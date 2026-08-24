@@ -572,6 +572,13 @@ def test_workflow_pause_resume_cancel_and_checkpoint_recovery(
         approval=True,
     )
     assert resumed["run_state"] == "succeeded" and resumed["node_count"] == 2
+    paused_observer = next(
+        record
+        for record in studio.manager.ledger.load()
+        if record.run_id.startswith(f"studio-finalizer-{started['run_id']}-")
+        and record.creator == "px-studio-terminal-observer"
+    )
+    assert paused_observer.active is False
     paused_worker = next(
         record
         for record in studio.manager.ledger.load()

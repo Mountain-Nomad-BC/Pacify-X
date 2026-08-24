@@ -12,7 +12,6 @@ import os
 from pathlib import Path
 import re
 import sys
-import time
 from typing import Mapping, Sequence
 from uuid import uuid4
 

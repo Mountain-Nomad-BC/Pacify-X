@@ -176,23 +176,35 @@ def wait_for_paused_worker_closure(
             run_control=run_control,
             run_id=run_id,
         )
+        records = manager.ledger.load()
         active_workers = [
             record
-            for record in manager.ledger.load()
+            for record in records
             if record.run_id == run_id
             and record.lane_id == f"studio-{kind}"
             and record.creator == "px-studio-durable-launcher"
             and record.resource_type == "process"
             and record.active
         ]
-        if not active_workers:
+        active_observers = [
+            record
+            for record in records
+            if record.run_id.startswith(f"studio-finalizer-{run_id}-")
+            and record.lane_id == f"studio-{kind}-terminal-observer"
+            and record.creator == "px-studio-terminal-observer"
+            and record.resource_type == "process"
+            and record.active
+        ]
+        if not active_workers and not active_observers:
             return state
         if str(state["state"]) != "paused":
             raise RuntimeError(
                 f"paused {kind} changed state before worker custody closed"
             )
         if time.monotonic() >= deadline:
-            raise TimeoutError(f"paused {kind} worker did not close before resume")
+            raise TimeoutError(
+                f"paused {kind} worker or terminal observer did not close before resume"
+            )
         time.sleep(0.02)
 
 

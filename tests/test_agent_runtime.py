@@ -724,6 +724,13 @@ def test_agent_session_pause_resume_cancel_and_denial_are_real_owned_lifecycle(
         spec, run_id=started["run_id"], task=task, approval=True
     )
     assert resumed["run_outcome"] == "succeeded" and resumed["resumable"] is False
+    paused_observer = next(
+        record
+        for record in controller.manager.ledger.load()
+        if record.run_id.startswith(f"studio-finalizer-{started['run_id']}-")
+        and record.creator == "px-studio-terminal-observer"
+    )
+    assert paused_observer.active is False
 
     approval = approval_proof(tmp_path, "agent", "start", start_payload)
     second = _one_shot(tmp_path, "agent", "start", {**start_payload, "approval_capability": approval})
