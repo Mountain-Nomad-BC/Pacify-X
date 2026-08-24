@@ -651,7 +651,7 @@ class ProcessSupervisor:
             ) from None
 
         activity_lock = threading.Lock()
-        supervision_started = time.monotonic()
+        supervision_started = started
         last_activity = [supervision_started]
         observed = [False]
 
