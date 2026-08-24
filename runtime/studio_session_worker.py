@@ -228,25 +228,10 @@ def main(argv: list[str] | None = None) -> int:
                 )
             except OSError:
                 pass
-    finally:
-        if manager is not None and resource_id:
-            try:
-                defer_worker_closure = False
-                state_root = root / ".engineering-bootstrap" / "studios" / (
-                    "agents" if args.kind == "agent" else "workflows"
-                )
-                control = (
-                    AgentRuntimeController(root).run_control
-                    if args.kind == "agent"
-                    else WorkflowStudio(root).run_control
-                )
-                state = control.read(args.run_id)
-                if str(state["state"]) == "finalizing":
-                    defer_worker_closure = True
-                if not defer_worker_closure:
-                    manager.complete_current_process(resource_id, expected_pid=os.getpid(), exit_code=exit_code)
-            except BaseException:
-                exit_code = 1
+    # The independently registered terminal observer owns worker-process
+    # closure on every path. Re-reading run control here can contend with that
+    # observer after ``finalizing`` is already durable and keep this PID alive,
+    # preventing the observer from truthfully publishing the terminal state.
     return exit_code
 
 

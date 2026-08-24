@@ -8,6 +8,7 @@ import pytest
 import runtime.studio_run_control as run_control_module
 from runtime.resource_lifecycle import ResourceManager
 from runtime.studio_run_control import DurableRunControl
+from runtime.studio_terminal_observer import _retryable_finalize_error
 from runtime.studio_worker_launch import finalize_studio_run_if_worker_exited
 
 
@@ -42,6 +43,15 @@ def test_durable_run_control_is_approval_gated_hash_chained_and_tamper_evident(
     head_path.write_text(json.dumps(forged), encoding="utf-8")
     with pytest.raises(PermissionError, match="authentication"):
         control.read(str(state["run_id"]))
+
+
+def test_terminal_observer_retries_only_transient_finalize_failures() -> None:
+    assert _retryable_finalize_error(OSError("transient filesystem contention"))
+    assert _retryable_finalize_error(
+        ValueError("illegal durable run transition: finalizing -> finalizing")
+    )
+    assert not _retryable_finalize_error(ValueError("invalid terminal target"))
+    assert not _retryable_finalize_error(PermissionError("identity mismatch"))
 
 
 def test_stale_owned_run_is_reconciled_to_interrupted_not_claimed_complete(

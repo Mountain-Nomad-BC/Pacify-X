@@ -168,6 +168,59 @@ class ResourceLifecycleTests(unittest.TestCase):
                 launch_binding="signed-request-digest",
             )
 
+    def test_persisted_process_exit_distinguishes_pid_reuse_from_same_process(self) -> None:
+        now = "2026-08-24T00:00:00+00:00"
+        record = ResourceRecord(
+            resource_id="process-persisted",
+            resource_type="process",
+            project_id="project",
+            run_id="run-persisted",
+            lane_id="studio-workflow",
+            creator="px-studio-durable-launcher",
+            classification=ResourceClassification.EPHEMERAL.value,
+            created_at=now,
+            last_activity_at=now,
+            expected_cleanup_event="process_exit_or_cancel",
+            retention_required=False,
+            pid=4242,
+            process_identity="process-start:original-start",
+        )
+        self.manager.ledger.upsert(record)
+
+        with mock.patch("runtime.resource_lifecycle._process_exists", return_value=True):
+            with mock.patch(
+                "runtime.resource_lifecycle._process_start_fingerprint",
+                return_value="original-start",
+            ):
+                self.assertFalse(
+                    self.manager.persisted_process_has_exited(
+                        record.resource_id, expected_pid=4242
+                    )
+                )
+                with self.assertRaisesRegex(ValueError, "still alive"):
+                    self.manager.complete_persisted_process_after_exit(
+                        record.resource_id,
+                        expected_pid=4242,
+                        run_state=RunState.CANCELLED,
+                    )
+
+            with mock.patch(
+                "runtime.resource_lifecycle._process_start_fingerprint",
+                return_value="replacement-start",
+            ):
+                self.assertTrue(
+                    self.manager.persisted_process_has_exited(
+                        record.resource_id, expected_pid=4242
+                    )
+                )
+                closed = self.manager.complete_persisted_process_after_exit(
+                    record.resource_id,
+                    expected_pid=4242,
+                    run_state=RunState.CANCELLED,
+                )
+        self.assertFalse(closed.active)
+        self.assertEqual(closed.cleanup_result, "process_absence_verified")
+
     def test_separate_process_registrations_do_not_lose_ledger_records(self) -> None:
         ledger = self.root / "process-state" / "ledger.json"
         code = (

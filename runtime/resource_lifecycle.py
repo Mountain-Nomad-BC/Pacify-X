@@ -24,7 +24,7 @@ import time
 from typing import Iterator, Mapping, Sequence
 from uuid import uuid4
 
-from .file_lock import FileLock, _process_exists
+from .file_lock import FileLock, _process_exists, _process_start_fingerprint
 from .wal_transaction import JsonArtifact, JsonWal
 
 
@@ -309,15 +309,20 @@ class ResourceLedger:
                 raise PermissionError("process launch handoff does not match resource custody")
             if actual_pid == expected_launcher_pid:
                 return record
-            identity = hashlib.sha256(
-                (
-                    record.process_identity
-                    + "\0handoff\0"
-                    + str(actual_pid)
-                    + "\0"
-                    + launch_binding
-                ).encode()
-            ).hexdigest()
+            start_fingerprint = _process_start_fingerprint(actual_pid)
+            identity = (
+                f"process-start:{start_fingerprint}"
+                if start_fingerprint is not None
+                else hashlib.sha256(
+                    (
+                        record.process_identity
+                        + "\0handoff\0"
+                        + str(actual_pid)
+                        + "\0"
+                        + launch_binding
+                    ).encode()
+                ).hexdigest()
+            )
             updated = replace(
                 record,
                 pid=actual_pid,
@@ -760,9 +765,14 @@ class ResourceManager:
             creationflags=creationflags,
         )
         now = _utc_now()
-        identity = hashlib.sha256(
-            (str(process.pid) + "\0" + "\0".join(command) + "\0" + now).encode()
-        ).hexdigest()
+        start_fingerprint = _process_start_fingerprint(process.pid)
+        identity = (
+            f"process-start:{start_fingerprint}"
+            if start_fingerprint is not None
+            else hashlib.sha256(
+                (str(process.pid) + "\0" + "\0".join(command) + "\0" + now).encode()
+            ).hexdigest()
+        )
         record = ResourceRecord(
             resource_id=f"process-{uuid4().hex}",
             resource_type="process",
@@ -876,7 +886,7 @@ class ResourceManager:
             if record.status == ResourceStatus.RECLAIMED.value:
                 return record
             raise PermissionError("persisted process resource is already inactive")
-        if _process_exists(expected_pid):
+        if self._persisted_process_is_alive(record, expected_pid=expected_pid):
             raise ValueError("persisted process is still alive")
         return self.update(
             resource_id,
@@ -895,7 +905,24 @@ class ResourceManager:
             raise PermissionError("persisted process identity does not match")
         if not record.active:
             return record.status == ResourceStatus.RECLAIMED.value
-        return not _process_exists(expected_pid)
+        return not self._persisted_process_is_alive(
+            record, expected_pid=expected_pid
+        )
+
+    @staticmethod
+    def _persisted_process_is_alive(
+        record: ResourceRecord, *, expected_pid: int
+    ) -> bool:
+        """Reject PID reuse when durable custody has a kernel start binding."""
+        if not _process_exists(expected_pid):
+            return False
+        prefix = "process-start:"
+        identity = str(record.process_identity or "")
+        if not identity.startswith(prefix):
+            return True
+        current = _process_start_fingerprint(expected_pid)
+        # An unavailable fingerprint proves neither exit nor reuse.
+        return current is None or current == identity[len(prefix) :]
 
     def terminate_owned_process(
         self, resource_id: str, *, graceful_timeout_seconds: float = 3.0

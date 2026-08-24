@@ -17,6 +17,16 @@ from .studio_worker_launch import finalize_studio_run_if_worker_exited
 from .workflow_studio import WorkflowStudio
 
 
+def _retryable_finalize_error(error: Exception) -> bool:
+    """Classify only bounded I/O contention and durable CAS races for retry."""
+    return isinstance(error, FileLockTimeout) or (
+        isinstance(error, OSError) and not isinstance(error, PermissionError)
+    ) or (
+        isinstance(error, ValueError)
+        and str(error).startswith("illegal durable run transition:")
+    )
+
+
 def _wait_for_observer_binding(
     manager: ResourceManager,
     *,
@@ -105,7 +115,7 @@ def main(argv: list[str] | None = None) -> int:
             except Exception as error:
                 now = time.monotonic()
                 first_finalize_error = first_finalize_error or now
-                retrying = isinstance(error, (FileLockTimeout, OSError)) and (
+                retrying = _retryable_finalize_error(error) and (
                     now - first_finalize_error < 30.0
                 )
                 try:
