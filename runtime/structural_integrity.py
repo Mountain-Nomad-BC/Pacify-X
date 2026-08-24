@@ -15,6 +15,7 @@ import tomllib
 from typing import Any
 
 from .bounded_walk import WalkLimits, bounded_walk
+from .build_claims import expected_build_claims
 from .repository_scope import is_external_environment_relative, is_project_source
 
 from .version import VERSION
@@ -668,15 +669,12 @@ def _document_errors(root: Path, release_open: bool) -> list[str]:
     readme = root / "README.md"
     if readme.is_file():
         readme_text = readme.read_text(encoding="utf-8", errors="replace")
-        framework_scripts = len(tuple((root / "scripts").glob("*.py")))
-        skill_scripts = len(tuple((root / ".px/skills").glob("*/scripts/*.py")))
+        claims = expected_build_claims(root)["counts"]
         denominators = {
-            "Runtime modules": len(tuple((root / "runtime").rglob("*.py"))),
-            "Contracts": len(tuple((root / "contracts").rglob("*.json"))),
-            "Registry artifacts": sum(
-                1 for path in (root / "registry").rglob("*") if path.is_file()
-            ),
-            "Tool and support scripts": framework_scripts + skill_scripts,
+            "Runtime modules": claims["runtime_modules"],
+            "Contracts": claims["contracts"],
+            "Registry artifacts": claims["registry_artifacts"],
+            "Tool and support scripts": claims["tool_and_support_scripts"],
         }
         for label, actual in denominators.items():
             match = re.search(rf"(?m)^\| {re.escape(label)} \| (\d+) \|", readme_text)

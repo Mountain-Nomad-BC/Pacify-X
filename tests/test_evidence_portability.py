@@ -62,6 +62,17 @@ def test_immutable_control_capture_families_are_not_runtime_locators(tmp_path) -
     assert discover_historical_references(tmp_path) == []
 
 
+def test_local_adversarial_audit_outputs_are_not_release_locators(tmp_path) -> None:
+    report = tmp_path / "evidence/adversarial-audit/current.json"
+    report.parent.mkdir(parents=True)
+    report.write_text(
+        '{"source":"C:\\\\Users\\\\operator\\\\workspace"}\n',
+        encoding="utf-8",
+    )
+
+    assert discover_historical_references(tmp_path) == []
+
+
 def test_portability_detects_unc_path() -> None:
     assert portability_findings(r"\\server\share\file")
 

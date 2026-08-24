@@ -23,6 +23,7 @@ STRUCTURED_ROOTS = (
     "extension/evidence",
 )
 EXCLUDED_PATH_PREFIXES = (
+    "evidence/adversarial-audit/",
     "evidence/full-control-proof-",
     "evidence/operational-control-fault-",
     "evidence/operational-ui-walk-",

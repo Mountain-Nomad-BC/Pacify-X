@@ -27,6 +27,17 @@ def _json(path: Path) -> dict[str, Any]:
     return value
 
 
+def _registry_artifact_count(root: Path) -> int:
+    """Count source artifacts without admitting live hidden lock files."""
+
+    return sum(
+        1
+        for path in (root / "registry").rglob("*")
+        if path.is_file()
+        and not (path.name.startswith(".") and path.suffix.casefold() == ".lock")
+    )
+
+
 def expected_build_claims(root: Path) -> dict[str, Any]:
     """Compute exact source-tree claims without trusting stored denominators."""
     root = root.resolve()
@@ -47,9 +58,7 @@ def expected_build_claims(root: Path) -> dict[str, Any]:
         "counts": {
             "runtime_modules": len(tuple((root / "runtime").rglob("*.py"))),
             "contracts": len(tuple((root / "contracts").rglob("*.json"))),
-            "registry_artifacts": sum(
-                1 for path in (root / "registry").rglob("*") if path.is_file()
-            ),
+            "registry_artifacts": _registry_artifact_count(root),
             "tool_and_support_scripts": framework_scripts + skill_scripts,
             "skills": len(skills),
             "agents": len(agents),
@@ -66,7 +75,7 @@ def expected_build_claims(root: Path) -> dict[str, Any]:
             "version": "pyproject.toml:project.version",
             "runtime_modules": "runtime/**/*.py",
             "contracts": "contracts/**/*.json",
-            "registry_artifacts": "registry/**/* files",
+            "registry_artifacts": "registry/**/* non-lock files",
             "tool_and_support_scripts": "scripts/*.py + .px/skills/*/scripts/*.py",
             "skills": "registry/skill_catalog.toml:skills",
             "agents": "registry/agency_agent_registry.json:agents",

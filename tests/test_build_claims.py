@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 from runtime.build_claims import (
+    _registry_artifact_count,
     build_claim_drift,
     expected_build_claims,
     update_readme_claims,
@@ -12,6 +13,17 @@ from runtime.build_claims import (
 
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_registry_claim_ignores_live_hidden_lock(tmp_path: Path) -> None:
+    registry = tmp_path / "registry"
+    registry.mkdir()
+    (registry / "owner.json").write_text("{}\n", encoding="utf-8")
+    (registry / ".operational-gap-ledger.lock").write_text(
+        "host-local\n", encoding="utf-8"
+    )
+
+    assert _registry_artifact_count(tmp_path) == 1
 
 
 def test_apply_builder_computes_before_creating_its_prepared_file() -> None:

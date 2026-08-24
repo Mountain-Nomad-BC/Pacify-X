@@ -142,7 +142,7 @@ These exact counts are checked automatically for drift; ordinary users do not ne
 |---|---:|
 | Runtime modules | 215 |
 | Contracts | 165 |
-| Registry artifacts | 364 |
+| Registry artifacts | 363 |
 | Tool and support scripts | 169 |
 
 The machine-readable source for release and inventory claims is [`registry/build_claims.json`](registry/build_claims.json).

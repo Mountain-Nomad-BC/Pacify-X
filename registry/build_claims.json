@@ -4,7 +4,7 @@
   "counts": {
     "runtime_modules": 215,
     "contracts": 165,
-    "registry_artifacts": 364,
+    "registry_artifacts": 363,
     "tool_and_support_scripts": 169,
     "skills": 178,
     "agents": 270,
@@ -19,7 +19,7 @@
     "version": "pyproject.toml:project.version",
     "runtime_modules": "runtime/**/*.py",
     "contracts": "contracts/**/*.json",
-    "registry_artifacts": "registry/**/* files",
+    "registry_artifacts": "registry/**/* non-lock files",
     "tool_and_support_scripts": "scripts/*.py + .px/skills/*/scripts/*.py",
     "skills": "registry/skill_catalog.toml:skills",
     "agents": "registry/agency_agent_registry.json:agents",
