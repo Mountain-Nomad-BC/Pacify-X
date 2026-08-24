@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import tempfile
 import unittest
 
 from runtime.startup import bounded_startup
@@ -13,7 +14,10 @@ ROOT = Path(__file__).resolve().parents[1]
 class ToolRegistryTests(unittest.TestCase):
     def test_startup_candidates_remain_bounded_and_metadata_driven(self) -> None:
         self.assertEqual(startup_candidates(ROOT), ("docker", "git", "rg"))
-        snapshot = bounded_startup(ROOT, ROOT, tool_resolver=lambda name: f"/{name}")
+        with tempfile.TemporaryDirectory() as directory:
+            snapshot = bounded_startup(
+                ROOT, Path(directory), tool_resolver=lambda name: f"/{name}"
+            )
         self.assertEqual(
             dict(snapshot.tools), {"docker": "/docker", "git": "/git", "rg": "/rg"}
         )

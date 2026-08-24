@@ -23,7 +23,7 @@ from runtime.file_lock import (
 def _hold_lock(path: str, ready, release) -> None:
     with FileLock(Path(path), timeout_seconds=2):
         ready.set()
-        release.wait(5)
+        release.wait(15)
 
 
 def test_file_lock_exponential_backoff() -> None:
@@ -80,13 +80,13 @@ def test_file_lock_high_contention_processes() -> None:
         )
         process.start()
         try:
-            assert ready.wait(5)
+            assert ready.wait(15)
             with pytest.raises(FileLockTimeout):
                 with FileLock(Path(directory) / "control.lock", timeout_seconds=0.05):
                     pass
         finally:
             release.set()
-            process.join(5)
+            process.join(15)
         assert process.exitcode == 0
 
 

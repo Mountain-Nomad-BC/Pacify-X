@@ -4915,7 +4915,7 @@
         "unittest.mock"
       ],
       "index_state": "verified",
-      "sha256": "b579377c3334175f299f4a7a7341631eca7af6b7a06fa062a72d0ced29ed3142"
+      "sha256": "a00bc1ac60cb70fba0ea8e40e58ad98a8ff71903d43e48337e5f8f4fe0419dbf"
     },
     "tests/test_foundation_assurance.py": {
       "imports": [
@@ -5095,7 +5095,7 @@
         "unittest"
       ],
       "index_state": "verified",
-      "sha256": "daea78eff9b2ff6f1cf7f71110fcc9e92496484ea37dc86c2d72cbbbacd0bb0f"
+      "sha256": "7979fbeb9eea91e4651ee8c65ab9c4aa0ced38ca4c6e3ce2865112c540b17606"
     },
     "tests/test_integration_disposition.py": {
       "imports": [
@@ -5313,10 +5313,11 @@
       "imports": [
         "__future__",
         "pathlib",
+        "pytest",
         "scripts.build_operation_health_snapshot"
       ],
       "index_state": "verified",
-      "sha256": "b7f3dc5f683d6cf6c13bd36ed0d9a5e02321e1cf06b6a21915be6eae11b73cde"
+      "sha256": "3f3a52c1efddd36e5ae53a452dead63c85f1ce4cab8bfd7ab7ddff6db050c281"
     },
     "tests/test_operational_control_proof_matrix.py": {
       "imports": [
@@ -6312,7 +6313,7 @@
         "tests.studio_approval_testkit"
       ],
       "index_state": "verified",
-      "sha256": "4fe93f5f59d50dee64f13b3d1144a274dc47863b13ef85458b7a9bd2476bc388"
+      "sha256": "fb51b89c4e65e498478088e8c6594256f9f424cd89cf850aab76d3c59a32a54b"
     },
     "tests/test_studio_catalog_status.py": {
       "imports": [
@@ -6439,10 +6440,11 @@
         "pathlib",
         "runtime.startup",
         "runtime.tooling",
+        "tempfile",
         "unittest"
       ],
       "index_state": "verified",
-      "sha256": "e735a2068dcdf8843060c8789d2a9a810c961a4d09deced41f003f2e1628b9b5"
+      "sha256": "c24e41dbb263242f3b948415673eb8ec0244eb0f664d370291c6a4f6896f49ed"
     },
     "tests/test_transcript_analysis.py": {
       "imports": [
@@ -6607,7 +6609,7 @@
       ],
       "description": "Serial process custody, recovery, test-runner, WAL, resource-lifecycle, and workspace mutation tests.",
       "group": "process-recovery",
-      "input_sha256": "d79bb3327c0ad4b49ad6a992345d7c9d41daee59aab4e8bec71b2738a026fe60",
+      "input_sha256": "0820abee6a90da9db4a90a0b015a82a1ea11f032b6fe2a6edc500edd4792fe30",
       "inputs": [
         "registry/test_profiles.json",
         "runtime/commissioning.py",
@@ -6681,7 +6683,7 @@
       ],
       "description": "Serial exact-tool, installed-wheel, corrective-release, and full-repair-ledger certification tests.",
       "group": "exact-installed",
-      "input_sha256": "3db0d6e993688fbabcb0f52a3dff9c41d42bd4d681cd1c4b96d24a14e0d7b459",
+      "input_sha256": "df57f28556c972a05562470aa5b1a77161ae968d2c162ce45c476f17e66d473d",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -6760,7 +6762,7 @@
       ],
       "description": "Serial release, distribution, artifact, and revocation certification tests excluding composed audit mutations.",
       "group": "release-build",
-      "input_sha256": "9ad8f7b5d8b8aeefa5201252e896dd520ffb0e23cf3538332465d96912a34de7",
+      "input_sha256": "d0fa22225d5e1956adc801c2312d568333b344391536387c7d4abd3f78ce4288",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -6832,7 +6834,7 @@
       ],
       "description": "Serial composed-audit and quarantine-mutation tests isolated from package builds.",
       "group": "release-audit",
-      "input_sha256": "62cdc4eb35099e6b0b27f73b33cc527f4ca4bc782b353109a813d5a39a17df71",
+      "input_sha256": "3107164d3b7182989b1402b6d4f752a3a071601da24585250651ac58f2aa1fd0",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -6877,7 +6879,7 @@
       ],
       "description": "Serial full-tree structural mutation tests isolated from derived-artifact checks.",
       "group": "structural-adversarial",
-      "input_sha256": "05e603c7ad267d03319da03fcc1e92e6f50d036403be01433c38dee19d42d76c",
+      "input_sha256": "c8365b2d69bfc6a5331812bc66897dae8d6c41d14e60aab3a833ba0d339cda87",
       "inputs": [
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_agents_md_generator.py",
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_change_impact.py",
@@ -8438,7 +8440,7 @@
       ],
       "description": "Final serial generated-output, completion-projection, portability, effect-surface, and punch-card integrity gate.",
       "group": "derived-integrity",
-      "input_sha256": "7a920e6289f3532ae16a80c2ed7bd7850022cd85fb31ce78029a51d569cde011",
+      "input_sha256": "3f4f464a6d4f2106604c5e042f9d3668a55720d63194402200a6c96d477414c2",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -8681,7 +8683,7 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin A through F; this lane shares canonical registry state with core-n-s and must not overlap it.",
       "group": "core-a-f",
-      "input_sha256": "0230a7ab2d00843f3e935eaba4d83ba48a29d6fa7b06832694c99dd27e23e838",
+      "input_sha256": "21d905fdae43f8eec0c2ff6e8f265e818af8d32541809560da38c96922cbe799",
       "inputs": [
         "builders/declared_suite_builder.py",
         "builders/declared_suite_support_builder.py",
@@ -9037,7 +9039,7 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin G through M; this lane reads or mutates shared canonical repository state.",
       "group": "core-g-m",
-      "input_sha256": "a84e3b1d5947370aa24384482b2a0af323baea8ac3b957c46a7226dc3ff29953",
+      "input_sha256": "c4d8980870da0afe8c53ccbb0605ab4de7abc760f26262a1a30e0b21949b2f3e",
       "inputs": [
         "builders/common.py",
         "builders/orchestration_builder.py",
@@ -9351,7 +9353,7 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin N through S; this lane reads or mutates shared canonical repository state.",
       "group": "core-n-s",
-      "input_sha256": "f5d44c766250b5fe9f27392f2812efb29e66e0205e226481607338806f888979",
+      "input_sha256": "fd732d419fa61a730006d1fb3e8daba4c70eb2b3c8546c19acba4dbdc271cd00",
       "inputs": [
         "registry/test_profiles.json",
         "runtime/__init__.py",
@@ -9672,7 +9674,7 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin T through Z; this lane reads or mutates shared canonical repository state.",
       "group": "core-t-z",
-      "input_sha256": "5bddc1fd27d9746b487983183107ef538129433edbb9647e1005095d24a63351",
+      "input_sha256": "3adb9d3ea2b3cea69a0a32282a5c1665afc45780f4ebf397825b96fad1a547c5",
       "inputs": [
         "builders/adapter_builder.py",
         "builders/common.py",

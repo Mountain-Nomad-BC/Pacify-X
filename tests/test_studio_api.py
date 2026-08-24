@@ -51,16 +51,17 @@ def _editor_tree_sha256(root: Path) -> tuple[str, int]:
 
 
 def test_worker_authority_environment_forwards_only_key_locators() -> None:
+    key_root = (ROOT / ".test-host-keys").resolve(strict=False)
     assert studio_authority_locator_environment(
         {
-            "PX_STUDIO_KEY_ROOT": "C:/host/keys",
+            "PX_STUDIO_KEY_ROOT": str(key_root),
             "XDG_STATE_HOME": "/host/state",
             "LOCALAPPDATA": "C:/host/state",
             "PX_STUDIO_APPROVAL_BROKER_SECRET": "must-not-cross",
             "OPENAI_API_KEY": "must-not-cross",
         }
     ) == {
-        "PX_STUDIO_KEY_ROOT": str(Path("C:/host/keys").resolve(strict=False)),
+        "PX_STUDIO_KEY_ROOT": str(key_root),
         "XDG_STATE_HOME": "/host/state",
         "LOCALAPPDATA": "C:/host/state",
     }

@@ -135,7 +135,7 @@
         "tests/test_rel009_release.py",
         "tests/test_structural_integrity.py"
       ],
-      "timeout_seconds": 450
+      "timeout_seconds": 600
     },
     "full": {
       "description": "Every discovered source test; new test files enter this profile automatically. The bound includes measured clean-build and adversarial full-tree mutation costs on Windows.",

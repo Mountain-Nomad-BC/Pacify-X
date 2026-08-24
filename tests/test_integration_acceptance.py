@@ -74,10 +74,13 @@ class IntegrationAcceptanceTests(unittest.TestCase):
     def test_full_skill_catalog_starts_dormant_selects_bounded_set_and_unloads(
         self,
     ) -> None:
-        tracemalloc.start()
-        snapshot = bounded_startup(ROOT, ROOT, tool_names=(), max_probe_workers=1)
-        _, peak = tracemalloc.get_traced_memory()
-        tracemalloc.stop()
+        with tempfile.TemporaryDirectory() as directory:
+            tracemalloc.start()
+            snapshot = bounded_startup(
+                ROOT, Path(directory), tool_names=(), max_probe_workers=1
+            )
+            _, peak = tracemalloc.get_traced_memory()
+            tracemalloc.stop()
         self.assertEqual(snapshot.hydrated_skill_bodies, ())
         catalog = tomllib.loads(
             (ROOT / "registry/skill_catalog.toml").read_text(encoding="utf-8")
