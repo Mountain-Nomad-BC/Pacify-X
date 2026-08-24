@@ -1,5 +1,5 @@
 {
-  "checkpoint_sha256": "5f077a157b6d97bb848ea054e3636d5bc0868597fd631dbd6d89377f1c4e0ab9",
+  "checkpoint_sha256": "567c2b03eb6c276aedba69f920feeeebce2104ae84db3fd98eef455581a09fcb",
   "created_utc": "2026-08-16T17:14:48.634100Z",
   "dashboard": {
     "cards": [
@@ -527,6 +527,21 @@
         "next_action": "Render source_status/error as a blocking diagnostics condition and suppress misleading counts.",
         "severity": "critical",
         "status": "narrowly_verified"
+      },
+      {
+        "acceptance": "Every current defect in the supplied adversarial report is reproduced or disproved against the exact current source, repaired at its canonical owner, validated at the real process, relocation, export, lifecycle, and host boundaries, and followed by an explicit incompleteness audit before certification.",
+        "area": "assurance-runtime-release",
+        "assigned_owner": "codex-host:adversarial-reconciliation",
+        "canonical_surface": "",
+        "control_action": "reproduce-repair-and-adversarially-recheck-current-findings",
+        "evidence_lacking": false,
+        "feature": "adversarial-audit-findings-reconciliation",
+        "finding": "A freshly downloaded repository produced high-severity authority, portability, export, sanitation, durable-worker, timing, host-integration, and assurance-state findings that were not covered by the prior green CI completion claim.",
+        "id": "PX-OS-1065",
+        "linked_control_count": 0,
+        "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+        "severity": "critical",
+        "status": "integrated"
       },
       {
         "acceptance": "An event that would exceed count or byte bounds is rejected before any authoritative write.",
@@ -1487,26 +1502,11 @@
         "next_action": "Reconcile exact current source and installed-host behavior before any state advancement.",
         "severity": "high",
         "status": "discovered"
-      },
-      {
-        "acceptance": "Node type and configuration round-trip to runtime semantics, edges render on the canvas with compatible ports, and invalid connections are blocked with a specific reason.",
-        "area": "workflow-topology",
-        "assigned_owner": "codex-primary",
-        "canonical_surface": "workflow-studio",
-        "control_action": "historical finding; exact visible action must be reconciled",
-        "evidence_lacking": false,
-        "feature": "workflow-topology",
-        "finding": "Workflow palette node types are cosmetic because persisted nodes do not retain typed kind/configuration and the canvas lacks inspectable typed ports and drawn connections.",
-        "id": "PX-OS-039",
-        "linked_control_count": 0,
-        "next_action": "Reconcile exact current source and installed-host behavior before any state advancement.",
-        "severity": "high",
-        "status": "discovered"
       }
     ],
-    "count": 1064,
+    "count": 1065,
     "limit": 100,
-    "open_count": 1058,
+    "open_count": 1059,
     "progress": {
       "aggregate_parent_cards": 25,
       "approved": 0,
@@ -1525,12 +1525,15 @@
         "PX-OS-009",
         "PX-OS-011",
         "PX-OS-045",
+        "PX-OS-1065",
         "PX-OS-976"
       ],
-      "cards_with_unbound_evidence_count": 5,
+      "cards_with_unbound_evidence_count": 6,
       "cards_with_unbound_evidence_truncated": false,
-      "cards_with_unregistered_surface": [],
-      "cards_with_unregistered_surface_count": 0,
+      "cards_with_unregistered_surface": [
+        "PX-OS-1065"
+      ],
+      "cards_with_unregistered_surface_count": 1,
       "cards_with_unregistered_surface_truncated": false,
       "cards_without_control_links": [
         "PX-OS-002",
@@ -1559,7 +1562,7 @@
         "PX-OS-035",
         "PX-OS-036"
       ],
-      "cards_without_control_links_count": 543,
+      "cards_without_control_links_count": 544,
       "cards_without_control_links_truncated": true,
       "cards_without_control_resolution": [
         "PX-OS-002",
@@ -1588,7 +1591,7 @@
         "PX-OS-056",
         "PX-OS-058"
       ],
-      "cards_without_control_resolution_count": 466,
+      "cards_without_control_resolution_count": 467,
       "cards_without_control_resolution_truncated": true,
       "closed": 6,
       "controls_not_yet_disposed": 0,
@@ -1602,19 +1605,20 @@
         "PX-OS-009",
         "PX-OS-011",
         "PX-OS-045",
+        "PX-OS-1065",
         "PX-OS-976"
       ],
-      "evidence_deficient_cards_count": 5,
+      "evidence_deficient_cards_count": 6,
       "evidence_deficient_cards_truncated": false,
       "examined_controls": 486,
       "expected_surfaces_missing": [],
       "expected_surfaces_missing_count": 0,
       "expected_surfaces_missing_truncated": false,
       "gap_controls": 531,
-      "gaps_discovered": 1064,
+      "gaps_discovered": 1065,
       "implemented": 8,
       "implementing": 1,
-      "integrated": 1,
+      "integrated": 2,
       "inventory_drift_surfaces": [
         "agent-studio",
         "agents",
@@ -1630,9 +1634,9 @@
       "operational_controls": 414,
       "operationally_verified": 0,
       "reopened": 0,
-      "report_findings": 232,
-      "report_findings_reconciled": 232,
-      "reports_registered": 19,
+      "report_findings": 251,
+      "report_findings_reconciled": 251,
+      "reports_registered": 20,
       "reproduced": 0,
       "scoped": 24,
       "superseded": 2,
@@ -1691,7 +1695,7 @@
       "discovered": 924,
       "implemented": 8,
       "implementing": 1,
-      "integrated": 1,
+      "integrated": 2,
       "narrowly_verified": 98,
       "operationally_verified": 0,
       "reopened": 0,
@@ -1701,22 +1705,22 @@
     },
     "truncated": true
   },
-  "event_count": 8829,
-  "generated_utc": "2026-08-24T04:53:41.819980Z",
-  "head_event_sha256": "620e43d499b424f57bd082846733d885b0572b249df95f665a8cb93a21f8b1c9",
+  "event_count": 8861,
+  "generated_utc": "2026-08-24T16:35:47.470152Z",
+  "head_event_sha256": "45892649802e9adcf1d7f32f73ea10e2a13005e22af9fe6c6e1550fc3f0db4ab",
   "ledger_fingerprint": {
     "device": 1585928601211604637,
     "inode": 9851624184906169,
-    "mtime_ns": 1787547222430593100,
-    "size_bytes": 19432731
+    "mtime_ns": 1787589348346125000,
+    "size_bytes": 19467615
   },
   "ledger_id": "PX-OPERATIONAL-GAPS-20260816",
-  "maximum_gap_ordinal": 1064,
-  "predecessor_event_sha256": "79f02d960a41076dcef512c070fba64e3354f2e7833c806627b5996ce4771eb5",
-  "previous_checkpoint_sha256": "345cd680482e1e7c5458284740601eb3ef020507514319bbb2d35386b3a53383",
+  "maximum_gap_ordinal": 1065,
+  "predecessor_event_sha256": "d1a9d301aec63e7fb80af9fc4deb981cdb56aeb78a025cbd0e4b53919199b8f5",
+  "previous_checkpoint_sha256": "7d2165b34da8cbcf22ae9fe163bd2f3e0d3f8519ccf6bfc9cea942bf6b90ea03",
   "schema_version": "px.operational-gap-ledger-head/1.0",
-  "snapshot_sha256": "5df7dc7027348a10a6f2ccca4a0cdd519e1800c1f9d4d96dfe8ae1b4746f0a68",
-  "snapshot_size_bytes": 24542177,
+  "snapshot_sha256": "0a848af91055e72d837ee4e5d4fcba9916acc85abdde5a4f2ba969089422b27e",
+  "snapshot_size_bytes": 24575454,
   "verification_basis": {
     "full_replay_anchor_event_count": 8810,
     "full_replay_anchor_event_sha256": "b1a2390c007eab5d015cf9b2d66f333067ffe89ee9cc366a0399f9194b18cf67",

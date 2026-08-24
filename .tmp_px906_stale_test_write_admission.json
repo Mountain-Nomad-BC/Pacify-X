@@ -1,8 +1,0 @@
-{
-  "gap_id":"PX-OS-906","checkpoint_event_id":"gap-event:PX-OPERATIONAL-GAPS-20260816:000000006337","effect":"write",
-  "scope":["extension/tests/hardening-boundaries.test.js","extension/tests/ui-scaffold.test.js"],
-  "authority":"PX906 may align the two stale affected-section assertions with the already-current request-correlation and UI state contracts; product source is unchanged by this admission.",
-  "expected_effect":"Preserve the path-boundary assertion after supplying its required request ID and update persisted-view expectations to current bounded graph/draft defaults.",
-  "rollback":"Revert only these two assertion updates if current source contracts are later intentionally changed.",
-  "evidence":[{"reference":".engineering-bootstrap/test-evidence/sections/dashboard-extension.json","artifact_sha256":"ddcc8c82f2d3abe369480c67b1fd993fc1bf9b04b38f562bed69b8785c8e1d6a","artifact_size":987,"claim":"The governed section failed with stale hardening and UI scaffold expectations."}]
-}

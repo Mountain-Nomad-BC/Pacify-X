@@ -58,6 +58,28 @@ def studio_authority_locator_environment(
         if not candidate.is_absolute():
             raise ValueError("PX_STUDIO_KEY_ROOT must be an absolute path")
         locators["PX_STUDIO_KEY_ROOT"] = str(candidate.resolve(strict=False))
+    else:
+        if os.name == "nt":
+            local_app_data = str(environment.get("LOCALAPPDATA", "")).strip()
+            if local_app_data:
+                candidate = Path(local_app_data) / "Pacify-X" / "authority-keys"
+            else:
+                home = str(environment.get("USERPROFILE", "")).strip()
+                candidate = (
+                    Path(home) if home else Path.home()
+                ) / "AppData/Local/Pacify-X/authority-keys"
+        else:
+            state_home = str(environment.get("XDG_STATE_HOME", "")).strip()
+            if state_home:
+                candidate = Path(state_home) / "pacify-x" / "authority-keys"
+            else:
+                home = str(environment.get("HOME", "")).strip()
+                candidate = (
+                    Path(home) if home else Path.home()
+                ) / ".local/state/pacify-x/authority-keys"
+        if not candidate.is_absolute():
+            raise ValueError("Studio authority host-state root must be absolute")
+        locators["PX_STUDIO_KEY_ROOT"] = str(candidate.resolve(strict=False))
     return locators
 
 
@@ -131,17 +153,9 @@ class StudioAuthorityStore:
             })
         if not self.project_identity.startswith("px-project-"):
             raise ValueError("studio project identity is invalid")
-        configured_root = os.environ.get("PX_STUDIO_KEY_ROOT", "").strip()
-        if configured_root:
-            key_root = Path(configured_root).expanduser()
-            if not key_root.is_absolute():
-                raise ValueError("PX_STUDIO_KEY_ROOT must be an absolute path")
-        elif os.name == "nt":
-            local_app_data = os.environ.get("LOCALAPPDATA")
-            key_root = (Path(local_app_data) if local_app_data else Path.home() / "AppData/Local") / "Pacify-X" / "authority-keys"
-        else:
-            key_root = Path(os.environ.get("XDG_STATE_HOME", Path.home() / ".local/state")) / "pacify-x" / "authority-keys"
-        key_root = key_root.resolve(strict=False)
+        key_root = Path(
+            studio_authority_locator_environment()["PX_STUDIO_KEY_ROOT"]
+        )
         if key_root == self.project_root or self.project_root in key_root.parents:
             raise ValueError("Studio authority key root must remain outside the project")
         key_root.mkdir(parents=True, exist_ok=True)

@@ -16,11 +16,30 @@ from runtime.process_supervisor import ProcessSupervisor, _BoundedCapture
 from runtime.resource_lifecycle import ResourceManager, ResourceStatus
 
 
+def _calibrated_python_startup_timeout() -> float:
+    """Give semantic tests a measured interpreter-start margin on this host."""
+    samples: list[float] = []
+    for _ in range(2):
+        started = time.monotonic()
+        subprocess.run(
+            [sys.executable, "-c", "pass"],
+            check=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            timeout=15,
+        )
+        samples.append(time.monotonic() - started)
+    return max(2.0, max(samples) * 4.0)
+
+
+PYTHON_STARTUP_TIMEOUT = _calibrated_python_startup_timeout()
+
+
 def _budget(**changes: object) -> dict[str, object]:
     value: dict[str, object] = {
-        "startup_timeout_seconds": 0.35,
-        "idle_timeout_seconds": 0.25,
-        "total_timeout_seconds": 0.7,
+        "startup_timeout_seconds": PYTHON_STARTUP_TIMEOUT,
+        "idle_timeout_seconds": 0.5,
+        "total_timeout_seconds": PYTHON_STARTUP_TIMEOUT + 1.0,
         "graceful_shutdown_seconds": 0.15,
         "force_shutdown_seconds": 4.0,
         "stdout_limit_bytes": 128,
@@ -33,11 +52,11 @@ def _budget(**changes: object) -> dict[str, object]:
 def _action(root: Path, **budget_changes: object) -> dict[str, object]:
     budget = _budget(**budget_changes)
     limits = _budget(
-        startup_timeout_seconds=2.0,
-        idle_timeout_seconds=2.0,
-        total_timeout_seconds=5.0,
-        graceful_shutdown_seconds=2.0,
-        force_shutdown_seconds=5.0,
+        startup_timeout_seconds=max(5.0, PYTHON_STARTUP_TIMEOUT),
+        idle_timeout_seconds=max(5.0, PYTHON_STARTUP_TIMEOUT),
+        total_timeout_seconds=max(15.0, PYTHON_STARTUP_TIMEOUT * 3),
+        graceful_shutdown_seconds=max(10.0, PYTHON_STARTUP_TIMEOUT * 2),
+        force_shutdown_seconds=max(15.0, PYTHON_STARTUP_TIMEOUT * 3),
         stdout_limit_bytes=4096,
         stderr_limit_bytes=4096,
         poll_interval_seconds=2.0,
@@ -53,6 +72,19 @@ def _action(root: Path, **budget_changes: object) -> dict[str, object]:
         "approval": True,
         "policy_override_requested": False,
     }
+
+
+def _set_event_when_path_exists(
+    event: threading.Event,
+    path: Path,
+    *,
+    timeout_seconds: float,
+) -> None:
+    deadline = time.monotonic() + timeout_seconds
+    while not path.exists() and time.monotonic() < deadline:
+        time.sleep(0.01)
+    if path.exists():
+        event.set()
 
 
 @pytest.fixture
@@ -190,16 +222,22 @@ def test_idle_output_producer_hits_idle_timeout(harness) -> None:
 
 def test_cancellation_closes_process(harness) -> None:
     cancel = threading.Event()
-    timer = threading.Timer(0.12, cancel.set)
-    timer.start()
+    ready = harness[0] / "cancellation.ready"
+
+    worker = threading.Thread(
+        target=_set_event_when_path_exists,
+        args=(cancel, ready),
+        kwargs={"timeout_seconds": 15.0},
+    )
+    worker.start()
     try:
         result = _run(
             harness,
-            "import sys,time;print('ready',flush=True);time.sleep(30)",
+            f"import pathlib,sys,time;pathlib.Path({str(ready)!r}).write_text('ready');print('ready',flush=True);time.sleep(30)",
             cancel_event=cancel,
         )
     finally:
-        timer.cancel()
+        worker.join(timeout=5)
     assert result.status == "cancelled"
     assert result.tree_closed
     assert result.shutdown_mode in {"graceful", "forced"}
@@ -211,23 +249,35 @@ def test_signal_aware_process_exits_gracefully(harness) -> None:
     else:
         setup = "signal.signal(signal.SIGTERM,lambda *_:sys.exit(0))"
     cancel = threading.Event()
-    timer = threading.Timer(0.15, cancel.set)
-    timer.start()
+    ready = harness[0] / "signal-aware.ready"
+
+    canceller = threading.Thread(
+        target=_set_event_when_path_exists,
+        args=(cancel, ready),
+        kwargs={"timeout_seconds": 15.0},
+    )
+    canceller.start()
     try:
         result = _run(
             harness,
-            f"import signal,sys,time;{setup};print('ready',flush=True);time.sleep(.3)",
+            f"import pathlib,signal,sys,time;{setup};pathlib.Path({str(ready)!r}).write_text('ready');print('ready',flush=True);time.sleep(30)",
             action=_action(
                 harness[0],
-                graceful_shutdown_seconds=1.0,
-                force_shutdown_seconds=3.0,
+                graceful_shutdown_seconds=max(5.0, PYTHON_STARTUP_TIMEOUT),
+                force_shutdown_seconds=max(8.0, PYTHON_STARTUP_TIMEOUT * 2),
             ),
             cancel_event=cancel,
         )
     finally:
-        timer.cancel()
+        canceller.join(timeout=16)
     assert result.status == "cancelled"
-    assert result.shutdown_mode == "graceful"
+    if os.name == "nt":
+        # Windows services and detached hosts do not always expose a console
+        # that can deliver CTRL_BREAK; the owned Job Object is the required
+        # bounded fallback and must still close the complete tree.
+        assert result.shutdown_mode in {"graceful", "forced"}
+    else:
+        assert result.shutdown_mode == "graceful"
     assert result.tree_closed
 
 
@@ -275,14 +325,11 @@ def test_signal_resistant_process_uses_forced_shutdown(harness) -> None:
     ready = harness[0] / "signal-resistant.ready"
     cancel = threading.Event()
 
-    def cancel_after_handler_is_ready() -> None:
-        deadline = time.monotonic() + 5
-        while not ready.exists() and time.monotonic() < deadline:
-            time.sleep(0.01)
-        if ready.exists():
-            cancel.set()
-
-    canceller = threading.Thread(target=cancel_after_handler_is_ready)
+    canceller = threading.Thread(
+        target=_set_event_when_path_exists,
+        args=(cancel, ready),
+        kwargs={"timeout_seconds": 5.0},
+    )
     canceller.start()
     try:
         result = _run(

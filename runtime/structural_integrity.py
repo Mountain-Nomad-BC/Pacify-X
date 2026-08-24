@@ -98,13 +98,6 @@ DUPLICATE_CLASSIFICATIONS = {
         "regeneration_command": "python scripts/reconcile_studio_operation_projections.py",
         "equivalence_rule": "byte-for-byte",
     },
-    "global-skill-isolation-reconciliation-snapshots": {
-        "owner": "runtime/global_skill_isolation.py",
-        "rationale": "independent reconciliation campaigns retain matching pre-move and stability snapshots as evidence",
-        "authoritative_source": ".px/global-skill-isolation",
-        "regeneration_command": "python -m runtime.cli skill-host-isolation reconcile",
-        "equivalence_rule": "byte-for-byte matching snapshot evidence",
-    },
     "bounded-json-loaders": {
         "owner": "scripts",
         "rationale": "small evidence assemblers use the same fail-closed JSON object loader contract",
@@ -132,6 +125,13 @@ DUPLICATE_CLASSIFICATIONS = {
         "authoritative_source": "policies",
         "regeneration_command": "python scripts/migration/sync_skill_packaging.py",
         "equivalence_rule": "byte-for-byte",
+    },
+    "independent-gate-receipts": {
+        "owner": "testing-governance",
+        "rationale": "independent governed gate runs may retain byte-identical receipts under distinct evidence custody roots",
+        "authoritative_source": "each governed gate run",
+        "regeneration_command": None,
+        "equivalence_rule": "independent immutable evidence",
     },
 }
 
@@ -265,6 +265,11 @@ def _import_cycles(root: Path) -> list[list[str]]:
 
 def _classify_exact_group(paths: list[str]) -> str | None:
     path_set = set(paths)
+    if path_set == {
+        ".engineering-bootstrap/test-evidence/adversarial-repair-gates/contracts.json",
+        ".engineering-bootstrap/test-evidence/github-reconciliation-gates/contracts.json",
+    }:
+        return "independent-gate-receipts"
     if (
         len(paths) == 2
         and all(path.startswith(".px/skills/") for path in paths)
@@ -319,13 +324,6 @@ def _classify_exact_group(paths: list[str]) -> str | None:
         "runtime/studio_operations.json",
     }:
         return "studio-operation-projections"
-    if len(paths) >= 2 and all(
-        path.startswith(".px/global-skill-isolation/reconcile-")
-        and "-snapshot-" in path
-        and path.endswith(".json")
-        for path in paths
-    ):
-        return "global-skill-isolation-reconciliation-snapshots"
     if (
         len(paths) == 2
         and all(

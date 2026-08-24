@@ -205,8 +205,29 @@ def main(argv: list[str] | None = None) -> int:
                     failure={"code": type(error).__name__, "message": str(error)[:500]},
                     operation="worker.failed",
                 )
-        except BaseException:
-            pass
+        except BaseException as publication_error:
+            diagnostic_root = (
+                root
+                / ".engineering-bootstrap"
+                / "studios"
+                / ("agents" if args.kind == "agent" else "workflows")
+                / "sessions"
+                / args.run_id
+            )
+            try:
+                write_json_atomic(
+                    diagnostic_root / "worker-failure-publication-error.json",
+                    {
+                        "schema_version": "px.studio-worker-publication-error/1.0",
+                        "run_id": args.run_id,
+                        "worker_error": type(error).__name__,
+                        "publication_error": type(publication_error).__name__,
+                        "message": str(publication_error)[:500],
+                        "authoritative": False,
+                    },
+                )
+            except OSError:
+                pass
     finally:
         if manager is not None and resource_id:
             try:

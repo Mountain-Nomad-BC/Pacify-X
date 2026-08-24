@@ -113,6 +113,29 @@ def build(
     instruction_requirements_complete = bool(
         instruction.get("completion_claim", {}).get("complete")
     )
+    ledger_path = root / "registry/operational_gap_ledger.snapshot.json"
+    ledger_error: str | None = None
+    try:
+        from runtime.operational_gap_ledger import read_snapshot
+
+        operational_ledger = read_snapshot(root)
+    except (OSError, ValueError, PermissionError, json.JSONDecodeError) as error:
+        operational_ledger = {}
+        ledger_error = f"{type(error).__name__}: {error}"
+    ledger_cards = operational_ledger.get("cards", {})
+    if not isinstance(ledger_cards, dict):
+        ledger_cards = {}
+        ledger_error = ledger_error or "operational ledger cards are unavailable"
+    completion_states = {"closed", "operationally_verified", "superseded"}
+    operational_blockers = sorted(
+        str(gap_id)
+        for gap_id, card in ledger_cards.items()
+        if isinstance(card, dict)
+        and str(card.get("severity", "")).casefold()
+        in {"blocker", "critical", "high"}
+        and str(card.get("current_state", "")) not in completion_states
+    )
+    operational_ledger_current = ledger_error is None and not operational_blockers
     operational_repairs_complete = not open_surface and not unknown_surface
     live_verification_complete = not live_pending_surface and not unknown_surface
     operational_frontier_complete = (
@@ -121,6 +144,7 @@ def build(
     cards_complete = (
         instruction_requirements_complete
         and operational_frontier_complete
+        and operational_ledger_current
     )
     from runtime.test_profiles import group_status, section_status
 
@@ -154,6 +178,14 @@ def build(
     if pending_surface:
         blocking_reasons.append(
             f"current product-surface audit has {len(pending_surface)} operational findings pending repair and verification"
+        )
+    if ledger_error:
+        blocking_reasons.append(
+            f"the current operational gap ledger is unavailable or invalid: {ledger_error}"
+        )
+    elif operational_blockers:
+        blocking_reasons.append(
+            f"the current operational gap ledger has {len(operational_blockers)} unresolved critical/high findings"
         )
     if gate_blockers:
         blocking_reasons.append(f"{len(gate_blockers)} required section/group receipts are stale or failed")
@@ -206,8 +238,21 @@ def build(
         blocking_reasons.append("final exact-artifact certification has not been admitted")
     complete = not blocking_reasons
     return {
-        "schema_version": "px.completion-status/1.3",
+        "schema_version": "px.completion-status/1.4",
         "authority": "generated projection; current operational and instruction ledgers supersede historical audit acceptance as completion authority",
+        "projection_metadata": {
+            "generated_at": operational_ledger.get("generated_utc"),
+            "source_revision": operational_ledger.get("head_event_sha256"),
+            "authority_level": "non-certifying-current-state-projection",
+            "marker": "current_at_generation",
+            "invalidation_conditions": [
+                "any source-byte change",
+                "any operational-ledger event",
+                "any governed receipt freshness change",
+                "any release certificate or artifact change",
+            ],
+            "superseding_artifact": ".engineering-bootstrap/runtime-core/completion_status.json",
+        },
         "complete": complete,
         "operationally_complete": operationally_complete,
         "certified": certified,
@@ -220,6 +265,7 @@ def build(
             {"path": independent_path.relative_to(root).as_posix(), "sha256": _sha(independent_path)},
             {"path": surface_path.relative_to(root).as_posix(), "sha256": _sha(surface_path)},
             {"path": instruction_path.relative_to(root).as_posix(), "sha256": _sha(instruction_path)},
+            *([{"path": ledger_path.relative_to(root).as_posix(), "sha256": _sha(ledger_path)}] if ledger_path.is_file() else []),
             *([{"path": evidence_path.relative_to(root).as_posix(), "sha256": _sha(evidence_path)}] if evidence_path.is_file() else []),
         ],
         "cards_complete": cards_complete,
@@ -231,6 +277,16 @@ def build(
             "state_counts": dict(sorted(requirement_counts.items())),
             "complete": instruction_requirements_complete,
             "completion_claim": instruction.get("completion_claim", {}),
+        },
+        "current_operational_gap_ledger": {
+            "valid": ledger_error is None,
+            "ledger_id": operational_ledger.get("ledger_id"),
+            "event_count": operational_ledger.get("event_count"),
+            "head_event_sha256": operational_ledger.get("head_event_sha256"),
+            "critical_high_blocker_count": len(operational_blockers),
+            "critical_high_blocker_ids": operational_blockers,
+            "complete": operational_ledger_current,
+            "error": ledger_error,
         },
         "current_adversarial_reaudit": {
             "count": len(reaudit),

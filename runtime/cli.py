@@ -930,6 +930,35 @@ def main(argv: list[str] | None = None) -> int:
             from .registry import validate_registry
 
             output = validate_registry(root)
+            try:
+                from scripts.build_completion_status import build as build_completion_status
+
+                completion = build_completion_status(root)
+                operational_state = {
+                    "known": True,
+                    "operationally_complete": completion.get("operationally_complete") is True,
+                    "certified": completion.get("certified") is True,
+                    "blocking_reasons": list(completion.get("blocking_reasons", ())),
+                }
+            except (OSError, ValueError, PermissionError, json.JSONDecodeError) as error:
+                operational_state = {
+                    "known": False,
+                    "operationally_complete": False,
+                    "certified": False,
+                    "blocking_reasons": [
+                        f"completion projection unavailable: {type(error).__name__}: {error}"
+                    ],
+                }
+            output = {
+                **output,
+                "validation_scope": "registry structure and declared contracts only",
+                "operational_state": operational_state,
+                "certification_claim": False,
+                "limitations": [
+                    "valid=true does not mean the product is operationally complete, release-ready, or certified",
+                    "use doctor --require operable/ready/certification-ready for the corresponding host contract",
+                ],
+            }
         elif args.command == "visibility":
             if args.action == "routes":
                 from .operational_visibility import validate_route_registry

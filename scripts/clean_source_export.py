@@ -19,6 +19,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from runtime.repository_scope import is_external_environment_relative  # noqa: E402
+
 
 EXCLUDED_DIRS = {
     ".git",
@@ -26,17 +28,21 @@ EXCLUDED_DIRS = {
     ".pytest_cache",
     ".ruff_cache",
     ".vscode-test",
+    ".VSCodeCounter",
     "__pycache__",
     "PortableGit",
     "Python",
     "build",
     "dist",
+    "evidence",
     "node_modules",
 }
+MAX_SOURCE_HANDOFF_BYTES = 128 * 1024 * 1024
 EXCLUDED_SUFFIXES = {".pyc", ".pyo", ".swp", ".tmp"}
 EXCLUDED_FILES = {
     "evidence/full-unittest-team-fabric-20260810.log",
     "extension/evidence/historical/vscode-host-listener-smoke-0.5.4.json",
+    "registry/.operational-gap-ledger.lock",
 }
 TEXT_SUFFIXES = {
     ".css",
@@ -102,7 +108,12 @@ def included_files(root: Path, output: Path | None = None) -> tuple[Path, ...]:
         )
         generated_or_dependency_tree = bool(
             EXCLUDED_DIRS.intersection(relative.parts)
-        ) or any(part.startswith(".venv") for part in relative.parts)
+        ) or (
+            is_external_environment_relative(relative)
+            and not retained_test_receipt
+            and not retained_control_state
+            and not retained_control_tree
+        )
         if (
             generated_or_dependency_tree
             or (
@@ -172,6 +183,16 @@ def _snapshot(
         )
     records.sort(key=lambda item: str(item["path"]).casefold())
     payloads.sort(key=lambda item: item[0].casefold())
+    source_bytes = sum(
+        len(data)
+        for relative, data, _mode_value in payloads
+        if not relative.startswith("AUDIT_ARTIFACTS/")
+    )
+    if source_bytes > MAX_SOURCE_HANDOFF_BYTES:
+        raise ValueError(
+            "source-only handoff exceeds the 128 MiB product-source budget; "
+            "partition generated state or historical evidence before export"
+        )
     return records, payloads
 
 

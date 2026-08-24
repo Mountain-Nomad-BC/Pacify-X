@@ -33,6 +33,7 @@ test('MCP build dependencies are pinned and the shipped server is bundled', () =
   const hostRunner = fs.readFileSync(path.join(root, 'scripts', 'run-vscode-host-smoke.js'), 'utf8');
   assert.match(hostRunner, /ensureOwnedVscodeTestCache/);
   assert.match(hostRunner, /version: vscodeVersion/);
+  assert.match(hostRunner, /process\.platform === 'win32' \? 'git\.exe' : 'git'/);
   const cacheOwner = fs.readFileSync(path.join(root, 'scripts', 'owned-vscode-test-cache.js'), 'utf8');
   assert.match(cacheOwner, /px\.owned-vscode-test-cache\/1\.0/);
   assert.match(cacheOwner, /retained_versions/);

@@ -55,7 +55,12 @@ def _read_json(path: Path, default: Any = None) -> Any:
 
 
 def _completion(root: Path) -> dict[str, Any]:
-    """Recompute a live certified projection when exact artifact custody exists."""
+    """Recompute live completion truth; use stored state only as a fallback.
+
+    The registry projection is generated evidence, not an authority that may stay
+    green after the operational ledger changes.  Artifact custody can strengthen
+    the live result, but its absence must not suppress the ledger-backed rebuild.
+    """
     baseline = _read_json(root / "registry" / "completion_status.json", {})
     baseline = dict(baseline) if isinstance(baseline, Mapping) else {}
     runtime_path = (
@@ -65,28 +70,32 @@ def _completion(root: Path) -> dict[str, Any]:
         / "completion_status.json"
     )
     runtime_value = _read_json(runtime_path, {})
+    artifact_dir: Path | None = None
     if isinstance(runtime_value, Mapping):
         runtime_projection = runtime_value.get("runtime_projection", {})
-        artifact_dir = (
+        artifact_value = (
             runtime_projection.get("artifact_dir")
             if isinstance(runtime_projection, Mapping)
             else None
         )
-        if isinstance(artifact_dir, str) and artifact_dir.strip():
+        if isinstance(artifact_value, str) and artifact_value.strip():
+            artifact_dir = Path(artifact_value)
+    try:
+        from scripts.build_completion_status import build
+
+        if artifact_dir is not None:
             try:
-                from scripts.build_completion_status import build
-
-                return dict(build(root, artifact_dir=Path(artifact_dir)))
+                return dict(build(root, artifact_dir=artifact_dir))
             except (OSError, ValueError, json.JSONDecodeError):
-                # A missing or malformed derived binding must never preserve an
-                # earlier certified claim. Recompute without artifact authority.
-                try:
-                    from scripts.build_completion_status import build
-
-                    return dict(build(root))
-                except (OSError, ValueError, json.JSONDecodeError):
-                    return baseline
-    return baseline
+                # A malformed derived binding cannot preserve a prior claim.
+                pass
+        return dict(build(root))
+    except (OSError, ValueError, json.JSONDecodeError):
+        fallback = dict(baseline)
+        fallback["projection_freshness"] = "stored_fallback_unverified"
+        fallback["certified"] = False
+        fallback["operationally_complete"] = False
+        return fallback
 
 
 def _git(root: Path, *args: str) -> str | None:

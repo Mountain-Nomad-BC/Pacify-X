@@ -110,6 +110,65 @@ def test_pytest_uses_registered_isolated_basetemp_and_reclaims_it(
     assert record.status == ResourceStatus.RECLAIMED.value
 
 
+def test_pytest_shared_temp_corruption_fails_at_responsible_test(
+    tmp_path: Path,
+) -> None:
+    test_file = tmp_path / "test_corrupts_shared_temp.py"
+    test_file.write_text(
+        "import shutil\n\n"
+        "def test_corrupts_shared_temp(request):\n"
+        "    base = request.config._tmp_path_factory.getbasetemp()\n"
+        "    shutil.rmtree(base)\n",
+        encoding="utf-8",
+    )
+    manager = ResourceManager(
+        tmp_path / "guard-ledger.json", receipt_dir=tmp_path / "guard-receipts"
+    )
+    result = run_test_command(
+        [sys.executable, "-m", "pytest", "-q", str(test_file)],
+        cwd=ROOT,
+        environment=os.environ,
+        timeout_seconds=30,
+        resource_manager=manager,
+        run_id="nested-pytest-corruption",
+    )
+
+    assert result["valid"] is False
+    assert result["exit_code"] != 0
+    assert "test destroyed pytest's shared temporary root" in result["stdout"]
+    assert result["test_workspace"]["reclaimed"] is True
+
+
+def test_green_assertions_with_lingering_thread_are_not_accepted(
+    tmp_path: Path,
+) -> None:
+    test_file = tmp_path / "test_leaks_thread.py"
+    test_file.write_text(
+        "import threading\n\n"
+        "def test_leaks_thread():\n"
+        "    threading.Thread(target=threading.Event().wait, name='leaked-test-thread').start()\n",
+        encoding="utf-8",
+    )
+    manager = ResourceManager(
+        tmp_path / "thread-ledger.json", receipt_dir=tmp_path / "thread-receipts"
+    )
+    result = run_test_command(
+        [sys.executable, "-m", "pytest", "-q", str(test_file)],
+        cwd=ROOT,
+        environment=os.environ,
+        timeout_seconds=3,
+        resource_manager=manager,
+        run_id="nested-pytest-thread-leak",
+    )
+
+    assert result["valid"] is False
+    assert result["timed_out"] is True
+    assert "1 passed" in result["stdout"]
+    assert "leaked non-daemon threads" in result["stdout"]
+    assert result["process_tree_terminated"] is True
+    assert result["test_workspace"]["reclaimed"] is True
+
+
 def test_wrapped_pytest_command_is_detected() -> None:
     from runtime.test_runner import _is_pytest_command
 

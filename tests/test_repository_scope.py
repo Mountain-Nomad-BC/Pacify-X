@@ -36,6 +36,9 @@ def test_local_dependency_installations_are_pruned_at_the_root() -> None:
     assert is_external_environment_relative("shared_capabilities/catalog.json")
     assert is_external_environment_relative(".px/preserved-skills/initial/user-original/tool.py")
     assert is_external_environment_relative(
+        ".px/global-skill-isolation/journal.json"
+    )
+    assert is_external_environment_relative(
         ".px/preserved-extension-installations/initial/extension/package.json"
     )
     assert not is_external_environment_relative("runtime/hardware_routing.py")

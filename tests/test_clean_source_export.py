@@ -17,12 +17,14 @@ import runtime.evidence_portability
 import runtime.generated_artifacts
 import runtime.licensing
 import runtime.provider_gateway
+import runtime.repository_scope
 import runtime.release_audit
 import runtime.registry
 import runtime.sanitation_assurance
 import runtime.structural_integrity
 import runtime.test_profiles
 import scripts.audit_sanitization
+import scripts.audit_source_archive
 import scripts.clean_source_export as clean_source_export
 from scripts.clean_source_export import create_clean_export
 
@@ -40,6 +42,22 @@ def test_clean_export_is_byte_deterministic_and_non_destructive():
         (root / "__pycache__/x.pyc").write_bytes(b"cache")
         (root / ".venv-certify/Scripts").mkdir(parents=True)
         (root / ".venv-certify/Scripts/tool.exe").write_bytes(b"generated")
+        (root / ".tmp_work.json").write_text("temporary\n", encoding="utf-8")
+        (root / ".tmp_batch/record.json").parent.mkdir()
+        (root / ".tmp_batch/record.json").write_text("temporary\n", encoding="utf-8")
+        (root / ".tmp/cache.bin").parent.mkdir()
+        (root / ".tmp/cache.bin").write_bytes(b"temporary")
+        (root / "tmp_admission.json").write_text("temporary\n", encoding="utf-8")
+        (root / "registry/.operational-gap-ledger.lock").parent.mkdir()
+        (root / "registry/.operational-gap-ledger.lock").write_text(
+            "host-local lock\n", encoding="utf-8"
+        )
+        (root / ".VSCodeCounter/report.txt").parent.mkdir()
+        (root / ".VSCodeCounter/report.txt").write_text("generated\n", encoding="utf-8")
+        (root / "evidence/historical-proof.json").parent.mkdir()
+        (root / "evidence/historical-proof.json").write_text(
+            '{"historical":true}\n', encoding="utf-8"
+        )
         first = Path(directory) / "first.zip"
         second = Path(directory) / "second.zip"
         one = create_clean_export(root, first)
@@ -83,6 +101,29 @@ def test_clean_export_is_byte_deterministic_and_non_destructive():
         receipt = json.loads(Path(one["replay_receipt"]).read_text(encoding="utf-8"))
         assert receipt["archive_sha256"] == one["archive_sha256"]
         assert receipt["valid"] is True
+
+
+def test_export_uses_shared_repository_scope_for_ephemeral_artifacts() -> None:
+    source = __import__("inspect").getsource(clean_source_export.included_files)
+    assert "is_external_environment_relative(relative)" in source
+    for relative in (
+        ".tmp/cache.bin",
+        ".tmp_work.json",
+        "tmp_admission.json",
+        ".VSCodeCounter/report.json",
+        ".engineering-bootstrap/coordination/state.json",
+    ):
+        assert runtime.repository_scope.is_external_environment_relative(relative)
+
+
+def test_git_source_archive_is_bounded_and_excludes_local_custody() -> None:
+    root = Path(__file__).resolve().parents[1]
+    result = scripts.audit_source_archive.audit_source_archive(
+        root, worktree_attributes=True
+    )
+    assert result["valid"], result
+    assert result["uncompressed_bytes"] <= result["maximum_uncompressed_bytes"]
+    assert result["forbidden_members"] == []
 
 
 def test_clean_export_refuses_unearned_certified_filename(tmp_path: Path) -> None:

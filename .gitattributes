@@ -14,3 +14,27 @@ evidence/bundles/**/*.jsonl binary
 evidence/releases/*/certificate.json binary
 evidence/releases/*/certificate.json.sig binary
 evidence/releases/*/rel-*/* binary
+
+# GitHub-generated source archives are source handoffs, not host-state or
+# historical-evidence bundles. Those artifacts retain separate custody.
+/.tmp_* export-ignore
+/.tmp export-ignore
+/tmp_* export-ignore
+/.VSCodeCounter export-ignore
+/.px/global-skill-isolation export-ignore
+/.px/preserved-extension-installations export-ignore
+/.px/preserved-skills export-ignore
+/.engineering-bootstrap/** export-ignore
+/.engineering-bootstrap/project-management -export-ignore
+/.engineering-bootstrap/project-management/state.json -export-ignore
+/.engineering-bootstrap/project-map -export-ignore
+/.engineering-bootstrap/project-map/architecture-graph.json -export-ignore
+/.engineering-bootstrap/project-registry.json -export-ignore
+/.engineering-bootstrap/test-evidence -export-ignore
+/.engineering-bootstrap/test-evidence/** -export-ignore
+/.engineering-bootstrap/test-evidence/**/*.json -export-ignore
+/.engineering-bootstrap/.ledger-authority -export-ignore
+/.engineering-bootstrap/.ledger-authority/commissioning-events -export-ignore
+/.engineering-bootstrap/.ledger-authority/commissioning-events/** -export-ignore
+/registry/.operational-gap-ledger.lock export-ignore
+/evidence export-ignore

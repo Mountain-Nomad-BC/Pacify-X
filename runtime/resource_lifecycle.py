@@ -886,6 +886,17 @@ class ResourceManager:
             cleanup_result="process_absence_verified",
         )
 
+    def persisted_process_has_exited(
+        self, resource_id: str, *, expected_pid: int
+    ) -> bool:
+        """Verify one exact persisted process identity without mutating custody."""
+        record = self.ledger.get(resource_id)
+        if record.resource_type != "process" or record.pid != expected_pid:
+            raise PermissionError("persisted process identity does not match")
+        if not record.active:
+            return record.status == ResourceStatus.RECLAIMED.value
+        return not _process_exists(expected_pid)
+
     def terminate_owned_process(
         self, resource_id: str, *, graceful_timeout_seconds: float = 3.0
     ) -> CleanupReceipt:

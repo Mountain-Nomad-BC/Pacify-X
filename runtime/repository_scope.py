@@ -48,6 +48,7 @@ def is_external_environment_relative(relative: str | Path) -> bool:
         or top == ".git"
         or parts[:2]
         in {
+            (".px", "global-skill-isolation"),
             (".px", "preserved-skills"),
             (".px", "preserved-extension-installations"),
         }

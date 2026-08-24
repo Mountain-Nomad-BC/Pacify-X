@@ -34,7 +34,7 @@ from .studio_authority import (
     studio_authority_locator_environment,
 )
 from .studio_run_control import DurableControlSignal, DurableRunControl, TERMINAL_STATES
-from .studio_worker_launch import launch_studio_worker
+from .studio_worker_launch import launch_studio_worker, wait_for_paused_worker_closure
 from .studio_models import (
     AgentSpec,
     CapabilityBinding,
@@ -1780,6 +1780,16 @@ class AgentRuntimeController:
         if spec.harness_id != "harness:px":
             raise ValueError("agent resume harness is not admitted")
         _validate_object_contract(task, spec.input_schema, "input")
+        state = self.run_control.read(run_id)
+        if str(state["state"]) == "paused":
+            wait_for_paused_worker_closure(
+                state_root=self.state_root,
+                manager=self.manager,
+                authority=self.authority,
+                run_control=self.run_control,
+                run_id=run_id,
+                kind="agent",
+            )
         return self._execute_session(
             spec,
             task=task,

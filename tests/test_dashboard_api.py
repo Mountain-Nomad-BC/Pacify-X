@@ -49,6 +49,44 @@ class DashboardApiTests(unittest.TestCase):
         self.assertEqual(result, {"complete": False, "certified": False})
         build.assert_called_once_with(root, artifact_dir=artifact_dir)
 
+    def test_live_completion_recomputes_without_artifact_binding(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = root / "registry"
+            registry.mkdir()
+            (registry / "completion_status.json").write_text(
+                json.dumps({"operationally_complete": True, "certified": True}),
+                encoding="utf-8",
+            )
+            with patch(
+                "scripts.build_completion_status.build",
+                return_value={"operationally_complete": False, "certified": False},
+            ) as build:
+                result = _completion(root)
+        self.assertEqual(
+            result, {"operationally_complete": False, "certified": False}
+        )
+        build.assert_called_once_with(root)
+
+    def test_completion_fallback_revokes_stale_green_claims(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = root / "registry"
+            registry.mkdir()
+            (registry / "completion_status.json").write_text(
+                json.dumps({"operationally_complete": True, "certified": True}),
+                encoding="utf-8",
+            )
+            with patch(
+                "scripts.build_completion_status.build", side_effect=OSError("broken")
+            ):
+                result = _completion(root)
+        self.assertFalse(result["operationally_complete"])
+        self.assertFalse(result["certified"])
+        self.assertEqual(
+            result["projection_freshness"], "stored_fallback_unverified"
+        )
+
     def test_visual_fixture_declares_demo_data_and_tracks_current_denominators(self) -> None:
         preview = (ROOT / "extension/tests/preview.html").read_text(encoding="utf-8")
         counts = build_snapshot(ROOT)["counts"]

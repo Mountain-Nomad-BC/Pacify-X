@@ -83,6 +83,16 @@ def _disables_pytest_cache(command: Sequence[str]) -> bool:
     )
 
 
+def _loads_pytest_lifecycle_guards(command: Sequence[str]) -> bool:
+    values = [str(value) for value in command]
+    return any(
+        value == "tests.pytest_guards"
+        and index > 0
+        and values[index - 1] == "-p"
+        for index, value in enumerate(values)
+    )
+
+
 def run_test_command(
     command: Sequence[str],
     *,
@@ -143,6 +153,10 @@ def run_test_command(
             effective_command.append(f"--rootdir={cwd.resolve(strict=True)}")
         if not _disables_pytest_cache(effective_command):
             effective_command.extend(("-p", "no:cacheprovider"))
+        if not _loads_pytest_lifecycle_guards(effective_command):
+            # Explicit loading also covers governed tests whose files are
+            # outside the repository conftest discovery tree.
+            effective_command.extend(("-p", "tests.pytest_guards"))
     result: dict[str, object] = {}
     try:
         force_timeout = min(15.0, effective_timeout)

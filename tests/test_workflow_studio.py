@@ -20,6 +20,7 @@ from runtime.studio_models import (
 )
 from runtime.workflow_studio import WorkflowStudio
 from runtime.file_lock import _process_exists
+from runtime.resource_lifecycle import RunState
 from tests.studio_approval_testkit import approval_proof, one_shot as _one_shot
 
 
@@ -571,6 +572,17 @@ def test_workflow_pause_resume_cancel_and_checkpoint_recovery(
         approval=True,
     )
     assert resumed["run_state"] == "succeeded" and resumed["node_count"] == 2
+    paused_worker = next(
+        record
+        for record in studio.manager.ledger.load()
+        if record.resource_type == "process" and record.run_id == started["run_id"]
+    )
+    assert paused_worker.active is False
+    assert paused_worker.run_state in {
+        RunState.COMPLETED.value,
+        RunState.RECOVERABLE.value,
+    }
+    assert paused_worker.status == "reclaimed"
     assert [row["node_id"] for row in resumed["node_receipts"]] == [
         "node:first",
         "node:slow",

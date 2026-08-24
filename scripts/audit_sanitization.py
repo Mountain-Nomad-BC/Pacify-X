@@ -6,8 +6,13 @@ import argparse
 import json
 from pathlib import Path
 import re
+import sys
 
-from runtime.repository_scope import is_external_environment_relative
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from runtime.repository_scope import is_external_environment_relative  # noqa: E402
 
 
 TERMS = ("r" + "ie", "re" + "my", "rh" + "eem")
@@ -27,6 +32,9 @@ LEGACY_PATTERN = re.compile(
     + rb"|"
     + LEGACY_TERMS[1].encode()
     + rb"(?!_system_with_deterministic_rails))"
+)
+HOST_HOME_PATTERN = re.compile(
+    rb"(?i)(?:[a-z]:[\\/]+users[\\/]+[a-z0-9._-]+|/(?:home|users)/[a-z0-9._-]+)"
 )
 EXCLUDED_DIRECTORIES = {".git"}
 BINARY_SUFFIXES = {
@@ -104,6 +112,7 @@ def audit(
     ignored_paths = {path.resolve() for path in ignored}
     identifier_hits: list[dict[str, object]] = []
     legacy_placeholder_hits: list[dict[str, object]] = []
+    host_home_hits: list[dict[str, object]] = []
     zip_paths: list[str] = []
     files_scanned = 0
     bytes_scanned = 0
@@ -137,6 +146,13 @@ def audit(
                     "location": "path",
                     "offset": legacy_path_match.start(),
                 }
+            )
+        host_path_match = HOST_HOME_PATTERN.search(
+            relative.encode("utf-8", errors="replace")
+        )
+        if host_path_match:
+            host_home_hits.append(
+                {"path": relative, "location": "path", "offset": host_path_match.start()}
             )
         try:
             if not _is_admitted_text(path):
@@ -174,6 +190,16 @@ def audit(
                                     "offset": absolute,
                                 }
                             )
+                    for match in HOST_HOME_PATTERN.finditer(buffer):
+                        absolute = buffer_start + match.start()
+                        if match.start() < safe_end and absolute >= 0:
+                            host_home_hits.append(
+                                {
+                                    "path": relative,
+                                    "location": "content",
+                                    "offset": absolute,
+                                }
+                            )
                     overlap = buffer[safe_end:]
                     offset += len(chunk)
                     chunk = following
@@ -183,6 +209,9 @@ def audit(
         key=lambda item: (str(item["path"]), str(item["location"]), int(item["offset"]))
     )
     legacy_placeholder_hits.sort(
+        key=lambda item: (str(item["path"]), str(item["location"]), int(item["offset"]))
+    )
+    host_home_hits.sort(
         key=lambda item: (str(item["path"]), str(item["location"]), int(item["offset"]))
     )
     exclusions = sorted(EXCLUDED_DIRECTORIES | set(excluded_names))
@@ -215,6 +244,12 @@ def audit(
             "failed" if legacy_placeholder_hits else "passed",
             legacy_placeholder_hits,
             "Configured legacy placeholder patterns only.",
+        ),
+        "host_home_path_sanitation": gate(
+            "host_home_path_sanitation",
+            "failed" if host_home_hits else "passed",
+            host_home_hits,
+            "Detects absolute Windows, Linux, and macOS user-home paths.",
         ),
         "archive_detection": gate(
             "archive_detection",
@@ -256,6 +291,7 @@ def audit(
     scoped_valid = (
         not identifier_hits
         and not legacy_placeholder_hits
+        and not host_home_hits
         and not zip_paths
         and not errors
     )
@@ -272,6 +308,8 @@ def audit(
         "identifier_hits": identifier_hits,
         "legacy_placeholder_hit_count": len(legacy_placeholder_hits),
         "legacy_placeholder_hits": legacy_placeholder_hits,
+        "host_home_path_hit_count": len(host_home_hits),
+        "host_home_path_hits": host_home_hits,
         "active_zip_count": len(zip_paths),
         "active_zip_paths": sorted(zip_paths),
         "error_count": len(errors),

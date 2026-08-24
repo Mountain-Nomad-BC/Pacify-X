@@ -42,11 +42,18 @@ function prepare(temporaryRoot, engineRoot) {
     fs.mkdirSync(path.join(config.workspace, '.vscode'), { recursive: true });
     fs.writeFileSync(path.join(config.workspace, '.vscode', 'settings.json'), `${JSON.stringify({ 'pacifyX.engineRoot': engineRoot }, null, 2)}\n`, 'utf8');
   }
-  childProcess.spawnSync('git.exe', ['init', '--quiet'], { cwd: config.workspace, encoding: 'utf8' });
-  childProcess.spawnSync('git.exe', ['config', 'user.email', 'px-o04@example.invalid'], { cwd: config.workspace, encoding: 'utf8' });
-  childProcess.spawnSync('git.exe', ['config', 'user.name', 'PX O04 Smoke'], { cwd: config.workspace, encoding: 'utf8' });
-  childProcess.spawnSync('git.exe', ['add', 'listener-matrix.txt'], { cwd: config.workspace, encoding: 'utf8' });
-  childProcess.spawnSync('git.exe', ['commit', '--quiet', '-m', 'fixture'], { cwd: config.workspace, encoding: 'utf8' });
+  const git = process.platform === 'win32' ? 'git.exe' : 'git';
+  for (const args of [
+    ['init', '--quiet'],
+    ['config', 'user.email', 'px-o04@example.invalid'],
+    ['config', 'user.name', 'PX O04 Smoke'],
+    ['add', 'listener-matrix.txt'],
+    ['commit', '--quiet', '-m', 'fixture'],
+  ]) {
+    const result = childProcess.spawnSync(git, args, { cwd: config.workspace, encoding: 'utf8', windowsHide: true });
+    assert.equal(result.error, undefined, result.error?.message);
+    assert.equal(result.status, 0, `Git fixture setup failed: ${result.stderr}`);
+  }
   return config;
 }
 

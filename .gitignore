@@ -35,6 +35,10 @@ Python/
 .engineering-bootstrap/project-map-history-archives/
 .engineering-bootstrap/project-map-lock-history/
 .engineering-bootstrap/resource-lifecycle/
+.engineering-bootstrap/cleanup-receipts/
+.engineering-bootstrap/diagnostics/hardware-dashboard-cache.json
+.engineering-bootstrap/export-resources.json
+.engineering-bootstrap/export-resources.json.lock
 .engineering-bootstrap/project-map/retrieval-index.json
 .engineering-bootstrap/runtime-core/cache/
 .engineering-bootstrap/runtime-core/state.json
@@ -60,6 +64,11 @@ temp/
 temp_*/
 .tmp/
 .tmp_*/
+/.tmp_*
+.VSCodeCounter/
+.engineering-bootstrap/coordination/
+.px/global-skill-isolation/
+registry/.operational-gap-ledger.lock
 tmp_*.json
 docs/tmp_*.md
 quarantine/

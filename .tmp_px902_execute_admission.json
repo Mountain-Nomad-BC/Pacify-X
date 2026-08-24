@@ -1,8 +1,0 @@
-{
-  "gap_id":"PX-OS-902","checkpoint_event_id":"gap-event:PX-OPERATIONAL-GAPS-20260816:000000006296","effect":"execute",
-  "scope":["node-test:extension-lifecycle-host-update","node-check:extension-lifecycle-update-and-dashboard"],
-  "authority":"PX902 owns focused injected-host and source checks; Codex retains process authority.",
-  "expected_effect":"Prove exact update denominator/target/approval/dispatch/receipt/refusal and syntax without touching a real installed extension.",
-  "rollback":"Pure Node tests use host doubles; syntax checks are read-only.",
-  "evidence":[{"reference":"extension/src/extensionLifecycleHost.js","artifact_sha256":"4f2d0b7be2d8e0597846667ab6888e22cbe3260fd104447849baa73196a7895c","artifact_size":4250,"claim":"The shared lifecycle controller is independently injectable for focused update checks."}]
-}

@@ -67,6 +67,17 @@ def test_worker_authority_environment_forwards_only_key_locators() -> None:
     }
 
 
+@pytest.mark.skipif(os.name == "nt", reason="POSIX HOME fallback semantics")
+def test_worker_authority_environment_freezes_parent_home_key_root(tmp_path) -> None:
+    home = tmp_path / "custom-home"
+    locators = studio_authority_locator_environment({"HOME": str(home)})
+    assert locators == {
+        "PX_STUDIO_KEY_ROOT": str(
+            (home / ".local/state/pacify-x/authority-keys").resolve()
+        )
+    }
+
+
 def test_agent_and_workflow_drafts_are_real_immutable_revisions(tmp_path) -> None:
     agent = {
         "agent_id": "agent:ui-demo",

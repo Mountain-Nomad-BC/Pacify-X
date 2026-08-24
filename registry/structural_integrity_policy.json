@@ -12,7 +12,8 @@
     {"id": "bounded-cli-boilerplate", "rationale": "CLI entry functions share bounded argument/check/apply scaffolding without domain behavior."},
     {"id": "digest-adapters", "rationale": "Tiny SHA-256 adapters have identical standard-library behavior but distinct ownership boundaries."},
     {"id": "ledger-authority-head-anchor", "rationale": "A hash-ledger authority head intentionally mirrors its current immutable sequence anchor and is verified byte-for-byte."},
-    {"id": "native-skill-policy-projections", "rationale": "Portable PX-native skill packages retain byte-identical local copies of authoritative root policies."}
+    {"id": "native-skill-policy-projections", "rationale": "Portable PX-native skill packages retain byte-identical local copies of authoritative root policies."},
+    {"id": "independent-gate-receipts", "rationale": "Independent governed gate runs retain their own immutable receipts even when two successful observations are byte-identical."}
   ],
   "marker_review_registry": "registry/incomplete_finding_reviews.json",
   "forbidden_active_claims_while_open": ["Status: Certified deployment-ready", "Status: deployment-ready"],

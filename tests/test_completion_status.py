@@ -25,11 +25,12 @@ def test_generated_completion_status_is_current_and_does_not_overclaim() -> None
         )
     )
     assert stored == generated
-    assert generated["schema_version"] == "px.completion-status/1.3"
+    assert generated["schema_version"] == "px.completion-status/1.4"
     assert generated["historical_cards_complete"] is True
     assert generated["cards_complete"] is (
         generated["current_instruction_reconciliation"]["complete"]
         and generated["current_operational_surface_audit"]["complete"]
+        and generated["current_operational_gap_ledger"]["complete"]
     )
     assert generated["operationally_complete"] is generated["cards_complete"]
     assert generated["complete"] is (not generated["blocking_reasons"])
@@ -110,6 +111,15 @@ def test_generated_completion_status_is_current_and_does_not_overclaim() -> None
         section_status(ROOT)["valid"] and group_status(ROOT)["valid"]
     )
     assert generated["blocking_reasons"]
+    assert generated["current_operational_gap_ledger"]["valid"] is True
+    assert generated["current_operational_gap_ledger"]["complete"] is False
+    assert "PX-OS-1065" in generated["current_operational_gap_ledger"][
+        "critical_high_blocker_ids"
+    ]
+    assert generated["operationally_complete"] is False
+    assert generated["projection_metadata"]["authority_level"] == (
+        "non-certifying-current-state-projection"
+    )
 
 
 def test_completion_projection_writer_is_atomic_and_exact() -> None:

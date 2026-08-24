@@ -32,19 +32,66 @@ def finalize_studio_run_if_worker_exited(
 ) -> dict[str, object]:
     """Publish a terminal Studio state only after its detached worker died."""
     state = run_control.read(run_id)
-    if str(state["state"]) != "finalizing":
+    current_state = str(state["state"])
+    if current_state in TERMINAL_STATES:
         return state
     checkpoint = state.get("checkpoint")
-    target = str(checkpoint.get("terminal_target") if isinstance(checkpoint, Mapping) else "")
+    target = str(
+        checkpoint.get("terminal_target") if isinstance(checkpoint, Mapping) else ""
+    )
+    binding_path = state_root / "sessions" / run_id / "worker-request-cleanup.json"
+    records = [
+        record
+        for record in manager.ledger.load()
+        if record.run_id == run_id
+        and record.lane_id == f"studio-{state['kind']}"
+        and record.creator == "px-studio-durable-launcher"
+        and record.resource_type == "process"
+    ]
+    if len(records) != 1 or not records[0].resource_id or int(records[0].pid or 0) <= 0:
+        raise PermissionError("Studio finalization worker identity is ambiguous")
+    worker = records[0]
+    resource_id = worker.resource_id
+    worker_pid = int(worker.pid or 0)
+    if binding_path.is_file():
+        raw = json.loads(binding_path.read_text(encoding="utf-8"))
+        binding = authority.verify_receipt(raw)
+        if (
+            binding.get("run_id") != run_id
+            or binding.get("worker_resource_id") != resource_id
+            or int(binding.get("worker_pid") or 0) != worker_pid
+        ):
+            raise PermissionError("Studio finalization binding is invalid")
+    if not manager.persisted_process_has_exited(
+        resource_id, expected_pid=worker_pid
+    ):
+        return state
+    if current_state == "paused":
+        manager.complete_persisted_process_after_exit(
+            resource_id,
+            expected_pid=worker_pid,
+            run_state=RunState.RECOVERABLE,
+        )
+        return state
+    if current_state != "finalizing":
+        target = "cancelled" if current_state == "cancel_requested" else "failed"
+        failure = state.get("failure")
+        if target == "failed" and not isinstance(failure, Mapping):
+            failure = {
+                "code": "WORKER_EXITED_WITHOUT_TERMINAL_STATE",
+                "message": "Studio worker exited before publishing a terminal target",
+            }
+        state = run_control.transition(
+            run_id,
+            "finalizing",
+            actor="px-studio-terminal-observer",
+            approved=True,
+            checkpoint={**dict(state["checkpoint"]), "terminal_target": target},
+            failure=failure if isinstance(failure, Mapping) else None,
+            operation=f"{state['kind']}.worker-exit-observed",
+        )
     if target not in TERMINAL_STATES:
         raise PermissionError("finalizing Studio run lacks a valid terminal target")
-    binding_path = state_root / "sessions" / run_id / "worker-request-cleanup.json"
-    raw = json.loads(binding_path.read_text(encoding="utf-8"))
-    binding = authority.verify_receipt(raw)
-    resource_id = str(binding.get("worker_resource_id") or "")
-    worker_pid = int(binding.get("worker_pid") or 0)
-    if binding.get("run_id") != run_id or not resource_id or worker_pid <= 0:
-        raise PermissionError("Studio finalization binding is invalid")
     desired = (
         RunState.CANCELLED
         if target == "cancelled"
@@ -101,6 +148,52 @@ def finalize_studio_run_if_worker_exited(
             )
         write_json_atomic(run_path, authority.sign_receipt(receipt))
     return final
+
+
+def wait_for_paused_worker_closure(
+    *,
+    state_root: Path,
+    manager: ResourceManager,
+    authority: StudioAuthorityStore,
+    run_control: DurableRunControl,
+    run_id: str,
+    kind: str,
+    timeout_seconds: float = 10.0,
+) -> dict[str, object]:
+    """Fence a paused run from its exact detached worker before resuming it."""
+
+    if kind not in {"agent", "workflow"}:
+        raise ValueError("Studio worker kind must be agent or workflow")
+    state = run_control.read(run_id)
+    if str(state["state"]) != "paused":
+        return state
+    deadline = time.monotonic() + timeout_seconds
+    while True:
+        state = finalize_studio_run_if_worker_exited(
+            state_root=state_root,
+            manager=manager,
+            authority=authority,
+            run_control=run_control,
+            run_id=run_id,
+        )
+        active_workers = [
+            record
+            for record in manager.ledger.load()
+            if record.run_id == run_id
+            and record.lane_id == f"studio-{kind}"
+            and record.creator == "px-studio-durable-launcher"
+            and record.resource_type == "process"
+            and record.active
+        ]
+        if not active_workers:
+            return state
+        if str(state["state"]) != "paused":
+            raise RuntimeError(
+                f"paused {kind} changed state before worker custody closed"
+            )
+        if time.monotonic() >= deadline:
+            raise TimeoutError(f"paused {kind} worker did not close before resume")
+        time.sleep(0.02)
 
 
 def _launch_terminal_observer(

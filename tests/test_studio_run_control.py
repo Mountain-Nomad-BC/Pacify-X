@@ -1,11 +1,14 @@
 from __future__ import annotations
 
 import json
+import sys
 
 import pytest
 
 import runtime.studio_run_control as run_control_module
+from runtime.resource_lifecycle import ResourceManager
 from runtime.studio_run_control import DurableRunControl
+from runtime.studio_worker_launch import finalize_studio_run_if_worker_exited
 
 
 def test_durable_run_control_is_approval_gated_hash_chained_and_tamper_evident(
@@ -226,3 +229,54 @@ def test_projection_recovery_rejects_tampered_or_multiple_trailing_events(
         multiple.recover_projection(
             str(multiple_state["run_id"]), actor="human:owner", approved=True
         )
+
+
+@pytest.mark.parametrize(
+    ("initial_state", "expected_state"),
+    (("queued", "failed"), ("running", "failed"), ("cancel_requested", "cancelled")),
+)
+def test_dead_worker_is_terminally_reconciled_from_every_live_launch_state(
+    tmp_path, monkeypatch, initial_state: str, expected_state: str
+) -> None:
+    project = tmp_path / "project"
+    project.mkdir()
+    monkeypatch.setenv("PX_STUDIO_KEY_ROOT", str(tmp_path / "host-keys"))
+    state_root = project / ".engineering-bootstrap/studios/agents"
+    manager = ResourceManager(state_root / "resources.json")
+    control = DurableRunControl(project, state_root / "run-control")
+    state = control.create(
+        kind="agent",
+        subject_id="agent:test",
+        version="1.0.0",
+        owner="human:test",
+        revision_sha256="a" * 64,
+        request_sha256="b" * 64,
+    )
+    if initial_state != "queued":
+        control.transition(
+            state["run_id"], initial_state, actor="human:test", approved=True
+        )
+    record, process = manager.spawn_owned_process(
+        (sys.executable, "-c", "pass"),
+        cwd=project,
+        project_id=project.name,
+        run_id=str(state["run_id"]),
+        lane_id="studio-agent",
+        creator="px-studio-durable-launcher",
+    )
+    process.wait(timeout=10)
+
+    final = finalize_studio_run_if_worker_exited(
+        state_root=state_root,
+        manager=manager,
+        authority=control.authority,
+        run_control=control,
+        run_id=str(state["run_id"]),
+    )
+
+    assert final["state"] == expected_state
+    if expected_state == "failed":
+        assert final["failure"]["code"] == "WORKER_EXITED_WITHOUT_TERMINAL_STATE"
+    persisted = manager.ledger.get(record.resource_id)
+    assert persisted.active is False
+    assert persisted.cleanup_result == "process_absence_verified"

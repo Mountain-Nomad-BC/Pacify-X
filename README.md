@@ -18,7 +18,7 @@ PACIFY-X is the project and framework. `engineering-bootstrap` is its Python pac
 
 **Status:** Signed self-certified release published; public assets reproduced and verified
 
-**Requires:** Python 3.11–3.14, Git, and an AI coding assistant
+**Requires:** Python 3.11–3.14, Git, OpenSSH Client (`ssh-keygen`), and an AI coding assistant
 
 PACIFY-X v0.6.3 is the current supported release and the default used throughout this guide.
 
@@ -48,6 +48,13 @@ python -m pip install .
 engineering-bootstrap doctor
 engineering-bootstrap validate
 ```
+
+`ssh-keygen` is required for effect-grant and release-signature verification.
+Verify it before setup with `ssh-keygen -?` on Windows or `ssh-keygen -h` on
+Linux/macOS. On Windows, install the built-in **OpenSSH Client** optional
+capability if that command is unavailable; on Linux/macOS, install the OpenSSH
+client package supplied by the operating system. PACIFY-X reports the missing
+executable instead of silently weakening signature checks.
 
 This installs the immutable certified source tag. To verify and install the exact published wheel instead, follow the short [verified-artifact installation](docs/release-process.md#install-the-certified-release) procedure.
 
@@ -136,7 +143,7 @@ These exact counts are checked automatically for drift; ordinary users do not ne
 | Runtime modules | 215 |
 | Contracts | 165 |
 | Registry artifacts | 364 |
-| Tool and support scripts | 168 |
+| Tool and support scripts | 169 |
 
 The machine-readable source for release and inventory claims is [`registry/build_claims.json`](registry/build_claims.json).
 

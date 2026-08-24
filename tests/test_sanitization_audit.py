@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 from pathlib import Path
+import subprocess
+import sys
 import tempfile
 import unittest
 
@@ -8,6 +10,20 @@ from scripts.audit_sanitization import audit
 
 
 class SanitizationAuditTests(unittest.TestCase):
+    def test_cli_help_bootstraps_repository_imports_outside_checkout(self) -> None:
+        script = Path(__file__).resolve().parents[1] / "scripts/audit_sanitization.py"
+        with tempfile.TemporaryDirectory() as directory:
+            result = subprocess.run(
+                [sys.executable, str(script), "--help"],
+                cwd=directory,
+                capture_output=True,
+                text=True,
+                timeout=15,
+                check=False,
+            )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("--root", result.stdout)
+
     def test_clean_tree_passes_and_embedded_word_does_not_false_positive(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -36,6 +52,20 @@ class SanitizationAuditTests(unittest.TestCase):
                 "rh" + "eemglobal.example", encoding="utf-8"
             )
             self.assertEqual(audit(root)["identifier_hit_count"], 1)
+
+    def test_absolute_user_home_paths_are_non_portable(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "host-paths.txt").write_text(
+                "C:\\Users\\LocalOwner\\project\n/home/local-owner/project\n",
+                encoding="utf-8",
+            )
+            result = audit(root)
+            self.assertFalse(result["scoped_valid"])
+            self.assertEqual(result["host_home_path_hit_count"], 2)
+            self.assertEqual(
+                result["gates"]["host_home_path_sanitation"]["status"], "failed"
+            )
 
     def test_legacy_abbreviated_placeholder_is_non_certifying(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

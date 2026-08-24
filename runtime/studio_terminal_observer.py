@@ -91,8 +91,20 @@ def main(argv: list[str] | None = None) -> int:
                 run_control=controller.run_control,
                 run_id=args.run_id,
             )
-            if str(state["state"]) in TERMINAL_STATES or str(state["state"]) == "paused":
+            if str(state["state"]) in TERMINAL_STATES:
                 return 0
+            if str(state["state"]) == "paused":
+                active_workers = [
+                    record
+                    for record in manager.ledger.load()
+                    if record.run_id == args.run_id
+                    and record.lane_id == f"studio-{args.kind}"
+                    and record.creator == "px-studio-durable-launcher"
+                    and record.resource_type == "process"
+                    and record.active
+                ]
+                if not active_workers:
+                    return 0
             time.sleep(0.02)
     except BaseException:
         exit_code = 1

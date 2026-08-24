@@ -12,6 +12,7 @@ import os
 from pathlib import Path
 import re
 import sys
+import time
 from typing import Mapping, Sequence
 from uuid import uuid4
 
@@ -28,7 +29,10 @@ from .studio_authority import (
     studio_authority_locator_environment,
 )
 from .studio_run_control import DurableControlSignal, DurableRunControl, TERMINAL_STATES
-from .studio_worker_launch import launch_studio_worker
+from .studio_worker_launch import (
+    launch_studio_worker,
+    wait_for_paused_worker_closure,
+)
 from .studio_models import (
     CapabilityBinding,
     EffectGrant,
@@ -1251,6 +1255,15 @@ class WorkflowStudio:
                 )
         if state["state"] not in {"queued", "paused", "interrupted"}:
             raise ValueError(f"workflow cannot start from {state['state']}")
+        if state["state"] == "paused":
+            state = wait_for_paused_worker_closure(
+                state_root=self.state_root,
+                manager=self.manager,
+                authority=self.authority,
+                run_control=self.run_control,
+                run_id=run_id,
+                kind="workflow",
+            )
         checkpoint = dict(state["checkpoint"])
         raw_results = checkpoint.get("results", {})
         if not isinstance(raw_results, Mapping):
