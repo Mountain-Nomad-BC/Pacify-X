@@ -1748,7 +1748,7 @@
         "uuid"
       ],
       "index_state": "verified",
-      "sha256": "9bdeecd9131da34a8a60149f63a5681ad0d492de454aeb3f12a62b9e34812379"
+      "sha256": "bbc3ac9590ced780301aadb127de4a3d77ca69c060ebb9c751e0f1a17beeb44a"
     },
     "runtime/profiles.py": {
       "imports": [
@@ -5471,7 +5471,7 @@
         "time"
       ],
       "index_state": "verified",
-      "sha256": "1ec9df4416733340c3bd1e9fd115e05bd7731e27ace8a4b31aec189cf59f6c24"
+      "sha256": "3892594b06953b2b5fac2769dca1e9f85262cd6297f38fb2227c3aa7d0e62cc6"
     },
     "tests/test_project_brief.py": {
       "imports": [
@@ -6609,7 +6609,7 @@
       ],
       "description": "Serial process custody, recovery, test-runner, WAL, resource-lifecycle, and workspace mutation tests.",
       "group": "process-recovery",
-      "input_sha256": "0820abee6a90da9db4a90a0b015a82a1ea11f032b6fe2a6edc500edd4792fe30",
+      "input_sha256": "9514163811ca923c7ae79dc9c0697e47abb612ce48d6151752628bd457d61cfd",
       "inputs": [
         "registry/test_profiles.json",
         "runtime/commissioning.py",
@@ -6683,7 +6683,7 @@
       ],
       "description": "Serial exact-tool, installed-wheel, corrective-release, and full-repair-ledger certification tests.",
       "group": "exact-installed",
-      "input_sha256": "3cb8d1c7113bad2013b4d12479976e416161992be536aaff13bd3f4cec41e285",
+      "input_sha256": "88db4c00fcf3c288c5d53226a03a4f5ee30f4c63aef816c4f8970deeca97e45f",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -6762,7 +6762,7 @@
       ],
       "description": "Serial release, distribution, artifact, and revocation certification tests excluding composed audit mutations.",
       "group": "release-build",
-      "input_sha256": "b982f747efecc68d03cc43a7e099f3ac6d5787fb319ee90a8db8e51ec3445a78",
+      "input_sha256": "05528e668a070c2f039b37a5a08bd6d435a5ae9254a340ba7bbe4c54460f20e5",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -6834,7 +6834,7 @@
       ],
       "description": "Serial composed-audit and quarantine-mutation tests isolated from package builds.",
       "group": "release-audit",
-      "input_sha256": "37ca746cf7545e534f9fc6a9a2fe30009a50e3a4e97bbe80c11cb2f62e5e0965",
+      "input_sha256": "e7f7d6dd298ed4004582bbe8f66d024add0ec8aebd0c73e913b5aa98828ad23e",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -6879,7 +6879,7 @@
       ],
       "description": "Serial full-tree structural mutation tests isolated from derived-artifact checks.",
       "group": "structural-adversarial",
-      "input_sha256": "cbf4b350d21f1c14cf0820a92b4cedb108b95d61bf5366868d63d1f8bda5c577",
+      "input_sha256": "4e79fd82aaab0a40a71231e3e652afdd45c0fde39012c6e7fbb0819b61262356",
       "inputs": [
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_agents_md_generator.py",
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_change_impact.py",
@@ -8440,7 +8440,7 @@
       ],
       "description": "Final serial generated-output, completion-projection, portability, effect-surface, and punch-card integrity gate.",
       "group": "derived-integrity",
-      "input_sha256": "5ef3d1c35430334971c957ecf0a286dfd9fbc7cab30ec5c6c8c15b580fc5e87d",
+      "input_sha256": "cd5daf4a22fc0e24230c6d0fe24fecde64fc228cf70c239f23aa40792790d160",
       "inputs": [
         "README.md",
         "pyproject.toml",

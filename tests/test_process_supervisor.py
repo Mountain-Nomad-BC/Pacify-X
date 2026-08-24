@@ -40,6 +40,7 @@ def _action(root: Path, **budget_changes: object) -> dict[str, object]:
         force_shutdown_seconds=5.0,
         stdout_limit_bytes=4096,
         stderr_limit_bytes=4096,
+        poll_interval_seconds=1.0,
     )
     return {
         "action_id": "test-process",
@@ -227,6 +228,42 @@ def test_signal_aware_process_exits_gracefully(harness) -> None:
         timer.cancel()
     assert result.status == "cancelled"
     assert result.shutdown_mode == "graceful"
+    assert result.tree_closed
+
+
+def test_exit_observed_after_cancellation_remains_cancelled(harness) -> None:
+    cancel = threading.Event()
+    timer = threading.Timer(0.03, cancel.set)
+    timer.start()
+    try:
+        result = _run(
+            harness,
+            "import time;time.sleep(.1)",
+            action=_action(
+                harness[0],
+                poll_interval_seconds=0.2,
+            ),
+            cancel_event=cancel,
+        )
+    finally:
+        timer.cancel()
+    assert result.status == "cancelled"
+    assert result.tree_closed
+
+
+def test_exit_observed_after_hard_total_budget_remains_timeout(harness) -> None:
+    result = _run(
+        harness,
+        "import time;time.sleep(.12)",
+        action=_action(
+            harness[0],
+            startup_timeout_seconds=0.05,
+            idle_timeout_seconds=0.05,
+            total_timeout_seconds=0.05,
+            poll_interval_seconds=0.2,
+        ),
+    )
+    assert result.status == "total_timeout"
     assert result.tree_closed
 
 

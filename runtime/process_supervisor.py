@@ -700,6 +700,18 @@ class ProcessSupervisor:
                     status = "idle_timeout"
                     break
                 time.sleep(budget.poll_interval_seconds)
+            # The child can exit while this supervisor thread is descheduled.
+            # Reconcile hard terminal controls after poll() observes that exit;
+            # otherwise an over-budget or cancelled process can be published as
+            # a successful natural exit under host contention.
+            if status == "exited":
+                if cancel_event is not None and cancel_event.is_set():
+                    status = "cancelled"
+                elif (
+                    time.monotonic() - supervision_started
+                    >= budget.total_timeout_seconds
+                ):
+                    status = "total_timeout"
             if status != "exited":
                 shutdown_mode, tree_closed = self._shutdown(
                     process, fingerprint, tracked, job, budget

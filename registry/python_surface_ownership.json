@@ -3333,7 +3333,7 @@
       "validation_level": "full-suite-and-installed-integration"
     },
     {
-      "bytes": 33859,
+      "bytes": 34505,
       "evidence": [
         "tests",
         "tests/test_installed_wheel_e2e.py"
@@ -3342,7 +3342,7 @@
       "packaged": true,
       "path": "runtime/process_supervisor.py",
       "role": "installed-runtime",
-      "sha256": "9bdeecd9131da34a8a60149f63a5681ad0d492de454aeb3f12a62b9e34812379",
+      "sha256": "bbc3ac9590ced780301aadb127de4a3d77ca69c060ebb9c751e0f1a17beeb44a",
       "syntax_valid": true,
       "validation_level": "full-suite-and-installed-integration"
     },
@@ -7238,7 +7238,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 14566,
+      "bytes": 15591,
       "evidence": [
         "tests/test_process_supervisor.py"
       ],
@@ -7246,7 +7246,7 @@
       "packaged": true,
       "path": "tests/test_process_supervisor.py",
       "role": "release-test",
-      "sha256": "1ec9df4416733340c3bd1e9fd115e05bd7731e27ace8a4b31aec189cf59f6c24",
+      "sha256": "3892594b06953b2b5fac2769dca1e9f85262cd6297f38fb2227c3aa7d0e62cc6",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },
