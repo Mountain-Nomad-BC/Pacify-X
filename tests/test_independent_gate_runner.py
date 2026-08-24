@@ -33,6 +33,39 @@ def test_passing_gate_receipt_is_reused_until_its_inputs_change(
     assert third["results"][0]["state"] == "executed" and calls == ["a", "a"]
 
 
+def test_gate_input_digest_excludes_derived_custody_but_tracks_source_metadata(
+    tmp_path: Path, monkeypatch
+) -> None:
+    root = tmp_path / "product"
+    source = root / ".engineering-bootstrap/project-management/state.json"
+    derived = root / ".engineering-bootstrap/operation-bus/event.json"
+    source.parent.mkdir(parents=True)
+    derived.parent.mkdir(parents=True)
+    source.write_text('{"state":"one"}', encoding="utf-8")
+    derived.write_text('{"event":"one"}', encoding="utf-8")
+    calls = []
+    monkeypatch.setattr(
+        gates,
+        "GATES",
+        {
+            "structural": GateSpec(
+                "structural",
+                (".engineering-bootstrap/**/*.json",),
+                (),
+                lambda _: calls.append("structural") or {"valid": True},
+            )
+        },
+    )
+    receipts = tmp_path / "receipts"
+
+    assert run_gates(root, receipts)["results"][0]["state"] == "executed"
+    derived.write_text('{"event":"two"}', encoding="utf-8")
+    assert run_gates(root, receipts)["results"][0]["state"] == "reused_current_pass"
+    source.write_text('{"state":"two"}', encoding="utf-8")
+    assert run_gates(root, receipts)["results"][0]["state"] == "executed"
+    assert calls == ["structural", "structural"]
+
+
 def test_failed_gate_reruns_without_reexecuting_unrelated_current_gate(
     tmp_path: Path, monkeypatch
 ) -> None:

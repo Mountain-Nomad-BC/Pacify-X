@@ -10,6 +10,8 @@ import subprocess
 import sys
 from typing import Any, Callable, Iterable
 
+from .repository_scope import is_external_environment_relative
+
 
 @dataclass(frozen=True)
 class GateSpec:
@@ -207,8 +209,13 @@ def _matching_files(root: Path, patterns: Iterable[str]) -> list[Path]:
     files: dict[str, Path] = {}
     for pattern in patterns:
         for path in root.glob(pattern):
-            if path.is_file() and "__pycache__" not in path.parts:
-                files[path.relative_to(root).as_posix()] = path
+            relative = path.relative_to(root)
+            if (
+                path.is_file()
+                and "__pycache__" not in relative.parts
+                and not is_external_environment_relative(relative)
+            ):
+                files[relative.as_posix()] = path
     return [files[key] for key in sorted(files)]
 
 

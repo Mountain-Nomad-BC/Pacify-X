@@ -332,7 +332,9 @@ def test_mirrored_runtime_source_matches_importable_package(built_distribution) 
     assert not any(any(marker in name for marker in forbidden) for name in names)
 
 
-def test_runtime_install_does_not_require_release_testkit(built_distribution) -> None:
+def test_runtime_install_requires_only_declared_runtime_dependencies(
+    built_distribution,
+) -> None:
     _, wheel, _, _ = built_distribution
     inspected = inspect_wheel(wheel)
     names = {item["path"] for item in inspected["entries"]}
@@ -349,7 +351,7 @@ def test_runtime_install_does_not_require_release_testkit(built_distribution) ->
         for line in metadata.splitlines()
         if line.startswith("Requires-Dist:") and "extra ==" not in line
     ]
-    assert unconditional == []
+    assert unconditional == ["Requires-Dist: PyYAML==6.0.3"]
 
 
 def test_certificate_version_matches_artifact_version() -> None:
