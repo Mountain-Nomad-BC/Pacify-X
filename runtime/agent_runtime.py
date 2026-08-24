@@ -100,7 +100,9 @@ def _agent_revision_runtime_entries(
     runs = revision / "runs"
     if not os.path.lexists(runs):
         return set(), set()
-    conflict = lambda: StudioVersionConflict("immutable-agent-revision-differs")
+    def conflict() -> StudioVersionConflict:
+        return StudioVersionConflict("immutable-agent-revision-differs")
+
     try:
         if is_link_or_reparse(runs) or not runs.is_dir():
             raise conflict()

@@ -36,11 +36,21 @@ H = "a" * 64
 
 
 def evidence(index: int, value: float = 1.0):
-    return operation_evidence(operation_id=f"op-{index}", task_class="repair", outcome="passed", measurements={"quality": value}, capability_ids=["A", "C"], environment_sha256=H, source_refs=[f"trace:{index}"], observed_at=f"2026-08-12T00:00:{index:02d}+00:00")
+    return operation_evidence(
+        operation_id=f"op-{index}",
+        task_class="repair",
+        outcome="passed",
+        measurements={"quality": value},
+        capability_ids=["A", "C"],
+        environment_sha256=H,
+        source_refs=[f"trace:{index}"],
+        observed_at=f"2026-08-12T00:00:{index:02d}+00:00",
+    )
 
 
 def test_operation_hashes_are_stable_and_aggregations_remain_hashless():
-    left = evidence(1); right = evidence(1)
+    left = evidence(1)
+    right = evidence(1)
     assert left == right
     aggregate = aggregate_operations([left, evidence(2, 2.0)], metric="quality")
     assert aggregate["aggregation_identity"] is None
@@ -54,13 +64,50 @@ def test_confidence_requires_statistical_lower_bound_not_a_bare_majority():
 
 
 def test_full_candidate_ab_research_validation_and_promotion_chain():
-    incumbent = freeze_revision(unit_id="route.failure-x", kind="skill", artifact={"skills": ["A", "B", "C"]}, evidence_sha256=[H], dependency_sha256={"policy": H})
-    challenger = freeze_revision(unit_id="route.failure-x", kind="skill", artifact={"skills": ["A", "C"]}, evidence_sha256=[H], dependency_sha256={"policy": H}, parent_revision_sha256=incumbent["revision_sha256"], tier=2)
-    trials = [{"winner": "challenger", "evidence_sha256": H} for _ in range(18)] + [{"winner": "incumbent", "evidence_sha256": H} for _ in range(2)]
-    comparison = compare_revisions(incumbent=incumbent, challenger=challenger, trials=trials)
+    incumbent = freeze_revision(
+        unit_id="route.failure-x",
+        kind="skill",
+        artifact={"skills": ["A", "B", "C"]},
+        evidence_sha256=[H],
+        dependency_sha256={"policy": H},
+    )
+    challenger = freeze_revision(
+        unit_id="route.failure-x",
+        kind="skill",
+        artifact={"skills": ["A", "C"]},
+        evidence_sha256=[H],
+        dependency_sha256={"policy": H},
+        parent_revision_sha256=incumbent["revision_sha256"],
+        tier=2,
+    )
+    trials = [{"winner": "challenger", "evidence_sha256": H} for _ in range(18)] + [
+        {"winner": "incumbent", "evidence_sha256": H} for _ in range(2)
+    ]
+    comparison = compare_revisions(
+        incumbent=incumbent, challenger=challenger, trials=trials
+    )
     confidence = confidence_gate(wins=18, losses=2)
-    research = research_validation(question="Is A+C the best evidenced procedure?", references=[{"uri": "evidence:independent-review", "evidence_sha256": H, "independent": True}], better_alternative_found=False, conclusion="No stronger bounded alternative was found.")
-    promotion = promote_revision(revision=challenger, confidence=confidence, comparison=comparison, research=research, final_validation_sha256=H, current_dependencies={"policy": H}, partial_units=["failure-x-router"])
+    research = research_validation(
+        question="Is A+C the best evidenced procedure?",
+        references=[
+            {
+                "uri": "evidence:independent-review",
+                "evidence_sha256": H,
+                "independent": True,
+            }
+        ],
+        better_alternative_found=False,
+        conclusion="No stronger bounded alternative was found.",
+    )
+    promotion = promote_revision(
+        revision=challenger,
+        confidence=confidence,
+        comparison=comparison,
+        research=research,
+        final_validation_sha256=H,
+        current_dependencies={"policy": H},
+        partial_units=["failure-x-router"],
+    )
     assert promotion["passed"]
     assert len(promotion["canonical_corpus_sha256"]) == 64
     assert not promotion["learning_direct_write_allowed"]
@@ -82,15 +129,18 @@ def test_full_candidate_ab_research_validation_and_promotion_chain():
         "reuse_measurements": [],
     }
     validate_learning_pipeline_state(state)
-    assert len(
-        {
-            challenger["artifact_sha256"],
-            challenger["revision_sha256"],
-            challenger["record_sha256"],
-            promotion["record_sha256"],
-            promotion["canonical_corpus_sha256"],
-        }
-    ) == 5
+    assert (
+        len(
+            {
+                challenger["artifact_sha256"],
+                challenger["revision_sha256"],
+                challenger["record_sha256"],
+                promotion["record_sha256"],
+                promotion["canonical_corpus_sha256"],
+            }
+        )
+        == 5
+    )
 
 
 def test_typed_parser_rejects_swapped_revision_and_corpus_hash_roles():
@@ -108,9 +158,7 @@ def test_typed_parser_rejects_swapped_revision_and_corpus_hash_roles():
         parent_revision_sha256=incumbent["revision_sha256"],
         tier=2,
     )
-    trials = [
-        {"winner": "challenger", "evidence_sha256": H} for _ in range(20)
-    ]
+    trials = [{"winner": "challenger", "evidence_sha256": H} for _ in range(20)]
     comparison = compare_revisions(
         incumbent=incumbent, challenger=challenger, trials=trials
     )
@@ -146,27 +194,59 @@ def test_typed_parser_rejects_swapped_revision_and_corpus_hash_roles():
     swapped_revision = dict(challenger)
     swapped_revision["artifact_sha256"] = challenger["revision_sha256"]
     swapped_revision["record_sha256"] = content_hash(
-        {key: value for key, value in swapped_revision.items() if key != "record_sha256"}
+        {
+            key: value
+            for key, value in swapped_revision.items()
+            if key != "record_sha256"
+        }
     )
     with pytest.raises(ValueError, match="semantic identity"):
         validate_learning_pipeline_state(
-            {**base, "challenger_revision": swapped_revision, "selected_revision": swapped_revision}
+            {
+                **base,
+                "challenger_revision": swapped_revision,
+                "selected_revision": swapped_revision,
+            }
         )
 
     swapped_promotion = dict(promotion)
     swapped_promotion["canonical_corpus_sha256"] = promotion["record_sha256"]
     swapped_promotion["record_sha256"] = content_hash(
-        {key: value for key, value in swapped_promotion.items() if key != "record_sha256"}
+        {
+            key: value
+            for key, value in swapped_promotion.items()
+            if key != "record_sha256"
+        }
     )
     with pytest.raises(ValueError, match="canonical corpus binding"):
-        validate_learning_pipeline_state({**base, "promotion_decision": swapped_promotion})
+        validate_learning_pipeline_state(
+            {**base, "promotion_decision": swapped_promotion}
+        )
 
 
 def test_dependency_drift_and_any_failed_gate_block_canonical_promotion():
-    revision = freeze_revision(unit_id="memory.repo-fact", kind="memory", artifact={"fact": "x"}, evidence_sha256=[H], dependency_sha256={"repo": H})
+    revision = freeze_revision(
+        unit_id="memory.repo-fact",
+        kind="memory",
+        artifact={"fact": "x"},
+        evidence_sha256=[H],
+        dependency_sha256={"repo": H},
+    )
     failed = confidence_gate(wins=3, losses=3)
-    research = research_validation(question="valid?", references=[{"uri": "evidence:r", "evidence_sha256": H}], better_alternative_found=False, conclusion="bounded")
-    result = promote_revision(revision=revision, confidence=failed, comparison={"record_type": "ab_comparison", "passed": False}, research=research, final_validation_sha256=H, current_dependencies={"repo": "b" * 64})
+    research = research_validation(
+        question="valid?",
+        references=[{"uri": "evidence:r", "evidence_sha256": H}],
+        better_alternative_found=False,
+        conclusion="bounded",
+    )
+    result = promote_revision(
+        revision=revision,
+        confidence=failed,
+        comparison={"record_type": "ab_comparison", "passed": False},
+        research=research,
+        final_validation_sha256=H,
+        current_dependencies={"repo": "b" * 64},
+    )
     assert not result["passed"]
     assert result["canonical_corpus_sha256"] is None
     assert not result["checks"]["dependencies_current"]

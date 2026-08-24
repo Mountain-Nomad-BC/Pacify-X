@@ -211,10 +211,6 @@ def main() -> int:
         if current_scope is not None:
             if current_scope.get("kind") != "aggregate_parent":
                 raise SystemExit(f"aggregate parent already has a conflicting scope: {parent_id}")
-            current_children = sorted(
-                map(str, current_scope.get("child_gap_ids", [])),
-                key=_sort_key,
-            )
             current_child_set = set(map(str, current_scope.get("child_gap_ids", [])))
             required_child_set = set(ordered_children)
             if not required_child_set.issubset(current_child_set):

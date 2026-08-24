@@ -478,7 +478,6 @@ def _validate_card(
         raise ValueError("card severity is invalid")
     if not isinstance(card["source_refs"], list) or not card["source_refs"]:
         raise ValueError("source_refs must contain at least one source reference")
-    discovery_source = str(card.get("discovery_source") or "").strip()
     for ref in card["source_refs"]:
         # Historical discovery events predate symbol-bound source references.
         # Replay must preserve those events long enough for a later annotation

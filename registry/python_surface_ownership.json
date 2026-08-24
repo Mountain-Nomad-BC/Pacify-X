@@ -291,7 +291,7 @@
       "validation_level": "evidence-association"
     },
     {
-      "bytes": 16130,
+      "bytes": 17744,
       "evidence": [
         "tests/test_sort_picker.py"
       ],
@@ -299,7 +299,7 @@
       "packaged": true,
       "path": ".px/skills/data-sort-dry-run-picker/scripts/sort_picker.py",
       "role": "installed-skill-tool",
-      "sha256": "85828460d8b5a08ba9fc7026249e1155f0896bee0a2b1d22b6ff30ac9c09ecd5",
+      "sha256": "4b5a71e3d7782dd8b85ba6eb6976dc55f600138c027447952cf067ae93d40a63",
       "syntax_valid": true,
       "validation_level": "evidence-association"
     },
@@ -1480,7 +1480,7 @@
       "validation_level": "full-suite-and-installed-integration"
     },
     {
-      "bytes": 78176,
+      "bytes": 78214,
       "evidence": [
         "tests",
         "tests/test_installed_wheel_e2e.py"
@@ -1489,7 +1489,7 @@
       "packaged": true,
       "path": "runtime/agent_runtime.py",
       "role": "installed-runtime",
-      "sha256": "ea8507b75538b4b0790f84279e51255cca3e724ed2bad30c7d4639c29ef1fadf",
+      "sha256": "a23d9de5ea7bf07ca4525cbf5897fe11dd107387fa94253b0861edb2641c513f",
       "syntax_valid": true,
       "validation_level": "full-suite-and-installed-integration"
     },
@@ -3194,7 +3194,7 @@
       "validation_level": "full-suite-and-installed-integration"
     },
     {
-      "bytes": 133314,
+      "bytes": 133243,
       "evidence": [
         "tests/test_operational_gap_ledger.py"
       ],
@@ -3202,7 +3202,7 @@
       "packaged": true,
       "path": "runtime/operational_gap_ledger.py",
       "role": "installed-runtime",
-      "sha256": "cbe8d6e62b2175d0a13eb98c0aa55108311a1a8fda8fe8e31b6ba201184039cb",
+      "sha256": "5122c06b0f1b209833b2ecace5548a6eb01ef79e633d18482387defd0508bc10",
       "syntax_valid": true,
       "validation_level": "evidence-association"
     },
@@ -4135,7 +4135,7 @@
       "validation_level": "full-suite-and-installed-integration"
     },
     {
-      "bytes": 9755,
+      "bytes": 9745,
       "evidence": [
         "tests",
         "tests/test_installed_wheel_e2e.py"
@@ -4144,7 +4144,7 @@
       "packaged": true,
       "path": "runtime/studio_session_worker.py",
       "role": "installed-runtime",
-      "sha256": "749eaa165040a766bd2535bcd65926674c35fe0eb121c64347dc86ad499fac3b",
+      "sha256": "dca045ae6892f822716738a8f7c1f578ea7af853cdbdc068852fca4143b48553",
       "syntax_valid": true,
       "validation_level": "full-suite-and-installed-integration"
     },
@@ -4204,7 +4204,7 @@
       "validation_level": "full-suite-and-installed-integration"
     },
     {
-      "bytes": 10338,
+      "bytes": 10272,
       "evidence": [
         "tests",
         "tests/test_installed_wheel_e2e.py"
@@ -4213,7 +4213,7 @@
       "packaged": true,
       "path": "runtime/test_runner.py",
       "role": "installed-runtime",
-      "sha256": "7c15e3a981c6560fcc7c6f332cd83e2c70e921e57590baeed7881dbae8ec65da",
+      "sha256": "5d7bda0a456b2b63749d4db681bb00c0f8c4828c65364de1d87b04cb5baa1bed",
       "syntax_valid": true,
       "validation_level": "full-suite-and-installed-integration"
     },
@@ -4315,7 +4315,7 @@
       "validation_level": "full-suite-and-installed-integration"
     },
     {
-      "bytes": 19665,
+      "bytes": 19656,
       "evidence": [
         "tests",
         "tests/test_installed_wheel_e2e.py"
@@ -4324,7 +4324,7 @@
       "packaged": true,
       "path": "runtime/work_admission.py",
       "role": "installed-runtime",
-      "sha256": "ce044c73c74f0c6dc01e5d5975bc77803d0e6935a8af2f957336b26d68950960",
+      "sha256": "f2c83b888cc633c7f168ced4c97ef0fb794a440b7103b1df693e18e6943a02b2",
       "syntax_valid": true,
       "validation_level": "full-suite-and-installed-integration"
     },
@@ -4579,7 +4579,7 @@
       "validation_level": "source-only-structural"
     },
     {
-      "bytes": 800,
+      "bytes": 835,
       "evidence": [
         "structural AST validation",
         "project-management release boundary"
@@ -4588,7 +4588,7 @@
       "packaged": false,
       "path": "scripts/build_current_evidence_index.py",
       "role": "source-build-control",
-      "sha256": "6efdd63a853cf3fc0d149d02f6f44b645d495fb719827fadd8b92ce569b28886",
+      "sha256": "805f5934f291028abed8af1fd331d608cd880e05cc3690837e4443cd1e99c005",
       "syntax_valid": true,
       "validation_level": "source-only-structural"
     },
@@ -4691,7 +4691,7 @@
       "validation_level": "source-only-structural"
     },
     {
-      "bytes": 7521,
+      "bytes": 8847,
       "evidence": [
         "structural AST validation",
         "project-management release boundary"
@@ -4700,7 +4700,7 @@
       "packaged": false,
       "path": "scripts/build_installed_host_control_evidence.py",
       "role": "source-build-control",
-      "sha256": "38d40babd23a13b918a73ad744ffc8cfd8268615e7be59f2722df8b27fee1909",
+      "sha256": "d04f0f27dc62cec2c9863ff42d7fbe4bb4ae206448645fe44c3f23fe4b6647ec",
       "syntax_valid": true,
       "validation_level": "source-only-structural"
     },
@@ -5676,7 +5676,7 @@
       "validation_level": "source-only-structural"
     },
     {
-      "bytes": 13071,
+      "bytes": 12921,
       "evidence": [
         "structural AST validation",
         "project-management release boundary"
@@ -5685,7 +5685,7 @@
       "packaged": false,
       "path": "scripts/split_operational_aggregate_cards.py",
       "role": "source-build-control",
-      "sha256": "6eb5c52641832ddf3531660765be3ef7385e93d28aa82408ce3f656404544f71",
+      "sha256": "7167a2e3dbfe6798416049db4a31c2e37a80c4278feeaea62c2742f4e709fa4b",
       "syntax_valid": true,
       "validation_level": "source-only-structural"
     },
@@ -6107,7 +6107,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 10160,
+      "bytes": 10172,
       "evidence": [
         "tests/test_clean_source_export.py"
       ],
@@ -6115,7 +6115,7 @@
       "packaged": true,
       "path": "tests/test_clean_source_export.py",
       "role": "release-test",
-      "sha256": "7b75477882c2493d94dc5a24aab8ea6cee17de96a0baf8680a9ff49c5d24f986",
+      "sha256": "910737a6ebb8b0ffa0742bce88317bb090fefd274cfd5a3e0b80c43d385bfc9c",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },
@@ -6926,7 +6926,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 8237,
+      "bytes": 8996,
       "evidence": [
         "tests/test_learning_promotion.py"
       ],
@@ -6934,7 +6934,7 @@
       "packaged": true,
       "path": "tests/test_learning_promotion.py",
       "role": "release-test",
-      "sha256": "5c262d7db07e577a2fefc6edfb0fa2a8adcba0126b23e1ecab8389e9f2e64cd1",
+      "sha256": "c6dc236d898e5e72e442ecac3d075c28ba818c3c7354fce2c0b1ca151890226a",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },
@@ -7615,7 +7615,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 1007,
+      "bytes": 1056,
       "evidence": [
         "tests/test_release_boundary_diff.py"
       ],
@@ -7623,7 +7623,7 @@
       "packaged": true,
       "path": "tests/test_release_boundary_diff.py",
       "role": "release-test",
-      "sha256": "cac2b0d4a7924b774636cb38185e0678f71021225672f29f362f86bcbe7ac1dd",
+      "sha256": "7e0263a4c6f5056ba30d0c5f0f6a2569e8a6c6b4a76fe3d5293b3ef005619a45",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },
@@ -7680,7 +7680,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 777,
+      "bytes": 905,
       "evidence": [
         "tests/test_release_evidence_budget.py"
       ],
@@ -7688,12 +7688,12 @@
       "packaged": true,
       "path": "tests/test_release_evidence_budget.py",
       "role": "release-test",
-      "sha256": "6fe5cfbcbcc21486b36e597c6f1a64f71e80bcebf4a8c16dbd4e167de26e16eb",
+      "sha256": "587d3b00b75a86120eb9593dcbcad4d30dc6a2b4a177c0c3643c13d64491c577",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },
     {
-      "bytes": 693,
+      "bytes": 719,
       "evidence": [
         "tests/test_release_evidence_portability.py"
       ],
@@ -7701,7 +7701,7 @@
       "packaged": true,
       "path": "tests/test_release_evidence_portability.py",
       "role": "release-test",
-      "sha256": "81e5d0ad330d506cd7e2384eb7a521d4db4384df7b549a68d132fb4d6b1438d4",
+      "sha256": "6160d9e5b5ff30a02130021f82254fc2a9f4cb3e29dd86147a413902b752e7ba",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },
@@ -7732,7 +7732,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 1061,
+      "bytes": 1110,
       "evidence": [
         "tests/test_release_fixed_point.py"
       ],
@@ -7740,7 +7740,7 @@
       "packaged": true,
       "path": "tests/test_release_fixed_point.py",
       "role": "release-test",
-      "sha256": "49823ac1653876ebc8ce17675f22be5f2b6ffcfa0579bd9ab361c0cd7b558fbd",
+      "sha256": "d41951ea5ea88fb82924237fbe594b445be95bc5f5d6503f4da32735d2f1948e",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },
@@ -7758,7 +7758,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 696,
+      "bytes": 727,
       "evidence": [
         "tests/test_release_mutation_probe.py"
       ],
@@ -7766,7 +7766,7 @@
       "packaged": true,
       "path": "tests/test_release_mutation_probe.py",
       "role": "release-test",
-      "sha256": "cd52705b46ad569962863cc202ee875dbd0879e0a0d69a9101c1d3c7b7f0b2a5",
+      "sha256": "4c124521e778a989d1fa705b60f84b932b3664e77013ec9835bf85b41fae4c1d",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },

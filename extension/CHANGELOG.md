@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.50
+
+- Integrate the current dependency and GitHub Actions updates without rewriting the issued 0.6.49 package.
+- Refresh governed generated evidence and compatibility checks for the updated Python release toolchain.
+- Keep extension packaging reproducible under the issued-artifact immutability guard.
+
 ## 0.6.49
 
 - Restore exact editable Agent model-version handling and preserve binding, grant, and test validation counts through live validation.

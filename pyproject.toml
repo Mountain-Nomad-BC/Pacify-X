@@ -39,9 +39,16 @@ engineering-bootstrap = "engineering_bootstrap.cli:main"
 [tool.ruff]
 target-version = "py311"
 line-length = 88
+exclude = [".px/preserved-skills"]
 
 [tool.ruff.lint]
 select = ["E4", "E7", "E9", "F"]
+
+[tool.ruff.lint.per-file-ignores]
+"scripts/archive_committed_wal.py" = ["E402"]
+"scripts/build_engine_identity.py" = ["E402"]
+"scripts/build_reclamation_learning_promotion.py" = ["E402"]
+"scripts/quarantine_paths.py" = ["E402"]
 
 [tool.ruff.format]
 line-ending = "lf"

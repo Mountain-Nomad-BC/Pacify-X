@@ -171,7 +171,9 @@ def test_clean_export_retains_only_test_receipts_from_runtime_state_and_omits_da
 def test_certification_preflight_returns_aggregated_gate_result(
     monkeypatch, tmp_path: Path
 ):
-    valid = lambda *args, **kwargs: {"valid": True, "schema_version": "test/1.0"}
+    def valid(*args, **kwargs):
+        return {"valid": True, "schema_version": "test/1.0"}
+
     for module, name in (
         (runtime.effect_surface, "validate_effect_surfaces"),
         (runtime.evidence_index, "build_index"),

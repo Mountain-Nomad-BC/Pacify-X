@@ -8,7 +8,6 @@ from pathlib import Path
 import signal
 import subprocess
 import tempfile
-import time
 from typing import Mapping, Sequence
 
 from .process_supervisor import ProcessBudgets, ProcessSupervisor
@@ -104,8 +103,6 @@ def run_test_command(
             / "resource-lifecycle"
             / "ledger.json"
         )
-    started = time.monotonic()
-    resource_id = None
     workspace_record = None
     workspace_path: Path | None = None
     effective_command = list(command)
