@@ -30,6 +30,12 @@ def test_local_dependency_installations_are_pruned_at_the_root() -> None:
         ".engineering-bootstrap/project-map-history-archives/history.zip"
     )
     assert is_external_environment_relative(".engineering-bootstrap/studios/agents/revision.json")
+    assert is_external_environment_relative(
+        ".engineering-bootstrap/test-evidence/adversarial-repair-gates/structural.json"
+    )
+    assert is_external_environment_relative(
+        ".engineering-bootstrap/test-evidence/github-reconciliation-gates/registry.json"
+    )
     assert is_external_environment_relative("projects/pacify-x/runtime/cli.py")
     assert is_external_environment_relative("projects_tracking/project-registry.json")
     assert is_external_environment_relative("repo_quarantine/prj_demo/receipt.json")
@@ -42,6 +48,9 @@ def test_local_dependency_installations_are_pruned_at_the_root() -> None:
         ".px/preserved-extension-installations/initial/extension/package.json"
     )
     assert not is_external_environment_relative("runtime/hardware_routing.py")
+    assert not is_external_environment_relative(
+        ".engineering-bootstrap/test-evidence/sections/testing-governance.json"
+    )
 
 
 def test_project_source_boundary_does_not_hide_similar_nested_names(tmp_path: Path) -> None:

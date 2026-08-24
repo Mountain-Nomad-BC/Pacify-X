@@ -47,6 +47,7 @@ def classify_tree(root: Path) -> dict[str, Any]:
     }
     records: list[dict[str, Any]] = []
     errors: list[str] = []
+    product_errors: list[str] = []
     normalized_seen: dict[str, str] = {}
     try:
         walk = bounded_walk(
@@ -61,6 +62,7 @@ def classify_tree(root: Path) -> dict[str, Any]:
         return {
             "schema_version": "1.0",
             "valid": False,
+            "product_valid": False,
             "policy_version": policy["policy_version"],
             "policy_sha256": hashlib.sha256(
                 (root / "policies/release-artifact-policy.json").read_bytes()
@@ -78,7 +80,9 @@ def classify_tree(root: Path) -> dict[str, Any]:
         normalized = relative.casefold()
         prior = normalized_seen.get(normalized)
         if prior is not None and prior != relative:
-            errors.append(f"case-fold path collision: {prior} vs {relative}")
+            collision = f"case-fold path collision: {prior} vs {relative}"
+            errors.append(collision)
+            product_errors.append(collision)
         normalized_seen[normalized] = relative
         if entry.kind == "file":
             path = entry.path
@@ -129,9 +133,13 @@ def classify_tree(root: Path) -> dict[str, Any]:
                         content_sha256 = hashlib.sha256(path.read_bytes()).hexdigest()
                     except OSError as error:
                         content_sha256 = None
-                        errors.append(
-                            f"unreadable release artifact: {relative}: {type(error).__name__}"
+                        unreadable = (
+                            f"unreadable release artifact: {relative}: "
+                            f"{type(error).__name__}"
                         )
+                        errors.append(unreadable)
+                        if classification == "product_input":
+                            product_errors.append(unreadable)
                 records.append(
                     {
                         "path": relative,
@@ -169,6 +177,7 @@ def classify_tree(root: Path) -> dict[str, Any]:
     return {
         "schema_version": "1.0",
         "valid": not errors,
+        "product_valid": not product_errors,
         "policy_version": policy["policy_version"],
         "policy_sha256": hashlib.sha256(
             (root / "policies/release-artifact-policy.json").read_bytes()

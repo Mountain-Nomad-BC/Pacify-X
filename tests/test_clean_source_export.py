@@ -174,6 +174,12 @@ def test_clean_export_retains_only_test_receipts_from_runtime_state_and_omits_da
     receipt = root / ".engineering-bootstrap/test-evidence/sections/dashboard.json"
     receipt.parent.mkdir(parents=True)
     receipt.write_text('{"current":true}\n', encoding="utf-8")
+    local_gate = (
+        root
+        / ".engineering-bootstrap/test-evidence/adversarial-repair-gates/structural.json"
+    )
+    local_gate.parent.mkdir(parents=True)
+    local_gate.write_text('{"local":true}\n', encoding="utf-8")
     volatile = root / ".engineering-bootstrap/operation-bus/events.jsonl"
     volatile.parent.mkdir(parents=True)
     volatile.write_text("volatile\n", encoding="utf-8")
@@ -193,6 +199,10 @@ def test_clean_export_retains_only_test_receipts_from_runtime_state_and_omits_da
         assert (
             ".engineering-bootstrap/test-evidence/sections/dashboard.json"
             in archive.namelist()
+        )
+        assert (
+            ".engineering-bootstrap/test-evidence/adversarial-repair-gates/structural.json"
+            not in archive.namelist()
         )
         assert (
             ".engineering-bootstrap/operation-bus/events.jsonl"

@@ -45,6 +45,7 @@ def test_executable_payload_cannot_hide_in_evidence() -> None:
     (root / "evidence/hidden.py").write_text("print('hidden')\n", encoding="utf-8")
     result = classify_tree(root)
     assert not result["valid"]
+    assert result["product_valid"]
     assert any("evidence payload" in item for item in result["errors"])
 
 

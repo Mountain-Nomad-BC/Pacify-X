@@ -77,6 +77,7 @@ RETAINED_CONTROL_TREES = {
     # commissioning ledger.  The volatile operation bus remains excluded.
     ".engineering-bootstrap/.ledger-authority/commissioning-events",
 }
+RETAINED_TEST_RECEIPT_ROOTS = {"groups", "profiles", "section-chunks", "sections"}
 
 
 def _mode(data: bytes) -> str:
@@ -95,9 +96,10 @@ def included_files(root: Path, output: Path | None = None) -> tuple[Path, ...]:
     for path in root.rglob("*"):
         relative = path.relative_to(root)
         retained_test_receipt = (
-            len(relative.parts) >= 3
+            len(relative.parts) >= 4
             and relative.parts[0] == ".engineering-bootstrap"
             and relative.parts[1] == "test-evidence"
+            and relative.parts[2] in RETAINED_TEST_RECEIPT_ROOTS
             and relative.suffix.casefold() == ".json"
         )
         retained_control_state = relative.as_posix() in RETAINED_CONTROL_STATE

@@ -1,6 +1,8 @@
 import json
 from pathlib import Path
 
+import runtime.release_preflight as release_preflight
+
 from runtime.release_preflight import (
     _cache_inputs,
     _binding,
@@ -174,6 +176,26 @@ def test_dependency_aware_cache_does_not_invalidate_unrelated_checks() -> None:
     binding["test_topology_digest"] = "topology-b"
     assert _cache_inputs("installed_equivalence", binding) == installed_before
     assert _cache_inputs("fixed_point", binding) != fixed_before
+
+
+def test_deep_discovery_exhausts_checks_without_relaxing_certification_binding(
+    tmp_path: Path, monkeypatch
+) -> None:
+    observed = {}
+
+    def fake_run(root: Path, **kwargs):
+        observed.update(kwargs)
+        return {"valid": True, "ready_for_certification": False}
+
+    monkeypatch.setattr(release_preflight, "run_preflight", fake_run)
+
+    result = release_preflight.run_discovery(tmp_path, release="1.0.0")
+
+    assert result["valid"] is True
+    assert result["ready_for_certification"] is False
+    assert observed["deep"] is True
+    assert observed["write_receipt"] is False
+    assert observed["enforce_release_binding"] is False
 
 
 def test_preflight_resource_ledger_is_outside_product_custody() -> None:

@@ -9,6 +9,9 @@ def test_repository_local_interpreters_are_dependencies_not_owned_source(tmp_pat
     (tmp_path / "tests" / "test_owned.py").write_text("def test_ok():\n    assert True\n", encoding="utf-8")
     (tmp_path / "runtime").mkdir()
     (tmp_path / "runtime" / "owned.py").write_text("VALUE = 1\n", encoding="utf-8")
+    (tmp_path / "conftest.py").write_text(
+        "def pytest_configure(config):\n    return None\n", encoding="utf-8"
+    )
     (tmp_path / ".venv-certify" / "Lib" / "site-packages").mkdir(parents=True)
     (tmp_path / ".venv-certify" / "Lib" / "site-packages" / "foreign.py").write_text("VALUE = 2\n", encoding="utf-8")
     (tmp_path / "Python" / "Lib").mkdir(parents=True)
@@ -21,5 +24,9 @@ def test_repository_local_interpreters_are_dependencies_not_owned_source(tmp_pat
     )
 
     paths = {record["path"] for record in result["records"]}
-    assert paths == {"runtime/owned.py", "tests/test_owned.py"}
+    assert paths == {"conftest.py", "runtime/owned.py", "tests/test_owned.py"}
     assert result["role_counts"].get("unknown", 0) == 0
+    harness = next(record for record in result["records"] if record["path"] == "conftest.py")
+    assert harness["role"] == "release-test-harness"
+    assert harness["validation_level"] == "executable-test"
+    assert harness["packaged"] is False

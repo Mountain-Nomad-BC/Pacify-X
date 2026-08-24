@@ -160,11 +160,20 @@ def audit_clean_boundary(
                 "clean export differs from the classified product boundary",
             )
         )
-    if (
-        not source_product.get("valid")
-        or not clean_product.get("valid")
-        or source_product.get("product_digest") != clean_product.get("product_digest")
-    ):
+    source_product_valid = source_product.get(
+        "product_valid", source_product.get("valid")
+    )
+    if not source_product_valid:
+        failures.append(
+            PreflightFailure("RP-BND-002", "live product inputs are invalid")
+        )
+    if not clean_product.get("valid"):
+        failures.append(
+            PreflightFailure(
+                "RP-BND-002", "clean export contains invalid or unclassified content"
+            )
+        )
+    if source_product.get("product_digest") != clean_product.get("product_digest"):
         failures.append(
             PreflightFailure(
                 "RP-BND-002", "live and clean product digests do not match"
@@ -181,6 +190,8 @@ def audit_clean_boundary(
         "product_inputs_missing_from_clean_export": missing_product,
         "unexpected_clean_files": unexpected,
         "clean_source_byte_mismatches": sorted(source_mismatches),
+        "source_classifier_errors": list(source_product.get("errors", ())),
+        "clean_classifier_errors": list(clean_product.get("errors", ())),
         "digest_comparison": {
             "source": source_product.get("product_digest"),
             "clean": clean_product.get("product_digest"),
@@ -754,7 +765,7 @@ def _binding(root: Path, release: str, artifact: Path | None) -> dict[str, Any]:
         "source_revision": git.get("commit_sha"),
         "source_identity_valid": git.get("valid") is True,
         "product_digest": product.get("product_digest"),
-        "product_valid": product.get("valid") is True,
+        "product_valid": product.get("product_valid", product.get("valid")) is True,
         "engine_identity": engine.get("tree_sha256"),
         "engine_manifest_sha256": engine.get("manifest_sha256"),
         "engine_valid": engine.get("valid") is True,
@@ -902,6 +913,7 @@ def run_preflight(
     artifact: Path | None = None,
     deep: bool = False,
     write_receipt: bool = True,
+    enforce_release_binding: bool = True,
 ) -> dict[str, Any]:
     """Run cheap checks first, then clean-stage state transitions and fixed point."""
     started = time.monotonic()
@@ -1180,37 +1192,49 @@ def run_preflight(
             },
         ]
 
-    failures = [
+    check_failures = [
         failure for result in checks.values() for failure in result.get("failures", ())
     ]
-    valid = (
-        not failures
+    checks_valid = bool(
+        not check_failures
         and checks
         and all(result.get("valid") for result in checks.values())
-        and binding["source_identity_valid"]
-        and binding["product_valid"]
-        and binding["engine_valid"]
         and checks.get("fixed_point", {}).get("fixed_point") is True
     )
+    binding_failures = []
     if not binding["source_identity_valid"]:
-        failures.append(
+        binding_failures.append(
             {
                 "code": "RP-BND-002",
                 "message": "source revision is not clean, tagged, and release-bound",
             }
         )
+    if not binding["product_valid"]:
+        binding_failures.append(
+            {
+                "code": "RP-BND-002",
+                "message": "live product identity inputs are invalid",
+            }
+        )
     if not binding["engine_valid"]:
-        failures.append(
+        binding_failures.append(
             {"code": "RP-GEN-001", "message": "engine identity projection is stale"}
         )
+    ready_for_certification = checks_valid and not binding_failures
+    valid = ready_for_certification if enforce_release_binding else checks_valid
+    failures = [
+        *check_failures,
+        *(binding_failures if enforce_release_binding else ()),
+    ]
+    warnings = [] if enforce_release_binding else binding_failures
     result = {
         "schema_version": "px.release-preflight/1.0",
         "valid": valid,
-        "ready_for_certification": valid,
+        "ready_for_certification": ready_for_certification,
         "binding": binding,
         "checks": checks,
         "blocking_reasons": failures,
-        "warnings": [],
+        "warnings": warnings,
         "phase_timings": timings,
         "state_transitions": transitions,
         "skipped_phases": [
@@ -1228,8 +1252,8 @@ def run_preflight(
         ],
         "elapsed_seconds": round(time.monotonic() - started, 6),
     }
-    verdict = (
-        "READY_FOR_CERTIFICATION = TRUE" if valid else "READY_FOR_CERTIFICATION = FALSE"
+    verdict = "READY_FOR_CERTIFICATION = " + (
+        "TRUE" if ready_for_certification else "FALSE"
     )
     result["summary"] = {
         "verdict": verdict,
@@ -1239,7 +1263,7 @@ def run_preflight(
         "failed": sorted(
             name for name, check in checks.items() if check.get("valid") is not True
         ),
-        "blocked_finalizer": not valid,
+        "blocked_finalizer": not ready_for_certification,
     }
     result["receipt_sha256"] = _sha_bytes(_canonical(result))
     if write_receipt:
@@ -1265,7 +1289,12 @@ def run_discovery(
     root: Path, *, release: str | None = None, artifact: Path | None = None
 ) -> dict[str, Any]:
     result = run_preflight(
-        root, release=release, artifact=artifact, deep=True, write_receipt=False
+        root,
+        release=release,
+        artifact=artifact,
+        deep=True,
+        write_receipt=False,
+        enforce_release_binding=False,
     )
     return {
         **result,

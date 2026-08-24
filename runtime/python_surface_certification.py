@@ -51,6 +51,8 @@ def _role(relative: str) -> tuple[str, str, bool]:
     parts = relative.split("/")
     if relative == "sitecustomize.py":
         return "source-build-control", "project-release-control", False
+    if relative == "conftest.py":
+        return "release-test-harness", "release-verification", False
     if parts[0] == "tests":
         return "release-test", "release-verification", True
     if parts[0] == "runtime":
@@ -266,7 +268,7 @@ def certify_python_surfaces(
             for name, text in test_text.items()
             if path.name in text or relative in text
         )
-        if role == "release-test":
+        if role in {"release-test", "release-test-harness"}:
             evidence = [relative]
             level = "executable-test"
         elif relative in direct_paths:

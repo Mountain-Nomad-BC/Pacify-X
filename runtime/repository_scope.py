@@ -27,6 +27,12 @@ DERIVED_CUSTODY_ROOTS = frozenset(
         "studios",
     }
 )
+LOCAL_TEST_EVIDENCE_ROOTS = frozenset(
+    {
+        "adversarial-repair-gates",
+        "github-reconciliation-gates",
+    }
+)
 
 
 def is_external_environment_relative(relative: str | Path) -> bool:
@@ -56,6 +62,11 @@ def is_external_environment_relative(relative: str | Path) -> bool:
             len(parts) >= 2
             and parts[0] == ".engineering-bootstrap"
             and parts[1] in DERIVED_CUSTODY_ROOTS
+        )
+        or (
+            len(parts) >= 3
+            and parts[:2] == (".engineering-bootstrap", "test-evidence")
+            and parts[2] in LOCAL_TEST_EVIDENCE_ROOTS
         )
     )
 
