@@ -44,6 +44,29 @@ def _body_hash_matches(path: Path, expected: str) -> bool:
     return _sha(path) == expected or _sha_text(path) == expected
 
 
+def _custody_bytes_match(path: Path, expected_size: object, expected_sha: object) -> bool:
+    """Verify raw bytes or the exact CRLF form retained by pre-Git custody."""
+
+    expected = str(expected_sha or "")
+    try:
+        size = int(expected_size)
+        raw = path.read_bytes()
+    except (OSError, TypeError, ValueError):
+        return False
+    candidates = [raw]
+    try:
+        normalized = raw.decode("utf-8").replace("\r\n", "\n").replace("\r", "\n")
+    except UnicodeDecodeError:
+        normalized = None
+    if normalized is not None:
+        candidates.append(normalized.replace("\n", "\r\n").encode("utf-8"))
+    return any(
+        len(candidate) == size
+        and hashlib.sha256(candidate).hexdigest() == expected
+        for candidate in candidates
+    )
+
+
 def _json_hash(value: object) -> str:
     return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
 
@@ -175,18 +198,51 @@ def verify_backup(snapshot_root: Path) -> dict[str, object]:
     for source in payload.get("sources", ()):
         records = inventory_tree(snapshot_root / str(source["relative_backup"]))
         inventory_path = snapshot_root / str(source.get("inventory", ""))
+        expected_records = None
+        inventory_matches = not source.get("inventory")
         if source.get("inventory"):
             try:
                 expected_records = json.loads(inventory_path.read_text(encoding="utf-8"))["files"]
             except (OSError, KeyError, json.JSONDecodeError):
                 expected_records = None
-            if expected_records != records:
+            expected_by_path = {
+                str(row.get("path", "")): row for row in expected_records or ()
+            }
+            actual_paths = {str(row["path"]) for row in records}
+            inventory_matches = (
+                expected_records is not None
+                and actual_paths == set(expected_by_path)
+                and all(
+                    _custody_bytes_match(
+                        snapshot_root / str(source["relative_backup"]) / relative,
+                        row.get("size_bytes"),
+                        row.get("sha256"),
+                    )
+                    for relative, row in expected_by_path.items()
+                )
+            )
+            if not inventory_matches:
                 errors.append(f"file-inventory:{source['id']}")
-            elif _sha(inventory_path) != source.get("inventory_sha256"):
-                errors.append(f"inventory-hash:{source['id']}")
+            elif not _custody_bytes_match(
+                inventory_path,
+                source.get("inventory_size_bytes", inventory_path.stat().st_size),
+                source.get("inventory_sha256"),
+            ):
+                # Older manifests did not retain inventory byte size. In that
+                # schema, an exact raw or reconstructed digest remains binding.
+                raw = inventory_path.read_bytes()
+                normalized = raw.decode("utf-8").replace("\r\n", "\n").replace("\r", "\n")
+                candidates = (raw, normalized.replace("\n", "\r\n").encode("utf-8"))
+                if not any(
+                    hashlib.sha256(candidate).hexdigest()
+                    == source.get("inventory_sha256")
+                    for candidate in candidates
+                ):
+                    errors.append(f"inventory-hash:{source['id']}")
         if len(records) != int(source["file_count"]):
             errors.append(f"file-count:{source['id']}")
-        if tree_hash(records) != source["tree_sha256"]:
+        custody_records = expected_records if source.get("inventory") else records
+        if not inventory_matches or tree_hash(custody_records) != source["tree_sha256"]:
             errors.append(f"tree-hash:{source['id']}")
     return {"valid": not errors, "errors": errors, "manifest": manifest_path.as_posix(), "sources": len(payload.get("sources", ())) }
 
@@ -203,6 +259,30 @@ def restore_backup(snapshot_root: Path, source_id: str, destination: Path) -> di
     if not verification["valid"]:
         raise RuntimeError(f"backup custody verification failed: {verification['errors']}")
     receipt = copy_verified(source, destination)
+    inventory_path = snapshot_root / str(record.get("inventory", ""))
+    if inventory_path.is_file():
+        expected_records = json.loads(inventory_path.read_text(encoding="utf-8"))["files"]
+        for expected in expected_records:
+            restored = destination / str(expected["path"])
+            if _custody_bytes_match(
+                restored, expected.get("size_bytes"), expected.get("sha256")
+            ) and (
+                restored.stat().st_size != int(expected["size_bytes"])
+                or _sha(restored) != expected["sha256"]
+            ):
+                normalized = (
+                    restored.read_text(encoding="utf-8")
+                    .replace("\r\n", "\n")
+                    .replace("\r", "\n")
+                )
+                restored.write_bytes(normalized.replace("\n", "\r\n").encode("utf-8"))
+        restored_records = inventory_tree(destination)
+        receipt.update(
+            file_count=len(restored_records),
+            size_bytes=sum(int(row["size_bytes"]) for row in restored_records),
+            tree_sha256=tree_hash(restored_records),
+            files=restored_records,
+        )
     if receipt["tree_sha256"] != record["tree_sha256"]:
         raise RuntimeError("restored skill tree does not match custody manifest")
     return {"restored": True, "source_id": source_id, "destination": str(destination.resolve()), "tree_sha256": receipt["tree_sha256"]}

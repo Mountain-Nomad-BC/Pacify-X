@@ -12,7 +12,14 @@ from scripts.build_installed_host_control_evidence import build
 
 ROOT = Path(__file__).resolve().parents[1]
 RECEIPT = ROOT / "extension/evidence/installed-vsix-smoke.json"
-CURRENT_VSIX = ROOT / "extension/dist" / json.loads(RECEIPT.read_text(encoding="utf-8"))["artifact"]["name"]
+
+
+def _current_vsix() -> Path | None:
+    if not RECEIPT.is_file():
+        return None
+    return ROOT / "extension/dist" / json.loads(
+        RECEIPT.read_text(encoding="utf-8")
+    )["artifact"]["name"]
 
 
 def _portable_installed_fixture(tmp_path: Path) -> tuple[Path, Path, Path]:
@@ -24,15 +31,48 @@ def _portable_installed_fixture(tmp_path: Path) -> tuple[Path, Path, Path]:
     artifact.parent.mkdir(parents=True)
     artifact.write_bytes(b"portable installed-host fixture\n")
     digest = hashlib.sha256(artifact.read_bytes()).hexdigest()
-    receipt = json.loads(RECEIPT.read_text(encoding="utf-8"))
-    receipt["artifact"].update(
-        {
+    receipt = {
+        "schema_version": "px.installed-vsix-certification/1.1",
+        "artifact": {
             "name": artifact.name,
             "unchanged": True,
             "sha256_before": digest,
             "sha256_after": digest,
-        }
-    )
+        },
+        "engine_connected": True,
+        "process_lifecycle": {
+            "worker_exit_verified": True,
+            "process_tree_closed_verified": True,
+            "exit_code": 0,
+        },
+        "host": {
+            "exact_studio_round_trips": {
+                "setup_ready": True,
+                "agent": {
+                    "admission": "admitted",
+                    "reopen_authenticated": True,
+                    "run_outcome": "succeeded",
+                },
+                "workflow": {
+                    "admission": "admitted",
+                    "reopen_authenticated": True,
+                    "run_state": "succeeded",
+                },
+                "skill": {"save_status": "created", "content_bound": True},
+            },
+            "live_sidebar": {
+                "provider": {
+                    "resolved": True,
+                    "visible": True,
+                    "html_assigned": True,
+                    "ready_count": 1,
+                    "render_ack_count": 1,
+                    "contract_rejection_count": 0,
+                    "operation_error_count": 0,
+                }
+            },
+        },
+    }
     receipt_path = root / "extension" / "evidence" / "installed-vsix-smoke.json"
     receipt_path.parent.mkdir(parents=True)
     receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
@@ -67,7 +107,8 @@ def test_artifact_identity_mismatch_fails_closed(tmp_path: Path) -> None:
 
 
 def test_current_host_receipt_remains_bound_when_retained_vsix_is_available() -> None:
-    if not CURRENT_VSIX.is_file():
+    current_vsix = _current_vsix()
+    if current_vsix is None or not current_vsix.is_file():
         pytest.skip("retained installed VSIX is external host custody")
-    result = build(ROOT, RECEIPT, CURRENT_VSIX)
+    result = build(ROOT, RECEIPT, current_vsix)
     assert len(result["records"]) == 12

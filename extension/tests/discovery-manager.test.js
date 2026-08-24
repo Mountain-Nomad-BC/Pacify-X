@@ -69,7 +69,7 @@ test('bounded discovery inventories actual virtual environments and secret-safe 
   fs.writeFileSync(path.join(root, 'consumer.js'), 'const configured = process.env.OPENAI_API_KEY;\n', 'utf8');
 
   const tree = boundedTree([root, path.parse(root).root]);
-  assert.deepEqual(tree.roots, [path.resolve(root)]);
+  assert.deepEqual(tree.roots, [fs.realpathSync.native(root)]);
   const environments = virtualEnvironmentInventory(tree, { pythonPath: interpreter });
   assert.equal(environments.length, 1);
   assert.equal(environments[0].state, 'active');

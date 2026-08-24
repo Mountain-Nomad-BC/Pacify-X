@@ -11,7 +11,7 @@
     },
     {
       "path": "registry/adversarial_repair_status.json",
-      "sha256": "35474f524970b83ba86a9ae6f7e7343a6365e5340dc9a793dbcba8b7adda4b24"
+      "sha256": "6c83bdf7745a9b66825cd870878f8b25fa089f9036843f0f009a8220c2338701"
     },
     {
       "path": "registry/adversarial_reaudit_20260814.json",
@@ -294,17 +294,39 @@
     ]
   },
   "current_gates": {
-    "valid": true,
-    "blocking_ids": []
+    "valid": false,
+    "blocking_ids": [
+      "group:process-recovery",
+      "group:exact-installed",
+      "group:release-build",
+      "group:release-audit",
+      "group:structural-adversarial",
+      "group:derived-integrity",
+      "group:core-a-f",
+      "group:core-g-m",
+      "group:core-n-s",
+      "group:core-t-z"
+    ]
   },
   "certification_freshness": {
     "fresh": false,
-    "receipt_current": true,
+    "receipt_current": false,
     "evidence_identity_current": false,
-    "evidence_identity_evaluated": true,
+    "evidence_identity_evaluated": false,
     "evidence_receipts_current": true,
     "failed_receipt_ids": [],
-    "stale_receipt_ids": [],
+    "stale_receipt_ids": [
+      "group:process-recovery",
+      "group:exact-installed",
+      "group:release-build",
+      "group:release-audit",
+      "group:structural-adversarial",
+      "group:derived-integrity",
+      "group:core-a-f",
+      "group:core-g-m",
+      "group:core-n-s",
+      "group:core-t-z"
+    ],
     "dependency_stale_receipt_ids": []
   },
   "release_certificate": {
@@ -314,6 +336,7 @@
     ]
   },
   "blocking_reasons": [
+    "10 required section/group receipts are stale or failed",
     "final exact-artifact certification has not been admitted"
   ]
 }

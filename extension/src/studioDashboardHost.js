@@ -51,15 +51,15 @@ function readBoundedFile(file, expectedStat) {
 }
 
 function revisionTreeSha256(revision, projectRoot) {
-  const project = fs.realpathSync.native(path.resolve(projectRoot)); const supplied = path.resolve(revision);
-  const relative = path.relative(project, supplied);
+  const requestedProject = path.resolve(projectRoot); const supplied = path.resolve(revision);
+  const relative = path.relative(requestedProject, supplied);
   if (!relative || path.isAbsolute(relative) || relative === '..' || relative.startsWith(`..${path.sep}`)) throw new Error('studio-catalog-revision-outside-project');
-  let current = project;
+  let current = requestedProject;
   for (const segment of relative.split(path.sep)) {
     current = path.join(current, segment); const component = fs.lstatSync(current);
     if (component.isSymbolicLink()) throw new Error('studio-catalog-revision-link-refused');
   }
-  const physical = fs.realpathSync.native(supplied);
+  const project = fs.realpathSync.native(requestedProject); const physical = fs.realpathSync.native(supplied);
   const physicalRelative = path.relative(project, physical);
   if (!physicalRelative || path.isAbsolute(physicalRelative) || physicalRelative === '..' || physicalRelative.startsWith(`..${path.sep}`)) throw new Error('studio-catalog-revision-outside-project');
   const rootStat = fs.lstatSync(physical);

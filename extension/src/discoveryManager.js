@@ -186,6 +186,12 @@ function rootIdentity(value, platform = process.platform) {
   return platform === 'win32' ? normalized.replaceAll('/', '\\').toLowerCase() : normalized;
 }
 
+function canonicalExistingPath(value) {
+  const resolved = path.resolve(value);
+  try { return fs.realpathSync.native?.(resolved) || fs.realpathSync(resolved); }
+  catch { return resolved; }
+}
+
 function inspectRoots(roots = []) {
   const records = []; const admitted = []; const failures = []; const ambiguities = []; const physical = new Map();
   for (const candidate of roots.filter(Boolean)) {
@@ -311,7 +317,10 @@ function isWithin(candidate, root) {
 }
 
 function virtualEnvironmentInventory(tree, options = {}) {
-  const activeCandidates = [options.pythonPath, process.env.VIRTUAL_ENV, process.env.CONDA_PREFIX].filter(Boolean).map(value => path.resolve(value));
+  const configuredPython = options.pythonPath ? canonicalExistingPath(options.pythonPath) : null;
+  const virtualEnv = process.env.VIRTUAL_ENV ? canonicalExistingPath(process.env.VIRTUAL_ENV) : null;
+  const condaPrefix = process.env.CONDA_PREFIX ? canonicalExistingPath(process.env.CONDA_PREFIX) : null;
+  const activeCandidates = [configuredPython, virtualEnv, condaPrefix].filter(Boolean);
   const byDirectory = new Map();
   for (const entry of tree.entries) {
     if (!entry.file || !['pyvenv.cfg', 'history'].includes(entry.name)) continue;
@@ -346,7 +355,7 @@ function virtualEnvironmentInventory(tree, options = {}) {
       path: item.directory, relative_path: path.relative(item.root, item.directory).split(path.sep).join('/') || '.', owner_root: item.root,
       interpreter, python_version: pythonVersion, state, active: state === 'active', evidence: {
         marker: path.relative(item.root, item.marker).split(path.sep).join('/'), interpreter_exists: Boolean(interpreter),
-        active_signals: activeEvidence.map(candidate => candidate === options.pythonPath ? 'configured-python-path' : candidate === process.env.VIRTUAL_ENV ? 'VIRTUAL_ENV' : candidate === process.env.CONDA_PREFIX ? 'CONDA_PREFIX' : 'path-contained'),
+        active_signals: activeEvidence.map(candidate => candidate === configuredPython ? 'configured-python-path' : candidate === virtualEnv ? 'VIRTUAL_ENV' : candidate === condaPrefix ? 'CONDA_PREFIX' : 'path-contained'),
         last_marker_change_utc: modified, stale_threshold_days: 180,
         declared_python_series: expectedSeries, observed_python_series: currentSeries, version_compatibility: versionCompatibility,
         active_evidence_captured_utc: options.generatedUtc || new Date().toISOString(), active_evidence_ttl_seconds: DEFAULT_DISCOVERY_TTL_MS / 1000

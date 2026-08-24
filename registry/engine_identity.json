@@ -1,6 +1,6 @@
 {
   "authority": "CPU-authoritative exact file bytes; mutable evidence and runtime state excluded.",
-  "file_total": 3785,
+  "file_total": 3784,
   "records": [
     {
       "bytes": 179,
@@ -223,9 +223,9 @@
       "sha256": "ce67520a25e4573640bc4dc417b752aec7bf5eb3309695186f9c6b12966ef9b4"
     },
     {
-      "bytes": 7230,
+      "bytes": 7498,
       "path": ".github/workflows/ci.yml",
-      "sha256": "0ac67eaced490da0b642ee9d41369d11525ac53080107dd0f335a12017f4b6cf"
+      "sha256": "39ef5f81a6b2fbe1a99eceb0e27ea52860bd5743526b8604782c55335e73ab79"
     },
     {
       "bytes": 9851,
@@ -10148,9 +10148,9 @@
       "sha256": "107ed4a55e43e67dfe9ac4863c7575d3cbbf6ce567f1f7a20e976f19bcc07225"
     },
     {
-      "bytes": 23054,
+      "bytes": 23385,
       "path": "extension/CHANGELOG.md",
-      "sha256": "fb1ece7862a1239dde3484943c1d9672599ebf8340f039cfcf2e8840f4a0a002"
+      "sha256": "592f2a2ca0a6ffb566bec41cba3a9bc1d531a0b0d95039486a329dd3c65a6618"
     },
     {
       "bytes": 5219,
@@ -10383,19 +10383,14 @@
       "sha256": "b8ae3a186a2b600dde8305a12c096b89e54c0299109a50833f76f199d616b409"
     },
     {
-      "bytes": 86234,
-      "path": "extension/package-0651.log",
-      "sha256": "832831bd3517b81c932eb88b2162d7c2183dd054d7945315dfcd2e0bc71430cc"
-    },
-    {
       "bytes": 33036,
       "path": "extension/package-lock.json",
-      "sha256": "6898551dabc7f7b75f3e8d493405d22a192fc483a1b473cb5928837d62a24380"
+      "sha256": "7d104ad70461fbaaa0bf770a554d5d1125bb876587548581485b81ce3ad9a2e3"
     },
     {
       "bytes": 17452,
       "path": "extension/package.json",
-      "sha256": "3fed039df0fc903b2da2378f3d0491762241d72ac09bd13e78de2fdb3fed971e"
+      "sha256": "b2afbb9ceab3a488c09feb04a2b98a05854d65d7c3bb39f9a71574c63f0c488c"
     },
     {
       "bytes": 7283,
@@ -10588,9 +10583,9 @@
       "sha256": "e84748a201db9a35dacb4c87f2e43634497d8fb7d4aca2abe4d12e307300a3b4"
     },
     {
-      "bytes": 1372244,
+      "bytes": 1372706,
       "path": "extension/server/index.js",
-      "sha256": "ddafc2a6576b4a8ce60cded7b6752a7ffce89fe0d9b055e132d42b6f9ead16a9"
+      "sha256": "926d4241bf300a8824b294bf81dbbbdbf36a34f3789d2c8a5e9c19b6fca597ed"
     },
     {
       "bytes": 30129,
@@ -10638,9 +10633,9 @@
       "sha256": "ca6ec58f9ed24b173d68cff41c93cdc6b232a05e3bcc2ed9fd8fbe8f38fd03d4"
     },
     {
-      "bytes": 55563,
+      "bytes": 55972,
       "path": "extension/src/discoveryManager.js",
-      "sha256": "242cbf73f075447481a5bd417ba0d440bb4e7b083eba4f74e3b6f78e0e481883"
+      "sha256": "8464f628a43a2208bfddfa3fdfe37212e9cbae72f3a433649810b0c7f9c4af86"
     },
     {
       "bytes": 744,
@@ -10753,9 +10748,9 @@
       "sha256": "cf29947f45af00db423537d80aeb24f875cdd07735a6147759cb2adffe50565c"
     },
     {
-      "bytes": 7893,
+      "bytes": 7954,
       "path": "extension/src/studioDashboardHost.js",
-      "sha256": "e6bc3862ec7fb44adefc42010cd0d7fb389a1be06cb442a3b54b3f6b90c85975"
+      "sha256": "14c8701a82202eafda11cdf96104272afba741b63e58f75d857745de4a6def59"
     },
     {
       "bytes": 41492,
@@ -10828,9 +10823,9 @@
       "sha256": "313cb1d226c598f567f920d16918b15436fabced03899518c837adecc12c375a"
     },
     {
-      "bytes": 14602,
+      "bytes": 14612,
       "path": "extension/tests/cleanup-manager.test.js",
-      "sha256": "d96a72d3cf6f0a4106bcd6d20953e8c0515ad848d144bb2625cf53aa035c9a39"
+      "sha256": "8eea5869f496d3cc593b3fa08ed7ac85b1b43d968563984475d8dc2d645318ad"
     },
     {
       "bytes": 1397,
@@ -10853,9 +10848,9 @@
       "sha256": "265cb773451f359627aefd0edf609c996076667f3e9d901d9e439a272ac50a7e"
     },
     {
-      "bytes": 14651,
+      "bytes": 14661,
       "path": "extension/tests/discovery-manager.test.js",
-      "sha256": "64bc5873bcc5822ed230309d81db2ca4f50c8e5f4cf1fb8c1b6b1040be9f223a"
+      "sha256": "07b32ab7771429ab2a238769c47ef20cabbed2a34c8708fe0cff7abe8ab1dbc6"
     },
     {
       "bytes": 5034,
@@ -10875,7 +10870,7 @@
     {
       "bytes": 29255,
       "path": "extension/tests/extension-contract.test.js",
-      "sha256": "ddbd1c90a372fae1fc59392723ebb4318642ef52a96a8c3884e26b51434e5302"
+      "sha256": "c9b20a04a1765276c16bcf17153d9d69b6c29df89dbf5f2e5e49da15bfe3460e"
     },
     {
       "bytes": 14313,
@@ -14210,7 +14205,7 @@
     {
       "bytes": 492,
       "path": "registry/.operational-gap-ledger.lock",
-      "sha256": "ab9e84f5cd80bbeea70e878db2b82a65fa20952648d1b8187e727adf0e23eb2d"
+      "sha256": "cf12e3a138b8a51844441ee1d5420b64a616318c28c15dd5a1cca9586d384926"
     },
     {
       "bytes": 1142,
@@ -14265,7 +14260,7 @@
     {
       "bytes": 396798,
       "path": "registry/artifact_reachability.json",
-      "sha256": "52aba7043fd5d92fa89a8740b866face858ffe479e559f377a28f3587850886e"
+      "sha256": "f66691863450767897def2924a8486a9d10d7555a8b60202fc570223ae2f3510"
     },
     {
       "bytes": 6555,
@@ -14285,7 +14280,7 @@
     {
       "bytes": 1171,
       "path": "registry/build_claims.json",
-      "sha256": "301c12969db0773d70bb8e3700968ccbf5b9f22241cd9e2f70567d12868b40db"
+      "sha256": "7f116eacb31864d7ddf5ed037bef7e76bb82270358909e7fb9988c518b0738a0"
     },
     {
       "bytes": 1205,
@@ -14383,9 +14378,9 @@
       "sha256": "4373109fcb373d968bbc417f1eb252068fdcd868287085c5fd401a3ad5c4c51a"
     },
     {
-      "bytes": 413010,
+      "bytes": 417513,
       "path": "registry/effect_surface_ownership.json",
-      "sha256": "10d0e4937b82a79bcc14ae30274fd10891c7af22c2d6ab7edadb90eab6713c6e"
+      "sha256": "f33c8412f898423c822deb9fa92b123274262faca3f75d2d4bb3e2873abdf480"
     },
     {
       "bytes": 6491,
@@ -14613,19 +14608,19 @@
       "sha256": "88915c850de566eaf38ed773aa6a1c59ede3d64c1a37731db259199c107a5964"
     },
     {
-      "bytes": 103164,
+      "bytes": 103163,
       "path": "registry/operational_gap_ledger.head.json",
-      "sha256": "ecff9b9a9cd601142a0f99e1ed1081a2c4b6fcc9d8bc06ca7d6a338705386858"
+      "sha256": "5c23710340716dc8b65567b34ee66135231246756aa33ddfddc155ca5466a7cf"
     },
     {
-      "bytes": 19408603,
+      "bytes": 19431553,
       "path": "registry/operational_gap_ledger.jsonl",
-      "sha256": "96d70e1e8aac78782dfa9dbaf971d70b5ce6caddf279e05664e68f77413566f2"
+      "sha256": "45b4ad9808f7854e233a6cd306629bbe2625545bf1d7a944b0427c623c7072f4"
     },
     {
-      "bytes": 24518605,
+      "bytes": 24541031,
       "path": "registry/operational_gap_ledger.snapshot.json",
-      "sha256": "5b54403ea9288dfb143a4ae2b7e102dc23894adb0cb66a7d4146b147d6d3207b"
+      "sha256": "f2434344356a33d5eb38799405ce73396a629e48b677a9db03df67ef18a713b3"
     },
     {
       "bytes": 6950,
@@ -14690,7 +14685,7 @@
     {
       "bytes": 70074,
       "path": "registry/provider_route_scan.json",
-      "sha256": "33f97a9d18e00a8c888ac93f8618c4461c5dce481f2b9772260cc5785fd020d0"
+      "sha256": "aa581ba0970989fc95fbaabecf92cd1854e5bc8a2af54ab67fc9d6061a447275"
     },
     {
       "bytes": 165025,
@@ -14700,7 +14695,7 @@
     {
       "bytes": 277530,
       "path": "registry/python_surface_ownership.json",
-      "sha256": "541ce72a5f4525123398915a8edb0f94fbe16803601d66ddd829c8277ffb2294"
+      "sha256": "d00453b63e90d6fe3d3f75c1baab9aedc537dc2263ecaef8a6c6468aab994026"
     },
     {
       "bytes": 46731,
@@ -16638,9 +16633,9 @@
       "sha256": "2ed1ae83b4c9055694e6119a8d589c73666b02b9c4a2bbe699a31c290aced441"
     },
     {
-      "bytes": 23792,
+      "bytes": 27357,
       "path": "runtime/native_skills.py",
-      "sha256": "731e426b3a2a36ade87e3336bfbe062138b76bfa4dfe1d94f27782fd2a47df9e"
+      "sha256": "85e23f7253f557035791b5d4a7c9d1e261c8c38387cbe79c48433ce10654faf3"
     },
     {
       "bytes": 4835,
@@ -16713,9 +16708,9 @@
       "sha256": "0387613096c58a4bcb3d7af2d9eee7983061cec76948b2ec85557448b532b6c8"
     },
     {
-      "bytes": 31929,
+      "bytes": 33859,
       "path": "runtime/process_supervisor.py",
-      "sha256": "ee6cfc15ea079f5917566bd32cefec68b05384a2422d4c20bb44f0fe07b1c5e9"
+      "sha256": "9bdeecd9131da34a8a60149f63a5681ad0d492de454aeb3f12a62b9e34812379"
     },
     {
       "bytes": 1985,
@@ -16938,9 +16933,9 @@
       "sha256": "a4be18571bfe1008451e2cb2b1fb9849e47b8dd04c187bfd3347e020e66e5db1"
     },
     {
-      "bytes": 92057,
+      "bytes": 92226,
       "path": "runtime/skill_studio.py",
-      "sha256": "657a42c3f90b33d10b2d0377a225b8a166f49b1abd4aed902e16c16462423903"
+      "sha256": "81bcb9ef67589fc6f827cb7a48111fa3502361ce4da4235524f9308625a5058a"
     },
     {
       "bytes": 2157,
@@ -17988,9 +17983,9 @@
       "sha256": "ef8e503ba1fa51c4bd80a0154498643153a60c3f08716ed30549a29bce7703fd"
     },
     {
-      "bytes": 3098,
+      "bytes": 4420,
       "path": "tests/test_build_installed_host_control_evidence.py",
-      "sha256": "91bdf2e572ce81908afdceb949c8a32715a36b197786da5bca95839fe9709010"
+      "sha256": "dea9b65b1311973ad1e6efd51a830f8aa95c219e4a9dedfdc7664bef9e701f9d"
     },
     {
       "bytes": 4231,
@@ -18778,9 +18773,9 @@
       "sha256": "df143ad0f8d7f2699c151890fa971e73ed3501c0b128d1f749df9f0f0705f4f1"
     },
     {
-      "bytes": 39142,
+      "bytes": 38968,
       "path": "tests/test_skill_studio.py",
-      "sha256": "022a668797e3a173cf76407e84ac444eceab69ab11464ce61bf1767dd0d5ff6d"
+      "sha256": "519259237109ee9b20837e500310eb61efa5a14078e76c4d35faacba0341a161"
     },
     {
       "bytes": 4608,
@@ -18929,5 +18924,5 @@
     }
   ],
   "schema_version": "px.engine-identity/1.0",
-  "tree_sha256": "e92c9bab70c7e5af8fe2d1469722cb60a689c08512e6d2dccfaadd03fe5cd3d8"
+  "tree_sha256": "94191eede50ba9fa170d888eebc6778ad685a817d6db7270989ac67a37ceed63"
 }

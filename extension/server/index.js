@@ -2695,6 +2695,14 @@ var require_discoveryManager = __commonJS({
       const normalized = pathFlavor.normalize(String(value || "")).replace(/[\\/]+$/, "");
       return platform === "win32" ? normalized.replaceAll("/", "\\").toLowerCase() : normalized;
     }
+    function canonicalExistingPath(value) {
+      const resolved = path2.resolve(value);
+      try {
+        return fs2.realpathSync.native?.(resolved) || fs2.realpathSync(resolved);
+      } catch {
+        return resolved;
+      }
+    }
     function inspectRoots(roots = []) {
       const records = [];
       const admitted = [];
@@ -2871,7 +2879,10 @@ var require_discoveryManager = __commonJS({
       return relative === "" || !relative.startsWith("..") && !path2.isAbsolute(relative);
     }
     function virtualEnvironmentInventory(tree, options = {}) {
-      const activeCandidates = [options.pythonPath, process.env.VIRTUAL_ENV, process.env.CONDA_PREFIX].filter(Boolean).map((value) => path2.resolve(value));
+      const configuredPython = options.pythonPath ? canonicalExistingPath(options.pythonPath) : null;
+      const virtualEnv = process.env.VIRTUAL_ENV ? canonicalExistingPath(process.env.VIRTUAL_ENV) : null;
+      const condaPrefix = process.env.CONDA_PREFIX ? canonicalExistingPath(process.env.CONDA_PREFIX) : null;
+      const activeCandidates = [configuredPython, virtualEnv, condaPrefix].filter(Boolean);
       const byDirectory = /* @__PURE__ */ new Map();
       for (const entry of tree.entries) {
         if (!entry.file || !["pyvenv.cfg", "history"].includes(entry.name)) continue;
@@ -2924,7 +2935,7 @@ var require_discoveryManager = __commonJS({
           evidence: {
             marker: path2.relative(item.root, item.marker).split(path2.sep).join("/"),
             interpreter_exists: Boolean(interpreter),
-            active_signals: activeEvidence.map((candidate) => candidate === options.pythonPath ? "configured-python-path" : candidate === process.env.VIRTUAL_ENV ? "VIRTUAL_ENV" : candidate === process.env.CONDA_PREFIX ? "CONDA_PREFIX" : "path-contained"),
+            active_signals: activeEvidence.map((candidate) => candidate === configuredPython ? "configured-python-path" : candidate === virtualEnv ? "VIRTUAL_ENV" : candidate === condaPrefix ? "CONDA_PREFIX" : "path-contained"),
             last_marker_change_utc: modified,
             stale_threshold_days: 180,
             declared_python_series: expectedSeries,
@@ -32674,7 +32685,7 @@ function readJsonFile(file2, fallback) {
     return fallback;
   }
 }
-var MCP_VERSION = "0.6.51";
+var MCP_VERSION = "0.6.52";
 function contextEnvelope() {
   const value = readJsonFile(process.env.PX_CONTEXT_PATH, {});
   return value?.envelope || value;

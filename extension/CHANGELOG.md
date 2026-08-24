@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.52
+
+- Make extension bridge tests install and exercise the exact locked Python runtime on every CI platform.
+- Canonicalize physical paths across Windows short names and macOS temporary-directory aliases.
+- Preserve deep-path, Studio revision, and cross-platform process-tree verification without weakening their controls.
+
 ## 0.6.51
 
 - Keep the owned-host timeout referenced until its termination result settles so Node 22 cannot cancel lifecycle verification early.

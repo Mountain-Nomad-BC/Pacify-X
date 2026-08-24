@@ -144,6 +144,11 @@ def _portable_relative_path(relative: Path) -> str:
     return canonical
 
 
+def _canonical_skill_path(value: str) -> str:
+    """Match JavaScript's Unicode lowercase alias policy without casefolding."""
+    return value.lower()
+
+
 def _read_bounded_regular_file(path: Path, limit: int) -> bytes:
     flags = os.O_RDONLY | int(getattr(os, "O_BINARY", 0)) | int(getattr(os, "O_NOFOLLOW", 0))
     descriptor = os.open(path, flags)
@@ -221,7 +226,7 @@ def _tree_attestation(
                     "skill package links or reparse points are not admitted"
                 )
             kind = "directory" if path.is_dir() else "file"
-            alias = relative_path.lower()
+            alias = _canonical_skill_path(relative_path)
             existing = physical_paths.get(alias)
             if existing is not None and existing != (relative_path, kind):
                 raise ValueError("skill package contains duplicate canonical path aliases")

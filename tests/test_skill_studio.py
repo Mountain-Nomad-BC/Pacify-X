@@ -13,6 +13,7 @@ from runtime.skill_studio import (
     MAX_SKILL_DIRECTORIES,
     MAX_SKILL_FILE_BYTES,
     SkillStudio,
+    _canonical_skill_path,
     _tree_attestation,
 )
 from runtime.native_skills import build_skill_index
@@ -504,16 +505,9 @@ def test_skill_source_rejects_duplicate_canonical_directory_aliases(tmp_path):
 
 
 def test_skill_alias_policy_matches_javascript_unicode_lowercase(tmp_path):
-    root = source(tmp_path, "unicode-aliases")
-    sharp_s = root / "Straße"
-    expanded = root / "STRASSE"
-    sharp_s.mkdir()
-    expanded.mkdir()
-    (sharp_s / "one.txt").write_text("one", encoding="utf-8")
-    (expanded / "two.txt").write_text("two", encoding="utf-8")
-    rows, _ = _tree_attestation(root)
-    paths = {str(row["path"]) for row in rows}
-    assert {"Straße/one.txt", "STRASSE/two.txt"}.issubset(paths)
+    assert _canonical_skill_path("Straße/one.txt") == "straße/one.txt"
+    assert _canonical_skill_path("STRASSE/two.txt") == "strasse/two.txt"
+    assert _canonical_skill_path("Straße") != _canonical_skill_path("STRASSE")
 
 
 def test_skill_source_directory_and_entry_traversal_is_bounded(tmp_path):

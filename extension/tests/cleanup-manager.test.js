@@ -246,7 +246,7 @@ test('unicode and deep cache paths scan and clean without path truncation', asyn
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'px-cleanup-unicode-'));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   let parent = root;
-  for (let index = 0; index < 12; index += 1) {
+  for (let index = 0; parent.length <= 270; index += 1) {
     parent = path.join(parent, `层-${index}-${'x'.repeat(12)}`);
   }
   const target = path.join(parent, '__pycache__');

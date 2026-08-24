@@ -262,6 +262,38 @@ class _WindowsJob:
         if not self._kernel32.TerminateJobObject(self.handle, exit_code):
             raise OSError("TerminateJobObject failed")
 
+    def active_processes(self) -> int:
+        class BASIC_ACCOUNTING(self._ctypes.Structure):
+            _fields_ = [
+                ("TotalUserTime", self._ctypes.c_longlong),
+                ("TotalKernelTime", self._ctypes.c_longlong),
+                ("ThisPeriodTotalUserTime", self._ctypes.c_longlong),
+                ("ThisPeriodTotalKernelTime", self._ctypes.c_longlong),
+                ("TotalPageFaultCount", self._ctypes.c_uint32),
+                ("TotalProcesses", self._ctypes.c_uint32),
+                ("ActiveProcesses", self._ctypes.c_uint32),
+                ("TotalTerminatedProcesses", self._ctypes.c_uint32),
+            ]
+
+        value = BASIC_ACCOUNTING()
+        if not self._kernel32.QueryInformationJobObject(
+            self.handle,
+            1,
+            self._ctypes.byref(value),
+            self._ctypes.sizeof(value),
+            None,
+        ):
+            raise OSError("QueryInformationJobObject failed")
+        return int(value.ActiveProcesses)
+
+    def wait_closed(self, timeout: float, poll_interval: float) -> bool:
+        deadline = time.monotonic() + timeout
+        while time.monotonic() < deadline:
+            if self.active_processes() == 0:
+                return True
+            time.sleep(min(0.02, poll_interval))
+        return self.active_processes() == 0
+
     def resume_process(self, pid: int) -> None:
         """Resume every initial thread after the suspended root enters the job."""
         from ctypes import wintypes
@@ -487,6 +519,12 @@ class ProcessSupervisor:
             }
         else:
             survivors = {}
+            if mode != "forced" and job is not None and job.active_processes() > 0:
+                job.terminate()
+                if not job.wait_closed(
+                    budget.force_shutdown_seconds, budget.poll_interval_seconds
+                ):
+                    return "forced_failed", False
         if mode == "forced" or survivors:
             mode = "forced"
             try:
@@ -613,7 +651,8 @@ class ProcessSupervisor:
             ) from None
 
         activity_lock = threading.Lock()
-        last_activity = [started]
+        supervision_started = time.monotonic()
+        last_activity = [supervision_started]
         observed = [False]
 
         def activity() -> None:
@@ -648,10 +687,13 @@ class ProcessSupervisor:
                 if cancel_event is not None and cancel_event.is_set():
                     status = "cancelled"
                     break
-                if now - started >= budget.total_timeout_seconds:
+                if now - supervision_started >= budget.total_timeout_seconds:
                     status = "total_timeout"
                     break
-                if not has_activity and now - started >= budget.startup_timeout_seconds:
+                if (
+                    not has_activity
+                    and now - supervision_started >= budget.startup_timeout_seconds
+                ):
                     status = "startup_timeout"
                     break
                 if has_activity and now - last >= budget.idle_timeout_seconds:
@@ -667,6 +709,9 @@ class ProcessSupervisor:
                 # successfully exited root process.
                 try:
                     job.terminate()
+                    tree_closed = job.wait_closed(
+                        budget.force_shutdown_seconds, budget.poll_interval_seconds
+                    )
                 except OSError:
                     tree_closed = False
             elif os.name != "nt":
