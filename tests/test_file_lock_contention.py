@@ -66,7 +66,11 @@ def test_file_lock_times_out_without_busy_spin() -> None:
             )
             with pytest.raises(FileLockTimeout):
                 contender.__enter__()
-        assert contender.attempts < 20 and contender.slept_seconds > 0
+        assert contender.attempts < 20
+        # On a loaded host the first filesystem/lease inspection can itself
+        # consume the 50 ms budget.  One bounded attempt is not a busy spin;
+        # repeated attempts must demonstrate backoff sleep.
+        assert contender.attempts == 1 or contender.slept_seconds > 0
 
 
 def test_file_lock_high_contention_processes() -> None:

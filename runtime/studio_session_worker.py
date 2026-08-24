@@ -251,4 +251,11 @@ def main(argv: list[str] | None = None) -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    # This module is an effect-isolated, dedicated subprocess. ``main`` closes
+    # every owned resource except the worker process record deliberately left
+    # for the independent terminal observer.  Do not enter interpreter
+    # shutdown after that handoff: third-party atexit handlers or lingering
+    # runtime threads can keep the PID alive indefinitely, which correctly
+    # prevents the observer from publishing a terminal state.  An immediate
+    # exit makes the already-completed custody boundary physically true.
+    os._exit(main())

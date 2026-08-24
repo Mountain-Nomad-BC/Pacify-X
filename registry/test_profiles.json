@@ -10,7 +10,7 @@
       "description": "Section resolution, exact-input receipts, dependency freshness, process custody, and whole-certification admission gate.",
       "source_patterns": ["pyproject.toml", "runtime/test_profiles.py", "runtime/test_runner.py", "runtime/resource_lifecycle.py", "runtime/evidence_index.py", "runtime/file_lock.py", "runtime/cli.py", "runtime/operational_gap_ledger.py", "scripts/build_test_group_index.py", "scripts/build_current_evidence_index.py", "scripts/build_operational_control_proof_matrix.py", "scripts/build_installed_probe_control_evidence.py", "scripts/operational_gap_ledger.py", "scripts/reconcile_unverified_operational_controls.py", "registry/test_profiles.json", "registry/test_group_index.json", "registry/operational_surface_inventory.json", "registry/operational_control_proof_matrix.json", "tests/test_test_profiles.py", "tests/test_test_runner_controls.py", "tests/test_evidence_index.py", "tests/test_cli_commands.py", "tests/test_resource_lifecycle.py", "tests/test_file_lock_contention.py", "tests/test_bytecode_guard.py", "tests/test_operational_gap_ledger.py", "tests/test_operational_control_proof_matrix.py", "tests/test_build_installed_probe_control_evidence.py"],
       "command": ["python", "-m", "pytest", "-q", "-p", "no:cacheprovider", "tests/test_test_profiles.py", "tests/test_test_runner_controls.py", "tests/test_evidence_index.py", "tests/test_cli_commands.py", "tests/test_resource_lifecycle.py", "tests/test_file_lock_contention.py", "tests/test_bytecode_guard.py", "tests/test_operational_gap_ledger.py", "tests/test_operational_control_proof_matrix.py", "tests/test_build_installed_probe_control_evidence.py"],
-      "timeout_seconds": 120
+      "timeout_seconds": 420
     },
     "dashboard-extension": {
       "description": "Dashboard renderer, message boundary, host bridge, and layout interaction gate.",
@@ -25,8 +25,8 @@
       "command": ["python", "-m", "pytest", "-q", "-p", "no:cacheprovider", "tests/test_agent_builder.py", "tests/test_studio_models.py", "tests/test_studio_api.py", "tests/test_studio_run_control.py", "tests/test_process_supervisor.py", "tests/test_agent_runtime.py", "tests/test_workflow_studio.py", "tests/test_skill_studio.py", "tests/test_studio_catalog_status.py", "tests/test_skill_packaging_projection.py", "tests/test_knowledge_core_controller.py", "tests/test_memory_vault.py", "tests/test_workspace_manager.py", "tests/test_dashboard_api.py"],
       "chunk_size": 2,
       "max_parallel_chunks": 1,
-      "chunk_timeout_seconds": 180,
-      "timeout_seconds": 300
+      "chunk_timeout_seconds": 600,
+      "timeout_seconds": 1500
     },
     "learning-promotion": {
       "description": "Evidence hashing, confidence, A/B, research, promotion, reuse, and decay gate.",

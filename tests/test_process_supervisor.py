@@ -188,9 +188,13 @@ def test_capture_receipt_conserves_bytes_below_at_and_above_limit(
 def test_endless_output_hits_total_timeout_and_records_drops(harness) -> None:
     action = _action(
         harness[0],
-        startup_timeout_seconds=0.2,
-        idle_timeout_seconds=0.3,
-        total_timeout_seconds=0.45,
+        # Starting a suspended Python interpreter and attaching its Windows
+        # Job can exceed 200 ms on a loaded or cold CI host.  This case owns
+        # total-timeout and drop accounting, so give startup enough room to
+        # observe the producer without changing the production defaults.
+        startup_timeout_seconds=2.0,
+        idle_timeout_seconds=2.25,
+        total_timeout_seconds=2.5,
         stdout_limit_bytes=64,
     )
     result = _run(

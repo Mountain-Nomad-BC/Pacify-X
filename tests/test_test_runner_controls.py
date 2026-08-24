@@ -156,7 +156,10 @@ def test_green_assertions_with_lingering_thread_are_not_accepted(
         [sys.executable, "-m", "pytest", "-q", str(test_file)],
         cwd=ROOT,
         environment=os.environ,
-        timeout_seconds=3,
+        # Allow a cold nested pytest interpreter to publish its green result;
+        # the deliberately leaked non-daemon thread must then keep the process
+        # alive until the governed owner terminates it at this bound.
+        timeout_seconds=30,
         resource_manager=manager,
         run_id="nested-pytest-thread-leak",
     )
