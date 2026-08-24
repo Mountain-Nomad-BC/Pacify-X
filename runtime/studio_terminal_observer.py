@@ -9,7 +9,9 @@ import time
 import hashlib
 
 from .agent_runtime import AgentRuntimeController
+from .file_lock import FileLockTimeout
 from .resource_lifecycle import ResourceManager
+from .studio_models import write_json_atomic
 from .studio_run_control import TERMINAL_STATES
 from .studio_worker_launch import finalize_studio_run_if_worker_exited
 from .workflow_studio import WorkflowStudio
@@ -21,7 +23,7 @@ def _wait_for_observer_binding(
     observer_run_id: str,
     kind: str,
     launch_nonce: str,
-    timeout_seconds: float = 8.0,
+    timeout_seconds: float = 30.0,
 ):
     """Wait for the launcher to publish this already-started process identity."""
     deadline = time.monotonic() + max(0.1, timeout_seconds)
@@ -82,15 +84,52 @@ def main(argv: list[str] | None = None) -> int:
         else WorkflowStudio(root)
     )
     exit_code = 0
+    first_finalize_error: float | None = None
+    diagnostic_path = (
+        state_root
+        / "sessions"
+        / args.run_id
+        / "terminal-observer-diagnostic.json"
+    )
     try:
         while True:
-            state = finalize_studio_run_if_worker_exited(
-                state_root=state_root,
-                manager=manager,
-                authority=controller.authority,
-                run_control=controller.run_control,
-                run_id=args.run_id,
-            )
+            try:
+                state = finalize_studio_run_if_worker_exited(
+                    state_root=state_root,
+                    manager=manager,
+                    authority=controller.authority,
+                    run_control=controller.run_control,
+                    run_id=args.run_id,
+                )
+                first_finalize_error = None
+            except Exception as error:
+                now = time.monotonic()
+                first_finalize_error = first_finalize_error or now
+                retrying = isinstance(error, (FileLockTimeout, OSError)) and (
+                    now - first_finalize_error < 30.0
+                )
+                try:
+                    diagnostic_path.parent.mkdir(parents=True, exist_ok=True)
+                    write_json_atomic(
+                        diagnostic_path,
+                        {
+                            "schema_version": "px.studio-terminal-observer-diagnostic/1.0",
+                            "authoritative": False,
+                            "run_id": args.run_id,
+                            "observer_run_id": args.observer_run_id,
+                            "error_type": type(error).__name__,
+                            "message": str(error)[:500],
+                            "retrying": retrying,
+                        },
+                    )
+                except OSError:
+                    # Diagnostics are deliberately non-authoritative and must
+                    # never suppress the bounded lifecycle retry itself.
+                    pass
+                if not retrying:
+                    raise
+                time.sleep(0.1)
+                continue
             if str(state["state"]) in TERMINAL_STATES:
                 return 0
             if str(state["state"]) == "paused":

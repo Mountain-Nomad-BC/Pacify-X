@@ -2542,7 +2542,7 @@
         "time"
       ],
       "index_state": "verified",
-      "sha256": "3e25e58057df530c36c788549cfdfd34c05622e5dc71632c6beb7c39e8f448e5"
+      "sha256": "d8e913ea658eb4558baa3cc4b6d640b377d3a65106663a50435b41f0b04fb160"
     },
     "runtime/studio_worker_launch.py": {
       "imports": [
@@ -6709,7 +6709,7 @@
       ],
       "description": "Serial exact-tool, installed-wheel, corrective-release, and full-repair-ledger certification tests.",
       "group": "exact-installed",
-      "input_sha256": "1301813fdbaa4911be36abf72a38db2c58dfebdcd3fb07a61a66f1a15ceadac0",
+      "input_sha256": "83f306dcc57471184b829d4dad4c9da4ed57c05160a1cf41811579e5c10b4ca9",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -6790,7 +6790,7 @@
       ],
       "description": "Serial release, distribution, artifact, and revocation certification tests excluding composed audit mutations.",
       "group": "release-build",
-      "input_sha256": "c9da7dc6dc73e4518b601863c9c88cc3e09cd439fec873e4e32378997393f570",
+      "input_sha256": "3ff6d441daee21c439f1125d7bb8d02ad1a2b81d19b0207f6a7f0700d02e65a5",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -6863,7 +6863,7 @@
       ],
       "description": "Serial composed-audit and quarantine-mutation tests isolated from package builds.",
       "group": "release-audit",
-      "input_sha256": "d43d6fa4343004a503c89500979c7fa3729db7498a93b53aededc2639e210338",
+      "input_sha256": "27ea52b190f2e160475a6377d4d0f04231f5a5da85605a19d98fcd2a44710971",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -6908,7 +6908,7 @@
       ],
       "description": "Serial full-tree structural mutation tests isolated from derived-artifact checks.",
       "group": "structural-adversarial",
-      "input_sha256": "32d5b9681240688e5d6c198434a6d59a3a40c133f1de0db331114f1875b351e6",
+      "input_sha256": "7db9b9326ffed2811b261c267c612f7387c484c9e7540624803bee66b442adcd",
       "inputs": [
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_agents_md_generator.py",
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_change_impact.py",
@@ -8476,7 +8476,7 @@
       ],
       "description": "Final serial generated-output, completion-projection, portability, effect-surface, and punch-card integrity gate.",
       "group": "derived-integrity",
-      "input_sha256": "97825f8f3a1e13d616598c8adbd0c0be72694086b9b9e1c93eb07188ced7ffdd",
+      "input_sha256": "7f90326419fa4bded335d2e33c2fe6a3e5d4d1f962c583ab4986881b1b1ceac0",
       "inputs": [
         "README.md",
         "pyproject.toml",

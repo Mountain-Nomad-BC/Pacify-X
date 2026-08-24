@@ -1,5 +1,5 @@
 {
-  "record_count": 897,
+  "record_count": 898,
   "records": [
     {
       "approval": "required_for_material_or_external_effects",
@@ -7963,6 +7963,20 @@
       "line": 253,
       "owner": "runtime",
       "path": "runtime/studio_run_control.py",
+      "policy": "policies/artifact-preservation.json",
+      "shell": null,
+      "timeout": null
+    },
+    {
+      "approval": "required_for_material_or_external_effects",
+      "call": "diagnostic_path.parent.mkdir",
+      "containment": "validated_path_and_bounded_scope",
+      "destructive": false,
+      "effect": "filesystem_mutation",
+      "id": "15e6230e11970a9c4aa1",
+      "line": 112,
+      "owner": "runtime",
+      "path": "runtime/studio_terminal_observer.py",
       "policy": "policies/artifact-preservation.json",
       "shell": null,
       "timeout": null
