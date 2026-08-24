@@ -298,9 +298,9 @@
     "blocking_ids": []
   },
   "certification_freshness": {
-    "fresh": true,
+    "fresh": false,
     "receipt_current": true,
-    "evidence_identity_current": true,
+    "evidence_identity_current": false,
     "evidence_identity_evaluated": true,
     "evidence_receipts_current": true,
     "failed_receipt_ids": [],
@@ -309,9 +309,8 @@
   },
   "release_certificate": {
     "valid": false,
-    "release": "0.7.0.dev0",
     "errors": [
-      "signed release certificate is missing"
+      "current product is not certification-eligible"
     ]
   },
   "blocking_reasons": [

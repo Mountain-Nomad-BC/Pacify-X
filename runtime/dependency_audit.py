@@ -81,8 +81,8 @@ def validate_dependency_closure(root: Path) -> dict[str, Any]:
     if lock_hash_counts.get("ruff", 0) < len(platform_policy.get("ci_runners", {})):
         errors.append("ruff hash allowlist does not cover the supported OS matrix")
     build_requirements = set(config.get("build-system", {}).get("requires", ()))
-    if build_requirements != {"setuptools==83.0.0"}:
-        errors.append("build-system backend must be exact-pinned to setuptools==83.0.0")
+    if build_requirements != {"setuptools==84.0.0"}:
+        errors.append("build-system backend must be exact-pinned to setuptools==84.0.0")
     lock_install = "python -m pip install --require-hashes -r requirements-release.lock"
     for relative in (
         ".github/workflows/ci.yml",
