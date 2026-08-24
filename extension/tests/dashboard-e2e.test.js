@@ -410,9 +410,18 @@ test('Playwright drives every dashboard route and high-risk interaction without 
   const wrongFamilySkillFailure = await page.evaluate(() => {
     const request = [...window.__PX_POSTED_MESSAGES__].reverse().find(message => message.type === 'studioOperation' && message.kind === 'skill' && message.operation === 'next-version');
     window.dispatchEvent(new MessageEvent('message', { data: { type: 'operationError', operation: 'loadStudioRevisionEditor', requestId: request.requestId, kind: request.kind, error: 'Synthetic wrong-family revision-load failure.' } }));
-    return { requestId: request.requestId, loading: document.querySelector('.cleanup-loading')?.textContent || '' };
+    return {
+      requestId: request.requestId,
+      loading: document.querySelector('.cleanup-loading')?.textContent || '',
+      editorOpen: Boolean(document.querySelector('#studio-skill-file')),
+      modalText: document.querySelector('#modal-root')?.textContent || ''
+    };
   });
-  assert.match(wrongFamilySkillFailure.loading, /Checking the exact physical revision set/);
+  assert.ok(
+    /Checking the exact physical revision set/.test(wrongFamilySkillFailure.loading) || wrongFamilySkillFailure.editorOpen,
+    'the exact allocation must remain pending or have completed before the mismatched failure is observed'
+  );
+  assert.doesNotMatch(wrongFamilySkillFailure.modalText, /Synthetic wrong-family revision-load failure/);
   await page.locator('#studio-skill-file').waitFor({ state: 'visible' });
   const importedSkillAllocationRequest = await page.evaluate(() => [...window.__PX_POSTED_MESSAGES__].reverse().find(message => message.type === 'studioOperation' && message.kind === 'skill' && message.operation === 'next-version'));
   assert.deepEqual(Object.keys(importedSkillAllocationRequest.payload).sort(), ['identity', 'source_selection_id', 'source_version']);
