@@ -185,7 +185,7 @@
         "pacifyX.pythonPath": {
           "type": "string",
           "default": "python",
-          "description": "Python executable used only for explicit Pacify-X validation commands."
+          "description": "Python executable used by the Pacify-X runtime bridge. It must provide the package's declared runtime dependencies."
         },
         "pacifyX.workspaceRoot": {
           "type": "string",

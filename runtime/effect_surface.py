@@ -85,7 +85,7 @@ def _popen_communication_timeout(tree: ast.AST, popen: ast.Call) -> str | None:
         if not isinstance(item, ast.Call) or not isinstance(item.func, ast.Attribute):
             continue
         if (
-            item.func.attr != "communicate"
+            item.func.attr not in {"communicate", "wait"}
             or not isinstance(item.func.value, ast.Name)
             or item.func.value.id != handle
         ):
@@ -95,7 +95,7 @@ def _popen_communication_timeout(tree: ast.AST, popen: ast.Call) -> str | None:
             None,
         )
         if timeout is not None:
-            return f"communicate(timeout={ast.unparse(timeout)})"
+            return f"{item.func.attr}(timeout={ast.unparse(timeout)})"
     return None
 
 

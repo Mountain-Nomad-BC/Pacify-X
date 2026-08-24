@@ -652,8 +652,10 @@ def test_vscode_host_tool_binding_passes_structural_preflight_and_live_authority
 def _wait_for_agent_state(controller, run_id: str, expected: set[str]) -> dict:
     # CI/certification hosts may be under sustained I/O load from preceding
     # groups. The runtime remains autonomous; this observer-only assertion has
-    # a bounded 15-second scheduling allowance.
-    deadline = time.monotonic() + 15
+    # a bounded 45-second scheduling allowance. Cross-platform CI can retain
+    # an exited detached child as a zombie until its parent is scheduled to
+    # reap it; the runtime observer still owns autonomous publication.
+    deadline = time.monotonic() + 45
     while time.monotonic() < deadline:
         # This intentionally bypasses session_status(): terminal publication
         # must be autonomous and cannot depend on a polling API mutating state.

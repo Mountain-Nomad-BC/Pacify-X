@@ -2,8 +2,8 @@
   "schema_version": "px.completion-status/1.4",
   "authority": "generated projection; current operational and instruction ledgers supersede historical audit acceptance as completion authority",
   "projection_metadata": {
-    "generated_at": "2026-08-24T15:43:39.037627Z",
-    "source_revision": "99aec22e93a73f34abfa7416b691355a4b3ec3b44067dc0c739c54d0ae816df5",
+    "generated_at": "2026-08-24T16:35:47.470152Z",
+    "source_revision": "45892649802e9adcf1d7f32f73ea10e2a13005e22af9fe6c6e1550fc3f0db4ab",
     "authority_level": "non-certifying-current-state-projection",
     "marker": "current_at_generation",
     "invalidation_conditions": [
@@ -52,7 +52,7 @@
     },
     {
       "path": "registry/operational_gap_ledger.snapshot.json",
-      "sha256": "88373bcc109225d853738ad592dd4cec341c75fc2ff2ddbaa539029a6479b6e0"
+      "sha256": "4ecaf51a995088adca576328a85bd0e2c0591a5d09d48d6646b1294f9383683a"
     },
     {
       "path": "registry/current_evidence_index.json",
@@ -94,8 +94,8 @@
   "current_operational_gap_ledger": {
     "valid": true,
     "ledger_id": "PX-OPERATIONAL-GAPS-20260816",
-    "event_count": 8834,
-    "head_event_sha256": "99aec22e93a73f34abfa7416b691355a4b3ec3b44067dc0c739c54d0ae816df5",
+    "event_count": 8861,
+    "head_event_sha256": "45892649802e9adcf1d7f32f73ea10e2a13005e22af9fe6c6e1550fc3f0db4ab",
     "critical_high_blocker_count": 261,
     "critical_high_blocker_ids": [
       "PX-OS-001",
@@ -585,9 +585,6 @@
   "current_gates": {
     "valid": false,
     "blocking_ids": [
-      "section:dashboard-extension",
-      "section:studio-memory-graph",
-      "section:testing-governance",
       "group:process-recovery",
       "group:exact-installed",
       "group:release-build",
@@ -608,9 +605,6 @@
     "evidence_receipts_current": true,
     "failed_receipt_ids": [],
     "stale_receipt_ids": [
-      "section:dashboard-extension",
-      "section:studio-memory-graph",
-      "section:testing-governance",
       "group:process-recovery",
       "group:exact-installed",
       "group:release-build",
@@ -632,7 +626,7 @@
   },
   "blocking_reasons": [
     "the current operational gap ledger has 261 unresolved critical/high findings",
-    "13 required section/group receipts are stale or failed",
+    "10 required section/group receipts are stale or failed",
     "final exact-artifact certification has not been admitted"
   ]
 }

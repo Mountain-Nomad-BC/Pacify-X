@@ -149,6 +149,28 @@ def _process_exists(pid: int) -> bool:
         return True
     if os.name == "nt":
         return _windows_process_exists(pid)
+    if sys.platform.startswith("linux"):
+        try:
+            value = Path(f"/proc/{pid}/stat").read_text(encoding="ascii")
+            fields = value[value.rfind(")") + 2 :].split()
+            if fields and fields[0] == "Z":
+                return False
+        except (OSError, UnicodeError):
+            pass
+    elif sys.platform in {"darwin", "freebsd", "openbsd", "netbsd"}:
+        try:
+            state = subprocess.run(
+                ["ps", "-o", "stat=", "-p", str(pid)],
+                text=True,
+                capture_output=True,
+                timeout=2,
+                check=False,
+                shell=False,
+            )
+            if state.returncode == 0 and state.stdout.strip().startswith("Z"):
+                return False
+        except (OSError, subprocess.SubprocessError):
+            pass
     try:
         os.kill(pid, 0)
     except ProcessLookupError:

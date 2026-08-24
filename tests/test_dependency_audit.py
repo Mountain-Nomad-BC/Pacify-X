@@ -12,7 +12,7 @@ def test_packaged_imports_are_fully_classified_and_declared():
     result = validate_dependency_closure(ROOT)
     assert result["valid"], result["errors"]
     assert result["unclassified"] == 0
-    assert result["runtime_dependency_count"] == 0
+    assert result["runtime_dependency_count"] == 1
     locked = {
         line.split("==", 1)[0].casefold()
         for line in (ROOT / "requirements-release.lock")
@@ -31,5 +31,5 @@ def test_dependency_inventory_is_deterministic_and_gates_runtime_yaml():
     first = build(ROOT)
     assert json.dumps(first, sort_keys=True) == json.dumps(build(ROOT), sort_keys=True)
     yaml_record = next(item for item in first["records"] if item["module"] == "yaml")
-    assert yaml_record["classification"] == "optional_gated"
+    assert yaml_record["classification"] == "declared_required"
     assert "runtime/project_intelligence.py" in yaml_record["paths"]

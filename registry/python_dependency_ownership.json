@@ -2722,6 +2722,7 @@
         "tests/test_health_model.py",
         "tests/test_installed_wheel_e2e.py",
         "tests/test_instrumentation_sdk.py",
+        "tests/test_operational_gap_ledger.py",
         "tests/test_provider_budget.py",
         "tests/test_provider_gateway.py",
         "tests/test_reclamation_learning_promotion.py",
@@ -3549,7 +3550,7 @@
       ]
     },
     {
-      "classification": "optional_gated",
+      "classification": "declared_required",
       "distribution": "PyYAML",
       "module": "yaml",
       "paths": [

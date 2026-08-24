@@ -8,6 +8,16 @@ const vscode = require('vscode');
 
 const sleep = milliseconds => new Promise(resolve => setTimeout(resolve, milliseconds));
 
+function configuredPython() {
+  if (process.env.PX_PYTHON_PATH) return process.env.PX_PYTHON_PATH;
+  if (process.env.pythonLocation) {
+    return process.platform === 'win32'
+      ? path.join(process.env.pythonLocation, 'python.exe')
+      : path.join(process.env.pythonLocation, 'bin', 'python');
+  }
+  return process.platform === 'win32' ? 'python' : 'python3';
+}
+
 async function waitFor(predicate, timeoutMs = 12000, intervalMs = 100) {
   const started = Date.now();
   while (Date.now() - started < timeoutMs) {
@@ -56,7 +66,7 @@ async function run() {
   assert.ok(populatedSidebar.render_ack_count >= 1, 'Installed sidebar renderer never acknowledged a rendered snapshot');
   const engineRoot = process.env.PX_ENGINE_ROOT;
   assert.ok(engineRoot, 'PX_ENGINE_ROOT is required for installed runtime certification');
-  const canonical = childProcess.spawnSync(process.env.PX_PYTHON_PATH || (process.platform === 'win32' ? 'python' : 'python3'), [
+  const canonical = childProcess.spawnSync(configuredPython(), [
     '-m', 'runtime.dashboard_api', 'snapshot', '--source-root', engineRoot,
     '--project', folder.uri.fsPath
   ], { cwd: engineRoot, encoding: 'utf8', shell: false, windowsHide: true, timeout: 60000 });
@@ -103,7 +113,7 @@ async function run() {
   process.env.PX_STUDIO_KEY_ROOT = path.join(path.dirname(folder.uri.fsPath), 'studio-approval-keys');
   const studioApprovalMaterial = installedStudioApprovalHost.generateApprovalKey();
   const installedBridge = new installedBridgeModule.PxBridge({
-    pythonPath: process.env.PX_PYTHON_PATH || (process.platform === 'win32' ? 'python' : 'python3'),
+    pythonPath: configuredPython(),
     engineRoot,
     projectRoot: folder.uri.fsPath,
     approvalKeyProvider: async request => request?.action === 'find' && request.keyId !== studioApprovalMaterial.keyId

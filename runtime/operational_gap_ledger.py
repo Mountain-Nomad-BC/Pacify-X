@@ -40,6 +40,7 @@ MAX_EVENTS = 100_000
 GAP_ID_PATTERN = re.compile(r"^PX-(?:OS|GAP)-[0-9]{3,}$")
 SHA256_PATTERN = re.compile(r"^[0-9a-f]{64}$")
 NON_VISIBLE_PATH_ID_PATTERN = re.compile(r"^[a-z0-9][a-z0-9._:-]{2,200}$")
+_LEDGER_DIGEST_CACHE: dict[str, tuple[tuple[int, int, int, int], Any]] = {}
 
 PRIMARY_STATES = (
     "discovered", "reproduced", "scoped", "approved", "implementing",
@@ -1750,18 +1751,84 @@ def _dashboard_index(snapshot: Mapping[str, Any], *, limit: int = 100) -> dict[s
     }
 
 
-def _ledger_fingerprint(root: Path) -> dict[str, int]:
+def _ledger_fingerprint(root: Path) -> dict[str, Any]:
     path = _inside(root, root / LEDGER_RELATIVE)
     if not path.exists():
-        return {"device": 0, "inode": 0, "size_bytes": 0, "mtime_ns": 0}
+        return {
+            "device": 0,
+            "inode": 0,
+            "size_bytes": 0,
+            "mtime_ns": 0,
+            "sha256": hashlib.sha256(b"").hexdigest(),
+        }
     value = path.lstat()
     if path.is_symlink() or not stat.S_ISREG(value.st_mode) or value.st_size > MAX_LEDGER_BYTES:
         raise ValueError("operational gap ledger is not a bounded physical file")
+    identity = (
+        int(value.st_dev),
+        int(value.st_ino),
+        int(value.st_size),
+        int(value.st_mtime_ns),
+    )
+    cache_key = str(path)
+    cached = _LEDGER_DIGEST_CACHE.get(cache_key)
+    if cached is not None and cached[0] == identity:
+        digest = cached[1].copy()
+    else:
+        digest = hashlib.sha256()
+        with path.open("rb") as handle:
+            while chunk := handle.read(1024 * 1024):
+                digest.update(chunk)
+        _LEDGER_DIGEST_CACHE[cache_key] = (identity, digest.copy())
     return {
         "device": int(value.st_dev),
         "inode": int(value.st_ino),
         "size_bytes": int(value.st_size),
         "mtime_ns": int(value.st_mtime_ns),
+        "sha256": digest.hexdigest(),
+    }
+
+
+def _ledger_fingerprint_after_append(
+    root: Path,
+    *,
+    previous: Mapping[str, Any],
+    appended: bytes,
+) -> dict[str, Any]:
+    """Extend the cached whole-ledger digest after an exact admitted append."""
+
+    path = _inside(root, root / LEDGER_RELATIVE)
+    value = path.lstat()
+    identity = (
+        int(value.st_dev),
+        int(value.st_ino),
+        int(value.st_size),
+        int(value.st_mtime_ns),
+    )
+    cache_key = str(path)
+    cached = _LEDGER_DIGEST_CACHE.get(cache_key)
+    previous_identity = (
+        int(previous["device"]),
+        int(previous["inode"]),
+        int(previous["size_bytes"]),
+        int(previous["mtime_ns"]),
+    )
+    if (
+        cached is None
+        or cached[0] != previous_identity
+        or identity[:2] != previous_identity[:2]
+        or identity[2] != previous_identity[2] + len(appended)
+    ):
+        return _ledger_fingerprint(root)
+    digest = cached[1].copy()
+    digest.update(appended)
+    _LEDGER_DIGEST_CACHE[cache_key] = (identity, digest.copy())
+    return {
+        "device": identity[0],
+        "inode": identity[1],
+        "size_bytes": identity[2],
+        "mtime_ns": identity[3],
+        "sha256": digest.hexdigest(),
     }
 
 
@@ -1778,7 +1845,7 @@ def _build_head(
     snapshot: Mapping[str, Any],
     snapshot_bytes: bytes,
     *,
-    fingerprint: Mapping[str, int],
+    fingerprint: Mapping[str, Any],
     tail_event: Mapping[str, Any] | None,
     verification_basis: Mapping[str, Any],
     previous_checkpoint_sha256: str | None,
@@ -1791,7 +1858,10 @@ def _build_head(
         "predecessor_event_sha256": (
             tail_event.get("previous_event_sha256") if tail_event else None
         ),
-        "ledger_fingerprint": dict(fingerprint),
+        "ledger_fingerprint": {
+            "size_bytes": int(fingerprint["size_bytes"]),
+            "sha256": str(fingerprint["sha256"]),
+        },
         "snapshot_sha256": hashlib.sha256(snapshot_bytes).hexdigest(),
         "snapshot_size_bytes": len(snapshot_bytes),
         "maximum_gap_ordinal": _maximum_gap_ordinal(snapshot),
@@ -1867,7 +1937,12 @@ def _read_checkpoint_once(
         head_path, MAX_HEAD_BYTES, "operational gap ledger compact head"
     )
     head = _decode_head(head_a_bytes)
-    if head.get("ledger_fingerprint") != _ledger_fingerprint(root):
+    current_fingerprint = _ledger_fingerprint(root)
+    portable_fingerprint = {
+        "size_bytes": current_fingerprint["size_bytes"],
+        "sha256": current_fingerprint["sha256"],
+    }
+    if head.get("ledger_fingerprint") != portable_fingerprint:
         raise ValueError("operational gap ledger checkpoint fingerprint is stale")
     tail = _last_event_unlocked(root)
     if tail is None:
@@ -2209,7 +2284,7 @@ def _recover_torn_tail_unlocked(root: Path) -> Path | None:
 
 
 def _append_bytes_unlocked(
-    root: Path, data: bytes, *, expected_fingerprint: Mapping[str, int]
+    root: Path, data: bytes, *, expected_fingerprint: Mapping[str, Any]
 ) -> None:
     path = _inside(root, root / LEDGER_RELATIVE)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -2518,6 +2593,7 @@ def append_events(
                 "inode": 2**63 - 1,
                 "size_bytes": predicted_size,
                 "mtime_ns": 2**63 - 1,
+                "sha256": "f" * 64,
             },
             tail_event=events[-1],
             verification_basis=basis,
@@ -2526,7 +2602,9 @@ def append_events(
         _append_bytes_unlocked(
             root, appended, expected_fingerprint=starting_fingerprint
         )
-        actual_fingerprint = _ledger_fingerprint(root)
+        actual_fingerprint = _ledger_fingerprint_after_append(
+            root, previous=starting_fingerprint, appended=appended
+        )
         if actual_fingerprint["size_bytes"] != predicted_size:
             raise OSError("operational gap ledger append size is inconsistent")
         published = _write_snapshot_unlocked(root, current, predicted_size)
@@ -2631,13 +2709,16 @@ def append_transition_admission_backfill(
                 "inode": 2**63 - 1,
                 "size_bytes": predicted_size,
                 "mtime_ns": 2**63 - 1,
+                "sha256": "f" * 64,
             },
             tail_event=event,
             verification_basis=basis,
             previous_checkpoint_sha256=previous_checkpoint,
         )
         _append_bytes_unlocked(root, encoded, expected_fingerprint=starting_fingerprint)
-        fingerprint = _ledger_fingerprint(root)
+        fingerprint = _ledger_fingerprint_after_append(
+            root, previous=starting_fingerprint, appended=encoded
+        )
         if fingerprint["size_bytes"] != predicted_size:
             raise OSError("operational gap ledger append size is inconsistent")
         published = _write_snapshot_unlocked(root, snapshot, predicted_size)

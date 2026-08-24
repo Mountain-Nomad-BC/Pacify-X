@@ -5,6 +5,7 @@ from pathlib import Path
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 import hashlib
 import json
+import shutil
 
 import pytest
 
@@ -1451,6 +1452,25 @@ def test_compact_snapshot_authenticates_projection_and_ledger_head(tmp_path: Pat
     path.write_text(text, encoding="utf-8")
     with pytest.raises(ValueError, match="snapshot hash is invalid"):
         read_snapshot(tmp_path)
+
+
+def test_checkpoint_identity_survives_a_clean_clone_filesystem_identity(
+    tmp_path: Path,
+) -> None:
+    source = tmp_path / "source"
+    clone = tmp_path / "clone"
+    source.mkdir()
+    initialize(source)
+    append_event(source, "card_discovered", card(), actor="test")
+    clone_registry = clone / "registry"
+    clone_registry.mkdir(parents=True)
+    for name in (
+        "operational_gap_ledger.jsonl",
+        "operational_gap_ledger.snapshot.json",
+        "operational_gap_ledger.head.json",
+    ):
+        shutil.copyfile(source / "registry" / name, clone_registry / name)
+    assert read_snapshot(clone) == read_snapshot(source)
 
 
 def test_incremental_checkpoint_projection_equals_full_replay(tmp_path: Path) -> None:

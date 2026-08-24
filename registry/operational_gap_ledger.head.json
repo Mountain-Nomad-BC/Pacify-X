@@ -1,5 +1,5 @@
 {
-  "checkpoint_sha256": "567c2b03eb6c276aedba69f920feeeebce2104ae84db3fd98eef455581a09fcb",
+  "checkpoint_sha256": "e7235cc0b666e222b35f49bce1e9e744e1f6ada7da487a5e478ab379e2613a63",
   "created_utc": "2026-08-16T17:14:48.634100Z",
   "dashboard": {
     "cards": [
@@ -1709,21 +1709,19 @@
   "generated_utc": "2026-08-24T16:35:47.470152Z",
   "head_event_sha256": "45892649802e9adcf1d7f32f73ea10e2a13005e22af9fe6c6e1550fc3f0db4ab",
   "ledger_fingerprint": {
-    "device": 1585928601211604637,
-    "inode": 9851624184906169,
-    "mtime_ns": 1787589348346125000,
+    "sha256": "e3f6b93c216cb32a322dd9b90c2a56f5f943bd20833543ca779f28d1816b86db",
     "size_bytes": 19467615
   },
   "ledger_id": "PX-OPERATIONAL-GAPS-20260816",
   "maximum_gap_ordinal": 1065,
   "predecessor_event_sha256": "d1a9d301aec63e7fb80af9fc4deb981cdb56aeb78a025cbd0e4b53919199b8f5",
-  "previous_checkpoint_sha256": "7d2165b34da8cbcf22ae9fe163bd2f3e0d3f8519ccf6bfc9cea942bf6b90ea03",
+  "previous_checkpoint_sha256": null,
   "schema_version": "px.operational-gap-ledger-head/1.0",
-  "snapshot_sha256": "0a848af91055e72d837ee4e5d4fcba9916acc85abdde5a4f2ba969089422b27e",
+  "snapshot_sha256": "4ecaf51a995088adca576328a85bd0e2c0591a5d09d48d6646b1294f9383683a",
   "snapshot_size_bytes": 24575454,
   "verification_basis": {
-    "full_replay_anchor_event_count": 8810,
-    "full_replay_anchor_event_sha256": "b1a2390c007eab5d015cf9b2d66f333067ffe89ee9cc366a0399f9194b18cf67",
-    "kind": "incremental_from_verified_checkpoint"
+    "kind": "full_replay",
+    "verified_event_count": 8861,
+    "verified_head_event_sha256": "45892649802e9adcf1d7f32f73ea10e2a13005e22af9fe6c6e1550fc3f0db4ab"
   }
 }

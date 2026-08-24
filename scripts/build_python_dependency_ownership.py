@@ -11,7 +11,7 @@ import sys
 
 LOCAL = {"runtime", "builders", "scripts", "engineering_bootstrap", "tests"}
 TEST_ONLY = {"pytest": "pytest", "yaml": "PyYAML"}
-OPTIONAL_GATED = {"yaml": "PyYAML"}
+DECLARED_REQUIRED = {"yaml": "PyYAML"}
 
 
 def build(root: Path) -> dict[str, object]:
@@ -41,10 +41,10 @@ def build(root: Path) -> dict[str, object]:
             classification, distribution = "standard_library", None
         elif name in LOCAL:
             classification, distribution = "local_product", None
-        elif name in OPTIONAL_GATED and any(
+        elif name in DECLARED_REQUIRED and any(
             path.startswith("runtime/") for path in paths
         ):
-            classification, distribution = "optional_gated", OPTIONAL_GATED[name]
+            classification, distribution = "declared_required", DECLARED_REQUIRED[name]
         elif name in TEST_ONLY and all(path.startswith("tests/") for path in paths):
             classification, distribution = "test_only", TEST_ONLY[name]
         else:
