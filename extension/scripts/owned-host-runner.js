@@ -134,7 +134,6 @@ async function runOwnedHostWorker(options) {
           if (!settled) { settled = true; reject(new Error('owned-host-timeout-termination-unverified')); }
         });
       }, receipt.timeout_ms);
-      timeout.unref?.();
     });
     await reconcile();
     receipt.status = result === 0 ? 'completed' : 'failed';

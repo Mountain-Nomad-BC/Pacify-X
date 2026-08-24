@@ -357,7 +357,9 @@ def write_section_chunk_receipt(root: Path, receipt: Mapping[str, Any]) -> Path:
     target.parent.mkdir(parents=True, exist_ok=True)
     temporary = target.with_suffix(f".json.{os.getpid()}.tmp")
     temporary.write_text(
-        json.dumps(dict(receipt), indent=2, sort_keys=True) + "\n", encoding="utf-8"
+        json.dumps(dict(receipt), indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+        newline="\n",
     )
     os.replace(temporary, target)
     return target
@@ -375,7 +377,9 @@ def write_section_receipt(root: Path, receipt: Mapping[str, Any]) -> Path:
     target.parent.mkdir(parents=True, exist_ok=True)
     temporary = target.with_suffix(f".json.{os.getpid()}.tmp")
     temporary.write_text(
-        json.dumps(dict(receipt), indent=2, sort_keys=True) + "\n", encoding="utf-8"
+        json.dumps(dict(receipt), indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+        newline="\n",
     )
     os.replace(temporary, target)
     return target
@@ -852,7 +856,9 @@ def write_group_receipt(root: Path, receipt: Mapping[str, Any]) -> Path:
     target.parent.mkdir(parents=True, exist_ok=True)
     temporary = target.with_suffix(f".json.{os.getpid()}.tmp")
     temporary.write_text(
-        json.dumps(dict(receipt), indent=2, sort_keys=True) + "\n", encoding="utf-8"
+        json.dumps(dict(receipt), indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+        newline="\n",
     )
     os.replace(temporary, target)
     return target

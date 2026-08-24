@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.6.51
+
+- Keep the owned-host timeout referenced until its termination result settles so Node 22 cannot cancel lifecycle verification early.
+- Rebuild portable generated manifests from Git-normalized source bytes for clean-checkout parity.
+
 ## 0.6.50
 
 - Integrate the current dependency and GitHub Actions updates without rewriting the issued 0.6.49 package.
