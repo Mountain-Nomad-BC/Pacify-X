@@ -82,6 +82,44 @@ class NativeSkillTests(unittest.TestCase):
             self.assertEqual((restored / relative).read_bytes(), custody_bytes)
             self.assertEqual(receipt["tree_sha256"], tree_hash(files))
 
+    def test_restore_preserves_manifest_order_across_host_path_ordering(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            snapshot = root / "snapshot"
+            backup = snapshot / "workspace-original"
+            backup.mkdir(parents=True)
+            retained_order = ("a.txt", "Z.txt")
+            for relative in retained_order:
+                (backup / relative).write_bytes(relative.encode("utf-8"))
+            files = [
+                {
+                    "path": relative,
+                    "size_bytes": len(relative.encode("utf-8")),
+                    "sha256": hashlib.sha256(relative.encode("utf-8")).hexdigest(),
+                }
+                for relative in retained_order
+            ]
+            inventory = snapshot / "workspace-original.inventory.json"
+            inventory.write_text(json.dumps({"files": files}), encoding="utf-8")
+            manifest = {
+                "schema_version": BACKUP_SCHEMA,
+                "sources": [{
+                    "id": "workspace-original",
+                    "relative_backup": "workspace-original",
+                    "inventory": inventory.name,
+                    "inventory_size_bytes": inventory.stat().st_size,
+                    "inventory_sha256": hashlib.sha256(inventory.read_bytes()).hexdigest(),
+                    "file_count": len(files),
+                    "tree_sha256": tree_hash(files),
+                }],
+            }
+            (snapshot / "manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
+
+            receipt = restore_backup(
+                snapshot, "workspace-original", root / "restored"
+            )
+            self.assertEqual(receipt["tree_sha256"], tree_hash(files))
+
     def test_default_query_cannot_bleed_vendor_enterprise_or_preserved_domains(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

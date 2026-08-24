@@ -284,7 +284,15 @@ def restore_backup(snapshot_root: Path, source_id: str, destination: Path) -> di
                 )
             if restored.read_bytes() != custody_bytes:
                 restored.write_bytes(custody_bytes)
-        restored_records = inventory_tree(destination)
+        actual_records = inventory_tree(destination)
+        actual_by_path = {str(row["path"]): row for row in actual_records}
+        expected_paths = [str(row["path"]) for row in expected_records]
+        if set(actual_by_path) != set(expected_paths):
+            raise RuntimeError("restored skill tree paths do not match custody manifest")
+        # A custody tree hash binds the inventory's retained record order.  That
+        # order can differ from host Path ordering (notably Windows vs POSIX),
+        # so reconstruct the receipt in manifest order after exact-byte checks.
+        restored_records = [actual_by_path[path] for path in expected_paths]
         receipt.update(
             file_count=len(restored_records),
             size_bytes=sum(int(row["size_bytes"]) for row in restored_records),

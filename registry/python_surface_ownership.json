@@ -3124,7 +3124,7 @@
       "validation_level": "evidence-association"
     },
     {
-      "bytes": 27585,
+      "bytes": 28192,
       "evidence": [
         "tests",
         "tests/test_installed_wheel_e2e.py"
@@ -3133,7 +3133,7 @@
       "packaged": true,
       "path": "runtime/native_skills.py",
       "role": "installed-runtime",
-      "sha256": "7069a0db8cb2dd324558c8e262a1e84a535e1737536bae90710c15c21cc5b80a",
+      "sha256": "d2576ff6b7652d0ad2cd8afa1678c84f71bb34adcb1147e2b4ac920285ef81b3",
       "syntax_valid": true,
       "validation_level": "full-suite-and-installed-integration"
     },
@@ -3333,7 +3333,7 @@
       "validation_level": "full-suite-and-installed-integration"
     },
     {
-      "bytes": 34496,
+      "bytes": 34505,
       "evidence": [
         "tests",
         "tests/test_installed_wheel_e2e.py"
@@ -3342,7 +3342,7 @@
       "packaged": true,
       "path": "runtime/process_supervisor.py",
       "role": "installed-runtime",
-      "sha256": "7067873736426d03625b16da3bdca8546d42141d94d9beb53cd90c2a06ad867c",
+      "sha256": "bbc3ac9590ced780301aadb127de4a3d77ca69c060ebb9c751e0f1a17beeb44a",
       "syntax_valid": true,
       "validation_level": "full-suite-and-installed-integration"
     },
@@ -7043,7 +7043,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 11447,
+      "bytes": 13223,
       "evidence": [
         "tests/test_native_skills.py"
       ],
@@ -7051,7 +7051,7 @@
       "packaged": true,
       "path": "tests/test_native_skills.py",
       "role": "release-test",
-      "sha256": "19028669889fb5c902de6433cdd05612b14cabe269aea513eca70a5baccf321a",
+      "sha256": "043141cc85025bfa9f088ed19525c53110d29e76cf2ef7e07dc3c94c83ae17f7",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },
@@ -7238,7 +7238,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 15591,
+      "bytes": 15586,
       "evidence": [
         "tests/test_process_supervisor.py"
       ],
@@ -7246,7 +7246,7 @@
       "packaged": true,
       "path": "tests/test_process_supervisor.py",
       "role": "release-test",
-      "sha256": "3892594b06953b2b5fac2769dca1e9f85262cd6297f38fb2227c3aa7d0e62cc6",
+      "sha256": "520978db73685c33ae49992a7ad0cee4719ef4cb8aa4437a52623b2268b44421",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },
