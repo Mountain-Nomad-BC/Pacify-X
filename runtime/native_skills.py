@@ -44,15 +44,16 @@ def _body_hash_matches(path: Path, expected: str) -> bool:
     return _sha(path) == expected or _sha_text(path) == expected
 
 
-def _custody_bytes_match(path: Path, expected_size: object, expected_sha: object) -> bool:
-    """Verify raw bytes or the exact CRLF form retained by pre-Git custody."""
-
+def _custody_bytes_candidate(
+    path: Path, expected_size: object, expected_sha: object
+) -> bytes | None:
+    """Return the exact bytes bound by custody, including pre-Git CRLF bytes."""
     expected = str(expected_sha or "")
     try:
         size = int(expected_size)
         raw = path.read_bytes()
     except (OSError, TypeError, ValueError):
-        return False
+        return None
     candidates = [raw]
     try:
         normalized = raw.decode("utf-8").replace("\r\n", "\n").replace("\r", "\n")
@@ -60,11 +61,21 @@ def _custody_bytes_match(path: Path, expected_size: object, expected_sha: object
         normalized = None
     if normalized is not None:
         candidates.append(normalized.replace("\n", "\r\n").encode("utf-8"))
-    return any(
-        len(candidate) == size
-        and hashlib.sha256(candidate).hexdigest() == expected
-        for candidate in candidates
+    return next(
+        (
+            candidate
+            for candidate in candidates
+            if len(candidate) == size
+            and hashlib.sha256(candidate).hexdigest() == expected
+        ),
+        None,
     )
+
+
+def _custody_bytes_match(path: Path, expected_size: object, expected_sha: object) -> bool:
+    """Verify raw bytes or the exact CRLF form retained by pre-Git custody."""
+
+    return _custody_bytes_candidate(path, expected_size, expected_sha) is not None
 
 
 def _json_hash(value: object) -> str:
@@ -264,18 +275,15 @@ def restore_backup(snapshot_root: Path, source_id: str, destination: Path) -> di
         expected_records = json.loads(inventory_path.read_text(encoding="utf-8"))["files"]
         for expected in expected_records:
             restored = destination / str(expected["path"])
-            if _custody_bytes_match(
+            custody_bytes = _custody_bytes_candidate(
                 restored, expected.get("size_bytes"), expected.get("sha256")
-            ) and (
-                restored.stat().st_size != int(expected["size_bytes"])
-                or _sha(restored) != expected["sha256"]
-            ):
-                normalized = (
-                    restored.read_text(encoding="utf-8")
-                    .replace("\r\n", "\n")
-                    .replace("\r", "\n")
+            )
+            if custody_bytes is None:
+                raise RuntimeError(
+                    f"restored custody file does not match inventory: {expected['path']}"
                 )
-                restored.write_bytes(normalized.replace("\n", "\r\n").encode("utf-8"))
+            if restored.read_bytes() != custody_bytes:
+                restored.write_bytes(custody_bytes)
         restored_records = inventory_tree(destination)
         receipt.update(
             file_count=len(restored_records),

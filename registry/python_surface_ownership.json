@@ -3124,7 +3124,7 @@
       "validation_level": "evidence-association"
     },
     {
-      "bytes": 27357,
+      "bytes": 27585,
       "evidence": [
         "tests",
         "tests/test_installed_wheel_e2e.py"
@@ -3133,7 +3133,7 @@
       "packaged": true,
       "path": "runtime/native_skills.py",
       "role": "installed-runtime",
-      "sha256": "85e23f7253f557035791b5d4a7c9d1e261c8c38387cbe79c48433ce10654faf3",
+      "sha256": "7069a0db8cb2dd324558c8e262a1e84a535e1737536bae90710c15c21cc5b80a",
       "syntax_valid": true,
       "validation_level": "full-suite-and-installed-integration"
     },
@@ -7043,7 +7043,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 9525,
+      "bytes": 11447,
       "evidence": [
         "tests/test_native_skills.py"
       ],
@@ -7051,7 +7051,7 @@
       "packaged": true,
       "path": "tests/test_native_skills.py",
       "role": "release-test",
-      "sha256": "77f9f2715f7abf690a0b6ad6d9627c4c3215bbb013c3bfb99279064296ebf300",
+      "sha256": "19028669889fb5c902de6433cdd05612b14cabe269aea513eca70a5baccf321a",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },

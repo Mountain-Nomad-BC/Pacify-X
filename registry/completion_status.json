@@ -296,6 +296,7 @@
   "current_gates": {
     "valid": false,
     "blocking_ids": [
+      "section:testing-governance",
       "group:process-recovery",
       "group:exact-installed",
       "group:release-build",
@@ -316,6 +317,7 @@
     "evidence_receipts_current": true,
     "failed_receipt_ids": [],
     "stale_receipt_ids": [
+      "section:testing-governance",
       "group:process-recovery",
       "group:exact-installed",
       "group:release-build",
@@ -336,7 +338,7 @@
     ]
   },
   "blocking_reasons": [
-    "10 required section/group receipts are stale or failed",
+    "11 required section/group receipts are stale or failed",
     "final exact-artifact certification has not been admitted"
   ]
 }

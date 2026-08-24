@@ -43,6 +43,45 @@ class NativeSkillTests(unittest.TestCase):
             self.assertTrue(restore["restored"])
             self.assertEqual(tree_hash([{**row} for row in receipt["files"]]), restore["tree_sha256"])
 
+    def test_restore_reconstructs_manifest_bound_crlf_bytes_from_git_lf(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            snapshot = root / "snapshot"
+            backup = snapshot / "workspace-original"
+            backup.mkdir(parents=True)
+            relative = "skill/SKILL.md"
+            checkout_bytes = b"---\nname: original\n---\n"
+            custody_bytes = checkout_bytes.replace(b"\n", b"\r\n")
+            body = backup / relative
+            body.parent.mkdir(parents=True)
+            body.write_bytes(checkout_bytes)
+            files = [{
+                "path": relative,
+                "size_bytes": len(custody_bytes),
+                "sha256": hashlib.sha256(custody_bytes).hexdigest(),
+            }]
+            inventory = snapshot / "workspace-original.inventory.json"
+            inventory.write_text(json.dumps({"files": files}), encoding="utf-8")
+            manifest = {
+                "schema_version": BACKUP_SCHEMA,
+                "sources": [{
+                    "id": "workspace-original",
+                    "relative_backup": "workspace-original",
+                    "inventory": inventory.name,
+                    "inventory_size_bytes": inventory.stat().st_size,
+                    "inventory_sha256": hashlib.sha256(inventory.read_bytes()).hexdigest(),
+                    "file_count": 1,
+                    "tree_sha256": tree_hash(files),
+                }],
+            }
+            (snapshot / "manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
+
+            self.assertTrue(verify_backup(snapshot)["valid"])
+            restored = root / "restored"
+            receipt = restore_backup(snapshot, "workspace-original", restored)
+            self.assertEqual((restored / relative).read_bytes(), custody_bytes)
+            self.assertEqual(receipt["tree_sha256"], tree_hash(files))
+
     def test_default_query_cannot_bleed_vendor_enterprise_or_preserved_domains(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
