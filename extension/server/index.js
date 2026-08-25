@@ -32685,7 +32685,7 @@ function readJsonFile(file2, fallback) {
     return fallback;
   }
 }
-var MCP_VERSION = "0.6.52";
+var MCP_VERSION = "0.6.53";
 function contextEnvelope() {
   const value = readJsonFile(process.env.PX_CONTEXT_PATH, {});
   return value?.envelope || value;
