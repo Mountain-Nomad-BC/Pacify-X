@@ -41,6 +41,22 @@ def test_every_executable_effect_surface_is_owned_and_bounded() -> None:
     assert result["counts"]["filesystem_mutation"] > 0
 
 
+def test_discovery_prunes_external_custody_before_parsing() -> None:
+    root = _copy_effect_fixture(Path(tempfile.mkdtemp()))
+    hostile = (
+        root
+        / ".engineering-bootstrap/test-evidence/adversarial-repair-gates"
+        / "unparseable.py"
+    )
+    hostile.parent.mkdir(parents=True)
+    hostile.write_text("this is not valid Python =", encoding="utf-8")
+
+    records = discover_effect_surfaces(root)
+
+    assert records
+    assert all("adversarial-repair-gates" not in record["path"] for record in records)
+
+
 def test_new_shell_execution_fails_closed() -> None:
     root = _copy_effect_fixture(Path(tempfile.mkdtemp()))
     target = root / "runtime/unsafe_effect.py"

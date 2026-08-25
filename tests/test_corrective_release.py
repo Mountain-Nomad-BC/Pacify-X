@@ -6,28 +6,32 @@ import shlex
 
 from runtime.corrective_release import SOURCE_CARD_IDS, validate_corrective_ledger
 from runtime.cli import parser
+from tests.repository_copy import canonical_copy_ignore
 
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 def _copy_product(target: Path) -> None:
+    ignore = canonical_copy_ignore(
+        ROOT,
+        ".git",
+        ".venv*",
+        ".vscode-test",
+        "Python",
+        "node_modules",
+        "__pycache__",
+        ".pytest_cache",
+        ".ruff_cache",
+        "quarantine",
+        "operation-bus",
+        "preserved-extension-installations",
+    )
+
     shutil.copytree(
         ROOT,
         target,
-        ignore=shutil.ignore_patterns(
-            ".git",
-            ".venv*",
-            ".vscode-test",
-            "Python",
-            "node_modules",
-            "__pycache__",
-            ".pytest_cache",
-            ".ruff_cache",
-            "quarantine",
-            "operation-bus",
-            "preserved-extension-installations",
-        ),
+        ignore=ignore,
     )
 
 

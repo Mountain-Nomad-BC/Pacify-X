@@ -8,7 +8,8 @@ import json
 from pathlib import Path
 from typing import Any
 
-from .repository_scope import is_project_source
+from .bounded_walk import WalkLimits, bounded_walk
+from .repository_scope import is_external_environment_relative
 
 
 PROCESS_CALLS = {
@@ -102,10 +103,17 @@ def _popen_communication_timeout(tree: ast.AST, popen: ast.Call) -> str | None:
 def discover_effect_surfaces(root: Path) -> list[dict[str, Any]]:
     root = root.resolve()
     records = []
-    for path in sorted(root.rglob("*.py"), key=lambda item: item.as_posix().casefold()):
-        relative = path.relative_to(root).as_posix()
+    source_walk = bounded_walk(
+        root,
+        limits=WalkLimits(max_files=100_000, max_depth=128, max_bytes=2 * 1024**3),
+        symlink_policy="skip",
+        exclude=is_external_environment_relative,
+    )
+    for entry in source_walk.files:
+        path = entry.path
+        relative = entry.relative
         if (
-            not is_project_source(path, root)
+            path.suffix.casefold() != ".py"
             or "__pycache__" in path.parts
             or relative.startswith("tests/")
             or relative.startswith(".px/preserved-skills/")

@@ -90,7 +90,7 @@ def _completion(root: Path) -> dict[str, Any]:
                 # A malformed derived binding cannot preserve a prior claim.
                 pass
         return dict(build(root))
-    except (OSError, ValueError, json.JSONDecodeError):
+    except (ImportError, OSError, ValueError, json.JSONDecodeError):
         fallback = dict(baseline)
         fallback["projection_freshness"] = "stored_fallback_unverified"
         fallback["certified"] = False

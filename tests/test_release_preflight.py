@@ -17,6 +17,7 @@ from runtime.release_preflight import (
     receipt_path,
     require_stable_source_binding,
     skip_policy_preflight,
+    certification_group_readiness,
     transaction_simulation,
     validate_preflight_receipt,
     RESOURCE_REGISTRY,
@@ -31,6 +32,56 @@ def test_unknown_release_skip_fails_closed(tmp_path: Path) -> None:
     )
     result = skip_policy_preflight(junit)
     assert not result["valid"] and result["failures"][0]["code"] == "RP-SKP-001"
+
+
+def test_stale_test_groups_block_preflight_readiness(
+    tmp_path: Path, monkeypatch
+) -> None:
+    monkeypatch.setattr(
+        "runtime.test_profiles.group_status",
+        lambda root: {
+            "valid": False,
+            "required_groups": ["core", "release"],
+            "groups": [
+                {"group": "core", "current": True},
+                {"group": "release", "current": False},
+            ],
+            "member_count": 2,
+        },
+    )
+
+    result = certification_group_readiness(tmp_path)
+
+    assert not result["valid"]
+    assert result["current_groups"] == ["core"]
+    assert result["stale_groups"] == ["release"]
+    assert result["failures"] == [
+        {
+            "code": "RP-TST-001",
+            "message": "whole certification requires current test-group receipts: release",
+        }
+    ]
+
+
+def test_current_test_groups_admit_preflight_readiness(
+    tmp_path: Path, monkeypatch
+) -> None:
+    monkeypatch.setattr(
+        "runtime.test_profiles.group_status",
+        lambda root: {
+            "valid": True,
+            "required_groups": ["core"],
+            "groups": [{"group": "core", "current": True}],
+            "member_count": 1,
+        },
+    )
+
+    result = certification_group_readiness(tmp_path)
+
+    assert result["valid"]
+    assert result["current_groups"] == ["core"]
+    assert result["stale_groups"] == []
+    assert result["failures"] == []
 
 
 def test_finalizer_admission_requires_exact_current_binding(

@@ -940,7 +940,13 @@ def main(argv: list[str] | None = None) -> int:
                     "certified": completion.get("certified") is True,
                     "blocking_reasons": list(completion.get("blocking_reasons", ())),
                 }
-            except (OSError, ValueError, PermissionError, json.JSONDecodeError) as error:
+            except (
+                ImportError,
+                OSError,
+                ValueError,
+                PermissionError,
+                json.JSONDecodeError,
+            ) as error:
                 operational_state = {
                     "known": False,
                     "operationally_complete": False,

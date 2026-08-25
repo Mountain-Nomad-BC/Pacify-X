@@ -87,6 +87,31 @@ class DashboardApiTests(unittest.TestCase):
             result["projection_freshness"], "stored_fallback_unverified"
         )
 
+    def test_completion_fallback_handles_source_only_builder_absence(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            registry = root / "registry"
+            registry.mkdir()
+            (registry / "completion_status.json").write_text(
+                json.dumps({"operationally_complete": True, "certified": True}),
+                encoding="utf-8",
+            )
+            original_import = __import__
+
+            def installed_import(name, *args, **kwargs):
+                if name == "scripts.build_completion_status":
+                    raise ModuleNotFoundError(name)
+                return original_import(name, *args, **kwargs)
+
+            with patch("builtins.__import__", side_effect=installed_import):
+                result = _completion(root)
+
+        self.assertFalse(result["operationally_complete"])
+        self.assertFalse(result["certified"])
+        self.assertEqual(
+            result["projection_freshness"], "stored_fallback_unverified"
+        )
+
     def test_visual_fixture_declares_demo_data_and_tracks_current_denominators(self) -> None:
         preview = (ROOT / "extension/tests/preview.html").read_text(encoding="utf-8")
         counts = build_snapshot(ROOT)["counts"]

@@ -730,6 +730,34 @@ def installed_equivalence(root: Path, artifact: Path | None = None) -> dict[str,
     }
 
 
+def certification_group_readiness(root: Path) -> dict[str, Any]:
+    """Mirror the whole-certification test-group receipt admission exactly."""
+    from .test_profiles import group_status
+
+    status = group_status(root)
+    rows = list(status.get("groups", ()))
+    stale = [str(row.get("group")) for row in rows if row.get("current") is not True]
+    current = [str(row.get("group")) for row in rows if row.get("current") is True]
+    valid = status.get("valid") is True and not stale
+    return {
+        "schema_version": "px.test-group-readiness-preflight/1.0",
+        "valid": valid,
+        "required_groups": list(status.get("required_groups", ())),
+        "current_groups": current,
+        "stale_groups": stale,
+        "member_count": status.get("member_count", 0),
+        "failures": []
+        if valid
+        else [
+            PreflightFailure(
+                "RP-TST-001",
+                "whole certification requires current test-group receipts: "
+                + ", ".join(stale),
+            ).as_dict()
+        ],
+    }
+
+
 def _implementation_digest(root: Path) -> str:
     paths = [
         root / "runtime/release_preflight.py",
@@ -951,6 +979,7 @@ def run_preflight(
         ("evidence_portability", lambda: evidence_portability(root)),
         ("evidence_budget", lambda: evidence_budget(root, policy)),
         ("skip_policy", lambda: skip_policy_preflight()),
+        ("test_group_readiness", lambda: certification_group_readiness(root)),
     ]
     for name, callback in static:
         if not phase(name, callback):

@@ -304,6 +304,7 @@
         "runtime/workspace_manager.py",
         "tests/pytest_guards.py",
         "tests/release_preflight_testkit.py",
+        "tests/repository_copy.py",
         "tests/studio_approval_testkit.py",
         "tests/test_admission_controller.py",
         "tests/test_agent_builder.py",
@@ -2074,6 +2075,7 @@
         "templates/generated/domain_tool.py",
         "tests/pytest_guards.py",
         "tests/release_preflight_testkit.py",
+        "tests/repository_copy.py",
         "tests/studio_approval_testkit.py",
         "tests/test_agent_provider.py",
         "tests/test_agent_runtime.py",
@@ -2463,6 +2465,7 @@
         "builders/last_round_assimilation_builder.py",
         "builders/orchestration_builder.py",
         "templates/generated/domain_tool.py",
+        "tests/repository_copy.py",
         "tests/studio_approval_testkit.py",
         "tests/test_admission_controller.py",
         "tests/test_agent_builder.py",
@@ -2713,6 +2716,7 @@
         "runtime/tooling.py",
         "runtime/transcript_analysis.py",
         "runtime/workspace_manager.py",
+        "tests/repository_copy.py",
         "tests/test_bytecode_guard.py",
         "tests/test_clean_source_export.py",
         "tests/test_corrective_release.py",
@@ -2735,6 +2739,7 @@
         "tests/test_release_certification.py",
         "tests/test_release_distribution_controls.py",
         "tests/test_release_identity_controls.py",
+        "tests/test_repository_scope.py",
         "tests/test_resource_lifecycle.py",
         "tests/test_structural_integrity.py",
         "tests/test_studio_api.py"
@@ -3048,9 +3053,12 @@
       "module": "tests",
       "paths": [
         "tests/test_agent_runtime.py",
+        "tests/test_corrective_release.py",
         "tests/test_knowledge_core_controller.py",
         "tests/test_release_boundary_diff.py",
+        "tests/test_release_certification.py",
         "tests/test_release_feedback_audit.py",
+        "tests/test_repository_scope.py",
         "tests/test_studio_api.py",
         "tests/test_workflow_studio.py"
       ]
@@ -3384,7 +3392,8 @@
         "runtime/wal_transaction.py",
         "runtime/work_admission.py",
         "runtime/workflow_studio.py",
-        "runtime/workspace_manager.py"
+        "runtime/workspace_manager.py",
+        "tests/repository_copy.py"
       ]
     },
     {

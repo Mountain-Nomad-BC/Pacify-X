@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from runtime.repository_scope import is_external_environment_relative  # noqa: E402
+from runtime.bounded_walk import WalkLimits, bounded_walk  # noqa: E402
 
 
 CACHE_DIRECTORIES = {"__pycache__", ".pytest_cache", ".ruff_cache"}
@@ -47,43 +48,39 @@ def cleanup(
         quarantine_root
         or (resolved / ".engineering-bootstrap" / "quarantine" / "disposable-cache")
     ).resolve()
-    preserved_skills = (resolved / ".px" / "preserved-skills").resolve()
     if quarantine_base == resolved or quarantine_base == Path(quarantine_base.anchor):
         raise ValueError(
             "quarantine root must be a bounded directory distinct from the workspace root"
         )
+    walk = bounded_walk(
+        resolved,
+        limits=WalkLimits(max_files=100_000, max_depth=128, max_bytes=2 * 1024**3),
+        symlink_policy="skip",
+        exclude=is_external_environment_relative,
+    )
     directories = sorted(
         (
-            path
-            for path in resolved.rglob("*")
-            if path.is_dir()
-            and path.name in CACHE_DIRECTORIES
-            and not is_external_environment_relative(path.relative_to(resolved))
-            and not _inside(path.resolve(), quarantine_base)
-            and not _inside(path.resolve(), preserved_skills)
+            entry.path
+            for entry in walk.entries
+            if entry.kind == "directory" and entry.path.name in CACHE_DIRECTORIES
         ),
         key=lambda path: len(path.parts),
         reverse=True,
     )
     files = sorted(
-        path
-        for path in resolved.rglob("*")
-        if path.is_file()
-        and path.suffix.casefold() in BYTECODE_SUFFIXES
-        and not is_external_environment_relative(path.relative_to(resolved))
-        and not _inside(path.resolve(), quarantine_base)
-        and not _inside(path.resolve(), preserved_skills)
-        and not any(parent in directories for parent in path.parents)
+        entry.path
+        for entry in walk.files
+        if entry.path.suffix.casefold() in BYTECODE_SUFFIXES
+        and not any(parent in directories for parent in entry.path.parents)
     )
     for target in [*directories, *files]:
         target.resolve().relative_to(resolved)
     inventory = []
     covered_files = sorted(
         {
-            path
-            for directory in directories
-            for path in directory.rglob("*")
-            if path.is_file()
+            entry.path
+            for entry in walk.files
+            if any(parent in directories for parent in entry.path.parents)
         }
         | set(files)
     )

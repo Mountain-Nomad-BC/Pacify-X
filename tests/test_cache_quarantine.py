@@ -43,6 +43,25 @@ class CacheQuarantineTests(unittest.TestCase):
             self.assertEqual(protected.read_bytes(), b"custody")
             self.assertEqual(result["inventoried_file_count"], 0)
 
+    def test_hostile_local_test_evidence_is_pruned_before_cache_discovery(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            hostile = (
+                root
+                / ".engineering-bootstrap/test-evidence/adversarial-repair-gates"
+                / "__pycache__/fixture.pyc"
+            )
+            owned = root / "runtime/__pycache__/owned.pyc"
+            for path, value in ((hostile, b"hostile"), (owned, b"owned")):
+                path.parent.mkdir(parents=True)
+                path.write_bytes(value)
+
+            result = MODULE.cleanup(root, apply=True)
+
+            self.assertTrue(hostile.is_file())
+            self.assertFalse(owned.exists())
+            self.assertEqual(result["inventoried_file_count"], 1)
+
     def test_apply_moves_and_hash_verifies_without_hard_delete(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

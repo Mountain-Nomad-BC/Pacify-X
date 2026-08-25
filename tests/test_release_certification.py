@@ -26,6 +26,7 @@ from runtime.release_certification import (
 )
 from runtime.corrective_release import validate_corrective_ledger
 from runtime.full_repair import validate_full_repair_ledger
+from tests.repository_copy import canonical_copy_ignore
 
 
 ROOT = Path(__file__).parents[1]
@@ -73,30 +74,33 @@ def test_clean_release_copy_uses_the_canonical_product_boundary() -> None:
 def _eligible_clone() -> Path:
     directory = Path(tempfile.mkdtemp())
     clone = directory / "framework"
+    ignore = canonical_copy_ignore(
+        ROOT,
+        ".git",
+        "__pycache__",
+        ".venv*",
+        "Python",
+        "node_modules",
+        ".pytest_cache",
+        ".ruff_cache",
+        ".vscode-test",
+        "*.pyc",
+        "*.pyo",
+        "build",
+        "dist",
+        "preserved-extension-installations",
+        "project-map",
+        "project-map-history",
+        "project-map-lock-history",
+        "quarantine",
+        "environment",
+        "operation-bus",
+    )
+
     shutil.copytree(
         ROOT,
         clone,
-        ignore=shutil.ignore_patterns(
-            ".git",
-            "__pycache__",
-            ".venv*",
-            "Python",
-            "node_modules",
-            ".pytest_cache",
-            ".ruff_cache",
-            ".vscode-test",
-            "*.pyc",
-            "*.pyo",
-            "build",
-            "dist",
-            "preserved-extension-installations",
-            "project-map",
-            "project-map-history",
-            "project-map-lock-history",
-            "quarantine",
-            "environment",
-            "operation-bus",
-        ),
+        ignore=ignore,
     )
     ledger_path = clone / "registry/corrective_release_ledger.json"
     ledger = json.loads(ledger_path.read_text(encoding="utf-8"))

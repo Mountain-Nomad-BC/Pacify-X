@@ -5,6 +5,7 @@ import unittest
 
 from runtime.release_audit import audit_framework
 from runtime.registry_envelope import discover_count_fields
+from runtime.repository_scope import is_external_environment_relative
 
 
 ROOT = Path(__file__).parents[1]
@@ -28,6 +29,9 @@ def _ignore_local_environments(_directory: str, names: list[str]) -> set[str]:
         name for name in names
         if name in derived_fixture_exclusions
         or name.startswith(".venv")
+        or is_external_environment_relative(
+            Path(_directory).resolve().relative_to(ROOT.resolve()) / name
+        )
     }
 
 
