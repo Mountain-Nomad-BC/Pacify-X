@@ -3,6 +3,10 @@ from pathlib import Path
 
 import runtime.release_preflight as release_preflight
 
+from runtime.evidence_portability import (
+    PRODUCT_STRUCTURED_ROOTS,
+    discover_historical_references,
+)
 from runtime.release_preflight import (
     _cache_inputs,
     _binding,
@@ -128,6 +132,49 @@ def test_stale_clean_projection_fails_before_finalizer(
     )
     assert not result["valid"]
     assert result["failures"][0]["code"] == "RP-GEN-001"
+
+
+def test_excluded_evidence_does_not_change_clean_product_projection(
+    tmp_path: Path, monkeypatch
+) -> None:
+    registry = tmp_path / "registry/historical_external_references.json"
+    registry.parent.mkdir(parents=True)
+    registry.write_text('{"reference_count":0,"records":[]}\n', encoding="utf-8")
+    evidence = tmp_path / "evidence/operator-capture.json"
+    evidence.parent.mkdir(parents=True)
+    evidence.write_text(
+        '{"source":"C:\\\\Users\\\\operator\\\\outside.json"}\n',
+        encoding="utf-8",
+    )
+
+    def rebuild(root: Path) -> None:
+        records = discover_historical_references(
+            root, structured_roots=PRODUCT_STRUCTURED_ROOTS
+        )
+        (root / "registry/historical_external_references.json").write_text(
+            json.dumps(
+                {
+                    "schema_version": "1.0",
+                    "reference_count": len(records),
+                    "records": records,
+                },
+                indent=2,
+                sort_keys=True,
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+
+    rebuild(tmp_path)
+    monkeypatch.setattr(
+        "scripts.clean_source_export._rebuild_candidate_projections", rebuild
+    )
+    result = rebuild_equivalence(
+        tmp_path,
+        tmp_path / "unused",
+        ["registry/historical_external_references.json"],
+    )
+    assert result["valid"], result["differences"]
 
 
 def test_stale_installed_identity_or_missing_custody_fails_closed(

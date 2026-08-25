@@ -2261,7 +2261,7 @@
       "validation_level": "full-suite-and-installed-integration"
     },
     {
-      "bytes": 5216,
+      "bytes": 5594,
       "evidence": [
         "tests",
         "tests/test_installed_wheel_e2e.py"
@@ -2270,7 +2270,7 @@
       "packaged": true,
       "path": "runtime/evidence_portability.py",
       "role": "installed-runtime",
-      "sha256": "a2ab34d038d9dac05337c049109f593a03c4be03f71e43f49ef57918b11df1aa",
+      "sha256": "e7fe8b7981e79129b0faf5996994fdf0b8f4c887a409aaa08377d9cf1f6f52c7",
       "syntax_valid": true,
       "validation_level": "full-suite-and-installed-integration"
     },
@@ -4703,7 +4703,7 @@
       "validation_level": "source-only-structural"
     },
     {
-      "bytes": 853,
+      "bytes": 949,
       "evidence": [
         "structural AST validation",
         "project-management release boundary"
@@ -4712,7 +4712,7 @@
       "packaged": false,
       "path": "scripts/build_historical_external_references.py",
       "role": "source-build-control",
-      "sha256": "1fa854b81d8bcc167a63feecd0b7f6a6f8d463adc2f67710facba3b6f9b02f0c",
+      "sha256": "1ba0166ae03bb5a960986a32d90836b2a7583c7dd4725b1ce46cc2271c422b82",
       "syntax_valid": true,
       "validation_level": "source-only-structural"
     },
@@ -6575,7 +6575,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 3620,
+      "bytes": 4647,
       "evidence": [
         "tests/test_evidence_portability.py"
       ],
@@ -6583,7 +6583,7 @@
       "packaged": true,
       "path": "tests/test_evidence_portability.py",
       "role": "release-test",
-      "sha256": "1b61521f22d5b033598aef2ce654e578652c4b77cb55e7873a149899238462f1",
+      "sha256": "2c480e1ad720eb463961d3b46c612358d1c6c78605ba9ec8b2e7933a64413d3e",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },
@@ -7810,7 +7810,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 8268,
+      "bytes": 9802,
       "evidence": [
         "tests/test_release_preflight.py"
       ],
@@ -7818,7 +7818,7 @@
       "packaged": true,
       "path": "tests/test_release_preflight.py",
       "role": "release-test",
-      "sha256": "52b5bfc43de0bdf2c7964b970f1ccf4c5b329c5186c3000f6bec3bf049a5fd8e",
+      "sha256": "2b537f85805120f2cef1bf21dc701448f3621e968e7f6fe7fe2d01953f2716c5",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },

@@ -8,11 +8,16 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from runtime.evidence_portability import discover_historical_references  # noqa: E402
+from runtime.evidence_portability import (  # noqa: E402
+    PRODUCT_STRUCTURED_ROOTS,
+    discover_historical_references,
+)
 
 
 def main() -> int:
-    records = discover_historical_references(ROOT)
+    records = discover_historical_references(
+        ROOT, structured_roots=PRODUCT_STRUCTURED_ROOTS
+    )
     output = {
         "schema_version": "1.0",
         "reference_count": len(records),

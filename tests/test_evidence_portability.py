@@ -3,11 +3,14 @@ import shutil
 import tempfile
 
 from runtime.evidence_portability import (
+    PRODUCT_STRUCTURED_ROOTS,
+    STRUCTURED_ROOTS,
     discover_historical_references,
     portability_findings,
     rewrite_reference_literals,
     validate_evidence_portability,
 )
+from runtime.release_preflight import evidence_portability as release_evidence_portability
 
 
 ROOT = Path(__file__).parents[1]
@@ -20,19 +23,13 @@ def test_all_evidence_locators_are_project_relative() -> None:
     assert all(not item["runtime_required"] for item in result["records"])
 
 
-def test_new_sibling_reference_fails_until_disposition_registry_is_rebuilt() -> None:
+def test_new_sibling_evidence_reference_fails_independent_release_audit() -> None:
     root = Path(tempfile.mkdtemp()) / "framework"
-    shutil.copytree(
-        ROOT,
-        root,
-        ignore=shutil.ignore_patterns(
-            ".git", ".engineering-bootstrap", "__pycache__", ".pytest_cache"
-        ),
-    )
+    (root / "evidence").mkdir(parents=True)
     (root / "evidence/new.json").write_text(
         '{"source":"../temp/unowned.json"}\n', encoding="utf-8"
     )
-    assert not validate_evidence_portability(root)["valid"]
+    assert not release_evidence_portability(root)["valid"]
 
 
 def test_generated_portability_registry_is_not_self_ingested() -> None:
@@ -71,6 +68,32 @@ def test_local_adversarial_audit_outputs_are_not_release_locators(tmp_path) -> N
     )
 
     assert discover_historical_references(tmp_path) == []
+
+
+def test_product_projection_excludes_evidence_without_weakening_audit(
+    tmp_path: Path,
+) -> None:
+    registry = tmp_path / "registry/historical_external_references.json"
+    registry.parent.mkdir(parents=True)
+    registry.write_text('{"reference_count":0,"records":[]}\n', encoding="utf-8")
+    evidence = tmp_path / "evidence/operator-capture.json"
+    evidence.parent.mkdir(parents=True)
+    evidence.write_text(
+        '{"source":"C:\\\\Users\\\\operator\\\\outside.json"}\n',
+        encoding="utf-8",
+    )
+
+    assert discover_historical_references(tmp_path) == []
+    assert discover_historical_references(
+        tmp_path, structured_roots=PRODUCT_STRUCTURED_ROOTS
+    ) == []
+    assert len(
+        discover_historical_references(tmp_path, structured_roots=STRUCTURED_ROOTS)
+    ) == 1
+    assert validate_evidence_portability(tmp_path)["valid"]
+    result = release_evidence_portability(tmp_path)
+    assert not result["valid"]
+    assert result["findings"][0]["path"] == "evidence/operator-capture.json"
 
 
 def test_portability_detects_unc_path() -> None:

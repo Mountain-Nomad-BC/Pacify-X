@@ -6,6 +6,7 @@ import hashlib
 import json
 from pathlib import Path
 import re
+from collections.abc import Iterable
 from typing import Any
 
 
@@ -21,6 +22,11 @@ STRUCTURED_ROOTS = (
     "orchestration",
     "policies",
     "extension/evidence",
+)
+PRODUCT_STRUCTURED_ROOTS = tuple(
+    directory
+    for directory in STRUCTURED_ROOTS
+    if directory not in {"evidence", "extension/evidence"}
 )
 EXCLUDED_PATH_PREFIXES = (
     "evidence/adversarial-audit/",
@@ -74,10 +80,12 @@ def portability_findings(
     return tuple(sorted(set(findings)))
 
 
-def discover_historical_references(root: Path) -> list[dict[str, Any]]:
+def discover_historical_references(
+    root: Path, *, structured_roots: Iterable[str] = PRODUCT_STRUCTURED_ROOTS
+) -> list[dict[str, Any]]:
     root = root.resolve()
     records = []
-    for directory in STRUCTURED_ROOTS:
+    for directory in structured_roots:
         for path in sorted((root / directory).rglob("*"), key=lambda item: item.as_posix().casefold()):
             if not path.is_file():
                 continue
@@ -121,23 +129,27 @@ def discover_historical_references(root: Path) -> list[dict[str, Any]]:
 
 def validate_evidence_portability(root: Path) -> dict[str, Any]:
     root = root.resolve()
-    actual = discover_historical_references(root)
+    product_records = discover_historical_references(
+        root, structured_roots=PRODUCT_STRUCTURED_ROOTS
+    )
     registry = json.loads(
         (root / "registry/historical_external_references.json").read_text(
             encoding="utf-8"
         )
     )
     errors = []
-    if registry.get("records") != actual or registry.get("reference_count") != len(
-        actual
+    if registry.get("records") != product_records or registry.get(
+        "reference_count"
+    ) != len(
+        product_records
     ):
         errors.append("historical external-reference disposition registry is stale")
-    for record in actual:
+    for record in product_records:
         errors.append(f"{record['id']}: evidence locator is not project-relative")
     return {
         "schema_version": "1.0",
         "valid": not errors,
-        "reference_count": len(actual),
+        "reference_count": len(product_records),
         "errors": errors,
-        "records": actual,
+        "records": product_records,
     }
