@@ -9,13 +9,20 @@ from pathlib import Path
 from typing import Any
 
 try:
-    from scripts.assemble_operational_control_evidence import MATRIX, STAGES
+    from scripts.assemble_operational_control_evidence import MATRIX, STAGES, current_source_manifest
 except ModuleNotFoundError:
-    from assemble_operational_control_evidence import MATRIX, STAGES
+    from assemble_operational_control_evidence import MATRIX, STAGES, current_source_manifest
 
 
 KINDS = {"direct_current_source_host_measurement", "direct_installed_host_measurement"}
 STATES = {"present", "missing", "not_applicable"}
+PROFILE_SPECS = (
+    ("reversible_configuration_profile", "px.installed-operational-control-probe/1.0", False),
+    ("studio_setup_profile", "px.installed-operational-control-probe/1.0", False),
+    ("studio_candidate_save_profile", "px.installed-operational-control-probe/1.0", False),
+    ("studio_lifecycle_profile", "px.installed-studio-lifecycle-profile/1.0", True),
+    ("studio_revision_edit_profile", "px.installed-studio-revision-edit-profile/1.0", True),
+)
 
 
 def _load(path: Path) -> dict[str, Any]:
@@ -27,6 +34,46 @@ def _load(path: Path) -> dict[str, Any]:
 
 def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _profile_records(
+    receipt: dict[str, Any], name: str, schema_version: str, nested: bool
+) -> list[dict[str, Any]]:
+    profile = receipt.get(name)
+    if profile is None:
+        return []
+    if not isinstance(profile, dict) or profile.get("schema_version") != schema_version:
+        raise ValueError(f"{name} schema is invalid")
+    probe = profile.get("control_probe") if nested else profile
+    if (
+        not isinstance(probe, dict)
+        or probe.get("schema_version") != "px.installed-operational-control-probe/1.0"
+    ):
+        raise ValueError(f"{name} control probe schema is invalid")
+    records = probe.get("records")
+    if not isinstance(records, list) or len(records) != probe.get("eligible_control_count"):
+        raise ValueError(f"{name} denominator is incomplete")
+    return records
+
+
+def _merge_stage(left: dict[str, Any], right: dict[str, Any]) -> dict[str, Any]:
+    left_state = str(left["state"])
+    right_state = str(right["state"])
+    if left_state == "not_applicable" or right_state == "not_applicable":
+        if left_state != right_state:
+            raise ValueError("duplicate profile stages conflict on applicability")
+        return left
+    if left_state == "present" and right_state == "present":
+        details = [str(left["detail"]).strip(), str(right["detail"]).strip()]
+        evidence = list(dict.fromkeys([*left["evidence"], *right["evidence"]]))
+        return {
+            "state": "present",
+            "detail": " | ".join(dict.fromkeys(details)),
+            "evidence": evidence,
+        }
+    if right_state == "present":
+        return right
+    return left
 
 
 def build(root: Path, receipt_path: Path, evidence_kind: str) -> dict[str, Any]:
@@ -47,22 +94,17 @@ def build(root: Path, receipt_path: Path, evidence_kind: str) -> dict[str, Any]:
     records = probe.get("records")
     if not isinstance(records, list) or len(records) != probe.get("eligible_control_count"):
         raise ValueError("expanded probe denominator is incomplete")
-    configuration = receipt.get("reversible_configuration_profile")
-    if configuration is not None:
-        if not isinstance(configuration, dict) or configuration.get("schema_version") != "px.installed-operational-control-probe/1.0":
-            raise ValueError("reversible configuration profile schema is invalid")
-        configuration_records = configuration.get("records")
-        if not isinstance(configuration_records, list) or len(configuration_records) != configuration.get("eligible_control_count"):
-            raise ValueError("reversible configuration profile denominator is incomplete")
-        records = [*records, *configuration_records]
-    requirements = {str(item["control_id"]): item for item in _load(root / MATRIX)["controls"]}
-    adapted = []
-    seen: set[str] = set()
+    records = list(records)
+    for name, schema_version, nested in PROFILE_SPECS:
+        records.extend(_profile_records(receipt, name, schema_version, nested))
+    matrix = _load(root / MATRIX)
+    source_manifest = current_source_manifest(root, matrix)
+    if receipt.get("source_identity", {}).get("control_source_manifest") != source_manifest:
+        raise ValueError("owned-host control-source identity is absent or stale")
+    requirements = {str(item["control_id"]): item for item in matrix["controls"]}
+    adapted: dict[str, dict[str, Any]] = {}
     for record in records:
         control_id = str(record.get("control_id") or "")
-        if control_id in seen:
-            raise ValueError(f"duplicate expanded probe control: {control_id}")
-        seen.add(control_id)
         requirement = requirements.get(control_id)
         if requirement is None:
             raise ValueError(f"expanded probe references an unknown control: {control_id}")
@@ -83,19 +125,30 @@ def build(root: Path, receipt_path: Path, evidence_kind: str) -> dict[str, Any]:
             if state == "present" and (not detail or not isinstance(evidence, list) or not evidence):
                 raise ValueError(f"expanded probe present stage lacks direct evidence: {control_id}/{stage}")
             stages[stage] = item
-        adapted.append({
+        candidate = {
             "control_id": control_id,
             "attempted": bool(record.get("attempted")),
             "rendered": bool(record.get("rendered")),
             "observed": bool(record.get("observed")),
             "stages": stages,
-        })
+        }
+        existing = adapted.get(control_id)
+        if existing is None:
+            adapted[control_id] = candidate
+            continue
+        existing["attempted"] = existing["attempted"] or candidate["attempted"]
+        existing["rendered"] = existing["rendered"] or candidate["rendered"]
+        existing["observed"] = existing["observed"] or candidate["observed"]
+        existing["stages"] = {
+            stage: _merge_stage(existing["stages"][stage], candidate["stages"][stage])
+            for stage in STAGES
+        }
     return {
         "schema_version": "px.operational-control-stage-evidence/1.0",
         "evidence_kind": evidence_kind,
         "authority": "Exact expanded control probe in an owned isolated VS Code host; missing stages remain missing.",
-        "source": {"receipt": receipt_path.relative_to(root).as_posix(), "receipt_sha256": _sha256(receipt_path)},
-        "records": adapted,
+        "source": {"receipt": receipt_path.relative_to(root).as_posix(), "receipt_sha256": _sha256(receipt_path), "control_source_manifest": source_manifest},
+        "records": list(adapted.values()),
     }
 
 

@@ -46,8 +46,16 @@ test('revision tree commitment is deterministic, content-sensitive, bounded, and
   const first = revisionTreeSha256(revision, project);
   assert.match(first, /^[a-f0-9]{64}$/);
   assert.equal(revisionTreeSha256(revision, project), first);
+  const sourceFirst = revisionTreeSha256(revision, project, { excludeOperationalRuns: true });
+  fs.mkdirSync(path.join(revision, 'runs', 'run-one'), { recursive: true });
+  fs.writeFileSync(path.join(revision, 'runs', 'run-one', 'status.json'), '{"state":"running"}\n');
+  assert.equal(revisionTreeSha256(revision, project, { excludeOperationalRuns: true }), sourceFirst);
+  fs.writeFileSync(path.join(revision, 'runs', 'run-one', 'status.json'), '{"state":"succeeded"}\n');
+  assert.equal(revisionTreeSha256(revision, project, { excludeOperationalRuns: true }), sourceFirst);
+  assert.notEqual(revisionTreeSha256(revision, project), first);
   fs.writeFileSync(path.join(revision, 'payload', 'agent.json'), '{"agent_id":"agent:changed"}\n');
   assert.notEqual(revisionTreeSha256(revision, project), first);
+  assert.notEqual(revisionTreeSha256(revision, project, { excludeOperationalRuns: true }), sourceFirst);
   assert.throws(() => revisionTreeSha256(project, project), /outside-project/);
 
   const link = path.join(revision, 'payload', 'link.json');

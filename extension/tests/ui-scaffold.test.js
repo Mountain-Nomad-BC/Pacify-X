@@ -95,6 +95,13 @@ test('detached canonical memory never dispatches a backend query', () => {
   assert.match(controller, /message\.type === 'snapshot'.*!canonicalMemoryReady\(\).*state\.memoryRequestId = null;/);
 });
 
+test('canonical memory lifecycle filter exposes only runtime-retrievable states', () => {
+  const surface = fs.readFileSync(path.join(root, 'media', 'dashboard', '46-observability-surfaces.js'), 'utf8');
+  assert.match(surface, /All retrievable states/);
+  assert.match(surface, /\['certified','trusted'\]/);
+  assert.doesNotMatch(surface, /\['candidate','verified','promoted','active','deprecated','rejected','invalid'\]/);
+});
+
 test('W001/S001/G004 Studio editors normalize typed drafts and rank typo-tolerant graph results', () => {
   const editors = loadScaffold().require('studioEditors');
   const agent = editors.normalizeAgent({ agent_id: 'agent:builder-test', extension_note: 'preserved' });
@@ -190,19 +197,30 @@ test('W001/S001/G004 Studio editors normalize typed drafts and rank typo-toleran
   const skill = editors.normalizeSkill({ skill_id: 'bounded-repair' });
   assert.equal(editors.normalizeSkill({ skill_id: ' Bounded-Mixed-Case ' }).skill_id, 'bounded-mixed-case');
   assert.equal(editors.normalizeSkill({ skill_id: 'bounded-repair', version: ' 2.4.8-RC.1 ' }).version, '2.4.8-rc.1');
-  assert.deepEqual(Object.keys(skill.editor_files).sort(), ['SKILL.md', 'capability.json', 'contracts/input.schema.json', 'resources/README.md', 'skill.yaml', 'tests/contract.json']);
+  assert.deepEqual(Object.keys(skill.editor_files).sort(), ['SKILL.md', 'agents/openai.yaml', 'capability.json', 'contracts/input.schema.json', 'contracts/manifest.json', 'resources/README.md', 'resources/index.json', 'skill.yaml', 'tests/contract.json']);
   const skillTest = JSON.parse(skill.editor_files['tests/contract.json']);
   assert.equal(skillTest.schema_version, 'px.skill-test/1.1');
-  assert.deepEqual(skillTest.cases[0].assertion, { kind: 'required-files', paths: ['SKILL.md', 'capability.json', 'skill.yaml'] });
+  assert.deepEqual(skillTest.cases[0].assertion, { kind: 'required-files', paths: ['agents/openai.yaml', 'capability.json', 'contracts/input.schema.json', 'contracts/manifest.json', 'resources/README.md', 'SKILL.md', 'skill.yaml', 'tests/contract.json'] });
   assert.equal(JSON.parse(skill.editor_files['capability.json']).version, '1.0.0');
+  assert.deepEqual(JSON.parse(skill.editor_files['skill.yaml']), JSON.parse(skill.editor_files['capability.json']));
+  assert.deepEqual(JSON.parse(skill.editor_files['contracts/manifest.json']), { schema_version: 'px.skill-contract-links/1.0', contracts: ['contracts/input.schema.json'] });
+  assert.equal(JSON.parse(skill.editor_files['resources/index.json']).schema_version, 'px.skill-resources/1.0');
+  assert.match(skill.editor_files['agents/openai.yaml'], /short_description/);
   assert.equal(editors.validateSkill(skill).valid, true);
   const revisedSkill = editors.prepareSkillCandidate({ ...skill, skill_id: 'bounded-repair-next', version: '1.0.1' });
   assert.equal(JSON.parse(revisedSkill.editor_files['capability.json']).id, 'bounded-repair-next');
   assert.equal(JSON.parse(revisedSkill.editor_files['capability.json']).version, '1.0.1');
-  assert.match(revisedSkill.editor_files['skill.yaml'], /^id:\s*bounded-repair-next$/m);
-  assert.match(revisedSkill.editor_files['skill.yaml'], /^version:\s*1\.0\.1$/m);
+  assert.equal(JSON.parse(revisedSkill.editor_files['skill.yaml']).id, 'bounded-repair-next');
+  assert.equal(JSON.parse(revisedSkill.editor_files['skill.yaml']).version, '1.0.1');
+  assert.deepEqual(JSON.parse(revisedSkill.editor_files['skill.yaml']), JSON.parse(revisedSkill.editor_files['capability.json']));
   assert.match(revisedSkill.editor_files['SKILL.md'], /^name:\s*bounded-repair-next$/m);
   assert.equal(editors.validateSkill(revisedSkill).valid, true);
+  const incompleteNativeSkill = JSON.parse(JSON.stringify(revisedSkill));
+  delete incompleteNativeSkill.editor_files['agents/openai.yaml'];
+  assert.match(editors.validateSkill(incompleteNativeSkill).issues.join(' '), /agents\/openai\.yaml is required/);
+  const divergentNativeSkill = JSON.parse(JSON.stringify(revisedSkill));
+  divergentNativeSkill.editor_files['skill.yaml'] = JSON.stringify({ ...JSON.parse(divergentNativeSkill.editor_files['skill.yaml']), extra: true });
+  assert.match(editors.validateSkill(divergentNativeSkill).issues.join(' '), /must contain the same native manifest/);
   const malformedSkill = editors.prepareSkillCandidate({ ...skill, version: '1.0.2', editor_files: { ...skill.editor_files, 'capability.json': '{' } });
   assert.match(editors.validateSkill(malformedSkill).issues.join(' '), /valid JSON/);
   skill.editor_files['capability.json'] = '{';

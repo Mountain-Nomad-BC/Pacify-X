@@ -228,6 +228,13 @@ function resetStudioDetachControls() {
   document.querySelectorAll('[data-action="closeModal"]').forEach(button => { button.textContent = button.closest('footer') ? 'Cancel' : '×'; button.removeAttribute('title'); if (button.classList.contains('modal-close')) button.setAttribute('aria-label', 'Close'); else button.removeAttribute('aria-label'); });
   document.querySelector('[data-studio-detach-notice]')?.remove();
 }
+function clearConsumedStudioSaveTrust() {
+  studioVersionAllocation = null;
+  studioVersionAllocationProof = null;
+  studioVersionProofRequestId = null;
+  studioPendingSkillPackage = null;
+  studioSourceProofRequestId = null;
+}
 function studioRecordIdentity(record, kind) {
   const details = record?.details || record || {}; const identityKey = kind === 'agent' ? 'agent_id' : kind === 'workflow' ? 'workflow_id' : 'skill_id';
   return String(details[identityKey] || record?.[identityKey] || details.id || (!String(record?.id || '').startsWith('studio:') ? record?.id : '') || '').trim().toLowerCase();
@@ -2714,7 +2721,20 @@ window.addEventListener('message', event => {
   }
   if (message.type === 'graphResult' && message.requestId === state.graphRequestId) { const request = state.graphRequest || {}; const requestedNode = request.node; clearTimeout(graphRequestTimer); state.graphPending = false; state.graphError = null; state.graphData = request.append ? mergeGraphPage(state.graphData, message.result) : message.result; const next = state.graphLoadAll ? nextGraphPageRequest() : null; if (next) { requestGraph(next); render(); } else { state.graphLoadAll = false; renderPreservingControl('[data-graph-search]'); requestAnimationFrame(prepareGraphInteraction); if (requestedNode) [...app.querySelectorAll('[data-node-key]')].find(item => item.dataset.nodeKey === state.graphData.selected)?.focus(); } }
   if (message.type === 'studioDraftCancelled') { const disposition = studioSaveResponseDisposition(message); if (disposition !== 'active') return; const save = document.querySelector('[data-action="submitStudioDraft"]'); if (save) { save.disabled = false; save.textContent = 'Save immutable candidate'; } resetStudioDetachControls(); const status = document.querySelector('[data-studio-validation]'); status?.insertAdjacentHTML('beforeend', '<span class="studio-warning">Host approval was canceled. The draft remains open and unchanged.</span>'); }
-  if (message.type === 'studioDraftResult') { const disposition = studioSaveResponseDisposition(message); if (!['agent', 'workflow', 'skill'].includes(message.kind) || disposition === 'unmatched') return; const catalogKind = `${message.kind}s`; invalidateCatalog(catalogKind, { offset: 0 }); const outcome = message.outcome === 'recovered' ? 'recover' : 'create'; state.studioHistory.unshift(studioEditors.historyEntry(message.kind, outcome, message.result)); persistStudioMetadata(); if (disposition === 'detached') return; clearWorkingStudioDraft(message.kind); studioDraftDirty = false; closeModal(); studioLifecycleModal(message.kind, outcome, message.result); }
+  if (message.type === 'studioDraftResult') {
+    const disposition = studioSaveResponseDisposition(message);
+    if (!['agent', 'workflow', 'skill'].includes(message.kind) || disposition === 'unmatched') return;
+    const catalogKind = `${message.kind}s`; invalidateCatalog(catalogKind, { offset: 0 });
+    const outcome = message.outcome === 'recovered' ? 'recover' : 'create';
+    state.studioHistory.unshift(studioEditors.historyEntry(message.kind, outcome, message.result)); persistStudioMetadata();
+    if (disposition === 'detached') return;
+    clearWorkingStudioDraft(message.kind); studioDraftDirty = false;
+    // A verified durable result means the host-side create coordinator already
+    // consumed every trust proof attached to this save. Clear the local copies
+    // before closing so cleanup cannot duplicate-release consumed authority.
+    clearConsumedStudioSaveTrust();
+    closeModal(); studioLifecycleModal(message.kind, outcome, message.result);
+  }
   if (message.type === 'studioSetupResult') { if (!pendingStudioSetup || message.requestId !== pendingStudioSetup.requestId || message.result?.schema_version !== 'px.studio-setup-result/1.0' || message.result.ready !== true) return; pendingStudioSetup = null; invalidateCatalog('agents', { offset: 0 }); invalidateCatalog('workflows', { offset: 0 }); vscode.postMessage({ type: 'refresh' }); showInformationModal('Agent Studio and Workflow Studio are operational', 'ADMITTED · EDITABLE · BOUNDED RUNS SUCCEEDED', message.result, `<p><b>${esc(message.result.agent.identity)} @ ${esc(message.result.agent.version)}</b> is admitted and completed run <span class="mono">${esc(message.result.agent.run_id)}</span>.</p><p><b>${esc(message.result.workflow.identity)} @ ${esc(message.result.workflow.version)}</b> is admitted and completed run <span class="mono">${esc(message.result.workflow.run_id)}</span>.</p><p>Open either catalog record and choose Edit as new revision to change it without overwriting the admitted predecessor.</p>`); return; }
   if (message.type === 'studioDraftOutcomeUnverified') { const disposition = studioSaveResponseDisposition(message); if (!['agent', 'workflow', 'skill'].includes(message.kind) || disposition === 'unmatched') return; const catalogKind = `${message.kind}s`; invalidateCatalog(catalogKind, { offset: 0 }); if (disposition === 'detached') return; resetStudioDetachControls(); const save = document.querySelector('[data-action="submitStudioDraft"]'); if (save) { save.disabled = true; save.textContent = 'Outcome requires catalog refresh'; } const status = document.querySelector('[data-studio-validation]') || document.querySelector('.studio-editor-root'); status?.insertAdjacentHTML('beforeend', '<span class="studio-warning" role="alert">The host could not validate the durable creation receipt. The catalog is refreshing to recover authoritative state; this draft will not be blindly retried.</span>'); return; }
   if (message.type === 'studioVersionConflict') {

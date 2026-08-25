@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from scripts.assemble_operational_control_evidence import STAGES, _source_path, assemble
+from scripts.assemble_operational_control_evidence import STAGES, _source_path, assemble, current_source_manifest
 
 
 def write(path: Path, value: object) -> None:
@@ -14,6 +14,7 @@ def write(path: Path, value: object) -> None:
 
 
 def fixture(tmp_path: Path) -> tuple[Path, Path]:
+    tmp_path.mkdir(parents=True, exist_ok=True)
     (tmp_path / "source.js").write_text("current source", encoding="utf-8")
     controls = []
     for control_id in ("pxui.demo.field.name", "pxui.demo.persistence.authoritativeState"):
@@ -23,7 +24,8 @@ def fixture(tmp_path: Path) -> tuple[Path, Path]:
             "source_refs": ["source.js:1"], "evidence_mode": "contained_ui_input" if kind == "field" else "contained_durability",
             "stage_policy": {stage: "required" if stage in {"open_load", "display", "result_acknowledgement"} else "not_applicable_with_evidence" for stage in STAGES},
         })
-    write(tmp_path / "registry/operational_control_proof_matrix.json", {"control_count": 2, "controls": controls})
+    matrix = {"control_count": 2, "controls": controls}
+    write(tmp_path / "registry/operational_control_proof_matrix.json", matrix)
     write(tmp_path / "registry/operational_surface_inventory.json", {"schema_version": "test", "inventory_id": "test", "surfaces": [{"surface_id": "demo", "controls": []}]})
     records = []
     for item in controls:
@@ -35,7 +37,7 @@ def fixture(tmp_path: Path) -> tuple[Path, Path]:
                 chain[stage] = {"state": "present", "detail": "direct browser observation", "evidence": ["browser"]}
         records.append({"control_id": item["control_id"], "attempted": item["kind"] == "field", "rendered": item["kind"] == "field", "observed": item["kind"] == "field", "interaction_chain": chain})
     ui = tmp_path / "ui.json"
-    write(ui, {"schema_version": "px.exhaustive-operational-control-walk/1.0", "records": records})
+    write(ui, {"schema_version": "px.exhaustive-operational-control-walk/1.0", "source": {"control_source_manifest": current_source_manifest(tmp_path, matrix)}, "records": records})
     return tmp_path, ui
 
 
@@ -58,7 +60,8 @@ def test_partial_sources_never_promote_missing_control(tmp_path: Path) -> None:
 def test_exact_direct_stage_receipt_completes_only_its_control(tmp_path: Path) -> None:
     root, ui = fixture(tmp_path)
     receipt = root / "durability.json"
-    write(receipt, {"schema_version": "px.operational-control-stage-evidence/1.0", "evidence_kind": "direct_durability_measurement", "records": [stage_record("pxui.demo.persistence.authoritativeState")]})
+    matrix = json.loads((root / "registry/operational_control_proof_matrix.json").read_text(encoding="utf-8"))
+    write(receipt, {"schema_version": "px.operational-control-stage-evidence/1.0", "evidence_kind": "direct_durability_measurement", "source": {"control_source_manifest": current_source_manifest(root, matrix)}, "records": [stage_record("pxui.demo.persistence.authoritativeState")]})
     result = assemble(root, ui, [receipt])
     assert result["control_chains"]["aggregates"]["complete_interaction_chains"] == 2
 
@@ -66,10 +69,12 @@ def test_exact_direct_stage_receipt_completes_only_its_control(tmp_path: Path) -
 def test_contextual_evidence_and_cross_denominator_ids_fail_closed(tmp_path: Path) -> None:
     root, ui = fixture(tmp_path)
     contextual = root / "contextual.json"
-    write(contextual, {"schema_version": "px.operational-control-stage-evidence/1.0", "evidence_kind": "generic_passing_tests", "records": []})
+    matrix = json.loads((root / "registry/operational_control_proof_matrix.json").read_text(encoding="utf-8"))
+    source = {"control_source_manifest": current_source_manifest(root, matrix)}
+    write(contextual, {"schema_version": "px.operational-control-stage-evidence/1.0", "evidence_kind": "generic_passing_tests", "source": source, "records": []})
     with pytest.raises(ValueError, match="contextual"):
         assemble(root, ui, [contextual])
-    write(contextual, {"schema_version": "px.operational-control-stage-evidence/1.0", "evidence_kind": "direct_durability_measurement", "records": [stage_record("pxui.other.persistence.state")]})
+    write(contextual, {"schema_version": "px.operational-control-stage-evidence/1.0", "evidence_kind": "direct_durability_measurement", "source": source, "records": [stage_record("pxui.other.persistence.state")]})
     with pytest.raises(ValueError, match="outside the denominator"):
         assemble(root, ui, [contextual])
 
@@ -83,6 +88,20 @@ def test_source_path_accepts_numeric_and_semantic_anchors() -> None:
 def test_current_source_owned_host_measurement_is_direct(tmp_path: Path) -> None:
     root, ui = fixture(tmp_path)
     receipt = root / "owned-host.json"
-    write(receipt, {"schema_version": "px.operational-control-stage-evidence/1.0", "evidence_kind": "direct_current_source_host_measurement", "records": [stage_record("pxui.demo.persistence.authoritativeState")]})
+    matrix = json.loads((root / "registry/operational_control_proof_matrix.json").read_text(encoding="utf-8"))
+    write(receipt, {"schema_version": "px.operational-control-stage-evidence/1.0", "evidence_kind": "direct_current_source_host_measurement", "source": {"control_source_manifest": current_source_manifest(root, matrix)}, "records": [stage_record("pxui.demo.persistence.authoritativeState")]})
     result = assemble(root, ui, [receipt])
     assert result["control_chains"]["aggregates"]["complete_interaction_chains"] == 2
+
+
+def test_stale_or_unbound_receipts_fail_closed(tmp_path: Path) -> None:
+    root, ui = fixture(tmp_path)
+    value = json.loads(ui.read_text(encoding="utf-8"))
+    del value["source"]["control_source_manifest"]
+    write(ui, value)
+    with pytest.raises(ValueError, match="absent or stale"):
+        assemble(root, ui, [])
+    root, ui = fixture(tmp_path / "stale")
+    (root / "source.js").write_text("changed after observation", encoding="utf-8")
+    with pytest.raises(ValueError, match="absent or stale"):
+        assemble(root, ui, [])

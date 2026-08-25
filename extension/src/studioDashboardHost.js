@@ -50,7 +50,7 @@ function readBoundedFile(file, expectedStat) {
   } finally { fs.closeSync(descriptor); }
 }
 
-function revisionTreeSha256(revision, projectRoot) {
+function revisionTreeSha256(revision, projectRoot, { excludeOperationalRuns = false } = {}) {
   const requestedProject = path.resolve(projectRoot); const supplied = path.resolve(revision);
   const relative = path.relative(requestedProject, supplied);
   if (!relative || path.isAbsolute(relative) || relative === '..' || relative.startsWith(`..${path.sep}`)) throw new Error('studio-catalog-revision-outside-project');
@@ -68,6 +68,7 @@ function revisionTreeSha256(revision, projectRoot) {
   while (pending.length) {
     const current = pending.pop();
     for (const entry of boundedEntries(current.directory)) {
+      if (excludeOperationalRuns && current.directory === physical && entry.name === 'runs') continue;
       observedEntries += 1;
       if (observedEntries > MAX_TREE_ENTRIES) throw new Error('studio-catalog-tree-bound-exceeded');
       const absolute = path.join(current.directory, entry.name); const stat = fs.lstatSync(absolute);

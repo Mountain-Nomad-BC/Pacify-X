@@ -625,13 +625,23 @@
 
   function defaultSkillFiles(skillId, version = '1.0.0') {
     const title = String(skillId || 'my-skill').replace(/[-_:]+/g, ' ').replace(/\b\w/g, value => value.toUpperCase());
+    const nativeManifest = { schema_version: 'px.native-skill-package/1.0', id: skillId, version, domain: 'px-standard' };
+    const nativeManifestText = `${JSON.stringify(nativeManifest, null, 2)}\n`;
+    const indexedResources = [
+      'agents/openai.yaml', 'capability.json', 'contracts/input.schema.json',
+      'contracts/manifest.json', 'resources/README.md', 'SKILL.md',
+      'skill.yaml', 'tests/contract.json'
+    ];
     return {
       'SKILL.md': `---\nname: ${skillId}\ndescription: Describe when this skill should and should not be used.\n---\n\n# ${title}\n\n1. Establish bounded inputs and authority.\n2. Perform the admitted operation.\n3. Retain validation evidence.\n`,
-      'capability.json': `${JSON.stringify({ schema_version: 'px.skill-capability/1.0', id: skillId, version, domain: 'px-standard', effects: ['read'], permissions: ['read_local'], triggers: ['explicit matching task'], non_triggers: ['unrelated task'] }, null, 2)}\n`,
-      'skill.yaml': `schema_version: px.skill-manifest/1.0\nid: ${skillId}\nversion: ${version}\nentrypoint: SKILL.md\ndomain: px-standard\n`,
+      'capability.json': nativeManifestText,
+      'skill.yaml': nativeManifestText,
+      'agents/openai.yaml': `interface:\n  display_name: ${JSON.stringify(title)}\n  short_description: ${JSON.stringify(`${title} Studio skill`)}\n`,
       'contracts/input.schema.json': `${JSON.stringify({ $schema: 'https://json-schema.org/draft/2020-12/schema', type: 'object', additionalProperties: false, properties: {} }, null, 2)}\n`,
-      'tests/contract.json': `${JSON.stringify({ schema_version: 'px.skill-test/1.1', cases: [{ name: 'required-package-files', assertion: { kind: 'required-files', paths: ['SKILL.md', 'capability.json', 'skill.yaml'] } }] }, null, 2)}\n`,
-      'resources/README.md': '# Resources\n\nPlace bounded, source-attributed supporting material here.\n'
+      'contracts/manifest.json': `${JSON.stringify({ schema_version: 'px.skill-contract-links/1.0', contracts: ['contracts/input.schema.json'] }, null, 2)}\n`,
+      'tests/contract.json': `${JSON.stringify({ schema_version: 'px.skill-test/1.1', cases: [{ name: 'required-package-files', assertion: { kind: 'required-files', paths: indexedResources } }] }, null, 2)}\n`,
+      'resources/README.md': '# Resources\n\nPlace bounded, source-attributed supporting material here.\n',
+      'resources/index.json': `${JSON.stringify({ schema_version: 'px.skill-resources/1.0', resources: indexedResources }, null, 2)}\n`
     };
   }
 
@@ -651,19 +661,13 @@
   }
 
   function synchronizeSkillIdentityFiles(draft) {
-    const next = clone(draft); const files = next.editor_files || {}; const skillId = safeToken(next.skill_id).toLowerCase(); const version = String(next.version || '').trim();
+    const next = clone(draft); const skillId = safeToken(next.skill_id).toLowerCase(); const version = String(next.version || '').trim();
+    const defaults = defaultSkillFiles(skillId, version); const files = { ...defaults, ...(next.editor_files || {}) };
     const capability = JSON.parse(files['capability.json'] || '{}');
     if (!capability || typeof capability !== 'object' || Array.isArray(capability)) throw new Error('capability.json must contain an object.');
-    capability.id = skillId; capability.version = version; capability.domain = 'px-standard'; files['capability.json'] = `${JSON.stringify(capability, null, 2)}\n`;
-    const yamlText = String(files['skill.yaml'] || '');
-    try {
-      const manifest = JSON.parse(yamlText); if (!manifest || typeof manifest !== 'object' || Array.isArray(manifest)) throw new Error('not an object');
-      manifest.id = skillId; manifest.version = version; manifest.domain = 'px-standard'; files['skill.yaml'] = `${JSON.stringify(manifest, null, 2)}\n`;
-    } catch {
-      let lines = yamlText.replace(/\r\n/g, '\n').split('\n');
-      const setRoot = (key, value) => { const index = lines.findIndex(line => new RegExp(`^${key}\\s*:`).test(line)); if (index >= 0) lines[index] = `${key}: ${value}`; else lines.unshift(`${key}: ${value}`); };
-      setRoot('domain', 'px-standard'); setRoot('version', version); setRoot('id', skillId); files['skill.yaml'] = `${lines.join('\n').replace(/\n+$/, '')}\n`;
-    }
+    capability.schema_version = 'px.native-skill-package/1.0'; capability.id = skillId; capability.version = version; capability.domain = 'px-standard';
+    const nativeManifestText = `${JSON.stringify(capability, null, 2)}\n`;
+    files['capability.json'] = nativeManifestText; files['skill.yaml'] = nativeManifestText;
     const body = String(files['SKILL.md'] || ''); const boundary = body.indexOf('\n---', 3);
     if (body.startsWith('---\n') && boundary > 0) { const head = body.slice(0, boundary); const updated = /^name\s*:/m.test(head) ? head.replace(/^name\s*:.*$/m, `name: ${skillId}`) : `${head}\nname: ${skillId}`; files['SKILL.md'] = `${updated}${body.slice(boundary)}`; }
     next.skill_id = skillId; next.editor_files = files; return next;
@@ -679,15 +683,21 @@
     const issues = []; const files = draft?.editor_files || {};
     if (!IDENTITY_PATTERN.test(String(draft?.skill_id || ''))) issues.push('Skill ID must be a lowercase PX identity.');
     if (!validStudioVersion(draft?.version)) issues.push('Version must be a bounded semantic PX version.');
-    for (const required of ['SKILL.md', 'capability.json', 'skill.yaml']) if (!String(files[required] || '').trim()) issues.push(`${required} is required.`);
+    const requiredFiles = ['SKILL.md', 'capability.json', 'skill.yaml', 'agents/openai.yaml', 'contracts/manifest.json', 'resources/index.json'];
+    for (const required of requiredFiles) if (!String(files[required] || '').trim()) issues.push(`${required} is required.`);
     for (const path of Object.keys(files)) {
       if (!path || path.startsWith('/') || /^[A-Za-z]:/.test(path) || path.split(/[\\/]/).includes('..')) issues.push(`Unsafe package path: ${path || '(blank)'}.`);
       if (!String(files[path]).trim()) issues.push(`${path} is empty.`);
     }
-    try { const capability = JSON.parse(files['capability.json'] || ''); if (!capability || Array.isArray(capability) || capability.id !== draft.skill_id || capability.version !== draft.version) issues.push('capability.json ID and version must match the Studio revision.'); if (capability?.domain !== 'px-standard') issues.push('capability.json must remain in the px-standard domain.'); } catch { issues.push('capability.json must contain valid JSON.'); }
+    let capability = null;
+    try { capability = JSON.parse(files['capability.json'] || ''); if (!capability || Array.isArray(capability) || capability.id !== draft.skill_id || capability.version !== draft.version) issues.push('capability.json ID and version must match the Studio revision.'); if (capability?.domain !== 'px-standard') issues.push('capability.json must remain in the px-standard domain.'); } catch { issues.push('capability.json must contain valid JSON.'); }
     const yamlText = String(files['skill.yaml'] || '');
-    try { const manifest = JSON.parse(yamlText); if (!manifest || Array.isArray(manifest) || manifest.id !== draft.skill_id || manifest.version !== draft.version) issues.push('skill.yaml ID and version must match the Studio revision.'); if (manifest?.domain !== 'px-standard') issues.push('skill.yaml must remain in the px-standard domain.'); }
+    try { const manifest = JSON.parse(yamlText); if (!manifest || Array.isArray(manifest) || manifest.id !== draft.skill_id || manifest.version !== draft.version) issues.push('skill.yaml ID and version must match the Studio revision.'); if (manifest?.domain !== 'px-standard') issues.push('skill.yaml must remain in the px-standard domain.'); if (capability && JSON.stringify(manifest) !== JSON.stringify(capability)) issues.push('capability.json and skill.yaml must contain the same native manifest.'); }
     catch { const id = /^id\s*:\s*([^#\r\n]+)/m.exec(yamlText)?.[1]?.trim(); const version = /^version\s*:\s*([^#\r\n]+)/m.exec(yamlText)?.[1]?.trim(); const domain = /^domain\s*:\s*([^#\r\n]+)/m.exec(yamlText)?.[1]?.trim(); if (id !== draft.skill_id || version !== draft.version) issues.push('skill.yaml ID and version must match the Studio revision.'); if (domain !== 'px-standard') issues.push('skill.yaml must remain in the px-standard domain.'); }
+    try { const manifest = JSON.parse(files['contracts/manifest.json'] || ''); if (manifest?.schema_version !== 'px.skill-contract-links/1.0' || !Array.isArray(manifest.contracts)) issues.push('contracts/manifest.json must declare the native contract-link schema and a contracts array.'); } catch { issues.push('contracts/manifest.json must contain valid JSON.'); }
+    try { const index = JSON.parse(files['resources/index.json'] || ''); if (index?.schema_version !== 'px.skill-resources/1.0' || !Array.isArray(index.resources) || index.resources.some(path => typeof path !== 'string' || !Object.hasOwn(files, path))) issues.push('resources/index.json must declare only package files that exist.'); } catch { issues.push('resources/index.json must contain valid JSON.'); }
+    const openaiInterface = String(files['agents/openai.yaml'] || '');
+    if (!/^interface\s*:/m.test(openaiInterface) || !/^\s+display_name\s*:\s*\S/m.test(openaiInterface) || !/^\s+short_description\s*:\s*\S/m.test(openaiInterface)) issues.push('agents/openai.yaml must declare display_name and short_description.');
     const frontmatterName = /^---\s*\n[\s\S]*?^name\s*:\s*([^\r\n#]+)/m.exec(String(files['SKILL.md'] || ''))?.[1]?.trim();
     if (frontmatterName !== draft.skill_id) issues.push('SKILL.md frontmatter name must match the Studio skill ID.');
     if (draft?.builder_domain !== 'px-standard') issues.push('Standard Skill Studio domain must remain px-standard.');

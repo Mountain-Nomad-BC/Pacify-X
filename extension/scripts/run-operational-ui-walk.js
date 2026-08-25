@@ -19,6 +19,7 @@ const { evaluateOperationalWalk, exitCodeForTerminalState } = require('./operati
 const {
   STAGES,
   actionIdentity,
+  currentSourceManifest,
   directSelectorFor,
   revealActionFor,
   selectorForKind,
@@ -1100,11 +1101,11 @@ async function runInstalledStudioSetupProfile(frameHost, matrix, timeoutMs = 180
   };
 }
 
-function validStudioDraftReceipt(kind, result, identity) {
+function validStudioDraftReceipt(kind, result, identity, version = '1.0.0') {
   if (!result || typeof result !== 'object') return false;
-  if (kind === 'agent') return result.schema_version === 'px.agent-creation-receipt/1.1' && result.agent_id === identity && result.version === '1.0.0' && result.created === true && /^[0-9a-f]{64}$/.test(String(result.record_sha256 || ''));
-  if (kind === 'workflow') return result.schema_version === 'px.workflow-revision-receipt/1.2' && result.workflow_id === identity && result.version === '1.0.0' && result.created === true && /^[0-9a-f]{64}$/.test(String(result.revision_sha256 || ''));
-  return kind === 'skill' && result.schema_version === 'px.skill-draft/1.1' && result.manifest?.skill_id === identity && result.manifest?.version === '1.0.0' && /^[0-9a-f]{64}$/.test(String(result.manifest_sha256 || '')) && /^[0-9a-f]{64}$/.test(String(result.source_tree_sha256 || ''));
+  if (kind === 'agent') return result.schema_version === 'px.agent-creation-receipt/1.1' && result.agent_id === identity && result.version === version && result.created === true && /^[0-9a-f]{64}$/.test(String(result.record_sha256 || ''));
+  if (kind === 'workflow') return result.schema_version === 'px.workflow-revision-receipt/1.2' && result.workflow_id === identity && result.version === version && result.created === true && /^[0-9a-f]{64}$/.test(String(result.revision_sha256 || ''));
+  return kind === 'skill' && result.schema_version === 'px.skill-draft/1.1' && result.manifest?.skill_id === identity && result.manifest?.version === version && /^[0-9a-f]{64}$/.test(String(result.manifest_sha256 || '')) && /^[0-9a-f]{64}$/.test(String(result.source_tree_sha256 || ''));
 }
 
 function studioCandidateSaveRecord(requirement, observation) {
@@ -1224,6 +1225,172 @@ async function runInstalledStudioCandidateSaveProfile(frameHost, matrix, timeout
     records.push(studioCandidateSaveRecord(requirement, observation));
   }
   return { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Exact immutable candidate saves executed only inside the owned isolated VS Code host.', eligible_control_count: records.length, observations, records };
+}
+
+function studioRevisionEditRecord(requirement, observations, kind = null) {
+  const selected = kind ? observations.filter(item => item.kind === kind) : observations;
+  const verified = selected.length > 0 && selected.every(item => item.editor_bound && item.typed_creation_receipt && item.reopened_catalog_match);
+  const evidenceRef = `installed-studio-revision-edit:${requirement.control_id}`;
+  return {
+    control_id: requirement.control_id, surface_id: requirement.surface_id, control_kind: requirement.kind,
+    evidence_mode: 'owned_isolated_studio_revision_edit', rendered: selected.every(item => item.editor_bound),
+    observed: selected.every(item => item.editor_bound), attempted: selected.some(item => item.attempted),
+    interaction_chain: Object.fromEntries(STAGES.map(stage => {
+      if (requirement.stage_policy[stage] !== 'required') return [stage, { state: 'not_applicable', detail: `Canonical matrix marks ${stage} not applicable.`, evidence: [evidenceRef] }];
+      if (stage === 'failure_handling') return [stage, { state: 'missing', detail: 'The successful predecessor-bound edit profile did not inject a create failure; matched fault evidence must supply this stage.', evidence: [] }];
+      return [stage, verified
+        ? { state: 'present', detail: `The installed ${kind || 'agent and workflow'} Studio authenticated exact 1.0.0 predecessors, opened read-only lineage-bound 1.0.1 editors, persisted modified immutable revisions, and rediscovered those exact revisions after route reopen.`, evidence: [evidenceRef] }
+        : { state: 'missing', detail: `The owned installed-host revision-edit campaign did not prove ${stage}.`, evidence: [] }];
+    })),
+    errors: selected.flatMap(item => item.errors || [])
+  };
+}
+
+async function runInstalledStudioRevisionEditProfile(frameHost, candidateProfile, matrix, timeoutMs = 150_000) {
+  const requirements = new Map(matrix.controls.map(control => [control.control_id, control]));
+  const specifications = [
+    { kind: 'agent', submitControlId: 'pxui.agent-studio.action.submitStudioDraft.agent' },
+    { kind: 'workflow', submitControlId: 'pxui.workflow-studio.action.submitStudioDraft.workflow' }
+  ];
+  const observations = [];
+  for (const spec of specifications) {
+    const candidate = (candidateProfile.observations || []).find(item => item.kind === spec.kind);
+    const observation = {
+      kind: spec.kind, identity: candidate?.identity || null, source_version: candidate?.version || null,
+      candidate_version: '1.0.1', source_catalog_record_id: candidate?.catalog_record_id || null,
+      saved_catalog_record_id: null, attempted: false, editor_bound: false, typed_creation_receipt: false,
+      reopened_catalog_match: false, last_editor_state: null, result: null, errors: []
+    };
+    try {
+      if (!candidate?.typed_creation_receipt || !candidate?.reopened_catalog_match || !candidate?.catalog_record_id) throw new Error(`studio-${spec.kind}-revision-edit-prerequisite-missing`);
+      await frameHost.evaluate((frame, item) => {
+        const document = frame.contentDocument;
+        document?.querySelector('[data-action="closeModal"]')?.click();
+        document?.querySelector(`[data-surface="${CSS.escape(item.route)}"]`)?.click();
+      }, candidate);
+      await wait(180);
+      await frameHost.evaluate((frame, item) => {
+        const scope = frame.contentDocument?.querySelector(`[data-action="surfaceScope"][data-target="${CSS.escape(item.route)}"][data-scope="core"]`);
+        if (!scope || scope.disabled) throw new Error(`studio-${item.kind}-revision-edit-core-scope-unavailable`);
+        if (scope.getAttribute('aria-pressed') !== 'true') scope.click();
+      }, candidate);
+      const rowDeadline = Date.now() + 30_000;
+      let rowOpened = false;
+      do {
+        rowOpened = await frameHost.evaluate((frame, recordId) => {
+          const row = [...frame.contentDocument.querySelectorAll('[data-action="inspectCatalogItem"]')].find(element => element.dataset.id === recordId && !element.disabled);
+          if (!row) return false;
+          row.click(); return true;
+        }, candidate.catalog_record_id);
+        if (rowOpened) break;
+        await wait(150);
+      } while (Date.now() < rowDeadline);
+      if (!rowOpened) throw new Error(`studio-${spec.kind}-revision-edit-source-row-missing`);
+      await wait(120);
+      observation.attempted = true;
+      const editorBefore = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
+      const openDispatched = await frameHost.evaluate((frame, kind) => {
+        const open = [...frame.contentDocument.querySelectorAll('[data-action="openStudioFromCatalog"]')].find(element => element.dataset.kind === kind && !element.disabled);
+        if (!open) return false;
+        open.click(); return true;
+      }, spec.kind);
+      if (!openDispatched) throw new Error(`studio-${spec.kind}-revision-editor-opener-missing`);
+      const editorDeadline = Date.now() + timeoutMs;
+      do {
+        const state = await frameHost.evaluate((frame, item) => {
+          const responses = frame.contentWindow?.__PX_INSTALLED_RESPONSES__ || [];
+          const failure = responses.slice(item.after).find(value => value?.type === 'operationError' && ['loadStudioRevisionEditor', 'studioOperation'].includes(value?.operation));
+          if (failure) return { failure: failure.error || 'unknown editor load failure' };
+          const document = frame.contentDocument;
+          const identity = document.querySelector('#studio-identity');
+          const version = document.querySelector('#studio-version');
+          const baseline = document.querySelector('.studio-revision-baseline');
+          const fork = document.querySelector('[data-action="forkStudioCandidate"]');
+          const save = document.querySelector('[data-action="submitStudioDraft"]');
+          return {
+            ready: identity?.value === item.identity && version?.value === item.version
+              && identity.readOnly && version.readOnly && Boolean(baseline) && Boolean(fork) && Boolean(save),
+            identity: identity?.value || null, identity_readonly: Boolean(identity?.readOnly),
+            version: version?.value || null, version_readonly: Boolean(version?.readOnly),
+            baseline: baseline?.textContent?.trim().slice(0, 1000) || null,
+            fork_present: Boolean(fork), save_present: Boolean(save), save_disabled: Boolean(save?.disabled),
+            validation: document.querySelector('[data-studio-validation]')?.textContent?.trim().slice(0, 1600) || null,
+            modal_text: document.querySelector('.studio-modal')?.textContent?.trim().slice(0, 2400) || null
+          };
+        }, { after: editorBefore, identity: candidate.identity, version: observation.candidate_version });
+        observation.last_editor_state = state;
+        if (state.failure) throw new Error(`studio-${spec.kind}-revision-editor-load-failed:${state.failure}`);
+        if (state.ready) { observation.editor_bound = true; break; }
+        await wait(200);
+      } while (Date.now() < editorDeadline);
+      if (!observation.editor_bound) throw new Error(`studio-${spec.kind}-revision-editor-binding-timeout`);
+      const saveState = await frameHost.evaluate((frame, suffix) => {
+        const owner = frame.contentDocument.querySelector('#studio-owner');
+        if (!owner) return { available: false, reason: 'owner-input-missing' };
+        owner.value = `${owner.value}${suffix}`; owner.dispatchEvent(new Event('input', { bubbles: true }));
+        const save = frame.contentDocument.querySelector('[data-action="submitStudioDraft"]');
+        return {
+          available: Boolean(save && !save.disabled), save_present: Boolean(save), save_disabled: Boolean(save?.disabled),
+          validation: frame.contentDocument.querySelector('[data-studio-validation]')?.textContent?.trim().slice(0, 1600) || null
+        };
+      }, `:edited-${Date.now().toString(36)}`);
+      observation.last_editor_state = { ...(observation.last_editor_state || {}), after_edit: saveState };
+      if (!saveState.available) throw new Error(`studio-${spec.kind}-revision-save-unavailable-after-edit:${JSON.stringify(saveState)}`);
+      const saveBefore = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
+      await frameHost.evaluate(frame => frame.contentDocument.querySelector('[data-action="submitStudioDraft"]').click());
+      const saveDeadline = Date.now() + timeoutMs;
+      do {
+        const response = await frameHost.evaluate((frame, item) => {
+          const responses = frame.contentWindow?.__PX_INSTALLED_RESPONSES__ || [];
+          return responses.slice(item.after).find(value => (value?.type === 'studioDraftResult' && value?.kind === item.kind)
+            || (value?.type === 'operationError' && value?.operation === 'createStudioDraft' && value?.kind === item.kind)) || null;
+        }, { after: saveBefore, kind: spec.kind });
+        if (response?.type === 'operationError') throw new Error(`studio-${spec.kind}-revision-create-failed:${response.error}`);
+        if (response) { observation.result = response.result; break; }
+        await wait(200);
+      } while (Date.now() < saveDeadline);
+      observation.typed_creation_receipt = validStudioDraftReceipt(spec.kind, observation.result, candidate.identity, observation.candidate_version);
+      if (!observation.typed_creation_receipt) throw new Error(`studio-${spec.kind}-revision-creation-receipt-invalid:${JSON.stringify(observation.result)}`);
+      const catalogBefore = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
+      await frameHost.evaluate((frame, route) => {
+        const document = frame.contentDocument;
+        document?.querySelector('[data-action="closeModal"]')?.click();
+        document?.querySelector('[data-surface="dashboard"]')?.click();
+        document?.querySelector(`[data-surface="${CSS.escape(route)}"]`)?.click();
+      }, candidate.route);
+      const catalogDeadline = Date.now() + 30_000;
+      do {
+        const reopenedRecord = await frameHost.evaluate((frame, item) => {
+          const responses = frame.contentWindow?.__PX_INSTALLED_RESPONSES__ || [];
+          for (const value of responses.slice(item.after).filter(value => value?.type === 'catalogResult' && value?.result?.kind === `${item.kind}s`)) {
+            const record = (value.result.items || []).find(record => {
+              const details = record?.details || {};
+              return (details.agent_id || details.workflow_id || details.id) === item.identity && details.version === item.version;
+            });
+            if (record) return { id: record.id, kind: record.kind, status: record.status };
+          }
+          return null;
+        }, { after: catalogBefore, kind: spec.kind, identity: candidate.identity, version: observation.candidate_version });
+        if (reopenedRecord) {
+          observation.reopened_catalog_match = true;
+          observation.saved_catalog_record_id = reopenedRecord.id;
+          break;
+        }
+        await wait(150);
+      } while (Date.now() < catalogDeadline);
+      if (!observation.reopened_catalog_match) throw new Error(`studio-${spec.kind}-revision-catalog-reopen-match-missing`);
+    } catch (error) { observation.errors.push(String(error?.message || error).slice(0, 2400)); }
+    observations.push(observation);
+  }
+  const openRequirement = requirements.get('pxui.studio-lifecycle.action.openStudioFromCatalog');
+  if (!openRequirement) throw new Error('Studio revision-edit profile openStudioFromCatalog control is absent');
+  const records = [studioRevisionEditRecord(openRequirement, observations)];
+  for (const spec of specifications) {
+    const requirement = requirements.get(spec.submitControlId);
+    if (!requirement) throw new Error(`Studio revision-edit profile control is absent: ${spec.submitControlId}`);
+    records.push(studioRevisionEditRecord(requirement, observations, spec.kind));
+  }
+  return { schema_version: 'px.installed-studio-revision-edit-profile/1.0', authority: 'Exact predecessor-bound immutable revision edits executed only inside the owned isolated VS Code host.', observations, control_probe: { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Exact predecessor-bound immutable revision edits executed only inside the owned isolated VS Code host.', eligible_control_count: records.length, records } };
 }
 
 function validStudioLifecycleResult(kind, operation, result) {
@@ -1627,6 +1794,9 @@ async function main() {
     const studioLifecycleProfile = ownedReversibleConfigurationAuthority
       ? await runInstalledStudioLifecycleProfile(dashboard, studioCandidateSaveProfile, proofMatrix)
       : { schema_version: 'px.installed-studio-lifecycle-profile/1.0', authority: 'Not admitted outside an owned isolated host.', observations: [], control_probe: { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside an owned isolated host.', eligible_control_count: 0, records: [] } };
+    const studioRevisionEditProfile = ownedReversibleConfigurationAuthority
+      ? await runInstalledStudioRevisionEditProfile(dashboard, studioCandidateSaveProfile, proofMatrix, studioLifecycleOnly ? 45_000 : 150_000)
+      : { schema_version: 'px.installed-studio-revision-edit-profile/1.0', authority: 'Not admitted outside an owned isolated host.', observations: [], control_probe: { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside an owned isolated host.', eligible_control_count: 0, records: [] } };
     let sidebarOpenError = null;
     const isSidebarText = text => /PACIFY-X[\s\S]*OPEN CONTROL PLANE/i.test(text) && /NO ACTIVE EXECUTION|PROVIDER ACTIVITY/i.test(text);
     let sidebar = studioLifecycleOnly ? null : await waitForOwnedWebview(workbench, isSidebarText, 1_500);
@@ -1663,7 +1833,7 @@ async function main() {
     const sidebarScreenshot = sidebar ? await safeScreenshot(sidebar, path.join(outputRoot, 'sidebar.png'), 'sidebar', hostErrors) : null;
     const observedAt = new Date().toISOString();
     const builderControlIds = Object.values(builders).flatMap(builder => builder?.attempted_control_ids || []);
-    const controlChains = applyInstalledProbeObservations(applyInstalledProbeObservations(applyInstalledProbeObservations(applyInstalledProbeObservations(applyInstalledProbeObservations(applyBuilderObservations(buildPerControlRecords({
+    const controlChains = applyInstalledProbeObservations(applyInstalledProbeObservations(applyInstalledProbeObservations(applyInstalledProbeObservations(applyInstalledProbeObservations(applyInstalledProbeObservations(applyBuilderObservations(buildPerControlRecords({
       inventory,
       results,
       sidebar: sidebarResult,
@@ -1671,7 +1841,7 @@ async function main() {
       authority: LIVE_WALK_AUTHORITY,
       observedAt,
       attemptedControlIds: [...attemptedControlIds, ...builderControlIds]
-    }), builders), installedControlProbe), reversibleConfigurationProfile, 'reversible_configuration_observations'), studioSetupProfile, 'studio_setup_observations'), studioCandidateSaveProfile, 'studio_candidate_save_observations'), studioLifecycleProfile.control_probe, 'studio_lifecycle_observations');
+    }), builders), installedControlProbe), reversibleConfigurationProfile, 'reversible_configuration_observations'), studioSetupProfile, 'studio_setup_observations'), studioCandidateSaveProfile, 'studio_candidate_save_observations'), studioLifecycleProfile.control_probe, 'studio_lifecycle_observations'), studioRevisionEditProfile.control_probe, 'studio_revision_edit_observations');
     const receipt = {
       schema_version: 'px.operational-ui-walk/1.2',
       observed_at: observedAt,
@@ -1680,7 +1850,8 @@ async function main() {
       host_source_mismatch: hostSourceMismatch,
       source_identity: {
         state: hostSourceMismatch ? 'mismatch' : hostSourceIdentityVerified ? 'verified' : 'unknown',
-        method: 'dashboard-runtime-identity-contract'
+        method: 'dashboard-runtime-identity-contract',
+        control_source_manifest: currentSourceManifest(JSON.parse(fs.readFileSync(proofMatrixPath, 'utf8')))
       },
       surfaces,
       results,
@@ -1690,6 +1861,7 @@ async function main() {
       studio_setup_profile: studioSetupProfile,
       studio_candidate_save_profile: studioCandidateSaveProfile,
       studio_lifecycle_profile: studioLifecycleProfile,
+      studio_revision_edit_profile: studioRevisionEditProfile,
       focused_profile: studioLifecycleOnly ? 'studio-lifecycle' : null,
       sidebar: sidebarResult,
       sidebar_screenshot: sidebarScreenshot,
@@ -1699,7 +1871,7 @@ async function main() {
       limitations: [
         'The inventory denominator is authoritative; every inventory control receives exactly one terminal record with all thirteen chain stages.',
         hostSourceMismatch ? 'Installed/source identity mismatch blocked all further surface and builder interaction.' : 'The walk activates every dashboard navigation surface and records its real DOM and screenshots.',
-        ownedReversibleConfigurationAuthority ? 'The owned isolated host directly executes bounded Studio setup, immutable candidate saves, and exact candidate lifecycle operations with typed durable receipts.' : 'Agent and Workflow builder interactions are limited to reversible unsaved webview state with exact per-control pre/post digests; no candidate save or run is authorized.',
+        ownedReversibleConfigurationAuthority ? 'The owned isolated host directly executes bounded Studio setup, immutable candidate saves, exact candidate lifecycle operations, and predecessor-bound next-revision edits with typed durable receipts.' : 'Agent and Workflow builder interactions are limited to reversible unsaved webview state with exact per-control pre/post digests; no candidate save or run is authorized.',
         'Controls requiring write, execution, lifecycle, recovery, reload, or destructive authority are skipped per control with an exact reason and return condition.'
       ]
     };
@@ -1720,4 +1892,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { applyInstalledProbeObservations, eligibleInstalledControl, exerciseInstalledControl, installedActionIdentity, installedStudioPrerequisites, instrumentInstalledBridge, prepareInstalledControl, probeInstalledControls, revealInstalledControl, runInstalledStudioCandidateSaveProfile, runInstalledStudioLifecycleProfile, runInstalledStudioSetupProfile, studioLifecycleControlProbe, validStudioDraftReceipt, validStudioLifecycleResult, validStudioSetupResult };
+module.exports = { applyInstalledProbeObservations, eligibleInstalledControl, exerciseInstalledControl, installedActionIdentity, installedStudioPrerequisites, instrumentInstalledBridge, prepareInstalledControl, probeInstalledControls, revealInstalledControl, runInstalledStudioCandidateSaveProfile, runInstalledStudioLifecycleProfile, runInstalledStudioRevisionEditProfile, runInstalledStudioSetupProfile, studioLifecycleControlProbe, validStudioDraftReceipt, validStudioLifecycleResult, validStudioSetupResult };

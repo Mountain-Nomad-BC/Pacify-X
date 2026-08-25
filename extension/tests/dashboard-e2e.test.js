@@ -456,14 +456,15 @@ test('Playwright drives every dashboard route and high-risk interaction without 
   assert.equal(await page.locator('#studio-version').inputValue(), '1.0.2');
   assert.match(await page.locator('#studio-skill-file').inputValue(), /Draft survives conflict/);
   await page.locator('[data-action="skillSelectFile"][data-file-path="skill.yaml"]').click();
-  assert.match(await page.locator('#studio-skill-file').inputValue(), /version:\s*1\.0\.2/);
+  assert.equal(JSON.parse(await page.locator('#studio-skill-file').inputValue()).version, '1.0.2');
   await page.locator('[data-action="skillSelectFile"][data-file-path="SKILL.md"]').click();
   assert.equal(await page.locator('[data-control-id="studio-save-candidate"]').isEnabled(), true);
   await page.locator('[data-control-id="studio-save-candidate"]').click();
   const retrySaveRequest = await page.evaluate(() => [...window.__PX_POSTED_MESSAGES__].reverse().find(message => message.type === 'createStudioDraft'));
   assert.notEqual(retrySaveRequest.requestId, saveRequest.requestId);
   assert.equal(retrySaveRequest.kind, 'skill');
-  assert.match(retrySaveRequest.payload.editor_files['skill.yaml'], /version:\s*1\.0\.2/);
+  assert.equal(JSON.parse(retrySaveRequest.payload.editor_files['skill.yaml']).version, '1.0.2');
+  assert.deepEqual(JSON.parse(retrySaveRequest.payload.editor_files['skill.yaml']), JSON.parse(retrySaveRequest.payload.editor_files['capability.json']));
   assert.equal(JSON.parse(retrySaveRequest.payload.editor_files['capability.json']).version, '1.0.2');
   await page.evaluate(requestId => window.dispatchEvent(new MessageEvent('message', { data: { type: 'studioVersionConflict', requestId, kind: 'skill', error: 'Predecessor binding changed.', allocation: { schema_version: 'px.studio-version-allocation/1.0', kind: 'skill', identity: 'skill:existing', source_version: '1.0.0', source_scope: 'studio-physical', source_revision_sha256: '6'.repeat(64), source_content_sha256: 'a'.repeat(64), candidate_version: '1.0.3', occupied_versions_sha256: 'b'.repeat(64), observed_utc: '2026-08-16T00:00:02Z' } } })), retrySaveRequest.requestId);
   assert.match(await page.locator('[data-control-id="studio-save-candidate"]').textContent(), /Version check failed/);
@@ -473,7 +474,7 @@ test('Playwright drives every dashboard route and high-risk interaction without 
   await page.locator('[data-action="discardWorkingStudioDraft"][data-kind="skill"]').click();
   assert.equal(await page.locator('.skill-file-tree').isVisible(), true);
   assert.equal(await page.locator('#studio-version').getAttribute('readonly'), null);
-  assert.equal(await page.locator('.skill-file-tree > button').count(), 6);
+  assert.equal(await page.locator('.skill-file-tree > button').count(), 9);
   await page.locator('[data-action="skillAddFile"][data-file-kind="resource"]').click();
   await page.locator('#studio-skill-file').fill('# Bounded reference\n');
   await page.locator('#studio-identity').fill('synchronized-skill');
@@ -495,8 +496,10 @@ test('Playwright drives every dashboard route and high-risk interaction without 
   assert.equal(synchronizedSkillRequest.payload.version, '2.0.0');
   assert.equal(JSON.parse(synchronizedSkillRequest.payload.editor_files['capability.json']).id, 'synchronized-skill');
   assert.equal(JSON.parse(synchronizedSkillRequest.payload.editor_files['capability.json']).version, '2.0.0');
-  assert.match(synchronizedSkillRequest.payload.editor_files['skill.yaml'], /id:\s*synchronized-skill/);
-  assert.match(synchronizedSkillRequest.payload.editor_files['skill.yaml'], /version:\s*2\.0\.0/);
+  const synchronizedNativeManifest = JSON.parse(synchronizedSkillRequest.payload.editor_files['skill.yaml']);
+  assert.equal(synchronizedNativeManifest.id, 'synchronized-skill');
+  assert.equal(synchronizedNativeManifest.version, '2.0.0');
+  assert.deepEqual(synchronizedNativeManifest, JSON.parse(synchronizedSkillRequest.payload.editor_files['capability.json']));
   await page.keyboard.press('Escape');
   assert.equal(await page.evaluate(requestId => [...window.__PX_POSTED_MESSAGES__].some(message => message.type === 'detachStudioDraft' && message.requestId === requestId && message.kind === 'skill'), synchronizedSkillRequest.requestId), true);
   const catalogQueriesBeforeUnverified = await page.evaluate(() => window.__PX_POSTED_MESSAGES__.filter(message => message.type === 'catalogQuery' && message.kind === 'skills').length);
@@ -636,9 +639,14 @@ test('Playwright drives every dashboard route and high-risk interaction without 
   assert.equal(predecessorWorkflowSave.payload.version_allocation.source_scope, 'studio-physical');
   assert.match(predecessorWorkflowSave.payload.version_allocation_proof, /^version-allocation:/);
   assert.equal(predecessorWorkflowSave.payload.version_allocation.candidate_version, '1.0.1');
-  await page.keyboard.press('Escape');
+  const workflowReleaseCountBeforeSuccess = await page.evaluate(() => window.__PX_POSTED_MESSAGES__.filter(message => message.type === 'releaseStudioTrust').length);
   await page.evaluate(request => window.dispatchEvent(new MessageEvent('message', { data: { type: 'studioDraftResult', requestId: request.requestId, kind: request.kind, result: { created: true } } })), predecessorWorkflowSave);
-  assert.equal(await page.locator('[role="dialog"]').count(), 0, 'Escape cancellation must reject a late predecessor-workflow save result');
+  await page.locator('[role="dialog"]').waitFor({ state: 'visible' });
+  assert.equal(await page.evaluate(({ proof, before }) => {
+    const releases = window.__PX_POSTED_MESSAGES__.filter(message => message.type === 'releaseStudioTrust');
+    return releases.length === before && !releases.some(message => message.proof === proof);
+  }, { proof: predecessorWorkflowSave.payload.version_allocation_proof, before: workflowReleaseCountBeforeSuccess }), true, 'a durable save result must clear consumed proof state before modal cleanup');
+  await page.keyboard.press('Escape');
   await page.locator('[data-action="openStudioDraft"][data-kind="workflow"]').click();
   assert.equal(await page.locator('[data-control-id="workflow-canvas"]').isVisible(), true);
   const initialWorkflowLayout = await page.locator('[data-control-id="workflow-canvas"]').evaluate(canvas => {

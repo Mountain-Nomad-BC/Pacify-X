@@ -568,6 +568,8 @@ class MemoryVault:
                 payloads.append((int(value["revision"]), path, value))
         _, path, sealed = sorted(payloads)[-1]
         lifecycle = self._validate_lifecycle(memory_id)
+        lifecycle_state = str(lifecycle[-1]["state"])
+        lifecycle_head_sha256 = str(lifecycle[-1]["event_sha256"])
         return {
             "schema_version": "px.canonical-memory-record/1.0",
             "authority": "canonical workspace memory vault",
@@ -583,9 +585,9 @@ class MemoryVault:
             "epistemic_status": record.epistemic_status,
             "confidence": record.confidence,
             "confidence_method": record.confidence_method,
-            "certification_status": record.certification_status,
-            "lifecycle_state": str(lifecycle[-1]["state"]),
-            "retrieval_enabled": record.retrieval_enabled,
+            "certification_status": lifecycle_state,
+            "lifecycle_state": lifecycle_state,
+            "retrieval_enabled": lifecycle_state in {"certified", "trusted"},
             "source_artifact": record.source_artifact,
             "source_sha256": record.source_sha256,
             "evidence_locator": record.evidence_locator,
@@ -596,8 +598,9 @@ class MemoryVault:
             "conflicts_with": list(record.conflicts_with),
             "record_sha256": sealed["record_sha256"],
             "previous_record_sha256": sealed["previous_record_sha256"],
-            "lifecycle_event_head_sha256": sealed["lifecycle_event_head_sha256"],
-            "lifecycle_head_sha256": sealed["lifecycle_event_head_sha256"],
+            "lifecycle_event_head_sha256": lifecycle_head_sha256,
+            "lifecycle_head_sha256": lifecycle_head_sha256,
+            "record_lifecycle_head_sha256": sealed["lifecycle_event_head_sha256"],
             "record_relative": path.relative_to(self.root).as_posix(),
             "lifecycle": [
                 {key: event[key] for key in ("sequence", "event", "state", "evidence", "created_utc", "previous_event_sha256", "event_sha256")}

@@ -9,9 +9,9 @@ from pathlib import Path
 from typing import Any
 
 try:
-    from scripts.assemble_operational_control_evidence import MATRIX, STAGES
+    from scripts.assemble_operational_control_evidence import MATRIX, STAGES, current_source_manifest
 except ModuleNotFoundError:  # Direct `python scripts/...` execution.
-    from assemble_operational_control_evidence import MATRIX, STAGES
+    from assemble_operational_control_evidence import MATRIX, STAGES, current_source_manifest
 
 
 STUDIO_RUNTIME_STAGES = {
@@ -88,6 +88,30 @@ def build(root: Path, receipt_path: Path, vsix_path: Path) -> dict[str, Any]:
         raise ValueError(
             "installed-host receipt is not bound to the exact retained VSIX"
         )
+    matrix = _load(root / MATRIX)
+    source_manifest = current_source_manifest(root, matrix)
+    identity_path = root / "registry" / "engine_identity.json"
+    identity = _load(identity_path)
+    receipt_identity = receipt.get("engine_identity")
+    identity_records = {
+        str(item.get("path")): item
+        for item in identity.get("records", [])
+        if isinstance(item, dict)
+    }
+    control_sources_current = all(
+        isinstance(identity_records.get(item["path"]), dict)
+        and identity_records[item["path"]].get("sha256") == item["sha256"]
+        and identity_records[item["path"]].get("bytes") == item["bytes"]
+        for item in source_manifest["files"]
+    )
+    if (
+        not isinstance(receipt_identity, dict)
+        or receipt_identity.get("manifest_sha256") != _sha256(identity_path)
+        or receipt_identity.get("tree_sha256") != identity.get("tree_sha256")
+        or receipt_identity.get("file_total") != identity.get("file_total")
+        or not control_sources_current
+    ):
+        raise ValueError("installed-host receipt engine identity is absent or stale")
     lifecycle = receipt.get("process_lifecycle", {})
     if not all(
         (
@@ -103,9 +127,7 @@ def build(root: Path, receipt_path: Path, vsix_path: Path) -> dict[str, Any]:
     sidebar = host.get("live_sidebar", {}).get("provider", {})
     if not studio.get("setup_ready"):
         raise ValueError("installed host lacks exact Studio readiness")
-    requirements = {
-        item["control_id"]: item for item in _load(root / MATRIX)["controls"]
-    }
+    requirements = {item["control_id"]: item for item in matrix["controls"]}
     specs: list[tuple[str, set[str], str, bool]] = []
     for surface, kind in (
         ("agent-studio", "agent"),
@@ -207,6 +229,7 @@ def build(root: Path, receipt_path: Path, vsix_path: Path) -> dict[str, Any]:
             "receipt_sha256": _sha256(receipt_path),
             "vsix": vsix_path.relative_to(root).as_posix(),
             "vsix_sha256": digest,
+            "control_source_manifest": source_manifest,
         },
         "records": sorted(records, key=lambda item: item["control_id"]),
     }

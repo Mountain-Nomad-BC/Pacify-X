@@ -64,6 +64,9 @@ test('owned installed Studio candidate save accepts only kind-exact durable rece
   assert.equal(validStudioDraftReceipt('agent', agent, agent.agent_id), true);
   assert.equal(validStudioDraftReceipt('workflow', workflow, workflow.workflow_id), true);
   assert.equal(validStudioDraftReceipt('skill', skill, skill.manifest.skill_id), true);
+  assert.equal(validStudioDraftReceipt('agent', { ...agent, version: '1.0.1' }, agent.agent_id, '1.0.1'), true);
+  assert.equal(validStudioDraftReceipt('workflow', { ...workflow, version: '1.0.1' }, workflow.workflow_id, '1.0.1'), true);
+  assert.equal(validStudioDraftReceipt('agent', agent, agent.agent_id, '1.0.1'), false);
   assert.equal(validStudioDraftReceipt('agent', { ...agent, created: false }, agent.agent_id), false);
   assert.equal(validStudioDraftReceipt('workflow', workflow, 'workflow:other'), false);
   assert.equal(validStudioDraftReceipt('skill', { ...skill, source_tree_sha256: 'bad' }, skill.manifest.skill_id), false);
@@ -120,6 +123,12 @@ test('installed control probe retains exact denominator, bridge, and receipt con
   assert.match(source, /reversible_configuration_profile: reversibleConfigurationProfile/);
   assert.match(source, /studio_setup_profile: studioSetupProfile/);
   assert.match(source, /studio_candidate_save_profile: studioCandidateSaveProfile/);
+  assert.match(source, /studio_revision_edit_profile: studioRevisionEditProfile/);
+  assert.match(source, /runInstalledStudioRevisionEditProfile/);
+  assert.match(source, /revision-editor-binding-timeout/);
+  assert.match(source, /revision-save-unavailable-after-edit/);
+  assert.match(source, /last_editor_state/);
+  assert.match(source, /revision-catalog-reopen-match-missing/);
   assert.match(source, /runInstalledStudioSetupProfile/);
   assert.match(source, /setupStudio-positive-counts-not-observed/);
   assert.match(source, /data-action="surfaceScope"\]\[data-target="agents"\]\[data-scope="core"/);

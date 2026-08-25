@@ -8,6 +8,16 @@ All notable changes to PACIFY-X are recorded here. The project follows semantic 
 - Added stable governed CLI exit codes, Python 3.11–3.14 runtime enforcement, command-local CLI loading, durable chunked release-evidence custody, and hash-locked normal CI.
 - Made v0.6.3 the sole onboarding default, removed the README warning block, and separated certified release installation from development setup.
 
+## 0.6.54 - 2026-08-25
+
+- Made Agent Studio and Workflow Studio physically editable through immutable successor revisions, with exact reopen, lifecycle, visual-builder, and runnable-state evidence.
+- Completed the nine-file Skill Studio package path and bound create, validation, admission, promotion, and physical editor reopen to exact source commitments.
+- Repaired canonical memory lifecycle projection, project filtering, ranking-before-pagination, and source-backed operational retrieval for all three Studios.
+- Hardened detached Studio worker authority propagation, abnormal-death reconciliation, failure-publication fallback, pause/resume fencing, and terminal process closure across supported hosts.
+- Repaired portable source custody, temporary-artifact exclusion, machine-local path sanitation, calibrated process tests, and governed leaked-test-process detection.
+- Expanded installed-host evidence adaptation to retain setup, save, lifecycle, and revision-edit control profiles without inventing evidence, and refreshed direct-provider-route currentness with zero bypass violations.
+- Added guarded current-source UI, fault-recovery, host, memory, and adversarial audit evidence while keeping certification fail-closed until this exact artifact is installed and verified.
+
 ## 0.6.3 - 2026-08-03
 
 - Bound release certificates to the annotated Git identity, trusted Ed25519 publisher, exact wheel and sdist bytes, evidence manifest, coverage, SBOM, provenance, toolchain, and platform.

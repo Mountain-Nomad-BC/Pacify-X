@@ -248,6 +248,7 @@ class WorkspaceManagerTests(unittest.TestCase):
                     summary="Invalid empty evidence",
                     apply=True,
                 )
+
             self.assertEqual(
                 [
                     item["memory_id"]
@@ -363,6 +364,53 @@ class WorkspaceManagerTests(unittest.TestCase):
                 workspace, "prj_beta", "resume", ("test-resume",), apply=True
             )
             self.assertEqual(resumed["state"], "registered")
+
+    def test_canonical_browser_preserves_filters_and_reports_pageable_totals(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = self._workspace_with_projects(Path(directory))
+            activate_project(workspace, "prj_alpha")
+            alpha = workspace / "projects/alpha"
+            second = alpha / "operations.md"
+            second.write_text(
+                "# Operations\n\nAgent Studio and Workflow Studio retain immutable revisions.\n",
+                encoding="utf-8",
+            )
+            ingested = ingest_memory(
+                workspace,
+                "prj_alpha",
+                (alpha / "notes.md", second),
+                source_root=ROOT,
+                apply=True,
+            )
+            memory_ids = ingested["outputs"]["memory_ids"]
+            self.assertGreater(len(memory_ids), 1)
+            for memory_id in memory_ids:
+                transition_memory(
+                    workspace,
+                    "prj_alpha",
+                    memory_id,
+                    "validated",
+                    ("test-validation",),
+                    apply=True,
+                )
+                transition_memory(
+                    workspace,
+                    "prj_alpha",
+                    memory_id,
+                    "certified",
+                    ("test-certification",),
+                    apply=True,
+                )
+            first_page = browse_canonical_memory(workspace, "", limit=1)
+            self.assertEqual(first_page["filters"]["project_id"], "")
+            self.assertEqual(first_page["matched_count"], len(memory_ids))
+            self.assertEqual(first_page["returned_count"], 1)
+            self.assertTrue(first_page["has_more"])
+            absent = browse_canonical_memory(
+                workspace, "", project_id="prj_beta", limit=1
+            )
+            self.assertEqual(absent["filters"]["project_id"], "prj_beta")
+            self.assertEqual(absent["matched_count"], 0)
 
     def test_memory_maintenance_is_append_only_and_status_is_project_bound(
         self,

@@ -225,8 +225,15 @@ def studio_revision_lock(root: Path, kind: str, identity: str) -> Path:
     return studio_revision_root(root, kind, identity).parent / ".revision-publication.lock"
 
 
-def _revision_tree_sha256(root: Path, revision: Path) -> str:
-    """Hash a bounded physical revision tree without following links."""
+def _revision_tree_sha256(
+    root: Path, revision: Path, *, exclude_operational_runs: bool = False
+) -> str:
+    """Hash a bounded physical revision tree without following links.
+
+    ``runs`` is mutable operational evidence, not authoring source. Callers that
+    bind an immutable predecessor exclude only that top-level subtree so run
+    checkpoints cannot invalidate an otherwise unchanged Studio revision.
+    """
     project_root = root.resolve(strict=True)
     verify_safe_ancestors(project_root, revision, include_target=True)
     if not revision.is_dir() or _is_link_or_reparse(revision):
@@ -247,6 +254,8 @@ def _revision_tree_sha256(root: Path, revision: Path) -> str:
         except OSError as error:
             raise StudioVersionConflict("source-revision-invalid") from error
         for entry in entries:
+            if exclude_operational_runs and directory == revision and entry.name == "runs":
+                continue
             relative = entry.relative_to(revision)
             if len(relative.parts) > MAX_REVISION_TREE_DEPTH:
                 raise StudioVersionConflict("source-content-bound-exceeded")
@@ -349,7 +358,9 @@ def _source_revision_identity(
         raise StudioVersionConflict("source-revision-invalid") from error
     if model_identity != identity or model_version != source_version:
         raise StudioVersionConflict("source-revision-mismatch")
-    return revision_sha256, _revision_tree_sha256(root, revision)
+    return revision_sha256, _revision_tree_sha256(
+        root, revision, exclude_operational_runs=True
+    )
 
 
 def _parse_version(value: str) -> tuple[str, int, int, int, bool]:

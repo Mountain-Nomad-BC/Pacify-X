@@ -65,6 +65,13 @@ def current_source_manifest(root: Path, matrix: dict[str, Any]) -> dict[str, Any
     return {**body, "source_sha256": _digest(_canonical(body))}
 
 
+def _require_source_binding(receipt: dict[str, Any], current: dict[str, Any]) -> None:
+    source = receipt.get("source")
+    bound = source.get("control_source_manifest") if isinstance(source, dict) else None
+    if bound != current:
+        raise ValueError("evidence receipt control-source identity is absent or stale")
+
+
 def _blank(requirement: dict[str, Any], matrix_reference: str) -> dict[str, dict[str, Any]]:
     result = {}
     for stage in STAGES:
@@ -148,8 +155,13 @@ def assemble(root: Path, ui_path: Path, stage_paths: list[Path]) -> dict[str, An
         }
         for control_id, requirement in requirements.items()
     }
-    inputs = [(ui_path, *_ui_records(ui_path, _load(ui_path)))]
-    inputs.extend((path, *_direct_records(_load(path))) for path in stage_paths)
+    ui_receipt = _load(ui_path)
+    _require_source_binding(ui_receipt, source)
+    inputs = [(ui_path, *_ui_records(ui_path, ui_receipt))]
+    for path in stage_paths:
+        receipt = _load(path)
+        _require_source_binding(receipt, source)
+        inputs.append((path, *_direct_records(receipt)))
     for path, kind, records in inputs:
         reference = path.resolve(strict=True).relative_to(root).as_posix()
         seen: set[str] = set()

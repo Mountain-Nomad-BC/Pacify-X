@@ -64,6 +64,16 @@ class MemoryVaultTests(unittest.TestCase):
             inspected = vault.inspect_record("mem-one")
             self.assertEqual(inspected["authority"], "canonical workspace memory vault")
             self.assertEqual(inspected["lifecycle_state"], "validated")
+            self.assertEqual(inspected["certification_status"], "validated")
+            self.assertFalse(inspected["retrieval_enabled"])
+            self.assertEqual(
+                inspected["lifecycle_head_sha256"],
+                inspected["lifecycle"][-1]["event_sha256"],
+            )
+            self.assertNotEqual(
+                inspected["record_lifecycle_head_sha256"],
+                inspected["lifecycle_head_sha256"],
+            )
             self.assertEqual(len(inspected["record_sha256"]), 64)
             self.assertEqual(inspected["lifecycle"][-1]["evidence"], ["validation-receipt"])
 

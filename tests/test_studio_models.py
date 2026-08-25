@@ -209,6 +209,18 @@ def test_version_allocation_uses_physical_occupancy_and_skips_stable_revisions(t
         source_record.read_bytes()
     ).hexdigest()
     assert len(first["source_content_sha256"]) == 64
+    run_status = source_record.parent / "runs" / "run-one" / "status.json"
+    run_status.parent.mkdir(parents=True)
+    run_status.write_text('{"state":"running"}\n', encoding="utf-8")
+    while_running = allocate_studio_version(
+        tmp_path, "agent", identity, "2.4.8-rc.1"
+    )
+    run_status.write_text('{"state":"succeeded"}\n', encoding="utf-8")
+    after_completion = allocate_studio_version(
+        tmp_path, "agent", identity, "2.4.8-rc.1"
+    )
+    assert while_running["source_content_sha256"] == first["source_content_sha256"]
+    assert after_completion["source_content_sha256"] == first["source_content_sha256"]
     (revision_root / "2.4.8").write_text("physically occupied", encoding="utf-8")
     (revision_root / "2.4.9").mkdir()
     skipped = allocate_studio_version(tmp_path, "agent", identity, "2.4.8-rc.1")

@@ -1888,16 +1888,24 @@ def browse_canonical_memory(
     active_sessions = _active_sessions(paths)
     bounded_limit = max(1, min(100, int(limit)))
     bounded_offset = max(0, min(10_000, int(offset)))
-    ranking_bound = min(500, bounded_offset + bounded_limit)
+    ranking_bound = 10_100
+    wanted_status = status.strip().casefold()
+    wanted_project = project_id.strip().casefold()
+    wanted_source = source.strip().casefold()
     records: list[dict[str, object]] = []
     rejected: list[object] = []
+    scan_truncated = False
     for active in active_sessions:
         scope = active["scope"]
-        project_id = str(active["project_id"])
+        active_project_id = str(active["project_id"])
+        if wanted_project and active_project_id.casefold() != wanted_project:
+            continue
         actor_id = str(scope["agent_id"])
-        vault = _vault(paths, str(config["workspace_id"]), project_id)
+        vault = _vault(paths, str(config["workspace_id"]), active_project_id)
+        retrieval_records = vault.retrieval_records(actor_id=actor_id)
+        scan_truncated = scan_truncated or len(retrieval_records) > ranking_bound
         caller = MemoryCaller(
-            project_id,
+            active_project_id,
             actor_id,
             actor_id,
             team_id=str(scope["team_id"]) if scope.get("team_id") else None,
@@ -1906,7 +1914,7 @@ def browse_canonical_memory(
         )
         ranked = rank_memories(
             query,
-            vault.retrieval_records(actor_id=actor_id),
+            retrieval_records,
             caller=caller,
             max_items=ranking_bound,
         )
@@ -1929,9 +1937,6 @@ def browse_canonical_memory(
             str(row["memory_id"]),
         )
     )
-    wanted_status = status.strip().casefold()
-    wanted_project = project_id.strip().casefold()
-    wanted_source = source.strip().casefold()
     if wanted_status:
         records = [
             row
@@ -1987,7 +1992,11 @@ def browse_canonical_memory(
                 ],
             }
         ),
-        "limitations": []
+        "limitations": (
+            ["Canonical browse scanned at most 10,100 retrievable records per active project."]
+            if scan_truncated
+            else []
+        )
         if active_sessions
         else [
             "No active project lease; canonical records are not exposed without an active scope."

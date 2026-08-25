@@ -11,7 +11,7 @@ const path = require('node:path');
 const { chromium } = require('playwright-core');
 const { resolveBrowserLane } = require('../tests/browser-lane');
 const {
-  STAGES, prepare, revealControl, resolveAction, resolveSemantic
+  STAGES, canonicalJson, currentSourceManifest, prepare, revealControl, resolveAction, resolveSemantic
 } = require('./run-exhaustive-operational-control-walk');
 
 const root = path.resolve(__dirname, '..', '..');
@@ -56,6 +56,8 @@ async function main() {
   const matrixBytes = fs.readFileSync(matrixPath); const matrix = JSON.parse(matrixBytes);
   const uiBytes = fs.readFileSync(uiReceiptPath); const uiReceipt = JSON.parse(uiBytes);
   if (uiReceipt.schema_version !== 'px.exhaustive-operational-control-walk/1.0' || uiReceipt.aggregates?.errors !== 0) throw new Error('A zero-error exact UI receipt is required.');
+  const sourceManifest = currentSourceManifest(matrix);
+  if (canonicalJson(uiReceipt.source?.control_source_manifest) !== canonicalJson(sourceManifest)) throw new Error('UI receipt control-source identity is absent or stale.');
   const rendered = new Set(uiReceipt.records.filter(record => record.rendered).map(record => record.control_id));
   const controls = matrix.controls.filter(control => UI_KINDS.has(control.kind) && rendered.has(control.control_id) && (control.stage_policy.failure_handling === 'required' || control.stage_policy.recovery_rollback === 'required'));
   const lane = resolveBrowserLane(); const browser = await chromium.launch({ executablePath: lane.executablePath, headless: true });
@@ -90,7 +92,7 @@ async function main() {
       } finally { pageErrors.push(...localErrors); await page.close(); }
     }));
   } finally { await browser.close(); }
-  const receipt = { schema_version: 'px.operational-control-stage-evidence/1.0', evidence_kind: 'direct_fault_injection_measurement', observed_at: new Date().toISOString(), authority: 'Direct current-source snapshot-loss and restore measurement; no generic test promotion.', source: { matrix_sha256: sha256(matrixBytes), ui_receipt_sha256: sha256(uiBytes), workers: workerCount }, aggregates: { eligible: controls.length, attempted: records.filter(record => record.attempted).length, failure_observed: records.filter(record => record.stages.failure_handling.state === 'present').length, recovery_observed: records.filter(record => record.stages.recovery_rollback.state === 'present').length, page_errors: pageErrors.length }, records };
+  const receipt = { schema_version: 'px.operational-control-stage-evidence/1.0', evidence_kind: 'direct_fault_injection_measurement', observed_at: new Date().toISOString(), authority: 'Direct current-source snapshot-loss and restore measurement; no generic test promotion.', source: { matrix_sha256: sha256(matrixBytes), ui_receipt_sha256: sha256(uiBytes), workers: workerCount, control_source_manifest: sourceManifest }, aggregates: { eligible: controls.length, attempted: records.filter(record => record.attempted).length, failure_observed: records.filter(record => record.stages.failure_handling.state === 'present').length, recovery_observed: records.filter(record => record.stages.recovery_rollback.state === 'present').length, page_errors: pageErrors.length }, records };
   fs.mkdirSync(path.dirname(output), { recursive: true }); fs.writeFileSync(output, `${JSON.stringify(receipt, null, 2)}\n`, { encoding: 'utf8', flag: 'wx' });
   process.stdout.write(`${JSON.stringify({ output, aggregates: receipt.aggregates }, null, 2)}\n`); if (pageErrors.length) process.exitCode = 1;
 }

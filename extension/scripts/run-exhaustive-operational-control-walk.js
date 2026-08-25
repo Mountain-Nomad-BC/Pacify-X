@@ -36,6 +36,31 @@ const ROUTES = {
 const UI_KINDS = new Set(['action', 'field', 'form', 'menu', 'editor', 'gesture', 'indicator']);
 
 function sha256(value) { return crypto.createHash('sha256').update(value).digest('hex'); }
+function canonicalJson(value) {
+  if (Array.isArray(value)) return `[${value.map(canonicalJson).join(',')}]`;
+  if (value && typeof value === 'object') return `{${Object.keys(value).sort().map(key => `${JSON.stringify(key)}:${canonicalJson(value[key])}`).join(',')}}`;
+  return JSON.stringify(value);
+}
+function sourcePath(reference) {
+  const value = String(reference || '');
+  const index = value.indexOf(':');
+  return index > 0 ? value.slice(0, index) : value;
+}
+function currentSourceManifest(matrix, sourceRoot = root) {
+  const files = [...new Set((matrix.controls || []).flatMap(control => control.source_refs || []).map(sourcePath))]
+    .sort().map(relative => {
+      if (!relative) throw new Error('Control source reference has no physical path.');
+      const target = path.resolve(sourceRoot, relative);
+      const bounded = path.relative(sourceRoot, target);
+      if (!bounded || path.isAbsolute(bounded) || bounded === '..' || bounded.startsWith(`..${path.sep}`)) throw new Error(`Control source escapes root: ${relative}`);
+      const stat = fs.lstatSync(target);
+      if (!stat.isFile() || stat.isSymbolicLink()) throw new Error(`Control source is not a physical file: ${relative}`);
+      const bytes = fs.readFileSync(target);
+      return { path: relative.replaceAll('\\', '/'), sha256: sha256(bytes), bytes: bytes.length };
+    });
+  const body = { schema_version: 'px.current-source-control-manifest/2.0', files };
+  return { ...body, source_sha256: sha256(Buffer.from(canonicalJson(body), 'utf8')) };
+}
 function normalize(value) {
   return String(value || '').replace(/([a-z])([A-Z])/g, '$1 $2').replace(/[._:/-]/g, ' ')
     .toLowerCase().replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
@@ -522,7 +547,7 @@ async function main() {
   const receipt = {
     schema_version: 'px.exhaustive-operational-control-walk/1.0',
     authority: 'Current-source contained browser evidence only; host/runtime/durability stages require separate direct receipts.',
-    observed_at: new Date().toISOString(), source: { matrix_sha256: sha256(matrixBytes), matrix_id: matrix.matrix_sha256 },
+    observed_at: new Date().toISOString(), source: { matrix_sha256: sha256(matrixBytes), matrix_id: matrix.matrix_sha256, control_source_manifest: currentSourceManifest(matrix) },
     browser: { lane: lane.name, platform: lane.platform, workers: workerCount },
     resume: priorReceipt ? { predecessor: path.relative(root, resumePath).replaceAll('\\', '/'), predecessor_sha256: sha256(fs.readFileSync(resumePath)), rerun_control_count: selectedIndexes.length, control_pattern: controlPatternSource || null } : null,
     aggregates, operationally_complete: aggregates.operational === records.length, records
@@ -534,4 +559,4 @@ async function main() {
 }
 
 if (require.main === module) main().catch(error => { process.stderr.write(`${error.stack || error.message}\n`); process.exitCode = 1; });
-module.exports = { STAGES, actionIdentity, candidateScore, completeChain, directSelectorFor, exercise, meaningfulTokens, normalize, prepare, revealActionFor, revealControl, resolveAction, resolveSemantic, selectorForKind, semanticLabel, stageResult, studioDraftRequired, variantsMatch, visualVariantsMatch };
+module.exports = { STAGES, actionIdentity, candidateScore, canonicalJson, completeChain, currentSourceManifest, directSelectorFor, exercise, meaningfulTokens, normalize, prepare, revealActionFor, revealControl, resolveAction, resolveSemantic, selectorForKind, semanticLabel, sourcePath, stageResult, studioDraftRequired, variantsMatch, visualVariantsMatch };

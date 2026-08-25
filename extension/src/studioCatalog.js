@@ -427,7 +427,7 @@ function studioRecord(projectRoot, catalogKind, revision, recordFile, layout, au
     studio_record_path: recordPath,
     revision_sha256: catalogKind === 'skills' ? definitionSha256 : recordFileSha256,
     definition_sha256: definitionSha256,
-    source_content_sha256: revisionTreeSha256(revision, projectRoot)
+    source_content_sha256: revisionTreeSha256(revision, projectRoot, { excludeOperationalRuns: true })
   };
   if (['agents', 'workflows'].includes(catalogKind)) {
     const authority = authorityDefinition(revision, catalogKind === 'agents' ? 'agent' : 'workflow', identity, version);

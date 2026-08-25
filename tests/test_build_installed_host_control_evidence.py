@@ -26,7 +26,24 @@ def _portable_installed_fixture(tmp_path: Path) -> tuple[Path, Path, Path]:
     root = tmp_path / "product"
     matrix = root / "registry" / "operational_control_proof_matrix.json"
     matrix.parent.mkdir(parents=True)
-    matrix.write_bytes((ROOT / "registry/operational_control_proof_matrix.json").read_bytes())
+    source = root / "source.js"
+    source.write_text("current installed control source", encoding="utf-8")
+    wanted = {
+        "pxui.agent-studio.persistence.authoritativeState", "pxui.agent-studio.reload_reopen.authoritativeState",
+        "pxui.agents.persistence.authoritativeState", "pxui.agents.reload_reopen.authoritativeState",
+        "pxui.workflow-studio.persistence.authoritativeState", "pxui.workflow-studio.reload_reopen.authoritativeState",
+        "pxui.workflows.persistence.authoritativeState", "pxui.workflows.reload_reopen.authoritativeState",
+        "pxui.studio-lifecycle.lifecycle.path.1", "pxui.studio-lifecycle.lifecycle.path.2",
+        "pxui.skill-studio.persistence.authoritativeState", "pxui.sidebar.acknowledgement.surface",
+    }
+    current = json.loads((ROOT / "registry/operational_control_proof_matrix.json").read_text(encoding="utf-8"))
+    controls = [{**item, "source_refs": ["source.js:1"]} for item in current["controls"] if item["control_id"] in wanted]
+    assert len(controls) == 12
+    matrix.write_text(json.dumps({"control_count": len(controls), "controls": controls}), encoding="utf-8")
+    source_sha = hashlib.sha256(source.read_bytes()).hexdigest()
+    engine_identity = {"file_total": 1, "tree_sha256": "1" * 64, "records": [{"path": "source.js", "sha256": source_sha, "bytes": source.stat().st_size}]}
+    identity_path = root / "registry" / "engine_identity.json"
+    identity_path.write_text(json.dumps(engine_identity), encoding="utf-8")
     artifact = root / "extension" / "dist" / "pacify-x-test.vsix"
     artifact.parent.mkdir(parents=True)
     artifact.write_bytes(b"portable installed-host fixture\n")
@@ -40,6 +57,7 @@ def _portable_installed_fixture(tmp_path: Path) -> tuple[Path, Path, Path]:
             "sha256_after": digest,
         },
         "engine_connected": True,
+        "engine_identity": {"manifest_sha256": hashlib.sha256(identity_path.read_bytes()).hexdigest(), "tree_sha256": engine_identity["tree_sha256"], "file_total": 1},
         "process_lifecycle": {
             "worker_exit_verified": True,
             "process_tree_closed_verified": True,
@@ -103,6 +121,13 @@ def test_artifact_identity_mismatch_fails_closed(tmp_path: Path) -> None:
     receipt["artifact"]["sha256_after"] = "0" * 64
     target.write_text(json.dumps(receipt), encoding="utf-8")
     with pytest.raises(ValueError, match="exact retained VSIX"):
+        build(root, target, artifact)
+
+
+def test_stale_engine_control_source_fails_closed(tmp_path: Path) -> None:
+    root, target, artifact = _portable_installed_fixture(tmp_path)
+    (root / "source.js").write_text("source changed after host run", encoding="utf-8")
+    with pytest.raises(ValueError, match="engine identity is absent or stale"):
         build(root, target, artifact)
 
 

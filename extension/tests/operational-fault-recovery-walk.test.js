@@ -2,8 +2,11 @@
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const os = require('node:os');
+const path = require('node:path');
 const { failureContained, recoveryObserved, stageMap } = require('../scripts/run-operational-fault-recovery-walk');
-const { STAGES } = require('../scripts/run-exhaustive-operational-control-walk');
+const { STAGES, currentSourceManifest } = require('../scripts/run-exhaustive-operational-control-walk');
 
 test('fault evidence rejects page errors and unchanged stale success', () => {
   const base = { baselineVisible: true, baselineText: '7 runnable agents', faultVisible: true, faultText: '7 runnable agents', mainVisible: true, alertText: '', newPageErrors: 0 };
@@ -26,4 +29,16 @@ test('recovery and stage mapping remain exact and fail closed', () => {
   assert.equal(stages.failure_handling.state, 'present');
   assert.equal(stages.recovery_rollback.state, 'missing');
   assert.equal(stages.runtime_effect.state, 'not_applicable');
+});
+
+test('control source manifest changes when an exercised source changes', t => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'px-control-source-'));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  fs.writeFileSync(path.join(root, 'surface.js'), 'first');
+  const matrix = { controls: [{ source_refs: ['surface.js:1-2'] }] };
+  const before = currentSourceManifest(matrix, root);
+  fs.writeFileSync(path.join(root, 'surface.js'), 'second');
+  const after = currentSourceManifest(matrix, root);
+  assert.notEqual(before.source_sha256, after.source_sha256);
+  assert.equal(after.files[0].path, 'surface.js');
 });
