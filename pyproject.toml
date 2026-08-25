@@ -31,7 +31,7 @@ Issues = "https://github.com/Mountain-Nomad-BC/Pacify-X/issues"
 test = ["pytest==9.1.1", "PyYAML==6.0.3"]
 build = ["build==1.5.0", "setuptools==84.0.0", "wheel==0.48.0"]
 lint = ["ruff==0.16.3"]
-release = ["build==1.5.0", "colorama==0.4.6", "coverage==7.15.4", "iniconfig==2.3.0", "packaging==26.3", "pluggy==1.6.0", "Pygments==2.20.0", "pyproject_hooks==1.2.0", "pytest==9.1.1", "PyYAML==6.0.3", "ruff==0.16.3", "setuptools==84.0.0", "wheel==0.48.0"]
+release = ["build==1.5.0", "colorama==0.4.6", "coverage==7.15.4", "iniconfig==2.3.0", "packaging==26.3", "pluggy==1.6.0", "Pygments==2.21.0", "pyproject_hooks==1.2.0", "pytest==9.1.1", "PyYAML==6.0.3", "ruff==0.16.3", "setuptools==84.0.0", "wheel==0.48.0"]
 
 [project.scripts]
 engineering-bootstrap = "engineering_bootstrap.cli:main"
