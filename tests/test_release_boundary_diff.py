@@ -38,6 +38,9 @@ def test_excluded_live_evidence_does_not_invalidate_matching_clean_product(
     excluded = source / "evidence/private-candidate.zip"
     excluded.parent.mkdir()
     excluded.write_bytes(b"not deployable evidence")
+    nested_product_evidence = source / "runtime/evidence/smoke.json"
+    nested_product_evidence.parent.mkdir(parents=True)
+    nested_product_evidence.write_text('{"valid":true}\n', encoding="utf-8")
     clean = tmp_path / "clean"
     copy_clean_product(source, clean)
 
@@ -46,6 +49,9 @@ def test_excluded_live_evidence_does_not_invalidate_matching_clean_product(
     )
 
     assert not (clean / "evidence").exists()
+    assert (clean / "runtime/evidence/smoke.json").read_bytes() == (
+        nested_product_evidence.read_bytes()
+    )
     assert result["valid"], result
     assert result["digest_comparison"]["equal"] is True
     assert result["source_classifier_errors"]

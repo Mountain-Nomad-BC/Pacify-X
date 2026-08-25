@@ -3691,7 +3691,7 @@
       "validation_level": "evidence-association"
     },
     {
-      "bytes": 1106,
+      "bytes": 1191,
       "evidence": [
         "tests",
         "tests/test_installed_wheel_e2e.py"
@@ -3700,7 +3700,7 @@
       "packaged": true,
       "path": "runtime/release_boundary.py",
       "role": "installed-runtime",
-      "sha256": "67d95010af96b0cb8bcb529e7190b3bc26c9ea9580c9732bd4f6936bd0fd21d5",
+      "sha256": "9a9c15aeadd8ed6239f480bbd801b365b3a49cdf033333556a037efc8ac4162e",
       "syntax_valid": true,
       "validation_level": "full-suite-and-installed-integration"
     },
@@ -7654,7 +7654,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 1814,
+      "bytes": 2135,
       "evidence": [
         "tests/test_release_boundary_diff.py"
       ],
@@ -7662,7 +7662,7 @@
       "packaged": true,
       "path": "tests/test_release_boundary_diff.py",
       "role": "release-test",
-      "sha256": "2b685450d878d7dc8588cc213841ab802e1bfdccc17a941c31a3637716fcde4f",
+      "sha256": "6621f76bff42f7c9a6d7b028139e4cd41caa93476c1e2ae5aa1fbf960db7c8e9",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },

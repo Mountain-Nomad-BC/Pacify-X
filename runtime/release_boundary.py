@@ -21,7 +21,6 @@ def copy_clean_product(source: Path, destination: Path) -> None:
         "*.egg-info",
         "build",
         "dist",
-        "evidence",
         "release.lock",
         "release-transaction.json",
     )
@@ -30,6 +29,8 @@ def copy_clean_product(source: Path, destination: Path) -> None:
         relative_directory = Path(directory).resolve().relative_to(source)
         ignored = set(generated(directory, names))
         for name in names:
+            if relative_directory == Path(".") and name == "evidence":
+                ignored.add(name)
             if is_external_environment_relative(relative_directory / name):
                 ignored.add(name)
         return ignored
