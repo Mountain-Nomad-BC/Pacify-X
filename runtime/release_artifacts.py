@@ -104,7 +104,7 @@ def classify_tree(root: Path) -> dict[str, Any]:
             elif folded in control_outputs:
                 classification = "control_output"
                 reason = "recoverable release transaction control"
-            elif folded_parts[0] in evidence_roots:
+            elif any(part in evidence_roots for part in folded_parts):
                 classification = "evidence_output"
                 reason = "non-executable evidence namespace"
                 if suffix not in evidence_suffixes:

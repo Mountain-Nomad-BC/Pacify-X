@@ -49,9 +49,7 @@ def test_excluded_live_evidence_does_not_invalidate_matching_clean_product(
     )
 
     assert not (clean / "evidence").exists()
-    assert (clean / "runtime/evidence/smoke.json").read_bytes() == (
-        nested_product_evidence.read_bytes()
-    )
+    assert not (clean / "runtime/evidence").exists()
     assert result["valid"], result
     assert result["digest_comparison"]["equal"] is True
     assert result["source_classifier_errors"]

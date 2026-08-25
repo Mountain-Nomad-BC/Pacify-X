@@ -60,6 +60,24 @@ def test_only_evidence_change_does_not_change_product_digest() -> None:
     assert first["product_digest"] == second["product_digest"]
 
 
+def test_nested_evidence_is_not_a_product_input() -> None:
+    root = _minimal_tree()
+    evidence = root / "runtime/evidence/result.json"
+    evidence.parent.mkdir()
+    evidence.write_text("{}\n", encoding="utf-8")
+    first = classify_tree(root)
+    record = next(
+        item
+        for item in first["records"]
+        if item["path"] == "runtime/evidence/result.json"
+    )
+    evidence.write_text('{"changed":true}\n', encoding="utf-8")
+    second = classify_tree(root)
+    assert first["valid"] and second["valid"]
+    assert record["classification"] == "evidence_output"
+    assert first["product_digest"] == second["product_digest"]
+
+
 def test_junit_xml_is_an_admitted_non_executable_evidence_format() -> None:
     root = _minimal_tree()
     report = root / "evidence/release-runs/example/full-tests.junit.xml"
