@@ -21,6 +21,7 @@ def copy_clean_product(source: Path, destination: Path) -> None:
         "*.egg-info",
         "build",
         "dist",
+        "evidence",
         "release.lock",
         "release-transaction.json",
     )

@@ -1,6 +1,7 @@
 from pathlib import Path
 import shutil
 
+from runtime.release_boundary import copy_clean_product
 from runtime.release_preflight import audit_clean_boundary
 from tests.release_preflight_testkit import minimal_product
 
@@ -38,14 +39,13 @@ def test_excluded_live_evidence_does_not_invalidate_matching_clean_product(
     excluded.parent.mkdir()
     excluded.write_bytes(b"not deployable evidence")
     clean = tmp_path / "clean"
-    shutil.copytree(source, clean)
-    (clean / "evidence/private-candidate.zip").unlink()
-    (clean / "evidence").rmdir()
+    copy_clean_product(source, clean)
 
     result = audit_clean_boundary(
         source, clean, identity_inputs=["runtime/owner.py"]
     )
 
+    assert not (clean / "evidence").exists()
     assert result["valid"], result
     assert result["digest_comparison"]["equal"] is True
     assert result["source_classifier_errors"]
