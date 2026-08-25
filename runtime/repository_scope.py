@@ -5,7 +5,9 @@ from __future__ import annotations
 from pathlib import Path
 
 
-EXTERNAL_ENVIRONMENT_ROOTS = frozenset({"Python", "node_modules", ".tmp"})
+EXTERNAL_ENVIRONMENT_ROOTS = frozenset(
+    {"Python", "node_modules", ".tmp", ".pacify-x"}
+)
 CANONICAL_WORKSPACE_CUSTODY_ROOTS = frozenset(
     {"projects", "projects_tracking", "repo_quarantine", "shared_capabilities"}
 )
