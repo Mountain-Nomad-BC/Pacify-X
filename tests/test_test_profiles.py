@@ -196,7 +196,7 @@ def test_studio_section_is_bounded_into_independently_addressed_chunks():
     # boundaries and measured above 300 seconds on a loaded Windows host. Each
     # chunk remains bounded, but the bound must cover its owned behavior rather
     # than truncate a still-progressing test process.
-    assert all(chunk["timeout_seconds"] == 600 for chunk in chunks)
+    assert all(chunk["timeout_seconds"] == 900 for chunk in chunks)
     assert len({chunk["input_sha256"] for chunk in chunks}) == len(chunks)
     assert [member for chunk in chunks for member in chunk["members"]] == members
     first_inputs = set(chunks[0]["inputs"])

@@ -1,0 +1,51 @@
+{
+  "schema_version": "px.focused-ci-repair-evidence/1.0",
+  "authoritative": false,
+  "base_revision": "226c0260262d3c787eedbbd2e81bad0abd83eae6",
+  "remote_run": {
+    "id": 32959584216,
+    "conclusion": "failure",
+    "actionable_failures": [
+      "stale effect-surface ownership projection",
+      "stale provider-route projection",
+      "Workflow Studio cancellation left an active node-task envelope after terminal publication",
+      "Windows live-host cold-run ceiling was below the observed bounded latency"
+    ]
+  },
+  "repairs": {
+    "generated_projections": [
+      "registry/effect_surface_ownership.json",
+      "registry/provider_route_scan.json"
+    ],
+    "workflow_terminal_reconciliation": "after exact detached-worker exit is verified, registered ephemeral paths for that exact run are safely reclaimed through their recorded allowed roots before terminal publication",
+    "workflow_observer_identity": "the pre-resume observer resource identity is retained and re-read directly",
+    "windows_host_bounds_ms": {
+      "canonical_snapshot": 120000,
+      "owned_host": 300000
+    }
+  },
+  "focused_results": [
+    {
+      "command": "python -m pytest -q -p no:cacheprovider tests/test_workflow_studio.py::test_terminal_observer_reclaims_exact_run_task_path_before_publication tests/test_agent_runtime.py::test_agent_session_pause_resume_cancel_and_denial_are_real_owned_lifecycle",
+      "result": "passed",
+      "tests": 2,
+      "duration_seconds": 56.9
+    },
+    {
+      "command": "node --check extension/tests/vscode-host/index.js && node --check extension/scripts/run-vscode-host-smoke.js",
+      "result": "passed"
+    },
+    {
+      "command": "direct registry validator",
+      "result": "passed",
+      "errors": []
+    }
+  ],
+  "remaining_before_remote_recheck": [
+    "regenerate dependency ownership after the finalizer source change",
+    "run governed studio-memory-graph and dashboard-extension sections",
+    "run one live Windows extension-host smoke",
+    "publish one additive commit and observe a fresh clean GitHub matrix"
+  ],
+  "certification_claim": false
+}

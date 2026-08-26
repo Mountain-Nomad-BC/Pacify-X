@@ -79,7 +79,7 @@ async function main() {
   let lifecycle;
   try {
     const run = await runOwnedHostWorker({
-      scriptPath: __filename, childFlag: CHILD_FLAG, configPath, cwd: extensionRoot, timeoutMs: 180_000,
+      scriptPath: __filename, childFlag: CHILD_FLAG, configPath, cwd: extensionRoot, timeoutMs: 420_000,
       ownershipToken: config.userData,
       env: { ...nonBillableEnvironment(), PX_OWNED_VSCODE_HOST: '1' }, stdout: process.stdout, stderr: process.stderr,
       onReceipt: value => { lifecycle = value; }

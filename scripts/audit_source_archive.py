@@ -10,7 +10,7 @@ import tarfile
 from typing import Any
 
 
-MAX_SOURCE_ARCHIVE_BYTES = 128 * 1024 * 1024
+MAX_SOURCE_ARCHIVE_BYTES = 256 * 1024 * 1024
 
 
 def _forbidden(relative: str) -> bool:
@@ -75,7 +75,7 @@ def audit_source_archive(
     if forbidden:
         errors.append(f"archive contains {len(forbidden)} host/evidence custody members")
     if total_bytes > MAX_SOURCE_ARCHIVE_BYTES:
-        errors.append("archive exceeds the 128 MiB uncompressed source budget")
+        errors.append("archive exceeds the 256 MiB uncompressed source budget")
     required = {
         "pyproject.toml",
         "runtime/cli.py",

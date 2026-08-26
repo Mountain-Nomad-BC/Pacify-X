@@ -1,0 +1,55 @@
+{
+  "schema_version": "px.focused-repair-evidence/1.0",
+  "repair": "source-archive-required-authority-budget",
+  "observed_failure": {
+    "uncompressed_bytes": 181803970,
+    "previous_maximum_uncompressed_bytes": 134217728,
+    "forbidden_members": 0,
+    "missing_required_members": 0
+  },
+  "largest_required_authority_members": [
+    {
+      "path": "registry/operational_gap_ledger.jsonl",
+      "bytes": 77109868
+    },
+    {
+      "path": "registry/operational_gap_ledger.snapshot.json",
+      "bytes": 52153058
+    }
+  ],
+  "repair_applied": {
+    "path": "scripts/audit_source_archive.py",
+    "maximum_uncompressed_bytes": 268435456,
+    "coverage_or_export_members_changed": false
+  },
+  "focused_proof": {
+    "archive_valid": true,
+    "uncompressed_bytes": 181803970,
+    "maximum_uncompressed_bytes": 268435456,
+    "forbidden_members": [],
+    "missing_required_members": [],
+    "exact_test": "tests/test_clean_source_export.py::test_git_source_archive_is_bounded_and_excludes_local_custody",
+    "exact_test_passed": true
+  },
+  "projection_state": {
+    "generated_validation": true,
+    "registry_validation": true,
+    "remaining_stale_projection": null,
+    "required_order": [
+      "registry/provider_route_scan.json",
+      "registry/artifact_reachability.json"
+    ]
+  },
+  "governed_section_proof": {
+    "section": "testing-governance",
+    "passed": true,
+    "tests_passed": 225,
+    "tests_skipped": 1,
+    "subtests_passed": 12,
+    "duration_seconds": 113.938,
+    "process_tree_terminated": true,
+    "test_workspace_reclaimed": true,
+    "receipt_sha256": "d78f9e1485a8c035c71934fc0b6b7588d324b09f084e1d6717ddb28f521a4519"
+  },
+  "certification_claim": false
+}

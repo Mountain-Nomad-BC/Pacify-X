@@ -17,7 +17,7 @@
       "source_patterns": ["extension/media/**", "extension/src/extension.js", "extension/src/pxBridge.js", "extension/src/studioApprovalHost.js", "extension/src/studioCatalog.js", "extension/src/studioDashboardHost.js", "extension/src/studioDraftHost.js", "extension/src/studioPackage.js", "extension/src/workflowTraceProjection.js", "extension/src/uiActionInventory.js", "extension/src/webviewMessages.js", "extension/src/sidebarMessages.js", "extension/src/sidebarProjection.js", "extension/src/sidebarView.js", "extension/scripts/audit-dashboard-css.js", "extension/scripts/deduplicate-legacy-css.js", "extension/scripts/build-ui-action-inventory.js", "extension/scripts/operational-ui-control-records.js", "extension/scripts/operational-walk-status.js", "extension/scripts/owned-engine-outage.js", "extension/scripts/run-exhaustive-operational-control-walk.js", "extension/scripts/run-operational-fault-recovery-walk.js", "extension/scripts/run-operational-ui-walk.js", "extension/scripts/run-isolated-current-source-walk.js", "extension/scripts/run-contained-ui-action-walk.js", "extension/scripts/owned-host-runner.js", "extension/scripts/owned-vscode-test-cache.js", "extension/scripts/run-vscode-host-smoke.js", "extension/scripts/run-installed-vsix-smoke.js", "extension/resources/studio-operations.json", "extension/resources/ui/**", "extension/tests/**", "extension/package.json", "registry/operational_surface_inventory.json", "registry/operational_control_proof_matrix.json"],
       "command": ["node", "--test", "tests/hardening-boundaries.test.js", "tests/extension-contract.test.js", "tests/extension-studio-wiring.test.js", "tests/studio-bootstrap.test.js", "tests/studio-dashboard-host.test.js", "tests/studio-draft-host.test.js", "tests/studio-package.test.js", "tests/px-bridge-cache.test.js", "tests/dashboard-e2e.test.js", "tests/ui-scaffold.test.js", "tests/studio-catalog-workflow-layout.test.js", "tests/studio-catalog-agent-builder.test.js", "tests/workflow-trace-projection.test.js", "tests/ui-action-inventory.test.js", "tests/operational-walk-status.test.js", "tests/operational-fault-recovery-walk.test.js", "tests/operational-ui-walk-installed-probe.test.js", "tests/isolated-current-source-walk.test.js", "tests/owned-engine-outage.test.js", "tests/contained-ui-action-walk.test.js"],
       "cwd": "extension",
-      "timeout_seconds": 180
+      "timeout_seconds": 600
     },
     "studio-memory-graph": {
       "description": "Versioned agent/workflow/skill studios, canonical memory browsing, and progressive graph exploration.",
@@ -25,8 +25,8 @@
       "command": ["python", "-m", "pytest", "-q", "-p", "no:cacheprovider", "tests/test_agent_builder.py", "tests/test_studio_models.py", "tests/test_studio_api.py", "tests/test_studio_run_control.py", "tests/test_process_supervisor.py", "tests/test_agent_runtime.py", "tests/test_workflow_studio.py", "tests/test_skill_studio.py", "tests/test_studio_catalog_status.py", "tests/test_skill_packaging_projection.py", "tests/test_knowledge_core_controller.py", "tests/test_memory_vault.py", "tests/test_workspace_manager.py", "tests/test_dashboard_api.py"],
       "chunk_size": 2,
       "max_parallel_chunks": 1,
-      "chunk_timeout_seconds": 600,
-      "timeout_seconds": 1500
+      "chunk_timeout_seconds": 900,
+      "timeout_seconds": 2400
     },
     "learning-promotion": {
       "description": "Evidence hashing, confidence, A/B, research, promotion, reuse, and decay gate.",

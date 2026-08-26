@@ -69,7 +69,7 @@ async function run() {
   const canonical = childProcess.spawnSync(configuredPython(), [
     '-m', 'runtime.dashboard_api', 'snapshot', '--source-root', engineRoot,
     '--project', folder.uri.fsPath
-  ], { cwd: engineRoot, encoding: 'utf8', shell: false, windowsHide: true, timeout: 60000 });
+  ], { cwd: engineRoot, encoding: 'utf8', shell: false, windowsHide: true, timeout: 120000 });
   assert.equal(canonical.error, undefined, canonical.error?.message);
   assert.equal(canonical.status, 0, `Canonical dashboard snapshot failed: ${canonical.stderr}`);
   const canonicalSnapshot = JSON.parse(canonical.stdout);

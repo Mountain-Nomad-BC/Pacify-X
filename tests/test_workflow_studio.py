@@ -3,6 +3,8 @@ from __future__ import annotations
 from dataclasses import asdict, replace
 import json
 from pathlib import Path
+import subprocess
+import sys
 from types import SimpleNamespace
 import pytest
 import threading
@@ -21,6 +23,8 @@ from runtime.studio_models import (
 from runtime.workflow_studio import WorkflowStudio
 from runtime.file_lock import _process_exists
 from runtime.resource_lifecycle import RunState
+from runtime.resource_lifecycle import ResourceManager
+from runtime.studio_terminal_observer import _reconcile_exited_worker_paths
 from tests.studio_approval_testkit import approval_proof, one_shot as _one_shot
 
 
@@ -503,6 +507,60 @@ def test_workflow_cancel_or_stop_wins_during_nonterminal_finalization(
     assert cancelled["checkpoint"]["terminal_target"] == "cancelled"
 
 
+def test_terminal_observer_reclaims_exact_run_task_path_before_publication(
+    tmp_path,
+) -> None:
+    state_root = tmp_path / "state"
+    manager = ResourceManager(state_root / "resources.json")
+    run_id = "run-terminal-path-reconciliation"
+    worker, process = manager.spawn_owned_process(
+        [sys.executable, "-c", "pass"],
+        cwd=tmp_path,
+        project_id="workflow:lifecycle",
+        run_id=run_id,
+        lane_id="studio-workflow",
+        creator="px-studio-durable-launcher",
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    assert process.wait(timeout=10) == 0
+    task_root = state_root / "node-tasks"
+    task_root.mkdir(parents=True)
+    task_path = task_root / "attempt"
+    task_path.mkdir()
+    (task_path / "request.json").write_text("{}\n", encoding="utf-8")
+    task = manager.register_path(
+        task_path,
+        allowed_cleanup_root=task_root,
+        project_id="workflow:lifecycle",
+        run_id=run_id,
+        lane_id="node:slow",
+        creator="human:owner",
+    )
+
+    _reconcile_exited_worker_paths(
+        manager,
+        run_control=SimpleNamespace(
+            read=lambda observed: {
+                "run_id": observed,
+                "state": "cancel_requested",
+                "checkpoint": {},
+            }
+        ),
+        run_id=run_id,
+        kind="workflow",
+    )
+
+    reclaimed = manager.ledger.get(task.resource_id)
+    assert reclaimed.active is False and reclaimed.status == "reclaimed"
+    assert task_path.exists() is False
+    manager.complete_persisted_process_after_exit(
+        worker.resource_id,
+        expected_pid=int(worker.pid or 0),
+        run_state=RunState.CANCELLED,
+    )
+
+
 def test_workflow_pause_resume_cancel_and_checkpoint_recovery(
     tmp_path, monkeypatch
 ) -> None:
@@ -602,6 +660,13 @@ def test_workflow_pause_resume_cancel_and_checkpoint_recovery(
     )
     paused = _wait_for_workflow_state(studio, started["run_id"], {"paused"})
     assert paused["checkpoint"]["completed_nodes"] == ["node:first"]
+    paused_observer_id = next(
+        record.resource_id
+        for record in studio.manager.ledger.load()
+        if record.run_id.startswith(f"studio-finalizer-{started['run_id']}-")
+        and record.creator == "px-studio-terminal-observer"
+        and record.active
+    )
     resumed = studio.resume(
         definition,
         inputs,
@@ -610,12 +675,7 @@ def test_workflow_pause_resume_cancel_and_checkpoint_recovery(
         approval=True,
     )
     assert resumed["run_state"] == "succeeded" and resumed["node_count"] == 2
-    paused_observer = next(
-        record
-        for record in studio.manager.ledger.load()
-        if record.run_id.startswith(f"studio-finalizer-{started['run_id']}-")
-        and record.creator == "px-studio-terminal-observer"
-    )
+    paused_observer = studio.manager.ledger.get(paused_observer_id)
     assert paused_observer.active is False
     paused_worker = next(
         record

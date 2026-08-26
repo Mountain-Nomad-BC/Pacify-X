@@ -10,7 +10,7 @@ import hashlib
 
 from .agent_runtime import AgentRuntimeController
 from .file_lock import FileLockTimeout
-from .resource_lifecycle import ResourceManager
+from .resource_lifecycle import ResourceManager, RunState
 from .studio_models import write_json_atomic
 from .studio_run_control import TERMINAL_STATES
 from .studio_worker_launch import finalize_studio_run_if_worker_exited
@@ -67,6 +67,74 @@ def _wait_for_observer_binding(
         time.sleep(0.01)
 
 
+def _reconcile_exited_worker_paths(
+    manager: ResourceManager,
+    *,
+    run_control,
+    run_id: str,
+    kind: str,
+) -> None:
+    """Close exact-run ephemeral paths after worker exit, before terminal publication."""
+    records = manager.ledger.load()
+    workers = [
+        record
+        for record in records
+        if record.run_id == run_id
+        and record.lane_id == f"studio-{kind}"
+        and record.creator == "px-studio-durable-launcher"
+        and record.resource_type == "process"
+    ]
+    if len(workers) != 1:
+        return
+    worker = workers[0]
+    worker_pid = int(worker.pid or 0)
+    if worker_pid <= 0 or not manager.persisted_process_has_exited(
+        worker.resource_id, expected_pid=worker_pid
+    ):
+        return
+
+    state = run_control.read(run_id)
+    current = str(state["state"])
+    checkpoint = state.get("checkpoint")
+    target = (
+        str(checkpoint.get("terminal_target") or "")
+        if isinstance(checkpoint, dict)
+        else ""
+    )
+    ended_state = (
+        # The run remains recoverable, but this exact worker-owned request
+        # path has finished its lifecycle and is safe to close permanently.
+        RunState.COMPLETED
+        if current == "paused"
+        else RunState.CANCELLED
+        if current in {"cancel_requested", "cancelled"} or target == "cancelled"
+        else RunState.COMPLETED
+        if target == "succeeded"
+        else RunState.FAILED
+    )
+    for record in records:
+        if (
+            record.run_id != run_id
+            or record.resource_type != "path"
+            or not record.active
+        ):
+            continue
+        if record.classification != "ephemeral":
+            raise PermissionError(
+                "Studio terminal reconciliation encountered a non-ephemeral run path"
+            )
+        cleanup = manager.reclaim_ephemeral_path(
+            record.resource_id,
+            reason="studio-worker-exited-run-path-reconciliation",
+            state=ended_state,
+        )
+        if cleanup.resources_reclaimed != 1 or cleanup.errors:
+            raise OSError(
+                "Studio terminal reconciliation could not close an exact-run path: "
+                + "; ".join(cleanup.errors)
+            )
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=Path, required=True)
@@ -104,6 +172,12 @@ def main(argv: list[str] | None = None) -> int:
     try:
         while True:
             try:
+                _reconcile_exited_worker_paths(
+                    manager,
+                    run_control=controller.run_control,
+                    run_id=args.run_id,
+                    kind=args.kind,
+                )
                 state = finalize_studio_run_if_worker_exited(
                     state_root=state_root,
                     manager=manager,

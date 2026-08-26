@@ -1,0 +1,50 @@
+{
+  "schema_version": "px.section-timeout-budget-repair/1.0",
+  "authoritative": false,
+  "repair": {
+    "dashboard-extension": {
+      "previous_timeout_seconds": 180,
+      "current_timeout_seconds": 600
+    },
+    "studio-memory-graph": {
+      "previous_chunk_timeout_seconds": 600,
+      "current_chunk_timeout_seconds": 900,
+      "previous_timeout_seconds": 1500,
+      "current_timeout_seconds": 2400
+    }
+  },
+  "causal_observations": {
+    "dashboard_previous_duration_seconds": 186.90475,
+    "studio_previous_duration_seconds": 1517.133969,
+    "studio_previous_workspace_dashboard_chunk_seconds": 606.801318,
+    "workloads_were_cpu_active": true,
+    "residual_owned_processes_after_previous_runs": []
+  },
+  "focused_results": [
+    {
+      "command": "python -m pytest -q -p no:cacheprovider tests/test_test_runner_controls.py",
+      "result": "passed",
+      "tests": 15,
+      "duration_seconds": 78.9
+    },
+    {
+      "command": "python -m runtime.cli test-section run studio-memory-graph",
+      "result": "passed",
+      "chunks": 7,
+      "rerun_chunk": "chunk-07",
+      "rerun_tests": 67,
+      "rerun_duration_seconds": 140.699481,
+      "receipt_sha256": "e4d676ea26aa6f4c3d80feac6057117b9ef711cd1062643cfdd90efd340bc165"
+    },
+    {
+      "command": "python -m runtime.cli test-section run dashboard-extension",
+      "result": "passed",
+      "tests": 238,
+      "duration_seconds": 41.488454,
+      "process_tree_terminated": true,
+      "receipt_sha256": "8e81eef2a5cfbafdce3f7c1ab4752ed83e7fdfca405f9e1cf8ea4f1cb3ab914b"
+    }
+  ],
+  "coverage_changed": false,
+  "certification_claim": false
+}
