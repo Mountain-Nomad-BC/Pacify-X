@@ -46,6 +46,37 @@ ROUTES = (
 )
 
 
+def _receipt_observed_at(
+    receipt: Path,
+    route_id: str,
+    payload: object,
+) -> str:
+    """Return the receipt's observation time without refreshing stale evidence."""
+
+    candidates: list[object] = []
+    if isinstance(payload, dict):
+        if route_id == "extension.vscode-listener":
+            process = payload.get("process_lifecycle")
+            if isinstance(process, dict):
+                candidates.append(process.get("finished_utc"))
+        elif route_id == "runtime.package-environment":
+            candidates.append(payload.get("generated_utc"))
+        candidates.extend(
+            payload.get(key)
+            for key in ("observed_at", "updated_utc", "generated_utc")
+        )
+    for candidate in candidates:
+        if not isinstance(candidate, str) or not candidate.strip():
+            continue
+        try:
+            parsed = datetime.fromisoformat(candidate.strip().replace("Z", "+00:00"))
+        except ValueError:
+            continue
+        if parsed.tzinfo is not None:
+            return parsed.astimezone(timezone.utc).isoformat()
+    return datetime.fromtimestamp(receipt.stat().st_mtime, timezone.utc).isoformat()
+
+
 def _receipt_health(root: Path, route_id: str, payload: object) -> tuple[str, str | None]:
     """Derive route health from receipt claims; receipt presence is not health."""
     if route_id == "provider.remote-model":
@@ -175,7 +206,6 @@ def _extension_health_claim(payload: object) -> dict[str, object]:
 
 def build(root: Path) -> dict[str, object]:
     root = root.resolve(strict=True)
-    observed_at = datetime.now(timezone.utc).isoformat()
     states = []
     for route_id, kind, relative in ROUTES:
         receipt = root / relative
@@ -191,7 +221,7 @@ def build(root: Path) -> dict[str, object]:
                 "route_id": route_id,
                 "kind": kind,
                 "health": health,
-                "observed_at": observed_at,
+                "observed_at": _receipt_observed_at(receipt, route_id, payload),
                 "receipt_path": relative,
                 "receipt_sha256": hashlib.sha256(receipt.read_bytes()).hexdigest(),
                 "limitation": limitation,

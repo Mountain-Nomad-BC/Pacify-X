@@ -10,6 +10,21 @@
     "failed_governed_step": "Fast correctness profile",
     "public_raw_logs_available": false
   },
+  "remote_followup_observation": {
+    "head_sha": "511cf6555e2278324fd82fe784e6feb566cf63e2",
+    "run_id": 32974443191,
+    "run_url": "https://github.com/Mountain-Nomad-BC/Pacify-X/actions/runs/32974443191",
+    "platform_jobs_green": 12,
+    "extension_jobs_green": 3,
+    "assurance_jobs_green": 5,
+    "functional_platform_regression_reproduced": false,
+    "remaining_failures": [
+      "generated projection drift",
+      "registry projection drift",
+      "structural projection drift"
+    ],
+    "governed_gates_ran": false
+  },
   "causal_analysis": {
     "shared_test": "tests/test_workflow_studio.py::test_terminal_observer_reclaims_exact_run_task_path_before_publication",
     "previous_child_command": "python -c pass",
@@ -20,11 +35,22 @@
     "child_command": "python -c import time; time.sleep(0.2)",
     "effect": "Keeps the child alive for bounded identity registration, then preserves the intended verified-exit reconciliation path."
   },
+  "additional_runtime_repairs": {
+    "studio_terminal_observer": "Waits up to 30 seconds for the exact worker cleanup request before finalizing a durable worker whose Windows launcher can exit before the real interpreter atomically rebinds the PID.",
+    "agent_runtime_regression": "Requires exactly one matching observer registration while allowing the bounded observer to complete before the paused session is resumed.",
+    "projection_reconciliation": [
+      "registry/effect_surface_ownership.json",
+      "registry/python_dependency_ownership.json",
+      "registry/provider_route_scan.json",
+      "registry/artifact_reachability.json"
+    ]
+  },
   "focused_proof": {
     "exact_regression_passed": true,
     "combined_platform_items_passed": 170,
     "combined_platform_items_skipped": 1,
     "combined_platform_duration_seconds": 183.86,
+    "agent_and_workflow_pause_resume_tests_passed": 2,
     "generated_registry_tests_passed": 8,
     "residual_processes": 0
   },

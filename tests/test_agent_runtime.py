@@ -722,13 +722,14 @@ def test_agent_session_pause_resume_cancel_and_denial_are_real_owned_lifecycle(
     )
     paused = _wait_for_agent_state(controller, started["run_id"], {"paused"})
     assert paused["checkpoint"]["shutdown_policy"] == "bounded-process-tree-termination"
-    paused_observer_id = next(
-        record.resource_id
+    paused_observers = [
+        record
         for record in controller.manager.ledger.load()
         if record.run_id.startswith(f"studio-finalizer-{started['run_id']}-")
         and record.creator == "px-studio-terminal-observer"
-        and record.active
-    )
+    ]
+    assert len(paused_observers) == 1
+    paused_observer_id = paused_observers[0].resource_id
     resumed = controller.resume_harness(
         spec, run_id=started["run_id"], task=task, approval=True
     )

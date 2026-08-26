@@ -7,6 +7,7 @@ import pytest
 from scripts.build_operation_health_snapshot import (
     INSTALLED_LISTENER_RECEIPT,
     _extension_health_claim,
+    _receipt_observed_at,
     _receipt_health,
 )
 
@@ -107,3 +108,25 @@ def test_installed_receipt_projects_canonical_extension_health_facts() -> None:
     assert all(claim["lifecycle"].values())
     assert claim["degradation"] == []
     assert claim["blockers"] == []
+
+
+def test_health_snapshot_preserves_installed_host_observation_time(tmp_path: Path) -> None:
+    receipt = tmp_path / "installed.json"
+    receipt.write_text("{}\n", encoding="utf-8")
+    observed = _receipt_observed_at(
+        receipt,
+        "extension.vscode-listener",
+        {"process_lifecycle": {"finished_utc": "2026-08-15T02:17:47Z"}},
+    )
+    assert observed == "2026-08-15T02:17:47+00:00"
+
+
+def test_health_snapshot_uses_environment_generation_time(tmp_path: Path) -> None:
+    receipt = tmp_path / "environment.json"
+    receipt.write_text("{}\n", encoding="utf-8")
+    observed = _receipt_observed_at(
+        receipt,
+        "runtime.package-environment",
+        {"generated_utc": "2026-08-26T13:41:31.562Z"},
+    )
+    assert observed == "2026-08-26T13:41:31.562000+00:00"

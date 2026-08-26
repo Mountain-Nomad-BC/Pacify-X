@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 import time
 import hashlib
+from collections.abc import Callable
 
 from .agent_runtime import AgentRuntimeController
 from .file_lock import FileLockTimeout
@@ -25,6 +26,32 @@ def _retryable_finalize_error(error: Exception) -> bool:
         isinstance(error, ValueError)
         and str(error).startswith("illegal durable run transition:")
     )
+
+
+def _wait_for_worker_handoff(
+    binding_path: Path,
+    *,
+    timeout_seconds: float = 30.0,
+    poll_seconds: float = 0.02,
+    clock: Callable[[], float] = time.monotonic,
+    sleeper: Callable[[float], None] = time.sleep,
+) -> bool:
+    """Fence terminal inspection until the durable worker publishes its handoff.
+
+    A Windows virtual-environment launcher may exit before the interpreter has
+    rebound the registered process record.  The worker writes this run-unique
+    binding only after the rebind and request cleanup succeed.  Its signature
+    and exact worker identity are verified by the finalization owner; this
+    helper only prevents the observer from mistaking the exited launcher for
+    the durable worker during that bounded handoff.
+    """
+
+    deadline = clock() + max(0.0, timeout_seconds)
+    while not binding_path.is_file():
+        if clock() >= deadline:
+            return False
+        sleeper(max(0.001, poll_seconds))
+    return True
 
 
 def _wait_for_observer_binding(
@@ -169,7 +196,14 @@ def main(argv: list[str] | None = None) -> int:
         / args.run_id
         / "terminal-observer-diagnostic.json"
     )
+    worker_binding_path = (
+        state_root
+        / "sessions"
+        / args.run_id
+        / "worker-request-cleanup.json"
+    )
     try:
+        _wait_for_worker_handoff(worker_binding_path)
         while True:
             try:
                 _reconcile_exited_worker_paths(

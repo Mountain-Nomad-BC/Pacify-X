@@ -1,0 +1,61 @@
+{
+  "schema_version": "px.adversarial-operational-audit/1.0",
+  "recorded_utc": "2026-08-26T13:42:18.0094434Z",
+  "scope": "current Pacify-X product, runtime, Studio lifecycle, provider coverage, environment handoff, structural integrity, and published CI follow-up",
+  "state": "source_repair_complete_pending_publish_live_health_and_release_gates",
+  "findings_repaired": [
+    {
+      "finding": "Studio durable worker can remain finalizing after a Windows launcher-to-interpreter PID handoff",
+      "repair": "bounded exact cleanup-request fence before worker finalization",
+      "proof": "Agent and Workflow pause/resume regressions passed; the 171-item CI platform command passed locally"
+    },
+    {
+      "finding": "Workflow CI fixture could exit before process identity registration",
+      "repair": "bounded 200 ms child lifetime in the exact reconciliation fixture",
+      "proof": "all 12 Python platform jobs and all 3 extension jobs passed in GitHub Actions run 32974443191"
+    },
+    {
+      "finding": "O08/O09 provider acceptance bindings and operational claims were stale",
+      "repair": "re-ran provider, budget, event, visibility, and contract tests; refreshed exact source hashes and current local-versus-remote admission claims",
+      "proof": "54 tests and 336 subtests passed; focused Ruff checks passed; O08/O09 acceptance bindings are current"
+    },
+    {
+      "finding": "environment capability map was stale",
+      "repair": "canonical secret-safe discovery persisted generation 6 from 66 installed extension manifests and the active project runtime",
+      "proof": "doctor reports environment handoff healthy and current"
+    },
+    {
+      "finding": "operation health generation refreshed old receipt timestamps and could make stale evidence appear current",
+      "repair": "route observations now preserve the receipt's own completion or generation time, falling back only to the receipt file time",
+      "proof": "operation-health regressions pass and the reconciler now honestly reports three stale live-health routes"
+    },
+    {
+      "finding": "retained pytest diagnostic workspaces polluted structural duplicate detection",
+      "repair": "preserved both workspaces under the canonical diagnostic custody root",
+      "proof": "structural audit passes all 15 categories and 21 required audit items"
+    }
+  ],
+  "current_operational_denominator": {
+    "operation_coverage_acceptance_bindings_valid": true,
+    "operation_coverage_certifiable": false,
+    "operation_coverage_blockers": 3,
+    "stale_live_health_routes": [
+      "extension.vscode-listener",
+      "provider.local-model",
+      "runtime.package-environment"
+    ],
+    "provider_gateway_ready_adapters": 1,
+    "provider_enabled_budgets": 1,
+    "environment_handoff_healthy": true,
+    "structural_integrity_valid": true,
+    "all_six_section_receipts_current": true
+  },
+  "remaining_before_certification": [
+    "publish the complete causal repair and exact derived projections as one source identity",
+    "obtain green remote deterministic, platform, extension, and governed release gates on that identity",
+    "refresh canonical environment discovery and execute a fresh admitted local Ollama smoke",
+    "run exactly one owned full profile and exactly one validation after all release receipts are current",
+    "produce a fresh installed-host extension attestation within its 120-second health TTL"
+  ],
+  "certification_claim": false
+}

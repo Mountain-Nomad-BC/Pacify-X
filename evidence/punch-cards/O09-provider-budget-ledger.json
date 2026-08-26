@@ -3,7 +3,7 @@
   "card_id": "O09",
   "status": "accepted",
   "recorded_at": "2026-08-21T00:16:34.498879+00:00",
-  "refreshed_utc": "2026-08-14T23:55:00Z",
+  "refreshed_utc": "2026-08-26T13:42:18.0094434Z",
   "claim": "Every admitted provider invocation requires a durable identity-bound reservation; request, token, and cost limits are deterministic; known, estimated, unknown, and local non-billable usage settle conservatively; and policy-controlled fallbacks cannot bypass budget authority.",
   "artifacts": [
     {
@@ -12,7 +12,7 @@
     },
     {
       "path": "runtime/provider_gateway.py",
-      "sha256": "ec89f482fe61707af2f09818276b1377091fef3e0997838ebfb33df07323fad6"
+      "sha256": "1af0d00c16b480195e00a97b6e9209fea6f4bdb11e718da7e58af0247ba1805c"
     },
     {
       "path": "tests/test_provider_budget.py",
@@ -20,7 +20,7 @@
     },
     {
       "path": "tests/test_provider_gateway.py",
-      "sha256": "d45e2ec344c21f95c377108bd056b427b316932746688c46d04459d46a4b14d3"
+      "sha256": "1553819f74e29cd8968503a27d9b2df924641b6f7dbf2aa351d5bb5a9cc49240"
     },
     {
       "path": "contracts/operations/provider-budget-policy.schema.json",
@@ -32,6 +32,14 @@
     }
   ],
   "verification": [
+    {
+      "command": "python -m pytest -q --rootdir=. -p no:cacheprovider tests/test_provider_budget.py tests/test_provider_gateway.py tests/test_operational_event_bus.py tests/test_operational_visibility.py tests/test_contract_runtime.py",
+      "result": "54 passed and 336 subtests passed in 16.90s on 2026-08-26"
+    },
+    {
+      "command": "ruff check runtime/provider_gateway.py runtime/provider_budget.py tests/test_provider_gateway.py tests/test_provider_budget.py",
+      "result": "passed on 2026-08-26"
+    },
     {
       "command": "python -B -m pytest -q --rootdir=. -p no:cacheprovider tests/test_runtime_lifecycle.py tests/test_agent_session_coordinator.py tests/test_provider_gateway.py tests/test_provider_budget.py tests/test_operational_visibility.py tests/test_operational_event_bus.py",
       "result": "45 passed in 35.16s after anchored-head optimization"
@@ -65,6 +73,6 @@
   },
   "limitations": [
     "Cross-provider fallback is denied within one invocation because it requires a separately identified provider budget.",
-    "The shipped budget policy has zero enabled budgets and remains default-deny."
+    "The shipped policy enables only the explicitly non-billable local-development Ollama budget; remote and billable spending remain default-deny."
   ]
 }

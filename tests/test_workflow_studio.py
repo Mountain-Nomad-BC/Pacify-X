@@ -24,7 +24,10 @@ from runtime.workflow_studio import WorkflowStudio
 from runtime.file_lock import _process_exists
 from runtime.resource_lifecycle import RunState
 from runtime.resource_lifecycle import ResourceManager
-from runtime.studio_terminal_observer import _reconcile_exited_worker_paths
+from runtime.studio_terminal_observer import (
+    _reconcile_exited_worker_paths,
+    _wait_for_worker_handoff,
+)
 from tests.studio_approval_testkit import approval_proof, one_shot as _one_shot
 
 
@@ -586,6 +589,27 @@ def test_terminal_observer_reclaims_exact_run_task_path_before_publication(
         expected_pid=int(worker.pid or 0),
         run_state=RunState.CANCELLED,
     )
+
+
+def test_terminal_observer_waits_for_worker_handoff_before_inspecting_launcher(
+    tmp_path,
+) -> None:
+    binding_path = tmp_path / "sessions" / "run-handoff" / "worker-request-cleanup.json"
+    clock_values = iter((10.0, 10.01))
+    sleeps: list[float] = []
+
+    def publish_binding(delay: float) -> None:
+        sleeps.append(delay)
+        binding_path.parent.mkdir(parents=True)
+        binding_path.write_text("{}\n", encoding="utf-8")
+
+    assert _wait_for_worker_handoff(
+        binding_path,
+        timeout_seconds=30.0,
+        clock=lambda: next(clock_values),
+        sleeper=publish_binding,
+    )
+    assert sleeps == [0.02]
 
 
 def test_workflow_pause_resume_cancel_and_checkpoint_recovery(
