@@ -125,6 +125,8 @@ def test_builder_and_trace_control_planes_have_exact_section_owners():
     assert reconciliation_test in governance["inputs"]
     assert governance["command"].count(reconciliation_test) == 1
     assert "runtime/repository_scope.py" in governance["inputs"]
+    assert "scripts/audit_source_archive.py" in governance["inputs"]
+    assert "scripts/clean_source_export.py" in governance["inputs"]
     for boundary_test in (
         "tests/test_repository_scope.py",
         "tests/test_effect_surface.py",

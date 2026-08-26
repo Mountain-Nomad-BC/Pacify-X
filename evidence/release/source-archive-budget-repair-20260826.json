@@ -35,6 +35,10 @@
     "generated_validation": true,
     "registry_validation": true,
     "remaining_stale_projection": null,
+    "testing_governance_direct_inputs": [
+      "scripts/audit_source_archive.py",
+      "scripts/clean_source_export.py"
+    ],
     "required_order": [
       "registry/provider_route_scan.json",
       "registry/artifact_reachability.json"
@@ -42,14 +46,15 @@
   },
   "governed_section_proof": {
     "section": "testing-governance",
+    "input_sha256": "66eabc08dd0515bf40e433e8fb7cf6929e2ba332ce051956dc8b4be5d6229ec1",
     "passed": true,
     "tests_passed": 225,
     "tests_skipped": 1,
     "subtests_passed": 12,
-    "duration_seconds": 113.938,
+    "duration_seconds": 115.106114,
     "process_tree_terminated": true,
     "test_workspace_reclaimed": true,
-    "receipt_sha256": "d78f9e1485a8c035c71934fc0b6b7588d324b09f084e1d6717ddb28f521a4519"
+    "receipt_sha256": "287b803f2ac76afc13db0197ff9ecbbff42d0f725f434b397c09daba66998e73"
   },
   "certification_claim": false
 }
