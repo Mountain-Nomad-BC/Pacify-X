@@ -134,13 +134,56 @@ function clearWorkingStudioDraft(kind) {
 function offerWorkingStudioDraft(kind) {
   const envelope = state.workingStudioDrafts?.[kind]; if (!envelope) return false;
   const identity = envelope.draft?.[kind === 'agent' ? 'agent_id' : kind === 'workflow' ? 'workflow_id' : 'skill_id'] || 'unsaved candidate';
-  const sourceWarning = envelope.source_binding ? '<p>This draft was based on an authenticated immutable predecessor. Reopen that exact catalog revision so the host can reauthenticate it before applying the retained overlay.</p>' : '<p>Resume restores only local unsaved editor state. It grants no authority and performs no save or runtime action.</p>';
-  showModal('Recover unsaved Studio draft', `${kind.toUpperCase()} · LOCAL RECOVERY · NO AUTHORITY`, `<p><b>${esc(identity)}</b> was retained at ${esc(envelope.updated_utc || 'an unknown time')}.</p>${sourceWarning}`, `<button data-action="discardWorkingStudioDraft" data-kind="${esc(kind)}">Discard retained draft</button>${envelope.source_binding ? '<button data-action="closeModal">Return to catalog</button>' : `<button class="primary" data-action="resumeWorkingStudioDraft" data-kind="${esc(kind)}">Resume draft</button>`}`);
+  const sourceWarning = envelope.source_binding ? '<p>This draft was based on an authenticated immutable predecessor. Resume will re-read and authenticate that exact catalog revision before applying the retained overlay.</p>' : '<p>Resume restores only local unsaved editor state. It grants no authority and performs no save or runtime action.</p>';
+  const resumeLabel = envelope.source_binding ? 'Reauthenticate and resume' : 'Resume draft';
+  showModal('Recover unsaved Studio draft', `${kind.toUpperCase()} · LOCAL RECOVERY · NO AUTHORITY`, `<p><b>${esc(identity)}</b> was retained at ${esc(envelope.updated_utc || 'an unknown time')}.</p>${sourceWarning}`, `<button data-action="discardWorkingStudioDraft" data-kind="${esc(kind)}">Discard retained draft</button><button class="primary" data-action="resumeWorkingStudioDraft" data-kind="${esc(kind)}">${resumeLabel}</button>`);
   return true;
+}
+function exactWorkingStudioCatalogRecord(kind, binding) {
+  if (!binding || !['agent', 'workflow', 'skill'].includes(kind)) return null;
+  const catalogKind = kind === 'skill' ? 'skills' : `${kind}s`;
+  const identityKey = kind === 'agent' ? 'agent_id' : kind === 'workflow' ? 'workflow_id' : 'skill_id';
+  const item = state.catalogs?.[catalogKind]?.items?.find(candidate => {
+    const details = candidate?.details || {};
+    return String(details[identityKey] || '').trim().toLowerCase() === binding.identity
+      && String(details.version || '').trim().toLowerCase() === binding.source_version
+      && studioRecordRevisionSha(candidate) === binding.source_revision_sha256
+      && studioRecordContentSha(candidate) === binding.source_content_sha256;
+  });
+  if (!item) return null;
+  const details = item.details || {};
+  return {
+    ...item,
+    ...details,
+    identity: { id: item.id, kind: item.kind, status: item.status, owner: item.owner, path: item.path },
+    summary: item.summary,
+    effects: item.effects,
+    tags: item.tags,
+    agent_model: item.agent_model || undefined,
+    _catalogKind: catalogKind,
+    _catalogRecordId: item.id
+  };
 }
 function resumeWorkingStudioDraft(kind) {
   const envelope = state.workingStudioDrafts?.[kind];
-  if (!envelope || envelope.source_binding) return;
+  if (!envelope) return;
+  if (envelope.source_binding) {
+    const record = exactWorkingStudioCatalogRecord(kind, envelope.source_binding);
+    if (!record) {
+      showModal('Exact predecessor unavailable', 'REFRESH CATALOG · RETAINED DRAFT PRESERVED', '<p>The currently loaded catalog does not contain the exact identity, version, revision hash, and content hash bound to this draft. Refresh the catalog and try Resume again. The retained draft was not discarded or changed.</p>');
+      return;
+    }
+    studioSourceRecord = record;
+    studioVersionAllocation = null;
+    studioWorkingSourceBinding = null;
+    studioVersionAllocationProof = null;
+    studioSaveRequest = null;
+    studioPackageRequest = null;
+    studioPendingSkillPackage = null;
+    if (kind === 'skill') requestSkillPackageEditor(record);
+    else requestStudioVersionAllocation(kind, record);
+    return;
+  }
   studioWorkingSourceBinding = null;
   closeModal(); openStudioDraftModal(kind, structuredClone(envelope.draft)); studioDraftDirty = true;
   if (envelope.editor_buffer?.kind === 'canonical-json') {
@@ -301,6 +344,25 @@ function requestStudioVersionAllocation(kind, record, packageResult = null) {
   const payload = { identity, source_version: sourceVersion };
   if (kind === 'skill') payload.source_selection_id = packageResult.sourceSelectionId;
   vscode.postMessage({ type: 'studioOperation', requestId, kind, operation: 'next-version', payload });
+  return true;
+}
+function requestSkillPackageEditor(record) {
+  const catalogKind = String(record?._catalogKind || '');
+  const recordId = String(record?._catalogRecordId || '');
+  if (catalogKind !== 'skills' || !recordId) {
+    showModal('Skill package unavailable', 'SEPARATE DOMAIN OR UNATTESTED SOURCE', '<p>Only a PX-standard package with an independent full-tree attestation can enter this editor. Preserved originals and Microsoft / Enterprise packages remain read-only here.</p>');
+    return false;
+  }
+  const requestId = studioAllocationRequestId();
+  studioPackageRequest = Object.freeze({ requestId, catalogKind, recordId, identity: studioRecordIdentity(record, 'skill'), revisionSha256: studioRecordRevisionSha(record), record: structuredClone(record) });
+  studioPendingSkillPackage = null;
+  studioAllocationRequest = null;
+  studioVersionAllocation = null;
+  studioVersionAllocationProof = null;
+  studioVersionProofRequestId = null;
+  studioSourceProofRequestId = null;
+  showModal('Loading skill package', 'HOST-OWNED CATALOG READ · FULL-TREE ATTESTATION', '<div class="cleanup-loading"><span class="empty-ring"></span><p>Resolving the exact catalog record, package tree, domain, and provenance in the extension host.</p></div>');
+  vscode.postMessage({ type: 'loadSkillPackageEditor', requestId, catalogKind, recordId });
   return true;
 }
 
@@ -622,7 +684,7 @@ function upgradeLegacyAgentTopology(root) {
   ];
   pipeline.className = 'agent-topology';
   pipeline.setAttribute('aria-label', 'Interactive agent runtime topology');
-  pipeline.innerHTML = nodes.map(([id, label, detail, target, domain]) => `<button class="agent-topology-node domain-${esc(domain)}${agentSelectedSection === id ? ' selected' : ''}" data-action="agentSelectSection" data-agent-section="${esc(id)}" data-agent-target="${esc(target)}" aria-pressed="${agentSelectedSection === id}"><span>${esc(label)}</span><strong>${esc(detail)}</strong><small>${domain === 'authority' || domain === 'gate' ? 'governed boundary' : domain === 'terminal' ? 'immutable candidate' : 'select to inspect'}</small></button>`).join('');
+  pipeline.innerHTML = nodes.map(([id, label, detail, _target, domain]) => `<span class="agent-topology-node domain-${esc(domain)}${agentSelectedSection === id ? ' selected' : ''}" data-legacy-agent-section="${esc(id)}"><span>${esc(label)}</span><strong>${esc(detail)}</strong><small>${domain === 'authority' || domain === 'gate' ? 'governed boundary' : domain === 'terminal' ? 'immutable candidate' : 'historical projection'}</small></span>`).join('');
   requestAnimationFrame(() => drawLegacyAgentTopologyEdges(root));
   const main = root.querySelector('.agent-builder-layout > main'); const model = draft.model || {};
   if (main && !main.querySelector('#agent-model-route')) {
@@ -1045,7 +1107,11 @@ function resolvedStudioPreviewModal(kind, result) {
     const nodes = (record?.nodes || []).map(node => `<article class="catalog-row"><div><strong>${esc(node.node_id)}</strong><small>${esc(node.kind)} · ${esc(node.binding_id)}</small></div><span>${esc((node.effects || []).join(', ') || 'no effects')}</span><small>${node.approval_required ? 'Human approval required' : 'No approval gate'} · ${number(node.timeout_seconds)}s · ${number(node.retry_limit)} retries</small></article>`).join('');
     body = `<div class="identity-warning ${eligible ? '' : 'blocked'}" role="status"><div><span>${eligible ? 'RESOLVED PLAN READY' : 'RESOLVED PLAN BLOCKED'}</span><strong>${esc(subject)} @ ${esc(record?.version || 'unknown')}</strong><p>${safe ? 'Dry-run executed no effects.' : 'The dry-run did not prove a no-effect boundary.'}</p></div></div><p><b>Topological order:</b> ${esc((record?.topological_order || []).join(' → ') || 'unavailable')}</p><div class="catalog-list">${nodes || '<p class="empty-state">No resolved workflow nodes.</p>'}</div><h3>Authority records used</h3><ul class="diagnostic-trace-list">${authorityRows || '<li>No authority records resolved.</li>'}</ul>`;
   }
-  const startAction = safe && eligible ? `<div class="action-grid studio-actions"><button class="primary" data-action="studioLifecycle" data-kind="${esc(kind)}" data-operation="start">Start exact admitted ${esc(kind)}</button></div>` : '<p class="modal-note">Execution remains blocked until the exact no-effect preview is eligible.</p>';
+  const workflowNeedsApproval = kind === 'workflow' && studioSession?.kind === 'workflow'
+    && (studioSession.payload.nodes || []).some(node => node.approval_required && !studioSession.payload.approvals?.[node.node_id]);
+  const nextOperation = workflowNeedsApproval ? 'approve' : 'start';
+  const nextLabel = workflowNeedsApproval ? 'Approve next required node' : `Start exact admitted ${kind}`;
+  const startAction = safe && eligible ? `<div class="action-grid studio-actions"><button class="primary" data-action="studioLifecycle" data-kind="${esc(kind)}" data-operation="${nextOperation}">${esc(nextLabel)}</button></div>` : '<p class="modal-note">Execution remains blocked until the exact no-effect preview is eligible.</p>';
   showInformationModal(`${kind === 'agent' ? 'Execution' : 'Workflow'} preview · ${subject}`, `REQUEST-BOUND · ${safe ? 'NO EFFECTS' : 'UNVERIFIED EFFECT BOUNDARY'} · ${eligible ? 'ELIGIBLE' : 'BLOCKED'}`, result, `${body}${startAction}`);
 }
 
@@ -1267,11 +1333,21 @@ function render() {
           ${badge(s?.enterprise?.catalog_id ? 'MS+ENTERPRISE OFFLINE BOUNDARY' : 'ENTERPRISE UNAVAILABLE', s?.enterprise?.catalog_id ? 'info' : 'neutral')}
           ${hostActionSummary()}
         </div>
+        ${!connected ? `<div class="engine-disconnected-warning" data-engine-disconnected role="alert"><span>ENGINE DISCONNECTED</span><strong>Current operational metrics are unavailable.</strong><p>${esc(s?.reason || s?.health?.reason || 'The Pacify-X engine did not return a current authoritative snapshot.')}</p><small>Any displayed zero is an unavailable fallback, not an observed system value or health claim. Restore the engine connection and sync again.</small></div>` : ''}
         ${connected && !identityMatches ? `<div class="identity-warning" role="alert"><div><span>EXTENSION IDENTITY MISMATCH</span><strong>The loaded VS Code host is not the dashboard source being inspected.</strong><p>${esc((s.extensionIdentity?.mismatch_reasons || ['identity unavailable']).join(' · '))}</p></div><dl><div><dt>Host</dt><dd>v${esc(s.extensionIdentity?.host?.version || 'unknown')} · ${esc((s.extensionIdentity?.host?.asset_sha256 || '').slice(0, 16) || 'no asset hash')}</dd></div><div><dt>Source</dt><dd>v${esc(s.extensionIdentity?.source?.version || 'unknown')} · ${esc((s.extensionIdentity?.source?.asset_sha256 || '').slice(0, 16) || 'no asset hash')}</dd></div><div><dt>Protocol</dt><dd>${esc(s.extensionIdentity?.host?.asset_protocol || 'unknown')} / ${esc(s.extensionIdentity?.host?.message_schema || 'unknown')}</dd></div></dl></div>` : ''}
         <div class="content surface-${esc(state.active)}">${surface(state.active)}</div>
         <footer class="footer"><span><i class="live-pip"></i>${esc(connection.label)}</span><span>Operational view · no completion claim</span><span>Host/source: ${esc(s?.extensionIdentity?.host?.version || 'unknown')} / ${esc(s?.extensionIdentity?.source?.version || 'unknown')}</span><span>Catalog: ${esc(s?.catalogSource || 'unavailable')}</span><span>${s?.generatedAt ? `Snapshot ${esc(new Date(s.generatedAt).toLocaleTimeString())}` : 'Awaiting snapshot'}</span></footer>
       </main>
     </div><div id="modal-root"></div>`;
+  if (state.active === 'settings') {
+    const settingsContent = app.querySelector('.surface-settings');
+    const policy = state.settings.executionPolicy || {};
+    const mcp = s?.observability?.mcp || {};
+    const metrics = document.createElement('div');
+    metrics.className = 'metric-grid compact settings-effective-metrics';
+    metrics.innerHTML = `${card('ENGINE CONNECTION', connected ? 'Connected' : 'Disconnected', s?.catalogSource || 'catalog source unavailable', connected ? 'green' : 'red')}${card('MCP RUNTIME', mcp.runtime_verified ? 'Runtime verified' : mcp.registered ? 'Registered, unverified' : String(mcp.status || 'Unavailable'), mcp.detail || 'current MCP observation', mcp.runtime_verified ? 'green' : 'blue')}${card('BILLABLE MASTER', policy.master_enabled === true ? 'Guarded opt-in' : 'Disabled', policy.master_enabled === true ? 'every execution gate still applies' : 'zero-cost default', policy.master_enabled === true ? 'red' : 'green')}${card('CONTEXT CAP', `${number(state.settings.contextInjectionCapTokens)} tokens`, 'effective extension setting')}`;
+    settingsContent?.prepend(metrics);
+  }
   for (const status of app.querySelectorAll('.catalog-controls > span:last-child, .memory-toolbar > span:last-child, .activity-toolbar > span:last-child')) {
     status.setAttribute('role', 'status');
     status.setAttribute('aria-live', 'polite');
@@ -1713,11 +1789,26 @@ function requestKnowledge(query = state.knowledgeQuery) {
   state.knowledgeQuery = String(query || '').slice(0, 300); state.knowledgePending = true;
   vscode.postMessage({ type: 'studioOperation', kind: 'knowledge', operation: 'browse', payload: { query: state.knowledgeQuery, limit: 200 } });
 }
+function knowledgeProposalPayload(fields, canonicalRecords = []) {
+  const id = String(fields?.id || '').trim(); const kind = String(fields?.kind || '').trim();
+  const title = String(fields?.title || '').trim(); const summary = String(fields?.summary || '').trim();
+  const source = String(fields?.source || '').trim(); const evidence = String(fields?.evidence || '').trim();
+  if (!id || !kind || !summary || !source || !evidence) throw new Error('Record ID, kind, summary, declared source, and evidence reference are required.');
+  const matchingHeads = (Array.isArray(canonicalRecords) ? canonicalRecords : []).filter(item => item?.record_id === id);
+  if (matchingHeads.length > 1) throw new Error('The current Knowledge snapshot contains ambiguous canonical heads for this record ID. Refresh before proposing an update.');
+  const candidate = { id, kind, title: title || id, summary };
+  if (matchingHeads.length === 1) {
+    const head = String(matchingHeads[0]?.candidate_sha256 || '');
+    if (!/^[0-9a-f]{64}$/.test(head)) throw new Error('The current canonical head is malformed. Refresh and repair Knowledge state before proposing an update.');
+    candidate.supersedes_sha256 = head;
+  }
+  return { candidate, source_ids: [source], evidence_refs: [evidence] };
+}
 function knowledgeProposalModal() {
   const sources = state.snapshot?.knowledgeCore?.records || [];
   const options = sources.filter(item => item.available).map(item => `<option value="${esc(item.id)}">${esc(item.id)} · ${esc(item.kind)}</option>`).join('');
   const evidence = sources.find(item => item.available && item.source_sha256)?.source_sha256;
-  showModal('Propose knowledge candidate', 'CANDIDATE ONLY · SOURCE + EVIDENCE BOUND', `<p>This creates a governed candidate. It does not verify, approve, promote, or alter canonical knowledge.</p><label class="form-field"><span>Record ID</span><input id="knowledge-id" placeholder="knowledge:decision-name"></label><label class="form-field"><span>Kind</span><input id="knowledge-kind" value="project-knowledge"></label><label class="form-field"><span>Title</span><input id="knowledge-title" placeholder="Human-readable title"></label><label class="form-field"><span>Summary</span><textarea id="knowledge-summary" rows="5" placeholder="Atomic, evidence-grounded statement"></textarea></label><label class="form-field"><span>Declared source</span><select id="knowledge-source">${options}</select></label><label class="form-field"><span>Evidence reference</span><input id="knowledge-evidence" class="mono" value="${evidence ? `sha256:${esc(evidence)}` : ''}" placeholder="sha256:&lt;64 hex&gt; or relative/path#sha256=&lt;64 hex&gt;"></label>`, '<button data-action="closeModal">Cancel</button><button class="primary" data-action="submitKnowledgeProposal">Write candidate</button>');
+  showModal('Propose knowledge candidate', 'CANDIDATE ONLY · SOURCE + EVIDENCE BOUND', `<p>This creates a governed candidate. It does not verify, approve, promote, or alter canonical knowledge.</p><p class="fine-print">If the record ID already has one current canonical head, this proposal is automatically bound to that exact head as an immutable update. Ambiguous, malformed, or changed heads fail closed during verification.</p><label class="form-field"><span>Record ID</span><input id="knowledge-id" placeholder="knowledge:decision-name"></label><label class="form-field"><span>Kind</span><input id="knowledge-kind" value="project-knowledge"></label><label class="form-field"><span>Title</span><input id="knowledge-title" placeholder="Human-readable title"></label><label class="form-field"><span>Summary</span><textarea id="knowledge-summary" rows="5" placeholder="Atomic, evidence-grounded statement"></textarea></label><label class="form-field"><span>Declared source</span><select id="knowledge-source">${options}</select></label><label class="form-field"><span>Evidence reference</span><input id="knowledge-evidence" class="mono" value="${evidence ? `sha256:${esc(evidence)}` : ''}" placeholder="sha256:&lt;64 hex&gt; or relative/path#sha256=&lt;64 hex&gt;"></label>`, '<button data-action="closeModal">Cancel</button><button class="primary" data-action="submitKnowledgeProposal">Write candidate</button>');
 }
 function learningPipeline(pipelineId) { return state.knowledgeData?.learning?.pipelines?.find(item => item.pipeline_id === pipelineId); }
 function learningJsonField(id, fallback = {}) {
@@ -2032,7 +2123,7 @@ app.addEventListener('click', event => {
     showInformationModal(`${identity} @ ${payload.version}`, 'EXACT AUTHENTICATED REVISION · OPERATIONS READY', payload, `<p>This exact revision is loaded without changing its version. Runtime inputs remain ephemeral.</p>${humanRecord(payload)}<div class="action-grid studio-actions"><button data-action="studioLifecycle" data-kind="${esc(kind)}" data-operation="${kind === 'agent' ? 'preview' : 'dry-run'}">${kind === 'agent' ? 'Preview exact execution' : 'Preview workflow plan'}</button><button class="primary" data-action="studioLifecycle" data-kind="${esc(kind)}" data-operation="start">Start exact revision</button></div>`);
     return;
   }
-  if (action === 'loadSkillPackageEditor') { const record = studioSourceRecord || modalRecord || {}; const catalogKind = String(record._catalogKind || ''); const recordId = String(record._catalogRecordId || ''); if (catalogKind !== 'skills' || !recordId) { showModal('Skill package unavailable', 'SEPARATE DOMAIN OR UNATTESTED SOURCE', '<p>Only a PX-standard package with an independent full-tree attestation can enter this editor. Preserved originals and Microsoft / Enterprise packages remain read-only here.</p>'); return; } const requestId = studioAllocationRequestId(); studioPackageRequest = Object.freeze({ requestId, catalogKind, recordId, identity: studioRecordIdentity(record, 'skill'), revisionSha256: studioRecordRevisionSha(record), record: structuredClone(record) }); studioPendingSkillPackage = null; studioAllocationRequest = null; studioVersionAllocation = null; studioVersionAllocationProof = null; studioVersionProofRequestId = null; studioSourceProofRequestId = null; showModal('Loading skill package', 'HOST-OWNED CATALOG READ · FULL-TREE ATTESTATION', '<div class="cleanup-loading"><span class="empty-ring"></span><p>Resolving the exact catalog record, package tree, domain, and provenance in the extension host.</p></div>'); vscode.postMessage({ type: 'loadSkillPackageEditor', requestId, catalogKind, recordId }); return; }
+  if (action === 'loadSkillPackageEditor') { requestSkillPackageEditor(studioSourceRecord || modalRecord || {}); return; }
   if (action === 'submitStudioDraft') { const input = document.getElementById('studio-draft-json') || document.getElementById('studio-skill-file') || document.querySelector('[data-agent-root-field="instructions"]'); try { const payload = studioEditorPayload(control); const validation = control.dataset.kind === 'agent' ? studioEditors.validateAgent(payload) : control.dataset.kind === 'workflow' ? studioEditors.validateWorkflow(payload) : studioEditors.validateSkill(payload); if (!validation.valid) throw new Error(validation.issues.join(' ')); const requestId = studioAllocationRequestId(); studioSession = { kind: control.dataset.kind, payload }; studioSaveRequest = { requestId, kind: control.dataset.kind }; control.disabled = true; control.textContent = 'Awaiting host approval…'; document.querySelectorAll('[data-action="closeModal"]').forEach(button => { if (!button.classList.contains('modal-close')) button.textContent = 'Detach — save may continue'; button.setAttribute('title', 'Closing stops live updates only. An already authorized host operation may still commit.'); button.setAttribute('aria-label', 'Detach from in-flight save; authorized host work may continue'); }); document.querySelector('[data-studio-validation]')?.insertAdjacentHTML('beforeend', '<span class="studio-warning" data-studio-detach-notice>Closing or pressing Escape now detaches this view; it cannot cancel an already authorized host commit.</span>'); vscode.postMessage({ type: 'createStudioDraft', requestId, kind: control.dataset.kind, payload }); } catch (error) { studioSaveRequest = null; input?.setCustomValidity(`Invalid Studio definition: ${error.message}`); input?.reportValidity(); } return; }
   if (action === 'acceptStudioVersionSuggestion') { const allocation = studioVersionAllocation; const version = String(allocation?.candidate_version || ''); if (!studioEditor || !version) return; if (studioEditor.kind === 'skill') syncSkillEditorFile(); studioEditor.draft.version = version; if (studioEditor.kind === 'skill') { studioEditor.draft = studioEditors.synchronizeSkillIdentityFiles(studioEditor.draft); const file = document.getElementById('studio-skill-file'); if (file?.dataset.filePath) file.value = studioEditor.draft.editor_files?.[file.dataset.filePath] || ''; } const input = document.getElementById('studio-version'); if (input) { input.value = version; input.dispatchEvent(new Event('input', { bubbles: true })); } document.querySelector('[data-studio-version-conflict]')?.remove(); const validation = studioEditor.kind === 'agent' ? studioEditors.validateAgent(studioEditor.draft) : studioEditor.kind === 'workflow' ? studioEditors.validateWorkflow(studioEditor.draft) : studioEditors.validateSkill(studioEditor.draft); const save = document.querySelector('[data-action="submitStudioDraft"]'); if (save) { save.disabled = !validation.valid; save.textContent = 'Save immutable candidate'; } persistWorkingStudioDraft(); return; }
   if (action === 'agentPortConnect') {
@@ -2086,7 +2177,6 @@ app.addEventListener('click', event => {
   if (action === 'agentZoom') { agentScale = Math.max(.45, Math.min(1.75, agentScale + Number(control.dataset.delta || 0))); refreshStudioEditor('[data-agent-editor-canvas]'); return; }
   if (action === 'agentFit') { const canvas = document.querySelector('[data-agent-editor-canvas]'); const scene = canvas?.querySelector('.agent-graph-scene'); const width = Number(scene?.dataset.agentSceneWidth || 920); agentScale = Math.max(.45, Math.min(1, ((canvas?.clientWidth || 920) - 18) / width)); refreshStudioEditor('[data-agent-editor-canvas]'); return; }
   if (action === 'agentAutoLayout') { const graph = currentAgentGraph(studioEditor.draft).graph; studioEditor.draft.editor_layout = Object.fromEntries(graph.nodes.map((node, index) => [node.node_id, { x: 36 + (index % 4) * 224, y: 42 + Math.floor(index / 4) * 142 }])); refreshStudioEditor('[data-agent-editor-canvas]'); return; }
-  if (action === 'agentSelectSection') { agentSelectedSection = control.dataset.agentSection || 'identity'; document.querySelectorAll('[data-action="agentSelectSection"]').forEach(button => { const selected = button === control; button.classList.toggle('selected', selected); button.setAttribute('aria-pressed', String(selected)); }); const target = document.querySelector(control.dataset.agentTarget || ''); target?.scrollIntoView?.({ behavior: 'smooth', block: 'center' }); target?.focus?.(); return; }
   if (action === 'studioEditorTab') { const tab = control.dataset.tab; document.querySelectorAll('[data-action="studioEditorTab"]').forEach(button => button.setAttribute('aria-selected', String(button === control))); document.querySelectorAll('[data-studio-panel]').forEach(panel => panel.toggleAttribute('hidden', panel.dataset.studioPanel !== tab)); if (tab === 'json' && studioEditor) { if (studioEditor.kind === 'workflow') studioEditor.draft = studioEditors.normalizeWorkflow(studioEditor.draft); const input = document.getElementById('studio-draft-json'); if (input) input.value = JSON.stringify(studioEditor.draft, null, 2); persistWorkingStudioDraft(); } return; }
   if (action === 'forkStudioCandidate') { forkStudioCandidate(); return; }
   if (action === 'studioApplyJson') { const input = document.getElementById('studio-draft-json'); try { const parsed = JSON.parse(input?.value || ''); const nextDraft = studioEditor.kind === 'agent' ? studioEditors.normalizeAgent(parsed) : studioEditors.normalizeWorkflow(parsed); const identityKey = studioEditor.kind === 'agent' ? 'agent_id' : 'workflow_id'; if (studioVersionAllocation && (nextDraft[identityKey] !== studioVersionAllocation.identity || nextDraft.version !== studioVersionAllocation.candidate_version)) throw new Error('Predecessor-bound JSON cannot change the candidate identity or version. Use the explicit independent fork action.'); if (studioEditor.kind === 'agent') { agentWorkingGraph = studioEditors.synchronizeAgentBuilderGraph(nextDraft, parsed.builder_graph); nextDraft.builder_graph = structuredClone(agentWorkingGraph); agentConnectionStart = null; agentGraphDirty = true; } input?.setCustomValidity(''); studioEditor.draft = nextDraft; studioSelectedNode = studioEditor.kind === 'workflow' ? studioEditor.draft.nodes[0]?.node_id || '' : ''; refreshStudioEditor(studioEditor.kind === 'agent' ? '[data-agent-root-field="instructions"]' : '[data-workflow-editor-canvas]'); } catch (error) { input?.setCustomValidity(error.message); input?.reportValidity(); } return; }
@@ -2144,7 +2234,7 @@ app.addEventListener('click', event => {
     if (!studioSession || studioSession.kind !== control.dataset.kind) { showModal('Studio context unavailable', 'FAIL CLOSED', '<p>Reopen the candidate from its exact revision before continuing.</p>'); return; }
     const payload = structuredClone(studioSession.payload); const operation = control.dataset.operation; const requestId = studioAllocationRequestId();
     if (['preview', 'dry-run'].includes(operation)) { const identityKey = control.dataset.kind === 'agent' ? 'agent_id' : 'workflow_id'; pendingStudioPreview = { requestId, kind: control.dataset.kind, operation, subject: String(payload[identityKey] || ''), version: String(payload.version || '') }; showModal('Resolving exact execution contract', 'AUTHENTICATED ADMISSION · NO EFFECTS', '<div class="cleanup-loading"><span class="empty-ring"></span><p>Re-reading the admitted revision, live authority hashes, routes, blockers, schemas, and execution topology.</p></div>'); vscode.postMessage({ type: 'studioOperation', requestId, kind: control.dataset.kind, operation, payload }); return; }
-    if (operation === 'start' && control.dataset.kind === 'agent') { studioPendingRun = { requestId, payload }; showModal('Start admitted agent revision', 'EXPLICIT OBJECTIVE · DURABLE RUN', '<label class="modal-field"><span>Objective</span><textarea id="studio-agent-objective" rows="6" maxlength="4000" placeholder="Describe the exact bounded task this admitted revision should perform."></textarea></label><p class="modal-note">PX returns a durable run ID before execution completes so status, pause, and cancel remain usable.</p>', '<button data-action="closeModal">Cancel</button><button class="primary" data-action="submitStudioAgentRun">Start with this objective</button>'); return; }
+    if (operation === 'start' && control.dataset.kind === 'agent') { studioPendingRun = { requestId, payload }; showModal('Start admitted agent revision', 'EXPLICIT OBJECTIVE · DURABLE RUN', '<label class="modal-field"><span>Objective</span><textarea id="studio-agent-objective" rows="6" maxlength="4000" placeholder="Describe the exact bounded task this admitted revision should perform."></textarea></label><label class="modal-field"><span>Bounded local tool calls (canonical JSON array, optional)</span><textarea id="studio-agent-tool-calls" rows="5" spellcheck="false">[]</textarea></label><p class="modal-note">At most eight admitted local-worker calls are accepted. The host validates the closed tool registry, inputs, grants, and process bounds before execution. PX returns a durable run ID before execution completes so status, pause, and cancel remain usable.</p>', '<button data-action="closeModal">Cancel</button><button class="primary" data-action="submitStudioAgentRun">Start with this objective</button>'); return; }
     if (operation === 'start' && control.dataset.kind === 'workflow') { studioPendingWorkflowRun = { requestId, payload }; const contract = (payload.run_input_contract || []).map(item => item.key).filter(Boolean); showModal('Start admitted workflow revision', 'EPHEMERAL INPUTS · DURABLE RUN', `<label class="modal-field"><span>Run inputs (canonical JSON object)</span><textarea id="studio-workflow-inputs" rows="9" spellcheck="false">${esc(JSON.stringify(payload.run_inputs || {}, null, 2))}</textarea></label><p class="modal-note">Expected keys: ${esc(contract.join(', ') || 'defined by root node input ports')}. PX returns a durable run ID before background execution begins.</p>`, '<button data-action="closeModal">Cancel</button><button class="primary" data-action="submitStudioWorkflowRun">Start with these inputs</button>'); return; }
     if (operation === 'approve' && control.dataset.kind === 'workflow') {
       const node = payload.nodes?.find(item => item.node_id === studioSelectedNode && item.approval_required && !payload.approvals?.[item.node_id]) || payload.nodes?.find(item => item.approval_required && !payload.approvals?.[item.node_id]);
@@ -2157,7 +2247,7 @@ app.addEventListener('click', event => {
     } else closeModal();
     vscode.postMessage({ type: 'studioOperation', requestId, kind: control.dataset.kind, operation, payload }); return;
   }
-  if (action === 'submitStudioAgentRun') { const objective = document.getElementById('studio-agent-objective')?.value.trim() || ''; if (!studioPendingRun || !objective) { document.getElementById('studio-agent-objective')?.setCustomValidity('A specific bounded objective is required.'); document.getElementById('studio-agent-objective')?.reportValidity(); return; } const { requestId, payload: pendingPayload } = studioPendingRun; const payload = structuredClone(pendingPayload); payload.task = { objective }; if (studioSession?.kind === 'agent') studioSession.payload.task = structuredClone(payload.task); studioPendingRun = null; vscode.postMessage({ type: 'studioOperation', requestId, kind: 'agent', operation: 'start', payload }); closeModal(); return; }
+  if (action === 'submitStudioAgentRun') { const objectiveInput = document.getElementById('studio-agent-objective'); const toolCallsInput = document.getElementById('studio-agent-tool-calls'); const objective = objectiveInput?.value.trim() || ''; try { if (!studioPendingRun || !objective) throw new Error('A specific bounded objective is required.'); const toolCalls = JSON.parse(toolCallsInput?.value || '[]'); if (!Array.isArray(toolCalls) || toolCalls.length > 8 || toolCalls.some(call => !call || typeof call !== 'object' || Array.isArray(call) || Object.keys(call).sort().join(',') !== 'input,tool' || typeof call.tool !== 'string')) throw new Error('Tool calls must be a JSON array of at most eight { tool, input } objects.'); const { requestId, payload: pendingPayload } = studioPendingRun; const payload = structuredClone(pendingPayload); payload.task = { objective, tool_calls: toolCalls }; if (studioSession?.kind === 'agent') studioSession.payload.task = structuredClone(payload.task); studioPendingRun = null; vscode.postMessage({ type: 'studioOperation', requestId, kind: 'agent', operation: 'start', payload }); closeModal(); } catch (error) { const input = objective ? toolCallsInput : objectiveInput; input?.setCustomValidity(error.message); input?.reportValidity(); } return; }
   if (action === 'submitStudioWorkflowRun') {
     const input = document.getElementById('studio-workflow-inputs');
     try {
@@ -2382,8 +2472,11 @@ app.addEventListener('click', event => {
   if (action === 'knowledgePropose') { knowledgeProposalModal(); return; }
   if (action === 'submitKnowledgeProposal') {
     const id = document.getElementById('knowledge-id')?.value.trim(); const kind = document.getElementById('knowledge-kind')?.value.trim(); const title = document.getElementById('knowledge-title')?.value.trim(); const summary = document.getElementById('knowledge-summary')?.value.trim(); const source = document.getElementById('knowledge-source')?.value; const evidence = document.getElementById('knowledge-evidence')?.value.trim();
-    if (!id || !kind || !summary || !source || !evidence) { showModal('Knowledge proposal blocked', 'REQUIRED EVIDENCE MISSING', '<p>Record ID, kind, summary, declared source, and evidence reference are required.</p>'); return; }
-    vscode.postMessage({ type: 'studioOperation', kind: 'knowledge', operation: 'propose', payload: { candidate: { id, kind, title: title || id, summary }, source_ids: [source], evidence_refs: [evidence] } }); closeModal(); return;
+    try {
+      const payload = knowledgeProposalPayload({ id, kind, title, summary, source, evidence }, state.knowledgeData?.canonical || []);
+      vscode.postMessage({ type: 'studioOperation', kind: 'knowledge', operation: 'propose', payload }); closeModal();
+    } catch (error) { showModal('Knowledge proposal blocked', 'CURRENT CANONICAL BINDING REQUIRED', `<p role="alert">${esc(error.message)}</p>`); }
+    return;
   }
   if (action === 'knowledgeTransition') {
     const operation = control.dataset.operation; const proposalId = control.dataset.proposalId;

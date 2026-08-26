@@ -8,6 +8,19 @@ All notable changes to PACIFY-X are recorded here. The project follows semantic 
 - Added stable governed CLI exit codes, Python 3.11–3.14 runtime enforcement, command-local CLI loading, durable chunked release-evidence custody, and hash-locked normal CI.
 - Made v0.6.3 the sole onboarding default, removed the README warning block, and separated certified release installation from development setup.
 
+## 0.6.56 - 2026-08-25
+
+- Preserve the stale 0.6.55 artifact after exact isolated-host source-identity rejection instead of overwriting issued bytes.
+- Admit deep unsigned release discovery at the validated pre-package boundary while retaining installed-operation admission for finalization.
+- Reconcile current installed-control terminal vocabulary monotonically so partial re-observations cannot erase stronger operational proof.
+
+## 0.6.55 - 2026-08-25
+
+- Replaced the unreachable legacy Agent Studio section navigator with the editable graph topology as the sole current control surface.
+- Reconciled the canonical operational denominator to the 929 controls that can actually render, removing twelve dead Agent Studio controls instead of counting them as product capability.
+- Made control retirement replay-safe when a historical control is restored and later retired again, preserving both lifecycle records without corrupting the live projection.
+- Kept the prior 0.6.54 artifact and installed-host evidence intact while preparing a version-distinct isolated physical-operation candidate.
+
 ## 0.6.54 - 2026-08-25
 
 - Made Agent Studio and Workflow Studio physically editable through immutable successor revisions, with exact reopen, lifecycle, visual-builder, and runnable-state evidence.

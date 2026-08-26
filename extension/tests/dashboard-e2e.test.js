@@ -75,6 +75,63 @@ function writeVisualManifest(browserVersion) {
   fs.writeFileSync(path.join(visualEvidenceRoot, 'manifest.json'), `${JSON.stringify({ schema_version: 'px.ui-visual-evidence/1.0', generated_utc: new Date().toISOString(), browser: `${browserLane.name} ${browserVersion}`, platform: browserLane.platform, files }, null, 2)}\n`, 'utf8');
 }
 
+test('disconnected engine snapshots cannot present zero metrics without a prominent non-authoritative warning', async t => {
+  const browser = await chromium.launch({ executablePath: browserLane.executablePath, headless: true });
+  t.after(async () => { await browser.close(); });
+  const page = await browser.newPage({ viewport: { width: 1200, height: 800 } });
+  await page.goto(`${preview}?surface=dashboard`); await settled(page);
+  await page.evaluate(() => window.dispatchEvent(new MessageEvent('message', { data: {
+    type: 'snapshot', snapshot: {
+      connected: false, reason: 'owned physical engine outage', counts: {}, attention: [],
+      health: { configured: false, detected: false, connected: false, authoritative: false, ready: false, reason: 'owned physical engine outage' },
+      source: { version: 'unavailable', mode: 'disconnected' }, project: { name: 'No Pacify-X root detected', branch: 'unavailable' },
+      extensionIdentity: { matches: false }, catalogSource: 'unavailable', runtime: {}, memory: {}, coordination: {}, readiness: {}, enterprise: {}
+    }, settings: { showAdvancedSurfaces: true, glassIntensity: .66 }
+  } })));
+  const alert = page.locator('[data-engine-disconnected][role="alert"]');
+  await alert.waitFor({ state: 'visible' });
+  assert.match(await alert.textContent(), /ENGINE DISCONNECTED.*metrics are unavailable.*zero is an unavailable fallback.*not an observed system value/is);
+  await page.evaluate(() => window.dispatchEvent(new MessageEvent('message', { data: { type: 'snapshot', snapshot: window.__PX_TEST_SNAPSHOT__, settings: { showAdvancedSurfaces: true, glassIntensity: .66 } } })));
+  await page.locator('[data-engine-disconnected]').waitFor({ state: 'detached' });
+});
+
+test('Knowledge proposals bind same-record updates to the exact canonical head', async t => {
+  const browser = await chromium.launch({ executablePath: browserLane.executablePath, headless: true });
+  t.after(async () => { await browser.close(); });
+  const page = await browser.newPage({ viewport: { width: 1200, height: 900 } });
+  await page.goto(`${preview}?surface=knowledgeCore`); await settled(page);
+  await page.locator('[data-action="knowledgePropose"]').waitFor({ state: 'visible' });
+
+  const submit = async id => {
+    await page.locator('[data-action="knowledgePropose"]').click();
+    await page.locator('#knowledge-id').fill(id);
+    await page.locator('#knowledge-summary').fill(`Bounded update for ${id}`);
+    await page.locator('[data-action="submitKnowledgeProposal"]').click();
+    return page.evaluate(recordId => [...window.__PX_POSTED_MESSAGES__].reverse().find(message => message.type === 'studioOperation'
+      && message.kind === 'knowledge' && message.operation === 'propose' && message.payload?.candidate?.id === recordId), id);
+  };
+
+  const update = await submit('knowledge:preview-canonical');
+  assert.equal(update.payload.candidate.supersedes_sha256, 'd'.repeat(64));
+  const created = await submit('knowledge:new-canonical');
+  assert.equal(Object.hasOwn(created.payload.candidate, 'supersedes_sha256'), false);
+
+  await page.evaluate(() => window.dispatchEvent(new MessageEvent('message', { data: {
+    type: 'studioOperationResult', kind: 'knowledge', operation: 'browse', result: {
+      schema_version: 'px.knowledge-control-view/1.0', proposals: [], conflicts: [], learning: { available: false, pipelines: [] },
+      canonical: [{ record_id: 'knowledge:malformed', candidate_sha256: 'not-a-head', rollback_targets: [] }]
+    }
+  } })));
+  const before = await page.evaluate(() => window.__PX_POSTED_MESSAGES__.length);
+  await page.locator('[data-action="knowledgePropose"]').click();
+  await page.locator('#knowledge-id').fill('knowledge:malformed');
+  await page.locator('#knowledge-summary').fill('This must not be dispatched.');
+  await page.locator('[data-action="submitKnowledgeProposal"]').click();
+  await page.locator('.control-modal h2').filter({ hasText: 'Knowledge proposal blocked' }).waitFor({ state: 'visible' });
+  assert.match(await page.locator('.control-modal [role="alert"]').textContent(), /canonical head is malformed/i);
+  assert.equal(await page.evaluate(() => window.__PX_POSTED_MESSAGES__.length), before);
+});
+
 test('Playwright drives every dashboard route and high-risk interaction without console or layout errors', { timeout: 120000 }, async t => {
   fs.mkdirSync(visualEvidenceRoot, { recursive: true });
   const browser = await chromium.launch({ executablePath: browserLane.executablePath, headless: true });
@@ -856,6 +913,11 @@ test('Playwright drives every dashboard route and high-risk interaction without 
   await page.goto(`${preview}?surface=settings`); await settled(page);
   await assertContained(page, '.policy-switch', '.surface-settings > .panel:has(.policy-switch)', 'settings-policy-mobile');
   assert.equal(await page.locator('.guardrail-grid').evaluate(element => getComputedStyle(element).gridTemplateColumns.split(' ').length), 2);
+  assert.equal(await page.locator('.settings-effective-metrics [data-action="inspectMetric"]').count(), 4);
+  await page.locator('.settings-effective-metrics [data-action="inspectMetric"]').first().click();
+  await page.locator('#modal-root [role="dialog"]').waitFor({ state: 'visible' });
+  assert.match(await page.locator('#modal-root [role="dialog"]').innerText(), /ENGINE CONNECTION/);
+  await page.locator('[data-action="closeModal"]').last().click();
   assert.deepEqual(failures, []);
   writeVisualManifest(browser.version());
 });
@@ -876,10 +938,8 @@ test('source-bound Studio recovery reapplies only an exactly reauthenticated ove
   await page.keyboard.press('Escape');
 
   await page.locator('[data-action="openStudioDraft"][data-kind="agent"]').click();
-  assert.match(await page.locator('.control-modal').textContent(), /Reopen that exact catalog revision/i);
-  await page.locator('.control-modal footer [data-action="closeModal"]').click();
-  await page.locator('.catalog-row[data-kind="agents"]').first().click();
-  await page.locator('[data-action="openStudioFromCatalog"][data-kind="agent"]').click();
+  assert.match(await page.locator('.control-modal').textContent(), /Reauthenticate and resume/i);
+  await page.locator('[data-action="resumeWorkingStudioDraft"][data-kind="agent"]').click();
   await page.locator('[data-agent-root-field="instructions"]').waitFor({ state: 'visible' });
   assert.equal(await page.locator('[data-agent-root-field="instructions"]').inputValue(), 'Retained exact overlay.');
   assert.match(await page.locator('.studio-revision-baseline').allTextContents().then(values => values.join(' ')), /RETAINED OVERLAY RESTORED/);

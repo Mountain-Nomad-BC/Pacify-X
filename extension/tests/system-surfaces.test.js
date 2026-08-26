@@ -70,6 +70,31 @@ test('diagnostics renderer preserves controls, integration composition, and cata
   assert.match(html, /All checks passed\./);
 });
 
+test('historical runtime failures remain visible evidence but never become live blockers', () => {
+  const context = fixture();
+  context.state.snapshot.runtime = {
+    core: { counters: { failures: 7 } },
+    bottlenecks: { failures: 0, historical_failures: 7 },
+    turbovec: { status: 'fallback', fallback: 'CPU' }
+  };
+  const diagnostics = loadSystemSurfaces().render('diagnostics', context);
+  assert.match(diagnostics, /7 historical work-plane failures retained as evidence/);
+  assert.doesNotMatch(diagnostics, /runtime-failures/);
+  const assurance = loadSystemSurfaces().render('assurance', context);
+  assert.doesNotMatch(assurance, /runtime failures are retained/);
+});
+
+test('retained operational cards are history while the active repair campaign owns live blockers', () => {
+  const context = fixture();
+  context.state.snapshot.completion = { operational_punch_cards: { source_status: 'open', count: 40, open_count: 0, retained_unclosed_count: 38, progress: {}, cards: [] } };
+  context.state.snapshot.repair_campaign = { valid: true, campaign_id: 'repair:test', phase: 'repair', unresolved_count: 1, unresolved: ['studio-operability'] };
+  const html = loadSystemSurfaces().render('diagnostics', context);
+  assert.match(html, /active-repair-campaign/);
+  assert.match(html, /1 functional repair tracks remain/);
+  assert.match(html, /0 ACTIVE \/ 38 UNCLOSED HISTORY \/ 40 RETAINED/);
+  assert.doesNotMatch(html, /operational findings are not closed/);
+});
+
 test('diagnostics renders truthful ledger states, exact-card actions, and invalid-ledger failure', () => {
   const context = fixture();
   context.state.snapshot.completion = { operational_punch_cards: {

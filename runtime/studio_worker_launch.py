@@ -48,17 +48,26 @@ def finalize_studio_run_if_worker_exited(
         and record.creator == "px-studio-durable-launcher"
         and record.resource_type == "process"
     ]
+    binding: Mapping[str, object] | None = None
+    if binding_path.is_file():
+        raw = json.loads(binding_path.read_text(encoding="utf-8"))
+        binding = authority.verify_receipt(raw)
+        if binding.get("run_id") != run_id:
+            raise PermissionError("Studio finalization binding is invalid")
+        records = [
+            record
+            for record in records
+            if record.resource_id == binding.get("worker_resource_id")
+            and int(record.pid or 0) == int(binding.get("worker_pid") or 0)
+        ]
     if len(records) != 1 or not records[0].resource_id or int(records[0].pid or 0) <= 0:
         raise PermissionError("Studio finalization worker identity is ambiguous")
     worker = records[0]
     resource_id = worker.resource_id
     worker_pid = int(worker.pid or 0)
-    if binding_path.is_file():
-        raw = json.loads(binding_path.read_text(encoding="utf-8"))
-        binding = authority.verify_receipt(raw)
+    if binding is not None:
         if (
-            binding.get("run_id") != run_id
-            or binding.get("worker_resource_id") != resource_id
+            binding.get("worker_resource_id") != resource_id
             or int(binding.get("worker_pid") or 0) != worker_pid
         ):
             raise PermissionError("Studio finalization binding is invalid")
@@ -261,6 +270,7 @@ def launch_studio_worker(
     startup_timeout_seconds: float = 8.0,
 ) -> dict[str, object]:
     """Start one registered worker and acknowledge only observed liveness."""
+    launch_state = str(run_control.read(run_id)["state"])
     request_root = state_root / "worker-requests"
     request_root.mkdir(parents=True, exist_ok=True)
     request_path = request_root / f"{run_id}.json"
@@ -338,7 +348,7 @@ def launch_studio_worker(
         state = run_control.read(run_id)
         current_record = manager.ledger.get(record.resource_id)
         worker_pid = int(current_record.pid or process.pid)
-        if str(state["state"]) != "queued":
+        if str(state["state"]) != launch_state:
             return {
                 "schema_version": f"px.{kind}-session-start/1.1",
                 "run_id": run_id,

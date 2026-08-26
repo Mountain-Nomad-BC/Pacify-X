@@ -66,6 +66,21 @@ def test_exact_direct_stage_receipt_completes_only_its_control(tmp_path: Path) -
     assert result["control_chains"]["aggregates"]["complete_interaction_chains"] == 2
 
 
+def test_complete_direct_observation_does_not_require_an_edit_attempt(tmp_path: Path) -> None:
+    root, ui = fixture(tmp_path)
+    value = json.loads(ui.read_text(encoding="utf-8"))
+    record = value["records"][0]
+    record["attempted"] = False
+    record["observed"] = True
+    write(ui, value)
+
+    result = assemble(root, ui, [])
+    records = {item["control_id"]: item for item in result["control_chains"]["controls"]}
+
+    assert records["pxui.demo.field.name"]["terminal_disposition"] == "interaction_complete"
+    assert result["control_chains"]["aggregates"]["observed_control_count"] == 1
+
+
 def test_contextual_evidence_and_cross_denominator_ids_fail_closed(tmp_path: Path) -> None:
     root, ui = fixture(tmp_path)
     contextual = root / "contextual.json"

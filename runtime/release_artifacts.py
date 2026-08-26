@@ -25,6 +25,20 @@ def _canonical_digest(records: list[dict[str, Any]]) -> str:
     return hashlib.sha256(payload).hexdigest()
 
 
+def _is_release_walk_excluded(relative: str | Path) -> bool:
+    """Prune external custody without hiding policy-governed evidence.
+
+    The repository source boundary intentionally excludes evidence from normal
+    source discovery.  Release classification has a different obligation: it
+    must see evidence payloads so executable or unapproved files cannot hide in
+    that namespace.  Evidence remains non-product and its content is not hashed.
+    """
+    path = Path(relative)
+    if any(part.casefold() == "evidence" for part in path.parts):
+        return False
+    return is_external_environment_relative(path)
+
+
 def classify_tree(root: Path) -> dict[str, Any]:
     root = root.resolve()
     policy = _load_policy(root)
@@ -53,10 +67,12 @@ def classify_tree(root: Path) -> dict[str, Any]:
         walk = bounded_walk(
             root,
             limits=WalkLimits(
-                max_files=100_000, max_depth=128, max_bytes=2 * 1024 * 1024 * 1024
+                max_files=250_000,
+                max_depth=128,
+                max_bytes=64 * 1024 * 1024 * 1024,
             ),
             symlink_policy="reject",
-            exclude=is_external_environment_relative,
+            exclude=_is_release_walk_excluded,
         )
     except FilesystemWalkError as error:
         return {
@@ -126,7 +142,7 @@ def classify_tree(root: Path) -> dict[str, Any]:
                 reason = "no release policy rule"
                 errors.append(f"unclassified release artifact: {relative}")
             if path.is_file():
-                if classification == "control_output":
+                if classification in {"control_output", "evidence_output"}:
                     content_sha256 = None
                 else:
                     try:

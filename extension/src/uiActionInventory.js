@@ -35,7 +35,6 @@ const UI_ONLY = Object.freeze({
   acceptStudioVersionSuggestion: ['draft-state', 'apply the request-bound host allocation suggestion to the unsaved candidate without saving it'],
   operateStudioRevision: ['modal', 'resume one exact durable Studio candidate lifecycle or load one authenticated admitted revision without changing its version'],
   studioEditorTab: ['view-state', 'switch synchronized visual and canonical Studio views'],
-  agentSelectSection: ['editor-state', 'select and focus one legacy agent topology section'],
   agentSelectNode: ['editor-state', 'select one closed AgentSpec graph node and open its field-linked inspector'],
   agentPortConnect: ['editor-state', 'start or complete one admitted typed AgentSpec connection in the unsaved working graph'],
   agentCancelConnection: ['editor-state', 'cancel the pending AgentSpec connection without changing the unsaved working graph'],

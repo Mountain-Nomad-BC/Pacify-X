@@ -15,6 +15,8 @@ const { codexHostHandoffDecision } = require('./operationAuthority');
 const { OllamaChatProvider } = require('./ollamaProvider');
 const { validateWebviewMessage } = require('./webviewMessages');
 const { createHealthState, healthLabel } = require('./healthState');
+const { observeMcpRuntime } = require('./mcpRuntimeObservation');
+const { resolveCanonicalWorkspaceRoot } = require('./canonicalWorkspaceSelection');
 const { scanCleanupCandidates, executeCleanup } = require('./cleanupManager');
 const { inventoryTeamPackAsync, stageTeamPack, workerAdapters } = require('./teamFabricManager');
 const { initializeEnterprise, setPackEnabled, configureTarget, setExecutionPolicy, enterpriseDoctor } = require('./enterpriseManager');
@@ -230,6 +232,10 @@ function extensionLifecycle() {
 function settings() {
   const config = vscode.workspace.getConfiguration('pacifyX');
   const providerAllowlist = config.get('guardrails.providerAllowlist');
+  const workspaceRootInspection = config.inspect('workspaceRoot') || {};
+  const workspaceRootExplicitlyConfigured = ['globalValue', 'workspaceValue', 'workspaceFolderValue']
+    .some(key => workspaceRootInspection[key] !== undefined);
+  const openProjectRoot = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath || '';
   return {
     showAdvancedSurfaces: Boolean(config.get('showAdvancedSurfaces')),
     glassIntensity: Number(config.get('glassIntensity') || 0.66),
@@ -239,7 +245,11 @@ function settings() {
     ollamaEnabled: Boolean(config.get('ollama.enabled')),
     ollamaBaseUrl: String(config.get('ollama.baseUrl') || 'http://127.0.0.1:11434'),
     pythonPath: String(config.get('pythonPath') || 'python'),
-    workspaceRoot: String(config.get('workspaceRoot') || '').trim(),
+    workspaceRoot: resolveCanonicalWorkspaceRoot({
+      configuredValue: config.get('workspaceRoot'),
+      explicitlyConfigured: workspaceRootExplicitlyConfigured,
+      projectRoot: openProjectRoot
+    }),
     activity: {
       enabled: config.get('activity.enabled') !== false,
       paused: Boolean(config.get('activity.paused')),
@@ -663,7 +673,7 @@ function activateImplementation(context, transaction) {
       currentSnapshot.observability = {
         listeners: listenerHealth.snapshot(),
         efficiency: bridge().diagnostics(),
-        mcp: { ...mcpRegistrationState }
+        mcp: observeMcpRuntime(mcpRegistrationState, coordinationData?.activity, context.extension.packageJSON?.version)
       };
       const currentActor = actorIdentity(sessionId);
       const hasWorkspaceClaim = Boolean(coordinationData?.state?.tasks?.some(task => task.owner?.actor_id === currentActor.actorId && ['claimed', 'in_progress', 'waiting'].includes(task.status)));
@@ -994,18 +1004,21 @@ function activateImplementation(context, transaction) {
     }, Math.max(60, settings().refreshIntervalSeconds) * 1000);
   }
 
-  function reauthenticatePreservedOriginalSelection(selection) {
+  function reauthenticateSkillSourceSelection(selection) {
     const provenance = selection?.backup_provenance;
-    if (selection?.kind !== 'skill' || selection.source_scope !== 'external-authenticated') throw new Error('studio-skill-preserved-original-lineage-invalid');
+    if (selection?.kind !== 'skill' || !['studio-physical', 'external-authenticated'].includes(selection.source_scope)) throw new Error('studio-skill-source-lineage-invalid');
     const canonical = readSkillPackage(bridge().engineRoot, selection.package_path, { projectRoot: bridge().projectRoot, scope: selection.package_scope });
     const canonicalBody = String(canonical.editor_files?.['SKILL.md'] || '');
     const canonicalBodySha256 = crypto.createHash('sha256').update(Buffer.from(canonicalBody, 'utf8')).digest('hex');
     if (canonical.packagePath !== selection.package_path
       || canonical.packageScope !== selection.package_scope
       || canonical.treeSha256 !== selection.tree_sha256
-      || canonical.treeSha256 !== selection.source_content_sha256
-      || canonical.fileCount !== selection.file_count
-      || canonicalBodySha256 !== selection.source_revision_sha256) throw new Error('studio-skill-selected-package-changed');
+      || canonical.fileCount !== selection.file_count) throw new Error('studio-skill-selected-package-changed');
+    if (selection.source_scope === 'studio-physical') {
+      if (selection.package_scope !== 'project-studio' || provenance !== null || !/^[a-f0-9]{64}$/.test(selection.source_revision_sha256) || !/^[a-f0-9]{64}$/.test(selection.source_content_sha256)) throw new Error('studio-skill-project-lineage-invalid');
+      return structuredClone(selection);
+    }
+    if (canonical.treeSha256 !== selection.source_content_sha256 || canonicalBodySha256 !== selection.source_revision_sha256) throw new Error('studio-skill-selected-package-changed');
     if (provenance === null || provenance === undefined) return structuredClone(selection);
     const original = readSkillPackage(bridge().engineRoot, provenance.package_relative, { scope: 'engine' });
     const body = String(original.editor_files?.['SKILL.md'] || '');
@@ -1193,7 +1206,7 @@ function activateImplementation(context, transaction) {
                   consumeVersionAllocation: (token, kind, allocation) => studioTrust.consumeVersionAllocation(token, kind, allocation, allocationOwner),
                   registerVersionAllocation: (kind, allocation, _owner, sourceSelection = null) => studioTrust.registerVersionAllocation(kind, allocation, { originId: panelOriginId, requestId: message.requestId }, sourceSelection),
                   resolveVersionAllocationSourceSelection: (token, owner) => studioTrust.resolveVersionAllocationSourceSelection(token, owner),
-                  reauthenticateVersionAllocationSourceSelection: reauthenticatePreservedOriginalSelection,
+                  reauthenticateVersionAllocationSourceSelection: reauthenticateSkillSourceSelection,
                   reclaimSkillPackage: reclaimMaterializedSkillPackage,
                   reportPostCommitWarning: receipt => { codexOutput.appendLine(`Studio create committed; follow-up delivery degraded: ${JSON.stringify({ request_id: receipt.requestId, kind: receipt.kind, warning_count: Array.isArray(receipt.warnings) ? receipt.warnings.length : 0 })}`); if (!operation.detached && panelOrigin.isActive()) void vscode.window.showWarningMessage('Pacify-X committed the immutable Studio revision, but its live result or refresh could not be delivered. Refresh the catalog to recover the durable receipt.'); }
                 });
@@ -1357,7 +1370,7 @@ function activateImplementation(context, transaction) {
                     const bodySha256 = crypto.createHash('sha256').update(Buffer.from(String(reread.editor_files?.['SKILL.md'] || ''), 'utf8')).digest('hex');
                     if (bodySha256 !== selection.source_revision_sha256 || reread.treeSha256 !== selection.source_content_sha256) throw new Error('studio-skill-source-selection-changed');
                   }
-                  reauthenticatePreservedOriginalSelection(selection);
+                  reauthenticateSkillSourceSelection(selection);
                   result = await bridge().nextStudioVersion('skill', selection.identity, selection.source_version, selection.source_scope, selection.source_revision_sha256, selection.source_content_sha256);
                   allocationSourceSelection = selection;
                 } else {

@@ -60,6 +60,20 @@ def test_only_evidence_change_does_not_change_product_digest() -> None:
     assert first["product_digest"] == second["product_digest"]
 
 
+def test_live_test_orchestration_lock_is_control_output_not_product() -> None:
+    root = _minimal_tree()
+    lock = root / ".engineering-bootstrap/test-evidence/.test-orchestration.lock"
+    lock.parent.mkdir(parents=True)
+    lock.write_text('{"owner":"active-test-profile"}\n', encoding="utf-8")
+
+    result = classify_tree(root)
+
+    record = next(item for item in result["records"] if item["path"] == lock.relative_to(root).as_posix())
+    assert result["valid"], result["errors"]
+    assert record["classification"] == "control_output"
+    assert record["sha256"] is None
+
+
 def test_nested_evidence_is_not_a_product_input() -> None:
     root = _minimal_tree()
     evidence = root / "runtime/evidence/result.json"
@@ -86,6 +100,15 @@ def test_junit_xml_is_an_admitted_non_executable_evidence_format() -> None:
         '<testsuites tests="1" failures="0" errors="0" skipped="0" />\n',
         encoding="utf-8",
     )
+    result = classify_tree(root)
+    assert result["valid"], result["errors"]
+
+
+def test_ndjson_progress_is_an_admitted_non_executable_evidence_format() -> None:
+    root = _minimal_tree()
+    report = root / "evidence/operational-walk/profile-progress.ndjson"
+    report.parent.mkdir(parents=True)
+    report.write_text('{"phase":"running"}\n', encoding="utf-8")
     result = classify_tree(root)
     assert result["valid"], result["errors"]
 

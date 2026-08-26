@@ -105,7 +105,12 @@ def _eligible_clone() -> Path:
     ledger_path = clone / "registry/corrective_release_ledger.json"
     ledger = json.loads(ledger_path.read_text(encoding="utf-8"))
     receipt = clone / "evidence/test-finalizer-prerequisite.json"
+    receipt.parent.mkdir(parents=True, exist_ok=True)
     receipt.write_text('{"valid":true}\n', encoding="utf-8")
+    shutil.copy2(
+        ROOT / "evidence/release-revocation-0.6.2.json",
+        clone / "evidence/release-revocation-0.6.2.json",
+    )
     for card in ledger["cards"]:
         if card["id"] not in {"REL-010-C", "REL-010-E"}:
             card["status"] = "passed"

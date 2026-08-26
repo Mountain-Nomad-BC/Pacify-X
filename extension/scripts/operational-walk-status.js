@@ -185,6 +185,50 @@ function summarizeIssues(issues) {
   };
 }
 
+function focusedProfileIssues(value) {
+  const focused = String(value.focused_profile || '');
+  if (!focused) return null;
+  const issues = [];
+  const incomplete = (code, message, details = null) => issues.push(issue({
+    source: 'coverage', code, message, severity: 'incomplete', context: focused, details
+  }));
+  if (focused === 'studio-lifecycle') {
+    const setup = value.studio_setup_profile?.observation;
+    const candidates = value.studio_candidate_save_profile?.observations;
+    const lifecycle = value.studio_lifecycle_profile?.observations;
+    const revisions = value.studio_revision_edit_profile?.observations;
+    if (setup?.typed_ready_result !== true || (setup?.errors || []).length) {
+      incomplete('focused-studio-setup-incomplete', 'The focused Studio setup did not return a typed ready result.', setup || null);
+    }
+    const candidateKinds = new Set((candidates || []).filter(item => item?.attempted === true && item?.typed_creation_receipt === true && item?.reopened_catalog_match === true && !(item?.errors || []).length).map(item => item.kind));
+    if (!['agent', 'workflow', 'skill'].every(kind => candidateKinds.has(kind))) {
+      incomplete('focused-studio-candidates-incomplete', 'Agent, Workflow, and Skill candidates were not all saved and reopened through the installed host.', { completed_kinds: [...candidateKinds].sort() });
+    }
+    const lifecycleKinds = new Set((lifecycle || []).filter(item => item?.exact_catalog_selection === true && (item?.operations || []).length > 0 && (item.operations || []).every(operation => operation?.valid === true) && !(item?.errors || []).length && (!['agent', 'workflow'].includes(item.kind) || item?.durable_run_reopened === true)).map(item => item.kind));
+    if (!['agent', 'workflow', 'skill'].every(kind => lifecycleKinds.has(kind))) {
+      incomplete('focused-studio-lifecycle-incomplete', 'The exact Agent, Workflow, and Skill candidate lifecycle routes did not all complete.', { completed_kinds: [...lifecycleKinds].sort() });
+    }
+    const revisionKinds = new Set((revisions || []).filter(item => item?.attempted === true && item?.editor_bound === true && item?.typed_creation_receipt === true && item?.reopened_catalog_match === true && item?.predecessor_preserved === true && item?.content_changed === true && item?.reopened_editor_content_match === true && !(item?.errors || []).length).map(item => item.kind));
+    if (!['agent', 'workflow', 'skill'].every(kind => revisionKinds.has(kind))) {
+      incomplete('focused-studio-revision-edit-incomplete', 'Agent, Workflow, and Skill predecessor-bound edits were not all saved and reopened with changed content.', { completed_kinds: [...revisionKinds].sort() });
+    }
+  } else if (focused === 'knowledge-lifecycle') {
+    const observation = value.knowledge_lifecycle_profile?.observation;
+    if (observation?.attempted !== true || observation?.completed !== true || (observation?.errors || []).length) {
+      incomplete('focused-knowledge-lifecycle-incomplete', 'The focused Knowledge lifecycle did not complete its source-bound mutation and refreshed-state journey.', observation || null);
+    }
+  } else if (focused === 'reversible-configuration') {
+    const profile = value.reversible_configuration_profile;
+    const records = Array.isArray(profile?.records) ? profile.records : [];
+    if (!records.length || records.some(record => record?.attempted !== true || (record?.errors || []).length)) {
+      incomplete('focused-configuration-incomplete', 'The focused reversible configuration journey did not complete every eligible control.', { eligible_control_count: profile?.eligible_control_count || 0, record_count: records.length });
+    }
+  } else {
+    incomplete('focused-profile-unsupported', `The focused operational profile ${focused} has no scoped completion contract.`);
+  }
+  return { focused, issues };
+}
+
 function evaluateOperationalWalk(receipt, { additionalIssues = [] } = {}) {
   const value = receipt && typeof receipt === 'object' ? receipt : {};
   const issues = [...normalizeHostErrors(value.host_errors), ...(additionalIssues || [])];
@@ -227,6 +271,8 @@ function evaluateOperationalWalk(receipt, { additionalIssues = [] } = {}) {
     issues.push(issue({ source: 'page', code: 'sidebar-inbound-message-invalid', message: 'A walked surface emitted sidebar-inbound-message-invalid:type:invalid_union.' }));
   }
 
+  const focusedEvaluation = focusedProfileIssues(value);
+  if (focusedEvaluation) issues.push(...focusedEvaluation.issues);
   const chain = value.control_chains;
   const controls = Array.isArray(chain?.controls) ? chain.controls : [];
   const declaredControlCount = Number(chain?.aggregates?.control_count ?? chain?.inventory?.control_count);
@@ -240,7 +286,7 @@ function evaluateOperationalWalk(receipt, { additionalIssues = [] } = {}) {
       message: `The control-chain receipt is missing or inconsistent (${controls.length} records / ${controlCount} declared).`,
       context: 'receipt-contract'
     }));
-  } else {
+  } else if (!focusedEvaluation) {
     if (attemptedControlCount < controlCount) {
       issues.push(issue({
         source: 'coverage',
@@ -262,7 +308,7 @@ function evaluateOperationalWalk(receipt, { additionalIssues = [] } = {}) {
   }
 
   const builders = value.builders && typeof value.builders === 'object' ? value.builders : {};
-  for (const kind of ['agent', 'workflow']) {
+  if (!focusedEvaluation) for (const kind of ['agent', 'workflow']) {
     const disposition = String(builders[kind]?.terminal_disposition || 'missing');
     if (!COMPLETE_BUILDER_DISPOSITIONS.has(disposition)) {
       issues.push(issue({
@@ -289,7 +335,7 @@ function evaluateOperationalWalk(receipt, { additionalIssues = [] } = {}) {
     if (COMPLETE_BUILDER_DISPOSITIONS.has(String(surface?.terminal_disposition || ''))) observedSurfaceIds.add(canonicalSurfaceId(surface.surface_id));
   }
   const missingSurfaceIds = [...expectedSurfaceIds].filter(surfaceId => !observedSurfaceIds.has(surfaceId)).sort();
-  if (missingSurfaceIds.length) {
+  if (missingSurfaceIds.length && !focusedEvaluation) {
     issues.push(issue({
       source: 'coverage',
       code: 'surfaces-not-observed',
@@ -304,7 +350,9 @@ function evaluateOperationalWalk(receipt, { additionalIssues = [] } = {}) {
   return {
     schema_version: 'px.operational-ui-walk-status/1.0',
     terminal_state: terminalState,
-    operationally_complete: terminalState === WALK_TERMINAL_STATES.COMPLETED,
+    operationally_complete: terminalState === WALK_TERMINAL_STATES.COMPLETED && !focusedEvaluation,
+    scope_complete: terminalState === WALK_TERMINAL_STATES.COMPLETED,
+    evaluated_scope: focusedEvaluation?.focused || 'full-operational-walk',
     source_identity: {
       state: sourceIdentityState,
       method: value.source_identity?.method || null

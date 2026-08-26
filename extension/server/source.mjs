@@ -90,6 +90,7 @@ function buildServer() {
     contextEnvelope,
     policy: activityPolicy,
     processId: process.pid,
+    serverVersion: MCP_VERSION,
     onDrop: failure => process.stderr.write(`[pacify-x-mcp-instrumentation] ${failure.type}:${failure.tool}:${failure.lifecycle}\n`)
   });
   const registerTool = (name, definition, handler) => server.registerTool(name, definition, mcpInstrumentation.wrapTool(name, definition, handler));

@@ -2,8 +2,10 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import os
 import tempfile
 import unittest
+from unittest import mock
 from pathlib import Path
 
 
@@ -210,6 +212,133 @@ class CapabilityMiningSkillTests(unittest.TestCase):
                 result["mechanism_counts"]["orchestration-checkpoint"], 0
             )
             self.assertEqual(result["excluded_boundaries"][0]["file_count"], 1)
+
+    def test_source_auditor_never_opens_excluded_file_bodies(self):
+        module = load_script(
+            "audit-source-capabilities", "audit_source_capabilities.py"
+        )
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            generated = root / "build"
+            generated.mkdir()
+            excluded = generated / "derived.bin"
+            excluded.write_bytes(b"abc")
+
+            with mock.patch.object(
+                module,
+                "_hash_file",
+                side_effect=AssertionError("excluded body was opened"),
+            ):
+                first = module.audit(root, existing_catalog=None)
+            boundary = first["excluded_boundaries"][0]
+            self.assertEqual(first["coverage"]["excluded_files"], 1)
+            self.assertEqual(first["coverage"]["excluded_bytes"], 3)
+            self.assertEqual(boundary["inventory_method"], "path-and-size-metadata")
+            self.assertNotIn("tree_sha256", boundary)
+
+            excluded.write_bytes(b"xyz")
+            second = module.audit(root, existing_catalog=None)
+            self.assertEqual(
+                boundary["metadata_inventory_sha256"],
+                second["excluded_boundaries"][0]["metadata_inventory_sha256"],
+            )
+            excluded.write_bytes(b"longer")
+            third = module.audit(root, existing_catalog=None)
+            self.assertNotEqual(
+                boundary["metadata_inventory_sha256"],
+                third["excluded_boundaries"][0]["metadata_inventory_sha256"],
+            )
+
+    def test_source_auditor_fails_closed_on_excluded_metadata_error(self):
+        module = load_script(
+            "audit-source-capabilities", "audit_source_capabilities.py"
+        )
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            generated = root / "build"
+            generated.mkdir()
+            excluded = generated / "derived.bin"
+            excluded.write_bytes(b"abc")
+            original_scandir = module.os.scandir
+
+            def failing_scandir(path):
+                if Path(path) == generated:
+                    raise PermissionError("denied for focused test")
+                return original_scandir(path)
+
+            with mock.patch.object(module.os, "scandir", side_effect=failing_scandir):
+                result = module.audit(root, existing_catalog=None)
+            self.assertFalse(result["complete"])
+            self.assertEqual(result["coverage"]["error_count"], 1)
+            self.assertIn("PermissionError", result["errors"][0])
+
+    def test_source_auditor_treats_only_hidden_runtime_locks_as_metadata(self):
+        module = load_script(
+            "audit-source-capabilities", "audit_source_capabilities.py"
+        )
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            volatile = root / ".runtime.lock"
+            volatile.write_bytes(b"owned-lock")
+            dependency = root / "Cargo.lock"
+            dependency.write_text("dependency = true\n", encoding="utf-8")
+            original_hash = module._hash_file
+
+            def guarded_hash(path):
+                if path == volatile:
+                    raise AssertionError("volatile lock body was opened")
+                return original_hash(path)
+
+            with mock.patch.object(module, "_hash_file", side_effect=guarded_hash):
+                result = module.audit(root, existing_catalog=None)
+            self.assertTrue(result["complete"])
+            self.assertEqual(result["coverage"]["files"], 1)
+            self.assertEqual(result["coverage"]["excluded_volatile_locks"], 1)
+            self.assertEqual(result["excluded_boundaries"][0]["reason"], "volatile-dot-lock")
+
+    def test_source_auditor_accounts_for_nested_excluded_symlink_without_following(self):
+        module = load_script(
+            "audit-source-capabilities", "audit_source_capabilities.py"
+        )
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            target = root / "target.txt"
+            target.write_text("included target", encoding="utf-8")
+            generated = root / "build"
+            generated.mkdir()
+            link = generated / "current"
+            os.symlink(target, link)
+
+            result = module.audit(root, existing_catalog=None)
+
+            self.assertTrue(result["complete"])
+            self.assertEqual(result["errors"], [])
+            self.assertEqual(result["coverage"]["excluded_symlinks"], 1)
+            self.assertEqual(result["excluded_boundaries"][0]["symlink_count"], 1)
+            first_inventory = result["coverage"]["inventory_sha256"]
+            link.unlink()
+            second = module.audit(root, existing_catalog=None)
+            self.assertNotEqual(
+                first_inventory,
+                second["coverage"]["inventory_sha256"],
+            )
+
+    def test_source_auditor_rejects_symlink_used_as_exclusion_boundary(self):
+        module = load_script(
+            "audit-source-capabilities", "audit_source_capabilities.py"
+        )
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            target = root / "generated-target"
+            target.mkdir()
+            (target / "derived.bin").write_bytes(b"abc")
+            os.symlink(target, root / "build", target_is_directory=True)
+
+            result = module.audit(root, existing_catalog=None)
+
+            self.assertFalse(result["complete"])
+            self.assertEqual(result["coverage"]["error_count"], 1)
+            self.assertIn("excluded boundary is a symlink", result["errors"][0])
 
     def test_source_inventory_reconciler_requires_an_owner_for_every_record(self):
         module = load_script(

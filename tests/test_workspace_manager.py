@@ -36,6 +36,7 @@ from runtime.workspace_manager import (
 import runtime.workspace_manager as workspace_runtime
 from runtime.file_lock import FileLock, FileLockTimeout
 from runtime.event_ledger import validate_event_ledger
+from runtime.test_profiles import ProcessingOrderBlocked
 
 
 ROOT = Path(__file__).parents[1]
@@ -156,6 +157,15 @@ class WorkspaceManagerTests(unittest.TestCase):
             for item in registry["projects"]:
                 self.assertTrue((workspace / item["memory_root"]).is_dir())
                 self.assertTrue((workspace / item["project_management"]).is_file())
+                project = workspace / item["path"]
+                campaign = (
+                    project
+                    / ".engineering-bootstrap/processing-order/repair-campaign.json"
+                )
+                self.assertTrue(campaign.is_file())
+                state = json.loads(campaign.read_text(encoding="utf-8"))
+                self.assertEqual(state["phase"], "intake")
+                self.assertTrue(state["intake_open"])
             repeated = discover_projects(workspace, source_root=ROOT, apply=True)
             self.assertEqual(repeated["admitted"], [])
             self.assertEqual(repeated["registered_count"], 2)
@@ -172,6 +182,21 @@ class WorkspaceManagerTests(unittest.TestCase):
             self.assertTrue(all("layer_counts" in item for item in monitor["memory"]))
             self.assertTrue(all("lifecycle_counts" in item for item in monitor["memory"]))
             self.assertTrue(monitor["integrations"]["smoke_tested"])
+
+    def test_activation_fails_closed_when_managed_project_order_state_is_missing(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = self._workspace_with_projects(Path(directory))
+            campaign = (
+                workspace
+                / "projects/alpha/.engineering-bootstrap/processing-order/repair-campaign.json"
+            )
+            campaign.unlink()
+            with self.assertRaisesRegex(
+                ProcessingOrderBlocked, "managed project is missing"
+            ):
+                activate_project(workspace, "prj_alpha")
 
     def test_active_session_memory_and_project_switch_are_isolated(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

@@ -910,7 +910,7 @@ def finalize_release(
             "errors": initial["errors"],
         }
     wheelhouse_manifest = build_wheelhouse_manifest(
-        wheelhouse, root / "requirements-release.lock"
+        wheelhouse, root / "requirements-release.txt"
     )
     if not wheelhouse_manifest["valid"]:
         return {
@@ -948,7 +948,7 @@ def finalize_release(
         environment = scrub_release_environment()
         install = subprocess.run(
             offline_install_command(
-                str(release_python), staged / "requirements-release.lock", wheelhouse
+                str(release_python), staged / "requirements-release.txt", wheelhouse
             ),
             cwd=staged,
             env=environment,

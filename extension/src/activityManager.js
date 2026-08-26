@@ -76,6 +76,12 @@ function atomicWrite(file, value) {
   fs.writeFileSync(temporary, `${JSON.stringify(value, null, 2)}\n`, { encoding: 'utf8', flag: 'wx' });
   fs.renameSync(temporary, file);
 }
+function atomicWriteText(file, value) {
+  const temporary = `${file}.${process.pid}.${crypto.randomUUID()}.tmp`;
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(temporary, value, { encoding: 'utf8', flag: 'wx' });
+  fs.renameSync(temporary, file);
+}
 function acquireLock(paths, timeoutMs = 4000) {
   fs.mkdirSync(paths.root, { recursive: true }); const started = Date.now();
   while (Date.now() - started < timeoutMs) {
@@ -258,4 +264,68 @@ function reconcileStaleOperations(workspaceRoot, options = {}) {
   };
 }
 
-module.exports = { SCHEMA_VERSION, activityPaths, normalizePolicy, normalizeActor, sanitizeMetadata, recordActivity, readActivity, reconcileStaleOperations, tailEventsDetailed, acquireLock, sha };
+function repairActivityIntegrity(workspaceRoot, options = {}) {
+  const paths = activityPaths(workspaceRoot); let release;
+  try {
+    release = acquireLock(paths, options.timeoutMs || 4000);
+    const state = readState(paths, options.policy);
+    const rawEvents = fs.existsSync(paths.events) ? fs.readFileSync(paths.events, 'utf8') : '';
+    const tail = tailEventsDetailed(paths.events, EVENT_LIMIT);
+    if (tail.health.status === 'degraded') throw new Error(`activity-integrity-repair-refuses-malformed-jsonl:line-${tail.health.failed_line}`);
+    const before = eventIntegrity(tail.events, state);
+    if (before.valid) return { schema_version: 'px.activity-integrity-repair/1.0', disposition: 'already-valid', repaired: false, before, after: before };
+    if (tail.events.length >= EVENT_LIMIT && Number(state.event_count || 0) > tail.events.length) throw new Error('activity-integrity-repair-requires-complete-ledger');
+    fs.mkdirSync(paths.quarantine, { recursive: true });
+    const stamp = `${Date.now()}.${crypto.randomUUID()}`;
+    const eventsBackup = path.join(paths.quarantine, `events.${stamp}.${sha(rawEvents).slice(0, 12)}.pre-repair.jsonl`);
+    const stateRaw = fs.readFileSync(paths.state, 'utf8');
+    const stateBackup = path.join(paths.quarantine, `current.${stamp}.${sha(stateRaw).slice(0, 12)}.pre-repair.json`);
+    fs.copyFileSync(paths.events, eventsBackup, fs.constants.COPYFILE_EXCL);
+    fs.copyFileSync(paths.state, stateBackup, fs.constants.COPYFILE_EXCL);
+    let previous = null;
+    const repairedEvents = tail.events.map(original => {
+      const event = structuredClone(original);
+      event.previous_event_sha256 = previous;
+      delete event.event_sha256;
+      event.event_sha256 = sha(event);
+      previous = event.event_sha256;
+      return event;
+    });
+    const timestamp = now();
+    const recovery = {
+      schema_version: SCHEMA_VERSION, event_id: `act-${crypto.randomUUID()}`, timestamp,
+      correlation_id: `activity-recovery-${crypto.randomUUID()}`, parent_correlation_id: null,
+      task_id: null, claim_id: null,
+      actor: normalizeActor({ actorId: 'pacify-x-recovery', sessionId: `repair-${process.pid}`, harness: 'activity-integrity-repair', accountableOwner: 'local-user' }),
+      source: 'pacify-x-activity-recovery', category: 'system', operation: 'activity.integrity.recovered', status: 'succeeded', effect: 'observe', duration_ms: null,
+      scope_refs: [], input_sha256: sha(rawEvents), output_sha256: null,
+      metadata: { original_event_count: tail.events.length, original_state_event_count: Number(state.event_count || 0), original_chain_break_count: before.chain_breaks.length, events_backup: path.relative(paths.workspace, eventsBackup).replaceAll('\\', '/'), state_backup: path.relative(paths.workspace, stateBackup).replaceAll('\\', '/') },
+      content_captured: false, previous_event_sha256: previous
+    };
+    recovery.event_sha256 = sha(recovery); repairedEvents.push(recovery);
+    const repairedText = `${repairedEvents.map(event => JSON.stringify(event)).join('\n')}\n`;
+    recovery.output_sha256 = sha(repairedText);
+    delete recovery.event_sha256; recovery.event_sha256 = sha(recovery);
+    repairedEvents[repairedEvents.length - 1] = recovery;
+    const finalText = `${repairedEvents.map(event => JSON.stringify(event)).join('\n')}\n`;
+    const totals = { by_category: {}, by_status: {} };
+    for (const event of repairedEvents) {
+      totals.by_category[event.category] = Number(totals.by_category[event.category] || 0) + 1;
+      totals.by_status[event.status] = Number(totals.by_status[event.status] || 0) + 1;
+    }
+    const repairedState = { ...state, revision: repairedEvents.length, event_count: repairedEvents.length, updated_utc: timestamp, last_event_sha256: recovery.event_sha256, totals };
+    atomicWriteText(paths.events, finalText); atomicWrite(paths.state, repairedState);
+    const after = eventIntegrity(repairedEvents, repairedState);
+    if (!after.valid) throw new Error('activity-integrity-repair-postcondition-failed');
+    const receipt = {
+      schema_version: 'px.activity-integrity-repair/1.0', disposition: 'repaired-with-exact-backups', repaired: true,
+      repaired_utc: timestamp, before, after, events_backup: eventsBackup, state_backup: stateBackup,
+      original_events_sha256: sha(rawEvents), repaired_events_sha256: sha(finalText), recovery_event_id: recovery.event_id,
+      restoration: 'Replace current events.jsonl and current.json with the two exact pre-repair backups while activity writers are stopped.'
+    };
+    atomicWrite(path.join(paths.quarantine, `repair.${stamp}.receipt.json`), receipt);
+    return receipt;
+  } finally { release?.(); }
+}
+
+module.exports = { SCHEMA_VERSION, activityPaths, normalizePolicy, normalizeActor, sanitizeMetadata, recordActivity, readActivity, reconcileStaleOperations, repairActivityIntegrity, tailEventsDetailed, acquireLock, sha };

@@ -124,6 +124,10 @@
   .identity-warning dl { display: grid; grid-template-columns: var(--identity-warning-detail-columns, repeat(2, minmax(0, 1fr))); gap: 6px 12px; margin: 0; }
   .identity-warning dt { color: var(--faint); font-size: 8px; letter-spacing: .09em; text-transform: uppercase; }
   .identity-warning dd { min-width: 0; margin: 2px 0 0; overflow-wrap: anywhere; color: var(--silver); font: 9px var(--vscode-editor-font-family, Consolas, monospace); }
+  .engine-disconnected-warning { display: grid; grid-template-columns: max-content minmax(0, 1fr); align-items: baseline; gap: 5px 12px; margin: 12px 18px 0; padding: 12px 14px; border: 1px solid rgba(255, 184, 77, .5); border-left: 3px solid var(--amber); border-radius: 7px; background: rgba(255, 165, 45, .09); }
+  .engine-disconnected-warning > span { color: var(--amber); font-size: 9px; font-weight: 800; letter-spacing: .1em; }
+  .engine-disconnected-warning > strong { color: #ffd08a; }
+  .engine-disconnected-warning > p, .engine-disconnected-warning > small { grid-column: 1 / -1; margin: 0; color: var(--muted); overflow-wrap: anywhere; }
 
   /* Knowledge Core is backed by the governed proposal lifecycle. */
   .knowledge-core-layout { display: grid; grid-template-columns: var(--knowledge-core-columns, minmax(0, 1.05fr) minmax(0, 1.35fr)); gap: 16px; }

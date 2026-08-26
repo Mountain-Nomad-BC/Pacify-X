@@ -36,7 +36,7 @@ jobs:
           cache: npm
           cache-dependency-path: extension/package-lock.json
       - name: Install validation toolchain
-        run: python -m pip install --require-hashes -r requirements-release.lock
+        run: python -m pip install --require-hashes -r requirements-release.txt
       - name: Install and test exact extension dependencies
         working-directory: extension
         run: npm ci --ignore-scripts && npm test

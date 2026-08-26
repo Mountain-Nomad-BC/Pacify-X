@@ -195,7 +195,7 @@ def assemble(root: Path, ui_path: Path, stage_paths: list[Path]) -> dict[str, An
             "evidence_mode": item["evidence_mode"], "rendered": item["rendered"], "observed": item["observed"],
             "attempted": item["attempted"], "observed_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
             "authority": "multiple exact direct control-stage receipts" if len(item["authorities"]) > 1 else (item["authorities"][0]["kind"] if item["authorities"] else "no direct evidence"),
-            "terminal_disposition": "interaction_complete" if complete and item["attempted"] else "observed_only",
+            "terminal_disposition": "interaction_complete" if complete and (item["attempted"] or item["observed"]) else "observed_only",
             "stages": stages, "authorities": item["authorities"],
         })
     complete_count = sum(record["terminal_disposition"] == "interaction_complete" for record in records)
@@ -207,7 +207,12 @@ def assemble(root: Path, ui_path: Path, stage_paths: list[Path]) -> dict[str, An
         "control_chains": {
             "schema_version": "px.operational-ui-control-chain/1.0", "chain_stages": list(STAGES),
             "inventory": {"path": INVENTORY.as_posix(), "sha256": source["source_sha256"], "schema_version": inventory["schema_version"], "inventory_id": inventory["inventory_id"], "surface_count": len(inventory["surfaces"]), "control_count": len(records)},
-            "aggregates": {"control_count": len(records), "attempted_control_count": sum(record["attempted"] for record in records), "complete_interaction_chains": complete_count},
+            "aggregates": {
+                "control_count": len(records),
+                "attempted_control_count": sum(record["attempted"] for record in records),
+                "observed_control_count": sum(record["observed"] for record in records),
+                "complete_interaction_chains": complete_count,
+            },
             "controls": records,
         },
     }

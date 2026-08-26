@@ -28,7 +28,7 @@ jobs:
         with:
           python-version: "3.14"
       - name: Install exact Python bridge dependencies
-        run: python -m pip install --require-hashes -r requirements-release.lock
+        run: python -m pip install --require-hashes -r requirements-release.txt
       - name: Install exact extension dependencies
         working-directory: extension
         run: npm ci --ignore-scripts
@@ -70,7 +70,7 @@ jobs:
           python-version: ${{ matrix.python }}
       - name: Install test surface
         run: |
-          python -m pip install --require-hashes -r requirements-release.lock
+          python -m pip install --require-hashes -r requirements-release.txt
           python -m pip install --no-build-isolation .
       - name: Platform path, lock, permission, and line-ending controls
         env:
@@ -95,7 +95,7 @@ jobs:
         with:
           python-version: "3.14"
       - name: Install exact validation tools
-        run: python -m pip install --require-hashes -r requirements-release.lock
+        run: python -m pip install --require-hashes -r requirements-release.txt
       - name: Run independently receipted gate
         run: python -m runtime.cli --root . gates run --gate ${{ matrix.gate }} --receipt-dir "${{ runner.temp }}/gate-receipts"
       - name: Retain gate receipt
@@ -121,7 +121,7 @@ jobs:
         with:
           python-version: "3.14"
       - name: Install exact validation tools
-        run: python -m pip install --require-hashes -r requirements-release.lock
+        run: python -m pip install --require-hashes -r requirements-release.txt
       - name: Package metadata and version policy
         run: python -m pytest -q -p no:cacheprovider tests/test_platform_support.py tests/test_release_identity_controls.py
       - name: GitHub source archive boundary

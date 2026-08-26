@@ -201,6 +201,7 @@ def _snapshot(
 def _certification_preflight(
     root: Path, artifacts: tuple[Path, ...]
 ) -> dict[str, object]:
+    from runtime.test_profiles import require_processing_stage
     from runtime.effect_surface import validate_effect_surfaces
     from runtime.evidence_index import build_index
     from runtime.evidence_portability import validate_evidence_portability
@@ -215,6 +216,7 @@ def _certification_preflight(
     from scripts.audit_sanitization import audit as audit_sanitization
     from scripts.build_completion_status import build as build_completion_status
 
+    require_processing_stage(root, "package")
     try:
         stored_completion = json.loads(
             (root / "registry/completion_status.json").read_text(encoding="utf-8")
@@ -291,7 +293,7 @@ def _write_json(path: Path, value: object, *, sort_keys: bool = True) -> None:
     )
 
 
-def _rebuild_candidate_projections(root: Path) -> None:
+def _rebuild_candidate_projections_unlocked(root: Path) -> None:
     """Rebuild hash-bound projections from the exact final candidate bytes.
 
     This runs only for a real certification export. It deliberately mutates the
@@ -386,6 +388,23 @@ def _rebuild_candidate_projections(root: Path) -> None:
     # must bind these exact engine bytes; later test receipts, evidence, and
     # completion publications are deliberately excluded to avoid a hash cycle.
     write_engine_identity(root)
+
+
+def _rebuild_candidate_projections(root: Path) -> None:
+    """Rebuild projections while excluding repository test orchestration."""
+
+    from runtime.test_orchestration_lock import (
+        claim_orchestration_lock,
+        release_orchestration_lock,
+    )
+
+    lock, previous = claim_orchestration_lock(
+        root, owner_kind="projection-reconciliation"
+    )
+    try:
+        _rebuild_candidate_projections_unlocked(root)
+    finally:
+        release_orchestration_lock(lock, previous)
 
 
 def _run_candidate_command(root: Path, *arguments: str, timeout: int) -> None:

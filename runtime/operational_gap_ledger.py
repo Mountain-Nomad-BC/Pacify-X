@@ -30,8 +30,13 @@ LEDGER_RELATIVE = Path("registry/operational_gap_ledger.jsonl")
 SNAPSHOT_RELATIVE = Path("registry/operational_gap_ledger.snapshot.json")
 HEAD_RELATIVE = Path("registry/operational_gap_ledger.head.json")
 LOCK_RELATIVE = Path("registry/.operational-gap-ledger.lock")
-MAX_LEDGER_BYTES = 64 * 1024 * 1024
-MAX_SNAPSHOT_BYTES = 64 * 1024 * 1024
+# The complete append-only operational denominator and its materialized
+# projection now exceed the original bootstrap-era 64 MiB envelope. Keep both
+# aggregate files hard-bounded, but leave enough headroom for current exact
+# control observations without weakening per-event, batch, or event-count
+# limits below.
+MAX_LEDGER_BYTES = 256 * 1024 * 1024
+MAX_SNAPSHOT_BYTES = 256 * 1024 * 1024
 MAX_HEAD_BYTES = 512 * 1024
 MAX_EVENT_BYTES = 4 * 1024 * 1024
 MAX_REPORT_BYTES = 16 * 1024 * 1024
@@ -105,7 +110,7 @@ EVENT_TYPES = frozenset(
         "card_evidence_attested",
         "transition_admission_backfilled",
         "report_registered", "report_finding_reconciled",
-        "card_relationship", "work_checkpoint", "work_admitted",
+        "card_relationship", "work_checkpoint", "work_admitted", "work_session_closed",
     }
 )
 CARD_REQUIRED = (
@@ -273,10 +278,10 @@ def _validate_control_observation(
             raise ValueError("operational disposition requires an operational observation outcome")
         if not source["current_source"] or source["host_source_mismatch"]:
             raise ValueError("operational disposition requires exact current-source host identity")
-        if not observed or not attempted:
-            raise ValueError("operational disposition requires an observed and attempted control")
+        if not observed:
+            raise ValueError("operational disposition requires a directly observed control")
         if schema_version == CONTROL_OBSERVATION_SCHEMA and not rendered:
-            raise ValueError("operational disposition requires a rendered and attempted control")
+            raise ValueError("operational disposition requires rendered evidence")
         if (
             schema_version == CONTROL_OBSERVATION_SCHEMA_V2
             and control_kind not in NON_RENDERED_CONTROL_KINDS
@@ -766,6 +771,7 @@ def project_events(
         relationships: list[dict[str, Any]] = []
         checkpoints: list[dict[str, Any]] = []
         work_admissions: list[dict[str, Any]] = []
+        work_session_closures: list[dict[str, Any]] = []
         expected_inventory: dict[str, Any] | None = None
         expected_inventory_history: list[dict[str, Any]] = []
         previous_hash: str | None = None
@@ -791,6 +797,7 @@ def project_events(
         relationships = json.loads(_canonical(base_snapshot.get("card_relationships", [])))
         checkpoints = json.loads(_canonical(base_snapshot.get("work_checkpoints", [])))
         work_admissions = json.loads(_canonical(base_snapshot.get("work_admissions", [])))
+        work_session_closures = json.loads(_canonical(base_snapshot.get("work_session_closures", [])))
         expected_inventory = json.loads(_canonical(base_snapshot.get("expected_inventory")))
         expected_inventory_history = json.loads(
             _canonical(base_snapshot.get("expected_inventory_history", []))
@@ -903,29 +910,42 @@ def project_events(
             if surface_id not in surfaces:
                 raise ValueError(f"controls added to unknown surface: {surface_id}")
             _evidence(payload.get("evidence"))
-            existing = set(map(str, surfaces[surface_id]["known_controls"]))
-            if surfaces[surface_id].get("control_records"):
+            current = surfaces[surface_id]
+            current.setdefault("retired_controls", {})
+            current.setdefault("retired_control_history", [])
+            existing = set(map(str, current["known_controls"]))
+            if current.get("control_records"):
                 added, records = _validate_control_records(controls)
                 if any(control in existing for control in added):
                     raise ValueError("added typed control is already registered")
-                surfaces[surface_id]["known_controls"] = sorted(existing | set(added))
-                surfaces[surface_id]["control_records"].update(records)
-                surfaces[surface_id]["control_records"] = {
-                    key: surfaces[surface_id]["control_records"][key]
-                    for key in sorted(surfaces[surface_id]["control_records"])
+                added_ids = set(added)
+                current["known_controls"] = sorted(existing | added_ids)
+                current["control_records"].update(records)
+                current["control_records"] = {
+                    key: current["control_records"][key]
+                    for key in sorted(current["control_records"])
                 }
             else:
                 if not isinstance(controls, list) or not controls or len(controls) != len(set(map(str, controls))):
                     raise ValueError("added controls must be a non-empty unique array")
                 if any(not str(control).strip() or str(control) in existing for control in controls):
                     raise ValueError("added control is empty or already registered")
-                surfaces[surface_id]["known_controls"] = sorted(existing | set(map(str, controls)))
+                added_ids = set(map(str, controls))
+                current["known_controls"] = sorted(existing | added_ids)
+            for control_id in sorted(added_ids & set(current["retired_controls"])):
+                prior_retirement = current["retired_controls"].pop(control_id)
+                current["retired_control_history"].append({
+                    **prior_retirement,
+                    "restored_at": event["timestamp"],
+                    "restored_by": event["actor"],
+                })
         elif kind == "surface_inventory_revised":
             surface_id = str(payload.get("surface_id") or "")
             if surface_id not in surfaces:
                 raise ValueError(f"inventory revision references unknown surface: {surface_id}")
             current = surfaces[surface_id]
             current.setdefault("retired_controls", {})
+            current.setdefault("retired_control_history", [])
             previous_controls_sha256 = str(payload.get("previous_controls_sha256") or "").lower()
             current_controls = list(map(str, current["known_controls"]))
             previous_control_records = dict(current.get("control_records", {}))
@@ -933,6 +953,14 @@ def project_events(
                 raise ValueError("surface inventory revision does not bind its predecessor")
             controls, records = _validate_control_records(payload.get("controls"))
             removed_controls = set(current_controls) - set(controls)
+            restored_controls = set(controls) - set(current_controls)
+            for control_id in sorted(restored_controls & set(current["retired_controls"])):
+                prior_retirement = current["retired_controls"].pop(control_id)
+                current["retired_control_history"].append({
+                    **prior_retirement,
+                    "restored_at": event["timestamp"],
+                    "restored_by": event["actor"],
+                })
             declared_retirement_schema = "retired_controls" in payload
             retirement_rows = payload.get("retired_controls", [])
             if not isinstance(retirement_rows, list) or any(
@@ -1402,22 +1430,79 @@ def project_events(
                 raise ValueError("work admission requires a known non-closed card")
             if gap_id != active["active_gap_id"] or payload.get("checkpoint_event_id") != active.get("event_id"):
                 raise ValueError("work admission does not bind the active checkpoint")
-            effect = str(payload.get("effect") or "")
-            if effect not in {"read", "write", "execute", "network", "install", "service", "destructive"}:
-                raise ValueError("work admission effect is invalid")
-            scope = payload.get("scope")
             authority = str(payload.get("authority") or "").strip()
             expected_effect = str(payload.get("expected_effect") or "").strip()
             rollback = str(payload.get("rollback") or "").strip()
-            if not isinstance(scope, list) or not scope or any(not isinstance(item, str) or not item.strip() for item in scope):
-                raise ValueError("work admission requires a non-empty exact scope")
             if not authority or not expected_effect or not rollback:
                 raise ValueError("work admission requires authority, expected_effect, and rollback")
+            effect_scopes = payload.get("effect_scopes")
+            normalized_payload = dict(payload)
+            if effect_scopes is None:
+                effect = str(payload.get("effect") or "")
+                if effect not in {"read", "write", "execute", "network", "install", "service", "destructive"}:
+                    raise ValueError("work admission effect is invalid")
+                scope = payload.get("scope")
+                if not isinstance(scope, list) or not scope or any(not isinstance(item, str) or not item.strip() for item in scope):
+                    raise ValueError("work admission requires a non-empty exact scope")
+                normalized_payload["scope"] = list(scope)
+            else:
+                session_id = str(payload.get("session_id") or "").strip()
+                expires_utc = str(payload.get("expires_utc") or "").strip()
+                if not NON_VISIBLE_PATH_ID_PATTERN.fullmatch(session_id):
+                    raise ValueError("work session requires a valid session_id")
+                if any(item.get("session_id") == session_id for item in work_admissions):
+                    raise ValueError("work session_id was already admitted")
+                if payload.get("effect") is not None or payload.get("scope") is not None:
+                    raise ValueError("work session cannot mix legacy effect/scope fields")
+                if not isinstance(effect_scopes, list) or not effect_scopes or len(effect_scopes) > 3:
+                    raise ValueError("work session requires one to three exact reversible effect scopes")
+                normalized_effect_scopes: list[dict[str, Any]] = []
+                seen_effects: set[str] = set()
+                for item in effect_scopes:
+                    if not isinstance(item, Mapping):
+                        raise ValueError("work session effect scope must be an object")
+                    effect = str(item.get("effect") or "")
+                    scope = item.get("scope")
+                    if effect not in {"read", "write", "execute"} or effect in seen_effects:
+                        raise ValueError("work session effects must be unique reversible read/write/execute values")
+                    if not isinstance(scope, list) or not scope or any(not isinstance(value, str) or not value.strip() for value in scope):
+                        raise ValueError("work session requires a non-empty exact scope for every effect")
+                    seen_effects.add(effect)
+                    normalized_effect_scopes.append({"effect": effect, "scope": list(scope)})
+                if _iso_utc(expires_utc, "expires_utc") <= _iso_utc(event["timestamp"], "timestamp"):
+                    raise ValueError("work session expiration must be after admission")
+                normalized_payload["session_id"] = session_id
+                normalized_payload["expires_utc"] = expires_utc
+                normalized_payload["effect_scopes"] = normalized_effect_scopes
             work_admissions.append({
-                **dict(payload), "scope": list(scope),
+                **normalized_payload,
                 "evidence": _evidence(payload.get("evidence")),
                 "timestamp": event["timestamp"], "actor": event["actor"],
                 "event_id": event["event_id"], "event_sha256": event["event_sha256"],
+                "sequence": event["sequence"],
+            })
+        elif kind == "work_session_closed":
+            gap_id = str(payload.get("gap_id") or "")
+            session_id = str(payload.get("session_id") or "").strip()
+            admission_event_id = str(payload.get("admission_event_id") or "").strip()
+            outcome = str(payload.get("outcome") or "").strip()
+            admission = next((item for item in work_admissions if item.get("event_id") == admission_event_id), None)
+            if (
+                admission is None
+                or admission.get("gap_id") != gap_id
+                or admission.get("session_id") != session_id
+                or not isinstance(admission.get("effect_scopes"), list)
+            ):
+                raise ValueError("work session closure does not bind an admitted session")
+            if outcome not in {"completed", "cancelled", "superseded"}:
+                raise ValueError("work session closure outcome is invalid")
+            if any(item.get("admission_event_id") == admission_event_id for item in work_session_closures):
+                raise ValueError("work session was already closed")
+            work_session_closures.append({
+                **dict(payload), "evidence": _evidence(payload.get("evidence")),
+                "timestamp": event["timestamp"], "actor": event["actor"],
+                "event_id": event["event_id"], "event_sha256": event["event_sha256"],
+                "sequence": event["sequence"],
             })
         previous_hash = str(event["event_sha256"])
     if event_count and ledger_id is None:
@@ -1625,6 +1710,7 @@ def project_events(
         "card_relationships": relationships,
         "work_checkpoints": checkpoints,
         "work_admissions": work_admissions,
+        "work_session_closures": work_session_closures,
         "transition_admission_backfills": transition_admission_backfills,
     }
 
@@ -1740,9 +1826,11 @@ def _dashboard_index(snapshot: Mapping[str, Any], *, limit: int = 100) -> dict[s
         for item in cards[:limit]
     ]
     state_counts = dict(snapshot.get("state_counts", {}))
+    resolved_states = {"closed", "operationally_verified", "superseded"}
     return {
         "count": len(cards),
-        "open_count": sum(1 for item in cards if item.get("current_state") != "closed"),
+        "open_count": sum(1 for item in cards if item.get("current_state") not in resolved_states),
+        "retained_unclosed_count": sum(1 for item in cards if item.get("current_state") != "closed"),
         "status_counts": state_counts,
         "progress": _bounded_progress(snapshot.get("progress", {})),
         "cards": rows,
@@ -2024,6 +2112,7 @@ def read_snapshot(root: Path) -> dict[str, Any]:
 def guard_work_admission(
     snapshot: Mapping[str, Any], *, gap_id: str, effect: str,
     scope: Iterable[str], admission_event_id: str,
+    now: datetime | None = None,
 ) -> dict[str, object]:
     """Fail closed unless an exact current work admission authorizes an effect.
 
@@ -2050,13 +2139,8 @@ def guard_work_admission(
     )
     if admission is None:
         raise ValueError("work guard admission event is absent")
-    if (
-        admission.get("checkpoint_event_id") != active.get("event_id")
-        or admission.get("gap_id") != gap_id
-    ):
-        raise ValueError("work guard admission is not bound to the active checkpoint")
-    if admission.get("effect") != effect:
-        raise ValueError("work guard effect does not match the admission")
+    if admission.get("gap_id") != gap_id:
+        raise ValueError("work guard admission is not bound to the active gap")
 
     def normalized(values: Iterable[str]) -> list[str]:
         result = [str(value).strip().replace("\\", "/") for value in values]
@@ -2065,7 +2149,40 @@ def guard_work_admission(
         return sorted(result)
 
     requested_scope = normalized(scope)
-    admitted_scope = admission.get("scope")
+    effect_scopes = admission.get("effect_scopes")
+    if effect_scopes is None:
+        if admission.get("checkpoint_event_id") != active.get("event_id"):
+            raise ValueError("work guard admission is not bound to the active checkpoint")
+        if admission.get("effect") != effect:
+            raise ValueError("work guard effect does not match the admission")
+        admitted_scope = admission.get("scope")
+        session_id = None
+    else:
+        if effect not in {"read", "write", "execute"}:
+            raise ValueError("work session cannot authorize a higher-risk effect")
+        admission_sequence = int(admission.get("sequence") or 0)
+        if not admission_sequence or any(
+            int(item.get("sequence") or 0) > admission_sequence
+            and item.get("active_gap_id") != gap_id
+            for item in checkpoints if isinstance(item, Mapping)
+        ):
+            raise ValueError("work session is stale after an active gap switch")
+        closures = snapshot.get("work_session_closures", [])
+        if not isinstance(closures, list) or any(
+            isinstance(item, Mapping) and item.get("admission_event_id") == admission_event_id
+            for item in closures
+        ):
+            raise ValueError("work session is closed")
+        current = now or datetime.now(timezone.utc)
+        if current.tzinfo is None:
+            raise ValueError("work guard now must include a timezone")
+        if current.astimezone(timezone.utc) >= _iso_utc(admission.get("expires_utc"), "expires_utc"):
+            raise ValueError("work session is expired")
+        selected = next((item for item in effect_scopes if isinstance(item, Mapping) and item.get("effect") == effect), None)
+        if selected is None:
+            raise ValueError("work guard effect does not match the session admission")
+        admitted_scope = selected.get("scope")
+        session_id = admission.get("session_id")
     if not isinstance(admitted_scope, list) or requested_scope != normalized(admitted_scope):
         raise ValueError("work guard scope does not exactly match the admission")
     return {
@@ -2076,6 +2193,7 @@ def guard_work_admission(
         "scope": requested_scope,
         "checkpoint_event_id": active.get("event_id"),
         "admission_event_id": admission_event_id,
+        "session_id": session_id,
         "authority_boundary": (
             "PX governance validated; Codex host retains native execution, approval, and security authority."
         ),
@@ -2189,6 +2307,64 @@ def _validate_work_checkpoint_append(
         or cards[switching_to].get("current_state") == "closed"
     ):
         raise ValueError("work checkpoint switching_to target is invalid")
+
+
+_MUTATING_WORK_EFFECTS = frozenset(
+    {"write", "execute", "network", "install", "service", "destructive"}
+)
+
+
+def _work_admission_effects(admission: Mapping[str, Any]) -> set[str]:
+    effect_scopes = admission.get("effect_scopes")
+    if isinstance(effect_scopes, list):
+        return {
+            str(item.get("effect") or "")
+            for item in effect_scopes
+            if isinstance(item, Mapping)
+        }
+    effect = str(admission.get("effect") or "")
+    return {effect} if effect else set()
+
+
+def _validate_work_admission_append(
+    current: Mapping[str, Any], payload: Mapping[str, Any]
+) -> None:
+    """Allow concurrent reads, but retain one mutating owner per active gap.
+
+    This is deliberately an append-time check instead of a projection rule so
+    historical ledgers containing the defect remain readable and repairable.
+    Bounded sessions remain active across same-gap checkpoints until explicitly
+    closed; legacy single-effect admissions remain active only at their exact
+    checkpoint.
+    """
+
+    gap_id = str(payload.get("gap_id") or "")
+    checkpoint_event_id = str(payload.get("checkpoint_event_id") or "")
+    new_effects = _work_admission_effects(payload)
+    new_is_mutating = bool(new_effects & _MUTATING_WORK_EFFECTS)
+    closures = current.get("work_session_closures", [])
+    closed_admission_ids = {
+        str(item.get("admission_event_id") or "")
+        for item in closures
+        if isinstance(item, Mapping)
+    }
+    for existing in current.get("work_admissions", []):
+        if not isinstance(existing, Mapping) or existing.get("gap_id") != gap_id:
+            continue
+        is_session = isinstance(existing.get("effect_scopes"), list)
+        if is_session:
+            if str(existing.get("event_id") or "") in closed_admission_ids:
+                continue
+        elif existing.get("checkpoint_event_id") != checkpoint_event_id:
+            continue
+        existing_is_mutating = bool(
+            _work_admission_effects(existing) & _MUTATING_WORK_EFFECTS
+        )
+        if new_is_mutating or existing_is_mutating:
+            raise ValueError(
+                "mutating work admission conflicts with an open admission "
+                "for the active gap"
+            )
 
 
 def _parse_jsonl_bytes(data: bytes) -> list[dict[str, Any]]:
@@ -2435,6 +2611,8 @@ def _prepare_event(
         raise ValueError("new surface inventory revisions require an exact retired_controls array")
     if event_type == "work_checkpoint":
         _validate_work_checkpoint_append(current, prepared_payload)
+    if event_type == "work_admitted":
+        _validate_work_admission_append(current, prepared_payload)
     if event_type == "card_transition" and prepared_payload.get("to_state") == "reopened":
         gap_id = str(prepared_payload.get("gap_id") or "")
         card = current.get("cards", {}).get(gap_id, {})
@@ -2506,6 +2684,102 @@ def _prepare_event(
     return event, next_snapshot, encoded
 
 
+_BULK_PROJECTION_EVENT_TYPES = {
+    "control_disposition_revised",
+    "card_annotated",
+    "card_transition",
+}
+
+
+def _eligible_for_bulk_projection(
+    requested: list[Mapping[str, Any]],
+) -> bool:
+    """Return whether one canonical projection can validate the whole batch."""
+    for item in requested:
+        event_type = str(item.get("event_type") or "")
+        if event_type not in _BULK_PROJECTION_EVENT_TYPES:
+            return False
+        if event_type == "card_transition" and str(
+            item.get("payload", {}).get("to_state") or ""
+        ) in {"reopened", "closed"}:
+            # These transitions have additional append-time predecessor or
+            # immutable-closure checks in _prepare_event.
+            return False
+    return True
+
+
+def _prepare_bulk_projection_events(
+    root: Path,
+    current: Mapping[str, Any],
+    requested: list[Mapping[str, Any]],
+) -> tuple[list[dict[str, Any]], dict[str, Any], list[bytes]]:
+    """Prepare a hash chain, then validate the complete batch exactly once."""
+    event_count = int(current.get("event_count") or 0)
+    if not event_count:
+        raise ValueError("initialize the operational ledger first")
+    if event_count + len(requested) > MAX_EVENTS:
+        raise ValueError("operational gap ledger event bound would be exceeded")
+    ledger_id = str(current.get("ledger_id") or "")
+    previous_hash = current.get("head_event_sha256")
+    events: list[dict[str, Any]] = []
+    encoded_events: list[bytes] = []
+    for offset, item in enumerate(requested, start=1):
+        event_type = str(item.get("event_type") or "")
+        if event_type not in _BULK_PROJECTION_EVENT_TYPES:
+            raise ValueError("unsupported bulk projection event type")
+        actor = str(item.get("actor") or "")
+        _nonempty(actor, "actor")
+        event_timestamp = item.get("timestamp") or _now()
+        _iso_utc(event_timestamp, "event timestamp")
+        prepared_payload = dict(_bind_evidence(root, dict(item.get("payload", {}))))
+        if event_type == "control_disposition_revised":
+            disposition = str(prepared_payload.get("to_disposition") or "")
+            observation = prepared_payload.get("observation")
+            if disposition == "operational" and observation is None:
+                raise ValueError(
+                    "operational control disposition requires a typed current-host observation"
+                )
+            if observation is not None:
+                prepared_payload["observation"] = _validate_control_observation(
+                    observation, disposition=disposition
+                )
+        elif event_type == "card_annotated":
+            patch = prepared_payload.get("patch", {})
+            if isinstance(patch, Mapping) and "interaction_chain" in patch:
+                _validate_chain(patch["interaction_chain"], require_evidence=True)
+            if isinstance(patch, Mapping) and "source_refs" in patch and any(
+                not isinstance(ref, Mapping)
+                or not isinstance(ref.get("symbols"), list)
+                or any(
+                    not isinstance(symbol, str) or not symbol.strip()
+                    for symbol in ref["symbols"]
+                )
+                for ref in patch["source_refs"]
+            ):
+                raise ValueError("new source_refs require non-empty relevant symbols")
+        sequence = event_count + offset
+        event = {
+            "schema_version": SCHEMA,
+            "sequence": sequence,
+            "event_id": f"gap-event:{ledger_id}:{sequence:012d}",
+            "event_type": event_type,
+            "timestamp": event_timestamp,
+            "actor": actor,
+            "previous_event_sha256": previous_hash,
+            "payload": json.loads(_canonical(prepared_payload)),
+        }
+        event["event_sha256"] = _digest(event)
+        encoded = json.dumps(
+            event, sort_keys=True, ensure_ascii=False, separators=(",", ":")
+        ).encode("utf-8") + b"\n"
+        if len(encoded) > MAX_EVENT_BYTES:
+            raise ValueError("operational gap ledger event byte bound would be exceeded")
+        events.append(event)
+        encoded_events.append(encoded)
+        previous_hash = event["event_sha256"]
+    return events, project_events(events, base_snapshot=current), encoded_events
+
+
 def _load_append_base_unlocked(
     root: Path,
 ) -> tuple[dict[str, Any], dict[str, Any] | None]:
@@ -2558,19 +2832,24 @@ def append_events(
     with FileLock(lock, timeout_seconds=30.0):
         current, predecessor = _load_append_base_unlocked(root)
         starting_fingerprint = _ledger_fingerprint(root)
-        events: list[dict[str, Any]] = []
-        encoded_events: list[bytes] = []
-        for item in requested:
-            event, current, encoded = _prepare_event(
-                root,
-                current,
-                event_type=str(item.get("event_type") or ""),
-                payload=item.get("payload", {}),
-                actor=str(item.get("actor") or ""),
-                timestamp=item.get("timestamp"),
+        if _eligible_for_bulk_projection(requested):
+            events, current, encoded_events = _prepare_bulk_projection_events(
+                root, current, requested
             )
-            events.append(event)
-            encoded_events.append(encoded)
+        else:
+            events = []
+            encoded_events = []
+            for item in requested:
+                event, current, encoded = _prepare_event(
+                    root,
+                    current,
+                    event_type=str(item.get("event_type") or ""),
+                    payload=item.get("payload", {}),
+                    actor=str(item.get("actor") or ""),
+                    timestamp=item.get("timestamp"),
+                )
+                events.append(event)
+                encoded_events.append(encoded)
         appended = b"".join(encoded_events)
         predicted_size = starting_fingerprint["size_bytes"] + len(appended)
         if predicted_size > MAX_LEDGER_BYTES:

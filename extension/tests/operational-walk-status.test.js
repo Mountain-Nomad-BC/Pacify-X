@@ -66,6 +66,37 @@ test('reports completed only when every builder, surface, control, and chain is 
   assert.deepEqual(status.coverage.missing_surface_ids, []);
 });
 
+test('focused Studio completion is judged by its physical lifecycle receipts, not unrelated full-walk coverage', () => {
+  const receipt = completeReceipt();
+  receipt.focused_profile = 'studio-lifecycle';
+  receipt.builders.agent = { terminal_disposition: 'focused_profile_not_run' };
+  receipt.builders.workflow = { terminal_disposition: 'focused_profile_not_run' };
+  receipt.control_chains.controls.forEach(control => { control.attempted = false; });
+  receipt.control_chains.aggregates.complete_interaction_chains = 0;
+  receipt.studio_setup_profile = { observation: { typed_ready_result: true, errors: [] } };
+  receipt.studio_candidate_save_profile = { observations: ['agent', 'workflow', 'skill'].map(kind => ({ kind, attempted: true, typed_creation_receipt: true, reopened_catalog_match: true, errors: [] })) };
+  receipt.studio_lifecycle_profile = { observations: ['agent', 'workflow', 'skill'].map(kind => ({ kind, exact_catalog_selection: true, operations: [{ operation: 'inspect', valid: true }], durable_run_reopened: kind === 'skill' ? false : true, errors: [] })) };
+  receipt.studio_revision_edit_profile = { observations: ['agent', 'workflow', 'skill'].map(kind => ({ kind, attempted: true, editor_bound: true, typed_creation_receipt: true, reopened_catalog_match: true, predecessor_preserved: true, content_changed: true, reopened_editor_content_match: true, errors: [] })) };
+  const status = evaluateOperationalWalk(receipt);
+  assert.equal(status.terminal_state, 'completed');
+  assert.equal(status.scope_complete, true);
+  assert.equal(status.operationally_complete, false);
+  assert.equal(status.evaluated_scope, 'studio-lifecycle');
+  assert.equal(status.summary.blocking_issue_count, 0);
+});
+
+test('focused Studio completion fails closed when one physical revision cannot be reopened', () => {
+  const receipt = completeReceipt();
+  receipt.focused_profile = 'studio-lifecycle';
+  receipt.studio_setup_profile = { observation: { typed_ready_result: true, errors: [] } };
+  receipt.studio_candidate_save_profile = { observations: ['agent', 'workflow', 'skill'].map(kind => ({ kind, attempted: true, typed_creation_receipt: true, reopened_catalog_match: true, errors: [] })) };
+  receipt.studio_lifecycle_profile = { observations: ['agent', 'workflow', 'skill'].map(kind => ({ kind, exact_catalog_selection: true, operations: [{ valid: true }], durable_run_reopened: !['agent', 'workflow'].includes(kind) || true, errors: [] })) };
+  receipt.studio_revision_edit_profile = { observations: ['agent', 'workflow', 'skill'].map(kind => ({ kind, attempted: true, editor_bound: true, typed_creation_receipt: true, reopened_catalog_match: kind !== 'workflow', predecessor_preserved: true, content_changed: true, reopened_editor_content_match: true, errors: [] })) };
+  const status = evaluateOperationalWalk(receipt);
+  assert.equal(status.terminal_state, 'incomplete');
+  assert.ok(status.issues.some(item => item.code === 'focused-studio-revision-edit-incomplete'));
+});
+
 test('skipped builders, modal surfaces, controls, and chains remain operationally incomplete', () => {
   const receipt = completeReceipt();
   receipt.builders.agent = { terminal_disposition: 'skipped_requires_exact_control_instrumentation' };

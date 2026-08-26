@@ -29,3 +29,13 @@ test('R02 extension test profiles isolate browser and performance campaigns', ()
   assert.deepEqual(performance.files, ['runtime-efficiency-load.test.js']);
   assert.throws(() => profile('unknown'), /unknown-test-profile/);
 });
+
+test('governed dashboard section owns isolated host and physical outage regressions', () => {
+  const registry = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'registry', 'test_profiles.json'), 'utf8'));
+  const command = registry.sections['dashboard-extension'].command;
+  for (const owner of [
+    'tests/operational-ui-walk-installed-probe.test.js',
+    'tests/isolated-current-source-walk.test.js',
+    'tests/owned-engine-outage.test.js'
+  ]) assert.ok(command.includes(owner), `dashboard-extension omits ${owner}`);
+});

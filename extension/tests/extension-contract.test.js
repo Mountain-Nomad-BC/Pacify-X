@@ -11,6 +11,7 @@ const { buildContextEnvelope } = require('../src/contextBridge');
 
 const root = path.resolve(__dirname, '..');
 const pkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
+const packageLock = JSON.parse(fs.readFileSync(path.join(root, 'package-lock.json'), 'utf8'));
 const dashboard = fs.readFileSync(path.join(root, 'media', 'dashboard', '90-controller.js'), 'utf8');
 const coreSurfaces = fs.readFileSync(path.join(root, 'media', 'dashboard', '42-core-surfaces.js'), 'utf8');
 const catalogSurfaces = fs.readFileSync(path.join(root, 'media', 'dashboard', '43-catalog-surfaces.js'), 'utf8');
@@ -73,7 +74,10 @@ test('preserved-original skill provenance is host-attested and allocation-bound'
   assert.match(extension, /backup_provenance: backupProvenance/);
   assert.match(extension, /registerVersionAllocation\(message\.kind, result,[\s\S]*allocationSourceSelection\)/);
   assert.match(extension, /resolveVersionAllocationSourceSelection/);
-  assert.match(extension, /reauthenticatePreservedOriginalSelection/);
+  assert.match(extension, /reauthenticateSkillSourceSelection/);
+  assert.match(extension, /\['studio-physical', 'external-authenticated'\]\.includes\(selection\.source_scope\)/);
+  assert.match(extension, /selection\.package_scope !== 'project-studio' \|\| provenance !== null/);
+  assert.match(extension, /canonical\.treeSha256 !== selection\.source_content_sha256 \|\| canonicalBodySha256 !== selection\.source_revision_sha256/);
   assert.match(extension, /studio-skill-preserved-original-changed/);
   assert.doesNotMatch(extension, /backup_provenance: null/);
 });
@@ -87,9 +91,10 @@ test('declares exactly sixteen primary and two governed advanced dashboard surfa
   assert.match(dashboard, /advancedVisible && state\.advancedOpen/);
 });
 
-test('0.6.54 surfaces operational Studio setup, interactive graphs, JSON inspectors, telemetry, plugins, memory and activity observability, readiness, agent models, and the complete logo', () => {
+test('current package surfaces operational Studio setup, interactive graphs, JSON inspectors, telemetry, plugins, memory and activity observability, readiness, agent models, and the complete logo', () => {
   const surfaceStyles = fs.readFileSync(path.join(root, 'media', 'styles', '40-surfaces.css'), 'utf8');
-  assert.equal(pkg.version, '0.6.54');
+  assert.equal(packageLock.version, pkg.version);
+  assert.equal(packageLock.packages[''].version, pkg.version);
   assert.ok(pkg.activationEvents.includes('onCommand:pacifyX.setupStudio'));
   assert.ok(pkg.activationEvents.includes('onUri'));
   assert.ok(pkg.contributes.commands.some(item => item.command === 'pacifyX.setupStudio'));
@@ -252,7 +257,14 @@ test('exact catalog Skill candidates can resume their lifecycle after reload', (
 });
 
 test('eligible resolved Agent and Workflow previews expose their exact start action', () => {
-  assert.match(dashboard, /resolvedStudioPreviewModal[\s\S]*safe && eligible[\s\S]*data-action="studioLifecycle"[\s\S]*data-operation="start"[\s\S]*Start exact admitted/);
+  assert.match(dashboard, /resolvedStudioPreviewModal[\s\S]*safe && eligible[\s\S]*data-action="studioLifecycle"[\s\S]*data-operation="\$\{nextOperation\}"[\s\S]*nextLabel/);
+  assert.match(dashboard, /const nextOperation = workflowNeedsApproval \? 'approve' : 'start'/);
+});
+
+test('resolved Workflow previews require governed node approval before start', () => {
+  assert.match(dashboard, /workflowNeedsApproval = kind === 'workflow'/);
+  assert.match(dashboard, /const nextOperation = workflowNeedsApproval \? 'approve' : 'start'/);
+  assert.match(dashboard, /Approve next required node/);
 });
 
 test('Studio setup remains explicitly available for repair and verification after runnable records exist', () => {

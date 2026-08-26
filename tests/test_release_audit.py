@@ -12,7 +12,8 @@ ROOT = Path(__file__).parents[1]
 
 
 def _ignore_local_environments(_directory: str, names: list[str]) -> set[str]:
-    if Path(_directory).name == "evidence":
+    directory = Path(_directory).resolve()
+    if directory.name == "evidence":
         # Keep only the content-addressed custody evidence required by the
         # composed audit; mutation fixtures do not need historical UI/log data.
         return {
@@ -21,16 +22,20 @@ def _ignore_local_environments(_directory: str, names: list[str]) -> set[str]:
         }
     derived_fixture_exclusions = {
         ".git", "Python", "node_modules", ".vscode-test", "__pycache__", ".pytest_cache",
+        ".operational-gap-ledger.lock", ".test-orchestration.lock",
         "quarantine", "diagnostics", "environment", "operation-bus",
         "preserved-extension-installations", "preserved-skills",
         "project-map", "project-map-history", "project-map-lock-history",
     }
+    relative_directory = directory.relative_to(ROOT.resolve())
     return {
-        name for name in names
+        name
+        for name in names
         if name in derived_fixture_exclusions
         or name.startswith(".venv")
-        or is_external_environment_relative(
-            Path(_directory).resolve().relative_to(ROOT.resolve()) / name
+        or (
+            not (not relative_directory.parts and name == "evidence")
+            and is_external_environment_relative(relative_directory / name)
         )
     }
 

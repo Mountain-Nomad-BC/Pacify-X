@@ -23,7 +23,7 @@ from .agent_builder import (
 from .agent_runtime import AgentRuntimeController
 from .knowledge_core_controller import KnowledgeCoreController
 from .paths import framework_root
-from .skill_studio import SkillStudio
+from .skill_studio import SkillStudio, _component
 from .studio_authority import StudioAuthorityStore
 from .studio_models import (
     AgentSpec,
@@ -51,6 +51,19 @@ MAX_ENVELOPE_BYTES = (2 * MAX_PAYLOAD_BYTES) + (16 * 1024)
 RESTRICTED_AGENT_NAMESPACE = re.compile(
     r"^(?:enterprise|microsoft|ms|azure|m365|dynamics)[.:/-]", re.IGNORECASE
 )
+
+
+def _skill_promotion_receipt_path(root: Path, skill_id: str, version: str) -> Path:
+    return (
+        root
+        / ".engineering-bootstrap"
+        / "studios"
+        / "skills"
+        / _component(skill_id)
+        / "revisions"
+        / version
+        / "promotion-receipt.json"
+    )
 
 
 def _payload(encoded: str) -> Mapping[str, Any]:
@@ -904,15 +917,8 @@ def studio_operation(
             )
         if operation == "promote":
             receipt = studio.promote(package, approved=bool(value.get("approved", False)))
-            receipt_path = (
-                root
-                / ".engineering-bootstrap"
-                / "studios"
-                / "skills"
-                / hashlib.sha256(package.skill_id.encode("utf-8")).hexdigest()
-                / "revisions"
-                / package.version
-                / "promotion-receipt.json"
+            receipt_path = _skill_promotion_receipt_path(
+                root, package.skill_id, package.version
             )
             return {
                 **receipt,

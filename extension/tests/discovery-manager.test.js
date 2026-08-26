@@ -210,3 +210,57 @@ test('filesystem discovery worker is owned and abortable', async t => {
   controller.abort('test-cancel');
   await assert.rejects(scanEnvironmentAsync([root], { signal: controller.signal }), error => error.name === 'AbortError');
 });
+
+test('filesystem discovery prunes generated evidence and returns explicit partial state at its internal time budget', t => {
+  const root = fixture(); t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  fs.mkdirSync(path.join(root, 'evidence', 'nested'), { recursive: true });
+  fs.mkdirSync(path.join(root, 'src'), { recursive: true });
+  fs.writeFileSync(path.join(root, 'evidence', 'nested', 'generated.js'), 'process.env.SHOULD_NOT_SCAN;\n');
+  fs.writeFileSync(path.join(root, 'src', 'owned.js'), 'process.env.SHOULD_SCAN;\n');
+  const tree = boundedTree([root]);
+  assert.equal(tree.entries.some(item => item.relative === 'src/owned.js'), true);
+  assert.equal(tree.entries.some(item => item.relative === 'evidence' && item.directory), true);
+  assert.equal(tree.entries.some(item => item.relative.startsWith('evidence/')), false);
+  let clock = 0;
+  const partial = boundedTree([root], { maxDurationMs: 1, now: () => (clock += 2) });
+  assert.equal(partial.completeness, 'partial');
+  assert.equal(partial.failures.some(item => item.code === 'scan-time-budget-exceeded'), true);
+});
+
+test('environment consumer discovery matches many exact keys in one bounded source pass', t => {
+  const root = fixture(); t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const keys = Array.from({ length: 200 }, (_item, index) => `PX_BOUNDED_KEY_${String(index).padStart(3, '0')}`);
+  fs.writeFileSync(path.join(root, '.env.example'), `${keys.map(key => `${key}=`).join('\n')}\n`);
+  fs.writeFileSync(path.join(root, 'consumer.js'), `const selected = process.env.${keys[137]};\n`);
+  const records = environmentFileInventory(boundedTree([root]));
+  const selected = records[0].variables.find(item => item.name === keys[137]);
+  assert.deepEqual(selected.consumers.map(item => item.path), ['consumer.js']);
+  assert.equal(records[0].variables.filter(item => item.consumers.length).length, 1);
+});
+
+test('environment discovery does not read unrelated sources when no environment keys exist', t => {
+  const root = fixture(); t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  fs.writeFileSync(path.join(root, 'consumer.js'), 'process.env.UNRELATED;\n');
+  const tree = boundedTree([root]);
+  const original = fs.readFileSync;
+  let sourceReads = 0;
+  fs.readFileSync = function counted(target, ...args) {
+    if (path.resolve(String(target)) === path.resolve(root, 'consumer.js')) sourceReads += 1;
+    return original.call(this, target, ...args);
+  };
+  t.after(() => { fs.readFileSync = original; });
+  assert.deepEqual(environmentFileInventory(tree), []);
+  assert.equal(sourceReads, 0);
+});
+
+test('environment consumer discovery returns explicit partial state at its own time budget', t => {
+  const root = fixture(); t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  fs.writeFileSync(path.join(root, '.env.example'), 'PX_LIMITED_KEY=\n');
+  fs.writeFileSync(path.join(root, 'consumer.js'), 'process.env.PX_LIMITED_KEY;\n');
+  const tree = boundedTree([root]);
+  let clock = 0;
+  const records = environmentFileInventory(tree, { maxDurationMs: 1, now: () => (clock += 2) });
+  assert.equal(records.length, 1);
+  assert.equal(tree.completeness, 'partial');
+  assert.equal(tree.failures.some(item => item.code === 'environment-consumer-scan-time-budget-exceeded'), true);
+});

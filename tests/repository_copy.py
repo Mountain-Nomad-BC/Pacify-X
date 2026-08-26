@@ -22,7 +22,8 @@ def canonical_copy_ignore(
         ignored.update(
             name
             for name in names
-            if is_external_environment_relative(relative / name)
+            if name.casefold().endswith(".lock")
+            or is_external_environment_relative(relative / name)
         )
         return ignored
 

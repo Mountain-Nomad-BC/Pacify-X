@@ -148,6 +148,7 @@ def test_deployment_certified_lifecycle_requires_and_accepts_all_blockers_passed
     product = tmp_path / "product"
     _copy_product(product)
     receipt = product / "evidence/test-all-blockers-passed.json"
+    receipt.parent.mkdir(parents=True, exist_ok=True)
     receipt.write_text('{"valid":true}\n', encoding="utf-8")
     (product / "evidence/release-certification-0.6.2.json").write_text(
         '{"status":"staging"}\n', encoding="utf-8"
@@ -157,6 +158,12 @@ def test_deployment_certified_lifecycle_requires_and_accepts_all_blockers_passed
     for card in ledger["cards"]:
         card["status"] = "passed"
         card["receipts"] = ["evidence/test-all-blockers-passed.json"]
+        card["owning_paths"] = [
+            "evidence/test-all-blockers-passed.json"
+            if str(path).startswith("evidence/")
+            else path
+            for path in card["owning_paths"]
+        ]
     ledger_path.write_text(json.dumps(ledger), encoding="utf-8")
     state_path = product / ".engineering-bootstrap/project-management/state.json"
     state = json.loads(state_path.read_text(encoding="utf-8"))

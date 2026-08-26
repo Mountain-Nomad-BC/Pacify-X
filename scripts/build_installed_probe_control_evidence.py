@@ -18,10 +18,12 @@ KINDS = {"direct_current_source_host_measurement", "direct_installed_host_measur
 STATES = {"present", "missing", "not_applicable"}
 PROFILE_SPECS = (
     ("reversible_configuration_profile", "px.installed-operational-control-probe/1.0", False),
+    ("engine_outage_profile", "px.installed-operational-control-probe/1.0", False),
     ("studio_setup_profile", "px.installed-operational-control-probe/1.0", False),
     ("studio_candidate_save_profile", "px.installed-operational-control-probe/1.0", False),
     ("studio_lifecycle_profile", "px.installed-studio-lifecycle-profile/1.0", True),
     ("studio_revision_edit_profile", "px.installed-studio-revision-edit-profile/1.0", True),
+    ("knowledge_lifecycle_profile", "px.installed-knowledge-lifecycle-profile/1.0", True),
 )
 
 

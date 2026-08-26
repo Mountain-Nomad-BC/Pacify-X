@@ -48,7 +48,7 @@ def main() -> int:
         "discover", "annotate", "transition", "examine",
         "set-control-scope", "revise-control-scope", "attest-evidence",
         "register-report", "reconcile-report-finding", "relate-cards",
-        "checkpoint", "admit-work", "revise-disposition",
+        "checkpoint", "admit-work", "close-work-session", "revise-disposition",
         "backfill-transition-admission",
     ):
         command = sub.add_parser(name)
@@ -89,7 +89,7 @@ def main() -> int:
         "discover", "annotate", "transition", "examine",
         "set-control-scope", "revise-control-scope", "attest-evidence",
         "register-report", "reconcile-report-finding", "relate-cards",
-        "checkpoint", "admit-work", "revise-disposition",
+        "checkpoint", "admit-work", "close-work-session", "revise-disposition",
         "backfill-transition-admission",
     }:
         if args.command == "backfill-transition-admission":
@@ -118,6 +118,7 @@ def main() -> int:
             "relate-cards": "card_relationship",
             "checkpoint": "work_checkpoint",
             "admit-work": "work_admitted",
+            "close-work-session": "work_session_closed",
             "revise-disposition": "control_disposition_revised",
         }[args.command]
         result = append_event(args.root, event_type, _json_value(args.payload), actor=args.actor)

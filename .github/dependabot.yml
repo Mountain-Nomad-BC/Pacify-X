@@ -6,6 +6,9 @@ updates:
       interval: weekly
     open-pull-requests-limit: 5
     labels: [dependencies, needs-validation]
+    groups:
+      release-toolchain:
+        patterns: ["*"]
   - package-ecosystem: github-actions
     directory: /
     schedule:

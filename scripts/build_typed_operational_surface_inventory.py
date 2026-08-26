@@ -73,22 +73,6 @@ CURRENT_ACTION_SURFACE_BINDINGS: dict[str, dict[str, list[str]]] = {
             "workflowAddNode.join",
         ]
     },
-    "agentSelectSection": {
-        "agent-studio": [
-            "agentSelectSection.identity",
-            "agentSelectSection.behavior",
-            "agentSelectSection.model",
-            "agentSelectSection.harness",
-            "agentSelectSection.capabilities",
-            "agentSelectSection.tools",
-            "agentSelectSection.workflows",
-            "agentSelectSection.memory",
-            "agentSelectSection.authority",
-            "agentSelectSection.tests",
-            "agentSelectSection.approval",
-            "agentSelectSection.candidate",
-        ]
-    },
     "agentCancelConnection": {"agent-studio": ["agentCancelConnection"]},
     "agentPortConnect": {"agent-studio": ["agentPortConnect"]},
     "agentRemoveEdge": {"agent-studio": ["agentRemoveEdge"]},
@@ -367,7 +351,7 @@ def build(root: Path) -> dict[str, object]:
     surfaces.sort(key=lambda item: str(item["surface_id"]))
     return {
         "schema_version": "px.operational-surface-inventory/2.0",
-        "inventory_id": "pacify-x-typed-surfaces-20260820-r14",
+        "inventory_id": "pacify-x-typed-surfaces-20260825-r15",
         "authority": "User-directed expected inventory baseline, derived from a reviewed per-surface source trace and reconciled fail-closed with the current generated UI action contract.",
         "source_report": REPORT.as_posix(),
         "source_report_sha256": hashlib.sha256(report_bytes).hexdigest(),

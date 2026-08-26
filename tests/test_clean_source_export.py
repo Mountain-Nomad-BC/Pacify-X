@@ -113,6 +113,9 @@ def test_export_uses_shared_repository_scope_for_ephemeral_artifacts() -> None:
         ".VSCodeCounter/report.json",
         ".pacify-x/resource-ledger.json.lock",
         ".engineering-bootstrap/coordination/state.json",
+        "extension/dist/pacify-x.vsix",
+        "extension/build/generated.js",
+        "extension/evidence/screenshots/view.png",
     ):
         assert runtime.repository_scope.is_external_environment_relative(relative)
 

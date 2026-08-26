@@ -1246,7 +1246,10 @@ def _operational_punch_cards(
             if bounded_offset + bounded_limit <= len(cached_rows) or not compact.get("truncated"):
                 rows = list(cached_rows[bounded_offset : bounded_offset + bounded_limit])
                 count = int(compact.get("count") or 0)
-                open_count = int(compact.get("open_count") or 0)
+                status_counts = dict(compact.get("status_counts", {}))
+                resolved_states = {"closed", "operationally_verified", "superseded"}
+                open_count = sum(int(count or 0) for status, count in status_counts.items() if status not in resolved_states)
+                retained_unclosed_count = sum(int(count or 0) for status, count in status_counts.items() if status != "closed")
                 return {
                     "schema_version": "px.operational-punch-card-projection/2.0",
                     "source": source.relative_to(root).as_posix(),
@@ -1256,7 +1259,8 @@ def _operational_punch_cards(
                     "checkpoint_sha256": head.get("checkpoint_sha256"),
                     "count": count,
                     "open_count": open_count,
-                    "status_counts": dict(compact.get("status_counts", {})),
+                    "retained_unclosed_count": retained_unclosed_count,
+                    "status_counts": status_counts,
                     "progress": dict(compact.get("progress", {})),
                     "head_event_sha256": head.get("head_event_sha256"),
                     "event_count": head.get("event_count"),
@@ -1292,7 +1296,9 @@ def _operational_punch_cards(
     findings = list(payload.get("cards", {}).values()) if isinstance(payload, Mapping) else []
     all_findings = [item for item in findings if isinstance(item, Mapping)]
     status_counts = Counter(str(item.get("current_state") or "discovered") for item in all_findings)
-    open_count = sum(1 for item in all_findings if item.get("current_state") != "closed")
+    resolved_states = {"closed", "operationally_verified", "superseded"}
+    open_count = sum(1 for item in all_findings if item.get("current_state") not in resolved_states)
+    retained_unclosed_count = sum(1 for item in all_findings if item.get("current_state") != "closed")
     needle = query.strip().casefold()[:500]
     filtered = all_findings
     if needle:
@@ -1338,6 +1344,7 @@ def _operational_punch_cards(
         "integrity_basis": "checkpoint_bound_projection",
         "count": len(all_findings),
         "open_count": open_count,
+        "retained_unclosed_count": retained_unclosed_count,
         "status_counts": dict(sorted(status_counts.items())),
         "progress": _bounded_operational_progress(payload.get("progress", {})),
         "head_event_sha256": payload.get("head_event_sha256"),
@@ -1688,7 +1695,7 @@ def build_readiness(
             "Are dependencies and external capabilities governed as versioned inputs?",
             [
                 (
-                    (root / "requirements-release.lock").is_file(),
+                    (root / "requirements-release.txt").is_file(),
                     "Release dependency lock is retained",
                     "Release dependency lock is absent",
                 ),
@@ -1853,6 +1860,32 @@ def _build_snapshot_admitted(
     if not isinstance(completion, Mapping):
         completion = {}
     completion = {**dict(completion), "operational_punch_cards": _operational_punch_cards(root)}
+    try:
+        from .test_profiles import repair_campaign_status
+
+        campaign_status = repair_campaign_status(root)
+        repair_campaign = {
+            "schema_version": "px.repair-campaign-status/1.0",
+            "valid": bool(campaign_status.get("valid")),
+            "campaign_id": campaign_status.get("campaign_id"),
+            "phase": campaign_status.get("phase"),
+            "intake_open": campaign_status.get("intake_open"),
+            "unresolved": list(campaign_status.get("unresolved") or []),
+            "unresolved_count": int(campaign_status.get("unresolved_count") or 0),
+            "authority": "active project-local repair-order denominator; retained operational cards remain historical and audit evidence until explicitly transitioned",
+        }
+    except (OSError, ValueError, json.JSONDecodeError) as error:
+        repair_campaign = {
+            "schema_version": "px.repair-campaign-status/1.0",
+            "valid": False,
+            "campaign_id": None,
+            "phase": None,
+            "intake_open": None,
+            "unresolved": [],
+            "unresolved_count": 0,
+            "error": f"{type(error).__name__}: {error}",
+            "authority": "active project-local repair-order denominator",
+        }
     project_state = _project(root, project)
     attention: list[dict[str, str]] = []
     if not project_state["map"].get("valid"):
@@ -2052,6 +2085,7 @@ def _build_snapshot_admitted(
         "memory": memory,
         "knowledge_core": knowledge_core,
         "completion": completion,
+        "repair_campaign": repair_campaign,
         "coordination": coordination,
         "enterprise": {
             "schema_version": enterprise.get("schema_version"),

@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from scripts.build_operational_control_proof_matrix import STAGES, build
+from scripts.build_operational_control_proof_matrix import STAGES, build, indicator_role, semantic_requirement
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -12,8 +12,9 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_matrix_is_current_complete_and_never_self_attests_execution() -> None:
     expected = build(ROOT)
     current = json.loads((ROOT / "registry/operational_control_proof_matrix.json").read_text(encoding="utf-8"))
+    inventory = json.loads((ROOT / "registry/operational_surface_inventory.json").read_text(encoding="utf-8"))
     assert current == expected
-    assert current["control_count"] == 941
+    assert current["control_count"] == sum(surface["expected_control_count"] for surface in inventory["surfaces"])
     assert current["authority"].endswith("not evidence that any probe ran or passed.")
     assert len({item["control_id"] for item in current["controls"]}) == current["control_count"]
     for item in current["controls"]:
@@ -34,3 +35,18 @@ def test_semantic_obligations_do_not_masquerade_as_rendered_ui() -> None:
         "contained_ui_interaction", "contained_host_interaction",
         "contained_sidebar_interaction",
     }
+
+
+def test_indicator_obligations_are_bound_to_the_state_they_report() -> None:
+    assert indicator_role("eventRevision") == "steady_state"
+    assert indicator_role("queryPending") == "conditional_progress"
+    assert indicator_role("catalogError") == "conditional_failure"
+    assert indicator_role("queryNoMatch") == "conditional_empty"
+    steady = semantic_requirement("indicator", "eventRevision")
+    pending = semantic_requirement("indicator", "queryPending")
+    failure = semantic_requirement("indicator", "catalogError")
+    assert steady["activation_condition"]["mode"] == "always"
+    assert steady["stage_policy"]["failure_handling"] == "not_applicable_with_evidence"
+    assert pending["stage_policy"]["progress_reporting"] == "required"
+    assert failure["stage_policy"]["failure_handling"] == "required"
+    assert failure["stage_policy"]["recovery_rollback"] == "required"

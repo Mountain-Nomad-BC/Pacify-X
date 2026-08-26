@@ -1,14 +1,14 @@
 {
   "schema_version": "px.operational-surface-inventory/2.0",
-  "inventory_id": "pacify-x-typed-surfaces-20260820-r14",
+  "inventory_id": "pacify-x-typed-surfaces-20260825-r15",
   "authority": "User-directed expected inventory baseline, derived from a reviewed per-surface source trace and reconciled fail-closed with the current generated UI action contract.",
   "source_report": "evidence/operational-gap-ledger/agent-studio-control-revision-20260816.json",
   "source_report_sha256": "d978207d763e55f4bf3771b9f7fc8086ca60d768347e45f412451ecec3ab957a",
   "ui_action_inventory": "extension/resources/ui/action-inventory.json",
-  "ui_action_inventory_sha256": "ed45d67cf48fafa5e20daa38e8a876bb546786b521b9c52cdb557309c843802b",
-  "ui_action_count": 202,
+  "ui_action_inventory_sha256": "9879b4e19bc43664aa935982be99ce2f30df5bb8198c92c1e9549498aeb5c8aa",
+  "ui_action_count": 201,
   "dashboard_controller": "extension/media/dashboard/90-controller.js",
-  "dashboard_controller_sha256": "a66f76036c90f01dbe60f5b3221da2315fad4596965a9662ddd6f172b824d491",
+  "dashboard_controller_sha256": "b04392859c89e4e93f209be652cedbd121ed6ecf11c445005034730a28b7f287",
   "dashboard_navigation_surface_count": 18,
   "surfaces": [
     {
@@ -263,8 +263,8 @@
     {
       "surface_id": "agent-studio",
       "name": "Agent Studio",
-      "expected_control_count": 111,
-      "expected_controls_sha256": "bb5cff2c6a47f2652bc71201bfc669c166be1d81ae46d49bb29c5bf69bb1d2b9",
+      "expected_control_count": 99,
+      "expected_controls_sha256": "b797bd4a25a257d4496ee45c275f70e852e6c8b157cc90da2acb0ecdca5352b2",
       "source_files": [
         "extension/media/dashboard/49-studio-editors.js",
         "extension/media/dashboard/90-controller.js",
@@ -492,102 +492,6 @@
           "control_id": "pxui.agent-studio.action.agentSelectNode.tools.optional",
           "kind": "action",
           "label": "agentSelectNode.tools.optional",
-          "source_refs": [
-            "extension/media/dashboard/90-controller.js"
-          ]
-        },
-        {
-          "control_id": "pxui.agent-studio.action.agentSelectSection.approval",
-          "kind": "action",
-          "label": "agentSelectSection.approval",
-          "source_refs": [
-            "extension/media/dashboard/90-controller.js"
-          ]
-        },
-        {
-          "control_id": "pxui.agent-studio.action.agentSelectSection.authority",
-          "kind": "action",
-          "label": "agentSelectSection.authority",
-          "source_refs": [
-            "extension/media/dashboard/90-controller.js"
-          ]
-        },
-        {
-          "control_id": "pxui.agent-studio.action.agentSelectSection.behavior",
-          "kind": "action",
-          "label": "agentSelectSection.behavior",
-          "source_refs": [
-            "extension/media/dashboard/90-controller.js"
-          ]
-        },
-        {
-          "control_id": "pxui.agent-studio.action.agentSelectSection.candidate",
-          "kind": "action",
-          "label": "agentSelectSection.candidate",
-          "source_refs": [
-            "extension/media/dashboard/90-controller.js"
-          ]
-        },
-        {
-          "control_id": "pxui.agent-studio.action.agentSelectSection.capabilities",
-          "kind": "action",
-          "label": "agentSelectSection.capabilities",
-          "source_refs": [
-            "extension/media/dashboard/90-controller.js"
-          ]
-        },
-        {
-          "control_id": "pxui.agent-studio.action.agentSelectSection.harness",
-          "kind": "action",
-          "label": "agentSelectSection.harness",
-          "source_refs": [
-            "extension/media/dashboard/90-controller.js"
-          ]
-        },
-        {
-          "control_id": "pxui.agent-studio.action.agentSelectSection.identity",
-          "kind": "action",
-          "label": "agentSelectSection.identity",
-          "source_refs": [
-            "extension/media/dashboard/90-controller.js"
-          ]
-        },
-        {
-          "control_id": "pxui.agent-studio.action.agentSelectSection.memory",
-          "kind": "action",
-          "label": "agentSelectSection.memory",
-          "source_refs": [
-            "extension/media/dashboard/90-controller.js"
-          ]
-        },
-        {
-          "control_id": "pxui.agent-studio.action.agentSelectSection.model",
-          "kind": "action",
-          "label": "agentSelectSection.model",
-          "source_refs": [
-            "extension/media/dashboard/90-controller.js"
-          ]
-        },
-        {
-          "control_id": "pxui.agent-studio.action.agentSelectSection.tests",
-          "kind": "action",
-          "label": "agentSelectSection.tests",
-          "source_refs": [
-            "extension/media/dashboard/90-controller.js"
-          ]
-        },
-        {
-          "control_id": "pxui.agent-studio.action.agentSelectSection.tools",
-          "kind": "action",
-          "label": "agentSelectSection.tools",
-          "source_refs": [
-            "extension/media/dashboard/90-controller.js"
-          ]
-        },
-        {
-          "control_id": "pxui.agent-studio.action.agentSelectSection.workflows",
-          "kind": "action",
-          "label": "agentSelectSection.workflows",
           "source_refs": [
             "extension/media/dashboard/90-controller.js"
           ]

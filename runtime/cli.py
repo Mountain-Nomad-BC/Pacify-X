@@ -13,6 +13,61 @@ from typing import Mapping
 from .version import VERSION
 
 
+def _claim_test_orchestration_single_flight(
+    root: Path, args: argparse.Namespace
+) -> tuple[object | None, str | None]:
+    """Claim one repository-wide mutating test orchestration owner.
+
+    A full/release profile retains the lock while its supervised stale-group
+    child runs.  That exact child inherits the owner token and therefore does
+    not deadlock trying to reacquire its parent's lease.  Independent profile
+    or run-stale commands must acquire the physical lock themselves.
+    """
+
+    import os
+
+    from .test_orchestration_lock import (
+        OWNER_ENV,
+        SUPERVISED_CHILD_ENV,
+        claim_orchestration_lock,
+    )
+
+    profile_run = (
+        getattr(args, "command", None) == "test-profile"
+        and getattr(args, "action", None) == "run"
+    )
+    group_run = (
+        getattr(args, "command", None) == "test-group"
+        and getattr(args, "action", None) in {"run", "run-stale"}
+    )
+    if not profile_run and not group_run:
+        return None, None
+    supervised_child = (
+        group_run
+        and getattr(args, "action", None) == "run-stale"
+        and bool(os.environ.get(OWNER_ENV))
+        and os.environ.get(SUPERVISED_CHILD_ENV) == os.environ.get(OWNER_ENV)
+    )
+    claimed = claim_orchestration_lock(
+        root,
+        owner_kind="profile-orchestration" if profile_run else "group-orchestration",
+        allow_inherited_owner=supervised_child,
+    )
+    if supervised_child:
+        # This is a one-generation capability.  Descendant pytest processes
+        # must not be able to impersonate the immediate supervised CLI child.
+        os.environ.pop(SUPERVISED_CHILD_ENV, None)
+    return claimed
+
+
+def _release_test_orchestration_single_flight(
+    lock: object | None, previous_owner: str | None
+) -> None:
+    from .test_orchestration_lock import release_orchestration_lock
+
+    release_orchestration_lock(lock, previous_owner)  # type: ignore[arg-type]
+
+
 def _summarize_audit(scope: str, report: Mapping[str, object]) -> dict[str, object]:
     """Return decision-useful audit metadata without hydrating large detail sets."""
     summary: dict[str, object] = {
@@ -74,6 +129,77 @@ def _prepare_certification_hygiene(root: Path, *, apply: bool) -> dict[str, obje
     )
 
 
+def _refresh_stale_groups_for_full_profile(
+    root: Path, *, timeout_seconds: object = 2700
+) -> dict[str, object]:
+    """Refresh only stale groups through their owned supervised CLI runner."""
+    import os
+    from uuid import uuid4
+
+    from .resource_lifecycle import ResourceManager
+    from .test_orchestration_lock import OWNER_ENV, SUPERVISED_CHILD_ENV
+    from .test_profiles import group_status
+    from .test_runner import run_test_command
+
+    before = group_status(root)
+    stale = [row["group"] for row in before["groups"] if not row["current"]]
+    if not stale:
+        return {"refreshed": False, "stale_groups": [], "status": before}
+    execution = run_test_command(
+        [
+            sys.executable,
+            "-m",
+            "runtime.cli",
+            "--root",
+            str(root),
+            "test-group",
+            "run-stale",
+            "--workers",
+            "3",
+        ],
+        cwd=root,
+        environment={
+            **os.environ,
+            "PYTHONDONTWRITEBYTECODE": "1",
+            SUPERVISED_CHILD_ENV: os.environ.get(OWNER_ENV, ""),
+        },
+        timeout_seconds=timeout_seconds,
+        resource_manager=ResourceManager(
+            root / ".engineering-bootstrap/resource-lifecycle/ledger.json"
+        ),
+        run_id=f"test-profile-group-refresh-{uuid4().hex}",
+        lane_id="profile:group-refresh",
+    )
+    if execution.get("valid") is not True:
+        detail = str(execution.get("stderr") or execution.get("stdout") or "")[-4000:]
+        raise ValueError(f"owned stale test-group refresh failed: {detail}")
+    after = group_status(root)
+    if not after["valid"]:
+        remaining = [row["group"] for row in after["groups"] if not row["current"]]
+        raise ValueError(
+            "owned stale test-group refresh left stale receipts: "
+            + ", ".join(remaining)
+        )
+    return {
+        "refreshed": True,
+        "stale_groups": stale,
+        "execution": {
+            key: execution.get(key)
+            for key in (
+                "valid",
+                "exit_code",
+                "timed_out",
+                "duration_seconds",
+                "process_tree_terminated",
+                "resource_id",
+                "supervision_receipt",
+                "supervision_status",
+            )
+        },
+        "status": after,
+    }
+
+
 def parser() -> argparse.ArgumentParser:
     result = argparse.ArgumentParser(
         prog="engineering-bootstrap",
@@ -83,6 +209,17 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--version", action="version", version=f"%(prog)s {VERSION}")
     commands = result.add_subparsers(dest="command", required=True)
     commands.add_parser("validate")
+    processing_order = commands.add_parser("processing-order")
+    processing_order.add_argument("action", choices=("status", "check", "initialize"))
+    processing_order.add_argument("--project", type=Path)
+    processing_order.add_argument(
+        "--stage",
+        choices=(
+            "diagnose", "repair", "focused_test", "governed_section",
+            "operational_verification", "revision_reconciliation", "full_profile",
+            "validate", "package", "install", "installed_operational_test", "certify",
+        ),
+    )
     doctor = commands.add_parser("doctor")
     doctor.add_argument("--format", choices=("json", "human"), default="json")
     doctor.add_argument("--health", type=Path)
@@ -922,13 +1059,38 @@ def parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     args = parser().parse_args(argv)
+    orchestration_lock: object | None = None
+    previous_orchestration_owner: str | None = None
     try:
         from .paths import framework_root
 
         root = args.root or framework_root()
-        if args.command == "validate":
+        orchestration_lock, previous_orchestration_owner = (
+            _claim_test_orchestration_single_flight(root, args)
+        )
+        if args.command == "processing-order":
+            from .test_profiles import (
+                initialize_project_repair_campaign,
+                repair_campaign_status,
+                require_processing_stage,
+            )
+
+            processing_root = args.project or root
+            if args.action == "initialize":
+                if args.project is None:
+                    raise ValueError("processing-order initialize requires --project")
+                output = initialize_project_repair_campaign(processing_root)
+            elif args.action == "check":
+                if not args.stage:
+                    raise ValueError("processing-order check requires --stage")
+                output = require_processing_stage(processing_root, args.stage)
+            else:
+                output = repair_campaign_status(processing_root)
+        elif args.command == "validate":
+            from .test_profiles import require_processing_stage
             from .registry import validate_registry
 
+            require_processing_stage(root, "validate")
             output = validate_registry(root)
             try:
                 from scripts.build_completion_status import build as build_completion_status
@@ -1851,12 +2013,14 @@ def main(argv: list[str] | None = None) -> int:
                 import os
 
                 if args.name in {"full", "release"}:
+                    from .test_profiles import require_processing_stage
                     from .test_profiles import (
                         cross_group_certification,
                         group_status,
                         section_status,
                     )
 
+                    require_processing_stage(root, "full_profile")
                     gate = section_status(root)
                     if not gate["valid"]:
                         stale = [
@@ -1870,15 +2034,11 @@ def main(argv: list[str] | None = None) -> int:
                         )
                     groups = group_status(root)
                     if not groups["valid"]:
-                        stale = [
-                            row["group"]
-                            for row in groups["groups"]
-                            if not row["current"]
-                        ]
-                        raise ValueError(
-                            "whole certification requires current test-group receipts: "
-                            + ", ".join(stale)
+                        group_refresh = _refresh_stale_groups_for_full_profile(
+                            root, timeout_seconds=output["timeout_seconds"]
                         )
+                        groups = group_refresh["status"]
+                        output["group_refresh"] = group_refresh
                     coexistence = cross_group_certification(root)
                     output["certification_mode"] = (
                         "current_group_receipts_plus_cross_group"
@@ -2093,6 +2253,10 @@ def main(argv: list[str] | None = None) -> int:
                     run_preflight,
                 )
 
+                if args.release_action in {"preflight", "dry-run"}:
+                    from .test_profiles import require_processing_stage
+
+                    require_processing_stage(root, "package")
                 if args.release_action == "preflight":
                     output = run_preflight(
                         root,
@@ -2109,6 +2273,9 @@ def main(argv: list[str] | None = None) -> int:
                         root, release=args.release, artifact=args.artifact
                     )
             else:
+                from .test_profiles import require_processing_stage
+
+                require_processing_stage(root, "certify")
                 output = finalize_release(
                     root,
                     args.release,
@@ -3002,6 +3169,10 @@ def main(argv: list[str] | None = None) -> int:
             raise AssertionError(args.command)
     except (OSError, ValueError, KeyError, RuntimeError, json.JSONDecodeError) as error:
         output = {"valid": False, "errors": [f"{type(error).__name__}: {error}"]}
+    finally:
+        _release_test_orchestration_single_flight(
+            orchestration_lock, previous_orchestration_owner
+        )
     exit_code = int(output.pop("_exit_code", 0 if output.get("valid", True) else 1))
     human_output = output.pop("_human_output", None)
     print(human_output if human_output is not None else json.dumps(output, indent=2))

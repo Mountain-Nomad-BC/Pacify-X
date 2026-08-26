@@ -2,8 +2,8 @@
   "schema_version": "px.completion-status/1.4",
   "authority": "generated projection; current operational and instruction ledgers supersede historical audit acceptance as completion authority",
   "projection_metadata": {
-    "generated_at": "2026-08-25T05:34:34.218079Z",
-    "source_revision": "defe68916d82610d0852d1514e6b357a8c348d97b3822a8b192fff6682e2c138",
+    "generated_at": "2026-08-26T09:28:02.000256Z",
+    "source_revision": "ceed484190c23f24465f591591b403c0df4bc5196f0ed2b6a946cf9bd32ce263",
     "authority_level": "non-certifying-current-state-projection",
     "marker": "current_at_generation",
     "invalidation_conditions": [
@@ -52,7 +52,7 @@
     },
     {
       "path": "registry/operational_gap_ledger.snapshot.json",
-      "sha256": "5fda1badb29283bfce0cd5bbbd993aaa031854dbee54e9d2c13caef5c0dddf8c"
+      "sha256": "c3a7d1dce82c1bdeeadf836f678c6ac6276693abadce9f1308a1beedc2d70b5c"
     },
     {
       "path": "registry/current_evidence_index.json",
@@ -94,9 +94,9 @@
   "current_operational_gap_ledger": {
     "valid": true,
     "ledger_id": "PX-OPERATIONAL-GAPS-20260816",
-    "event_count": 9145,
-    "head_event_sha256": "defe68916d82610d0852d1514e6b357a8c348d97b3822a8b192fff6682e2c138",
-    "critical_high_blocker_count": 261,
+    "event_count": 23165,
+    "head_event_sha256": "ceed484190c23f24465f591591b403c0df4bc5196f0ed2b6a946cf9bd32ce263",
+    "critical_high_blocker_count": 233,
     "critical_high_blocker_ids": [
       "PX-OS-001",
       "PX-OS-002",
@@ -105,15 +105,11 @@
       "PX-OS-005",
       "PX-OS-006",
       "PX-OS-007",
-      "PX-OS-008",
-      "PX-OS-009",
       "PX-OS-010",
-      "PX-OS-011",
       "PX-OS-012",
       "PX-OS-014",
       "PX-OS-015",
       "PX-OS-016",
-      "PX-OS-018",
       "PX-OS-019",
       "PX-OS-020",
       "PX-OS-022",
@@ -121,8 +117,6 @@
       "PX-OS-024",
       "PX-OS-025",
       "PX-OS-026",
-      "PX-OS-027",
-      "PX-OS-028",
       "PX-OS-029",
       "PX-OS-030",
       "PX-OS-031",
@@ -138,7 +132,6 @@
       "PX-OS-042",
       "PX-OS-043",
       "PX-OS-045",
-      "PX-OS-046",
       "PX-OS-047",
       "PX-OS-049",
       "PX-OS-050",
@@ -147,7 +140,6 @@
       "PX-OS-053",
       "PX-OS-054",
       "PX-OS-055",
-      "PX-OS-056",
       "PX-OS-057",
       "PX-OS-058",
       "PX-OS-059",
@@ -161,27 +153,15 @@
       "PX-OS-067",
       "PX-OS-068",
       "PX-OS-069",
-      "PX-OS-070",
-      "PX-OS-071",
-      "PX-OS-072",
-      "PX-OS-073",
-      "PX-OS-074",
-      "PX-OS-075",
-      "PX-OS-076",
-      "PX-OS-077",
       "PX-OS-078",
-      "PX-OS-079",
-      "PX-OS-080",
       "PX-OS-081",
       "PX-OS-082",
       "PX-OS-083",
-      "PX-OS-084",
       "PX-OS-086",
       "PX-OS-087",
       "PX-OS-089",
       "PX-OS-090",
       "PX-OS-091",
-      "PX-OS-092",
       "PX-OS-093",
       "PX-OS-094",
       "PX-OS-096",
@@ -189,13 +169,10 @@
       "PX-OS-098",
       "PX-OS-099",
       "PX-OS-100",
-      "PX-OS-101",
       "PX-OS-102",
       "PX-OS-103",
       "PX-OS-104",
-      "PX-OS-105",
       "PX-OS-1053",
-      "PX-OS-106",
       "PX-OS-1065",
       "PX-OS-107",
       "PX-OS-108",
@@ -215,7 +192,6 @@
       "PX-OS-129",
       "PX-OS-130",
       "PX-OS-131",
-      "PX-OS-132",
       "PX-OS-133",
       "PX-OS-134",
       "PX-OS-135",
@@ -257,7 +233,6 @@
       "PX-OS-879",
       "PX-OS-880",
       "PX-OS-881",
-      "PX-OS-882",
       "PX-OS-883",
       "PX-OS-884",
       "PX-OS-885",
@@ -270,9 +245,6 @@
       "PX-OS-892",
       "PX-OS-893",
       "PX-OS-894",
-      "PX-OS-895",
-      "PX-OS-896",
-      "PX-OS-897",
       "PX-OS-898",
       "PX-OS-899",
       "PX-OS-900",
@@ -583,23 +555,17 @@
     ]
   },
   "current_gates": {
-    "valid": false,
-    "blocking_ids": [
-      "section:studio-memory-graph",
-      "section:testing-governance"
-    ]
+    "valid": true,
+    "blocking_ids": []
   },
   "certification_freshness": {
     "fresh": false,
-    "receipt_current": false,
+    "receipt_current": true,
     "evidence_identity_current": false,
     "evidence_identity_evaluated": false,
     "evidence_receipts_current": true,
     "failed_receipt_ids": [],
-    "stale_receipt_ids": [
-      "section:studio-memory-graph",
-      "section:testing-governance"
-    ],
+    "stale_receipt_ids": [],
     "dependency_stale_receipt_ids": []
   },
   "release_certificate": {
@@ -609,8 +575,7 @@
     ]
   },
   "blocking_reasons": [
-    "the current operational gap ledger has 261 unresolved critical/high findings",
-    "2 required section/group receipts are stale or failed",
+    "the current operational gap ledger has 233 unresolved critical/high findings",
     "final exact-artifact certification has not been admitted"
   ]
 }

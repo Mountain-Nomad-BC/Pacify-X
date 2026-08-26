@@ -725,7 +725,12 @@ def test_agent_session_pause_resume_cancel_and_denial_are_real_owned_lifecycle(
     resumed = controller.resume_harness(
         spec, run_id=started["run_id"], task=task, approval=True
     )
-    assert resumed["run_outcome"] == "succeeded" and resumed["resumable"] is False
+    assert resumed["schema_version"] == "px.agent-session-start/1.1"
+    assert resumed["accepted"] is True
+    assert resumed["run_id"] == started["run_id"]
+    assert resumed["state"] == "running"
+    completed = _wait_for_agent_state(controller, started["run_id"], {"succeeded"})
+    assert completed["state"] == "succeeded"
     paused_observer = next(
         record
         for record in controller.manager.ledger.load()

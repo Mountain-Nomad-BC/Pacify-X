@@ -104,7 +104,7 @@ GATES = {
             "dependencies",
             (
                 "pyproject.toml",
-                "requirements-release.lock",
+                "requirements-release.txt",
                 "runtime/dependency_audit.py",
                 "registry/python_dependency_ownership.json",
                 ".github/workflows/*.yml",

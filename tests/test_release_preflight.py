@@ -296,6 +296,30 @@ def test_deep_discovery_exhausts_checks_without_relaxing_certification_binding(
     assert observed["enforce_release_binding"] is False
 
 
+def test_preflight_admission_uses_validated_package_boundary(
+    tmp_path: Path, monkeypatch
+) -> None:
+    observed = {}
+
+    def reject_after_observation(root: Path, stage: str):
+        observed["root"] = root
+        observed["stage"] = stage
+        raise RuntimeError("stop-after-stage-observation")
+
+    monkeypatch.setattr(
+        "runtime.test_profiles.require_processing_stage", reject_after_observation
+    )
+
+    try:
+        release_preflight.run_preflight(tmp_path)
+    except RuntimeError as error:
+        assert str(error) == "stop-after-stage-observation"
+    else:
+        raise AssertionError("preflight did not invoke its processing-order gate")
+
+    assert observed == {"root": tmp_path, "stage": "package"}
+
+
 def test_preflight_resource_ledger_is_outside_product_custody() -> None:
     assert is_external_environment_relative(RESOURCE_REGISTRY)
 

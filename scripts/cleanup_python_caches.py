@@ -22,6 +22,16 @@ CACHE_DIRECTORIES = {"__pycache__", ".pytest_cache", ".ruff_cache"}
 BYTECODE_SUFFIXES = {".pyc", ".pyo"}
 
 
+def _is_cleanup_excluded(relative: str) -> bool:
+    """Prune external custody without pruning the cache targets themselves."""
+    parts = tuple(
+        part
+        for part in Path(relative).parts
+        if part.casefold() not in CACHE_DIRECTORIES
+    )
+    return bool(parts) and is_external_environment_relative(Path(*parts))
+
+
 def _inside(path: Path, parent: Path) -> bool:
     try:
         path.relative_to(parent)
@@ -56,7 +66,7 @@ def cleanup(
         resolved,
         limits=WalkLimits(max_files=100_000, max_depth=128, max_bytes=2 * 1024**3),
         symlink_policy="skip",
-        exclude=is_external_environment_relative,
+        exclude=_is_cleanup_excluded,
     )
     directories = sorted(
         (

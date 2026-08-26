@@ -51,7 +51,7 @@ def validate_dependency_closure(root: Path) -> dict[str, Any]:
             and distribution not in optional.get("release", set())
         ):
             errors.append(f"undeclared test distribution: {record['distribution']}")
-    lock_path = root / "requirements-release.lock"
+    lock_path = root / "requirements-release.txt"
     lock_text = lock_path.read_text(encoding="utf-8")
     lock = {
         line.split("==", 1)[0].casefold(): line.split("==", 1)[1]
@@ -83,7 +83,7 @@ def validate_dependency_closure(root: Path) -> dict[str, Any]:
     build_requirements = set(config.get("build-system", {}).get("requires", ()))
     if build_requirements != {"setuptools==84.0.0"}:
         errors.append("build-system backend must be exact-pinned to setuptools==84.0.0")
-    lock_install = "python -m pip install --require-hashes -r requirements-release.lock"
+    lock_install = "python -m pip install --require-hashes -r requirements-release.txt"
     for relative in (
         ".github/workflows/ci.yml",
         ".github/workflows/scheduled-assurance.yml",
@@ -94,7 +94,7 @@ def validate_dependency_closure(root: Path) -> dict[str, Any]:
         encoding="utf-8"
     )
     if (
-        "python -m pip download --require-hashes -r requirements-release.lock"
+        "python -m pip download --require-hashes -r requirements-release.txt"
         not in release_workflow
     ):
         errors.append(

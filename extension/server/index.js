@@ -134,6 +134,12 @@ var require_activityManager = __commonJS({
 `, { encoding: "utf8", flag: "wx" });
       fs2.renameSync(temporary, file2);
     }
+    function atomicWriteText(file2, value) {
+      const temporary = `${file2}.${process.pid}.${crypto2.randomUUID()}.tmp`;
+      fs2.mkdirSync(path2.dirname(file2), { recursive: true });
+      fs2.writeFileSync(temporary, value, { encoding: "utf8", flag: "wx" });
+      fs2.renameSync(temporary, file2);
+    }
     function acquireLock(paths, timeoutMs = 4e3) {
       fs2.mkdirSync(paths.root, { recursive: true });
       const started = Date.now();
@@ -408,7 +414,98 @@ var require_activityManager = __commonJS({
         receipt_sha256: sha({ threshold_ms: thresholdMs, reconciled, skipped })
       };
     }
-    module2.exports = { SCHEMA_VERSION, activityPaths, normalizePolicy, normalizeActor, sanitizeMetadata, recordActivity: recordActivity2, readActivity: readActivity2, reconcileStaleOperations, tailEventsDetailed, acquireLock, sha };
+    function repairActivityIntegrity(workspaceRoot2, options = {}) {
+      const paths = activityPaths(workspaceRoot2);
+      let release;
+      try {
+        release = acquireLock(paths, options.timeoutMs || 4e3);
+        const state = readState(paths, options.policy);
+        const rawEvents = fs2.existsSync(paths.events) ? fs2.readFileSync(paths.events, "utf8") : "";
+        const tail = tailEventsDetailed(paths.events, EVENT_LIMIT);
+        if (tail.health.status === "degraded") throw new Error(`activity-integrity-repair-refuses-malformed-jsonl:line-${tail.health.failed_line}`);
+        const before = eventIntegrity(tail.events, state);
+        if (before.valid) return { schema_version: "px.activity-integrity-repair/1.0", disposition: "already-valid", repaired: false, before, after: before };
+        if (tail.events.length >= EVENT_LIMIT && Number(state.event_count || 0) > tail.events.length) throw new Error("activity-integrity-repair-requires-complete-ledger");
+        fs2.mkdirSync(paths.quarantine, { recursive: true });
+        const stamp = `${Date.now()}.${crypto2.randomUUID()}`;
+        const eventsBackup = path2.join(paths.quarantine, `events.${stamp}.${sha(rawEvents).slice(0, 12)}.pre-repair.jsonl`);
+        const stateRaw = fs2.readFileSync(paths.state, "utf8");
+        const stateBackup = path2.join(paths.quarantine, `current.${stamp}.${sha(stateRaw).slice(0, 12)}.pre-repair.json`);
+        fs2.copyFileSync(paths.events, eventsBackup, fs2.constants.COPYFILE_EXCL);
+        fs2.copyFileSync(paths.state, stateBackup, fs2.constants.COPYFILE_EXCL);
+        let previous = null;
+        const repairedEvents = tail.events.map((original) => {
+          const event = structuredClone(original);
+          event.previous_event_sha256 = previous;
+          delete event.event_sha256;
+          event.event_sha256 = sha(event);
+          previous = event.event_sha256;
+          return event;
+        });
+        const timestamp = now();
+        const recovery = {
+          schema_version: SCHEMA_VERSION,
+          event_id: `act-${crypto2.randomUUID()}`,
+          timestamp,
+          correlation_id: `activity-recovery-${crypto2.randomUUID()}`,
+          parent_correlation_id: null,
+          task_id: null,
+          claim_id: null,
+          actor: normalizeActor({ actorId: "pacify-x-recovery", sessionId: `repair-${process.pid}`, harness: "activity-integrity-repair", accountableOwner: "local-user" }),
+          source: "pacify-x-activity-recovery",
+          category: "system",
+          operation: "activity.integrity.recovered",
+          status: "succeeded",
+          effect: "observe",
+          duration_ms: null,
+          scope_refs: [],
+          input_sha256: sha(rawEvents),
+          output_sha256: null,
+          metadata: { original_event_count: tail.events.length, original_state_event_count: Number(state.event_count || 0), original_chain_break_count: before.chain_breaks.length, events_backup: path2.relative(paths.workspace, eventsBackup).replaceAll("\\", "/"), state_backup: path2.relative(paths.workspace, stateBackup).replaceAll("\\", "/") },
+          content_captured: false,
+          previous_event_sha256: previous
+        };
+        recovery.event_sha256 = sha(recovery);
+        repairedEvents.push(recovery);
+        const repairedText = `${repairedEvents.map((event) => JSON.stringify(event)).join("\n")}
+`;
+        recovery.output_sha256 = sha(repairedText);
+        delete recovery.event_sha256;
+        recovery.event_sha256 = sha(recovery);
+        repairedEvents[repairedEvents.length - 1] = recovery;
+        const finalText = `${repairedEvents.map((event) => JSON.stringify(event)).join("\n")}
+`;
+        const totals = { by_category: {}, by_status: {} };
+        for (const event of repairedEvents) {
+          totals.by_category[event.category] = Number(totals.by_category[event.category] || 0) + 1;
+          totals.by_status[event.status] = Number(totals.by_status[event.status] || 0) + 1;
+        }
+        const repairedState = { ...state, revision: repairedEvents.length, event_count: repairedEvents.length, updated_utc: timestamp, last_event_sha256: recovery.event_sha256, totals };
+        atomicWriteText(paths.events, finalText);
+        atomicWrite(paths.state, repairedState);
+        const after = eventIntegrity(repairedEvents, repairedState);
+        if (!after.valid) throw new Error("activity-integrity-repair-postcondition-failed");
+        const receipt = {
+          schema_version: "px.activity-integrity-repair/1.0",
+          disposition: "repaired-with-exact-backups",
+          repaired: true,
+          repaired_utc: timestamp,
+          before,
+          after,
+          events_backup: eventsBackup,
+          state_backup: stateBackup,
+          original_events_sha256: sha(rawEvents),
+          repaired_events_sha256: sha(finalText),
+          recovery_event_id: recovery.event_id,
+          restoration: "Replace current events.jsonl and current.json with the two exact pre-repair backups while activity writers are stopped."
+        };
+        atomicWrite(path2.join(paths.quarantine, `repair.${stamp}.receipt.json`), receipt);
+        return receipt;
+      } finally {
+        release?.();
+      }
+    }
+    module2.exports = { SCHEMA_VERSION, activityPaths, normalizePolicy, normalizeActor, sanitizeMetadata, recordActivity: recordActivity2, readActivity: readActivity2, reconcileStaleOperations, repairActivityIntegrity, tailEventsDetailed, acquireLock, sha };
   }
 });
 
@@ -588,6 +685,7 @@ var require_mcpActivityIntegration = __commonJS({
                 canonical_schema_version: event.schema_version,
                 canonical_sdk_version: SDK_VERSION,
                 canonical_event_sha256: sha(event),
+                server_version: String(options.serverVersion || "unknown").slice(0, 80),
                 payload_retained: false
               }
             },
@@ -2448,6 +2546,7 @@ var require_discoveryManager = __commonJS({
     var MAX_OUTPUT = 8 * 1024 * 1024;
     var MAX_SCAN_ENTRIES = 2e4;
     var MAX_SCAN_DEPTH = 7;
+    var MAX_SCAN_DURATION_MS = 15e3;
     var MAX_ENV_FILE_BYTES = 1024 * 1024;
     var DEFAULT_DISCOVERY_TTL_MS = 24 * 60 * 60 * 1e3;
     var TOOL_PROBES = [
@@ -2741,13 +2840,24 @@ var require_discoveryManager = __commonJS({
       }
       return { admitted, records, failures, ambiguities };
     }
-    function boundedTree(roots = []) {
+    function boundedTree(roots = [], options = {}) {
       const rootInspection = inspectRoots(roots);
       const entries = [];
       const failures = [...rootInspection.failures];
       const ambiguities = [...rootInspection.ambiguities];
       let capped = false;
       let symbolicLinksSkipped = 0;
+      const now = typeof options.now === "function" ? options.now : Date.now;
+      const timeBudgetMs = Math.max(1, Math.min(Number(options.maxDurationMs) || MAX_SCAN_DURATION_MS, MAX_SCAN_DURATION_MS));
+      const deadline = now() + timeBudgetMs;
+      let timeBudgetExceeded = false;
+      const stopForTimeBudget = () => {
+        if (timeBudgetExceeded || now() < deadline) return timeBudgetExceeded;
+        timeBudgetExceeded = true;
+        capped = true;
+        failures.push({ code: "scan-time-budget-exceeded", budget_ms: timeBudgetMs });
+        return true;
+      };
       const inspectPythonEnvironment = (root, directory, relative, depth) => {
         const marker = path2.join(directory, "pyvenv.cfg");
         try {
@@ -2786,6 +2896,7 @@ var require_discoveryManager = __commonJS({
         const pending = [{ target: root, depth: 0 }];
         let cursor = 0;
         while (cursor < pending.length && entries.length < MAX_SCAN_ENTRIES) {
+          if (stopForTimeBudget()) break;
           const { target, depth } = pending[cursor];
           cursor += 1;
           let children;
@@ -2795,8 +2906,9 @@ var require_discoveryManager = __commonJS({
             failures.push({ code: "directory-unreadable", root, relative: path2.relative(root, target).split(path2.sep).join("/") || "." });
             continue;
           }
+          children.sort((left, right) => left.name.localeCompare(right.name));
           for (const child of children) {
-            if (entries.length >= MAX_SCAN_ENTRIES) {
+            if (entries.length >= MAX_SCAN_ENTRIES || stopForTimeBudget()) {
               capped = true;
               break;
             }
@@ -2809,7 +2921,7 @@ var require_discoveryManager = __commonJS({
             const record2 = { root, absolute, relative, name: child.name, depth: depth + 1, directory: child.isDirectory(), file: child.isFile() };
             entries.push(record2);
             if (child.isDirectory() && /^\.venv.*$/i.test(child.name)) inspectPythonEnvironment(root, absolute, relative, depth);
-            if (child.isDirectory() && depth < MAX_SCAN_DEPTH && !/^(\.git|node_modules|__pycache__|\.engineering-bootstrap|\.pytest_cache|\.ruff_cache|\.mypy_cache|\.cache|\.px|Python|\.venv.*|dist|build|coverage)$/i.test(child.name)) pending.push({ target: absolute, depth: depth + 1 });
+            if (child.isDirectory() && depth < MAX_SCAN_DEPTH && !/^(\.git|node_modules|__pycache__|\.engineering-bootstrap|\.pytest_cache|\.ruff_cache|\.mypy_cache|\.cache|\.px|evidence|Python|\.venv.*|dist|build|coverage)$/i.test(child.name)) pending.push({ target: absolute, depth: depth + 1 });
           }
         }
         if (entries.length >= MAX_SCAN_ENTRIES) capped = true;
@@ -2824,7 +2936,8 @@ var require_discoveryManager = __commonJS({
         failures,
         ambiguities,
         symbolic_links_skipped: symbolicLinksSkipped,
-        completeness: capped || failures.length ? "partial" : "complete"
+        completeness: capped || failures.length ? "partial" : "complete",
+        time_budget_ms: timeBudgetMs
       };
     }
     function scanEnvironmentAsync(roots, options = {}) {
@@ -2972,7 +3085,22 @@ var require_discoveryManager = __commonJS({
       const matched = patterns.find((pattern) => pattern === ".env" || pattern === ".env.*" || pattern === "*.env" || pattern.replace(/^\//, "") === normalized || pattern.replace(/^\*\*\//, "") === basename);
       return matched ? { status: "ignore-pattern-observed", pattern: matched, method: "bounded-local-pattern-check", definitive: false } : { status: "potentially-exposed", reason: "no-matching-root-ignore-pattern-observed", method: "bounded-local-pattern-check", definitive: false };
     }
-    function environmentFileInventory(tree) {
+    function environmentFileInventory(tree, options = {}) {
+      const now = typeof options.now === "function" ? options.now : Date.now;
+      const budgetMs = Math.max(1, Math.min(Number(options.maxDurationMs) || 1e4, 1e4));
+      const deadline = now() + budgetMs;
+      let budgetExceeded = false;
+      const stopForBudget = () => {
+        if (budgetExceeded || now() < deadline) return budgetExceeded;
+        budgetExceeded = true;
+        tree.capped = true;
+        tree.completeness = "partial";
+        if (!Array.isArray(tree.failures)) tree.failures = [];
+        if (!tree.failures.some((item) => item?.code === "environment-consumer-scan-time-budget-exceeded")) {
+          tree.failures.push({ code: "environment-consumer-scan-time-budget-exceeded", budget_ms: budgetMs });
+        }
+        return true;
+      };
       const envEntries = tree.entries.filter((entry) => entry.file && /^\.env(?:\..+)?$/i.test(entry.name));
       const sourceEntries = tree.entries.filter((entry) => entry.file && !/^\.env(?:\..+)?$/i.test(entry.name) && /\.(?:js|cjs|mjs|ts|tsx|jsx|py|json|ya?ml|toml|ini|cfg|md)$/i.test(entry.name));
       const consumers = /* @__PURE__ */ new Map();
@@ -3002,7 +3130,9 @@ var require_discoveryManager = __commonJS({
         return { entry, stat, keys, duplicates };
       });
       const allKeys = new Set(parsed.flatMap((item) => item.keys));
-      for (const source of sourceEntries.slice(0, 5e3)) {
+      const consumerPattern = allKeys.size ? new RegExp(`\\b(?:${[...allKeys].sort((left, right) => right.length - left.length || left.localeCompare(right)).map((key) => key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})\\b`, "g") : null;
+      for (const source of consumerPattern ? sourceEntries.slice(0, 5e3) : []) {
+        if (stopForBudget()) break;
         let stat;
         let text;
         try {
@@ -3012,7 +3142,7 @@ var require_discoveryManager = __commonJS({
         } catch {
           continue;
         }
-        for (const key of allKeys) if (new RegExp(`\\b${key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`).test(text)) {
+        for (const key of new Set(text.match(consumerPattern) || [])) {
           if (!consumers.has(key)) consumers.set(key, []);
           if (consumers.get(key).length < 25) consumers.get(key).push({ root: source.root, path: source.relative });
         }
@@ -32685,7 +32815,7 @@ function readJsonFile(file2, fallback) {
     return fallback;
   }
 }
-var MCP_VERSION = "0.6.54";
+var MCP_VERSION = "0.6.59";
 function contextEnvelope() {
   const value = readJsonFile(process.env.PX_CONTEXT_PATH, {});
   return value?.envelope || value;
@@ -32758,6 +32888,7 @@ function buildServer() {
     contextEnvelope,
     policy: activityPolicy,
     processId: process.pid,
+    serverVersion: MCP_VERSION,
     onDrop: (failure) => process.stderr.write(`[pacify-x-mcp-instrumentation] ${failure.type}:${failure.tool}:${failure.lifecycle}
 `)
   });

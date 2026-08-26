@@ -4,6 +4,7 @@ const cp = require('child_process');
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
+const { Worker } = require('node:worker_threads');
 const STUDIO_PROTOCOL = require('../resources/studio-operations.json');
 const { nonBillableEnvironment } = require('./contextBridge');
 const { processTreeSpawnOptions, terminateProcessTree } = require('./processTree');
@@ -317,6 +318,8 @@ class PxBridge {
     this.requestCacheMetrics = { hits: 0, misses: 0, evictions: 0 };
     this.fingerprintMemo = { watchStamp: null, value: null };
     this.fingerprintMetrics = { watchScans: 0, completeScans: 0, guardedReuses: 0 };
+    this.fingerprintWorkers = new Set();
+    this.fingerprintPromise = null;
     this.lastSnapshot = null; this.lastSnapshotAt = 0; this.lastFingerprint = null; this.lastInvalidationReason = 'cold-start';
   }
 
@@ -336,17 +339,60 @@ class PxBridge {
     this.fingerprintMemo = { watchStamp: null, value: null };
   }
 
-  _sourceFingerprint() {
-    const watchStamp = snapshotSourceWatchStamp(this.engineRoot, this.projectRoot, this.workspaceRoot);
-    this.fingerprintMetrics.watchScans += 1;
-    if (this.fingerprintMemo.value && this.fingerprintMemo.watchStamp === watchStamp) {
-      this.fingerprintMetrics.guardedReuses += 1;
-      return this.fingerprintMemo.value;
-    }
-    const value = snapshotSourceFingerprint(this.engineRoot, this.projectRoot, this.workspaceRoot);
-    this.fingerprintMetrics.completeScans += 1;
-    this.fingerprintMemo = { watchStamp, value };
-    return value;
+  _fingerprintInWorker(mode) {
+    return new Promise((resolve, reject) => {
+      const worker = new Worker(path.join(__dirname, 'sourceFingerprintWorker.js'), {
+        workerData: { mode, engineRoot: this.engineRoot, projectRoot: this.projectRoot, workspaceRoot: this.workspaceRoot }
+      });
+      this.fingerprintWorkers.add(worker);
+      let settled = false;
+      let response = null;
+      const finish = (error, value) => {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timer);
+        this.fingerprintWorkers.delete(worker);
+        if (error) reject(error); else resolve(value);
+      };
+      const timer = setTimeout(() => {
+        void worker.terminate();
+        finish(new Error('Source fingerprint worker timed out.'));
+      }, 30_000);
+      timer.unref?.();
+      worker.once('message', message => { response = message; });
+      worker.once('error', error => finish(error));
+      worker.once('exit', code => {
+        if (settled) return;
+        if (code !== 0) finish(new Error(`Source fingerprint worker exited with code ${code}.`));
+        else if (!response) finish(new Error('Source fingerprint worker exited without a result.'));
+        else if (response.ok) finish(null, response.result);
+        else finish(new Error(response.error || 'Source fingerprint worker failed.'));
+      });
+    });
+  }
+
+  async _sourceFingerprint() {
+    if (this.fingerprintPromise) return this.fingerprintPromise;
+    this.fingerprintPromise = (async () => {
+      if (!this.fingerprintMemo.value) {
+        const result = await this._fingerprintInWorker('both');
+        this.fingerprintMetrics.watchScans += 1;
+        this.fingerprintMetrics.completeScans += 1;
+        this.fingerprintMemo = { watchStamp: result.watchStamp, value: result.value };
+        return result.value;
+      }
+      const watchStamp = await this._fingerprintInWorker('watch');
+      this.fingerprintMetrics.watchScans += 1;
+      if (this.fingerprintMemo.watchStamp === watchStamp) {
+        this.fingerprintMetrics.guardedReuses += 1;
+        return this.fingerprintMemo.value;
+      }
+      const value = await this._fingerprintInWorker('complete');
+      this.fingerprintMetrics.completeScans += 1;
+      this.fingerprintMemo = { watchStamp, value };
+      return value;
+    })().finally(() => { this.fingerprintPromise = null; });
+    return this.fingerprintPromise;
   }
 
   _cached(status, fingerprint, reason, refreshPending = false) {
@@ -397,7 +443,7 @@ class PxBridge {
 
   async snapshot({ force = false, reason = force ? 'explicit-refresh' : 'periodic-fallback' } = {}) {
     if (!isEngineRoot(this.engineRoot)) return disconnected('Set pacifyX.engineRoot to a Pacify-X source tree containing runtime/dashboard_api.py.');
-    const fingerprint = this._sourceFingerprint();
+    const fingerprint = await this._sourceFingerprint();
     if (!force && !this.lastSnapshot) {
       const restored = await this.metadataCache.get(this._snapshotCacheKey(), { fingerprint, maxAgeMs: 24 * 60 * 60_000 });
       if (restored) {
@@ -424,9 +470,10 @@ class PxBridge {
     if (!['skills', 'preserved-skills', 'microsoft-skills', 'tools', 'agents', 'workflows', 'graph', 'enterprise-skills', 'enterprise-agents', 'enterprise-workflows', 'enterprise-integrations', 'enterprise-models'].includes(kind)) throw new Error('Unsupported catalog kind.');
     const requestedOffset = Math.max(0, Number(input.offset || 0));
     const requestedLimit = Math.max(1, Math.min(100, Number(input.limit || 50)));
+    const source = await this._sourceFingerprint();
     let authenticatedStatuses = {};
     if (this.projectRoot && ['agents', 'workflows', 'skills'].includes(kind)) {
-      const projectionKey = `studio-lifecycle:${kind}:${this._sourceFingerprint()}`;
+      const projectionKey = `studio-lifecycle:${kind}:${source}`;
       try {
         const projection = await this._request(projectionKey, signal => this.capture(this.pythonPath, ['-m', 'runtime.studio_catalog_status', '--root', this.projectRoot, '--kind', kind], { cwd: this.engineRoot, timeoutMs: 15_000, signal }), { pool: 'interactive', priority: 1, reason: 'studio-lifecycle-projection', circuitKey: 'studio-catalog-status', timeoutMs: 15_000 });
         authenticatedStatuses = projection?.records && typeof projection.records === 'object' ? projection.records : {};
@@ -445,7 +492,6 @@ class PxBridge {
       '--offset', String(backendOffset), '--limit', String(backendLimit),
       '--sort', ['id', 'label', 'status', 'kind'].includes(input.sort) ? input.sort : 'label'];
     const dependency = kind.includes('enterprise') ? 'providers' : kind === 'skills' || kind.includes('skills') ? 'skills' : kind;
-    const source = this._sourceFingerprint();
     const key = `catalog:${this.revisions.fingerprint([dependency])}:${source}:${studio.fingerprint}:${crypto.createHash('sha256').update(JSON.stringify(args)).digest('hex')}`;
     const base = normalizeSkillCatalogPage(await this._request(key, signal => this.capture(this.pythonPath, args, { cwd: this.engineRoot, timeoutMs: 30_000, signal }), { pool: 'interactive', priority: 1, reason: 'catalog-query', circuitKey: 'dashboard-api', timeoutMs: 30_000 }), kind);
     const baseItems = remaining > 0 ? (base.items || []).slice(0, remaining) : [];
@@ -539,7 +585,7 @@ class PxBridge {
       '--query', String(input.query || '').slice(0, 500), '--offset', String(Math.max(0, Math.min(10_000, Number(input.offset || 0)))),
       '--limit', String(Math.max(1, Math.min(100, Number(input.limit || 60)))), '--status', String(input.status || '').slice(0, 100),
       '--project-id', String(input.projectId || '').slice(0, 160), '--source', String(input.source || '').slice(0, 500)];
-    const source = this._sourceFingerprint();
+    const source = await this._sourceFingerprint();
     const key = `canonical-memory:${this.revisions.fingerprint(['memory'])}:${source}:${crypto.createHash('sha256').update(JSON.stringify(args)).digest('hex')}`;
     return this._request(key, signal => this.capture(this.pythonPath, args, { cwd: this.engineRoot, timeoutMs: 30_000, signal }), { pool: 'interactive', priority: 1, reason: 'canonical-memory-query', circuitKey: 'dashboard-api', timeoutMs: 30_000 }, 5000);
   }
@@ -757,7 +803,7 @@ class PxBridge {
       '--max-nodes', String(Math.max(2, Math.min(500, Number(input.maxNodes || 24)))),
       '--max-edges', String(Math.max(1, Math.min(1000, Number(input.maxEdges || 48))))];
     if (this.projectRoot) args.push('--project', this.projectRoot);
-    const source = this._sourceFingerprint();
+    const source = await this._sourceFingerprint();
     const key = `graph:${this.revisions.fingerprint(['workflows', 'agents', 'repositories'])}:${source}:${crypto.createHash('sha256').update(JSON.stringify(args)).digest('hex')}`;
     return this._request(key, signal => this.capture(this.pythonPath, args, { cwd: this.engineRoot, timeoutMs: 30_000, signal }), { pool: 'interactive', priority: 1, reason: 'graph-query', supersessionKey: 'graph-query', circuitKey: 'dashboard-api', timeoutMs: 30_000 });
   }
@@ -776,12 +822,16 @@ class PxBridge {
       governor: this.governor.snapshot(),
       dependency_revisions: this.revisions.snapshot(),
       persistent_metadata: this.metadataCache.snapshot(),
-      source_fingerprint: { ...this.fingerprintMetrics, watch_guard: 'bounded-stat-tree-no-content-reads' },
+      source_fingerprint: { ...this.fingerprintMetrics, active_workers: this.fingerprintWorkers.size, watch_guard: 'bounded-worker-thread-stat-tree' },
       request_cache: { entries: this.requestCache.size, maximum_entries: 128, metrics: { ...this.requestCacheMetrics } }
     };
   }
 
-  dispose() { if (this.ownsGovernor) this.governor.dispose(); }
+  dispose() {
+    for (const worker of this.fingerprintWorkers) void worker.terminate();
+    this.fingerprintWorkers.clear();
+    if (this.ownsGovernor) this.governor.dispose();
+  }
 }
 
 module.exports = { DEFAULT_SNAPSHOT_TTL_MS, SNAPSHOT_FINGERPRINT_PATHS, STUDIO_VERSION_CONFLICT_REASONS, snapshotSourceFingerprint, snapshotSourceWatchStamp, isEngineRoot, findEngineRoot, captureJson, exactStudioVersionConflictEnvelope, exactStudioVersionConflictError, studioProcessError, normalizeSnapshot, disconnected, authorityMap, pathWithin, PxBridge };

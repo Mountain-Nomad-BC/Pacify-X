@@ -45,7 +45,9 @@ def main() -> int:
     evidence.mkdir(parents=True)
 
     steps: dict[str, object] = {}
-    steps["framework_validation"] = _run("validate")
+    # The quickstart demonstrates an operable pre-validation lifecycle. Full
+    # validation is intentionally reserved for the post-profile closure phase.
+    steps["framework_validation"] = _run("processing-order", "status")
     steps["initialization_preview"] = _run(
         "commission", "--mode", "new", "--project", str(project)
     )

@@ -109,6 +109,7 @@ function createMcpActivityIntegration(options) {
             canonical_schema_version: event.schema_version,
             canonical_sdk_version: SDK_VERSION,
             canonical_event_sha256: sha(event),
+            server_version: String(options.serverVersion || 'unknown').slice(0, 80),
             payload_retained: false
           }
         },

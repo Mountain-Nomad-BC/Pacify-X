@@ -47,6 +47,7 @@ Python/
 # historical records remain tracked; newly generated preflight/cache/log
 # evidence must never dirty or enter the product source revision.
 .engineering-bootstrap/runtime-core/
+.engineering-bootstrap/processing-order/
 .engineering-bootstrap/test-evidence/adversarial-repair-gates/
 .engineering-bootstrap/test-evidence/github-reconciliation-gates/
 

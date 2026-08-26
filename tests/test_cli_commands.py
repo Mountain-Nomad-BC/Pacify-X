@@ -3,13 +3,27 @@ from __future__ import annotations
 from contextlib import redirect_stdout
 from io import StringIO
 import json
+import os
 from pathlib import Path
 import tempfile
 import unittest
 from unittest.mock import patch
 
 from runtime.admission_controller import AdmissionDecision
-from runtime.cli import _prepare_certification_hygiene, _summarize_audit, main
+from runtime.cli import (
+    _claim_test_orchestration_single_flight,
+    _prepare_certification_hygiene,
+    _release_test_orchestration_single_flight,
+    _refresh_stale_groups_for_full_profile,
+    _summarize_audit,
+    main,
+)
+from runtime.test_orchestration_lock import (
+    OWNER_ENV,
+    SUPERVISED_CHILD_ENV,
+    claim_orchestration_lock,
+    release_orchestration_lock,
+)
 
 
 ROOT = Path(__file__).parents[1]
@@ -23,6 +37,194 @@ def invoke(*arguments: str) -> tuple[int, dict]:
 
 
 class CliCommandTests(unittest.TestCase):
+    def test_full_profile_orchestration_is_repository_single_flight(self) -> None:
+        from argparse import Namespace
+        from runtime.file_lock import FileLockTimeout
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            args = Namespace(command="test-profile", action="run", name="full")
+            first, previous = _claim_test_orchestration_single_flight(root, args)
+            try:
+                with self.assertRaisesRegex(FileLockTimeout, "another process"):
+                    _claim_test_orchestration_single_flight(root, args)
+            finally:
+                _release_test_orchestration_single_flight(first, previous)
+
+    def test_every_mutating_profile_and_group_uses_single_flight(self) -> None:
+        from argparse import Namespace
+
+        cases = (
+            Namespace(command="test-profile", action="run", name="fast"),
+            Namespace(command="test-group", action="run", name="core"),
+            Namespace(command="test-group", action="run-stale", name=None),
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for args in cases:
+                with self.subTest(command=args.command, action=args.action):
+                    lock, previous = _claim_test_orchestration_single_flight(
+                        root, args
+                    )
+                    try:
+                        self.assertIsNotNone(lock)
+                    finally:
+                        _release_test_orchestration_single_flight(lock, previous)
+
+    def test_owned_stale_group_child_reuses_parent_orchestration_lease(self) -> None:
+        from argparse import Namespace
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            profile = Namespace(command="test-profile", action="run", name="full")
+            group = Namespace(command="test-group", action="run-stale", name=None)
+            first, previous = _claim_test_orchestration_single_flight(root, profile)
+            try:
+                with patch.dict(
+                    "os.environ",
+                    {SUPERVISED_CHILD_ENV: os.environ[OWNER_ENV]},
+                ):
+                    inherited, inherited_previous = (
+                        _claim_test_orchestration_single_flight(root, group)
+                    )
+                    self.assertNotIn(SUPERVISED_CHILD_ENV, os.environ)
+                self.assertIsNone(inherited)
+                self.assertIsNotNone(inherited_previous)
+            finally:
+                _release_test_orchestration_single_flight(first, previous)
+
+    def test_profile_lock_blocks_projection_identity_mutation(self) -> None:
+        from argparse import Namespace
+        from runtime.file_lock import FileLockTimeout
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            profile = Namespace(command="test-profile", action="run", name="full")
+            lock, previous = _claim_test_orchestration_single_flight(root, profile)
+            try:
+                with self.assertRaisesRegex(FileLockTimeout, "another process"):
+                    claim_orchestration_lock(
+                        root, owner_kind="projection-reconciliation"
+                    )
+            finally:
+                _release_test_orchestration_single_flight(lock, previous)
+
+    def test_projection_lock_blocks_profile_and_releases_cleanly(self) -> None:
+        from argparse import Namespace
+        from runtime.file_lock import FileLockTimeout
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            profile = Namespace(command="test-profile", action="run", name="full")
+            projection, previous = claim_orchestration_lock(
+                root, owner_kind="projection-reconciliation"
+            )
+            try:
+                with self.assertRaisesRegex(FileLockTimeout, "another process"):
+                    _claim_test_orchestration_single_flight(root, profile)
+            finally:
+                release_orchestration_lock(projection, previous)
+            acquired, acquired_previous = _claim_test_orchestration_single_flight(
+                root, profile
+            )
+            _release_test_orchestration_single_flight(
+                acquired, acquired_previous
+            )
+
+    def test_canonical_projection_owner_cannot_bypass_profile_lock(self) -> None:
+        from argparse import Namespace
+        from runtime.file_lock import FileLockTimeout
+        from scripts.clean_source_export import _rebuild_candidate_projections
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            profile = Namespace(command="test-profile", action="run", name="full")
+            lock, previous = _claim_test_orchestration_single_flight(root, profile)
+            try:
+                with (
+                    patch(
+                        "scripts.clean_source_export._rebuild_candidate_projections_unlocked"
+                    ) as rebuild,
+                    self.assertRaisesRegex(FileLockTimeout, "another process"),
+                ):
+                    _rebuild_candidate_projections(root)
+                rebuild.assert_not_called()
+            finally:
+                _release_test_orchestration_single_flight(lock, previous)
+
+    def test_full_profile_refreshes_only_stale_groups_through_owned_runner(self) -> None:
+        stale = {
+            "valid": False,
+            "groups": [
+                {"group": "current", "current": True},
+                {"group": "stale-a", "current": False},
+                {"group": "stale-b", "current": False},
+            ],
+        }
+        current = {
+            "valid": True,
+            "groups": [
+                {"group": "current", "current": True},
+                {"group": "stale-a", "current": True},
+                {"group": "stale-b", "current": True},
+            ],
+        }
+        with (
+            patch("runtime.test_profiles.group_status", side_effect=[stale, current]),
+            patch(
+                "runtime.test_runner.run_test_command",
+                return_value={
+                    "valid": True,
+                    "exit_code": 0,
+                    "duration_seconds": 1.25,
+                    "stdout": "child detail must not be embedded",
+                },
+            ) as runner,
+            patch("runtime.resource_lifecycle.ResourceManager"),
+        ):
+            result = _refresh_stale_groups_for_full_profile(
+                ROOT, timeout_seconds=321
+            )
+
+        self.assertTrue(result["refreshed"])
+        self.assertEqual(result["stale_groups"], ["stale-a", "stale-b"])
+        command = runner.call_args.args[0]
+        self.assertEqual(command[-4:], ["test-group", "run-stale", "--workers", "3"])
+        environment = runner.call_args.kwargs["environment"]
+        self.assertEqual(environment["PYTHONDONTWRITEBYTECODE"], "1")
+        self.assertTrue(any(key.casefold() == "path" for key in environment))
+        self.assertEqual(runner.call_args.kwargs["timeout_seconds"], 321)
+        self.assertNotIn("stdout", result["execution"])
+
+    def test_full_profile_group_refresh_fails_closed(self) -> None:
+        stale = {"valid": False, "groups": [{"group": "broken", "current": False}]}
+        with (
+            patch("runtime.test_profiles.group_status", return_value=stale),
+            patch(
+                "runtime.test_runner.run_test_command",
+                return_value={"valid": False, "exit_code": 1, "stderr": "failed"},
+            ),
+            patch("runtime.resource_lifecycle.ResourceManager"),
+            self.assertRaisesRegex(ValueError, "owned stale test-group refresh failed"),
+        ):
+            _refresh_stale_groups_for_full_profile(ROOT)
+
+    def test_full_profile_does_not_rerun_current_groups(self) -> None:
+        current = {
+            "valid": True,
+            "groups": [{"group": "already-current", "current": True}],
+        }
+        with (
+            patch("runtime.test_profiles.group_status", return_value=current),
+            patch("runtime.test_runner.run_test_command") as runner,
+            patch("runtime.resource_lifecycle.ResourceManager"),
+        ):
+            result = _refresh_stale_groups_for_full_profile(ROOT)
+
+        self.assertFalse(result["refreshed"])
+        self.assertEqual(result["stale_groups"], [])
+        runner.assert_not_called()
+
     def test_section_runner_reuses_current_chunks_and_parallelizes_only_missing(self) -> None:
         import threading
         import time
@@ -405,7 +607,13 @@ class CliCommandTests(unittest.TestCase):
             "termination": {"method": "test-fixture", "errors": []},
             "errors": ["test profile exceeded 300 seconds"],
         }
-        with patch("runtime.test_runner.run_test_command", return_value=timed_out):
+        with (
+            patch("runtime.test_runner.run_test_command", return_value=timed_out),
+            patch(
+                "runtime.cli._claim_test_orchestration_single_flight",
+                return_value=(None, None),
+            ),
+        ):
             status, output = invoke("test-profile", "run", "fast")
         self.assertEqual(status, 1)
         self.assertFalse(output["valid"])

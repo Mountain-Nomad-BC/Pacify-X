@@ -305,14 +305,14 @@ def validate_certification_platform(
 
 
 def validate_release_lock(root: Path) -> dict[str, Any]:
-    lock_path = root.resolve() / "requirements-release.lock"
+    lock_path = root.resolve() / "requirements-release.txt"
     result = parse_release_lock(lock_path)
     return {**result, "lock_sha256": hashlib.sha256(lock_path.read_bytes()).hexdigest()}
 
 
 def validate_release_environment(root: Path) -> dict[str, Any]:
     root = root.resolve()
-    lock_path = root / "requirements-release.lock"
+    lock_path = root / "requirements-release.txt"
     lock = parse_release_lock(lock_path)
     installed: dict[str, str | None] = {}
     errors = list(lock["errors"])

@@ -10,6 +10,7 @@ import json
 import os
 from pathlib import Path
 import re
+import stat
 import tomllib
 from typing import Iterable
 
@@ -364,6 +365,7 @@ MECHANISM_PREFILTERS = {
 SKILL_NAME = re.compile(r"(?m)^name:\s*[\"']?([^\n\"']+)")
 SKILL_DESCRIPTION = re.compile(r"(?m)^description:\s*[\"']?([^\n]+)")
 STREAM_CHUNK_BYTES = 1024 * 1024
+MAX_EXCLUDED_BOUNDARY_ENTRIES = 1_000_000
 TEXT_OVERLAP_CHARACTERS = 1024
 METADATA_PREFIX_BYTES = 12000
 
@@ -427,26 +429,100 @@ def _scan_text(path: Path) -> tuple[str, str, Counter[str]]:
 
 
 def _inventory_excluded_boundary(
-    boundary: Path, source: Path
-) -> tuple[list[tuple[str, int, str]], list[str]]:
-    records: list[tuple[str, int, str]] = []
+    boundary: Path,
+    source: Path,
+    *,
+    max_entries: int = MAX_EXCLUDED_BOUNDARY_ENTRIES,
+) -> tuple[list[tuple[str, int]], list[str], list[str]]:
+    """Inventory an excluded tree from directory metadata only.
+
+    Exclusion is an I/O boundary, not merely a classification label.  Exact
+    regular-file and byte denominators are retained without opening excluded
+    file bodies.  Any entry that cannot be classified safely makes the audit
+    incomplete instead of silently disappearing from the denominator.
+    """
+    if max_entries < 1:
+        raise ValueError("max_entries must be positive")
+    records: list[tuple[str, int]] = []
     errors: list[str] = []
-    for path in sorted(
-        boundary.rglob("*"), key=lambda item: item.as_posix().casefold()
-    ):
-        if path.is_symlink() or not path.is_file():
-            continue
+    visited_entries = 0
+
+    try:
+        boundary_mode = os.stat(boundary, follow_symlinks=False).st_mode
+    except OSError as error:
+        return records, [], [f"{boundary}: {type(error).__name__}: {error}"]
+    if stat.S_ISLNK(boundary_mode):
+        return records, [], [f"{boundary}: excluded boundary is a symlink"]
+    if not stat.S_ISDIR(boundary_mode):
+        return records, [], [f"{boundary}: excluded boundary is not a directory"]
+
+    symlinks: list[str] = []
+    bounded = False
+    pending = [boundary]
+    while pending:
+        current_path = pending.pop()
         try:
-            records.append(
-                (
-                    path.relative_to(source).as_posix(),
-                    path.stat().st_size,
-                    _hash_file(path),
-                )
-            )
+            with os.scandir(current_path) as iterator:
+                entries = sorted(iterator, key=lambda item: item.name.casefold())
         except OSError as error:
-            errors.append(f"{path}: {type(error).__name__}: {error}")
-    return records, errors
+            errors.append(
+                f"{error.filename or current_path}: {type(error).__name__}: {error}"
+            )
+            continue
+        child_directories: list[Path] = []
+        for entry in entries:
+            visited_entries += 1
+            if visited_entries > max_entries:
+                bounded = True
+                break
+            path = current_path / entry.name
+            try:
+                if entry.is_symlink():
+                    symlinks.append(path.relative_to(source).as_posix())
+                elif entry.is_dir(follow_symlinks=False):
+                    child_directories.append(path)
+                elif entry.is_file(follow_symlinks=False):
+                    metadata = entry.stat(follow_symlinks=False)
+                    records.append(
+                        (path.relative_to(source).as_posix(), metadata.st_size)
+                    )
+                else:
+                    errors.append(f"{path}: non-regular entry inside excluded boundary")
+            except OSError as error:
+                errors.append(f"{path}: {type(error).__name__}: {error}")
+        if bounded:
+            break
+        pending.extend(reversed(child_directories))
+    if bounded:
+        errors.append(
+            f"{boundary}: excluded boundary entry limit exceeded ({max_entries})"
+        )
+    records.sort(key=lambda item: item[0].casefold())
+    symlinks.sort(key=str.casefold)
+    return records, symlinks, errors
+
+
+def _update_inventory_hash(
+    digest: "hashlib._Hash",
+    relative: str,
+    size: int,
+    content_sha256: str | None,
+    *,
+    entry_kind: str = "regular-file",
+) -> None:
+    encoded_path = relative.encode("utf-8", errors="replace")
+    method = (
+        b"content-sha256"
+        if content_sha256 is not None
+        else f"path-size-metadata:{entry_kind}".encode("ascii")
+    )
+    digest.update(len(encoded_path).to_bytes(8, "big"))
+    digest.update(encoded_path)
+    digest.update(size.to_bytes(16, "big", signed=False))
+    digest.update(len(method).to_bytes(2, "big"))
+    digest.update(method)
+    if content_sha256 is not None:
+        digest.update(bytes.fromhex(content_sha256))
 
 
 def _catalog(path: Path | None) -> list[dict[str, object]]:
@@ -509,7 +585,7 @@ def audit(
     inventory_hash = hashlib.sha256()
 
     excluded_boundaries: list[dict[str, object]] = []
-    inventory_records: list[tuple[str, int, str]] = []
+    inventory_records: list[tuple[str, int, str | None, str]] = []
     paths: list[Path] = []
     for current, directories, filenames in os.walk(
         source, topdown=True, followlinks=False
@@ -527,27 +603,45 @@ def audit(
             ):
                 excluded_counts[name] += 1
                 totals["excluded_directories"] += 1
-                boundary_records, boundary_errors = _inventory_excluded_boundary(
-                    candidate, source
+                (
+                    boundary_records,
+                    boundary_symlinks,
+                    boundary_errors,
+                ) = _inventory_excluded_boundary(candidate, source)
+                inventory_records.extend(
+                    (item_path, item_bytes, None, "regular-file")
+                    for item_path, item_bytes in boundary_records
                 )
-                inventory_records.extend(boundary_records)
+                inventory_records.extend(
+                    (item_path, 0, None, "unfollowed-symlink")
+                    for item_path in boundary_symlinks
+                )
                 errors.extend(boundary_errors)
                 boundary_hash = hashlib.sha256()
-                for item_path, item_bytes, item_digest in boundary_records:
-                    boundary_hash.update(
-                        f"{item_path}\0{item_digest}\0{item_bytes}\n".encode(
-                            "utf-8", errors="replace"
-                        )
+                for item_path, item_bytes in boundary_records:
+                    _update_inventory_hash(
+                        boundary_hash, item_path, item_bytes, None
+                    )
+                for item_path in boundary_symlinks:
+                    _update_inventory_hash(
+                        boundary_hash,
+                        item_path,
+                        0,
+                        None,
+                        entry_kind="unfollowed-symlink",
                     )
                 totals["excluded_files"] += len(boundary_records)
                 totals["excluded_bytes"] += sum(item[1] for item in boundary_records)
+                totals["excluded_symlinks"] += len(boundary_symlinks)
                 excluded_boundaries.append(
                     {
                         "path": relative.as_posix(),
                         "reason": name,
                         "file_count": len(boundary_records),
                         "byte_count": sum(item[1] for item in boundary_records),
-                        "tree_sha256": boundary_hash.hexdigest(),
+                        "symlink_count": len(boundary_symlinks),
+                        "inventory_method": "path-and-size-metadata",
+                        "metadata_inventory_sha256": boundary_hash.hexdigest(),
                     }
                 )
             elif candidate.is_symlink():
@@ -558,9 +652,49 @@ def audit(
             else:
                 kept.append(name)
         directories[:] = kept
-        paths.extend(
-            current_path / name for name in sorted(filenames, key=str.casefold)
-        )
+        for name in sorted(filenames, key=str.casefold):
+            path = current_path / name
+            if name.startswith(".") and name.casefold().endswith(".lock"):
+                try:
+                    metadata = os.stat(path, follow_symlinks=False)
+                    relative = path.relative_to(source).as_posix()
+                    if stat.S_ISLNK(metadata.st_mode):
+                        totals["symlink_skipped"] += 1
+                        excluded_boundaries.append(
+                            {"path": relative, "reason": "symlink"}
+                        )
+                    elif stat.S_ISREG(metadata.st_mode):
+                        inventory_records.append(
+                            (relative, metadata.st_size, None, "volatile-dot-lock")
+                        )
+                        totals["excluded_files"] += 1
+                        totals["excluded_bytes"] += metadata.st_size
+                        totals["excluded_volatile_locks"] += 1
+                        volatile_hash = hashlib.sha256()
+                        _update_inventory_hash(
+                            volatile_hash,
+                            relative,
+                            metadata.st_size,
+                            None,
+                            entry_kind="volatile-dot-lock",
+                        )
+                        excluded_boundaries.append(
+                            {
+                                "path": relative,
+                                "reason": "volatile-dot-lock",
+                                "file_count": 1,
+                                "byte_count": metadata.st_size,
+                                "symlink_count": 0,
+                                "inventory_method": "path-and-size-metadata",
+                                "metadata_inventory_sha256": volatile_hash.hexdigest(),
+                            }
+                        )
+                    else:
+                        errors.append(f"{path}: non-regular hidden lock entry")
+                except OSError as error:
+                    errors.append(f"{path}: {type(error).__name__}: {error}")
+                continue
+            paths.append(path)
 
     for path in sorted(paths, key=lambda item: item.as_posix().casefold()):
         try:
@@ -576,14 +710,18 @@ def audit(
             if not _is_text(path):
                 totals["non_text"] += 1
                 digest = _hash_file(path)
-                inventory_records.append((relative.as_posix(), size, digest))
+                inventory_records.append(
+                    (relative.as_posix(), size, digest, "regular-file")
+                )
                 continue
             oversized = size > max_bytes
             if oversized:
                 totals["oversize"] += 1
                 totals["oversize_stream_scanned"] += 1
             digest, metadata_prefix, hit_counts = _scan_text(path)
-            inventory_records.append((relative.as_posix(), size, digest))
+            inventory_records.append(
+                (relative.as_posix(), size, digest, "regular-file")
+            )
             hits = dict(sorted(hit_counts.items()))
             mechanism_counts.update(hits)
             skill_like = (
@@ -635,12 +773,15 @@ def audit(
         except (OSError, UnicodeError) as error:
             errors.append(f"{path}: {type(error).__name__}: {error}")
 
-    for relative, size, digest in sorted(
+    for relative, size, digest, entry_kind in sorted(
         inventory_records, key=lambda item: item[0].casefold()
     ):
-        inventory_hash.update(relative.encode("utf-8", errors="replace"))
-        inventory_hash.update(
-            b"\0" + str(size).encode() + b"\0" + digest.encode() + b"\n"
+        _update_inventory_hash(
+            inventory_hash,
+            relative,
+            size,
+            digest,
+            entry_kind=entry_kind,
         )
     totals["total_accounted_files"] = totals["files"] + totals["excluded_files"]
     totals["total_accounted_bytes"] = totals["bytes"] + totals["excluded_bytes"]
@@ -655,8 +796,8 @@ def audit(
         for item in records
     )
     return {
-        "schema_version": "1.0",
-        "scanner": "audit-source-capabilities/1.2.0",
+        "schema_version": "1.1",
+        "scanner": "audit-source-capabilities/1.3.1",
         "created_utc": datetime.now(timezone.utc).isoformat(),
         "source_root": source.as_posix(),
         "configuration": {"max_bytes": max_bytes, "excluded_names": sorted(excluded)},
@@ -665,7 +806,9 @@ def audit(
             "extension_counts": dict(sorted(extension_counts.items())),
             "excluded_counts": dict(sorted(excluded_counts.items())),
             "inventory_sha256": inventory_hash.hexdigest(),
-            "inventory_scope": "all regular files including explicitly excluded generated/cache boundaries",
+            "inventory_scope": "all regular files; content SHA-256 for included source and path/size metadata for explicitly excluded boundaries",
+            "excluded_inventory_method": "path-and-size-metadata-no-body-read",
+            "excluded_boundary_entry_limit": MAX_EXCLUDED_BOUNDARY_ENTRIES,
             "error_count": len(errors),
         },
         "mechanism_counts": dict(sorted(mechanism_counts.items())),

@@ -11,6 +11,7 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
+import re
 
 
 INVENTORY = Path("registry/operational_surface_inventory.json")
@@ -62,6 +63,11 @@ def action_requirement(control: dict[str, object], actions: dict[str, dict[str, 
         "requires_fault_injection": host,
         "requires_restart": mutating,
         "requires_real_external_authority": False,
+        "state_role": "direct_control",
+        "activation_condition": {
+            "mode": "always",
+            "trigger": "the owning surface and declared action variant are loaded",
+        },
         "stage_policy": {
             stage: (
                 "required"
@@ -75,7 +81,22 @@ def action_requirement(control: dict[str, object], actions: dict[str, dict[str, 
     }
 
 
-def semantic_requirement(kind: str) -> dict[str, object]:
+def indicator_role(label: str) -> str:
+    normalized = re.sub(r"([a-z])([A-Z])", r"\1 \2", label).lower()
+    tokens = set(re.findall(r"[a-z0-9]+", normalized))
+    if tokens & {
+        "error", "failed", "failure", "invalid", "mismatch", "missing",
+        "blocked", "stale", "detached", "unavailable", "warning", "requires",
+    } or {"not", "accepted"} <= tokens or {"not", "ready"} <= tokens:
+        return "conditional_failure"
+    if tokens & {"pending", "loading", "awaiting", "progress", "running"}:
+        return "conditional_progress"
+    if {"no", "match"} <= tokens or "empty" in tokens:
+        return "conditional_empty"
+    return "steady_state"
+
+
+def semantic_requirement(kind: str, label: str) -> dict[str, object]:
     configurations = {
         "command": ("isolated_host_command", "invoke the exact registered command in an isolated VS Code host and observe completion or typed denial", True, True, False),
         "field": ("contained_ui_input", "resolve the exact field, exercise valid and invalid boundaries, and restore its prior value", False, False, False),
@@ -93,6 +114,7 @@ def semantic_requirement(kind: str) -> dict[str, object]:
     if kind not in configurations:
         raise ValueError(f"unsupported operational control kind: {kind}")
     mode, probe, disposable, fault, restart = configurations[kind]
+    state_role = indicator_role(label) if kind == "indicator" else "direct_control"
     stage_policy = {}
     for stage in STAGES:
         required = stage in {"open_load", "display", "result_acknowledgement"}
@@ -102,7 +124,11 @@ def semantic_requirement(kind: str) -> dict[str, object]:
             required = True
         if kind in {"lifecycle", "persistence", "reload_reopen"} and stage in {"persistence", "reload_reopen"}:
             required = True
-        if kind in {"command", "form", "editor", "gesture", "indicator", "lifecycle", "persistence", "reload_reopen", "failure_recovery"} and stage in {"failure_handling", "recovery_rollback"}:
+        if kind in {"command", "form", "editor", "gesture", "lifecycle", "persistence", "reload_reopen", "failure_recovery"} and stage in {"failure_handling", "recovery_rollback"}:
+            required = True
+        if kind == "indicator" and state_role == "conditional_failure" and stage in {"failure_handling", "recovery_rollback"}:
+            required = True
+        if kind == "indicator" and state_role == "conditional_progress" and stage == "progress_reporting":
             required = True
         if kind in {"command", "lifecycle"} and stage == "progress_reporting":
             required = True
@@ -115,6 +141,15 @@ def semantic_requirement(kind: str) -> dict[str, object]:
         "requires_fault_injection": fault,
         "requires_restart": restart,
         "requires_real_external_authority": False,
+        "state_role": state_role,
+        "activation_condition": {
+            "mode": "always" if state_role in {"direct_control", "steady_state"} else "conditional",
+            "trigger": {
+                "conditional_failure": "the owning failure state is intentionally produced in a contained target",
+                "conditional_progress": "the owning operation is intentionally held in its reported in-progress state",
+                "conditional_empty": "the owning bounded query or collection is intentionally placed in its empty state",
+            }.get(state_role, "the owning surface and control are loaded"),
+        },
         "stage_policy": stage_policy,
     }
 
@@ -132,7 +167,7 @@ def build(root: Path) -> dict[str, object]:
             requirement = (
                 action_requirement(control, actions)
                 if control["kind"] == "action"
-                else semantic_requirement(str(control["kind"]))
+                else semantic_requirement(str(control["kind"]), str(control["label"]))
             )
             controls.append({
                 "control_id": control["control_id"],

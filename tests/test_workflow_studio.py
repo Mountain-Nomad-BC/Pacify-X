@@ -465,6 +465,44 @@ def _wait_for_workflow_state(studio, run_id: str, expected: set[str]) -> dict:
     )
 
 
+@pytest.mark.parametrize("action", ["cancel", "stop"])
+def test_workflow_cancel_or_stop_wins_during_nonterminal_finalization(
+    tmp_path, monkeypatch, action
+) -> None:
+    monkeypatch.setenv(
+        "PX_STUDIO_KEY_ROOT", str(tmp_path.parent / f"{tmp_path.name}-host-keys")
+    )
+    studio = WorkflowStudio(tmp_path)
+    created = studio.run_control.create(
+        kind="workflow",
+        subject_id="workflow:finalizing-race",
+        version="1.0.0",
+        owner="human:owner",
+        revision_sha256="a" * 64,
+        request_sha256="b" * 64,
+    )
+    studio.run_control.transition(
+        created["run_id"], "running", actor="human:owner", approved=True
+    )
+    studio.run_control.transition(
+        created["run_id"],
+        "finalizing",
+        actor="human:owner",
+        approved=True,
+        checkpoint={"terminal_target": "succeeded"},
+    )
+
+    cancelled = studio.request_lifecycle(
+        created["run_id"],
+        action,
+        approved=True,
+        approved_by="human:owner",
+    )
+
+    assert cancelled["state"] == "cancelled"
+    assert cancelled["checkpoint"]["terminal_target"] == "cancelled"
+
+
 def test_workflow_pause_resume_cancel_and_checkpoint_recovery(
     tmp_path, monkeypatch
 ) -> None:

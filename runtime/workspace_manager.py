@@ -39,6 +39,10 @@ from .project_stream_controls import (
 )
 from .paths import framework_root
 from .work_admission import RuntimeWorkPlane
+from .test_profiles import (
+    initialize_project_repair_campaign,
+    repair_campaign_status,
+)
 
 
 def _project_stream_api():
@@ -810,6 +814,7 @@ def _discover_projects_direct(
             raise RuntimeError(
                 f"project integrity check failed: {proposal['path']}: {check.get('errors')}"
             )
+        processing_order = initialize_project_repair_campaign(project)
         local = json.loads(
             (project / ".engineering-bootstrap" / "project-record.json").read_text(
                 encoding="utf-8"
@@ -879,6 +884,11 @@ def _discover_projects_direct(
             {
                 "project": central,
                 "commissioning": {"mode": proposal["mode"], "valid": True},
+                "processing_order": {
+                    "campaign_id": processing_order["campaign_id"],
+                    "phase": processing_order["phase"],
+                    "path": processing_order["path"],
+                },
             },
         )
         admitted.append(central)
@@ -1023,6 +1033,9 @@ def activate_project(
             f"project cannot be activated from state: {target.get('state')}"
         )
     project = _project_path(paths, target)
+    # Activation is the universal managed-project boundary. Missing or malformed
+    # state must never degrade to an unmanaged/allowed project.
+    repair_campaign_status(project)
     check = project_check(project)
     if not check.get("valid"):
         raise ValueError(

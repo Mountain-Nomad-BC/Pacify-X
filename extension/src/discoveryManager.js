@@ -12,6 +12,7 @@ const LEGACY_SCHEMA = 'px.environment-capability-map/1.0';
 const MAX_OUTPUT = 8 * 1024 * 1024;
 const MAX_SCAN_ENTRIES = 20000;
 const MAX_SCAN_DEPTH = 7;
+const MAX_SCAN_DURATION_MS = 15_000;
 const MAX_ENV_FILE_BYTES = 1024 * 1024;
 // Extension changes invalidate this inventory immediately. Keep unchanged host
 // evidence current for the same bounded daily window used by the environment
@@ -216,8 +217,18 @@ function inspectRoots(roots = []) {
   return { admitted, records, failures, ambiguities };
 }
 
-function boundedTree(roots = []) {
+function boundedTree(roots = [], options = {}) {
   const rootInspection = inspectRoots(roots); const entries = []; const failures = [...rootInspection.failures]; const ambiguities = [...rootInspection.ambiguities]; let capped = false; let symbolicLinksSkipped = 0;
+  const now = typeof options.now === 'function' ? options.now : Date.now;
+  const timeBudgetMs = Math.max(1, Math.min(Number(options.maxDurationMs) || MAX_SCAN_DURATION_MS, MAX_SCAN_DURATION_MS));
+  const deadline = now() + timeBudgetMs;
+  let timeBudgetExceeded = false;
+  const stopForTimeBudget = () => {
+    if (timeBudgetExceeded || now() < deadline) return timeBudgetExceeded;
+    timeBudgetExceeded = true; capped = true;
+    failures.push({ code: 'scan-time-budget-exceeded', budget_ms: timeBudgetMs });
+    return true;
+  };
   const inspectPythonEnvironment = (root, directory, relative, depth) => {
     const marker = path.join(directory, 'pyvenv.cfg');
     try {
@@ -244,18 +255,20 @@ function boundedTree(roots = []) {
   for (const root of rootInspection.admitted) {
     const pending = [{ target: root, depth: 0 }]; let cursor = 0;
     while (cursor < pending.length && entries.length < MAX_SCAN_ENTRIES) {
+      if (stopForTimeBudget()) break;
       const { target, depth } = pending[cursor]; cursor += 1;
       let children;
       try { children = fs.readdirSync(target, { withFileTypes: true }); } catch { failures.push({ code: 'directory-unreadable', root, relative: path.relative(root, target).split(path.sep).join('/') || '.' }); continue; }
+      children.sort((left, right) => left.name.localeCompare(right.name));
       for (const child of children) {
-        if (entries.length >= MAX_SCAN_ENTRIES) { capped = true; break; }
+        if (entries.length >= MAX_SCAN_ENTRIES || stopForTimeBudget()) { capped = true; break; }
         if (child.isSymbolicLink()) { symbolicLinksSkipped += 1; continue; }
         const absolute = path.join(target, child.name);
         const relative = path.relative(root, absolute).split(path.sep).join('/');
         const record = { root, absolute, relative, name: child.name, depth: depth + 1, directory: child.isDirectory(), file: child.isFile() };
         entries.push(record);
         if (child.isDirectory() && /^\.venv.*$/i.test(child.name)) inspectPythonEnvironment(root, absolute, relative, depth);
-        if (child.isDirectory() && depth < MAX_SCAN_DEPTH && !/^(\.git|node_modules|__pycache__|\.engineering-bootstrap|\.pytest_cache|\.ruff_cache|\.mypy_cache|\.cache|\.px|Python|\.venv.*|dist|build|coverage)$/i.test(child.name)) pending.push({ target: absolute, depth: depth + 1 });
+        if (child.isDirectory() && depth < MAX_SCAN_DEPTH && !/^(\.git|node_modules|__pycache__|\.engineering-bootstrap|\.pytest_cache|\.ruff_cache|\.mypy_cache|\.cache|\.px|evidence|Python|\.venv.*|dist|build|coverage)$/i.test(child.name)) pending.push({ target: absolute, depth: depth + 1 });
       }
     }
     if (entries.length >= MAX_SCAN_ENTRIES) capped = true;
@@ -263,7 +276,7 @@ function boundedTree(roots = []) {
   return {
     roots: rootInspection.admitted, root_records: rootInspection.records, entries, capped, limit: MAX_SCAN_ENTRIES, max_depth: MAX_SCAN_DEPTH,
     failures, ambiguities, symbolic_links_skipped: symbolicLinksSkipped,
-    completeness: capped || failures.length ? 'partial' : 'complete'
+    completeness: capped || failures.length ? 'partial' : 'complete', time_budget_ms: timeBudgetMs
   };
 }
 
@@ -388,7 +401,22 @@ function envIgnoreEvidence(root, relativePath) {
     : { status: 'potentially-exposed', reason: 'no-matching-root-ignore-pattern-observed', method: 'bounded-local-pattern-check', definitive: false };
 }
 
-function environmentFileInventory(tree) {
+function environmentFileInventory(tree, options = {}) {
+  const now = typeof options.now === 'function' ? options.now : Date.now;
+  const budgetMs = Math.max(1, Math.min(Number(options.maxDurationMs) || 10_000, 10_000));
+  const deadline = now() + budgetMs;
+  let budgetExceeded = false;
+  const stopForBudget = () => {
+    if (budgetExceeded || now() < deadline) return budgetExceeded;
+    budgetExceeded = true;
+    tree.capped = true;
+    tree.completeness = 'partial';
+    if (!Array.isArray(tree.failures)) tree.failures = [];
+    if (!tree.failures.some(item => item?.code === 'environment-consumer-scan-time-budget-exceeded')) {
+      tree.failures.push({ code: 'environment-consumer-scan-time-budget-exceeded', budget_ms: budgetMs });
+    }
+    return true;
+  };
   const envEntries = tree.entries.filter(entry => entry.file && /^\.env(?:\..+)?$/i.test(entry.name));
   const sourceEntries = tree.entries.filter(entry => entry.file && !/^\.env(?:\..+)?$/i.test(entry.name) && /\.(?:js|cjs|mjs|ts|tsx|jsx|py|json|ya?ml|toml|ini|cfg|md)$/i.test(entry.name));
   const consumers = new Map();
@@ -405,10 +433,17 @@ function environmentFileInventory(tree) {
     return { entry, stat, keys, duplicates };
   });
   const allKeys = new Set(parsed.flatMap(item => item.keys));
-  for (const source of sourceEntries.slice(0, 5000)) {
+  const consumerPattern = allKeys.size
+    ? new RegExp(`\\b(?:${[...allKeys].sort((left, right) => right.length - left.length || left.localeCompare(right)).map(key => key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})\\b`, 'g')
+    : null;
+  // Without a declared environment key there can be no consumer match. The
+  // previous implementation still opened as many as 5,000 source files,
+  // turning a metadata-only refresh into minutes of pointless I/O.
+  for (const source of (consumerPattern ? sourceEntries.slice(0, 5000) : [])) {
+    if (stopForBudget()) break;
     let stat; let text;
     try { stat = fs.statSync(source.absolute); if (stat.size > 512 * 1024) continue; text = fs.readFileSync(source.absolute, 'utf8'); } catch { continue; }
-    for (const key of allKeys) if (new RegExp(`\\b${key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`).test(text)) {
+    for (const key of new Set(text.match(consumerPattern) || [])) {
       if (!consumers.has(key)) consumers.set(key, []);
       if (consumers.get(key).length < 25) consumers.get(key).push({ root: source.root, path: source.relative });
     }

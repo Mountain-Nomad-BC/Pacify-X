@@ -34,6 +34,9 @@ const walkerPath = path.join(__dirname, 'run-operational-ui-walk.js');
 const bootstrapPath = path.join(extensionRoot, 'tests', 'operational-walk-bootstrap', 'index.js');
 const installedHarnessPath = path.join(extensionRoot, 'tests', 'installed-harness');
 const MAX_CAPTURE = 2 * 1024 * 1024;
+const ENGINE_COPY_EXCLUDED_ROOTS = new Set(['.git', '.vscode', '.pytest_cache', '.mypy_cache', '.ruff_cache', '.venv', 'venv', 'node_modules', 'evidence']);
+const ENGINE_COPY_EXCLUDED_PATHS = new Set(['extension/node_modules', 'extension/dist', '.engineering-bootstrap/test-evidence', '.engineering-bootstrap/resource-lifecycle', '.engineering-bootstrap/operation-bus']);
+const REQUIRED_ENGINE_FILES = ['runtime/cli.py', 'registry/engine_identity.json'];
 
 const utcStamp = () => new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z');
 const sha256 = target => crypto.createHash('sha256').update(fs.readFileSync(target)).digest('hex');
@@ -81,6 +84,80 @@ async function waitForJsonFile(target, host, timeoutMs = 60_000) {
 function inside(root, target) {
   const relative = path.relative(path.resolve(root), path.resolve(target));
   return relative === '' || (!relative.startsWith('..') && !path.isAbsolute(relative));
+}
+
+function excludedEnginePath(relativePath) {
+  const normalized = String(relativePath || '').replaceAll('\\', '/').replace(/^\.\//, '');
+  if (!normalized) return false;
+  const parts = normalized.split('/');
+  if (ENGINE_COPY_EXCLUDED_ROOTS.has(parts[0]) || parts.includes('__pycache__')) return true;
+  if (parts.at(-1)?.endsWith('.lock')) return true;
+  if (normalized.endsWith('.pyc') || normalized.endsWith('.pyo')) return true;
+  return [...ENGINE_COPY_EXCLUDED_PATHS].some(candidate => normalized === candidate || normalized.startsWith(`${candidate}/`));
+}
+
+function stageDisposableEngine(sourceRoot, temporaryRoot) {
+  const sourceInput = path.resolve(sourceRoot);
+  const ownedInput = path.resolve(temporaryRoot);
+  const sourceInputStatus = fs.lstatSync(sourceInput);
+  const ownedInputStatus = fs.lstatSync(ownedInput);
+  if (sourceInputStatus.isSymbolicLink() || ownedInputStatus.isSymbolicLink()) throw new Error('owned-engine-root-linked');
+  if (!sourceInputStatus.isDirectory() || !ownedInputStatus.isDirectory()) throw new Error('owned-engine-root-not-directory');
+  const source = fs.realpathSync.native(sourceInput);
+  const ownedRoot = fs.realpathSync.native(ownedInput);
+  const target = path.join(ownedRoot, 'engine');
+  if (source === ownedRoot || inside(source, ownedRoot) || !inside(ownedRoot, target)) throw new Error('owned-engine-root-boundary-invalid');
+  if (fs.existsSync(target)) throw new Error('owned-engine-target-already-exists');
+  let copiedFiles = 0;
+  let copiedBytes = 0;
+  try {
+    fs.cpSync(source, target, {
+      recursive: true,
+      force: false,
+      errorOnExist: true,
+      filter(candidate) {
+        const resolved = path.resolve(candidate);
+        const relative = path.relative(source, resolved);
+        if (relative.startsWith('..') || path.isAbsolute(relative)) throw new Error(`owned-engine-source-escape:${relative}`);
+        if (excludedEnginePath(relative)) return false;
+        const status = fs.lstatSync(resolved);
+        if (status.isSymbolicLink()) throw new Error(`owned-engine-source-link:${relative.replaceAll('\\', '/')}`);
+        if (status.isFile()) { copiedFiles += 1; copiedBytes += status.size; }
+        return true;
+      }
+    });
+    const staged = fs.realpathSync.native(target);
+    if (!inside(ownedRoot, staged) || fs.lstatSync(staged).isSymbolicLink()) throw new Error('owned-engine-staged-boundary-invalid');
+    const required = Object.fromEntries(REQUIRED_ENGINE_FILES.map(relative => {
+      const original = path.join(source, ...relative.split('/'));
+      const copy = path.join(staged, ...relative.split('/'));
+      if (!fs.existsSync(original) || !fs.existsSync(copy) || !fs.lstatSync(copy).isFile() || fs.lstatSync(copy).isSymbolicLink()) {
+        throw new Error(`owned-engine-required-file-missing:${relative}`);
+      }
+      let stableSha256 = null;
+      for (let attempt = 0; attempt < 3; attempt += 1) {
+        const before = fs.readFileSync(original);
+        fs.copyFileSync(original, copy);
+        const after = fs.readFileSync(original);
+        const copied = fs.readFileSync(copy);
+        const beforeSha256 = crypto.createHash('sha256').update(before).digest('hex');
+        const afterSha256 = crypto.createHash('sha256').update(after).digest('hex');
+        const copiedSha256 = crypto.createHash('sha256').update(copied).digest('hex');
+        if (beforeSha256 === afterSha256 && afterSha256 === copiedSha256) {
+          stableSha256 = copiedSha256;
+          break;
+        }
+      }
+      if (!stableSha256) throw new Error(`owned-engine-required-file-unstable:${relative}`);
+      return [relative, stableSha256];
+    }));
+    return { root: staged, source: '[current-repository-source]', copied_files: copiedFiles, copied_bytes: copiedBytes, required_file_sha256: required };
+  } catch (error) {
+    if (fs.existsSync(target) && inside(ownedRoot, target) && !fs.lstatSync(target).isSymbolicLink()) {
+      fs.rmSync(target, { recursive: true, force: true });
+    }
+    throw error;
+  }
 }
 
 function classifySharedStoragePath(sharedData, raw) {
@@ -257,7 +334,7 @@ async function childMain(configPath) {
       env: electronHostEnvironment({
         PX_OWNED_VSCODE_HOST: '1',
         PX_OWNED_VSCODE_HOST_CONFIRM_REVERSIBLE_WRITES: '1',
-        PX_ENGINE_ROOT: repositoryRoot,
+        PX_ENGINE_ROOT: config.engineRoot,
         PX_OPERATIONAL_WALK_BOOTSTRAP_RECEIPT: config.bootstrapReceipt,
         PX_OPERATIONAL_WALK_BOOTSTRAP_SENTINEL: config.bootstrapSentinel
       })
@@ -282,7 +359,18 @@ async function childMain(configPath) {
         shell: false,
         windowsHide: true,
         stdio: ['ignore', 'pipe', 'pipe'],
-        env: { ...nonBillableEnvironment(), PX_OWNED_VSCODE_HOST: '1' }
+        env: {
+          ...nonBillableEnvironment(),
+          PX_OWNED_VSCODE_HOST: '1',
+          PX_OWNED_ENGINE_ROOT: config.engineRoot,
+          ...(config.knowledgeFixture ? {
+            PX_OWNED_KNOWLEDGE_SOURCE_ID: config.knowledgeFixture.source_id,
+            PX_OWNED_KNOWLEDGE_SOURCE_SHA256: config.knowledgeFixture.source_sha256
+          } : {}),
+          ...(config.configurationOnly ? { PX_OPERATIONAL_CONFIGURATION_ONLY: '1' } : {}),
+          ...(config.studioLifecycleOnly ? { PX_OPERATIONAL_STUDIO_LIFECYCLE_ONLY: '1' } : {}),
+          ...(config.knowledgeLifecycleOnly ? { PX_OPERATIONAL_KNOWLEDGE_LIFECYCLE_ONLY: '1' } : {})
+        }
       });
       lifecycle.walker_pid = Number(walker.pid) || null;
       capture(walker.stdout, appendStdout);
@@ -354,7 +442,70 @@ async function childMain(configPath) {
   return 0;
 }
 
-function prepare(temporaryRoot, walkOutput, vsixPath = null, bootstrapOnly = false) {
+function stageOwnedKnowledgeFixture(workspaceRoot, engineRoot = null) {
+  const resolved = fs.realpathSync.native(workspaceRoot);
+  if (fs.lstatSync(resolved).isSymbolicLink()) throw new Error('owned-knowledge-workspace-linked');
+  const sourceDirectory = path.join(resolved, 'knowledge');
+  const registryDirectory = path.join(resolved, 'registry');
+  const sourceRelative = 'knowledge/px-owned-lifecycle-source.md';
+  const sourcePath = path.join(resolved, ...sourceRelative.split('/'));
+  const registryPath = path.join(registryDirectory, 'knowledge_sources.json');
+  for (const target of [sourceDirectory, registryDirectory, sourcePath, registryPath]) {
+    if (!inside(resolved, target)) throw new Error(`owned-knowledge-target-outside-workspace:${target}`);
+    if (fs.existsSync(target)) throw new Error(`owned-knowledge-target-already-exists:${path.relative(resolved, target).replace(/\\/g, '/')}`);
+  }
+  fs.mkdirSync(sourceDirectory);
+  fs.mkdirSync(registryDirectory);
+  const source = '# PACIFY-X owned Knowledge lifecycle fixture\n\nBounded source evidence for the disposable installed-host operational walk.\n';
+  fs.writeFileSync(sourcePath, source, { encoding: 'utf8', flag: 'wx' });
+  const sourceSha256 = sha256(sourcePath);
+  const sourceRecord = {
+    id: 'source:px-owned-knowledge-lifecycle',
+    status: 'active',
+    kind: 'local_file',
+    visibility: ['local'],
+    location: sourceRelative,
+    uses: []
+  };
+  const registry = {
+    schema_version: '2.0',
+    knowledge_sources: [sourceRecord]
+  };
+  fs.writeFileSync(registryPath, `${JSON.stringify(registry, null, 2)}\n`, { encoding: 'utf8', flag: 'wx' });
+  let engineRegistrySha256 = null;
+  if (engineRoot) {
+    const engine = fs.realpathSync.native(engineRoot);
+    if (fs.lstatSync(engine).isSymbolicLink()) throw new Error('owned-knowledge-engine-linked');
+    const engineRegistryPath = path.join(engine, 'registry', 'knowledge_sources.json');
+    const engineSourcePath = path.join(engine, ...sourceRelative.split('/'));
+    for (const target of [engineRegistryPath, engineSourcePath]) if (!inside(engine, target)) throw new Error(`owned-knowledge-engine-target-outside-root:${target}`);
+    if (!fs.existsSync(engineRegistryPath) || fs.lstatSync(engineRegistryPath).isSymbolicLink() || !fs.lstatSync(engineRegistryPath).isFile()) throw new Error('owned-knowledge-engine-registry-invalid');
+    if (fs.existsSync(engineSourcePath)) throw new Error(`owned-knowledge-engine-source-already-exists:${sourceRelative}`);
+    const engineRegistry = JSON.parse(fs.readFileSync(engineRegistryPath, 'utf8'));
+    if (engineRegistry?.schema_version !== '2.0' || !Array.isArray(engineRegistry.knowledge_sources)) throw new Error('owned-knowledge-engine-registry-schema-invalid');
+    if (engineRegistry.knowledge_sources.some(item => item?.id === sourceRecord.id)) throw new Error('owned-knowledge-engine-source-id-conflict');
+    const engineSourceDirectory = path.dirname(engineSourcePath);
+    if (fs.existsSync(engineSourceDirectory) && (fs.lstatSync(engineSourceDirectory).isSymbolicLink() || !fs.lstatSync(engineSourceDirectory).isDirectory())) throw new Error('owned-knowledge-engine-source-directory-invalid');
+    fs.mkdirSync(engineSourceDirectory, { recursive: true });
+    fs.writeFileSync(engineSourcePath, source, { encoding: 'utf8', flag: 'wx' });
+    if (sha256(engineSourcePath) !== sourceSha256) throw new Error('owned-knowledge-engine-source-hash-mismatch');
+    engineRegistry.knowledge_sources.push(sourceRecord);
+    fs.writeFileSync(engineRegistryPath, `${JSON.stringify(engineRegistry, null, 2)}\n`, 'utf8');
+    const projected = JSON.parse(fs.readFileSync(engineRegistryPath, 'utf8'));
+    if (projected.knowledge_sources.filter(item => item?.id === sourceRecord.id).length !== 1) throw new Error('owned-knowledge-engine-projection-invalid');
+    engineRegistrySha256 = sha256(engineRegistryPath);
+  }
+  return {
+    source_id: sourceRecord.id,
+    source_relative: sourceRecord.location,
+    source_sha256: sourceSha256,
+    evidence_ref: `sha256:${sourceSha256}`,
+    engine_registry_sha256: engineRegistrySha256
+  };
+}
+
+function prepare(temporaryRoot, walkOutput, vsixPath = null, bootstrapOnly = false, configurationOnly = false, studioLifecycleOnly = false, knowledgeLifecycleOnly = false) {
+  const stagedEngine = stageDisposableEngine(repositoryRoot, temporaryRoot);
   const config = {
     workspace: path.join(temporaryRoot, 'workspace'),
     userData: path.join(temporaryRoot, 'user-data'),
@@ -365,7 +516,12 @@ function prepare(temporaryRoot, walkOutput, vsixPath = null, bootstrapOnly = fal
     childResult: path.join(temporaryRoot, 'child-result.json'),
     walkOutput,
     walkReceipt: path.join(walkOutput, 'receipt.json'),
+    engineRoot: stagedEngine.root,
+    stagedEngine,
     bootstrapOnly,
+    configurationOnly,
+    studioLifecycleOnly,
+    knowledgeLifecycleOnly,
     vsixPath,
     vsixSha256: vsixPath ? sha256(vsixPath) : null
   };
@@ -377,7 +533,7 @@ function prepare(temporaryRoot, walkOutput, vsixPath = null, bootstrapOnly = fal
   }
   fs.mkdirSync(path.join(config.workspace, '.vscode'), { recursive: true });
   fs.writeFileSync(path.join(config.workspace, '.vscode', 'settings.json'), `${JSON.stringify({
-    'pacifyX.engineRoot': repositoryRoot,
+    'pacifyX.engineRoot': config.engineRoot,
     'pacifyX.workspaceRoot': '',
     'pacifyX.pythonPath': process.platform === 'win32' ? 'python' : 'python3',
     'pacifyX.activity.enabled': false
@@ -390,7 +546,31 @@ function prepare(temporaryRoot, walkOutput, vsixPath = null, bootstrapOnly = fal
     'telemetry.telemetryLevel': 'off'
   }, null, 2)}\n`, 'utf8');
   fs.writeFileSync(path.join(config.workspace, 'README.md'), '# PACIFY-X owned operational walk workspace\n', 'utf8');
+  config.knowledgeFixture = bootstrapOnly || configurationOnly || studioLifecycleOnly ? null : stageOwnedKnowledgeFixture(config.workspace, config.engineRoot);
   return config;
+}
+
+function reconcilePrelaunchFailure(temporaryRoot, reportPath, walkOutput, error) {
+  const cleanup = safeOwnedEphemeralCleanup(temporaryRoot, true);
+  const statusTruth = evaluateLauncherTerminal({ walkStatus: null, processTreeClosedVerified: true, workerExitVerified: false, error });
+  const report = {
+    schema_version: 'px.isolated-current-source-operational-walk/1.1',
+    observed_utc: new Date().toISOString(),
+    status: statusTruth.terminal_state,
+    status_truth: statusTruth,
+    phase: 'prelaunch-staging',
+    authority: 'Codex host retained execution authority; PX governed scope, evidence, isolation, and cleanup.',
+    effects: { created: ['PACIFY-X-owned temporary root', 'repository failure evidence'], spawned: [], user_main_vscode_profile_touched: false, isolation_boundary_verified: true, product_ui_modified: false, broad_tests_run: false },
+    walk: { path: path.relative(repositoryRoot, walkOutput).replace(/\\/g, '/'), present: fs.existsSync(walkOutput) },
+    child_lifecycle: null,
+    owner_lifecycle: { process_tree_closed_verified: true, host_started: false },
+    cleanup,
+    error: String(error?.stack || error?.message || error).slice(0, 4000)
+  };
+  if (!cleanup.reclaimed) report.recovery = { retained_temporary_root: temporaryRoot, reason: cleanup.reason };
+  fs.mkdirSync(path.dirname(reportPath), { recursive: true });
+  fs.writeFileSync(reportPath, `${JSON.stringify(report, null, 2)}\n`, { encoding: 'utf8', flag: 'wx' });
+  return report;
 }
 
 async function main() {
@@ -398,8 +578,13 @@ async function main() {
   const requestedVsix = argument('--vsix');
   const vsixPath = requestedVsix ? path.resolve(requestedVsix) : null;
   const bootstrapOnly = process.argv.includes('--bootstrap-only');
+  const configurationOnly = process.argv.includes('--configuration-only');
+  const studioLifecycleOnly = process.argv.includes('--studio-lifecycle-only');
+  const knowledgeLifecycleOnly = process.argv.includes('--knowledge-lifecycle-only');
+  if ([bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly].filter(Boolean).length > 1) throw new Error('focused-launcher-modes-are-mutually-exclusive');
   if (vsixPath && (!fs.existsSync(vsixPath) || path.extname(vsixPath).toLowerCase() !== '.vsix')) throw new Error(`exact-vsix-missing:${vsixPath}`);
-  const mode = `${vsixPath ? 'installed-vsix' : 'current-source'}${bootstrapOnly ? '-bootstrap' : ''}`;
+  const focusedProfile = configurationOnly ? 'reversible-configuration' : studioLifecycleOnly ? 'studio-lifecycle' : knowledgeLifecycleOnly ? 'knowledge-lifecycle' : null;
+  const mode = `${vsixPath ? 'installed-vsix' : 'current-source'}${bootstrapOnly ? '-bootstrap' : focusedProfile ? `-${focusedProfile}` : ''}`;
   const walkOutput = path.resolve(argument('--output') || path.join(repositoryRoot, 'evidence', `operational-ui-walk-${mode}-${stamp}`));
   const reportPath = path.resolve(argument('--report') || path.join(repositoryRoot, 'evidence', 'operational-gap-ledger', `${mode}-host-walk-${stamp}.json`));
   for (const target of [walkOutput, reportPath, ...(vsixPath ? [vsixPath] : [])]) {
@@ -408,10 +593,17 @@ async function main() {
   }
   if (fs.existsSync(reportPath)) throw new Error(`evidence-report-already-exists:${reportPath}`);
   const temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'pacify-x-current-source-walk-'));
-  markOwnedHostWorkspace(temporaryRoot, `${vsixPath ? 'installed-vsix' : 'current-source'}-${bootstrapOnly ? 'bootstrap-activation' : 'operational-ui-walk'}`);
-  const config = prepare(temporaryRoot, walkOutput, vsixPath, bootstrapOnly);
-  const configPath = path.join(temporaryRoot, 'host-config.json');
-  fs.writeFileSync(configPath, `${JSON.stringify(config, null, 2)}\n`, 'utf8');
+  markOwnedHostWorkspace(temporaryRoot, `${vsixPath ? 'installed-vsix' : 'current-source'}-${bootstrapOnly ? 'bootstrap-activation' : focusedProfile || 'operational-ui-walk'}`);
+  let config = null;
+  let configPath = null;
+  try {
+    config = prepare(temporaryRoot, walkOutput, vsixPath, bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly);
+    configPath = path.join(temporaryRoot, 'host-config.json');
+    fs.writeFileSync(configPath, `${JSON.stringify(config, null, 2)}\n`, { encoding: 'utf8', flag: 'wx' });
+  } catch (error) {
+    reconcilePrelaunchFailure(temporaryRoot, reportPath, walkOutput, error);
+    throw error;
+  }
   let run = null;
   let lifecycle = null;
   let error = null;
@@ -452,7 +644,7 @@ async function main() {
     status_truth: statusTruth,
     authority: 'Codex host retained execution authority; PX governed scope, evidence, isolation, and cleanup.',
     effects: {
-      created: ['PACIFY-X-owned temporary workspace', 'PACIFY-X-owned user-data profile', 'PACIFY-X-owned empty extensions directory', 'PACIFY-X-owned shared-data directory', 'repository evidence'],
+      created: ['PACIFY-X-owned temporary engine copy', 'PACIFY-X-owned temporary workspace', 'PACIFY-X-owned user-data profile', 'PACIFY-X-owned empty extensions directory', 'PACIFY-X-owned shared-data directory', 'repository evidence'],
       spawned: bootstrapOnly ? ['pinned VS Code development host'] : ['pinned VS Code development host', 'existing operational UI walker'],
       user_main_vscode_profile_touched: child?.storage_boundary?.verified === true ? false : null,
       isolation_boundary_verified: child?.storage_boundary?.verified === true,
@@ -469,6 +661,13 @@ async function main() {
       vscode_version: VSCODE_VERSION
     },
     isolation: {
+      engine: config.stagedEngine ? {
+        root: 'PACIFY-X-owned ephemeral current-source copy',
+        copied_files: config.stagedEngine.copied_files,
+        copied_bytes: config.stagedEngine.copied_bytes,
+        required_file_sha256: config.stagedEngine.required_file_sha256,
+        live_repository_used_as_engine: false
+      } : null,
       workspace: 'PACIFY-X-owned ephemeral',
       user_data: 'PACIFY-X-owned ephemeral; not the user profile',
       extensions: 'PACIFY-X-owned empty directory',
@@ -477,7 +676,9 @@ async function main() {
       cdp: child?.cdp || null,
       extension_loading: vsixPath ? 'exact VSIX installed into owned empty extensions directory' : 'current repository source only'
     },
-    operation: bootstrapOnly ? 'installed-extension-bootstrap-activation' : 'operational-ui-walk',
+    operation: bootstrapOnly ? 'installed-extension-bootstrap-activation' : focusedProfile ? `focused-${focusedProfile}-walk` : 'operational-ui-walk',
+    focused_profile: focusedProfile,
+    full_operational_completion_claimed: focusedProfile ? false : child?.operational_status?.operationally_complete === true,
     bootstrap: bootstrapOnly ? child?.bootstrap || null : null,
     walk: bootstrapOnly ? null : child?.walk_receipt || { path: path.relative(repositoryRoot, config.walkReceipt).replace(/\\/g, '/'), present: fs.existsSync(config.walkReceipt) },
     child_lifecycle: child,
@@ -501,7 +702,7 @@ if (require.main === module) {
       process.exitCode = 1;
     });
   } else if (process.argv.includes('--help')) {
-    process.stdout.write('Usage: node scripts/run-isolated-current-source-walk.js [--bootstrap-only] [--vsix <path>] [--output <path>] [--report <path>]\n');
+    process.stdout.write('Usage: node scripts/run-isolated-current-source-walk.js [--bootstrap-only | --configuration-only | --studio-lifecycle-only | --knowledge-lifecycle-only] [--vsix <path>] [--output <path>] [--report <path>]\n');
   } else {
     main().catch(error => {
       process.stderr.write(`${error.stack || error.message}\n`);
@@ -510,4 +711,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { classifySharedStoragePath };
+module.exports = { classifySharedStoragePath, excludedEnginePath, reconcilePrelaunchFailure, stageDisposableEngine, stageOwnedKnowledgeFixture };

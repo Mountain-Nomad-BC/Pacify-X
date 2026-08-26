@@ -4,7 +4,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
-const { applyInstalledProbeObservations, eligibleInstalledControl, installedActionIdentity, installedStudioPrerequisites, validStudioDraftReceipt, validStudioLifecycleResult, validStudioSetupResult } = require('../scripts/run-operational-ui-walk');
+const { applyInstalledProbeObservations, eligibleInstalledControl, engineOutageRecord, installedActionIdentity, installedStudioPrerequisites, knowledgeBrowseHasHead, validKnowledgeLifecycleResult, validStudioDraftReceipt, validStudioLifecycleResult, validStudioRevisionEditObservation, validStudioSetupResult } = require('../scripts/run-operational-ui-walk');
 
 const STAGES = ['open_load', 'display', 'user_edit_action', 'input_validation', 'authorization', 'backend_dispatch', 'runtime_effect', 'progress_reporting', 'result_acknowledgement', 'persistence', 'reload_reopen', 'failure_handling', 'recovery_rollback'];
 
@@ -72,6 +72,29 @@ test('owned installed Studio candidate save accepts only kind-exact durable rece
   assert.equal(validStudioDraftReceipt('skill', { ...skill, source_tree_sha256: 'bad' }, skill.manifest.skill_id), false);
 });
 
+test('owned installed revision edit requires changed content, preserved predecessor, and physical reopen', () => {
+  const observation = {
+    editor_bound: true,
+    typed_creation_receipt: true,
+    reopened_catalog_match: true,
+    predecessor_preserved: true,
+    content_changed: true,
+    reopened_editor_content_match: true,
+    original_owner: 'PX',
+    changed_owner: 'PX:edited-one',
+    predecessor_revision_sha256: 'a'.repeat(64),
+    predecessor_content_sha256: 'b'.repeat(64),
+    saved_revision_sha256: 'c'.repeat(64),
+    saved_content_sha256: 'd'.repeat(64)
+  };
+  assert.equal(validStudioRevisionEditObservation(observation), true);
+  assert.equal(validStudioRevisionEditObservation({ ...observation, changed_owner: observation.original_owner }), false);
+  assert.equal(validStudioRevisionEditObservation({ ...observation, predecessor_preserved: false }), false);
+  assert.equal(validStudioRevisionEditObservation({ ...observation, saved_content_sha256: observation.predecessor_content_sha256 }), false);
+  assert.equal(validStudioRevisionEditObservation({ ...observation, reopened_editor_content_match: false }), false);
+  assert.equal(validStudioRevisionEditObservation({ ...observation, saved_revision_sha256: 'invalid' }), false);
+});
+
 test('owned installed Studio lifecycle accepts only operation-exact typed receipts', () => {
   assert.equal(validStudioLifecycleResult('agent', 'test', { schema_version: 'px.agent-preflight-receipt/1.2', passed: true }), true);
   assert.equal(validStudioLifecycleResult('agent', 'register-authority', { schema_version: 'px.studio-authority-transaction/1.0', status: 'registered', authenticated: true }), true);
@@ -84,9 +107,36 @@ test('owned installed Studio lifecycle accepts only operation-exact typed receip
   assert.equal(validStudioLifecycleResult('skill', 'admit', { schema_version: 'px.skill-admission-receipt/1.1', decision: 'admitted' }), true);
   assert.equal(validStudioLifecycleResult('skill', 'promote', { schema_version: 'px.skill-promotion-receipt/1.3', state: 'promoted', promotion_receipt_relative: '.engineering-bootstrap/studios/skills/demo/promotion-receipt.json' }), true);
   assert.equal(validStudioLifecycleResult('agent', 'status', { schema_version: 'px.studio-durable-run/1.0', run_id: 'run:one' }), true);
+  assert.equal(validStudioLifecycleResult('agent', 'pause', { schema_version: 'px.studio-durable-run/1.0', run_id: 'run:one', state: 'pause_requested' }), true);
+  assert.equal(validStudioLifecycleResult('workflow', 'cancel', { schema_version: 'px.studio-durable-run/1.0', run_id: 'run:two', state: 'cancel_requested' }), true);
+  assert.equal(validStudioLifecycleResult('agent', 'resume', { schema_version: 'px.agent-session-start/1.1', accepted: true, run_id: 'run:one' }), true);
+  assert.equal(validStudioLifecycleResult('agent', 'resume', { schema_version: 'px.agent-runtime-receipt/1.2', run_outcome: 'succeeded', run_id: 'run:one' }), false);
+  assert.equal(validStudioLifecycleResult('workflow', 'reconcile', { schema_version: 'px.studio-run-reconciliation/1.0', valid: true }), true);
+  assert.equal(validStudioLifecycleResult('workflow', 'approve', { schema_version: 'px.workflow-approval-result/1.0', approval_id: 'approval:one' }), true);
+  assert.equal(validStudioLifecycleResult('skill', 'rollback', { state: 'rolled-back' }), true);
   assert.equal(validStudioLifecycleResult('workflow', 'runs', { schema_version: 'px.studio-run-list/1.0', kind: 'workflow', runs: [] }), true);
   assert.equal(validStudioLifecycleResult('skill', 'promote', { schema_version: 'px.skill-promotion-receipt/1.3', state: 'promoted' }), false);
   assert.equal(validStudioLifecycleResult('agent', 'admit', { schema_version: 'px.agent-admission-receipt/1.1', decision: 'rejected' }), false);
+});
+
+test('owned installed Knowledge lifecycle accepts only exact typed states and canonical heads', () => {
+  const hashA = 'a'.repeat(64); const hashB = 'b'.repeat(64);
+  const proposal = { schema_version: 'px.knowledge-proposal/1.0', proposal_id: 'proposal:one', candidate_sha256: hashA, state: 'candidate' };
+  assert.equal(validKnowledgeLifecycleResult('propose', proposal), true);
+  assert.equal(validKnowledgeLifecycleResult('verify', { ...proposal, state: 'verified' }, { proposal_id: proposal.proposal_id, candidate_sha256: hashA }), true);
+  assert.equal(validKnowledgeLifecycleResult('approve', { ...proposal, state: 'approved' }), true);
+  assert.equal(validKnowledgeLifecycleResult('promote', { ...proposal, state: 'promoted' }), true);
+  assert.equal(validKnowledgeLifecycleResult('reject', { ...proposal, state: 'rejected' }), true);
+  assert.equal(validKnowledgeLifecycleResult('verify', { ...proposal, state: 'approved' }), false);
+  assert.equal(validKnowledgeLifecycleResult('promote', { ...proposal, candidate_sha256: 'bad', state: 'promoted' }), false);
+  const rollback = { schema_version: 'px.knowledge-rollback/1.0', from_sha256: hashB, to_sha256: hashA, hard_delete: false };
+  assert.equal(validKnowledgeLifecycleResult('rollback', rollback, { from_sha256: hashB, to_sha256: hashA }), true);
+  assert.equal(validKnowledgeLifecycleResult('rollback', { ...rollback, hard_delete: true }), false);
+  assert.equal(validKnowledgeLifecycleResult('recover', { schema_version: 'px.knowledge-recovery/1.0', valid: true }), true);
+  const browse = { schema_version: 'px.knowledge-core-control/1.0', proposals: [], canonical: [{ record_id: 'knowledge:one', candidate_sha256: hashA }] };
+  assert.equal(validKnowledgeLifecycleResult('browse', browse), true);
+  assert.equal(knowledgeBrowseHasHead(browse, 'knowledge:one', hashA), true);
+  assert.equal(knowledgeBrowseHasHead(browse, 'knowledge:one', hashB), false);
 });
 
 test('installed control probe retains exact denominator, bridge, and receipt contracts', () => {
@@ -124,7 +174,12 @@ test('installed control probe retains exact denominator, bridge, and receipt con
   assert.match(source, /studio_setup_profile: studioSetupProfile/);
   assert.match(source, /studio_candidate_save_profile: studioCandidateSaveProfile/);
   assert.match(source, /studio_revision_edit_profile: studioRevisionEditProfile/);
+  assert.match(source, /engine_outage_profile: engineOutageProfile/);
+  assert.match(source, /beginOwnedEngineOutage\(process\.env\.PX_OWNED_ENGINE_ROOT, ownedHostToken\)/);
+  assert.match(source, /querySelector\('\[data-surface="dashboard"\]'\)[\s\S]*dashboard\.click\(\);[\s\S]*querySelectorAll\('\[data-action="refresh"\]'\)/);
   assert.match(source, /runInstalledStudioRevisionEditProfile/);
+  assert.match(source, /kind: 'skill', submitControlId: 'pxui\.skill-studio\.action\.submitStudioDraft\.skill'/);
+  assert.match(source, /kind === 'skill' \? 'loadSkillPackageEditor' : 'openStudioFromCatalog'/);
   assert.match(source, /revision-editor-binding-timeout/);
   assert.match(source, /revision-save-unavailable-after-edit/);
   assert.match(source, /last_editor_state/);
@@ -144,6 +199,90 @@ test('installed control probe retains exact denominator, bridge, and receipt con
   assert.match(source, /disconnectCanonicalMemory/);
   assert.match(source, /canonical-memory-restoration-mismatch/);
   assert.match(source, /px\.installed-operational-control-probe\/1\.0/);
+});
+
+test('owned engine outage evidence requires both the visible non-authoritative alert and exact restoration', () => {
+  const requirement = {
+    control_id: 'pxui.dashboard.failure_recovery.surface', surface_id: 'dashboard', kind: 'failure_recovery',
+    stage_policy: Object.fromEntries(STAGES.map(stage => [stage, ['open_load', 'display', 'authorization', 'backend_dispatch', 'runtime_effect', 'result_acknowledgement', 'failure_handling', 'recovery_rollback'].includes(stage) ? 'required' : 'not_applicable_with_evidence']))
+  };
+  const observation = {
+    outage_started: true, restoration: { restored: true }, errors: [],
+    baseline: { [requirement.control_id]: { heading: 'Dashboard', disconnected: false } },
+    fault: { [requirement.control_id]: { disconnected: true, alert_visible: true, alert_text: 'Current operational metrics are unavailable. Any displayed zero is not an observed system value.' } },
+    recovered: { [requirement.control_id]: { disconnected: false, alert_visible: false, footer: 'CONTROL PLANE CONNECTED' } }
+  };
+  const record = engineOutageRecord(requirement, observation);
+  assert.equal(record.interaction_chain.failure_handling.state, 'present');
+  assert.equal(record.interaction_chain.recovery_rollback.state, 'present');
+  assert.equal(record.interaction_chain.runtime_effect.state, 'present');
+  const missingAlert = engineOutageRecord(requirement, { ...observation, fault: { [requirement.control_id]: { disconnected: true, alert_visible: false, alert_text: '' } } });
+  assert.equal(missingAlert.interaction_chain.failure_handling.state, 'missing');
+  assert.equal(missingAlert.interaction_chain.runtime_effect.state, 'missing');
+});
+
+test('owned lifecycle probe enters eight bounded admitted delays through the real agent start form', () => {
+  const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
+  assert.match(source, /#studio-agent-tool-calls/);
+  assert.match(source, /Array\.from\(\{ length: 8 \}, \(\) => \(\{ tool: 'delay', input: 1\.5 \}\)\)/);
+  assert.match(source, /invokeRunControl\('resume'\)[\s\S]*invokeRunControl\('stop'\)/);
+  assert.match(source, /candidate\.kind === 'workflow'[\s\S]*invokeRunControl\('cancel'\)/);
+  assert.doesNotMatch(source, /PX_INSTALLED_WORKFLOW_TERMINATION_ACTION/);
+  assert.doesNotMatch(source, /__PX_INSTALLED_ORIGINAL_POST_MESSAGE__|inner\.eval/);
+});
+
+test('owned lifecycle probe exercises governed workflow approval and retained skill rollback', () => {
+  const source = fs.readFileSync(path.join(__dirname, '../scripts/run-operational-ui-walk.js'), 'utf8');
+  assert.match(source, /\['register-authority', 'validate', 'dry-run', 'approve', 'start'\]/);
+  assert.match(source, /candidate\.expect_rollback \? \['rollback'\]/);
+  assert.match(source, /studio-skill-revision-rollback/);
+  assert.match(source, /validStudioRevisionEditObservation\(revisedSkill\)/);
+});
+
+test('state-producing owned profiles run before the general installed control probe', () => {
+  const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
+  const main = source.slice(source.indexOf('async function main()'));
+  const probe = main.indexOf('await probeInstalledControls(dashboard, proofMatrix, hostErrors)');
+  assert.ok(probe > main.indexOf('await runInstalledReversibleConfigurationProfile('));
+  assert.ok(probe > main.indexOf('await runInstalledStudioSetupProfile('));
+  assert.ok(probe > main.indexOf('await runInstalledStudioCandidateSaveProfile('));
+  assert.ok(probe > main.indexOf('await runInstalledStudioLifecycleProfile('));
+  assert.ok(probe > main.indexOf('await runInstalledStudioRevisionEditProfile('));
+  assert.ok(probe > main.indexOf('await runInstalledKnowledgeLifecycleProfile('));
+});
+
+test('owned Knowledge lifecycle establishes a fresh authoritative baseline instead of trusting route cache', () => {
+  const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
+  const profile = source.slice(source.indexOf('async function runInstalledKnowledgeLifecycleProfile'), source.indexOf('async function waitForInstalledMemoryText'));
+  const route = profile.indexOf('[data-surface="knowledgeCore"]');
+  const refresh = profile.indexOf("waitForKnowledgeControl(frameHost, '[data-action=\"knowledgeRefresh\"]')", route);
+  const baseline = profile.indexOf("waitForStudioOperationResult(frameHost, initialBefore, 'knowledge', 'browse'", refresh);
+  assert.ok(route >= 0 && refresh > route && baseline > refresh);
+  assert.match(profile, /knowledge-route-unavailable/);
+  assert.match(profile, /data-action="toggleAdvanced"/);
+  assert.match(source, /knowledge_actions/);
+});
+
+test('focused Knowledge execution skips unrelated profiles and keeps append-only timing evidence', () => {
+  const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
+  assert.match(source, /PX_OPERATIONAL_KNOWLEDGE_LIFECYCLE_ONLY === '1'/);
+  assert.match(source, /const focusedProfileOnly = Boolean\(focusedProfile\)/);
+  assert.match(source, /ownedReversibleConfigurationAuthority && !configurationOnly && !knowledgeLifecycleOnly[\s\S]*runInstalledStudioSetupProfile/);
+  assert.match(source, /ownedReversibleConfigurationAuthority && !configurationOnly && !studioLifecycleOnly[\s\S]*runInstalledKnowledgeLifecycleProfile/);
+  assert.match(source, /profile-progress\.ndjson/);
+  assert.match(source, /fs\.appendFileSync\(profileProgressPath/);
+  assert.match(source, /PX_OPERATIONAL_CONFIGURATION_ONLY === '1'/);
+  assert.match(source, /returnedProfileErrors/);
+  assert.match(source, /\(!focusedProfileOnly \|\| configurationOnly\)/);
+  assert.match(source, /ownedReversibleConfigurationAuthority && !await instrumentInstalledBridge\(dashboard\)/);
+  assert.match(source, /full_operational_completion_claimed: focusedProfileOnly \? false/);
+  assert.match(source, /ownedKnowledgeSourceId/);
+  assert.match(source, /source\.options.*option\.value === values\.sourceId/);
+  assert.match(source, /evidence\.value = `sha256:\$\{values\.sourceSha256\}`/);
+  const main = source.slice(source.indexOf('async function main()'));
+  const advanced = main.indexOf("if (!hostSourceMismatch && !studioLifecycleOnly)");
+  const knowledge = main.indexOf("timedProfile('knowledge-lifecycle'", advanced);
+  assert.ok(advanced >= 0 && knowledge > advanced);
 });
 
 test('installed control probe populates authoritative per-control chains without promoting missing stages', () => {
@@ -186,4 +325,34 @@ test('installed control probe marks only a fully evidenced chain complete', () =
   assert.equal(controlChains.controls[0].terminal_disposition, 'installed_operational_interaction_complete');
   assert.equal(controlChains.aggregates.complete_interaction_chains, 1);
   assert.equal(controlChains.installed_probe_observations.complete_interaction_chains, 1);
+});
+
+test('installed control probe reports rendered, absent, and errored controls truthfully', () => {
+  const controls = ['rendered', 'absent', 'errored'].map(name => ({
+    control_id: `pxui.demo.indicator.${name}`,
+    rendered: false,
+    visible: false,
+    attempted: false,
+    terminal_disposition: 'not_rendered',
+    stages: STAGES.map(stage => ({ stage, status: 'not_attempted' }))
+  }));
+  const incompleteChain = Object.fromEntries(STAGES.map(stage => [stage, {
+    state: stage === 'display' ? 'present' : 'missing',
+    detail: stage,
+    evidence: ['owned-host']
+  }]));
+  applyInstalledProbeObservations({ controls, aggregates: {} }, {
+    schema_version: 'px.installed-operational-control-probe/1.0',
+    eligible_control_count: 3,
+    records: [
+      { control_id: controls[0].control_id, rendered: true, attempted: false, interaction_chain: incompleteChain, errors: [] },
+      { control_id: controls[1].control_id, rendered: false, attempted: false, interaction_chain: incompleteChain, errors: [] },
+      { control_id: controls[2].control_id, rendered: false, attempted: false, interaction_chain: incompleteChain, errors: ['exact probe failed'] }
+    ]
+  });
+  assert.deepEqual(controls.map(control => control.terminal_disposition), [
+    'installed_operational_observation_partial',
+    'installed_control_not_rendered',
+    'installed_operational_probe_error'
+  ]);
 });

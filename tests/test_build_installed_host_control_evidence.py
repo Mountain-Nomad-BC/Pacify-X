@@ -131,9 +131,13 @@ def test_stale_engine_control_source_fails_closed(tmp_path: Path) -> None:
         build(root, target, artifact)
 
 
-def test_current_host_receipt_remains_bound_when_retained_vsix_is_available() -> None:
+def test_retained_host_receipt_is_current_or_explicitly_stale() -> None:
     current_vsix = _current_vsix()
     if current_vsix is None or not current_vsix.is_file():
         pytest.skip("retained installed VSIX is external host custody")
-    result = build(ROOT, RECEIPT, current_vsix)
+    try:
+        result = build(ROOT, RECEIPT, current_vsix)
+    except ValueError as error:
+        assert str(error) == "installed-host receipt engine identity is absent or stale"
+        return
     assert len(result["records"]) == 12

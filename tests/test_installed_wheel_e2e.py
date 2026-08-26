@@ -90,7 +90,7 @@ class InstalledWheelEndToEndTests(unittest.TestCase):
                     "NOTICE",
                     "README.md",
                     "pyproject.toml",
-                    "requirements-release.lock",
+                    "requirements-release.txt",
                 ):
                     shutil.copy2(ROOT / name, source / name)
                 wheel_dir = temp / "wheel"

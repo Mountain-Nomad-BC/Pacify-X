@@ -4,6 +4,15 @@ from pathlib import Path
 import subprocess
 import sys
 
+import pytest
+
+from runtime.test_profiles import (
+    ProcessingOrderBlocked,
+    initialize_project_repair_campaign,
+    repair_campaign_status,
+    require_processing_stage,
+)
+
 from runtime.test_profiles import (
     _section_files,
     _structural_scan_files,
@@ -23,6 +32,13 @@ from runtime.test_profiles import (
 
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_testing_governance_receipt_excludes_mutable_processing_order_state():
+    config = json.loads((ROOT / "registry/test_profiles.json").read_text(encoding="utf-8"))
+    patterns = config["sections"]["testing-governance"]["source_patterns"]
+    assert "registry/repair_campaign.json" not in patterns
+    assert not any("processing-order/repair-campaign.json" in pattern for pattern in patterns)
 
 
 def test_test_group_index_help_is_side_effect_free():
@@ -103,6 +119,65 @@ def test_builder_and_trace_control_planes_have_exact_section_owners():
     assert "runtime/studio_terminal_observer.py" in studios["inputs"]
     assert "tests/test_agent_builder.py" in studios["inputs"]
     assert "tests/test_agent_builder.py" in studios["command"]
+
+    governance = resolve_test_section(ROOT, "testing-governance")
+    reconciliation_test = "tests/test_reconcile_unverified_operational_controls.py"
+    assert reconciliation_test in governance["inputs"]
+    assert governance["command"].count(reconciliation_test) == 1
+    assert "runtime/repository_scope.py" in governance["inputs"]
+    for boundary_test in (
+        "tests/test_repository_scope.py",
+        "tests/test_effect_surface.py",
+        "tests/test_clean_source_export.py",
+    ):
+        assert boundary_test in governance["inputs"]
+        assert governance["command"].count(boundary_test) == 1
+    assert "scripts/cleanup_python_caches.py" in governance["inputs"]
+    assert "tests/test_cache_quarantine.py" in governance["inputs"]
+    assert governance["command"].count("tests/test_cache_quarantine.py") == 1
+
+
+def test_repository_scope_change_stales_testing_governance_identity(tmp_path):
+    config = {
+        "sections": {
+            "testing-governance": {
+                "source_patterns": [
+                    "runtime/repository_scope.py",
+                    "scripts/cleanup_python_caches.py",
+                    "tests/test_repository_scope.py",
+                    "tests/test_effect_surface.py",
+                    "tests/test_clean_source_export.py",
+                    "tests/test_cache_quarantine.py",
+                ],
+                "command": ["python", "-m", "pytest", "tests/test_repository_scope.py"],
+                "timeout_seconds": 30,
+            }
+        }
+    }
+    (tmp_path / "registry").mkdir()
+    (tmp_path / "runtime").mkdir()
+    (tmp_path / "scripts").mkdir()
+    (tmp_path / "tests").mkdir()
+    (tmp_path / "registry/test_profiles.json").write_text(
+        json.dumps(config), encoding="utf-8"
+    )
+    for relative in config["sections"]["testing-governance"]["source_patterns"]:
+        (tmp_path / relative).write_text(f"# {relative}\n", encoding="utf-8")
+
+    predecessor = resolve_test_section(tmp_path, "testing-governance")
+    (tmp_path / "runtime/repository_scope.py").write_text(
+        "# changed boundary\n", encoding="utf-8"
+    )
+    current = resolve_test_section(tmp_path, "testing-governance")
+
+    assert predecessor["input_sha256"] != current["input_sha256"]
+    cleanup = tmp_path / "scripts/cleanup_python_caches.py"
+    cleanup.write_text("# changed cleanup boundary\n", encoding="utf-8")
+    cleanup_current = resolve_test_section(tmp_path, "testing-governance")
+    assert cleanup_current["input_sha256"] not in {
+        predecessor["input_sha256"],
+        current["input_sha256"],
+    }
 
 
 def test_studio_section_is_bounded_into_independently_addressed_chunks():
@@ -319,3 +394,73 @@ def test_group_status_is_receipt_driven_and_covers_every_test_file():
         "derived-integrity",
         "structural-adversarial",
     }
+
+
+def _write_repair_campaign(root: Path, **changes: object) -> None:
+    value = {
+        "schema_version": "px.repair-campaign/1.0",
+        "campaign_id": "test-campaign",
+        "phase": "repair",
+        "intake_open": True,
+        "unresolved": ["studio-operability"],
+    }
+    value.update(changes)
+    path = root / "registry/repair_campaign.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(value), encoding="utf-8")
+
+
+def test_processing_order_allows_focused_work_but_blocks_expensive_closure(tmp_path):
+    _write_repair_campaign(tmp_path)
+    assert require_processing_stage(tmp_path, "focused_test")["stage_allowed"] is True
+    assert require_processing_stage(tmp_path, "governed_section")["stage_allowed"] is True
+    for stage in ("revision_reconciliation", "full_profile", "validate", "package", "certify"):
+        with pytest.raises(ProcessingOrderBlocked, match=stage):
+            require_processing_stage(tmp_path, stage)
+
+
+def test_processing_order_open_work_blocks_closure_even_with_advanced_phase(tmp_path):
+    _write_repair_campaign(tmp_path, phase="validated")
+    with pytest.raises(ProcessingOrderBlocked, match="intake_open=true"):
+        require_processing_stage(tmp_path, "package")
+    _write_repair_campaign(tmp_path, phase="validated", intake_open=False)
+    with pytest.raises(ProcessingOrderBlocked, match="studio-operability"):
+        require_processing_stage(tmp_path, "package")
+
+
+def test_processing_order_advances_only_after_each_predecessor(tmp_path):
+    _write_repair_campaign(tmp_path, phase="repair_frozen", intake_open=False, unresolved=[])
+    assert require_processing_stage(tmp_path, "revision_reconciliation")["stage_allowed"] is True
+    with pytest.raises(ProcessingOrderBlocked, match="full_profile"):
+        require_processing_stage(tmp_path, "full_profile")
+    _write_repair_campaign(tmp_path, phase="sections_current", intake_open=False, unresolved=[])
+    assert require_processing_stage(tmp_path, "full_profile")["stage_allowed"] is True
+    with pytest.raises(ProcessingOrderBlocked, match="validate"):
+        require_processing_stage(tmp_path, "validate")
+
+
+def test_processing_order_absent_campaign_preserves_unmanaged_repository(tmp_path):
+    status = repair_campaign_status(tmp_path)
+    assert status["managed"] is False
+    assert require_processing_stage(tmp_path, "certify")["managed"] is False
+
+
+def test_managed_project_missing_campaign_fails_closed_and_initializer_is_idempotent(
+    tmp_path,
+):
+    marker = tmp_path / ".engineering-bootstrap/project-record.json"
+    marker.parent.mkdir(parents=True)
+    marker.write_text(
+        json.dumps({"project_id": "prj_demo"}) + "\n", encoding="utf-8"
+    )
+    with pytest.raises(ProcessingOrderBlocked, match="managed project is missing"):
+        require_processing_stage(tmp_path, "focused_test")
+    created = initialize_project_repair_campaign(tmp_path)
+    assert created["initialized"] is True
+    assert created["phase"] == "intake"
+    assert created["intake_open"] is True
+    assert created["unresolved"] == ["initial-operational-intake"]
+    repeated = initialize_project_repair_campaign(tmp_path)
+    assert repeated["initialized"] is False
+    with pytest.raises(ProcessingOrderBlocked, match="certify requires"):
+        require_processing_stage(tmp_path, "certify")

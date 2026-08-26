@@ -1790,13 +1790,21 @@ class AgentRuntimeController:
                 run_id=run_id,
                 kind="agent",
             )
-        return self._execute_session(
-            spec,
-            task=task,
+        return launch_studio_worker(
+            project_root=self.project_root,
+            state_root=self.state_root,
+            manager=self.manager,
+            authority=self.authority,
+            run_control=self.run_control,
+            kind="agent",
             run_id=run_id,
-            record_path=record_path,
-            admission=admission,
-            live_hashes=live_hashes,
+            payload={
+                "spec": asdict(spec),
+                "task": dict(task),
+                "record_path": record_path.relative_to(self.project_root).as_posix(),
+                "admission": dict(admission),
+                "live_hashes": dict(live_hashes),
+            },
         )
 
     def session_status(self, run_id: str) -> dict[str, object]:

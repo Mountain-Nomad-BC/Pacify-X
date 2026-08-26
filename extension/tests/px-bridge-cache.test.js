@@ -47,9 +47,20 @@ test('ten forced equivalent snapshots coalesce into one governed execution', asy
   const gate = new Promise(resolve => { release = resolve; });
   const bridge = new PxBridge({ engineRoot: root, projectRoot: root, capture: async () => { executions += 1; await gate; return raw(executions); } });
   const requests = Array.from({ length: 10 }, () => bridge.snapshot({ force: true, reason: 'test-force' }));
-  await new Promise(resolve => setImmediate(resolve));
+  for (let attempt = 0; attempt < 100 && executions === 0; attempt += 1) await new Promise(resolve => setTimeout(resolve, 5));
   assert.equal(executions, 1); release(); await Promise.all(requests);
   assert.equal(bridge.diagnostics().governor.metrics.joins, 9);
+  bridge.dispose();
+});
+
+test('source fingerprinting yields the host event loop and closes its worker', async t => {
+  const root = fixture(t); let executions = 0; let eventLoopAdvanced = false;
+  const bridge = new PxBridge({ engineRoot: root, projectRoot: root, capture: async () => raw(++executions) });
+  const snapshot = bridge.snapshot();
+  await new Promise(resolve => setImmediate(() => { eventLoopAdvanced = true; resolve(); }));
+  assert.equal(eventLoopAdvanced, true);
+  assert.equal((await snapshot).cache.status, 'miss');
+  assert.equal(bridge.diagnostics().source_fingerprint.active_workers, 0);
   bridge.dispose();
 });
 

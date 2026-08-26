@@ -149,7 +149,7 @@ def test_governed_ci_runs_independent_receipted_assurance_gates() -> None:
 
 
 def test_assurance_workflows_do_not_build_the_project_before_source_audits() -> None:
-    exact_tools = "python -m pip install --require-hashes -r requirements-release.lock"
+    exact_tools = "python -m pip install --require-hashes -r requirements-release.txt"
     for relative in (
         ".github/workflows/ci.yml",
         ".github/workflows/scheduled-assurance.yml",

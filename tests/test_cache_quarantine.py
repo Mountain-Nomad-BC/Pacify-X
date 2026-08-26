@@ -62,6 +62,25 @@ class CacheQuarantineTests(unittest.TestCase):
             self.assertFalse(owned.exists())
             self.assertEqual(result["inventoried_file_count"], 1)
 
+    def test_generated_source_boundaries_stay_pruned_while_owned_cache_is_found(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            generated = [
+                root / "extension/build/__pycache__/build.pyc",
+                root / "extension/dist/__pycache__/dist.pyc",
+                root / "extension/evidence/__pycache__/evidence.pyc",
+            ]
+            owned = root / "runtime/__pycache__/owned.pyc"
+            for path in [*generated, owned]:
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(b"compiled")
+
+            result = MODULE.cleanup(root, apply=True)
+
+            self.assertEqual(result["inventoried_file_count"], 1)
+            self.assertFalse(owned.exists())
+            self.assertTrue(all(path.is_file() for path in generated))
+
     def test_apply_moves_and_hash_verifies_without_hard_delete(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

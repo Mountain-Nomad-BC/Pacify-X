@@ -15,6 +15,159 @@ from typing import Any, Mapping
 from .test_runner import validate_timeout
 
 
+REPAIR_CAMPAIGN_PATH = Path("registry/repair_campaign.json")
+MANAGED_PROJECT_MARKER = Path(".engineering-bootstrap/project-record.json")
+PROJECT_REPAIR_CAMPAIGN_PATH = Path(
+    ".engineering-bootstrap/processing-order/repair-campaign.json"
+)
+PROCESSING_PHASES = (
+    "intake", "repair", "operational_verification", "repair_frozen",
+    "revision_reconciled", "sections_current", "full_profile_passed",
+    "validated", "packaged", "installed_operational", "certified",
+)
+STAGE_MINIMUM_PHASE = {
+    "diagnose": "intake", "repair": "repair", "focused_test": "repair",
+    "governed_section": "repair", "operational_verification": "operational_verification",
+    "revision_reconciliation": "repair_frozen", "full_profile": "sections_current",
+    "validate": "full_profile_passed", "package": "validated", "install": "packaged",
+    "installed_operational_test": "installed_operational", "certify": "installed_operational",
+}
+CLOSURE_STAGES = frozenset({
+    "revision_reconciliation", "full_profile", "validate", "package", "install",
+    "installed_operational_test", "certify",
+})
+
+
+class ProcessingOrderBlocked(ValueError):
+    """Raised when downstream closure is attempted before repair freeze."""
+
+
+def _repair_campaign_path(root: Path) -> tuple[Path, bool]:
+    repository_campaign = root / REPAIR_CAMPAIGN_PATH
+    if repository_campaign.is_file():
+        return repository_campaign, True
+    if (root / MANAGED_PROJECT_MARKER).is_file():
+        return root / PROJECT_REPAIR_CAMPAIGN_PATH, True
+    return repository_campaign, False
+
+
+def initialize_project_repair_campaign(root: Path) -> dict[str, Any]:
+    """Create mandatory local processing-order state for a managed project."""
+
+    root = root.resolve(strict=True)
+    marker = root / MANAGED_PROJECT_MARKER
+    if not marker.is_file():
+        raise ProcessingOrderBlocked(
+            "processing-order initialization requires a managed-project record"
+        )
+    project_record = json.loads(marker.read_text(encoding="utf-8"))
+    project_id = str(project_record.get("project_id") or "")
+    if not project_id.startswith("prj_"):
+        raise ProcessingOrderBlocked("managed-project record is malformed")
+    path = root / PROJECT_REPAIR_CAMPAIGN_PATH
+    if path.exists():
+        status = repair_campaign_status(root)
+        return {
+            **status,
+            "initialized": False,
+            "path": path.relative_to(root).as_posix(),
+        }
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if path.parent.is_symlink():
+        raise ProcessingOrderBlocked(
+            "processing-order state parent must not be a symlink"
+        )
+    campaign = {
+        "schema_version": "px.repair-campaign/1.0",
+        "campaign_id": f"{project_id}-initial-operational-repair",
+        "phase": "intake",
+        "intake_open": True,
+        "unresolved": ["initial-operational-intake"],
+    }
+    temporary = path.with_name(path.name + ".new")
+    with temporary.open("x", encoding="utf-8", newline="\n") as stream:
+        json.dump(campaign, stream, indent=2)
+        stream.write("\n")
+        stream.flush()
+        os.fsync(stream.fileno())
+    # Successful replacement consumes the prepared file. On failure it remains
+    # in bounded project-local custody for explicit recovery; never hard-delete
+    # unclassified evidence from an exception path.
+    os.replace(temporary, path)
+    status = repair_campaign_status(root)
+    return {
+        **status,
+        "initialized": True,
+        "path": path.relative_to(root).as_posix(),
+    }
+
+
+def processing_stage_allowed(
+    phase: str, intake_open: bool, unresolved: list[str], stage: str
+) -> bool:
+    minimum = STAGE_MINIMUM_PHASE.get(stage)
+    if minimum is None:
+        raise ValueError(f"unknown processing stage: {stage}")
+    if stage in CLOSURE_STAGES and (intake_open or unresolved):
+        return False
+    return PROCESSING_PHASES.index(phase) >= PROCESSING_PHASES.index(minimum)
+
+
+def repair_campaign_status(root: Path) -> dict[str, Any]:
+    root = root.resolve(strict=True)
+    path, managed = _repair_campaign_path(root)
+    if not path.is_file():
+        if managed:
+            raise ProcessingOrderBlocked(
+                "PROCESSING_ORDER_BLOCKED: managed project is missing mandatory "
+                f"processing-order state at {path.relative_to(root).as_posix()}"
+            )
+        return {
+            "schema_version": "px.processing-order-status/1.0", "valid": True,
+            "managed": False, "phase": "unmanaged", "intake_open": False,
+            "unresolved": [], "blocked_stages": [],
+            "limitations": ["No active repair campaign is registered."],
+        }
+    value = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(value, dict):
+        raise ProcessingOrderBlocked("repair campaign must be a JSON object")
+    phase = str(value.get("phase") or "")
+    unresolved = value.get("unresolved")
+    intake_open = value.get("intake_open")
+    if (
+        value.get("schema_version") != "px.repair-campaign/1.0"
+        or phase not in PROCESSING_PHASES
+        or not isinstance(intake_open, bool)
+        or not isinstance(unresolved, list)
+        or any(not isinstance(item, str) or not item.strip() for item in unresolved)
+        or len(unresolved) != len(set(unresolved))
+    ):
+        raise ProcessingOrderBlocked("repair campaign is malformed")
+    blocked = [stage for stage in STAGE_MINIMUM_PHASE if not processing_stage_allowed(phase, intake_open, unresolved, stage)]
+    return {
+        "schema_version": "px.processing-order-status/1.0", "valid": True,
+        "managed": True, "campaign_id": value.get("campaign_id"), "phase": phase,
+        "intake_open": intake_open, "unresolved": list(unresolved),
+        "unresolved_count": len(unresolved), "blocked_stages": blocked,
+        "next_required_phase": PROCESSING_PHASES[min(PROCESSING_PHASES.index(phase) + 1, len(PROCESSING_PHASES) - 1)],
+        "rule": "Repair intake and operational work freeze before revision reconciliation; downstream closure advances once in order.",
+    }
+
+
+def require_processing_stage(root: Path, stage: str) -> dict[str, Any]:
+    status = repair_campaign_status(root)
+    if not status["managed"]:
+        return status
+    if not processing_stage_allowed(str(status["phase"]), bool(status["intake_open"]), list(status["unresolved"]), stage):
+        unresolved = ", ".join(status["unresolved"][:8]) or "none"
+        raise ProcessingOrderBlocked(
+            f"PROCESSING_ORDER_BLOCKED: {stage} requires phase {STAGE_MINIMUM_PHASE[stage]}; "
+            f"current={status['phase']}; intake_open={str(status['intake_open']).lower()}; "
+            f"unresolved={unresolved}"
+        )
+    return {**status, "requested_stage": stage, "stage_allowed": True}
+
+
 def resolve_test_profile(root: Path, name: str) -> dict[str, Any]:
     root = root.resolve()
     config = json.loads(

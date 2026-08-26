@@ -1691,6 +1691,20 @@ class WorkflowStudio:
         state = self.run_control.read(run_id)
         if state["kind"] != "workflow":
             raise PermissionError("durable run is not a workflow")
+        if target == "cancel_requested" and state["state"] == "finalizing":
+            # ``finalizing`` is deliberately non-terminal: the detached worker
+            # has published its proposed terminal target, but the observer has
+            # not committed it yet.  A host-approved stop/cancel that reaches
+            # this window must still win instead of being rejected as an
+            # illegal finalizing -> cancel_requested transition.
+            return self.run_control.transition(
+                run_id,
+                "cancelled",
+                actor=approved_by,
+                approved=approved,
+                checkpoint={**state["checkpoint"], "terminal_target": "cancelled"},
+                operation=f"workflow.request.{action}.during-finalization",
+            )
         return self.run_control.transition(
             run_id,
             target,

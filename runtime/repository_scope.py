@@ -6,12 +6,24 @@ from pathlib import Path
 
 
 EXTERNAL_ENVIRONMENT_ROOTS = frozenset(
-    {"Python", "node_modules", ".tmp", ".pacify-x"}
+    {"Python", "PortableGit", "node_modules", ".tmp", ".pacify-x"}
 )
 CANONICAL_WORKSPACE_CUSTODY_ROOTS = frozenset(
     {"projects", "projects_tracking", "repo_quarantine", "shared_capabilities"}
 )
-EXTERNAL_ENVIRONMENT_PARTS = frozenset({"node_modules", ".vscode-test"})
+EXTERNAL_ENVIRONMENT_PARTS = frozenset(
+    {
+        "node_modules",
+        ".vscode-test",
+        ".mypy_cache",
+        ".pytest_cache",
+        ".ruff_cache",
+        "__pycache__",
+        "build",
+        "dist",
+        "evidence",
+    }
+)
 DERIVED_CUSTODY_ROOTS = frozenset(
     {
         ".lock-recovery-receipts",
@@ -51,7 +63,7 @@ def is_external_environment_relative(relative: str | Path) -> bool:
         or normalized_top.startswith("tmp_")
         or normalized_top.startswith(".vscodecounter")
         or top.startswith(".venv")
-        or any(part in EXTERNAL_ENVIRONMENT_PARTS for part in parts)
+        or any(part.casefold() in EXTERNAL_ENVIRONMENT_PARTS for part in parts)
         or any(part.startswith(".venv") for part in parts)
         or top == ".git"
         or parts[:2]

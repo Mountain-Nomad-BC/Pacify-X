@@ -15,7 +15,29 @@ def validate_external_evidence(
 ) -> dict[str, Any]:
     root = root.resolve()
     index_path = root / "evidence/externalized-payload-index.json"
-    index = json.loads(index_path.read_text(encoding="utf-8"))
+    if not index_path.is_file():
+        errors = ["externalized payload index is missing"] if strict else []
+        return {
+            "schema_version": "1.0",
+            "valid": not errors,
+            "references": 0,
+            "verified": 0,
+            "strict": strict,
+            "errors": errors,
+        }
+    try:
+        index = json.loads(index_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as error:
+        return {
+            "schema_version": "1.0",
+            "valid": False,
+            "references": 0,
+            "verified": 0,
+            "strict": strict,
+            "errors": [
+                f"externalized payload index is unreadable: {type(error).__name__}"
+            ],
+        }
     errors = []
     verified = 0
     schema = root / "contracts/evidence-reference.schema.json"

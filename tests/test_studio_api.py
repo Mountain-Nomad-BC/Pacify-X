@@ -11,7 +11,14 @@ import struct
 import sys
 import pytest
 
-from runtime.studio_api import admit_skill_source, create_draft, main, studio_operation
+from runtime.studio_api import (
+    _skill_promotion_receipt_path,
+    admit_skill_source,
+    create_draft,
+    main,
+    studio_operation,
+)
+from runtime.skill_studio import _component
 from runtime.studio_authority import (
     StudioAuthorityStore,
     studio_authority_locator_environment,
@@ -48,6 +55,17 @@ def _editor_tree_sha256(root: Path) -> tuple[str, int]:
         hasher.update(struct.pack(">Q", len(content)))
         hasher.update(content)
     return hasher.hexdigest(), len(files)
+
+
+def test_skill_promotion_api_returns_the_physical_component_receipt_path(tmp_path) -> None:
+    skill_id = "skill:rollback-path"
+    expected = (
+        tmp_path
+        / ".engineering-bootstrap/studios/skills"
+        / _component(skill_id)
+        / "revisions/1.2.3/promotion-receipt.json"
+    )
+    assert _skill_promotion_receipt_path(tmp_path, skill_id, "1.2.3") == expected
 
 
 def test_worker_authority_environment_forwards_only_key_locators() -> None:

@@ -94,7 +94,7 @@ def audit_framework(
         "dependency-closure",
         dependencies["valid"],
         f"mapped modules={dependencies.get('module_count', 0)}",
-        ["registry/python_dependency_ownership.json", "requirements-release.lock"],
+        ["registry/python_dependency_ownership.json", "requirements-release.txt"],
     )
     artifacts = classify_tree(root)
     check(
@@ -304,12 +304,25 @@ def audit_framework(
         "dist",
     }
     quarantine_prefix = (".engineering-bootstrap", "quarantine")
+
+    def exclude_audit_path(relative: str | Path) -> bool:
+        path = Path(relative)
+        parts = path.parts
+        if parts[:2] == quarantine_prefix:
+            return True
+        if (
+            any(part in generated_directory_names for part in parts)
+            or path.name.endswith(".egg-info")
+            or path.suffix.casefold() in {".pyc", ".pyo"}
+        ):
+            return False
+        return is_external_environment_relative(relative)
+
     audit_walk = bounded_walk(
         root,
-        limits=WalkLimits(max_files=100_000, max_depth=128, max_bytes=2 * 1024**3),
+        limits=WalkLimits(max_files=100_000, max_depth=128, max_bytes=4 * 1024**3),
         symlink_policy="skip",
-        exclude=lambda relative: is_external_environment_relative(relative)
-        or Path(relative).parts[:2] == quarantine_prefix,
+        exclude=exclude_audit_path,
     )
     generated = sorted(
         entry.relative

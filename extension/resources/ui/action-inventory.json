@@ -7,7 +7,7 @@
     "effect": "none-outside-webview",
     "acknowledgement": "active surface and focus update"
   },
-  "action_count": 202,
+  "action_count": 201,
   "actions": [
     {
       "action": "acceptStudioVersionSuggestion",
@@ -228,20 +228,6 @@
       "acknowledgement": "immediate visible UI state",
       "receipt": null,
       "behavior": "select one closed AgentSpec graph node and open its field-linked inspector",
-      "rendered_in": [
-        "media/dashboard/90-controller.js"
-      ]
-    },
-    {
-      "action": "agentSelectSection",
-      "mode": "ui-only",
-      "inbound_schema": null,
-      "authority": "webview presentation state",
-      "effect": "none-outside-webview",
-      "state_transition": "editor-state",
-      "acknowledgement": "immediate visible UI state",
-      "receipt": null,
-      "behavior": "select and focus one legacy agent topology section",
       "rendered_in": [
         "media/dashboard/90-controller.js"
       ]

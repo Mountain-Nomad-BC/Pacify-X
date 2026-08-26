@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import base64
+from datetime import datetime, timezone
 from pathlib import Path
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 import hashlib
@@ -96,6 +97,27 @@ def test_semantic_operational_observation_requires_exact_kind_aware_evidence_not
     visible = semantic_control_observation("action", "contained_ui_interaction")
     with pytest.raises(ValueError, match="requires rendered evidence"):
         _validate_control_observation(visible, disposition="operational", expected_kind="action")
+
+
+def test_operational_read_only_observation_does_not_require_an_active_attempt() -> None:
+    visible = control_observation(attempted=False)
+    validated = _validate_control_observation(visible, disposition="operational")
+    assert validated["rendered"] is True
+    assert validated["attempted"] is False
+
+    persistence = semantic_control_observation("persistence", "contained_durability")
+    persistence["attempted"] = False
+    validated = _validate_control_observation(
+        persistence, disposition="operational", expected_kind="persistence"
+    )
+    assert validated["observed"] is True
+    assert validated["attempted"] is False
+
+    persistence["observed"] = False
+    with pytest.raises(ValueError, match="directly observed"):
+        _validate_control_observation(
+            persistence, disposition="operational", expected_kind="persistence"
+        )
 
 
 def card(identifier: str = "PX-GAP-0001") -> dict[str, object]:
@@ -1036,6 +1058,189 @@ def test_work_guard_requires_exact_active_admission_event_effect_and_scope(tmp_p
         )
 
 
+def test_bounded_repair_session_survives_same_gap_checkpoint_and_closes_explicitly(tmp_path: Path) -> None:
+    initialize(tmp_path)
+    append_event(tmp_path, "card_discovered", card(), actor="test")
+    checkpoint = append_event(tmp_path, "work_checkpoint", {
+        "active_gap_id": "PX-GAP-0001", "learned": "The bounded session is known.",
+        "next_action": "Implement a hash-bound editor sidecar.",
+        "unresolved_branch_gap_ids": [], "newly_discovered_gap_ids": [],
+        "evidence": evidence("checkpoint"),
+    }, actor="test")
+    admission = append_event(tmp_path, "work_admitted", {
+        "gap_id": "PX-GAP-0001", "checkpoint_event_id": checkpoint["event_id"],
+        "session_id": "repair-session:px-gap-0001", "expires_utc": "2099-01-01T00:00:00Z",
+        "effect_scopes": [
+            {"effect": "read", "scope": ["runtime/owner.py"]},
+            {"effect": "write", "scope": ["runtime/owner.py", "tests/test_owner.py"]},
+            {"effect": "execute", "scope": ["pytest tests/test_owner.py"]},
+        ],
+        "authority": "Codex host authority applying bounded PX governance.",
+        "expected_effect": "Complete one bounded reversible repair session.",
+        "rollback": "Revert only the admitted source and test files.",
+        "evidence": evidence("session admission"),
+    }, actor="test")
+    later = append_event(tmp_path, "work_checkpoint", {
+        "active_gap_id": "PX-GAP-0001", "learned": "Diagnosis improved without expanding scope.",
+        "next_action": "Implement a hash-bound editor sidecar.",
+        "previous_checkpoint_event_id": checkpoint["event_id"],
+        "unresolved_branch_gap_ids": [], "newly_discovered_gap_ids": [],
+        "evidence": evidence("delta checkpoint"),
+    }, actor="test")
+    snapshot = read_snapshot(tmp_path)
+    guarded = guard_work_admission(
+        snapshot, gap_id="PX-GAP-0001", effect="write",
+        scope=["tests/test_owner.py", "runtime/owner.py"],
+        admission_event_id=admission["event_id"],
+        now=datetime(2028, 1, 1, tzinfo=timezone.utc),
+    )
+    assert guarded["valid"] is True
+    assert guarded["session_id"] == "repair-session:px-gap-0001"
+    assert guarded["checkpoint_event_id"] == later["event_id"]
+    with pytest.raises(ValueError, match="higher-risk"):
+        guard_work_admission(snapshot, gap_id="PX-GAP-0001", effect="network", scope=["runtime/owner.py"], admission_event_id=admission["event_id"])
+    with pytest.raises(ValueError, match="expired"):
+        guard_work_admission(snapshot, gap_id="PX-GAP-0001", effect="read", scope=["runtime/owner.py"], admission_event_id=admission["event_id"], now=datetime(2100, 1, 1, tzinfo=timezone.utc))
+    append_event(tmp_path, "work_session_closed", {
+        "gap_id": "PX-GAP-0001", "session_id": "repair-session:px-gap-0001",
+        "admission_event_id": admission["event_id"], "outcome": "completed",
+        "evidence": evidence("session closure"),
+    }, actor="test")
+    with pytest.raises(ValueError, match="closed"):
+        guard_work_admission(read_snapshot(tmp_path), gap_id="PX-GAP-0001", effect="read", scope=["runtime/owner.py"], admission_event_id=admission["event_id"])
+
+
+def test_bounded_repair_session_rejects_high_risk_effects_and_gap_switch_reuse(tmp_path: Path) -> None:
+    initialize(tmp_path)
+    append_event(tmp_path, "card_discovered", card("PX-GAP-0001"), actor="test")
+    append_event(tmp_path, "card_discovered", card("PX-GAP-0002"), actor="test")
+    checkpoint = append_event(tmp_path, "work_checkpoint", {
+        "active_gap_id": "PX-GAP-0001", "learned": "Session boundary.",
+        "next_action": "Implement a hash-bound editor sidecar.",
+        "unresolved_branch_gap_ids": ["PX-GAP-0002"], "newly_discovered_gap_ids": [],
+        "evidence": evidence(),
+    }, actor="test")
+    base = {
+        "gap_id": "PX-GAP-0001", "checkpoint_event_id": checkpoint["event_id"],
+        "session_id": "repair-session:px-gap-0001", "expires_utc": "2099-01-01T00:00:00Z",
+        "authority": "Codex host authority.", "expected_effect": "Bounded repair.",
+        "rollback": "Revert bounded files.", "evidence": evidence(),
+    }
+    with pytest.raises(ValueError, match="reversible"):
+        append_event(tmp_path, "work_admitted", {**base, "effect_scopes": [{"effect": "network", "scope": ["example.com"]}]}, actor="test")
+    admission = append_event(tmp_path, "work_admitted", {**base, "effect_scopes": [{"effect": "read", "scope": ["runtime/owner.py"]}]}, actor="test")
+    outgoing = append_event(tmp_path, "work_checkpoint", {
+        "active_gap_id": "PX-GAP-0001", "learned": "Switch required.",
+        "next_action": "Implement a hash-bound editor sidecar.",
+        "previous_checkpoint_event_id": checkpoint["event_id"],
+        "unresolved_branch_gap_ids": ["PX-GAP-0002"], "newly_discovered_gap_ids": [],
+        "switching_to": "PX-GAP-0002", "evidence": evidence(),
+    }, actor="test")
+    append_event(tmp_path, "work_checkpoint", {
+        "active_gap_id": "PX-GAP-0002", "learned": "Switched.",
+        "next_action": "Implement a hash-bound editor sidecar.",
+        "previous_checkpoint_event_id": outgoing["event_id"],
+        "unresolved_branch_gap_ids": ["PX-GAP-0001"], "newly_discovered_gap_ids": [],
+        "evidence": evidence(),
+    }, actor="test")
+    with pytest.raises(ValueError, match="active checkpoint|active gap"):
+        guard_work_admission(read_snapshot(tmp_path), gap_id="PX-GAP-0001", effect="read", scope=["runtime/owner.py"], admission_event_id=admission["event_id"])
+
+
+def test_mutating_work_admission_is_exclusive_while_reads_can_overlap(tmp_path: Path) -> None:
+    initialize(tmp_path)
+    append_event(tmp_path, "card_discovered", card(), actor="test")
+    checkpoint = append_event(tmp_path, "work_checkpoint", {
+        "active_gap_id": "PX-GAP-0001", "learned": "Ownership must be exclusive.",
+        "next_action": "Implement a hash-bound editor sidecar.",
+        "unresolved_branch_gap_ids": [], "newly_discovered_gap_ids": [],
+        "evidence": evidence("checkpoint"),
+    }, actor="test")
+
+    def session(session_id: str, effect: str) -> dict[str, object]:
+        return {
+            "gap_id": "PX-GAP-0001",
+            "checkpoint_event_id": checkpoint["event_id"],
+            "session_id": session_id,
+            "expires_utc": "2099-01-01T00:00:00Z",
+            "effect_scopes": [{"effect": effect, "scope": [f"scope/{session_id}"]}],
+            "authority": "Codex host authority applying bounded PX governance.",
+            "expected_effect": "Exercise exact admission ownership.",
+            "rollback": "Close the bounded session.",
+            "evidence": evidence("admission ownership"),
+        }
+
+    read_one = append_event(
+        tmp_path, "work_admitted", session("repair-session:read-one", "read"), actor="test"
+    )
+    read_two = append_event(
+        tmp_path, "work_admitted", session("repair-session:read-two", "read"), actor="test"
+    )
+    with pytest.raises(ValueError, match="mutating work admission conflicts"):
+        append_event(
+            tmp_path, "work_admitted", session("repair-session:write-blocked", "write"), actor="test"
+        )
+    for admission, session_id in (
+        (read_one, "repair-session:read-one"),
+        (read_two, "repair-session:read-two"),
+    ):
+        append_event(tmp_path, "work_session_closed", {
+            "gap_id": "PX-GAP-0001", "session_id": session_id,
+            "admission_event_id": admission["event_id"], "outcome": "completed",
+            "evidence": evidence("read session closed"),
+        }, actor="test")
+
+    writer = append_event(
+        tmp_path, "work_admitted", session("repair-session:writer", "write"), actor="test"
+    )
+    with pytest.raises(ValueError, match="mutating work admission conflicts"):
+        append_event(
+            tmp_path, "work_admitted", session("repair-session:read-blocked", "read"), actor="test"
+        )
+    append_event(tmp_path, "work_session_closed", {
+        "gap_id": "PX-GAP-0001", "session_id": "repair-session:writer",
+        "admission_event_id": writer["event_id"], "outcome": "completed",
+        "evidence": evidence("writer closed"),
+    }, actor="test")
+    append_event(
+        tmp_path, "work_admitted", session("repair-session:writer-handoff", "execute"), actor="test"
+    )
+
+
+def test_historical_overlapping_mutating_admissions_remain_projectable(tmp_path: Path) -> None:
+    initialize(tmp_path)
+    append_event(tmp_path, "card_discovered", card(), actor="test")
+    checkpoint = append_event(tmp_path, "work_checkpoint", {
+        "active_gap_id": "PX-GAP-0001", "learned": "Historical replay is retained.",
+        "next_action": "Implement a hash-bound editor sidecar.",
+        "unresolved_branch_gap_ids": [], "newly_discovered_gap_ids": [],
+        "evidence": evidence("checkpoint"),
+    }, actor="test")
+    first = {
+        "gap_id": "PX-GAP-0001", "checkpoint_event_id": checkpoint["event_id"],
+        "effect": "write", "scope": ["runtime/one.py"],
+        "authority": "Historical host authority.", "expected_effect": "Historical repair one.",
+        "rollback": "Historical rollback one.", "evidence": evidence("historical one"),
+    }
+    append_event(tmp_path, "work_admitted", first, actor="test")
+    events = read_events(tmp_path)
+    previous = events[-1]
+    second_payload = {**first, "scope": ["runtime/two.py"], "expected_effect": "Historical repair two."}
+    second = {
+        "schema_version": previous["schema_version"],
+        "sequence": previous["sequence"] + 1,
+        "event_id": f"gap-event:{read_snapshot(tmp_path)['ledger_id']}:{previous['sequence'] + 1:012d}",
+        "event_type": "work_admitted", "timestamp": "2026-08-16T00:00:01Z",
+        "actor": "historical-import", "previous_event_sha256": previous["event_sha256"],
+        "payload": second_payload,
+    }
+    second["event_sha256"] = hashlib.sha256(
+        json.dumps(second, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+    ).hexdigest()
+    projected = project_events([*events, second])
+    assert len(projected["work_admissions"]) == 2
+
+
 def test_concurrent_append_serializes_sequence_and_refreshes_snapshot(tmp_path: Path) -> None:
     initialize(tmp_path)
 
@@ -1207,6 +1412,17 @@ def test_preappend_byte_bound_is_fail_closed(tmp_path: Path, monkeypatch: pytest
     with pytest.raises(ValueError, match="byte bound would be exceeded"):
         append_event(tmp_path, "card_discovered", card(), actor="test")
     assert len(read_events(tmp_path)) == 1
+
+
+def test_aggregate_capacity_retains_hard_per_event_and_batch_bounds() -> None:
+    import runtime.operational_gap_ledger as ledger
+
+    assert ledger.MAX_LEDGER_BYTES == 256 * 1024 * 1024
+    assert ledger.MAX_SNAPSHOT_BYTES == 256 * 1024 * 1024
+    assert ledger.MAX_EVENT_BYTES == 4 * 1024 * 1024
+    assert ledger.MAX_BATCH_EVENTS == 1_000
+    assert ledger.MAX_EVENTS == 100_000
+    assert ledger.MAX_EVENT_BYTES < ledger.MAX_LEDGER_BYTES
 
 
 def test_new_present_chain_claim_requires_evidence(tmp_path: Path) -> None:
@@ -1541,6 +1757,53 @@ def test_batch_append_uses_one_snapshot_publication(
     assert project_events(read_events(tmp_path))["event_count"] == 3
 
 
+def test_reconciliation_batch_uses_one_canonical_projection(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import runtime.operational_gap_ledger as ledger
+
+    initialize(tmp_path)
+    append_event(tmp_path, "card_discovered", card(), actor="test")
+    original = ledger.project_events
+    calls = []
+
+    def counted(*args, **kwargs):
+        calls.append(len(args[0]))
+        return original(*args, **kwargs)
+
+    monkeypatch.setattr(ledger, "project_events", counted)
+    append_events(
+        tmp_path,
+        [
+            {
+                "event_type": "card_annotated",
+                "payload": {
+                    "gap_id": "PX-GAP-0001",
+                    "note": "First bounded bulk annotation.",
+                    "evidence": evidence("bulk-one"),
+                    "patch": {"next_action": "Retain the first annotation."},
+                },
+                "actor": "batch",
+            },
+            {
+                "event_type": "card_annotated",
+                "payload": {
+                    "gap_id": "PX-GAP-0001",
+                    "note": "Second bounded bulk annotation.",
+                    "evidence": evidence("bulk-two"),
+                    "patch": {"next_action": "Retain both annotations."},
+                },
+                "actor": "batch",
+            },
+        ],
+    )
+    assert calls == [2]
+    cached = read_snapshot(tmp_path)
+    cached.pop("ledger_size_bytes")
+    cached.pop("projection_sha256")
+    assert cached == original(read_events(tmp_path))
+
+
 def test_default_dashboard_uses_compact_head_without_full_snapshot(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -1688,6 +1951,30 @@ def test_typed_surface_refuses_legacy_add_and_accepts_typed_add(tmp_path: Path) 
     surface = read_snapshot(tmp_path)["surfaces"]["workflow-studio"]
     assert surface["known_controls"] == ["reload", "save"]
     assert surface["control_records"]["reload"]["kind"] == "action"
+
+
+def test_control_can_be_restored_and_retired_again_without_losing_retirement_history(tmp_path: Path) -> None:
+    initialize(tmp_path)
+    append_event(
+        tmp_path,
+        "surface_registered",
+        {"surface_id": "agent-studio", "name": "Agent Studio", "source_files": ["ui.js"], "known_controls": ["legacy"], "owner": "ui", "inventory_evidence": ["ui.js"]},
+        actor="test",
+    )
+    typed = [{"control_id": "legacy", "kind": "action", "label": "Legacy", "source_refs": ["ui.js:1"]}]
+    previous = hashlib.sha256(json.dumps(["legacy"], separators=(",", ":")).encode()).hexdigest()
+    append_event(tmp_path, "surface_inventory_revised", {"surface_id": "agent-studio", "previous_controls_sha256": previous, "controls": typed, "retired_controls": [], "source_files": ["ui.js"], "reason": "Adopt typed inventory.", "evidence": evidence("typed")}, actor="test")
+    append_event(tmp_path, "surface_inventory_revised", {"surface_id": "agent-studio", "previous_controls_sha256": previous, "controls": [{"control_id": "current", "kind": "action", "label": "Current", "source_refs": ["ui.js:2"]}], "retired_controls": [{"control_id": "legacy", "reason": "Replaced.", "replacement_control_ids": ["current"]}], "source_files": ["ui.js"], "reason": "Replace legacy.", "evidence": evidence("retire one")}, actor="test")
+    current_hash = hashlib.sha256(json.dumps(["current"], separators=(",", ":")).encode()).hexdigest()
+    append_event(tmp_path, "surface_controls_added", {"surface_id": "agent-studio", "controls": typed, "evidence": evidence("restore")}, actor="test")
+    both_hash = hashlib.sha256(json.dumps(["current", "legacy"], separators=(",", ":")).encode()).hexdigest()
+    append_event(tmp_path, "surface_inventory_revised", {"surface_id": "agent-studio", "previous_controls_sha256": both_hash, "controls": [{"control_id": "current", "kind": "action", "label": "Current", "source_refs": ["ui.js:2"]}], "retired_controls": [{"control_id": "legacy", "reason": "Legacy is obsolete again.", "replacement_control_ids": ["current"]}], "source_files": ["ui.js"], "reason": "Retire restored legacy.", "evidence": evidence("retire two")}, actor="test")
+
+    surface = read_snapshot(tmp_path)["surfaces"]["agent-studio"]
+    assert surface["retired_controls"]["legacy"]["reason"] == "Legacy is obsolete again."
+    assert len(surface["retired_control_history"]) == 1
+    assert surface["retired_control_history"][0]["reason"] == "Replaced."
+    assert surface["retired_control_history"][0]["restored_by"] == "test"
 
 
 def test_recovery_source_bound_is_enforced_before_replay(

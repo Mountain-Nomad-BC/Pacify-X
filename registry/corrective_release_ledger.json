@@ -234,7 +234,7 @@
       "id": "ENV-010-A",
       "owning_paths": [
         "pyproject.toml",
-        "requirements-release.lock",
+        "requirements-release.txt",
         "runtime/release_environment.py"
       ],
       "priority": "P1",
@@ -581,7 +581,7 @@
       "id": "BUILD-020",
       "owning_paths": [
         "pyproject.toml",
-        "requirements-release.lock",
+        "requirements-release.txt",
         "runtime/release_environment.py"
       ],
       "parent": "ENV-010-A",

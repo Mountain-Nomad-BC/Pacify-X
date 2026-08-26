@@ -5,7 +5,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const { recordActivity, readActivity, reconcileStaleOperations, sanitizeMetadata, activityPaths, acquireLock, tailEventsDetailed } = require('../src/activityManager');
+const { recordActivity, readActivity, reconcileStaleOperations, repairActivityIntegrity, sanitizeMetadata, activityPaths, acquireLock, tailEventsDetailed, sha } = require('../src/activityManager');
 
 function workspace(t) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'px-activity-'));
@@ -110,6 +110,26 @@ test('activity reader reports event tampering instead of trusting the trace', t 
   const view = readActivity(root);
   assert.equal(view.integrity.valid, false);
   assert.deepEqual(view.integrity.invalid_event_ids, [event.event_id]);
+});
+
+test('activity integrity repair retains exact backups, rechains every event, and appends recovery evidence', t => {
+  const root = workspace(t);
+  recordActivity(root, actor, { category: 'verification', operation: 'one', status: 'succeeded' });
+  recordActivity(root, actor, { category: 'verification', operation: 'two', status: 'succeeded' });
+  const paths = activityPaths(root); const events = fs.readFileSync(paths.events, 'utf8').trim().split(/\r?\n/).map(JSON.parse);
+  events[1].previous_event_sha256 = 'f'.repeat(64); delete events[1].event_sha256; events[1].event_sha256 = sha(events[1]);
+  fs.writeFileSync(paths.events, `${events.map(JSON.stringify).join('\n')}\n`, 'utf8');
+  const state = JSON.parse(fs.readFileSync(paths.state, 'utf8')); state.last_event_sha256 = events[1].event_sha256;
+  fs.writeFileSync(paths.state, `${JSON.stringify(state, null, 2)}\n`, 'utf8');
+  assert.equal(readActivity(root).integrity.valid, false);
+  const receipt = repairActivityIntegrity(root);
+  const view = readActivity(root, { limit: 10 });
+  assert.equal(receipt.repaired, true);
+  assert.equal(fs.existsSync(receipt.events_backup), true);
+  assert.equal(fs.existsSync(receipt.state_backup), true);
+  assert.equal(view.integrity.valid, true);
+  assert.equal(view.events[0].operation, 'activity.integrity.recovered');
+  assert.equal(view.event_count, 3);
 });
 
 test('activity state corruption fails closed with retained evidence instead of fabricating an empty trace', t => {

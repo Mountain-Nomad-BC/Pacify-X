@@ -15,7 +15,7 @@ def test_packaged_imports_are_fully_classified_and_declared():
     assert result["runtime_dependency_count"] == 1
     locked = {
         line.split("==", 1)[0].casefold()
-        for line in (ROOT / "requirements-release.lock")
+        for line in (ROOT / "requirements-release.txt")
         .read_text(encoding="utf-8")
         .splitlines()
         if line and not line.startswith("#") and "==" in line

@@ -62,7 +62,7 @@ jobs:
           $artifactDir = Join-Path $env:RUNNER_TEMP "pacify-x-release-artifacts"
           New-Item -ItemType Directory -Path $wheelhouse | Out-Null
           New-Item -ItemType Directory -Path $artifactDir | Out-Null
-          python -m pip download --require-hashes -r requirements-release.lock -d $wheelhouse
+          python -m pip download --require-hashes -r requirements-release.txt -d $wheelhouse
           "PACIFY_X_RELEASE_WHEELHOUSE=$wheelhouse" | Out-File -FilePath $env:GITHUB_ENV -Append
           "PACIFY_X_RELEASE_ARTIFACT_DIR=$artifactDir" | Out-File -FilePath $env:GITHUB_ENV -Append
 

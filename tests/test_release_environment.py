@@ -34,7 +34,7 @@ def test_current_release_environment_matches_exact_lock() -> None:
 
 def test_multiline_hash_allowlists_remain_exact_and_reject_interruption() -> None:
     root = Path(tempfile.mkdtemp())
-    lock = root / "requirements-release.lock"
+    lock = root / "requirements-release.txt"
     first = "1" * 64
     second = "2" * 64
     lock.write_text(
@@ -58,7 +58,7 @@ def test_release_dependencies_install_offline_with_hashes() -> None:
     wheel = wheelhouse / "fixture-1.0-py3-none-any.whl"
     wheel.write_bytes(b"locked wheel")
     digest = hashlib.sha256(wheel.read_bytes()).hexdigest()
-    lock = root / "requirements-release.lock"
+    lock = root / "requirements-release.txt"
     lock.write_text(f"fixture==1.0 --hash=sha256:{digest}\n", encoding="utf-8")
     manifest = build_wheelhouse_manifest(wheelhouse, lock)
     command = offline_install_command("python", lock, wheelhouse)
@@ -71,7 +71,7 @@ def test_wrong_dependency_hash_fails() -> None:
     wheelhouse = root / "wheelhouse"
     wheelhouse.mkdir()
     (wheelhouse / "fixture-1.0-py3-none-any.whl").write_bytes(b"substituted")
-    lock = root / "requirements-release.lock"
+    lock = root / "requirements-release.txt"
     lock.write_text(f"fixture==1.0 --hash=sha256:{'0' * 64}\n", encoding="utf-8")
     assert not build_wheelhouse_manifest(wheelhouse, lock)["valid"]
 
@@ -107,7 +107,7 @@ def test_toolchain_identity_is_in_certificate_evidence() -> None:
 def test_network_is_not_required_during_certification() -> None:
     root = Path(tempfile.mkdtemp())
     command = offline_install_command(
-        "python", root / "requirements-release.lock", root / "wheelhouse"
+        "python", root / "requirements-release.txt", root / "wheelhouse"
     )
     clean = scrub_release_environment(
         {"PIP_INDEX_URL": "https://example.invalid/simple", "PATH": "tools"}

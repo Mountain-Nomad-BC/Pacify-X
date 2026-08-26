@@ -944,8 +944,14 @@ def run_preflight(
     enforce_release_binding: bool = True,
 ) -> dict[str, Any]:
     """Run cheap checks first, then clean-stage state transitions and fixed point."""
+    from .test_profiles import require_processing_stage
+
     started = time.monotonic()
     root = root.resolve(strict=True)
+    # Preflight is the admission owner for package/install/finalization work,
+    # so requiring the later installed-operational certification phase here
+    # creates a circular gate and prevents early defect discovery.
+    require_processing_stage(root, "package")
     release = release or authoritative_version(root)
     artifact = artifact.resolve(strict=True) if artifact else None
     policy = _json(root / PREFLIGHT_POLICY)
