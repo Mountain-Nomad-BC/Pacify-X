@@ -1,0 +1,35 @@
+{
+  "schema_version": "px.focused-repair-evidence/1.0",
+  "observed_utc": "2026-08-26T11:00:00Z",
+  "gap_id": "PX-OS-1065",
+  "repair": {
+    "file": "tests/test_agent_runtime.py",
+    "cause": "The lifecycle assertion selected an arbitrary terminal-observer record after resume, so it could inspect the resumed observer instead of the paused observer whose closure the test intended to prove.",
+    "change": "Capture the exact active paused-observer resource identity before resume and verify that same resource is inactive after the resumed run succeeds.",
+    "runtime_contract_changed": false
+  },
+  "focused_tests": {
+    "passed": true,
+    "count": 3,
+    "nodes": [
+      "tests/test_agent_runtime.py::test_agent_session_pause_resume_cancel_and_denial_are_real_owned_lifecycle",
+      "tests/test_studio_run_control.py::test_terminal_observer_retries_only_transient_finalize_failures",
+      "tests/test_workflow_studio.py::test_workflow_pause_resume_cancel_and_checkpoint_recovery"
+    ],
+    "duration_seconds": 64.86
+  },
+  "lint": {
+    "passed": true,
+    "command": "python -m ruff check --no-cache .",
+    "output": "All checks passed!"
+  },
+  "governed_section": {
+    "section": "studio-memory-graph",
+    "passed": true,
+    "timed_out": false,
+    "duration_seconds": 56.117245,
+    "receipt": ".engineering-bootstrap/test-evidence/sections/studio-memory-graph.json",
+    "receipt_sha256": "af1a2cc359efc770589dd76721d4c47454fc2bdfba1998d0725df1cb5fe1bb8c"
+  },
+  "certification_claim": false
+}

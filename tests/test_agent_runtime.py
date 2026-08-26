@@ -722,6 +722,13 @@ def test_agent_session_pause_resume_cancel_and_denial_are_real_owned_lifecycle(
     )
     paused = _wait_for_agent_state(controller, started["run_id"], {"paused"})
     assert paused["checkpoint"]["shutdown_policy"] == "bounded-process-tree-termination"
+    paused_observer_id = next(
+        record.resource_id
+        for record in controller.manager.ledger.load()
+        if record.run_id.startswith(f"studio-finalizer-{started['run_id']}-")
+        and record.creator == "px-studio-terminal-observer"
+        and record.active
+    )
     resumed = controller.resume_harness(
         spec, run_id=started["run_id"], task=task, approval=True
     )
@@ -731,12 +738,7 @@ def test_agent_session_pause_resume_cancel_and_denial_are_real_owned_lifecycle(
     assert resumed["state"] == "running"
     completed = _wait_for_agent_state(controller, started["run_id"], {"succeeded"})
     assert completed["state"] == "succeeded"
-    paused_observer = next(
-        record
-        for record in controller.manager.ledger.load()
-        if record.run_id.startswith(f"studio-finalizer-{started['run_id']}-")
-        and record.creator == "px-studio-terminal-observer"
-    )
+    paused_observer = controller.manager.ledger.get(paused_observer_id)
     assert paused_observer.active is False
 
     approval = approval_proof(tmp_path, "agent", "start", start_payload)
