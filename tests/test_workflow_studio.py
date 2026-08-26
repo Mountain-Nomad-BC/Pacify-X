@@ -462,10 +462,37 @@ def _wait_for_workflow_state(studio, run_id: str, expected: set[str]) -> dict:
         if state["state"] in expected:
             return state
         time.sleep(0.02)
+    lifecycle = [
+        {
+            "resource_id": record.resource_id,
+            "resource_type": record.resource_type,
+            "run_id": record.run_id,
+            "pid": record.pid,
+            "active": record.active,
+            "status": record.status,
+            "run_state": record.run_state,
+            "cleanup_result": record.cleanup_result,
+        }
+        for record in studio.manager.ledger.load()
+        if record.run_id == run_id
+        or record.run_id.startswith(f"studio-finalizer-{run_id}-")
+    ]
+    diagnostic_path = (
+        studio.state_root
+        / "sessions"
+        / run_id
+        / "terminal-observer-diagnostic.json"
+    )
+    diagnostic = (
+        diagnostic_path.read_text(encoding="utf-8")
+        if diagnostic_path.is_file()
+        else "missing"
+    )
     raise AssertionError(
         f"workflow did not reach {expected}; last state="
         f"{state.get('state')} sequence={state.get('sequence')} "
-        f"failure={state.get('failure')}"
+        f"failure={state.get('failure')} lifecycle={lifecycle!r} "
+        f"observer_diagnostic={diagnostic}"
     )
 
 
@@ -514,7 +541,7 @@ def test_terminal_observer_reclaims_exact_run_task_path_before_publication(
     manager = ResourceManager(state_root / "resources.json")
     run_id = "run-terminal-path-reconciliation"
     worker, process = manager.spawn_owned_process(
-        [sys.executable, "-c", "pass"],
+        [sys.executable, "-c", "import time; time.sleep(0.2)"],
         cwd=tmp_path,
         project_id="workflow:lifecycle",
         run_id=run_id,
@@ -660,13 +687,14 @@ def test_workflow_pause_resume_cancel_and_checkpoint_recovery(
     )
     paused = _wait_for_workflow_state(studio, started["run_id"], {"paused"})
     assert paused["checkpoint"]["completed_nodes"] == ["node:first"]
-    paused_observer_id = next(
-        record.resource_id
+    paused_observers = [
+        record
         for record in studio.manager.ledger.load()
         if record.run_id.startswith(f"studio-finalizer-{started['run_id']}-")
         and record.creator == "px-studio-terminal-observer"
-        and record.active
-    )
+    ]
+    assert len(paused_observers) == 1
+    paused_observer_id = paused_observers[0].resource_id
     resumed = studio.resume(
         definition,
         inputs,

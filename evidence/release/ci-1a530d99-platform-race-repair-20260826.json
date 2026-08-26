@@ -1,0 +1,48 @@
+{
+  "schema_version": "px.focused-repair-evidence/1.0",
+  "repair": "ci-platform-zero-duration-child-registration-race",
+  "remote_observation": {
+    "head_sha": "1a530d99ec0704c47007b8e66f61631c62e4c049",
+    "run_id": 32970782138,
+    "deterministic_assurance_jobs_green": 8,
+    "extension_jobs_green": 3,
+    "failed_platform_jobs": 7,
+    "failed_governed_step": "Fast correctness profile",
+    "public_raw_logs_available": false
+  },
+  "causal_analysis": {
+    "shared_test": "tests/test_workflow_studio.py::test_terminal_observer_reclaims_exact_run_task_path_before_publication",
+    "previous_child_command": "python -c pass",
+    "defect": "The fixture could let the child exit before ResourceManager captured its process identity; runner scheduling made that registration race nondeterministic across the matrix.",
+    "runtime_contract_under_test": "Reconcile an already registered worker after verified exit, not registration of a zero-duration process."
+  },
+  "repair_applied": {
+    "child_command": "python -c import time; time.sleep(0.2)",
+    "effect": "Keeps the child alive for bounded identity registration, then preserves the intended verified-exit reconciliation path."
+  },
+  "focused_proof": {
+    "exact_regression_passed": true,
+    "combined_platform_items_passed": 170,
+    "combined_platform_items_skipped": 1,
+    "combined_platform_duration_seconds": 183.86,
+    "generated_registry_tests_passed": 8,
+    "residual_processes": 0
+  },
+  "owned_section_proof": {
+    "section": "studio-memory-graph",
+    "input_sha256": "9e88bd473e86ab84649fb7c94edf6f24f58f370bc0c21b5e75a9721d4adf339c",
+    "passed": true,
+    "rerun_chunk": "chunk-04",
+    "rerun_chunk_tests_passed": 76,
+    "rerun_chunk_tests_skipped": 1,
+    "process_tree_terminated": true,
+    "receipt_sha256": "845cf7f155557df8777ce3ba2fbe929168ffb914092167b7c133b20462deb5a5",
+    "receipt_file_sha256": "8b6ca2402d3cad8fad1932c711964c15f0b7777651f757d39e0eb2317ceb4c39"
+  },
+  "projection_state": {
+    "effect_surface_ownership": true,
+    "provider_route_scan": true,
+    "artifact_reachability": true
+  },
+  "certification_claim": false
+}
