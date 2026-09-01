@@ -1,6 +1,7 @@
 from pathlib import Path
 import shutil
 
+from runtime.file_lock import FileLock
 from runtime.release_boundary import copy_clean_product
 from runtime.release_preflight import audit_clean_boundary
 from tests.release_preflight_testkit import minimal_product
@@ -54,3 +55,24 @@ def test_excluded_live_evidence_does_not_invalidate_matching_clean_product(
     assert result["digest_comparison"]["equal"] is True
     assert result["source_classifier_errors"]
     assert result["clean_classifier_errors"] == []
+
+
+def test_clean_product_excludes_the_live_test_orchestration_lock(
+    tmp_path: Path,
+) -> None:
+    source = minimal_product(tmp_path / "source")
+    lock_path = (
+        source / ".engineering-bootstrap/test-evidence/.test-orchestration.lock"
+    )
+    clean = tmp_path / "clean"
+
+    with FileLock(lock_path, timeout_seconds=1):
+        copy_clean_product(source, clean)
+
+    assert not (
+        clean / ".engineering-bootstrap/test-evidence/.test-orchestration.lock"
+    ).exists()
+    result = audit_clean_boundary(
+        source, clean, identity_inputs=["runtime/owner.py"]
+    )
+    assert result["valid"], result

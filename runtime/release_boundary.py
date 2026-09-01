@@ -18,11 +18,11 @@ def copy_clean_product(source: Path, destination: Path) -> None:
         ".ruff_cache",
         "*.pyc",
         "*.pyo",
+        "*.lock",
         "*.egg-info",
         "build",
         "dist",
         "evidence",
-        "release.lock",
         "release-transaction.json",
     )
 
