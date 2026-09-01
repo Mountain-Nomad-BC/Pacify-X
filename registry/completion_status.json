@@ -338,22 +338,16 @@
     ]
   },
   "current_gates": {
-    "valid": false,
-    "blocking_ids": [
-      "group:exact-installed",
-      "group:release-build"
-    ]
+    "valid": true,
+    "blocking_ids": []
   },
   "certification_freshness": {
     "fresh": false,
-    "receipt_current": false,
+    "receipt_current": true,
     "evidence_identity_current": false,
     "evidence_identity_evaluated": false,
     "evidence_receipts_current": true,
-    "failed_receipt_ids": [
-      "group:exact-installed",
-      "group:release-build"
-    ],
+    "failed_receipt_ids": [],
     "stale_receipt_ids": [],
     "dependency_stale_receipt_ids": []
   },
@@ -365,7 +359,6 @@
   },
   "blocking_reasons": [
     "the current operational gap ledger has 16 unresolved critical/high findings",
-    "2 required section/group receipts are stale or failed",
     "final exact-artifact certification has not been admitted"
   ]
 }
