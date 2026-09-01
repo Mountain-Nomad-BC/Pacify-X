@@ -3292,6 +3292,9 @@ function applyBuilderObservations(controlChains, builders) {
 }
 
 function applyInstalledProbeObservations(controlChains, installedControlProbe, summaryKey = 'installed_probe_observations') {
+  if (installedControlProbe?.schema_version === 'px.installed-collected-profile-failure/1.0') {
+    installedControlProbe = installedControlProbe.control_probe;
+  }
   if (!installedControlProbe || installedControlProbe.schema_version !== 'px.installed-operational-control-probe/1.0') {
     throw new Error('Installed control probe is missing or has an unsupported schema.');
   }
@@ -5427,7 +5430,8 @@ const OWNED_NATIVE_WORKBENCH_ACTIONS = new Set([
   'Authorize conflict route', 'Open exact native record'
 ]);
 const OWNED_NATIVE_REQUESTS_BY_ACTION = new Map([
-  ['Cancel', new Set(['enterprisePackToggle', 'buildRepositoryGraph', 'executeCleanup'])],
+  ['Cancel', new Set(['setupStudio', 'enterprisePackToggle', 'buildRepositoryGraph', 'executeCleanup'])],
+  ['Set up and run', new Set(['setupStudio'])],
   ['Build graph', new Set(['buildRepositoryGraph'])],
   ['Enable offline metadata', new Set(['enterprisePackToggle'])],
   ['Disable pack metadata', new Set(['enterprisePackToggle'])],
@@ -5570,10 +5574,20 @@ async function waitForNativeWorkbenchDialog(workbench, expected, timeoutMs = 15_
   throw new Error(`owned-native-workbench-dialog-timeout:${String(expected).slice(0, 300)}:${JSON.stringify(inventory)}`);
 }
 
+async function visibleAdmittedNativeWorkbenchAction(dialog) {
+  if (!dialog?.locator) return null;
+  const labels = await dialog.locator(NATIVE_WORKBENCH_ACTION_SELECTOR).evaluateAll(nodes => nodes
+    .filter(node => node.offsetWidth || node.offsetHeight || node.getClientRects().length)
+    .map(node => String(node.innerText || node.textContent || node.getAttribute('aria-label') || '').replace(/\s+/g, ' ').trim()))
+    .catch(() => []);
+  return labels.find(label => nativeWorkbenchKeyboardActionAdmitted(label)) || null;
+}
+
 async function dismissOwnedNativeWorkbenchDialog(workbench, expected) {
   const dialog = await findNativeWorkbenchDialog(workbench, expected);
   const blockerCount = await visibleNativeWorkbenchModalBlockerCount(workbench);
-  if (!dialog && blockerCount === 0) return false;
+  const admittedAction = await visibleAdmittedNativeWorkbenchAction(dialog);
+  if (blockerCount === 0 && !admittedAction) return false;
   if (dialog) {
     const cancel = dialog.locator(NATIVE_WORKBENCH_ACTION_SELECTOR)
       .filter({ hasText: /^\s*Cancel\s*$/ }).last();
@@ -5584,7 +5598,10 @@ async function dismissOwnedNativeWorkbenchDialog(workbench, expected) {
   }
   const deadline = Date.now() + 2_000;
   while (Date.now() < deadline) {
-    if (!await findNativeWorkbenchDialog(workbench, expected) && await visibleNativeWorkbenchModalBlockerCount(workbench) === 0) return true;
+    const remaining = await findNativeWorkbenchDialog(workbench, expected);
+    const remainingBlockers = await visibleNativeWorkbenchModalBlockerCount(workbench);
+    const remainingAction = await visibleAdmittedNativeWorkbenchAction(remaining);
+    if (remainingBlockers === 0 && !remainingAction) return true;
     await wait(50);
   }
   throw new Error(`owned-native-workbench-dialog-recovery-timeout:${String(expected).slice(0, 300)}`);
@@ -5613,67 +5630,45 @@ async function clickNativeWorkbenchDialogAction(workbench, dialog, label) {
   }
   const actionSelector = NATIVE_WORKBENCH_ACTION_SELECTOR;
   const exact = new RegExp(`^\\s*${String(label).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*$`);
-  let domActionAttempted = false;
-  let domActionFocused = false;
-  let exactActionTabCount = 0;
-  for (const scope of [dialog, workbench]) {
-    const candidates = scope.locator(actionSelector).filter({ hasText: exact });
-    const count = await candidates.count().catch(() => 0);
-    for (let index = count - 1; index >= 0; index -= 1) {
-      const candidate = candidates.nth(index);
-      if (!await candidate.isVisible().catch(() => false)) continue;
-      domActionAttempted = true;
-      exactActionTabCount = await candidate.evaluate((element, input) => {
-        const normalize = value => String(value || '').replace(/\s+/g, ' ').trim();
-        const container = element.closest('.monaco-dialog-box, .dialog-container, [role="dialog"]') || element.parentElement;
-        if (!container) return 0;
-        const actions = [...container.querySelectorAll(input.selector)]
-          .filter(node => node.offsetWidth || node.offsetHeight || node.getClientRects().length);
-        const indices = actions.map((node, position) => normalize(node.innerText || node.textContent || node.getAttribute('aria-label')) === input.label ? position : -1)
-          .filter(position => position >= 0);
-        return indices.length === 1 && indices[0] < 2 ? indices[0] + 1 : 0;
-      }, { selector: actionSelector, label: String(label).trim() }, { timeout: 2_000 }).catch(() => 0);
-      if (label === 'Cancel') {
+  const exactActionDeadline = Date.now() + 2_000;
+  do {
+    for (const scope of [dialog, workbench]) {
+      const candidates = scope.locator(actionSelector).filter({ hasText: exact });
+      const count = await candidates.count().catch(() => 0);
+      for (let index = count - 1; index >= 0; index -= 1) {
+        const candidate = candidates.nth(index);
+        if (!await candidate.isVisible().catch(() => false)) continue;
+        // A visible, exact workbench action is already the strongest physical
+        // identity available. Playwright's click performs the real pointer
+        // gesture and the caller proves the request-bound terminal response.
         await candidate.click({ timeout: 3_000 });
-      } else {
-        await candidate.evaluate(element => element.click(), undefined, { timeout: 2_000 });
+        return true;
       }
-      const dismissalDeadline = Date.now() + 750;
-      do {
-        if (!await dialog.isVisible().catch(() => false) && await visibleNativeWorkbenchModalBlockerCount(workbench) === 0) return true;
-        await wait(50);
-      } while (Date.now() < dismissalDeadline);
-      if (label !== 'Cancel') {
-        await workbench.keyboard.press('Enter');
-        const rendererEnterDeadline = Date.now() + 750;
-        do {
-          if (!await dialog.isVisible().catch(() => false) && await visibleNativeWorkbenchModalBlockerCount(workbench) === 0) return true;
-          await wait(50);
-        } while (Date.now() < rendererEnterDeadline);
-      }
-      if (label !== 'Cancel' && !domActionFocused) {
-        await candidate.focus({ timeout: 2_000 }).catch(() => {});
-        domActionFocused = await candidate.evaluate(element => element === document.activeElement || element.contains(document.activeElement)).catch(() => false);
-      }
-      break;
     }
-    if (domActionAttempted) break;
-  }
+    await wait(50);
+  } while (Date.now() < exactActionDeadline);
   if (label === 'Cancel') {
+    const request = await findInstalledOutboundRequest(dialog?.frame_host, dialog?.request_offset, dialog?.request_type);
+    if (ownedReversibleConfigurationAuthority && nativeWorkbenchRequestFallbackAdmitted(request, label, dialog?.request_type)) {
+      await workbench.bringToFront();
+      await wait(100);
+      const proof = await requestOwnedNativeInput(label, request);
+      nativeInputEvidence.push(proof);
+      return true;
+    }
     await workbench.keyboard.press('Escape');
     return true;
   }
   if (OWNED_NATIVE_WORKBENCH_ACTIONS.has(label)) {
     const request = await findInstalledOutboundRequest(dialog?.frame_host, dialog?.request_offset, dialog?.request_type);
     if (ownedReversibleConfigurationAuthority && nativeWorkbenchRequestFallbackAdmitted(request, label, dialog?.request_type)) {
-      if (!domActionFocused && exactActionTabCount === 0) throw new Error(`owned-native-workbench-exact-action-focus-unproven:${String(label).slice(0, 300)}:${dialog?.request_type || ''}`);
       await workbench.bringToFront();
       await wait(100);
-      const proof = await requestOwnedNativeInput(label, request, { focusTraversalCount: domActionFocused ? 0 : exactActionTabCount });
+      const proof = await requestOwnedNativeInput(label, request, { focusTraversal: true });
       nativeInputEvidence.push(proof);
       return true;
     }
-    throw new Error(`owned-native-workbench-dom-action-inert:${String(label).slice(0, 300)}:${dialog?.request_type || ''}`);
+    throw new Error(`owned-native-workbench-exact-action-not-visible:${String(label).slice(0, 300)}:${dialog?.request_type || ''}`);
   }
   throw new Error(`owned-native-workbench-action-not-admitted:${String(label).slice(0, 300)}`);
 }
@@ -5875,6 +5870,9 @@ async function runInstalledStudioSetupProfile(workbench, frameHost, matrix, time
     const cancellationDialog = await waitForNativeStudioSetupDialog(workbench, frameHost, cancelledBefore);
     const cancelledRequest = await waitForInstalledOutboundRequest(frameHost, cancelledRequestBefore, 'setupStudio');
     if (!cancelledRequest) throw new Error('setupStudio-cancellation-request-not-observed');
+    cancellationDialog.request_type = 'setupStudio';
+    cancellationDialog.request_offset = cancelledRequestBefore;
+    cancellationDialog.frame_host = frameHost;
     await clickNativeStudioSetupAction(workbench, cancellationDialog, 'Cancel');
     const cancelledDeadline = Date.now() + 15_000;
     do {
@@ -5896,6 +5894,9 @@ async function runInstalledStudioSetupProfile(workbench, frameHost, matrix, time
     const approvalDialog = await waitForNativeStudioSetupDialog(workbench, frameHost, before);
     const request = await waitForInstalledOutboundRequest(frameHost, requestBefore, 'setupStudio');
     if (!request) throw new Error('setupStudio-authorized-request-not-observed');
+    approvalDialog.request_type = 'setupStudio';
+    approvalDialog.request_offset = requestBefore;
+    approvalDialog.frame_host = frameHost;
     observation.request_id = request.requestId;
     await clickNativeStudioSetupAction(workbench, approvalDialog, 'Set up and run');
     const deadline = Date.now() + timeoutMs;
@@ -10038,13 +10039,13 @@ async function main() {
     const projectsProfile = ownedReversibleConfigurationAuthority && (!focusedProfileOnly || nativeDialogOnly)
       ? await timedProfile('projects-map-restart', () => runInstalledProjectsProfile(workbench, dashboard, proofMatrix))
       : { schema_version: 'px.installed-projects-profile/1.0', authority: 'Not admitted outside a full owned isolated host and disposable workspace.', observation: { attempted: false, completed: false, errors: [] }, control_probe: { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside a full owned isolated host and disposable workspace.', eligible_control_count: 0, records: [] } };
-    const knowledgeGraphProfile = ownedReversibleConfigurationAuthority && !focusedProfileOnly
+    const knowledgeGraphProfile = ownedReversibleConfigurationAuthority && (!focusedProfileOnly || nativeDialogOnly)
       ? await timedProfile('knowledge-graph-restart', () => runInstalledKnowledgeGraphProfile(dashboard, proofMatrix))
       : { schema_version: 'px.installed-knowledge-graph-profile/1.0', authority: 'Not admitted outside a full owned isolated host and disposable workspace.', observation: { attempted: false, completed: false, errors: [] }, control_probe: { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside a full owned isolated host and disposable workspace.', eligible_control_count: 0, records: [] } };
     const systemProjectionProfile = ownedReversibleConfigurationAuthority && !focusedProfileOnly
       ? await timedProfile('system-projection-restart', () => runInstalledSystemProjectionProfile(dashboard, proofMatrix))
       : { schema_version: 'px.installed-system-projection-profile/1.0', authority: 'Not admitted outside a full exact-source owned host.', observation: { attempted: false, completed: false, errors: [] }, control_probe: { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside a full exact-source owned host.', eligible_control_count: 0, records: [] } };
-    const cleanupProfile = ownedReversibleConfigurationAuthority && !focusedProfileOnly
+    const cleanupProfile = ownedReversibleConfigurationAuthority && (!focusedProfileOnly || nativeDialogOnly)
       ? await timedProfile('cleanup-recycle', () => runInstalledCleanupProfile(workbench, dashboard, proofMatrix))
       : { schema_version: 'px.installed-cleanup-recycle-profile/1.0', authority: 'Not admitted outside a full owned isolated host and disposable engine.', observation: { attempted: false, completed: false, errors: [] }, control_probe: { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside a full owned isolated host and disposable engine.', eligible_control_count: 0, records: [] } };
     const pluginReadProfile = ownedReversibleConfigurationAuthority && !focusedProfileOnly
@@ -10054,11 +10055,12 @@ async function main() {
       ? await timedProfile('plugin-local-lifecycle', () => runInstalledPluginMutationProfile(workbench, dashboard, proofMatrix))
       : { schema_version: 'px.installed-plugin-mutation-profile/1.0', authority: 'Not admitted outside a full owned disposable VS Code extension profile.', observation: { attempted: false, completed: false, errors: [] }, control_probe: { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside a full owned disposable VS Code extension profile.', eligible_control_count: 0, records: [] } };
     if (returnedProfileErrors(pluginMutationProfile).length) dashboardProfileBlocker = 'plugin-local-lifecycle';
+    if (!dashboardProfileBlocker && profileFailures.length) dashboardProfileBlocker = profileFailures[0].profile;
     // Builder inspection uses shared webview working-draft state. Run it only
     // after every state-producing profile has established and verified its
     // negative/positive denominators, but before the general probe aggregates
     // dynamic builder controls into the final receipt.
-    if (!focusedProfileOnly && !hostSourceMismatch && profileDashboardBaseline) {
+    if (!focusedProfileOnly && !hostSourceMismatch && !dashboardProfileBlocker && profileDashboardBaseline) {
       await timedProfile(
         'pre-builder-baseline',
         () => resetInstalledDashboardBaseline(profileDashboardBaseline.workbench, profileDashboardBaseline.frameHost),
@@ -10066,6 +10068,10 @@ async function main() {
       );
     }
     for (const kind of focusedProfileOnly ? [] : ['agent', 'workflow']) {
+      if (dashboardProfileBlocker) {
+        builders[kind] = { terminal_disposition: 'blocked_profile_failure', reason: `The ${dashboardProfileBlocker} profile invalidated the shared dashboard boundary.`, observations: [], attempted_control_ids: [] };
+        continue;
+      }
       if (hostSourceMismatch) {
         builders[kind] = { terminal_disposition: 'blocked_host_source_mismatch', reason: 'No builder interaction is allowed against installed assets that differ from source.' };
         continue;

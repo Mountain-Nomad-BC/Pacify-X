@@ -171,18 +171,23 @@ test('timeout evidence retains bounded hash-bound physical profile progress', t 
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   const records = [
     { schema_version: 'px.operational-profile-progress/1.0', observed_utc: '2026-08-27T00:00:00Z', profile: 'host-boundary', state: 'started' },
-    { schema_version: 'px.operational-profile-progress/1.0', observed_utc: '2026-08-27T00:01:00Z', profile: 'host-boundary', state: 'returned', error_count: 1, errors: ['exact-failure'] }
+    { schema_version: 'px.operational-profile-progress/1.0', observed_utc: '2026-08-27T00:00:30Z', profile: 'host-boundary-control', control_id: 'one', state: 'returned', error_count: 0, errors: [] },
+    { schema_version: 'px.operational-profile-progress/1.0', observed_utc: '2026-08-27T00:01:00Z', profile: 'host-boundary', state: 'returned', error_count: 1, errors: ['exact-failure'] },
+    { schema_version: 'px.operational-profile-progress/1.0', observed_utc: '2026-08-27T00:01:01Z', profile: 'dependent', state: 'skipped', error_count: 1, errors: ['dependency-failed'] },
+    { schema_version: 'px.operational-profile-progress/1.0', observed_utc: '2026-08-27T00:01:02Z', profile: 'thrown', state: 'threw', error_count: 1, errors: ['bounded-failure'] }
   ];
   const target = path.join(root, 'profile-progress.ndjson');
   fs.writeFileSync(target, `${records.map(record => JSON.stringify(record)).join('\n')}\n`, 'utf8');
   const retained = retainedProfileProgress(root);
   assert.equal(retained.valid, true);
   assert.equal(retained.sha256, digest(target));
-  assert.equal(retained.record_count, 2);
+  assert.equal(retained.record_count, 5);
   assert.equal(retained.started_count, 1);
-  assert.equal(retained.returned_count, 1);
+  assert.equal(retained.returned_count, 2);
+  assert.equal(retained.terminal_count, 4);
+  assert.equal(retained.terminal_with_errors, 3);
   assert.equal(retained.returned_with_errors, 1);
-  assert.deepEqual(retained.last_record, records[1]);
+  assert.deepEqual(retained.last_record, records[4]);
   fs.writeFileSync(target, '{"schema_version":"wrong"}\n', 'utf8');
   assert.equal(retainedProfileProgress(root).valid, false);
 });
@@ -564,7 +569,7 @@ test('launcher requires explicit full-profile authority for post-audit long-runn
   assert.match(source, /partial_profile_progress: child\?\.walk_receipt \? null : retainedProfileProgress\(walkOutput\)/);
   assert.match(source, /partial_host_progress: child\?\.walk_receipt \? null : retainedHostProgress\(walkOutput\)/);
   assert.match(source, /const nativeInputRequired = config\.nativeInputRequired === true/);
-  assert.match(source, /const nativeInputRequired = nativeDialogOnly \|\| postAuditLongRunning \|\| fullOperationalWalk/);
+  assert.match(source, /const nativeInputRequired = studioLifecycleOnly \|\| nativeDialogOnly \|\| postAuditLongRunning \|\| fullOperationalWalk/);
   assert.match(source, /nativeInputRequired,/);
   assert.match(source, /nativeInputRequired \? \{[\s\S]*PX_OWNED_NATIVE_INPUT_SECRET: config\.nativeInputSecret/);
   assert.match(source, /nativeInputRequired \? resolveOwnedCachedVSCode/);

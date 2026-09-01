@@ -67,16 +67,20 @@ function retainedProfileProgress(outputRoot) {
       return { schema_version: 'px.retained-profile-progress/1.0', valid: false, error: 'profile-progress-boundary-invalid' };
     }
     const records = fs.readFileSync(target, 'utf8').split(/\r?\n/).filter(Boolean).map(line => JSON.parse(line));
+    const admittedStates = new Set(['started', 'returned', 'skipped', 'threw']);
     if (records.some(record => record?.schema_version !== 'px.operational-profile-progress/1.0'
-      || typeof record.profile !== 'string' || !['started', 'returned'].includes(record.state))) {
+      || typeof record.profile !== 'string' || !admittedStates.has(record.state))) {
       throw new Error('profile-progress-record-invalid');
     }
     const started = records.filter(record => record.state === 'started');
     const returned = records.filter(record => record.state === 'returned');
+    const terminal = records.filter(record => record.state !== 'started');
     return {
       schema_version: 'px.retained-profile-progress/1.0', valid: true,
       sha256: sha256(target), record_count: records.length,
       started_count: started.length, returned_count: returned.length,
+      terminal_count: terminal.length,
+      terminal_with_errors: terminal.filter(record => Number(record.error_count || 0) > 0).length,
       returned_with_errors: returned.filter(record => Number(record.error_count || 0) > 0).length,
       last_record: records.at(-1) || null
     };
@@ -804,7 +808,7 @@ function prepare(temporaryRoot, walkOutput, vsixPath = null, bootstrapOnly = fal
   const stagedEngine = stageDisposableEngine(repositoryRoot, temporaryRoot);
   const hostBoundaryFixtureRequired = hostBoundaryOnly || (!bootstrapOnly && !configurationOnly && !studioLifecycleOnly && !knowledgeLifecycleOnly && !nativeDialogOnly);
   const fullOperationalWalk = !bootstrapOnly && !configurationOnly && !studioLifecycleOnly && !knowledgeLifecycleOnly && !hostBoundaryOnly && !nativeDialogOnly && !codexHandoffOnly && !errorIndicatorsOnly;
-  const nativeInputRequired = nativeDialogOnly || postAuditLongRunning || fullOperationalWalk;
+  const nativeInputRequired = studioLifecycleOnly || nativeDialogOnly || postAuditLongRunning || fullOperationalWalk;
   const config = {
     workspace: path.join(temporaryRoot, 'workspace'),
     userData: path.join(temporaryRoot, 'user-data'),

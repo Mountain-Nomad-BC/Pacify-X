@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.6.66
+
+- Bind Studio setup cancellation and approval to the exact outbound request before using owned native input.
+- Derive native modal traversal from the already-proven semantic action element and retain nested, skipped, and thrown profile progress in timeout evidence.
+- Stop builders and the general installed-control probe after the complete independent profile failure set is collected, preventing a failed modal chain from consuming the outer host budget.
+- Use bounded exact workbench pointer activation with request-bound native fallback, and distinguish live admitted dialog actions from stale notification text during recovery.
+- Preserve typed zero-denominator control probes for collected profile failures so focused receipts remain serializable without promoting failed observations.
+
 ## 0.6.65
 
 - Make owned native-dialog approval deterministic across notification and modal layouts without weakening normal-session confirmation boundaries.

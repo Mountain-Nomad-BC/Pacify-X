@@ -328,13 +328,15 @@ test('focused host-boundary scheduling runs only its exact typed-host profile', 
   assert.match(source, /enterpriseProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| nativeDialogOnly\)/);
 });
 
-test('focused native-dialog scheduling runs only the three exact confirmation profiles', () => {
+test('focused native-dialog scheduling runs the exact confirmation profiles and dependent recovery checks', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   assert.match(source, /PX_OPERATIONAL_NATIVE_DIALOG_ONLY === '1'/);
   assert.match(source, /nativeDialogOnly \? 'native-dialog-boundary' : codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : null/);
   assert.match(source, /reversibleConfigurationProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| configurationOnly\)/);
   assert.match(source, /enterpriseProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| nativeDialogOnly\)/);
   assert.match(source, /projectsProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| nativeDialogOnly\)/);
+  assert.match(source, /knowledgeGraphProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| nativeDialogOnly\)/);
+  assert.match(source, /cleanupProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| nativeDialogOnly\)/);
   assert.match(source, /pluginMutationProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| nativeDialogOnly\)/);
   const studioChainClause = source.slice(source.indexOf('const studioChainAdmitted ='), source.indexOf('\n', source.indexOf('const studioChainAdmitted =')));
   assert.match(studioChainClause, /!nativeDialogOnly/);
@@ -344,7 +346,7 @@ test('focused native-dialog scheduling runs only the three exact confirmation pr
     if (profile.startsWith('studio')) assert.match(clause, /studioChainAdmitted/, `${profile} must use the excluded Studio chain`);
     else assert.match(clause, /!nativeDialogOnly/, `${profile} must be excluded`);
   }
-  for (const profile of ['coordinationMemoryProfile', 'hostBoundaryProfile', 'environmentLifecycleProfile', 'codexHandoffProfile', 'knowledgeGraphProfile', 'systemProjectionProfile', 'cleanupProfile', 'pluginReadProfile']) {
+  for (const profile of ['coordinationMemoryProfile', 'hostBoundaryProfile', 'environmentLifecycleProfile', 'codexHandoffProfile', 'systemProjectionProfile', 'pluginReadProfile']) {
     const start = source.indexOf(`const ${profile} =`);
     const clause = source.slice(start, source.indexOf('\n', start));
     assert.match(clause, /focusedProfileOnly|hostBoundaryOnly/, `${profile} remains outside the native-dialog focus`);
@@ -528,6 +530,9 @@ test('physical owner dynamically reacquires reconstructed webviews and causally 
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   assert.match(source, /async function waitForOwnedWebview[\s\S]*let current = null[\s\S]*requireCurrent[\s\S]*evaluate: async[\s\S]*evaluateContent: async[\s\S]*elementHandle\(\)[\s\S]*handle\.contentFrame\(\)[\s\S]*handle\?\.dispose\(\)[\s\S]*reacquire: async[\s\S]*current = null[\s\S]*resolve[\s\S]*screenshot: async/);
   assert.match(source, /dashboardProfileBlocker = 'reversible-configuration'/);
+  assert.match(source, /if \(!dashboardProfileBlocker && profileFailures\.length\) dashboardProfileBlocker = profileFailures\[0\]\.profile/);
+  assert.match(source, /!dashboardProfileBlocker && profileDashboardBaseline/);
+  assert.match(source, /terminal_disposition: 'blocked_profile_failure'/);
   assert.match(source, /skippedProfileResult\(profile, dashboardProfileBlocker\)/);
   assert.doesNotMatch(source, /throw new Error\(`profile-prerequisite-failed:/);
   assert.match(source, /innerText\(\{ timeout: 1_000 \}\)\.catch/);
@@ -1217,6 +1222,8 @@ test('owned installed Studio setup accepts only the exact ready and succeeded re
   assert.match(profile, /setupStudio-native-cancellation-not-observed/);
   assert.match(profile, /clickNativeStudioSetupAction\(workbench, cancellationDialog, 'Cancel'\)/);
   assert.match(profile, /clickNativeStudioSetupAction\(workbench, approvalDialog, 'Set up and run'\)/);
+  assert.match(profile, /cancellationDialog\.request_type = 'setupStudio'[\s\S]*cancellationDialog\.frame_host = frameHost/);
+  assert.match(profile, /approvalDialog\.request_type = 'setupStudio'[\s\S]*approvalDialog\.frame_host = frameHost/);
   assert.match(profile, /waitForInstalledOutboundRequest\(frameHost, requestBefore, 'setupStudio'\)/);
   assert.match(profile, /exactStudioSetupTerminalResponse\(responses, 0, request\.requestId\)/);
   assert.match(profile, /setupStudio-operation-error:/);
@@ -1226,9 +1233,11 @@ test('owned installed Studio setup accepts only the exact ready and succeeded re
   assert.match(source, /NATIVE_WORKBENCH_ACTION_SELECTOR = '[^']*\.monaco-text-button/);
   assert.doesNotMatch(source, /NATIVE_WORKBENCH_ACTION_SELECTOR = '[^']*tabindex/);
   assert.match(nativeAction, /label === 'Cancel'[\s\S]*keyboard\.press\('Escape'\)/);
-  assert.match(nativeAction, /exactActionTabCount = await candidate\.evaluate[\s\S]*element\.closest\('\.monaco-dialog-box, \.dialog-container, \[role="dialog"\]'\)[\s\S]*candidate\.evaluate\(element => element\.click\(\)[\s\S]*candidate\.focus\([\s\S]*domActionFocused = await candidate\.evaluate[\s\S]*OWNED_NATIVE_WORKBENCH_ACTIONS\.has\(label\)[\s\S]*nativeWorkbenchRequestFallbackAdmitted\(request, label[\s\S]*owned-native-workbench-exact-action-focus-unproven[\s\S]*focusTraversalCount: domActionFocused \? 0 : exactActionTabCount/);
+  assert.match(nativeAction, /exactActionDeadline = Date\.now\(\) \+ 2_000[\s\S]*const candidates = scope\.locator\(actionSelector\)\.filter\(\{ hasText: exact \}\)[\s\S]*candidate\.isVisible[\s\S]*candidate\.click\(\{ timeout: 3_000 \}\)[\s\S]*wait\(50\)[\s\S]*Date\.now\(\) < exactActionDeadline[\s\S]*label === 'Cancel'[\s\S]*nativeWorkbenchRequestFallbackAdmitted\(request, label[\s\S]*requestOwnedNativeInput\(label, request\)[\s\S]*OWNED_NATIVE_WORKBENCH_ACTIONS\.has\(label\)[\s\S]*focusTraversal: true[\s\S]*owned-native-workbench-exact-action-not-visible/);
+  assert.doesNotMatch(nativeAction, /candidate\.evaluate\(element => element\.click\(\)|owned-native-workbench-exact-action-focus-unproven/);
   assert.doesNotMatch(nativeAction, /OWNED_NATIVE_WORKBENCH_ACTIONS\.has\(label\)[\s\S]*keyboard\.press\('Enter'\)/);
   assert.match(source, /'Set up and run'[\s\S]*'Authorize native install'[\s\S]*'Authorize conflict route'/);
+  assert.match(source, /\['Cancel', new Set\(\['setupStudio'[\s\S]*\['Set up and run', new Set\(\['setupStudio'\]\)\]/);
   const setupWait = source.slice(source.indexOf('async function waitForStudioSetupAction'), source.indexOf('async function runInstalledStudioSetupProfile'));
   assert.match(setupWait, /Date\.now\(\) \+ timeoutMs/);
   assert.match(setupWait, /setupStudio-landing-action-unavailable/);
@@ -1760,8 +1769,8 @@ test('native workbench keyboard fallback requires an exact newly captured outbou
   assert.match(helper, /requestOwnedNativeInput\(label, request, \{ focusTraversal: label !== 'Cancel' \}\)/);
   assert.match(helper, /workbench\.bringToFront\(\)[\s\S]*wait\(100\)[\s\S]*requestOwnedNativeInput\(label, request, \{ focusTraversal: label !== 'Cancel' \}\)/);
   assert.doesNotMatch(helper, /keyboard\.press\(label === 'Cancel'/);
-  assert.match(helper, /findNativeWorkbenchDialog\(workbench, expected\)[\s\S]*visibleNativeWorkbenchModalBlockerCount\(workbench\) === 0[\s\S]*owned-native-workbench-dialog-recovery-timeout/);
-  assert.match(helper, /label === 'Cancel'[\s\S]*candidate\.click[\s\S]*candidate\.evaluate\(element => element\.click\(\)[\s\S]*dismissalDeadline[\s\S]*keyboard\.press\('Enter'\)[\s\S]*rendererEnterDeadline[\s\S]*candidate\.focus[\s\S]*nativeWorkbenchRequestFallbackAdmitted\(request, label[\s\S]*exact-action-focus-unproven/);
+  assert.match(helper, /visibleAdmittedNativeWorkbenchAction\(dialog\)[\s\S]*blockerCount === 0 && !admittedAction[\s\S]*visibleAdmittedNativeWorkbenchAction\(remaining\)[\s\S]*remainingBlockers === 0 && !remainingAction/);
+  assert.match(helper, /candidate\.isVisible[\s\S]*candidate\.click\(\{ timeout: 3_000 \}\)[\s\S]*return true[\s\S]*label === 'Cancel'[\s\S]*nativeWorkbenchRequestFallbackAdmitted\(request, label[\s\S]*exact-action-not-visible/);
 
   const enterprise = source.slice(source.indexOf('async function runInstalledEnterpriseProfile'), source.indexOf('const INSTALLED_VALIDATION_CONTROL_IDS'));
   assert.match(enterprise, /responseOffset: beforeCancel, requestOffset: requestBeforeCancel, requestType: 'enterprisePackToggle', keyboardAction: 'Cancel'/);
@@ -2774,6 +2783,23 @@ test('installed control probe marks only a fully evidenced chain complete', () =
   assert.equal(controlChains.controls[0].terminal_disposition, 'installed_operational_interaction_complete');
   assert.equal(controlChains.aggregates.complete_interaction_chains, 1);
   assert.equal(controlChains.installed_probe_observations.complete_interaction_chains, 1);
+});
+
+test('installed control probe accepts a collected profile failure only through its typed zero-denominator probe', () => {
+  const controlChains = { controls: [], aggregates: {} };
+  applyInstalledProbeObservations(controlChains, {
+    schema_version: 'px.installed-collected-profile-failure/1.0',
+    profile: 'studio-candidate-save',
+    errors: ['dependency-failed:studio-setup'],
+    control_probe: {
+      schema_version: 'px.installed-operational-control-probe/1.0',
+      authority: 'The failed profile remains retained separately and contributes no successful control observations.',
+      eligible_control_count: 0,
+      records: []
+    }
+  }, 'studio_candidate_save_observations');
+  assert.equal(controlChains.studio_candidate_save_observations.eligible_control_count, 0);
+  assert.equal(controlChains.studio_candidate_save_observations.complete_interaction_chains, 0);
 });
 
 test('installed control probe preserves an explicit authority-skipped terminal boundary', () => {
