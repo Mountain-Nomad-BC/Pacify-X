@@ -24,7 +24,10 @@ test('installed Studio controller adversarial profile executes every request-cor
   t.after(async () => { await browser.close(); });
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
   await page.goto(`${preview}?surface=agents`); await settled(page);
-  await page.evaluate(() => { window.__PX_INSTALLED_REQUESTS__ = window.__PX_POSTED_MESSAGES__; });
+  await page.evaluate(() => {
+    window.__PX_INSTALLED_REQUESTS__ = [];
+    addEventListener('px-dashboard-outbound-request', event => window.__PX_INSTALLED_REQUESTS__.push(event.detail));
+  });
   const profile = await runInstalledStudioControllerAdversarialProfile({ evaluateContent: (...args) => page.evaluate(...args) });
   assert.equal(profile.completed, true, JSON.stringify(profile));
   assert.equal(profile.errors.length, 0);

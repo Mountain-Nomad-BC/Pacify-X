@@ -528,6 +528,7 @@ async function childMain(configPath) {
           ...(config.nativeDialogOnly ? { PX_OPERATIONAL_NATIVE_DIALOG_ONLY: '1' } : {}),
           ...(config.codexHandoffOnly ? { PX_OPERATIONAL_CODEX_HANDOFF_ONLY: '1' } : {}),
           ...(config.errorIndicatorsOnly ? { PX_OPERATIONAL_ERROR_INDICATORS_ONLY: '1' } : {}),
+          ...(config.lateCardRepairOnly ? { PX_OPERATIONAL_LATE_CARD_REPAIR_ONLY: '1' } : {}),
           ...(nativeInputRequired ? {
             PX_OWNED_NATIVE_INPUT_ROOT: config.nativeInputRoot,
             PX_OWNED_NATIVE_INPUT_TOKEN: config.userData,
@@ -804,10 +805,10 @@ function stageOwnedHostBoundaryFixture(workspaceRoot, engineRoot, { runtimeComma
   };
 }
 
-function prepare(temporaryRoot, walkOutput, vsixPath = null, bootstrapOnly = false, configurationOnly = false, studioLifecycleOnly = false, knowledgeLifecycleOnly = false, hostBoundaryOnly = false, nativeDialogOnly = false, codexHandoffOnly = false, errorIndicatorsOnly = false, postAuditLongRunning = false) {
+function prepare(temporaryRoot, walkOutput, vsixPath = null, bootstrapOnly = false, configurationOnly = false, studioLifecycleOnly = false, knowledgeLifecycleOnly = false, hostBoundaryOnly = false, nativeDialogOnly = false, codexHandoffOnly = false, errorIndicatorsOnly = false, lateCardRepairOnly = false, postAuditLongRunning = false) {
   const stagedEngine = stageDisposableEngine(repositoryRoot, temporaryRoot);
   const hostBoundaryFixtureRequired = hostBoundaryOnly || (!bootstrapOnly && !configurationOnly && !studioLifecycleOnly && !knowledgeLifecycleOnly && !nativeDialogOnly);
-  const fullOperationalWalk = !bootstrapOnly && !configurationOnly && !studioLifecycleOnly && !knowledgeLifecycleOnly && !hostBoundaryOnly && !nativeDialogOnly && !codexHandoffOnly && !errorIndicatorsOnly;
+  const fullOperationalWalk = !bootstrapOnly && !configurationOnly && !studioLifecycleOnly && !knowledgeLifecycleOnly && !hostBoundaryOnly && !nativeDialogOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly;
   const nativeInputRequired = studioLifecycleOnly || nativeDialogOnly || postAuditLongRunning || fullOperationalWalk;
   const config = {
     workspace: path.join(temporaryRoot, 'workspace'),
@@ -829,6 +830,7 @@ function prepare(temporaryRoot, walkOutput, vsixPath = null, bootstrapOnly = fal
     nativeDialogOnly,
     codexHandoffOnly,
     errorIndicatorsOnly,
+    lateCardRepairOnly,
     nativeInputRequired,
     nativeInputRoot: path.join(temporaryRoot, 'native-input'),
     nativeInputSecret: nativeInputRequired ? crypto.randomBytes(32).toString('hex') : null,
@@ -973,11 +975,12 @@ async function main() {
   const nativeDialogOnly = process.argv.includes('--native-dialog-only');
   const codexHandoffOnly = process.argv.includes('--codex-handoff-only');
   const errorIndicatorsOnly = process.argv.includes('--error-indicators-only');
+  const lateCardRepairOnly = process.argv.includes('--late-card-repair-only');
   const postAuditLongRunning = process.argv.includes('--post-audit-long-running');
-  if ([bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly, hostBoundaryOnly, nativeDialogOnly, codexHandoffOnly, errorIndicatorsOnly].filter(Boolean).length > 1) throw new Error('focused-launcher-modes-are-mutually-exclusive');
-  if (postAuditLongRunning && (bootstrapOnly || configurationOnly || studioLifecycleOnly || knowledgeLifecycleOnly || hostBoundaryOnly || nativeDialogOnly || codexHandoffOnly || errorIndicatorsOnly)) throw new Error('post-audit-long-running-requires-full-profile');
+  if ([bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly, hostBoundaryOnly, nativeDialogOnly, codexHandoffOnly, errorIndicatorsOnly, lateCardRepairOnly].filter(Boolean).length > 1) throw new Error('focused-launcher-modes-are-mutually-exclusive');
+  if (postAuditLongRunning && (bootstrapOnly || configurationOnly || studioLifecycleOnly || knowledgeLifecycleOnly || hostBoundaryOnly || nativeDialogOnly || codexHandoffOnly || errorIndicatorsOnly || lateCardRepairOnly)) throw new Error('post-audit-long-running-requires-full-profile');
   if (vsixPath && (!fs.existsSync(vsixPath) || path.extname(vsixPath).toLowerCase() !== '.vsix')) throw new Error(`exact-vsix-missing:${vsixPath}`);
-  const focusedProfile = configurationOnly ? 'reversible-configuration' : studioLifecycleOnly ? 'studio-lifecycle' : knowledgeLifecycleOnly ? 'knowledge-lifecycle' : hostBoundaryOnly ? 'host-boundary' : nativeDialogOnly ? 'native-dialog-boundary' : codexHandoffOnly ? 'codex-handoff' : errorIndicatorsOnly ? 'error-indicators' : null;
+  const focusedProfile = configurationOnly ? 'reversible-configuration' : studioLifecycleOnly ? 'studio-lifecycle' : knowledgeLifecycleOnly ? 'knowledge-lifecycle' : hostBoundaryOnly ? 'host-boundary' : nativeDialogOnly ? 'native-dialog-boundary' : codexHandoffOnly ? 'codex-handoff' : errorIndicatorsOnly ? 'error-indicators' : lateCardRepairOnly ? 'late-card-repair' : null;
   const mode = `${vsixPath ? 'installed-vsix' : 'current-source'}${bootstrapOnly ? '-bootstrap' : focusedProfile ? `-${focusedProfile}` : ''}`;
   const walkOutput = path.resolve(argument('--output') || path.join(repositoryRoot, 'evidence', `operational-ui-walk-${mode}-${stamp}`));
   const reportPath = path.resolve(argument('--report') || path.join(repositoryRoot, 'evidence', 'operational-gap-ledger', `${mode}-host-walk-${stamp}.json`));
@@ -996,7 +999,7 @@ async function main() {
   let config = null;
   let configPath = null;
   try {
-    config = prepare(temporaryRoot, walkOutput, vsixPath, bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly, hostBoundaryOnly, nativeDialogOnly, codexHandoffOnly, errorIndicatorsOnly, postAuditLongRunning);
+    config = prepare(temporaryRoot, walkOutput, vsixPath, bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly, hostBoundaryOnly, nativeDialogOnly, codexHandoffOnly, errorIndicatorsOnly, lateCardRepairOnly, postAuditLongRunning);
     configPath = path.join(temporaryRoot, 'host-config.json');
     fs.writeFileSync(configPath, `${JSON.stringify(config, null, 2)}\n`, { encoding: 'utf8', flag: 'wx' });
   } catch (error) {
@@ -1111,7 +1114,7 @@ if (require.main === module) {
       process.exitCode = 1;
     });
   } else if (process.argv.includes('--help')) {
-    process.stdout.write('Usage: node scripts/run-isolated-current-source-walk.js [--post-audit-long-running | --bootstrap-only | --configuration-only | --studio-lifecycle-only | --knowledge-lifecycle-only | --host-boundary-only | --native-dialog-only | --codex-handoff-only | --error-indicators-only] [--vsix <path>] [--output <path>] [--report <path>]\n');
+    process.stdout.write('Usage: node scripts/run-isolated-current-source-walk.js [--post-audit-long-running | --bootstrap-only | --configuration-only | --studio-lifecycle-only | --knowledge-lifecycle-only | --host-boundary-only | --native-dialog-only | --codex-handoff-only | --error-indicators-only | --late-card-repair-only] [--vsix <path>] [--output <path>] [--report <path>]\n');
   } else {
     main().catch(error => {
       process.stderr.write(`${error.stack || error.message}\n`);

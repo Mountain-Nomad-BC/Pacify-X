@@ -17,6 +17,7 @@ const { buildInstalledLateCardAdversarialProfile, buildInstalledLateCardScenario
 const { exactStudioSetupTerminalResponse } = require('../scripts/run-operational-ui-walk');
 
 const { boundedOwnedUiAction, waitForOwnedWebview } = require('../scripts/run-operational-ui-walk');
+const { waitForInstalledGraphIdle } = require('../scripts/run-operational-ui-walk');
 
 const STAGES = ['open_load', 'display', 'user_edit_action', 'input_validation', 'authorization', 'backend_dispatch', 'runtime_effect', 'progress_reporting', 'result_acknowledgement', 'persistence', 'reload_reopen', 'failure_handling', 'recovery_rollback'];
 
@@ -123,6 +124,68 @@ test('owned dead-proxy diagnostics are nonblocking only with the exact sentinel 
     ]
   });
   assert.deepEqual(partitionExpectedFaultDiagnostics([proxy], null, null, false), { retained: [proxy], recovered: [] });
+});
+
+test('late-card diagnostics exclude only exact external host warnings', () => {
+  const mermaid = {
+    source: 'console',
+    context: 'console:vscode-file://vscode-app/C:/Program Files/Microsoft VS Code/resources/app/out/vs/workbench/workbench.desktop.main.js',
+    message: '%c ERR color: #f33 Tool "renderMermaidDiagram" was not contributed.'
+  };
+  const marketplace = {
+    source: 'console',
+    context: 'console:https://marketplace.visualstudio.com/_apis/public/gallery/vscode/px-owned/fixture/latest',
+    message: 'Failed to load resource: the server responded with a status of 404 ()'
+  };
+  const lookalike = { ...marketplace, context: 'console:https://marketplace.visualstudio.com/_apis/public/gallery/vscode/other/fixture/latest' };
+  assert.deepEqual(partitionExpectedFaultDiagnostics([mermaid, marketplace, lookalike], null, null, false), {
+    retained: [lookalike],
+    recovered: [
+      { ...mermaid, disposition: 'expected_external_host_warning' },
+      { ...marketplace, disposition: 'expected_external_host_warning' }
+    ]
+  });
+});
+
+test('graph cancellation settles on exact installed idle state without requiring a graph response', async () => {
+  const samples = [false, false, true];
+  const frameHost = { evaluateContent: async () => samples.shift() ?? true };
+  assert.equal(await waitForInstalledGraphIdle(frameHost, 1_000), true);
+  assert.equal(samples.length, 0);
+  const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
+  const cancellation = source.slice(source.indexOf('async function runInstalledLateCardRepairObservationProfile'), source.indexOf('async function runInstalledObservationStateProfile'));
+  assert.match(cancellation, /const cancelled = await waitForInstalledGraphIdle\(frameHost, timeoutMs\)/);
+  assert.doesNotMatch(source, /await waitForInstalledResponse\(frameHost, before, \{ types: \['graphResult'\] \}, timeoutMs\);\s*const cancelled/);
+});
+
+test('graph cancellation diagnostic is nonblocking only after exact cancellation recovery', () => {
+  const diagnostic = {
+    source: 'console',
+    context: 'console:vscode-file://vscode-app/resources/app/out/vs/workbench/workbench.desktop.main.js',
+    message: 'Pacify-X graphQuery failed closed: work-superseded'
+  };
+  const complete = { observations: { 'pxui.knowledge-graph.action.graphLoadAll': { attempted: true, cancelled: true, recovered: true, completed: true } } };
+  assert.deepEqual(partitionExpectedFaultDiagnostics([diagnostic], null, null, false, complete), {
+    retained: [],
+    recovered: [{ ...diagnostic, disposition: 'expected_graph_cancellation_recovered' }]
+  });
+  const incomplete = { observations: { 'pxui.knowledge-graph.action.graphLoadAll': { attempted: true, cancelled: true, recovered: false, completed: false } } };
+  assert.deepEqual(partitionExpectedFaultDiagnostics([diagnostic], null, null, false, incomplete), { retained: [diagnostic], recovered: [] });
+  assert.equal(partitionExpectedFaultDiagnostics([{ ...diagnostic, message: `${diagnostic.message}:lookalike` }], null, null, false, complete).retained.length, 1);
+});
+
+test('late-card repair focus runs only observation state and controller adversarial profiles', () => {
+  const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
+  assert.match(source, /PX_OPERATIONAL_LATE_CARD_REPAIR_ONLY === '1'/);
+  assert.match(source, /lateCardRepairOnly \? 'late-card-repair'/);
+  assert.match(source, /lateCardRepairOnly[\s\S]*runInstalledLateCardRepairObservationProfile\(dashboard, proofMatrix\)[\s\S]*runInstalledObservationStateProfile\(dashboard, sidebar, proofMatrix\)/);
+  assert.match(source, /INSTALLED_GRAPH_PAGINATION_OBSERVATION_IDS[\s\S]*observationStateControlProbe\(matrix, observations, INSTALLED_GRAPH_PAGINATION_OBSERVATION_IDS\)/);
+  assert.match(source, /lateCardControllerProfile = \(!focusedProfileOnly \|\| lateCardRepairOnly\)/);
+  assert.match(source, /studioChainAdmitted =[\s\S]*!lateCardRepairOnly/);
+  assert.match(source, /knowledgeLifecycleProfile =[\s\S]*!lateCardRepairOnly/);
+  assert.match(source, /learningLifecycleProfile =[\s\S]*!lateCardRepairOnly/);
+  assert.match(source, /lateCardWorkerProfile = !focusedProfileOnly/);
+  assert.match(source, /lateCardAdversarialProfile = !focusedProfileOnly/);
 });
 
 test('physical host mechanics reopen the owned editor, preserve command mode, and defer command probes', () => {
@@ -319,7 +382,7 @@ test('environment and Codex conditional profiles wait for their exact authoritat
 test('focused host-boundary scheduling runs only its exact typed-host profile', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   assert.match(source, /PX_OPERATIONAL_HOST_BOUNDARY_ONLY === '1'/);
-  assert.match(source, /hostBoundaryOnly \? 'host-boundary' : nativeDialogOnly \? 'native-dialog-boundary' : codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : null/);
+  assert.match(source, /hostBoundaryOnly \? 'host-boundary' : nativeDialogOnly \? 'native-dialog-boundary' : codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : null/);
   assert.match(source, /hostBoundaryProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| hostBoundaryOnly\)/);
   assert.match(source, /studioChainAdmitted = ownedReversibleConfigurationAuthority && !configurationOnly && !knowledgeLifecycleOnly && !hostBoundaryOnly/);
   assert.match(source, /studioSetupProfile = studioChainAdmitted/);
@@ -331,7 +394,7 @@ test('focused host-boundary scheduling runs only its exact typed-host profile', 
 test('focused native-dialog scheduling runs the exact confirmation profiles and dependent recovery checks', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   assert.match(source, /PX_OPERATIONAL_NATIVE_DIALOG_ONLY === '1'/);
-  assert.match(source, /nativeDialogOnly \? 'native-dialog-boundary' : codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : null/);
+  assert.match(source, /nativeDialogOnly \? 'native-dialog-boundary' : codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : null/);
   assert.match(source, /reversibleConfigurationProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| configurationOnly\)/);
   assert.match(source, /enterpriseProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| nativeDialogOnly\)/);
   assert.match(source, /projectsProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| nativeDialogOnly\)/);
@@ -944,7 +1007,7 @@ test('Codex handoff profile owns the exact contributed command without contradic
 test('focused Codex handoff scheduling excludes every unrelated stateful profile', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   assert.match(source, /PX_OPERATIONAL_CODEX_HANDOFF_ONLY === '1'/);
-  assert.match(source, /codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : null/);
+  assert.match(source, /codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : null/);
   assert.match(source, /const codexHandoffProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| codexHandoffOnly\)/);
   const schedulingStart = source.indexOf('const reversibleConfigurationProfile');
   const scheduling = source.slice(schedulingStart, source.indexOf('const engineOutageProfile', schedulingStart));
@@ -958,7 +1021,7 @@ test('focused Codex handoff scheduling excludes every unrelated stateful profile
 test('focused error-indicator scheduling probes exactly two identities and excludes unrelated stateful profiles', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   assert.match(source, /PX_OPERATIONAL_ERROR_INDICATORS_ONLY === '1'/);
-  assert.match(source, /errorIndicatorsOnly \? 'error-indicators' : null/);
+  assert.match(source, /errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : null/);
   const identityBlock = source.slice(source.indexOf('const ERROR_INDICATOR_CONTROL_IDS'), source.indexOf('const focusedProfile'));
   assert.match(identityBlock, /pxui\.memory\.indicator\.queryError/);
   assert.match(identityBlock, /pxui\.knowledge-core\.indicator\.controllerError/);
@@ -1766,7 +1829,7 @@ test('native workbench keyboard fallback requires an exact newly captured outbou
   const controllerBoundary = controller.slice(0, controller.indexOf('const app ='));
   assert.match(controllerBoundary, /const vscodeApi = acquireVsCodeApi\(\)/);
   assert.match(controllerBoundary, /px-dashboard-outbound-request/);
-  assert.match(controllerBoundary, /\['requestId', 'operation', 'kind', 'status', 'sort', 'exactTarget', 'packId'\]/);
+  assert.match(controllerBoundary, /\['requestId', 'operation', 'kind', 'status', 'sort', 'exactTarget', 'packId', 'trustKind', 'proof'\]/);
   assert.match(controllerBoundary, /\['offset', 'limit'\][\s\S]*Number\.isSafeInteger/);
   assert.match(controllerBoundary, /typeof value\.enabled === 'boolean'/);
   assert.doesNotMatch(controllerBoundary, /token|payload|content|path/);

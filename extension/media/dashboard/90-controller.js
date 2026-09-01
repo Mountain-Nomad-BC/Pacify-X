@@ -7,7 +7,7 @@ const PX_OUTBOUND_REQUEST_EVENT = 'px-dashboard-outbound-request';
 function pxOutboundRequestIdentity(message) {
   const value = message && typeof message === 'object' ? message : {};
   const identity = { type: typeof value.type === 'string' ? value.type : '' };
-  for (const key of ['requestId', 'operation', 'kind', 'status', 'sort', 'exactTarget', 'packId']) {
+  for (const key of ['requestId', 'operation', 'kind', 'status', 'sort', 'exactTarget', 'packId', 'trustKind', 'proof']) {
     if (typeof value[key] === 'string') identity[key] = value[key].slice(0, 500);
   }
   for (const key of ['offset', 'limit']) {

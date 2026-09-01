@@ -317,6 +317,38 @@ function focusedProfileIssues(value) {
         profile_errors: profile?.observation?.errors || []
       });
     }
+  } else if (focused === 'late-card-repair') {
+    const observation = value.observation_state_profile;
+    const graph = observation?.observations?.['pxui.knowledge-graph.action.graphLoadAll'];
+    const controller = value.studio_controller_adversarial_profile;
+    const requiredControllerChecks = [
+      'stale_allocation_ignored',
+      'cross_kind_allocation_ignored',
+      'cancelled_allocation_cannot_reopen',
+      'physical_skill_hash_substitution_rejected',
+      'incoming_trust_released',
+      'initial_conflict_rejected'
+    ];
+    const observationComplete = completeOwnedProbe(observation)
+      && graph?.rendered === true
+      && graph?.attempted === true
+      && graph?.cancelled === true
+      && graph?.recovered === true
+      && graph?.completed === true;
+    const controllerComplete = controller?.completed === true
+      && !(controller?.errors || []).length
+      && requiredControllerChecks.every(name => controller?.checks?.[name] === true)
+      && Object.values(controller?.checks || {}).length > 0
+      && Object.values(controller.checks).every(value => value === true);
+    if (!observationComplete || !controllerComplete) {
+      incomplete('focused-late-card-repair-incomplete', 'The focused repair journey did not complete the exact graph cancellation/recovery and Studio trust-release correlation boundaries.', {
+        observation_complete: observationComplete,
+        graph: graph || null,
+        controller_complete: controllerComplete,
+        failed_controller_checks: requiredControllerChecks.filter(name => controller?.checks?.[name] !== true),
+        controller_errors: controller?.errors || []
+      });
+    }
   } else if (focused === 'error-indicators') {
     const requiredIds = new Set([
       'pxui.memory.indicator.queryError',
@@ -597,6 +629,7 @@ module.exports = {
   evaluateLauncherTerminal,
   evaluateOperationalWalk,
   exitCodeForTerminalState,
+  isExternalOwnedFixtureMarketplaceDiagnostic,
   isExternalVsCodeMermaidToolDiagnostic,
   normalizeHostErrors,
   normalizeProcessOutput,

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.68
+
+- Preserve exact Studio trust-release proof identity in installed-host instrumentation.
+- Treat graph load-all cancellation as an idle-state transition instead of requiring a deliberately suppressed response.
+- Keep exact external VS Code optional-tool and owned-fixture marketplace warnings out of blocking late-card diagnostics.
+
 ## 0.6.67
 
 - Normalize extension source identity to the raw authored asset set, excluding the deterministic installed-only bundle whose bytes are verified independently during artifact installation.

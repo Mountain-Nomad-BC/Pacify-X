@@ -200,6 +200,67 @@ test('focused Codex handoff completion requires its exact three-control typed pr
   assert.equal(status.evaluated_scope, 'codex-handoff');
 });
 
+test('focused late-card repair requires graph idle recovery and exact Studio trust release checks', () => {
+  const receipt = completeReceipt();
+  receipt.focused_profile = 'late-card-repair';
+  receipt.control_chains.controls.forEach(control => { control.attempted = false; });
+  receipt.control_chains.aggregates.complete_interaction_chains = 0;
+  const stages = ['open_load', 'display', 'user_edit_action', 'input_validation', 'authorization', 'backend_dispatch', 'runtime_effect', 'progress_reporting', 'result_acknowledgement', 'persistence', 'reload_reopen', 'failure_handling', 'recovery_rollback'];
+  receipt.observation_state_profile = {
+    observations: {
+      'pxui.knowledge-graph.action.graphLoadAll': { rendered: true, attempted: true, cancelled: true, recovered: true, completed: true }
+    },
+    control_probe: {
+      eligible_control_count: 1,
+      records: [{
+        control_id: 'pxui.knowledge-graph.action.graphLoadAll', rendered: true, attempted: true, errors: [],
+        interaction_chain: Object.fromEntries(stages.map(stage => [stage, { state: 'present' }]))
+      }]
+    }
+  };
+  receipt.studio_controller_adversarial_profile = {
+    completed: true,
+    errors: [],
+    checks: Object.fromEntries([
+      'stale_allocation_ignored',
+      'cross_kind_allocation_ignored',
+      'cancelled_allocation_cannot_reopen',
+      'physical_skill_hash_substitution_rejected',
+      'incoming_trust_released',
+      'initial_conflict_rejected',
+      'editor_preserved'
+    ].map(name => [name, true]))
+  };
+  const status = evaluateOperationalWalk(receipt);
+  assert.equal(status.terminal_state, 'completed', JSON.stringify(status.issues));
+  assert.equal(status.scope_complete, true);
+  assert.equal(status.operationally_complete, false);
+  assert.equal(status.evaluated_scope, 'late-card-repair');
+});
+
+test('focused late-card repair fails closed on missing graph recovery or stripped trust proof', () => {
+  const receipt = completeReceipt();
+  receipt.focused_profile = 'late-card-repair';
+  receipt.observation_state_profile = {
+    observations: {
+      'pxui.knowledge-graph.action.graphLoadAll': { rendered: true, attempted: true, cancelled: true, recovered: false, completed: false }
+    },
+    control_probe: { eligible_control_count: 1, records: [] }
+  };
+  receipt.studio_controller_adversarial_profile = {
+    completed: false,
+    errors: ['incoming_trust_released:failed'],
+    checks: { incoming_trust_released: false }
+  };
+  const status = evaluateOperationalWalk(receipt);
+  assert.equal(status.terminal_state, 'incomplete');
+  const finding = status.issues.find(item => item.code === 'focused-late-card-repair-incomplete');
+  assert.ok(finding);
+  assert.equal(finding.details.observation_complete, false);
+  assert.equal(finding.details.controller_complete, false);
+  assert.ok(finding.details.failed_controller_checks.includes('incoming_trust_released'));
+});
+
 test('focused Codex handoff fails closed on denominator mismatch, missing stage, or profile error', () => {
   const receipt = completeReceipt();
   receipt.focused_profile = 'codex-handoff';

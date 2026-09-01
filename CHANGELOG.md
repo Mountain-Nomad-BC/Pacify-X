@@ -4,6 +4,7 @@ All notable changes to PACIFY-X are recorded here. The project follows semantic 
 
 ## Unreleased
 
+- Repair installed-host graph cancellation, Studio trust-release instrumentation, and exact external-warning partitioning behind a bounded focused verification profile.
 - Normalize extension source identity to the raw authored asset set, excluding the deterministic installed-only bundle whose bytes are verified independently during artifact installation.
 - Replaced caller-asserted outcome, authorization, and candidate-admission authority with one signed, scoped evidence resolver and explicit non-authoritative compatibility commands.
 - Added stable governed CLI exit codes, Python 3.11–3.14 runtime enforcement, command-local CLI loading, durable chunked release-evidence custody, and hash-locked normal CI.
