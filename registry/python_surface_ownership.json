@@ -2118,7 +2118,7 @@
       "validation_level": "full-suite-and-installed-integration"
     },
     {
-      "bytes": 148658,
+      "bytes": 148773,
       "evidence": [
         "tests/test_dashboard_api.py"
       ],
@@ -2126,7 +2126,7 @@
       "packaged": true,
       "path": "runtime/dashboard_api.py",
       "role": "installed-runtime",
-      "sha256": "a0ee952e5afc9117f9687a57459bc8c9f996264a5ed5e1895df1920045ebee44",
+      "sha256": "02241315db5457636115836efc9364e174dad757f533c045c55e89b342bd06c4",
       "syntax_valid": true,
       "validation_level": "evidence-association"
     },
@@ -6505,7 +6505,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 38219,
+      "bytes": 38592,
       "evidence": [
         "tests/test_dashboard_api.py"
       ],
@@ -6513,7 +6513,7 @@
       "packaged": true,
       "path": "tests/test_dashboard_api.py",
       "role": "release-test",
-      "sha256": "1257a3e96299227ca8a59947c3521a39fa7d647965cda7b53c325399ebfab84f",
+      "sha256": "a70950df97562a336bba897b5bbb4accd0b230e4102026a198d328620db43902",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },
