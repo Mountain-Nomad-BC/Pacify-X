@@ -17,7 +17,7 @@ const { buildInstalledLateCardAdversarialProfile, buildInstalledLateCardScenario
 const { exactStudioSetupTerminalResponse } = require('../scripts/run-operational-ui-walk');
 
 const { boundedOwnedUiAction, waitForOwnedWebview } = require('../scripts/run-operational-ui-walk');
-const { waitForInstalledGraphIdle } = require('../scripts/run-operational-ui-walk');
+const { installedGraphExchangeOffset, waitForBuilderJsonControls, waitForInstalledGraphExchange, waitForInstalledGraphIdle } = require('../scripts/run-operational-ui-walk');
 
 const STAGES = ['open_load', 'display', 'user_edit_action', 'input_validation', 'authorization', 'backend_dispatch', 'runtime_effect', 'progress_reporting', 'result_acknowledgement', 'persistence', 'reload_reopen', 'failure_handling', 'recovery_rollback'];
 
@@ -158,6 +158,52 @@ test('graph cancellation settles on exact installed idle state without requiring
   assert.doesNotMatch(source, /await waitForInstalledResponse\(frameHost, before, \{ types: \['graphResult'\] \}, timeoutMs\);\s*const cancelled/);
 });
 
+test('graph pagination waits for the exact request-bound terminal response', async () => {
+  const requests = [{ type: 'graphQuery', requestId: 'graph-exact', offset: 0, edgeOffset: 0 }];
+  const responses = [
+    { type: 'graphResult', requestId: 'graph-stale', result: { page: {} } },
+    { type: 'graphResult', requestId: 'graph-exact', result: { page: { node_has_more: true } } }
+  ];
+  const frame = { contentWindow: { __PX_INSTALLED_REQUESTS__: requests, __PX_INSTALLED_RESPONSES__: responses } };
+  const frameHost = { evaluate: async (operation, argument) => operation(frame, argument) };
+  assert.deepEqual(await installedGraphExchangeOffset(frameHost), { requests: 1, responses: 2 });
+  const exact = await waitForInstalledGraphExchange(frameHost, { requests: 0, responses: 0 }, 1_000);
+  assert.equal(exact.requestId, 'graph-exact');
+  assert.equal(exact.result.page.node_has_more, true);
+
+  frame.contentWindow.__PX_INSTALLED_RESPONSES__ = [
+    { type: 'operationError', operation: 'graphQuery', requestId: 'graph-exact', error: 'work-superseded' }
+  ];
+  await assert.rejects(
+    waitForInstalledGraphExchange(frameHost, { requests: 0, responses: 0 }, 1_000),
+    /installed-graph-query-failed:graph-exact:work-superseded/
+  );
+});
+
+test('builder JSON controls are reacquired from the current modal render', async () => {
+  let samples = 0;
+  let selected = false;
+  const tab = { disabled: false, getAttribute: name => name === 'aria-selected' && selected ? 'true' : 'false', click: () => { selected = true; } };
+  const input = {};
+  const apply = {};
+  const modal = { querySelector: selector => {
+    if (selector.includes('studioEditorTab')) return tab;
+    if (selector === '#studio-draft-json') return selected ? input : null;
+    if (selector.includes('studioApplyJson')) return selected ? apply : null;
+    if (selector === 'h2') return { textContent: 'Agent Studio' };
+    return null;
+  } };
+  const frameHost = { evaluate: async (operation, argument) => {
+    samples += 1;
+    const document = { querySelector: selector => selector === '.studio-modal' && samples > 1 ? modal : null };
+    return operation({ contentDocument: document }, argument);
+  } };
+  const ready = await waitForBuilderJsonControls(frameHost, 'agent', 1_000);
+  assert.equal(ready.ready, true);
+  assert.equal(ready.json_tab_selected, true);
+  assert.ok(samples >= 2, 'the helper must tolerate a transiently replaced modal render');
+});
+
 test('graph cancellation diagnostic is nonblocking only after exact cancellation recovery', () => {
   const diagnostic = {
     source: 'console',
@@ -186,6 +232,17 @@ test('late-card repair focus runs only observation state and controller adversar
   assert.match(source, /learningLifecycleProfile =[\s\S]*!lateCardRepairOnly/);
   assert.match(source, /lateCardWorkerProfile = !focusedProfileOnly/);
   assert.match(source, /lateCardAdversarialProfile = !focusedProfileOnly/);
+});
+
+test('builder focus runs only the two unsaved builder durability profiles', () => {
+  const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
+  assert.match(source, /PX_OPERATIONAL_BUILDER_ONLY === '1'/);
+  assert.match(source, /builderOnly \? 'builder' : null/);
+  assert.match(source, /for \(const kind of focusedProfileOnly && !builderOnly \? \[\] : \['agent', 'workflow'\]\)/);
+  assert.match(source, /if \(focusedProfileOnly && !builderOnly\)/);
+  assert.match(source, /studioChainAdmitted =[^\n]*!builderOnly/);
+  assert.match(source, /knowledgeLifecycleProfile =[^\n]*!builderOnly/);
+  assert.match(source, /learningLifecycleProfile =[^\n]*!builderOnly/);
 });
 
 test('physical host mechanics reopen the owned editor, preserve command mode, and defer command probes', () => {
@@ -382,7 +439,7 @@ test('environment and Codex conditional profiles wait for their exact authoritat
 test('focused host-boundary scheduling runs only its exact typed-host profile', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   assert.match(source, /PX_OPERATIONAL_HOST_BOUNDARY_ONLY === '1'/);
-  assert.match(source, /hostBoundaryOnly \? 'host-boundary' : nativeDialogOnly \? 'native-dialog-boundary' : codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : null/);
+  assert.match(source, /hostBoundaryOnly \? 'host-boundary' : nativeDialogOnly \? 'native-dialog-boundary' : codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : builderOnly \? 'builder' : null/);
   assert.match(source, /hostBoundaryProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| hostBoundaryOnly\)/);
   assert.match(source, /studioChainAdmitted = ownedReversibleConfigurationAuthority && !configurationOnly && !knowledgeLifecycleOnly && !hostBoundaryOnly/);
   assert.match(source, /studioSetupProfile = studioChainAdmitted/);
@@ -394,7 +451,7 @@ test('focused host-boundary scheduling runs only its exact typed-host profile', 
 test('focused native-dialog scheduling runs the exact confirmation profiles and dependent recovery checks', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   assert.match(source, /PX_OPERATIONAL_NATIVE_DIALOG_ONLY === '1'/);
-  assert.match(source, /nativeDialogOnly \? 'native-dialog-boundary' : codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : null/);
+  assert.match(source, /nativeDialogOnly \? 'native-dialog-boundary' : codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : builderOnly \? 'builder' : null/);
   assert.match(source, /reversibleConfigurationProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| configurationOnly\)/);
   assert.match(source, /enterpriseProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| nativeDialogOnly\)/);
   assert.match(source, /projectsProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| nativeDialogOnly\)/);
@@ -415,7 +472,7 @@ test('focused native-dialog scheduling runs the exact confirmation profiles and 
     assert.match(clause, /focusedProfileOnly|hostBoundaryOnly/, `${profile} remains outside the native-dialog focus`);
   }
   assert.match(source, /installedControlProbe = dashboardProfileBlocker[\s\S]*: errorIndicatorsOnly/);
-  assert.match(source, /for \(const kind of focusedProfileOnly \? \[\] : \['agent', 'workflow'\]\)/);
+  assert.match(source, /for \(const kind of focusedProfileOnly && !builderOnly \? \[\] : \['agent', 'workflow'\]\)/);
 });
 
 test('portable memory stays non-canonical while exposing bounded metadata rows after restart', () => {
@@ -1007,7 +1064,7 @@ test('Codex handoff profile owns the exact contributed command without contradic
 test('focused Codex handoff scheduling excludes every unrelated stateful profile', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   assert.match(source, /PX_OPERATIONAL_CODEX_HANDOFF_ONLY === '1'/);
-  assert.match(source, /codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : null/);
+  assert.match(source, /codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : builderOnly \? 'builder' : null/);
   assert.match(source, /const codexHandoffProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| codexHandoffOnly\)/);
   const schedulingStart = source.indexOf('const reversibleConfigurationProfile');
   const scheduling = source.slice(schedulingStart, source.indexOf('const engineOutageProfile', schedulingStart));
@@ -1021,7 +1078,7 @@ test('focused Codex handoff scheduling excludes every unrelated stateful profile
 test('focused error-indicator scheduling probes exactly two identities and excludes unrelated stateful profiles', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   assert.match(source, /PX_OPERATIONAL_ERROR_INDICATORS_ONLY === '1'/);
-  assert.match(source, /errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : null/);
+  assert.match(source, /errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : builderOnly \? 'builder' : null/);
   const identityBlock = source.slice(source.indexOf('const ERROR_INDICATOR_CONTROL_IDS'), source.indexOf('const focusedProfile'));
   assert.match(identityBlock, /pxui\.memory\.indicator\.queryError/);
   assert.match(identityBlock, /pxui\.knowledge-core\.indicator\.controllerError/);

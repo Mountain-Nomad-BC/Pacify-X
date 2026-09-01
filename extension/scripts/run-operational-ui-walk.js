@@ -465,11 +465,12 @@ const nativeDialogOnly = ownedReversibleConfigurationAuthority && process.env.PX
 const codexHandoffOnly = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_CODEX_HANDOFF_ONLY === '1';
 const errorIndicatorsOnly = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_ERROR_INDICATORS_ONLY === '1';
 const lateCardRepairOnly = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_LATE_CARD_REPAIR_ONLY === '1';
+const builderOnly = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_BUILDER_ONLY === '1';
 const ERROR_INDICATOR_CONTROL_IDS = new Set([
   'pxui.memory.indicator.queryError',
   'pxui.knowledge-core.indicator.controllerError'
 ]);
-const focusedProfile = configurationOnly ? 'reversible-configuration' : studioLifecycleOnly ? 'studio-lifecycle' : knowledgeLifecycleOnly ? 'knowledge-lifecycle' : hostBoundaryOnly ? 'host-boundary' : nativeDialogOnly ? 'native-dialog-boundary' : codexHandoffOnly ? 'codex-handoff' : errorIndicatorsOnly ? 'error-indicators' : lateCardRepairOnly ? 'late-card-repair' : null;
+const focusedProfile = configurationOnly ? 'reversible-configuration' : studioLifecycleOnly ? 'studio-lifecycle' : knowledgeLifecycleOnly ? 'knowledge-lifecycle' : hostBoundaryOnly ? 'host-boundary' : nativeDialogOnly ? 'native-dialog-boundary' : codexHandoffOnly ? 'codex-handoff' : errorIndicatorsOnly ? 'error-indicators' : lateCardRepairOnly ? 'late-card-repair' : builderOnly ? 'builder' : null;
 const focusedProfileOnly = Boolean(focusedProfile);
 const postAuditLongRunningAuthority = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_POST_AUDIT_LONG_RUNNING === '1';
 // Long-running operational coverage is not validation authority. Repository
@@ -3080,9 +3081,36 @@ async function invokeBuilderControl(frameHost, kind, controlId, action, dataset 
   };
 }
 
+async function waitForBuilderJsonControls(frameHost, kind, timeoutMs = 5_000) {
+  const deadline = Date.now() + timeoutMs;
+  let last = null;
+  do {
+    last = await frameHost.evaluate((frame, builderKind) => {
+      const document = frame.contentDocument;
+      const modal = document?.querySelector('.studio-modal');
+      const tab = modal?.querySelector('[data-action="studioEditorTab"][data-tab="json"]');
+      if (tab && !tab.disabled && tab.getAttribute('aria-selected') !== 'true') tab.click();
+      const input = modal?.querySelector('#studio-draft-json');
+      const apply = modal?.querySelector('[data-action="studioApplyJson"]');
+      return {
+        builder_kind: builderKind,
+        modal_present: Boolean(modal),
+        title: modal?.querySelector('h2')?.textContent?.trim() || '',
+        json_tab_present: Boolean(tab),
+        json_tab_selected: tab?.getAttribute('aria-selected') === 'true',
+        input_present: Boolean(input),
+        apply_present: Boolean(apply),
+        ready: Boolean(input && apply)
+      };
+    }, kind);
+    if (last.ready) return last;
+    await wait(50);
+  } while (Date.now() < deadline);
+  throw new Error(`canonical-json-controls-readiness-timeout:${kind}:${JSON.stringify(last)}`);
+}
+
 async function exerciseBuilderDurability(frameHost, kind, studioSurface) {
-  await frameHost.evaluate(frame => frame.contentDocument?.querySelector('[data-action="studioEditorTab"][data-tab="json"]')?.click());
-  await wait(180);
+  await waitForBuilderJsonControls(frameHost, kind);
   const before = await builderState(frameHost, kind);
   const negative = await frameHost.evaluate(frame => {
     const document = frame.contentDocument;
@@ -3097,6 +3125,7 @@ async function exerciseBuilderDurability(frameHost, kind, studioSurface) {
   });
   await wait(180);
   assert.ok(negative.validation_message, `${kind}-studio-malformed-json-was-not-rejected`);
+  await waitForBuilderJsonControls(frameHost, kind);
   await frameHost.evaluate((frame, original) => {
     const document = frame.contentDocument;
     const input = document?.querySelector('#studio-draft-json');
@@ -4073,6 +4102,45 @@ async function waitForInstalledResponse(frameHost, after, predicate, timeoutMs =
   throw new Error(`installed-response-timeout:${predicate.types.join(',')}:${predicate.operation || '*'}`);
 }
 
+async function installedGraphExchangeOffset(frameHost) {
+  return frameHost.evaluate(frame => ({
+    requests: frame.contentWindow?.__PX_INSTALLED_REQUESTS__?.length || 0,
+    responses: frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0
+  }));
+}
+
+async function waitForInstalledGraphExchange(frameHost, after, timeoutMs = 30_000) {
+  const deadline = Date.now() + timeoutMs;
+  let diagnostic = { requests: [], responses: [] };
+  do {
+    const exchange = await frameHost.evaluate((frame, offsets) => {
+      const requests = (frame.contentWindow?.__PX_INSTALLED_REQUESTS__ || []).slice(offsets.requests)
+        .filter(value => value?.type === 'graphQuery' && typeof value.requestId === 'string' && value.requestId);
+      const responses = (frame.contentWindow?.__PX_INSTALLED_RESPONSES__ || []).slice(offsets.responses);
+      for (const request of requests) {
+        const response = responses.find(value => value?.requestId === request.requestId
+          && (value?.type === 'graphResult' || (value?.type === 'operationError' && value?.operation === 'graphQuery')));
+        if (response) return { request, response, diagnostic: null };
+      }
+      return {
+        request: null,
+        response: null,
+        diagnostic: {
+          requests: requests.slice(-6).map(value => ({ type: value.type, requestId: value.requestId, offset: value.offset, edgeOffset: value.edgeOffset })),
+          responses: responses.slice(-8).map(value => ({ type: value?.type, requestId: value?.requestId || null, operation: value?.operation || null, error: String(value?.error || '').slice(0, 300) }))
+        }
+      };
+    }, after);
+    if (exchange.response?.type === 'operationError') {
+      throw new Error(`installed-graph-query-failed:${exchange.request.requestId}:${String(exchange.response.error || 'unknown').slice(0, 600)}`);
+    }
+    if (exchange.response?.type === 'graphResult') return exchange.response;
+    diagnostic = exchange.diagnostic || diagnostic;
+    await wait(120);
+  } while (Date.now() < deadline);
+  throw new Error(`installed-graph-request-bound-response-timeout:${JSON.stringify(diagnostic)}`);
+}
+
 async function waitForInstalledGraphIdle(frameHost, timeoutMs = 30_000) {
   const deadline = Date.now() + timeoutMs;
   do {
@@ -4914,19 +4982,20 @@ async function runInstalledLateCardRepairObservationProfile(frameHost, matrix, t
   }]));
   try {
     await navigateInstalledSurface(frameHost, 'knowledgeGraph', timeoutMs);
+    await waitForInstalledGraphIdle(frameHost, timeoutMs);
     const relation = await installedLocalSelectFailureRoundTrip(frameHost, '[data-graph-relation]', timeoutMs);
     Object.assign(observations['pxui.knowledge-graph.field.graphRelation'], { rendered: relation.rendered, attempted: true, failure: relation.invalidRejected, recovered: relation.restored && relation.fixtureRemoved, completed: relation.invalidRejected && relation.changed && relation.restored && relation.fixtureRemoved, failure_detail: 'The native graph-relation select rejected an option outside its authoritative relation set without dispatch.', recovery_detail: 'A valid alternate relation was selected locally, the exact predecessor filter was restored, and any owned single-option fixture was removed.', detail: 'The local graph relation select rejected an invalid option, accepted a valid alternate, restored its exact prior value, and removed its owned reversible fixture without host dispatch.' });
     const requestGraphPage = async () => {
-      const before = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
+      const before = await installedGraphExchangeOffset(frameHost);
       await frameHost.evaluateContent(() => requestGraph({ view: 'repository', mode: 'full', cluster: '', node: '', query: '', relation: '', direction: 'both', kind: '', status: '', offset: 0, edgeOffset: 0, maxNodes: 1, maxEdges: 1 }));
-      return waitForInstalledResponse(frameHost, before, { types: ['graphResult'] }, timeoutMs);
+      return waitForInstalledGraphExchange(frameHost, before, timeoutMs);
     };
     const first = await requestGraphPage();
     if (!first.result?.page?.node_has_more && !first.result?.page?.edge_has_more) throw new Error('observation-state-graph-denominator-too-small');
     const initial = await frameHost.evaluate(frame => ({ more: Boolean(frame.contentDocument.querySelector('[data-action="graphLoadMore"]:not([disabled])')), all: Boolean(frame.contentDocument.querySelector('[data-action="graphLoadAll"]:not([disabled])')) }));
-    let before = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
+    let before = await installedGraphExchangeOffset(frameHost);
     await frameHost.evaluate(frame => frame.contentDocument.querySelector('[data-action="graphLoadMore"]')?.click());
-    await waitForInstalledResponse(frameHost, before, { types: ['graphResult'] }, timeoutMs);
+    await waitForInstalledGraphExchange(frameHost, before, timeoutMs);
     Object.assign(observations['pxui.knowledge-graph.action.graphLoadMore'], { rendered: initial.more, attempted: true, failure: true, recovered: true, completed: initial.more, failure_detail: 'The bounded first graph page withheld remaining records until the exact Load more action.', recovery_detail: 'Load more returned the next real host graph page.' });
     await requestGraphPage();
     const cancellation = await frameHost.evaluate(frame => {
@@ -4939,14 +5008,14 @@ async function runInstalledLateCardRepairObservationProfile(frameHost, matrix, t
     });
     const cancelled = await waitForInstalledGraphIdle(frameHost, timeoutMs);
     if (!cancellation.cancelRendered || !cancelled) throw new Error('observation-state-graph-load-all-cancellation-failed');
-    before = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
+    before = await installedGraphExchangeOffset(frameHost);
     await frameHost.evaluate(frame => frame.contentDocument.querySelector('[data-action="graphLoadAll"]')?.click());
-    await waitForInstalledResponse(frameHost, before, { types: ['graphResult'] }, timeoutMs);
+    await waitForInstalledGraphExchange(frameHost, before, timeoutMs);
     const allDone = await waitForInstalledGraphIdle(frameHost, timeoutMs);
     Object.assign(observations['pxui.knowledge-graph.action.graphLoadAll'], { rendered: initial.all, attempted: true, failure: true, cancelled, recovered: allDone, completed: initial.all && cancelled && allDone, failure_detail: 'The bounded first graph page exposed an incomplete-page state and the installed Cancel load all action stopped continuation after the in-flight bounded page.', recovery_detail: 'A subsequent Load all consumed real host pages until no continuation remained.' });
-    const restoreBefore = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
+    const restoreBefore = await installedGraphExchangeOffset(frameHost);
     await frameHost.evaluateContent(() => requestGraph({ view: 'repository', mode: 'full', cluster: '', node: '', query: '', relation: '', direction: 'both', kind: '', status: '', offset: 0, edgeOffset: 0 }));
-    await waitForInstalledResponse(frameHost, restoreBefore, { types: ['graphResult'] }, timeoutMs);
+    await waitForInstalledGraphExchange(frameHost, restoreBefore, timeoutMs);
   } catch (error) {
     for (const id of INSTALLED_GRAPH_PAGINATION_OBSERVATION_IDS) observations[id].errors.push(String(error?.message || error).slice(0, 1600));
   }
@@ -5026,19 +5095,20 @@ async function runInstalledObservationStateProfile(frameHost, sidebar, matrix, t
 
   try {
     await navigateInstalledSurface(frameHost, 'knowledgeGraph', timeoutMs);
+    await waitForInstalledGraphIdle(frameHost, timeoutMs);
     const relation = await installedLocalSelectFailureRoundTrip(frameHost, '[data-graph-relation]', timeoutMs);
     apply(['pxui.knowledge-graph.field.graphRelation'], { rendered: relation.rendered, attempted: true, failure: relation.invalidRejected, recovered: relation.restored && relation.fixtureRemoved, completed: relation.invalidRejected && relation.changed && relation.restored && relation.fixtureRemoved, failure_detail: 'The native graph-relation select rejected an option outside its authoritative relation set without dispatch.', recovery_detail: 'A valid alternate relation was selected locally, the exact predecessor filter was restored, and any owned single-option fixture was removed.', detail: 'The local graph relation select rejected an invalid option, accepted a valid alternate, restored its exact prior value, and removed its owned reversible fixture without dispatch.' });
     const requestGraphPage = async () => {
-      const before = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
+      const before = await installedGraphExchangeOffset(frameHost);
       await frameHost.evaluateContent(() => requestGraph({ view: 'repository', mode: 'full', cluster: '', node: '', query: '', relation: '', direction: 'both', kind: '', status: '', offset: 0, edgeOffset: 0, maxNodes: 1, maxEdges: 1 }));
-      return waitForInstalledResponse(frameHost, before, { types: ['graphResult'] }, timeoutMs);
+      return waitForInstalledGraphExchange(frameHost, before, timeoutMs);
     };
     const first = await requestGraphPage();
     if (!first.result?.page?.node_has_more && !first.result?.page?.edge_has_more) throw new Error('observation-state-graph-denominator-too-small');
     const initial = await frameHost.evaluate(frame => ({ more: Boolean(frame.contentDocument.querySelector('[data-action="graphLoadMore"]:not([disabled])')), all: Boolean(frame.contentDocument.querySelector('[data-action="graphLoadAll"]:not([disabled])')) }));
-    let before = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
+    let before = await installedGraphExchangeOffset(frameHost);
     await frameHost.evaluate(frame => frame.contentDocument.querySelector('[data-action="graphLoadMore"]')?.click());
-    await waitForInstalledResponse(frameHost, before, { types: ['graphResult'] }, timeoutMs);
+    await waitForInstalledGraphExchange(frameHost, before, timeoutMs);
     const moreId = 'pxui.knowledge-graph.action.graphLoadMore';
     Object.assign(observations[moreId], { rendered: initial.more, attempted: true, failure: true, recovered: true, completed: initial.more, failure_detail: 'The bounded first graph page withheld remaining records until the exact Load more action.', recovery_detail: 'Load more returned the next real host graph page.' });
     await requestGraphPage();
@@ -5052,15 +5122,15 @@ async function runInstalledObservationStateProfile(frameHost, sidebar, matrix, t
     });
     const cancelled = await waitForInstalledGraphIdle(frameHost, timeoutMs);
     if (!cancellation.cancelRendered || !cancelled) throw new Error('observation-state-graph-load-all-cancellation-failed');
-    before = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
+    before = await installedGraphExchangeOffset(frameHost);
     await frameHost.evaluate(frame => frame.contentDocument.querySelector('[data-action="graphLoadAll"]')?.click());
-    await waitForInstalledResponse(frameHost, before, { types: ['graphResult'] }, timeoutMs);
+    await waitForInstalledGraphExchange(frameHost, before, timeoutMs);
     const allDone = await waitForInstalledGraphIdle(frameHost, timeoutMs);
     const allId = 'pxui.knowledge-graph.action.graphLoadAll';
     Object.assign(observations[allId], { rendered: initial.all, attempted: true, failure: true, cancelled, recovered: allDone, completed: initial.all && cancelled && allDone, failure_detail: 'The bounded first graph page exposed an incomplete-page state and the installed Cancel load all action stopped continuation after the in-flight bounded page.', recovery_detail: 'A subsequent Load all consumed real host pages until no continuation remained.' });
-    const restoreBefore = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
+    const restoreBefore = await installedGraphExchangeOffset(frameHost);
     await frameHost.evaluateContent(() => requestGraph({ view: 'repository', mode: 'full', cluster: '', node: '', query: '', relation: '', direction: 'both', kind: '', status: '', offset: 0, edgeOffset: 0 }));
-    await waitForInstalledResponse(frameHost, restoreBefore, { types: ['graphResult'] }, timeoutMs);
+    await waitForInstalledGraphExchange(frameHost, restoreBefore, timeoutMs);
   } catch (error) {
     for (const id of ['pxui.knowledge-graph.field.graphRelation', 'pxui.knowledge-graph.action.graphLoadMore', 'pxui.knowledge-graph.action.graphLoadAll']) observations[id].errors.push(String(error?.message || error).slice(0, 1600));
   }
@@ -10045,7 +10115,7 @@ async function main() {
     if (ownedReversibleConfigurationAuthority && returnedProfileErrors(reversibleConfigurationProfile).length) {
       dashboardProfileBlocker = 'reversible-configuration';
     }
-    const studioChainAdmitted = ownedReversibleConfigurationAuthority && !configurationOnly && !knowledgeLifecycleOnly && !hostBoundaryOnly && !nativeDialogOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly;
+    const studioChainAdmitted = ownedReversibleConfigurationAuthority && !configurationOnly && !knowledgeLifecycleOnly && !hostBoundaryOnly && !nativeDialogOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly && !builderOnly;
     const studioSetupProfile = studioChainAdmitted
       ? await timedProfile('studio-setup', () => runInstalledStudioSetupProfile(workbench, dashboard, proofMatrix))
       : { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside an owned isolated host.', eligible_control_count: 0, records: [] };
@@ -10094,10 +10164,10 @@ async function main() {
     if (!focusedProfileOnly && !hostSourceMismatch && studioLifecycleCrashProfile.completed !== true && returnedProfileErrors(studioLifecycleCrashProfile).length === 0) {
       recordProfileFailure('studio-lifecycle-crash-recovery', 'returned-incomplete', studioLifecycleCrashProfile.errors?.length ? studioLifecycleCrashProfile.errors : ['profile-incomplete-without-error']);
     }
-    const knowledgeLifecycleProfile = ownedReversibleConfigurationAuthority && !configurationOnly && !studioLifecycleOnly && !hostBoundaryOnly && !nativeDialogOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly
+    const knowledgeLifecycleProfile = ownedReversibleConfigurationAuthority && !configurationOnly && !studioLifecycleOnly && !hostBoundaryOnly && !nativeDialogOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly && !builderOnly
       ? await timedProfile('knowledge-lifecycle', () => runInstalledKnowledgeLifecycleProfile(dashboard, proofMatrix))
       : { schema_version: 'px.installed-knowledge-lifecycle-profile/1.0', authority: 'Not admitted outside an owned isolated host and disposable workspace.', observation: { attempted: false, completed: false, errors: [] }, control_probe: { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside an owned isolated host and disposable workspace.', eligible_control_count: 0, records: [] } };
-    const learningLifecycleProfile = ownedReversibleConfigurationAuthority && !configurationOnly && !studioLifecycleOnly && !hostBoundaryOnly && !nativeDialogOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly
+    const learningLifecycleProfile = ownedReversibleConfigurationAuthority && !configurationOnly && !studioLifecycleOnly && !hostBoundaryOnly && !nativeDialogOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly && !builderOnly
       ? await timedProfile('learning-lifecycle', () => runInstalledLearningLifecycleProfile(dashboard, proofMatrix))
       : { schema_version: 'px.installed-learning-lifecycle-profile/1.0', authority: 'Not admitted outside an owned isolated host and disposable workspace.', observation: { attempted: false, completed: false, errors: [] }, control_probe: { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside an owned isolated host and disposable workspace.', eligible_control_count: 0, records: [] } };
     const coordinationMemoryProfile = ownedReversibleConfigurationAuthority && !focusedProfileOnly
@@ -10163,7 +10233,7 @@ async function main() {
         { resetBaseline: false, timeoutMs: 30_000 }
       );
     }
-    for (const kind of focusedProfileOnly ? [] : ['agent', 'workflow']) {
+    for (const kind of focusedProfileOnly && !builderOnly ? [] : ['agent', 'workflow']) {
       if (dashboardProfileBlocker) {
         builders[kind] = { terminal_disposition: 'blocked_profile_failure', reason: `The ${dashboardProfileBlocker} profile invalidated the shared dashboard boundary.`, observations: [], attempted_control_ids: [] };
         continue;
@@ -10193,7 +10263,7 @@ async function main() {
         };
       }
     }
-    if (focusedProfileOnly) {
+    if (focusedProfileOnly && !builderOnly) {
       builders.agent = { terminal_disposition: 'focused_profile_not_run', observations: [], attempted_control_ids: [] };
       builders.workflow = { terminal_disposition: 'focused_profile_not_run', observations: [], attempted_control_ids: [] };
     }
@@ -10437,5 +10507,6 @@ module.exports = {
   validCoordinationResult, validKnowledgeLifecycleResult, validLearningLifecycleResult, validPermanentCleanupResult,
   validPluginLifecycleObservation, validPendingPluginMutationReceipt, validPluginMutationReceipt, validStudioDraftReceipt, validStudioLifecycleResult,
   captureSurfaceViews, surfaceCaptureCandidates, surfaceCaptureFileStem,
-  validStudioRevisionEditObservation, validStudioSetupResult, validationControlProbe, runInstalledValidationBoundaryProfile, waitForCoordinationResult, waitForInstalledGraphIdle, waitForOwnedWebview
+  validStudioRevisionEditObservation, validStudioSetupResult, validationControlProbe, runInstalledValidationBoundaryProfile, waitForBuilderJsonControls, waitForCoordinationResult,
+  installedGraphExchangeOffset, waitForInstalledGraphExchange, waitForInstalledGraphIdle, waitForOwnedWebview
 };

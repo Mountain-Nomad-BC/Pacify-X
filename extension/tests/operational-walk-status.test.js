@@ -261,6 +261,47 @@ test('focused late-card repair fails closed on missing graph recovery or strippe
   assert.ok(finding.details.failed_controller_checks.includes('incoming_trust_released'));
 });
 
+test('focused builder completion requires exact durability and no-effect cleanup for both builders', () => {
+  const receipt = completeReceipt();
+  receipt.focused_profile = 'builder';
+  receipt.control_chains.controls.forEach(control => { control.attempted = false; });
+  receipt.control_chains.aggregates.complete_interaction_chains = 0;
+  receipt.builders = Object.fromEntries(['agent', 'workflow'].map(kind => [kind, {
+    terminal_disposition: 'interaction_complete',
+    durability: { verified: true },
+    attempted_control_ids: [
+      `pxui.${kind === 'agent' ? 'agent' : 'workflow'}-studio.action.studioApplyJson`,
+      `pxui.${kind === 'agent' ? 'agent' : 'workflow'}-studio.action.resumeWorkingStudioDraft`
+    ],
+    cleanup: { modal_closed: true, candidate_saved: false, runtime_executed: false }
+  }]));
+  const status = evaluateOperationalWalk(receipt);
+  assert.equal(status.terminal_state, 'completed', JSON.stringify(status.issues));
+  assert.equal(status.scope_complete, true);
+  assert.equal(status.operationally_complete, false);
+  assert.equal(status.evaluated_scope, 'builder');
+});
+
+test('focused builder completion fails closed on missing recovery or any durable effect', () => {
+  const receipt = completeReceipt();
+  receipt.focused_profile = 'builder';
+  receipt.builders.agent = {
+    terminal_disposition: 'interaction_complete', durability: { verified: false },
+    attempted_control_ids: ['pxui.agent-studio.action.studioApplyJson'],
+    cleanup: { modal_closed: true, candidate_saved: false, runtime_executed: false }
+  };
+  receipt.builders.workflow = {
+    terminal_disposition: 'interaction_complete', durability: { verified: true },
+    attempted_control_ids: ['pxui.workflow-studio.action.studioApplyJson', 'pxui.workflow-studio.action.resumeWorkingStudioDraft'],
+    cleanup: { modal_closed: true, candidate_saved: true, runtime_executed: false }
+  };
+  const status = evaluateOperationalWalk(receipt);
+  assert.equal(status.terminal_state, 'incomplete');
+  const finding = status.issues.find(item => item.code === 'focused-builder-incomplete');
+  assert.ok(finding);
+  assert.deepEqual(finding.details.incomplete_builders, ['agent', 'workflow']);
+});
+
 test('focused Codex handoff fails closed on denominator mismatch, missing stage, or profile error', () => {
   const receipt = completeReceipt();
   receipt.focused_profile = 'codex-handoff';

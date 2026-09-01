@@ -349,6 +349,25 @@ function focusedProfileIssues(value) {
         controller_errors: controller?.errors || []
       });
     }
+  } else if (focused === 'builder') {
+    const builders = value.builders && typeof value.builders === 'object' ? value.builders : {};
+    const incompleteBuilders = ['agent', 'workflow'].filter(kind => {
+      const builder = builders[kind];
+      return builder?.terminal_disposition !== 'interaction_complete'
+        || builder?.durability?.verified !== true
+        || builder?.cleanup?.modal_closed !== true
+        || builder?.cleanup?.candidate_saved !== false
+        || builder?.cleanup?.runtime_executed !== false
+        || !Array.isArray(builder?.attempted_control_ids)
+        || !builder.attempted_control_ids.includes(`pxui.${kind === 'agent' ? 'agent' : 'workflow'}-studio.action.studioApplyJson`)
+        || !builder.attempted_control_ids.includes(`pxui.${kind === 'agent' ? 'agent' : 'workflow'}-studio.action.resumeWorkingStudioDraft`);
+    });
+    if (incompleteBuilders.length) {
+      incomplete('focused-builder-incomplete', 'The focused builder journey did not complete exact malformed-JSON rejection, recovery, working-draft reopen, and no-effect cleanup for both Agent and Workflow.', {
+        incomplete_builders: incompleteBuilders,
+        builders: Object.fromEntries(incompleteBuilders.map(kind => [kind, builders[kind] || null]))
+      });
+    }
   } else if (focused === 'error-indicators') {
     const requiredIds = new Set([
       'pxui.memory.indicator.queryError',
