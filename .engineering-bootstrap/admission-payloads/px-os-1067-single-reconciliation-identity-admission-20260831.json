@@ -1,0 +1,39 @@
+{
+  "gap_id": "PX-OS-1067",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000031620",
+  "session_id": "release-session:px-os-1067-single-reconciliation-identity-20260831",
+  "expires_utc": "2026-09-03T12:00:00Z",
+  "authority": "User explicitly required all prior revision/SHA state cleared before certification, exactly one revision identity for the campaign, no identity churn during repair, and one ordered certification campaign only after the complete known denominator was focused-green.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": [
+        "only AGENTS.md processing-order rules, the current cleared release identity and repair campaign, prior exact reconciliation plans, revision/generated-projection owner implementation and CLI help, current source/version/projection state, bounded Git diff/status metadata, the focused-green adversarial audit, and append-only operational ledger state"
+      ]
+    },
+    {
+      "effect": "write",
+      "scope": [
+        "only the exact canonical revision/version files and generated projection/checksum files owned by the repository's single reconciliation command, .engineering-bootstrap/processing-order/release-identity.json, .engineering-bootstrap/processing-order/repair-campaign.json, one reconciliation plan/evidence record, exact admission payloads under .engineering-bootstrap/admission-payloads/, evidence/release/pre-certification-adversarial-audit-20260831.json, and append-only operational-gap ledger event/projection files under registry/"
+      ]
+    },
+    {
+      "effect": "execute",
+      "scope": [
+        "only operational-ledger guards, bounded processing-order/release/reconciliation help and status checks, exactly one repository-authoritative revision/generated-projection reconciliation command, exactly one release-identity apply command for campaign pacify-x-certification-20260831-single, and bounded coherence/diff/JSON/hash/status verification; prohibit another clear-release-identity, any source repair, governed sections, full profile, broad validation, package, install, operational walk, certification, publication, network access, recursive Temp traversal, deletion, or unrelated process termination"
+      ]
+    }
+  ],
+  "expected_effect": "Reconcile the already-focused-green source tree to one canonical revision and generated projection state exactly once, then atomically bind that immutable source/projection state to the existing cleared campaign with apply_count exactly one and no stage execution.",
+  "rollback": "There is no identity retry or second clear in this campaign. If reconciliation or identity application fails, retain the exact terminal evidence, permanently stop this campaign before every broad stage, and do not create another revision/hash state during this turn.",
+  "evidence": [
+    {
+      "reference": "evidence/release/pre-certification-adversarial-audit-20260831.json",
+      "claim": "Focused-green source/control denominator authorizes the single post-freeze identity transition."
+    },
+    {
+      "reference": "host-instruction:20260831-single-release-identity",
+      "claim": "Explicit one-revision, one-hash campaign authority."
+    }
+  ]
+}

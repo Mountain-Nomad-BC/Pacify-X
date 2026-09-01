@@ -1,0 +1,18 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022938",
+  "learned": "The Command Center walker isolation repair passed its focused regression and exact resumed control. The governed dashboard-extension section now has one failure only: extension-contract.test.js hardcodes package version 0.6.56 while the current exact package is 0.6.57. Fault recovery completed with zero page errors.",
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": ["PX-OS-1065"],
+  "evidence": [
+    {
+      "reference": ".engineering-bootstrap/test-evidence/sections/dashboard-extension.json",
+      "claim": "Governed section receipt isolating the single stale hardcoded package-version assertion."
+    },
+    {
+      "reference": "evidence/current-control-proof-installed-0657-20260825/fault-recovery.json",
+      "claim": "Current exact fault-recovery measurement completed without page errors."
+    }
+  ]
+}

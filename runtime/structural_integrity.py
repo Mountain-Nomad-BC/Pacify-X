@@ -85,9 +85,23 @@ DUPLICATE_CLASSIFICATIONS = {
         "regeneration_command": None,
         "equivalence_rule": "behavioral parity",
     },
+    "installed-studio-lifecycle-scaffolds": {
+        "owner": "extension/tests/installed-harness",
+        "rationale": "independent installed-host lifecycle fixtures construct the same minimal signed Studio authority scaffold before exercising different failure paths",
+        "authoritative_source": "runtime Studio authority contract",
+        "regeneration_command": None,
+        "equivalence_rule": "behavioral parity",
+    },
     "ledger-authority-head-anchor": {
         "owner": "runtime/event_ledger.py",
         "rationale": "the current authority head is an exact recoverable projection of its immutable sequence anchor",
+        "authoritative_source": ".engineering-bootstrap/commissioning-events",
+        "regeneration_command": "append chained event",
+        "equivalence_rule": "byte-for-byte",
+    },
+    "ledger-authority-anchor-history": {
+        "owner": "runtime/event_ledger.py",
+        "rationale": "an immutable sequence anchor and retained prior authority head preserve the same reviewed chain state",
         "authoritative_source": ".engineering-bootstrap/commissioning-events",
         "regeneration_command": "append chained event",
         "equivalence_rule": "byte-for-byte",
@@ -335,6 +349,16 @@ def _classify_exact_group(paths: list[str]) -> str | None:
         and any("/anchors/" in path for path in paths)
     ):
         return "ledger-authority-head-anchor"
+    if (
+        len(paths) == 2
+        and all(
+            path.startswith(".engineering-bootstrap/.ledger-authority/")
+            for path in paths
+        )
+        and any("/anchors/" in path for path in paths)
+        and any("/history/" in path for path in paths)
+    ):
+        return "ledger-authority-anchor-history"
     if len(paths) == 2 and set(Path(path).name for path in paths) == {
         "_write_json",
         "_atomic_json",
@@ -442,10 +466,16 @@ def _logic_duplicates(root: Path, files: tuple[Path, ...] | None = None) -> tupl
             path.startswith("runtime/") for path in paths
         ):
             classification = "bounded-progress-envelope"
+        elif names == {"_projection_scaffold", "_scaffold"} and set(paths) == {
+            "extension/tests/installed-harness/studio_late_card_worker.py",
+            "extension/tests/installed-harness/studio_lifecycle_crash_worker.py",
+        }:
+            classification = "installed-studio-lifecycle-scaffolds"
         elif names <= {
             "_sha",
             "_sha_file",
             "_digest",
+            "_digest_file",
             "file_hash",
             "hash_file",
             "_file_sha256",

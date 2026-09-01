@@ -1,0 +1,35 @@
+{
+  "gap_id": "PX-OS-1067",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023418",
+  "session_id": "audit-session:px-full-adversarial-source-20260826",
+  "expires_utc": "2026-09-07T06:00:00Z",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": [
+        "Read current Pacify-X source, tests, generated inventories, operational ledger projections, the complete px-audit skill instructions, C:/Users/Ben/Downloads/PX_RELEASE_CLOSURE_PREFLIGHT_CODEX.md, C:/Users/Ben/Downloads/Pacify-X_Adversarial_Audit_Findings.md, and filenames/images under C:/Users/Ben/Documents/px audit for a full pre-physical adversarial source audit."
+      ]
+    },
+    {
+      "effect": "write",
+      "scope": [
+        "Write only bounded adversarial-audit evidence/report artifacts and this audit session's checkpoint/admission/closure ledger records; do not modify product source, tests, generated product inventories, release artifacts, Git, or ZIP output."
+      ]
+    },
+    {
+      "effect": "execute",
+      "scope": [
+        "Run only bounded read-oriented audit queries, static analyzers, source-contract checks, and compact diagnostic commands required by px-audit; do not run physical host mutation walks, broad long-running tests, full profile, validate, certification, Git/GitHub, release packaging, or ZIP export."
+      ]
+    }
+  ],
+  "authority": "User explicitly requested a full adversarial audit after source repairs and before all long-running operational or certification work.",
+  "expected_effect": "Produce an independent current-source finding denominator that either identifies exact repairable defects or supports advancing to separately admitted physical verification.",
+  "rollback": "Remove only an incomplete audit report draft if necessary; preserve all source, supplied evidence, ledger history, and completed audit evidence.",
+  "evidence": [
+    {
+      "reference": ".engineering-bootstrap/test-evidence/sections/dashboard-extension.json",
+      "claim": "The changed source batch passed its one governed dashboard section gate before independent audit."
+    }
+  ]
+}

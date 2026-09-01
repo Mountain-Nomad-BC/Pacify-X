@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023188",
+  "learned": "Canonical GitHub main is 306dd98f and remains the ancestor of local main 079689f, which is five commits ahead with no known remote divergence. The unified worktree contains 134 tracked repairs and exactly 12 intended untracked source/dependency files; 416 untracked local custody, admission, host-isolation, probe, and temporary entries must remain unstaged. Pull requests 15 and 16 remain open incomplete Dependabot updates. GitHub CLI is absent, so all GitHub work must stay non-interactive through git and REST without invoking VS Code authentication UI.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": [],
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "evidence": [
+    {
+      "reference": "evidence/release/github-prepublish-topology-20260826.json",
+      "claim": "Exact bounded publish topology.",
+      "artifact_sha256": "b52b9c313fe71872af79d21b4ef466ae885232d6d3cf01652ecb52fffdb46775",
+      "artifact_size": 1465
+    }
+  ]
+}

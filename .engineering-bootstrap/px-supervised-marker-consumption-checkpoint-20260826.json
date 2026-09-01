@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023161",
+  "learned": "The supervised-child capability is now one-generation and consumed immediately after the exact run-stale child inherits its parent lease. Five focused tests plus three subtests and the lazy import probe pass. The repair campaign again has zero unresolved tracks.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": [],
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "evidence": [
+    {
+      "reference": "evidence/release/supervised-child-marker-consumption-focused-proof-20260826.json",
+      "claim": "Complete one-generation capability proof.",
+      "artifact_sha256": "bc67f07e64b15371043984eb0a94b29d4af0702037d9742bc73d099fd5f547ab",
+      "artifact_size": 841
+    }
+  ]
+}

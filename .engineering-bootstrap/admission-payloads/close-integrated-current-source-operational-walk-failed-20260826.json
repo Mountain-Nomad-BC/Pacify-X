@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-integrated-current-source-operational-walk-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023323",
+  "outcome": "completed",
+  "reason": "The one admitted walk completed its bounded attempt and truthfully failed at prelaunch staging because retained diagnostic custody contained a link/reparse entry. No VS Code host started; the owned process tree and temporary root were reconciled.",
+  "evidence": [
+    {
+      "reference": "evidence/release/integrated-current-source-operational-walk-20260826.json",
+      "claim": "Current integrated operational attempt failed before host launch on owned-engine-source-link below .engineering-bootstrap/diagnostics/retained-workspaces; process closure and user-profile isolation are verified, and repair freeze is not allowed.",
+      "artifact_sha256": "8f1c0dccc586a97e74bdc9ae439b0b103a807276ad6c2f98aedc873180de2389",
+      "artifact_size": 3767
+    }
+  ]
+}

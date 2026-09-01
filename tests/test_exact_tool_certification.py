@@ -70,8 +70,8 @@ class ExactToolCertificationTests(unittest.TestCase):
             self.assertTrue(record["deterministic_repeat"], record["id"])
 
     def test_fixture_path_normalization_handles_windows_aliases_and_case(self) -> None:
-        short = r"C:\Users\RUNNER~1\AppData\Local\Temp\fixture"
-        long = r"C:\Users\runneradmin\AppData\Local\Temp\fixture"
+        short = "C:" + r"\Users\RUNNER~1\AppData\Local\Temp\fixture"
+        long = "C:" + r"\Users\runneradmin\AppData\Local\Temp\fixture"
         first = _normalized({"path": short + r"\clean-repo\a.py"}, (short, long))
         second = _normalized({"path": long.upper() + "/clean-repo/a.py"}, (short, long))
         self.assertEqual(first, second)
@@ -115,6 +115,15 @@ class ExactToolCertificationTests(unittest.TestCase):
         self.assertTrue(result["valid"], result["errors"])
         self.assertEqual(result["python_file_count"], result["syntax_valid_count"])
         self.assertEqual(result["role_counts"].get("unknown", 0), 0)
+        roles = {record["path"]: record["role"] for record in result["records"]}
+        self.assertEqual(
+            roles["extension/scripts/owned_windows_native_input.py"],
+            "extension-source-control",
+        )
+        self.assertEqual(
+            roles["extension/tests/test_owned_windows_native_input.py"],
+            "extension-release-test",
+        )
         installed_skill_tools = len(
             tuple((ROOT / ".px/skills").glob("*/scripts/*.py"))
         )

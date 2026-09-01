@@ -4,8 +4,10 @@ from __future__ import annotations
 
 import hashlib
 import json
-from pathlib import Path
-from typing import Any
+from pathlib import Path, PurePosixPath
+import shutil
+import tomllib
+from typing import Any, Iterable
 
 from .bounded_walk import FilesystemWalkError, WalkLimits, bounded_walk
 from .repository_scope import is_external_environment_relative
@@ -56,6 +58,9 @@ def classify_tree(root: Path) -> dict[str, Any]:
         item.casefold() for item in policy["intermediate_suffixes"]
     }
     control_outputs = {item.casefold() for item in policy["control_output_paths"]}
+    control_output_prefixes = tuple(
+        item.casefold() for item in policy.get("control_output_prefixes", [])
+    )
     evidence_suffixes = {
         item.casefold() for item in policy["evidence_allowed_suffixes"]
     }
@@ -117,9 +122,11 @@ def classify_tree(root: Path) -> dict[str, Any]:
             ):
                 classification = "generated_intermediate"
                 reason = "narrow generated-artifact exclusion"
-            elif folded in control_outputs:
+            elif folded in control_outputs or any(
+                folded.startswith(prefix) for prefix in control_output_prefixes
+            ):
                 classification = "control_output"
-                reason = "recoverable release transaction control"
+                reason = "mutable release transaction, governance, or receipt control"
             elif any(part in evidence_roots for part in folded_parts):
                 classification = "evidence_output"
                 reason = "non-executable evidence namespace"
@@ -220,4 +227,85 @@ def verify_frozen_product(root: Path, frozen: dict[str, Any]) -> dict[str, Any]:
         "product_digest": current["product_digest"],
         "harness_digest": current["harness_digest"],
         "errors": errors,
+    }
+
+
+def _safe_fixture_relative(value: str) -> PurePosixPath:
+    relative = PurePosixPath(value)
+    if relative.is_absolute() or not relative.parts or ".." in relative.parts:
+        raise ValueError(f"unsafe release fixture path: {value}")
+    return relative
+
+
+def _declared_evidence_files(root: Path) -> set[str]:
+    configuration = tomllib.loads((root / "pyproject.toml").read_text(encoding="utf-8"))
+    data_files = (
+        configuration.get("tool", {})
+        .get("setuptools", {})
+        .get("data-files", {})
+    )
+    declared: set[str] = set()
+    for patterns in data_files.values():
+        for pattern in patterns:
+            relative_pattern = _safe_fixture_relative(str(pattern)).as_posix()
+            if not relative_pattern.startswith("evidence/"):
+                continue
+            for candidate in root.glob(relative_pattern):
+                if candidate.is_file():
+                    declared.add(candidate.relative_to(root).as_posix())
+    return declared
+
+
+def materialize_release_source(
+    source_root: Path,
+    destination: Path,
+    *,
+    extra_paths: Iterable[str] = (),
+) -> dict[str, object]:
+    """Materialize product inputs and declared packaged evidence for release tests."""
+
+    root = source_root.resolve(strict=True)
+    target = destination.resolve(strict=False)
+    if target.exists():
+        raise FileExistsError(f"release fixture destination already exists: {target}")
+    try:
+        target.relative_to(root)
+    except ValueError:
+        pass
+    else:
+        raise ValueError("release fixture destination must be outside the source root")
+
+    classification = classify_tree(root)
+    if not classification["valid"] or not classification["product_valid"]:
+        raise ValueError(f"release source is not classifiable: {classification['errors']}")
+
+    product_paths = {record["path"] for record in classification["product_records"]}
+    declared_evidence = _declared_evidence_files(root)
+    extras = {_safe_fixture_relative(str(path)).as_posix() for path in extra_paths}
+    selected = sorted(product_paths | declared_evidence | extras)
+
+    copied_bytes = 0
+    for relative in selected:
+        source = (root / Path(relative)).resolve(strict=True)
+        try:
+            source.relative_to(root)
+        except ValueError as error:
+            raise ValueError(f"release fixture path escapes source root: {relative}") from error
+        if not source.is_file():
+            raise ValueError(f"release fixture input is not a file: {relative}")
+        output = target / Path(relative)
+        output.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source, output)
+        copied_bytes += source.stat().st_size
+
+    return {
+        "schema_version": "px.test-release-source-fixture/1.0",
+        "valid": True,
+        "file_count": len(selected),
+        "copied_bytes": copied_bytes,
+        "product_file_count": len(product_paths),
+        "declared_evidence_file_count": len(declared_evidence),
+        "extra_file_count": len(extras),
+        "product_digest": classification["product_digest"],
+        "harness_digest": classification["harness_digest"],
     }

@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "release-session:px-one-revision-reconciliation-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023005",
+  "outcome": "completed",
+  "reason": "The frozen source projections were rebuilt exactly once by the repository owner, the dependency closure and diff integrity checks are clean, ten key generated authorities are hash-bound in retained evidence, and the processing order advanced once to revision_reconciled. No section, profile, validation, package, install, push, merge, or certification ran.",
+  "evidence": [
+    {
+      "reference": "evidence/release/revision-reconciliation-20260826.json",
+      "artifact_sha256": "c2ebfbdd857ac24bbb9ea5166c562c92c1483466c8271b3e3b1379f131ceb2b2",
+      "artifact_size": 2253,
+      "claim": "The repair-frozen source reached one revision/generated-projection reconciliation and now requires governed sections."
+    }
+  ]
+}

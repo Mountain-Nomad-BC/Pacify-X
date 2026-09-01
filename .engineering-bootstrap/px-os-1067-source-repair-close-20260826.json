@@ -1,0 +1,16 @@
+{
+  "gap_id": "PX-OS-1067",
+  "session_id": "repair-session:px-remaining-denominator-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023416",
+  "outcome": "completed",
+  "evidence": [
+    {
+      "reference": ".engineering-bootstrap/test-evidence/sections/dashboard-extension.json",
+      "claim": "The one governed changed-section gate passed and retained a supervised receipt."
+    },
+    {
+      "reference": "extension/resources/ui/action-inventory.json",
+      "claim": "Generated action inventory is current and its hard operational-owner check reports 95 of 95 exactly once."
+    }
+  ]
+}

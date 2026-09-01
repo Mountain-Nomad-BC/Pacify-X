@@ -12,6 +12,15 @@
       "billing_state": "local_non_billable"
     },
     {
+      "adapter_id": "llama-cpp-http",
+      "provider_id": "llama.cpp",
+      "mode": "local",
+      "implementation": "runtime/provider_gateway.py",
+      "admitted": true,
+      "status": "ready",
+      "billing_state": "local_non_billable"
+    },
+    {
       "adapter_id": "openai-responses",
       "provider_id": "openai",
       "mode": "remote",

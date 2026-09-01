@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "learned": "Current classification shows PX-CURRENT-001 through 009 are source-repaired or current. PX-CURRENT-010 and 011 require the ordered exact installed-host operational phase; three truthful live-health routes remain stale and must be refreshed through their real observers rather than relabeled.",
+  "next_action": "Repair the ten remaining PX-CURRENT tracks in dependency order, beginning with the tested-source Studio worker handoff and current extension-host/listener health.",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023315",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": [],
+  "evidence": [
+    {
+      "reference": "evidence/adversarial-audit/current-environment-repair-closure-20260826.json",
+      "artifact_sha256": "35be49772bc1001a03a3ea0416748348eb23f94d8a2c9e1db8d9b87573f2d935",
+      "artifact_size": 3535,
+      "claim": "Dependency-ordered classification of repaired source tracks and remaining installed/live operational work."
+    }
+  ]
+}

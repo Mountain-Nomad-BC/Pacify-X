@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-three-transient-controls-20260825",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022979",
+  "outcome": "completed",
+  "reason": "The exact three-control predecessor-bound refresh and rebound fault assembly completed with 929 of 929 controls observed, no source mismatch, and zero receipt errors.",
+  "evidence": [
+    {
+      "reference": "evidence/current-control-proof-installed-0659-20260825/assembled-current-r2.json",
+      "artifact_sha256": "a5c440f1ba4390dfa39713353d42a1b5ec98e39ff1765678545350230843563f",
+      "artifact_size": 5623333,
+      "claim": "Current source-bound operational evidence observes the complete 929-control denominator."
+    }
+  ]
+}

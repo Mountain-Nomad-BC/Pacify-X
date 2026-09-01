@@ -1,0 +1,14 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "release-session:px-complete-causal-repair-publish-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023292",
+  "outcome": "completed",
+  "evidence": [
+    {
+      "reference": "commit:541e22e87ff71cf5260638115c2e3f32790de8bd",
+      "artifact_sha256": "a1c85be36b7877dfde1d0f38c9b111b2c5924d841fb9019610ca5c009e2d85ed",
+      "artifact_size": 3469,
+      "claim": "The exact 14-path repair commit was pushed linearly to canonical main. GitHub run 32977077401 reached 19 green jobs before three independent projection gates failed; no certification claim is made."
+    }
+  ]
+}

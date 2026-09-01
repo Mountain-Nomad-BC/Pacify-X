@@ -1,0 +1,31 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-final-reachability-live-sections-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023230",
+  "authority": "User requested uninterrupted repair of every remaining Pacify-X and GitHub failure through complete operation.",
+  "expected_effect": "Regenerate final downstream artifact reachability, require generated and registry truth, prove changed-source syntax and the real Windows extension host, and run exactly the two affected governed sections before publication.",
+  "rollback": "Regenerate prior reachability from prior source/projections if validation fails; revert only focused observer/lifecycle/host-timeout changes if operational proofs regress. Reconcile owned child processes and retain failures without publishing.",
+  "expires_utc": "2026-09-04T12:00:00Z",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect only registry/artifact_reachability.json, scripts/build_artifact_reachability.py, current focused runtime/test/extension/projection diffs, extension host retained receipts, and studio-memory-graph/dashboard-extension section receipts."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Run the authoritative artifact reachability generator to update only registry/artifact_reachability.json; create one focused repair evidence JSON. Do not alter other source, projections, dependencies, ledgers, package identity, installed extension, or certification state."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["With caches disabled, run only the artifact reachability generator; direct generated and registry validators; syntax checks for changed Python/JavaScript; one bounded Windows live VS Code extension-host smoke; exactly one studio-memory-graph section and one dashboard-extension section; and exact residual-process checks. Do not run full profile, runtime.cli validate, package, install, publish, or certify."]
+    }
+  ],
+  "evidence": [
+    {
+      "reference": "evidence/release/agent-observer-resource-repair-20260826.json",
+      "claim": "Only final downstream artifact reachability remains stale before operational gates.",
+      "artifact_sha256": "2856fc5bf94a2bf84fd09f59f46dde071bd47a486816780acb92cebbe6764456",
+      "artifact_size": 1515
+    }
+  ]
+}

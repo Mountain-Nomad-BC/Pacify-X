@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "verification-session:px-cache-repair-ordered-handoff-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023037",
+  "outcome": "completed",
+  "reason": "The final cache repair passed ordered freeze and one projection rebuild. Focused generated/dependency/diff integrity passed, testing-governance passed with 214 tests, 1 skip, and 9 subtests, and all six required sections are now passed, fresh, and dependency-current. The campaign advanced only to sections_current; no full profile or downstream certification action ran.",
+  "evidence": [
+    {"reference": "evidence/release/cache-repair-sections-current-20260826.json", "claim": "Final repaired revision and all-current governed section proof.", "artifact_sha256": "0b9a970953baa8fce9312192b0cc088ca78b4703712329d161cc436b83128827", "artifact_size": 1082}
+  ]
+}

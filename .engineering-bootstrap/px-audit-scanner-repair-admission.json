@@ -1,0 +1,37 @@
+{
+  "session_id": "repair-session:px-audit-scanner-boundary-v2-20260825",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022985",
+  "gap_id": "PX-OS-1065",
+  "authority": "User explicitly authorized all remaining reversible Pacify-X repairs; only irreversible destructive effects require approval.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": [
+        "Inspect only the admitted audit-source-capabilities scanner, its validation contract and focused tests, current PX-AUD2-001 report, and exact stale scanner process metadata."
+      ]
+    },
+    {
+      "effect": "write",
+      "scope": [
+        "Modify only .px/skills/audit-source-capabilities scanner implementation, validation contract, and focused tests so excluded boundaries retain deterministic file/byte denominators without reading file bodies; write session-owned focused evidence and append-only ledger events."
+      ]
+    },
+    {
+      "effect": "execute",
+      "scope": [
+        "Reconcile only the exact stale audit scanner process tree launched under closed admission 22983, run focused scanner tests and skill validation, then run one bounded current audit scanner reproduction. Do not run broad section gates, full profile, validate, package, install, deploy, publish, merge, or certify."
+      ]
+    }
+  ],
+  "expected_effect": "Make excluded-boundary accounting metadata-only, deterministic, denominator-preserving, and bounded while retaining strict traversal, stat, and symlink error reporting.",
+  "rollback": "Revert only the bounded audit scanner, validation-contract, and focused-test changes while retaining append-only failed and successful attempt evidence.",
+  "expires_utc": "2026-08-26T16:00:00Z",
+  "evidence": [
+    {
+      "reference": "evidence/adversarial-audit/second-adversarial-audit-20260825.json",
+      "artifact_sha256": "958ba20ad0d62baeabce3a8c14e51629f97ee0dae635f1905785aa6e08841fd0",
+      "artifact_size": 2653,
+      "claim": "PX-AUD2-001 confirms excluded-boundary content hashing is operationally unbounded."
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "gap_id": "PX-OS-1065",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000015445",
+  "session_id": "repair-session:px-installed-evidence-adapter-20260825",
+  "expires_utc": "2026-08-29T23:59:00Z",
+  "effect_scopes": [
+    {
+      "effect": "write",
+      "scope": [
+        "Modify only scripts/build_installed_probe_control_evidence.py and its direct regression tests to include exact typed Knowledge lifecycle and engine outage/recovery profiles; rebuild only bounded 0.6.56 derived control evidence and append deterministic ledger reconciliation events; do not package, deploy, publish, or certify."
+      ]
+    },
+    {
+      "effect": "execute",
+      "scope": [
+        "Run only focused installed-evidence-adapter tests, bounded 0.6.56 evidence adapters, deterministic ledger reconciliation, operational gap progress, and the directly governed testing-governance section gate; do not run full profile, validate, package, deploy, publish, or certify."
+      ]
+    }
+  ],
+  "authority": "The exact installed 0.6.56 receipt directly contains both omitted typed profiles and the user authorized reversible repairs through full operation.",
+  "expected_effect": "Preserve and reconcile all exact 0.6.56 installed control proof without promoting missing stages or stale evidence.",
+  "rollback": "Revert only the bounded adapter and test changes and retain the generated evidence as non-authoritative diagnostic output.",
+  "evidence": [
+    {
+      "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000015445",
+      "claim": "Exact active repair checkpoint."
+    },
+    {
+      "reference": "evidence/operational-ui-walk-installed-vsix-0.6.56-postrepair-20260825T2300Z/receipt.json",
+      "claim": "Exact installed receipt with typed omitted profiles."
+    }
+  ]
+}

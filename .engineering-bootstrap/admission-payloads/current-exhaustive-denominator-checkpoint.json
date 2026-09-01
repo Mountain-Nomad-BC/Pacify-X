@@ -1,0 +1,18 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "learned": "The installed evidence adapter now retains the omitted exact profiles and its focused tests pass, but the assembler correctly rejects the prior exhaustive browser denominator because three canonical control-source files have changed. A fresh current-source denominator is required before the 0.6.56 installed evidence can be assembled without stale promotion.",
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000015445",
+  "unresolved_branch_gap_ids": [],
+  "newly_discovered_gap_ids": [],
+  "evidence": [
+    {
+      "reference": "evidence/current-control-proof-installed-0656-20260825/installed-probe-complete.json",
+      "claim": "Repaired exact installed evidence adapter output with 765 distinct control records."
+    },
+    {
+      "reference": "evidence/current-control-proof-installed-0655-20260825/exhaustive-ui.json",
+      "claim": "Preserved prior denominator rejected as stale rather than reused."
+    }
+  ]
+}

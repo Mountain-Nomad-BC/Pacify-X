@@ -895,3 +895,132 @@ def project_check(project: Path, source_root: Path | None = None) -> dict:
         "skills": skills,
         "errors": errors,
     }
+
+
+def rebind_commissioning_framework(
+    project: Path,
+    *,
+    source_root: Path | None = None,
+    apply: bool = False,
+) -> dict[str, object]:
+    """Rebind an intact receipt without recommissioning managed project files."""
+    resolved = project.resolve()
+    source = (source_root or framework_root()).resolve()
+    binding_error = "commissioning receipt framework release binding mismatch"
+    receipt_error_prefixes = (
+        "commissioning receipt",
+        "commissioning event ledger:",
+        "commissioning managed manifest",
+        "managed commissioning file drift:",
+        "invalid commissioning receipt:",
+    )
+    check = project_check(resolved, source_root=source)
+    receipt_errors = [
+        str(error)
+        for error in check["errors"]
+        if str(error).startswith(receipt_error_prefixes)
+    ]
+    blockers = [error for error in receipt_errors if error != binding_error]
+    if blockers:
+        return {
+            "valid": False,
+            "applied": False,
+            "changed": False,
+            "project": str(resolved),
+            "errors": blockers,
+        }
+    framework = _framework_binding(source)
+    if binding_error not in receipt_errors:
+        return {
+            "valid": True,
+            "applied": False,
+            "changed": False,
+            "project": str(resolved),
+            "framework_release": framework,
+            "errors": [],
+        }
+
+    control = resolved / ".engineering-bootstrap"
+    receipt_path = control / "commissioning-receipt.json"
+    prior = receipt_path.read_bytes()
+    prior_file_sha256 = _sha256(prior)
+    receipt = json.loads(prior)
+    previous_framework = receipt.get("framework_release")
+    for field in (
+        "receipt_sha256",
+        "receipt_payload_sha256",
+        "commissioning_event_sha256",
+    ):
+        receipt.pop(field, None)
+    receipt.update(
+        {
+            "framework_release": framework,
+            "commissioning_tool_version": framework["version"],
+            "framework_rebound_utc": datetime.now(timezone.utc).isoformat(),
+            "previous_receipt_sha256": prior_file_sha256,
+        }
+    )
+    payload_sha256 = _sha256(
+        json.dumps(receipt, sort_keys=True, separators=(",", ":")).encode()
+    )
+    result: dict[str, object] = {
+        "valid": True,
+        "applied": False,
+        "changed": True,
+        "approval_required": not apply,
+        "project": str(resolved),
+        "previous_framework_release": previous_framework,
+        "framework_release": framework,
+        "previous_receipt_sha256": prior_file_sha256,
+        "receipt_payload_sha256": payload_sha256,
+        "errors": [],
+    }
+    if not apply:
+        return result
+
+    history = control / "commissioning-history" / f"{prior_file_sha256}.json"
+    history.parent.mkdir(parents=True, exist_ok=True)
+    if history.exists() and history.read_bytes() != prior:
+        return {
+            **result,
+            "valid": False,
+            "changed": False,
+            "approval_required": False,
+            "errors": ["commissioning receipt history hash collision"],
+        }
+    if not history.exists():
+        history.write_bytes(prior)
+    event_path = append_chained_event(
+        control / "commissioning-events",
+        "project-framework-rebound",
+        {
+            "project_id": receipt["project_id"],
+            "previous_receipt_sha256": prior_file_sha256,
+            "previous_framework_release": previous_framework,
+            "framework_release": framework,
+            "receipt_payload_sha256": payload_sha256,
+        },
+    )
+    event = json.loads(event_path.read_text(encoding="utf-8"))
+    receipt.update(
+        {
+            "receipt_payload_sha256": payload_sha256,
+            "commissioning_event_sha256": event["event_sha256"],
+        }
+    )
+    receipt["receipt_sha256"] = _sha256(
+        json.dumps(receipt, sort_keys=True, separators=(",", ":")).encode()
+    )
+    prepared = receipt_path.with_name(
+        f".{receipt_path.name}.{event['sequence']:06d}.prepared"
+    )
+    prepared.write_bytes((json.dumps(receipt, indent=2) + "\n").encode())
+    os.replace(prepared, receipt_path)
+    return {
+        **result,
+        "applied": True,
+        "approval_required": False,
+        "history": str(history),
+        "event": str(event_path),
+        "receipt": str(receipt_path),
+    }

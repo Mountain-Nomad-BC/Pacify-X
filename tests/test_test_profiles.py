@@ -7,10 +7,21 @@ import sys
 import pytest
 
 from runtime.test_profiles import (
+    PROCESSING_PHASES,
     ProcessingOrderBlocked,
     initialize_project_repair_campaign,
+    processing_stage_allowed,
     repair_campaign_status,
     require_processing_stage,
+)
+from runtime.release_campaign import (
+    ReleaseCampaignBlocked,
+    apply_release_identity,
+    claim_release_stage,
+    clear_release_identity,
+    finish_release_stage,
+    release_campaign_status,
+    supersede_failed_release_campaign,
 )
 
 from runtime.test_profiles import (
@@ -96,9 +107,13 @@ def test_sections_are_content_addressed_bounded_and_dependency_governed(tmp_path
 
 def test_builder_and_trace_control_planes_have_exact_section_owners():
     dashboard = resolve_test_section(ROOT, "dashboard-extension")
+    assert dashboard["command"][:3] == ["node", "--test", "--test-concurrency=1"]
     assert "extension/src/studioCatalog.js" in dashboard["inputs"]
     assert "extension/src/workflowTraceProjection.js" in dashboard["inputs"]
     assert "extension/scripts/deduplicate-legacy-css.js" in dashboard["inputs"]
+    assert "extension/scripts/owned-native-input-client.js" in dashboard["inputs"]
+    assert "extension/scripts/owned_windows_native_input.py" in dashboard["inputs"]
+    assert "tests/owned-native-input-client.test.js" in dashboard["command"]
     assert "tests/ui-scaffold.test.js" in dashboard["command"]
     governed_dashboard_owners = [
         "tests/studio-catalog-agent-builder.test.js",
@@ -113,6 +128,11 @@ def test_builder_and_trace_control_planes_have_exact_section_owners():
         for command in dashboard["command"]
         if command in governed_dashboard_owners
     ] == governed_dashboard_owners
+
+    testing = resolve_test_section(ROOT, "testing-governance")
+    assert "extension/scripts/owned_windows_native_input.py" in testing["inputs"]
+    assert "extension/tests/test_owned_windows_native_input.py" in testing["inputs"]
+    assert "extension/tests/test_owned_windows_native_input.py" in testing["command"]
 
     studios = resolve_test_section(ROOT, "studio-memory-graph")
     assert "runtime/agent_builder.py" in studios["inputs"]
@@ -441,6 +461,56 @@ def test_processing_order_advances_only_after_each_predecessor(tmp_path):
         require_processing_stage(tmp_path, "validate")
 
 
+def test_processing_order_is_exact_and_cannot_replay_or_skip_stages():
+    expected = {
+        "intake": {"diagnose"},
+        "repair": {"diagnose", "repair", "focused_test", "governed_section"},
+        "operational_verification": {"operational_verification"},
+        "repair_frozen": {"revision_reconciliation"},
+        "revision_reconciled": {"governed_section"},
+        "sections_current": {"full_profile"},
+        "full_profile_passed": {"validate"},
+        "validated": {"package"},
+        "packaged": {"install"},
+        "installed": {"installed_operational_test"},
+        "installed_operational": {"certify"},
+        "certified": set(),
+    }
+    stages = set().union(*expected.values())
+    assert tuple(expected) == PROCESSING_PHASES
+    for phase, allowed in expected.items():
+        assert {
+            stage
+            for stage in stages
+            if processing_stage_allowed(phase, False, [], stage)
+        } == allowed
+
+
+def test_processing_order_open_denominator_blocks_every_closure_stage():
+    closure = {
+        "revision_reconciliation",
+        "full_profile",
+        "validate",
+        "package",
+        "install",
+        "installed_operational_test",
+        "certify",
+    }
+    exact_phase = {
+        "revision_reconciliation": "repair_frozen",
+        "full_profile": "sections_current",
+        "validate": "full_profile_passed",
+        "package": "validated",
+        "install": "packaged",
+        "installed_operational_test": "installed",
+        "certify": "installed_operational",
+    }
+    for stage in closure:
+        phase = exact_phase[stage]
+        assert not processing_stage_allowed(phase, True, [], stage)
+        assert not processing_stage_allowed(phase, False, ["open"], stage)
+
+
 def test_processing_order_absent_campaign_preserves_unmanaged_repository(tmp_path):
     status = repair_campaign_status(tmp_path)
     assert status["managed"] is False
@@ -466,3 +536,242 @@ def test_managed_project_missing_campaign_fails_closed_and_initializer_is_idempo
     assert repeated["initialized"] is False
     with pytest.raises(ProcessingOrderBlocked, match="certify requires"):
         require_processing_stage(tmp_path, "certify")
+
+
+def test_managed_revision_reconciliation_requires_a_cleared_release_identity(
+    tmp_path,
+):
+    marker = tmp_path / ".engineering-bootstrap/project-record.json"
+    marker.parent.mkdir(parents=True)
+    marker.write_text(json.dumps({"project_id": "prj_demo"}) + "\n", encoding="utf-8")
+    initialize_project_repair_campaign(tmp_path)
+    campaign = tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    value = json.loads(campaign.read_text(encoding="utf-8"))
+    value.update(phase="repair_frozen", intake_open=False, unresolved=[])
+    campaign.write_text(json.dumps(value) + "\n", encoding="utf-8")
+    with pytest.raises(ProcessingOrderBlocked, match="one-shot release identity"):
+        require_processing_stage(tmp_path, "revision_reconciliation")
+    clear_release_identity(tmp_path, campaign_id="certification-1")
+    assert require_processing_stage(tmp_path, "revision_reconciliation")[
+        "stage_allowed"
+    ] is True
+
+
+def _release_repair_state(
+    root: Path, phase: str, unresolved: list[str] | None = None
+) -> None:
+    path = root / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        json.dumps(
+            {
+                "schema_version": "px.repair-campaign/1.0",
+                "campaign_id": "repair-1",
+                "phase": phase,
+                "intake_open": False,
+                "unresolved": unresolved or [],
+            }
+        ),
+        encoding="utf-8",
+    )
+    extension = root / "extension/package.json"
+    extension.parent.mkdir(parents=True, exist_ok=True)
+    extension.write_text('{"version":"1.2.3"}\n', encoding="utf-8")
+
+
+@pytest.fixture
+def release_classification(monkeypatch):
+    value = {
+        "valid": True,
+        "product_valid": True,
+        "errors": [],
+        "product_digest": "1" * 64,
+        "harness_digest": "2" * 64,
+        "policy_sha256": "3" * 64,
+        "product_records": [
+            {"path": "runtime/a.py", "size": 1, "sha256": "4" * 64}
+        ],
+    }
+    monkeypatch.setattr(
+        "runtime.release_campaign.classify_tree", lambda _root: dict(value)
+    )
+    monkeypatch.setattr(
+        "runtime.release_campaign.authoritative_version", lambda _root: "1.2.3"
+    )
+    return value
+
+
+def test_release_identity_is_cleared_then_applied_exactly_once(
+    tmp_path: Path, release_classification
+) -> None:
+    _release_repair_state(tmp_path, "repair")
+    cleared = clear_release_identity(tmp_path, campaign_id="certification-1")
+    assert cleared["state"] == "cleared"
+    assert cleared["apply_count"] == 0
+    assert cleared["identity"] is None
+    _release_repair_state(tmp_path, "revision_reconciled")
+    applied = apply_release_identity(tmp_path)
+    assert applied["valid"] is True
+    assert applied["state"] == "active"
+    assert applied["apply_count"] == 1
+    assert len(applied["identity"]["release_identity_sha256"]) == 64
+    with pytest.raises(ReleaseCampaignBlocked, match="already applied"):
+        apply_release_identity(tmp_path)
+    _release_repair_state(tmp_path, "repair")
+    with pytest.raises(ReleaseCampaignBlocked, match="cannot be cleared and reused"):
+        clear_release_identity(tmp_path, campaign_id="certification-1")
+    with pytest.raises(ReleaseCampaignBlocked, match="already owns"):
+        clear_release_identity(tmp_path, campaign_id="certification-2")
+
+
+def test_release_stage_claim_is_ordered_one_shot_and_failure_ends_campaign(
+    tmp_path: Path, release_classification
+) -> None:
+    _release_repair_state(tmp_path, "repair")
+    clear_release_identity(tmp_path, campaign_id="certification-1")
+    _release_repair_state(tmp_path, "revision_reconciled")
+    apply_release_identity(tmp_path)
+    _release_repair_state(tmp_path, "sections_current")
+    with pytest.raises(ReleaseCampaignBlocked, match="incomplete predecessor"):
+        claim_release_stage(tmp_path, "full_profile")
+    _release_repair_state(tmp_path, "revision_reconciled")
+    sections = claim_release_stage(tmp_path, "sections")
+    finish_release_stage(
+        tmp_path, stage="sections", claim_id=sections["claim_id"], passed=True
+    )
+    _release_repair_state(tmp_path, "sections_current")
+    full = claim_release_stage(tmp_path, "full_profile")
+    with pytest.raises(ReleaseCampaignBlocked, match="not available"):
+        claim_release_stage(tmp_path, "full_profile")
+    failed = finish_release_stage(
+        tmp_path, stage="full_profile", claim_id=full["claim_id"], passed=False
+    )
+    assert failed["state"] == "failed"
+    with pytest.raises(ReleaseCampaignBlocked, match="not available"):
+        claim_release_stage(tmp_path, "full_profile")
+
+
+def test_terminal_failed_campaign_is_archived_before_one_cleared_successor(
+    tmp_path: Path, release_classification
+) -> None:
+    _release_repair_state(tmp_path, "repair")
+    clear_release_identity(tmp_path, campaign_id="certification-failed")
+    _release_repair_state(tmp_path, "revision_reconciled")
+    apply_release_identity(tmp_path)
+    sections = claim_release_stage(tmp_path, "sections")
+    failed = finish_release_stage(
+        tmp_path, stage="sections", claim_id=sections["claim_id"], passed=False
+    )
+    assert failed["state"] == "failed"
+    _release_repair_state(tmp_path, "repair_frozen")
+
+    cleared = supersede_failed_release_campaign(
+        tmp_path,
+        campaign_id="certification-successor",
+        reason="complete failed-stage denominator repaired",
+    )
+
+    assert cleared["state"] == "cleared"
+    assert cleared["campaign_id"] == "certification-successor"
+    assert cleared["apply_count"] == 0
+    assert all(
+        stage["status"] == "pending" for stage in cleared["stages"].values()
+    )
+    archive = tmp_path / cleared["superseded_archive"]
+    retained = json.loads(archive.read_text(encoding="utf-8"))
+    assert retained["campaign_state"]["campaign_id"] == "certification-failed"
+    assert retained["campaign_state"]["apply_count"] == 1
+    assert retained["campaign_state"]["stages"]["sections"]["status"] == "failed"
+    with pytest.raises(ReleaseCampaignBlocked, match="only a terminal failed"):
+        supersede_failed_release_campaign(
+            tmp_path,
+            campaign_id="certification-second-successor",
+            reason="must not supersede a cleared successor",
+        )
+
+
+def test_claimed_package_stage_remains_admitted_for_its_exact_command(
+    tmp_path: Path, release_classification
+) -> None:
+    marker = tmp_path / ".engineering-bootstrap/project-record.json"
+    marker.parent.mkdir(parents=True, exist_ok=True)
+    marker.write_text('{"project_id":"prj_demo"}\n', encoding="utf-8")
+    _release_repair_state(tmp_path, "repair")
+    clear_release_identity(tmp_path, campaign_id="certification-1")
+    _release_repair_state(tmp_path, "revision_reconciled")
+    apply_release_identity(tmp_path)
+    for stage, phase in (
+        ("sections", "revision_reconciled"),
+        ("full_profile", "sections_current"),
+        ("validate", "full_profile_passed"),
+    ):
+        _release_repair_state(tmp_path, phase)
+        claimed = claim_release_stage(tmp_path, stage)
+        finish_release_stage(
+            tmp_path, stage=stage, claim_id=claimed["claim_id"], passed=True
+        )
+    _release_repair_state(tmp_path, "validated")
+    assert require_processing_stage(tmp_path, "package")["stage_allowed"] is True
+    package = claim_release_stage(tmp_path, "package")
+    admitted = require_processing_stage(tmp_path, "package")
+    assert admitted["stage_allowed"] is True
+    status = release_campaign_status(tmp_path)
+    assert status["active_claim"]["claim_id"] == package["claim_id"]
+    with pytest.raises(ReleaseCampaignBlocked, match="not available"):
+        claim_release_stage(tmp_path, "package")
+
+
+def test_release_source_digest_change_blocks_the_next_stage(
+    tmp_path: Path, release_classification, monkeypatch
+) -> None:
+    _release_repair_state(tmp_path, "repair")
+    clear_release_identity(tmp_path, campaign_id="certification-1")
+    _release_repair_state(tmp_path, "revision_reconciled")
+    apply_release_identity(tmp_path)
+    release_classification["product_digest"] = "9" * 64
+    monkeypatch.setattr(
+        "runtime.release_campaign.classify_tree",
+        lambda _root: dict(release_classification),
+    )
+    status = release_campaign_status(tmp_path, verify_source=True)
+    assert status["valid"] is False
+    with pytest.raises(ReleaseCampaignBlocked, match="source changed"):
+        claim_release_stage(tmp_path, "sections")
+
+
+def test_release_source_digest_change_during_stage_permanently_fails_campaign(
+    tmp_path: Path, release_classification, monkeypatch
+) -> None:
+    _release_repair_state(tmp_path, "repair")
+    clear_release_identity(tmp_path, campaign_id="certification-1")
+    _release_repair_state(tmp_path, "revision_reconciled")
+    apply_release_identity(tmp_path)
+    sections = claim_release_stage(tmp_path, "sections")
+    release_classification["product_digest"] = "9" * 64
+    monkeypatch.setattr(
+        "runtime.release_campaign.classify_tree",
+        lambda _root: dict(release_classification),
+    )
+    failed = finish_release_stage(
+        tmp_path, stage="sections", claim_id=sections["claim_id"], passed=True
+    )
+    assert failed["state"] == "failed"
+    assert failed["stages"]["sections"]["status"] == "failed"
+
+
+def test_release_status_rejects_identity_from_another_repair_campaign(
+    tmp_path: Path, release_classification
+) -> None:
+    _release_repair_state(tmp_path, "repair")
+    clear_release_identity(tmp_path, campaign_id="certification-1")
+    repair_path = (
+        tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    )
+    repair = json.loads(repair_path.read_text(encoding="utf-8"))
+    repair["campaign_id"] = "repair-2"
+    repair_path.write_text(json.dumps(repair), encoding="utf-8")
+    status = release_campaign_status(tmp_path)
+    assert status["valid"] is False
+    assert status["errors"] == [
+        "release identity belongs to another repair campaign"
+    ]

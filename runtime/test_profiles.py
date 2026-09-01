@@ -23,14 +23,28 @@ PROJECT_REPAIR_CAMPAIGN_PATH = Path(
 PROCESSING_PHASES = (
     "intake", "repair", "operational_verification", "repair_frozen",
     "revision_reconciled", "sections_current", "full_profile_passed",
-    "validated", "packaged", "installed_operational", "certified",
+    "validated", "packaged", "installed", "installed_operational", "certified",
 )
 STAGE_MINIMUM_PHASE = {
     "diagnose": "intake", "repair": "repair", "focused_test": "repair",
     "governed_section": "repair", "operational_verification": "operational_verification",
     "revision_reconciliation": "repair_frozen", "full_profile": "sections_current",
     "validate": "full_profile_passed", "package": "validated", "install": "packaged",
-    "installed_operational_test": "installed_operational", "certify": "installed_operational",
+    "installed_operational_test": "installed", "certify": "installed_operational",
+}
+STAGE_ALLOWED_PHASES = {
+    "diagnose": frozenset({"intake", "repair"}),
+    "repair": frozenset({"repair"}),
+    "focused_test": frozenset({"repair"}),
+    "governed_section": frozenset({"repair", "revision_reconciled"}),
+    "operational_verification": frozenset({"operational_verification"}),
+    "revision_reconciliation": frozenset({"repair_frozen"}),
+    "full_profile": frozenset({"sections_current"}),
+    "validate": frozenset({"full_profile_passed"}),
+    "package": frozenset({"validated"}),
+    "install": frozenset({"packaged"}),
+    "installed_operational_test": frozenset({"installed"}),
+    "certify": frozenset({"installed_operational"}),
 }
 CLOSURE_STAGES = frozenset({
     "revision_reconciliation", "full_profile", "validate", "package", "install",
@@ -105,12 +119,12 @@ def initialize_project_repair_campaign(root: Path) -> dict[str, Any]:
 def processing_stage_allowed(
     phase: str, intake_open: bool, unresolved: list[str], stage: str
 ) -> bool:
-    minimum = STAGE_MINIMUM_PHASE.get(stage)
-    if minimum is None:
+    allowed_phases = STAGE_ALLOWED_PHASES.get(stage)
+    if allowed_phases is None:
         raise ValueError(f"unknown processing stage: {stage}")
     if stage in CLOSURE_STAGES and (intake_open or unresolved):
         return False
-    return PROCESSING_PHASES.index(phase) >= PROCESSING_PHASES.index(minimum)
+    return phase in allowed_phases
 
 
 def repair_campaign_status(root: Path) -> dict[str, Any]:
@@ -160,11 +174,70 @@ def require_processing_stage(root: Path, stage: str) -> dict[str, Any]:
         return status
     if not processing_stage_allowed(str(status["phase"]), bool(status["intake_open"]), list(status["unresolved"]), stage):
         unresolved = ", ".join(status["unresolved"][:8]) or "none"
+        required = " or ".join(sorted(STAGE_ALLOWED_PHASES[stage], key=PROCESSING_PHASES.index))
         raise ProcessingOrderBlocked(
-            f"PROCESSING_ORDER_BLOCKED: {stage} requires phase {STAGE_MINIMUM_PHASE[stage]}; "
+            f"PROCESSING_ORDER_BLOCKED: {stage} requires phase {required}; "
             f"current={status['phase']}; intake_open={str(status['intake_open']).lower()}; "
             f"unresolved={unresolved}"
         )
+    identity_bound_section = (
+        stage == "governed_section" and status.get("phase") == "revision_reconciled"
+    )
+    if (root.resolve() / MANAGED_PROJECT_MARKER).is_file() and (
+        stage in CLOSURE_STAGES or identity_bound_section
+    ):
+        from .release_campaign import release_campaign_status
+
+        release = release_campaign_status(
+            root,
+            verify_source=stage != "revision_reconciliation",
+        )
+        if stage == "revision_reconciliation":
+            release_ready = (
+                release.get("valid") is True
+                and release.get("state") == "cleared"
+                and release.get("apply_count") == 0
+                and release.get("identity") is None
+            )
+        elif identity_bound_section:
+            stages = release.get("stages", {})
+            release_ready = (
+                release.get("valid") is True
+                and release.get("state") == "active"
+                and release.get("apply_count") == 1
+                and stages.get("sections", {}).get("status") == "claimed"
+            )
+        else:
+            release_stage = {
+                "full_profile": "full_profile",
+                "validate": "validate",
+                "package": "package",
+                "install": "install",
+                "installed_operational_test": "installed_operational",
+                "certify": "certify",
+            }[stage]
+            stages = release.get("stages", {})
+            stage_status = stages.get(release_stage, {}).get("status")
+            active_claim = release.get("active_claim")
+            claimed_here = (
+                stage_status == "claimed"
+                and isinstance(active_claim, dict)
+                and active_claim.get("stage") == release_stage
+                and active_claim.get("claim_id")
+                == stages.get(release_stage, {}).get("claim_id")
+            )
+            release_ready = (
+                release.get("valid") is True
+                and release.get("state") == "active"
+                and release.get("apply_count") == 1
+                and isinstance(release.get("identity"), dict)
+                and (stage_status == "pending" or claimed_here)
+            )
+        if not release_ready:
+            raise ProcessingOrderBlocked(
+                f"PROCESSING_ORDER_BLOCKED: {stage} has no exact one-shot "
+                f"release identity/stage authority; release_state={release.get('state')}"
+            )
     return {**status, "requested_stage": stage, "stage_allowed": True}
 
 

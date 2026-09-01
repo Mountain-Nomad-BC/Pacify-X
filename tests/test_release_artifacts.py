@@ -4,7 +4,22 @@ from pathlib import Path
 import shutil
 import tempfile
 
-from runtime.release_artifacts import classify_tree, verify_frozen_product
+import pytest
+
+from runtime.release_artifacts import (
+    classify_tree,
+    materialize_release_source,
+    verify_frozen_product,
+)
+from runtime.release_campaign import (
+    ReleaseCampaignBlocked,
+    apply_release_identity,
+    claim_release_stage,
+    clear_release_identity,
+    finish_release_stage,
+    supersede_invalid_active_release_campaign,
+    supersede_invalid_release_identity,
+)
 
 
 ROOT = Path(__file__).parents[1]
@@ -72,6 +87,216 @@ def test_live_test_orchestration_lock_is_control_output_not_product() -> None:
     assert result["valid"], result["errors"]
     assert record["classification"] == "control_output"
     assert record["sha256"] is None
+
+
+def test_governance_and_receipt_progress_cannot_mutate_frozen_product_identity() -> None:
+    root = _minimal_tree()
+    controls = {
+        ".engineering-bootstrap/processing-order/repair-campaign.json": '{"phase":"repair_frozen"}\n',
+        ".engineering-bootstrap/processing-order/release-identity.json": '{"state":"cleared"}\n',
+        ".engineering-bootstrap/test-evidence/sections/testing-governance.json": '{"passed":true}\n',
+        ".engineering-bootstrap/test-evidence/groups/core-a-f.json": '{"passed":true}\n',
+        ".engineering-bootstrap/resource-lifecycle/cleanup-receipts/process.json": '{"status":"exited"}\n',
+        "extension/SHA256SUMS.txt": "old  dist/package.vsix\n",
+        "registry/.operational-gap-ledger.lock": '{"owner":"one"}\n',
+        "registry/completion_status.json": '{"complete":false}\n',
+        "registry/operational_gap_ledger.head.json": '{"sequence":1}\n',
+    }
+    for relative, content in controls.items():
+        path = root / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content, encoding="utf-8")
+    frozen = classify_tree(root)
+    for relative in controls:
+        path = root / relative
+        path.write_text(path.read_text(encoding="utf-8") + "\n", encoding="utf-8")
+    current = classify_tree(root)
+    assert frozen["valid"] and current["valid"]
+    assert frozen["product_digest"] == current["product_digest"]
+    records = {item["path"]: item for item in current["records"]}
+    for relative in (
+        ".engineering-bootstrap/processing-order/repair-campaign.json",
+        ".engineering-bootstrap/processing-order/release-identity.json",
+        ".engineering-bootstrap/test-evidence/sections/testing-governance.json",
+        "extension/SHA256SUMS.txt",
+        "registry/.operational-gap-ledger.lock",
+        "registry/completion_status.json",
+        "registry/operational_gap_ledger.head.json",
+    ):
+        record = records[relative]
+        assert record["classification"] == "control_output"
+        assert record["sha256"] is None
+
+
+def test_full_profile_completion_projection_cannot_fail_a_passing_stage(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    root = _minimal_tree()
+    extension = root / "extension/package.json"
+    extension.parent.mkdir(parents=True)
+    extension.write_text('{"version":"1.2.3"}\n', encoding="utf-8")
+    completion = root / "registry/completion_status.json"
+    completion.parent.mkdir(parents=True)
+    completion.write_text('{"complete":false}\n', encoding="utf-8")
+    monkeypatch.setattr(
+        "runtime.release_campaign.authoritative_version", lambda _root: "1.2.3"
+    )
+
+    _write_release_repair_state(root, "repair")
+    clear_release_identity(root, campaign_id="completion-control-output")
+    _write_release_repair_state(root, "revision_reconciled")
+    apply_release_identity(root)
+    sections = claim_release_stage(root, "sections")
+    finish_release_stage(
+        root, stage="sections", claim_id=sections["claim_id"], passed=True
+    )
+    _write_release_repair_state(root, "sections_current")
+    full_profile = claim_release_stage(root, "full_profile")
+
+    completion.write_text('{"complete":true}\n', encoding="utf-8")
+    finished = finish_release_stage(
+        root,
+        stage="full_profile",
+        claim_id=full_profile["claim_id"],
+        passed=True,
+    )
+
+    assert finished["valid"] is True
+    assert finished["state"] == "active"
+    assert finished["stages"]["full_profile"]["status"] == "passed"
+
+
+def test_invalid_active_campaign_with_passed_stages_is_archived_before_successor(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    root = _minimal_tree()
+    extension = root / "extension/package.json"
+    extension.parent.mkdir(parents=True)
+    extension.write_text('{"version":"1.2.3"}\n', encoding="utf-8")
+    monkeypatch.setattr(
+        "runtime.release_campaign.authoritative_version", lambda _root: "1.2.3"
+    )
+    _write_release_repair_state(root, "repair")
+    clear_release_identity(root, campaign_id="active-before-defect")
+    _write_release_repair_state(root, "revision_reconciled")
+    apply_release_identity(root)
+    sections = claim_release_stage(root, "sections")
+    finish_release_stage(
+        root, stage="sections", claim_id=sections["claim_id"], passed=True
+    )
+
+    (root / "runtime/module.py").write_text("VALUE = 2\n", encoding="utf-8")
+    _write_release_repair_state(root, "repair_frozen")
+    superseded = supersede_invalid_active_release_campaign(
+        root,
+        campaign_id="active-after-defect",
+        reason="focused pre-package source defect",
+    )
+
+    assert superseded["state"] == "cleared"
+    assert superseded["apply_count"] == 0
+    archive = root / superseded["superseded_archive"]
+    retained = __import__("json").loads(archive.read_text(encoding="utf-8"))
+    assert retained["campaign_state"]["campaign_id"] == "active-before-defect"
+    assert retained["campaign_state"]["stages"]["sections"]["status"] == "passed"
+
+
+def _write_release_repair_state(root: Path, phase: str) -> None:
+    campaign = root / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    campaign.parent.mkdir(parents=True, exist_ok=True)
+    campaign.write_text(
+        '{"schema_version":"px.repair-campaign/1.0",'
+        f'"campaign_id":"repair-exact","phase":"{phase}",'
+        '"intake_open":false,"unresolved":[]}\n',
+        encoding="utf-8",
+    )
+
+
+def test_real_classifier_is_stable_across_identity_apply_and_invalid_supersession(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    root = _minimal_tree()
+    extension = root / "extension/package.json"
+    extension.parent.mkdir(parents=True)
+    extension.write_text('{"version":"1.2.3"}\n', encoding="utf-8")
+    monkeypatch.setattr(
+        "runtime.release_campaign.authoritative_version", lambda _root: "1.2.3"
+    )
+    _write_release_repair_state(root, "repair")
+    clear_release_identity(root, campaign_id="identity-invalid")
+    before_apply = classify_tree(root)
+    _write_release_repair_state(root, "revision_reconciled")
+    applied = apply_release_identity(root)
+    after_apply = classify_tree(root)
+    assert applied["valid"] is True
+    assert applied["apply_count"] == 1
+    assert before_apply["product_digest"] == after_apply["product_digest"]
+    identity_record = next(
+        item
+        for item in after_apply["records"]
+        if item["path"]
+        == ".engineering-bootstrap/processing-order/release-identity.json"
+    )
+    assert identity_record["classification"] == "control_output"
+    assert identity_record["sha256"] is None
+
+    _write_release_repair_state(root, "repair_frozen")
+    with pytest.raises(
+        ReleaseCampaignBlocked, match="coherent release identity cannot be superseded"
+    ):
+        supersede_invalid_release_identity(
+            root,
+            campaign_id="identity-must-not-replace-valid",
+            reason="invalid attempt to replace a coherent identity",
+        )
+
+    (root / "runtime/module.py").write_text("VALUE = 2\n", encoding="utf-8")
+    superseded = supersede_invalid_release_identity(
+        root,
+        campaign_id="identity-corrected",
+        reason="focused source-drift recovery",
+    )
+    assert superseded["state"] == "cleared"
+    assert superseded["apply_count"] == 0
+    archive = root / superseded["superseded_archive"]
+    retained = __import__("json").loads(archive.read_text(encoding="utf-8"))
+    assert retained["campaign_state"]["campaign_id"] == "identity-invalid"
+    assert retained["campaign_state"]["apply_count"] == 1
+    _write_release_repair_state(root, "revision_reconciled")
+    corrected = apply_release_identity(root)
+    assert corrected["valid"] is True
+    assert corrected["campaign_id"] == "identity-corrected"
+    assert corrected["apply_count"] == 1
+
+
+def test_current_product_tree_identity_apply_is_a_fixed_point(tmp_path: Path) -> None:
+    root = tmp_path / "current-product-source"
+    receipt = materialize_release_source(ROOT, root)
+    assert receipt["valid"], receipt
+    _write_release_repair_state(root, "repair")
+    clear_release_identity(root, campaign_id="exact-current-product")
+    cleared = classify_tree(root)
+    _write_release_repair_state(root, "revision_reconciled")
+    applied = apply_release_identity(root)
+    active = classify_tree(root)
+    assert applied["valid"] is True
+    assert applied["apply_count"] == 1
+    assert applied["identity"]["source_product_digest"] == cleared["product_digest"]
+    assert active["product_digest"] == cleared["product_digest"]
+    assert active["harness_digest"] == cleared["harness_digest"]
+
+
+def test_control_output_prefix_does_not_hide_neighboring_product_source() -> None:
+    root = _minimal_tree()
+    source = root / ".engineering-bootstrap/test-evidence-contract.py"
+    source.parent.mkdir(parents=True, exist_ok=True)
+    source.write_text("VALUE = 1\n", encoding="utf-8")
+    frozen = classify_tree(root)
+    source.write_text("VALUE = 2\n", encoding="utf-8")
+    current = classify_tree(root)
+    record = next(item for item in current["records"] if item["path"] == source.relative_to(root).as_posix())
+    assert record["classification"] == "product_input"
+    assert frozen["product_digest"] != current["product_digest"]
 
 
 def test_nested_evidence_is_not_a_product_input() -> None:
@@ -156,3 +381,44 @@ def test_px_native_skills_are_product_and_nested_dependencies_are_pruned() -> No
         for item in result["records"]
     )
     assert not any(item["path"].startswith("extension/node_modules/") for item in result["records"])
+
+
+def test_materialized_release_source_is_bounded_and_complete() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        destination = Path(directory) / "source"
+        receipt = materialize_release_source(
+            ROOT,
+            destination,
+            extra_paths=("evidence/externalized-payload-index.json",),
+        )
+
+        assert receipt["valid"]
+        assert receipt["copied_bytes"] < 256 * 1024 * 1024
+        assert (destination / "pyproject.toml").read_bytes() == (
+            ROOT / "pyproject.toml"
+        ).read_bytes()
+        assert (destination / "runtime/release_artifacts.py").is_file()
+        assert (destination / "evidence/externalized-payload-index.json").is_file()
+        assert not (destination / "registry/operational_gap_ledger.jsonl").exists()
+        assert not (
+            destination / "registry/operational_gap_ledger.snapshot.json"
+        ).exists()
+        assert not (destination / "registry/operational_gap_ledger.head.json").exists()
+
+
+def test_materialized_release_source_rejects_existing_destination() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        destination = Path(directory) / "source"
+        destination.mkdir()
+        with pytest.raises(FileExistsError, match="already exists"):
+            materialize_release_source(ROOT, destination)
+
+
+def test_materialized_release_source_rejects_path_traversal() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        with pytest.raises(ValueError, match="unsafe release fixture path"):
+            materialize_release_source(
+                ROOT,
+                Path(directory) / "source",
+                extra_paths=("../outside",),
+            )

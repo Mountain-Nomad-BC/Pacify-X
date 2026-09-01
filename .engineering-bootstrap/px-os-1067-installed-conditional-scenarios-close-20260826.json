@@ -1,0 +1,14 @@
+{
+  "session_id": "repair-session:px-installed-conditional-scenarios-20260826",
+  "gap_id": "PX-OS-1067",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023370",
+  "outcome": "completed",
+  "evidence": [
+    {
+      "reference": "evidence/release/px-os-1067-installed-conditional-scenarios-repair-20260826.json",
+      "artifact_sha256": "246564d65361697ee65e87b6774ef281dd3fb5d1e2162b0d8c0d85fdab461405",
+      "artifact_size": 1555,
+      "claim": "Installed conditional consumer scenarios pass 39 focused tests and the 246-test governed dashboard-extension section without promoting backend or recovery authority."
+    }
+  ]
+}

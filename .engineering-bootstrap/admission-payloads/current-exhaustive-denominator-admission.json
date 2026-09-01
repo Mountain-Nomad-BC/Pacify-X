@@ -1,0 +1,29 @@
+{
+  "gap_id": "PX-OS-1065",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000015447",
+  "session_id": "verification-session:px-current-exhaustive-denominator-20260825",
+  "expires_utc": "2026-08-29T23:59:00Z",
+  "effect_scopes": [
+    {
+      "effect": "write",
+      "scope": [
+        "Write only a fresh current-source exhaustive browser denominator, a derived exact 0.6.56 assembled control-evidence receipt, deterministic ledger reconciliation events, and governed section receipts; do not modify implementation source, package, deploy, publish, or certify."
+      ]
+    },
+    {
+      "effect": "execute",
+      "scope": [
+        "Run one bounded current-source exhaustive operational-control browser walk, exact 0.6.56 evidence assembly, deterministic ledger reconciliation and progress diagnostics, focused installed-evidence-adapter tests, and directly changed governed section gates; do not run full profile, validate, package, deploy, publish, or certify."
+      ]
+    }
+  ],
+  "authority": "The assembler rejected stale denominator evidence and the user authorized reversible operational repair and measurement.",
+  "expected_effect": "Produce one current exact control denominator and combine it with direct installed 0.6.56 evidence while preserving every missing stage as a gap.",
+  "rollback": "Retain the bounded receipts as diagnostic evidence and supersede them with a later exact run; no source or user profile changes are permitted.",
+  "evidence": [
+    {
+      "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000015447",
+      "claim": "Exact active denominator checkpoint."
+    }
+  ]
+}

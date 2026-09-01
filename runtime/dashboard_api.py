@@ -15,6 +15,7 @@ import json
 import os
 from pathlib import Path
 import re
+import stat
 import subprocess
 import time
 import tomllib
@@ -25,6 +26,9 @@ MAX_PAGE_SIZE = 100
 HARDWARE_CACHE_TTL_SECONDS = 300.0
 HARDWARE_CACHE_MAX_TTL_SECONDS = 3600.0
 HARDWARE_CACHE_SCHEMA = "px.hardware-dashboard-cache/1.1"
+REPOSITORY_GRAPH_MAX_BYTES = 16 * 1024 * 1024
+REPOSITORY_GRAPH_MAX_NODES = 50_000
+REPOSITORY_GRAPH_MAX_EDGES = 200_000
 
 _DISPLAY_ACRONYMS = {
     "ai": "AI",
@@ -52,6 +56,47 @@ def _read_json(path: Path, default: Any = None) -> Any:
         return json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
         return default
+
+
+def _read_bounded_repository_graph(path: Path) -> tuple[Mapping[str, Any] | None, str | None]:
+    """Read one project-controlled graph without allocating beyond its contract."""
+
+    try:
+        with path.open("rb") as handle:
+            metadata = os.fstat(handle.fileno())
+            if not stat.S_ISREG(metadata.st_mode):
+                return None, "repository architecture graph is not a regular file"
+            if metadata.st_size > REPOSITORY_GRAPH_MAX_BYTES:
+                return None, (
+                    "repository architecture graph exceeds the "
+                    f"{REPOSITORY_GRAPH_MAX_BYTES}-byte input limit"
+                )
+            encoded = handle.read(REPOSITORY_GRAPH_MAX_BYTES + 1)
+        if len(encoded) > REPOSITORY_GRAPH_MAX_BYTES:
+            return None, (
+                "repository architecture graph changed beyond the "
+                f"{REPOSITORY_GRAPH_MAX_BYTES}-byte input limit while reading"
+            )
+        payload = json.loads(encoded)
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError, RecursionError) as error:
+        return None, f"repository architecture graph is unreadable: {type(error).__name__}"
+    if not isinstance(payload, Mapping):
+        return None, "repository architecture graph must be a JSON object"
+    nodes = payload.get("nodes", [])
+    edges = payload.get("edges", [])
+    if not isinstance(nodes, list) or not isinstance(edges, list):
+        return None, "repository architecture graph nodes and edges must be arrays"
+    if len(nodes) > REPOSITORY_GRAPH_MAX_NODES:
+        return None, (
+            "repository architecture graph exceeds the "
+            f"{REPOSITORY_GRAPH_MAX_NODES}-node input limit"
+        )
+    if len(edges) > REPOSITORY_GRAPH_MAX_EDGES:
+        return None, (
+            "repository architecture graph exceeds the "
+            f"{REPOSITORY_GRAPH_MAX_EDGES}-edge input limit"
+        )
+    return payload, None
 
 
 def _completion(root: Path) -> dict[str, Any]:
@@ -500,17 +545,22 @@ def _extension_source_identity(root: Path) -> dict[str, Any]:
     package_path = extension_root / "package.json"
     package = _read_json(package_path, {})
     asset_paths = sorted((extension_root / "media" / "dashboard").glob("*.js"))
+    asset_paths.extend(sorted((extension_root / "src").glob("*.js")))
     asset_paths.extend(
         path
         for path in (
             extension_root / "media" / "dashboard.css",
             extension_root / "media" / "sidebar.css",
             extension_root / "media" / "sidebar.js",
+            extension_root / "resources" / "ui" / "action-inventory.json",
         )
         if path.is_file()
     )
     digest = hashlib.sha256()
-    for path in sorted(asset_paths, key=lambda item: item.relative_to(extension_root).as_posix()):
+    for path in sorted(
+        asset_paths,
+        key=lambda item: item.relative_to(extension_root).as_posix().encode("utf-8"),
+    ):
         relative = path.relative_to(extension_root).as_posix()
         data = path.read_bytes()
         digest.update(relative.encode("utf-8"))
@@ -2684,7 +2734,37 @@ def query_graph(
                     "approval_required": True,
                 },
             }
-        payload = _read_json(source_path, {})
+        payload, graph_error = _read_bounded_repository_graph(source_path)
+        if payload is None:
+            return {
+                "schema_version": SCHEMA_VERSION,
+                "generated_at": _now(),
+                "available": False,
+                "source": source_path.as_posix(),
+                "view": view,
+                "selected": None,
+                "nodes": [],
+                "edges": [],
+                "relations": [],
+                "requested_query": query,
+                "requested_relation": relation,
+                "search_results": [],
+                "ambiguous_matches": [],
+                "total_nodes": None,
+                "total_edges": None,
+                "direction": direction,
+                "depth": bounded_depth,
+                "limits": {
+                    "max_nodes": bounded_nodes,
+                    "max_edges": bounded_edges,
+                    "input_bytes": REPOSITORY_GRAPH_MAX_BYTES,
+                    "input_nodes": REPOSITORY_GRAPH_MAX_NODES,
+                    "input_edges": REPOSITORY_GRAPH_MAX_EDGES,
+                },
+                "truncated": False,
+                "limitations": [graph_error],
+                "build_action": None,
+            }
         raw_records = payload.get("nodes", []) if isinstance(payload, Mapping) else []
         records = [
             {

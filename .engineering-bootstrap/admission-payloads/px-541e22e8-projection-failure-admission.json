@@ -1,0 +1,37 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-541e22e8-clean-projection-diagnosis-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023294",
+  "authority": "User requested all remaining Pacify-X repairs and GitHub failures be resolved before testing and certification.",
+  "expected_effect": "Reproduce the three remote assurance failures from an exact clean archive of 541e22e8, identify the deterministic source-to-projection delta, and repair only its canonical generated owners in the primary worktree.",
+  "rollback": "Retain the clean diagnostic workspace and receipts; revert only directly regenerated projection files if clean-checkout focused gates do not pass. Do not alter Git history or remote state.",
+  "expires_utc": "2026-09-05T15:00:00Z",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": [
+        "Inspect GitHub run 32977077401 public job metadata, commit 541e22e8 archive contents, independent gate definitions/receipts, exact clean-checkout generated/registry/structural results, and diffs limited to canonical generated projections."
+      ]
+    },
+    {
+      "effect": "write",
+      "scope": [
+        "Create and register one retained diagnostic workspace below .engineering-bootstrap/diagnostics for the exact 541e22e8 Git archive; write its independent gate receipts; update only canonical generated projection files proven stale by that exact clean-checkout diagnosis and one focused non-certifying repair evidence file. Do not modify source behavior, tests, ledger history, package/install artifacts, Git history, or remote state."
+      ]
+    },
+    {
+      "effect": "execute",
+      "scope": [
+        "Extract the exact 541e22e8 Git archive into the registered diagnostic workspace; run only generated, registry, and structural independent gates and their named canonical projection builders/currentness tests with bytecode disabled; reconcile the diagnostic process/workspace. Do not run sections, full profile, validate, package, install, service mutation, commit, push, merge, close pull requests, or certify."
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "reference": "https://github.com/Mountain-Nomad-BC/Pacify-X/actions/runs/32977077401",
+      "artifact_sha256": "a1c85be36b7877dfde1d0f38c9b111b2c5924d841fb9019610ca5c009e2d85ed",
+      "artifact_size": 3469,
+      "claim": "Three exact remote assurance projection failures on canonical main 541e22e8."
+    }
+  ]
+}

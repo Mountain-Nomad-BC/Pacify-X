@@ -1884,7 +1884,13 @@ class SkillStudio:
             return receipt
 
     def rollback(
-        self, promotion_receipt: Path, *, approved: bool, approver: str
+        self,
+        promotion_receipt: Path,
+        *,
+        approved: bool,
+        approver: str,
+        expected_skill_id: str | None = None,
+        expected_version: str | None = None,
     ) -> dict[str, object]:
         if not approved or not approver.strip():
             raise PermissionError(
@@ -1894,6 +1900,16 @@ class SkillStudio:
             self._recover_lifecycle_transactions_locked()
             raw = json.loads(promotion_receipt.read_text(encoding="utf-8"))
             promotion = self.authority.verify_receipt(raw)
+            if (
+                expected_skill_id is not None
+                and promotion.get("skill_id") != expected_skill_id
+            ):
+                raise PermissionError("promotion receipt skill identity mismatch")
+            if (
+                expected_version is not None
+                and promotion.get("version") != expected_version
+            ):
+                raise PermissionError("promotion receipt skill version mismatch")
             backup_relative = promotion.get("backup_relative")
             if not backup_relative:
                 raise ValueError("promotion has no rollback target")

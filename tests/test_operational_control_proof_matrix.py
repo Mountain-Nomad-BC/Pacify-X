@@ -1,12 +1,20 @@
 from __future__ import annotations
 
 import json
+import inspect
 from pathlib import Path
 
+from scripts.clean_source_export import _rebuild_candidate_projections_unlocked
 from scripts.build_operational_control_proof_matrix import STAGES, build, indicator_role, semantic_requirement
 
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_canonical_reconciliation_owns_the_operational_proof_matrix() -> None:
+    source = inspect.getsource(_rebuild_candidate_projections_unlocked)
+    assert "build_operational_control_proof_matrix" in source
+    assert 'root / "registry/operational_control_proof_matrix.json"' in source
 
 
 def test_matrix_is_current_complete_and_never_self_attests_execution() -> None:

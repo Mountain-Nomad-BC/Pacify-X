@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023329",
+  "learned": "The repaired runner correctly preserves immutable evidence and rejected reuse of the first retained report path before any temporary root or host launch. The operational rerun must use fresh r2 output and report paths.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": [],
+  "next_action": "Repair the ten remaining PX-CURRENT tracks in dependency order, beginning with the tested-source Studio worker handoff and current extension-host/listener health.",
+  "evidence": [
+    {
+      "reference": "evidence/release/isolated-runner-diagnostic-custody-repair-20260826.json",
+      "artifact_sha256": "13f806441867855aaa0bfc1a49595dc00197434aa66c00b8660f6b94346263da",
+      "artifact_size": 1738,
+      "claim": "Green runner repair retained before fresh-path operational rerun."
+    }
+  ]
+}

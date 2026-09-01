@@ -13,7 +13,7 @@ const STUDIO_PROTOCOL = require('../resources/studio-operations.json');
 if (STUDIO_PROTOCOL.schema_version !== 'px.studio-operation-contract/1.0' || !STUDIO_PROTOCOL.kinds) throw new Error('studio-operation-contract-invalid');
 
 const CONTRACTS = Object.freeze({
-  ready: [], refresh: [], openCoordinationHandoff: ['requestId'], openSettings: ['requestId'], configureCanonicalMemory: ['requestId'], disconnectCanonicalMemory: ['requestId'], buildRepositoryGraph: [], validate: [], createContextSnapshot: ['requestId'], openExtensionsView: ['requestId'], scanCleanup: [], teamPackPreview: [], refreshEnvironment: [], continueCodex: ['requestId'], cancelCodex: ['requestId'], listHostModels: [],
+  ready: [], refresh: [], dashboardViewState: ['state'], openCoordinationHandoff: ['requestId'], openSettings: ['requestId'], configureCanonicalMemory: ['requestId'], disconnectCanonicalMemory: ['requestId'], buildRepositoryGraph: [], validate: [], createContextSnapshot: ['requestId'], openExtensionsView: ['requestId'], scanCleanup: [], teamPackPreview: [], refreshEnvironment: [], continueCodex: ['requestId'], cancelCodex: ['requestId'], listHostModels: [],
   skillQuery: ['goal', 'domain'], skillHydrate: ['skill', 'domain'], skillCompare: ['requestId', 'skill'], setupStudio: ['requestId'],
   createStudioDraft: ['requestId', 'kind', 'payload'],
   detachStudioDraft: ['requestId', 'kind'],
@@ -38,9 +38,10 @@ const CONTRACTS = Object.freeze({
   executeCleanup: ['ids', 'disposition'], enterprisePackToggle: ['packId', 'enabled'], enterpriseTargetConfigure: ['packId'],
   enterpriseDoctor: [], toggleBillablePolicy: ['enabled'], environmentQuery: ['subject', 'query', 'offset', 'limit'],
   environmentExtensionDetail: ['extensionId'], environmentLifecyclePreview: ['subject', 'recordId', 'action'],
-  extensionLifecyclePreview: ['requestId', 'extensionId', 'version'],
+  environmentLifecycleRestorePreview: ['receiptId'], environmentLifecycleRestoreExecute: ['token', 'exactTarget'],
+  extensionLifecyclePreview: ['requestId', 'extensionId', 'version', 'localVsixPath'],
   extensionLifecycleExecute: ['requestId', 'token', 'exactTarget'],
-  extensionUpdatePreview: ['requestId', 'extensionId', 'version'],
+  extensionUpdatePreview: ['requestId', 'extensionId', 'version', 'localVsixPath'],
   extensionUpdateExecute: ['requestId', 'token', 'exactTarget'],
   extensionEnablementPreview: ['requestId', 'extensionId', 'desiredAction', 'scope'],
   extensionEnablementExecute: ['requestId', 'token', 'exactTarget', 'extensionId', 'desiredAction', 'scope'],
@@ -106,6 +107,25 @@ function validCanonicalStudioVersion(value) {
   catch { return false; }
 }
 
+function validPersistedWorkingStudioDrafts(value) {
+  if (!plainObject(value)) return false;
+  const kinds = ['agent', 'workflow', 'skill'];
+  if (Object.keys(value).some(kind => !kinds.includes(kind))) return false;
+  let totalBytes = 0;
+  for (const kind of kinds) {
+    if (!Object.hasOwn(value, kind)) continue;
+    const encoded = value[kind];
+    if (typeof encoded !== 'string') return false;
+    const bytes = Buffer.byteLength(encoded, 'utf8');
+    if (bytes > 524288 || totalBytes + bytes > 1048576) return false;
+    totalBytes += bytes;
+    let envelope;
+    try { envelope = JSON.parse(encoded); } catch { return false; }
+    if (!plainObject(envelope) || envelope.schema_version !== 'px.studio-working-draft/1.0' || envelope.kind !== kind || !plainObject(envelope.draft)) return false;
+  }
+  return true;
+}
+
 function validateWebviewMessage(message) {
   if (!plainObject(message)) throw new Error('webview-message-must-be-an-object');
   inspectValue(message, { nodes: 0 });
@@ -116,6 +136,16 @@ function validateWebviewMessage(message) {
   let serialized;
   try { serialized = JSON.stringify(message); } catch { throw new Error('webview-message-not-serializable'); }
   if (Buffer.byteLength(serialized, 'utf8') > MAX_MESSAGE_BYTES) throw new Error('webview-message-too-large');
+  if (message.type === 'dashboardViewState') {
+    const allowedStateKeys = new Set([
+      'active', 'advancedOpen', 'capabilityKind', 'agentScope', 'workflowScope', 'environmentScope',
+      'graphView', 'graphMode', 'graphTarget', 'graphLayout', 'graphInspectorOpen', 'graphDepth',
+      'graphKind', 'graphStatus', 'graphCommunity', 'graphRelation', 'graphSavedViews', 'studioHistory', 'workingStudioDrafts'
+    ]);
+    if (!plainObject(message.state)) throw new Error('webview-message-field-invalid:dashboardViewState');
+    const unknownStateKeys = Object.keys(message.state).filter(key => !allowedStateKeys.has(key));
+    if (unknownStateKeys.length || Buffer.byteLength(JSON.stringify(message.state), 'utf8') > 1572864 || !validPersistedWorkingStudioDrafts(message.state.workingStudioDrafts)) throw new Error('webview-message-field-invalid:dashboardViewState');
+  }
   for (const key of ['offset', 'edgeOffset', 'limit', 'depth', 'maxNodes', 'maxEdges', 'ttlMinutes', 'confidence', 'nodeCount', 'edgeCount', 'visibleNodeCount', 'canvasWidth', 'canvasHeight']) {
     if (message[key] != null && (typeof message[key] !== 'number' || !Number.isFinite(message[key]))) throw new Error(`webview-message-field-invalid:${key}`);
   }
@@ -179,6 +209,7 @@ function validateWebviewMessage(message) {
     if (!boundedStudioRequestId) throw new Error('webview-message-field-invalid:requestId');
     if (typeof message.extensionId !== 'string' || !EXTENSION_ID_PATTERN.test(message.extensionId)) throw new Error('webview-message-field-invalid:extensionId');
     if (typeof message.version !== 'string' || message.version.length > 96 || (message.version && !EXTENSION_VERSION_PATTERN.test(message.version))) throw new Error('webview-message-field-invalid:extensionVersion');
+    if (typeof message.localVsixPath !== 'string' || message.localVsixPath.length > 32768 || (message.localVsixPath && !/\.vsix$/i.test(message.localVsixPath))) throw new Error('webview-message-field-invalid:localVsixPath');
   }
   if (['extensionLifecycleExecute', 'extensionUpdateExecute'].includes(message.type)) {
     if (!boundedStudioRequestId) throw new Error('webview-message-field-invalid:requestId');

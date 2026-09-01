@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023013",
+  "learned": "PX-AUD2-003 and PX-AUD2-004 are causally repaired: the current product-source walk completes with 900 effect-surface records and no build, dist, evidence, or cache boundary records. Only the generated ownership/reachability projections are stale, and the processing-order contract assigns their single refresh to revision reconciliation before governed sections.",
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": ["PX-OS-1065"],
+  "evidence": [
+    {
+      "reference": "evidence/release/generated-source-boundary-causal-proof-20260826.json",
+      "artifact_sha256": "7c84f4e168d7ab29cf0128399dacb4072b900bdcf5c9956df8f93d11c1d3a4a4",
+      "artifact_size": 1587,
+      "claim": "Causal proof permits repair freeze while deferring generated projection equality to the ordered revision stage."
+    }
+  ]
+}

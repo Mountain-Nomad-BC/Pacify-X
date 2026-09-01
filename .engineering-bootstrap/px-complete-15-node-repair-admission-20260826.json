@@ -1,0 +1,31 @@
+{
+  "session_id": "repair-session:px-complete-stale-group-failure-cluster-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023103",
+  "gap_id": "PX-OS-1065",
+  "authority": "Codex host authority performing focused repair from the complete current five-group failure denominator.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect only the 15 named failure nodes in evidence/release/post-singleflight-full-profile-failures-20260826.json and their directly exercised corrective-release, release-audit, release-artifact, release-certification, CLI timeout, release-boundary, repository-scope, and fixture implementations plus exact failure receipts."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Repair only shared causal defects behind the complete PX-AUD2-014 five-group denominator, add or correct focused regression fixtures, retain bounded evidence, and clear the finding only after all 15 named nodes pass. Do not rebuild projections, run sections/groups/profile/validate/package/install/publish/certify."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["Run only the 15 exact failed test nodes and smaller causal subsets while repairing. Do not run whole files unrelated to those nodes, governed sections, groups, full profile, validate, package, install, publish, or certify."]
+    }
+  ],
+  "expected_effect": "Reduce the complete 15-node cluster to causal repairs and make every exact node pass before any refreeze.",
+  "rollback": "Revert only scoped fixture/runtime repairs that fail their exact nodes; retain all five failed group receipts.",
+  "expires_utc": "2026-08-27T06:00:00Z",
+  "evidence": [
+    {
+      "reference": "evidence/release/post-singleflight-full-profile-failures-20260826.json",
+      "artifact_sha256": "09cb8685ffca170c7224ad7440a553bb58312e003f1f753887d9237ebddfe1c0",
+      "artifact_size": 2959,
+      "claim": "Complete five-group, 15-node failed-profile denominator."
+    }
+  ]
+}

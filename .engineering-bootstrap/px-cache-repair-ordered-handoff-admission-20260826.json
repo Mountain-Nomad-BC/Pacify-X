@@ -1,0 +1,17 @@
+{
+  "session_id": "verification-session:px-cache-repair-ordered-handoff-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023036",
+  "gap_id": "PX-OS-1065",
+  "authority": "User authorized all remaining reversible Pacify-X closure work and requires repaired governed operation before whole-profile validation.",
+  "effect_scopes": [
+    {"effect": "read", "scope": ["Inspect the zero-unresolved repair campaign, processing oracles, repository projection owner, testing-governance currentness, and final section receipt only."]},
+    {"effect": "write", "scope": ["Advance the campaign through operational_verification and repair_frozen; rebuild repository-owned generated projections exactly once; advance to revision_reconciled; let only testing-governance write its owned receipt/resources; advance to sections_current only if all six required sections are current; retain evidence and append ledger closure events. Do not change product source."]},
+    {"effect": "execute", "scope": ["Run processing-order checks, exactly one repository-owned projection rebuild, focused generated/dependency/diff integrity, and exactly one governed testing-governance section retry followed by section status. Do not run full profile, validate, package, install, deploy, publish, commit, push, merge, or certify."]}
+  ],
+  "expected_effect": "Convert the final cache repair into current generated authorities and a passing current testing-governance receipt without entering whole-profile certification.",
+  "rollback": "Keep phase at the last passed predecessor and retain failed receipts if any stage fails; restore only generated outputs if their owner fails.",
+  "expires_utc": "2026-08-26T21:00:00Z",
+  "evidence": [
+    {"reference": "evidence/release/cache-hygiene-governance-causal-proof-20260826.json", "claim": "Zero-unresolved final cache repair proof.", "artifact_sha256": "978f51fe20620606230c7eb6b840ff19735ca4060ff688f478546ce56195eb3f", "artifact_size": 921}
+  ]
+}

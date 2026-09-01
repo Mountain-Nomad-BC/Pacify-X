@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-profile-child-environment-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023053",
+  "outcome": "completed",
+  "reason": "PX-AUD2-009 is repaired: the nested group owner inherits the host environment with no-bytecode override, receives the full profile budget, retains bounded execution metadata, fails closed, and reuses current receipts. Three focused tests pass; no real release gate ran.",
+  "evidence": [
+    {
+      "reference": "evidence/release/full-profile-child-environment-causal-proof-20260826.json",
+      "artifact_sha256": "614942000379326ec61f8392aa3929d18037ecd0af722405028b8f931e092058",
+      "artifact_size": 790,
+      "claim": "Profile child environment, budget, bounded-output, and reuse proof."
+    }
+  ]
+}

@@ -37,6 +37,13 @@ test('H05 every rendered action has one effect/authority/schema/outcome contract
   }
 });
 
+test('installed runtime identity binds the generated action contract and host bridge sources', () => {
+  const extension = fs.readFileSync(path.join(root, 'src', 'extension.js'), 'utf8');
+  const owner = extension.slice(extension.indexOf('function extensionAssetIdentity'), extension.indexOf('function environmentLifecycle'));
+  assert.match(owner, /hostSourceRoot[\s\S]*src/);
+  assert.match(owner, /action-inventory\.json/);
+});
+
 test('H05 generated host mappings resolve to admitted schema and host authority switches', () => {
   const report = build();
   const extension = fs.readFileSync(path.join(root, 'src', 'extension.js'), 'utf8');
@@ -158,4 +165,10 @@ test('operational action resolution treats repeated classes and camel-case row i
   assert.equal(byId['pxui.activity.action.inspectMetric'].resolver.match_count, 2);
   assert.equal(byId['pxui.activity.action.inspectActivityEvent.row'].resolver.status, 'exact');
   assert.equal(byId['pxui.activity.action.inspectActivityEvent.row'].resolver.match_count, 2);
+  const authoritySkipped = chains.controls.filter(control => control.terminal_disposition === 'skipped_requires_authority');
+  assert.ok(authoritySkipped.length > 0);
+  assert.ok(authoritySkipped.every(control =>
+    [control.authority, control.reason, control.expected_effect, control.return_condition]
+      .every(value => typeof value === 'string' && value.trim())
+  ));
 });

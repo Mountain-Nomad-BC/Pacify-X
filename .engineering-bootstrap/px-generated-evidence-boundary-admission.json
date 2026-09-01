@@ -1,0 +1,31 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-generated-evidence-boundary-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023013",
+  "authority": "User authorized all remaining reversible Pacify-X repairs and requires full operational behavior before certification.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect only runtime/repository_scope.py, the focused repository-scope/effect-surface tests, current repair-campaign state, test-section ownership, and PX-AUD2-004 evidence for nested generated evidence directories."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Modify only runtime/repository_scope.py and focused repository-scope/effect-surface tests so build, dist, and evidence directories at any depth are excluded from product-source walks while similarly named source files and directories remain included; after causal and governed proof, clear the exact generated-boundary unresolved item and restore repair_frozen; write repair evidence and append ledger events."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["Run the same focused repository-scope, effect-surface, generated-artifact, and clean-export tests plus only the affected governed section gate. Do not run revision reconciliation, full profile, validate, package, install, deploy, publish, commit, push, merge, or certify."]
+    }
+  ],
+  "expected_effect": "Make the canonical product-source walker prune every current generated-output boundary before resource accounting so focused and governed gates complete without masking legitimate source paths.",
+  "rollback": "Revert only the evidence-directory classifier and its focused assertions while retaining both failed attempts and append-only ledger evidence.",
+  "expires_utc": "2026-08-26T16:00:00Z",
+  "evidence": [
+    {
+      "reference": "evidence/release/generated-boundary-exclusion-followup-20260826.json",
+      "artifact_sha256": "a9552ecf027fc2e2fba1d44cab7b89f50f6276a9ee35586b9a52d6a0e26da42b",
+      "artifact_size": 1303,
+      "claim": "The focused current-root gate proves nested evidence is the remaining generated boundary."
+    }
+  ]
+}

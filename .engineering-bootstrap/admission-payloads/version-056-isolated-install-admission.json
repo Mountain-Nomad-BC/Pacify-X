@@ -1,0 +1,17 @@
+{
+  "gap_id": "PX-OS-1065",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000015128",
+  "effect": "install",
+  "scope": [
+    "Install only extension/dist/pacify-x-vscode-0.6.56.vsix into a PACIFY-X-owned disposable isolated VS Code extensions directory for exact-artifact operational proof; do not modify the user's normal VS Code profile."
+  ],
+  "authority": "The user authorized reversible installation; the candidate remains confined to PX-owned disposable profile custody.",
+  "expected_effect": "Load and operate exact 0.6.56 bytes in an isolated VS Code host.",
+  "rollback": "Reclaim the owned extensions, user-data, workspace, engine, and process tree with retained cleanup receipts.",
+  "evidence": [
+    {
+      "reference": "extension/scripts/run-isolated-current-source-walk.js",
+      "claim": "Owned isolated exact-VSIX host boundary."
+    }
+  ]
+}

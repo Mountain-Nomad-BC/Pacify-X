@@ -1,0 +1,11 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023033",
+  "learned": "PX-AUD2-006 and PX-AUD2-007 are causally repaired: cleanup inventory now distinguishes cache targets from external custody, 6/6 cleanup tests pass, and testing-governance owns both the implementation and its focused suite with input-identity coverage. Repair is zero-unresolved; projections and testing-governance receipt are stale by design.",
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "unresolved_branch_gap_ids": ["PX-OS-1065"],
+  "newly_discovered_gap_ids": [],
+  "evidence": [
+    {"reference": "evidence/release/cache-hygiene-governance-causal-proof-20260826.json", "claim": "Final cache repair and governance proof.", "artifact_sha256": "978f51fe20620606230c7eb6b840ff19735ca4060ff688f478546ce56195eb3f", "artifact_size": 921}
+  ]
+}

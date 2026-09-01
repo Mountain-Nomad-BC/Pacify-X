@@ -28,11 +28,29 @@ const pxBridge = fs.readFileSync(path.join(root, 'src', 'pxBridge.js'), 'utf8');
 const extensionLifecycleHost = fs.readFileSync(path.join(root, 'src', 'extensionLifecycleHost.js'), 'utf8');
 const extensionConflictAnalyzer = fs.readFileSync(path.join(root, 'src', 'extensionConflictAnalyzer.js'), 'utf8');
 
+test('dashboard publication treats only exact post-disposal delivery as terminal cancellation', () => {
+  assert.match(extension, /function isDisposedWebviewError[\s\S]*=== 'Webview is disposed'/);
+  assert.match(extension, /let dashboardDisposed = false[\s\S]*publishDashboardMessage[\s\S]*if \(dashboardDisposed\) return false/);
+  assert.match(extension, /catch \(error\)[\s\S]*dashboardDisposed && isDisposedWebviewError\(error\)[\s\S]*dashboard-operation-cancelled/);
+  assert.match(extension, /onDidDispose\(\(\) => \{[\s\S]*dashboardDisposed = true/);
+});
+
+test('an explicit forced snapshot refresh survives an overlapping non-forced publication', () => {
+  assert.match(extension, /let publishPromiseForce = false/);
+  assert.match(extension, /if \(publishPromise && force && !publishPromiseForce\) \{[\s\S]*await publishPromise;[\s\S]*return publishSnapshot\(true, targetWebview\);[\s\S]*\}/);
+  assert.match(extension, /publishPromiseForce = force;[\s\S]*finally\(\(\) => \{ publishPromise = null; publishPromiseForce = false; \}\)/);
+});
+
 test('admitted host tools reach the live interface, policy, target, budget, and receipt gates', () => {
   assert.doesNotMatch(extension, /Direct VS Code host tools are refused until/);
   assert.match(extension, /attestHostToolInterface/);
   assert.match(extension, /host_tool_interface_sha256/);
   assert.match(extension, /enforceAdmittedHostToolPolicy\(admitted, call\.input\)/);
+  assert.match(extension, /fs\.realpathSync\.native/);
+  assert.match(extension, /escapes its admitted physical scope through a link or reparse point/);
+  assert.match(extension, /locatorNamed[\s\S]*source\|resource/);
+  assert.match(extension, /input: policy\.sanitized_input/);
+  assert.doesNotMatch(extension, /input: call\.input/);
   assert.match(extension, /toolCalls \+ calls\.length > 8/);
   assert.match(extension, /vscode\.lm\.invokeTool/);
 });
@@ -40,8 +58,23 @@ test('admitted host tools reach the live interface, policy, target, budget, and 
 test('dashboard restart restoration and predecessor-bound draft recovery have live owners', () => {
   assert.match(extension, /registerWebviewPanelSerializer\('pacifyX\.dashboard'/);
   assert.match(extension, /openDashboard\('\/control-plane', null, restoredPanel\)/);
+  assert.match(extension, /dashboardViewStateByWorkspace\.get\(dashboardViewStateKey\(\)\)/);
+  assert.match(extension, /rememberDashboardViewState\(message\.state\)/);
+  assert.match(extension, /validateWebviewMessage\(\{ type: 'dashboardViewState', state: _state \}\)/);
+  assert.match(dashboard, /vscode\.postMessage\(\{ type: 'dashboardViewState', state: persisted \}\)/);
   assert.match(dashboard, /function workingStudioOverlayDisposition\(/);
   assert.match(dashboard, /function openReauthenticatedStudioDraft\(/);
+  assert.match(dashboard, /function studioSkillRollbackPayload\([\s\S]*promotion_receipt[\s\S]*operation === 'rollback'\) payload = studioSkillRollbackPayload\(payload\)/);
+  assert.doesNotMatch(dashboard.match(/function studioSkillRollbackPayload\([\s\S]*?\n\}/)?.[0] || '', /editor_files|lifecycle_authentication/);
+  assert.match(dashboard, /function ensureStudioEditorPresentation\(/);
+  assert.match(dashboard, /function recordStudioEditorTransition\(/);
+  assert.match(dashboard, /request-created[\s\S]*request-cancelled[\s\S]*response-received[\s\S]*response-unmatched[\s\S]*response-rejected[\s\S]*response-accepted/);
+  assert.match(dashboard, /presentation-error[\s\S]*releaseStudioTrust[\s\S]*REQUEST-BOUND PRESENTATION FAILURE/);
+  assert.match(extension, /case 'releaseStudioTrust':[\s\S]*releaseSourceSelection[\s\S]*releaseVersionAllocation[\s\S]*studio-trust-proof-invalid-or-expired'[\s\S]*throw error/);
+  assert.match(dashboard, /modal-overwrite-blocked[\s\S]*attempted_title[\s\S]*studio-modal-overwrite-blocked/);
+  assert.match(dashboard, /studioEditorPresentationMatches[\s\S]*exactStudioEditorPresentationPresent/);
+  assert.match(dashboard, /scheduleStudioEditorPresentationCheck[\s\S]*queueMicrotask[\s\S]*requestAnimationFrame/);
+  assert.match(dashboard, /presentation\.kind, structuredClone\(studioEditor\.draft\)/);
   assert.match(dashboard, /RETAINED OVERLAY RESTORED/);
   assert.match(dashboard, /RETAINED OVERLAY NOT APPLIED/);
   assert.doesNotMatch(dashboard, /studioPendingSkillPackage = null; closeModal\(true\); openStudioDraftModal\(kind, seed\)/);
@@ -237,9 +270,33 @@ test('billable policy defaults deny and exposes every configurable guardrail', (
   assert.match(extension, /toggleBillablePolicy[\s\S]*PX_OWNED_VSCODE_HOST === '1'[\s\S]*PX_OWNED_VSCODE_HOST_CONFIRM_REVERSIBLE_WRITES === '1'[\s\S]*enabled && !ownedReversibleApproval[\s\S]*Enable guarded policy/);
 });
 
-test('Studio setup bypasses its modal only in the double-confirmed owned host', () => {
-  assert.match(extension, /runStudioSetup[\s\S]*PX_OWNED_VSCODE_HOST === '1'[\s\S]*PX_OWNED_VSCODE_HOST_CONFIRM_REVERSIBLE_WRITES === '1'[\s\S]*if \(!ownedReversibleApproval\)[\s\S]*Set up an operational local Agent Studio and Workflow Studio\?/);
-  assert.match(extension, /if \(approval !== 'Set up and run'\)[\s\S]*Host approval was cancelled/);
+test('owned operational configuration fault markers fail before reversible writes', () => {
+  assert.match(extension, /OWNED_OPERATIONAL_CONFIGURATION_FAULTS[\s\S]*setActivityPaused[\s\S]*toggleBillablePolicy[\s\S]*configureCanonicalMemory[\s\S]*disconnectCanonicalMemory[\s\S]*validate/);
+  assert.match(extension, /assertNoOwnedOperationalConfigurationFault[\s\S]*PX_OWNED_VSCODE_HOST[\s\S]*PX_OWNED_VSCODE_HOST_CONFIRM_REVERSIBLE_WRITES[\s\S]*owned-operational-faults/);
+  for (const operation of ['setActivityPaused', 'toggleBillablePolicy', 'configureCanonicalMemory', 'disconnectCanonicalMemory', 'validate']) {
+    assert.match(extension, new RegExp(`assertNoOwnedOperationalConfigurationFault\\('${operation}'\\)`));
+  }
+});
+
+test('owned host-action fault markers are exact one-shot pre-effect failures', () => {
+  assert.match(extension, /OWNED_OPERATIONAL_HOST_ACTION_FAULTS[\s\S]*reconcileStaleActivity[\s\S]*copyText[\s\S]*exportRecordJson[\s\S]*openSettings[\s\S]*openFile[\s\S]*createContextSnapshot[\s\S]*openCoordinationHandoff[\s\S]*copyTaskHandoff/);
+  assert.match(extension, /assertNoOwnedOperationalHostActionFault[\s\S]*PX_OWNED_VSCODE_HOST[\s\S]*PX_OWNED_VSCODE_HOST_CONFIRM_REVERSIBLE_WRITES[\s\S]*owned-host-action-faults[\s\S]*isSymbolicLink[\s\S]*fail-after-validation-before-host-effect[\s\S]*unlinkSync[\s\S]*owned-injected-host-action-fault/);
+  assert.ok(extension.indexOf('activeRuntime.lastHostActionRequest =') < extension.indexOf('assertNoOwnedOperationalHostActionFault(message.type)'));
+  assert.ok(extension.indexOf('assertNoOwnedOperationalHostActionFault(message.type)') < extension.indexOf('switch (message?.type)'));
+});
+
+test('owned operational JSON export is bounded to the disposable workspace', () => {
+  assert.match(extension, /exportRecordJson[\s\S]*ownedExport[\s\S]*owned-operational-exports[\s\S]*createDirectory/);
+  assert.match(extension, /ownedExport[\s\S]*showSaveDialog/);
+});
+
+test('owned Team Fabric staging uses only the disposable workspace fixture', () => {
+  assert.match(extension, /previewTeamPack[\s\S]*ownedTeamPack[\s\S]*owned-team-pack-fixture[\s\S]*showOpenDialog/);
+});
+
+test('Studio setup bypasses its workbench confirmation only in the double-confirmed owned host', () => {
+  assert.match(extension, /runStudioSetup[\s\S]*PX_OWNED_VSCODE_HOST === '1'[\s\S]*PX_OWNED_VSCODE_HOST_CONFIRM_REVERSIBLE_WRITES === '1'[\s\S]*PX_OPERATIONAL_EXERCISE_STUDIO_APPROVAL === '1'[\s\S]*PX_ENGINE_ROOT[\s\S]*realpathSync\.native\(engineRoot\(\)\)[\s\S]*owned-studio-setup-root-mismatch[\s\S]*owned-operational-prompts[\s\S]*setup-studio\.marker[\s\S]*markerStat\.isFile\(\)[\s\S]*owned-studio-setup-approval-marker-invalid[\s\S]*ownedSetupApprovalMarkerValid[\s\S]*if \(!ownedReversibleApproval\)[\s\S]*Set up an operational local Agent Studio and Workflow Studio\?[\s\S]*modal: false/);
+  assert.match(extension, /setupAction = \{ title: 'Set up and run' \}[\s\S]*cancelAction = \{ title: 'Cancel', isCloseAffordance: true \}[\s\S]*approval\?\.title !== setupAction\.title[\s\S]*Host approval was cancelled/);
 });
 
 test('Studio immutable creation bypasses approval only in the double-confirmed owned host', () => {
@@ -390,6 +447,16 @@ test('destructive cleanup remains confirm-gated, hash-revalidated, and receipted
   assert.doesNotMatch(dashboard, /postMessage\(\{ type: ['"]delete/);
 });
 
+test('owned disposable hosts receive interactable confirmations while normal hosts retain modal gates', () => {
+  assert.match(extension, /function governedConfirmationOptions\(detail\)[\s\S]*PX_OWNED_VSCODE_HOST === '1'[\s\S]*PX_OWNED_VSCODE_HOST_CONFIRM_REVERSIBLE_WRITES === '1'[\s\S]*modal: !ownedInteractableHost/);
+  assert.match(extension, /Move to Recycle Bin[\s\S]*governedConfirmationOptions/);
+  assert.match(extension, /Stage candidates[\s\S]*governedConfirmationOptions/);
+  assert.match(extension, /Enable offline metadata[\s\S]*governedConfirmationOptions/);
+  assert.match(extension, /Build or refresh the bounded repository architecture graph[\s\S]*governedConfirmationOptions/);
+  assert.match(extension, /Install the exact extension target[\s\S]*governedConfirmationOptions/);
+  assert.match(extension, /Open the exact \$\{String\(message\.scope[\s\S]*governedConfirmationOptions/);
+});
+
 test('owned host can approve reversible environment persistence without weakening the user confirmation gate', () => {
   assert.match(extension, /PX_OWNED_VSCODE_HOST === '1'[\s\S]*PX_OWNED_VSCODE_HOST_CONFIRM_REVERSIBLE_WRITES === '1'/);
   assert.match(extension, /ownedReversibleApproval \? 'approved' : 'prompt'/);
@@ -440,10 +507,15 @@ test('real-path admission rejects a parent alias that escapes an admitted root',
   fs.writeFileSync(path.join(outside, 'secret.txt'), 'secret');
   const guard = bridge.resolveAdmittedFile(path.join(admitted, 'good.txt'), [admitted]);
   assert.equal(bridge.revalidateAdmittedFile(guard).real, fs.realpathSync.native(path.join(admitted, 'good.txt')));
+  const directoryGuard = bridge.resolveAdmittedPath(admitted, [admitted]);
+  assert.equal(directoryGuard.kind, 'directory');
+  assert.equal(bridge.revalidateAdmittedPath(directoryGuard).real, fs.realpathSync.native(admitted));
+  assert.throws(() => bridge.resolveAdmittedFile(admitted, [admitted]), /not-file/);
   const alias = path.join(admitted, 'alias');
   try {
     fs.symlinkSync(outside, alias, process.platform === 'win32' ? 'junction' : 'dir');
     assert.throws(() => bridge.resolveAdmittedFile(path.join(alias, 'secret.txt'), [admitted]), /alias-rejected|escaped-root/);
+    assert.throws(() => bridge.resolveAdmittedPath(alias, [admitted]), /alias-rejected|escaped-root/);
   } catch (error) {
     if (!/privilege|permitted|alias-rejected|escaped-root/i.test(error.message)) throw error;
   }

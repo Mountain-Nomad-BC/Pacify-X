@@ -10,6 +10,12 @@ from pathlib import Path
 import re
 from typing import Iterable, Mapping, Sequence
 
+from .semantic_memory import (
+    SemanticEnvelope,
+    semantic_envelope_from_mapping,
+    semantic_query_signals,
+)
+
 
 TOKEN = re.compile(r"[a-z0-9]+")
 NIBBLE_ALPHABET = "ABCDEFGHIJKLMNOP"
@@ -178,6 +184,7 @@ class MemoryRecord:
     fixed_agent_ids: tuple[str, ...] = ()
     priority: int = 50
     usage_success_rate: float = 0.0
+    semantic: SemanticEnvelope | None = None
 
     def validation_errors(self) -> tuple[str, ...]:
         errors = []
@@ -241,6 +248,8 @@ class MemoryRecord:
             errors.append("uncertified_retrieval_enabled")
         if self.expires_at and self.expires_at <= self.effective_at:
             errors.append("expiry_not_after_effective")
+        if self.semantic is not None:
+            errors.extend(self.semantic.validation_errors(project_id=self.project_id))
         return tuple(sorted(set(errors)))
 
 
@@ -315,7 +324,7 @@ def candidate_memories(
     max_hamming: int = 18,
     now: datetime | None = None,
 ) -> tuple[str, ...]:
-    """Generate project/ACL/lifecycle-scoped candidates; semantic reranking is external."""
+    """Generate hard-filtered candidates with exact semantics before locality."""
     query_hash = simhash64(query)
     current = now or datetime.now(timezone.utc)
     values = tuple(records)
@@ -340,12 +349,15 @@ def candidate_memories(
             for pattern in record.negative_matches
         ):
             continue
+        exact_priority, semantic_score = semantic_query_signals(query, record.semantic)
         distance = (
             query_hash ^ simhash64(record.title + " " + record.summary)
         ).bit_count()
-        if distance <= max_hamming:
-            candidates.append((distance, record.memory_id))
-    return tuple(memory_id for _, memory_id in sorted(candidates))
+        if exact_priority == 0 or semantic_score > 0 or distance <= max_hamming:
+            candidates.append(
+                (exact_priority, -semantic_score, distance, record.memory_id)
+            )
+    return tuple(memory_id for *_, memory_id in sorted(candidates))
 
 
 def memory_record_from_mapping(value: Mapping[str, object]) -> MemoryRecord:
@@ -355,6 +367,7 @@ def memory_record_from_mapping(value: Mapping[str, object]) -> MemoryRecord:
         for name in ("observed_at", "effective_at")
     }
     expires = value.get("expires_at")
+    semantic = value.get("semantic")
     return MemoryRecord(
         memory_id=str(value["memory_id"]),
         workspace_id=str(value["workspace_id"]),
@@ -392,6 +405,11 @@ def memory_record_from_mapping(value: Mapping[str, object]) -> MemoryRecord:
         fixed_agent_ids=tuple(map(str, value.get("fixed_agent_ids", ()))),
         priority=int(value.get("priority", 50)),
         usage_success_rate=float(value.get("usage_success_rate", 0.0)),
+        semantic=(
+            semantic_envelope_from_mapping(semantic)
+            if isinstance(semantic, Mapping)
+            else None
+        ),
     )
 
 

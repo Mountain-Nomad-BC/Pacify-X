@@ -1,0 +1,21 @@
+{
+  "name": "fixture",
+  "displayName": "PX Inert Lifecycle Fixture",
+  "description": "Harmless local fixture for Pacify-X Plugin lifecycle verification.",
+  "version": "2.0.0",
+  "publisher": "px-owned",
+  "private": true,
+  "engines": {
+    "vscode": "^1.132.0"
+  },
+  "main": "./extension.js",
+  "activationEvents": [],
+  "contributes": {
+    "commands": [
+      {
+        "command": "pacifyX.openDashboard",
+        "title": "PX Inert Conflict Fixture"
+      }
+    ]
+  }
+}

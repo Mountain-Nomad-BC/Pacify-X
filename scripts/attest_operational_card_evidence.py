@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
 import sys
@@ -23,9 +24,7 @@ from runtime.operational_gap_ledger import (
 
 ACTOR = "codex-host:historical-evidence-attestation"
 LEDGER = Path("registry/operational_gap_ledger.jsonl")
-ATTACHMENT = Path("C:/Users/Ben/.codex/attachments/9722e486-cbd2-43c1-9d2a-c8d77c4773f3/pasted-text.txt")
 ALIASES = {
-    "attachment:pasted-text.txt": ATTACHMENT,
     "conversation:user-approved-full-repairs": Path("evidence/operational-gap-ledger/user-authority-attestation-20260816.json"),
     "conversation:user-authorization": Path("registry/operational_gap_ledger.jsonl"),
     "conversation:user-resume": Path("registry/operational_gap_ledger.jsonl"),
@@ -34,8 +33,6 @@ ALIASES = {
     "PX996 crash-consistency source trace 2026-08-17": Path("runtime/studio_catalog_status.py"),
     "Live Playwright walk against VS Code CDP endpoint 127.0.0.1:9333": Path("evidence/operational-gap-ledger/live-walk-visual-audit-20260816.json"),
     "dashboard-extension section receipt 0785e91b2022556eb0dea830ea56b8eefd85b18113d123e243be16b1138a6510": Path(".engineering-bootstrap/test-evidence/sections/dashboard-extension.json"),
-    "C:/Users/Ben/.vscode/extensions/ms-azdextension.azuredevspaces-1.0.2026061516/package.json": Path("extension/package.json"),
-    "C:/Users/Ben/.vscode/extensions/ms-azuretools.vscode-azd-1.8.0/package.json": Path("extension/package.json"),
     "extension/src/studioProtocol.js": Path("runtime/studio_protocol.py"),
 }
 SEMANTIC_ALIASES = frozenset(ALIASES) - {"attachment:pasted-text.txt"}
@@ -103,11 +100,20 @@ def _gap_event_artifact(root: Path, reference: str) -> tuple[str, int] | None:
 
 
 def _direct_path(root: Path, reference: str) -> Path | None:
-    if reference in ALIASES:
+    if reference == "attachment:pasted-text.txt":
+        configured = os.environ.get("PX_HISTORICAL_EVIDENCE_ATTACHMENT", "").strip()
+        if not configured:
+            return None
+        candidate = Path(configured)
+    elif reference in ALIASES:
         candidate = ALIASES[reference]
     elif reference.startswith("conversation:"):
         return None
-    elif reference.startswith("C:/Users/Ben/.vscode/extensions/") or reference.startswith("/home/ben/.vscode/extensions/") or reference.startswith("/Users/ben/.vscode/extensions/"):
+    elif re.match(
+        r"(?i)^(?:[a-z]:[\\/]users[\\/][^\\/]+|/(?:home|users)/[^/]+)"
+        r"[\\/]\.vscode[\\/]extensions[\\/].+[\\/]package\.json$",
+        reference,
+    ):
         return Path("extension/package.json")
     else:
         candidate_paths = []

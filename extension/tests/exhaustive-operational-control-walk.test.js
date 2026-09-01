@@ -49,7 +49,14 @@ test('state-bound semantic controls declare their exact reveal action', () => {
 });
 
 test('conditional editor fields use exact DOM identities instead of fuzzy labels', () => {
+  assert.equal(directSelectorFor({ control_id: 'pxui.agent-studio.field.model.provider' }), '[data-agent-model-field="provider"]');
+  assert.equal(directSelectorFor({ control_id: 'pxui.agent-studio.field.model.max_output_tokens' }), '[data-agent-model-field="max_output_tokens"]');
   assert.equal(directSelectorFor({ control_id: 'pxui.agent-studio.field.model.version' }), '[data-agent-model-field="version"]');
+  assert.equal(directSelectorFor({ control_id: 'pxui.agent-studio.field.model.host_model' }), '[data-agent-host-model]');
+  assert.equal(directSelectorFor({ control_id: 'pxui.agent-studio.field.input_schema' }), '[data-agent-json-field="input_schema"]');
+  assert.equal(directSelectorFor({ control_id: 'pxui.workflow-studio.field.edge.source_endpoint' }), '[data-edge-source-endpoint]');
+  assert.equal(directSelectorFor({ control_id: 'pxui.workflow-studio.field.edge.condition' }), '[data-edge-condition]');
+  assert.equal(directSelectorFor({ control_id: 'pxui.workflow-studio.field.port.required' }), '[data-workflow-port-field="required"]');
   assert.equal(directSelectorFor({ control_id: 'pxui.diagnostics.field.operationalCardEvidenceGap' }), '[data-operational-card-evidence-gap]');
   assert.equal(directSelectorFor({ control_id: 'pxui.workflow-studio.field.canonicalJson' }), '#studio-draft-json');
   assert.equal(directSelectorFor({ control_id: 'pxui.knowledge-core.field.dependencyHashJson' }), '#learning-dependencies');
@@ -58,6 +65,9 @@ test('conditional editor fields use exact DOM identities instead of fuzzy labels
   assert.equal(directSelectorFor({ control_id: 'pxui.dashboard-control-plane.menu.mainNavigation' }), '.nav-rail');
   assert.equal(directSelectorFor({ control_id: 'pxui.knowledge-graph.gesture.ctrlWheelZoom' }), '[data-graph-canvas]');
   assert.equal(directSelectorFor({ control_id: 'pxui.knowledge-graph.menu.depth' }), '[aria-label="Relationship depth"]');
+  assert.equal(directSelectorFor({ control_id: 'pxui.knowledge-graph.field.graphRelation' }), '[data-graph-relation]');
+  assert.equal(directSelectorFor({ control_id: 'pxui.diagnostics.indicator.catalogError' }), '.memory-errors[role="alert"]');
+  assert.equal(directSelectorFor({ control_id: 'pxui.diagnostics.indicator.catalogPage' }), '.catalog-controls > span:last-child');
   assert.equal(directSelectorFor({ control_id: 'pxui.agent-studio.form.candidateMetadata' }), '.studio-guided-grid');
   assert.equal(directSelectorFor({ control_id: 'pxui.workflow-studio.editor.visualGraph' }), '[data-workflow-editor-canvas]');
   assert.equal(directSelectorFor({ control_id: 'pxui.skill-studio.editor.packageFile' }), '#studio-skill-file');
@@ -69,6 +79,33 @@ test('conditional editor fields use exact DOM identities instead of fuzzy labels
 test('Plugin integrity controls resolve to their truthful always-visible records', () => {
   assert.equal(directSelectorFor({ control_id: 'pxui.plugins.indicator.inventoryGeneration' }), '[data-plugin-integrity="generation"]');
   assert.equal(directSelectorFor({ control_id: 'pxui.plugins.indicator.shardHashMatch' }), '[data-plugin-integrity="shard-hash"]');
+});
+
+test('installed catalog, graph, coordination, and workflow editor controls use exact live DOM selectors', () => {
+  const selectors = {
+    'pxui.agents.field.catalogSearch': '[data-catalog-search="agents"]',
+    'pxui.agents.form.catalogFilter': '.catalog-controls:has([data-catalog-search="agents"])',
+    'pxui.agents.menu.surfaceScope': '[aria-label="Agent catalog scope"]',
+    'pxui.workflows.field.catalogSort': '[data-catalog-sort="workflows"]',
+    'pxui.workflows.field.planObjective': '#plan-objective',
+    'pxui.workflows.field.progressSummary': '#progress-summary',
+    'pxui.workflows.form.parallelPlan': '#modal-root:has(#plan-objective)',
+    'pxui.workflows.form.claimTask': '#modal-root:has(#claim-task)',
+    'pxui.knowledge-graph.editor.accessibleMap': '.graph-accessible-map',
+    'pxui.knowledge-graph.editor.interactiveCanvas': '[data-graph-canvas]',
+    'pxui.knowledge-graph.field.accessibleRecordList': '[data-graph-record-list]',
+    'pxui.knowledge-graph.indicator.graphStatusLiveRegion': '[data-graph-status]',
+    'pxui.knowledge-graph.indicator.selectedRecord': '.graph-selection-card',
+    'pxui.workflow-studio.form.effectGrant': '[data-workflow-grant-index]',
+    'pxui.workflow-studio.form.nodeInspector': '[data-workflow-inspector]',
+    'pxui.workflow-studio.form.typedEdge': '.workflow-edge-editor',
+    'pxui.workflow-studio.indicator.structuralValidation': '[data-studio-validation]',
+    'pxui.agents.indicator.runnableRevisions': '.metric-grid .metric-card:nth-child(2)',
+    'pxui.workflows.indicator.runnableRuns': '.metric-grid .metric-card:nth-child(5)'
+  };
+  for (const [control_id, selector] of Object.entries(selectors)) {
+    assert.equal(directSelectorFor({ control_id }), selector, control_id);
+  }
 });
 
 test('Studio lifecycle failure indicators resolve to the request-bound modal state', () => {
@@ -121,8 +158,46 @@ test('a semantic live-state display acknowledges only its visible result', () =>
   const probe = { loaded: true, visible: true, attempted: false, validationObserved: false, acknowledged: true, details: {} };
   assert.equal(stageResult(requirement, probe, 'display', 'receipt:indicator').state, 'present');
   assert.equal(stageResult(requirement, probe, 'result_acknowledgement', 'receipt:indicator').state, 'present');
+  assert.equal(stageResult(requirement, probe, 'progress_reporting', 'receipt:indicator').state, 'present');
   assert.equal(stageResult(requirement, probe, 'runtime_effect', 'receipt:indicator').state, 'missing');
   assert.match(selectorForKind('indicator'), /h2/);
+});
+
+test('a visible request-bound error indicator proves its failure presentation', () => {
+  const requirement = {
+    kind: 'indicator', control_id: 'pxui.activity.indicator.queryError',
+    stage_policy: Object.fromEntries(STAGES.map(stage => [stage, 'required']))
+  };
+  const probe = { loaded: true, visible: true, attempted: false, validationObserved: false, acknowledged: true, details: {} };
+  assert.equal(stageResult(requirement, probe, 'failure_handling', 'receipt:error-indicator').state, 'present');
+});
+
+test('a form credits failure and recovery only from directly observed invalidation and restoration', () => {
+  const requirement = {
+    kind: 'form', control_id: 'pxui.demo.form.example', evidence_mode: 'contained_ui_form',
+    stage_policy: Object.fromEntries(STAGES.map(stage => [stage, 'required']))
+  };
+  const probe = { loaded: true, visible: true, attempted: true, validationObserved: true, acknowledged: true, failureObserved: true, recoveryObserved: true, details: {} };
+  for (const stage of ['authorization', 'backend_dispatch', 'runtime_effect']) {
+    const result = stageResult(requirement, probe, stage, 'receipt:form');
+    assert.equal(result.state, 'not_applicable');
+    assert.match(result.detail, /did not submit the form, and dispatched no host or durable effect/);
+  }
+  assert.equal(stageResult(requirement, probe, 'failure_handling', 'receipt:form').state, 'present');
+  assert.equal(stageResult(requirement, probe, 'recovery_rollback', 'receipt:form').state, 'present');
+  assert.equal(stageResult(requirement, { ...probe, failureObserved: false }, 'failure_handling', 'receipt:form').state, 'missing');
+  assert.equal(stageResult(requirement, { ...probe, recoveryObserved: false }, 'recovery_rollback', 'receipt:form').state, 'missing');
+});
+
+test('contained form scenario sets, proves, clears, and exactly restores custom validity without submission', () => {
+  const source = fs.readFileSync(path.join(__dirname, '../scripts/run-exhaustive-operational-control-walk.js'), 'utf8');
+  const scenario = source.slice(source.indexOf("if (control.kind === 'form')"), source.indexOf("if (control.kind === 'field')"));
+  assert.match(scenario, /const validityBefore = field\.checkValidity\(\)/);
+  assert.match(scenario, /const customErrorBefore = field\.validity\?\.customError === true/);
+  assert.match(scenario, /field\.setCustomValidity\('px-owned-form-probe-invalid'\)/);
+  assert.match(scenario, /finally \{[\s\S]*field\.setCustomValidity\(''\)/);
+  assert.match(scenario, /recoveryObserved: failureObserved && valueRestored && validityRestored/);
+  assert.doesNotMatch(scenario, /\.submit\(|requestSubmit|type=['"]submit/);
 });
 
 test('sidebar controls receive a rich typed projection and exact selectors', () => {

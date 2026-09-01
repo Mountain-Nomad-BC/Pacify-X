@@ -1,0 +1,37 @@
+{
+  "session_id": "repair-session:px-post-singleflight-failure-cluster-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023149",
+  "gap_id": "PX-OS-1065",
+  "authority": "User-authorized reversible repair of all Pacify-X defects blocking reinstall.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": [
+        "Inspect only the three fresh failing nodes from the post-singleflight full-profile receipts, their direct runtime owners and fixtures, and prior passing focused evidence needed to isolate environment, ordering, or source defects."
+      ]
+    },
+    {
+      "effect": "write",
+      "scope": [
+        "Repair only causal defects behind release-audit live composed audit, CLI timeout fail-closed formatting, and CLI lazy-loading hydration; update direct focused tests if the contract itself is wrong; retain proof; clear the unresolved profile-failure track only when all three focused nodes pass. Do not reconcile projections, run sections/groups/profile/validate, package, install, publish, commit, push, merge, or certify."
+      ]
+    },
+    {
+      "effect": "execute",
+      "scope": [
+        "With PYTHONDONTWRITEBYTECODE=1 set, run only the three exact failing pytest nodes individually and together, plus syntax/import probes for directly changed modules. Do not run projection reconciliation, governed sections/groups/full profile, validate, package, install, publish, commit, push, merge, or certify."
+      ]
+    }
+  ],
+  "expected_effect": "Produce causal, focused passing proof for all three fresh full-profile failure nodes without rerunning any governed closure stage.",
+  "rollback": "Revert only direct repairs from this session if focused tests regress; retain failed receipts and the exact denominator.",
+  "expires_utc": "2026-08-29T12:00:00Z",
+  "evidence": [
+    {
+      "reference": "evidence/release/post-singleflight-full-profile-failure-cluster-20260826.json",
+      "claim": "Exact three-node repair denominator.",
+      "artifact_sha256": "cb756346b4a02142e4d0e747e8d7a606766dda7c1ccf914c695aa7943e20e80e",
+      "artifact_size": 1338
+    }
+  ]
+}

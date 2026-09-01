@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "audit-session:px-second-adversarial-20260825",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022983",
+  "outcome": "completed",
+  "reason": "The second adversarial pass produced one confirmed current audit-runtime defect and stopped before repair freeze, without making a certification claim.",
+  "evidence": [
+    {
+      "reference": "evidence/adversarial-audit/second-adversarial-audit-20260825.json",
+      "artifact_sha256": "958ba20ad0d62baeabce3a8c14e51629f97ee0dae635f1905785aa6e08841fd0",
+      "artifact_size": 2653,
+      "claim": "PX-AUD2-001 records the current excluded-boundary content-hashing defect and exact observed runtime cost."
+    }
+  ]
+}

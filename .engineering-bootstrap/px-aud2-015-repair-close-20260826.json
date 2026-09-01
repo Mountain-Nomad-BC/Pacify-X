@@ -1,0 +1,14 @@
+{
+  "session_id": "repair-session:px-aud2-015-exact-installed-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023116",
+  "gap_id": "PX-OS-1065",
+  "outcome": "completed",
+  "evidence": [
+    {
+      "reference": "evidence/release/px-aud2-015-exact-installed-focused-proof-20260826.json",
+      "artifact_sha256": "23f1532d85f997b351b92ce54dd8f07be74fe163981a1d35fb8e3246d1257d32",
+      "artifact_size": 1323,
+      "claim": "All three exact-installed failure nodes pass after canonical Python ownership synchronization."
+    }
+  ]
+}

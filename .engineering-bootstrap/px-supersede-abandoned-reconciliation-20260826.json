@@ -1,0 +1,14 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "closure-session:px-single-revision-reconciliation-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023088",
+  "outcome": "superseded",
+  "evidence": [
+    {
+      "reference": "evidence/adversarial-audit/px-aud2-011-mutating-admission-exclusivity-20260826.json",
+      "artifact_sha256": "e36a49ce7150fe94bde48b5de5e08756af02a8808c7b8d40bf83100a9f6bd78b",
+      "artifact_size": 1087,
+      "claim": "The exclusivity repair proof and an empty live-process query establish that this interrupted admission is abandoned and must not retain mutation ownership."
+    }
+  ]
+}

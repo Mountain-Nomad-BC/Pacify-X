@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "release-session:px-repair-refreeze-after-boundary-governance-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023020",
+  "outcome": "completed",
+  "reason": "The zero-unresolved repair campaign passed operational_verification and advanced to repair_frozen. The revision_reconciliation oracle now allows exactly the next ordered stage. No projection, section, profile, validation, packaging, installation, publication, or certification ran.",
+  "evidence": [
+    {
+      "reference": "evidence/release/repair-refreeze-after-boundary-governance-20260826.json",
+      "claim": "Zero-unresolved ordered repair freeze after source-boundary governance repair.",
+      "artifact_sha256": "c1d4aca983a470e1b65c2f6204464b6a5d4fe9f89fb380a3a0172b1db1fb51d2",
+      "artifact_size": 711
+    }
+  ]
+}

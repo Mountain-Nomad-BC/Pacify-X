@@ -19,6 +19,52 @@ from .studio_run_control import TERMINAL_STATES
 from .workflow_studio import WorkflowStudio
 
 
+def _retain_publication_failure(
+    root: Path,
+    kind: str,
+    run_id: str,
+    worker_error: BaseException,
+    publication_error: BaseException,
+) -> None:
+    payload = {
+        "schema_version": "px.studio-worker-publication-error/1.0",
+        "run_id": run_id,
+        "worker_error": type(worker_error).__name__,
+        "publication_error": type(publication_error).__name__,
+        "message": str(publication_error)[:500],
+        "authoritative": False,
+    }
+    primary = (
+        root
+        / ".engineering-bootstrap"
+        / "studios"
+        / ("agents" if kind == "agent" else "workflows")
+        / "sessions"
+        / run_id
+        / "worker-failure-publication-error.json"
+    )
+    try:
+        write_json_atomic(primary, payload)
+        return
+    except OSError as primary_error:
+        payload["diagnostic_write_error"] = type(primary_error).__name__
+    fallback = (
+        root
+        / ".engineering-bootstrap"
+        / "studios"
+        / "worker-publication-errors"
+        / f"{kind}-{run_id}.json"
+    )
+    try:
+        write_json_atomic(fallback, payload)
+        return
+    except OSError as fallback_error:
+        payload["fallback_write_error"] = type(fallback_error).__name__
+    # The launcher supervises stderr.  This last route is deliberately direct
+    # so a broken filesystem diagnostic path cannot silently erase the event.
+    os.write(2, (json.dumps(payload, sort_keys=True) + "\n").encode("utf-8"))
+
+
 def _load_request(path: Path, authority: StudioAuthorityStore) -> dict[str, object]:
     deadline = time.monotonic() + 8.0
     while not path.is_file() and time.monotonic() < deadline:
@@ -206,28 +252,13 @@ def main(argv: list[str] | None = None) -> int:
                     operation="worker.failed",
                 )
         except BaseException as publication_error:
-            diagnostic_root = (
-                root
-                / ".engineering-bootstrap"
-                / "studios"
-                / ("agents" if args.kind == "agent" else "workflows")
-                / "sessions"
-                / args.run_id
+            _retain_publication_failure(
+                root,
+                args.kind,
+                args.run_id,
+                error,
+                publication_error,
             )
-            try:
-                write_json_atomic(
-                    diagnostic_root / "worker-failure-publication-error.json",
-                    {
-                        "schema_version": "px.studio-worker-publication-error/1.0",
-                        "run_id": args.run_id,
-                        "worker_error": type(error).__name__,
-                        "publication_error": type(publication_error).__name__,
-                        "message": str(publication_error)[:500],
-                        "authoritative": False,
-                    },
-                )
-            except OSError:
-                pass
     # The independently registered terminal observer owns worker-process
     # closure on every path. Re-reading run control here can contend with that
     # observer after ``finalizing`` is already durable and keep this PID alive,

@@ -22,8 +22,10 @@ from runtime.memory_intelligence import (
     resolve_loadout,
     restore_offload,
     sanitize_capture,
+    semantic_candidate_from_capture,
     validate_memory_orchestration,
 )
+from runtime.semantic_memory import SemanticEnvelope
 
 
 ROOT = Path(__file__).parents[1]
@@ -62,6 +64,52 @@ def record(memory_id: str, **updates: object) -> MemoryRecord:
 
 
 class MemoryIntelligenceTests(unittest.TestCase):
+    def test_learning_emits_reviewable_structured_candidates_only(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            capture = capture_event(
+                Path(directory),
+                project_id="prj",
+                source_kind="document",
+                source_locator="guide.md",
+                content="A generic bounded procedure.",
+            )
+            semantic = SemanticEnvelope(
+                namespace="prj",
+                record_type="procedure",
+                payload={"instruction": "A generic bounded procedure."},
+                exact_keys=("procedure-alpha",),
+            )
+            candidate = semantic_candidate_from_capture(
+                capture,
+                workspace_id="wsp",
+                project_id="prj",
+                owner_id="actor",
+                session_id="session",
+                lease_id="lease",
+                memory_id="candidate-one",
+                title="Procedure alpha",
+                summary="A proposed bounded procedure",
+                memory_type="procedure",
+                semantic=semantic,
+            )
+            self.assertEqual(candidate.certification_status, "candidate")
+            self.assertEqual(candidate.epistemic_status, "proposal")
+            self.assertFalse(candidate.retrieval_enabled)
+            with self.assertRaisesRegex(ValueError, "accepted capture events"):
+                semantic_candidate_from_capture(
+                    {"event": {**capture["event"], "admission_status": "quarantined"}},
+                    workspace_id="wsp",
+                    project_id="prj",
+                    owner_id="actor",
+                    session_id="session",
+                    lease_id="lease",
+                    memory_id="candidate-two",
+                    title="Procedure beta",
+                    summary="Rejected source",
+                    memory_type="procedure",
+                    semantic=semantic,
+                )
+
     def test_capture_redacts_without_echoing_secret_and_quarantines_injection(
         self,
     ) -> None:

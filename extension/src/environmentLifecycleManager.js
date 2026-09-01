@@ -73,6 +73,32 @@ class EnvironmentLifecycleManager {
     const receipt = { schema_version: 'px.environment-lifecycle-receipt/1.1', receipt_id: `env-life-${crypto.randomUUID()}`, timestamp: new Date().toISOString(), record_id: preview.record_id, resource_kind: preview.resource_kind, action: preview.action, source_relative: preview.target_relative, destination_relative: path.relative(this.projectRoot, destination).split(path.sep).join('/'), snapshot_sha256: preview.snapshot_sha256, source_identity: snapshot.target_identity, root_identity: snapshot.root_identity, same_device_move: true, entry_count: preview.entry_count, consumer_count: preview.consumers.length, consumer_impact_acknowledged: Boolean(confirmation.consumer_impact_acknowledged), disposition: 'quarantined-reversible', values_or_content_retained_in_receipt: false };
     fs.mkdirSync(this.receiptRoot, { recursive: true }); fs.writeFileSync(path.join(this.receiptRoot, `${receipt.receipt_id}.json`), `${JSON.stringify(receipt, null, 2)}\n`, { encoding: 'utf8', flag: 'wx' }); return receipt;
   }
+  previewRestore(receiptId) {
+    const id = safeId(receiptId); if (id !== receiptId) throw new Error('Restore receipt identity is invalid.');
+    const receiptPath = path.join(this.receiptRoot, `${id}.json`);
+    if (!within(receiptPath, this.receiptRoot) || !fs.existsSync(receiptPath)) throw new Error('Environment lifecycle receipt is unavailable.');
+    const receipt = JSON.parse(fs.readFileSync(receiptPath, 'utf8'));
+    if (receipt.schema_version !== 'px.environment-lifecycle-receipt/1.1' || receipt.receipt_id !== id || receipt.disposition !== 'quarantined-reversible') throw new Error('Environment lifecycle receipt is not restorable.');
+    const source = path.resolve(this.projectRoot, receipt.source_relative); const destination = path.resolve(this.projectRoot, receipt.destination_relative);
+    if (!within(source, this.projectRoot) || source === this.projectRoot || !within(destination, this.quarantineRoot)) throw new Error('Restore receipt paths escaped their admitted roots.');
+    if (fs.existsSync(source)) throw new Error('Restore source path is already occupied.');
+    const first = metadataSnapshot(destination, this.projectRoot); const second = metadataSnapshot(destination, this.projectRoot);
+    if (first.metadata_sha256 !== receipt.snapshot_sha256 || second.metadata_sha256 !== receipt.snapshot_sha256 || first.real !== second.real) throw new Error('Quarantined resource changed after disposition.');
+    const token = crypto.randomUUID();
+    const preview = { schema_version: 'px.environment-lifecycle-restore-preview/1.0', token, receipt_id: id, source, destination, snapshot_sha256: first.metadata_sha256, exact_confirmation: source, allowed: true };
+    this.pending.set(token, { restore: true, preview, snapshot: first, receipt }); return preview;
+  }
+  restore(token, confirmation) {
+    const pending = this.pending.get(token); if (!pending?.restore) throw new Error('Restore preview token is unknown or already consumed.');
+    const { preview, snapshot, receipt } = pending;
+    if (!confirmation?.approved || path.resolve(confirmation.exact_target || '') !== preview.source) throw new Error('Restore requires exact original-target confirmation.');
+    if (fs.existsSync(preview.source)) throw new Error('Restore source path became occupied.');
+    const immediate = metadataSnapshot(preview.destination, this.projectRoot);
+    if (immediate.metadata_sha256 !== snapshot.metadata_sha256 || immediate.real !== snapshot.real || immediate.target_identity !== snapshot.target_identity) throw new Error('Quarantined resource changed after restore preview.');
+    fs.renameSync(preview.destination, preview.source); this.pending.delete(token);
+    const restoration = { schema_version: 'px.environment-lifecycle-restoration-receipt/1.0', receipt_id: `env-restore-${crypto.randomUUID()}`, timestamp: new Date().toISOString(), predecessor_receipt_id: receipt.receipt_id, source_relative: receipt.destination_relative, restored_relative: receipt.source_relative, snapshot_sha256: receipt.snapshot_sha256, same_device_move: true, disposition: 'restored' };
+    fs.writeFileSync(path.join(this.receiptRoot, `${restoration.receipt_id}.json`), `${JSON.stringify(restoration, null, 2)}\n`, { encoding: 'utf8', flag: 'wx' }); return restoration;
+  }
 }
 
 module.exports = { MAX_ENTRIES, within, metadataSnapshot, EnvironmentLifecycleManager };

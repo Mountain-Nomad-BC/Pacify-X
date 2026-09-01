@@ -1,0 +1,31 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-enter-operational-verification-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023312",
+  "authority": "User requested complete live operational verification before revision reconciliation and certification.",
+  "expected_effect": "Advance the local repair campaign exactly one phase from repair to operational_verification and retain a non-certifying transition receipt; do not freeze repairs or execute live operational routes in this state-transition session.",
+  "rollback": "Restore only the predecessor phase value repair from the retained predecessor hash if the operational_verification check fails; retain append-only ledger history.",
+  "expires_utc": "2026-09-05T21:00:00Z",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect only .engineering-bootstrap/processing-order/repair-campaign.json predecessor content and processing-order status/check output for repair and operational_verification."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Change only .engineering-bootstrap/processing-order/repair-campaign.json phase from repair to operational_verification; preserve every other byte-equivalent field/value; create one focused transition evidence file and append the governed ledger close event. Do not change source, projections, receipts, revisions, packages, installs, or certification evidence."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["Run only processing-order status/check commands proving operational_verification is allowed and revision_reconciliation remains blocked. Do not run live route checks, tests, sections, full profile, validate, projection reconciliation, package, install, service mutation, Git/GitHub operations, or certify."]
+    }
+  ],
+  "evidence": [
+    {
+      "reference": ".engineering-bootstrap/processing-order/repair-campaign.json",
+      "claim": "Exact predecessor campaign awaiting one operational_verification phase transition.",
+      "artifact_sha256": "1b9b536e63a72d236aa923cf8c9f237d06320a4a990b69bba81362805c6a1005",
+      "artifact_size": 4326
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "release-session:px-additive-github-publish-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023207",
+  "outcome": "completed",
+  "evidence": [
+    {
+      "reference": "evidence/release/agent-observer-resource-repair-20260826.json",
+      "claim": "Commit 226c0260 was published linearly to canonical main; fresh Actions run 32959584216 completed with seven remaining failed jobs requiring a new repair scope.",
+      "artifact_sha256": "2856fc5bf94a2bf84fd09f59f46dde071bd47a486816780acb92cebbe6764456",
+      "artifact_size": 1515
+    }
+  ]
+}

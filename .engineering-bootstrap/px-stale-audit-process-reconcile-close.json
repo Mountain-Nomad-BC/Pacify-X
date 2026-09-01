@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-stale-audit-process-reconcile-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022991",
+  "outcome": "completed",
+  "reason": "The duplicate r3 scanner exited naturally before termination, its process tree is absent, and the operational ledger snapshot is current through the admission. No process was killed and no product or user data changed. The r3 receipt is retained because it exposed a separate nested-excluded-symlink classification defect for a new repair card.",
+  "evidence": [
+    {
+      "reference": "evidence/adversarial-audit/second-adversarial-source-scan-20260825-r3.json",
+      "artifact_sha256": "63f3ad517e5868e2b2cde541a00e2008c10d5494618845839ffade9caef64592",
+      "artifact_size": 2777007,
+      "claim": "The duplicate process completed and retained its incomplete result, including 50 nested excluded-tree symlink classification errors."
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-audit-nested-excluded-symlinks-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022993",
+  "authority": "User explicitly authorized all remaining reversible Pacify-X repairs; only irreversible destructive effects require approval.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect only the admitted audit scanner nested excluded-tree symlink handling, its focused tests, and r3 error evidence."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Modify only .px/skills/audit-source-capabilities/scripts/audit_source_capabilities.py and tests/test_capability_mining_skills.py so safe nested symlink metadata inside an excluded real-directory boundary is explicitly counted and hash-bound without traversal, while an exclusion boundary that is itself a symlink still fails closed; write focused evidence and append-only ledger events."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["Run only the focused capability-mining tests and one bounded post-repair audit reproduction. Do not run broad section gates, full profile, validate, package, install, deploy, publish, merge, or certify."]
+    }
+  ],
+  "expected_effect": "Keep source exclusion boundaries traversal-safe and explicit while preventing expected symlink metadata nested in excluded generated evidence from falsely making the source audit incomplete.",
+  "rollback": "Revert only the nested excluded-symlink accounting and focused tests while retaining failed r3 and subsequent verification receipts.",
+  "expires_utc": "2026-08-26T16:00:00Z",
+  "evidence": [
+    {
+      "reference": "evidence/adversarial-audit/second-adversarial-source-scan-20260825-r3.json",
+      "artifact_sha256": "63f3ad517e5868e2b2cde541a00e2008c10d5494618845839ffade9caef64592",
+      "artifact_size": 2777007,
+      "claim": "All 50 r3 errors are nested symlinks inside an already excluded generated test-evidence tree."
+    }
+  ]
+}

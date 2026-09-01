@@ -22,6 +22,34 @@
       return Array.isArray(parsed) ? parsed : [];
     } catch { return []; }
   };
+  const GRAPH_SAVED_VIEW_KEYS = Object.freeze(['community', 'depth', 'direction', 'kind', 'layout', 'mode', 'name', 'query', 'relation', 'status', 'target', 'view']);
+  const graphSavedViews = value => {
+    if (!Array.isArray(value)) return [];
+    const result = [];
+    for (const candidate of value.slice(0, 12)) {
+      if (!candidate || typeof candidate !== 'object' || Array.isArray(candidate)) continue;
+      if (Object.keys(candidate).sort().join('\0') !== GRAPH_SAVED_VIEW_KEYS.join('\0')) continue;
+      const name = text(candidate.name, '', 80);
+      if (!name || candidate.name !== name) continue;
+      const normalized = {
+        name,
+        view: oneOf(candidate.view, ['capabilities', 'repository'], 'capabilities'),
+        mode: oneOf(candidate.mode, ['full', 'overview', 'neighborhood', 'path', 'impact', 'dependencies', 'dependents', 'hubs', 'orphans', 'provenance'], 'full'),
+        target: text(candidate.target, '', 500),
+        query: text(candidate.query, '', 500),
+        relation: text(candidate.relation, '', 160),
+        direction: oneOf(candidate.direction, ['both', 'outgoing', 'incoming'], 'both'),
+        depth: integer(candidate.depth, 1, 6, 1),
+        layout: oneOf(candidate.layout, ['community', 'orbit', 'flow'], 'community'),
+        kind: text(candidate.kind, '', 120),
+        status: text(candidate.status, '', 120),
+        community: text(candidate.community, '', 160)
+      };
+      if (GRAPH_SAVED_VIEW_KEYS.some(key => candidate[key] !== normalized[key])) continue;
+      result.push(normalized);
+    }
+    return boundedArray(result, 12, 262144);
+  };
   const containsForbiddenDraftKey = value => {
     if (!value || typeof value !== 'object') return false;
     if (Array.isArray(value)) return value.some(containsForbiddenDraftKey);
@@ -64,7 +92,13 @@
     if (!value || typeof value !== 'object' || Array.isArray(value)) return {};
     const result = {}; let totalBytes = 0;
     for (const kind of ['agent', 'workflow', 'skill']) {
-      const envelope = value[kind];
+      let envelope = value[kind];
+      if (typeof envelope === 'string') {
+        try {
+          if (new TextEncoder().encode(envelope).byteLength > 524288) continue;
+          envelope = JSON.parse(envelope);
+        } catch { continue; }
+      }
       if (!envelope || envelope.schema_version !== 'px.studio-working-draft/1.0' || envelope.kind !== kind || !envelope.draft || typeof envelope.draft !== 'object' || Array.isArray(envelope.draft)) continue;
       if (containsForbiddenDraftKey(envelope)) continue;
       const binding = sourceBinding(envelope.source_binding, kind, envelope.draft);
@@ -77,6 +111,20 @@
         const parsed = JSON.parse(encoded);
         result[kind] = parsed; totalBytes += bytes;
       } catch { /* malformed or cyclic draft is not persisted */ }
+    }
+    return result;
+  };
+  const persistedWorkingStudioDrafts = value => {
+    const normalized = workingStudioDrafts(value);
+    const result = {}; let totalBytes = 0;
+    for (const kind of ['agent', 'workflow', 'skill']) {
+      if (!normalized[kind]) continue;
+      try {
+        const encoded = JSON.stringify(normalized[kind]);
+        const bytes = new TextEncoder().encode(encoded).byteLength;
+        if (bytes > 524288 || totalBytes + bytes > 1048576) continue;
+        result[kind] = encoded; totalBytes += bytes;
+      } catch { /* validated drafts should remain serializable */ }
     }
     return result;
   };
@@ -115,7 +163,8 @@
         graphKind: text(persisted.graphKind, '', 120),
         graphStatus: text(persisted.graphStatus, '', 120),
         graphCommunity: text(persisted.graphCommunity, '', 240),
-        graphSavedViews: boundedArray(persisted.graphSavedViews, 12, 262144),
+        graphRelation: text(persisted.graphRelation, '', 160),
+        graphSavedViews: graphSavedViews(persisted.graphSavedViews),
         studioHistory: boundedArray(persisted.studioHistory, 30, 262144),
         workingStudioDrafts: workingStudioDrafts(persisted.workingStudioDrafts),
         memoryData: null,
@@ -164,11 +213,14 @@
         graphKind: text(state.graphKind, '', 120),
         graphStatus: text(state.graphStatus, '', 120),
         graphCommunity: text(state.graphCommunity, '', 240),
-        graphSavedViews: boundedArray(state.graphSavedViews, 12, 262144),
+        graphRelation: text(state.graphRelation, '', 160),
+        graphSavedViews: graphSavedViews(state.graphSavedViews),
         studioHistory: boundedArray(state.studioHistory, 30, 262144),
-        workingStudioDrafts: workingStudioDrafts(state.workingStudioDrafts)
+        workingStudioDrafts: persistedWorkingStudioDrafts(state.workingStudioDrafts)
       };
     },
-    workingStudioDrafts
+    graphSavedViews,
+    workingStudioDrafts,
+    persistedWorkingStudioDrafts
   });
 })();

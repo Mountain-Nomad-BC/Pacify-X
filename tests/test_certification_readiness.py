@@ -145,6 +145,140 @@ release = ["build==1.5.0"]
             result, ROOT / "contracts" / "certification-readiness.schema.json"
         )
 
+    def test_managed_late_phase_consumes_validation_state_without_rerun(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            engine, extension = self._fixture(Path(directory))
+            marker = engine / ".engineering-bootstrap" / "project-record.json"
+            campaign = (
+                engine
+                / ".engineering-bootstrap"
+                / "processing-order"
+                / "repair-campaign.json"
+            )
+            campaign.parent.mkdir(parents=True)
+            marker.write_text(
+                json.dumps({"project_id": "prj_certification_readiness_fixture"}),
+                encoding="utf-8",
+            )
+            campaign.write_text(
+                json.dumps(
+                    {
+                        "schema_version": "px.repair-campaign/1.0",
+                        "campaign_id": "fixture-release",
+                        "phase": "installed_operational",
+                        "intake_open": False,
+                        "unresolved": [],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            def probe_without_validate(
+                executable: Path,
+                arguments: tuple[str, ...],
+                *,
+                cwd: Path,
+                timeout_seconds: float = 8.0,
+            ) -> dict[str, object]:
+                self.assertNotEqual(
+                    arguments,
+                    ("-m", "runtime.cli", "--root", str(engine), "validate"),
+                )
+                return self._probe(
+                    executable,
+                    arguments,
+                    cwd=cwd,
+                    timeout_seconds=timeout_seconds,
+                )
+
+            with (
+                mock.patch(
+                    "runtime.certification_readiness._resolve_executable",
+                    side_effect=self._resolve,
+                ),
+                mock.patch(
+                    "runtime.certification_readiness._run_probe",
+                    side_effect=probe_without_validate,
+                ),
+            ):
+                result = assess_certification_readiness(
+                    engine, extension, python="python3"
+                )
+
+        engine_result = next(
+            item for item in result["prerequisites"] if item["id"] == "engine"
+        )
+        self.assertTrue(result["valid"], result["errors"])
+        self.assertEqual(engine_result["status"], "ready")
+        self.assertEqual(engine_result["version"], "0.6.3")
+
+    def test_managed_prevalidation_phase_fails_without_running_validate(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            engine, extension = self._fixture(Path(directory))
+            marker = engine / ".engineering-bootstrap" / "project-record.json"
+            campaign = (
+                engine
+                / ".engineering-bootstrap"
+                / "processing-order"
+                / "repair-campaign.json"
+            )
+            campaign.parent.mkdir(parents=True)
+            marker.write_text(
+                json.dumps({"project_id": "prj_certification_readiness_fixture"}),
+                encoding="utf-8",
+            )
+            campaign.write_text(
+                json.dumps(
+                    {
+                        "schema_version": "px.repair-campaign/1.0",
+                        "campaign_id": "fixture-release",
+                        "phase": "full_profile_passed",
+                        "intake_open": False,
+                        "unresolved": [],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            def probe_without_validate(
+                executable: Path,
+                arguments: tuple[str, ...],
+                *,
+                cwd: Path,
+                timeout_seconds: float = 8.0,
+            ) -> dict[str, object]:
+                self.assertNotEqual(
+                    arguments,
+                    ("-m", "runtime.cli", "--root", str(engine), "validate"),
+                )
+                return self._probe(
+                    executable,
+                    arguments,
+                    cwd=cwd,
+                    timeout_seconds=timeout_seconds,
+                )
+
+            with (
+                mock.patch(
+                    "runtime.certification_readiness._resolve_executable",
+                    side_effect=self._resolve,
+                ),
+                mock.patch(
+                    "runtime.certification_readiness._run_probe",
+                    side_effect=probe_without_validate,
+                ),
+            ):
+                result = assess_certification_readiness(
+                    engine, extension, python="python3"
+                )
+
+        engine_result = next(
+            item for item in result["prerequisites"] if item["id"] == "engine"
+        )
+        self.assertFalse(result["valid"])
+        self.assertEqual(engine_result["status"], "probe-failed")
+        self.assertIn("governed validation has not completed", engine_result["diagnostic"])
+
     def test_missing_browser_is_environment_unready_and_never_skipped(self) -> None:
         def resolve(
             requested: str | None,

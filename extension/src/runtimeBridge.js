@@ -51,6 +51,42 @@ function fileIdentity(stat) {
   return `${Number(stat.dev)}:${Number(stat.ino)}:${Number(stat.size)}:${Math.trunc(stat.mtimeMs)}`;
 }
 
+function resolveAdmittedPath(candidate, roots) {
+  if (!candidate || !Array.isArray(roots)) throw new Error('path-missing');
+  const requested = path.resolve(candidate);
+  for (const rootValue of roots.filter(Boolean)) {
+    const root = path.resolve(rootValue);
+    const relative = path.relative(root, requested);
+    if (relative.startsWith('..') || path.isAbsolute(relative)) continue;
+    try {
+      const rootReal = fs.realpathSync.native(root);
+      let cursor = root;
+      for (const component of relative.split(path.sep).filter(Boolean)) {
+        cursor = path.join(cursor, component);
+        if (fs.lstatSync(cursor).isSymbolicLink()) throw new Error('path-alias-rejected');
+      }
+      const real = fs.realpathSync.native(requested);
+      const realRelative = path.relative(rootReal, real);
+      if (realRelative.startsWith('..') || path.isAbsolute(realRelative)) throw new Error('path-realpath-escaped-root');
+      const stat = fs.statSync(real);
+      const kind = stat.isFile() ? 'file' : stat.isDirectory() ? 'directory' : null;
+      if (!kind) throw new Error('path-kind-not-supported');
+      return { requested, root, rootReal, real, identity: fileIdentity(stat), kind };
+    } catch (error) {
+      if (String(error?.message || '').startsWith('path-')) throw error;
+    }
+  }
+  throw new Error('path-not-admitted');
+}
+
+function revalidateAdmittedPath(guard) {
+  const current = resolveAdmittedPath(guard.requested, [guard.root]);
+  if (current.real !== guard.real || current.rootReal !== guard.rootReal || current.identity !== guard.identity || current.kind !== guard.kind) {
+    throw new Error('path-changed-after-validation');
+  }
+  return current;
+}
+
 function resolveAdmittedFile(candidate, roots) {
   if (!candidate || !Array.isArray(roots)) throw new Error('file-path-missing');
   const requested = path.resolve(candidate);
@@ -86,4 +122,7 @@ function revalidateAdmittedFile(guard) {
   return current;
 }
 
-module.exports = { findEngineRoot, isEngineRoot, runValidation, isPathWithin, resolveAdmittedFile, revalidateAdmittedFile };
+module.exports = {
+  findEngineRoot, isEngineRoot, runValidation, isPathWithin,
+  resolveAdmittedPath, revalidateAdmittedPath, resolveAdmittedFile, revalidateAdmittedFile
+};

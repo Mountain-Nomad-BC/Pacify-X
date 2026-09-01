@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023230",
+  "learned": "Artifact reachability regenerated and direct generated plus registry validators are green; Python and JavaScript syntax checks passed. The isolated Windows VS Code host completed every live listener/dashboard/knowledge graph/Agent Studio/Workflow Studio/Skill Studio operation with worker exit and process-tree closure verified and zero residual owned PIDs. It consumed 293681 ms of a 300000 ms owner ceiling, so the outer ceiling lacks safe scheduling margin. The canonical snapshot completed inside its 120000 ms bound. Raise only the outer owner ceiling to 420000 ms, then run the two affected governed sections; do not repeat the live host because its exact operation already passed.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": [],
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "evidence": [
+    {
+      "reference": "extension/evidence/vscode-host-process-lifecycle.json",
+      "claim": "Windows live host passed with exact process closure but only 6319 ms of ceiling margin.",
+      "artifact_sha256": "29e393ffc64d59834297adbc8e371156dc519e7e3ee0809a6cc997af91a2934c",
+      "artifact_size": 553
+    }
+  ]
+}

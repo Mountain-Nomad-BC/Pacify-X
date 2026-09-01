@@ -1,0 +1,11 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023173",
+  "learned": "The validated source is packaged through exact immutable selection of mountain-nomad-bc.pacify-x-vscode 0.6.59. Its 4,228,674-byte VSIX SHA-256 matches SHA256SUMS, embedded identity is exact, and no bundled source is newer. The campaign is packaged and ready for one install.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": [],
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "evidence": [
+    {"reference": "evidence/release/final-immutable-vsix-package-proof-20260826.json", "claim": "Exact packaged artifact authority.", "artifact_sha256": "50fcde7a5a38265ed7ba6f73cb25d6907418dcd1707f8844539ae0d91ec41e9b", "artifact_size": 760}
+  ]
+}

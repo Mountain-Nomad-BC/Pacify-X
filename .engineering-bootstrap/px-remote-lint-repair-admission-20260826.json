@@ -1,0 +1,31 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-remote-lint-1f854583-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023197",
+  "authority": "User authorized repair of all GitHub failures and requested Dependabot/Actions reconciliation before completion.",
+  "expected_effect": "Reproduce the exact independently receipted lint gate from failed remote job 98143428626, repair only its reported current-source violations, prove the lint gate and affected governed section, and retain a bounded fix receipt before an additive push.",
+  "rollback": "Revert only direct lint repairs that introduce behavioral regressions; retain the remote failure and do not certify.",
+  "expires_utc": "2026-09-04T12:00:00Z",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect only remote lint failure evidence, current lint gate policy/command and receipt, files directly named by lint output, compact git status for the additive repair, and focused tests/section ownership required by a changed file."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Create one registered owned lint-reproduction receipt directory; repair only files directly identified by the exact lint gate; add focused coverage only if a semantic defect is exposed; return the campaign to repair for any product-source change; retain proof. Do not alter unrelated local custody, package, install, publish, merge, or certify."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["With PYTHONDONTWRITEBYTECODE=1 set, run the exact lint gate once to reproduce, only direct formatter/linter diagnostics required by its output, the exact lint gate once after repair, syntax/import probes for changed owners, and the governed section gate required for any changed control-plane owner. Do not run full profile or runtime.cli validate, package, install, commit, push, merge, or certify."]
+    }
+  ],
+  "evidence": [
+    {
+      "reference": "evidence/release/github-main-1f854583-remote-failure-20260826.json",
+      "artifact_sha256": "4c6d9be04b099c203e49289a09c4640494c6bfff0f2c82e9938af4efc288905b",
+      "artifact_size": 1354,
+      "claim": "Exact remote lint failure predecessor."
+    }
+  ]
+}

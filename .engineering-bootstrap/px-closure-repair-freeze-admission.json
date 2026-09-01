@@ -1,0 +1,37 @@
+{
+  "session_id": "release-session:px-repair-freeze-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022999",
+  "gap_id": "PX-OS-1065",
+  "authority": "User explicitly authorized completion of all remaining reversible Pacify-X work and requested GitHub/Dependabot plus final operational closure; irreversible destructive actions alone require approval.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": [
+        "Read only the px-release broker result and one admitted release skill body, repair-campaign processing-order state, superseding second-adversarial disposition, current worktree status, and release/CI metadata needed to establish repair freeze."
+      ]
+    },
+    {
+      "effect": "write",
+      "scope": [
+        "Advance only .engineering-bootstrap/processing-order/repair-campaign.json from repair to repair freeze using its governed CLI, write session-owned freeze evidence, and append ledger events; do not modify product source, dependencies, revisions, packages, Git, GitHub, or certification evidence."
+      ]
+    },
+    {
+      "effect": "execute",
+      "scope": [
+        "Run only the PX release skill query/hydration, processing-order repair-freeze checks/transition, and bounded read-only worktree/release inspection. Do not reconcile revisions, run section gates/full profile/validate, package, install, deploy, publish, merge, or certify."
+      ]
+    }
+  ],
+  "expected_effect": "Freeze the completed local repair set exactly once and expose the next allowed reconciliation stage without repeating repair-time validation or revision work.",
+  "rollback": "Restore only the previous repair-campaign phase from its retained predecessor if the governed freeze transition fails; retain all append-only audit evidence.",
+  "expires_utc": "2026-08-26T16:00:00Z",
+  "evidence": [
+    {
+      "reference": "evidence/adversarial-audit/second-adversarial-audit-final-20260826.json",
+      "artifact_sha256": "3ae3299985693b4eee3b76d572ac206038b8b9caa7f323b808366bd0517fd2ce",
+      "artifact_size": 4066,
+      "claim": "Second adversarial audit permits local repair freeze while withholding certification."
+    }
+  ]
+}

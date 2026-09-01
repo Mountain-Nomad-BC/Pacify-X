@@ -1,0 +1,15 @@
+{
+  "session_id": "repair-session:px-workflow-finalizing-cancel-20260825",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022953",
+  "gap_id": "PX-OS-1065",
+  "outcome": "superseded",
+  "summary": "Superseded by one consolidated runtime lifecycle repair covering both the already-isolated Workflow finalizing cancellation race and the newly isolated synchronous local Agent resume defect.",
+  "evidence": [
+    {
+      "reference": "evidence/operational-ui-walk-installed-vsix-0.6.59-lifecycle-r1/receipt.json",
+      "artifact_sha256": "a50710436f1bd773e9af1ad1c547c954e97d95e81650715dccecb6bc8a79d7a3",
+      "artifact_size": 4874763,
+      "claim": "Exact installed proof of the Workflow finalizing cancellation race retained for the consolidated runtime repair."
+    }
+  ]
+}

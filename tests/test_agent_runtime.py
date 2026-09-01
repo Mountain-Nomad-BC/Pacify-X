@@ -60,6 +60,58 @@ def fixtures(body: str):
     return spec, binding, grant
 
 
+def test_worker_publication_failure_uses_separate_durable_fallback(
+    tmp_path, monkeypatch
+):
+    from runtime import studio_session_worker
+
+    writes = []
+
+    def controlled_write(path, payload):
+        writes.append(path)
+        if len(writes) == 1:
+            raise OSError("primary unavailable")
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(payload), encoding="utf-8")
+
+    monkeypatch.setattr(studio_session_worker, "write_json_atomic", controlled_write)
+    studio_session_worker._retain_publication_failure(
+        tmp_path, "agent", "run-1", RuntimeError("worker"), ValueError("publish")
+    )
+
+    retained = json.loads(writes[1].read_text(encoding="utf-8"))
+    assert retained["worker_error"] == "RuntimeError"
+    assert retained["publication_error"] == "ValueError"
+    assert retained["diagnostic_write_error"] == "OSError"
+
+
+def test_worker_publication_failure_uses_supervised_stderr_when_storage_fails(
+    tmp_path, monkeypatch
+):
+    from runtime import studio_session_worker
+
+    monkeypatch.setattr(
+        studio_session_worker,
+        "write_json_atomic",
+        lambda *_args, **_kwargs: (_ for _ in ()).throw(OSError("unavailable")),
+    )
+    retained = []
+    monkeypatch.setattr(
+        studio_session_worker.os,
+        "write",
+        lambda descriptor, payload: retained.append((descriptor, payload)) or len(payload),
+    )
+
+    studio_session_worker._retain_publication_failure(
+        tmp_path, "workflow", "run-2", RuntimeError("worker"), ValueError("publish")
+    )
+
+    assert retained[0][0] == 2
+    payload = json.loads(retained[0][1])
+    assert payload["fallback_write_error"] == "OSError"
+    assert payload["run_id"] == "run-2"
+
+
 def test_agent_creation_admission_and_actual_owned_harness_are_separate(
     tmp_path,
 ) -> None:
@@ -647,6 +699,36 @@ def test_vscode_host_tool_binding_passes_structural_preflight_and_live_authority
             "effect_grant_ids": [grant.grant_id],
         }
     ]
+
+
+def test_admitted_agent_with_unresolved_memory_previews_blocked_before_run_creation(
+    tmp_path,
+) -> None:
+    body = "Keep unresolved memory outside the executable runtime boundary.\n"
+    spec, binding, grant = fixtures(body)
+    spec = replace(spec, memory_binding_ids=("memory:px-unresolved",))
+    controller = AgentRuntimeController(tmp_path)
+    controller.create_candidate(spec, body)
+
+    preflight = controller.test_candidate(spec)
+    assert preflight["passed"] is True
+    assert preflight["runtime_ready"] is False
+    assert preflight["runtime_blockers"] == ["memory_runtime_resolved"]
+    assert preflight["checks"]["memory_runtime_resolved"] is False
+    controller.register_authority([binding], [grant])
+    assert controller.admit(spec)["decision"] == "admitted"
+
+    preview = controller.preview(spec)
+    assert preview["eligible"] is False
+    assert preview["status"] == "blocked"
+    assert preview["effects_executed"] is False
+    assert preview["blockers"] == ["memory_bindings_not_runtime_resolved"]
+    before = controller.run_control.list_runs(kind="agent")["runs"]
+    with pytest.raises(PermissionError, match="memory_bindings_not_runtime_resolved"):
+        controller.invoke_harness(
+            spec, task={"objective": "must remain blocked"}, approval=True
+        )
+    assert controller.run_control.list_runs(kind="agent")["runs"] == before
 
 
 def _wait_for_agent_state(controller, run_id: str, expected: set[str]) -> dict:

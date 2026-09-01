@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-aud2-005-denominator-reconcile-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023023",
+  "outcome": "completed",
+  "reason": "The focused causal proof passed 2/2 and the campaign now has intake closed with an empty unresolved denominator. A separate ordered session advanced it to repair_frozen; this repair-only card performed no projection or downstream release action.",
+  "evidence": [
+    {
+      "reference": "evidence/release/repository-scope-governance-causal-proof-20260826.json",
+      "artifact_sha256": "6ceeb3892f8b0d7e4e953d8d9692a978beda19141eee08db2668c9f7a032578d",
+      "artifact_size": 1045,
+      "claim": "PX-AUD2-005 exact causal proof; focused rerun passed 2/2."
+    }
+  ]
+}

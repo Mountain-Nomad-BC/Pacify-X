@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023030",
+  "learned": "PX-AUD2-006 cleanup policy separation is causally repaired with 6/6 focused tests. PX-AUD2-007 remains: scripts/cleanup_python_caches.py and tests/test_cache_quarantine.py have no testing-governance ownership, so this release-critical cleanup change would not stale or exercise the governed receipt.",
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "unresolved_branch_gap_ids": ["PX-OS-1065"],
+  "newly_discovered_gap_ids": [],
+  "evidence": [
+    {
+      "reference": "evidence/release/cache-hygiene-boundary-causal-proof-20260826.json",
+      "claim": "PX-AUD2-006 repair and PX-AUD2-007 ownership gap.",
+      "artifact_sha256": "21b44ed43ee21e987baf4d207252a4252f09540757f348c02e1f2a1923eefaa7",
+      "artifact_size": 1244
+    }
+  ]
+}

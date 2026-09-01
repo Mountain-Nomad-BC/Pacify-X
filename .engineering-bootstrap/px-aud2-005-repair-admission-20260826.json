@@ -1,0 +1,37 @@
+{
+  "session_id": "repair-session:px-repository-scope-section-owner-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023016",
+  "gap_id": "PX-OS-1065",
+  "authority": "User authorized all remaining reversible Pacify-X repairs and requires actual governed operation before certification.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": [
+        "Inspect registry/test_profiles.json testing-governance ownership, runtime/test_profiles.py section-currentness logic, focused test-profile tests, and PX-AUD2-005 evidence only."
+      ]
+    },
+    {
+      "effect": "write",
+      "scope": [
+        "Add runtime/repository_scope.py and its focused repository-scope/effect-surface/clean-export tests to the testing-governance section authority in registry/test_profiles.json; add focused regression coverage proving section staleness/currentness follows those inputs; maintain the exact PX-AUD2-005 repair-campaign unresolved item until causal proof, then clear it. Do not refresh generated projections or section receipts in repair."
+      ]
+    },
+    {
+      "effect": "execute",
+      "scope": [
+        "Run only focused test-profile/currentness tests that prove the new testing-governance mapping. Defer the governed section gate until the ordered post-freeze revision reconciliation makes generated projections current. Do not run revision reconciliation, broad sections, full profile, validate, package, install, deploy, publish, commit, push, merge, or certify."
+      ]
+    }
+  ],
+  "expected_effect": "Make the shared product-source boundary an explicit testing-governance input whose source or causal-test changes stale that section, without performing a repair-time generated projection refresh.",
+  "rollback": "Revert only the testing-governance mapping and focused regression test, restore the repair campaign predecessor, and retain PX-AUD2-005 evidence.",
+  "expires_utc": "2026-08-26T18:00:00Z",
+  "evidence": [
+    {
+      "reference": "evidence/release/generated-boundary-governance-gap-20260826.json",
+      "artifact_sha256": "be0ea84833d3a445941c90478ed701ff23a8a1490485c317ff3ee1e882e2d0b7",
+      "artifact_size": 1589,
+      "claim": "PX-AUD2-005 missing governed-section ownership."
+    }
+  ]
+}

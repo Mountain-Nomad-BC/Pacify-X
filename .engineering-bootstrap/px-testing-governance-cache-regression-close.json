@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "verification-session:px-governed-sections-current-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023028",
+  "outcome": "superseded",
+  "reason": "The only stale governed section ran exactly once and failed closed: 208 passed, 1 skipped, and certification hygiene failed to inventory one runtime/__pycache__/cli.pyc file. The new product-source exclusion is correct for source projections but was incorrectly inherited by cleanup inventory. Keep the campaign before sections_current and reopen focused repair.",
+  "evidence": [
+    {
+      "reference": ".engineering-bootstrap/test-evidence/sections/testing-governance.json",
+      "artifact_sha256": "b78a85365008b3f732f2927d88d3d37b0aef5e2dbdf9114af9704433edcb6443",
+      "artifact_size": 1228,
+      "claim": "Governed testing-governance failure receipt proving the cache-inventory regression."
+    }
+  ]
+}

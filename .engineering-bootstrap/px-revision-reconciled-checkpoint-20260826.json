@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023022",
+  "learned": "The single post-repair generated-authority reconciliation completed successfully. Focused generated-artifact, effect-surface, dependency-closure, and diff-integrity checks passed, and the campaign is revision_reconciled. Governed section receipts are the next ordered stage.",
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "unresolved_branch_gap_ids": ["PX-OS-1065"],
+  "newly_discovered_gap_ids": [],
+  "evidence": [
+    {
+      "reference": "evidence/release/final-revision-reconciliation-20260826.json",
+      "artifact_sha256": "0056bbaad2b835d208216a44a371ed4eba62c53060647fc04df5fa6c092689ae",
+      "artifact_size": 2424,
+      "claim": "One-time generated authority reconciliation and bounded integrity proof."
+    }
+  ]
+}

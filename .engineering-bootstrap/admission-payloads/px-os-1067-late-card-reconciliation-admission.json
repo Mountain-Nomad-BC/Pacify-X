@@ -1,0 +1,31 @@
+{
+  "gap_id": "PX-OS-1067",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000031433",
+  "session_id": "repair-session:px-os-1067-late-card-single-reconciliation-20260831",
+  "authority": "User explicitly directed uninterrupted completion; the repaired generation is frozen with zero unresolved items and the processing-order oracle admits revision reconciliation.",
+  "expires_utc": "2026-09-01T12:00:00Z",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["canonical projection inputs for the frozen late-card installed owner, exact repair evidence, and independent generated-artifact/registry/effect/Python validation results"]
+    },
+    {
+      "effect": "write",
+      "scope": ["only projections owned by scripts.clean_source_export._rebuild_candidate_projections(Path.cwd()), .engineering-bootstrap/processing-order/repair-campaign.json, .tmp/audit_walks_plans/543_late_card_single_reconciliation.md, and append-only operational-gap ledger event/projection files under registry/"]
+    },
+    {
+      "effect": "execute",
+      "scope": ["operational ledger guards, processing-order revision_reconciliation check, exactly one python -B invocation of scripts.clean_source_export._rebuild_candidate_projections(Path.cwd()), independent generated-artifact/registry/effect/Python validators, git diff --check, campaign phase diagnostic, and ledger validation"]
+    }
+  ],
+  "expected_effect": "Consume exactly one canonical reconciliation for the frozen late-card generation, refresh every registered projection, independently validate them, and advance only to revision_reconciled.",
+  "rollback": "Do not retry the owner in this frozen generation. On failure preserve partial evidence and reopen repair causally; on success retain projections and advance once.",
+  "evidence": [
+    {
+      "reference": ".tmp/audit_walks_plans/542_exhaustive_installed_late_card_scenario_repair.md",
+      "artifact_sha256": "20b1daa604ae857b3faca1af6ebd0a89376ed33f24fc372acd2f35f7c7a466ad",
+      "artifact_size": 4670,
+      "claim": "Frozen causal repair evidence."
+    }
+  ]
+}

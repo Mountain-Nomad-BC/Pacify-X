@@ -34,7 +34,7 @@ function createMcpActivityIntegration(options) {
   const state = {
     schema_version: 'px.mcp-instrumentation-health/1.0', registered_tools: [], calls: 0,
     emitted_events: 0, dropped_events: 0, last_drop_type: null,
-    identity: { self_asserted_calls: 0, unattested_calls: 0 }
+    identity: { authenticated_host_capability_calls: 0, self_asserted_calls: 0, unattested_calls: 0 }
   };
   const now = options.now || (() => new Date().toISOString());
   const uuid = options.uuid || (() => crypto.randomUUID());
@@ -132,19 +132,26 @@ function createMcpActivityIntegration(options) {
     state.registered_tools.push(name);
     return async input => {
       const context = options.contextEnvelope?.() || {};
-      const attestation = actorAttestation(input, context, options.processId);
+      let effectiveInput = input;
+      let attestation = actorAttestation(input, context, options.processId);
+      if (!definition.annotations?.readOnlyHint && typeof options.authorize === 'function') {
+        const decision = await options.authorize(name, input);
+        if (!decision?.authorized) return decision?.result;
+        effectiveInput = decision.input;
+        attestation = decision.attestation;
+      }
       state.calls += 1;
       state.identity[`${attestation.identityAttestation}_calls`] += 1;
       const correlationId = `mcp-${uuid()}`;
       const startedMs = Date.now();
       const startedAt = now();
-      emit(name, definition, input, 'started', 'pending', correlationId, attestation, startedAt, 0);
+      emit(name, definition, effectiveInput, 'started', 'pending', correlationId, attestation, startedAt, 0);
       try {
-        const value = await handler(input);
-        emit(name, definition, input, 'completed', 'success', correlationId, attestation, startedAt, Date.now() - startedMs);
+        const value = await handler(effectiveInput);
+        emit(name, definition, effectiveInput, 'completed', 'success', correlationId, attestation, startedAt, Date.now() - startedMs);
         return value;
       } catch (error) {
-        emit(name, definition, input, 'failed', 'failure', correlationId, attestation, startedAt, Date.now() - startedMs);
+        emit(name, definition, effectiveInput, 'failed', 'failure', correlationId, attestation, startedAt, Date.now() - startedMs);
         throw error;
       }
     };

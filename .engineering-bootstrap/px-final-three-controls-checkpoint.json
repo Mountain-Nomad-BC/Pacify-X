@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022974",
+  "unresolved_branch_gap_ids": ["PX-OS-1065"],
+  "newly_discovered_gap_ids": [],
+  "learned": "The one broad source-bound assembly is error-free and covers 926 of 929 controls. Only dashboard loading, sidebar connection, and Workflow Studio pending-port indicators were missed by timing in the full contained pass; all three have existing exact selectors and prior focused proof, so they require one focused predecessor-bound refresh rather than another broad walk or product repair.",
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "evidence": [
+    {
+      "reference": "evidence/current-control-proof-installed-0659-20260825/assembled-current.json",
+      "artifact_sha256": "b3b0afe80e05ce343d0c9d8b32289df1a47b62d925d11c816974cc1264673844",
+      "artifact_size": 5613800,
+      "claim": "Exact 926/929 assembly and the three-control residual denominator."
+    }
+  ]
+}

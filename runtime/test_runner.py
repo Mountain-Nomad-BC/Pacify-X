@@ -14,6 +14,9 @@ from .process_supervisor import ProcessBudgets, ProcessSupervisor
 from .resource_lifecycle import ResourceManager, ResourceStatus, RunState
 
 
+TEST_DISK_CONSUMPTION_LIMIT_BYTES = 8 * 1024 * 1024 * 1024
+
+
 def validate_timeout(value: object) -> float:
     if (
         isinstance(value, bool)
@@ -168,6 +171,7 @@ def run_test_command(
             force_shutdown_seconds=force_timeout,
             stdout_limit_bytes=64 * 1024 * 1024,
             stderr_limit_bytes=64 * 1024 * 1024,
+            disk_consumption_limit_bytes=TEST_DISK_CONSUMPTION_LIMIT_BYTES,
         )
         action = {
             "action_id": f"test-runner:{run_id}",
@@ -219,7 +223,7 @@ def run_test_command(
                 "errors": [] if supervised.tree_closed else ["process tree closure was not proven"],
                 "receipt": supervised.receipt_path,
             }
-            if timed_out or not supervised.tree_closed
+            if supervised.status != "exited" or not supervised.tree_closed
             else None,
             "resource_id": supervised.resource_id,
             "supervision_receipt": supervised.receipt_path,
@@ -227,6 +231,14 @@ def run_test_command(
         }
         if timed_out:
             result["errors"] = [f"test profile exceeded {timeout:g} seconds"]
+        elif supervised.status == "owner_lost":
+            result["errors"] = [
+                "test launcher exited before its supervised process tree"
+            ]
+        elif supervised.status == "disk_budget_exceeded":
+            result["errors"] = [
+                "test process exceeded the 8 GiB disk-consumption ceiling"
+            ]
     except BaseException:
         if workspace_path is not None and workspace_record is not None:
             resource_manager.update(

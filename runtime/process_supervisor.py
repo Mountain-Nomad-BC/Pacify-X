@@ -11,6 +11,8 @@ from datetime import datetime, timezone
 import json
 import os
 from pathlib import Path
+import select
+import shutil
 import signal
 import subprocess
 import threading
@@ -25,6 +27,8 @@ from .resource_lifecycle import ResourceManager, ResourceStatus, RunState
 
 MAX_TIMEOUT_SECONDS = 86_400.0
 MAX_CAPTURE_BYTES = 64 * 1024 * 1024
+DEFAULT_DISK_CONSUMPTION_LIMIT_BYTES = 8 * 1024 * 1024 * 1024
+MAX_DISK_CONSUMPTION_LIMIT_BYTES = 1024 * 1024 * 1024 * 1024
 
 
 def _now() -> str:
@@ -52,6 +56,7 @@ class ProcessBudgets:
     force_shutdown_seconds: float
     stdout_limit_bytes: int
     stderr_limit_bytes: int
+    disk_consumption_limit_bytes: int = DEFAULT_DISK_CONSUMPTION_LIMIT_BYTES
     poll_interval_seconds: float = 0.02
 
     @classmethod
@@ -76,6 +81,12 @@ class ProcessBudgets:
             force_shutdown_seconds=float(value["force_shutdown_seconds"]),
             stdout_limit_bytes=int(value["stdout_limit_bytes"]),
             stderr_limit_bytes=int(value["stderr_limit_bytes"]),
+            disk_consumption_limit_bytes=int(
+                value.get(
+                    "disk_consumption_limit_bytes",
+                    DEFAULT_DISK_CONSUMPTION_LIMIT_BYTES,
+                )
+            ),
             poll_interval_seconds=float(value.get("poll_interval_seconds", 0.02)),
         )
         budget.validate()
@@ -100,6 +111,8 @@ class ProcessBudgets:
             raise ValueError("stdout byte budget is outside hard bounds")
         if not 1 <= self.stderr_limit_bytes <= MAX_CAPTURE_BYTES:
             raise ValueError("stderr byte budget is outside hard bounds")
+        if not 1 <= self.disk_consumption_limit_bytes <= MAX_DISK_CONSUMPTION_LIMIT_BYTES:
+            raise ValueError("disk-consumption byte budget is outside hard bounds")
 
 
 @dataclass(frozen=True, slots=True)
@@ -181,6 +194,61 @@ def _decode_utf8_lossy(raw: bytes) -> tuple[str, int]:
             errors += 1
             remaining = remaining[error.end :]
     return "".join(parts), errors
+
+
+class _OwnerLivenessHandle:
+    """Exact kernel-owned proof that the supervising process remains alive."""
+
+    def __init__(self, kind: str, handle: object, closer: Callable[[], None]) -> None:
+        self.kind = kind
+        self.handle = handle
+        self._closer = closer
+
+    def alive(self) -> bool:
+        if self.kind == "windows":
+            kernel32, handle = self.handle  # type: ignore[misc]
+            # WAIT_TIMEOUT means the process handle is not signalled and the
+            # exact process represented by the handle is still running.
+            return int(kernel32.WaitForSingleObject(handle, 0)) == 0x00000102
+        readable, _, _ = select.select([int(self.handle)], [], [], 0)
+        return not readable
+
+    def close(self) -> None:
+        if self.handle is not None:
+            self._closer()
+            self.handle = None
+
+
+def _open_owner_liveness(pid: int) -> _OwnerLivenessHandle | None:
+    """Acquire a non-replayable OS handle for the supervising process."""
+
+    if os.name == "nt":
+        import ctypes
+        from ctypes import wintypes
+
+        kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+        kernel32.OpenProcess.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
+        kernel32.OpenProcess.restype = wintypes.HANDLE
+        kernel32.WaitForSingleObject.argtypes = [wintypes.HANDLE, wintypes.DWORD]
+        kernel32.WaitForSingleObject.restype = wintypes.DWORD
+        handle = kernel32.OpenProcess(0x00100000, False, pid)  # SYNCHRONIZE
+        if not handle:
+            return None
+        return _OwnerLivenessHandle(
+            "windows",
+            (kernel32, handle),
+            lambda: kernel32.CloseHandle(handle),
+        )
+    pidfd_open = getattr(os, "pidfd_open", None)
+    if pidfd_open is None:
+        return None
+    try:
+        descriptor = int(pidfd_open(pid, 0))
+    except OSError:
+        return None
+    return _OwnerLivenessHandle(
+        "pidfd", descriptor, lambda: os.close(descriptor)
+    )
 
 
 def _drain(stream: object, capture: _BoundedCapture) -> None:
@@ -581,6 +649,17 @@ class ProcessSupervisor:
     ) -> ProcessResult:
         self.command_plan(command)
         budget, audit_hash = self._authorize(action, cwd)
+        # ``run`` executes in the process that owns and supervises the child.
+        # Its own PID is the custody identity.  Using getppid() binds the child
+        # to the supervisor's launcher, which is intentionally short-lived for
+        # durable Studio workers and therefore creates false owner-loss kills.
+        owner_pid = os.getpid()
+        owner_fingerprint = _process_start_fingerprint(owner_pid)
+        owner_liveness = _open_owner_liveness(owner_pid)
+        if owner_fingerprint is None and owner_liveness is None:
+            raise RuntimeError("supervising process identity cannot be proven")
+        disk_root = Path(cwd.resolve(strict=True).anchor or cwd.resolve(strict=True))
+        initial_disk_free = shutil.disk_usage(disk_root).free
         action_id = str(action["action_id"])
         started_at = _now()
         started = time.monotonic()
@@ -598,6 +677,8 @@ class ProcessSupervisor:
                 start_suspended=os.name == "nt",
             )
         except (OSError, subprocess.SubprocessError) as error:
+            if owner_liveness is not None:
+                owner_liveness.close()
             preliminary = ProcessResult(
                 action_id,
                 None,
@@ -646,6 +727,8 @@ class ProcessSupervisor:
                     job.close()
             else:
                 self.manager.terminate_owned_process(record.resource_id)
+            if owner_liveness is not None:
+                owner_liveness.close()
             raise RuntimeError(
                 f"process containment setup failed ({type(error).__name__})"
             ) from None
@@ -677,6 +760,27 @@ class ProcessSupervisor:
         shutdown_mode = "natural"
         tree_closed = True
         tracked = {process.pid: fingerprint}
+        next_safety_check = supervision_started
+
+        def terminal_safety_status() -> str | None:
+            if owner_liveness is not None:
+                owner_alive = owner_liveness.alive()
+            elif owner_fingerprint is not None:
+                owner_alive = (
+                    _process_start_fingerprint(owner_pid) == owner_fingerprint
+                )
+            else:
+                owner_alive = False
+            if not owner_alive:
+                return "owner_lost"
+            current_disk_free = shutil.disk_usage(disk_root).free
+            if (
+                initial_disk_free - current_disk_free
+                > budget.disk_consumption_limit_bytes
+            ):
+                return "disk_budget_exceeded"
+            return None
+
         try:
             while process.poll() is None:
                 now = time.monotonic()
@@ -687,6 +791,14 @@ class ProcessSupervisor:
                 if cancel_event is not None and cancel_event.is_set():
                     status = "cancelled"
                     break
+                if now >= next_safety_check:
+                    next_safety_check = now + max(
+                        0.25, budget.poll_interval_seconds
+                    )
+                    safety_status = terminal_safety_status()
+                    if safety_status is not None:
+                        status = safety_status
+                        break
                 if now - supervision_started >= budget.total_timeout_seconds:
                     status = "total_timeout"
                     break
@@ -705,7 +817,10 @@ class ProcessSupervisor:
             # otherwise an over-budget or cancelled process can be published as
             # a successful natural exit under host contention.
             if status == "exited":
-                if cancel_event is not None and cancel_event.is_set():
+                safety_status = terminal_safety_status()
+                if safety_status is not None:
+                    status = safety_status
+                elif cancel_event is not None and cancel_event.is_set():
                     status = "cancelled"
                 elif (
                     time.monotonic() - supervision_started
@@ -738,6 +853,8 @@ class ProcessSupervisor:
         finally:
             if job is not None:
                 job.close()
+            if owner_liveness is not None:
+                owner_liveness.close()
             for thread in threads:
                 thread.join(timeout=budget.force_shutdown_seconds)
 

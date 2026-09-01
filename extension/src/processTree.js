@@ -39,10 +39,14 @@ function terminateProcessTreeAsync(child, options = {}) {
   const spawn = options.spawn || cp.spawn;
   const kill = options.kill || process.kill;
   return new Promise(resolve => {
-    let settled = false; let escalationTimer; let verifyTimer;
+    let settled = false; let escalationTimer; let verifyTimer; let killer = null;
     const finish = value => {
       if (settled) return; settled = true;
-      clearTimeout(escalationTimer); clearTimeout(verifyTimer); resolve(value);
+      clearTimeout(escalationTimer); clearTimeout(verifyTimer);
+      if (killer && killer.exitCode === null && killer.signalCode === null) {
+        try { killer.kill(); } catch {}
+      }
+      resolve(value);
     };
     child?.once?.('close', () => finish(true));
     child?.once?.('exit', () => finish(true));
@@ -50,13 +54,15 @@ function terminateProcessTreeAsync(child, options = {}) {
     escalationTimer = setTimeout(() => {
       try {
         if (platform === 'win32') {
-          const killer = spawn('taskkill', ['/pid', String(pid), '/t', '/f'], { windowsHide: true, shell: false, stdio: 'ignore' });
+          killer = spawn('taskkill', ['/pid', String(pid), '/t', '/f'], { windowsHide: true, shell: false, stdio: 'ignore' });
           killer.once?.('error', () => {});
+          // taskkill is an implementation detail, not a lifecycle owner. Do not
+          // let a stalled taskkill keep the reconciler process alive past verifyMs.
+          killer.unref?.();
         } else kill(-pid, 'SIGKILL');
       } catch {}
     }, graceMs);
     verifyTimer = setTimeout(() => finish(false), verifyMs);
-    escalationTimer.unref?.(); verifyTimer.unref?.();
   });
 }
 

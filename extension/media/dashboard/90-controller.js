@@ -2,7 +2,28 @@
 
 // Single browser controller: state composition, interaction dispatch, and host bridge ownership.
 
-const vscode = acquireVsCodeApi();
+const vscodeApi = acquireVsCodeApi();
+const PX_OUTBOUND_REQUEST_EVENT = 'px-dashboard-outbound-request';
+function pxOutboundRequestIdentity(message) {
+  const value = message && typeof message === 'object' ? message : {};
+  const identity = { type: typeof value.type === 'string' ? value.type : '' };
+  for (const key of ['requestId', 'operation', 'kind', 'status', 'sort', 'exactTarget', 'packId']) {
+    if (typeof value[key] === 'string') identity[key] = value[key].slice(0, 500);
+  }
+  for (const key of ['offset', 'limit']) {
+    if (Number.isSafeInteger(value[key])) identity[key] = value[key];
+  }
+  if (typeof value.enabled === 'boolean') identity.enabled = value.enabled;
+  return Object.freeze(identity);
+}
+const vscode = Object.freeze({
+  postMessage(message) {
+    globalThis.dispatchEvent(new CustomEvent(PX_OUTBOUND_REQUEST_EVENT, { detail: pxOutboundRequestIdentity(message) }));
+    return vscodeApi.postMessage(message);
+  },
+  getState() { return vscodeApi.getState?.(); },
+  setState(value) { return vscodeApi.setState?.(value); }
+});
 const app = document.getElementById('app');
 const shieldUri = app.dataset.shieldUri;
 const brandUri = app.dataset.brandUri || shieldUri;
@@ -20,6 +41,46 @@ const healthState = globalThis.PXDashboard.require('healthState');
 const dashboardState = globalThis.PXDashboard.require('state');
 const { escapeHtml: esc, number, bytes, badge, unavailable, card, section, empty } = components;
 
+function activityScenarioIdentity() {
+  const data = state.activityData || state.coordination?.activity || {};
+  const policy = data.policy || {};
+  const staleOperations = [...new Map((data.stale_operations || []).map(item => [item.correlation_id || `${item.operation}:${item.started_utc || ''}`, item])).values()];
+  const enabled = policy.enabled !== false;
+  const paused = policy.paused === true;
+  return Object.freeze({
+    pending: state.activityPending === true,
+    enabled,
+    paused,
+    staleCount: staleOperations.length,
+    reconcileEnabled: !(staleOperations.length > 0 && (paused || !enabled))
+  });
+}
+
+globalThis.PXDashboard.define('hostQueries', Object.freeze({
+  refresh() {
+    vscode.postMessage({ type: 'refresh' });
+  },
+  hostActionIdentity() {
+    const operation = state.operation || {};
+    return Object.freeze({
+      status: String(operation.status || ''),
+      action: String(operation.action || ''),
+      requestId: String(operation.requestId || '')
+    });
+  },
+  activityPolicy() {
+    const scenario = activityScenarioIdentity();
+    return Object.freeze({ enabled: scenario.enabled, paused: scenario.paused });
+  },
+  activityScenario() {
+    return activityScenarioIdentity();
+  },
+  operationalCard(requestId, gapId) {
+    if (!requestId || !gapId) throw new TypeError('An exact request and gap identity are required.');
+    vscode.postMessage({ type: 'operationalCardQuery', requestId, gapId });
+  }
+}));
+
 const visibleSurfaces = [
   ['dashboard', 'Dashboard', 'pulse'], ['projects', 'Projects', 'folder'], ['agents', 'Agents', 'agents'],
   ['agent-studio', 'Agent Studio', 'agents'], ['workflow-studio', 'Workflow Studio', 'flow'], ['skill-studio', 'Skill Studio', 'tools'],
@@ -30,7 +91,11 @@ const visibleSurfaces = [
 ];
 const advancedSurfaces = [['knowledgeCore', 'Knowledge Core', 'knowledge'], ['runtimeCore', 'Runtime Core', 'runtime']];
 
-let state = dashboardState.createInitial(vscode.getState() || {}, Boolean(window.__PX_PREVIEW_ADVANCED__));
+const localDashboardViewState = vscode.getState();
+let state = dashboardState.createInitial(
+  localDashboardViewState && Object.keys(localDashboardViewState).length ? localDashboardViewState : window.__PX_INITIAL_DASHBOARD_STATE__ || {},
+  Boolean(window.__PX_PREVIEW_ADVANCED__)
+);
 let modalCopyText = '';
 let modalReturnFocus = null;
 let modalTitle = '';
@@ -44,6 +109,7 @@ let studioPendingRun = null;
 let studioPendingWorkflowRun = null;
 let pendingStudioPreview = null;
 let pendingStudioRunQuery = null;
+let pendingWorkflowApproval = null;
 let pendingStudioSetup = null;
 let workflowConnectionStart = null;
 let workflowScale = 1;
@@ -71,6 +137,8 @@ let studioVersionAllocationProof = null;
 let studioVersionProofRequestId = null;
 let studioAllocationRequest = null;
 let studioSaveRequest = null;
+let studioEditorPresentation = null;
+let studioEditorPresentationSequence = 0;
 const detachedStudioSaveRequests = new Map();
 const pendingHostActions = new Map();
 let pendingTaskRelease = null;
@@ -78,6 +146,12 @@ let studioPackageRequest = null;
 let studioPendingSkillPackage = null;
 let studioSourceProofRequestId = null;
 let searchTimer; let graphResizeTimer; let graphRequestTimer;
+
+function recordStudioEditorTransition(stage, detail = {}) {
+  const trace = globalThis.__PX_STUDIO_EDITOR_TRANSITIONS__ ||= [];
+  trace.push({ stage, observed_utc: new Date().toISOString(), ...structuredClone(detail) });
+  if (trace.length > 64) trace.splice(0, trace.length - 64);
+}
 
 function readinessLiveBlockers(snapshot = {}) {
   const blockers = [];
@@ -105,7 +179,9 @@ function readinessLiveBlockers(snapshot = {}) {
 }
 
 function persistDashboardState() {
-  vscode.setState(dashboardState.persistedView(state));
+  const persisted = dashboardState.persistedView(state);
+  vscode.setState(persisted);
+  vscode.postMessage({ type: 'dashboardViewState', state: persisted });
 }
 
 function workingStudioSourceBinding() {
@@ -211,33 +287,125 @@ function workingStudioOverlayDisposition(kind, allocation) {
     ? { status: 'matched', envelope }
     : { status: 'mismatch', envelope };
 }
-function openReauthenticatedStudioDraft(kind, seed, allocation) {
-  const disposition = workingStudioOverlayDisposition(kind, allocation);
-  const restored = disposition.status === 'matched';
-  studioWorkingSourceBinding = {
-    source_scope: allocation.source_scope,
-    identity: allocation.identity,
-    source_version: allocation.source_version,
-    source_revision_sha256: allocation.source_revision_sha256,
-    source_content_sha256: allocation.source_content_sha256
+
+function studioSkillRollbackPayload(source = {}) {
+  const normalized = studioEditors.normalizeSkill(source);
+  const strings = key => Array.isArray(normalized[key])
+    ? normalized[key].filter(value => typeof value === 'string').slice(0, 200)
+    : [];
+  return {
+    skill_id: normalized.skill_id,
+    version: normalized.version,
+    owner: String(normalized.owner || 'human:owner'),
+    triggers: strings('triggers'), non_triggers: strings('non_triggers'),
+    permissions: strings('permissions'), effects: strings('effects'),
+    resources: strings('resources'), contracts: strings('contracts'), tests: strings('tests'),
+    provenance: { source: String(normalized.provenance?.source || 'studio-catalog').slice(0, 1000) },
+    lifecycle: 'promoted',
+    promotion_receipt: String(source.promotion_receipt || '').slice(0, 32768)
   };
-  closeModal(true);
-  openStudioDraftModal(kind, restored ? structuredClone(disposition.envelope.draft) : seed);
-  const editorRoot = document.querySelector('.studio-editor-root');
-  if (disposition.status === 'mismatch') {
-    editorRoot?.insertAdjacentHTML('beforebegin', '<div class="identity-warning" role="alert"><div><span>RETAINED OVERLAY NOT APPLIED</span><strong>The reauthenticated predecessor does not exactly match the retained draft binding.</strong><p>The retained draft remains recoverable. Reopen its exact identity, version, revision hash, and content hash before applying it.</p></div></div>');
-    return;
+}
+
+function openReauthenticatedStudioDraft(kind, seed, allocation) {
+  const requestId = studioVersionProofRequestId;
+  try {
+    const disposition = workingStudioOverlayDisposition(kind, allocation);
+    const restored = disposition.status === 'matched';
+    studioWorkingSourceBinding = {
+      source_scope: allocation.source_scope,
+      identity: allocation.identity,
+      source_version: allocation.source_version,
+      source_revision_sha256: allocation.source_revision_sha256,
+      source_content_sha256: allocation.source_content_sha256
+    };
+    closeModal(true);
+    studioEditorPresentation = Object.freeze({
+      token: ++studioEditorPresentationSequence,
+      kind,
+      identity: allocation.identity,
+      candidate_version: allocation.candidate_version
+    });
+    openStudioDraftModal(kind, restored ? structuredClone(disposition.envelope.draft) : seed);
+    recordStudioEditorTransition('presentation-opened', {
+      request_id: requestId, kind, identity: allocation.identity,
+      candidate_version: allocation.candidate_version,
+      editor_present: Boolean(document.querySelector('#studio-identity') && document.querySelector('#studio-version')),
+      identity_readonly: Boolean(document.querySelector('#studio-identity')?.readOnly),
+      version_readonly: Boolean(document.querySelector('#studio-version')?.readOnly),
+      baseline_present: Boolean(document.querySelector('.studio-revision-baseline')),
+      fork_present: Boolean(document.querySelector('[data-action="forkStudioCandidate"]')),
+      save_present: Boolean(document.querySelector('[data-action="submitStudioDraft"]'))
+    });
+    scheduleStudioEditorPresentationCheck(studioEditorPresentation);
+    const editorRoot = document.querySelector('.studio-editor-root');
+    if (disposition.status === 'mismatch') {
+      editorRoot?.insertAdjacentHTML('beforebegin', '<div class="identity-warning" role="alert"><div><span>RETAINED OVERLAY NOT APPLIED</span><strong>The reauthenticated predecessor does not exactly match the retained draft binding.</strong><p>The retained draft remains recoverable. Reopen its exact identity, version, revision hash, and content hash before applying it.</p></div></div>');
+      return true;
+    }
+    if (!restored) return true;
+    studioDraftDirty = true;
+    editorRoot?.insertAdjacentHTML('beforebegin', '<div class="studio-revision-baseline" role="status"><b>RETAINED OVERLAY RESTORED</b><span>The host reauthenticated the exact immutable predecessor and Pacify-X reapplied only its matching local unsaved overlay. No save or execution occurred.</span></div>');
+    const buffer = disposition.envelope.editor_buffer;
+    if (buffer?.kind === 'canonical-json' && typeof buffer.value === 'string' && buffer.value.length <= 524288) {
+      document.querySelector('[data-action="studioEditorTab"][data-tab="json"]')?.click();
+      const input = document.getElementById('studio-draft-json');
+      if (input) input.value = buffer.value;
+    }
+    persistWorkingStudioDraft();
+    return true;
+  } catch (error) {
+    recordStudioEditorTransition('presentation-error', {
+      request_id: requestId, kind, identity: allocation?.identity || null,
+      candidate_version: allocation?.candidate_version || null,
+      error: String(error?.message || error).slice(0, 800),
+      stack: String(error?.stack || '').slice(0, 1600)
+    });
+    if (studioVersionAllocationProof && requestId) vscode.postMessage({ type: 'releaseStudioTrust', requestId, trustKind: 'version-allocation', proof: studioVersionAllocationProof });
+    studioEditorPresentation = null; studioEditorPresentationSequence += 1;
+    studioVersionAllocation = null; studioVersionAllocationProof = null; studioVersionProofRequestId = null;
+    studioWorkingSourceBinding = null;
+    try { showModal('Revision editor blocked', 'REQUEST-BOUND PRESENTATION FAILURE', `<p role="alert">The authenticated revision could not be presented safely: ${esc(String(error?.message || error).slice(0, 800))}</p>`); } catch { /* trace remains authoritative */ }
+    return false;
   }
-  if (!restored) return;
-  studioDraftDirty = true;
-  editorRoot?.insertAdjacentHTML('beforebegin', '<div class="studio-revision-baseline" role="status"><b>RETAINED OVERLAY RESTORED</b><span>The host reauthenticated the exact immutable predecessor and Pacify-X reapplied only its matching local unsaved overlay. No save or execution occurred.</span></div>');
-  const buffer = disposition.envelope.editor_buffer;
-  if (buffer?.kind === 'canonical-json' && typeof buffer.value === 'string' && buffer.value.length <= 524288) {
-    document.querySelector('[data-action="studioEditorTab"][data-tab="json"]')?.click();
-    const input = document.getElementById('studio-draft-json');
-    if (input) input.value = buffer.value;
-  }
-  persistWorkingStudioDraft();
+}
+
+function studioEditorPresentationMatches(presentation) {
+  if (!presentation || studioEditorPresentation?.token !== presentation.token || studioEditor?.kind !== presentation.kind) return false;
+  const identityKey = presentation.kind === 'agent' ? 'agent_id' : presentation.kind === 'workflow' ? 'workflow_id' : 'skill_id';
+  return studioVersionAllocation?.kind === presentation.kind
+    && studioVersionAllocation?.identity === presentation.identity
+    && studioVersionAllocation?.candidate_version === presentation.candidate_version
+    && studioEditor.draft?.[identityKey] === presentation.identity
+    && studioEditor.draft?.version === presentation.candidate_version;
+}
+
+function exactStudioEditorPresentationPresent(presentation) {
+  if (!studioEditorPresentationMatches(presentation)) return false;
+  const identity = document.querySelector('#studio-identity');
+  const version = document.querySelector('#studio-version');
+  return identity?.value === presentation.identity && identity.readOnly
+    && version?.value === presentation.candidate_version && version.readOnly
+    && Boolean(document.querySelector('.studio-revision-baseline'))
+    && Boolean(document.querySelector('[data-action="forkStudioCandidate"]'))
+    && Boolean(document.querySelector('[data-action="submitStudioDraft"]'));
+}
+
+function ensureStudioEditorPresentation(presentation) {
+  if (!studioEditorPresentationMatches(presentation) || exactStudioEditorPresentationPresent(presentation)) return;
+  const modal = document.querySelector('.control-modal');
+  if (modal && !modal.classList.contains('studio-modal')) return;
+  const dirty = studioDraftDirty;
+  openStudioDraftModal(presentation.kind, structuredClone(studioEditor.draft));
+  studioDraftDirty = dirty;
+  updateStudioSaveAvailability();
+}
+
+function scheduleStudioEditorPresentationCheck(presentation = studioEditorPresentation) {
+  if (!presentation) return;
+  queueMicrotask(() => ensureStudioEditorPresentation(presentation));
+  requestAnimationFrame(() => ensureStudioEditorPresentation(presentation));
+  setTimeout(() => ensureStudioEditorPresentation(presentation), 100);
+  setTimeout(() => ensureStudioEditorPresentation(presentation), 500);
 }
 
 const STUDIO_ALLOCATION_KEYS = Object.freeze([
@@ -272,6 +440,8 @@ function resetStudioDetachControls() {
   document.querySelector('[data-studio-detach-notice]')?.remove();
 }
 function clearConsumedStudioSaveTrust() {
+  studioEditorPresentation = null;
+  studioEditorPresentationSequence += 1;
   studioVersionAllocation = null;
   studioVersionAllocationProof = null;
   studioVersionProofRequestId = null;
@@ -316,6 +486,7 @@ function requestStudioVersionAllocation(kind, record, packageResult = null) {
     if (catalogKind !== `${kind}s` || !recordId || !identity || !studioEditors.validStudioVersion(sourceVersion) || !SHA256_PATTERN.test(sourceRevisionSha256) || !SHA256_PATTERN.test(sourceContentSha256)) { showModal('Cannot allocate revision', 'HOST CATALOG SELECTION REQUIRED', '<p>Refresh the catalog and select the exact authenticated Studio revision with its identity, version, revision hash, and content hash again.</p>'); return false; }
     const requestId = studioAllocationRequestId();
     studioAllocationRequest = { requestId, operation: 'loadStudioRevisionEditor', suboperation: null, kind, catalogKind, recordId, identity, source_version: sourceVersion, source_scope: 'studio-physical', source_revision_sha256: sourceRevisionSha256, source_content_sha256: sourceContentSha256 };
+    recordStudioEditorTransition('request-created', { request_id: requestId, kind, operation: 'loadStudioRevisionEditor', catalog_kind: catalogKind, record_id: recordId, identity, source_version: sourceVersion });
     showModal('Loading immutable predecessor', 'HOST-OWNED CATALOG SNAPSHOT · EXACT TREE BINDING', '<div class="cleanup-loading"><span class="empty-ring"></span><p>Re-reading and authenticating the complete physical revision before opening its editor.</p></div>');
     vscode.postMessage({ type: 'loadStudioRevisionEditor', requestId, kind, catalogKind, recordId });
     return true;
@@ -340,6 +511,7 @@ function requestStudioVersionAllocation(kind, record, packageResult = null) {
     source_selection_id: kind === 'skill' ? packageResult.sourceSelectionId : '',
     record: structuredClone(record)
   };
+  recordStudioEditorTransition('request-created', { request_id: requestId, kind, operation: 'studioOperation', suboperation: 'next-version', identity, source_version: sourceVersion });
   showModal('Allocating immutable revision', 'BACKEND VERSION CHECK · NO WRITE', '<div class="cleanup-loading"><span class="empty-ring"></span><p>Checking the exact physical revision set and authenticated predecessor before opening the editor.</p></div>');
   const payload = { identity, source_version: sourceVersion };
   if (kind === 'skill') payload.source_selection_id = packageResult.sourceSelectionId;
@@ -537,6 +709,9 @@ const graphInteraction = {
   x: 0, y: 0, scale: 1, minScale: 0.08, maxScale: 2.8, sceneKey: '', fitted: false,
   pointers: new Map(), dragOrigin: null, pinchOrigin: null, viewportFrame: 0, visibilityGeneration: 0
 };
+let graphRenderFallbackTimer = null;
+let lastGraphRenderAcknowledgedRequestId = '';
+let graphRenderRequestId = '';
 
 function icon(name) {
   const paths = {
@@ -558,6 +733,16 @@ function icon(name) {
 }
 
 function showModal(title, kicker, body, actions = '', modalClass = '') {
+  const requestedClasses = new Set(String(modalClass || '').split(/\s+/).filter(Boolean));
+  if (!requestedClasses.has('studio-modal') && studioEditorPresentationMatches(studioEditorPresentation)) {
+    recordStudioEditorTransition('modal-overwrite-blocked', {
+      request_id: studioVersionProofRequestId, kind: studioEditorPresentation.kind,
+      identity: studioEditorPresentation.identity, candidate_version: studioEditorPresentation.candidate_version,
+      attempted_title: String(title || '').slice(0, 200), attempted_kicker: String(kicker || '').slice(0, 300),
+      caller: String(new Error('studio-modal-overwrite-blocked').stack || '').slice(0, 1600)
+    });
+    return false;
+  }
   modalReturnFocus = document.activeElement;
   modalReturnSelector = modalReturnFocus?.dataset?.action ? `[data-action="${CSS.escape(modalReturnFocus.dataset.action)}"]`
     : modalReturnFocus?.dataset?.surface ? `[data-surface="${CSS.escape(modalReturnFocus.dataset.surface)}"]`
@@ -576,6 +761,7 @@ function showModal(title, kicker, body, actions = '', modalClass = '') {
     if (execute) execute.disabled = true;
   }
   root.querySelector('.control-modal')?.focus();
+  return true;
 }
 function readableValue(value) {
   if (value === null || value === undefined || value === '') return 'Not declared';
@@ -910,21 +1096,46 @@ function updateAgentValidationBox() {
   const graphValidation = studioEditors.validateAgentBuilderGraph(currentAgentGraph(studioEditor.draft).graph);
   const validation = { ...specValidation, valid: specValidation.valid && graphValidation.valid, issues: [...specValidation.issues, ...graphValidation.issues] }; const box = document.querySelector('[data-studio-validation]');
   if (box) { box.classList.toggle('passed', validation.valid); box.classList.toggle('failed', !validation.valid); box.innerHTML = agentValidationHtml(validation); }
-  const save = document.querySelector('[data-control-id="studio-save-candidate"]');
-  if (save) { save.disabled = !validation.valid; save.title = validation.valid ? 'Save immutable candidate' : 'Resolve every structural issue before saving'; }
+  updateStudioSaveAvailability(validation);
   const graphState = document.querySelector('.agent-graph-state');
   if (graphState) { graphState.classList.remove('persisted-verified'); graphState.classList.add('working-projection'); graphState.textContent = 'WORKING · PYTHON COMPILE REQUIRED'; }
 }
 
-function refreshStudioEditor(focusSelector = '') {
+function currentStudioValidation() {
+  if (!studioEditor) return { valid: false };
+  if (studioEditor.kind === 'agent') {
+    const spec = studioEditors.validateAgent(studioEditor.draft);
+    const graph = studioEditors.validateAgentBuilderGraph(currentAgentGraph(studioEditor.draft).graph);
+    return { valid: spec.valid && graph.valid };
+  }
+  if (studioEditor.kind === 'workflow') return studioEditors.validateWorkflow(studioEditor.draft);
+  return studioEditors.validateSkill(studioEditor.draft);
+}
+
+function updateStudioSaveAvailability(validation = currentStudioValidation()) {
+  const save = document.querySelector('[data-control-id="studio-save-candidate"]');
+  if (!save) return;
+  const unchangedPredecessor = Boolean(studioVersionAllocation) && !studioDraftDirty;
+  save.disabled = !validation.valid || unchangedPredecessor;
+  save.title = !validation.valid
+    ? 'Resolve every structural issue before saving'
+    : unchangedPredecessor
+      ? 'Change this predecessor-bound revision before saving a new immutable version'
+      : 'Save immutable candidate';
+}
+
+function refreshStudioEditor(focusSelector = '', markDirty = true) {
   const modal = document.querySelector('.studio-modal .modal-body'); if (!modal || !studioEditor) return;
   const editor = modal.querySelector('.studio-editor-root'); if (!editor) return;
-  studioDraftDirty = true;
-  persistWorkingStudioDraft();
+  if (markDirty) {
+    studioDraftDirty = true;
+    persistWorkingStudioDraft();
+  }
   editor.innerHTML = studioEditor.kind === 'agent' ? agentEditorHtml(studioEditor.draft) : studioEditor.kind === 'workflow' ? workflowEditorHtml(studioEditor.draft) : skillEditorHtml(studioEditor.draft);
   upgradeAgentTopology(editor);
   if (studioEditor.kind === 'agent') updateAgentValidationBox();
   if (studioEditor.kind === 'workflow') { upgradeWorkflowCanvas(editor); drawWorkflowCanvasEdges(editor, studioEditor.draft); }
+  updateStudioSaveAvailability();
   if (focusSelector) editor.querySelector(focusSelector)?.focus();
 }
 function forkStudioCandidate() {
@@ -932,6 +1143,8 @@ function forkStudioCandidate() {
   const kind = studioEditor.kind; const identityKey = kind === 'agent' ? 'agent_id' : kind === 'workflow' ? 'workflow_id' : 'skill_id';
   const source = structuredClone(studioVersionAllocation); const draft = structuredClone(studioEditor.draft);
   if (studioVersionAllocationProof && studioVersionProofRequestId) vscode.postMessage({ type: 'releaseStudioTrust', requestId: studioVersionProofRequestId, trustKind: 'version-allocation', proof: studioVersionAllocationProof });
+  studioEditorPresentation = null;
+  studioEditorPresentationSequence += 1;
   draft[identityKey] = `${String(source.identity || draft[identityKey] || '').replace(/-fork(?:-[0-9]+)?$/, '')}-fork`;
   draft.version = '1.0.0';
   if (Array.isArray(draft.grants)) draft.grants = draft.grants.map(item => ({ ...item, subject_id: draft[identityKey] }));
@@ -990,7 +1203,7 @@ function openStudioDraftModal(kind, seed = null) {
   let editor = kind === 'agent' ? agentEditorHtml(draft) : kind === 'workflow' ? workflowEditorHtml(draft) : skillEditorHtml(draft);
   if (kind === 'skill' && draft.package_missing_required_files?.length) editor = `<div class="identity-warning" role="alert"><div><span>ORIGINAL PACKAGE IS INCOMPLETE</span><strong>This source cannot become a PX candidate until its missing native files are explicitly authored.</strong><p>${esc(draft.package_missing_required_files.join(', '))}</p></div></div>${editor}`;
   const predecessorBound = Boolean(studioVersionAllocation);
-  showModal(`${kind[0].toUpperCase()}${kind.slice(1)} Studio`, 'GUIDED EDITOR · VERSIONED CANDIDATE · AUTHORITY SEPARATED', `<p>The guided fields and canonical definition describe one immutable revision. Saving never implies admission, activation, promotion, or execution.</p><div class="studio-guided-grid"><label><span>Identity</span><input id="studio-identity" value="${esc(draft[identityKey])}" autocomplete="off" ${predecessorBound ? 'readonly aria-readonly="true"' : ''}></label><label><span>Version</span><input id="studio-version" value="${esc(draft.version)}" autocomplete="off" ${predecessorBound ? 'readonly aria-readonly="true"' : ''}></label><label><span>Owner</span><input id="studio-owner" value="${esc(draft.owner)}" autocomplete="off"></label></div><div class="studio-editor-root">${editor}</div><p class="fine-print">${kind === 'skill' ? 'The host materializes these UTF-8 files only inside the selected project’s governed Studio staging root, then link-checks, attests, copies, and rehashes the package.' : 'Authority records are authenticated separately. Lifecycle controls appear after this revision is saved.'}</p>`, `<button data-action="closeModal">Cancel</button>${predecessorBound ? '<button data-action="forkStudioCandidate">Fork content as independent candidate</button>' : ''}<button class="primary" data-action="submitStudioDraft" data-control-id="studio-save-candidate" data-kind="${esc(kind)}" data-identity-key="${identityKey}">Save immutable candidate</button>`, 'wide-modal studio-modal');
+  showModal(`${kind[0].toUpperCase()}${kind.slice(1)} Studio`, 'GUIDED EDITOR · VERSIONED CANDIDATE · AUTHORITY SEPARATED', `<p>The guided fields and canonical definition describe one immutable revision. Saving never implies admission, activation, promotion, or execution.</p><div class="studio-guided-grid"><label><span>Identity</span><input id="studio-identity" value="${esc(draft[identityKey])}" autocomplete="off" ${predecessorBound ? 'readonly aria-readonly="true"' : ''}></label><label><span>Version</span><input id="studio-version" value="${esc(draft.version)}" autocomplete="off" ${predecessorBound ? 'readonly aria-readonly="true"' : ''}></label><label><span>Owner</span><input id="studio-owner" value="${esc(draft.owner)}" autocomplete="off"></label></div><div class="studio-editor-root">${editor}</div><p class="fine-print">${kind === 'skill' ? 'The host materializes these UTF-8 files only inside the selected project’s governed Studio staging root, then link-checks, attests, copies, and rehashes the package.' : 'Authority records are authenticated separately. Lifecycle controls appear after this revision is saved.'}</p>`, `<button data-action="closeModal">Cancel</button>${predecessorBound ? '<button data-action="forkStudioCandidate">Fork content as independent candidate</button>' : ''}<button class="primary" data-action="submitStudioDraft" data-control-id="studio-save-candidate" data-kind="${esc(kind)}" data-identity-key="${identityKey}" ${predecessorBound ? 'disabled title="Change this predecessor-bound revision before saving a new immutable version"' : ''}>Save immutable candidate</button>`, 'wide-modal studio-modal');
   if (seed && studioSourceRecord) {
     const imported = Boolean(studioSourceRecord.import_adapter);
     document.querySelector('.studio-editor-root')?.insertAdjacentHTML('beforebegin', `<div class="studio-revision-baseline" role="status"><b>${imported ? 'IMPORTED INTO AN INDEPENDENT STUDIO CANDIDATE' : 'EDITING AS A NEW IMMUTABLE REVISION'}</b><span>${esc(studioSourceRecord.label || studioSourceRecord.id || (imported ? 'source definition' : 'authenticated Studio revision'))} remains unchanged. Save will publish ${esc(draft[identityKey])} @ ${esc(draft.version)}${imported ? ' without claiming predecessor lineage or inherited authority.' : ' and preserve the prior revision.'}</span></div>`);
@@ -1196,6 +1409,12 @@ function switchInformationTab(tab) {
 }
 function cancelPendingStudioRequests() {
   const saveInFlight = Boolean(studioSaveRequest);
+  if (studioAllocationRequest?.requestId) recordStudioEditorTransition('request-cancelled', {
+    request_id: studioAllocationRequest.requestId,
+    kind: studioAllocationRequest.kind,
+    operation: studioAllocationRequest.operation,
+    caller: String(new Error('studio-request-cancelled').stack || '').slice(0, 1200)
+  });
   if (saveInFlight) {
     rememberDetachedStudioSave(studioSaveRequest);
     vscode.postMessage({ type: 'detachStudioDraft', requestId: studioSaveRequest.requestId, kind: studioSaveRequest.kind });
@@ -1213,6 +1432,8 @@ function cancelPendingStudioRequests() {
   studioVersionAllocationProof = null;
   studioVersionProofRequestId = null;
   studioSourceProofRequestId = null;
+  studioEditorPresentation = null;
+  studioEditorPresentationSequence += 1;
 }
 function closeModal(preserveStudioTrust = false) {
   if (!preserveStudioTrust) cancelPendingStudioRequests();
@@ -1348,6 +1569,15 @@ function render() {
     metrics.innerHTML = `${card('ENGINE CONNECTION', connected ? 'Connected' : 'Disconnected', s?.catalogSource || 'catalog source unavailable', connected ? 'green' : 'red')}${card('MCP RUNTIME', mcp.runtime_verified ? 'Runtime verified' : mcp.registered ? 'Registered, unverified' : String(mcp.status || 'Unavailable'), mcp.detail || 'current MCP observation', mcp.runtime_verified ? 'green' : 'blue')}${card('BILLABLE MASTER', policy.master_enabled === true ? 'Guarded opt-in' : 'Disabled', policy.master_enabled === true ? 'every execution gate still applies' : 'zero-cost default', policy.master_enabled === true ? 'red' : 'green')}${card('CONTEXT CAP', `${number(state.settings.contextInjectionCapTokens)} tokens`, 'effective extension setting')}`;
     settingsContent?.prepend(metrics);
   }
+  if (state.active === 'plugins') {
+    const addLocalVsixField = (versionId, fieldId) => {
+      const versionField = app.querySelector(`#${versionId}`);
+      if (!versionField || app.querySelector(`#${fieldId}`)) return;
+      versionField.closest('label')?.insertAdjacentHTML('afterend', `<label>Local VSIX path (optional, hash-bound)<input id="${fieldId}" placeholder="C:\\path\\extension.vsix" autocomplete="off"></label>`);
+    };
+    addLocalVsixField('extension-install-version', 'extension-install-vsix');
+    addLocalVsixField('extension-update-version', 'extension-update-vsix');
+  }
   for (const status of app.querySelectorAll('.catalog-controls > span:last-child, .memory-toolbar > span:last-child, .activity-toolbar > span:last-child')) {
     status.setAttribute('role', 'status');
     status.setAttribute('aria-live', 'polite');
@@ -1355,6 +1585,7 @@ function render() {
   boundedLayout.apply(document);
   persistDashboardState();
   ensureSurfaceData();
+  scheduleStudioEditorPresentationCheck();
   if (state.active === 'knowledgeGraph') requestAnimationFrame(prepareGraphInteraction);
 }
 
@@ -1605,7 +1836,22 @@ function reportGraphRender() {
     return [{ left, top, right: left + frameWidth * graphInteraction.scale, bottom: top + frameHeight * graphInteraction.scale, width: frameWidth * graphInteraction.scale, height: frameHeight * graphInteraction.scale }];
   });
   const visibleNodeCount = canvas.querySelectorAll('.graph-node-frame:not(.is-virtualized)').length || nodeRects.filter(rect => rect.width > 0 && rect.height > 0 && rect.right > canvasRect.left && rect.left < canvasRect.right && rect.bottom > canvasRect.top && rect.top < canvasRect.bottom).length;
-  vscode.postMessage({ type: 'graphRendered', requestId: state.graphRequestId || '', view: state.graphData.view || state.graphView, nodeCount: nodes.length, edgeCount: canvas.querySelectorAll('.graph-edge-group path').length, visibleNodeCount, canvasWidth: Math.round(canvasRect.width), canvasHeight: Math.round(canvasRect.height) });
+  const requestId = graphRenderRequestId;
+  vscode.postMessage({ type: 'graphRendered', requestId, view: state.graphData.view || state.graphView, nodeCount: nodes.length, edgeCount: canvas.querySelectorAll('.graph-edge-group path').length, visibleNodeCount, canvasWidth: Math.round(canvasRect.width), canvasHeight: Math.round(canvasRect.height) });
+  lastGraphRenderAcknowledgedRequestId = requestId;
+}
+function scheduleGraphRenderPreparation(requestId) {
+  clearTimeout(graphRenderFallbackTimer);
+  requestAnimationFrame(prepareGraphInteraction);
+  graphRenderFallbackTimer = setTimeout(() => {
+    graphRenderFallbackTimer = null;
+    if (requestId !== graphRenderRequestId || state.graphPending || !state.graphData || lastGraphRenderAcknowledgedRequestId === requestId) return;
+    // Installed or occluded Electron hosts may suspend animation frames. Keep
+    // frame-chunked rendering as the fast path, but retain a bounded liveness
+    // path that measures the actual rendered DOM and never invents geometry.
+    prepareGraphInteraction();
+    reportGraphRender();
+  }, 250);
 }
 function highlightGraphNode(key) {
   const canvas = graphCanvas(); if (!canvas) return; const scene = canvas.querySelector('[data-graph-scene]'); if (!scene) return;
@@ -1623,7 +1869,7 @@ function requestGraph(updates = {}) {
     maxNodes: fullMode ? 180 : Math.min(96, 24 * state.graphDepth), maxEdges: fullMode ? 500 : Math.min(192, 48 * state.graphDepth), append: false,
     ...updates
   };
-  const requestId = `graph-${Date.now()}-${Math.random()}`; state.graphRequestId = requestId; state.graphRequest = current; state.graphPending = true; state.graphError = null;
+  const requestId = `graph-${Date.now()}-${Math.random()}`; clearTimeout(graphRenderFallbackTimer); graphRenderRequestId = ''; state.graphRequestId = requestId; state.graphRequest = current; state.graphRelation = String(current.relation || ''); state.graphPending = true; state.graphError = null;
   if (updates.append !== true) state.graphLoadAll = false;
   clearTimeout(graphRequestTimer); graphRequestTimer = setTimeout(() => { if (state.graphPending && state.graphRequestId === requestId) { state.graphPending = false; state.graphError = 'The live graph query exceeded its 12-second bound. Retry or open Diagnostics for the retained host error.'; render(); } }, 12000);
   const modes = new Set(['full', 'overview', 'neighborhood', 'path', 'impact', 'dependencies', 'dependents', 'hubs', 'orphans', 'provenance']);
@@ -2131,7 +2377,7 @@ app.addEventListener('click', event => {
     const direction = control.dataset.direction;
     if (direction === 'output') {
       agentConnectionStart = { node: control.dataset.nodeId || '', port: control.dataset.port || '' };
-      refreshStudioEditor(`[data-action="agentPortConnect"][data-direction="output"][data-node-id="${CSS.escape(agentConnectionStart.node)}"][data-port="${CSS.escape(agentConnectionStart.port)}"]`);
+      refreshStudioEditor(`[data-action="agentPortConnect"][data-direction="output"][data-node-id="${CSS.escape(agentConnectionStart.node)}"][data-port="${CSS.escape(agentConnectionStart.port)}"]`, false);
       return;
     }
     if (direction !== 'input') return;
@@ -2159,7 +2405,7 @@ app.addEventListener('click', event => {
     }
     return;
   }
-  if (action === 'agentCancelConnection') { agentConnectionStart = null; refreshStudioEditor('[data-agent-editor-canvas]'); return; }
+  if (action === 'agentCancelConnection') { agentConnectionStart = null; refreshStudioEditor('[data-agent-editor-canvas]', false); return; }
   if (action === 'agentRemoveEdge') {
     if (studioEditor?.kind !== 'agent') return;
     try {
@@ -2173,9 +2419,9 @@ app.addEventListener('click', event => {
     return;
   }
   if (action === 'agentAddTopologyNode' || action === 'agentRemoveTopologyNode') { try { const edited = studioEditors.editAgentBuilderNode(studioEditor?.draft, currentAgentGraph(studioEditor?.draft).graph, { type: action === 'agentAddTopologyNode' ? 'add' : 'remove', kind: control.dataset.agentKind, node_id: control.dataset.agentNodeId }); studioEditor.draft = edited.draft; agentWorkingGraph = edited.graph; agentSelectedSection = edited.selected_node_id.replace(/^agent-node:/, ''); agentConnectionStart = null; agentGraphDirty = true; refreshStudioEditor(`[data-agent-node-id="${CSS.escape(edited.selected_node_id)}"]`); } catch (error) { showModal('Agent topology edit blocked', 'CLOSED AGENTSPEC NODE CONTRACT', `<p>${esc(error.message)}</p>`); } return; }
-  if (action === 'agentSelectNode') { agentSelectedSection = control.dataset.agentKind || 'identity'; refreshStudioEditor(`[data-agent-node-id="${CSS.escape(control.dataset.agentNodeId || '')}"]`); return; }
-  if (action === 'agentZoom') { agentScale = Math.max(.45, Math.min(1.75, agentScale + Number(control.dataset.delta || 0))); refreshStudioEditor('[data-agent-editor-canvas]'); return; }
-  if (action === 'agentFit') { const canvas = document.querySelector('[data-agent-editor-canvas]'); const scene = canvas?.querySelector('.agent-graph-scene'); const width = Number(scene?.dataset.agentSceneWidth || 920); agentScale = Math.max(.45, Math.min(1, ((canvas?.clientWidth || 920) - 18) / width)); refreshStudioEditor('[data-agent-editor-canvas]'); return; }
+  if (action === 'agentSelectNode') { agentSelectedSection = control.dataset.agentKind || 'identity'; refreshStudioEditor(`[data-agent-node-id="${CSS.escape(control.dataset.agentNodeId || '')}"]`, false); return; }
+  if (action === 'agentZoom') { agentScale = Math.max(.45, Math.min(1.75, agentScale + Number(control.dataset.delta || 0))); refreshStudioEditor('[data-agent-editor-canvas]', false); return; }
+  if (action === 'agentFit') { const canvas = document.querySelector('[data-agent-editor-canvas]'); const scene = canvas?.querySelector('.agent-graph-scene'); const width = Number(scene?.dataset.agentSceneWidth || 920); agentScale = Math.max(.45, Math.min(1, ((canvas?.clientWidth || 920) - 18) / width)); refreshStudioEditor('[data-agent-editor-canvas]', false); return; }
   if (action === 'agentAutoLayout') { const graph = currentAgentGraph(studioEditor.draft).graph; studioEditor.draft.editor_layout = Object.fromEntries(graph.nodes.map((node, index) => [node.node_id, { x: 36 + (index % 4) * 224, y: 42 + Math.floor(index / 4) * 142 }])); refreshStudioEditor('[data-agent-editor-canvas]'); return; }
   if (action === 'studioEditorTab') { const tab = control.dataset.tab; document.querySelectorAll('[data-action="studioEditorTab"]').forEach(button => button.setAttribute('aria-selected', String(button === control))); document.querySelectorAll('[data-studio-panel]').forEach(panel => panel.toggleAttribute('hidden', panel.dataset.studioPanel !== tab)); if (tab === 'json' && studioEditor) { if (studioEditor.kind === 'workflow') studioEditor.draft = studioEditors.normalizeWorkflow(studioEditor.draft); const input = document.getElementById('studio-draft-json'); if (input) input.value = JSON.stringify(studioEditor.draft, null, 2); persistWorkingStudioDraft(); } return; }
   if (action === 'forkStudioCandidate') { forkStudioCandidate(); return; }
@@ -2191,18 +2437,18 @@ app.addEventListener('click', event => {
   if (action === 'workflowPortConnect') {
     if (control.dataset.direction === 'output') {
       workflowConnectionStart = { node: control.dataset.nodeId, port: control.dataset.port };
-      refreshStudioEditor(`[data-action="workflowPortConnect"][data-direction="output"][data-node-id="${CSS.escape(control.dataset.nodeId)}"][data-port="${CSS.escape(control.dataset.port)}"]`);
+      refreshStudioEditor(`[data-action="workflowPortConnect"][data-direction="output"][data-node-id="${CSS.escape(control.dataset.nodeId)}"][data-port="${CSS.escape(control.dataset.port)}"]`, false);
     } else if (workflowConnectionStart) connectWorkflowEdge(workflowConnectionStart.node, workflowConnectionStart.port, control.dataset.nodeId, control.dataset.port, 'always');
     else document.querySelector('[data-studio-validation]')?.insertAdjacentHTML('beforeend', '<span class="studio-warning">Select an output handle first, then the target input handle.</span>');
     return;
   }
-  if (action === 'workflowCancelConnection') { workflowConnectionStart = null; refreshStudioEditor('[data-workflow-editor-canvas]'); return; }
-  if (action === 'workflowZoom') { workflowScale = Math.max(.45, Math.min(1.75, workflowScale + Number(control.dataset.delta || 0))); refreshStudioEditor('[data-workflow-editor-canvas]'); return; }
+  if (action === 'workflowCancelConnection') { workflowConnectionStart = null; refreshStudioEditor('[data-workflow-editor-canvas]', false); return; }
+  if (action === 'workflowZoom') { workflowScale = Math.max(.45, Math.min(1.75, workflowScale + Number(control.dataset.delta || 0))); refreshStudioEditor('[data-workflow-editor-canvas]', false); return; }
   if (action === 'workflowFit') {
     const canvas = document.querySelector('[data-workflow-editor-canvas]'); const nodes = studioEditor?.draft?.nodes || [];
     const maxX = Math.max(240, ...nodes.map(node => Number(node.position?.x || 0) + 220)); const maxY = Math.max(160, ...nodes.map(node => Number(node.position?.y || 0) + 120));
     workflowScale = Math.max(.45, Math.min(1.25, Math.min((canvas?.clientWidth || 720) / maxX, (canvas?.clientHeight || 430) / maxY) * .94));
-    refreshStudioEditor('[data-workflow-editor-canvas]'); return;
+    refreshStudioEditor('[data-workflow-editor-canvas]', false); return;
   }
   if (action === 'workflowAutoLayout') {
     const draft = studioEditor?.draft; if (!draft) return;
@@ -2215,14 +2461,14 @@ app.addEventListener('click', event => {
     workflowScale = 1; refreshStudioEditor('[data-workflow-editor-canvas]'); return;
   }
   if (action === 'workflowAddNode') { addWorkflowNode(control.dataset.nodeTemplate); return; }
-  if (action === 'workflowSelectNode') { studioSelectedNode = control.dataset.nodeId; refreshStudioEditor('[data-workflow-field="node_id"]'); return; }
+  if (action === 'workflowSelectNode') { studioSelectedNode = control.dataset.nodeId; refreshStudioEditor('[data-workflow-field="node_id"]', false); return; }
   if (action === 'workflowAddPort') { const node = studioEditor?.draft.nodes.find(item => item.node_id === studioSelectedNode); const direction = control.dataset.direction; if (node && ['inputs', 'outputs'].includes(direction)) { node[direction].push({ name: `${direction === 'inputs' ? 'input' : 'output'}-${node[direction].length + 1}`, data_type: 'string', required: true }); refreshStudioEditor(`[data-action="workflowAddPort"][data-direction="${direction}"]`); } return; }
   if (action === 'workflowRemovePort') { const draft = studioEditor?.draft; const node = draft?.nodes.find(item => item.node_id === studioSelectedNode); const direction = control.dataset.direction; const index = Number(control.dataset.index); if (!node || !['inputs', 'outputs'].includes(direction) || node[direction].length <= 1 || !node[direction][index]) return; const [removed] = node[direction].splice(index, 1); draft.edges = draft.edges.filter(edge => direction === 'inputs' ? !(edge.target_node === node.node_id && edge.target_port === removed.name) : !(edge.source_node === node.node_id && edge.source_port === removed.name)); refreshStudioEditor(`[data-action="workflowAddPort"][data-direction="${direction}"]`); return; }
   if (action === 'workflowMoveNode') { const nodes = studioEditor?.draft.nodes || []; const index = nodes.findIndex(item => item.node_id === studioSelectedNode); const target = index + Number(control.dataset.delta); if (index >= 0 && target >= 0 && target < nodes.length) { [nodes[index], nodes[target]] = [nodes[target], nodes[index]]; refreshStudioEditor(`[data-action="workflowMoveNode"][data-delta="${control.dataset.delta}"]`); } return; }
   if (action === 'workflowRemoveNode') { const draft = studioEditor?.draft; if (draft && draft.nodes.length > 1) { draft.nodes = draft.nodes.filter(item => item.node_id !== studioSelectedNode); draft.edges = draft.edges.filter(edge => edge.source_node !== studioSelectedNode && edge.target_node !== studioSelectedNode); studioSelectedNode = draft.nodes[0].node_id; refreshStudioEditor('[data-workflow-editor-canvas]'); } return; }
   if (action === 'workflowRemoveEdge') { const draft = studioEditor?.draft; const index = Number(control.dataset.index); if (draft?.edges?.[index]) { draft.edges.splice(index, 1); refreshStudioEditor('[data-edge-source-endpoint]'); } return; }
   if (action === 'workflowConnectNodes') { connectWorkflowEdgeFromControls(); return; }
-  if (action === 'skillSelectFile') { syncSkillEditorFile(); studioActiveFile = control.dataset.filePath; refreshStudioEditor('#studio-skill-file'); return; }
+  if (action === 'skillSelectFile') { syncSkillEditorFile(); studioActiveFile = control.dataset.filePath; refreshStudioEditor('#studio-skill-file', false); return; }
   if (action === 'skillAddFile') { syncSkillEditorFile(); const prefix = control.dataset.fileKind === 'contract' ? 'contracts/schema' : control.dataset.fileKind === 'test' ? 'tests/case' : 'resources/note'; const extension = control.dataset.fileKind === 'resource' ? '.md' : '.json'; let index = 1; while (Object.hasOwn(studioEditor.draft.editor_files, `${prefix}-${index}${extension}`)) index += 1; studioActiveFile = `${prefix}-${index}${extension}`; studioEditor.draft.editor_files[studioActiveFile] = extension === '.json' ? '{}\n' : '# Resource\n'; refreshStudioEditor('#studio-skill-file'); return; }
   if (action === 'skillRemoveFile') { syncSkillEditorFile(); if (studioEditor?.kind === 'skill' && !['SKILL.md', 'capability.json', 'skill.yaml'].includes(studioActiveFile)) { delete studioEditor.draft.editor_files[studioActiveFile]; studioActiveFile = 'SKILL.md'; refreshStudioEditor('#studio-skill-file'); } return; }
   if (action === 'studioLifecycle') {
@@ -2232,7 +2478,10 @@ app.addEventListener('click', event => {
       studioSession = { kind: 'skill', payload: { ...studioEditors.normalizeSkill(details), promotion_receipt: lifecycle.promotion_receipt_relative } };
     }
     if (!studioSession || studioSession.kind !== control.dataset.kind) { showModal('Studio context unavailable', 'FAIL CLOSED', '<p>Reopen the candidate from its exact revision before continuing.</p>'); return; }
-    const payload = structuredClone(studioSession.payload); const operation = control.dataset.operation; const requestId = studioAllocationRequestId();
+    const operation = control.dataset.operation;
+    let payload = structuredClone(studioSession.payload);
+    if (control.dataset.kind === 'skill' && operation === 'rollback') payload = studioSkillRollbackPayload(payload);
+    const requestId = studioAllocationRequestId();
     if (['preview', 'dry-run'].includes(operation)) { const identityKey = control.dataset.kind === 'agent' ? 'agent_id' : 'workflow_id'; pendingStudioPreview = { requestId, kind: control.dataset.kind, operation, subject: String(payload[identityKey] || ''), version: String(payload.version || '') }; showModal('Resolving exact execution contract', 'AUTHENTICATED ADMISSION · NO EFFECTS', '<div class="cleanup-loading"><span class="empty-ring"></span><p>Re-reading the admitted revision, live authority hashes, routes, blockers, schemas, and execution topology.</p></div>'); vscode.postMessage({ type: 'studioOperation', requestId, kind: control.dataset.kind, operation, payload }); return; }
     if (operation === 'start' && control.dataset.kind === 'agent') { studioPendingRun = { requestId, payload }; showModal('Start admitted agent revision', 'EXPLICIT OBJECTIVE · DURABLE RUN', '<label class="modal-field"><span>Objective</span><textarea id="studio-agent-objective" rows="6" maxlength="4000" placeholder="Describe the exact bounded task this admitted revision should perform."></textarea></label><label class="modal-field"><span>Bounded local tool calls (canonical JSON array, optional)</span><textarea id="studio-agent-tool-calls" rows="5" spellcheck="false">[]</textarea></label><p class="modal-note">At most eight admitted local-worker calls are accepted. The host validates the closed tool registry, inputs, grants, and process bounds before execution. PX returns a durable run ID before execution completes so status, pause, and cancel remain usable.</p>', '<button data-action="closeModal">Cancel</button><button class="primary" data-action="submitStudioAgentRun">Start with this objective</button>'); return; }
     if (operation === 'start' && control.dataset.kind === 'workflow') { studioPendingWorkflowRun = { requestId, payload }; const contract = (payload.run_input_contract || []).map(item => item.key).filter(Boolean); showModal('Start admitted workflow revision', 'EPHEMERAL INPUTS · DURABLE RUN', `<label class="modal-field"><span>Run inputs (canonical JSON object)</span><textarea id="studio-workflow-inputs" rows="9" spellcheck="false">${esc(JSON.stringify(payload.run_inputs || {}, null, 2))}</textarea></label><p class="modal-note">Expected keys: ${esc(contract.join(', ') || 'defined by root node input ports')}. PX returns a durable run ID before background execution begins.</p>`, '<button data-action="closeModal">Cancel</button><button class="primary" data-action="submitStudioWorkflowRun">Start with these inputs</button>'); return; }
@@ -2240,6 +2489,7 @@ app.addEventListener('click', event => {
       const node = payload.nodes?.find(item => item.node_id === studioSelectedNode && item.approval_required && !payload.approvals?.[item.node_id]) || payload.nodes?.find(item => item.approval_required && !payload.approvals?.[item.node_id]);
       if (!node) { showModal('Approval not required', 'NO GOVERNED NODE SELECTED', '<p>Mark a workflow node as requiring governed human approval before issuing a node approval capability.</p>', '<button class="primary" data-action="closeModal">Close</button>'); return; }
       payload.node_id = node.node_id;
+      pendingWorkflowApproval = Object.freeze({ requestId, nodeId: node.node_id, workflowId: String(payload.workflow_id || ''), version: String(payload.version || '') });
     }
     if (control.dataset.kind === 'skill') {
       pendingSkillLifecycle = Object.freeze({ requestId, kind: 'skill', operation, skill: String(payload.skill_id || ''), version: String(payload.version || '') });
@@ -2338,9 +2588,11 @@ app.addEventListener('click', event => {
   if (action === 'graphFit') { fitGraphViewport(); return; }
   if (action === 'graphReset') { resetGraphViewport(); return; }
   if (action === 'graphLoadMore') { state.graphLoadAll = false; const next = nextGraphPageRequest(); if (!next) return; requestGraph(next); render(); return; }
-  if (action === 'graphLoadAll') { state.graphLoadAll = true; const next = nextGraphPageRequest(); if (!next) { state.graphLoadAll = false; return; } requestGraph(next); render(); return; }
+  if (action === 'graphLoadAll') { if (state.graphLoadAll && state.graphPending) { state.graphLoadAll = false; renderPreservingControl('[data-action="graphLoadAll"]'); return; } state.graphLoadAll = true; const next = nextGraphPageRequest(); if (!next) { state.graphLoadAll = false; return; } requestGraph(next); render(); return; }
   if (action === 'graphCommunity') { state.graphMode = 'full'; state.graphLayout = 'community'; state.graphCommunity = control.dataset.communityId || ''; state.graphBackStack = []; state.graphData = null; requestGraph({ mode: 'full', cluster: state.graphCommunity, kind: state.graphKind, status: state.graphStatus, offset: 0, edgeOffset: 0, query: '' }); render(); return; }
   if (action === 'graphClearCommunity') { state.graphMode = 'full'; state.graphLayout = 'community'; state.graphCommunity = ''; state.graphData = null; requestGraph({ mode: 'full', cluster: '', offset: 0, edgeOffset: 0 }); render(); return; }
+  if (action === 'graphFilterEdgeBundle') { const relation = control.dataset.relation || ''; if (!relation) return; const selected = state.graphData?.selected || ''; state.graphBackStack = []; requestGraph({ node: selected, query: '', relation, direction: 'both', offset: 0, edgeOffset: 0 }); render(); return; }
+  if (action === 'graphClearEdgeBundle') { const selected = state.graphData?.selected || ''; state.graphBackStack = []; requestGraph({ node: selected, query: '', relation: '', direction: 'both', offset: 0, edgeOffset: 0 }); render(); return; }
   if (action === 'graphOpenNeighborhood') { const key = control.dataset.nodeKey || state.graphData?.selected; if (!key) return; state.graphMode = 'neighborhood'; state.graphLayout = 'flow'; state.graphBackStack = []; requestGraph({ mode: 'neighborhood', cluster: '', node: key, query: '', offset: 0, edgeOffset: 0 }); render(); return; }
   if (action === 'inspectGraphRecord') { const key = control.dataset.nodeKey || state.graphData?.selected; const record = state.graphData?.nodes?.find(item => item.key === key); if (record) showInformationModal(record.title || key, `${String(record.kind || 'NODE').toUpperCase()} · GRAPH SOURCE RECORD`, record, `<p>${esc(record.summary || 'No source summary is available.')}</p><dl class="modal-detail"><div><dt>Canonical key</dt><dd class="mono">${esc(record.key)}</dd></div><div><dt>Community</dt><dd>${esc(record.community_id || 'not classified')}</dd></div><div><dt>Owner</dt><dd>${esc(record.owner || 'not declared')}</dd></div><div><dt>Source path</dt><dd class="mono">${esc(record.path || record.source?.path || 'not declared')}</dd></div><div><dt>Source hash</dt><dd class="mono">${esc(record.source_sha256 || 'not declared')}</dd></div><div><dt>Provenance</dt><dd class="mono">${esc(readableValue(record.provenance || record.source || {}))}</dd></div></dl>`); return; }
   if (action === 'graphSaveView') { const query = app.querySelector('[data-graph-search]')?.value.trim() || ''; showModal('Save graph view', 'LOCAL VIEW PRESET · NO AUTHORITY CHANGE', `<label class="modal-field"><span>View name</span><input id="graph-view-name" maxlength="80" value="${esc(query || `${state.graphView} ${state.graphKind || 'all'} view`)}"></label><p class="modal-note">Stores only query, filters, layout, and depth in VS Code webview state. It does not copy graph records.</p>`, '<button data-action="closeModal">Cancel</button><button class="primary" data-action="submitGraphSavedView">Save view</button>'); return; }
@@ -2356,9 +2608,10 @@ app.addEventListener('click', event => {
   if (action === 'previewExtensionInstall') {
     const extensionId = document.getElementById('extension-install-id')?.value.trim().toLowerCase() || '';
     const version = document.getElementById('extension-install-version')?.value.trim().toLowerCase() || '';
+    const localVsixPath = document.getElementById('extension-install-vsix')?.value.trim() || '';
     if (!/^[a-z0-9][a-z0-9-]{0,63}\.[a-z0-9][a-z0-9-]{0,127}$/.test(extensionId)) { showModal('Install blocked', 'EXACT PUBLISHER.EXTENSION ID REQUIRED', '<p>Enter the complete Marketplace identity, for example <code>publisher.extension</code>.</p>'); return; }
     const requestId = studioAllocationRequestId(); pendingExtensionLifecycle = { requestId, action: 'install', extensionId };
-    vscode.postMessage({ type: 'extensionLifecyclePreview', requestId, extensionId, version }); return;
+    vscode.postMessage({ type: 'extensionLifecyclePreview', requestId, extensionId, version, localVsixPath }); return;
   }
   if (action === 'executeExtensionInstall') {
     const request = pendingExtensionLifecycle;
@@ -2368,9 +2621,10 @@ app.addEventListener('click', event => {
   if (action === 'previewExtensionUpdate') {
     const extensionId = document.getElementById('extension-update-id')?.value.trim().toLowerCase() || '';
     const version = document.getElementById('extension-update-version')?.value.trim().toLowerCase() || '';
+    const localVsixPath = document.getElementById('extension-update-vsix')?.value.trim() || '';
     if (!/^[a-z0-9][a-z0-9-]{0,63}\.[a-z0-9][a-z0-9-]{0,127}$/.test(extensionId)) { showModal('Update blocked', 'EXACT INSTALLED PUBLISHER.EXTENSION ID REQUIRED', '<p>Enter the complete installed extension identity.</p>'); return; }
     const requestId = studioAllocationRequestId(); pendingExtensionLifecycle = { requestId, action: 'update', extensionId };
-    vscode.postMessage({ type: 'extensionUpdatePreview', requestId, extensionId, version }); return;
+    vscode.postMessage({ type: 'extensionUpdatePreview', requestId, extensionId, version, localVsixPath }); return;
   }
   if (action === 'executeExtensionUpdate') {
     const request = pendingExtensionLifecycle;
@@ -2493,7 +2747,13 @@ app.addEventListener('click', event => {
     const eventRecord = state.activityData?.events?.find(item => item.event_id === control.dataset.eventId); if (!eventRecord) return;
     showInformationModal(eventRecord.operation, `${String(eventRecord.category).toUpperCase()} · ${String(eventRecord.status).toUpperCase()} · METADATA ONLY`, eventRecord, `<p>This record describes an observed action without storing prompts, file contents, terminal output, secrets, or private reasoning.</p><dl class="modal-detail"><div><dt>Actor</dt><dd>${esc(eventRecord.actor?.actor_id)} · ${esc(eventRecord.actor?.harness)}</dd></div><div><dt>Correlation</dt><dd class="mono">${esc(eventRecord.correlation_id)}</dd></div><div><dt>Effect</dt><dd>${esc(eventRecord.effect)}</dd></div><div><dt>Scope references</dt><dd>${esc((eventRecord.scope_refs || []).join(', ') || 'none')}</dd></div><div><dt>Integrity seal</dt><dd class="mono">${esc(eventRecord.event_sha256)}</dd></div></dl>`); return;
   }
-  if (action === 'inspectMemoryRecord') { const record = state.memoryData?.records?.find(item => item.memory_id === control.dataset.memoryId); if (record) { const sourcePath = record.source?.path || record.source_artifact || ''; showInformationModal(record.title || record.memory_type || record.memory_id, `${String(record.layer || 'canonical').toUpperCase()} · ${String(record.lifecycle_state || record.status || 'UNKNOWN').toUpperCase()} · CANONICAL`, record, `<p>${esc(record.summary || 'No canonical summary was stored.')}</p><dl class="modal-detail"><div><dt>Authority</dt><dd>${esc(record.authority || 'Lease-bound canonical workspace memory vault')}</dd></div><div><dt>Source</dt><dd class="mono">${esc(sourcePath || 'Not declared')} · ${esc(record.source?.sha256 || 'hash unavailable')}</dd></div><div><dt>Evidence</dt><dd class="mono">${esc(readableValue(record.evidence || record.evidence_locators || []))}</dd></div><div><dt>Record seal</dt><dd class="mono">${esc(record.record_sha256 || 'Seal unavailable')}</dd></div><div><dt>Lifecycle head</dt><dd class="mono">${esc(record.lifecycle_head_sha256 || 'Lifecycle seal unavailable')}</dd></div><div><dt>Confidence</dt><dd>${esc(readableValue(record.confidence))} · ${esc(record.confidence_method || 'not declared')}</dd></div></dl>${sourcePath ? `<button data-action="openMemorySource" data-path="${esc(sourcePath)}">Open governed source</button>` : ''}`); } return; }
+  if (action === 'inspectMemoryRecord') {
+    const record = state.memoryData?.records?.find(item => item.memory_id === control.dataset.memoryId);
+    if (record) { const sourcePath = record.source?.path || record.source_artifact || ''; showInformationModal(record.title || record.memory_type || record.memory_id, `${String(record.layer || 'canonical').toUpperCase()} · ${String(record.lifecycle_state || record.status || 'UNKNOWN').toUpperCase()} · CANONICAL`, record, `<p>${esc(record.summary || 'No canonical summary was stored.')}</p><dl class="modal-detail"><div><dt>Authority</dt><dd>${esc(record.authority || 'Lease-bound canonical workspace memory vault')}</dd></div><div><dt>Source</dt><dd class="mono">${esc(sourcePath || 'Not declared')} · ${esc(record.source?.sha256 || 'hash unavailable')}</dd></div><div><dt>Evidence</dt><dd class="mono">${esc(readableValue(record.evidence || record.evidence_locators || []))}</dd></div><div><dt>Record seal</dt><dd class="mono">${esc(record.record_sha256 || 'Seal unavailable')}</dd></div><div><dt>Lifecycle head</dt><dd class="mono">${esc(record.lifecycle_head_sha256 || 'Lifecycle seal unavailable')}</dd></div><div><dt>Confidence</dt><dd>${esc(readableValue(record.confidence))} · ${esc(record.confidence_method || 'not declared')}</dd></div></dl>${sourcePath ? `<button data-action="openMemorySource" data-path="${esc(sourcePath)}">Open governed source</button>` : ''}`); return; }
+    const portableRecord = state.coordination?.memory?.records?.find(item => item.memory_id === control.dataset.portableMemoryId);
+    if (portableRecord) showInformationModal(portableRecord.kind || portableRecord.memory_id, `${String(portableRecord.layer || 'portable').toUpperCase()} · ${String(portableRecord.lifecycle || 'PROPOSED').toUpperCase()} · PORTABLE · NON-CANONICAL`, portableRecord, `<p>Metadata-only coordination memory. Portable records never substitute for lease-bound canonical memory, and content is not projected into this snapshot.</p><dl class="modal-detail"><div><dt>Memory ID</dt><dd class="mono">${esc(portableRecord.memory_id)}</dd></div><div><dt>Project</dt><dd class="mono">${esc(portableRecord.project_id || 'not declared')}</dd></div><div><dt>Source</dt><dd class="mono">${esc(portableRecord.source_artifact || 'not declared')}</dd></div><div><dt>Record seal</dt><dd class="mono">${esc(portableRecord.record_sha256 || 'seal unavailable')}</dd></div><div><dt>Confidence</dt><dd>${esc(readableValue(portableRecord.confidence))} · ${esc(portableRecord.confidence_method || 'not declared')}</dd></div></dl>`);
+    return;
+  }
   if (action === 'cleanupManager' || action === 'refreshCleanup') { showModal('Storage & cleanup', 'CLASSIFYING CANDIDATES', '<div class="cleanup-loading"><span class="empty-ring"></span><p>Scanning the admitted engine root. No files are changed.</p></div>'); vscode.postMessage({ type: 'scanCleanup' }); return; }
   if (action === 'teamPackPreview') { vscode.postMessage({ type: 'teamPackPreview' }); return; }
   if (action === 'enterprisePackToggle') { vscode.postMessage({ type: 'enterprisePackToggle', packId: control.dataset.packId, enabled: control.dataset.enabled === 'true' }); return; }
@@ -2514,6 +2774,8 @@ app.addEventListener('click', event => {
   }
   if (action === 'previewEnvironmentLifecycle') { vscode.postMessage({ type: 'environmentLifecyclePreview', subject: state.environmentScope, recordId: control.dataset.environmentId, action: control.dataset.lifecycleAction }); return; }
   if (action === 'executeEnvironmentLifecycle') { const target = document.getElementById('environment-lifecycle-target'); const acknowledgement = document.getElementById('environment-lifecycle-consumers'); if (!target || target.value !== target.dataset.exactTarget || (acknowledgement && !acknowledgement.checked)) return; vscode.postMessage({ type: 'environmentLifecycleExecute', token: control.dataset.token, exactTarget: target.value, consumerImpactAcknowledged: Boolean(acknowledgement?.checked) }); closeModal(); return; }
+  if (action === 'previewEnvironmentLifecycleRestore') { vscode.postMessage({ type: 'environmentLifecycleRestorePreview', receiptId: control.dataset.receiptId }); return; }
+  if (action === 'executeEnvironmentLifecycleRestore') { const target = document.getElementById('environment-restore-target'); if (!target || target.value !== target.dataset.exactTarget) return; vscode.postMessage({ type: 'environmentLifecycleRestoreExecute', token: control.dataset.token, exactTarget: target.value }); closeModal(); return; }
   if (action === 'cleanupSelectAll') { const candidates = cleanupState.inventory?.candidates || []; cleanupState.selected = cleanupState.selected.size === candidates.length ? new Set() : new Set(candidates.map(item => item.id)); renderCleanupManager(); return; }
   if (action === 'cleanupRecycle' || action === 'cleanupPermanent') { vscode.postMessage({ type: 'executeCleanup', ids: [...cleanupState.selected], disposition: action === 'cleanupPermanent' ? 'permanent' : 'recycle' }); return; }
   if (action === 'copyModal') { postHostAction(action, 'copyText', { text: modalCopyText }); return; }
@@ -2576,7 +2838,7 @@ app.addEventListener('focusin', event => { const node = event.target.closest('.g
 app.addEventListener('focusout', event => { const node = event.target.closest('.graph-node.actual'); if (node && !node.contains(event.relatedTarget)) highlightGraphNode(''); });
 app.addEventListener('focusout', event => {
   if (studioEditor?.kind !== 'agent' || !['tool_binding_ids', 'memory_binding_ids', 'handoff_agent_ids'].includes(event.target.dataset?.agentListField)) return;
-  requestAnimationFrame(() => { const visual = document.querySelector('[data-studio-panel="visual"]'); if (studioEditor?.kind === 'agent' && visual && !visual.hidden) refreshStudioEditor('[data-agent-editor-canvas]'); });
+  requestAnimationFrame(() => { const visual = document.querySelector('[data-studio-panel="visual"]'); if (studioEditor?.kind === 'agent' && visual && !visual.hidden) refreshStudioEditor('[data-agent-editor-canvas]', false); });
 });
 
 app.addEventListener('input', event => {
@@ -2586,13 +2848,19 @@ app.addEventListener('input', event => {
     const identityField = studioEditor.kind === 'agent' ? 'agent_id' : studioEditor.kind === 'workflow' ? 'workflow_id' : 'skill_id';
     const field = event.target.id === 'studio-identity' ? identityField : event.target.id === 'studio-version' ? 'version' : 'owner'; studioEditor.draft[field] = event.target.value.trim();
     if (field === identityField) { for (const grant of studioEditor.draft.grants || []) grant.subject_id = studioEditor.draft[identityField]; for (const binding of studioEditor.draft.bindings || []) binding.subject_id = studioEditor.draft[identityField]; }
+    if (studioEditor.kind === 'skill' && [identityField, 'version'].includes(field)) {
+      studioEditor.draft = studioEditors.synchronizeSkillIdentityFiles(studioEditor.draft);
+      const file = document.getElementById('studio-skill-file');
+      if (file?.dataset.filePath) file.value = studioEditor.draft.editor_files?.[file.dataset.filePath] || '';
+    }
     if (studioEditor.kind === 'agent') { agentGraphDirty = true; updateAgentValidationBox(); }
+    else updateStudioSaveAvailability();
     persistWorkingStudioDraft(); return;
   }
   if (updateAgentDraftFromControl(event.target)) { studioDraftDirty = true; persistWorkingStudioDraft(); return; }
   if (updateWorkflowAuthorityFromControl(event.target)) { studioDraftDirty = true; persistWorkingStudioDraft(); return; }
-  if (event.target.matches('#studio-skill-file')) { studioDraftDirty = true; syncSkillEditorFile(); const validation = studioEditors.validateSkill(studioEditor.draft); const box = document.querySelector('[data-studio-validation]'); if (box) { box.classList.toggle('passed', validation.valid); box.classList.toggle('failed', !validation.valid); box.querySelector('b').textContent = validation.valid ? `${validation.file_count} files pass browser preflight` : `${validation.issues.length} package issue(s)`; } persistWorkingStudioDraft(); return; }
-  if (event.target.matches('#studio-draft-json') && studioEditor) { studioDraftDirty = true; persistWorkingStudioDraft(); return; }
+  if (event.target.matches('#studio-skill-file')) { studioDraftDirty = true; syncSkillEditorFile(); const validation = studioEditors.validateSkill(studioEditor.draft); const box = document.querySelector('[data-studio-validation]'); if (box) { box.classList.toggle('passed', validation.valid); box.classList.toggle('failed', !validation.valid); box.querySelector('b').textContent = validation.valid ? `${validation.file_count} files pass browser preflight` : `${validation.issues.length} package issue(s)`; } updateStudioSaveAvailability(validation); persistWorkingStudioDraft(); return; }
+  if (event.target.matches('#studio-draft-json') && studioEditor) { studioDraftDirty = true; updateStudioSaveAvailability(); persistWorkingStudioDraft(); return; }
   const activityInput = event.target.closest('[data-activity-search]');
   if (activityInput) { clearTimeout(searchTimer); state.activityQuery = activityInput.value; searchTimer = setTimeout(() => requestActivity({ query: activityInput.value }), 250); return; }
   const memoryInput = event.target.closest('[data-memory-search]');
@@ -2773,13 +3041,13 @@ window.addEventListener('message', event => {
     if (record) showInformationModal(record.title || record.objective || record.name || record.actor_id || id, `SIDEBAR DEEP LINK · ${String(kind).toUpperCase()} OBJECT`, record, humanRecord(record));
     else if (id && kind !== 'knowledge-graph') showInformationModal(id, `SIDEBAR DEEP LINK · ${String(kind || 'UNKNOWN').toUpperCase()}`, { type: kind, id, status: 'not present in the current snapshot' }, '<p>The route opened its owning surface, but this entity is no longer present in the current bounded snapshot. Refresh the source view to reconcile it.</p>');
   }
-  if (message.type === 'snapshot') { state.snapshot = message.snapshot; if (!canonicalMemoryReady()) { state.memoryData = null; state.memoryPending = false; state.memoryRequestId = null; } state.settings = message.settings || state.settings; state.coordination = message.coordination || state.coordination; state.activityData = message.coordination?.activity || state.activityData; state.clientActor = message.clientActor || state.clientActor; render(); }
+  if (message.type === 'snapshot') { state.snapshot = message.snapshot; const durableHostRequest = message.snapshot?.lastHostActionRequest || null; if (durableHostRequest) globalThis.__PX_DURABLE_HOST_ACTION_REQUEST__ = durableHostRequest; const durableHostAction = message.snapshot?.lastHostActionResult || null; if (durableHostAction) { globalThis.__PX_DURABLE_HOST_ACTION_RESULT__ = durableHostAction; const pending = pendingHostActions.get(durableHostAction.requestId); if (pending?.type === durableHostAction.operation) { pendingHostActions.delete(durableHostAction.requestId); state.operation = { status: durableHostAction.disposition, action: pending.action, requestId: durableHostAction.requestId, detail: durableHostAction.detail || {}, observedAt: durableHostAction.observedAt }; } } if (!canonicalMemoryReady()) { state.memoryData = null; state.memoryPending = false; state.memoryRequestId = null; } state.settings = message.settings || state.settings; state.coordination = message.coordination || state.coordination; state.activityData = message.coordination?.activity || state.activityData; state.clientActor = message.clientActor || state.clientActor; render(); }
   if (message.type === 'settings') { state.settings = message.settings || state.settings; render(); }
-  if (message.type === 'hostModelCatalog') { studioModelCatalog = Array.isArray(message.models) ? message.models : []; if (studioEditor?.kind === 'agent') refreshStudioEditor('[data-agent-host-model]'); }
+  if (message.type === 'hostModelCatalog') { studioModelCatalog = Array.isArray(message.models) ? message.models : []; if (studioEditor?.kind === 'agent') refreshStudioEditor('[data-agent-host-model]', false); }
   if (message.type === 'validation' && state.snapshot) { state.snapshot.validation = message.result; render(); }
   if (message.type === 'catalogResult') {
     const kind = message.result.kind; const activeRequest = state.catalogRequests[kind];
-    if (!activeRequest || activeRequest.requestId === message.requestId) { if (activeRequest) delete activeRequest.requestId; state.catalogs[kind] = message.result; renderPreservingControl(`[data-catalog-search="${CSS.escape(kind)}"]`); }
+    if (activeRequest?.requestId === message.requestId) { delete activeRequest.requestId; state.catalogs[kind] = message.result; renderPreservingControl(`[data-catalog-search="${CSS.escape(kind)}"]`); }
   }
   if (message.type === 'operationalCardsResult' && message.requestId === state.operationalCardsRequestId) { state.operationalCardsData = message.result; renderPreservingControl('[data-operational-card-search]'); return; }
   if (message.type === 'operationalCardResult') {
@@ -2812,7 +3080,7 @@ window.addEventListener('message', event => {
     const fileRows = changes.map(item => `<button class="project-map-row"><span><strong>${esc(item.path)}</strong><small class="mono">PX ${esc(item.px_sha256 || 'absent')} · original ${esc(item.preserved_sha256 || 'absent')}</small></span><b>${esc(String(item.state || 'changed').replaceAll('_', ' ').toUpperCase())}</b></button>`).join('');
     showInformationModal(`${result.skill_id} comparison`, `${result.identical ? 'IDENTICAL' : 'DIFFERENT'} · VERIFIED PACKAGE TREES · READ ONLY`, result, `<p>${esc(result.authority || 'Read-only skill custody comparison.')}</p><dl class="detail-list"><div><dt>PX package tree</dt><dd class="mono">${esc(result.px?.package_tree_sha256 || 'unavailable')}</dd></div><div><dt>Preserved tree</dt><dd class="mono">${esc(result.preserved?.package_tree_sha256 || 'unavailable')}</dd></div><div><dt>Files</dt><dd>${number(files.px_file_count)} PX / ${number(files.preserved_file_count)} preserved / ${number(files.changed_file_count)} changed</dd></div><div><dt>Comparison coverage</dt><dd>${number(files.returned_change_count)} / ${number(files.changed_file_count)} changes shown${files.changes_truncated ? ' · truncated' : ''}</dd></div></dl><h4>Metadata differences</h4><div class="comparison-table-wrap"><table class="comparison-table"><thead><tr><th>Field</th><th>PX</th><th>Preserved original</th></tr></thead><tbody>${metadataRows || '<tr><td colspan="3">No compared metadata differs.</td></tr>'}</tbody></table></div><h4>Package file differences</h4><div class="project-map-list">${fileRows || '<p class="compact-empty">No package file differs.</p>'}</div>`); return;
   }
-  if (message.type === 'graphResult' && message.requestId === state.graphRequestId) { const request = state.graphRequest || {}; const requestedNode = request.node; clearTimeout(graphRequestTimer); state.graphPending = false; state.graphError = null; state.graphData = request.append ? mergeGraphPage(state.graphData, message.result) : message.result; const next = state.graphLoadAll ? nextGraphPageRequest() : null; if (next) { requestGraph(next); render(); } else { state.graphLoadAll = false; renderPreservingControl('[data-graph-search]'); requestAnimationFrame(prepareGraphInteraction); if (requestedNode) [...app.querySelectorAll('[data-node-key]')].find(item => item.dataset.nodeKey === state.graphData.selected)?.focus(); } }
+  if (message.type === 'graphResult' && message.requestId === state.graphRequestId) { const request = state.graphRequest || {}; const requestedNode = request.node; clearTimeout(graphRequestTimer); state.graphRequestId = null; state.graphPending = false; state.graphError = null; state.graphData = request.append ? mergeGraphPage(state.graphData, message.result) : message.result; const next = state.graphLoadAll ? nextGraphPageRequest() : null; if (next) { requestGraph(next); render(); } else { graphRenderRequestId = message.requestId; state.graphLoadAll = false; renderPreservingControl('[data-graph-search]'); scheduleGraphRenderPreparation(message.requestId); if (requestedNode) [...app.querySelectorAll('[data-node-key]')].find(item => item.dataset.nodeKey === state.graphData.selected)?.focus(); } }
   if (message.type === 'studioDraftCancelled') { const disposition = studioSaveResponseDisposition(message); if (disposition !== 'active') return; const save = document.querySelector('[data-action="submitStudioDraft"]'); if (save) { save.disabled = false; save.textContent = 'Save immutable candidate'; } resetStudioDetachControls(); const status = document.querySelector('[data-studio-validation]'); status?.insertAdjacentHTML('beforeend', '<span class="studio-warning">Host approval was canceled. The draft remains open and unchanged.</span>'); }
   if (message.type === 'studioDraftResult') {
     const disposition = studioSaveResponseDisposition(message);
@@ -2848,6 +3116,11 @@ window.addEventListener('message', event => {
     return;
   }
   if (message.type === 'studioOperationResult') {
+    if (message.kind === 'workflow' && message.operation === 'approve') {
+      const pending = pendingWorkflowApproval;
+      if (!pending || message.requestId !== pending.requestId || message.nodeId !== pending.nodeId || typeof message.result?.approval_id !== 'string' || !message.result.approval_id) return;
+      pendingWorkflowApproval = null;
+    }
     if (message.kind === 'skill' && ['validate', 'admit', 'promote', 'rollback'].includes(message.operation)) {
       const pending = pendingSkillLifecycle; const record = message.result?.record && typeof message.result.record === 'object' ? message.result.record : message.result;
       if (!pending || message.requestId !== pending.requestId || message.operation !== pending.operation || String(record?.skill_id || '') !== pending.skill || String(record?.version || '') !== pending.version) return;
@@ -2871,8 +3144,10 @@ window.addEventListener('message', event => {
     }
     if (message.operation === 'next-version') {
       const request = studioAllocationRequest;
+      recordStudioEditorTransition('response-received', { request_id: message.requestId, kind: message.kind, operation: 'next-version', active_request_id: request?.requestId || null, active_kind: request?.kind || null });
       const allocationProof = typeof message.allocationProof === 'string' && /^version-allocation:[a-zA-Z0-9-]{1,160}$/.test(message.allocationProof) ? message.allocationProof : null;
       if (!request || request.kind !== 'skill' || message.requestId !== request.requestId || message.kind !== request.kind) {
+        recordStudioEditorTransition('response-unmatched', { request_id: message.requestId, kind: message.kind, operation: 'next-version', active_request_id: request?.requestId || null, active_kind: request?.kind || null });
         if (allocationProof && typeof message.requestId === 'string') vscode.postMessage({ type: 'releaseStudioTrust', requestId: message.requestId, trustKind: 'version-allocation', proof: allocationProof });
         return;
       }
@@ -2890,11 +3165,12 @@ window.addEventListener('message', event => {
         && studioRecordRevisionSha(studioSourceRecord) === request.selected_revision_sha256
         && studioRecordContentSha(studioSourceRecord) === request.selected_content_sha256;
       const allocation = livePackageMatches ? validStudioAllocation(message.result, request) : null;
-      if (!allocation || !allocationProof) { if (allocationProof) vscode.postMessage({ type: 'releaseStudioTrust', requestId: message.requestId, trustKind: 'version-allocation', proof: allocationProof }); if (packageResult?.sourceSelectionId && studioSourceProofRequestId) vscode.postMessage({ type: 'releaseStudioTrust', requestId: studioSourceProofRequestId, trustKind: 'source-selection', proof: packageResult.sourceSelectionId }); studioAllocationRequest = null; studioPendingSkillPackage = null; studioVersionAllocationProof = null; studioSourceProofRequestId = null; showModal('Version allocation rejected', 'STALE OR MALFORMED RESULT', '<p>The backend response did not match the exact request, predecessor, package selection, kind, allocation schema, hashes, or host proof. No editor was opened.</p>'); return; }
+      if (!allocation || !allocationProof) { recordStudioEditorTransition('response-rejected', { request_id: message.requestId, kind: message.kind, operation: 'next-version', live_package_matches: Boolean(livePackageMatches), allocation_valid: Boolean(allocation), proof_valid: Boolean(allocationProof) }); if (allocationProof) vscode.postMessage({ type: 'releaseStudioTrust', requestId: message.requestId, trustKind: 'version-allocation', proof: allocationProof }); if (packageResult?.sourceSelectionId && studioSourceProofRequestId) vscode.postMessage({ type: 'releaseStudioTrust', requestId: studioSourceProofRequestId, trustKind: 'source-selection', proof: packageResult.sourceSelectionId }); studioAllocationRequest = null; studioPendingSkillPackage = null; studioVersionAllocationProof = null; studioSourceProofRequestId = null; showModal('Version allocation rejected', 'STALE OR MALFORMED RESULT', '<p>The backend response did not match the exact request, predecessor, package selection, kind, allocation schema, hashes, or host proof. No editor was opened.</p>'); return; }
       const record = request.record; const details = record.details || record; const kind = request.kind; const identityKey = kind === 'agent' ? 'agent_id' : kind === 'workflow' ? 'workflow_id' : 'skill_id'; const identity = request.identity;
       studioSourceRecord = record; studioVersionAllocation = allocation; studioVersionAllocationProof = allocationProof; studioVersionProofRequestId = request.requestId; studioSourceProofRequestId = null; studioAllocationRequest = null;
       const seed = { ...details, [identityKey]: identity, version: allocation.candidate_version };
       if (packageResult) Object.assign(seed, { editor_files: packageResult.editor_files, package_missing_required_files: packageResult.missingRequiredFiles || [], provenance: { source: packageResult.packagePath, tree_sha256: packageResult.treeSha256 } });
+      recordStudioEditorTransition('response-accepted', { request_id: message.requestId, kind, operation: 'next-version', identity, candidate_version: allocation.candidate_version });
       studioPendingSkillPackage = null; openReauthenticatedStudioDraft(kind, seed, allocation); return;
     } else if (message.kind === 'knowledge') {
       state.knowledgePending = false;
@@ -2917,8 +3193,10 @@ window.addEventListener('message', event => {
   }
   if (message.type === 'studioRevisionEditorResult') {
     const request = studioAllocationRequest;
+    recordStudioEditorTransition('response-received', { request_id: message.requestId, kind: message.kind, operation: 'loadStudioRevisionEditor', active_request_id: request?.requestId || null, active_kind: request?.kind || null });
     const selection = message.selection;
     if (!request || !['agent', 'workflow'].includes(request.kind) || message.requestId !== request.requestId || message.kind !== request.kind || message.catalogKind !== request.catalogKind || message.recordId !== request.recordId) {
+      recordStudioEditorTransition('response-unmatched', { request_id: message.requestId, kind: message.kind, operation: 'loadStudioRevisionEditor', active_request_id: request?.requestId || null, active_kind: request?.kind || null });
       if (typeof message.requestId === 'string' && typeof message.allocationProof === 'string' && /^version-allocation:[a-zA-Z0-9-]{1,160}$/.test(message.allocationProof)) vscode.postMessage({ type: 'releaseStudioTrust', requestId: message.requestId, trustKind: 'version-allocation', proof: message.allocationProof });
       return;
     }
@@ -2937,12 +3215,14 @@ window.addEventListener('message', event => {
     const selectionMatches = selection?.kind === request.kind && selection?.catalog_kind === request.catalogKind && selection?.record_id === request.recordId && selection?.identity === request.identity && selection?.source_version === request.source_version && selection?.source_revision_sha256 === request.source_revision_sha256 && selection?.source_content_sha256 === request.source_content_sha256;
     const recordMatches = record && typeof record === 'object' && !Array.isArray(record) && record[identityKey] === request.identity && record.version === request.source_version && studioRecordRevisionSha(record) === request.source_revision_sha256 && studioRecordContentSha(record) === request.source_content_sha256;
     if (!allocation || !allocationProof || !selectionMatches || !recordMatches) {
+      recordStudioEditorTransition('response-rejected', { request_id: message.requestId, kind: message.kind, operation: 'loadStudioRevisionEditor', allocation_valid: Boolean(allocation), proof_valid: Boolean(allocationProof), selection_matches: Boolean(selectionMatches), record_matches: Boolean(recordMatches) });
       if (allocationProof) vscode.postMessage({ type: 'releaseStudioTrust', requestId: message.requestId, trustKind: 'version-allocation', proof: allocationProof });
       showModal('Revision response rejected', 'AWAITING EXACT HOST SNAPSHOT', '<p>The host response did not match the identity, version, revision hash, content hash, catalog record, or proof captured by the active request. The original request remains pending and no editor state was replaced.</p>'); return;
     }
     studioSourceRecord = { ...record, _catalogKind: request.catalogKind, _catalogRecordId: request.recordId };
     studioVersionAllocation = allocation; studioVersionAllocationProof = allocationProof; studioVersionProofRequestId = request.requestId; studioAllocationRequest = null;
     const seed = { ...record, [identityKey]: selection.identity, version: allocation.candidate_version };
+    recordStudioEditorTransition('response-accepted', { request_id: message.requestId, kind: request.kind, operation: 'loadStudioRevisionEditor', identity: selection.identity, candidate_version: allocation.candidate_version });
     openReauthenticatedStudioDraft(request.kind, seed, allocation); return;
   }
   if (message.type === 'skillPackageEditorResult') {
@@ -2963,9 +3243,9 @@ window.addEventListener('message', event => {
   }
   if (message.type === 'coordination') { state.coordination = message.coordination; state.activityData = message.coordination?.activity || state.activityData; render(); }
   if (message.type === 'coordinationResult') { if (message.operation === 'releaseCoordinationTask') { if (!pendingTaskRelease || message.requestId !== pendingTaskRelease.requestId || message.authorization?.taskId !== pendingTaskRelease.taskId) return; state.operation = { status: 'complete', action: 'releaseTask', requestId: message.requestId, authorization: message.authorization, result: message.result }; pendingTaskRelease = null; showInformationModal('Task claim released', 'REQUEST-BOUND RELEASE RECEIPT', { authorization: message.authorization, receipt: message.result }, '<p>The exact task claim was released after a reason and explicit confirmation were supplied. Existing coordination evidence was preserved.</p>'); } else state.operation = { status: 'complete', result: message.result }; state.memoryData = null; state.activityData = null; if (state.active === 'memory') requestMemory(); if (state.active === 'activity') requestActivity(); }
-  if (message.type === 'memoryResult' && message.requestId === state.memoryRequestId) { state.memoryPending = false; state.memoryData = message.result; renderPreservingControl('[data-memory-search]'); }
+  if (message.type === 'memoryResult' && message.requestId === state.memoryRequestId) { state.memoryRequestId = null; state.memoryPending = false; state.memoryData = message.result; renderPreservingControl('[data-memory-search]'); }
   if (message.type === 'graphBuildResult') { state.graphData = null; requestGraph({ view: 'repository', node: '', query: '' }); render(); }
-  if (message.type === 'activityResult' && (!message.requestId || message.requestId === state.activityRequestId)) { state.activityPending = false; state.activityData = message.result; renderPreservingControl('[data-activity-search]'); }
+  if (message.type === 'activityResult' && message.requestId === state.activityRequestId) { state.activityRequestId = null; state.activityPending = false; state.activityData = message.result; renderPreservingControl('[data-activity-search]'); }
   if (message.type === 'activityReconciliationResult') { const pending = pendingHostActions.get(message.requestId); if (!pending || pending.type !== 'reconcileStaleActivity') return; pendingHostActions.delete(message.requestId); state.operation = { status: 'completed', action: pending.action, requestId: message.requestId, detail: message.authorization || {} }; state.activityData = null; requestActivity(); showInformationModal('Stale activity reconciled', 'APPEND-ONLY TERMINAL EVIDENCE', { authorization: message.authorization, receipt: message.result }, `<p>${number(message.result.reconciled_count || 0)} stale operation${message.result.reconciled_count === 1 ? '' : 's'} received sealed terminal events. Prior activity evidence was preserved.</p><p>The write followed an explicit host-modal acknowledgement bound to this request. Cancellation would have left the ledger unchanged.</p>`); }
   if (message.type === 'cleanupCandidates') { cleanupState.inventory = message.inventory; cleanupState.selected = new Set([...cleanupState.selected].filter(id => message.inventory.candidates.some(item => item.id === id))); renderCleanupManager(); }
   if (message.type === 'cleanupResult') { cleanupState.lastResult = message.result; cleanupState.selected = new Set(); renderCleanupManager(); }
@@ -3090,7 +3370,9 @@ window.addEventListener('message', event => {
     const consumers = preview.consumers || [];
     showModal('Confirm reversible environment disposition', 'EXACT TARGET · TWO SNAPSHOTS · IMMEDIATE REVALIDATION', `<p>The resource will be moved into project-owned quarantine. Nothing is permanently deleted.</p><dl class="modal-detail"><div><dt>Target</dt><dd class="mono">${esc(preview.target)}</dd></div><div><dt>Entries</dt><dd>${number(preview.entry_count)}</dd></div><div><dt>Consumers</dt><dd>${esc(consumers.join(', ') || 'None detected')}</dd></div><div><dt>Snapshot</dt><dd class="mono">${esc(preview.snapshot_sha256)}</dd></div></dl><label>Type or preserve the exact target<input id="environment-lifecycle-target" value="${esc(preview.target)}" autocomplete="off"></label>${preview.consumer_ack_required ? '<label class="policy-switch"><input id="environment-lifecycle-consumers" type="checkbox"><span>I reviewed and accept the listed consumer impact</span></label>' : ''}`, `<button data-action="closeModal">Cancel</button><button class="danger" data-action="executeEnvironmentLifecycle" data-token="${esc(preview.token)}">Move to quarantine</button>`); return;
   }
-  if (message.type === 'environmentLifecycleResult') { showInformationModal('Environment resource quarantined', 'REVERSIBLE DISPOSITION RECEIPT', message.result, '<p>The exact target was moved into project-owned quarantine after immediate snapshot revalidation. The receipt contains no environment values.</p>'); return; }
+  if (message.type === 'environmentLifecycleResult') { showInformationModal('Environment resource quarantined', 'REVERSIBLE DISPOSITION RECEIPT', message.result, `<p>The exact target was moved into project-owned quarantine after immediate snapshot revalidation. The receipt contains no environment values.</p><button class="primary" data-action="previewEnvironmentLifecycleRestore" data-receipt-id="${esc(message.result?.receipt_id || '')}">Restore exact resource</button>`); return; }
+  if (message.type === 'environmentLifecycleRestorePreview') { const preview = message.result; showModal('Restore quarantined environment resource', 'DURABLE RECEIPT · FRESH SNAPSHOTS · EXACT TARGET', `<p>The quarantined resource will be moved back to its exact original path. Restoration is refused if either side changed or the original path is occupied.</p><label>Exact original target<input id="environment-restore-target" value="${esc(preview.source)}" data-exact-target="${esc(preview.exact_confirmation)}"></label>`, `<button data-action="closeModal">Cancel</button><button class="primary" data-action="executeEnvironmentLifecycleRestore" data-token="${esc(preview.token)}">Restore resource</button>`); return; }
+  if (message.type === 'environmentLifecycleRestoreResult') { showInformationModal('Environment resource restored', 'EXACT RESTORATION RECEIPT', message.result, '<p>The quarantined bytes were restored to their original path after immediate revalidation.</p>'); return; }
   if (message.type === 'hostActionResult') {
     const pending = pendingHostActions.get(message.requestId);
     if (!pending || pending.type !== message.operation) return;
@@ -3142,6 +3424,10 @@ window.addEventListener('message', event => {
       if (!pendingStudioPreview || requestId !== pendingStudioPreview.requestId) return;
       pendingStudioPreview = null;
     }
+    if (message.operation === 'studioOperation' && message.kind === 'workflow' && message.suboperation === 'approve') {
+      if (!pendingWorkflowApproval || requestId !== pendingWorkflowApproval.requestId) return;
+      pendingWorkflowApproval = null;
+    }
     if (message.operation === 'studioOperation' && ['runs', 'status', 'pause', 'cancel', 'stop', 'reconcile', 'resume'].includes(message.suboperation)) {
       if (!pendingStudioRunQuery || requestId !== pendingStudioRunQuery.requestId) return;
       pendingStudioRunQuery = null;
@@ -3152,23 +3438,24 @@ window.addEventListener('message', event => {
       studioAllocationRequest = null; studioPendingSkillPackage = null; studioSourceProofRequestId = null;
       showModal('Version allocation blocked', 'REQUEST-BOUND FAILURE', `<p role="alert">${esc(message.error || 'The immutable revision allocation failed.')}</p>`); return;
     }
-    const stale = Boolean(requestId && (
+    const stale = Boolean(
       (message.operation === 'graphQuery' && requestId !== state.graphRequestId) ||
       (message.operation === 'memoryQuery' && requestId !== state.memoryRequestId) ||
       (message.operation === 'activityQuery' && requestId !== state.activityRequestId) ||
-      (message.operation === 'catalogQuery' && requestId !== state.catalogRequests[message.kind]?.requestId)
-    ));
+      (message.operation === 'catalogQuery' && (!state.catalogRequests[message.kind]?.requestId || requestId !== state.catalogRequests[message.kind].requestId))
+    );
     if (stale) return;
     if (message.operation === 'createStudioDraft') { const disposition = studioSaveResponseDisposition(message); if (disposition !== 'active') return; const save = document.querySelector('[data-action="submitStudioDraft"]'); if (save) { save.disabled = false; save.textContent = 'Save immutable candidate'; } resetStudioDetachControls(); const status = document.querySelector('[data-studio-validation]'); status?.insertAdjacentHTML('beforeend', `<span class="studio-warning">Host operation failed closed: ${esc(message.error || 'Unknown error')}</span>`); return; }
-    if (message.operation === 'graphQuery') { clearTimeout(graphRequestTimer); state.graphPending = false; state.graphError = `Live graph query failed closed: ${message.error}`; }
-    if (message.operation === 'memoryQuery') { state.memoryPending = false; state.memoryData = { records: [], matched_count: 0, error: String(message.error || 'Canonical memory query failed.') }; }
-    if (message.operation === 'activityQuery') { state.activityPending = false; state.activityData = { events: [], active_operations: [], stale_operations: [], live_agents: [], error: String(message.error || 'Activity query failed.') }; }
+    if (message.operation === 'graphQuery') { clearTimeout(graphRequestTimer); state.graphRequestId = null; state.graphPending = false; state.graphError = `Live graph query failed closed: ${message.error}`; }
+    if (message.operation === 'memoryQuery') { state.memoryRequestId = null; state.memoryPending = false; state.memoryData = { records: [], matched_count: 0, error: String(message.error || 'Canonical memory query failed.') }; }
+    if (message.operation === 'activityQuery') { state.activityRequestId = null; state.activityPending = false; state.activityData = { events: [], active_operations: [], stale_operations: [], live_agents: [], error: String(message.error || 'Activity query failed.') }; }
     if (message.operation === 'studioOperation' && message.kind === 'knowledge') { state.knowledgePending = false; state.knowledgeData = { proposals: [], canonical: [], error: String(message.error || 'Knowledge controller query failed.') }; }
     if (message.operation === 'environmentQuery') {
       if (message.subject) { state.environmentPending[message.subject] = false; state.environmentData[message.subject] = { records: [], error: String(message.error || 'Environment query failed.') }; }
       else for (const subject of Object.keys(state.environmentPending)) state.environmentPending[subject] = false;
     }
     if (message.operation === 'catalogQuery' && message.kind) {
+      delete state.catalogRequests[message.kind].requestId;
       state.catalogs[message.kind] = { kind: message.kind, items: [], total: 0, filtered: 0, offset: 0, limit: 50, has_more: false, error: String(message.error || 'Catalog query failed.') };
     }
     render(); showModal('Operation blocked', 'FAIL-CLOSED RESULT', `<p role="alert">${esc(message.error)}</p>`, '<button class="primary" data-action="closeModal">Close</button>');

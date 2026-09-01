@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023049",
+  "learned": "The PX-AUD2-008 orchestration is structurally repaired, but post-repair review found PX-AUD2-009: the nested supervised group CLI received only PYTHONDONTWRITEBYTECODE instead of the host environment, risking missing PATH/tool discovery for Node and VS Code groups; it also used a shorter fixed timeout and retained unbounded child output in the profile result.",
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "unresolved_branch_gap_ids": ["PX-OS-1065"],
+  "newly_discovered_gap_ids": [],
+  "evidence": [
+    {
+      "reference": "evidence/release/full-profile-group-orchestration-causal-proof-20260826.json",
+      "artifact_sha256": "14824f6e1fbbd9d774223eac1b2a3c25a16e2ffead63f0bb948c7c983c96be35",
+      "artifact_size": 1085,
+      "claim": "PX-AUD2-008 predecessor requiring environment/budget hardening before refreeze."
+    }
+  ]
+}

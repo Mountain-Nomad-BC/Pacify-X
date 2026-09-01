@@ -5,7 +5,13 @@ import json
 from pathlib import Path
 import tempfile
 
-from runtime.commissioning import commission, project_check, scaffold_files
+import runtime.commissioning as commissioning
+from runtime.commissioning import (
+    commission,
+    project_check,
+    rebind_commissioning_framework,
+    scaffold_files,
+)
 from runtime.event_ledger import validate_event_ledger
 
 
@@ -122,3 +128,66 @@ def test_commissioning_manifest_covers_all_managed_files() -> None:
             )
         }
         assert set(receipt["managed_file_sha256"]) == managed_expected
+
+
+def test_framework_rebind_preserves_receipt_and_managed_files(monkeypatch) -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        project = Path(directory) / "project"
+        commission(project, "new", apply=True, source_root=ROOT)
+        receipt_path = project / ".engineering-bootstrap/commissioning-receipt.json"
+        prior = receipt_path.read_bytes()
+        prior_sha256 = hashlib.sha256(prior).hexdigest()
+        prior_receipt = json.loads(prior)
+        managed = {
+            relative: (project / relative).read_bytes()
+            for relative in prior_receipt["managed_file_sha256"]
+        }
+        current = commissioning._framework_binding(ROOT)
+        future = {**current, "version": "99.0.0-test"}
+        monkeypatch.setattr(commissioning, "_framework_binding", lambda source: future)
+
+        preview = rebind_commissioning_framework(project, source_root=ROOT)
+        assert preview["valid"] and preview["changed"]
+        assert preview["approval_required"] and not preview["applied"]
+        assert receipt_path.read_bytes() == prior
+
+        result = rebind_commissioning_framework(project, source_root=ROOT, apply=True)
+        assert result["valid"] and result["applied"] and result["changed"]
+        history = (
+            project
+            / ".engineering-bootstrap/commissioning-history"
+            / f"{prior_sha256}.json"
+        )
+        assert history.read_bytes() == prior
+        assert all(
+            (project / relative).read_bytes() == content
+            for relative, content in managed.items()
+        )
+        rebound = json.loads(receipt_path.read_text(encoding="utf-8"))
+        assert rebound["framework_release"] == future
+        assert rebound["commissioning_tool_version"] == future["version"]
+        assert project_check(project, source_root=ROOT)["valid"]
+
+
+def test_framework_rebind_refuses_a_damaged_receipt(monkeypatch) -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        project = Path(directory) / "project"
+        commission(project, "new", apply=True, source_root=ROOT)
+        receipt_path = project / ".engineering-bootstrap/commissioning-receipt.json"
+        receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+        receipt["receipt_sha256"] = "0" * 64
+        receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
+        current = commissioning._framework_binding(ROOT)
+        monkeypatch.setattr(
+            commissioning,
+            "_framework_binding",
+            lambda source: {**current, "version": "99.0.0-test"},
+        )
+
+        result = rebind_commissioning_framework(
+            project, source_root=ROOT, apply=True
+        )
+        assert not result["valid"]
+        assert not result["applied"]
+        assert result["errors"] == ["commissioning receipt digest mismatch"]
+        assert not (project / ".engineering-bootstrap/commissioning-history").exists()

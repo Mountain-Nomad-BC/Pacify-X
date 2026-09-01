@@ -1,0 +1,31 @@
+{
+  "session_id": "release-session:px-cache-repair-refreeze-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023036",
+  "gap_id": "PX-OS-1065",
+  "authority": "User authorized all reversible Pacify-X closure work and requires completed repair before release testing.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect only the zero-unresolved repair campaign and retained PX-AUD2-006/PX-AUD2-007 causal proofs for repair freeze."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Advance only the repair campaign phase from repair to repair_frozen after confirming intake closed and unresolved zero; retain freeze evidence and append ledger events. Do not refresh projections or section receipts."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["Run only processing-order status/check commands needed to prove repair_frozen and revision reconciliation eligibility. Do not reconcile projections, run sections, full profile, validate, package, install, publish, or certify."]
+    }
+  ],
+  "expected_effect": "Freeze the completed cache-boundary repair revision so its single generated-projection reconciliation is admissible.",
+  "rollback": "Restore only the campaign phase to repair if the freeze oracle fails; retain source and causal evidence.",
+  "expires_utc": "2026-08-26T20:00:00Z",
+  "evidence": [
+    {
+      "reference": "evidence/release/cache-hygiene-governance-causal-proof-20260826.json",
+      "artifact_sha256": "978f51fe20620606230c7eb6b840ff19735ca4060ff688f478546ce56195eb3f",
+      "artifact_size": 921,
+      "claim": "Final zero-unresolved cache repair and governance proof."
+    }
+  ]
+}

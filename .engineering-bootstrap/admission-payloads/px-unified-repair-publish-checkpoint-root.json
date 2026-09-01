@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023254",
+  "learned": "Additive commit fb93e5ddee5aa77fd6da93bd775eb81f5360fc9c contains exactly the unified Studio lifecycle, Workflow observer, live-host budget, governed timeout, source-archive budget, synchronized projection, focused test, and focused evidence changes. Local custody files and ledger/receipt churn were excluded. Fetch origin noninteractively, require fast-forward ancestry, push without force, then observe the fresh GitHub matrix.",
+  "unresolved_branch_gap_ids": [],
+  "newly_discovered_gap_ids": [],
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "evidence": [
+    {
+      "reference": "commit:fb93e5ddee5aa77fd6da93bd775eb81f5360fc9c",
+      "artifact_sha256": "a78c1e6df506b418cc4eda0cc9990c92aaf6b750f79ae88ae81fa25997d38ce5",
+      "artifact_size": 1262,
+      "claim": "The unified functional repair is committed locally and ready for non-force publication."
+    }
+  ]
+}

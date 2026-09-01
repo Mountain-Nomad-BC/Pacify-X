@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022990",
+  "learned": "The completed r3 audit classified 50 symlinks nested beneath the already excluded .engineering-bootstrap test-evidence boundary as fatal source-audit errors even though the boundary itself is a real directory and os.walk does not follow those links. Expected generated evidence entries must remain explicitly accounted without being confused with an unsafe symlink used as an exclusion boundary.",
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": ["PX-OS-1065"],
+  "evidence": [
+    {
+      "reference": "evidence/adversarial-audit/second-adversarial-source-scan-20260825-r3.json",
+      "artifact_sha256": "63f3ad517e5868e2b2cde541a00e2008c10d5494618845839ffade9caef64592",
+      "artifact_size": 2777007,
+      "claim": "The current r3 audit is incomplete solely because it reports 50 nested excluded-tree symlinks as errors."
+    }
+  ]
+}

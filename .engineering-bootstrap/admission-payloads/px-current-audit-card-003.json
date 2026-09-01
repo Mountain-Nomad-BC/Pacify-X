@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-003",
+  "note": "The corrected environment contains installed extension versions 0.6.49, 0.6.55, and 0.6.59, while doctor reports no current VS Code listener health claim. Source version presence is not proof of the active installed host.",
+  "evidence": [
+    {
+      "reference": "evidence/adversarial-audit/current-environment-operational-audit-20260826.json",
+      "claim": "Current installed-host identity and listener health are unresolved and remain in the repair denominator.",
+      "artifact_sha256": "f9d91114c2a2aa65ef43664061f5ec5fa6551ce874afac28039f11f3c38a2f81",
+      "artifact_size": 6332
+    }
+  ],
+  "patch": {
+    "next_action": "Repair current-host health publication and identity observation in source now; defer the one package/install/installed-host walk until the ordered closure phase."
+  }
+}

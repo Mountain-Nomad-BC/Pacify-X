@@ -1,0 +1,18 @@
+{
+  "session_id": "verification-session:px-exclusive-final-profile-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023087",
+  "gap_id": "PX-OS-1065",
+  "authority": "User authorized all remaining reversible Pacify-X work; the repaired ledger now guarantees this is the exclusive mutating owner.",
+  "effect_scopes": [
+    {"effect": "read", "scope": ["Inspect only repair_frozen processing state, exclusive admission ownership, projection integrity, testing-governance currentness, group/profile receipts, and registered resource cleanup evidence."]},
+    {"effect": "write", "scope": ["Rebuild generated projections exactly once under exclusive ownership; advance to revision_reconciled; refresh only testing-governance if stale; advance to sections_current only when all sections are current; run exactly one actual full profile with owned stale-group refresh; advance to full_profile_passed only on a passing reconciled result; retain evidence and ledger events. Do not change product source."]},
+    {"effect": "execute", "scope": ["Run one projection rebuild, managed focused generated/dependency/diff integrity, at most one testing-governance section, section status, and exactly one actual python -m runtime.cli test-profile run full. Do not run a second full profile, validate, package, install, publish, commit, push, merge, or certify."]}
+  ],
+  "expected_effect": "Produce the sole current-revision whole-profile result without any overlapping mutating session.",
+  "rollback": "Stop at the last passing phase and retain failures; do not rerun the actual full profile in this session.",
+  "expires_utc": "2026-08-27T03:00:00Z",
+  "evidence": [
+    {"reference": "evidence/adversarial-audit/px-aud2-011-mutating-admission-exclusivity-20260826.json", "claim": "Exclusive mutating ownership repair.", "artifact_sha256": "e36a49ce7150fe94bde48b5de5e08756af02a8808c7b8d40bf83100a9f6bd78b", "artifact_size": 1087},
+    {"reference": ".engineering-bootstrap/test-evidence/sections/testing-governance.json", "claim": "Current PX-AUD2-011 changed-section receipt.", "artifact_sha256": "f4570909143c247f0a33ba2d08c2681b0cdd4042c0b5d39728293097e43b0b6c", "artifact_size": 1265}
+  ]
+}

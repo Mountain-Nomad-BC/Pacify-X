@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-final-broad-current-source-20260825",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022970",
+  "outcome": "superseded",
+  "reason": "The earlier active admission 22969 owns the same broad campaign with the fuller installed/current-source/fault/assembly scope, so this duplicate must not execute.",
+  "evidence": [
+    {
+      "reference": "evidence/current-source-settings-inspect-metric-20260825.json",
+      "artifact_sha256": "18384ae8f5864807393ed3570ef53a452d623e8792006b339227de7c6c288a5f",
+      "artifact_size": 2701610,
+      "claim": "The shared predecessor evidence remains valid; no duplicate broad campaign was launched under this admission."
+    }
+  ]
+}

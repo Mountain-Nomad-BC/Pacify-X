@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023275",
+  "learned": "The broad current-environment adversarial audit is intentionally deferred until the proven CI fixture-race repair is committed, published, and settled remotely. The exact regression passes, the full 171-item platform command passes, Studio chunk 04 and the Studio section are green, projections are synchronized, and no diagnostic process remains. Commit and publish only this focused repair, then resume the full audit on stable canonical source.",
+  "unresolved_branch_gap_ids": [],
+  "newly_discovered_gap_ids": [],
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "evidence": [
+    {
+      "reference": "evidence/release/ci-1a530d99-platform-race-repair-20260826.json",
+      "artifact_sha256": "8b6ca2402d3cad8fad1932c711964c15f0b7777651f757d39e0eb2317ceb4c39",
+      "artifact_size": 3535,
+      "claim": "Focused repair chain is ready for additive commit before broad audit."
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "session_id": "repair-session:px-aud2-014-derived-state-closure-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023103",
+  "gap_id": "PX-OS-1065",
+  "authority": "Codex host authority completing the last focused PX-AUD2-014 node through its exact derived-state owners.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect only active Python cache hygiene, registry/provider_route_scan.json validity, registry/artifact_reachability.json equivalence, registry/python_surface_ownership.json equivalence, their direct builders, and the one remaining live composed-audit node."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Quarantine only PACIFY-X-owned active Python caches through the governed cleanup owner; rebuild only provider_route_scan.json, artifact_reachability.json, python_surface_ownership.json, and directly required envelope metadata; retain focused proof; clear PX-AUD2-014 only when the one remaining node passes. Do not run general projection reconciliation, sections/groups/profile/validate/package/install/publish/certify."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["Run only governed Python-cache cleanup, the three direct deterministic builders plus directly required envelope builder, their focused validity checks, and the one remaining live composed-audit node. Do not run sections, groups, full profile, validate, package, install, publish, or certify."]
+    }
+  ],
+  "expected_effect": "Make the fifteenth and final PX-AUD2-014 node pass without broad reconciliation or profile reruns.",
+  "rollback": "Retain quarantined caches and restore only the previous generated files if a direct builder or focused node fails.",
+  "expires_utc": "2026-08-27T07:00:00Z",
+  "evidence": [
+    {
+      "reference": "evidence/release/px-aud2-014-focused-repair-progress-20260826.json",
+      "artifact_sha256": "c6632dcc351751bd715cb1134d06297d94730798e1fc2ab188e4ba62cc06e175",
+      "artifact_size": 1582,
+      "claim": "Exact 14-of-15 predecessor and remaining derived-state causes."
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-current-environment-adversarial-audit-v2-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023284",
+  "outcome": "completed",
+  "evidence": [
+    {
+      "reference": "evidence/release/adversarial-operational-audit-20260826.json",
+      "artifact_sha256": "a1c85be36b7877dfde1d0f38c9b111b2c5924d841fb9019610ca5c009e2d85ed",
+      "artifact_size": 3469,
+      "claim": "Current-environment adversarial repair completed the causal Studio lifecycle, health truthfulness, provider acceptance, environment discovery, retained diagnostic custody, and structural integrity repairs; publication, fresh live health, release gates, and certification remain explicitly pending."
+    }
+  ]
+}

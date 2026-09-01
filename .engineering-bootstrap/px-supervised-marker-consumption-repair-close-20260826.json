@@ -1,0 +1,14 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-supervised-marker-consumption-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023162",
+  "outcome": "completed",
+  "evidence": [
+    {
+      "reference": "evidence/release/supervised-child-marker-consumption-focused-proof-20260826.json",
+      "claim": "The supervised inheritance capability is consumed by the immediate child and cannot leak into descendants.",
+      "artifact_sha256": "bc67f07e64b15371043984eb0a94b29d4af0702037d9742bc73d099fd5f547ab",
+      "artifact_size": 841
+    }
+  ]
+}

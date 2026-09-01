@@ -1,0 +1,18 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "learned": "The exact installed 0.6.56 walk captured successful Knowledge lifecycle and engine outage/recovery control probes, but build_installed_probe_control_evidence.py omits both profiles from its admitted profile list. This leaves directly proven controls absent from assembled evidence and inflates unresolved operational coverage.",
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000015128",
+  "unresolved_branch_gap_ids": [],
+  "newly_discovered_gap_ids": [],
+  "evidence": [
+    {
+      "reference": "evidence/operational-ui-walk-installed-vsix-0.6.56-postrepair-20260825T2300Z/receipt.json",
+      "claim": "Exact installed artifact receipt containing the omitted Knowledge lifecycle and engine outage/recovery profiles."
+    },
+    {
+      "reference": "scripts/build_installed_probe_control_evidence.py",
+      "claim": "Canonical adapter whose profile list omits both captured profiles."
+    }
+  ]
+}

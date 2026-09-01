@@ -1,0 +1,19 @@
+{
+  "gap_id": "PX-OS-1065",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023270",
+  "effect": "network",
+  "scope": [
+    "Query only public GitHub REST check-run output fields, annotations, and job step conclusions for the eight failed jobs in run 32970782138; retry no raw log endpoint already proven 403 and perform no other network action. Do not authenticate, open VS Code/account selection, modify GitHub state, fetch/push Git, rerun workflows, create issues/PRs, install, publish, validate, or certify."
+  ],
+  "authority": "User requested exact GitHub/Dependabot failure diagnosis before health claims; this is one bounded read-only metadata query.",
+  "expected_effect": "Narrow the exact failing test/step owner using public check-run summaries and avoid speculative source changes.",
+  "rollback": "Read-only public metadata inspection has no persistent external state.",
+  "evidence": [
+    {
+      "reference": "https://github.com/Mountain-Nomad-BC/Pacify-X/actions/runs/32970782138",
+      "artifact_sha256": "7f56cf7d41209e4b71d7fface2e867e0fb86323c21c33dbf8503116e39d60404",
+      "artifact_size": 1265,
+      "claim": "Eight completed failed jobs require exact public check output inspection."
+    }
+  ]
+}

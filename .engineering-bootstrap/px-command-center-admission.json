@@ -1,0 +1,29 @@
+{
+  "session_id": "repair-session:px-command-center-walker-isolation-20260825",
+  "gap_id": "PX-OS-1065",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022938",
+  "authority": "User explicitly authorized all remaining reversible Pacify-X repairs; only irreversible destructive effects require approval.",
+  "expected_effect": "Repair exact modal isolation for Command Center in the exhaustive operational walker, retain focused regression evidence, and resume the current installed lifecycle campaign.",
+  "rollback": "Revert only the narrow walker and focused-test changes while retaining append-only failed-attempt evidence.",
+  "expires_utc": "2026-08-26T08:00:00Z",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect the exact Command Center walker path, modal preparation helpers, focused walker tests, and current failed receipts only."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Modify only extension/scripts/run-exhaustive-operational-control-walk.js and extension/tests/exhaustive-operational-control-walk.test.js for exact modal isolation; write current focused evidence and append exact ledger events."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["Run focused walker tests, the exact Command Center resumed control walk, one regenerated current UI walk, current fault recovery, the governed dashboard-extension section gate, and the already-admitted isolated exact-VSIX operational lifecycle campaign. Do not run full profile, validate, deploy, publish, merge, or certify."]
+    }
+  ],
+  "evidence": [
+    {
+      "reference": "evidence/current-control-proof-installed-0657-20260825/exhaustive-ui-current-r2.json",
+      "claim": "Exact twice-reproduced modal interception failure defining this narrow repair."
+    }
+  ]
+}

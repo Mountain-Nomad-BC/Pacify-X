@@ -31,6 +31,15 @@ function loadStudioEditors() {
 
 const studioEditors = loadStudioEditors();
 
+test('render-only Studio refreshes do not dirty an immutable predecessor', () => {
+  const source = fs.readFileSync(path.join(__dirname, '..', 'media', 'dashboard', '90-controller.js'), 'utf8');
+  assert.match(source, /function refreshStudioEditor\(focusSelector = '', markDirty = true\)[\s\S]*if \(markDirty\) \{[\s\S]*studioDraftDirty = true;[\s\S]*persistWorkingStudioDraft\(\);[\s\S]*\}/);
+  assert.match(source, /message\.type === 'hostModelCatalog'[\s\S]*refreshStudioEditor\('\[data-agent-host-model\]', false\)/);
+  assert.match(source, /action === 'agentSelectNode'[\s\S]*refreshStudioEditor\([^\n]+, false\)/);
+  assert.match(source, /action === 'workflowSelectNode'[\s\S]*refreshStudioEditor\('\[data-workflow-field="node_id"\]', false\)/);
+  assert.match(source, /const unchangedPredecessor = Boolean\(studioVersionAllocation\) && !studioDraftDirty/);
+});
+
 test('Agent Studio exposes only runtime-owned structural checks and rejects unknown imported IDs', () => {
   assert.deepEqual(studioEditors.agentStructuralChecks.map(check => check.id), [
     'identity', 'sandbox', 'model-route', 'input-contract', 'output-contract',
@@ -267,6 +276,36 @@ test('typed AgentSpec connection edits preserve an incomplete draft and only adm
   });
   assert.deepEqual(restored, canonical);
   assert.equal(studioEditors.validateAgentBuilderGraph(restored).valid, true);
+});
+
+test('new unresolved Agent bindings remain structurally admissible and add only their canonical topology', () => {
+  const baseDraft = studioEditors.normalizeAgent({ agent_id: 'agent:runtime-blocked-memory' });
+  const baseGraph = studioEditors.projectAgentBuilderGraph(baseDraft);
+  assert.equal(baseGraph.nodes.some(node => node.kind === 'memory'), false);
+
+  const memoryDraft = studioEditors.normalizeAgent({
+    ...baseDraft,
+    memory_binding_ids: ['memory:runtime-unresolved']
+  });
+  const synchronized = studioEditors.synchronizeAgentBuilderGraph(memoryDraft, baseGraph);
+  const memoryNode = synchronized.nodes.find(node => node.kind === 'memory');
+  assert.ok(memoryNode, 'a newly declared memory binding must add the content-bound memory node');
+  assert.deepEqual(memoryNode.config.binding_ids, ['memory:runtime-unresolved']);
+  assert.deepEqual(
+    synchronized.edges.filter(edge => edge.source_node === memoryNode.node_id || edge.target_node === memoryNode.node_id),
+    studioEditors.projectAgentBuilderGraph(memoryDraft).edges.filter(edge => edge.source_node === memoryNode.node_id || edge.target_node === memoryNode.node_id)
+  );
+  assert.equal(studioEditors.validateAgentBuilderGraph(synchronized).valid, true);
+
+  const validation = studioEditors.validateAgent(memoryDraft);
+  assert.equal(validation.valid, true);
+  assert.match(validation.warnings.join('\n'), /preview and Start remain blocked until runtime retrieval is resolved/);
+
+  const removedEdge = baseGraph.edges.find(edge => edge.relation === 'owns');
+  const incompleteBase = { ...baseGraph, edges: baseGraph.edges.filter(edge => edge.edge_id !== removedEdge.edge_id) };
+  const synchronizedIncomplete = studioEditors.synchronizeAgentBuilderGraph(memoryDraft, incompleteBase);
+  assert.equal(synchronizedIncomplete.edges.some(edge => edge.edge_id === removedEdge.edge_id), false, 'new optional topology must not restore an unrelated manual omission');
+  assert.equal(studioEditors.validateAgentBuilderGraph(synchronizedIncomplete).valid, false);
 });
 
 test('catalog rejects a rehashed semantic graph substitution', t => {

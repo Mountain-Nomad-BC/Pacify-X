@@ -11,6 +11,8 @@ import struct
 import sys
 import pytest
 
+import runtime.studio_api as studio_api_module
+
 from runtime.studio_api import (
     _skill_promotion_receipt_path,
     admit_skill_source,
@@ -66,6 +68,51 @@ def test_skill_promotion_api_returns_the_physical_component_receipt_path(tmp_pat
         / "revisions/1.2.3/promotion-receipt.json"
     )
     assert _skill_promotion_receipt_path(tmp_path, skill_id, "1.2.3") == expected
+
+
+def test_skill_rollback_api_uses_authenticated_receipt_without_reconstructing_manifest(
+    tmp_path, monkeypatch
+) -> None:
+    receipt = (
+        tmp_path
+        / ".engineering-bootstrap/studios/skills/demo/revisions/1.1.0/promotion-receipt.json"
+    )
+    receipt.parent.mkdir(parents=True)
+    receipt.write_text("{}\n", encoding="utf-8")
+    observed = {}
+
+    class FakeSkillStudio:
+        def __init__(self, root):
+            observed["root"] = root
+
+        def rollback(self, supplied, **kwargs):
+            observed.update({"receipt": supplied, **kwargs})
+            return {
+                "schema_version": "px.skill-rollback-receipt/1.2",
+                "skill_id": "skill:demo",
+                "version": "1.1.0",
+            }
+
+    monkeypatch.setattr(studio_api_module, "SkillStudio", FakeSkillStudio)
+    payload = {
+        "skill_id": "skill:demo",
+        "version": "1.1.0",
+        "lifecycle": "promoted",
+        "promotion_receipt": receipt.relative_to(tmp_path).as_posix(),
+    }
+    result = studio_operation(
+        tmp_path, "skill", "rollback", _authorized(tmp_path, "skill", "rollback", payload)
+    )
+
+    assert result["state"] == "rolled-back"
+    assert observed == {
+        "root": tmp_path.resolve(),
+        "receipt": receipt.resolve(),
+        "approved": True,
+        "approver": "human:vscode-local-user",
+        "expected_skill_id": "skill:demo",
+        "expected_version": "1.1.0",
+    }
 
 
 def test_worker_authority_environment_forwards_only_key_locators() -> None:

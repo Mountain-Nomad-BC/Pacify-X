@@ -40,7 +40,32 @@ def _claim_test_orchestration_single_flight(
         getattr(args, "command", None) == "test-group"
         and getattr(args, "action", None) in {"run", "run-stale"}
     )
-    if not profile_run and not group_run:
+    section_run = (
+        getattr(args, "command", None) == "test-section"
+        and getattr(args, "action", None) == "run"
+    )
+    processing_mutation = (
+        getattr(args, "command", None) == "processing-order"
+        and getattr(args, "action", None)
+        in {
+            "clear-release-identity",
+            "apply-release-identity",
+            "claim-release-stage",
+            "finish-release-stage",
+        }
+    )
+    release_stage_run = getattr(args, "command", None) == "validate" or (
+        getattr(args, "command", None) == "release"
+        and getattr(args, "release_action", None)
+        in {"preflight", "dry-run", "finalize"}
+    )
+    if (
+        not profile_run
+        and not group_run
+        and not section_run
+        and not processing_mutation
+        and not release_stage_run
+    ):
         return None, None
     supervised_child = (
         group_run
@@ -50,7 +75,17 @@ def _claim_test_orchestration_single_flight(
     )
     claimed = claim_orchestration_lock(
         root,
-        owner_kind="profile-orchestration" if profile_run else "group-orchestration",
+        owner_kind=(
+            "profile-orchestration"
+            if profile_run
+            else "release-stage-orchestration"
+            if release_stage_run
+            else "section-orchestration"
+            if section_run
+            else "group-orchestration"
+            if group_run
+            else "release-campaign-orchestration"
+        ),
         allow_inherited_owner=supervised_child,
     )
     if supervised_child:
@@ -138,13 +173,40 @@ def _refresh_stale_groups_for_full_profile(
 
     from .resource_lifecycle import ResourceManager
     from .test_orchestration_lock import OWNER_ENV, SUPERVISED_CHILD_ENV
-    from .test_profiles import group_status
-    from .test_runner import run_test_command
+    from .test_profiles import group_status, resolve_test_groups
+    from .test_runner import run_test_command, validate_timeout
 
     before = group_status(root)
     stale = [row["group"] for row in before["groups"] if not row["current"]]
     if not stale:
-        return {"refreshed": False, "stale_groups": [], "status": before}
+        return {
+            "refreshed": False,
+            "valid": True,
+            "stale_groups": [],
+            "failed_groups": [],
+            "status": before,
+        }
+    registered = {
+        str(group["group"]): group for group in resolve_test_groups(root)
+    }
+    missing = [name for name in stale if name not in registered]
+    if missing:
+        raise ValueError(
+            "stale test groups are absent from the registered topology: "
+            + ", ".join(missing)
+        )
+    # The child owns the whole stale queue.  Its total timeout must therefore
+    # cover every independently bounded group, plus process/projection custody,
+    # even when the profile's normal cross-group budget is smaller.  Summing is
+    # deliberately conservative if future groups become parallel-safe.
+    registered_budget = sum(
+        validate_timeout(registered[name]["timeout_seconds"]) for name in stale
+    )
+    custody_allowance = max(60.0, 15.0 * len(stale))
+    effective_timeout = max(
+        validate_timeout(timeout_seconds),
+        registered_budget + custody_allowance,
+    )
     execution = run_test_command(
         [
             sys.executable,
@@ -163,26 +225,38 @@ def _refresh_stale_groups_for_full_profile(
             "PYTHONDONTWRITEBYTECODE": "1",
             SUPERVISED_CHILD_ENV: os.environ.get(OWNER_ENV, ""),
         },
-        timeout_seconds=timeout_seconds,
+        timeout_seconds=effective_timeout,
         resource_manager=ResourceManager(
             root / ".engineering-bootstrap/resource-lifecycle/ledger.json"
         ),
         run_id=f"test-profile-group-refresh-{uuid4().hex}",
         lane_id="profile:group-refresh",
     )
-    if execution.get("valid") is not True:
+    supervision_contained = (
+        execution.get("supervision_status") == "exited"
+        and execution.get("process_tree_terminated") is True
+        and execution.get("timed_out") is not True
+    )
+    if execution.get("valid") is not True and not supervision_contained:
         detail = str(execution.get("stderr") or execution.get("stdout") or "")[-4000:]
         raise ValueError(f"owned stale test-group refresh failed: {detail}")
     after = group_status(root)
-    if not after["valid"]:
-        remaining = [row["group"] for row in after["groups"] if not row["current"]]
+    remaining = [row["group"] for row in after["groups"] if not row.get("fresh")]
+    if remaining:
         raise ValueError(
             "owned stale test-group refresh left stale receipts: "
             + ", ".join(remaining)
         )
+    failed = [
+        row["group"]
+        for row in after["groups"]
+        if row.get("fresh") is True and row.get("passed") is not True
+    ]
     return {
         "refreshed": True,
+        "valid": not failed,
         "stale_groups": stale,
+        "failed_groups": failed,
         "execution": {
             key: execution.get(key)
             for key in (
@@ -196,6 +270,8 @@ def _refresh_stale_groups_for_full_profile(
                 "supervision_status",
             )
         },
+        "requested_timeout_seconds": validate_timeout(timeout_seconds),
+        "effective_timeout_seconds": effective_timeout,
         "status": after,
     }
 
@@ -210,8 +286,35 @@ def parser() -> argparse.ArgumentParser:
     commands = result.add_subparsers(dest="command", required=True)
     commands.add_parser("validate")
     processing_order = commands.add_parser("processing-order")
-    processing_order.add_argument("action", choices=("status", "check", "initialize"))
+    processing_order.add_argument(
+        "action",
+        choices=(
+            "status",
+            "check",
+            "initialize",
+            "release-status",
+            "clear-release-identity",
+            "apply-release-identity",
+            "claim-release-stage",
+            "finish-release-stage",
+        ),
+    )
     processing_order.add_argument("--project", type=Path)
+    processing_order.add_argument("--campaign-id")
+    processing_order.add_argument(
+        "--release-stage",
+        choices=(
+            "sections",
+            "full_profile",
+            "validate",
+            "package",
+            "install",
+            "installed_operational",
+            "certify",
+        ),
+    )
+    processing_order.add_argument("--claim-id")
+    processing_order.add_argument("--result", choices=("passed", "failed"))
     processing_order.add_argument(
         "--stage",
         choices=(
@@ -576,6 +679,8 @@ def parser() -> argparse.ArgumentParser:
     tool_intake.add_argument("--apply", action="store_true")
     check = commands.add_parser("project-check")
     check.add_argument("--project", type=Path, required=True)
+    check.add_argument("--rebind-framework", action="store_true")
+    check.add_argument("--apply", action="store_true")
     specialties = commands.add_parser("specialties")
     specialties.add_argument("--category")
     plan = commands.add_parser("plan")
@@ -1061,6 +1166,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parser().parse_args(argv)
     orchestration_lock: object | None = None
     previous_orchestration_owner: str | None = None
+    release_stage_claim: dict[str, object] | None = None
     try:
         from .paths import framework_root
 
@@ -1069,6 +1175,13 @@ def main(argv: list[str] | None = None) -> int:
             _claim_test_orchestration_single_flight(root, args)
         )
         if args.command == "processing-order":
+            from .release_campaign import (
+                apply_release_identity,
+                claim_release_stage,
+                clear_release_identity,
+                finish_release_stage,
+                release_campaign_status,
+            )
             from .test_profiles import (
                 initialize_project_repair_campaign,
                 repair_campaign_status,
@@ -1084,13 +1197,50 @@ def main(argv: list[str] | None = None) -> int:
                 if not args.stage:
                     raise ValueError("processing-order check requires --stage")
                 output = require_processing_stage(processing_root, args.stage)
+            elif args.action == "release-status":
+                output = release_campaign_status(processing_root, verify_source=True)
+            elif args.action == "clear-release-identity":
+                if not args.campaign_id:
+                    raise ValueError("clear-release-identity requires --campaign-id")
+                output = clear_release_identity(
+                    processing_root, campaign_id=args.campaign_id
+                )
+            elif args.action == "apply-release-identity":
+                output = apply_release_identity(processing_root)
+            elif args.action == "claim-release-stage":
+                if not args.release_stage:
+                    raise ValueError("claim-release-stage requires --release-stage")
+                output = claim_release_stage(processing_root, args.release_stage)
+            elif args.action == "finish-release-stage":
+                if not args.release_stage or not args.claim_id or not args.result:
+                    raise ValueError(
+                        "finish-release-stage requires --release-stage, --claim-id, and --result"
+                    )
+                output = finish_release_stage(
+                    processing_root,
+                    stage=args.release_stage,
+                    claim_id=args.claim_id,
+                    passed=args.result == "passed",
+                )
             else:
                 output = repair_campaign_status(processing_root)
         elif args.command == "validate":
+            from .release_campaign import claim_release_stage
             from .test_profiles import require_processing_stage
             from .registry import validate_registry
 
-            require_processing_stage(root, "validate")
+            release_state = (
+                root
+                / ".engineering-bootstrap"
+                / "processing-order"
+                / "release-identity.json"
+            )
+            # Source certification owns an ordered, one-shot validate stage.
+            # An installed wheel has no source campaign pointer and its public
+            # ``validate`` command must remain a read-only registry check.
+            if release_state.is_file():
+                require_processing_stage(root, "validate")
+                release_stage_claim = claim_release_stage(root, "validate")
             output = validate_registry(root)
             try:
                 from scripts.build_completion_status import build as build_completion_status
@@ -1829,6 +1979,9 @@ def main(argv: list[str] | None = None) -> int:
                     raise ValueError("test section name is required for show or run")
                 output = resolve_test_section(root, args.name)
                 if args.action == "run":
+                    from .test_profiles import require_processing_stage
+
+                    require_processing_stage(root, "governed_section")
                     status = section_status(root)
                     status_by_name = {row["section"]: row for row in status["sections"]}
                     stale_dependencies = [
@@ -2013,6 +2166,7 @@ def main(argv: list[str] | None = None) -> int:
                 import os
 
                 if args.name in {"full", "release"}:
+                    from .release_campaign import claim_release_stage
                     from .test_profiles import require_processing_stage
                     from .test_profiles import (
                         cross_group_certification,
@@ -2021,6 +2175,7 @@ def main(argv: list[str] | None = None) -> int:
                     )
 
                     require_processing_stage(root, "full_profile")
+                    release_stage_claim = claim_release_stage(root, "full_profile")
                     gate = section_status(root)
                     if not gate["valid"]:
                         stale = [
@@ -2075,6 +2230,16 @@ def main(argv: list[str] | None = None) -> int:
                     **execution,
                     "profile_budget_seconds": output["timeout_seconds"],
                 }
+                if args.name in {"full", "release"}:
+                    failed_groups = list(
+                        output.get("group_refresh", {}).get("failed_groups", [])
+                    )
+                    if failed_groups:
+                        output["valid"] = False
+                        output.setdefault("errors", []).append(
+                            "complete stale-group failure denominator: "
+                            + ", ".join(failed_groups)
+                        )
         elif args.command == "test-group":
             from concurrent.futures import ThreadPoolExecutor, as_completed
             from uuid import uuid4
@@ -2103,6 +2268,26 @@ def main(argv: list[str] | None = None) -> int:
                 else:
                     output = resolve_test_group(root, args.name)
             else:
+                from .test_profiles import MANAGED_PROJECT_MARKER
+
+                if (root / MANAGED_PROJECT_MARKER).is_file():
+                    from .release_campaign import release_campaign_status
+
+                    release = release_campaign_status(root, verify_source=True)
+                    claim = release.get("active_claim")
+                    if (
+                        release.get("valid") is not True
+                        or release.get("state") != "active"
+                        or not isinstance(claim, dict)
+                        or claim.get("stage") != "full_profile"
+                        or release.get("stages", {})
+                        .get("full_profile", {})
+                        .get("status")
+                        != "claimed"
+                    ):
+                        raise ValueError(
+                            "test-group execution requires the one claimed full-profile campaign"
+                        )
                 if args.action == "run":
                     if not args.name:
                         raise ValueError("test group name is required for run")
@@ -2254,9 +2439,11 @@ def main(argv: list[str] | None = None) -> int:
                 )
 
                 if args.release_action in {"preflight", "dry-run"}:
+                    from .release_campaign import claim_release_stage
                     from .test_profiles import require_processing_stage
 
                     require_processing_stage(root, "package")
+                    release_stage_claim = claim_release_stage(root, "package")
                 if args.release_action == "preflight":
                     output = run_preflight(
                         root,
@@ -2273,9 +2460,11 @@ def main(argv: list[str] | None = None) -> int:
                         root, release=args.release, artifact=args.artifact
                     )
             else:
+                from .release_campaign import claim_release_stage
                 from .test_profiles import require_processing_stage
 
                 require_processing_stage(root, "certify")
+                release_stage_claim = claim_release_stage(root, "certify")
                 output = finalize_release(
                     root,
                     args.release,
@@ -2302,9 +2491,19 @@ def main(argv: list[str] | None = None) -> int:
                 allowed_licenses=args.allow_license,
             )
         elif args.command == "project-check":
-            from .commissioning import project_check
+            from .commissioning import project_check, rebind_commissioning_framework
 
-            output = project_check(args.project, source_root=root)
+            if args.rebind_framework:
+                output = rebind_commissioning_framework(
+                    args.project, source_root=root, apply=args.apply
+                )
+            elif args.apply:
+                output = {
+                    "valid": False,
+                    "errors": ["--apply requires --rebind-framework"],
+                }
+            else:
+                output = project_check(args.project, source_root=root)
         elif args.command == "specialties":
             from .registry import load_json
 
@@ -3167,7 +3366,42 @@ def main(argv: list[str] | None = None) -> int:
                 )
         else:  # pragma: no cover
             raise AssertionError(args.command)
+        if release_stage_claim is not None:
+            from .release_campaign import finish_release_stage
+
+            release_state = finish_release_stage(
+                root,
+                stage=str(release_stage_claim["stage"]),
+                claim_id=str(release_stage_claim["claim_id"]),
+                passed=output.get("valid") is True,
+            )
+            output["release_campaign"] = {
+                "campaign_id": release_state.get("campaign_id"),
+                "state": release_state.get("state"),
+                "release_identity_sha256": release_state.get("identity", {}).get(
+                    "release_identity_sha256"
+                )
+                if isinstance(release_state.get("identity"), dict)
+                else None,
+                "stage": release_stage_claim["stage"],
+                "stage_status": release_state.get("stages", {})
+                .get(str(release_stage_claim["stage"]), {})
+                .get("status"),
+            }
+            release_stage_claim = None
     except (OSError, ValueError, KeyError, RuntimeError, json.JSONDecodeError) as error:
+        if release_stage_claim is not None:
+            try:
+                from .release_campaign import finish_release_stage
+
+                finish_release_stage(
+                    root,
+                    stage=str(release_stage_claim["stage"]),
+                    claim_id=str(release_stage_claim["claim_id"]),
+                    passed=False,
+                )
+            except (OSError, ValueError, json.JSONDecodeError):
+                pass
         output = {"valid": False, "errors": [f"{type(error).__name__}: {error}"]}
     finally:
         _release_test_orchestration_single_flight(

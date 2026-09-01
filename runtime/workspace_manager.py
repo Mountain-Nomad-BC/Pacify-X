@@ -1898,6 +1898,7 @@ def browse_canonical_memory(
 
     paths = workspace_paths(root)
     config = _load_config(paths)
+    registry = _load_registry(paths)
     active_sessions = _active_sessions(paths)
     bounded_limit = max(1, min(100, int(limit)))
     bounded_offset = max(0, min(10_000, int(offset)))
@@ -1914,6 +1915,7 @@ def browse_canonical_memory(
         if wanted_project and active_project_id.casefold() != wanted_project:
             continue
         actor_id = str(scope["agent_id"])
+        project = _project_path(paths, _project_by_id(registry, active_project_id))
         vault = _vault(paths, str(config["workspace_id"]), active_project_id)
         retrieval_records = vault.retrieval_records(actor_id=actor_id)
         scan_truncated = scan_truncated or len(retrieval_records) > ranking_bound
@@ -1933,9 +1935,28 @@ def browse_canonical_memory(
         )
         for selected in ranked.selected:
             detail = vault.inspect_record(selected.record.memory_id)
+            source = detail.get("source")
+            if not isinstance(source, Mapping):
+                raise ValueError("canonical memory source locator is malformed")
+            project_relative_source = Path(str(source.get("path") or ""))
+            if (
+                not str(project_relative_source)
+                or project_relative_source.is_absolute()
+                or ".." in project_relative_source.parts
+            ):
+                raise ValueError("canonical memory source locator is not project relative")
+            physical_source = (project / project_relative_source).resolve()
+            if not _inside(physical_source, project):
+                raise ValueError("canonical memory source locator escapes its project")
+            workspace_relative_source = physical_source.relative_to(paths.root.resolve()).as_posix()
             records.append(
                 {
                     **detail,
+                    "source": {
+                        **dict(source),
+                        "path": workspace_relative_source,
+                        "project_relative_path": project_relative_source.as_posix(),
+                    },
                     "score": selected.score,
                     "selection_reasons": list(selected.reasons),
                     "session_id": scope["session_id"],

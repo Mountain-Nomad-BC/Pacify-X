@@ -35,6 +35,15 @@ class ContractRuntimeTests(unittest.TestCase):
         self.assertEqual(result["contract_count"], result["owned_count"])
         self.assertGreater(result["contract_count"], 0)
 
+    def test_local_model_session_pattern_has_a_valid_minimal_fixture(self) -> None:
+        schema = ROOT / "contracts/operations/local-model-runtime.schema.json"
+        instance = build_minimal_instance(schema)
+
+        self.assertRegex(
+            instance["session_id"], r"^local-model-session-[a-f0-9]{32}$"
+        )
+        validate_instance(instance, schema)
+
     def test_validation_rejects_invalid_commissioning_record(self) -> None:
         with self.assertRaises(ContractValidationError):
             validate_instance(

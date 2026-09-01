@@ -1,0 +1,37 @@
+{
+  "session_id": "repair-session:px-generated-boundary-exclusion-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023009",
+  "gap_id": "PX-OS-1065",
+  "authority": "User authorized all reversible Pacify-X repairs and requires repair completion before validation, packaging, Git publication, or certification.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": [
+        "Inspect runtime/repository_scope.py, runtime/effect_surface.py, bounded-walk behavior, clean-export/engine-identity exclusions, focused repository-scope/effect-surface tests, changed-section ownership, and the PX-AUD2-003 reconciliation failure only."
+      ]
+    },
+    {
+      "effect": "write",
+      "scope": [
+        "Reopen .engineering-bootstrap/processing-order/repair-campaign.json for PX-AUD2-003; modify only runtime/repository_scope.py and focused repository-scope/effect-surface tests so nested build/dist generated outputs are excluded from product-source walks; clear the exact unresolved item after causal proof; write repair evidence and append ledger events. Do not refresh generated projections, stage, commit, push, merge, package, install, or certify."
+      ]
+    },
+    {
+      "effect": "execute",
+      "scope": [
+        "Run focused repository-scope, effect-surface, generated-artifact, and clean-export causal tests plus only the affected governed section gate identified by current test ownership. Do not rerun revision reconciliation, full profile, validate, package, install, deploy, publish, merge, or certify."
+      ]
+    }
+  ],
+  "expected_effect": "Restore the shared product-source boundary so generated build/dist trees never consume source-audit budgets, prove the exact failure fixture, and return to a zero-unresolved repair state without repeating reconciliation.",
+  "rollback": "Revert only the repository-scope exclusion and focused tests, restore the repair campaign predecessor, and retain the failed reconciliation receipt.",
+  "expires_utc": "2026-08-26T18:00:00Z",
+  "evidence": [
+    {
+      "reference": "evidence/release/revision-reconciliation-failure-20260826.json",
+      "artifact_sha256": "26208a881f60a8e74931aa28823a31e4911498f3ca36f4fa75eabedab0147b4c",
+      "artifact_size": 1529,
+      "claim": "PX-AUD2-003 exact failure and root cause."
+    }
+  ]
+}

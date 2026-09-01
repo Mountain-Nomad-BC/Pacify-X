@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-876",
+  "note": "Correction: the corrected workspace is not detached. With the same workspace_root supplied by the extension bridge, canonical memory is healthy, retrieval-ready, lease-current, integrity-valid, and exposes 102 eligible certified records. This card still owns detached-client query guarding, but it is not evidence of a current canonical workspace failure.",
+  "evidence": [
+    {
+      "reference": "evidence/adversarial-audit/current-environment-operational-audit-20260826-v2.json",
+      "claim": "Corrected real-path snapshot and workspace monitor disprove current canonical-memory detachment.",
+      "artifact_sha256": "9ed72b3a8060e880d898eff1d5c745826248660c990b3f7c2b2100cd32a4a03b",
+      "artifact_size": 2167
+    }
+  ],
+  "patch": {
+    "next_action": "Retain focused detached-client guard coverage, but do not block current workspace operation on canonical memory; reopen attachment repair only if the real extension bridge path loses workspace_root or its active lease."
+  }
+}

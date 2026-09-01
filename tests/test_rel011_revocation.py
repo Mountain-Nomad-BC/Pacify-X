@@ -49,8 +49,12 @@ class Rel011RevocationTests(unittest.TestCase):
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
         start = (ROOT / "START_HERE_FOR_AI.md").read_text(encoding="utf-8")
         self.assertNotIn("**Status:** Certified deployment-ready", readme)
-        self.assertIn("**Current release:** [v0.6.3]", readme)
-        self.assertIn("Signed self-certified release published", readme)
+        self.assertIn(
+            "**Current release:** v0.7.0 (release candidate; certification and publication pending)",
+            readme,
+        )
+        self.assertIn("**Previous certified release:** [v0.6.3]", readme)
+        self.assertIn("no publication claim is made yet", readme)
         self.assertIn("Version 0.6.3 is the current signed release", start)
         self.assertNotIn("0.6.2", readme)
         self.assertNotIn("0.6.2", start)

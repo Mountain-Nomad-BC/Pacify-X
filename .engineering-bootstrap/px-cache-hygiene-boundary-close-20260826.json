@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-cache-hygiene-boundary-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023031",
+  "outcome": "superseded",
+  "reason": "PX-AUD2-006 is causally repaired with 6/6 focused tests, but the repair exposed PX-AUD2-007: the cleanup implementation and causal test are not owned by a governed section. Repair remains open; no projection, section retry, profile, validation, packaging, installation, publication, or certification ran.",
+  "evidence": [
+    {
+      "reference": "evidence/release/cache-hygiene-boundary-causal-proof-20260826.json",
+      "claim": "Causal repair proof and exact adjacent governed-ownership gap.",
+      "artifact_sha256": "21b44ed43ee21e987baf4d207252a4252f09540757f348c02e1f2a1923eefaa7",
+      "artifact_size": 1244
+    }
+  ]
+}

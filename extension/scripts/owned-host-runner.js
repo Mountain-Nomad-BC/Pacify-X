@@ -75,7 +75,8 @@ function acquireHostLease(options = {}) {
 }
 
 async function runOwnedHostWorker(options) {
-  const lease = acquireHostLease(options);
+  const lease = options.lease || acquireHostLease(options);
+  if (!lease || typeof lease.release !== 'function') throw new Error('owned-host-lease-invalid');
   const started = Date.now();
   const receipt = {
     schema_version: 'px.owned-host-run/1.0', run_id: crypto.randomUUID(), owner_pid: process.pid,
@@ -137,13 +138,17 @@ async function runOwnedHostWorker(options) {
     });
     await reconcile();
     receipt.status = result === 0 ? 'completed' : 'failed';
+    if (result === null && receipt.termination_reason === 'timeout') {
+      receipt.status = 'timed_out';
+      throw new Error('owned-host-timeout');
+    }
     if (result !== 0) throw new Error(`owned-host-worker-exit-${result}`);
     return { receipt, stdout, stderr };
   } catch (error) {
     if (receipt.residual_owned_pids_after === undefined) {
       try { await reconcile(); } catch (reconcileError) { receipt.reconciliation_error = String(reconcileError?.message || reconcileError).slice(0, 200); }
     }
-    receipt.status = receipt.termination_requested ? 'terminated' : 'failed';
+    receipt.status = receipt.termination_reason === 'timeout' ? 'timed_out' : receipt.termination_requested ? 'terminated' : 'failed';
     receipt.error = String(error?.message || error).slice(0, 500);
     error.lifecycleReceipt = receipt; throw error;
   } finally {

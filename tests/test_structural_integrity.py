@@ -4,16 +4,18 @@ import json
 import ast
 import hashlib
 import importlib.util
+import os
 from pathlib import Path
 import shutil
 import sys
-import tempfile
 
 from runtime.structural_integrity import (
+    _classify_exact_group,
     _exclude_structural_path,
     _stable_ast,
     audit_structural_integrity,
 )
+from runtime.repository_scope import is_external_environment_relative
 
 
 ROOT = Path(__file__).parents[1]
@@ -71,38 +73,50 @@ def test_ellipsis_finding_identity_is_source_derived_across_python_versions(
     assert finding["id"] == expected
 
 
-def _clone() -> Path:
-    directory = Path(tempfile.mkdtemp())
+def _clone_ignore(directory: str, names: list[str]) -> set[str]:
+    relative_directory = Path(directory).resolve().relative_to(ROOT)
+    return {
+        name
+        for name in names
+        if is_external_environment_relative(relative_directory / name)
+    }
+
+
+def _link_read_only_source(source: str, target: str) -> str:
+    try:
+        return os.link(source, target)
+    except OSError:
+        return shutil.copy2(source, target)
+
+
+def _clone(directory: Path) -> Path:
     target = directory / "framework"
     shutil.copytree(
         ROOT,
         target,
-        ignore=shutil.ignore_patterns(
-            ".git",
-            ".tmp*",
-            ".venv*",
-            ".VSCodeCounter",
-            ".vscode-test",
-            "Python",
-            "node_modules",
-            "__pycache__",
-            ".pytest_cache",
-            ".ruff_cache",
-            "coordination",
-            "diagnostics",
-            "environment",
-            "project-map",
-            "project-map-history",
-            "project-map-lock-history",
-            "quarantine",
-            "operation-bus",
-            "preserved-extension-installations",
-            "preserved-skills",
-            "resource-lifecycle",
-            "test-evidence",
-        ),
+        ignore=_clone_ignore,
+        copy_function=_link_read_only_source,
     )
     return target
+
+
+def _detach_for_mutation(path: Path) -> None:
+    detached = path.with_name(f".{path.name}.detached")
+    shutil.copy2(path, detached)
+    os.replace(detached, path)
+
+
+def test_structural_mutation_clone_excludes_retained_evidence() -> None:
+    assert is_external_environment_relative("evidence/release-certification.json")
+    assert is_external_environment_relative("extension/dist/release.vsix")
+    assert is_external_environment_relative(
+        ".engineering-bootstrap/project-map-history-archives/prior.json"
+    )
+    assert is_external_environment_relative(
+        "registry/operational_gap_ledger.snapshot.json"
+    )
+    assert _exclude_structural_path("evidence/release-certification.json")
+
 
 
 def test_structural_integrity_has_closed_denominators() -> None:
@@ -131,8 +145,16 @@ def test_hash_ledger_head_and_anchor_are_a_reviewed_exact_projection() -> None:
     assert all(item["passed"] for item in result["audit_items"].values())
 
 
-def test_structural_audit_never_writes_dynamic_loader_bytecode() -> None:
-    root = _clone()
+def test_ledger_anchor_and_retained_history_are_reviewed_custody() -> None:
+    paths = [
+        ".engineering-bootstrap/.ledger-authority/commissioning-events/anchors/00000001-a.json",
+        ".engineering-bootstrap/.ledger-authority/commissioning-events/history/00000001.json",
+    ]
+    assert _classify_exact_group(paths) == "ledger-authority-anchor-history"
+
+
+def test_structural_audit_never_writes_dynamic_loader_bytecode(tmp_path) -> None:
+    root = _clone(tmp_path)
     cache = root / ".px/skills/audit-incomplete-implementations/scripts/__pycache__"
     previous = sys.dont_write_bytecode
     sys.dont_write_bytecode = False
@@ -143,15 +165,15 @@ def test_structural_audit_never_writes_dynamic_loader_bytecode() -> None:
     assert not cache.exists()
 
 
-def test_orphan_registry_file_fails_closed() -> None:
-    root = _clone()
+def test_orphan_registry_file_fails_closed(tmp_path) -> None:
+    root = _clone(tmp_path)
     (root / "registry/orphan.json").write_text("{}\n", encoding="utf-8")
     result = audit_structural_integrity(root)
     assert not result["categories"]["reachability"]["passed"]
 
 
-def test_defined_but_unbound_orchestration_fails_closed() -> None:
-    root = _clone()
+def test_defined_but_unbound_orchestration_fails_closed(tmp_path) -> None:
+    root = _clone(tmp_path)
     (root / "orchestration/workflows/unbound.yaml").write_text(
         "id: unbound\n", encoding="utf-8"
     )
@@ -159,9 +181,10 @@ def test_defined_but_unbound_orchestration_fails_closed() -> None:
     assert not result["categories"]["orchestrations"]["passed"]
 
 
-def test_undiscoverable_skill_fails_closed() -> None:
-    root = _clone()
+def test_undiscoverable_skill_fails_closed(tmp_path) -> None:
+    root = _clone(tmp_path)
     index_path = root / "registry/semantic_capability_index.json"
+    _detach_for_mutation(index_path)
     index = json.loads(index_path.read_text(encoding="utf-8"))
     index["records"] = index["records"][1:]
     index_path.write_text(json.dumps(index), encoding="utf-8")
@@ -169,16 +192,17 @@ def test_undiscoverable_skill_fails_closed() -> None:
     assert not result["categories"]["skills"]["passed"]
 
 
-def test_unowned_yaml_fails_closed() -> None:
-    root = _clone()
+def test_unowned_yaml_fails_closed(tmp_path) -> None:
+    root = _clone(tmp_path)
     (root / "bootstrap/orphan.yaml").write_text("id: orphan\n", encoding="utf-8")
     result = audit_structural_integrity(root)
     assert not result["categories"]["reachability"]["passed"]
 
 
-def test_dead_contract_fails_closed() -> None:
-    root = _clone()
+def test_dead_contract_fails_closed(tmp_path) -> None:
+    root = _clone(tmp_path)
     ownership_path = root / "registry/contract_ownership.json"
+    _detach_for_mutation(ownership_path)
     ownership = json.loads(ownership_path.read_text(encoding="utf-8"))
     ownership["records"][0]["packaged"] = False
     ownership_path.write_text(json.dumps(ownership), encoding="utf-8")
@@ -186,17 +210,19 @@ def test_dead_contract_fails_closed() -> None:
     assert not result["categories"]["contracts"]["passed"]
 
 
-def test_stale_release_pinned_execution_plan_fails_closed() -> None:
-    root = _clone()
+def test_stale_release_pinned_execution_plan_fails_closed(tmp_path) -> None:
+    root = _clone(tmp_path)
     path = root / "EXECUTION_PLAN_PUNCH_CARDS_AND_ACCEPTANCE.md"
+    _detach_for_mutation(path)
     path.write_text("# Plan\n\n`REL-006` is complete.\n", encoding="utf-8")
     result = audit_structural_integrity(root)
     assert not result["categories"]["documentation"]["passed"]
 
 
-def test_project_management_checkpoint_drift_fails_closed() -> None:
-    root = _clone()
+def test_project_management_checkpoint_drift_fails_closed(tmp_path) -> None:
+    root = _clone(tmp_path)
     path = root / ".engineering-bootstrap/project-management/state.json"
+    _detach_for_mutation(path)
     state = json.loads(path.read_text(encoding="utf-8"))
     state["checkpoint"]["next_safe_action"] = "different"
     path.write_text(json.dumps(state), encoding="utf-8")
@@ -218,8 +244,8 @@ def test_declared_generated_duplicates_regenerate_cleanly() -> None:
     assert "native-skill-policy-projections" in classifications
 
 
-def test_undeclared_duplicate_group_fails_audit() -> None:
-    root = _clone()
+def test_undeclared_duplicate_group_fails_audit(tmp_path) -> None:
+    root = _clone(tmp_path)
     (root / "docs/a.md").write_text("duplicate", encoding="utf-8")
     (root / "docs/b.md").write_text("duplicate", encoding="utf-8")
     result = audit_structural_integrity(root)
@@ -234,3 +260,25 @@ def test_portable_hash_helpers_have_behavioral_parity() -> None:
         if item["classification"] == "portable-skill-hash-helpers"
     ]
     assert all(item["equivalence_rule"] == "behavioral parity" for item in helpers)
+
+
+def test_runtime_file_digest_helpers_are_reviewed_digest_adapters() -> None:
+    result = audit_structural_integrity(ROOT)
+    helpers = [
+        item
+        for item in result["duplicate_logic_groups"]
+        if {
+            location.rsplit(":", 1)[-1]
+            for location in item["locations"]
+        } == {"_digest_file", "_file_sha256"}
+        and {
+            location.split(":", 1)[0]
+            for location in item["locations"]
+        } == {
+            "runtime/local_model_runtime.py",
+            "runtime/provider_gateway.py",
+        }
+    ]
+    assert len(helpers) == 1
+    assert helpers[0]["classification"] == "digest-adapters"
+    assert helpers[0]["equivalence_rule"] == "behavioral parity"

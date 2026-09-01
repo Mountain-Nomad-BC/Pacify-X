@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023059",
+  "learned": "PX-AUD2-010 does not reproduce in isolated or full adjacent runner controls (1/1 and 15/15 pass). PX-AUD2-011 is confirmed: the ledger admitted two simultaneous read/write/execute handoff sessions from checkpoint 23055 for the same gap, permitting duplicate projection/section/profile ownership and nondeterministic interference.",
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "unresolved_branch_gap_ids": ["PX-OS-1065"],
+  "newly_discovered_gap_ids": [],
+  "evidence": [
+    {
+      "reference": "evidence/release/nested-pytest-custody-focused-reproduction-20260826.json",
+      "artifact_sha256": "24dcf99e63cd67eab9129c918dd59346d0a741a5a757790a56a917b46457c653",
+      "artifact_size": 888,
+      "claim": "PX-AUD2-011 overlapping mutating admission evidence."
+    }
+  ]
+}

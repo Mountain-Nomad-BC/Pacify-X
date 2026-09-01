@@ -1,0 +1,32 @@
+{
+  "session_id": "repair-session:px-final-21-controls-20260825",
+  "gap_id": "PX-OS-1065",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022942",
+  "authority": "User explicitly authorized all remaining reversible Pacify-X repairs; only irreversible destructive effects require approval.",
+  "expected_effect": "Extend the owned installed lifecycle campaign to physically exercise every supported authenticated transition and add exact state preparation for the remaining five controls, then rebuild current evidence.",
+  "rollback": "Revert only the lifecycle campaign, contained walker, and focused-test changes while retaining all append-only attempt evidence and session-owned installed-host receipts.",
+  "expires_utc": "2026-08-26T09:00:00Z",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect only the 21 exact unobserved control definitions, installed lifecycle campaign, durable Studio operation contracts, contained state preparation, focused tests, and current evidence."
+      ]
+    },
+    {
+      "effect": "write",
+      "scope": ["Modify only extension/scripts/run-operational-ui-walk.js, extension/tests/operational-ui-walk-installed-probe.test.js, extension/scripts/run-exhaustive-operational-control-walk.js, and extension/tests/exhaustive-operational-control-walk.test.js for exact remaining-control coverage; write session-owned evidence and append exact ledger events. Modify product Studio source and focused tests only if a real installed transition fails."
+      ]
+    },
+    {
+      "effect": "execute",
+      "scope": ["Run focused probe and walker tests, targeted contained controls, focused installed Studio lifecycle campaigns in hidden session-owned VS Code hosts, current fault/evidence assembly, and affected governed section gates. Do not run full profile, validate, deploy, publish, merge, or certify."
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "reference": "evidence/current-control-proof-installed-0657-20260825/assembled-current.json",
+      "claim": "Exact denominator and remaining-control list for this bounded repair."
+    }
+  ]
+}

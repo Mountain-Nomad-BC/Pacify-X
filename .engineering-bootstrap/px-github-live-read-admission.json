@@ -1,0 +1,31 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "audit-session:px-github-dependabot-live-read-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022999",
+  "authority": "User explicitly requested current GitHub, merge, Actions, and Dependabot reconciliation and authorized all reversible work. This card is read-only against GitHub.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect local Git remotes, branches, tracking state, prompt-disabled GitHub CLI authentication metadata, and the returned read-only Mountain-Nomad-BC/Pacify-X remote refs, default branch, pull requests, workflow runs/check conclusions, Dependabot pull requests, and accessible Dependabot/security alerts."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Write one session-owned GitHub/Dependabot reconciliation report and append-only ledger evidence only; do not modify product source, Git index, commits, branches, tags, or external systems."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["Run bounded prompt-disabled gh, git status, git branch, git remote, git ls-remote, and read-only GitHub API diagnostics required for the remote reconciliation only. Do not push, merge, close, rerun, approve, dispatch, modify settings, test, package, certify, commit, or publish."]
+    }
+  ],
+  "expected_effect": "Determine the exact live remote main, open PR, Actions, and Dependabot state without account-picker UI or external mutation, and identify any remaining repair required before a unified commit/push.",
+  "rollback": "No external mutation is allowed; remove only the session-owned local report if malformed while retaining append-only audit evidence.",
+  "expires_utc": "2026-08-26T16:00:00Z",
+  "evidence": [
+    {
+      "reference": "evidence/adversarial-audit/second-adversarial-audit-final-20260826.json",
+      "artifact_sha256": "3ae3299985693b4eee3b76d572ac206038b8b9caa7f323b808366bd0517fd2ce",
+      "artifact_size": 4066,
+      "claim": "Remote truth is the next required predecessor after local repair freeze."
+    }
+  ]
+}

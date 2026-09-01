@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-profile-child-environment-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023053",
+  "outcome": "completed",
+  "reason": "PX-AUD2-009 is causally repaired: the nested group owner inherits host PATH/environment, uses the full-profile budget, retains bounded metadata without child output, fails closed, and does not rerun current groups. Three focused tests pass; no real group, section, profile, projection, or downstream release action ran.",
+  "evidence": [
+    {"reference": "evidence/release/full-profile-child-boundary-causal-proof-20260826.json", "claim": "Environment, budget, output-bound, failure, and reuse proof.", "artifact_sha256": "6a412fc06a44130d4d943e905ddc2dce810e2e9d53a567521422fcb80128b168", "artifact_size": 952}
+  ]
+}

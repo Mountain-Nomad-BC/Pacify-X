@@ -1,0 +1,31 @@
+{
+  "session_id": "repair-session:px-cache-hygiene-section-owner-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023033",
+  "gap_id": "PX-OS-1065",
+  "authority": "User authorized all reversible Pacify-X repairs and requires governed operational correctness before release closure.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect only testing-governance ownership for scripts/cleanup_python_caches.py and tests/test_cache_quarantine.py plus the PX-AUD2-007 causal evidence."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Add scripts/cleanup_python_caches.py and tests/test_cache_quarantine.py to testing-governance inputs and its command exactly once; add focused ownership regression assertions; clear only PX-AUD2-007 after causal proof; keep phase=repair; retain evidence and ledger events. Do not refresh generated projections or section receipts."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["Run only focused testing-governance ownership/identity assertions proving cleanup implementation and safety tests stale and execute the section. Do not run the governed section, revision reconciliation, full profile, validate, package, install, publish, or certify during repair."]
+    }
+  ],
+  "expected_effect": "Bind certification cleanup implementation and its causal safety suite to the testing-governance section so future changes cannot bypass the receipt.",
+  "rollback": "Revert only the two section inputs, command entry, and focused ownership assertions while retaining causal evidence.",
+  "expires_utc": "2026-08-26T20:00:00Z",
+  "evidence": [
+    {
+      "reference": "evidence/release/cache-hygiene-boundary-causal-proof-20260826.json",
+      "artifact_sha256": "21b44ed43ee21e987baf4d207252a4252f09540757f348c02e1f2a1923eefaa7",
+      "artifact_size": 1244,
+      "claim": "PX-AUD2-007 exact missing ownership evidence."
+    }
+  ]
+}

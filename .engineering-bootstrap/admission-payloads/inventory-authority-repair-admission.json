@@ -1,0 +1,29 @@
+{
+  "gap_id": "PX-OS-1065",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000016532",
+  "session_id": "repair-session:px-inventory-authority-20260825",
+  "expires_utc": "2026-08-29T23:59:00Z",
+  "effect_scopes": [
+    {
+      "effect": "write",
+      "scope": [
+        "Modify only the typed operational inventory generator identity, the operational reconciler expected-inventory planner, their direct tests, regenerated typed inventory and proof-matrix authorities, and deterministic ledger reconciliation events; do not modify product behavior, package, deploy, publish, or certify."
+      ]
+    },
+    {
+      "effect": "execute",
+      "scope": [
+        "Run focused inventory/reconciler tests, canonical typed-inventory and proof-matrix builders, deterministic ledger reconciliation and progress diagnostics, and directly changed governed section gates; do not run operational UI walks, full profile, validate, package, deploy, publish, or certify."
+      ]
+    }
+  ],
+  "authority": "The canonical inventory and ledger snapshot directly prove identity reuse and expected-authority drift; the user authorized reversible repairs.",
+  "expected_effect": "Give the current denominator a distinct r15 identity and automatically predecessor-bind expected inventory whenever the canonical inventory source changes.",
+  "rollback": "Revert only the bounded generator, reconciler, tests, and generated authorities; ledger events remain append-only and may be superseded by a later canonical revision.",
+  "evidence": [
+    {
+      "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000016532",
+      "claim": "Exact active inventory-authority repair checkpoint."
+    }
+  ]
+}

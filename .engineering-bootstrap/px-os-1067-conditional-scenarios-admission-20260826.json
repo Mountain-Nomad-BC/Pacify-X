@@ -1,0 +1,17 @@
+{
+  "session_id": "repair-session:px-installed-conditional-scenarios-20260826",
+  "gap_id": "PX-OS-1067",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023369",
+  "authority": "User requested complete operational repair before release reconciliation and authorizes reversible isolated-host UI scenarios.",
+  "expected_effect": "Implement bounded current-source scenarios that physically render and exercise conditional catalog rows, forms, progress states, request-bound errors, validation failures, and recovery states without durable or external effects.",
+  "rollback": "Revert only the bounded walker and direct-test patch if focused or governed tests fail; do not change durable product state or promote missing authority stages.",
+  "expires_utc": "2026-09-06T13:00:00Z",
+  "effect_scopes": [
+    { "effect": "read", "scope": ["Inspect exact r2 conditional row/form/error/progress records, extension/scripts/run-operational-ui-walk.js installed probe sequencing and bridge instrumentation, extension/scripts/run-exhaustive-operational-control-walk.js contained scenario preparation, extension/media dashboard state and message handlers, direct installed-probe/fault-recovery tests, and registry/test_profiles.json ownership for conditional scenarios."] },
+    { "effect": "write", "scope": ["Modify only extension/scripts/run-operational-ui-walk.js, extension/tests/operational-ui-walk-installed-probe.test.js and directly related conditional/fault tests, registry/test_profiles.json only if ownership is absent, directly affected generated ownership projection if required, one evidence/release/px-os-1067-installed-conditional-scenarios-repair-20260826.json file, governed dashboard-extension receipt, and session lifecycle. Do not modify durable product behavior, external providers, cleanup/install state, processing order, revisions, Git/GitHub, or certification evidence."] },
+    { "effect": "execute", "scope": ["Run bounded source searches, direct installed-probe/fault/status Node tests, syntax checks, required ownership builder if any, and one owning python -m runtime.cli test-section run dashboard-extension gate. Do not run broad operational walks, providers, other sections, full profile, validate, package, install, Git/GitHub, or certify."] }
+  ],
+  "evidence": [
+    { "reference": "evidence/operational-ui-walk-current-source-final-r2-20260826/receipt.json", "artifact_sha256": "774fcfd8f0ccb6a5c34a8dac379ba094beb7350aacdf756772a448f1bbe56d78", "artifact_size": 9986164, "claim": "Physical r2 evidence retains the exact conditional row, form, progress, error, and recovery denominator still missing from current-source operation." }
+  ]
+}

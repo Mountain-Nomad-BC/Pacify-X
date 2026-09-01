@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-nested-pytest-custody-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023061",
+  "outcome": "superseded",
+  "reason": "The exact custody test and all 15 adjacent runner-control tests pass without source changes. The governed failure coincided with two mutating handoff sessions admitted from checkpoint 23055. PX-AUD2-011 must close that overlap hole before retrying the section.",
+  "evidence": [
+    {
+      "reference": "evidence/release/nested-pytest-custody-focused-reproduction-20260826.json",
+      "artifact_sha256": "24dcf99e63cd67eab9129c918dd59346d0a741a5a757790a56a917b46457c653",
+      "artifact_size": 888,
+      "claim": "Exact and adjacent custody controls pass; overlapping mutating sessions are the remaining root cause."
+    }
+  ]
+}

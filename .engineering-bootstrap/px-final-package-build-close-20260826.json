@@ -1,0 +1,9 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "package-session:px-final-extension-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023171",
+  "outcome": "superseded",
+  "evidence": [
+    {"reference": "evidence/release/immutable-vsix-package-selection-boundary-20260826.json", "claim": "The exact 0.6.59 VSIX is already issued, hash-bound, and newer than every bundled source; its canonical packager forbids overwrite.", "artifact_sha256": "de649a0b11a47dcd4d8223720e45e9b40eda2ec569a675ca21ff6a6784d77e22", "artifact_size": 928}
+  ]
+}

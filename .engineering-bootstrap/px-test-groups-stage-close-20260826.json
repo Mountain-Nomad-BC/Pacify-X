@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-test-groups-processing-stage-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023046",
+  "outcome": "superseded",
+  "reason": "No product or campaign mutation occurred. The predecessor-bound admission 23045 owns the narrower repair: the one top-level full-profile command will internally refresh stale groups through existing supervised ownership, preserving the established hard sequence without exposing a new manual phase.",
+  "evidence": [
+    {"reference": "evidence/release/full-profile-prerequisite-failure-20260826.json", "claim": "Shared PX-AUD2-008 predecessor.", "artifact_sha256": "1eaaae6928d7bcb3d81bb367f424f5eb2dfde1feafdb4ba18d48544c8df4e77b", "artifact_size": 981}
+  ]
+}

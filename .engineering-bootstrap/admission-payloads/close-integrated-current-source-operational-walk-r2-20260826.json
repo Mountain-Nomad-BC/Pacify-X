@@ -1,0 +1,14 @@
+{
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023333",
+  "session_id": "repair-session:px-integrated-current-source-operational-walk-r2-20260826",
+  "gap_id": "PX-OS-1065",
+  "outcome": "completed",
+  "evidence": [
+    {
+      "reference": "evidence/operational-ui-walk-current-source-final-r2-20260826/receipt.json",
+      "artifact_sha256": "774fcfd8f0ccb6a5c34a8dac379ba094beb7350aacdf756772a448f1bbe56d78",
+      "artifact_size": 9986164,
+      "claim": "Fresh exact-source isolated host observed every expected surface with verified source identity and zero host errors, but truthfully remained incomplete: only 403 of 929 control chains were complete and 541 controls were unattempted. A concurrent runner wrote the reserved report path; the completed walk retained its immutable receipt and reclaimed its own temporary root before report finalization."
+    }
+  ]
+}

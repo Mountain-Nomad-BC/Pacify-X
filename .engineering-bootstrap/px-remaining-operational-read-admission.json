@@ -1,0 +1,19 @@
+{
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022962",
+  "gap_id": "PX-OS-1065",
+  "authority": "User requested continuation through every remaining Pacify-X operational repair; this admission is read-only diagnosis.",
+  "effect": "read",
+  "scope": [
+    "Inspect the current PX-OS-1065 card and progress projection, repair-campaign state, imported adversarial audit reconciliation, current assembled operational-control evidence and its source receipts, and current registered dashboard/control denominators solely to enumerate concrete remaining repair work."
+  ],
+  "expected_effect": "Produce an exact remaining-work denominator after the now-passing Studio lifecycle repair without refreshing revisions, packages, release validation, or certification evidence.",
+  "rollback": "No state outside append-only checkpoint and admission records changes; discard the diagnostic conclusion if any inspected evidence is stale or identity-mismatched.",
+  "evidence": [
+    {
+      "reference": "evidence/operational-ui-walk-current-source-final-lifecycle-r6-20260825/receipt.json",
+      "artifact_sha256": "8ea0d0f710320a04707c744e09ac5694e2e7240db9a13ce83219cd896f338fa3",
+      "artifact_size": 4876023,
+      "claim": "The lifecycle subset is current and no longer belongs in the remaining repair denominator."
+    }
+  ]
+}

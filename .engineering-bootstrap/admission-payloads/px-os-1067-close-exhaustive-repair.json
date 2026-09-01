@@ -1,0 +1,20 @@
+{
+  "gap_id": "PX-OS-1067",
+  "session_id": "repair-session:px-os-1067-exhaustive-installed-scenarios-repair-20260831",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000031426",
+  "outcome": "superseded",
+  "evidence": [
+    {
+      "reference": ".tmp/audit_walks_plans/542_exhaustive_installed_late_card_scenario_repair.md",
+      "artifact_sha256": "ddbdf3341976a5fd54012a784ea63c722cc04228917937735fe975922e6f5f70",
+      "artifact_size": 3971,
+      "claim": "Late-card repair and causal verification record."
+    },
+    {
+      "reference": ".engineering-bootstrap/test-evidence/sections/dashboard-extension.json",
+      "artifact_sha256": "723b1cfdd96f58a1867f8d71c03dbf7fe7606645bf7b2fc3c67bb700d2627fa1",
+      "artifact_size": 1405,
+      "claim": "Passing but denominator-polluted section receipt; superseded before freeze."
+    }
+  ]
+}

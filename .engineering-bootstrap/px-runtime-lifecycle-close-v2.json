@@ -1,0 +1,21 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-runtime-lifecycle-finalization-v2-20260825",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022960",
+  "outcome": "completed",
+  "reason": "Asynchronous Agent resume, exact signed worker-generation reconciliation, terminal-safe Workflow cancellation, and UI lifecycle expectations passed focused tests, both affected section gates, and the owned current-source lifecycle campaign.",
+  "evidence": [
+    {
+      "reference": "evidence/operational-ui-walk-current-source-final-lifecycle-r6-20260825/receipt.json",
+      "artifact_sha256": "8ea0d0f710320a04707c744e09ac5694e2e7240db9a13ce83219cd896f338fa3",
+      "artifact_size": 4876023,
+      "claim": "All 31 targeted lifecycle controls rendered, were attempted and observed; Agent and Workflow durable runs reopened; all operations were valid with zero lifecycle or host errors."
+    },
+    {
+      "reference": ".engineering-bootstrap/test-evidence/sections/studio-memory-graph.json",
+      "artifact_sha256": "5c0c05db9fec30dbc33c16f259eab6fc28e12f29a9415d701af2663932d4aea4",
+      "artifact_size": 3541,
+      "claim": "The affected Studio/runtime governed section passed after the repair."
+    }
+  ]
+}

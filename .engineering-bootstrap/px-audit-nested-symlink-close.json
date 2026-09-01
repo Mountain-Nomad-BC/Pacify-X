@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-audit-nested-excluded-symlinks-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022994",
+  "outcome": "completed",
+  "reason": "Nested symlinks inside an excluded real-directory boundary are now explicitly counted and inventory-hash-bound without traversal, while a symlink boundary remains rejected. Sixteen focused tests pass and the single r4 exhaustive reproduction completed in 140.2 seconds with 116073 files, 50 excluded symlinks, 6893698483 bytes accounted, and zero errors.",
+  "evidence": [
+    {
+      "reference": "evidence/adversarial-audit/px-audit-nested-excluded-symlink-repair-20260826.json",
+      "artifact_sha256": "52580567166455c28d5594dad302211f42c549a144f25557b13b83acb504644a",
+      "artifact_size": 1649,
+      "claim": "Focused and exhaustive evidence closes PX-AUD2-002 without making a Pacify-X certification claim."
+    }
+  ]
+}

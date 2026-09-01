@@ -368,6 +368,7 @@ def evidence_reference_sha256(evidence: Mapping[str, Any]) -> str:
 def _validate_card_control_scope(
     cards: Mapping[str, Mapping[str, Any]],
     relationships: list[Mapping[str, Any]],
+    surfaces: Mapping[str, Mapping[str, Any]],
     payload: Mapping[str, Any],
 ) -> dict[str, Any]:
     gap_id = str(payload.get("gap_id") or "")
@@ -420,6 +421,43 @@ def _validate_card_control_scope(
                 raise ValueError("non-visible card control scope source_refs are invalid")
         result["path_id"] = path_id
         result["source_refs"] = json.loads(_canonical(source_refs))
+    elif kind == "typed_controls":
+        bindings = payload.get("bindings")
+        if bindings is not None:
+            if not isinstance(bindings, list) or not bindings:
+                raise ValueError("typed control scope bindings must be a non-empty array")
+            normalized_bindings: list[dict[str, str]] = []
+            identities: set[tuple[str, str]] = set()
+            for binding in bindings:
+                if not isinstance(binding, Mapping) or set(binding) != {
+                    "surface_id", "control_id"
+                }:
+                    raise ValueError(
+                        "typed control scope bindings require exact surface_id and control_id"
+                    )
+                surface_id = str(binding.get("surface_id") or "").strip()
+                control_id = str(binding.get("control_id") or "").strip()
+                surface = surfaces.get(surface_id)
+                if (
+                    not surface_id
+                    or not control_id
+                    or not isinstance(surface, Mapping)
+                    or control_id not in set(map(str, surface.get("known_controls", [])))
+                ):
+                    raise ValueError(
+                        "typed control scope binding must reference a current known control"
+                    )
+                identity = (surface_id, control_id)
+                if identity in identities:
+                    raise ValueError("typed control scope bindings must be unique")
+                identities.add(identity)
+                normalized_bindings.append(
+                    {"surface_id": surface_id, "control_id": control_id}
+                )
+            result["bindings"] = sorted(
+                normalized_bindings,
+                key=lambda item: (item["surface_id"], item["control_id"]),
+            )
     return result
 
 
@@ -1339,7 +1377,9 @@ def project_events(
             })
         elif kind in {"card_control_scope_set", "card_control_scope_revised"}:
             gap_id = str(payload.get("gap_id") or "")
-            validated = _validate_card_control_scope(cards, relationships, payload)
+            validated = _validate_card_control_scope(
+                cards, relationships, surfaces, payload
+            )
             current = cards[gap_id].get("control_scope_disposition")
             if kind == "card_control_scope_set":
                 if current is not None:
@@ -1560,7 +1600,42 @@ def project_events(
     control_scope_conflicts: list[str] = []
     for gap_id, card in cards.items():
         explicit = card.get("control_scope_disposition")
-        if card["linked_controls"]:
+        explicit_bindings = (
+            explicit.get("bindings")
+            if isinstance(explicit, Mapping)
+            and explicit.get("kind") == "typed_controls"
+            else None
+        )
+        if isinstance(explicit_bindings, list) and explicit_bindings:
+            bindings = sorted(
+                json.loads(_canonical(explicit_bindings)),
+                key=lambda item: (item["surface_id"], item["control_id"]),
+            )
+            missing_bindings = [
+                binding for binding in bindings
+                if binding["surface_id"] not in surfaces
+                or binding["control_id"] not in set(map(
+                    str,
+                    surfaces[binding["surface_id"]].get("known_controls", []),
+                ))
+            ]
+            unexpected_links = [
+                binding for binding in card["linked_controls"]
+                if binding not in bindings
+            ]
+            card["control_resolution"] = {
+                "kind": "typed_controls",
+                "resolved": not missing_bindings and not unexpected_links,
+                "bindings": bindings,
+                "scope_revision": dict(explicit),
+            }
+            if missing_bindings:
+                card["control_resolution"]["missing_bindings"] = missing_bindings
+            if unexpected_links:
+                card["control_resolution"]["unexpected_links"] = unexpected_links
+                card["control_resolution"]["explicit_scope_conflict"] = True
+                control_scope_conflicts.append(gap_id)
+        elif card["linked_controls"]:
             card["control_resolution"] = {
                 "kind": "typed_controls",
                 "resolved": True,

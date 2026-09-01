@@ -1,0 +1,37 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "release-session:px-unified-revision-push-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023006",
+  "authority": "User explicitly requested all Pacify-X repairs be completed and GitHub be current and merged, authorizing all reversible Git/GitHub work while requiring approval only for irreversible destructive effects.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect the repair-frozen processing-order state, complete local Git status and diffs, tracked/untracked classification, ignore/export rules, local/remote ancestry, and exact revision-bound generated projections before staging."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Refresh only revision/generated projections explicitly required by the repair-frozen reconciliation; stage the intended Pacify-X product, repair, test, workflow, documentation, and retained evidence changes while excluding accidental or local-only artifacts; create one unified commit; write session-owned revision evidence and append-only ledger events."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["Run the single repair-frozen revision/generated reconciliation allowed by the processing oracle, bounded Git diff/status/integrity commands, create one commit, push that exact commit to origin/main with all interactive credential prompts disabled, and observe the resulting remote workflow trigger. Do not merge stale Dependabot PRs, force-push, rewrite history, tag, release, run broad tests, full profile, validate, or certify in this session."]
+    }
+  ],
+  "expected_effect": "Turn the repair-frozen unified worktree into one reviewable commit on remote main, superseding the incomplete Dependabot updates and triggering real remote multi-OS validation.",
+  "rollback": "Before push, unstage only session-staged paths or revert the session commit while preserving file content; after push, use a normal forward revert commit if required. Never force-push or rewrite published history.",
+  "expires_utc": "2026-08-26T16:00:00Z",
+  "evidence": [
+    {
+      "reference": "evidence/release/repair-freeze-20260826.json",
+      "artifact_sha256": "cb14a45aabc6dd0e30ca22c98d8c1aab14af9f5877db2b99f2fb7a6d2495d358",
+      "artifact_size": 1549,
+      "claim": "The governed processing order permits revision reconciliation after repair freeze."
+    },
+    {
+      "reference": "evidence/adversarial-audit/github-dependabot-live-reconciliation-20260826.json",
+      "artifact_sha256": "4ee151d6fd794ea2101e42da8c2fd649ea138ace2726b7c63117836c2bc2bd48",
+      "artifact_size": 3099,
+      "claim": "Remote main is stale and requires the unified local repair rather than either Dependabot PR."
+    }
+  ]
+}

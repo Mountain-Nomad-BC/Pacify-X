@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022996",
+  "learned": "The superseding second adversarial audit permits local repair freeze with zero open local product defects, while explicitly withholding certification pending live GitHub/Dependabot reconciliation and real-host remote OS execution.",
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": ["PX-OS-1065"],
+  "evidence": [
+    {
+      "reference": "evidence/adversarial-audit/second-adversarial-audit-final-20260826.json",
+      "artifact_sha256": "3ae3299985693b4eee3b76d572ac206038b8b9caa7f323b808366bd0517fd2ce",
+      "artifact_size": 4066,
+      "claim": "Local repair freeze is ready; live remote truth remains required before committing or certifying."
+    }
+  ]
+}

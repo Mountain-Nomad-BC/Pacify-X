@@ -1,0 +1,21 @@
+{
+  "gap_id": "PX-OS-1067",
+  "session_id": "repair-session:px-os-1067-operational-denominator-20260831",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000031618",
+  "outcome": "completed",
+  "reason": "The complete four-part operational repair denominator is focused-green. The failed full walk was not retried. Exact Studio terminal correlation, causal failure collection, and launcher progress retention passed focused tests; the one Studio-only diagnostic completed with verified identity and zero profile failures, and every owned resource was reclaimed.",
+  "evidence": [
+    {
+      "reference": "evidence/release/pre-certification-adversarial-audit-20260831.json",
+      "claim": "Updated authoritative audit records the complete repaired denominator and the prohibition on another full operational repair-loop run."
+    },
+    {
+      "reference": "evidence/operational-ui-walk-current-source-precert-studio-diagnostic-20260831/receipt.json",
+      "claim": "The single focused Studio diagnostic retained verified source identity, exact request-bound setup success, zero profile failures, and no full operational completion claim."
+    },
+    {
+      "reference": "evidence/operational-gap-ledger/current-source-precert-studio-diagnostic-host-walk-20260831.json",
+      "claim": "The supervised focused diagnostic exited normally and reclaimed its exact ephemeral workspace."
+    }
+  ]
+}

@@ -44,14 +44,33 @@ def _has_link_boundary(path: Path, root: Path) -> bool:
 
 
 def _snapshot(path: Path) -> dict[str, object]:
-    stat = path.stat()
-    data = path.read_bytes()
+    with path.open("rb") as stream:
+        stat = os.fstat(stream.fileno())
+        data = stream.read()
     return {
         "size": len(data),
         "mtime_ns": stat.st_mtime_ns,
+        "device": stat.st_dev,
+        "inode": stat.st_ino,
         "sha256": hashlib.sha256(data).hexdigest(),
         "bytes": data,
     }
+
+
+def _snapshot_metadata(snapshot: Mapping[str, object]) -> dict[str, object]:
+    return {
+        key: snapshot[key]
+        for key in ("size", "mtime_ns", "device", "inode", "sha256")
+    }
+
+
+def _write_record(path: Path, record: Mapping[str, object]) -> str:
+    encoded = (json.dumps(dict(record), indent=2) + "\n").encode("utf-8")
+    with path.open("xb") as stream:
+        stream.write(encoded)
+        stream.flush()
+        os.fsync(stream.fileno())
+    return hashlib.sha256(encoded).hexdigest()
 
 
 def load_state_classifications(root: Path) -> dict[str, dict[str, str]]:
@@ -102,21 +121,66 @@ def _quarantine_corrupt(
         raise AuthoritativeStateError("link or junction boundary refused")
     first = _snapshot(source)
     second = _snapshot(source)
-    identity = ("size", "mtime_ns", "sha256")
+    identity = ("size", "mtime_ns", "device", "inode", "sha256")
     if any(first[key] != second[key] for key in identity):
         raise AuthoritativeStateError("source changed during quarantine snapshots")
     destination_dir = quarantine / "corrupt" / artifact_kind
     destination_dir.mkdir(parents=True, exist_ok=True)
     destination = destination_dir / f"{str(second['sha256'])[:16]}-{source.name}"
     receipt = destination.with_suffix(destination.suffix + ".receipt.json")
-    if destination.exists() or receipt.exists():
+    intent = Path(str(destination) + ".intent.json")
+    recovery = Path(str(destination) + ".recovery.json")
+    if any(item.exists() for item in (destination, receipt, intent, recovery)):
         raise AuthoritativeStateError("quarantine destination already exists")
     immediate = _snapshot(source)
     if any(second[key] != immediate[key] for key in identity):
         raise AuthoritativeStateError("source changed immediately before quarantine")
-    os.replace(source, destination)
-    if hashlib.sha256(destination.read_bytes()).hexdigest() != immediate["sha256"]:
-        raise AuthoritativeStateError("quarantined bytes failed integrity check")
+    created = datetime.now(timezone.utc).isoformat()
+    intent_record = {
+        "schema_version": "1.0",
+        "artifact_kind": artifact_kind,
+        "classification": "authoritative",
+        "decision": "quarantine_intent",
+        "original_path": source.as_posix(),
+        "planned_custody_path": destination.as_posix(),
+        "expected": _snapshot_metadata(immediate),
+        "error_type": type(parse_error).__name__,
+        "created_utc": created,
+    }
+    intent_sha256 = _write_record(intent, intent_record)
+    moved = False
+    try:
+        os.replace(source, destination)
+        moved = True
+        observed = _snapshot(destination)
+        if any(immediate[key] != observed[key] for key in identity):
+            raise RuntimeError("filesystem_identity_mismatch")
+    except (OSError, RuntimeError) as error:
+        failure = str(error) if isinstance(error, RuntimeError) else type(error).__name__
+        custody = destination if moved and destination.exists() else source
+        recovery_record = {
+            "schema_version": "1.0",
+            "artifact_kind": artifact_kind,
+            "classification": "authoritative",
+            "decision": "quarantine_recovery_required",
+            "original_path": source.as_posix(),
+            "custody_path": custody.as_posix(),
+            "moved": moved,
+            "failure": failure,
+            "expected": _snapshot_metadata(immediate),
+            "intent_path": intent.as_posix(),
+            "intent_sha256": intent_sha256,
+            "created_utc": datetime.now(timezone.utc).isoformat(),
+        }
+        recovery_receipt = intent
+        try:
+            _write_record(recovery, recovery_record)
+            recovery_receipt = recovery
+        except OSError:
+            pass
+        raise AuthoritativeStateError(
+            "authoritative quarantine recovery required", receipt=recovery_receipt
+        ) from error
     record = {
         "schema_version": "1.0",
         "artifact_kind": artifact_kind,
@@ -126,14 +190,41 @@ def _quarantine_corrupt(
         "quarantined_path": destination.as_posix(),
         "sha256": immediate["sha256"],
         "bytes": immediate["size"],
+        "filesystem_identity": {
+            "device": immediate["device"],
+            "inode": immediate["inode"],
+        },
+        "intent_path": intent.as_posix(),
+        "intent_sha256": intent_sha256,
         "error_type": type(parse_error).__name__,
-        "created_utc": datetime.now(timezone.utc).isoformat(),
+        "created_utc": created,
     }
-    with receipt.open("x", encoding="utf-8", newline="\n") as stream:
-        json.dump(record, stream, indent=2)
-        stream.write("\n")
-        stream.flush()
-        os.fsync(stream.fileno())
+    try:
+        _write_record(receipt, record)
+    except OSError as error:
+        recovery_record = {
+            "schema_version": "1.0",
+            "artifact_kind": artifact_kind,
+            "classification": "authoritative",
+            "decision": "quarantine_recovery_required",
+            "original_path": source.as_posix(),
+            "custody_path": destination.as_posix(),
+            "moved": True,
+            "failure": "receipt_write_failed",
+            "expected": _snapshot_metadata(immediate),
+            "intent_path": intent.as_posix(),
+            "intent_sha256": intent_sha256,
+            "created_utc": datetime.now(timezone.utc).isoformat(),
+        }
+        recovery_receipt = intent
+        try:
+            _write_record(recovery, recovery_record)
+            recovery_receipt = recovery
+        except OSError:
+            pass
+        raise AuthoritativeStateError(
+            "authoritative quarantine recovery required", receipt=recovery_receipt
+        ) from error
     return receipt
 
 

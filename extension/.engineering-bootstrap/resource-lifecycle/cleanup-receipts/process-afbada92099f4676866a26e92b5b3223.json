@@ -1,0 +1,29 @@
+{
+  "action_id": "test-runner:focused-dashboard-ui-action-inventory-20260831",
+  "audit_record_hash": "a84b179d425426a869bc6a2003519533e31db522bafddc5eca427a23d936ea51",
+  "duration_seconds": 1.0902960999992501,
+  "ended_at": "2026-09-01T01:15:51.174Z",
+  "exit_code": 1,
+  "failure_type": null,
+  "receipt_id": "process-afbada92099f4676866a26e92b5b3223",
+  "resource_id": "process-817450ebd8084073b77f681bd1eb1c5a",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-09-01T01:15:50.084Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 23099,
+    "total_bytes": 23099,
+    "truncated": false
+  },
+  "tree_closed": true
+}

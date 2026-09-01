@@ -1,0 +1,31 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "closure-session:px-final-validation-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023167",
+  "authority": "User-authorized ordered completion of all Pacify-X repairs and validation before packaging.",
+  "expected_effect": "Run exactly one governed validation against the current passing full-profile revision and advance the campaign to validated only on success.",
+  "rollback": "Retain the validation failure denominator, return the campaign to repair, and do not rerun validation or enter packaging.",
+  "expires_utc": "2026-09-01T00:00:00Z",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect only the passing full-profile proof, full_profile_passed campaign state, current section/group receipts, validation gate inputs, shared lock state, and resulting validation receipt."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Run exactly one governed validation; retain its receipt; advance the campaign from full_profile_passed to validated only on success. On failure return to repair and stop. Do not package, install, publish, commit, push, merge, or certify."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["With PYTHONDONTWRITEBYTECODE=1 set, run one processing-order validate-stage check followed by exactly one python -m runtime.cli validate. Do not run a second validation, any test profile/group/section, projection rebuild, package, install, publish, commit, push, merge, or certify."]
+    }
+  ],
+  "evidence": [
+    {
+      "reference": "evidence/release/one-generation-final-full-profile-proof-20260826.json",
+      "artifact_sha256": "6d8cfdbb2573dfbb05ad7e564560b68c1f6cf3a94b2399fde7aea338e4cb7f92",
+      "artifact_size": 1007,
+      "claim": "Passing full-profile predecessor for the one validation."
+    }
+  ]
+}

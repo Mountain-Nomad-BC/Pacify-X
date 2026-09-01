@@ -1,0 +1,31 @@
+{
+  "session_id": "verification-session:px-governed-sections-current-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023027",
+  "gap_id": "PX-OS-1065",
+  "authority": "User authorized all remaining reversible Pacify-X work and requires governed operational correctness before full-profile validation or certification.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect revision_reconciled processing order, governed section status, exact section dependencies, and current section receipt identities only."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Allow repository-owned test-section commands to write only their governed section/chunk receipts and registered test resources; advance the campaign to sections_current only when every required section is passed, fresh, and dependency-current; retain section-closure evidence and append ledger events. Do not change product source or generated projections."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["Run python -m runtime.cli test-section run <section> for each stale required section exactly once in dependency order, then test-section status and processing-order checks. Do not run raw unsupervised unittest, test groups, full profile, validate, package, install, deploy, publish, commit, push, merge, or certify."]
+    }
+  ],
+  "expected_effect": "Make all required governed section receipts current against the reconciled revision before any whole-profile run.",
+  "rollback": "Retain failed section receipts and keep the campaign at revision_reconciled if any section fails; do not erase test evidence or modify product source.",
+  "expires_utc": "2026-08-26T20:00:00Z",
+  "evidence": [
+    {
+      "reference": "evidence/release/final-revision-reconciliation-20260826.json",
+      "claim": "Current revision predecessor for governed section execution.",
+      "artifact_sha256": "0056bbaad2b835d208216a44a371ed4eba62c53060647fc04df5fa6c092689ae",
+      "artifact_size": 2424
+    }
+  ]
+}

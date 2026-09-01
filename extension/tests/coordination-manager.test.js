@@ -27,6 +27,23 @@ test('coordination inspection does not initialize or write an absent store', t =
   assert.deepEqual(fs.readdirSync(root).sort(), before);
 });
 
+test('authoritative workspace identity accepts only Windows drive-letter case equivalence', t => {
+  if (process.platform !== 'win32') return t.skip('Windows path identity regression');
+  const root = fixture(t);
+  createParallelPlan(root, actorA, { objective: 'path identity', tasks: [{ id: 'identity', title: 'Identity', claims: ['src/identity'] }] });
+  const alternateDriveCase = root.replace(/^([A-Za-z]):/, (_match, drive) => `${drive === drive.toUpperCase() ? drive.toLowerCase() : drive.toUpperCase()}:`);
+  assert.notEqual(alternateDriveCase, root);
+  assert.equal(readCoordination(alternateDriveCase).state.tasks.find(item => item.id === 'identity').title, 'Identity');
+  assert.equal(fs.existsSync(path.join(root, '.engineering-bootstrap', 'coordination', 'quarantine')), false);
+
+  const statePath = path.join(root, '.engineering-bootstrap', 'coordination', 'state.json');
+  const state = JSON.parse(fs.readFileSync(statePath, 'utf8'));
+  state.project.root = path.join(root, 'different-workspace');
+  fs.writeFileSync(statePath, `${JSON.stringify(state, null, 2)}\n`, 'utf8');
+  assert.throws(() => readCoordination(root), /coordination-authoritative-state-workspace-mismatch/);
+  assert.equal(fs.existsSync(path.join(root, '.engineering-bootstrap', 'coordination', 'quarantine')), true);
+});
+
 test('parallel plan accepts disjoint work and rejects unordered overlapping ancestor scopes', t => {
   const root = fixture(t);
   createParallelPlan(root, actorA, { objective: 'disjoint', tasks: [

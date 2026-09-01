@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023051",
+  "learned": "PX-AUD2-008 and PX-AUD2-009 are repaired. The single top-level full profile can refresh stale groups through the supervised owner with host tool discovery, the full profile budget, bounded evidence, fail-closed behavior, and current-receipt reuse. Repair is zero-unresolved.",
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "unresolved_branch_gap_ids": ["PX-OS-1065"],
+  "newly_discovered_gap_ids": [],
+  "evidence": [
+    {
+      "reference": "evidence/release/full-profile-child-environment-causal-proof-20260826.json",
+      "artifact_sha256": "614942000379326ec61f8392aa3929d18037ecd0af722405028b8f931e092058",
+      "artifact_size": 790,
+      "claim": "Final zero-unresolved full-profile orchestration proof."
+    }
+  ]
+}

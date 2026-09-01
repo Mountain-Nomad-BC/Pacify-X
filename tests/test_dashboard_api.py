@@ -6,6 +6,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
+from runtime import dashboard_api
 from runtime.dashboard_api import (
     _completion,
     _hardware,
@@ -23,6 +24,45 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class DashboardApiTests(unittest.TestCase):
+    def test_extension_source_identity_binds_host_sources_and_action_contract(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            extension = root / "extension"
+            (extension / "media" / "dashboard").mkdir(parents=True)
+            (extension / "src").mkdir()
+            (extension / "resources" / "ui").mkdir(parents=True)
+            (extension / "package.json").write_text(
+                json.dumps({"version": "1.2.3"}), encoding="utf-8"
+            )
+            (extension / "media" / "dashboard" / "app.js").write_text(
+                "dashboard", encoding="utf-8"
+            )
+            (extension / "media" / "sidebar.js").write_text(
+                "const ASSET_PROTOCOL = 'px.asset/1.0';", encoding="utf-8"
+            )
+            (extension / "src" / "sidebarMessages.js").write_text(
+                "const MESSAGE_SCHEMA_VERSION = 'px.message/1.0';",
+                encoding="utf-8",
+            )
+            host_source = extension / "src" / "extension.js"
+            host_source.write_text("host-v1", encoding="utf-8")
+            action_contract = extension / "resources" / "ui" / "action-inventory.json"
+            action_contract.write_text('{"actions":[]}', encoding="utf-8")
+
+            initial = dashboard_api._extension_source_identity(root)
+            host_source.write_text("host-v2", encoding="utf-8")
+            host_changed = dashboard_api._extension_source_identity(root)
+            action_contract.write_text('{"actions":["refresh"]}', encoding="utf-8")
+            contract_changed = dashboard_api._extension_source_identity(root)
+
+        self.assertEqual(initial["asset_file_count"], 5)
+        self.assertNotEqual(initial["asset_sha256"], host_changed["asset_sha256"])
+        self.assertNotEqual(
+            host_changed["asset_sha256"], contract_changed["asset_sha256"]
+        )
+
     def test_live_completion_recomputes_from_exact_artifact_binding(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -624,6 +664,52 @@ class DashboardApiTests(unittest.TestCase):
         self.assertFalse(result["available"])
         self.assertIsNone(result["total_nodes"])
         self.assertEqual(result["build_action"]["operation"], "project-map build")
+
+    def test_repository_graph_rejects_oversized_input_before_json_decode(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            project = Path(directory)
+            graph = (
+                project
+                / ".engineering-bootstrap"
+                / "project-map"
+                / "architecture-graph.json"
+            )
+            graph.parent.mkdir(parents=True)
+            with graph.open("wb") as handle:
+                handle.truncate(dashboard_api.REPOSITORY_GRAPH_MAX_BYTES + 1)
+            with patch.object(
+                dashboard_api.json,
+                "loads",
+                side_effect=AssertionError("oversized graph body was parsed"),
+            ):
+                result = query_graph(ROOT, project=project, view="repository")
+        self.assertFalse(result["available"])
+        self.assertIn("byte input limit", result["limitations"][0])
+        self.assertIsNone(result["build_action"])
+
+    def test_repository_graph_rejects_excessive_record_count_before_materialization(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            project = Path(directory)
+            graph = (
+                project
+                / ".engineering-bootstrap"
+                / "project-map"
+                / "architecture-graph.json"
+            )
+            graph.parent.mkdir(parents=True)
+            graph.write_text(
+                json.dumps(
+                    {
+                        "nodes": [{}]
+                        * (dashboard_api.REPOSITORY_GRAPH_MAX_NODES + 1),
+                        "edges": [],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            result = query_graph(ROOT, project=project, view="repository")
+        self.assertFalse(result["available"])
+        self.assertIn("node input limit", result["limitations"][0])
 
     def test_bare_duplicate_graph_id_requires_qualified_key(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

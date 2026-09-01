@@ -41,6 +41,8 @@ DASHBOARD_SURFACE_BINDINGS = {
 # actions to stable per-surface identities.  Generation fails closed when a
 # current action contract has no typed surface owner.
 CURRENT_ACTION_SURFACE_BINDINGS: dict[str, dict[str, list[str]]] = {
+    "previewEnvironmentLifecycleRestore": {"workflows": ["previewEnvironmentLifecycleRestore"]},
+    "executeEnvironmentLifecycleRestore": {"workflows": ["executeEnvironmentLifecycleRestore"]},
     "resumeWorkingStudioDraft": {
         "agent-studio": ["resumeWorkingStudioDraft"],
         "workflow-studio": ["resumeWorkingStudioDraft"],
@@ -97,6 +99,8 @@ CURRENT_ACTION_SURFACE_BINDINGS: dict[str, dict[str, list[str]]] = {
     "openProjectModuleMap": {"projects": ["openProjectModuleMap"]},
     "disconnectCanonicalMemory": {"memory": ["disconnectCanonicalMemory"]},
     "graphLoadAll": {"knowledge-graph": ["graphLoadAll"]},
+    "graphFilterEdgeBundle": {"knowledge-graph": ["graphFilterEdgeBundle"]},
+    "graphClearEdgeBundle": {"knowledge-graph": ["graphClearEdgeBundle"]},
     "importCatalogDefinition": {
         "agents": ["importCatalogDefinition.agent"],
         "workflows": ["importCatalogDefinition.workflow"],

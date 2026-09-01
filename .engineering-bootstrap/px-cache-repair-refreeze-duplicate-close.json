@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "release-session:px-cache-repair-refreeze-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023038",
+  "outcome": "superseded",
+  "reason": "The predecessor ordered-handoff session already owns freeze, one projection rebuild, and one testing-governance retry. This duplicate session only observed that repair_frozen was already reached and performed no mutation.",
+  "evidence": [
+    {
+      "reference": "evidence/release/cache-hygiene-governance-causal-proof-20260826.json",
+      "artifact_sha256": "978f51fe20620606230c7eb6b840ff19735ca4060ff688f478546ce56195eb3f",
+      "artifact_size": 921,
+      "claim": "Zero-unresolved repair predecessor retained by the ordered handoff."
+    }
+  ]
+}

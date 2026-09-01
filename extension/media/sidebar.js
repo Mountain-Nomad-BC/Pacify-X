@@ -14,7 +14,11 @@
   let renderAcknowledgementEnabled = false;
 
   const esc = value => String(value ?? '').replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character]));
-  const post = message => vscode.postMessage({ schemaVersion: VERSION, ...message });
+  const post = message => {
+    const envelope = { schemaVersion: VERSION, ...message };
+    window.dispatchEvent(new CustomEvent('px-sidebar-outbound-request', { detail: envelope }));
+    vscode.postMessage(envelope);
+  };
   const percent = value => value == null ? '—' : `${Number(value).toFixed(Number(value) % 1 ? 1 : 0)}%`;
   const symbol = state => ({ complete: '✓', active: '◉', verifying: '↻', blocked: '⊘', failed: '!', stale: '!', recovering: '↻', queued: '○', waiting: '○' }[state] || '•');
   const time = value => value ? new Intl.DateTimeFormat(undefined, { hour: '2-digit', minute: '2-digit' }).format(new Date(value)) : 'unknown';
@@ -62,7 +66,7 @@
 
   function renderWaves(p) {
     if (!p.waves.length) { patch('waves', [], ''); return; }
-    const expandedWaves = new Set(p.ui.expandedWaveIds.length ? p.ui.expandedWaveIds : [p.execution?.currentWaveId].filter(Boolean));
+    const expandedWaves = new Set(Array.isArray(p.ui.expandedWaveIds) ? p.ui.expandedWaveIds : [p.execution?.currentWaveId].filter(Boolean));
     const expandedTasks = new Set(p.ui.expandedTaskIds);
     patch('waves', [p.waves, [...expandedWaves], [...expandedTasks]], `${sectionTitle('PLAN WAVES', p.waves.length)}<div class="tree">${p.waves.map(wave => {
       const expanded = expandedWaves.has(wave.id); return `<div class="wave"><button class="tree-row wave-row" data-toggle-wave="${esc(wave.id)}" aria-expanded="${expanded}" title="${esc(wave.name)}"><span aria-hidden="true">${expanded ? '▾' : '▸'}</span><span class="state-icon state-${esc(wave.status)}" aria-hidden="true">${symbol(wave.status)}</span><span class="row-label">${esc(wave.name)}</span><span class="row-percent">${esc(percent(wave.progressPercent))}</span></button>${expanded ? `<div class="tasks">${wave.tasks.map(task => taskHtml(task, expandedTasks)).join('')}</div>` : ''}</div>`;

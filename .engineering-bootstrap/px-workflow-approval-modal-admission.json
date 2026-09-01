@@ -1,0 +1,17 @@
+{
+  "session_id": "repair-session:px-workflow-approval-modal-20260825",
+  "gap_id": "PX-OS-1065",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022950",
+  "authority": "User explicitly authorized all remaining reversible Pacify-X repairs; only irreversible destructive effects require approval.",
+  "expected_effect": "Render the required governed workflow approval action from the real resolved dry-run modal and issue a new immutable VSIX.",
+  "rollback": "Revert only the resolved-preview approval branch, focused tests, package version, and generated 0.6.59 artifact while retaining append-only evidence.",
+  "expires_utc": "2026-08-26T10:00:00Z",
+  "effect_scopes": [
+    {"effect": "read", "scope": ["Inspect only resolved workflow preview rendering, approval-required session state, focused UI tests, package versions, and exact installed failure evidence."]},
+    {"effect": "write", "scope": ["Modify extension/media/dashboard/90-controller.js and focused dashboard/contract tests for the workflow approval branch; advance extension package and lock versions to a new immutable version; build the VSIX; write session-owned evidence and append exact ledger events."]},
+    {"effect": "execute", "scope": ["Run focused dashboard tests, packaging checks, governed dashboard-extension and studio-memory-graph sections, and hidden session-owned exact-VSIX lifecycle probes. Do not run full profile, validate, deploy, publish, merge, or certify."]}
+  ],
+  "evidence": [
+    {"reference": "evidence/operational-ui-walk-installed-vsix-0.6.58-lifecycle-r3/receipt.json", "claim": "Exact installed proof of the unreachable workflow approval action."}
+  ]
+}

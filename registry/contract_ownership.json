@@ -1,7 +1,7 @@
 {
   "schema_version": "2.0",
   "policy": "Every shipped schema has one explicit owner and an honest enforcement classification.",
-  "contract_count": 165,
+  "contract_count": 167,
   "records": [
     {
       "path": "contracts/agents/agency-agent-manifest.schema.json",
@@ -1291,6 +1291,29 @@
       ]
     },
     {
+      "path": "contracts/memory/semantic-memory-envelope.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:memory:semantic-memory-envelope",
+      "contract_version": "1.0.0",
+      "title": "Structured semantic memory envelope",
+      "owner": "runtime/semantic_memory.py",
+      "producers": [
+        "runtime/semantic_memory.py",
+        "runtime/memory_fabric.py",
+        "runtime/memory_intelligence.py",
+        "runtime/project_stream_orchestrator.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "memory_lifecycle_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_memory_intelligence.py",
+        "tests/test_clean_room_capabilities.py"
+      ]
+    },
+    {
       "path": "contracts/memory-record.schema.json",
       "contract_id": "urn:engineering-loop-bootstrap:contract:memory-record",
       "contract_version": "1.0.0",
@@ -1630,6 +1653,25 @@
       "tests": [
         "tests/test_contract_runtime.py",
         "tests/test_health_model.py"
+      ]
+    },
+    {
+      "path": "contracts/operations/local-model-runtime.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:operations:local-model-runtime",
+      "contract_version": "1.0.0",
+      "title": "Pacify-X governed local model runtime record",
+      "owner": "runtime/local_model_runtime.py",
+      "producers": [
+        "runtime/local_model_runtime.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "local_model_lifecycle_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_local_model_runtime.py"
       ]
     },
     {

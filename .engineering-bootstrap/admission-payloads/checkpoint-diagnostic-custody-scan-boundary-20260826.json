@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023300",
+  "learned": "All 126 unreviewed incomplete-marker findings are duplicates inside two registered, retained .engineering-bootstrap/diagnostics workspaces. Canonical repository source has zero unreviewed findings. The scanner excludes root .px/preserved-skills custody but does not exclude PX-owned retained diagnostic custody, so clean-checkout evidence copied beneath the workspace is incorrectly treated as live product source.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": [],
+  "next_action": "Repair the ten remaining PX-CURRENT tracks in dependency order, beginning with the tested-source Studio worker handoff and current extension-host/listener health.",
+  "evidence": [
+    {
+      "reference": ".engineering-bootstrap/test-evidence/assurance-current/structural.json",
+      "claim": "Exact structural failure whose 126 marker findings are entirely confined to registered diagnostic custody.",
+      "artifact_sha256": "99b9738932e4bcb84aecfaf4942b9e268e4f758ebabb65ec0207ce47f417ce50",
+      "artifact_size": 171709
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "session_id": "verification-session:px-profile-orchestration-final-handoff-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023049",
+  "gap_id": "PX-OS-1065",
+  "authority": "User requested completion through repairs and real governed operation; AGENTS.md requires current sections and exactly one owned full profile before validation.",
+  "effect_scopes": [
+    {"effect": "read", "scope": ["Inspect zero-unresolved repair state, processing oracles, projection owner, testing-governance status, test-group/profile receipts, and registered process/workspace cleanup evidence."]},
+    {"effect": "write", "scope": ["Advance ordered phases through repair_frozen and revision_reconciled; rebuild generated projections exactly once; refresh only testing-governance receipt; advance to sections_current only when all sections are current; run exactly one actual top-level full profile which may refresh stale groups through its repaired owned orchestration; advance to full_profile_passed only on a passing reconciled receipt; retain evidence and append ledger events. Do not change product source."]},
+    {"effect": "execute", "scope": ["Run processing checks, one projection rebuild, focused generated/dependency/diff integrity, one testing-governance section, section status, and exactly one actual python -m runtime.cli test-profile run full. Do not run a second full profile, validate, package, install, deploy, publish, commit, push, merge, or certify."]}
+  ],
+  "expected_effect": "Produce current governed sections and the sole actual passing full-profile receipt on the repaired orchestration revision.",
+  "rollback": "Stop at the last passed phase and retain any failed owned receipt; do not rerun the full profile in this session or erase evidence.",
+  "expires_utc": "2026-08-27T01:00:00Z",
+  "evidence": [
+    {"reference": "evidence/release/full-profile-group-orchestration-causal-proof-20260826.json", "claim": "Reachable single-profile orchestration predecessor.", "artifact_sha256": "14824f6e1fbbd9d774223eac1b2a3c25a16e2ffead63f0bb948c7c983c96be35", "artifact_size": 1085}
+  ]
+}

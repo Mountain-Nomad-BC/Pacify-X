@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "verification-session:px-one-full-profile-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023042",
+  "outcome": "superseded",
+  "reason": "The full-profile command failed before test execution because all ten required test-group receipts were stale, despite the processing oracle allowing full_profile at sections_current. Zero profile tests ran and no profile receipt was written. PX-AUD2-008 requires an explicit groups_current processing stage before the single actual full-profile execution.",
+  "evidence": [
+    {"reference": "evidence/release/full-profile-precondition-gap-20260826.json", "claim": "Exact pre-execution processing-order defect.", "artifact_sha256": "6d527c5d1efadb9bb5f599714a731dacfe81ca618dae0d59701c9b0665f33a4b", "artifact_size": 933}
+  ]
+}

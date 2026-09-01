@@ -103,6 +103,20 @@ test('async process termination requests graceful exit without blocking the even
   assert.deepEqual(calls, ['SIGTERM']);
 });
 
+test('async Windows escalation cannot retain a stalled taskkill child past verification', async () => {
+  const events = new (require('node:events').EventEmitter)();
+  events.pid = 790; events.kill = () => true;
+  const killer = new (require('node:events').EventEmitter)();
+  killer.exitCode = null; killer.signalCode = null;
+  let unrefCalled = false; let killCalled = false;
+  killer.unref = () => { unrefCalled = true; };
+  killer.kill = () => { killCalled = true; return true; };
+  const result = await terminateProcessTreeAsync(events, { platform: 'win32', graceMs: 1, verifyMs: 10, spawn: () => killer });
+  assert.equal(result, false);
+  assert.equal(unrefCalled, true);
+  assert.equal(killCalled, true);
+});
+
 test('webview messages reject unknown operations, fields, dangerous shapes, and invalid bounded fields', () => {
   assert.equal(validateWebviewMessage({ type: 'refresh' }).type, 'refresh');
   assert.equal(validateWebviewMessage({ type: 'setupStudio', requestId: 'studio-setup:one' }).type, 'setupStudio');
@@ -156,6 +170,8 @@ test('webview messages reject unknown operations, fields, dangerous shapes, and 
   assert.throws(() => validateWebviewMessage({ type: 'createStudioDraft', requestId: '../stale request', kind: 'agent', payload: {} }), /field-invalid:requestId/);
   assert.equal(validateWebviewMessage({ type: 'studioOperation', kind: 'agent', operation: 'start', payload: {} }).operation, 'start');
   assert.equal(validateWebviewMessage({ type: 'studioOperation', requestId: 'resume:one', kind: 'workflow', operation: 'resume', payload: { run_id: 'run:one' } }).operation, 'resume');
+  const rollbackPayload = { skill_id: 'skill-one', version: '1.0.1', owner: 'human:owner', triggers: [], non_triggers: [], permissions: [], effects: [], resources: [], contracts: [], tests: [], provenance: { source: 'studio-catalog' }, lifecycle: 'promoted', promotion_receipt: '.engineering-bootstrap/studios/skills/skill-one/1.0.1/promotion-receipt.json' };
+  assert.equal(validateWebviewMessage({ type: 'studioOperation', requestId: 'rollback:one', kind: 'skill', operation: 'rollback', payload: rollbackPayload }).payload.promotion_receipt, rollbackPayload.promotion_receipt);
   assert.equal(validateWebviewMessage({ type: 'studioOperation', kind: 'knowledge', operation: 'browse', payload: {} }).operation, 'browse');
   assert.throws(() => validateWebviewMessage({ type: 'studioOperation', kind: 'agent', operation: 'delete', payload: {} }), /studio-operation/);
   assert.throws(() => validateWebviewMessage({ type: 'studioOperation', kind: 'agent', operation: 'test', payload: [] }), /studio-payload/);
@@ -164,6 +180,18 @@ test('webview messages reject unknown operations, fields, dangerous shapes, and 
   assert.equal(validateWebviewMessage({ type: 'operationalCardsQuery', requestId: 'cards-1', query: '', state: 'scoped', severity: 'critical', surface: '', owner: '', evidenceGap: false, offset: 0, limit: 50 }).limit, 50);
   assert.equal(validateWebviewMessage({ type: 'operationalInventoryQuery', requestId: 'inventory-1', surfaceId: '' }).surfaceId, '');
   assert.throws(() => validateWebviewMessage({ type: 'operationalCardQuery', requestId: 'card-1', gapId: '../wrong' }), /gapId/);
+  const dashboardViewState = {
+    active: 'knowledgeGraph', advancedOpen: true, capabilityKind: 'skills', agentScope: 'core', workflowScope: 'core',
+    environmentScope: 'graph', graphView: 'repository', graphMode: 'full', graphTarget: '', graphLayout: 'community', graphInspectorOpen: true,
+    graphDepth: 1, graphKind: '', graphStatus: '', graphCommunity: '', graphRelation: '', graphSavedViews: [], studioHistory: [], workingStudioDrafts: {}
+  };
+  assert.deepEqual(validateWebviewMessage({ type: 'dashboardViewState', state: dashboardViewState }).state, dashboardViewState);
+  const encodedDraft = JSON.stringify({ schema_version: 'px.studio-working-draft/1.0', kind: 'skill', draft: { skill_id: 'recovery.skill', version: '1.0.0', deeply: { nested: { semantic: { content: true } } } }, source_binding: null });
+  assert.equal(validateWebviewMessage({ type: 'dashboardViewState', state: { ...dashboardViewState, workingStudioDrafts: { skill: encodedDraft } } }).state.workingStudioDrafts.skill, encodedDraft);
+  assert.throws(() => validateWebviewMessage({ type: 'dashboardViewState', state: { ...dashboardViewState, workingStudioDrafts: { skill: JSON.parse(encodedDraft) } } }), /dashboardViewState/);
+  assert.throws(() => validateWebviewMessage({ type: 'dashboardViewState', state: { ...dashboardViewState, workingStudioDrafts: { skill: '{' } } }), /dashboardViewState/);
+  assert.throws(() => validateWebviewMessage({ type: 'dashboardViewState', state: { ...dashboardViewState, proof: 'not-admitted' } }), /dashboardViewState/);
+  assert.throws(() => validateWebviewMessage({ type: 'dashboardViewState', state: [] }), /dashboardViewState/);
 });
 
 test('shipped Studio protocol is an exact projection of the canonical contract', () => {

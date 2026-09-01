@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "release-session:px-repair-freeze-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023001",
+  "outcome": "completed",
+  "reason": "The governed processing-order state advanced once through operational_verification to repair_frozen using retained 929-control, installed-host, and second-adversarial evidence. Revision reconciliation is now allowed; no revision, section, profile, validation, package, install, or certification work ran in this session.",
+  "evidence": [
+    {
+      "reference": "evidence/release/repair-freeze-20260826.json",
+      "artifact_sha256": "cb14a45aabc6dd0e30ca22c98d8c1aab14af9f5877db2b99f2fb7a6d2495d358",
+      "artifact_size": 1549,
+      "claim": "Exact repair-freeze state and predecessor evidence."
+    }
+  ]
+}

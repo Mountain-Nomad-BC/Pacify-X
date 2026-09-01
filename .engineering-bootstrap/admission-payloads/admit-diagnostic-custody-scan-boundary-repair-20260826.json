@@ -1,0 +1,31 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-diagnostic-custody-scan-boundary-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023303",
+  "authority": "User requested completion of every causal Pacify-X repair before revision reconciliation or certification.",
+  "expected_effect": "Make the incomplete-implementation scanner ignore PX-owned diagnostic custody while continuing to scan canonical source, prove the boundary with a regression, refresh only causally affected generated owners, and rerun the owning changed section plus structural gate.",
+  "rollback": "Revert only the scanner boundary, its focused regression, and directly regenerated owners if the regression permits canonical-source omissions or the focused gates fail.",
+  "expires_utc": "2026-09-05T18:00:00Z",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect .px/skills/audit-incomplete-implementations/scripts/audit_incomplete.py, tests/test_capability_mining_skills.py and other direct tests referencing that scanner, registry/test_profiles.json ownership for those paths, directly affected generated projections, and focused gate/section receipts."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Modify only .px/skills/audit-incomplete-implementations/scripts/audit_incomplete.py to exclude .engineering-bootstrap/diagnostics custody, its directly owning focused test file, registry/test_profiles.json only if the changed source/test is not already section-owned, directly affected generated projection files, and one focused non-certifying repair evidence file plus changed section/focused gate receipts."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["Run only scanner-focused tests, the incomplete audit in a registered disposable reproduction if needed, directly affected projection builders, the owning changed section gate, and independent generated, registry, and structural gates with bytecode disabled. Do not run a full profile, validate, package, install, service mutation, Git commit/push/merge, or certification."]
+    }
+  ],
+  "evidence": [
+    {
+      "reference": ".engineering-bootstrap/test-evidence/assurance-current/structural.json",
+      "claim": "All upstream focused gates pass; structural is blocked only by retained diagnostic custody being scanned as canonical source.",
+      "artifact_sha256": "99b9738932e4bcb84aecfaf4942b9e268e4f758ebabb65ec0207ce47f417ce50",
+      "artifact_size": 171709
+    }
+  ]
+}

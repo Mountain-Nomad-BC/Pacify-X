@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023125",
+  "learned": "The one owned full profile failed closed during stale-group refresh. Five group receipts contain a complete 15-node denominator spanning exact-installed, release-build, release-audit, core-a-f, and core-n-s. Several nodes pass in focused isolation but fail during the three-worker stale-group run, so shared group scheduling and mutable-state isolation must be diagnosed before patching individual assertions again.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": ["PX-OS-1065"],
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "evidence": [
+    {
+      "reference": "evidence/release/px-aud2-016-full-profile-failure-denominator-20260826.json",
+      "artifact_sha256": "ed61c9d1b149145b6c5b104f1527f0623f844b1653bd4c0fee302d11099312c4",
+      "artifact_size": 3560,
+      "claim": "Complete five-group, fifteen-node failed-profile denominator."
+    }
+  ]
+}

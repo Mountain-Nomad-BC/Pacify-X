@@ -37,6 +37,14 @@ test('extension handoff assigns execution to the existing Codex host', () => {
   assert.equal(result.extensionExecutes, false);
 });
 
+test('read-only handoff tolerates Git unavailability but never active conflict or write ambiguity', () => {
+  const unavailable = { allowed: false, reasons: ['git-unavailable'] };
+  assert.equal(codexHostHandoffDecision({ git: unavailable, requestedEffect: 'workspace-read' }).allowed, true);
+  assert.deepEqual(codexHostHandoffDecision({ git: unavailable, requestedEffect: 'workspace-write', hasWorkspaceClaim: true }).reasons, ['git-unavailable']);
+  assert.deepEqual(codexHostHandoffDecision({ git: { allowed: false, reasons: ['git-operation-active:rebase'] }, requestedEffect: 'workspace-read' }).reasons, ['git-operation-active:rebase']);
+  assert.deepEqual(codexHostHandoffDecision({ git: { allowed: false, reasons: ['unmerged-paths:2'] }, requestedEffect: 'workspace-read' }).reasons, ['unmerged-paths:2']);
+});
+
 test('extension source contains no nested codex process owner', () => {
   const root = path.resolve(__dirname, '..');
   const extension = fs.readFileSync(path.join(root, 'src', 'extension.js'), 'utf8');

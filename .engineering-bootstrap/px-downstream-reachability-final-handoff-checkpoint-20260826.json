@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023227",
+  "learned": "Python dependency ownership regenerated valid after the terminal-observer import change. Registry validation remains green. Generated validation now fails only artifact_reachability because reachability inventories the newly changed dependency projection; this is the final downstream projection in the registered generator chain. Syntax/live-host/section gates were not started against the known-stale reachability state.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": [],
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "evidence": [
+    {
+      "reference": "evidence/release/agent-observer-resource-repair-20260826.json",
+      "claim": "Only final downstream artifact reachability remains stale before operational gates.",
+      "artifact_sha256": "2856fc5bf94a2bf84fd09f59f46dde071bd47a486816780acb92cebbe6764456",
+      "artifact_size": 1515
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-post-singleflight-failure-cluster-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023150",
+  "outcome": "cancelled",
+  "evidence": [
+    {
+      "reference": "evidence/release/post-singleflight-three-node-focused-diagnosis-20260826.json",
+      "claim": "Two source-behavior nodes pass and the release audit is isolated to the required post-repair generated-projection boundary.",
+      "artifact_sha256": "850e6c38a2137a33c7fdc5669bdbd26f6c948ad9691786a52a524a133205f582",
+      "artifact_size": 1565
+    }
+  ]
+}

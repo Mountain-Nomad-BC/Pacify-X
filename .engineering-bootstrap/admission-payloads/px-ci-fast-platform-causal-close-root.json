@@ -1,0 +1,14 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-ci-fast-platform-causal-repair-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023273",
+  "outcome": "completed",
+  "evidence": [
+    {
+      "reference": ".engineering-bootstrap/test-evidence/sections/studio-memory-graph.json",
+      "artifact_sha256": "8b6ca2402d3cad8fad1932c711964c15f0b7777651f757d39e0eb2317ceb4c39",
+      "artifact_size": 3535,
+      "claim": "Fixture race repair passed the exact regression, full 171-item platform command, owning Studio chunk/section, generated checks, and process closure."
+    }
+  ]
+}

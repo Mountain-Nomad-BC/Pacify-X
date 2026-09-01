@@ -13,6 +13,7 @@ on:
 
 permissions:
   contents: write
+  id-token: write
 
 concurrency:
   group: pacify-x-release-${{ github.ref }}
@@ -168,6 +169,24 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh release create $env:PACIFY_X_RELEASE_TAG release-assets\* --verify-tag --title "PACIFY-X $env:PACIFY_X_RELEASE" --notes-file release-notes.md
+
+      - name: Publish exact verified VSIX to Visual Studio Marketplace
+        shell: pwsh
+        run: |
+          if (-not $env:PACIFY_X_CERTIFIED_VSIX -or -not (Test-Path -LiteralPath $env:PACIFY_X_CERTIFIED_VSIX -PathType Leaf)) {
+            throw "certified VSIX is unavailable"
+          }
+          if ($env:PACIFY_X_CERTIFIED_VSIX_SHA256 -notmatch '^[0-9a-f]{64}$') {
+            throw "certified VSIX SHA-256 is unavailable or malformed"
+          }
+          $before = (Get-FileHash -LiteralPath $env:PACIFY_X_CERTIFIED_VSIX -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($before -ne $env:PACIFY_X_CERTIFIED_VSIX_SHA256) {
+            throw "certified VSIX bytes changed before Marketplace publication"
+          }
+          npx --yes @vscode/vsce@3.9.2 publish --oidc --packagePath $env:PACIFY_X_CERTIFIED_VSIX
+          if ($LASTEXITCODE -ne 0) { throw "Marketplace OIDC publication failed" }
+          $after = (Get-FileHash -LiteralPath $env:PACIFY_X_CERTIFIED_VSIX -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($after -ne $before) { throw "certified VSIX bytes changed during Marketplace publication" }
 
       - name: Retain certification evidence on failure or success
         if: always()

@@ -7,17 +7,64 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const readline = require('node:readline');
+const { generateApprovalKey } = require('../src/studioApprovalHost');
+const { createLaunchAuthority } = require('../src/mcpMutationAuthority');
 
 const root = path.resolve(__dirname, '..');
 
-test('bundled MCP server exposes first-class catalogs, activity traces, resume, claims, receipts, and layered memory', { timeout: 15000 }, async t => {
-  const workspace = fs.mkdtempSync(path.join(os.tmpdir(), 'px-mcp-coordination-'));
+test('bundled MCP server rejects an unattested write before project state or activity changes', { timeout: 10000 }, async t => {
+  const workspace = fs.mkdtempSync(path.join(os.tmpdir(), 'px-mcp-denied-'));
   t.after(() => fs.rmSync(workspace, { recursive: true, force: true }));
   const child = cp.spawn(process.execPath, [path.join(root, 'server', 'index.js')], {
     cwd: root, shell: false, windowsHide: true, stdio: ['pipe', 'pipe', 'pipe'],
     env: {
       ...process.env, PX_CONTEXT_PATH: path.join(root, 'tests', 'fixtures', 'context.json'),
-      PX_ENGINE_ROOT: root, PX_WORKSPACE_ROOT: workspace, PX_COORDINATION_ROOT: workspace, PX_PYTHON_PATH: 'python'
+      PX_ENGINE_ROOT: root, PX_WORKSPACE_ROOT: workspace, PX_COORDINATION_ROOT: workspace, PX_PYTHON_PATH: 'python',
+      PX_MCP_AUTHORITY_CLAIM: '', PX_MCP_AUTHORITY_SIGNATURE: '', PX_MCP_AUTHORITY_TOKEN: '',
+      PX_MCP_AUTHORITY_PUBLIC_JWK_PATH: '', PX_MCP_AUTHORITY_KEY_ID: ''
+    }
+  });
+  const lines = readline.createInterface({ input: child.stdout });
+  const messages = [];
+  lines.on('line', line => { if (line.trim()) messages.push(JSON.parse(line)); });
+  const send = value => child.stdin.write(`${JSON.stringify(value)}\n`);
+  const waitFor = async id => {
+    for (let attempt = 0; attempt < 160; attempt += 1) {
+      const found = messages.find(message => message.id === id); if (found) return found;
+      await new Promise(resolve => setTimeout(resolve, 25));
+    }
+    throw new Error(`MCP response timeout for ${id}`);
+  };
+  try {
+    send({ jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: '2025-11-25', capabilities: {}, clientInfo: { name: 'untrusted-test', version: '1.0.0' } } });
+    await waitFor(1);
+    send({ jsonrpc: '2.0', method: 'notifications/initialized', params: {} });
+    send({ jsonrpc: '2.0', id: 2, method: 'tools/call', params: { name: 'pacify_parallel_plan_create', arguments: {
+      actor_id: 'self-asserted', session_id: 'self-asserted', harness: 'self-asserted',
+      objective: 'must not be retained', tasks: [{ id: 'denied', title: 'Denied', claims: ['denied/'] }]
+    } } });
+    const denied = await waitFor(2);
+    assert.equal(denied.result.isError, true);
+    assert.equal(denied.result.structuredContent.authorized, false);
+    assert.deepEqual(fs.readdirSync(workspace), []);
+  } finally { child.kill(); }
+});
+
+test('bundled MCP server exposes first-class catalogs, activity traces, resume, claims, receipts, and layered memory', { timeout: 15000 }, async t => {
+  const workspace = fs.mkdtempSync(path.join(os.tmpdir(), 'px-mcp-coordination-'));
+  t.after(() => fs.rmSync(workspace, { recursive: true, force: true }));
+  const keyMaterial = generateApprovalKey();
+  const authority = createLaunchAuthority({ projectRoot: workspace, sessionId: 'authenticated-host-session', keyMaterial });
+  const publicJwkPath = path.join(workspace, 'mcp-public-jwk.json');
+  fs.writeFileSync(publicJwkPath, JSON.stringify(keyMaterial.publicKeyJwk));
+  const child = cp.spawn(process.execPath, [path.join(root, 'server', 'index.js')], {
+    cwd: root, shell: false, windowsHide: true, stdio: ['pipe', 'pipe', 'pipe'],
+    env: {
+      ...process.env, PX_CONTEXT_PATH: path.join(root, 'tests', 'fixtures', 'context.json'),
+      PX_ENGINE_ROOT: root, PX_WORKSPACE_ROOT: workspace, PX_COORDINATION_ROOT: workspace, PX_PYTHON_PATH: 'python',
+      PX_MCP_AUTHORITY_CLAIM: authority.claim, PX_MCP_AUTHORITY_SIGNATURE: authority.signature,
+      PX_MCP_AUTHORITY_TOKEN: authority.token, PX_MCP_AUTHORITY_PUBLIC_JWK_PATH: publicJwkPath,
+      PX_MCP_AUTHORITY_KEY_ID: keyMaterial.keyId
     }
   });
   const lines = readline.createInterface({ input: child.stdout });
@@ -73,6 +120,8 @@ test('bundled MCP server exposes first-class catalogs, activity traces, resume, 
     send({ jsonrpc: '2.0', id: 5, method: 'tools/call', params: { name: 'pacify_coordination_status', arguments: {} } });
     const status = await waitFor(message => message.id === 5);
     assert.equal(status.result.structuredContent.state.claims.length, 1);
+    assert.equal(status.result.structuredContent.state.claims[0].actor.actor_id, 'vscode-mcp-host');
+    assert.equal(status.result.structuredContent.state.claims[0].actor.session_id, 'authenticated-host-session');
     send({ jsonrpc: '2.0', id: 7, method: 'tools/call', params: { name: 'pacify_memory_capture', arguments: { ...actor, layer: 'project', kind: 'decision', content: 'MCP-visible bounded memory' } } });
     await waitFor(message => message.id === 7);
     send({ jsonrpc: '2.0', id: 8, method: 'tools/call', params: { name: 'pacify_memory_observability', arguments: { query: 'bounded memory', include_content: true } } });
@@ -91,7 +140,8 @@ test('bundled MCP server exposes first-class catalogs, activity traces, resume, 
     const instrumentation = await waitFor(message => message.id === 11);
     assert.equal(instrumentation.result.structuredContent.status, 'healthy');
     assert.equal(instrumentation.result.structuredContent.registered_tools.length, byName.size);
-    assert.equal(instrumentation.result.structuredContent.identity.self_asserted_calls > 0, true);
+    assert.equal(instrumentation.result.structuredContent.identity.authenticated_host_capability_calls > 0, true);
+    assert.equal(instrumentation.result.structuredContent.identity.self_asserted_calls, 0);
     assert.equal(instrumentation.result.structuredContent.identity.unattested_calls > 0, true);
   } finally { child.kill(); }
 });

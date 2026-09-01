@@ -1,0 +1,17 @@
+{
+  "session_id": "repair-session:px-test-groups-processing-stage-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023044",
+  "gap_id": "PX-OS-1065",
+  "authority": "User requires the hard repair-first processing order to prevent expensive recursive loops and authorized all reversible Pacify-X repairs.",
+  "effect_scopes": [
+    {"effect": "read", "scope": ["Inspect only runtime/test_profiles.py processing phases, runtime/cli.py test-group/full-profile gates, repair campaign ordered closure, focused processing-order tests, and PX-AUD2-008 evidence."]},
+    {"effect": "write", "scope": ["Reopen repair for PX-AUD2-008; add explicit test_groups stage and groups_current phase between sections_current and full_profile; require test-group mutation at the test_groups stage and full_profile at groups_current; update ordered closure and focused processing-order tests; clear the exact finding after causal proof. Do not run groups or profile during repair."]},
+    {"effect": "execute", "scope": ["Run only focused processing-order and CLI gate tests proving groups must become current before full_profile. Do not run test groups, governed sections, full profile, validate, package, install, publish, or certify during repair."]}
+  ],
+  "expected_effect": "Make the hard processing order represent every executable prerequisite so the sole actual full profile is reachable without a recursive failed attempt.",
+  "rollback": "Revert only the new phase/stage, CLI gates, campaign order, and focused tests while retaining the precondition failure evidence.",
+  "expires_utc": "2026-08-26T22:00:00Z",
+  "evidence": [
+    {"reference": "evidence/release/full-profile-prerequisite-failure-20260826.json", "claim": "PX-AUD2-008 exact pre-execution contradiction.", "artifact_sha256": "1eaaae6928d7bcb3d81bb367f424f5eb2dfde1feafdb4ba18d48544c8df4e77b", "artifact_size": 981}
+  ]
+}

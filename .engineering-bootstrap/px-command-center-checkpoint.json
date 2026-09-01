@@ -1,0 +1,14 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022936",
+  "learned": "The exact current-source walk reproduced pxui.dashboard-control-plane.action.commandCenter failure twice because the exhaustive walker leaves a modal backdrop open before its click. The diagnostics sort retry passed. This is a narrow evidence-harness state-isolation defect; the current installed lifecycle rebuild remains pending.",
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": ["PX-OS-1065"],
+  "evidence": [
+    {
+      "reference": "evidence/current-control-proof-installed-0657-20260825/exhaustive-ui-current-r2.json",
+      "claim": "Exact rerun reproducing only the Command Center modal interception error."
+    }
+  ]
+}

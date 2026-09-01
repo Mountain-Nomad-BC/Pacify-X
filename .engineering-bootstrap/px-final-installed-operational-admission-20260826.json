@@ -1,0 +1,17 @@
+{
+  "session_id": "installed-session:px-vscode-0.6.59-operational-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023179",
+  "gap_id": "PX-OS-1065",
+  "authority": "User explicitly requested the repaired Pacify-X installation be fully fixed and reinstalled.",
+  "effect_scopes": [
+    {"effect": "read", "scope": ["Inspect only installed_operational campaign state, exact install/package proofs, installed VSIX smoke owner and arguments, installed 0.6.59 directory identity, engine snapshot identity, and resulting installed-host receipts."]},
+    {"effect": "write", "scope": ["Run the exact installed 0.6.59 VSIX through its isolated owned host smoke; retain installed-host identity/effect evidence; keep installed_operational only on exact version, asset, protocol, message schema, command/sidebar activation, and engine-root success. Do not alter product source, publish, commit, push, merge, or certify."]},
+    {"effect": "execute", "scope": ["Run processing-order installed_operational_test checks, inspect installed-smoke help, and execute one exact isolated installed-VSIX smoke for extension/dist/pacify-x-vscode-0.6.59.vsix against the repaired source; verify resulting receipts and installed directory identity. Do not rerun full profile/validation/package/install, publish, commit, push, merge, or certify."]}
+  ],
+  "expected_effect": "Prove the installed 0.6.59 artifact activates with exact source/asset/protocol/schema identity and can reach the configured engine root.",
+  "rollback": "Retain a failed installed-host receipt and leave the exact VSIX available for reinstall; do not certify.",
+  "expires_utc": "2026-09-03T12:00:00Z",
+  "evidence": [
+    {"reference": "evidence/release/final-vscode-install-proof-20260826.json", "claim": "Exact install predecessor.", "artifact_sha256": "cf9724f1b8e61deba5e992c0e36b0b6d62bb5df0915c83a96d33d84bfce91f80", "artifact_size": 1108}
+  ]
+}

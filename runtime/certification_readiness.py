@@ -19,6 +19,11 @@ import tomllib
 from typing import Any, Iterable, Mapping, Sequence
 
 from .release_environment import scrub_release_environment
+from .test_profiles import (
+    PROCESSING_PHASES,
+    ProcessingOrderBlocked,
+    repair_campaign_status,
+)
 
 
 SCHEMA_VERSION = "px.certification-readiness/1.0"
@@ -519,13 +524,53 @@ def _engine_result(
         "status": "invalid-configuration",
         "executable": str(python_executable) if python_executable else None,
         "version": None,
-        "requirement": "PX root plus successful runtime.cli validate",
+        "requirement": "PX root plus successful governed validation state",
         "diagnostic": "",
     }
     if missing:
         return {**base, "diagnostic": f"engine root is missing: {', '.join(missing)}"}
     if python_executable is None:
         return {**base, "status": "missing", "diagnostic": "Python is unavailable"}
+
+    try:
+        campaign = repair_campaign_status(engine_root)
+    except (OSError, json.JSONDecodeError, ProcessingOrderBlocked) as error:
+        return {
+            **base,
+            "status": "invalid-configuration",
+            "diagnostic": f"cannot verify governed validation state: {error}",
+        }
+
+    if campaign.get("managed") is True:
+        phase = str(campaign.get("phase") or "")
+        validation_index = PROCESSING_PHASES.index("validated")
+        validation_complete = phase in PROCESSING_PHASES[validation_index:]
+        unresolved = list(campaign.get("unresolved") or [])
+        intake_open = bool(campaign.get("intake_open"))
+        if not validation_complete or intake_open or unresolved:
+            return {
+                **base,
+                "status": "probe-failed",
+                "diagnostic": (
+                    "governed validation has not completed for the active campaign: "
+                    f"phase={phase or 'unknown'}; "
+                    f"intake_open={str(intake_open).lower()}; "
+                    f"unresolved={', '.join(unresolved[:8]) or 'none'}"
+                ),
+            }
+        try:
+            version = tomllib.loads(
+                (engine_root / "pyproject.toml").read_text(encoding="utf-8")
+            )["project"]["version"]
+        except (OSError, KeyError, tomllib.TOMLDecodeError):
+            version = None
+        return {
+            **base,
+            "status": "ready",
+            "version": version,
+            "diagnostic": "",
+        }
+
     probe = _run_probe(
         python_executable,
         ("-m", "runtime.cli", "--root", str(engine_root), "validate"),

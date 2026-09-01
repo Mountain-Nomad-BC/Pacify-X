@@ -329,15 +329,20 @@ test('studio approval is signed by the host key and Python receives no issuer se
     approvalKeyProvider: async request => request?.action === 'find' ? null : { active: material, previous: [] }
   });
   const result = await bridge.issueStudioApproval('agent', 'create', { agent_id: 'demo' });
+  const second = await bridge.issueStudioApproval('agent', 'create', { agent_id: 'demo-two' });
   assert.equal(result.approval_capability.claim.approved_by, 'human:vscode-local-user');
   assert.equal(result.approval_capability.claim.key_id, material.keyId);
   assert.ok(result.approval_capability.signature.length > 300);
+  assert.notEqual(result.approval_capability.claim.nonce, second.approval_capability.claim.nonce);
   assert.equal(calls.length, 1);
   assert.equal(calls[0].options.environment, undefined);
   const enrollment = JSON.parse(fs.readFileSync(path.join(hostRoot, 'approval-verifiers', `${projectIdentity}.json`), 'utf8'));
   assert.equal(enrollment.approved_by, 'human:vscode-local-user');
   assert.equal(enrollment.host_surface, 'vscode-extension-host');
   assert.equal(enrollment.key_id, material.keyId);
+  bridge.update({ projectRoot: path.join(root, 'other-project') });
+  await bridge.issueStudioApproval('agent', 'create', { agent_id: 'other-project' });
+  assert.equal(calls.length, 2);
   bridge.dispose();
 });
 
@@ -351,7 +356,8 @@ test('studio verifier uses component-aware containment and supports proven rotat
     if (request?.action === 'find') return [ring.active, ...ring.previous].find(item => item.keyId === request.keyId) || null;
     return ring;
   };
-  const bridge = new PxBridge({ engineRoot: root, projectRoot: root, capture: async () => descriptor, approvalKeyProvider: provider, approvalRecoveryProvider: async () => { recoveryCalls += 1; return true; } });
+  let descriptorCalls = 0;
+  const bridge = new PxBridge({ engineRoot: root, projectRoot: root, capture: async () => { descriptorCalls += 1; return descriptor; }, approvalKeyProvider: provider, approvalRecoveryProvider: async () => { recoveryCalls += 1; return true; } });
   await bridge.issueStudioApproval('agent', 'create', { agent_id: 'first' });
   const first = ring.active; ring = { active: generateApprovalKey(), previous: [first] };
   await bridge.issueStudioApproval('agent', 'create', { agent_id: 'rotated' });
@@ -361,6 +367,7 @@ test('studio verifier uses component-aware containment and supports proven rotat
   await bridge.issueStudioApproval('agent', 'create', { agent_id: 'recovered' });
   enrolled = JSON.parse(fs.readFileSync(descriptor.record_path, 'utf8'));
   assert.equal(enrolled.rotation.mode, 'explicit-human-recovery'); assert.equal(recoveryCalls, 1);
+  assert.equal(descriptorCalls, 1, 'descriptor reuse must not cache active keys or verifier records');
   assert.equal(fs.readdirSync(path.join(path.dirname(descriptor.record_path), 'recovery-backups')).length, 1);
 
   const containedRoot = path.join(root, '..broker');

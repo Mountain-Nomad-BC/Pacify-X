@@ -1,0 +1,11 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022944",
+  "learned": "The exact installed workflow dry-run receipt preserves approval_required=true, but resolvedStudioPreviewModal always renders Start and bypasses the transition logic that would render Approve. Governed approval is therefore physically unreachable from the real dry-run result. Skill rollback now succeeds after correcting the API receipt component path; agent pause and resume also succeed.",
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": ["PX-OS-1065"],
+  "evidence": [
+    {"reference": "evidence/operational-ui-walk-installed-vsix-0.6.58-lifecycle-r3/receipt.json", "claim": "Exact installed receipt proving approval-required definition and unreachable Approve control while rollback and agent transitions succeed."}
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "schema_version": "px.plugin-lifecycle-fixtures/1.0",
+  "extension_id": "px-owned.fixture",
+  "deterministic_timestamp_utc": "2020-01-02T03:04:06.000Z",
+  "artifacts": [
+    {
+      "path": "tests/generated/plugin-lifecycle/px-owned.fixture-1.0.0.vsix",
+      "version": "1.0.0",
+      "size": 1446,
+      "sha256": "bc3cd714092254f04c77466a844856737d5d3afee0e8688fba9f80ca514f6c86"
+    },
+    {
+      "path": "tests/generated/plugin-lifecycle/px-owned.fixture-2.0.0.vsix",
+      "version": "2.0.0",
+      "size": 1503,
+      "sha256": "e44135116bddcd38be4b5497e880e93f0f6b85cdfe072c244f4a9aaf3142a7e4"
+    }
+  ]
+}

@@ -7,7 +7,8 @@ const {
   evaluateLauncherTerminal,
   evaluateOperationalWalk,
   exitCodeForTerminalState,
-  normalizeProcessOutput
+  normalizeProcessOutput,
+  validRecoveredAuthorityBoundary
 } = require('../scripts/operational-walk-status');
 
 function readyBootstrap() {
@@ -60,7 +61,7 @@ function completeReceipt() {
 
 test('reports completed only when every builder, surface, control, and chain is complete', () => {
   const status = evaluateOperationalWalk(completeReceipt());
-  assert.equal(status.terminal_state, 'completed');
+  assert.equal(status.terminal_state, 'completed', JSON.stringify(status.issues));
   assert.equal(status.operationally_complete, true);
   assert.equal(status.summary.blocking_issue_count, 0);
   assert.deepEqual(status.coverage.missing_surface_ids, []);
@@ -97,6 +98,195 @@ test('focused Studio completion fails closed when one physical revision cannot b
   assert.ok(status.issues.some(item => item.code === 'focused-studio-revision-edit-incomplete'));
 });
 
+test('focused host-boundary completion is judged only by its exact typed handoff records', () => {
+  const receipt = completeReceipt();
+  receipt.focused_profile = 'host-boundary';
+  receipt.control_chains.controls.forEach(control => { control.attempted = false; });
+  receipt.control_chains.aggregates.complete_interaction_chains = 0;
+  const completeChain = { open_load: { state: 'present' }, failure_handling: { state: 'not_applicable' } };
+  receipt.host_boundary_profile = {
+    observation: { operations: {}, errors: [] },
+    control_probe: {
+      eligible_control_count: 2,
+      records: [
+        { control_id: 'open-file', rendered: true, attempted: true, errors: [], interaction_chain: completeChain },
+        { control_id: 'open-url', rendered: true, attempted: true, errors: [], interaction_chain: completeChain }
+      ]
+    }
+  };
+  const status = evaluateOperationalWalk(receipt);
+  assert.equal(status.terminal_state, 'completed');
+  assert.equal(status.scope_complete, true);
+  assert.equal(status.operationally_complete, false);
+  assert.equal(status.evaluated_scope, 'host-boundary');
+});
+
+test('focused host-boundary completion fails closed on a missing rendered action', () => {
+  const receipt = completeReceipt();
+  receipt.focused_profile = 'host-boundary';
+  receipt.host_boundary_profile = {
+    observation: { operations: {}, errors: ['openMemorySource-not-rendered'] },
+    control_probe: {
+      eligible_control_count: 1,
+      records: [{ control_id: 'open-memory', rendered: false, attempted: false, errors: ['not-rendered'], interaction_chain: { open_load: { state: 'missing' } } }]
+    }
+  };
+  const status = evaluateOperationalWalk(receipt);
+  assert.equal(status.terminal_state, 'incomplete');
+  assert.ok(status.issues.some(item => item.code === 'focused-host-boundary-incomplete'));
+});
+
+test('focused native-dialog completion requires exact complete Enterprise, Projects, and Plugin mutation probes', () => {
+  const receipt = completeReceipt();
+  receipt.focused_profile = 'native-dialog-boundary';
+  receipt.control_chains.controls.forEach(control => { control.attempted = false; });
+  receipt.control_chains.aggregates.complete_interaction_chains = 0;
+  const stages = ['open_load', 'display', 'user_edit_action', 'input_validation', 'authorization', 'backend_dispatch', 'runtime_effect', 'progress_reporting', 'result_acknowledgement', 'persistence', 'reload_reopen', 'failure_handling', 'recovery_rollback'];
+  const completeProfile = name => ({
+    observation: { completed: true, errors: [] },
+    control_probe: {
+      eligible_control_count: 1,
+      records: [{
+        control_id: name, rendered: true, attempted: true, errors: [],
+        interaction_chain: Object.fromEntries(stages.map(stage => [stage, { state: stage === 'progress_reporting' ? 'not_applicable' : 'present' }]))
+      }]
+    }
+  });
+  receipt.enterprise_profile = completeProfile('enterprise');
+  receipt.projects_profile = completeProfile('projects');
+  receipt.plugin_mutation_profile = completeProfile('plugin-mutation');
+  const status = evaluateOperationalWalk(receipt);
+  assert.equal(status.terminal_state, 'completed');
+  assert.equal(status.scope_complete, true);
+  assert.equal(status.operationally_complete, false);
+  assert.equal(status.evaluated_scope, 'native-dialog-boundary');
+});
+
+test('focused native-dialog completion fails closed on missing recovery or profile errors', () => {
+  const receipt = completeReceipt();
+  receipt.focused_profile = 'native-dialog-boundary';
+  const stages = ['open_load', 'display', 'user_edit_action', 'input_validation', 'authorization', 'backend_dispatch', 'runtime_effect', 'progress_reporting', 'result_acknowledgement', 'persistence', 'reload_reopen', 'failure_handling', 'recovery_rollback'];
+  const completeProfile = name => ({ observation: { errors: [] }, control_probe: { eligible_control_count: 1, records: [{ control_id: name, rendered: true, attempted: true, errors: [], interaction_chain: Object.fromEntries(stages.map(stage => [stage, { state: 'present' }])) }] } });
+  receipt.enterprise_profile = completeProfile('enterprise');
+  receipt.projects_profile = completeProfile('projects');
+  receipt.plugin_mutation_profile = completeProfile('plugin-mutation');
+  receipt.projects_profile.control_probe.records[0].interaction_chain.recovery_rollback = { state: 'missing' };
+  receipt.plugin_mutation_profile.observation.errors.push('typed-restoration-mismatch');
+  const status = evaluateOperationalWalk(receipt);
+  assert.equal(status.terminal_state, 'incomplete');
+  const finding = status.issues.find(item => item.code === 'focused-native-dialog-boundary-incomplete');
+  assert.ok(finding);
+  assert.deepEqual(finding.details.incomplete_profiles.map(item => item.name), ['projects', 'plugin-mutation']);
+});
+
+test('focused Codex handoff completion requires its exact three-control typed probe', () => {
+  const receipt = completeReceipt();
+  receipt.focused_profile = 'codex-handoff';
+  receipt.control_chains.controls.forEach(control => { control.attempted = false; });
+  receipt.control_chains.aggregates.complete_interaction_chains = 0;
+  const stages = ['open_load', 'display', 'user_edit_action', 'input_validation', 'authorization', 'backend_dispatch', 'runtime_effect', 'progress_reporting', 'result_acknowledgement', 'persistence', 'reload_reopen', 'failure_handling', 'recovery_rollback'];
+  const chain = Object.fromEntries(stages.map(stage => [stage, { state: ['input_validation', 'persistence', 'reload_reopen'].includes(stage) ? 'not_applicable' : 'present' }]));
+  receipt.codex_handoff_profile = {
+    observation: { prepared: true, cleared: true, claim_released: true, webview_restarted: true, errors: [] },
+    control_probe: {
+      eligible_control_count: 3,
+      records: ['command', 'continue', 'cancel'].map(control_id => ({ control_id, rendered: true, attempted: true, errors: [], interaction_chain: chain }))
+    }
+  };
+  const status = evaluateOperationalWalk(receipt);
+  assert.equal(status.terminal_state, 'completed', JSON.stringify(status.issues));
+  assert.equal(status.scope_complete, true);
+  assert.equal(status.operationally_complete, false);
+  assert.equal(status.evaluated_scope, 'codex-handoff');
+});
+
+test('focused Codex handoff fails closed on denominator mismatch, missing stage, or profile error', () => {
+  const receipt = completeReceipt();
+  receipt.focused_profile = 'codex-handoff';
+  const stages = ['open_load', 'display', 'user_edit_action', 'input_validation', 'authorization', 'backend_dispatch', 'runtime_effect', 'progress_reporting', 'result_acknowledgement', 'persistence', 'reload_reopen', 'failure_handling', 'recovery_rollback'];
+  const chain = Object.fromEntries(stages.map(stage => [stage, { state: 'present' }]));
+  receipt.codex_handoff_profile = {
+    observation: { errors: ['retained-profile-error'] },
+    control_probe: {
+      eligible_control_count: 3,
+      records: [
+        { control_id: 'command', rendered: true, attempted: true, errors: [], interaction_chain: chain },
+        { control_id: 'continue', rendered: true, attempted: true, errors: [], interaction_chain: { ...chain, recovery_rollback: { state: 'missing' } } }
+      ]
+    }
+  };
+  const status = evaluateOperationalWalk(receipt);
+  assert.equal(status.terminal_state, 'incomplete');
+  const finding = status.issues.find(item => item.code === 'focused-codex-handoff-incomplete');
+  assert.ok(finding);
+  assert.equal(finding.details.eligible_control_count, 3);
+  assert.equal(finding.details.record_count, 2);
+  assert.deepEqual(finding.details.profile_errors, ['retained-profile-error']);
+});
+
+test('focused error-indicator completion requires exactly the Memory and Knowledge Core recovery chains', () => {
+  const receipt = completeReceipt();
+  receipt.focused_profile = 'error-indicators';
+  receipt.control_chains.controls.forEach(control => { control.attempted = false; });
+  receipt.control_chains.aggregates.complete_interaction_chains = 0;
+  const stages = ['open_load', 'display', 'user_edit_action', 'input_validation', 'authorization', 'backend_dispatch', 'runtime_effect', 'progress_reporting', 'result_acknowledgement', 'persistence', 'reload_reopen', 'failure_handling', 'recovery_rollback'];
+  const chain = Object.fromEntries(stages.map(stage => [stage, { state: ['user_edit_action', 'persistence'].includes(stage) ? 'not_applicable' : 'present', evidence: [`focused-error-indicator:${stage}`] }]));
+  receipt.installed_control_probe = {
+    eligible_control_count: 2,
+    records: [
+      'pxui.memory.indicator.queryError',
+      'pxui.knowledge-core.indicator.controllerError'
+    ].map(control_id => ({ control_id, rendered: true, observed: true, attempted: false, errors: [], interaction_chain: chain }))
+  };
+  const status = evaluateOperationalWalk(receipt);
+  assert.equal(status.terminal_state, 'completed', JSON.stringify(status.issues));
+  assert.equal(status.scope_complete, true);
+  assert.equal(status.operationally_complete, false);
+  assert.equal(status.evaluated_scope, 'error-indicators');
+});
+
+test('focused error-indicator completion fails closed on substitution, incomplete evidence, or retained errors', () => {
+  const receipt = completeReceipt();
+  receipt.focused_profile = 'error-indicators';
+  const chain = {
+    open_load: { state: 'present', evidence: ['focused-error-indicator:open'] },
+    recovery_rollback: { state: 'present', evidence: [] }
+  };
+  receipt.installed_control_probe = {
+    eligible_control_count: 2,
+    records: [
+      { control_id: 'pxui.memory.indicator.queryError', rendered: true, observed: true, errors: [], interaction_chain: chain },
+      { control_id: 'pxui.knowledge-core.indicator.substitutedError', rendered: true, observed: true, errors: ['retained-probe-error'], interaction_chain: chain }
+    ]
+  };
+  const status = evaluateOperationalWalk(receipt);
+  assert.equal(status.terminal_state, 'incomplete');
+  const finding = status.issues.find(item => item.code === 'focused-error-indicators-incomplete');
+  assert.ok(finding);
+  assert.deepEqual(finding.details.observed_control_ids, [
+    'pxui.memory.indicator.queryError',
+    'pxui.knowledge-core.indicator.substitutedError'
+  ]);
+});
+
+test('focused error-indicator completion fails closed when an exact required stage is absent', () => {
+  const receipt = completeReceipt();
+  receipt.focused_profile = 'error-indicators';
+  const stages = ['open_load', 'display', 'user_edit_action', 'input_validation', 'authorization', 'backend_dispatch', 'runtime_effect', 'progress_reporting', 'result_acknowledgement', 'persistence', 'reload_reopen', 'failure_handling', 'recovery_rollback'];
+  const chain = Object.fromEntries(stages.map(stage => [stage, { state: 'present', evidence: [`focused-error-indicator:${stage}`] }]));
+  delete chain.failure_handling;
+  receipt.installed_control_probe = {
+    eligible_control_count: 2,
+    records: [
+      'pxui.memory.indicator.queryError',
+      'pxui.knowledge-core.indicator.controllerError'
+    ].map(control_id => ({ control_id, rendered: true, observed: true, errors: [], interaction_chain: chain }))
+  };
+  const status = evaluateOperationalWalk(receipt);
+  assert.equal(status.terminal_state, 'incomplete');
+  assert.ok(status.issues.some(item => item.code === 'focused-error-indicators-incomplete'));
+});
+
 test('skipped builders, modal surfaces, controls, and chains remain operationally incomplete', () => {
   const receipt = completeReceipt();
   receipt.builders.agent = { terminal_disposition: 'skipped_requires_exact_control_instrumentation' };
@@ -112,6 +302,98 @@ test('skipped builders, modal surfaces, controls, and chains remain operationall
   assert.ok(codes.has('control-chains-incomplete'));
   assert.ok(codes.has('surfaces-not-observed'));
   assert.deepEqual(status.coverage.missing_surface_ids, ['agent-studio', 'skill-studio', 'studio-lifecycle']);
+});
+
+test('readiness accepts only the ten exact rendered and recovered authority boundaries without relabeling them complete', () => {
+  const receipt = completeReceipt();
+  const ids = [
+    'pxui.dashboard-control-plane.command.pacifyX.continueWithCodex',
+    'pxui.dashboard-control-plane.command.pacifyX.refreshEnvironment',
+    'pxui.dashboard-control-plane.command.pacifyX.refreshOllama',
+    'pxui.dashboard-control-plane.command.pacifyX.rotateStudioApprovalIdentity',
+    'pxui.dashboard-control-plane.command.pacifyX.validateControlPlane',
+    'pxui.dashboard-control-plane.command.validate',
+    'pxui.diagnostics.action.dynamicRepair.refreshEnvironment',
+    'pxui.diagnostics.action.validate',
+    'pxui.runtime-core.action.validate',
+    'pxui.runtime-core.action.cleanupPermanent'
+  ];
+  const stages = ['open_load', 'display', 'user_edit_action', 'input_validation', 'authorization', 'backend_dispatch', 'runtime_effect', 'progress_reporting', 'result_acknowledgement', 'persistence', 'reload_reopen', 'failure_handling', 'recovery_rollback'];
+  const boundaries = ids.map(control_id => ({
+    control_id, surface_id: control_id.includes('runtime-core') ? 'runtime-core' : 'dashboard-control-plane', kind: control_id.includes('.action.') ? 'action' : 'command',
+    rendered: true, visible: true, attempted: true, terminal_disposition: 'skipped_requires_authority', errors: [],
+    authority: 'owned isolated host; exact effect withheld', reason: 'the exact effect exceeds this walk authority',
+    expected_effect: `exercise ${control_id}`, return_condition: 'grant exact effect authority in the disposable host and rerun with rollback proof',
+    stages: stages.map(stage => ({ stage, status: ['failure_handling', 'recovery_rollback'].includes(stage) ? 'observed' : 'not_observed' }))
+  }));
+  receipt.control_chains.controls.push(...boundaries);
+  receipt.control_chains.inventory.control_count += boundaries.length;
+  receipt.control_chains.aggregates.control_count += boundaries.length;
+  receipt.results.push({ surface: 'runtimeCore', navigation_active: true, terminal_disposition: 'completed' });
+  const status = evaluateOperationalWalk(receipt);
+  assert.equal(status.terminal_state, 'completed', JSON.stringify(status.issues));
+  assert.equal(status.operationally_complete, true);
+  assert.equal(status.coverage.complete_interaction_chains, 6);
+  assert.equal(status.coverage.recovered_authority_boundary_count, 10);
+  assert.equal(status.coverage.accepted_coverage_count, 16);
+  assert.deepEqual(status.coverage.recovered_authority_boundary_ids, [...ids].sort());
+  assert.ok(boundaries.every(validRecoveredAuthorityBoundary));
+  assert.ok(boundaries.every(control => control.terminal_disposition === 'skipped_requires_authority'));
+});
+
+test('readiness rejects unknown, unrendered, errored, unrecovered, and falsely complete authority skips', () => {
+  const base = {
+    control_id: 'pxui.runtime-core.action.cleanupPermanent', surface_id: 'runtime-core', kind: 'action',
+    rendered: true, visible: true, attempted: true, terminal_disposition: 'skipped_requires_authority', errors: [],
+    authority: 'owned isolated host; exact effect withheld', reason: 'the exact effect exceeds this walk authority',
+    expected_effect: 'exercise the exact permanent cleanup effect', return_condition: 'grant exact destructive authority and rerun with rollback proof',
+    stages: [
+      { stage: 'open_load', status: 'not_observed' },
+      { stage: 'failure_handling', status: 'observed' },
+      { stage: 'recovery_rollback', status: 'observed' }
+    ]
+  };
+  assert.equal(validRecoveredAuthorityBoundary(base), true);
+  assert.equal(validRecoveredAuthorityBoundary({ ...base, control_id: 'pxui.unknown.action' }), false);
+  assert.equal(validRecoveredAuthorityBoundary({ ...base, rendered: false }), false);
+  assert.equal(validRecoveredAuthorityBoundary({ ...base, errors: ['fault'] }), false);
+  assert.equal(validRecoveredAuthorityBoundary({ ...base, stages: base.stages.filter(stage => stage.stage !== 'recovery_rollback') }), false);
+  assert.equal(validRecoveredAuthorityBoundary({ ...base, stages: base.stages.map(stage => ({ ...stage, status: 'observed' })) }), false);
+  for (const field of ['authority', 'reason', 'expected_effect', 'return_condition']) {
+    assert.equal(validRecoveredAuthorityBoundary({ ...base, [field]: '' }), false);
+  }
+  for (const invalid of [
+    { ...base, control_id: 'pxui.unknown.action' },
+    { ...base, rendered: false },
+    { ...base, errors: ['fault'] },
+    { ...base, stages: base.stages.filter(stage => stage.stage !== 'recovery_rollback') }
+  ]) {
+    const receipt = completeReceipt();
+    receipt.control_chains.controls.push(invalid);
+    receipt.control_chains.inventory.control_count += 1;
+    receipt.control_chains.aggregates.control_count += 1;
+    const status = evaluateOperationalWalk(receipt);
+    assert.equal(status.terminal_state, 'incomplete');
+    assert.ok(status.issues.some(item => item.code === 'authority-boundaries-invalid'));
+    assert.ok(status.issues.some(item => item.code === 'control-chains-incomplete'));
+  }
+});
+
+test('observation-only controls require complete chains but are not mislabeled as unattempted interactions', () => {
+  const receipt = completeReceipt();
+  receipt.control_chains.controls.push({
+    control_id: 'indicator-observed', surface_id: 'dashboard-control-plane', kind: 'indicator',
+    attempted: false, terminal_disposition: 'installed_operational_interaction_complete'
+  });
+  receipt.control_chains.inventory.control_count += 1;
+  receipt.control_chains.aggregates.control_count += 1;
+  receipt.control_chains.aggregates.complete_interaction_chains += 1;
+  const status = evaluateOperationalWalk(receipt);
+  assert.equal(status.terminal_state, 'completed');
+  assert.equal(status.coverage.attemptable_control_count, 6);
+  assert.equal(status.coverage.attempted_attemptable_control_count, 6);
+  assert.equal(status.coverage.attempted_control_count, 6);
+  assert.equal(status.issues.some(item => item.code === 'controls-unattempted'), false);
 });
 
 test('source mismatch blocks completion even when coverage is otherwise complete', () => {
@@ -141,6 +423,52 @@ test('page and console errors are normalized and fail the walk', () => {
   const status = evaluateOperationalWalk(receipt);
   assert.equal(status.terminal_state, 'failed');
   assert.deepEqual(new Set(status.issues.map(item => item.source)), new Set(['console', 'page']));
+});
+
+test('only the exact external VS Code Mermaid contribution diagnostic is non-blocking', () => {
+  const receipt = completeReceipt();
+  receipt.host_errors = [{
+    source: 'console',
+    message: '%c  ERR color: #f33 Tool "renderMermaidDiagram" was not contributed.',
+    context: 'console:vscode-file://vscode-app/c:/owned-vscode/resources/app/out/vs/workbench/workbench.desktop.main.js'
+  }];
+  const status = evaluateOperationalWalk(receipt);
+  assert.equal(status.terminal_state, 'completed');
+  assert.equal(status.issues.length, 1);
+  assert.equal(status.issues[0].code, 'external-vscode-optional-tool-unavailable');
+  assert.equal(status.issues[0].blocking, false);
+
+  for (const changed of [
+    { ...receipt.host_errors[0], message: '%c ERR color: #f33 Tool "differentTool" was not contributed.' },
+    { ...receipt.host_errors[0], context: 'console:vscode-file://vscode-app/c:/owned-extension/extension.js' }
+  ]) {
+    const blocked = evaluateOperationalWalk({ ...completeReceipt(), host_errors: [changed] });
+    assert.equal(blocked.terminal_state, 'failed');
+    assert.equal(blocked.issues[0].code, 'console-error');
+    assert.equal(blocked.issues[0].blocking, true);
+  }
+});
+
+test('only the exact owned fixture Marketplace 404 is non-blocking', () => {
+  const exact = {
+    source: 'console',
+    message: 'Failed to load resource: the server responded with a status of 404 ()',
+    context: 'console:https://marketplace.visualstudio.com/_apis/public/gallery/vscode/px-owned/fixture/latest'
+  };
+  const status = evaluateOperationalWalk({ ...completeReceipt(), host_errors: [exact] });
+  assert.equal(status.terminal_state, 'completed');
+  assert.equal(status.issues[0].code, 'external-vscode-owned-fixture-marketplace-miss');
+  assert.equal(status.issues[0].blocking, false);
+
+  for (const changed of [
+    { ...exact, context: exact.context.replace('/px-owned/fixture/', '/px-owned/different/') },
+    { ...exact, message: 'Failed to load resource: the server responded with a status of 500 ()' },
+    { ...exact, source: 'page' }
+  ]) {
+    const blocked = evaluateOperationalWalk({ ...completeReceipt(), host_errors: [changed] });
+    assert.equal(blocked.terminal_state, 'failed');
+    assert.equal(blocked.issues[0].blocking, true);
+  }
 });
 
 test('extension-host unresponsive output remains blocking even after recovery', () => {
@@ -176,6 +504,20 @@ test('launcher requires both semantic completion and verified process closure', 
   });
   assert.equal(failed.terminal_state, 'failed');
   assert.ok(failed.issues.some(item => item.code === 'owner-process-tree-closure-unverified'));
+});
+
+test('verified owned timeout remains blocking without inventing an unverified worker exit', () => {
+  const status = evaluateLauncherTerminal({
+    walkStatus: null,
+    processTreeClosedVerified: true,
+    workerExitVerified: true,
+    error: new Error('owned-host-timeout')
+  });
+  assert.equal(status.terminal_state, 'failed');
+  assert.ok(status.issues.some(item => item.code === 'walk-status-missing'));
+  assert.ok(status.issues.some(item => item.code === 'launcher-error'));
+  assert.equal(status.issues.some(item => item.code === 'owned-worker-exit-unverified'), false);
+  assert.equal(status.issues.some(item => item.code === 'owner-process-tree-closure-unverified'), false);
 });
 
 test('bootstrap activation completes only with the installed extension and isolated storage proven', () => {

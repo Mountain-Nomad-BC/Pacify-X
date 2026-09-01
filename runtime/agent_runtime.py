@@ -708,6 +708,18 @@ class AgentRuntimeController:
             "memory_runtime_resolved": not spec.memory_binding_ids,
             "handoff_runtime_resolved": not spec.handoff_agent_ids,
         }
+        runtime_check_ids = {
+            "memory_runtime_resolved",
+            "handoff_runtime_resolved",
+        }
+        admission_ready = all(
+            passed for check_id, passed in checks.items()
+            if check_id not in runtime_check_ids
+        )
+        runtime_blockers = [
+            check_id for check_id in sorted(runtime_check_ids)
+            if not checks[check_id]
+        ]
         receipt = {
             "schema_version": "px.agent-preflight-receipt/1.2",
             "agent_id": spec.agent_id,
@@ -717,8 +729,10 @@ class AgentRuntimeController:
             ).hexdigest(),
             "checks": checks,
             "test_results": test_results,
-            "passed": all(checks.values()),
-            "status": "passed" if all(checks.values()) else "failed",
+            "passed": admission_ready,
+            "status": "passed" if admission_ready else "failed",
+            "runtime_ready": not runtime_blockers,
+            "runtime_blockers": runtime_blockers,
             "independently_derived": False,
             "evidence_class": "structural_preflight_not_behavioral_certification",
             "tested_utc": _now(),
@@ -838,9 +852,12 @@ class AgentRuntimeController:
             raise PermissionError("agent authority changed after admission")
         return record_path, admission, live_hashes
 
-    def preview(self, spec: AgentSpec) -> dict[str, object]:
-        """Resolve the exact saved execution contract without launching anything."""
-        _record_path, admission, live_hashes = self._admitted_context(spec)
+    def _resolved_preview(
+        self,
+        spec: AgentSpec,
+        admission: Mapping[str, object],
+        live_hashes: Mapping[str, str],
+    ) -> dict[str, object]:
         tools: list[dict[str, object]] = []
         for binding_id in spec.tool_binding_ids:
             binding, binding_sha256 = self.authority.resolve_binding(
@@ -885,6 +902,11 @@ class AgentRuntimeController:
             "host_authority_retained": True,
         }
 
+    def preview(self, spec: AgentSpec) -> dict[str, object]:
+        """Resolve the exact saved execution contract without launching anything."""
+        _record_path, admission, live_hashes = self._admitted_context(spec)
+        return self._resolved_preview(spec, admission, live_hashes)
+
     def _new_session(
         self, spec: AgentSpec, task: Mapping[str, object], *, approval: bool
     ) -> tuple[str, Path, dict[str, object], dict[str, str]]:
@@ -896,6 +918,12 @@ class AgentRuntimeController:
         if len(canonical_bytes(task)) > 256 * 1024:
             raise ValueError("agent task exceeds the 256 KiB bounded task contract")
         record_path, admission, live_hashes = self._admitted_context(spec)
+        preview = self._resolved_preview(spec, admission, live_hashes)
+        if preview["eligible"] is not True:
+            blockers = ", ".join(str(item) for item in preview["blockers"])
+            raise PermissionError(
+                f"agent runtime remains blocked by the resolved preview: {blockers}"
+            )
         task_sha = digest(task)
         state = self.run_control.create(
             kind="agent",

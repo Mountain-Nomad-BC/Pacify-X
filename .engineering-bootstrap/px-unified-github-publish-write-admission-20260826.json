@@ -1,0 +1,31 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "release-session:px-unified-main-publish-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023191",
+  "authority": "User explicitly requested the completed unified Pacify-X repairs be committed, pushed, and merged on canonical GitHub.",
+  "expected_effect": "Fetch canonical main non-interactively, stage the 134 tracked unified repairs plus exactly 12 classified new source/dependency files, create one normal commit, require linear ancestry, and push main without force to trigger remote OS execution.",
+  "rollback": "Do not rewrite or force-push history; if the published commit is wrong, publish a new corrective or revert commit. Local custody files remain unstaged and unchanged.",
+  "expires_utc": "2026-09-04T12:00:00Z",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect only the prepublish topology receipt, compact worktree/index state, exact intended 12 new paths, fetched origin/main ancestry, staged diff summary/name status, commit identity, push result, and triggered canonical GitHub main state."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Update origin refs by normal fetch; stage all existing tracked Pacify-X changes plus exactly the 10 classified extension source/test files, runtime/test_orchestration_lock.py, and requirements-release.txt; create one normal unified repair commit on main; push main without force; retain a publish receipt. Do not stage the 416 classified local-custody entries, rewrite history, close pull requests yet, package, install, or certify."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["Run only non-interactive git fetch, bounded staging, staged status/diff checks, normal commit, ancestry verification, non-force push, and read-only GitHub REST observation of the triggered main revision. Do not run local tests/profile/validate/package/install, force-push, amend, rebase, close pull requests, or certify."]
+    }
+  ],
+  "evidence": [
+    {
+      "reference": "evidence/release/github-prepublish-topology-20260826.json",
+      "artifact_sha256": "b52b9c313fe71872af79d21b4ef466ae885232d6d3cf01652ecb52fffdb46775",
+      "artifact_size": 1465,
+      "claim": "Exact staging and linear publish boundary."
+    }
+  ]
+}

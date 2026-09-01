@@ -1,0 +1,37 @@
+{
+  "session_id": "repair-session:px-runtime-lifecycle-finalization-v2-20260825",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022959",
+  "gap_id": "PX-OS-1065",
+  "authority": "User explicitly authorized all remaining reversible Pacify-X repairs; only irreversible destructive effects require approval.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": [
+        "Inspect runtime/agent_runtime.py, runtime/studio_worker_launch.py, runtime/workflow_studio.py, runtime/studio_run_control.py, exact lifecycle request/response correlation, focused runtime and extension tests, and the two current lifecycle failure receipts only."
+      ]
+    },
+    {
+      "effect": "write",
+      "scope": [
+        "Modify runtime/agent_runtime.py, runtime/studio_worker_launch.py, runtime/workflow_studio.py or runtime/studio_run_control.py for asynchronous local Agent resume, active-generation finalization, and terminal-safe Workflow cancellation; modify extension/scripts/run-operational-ui-walk.js only for exact lifecycle result recognition and terminal expectations; modify focused runtime and extension tests; write session-owned evidence and append exact ledger events."
+      ]
+    },
+    {
+      "effect": "execute",
+      "scope": [
+        "Run focused Agent, Workflow, worker-launch, and run-control pytest and Node tests, affected governed dashboard-extension and studio-memory-graph section gates, and one hidden session-owned current-source lifecycle campaign. Do not run full profile, validate, package, install, deploy, publish, merge, or certify."
+      ]
+    }
+  ],
+  "expected_effect": "Return local Agent Resume asynchronously with the same durable run identity, bind finalization to the single active resumed worker generation, keep Stop reachable after resume, and make approved Workflow Cancel or Stop terminal-safe during finalization.",
+  "rollback": "Revert only the bounded Agent resume, active-worker finalizer, Workflow finalization, lifecycle runner, and focused-test changes while retaining append-only failed and successful attempt evidence.",
+  "expires_utc": "2026-08-26T12:00:00Z",
+  "evidence": [
+    {
+      "reference": "evidence/operational-ui-walk-current-source-final-lifecycle-r5-20260825/receipt.json",
+      "artifact_sha256": "657a6d9400518d2ce3113d6b9e97b1e2e5022d89ef5b82197e1daafb873a2fbf",
+      "artifact_size": 4797857,
+      "claim": "Exact current-source reproduction of the synchronous Agent Resume timeout."
+    }
+  ]
+}

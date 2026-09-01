@@ -1,0 +1,11 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023170",
+  "learned": "The canonical 0.6.59 VSIX already exists as one immutable issued artifact. Its SHA-256 matches extension/SHA256SUMS.txt, it was written after every bundled extension source, and the later repairs affect the external Python engine rather than bundled extension files. Rebuilding would correctly fail immutable-version policy; the ordered package action must select and bind this exact artifact.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": [],
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "evidence": [
+    {"reference": "evidence/release/immutable-vsix-package-selection-boundary-20260826.json", "claim": "Exact immutable artifact selection boundary.", "artifact_sha256": "de649a0b11a47dcd4d8223720e45e9b40eda2ec569a675ca21ff6a6784d77e22", "artifact_size": 928}
+  ]
+}

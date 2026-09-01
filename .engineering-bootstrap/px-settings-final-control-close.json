@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-settings-inspect-metric-20260825",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022965",
+  "outcome": "completed",
+  "reason": "The final locally unobserved control rendered and completed its exact current-source contained interaction with zero errors; no source repair was required.",
+  "evidence": [
+    {
+      "reference": "evidence/current-source-settings-inspect-metric-20260825.json",
+      "artifact_sha256": "18384ae8f5864807393ed3570ef53a452d623e8792006b339227de7c6c288a5f",
+      "artifact_size": 2701610,
+      "claim": "pxui.settings.action.inspectMetric was the sole selected control and was rendered, attempted, operational, and error-free."
+    }
+  ]
+}

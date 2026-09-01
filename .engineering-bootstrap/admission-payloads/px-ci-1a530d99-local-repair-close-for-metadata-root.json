@@ -1,0 +1,14 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-ci-1a530d99-platform-governed-repair-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023268",
+  "outcome": "superseded",
+  "evidence": [
+    {
+      "reference": "https://github.com/Mountain-Nomad-BC/Pacify-X/actions/runs/32970782138",
+      "artifact_sha256": "7f56cf7d41209e4b71d7fface2e867e0fb86323c21c33dbf8503116e39d60404",
+      "artifact_size": 1265,
+      "claim": "Local isolation passed 35 path/lock/portability, 21 supervisor, and 38 Agent runtime tests; exact check output is needed to narrow Workflow/Skill or aggregate ordering."
+    }
+  ]
+}

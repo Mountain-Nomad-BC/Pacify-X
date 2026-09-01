@@ -8,6 +8,7 @@ import sys
 import tempfile
 import threading
 import time
+from types import SimpleNamespace
 
 import pytest
 
@@ -377,6 +378,85 @@ def test_descendant_cannot_survive_parent_cancellation(harness) -> None:
         time.sleep(0.02)
     assert result.tree_closed
     assert not _process_exists(child_pid)
+
+
+def test_launching_parent_loss_forces_the_owned_tree_closed(
+    harness, monkeypatch
+) -> None:
+    owner_pid = os.getpid()
+    real_fingerprint = _process_start_fingerprint
+    owner_checks = 0
+
+    def fingerprint(pid: int):
+        nonlocal owner_checks
+        if pid == owner_pid:
+            owner_checks += 1
+            if owner_checks > 1:
+                return None
+        return real_fingerprint(pid)
+
+    monkeypatch.setattr(
+        "runtime.process_supervisor._process_start_fingerprint", fingerprint
+    )
+    monkeypatch.setattr(
+        "runtime.process_supervisor._open_owner_liveness", lambda _pid: None
+    )
+    result = _run(harness, "import time;print('ready',flush=True);time.sleep(30)")
+    assert result.status == "owner_lost"
+    assert result.tree_closed
+
+
+def test_disk_consumption_ceiling_forces_the_owned_tree_closed(
+    harness, monkeypatch
+) -> None:
+    observations = iter((10_000, 9_900))
+
+    def disk_usage(_path):
+        return SimpleNamespace(total=20_000, used=10_000, free=next(observations, 9_900))
+
+    monkeypatch.setattr("runtime.process_supervisor.shutil.disk_usage", disk_usage)
+    result = _run(
+        harness,
+        "import time;print('ready',flush=True);time.sleep(30)",
+        action=_action(harness[0], disk_consumption_limit_bytes=64),
+    )
+    assert result.status == "disk_budget_exceeded"
+    assert result.tree_closed
+
+
+def test_disk_consumption_ceiling_is_reconciled_after_a_fast_exit(
+    harness, monkeypatch
+) -> None:
+    observations = iter((10_000, 9_900))
+
+    def disk_usage(_path):
+        return SimpleNamespace(total=20_000, used=10_000, free=next(observations, 9_900))
+
+    monkeypatch.setattr("runtime.process_supervisor.shutil.disk_usage", disk_usage)
+    result = _run(
+        harness,
+        "pass",
+        action=_action(harness[0], disk_consumption_limit_bytes=64),
+    )
+    assert result.status == "disk_budget_exceeded"
+    assert result.tree_closed
+
+
+def test_unprovable_launching_parent_fails_before_spawn(harness, monkeypatch) -> None:
+    owner_pid = os.getpid()
+    real_fingerprint = _process_start_fingerprint
+
+    def fingerprint(pid: int):
+        return None if pid == owner_pid else real_fingerprint(pid)
+
+    monkeypatch.setattr(
+        "runtime.process_supervisor._process_start_fingerprint", fingerprint
+    )
+    monkeypatch.setattr(
+        "runtime.process_supervisor._open_owner_liveness", lambda _pid: None
+    )
+    with pytest.raises(RuntimeError, match="supervising process identity cannot be proven"):
+        _run(harness, "print('must-not-spawn')")
 
 
 def test_spawn_failure_is_sanitized_and_receipted(harness) -> None:

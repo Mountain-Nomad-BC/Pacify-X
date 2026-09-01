@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023200",
+  "learned": "The retained Agent lifecycle failure was caused by nondeterministic test attribution: after resume, the test selected the first randomly sorted terminal-observer record and could assert against the newly resumed observer instead of the paused observer. The test now captures the exact paused observer resource ID before resume. Agent, Workflow, and observer focused tests pass 3/3; lint passes; studio-memory-graph passes all seven chunks. The campaign remains in repair and the three-file additive source/test fix must be published before remote CI is re-evaluated.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": [],
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "evidence": [
+    {
+      "reference": "evidence/release/agent-observer-attribution-repair-proof-20260826.json",
+      "claim": "Exact observer-attribution repair authority.",
+      "artifact_sha256": "0344ad559bc803a7bacff659c41bacc3a8ec9f505e66d4c9a7620f218f063a4e",
+      "artifact_size": 1541
+    }
+  ]
+}

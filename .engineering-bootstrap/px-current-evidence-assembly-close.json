@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-current-evidence-assembly-20260825",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022976",
+  "outcome": "completed",
+  "reason": "The single current exhaustive, fault, smoke, builder, and assembly pipeline completed with zero execution errors and exposed exactly three unobserved timing-sensitive visible indicators for focused predecessor-bound refresh.",
+  "evidence": [
+    {
+      "reference": "evidence/current-control-proof-installed-0659-20260825/assembled-current.json",
+      "artifact_sha256": "b3b0afe80e05ce343d0c9d8b32289df1a47b62d925d11c816974cc1264673844",
+      "artifact_size": 5613800,
+      "claim": "Source-bound assembly covers 926 of 929 controls and identifies the exact three remaining observed-only indicator gaps."
+    }
+  ]
+}

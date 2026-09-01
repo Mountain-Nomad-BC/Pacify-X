@@ -1,0 +1,43 @@
+{
+  "session_id": "closure-session:px-repair-freeze-and-reconciliation-20260825",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022967",
+  "gap_id": "PX-OS-1065",
+  "authority": "User requested completion through the enforced repair-first processing order and authorized reversible repository changes.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": [
+        "Inspect runtime/processing_order.py, the processing-order CLI owner, .engineering-bootstrap/processing-order/repair-campaign.json, scripts/assemble_operational_control_evidence.py and exact operational-ledger reconciliation owners, the last current assembly, r6 Studio lifecycle receipt, final Settings receipt, and PX-OS-1065 transition requirements."
+      ]
+    },
+    {
+      "effect": "write",
+      "scope": [
+        "Advance the governed repair campaign from repair to repair_frozen only after its oracle passes; produce exactly one current assembled operational-control evidence artifact from the retained current predecessor plus r6 Studio lifecycle and final Settings receipts; append exact current control dispositions/evidence and transition PX-OS-1065 only when its full evidence contract is satisfied; update the campaign to the next ordered closure phase."
+      ]
+    },
+    {
+      "effect": "execute",
+      "scope": [
+        "Run processing-order checks for repair freeze and the single reconciliation stage, execute exactly one operational-control evidence assembly/reconciliation, and run only focused integrity checks required by those owners. Do not run section gates, full profile, validate, package, install, deploy, publish, merge, or certify in this session."
+      ]
+    }
+  ],
+  "expected_effect": "Freeze the completed repair scope and reconcile the exact retained current evidence once so all 929 controls and all 19 audit dispositions are represented without repeating repair-time revisions or broad validation.",
+  "rollback": "Restore only the repair-campaign phase file and retain the append-only reconciliation evidence/events; do not erase prior receipts or ledger history.",
+  "expires_utc": "2026-08-26T12:00:00Z",
+  "evidence": [
+    {
+      "reference": "evidence/operational-ui-walk-current-source-final-lifecycle-r6-20260825/receipt.json",
+      "artifact_sha256": "8ea0d0f710320a04707c744e09ac5694e2e7240db9a13ce83219cd896f338fa3",
+      "artifact_size": 4876023,
+      "claim": "Fresh lifecycle evidence for the sixteen previously unobserved Studio controls."
+    },
+    {
+      "reference": "evidence/current-source-settings-inspect-metric-20260825.json",
+      "artifact_sha256": "18384ae8f5864807393ed3570ef53a452d623e8792006b339227de7c6c288a5f",
+      "artifact_size": 2701610,
+      "claim": "Fresh evidence for the final locally unobserved Settings control."
+    }
+  ]
+}

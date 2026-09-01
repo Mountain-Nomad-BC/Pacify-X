@@ -1,0 +1,31 @@
+{
+  "session_id": "repair-session:px-cache-hygiene-section-owner-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023033",
+  "gap_id": "PX-OS-1065",
+  "authority": "User authorized all remaining reversible Pacify-X repairs and requires governed operational correctness before certification.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect only testing-governance source/command ownership, cleanup hygiene implementation and focused tests, and PX-AUD2-007 evidence."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Add scripts/cleanup_python_caches.py and tests/test_cache_quarantine.py to testing-governance inputs and add the focused test exactly once to its command; extend the existing input-identity regression for cleanup ownership; clear PX-AUD2-007 after focused proof and retain repair evidence. Do not refresh projections or section receipts."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["Run only focused test-profile ownership/input-identity tests for the cache hygiene owner. Do not run a governed section, revision reconciliation, full profile, validate, package, install, publish, or certify during repair."]
+    }
+  ],
+  "expected_effect": "Make cache hygiene implementation and causal tests exact testing-governance inputs so changes stale and exercise the governed receipt.",
+  "rollback": "Revert only the two testing-governance mappings and focused ownership assertion while retaining causal evidence.",
+  "expires_utc": "2026-08-26T20:00:00Z",
+  "evidence": [
+    {
+      "reference": "evidence/release/cache-hygiene-boundary-causal-proof-20260826.json",
+      "claim": "PX-AUD2-007 exact ownership gap.",
+      "artifact_sha256": "21b44ed43ee21e987baf4d207252a4252f09540757f348c02e1f2a1923eefaa7",
+      "artifact_size": 1244
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022959",
+  "unresolved_branch_gap_ids": ["PX-OS-1065"],
+  "newly_discovered_gap_ids": [],
+  "learned": "The repaired current-source lifecycle campaign now physically completes Agent pause, resume, stop and cancellation; Workflow approval, start and cancellation; Skill promotion and rollback; all 31 targeted controls are rendered, attempted and observed with durable run reopen and zero errors. The broader system gap remains open until current assembled evidence is reconciled against the full control denominator and imported audit findings.",
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "evidence": [
+    {
+      "reference": "evidence/operational-ui-walk-current-source-final-lifecycle-r6-20260825/receipt.json",
+      "artifact_sha256": "8ea0d0f710320a04707c744e09ac5694e2e7240db9a13ce83219cd896f338fa3",
+      "artifact_size": 4876023,
+      "claim": "The exact current-source Studio lifecycle scope is operationally complete."
+    }
+  ]
+}

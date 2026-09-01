@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-cache-hygiene-section-owner-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023034",
+  "outcome": "completed",
+  "reason": "PX-AUD2-007 is repaired: testing-governance owns the cleanup implementation, executes its focused test exactly once, and its input identity changes with cleanup policy bytes. The repair denominator is zero; projections and the section receipt remain intentionally stale for ordered reconciliation.",
+  "evidence": [
+    {
+      "reference": "evidence/release/cache-hygiene-governance-causal-proof-20260826.json",
+      "claim": "Exact cleanup governance ownership and input identity proof.",
+      "artifact_sha256": "978f51fe20620606230c7eb6b840ff19735ca4060ff688f478546ce56195eb3f",
+      "artifact_size": 921
+    }
+  ]
+}

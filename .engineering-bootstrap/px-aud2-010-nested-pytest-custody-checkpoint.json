@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023055",
+  "learned": "PX-AUD2-010: the testing-governance nested pytest corruption control no longer reaches its intentional shared-temp destruction. The supervised child fails during collection, so process custody cannot attribute the destructive test as designed. Repair the runner/pytest-guard boundary before any group or profile execution.",
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "unresolved_branch_gap_ids": ["PX-OS-1065"],
+  "newly_discovered_gap_ids": [],
+  "evidence": [
+    {
+      "reference": ".engineering-bootstrap/test-evidence/sections/testing-governance.json",
+      "artifact_sha256": "09ff7e8e73465657b3a53e34d8db7d92cb0c7943fc3c07f4bd1178d327c60292",
+      "artifact_size": 1266,
+      "claim": "PX-AUD2-010 exact governed failure receipt."
+    }
+  ]
+}

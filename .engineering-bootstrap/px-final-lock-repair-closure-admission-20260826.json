@@ -1,0 +1,37 @@
+{
+  "session_id": "closure-session:px-final-lock-repair-profile-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023158",
+  "gap_id": "PX-OS-1065",
+  "authority": "User-authorized ordered completion of all Pacify-X repairs required before reinstall.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": [
+        "Inspect only the two-cause focused proof, current repair campaign, generated projection and group-index ownership, release-audit/core-a-f and section currentness, shared orchestration lock, and resulting receipts."
+      ]
+    },
+    {
+      "effect": "write",
+      "scope": [
+        "Resolve the focused lock repair track; freeze repair; perform exactly one canonical projection reconciliation; advance to revision_reconciled only after focused integrity; refresh only stale governed sections; advance to sections_current only when all six are current; run exactly one full profile and advance to full_profile_passed only on success; retain evidence. On failure return to repair and stop. Do not validate, package, install, publish, commit, push, merge, or certify."
+      ]
+    },
+    {
+      "effect": "execute",
+      "scope": [
+        "With PYTHONDONTWRITEBYTECODE=1 set, run one canonical projection rebuild, focused generated and lock-policy integrity, section status and only stale sections, then exactly one full profile under shared physical single-flight. Do not run a second projection/profile, validate, package, install, publish, commit, push, merge, or certify."
+      ]
+    }
+  ],
+  "expected_effect": "Produce current projections and one passing full profile with the live orchestration lock safely excluded from product hashing and inheritance bounded to the true child.",
+  "rollback": "Stop at the last passing phase, retain exact failure evidence, return to repair, and do not duplicate projection or profile execution.",
+  "expires_utc": "2026-08-31T00:00:00Z",
+  "evidence": [
+    {
+      "reference": "evidence/release/orchestration-lock-audit-and-inheritance-causal-proof-20260826.json",
+      "claim": "Focused two-cause repair predecessor.",
+      "artifact_sha256": "c46d33321d969d840a4773fdbf837f52c9cd4f9e75dc96d13d5fd6a6246dbdd7",
+      "artifact_size": 1107
+    }
+  ]
+}

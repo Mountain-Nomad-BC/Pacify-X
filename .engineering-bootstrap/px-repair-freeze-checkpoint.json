@@ -1,0 +1,22 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022964",
+  "unresolved_branch_gap_ids": ["PX-OS-1065"],
+  "newly_discovered_gap_ids": [],
+  "learned": "Local repair intake is closed with no unresolved campaign tracks. Exact current evidence now covers all 929 registered controls: 912 already-current observations, 16 freshly proven Studio lifecycle controls, and the final Settings inspectMetric control. Every imported adversarial finding has a repair disposition; only later remote multi-OS CI and the requested second adversarial audit remain as release evidence, not open local source repairs.",
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "evidence": [
+    {
+      "reference": "evidence/operational-ui-walk-current-source-final-lifecycle-r6-20260825/receipt.json",
+      "artifact_sha256": "8ea0d0f710320a04707c744e09ac5694e2e7240db9a13ce83219cd896f338fa3",
+      "artifact_size": 4876023,
+      "claim": "The sixteen remaining Studio lifecycle controls are current and operational."
+    },
+    {
+      "reference": "evidence/current-source-settings-inspect-metric-20260825.json",
+      "artifact_sha256": "18384ae8f5864807393ed3570ef53a452d623e8792006b339227de7c6c288a5f",
+      "artifact_size": 2701610,
+      "claim": "The final Settings control is current and operational."
+    }
+  ]
+}

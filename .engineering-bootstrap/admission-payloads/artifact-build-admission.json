@@ -1,0 +1,33 @@
+{
+  "gap_id": "PX-OS-1065",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000015125",
+  "session_id": "closure-session:px-artifact-install-20260825",
+  "expires_utc": "2026-08-28T23:59:00Z",
+  "effect_scopes": [
+    {
+      "effect": "write",
+      "scope": [
+        "Create exactly one 0.6.55 VSIX under extension/dist, update extension/SHA256SUMS.txt, write PX-owned isolated installed-host evidence and derived preflight/cache records, append predecessor-bound operational-ledger reconciliation events, and update local processing-order state; do not overwrite issued artifacts, publish, deploy, or certify."
+      ]
+    },
+    {
+      "effect": "execute",
+      "scope": [
+        "Run the canonical extension package owner once, exact artifact preflight/discovery, isolated installed-VSIX operational walks and evidence adapters, deterministic operational-ledger reconciliation, and only focused post-install diagnostics; do not publish, deploy to the user profile, or certify."
+      ]
+    }
+  ],
+  "authority": "The user authorized reversible local operations and requested full completion; deep discovery requires one exact current artifact to continue.",
+  "expected_effect": "Produce one exact 0.6.55 artifact, prove it in an isolated VS Code profile, and bind resulting direct installed evidence to the operational ledger and release preflight.",
+  "rollback": "Move the unissued artifact and derived installation evidence to recoverable PX quarantine, restore the prior SHA256SUMS projection, and retain failed receipts if any gate fails.",
+  "evidence": [
+    {
+      "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000015125",
+      "claim": "Exact deep-discovery checkpoint."
+    },
+    {
+      "reference": "extension/scripts/package-vsix.js",
+      "claim": "Canonical non-overwriting VSIX package owner."
+    }
+  ]
+}

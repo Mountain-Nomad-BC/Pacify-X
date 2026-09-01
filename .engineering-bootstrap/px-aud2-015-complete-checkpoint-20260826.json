@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023117",
+  "learned": "PX-AUD2-015 is repaired at its complete current denominator. The two corrective-release lifecycle nodes pass without further product changes, the canonical Python ownership projection is current, and all three exact-installed nodes pass together.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": [],
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "evidence": [
+    {
+      "reference": "evidence/release/px-aud2-015-exact-installed-focused-proof-20260826.json",
+      "artifact_sha256": "23f1532d85f997b351b92ce54dd8f07be74fe163981a1d35fb8e3246d1257d32",
+      "artifact_size": 1323,
+      "claim": "Complete three-of-three focused repair proof."
+    }
+  ]
+}

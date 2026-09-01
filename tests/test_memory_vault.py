@@ -2,12 +2,14 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 from concurrent.futures import ThreadPoolExecutor
+import json
 from pathlib import Path
 import tempfile
 import unittest
 
 from runtime.memory_fabric import MemoryRecord
 from runtime.memory_vault import MemoryVault
+from runtime.semantic_memory import SemanticEntity, SemanticEnvelope
 
 
 NOW = datetime.now(timezone.utc)
@@ -37,6 +39,17 @@ def record(memory_id: str = "mem-one", **updates: object) -> MemoryRecord:
     }
     values.update(updates)
     return MemoryRecord(**values)
+
+
+def semantics(exact_key: str = "gate-alpha") -> SemanticEnvelope:
+    return SemanticEnvelope(
+        namespace="prj",
+        record_type="decision",
+        payload={"statement": "Use the bounded verification gate."},
+        exact_keys=(exact_key,),
+        tags=("verification",),
+        entities=(SemanticEntity(f"decision:{exact_key}", "decision"),),
+    )
 
 
 class MemoryVaultTests(unittest.TestCase):
@@ -76,6 +89,22 @@ class MemoryVaultTests(unittest.TestCase):
             )
             self.assertEqual(len(inspected["record_sha256"]), 64)
             self.assertEqual(inspected["lifecycle"][-1]["evidence"], ["validation-receipt"])
+
+    def test_semantic_envelope_is_canonical_and_exact_route_wins_search(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            vault = MemoryVault(Path(directory), workspace_id="wsp", project_id="prj")
+            vault.append(record("exact", title="Other", summary="Other", semantic=semantics()))
+            vault.append(record("lexical", title="Gate alpha", summary="Gate alpha"))
+            for memory_id in ("exact", "lexical"):
+                vault.transition(memory_id, "validated", evidence=("review",))
+                vault.transition(memory_id, "certified", evidence=("certification",))
+            inspected = vault.inspect_record("exact")
+            self.assertEqual(inspected["semantic"]["exact_keys"], ["gate-alpha"])
+            self.assertEqual(len(inspected["semantic_sha256"]), 64)
+            self.assertEqual(
+                vault.search("use gate alpha now", actor_id="agent")[0].memory_id,
+                "exact",
+            )
 
     def test_lifecycle_controls_retrieval_and_correction_supersedes_old_memory(
         self,
@@ -126,7 +155,13 @@ class MemoryVaultTests(unittest.TestCase):
             vault = MemoryVault(root, workspace_id="wsp", project_id="prj")
             vault.append(record())
             first = vault.build_index()
+            self.assertTrue(vault.validate_index_generation(first.generation)["valid"])
+            self.assertIsNone(vault.reconcile_indexes()["authoritative_generation"])
+            with self.assertRaises(PermissionError):
+                vault.promote_index(first.generation, approved=False)
+            vault.promote_index(first.generation, approved=True)
             second = vault.build_index()
+            vault.promote_index(second.generation, approved=True)
             self.assertEqual((first.generation, second.generation), (1, 2))
             self.assertTrue((root / first.manifest_path).is_file())
             orphan = root / ".memory-control/index/generations/000003"
@@ -136,6 +171,28 @@ class MemoryVaultTests(unittest.TestCase):
             self.assertEqual(status["authoritative_generation"], "000002")
             self.assertEqual(status["orphan_generations"], ("000003",))
             self.assertFalse(status["hard_delete"])
+
+    def test_index_validation_detects_tampering_and_activation_can_roll_back(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            vault = MemoryVault(root, workspace_id="wsp", project_id="prj")
+            vault.append(record(semantic=semantics()))
+            first = vault.build_index()
+            vault.promote_index(first.generation, approved=True)
+            second = vault.build_index()
+            vault.promote_index(second.generation, approved=True)
+            rollback = vault.rollback_index(first.generation, approved=True)
+            self.assertEqual(rollback["action"], "rollback")
+            self.assertEqual(vault.reconcile_indexes()["authoritative_generation"], "000001")
+
+            entries_path = root / second.manifest_path
+            entries_path = entries_path.parent / "entries.json"
+            entries = json.loads(entries_path.read_text(encoding="utf-8"))
+            entries[0]["semantic"]["exact_keys"] = ["tampered"]
+            entries_path.write_text(json.dumps(entries, indent=2) + "\n", encoding="utf-8")
+            validation = vault.validate_index_generation(second.generation)
+            self.assertFalse(validation["valid"])
+            self.assertIn("generation_entries_hash_invalid", validation["reasons"])
 
     def test_concurrent_index_requests_publish_distinct_complete_generations(
         self,

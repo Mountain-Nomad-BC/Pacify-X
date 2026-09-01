@@ -1,0 +1,14 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "release-session:px-unified-main-publish-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023192",
+  "outcome": "completed",
+  "evidence": [
+    {
+      "reference": "evidence/release/github-unified-main-publish-proof-20260826.json",
+      "claim": "Unified repair commit is linearly and non-force-pushed to canonical main; remote matrices are triggered.",
+      "artifact_sha256": "793bb2298547c9261de1667c2955320f8c89b50752fdeb59f40e7c4d0e6aed5f",
+      "artifact_size": 1215
+    }
+  ]
+}

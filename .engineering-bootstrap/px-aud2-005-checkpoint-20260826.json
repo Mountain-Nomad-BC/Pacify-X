@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023013",
+  "unresolved_branch_gap_ids": ["PX-OS-1065"],
+  "newly_discovered_gap_ids": [],
+  "learned": "PX-AUD2-004 is causally repaired, and PX-AUD2-005 is now confirmed: runtime/repository_scope.py and its focused boundary tests have no governed section owner, so all section receipts remain current after this release-critical control-plane source changes. Repair freeze remains denied until testing-governance owns and exercises this boundary.",
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "evidence": [
+    {
+      "reference": "evidence/release/generated-boundary-governance-gap-20260826.json",
+      "artifact_sha256": "be0ea84833d3a445941c90478ed701ff23a8a1490485c317ff3ee1e882e2d0b7",
+      "artifact_size": 1589,
+      "claim": "Missing governed-section ownership for the repaired product-source boundary."
+    }
+  ]
+}

@@ -5,9 +5,10 @@ const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
 const { performance } = require('node:perf_hooks');
-const { findEngineRoot, runValidation, resolveAdmittedFile, revalidateAdmittedFile } = require('./runtimeBridge');
+const { findEngineRoot, runValidation, resolveAdmittedPath, revalidateAdmittedPath } = require('./runtimeBridge');
 const { PxBridge, disconnected, exactStudioVersionConflictError } = require('./pxBridge');
 const { createSecretStorageApprovalKeyProvider } = require('./studioApprovalHost');
+const { createLaunchAuthority } = require('./mcpMutationAuthority');
 const { SidebarViewProvider } = require('./sidebarView');
 const { MESSAGE_SCHEMA_VERSION, SIDEBAR_ASSET_PROTOCOL } = require('./sidebarMessages');
 const { buildContextEnvelope, providerStatus, gitConflictDecision } = require('./contextBridge');
@@ -38,6 +39,7 @@ const {
 } = require('./coordinationManager');
 
 let panel;
+const dashboardViewStateByWorkspace = new Map();
 let refreshTimer;
 let currentSnapshot;
 let currentContextEnvelope;
@@ -48,6 +50,16 @@ let extensionLifecycleState;
 let extensionLifecycleStorage;
 let pendingExtensionEnablementObservation;
 const activeHostRuns = new Map();
+
+function governedConfirmationOptions(detail) {
+  const ownedInteractableHost = process.env.PX_OWNED_VSCODE_HOST === '1'
+    && process.env.PX_OWNED_VSCODE_HOST_CONFIRM_REVERSIBLE_WRITES === '1';
+  return detail ? { modal: !ownedInteractableHost, detail } : { modal: !ownedInteractableHost };
+}
+
+function isDisposedWebviewError(error) {
+  return String(error instanceof Error ? error.message : error || '').trim() === 'Webview is disposed';
+}
 
 function canonicalHostInterface(value) {
   if (Array.isArray(value)) return value.map(canonicalHostInterface);
@@ -74,28 +86,50 @@ function enforceAdmittedHostToolPolicy(binding, input) {
   if (String(binding.cost_policy || '') !== 'non-billable') throw new Error(`Host tool ${binding.name} does not have an executable non-billable cost policy.`);
   if (!['deny', 'loopback-only'].includes(String(binding.egress_policy || ''))) throw new Error(`Host tool ${binding.name} does not have a closed egress policy.`);
   if (binding.credential_namespace) throw new Error(`Host tool ${binding.name} requires credentials; direct Studio tool execution is refused.`);
+  const comparisonPath = value => process.platform === 'win32' ? path.resolve(value).toLowerCase() : path.resolve(value);
+  const within = (candidate, root) => comparisonPath(candidate) === comparisonPath(root) || comparisonPath(candidate).startsWith(`${comparisonPath(root)}${path.sep}`);
   const allowedPaths = scopeRoots.map(root => ['workspace:current', 'project:current'].includes(root) ? workspaceRoot() : path.isAbsolute(root) ? root : null).filter(Boolean).map(root => path.resolve(root));
+  const physicalRoots = allowedPaths.map(root => {
+    try { return fs.realpathSync.native(root); } catch { throw new Error(`Host tool ${binding.name} scope root is not physically addressable: ${root}.`); }
+  });
   const targets = [];
-  const visit = (value, key = '', depth = 0) => {
-    if (depth > 8 || value == null) return;
-    if (Array.isArray(value)) { for (const item of value) visit(item, key, depth + 1); return; }
-    if (typeof value === 'object') { for (const [childKey, item] of Object.entries(value)) visit(item, childKey, depth + 1); return; }
-    if (typeof value !== 'string' || !/(?:path|file|folder|directory|root|cwd|target|uri|url)$/i.test(key)) return;
-    targets.push({ key, value });
-  };
-  visit(input);
-  for (const target of targets) {
-    if (/^https?:\/\//i.test(target.value)) {
-      const url = new URL(target.value);
+  const materialize = (value, key, pointer) => {
+    if (/^https?:\/\//i.test(value)) {
+      const url = new URL(value);
       const loopback = ['localhost', '127.0.0.1', '::1', '[::1]'].includes(url.hostname);
-      if (binding.egress_policy === 'deny' || !loopback) throw new Error(`Host tool ${binding.name} target ${target.key} violates its ${binding.egress_policy} egress policy.`);
-      continue;
+      if (binding.egress_policy === 'deny' || !loopback) throw new Error(`Host tool ${binding.name} target ${pointer} violates its ${binding.egress_policy} egress policy.`);
+      targets.push({ key, pointer, kind: 'url' });
+      return value;
     }
-    if (/^[a-z][a-z0-9+.-]*:/i.test(target.value) && !/^file:/i.test(target.value)) throw new Error(`Host tool ${binding.name} uses an unadmitted target URI scheme.`);
-    const candidate = path.resolve(/^file:/i.test(target.value) ? vscode.Uri.parse(target.value).fsPath : workspaceRoot(), /^file:/i.test(target.value) || path.isAbsolute(target.value) ? '' : target.value || '.');
-    if (!allowedPaths.some(root => candidate === root || candidate.startsWith(`${root}${path.sep}`))) throw new Error(`Host tool ${binding.name} target ${target.key} is outside its admitted scope roots.`);
-  }
-  return { effects, scope_roots: scopeRoots, validated_targets: targets.map(target => target.key) };
+    const fileUri = /^file:/i.test(value);
+    if (/^[a-z][a-z0-9+.-]*:/i.test(value) && !fileUri && !/^[a-z]:[\\/]/i.test(value)) throw new Error(`Host tool ${binding.name} uses an unadmitted target URI scheme.`);
+    const rawPath = fileUri ? vscode.Uri.parse(value).fsPath : value;
+    const candidate = path.resolve(workspaceRoot(), path.isAbsolute(rawPath) ? rawPath : rawPath || '.');
+    const locatorNamed = /(?:path|file|folder|directory|root|cwd|target|source|resource|uri|url)$/i.test(key);
+    const locatorShaped = fileUri || path.isAbsolute(rawPath) || /^[.]{1,2}(?:[\\/]|$)/.test(rawPath) || /[\\/]/.test(rawPath) || fs.existsSync(candidate);
+    if (!locatorNamed && !locatorShaped) return value;
+    if (!allowedPaths.some(root => within(candidate, root))) throw new Error(`Host tool ${binding.name} target ${pointer} is outside its admitted scope roots.`);
+    let cursor = candidate; const suffix = [];
+    while (!fs.existsSync(cursor)) {
+      const parent = path.dirname(cursor);
+      if (parent === cursor) throw new Error(`Host tool ${binding.name} target ${pointer} has no physically addressable ancestor.`);
+      suffix.unshift(path.basename(cursor)); cursor = parent;
+    }
+    const physicalAncestor = fs.realpathSync.native(cursor);
+    const physicalCandidate = path.resolve(physicalAncestor, ...suffix);
+    if (!physicalRoots.some(root => within(physicalCandidate, root))) throw new Error(`Host tool ${binding.name} target ${pointer} escapes its admitted physical scope through a link or reparse point.`);
+    targets.push({ key, pointer, kind: 'filesystem' });
+    return fileUri ? vscode.Uri.file(physicalCandidate).toString() : physicalCandidate;
+  };
+  const visit = (value, key = '', pointer = '$', depth = 0) => {
+    if (depth > 8 || value == null) return value;
+    if (Array.isArray(value)) return value.map((item, index) => visit(item, key, `${pointer}[${index}]`, depth + 1));
+    if (typeof value === 'object') return Object.fromEntries(Object.entries(value).map(([childKey, item]) => [childKey, visit(item, childKey, `${pointer}.${childKey}`, depth + 1)]));
+    if (typeof value !== 'string') return value;
+    return materialize(value, key, pointer);
+  };
+  const sanitizedInput = visit(input);
+  return { effects, scope_roots: scopeRoots, validated_targets: targets.map(target => target.pointer), sanitized_input: sanitizedInput };
 }
 
 async function executeAdmittedHostModel(prepared, token) {
@@ -174,12 +208,12 @@ async function executeAdmittedHostModel(prepared, token) {
       const admitted = admittedHostTools.find(binding => binding.name === call.name);
       if (!admitted) throw new Error(`Model requested an unbound tool: ${call.name}.`);
       const policy = enforceAdmittedHostToolPolicy(admitted, call.input);
-      const toolReceipt = { call_id: call.callId, name: call.name, binding_id: admitted.binding_id, binding_sha256: admitted.binding_sha256, host_tool_interface_sha256: liveToolInterfaces.get(call.name), input_sha256: crypto.createHash('sha256').update(JSON.stringify(call.input || {})).digest('hex'), result_sha256: null, effect_grant_ids: admitted.effect_grant_ids || [], effects: policy.effects, scope_roots: policy.scope_roots, validated_targets: policy.validated_targets, status: 'started' };
+      const toolReceipt = { call_id: call.callId, name: call.name, binding_id: admitted.binding_id, binding_sha256: admitted.binding_sha256, host_tool_interface_sha256: liveToolInterfaces.get(call.name), input_sha256: crypto.createHash('sha256').update(JSON.stringify(policy.sanitized_input || {})).digest('hex'), result_sha256: null, effect_grant_ids: admitted.effect_grant_ids || [], effects: policy.effects, scope_roots: policy.scope_roots, validated_targets: policy.validated_targets, status: 'started' };
       toolsDispatched.push(toolReceipt);
       let result;
       try {
         result = await vscode.lm.invokeTool(call.name, {
-          input: call.input,
+          input: policy.sanitized_input,
           toolInvocationToken: undefined,
           tokenizationOptions: { tokenBudget: Math.max(1, Math.min(4096, outputTokenLimit - outputTokens)), countTokens: (value, countToken) => model.countTokens(value, countToken) }
         }, requestCancellation.token);
@@ -210,8 +244,10 @@ function extensionAssetIdentity(extensionRoot) {
   const files = [];
   const dashboardRoot = path.join(extensionRoot, 'media', 'dashboard');
   if (fs.existsSync(dashboardRoot)) for (const name of fs.readdirSync(dashboardRoot).filter(name => name.endsWith('.js'))) files.push(path.join(dashboardRoot, name));
-  for (const relative of [path.join('media', 'dashboard' + '.css'), path.join('media', 'sidebar.css'), path.join('media', 'sidebar.js')]) { const target = path.join(extensionRoot, relative); if (fs.existsSync(target)) files.push(target); }
-  files.sort((left, right) => path.relative(extensionRoot, left).replaceAll('\\', '/').localeCompare(path.relative(extensionRoot, right).replaceAll('\\', '/')));
+  const hostSourceRoot = path.join(extensionRoot, 'src');
+  if (fs.existsSync(hostSourceRoot)) for (const name of fs.readdirSync(hostSourceRoot).filter(name => name.endsWith('.js'))) files.push(path.join(hostSourceRoot, name));
+  for (const relative of [path.join('media', 'dashboard' + '.css'), path.join('media', 'sidebar.css'), path.join('media', 'sidebar.js'), path.join('resources', 'ui', 'action-inventory.json')]) { const target = path.join(extensionRoot, relative); if (fs.existsSync(target)) files.push(target); }
+  files.sort((left, right) => Buffer.compare(Buffer.from(path.relative(extensionRoot, left).replaceAll('\\', '/'), 'utf8'), Buffer.from(path.relative(extensionRoot, right).replaceAll('\\', '/'), 'utf8')));
   const digest = crypto.createHash('sha256');
   for (const file of files) { digest.update(path.relative(extensionRoot, file).replaceAll('\\', '/')); digest.update('\0'); digest.update(fs.readFileSync(file)); digest.update('\0'); }
   const packagePath = path.join(extensionRoot, 'package.json');
@@ -225,7 +261,7 @@ function environmentLifecycle() {
 }
 
 function extensionLifecycle() {
-  if (!extensionLifecycleState) extensionLifecycleState = createExtensionLifecycleHost({ commands: vscode.commands, extensions: vscode.extensions, storage: extensionLifecycleStorage });
+  if (!extensionLifecycleState) extensionLifecycleState = createExtensionLifecycleHost({ commands: vscode.commands, extensions: vscode.extensions, storage: extensionLifecycleStorage, toInstallTarget: value => vscode.Uri.file(value) });
   return extensionLifecycleState;
 }
 
@@ -282,6 +318,61 @@ function settings() {
 
 function workspaceRoot() {
   return vscode.workspace.workspaceFolders?.[0]?.uri.fsPath || engineRoot();
+}
+
+function dashboardViewStateKey() {
+  const root = workspaceRoot();
+  return root ? path.resolve(root).toLowerCase() : 'workspace:none';
+}
+
+function rememberDashboardViewState(value) {
+  const key = dashboardViewStateKey();
+  dashboardViewStateByWorkspace.delete(key);
+  dashboardViewStateByWorkspace.set(key, JSON.parse(JSON.stringify(value)));
+  while (dashboardViewStateByWorkspace.size > 8) dashboardViewStateByWorkspace.delete(dashboardViewStateByWorkspace.keys().next().value);
+}
+
+const OWNED_OPERATIONAL_CONFIGURATION_FAULTS = new Set([
+  'setActivityPaused',
+  'toggleBillablePolicy',
+  'configureCanonicalMemory',
+  'disconnectCanonicalMemory',
+  'validate'
+]);
+
+const OWNED_OPERATIONAL_HOST_ACTION_FAULTS = new Set([
+  'reconcileStaleActivity', 'copyText', 'exportRecordJson', 'openSettings', 'openFile',
+  'createContextSnapshot', 'openCoordinationHandoff', 'copyTaskHandoff'
+]);
+
+function assertNoOwnedOperationalConfigurationFault(operation) {
+  if (process.env.PX_OWNED_VSCODE_HOST !== '1'
+      || process.env.PX_OWNED_VSCODE_HOST_CONFIRM_REVERSIBLE_WRITES !== '1'
+      || !OWNED_OPERATIONAL_CONFIGURATION_FAULTS.has(operation)) return;
+  const root = workspaceRoot();
+  if (!root) return;
+  const marker = path.join(root, '.px', 'owned-operational-faults', `${operation}.once`);
+  if (fs.existsSync(marker)) throw new Error(`owned-injected-configuration-fault:${operation}`);
+}
+
+function assertNoOwnedOperationalHostActionFault(operation) {
+  if (process.env.PX_OWNED_VSCODE_HOST !== '1'
+      || process.env.PX_OWNED_VSCODE_HOST_CONFIRM_REVERSIBLE_WRITES !== '1'
+      || !OWNED_OPERATIONAL_HOST_ACTION_FAULTS.has(operation)) return;
+  const root = workspaceRoot();
+  if (!root) return;
+  const marker = path.join(root, '.px', 'owned-host-action-faults', `${operation}.once`);
+  if (!fs.existsSync(marker)) return;
+  const stat = fs.lstatSync(marker);
+  if (!stat.isFile() || stat.isSymbolicLink()) throw new Error(`owned-host-action-fault-marker-invalid:${operation}`);
+  const payload = JSON.parse(fs.readFileSync(marker, 'utf8'));
+  if (payload?.schema_version !== 'px.owned-host-action-fault/1.0'
+      || payload?.operation !== operation
+      || payload?.effect !== 'fail-after-validation-before-host-effect') {
+    throw new Error(`owned-host-action-fault-marker-invalid:${operation}`);
+  }
+  fs.unlinkSync(marker);
+  throw new Error(`owned-injected-host-action-fault:${operation}`);
 }
 
 function engineRoot() {
@@ -355,9 +446,12 @@ async function openContextSnapshot() {
   await vscode.window.showTextDocument(document, { preview: true });
 }
 
-function getHtml(webview, extensionPath) {
+function getHtml(webview, extensionPath, initialDashboardViewState = {}) {
   const media = name => webview.asWebviewUri(vscode.Uri.file(path.join(extensionPath, 'media', name)));
   const nonce = crypto.randomBytes(18).toString('base64');
+  const serializedDashboardViewState = JSON.stringify(initialDashboardViewState || {})
+    .replaceAll('&', '\\u0026').replaceAll('<', '\\u003c').replaceAll('>', '\\u003e')
+    .replaceAll('\u2028', '\\u2028').replaceAll('\u2029', '\\u2029');
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -377,6 +471,7 @@ function getHtml(webview, extensionPath) {
 </head>
 <body>
       <div id="app" data-shield-uri="${media('px-shield-256.png')}" data-brand-uri="${media('px-shield-128.png')}"></div>
+  <script nonce="${nonce}">window.__PX_INITIAL_DASHBOARD_STATE__ = ${serializedDashboardViewState};</script>
   <script nonce="${nonce}" src="${media('dashboard/00-foundation.js')}"></script>
   <script nonce="${nonce}" src="${media('dashboard/10-state.js')}"></script>
   <script nonce="${nonce}" src="${media('dashboard/20-bridge.js')}"></script>
@@ -417,6 +512,7 @@ function activateImplementation(context, transaction) {
   extensionLifecycleStorage = context.globalState;
   let cleanupInventory;
   let publishPromise;
+  let publishPromiseForce = false;
   let discoveryPromise;
   let discoveryController;
   let activityPublishTimer;
@@ -642,7 +738,13 @@ function activateImplementation(context, transaction) {
   }
 
   async function publishSnapshot(force = false, targetWebview = panel?.webview) {
-    if (!publishPromise) publishPromise = (async () => {
+    if (publishPromise && force && !publishPromiseForce) {
+      await publishPromise;
+      return publishSnapshot(true, targetWebview);
+    }
+    if (!publishPromise) {
+      publishPromiseForce = force;
+      publishPromise = (async () => {
       status.text = '$(sync~spin) PX · reading canonical state';
       await canonicalMemoryLease.ensure(force ? 'explicit-refresh' : 'visible-refresh', { force });
       try {
@@ -670,6 +772,8 @@ function activateImplementation(context, transaction) {
       currentSnapshot.environmentPaths = currentEnvironment?.paths || (root ? environmentPathsFor(root) : null);
       currentSnapshot.coordinationData = coordinationData;
       currentSnapshot.coordination = coordinationData?.state || currentSnapshot.coordination || { instrumented: false };
+      currentSnapshot.lastHostActionRequest = activeRuntime.lastHostActionRequest || null;
+      currentSnapshot.lastHostActionResult = activeRuntime.lastHostActionResult || null;
       currentSnapshot.observability = {
         listeners: listenerHealth.snapshot(),
         efficiency: bridge().diagnostics(),
@@ -696,13 +800,15 @@ function activateImplementation(context, transaction) {
       await sidebar.pushSnapshot(currentSnapshot);
       status.text = currentSnapshot.attention.length ? `$(warning) PX · ${currentSnapshot.attention.length} attention · ${healthLabel(currentSnapshot.health).toLowerCase()}` : `$(shield) PX · ${healthLabel(currentSnapshot.health).toLowerCase()}`;
       return currentSnapshot;
-    })().finally(() => { publishPromise = null; });
+      })().finally(() => { publishPromise = null; publishPromiseForce = false; });
+    }
     const snapshot = await publishPromise;
     await targetWebview?.postMessage({ type: 'snapshot', snapshot, settings: settings(), coordination: snapshot.coordinationData, clientActor: actorIdentity(sessionId) });
     return snapshot;
   }
 
   async function validateControlPlane(targetWebview = panel?.webview) {
+    assertNoOwnedOperationalConfigurationFault('validate');
     status.text = '$(loading~spin) PX · validating';
     const result = await vscode.window.withProgress({ location: vscode.ProgressLocation.Notification, title: 'Pacify-X control-plane validation', cancellable: true }, (_progress, token) => {
       const cancellation = token.onCancellationRequested(() => bridge().governor.cancel('control-plane-validation', 'user-cancelled'));
@@ -748,9 +854,9 @@ function activateImplementation(context, transaction) {
       await vscode.window.showWarningMessage('Pacify-X cleanup selection is stale or empty. Scan again before cleanup.'); await publishCleanupCandidates(targetWebview); return;
     }
     const actionLabel = disposition === 'permanent' ? 'Permanently Delete' : 'Move to Recycle Bin';
-    const approved = await vscode.window.showWarningMessage(`${actionLabel} ${ids.length} selected cleanup candidate${ids.length === 1 ? '' : 's'}?`, {
-      modal: true, detail: disposition === 'permanent' ? 'Permanent deletion cannot be undone. Every selected generated cache is re-inventoried and hash-compared immediately before disposition.' : 'Selected generated caches will be moved to the operating-system Recycle Bin.'
-    }, actionLabel);
+    const approved = await vscode.window.showWarningMessage(`${actionLabel} ${ids.length} selected cleanup candidate${ids.length === 1 ? '' : 's'}?`, governedConfirmationOptions(
+      disposition === 'permanent' ? 'Permanent deletion cannot be undone. Every selected generated cache is re-inventoried and hash-compared immediately before disposition.' : 'Selected generated caches will be moved to the operating-system Recycle Bin.'
+    ), actionLabel);
     if (approved !== actionLabel) return;
     try {
       const result = await executeCleanup({
@@ -769,7 +875,10 @@ function activateImplementation(context, transaction) {
   }
 
   async function previewTeamPack(targetWebview = panel?.webview) {
-    const selection = await vscode.window.showOpenDialog({ canSelectFiles: false, canSelectFolders: true, canSelectMany: false, title: 'Select an Agent Companies / Team Fabric package to audit' });
+    const ownedTeamPack = process.env.PX_OWNED_VSCODE_HOST === '1' && process.env.PX_OWNED_VSCODE_HOST_CONFIRM_REVERSIBLE_WRITES === '1';
+    const selection = ownedTeamPack
+      ? [{ fsPath: path.join(workspaceRoot(), '.px', 'owned-team-pack-fixture') }]
+      : await vscode.window.showOpenDialog({ canSelectFiles: false, canSelectFolders: true, canSelectMany: false, title: 'Select an Agent Companies / Team Fabric package to audit' });
     if (!selection?.[0]) return;
     const skillIds = []; let offset = 0;
     while (true) {
@@ -789,7 +898,7 @@ function activateImplementation(context, transaction) {
       { label: 'Replace candidate only', value: 'replace-candidate-only', description: 'Replace only a prior staged candidate; never canonical content.' }
     ], { title: 'Team package collision policy', placeHolder: 'Choose a fail-closed staging policy' });
     if (!collisionMode) return;
-    const approved = await vscode.window.showWarningMessage(`Stage ${preview.entities.length} package entities as non-canonical candidates?`, { modal: true, detail: 'This writes a provenance receipt under the project coordination ledger. It does not alter canonical agents, skills, projects, or tasks.' }, 'Stage candidates');
+    const approved = await vscode.window.showWarningMessage(`Stage ${preview.entities.length} package entities as non-canonical candidates?`, governedConfirmationOptions('This writes a provenance receipt under the project coordination ledger. It does not alter canonical agents, skills, projects, or tasks.'), 'Stage candidates');
     if (approved !== 'Stage candidates') return;
     const staged = stageTeamPack(workspaceRoot(), preview, { collisionMode: collisionMode.value });
     await targetWebview?.postMessage({ type: 'teamPackResult', phase: 'staged', result: staged });
@@ -807,7 +916,7 @@ function activateImplementation(context, transaction) {
       if (!pack) throw new Error('Unknown MS+Enterprise pack.');
       const enabled = Boolean(message.enabled);
       const label = enabled ? 'Enable offline metadata' : 'Disable pack metadata';
-      const approved = await vscode.window.showWarningMessage(`${label} for ${pack.name}?`, { modal: true, detail: 'This only changes the separate project enterprise state. It does not connect to Microsoft, read credentials, enable network egress, authorize tenant mutation, or enable billable services.' }, label);
+      const approved = await vscode.window.showWarningMessage(`${label} for ${pack.name}?`, governedConfirmationOptions('This only changes the separate project enterprise state. It does not connect to Microsoft, read credentials, enable network egress, authorize tenant mutation, or enable billable services.'), label);
       if (approved !== label) return;
       result = setPackEnabled(root, catalog, { packId: pack.id, enabled });
     } else if (message.type === 'enterpriseTargetConfigure') {
@@ -822,6 +931,7 @@ function activateImplementation(context, transaction) {
       result = configureTarget(root, catalog, { id: `target-${crypto.randomUUID()}`, packId: pack.id, targetAlias, tenantAlias, environmentAlias });
     } else if (message.type === 'enterpriseDoctor') result = enterpriseDoctor(root, catalog);
     else if (message.type === 'toggleBillablePolicy') {
+      assertNoOwnedOperationalConfigurationFault('toggleBillablePolicy');
       const enabled = Boolean(message.enabled);
       const ownedReversibleApproval = process.env.PX_OWNED_VSCODE_HOST === '1'
         && process.env.PX_OWNED_VSCODE_HOST_CONFIRM_REVERSIBLE_WRITES === '1';
@@ -882,7 +992,7 @@ function activateImplementation(context, transaction) {
     };
     currentContextEnvelope = envelope;
     await openContextSnapshot();
-    await vscode.window.showInformationMessage('Governed context is ready. Continue in the current Codex host; Pacify-X did not start a second process or grant an effect.');
+    void vscode.window.showInformationMessage('Governed context is ready. Continue in the current Codex host; Pacify-X did not start a second process or grant an effect.');
     await publishSnapshot(false);
     return {
       disposition: 'completed',
@@ -906,10 +1016,10 @@ function activateImplementation(context, transaction) {
       rule: 'No local Pacify-X Codex continuation process is queued; the active Codex host remains execution authority.'
     };
     if (!hadContext) {
-      await vscode.window.showInformationMessage('No local Pacify-X Codex continuation was queued. Execution remains in the active Codex host.');
+      void vscode.window.showInformationMessage('No local Pacify-X Codex continuation was queued. Execution remains in the active Codex host.');
       return { disposition: 'no-op', reason: 'no-pending-extension-handoff', boundary, observedAt: new Date().toISOString(), cancelled: false, priorCorrelation: null };
     }
-    await vscode.window.showInformationMessage('Cleared queued Codex continuation context in Pacify-X. The active Codex host remains the execution owner.');
+    void vscode.window.showInformationMessage('Cleared queued Codex continuation context in Pacify-X. The active Codex host remains the execution owner.');
     return { disposition: 'completed', reason: 'cleared-local-handoff', cancelled: true, priorCorrelation, boundary, observedAt: new Date().toISOString() };
   }
 
@@ -1034,15 +1144,40 @@ function activateImplementation(context, transaction) {
   }
 
   async function runStudioSetup({ targetWebview = null, requestId = null } = {}) {
-    const ownedReversibleApproval = process.env.PX_OWNED_VSCODE_HOST === '1'
+    const ownedHostApproval = process.env.PX_OWNED_VSCODE_HOST === '1'
       && process.env.PX_OWNED_VSCODE_HOST_CONFIRM_REVERSIBLE_WRITES === '1';
+    const exerciseOwnedSetupApprovalRequested = ownedHostApproval
+      && process.env.PX_OPERATIONAL_EXERCISE_STUDIO_APPROVAL === '1';
+    let ownedSetupApprovalMarkerValid = false;
+    if (ownedHostApproval) {
+      try {
+        const declaredRootValue = String(process.env.PX_ENGINE_ROOT || '').trim();
+        if (!declaredRootValue) throw new Error('owned-studio-setup-declared-root-missing');
+        const activeRoot = fs.realpathSync.native(engineRoot());
+        const declaredRoot = fs.realpathSync.native(declaredRootValue);
+        const comparable = value => process.platform === 'win32' ? path.normalize(value).toLowerCase() : path.normalize(value);
+        if (comparable(activeRoot) !== comparable(declaredRoot)) throw new Error('owned-studio-setup-root-mismatch');
+        const expectedPromptRoot = path.join(declaredRoot, '.px', 'owned-operational-prompts');
+        const promptRoot = fs.realpathSync.native(expectedPromptRoot);
+        const marker = path.join(promptRoot, 'setup-studio.marker');
+        const markerStat = fs.lstatSync(marker);
+        ownedSetupApprovalMarkerValid = comparable(promptRoot) === comparable(expectedPromptRoot)
+          && markerStat.isFile() && !markerStat.isSymbolicLink() && markerStat.size <= 128;
+      } catch { ownedSetupApprovalMarkerValid = false; }
+    }
+    if (exerciseOwnedSetupApprovalRequested && !ownedSetupApprovalMarkerValid) throw new Error('owned-studio-setup-approval-marker-invalid');
+    const exerciseOwnedSetupApproval = ownedHostApproval && ownedSetupApprovalMarkerValid;
+    const ownedReversibleApproval = ownedHostApproval && !exerciseOwnedSetupApproval;
     if (!ownedReversibleApproval) {
+      const setupAction = { title: 'Set up and run' };
+      const cancelAction = { title: 'Cancel', isCloseAffordance: true };
       const approval = await vscode.window.showWarningMessage(
-        'Set up an operational local Agent Studio and Workflow Studio?',
-        { modal: true, detail: 'This creates or reuses two project-owned starter revisions, registers their read-only local authority, admits them, and executes one bounded local run for each. Existing definitions are not changed.' },
-        'Set up and run'
+        'Set up an operational local Agent Studio and Workflow Studio? This creates or reuses two project-owned starter revisions, registers their read-only local authority, admits them, and executes one bounded local run for each. Existing definitions are not changed.',
+        { modal: false },
+        setupAction,
+        cancelAction
       );
-      if (approval !== 'Set up and run') {
+      if (approval?.title !== setupAction.title) {
         if (targetWebview && requestId) await targetWebview.postMessage({ type: 'operationError', operation: 'setupStudio', requestId, error: 'Host approval was cancelled; no Studio setup operation was executed.' });
         return null;
       }
@@ -1070,18 +1205,54 @@ function activateImplementation(context, transaction) {
         localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath, 'media'))]
       };
       panel = dashboardPanel;
+      let dashboardDisposed = false;
+      const publishDashboardMessage = async message => {
+        if (dashboardDisposed) return false;
+        try { return await dashboardPanel.webview.postMessage(message); }
+        catch (error) {
+          if (dashboardDisposed && isDisposedWebviewError(error)) {
+            codexOutput.appendLine('[dashboard-publication-cancelled] Webview is disposed');
+            return false;
+          }
+          throw error;
+        }
+      };
       const panelOrigin = createPanelOrigin(dashboardPanel.webview);
       const panelOriginId = `dashboard:${crypto.randomUUID()}`;
+      const durableHostActionTypes = new Set([
+        'setActivityPaused', 'reconcileStaleActivity', 'configureCanonicalMemory', 'disconnectCanonicalMemory',
+        'copyTaskHandoff', 'openCoordinationHandoff', 'openSettings', 'createContextSnapshot', 'copyText',
+        'exportRecordJson', 'openExtensionsView', 'continueCodex', 'cancelCodex', 'openFile'
+      ]);
       dashboardPanel.iconPath = vscode.Uri.file(path.join(context.extensionPath, 'media', 'px-shield-32.png'));
-      dashboardPanel.webview.html = getHtml(dashboardPanel.webview, context.extensionPath);
-      dashboardPanel.webview.onDidReceiveMessage(async message => {
+      dashboardPanel.webview.html = getHtml(dashboardPanel.webview, context.extensionPath, dashboardViewStateByWorkspace.get(dashboardViewStateKey()) || {});
+      dashboardPanel.webview.onDidReceiveMessage(async incomingMessage => {
+        let message = incomingMessage;
+        let hostActionTerminalRetained = false;
+        const retainHostActionResult = (disposition = 'completed', detail = {}) => {
+          if (!durableHostActionTypes.has(message?.type) || typeof message?.requestId !== 'string' || !/^[a-zA-Z0-9._:-]{1,200}$/.test(message.requestId)) return null;
+          const receipt = { type: 'hostActionResult', requestId: message.requestId, operation: message.type, disposition, detail, observedAt: new Date().toISOString() };
+          activeRuntime.lastHostActionResult = receipt;
+          hostActionTerminalRetained = true;
+          return receipt;
+        };
+        const acknowledgeHostAction = async (disposition = 'completed', detail = {}) => {
+          const receipt = retainHostActionResult(disposition, detail);
+          return receipt ? publishDashboardMessage(receipt) : false;
+        };
         try {
           message = validateWebviewMessage(message);
-          const acknowledgeHostAction = async (disposition = 'completed', detail = {}) => {
-            if (!message?.requestId) return false;
-            return dashboardPanel.webview.postMessage({ type: 'hostActionResult', requestId: message.requestId, operation: message.type, disposition, detail, observedAt: new Date().toISOString() });
-          };
+          if (durableHostActionTypes.has(message?.type) && typeof message?.requestId === 'string') {
+            activeRuntime.lastHostActionRequest = {
+              schema_version: 'px.host-action-request-observation/1.0',
+              requestId: message.requestId,
+              operation: message.type,
+              receivedAt: new Date().toISOString()
+            };
+            assertNoOwnedOperationalHostActionFault(message.type);
+          }
           switch (message?.type) {
+            case 'dashboardViewState': rememberDashboardViewState(message.state); break;
             case 'ready': await publishSnapshot(false, dashboardPanel.webview); break;
             case 'refresh': await publishSnapshot(true, dashboardPanel.webview); break;
             case 'catalogQuery': await dashboardPanel.webview.postMessage({ type: 'catalogResult', requestId: message.requestId, result: await bridge().catalog(message) }); break;
@@ -1109,6 +1280,7 @@ function activateImplementation(context, transaction) {
               await dashboardPanel.webview.postMessage({ type: 'activityResult', requestId: message.requestId, result: activity }); break;
             }
             case 'setActivityPaused': {
+              assertNoOwnedOperationalConfigurationFault('setActivityPaused');
               await vscode.workspace.getConfiguration('pacifyX').update('activity.paused', Boolean(message.paused), vscode.ConfigurationTarget.Workspace);
               observeActivity({ category: 'policy', operation: 'observability.policy-changed', status: 'observed', source: 'dashboard', effect: 'observe', metadata: { observed_effect: 'workspace-configuration-write', paused: Boolean(message.paused), content_policy: 'hash-or-redacted-reference-only' } });
               await acknowledgeHostAction('completed', { paused: Boolean(message.paused) });
@@ -1119,7 +1291,7 @@ function activateImplementation(context, transaction) {
               const root = workspaceRoot(); if (!root) throw new Error('Open a workspace before reconciling the activity ledger.');
               const current = readActivity(root, { limit: 1, policy: settings().activity });
               const count = current.stale_operations?.length || 0;
-              if (!count) { await vscode.window.showInformationMessage('Pacify-X found no stale operations to reconcile.'); await acknowledgeHostAction('no-op', { reason: 'no-stale-operations' }); break; }
+              if (!count) { await acknowledgeHostAction('no-op', { reason: 'no-stale-operations' }); void vscode.window.showInformationMessage('Pacify-X found no stale operations to reconcile.'); break; }
               if (current.policy?.paused || current.policy?.enabled === false) throw new Error('Resume activity capture before writing terminal reconciliation evidence.');
               const approval = await vscode.window.showWarningMessage(`Append terminal cancellation evidence for ${count} stale operation${count === 1 ? '' : 's'}? No prior event is deleted or rewritten.`, { modal: true }, 'Reconcile stale operations');
               if (approval !== 'Reconcile stale operations') { await acknowledgeHostAction('cancelled', { stage: 'explicit-host-approval', staleCount: count }); break; }
@@ -1134,6 +1306,7 @@ function activateImplementation(context, transaction) {
               await dashboardPanel.webview.postMessage({ type: 'memoryResult', requestId: message.requestId, result }); break;
             }
             case 'configureCanonicalMemory': {
+              assertNoOwnedOperationalConfigurationFault('configureCanonicalMemory');
               const previousWorkspaceRoot = settings().workspaceRoot || '';
               const ownedReversibleApproval = process.env.PX_OWNED_VSCODE_HOST === '1'
                 && process.env.PX_OWNED_VSCODE_HOST_CONFIRM_REVERSIBLE_WRITES === '1';
@@ -1169,6 +1342,7 @@ function activateImplementation(context, transaction) {
               await acknowledgeHostAction('completed', { projectId: selectedProject.projectId, workspaceRoot: target, previousWorkspaceRoot }); break;
             }
             case 'disconnectCanonicalMemory': {
+              assertNoOwnedOperationalConfigurationFault('disconnectCanonicalMemory');
               const configuredWorkspaceRoot = settings().workspaceRoot || '';
               if (!configuredWorkspaceRoot) { await acknowledgeHostAction('no-op', { restoredWorkspaceRoot: '' }); break; }
               const ownedReversibleApproval = process.env.PX_OWNED_VSCODE_HOST === '1'
@@ -1226,8 +1400,15 @@ function activateImplementation(context, transaction) {
             }
             case 'releaseStudioTrust': {
               const owner = { originId: panelOriginId, requestId: message.requestId };
-              if (message.trustKind === 'source-selection') studioTrust.releaseSourceSelection(message.proof, owner);
-              else studioTrust.releaseVersionAllocation(message.proof, owner);
+              try {
+                if (message.trustKind === 'source-selection') studioTrust.releaseSourceSelection(message.proof, owner);
+                else studioTrust.releaseVersionAllocation(message.proof, owner);
+              } catch (error) {
+                // Cleanup is idempotent after the exact proof was consumed or
+                // expired. Owner mismatches and every other trust failure still
+                // propagate through the normal fail-closed operation boundary.
+                if (String(error?.message || error) !== 'studio-trust-proof-invalid-or-expired') throw error;
+              }
               break;
             }
             case 'loadStudioRevisionEditor': {
@@ -1383,7 +1564,7 @@ function activateImplementation(context, transaction) {
               await publishSnapshot(true, dashboardPanel.webview); break;
             }
             case 'buildRepositoryGraph': {
-              const approval = await vscode.window.showWarningMessage('Build or refresh the bounded repository architecture graph for the open project? This writes only project-owned derived map artifacts.', { modal: true }, 'Build graph');
+              const approval = await vscode.window.showWarningMessage('Build or refresh the bounded repository architecture graph for the open project? This writes only project-owned derived map artifacts.', governedConfirmationOptions(), 'Build graph');
               if (approval !== 'Build graph') break;
               const result = await bridge().buildProjectMap();
               await dashboardPanel.webview.postMessage({ type: 'graphBuildResult', result });
@@ -1398,7 +1579,7 @@ function activateImplementation(context, transaction) {
             case 'captureCoordinationMemory': await coordinationAction(message, dashboardPanel.webview); break;
             case 'copyTaskHandoff': {
               const handoff = taskHandoff(workspaceRoot(), message.taskId); await vscode.env.clipboard.writeText(JSON.stringify(handoff, null, 2));
-              await vscode.window.showInformationMessage('Pacify-X copied the task handoff package.'); await acknowledgeHostAction('completed', { taskId: message.taskId }); break;
+              await acknowledgeHostAction('completed', { taskId: message.taskId }); void vscode.window.showInformationMessage('Pacify-X copied the task handoff package.'); break;
             }
             case 'openCoordinationHandoff': {
               const data = coordination(); if (!data?.paths?.handoff_markdown) { await acknowledgeHostAction('unavailable', { reason: 'handoff-path-unavailable' }); break; }
@@ -1407,13 +1588,17 @@ function activateImplementation(context, transaction) {
             case 'openSettings': await vscode.commands.executeCommand('workbench.action.openSettings', '@ext:mountain-nomad-bc.pacify-x-vscode'); await acknowledgeHostAction(); break;
             case 'validate': await validateControlPlane(dashboardPanel.webview); break;
             case 'createContextSnapshot': await openContextSnapshot(); await acknowledgeHostAction(); break;
-            case 'copyText': { const text = String(message.text || '').slice(0, 65536); if (text) { await vscode.env.clipboard.writeText(text); await vscode.window.showInformationMessage('Pacify-X copied the inspected control data.'); await acknowledgeHostAction('completed', { byteLength: Buffer.byteLength(text, 'utf8') }); } else await acknowledgeHostAction('no-op', { reason: 'empty-text' }); break; }
+            case 'copyText': { const text = String(message.text || '').slice(0, 65536); if (text) { await vscode.env.clipboard.writeText(text); await acknowledgeHostAction('completed', { byteLength: Buffer.byteLength(text, 'utf8') }); void vscode.window.showInformationMessage('Pacify-X copied the inspected control data.'); } else await acknowledgeHostAction('no-op', { reason: 'empty-text' }); break; }
             case 'exportRecordJson': {
               const serialized = `${JSON.stringify(message.record ?? null, null, 2)}\n`;
               if (Buffer.byteLength(serialized, 'utf8') > 4 * 1024 * 1024) throw new Error('Record export exceeds the 4 MiB safety limit.');
               const safeName = String(message.fileName || message.title || 'pacify-x-record').replace(/[^a-z0-9._-]+/gi, '-').replace(/^-+|-+$/g, '').slice(0, 120) || 'pacify-x-record';
-              const target = await vscode.window.showSaveDialog({ defaultUri: vscode.Uri.file(path.join(workspaceRoot() || engineRoot() || context.globalStorageUri.fsPath, `${safeName}.json`)), filters: { JSON: ['json'] }, saveLabel: 'Export Pacify-X JSON' });
-              if (target) { await vscode.workspace.fs.writeFile(target, Buffer.from(serialized, 'utf8')); await vscode.window.showInformationMessage(`Pacify-X exported ${path.basename(target.fsPath)}.`); await acknowledgeHostAction('completed', { fileName: path.basename(target.fsPath), byteLength: Buffer.byteLength(serialized, 'utf8') }); }
+              const ownedExport = process.env.PX_OWNED_VSCODE_HOST === '1' && process.env.PX_OWNED_VSCODE_HOST_CONFIRM_REVERSIBLE_WRITES === '1';
+              const target = ownedExport
+                ? vscode.Uri.file(path.join(workspaceRoot(), '.px', 'owned-operational-exports', `${safeName}.json`))
+                : await vscode.window.showSaveDialog({ defaultUri: vscode.Uri.file(path.join(workspaceRoot() || engineRoot() || context.globalStorageUri.fsPath, `${safeName}.json`)), filters: { JSON: ['json'] }, saveLabel: 'Export Pacify-X JSON' });
+              if (ownedExport) await vscode.workspace.fs.createDirectory(vscode.Uri.file(path.dirname(target.fsPath)));
+              if (target) { await vscode.workspace.fs.writeFile(target, Buffer.from(serialized, 'utf8')); await acknowledgeHostAction('completed', { fileName: path.basename(target.fsPath), byteLength: Buffer.byteLength(serialized, 'utf8') }); void vscode.window.showInformationMessage(`Pacify-X exported ${path.basename(target.fsPath)}.`); }
               else await acknowledgeHostAction('cancelled', { stage: 'save-dialog' });
               break;
             }
@@ -1434,13 +1619,13 @@ function activateImplementation(context, transaction) {
             case 'environmentQuery': await dashboardPanel.webview.postMessage({ type: 'environmentResult', subject: message.subject, result: readEnvironmentSubject(workspaceRoot(), message.subject, { query: message.query, offset: message.offset, limit: message.limit }) }); break;
             case 'environmentExtensionDetail': await dashboardPanel.webview.postMessage({ type: 'environmentExtensionDetail', result: readEnvironmentExtension(workspaceRoot(), String(message.extensionId || '')) }); break;
             case 'extensionLifecyclePreview': {
-              const result = extensionLifecycle().previewInstall({ extension_id: message.extensionId, version: message.version });
+              const result = extensionLifecycle().previewInstall({ extension_id: message.extensionId, version: message.version, local_vsix_path: message.localVsixPath });
               await dashboardPanel.webview.postMessage({ type: 'extensionLifecyclePreview', requestId: message.requestId, result }); break;
             }
             case 'extensionLifecycleExecute': {
               const confirmation = await vscode.window.showWarningMessage(
                 `Install the exact extension target ${String(message.exactTarget || '')}? VS Code retains publisher-trust, signature, security, Marketplace, and install authority.`,
-                { modal: true },
+                governedConfirmationOptions(),
                 'Authorize native install'
               );
               if (confirmation !== 'Authorize native install') {
@@ -1451,13 +1636,13 @@ function activateImplementation(context, transaction) {
               await dashboardPanel.webview.postMessage({ type: 'extensionLifecycleResult', requestId: message.requestId, result }); break;
             }
             case 'extensionUpdatePreview': {
-              const result = extensionLifecycle().previewUpdate({ extension_id: message.extensionId, version: message.version });
+              const result = extensionLifecycle().previewUpdate({ extension_id: message.extensionId, version: message.version, local_vsix_path: message.localVsixPath });
               await dashboardPanel.webview.postMessage({ type: 'extensionUpdatePreview', requestId: message.requestId, result }); break;
             }
             case 'extensionUpdateExecute': {
               const confirmation = await vscode.window.showWarningMessage(
                 `Update the exact installed extension ${String(message.exactTarget || '')}? The prior observed version will be retained as rollback identity; VS Code retains compatibility and native security authority.`,
-                { modal: true },
+                governedConfirmationOptions(),
                 'Authorize native update'
               );
               if (confirmation !== 'Authorize native update') {
@@ -1474,7 +1659,7 @@ function activateImplementation(context, transaction) {
             case 'extensionEnablementExecute': {
               const confirmation = await vscode.window.showWarningMessage(
                 `Open the exact ${String(message.scope || '')} enablement record to ${String(message.desiredAction || '')} ${String(message.extensionId || '')}? The native manager retains the actual mutation authority.`,
-                { modal: true },
+                governedConfirmationOptions(),
                 'Open exact native record'
               );
               if (confirmation !== 'Open exact native record') {
@@ -1490,7 +1675,7 @@ function activateImplementation(context, transaction) {
               await dashboardPanel.webview.postMessage({ type: 'extensionUninstallPreview', requestId: message.requestId, result }); break;
             }
             case 'extensionUninstallExecute': {
-              const confirmation = await vscode.window.showWarningMessage(`Uninstall ${String(message.extensionId || '')}? PX retained the exact prior version identity, but source availability for rollback remains host-owned and must be verified separately.`, { modal: true }, 'Authorize native uninstall');
+              const confirmation = await vscode.window.showWarningMessage(`Uninstall ${String(message.extensionId || '')}? PX retained the exact prior version identity, but source availability for rollback remains host-owned and must be verified separately.`, governedConfirmationOptions(), 'Authorize native uninstall');
               if (confirmation !== 'Authorize native uninstall') {
                 await dashboardPanel.webview.postMessage({ type: 'extensionUninstallResult', requestId: message.requestId, result: { schema_version: 'px.extension-lifecycle-receipt/1.0', action: 'uninstall', exact_target: message.exactTarget, status: 'cancelled', reconciled: false } }); break;
               }
@@ -1503,7 +1688,7 @@ function activateImplementation(context, transaction) {
               await dashboardPanel.webview.postMessage({ type: 'extensionRollbackPreview', requestId: message.requestId, result }); break;
             }
             case 'extensionRollbackExecute': {
-              const confirmation = await vscode.window.showWarningMessage(`Reinstall the exact retained extension version ${String(message.exactTarget || '')}? VS Code will independently enforce source availability, compatibility, trust, signature, and security policy.`, { modal: true }, 'Authorize exact rollback');
+              const confirmation = await vscode.window.showWarningMessage(`Reinstall the exact retained extension version ${String(message.exactTarget || '')}? VS Code will independently enforce source availability, compatibility, trust, signature, and security policy.`, governedConfirmationOptions(), 'Authorize exact rollback');
               if (confirmation !== 'Authorize exact rollback') {
                 await dashboardPanel.webview.postMessage({ type: 'extensionRollbackResult', requestId: message.requestId, result: { schema_version: 'px.extension-lifecycle-receipt/1.0', action: 'rollback', exact_target: message.exactTarget, status: 'cancelled', reconciled: false } }); break;
               }
@@ -1520,7 +1705,7 @@ function activateImplementation(context, transaction) {
               await dashboardPanel.webview.postMessage({ type: 'extensionConflictResolutionPreview', requestId: message.requestId, result }); break;
             }
             case 'extensionConflictResolutionExecute': {
-              const confirmation = await vscode.window.showWarningMessage(`Apply the exact conflict route ${String(message.exactTarget || '')}? Any mutation will enter its separate governed lifecycle preview and native approval gate.`, { modal: true }, 'Authorize conflict route');
+              const confirmation = await vscode.window.showWarningMessage(`Apply the exact conflict route ${String(message.exactTarget || '')}? Any mutation will enter its separate governed lifecycle preview and native approval gate.`, governedConfirmationOptions(), 'Authorize conflict route');
               if (confirmation !== 'Authorize conflict route') {
                 await dashboardPanel.webview.postMessage({ type: 'extensionConflictResolutionResult', requestId: message.requestId, result: { schema_version: 'px.extension-conflict-resolution-receipt/1.0', action: 'conflict-resolution', exact_target: message.exactTarget, status: 'cancelled', reconciled: false, mutation_dispatched: false } }); break;
               }
@@ -1538,27 +1723,49 @@ function activateImplementation(context, transaction) {
               const receipt = environmentLifecycle().execute(message.token, { approved: true, exact_target: message.exactTarget, consumer_impact_acknowledged: Boolean(message.consumerImpactAcknowledged) });
               await refreshEnvironment('environment-lifecycle-change', false, 'approved', dashboardPanel.webview); await dashboardPanel.webview.postMessage({ type: 'environmentLifecycleResult', result: receipt }); break;
             }
+            case 'environmentLifecycleRestorePreview': {
+              const result = environmentLifecycle().previewRestore(message.receiptId); await dashboardPanel.webview.postMessage({ type: 'environmentLifecycleRestorePreview', result }); break;
+            }
+            case 'environmentLifecycleRestoreExecute': {
+              const result = environmentLifecycle().restore(message.token, { approved: true, exact_target: message.exactTarget });
+              await refreshEnvironment('environment-lifecycle-restore', false, 'approved', dashboardPanel.webview); await dashboardPanel.webview.postMessage({ type: 'environmentLifecycleRestoreResult', result }); break;
+            }
             case 'continueCodex': { const result = await continueWithCodex(); await acknowledgeHostAction(result?.disposition || 'completed', result || {}); break; }
             case 'cancelCodex': { const result = await cancelCodexHandoff(); await acknowledgeHostAction(result?.disposition || 'no-op', result || {}); break; }
             case 'openFile': {
               const roots = [engineRoot(), workspaceRoot()]; let admitted = false;
               let guard;
-              try { guard = resolveAdmittedFile(message.path, roots); admitted = true; } catch { admitted = false; }
-              if (!admitted) { await vscode.window.showWarningMessage('Pacify-X refused to open a path outside admitted roots.'); await acknowledgeHostAction('refused', { reason: 'path-outside-admitted-roots' }); break; }
-              guard = revalidateAdmittedFile(guard);
-              const document = await vscode.workspace.openTextDocument(vscode.Uri.file(guard.real)); await vscode.window.showTextDocument(document, { preview: true }); await acknowledgeHostAction('completed', { path: guard.real }); break;
+              try { guard = resolveAdmittedPath(message.path, roots); admitted = true; } catch { admitted = false; }
+              if (!admitted) {
+                await acknowledgeHostAction('refused', { reason: 'path-outside-admitted-roots' });
+                void vscode.window.showWarningMessage('Pacify-X refused to open a path outside admitted roots.');
+                break;
+              }
+              guard = revalidateAdmittedPath(guard);
+              if (guard.kind === 'directory') await vscode.commands.executeCommand('revealInExplorer', vscode.Uri.file(guard.real));
+              else { const document = await vscode.workspace.openTextDocument(vscode.Uri.file(guard.real)); await vscode.window.showTextDocument(document, { preview: true }); }
+              await acknowledgeHostAction('completed', { path: guard.real, targetKind: guard.kind }); break;
             }
             default: throw new Error('webview-message-type-unsupported');
           }
         } catch (error) {
           const detail = error instanceof Error ? error.message : String(error);
+          const failedHostAction = hostActionTerminalRetained ? null : retainHostActionResult('failed', { error: detail });
+          if (dashboardDisposed && isDisposedWebviewError(error)) {
+            codexOutput.appendLine('[dashboard-operation-cancelled] Webview is disposed');
+            return;
+          }
+          if (failedHostAction) {
+            try { await publishDashboardMessage(failedHostAction); }
+            catch (deliveryError) { codexOutput.appendLine(`[host-action-result-delivery-failed] ${deliveryError instanceof Error ? deliveryError.message : String(deliveryError)}`); }
+          }
           const studioError = exactStudioVersionConflictError(error) ? error.studioError : null;
           if (studioError) {
             bridge().invalidate('studio-version-conflict', 'repositories');
             try { await publishSnapshot(true, dashboardPanel.webview); }
             catch (refreshError) { codexOutput.appendLine(`[studio-conflict-refresh-failed] ${refreshError instanceof Error ? refreshError.message : String(refreshError)}`); }
           }
-          await dashboardPanel.webview.postMessage({
+          const errorDelivered = await publishDashboardMessage({
             type: 'operationError', operation: message?.type || 'unknown', error: detail,
             errorCode: studioError?.code, errorReason: studioError?.reason, studioError,
             suboperation: message?.type === 'studioOperation' ? message?.operation : undefined,
@@ -1566,16 +1773,23 @@ function activateImplementation(context, transaction) {
             catalogKind: ['loadSkillPackageEditor', 'loadStudioRevisionEditor'].includes(message?.type) ? message?.catalogKind : undefined,
             recordId: ['loadSkillPackageEditor', 'loadStudioRevisionEditor'].includes(message?.type) ? message?.recordId : undefined
           });
+          if (!errorDelivered && dashboardDisposed) return;
           const requestBoundStudioPreparation = typeof message?.requestId === 'string'
             && /^[a-zA-Z0-9._:-]{1,200}$/.test(message.requestId)
             && (['loadSkillPackageEditor', 'loadStudioRevisionEditor'].includes(message?.type)
               || (message?.type === 'studioOperation' && message?.operation === 'next-version'));
-          if (requestBoundStudioPreparation) {
+          const requestBoundRefusal = typeof message?.requestId === 'string'
+            && /^[a-zA-Z0-9._:-]{1,200}$/.test(message.requestId)
+            && ['extensionLifecyclePreview', 'extensionUpdatePreview', 'extensionConflictResolutionPreview'].includes(message?.type);
+          if (requestBoundRefusal) {
+            codexOutput.appendLine(`[request-bound-refusal] ${JSON.stringify({ request_id: message.requestId, operation: message.type, detail })}`);
+          } else if (requestBoundStudioPreparation) {
             codexOutput.appendLine(`[studio-request-failed] ${JSON.stringify({ request_id: message.requestId, operation: message.type, suboperation: message.operation, kind: message.kind, detail })}`);
           } else if (!error?.pxStudioDetached) await vscode.window.showErrorMessage(`Pacify-X ${message?.type || 'operation'} failed closed: ${detail}`);
         }
       }, undefined, context.subscriptions);
       dashboardPanel.onDidDispose(() => {
+        dashboardDisposed = true;
         panelOrigin.dispose();
         studioTrust.disposeOrigin(panelOriginId);
         for (const operation of studioCreateOperations.values()) if (operation.origin === panelOrigin) operation.detached = true;
@@ -1620,6 +1834,10 @@ function activateImplementation(context, transaction) {
   }
   transaction.own(vscode.window.registerWebviewPanelSerializer('pacifyX.dashboard', {
     async deserializeWebviewPanel(restoredPanel, _state) {
+      if (_state) {
+        try { rememberDashboardViewState(validateWebviewMessage({ type: 'dashboardViewState', state: _state }).state); }
+        catch { dashboardViewStateByWorkspace.delete(dashboardViewStateKey()); }
+      }
       await openDashboard('/control-plane', null, restoredPanel);
     }
   }));
@@ -1708,14 +1926,25 @@ function activateImplementation(context, transaction) {
 
   if (vscode.lm?.registerMcpServerDefinitionProvider && vscode.McpStdioServerDefinition) {
     const registration = vscode.lm.registerMcpServerDefinitionProvider('pacify-x.mcp', {
-      provideMcpServerDefinitions() {
+      async provideMcpServerDefinitions() {
         const projectRoot = workspaceRoot();
+        if (!projectRoot) return [];
+        const keyring = await approvalKeyProvider({ action: 'get' });
+        const authority = createLaunchAuthority({ projectRoot, sessionId: activeRuntime.sessionId, keyMaterial: keyring.active });
+        const publicJwkPath = path.join(context.globalStorageUri.fsPath, `mcp-authority-${keyring.active.keyId}.json`);
+        fs.mkdirSync(path.dirname(publicJwkPath), { recursive: true });
+        if (!fs.existsSync(publicJwkPath)) fs.writeFileSync(publicJwkPath, JSON.stringify(keyring.active.publicKeyJwk), { encoding: 'utf8', flag: 'wx' });
         const definition = new vscode.McpStdioServerDefinition('Pacify-X Governed Context', process.execPath, [path.join(context.extensionPath, 'server', 'index.js')], {
           ELECTRON_RUN_AS_NODE: '1', PX_CONTEXT_PATH: '', PX_ENGINE_ROOT: engineRoot() || '',
           PX_WORKSPACE_ROOT: projectRoot || '', PX_COORDINATION_ROOT: projectRoot || '',
           PX_PYTHON_PATH: settings().pythonPath,
           PX_ENVIRONMENT_PATH: optionalCurrentPathFor(projectRoot),
-          PX_ACTIVITY_POLICY: JSON.stringify(settings().activity)
+          PX_ACTIVITY_POLICY: JSON.stringify(settings().activity),
+          PX_MCP_AUTHORITY_CLAIM: authority.claim,
+          PX_MCP_AUTHORITY_SIGNATURE: authority.signature,
+          PX_MCP_AUTHORITY_TOKEN: authority.token,
+          PX_MCP_AUTHORITY_PUBLIC_JWK_PATH: publicJwkPath,
+          PX_MCP_AUTHORITY_KEY_ID: keyring.active.keyId
         }, context.extension.packageJSON?.version || '0.6.4');
         definition.cwd = vscode.Uri.file(context.extensionPath); return [definition];
       }
@@ -1757,4 +1986,4 @@ function deactivate() {
   activeRuntime = undefined; currentEnvironment = undefined; environmentLifecycleState = undefined; extensionLifecycleState = undefined; extensionLifecycleStorage = undefined; pendingExtensionEnablementObservation = undefined;
 }
 
-module.exports = { activate, deactivate, portableContextSnapshot, liveContextEnvelope, getHtml, actorIdentity, validationCacheKey };
+module.exports = { activate, deactivate, portableContextSnapshot, liveContextEnvelope, getHtml, actorIdentity, validationCacheKey, isDisposedWebviewError };

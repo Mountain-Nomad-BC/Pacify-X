@@ -1,0 +1,31 @@
+{
+  "session_id": "repair-session:px-aud2-005-denominator-reconcile-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023022",
+  "gap_id": "PX-OS-1065",
+  "authority": "User authorized all remaining reversible Pacify-X repairs and requires actual repair completion before release validation.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect only the PX-AUD2-005 causal proof and current repair-campaign denominator."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Remove only PX-AUD2-005-repository-scope-section-owner from .engineering-bootstrap/processing-order/repair-campaign.json after its retained causal proof; keep phase=repair and all other campaign fields unchanged; append closure evidence and ledger events."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["Run only the focused two-test PX-AUD2-005 causal proof and processing-order status/check needed to confirm the repair denominator becomes zero while phase remains repair. Do not freeze, reconcile projections, run section gates, full profile, validate, package, install, publish, or certify."]
+    }
+  ],
+  "expected_effect": "Reconcile the stale campaign denominator with already-retained causal proof so repair freeze can be admitted separately.",
+  "rollback": "Restore only the removed PX-AUD2-005 unresolved item if the focused proof fails; retain append-only evidence.",
+  "expires_utc": "2026-08-26T18:00:00Z",
+  "evidence": [
+    {
+      "reference": "evidence/release/repository-scope-governance-causal-proof-20260826.json",
+      "artifact_sha256": "6ceeb3892f8b0d7e4e953d8d9692a978beda19141eee08db2668c9f7a032578d",
+      "artifact_size": 1045,
+      "claim": "PX-AUD2-005 exact causal proof."
+    }
+  ]
+}

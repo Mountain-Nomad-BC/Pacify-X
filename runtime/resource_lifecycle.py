@@ -1173,6 +1173,7 @@ class ResourceManager:
     def reconcile(self, *, apply: bool = False) -> dict[str, object]:
         receipts: list[CleanupReceipt] = []
         retained: list[dict[str, object]] = []
+        abandoned_owners: set[tuple[str, str, str]] = set()
         for record in self.ledger.load():
             if record.resource_type == "process" and record.active:
                 if record.resource_id in self._processes:
@@ -1182,6 +1183,10 @@ class ResourceManager:
                         record.resource_id, apply=apply
                     )
                     receipts.append(receipt)
+                    if apply and receipt.resources_reclaimed == 1:
+                        abandoned_owners.add(
+                            (record.project_id, record.run_id, record.lane_id)
+                        )
                     if receipt.resources_reclaimed == 0:
                         retained.append(
                             {
@@ -1211,6 +1216,45 @@ class ResourceManager:
                         {
                             "resource_id": record.resource_id,
                             "reason": "; ".join(receipt.errors) or "dry run",
+                        }
+                    )
+        if apply and abandoned_owners:
+            current = self.ledger.load()
+            live_process_owners = {
+                (item.project_id, item.run_id, item.lane_id)
+                for item in current
+                if item.resource_type == "process" and item.active
+            }
+            for record in current:
+                owner = (record.project_id, record.run_id, record.lane_id)
+                if (
+                    record.resource_type != "path"
+                    or not record.active
+                    or owner not in abandoned_owners
+                    or owner in live_process_owners
+                    or record.classification
+                    != ResourceClassification.EPHEMERAL.value
+                    or record.retention_required
+                ):
+                    continue
+                self.update(
+                    record.resource_id,
+                    active=False,
+                    run_state=RunState.ABANDONED.value,
+                    status=ResourceStatus.RECLAIMABLE.value,
+                )
+                receipt = self.reclaim(
+                    record.resource_id,
+                    reason="abrupt_owner_absence_reconciliation",
+                    apply=True,
+                )
+                receipts.append(receipt)
+                if receipt.resources_reclaimed == 0:
+                    retained.append(
+                        {
+                            "resource_id": record.resource_id,
+                            "reason": "; ".join(receipt.errors)
+                            or "abandoned owned path was not reclaimed",
                         }
                     )
         final = self.ledger.load()

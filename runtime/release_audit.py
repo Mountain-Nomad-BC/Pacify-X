@@ -29,6 +29,169 @@ def _json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _audit_check(
+    identifier: str, passed: bool, detail: str, evidence: list[str] | None = None
+) -> dict[str, Any]:
+    return {
+        "id": identifier,
+        "passed": bool(passed),
+        "detail": detail,
+        "evidence": evidence or [],
+    }
+
+
+def audit_deploy_layout(root: Path) -> dict[str, Any]:
+    root = root.resolve()
+    forbidden_roots = [
+        name
+        for name in ("planning", "quarantine", "integrations")
+        if (root / name).exists()
+    ]
+    forbidden_roots.extend(
+        name
+        for name in (
+            "knowledge/bootstrap_source_notes",
+            "knowledge/research_operations",
+            "knowledge/project_stream_reference",
+        )
+        if (root / name).exists()
+    )
+    return _audit_check(
+        "deploy-layout",
+        not forbidden_roots,
+        f"forbidden duplicate/raw roots={forbidden_roots}",
+        ["evidence/externalized-payload-index.json"],
+    )
+
+
+_GENERATED_DIRECTORY_NAMES = {
+    ".pytest_cache",
+    ".ruff_cache",
+    "__pycache__",
+    "build",
+    "dist",
+}
+_QUARANTINE_PREFIX = (".engineering-bootstrap", "quarantine")
+
+
+def _release_audit_walk(root: Path):
+    def exclude_audit_path(relative: str | Path) -> bool:
+        path = Path(relative)
+        parts = path.parts
+        if parts[:2] == _QUARANTINE_PREFIX:
+            return True
+        if (
+            any(part in _GENERATED_DIRECTORY_NAMES for part in parts)
+            or path.name.endswith(".egg-info")
+            or path.suffix.casefold() in {".pyc", ".pyo"}
+        ):
+            return False
+        return is_external_environment_relative(relative)
+
+    return bounded_walk(
+        root,
+        limits=WalkLimits(max_files=100_000, max_depth=128, max_bytes=4 * 1024**3),
+        symlink_policy="skip",
+        exclude=exclude_audit_path,
+    )
+
+
+def audit_generated_artifact_hygiene(
+    root: Path, *, audit_walk=None
+) -> dict[str, Any]:
+    root = root.resolve()
+    audit_walk = audit_walk or _release_audit_walk(root)
+    generated = sorted(
+        entry.relative
+        for entry in audit_walk.entries
+        for path in (entry.path,)
+        if (
+            any(
+                part in _GENERATED_DIRECTORY_NAMES
+                for part in path.relative_to(root).parts
+            )
+            or path.name.endswith(".egg-info")
+            or path.suffix.casefold() in {".pyc", ".pyo"}
+        )
+    )
+    generated = [
+        relative for relative in generated if not relative.startswith("extension/dist")
+    ]
+    generated_evidence: list[str] = []
+    for marker in sorted(_GENERATED_DIRECTORY_NAMES):
+        witness = next(
+            (
+                relative
+                for relative in generated
+                if marker in Path(relative).parts
+            ),
+            None,
+        )
+        if witness is not None and witness not in generated_evidence:
+            generated_evidence.append(witness)
+    for predicate in (
+        lambda path: path.name.endswith(".egg-info"),
+        lambda path: path.suffix.casefold() in {".pyc", ".pyo"},
+    ):
+        witness = next(
+            (relative for relative in generated if predicate(Path(relative))), None
+        )
+        if witness is not None and witness not in generated_evidence:
+            generated_evidence.append(witness)
+    generated_evidence.extend(
+        relative for relative in generated if relative not in generated_evidence
+    )
+    return _audit_check(
+        "generated-artifact-hygiene",
+        not generated,
+        f"active generated artifacts={len(generated)}",
+        generated_evidence[:20],
+    )
+
+
+def audit_python_surface_ownership(
+    root: Path, *, audit_walk=None
+) -> dict[str, Any]:
+    root = root.resolve()
+    audit_walk = audit_walk or _release_audit_walk(root)
+    ownership_path = root / "registry/python_surface_ownership.json"
+    ownership_errors: list[str] = []
+    mapped_count = 0
+    if ownership_path.is_file():
+        ownership = _json(ownership_path)
+        mapped = {
+            str(record.get("path")): record for record in ownership.get("records", ())
+        }
+        python_paths = {
+            entry.relative: entry.path
+            for entry in audit_walk.files
+            for path in (entry.path,)
+            if path.suffix.casefold() == ".py"
+            and is_project_source(path, root)
+            and "__pycache__" not in path.parts
+            and path.relative_to(root).parts[:2] != _QUARANTINE_PREFIX
+        }
+        mapped_count = len(mapped)
+        for relative, path in python_paths.items():
+            record = mapped.get(relative)
+            if record is None:
+                ownership_errors.append(f"unmapped: {relative}")
+            elif hashlib.sha256(path.read_bytes()).hexdigest() != record.get("sha256"):
+                ownership_errors.append(f"hash mismatch: {relative}")
+        ownership_errors.extend(
+            f"missing: {relative}"
+            for relative in sorted(set(mapped) - set(python_paths))
+        )
+    else:
+        ownership_errors.append("missing registry/python_surface_ownership.json")
+    return _audit_check(
+        "python-surface-ownership",
+        not ownership_errors,
+        f"mapped={mapped_count}; errors={len(ownership_errors)}",
+        ["registry/python_surface_ownership.json", *ownership_errors[:20]],
+    )
+
+
 def audit_framework(
     root: Path, *, require_external_manifests: bool = False
 ) -> dict[str, Any]:
@@ -38,14 +201,7 @@ def audit_framework(
     def check(
         identifier: str, passed: bool, detail: str, evidence: list[str] | None = None
     ) -> None:
-        checks.append(
-            {
-                "id": identifier,
-                "passed": bool(passed),
-                "detail": detail,
-                "evidence": evidence or [],
-            }
-        )
+        checks.append(_audit_check(identifier, passed, detail, evidence))
 
     registry = validate_registry(root)
     check(
@@ -244,26 +400,7 @@ def audit_framework(
         else [],
     )
 
-    forbidden_roots = [
-        name
-        for name in ("planning", "quarantine", "integrations")
-        if (root / name).exists()
-    ]
-    forbidden_roots.extend(
-        name
-        for name in (
-            "knowledge/bootstrap_source_notes",
-            "knowledge/research_operations",
-            "knowledge/project_stream_reference",
-        )
-        if (root / name).exists()
-    )
-    check(
-        "deploy-layout",
-        not forbidden_roots,
-        f"forbidden duplicate/raw roots={forbidden_roots}",
-        ["evidence/externalized-payload-index.json"],
-    )
+    checks.append(audit_deploy_layout(root))
 
     pyproject = root / "pyproject.toml"
     if pyproject.is_file():
@@ -296,125 +433,9 @@ def audit_framework(
         ["evidence/externalized-payload-index.json"],
     )
 
-    generated_directory_names = {
-        ".pytest_cache",
-        ".ruff_cache",
-        "__pycache__",
-        "build",
-        "dist",
-    }
-    quarantine_prefix = (".engineering-bootstrap", "quarantine")
-
-    def exclude_audit_path(relative: str | Path) -> bool:
-        path = Path(relative)
-        parts = path.parts
-        if parts[:2] == quarantine_prefix:
-            return True
-        if (
-            any(part in generated_directory_names for part in parts)
-            or path.name.endswith(".egg-info")
-            or path.suffix.casefold() in {".pyc", ".pyo"}
-        ):
-            return False
-        return is_external_environment_relative(relative)
-
-    audit_walk = bounded_walk(
-        root,
-        limits=WalkLimits(max_files=100_000, max_depth=128, max_bytes=4 * 1024**3),
-        symlink_policy="skip",
-        exclude=exclude_audit_path,
-    )
-    generated = sorted(
-        entry.relative
-        for entry in audit_walk.entries
-        for path in (entry.path,)
-        if (
-            any(
-                part in generated_directory_names
-                for part in path.relative_to(root).parts
-            )
-            or path.name.endswith(".egg-info")
-            or path.suffix.casefold() in {".pyc", ".pyo"}
-        )
-    )
-    generated = [
-        relative
-        for relative in generated
-        if not relative.startswith("extension/dist")
-    ]
-    generated_evidence: list[str] = []
-    # A raw prefix can be monopolized by one large generated tree (for example,
-    # a release-output directory) and hide a different violation entirely.
-    # Retain one deterministic witness for every governed artifact class before
-    # filling the bounded evidence payload with the ordinary sorted remainder.
-    for marker in sorted(generated_directory_names):
-        witness = next(
-            (
-                relative
-                for relative in generated
-                if marker in Path(relative).parts
-            ),
-            None,
-        )
-        if witness is not None and witness not in generated_evidence:
-            generated_evidence.append(witness)
-    for predicate in (
-        lambda path: path.name.endswith(".egg-info"),
-        lambda path: path.suffix.casefold() in {".pyc", ".pyo"},
-    ):
-        witness = next(
-            (relative for relative in generated if predicate(Path(relative))), None
-        )
-        if witness is not None and witness not in generated_evidence:
-            generated_evidence.append(witness)
-    generated_evidence.extend(
-        relative
-        for relative in generated
-        if relative not in generated_evidence
-    )
-    check(
-        "generated-artifact-hygiene",
-        not generated,
-        f"active generated artifacts={len(generated)}",
-        generated_evidence[:20],
-    )
-
-    ownership_path = root / "registry/python_surface_ownership.json"
-    ownership_errors: list[str] = []
-    mapped_count = 0
-    if ownership_path.is_file():
-        ownership = _json(ownership_path)
-        mapped = {
-            str(record.get("path")): record for record in ownership.get("records", ())
-        }
-        python_paths = {
-            entry.relative: entry.path
-            for entry in audit_walk.files
-            for path in (entry.path,)
-            if path.suffix.casefold() == ".py"
-            and is_project_source(path, root)
-            and "__pycache__" not in path.parts
-            and path.relative_to(root).parts[:2] != quarantine_prefix
-        }
-        mapped_count = len(mapped)
-        for relative, path in python_paths.items():
-            record = mapped.get(relative)
-            if record is None:
-                ownership_errors.append(f"unmapped: {relative}")
-            elif hashlib.sha256(path.read_bytes()).hexdigest() != record.get("sha256"):
-                ownership_errors.append(f"hash mismatch: {relative}")
-        ownership_errors.extend(
-            f"missing: {relative}"
-            for relative in sorted(set(mapped) - set(python_paths))
-        )
-    else:
-        ownership_errors.append("missing registry/python_surface_ownership.json")
-    check(
-        "python-surface-ownership",
-        not ownership_errors,
-        f"mapped={mapped_count}; errors={len(ownership_errors)}",
-        ["registry/python_surface_ownership.json", *ownership_errors[:20]],
-    )
+    audit_walk = _release_audit_walk(root)
+    checks.append(audit_generated_artifact_hygiene(root, audit_walk=audit_walk))
+    checks.append(audit_python_surface_ownership(root, audit_walk=audit_walk))
 
     failed = [item for item in checks if not item["passed"]]
     return {

@@ -26,6 +26,22 @@ def test_registry_claim_ignores_live_hidden_lock(tmp_path: Path) -> None:
     assert _registry_artifact_count(tmp_path) == 1
 
 
+def test_registry_claim_ignores_mutable_operational_ledger_projections(
+    tmp_path: Path,
+) -> None:
+    registry = tmp_path / "registry"
+    registry.mkdir()
+    (registry / "owner.json").write_text("{}\n", encoding="utf-8")
+    (registry / "operational_gap_ledger.jsonl").write_text(
+        "{}\n", encoding="utf-8"
+    )
+    (registry / "operational_gap_ledger.snapshot.json").write_text(
+        "{}\n", encoding="utf-8"
+    )
+
+    assert _registry_artifact_count(tmp_path) == 1
+
+
 def test_apply_builder_computes_before_creating_its_prepared_file() -> None:
     source = ROOT / "scripts" / "build_claims.py"
     text = source.read_text(encoding="utf-8")
@@ -38,7 +54,7 @@ def test_checked_in_build_claims_and_readme_are_current() -> None:
     report = validate_build_claims(ROOT)
     assert report["valid"] is True, report["errors"]
     claims = report["claims"]
-    assert claims["version"] == "0.7.0.dev0"
+    assert claims["version"] == "0.7.0"
     assert claims == expected_build_claims(ROOT)
 
 

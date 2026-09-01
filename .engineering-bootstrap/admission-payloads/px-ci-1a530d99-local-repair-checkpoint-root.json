@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023265",
+  "learned": "GitHub public REST exposes full job/step/annotation metadata but raw logs return 403 without authentication. Dependabot PRs 15 and 16 are closed unmerged; all their dependency, assurance, matrix, extension, GitGuardian, and review checks were green except their old governed-gates aggregate. Current main dependency assurance is green. Reproduce run 32970782138's exact shared platform step and governed-gates command locally on installed Python versions, repair only proven causes, and do not authenticate or use the VS Code account path.",
+  "unresolved_branch_gap_ids": [],
+  "newly_discovered_gap_ids": [],
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "evidence": [
+    {
+      "reference": "https://github.com/Mountain-Nomad-BC/Pacify-X/actions/runs/32970782138",
+      "artifact_sha256": "7f56cf7d41209e4b71d7fface2e867e0fb86323c21c33dbf8503116e39d60404",
+      "artifact_size": 1265,
+      "claim": "Complete job metadata identifies shared platform-step and governed-gates failures; public raw logs are unavailable without auth."
+    }
+  ]
+}

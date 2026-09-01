@@ -1,0 +1,43 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "audit-session:px-second-adversarial-19-findings-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023185",
+  "authority": "User explicitly requested a second adversarial audit after operational repairs and before final certification.",
+  "expected_effect": "Reconcile all 19 supplied findings against current behavior and current retained evidence, repair any confirmed remaining defect at its canonical owner, and retain an explicit incompleteness result without certifying.",
+  "rollback": "Revert only new direct repairs that regress focused gates; retain confirmed or uncertain findings as open and do not certify.",
+  "expires_utc": "2026-09-04T12:00:00Z",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect only the user-supplied 19-finding adversarial report, its existing current-findings reconciliation, current canonical source/extension/export/sanitation/worker/timing/host/assurance owners, focused tests, installed-host receipts, operational ledger card PX-OS-1065, and current GitHub workflow/dependency configuration needed by those findings."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Repair only confirmed remaining defects from PX-AUD-001 through PX-AUD-019 at their canonical owners; add focused regression or fault-injection coverage; return the campaign to repair for any product-source change; retain a generation-unique second-pass matrix and incompleteness evidence. Do not package, install, publish, commit, push, merge, or certify."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["With PYTHONDONTWRITEBYTECODE=1 set, run only bounded reproduction commands, syntax/import probes, focused direct tests, source-export/portability/sanitation/worker/host fault injections directly required by PX-AUD-001 through PX-AUD-019, and governed section gates for changed owners. Do not rerun full profile or runtime.cli validate, perform revision reconciliation, package, install, publish, commit, push, merge, or certify."]
+    }
+  ],
+  "evidence": [
+    {
+      "reference": "evidence/adversarial-audit/current-findings-20260824.json",
+      "artifact_sha256": "a16a546ae9a36410975962a11d19c8399e923f9e987be6bd1e5f8cebb89b945a",
+      "artifact_size": 4898,
+      "claim": "First-pass 19-finding reconciliation predecessor."
+    },
+    {
+      "reference": "evidence/release/final-installed-operational-proof-20260826.json",
+      "artifact_sha256": "c0050cc9f9c6da2185b92515c2cae25d8f2a3e4b3e4502c78b0c8e56471c48a9",
+      "artifact_size": 1276,
+      "claim": "Exact installed-host operational predecessor."
+    },
+    {
+      "reference": "evidence/release/canonical-memory-workspace-repair-proof-20260826.json",
+      "artifact_sha256": "32a3166e39db8dcae80044f43b04dabd559373a3158b13f30ecd2fa39373cafe",
+      "artifact_size": 1093,
+      "claim": "Canonical workspace and dashboard attention repair predecessor."
+    }
+  ]
+}

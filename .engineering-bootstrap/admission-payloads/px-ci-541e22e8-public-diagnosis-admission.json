@@ -1,0 +1,21 @@
+{
+  "gap_id": "PX-OS-1065",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023294",
+  "session_id": "repair-session:px-ci-541e22e8-projection-diagnosis-20260826",
+  "effect": "network",
+  "scope": [
+    "Query only unauthenticated public GitHub REST metadata for Pacify-X Actions run 32977077401: its run conclusion, job names/conclusions, failed step names, check-run output summaries/text, and annotations for the three failed projection gates. Do not request raw logs already known to require authentication; do not authenticate, open VS Code/account selection, rerun/cancel workflows, modify GitHub state, fetch/push Git, create issues/PRs, install, package, validate, or certify."
+  ],
+  "authority": "User requested complete Pacify-X repair and explicit GitHub/Dependabot failure diagnosis; this is bounded public read-only network access.",
+  "expected_effect": "Identify the exact three failing projection owners and their causal mismatch without changing local or remote state.",
+  "rollback": "No remote or local state is changed; retain only public failure metadata needed for the causal repair.",
+  "expires_utc": "2026-09-05T14:00:00Z",
+  "evidence": [
+    {
+      "reference": "commit:541e22e87ff71cf5260638115c2e3f32790de8bd",
+      "claim": "Fresh run 32977077401 is the exact failed denominator.",
+      "artifact_sha256": "a1c85be36b7877dfde1d0f38c9b111b2c5924d841fb9019610ca5c009e2d85ed",
+      "artifact_size": 3469
+    }
+  ]
+}

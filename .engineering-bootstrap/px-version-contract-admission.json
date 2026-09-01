@@ -1,0 +1,29 @@
+{
+  "session_id": "repair-session:px-version-contract-20260825",
+  "gap_id": "PX-OS-1065",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022940",
+  "authority": "User explicitly authorized all remaining reversible Pacify-X repairs; only irreversible destructive effects require approval.",
+  "expected_effect": "Replace the stale hardcoded extension version assertion with an exact manifest-to-lockfile version consistency contract and rebuild the current exact package.",
+  "rollback": "Revert only the version-contract test change and regenerated package artifact while retaining append-only failure evidence.",
+  "expires_utc": "2026-08-26T08:00:00Z",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect only the failing extension version contract, current extension manifest, and lockfile version fields."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Modify only extension/tests/extension-contract.test.js to enforce current manifest-lockfile version consistency; rebuild current extension package artifacts; write focused evidence and append exact ledger events."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["Run the focused extension contract test, packaging checks, governed dashboard-extension section, and exact isolated-VSIX lifecycle campaign. Do not run full profile, validate, deploy, publish, merge, or certify."]
+    }
+  ],
+  "evidence": [
+    {
+      "reference": ".engineering-bootstrap/test-evidence/sections/dashboard-extension.json",
+      "claim": "Exact governed failure caused only by the stale 0.6.56 literal."
+    }
+  ]
+}

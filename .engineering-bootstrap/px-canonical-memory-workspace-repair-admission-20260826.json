@@ -1,0 +1,37 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-canonical-memory-workspace-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023182",
+  "authority": "User-authorized reversible repair of all remaining Pacify-X operational faults before certification.",
+  "expected_effect": "Remove the canonical memory workspace warning by repairing selection, persistence, validation, or dashboard projection at its owning layer; reconcile the retained install-receipt filename collision; prove normal dashboard and Studio counts without certifying.",
+  "rollback": "Revert only direct source/configuration changes that regress focused tests; retain both open findings and do not certify.",
+  "expires_utc": "2026-09-03T12:00:00Z",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect only canonical memory workspace selection/persistence/validation, workspace and memory CLI/API/dashboard owners, current workspace records and settings, the installed receipt filename collision, relevant direct tests, and one PX-admitted knowledge-memory skill candidate."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Repair only canonical memory workspace selection/persistence/validation and its dashboard projection, plus corrective evidence for the install-receipt filename collision; add focused regression coverage and retained proof. If product source changes, return the campaign to repair. Do not package, install, publish, commit, push, merge, or certify."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["With PYTHONDONTWRITEBYTECODE=1 set, query and hydrate exactly one admitted PX knowledge-memory candidate; run only workspace/memory/dashboard diagnostics, syntax/import probes, focused direct tests, and the governed section gate required for any changed control-plane owner. Do not rerun full profile or runtime.cli validate, rebuild projections except when directly owned by the repaired workspace state, package, install, publish, commit, push, merge, or certify."]
+    }
+  ],
+  "evidence": [
+    {
+      "reference": "evidence/release/final-installed-operational-proof-20260826.json",
+      "artifact_sha256": "c0050cc9f9c6da2185b92515c2cae25d8f2a3e4b3e4502c78b0c8e56471c48a9",
+      "artifact_size": 1276,
+      "claim": "Installed-host predecessor passed while normal-window canonical workspace attention remains open."
+    },
+    {
+      "reference": "evidence/release/final-vscode-install-proof-20260826.json",
+      "artifact_sha256": "2271ac2e25b17938775eb0bb3ca453b937d1109b877eae2009e5dede9b27e2a2",
+      "artifact_size": 1328,
+      "claim": "Current bytes at the reused install-proof path; predecessor ledger references require correction."
+    }
+  ]
+}

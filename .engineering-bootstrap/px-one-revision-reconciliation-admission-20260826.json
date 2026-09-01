@@ -1,0 +1,37 @@
+{
+  "session_id": "release-session:px-one-revision-reconciliation-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023003",
+  "gap_id": "PX-OS-1065",
+  "authority": "User explicitly authorized all remaining reversible Pacify-X closure work and requested the newest commits/merges only after repairs and adversarial audit.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": [
+        "Read the user-supplied PX_RELEASE_CLOSURE_PREFLIGHT_CODEX.md, current frozen tracked diff/status, version and artifact identity owners, generated-projection builders, release metadata, and current processing-order state solely for one revision/generated-projection reconciliation."
+      ]
+    },
+    {
+      "effect": "write",
+      "scope": [
+        "Reconcile current version, hashes, generated projections, manifests, ownership indexes, and release metadata exactly once from the frozen source using repository owners; advance only the repair campaign to revision_reconciled; write session evidence and append ledger events. Do not make new product-behavior repairs, commit, push, merge, package, install, or certify."
+      ]
+    },
+    {
+      "effect": "execute",
+      "scope": [
+        "Run the processing-order revision_reconciliation oracle, exact repository-owned reconciliation/generation commands identified by preflight, and focused integrity inspection of their outputs only. Do not run section gates, full profile, validate, package, install, deploy, publish, merge, or certify."
+      ]
+    }
+  ],
+  "expected_effect": "Produce one internally consistent frozen revision and generated-projection set, then advance once to revision_reconciled without re-entering repair-time validation loops.",
+  "rollback": "Restore only the generated projection and metadata outputs from their frozen predecessor if reconciliation fails; retain failure evidence and do not alter product source.",
+  "expires_utc": "2026-08-26T18:00:00Z",
+  "evidence": [
+    {
+      "reference": "evidence/release/repair-freeze-20260826.json",
+      "artifact_sha256": "cb14a45aabc6dd0e30ca22c98d8c1aab14af9f5877db2b99f2fb7a6d2495d358",
+      "artifact_size": 1549,
+      "claim": "Repair-frozen predecessor authorizing one revision reconciliation."
+    }
+  ]
+}

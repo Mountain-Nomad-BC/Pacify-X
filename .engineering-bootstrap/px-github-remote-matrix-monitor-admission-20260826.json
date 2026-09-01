@@ -1,0 +1,27 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "monitor-session:px-github-main-1f854583-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023194",
+  "authority": "User explicitly requested GitHub, Dependabot logs, and remote platform execution be fully reconciled after the unified push.",
+  "expected_effect": "Observe the exact unified main CI, Windows/Linux/macOS extension host jobs, dependency graph, and Dependabot update runs through terminal state; collect job-step evidence and identify any repair without mutating source or remote state.",
+  "rollback": "Monitoring is read-only; retain failures as open and do not close pull requests or certify.",
+  "expires_utc": "2026-09-04T12:00:00Z",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect only canonical GitHub main commit 1f854583, Actions run 32957857059 and its jobs/steps, dependency graph run 32957859266, Dependabot update runs 32957859162/32957859291/32957859453, pull requests 15/16, and resulting remote receipts or failure annotations."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["Run only bounded non-interactive read-only GitHub REST polling and job/annotation inspection until the exact main and dependency runs reach terminal state. Do not fetch, stage, commit, push, merge, close pull requests, change source, rerun local tests, or certify."]
+    }
+  ],
+  "evidence": [
+    {
+      "reference": "evidence/release/github-unified-main-publish-proof-20260826.json",
+      "artifact_sha256": "793bb2298547c9261de1667c2955320f8c89b50752fdeb59f40e7c4d0e6aed5f",
+      "artifact_size": 1215,
+      "claim": "Exact published main and triggered run identities."
+    }
+  ]
+}

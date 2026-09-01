@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-generated-boundary-exclusion-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023010",
+  "outcome": "completed",
+  "reason": "PX-AUD2-003 is repaired: nested build/dist/evidence and cache/dependency trees are pruned before product-source walk accounting, the current effect-surface walk completes under its original bound, and 18 causal tests pass. Projection-currentness checks remain intentionally deferred to the next single post-freeze reconciliation.",
+  "evidence": [
+    {
+      "reference": "evidence/release/px-aud2-003-repair-20260826.json",
+      "artifact_sha256": "b5fb0aad5453c36e0864b439f1242af51510f16e11f9a6ea4b70a48817a0ef74",
+      "artifact_size": 1793,
+      "claim": "PX-AUD2-003 causal repair evidence."
+    }
+  ]
+}

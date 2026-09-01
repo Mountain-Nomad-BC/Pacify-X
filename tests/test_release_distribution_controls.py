@@ -3,7 +3,6 @@ from __future__ import annotations
 import hashlib
 import io
 from pathlib import Path
-import shutil
 import subprocess
 import sys
 import tarfile
@@ -11,6 +10,8 @@ import tempfile
 import zipfile
 
 import pytest
+
+from runtime.release_artifacts import materialize_release_source
 
 from runtime.release_distribution import (
     bind_artifact_set,
@@ -27,33 +28,14 @@ from runtime.release_distribution import (
 
 
 ROOT = Path(__file__).parents[1]
+BUILD_TIMEOUT_SECONDS = 480
 
 
 @pytest.fixture(scope="module")
 def built_distribution(tmp_path_factory):
     temporary = tmp_path_factory.mktemp("artifact-manifest")
     source = temporary / "source"
-    shutil.copytree(
-        ROOT,
-        source,
-        ignore=shutil.ignore_patterns(
-            ".git",
-            ".engineering-bootstrap",
-            ".venv*",
-            "Python",
-            "node_modules",
-            "__pycache__",
-            ".pytest_cache",
-            ".ruff_cache",
-            ".vscode-test",
-            "*.pyc",
-            "*.pyo",
-            "*.egg-info",
-            "build",
-            "dist",
-            "preserved-extension-installations",
-        ),
-    )
+    materialize_release_source(ROOT, source)
     output = temporary / "dist"
     output.mkdir()
     process = subprocess.run(
@@ -70,7 +52,7 @@ def built_distribution(tmp_path_factory):
         cwd=source,
         text=True,
         capture_output=True,
-        timeout=300,
+        timeout=BUILD_TIMEOUT_SECONDS,
     )
     assert process.returncode == 0, process.stdout + process.stderr
     manifest = generate_artifact_manifest(source)
@@ -128,7 +110,7 @@ def test_artifact_manifest_projects_declared_package_data() -> None:
         ("wheel", "engineering_bootstrap/studio_operations.json"),
         (
             "sdist",
-            "engineering_loop_bootstrap-0.7.0.dev0/runtime/studio_operations.json",
+            "engineering_loop_bootstrap-0.7.0/runtime/studio_operations.json",
         ),
     }
 

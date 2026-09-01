@@ -1,0 +1,20 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-canonical-memory-workspace-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023183",
+  "outcome": "completed",
+  "evidence": [
+    {
+      "reference": "evidence/release/canonical-memory-workspace-repair-proof-20260826.json",
+      "claim": "Canonical workspace and memory retrieval are healthy and dashboard attention is empty.",
+      "artifact_sha256": "32a3166e39db8dcae80044f43b04dabd559373a3158b13f30ecd2fa39373cafe",
+      "artifact_size": 1093
+    },
+    {
+      "reference": "evidence/release/install-proof-path-collision-correction-20260826.json",
+      "claim": "The reused receipt path is disclosed and successor evidence is generation-bound.",
+      "artifact_sha256": "823ad3058ff06953f7a2c4f3147bdacaed17e5ea91b3bb40257b94c2a9318995",
+      "artifact_size": 1708
+    }
+  ]
+}

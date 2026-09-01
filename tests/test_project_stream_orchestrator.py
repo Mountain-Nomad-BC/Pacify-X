@@ -110,6 +110,9 @@ class ProjectStreamOrchestratorTests(unittest.TestCase):
             )
             self.assertEqual(ingest.status, "completed")
             self.assertGreater(ingest.outputs["memory_notes_updated"], 0)
+            ingested_record = vault.latest_records()[0]
+            self.assertIsNotNone(ingested_record.semantic)
+            self.assertEqual(ingested_record.semantic.namespace, "prj_test")
             maintenance = execute_project_stream(
                 ROOT,
                 context(
@@ -123,6 +126,13 @@ class ProjectStreamOrchestratorTests(unittest.TestCase):
             self.assertEqual(maintenance.status, "completed")
             self.assertEqual(
                 maintenance.outputs["memory_health_report"], "index_published"
+            )
+            self.assertTrue(maintenance.outputs["validation"]["valid"])
+            self.assertEqual(
+                maintenance.outputs["authoritative_generation"], "000001"
+            )
+            self.assertEqual(
+                vault.reconcile_indexes()["authoritative_generation"], "000001"
             )
 
     def test_malformed_workflow_and_missing_approval_fail_closed(self) -> None:

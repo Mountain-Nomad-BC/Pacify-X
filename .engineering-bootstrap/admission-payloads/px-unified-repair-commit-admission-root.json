@@ -1,0 +1,37 @@
+{
+  "gap_id": "PX-OS-1065",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023254",
+  "session_id": "repair-session:px-unified-functional-repair-commit-20260826",
+  "expires_utc": "2026-09-04T12:00:00Z",
+  "authority": "User explicitly requested complete repair and current GitHub publication; this session creates one reversible additive commit from the proven functional repair set.",
+  "expected_effect": "Create one additive local commit containing only Studio lifecycle, Workflow observer targeting, live-host bounds, test budgets, source-archive budget, synchronized projections, focused tests, and focused repair evidence.",
+  "rollback": "Revert the new additive commit if remote CI identifies a causal regression; no force push, reset, deletion, or certification occurs in this session.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": [
+        "Inspect only the exact unified repair files extension/scripts/run-vscode-host-smoke.js, extension/tests/vscode-host/index.js, registry/artifact_reachability.json, registry/effect_surface_ownership.json, registry/provider_route_scan.json, registry/python_dependency_ownership.json, registry/test_profiles.json, runtime/studio_terminal_observer.py, scripts/audit_source_archive.py, tests/test_test_profiles.py, tests/test_workflow_studio.py; the three focused evidence JSON files; their Git diff/status; and current HEAD metadata."
+      ]
+    },
+    {
+      "effect": "write",
+      "scope": [
+        "Stage and commit only the eleven exact unified repair files and evidence/release/ci-226c0260-followup-repair-20260826.json, evidence/release/section-timeout-budget-repair-20260826.json, evidence/release/source-archive-budget-repair-20260826.json. Exclude operational ledger files, section/chunk receipts, local admission payloads, diagnostics, installed artifacts, and every unrelated or untracked file."
+      ]
+    },
+    {
+      "effect": "execute",
+      "scope": [
+        "Run only git diff --check, exact git add/git add -f for the admitted files, inspect the exact staged file list/diff summary, create one non-amending additive commit named fix: reconcile studio lifecycle and CI execution budgets, and inspect its identity. Do not fetch, push, reset, clean, package, install, validate, run tests, or certify."
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "reference": ".engineering-bootstrap/test-evidence/sections/testing-governance.json",
+      "artifact_sha256": "a78c1e6df506b418cc4eda0cc9990c92aaf6b750f79ae88ae81fa25997d38ce5",
+      "artifact_size": 1262,
+      "claim": "Testing-governance is green after the unified repair projection chain."
+    }
+  ]
+}

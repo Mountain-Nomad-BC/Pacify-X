@@ -12,11 +12,152 @@ const { resolveBrowserLane } = require('./browser-lane');
 const browserLane = resolveBrowserLane();
 const preview = pathToFileURL(path.join(__dirname, 'preview.html')).href;
 const visualEvidenceRoot = path.join(__dirname, '..', 'evidence', 'screenshots');
+const { runInstalledStudioControllerAdversarialProfile } = require('../scripts/run-operational-ui-walk');
 
 async function settled(page) {
   await page.locator('main h1').waitFor({ state: 'visible' });
   await page.waitForTimeout(180);
 }
+
+test('installed Studio controller adversarial profile executes every request-correlation predicate', { timeout: 30000 }, async t => {
+  const browser = await chromium.launch({ executablePath: browserLane.executablePath, headless: true });
+  t.after(async () => { await browser.close(); });
+  const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  await page.goto(`${preview}?surface=agents`); await settled(page);
+  await page.evaluate(() => { window.__PX_INSTALLED_REQUESTS__ = window.__PX_POSTED_MESSAGES__; });
+  const profile = await runInstalledStudioControllerAdversarialProfile({ evaluateContent: (...args) => page.evaluate(...args) });
+  assert.equal(profile.completed, true, JSON.stringify(profile));
+  assert.equal(profile.errors.length, 0);
+  assert.equal(Object.values(profile.checks).every(Boolean), true);
+});
+
+test('catalog lifecycle selection exposes bounded status and pagination identity to installed verification', { timeout: 30000 }, async t => {
+  const browser = await chromium.launch({ executablePath: browserLane.executablePath, headless: true });
+  t.after(async () => { await browser.close(); });
+  const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  await page.goto(`${preview}?surface=agents`); await settled(page);
+  const observed = await page.evaluate(async () => {
+    const observed = [];
+    addEventListener('px-dashboard-outbound-request', event => observed.push(event.detail));
+    requestCatalog('agents', { query: 'retained-stale-search', status: 'advisory', offset: 7, limit: 1 });
+    requestCatalog('agents', { query: '', status: '', offset: 0, limit: 50 });
+    const baseline = [...window.__PX_POSTED_MESSAGES__].reverse().find(value => value?.type === 'catalogQuery' && value?.kind === 'agents');
+    const select = document.querySelector('[data-catalog-status="agents"]');
+    const option = document.createElement('option'); option.value = 'active'; option.textContent = 'active'; select.append(option);
+    select.value = 'active'; select.dispatchEvent(new Event('change', { bubbles: true }));
+    await new Promise(resolve => setTimeout(resolve, 20));
+    return { baseline, identity: observed.find(value => value?.type === 'catalogQuery' && value?.kind === 'agents' && value?.status === 'active') || null };
+  });
+  assert.equal(observed.baseline.query, '', 'the lifecycle precondition must clear an inherited search query');
+  assert.equal(observed.baseline.status, '', 'the lifecycle precondition must clear an inherited status');
+  assert.equal(observed.baseline.offset, 0);
+  assert.equal(observed.baseline.limit, 50);
+  const identity = observed.identity;
+  assert.deepEqual(identity, { type: 'catalogQuery', requestId: identity.requestId, kind: 'agents', status: 'active', sort: 'label', offset: 0, limit: 50 });
+  assert.match(identity.requestId, /^agents-/);
+});
+
+test('graph catalog memory and activity responses are exact request-bound and single-use', { timeout: 30000 }, async t => {
+  const browser = await chromium.launch({ executablePath: browserLane.executablePath, headless: true });
+  t.after(async () => { await browser.close(); });
+  const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  await page.goto(`${preview}?surface=knowledgeGraph`); await settled(page);
+  const result = await page.evaluate(() => {
+    const dispatch = data => window.dispatchEvent(new MessageEvent('message', { data }));
+    const graph = marker => ({ schema_version: 'pacify-x.graph-query.v1', view: 'capabilities', selected: null, requested_query: marker, marker, nodes: [], edges: [], available_relations: [], total_nodes: 0, total_edges: 0, truncated: false });
+
+    requestGraph({ query: 'stale-graph' }); const staleGraph = state.graphRequestId;
+    requestGraph({ query: 'active-graph' }); const activeGraph = state.graphRequestId;
+    dispatch({ type: 'graphResult', requestId: staleGraph, result: graph('stale') });
+    dispatch({ type: 'graphResult', result: graph('missing') });
+    const graphIgnored = state.graphRequestId === activeGraph && state.graphData?.marker !== 'stale' && state.graphData?.marker !== 'missing';
+    dispatch({ type: 'graphResult', requestId: activeGraph, result: graph('current') });
+    dispatch({ type: 'graphResult', requestId: activeGraph, result: graph('duplicate') });
+    const graphAcceptedOnce = state.graphRequestId === null && state.graphData?.marker === 'current';
+
+    requestCatalog('agents', { query: 'stale-catalog' }); const staleCatalog = state.catalogRequests.agents.requestId;
+    requestCatalog('agents', { query: 'active-catalog' }); const activeCatalog = state.catalogRequests.agents.requestId;
+    const catalog = (filtered, marker) => ({ kind: 'agents', total: filtered, filtered, offset: 0, limit: 50, items: [], has_more: false, marker });
+    dispatch({ type: 'catalogResult', requestId: staleCatalog, result: catalog(91, 'stale') });
+    dispatch({ type: 'catalogResult', result: catalog(92, 'missing') });
+    const catalogIgnored = state.catalogRequests.agents.requestId === activeCatalog && !['stale', 'missing'].includes(state.catalogs.agents?.marker);
+    dispatch({ type: 'catalogResult', requestId: activeCatalog, result: catalog(7, 'current') });
+    dispatch({ type: 'catalogResult', requestId: activeCatalog, result: catalog(99, 'duplicate') });
+    const catalogAcceptedOnce = !Object.hasOwn(state.catalogRequests.agents, 'requestId') && state.catalogs.agents?.marker === 'current';
+
+    requestMemory('stale-memory'); const staleMemory = state.memoryRequestId;
+    requestMemory('active-memory'); const activeMemory = state.memoryRequestId;
+    const memory = marker => ({ schema_version: 'px.canonical-memory-browser/1.0', valid: true, marker, matched_count: 0, records: [] });
+    dispatch({ type: 'memoryResult', requestId: staleMemory, result: memory('stale') });
+    dispatch({ type: 'memoryResult', result: memory('missing') });
+    const memoryIgnored = state.memoryRequestId === activeMemory && !['stale', 'missing'].includes(state.memoryData?.marker);
+    dispatch({ type: 'memoryResult', requestId: activeMemory, result: memory('current') });
+    dispatch({ type: 'memoryResult', requestId: activeMemory, result: memory('duplicate') });
+    const memoryAcceptedOnce = state.memoryRequestId === null && state.memoryData?.marker === 'current';
+
+    requestActivity({ query: 'stale-activity' }); const staleActivity = state.activityRequestId;
+    requestActivity({ query: 'active-activity' }); const activeActivity = state.activityRequestId;
+    const activity = marker => ({ schema_version: 'px.activity-view/1.0', marker, matched_count: 0, events: [], active_operations: [], stale_operations: [], live_agents: [] });
+    dispatch({ type: 'activityResult', requestId: staleActivity, result: activity('stale') });
+    dispatch({ type: 'activityResult', result: activity('missing') });
+    const activityIgnored = state.activityRequestId === activeActivity && !['stale', 'missing'].includes(state.activityData?.marker);
+    dispatch({ type: 'activityResult', requestId: activeActivity, result: activity('current') });
+    dispatch({ type: 'activityResult', requestId: activeActivity, result: activity('duplicate') });
+    const activityAcceptedOnce = state.activityRequestId === null && state.activityData?.marker === 'current';
+
+    return { graphIgnored, graphAcceptedOnce, catalogIgnored, catalogAcceptedOnce, memoryIgnored, memoryAcceptedOnce, activityIgnored, activityAcceptedOnce };
+  });
+  assert.deepEqual(result, {
+    graphIgnored: true, graphAcceptedOnce: true,
+    catalogIgnored: true, catalogAcceptedOnce: true,
+    memoryIgnored: true, memoryAcceptedOnce: true,
+    activityIgnored: true, activityAcceptedOnce: true
+  });
+});
+
+test('durable run browsing and multi-node workflow approvals retain exact request identity', { timeout: 30000 }, async t => {
+  const browser = await chromium.launch({ executablePath: browserLane.executablePath, headless: true });
+  t.after(async () => { await browser.close(); });
+  const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  await page.goto(`${preview}?surface=workflowStudio`); await settled(page);
+  const result = await page.evaluate(() => {
+    const dispatch = data => window.dispatchEvent(new MessageEvent('message', { data }));
+    const button = (action, kind, operation = '') => {
+      const control = document.createElement('button'); control.dataset.action = action; control.dataset.kind = kind;
+      if (operation) control.dataset.operation = operation;
+      app.append(control); control.click(); control.remove();
+    };
+
+    button('openStudioRuns', 'workflow');
+    const runRequest = [...window.__PX_POSTED_MESSAGES__].reverse().find(message => message.type === 'studioOperation' && message.operation === 'runs');
+    const run = { run_id: 'run:workflow:one', workflow_id: 'workflow:demo', version: '1.0.0', state: 'paused', revision_sha256: 'a'.repeat(64), request_sha256: 'b'.repeat(64), last_event_sha256: 'c'.repeat(64), sequence: 7, authority_state: 'authenticated', checkpoint: { completed_nodes: ['node:one'] } };
+    dispatch({ type: 'studioOperationResult', requestId: 'stale-run-request', kind: 'workflow', operation: 'runs', result: { runs: [{ ...run, run_id: 'run:stale' }] } });
+    const staleRunIgnored = !document.querySelector('[data-run-id="run:stale"]') && !document.body.textContent.includes('run:stale');
+    dispatch({ type: 'studioOperationResult', requestId: runRequest.requestId, kind: 'workflow', operation: 'runs', result: { schema_version: 'px.run-list/1.0', runs: [run], invalid: [] } });
+    const durableRunRendered = document.body.textContent.includes(run.run_id) && document.body.textContent.includes(run.last_event_sha256) && Boolean(document.querySelector('[data-action="studioRunAction"][data-operation="resume"][data-run-id="run:workflow:one"]'));
+    dispatch({ type: 'studioOperationResult', requestId: runRequest.requestId, kind: 'workflow', operation: 'runs', result: { runs: [{ ...run, run_id: 'run:duplicate' }] } });
+    const duplicateRunIgnored = !document.body.textContent.includes('run:duplicate');
+
+    studioSession = { kind: 'workflow', payload: { workflow_id: 'workflow:demo', version: '1.0.0', nodes: [{ node_id: 'node:two', approval_required: true }, { node_id: 'node:three', approval_required: true }], approvals: {} } };
+    studioSelectedNode = 'node:two'; button('studioLifecycle', 'workflow', 'approve');
+    const first = [...window.__PX_POSTED_MESSAGES__].reverse().find(message => message.type === 'studioOperation' && message.operation === 'approve');
+    dispatch({ type: 'studioOperationResult', requestId: 'stale-approval', kind: 'workflow', operation: 'approve', nodeId: 'node:two', result: { approval_id: 'approval:stale' } });
+    const staleApprovalIgnored = !studioSession.payload.approvals['node:two'];
+    dispatch({ type: 'studioOperationResult', requestId: first.requestId, kind: 'workflow', operation: 'approve', nodeId: 'node:two', result: { approval_id: 'approval:two' } });
+
+    studioSelectedNode = 'node:three'; button('studioLifecycle', 'workflow', 'approve');
+    const second = [...window.__PX_POSTED_MESSAGES__].reverse().find(message => message.type === 'studioOperation' && message.operation === 'approve');
+    dispatch({ type: 'studioOperationResult', requestId: second.requestId, kind: 'workflow', operation: 'approve', nodeId: 'node:three', result: { approval_id: 'approval:three' } });
+    dispatch({ type: 'studioOperationResult', requestId: second.requestId, kind: 'workflow', operation: 'approve', nodeId: 'node:three', result: { approval_id: 'approval:duplicate' } });
+    const approvals = structuredClone(studioSession.payload.approvals);
+    return { staleRunIgnored, durableRunRendered, duplicateRunIgnored, staleApprovalIgnored, approvals, distinctRequests: first.requestId !== second.requestId, firstNode: first.payload.node_id, secondNode: second.payload.node_id };
+  });
+  assert.deepEqual(result, {
+    staleRunIgnored: true, durableRunRendered: true, duplicateRunIgnored: true, staleApprovalIgnored: true,
+    approvals: { 'node:two': 'approval:two', 'node:three': 'approval:three' },
+    distinctRequests: true, firstNode: 'node:two', secondNode: 'node:three'
+  });
+});
 
 async function noHorizontalOverflow(page, label) {
   const dimensions = await page.evaluate(() => ({ viewport: innerWidth, document: document.documentElement.scrollWidth, body: document.body.scrollWidth }));
@@ -130,6 +271,22 @@ test('Knowledge proposals bind same-record updates to the exact canonical head',
   await page.locator('.control-modal h2').filter({ hasText: 'Knowledge proposal blocked' }).waitFor({ state: 'visible' });
   assert.match(await page.locator('.control-modal [role="alert"]').textContent(), /canonical head is malformed/i);
   assert.equal(await page.evaluate(() => window.__PX_POSTED_MESSAGES__.length), before);
+});
+
+test('graph render acknowledgement remains live when installed-host animation frames are suspended', async t => {
+  const browser = await chromium.launch({ executablePath: browserLane.executablePath, headless: true });
+  t.after(async () => { await browser.close(); });
+  const page = await browser.newPage({ viewport: { width: 1200, height: 900 } });
+  await page.addInitScript(() => {
+    window.requestAnimationFrame = () => 1;
+    window.cancelAnimationFrame = () => {};
+  });
+  await page.goto(`${preview}?surface=dashboard`); await settled(page);
+  await page.evaluate(() => window.dispatchEvent(new MessageEvent('message', { data: { type: 'deepLink', route: '/control-plane/knowledge-graph' } })));
+  await page.locator('main h1').filter({ hasText: 'Knowledge Graph' }).waitFor({ state: 'visible' });
+  await page.waitForFunction(() => window.__PX_POSTED_MESSAGES__?.some(message => message.type === 'graphRendered'
+    && message.nodeCount > 0 && message.edgeCount > 0 && message.visibleNodeCount > 0
+    && message.canvasWidth > 0 && message.canvasHeight > 0), undefined, { polling: 50 });
 });
 
 test('Playwright drives every dashboard route and high-risk interaction without console or layout errors', { timeout: 120000 }, async t => {
@@ -308,6 +465,9 @@ test('Playwright drives every dashboard route and high-risk interaction without 
   assert.equal(await page.locator('#studio-version').getAttribute('readonly'), '');
   assert.equal(await page.locator('#studio-version').inputValue(), '1.0.1');
   assert.equal(await page.locator('.studio-revision-baseline').isVisible(), true);
+  assert.equal(await page.locator('[data-control-id="studio-save-candidate"]').isDisabled(), true, 'an unchanged predecessor-bound revision must not be saveable');
+  await page.locator('#studio-owner').fill('human:preview-editor');
+  assert.equal(await page.locator('[data-control-id="studio-save-candidate"]').isEnabled(), true, 'a valid content edit must enable the new immutable revision save');
   await page.locator('[data-control-id="studio-save-candidate"]').click();
   const predecessorAgentSave = await page.evaluate(() => [...window.__PX_POSTED_MESSAGES__].reverse().find(message => message.type === 'createStudioDraft' && message.kind === 'agent'));
   assert.equal(predecessorAgentSave.payload.agent_id, 'agent:preview-catalog');
@@ -320,6 +480,8 @@ test('Playwright drives every dashboard route and high-risk interaction without 
   await page.locator('[data-action="closeModal"]').first().click();
   assert.equal(await page.evaluate(proof => [...window.__PX_POSTED_MESSAGES__].some(message => message.type === 'releaseStudioTrust' && message.proof === proof), predecessorAgentSave.payload.version_allocation_proof), false, 'an in-flight save owns its consumed allocation proof');
   await page.locator('[data-action="openStudioDraft"][data-kind="agent"]').click();
+  assert.match(await page.locator('#modal-root').textContent(), /Recover unsaved Studio draft/);
+  await page.locator('[data-action="discardWorkingStudioDraft"][data-kind="agent"]').click();
   await page.locator('[data-agent-root-field="instructions"]').fill('Newer local agent draft survives detached predecessor result.');
   await page.evaluate(request => window.dispatchEvent(new MessageEvent('message', { data: { type: 'studioDraftResult', requestId: request.requestId, kind: request.kind, result: { created: true } } })), predecessorAgentSave);
   assert.equal(await page.locator('[data-agent-root-field="instructions"]').inputValue(), 'Newer local agent draft survives detached predecessor result.', 'a detached older save result must not mutate the newer same-kind editor');
@@ -593,6 +755,21 @@ test('Playwright drives every dashboard route and high-risk interaction without 
   assert.deepEqual(await page.locator('[data-graph-search]').evaluate(element => ({ value: element.value, start: element.selectionStart, end: element.selectionEnd })), { value: 'contradiction', start: 13, end: 13 });
   assert.ok(await page.locator('.graph-node.actual').count() >= 10);
   assert.ok(await page.locator('.relationship-row').count() >= 10);
+  assert.ok(await page.locator('.graph-edge-bundle').count() >= 1);
+  const selectedBeforeBundleFilter = await page.locator('.graph-node.actual.selected').getAttribute('data-node-key');
+  const firstBundle = page.locator('.graph-edge-bundle').first();
+  await firstBundle.locator('summary').click();
+  assert.equal(await firstBundle.getAttribute('open'), '');
+  assert.match(await firstBundle.locator('summary').textContent(), /relationship/i);
+  const bundleRelation = await firstBundle.getAttribute('data-edge-bundle');
+  await firstBundle.locator('[data-action="graphFilterEdgeBundle"]').click();
+  await page.waitForFunction(relation => window.__PX_POSTED_MESSAGES__?.some(message => message.type === 'graphQuery' && message.relation === relation), bundleRelation);
+  await page.waitForTimeout(100);
+  assert.equal(await page.locator('.graph-node.actual.selected').getAttribute('data-node-key'), selectedBeforeBundleFilter);
+  assert.equal(await page.locator('[data-graph-relation]').inputValue(), bundleRelation);
+  const renderCountBeforeClear = await page.evaluate(() => window.__PX_POSTED_MESSAGES__?.filter(message => message.type === 'graphRendered').length || 0);
+  await page.locator('[data-action="graphClearEdgeBundle"]').click();
+  await page.waitForFunction(before => (window.__PX_POSTED_MESSAGES__?.filter(message => message.type === 'graphRendered').length || 0) > before, renderCountBeforeClear);
   const graphCanvas = page.locator('[data-graph-canvas]');
   await graphCanvas.waitFor({ state: 'visible' });
   assert.equal(await page.locator('[data-action="graphLayout"][data-layout="flow"]').getAttribute('aria-pressed'), 'true');
@@ -684,10 +861,31 @@ test('Playwright drives every dashboard route and high-risk interaction without 
   await page.locator('.catalog-row[data-kind="workflows"]').first().click();
   await page.locator('[data-action="openStudioFromCatalog"][data-kind="workflow"]').click();
   await page.locator('[data-control-id="workflow-canvas"]').waitFor({ state: 'visible' });
+  const workflowAllocationRequestsBeforePresentationRecovery = await page.evaluate(() => {
+    const requests = window.__PX_POSTED_MESSAGES__.filter(message => message.type === 'loadStudioRevisionEditor' && message.kind === 'workflow').length;
+    document.getElementById('modal-root').innerHTML = '';
+    return requests;
+  });
+  await page.locator('[data-control-id="workflow-canvas"]').waitFor({ state: 'visible' });
+  assert.equal(await page.evaluate(() => window.__PX_POSTED_MESSAGES__.filter(message => message.type === 'loadStudioRevisionEditor' && message.kind === 'workflow').length), workflowAllocationRequestsBeforePresentationRecovery, 'presentation recovery must reuse accepted in-memory authority without another host request');
+  await page.evaluate(() => {
+    document.querySelector('[data-action="submitStudioDraft"]')?.remove();
+    ensureStudioEditorPresentation(studioEditorPresentation);
+  });
+  await page.locator('[data-action="submitStudioDraft"]').waitFor({ state: 'visible' });
+  assert.equal(await page.evaluate(() => window.__PX_POSTED_MESSAGES__.filter(message => message.type === 'loadStudioRevisionEditor' && message.kind === 'workflow').length), workflowAllocationRequestsBeforePresentationRecovery, 'incomplete live Studio modal recovery must reuse accepted in-memory authority without another host request');
+  await page.evaluate(() => window.dispatchEvent(new MessageEvent('message', { data: { type: 'operationError', operation: 'owned-unrelated-fixture', requestId: 'owned-unrelated-modal-overwrite', error: 'Unrelated late fixture error.' } })));
+  await page.waitForTimeout(20);
+  assert.equal(await page.locator('.studio-modal').isVisible(), true, 'an unrelated late host failure must not evict accepted Studio presentation authority');
+  assert.equal(await page.locator('.control-modal h2').textContent(), 'Workflow Studio');
+  assert.equal(await page.evaluate(() => window.__PX_STUDIO_EDITOR_TRANSITIONS__.some(value => value.stage === 'modal-overwrite-blocked' && value.attempted_title === 'Operation blocked')), true);
   assert.equal(await page.locator('#studio-identity').getAttribute('readonly'), '');
   assert.equal(await page.locator('#studio-version').getAttribute('readonly'), '');
   assert.equal(await page.locator('#studio-version').inputValue(), '1.0.1');
   assert.equal(await page.locator('.studio-revision-baseline').isVisible(), true);
+  assert.equal(await page.locator('[data-control-id="studio-save-candidate"]').isDisabled(), true, 'an unchanged predecessor-bound workflow must not be saveable');
+  await page.locator('#studio-owner').fill('human:preview-workflow-editor');
+  assert.equal(await page.locator('[data-control-id="studio-save-candidate"]').isEnabled(), true, 'a valid workflow content edit must enable the new immutable revision save');
   await page.locator('[data-control-id="studio-save-candidate"]').click();
   const predecessorWorkflowSave = await page.evaluate(() => [...window.__PX_POSTED_MESSAGES__].reverse().find(message => message.type === 'createStudioDraft' && message.kind === 'workflow'));
   assert.equal(predecessorWorkflowSave.payload.workflow_id, 'workflow:preview-catalog');

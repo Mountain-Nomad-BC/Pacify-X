@@ -31,9 +31,15 @@ def _excluded_directory(name: str) -> bool:
 
 
 def _excluded_relative(relative: Path) -> bool:
-    """Keep immutable, user-owned skill custody outside product completeness claims."""
+    """Keep non-product custody outside live product completeness claims."""
     parts = tuple(part.casefold() for part in relative.parts)
-    return len(parts) >= 2 and parts[:2] == (".px", "preserved-skills")
+    return (
+        len(parts) >= 2
+        and parts[:2] == (".px", "preserved-skills")
+    ) or (
+        len(parts) >= 2
+        and parts[:2] == (".engineering-bootstrap", "diagnostics")
+    )
 
 
 TEXT_RULES = {

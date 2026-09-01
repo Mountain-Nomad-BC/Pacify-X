@@ -1,0 +1,14 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "closure-session:px-aud2-017-post-repair-profile-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023147",
+  "outcome": "cancelled",
+  "evidence": [
+    {
+      "reference": "evidence/release/post-singleflight-full-profile-failure-cluster-20260826.json",
+      "claim": "The one admitted full profile failed closed on three exact fresh nodes; no retry or downstream stage ran.",
+      "artifact_sha256": "cb756346b4a02142e4d0e747e8d7a606766dda7c1ccf914c695aa7943e20e80e",
+      "artifact_size": 1338
+    }
+  ]
+}

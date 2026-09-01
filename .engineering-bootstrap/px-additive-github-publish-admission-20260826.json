@@ -1,0 +1,23 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "release-session:px-additive-github-publish-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023206",
+  "authority": "User explicitly requested canonical GitHub be current and all remaining Pacify-X repairs continue through completion.",
+  "expected_effect": "Use noninteractive Git transport to fetch canonical main, require 226c0260 to be a linear descendant, push main without force, and observe the newly triggered GitHub Actions and Dependabot state through read-only REST requests.",
+  "rollback": "Never rewrite or force-push remote history; publish a new corrective or revert commit if the additive commit is wrong. Read-only remote observations require no rollback.",
+  "expires_utc": "2026-09-04T12:00:00Z",
+  "effect_scopes": [
+    {
+      "effect": "execute",
+      "scope": ["Perform only the current network operation: noninteractive git fetch of origin main, local linear-ancestry check, non-force git push of commit 226c0260 to canonical main, and read-only GitHub REST observation of that revision's Actions/check suites plus open Dependabot pull requests. Do not use VS Code UI authentication, force-push, merge or close pull requests, rerun workflows, alter GitHub settings, publish packages, install, or certify."]
+    }
+  ],
+  "evidence": [
+    {
+      "reference": "evidence/release/agent-observer-resource-repair-20260826.json",
+      "claim": "Commit 226c0260 is locally proved and ready for non-force canonical publication.",
+      "artifact_sha256": "2856fc5bf94a2bf84fd09f59f46dde071bd47a486816780acb92cebbe6764456",
+      "artifact_size": 1515
+    }
+  ]
+}

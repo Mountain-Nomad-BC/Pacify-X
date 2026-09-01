@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023197",
+  "learned": "The exact remote lint gate is green after two surgical edits. Its required studio-memory-graph section completed without timeout but failed one agent pause/resume lifecycle assertion because the paused terminal-observer resource remained active after the resumed run succeeded. All other section chunks passed. No section processes remain. Publication remains blocked until this distinct resource-reconciliation defect is repaired and the section is green.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": [],
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "evidence": [
+    {
+      "reference": "evidence/release/remote-lint-repair-section-discovery-20260826.json",
+      "claim": "Passing lint and exact changed-section failure authority.",
+      "artifact_sha256": "391ae82c3c75833fb3626176863b7553dc9287a54ca43492171641d5547032ee",
+      "artifact_size": 1274
+    }
+  ]
+}

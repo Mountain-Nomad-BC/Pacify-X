@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023003",
+  "learned": "Repair freeze is active. Live GitHub shows remote main 306dd98 behind local main, while Dependabot PRs 15 and 16 are stale one-file updates whose only failure is governed-gates/Fast correctness; the unified local dependency closure is the safe path and the stale PRs must not be merged.",
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": ["PX-OS-1065"],
+  "evidence": [
+    {
+      "reference": "evidence/adversarial-audit/github-dependabot-live-reconciliation-20260826.json",
+      "artifact_sha256": "4ee151d6fd794ea2101e42da8c2fd649ea138ace2726b7c63117836c2bc2bd48",
+      "artifact_size": 3099,
+      "claim": "Live remote reconciliation permits one unified revision and rejects merging the two stale Dependabot PRs."
+    }
+  ]
+}

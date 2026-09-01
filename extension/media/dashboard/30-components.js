@@ -28,7 +28,10 @@
       return `<article class="metric-card ${escapeHtml(tone)}" role="button" tabindex="0" data-action="inspectMetric" data-metric-label="${safeLabel}" data-metric-value="${safeValue}" data-metric-detail="${safeDetail}" aria-label="Inspect ${safeLabel}: ${safeValue}"><span class="metric-label">${safeLabel}</span><i class="inspect-cue" aria-hidden="true">INSPECT</i><strong>${safeValue}</strong><small>${safeDetail}</small></article>`;
     },
     section(title, kicker, content, extra = '') {
-      if (['Stale operation queue', 'Historical actor sessions'].includes(title) && content.includes('class="empty-state"')) return '';
+      // Historical sessions are optional, but the stale-operation section also
+      // owns the typed zero-count reconciliation action. Keep that section
+      // rendered even when its list body is empty.
+      if (title === 'Historical actor sessions' && content.includes('class="empty-state"')) return '';
       const actions = extra ? `<div class="panel-heading-actions">${extra}</div>` : '';
       return `<section class="panel"><div class="panel-heading"><div><span class="eyebrow">${escapeHtml(kicker)}</span><h2>${escapeHtml(title)}</h2></div>${actions}</div>${content}</section>`;
     },

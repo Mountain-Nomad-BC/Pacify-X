@@ -1,0 +1,31 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-agent-observer-resource-reconciliation-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023200",
+  "authority": "User requested uninterrupted repair of every remaining Pacify-X and GitHub failure.",
+  "expected_effect": "Trace why a paused agent terminal-observer resource remains active after resume and terminal success, repair exact observer/process resource reconciliation without weakening lifecycle authority, and prove the focused failure plus its governed section.",
+  "rollback": "Revert only the observer/resource reconciliation patch if focused lifecycle semantics regress; retain the section failure and do not publish or certify.",
+  "expires_utc": "2026-09-04T12:00:00Z",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect only the failing agent pause/resume lifecycle test and receipt, AgentRuntimeController resume/pause paths, Studio terminal observer/worker launch/resource lifecycle owners, current resource ledger records, and directly relevant focused tests."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Repair only agent terminal-observer/process resource reconciliation across pause, resume, terminal success, and observer exit; add focused causal coverage if missing; retain proof. Do not alter unrelated local custody, package, install, commit, push, merge, or certify."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["With PYTHONDONTWRITEBYTECODE=1 set, run only the exact failing agent lifecycle test, directly related observer/resource fault tests, syntax/import probes for changed owners, the lint gate, and one studio-memory-graph governed section after repair. Do not run full profile or runtime.cli validate, package, install, commit, push, merge, or certify."]
+    }
+  ],
+  "evidence": [
+    {
+      "reference": "evidence/release/remote-lint-repair-section-discovery-20260826.json",
+      "artifact_sha256": "391ae82c3c75833fb3626176863b7553dc9287a54ca43492171641d5547032ee",
+      "artifact_size": 1274,
+      "claim": "Exact failing lifecycle assertion and passing lint predecessor."
+    }
+  ]
+}

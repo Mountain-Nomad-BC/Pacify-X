@@ -2,9 +2,12 @@
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const os = require('node:os');
+const path = require('node:path');
 const { createExtensionLifecycleHost } = require('../src/extensionLifecycleHost');
 
-function harness(initial = new Map(), manifests = new Map()) {
+function harness(initial = new Map(), manifests = new Map(), localTargets = new Map()) {
   let clock = Date.parse('2026-08-17T00:00:00Z');
   const installed = initial;
   const calls = [];
@@ -17,7 +20,7 @@ function harness(initial = new Map(), manifests = new Map()) {
     uuid: () => `operation-${++sequence}`,
     extensions,
     storage: { get: (key, fallback) => stored.has(key) ? stored.get(key) : fallback, update: async (key, value) => { stored.set(key, value); } },
-    commands: { executeCommand: async (command, target) => { calls.push([command, target]); if (command === 'workbench.extensions.uninstallExtension') installed.delete(target); else if (command === 'workbench.extensions.installExtension') { const [id, version] = target.split('@'); installed.set(id, version || '9.9.9'); } } }
+    commands: { executeCommand: async (command, target) => { calls.push([command, target]); if (command === 'workbench.extensions.uninstallExtension') installed.delete(target); else if (command === 'workbench.extensions.installExtension') { const local = localTargets.get(String(target)); if (local && !local.defer) installed.set(local.id, local.version); else if (!local) { const [id, version] = String(target).split('@'); installed.set(id, version || '9.9.9'); } } } }
   });
   return { host, installed, stored, calls, advance: value => { clock += value; } };
 }
@@ -30,6 +33,82 @@ test('exact install preview dispatches documented host command and reconciles re
   assert.deepEqual(calls, [['workbench.extensions.installExtension', 'publisher.demo@1.2.3']]);
   assert.equal(receipt.status, 'installed');
   assert.equal(receipt.reconciled, true);
+});
+
+test('local VSIX install, update, uninstall, and rollback bind exact bytes without network', async t => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'px-local-vsix-'));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const v1 = path.join(root, 'fixture-1.0.0.vsix'); const v2 = path.join(root, 'fixture-2.0.0.vsix');
+  fs.writeFileSync(v1, 'owned-local-vsix-v1'); fs.writeFileSync(v2, 'owned-local-vsix-v2');
+  const targets = new Map([[v1, { id: 'px-owned.fixture', version: '1.0.0' }], [v2, { id: 'px-owned.fixture', version: '2.0.0' }]]);
+  const state = harness(new Map(), new Map(), targets);
+  const install = state.host.previewInstall({ extension_id: 'px-owned.fixture', version: '1.0.0', local_vsix_path: v1 });
+  assert.equal(install.network_expected, false); assert.match(install.local_source.sha256, /^[0-9a-f]{64}$/);
+  assert.equal((await state.host.executeInstall(install.token, { approved: true, exact_target: install.exact_target })).after_version, '1.0.0');
+  const update = state.host.previewUpdate({ extension_id: 'px-owned.fixture', version: '2.0.0', local_vsix_path: v2 });
+  assert.equal((await state.host.executeUpdate(update.token, { approved: true, exact_target: update.exact_target })).after_version, '2.0.0');
+  const uninstall = state.host.previewUninstall({ extension_id: 'px-owned.fixture' });
+  assert.equal(uninstall.rollback_identity.source_availability, 'hash-bound-local-vsix');
+  await state.host.executeUninstall(uninstall.token, { approved: true, exact_target: uninstall.exact_target, consumer_impact_acknowledged: false });
+  const rollback = state.host.previewRollback({ extension_id: 'px-owned.fixture' });
+  assert.equal(rollback.local_source.path, v2);
+  const restored = await state.host.executeRollback(rollback.token, { approved: true, exact_target: rollback.exact_target });
+  assert.equal(restored.after_version, '2.0.0'); assert.equal(restored.reconciled, true);
+});
+
+test('reload-pending local VSIX source becomes rollback-eligible only after exact inventory convergence', async t => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'px-local-vsix-pending-'));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const v2 = path.join(root, 'fixture-2.0.0.vsix');
+  fs.writeFileSync(v2, 'owned-local-vsix-v2-pending');
+  const state = harness(
+    new Map([['px-owned.fixture', '1.0.0']]),
+    new Map(),
+    new Map([[v2, { id: 'px-owned.fixture', version: '2.0.0', defer: true }]])
+  );
+  const update = state.host.previewUpdate({ extension_id: 'px-owned.fixture', version: '2.0.0', local_vsix_path: v2 });
+  const pending = await state.host.executeUpdate(update.token, { approved: true, exact_target: update.exact_target });
+  assert.equal(pending.status, 'pending-host-reload-or-refresh');
+  assert.equal(state.host.previewUninstall({ extension_id: 'px-owned.fixture' }).rollback_identity.source_availability, 'host-marketplace-or-original-source-not-yet-verified');
+  state.installed.set('px-owned.fixture', '2.0.0');
+  const converged = state.host.previewUninstall({ extension_id: 'px-owned.fixture' });
+  assert.equal(converged.rollback_identity.source_availability, 'hash-bound-local-vsix');
+  assert.equal(converged.rollback_identity.local_source.path, v2);
+  state.installed.set('px-owned.fixture', '3.0.0');
+  assert.equal(state.host.previewUninstall({ extension_id: 'px-owned.fixture' }).rollback_identity.source_availability, 'host-marketplace-or-original-source-not-yet-verified');
+});
+
+test('reload-pending rollback receipt preserves exact retained local source without consuming custody', async t => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'px-local-vsix-rollback-pending-'));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const v2 = path.join(root, 'fixture-2.0.0.vsix');
+  fs.writeFileSync(v2, 'owned-local-vsix-v2-rollback-pending');
+  const target = { id: 'px-owned.fixture', version: '2.0.0' };
+  const state = harness(new Map(), new Map(), new Map([[v2, target]]));
+  const install = state.host.previewInstall({ extension_id: 'px-owned.fixture', version: '2.0.0', local_vsix_path: v2 });
+  await state.host.executeInstall(install.token, { approved: true, exact_target: install.exact_target });
+  const uninstall = state.host.previewUninstall({ extension_id: 'px-owned.fixture' });
+  await state.host.executeUninstall(uninstall.token, { approved: true, exact_target: uninstall.exact_target, consumer_impact_acknowledged: false });
+  target.defer = true;
+  const rollback = state.host.previewRollback({ extension_id: 'px-owned.fixture' });
+  const pending = await state.host.executeRollback(rollback.token, { approved: true, exact_target: rollback.exact_target });
+  assert.equal(pending.status, 'pending-host-reload-or-refresh');
+  assert.equal(pending.reconciled, false);
+  assert.equal(pending.custody_state, 'retained-before-uninstall');
+  assert.equal(pending.source_availability, 'hash-bound-local-vsix');
+  assert.deepEqual(pending.local_source, rollback.local_source);
+  assert.equal(state.host.rollbackHistory()[0].custody_state, 'retained-before-uninstall');
+});
+
+test('local VSIX execution fails closed when previewed bytes change', async t => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'px-local-vsix-tamper-'));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const vsix = path.join(root, 'fixture.vsix'); fs.writeFileSync(vsix, 'before');
+  const state = harness(new Map(), new Map(), new Map([[vsix, { id: 'px-owned.fixture', version: '1.0.0' }]]));
+  const preview = state.host.previewInstall({ extension_id: 'px-owned.fixture', version: '1.0.0', local_vsix_path: vsix });
+  fs.writeFileSync(vsix, 'after');
+  await assert.rejects(state.host.executeInstall(preview.token, { approved: true, exact_target: preview.exact_target }), /local-vsix-bytes-changed/);
+  assert.equal(state.calls.length, 0);
 });
 
 test('install refuses invalid identity, installed denominator, substitution, expiry, and absent approval', async () => {

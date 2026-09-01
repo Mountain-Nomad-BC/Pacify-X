@@ -1,0 +1,14 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "verification-session:px-exclusive-final-profile-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023090",
+  "outcome": "cancelled",
+  "evidence": [
+    {
+      "reference": "evidence/release/full-profile-duplicate-execution-20260826.json",
+      "artifact_sha256": "ab6be17ef280af67a42cf26eac94342ef218cebc5e6200a83df7ae9392642b53",
+      "artifact_size": 1311,
+      "claim": "Execution-level duplicate profile ownership invalidated both overlapping attempts; both exact process trees were contained."
+    }
+  ]
+}

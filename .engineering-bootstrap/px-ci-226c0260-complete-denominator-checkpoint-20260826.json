@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023209",
+  "learned": "Canonical CI run 32959584216 completed with 17 successful jobs, one skipped aggregator, and seven failures. The seven failed jobs form five diagnosis classes: assurance/generated, assurance/registry, assurance/structural, platform path-lock-permission-line-ending controls on Ubuntu Python 3.11 and 3.13 plus macOS Python 3.12, and the real VS Code extension-host exercise on Windows. Lint is green. Dependabot PRs 15 and 16 are closed. The earlier four-class diagnosis scope was superseded before local diagnosis so the complete denominator can be handled once.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": [],
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "evidence": [
+    {
+      "reference": "evidence/release/agent-observer-resource-repair-20260826.json",
+      "claim": "Commit 226c0260 is canonical and run 32959584216 is the complete fresh remote failure denominator.",
+      "artifact_sha256": "2856fc5bf94a2bf84fd09f59f46dde071bd47a486816780acb92cebbe6764456",
+      "artifact_size": 1515
+    }
+  ]
+}

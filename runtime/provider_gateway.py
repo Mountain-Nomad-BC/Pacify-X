@@ -176,6 +176,90 @@ class OllamaHttpAdapter:
         )
 
 
+class LlamaCppHttpAdapter:
+    """Bounded loopback-only adapter for an owned llama.cpp server session."""
+
+    adapter_id = "llama-cpp-http"
+
+    def __init__(
+        self,
+        base_url: str,
+        *,
+        session_id: str,
+        model_sha256: str,
+        timeout_seconds: float = 120.0,
+        opener: object | None = None,
+    ) -> None:
+        parsed = urlsplit(base_url)
+        if (
+            parsed.scheme != "http"
+            or parsed.hostname not in {"127.0.0.1", "::1"}
+            or parsed.username is not None
+            or parsed.password is not None
+            or parsed.query
+            or parsed.fragment
+            or parsed.path not in {"", "/"}
+        ):
+            raise ValueError("llama.cpp adapter requires a literal loopback HTTP origin")
+        if not session_id.startswith("local-model-session-"):
+            raise ValueError("llama.cpp session identity is invalid")
+        if len(model_sha256) != 64 or any(character not in "0123456789abcdef" for character in model_sha256):
+            raise ValueError("llama.cpp model digest is invalid")
+        if not 1 <= timeout_seconds <= 300:
+            raise ValueError("llama.cpp timeout must be between 1 and 300 seconds")
+        self.base_url = base_url.rstrip("/")
+        self.session_id = session_id
+        self.model_sha256 = model_sha256
+        self.timeout_seconds = float(timeout_seconds)
+        self._opener = opener or build_opener(ProxyHandler({}))
+
+    def invoke(self, model_id: str, payload: Mapping[str, object]) -> ProviderResponse:
+        if model_id != self.model_sha256:
+            raise ValueError("llama.cpp request model does not match the admitted digest")
+        if "model" in payload or "stream" in payload:
+            raise ValueError("llama.cpp model and stream mode are gateway-owned")
+        messages = payload.get("messages")
+        if not isinstance(messages, list) or not messages:
+            raise ValueError("llama.cpp payload requires non-empty messages")
+        request_payload = dict(payload)
+        request_payload.update({"model": self.model_sha256, "stream": False})
+        raw_request = _canonical(request_payload, limit=MAX_REQUEST_BYTES)
+        request = Request(
+            f"{self.base_url}/v1/chat/completions",
+            data=raw_request,
+            headers={
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "X-Pacify-Local-Session": self.session_id,
+            },
+            method="POST",
+        )
+        with self._opener.open(request, timeout=self.timeout_seconds) as response:
+            raw = response.read(MAX_RESPONSE_BYTES + 1)
+        if len(raw) > MAX_RESPONSE_BYTES:
+            raise ValueError("llama.cpp response exceeds the configured byte bound")
+        try:
+            result = json.loads(raw.decode("utf-8"))
+        except (UnicodeDecodeError, json.JSONDecodeError) as error:
+            raise ValueError("llama.cpp returned invalid JSON") from error
+        try:
+            value = result["choices"][0]["message"]["content"]
+            usage = result.get("usage", {})
+            input_tokens = usage.get("prompt_tokens", 0)
+            output_tokens = usage.get("completion_tokens", 0)
+        except (KeyError, IndexError, TypeError, AttributeError) as error:
+            raise ValueError("llama.cpp returned an invalid terminal response") from error
+        if not isinstance(value, str) or any(
+            not isinstance(count, int) or isinstance(count, bool) or count < 0
+            for count in (input_tokens, output_tokens)
+        ):
+            raise ValueError("llama.cpp terminal response has invalid output or usage")
+        return ProviderResponse(
+            value=value,
+            usage=ProviderUsage("local_non_billable", input_tokens, output_tokens, 0),
+        )
+
+
 def _canonical(value: object, *, limit: int) -> bytes:
     try:
         encoded = json.dumps(

@@ -6,6 +6,17 @@ const { buildSidebarProjection } = require('./sidebarProjection');
 const { MESSAGE_SCHEMA_VERSION, SIDEBAR_ASSET_PROTOCOL, validateSidebarInbound, validateSidebarOutbound, describeSidebarInboundRejection } = require('./sidebarMessages');
 
 const PREF_KEY = 'pacifyX.sidebar.ui/1.0';
+const SIDEBAR_ID = /^[A-Za-z0-9][A-Za-z0-9._:-]{0,159}$/;
+
+function normalizeSidebarPreferences(raw) {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return { expandedWaveIds: [], expandedTaskIds: [], selectedProviderId: null };
+  const ids = (value, limit) => Array.isArray(value) ? [...new Set(value.filter(item => typeof item === 'string' && SIDEBAR_ID.test(item)))].slice(0, limit) : [];
+  return {
+    expandedWaveIds: ids(raw.expandedWaveIds, 40),
+    expandedTaskIds: ids(raw.expandedTaskIds, 80),
+    selectedProviderId: typeof raw.selectedProviderId === 'string' && SIDEBAR_ID.test(raw.selectedProviderId) ? raw.selectedProviderId : null
+  };
+}
 
 function sidebarHtml(vscode, webview, extensionPath) {
   const media = name => webview.asWebviewUri(vscode.Uri.file(path.join(extensionPath, 'media', name)));
@@ -57,17 +68,12 @@ class SidebarViewProvider {
   }
 
   preferences() {
-    const raw = this.context.workspaceState.get(PREF_KEY, {});
-    return {
-      expandedWaveIds: Array.isArray(raw.expandedWaveIds) ? raw.expandedWaveIds : [],
-      expandedTaskIds: Array.isArray(raw.expandedTaskIds) ? raw.expandedTaskIds : [],
-      selectedProviderId: typeof raw.selectedProviderId === 'string' ? raw.selectedProviderId : null
-    };
+    return normalizeSidebarPreferences(this.context.workspaceState.get(PREF_KEY, {}));
   }
 
   async savePreferences(next) {
     const current = this.preferences();
-    await this.context.workspaceState.update(PREF_KEY, { ...current, ...next });
+    await this.context.workspaceState.update(PREF_KEY, normalizeSidebarPreferences({ ...current, ...next }));
   }
 
   async reportClientError(code, detail) {
@@ -122,11 +128,15 @@ class SidebarViewProvider {
       if (message.type === 'retryConnection') return this.callbacks.retryConnection?.();
       if (message.type === 'toggleWave') {
         const ids = new Set(this.preferences().expandedWaveIds); message.expanded ? ids.add(message.waveId) : ids.delete(message.waveId);
-        return this.savePreferences({ expandedWaveIds: [...ids].slice(0, 40) });
+        await this.savePreferences({ expandedWaveIds: [...ids].slice(0, 40) });
+        if (this.snapshot) return this.pushSnapshot(this.snapshot, true);
+        return;
       }
       if (message.type === 'toggleTask') {
         const ids = new Set(this.preferences().expandedTaskIds); message.expanded ? ids.add(message.taskId) : ids.delete(message.taskId);
-        return this.savePreferences({ expandedTaskIds: [...ids].slice(0, 80) });
+        await this.savePreferences({ expandedTaskIds: [...ids].slice(0, 80) });
+        if (this.snapshot) return this.pushSnapshot(this.snapshot, true);
+        return;
       }
       if (message.type === 'selectProvider') {
         const providers = this.lastEnvelope?.projection?.providerState?.providers || [];
@@ -245,4 +255,4 @@ class SidebarViewProvider {
   dispose() { for (const disposable of this.disposables.splice(0)) disposable?.dispose?.(); this.view = null; }
 }
 
-module.exports = { SidebarViewProvider, sidebarHtml, PREF_KEY };
+module.exports = { SidebarViewProvider, sidebarHtml, PREF_KEY, normalizeSidebarPreferences };

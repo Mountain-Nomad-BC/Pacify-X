@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023194",
+  "learned": "Unified main commit 1f854583 reached GitHub and seven assurance jobs observed so far passed, but assurance/lint job 98143428626 failed in the independently receipted lint gate with exit code 1. Public unauthenticated job-log download returned 403, so the exact same bounded lint gate must be reproduced locally. Remote main is not green; Dependabot PRs remain open and certification is forbidden.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": [],
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "evidence": [
+    {
+      "reference": "evidence/release/github-main-1f854583-remote-failure-20260826.json",
+      "claim": "Remote lint failure authority.",
+      "artifact_sha256": "4c6d9be04b099c203e49289a09c4640494c6bfff0f2c82e9938af4efc288905b",
+      "artifact_size": 1354
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "session_id": "package-session:px-final-extension-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023170",
+  "gap_id": "PX-OS-1065",
+  "authority": "User-authorized Pacify-X rebuild and reinstall from the validated source.",
+  "effect_scopes": [
+    {"effect": "read", "scope": ["Inspect only validated campaign state, canonical release/package owners, extension package metadata and scripts, current source identity, existing distribution destinations, and resulting artifact manifests."]},
+    {"effect": "write", "scope": ["Build exactly one canonical Pacify-X release artifact set including the VS Code VSIX from the validated frozen source; update only package-owned outputs/manifests; advance to packaged only on integrity success; retain evidence. Do not install, publish, commit, push, merge, or certify."]},
+    {"effect": "execute", "scope": ["With PYTHONDONTWRITEBYTECODE=1 set, run processing-order package checks, inspect package help/scripts, and execute exactly one canonical packaging flow plus artifact hash/manifest verification. Do not rerun tests/validation/projections, install, publish, commit, push, merge, or certify."]}
+  ],
+  "expected_effect": "Produce one hash-bound VSIX and companion release artifacts from the exact validated source.",
+  "rollback": "Retain failed package outputs as evidence and stop before installation; do not overwrite a prior known artifact silently.",
+  "expires_utc": "2026-09-02T00:00:00Z",
+  "evidence": [
+    {"reference": "evidence/release/final-validation-proof-20260826.json", "claim": "Passing validation predecessor.", "artifact_sha256": "676b54124e7beadbe3f9e68b6f9166f6c3a13d357f625e9d7a5af8c6484bcd3d", "artifact_size": 531}
+  ]
+}

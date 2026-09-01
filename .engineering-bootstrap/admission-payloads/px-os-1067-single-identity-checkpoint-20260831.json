@@ -1,0 +1,24 @@
+{
+  "active_gap_id": "PX-OS-1067",
+  "learned": "The full adversarial source/control denominator and the four defects exposed by the one failed full current-source operational attempt are now focused-green. The failed full attempt was never retried. One Studio-only diagnostic completed with verified source identity, exact request-bound setup success, zero profile failures, verified process-tree closure, and reclaimed ephemeral storage. The release campaign remains cleared exactly once with identity null and apply_count zero; no reconciliation, identity application, governed section, full profile, validation, package, install, or certification has run.",
+  "next_action": "Run the single revision/generated-projection reconciliation, make every governed section current, then execute exactly one full profile, validation, package, install, installed-system operational test, and certification in registered order.",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000031617",
+  "unresolved_branch_gap_ids": [
+    "PX-OS-1067"
+  ],
+  "newly_discovered_gap_ids": [],
+  "evidence": [
+    {
+      "reference": "evidence/release/pre-certification-adversarial-audit-20260831.json",
+      "claim": "Complete known pre-certification denominator is focused-green and the one-campaign continuation rule is explicit."
+    },
+    {
+      "reference": "evidence/operational-ui-walk-current-source-precert-studio-diagnostic-20260831/receipt.json",
+      "claim": "Single focused operational repair validation completed with zero profile failures."
+    },
+    {
+      "reference": ".engineering-bootstrap/processing-order/release-identity.json",
+      "claim": "One cleared campaign exists with apply_count zero and every registered stage pending."
+    }
+  ]
+}

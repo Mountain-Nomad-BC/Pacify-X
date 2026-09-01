@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023203",
+  "learned": "The focused lint and Agent Studio lifecycle corrections are now one additive local commit, 226c0260, containing exactly runtime/studio_api.py, tests/test_agent_runtime.py, tests/test_operational_gap_ledger.py, and the focused repair evidence. Generated local custody, operational ledgers, and section receipts were not staged. Canonical GitHub publication and fresh remote execution remain outstanding.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": [],
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "evidence": [
+    {
+      "reference": "evidence/release/agent-observer-resource-repair-20260826.json",
+      "claim": "Focused proof committed at 226c0260.",
+      "artifact_sha256": "2856fc5bf94a2bf84fd09f59f46dde071bd47a486816780acb92cebbe6764456",
+      "artifact_size": 1515
+    }
+  ]
+}

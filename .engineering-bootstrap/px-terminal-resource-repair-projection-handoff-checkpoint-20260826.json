@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023221",
+  "learned": "Terminal observer reconciliation now safely reclaims only active ephemeral path resources for the exact Studio run after the worker is proven absent and before terminal publication. Paused runs mark finished request paths completed while leaving the run recoverable. The exact Workflow and Agent lifecycle pair passed in 223.72 seconds with zero residual test process. Direct validators then correctly reported effect-surface, provider-route, and artifact-reachability projections stale because the new observer source changed their inputs. One final authoritative regeneration and affected section gates remain; full profile, validation, package, install, publish, and certification have not run.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": [],
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "evidence": [
+    {
+      "reference": "evidence/release/agent-observer-resource-repair-20260826.json",
+      "claim": "Focused lifecycle predecessor plus current exact lifecycle pair define the final projection and section handoff.",
+      "artifact_sha256": "2856fc5bf94a2bf84fd09f59f46dde071bd47a486816780acb92cebbe6764456",
+      "artifact_size": 1515
+    }
+  ]
+}

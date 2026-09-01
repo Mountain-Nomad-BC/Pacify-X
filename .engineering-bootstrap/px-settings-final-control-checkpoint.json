@@ -1,0 +1,22 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022962",
+  "unresolved_branch_gap_ids": ["PX-OS-1065"],
+  "newly_discovered_gap_ids": [],
+  "learned": "The current ledger has exactly 17 controls without a current observation. Sixteen are Studio lifecycle controls now directly proven by the fresh r6 owned-host campaign; the only remaining locally unexercised control is pxui.settings.action.inspectMetric. All 19 external audit findings are mapped to PX-OS-1065; 17 are repaired, retained-state volume is repaired locally, and multi-OS real VS Code-host execution awaits the later committed remote CI stage.",
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "evidence": [
+    {
+      "reference": "evidence/operational-ui-walk-current-source-final-lifecycle-r6-20260825/receipt.json",
+      "artifact_sha256": "8ea0d0f710320a04707c744e09ac5694e2e7240db9a13ce83219cd896f338fa3",
+      "artifact_size": 4876023,
+      "claim": "Sixteen previously unobserved Studio lifecycle controls now have exact current-source operational evidence."
+    },
+    {
+      "reference": "evidence/adversarial-audit/current-findings-20260824.json",
+      "artifact_sha256": "a16a546ae9a36410975962a11d19c8399e923f9e987be6bd1e5f8cebb89b945a",
+      "artifact_size": 4898,
+      "claim": "All 19 imported audit findings have explicit current repair dispositions and remaining evidence boundaries."
+    }
+  ]
+}

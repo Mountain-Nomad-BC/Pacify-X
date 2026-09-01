@@ -7,6 +7,7 @@ import coordination from '../src/coordinationManager.js';
 import teamFabric from '../src/teamFabricManager.js';
 import enterprise from '../src/enterpriseManager.js';
 import discovery from '../src/discoveryManager.js';
+import mutationAuthority from '../src/mcpMutationAuthority.js';
 import { McpServer } from '@modelcontextprotocol/server';
 import { serveStdio } from '@modelcontextprotocol/server/stdio';
 import { z } from 'zod';
@@ -21,6 +22,7 @@ const { initializeEnterprise, setPackEnabled, configureTarget, evaluateBillableE
 const { readEnvironmentSubject, readEnvironmentExtension } = discovery;
 const { recordActivity, readActivity } = activity;
 const { createMcpActivityIntegration } = mcpActivity;
+const { createMcpMutationAuthority } = mutationAuthority;
 
 function textResult(value) {
   return { content: [{ type: 'text', text: JSON.stringify(value, null, 2) }], structuredContent: value };
@@ -80,9 +82,15 @@ function buildServer() {
   const readOnly = { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false };
   const write = { readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: false };
   const actorFields = {
-    actor_id: z.string().min(1).max(160), session_id: z.string().min(1).max(160),
-    harness: z.string().min(1).max(120), accountable_owner: z.string().max(160).optional()
+    actor_id: z.string().min(1).max(160).optional(), session_id: z.string().min(1).max(160).optional(),
+    harness: z.string().min(1).max(120).optional(), accountable_owner: z.string().max(160).optional()
   };
+  const writeAuthority = createMcpMutationAuthority({
+    projectRoot: workspaceRoot(), claim: process.env.PX_MCP_AUTHORITY_CLAIM,
+    signature: process.env.PX_MCP_AUTHORITY_SIGNATURE, token: process.env.PX_MCP_AUTHORITY_TOKEN,
+    publicKeyJwk: readJsonFile(process.env.PX_MCP_AUTHORITY_PUBLIC_JWK_PATH, null),
+    trustedKeyId: process.env.PX_MCP_AUTHORITY_KEY_ID
+  });
   const mcpInstrumentation = createMcpActivityIntegration({
     recordActivity,
     workspaceRoot,
@@ -91,6 +99,7 @@ function buildServer() {
     policy: activityPolicy,
     processId: process.pid,
     serverVersion: MCP_VERSION,
+    authorize: (name, input) => writeAuthority.authorize(name, input),
     onDrop: failure => process.stderr.write(`[pacify-x-mcp-instrumentation] ${failure.type}:${failure.tool}:${failure.lifecycle}\n`)
   });
   const registerTool = (name, definition, handler) => server.registerTool(name, definition, mcpInstrumentation.wrapTool(name, definition, handler));

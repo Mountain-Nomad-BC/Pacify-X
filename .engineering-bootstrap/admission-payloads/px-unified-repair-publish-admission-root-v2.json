@@ -1,0 +1,19 @@
+{
+  "gap_id": "PX-OS-1065",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023263",
+  "effect": "network",
+  "scope": [
+    "With GIT_TERMINAL_PROMPT=0, fetch only origin main; verify 1a530d99ec0704c47007b8e66f61631c62e4c049 is a descendant of origin/main; if and only if fast-forward, push local main to origin main without force; then query only public GitHub Actions run/job metadata for head 1a530d99ec0704c47007b8e66f61631c62e4c049. Do not open VS Code UI or account selection, rewrite history, merge, rebase, create PRs, alter settings, publish packages, install, validate, or certify."
+  ],
+  "authority": "User explicitly requested GitHub current and merged; this publishes the tested additive repair chain to canonical main without interaction or history rewriting.",
+  "expected_effect": "Advance origin/main from 226c0260262d3c787eedbbd2e81bad0abd83eae6 to 1a530d99ec0704c47007b8e66f61631c62e4c049 and obtain fresh CI metadata without an account picker.",
+  "rollback": "If remote CI proves a regression, create a new additive revert or repair commit; never force-push or delete remote history.",
+  "evidence": [
+    {
+      "reference": "commit:1a530d99ec0704c47007b8e66f61631c62e4c049",
+      "artifact_sha256": "7f56cf7d41209e4b71d7fface2e867e0fb86323c21c33dbf8503116e39d60404",
+      "artifact_size": 1265,
+      "claim": "The complete additive repair chain is ready for fast-forward publication."
+    }
+  ]
+}

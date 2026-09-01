@@ -1,0 +1,10 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "verification-session:px-final-profile-handoff-r2-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023057",
+  "outcome": "superseded",
+  "reason": "The profile attempt was cancelled after PX-AUD2-011 mutated the revision concurrently; its results are invalid and no certification claim is retained. Close this pre-exclusivity handoff so one current mutating owner can proceed.",
+  "evidence": [
+    {"reference": "evidence/adversarial-audit/px-aud2-011-mutating-admission-exclusivity-20260826.json", "claim": "Exclusive mutating admission repair and invalidated overlapping predecessor.", "artifact_sha256": "e36a49ce7150fe94bde48b5de5e08756af02a8808c7b8d40bf83100a9f6bd78b", "artifact_size": 1087}
+  ]
+}

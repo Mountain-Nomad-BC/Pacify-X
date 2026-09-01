@@ -1,0 +1,29 @@
+{
+  "gap_id": "PX-OS-1065",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000015891",
+  "session_id": "verification-session:px-current-fault-recovery-20260825",
+  "expires_utc": "2026-08-29T23:59:00Z",
+  "effect_scopes": [
+    {
+      "effect": "write",
+      "scope": [
+        "Write only one fresh current-source fault/recovery control receipt, one derived exact 0.6.56 assembled control-evidence receipt, and deterministic ledger reconciliation events; do not modify source, package, deploy, publish, or certify."
+      ]
+    },
+    {
+      "effect": "execute",
+      "scope": [
+        "Run one bounded current-source operational fault/recovery walk, exact 0.6.56 evidence assembly, deterministic ledger reconciliation, and operational coverage diagnostics; do not run generic walks, full profile, validate, package, deploy, publish, or certify."
+      ]
+    }
+  ],
+  "authority": "The exact assembly identifies required failure-handling stages and the user authorized reversible operational repair and measurement.",
+  "expected_effect": "Directly exercise bounded failure and recovery behavior and merge only exact observed stages into the current 0.6.56 denominator.",
+  "rollback": "Retain the new receipts as non-destructive diagnostic evidence and supersede them with a later exact run if needed.",
+  "evidence": [
+    {
+      "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000015891",
+      "claim": "Exact active fault/recovery checkpoint."
+    }
+  ]
+}

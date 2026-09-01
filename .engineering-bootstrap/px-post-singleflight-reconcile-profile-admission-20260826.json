@@ -1,0 +1,37 @@
+{
+  "session_id": "closure-session:px-post-singleflight-reconcile-profile-current-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023098",
+  "gap_id": "PX-OS-1065",
+  "authority": "Codex host authority executing the ordered post-repair closure under physical single-flight.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect only repair-frozen processing state, deterministic generated owners, governed section/group currentness, single-flight lock state, and receipts for the PX-AUD2-012/PX-AUD2-013 repair boundary."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Run exactly one generated-projection reconciliation for the PX-AUD2-012/PX-AUD2-013 boundary; advance to revision_reconciled; refresh only stale governed sections; advance to sections_current only when all are current; run one single-flight-owned full profile and advance to full_profile_passed only on success; retain evidence. Do not validate, package, install, publish, commit, push, merge, or certify."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["Run the processing-order reconciliation check, one canonical projection rebuild and focused generated integrity, section status plus only stale testing-governance if needed, then exactly one single-flight-owned python -m runtime.cli test-profile run full. Do not run a second profile, validate, package, install, publish, commit, push, merge, or certify."]
+    }
+  ],
+  "expected_effect": "Reach one valid full-profile result for the repaired source without duplicate execution.",
+  "rollback": "Stop at the last passing phase, retain any failure, return to repair on a new causal defect, and never reuse a failed profile receipt.",
+  "expires_utc": "2026-08-27T05:00:00Z",
+  "evidence": [
+    {
+      "reference": ".engineering-bootstrap/test-evidence/sections/testing-governance.json",
+      "artifact_sha256": "5199bf11003faae89c56d83aa17ae65e83dbba50ca6a5c3b93d16bcd64871a72",
+      "artifact_size": 1265,
+      "claim": "Repair-frozen governed predecessor."
+    },
+    {
+      "reference": "evidence/release/profile-singleflight-corrective-lifecycle-repair-20260826.json",
+      "artifact_sha256": "772c757afb7e184c9752d75e14ac407443a700c706f883c42cc26e000ad8ed00",
+      "artifact_size": 1146,
+      "claim": "Focused repair proof."
+    }
+  ]
+}

@@ -166,6 +166,30 @@ class CapabilityMiningSkillTests(unittest.TestCase):
             self.assertTrue(result["complete"])
             self.assertEqual(result["finding_count"], 0)
 
+    def test_incomplete_audit_excludes_diagnostic_custody_only(self):
+        module = load_script("audit-incomplete-implementations", "audit_incomplete.py")
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            diagnostic = (
+                root
+                / ".engineering-bootstrap/diagnostics/retained/source/runtime.py"
+            )
+            diagnostic.parent.mkdir(parents=True)
+            diagnostic.write_text("def copied_source():\n    pass\n", encoding="utf-8")
+            managed = root / ".engineering-bootstrap/policies/live.py"
+            managed.parent.mkdir(parents=True)
+            managed.write_text("def managed_source():\n    pass\n", encoding="utf-8")
+            active = root / "runtime.py"
+            active.write_text("def active_source():\n    pass\n", encoding="utf-8")
+
+            result = module.audit(root)
+
+            self.assertEqual(result["finding_count"], 2)
+            self.assertEqual(
+                {item["path"] for item in result["findings"]},
+                {".engineering-bootstrap/policies/live.py", "runtime.py"},
+            )
+
     def test_source_auditor_accounts_for_every_file(self):
         module = load_script(
             "audit-source-capabilities", "audit_source_capabilities.py"
@@ -182,6 +206,78 @@ class CapabilityMiningSkillTests(unittest.TestCase):
             self.assertEqual(result["coverage"]["files"], 1)
             self.assertEqual(result["coverage"]["total_accounted_files"], 1)
             self.assertTrue(result["complete"])
+
+    def test_source_auditor_metadata_accounts_external_runtime_boundaries(self):
+        module = load_script(
+            "audit-source-capabilities", "audit_source_capabilities.py"
+        )
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root / "runtime.py").write_text("# sha256\n", encoding="utf-8")
+            embedded = root / "Python" / "runtime"
+            embedded.mkdir(parents=True)
+            (embedded / "dependency.py").write_text(
+                "# should not be mechanism-scanned\n", encoding="utf-8"
+            )
+
+            result = module.audit(root)
+
+            self.assertTrue(result["complete"])
+            self.assertEqual(result["coverage"]["files"], 1)
+            self.assertEqual(result["coverage"].get("excluded_files", 0), 0)
+            self.assertEqual(result["coverage"]["opaque_external_boundaries"], 1)
+            self.assertEqual(result["coverage"]["total_accounted_files"], 1)
+            self.assertEqual(result["excluded_boundaries"][0]["path"], "Python")
+            self.assertEqual(
+                result["excluded_boundaries"][0]["inventory_method"],
+                "boundary-identity-no-recursion",
+            )
+
+    def test_source_auditor_excludes_preserved_custody_and_owned_temporaries(self):
+        module = load_script(
+            "audit-source-capabilities", "audit_source_capabilities.py"
+        )
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            current = root / "runtime.py"
+            current.write_text("# sha256 rollback checkpoint\n", encoding="utf-8")
+            preserved = root / ".px" / "preserved-skills" / "old" / "SKILL.md"
+            preserved.parent.mkdir(parents=True)
+            preserved.write_text(
+                "---\nname: stale\ndescription: retained custody\n---\n# sha256 rollback\n",
+                encoding="utf-8",
+            )
+            temporary_directory = root / ".tmp_native_debug"
+            temporary_directory.mkdir()
+            (temporary_directory / "debug.py").write_text(
+                "# sha256 rollback checkpoint\n", encoding="utf-8"
+            )
+            temporary_file = root / "tmp_work_admit_payload.json"
+            temporary_file.write_text(
+                '{"sha256":"rollback checkpoint"}', encoding="utf-8"
+            )
+
+            result = module.audit(root)
+
+            self.assertTrue(result["complete"])
+            self.assertEqual(
+                [item["path"] for item in result["records"]], ["runtime.py"]
+            )
+            boundary_paths = {
+                item["path"]: item for item in result["excluded_boundaries"]
+            }
+            self.assertEqual(
+                boundary_paths[".px/preserved-skills"]["inventory_method"],
+                "boundary-identity-no-recursion",
+            )
+            self.assertEqual(
+                boundary_paths[".tmp_native_debug"]["inventory_method"],
+                "boundary-identity-no-recursion",
+            )
+            self.assertEqual(
+                boundary_paths["tmp_work_admit_payload.json"]["reason"],
+                "owned-temporary",
+            )
 
     def test_source_auditor_streams_oversize_catalogs_and_accounts_for_exclusions(self):
         module = load_script(
@@ -212,6 +308,40 @@ class CapabilityMiningSkillTests(unittest.TestCase):
                 result["mechanism_counts"]["orchestration-checkpoint"], 0
             )
             self.assertEqual(result["excluded_boundaries"][0]["file_count"], 1)
+
+    def test_source_auditor_hashes_very_large_records_without_mechanism_regex(self):
+        module = load_script(
+            "audit-source-capabilities", "audit_source_capabilities.py"
+        )
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            record = root / "historical.jsonl"
+            record.write_bytes(b"sha256 rollback checkpoint\n" * 400_000)
+
+            result = module.audit(root)
+
+            self.assertTrue(result["complete"])
+            self.assertEqual(result["coverage"]["oversize_hash_only"], 1)
+            self.assertEqual(result["mechanism_counts"], {})
+            self.assertEqual(result["records"][0]["disposition"], "oversize_review_required")
+
+    def test_source_auditor_retains_atomic_progress(self):
+        module = load_script(
+            "audit-source-capabilities", "audit_source_capabilities.py"
+        )
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root / "one.py").write_text("# sha256 evidence\n", encoding="utf-8")
+            (root / "two.py").write_text("# rollback checkpoint\n", encoding="utf-8")
+            progress = root / "audit-progress.json"
+
+            result = module.audit(root, progress_output=progress)
+            retained = json.loads(progress.read_text(encoding="utf-8"))
+
+            self.assertTrue(result["complete"])
+            self.assertTrue(retained["complete"])
+            self.assertEqual(retained["files_completed"], retained["files_total"])
+            self.assertFalse(progress.with_name(progress.name + ".tmp").exists())
 
     def test_source_auditor_never_opens_excluded_file_bodies(self):
         module = load_script(

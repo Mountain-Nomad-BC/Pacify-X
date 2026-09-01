@@ -1,0 +1,27 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-ci-226c0260-complete-diagnosis-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023212",
+  "authority": "User requested uninterrupted repair of every remaining Pacify-X failure through complete operation.",
+  "expected_effect": "Identify exact actionable causes for all five failure classes in completed CI run 32959584216 using the checked-in workflow and focused non-mutating local reproductions; retain one complete diagnosis before source repair.",
+  "rollback": "Read-only inspection and non-mutating diagnostic execution require no product rollback; reconcile any owned diagnostic process or temporary output before closing the session.",
+  "expires_utc": "2026-09-04T12:00:00Z",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect only compact CI run 32959584216 job/step metadata already observed; checked-in GitHub workflow commands; exact generated, registry, structural gate definitions and inputs; cross-platform path/lock/permission/line-ending test list; Windows real extension-host launcher/config/tests; and directly implicated source owners."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["With caches disabled and no dependency installs, run only exact local reproductions of assurance generated, registry, and structural gates; enumerate or run the checked-in focused platform-control nodes under the available host where meaningful; run the exact Windows real extension-host command or its non-package focused launcher diagnostic; and perform syntax/import probes needed to identify causes. Do not modify source, run full profile or validation, package, install, publish, start persistent services, or certify."]
+    }
+  ],
+  "evidence": [
+    {
+      "reference": "evidence/release/agent-observer-resource-repair-20260826.json",
+      "claim": "Canonical commit 226c0260 and completed fresh CI run 32959584216 establish the bounded diagnosis denominator.",
+      "artifact_sha256": "2856fc5bf94a2bf84fd09f59f46dde071bd47a486816780acb92cebbe6764456",
+      "artifact_size": 1515
+    }
+  ]
+}

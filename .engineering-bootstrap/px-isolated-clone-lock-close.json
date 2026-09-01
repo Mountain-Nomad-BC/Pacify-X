@@ -1,0 +1,21 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-isolated-clone-lock-filter-20260825",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022972",
+  "outcome": "completed",
+  "reason": "The exact .lock exclusion passed 10 focused tests and the 238-test dashboard section; the restarted broad owned campaign completed with verified cleanup, matched source identity, all expected surfaces, completed builders/lifecycles, and zero host errors.",
+  "evidence": [
+    {
+      "reference": "evidence/operational-ui-walk-installed-vsix-0.6.59-broad-r2/receipt.json",
+      "artifact_sha256": "cc8ccb4fc6fdc10dc3f24f601fcc5596e36b53cbfcdd7f3b9886093a59b0c33a",
+      "artifact_size": 9995449,
+      "claim": "The broad owned operational campaign completed after the lock-filter repair with no host or product/runtime errors."
+    },
+    {
+      "reference": "evidence/operational-ui-walk-installed-vsix-0.6.59-broad-r2-host.json",
+      "artifact_sha256": "8d1765b6f78df4a9de7dac1785b56f763c0963e03e977f5496f5817021696eb3",
+      "artifact_size": 821323,
+      "claim": "The owned disposable process tree and workspace were verified closed and reclaimed."
+    }
+  ]
+}

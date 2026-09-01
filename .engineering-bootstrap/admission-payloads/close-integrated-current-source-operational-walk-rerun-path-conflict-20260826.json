@@ -1,0 +1,14 @@
+{
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023330",
+  "session_id": "repair-session:px-integrated-current-source-operational-walk-rerun-20260826",
+  "gap_id": "PX-OS-1065",
+  "outcome": "completed",
+  "evidence": [
+    {
+      "reference": "evidence/release/isolated-runner-diagnostic-custody-repair-20260826.json",
+      "artifact_sha256": "13f806441867855aaa0bfc1a49595dc00197434aa66c00b8660f6b94346263da",
+      "artifact_size": 1738,
+      "claim": "The repaired runner rejected the reused retained report path before creating a temporary root or launching a host; rerun requires a new evidence path and the original failure evidence remains preserved."
+    }
+  ]
+}

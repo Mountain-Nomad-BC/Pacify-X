@@ -607,7 +607,7 @@ var require_mcpActivityIntegration = __commonJS({
         emitted_events: 0,
         dropped_events: 0,
         last_drop_type: null,
-        identity: { self_asserted_calls: 0, unattested_calls: 0 }
+        identity: { authenticated_host_capability_calls: 0, self_asserted_calls: 0, unattested_calls: 0 }
       };
       const now = options.now || (() => (/* @__PURE__ */ new Date()).toISOString());
       const uuid3 = options.uuid || (() => crypto2.randomUUID());
@@ -707,19 +707,26 @@ var require_mcpActivityIntegration = __commonJS({
         state.registered_tools.push(name);
         return async (input) => {
           const context = options.contextEnvelope?.() || {};
-          const attestation = actorAttestation(input, context, options.processId);
+          let effectiveInput = input;
+          let attestation = actorAttestation(input, context, options.processId);
+          if (!definition.annotations?.readOnlyHint && typeof options.authorize === "function") {
+            const decision = await options.authorize(name, input);
+            if (!decision?.authorized) return decision?.result;
+            effectiveInput = decision.input;
+            attestation = decision.attestation;
+          }
           state.calls += 1;
           state.identity[`${attestation.identityAttestation}_calls`] += 1;
           const correlationId = `mcp-${uuid3()}`;
           const startedMs = Date.now();
           const startedAt = now();
-          emit(name, definition, input, "started", "pending", correlationId, attestation, startedAt, 0);
+          emit(name, definition, effectiveInput, "started", "pending", correlationId, attestation, startedAt, 0);
           try {
-            const value = await handler(input);
-            emit(name, definition, input, "completed", "success", correlationId, attestation, startedAt, Date.now() - startedMs);
+            const value = await handler(effectiveInput);
+            emit(name, definition, effectiveInput, "completed", "success", correlationId, attestation, startedAt, Date.now() - startedMs);
             return value;
           } catch (error51) {
-            emit(name, definition, input, "failed", "failure", correlationId, attestation, startedAt, Date.now() - startedMs);
+            emit(name, definition, effectiveInput, "failed", "failure", correlationId, attestation, startedAt, Date.now() - startedMs);
             throw error51;
           }
         };
@@ -3614,6 +3621,223 @@ var require_discoveryManager = __commonJS({
   }
 });
 
+// src/studioApprovalHost.js
+var require_studioApprovalHost = __commonJS({
+  "src/studioApprovalHost.js"(exports2, module2) {
+    "use strict";
+    var crypto2 = require("crypto");
+    var KEYRING_SECRET = "pacifyX.studioApprovalSigningKeyring.v2";
+    function canonicalJson(value) {
+      if (value === null || typeof value !== "object") return JSON.stringify(value);
+      if (Array.isArray(value)) return `[${value.map(canonicalJson).join(",")}]`;
+      return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${canonicalJson(value[key])}`).join(",")}}`;
+    }
+    function approvalPayloadJson(value) {
+      const serialized = JSON.stringify(value);
+      if (typeof serialized !== "string" || serialized[0] !== "{") {
+        throw new TypeError("Studio approval payload must be a JSON object.");
+      }
+      return serialized;
+    }
+    function keyId(publicKeyJwk) {
+      return crypto2.createHash("sha256").update(canonicalJson(publicKeyJwk), "utf8").digest("hex");
+    }
+    function generateApprovalKey() {
+      const { publicKey, privateKey } = crypto2.generateKeyPairSync("rsa", {
+        modulusLength: 3072,
+        publicExponent: 65537
+      });
+      const publicKeyJwk = publicKey.export({ format: "jwk" });
+      return {
+        keyId: keyId(publicKeyJwk),
+        publicKeyJwk,
+        privateKeyPem: privateKey.export({ format: "pem", type: "pkcs8" }).toString(),
+        createdUtc: (/* @__PURE__ */ new Date()).toISOString()
+      };
+    }
+    function validMaterial(value) {
+      return Boolean(value && /^[0-9a-f]{64}$/.test(String(value.keyId || "")) && value.publicKeyJwk?.kty === "RSA" && typeof value.privateKeyPem === "string" && keyId(value.publicKeyJwk) === value.keyId);
+    }
+    function createSecretStorageApprovalKeyProvider(secretStorage) {
+      if (!secretStorage?.get || !secretStorage?.store) throw new TypeError("VS Code SecretStorage is required.");
+      async function load() {
+        const raw = await secretStorage.get(KEYRING_SECRET);
+        if (raw) {
+          try {
+            const parsed = JSON.parse(raw);
+            if (parsed.schema_version === "px.studio-approval-keyring/2.0" && validMaterial(parsed.active) && Array.isArray(parsed.previous) && parsed.previous.every(validMaterial)) return parsed;
+          } catch {
+          }
+        }
+        const created = { schema_version: "px.studio-approval-keyring/2.0", active: generateApprovalKey(), previous: [] };
+        await secretStorage.store(KEYRING_SECRET, JSON.stringify(created));
+        return created;
+      }
+      return async (request) => {
+        const action = request?.action || "get";
+        let ring = await load();
+        if (action === "rotate") {
+          ring = {
+            schema_version: ring.schema_version,
+            active: generateApprovalKey(),
+            previous: [ring.active, ...ring.previous].slice(0, 2)
+          };
+          await secretStorage.store(KEYRING_SECRET, JSON.stringify(ring));
+        }
+        if (action === "find") return [ring.active, ...ring.previous].find((item) => item.keyId === request.keyId) || null;
+        return ring;
+      };
+    }
+    function signClaim(material, claim) {
+      if (!validMaterial(material)) throw new Error("Studio approval signing key is invalid.");
+      return crypto2.sign("sha256", Buffer.from(canonicalJson(claim), "utf8"), {
+        key: material.privateKeyPem,
+        padding: crypto2.constants.RSA_PKCS1_PADDING
+      }).toString("base64url");
+    }
+    module2.exports = {
+      KEYRING_SECRET,
+      approvalPayloadJson,
+      canonicalJson,
+      keyId,
+      generateApprovalKey,
+      createSecretStorageApprovalKeyProvider,
+      signClaim,
+      validMaterial
+    };
+  }
+});
+
+// src/mcpMutationAuthority.js
+var require_mcpMutationAuthority = __commonJS({
+  "src/mcpMutationAuthority.js"(exports2, module2) {
+    "use strict";
+    var crypto2 = require("crypto");
+    var fs2 = require("fs");
+    var path2 = require("path");
+    var { canonicalJson, keyId, signClaim } = require_studioApprovalHost();
+    var AUTHORITY_SCHEMA = "px.mcp-launch-authority/1.0";
+    var MAX_LIFETIME_MS = 24 * 60 * 60 * 1e3;
+    var MUTATING_TOOL_NAMES = Object.freeze([
+      "pacify_enterprise_readiness",
+      "pacify_enterprise_pack_set",
+      "pacify_enterprise_target_configure",
+      "pacify_activity_emit",
+      "pacify_parallel_plan_create",
+      "pacify_task_claim",
+      "pacify_claim_renew",
+      "pacify_task_progress",
+      "pacify_task_reconcile",
+      "pacify_task_release",
+      "pacify_memory_capture",
+      "pacify_team_pack_stage"
+    ]);
+    function sha(value) {
+      return crypto2.createHash("sha256").update(String(value), "utf8").digest("hex");
+    }
+    function physicalProjectIdentity(projectRoot) {
+      if (!projectRoot) throw new Error("MCP project authority root is unavailable.");
+      const resolved = fs2.realpathSync.native(path2.resolve(projectRoot));
+      const stat = fs2.statSync(resolved);
+      if (!stat.isDirectory()) throw new Error("MCP project authority root is not a directory.");
+      return sha(process.platform === "win32" ? resolved.toLowerCase() : resolved);
+    }
+    function encodeClaim(claim) {
+      return Buffer.from(canonicalJson(claim), "utf8").toString("base64url");
+    }
+    function decodeClaim(value) {
+      const raw = Buffer.from(String(value || ""), "base64url");
+      if (!raw.length || raw.length > 16 * 1024) throw new Error("MCP authority claim is invalid.");
+      const claim = JSON.parse(raw.toString("utf8"));
+      if (!claim || Array.isArray(claim) || typeof claim !== "object") throw new Error("MCP authority claim is invalid.");
+      return claim;
+    }
+    function createLaunchAuthority({ projectRoot, sessionId, keyMaterial, now = Date.now, lifetimeMs = 12 * 60 * 60 * 1e3 }) {
+      const issuedMs = Number(now());
+      const boundedLifetime = Math.min(Math.max(Number(lifetimeMs) || 0, 6e4), MAX_LIFETIME_MS);
+      const token = crypto2.randomBytes(32).toString("base64url");
+      const claim = {
+        schema_version: AUTHORITY_SCHEMA,
+        key_id: keyMaterial.keyId,
+        project_sha256: physicalProjectIdentity(projectRoot),
+        session_id: String(sessionId || ""),
+        actor_id: "vscode-mcp-host",
+        harness: "VS Code MCP",
+        accountable_owner: "local-user",
+        allowed_operations: [...MUTATING_TOOL_NAMES],
+        token_sha256: sha(token),
+        issued_at: new Date(issuedMs).toISOString(),
+        expires_at: new Date(issuedMs + boundedLifetime).toISOString()
+      };
+      if (!claim.session_id) throw new Error("MCP host session identity is unavailable.");
+      return { claim: encodeClaim(claim), signature: signClaim(keyMaterial, claim), token };
+    }
+    function verifiedLaunchAuthority({ projectRoot, claim: encodedClaim, signature, token, publicKeyJwk, trustedKeyId, now = Date.now }) {
+      const claim = decodeClaim(encodedClaim);
+      const issuedMs = Date.parse(claim.issued_at);
+      const expiresMs = Date.parse(claim.expires_at);
+      const allowed = Array.isArray(claim.allowed_operations) ? claim.allowed_operations : [];
+      const structurallyValid = claim.schema_version === AUTHORITY_SCHEMA && /^[0-9a-f]{64}$/.test(String(claim.key_id || "")) && claim.key_id === trustedKeyId && publicKeyJwk?.kty === "RSA" && keyId(publicKeyJwk) === trustedKeyId && claim.project_sha256 === physicalProjectIdentity(projectRoot) && typeof claim.session_id === "string" && claim.session_id.length > 0 && claim.session_id.length <= 200 && claim.token_sha256 === sha(token) && Number.isFinite(issuedMs) && Number.isFinite(expiresMs) && expiresMs > issuedMs && expiresMs - issuedMs <= MAX_LIFETIME_MS && Number(now()) >= issuedMs - 3e4 && Number(now()) < expiresMs && allowed.length === MUTATING_TOOL_NAMES.length && MUTATING_TOOL_NAMES.every((name) => allowed.includes(name));
+      if (!structurallyValid) throw new Error("MCP host authority is unavailable or expired.");
+      const verified = crypto2.verify("sha256", Buffer.from(canonicalJson(claim), "utf8"), {
+        key: publicKeyJwk,
+        format: "jwk",
+        padding: crypto2.constants.RSA_PKCS1_PADDING
+      }, Buffer.from(String(signature || ""), "base64url"));
+      if (!verified) throw new Error("MCP host authority signature is invalid.");
+      return claim;
+    }
+    function deniedResult() {
+      const value = { available: false, authorized: false, reason: "A current authenticated Pacify-X host capability is required for this write." };
+      return { isError: true, content: [{ type: "text", text: JSON.stringify(value) }], structuredContent: value };
+    }
+    function createMcpMutationAuthority2(options) {
+      let claim;
+      let failure;
+      try {
+        claim = verifiedLaunchAuthority(options);
+      } catch (error51) {
+        failure = error51;
+      }
+      return {
+        authorize(operation, input = {}) {
+          if (failure || Number(options.now?.() ?? Date.now()) >= Date.parse(claim?.expires_at) || !claim?.allowed_operations.includes(operation)) return { authorized: false, result: deniedResult() };
+          const sanitizedInput = {
+            ...input,
+            actor_id: claim.actor_id,
+            session_id: claim.session_id,
+            harness: claim.harness,
+            accountable_owner: claim.accountable_owner
+          };
+          return {
+            authorized: true,
+            input: sanitizedInput,
+            attestation: {
+              actor: {
+                actorId: claim.actor_id,
+                sessionId: claim.session_id,
+                harness: claim.harness,
+                accountableOwner: claim.accountable_owner
+              },
+              actorKind: "host",
+              identityAttestation: "authenticated_host_capability",
+              unattestedFields: []
+            }
+          };
+        }
+      };
+    }
+    module2.exports = {
+      AUTHORITY_SCHEMA,
+      MUTATING_TOOL_NAMES,
+      createLaunchAuthority,
+      createMcpMutationAuthority: createMcpMutationAuthority2,
+      physicalProjectIdentity,
+      verifiedLaunchAuthority
+    };
+  }
+});
+
 // server/source.mjs
 var import_node_child_process = __toESM(require("node:child_process"), 1);
 var import_node_fs = __toESM(require("node:fs"), 1);
@@ -3624,6 +3848,7 @@ var import_coordinationManager = __toESM(require_coordinationManager(), 1);
 var import_teamFabricManager = __toESM(require_teamFabricManager(), 1);
 var import_enterpriseManager = __toESM(require_enterpriseManager(), 1);
 var import_discoveryManager = __toESM(require_discoveryManager(), 1);
+var import_mcpMutationAuthority = __toESM(require_mcpMutationAuthority(), 1);
 
 // node_modules/@modelcontextprotocol/server/dist/chunk-Br0eD_fh.mjs
 var __create2 = Object.create;
@@ -32802,6 +33027,7 @@ var { initializeEnterprise, setPackEnabled, configureTarget, evaluateBillableExe
 var { readEnvironmentSubject, readEnvironmentExtension } = import_discoveryManager.default;
 var { recordActivity, readActivity } = import_activityManager.default;
 var { createMcpActivityIntegration } = import_mcpActivityIntegration.default;
+var { createMcpMutationAuthority } = import_mcpMutationAuthority.default;
 function textResult(value) {
   return { content: [{ type: "text", text: JSON.stringify(value, null, 2) }], structuredContent: value };
 }
@@ -32876,11 +33102,19 @@ function buildServer() {
   const readOnly = { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false };
   const write = { readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: false };
   const actorFields = {
-    actor_id: external_exports.string().min(1).max(160),
-    session_id: external_exports.string().min(1).max(160),
-    harness: external_exports.string().min(1).max(120),
+    actor_id: external_exports.string().min(1).max(160).optional(),
+    session_id: external_exports.string().min(1).max(160).optional(),
+    harness: external_exports.string().min(1).max(120).optional(),
     accountable_owner: external_exports.string().max(160).optional()
   };
+  const writeAuthority = createMcpMutationAuthority({
+    projectRoot: workspaceRoot(),
+    claim: process.env.PX_MCP_AUTHORITY_CLAIM,
+    signature: process.env.PX_MCP_AUTHORITY_SIGNATURE,
+    token: process.env.PX_MCP_AUTHORITY_TOKEN,
+    publicKeyJwk: readJsonFile(process.env.PX_MCP_AUTHORITY_PUBLIC_JWK_PATH, null),
+    trustedKeyId: process.env.PX_MCP_AUTHORITY_KEY_ID
+  });
   const mcpInstrumentation = createMcpActivityIntegration({
     recordActivity,
     workspaceRoot,
@@ -32889,6 +33123,7 @@ function buildServer() {
     policy: activityPolicy,
     processId: process.pid,
     serverVersion: MCP_VERSION,
+    authorize: (name, input) => writeAuthority.authorize(name, input),
     onDrop: (failure) => process.stderr.write(`[pacify-x-mcp-instrumentation] ${failure.type}:${failure.tool}:${failure.lifecycle}
 `)
   });

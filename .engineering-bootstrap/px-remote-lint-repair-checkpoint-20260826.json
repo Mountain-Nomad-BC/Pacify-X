@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023197",
+  "learned": "Remote assurance/lint failed only on a duplicate unused hashlib import in runtime/studio_api.py and an unused current_hash test assignment. Both were removed without semantic change. The exact lint gate now passes, studio-memory-graph passed all seven governed chunks in 294.16 seconds, all observed section processes exited, and the campaign correctly returned to repair. A small additive fix commit and fresh remote matrix are required; prior validation/package/install receipts are not current for certification.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": [],
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "evidence": [
+    {
+      "reference": "evidence/release/remote-lint-focused-repair-proof-20260826.json",
+      "claim": "Remote lint repair authority.",
+      "artifact_sha256": "4ce267b880c891bd06f4e8704d08e36e474fde7bb3dc1c74a10cc55f1b5e2e6a",
+      "artifact_size": 1792
+    }
+  ]
+}

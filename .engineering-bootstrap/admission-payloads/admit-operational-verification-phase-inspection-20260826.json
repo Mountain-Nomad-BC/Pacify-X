@@ -1,0 +1,27 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-operational-verification-phase-inspection-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023309",
+  "authority": "User requested complete live operational repair before revision reconciliation and certification.",
+  "expected_effect": "Identify the exact fail-closed campaign transition and operational-verification commands/evidence owners so the phase can advance once without speculative revision or certification work.",
+  "rollback": "Read-only phase inspection creates no rollback requirement; close before modifying campaign state or executing live routes.",
+  "expires_utc": "2026-09-05T20:00:00Z",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect .engineering-bootstrap/processing-order/repair-campaign.json, the processing-order schema and phase-transition implementation in runtime/test_profiles.py and direct tests, and existing operational-verification/freeze payload examples; identify exact allowed phase values, transition preconditions, and stage commands."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["Run only processing-order read-only checks for repair and operational_verification stages and compact JSON/schema inspection. Do not modify campaign state, ledgers/cards/source, run tests/sections/full profile/validate, refresh projections, execute live providers or extension hosts, package, install, commit, push, merge, or certify."]
+    }
+  ],
+  "evidence": [
+    {
+      "reference": "registry/operational_gap_ledger.snapshot.json",
+      "claim": "Current operational denominator requires the registered operational_verification phase next.",
+      "artifact_sha256": "c0c1d2bc27a83778f9f00a0d22fec2d6e4639eda898819ff694c0f500befcbcd",
+      "artifact_size": 52359884
+    }
+  ]
+}

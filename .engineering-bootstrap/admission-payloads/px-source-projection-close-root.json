@@ -1,0 +1,14 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-source-archive-projection-governance-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023252",
+  "outcome": "completed",
+  "evidence": [
+    {
+      "reference": ".engineering-bootstrap/test-evidence/sections/testing-governance.json",
+      "artifact_sha256": "a78c1e6df506b418cc4eda0cc9990c92aaf6b750f79ae88ae81fa25997d38ce5",
+      "artifact_size": 1262,
+      "claim": "Testing-governance passed 225 tests, 12 subtests, and closed its process tree after source-archive projection synchronization."
+    }
+  ]
+}

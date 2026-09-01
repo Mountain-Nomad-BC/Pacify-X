@@ -1,0 +1,37 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "release-session:px-additive-lint-observer-fix-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023203",
+  "authority": "User requested every GitHub failure be repaired and canonical main remain current.",
+  "expected_effect": "Publish one additive, non-force commit containing only the two exact lint fixes and the exact paused-observer attribution regression repair, then trigger a fresh remote matrix.",
+  "rollback": "Do not rewrite history; correct any published defect with a later revert/fix commit. Keep post-publish operational ledger and local receipts outside the source commit boundary.",
+  "expires_utc": "2026-09-04T12:00:00Z",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect only compact git status/diff for runtime/studio_api.py, tests/test_operational_gap_ledger.py, and tests/test_agent_runtime.py; origin/main ancestry; exact focused repair proofs; commit/push identity; and freshly triggered GitHub main runs."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Fetch origin/main; stage exactly runtime/studio_api.py, tests/test_operational_gap_ledger.py, and tests/test_agent_runtime.py; create one normal additive fix commit; push main without force; retain publish evidence. Do not stage operational ledgers, section receipts, local custody, package, install, merge, close pull requests, or certify."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["Run only non-interactive git fetch, exact three-file staging and diff checks, normal commit, ancestry verification, non-force push, and read-only GitHub REST observation. Do not run more local tests/profile/validate/package/install, amend, rebase, force-push, merge, close pull requests, or certify."]
+    }
+  ],
+  "evidence": [
+    {
+      "reference": "evidence/release/remote-lint-focused-repair-proof-20260826.json",
+      "artifact_sha256": "4ce267b880c891bd06f4e8704d08e36e474fde7bb3dc1c74a10cc55f1b5e2e6a",
+      "artifact_size": 1792,
+      "claim": "Exact lint repair predecessor."
+    },
+    {
+      "reference": "evidence/release/agent-observer-resource-repair-20260826.json",
+      "artifact_sha256": "2856fc5bf94a2bf84fd09f59f46dde071bd47a486816780acb92cebbe6764456",
+      "artifact_size": 1515,
+      "claim": "Exact observer attribution repair predecessor."
+    }
+  ]
+}

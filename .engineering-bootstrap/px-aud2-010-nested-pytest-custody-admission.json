@@ -1,0 +1,31 @@
+{
+  "session_id": "repair-session:px-nested-pytest-custody-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023059",
+  "gap_id": "PX-OS-1065",
+  "authority": "User authorized all reversible Pacify-X repairs and requires governed process custody to operate before whole-profile testing.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect only runtime/test_runner.py managed pytest arguments/environment, tests/pytest_guards.py shared-temp attribution, tests/test_test_runner_controls.py nested corruption fixture, and PX-AUD2-010 receipt output."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Reopen repair for PX-AUD2-010; modify only the managed nested-pytest runner/guard fixture boundary and focused tests so the intentional shared-temp deletion reaches execution and is attributed to the responsible test without weakening workspace cleanup; clear the exact finding after causal proof; retain evidence and ledger events. Do not refresh projections or receipts."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["Run only the exact nested pytest corruption test and directly adjacent managed-pytest runner guard tests needed to reproduce and prove the fix. Do not run a section, projection reconciliation, real group, full profile, validate, package, install, publish, or certify."]
+    }
+  ],
+  "expected_effect": "Restore deterministic responsible-test attribution when a supervised nested pytest test destroys its managed shared temporary root.",
+  "rollback": "Revert only the runner/guard fixture repair and focused assertions while retaining the governed failure receipt.",
+  "expires_utc": "2026-08-26T23:00:00Z",
+  "evidence": [
+    {
+      "reference": ".engineering-bootstrap/test-evidence/sections/testing-governance.json",
+      "artifact_sha256": "09ff7e8e73465657b3a53e34d8db7d92cb0c7943fc3c07f4bd1178d327c60292",
+      "artifact_size": 1266,
+      "claim": "PX-AUD2-010 exact governed nested-pytest failure."
+    }
+  ]
+}

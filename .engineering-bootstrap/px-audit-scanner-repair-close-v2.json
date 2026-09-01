@@ -1,0 +1,21 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-audit-scanner-boundary-v2-20260825",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022988",
+  "outcome": "completed",
+  "reason": "PX-AUD2-001 is repaired: excluded content bodies are not opened, denominators remain exact and deterministic, unsafe metadata conditions fail closed, 27 focused and declared tests pass, and the bounded workspace reproduction completed with zero errors across 116087 accounted files.",
+  "evidence": [
+    {
+      "reference": "evidence/adversarial-audit/px-aud2-001-repair-20260825.json",
+      "artifact_sha256": "48b127e59c7ba2a02663adef0108d7028f3fcd84846f6b6db5450284b4e4f382",
+      "artifact_size": 1918,
+      "claim": "Focused repair and causal verification evidence for PX-AUD2-001."
+    },
+    {
+      "reference": "evidence/adversarial-audit/second-adversarial-source-scan-20260825-r5.json",
+      "artifact_sha256": "bd19b3dc55534915989c874ada6bb82e20d5b97336045320528778690f005218",
+      "artifact_size": 2767165,
+      "claim": "Bounded current workspace scan completed with zero errors."
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023224",
+  "learned": "The effect-surface, provider-route, and artifact-reachability projections regenerated successfully for the terminal-observer repair. Registry validation is green. Generated validation now fails only python_dependency_ownership because the observer's new RunState import changed the module dependency surface. Structural validation exceeded its local bound while scanning retained diagnostic custody and was reconciled; expensive live-host and section gates were not started against known-stale generated inputs. One dependency projection regeneration remains before the live host and two affected section gates.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": [],
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "evidence": [
+    {
+      "reference": "evidence/release/agent-observer-resource-repair-20260826.json",
+      "claim": "Current focused repair boundary; generated failure denominator is now one dependency projection.",
+      "artifact_sha256": "2856fc5bf94a2bf84fd09f59f46dde071bd47a486816780acb92cebbe6764456",
+      "artifact_size": 1515
+    }
+  ]
+}

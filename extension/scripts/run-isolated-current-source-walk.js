@@ -15,9 +15,10 @@ const os = require('os');
 const path = require('path');
 const { downloadAndUnzipVSCode, resolveCliArgsFromVSCodeExecutablePath } = require('@vscode/test-electron');
 const { nonBillableEnvironment } = require('../src/contextBridge');
+const { createParallelPlan, readCoordination } = require('../src/coordinationManager');
 const { terminateProcessTreeAsync } = require('../src/processTree');
-const { runOwnedHostWorker } = require('./owned-host-runner');
-const { ensureOwnedVscodeTestCache, markOwnedHostWorkspace } = require('./owned-vscode-test-cache');
+const { acquireHostLease, runOwnedHostWorker } = require('./owned-host-runner');
+const { ensureOwnedVscodeTestCache, markOwnedHostWorkspace, resolveOwnedCachedVSCode } = require('./owned-vscode-test-cache');
 const {
   evaluateBootstrapActivation,
   evaluateLauncherTerminal,
@@ -31,11 +32,14 @@ const VSCODE_VERSION = '1.132.1';
 const extensionRoot = path.resolve(__dirname, '..');
 const repositoryRoot = path.resolve(extensionRoot, '..');
 const walkerPath = path.join(__dirname, 'run-operational-ui-walk.js');
+const nativeInputHelperPath = path.join(__dirname, 'owned_windows_native_input.py');
 const bootstrapPath = path.join(extensionRoot, 'tests', 'operational-walk-bootstrap', 'index.js');
 const installedHarnessPath = path.join(extensionRoot, 'tests', 'installed-harness');
 const MAX_CAPTURE = 2 * 1024 * 1024;
+const MAX_PROFILE_PROGRESS = 2 * 1024 * 1024;
+const HOST_PROGRESS_STAGES = new Set(['child-started', 'cache-ready', 'executable-ready', 'port-reserved', 'vscode-spawned', 'cdp-ready', 'storage-ready', 'native-helper-spawned', 'native-helper-ready', 'walker-spawned', 'walker-closed', 'native-helper-stop-requested', 'native-helper-closed', 'vscode-termination-started', 'vscode-closed', 'child-result-written']);
 const ENGINE_COPY_EXCLUDED_ROOTS = new Set(['.git', '.vscode', '.pytest_cache', '.mypy_cache', '.ruff_cache', '.venv', 'venv', 'node_modules', 'evidence']);
-const ENGINE_COPY_EXCLUDED_PATHS = new Set(['extension/node_modules', 'extension/dist', '.engineering-bootstrap/test-evidence', '.engineering-bootstrap/resource-lifecycle', '.engineering-bootstrap/operation-bus']);
+const ENGINE_COPY_EXCLUDED_PATHS = new Set(['extension/node_modules', 'extension/dist', '.engineering-bootstrap/diagnostics', '.engineering-bootstrap/test-evidence', '.engineering-bootstrap/resource-lifecycle', '.engineering-bootstrap/operation-bus']);
 const REQUIRED_ENGINE_FILES = ['runtime/cli.py', 'registry/engine_identity.json'];
 
 const utcStamp = () => new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z');
@@ -49,6 +53,63 @@ function capture(stream, collector) {
   stream?.on('data', chunk => collector(chunk.toString('utf8')));
 }
 
+function boundedDelay(milliseconds) {
+  const duration = Math.max(0, Number(milliseconds) || 0);
+  return new Promise(resolve => setTimeout(resolve, duration));
+}
+
+function retainedProfileProgress(outputRoot) {
+  const target = path.resolve(outputRoot, 'profile-progress.ndjson');
+  try {
+    if (!inside(outputRoot, target) || !fs.existsSync(target)) return null;
+    const status = fs.lstatSync(target);
+    if (!status.isFile() || status.isSymbolicLink() || status.size > MAX_PROFILE_PROGRESS) {
+      return { schema_version: 'px.retained-profile-progress/1.0', valid: false, error: 'profile-progress-boundary-invalid' };
+    }
+    const records = fs.readFileSync(target, 'utf8').split(/\r?\n/).filter(Boolean).map(line => JSON.parse(line));
+    if (records.some(record => record?.schema_version !== 'px.operational-profile-progress/1.0'
+      || typeof record.profile !== 'string' || !['started', 'returned'].includes(record.state))) {
+      throw new Error('profile-progress-record-invalid');
+    }
+    const started = records.filter(record => record.state === 'started');
+    const returned = records.filter(record => record.state === 'returned');
+    return {
+      schema_version: 'px.retained-profile-progress/1.0', valid: true,
+      sha256: sha256(target), record_count: records.length,
+      started_count: started.length, returned_count: returned.length,
+      returned_with_errors: returned.filter(record => Number(record.error_count || 0) > 0).length,
+      last_record: records.at(-1) || null
+    };
+  } catch (error) {
+    return { schema_version: 'px.retained-profile-progress/1.0', valid: false, error: String(error?.message || error).slice(0, 200) };
+  }
+}
+
+function appendHostProgress(outputRoot, stage, details = {}) {
+  if (!HOST_PROGRESS_STAGES.has(stage)) throw new Error(`owned-host-progress-stage-invalid:${stage}`);
+  const target = path.resolve(outputRoot, 'host-progress.ndjson');
+  if (!inside(outputRoot, target)) throw new Error('owned-host-progress-path-invalid');
+  const safe = {};
+  for (const key of ['pid', 'ready_after_ms']) {
+    if (Number.isSafeInteger(details[key]) && details[key] >= 0) safe[key] = details[key];
+  }
+  fs.appendFileSync(target, `${JSON.stringify({ schema_version: 'px.owned-host-progress/1.0', observed_utc: new Date().toISOString(), stage, ...safe })}\n`, { encoding: 'utf8' });
+}
+
+function retainedHostProgress(outputRoot) {
+  const target = path.resolve(outputRoot, 'host-progress.ndjson');
+  try {
+    if (!inside(outputRoot, target) || !fs.existsSync(target)) return null;
+    const status = fs.lstatSync(target);
+    if (!status.isFile() || status.isSymbolicLink() || status.size > MAX_PROFILE_PROGRESS) throw new Error('host-progress-boundary-invalid');
+    const records = fs.readFileSync(target, 'utf8').split(/\r?\n/).filter(Boolean).map(line => JSON.parse(line));
+    if (!records.length || records.some(record => record?.schema_version !== 'px.owned-host-progress/1.0' || !HOST_PROGRESS_STAGES.has(record.stage))) throw new Error('host-progress-record-invalid');
+    return { schema_version: 'px.retained-host-progress/1.0', valid: true, sha256: sha256(target), record_count: records.length, last_record: records.at(-1) };
+  } catch (error) {
+    return { schema_version: 'px.retained-host-progress/1.0', valid: false, error: String(error?.message || error).slice(0, 200) };
+  }
+}
+
 function electronHostEnvironment(extra = {}) {
   const environment = { ...nonBillableEnvironment(), ...extra };
   // Codex and CLI hosts may intentionally run Electron as Node. A VS Code
@@ -58,8 +119,18 @@ function electronHostEnvironment(extra = {}) {
   return environment;
 }
 
+function ownedExternalNetworkDeniedEnvironment(environment = process.env) {
+  const denied = 'http://127.0.0.1:9';
+  return String(environment.HTTP_PROXY || '').toLowerCase() === denied
+    && String(environment.HTTPS_PROXY || '').toLowerCase() === denied;
+}
+
 function waitForExit(child) {
   return new Promise((resolve, reject) => {
+    if (child.exitCode !== null || child.signalCode !== null) {
+      resolve({ code: child.exitCode, signal: child.signalCode || null });
+      return;
+    }
     let settled = false;
     const finish = value => { if (!settled) { settled = true; resolve(value); } };
     child.once('error', error => { if (!settled) { settled = true; reject(error); } });
@@ -193,15 +264,26 @@ function storageBoundaryObserver(config) {
   };
 }
 
-async function reserveLoopbackPort() {
-  const server = net.createServer();
+async function reserveLoopbackPort(timeoutMs = 5_000, createServer = () => net.createServer()) {
+  const server = createServer();
   await new Promise((resolve, reject) => {
-    server.once('error', reject);
-    server.listen(0, '127.0.0.1', resolve);
+    let settled = false;
+    const finish = error => { if (!settled) { settled = true; clearTimeout(timer); error ? reject(error) : resolve(); } };
+    const timer = setTimeout(() => {
+      try { server.close(() => {}); } catch {}
+      finish(new Error('loopback-port-listen-timeout'));
+    }, timeoutMs);
+    server.once('error', finish);
+    server.listen(0, '127.0.0.1', () => finish());
   });
   const address = server.address();
   const port = Number(address?.port);
-  await new Promise((resolve, reject) => server.close(error => error ? reject(error) : resolve()));
+  await new Promise((resolve, reject) => {
+    let settled = false;
+    const finish = error => { if (!settled) { settled = true; clearTimeout(timer); error ? reject(error) : resolve(); } };
+    const timer = setTimeout(() => finish(new Error('loopback-port-close-timeout')), timeoutMs);
+    server.close(finish);
+  });
   if (!Number.isSafeInteger(port) || port < 1024 || port > 65535) throw new Error('invalid-loopback-cdp-port');
   return port;
 }
@@ -234,6 +316,18 @@ async function waitForCdp(port, host, timeoutMs = 60_000) {
   throw new Error(`loopback-cdp-not-ready:${port}`);
 }
 
+async function waitForIsolatedStorageBoundary(storageBoundary, host, timeoutMs = 15_000) {
+  const deadline = Date.now() + timeoutMs;
+  do {
+    const observed = storageBoundary.result;
+    if (observed.user_scoped_shared_data_observed) throw new Error('user-scoped-shared-storage-observed');
+    if (observed.owned_shared_data_observed || observed.in_memory_observed) return observed;
+    if (host.exitCode !== null || host.signalCode !== null) throw new Error(`vscode-host-exited-before-storage-boundary:${host.exitCode ?? host.signalCode}`);
+    await new Promise(resolve => setTimeout(resolve, 50));
+  } while (Date.now() < deadline);
+  throw new Error('isolated-shared-storage-not-observed');
+}
+
 function safeOwnedEphemeralCleanup(temporaryRoot, processTreeClosedVerified) {
   const resolved = path.resolve(temporaryRoot);
   const allowedParent = path.resolve(os.tmpdir());
@@ -255,12 +349,16 @@ function safeOwnedEphemeralCleanup(temporaryRoot, processTreeClosedVerified) {
 
 async function childMain(configPath) {
   const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+  const regularOperationalHost = config.regularOperationalHost === true;
   const lifecycle = {
     schema_version: 'px.isolated-current-source-host-child/1.0',
     started_utc: new Date().toISOString(),
     source_mode: config.vsixPath ? 'installed-exact-vsix' : 'extensionDevelopmentPath',
     vscode_pid: null,
     walker_pid: null,
+    native_input_helper_pid: null,
+    native_input_helper_exit: null,
+    native_input_helper_termination_verified: null,
     cdp: null,
     vscode_termination_verified: false,
     walker_termination_verified: null,
@@ -268,15 +366,20 @@ async function childMain(configPath) {
   };
   let vscode = null;
   let walker = null;
+  let nativeInputHelper = null;
   let stdout = '';
   let stderr = '';
   let childError = null;
   const storageBoundary = storageBoundaryObserver(config);
+  const nativeInputRequired = config.nativeInputRequired === true;
   const appendStdout = text => { storageBoundary.observe(text); stdout = `${stdout}${text}`.slice(-MAX_CAPTURE); process.stdout.write(text); };
   const appendStderr = text => { stderr = `${stderr}${text}`.slice(-MAX_CAPTURE); process.stderr.write(text); };
+  appendHostProgress(config.walkOutput, 'child-started', { pid: process.pid });
   try {
-    const cache = ensureOwnedVscodeTestCache(VSCODE_VERSION);
-    const executable = await downloadAndUnzipVSCode({ version: VSCODE_VERSION, cachePath: cache.root });
+    const cache = nativeInputRequired ? resolveOwnedCachedVSCode(VSCODE_VERSION) : ensureOwnedVscodeTestCache(VSCODE_VERSION);
+    appendHostProgress(config.walkOutput, 'cache-ready');
+    const executable = nativeInputRequired ? cache.executable : await downloadAndUnzipVSCode({ version: VSCODE_VERSION, cachePath: cache.root });
+    appendHostProgress(config.walkOutput, 'executable-ready');
     let developmentPath = extensionRoot;
     if (config.vsixPath) {
       const before = sha256(config.vsixPath);
@@ -295,10 +398,12 @@ async function childMain(configPath) {
       developmentPath = installedHarnessPath;
     }
     const port = await reserveLoopbackPort();
+    appendHostProgress(config.walkOutput, 'port-reserved');
     const endpoint = `http://127.0.0.1:${port}`;
     const args = [
       config.workspace,
       '--new-window',
+      '--window-size=1600,1000',
       '--no-sandbox',
       '--disable-gpu-sandbox',
       '--disable-updates',
@@ -315,7 +420,7 @@ async function childMain(configPath) {
       `--extensions-dir=${config.extensions}`,
       `--shared-data-dir=${config.sharedData}`,
       `--extensionDevelopmentPath=${developmentPath}`,
-      `--extensionTestsPath=${bootstrapPath}`,
+      ...(!regularOperationalHost ? [`--extensionTestsPath=${bootstrapPath}`] : []),
       '--remote-debugging-address=127.0.0.1',
       `--remote-debugging-port=${port}`
     ];
@@ -336,19 +441,61 @@ async function childMain(configPath) {
         PX_OWNED_VSCODE_HOST_CONFIRM_REVERSIBLE_WRITES: '1',
         PX_ENGINE_ROOT: config.engineRoot,
         PX_OPERATIONAL_WALK_BOOTSTRAP_RECEIPT: config.bootstrapReceipt,
-        PX_OPERATIONAL_WALK_BOOTSTRAP_SENTINEL: config.bootstrapSentinel
+        PX_OPERATIONAL_WALK_BOOTSTRAP_SENTINEL: config.bootstrapSentinel,
+        ...(!config.bootstrapOnly && !config.configurationOnly && !config.knowledgeLifecycleOnly && !config.hostBoundaryOnly && !config.nativeDialogOnly && !config.codexHandoffOnly && !config.errorIndicatorsOnly
+          ? { PX_OPERATIONAL_EXERCISE_STUDIO_APPROVAL: '1' }
+          : {})
       })
     });
     lifecycle.vscode_pid = Number(vscode.pid) || null;
+    appendHostProgress(config.walkOutput, 'vscode-spawned', { pid: lifecycle.vscode_pid });
     capture(vscode.stdout, appendStdout);
     capture(vscode.stderr, appendStderr);
     lifecycle.cdp = { endpoint, address: '127.0.0.1', port, ready_after_ms: await waitForCdp(port, vscode) };
-    lifecycle.bootstrap = await waitForJsonFile(config.bootstrapReceipt, vscode);
-    assert.equal(lifecycle.bootstrap.status, 'ready', `operational-bootstrap:${lifecycle.bootstrap.status || 'unknown'}`);
-    assert.equal(lifecycle.bootstrap.command_registered, true, 'operational-bootstrap-command-unregistered');
-    assert.equal(lifecycle.bootstrap.command_executed, true, 'operational-bootstrap-command-not-executed');
+    appendHostProgress(config.walkOutput, 'cdp-ready', { ready_after_ms: lifecycle.cdp.ready_after_ms });
+    if (regularOperationalHost) {
+      lifecycle.bootstrap = {
+        schema_version: 'px.operational-walk-bootstrap/1.0',
+        status: 'deferred-to-operational-walker',
+        test_mode: false,
+        command_id: 'pacifyX.openDashboard',
+        command_registered: null,
+        command_executed: false,
+        ready_utc: new Date().toISOString()
+      };
+    } else {
+      lifecycle.bootstrap = await waitForJsonFile(config.bootstrapReceipt, vscode);
+      assert.equal(lifecycle.bootstrap.status, 'ready', `operational-bootstrap:${lifecycle.bootstrap.status || 'unknown'}`);
+      assert.equal(lifecycle.bootstrap.command_registered, true, 'operational-bootstrap-command-unregistered');
+      assert.equal(lifecycle.bootstrap.command_executed, true, 'operational-bootstrap-command-not-executed');
+    }
+    await waitForIsolatedStorageBoundary(storageBoundary, vscode);
+    appendHostProgress(config.walkOutput, 'storage-ready');
     assert.equal(storageBoundary.result.user_scoped_shared_data_observed, false, 'user-scoped-shared-storage-observed');
-    assert.equal(storageBoundary.result.owned_shared_data_observed || storageBoundary.result.in_memory_observed, true, 'isolated-shared-storage-not-observed');
+    if (nativeInputRequired) {
+      assert.equal(process.platform, 'win32', 'owned-native-input-requires-windows');
+      const helperConfig = path.join(config.nativeInputRoot, 'helper-config.json');
+      fs.writeFileSync(helperConfig, `${JSON.stringify({
+        schema_version: 'px.owned-native-input-config/1.0',
+        root: config.nativeInputRoot,
+        secret: config.nativeInputSecret,
+        vscode_pid: lifecycle.vscode_pid,
+        ownership_token: config.userData
+      }, null, 2)}\n`, { encoding: 'utf8', flag: 'wx' });
+      nativeInputHelper = childProcess.spawn('python', [nativeInputHelperPath, '--serve', helperConfig, `--px-owned-token=${config.userData}`], {
+        cwd: extensionRoot, shell: false, windowsHide: true, stdio: ['ignore', 'pipe', 'pipe'], env: nonBillableEnvironment()
+      });
+      lifecycle.native_input_helper_pid = Number(nativeInputHelper.pid) || null;
+      appendHostProgress(config.walkOutput, 'native-helper-spawned', { pid: lifecycle.native_input_helper_pid });
+      capture(nativeInputHelper.stdout, appendStdout);
+      capture(nativeInputHelper.stderr, appendStderr);
+      const ready = await waitForJsonFile(path.join(config.nativeInputRoot, 'ready.json'), nativeInputHelper, 15_000);
+      assert.equal(ready.schema_version, 'px.owned-native-input-ready/1.0', 'owned-native-input-ready-schema-invalid');
+      assert.equal(ready.pid, lifecycle.native_input_helper_pid, 'owned-native-input-ready-pid-mismatch');
+      assert.equal(ready.vscode_pid, lifecycle.vscode_pid, 'owned-native-input-ready-vscode-pid-mismatch');
+      lifecycle.native_input_helper_ready = true;
+      appendHostProgress(config.walkOutput, 'native-helper-ready');
+    }
     if (config.bootstrapOnly) {
       lifecycle.walker_termination_verified = true;
       lifecycle.status = 'bootstrap-ready';
@@ -363,16 +510,30 @@ async function childMain(configPath) {
           ...nonBillableEnvironment(),
           PX_OWNED_VSCODE_HOST: '1',
           PX_OWNED_ENGINE_ROOT: config.engineRoot,
+          PX_OWNED_VSCODE_WORKSPACE_ROOT: config.workspace,
+          ...(ownedExternalNetworkDeniedEnvironment() ? { PX_OWNED_EXTERNAL_NETWORK_DENIED: '1' } : {}),
           ...(config.knowledgeFixture ? {
             PX_OWNED_KNOWLEDGE_SOURCE_ID: config.knowledgeFixture.source_id,
             PX_OWNED_KNOWLEDGE_SOURCE_SHA256: config.knowledgeFixture.source_sha256
           } : {}),
           ...(config.configurationOnly ? { PX_OPERATIONAL_CONFIGURATION_ONLY: '1' } : {}),
           ...(config.studioLifecycleOnly ? { PX_OPERATIONAL_STUDIO_LIFECYCLE_ONLY: '1' } : {}),
-          ...(config.knowledgeLifecycleOnly ? { PX_OPERATIONAL_KNOWLEDGE_LIFECYCLE_ONLY: '1' } : {})
+          ...(config.knowledgeLifecycleOnly ? { PX_OPERATIONAL_KNOWLEDGE_LIFECYCLE_ONLY: '1' } : {}),
+          ...(config.hostBoundaryOnly ? { PX_OPERATIONAL_HOST_BOUNDARY_ONLY: '1' } : {}),
+          ...(config.nativeDialogOnly ? { PX_OPERATIONAL_NATIVE_DIALOG_ONLY: '1' } : {}),
+          ...(config.codexHandoffOnly ? { PX_OPERATIONAL_CODEX_HANDOFF_ONLY: '1' } : {}),
+          ...(config.errorIndicatorsOnly ? { PX_OPERATIONAL_ERROR_INDICATORS_ONLY: '1' } : {}),
+          ...(nativeInputRequired ? {
+            PX_OWNED_NATIVE_INPUT_ROOT: config.nativeInputRoot,
+            PX_OWNED_NATIVE_INPUT_TOKEN: config.userData,
+            PX_OWNED_NATIVE_INPUT_SECRET: config.nativeInputSecret,
+            PX_OWNED_NATIVE_INPUT_VSCODE_PID: String(lifecycle.vscode_pid)
+          } : {}),
+          ...(config.postAuditLongRunning ? { PX_OPERATIONAL_POST_AUDIT_LONG_RUNNING: '1' } : {})
         }
       });
       lifecycle.walker_pid = Number(walker.pid) || null;
+      appendHostProgress(config.walkOutput, 'walker-spawned', { pid: lifecycle.walker_pid });
       capture(walker.stdout, appendStdout);
       capture(walker.stderr, appendStderr);
       const walkerExit = await waitForExit(walker);
@@ -395,7 +556,30 @@ async function childMain(configPath) {
     if (walker && walker.exitCode === null && walker.signalCode === null) {
       lifecycle.walker_termination_verified = await terminateProcessTreeAsync(walker, { graceMs: 750, verifyMs: 10_000 });
     }
-    if (vscode) lifecycle.vscode_termination_verified = await terminateProcessTreeAsync(vscode, { graceMs: 1000, verifyMs: 15_000 });
+    if (walker) appendHostProgress(config.walkOutput, 'walker-closed');
+    if (nativeInputHelper) {
+      const helperExit = waitForExit(nativeInputHelper);
+      try {
+        fs.writeFileSync(path.join(config.nativeInputRoot, 'stop.json'), `${JSON.stringify({ requested_utc: new Date().toISOString() })}\n`, { encoding: 'utf8', flag: 'wx' });
+      } catch (error) {
+        if (error?.code !== 'EEXIST') lifecycle.native_input_helper_stop_error = String(error?.message || error).slice(0, 500);
+      }
+      appendHostProgress(config.walkOutput, 'native-helper-stop-requested');
+      const boundedExit = await Promise.race([helperExit, boundedDelay(5_000).then(() => null)]);
+      if (boundedExit) {
+        lifecycle.native_input_helper_exit = boundedExit;
+        lifecycle.native_input_helper_termination_verified = boundedExit.signal === null;
+        if (boundedExit.code !== 0 || boundedExit.signal !== null) lifecycle.native_input_helper_exit_error = `exit-${boundedExit.code}:signal-${boundedExit.signal || 'none'}`;
+      } else {
+        lifecycle.native_input_helper_termination_verified = await terminateProcessTreeAsync(nativeInputHelper, { graceMs: 750, verifyMs: 10_000 });
+      }
+      appendHostProgress(config.walkOutput, 'native-helper-closed');
+    }
+    if (vscode) {
+      appendHostProgress(config.walkOutput, 'vscode-termination-started');
+      lifecycle.vscode_termination_verified = await terminateProcessTreeAsync(vscode, { graceMs: 1000, verifyMs: 15_000 });
+      appendHostProgress(config.walkOutput, 'vscode-closed');
+    }
     lifecycle.finished_utc = new Date().toISOString();
     lifecycle.storage_boundary = {
       ...storageBoundary.result,
@@ -422,6 +606,8 @@ async function childMain(configPath) {
       processError: childError || walkReceiptError,
       processTreeClosedVerified: lifecycle.vscode_termination_verified === true && lifecycle.walker_termination_verified === true
     });
+    if (nativeInputRequired && lifecycle.native_input_helper_termination_verified !== true) processIssues.push('owned-native-input-helper-termination-unverified');
+    if (nativeInputRequired && lifecycle.native_input_helper_exit_error) processIssues.push(`owned-native-input-helper-${lifecycle.native_input_helper_exit_error}`);
     lifecycle.operational_status = config.bootstrapOnly
       ? evaluateBootstrapActivation({ bootstrap: lifecycle.bootstrap, storageBoundary: lifecycle.storage_boundary, additionalIssues: processIssues })
       : evaluateOperationalWalk(walkReceipt, { additionalIssues: processIssues });
@@ -437,6 +623,7 @@ async function childMain(configPath) {
       };
     }
     fs.writeFileSync(config.childResult, `${JSON.stringify(lifecycle, null, 2)}\n`, 'utf8');
+    appendHostProgress(config.walkOutput, 'child-result-written');
   }
   if (childError) throw childError;
   return 0;
@@ -504,8 +691,119 @@ function stageOwnedKnowledgeFixture(workspaceRoot, engineRoot = null) {
   };
 }
 
-function prepare(temporaryRoot, walkOutput, vsixPath = null, bootstrapOnly = false, configurationOnly = false, studioLifecycleOnly = false, knowledgeLifecycleOnly = false) {
+function runOwnedRuntimeJson(engineRoot, args) {
+  const runtime = childProcess.spawnSync(process.platform === 'win32' ? 'python' : 'python3', ['-m', 'runtime.cli', '--root', engineRoot, ...args], {
+    cwd: engineRoot,
+    shell: false,
+    windowsHide: true,
+    encoding: 'utf8',
+    timeout: 120_000,
+    maxBuffer: 4 * 1024 * 1024,
+    env: { ...nonBillableEnvironment(), PYTHONDONTWRITEBYTECODE: '1' }
+  });
+  if (runtime.error || runtime.status !== 0) throw new Error(`owned-host-boundary-runtime-command-failed:${args.slice(0, 2).join(':')}:${String(runtime.error?.message || runtime.stderr || runtime.stdout || `exit-${runtime.status}`).slice(0, 2000)}`);
+  try { return JSON.parse(String(runtime.stdout || '')); }
+  catch (error) { throw new Error(`owned-host-boundary-runtime-json-invalid:${args.slice(0, 2).join(':')}:${String(error?.message || error)}`); }
+}
+
+function stageOwnedProviderPaginationFixture(engineRoot) {
+  const engine = fs.realpathSync.native(engineRoot);
+  const policyPath = path.join(engine, 'registry', 'provider_budget_policy.json');
+  if (!inside(engine, policyPath) || !fs.existsSync(policyPath) || fs.lstatSync(policyPath).isSymbolicLink() || !fs.lstatSync(policyPath).isFile()) throw new Error('owned-provider-pagination-policy-invalid');
+  const policyBeforeSha256 = sha256(policyPath);
+  const policy = JSON.parse(fs.readFileSync(policyPath, 'utf8'));
+  if (!Array.isArray(policy?.budgets)) throw new Error('owned-provider-pagination-budgets-invalid');
+  const baseline = policy.budgets.find(row => row?.enabled === true && row?.provider_id === 'ollama');
+  if (!baseline) throw new Error('owned-provider-pagination-local-baseline-missing');
+  const owned = {
+    ...baseline,
+    budget_id: 'px-owned-pagination',
+    actor_id: 'px-owned-pagination',
+    enabled: true,
+    hard_limit_microunits: 0,
+    warning_threshold_microunits: 0,
+    max_charge_per_request_microunits: 0,
+    unknown_billing: 'deny',
+    unknown_charge_microunits: 0,
+    fallback_adapter_ids: []
+  };
+  const ownedKey = `${owned.provider_id}:${owned.budget_id}:${owned.actor_id}`;
+  if (policy.budgets.some(row => `${row?.provider_id}:${row?.budget_id}:${row?.actor_id}` === ownedKey)) throw new Error('owned-provider-pagination-fixture-already-present');
+  policy.budgets.push(owned);
+  fs.writeFileSync(policyPath, `${JSON.stringify(policy, null, 2)}\n`, 'utf8');
+  const projected = JSON.parse(fs.readFileSync(policyPath, 'utf8'));
+  const enabled = projected.budgets.filter(row => row?.enabled === true);
+  if (enabled.filter(row => `${row?.provider_id}:${row?.budget_id}:${row?.actor_id}` === ownedKey).length !== 1 || enabled.length < 2) throw new Error('owned-provider-pagination-projection-invalid');
+  return {
+    schema_version: 'px.owned-provider-pagination-fixture/1.0',
+    provider_count: enabled.length,
+    owned_provider_id: ownedKey,
+    policy_before_sha256: policyBeforeSha256,
+    policy_after_sha256: sha256(policyPath),
+    local_non_billable: true
+  };
+}
+
+function stageOwnedHostBoundaryFixture(workspaceRoot, engineRoot, { runtimeCommand = runOwnedRuntimeJson } = {}) {
+  const workspace = fs.realpathSync.native(workspaceRoot);
+  const engine = fs.realpathSync.native(engineRoot);
+  if (fs.lstatSync(workspace).isSymbolicLink() || fs.lstatSync(engine).isSymbolicLink()) throw new Error('owned-host-boundary-fixture-root-linked');
+  const taskId = 'host-boundary-fixture-task';
+  const actor = { actorId: 'px-host-boundary-fixture', sessionId: 'px-host-boundary-fixture', harness: 'VS Code', accountableOwner: 'PACIFY-X owned operational walker' };
+  createParallelPlan(workspace, actor, {
+    id: 'host-boundary-fixture-plan',
+    objective: 'Provide exact disposable state for typed host-boundary controls.',
+    tasks: [{ id: taskId, title: 'Inspect exact disposable task handoff', claims: ['.px-owned/host-boundary-fixture'], acceptance: ['Exact task handoff is copyable through the installed host.'] }]
+  });
+  const coordination = readCoordination(workspace);
+  if (!coordination.instrumented || coordination.state?.tasks?.filter(item => item.id === taskId).length !== 1) throw new Error('owned-host-boundary-coordination-fixture-invalid');
+  const handoffPath = coordination.paths?.handoff_markdown;
+  if (!handoffPath || !inside(workspace, handoffPath) || !fs.existsSync(handoffPath) || fs.lstatSync(handoffPath).isSymbolicLink()) throw new Error('owned-host-boundary-handoff-fixture-invalid');
+
+  const initialized = runtimeCommand(engine, ['workspace', 'init', '--workspace', workspace, '--apply']);
+  if (initialized?.valid !== true) throw new Error('owned-host-boundary-workspace-initialization-invalid');
+  const projectName = 'px-owned-memory-profile';
+  const projectId = 'prj_px-owned-memory-profile';
+  const created = runtimeCommand(engine, ['workspace', 'create-project', '--workspace', workspace, '--name', projectName, '--apply']);
+  if (created?.valid !== true || created?.project?.project_id !== projectId) throw new Error('owned-host-boundary-project-fixture-invalid');
+  const projectRoot = path.join(workspace, 'projects', projectName);
+  const sourcePath = path.join(projectRoot, 'host-boundary-memory.md');
+  if (!inside(workspace, projectRoot) || !inside(projectRoot, sourcePath) || !fs.existsSync(projectRoot) || fs.lstatSync(projectRoot).isSymbolicLink() || fs.existsSync(sourcePath)) throw new Error('owned-host-boundary-memory-source-target-invalid');
+  const source = '# PACIFY-X owned host-boundary memory\n\nCertified disposable source for the exact open-memory-source host action.\n';
+  fs.writeFileSync(sourcePath, source, { encoding: 'utf8', flag: 'wx' });
+  const activated = runtimeCommand(engine, ['project', 'activate', '--workspace', workspace, '--project-id', projectId, '--agent-id', 'human-local-user', '--session-id', 'vscode-dashboard', '--context-reset-confirmed']);
+  if (activated?.activated !== true && activated?.already_active !== true) throw new Error('owned-host-boundary-project-activation-invalid');
+  const ingested = runtimeCommand(engine, ['memory', 'ingest', '--workspace', workspace, '--project-id', projectId, '--source', sourcePath, '--session-id', 'vscode-dashboard', '--actor-id', 'human-local-user', '--apply']);
+  const rawMemoryIds = Array.isArray(ingested?.outputs?.memory_ids) ? ingested.outputs.memory_ids : [];
+  const memoryIds = [...new Set(rawMemoryIds)].sort();
+  if (ingested?.valid !== true || memoryIds.length < 1 || memoryIds.length > 64 || memoryIds.length !== rawMemoryIds.length || memoryIds.some(value => typeof value !== 'string' || !/^[A-Za-z0-9][A-Za-z0-9._:-]{1,159}$/.test(value))) throw new Error(`owned-host-boundary-memory-ingest-invalid:${JSON.stringify({ valid: ingested?.valid === true, memory_id_count: memoryIds.length, duplicate_count: rawMemoryIds.length - memoryIds.length })}`);
+  for (const memoryId of memoryIds) for (const [target, evidence] of [['validated', 'owned-host-boundary-validation'], ['certified', 'owned-host-boundary-certification']]) {
+    const transitioned = runtimeCommand(engine, ['memory', 'transition', '--workspace', workspace, '--project-id', projectId, '--memory-id', memoryId, '--target', target, '--evidence', evidence, '--session-id', 'vscode-dashboard', '--actor-id', 'human-local-user', '--apply']);
+    if (transitioned?.valid !== true || transitioned?.applied !== true) throw new Error(`owned-host-boundary-memory-${target}-invalid:${memoryId}`);
+  }
+  const memoryId = memoryIds[0];
+  const providerPagination = stageOwnedProviderPaginationFixture(engine);
+  return {
+    schema_version: 'px.owned-host-boundary-fixture/1.0',
+    task_id: taskId,
+    coordination_handoff_relative: path.relative(workspace, handoffPath).replace(/\\/g, '/'),
+    coordination_handoff_sha256: sha256(handoffPath),
+    project_id: projectId,
+    memory_id: memoryId,
+    memory_ids: memoryIds,
+    memory_record_count: memoryIds.length,
+    memory_source_relative: path.relative(workspace, sourcePath).replace(/\\/g, '/'),
+    memory_source_sha256: sha256(sourcePath),
+    provider_pagination: providerPagination,
+    lifecycle: ['workspace-initialized', 'project-created', 'project-activated', 'memory-ingested', 'memory-validated', 'memory-certified']
+  };
+}
+
+function prepare(temporaryRoot, walkOutput, vsixPath = null, bootstrapOnly = false, configurationOnly = false, studioLifecycleOnly = false, knowledgeLifecycleOnly = false, hostBoundaryOnly = false, nativeDialogOnly = false, codexHandoffOnly = false, errorIndicatorsOnly = false, postAuditLongRunning = false) {
   const stagedEngine = stageDisposableEngine(repositoryRoot, temporaryRoot);
+  const hostBoundaryFixtureRequired = hostBoundaryOnly || (!bootstrapOnly && !configurationOnly && !studioLifecycleOnly && !knowledgeLifecycleOnly && !nativeDialogOnly);
+  const fullOperationalWalk = !bootstrapOnly && !configurationOnly && !studioLifecycleOnly && !knowledgeLifecycleOnly && !hostBoundaryOnly && !nativeDialogOnly && !codexHandoffOnly && !errorIndicatorsOnly;
+  const nativeInputRequired = nativeDialogOnly || postAuditLongRunning || fullOperationalWalk;
   const config = {
     workspace: path.join(temporaryRoot, 'workspace'),
     userData: path.join(temporaryRoot, 'user-data'),
@@ -522,11 +820,26 @@ function prepare(temporaryRoot, walkOutput, vsixPath = null, bootstrapOnly = fal
     configurationOnly,
     studioLifecycleOnly,
     knowledgeLifecycleOnly,
+    hostBoundaryOnly,
+    nativeDialogOnly,
+    codexHandoffOnly,
+    errorIndicatorsOnly,
+    nativeInputRequired,
+    nativeInputRoot: path.join(temporaryRoot, 'native-input'),
+    nativeInputSecret: nativeInputRequired ? crypto.randomBytes(32).toString('hex') : null,
+    postAuditLongRunning,
+    regularOperationalHost: !bootstrapOnly && !vsixPath,
     vsixPath,
     vsixSha256: vsixPath ? sha256(vsixPath) : null
   };
   for (const directory of [config.workspace, config.userData, config.extensions, config.sharedData, config.walkOutput]) {
     fs.mkdirSync(directory, { recursive: true });
+  }
+  if (nativeInputRequired) {
+    for (const directory of [config.nativeInputRoot, path.join(config.nativeInputRoot, 'requests'), path.join(config.nativeInputRoot, 'results')]) {
+      fs.mkdirSync(directory, { recursive: true });
+      if (!inside(temporaryRoot, directory) || fs.lstatSync(directory).isSymbolicLink()) throw new Error(`owned-native-input-directory-invalid:${directory}`);
+    }
   }
   for (const directory of [config.workspace, config.userData, config.extensions, config.sharedData]) {
     if (!inside(temporaryRoot, directory) || fs.lstatSync(directory).isSymbolicLink()) throw new Error(`owned-host-directory-invalid:${directory}`);
@@ -534,7 +847,7 @@ function prepare(temporaryRoot, walkOutput, vsixPath = null, bootstrapOnly = fal
   fs.mkdirSync(path.join(config.workspace, '.vscode'), { recursive: true });
   fs.writeFileSync(path.join(config.workspace, '.vscode', 'settings.json'), `${JSON.stringify({
     'pacifyX.engineRoot': config.engineRoot,
-    'pacifyX.workspaceRoot': '',
+    'pacifyX.workspaceRoot': hostBoundaryFixtureRequired ? config.workspace : '',
     'pacifyX.pythonPath': process.platform === 'win32' ? 'python' : 'python3',
     'pacifyX.activity.enabled': false
   }, null, 2)}\n`, 'utf8');
@@ -546,8 +859,45 @@ function prepare(temporaryRoot, walkOutput, vsixPath = null, bootstrapOnly = fal
     'telemetry.telemetryLevel': 'off'
   }, null, 2)}\n`, 'utf8');
   fs.writeFileSync(path.join(config.workspace, 'README.md'), '# PACIFY-X owned operational walk workspace\n', 'utf8');
-  config.knowledgeFixture = bootstrapOnly || configurationOnly || studioLifecycleOnly ? null : stageOwnedKnowledgeFixture(config.workspace, config.engineRoot);
+  config.gitAuthority = fullOperationalWalk ? stageOwnedGitAuthority(config.workspace) : null;
+  config.hostBoundaryFixture = hostBoundaryFixtureRequired ? stageOwnedHostBoundaryFixture(config.workspace, config.engineRoot) : null;
+  if (!bootstrapOnly && !configurationOnly && !knowledgeLifecycleOnly && !hostBoundaryOnly && !nativeDialogOnly && !codexHandoffOnly && !errorIndicatorsOnly) {
+    const promptRoot = path.join(config.engineRoot, '.px', 'owned-operational-prompts');
+    const setupPrompt = path.join(promptRoot, 'setup-studio.marker');
+    if (!inside(config.engineRoot, promptRoot) || !inside(config.engineRoot, setupPrompt)) throw new Error('owned-setup-prompt-marker-outside-engine');
+    fs.mkdirSync(promptRoot, { recursive: true });
+    if (fs.lstatSync(promptRoot).isSymbolicLink()) throw new Error('owned-setup-prompt-root-linked');
+    fs.writeFileSync(setupPrompt, 'exercise-native-setup-approval\n', { encoding: 'utf8', flag: 'wx' });
+  }
+  config.knowledgeFixture = bootstrapOnly || configurationOnly || studioLifecycleOnly || nativeDialogOnly || codexHandoffOnly ? null : stageOwnedKnowledgeFixture(config.workspace, config.engineRoot);
   return config;
+}
+
+function stageOwnedGitAuthority(workspaceRoot) {
+  const workspace = fs.realpathSync.native(workspaceRoot);
+  const gitRoot = path.join(workspace, '.git');
+  if (!inside(workspace, gitRoot) || fs.existsSync(gitRoot)) throw new Error('owned-git-authority-target-unavailable');
+  const directories = [
+    gitRoot, path.join(gitRoot, 'objects'), path.join(gitRoot, 'objects', 'info'), path.join(gitRoot, 'objects', 'pack'),
+    path.join(gitRoot, 'refs'), path.join(gitRoot, 'refs', 'heads'), path.join(gitRoot, 'refs', 'tags')
+  ];
+  for (const directory of directories) {
+    fs.mkdirSync(directory);
+    if (!inside(workspace, directory) || fs.lstatSync(directory).isSymbolicLink()) throw new Error('owned-git-authority-directory-invalid');
+  }
+  const config = '[core]\n\trepositoryformatversion = 0\n\tfilemode = false\n\tbare = false\n\tlogallrefupdates = true\n\tsymlinks = false\n\tignorecase = true\n';
+  fs.writeFileSync(path.join(gitRoot, 'HEAD'), 'ref: refs/heads/main\n', { encoding: 'utf8', flag: 'wx' });
+  fs.writeFileSync(path.join(gitRoot, 'config'), config, { encoding: 'utf8', flag: 'wx' });
+  fs.writeFileSync(path.join(gitRoot, 'description'), 'PACIFY-X owned disposable operational authority\n', { encoding: 'utf8', flag: 'wx' });
+  return {
+    schema_version: 'px.owned-disposable-git-authority/1.0',
+    repository_relative: '.',
+    git_directory_relative: '.git',
+    head: 'refs/heads/main',
+    config_sha256: crypto.createHash('sha256').update(config).digest('hex'),
+    network_used: false,
+    user_git_configuration_read_or_written: false
+  };
 }
 
 function reconcilePrelaunchFailure(temporaryRoot, reportPath, walkOutput, error) {
@@ -573,6 +923,35 @@ function reconcilePrelaunchFailure(temporaryRoot, reportPath, walkOutput, error)
   return report;
 }
 
+function acquireWalkOwnership(options = {}) {
+  const lease = acquireHostLease(options);
+  let temporaryRoot = null;
+  try {
+    const makeTemporaryRoot = options.makeTemporaryRoot
+      || (() => fs.mkdtempSync(path.join(os.tmpdir(), 'pacify-x-current-source-walk-')));
+    temporaryRoot = makeTemporaryRoot();
+    markOwnedHostWorkspace(temporaryRoot, options.ownershipLabel || 'current-source-operational-ui-walk');
+    return { lease, temporaryRoot };
+  } catch (error) {
+    if (temporaryRoot) {
+      try { fs.rmSync(temporaryRoot, { recursive: true, force: true }); } catch {}
+    }
+    lease.release();
+    throw error;
+  }
+}
+
+function reconcileOwnedPrelaunchFailure(ownership, reportPath, walkOutput, error) {
+  try {
+    return reconcilePrelaunchFailure(ownership.temporaryRoot, reportPath, walkOutput, error);
+  } finally {
+    // The evidence write is deliberately fail-closed (`wx`). Even if that
+    // write itself loses a race, the pre-acquired owner lease must never be
+    // stranded and block every later owned-host run.
+    ownership.lease.release();
+  }
+}
+
 async function main() {
   const stamp = utcStamp();
   const requestedVsix = argument('--vsix');
@@ -581,9 +960,15 @@ async function main() {
   const configurationOnly = process.argv.includes('--configuration-only');
   const studioLifecycleOnly = process.argv.includes('--studio-lifecycle-only');
   const knowledgeLifecycleOnly = process.argv.includes('--knowledge-lifecycle-only');
-  if ([bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly].filter(Boolean).length > 1) throw new Error('focused-launcher-modes-are-mutually-exclusive');
+  const hostBoundaryOnly = process.argv.includes('--host-boundary-only');
+  const nativeDialogOnly = process.argv.includes('--native-dialog-only');
+  const codexHandoffOnly = process.argv.includes('--codex-handoff-only');
+  const errorIndicatorsOnly = process.argv.includes('--error-indicators-only');
+  const postAuditLongRunning = process.argv.includes('--post-audit-long-running');
+  if ([bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly, hostBoundaryOnly, nativeDialogOnly, codexHandoffOnly, errorIndicatorsOnly].filter(Boolean).length > 1) throw new Error('focused-launcher-modes-are-mutually-exclusive');
+  if (postAuditLongRunning && (bootstrapOnly || configurationOnly || studioLifecycleOnly || knowledgeLifecycleOnly || hostBoundaryOnly || nativeDialogOnly || codexHandoffOnly || errorIndicatorsOnly)) throw new Error('post-audit-long-running-requires-full-profile');
   if (vsixPath && (!fs.existsSync(vsixPath) || path.extname(vsixPath).toLowerCase() !== '.vsix')) throw new Error(`exact-vsix-missing:${vsixPath}`);
-  const focusedProfile = configurationOnly ? 'reversible-configuration' : studioLifecycleOnly ? 'studio-lifecycle' : knowledgeLifecycleOnly ? 'knowledge-lifecycle' : null;
+  const focusedProfile = configurationOnly ? 'reversible-configuration' : studioLifecycleOnly ? 'studio-lifecycle' : knowledgeLifecycleOnly ? 'knowledge-lifecycle' : hostBoundaryOnly ? 'host-boundary' : nativeDialogOnly ? 'native-dialog-boundary' : codexHandoffOnly ? 'codex-handoff' : errorIndicatorsOnly ? 'error-indicators' : null;
   const mode = `${vsixPath ? 'installed-vsix' : 'current-source'}${bootstrapOnly ? '-bootstrap' : focusedProfile ? `-${focusedProfile}` : ''}`;
   const walkOutput = path.resolve(argument('--output') || path.join(repositoryRoot, 'evidence', `operational-ui-walk-${mode}-${stamp}`));
   const reportPath = path.resolve(argument('--report') || path.join(repositoryRoot, 'evidence', 'operational-gap-ledger', `${mode}-host-walk-${stamp}.json`));
@@ -592,16 +977,21 @@ async function main() {
     if (relative.startsWith('..') || path.isAbsolute(relative)) throw new Error(`walk-input-or-evidence-target-outside-repository:${target}`);
   }
   if (fs.existsSync(reportPath)) throw new Error(`evidence-report-already-exists:${reportPath}`);
-  const temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'pacify-x-current-source-walk-'));
-  markOwnedHostWorkspace(temporaryRoot, `${vsixPath ? 'installed-vsix' : 'current-source'}-${bootstrapOnly ? 'bootstrap-activation' : focusedProfile || 'operational-ui-walk'}`);
+  // Acquire the single-host lease before allocating any output namespace or
+  // owned ephemeral. A rejected duplicate therefore has no report, output,
+  // or cleanup authority belonging to the legitimate in-flight owner.
+  const ownership = acquireWalkOwnership({
+    ownershipLabel: `${vsixPath ? 'installed-vsix' : 'current-source'}-${bootstrapOnly ? 'bootstrap-activation' : focusedProfile || 'operational-ui-walk'}`
+  });
+  const { lease: hostLease, temporaryRoot } = ownership;
   let config = null;
   let configPath = null;
   try {
-    config = prepare(temporaryRoot, walkOutput, vsixPath, bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly);
+    config = prepare(temporaryRoot, walkOutput, vsixPath, bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly, hostBoundaryOnly, nativeDialogOnly, codexHandoffOnly, errorIndicatorsOnly, postAuditLongRunning);
     configPath = path.join(temporaryRoot, 'host-config.json');
     fs.writeFileSync(configPath, `${JSON.stringify(config, null, 2)}\n`, { encoding: 'utf8', flag: 'wx' });
   } catch (error) {
-    reconcilePrelaunchFailure(temporaryRoot, reportPath, walkOutput, error);
+    reconcileOwnedPrelaunchFailure(ownership, reportPath, walkOutput, error);
     throw error;
   }
   let run = null;
@@ -609,6 +999,7 @@ async function main() {
   let error = null;
   try {
     run = await runOwnedHostWorker({
+      lease: hostLease,
       scriptPath: __filename,
       childFlag: CHILD_FLAG,
       configPath,
@@ -618,7 +1009,11 @@ async function main() {
       // boundary longer than the bootstrap release wait so the child can
       // publish its receipt and reconcile cleanup instead of being killed
       // mid-walk by its own harness.
-      timeoutMs: 1_200_000,
+      // A full post-audit campaign exercises every admitted stateful profile
+      // and can legitimately exceed the ordinary twenty-minute walk bound.
+      // Keep it bounded, but do not let the owner terminate a healthy campaign
+      // before the child can publish its receipt and reconcile its resources.
+      timeoutMs: postAuditLongRunning ? 3_600_000 : 1_800_000,
       ownershipToken: config.userData,
       env: { ...nonBillableEnvironment(), PX_OWNED_VSCODE_HOST: '1' },
       stdout: process.stdout,
@@ -634,7 +1029,7 @@ async function main() {
   const statusTruth = evaluateLauncherTerminal({
     walkStatus: child?.operational_status || null,
     processTreeClosedVerified: lifecycle?.process_tree_closed_verified,
-    workerExitVerified: run?.receipt?.worker_exit_verified,
+    workerExitVerified: run?.receipt?.worker_exit_verified ?? lifecycle?.worker_exit_verified,
     error
   });
   const report = {
@@ -676,9 +1071,14 @@ async function main() {
       cdp: child?.cdp || null,
       extension_loading: vsixPath ? 'exact VSIX installed into owned empty extensions directory' : 'current repository source only'
     },
+    owned_host_boundary_fixture: config.hostBoundaryFixture,
+    owned_git_authority: config.gitAuthority,
     operation: bootstrapOnly ? 'installed-extension-bootstrap-activation' : focusedProfile ? `focused-${focusedProfile}-walk` : 'operational-ui-walk',
     focused_profile: focusedProfile,
+    post_audit_long_running_authority: postAuditLongRunning,
     full_operational_completion_claimed: focusedProfile ? false : child?.operational_status?.operationally_complete === true,
+    partial_profile_progress: child?.walk_receipt ? null : retainedProfileProgress(walkOutput),
+    partial_host_progress: child?.walk_receipt ? null : retainedHostProgress(walkOutput),
     bootstrap: bootstrapOnly ? child?.bootstrap || null : null,
     walk: bootstrapOnly ? null : child?.walk_receipt || { path: path.relative(repositoryRoot, config.walkReceipt).replace(/\\/g, '/'), present: fs.existsSync(config.walkReceipt) },
     child_lifecycle: child,
@@ -702,7 +1102,7 @@ if (require.main === module) {
       process.exitCode = 1;
     });
   } else if (process.argv.includes('--help')) {
-    process.stdout.write('Usage: node scripts/run-isolated-current-source-walk.js [--bootstrap-only | --configuration-only | --studio-lifecycle-only | --knowledge-lifecycle-only] [--vsix <path>] [--output <path>] [--report <path>]\n');
+    process.stdout.write('Usage: node scripts/run-isolated-current-source-walk.js [--post-audit-long-running | --bootstrap-only | --configuration-only | --studio-lifecycle-only | --knowledge-lifecycle-only | --host-boundary-only | --native-dialog-only | --codex-handoff-only | --error-indicators-only] [--vsix <path>] [--output <path>] [--report <path>]\n');
   } else {
     main().catch(error => {
       process.stderr.write(`${error.stack || error.message}\n`);
@@ -711,4 +1111,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { classifySharedStoragePath, excludedEnginePath, reconcilePrelaunchFailure, stageDisposableEngine, stageOwnedKnowledgeFixture };
+module.exports = { acquireWalkOwnership, appendHostProgress, boundedDelay, classifySharedStoragePath, excludedEnginePath, ownedExternalNetworkDeniedEnvironment, reconcileOwnedPrelaunchFailure, reconcilePrelaunchFailure, reserveLoopbackPort, retainedHostProgress, retainedProfileProgress, stageDisposableEngine, stageOwnedGitAuthority, stageOwnedHostBoundaryFixture, stageOwnedKnowledgeFixture, stageOwnedProviderPaginationFixture, waitForIsolatedStorageBoundary };

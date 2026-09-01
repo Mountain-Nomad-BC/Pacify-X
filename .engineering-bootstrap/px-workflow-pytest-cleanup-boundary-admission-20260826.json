@@ -1,0 +1,31 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-workflow-pytest-cleanup-boundary-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023218",
+  "authority": "User requested uninterrupted repair of every remaining Pacify-X failure through complete operation.",
+  "expected_effect": "Repair the exact Workflow Studio test cleanup boundary so a clean-process lifecycle fixture can reclaim only its owned workspace and never pytest's shared temporary root; retain the already generated projection and bounded Windows host changes; prove the focused lifecycle and affected governed sections.",
+  "rollback": "Revert only the cleanup-boundary patch if focused lifecycle semantics regress; preserve generated projections and Windows host changes for their separate proved causes. Reconcile exact owned test processes on failure or timeout.",
+  "expires_utc": "2026-09-04T12:00:00Z",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect only current focused diffs in registry/effect_surface_ownership.json, registry/provider_route_scan.json, tests/test_workflow_studio.py, extension/tests/vscode-host/index.js, extension/scripts/run-vscode-host-smoke.js; the Workflow Studio clean-process helper/fixture cleanup path; pytest temporary-root guard; and directly relevant lifecycle tests/section ownership."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Patch only the Workflow Studio clean-process test helper or fixture cleanup boundary so it reclaims its exact owned child workspace without deleting pytest's shared temporary root; retain but do not broaden the current projection and Windows host changes; add focused regression coverage or repair evidence if needed. Do not alter product runtime semantics, unrelated tests, dependencies, package identity, ledgers, release certification, or installed extension state."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["With caches disabled, run only the exact Workflow Studio lifecycle test, pytest temporary-root cleanup guard or directly related regression node, neighboring Agent Studio lifecycle test, direct generated/registry/structural validators, extension syntax checks and one bounded live-host smoke if still needed, then one studio-memory-graph and one dashboard-extension governed section. Do not run full profile, validate, package, install, publish, or certify."]
+    }
+  ],
+  "evidence": [
+    {
+      "reference": "evidence/release/agent-observer-resource-repair-20260826.json",
+      "claim": "CI 32959584216, deterministic projection reproduction, and the focused pytest cleanup guard define the remaining repair boundary.",
+      "artifact_sha256": "2856fc5bf94a2bf84fd09f59f46dde071bd47a486816780acb92cebbe6764456",
+      "artifact_size": 1515
+    }
+  ]
+}

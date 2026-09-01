@@ -1,0 +1,31 @@
+{
+  "session_id": "closure-session:px-aud2-014-post-repair-profile-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023110",
+  "gap_id": "PX-OS-1065",
+  "authority": "User-authorized reversible closure work after the complete 15-of-15 PX-AUD2-014 repair proof.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect only zero-unresolved repair-campaign state, direct generated-projection equivalence, governed section/group currentness, test-orchestration single-flight state, and PX-AUD2-014 receipts."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Freeze the zero-unresolved repair campaign; perform exactly one post-repair generated-projection reconciliation; advance to revision_reconciled; refresh only actually stale governed sections; advance to sections_current only when all are current; run exactly one single-flight-owned full profile; advance to full_profile_passed only on success; retain evidence. Do not validate, package, install, publish, commit, push, merge, or certify."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["Run repair-freeze and revision-reconciliation processing checks, one canonical projection rebuild, focused generated integrity, section status and only stale sections, then exactly one python -m runtime.cli test-profile run full under repository single-flight. Do not run a second profile, validate, package, install, publish, commit, push, merge, or certify."]
+    }
+  ],
+  "expected_effect": "Produce the first valid full-profile result after the complete PX-AUD2-014 repair without duplicated execution or recursive reconciliation.",
+  "rollback": "Stop at the last passing phase, retain any exact failure denominator, and return to focused repair without reusing a failed profile result.",
+  "expires_utc": "2026-08-27T10:00:00Z",
+  "evidence": [
+    {
+      "reference": "evidence/release/px-aud2-014-complete-focused-proof-20260826.json",
+      "artifact_sha256": "c76086bb4d92c6eebce5792841fc4d22fc41538b58e29caab28733f5bc1f5777",
+      "artifact_size": 1986,
+      "claim": "Complete repair predecessor."
+    }
+  ]
+}

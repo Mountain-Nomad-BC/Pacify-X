@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023294",
+  "learned": "The exact 541e22e8 archive reproduces GitHub run 32977077401. Contracts pass. Generated fails only because registry/artifact_reachability.json records the hash of the intended local registry/test_profiles.json change while that source owner was omitted from the commit. Registry and structural fail only through that dependency. The diagnostic resources are retained and reconciled.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": [],
+  "next_action": "Repair the ten remaining PX-CURRENT tracks in dependency order, beginning with the tested-source Studio worker handoff and current extension-host/listener health.",
+  "evidence": [
+    {
+      "reference": "evidence/release/ci-541e22e8-projection-diagnosis-20260826.json",
+      "claim": "Exact clean-checkout root-cause evidence with the operational denominator still open.",
+      "artifact_sha256": "503ed271684eabd38c02f897e3597776a62d39b0ba16b1d1f3b4bf61c598fc62",
+      "artifact_size": 1548
+    }
+  ]
+}

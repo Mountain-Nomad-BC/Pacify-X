@@ -1,0 +1,31 @@
+{
+  "session_id": "repair-session:px-full-profile-group-orchestration-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023044",
+  "gap_id": "PX-OS-1065",
+  "authority": "User authorized all reversible Pacify-X repairs and requires the prescribed release sequence to be operational before certification.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect only runtime/cli.py test-profile/test-group orchestration, runtime/test_profiles.py group status/resolution, registry/test_profiles.json group/profile contracts, focused CLI/test-profile runner tests, and PX-AUD2-008 evidence."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Reopen the repair campaign for PX-AUD2-008; make the owned full-profile command internally execute and receipt stale required groups through the existing supervised group runner before cross-group certification, while reusing current group receipts and preserving exactly one top-level full-profile run; add focused regression tests; clear PX-AUD2-008 after causal proof; retain evidence and ledger events. Do not run or refresh actual group/profile receipts during repair."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["Run only focused mocked/unit tests proving sections_current plus stale groups is an executable single full-profile path, failure remains fail-closed, and current groups are not rerun. Do not run real test groups, governed sections, revision reconciliation, full profile, validate, package, install, publish, or certify during repair."]
+    }
+  ],
+  "expected_effect": "Make the registered sections-to-one-full-profile processing order reachable while retaining supervised group receipts and cross-group coexistence proof.",
+  "rollback": "Revert only the full-profile orchestration and focused tests, restore the campaign predecessor, and retain the exact failed attempt evidence.",
+  "expires_utc": "2026-08-26T22:00:00Z",
+  "evidence": [
+    {
+      "reference": "evidence/release/full-profile-prerequisite-failure-20260826.json",
+      "artifact_sha256": "1eaaae6928d7bcb3d81bb367f424f5eb2dfde1feafdb4ba18d48544c8df4e77b",
+      "artifact_size": 981,
+      "claim": "PX-AUD2-008 exact unreachable full-profile path."
+    }
+  ]
+}

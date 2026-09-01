@@ -1,0 +1,37 @@
+{
+  "session_id": "release-session:px-final-revision-reconciliation-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023022",
+  "gap_id": "PX-OS-1065",
+  "authority": "User authorized all remaining reversible Pacify-X closure work and requires the repaired source to become one internally consistent revision before governed testing.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect the repair_frozen campaign, revision-reconciliation oracle, repository-owned candidate projection builder, current generated projection identities, release dependency closure, and bounded Git diff integrity only."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Run the repository-owned candidate projection builder exactly once from the repair-frozen source; update only its generated registries and manifests; advance the campaign only to revision_reconciled after integrity checks pass; retain reconciliation evidence and append ledger closure events. Do not change product behavior, section receipts, package, install, commit, push, or certify."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["Run the revision_reconciliation oracle, exactly one repository-owned candidate projection rebuild, focused generated-artifact/effect-surface currentness checks, release dependency closure, and git diff --check. Do not run governed sections, full profile, validate, package, install, deploy, publish, commit, push, merge, or certify."]
+    }
+  ],
+  "expected_effect": "Produce one internally consistent revision-bound generated authority set from the fully repaired source and advance once to revision_reconciled.",
+  "rollback": "Restore only generated projection outputs from their repair-frozen predecessors if reconciliation fails; retain failure evidence and do not alter product source.",
+  "expires_utc": "2026-08-26T18:00:00Z",
+  "evidence": [
+    {
+      "reference": "evidence/release/repair-refreeze-after-boundary-governance-20260826.json",
+      "claim": "Zero-unresolved repair-frozen state and allowed reconciliation oracle.",
+      "artifact_sha256": "c1d4aca983a470e1b65c2f6204464b6a5d4fe9f89fb380a3a0172b1db1fb51d2",
+      "artifact_size": 711
+    },
+    {
+      "reference": "evidence/release/repository-scope-governance-causal-proof-20260826.json",
+      "claim": "Repaired bounded source walker and governed ownership predecessor.",
+      "artifact_sha256": "6ceeb3892f8b0d7e4e953d8d9692a978beda19141eee08db2668c9f7a032578d",
+      "artifact_size": 1045
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-post-structural-operational-denominator-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023306",
+  "authority": "User requested complete operational repair and implementation before any final revision, hash, or certification phase.",
+  "expected_effect": "Re-observe the corrected workspace and identify the exact remaining operational repair cards, current live route-health blockers, Studio editability/runtime blockers, and processing-order phase without mutating source or refreshing broad release evidence.",
+  "rollback": "Read-only operational diagnosis creates no source rollback requirement; close the session before admitting any repair or lifecycle transition.",
+  "expires_utc": "2026-09-05T19:00:00Z",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect evidence/release/adversarial-operational-audit-20260826.json, current dashboard and operation-health snapshots, current doctor output, corrected workspace monitor state, processing-order state, compact source diff, and active critical/high operational gap cards including PX-OS-1065, PX-OS-003, Studio Agent/Workflow/Skill editability, provider/environment health, packaging/install, and certification dependencies."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["Run only read-only dashboard snapshot with explicit source/project/workspace roots, workspace monitor, doctor without retained receipt, processing-order repair-stage check, operational-gap progress/projection queries, and compact Git diff/status inspection. Do not modify ledgers/cards/source, run sections/full profile/validate, refresh generated projections, package, install, mutate services, commit, push, merge, or certify."]
+    }
+  ],
+  "evidence": [
+    {
+      "reference": "evidence/release/diagnostic-custody-scan-boundary-repair-20260826.json",
+      "claim": "Last completed causal repair and green focused gate boundary before live operational re-observation.",
+      "artifact_sha256": "db80cb620f2f9c2dc9a0d7758897a46c419106024da2e7e173ffa09f94e7c309",
+      "artifact_size": 1613
+    }
+  ]
+}

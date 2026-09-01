@@ -38,6 +38,11 @@ function coordinationPaths(workspaceRoot) {
   };
 }
 
+function workspacePathIdentity(value) {
+  const resolved = path.resolve(value || '');
+  return process.platform === 'win32' ? resolved.toLowerCase() : resolved;
+}
+
 function defaultState(workspaceRoot) {
   return {
     schema_version: SCHEMA_VERSION, project: { id: safeId(path.basename(workspaceRoot), 'project'), root: path.resolve(workspaceRoot) },
@@ -102,7 +107,7 @@ function readAuthoritativeState(paths) {
     const evidence = quarantineCorruptAuthoritativeJson(paths, paths.state, raw, new Error('invalid-coordination-state-shape'));
     throw new Error(`coordination-authoritative-state-invalid:${evidence.fingerprint}:${evidence.receipt}`);
   }
-  if (path.resolve(state.project.root || '') !== paths.workspace) {
+  if (workspacePathIdentity(state.project.root) !== workspacePathIdentity(paths.workspace)) {
     const evidence = quarantineCorruptAuthoritativeJson(paths, paths.state, raw, new Error('coordination-state-workspace-mismatch'));
     throw new Error(`coordination-authoritative-state-workspace-mismatch:${evidence.fingerprint}:${evidence.receipt}`);
   }

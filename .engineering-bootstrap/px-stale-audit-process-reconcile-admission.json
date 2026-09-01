@@ -1,0 +1,31 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-stale-audit-process-reconcile-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022990",
+  "authority": "User explicitly authorized all remaining reversible Pacify-X repairs; only irreversible destructive effects require approval.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect only the exact duplicate audit scanner process tree rooted at PowerShell PID 30068 and Python PID 24960 plus the operational ledger projection state."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["Stop only the exact duplicate owned audit scanner process tree rooted at PowerShell PID 30068 and Python PID 24960 after the successful r2 reproduction, then rebuild the operational ledger snapshot."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Append only process-reconciliation ledger evidence and atomically refresh registry/operational_gap_ledger.snapshot.json from the authoritative JSONL ledger."]
+    }
+  ],
+  "expected_effect": "Remove the duplicate post-repair audit process that remained after r2 already completed and release its transient snapshot read handle so the append-only ledger projection can become current.",
+  "rollback": "No product or user data changes; the duplicate scan can be rerun from its unchanged command if required, while the successful r2 receipt remains retained.",
+  "expires_utc": "2026-08-26T16:00:00Z",
+  "evidence": [
+    {
+      "reference": "evidence/adversarial-audit/second-adversarial-source-scan-20260825-r2.json",
+      "artifact_sha256": "13a405240c2afa48c9cb2c2a0db5f325bb3aefee5c7cdeaf7672c4af8ec1bdf5",
+      "artifact_size": 2761588,
+      "claim": "The successful r2 reproduction makes the still-running duplicate r3 process unnecessary."
+    }
+  ]
+}

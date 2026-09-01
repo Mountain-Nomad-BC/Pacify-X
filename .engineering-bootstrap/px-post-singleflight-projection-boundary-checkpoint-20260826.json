@@ -1,0 +1,18 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023149",
+  "learned": "The CLI timeout node passes. CLI lazy loading was causally repaired by moving lock imports into the mutating command helpers and now passes. The live release audit passed before that source repair and now correctly fails only because generated ownership hashes are stale. A single ordered post-repair projection reconciliation is required before the three nodes can pass together.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": [
+    "PX-OS-1065"
+  ],
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "evidence": [
+    {
+      "reference": "evidence/release/post-singleflight-three-node-focused-diagnosis-20260826.json",
+      "claim": "Focused repair proof and exact remaining projection boundary.",
+      "artifact_sha256": "850e6c38a2137a33c7fdc5669bdbd26f6c948ad9691786a52a524a133205f582",
+      "artifact_size": 1565
+    }
+  ]
+}

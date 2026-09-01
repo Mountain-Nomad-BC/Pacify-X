@@ -414,6 +414,165 @@ def test_aggregate_scope_requires_relationships_and_resolved_children(tmp_path: 
     assert snapshot["progress"]["cards_without_control_resolution"] == []
 
 
+def test_explicit_typed_binding_survives_operational_promotion_and_resolves_parent(
+    tmp_path: Path,
+) -> None:
+    initialize(tmp_path)
+    append_event(
+        tmp_path,
+        "surface_registered",
+        {
+            "surface_id": "workflow-studio",
+            "name": "Workflow Studio",
+            "source_files": ["ui.js"],
+            "known_controls": ["save"],
+            "owner": "ui",
+            "inventory_evidence": ["ui.js"],
+        },
+        actor="test",
+    )
+    append_event(tmp_path, "card_discovered", card("PX-GAP-0001"), actor="test")
+    append_event(tmp_path, "card_discovered", card("PX-GAP-0002"), actor="test")
+    append_event(
+        tmp_path,
+        "card_relationship",
+        {
+            "parent_gap_id": "PX-GAP-0001",
+            "child_gap_id": "PX-GAP-0002",
+            "relationship": "child",
+            "evidence": evidence("exact child"),
+        },
+        actor="test",
+    )
+    append_event(
+        tmp_path,
+        "card_control_scope_set",
+        {
+            "gap_id": "PX-GAP-0001",
+            "kind": "aggregate_parent",
+            "child_gap_ids": ["PX-GAP-0002"],
+            "reason": "The parent tracks the exact child.",
+            "authority": "Reviewed decomposition.",
+            "return_condition": "Revise when the child set changes.",
+            "evidence": evidence("decomposition"),
+        },
+        actor="test",
+    )
+    append_event(
+        tmp_path,
+        "control_disposition",
+        {
+            "surface_id": "workflow-studio",
+            "control_id": "save",
+            "disposition": "gap",
+            "gap_ids": ["PX-GAP-0002"],
+            "evidence": evidence("save gap"),
+        },
+        actor="test",
+    )
+    append_event(
+        tmp_path,
+        "card_control_scope_set",
+        {
+            "gap_id": "PX-GAP-0002",
+            "kind": "typed_controls",
+            "bindings": [
+                {"surface_id": "workflow-studio", "control_id": "save"}
+            ],
+            "reason": "The card owns the exact save control across disposition changes.",
+            "authority": "Current typed surface inventory.",
+            "return_condition": "Revise if the control is retired or ownership moves.",
+            "evidence": evidence("typed binding"),
+        },
+        actor="test",
+    )
+    current = read_snapshot(tmp_path)["surfaces"]["workflow-studio"][
+        "control_dispositions"
+    ]["save"]
+    append_event(
+        tmp_path,
+        "control_disposition_revised",
+        {
+            "surface_id": "workflow-studio",
+            "control_id": "save",
+            "from_disposition": "gap",
+            "to_disposition": "operational",
+            "previous_disposition_sha256": control_disposition_sha256(current),
+            "gap_ids": [],
+            "reason": "The current host completed the exact interaction chain.",
+            "evidence": evidence("host walk"),
+            "observation": control_observation(),
+        },
+        actor="test",
+    )
+    snapshot = read_snapshot(tmp_path)
+    child = snapshot["cards"]["PX-GAP-0002"]
+    assert child["linked_controls"] == []
+    assert child["control_resolution"] == {
+        "kind": "typed_controls",
+        "resolved": True,
+        "bindings": [
+            {"surface_id": "workflow-studio", "control_id": "save"}
+        ],
+        "scope_revision": child["control_scope_disposition"],
+    }
+    assert snapshot["cards"]["PX-GAP-0001"]["control_resolution"]["resolved"] is True
+    assert snapshot["progress"]["cards_without_control_resolution"] == []
+
+
+def test_explicit_typed_bindings_reject_unknown_or_duplicate_controls(
+    tmp_path: Path,
+) -> None:
+    initialize(tmp_path)
+    append_event(
+        tmp_path,
+        "surface_registered",
+        {
+            "surface_id": "workflow-studio",
+            "name": "Workflow Studio",
+            "source_files": ["ui.js"],
+            "known_controls": ["save"],
+            "owner": "ui",
+            "inventory_evidence": ["ui.js"],
+        },
+        actor="test",
+    )
+    append_event(tmp_path, "card_discovered", card(), actor="test")
+    base = {
+        "gap_id": "PX-GAP-0001",
+        "kind": "typed_controls",
+        "reason": "The card owns exact typed controls.",
+        "authority": "Current typed surface inventory.",
+        "return_condition": "Revise if the controls are retired or ownership moves.",
+        "evidence": evidence("typed binding"),
+    }
+    with pytest.raises(ValueError, match="current known control"):
+        append_event(
+            tmp_path,
+            "card_control_scope_set",
+            {
+                **base,
+                "bindings": [
+                    {"surface_id": "workflow-studio", "control_id": "missing"}
+                ],
+            },
+            actor="test",
+        )
+    with pytest.raises(ValueError, match="must be unique"):
+        append_event(
+            tmp_path,
+            "card_control_scope_set",
+            {
+                **base,
+                "bindings": [
+                    {"surface_id": "workflow-studio", "control_id": "save"},
+                    {"surface_id": "workflow-studio", "control_id": "save"},
+                ],
+            },
+            actor="test",
+        )
+
+
 def test_control_scope_revision_is_predecessor_bound_and_retains_history(tmp_path: Path) -> None:
     initialize(tmp_path)
     append_event(tmp_path, "card_discovered", card(), actor="test")

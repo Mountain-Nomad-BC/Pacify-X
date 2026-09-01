@@ -1,0 +1,11 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023176",
+  "learned": "VS Code force-installed exact Pacify-X 0.6.59. The CLI now reports 0.6.59, pacifyX.engineRoot and workspaceRoot both target the repaired source, dashboard_api.py exists, and the engine snapshot reports source 0.7.0.dev0 with extension source 0.6.59. Installed-operational closure remains open because canonical memory workspace attention is still present.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": [],
+  "next_action": "Repair and prove the canonical memory workspace and remaining installed-operational surfaces before certification.",
+  "evidence": [
+    {"reference": "evidence/release/final-vscode-install-proof-20260826.json", "claim": "Exact install and engine-root authority without an installed-operational claim.", "artifact_sha256": "2271ac2e25b17938775eb0bb3ca453b937d1109b877eae2009e5dede9b27e2a2", "artifact_size": 1328}
+  ]
+}

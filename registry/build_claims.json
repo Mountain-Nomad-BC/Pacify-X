@@ -1,19 +1,19 @@
 {
   "schema_version": "px.build-claims/1.0",
-  "version": "0.7.0.dev0",
+  "version": "0.7.0",
   "counts": {
-    "runtime_modules": 216,
-    "contracts": 165,
-    "registry_artifacts": 363,
+    "runtime_modules": 219,
+    "contracts": 167,
+    "registry_artifacts": 362,
     "tool_and_support_scripts": 169,
     "skills": 178,
     "agents": 270,
     "workflow_definitions": 38,
     "orchestrations": 34,
-    "test_modules": 204,
+    "test_modules": 208,
     "graph_records": 985,
     "graph_edges": 1917,
-    "effect_surfaces": 901
+    "effect_surfaces": 968
   },
   "sources": {
     "version": "pyproject.toml:project.version",

@@ -40,10 +40,12 @@ function codexHostHandoffDecision({ git, hasWorkspaceClaim = false, requestedEff
   const gitDecision = git && Array.isArray(git.reasons)
     ? git
     : { allowed: !git?.operation || git.operation === 'none', reasons: git?.operation && git.operation !== 'none' ? [`git-operation:${git.operation}`] : [] };
-  const reasons = [...(gitDecision.reasons || [])];
+  const declaredGitReasons = [...(gitDecision.reasons || [])];
+  if (gitDecision.allowed === false && declaredGitReasons.length === 0) declaredGitReasons.push('git-decision-denied-without-reason');
+  const reasons = declaredGitReasons.filter(reason => !(requestedEffect === 'workspace-read' && reason === 'git-unavailable'));
   if (requestedEffect === 'workspace-write' && !hasWorkspaceClaim) reasons.push('workspace-write requires an active repository claim');
   return Object.freeze({
-    allowed: gitDecision.allowed !== false && reasons.length === 0,
+    allowed: reasons.length === 0,
     mode: 'host-context-handoff',
     executorOwner: 'codex-host',
     extensionExecutes: false,

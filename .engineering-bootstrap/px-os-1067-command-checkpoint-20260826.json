@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1067",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023366",
+  "learned": "The current-source walker now physically covers exact Studio prerequisite states, direct catalog/graph/workflow selectors, passive-versus-interactive semantics, the installed sidebar, and a bounded allowlist of registered workbench commands. Conditional rows/forms and their actual failure/recovery states plus explicit reversible effect authorities remain before the one fresh full operational walk.",
+  "next_action": "Implement state-scenario and reversible-authority coverage in dependency order, then rerun one fresh-path current-source operational walk.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": [],
+  "evidence": [
+    {
+      "reference": "evidence/release/px-os-1067-installed-command-coverage-repair-20260826.json",
+      "artifact_sha256": "ce7ca8c7fad0f536b301fde4cb58467518284f98a464b00697d2edb19b373307",
+      "artifact_size": 1610,
+      "claim": "Safe installed workbench command coverage cluster evidence."
+    }
+  ]
+}

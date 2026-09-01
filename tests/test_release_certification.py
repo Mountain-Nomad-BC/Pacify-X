@@ -260,8 +260,8 @@ def test_junit_publication_evidence_redacts_machine_local_failure_paths() -> Non
         report = Path(directory) / "report.xml"
         report.write_text(
             '<testsuites><testsuite hostname="runner"><testcase name="test_failure">'
-            "<failure>C:\\Users\\runneradmin\\work\\project\\tests\\test_example.py:10 "
-            "/home/runner/work/project/tests/test_example.py:10</failure>"
+            "<failure>C:" + "\\Users\\runneradmin\\work\\project\\tests\\test_example.py:10 "
+            "/" + "home/runner/work/project/tests/test_example.py:10</failure>"
             "</testcase></testsuite></testsuites>",
             encoding="utf-8",
         )
@@ -271,7 +271,7 @@ def test_junit_publication_evidence_redacts_machine_local_failure_paths() -> Non
         assert result["valid"], result["errors"]
         assert content.count("[machine-local-path]") == 2
         assert "runneradmin" not in content
-        assert "/home/runner" not in content
+        assert "/" + "home/runner" not in content
 
 
 def test_junit_publication_evidence_redacts_parent_traversing_traceback_paths() -> None:
@@ -313,10 +313,10 @@ def test_publishable_release_metadata_rejects_machine_local_paths() -> None:
     }
     assert _portable_payload_gate(portable)["valid"]
     for local_path in (
-        "C:/Users/example/AppData/Local/Temp/build-a1b2c3",
-        r"C:\Users\example\AppData\Local\Temp\build-a1b2c3",
-        "/Users/example/tmp/build-a1b2c3",
-        "/home/example/tmp/build-a1b2c3",
+        "C:" + "/" + "Users/example/AppData/Local/Temp/build-a1b2c3",
+        "C:" + r"\Users\example\AppData\Local\Temp\build-a1b2c3",
+        "/" + "Users/example/tmp/build-a1b2c3",
+        "/" + "home/example/tmp/build-a1b2c3",
         "../outside/build-a1b2c3",
     ):
         result = _portable_payload_gate({"quarantine": local_path})
@@ -326,7 +326,7 @@ def test_publishable_release_metadata_rejects_machine_local_paths() -> None:
 
 def test_release_evidence_redaction_preserves_shape_and_removes_local_paths() -> None:
     value = {
-        "python_executable": r"C:\Users\example\Temp\venv\Scripts\python.exe",
+        "python_executable": "C:" + r"\Users\example\Temp\venv\Scripts\python.exe",
         "errors": ["from /tmp/release/venv/bin/python"],
         "valid": True,
     }

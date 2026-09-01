@@ -194,7 +194,7 @@ def test_excluded_evidence_does_not_change_clean_product_projection(
     evidence = tmp_path / "evidence/operator-capture.json"
     evidence.parent.mkdir(parents=True)
     evidence.write_text(
-        '{"source":"C:\\\\Users\\\\operator\\\\outside.json"}\n',
+        '{"source":"C:' + '\\\\Users\\\\operator\\\\outside.json"}\n',
         encoding="utf-8",
     )
 

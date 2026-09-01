@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022999",
+  "unresolved_branch_gap_ids": ["PX-OS-1065"],
+  "newly_discovered_gap_ids": [],
+  "learned": "The repair campaign is frozen after one governed transition through operational_verification. Intake is closed, the unresolved denominator is zero, the 929-control and installed-host evidence are retained, and the processing oracle now permits exactly one revision/generated-projection reconciliation.",
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "evidence": [
+    {
+      "reference": "evidence/release/repair-freeze-20260826.json",
+      "artifact_sha256": "cb14a45aabc6dd0e30ca22c98d8c1aab14af9f5877db2b99f2fb7a6d2495d358",
+      "artifact_size": 1549,
+      "claim": "Repair freeze and allowed next stage."
+    }
+  ]
+}

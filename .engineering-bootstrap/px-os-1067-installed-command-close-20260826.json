@@ -1,0 +1,14 @@
+{
+  "session_id": "repair-session:px-installed-command-coverage-20260826",
+  "gap_id": "PX-OS-1067",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023367",
+  "outcome": "completed",
+  "evidence": [
+    {
+      "reference": "evidence/release/px-os-1067-installed-command-coverage-repair-20260826.json",
+      "artifact_sha256": "ce7ca8c7fad0f536b301fde4cb58467518284f98a464b00697d2edb19b373307",
+      "artifact_size": 1610,
+      "claim": "Safe installed workbench command coverage passes 34 focused tests and the 245-test governed dashboard-extension section while excluded command authorities remain truthful."
+    }
+  ]
+}

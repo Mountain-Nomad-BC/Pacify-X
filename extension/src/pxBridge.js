@@ -320,6 +320,7 @@ class PxBridge {
     this.fingerprintMetrics = { watchScans: 0, completeScans: 0, guardedReuses: 0 };
     this.fingerprintWorkers = new Set();
     this.fingerprintPromise = null;
+    this.studioVerifierDescriptorCache = null;
     this.lastSnapshot = null; this.lastSnapshotAt = 0; this.lastFingerprint = null; this.lastInvalidationReason = 'cold-start';
   }
 
@@ -327,7 +328,10 @@ class PxBridge {
     const before = [this.pythonPath, this.engineRoot, this.projectRoot, this.workspaceRoot].join('\0');
     Object.assign(this, options);
     const after = [this.pythonPath, this.engineRoot, this.projectRoot, this.workspaceRoot].join('\0');
-    if (before !== after) this.invalidate('bridge-configuration-changed', 'repositories');
+    if (before !== after) {
+      this.studioVerifierDescriptorCache = null;
+      this.invalidate('bridge-configuration-changed', 'repositories');
+    }
   }
 
   invalidate(reason = 'explicit-invalidation', domain = 'dashboard') {
@@ -715,13 +719,30 @@ class PxBridge {
 
   async _studioApprovalSigningContext() {
     if (typeof this.approvalKeyProvider !== 'function') throw new Error('Studio approval requires the authenticated VS Code host signing key.');
-    const descriptor = await this.capture(this.pythonPath, ['-m', 'runtime.studio_approval', '--root', this.projectRoot, '--describe-verifier'], { cwd: this.engineRoot, timeoutMs: 30_000 });
+    const descriptorBinding = JSON.stringify([
+      this.pythonPath,
+      path.resolve(this.engineRoot),
+      path.resolve(this.projectRoot),
+      String(process.env.PX_STUDIO_KEY_ROOT || '')
+    ]);
+    let descriptor = this.studioVerifierDescriptorCache?.binding === descriptorBinding
+      ? this.studioVerifierDescriptorCache.descriptor
+      : null;
+    if (!descriptor) {
+      descriptor = await this.capture(this.pythonPath, ['-m', 'runtime.studio_approval', '--root', this.projectRoot, '--describe-verifier'], { cwd: this.engineRoot, timeoutMs: 30_000 });
+    }
     const projectIdentity = String(descriptor?.project_identity || '');
     const keyRoot = path.resolve(String(descriptor?.key_root || ''));
     const recordPath = path.resolve(String(descriptor?.record_path || ''));
     const expectedPath = path.resolve(keyRoot, 'approval-verifiers', `${projectIdentity}.json`);
     if (!projectIdentity.startsWith('px-project-') || recordPath !== expectedPath || pathWithin(keyRoot, this.projectRoot) || pathWithin(recordPath, this.projectRoot)) {
       throw new Error('Studio approval verifier location is outside the admitted host boundary.');
+    }
+    if (!this.studioVerifierDescriptorCache || this.studioVerifierDescriptorCache.binding !== descriptorBinding) {
+      this.studioVerifierDescriptorCache = {
+        binding: descriptorBinding,
+        descriptor: Object.freeze({ project_identity: projectIdentity, key_root: keyRoot, record_path: recordPath })
+      };
     }
     const ring = await this.approvalKeyProvider({ action: 'get', projectIdentity });
     const material = ring?.active;
@@ -830,6 +851,7 @@ class PxBridge {
   dispose() {
     for (const worker of this.fingerprintWorkers) void worker.terminate();
     this.fingerprintWorkers.clear();
+    this.studioVerifierDescriptorCache = null;
     if (this.ownsGovernor) this.governor.dispose();
   }
 }

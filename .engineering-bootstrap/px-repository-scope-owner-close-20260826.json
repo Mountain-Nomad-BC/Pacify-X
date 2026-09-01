@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-repository-scope-section-owner-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023017",
+  "outcome": "completed",
+  "reason": "PX-AUD2-005 is causally repaired: testing-governance now owns runtime/repository_scope.py and executes all three focused boundary test modules, while a regression proves boundary changes alter the section identity. No generated projection, section receipt, broad profile, validation, packaging, installation, Git publication, or certification ran.",
+  "evidence": [
+    {
+      "reference": "evidence/release/repository-scope-governance-causal-proof-20260826.json",
+      "claim": "Exact governed ownership and input-identity causal proof.",
+      "artifact_sha256": "6ceeb3892f8b0d7e4e953d8d9692a978beda19141eee08db2668c9f7a032578d",
+      "artifact_size": 1045
+    }
+  ]
+}

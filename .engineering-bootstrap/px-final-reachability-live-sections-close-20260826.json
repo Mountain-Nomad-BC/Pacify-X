@@ -1,0 +1,14 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-final-reachability-live-sections-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023231",
+  "outcome": "superseded",
+  "evidence": [
+    {
+      "reference": "extension/evidence/vscode-host-process-lifecycle.json",
+      "claim": "The isolated Windows live host completed with full process-tree closure and zero residual owned PIDs, but consumed 293681 ms of its 300000 ms ceiling, leaving insufficient operational margin before section testing.",
+      "artifact_sha256": "29e393ffc64d59834297adbc8e371156dc519e7e3ee0809a6cc997af91a2934c",
+      "artifact_size": 553
+    }
+  ]
+}

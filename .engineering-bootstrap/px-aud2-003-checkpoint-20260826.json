@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023006",
+  "unresolved_branch_gap_ids": ["PX-OS-1065"],
+  "newly_discovered_gap_ids": [],
+  "learned": "PX-AUD2-003: the first ordered revision reconciliation failed closed because runtime.repository_scope does not exclude nested build/dist generated-output directories, causing the source-only effect-surface builder to include extension/dist and cross its 2 GiB bound. Repair must reopen before any further reconciliation or release gate.",
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "evidence": [
+    {
+      "reference": "evidence/release/revision-reconciliation-failure-20260826.json",
+      "artifact_sha256": "26208a881f60a8e74931aa28823a31e4911498f3ca36f4fa75eabedab0147b4c",
+      "artifact_size": 1529,
+      "claim": "PX-AUD2-003 reproduction and root cause."
+    }
+  ]
+}

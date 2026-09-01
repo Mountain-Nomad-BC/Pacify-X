@@ -160,6 +160,11 @@ class NativeSkillTests(unittest.TestCase):
             decision = query_skills(root, "audit runtime", limit=99)
             self.assertEqual(len(decision["candidates"]), 3)
             self.assertTrue(all(row["selection_eligible"] for row in decision["candidates"]))
+            self.assertTrue(all(
+                row["selection_rationale"]
+                == "semantic-overlap=5; native-preference=0.5; domain=px-standard; selectable=True"
+                for row in decision["candidates"]
+            ))
             self.assertEqual(decision["hydrated"], 0)
             hydrated = hydrate_skill(root, decision["candidates"][0]["id"])
             self.assertEqual(hydrated["hydrated_count"], 1)

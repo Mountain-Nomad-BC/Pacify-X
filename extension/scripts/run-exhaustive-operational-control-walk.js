@@ -120,7 +120,7 @@ function sidebarFixtureMessage({ disconnected = false } = {}) {
   const projection = buildSidebarProjection({
     connected: !disconnected,
     generatedAt: new Date(SIDEBAR_FIXTURE_NOW).toISOString(),
-    source: { version: '0.7.0.dev0' },
+    source: { version: '0.7.0' },
     health: { authoritative: !disconnected, ready: !disconnected },
     attention: [{ id: 'review', severity: 'warning', title: 'Review exact control evidence', detail: 'Bounded fixture attention record.' }],
     providerActivity: [
@@ -163,11 +163,48 @@ function sidebarActionSelector(control) {
 
 function directSelectorFor(control) {
   const id = String(control?.control_id || '');
+  const agentModelField = id.match(/^pxui\.agent-studio\.field\.model\.(provider|vendor|family|model_id|version|max_output_tokens|temperature)$/)?.[1];
+  if (agentModelField) return `[data-agent-model-field="${agentModelField}"]`;
+  if (id === 'pxui.agent-studio.field.model.host_model') return '[data-agent-host-model]';
+  const agentSchemaField = id.match(/^pxui\.agent-studio\.field\.(input_schema|output_schema)$/)?.[1];
+  if (agentSchemaField) return `[data-agent-json-field="${agentSchemaField}"]`;
+  if (id === 'pxui.workflow-studio.field.edge.source_endpoint') return '[data-edge-source-endpoint]';
+  if (id === 'pxui.workflow-studio.field.edge.target_endpoint') return '[data-edge-target-endpoint]';
+  if (id === 'pxui.workflow-studio.field.edge.condition') return '[data-edge-condition]';
+  const workflowPortField = id.match(/^pxui\.workflow-studio\.field\.port\.(name|required)$/)?.[1];
+  if (workflowPortField) return `[data-workflow-port-field="${workflowPortField}"]`;
   const runtimeRecordKind = id.match(/^pxui\.runtime-core\.action\.inspectRuntimeRecord\.(operations|placements|producers|providers|startup)$/)?.[1];
   if (runtimeRecordKind) return `[data-action="inspectRuntimeRecord"][data-runtime-kind="${runtimeRecordKind}"]`;
   if (/^pxui\.runtime-core\.indicator\.(?:cleanupBytes|cleanupCandidates|cleanupSelection)$/.test(id)) return '.cleanup-summary';
   if (id === 'pxui.runtime-core.form.cleanupSelection') return '.cleanup-list';
   if (id === 'pxui.workflows.indicator.environmentFreshness') return '.environment-freshness';
+  if (id === 'pxui.agents.field.catalogSearch') return '[data-catalog-search="agents"]';
+  if (id === 'pxui.agents.form.catalogFilter') return '.catalog-controls:has([data-catalog-search="agents"])';
+  if (id === 'pxui.agents.menu.surfaceScope') return '[aria-label="Agent catalog scope"]';
+  if (id === 'pxui.workflows.field.catalogSearch') return '[data-catalog-search="workflows"]';
+  if (id === 'pxui.workflows.field.catalogSort') return '[data-catalog-sort="workflows"]';
+  if (id === 'pxui.workflows.form.catalogFilter') return '.catalog-controls:has([data-catalog-search="workflows"])';
+  if (id === 'pxui.workflows.menu.surfaceScope') return '[aria-label="Workflow scope"]';
+  if (id === 'pxui.workflows.field.planObjective') return '#plan-objective';
+  if (id === 'pxui.workflows.field.planGoal') return '#plan-goal';
+  if (id === 'pxui.workflows.field.planTaskLines') return '#plan-tasks';
+  if (id === 'pxui.workflows.field.progressSummary') return '#progress-summary';
+  if (id === 'pxui.workflows.field.progressNextAction') return '#progress-next';
+  if (id === 'pxui.workflows.form.parallelPlan') return '#modal-root:has(#plan-objective)';
+  if (id === 'pxui.workflows.form.claimTask') return '#modal-root:has(#claim-task)';
+  if (id === 'pxui.workflows.form.taskProgress') return '#modal-root:has(#progress-task)';
+  if (id === 'pxui.workflows.form.reconcileTask') return '#modal-root:has(#reconcile-task)';
+  if (id === 'pxui.knowledge-graph.editor.accessibleMap') return '.graph-accessible-map';
+  if (id === 'pxui.knowledge-graph.editor.interactiveCanvas') return '[data-graph-canvas]';
+  if (id === 'pxui.knowledge-graph.field.accessibleRecordList') return '[data-graph-record-list]';
+  if (id === 'pxui.knowledge-graph.field.graphRelation') return '[data-graph-relation]';
+  if (id === 'pxui.knowledge-graph.form.savedView') return '#modal-root:has(#graph-view-name)';
+  if (id === 'pxui.knowledge-graph.indicator.graphStatusLiveRegion') return '[data-graph-status]';
+  if (id === 'pxui.knowledge-graph.indicator.selectedRecord') return '.graph-selection-card';
+  if (id === 'pxui.workflow-studio.form.effectGrant') return '[data-workflow-grant-index]';
+  if (id === 'pxui.workflow-studio.form.nodeInspector') return '[data-workflow-inspector]';
+  if (id === 'pxui.workflow-studio.form.typedEdge') return '.workflow-edge-editor';
+  if (id === 'pxui.workflow-studio.indicator.structuralValidation') return '[data-studio-validation]';
   if (id === 'pxui.plugins.indicator.inventoryGeneration') return '[data-plugin-integrity="generation"]';
   if (id === 'pxui.plugins.indicator.shardHashMatch') return '[data-plugin-integrity="shard-hash"]';
   if (id === 'pxui.studio-lifecycle.indicator.error') return '#modal-root [role="alert"]';
@@ -176,6 +213,7 @@ function directSelectorFor(control) {
   if (id === 'pxui.projects.indicator.mapStatus') return '.project-map-head';
   if (id === 'pxui.projects.indicator.mapErrors') return '.memory-errors[role="alert"]';
   if (id === 'pxui.agent-studio.form.candidateMetadata') return '.studio-guided-grid';
+  if (id === 'pxui.agent-studio.action.agentFit.minimap') return '.agent-graph-minimap';
   if (id === 'pxui.agent-studio.indicator.graphMinimap') return '.agent-graph-minimap';
   if (/^pxui\.agent-studio\.indicator\.(?:persistedGraphVerified|workingGraphRequiresPythonCompile)$/.test(id)) return '.agent-graph-state';
   if (id === 'pxui.agent-studio.indicator.typedEdgeMap') return '.agent-accessible-topology';
@@ -186,6 +224,7 @@ function directSelectorFor(control) {
   if (id === 'pxui.workflow-studio.menu.nodePalette') return '.workflow-palette';
   if (id === 'pxui.workflow-studio.indicator.zoom') return '.workflow-canvas-toolbar output';
   if (id === 'pxui.workflow-studio.indicator.pendingPortConnection') return '.workflow-canvas-toolbar [data-action="workflowCancelConnection"]:not([disabled])';
+  if (id === 'pxui.workflow-studio.indicator.runInputContract') return '.workflow-input-contract';
   if (id === 'pxui.workflow-studio.indicator.awaitingHostApproval') return '[data-action="submitStudioDraft"]';
   if (id === 'pxui.skill-studio.editor.packageFile') return '#studio-skill-file';
   if (id === 'pxui.skill-studio.indicator.recentLifecycleHistory') return '.skill-history';
@@ -219,9 +258,9 @@ function directSelectorFor(control) {
   if (id === 'pxui.memory.indicator.queryPage') return '.memory-pagination';
   if (id === 'pxui.memory.indicator.queryError') return '.memory-errors[role="alert"]';
   if (id === 'pxui.memory.indicator.queryPending') return '.memory-toolbar > span:last-child';
-  if (/^pxui\.(?:agents|workflows|skills-tools)\.indicator\.catalogError$/.test(id)) return '.memory-errors[role="alert"]';
-  if (/^pxui\.(?:agents|workflows|skills-tools)\.indicator\.catalogPending$/.test(id)) return '.catalog-loading';
-  if (/^pxui\.(?:agents|workflows|skills-tools)\.indicator\.catalogPage$/.test(id)) return '.catalog-controls > span:last-child';
+  if (/^pxui\.(?:agents|workflows|skills-tools|diagnostics)\.indicator\.catalogError$/.test(id)) return '.memory-errors[role="alert"]';
+  if (/^pxui\.(?:agents|workflows|skills-tools|diagnostics)\.indicator\.catalogPending$/.test(id)) return '.catalog-loading';
+  if (/^pxui\.(?:agents|workflows|skills-tools|diagnostics)\.indicator\.catalogPage$/.test(id)) return '.catalog-controls > span:last-child';
   if (/^pxui\.skills-tools\.indicator\.(?:nativeCount|domainBoundary)$/.test(id)) return '.metric-grid .metric-card:nth-child(1)';
   if (/^pxui\.skills-tools\.indicator\.(?:preservedBoundary)$/.test(id)) return '.metric-grid .metric-card:nth-child(2)';
   if (/^pxui\.skills-tools\.indicator\.(?:enterpriseCount)$/.test(id)) return '.metric-grid .metric-card:nth-child(3)';
@@ -250,8 +289,16 @@ function directSelectorFor(control) {
   if (id === 'pxui.knowledge-graph.indicator.renderedTelemetry') return '[data-graph-status]';
   if (id === 'pxui.knowledge-graph.form.searchAndFilter') return '.graph-tools';
   if (id === 'pxui.agents.indicator.activeSessions') return '.metric-grid .metric-card:nth-child(2)';
+  if (id === 'pxui.agents.indicator.registered') return '.metric-grid .metric-card:nth-child(1)';
+  if (id === 'pxui.agents.indicator.runnableRevisions') return '.metric-grid .metric-card:nth-child(2)';
+  if (id === 'pxui.agents.indicator.runningProcesses') return '.metric-grid .metric-card:nth-child(3)';
+  if (id === 'pxui.agents.indicator.advisoryRecords') return '.metric-grid .metric-card:nth-child(4)';
   if (id === 'pxui.agents.indicator.enterpriseDoctorStatus') return '.enterprise-boundary';
+  if (id === 'pxui.workflows.indicator.workflowDefinitions') return '.metric-grid .metric-card:nth-child(1)';
+  if (id === 'pxui.workflows.indicator.runnableRuns') return '.metric-grid .metric-card:nth-child(5)';
   if (id === 'pxui.workflows.indicator.environmentSnapshotHash') return '.environment-boundary b';
+  if (id === 'pxui.workflows.indicator.activePlan') return '.plan-header';
+  if (/^pxui\.workflows\.indicator\.claim(?:Budget|Fence|Lease)$/.test(id)) return '.task-card .task-meta';
   if (id === 'pxui.workflows.indicator.taskStatus') return '.task-state';
   if (id === 'pxui.diagnostics.indicator.catalogPending') return '.catalog-loading';
   if (id === 'pxui.diagnostics.indicator.surfaceCoverage') return '.punch-ledger-progress';
@@ -387,10 +434,24 @@ function selectorForKind(kind) {
 }
 function stageResult(requirement, probe, stage, evidenceRef) {
   const required = requirement.stage_policy[stage] === 'required';
+  const containedFormHostStage = requirement.evidence_mode === 'contained_ui_form'
+    && ['authorization', 'backend_dispatch', 'runtime_effect'].includes(stage);
+  if (containedFormHostStage) {
+    return {
+      state: 'not_applicable',
+      detail: `The contained form probe changed and restored only local draft input, did not submit the form, and dispatched no host or durable effect; ${stage} is therefore not applicable to this exact interaction.`,
+      evidence: [evidenceRef]
+    };
+  }
   if (!required) return { state: 'not_applicable', detail: `Proof matrix marks ${stage} not applicable for this control kind.`, evidence: [evidenceRef] };
   const present = (
     (stage === 'open_load' && probe.loaded) ||
     (stage === 'display' && probe.visible) ||
+    (stage === 'progress_reporting' && requirement.kind === 'indicator' && probe.visible) ||
+    (stage === 'failure_handling' && probe.failureObserved === true) ||
+    (stage === 'recovery_rollback' && probe.recoveryObserved === true) ||
+    (stage === 'failure_handling' && requirement.kind === 'indicator' && probe.visible
+      && /(?:error|failed|failure|notAccepted|invalid|warning)/i.test(String(requirement.control_id || requirement.label || ''))) ||
     (stage === 'user_edit_action' && probe.attempted) ||
     (stage === 'input_validation' && probe.validationObserved) ||
     (stage === 'result_acknowledgement' && probe.acknowledged)
@@ -1137,7 +1198,8 @@ async function resolveSemantic(page, control) {
 }
 
 async function exercise(page, control) {
-  const result = { loaded: true, visible: false, attempted: false, validationObserved: false, acknowledged: false, details: {}, errors: [] };
+  const result = { loaded: true, visible: false, attempted: false, validationObserved: false, acknowledged: false,
+    changed: false, restored: false, failureObserved: false, recoveryObserved: false, details: {}, errors: [] };
   try {
     if (control.kind === 'action') {
       const item = await resolveAction(page, control);
@@ -1163,6 +1225,56 @@ async function exercise(page, control) {
       // validation, host, persistence, or failure stages from that display.
       result.acknowledged = true;
       result.details.result_acknowledgement = 'The exact visible live-state indicator directly exposed its current value.';
+      return result;
+    }
+    if (control.kind === 'form') {
+      const scenario = await item.evaluate(form => {
+        const visible = element => Boolean(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
+        const field = [...form.querySelectorAll('input,select,textarea')]
+          .find(element => visible(element) && !element.disabled && !element.readOnly
+            && !['button', 'submit', 'reset', 'hidden'].includes(String(element.type || '').toLowerCase()));
+        if (!field) return { attempted: false, changed: false, restored: false, failureObserved: false, recoveryObserved: false };
+        const checked = ['checkbox', 'radio'].includes(String(field.type || '').toLowerCase());
+        const original = checked ? field.checked : field.value;
+        const validityBefore = field.checkValidity();
+        const customErrorBefore = field.validity?.customError === true;
+        let changed = false;
+        if (checked) {
+          field.checked = !original; field.dispatchEvent(new Event('change', { bubbles: true })); changed = field.checked !== original;
+          field.checked = original; field.dispatchEvent(new Event('change', { bubbles: true }));
+        } else if (field.tagName === 'SELECT') {
+          const alternate = [...field.options].find(option => option.value !== original && !option.disabled);
+          if (alternate) { field.value = alternate.value; field.dispatchEvent(new Event('change', { bubbles: true })); changed = field.value !== original; }
+          field.value = original; field.dispatchEvent(new Event('change', { bubbles: true }));
+        } else {
+          const alternate = field.type === 'number' ? String(Number(original || 0) + 1) : `${original || ''} px-probe`.trim();
+          field.value = alternate; field.dispatchEvent(new Event('input', { bubbles: true })); changed = field.value !== original;
+          field.value = original; field.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+        const valueRestored = (checked ? field.checked : field.value) === original;
+        let failureObserved = false;
+        if (!customErrorBefore && typeof field.setCustomValidity === 'function') {
+          try {
+            field.setCustomValidity('px-owned-form-probe-invalid');
+            failureObserved = field.validity.customError === true && field.checkValidity() === false;
+          } finally {
+            field.setCustomValidity('');
+          }
+        }
+        const validityRestored = field.checkValidity() === validityBefore && field.validity?.customError === customErrorBefore;
+        return {
+          attempted: changed || failureObserved,
+          changed,
+          restored: valueRestored && validityRestored,
+          failureObserved,
+          recoveryObserved: failureObserved && valueRestored && validityRestored
+        };
+      });
+      Object.assign(result, scenario);
+      result.validationObserved = result.failureObserved;
+      result.acknowledged = result.recoveryObserved;
+      if (result.failureObserved) result.details.failure_handling = 'The exact contained form entered a temporary owned custom-validity failure state.';
+      if (result.recoveryObserved) result.details.recovery_rollback = 'The custom-validity marker was cleared and exact value/checked state plus predecessor validity were restored.';
       return result;
     }
     if (control.kind === 'field') {

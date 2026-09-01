@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-generated-evidence-boundary-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023014",
+  "outcome": "superseded",
+  "reason": "The canonical source-boundary repair is causally proven: 18 focused tests pass and current-root effect discovery completes with 900 records and zero generated-boundary records. Governed current-root projection tests now fail only because the failed predecessor left effect-surface and reachability authorities stale. Recursive repair-time projection refresh is prohibited; an ordered freeze/revision/section handoff must own the remaining proof.",
+  "evidence": [
+    {
+      "reference": "evidence/release/generated-source-boundary-causal-proof-20260826.json",
+      "artifact_sha256": "7c84f4e168d7ab29cf0128399dacb4072b900bdcf5c9956df8f93d11c1d3a4a4",
+      "artifact_size": 1587,
+      "claim": "Causal proof closes the resource-bound source-walker behavior while retaining stale generated projections for one ordered refresh."
+    }
+  ]
+}

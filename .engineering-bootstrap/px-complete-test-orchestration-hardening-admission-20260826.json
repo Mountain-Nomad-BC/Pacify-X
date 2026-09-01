@@ -1,0 +1,31 @@
+{
+  "session_id": "repair-session:px-complete-test-orchestration-hardening-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023095",
+  "gap_id": "PX-OS-1065",
+  "authority": "User authorized all remaining reversible repair work; this session completes the already identified execution single-flight boundary without expanding product scope.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect only runtime/cli.py test orchestration ownership, tests/test_cli_commands.py single-flight regressions, the focused PX-AUD2-012/PX-AUD2-013 proof, repair-campaign state, test ownership metadata, and testing-governance status."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Complete the repository single-flight rule so every mutating test-profile run and test-group run/run-stale is covered; retain the inherited full-profile child exception; update only its focused test/proof, directly owned generated test metadata if required, repair-campaign freeze state, governed testing receipt, and ledger records. Do not change other product behavior, reconcile revisions, run groups/profile/validate, package, install, publish, or certify."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["Run only the broadened single-flight focused regression, existing corrective-release focused tests if needed, directly required test metadata builder if stale, and exactly one governed testing-governance section after repair freeze. Do not run test groups, full profile, validate, package, install, publish, or certify."]
+    }
+  ],
+  "expected_effect": "Close the narrower coverage weakness and restore a current changed-section receipt before revision reconciliation.",
+  "rollback": "Revert only the broadened lock predicate and its focused regression if the causal test fails; retain prior narrow repair and evidence.",
+  "expires_utc": "2026-08-27T04:30:00Z",
+  "evidence": [
+    {
+      "reference": "evidence/release/full-profile-duplicate-execution-20260826.json",
+      "artifact_sha256": "ab6be17ef280af67a42cf26eac94342ef218cebc5e6200a83df7ae9392642b53",
+      "artifact_size": 1311,
+      "claim": "Original execution-level duplicate profile evidence."
+    }
+  ]
+}

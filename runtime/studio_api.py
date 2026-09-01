@@ -905,6 +905,28 @@ def studio_operation(
             )
     elif kind == "skill":
         studio = SkillStudio(root)
+        if operation == "rollback":
+            supplied = Path(str(value.get("promotion_receipt") or ""))
+            receipt = supplied if supplied.is_absolute() else root / supplied
+            resolved = receipt.resolve(strict=True)
+            try:
+                resolved.relative_to(
+                    (root / ".engineering-bootstrap" / "studios" / "skills").resolve(
+                        strict=True
+                    )
+                )
+            except ValueError as error:
+                raise PermissionError(
+                    "skill rollback receipt escapes Studio custody"
+                ) from error
+            rollback = studio.rollback(
+                resolved,
+                approved=bool(value.get("approved", False)),
+                approver=str(value.get("approved_by") or ""),
+                expected_skill_id=str(value.get("skill_id") or ""),
+                expected_version=str(value.get("version") or ""),
+            )
+            return {**rollback, "state": "rolled-back"}
         package, _ = _skill(value)
         if operation == "validate":
             return studio.validate(package)
@@ -924,26 +946,6 @@ def studio_operation(
                 "state": "promoted",
                 "promotion_receipt_relative": receipt_path.relative_to(root).as_posix(),
             }
-        if operation == "rollback":
-            supplied = Path(str(value.get("promotion_receipt") or ""))
-            receipt = supplied if supplied.is_absolute() else root / supplied
-            resolved = receipt.resolve(strict=True)
-            try:
-                resolved.relative_to(
-                    (root / ".engineering-bootstrap" / "studios" / "skills").resolve(
-                        strict=True
-                    )
-                )
-            except ValueError as error:
-                raise PermissionError(
-                    "skill rollback receipt escapes Studio custody"
-                ) from error
-            rollback = studio.rollback(
-                resolved,
-                approved=bool(value.get("approved", False)),
-                approver=str(value.get("approved_by") or ""),
-            )
-            return {**rollback, "state": "rolled-back"}
     raise ValueError(f"unsupported {kind} Studio operation: {operation}")
 
 

@@ -1,0 +1,14 @@
+{
+  "session_id": "closure-session:px-aud2-014-post-repair-profile-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023111",
+  "gap_id": "PX-OS-1065",
+  "outcome": "cancelled",
+  "evidence": [
+    {
+      "reference": ".engineering-bootstrap/test-evidence/groups/exact-installed.json",
+      "artifact_sha256": "bd59328e821a44753e42891cea4c2d0cf9efc4b3008636d87ee03d246530730b",
+      "artifact_size": 1023,
+      "claim": "The single-flight full-profile attempt failed closed during stale-group refresh on three exact-installed nodes; no profile receipt was produced or reused."
+    }
+  ]
+}

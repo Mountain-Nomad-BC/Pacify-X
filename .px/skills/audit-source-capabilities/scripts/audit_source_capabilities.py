@@ -68,16 +68,42 @@ DEFAULT_EXCLUDES = {
     ".git",
     ".hg",
     ".svn",
+    ".engineering-bootstrap",
     "__pycache__",
     ".pytest_cache",
+    ".vscode-test",
+    ".vscodecounter",
     "node_modules",
     "dist",
     "build",
     "coverage",
+    "evidence",
     ".mypy_cache",
     ".ruff_cache",
+    ".tmp",
+    "portablegit",
+    "python",
     "venv",
 }
+OPAQUE_EXTERNAL_BOUNDARIES = {
+    ".engineering-bootstrap",
+    ".tmp",
+    ".vscode-test",
+    ".vscodecounter",
+    "evidence",
+    "node_modules",
+    "portablegit",
+    "python",
+}
+DEFAULT_OPAQUE_PATHS = {
+    ".px/preserved-extension-installations",
+    ".px/preserved-skills",
+}
+
+
+def _temporary_name(name: str) -> bool:
+    lowered = name.casefold()
+    return lowered.startswith(".tmp") or lowered.startswith("tmp_")
 MECHANISMS = {
     "atomic-state": r"(?i)\b(os\.replace|atomic[_ -]?(write|swap|rename)|fsync|write[_ -]?ahead|temp(?:orary)?[_ -]?file)\b",
     "bounded-retry": r"(?i)\b(exponential[_ -]?backoff|retry[_ -]?(budget|policy|after)|max[_ -]?retries|jitter|circuit[_ -]?breaker)\b",
@@ -120,6 +146,9 @@ COMBINED_MECHANISMS = re.compile(
 )
 COMPILED_MECHANISMS = {
     name: re.compile(pattern) for name, pattern in MECHANISMS.items()
+}
+COMBINED_GROUP_TO_MECHANISM = {
+    f"m{index}": name for index, name in enumerate(MECHANISMS)
 }
 MECHANISM_PREFILTERS = {
     "atomic-state": (
@@ -365,6 +394,7 @@ MECHANISM_PREFILTERS = {
 SKILL_NAME = re.compile(r"(?m)^name:\s*[\"']?([^\n\"']+)")
 SKILL_DESCRIPTION = re.compile(r"(?m)^description:\s*[\"']?([^\n]+)")
 STREAM_CHUNK_BYTES = 1024 * 1024
+MAX_MECHANISM_SCAN_BYTES = 8 * 1024 * 1024
 MAX_EXCLUDED_BOUNDARY_ENTRIES = 1_000_000
 TEXT_OVERLAP_CHARACTERS = 1024
 METADATA_PREFIX_BYTES = 12000
@@ -401,6 +431,15 @@ def _hash_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _write_progress(path: Path | None, payload: dict[str, object]) -> None:
+    if path is None:
+        return
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_name(path.name + ".tmp")
+    temporary.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+    os.replace(temporary, path)
+
+
 def _scan_text(path: Path) -> tuple[str, str, Counter[str]]:
     """Hash and line-scan text without loading oversized files or regexing irrelevant lines."""
     digest = hashlib.sha256()
@@ -411,16 +450,11 @@ def _scan_text(path: Path) -> tuple[str, str, Counter[str]]:
             digest.update(line)
             if len(prefix) < METADATA_PREFIX_BYTES:
                 prefix.extend(line[: METADATA_PREFIX_BYTES - len(prefix)])
-            lowered = line.lower()
-            decoded: str | None = None
-            for name, triggers in MECHANISM_PREFILTERS.items():
-                if not any(trigger in lowered for trigger in triggers):
-                    continue
-                if decoded is None:
-                    decoded = line.decode("utf-8", errors="replace")
-                hit_counts[name] += sum(
-                    1 for _ in COMPILED_MECHANISMS[name].finditer(decoded)
-                )
+            decoded = line.decode("utf-8", errors="replace")
+            for match in COMBINED_MECHANISMS.finditer(decoded):
+                mechanism = COMBINED_GROUP_TO_MECHANISM.get(match.lastgroup or "")
+                if mechanism is not None:
+                    hit_counts[mechanism] += 1
     return (
         digest.hexdigest(),
         bytes(prefix).decode("utf-8", errors="replace"),
@@ -569,12 +603,14 @@ def audit(
     existing_catalog: Path | None = None,
     excluded_names: Iterable[str] = (),
     max_bytes: int = 2_000_000,
+    progress_output: Path | None = None,
 ) -> dict[str, object]:
     source = root.resolve()
     if not source.is_dir() or source == Path(source.anchor):
         raise ValueError("root must be an explicit non-filesystem-root directory")
     catalog = _catalog(existing_catalog)
-    excluded = {item.casefold() for item in DEFAULT_EXCLUDES | set(excluded_names)}
+    explicit_excluded = {item.casefold() for item in excluded_names}
+    excluded = {item.casefold() for item in DEFAULT_EXCLUDES} | explicit_excluded
     extension_counts: Counter[str] = Counter()
     excluded_counts: Counter[str] = Counter()
     mechanism_counts: Counter[str] = Counter()
@@ -587,6 +623,15 @@ def audit(
     excluded_boundaries: list[dict[str, object]] = []
     inventory_records: list[tuple[str, int, str | None, str]] = []
     paths: list[Path] = []
+    _write_progress(
+        progress_output,
+        {
+            "schema_version": "px.audit-source-capabilities-progress/1.0",
+            "source_root": source.as_posix(),
+            "phase": "inventory",
+            "complete": False,
+        },
+    )
     for current, directories, filenames in os.walk(
         source, topdown=True, followlinks=False
     ):
@@ -596,13 +641,48 @@ def audit(
             candidate = current_path / name
             relative = candidate.relative_to(source)
             lowered = name.casefold()
+            relative_key = relative.as_posix().casefold()
+            path_is_opaque = relative_key in DEFAULT_OPAQUE_PATHS
             if (
                 lowered in excluded
                 or lowered.startswith(".venv")
                 or lowered.endswith("-venv")
+                or _temporary_name(lowered)
+                or path_is_opaque
             ):
                 excluded_counts[name] += 1
                 totals["excluded_directories"] += 1
+                opaque_external = (
+                    lowered in OPAQUE_EXTERNAL_BOUNDARIES
+                    or lowered in explicit_excluded
+                    or lowered.startswith(".venv")
+                    or lowered.endswith("-venv")
+                    or _temporary_name(lowered)
+                    or path_is_opaque
+                )
+                if opaque_external:
+                    relative_value = relative.as_posix()
+                    inventory_records.append(
+                        (relative_value, 0, None, "opaque-external-boundary")
+                    )
+                    boundary_hash = hashlib.sha256()
+                    _update_inventory_hash(
+                        boundary_hash,
+                        relative_value,
+                        0,
+                        None,
+                        entry_kind="opaque-external-boundary",
+                    )
+                    totals["opaque_external_boundaries"] += 1
+                    excluded_boundaries.append(
+                        {
+                            "path": relative_value,
+                            "reason": "external-environment-boundary",
+                            "inventory_method": "boundary-identity-no-recursion",
+                            "metadata_inventory_sha256": boundary_hash.hexdigest(),
+                        }
+                    )
+                    continue
                 (
                     boundary_records,
                     boundary_symlinks,
@@ -654,6 +734,45 @@ def audit(
         directories[:] = kept
         for name in sorted(filenames, key=str.casefold):
             path = current_path / name
+            if _temporary_name(name):
+                try:
+                    metadata = os.stat(path, follow_symlinks=False)
+                    relative = path.relative_to(source).as_posix()
+                    if stat.S_ISLNK(metadata.st_mode):
+                        totals["symlink_skipped"] += 1
+                        excluded_boundaries.append(
+                            {"path": relative, "reason": "symlink"}
+                        )
+                    elif stat.S_ISREG(metadata.st_mode):
+                        inventory_records.append(
+                            (relative, metadata.st_size, None, "owned-temporary")
+                        )
+                        totals["excluded_files"] += 1
+                        totals["excluded_bytes"] += metadata.st_size
+                        temporary_hash = hashlib.sha256()
+                        _update_inventory_hash(
+                            temporary_hash,
+                            relative,
+                            metadata.st_size,
+                            None,
+                            entry_kind="owned-temporary",
+                        )
+                        excluded_boundaries.append(
+                            {
+                                "path": relative,
+                                "reason": "owned-temporary",
+                                "file_count": 1,
+                                "byte_count": metadata.st_size,
+                                "symlink_count": 0,
+                                "inventory_method": "path-and-size-metadata",
+                                "metadata_inventory_sha256": temporary_hash.hexdigest(),
+                            }
+                        )
+                    else:
+                        errors.append(f"{path}: non-regular temporary entry")
+                except OSError as error:
+                    errors.append(f"{path}: {type(error).__name__}: {error}")
+                continue
             if name.startswith(".") and name.casefold().endswith(".lock"):
                 try:
                     metadata = os.stat(path, follow_symlinks=False)
@@ -696,7 +815,8 @@ def audit(
                 continue
             paths.append(path)
 
-    for path in sorted(paths, key=lambda item: item.as_posix().casefold()):
+    ordered_paths = sorted(paths, key=lambda item: item.as_posix().casefold())
+    for path_index, path in enumerate(ordered_paths, start=1):
         try:
             if not path.is_file() or path.is_symlink():
                 if path.is_symlink():
@@ -717,8 +837,15 @@ def audit(
             oversized = size > max_bytes
             if oversized:
                 totals["oversize"] += 1
-                totals["oversize_stream_scanned"] += 1
-            digest, metadata_prefix, hit_counts = _scan_text(path)
+            if size > MAX_MECHANISM_SCAN_BYTES:
+                digest = _hash_file(path)
+                metadata_prefix = ""
+                hit_counts = Counter()
+                totals["oversize_hash_only"] += 1
+            else:
+                if oversized:
+                    totals["oversize_stream_scanned"] += 1
+                digest, metadata_prefix, hit_counts = _scan_text(path)
             inventory_records.append(
                 (relative.as_posix(), size, digest, "regular-file")
             )
@@ -772,6 +899,19 @@ def audit(
             totals["text_scanned"] += 1
         except (OSError, UnicodeError) as error:
             errors.append(f"{path}: {type(error).__name__}: {error}")
+        if progress_output is not None and (
+            path_index == 1 or path_index % 100 == 0 or path_index == len(ordered_paths)
+        ):
+            progress = {
+                "schema_version": "px.audit-source-capabilities-progress/1.0",
+                "source_root": source.as_posix(),
+                "phase": "content-scan",
+                "files_completed": path_index,
+                "files_total": len(ordered_paths),
+                "last_path": path.relative_to(source).as_posix(),
+                "complete": path_index == len(ordered_paths),
+            }
+            _write_progress(progress_output, progress)
 
     for relative, size, digest, entry_kind in sorted(
         inventory_records, key=lambda item: item[0].casefold()
@@ -797,7 +937,7 @@ def audit(
     )
     return {
         "schema_version": "1.1",
-        "scanner": "audit-source-capabilities/1.3.1",
+        "scanner": "audit-source-capabilities/1.4.0",
         "created_utc": datetime.now(timezone.utc).isoformat(),
         "source_root": source.as_posix(),
         "configuration": {"max_bytes": max_bytes, "excluded_names": sorted(excluded)},
@@ -806,7 +946,7 @@ def audit(
             "extension_counts": dict(sorted(extension_counts.items())),
             "excluded_counts": dict(sorted(excluded_counts.items())),
             "inventory_sha256": inventory_hash.hexdigest(),
-            "inventory_scope": "all regular files; content SHA-256 for included source and path/size metadata for explicitly excluded boundaries",
+            "inventory_scope": "all included source regular files plus boundary identities for external environments; content SHA-256 for included source and path/size metadata for ordinary excluded generated boundaries",
             "excluded_inventory_method": "path-and-size-metadata-no-body-read",
             "excluded_boundary_entry_limit": MAX_EXCLUDED_BOUNDARY_ENTRIES,
             "error_count": len(errors),
@@ -829,12 +969,14 @@ def main() -> int:
     parser.add_argument("--exclude-name", action="append", default=[])
     parser.add_argument("--max-bytes", type=int, default=2_000_000)
     parser.add_argument("--allow-errors", action="store_true")
+    parser.add_argument("--progress-output", type=Path)
     args = parser.parse_args()
     result = audit(
         args.root,
         existing_catalog=args.existing_catalog,
         excluded_names=args.exclude_name,
         max_bytes=args.max_bytes,
+        progress_output=args.progress_output,
     )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")

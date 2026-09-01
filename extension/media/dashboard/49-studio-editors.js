@@ -420,10 +420,16 @@
     const kindsAreUsable = rawKinds.length === new Set(rawKinds).size
       && rawKinds.every(kind => AGENT_NODE_ORDER.includes(kind))
       && requiredKinds.every(kind => rawKinds.includes(kind));
+    const newlyDeclaredKinds = kindsAreUsable
+      ? AGENT_NODE_ORDER.filter(kind => AGENT_OPTIONAL_NODES.has(kind)
+        && stringList(draft?.[AGENT_OPTIONAL_NODE_FIELDS[kind]]).length
+        && !rawKinds.includes(kind))
+      : [];
+    const requestedKinds = kindsAreUsable ? [...new Set([...rawKinds, ...newlyDeclaredKinds])] : null;
     const projected = projectAgentBuilderGraph(
       draft,
       sha256Utf8(draft?.instructions || ''),
-      kindsAreUsable ? rawKinds : null
+      requestedKinds
     );
     if (!Array.isArray(graph.edges)) return { ...projected, edges: [] };
     const edges = graph.edges.map(edge => ({
@@ -433,7 +439,15 @@
       target_node: String(edge?.target_node || '').trim().toLowerCase(),
       target_port: String(edge?.target_port || '').trim().toLowerCase(),
       relation: String(edge?.relation || '').trim().toLowerCase()
-    })).sort((left, right) => left.edge_id.localeCompare(right.edge_id));
+    }));
+    const introducedNodeIds = new Set(newlyDeclaredKinds.map(kind => `agent-node:${kind}`));
+    const retainedEdgeIds = new Set(edges.map(edge => edge.edge_id));
+    for (const edge of projected.edges) {
+      if ((introducedNodeIds.has(edge.source_node) || introducedNodeIds.has(edge.target_node)) && !retainedEdgeIds.has(edge.edge_id)) {
+        edges.push(clone(edge)); retainedEdgeIds.add(edge.edge_id);
+      }
+    }
+    edges.sort((left, right) => left.edge_id.localeCompare(right.edge_id));
     return { ...projected, edges };
   }
 
@@ -589,8 +603,8 @@
     for (const [name, schema] of [['Input', draft?.input_schema], ['Output', draft?.output_schema]]) if (!schema || typeof schema !== 'object' || Array.isArray(schema) || schema.type !== 'object') issues.push(`${name} schema must be a JSON object schema with root type object.`);
     if (stringList(draft?.tool_binding_ids).some(id => !stringList(draft?.capability_binding_ids).includes(id))) issues.push('Every tool binding must reference a declared capability binding.');
     if (model?.provider === 'pacify-local' && stringList(draft?.tool_binding_ids).length) issues.push('The local Ollama route does not advertise tool calling; use a compatible VS Code model or remove tool bindings.');
-    if (stringList(draft?.memory_binding_ids).length) issues.push('Memory bindings are preserved in the candidate schema but runtime retrieval is not yet resolved; remove them before admission.');
-    if (stringList(draft?.handoff_agent_ids).length) issues.push('Handoff bindings are preserved in the candidate schema but runtime dispatch is not yet resolved; remove them before admission.');
+    if (stringList(draft?.memory_binding_ids).length) warnings.push('Memory bindings are preserved for structural admission, but preview and Start remain blocked until runtime retrieval is resolved.');
+    if (stringList(draft?.handoff_agent_ids).length) warnings.push('Handoff bindings are preserved for structural admission, but preview and Start remain blocked until runtime dispatch is resolved.');
     if (stringList(draft?.handoff_agent_ids).includes(draft?.agent_id)) issues.push('An agent cannot hand off to itself.');
     const grants = Array.isArray(draft?.grants) ? draft.grants : []; const bindings = Array.isArray(draft?.bindings) ? draft.bindings : [];
     if (!grants.length) issues.push('At least one effect grant declaration is required.');

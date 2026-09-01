@@ -1,0 +1,37 @@
+{
+  "session_id": "closure-session:px-post-lazy-import-profile-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023152",
+  "gap_id": "PX-OS-1065",
+  "authority": "User-authorized ordered completion of all Pacify-X repairs required before reinstall.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": [
+        "Inspect only the focused three-node diagnosis, current repair campaign, generated projection ownership, governed section/group currentness, shared orchestration lock, and resulting receipts."
+      ]
+    },
+    {
+      "effect": "write",
+      "scope": [
+        "Resolve the bounded source-repair track from its focused proof; freeze repair; perform exactly one canonical generated-projection reconciliation under the shared lock; run the three-node proof together; advance to revision_reconciled only on success; refresh only stale governed sections; advance to sections_current only when all six are current; run exactly one full profile and advance to full_profile_passed only on success; retain evidence. On any failure return to repair and stop. Do not validate, package, install, publish, commit, push, merge, or certify."
+      ]
+    },
+    {
+      "effect": "execute",
+      "scope": [
+        "With PYTHONDONTWRITEBYTECODE=1 set, run one canonical projection rebuild, the three exact focused nodes together, focused generated-integrity probes, section status and only stale sections, then exactly one full profile under the shared physical lock. Do not run a second projection or profile, validate, package, install, publish, commit, push, merge, or certify."
+      ]
+    }
+  ],
+  "expected_effect": "Bind the lazy-import repair into current generated ownership, prove all three failure nodes together, and produce one race-free passing full profile.",
+  "rollback": "Stop at the last passing phase, retain exact failure evidence, return to repair, and do not duplicate projection or profile execution.",
+  "expires_utc": "2026-08-30T00:00:00Z",
+  "evidence": [
+    {
+      "reference": "evidence/release/post-singleflight-three-node-focused-diagnosis-20260826.json",
+      "claim": "Source repair proof and exact ordered projection boundary.",
+      "artifact_sha256": "850e6c38a2137a33c7fdc5669bdbd26f6c948ad9691786a52a524a133205f582",
+      "artifact_size": 1565
+    }
+  ]
+}

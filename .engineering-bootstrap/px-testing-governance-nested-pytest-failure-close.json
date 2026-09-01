@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "verification-session:px-profile-orchestration-hardened-handoff-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023056",
+  "outcome": "superseded",
+  "reason": "The ordered handoff stopped at testing-governance: 216 passed, 1 skipped, but the nested pytest corruption control failed during collection instead of producing the responsible-test custody violation. No group refresh, full profile, validation, package, install, publication, or certification ran.",
+  "evidence": [
+    {
+      "reference": ".engineering-bootstrap/test-evidence/sections/testing-governance.json",
+      "artifact_sha256": "09ff7e8e73465657b3a53e34d8db7d92cb0c7943fc3c07f4bd1178d327c60292",
+      "artifact_size": 1266,
+      "claim": "PX-AUD2-010 exact governed process-custody failure."
+    }
+  ]
+}

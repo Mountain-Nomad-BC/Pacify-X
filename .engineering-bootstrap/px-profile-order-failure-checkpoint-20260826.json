@@ -1,0 +1,18 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023152",
+  "learned": "Four focused source and generated-integrity nodes pass together immediately after reconciliation, and source hashes remain unchanged. The governed full profile still fails in release-audit and core-a-f; core-a-f has no parsed failure node. The remaining causal defect is order-dependent shared test/release state or session-level custody, not static source drift.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": [
+    "PX-OS-1065"
+  ],
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "evidence": [
+    {
+      "reference": "evidence/release/profile-order-dependent-failure-denominator-20260826.json",
+      "claim": "Exact order-dependent failure denominator after a clean focused proof.",
+      "artifact_sha256": "d88d7c06ba0c6fce53b9cb20757468f597cbf253d203b1a019a7a6b8baeab780",
+      "artifact_size": 1533
+    }
+  ]
+}

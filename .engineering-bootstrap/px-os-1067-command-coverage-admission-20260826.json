@@ -1,0 +1,37 @@
+{
+  "session_id": "repair-session:px-installed-command-coverage-20260826",
+  "gap_id": "PX-OS-1067",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023366",
+  "authority": "User requested complete operational repair and authorizes reversible isolated-host interactions before release reconciliation.",
+  "expected_effect": "Add exact physical coverage for safe registered workbench commands and matching dashboard command paths without executing destructive, installation, credential, approval-rotation, validation, cleanup, or certification effects.",
+  "rollback": "Revert only the bounded walker and direct-test patch if focused or governed tests fail; retain truthful partial records for commands requiring later exact authority.",
+  "expires_utc": "2026-09-06T12:00:00Z",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": [
+        "Inspect exact r2 dashboard-control-plane command records, extension/scripts/run-operational-ui-walk.js command handling and workbench acquisition, extension/src/extension.js registered command identities and effects, extension/media dashboard command actions, direct installed-probe tests, and registry/test_profiles.json ownership for the command-coverage cluster."
+      ]
+    },
+    {
+      "effect": "write",
+      "scope": [
+        "Modify only extension/scripts/run-operational-ui-walk.js, extension/tests/operational-ui-walk-installed-probe.test.js and command-focused direct tests if needed, registry/test_profiles.json only if ownership is absent, directly affected generated ownership projection if required, one evidence/release/px-os-1067-installed-command-coverage-repair-20260826.json file, governed dashboard-extension receipt, and session lifecycle. Do not modify product command behavior, conditional/fault or durable authority profiles, processing order, package/install state, revisions, Git/GitHub, or certification evidence."
+      ]
+    },
+    {
+      "effect": "execute",
+      "scope": [
+        "Run bounded command source searches, direct installed-probe/status Node tests, syntax checks, required ownership builder if any, and one owning python -m runtime.cli test-section run dashboard-extension gate. Do not run operational walks, providers, destructive or billable commands, other sections, full profile, validate, package, install, Git/GitHub, or certify."
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "reference": "evidence/operational-ui-walk-current-source-final-r2-20260826/receipt.json",
+      "artifact_sha256": "774fcfd8f0ccb6a5c34a8dac379ba094beb7350aacdf756772a448f1bbe56d78",
+      "artifact_size": 9986164,
+      "claim": "The physical r2 denominator contains 21 command controls, with only pacifyX.openDashboard attempted and the remaining safe command paths absent or authority-skipped."
+    }
+  ]
+}

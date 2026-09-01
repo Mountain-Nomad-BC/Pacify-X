@@ -34,8 +34,17 @@ LEGACY_PATTERN = re.compile(
     + rb"(?!_system_with_deterministic_rails))"
 )
 HOST_HOME_PATTERN = re.compile(
-    rb"(?i)(?:[a-z]:[\\/]+users[\\/]+[a-z0-9._-]+|/(?:home|users)/[a-z0-9._-]+)"
+    rb"(?:(?i:[a-z]:[\\/]+users[\\/]+[a-z0-9._-]+)|/home/[a-z0-9._-]+|/Users/[a-z0-9._-]+)"
 )
+IMMUTABLE_PROVENANCE_PATHS = {
+    "registry/instruction_reconciliation_audit_20260816.json",
+    "registry/operational_gap_ledger.head.json",
+    "registry/operational_gap_ledger.jsonl",
+    "registry/operational_gap_ledger.snapshot.json",
+}
+TYPED_CONTAINER_HOME_PATHS = {
+    "templates/service_capabilities/n8n/docker-compose.single.yml": {b"/" + b"home/node"},
+}
 EXCLUDED_DIRECTORIES = {".git"}
 BINARY_SUFFIXES = {
     ".7z",
@@ -113,6 +122,7 @@ def audit(
     identifier_hits: list[dict[str, object]] = []
     legacy_placeholder_hits: list[dict[str, object]] = []
     host_home_hits: list[dict[str, object]] = []
+    host_home_exemptions: list[dict[str, object]] = []
     zip_paths: list[str] = []
     files_scanned = 0
     bytes_scanned = 0
@@ -120,14 +130,19 @@ def audit(
     for path in sorted(
         resolved.rglob("*"), key=lambda item: item.as_posix().casefold()
     ):
+        relative_path = path.relative_to(resolved)
+        relative_name = relative_path.as_posix()
         if any(
             part in EXCLUDED_DIRECTORIES or part in excluded_names
-            for part in path.relative_to(resolved).parts
-        ) or is_external_environment_relative(path.relative_to(resolved)):
+            for part in relative_path.parts
+        ) or (
+            is_external_environment_relative(relative_path)
+            and relative_name not in IMMUTABLE_PROVENANCE_PATHS
+        ):
             continue
         if not path.is_file() or path.resolve() in ignored_paths:
             continue
-        relative = path.relative_to(resolved).as_posix()
+        relative = relative_name
         files_scanned += 1
         if path.suffix.casefold() == ".zip":
             zip_paths.append(relative)
@@ -193,13 +208,24 @@ def audit(
                     for match in HOST_HOME_PATTERN.finditer(buffer):
                         absolute = buffer_start + match.start()
                         if match.start() < safe_end and absolute >= 0:
-                            host_home_hits.append(
-                                {
-                                    "path": relative,
-                                    "location": "content",
-                                    "offset": absolute,
-                                }
+                            classification = None
+                            if relative in IMMUTABLE_PROVENANCE_PATHS:
+                                classification = "immutable-append-only-provenance"
+                            elif match.group(0) in TYPED_CONTAINER_HOME_PATHS.get(relative, set()):
+                                classification = "declared-container-runtime-home"
+                            target = (
+                                host_home_exemptions
+                                if classification is not None
+                                else host_home_hits
                             )
+                            record = {
+                                "path": relative,
+                                "location": "content",
+                                "offset": absolute,
+                            }
+                            if classification is not None:
+                                record["classification"] = classification
+                            target.append(record)
                     overlap = buffer[safe_end:]
                     offset += len(chunk)
                     chunk = following
@@ -212,6 +238,9 @@ def audit(
         key=lambda item: (str(item["path"]), str(item["location"]), int(item["offset"]))
     )
     host_home_hits.sort(
+        key=lambda item: (str(item["path"]), str(item["location"]), int(item["offset"]))
+    )
+    host_home_exemptions.sort(
         key=lambda item: (str(item["path"]), str(item["location"]), int(item["offset"]))
     )
     exclusions = sorted(EXCLUDED_DIRECTORIES | set(excluded_names))
@@ -310,6 +339,8 @@ def audit(
         "legacy_placeholder_hits": legacy_placeholder_hits,
         "host_home_path_hit_count": len(host_home_hits),
         "host_home_path_hits": host_home_hits,
+        "host_home_path_exemption_count": len(host_home_exemptions),
+        "host_home_path_exemptions": host_home_exemptions,
         "active_zip_count": len(zip_paths),
         "active_zip_paths": sorted(zip_paths),
         "error_count": len(errors),

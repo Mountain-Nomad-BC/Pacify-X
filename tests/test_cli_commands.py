@@ -156,21 +156,26 @@ class CliCommandTests(unittest.TestCase):
         stale = {
             "valid": False,
             "groups": [
-                {"group": "current", "current": True},
-                {"group": "stale-a", "current": False},
-                {"group": "stale-b", "current": False},
+                {"group": "current", "current": True, "fresh": True, "passed": True},
+                {"group": "stale-a", "current": False, "fresh": False, "passed": False},
+                {"group": "stale-b", "current": False, "fresh": False, "passed": False},
             ],
         }
         current = {
             "valid": True,
             "groups": [
-                {"group": "current", "current": True},
-                {"group": "stale-a", "current": True},
-                {"group": "stale-b", "current": True},
+                {"group": "current", "current": True, "fresh": True, "passed": True},
+                {"group": "stale-a", "current": True, "fresh": True, "passed": True},
+                {"group": "stale-b", "current": True, "fresh": True, "passed": True},
             ],
         }
+        registered = [
+            {"group": "stale-a", "timeout_seconds": 200},
+            {"group": "stale-b", "timeout_seconds": 300},
+        ]
         with (
             patch("runtime.test_profiles.group_status", side_effect=[stale, current]),
+            patch("runtime.test_profiles.resolve_test_groups", return_value=registered),
             patch(
                 "runtime.test_runner.run_test_command",
                 return_value={
@@ -193,13 +198,57 @@ class CliCommandTests(unittest.TestCase):
         environment = runner.call_args.kwargs["environment"]
         self.assertEqual(environment["PYTHONDONTWRITEBYTECODE"], "1")
         self.assertTrue(any(key.casefold() == "path" for key in environment))
-        self.assertEqual(runner.call_args.kwargs["timeout_seconds"], 321)
+        self.assertEqual(runner.call_args.kwargs["timeout_seconds"], 560)
+        self.assertEqual(result["requested_timeout_seconds"], 321)
+        self.assertEqual(result["effective_timeout_seconds"], 560)
         self.assertNotIn("stdout", result["execution"])
+
+    def test_full_profile_collects_all_fresh_failed_groups_before_repair(self) -> None:
+        stale = {
+            "valid": False,
+            "groups": [
+                {"group": "broken-a", "current": False, "fresh": False, "passed": False},
+                {"group": "broken-b", "current": False, "fresh": False, "passed": False},
+            ],
+        }
+        failed = {
+            "valid": False,
+            "groups": [
+                {"group": "broken-a", "current": False, "fresh": True, "passed": False},
+                {"group": "broken-b", "current": False, "fresh": True, "passed": False},
+            ],
+        }
+        registered = [
+            {"group": "broken-a", "timeout_seconds": 30},
+            {"group": "broken-b", "timeout_seconds": 30},
+        ]
+        with (
+            patch("runtime.test_profiles.group_status", side_effect=[stale, failed]),
+            patch("runtime.test_profiles.resolve_test_groups", return_value=registered),
+            patch(
+                "runtime.test_runner.run_test_command",
+                return_value={
+                    "valid": False,
+                    "exit_code": 1,
+                    "timed_out": False,
+                    "supervision_status": "exited",
+                    "process_tree_terminated": True,
+                },
+            ),
+            patch("runtime.resource_lifecycle.ResourceManager"),
+        ):
+            result = _refresh_stale_groups_for_full_profile(ROOT)
+        self.assertFalse(result["valid"])
+        self.assertEqual(result["failed_groups"], ["broken-a", "broken-b"])
 
     def test_full_profile_group_refresh_fails_closed(self) -> None:
         stale = {"valid": False, "groups": [{"group": "broken", "current": False}]}
         with (
             patch("runtime.test_profiles.group_status", return_value=stale),
+            patch(
+                "runtime.test_profiles.resolve_test_groups",
+                return_value=[{"group": "broken", "timeout_seconds": 30}],
+            ),
             patch(
                 "runtime.test_runner.run_test_command",
                 return_value={"valid": False, "exit_code": 1, "stderr": "failed"},
@@ -212,7 +261,7 @@ class CliCommandTests(unittest.TestCase):
     def test_full_profile_does_not_rerun_current_groups(self) -> None:
         current = {
             "valid": True,
-            "groups": [{"group": "already-current", "current": True}],
+            "groups": [{"group": "already-current", "current": True, "fresh": True, "passed": True}],
         }
         with (
             patch("runtime.test_profiles.group_status", return_value=current),
@@ -776,6 +825,26 @@ class CliCommandTests(unittest.TestCase):
             self.assertIn("new evidence", denied["reason"])
             self.assertEqual(allowed_status, 0)
             self.assertTrue(allowed["allowed"])
+
+    def test_release_preflight_claims_and_finishes_the_one_shot_package_stage(self):
+        source = (ROOT / "runtime/cli.py").read_text(encoding="utf-8")
+        start = source.index('elif args.release_action in {"preflight", "dry-run", "discover"}')
+        branch = source[
+            start :
+            source.index('else:\n                from .release_campaign import claim_release_stage', start)
+        ]
+        self.assertIn('require_processing_stage(root, "package")', branch)
+        self.assertIn('release_stage_claim = claim_release_stage(root, "package")', branch)
+        completion = source[source.index("if release_stage_claim is not None:") :]
+        self.assertIn("finish_release_stage(", completion)
+        self.assertIn('passed=output.get("valid") is True', completion)
+
+    def test_release_finalize_participates_in_the_single_flight_lock(self):
+        source = (ROOT / "runtime/cli.py").read_text(encoding="utf-8")
+        lock_owner = source[source.index("def _claim_test_orchestration_single_flight") : source.index("def _release_test_orchestration_single_flight")]
+        self.assertIn('in {"preflight", "dry-run", "finalize"}', lock_owner)
+        self.assertIn('getattr(args, "command", None) == "test-section"', lock_owner)
+        self.assertIn('"section-orchestration"', lock_owner)
 
 
 if __name__ == "__main__":

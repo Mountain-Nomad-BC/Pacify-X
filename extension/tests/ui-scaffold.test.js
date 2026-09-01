@@ -252,8 +252,41 @@ test('state scaffold preserves current defaults without sharing mutable containe
   assert.deepEqual(JSON.parse(JSON.stringify(stateModule.persistedView(first))), {
     active: 'memory', advancedOpen: true, capabilityKind: 'skills', agentScope: 'core', workflowScope: 'core',
     environmentScope: 'graph', graphView: 'capabilities', graphMode: 'full', graphTarget: '', graphLayout: 'community', graphInspectorOpen: false,
-    graphDepth: 1, graphKind: '', graphStatus: '', graphCommunity: '', graphSavedViews: [], studioHistory: [], workingStudioDrafts: {}
+    graphDepth: 1, graphKind: '', graphStatus: '', graphCommunity: '', graphRelation: '', graphSavedViews: [], studioHistory: [], workingStudioDrafts: {}
   });
+});
+
+test('state scaffold accepts only exact bounded Knowledge Graph saved views', () => {
+  const stateModule = loadScaffold({ TextEncoder }).require('state');
+  const valid = { name: 'Repository imports', view: 'repository', mode: 'full', target: '', query: '', relation: 'imports', direction: 'both', depth: 2, layout: 'flow', kind: 'file', status: '', community: '' };
+  const portable = value => JSON.parse(JSON.stringify(value));
+  assert.deepEqual(portable(stateModule.graphSavedViews([valid])), [valid]);
+  assert.deepEqual(portable(stateModule.graphSavedViews([{ ...valid, proof: 'substituted' }])), []);
+  assert.deepEqual(portable(stateModule.graphSavedViews([{ ...valid, direction: 'sideways' }])), []);
+  assert.deepEqual(portable(stateModule.graphSavedViews([{ ...valid, name: ' x ' }])), []);
+  const restored = stateModule.createInitial({ graphSavedViews: [valid] });
+  assert.deepEqual(portable(restored.graphSavedViews), [valid]);
+  assert.deepEqual(portable(stateModule.persistedView(restored).graphSavedViews), [valid]);
+});
+
+test('state scaffold persists Studio working drafts as shallow strings and restores their semantics', () => {
+  const stateModule = loadScaffold({ TextEncoder }).require('state');
+  const envelope = {
+    schema_version: 'px.studio-working-draft/1.0',
+    kind: 'workflow',
+    draft: {
+      workflow_id: 'recovery.workflow',
+      version: '1.0.0',
+      steps: [{ id: 'one', config: { nested: { beyond: { transport: { depth: { limits: true } } } } } }]
+    },
+    source_binding: null
+  };
+  const state = stateModule.createInitial({ workingStudioDrafts: { workflow: envelope } });
+  const persisted = stateModule.persistedView(state);
+  assert.equal(typeof persisted.workingStudioDrafts.workflow, 'string');
+  assert.deepEqual(JSON.parse(persisted.workingStudioDrafts.workflow), envelope);
+  const restored = stateModule.createInitial(persisted);
+  assert.deepEqual(JSON.parse(JSON.stringify(restored.workingStudioDrafts.workflow)), envelope);
 });
 
 test('bridge scaffold owns post/subscribe and returns a working unsubscribe', () => {

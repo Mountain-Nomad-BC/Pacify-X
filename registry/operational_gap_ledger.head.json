@@ -1,5 +1,5 @@
 {
-  "checkpoint_sha256": "aa88f7fcda4c38ef40d77856f93dc126958da2247be6ac2ce741a64ad39233bb",
+  "checkpoint_sha256": "77f6692e3b8f1e09c58a3b3ae9a775aa8e3fe331fcd2ae4caeefa7161afb6b79",
   "created_utc": "2026-08-16T17:14:48.634100Z",
   "dashboard": {
     "cards": [
@@ -13,7 +13,7 @@
         "feature": "installed/source identity",
         "finding": "Source is 0.6.19 while the retained VS Code install is 0.6.16 with a mixture of matching and stale files.",
         "id": "PX-OS-085",
-        "linked_control_count": 2,
+        "linked_control_count": 0,
         "next_action": "Reload the active VS Code window, open Pacify-X, and verify Diagnostics reports extension 0.6.20 with exact host/source identity, command/sidebar activation, and no current-source activity-lock failure; then run the installed Studio product-path walk under PX-OS-976.",
         "severity": "blocker",
         "status": "superseded"
@@ -28,10 +28,10 @@
         "feature": "assurance",
         "finding": "The retained visual gate uses explicitly non-operational demo fixtures with an extension identity mismatch, yet its screenshots and passing layout checks were cited as product repair evidence.",
         "id": "PX-OS-001",
-        "linked_control_count": 1,
-        "next_action": "Reconcile exact current source and installed-host behavior before any state advancement.",
+        "linked_control_count": 0,
+        "next_action": "Retain operational evidence and reopen on contrary current-source or installed-host behavior.",
         "severity": "critical",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Every visible action requires a behavior test through its real host boundary, authoritative state transition or read result, failure result, and visible acknowledgement.",
@@ -44,9 +44,9 @@
         "finding": "The UI action inventory proves only rendered action names, declared prose contracts, and matching handler strings. It does not prove useful backend behavior, persistence, error handling, or live-host acknowledgement.",
         "id": "PX-OS-002",
         "linked_control_count": 0,
-        "next_action": "Reconcile exact current source and installed-host behavior before any state advancement.",
+        "next_action": "Retain aggregate and current-source evidence; reopen only if a child scope/lifecycle or current host behavior regresses.",
         "severity": "critical",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "The reloaded live host reports exact version, asset digest, asset protocol, and message schema equality.",
@@ -58,10 +58,10 @@
         "feature": "installed-extension",
         "finding": "The live VS Code host was running an older extension than source and reported host-version-differs-from-source while certification work continued.",
         "id": "PX-OS-003",
-        "linked_control_count": 1,
-        "next_action": "Reconcile exact current source and installed-host behavior before any state advancement.",
+        "linked_control_count": 0,
+        "next_action": "Retain operational evidence and reopen on contrary current-source or installed-host behavior.",
         "severity": "critical",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "A real canvas projects identity/start, behavior, harness/model route, capabilities/tools/skills/workflows, grants/scope, memory/context, tests/validation, approval, and terminal candidate nodes with inspectable typed connections.",
@@ -74,9 +74,9 @@
         "finding": "Agent Studio calls a long form a visual Builder. Its lifecycle strip is decorative; there is no selectable topology, connection model, node inspector, or visual composition of the agent runtime contract.",
         "id": "PX-OS-004",
         "linked_control_count": 0,
-        "next_action": "Reconcile exact current source and installed-host behavior before any state advancement.",
+        "next_action": "Retain aggregate and current-source evidence; reopen only if a child scope/lifecycle or current host behavior regresses.",
         "severity": "critical",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "The overview must preserve navigable hierarchy and meaningful subclusters, progressively reveal all records, expose density and hidden counts, and never imply that a handful of kind boxes is the full system map.",
@@ -133,10 +133,10 @@
         "feature": "assurance",
         "finding": "Assurance renders confident readiness bars from fixture/structural evidence while the same screen reports a host/source identity mismatch. Its readiness presentation is therefore operationally misleading.",
         "id": "PX-OS-019",
-        "linked_control_count": 1,
-        "next_action": "Reconcile exact current source and installed-host behavior before any state advancement.",
+        "linked_control_count": 0,
+        "next_action": "Retain operational evidence and reopen on contrary current-source or installed-host behavior.",
         "severity": "critical",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "This ledger is included in completion authority; no certification or certified naming is allowed while any critical/high operational finding is open or only fixture-verified.",
@@ -149,9 +149,9 @@
         "finding": "Earlier completion and audit workflows did not treat these operational surface failures as blockers, allowing repeated certification work before the product worked correctly.",
         "id": "PX-OS-023",
         "linked_control_count": 0,
-        "next_action": "Reconcile exact current source and installed-host behavior before any state advancement.",
+        "next_action": "Retain current governed evidence and reopen only on contrary current-source or installed-host behavior.",
         "severity": "critical",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Every health label is derived from its own observed source and blockers; connection alone never upgrades identity, provider, memory, agent, workflow, validation, or extension status.",
@@ -164,9 +164,9 @@
         "finding": "Several health and authority labels were synthesized from bridge connectivity or hard-coded as operational even when the installed host identity differed from source and validation was not current.",
         "id": "PX-OS-024",
         "linked_control_count": 0,
-        "next_action": "Reconcile exact current source and installed-host behavior before any state advancement.",
+        "next_action": "Retain current governed evidence and reopen only on contrary current-source or installed-host behavior.",
         "severity": "critical",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Created revisions appear in the catalog after reload with project identity, revision, status, source, and a working reopen/edit action.",
@@ -178,10 +178,10 @@
         "feature": "agent-studio-persistence",
         "finding": "Studio revisions can be persisted but are not reliably rediscovered or reopened after a webview reload because displayed catalogs are largely static and project-scoped revision discovery is incomplete.",
         "id": "PX-OS-025",
-        "linked_control_count": 3,
-        "next_action": "Reconcile exact current source and installed-host behavior before any state advancement.",
+        "linked_control_count": 0,
+        "next_action": "Retain operational evidence and reopen on contrary current-source or installed-host behavior.",
         "severity": "critical",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Unsupported workflow semantics are losslessly preserved and visibly identified; the editor refuses destructive save when it cannot round-trip the source.",
@@ -209,9 +209,9 @@
         "finding": "The current harness:px execution path is a deterministic local worker and does not invoke a declared AI model/provider route, while the surrounding Agent Studio presentation implied a complete agent runtime.",
         "id": "PX-OS-029",
         "linked_control_count": 0,
-        "next_action": "Reconcile exact current source and installed-host behavior before any state advancement.",
+        "next_action": "Retain current governed evidence and reopen only on contrary current-source or installed-host behavior.",
         "severity": "critical",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "All behavior-affecting sources participate in content-derived invalidation and stale validation can never be restored as current after relevant changes.",
@@ -224,9 +224,9 @@
         "finding": "Snapshot and validation cache fingerprints omit relevant runtime, extension, and Studio state, and directory fingerprints can ignore changed children, allowing stale passed state to survive material changes.",
         "id": "PX-OS-032",
         "linked_control_count": 0,
-        "next_action": "Remove or safely invalidate the one-second fingerprint blind window, then rerun the exact bridge cache case.",
+        "next_action": "Retain current governed evidence and reopen only if a watched same-size write can reuse stale snapshot state.",
         "severity": "critical",
-        "status": "scoped"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Maintain one dependency-ordered instruction ledger with a stable requirement ID, source, owner, implementation state, live state, contrary evidence, and blocking finding IDs for every requested outcome.",
@@ -239,9 +239,9 @@
         "finding": "No single current ledger maps every user instruction, supplied audit, architecture add-on, punch card, implementation owner, runtime owner, and live acceptance result. Work repeatedly followed the newest report while earlier requirements silently disappeared.",
         "id": "PX-OS-049",
         "linked_control_count": 0,
-        "next_action": "Reconcile exact current source and installed-host behavior before any state advancement.",
+        "next_action": "Retain current governed evidence and reopen only on contrary current-source or installed-host behavior.",
         "severity": "critical",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Completion projections derive from the current operational ledger, distinguish historical acceptance from present state, verify every source digest, and cannot report cards complete while any current critical/high finding is open or pending live verification.",
@@ -254,9 +254,9 @@
         "finding": "registry/completion_status.json is stale and internally contradictory: it reports cards_complete=true and 81/81 historical cards accepted, describes only 23 operational findings, and carries source hashes that no longer match the current operational ledger and punch-card document.",
         "id": "PX-OS-050",
         "linked_control_count": 0,
-        "next_action": "Reconcile exact current source and installed-host behavior before any state advancement.",
+        "next_action": "Retain current governed evidence and reopen only on contrary current-source or installed-host behavior.",
         "severity": "critical",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Every visible node kind has an explicit executable contract and result schema, unsupported kinds/configuration are blocked before save, and the run trace proves the exact configured semantics rather than a cosmetic label.",
@@ -284,9 +284,9 @@
         "finding": "The dashboard makes operational health depend on a current passed validation receipt, conflating connectivity and functional availability with certification freshness. This drives the same validation-first behavior the user explicitly rejected.",
         "id": "PX-OS-064",
         "linked_control_count": 0,
-        "next_action": "Reconcile exact current source and installed-host behavior before any state advancement.",
+        "next_action": "Retain current governed evidence and reopen only on contrary current-source or installed-host behavior.",
         "severity": "critical",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "An authenticated revision reopens losslessly, saves a distinct immutable version, preserves its predecessor, and reopens from disk.",
@@ -388,10 +388,10 @@
         "feature": "lifecycle separation",
         "finding": "The workflow validate operation directly calls validate_and_admit and changes admission state.",
         "id": "PX-OS-078",
-        "linked_control_count": 2,
-        "next_action": "Complete the missing interaction-chain stages with targeted installed-host evidence.",
+        "linked_control_count": 0,
+        "next_action": "Retain operational evidence and reopen on contrary current-source or installed-host behavior.",
         "severity": "critical",
-        "status": "scoped"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "The contributed command registers before fallible initialization and lazily reports initialization failures when invoked.",
@@ -403,10 +403,10 @@
         "feature": "dashboard command activation",
         "finding": "Command registration occurs late; any earlier activation exception rolls back and VS Code reports command not found.",
         "id": "PX-OS-086",
-        "linked_control_count": 1,
-        "next_action": "Complete the missing interaction-chain stages with targeted installed-host evidence.",
+        "linked_control_count": 0,
+        "next_action": "Retain operational evidence and reopen on contrary current-source or installed-host behavior.",
         "severity": "critical",
-        "status": "scoped"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Every rendered action is classified as UI-only or host-bound with a valid owner/effect/result contract.",
@@ -419,39 +419,9 @@
         "finding": "Concurrent edits placed five UI-only actions under nonexistent host message types; action inventory generation currently rejects them.",
         "id": "PX-OS-094",
         "linked_control_count": 0,
-        "next_action": "In the installed Extension Development Host, compare the rendered action denominator to the generated inventory and retain one exact UI-only action plus one host-bound lifecycle action trace before any operational-verification claim.",
+        "next_action": "Retain r128 operational evidence and reopen only on contradictory current-source or installed-host behavior.",
         "severity": "critical",
-        "status": "integrated"
-      },
-      {
-        "acceptance": "Concurrent writers serialize before reading the head and appending the next hash-chained event.",
-        "area": "dashboard-control-plane",
-        "assigned_owner": "codex-primary",
-        "canonical_surface": "dashboard-control-plane",
-        "control_action": "append operational ledger event",
-        "evidence_lacking": false,
-        "feature": "serialized durable append",
-        "finding": "append_event reads the ledger and later appends without a process lock, permitting duplicate sequence/head races.",
-        "id": "PX-OS-096",
-        "linked_control_count": 0,
-        "next_action": "Guard read-validate-append-snapshot with the repository FileLock and add a contention test.",
-        "severity": "critical",
-        "status": "narrowly_verified"
-      },
-      {
-        "acceptance": "Every known control has an evidence-backed operational or gap disposition, with unresolved controls counted explicitly.",
-        "area": "dashboard-control-plane",
-        "assigned_owner": "codex-primary",
-        "canonical_surface": "dashboard-control-plane",
-        "control_action": "record operational or gap disposition for each inventoried control",
-        "evidence_lacking": false,
-        "feature": "per-control disposition",
-        "finding": "The ledger only stores a surface-level examination and an unchecked examined_controls list.",
-        "id": "PX-OS-097",
-        "linked_control_count": 0,
-        "next_action": "Add control_disposition events, referential checks, and unresolved-control projection counts.",
-        "severity": "critical",
-        "status": "narrowly_verified"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Total gaps and every current state are displayed as separate canonical counts.",
@@ -469,36 +439,6 @@
         "status": "operationally_verified"
       },
       {
-        "acceptance": "A surface becomes fully examined only when every known control has an evidence-backed disposition.",
-        "area": "dashboard-control-plane",
-        "assigned_owner": "codex-primary",
-        "canonical_surface": "dashboard-control-plane",
-        "control_action": "mark surface examined",
-        "evidence_lacking": false,
-        "feature": "complete surface examination semantics",
-        "finding": "Any single surface_examined event marks the whole surface examined, even with an empty or partial control set.",
-        "id": "PX-OS-102",
-        "linked_control_count": 0,
-        "next_action": "Derive examined status from complete control dispositions and reject unknown or empty control claims.",
-        "severity": "critical",
-        "status": "narrowly_verified"
-      },
-      {
-        "acceptance": "Every card links to a registered stable surface ID and one or more registered control IDs, with explicit aliases for imported legacy IDs.",
-        "area": "dashboard-control-plane",
-        "assigned_owner": "codex-primary",
-        "canonical_surface": "dashboard-control-plane",
-        "control_action": "discover card for a surface/control",
-        "evidence_lacking": false,
-        "feature": "inventory referential integrity",
-        "finding": "parent_surface and control_action are unchecked strings; 53 of 95 cards reference unregistered surfaces and none of the registered-parent cards links exactly to a known control.",
-        "id": "PX-OS-103",
-        "linked_control_count": 0,
-        "next_action": "Add stable control IDs, aliases/import mapping, orphan counts, and fail-closed linkage for new cards.",
-        "severity": "critical",
-        "status": "narrowly_verified"
-      },
-      {
         "acceptance": "The current Pacify-X worktree installs or runs from source, starts its intended operational surfaces, and completes real user-visible workflows without startup blockers.",
         "area": "runtime-core",
         "assigned_owner": "codex-primary:startup-recovery",
@@ -509,9 +449,9 @@
         "finding": "The user reports repeated failed startup attempts by prior assistants, while the current worktree contains extensive staged, unstaged, deleted, and untracked changes whose integrated runtime state is not established.",
         "id": "PX-OS-1053",
         "linked_control_count": 0,
-        "next_action": "Reproduce the documented startup path, trace the first real failure to its canonical owner, and repair successive blockers without running certification early.",
+        "next_action": "Retain current evidence and reopen only on contrary current-source behavior.",
         "severity": "critical",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "An invalid ledger renders a blocking, explicit error with the validation reason.",
@@ -539,99 +479,39 @@
         "finding": "A freshly downloaded repository produced high-severity authority, portability, export, sanitation, durable-worker, timing, host-integration, and assurance-state findings that were not covered by the prior green CI completion claim.",
         "id": "PX-OS-1065",
         "linked_control_count": 0,
-        "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+        "next_action": "Complete PX-CURRENT-010 and PX-CURRENT-011 only in the registered one-package one-install installed-system phase.",
         "severity": "critical",
         "status": "integrated"
       },
       {
-        "acceptance": "An event that would exceed count or byte bounds is rejected before any authoritative write.",
+        "acceptance": "Every declared control is exercised in an owned current-source scenario where it is applicable, or receives a current evidence-bound non-applicability disposition. Reversible effects in the disposable host receive exact authority and complete every applicable interaction-chain stage.",
         "area": "dashboard-control-plane",
         "assigned_owner": "codex-primary",
         "canonical_surface": "dashboard-control-plane",
-        "control_action": "append event at count/byte boundary",
+        "control_action": "pxui.dashboard-control-plane.operationalVerification.controlDenominator",
         "evidence_lacking": false,
-        "feature": "pre-append bounds enforcement",
-        "finding": "Bounds are checked only on the existing file; the crossing append succeeds and makes the next read reject the ledger.",
-        "id": "PX-OS-109",
+        "feature": "current-source-operational-denominator-coverage",
+        "finding": "The fresh host completed all named Studio, revision, Skill rollback, configuration, and Knowledge lifecycle profiles without profile errors, but only 403 of 929 controls had complete chains; 541 were unattempted, including 238 installed controls absent from the single probed state and 87 controls skipped for authority.",
+        "id": "PX-OS-1067",
         "linked_control_count": 0,
-        "next_action": "Validate next event count and encoded byte size before append; add exact boundary tests.",
+        "next_action": "Run the single revision/generated-projection reconciliation, make every governed section current, then execute exactly one full profile, validation, package, install, installed-system operational test, and certification in registered order.",
         "severity": "critical",
-        "status": "narrowly_verified"
+        "status": "reopened"
       },
       {
-        "acceptance": "Every present or partial interaction stage carries at least one exact evidence reference and progress reports deficient cards.",
-        "area": "dashboard-control-plane",
-        "assigned_owner": "codex-primary",
-        "canonical_surface": "dashboard-control-plane",
-        "control_action": "mark chain stage present or partial",
+        "acceptance": "A predecessor-bound typed scope can name exact registered controls and remains resolved after those controls transition from gap to operational, allowing aggregate parents to resolve without retaining forbidden operational gap_ids.",
+        "area": "operational-gap-ledger",
+        "assigned_owner": "runtime.operational_gap_ledger",
+        "canonical_surface": "operational-gap-ledger",
+        "control_action": "Resolve explicit typed bindings independently of active gap disposition",
         "evidence_lacking": false,
-        "feature": "interaction-chain evidence completeness",
-        "finding": "Empty evidence arrays are accepted and bootstrap creates present/partial claims with no evidence while reporting zero deficient cards.",
-        "id": "PX-OS-110",
+        "feature": "Typed control scope resolution",
+        "finding": "Operational dispositions forbid gap_ids, but typed resolution recognizes only current disposition gap_ids; explicit typed scopes carry no bindings and become unresolved after successful control repair.",
+        "id": "PX-OS-1075",
         "linked_control_count": 0,
-        "next_action": "Require evidence for present/partial stages and separately report legacy deficient cards until reconciled.",
+        "next_action": "No card-local repair remains; preserve the governed section receipt through release reconciliation.",
         "severity": "critical",
-        "status": "narrowly_verified"
-      },
-      {
-        "acceptance": "Every annotation patch leaves the complete card schema valid and completion evidence contains nonempty immutable references.",
-        "area": "dashboard-control-plane",
-        "assigned_owner": "codex-primary",
-        "canonical_surface": "dashboard-control-plane",
-        "control_action": "annotate mutable card fields and attach completion evidence",
-        "evidence_lacking": false,
-        "feature": "annotation patch revalidation",
-        "finding": "Patch fields are applied without revalidation; empty owners/actions, malformed arrays, or [null] completion evidence can enable closure.",
-        "id": "PX-OS-111",
-        "linked_control_count": 0,
-        "next_action": "Validate patch shapes, revalidate the merged card, and require nonempty completion evidence strings.",
-        "severity": "critical",
-        "status": "narrowly_verified"
-      },
-      {
-        "acceptance": "The expected inventory uses stable typed control IDs for every required interaction category and maps each to its owning surface.",
-        "area": "dashboard-control-plane",
-        "assigned_owner": "codex-primary",
-        "canonical_surface": "dashboard-control-plane",
-        "control_action": "inventory buttons, menus, forms, gestures, commands, persistence, recovery, and status",
-        "evidence_lacking": false,
-        "feature": "lossless control inventory extraction",
-        "finding": "Regex scans only data-action and inventory keys, scans whole files for several surfaces, and even records template expressions such as ${item.repair}.",
-        "id": "PX-OS-113",
-        "linked_control_count": 0,
-        "next_action": "Keep the fail-closed generator current whenever rendered actions change; perform an installed-host denominator walk separately.",
-        "severity": "critical",
-        "status": "narrowly_verified"
-      },
-      {
-        "acceptance": "Every report has a hash-bound denominator, every finding is reconciled exactly once, child branches persist, and task switches checkpoint the active card.",
-        "area": "dashboard-control-plane",
-        "assigned_owner": "codex-primary",
-        "canonical_surface": "dashboard-control-plane",
-        "control_action": "ingest report; preserve child branches; checkpoint active card; switch task",
-        "evidence_lacking": false,
-        "feature": "agent report and task-switch reconciliation",
-        "finding": "No report, finding-disposition, parent/child, active-card checkpoint, or task-switch events exist; findings are manually transcribed.",
-        "id": "PX-OS-114",
-        "linked_control_count": 0,
-        "next_action": "Switch to PX-OS-945 and enforce event-bound discovery provenance.",
-        "severity": "critical",
-        "status": "narrowly_verified"
-      },
-      {
-        "acceptance": "A torn final append is detected, quarantined or recovered only with authenticated prior-head evidence and a retained recovery receipt.",
-        "area": "dashboard-control-plane",
-        "assigned_owner": "codex-primary",
-        "canonical_surface": "dashboard-control-plane",
-        "control_action": "open ledger after interrupted append",
-        "evidence_lacking": false,
-        "feature": "authenticated tail recovery",
-        "finding": "A partial final JSON line makes the entire ledger unreadable; no prepared-record or authenticated tail recovery exists.",
-        "id": "PX-OS-116",
-        "linked_control_count": 0,
-        "next_action": "Use prepared atomic event publication or authenticated tail recovery with explicit receipts.",
-        "severity": "critical",
-        "status": "narrowly_verified"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "The declared explicit approval boundary appears before the reconciliation write and records acknowledgement evidence.",
@@ -643,10 +523,10 @@
         "feature": "stale activity reconciliation approval",
         "finding": "The click handler dispatches the write immediately although uiActionInventory declares explicit modal approval.",
         "id": "PX-OS-131",
-        "linked_control_count": 1,
-        "next_action": "Insert the real approval/evidence gate and walk dispatch, acknowledgement, and persistence.",
+        "linked_control_count": 0,
+        "next_action": "Retain operational evidence and reopen on contrary current-source or installed-host behavior.",
         "severity": "critical",
-        "status": "narrowly_verified"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "The walker loads the canonical 827-control denominator and emits one exact terminal record for every control and every chain stage.",
@@ -659,24 +539,9 @@
         "finding": "The walker records surface presence and two unsaved deltas, but no stable control IDs and zero complete per-control chains.",
         "id": "PX-OS-844",
         "linked_control_count": 0,
-        "next_action": "Retain the verified denominator/join; complete chains only through the control-specific cards and PX-OS-848.",
+        "next_action": "Retain current operational evidence and reopen only on contradictory source, host, manifest, status, isolation, or admission behavior.",
         "severity": "critical",
-        "status": "narrowly_verified"
-      },
-      {
-        "acceptance": "Every unexercised mutating control records authority, reason, expected effect, and return condition under its stable control ID.",
-        "area": "studio-lifecycle",
-        "assigned_owner": "codex-primary",
-        "canonical_surface": "studio-lifecycle",
-        "control_action": "mutating-control skip disposition",
-        "evidence_lacking": false,
-        "feature": "walker-skip-governance",
-        "finding": "Mutating controls are globally avoided without per-control terminal dispositions.",
-        "id": "PX-OS-846",
-        "linked_control_count": 0,
-        "next_action": "Retain narrow verification and reopen if any skipped mutating control loses its exact authority boundary.",
-        "severity": "critical",
-        "status": "narrowly_verified"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "The walk performs reversible save/reload and injected negative/recovery passes with before/after receipts.",
@@ -689,24 +554,9 @@
         "finding": "No persistence, reload/reopen, failure-handling, rollback, or recovery path is exercised.",
         "id": "PX-OS-848",
         "linked_control_count": 0,
-        "next_action": "Implement reversible isolated persistence/reopen and injected failure/recovery passes with exact pre/post digests.",
+        "next_action": "Retain r128 operational evidence and reopen only on contradictory current-source or installed-host behavior.",
         "severity": "critical",
-        "status": "scoped"
-      },
-      {
-        "acceptance": "A gap disposition can later become operational, or operational evidence can later be contradicted, using a predecessor-bound append-only revision that retains all prior evidence.",
-        "area": "dashboard-control-plane",
-        "assigned_owner": "codex-primary",
-        "canonical_surface": "dashboard-control-plane",
-        "control_action": "revise an evidence-backed control disposition without deleting its prior state",
-        "evidence_lacking": false,
-        "feature": "control-disposition-revision",
-        "finding": "The initial ledger rejected every second disposition, making the first gap/operational conclusion permanent.",
-        "id": "PX-OS-849",
-        "linked_control_count": 0,
-        "next_action": "Integrate predecessor-bound control disposition revisions into the exact current-source walker importer.",
-        "severity": "critical",
-        "status": "narrowly_verified"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Every rendered Agent Studio section selector has one stable typed control ID in the canonical inventory.",
@@ -719,9 +569,9 @@
         "finding": "The live builder renders 12 section variants, but the 827-control inventory includes only six and omits model, harness, tools, workflows, memory, and approval.",
         "id": "PX-OS-851",
         "linked_control_count": 0,
-        "next_action": "Revise the typed inventory with the six missing variants and predecessor-bind the old denominator.",
+        "next_action": "No aggregate-local work remains; reopen only if a child binding or terminal child outcome is contradicted.",
         "severity": "critical",
-        "status": "narrowly_verified"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Every native command contributed to VS Code has one exact stable control ID joined to its package command identity.",
@@ -734,9 +584,9 @@
         "finding": "The typed inventory contains nine different command-center labels and omits all 12 contributed pacifyX.* command IDs.",
         "id": "PX-OS-858",
         "linked_control_count": 0,
-        "next_action": "Add exact package command identities to the typed inventory and predecessor-bind the revision.",
+        "next_action": "No aggregate-local work remains; reopen only if a child binding or terminal child outcome is contradicted.",
         "severity": "critical",
-        "status": "narrowly_verified"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Every VS Code storage path used by the operational host remains inside the registered PACIFY-X-owned temporary root.",
@@ -749,9 +599,9 @@
         "finding": "Host stdout reports application shared storage at C:/Users/Ben/.vscode-shared/sharedStorage/state.vscdb even though --user-data-dir points to the owned temporary root.",
         "id": "PX-OS-872",
         "linked_control_count": 0,
-        "next_action": "Determine the supported VS Code shared-storage isolation switch or use an alternate owned-host boundary; do not rerun until exact path isolation is proven.",
+        "next_action": "Retain current operational evidence and reopen only on contradictory source, host, manifest, status, isolation, or admission behavior.",
         "severity": "critical",
-        "status": "narrowly_verified"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "The pinned development host loads the exact extension source, registers pacifyX.openDashboard, and produces the Pacify-X dashboard webview.",
@@ -764,39 +614,9 @@
         "finding": "CDP became ready, but the command-path walk ended with The installed extension did not produce the Pacify-X dashboard webview; stderr also reports Unknown channel: agentHostClientProxy.",
         "id": "PX-OS-873",
         "linked_control_count": 0,
-        "next_action": "Trace extension-development activation and the VS Code agent-host channel before another operational launch.",
+        "next_action": "Retain current operational evidence and reopen only on contradictory source, host, manifest, status, isolation, or admission behavior.",
         "severity": "critical",
-        "status": "narrowly_verified"
-      },
-      {
-        "acceptance": "Read-only Knowledge Core browsing resolves the intended engine/workspace root or reports a bounded detached state without a traceback.",
-        "area": "knowledge-core",
-        "assigned_owner": "codex-primary",
-        "canonical_surface": "knowledge-core",
-        "control_action": "open Knowledge Core and browse its controller state in the isolated current-source host",
-        "evidence_lacking": false,
-        "feature": "knowledge-controller-root-bootstrap",
-        "finding": "The dashboard studioOperation browse path raised a traceback because KnowledgeCoreController attempted to read a policy path that was absent under the resolved root.",
-        "id": "PX-OS-877",
-        "linked_control_count": 1,
-        "next_action": "Framework policy-root routing exists; retain until exact operation exercise.",
-        "severity": "critical",
-        "status": "discovered"
-      },
-      {
-        "acceptance": "The global visible operation assurance branch has an independently traceable control or runtime contract, full interaction chain, evidence, and lifecycle state.",
-        "area": "interaction-assurance",
-        "assigned_owner": "codex-primary",
-        "canonical_surface": "assurance",
-        "control_action": "global visible operation assurance",
-        "evidence_lacking": false,
-        "feature": "interaction-assurance: global visible operation assurance",
-        "finding": "PX-OS-002 combined the global visible operation assurance branch with other concerns and had no independently addressable child card.",
-        "id": "PX-OS-879",
-        "linked_control_count": 0,
-        "next_action": "Trace global visible operation assurance to exact typed controls or a non-visible path, then record a predecessor-safe resolution without advancing the parent.",
-        "severity": "critical",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "The agent topology nodes branch has an independently traceable control or runtime contract, full interaction chain, evidence, and lifecycle state.",
@@ -808,10 +628,10 @@
         "feature": "agent-builder: agent topology nodes",
         "finding": "PX-OS-004 combined the agent topology nodes branch with other concerns and had no independently addressable child card.",
         "id": "PX-OS-880",
-        "linked_control_count": 1,
-        "next_action": "Retain narrowly_verified; complete PX-OS-881 connections and the installed-host operational chain before any operational verification or closure.",
+        "linked_control_count": 0,
+        "next_action": "Retain operational evidence and reopen on contrary current-source or installed-host behavior.",
         "severity": "critical",
-        "status": "narrowly_verified"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "The typed connections branch has an independently traceable control or runtime contract, full interaction chain, evidence, and lifecycle state.",
@@ -824,9 +644,9 @@
         "finding": "PX-OS-004 combined the typed connections branch with other concerns and had no independently addressable child card.",
         "id": "PX-OS-881",
         "linked_control_count": 0,
-        "next_action": "Build/install the current VSIX, then walk exact Agent candidate create -> disconnect -> observe disabled save -> reconnect -> save immutable candidate -> reopen the same revision and compare builder_graph.",
+        "next_action": "Retain operational evidence and reopen on contrary current-source or installed-host behavior.",
         "severity": "critical",
-        "status": "narrowly_verified"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "The node inspector branch has an independently traceable control or runtime contract, full interaction chain, evidence, and lifecycle state.",
@@ -853,55 +673,10 @@
         "feature": "agent-builder: resolved execution preview",
         "finding": "PX-OS-004 combined the resolved execution preview branch with other concerns and had no independently addressable child card.",
         "id": "PX-OS-883",
-        "linked_control_count": 1,
-        "next_action": "Exercise exact admitted Agent preview in the installed host, including blocked and stale-result cases.",
-        "severity": "critical",
-        "status": "narrowly_verified"
-      },
-      {
-        "acceptance": "The health source derivation branch has an independently traceable control or runtime contract, full interaction chain, evidence, and lifecycle state.",
-        "area": "runtime-truth",
-        "assigned_owner": "codex-primary",
-        "canonical_surface": "runtime-core",
-        "control_action": "health source derivation",
-        "evidence_lacking": false,
-        "feature": "runtime-truth: health source derivation",
-        "finding": "PX-OS-024 combined the health source derivation branch with other concerns and had no independently addressable child card.",
-        "id": "PX-OS-915",
         "linked_control_count": 0,
-        "next_action": "Trace health source derivation to exact typed controls or a non-visible path, then record a predecessor-safe resolution without advancing the parent.",
+        "next_action": "Retain operational evidence and reopen on contrary current-source or installed-host behavior.",
         "severity": "critical",
-        "status": "discovered"
-      },
-      {
-        "acceptance": "The independent health dimensions branch has an independently traceable control or runtime contract, full interaction chain, evidence, and lifecycle state.",
-        "area": "health-taxonomy",
-        "assigned_owner": "codex-primary",
-        "canonical_surface": "diagnostics",
-        "control_action": "independent health dimensions",
-        "evidence_lacking": false,
-        "feature": "health-taxonomy: independent health dimensions",
-        "finding": "PX-OS-064 combined the independent health dimensions branch with other concerns and had no independently addressable child card.",
-        "id": "PX-OS-931",
-        "linked_control_count": 0,
-        "next_action": "Trace independent health dimensions to exact typed controls or a non-visible path, then record a predecessor-safe resolution without advancing the parent.",
-        "severity": "critical",
-        "status": "discovered"
-      },
-      {
-        "acceptance": "The certification independent runtime health branch has an independently traceable control or runtime contract, full interaction chain, evidence, and lifecycle state.",
-        "area": "health-taxonomy",
-        "assigned_owner": "codex-primary",
-        "canonical_surface": "diagnostics",
-        "control_action": "certification independent runtime health",
-        "evidence_lacking": false,
-        "feature": "health-taxonomy: certification independent runtime health",
-        "finding": "PX-OS-064 combined the certification independent runtime health branch with other concerns and had no independently addressable child card.",
-        "id": "PX-OS-932",
-        "linked_control_count": 0,
-        "next_action": "Trace certification independent runtime health to exact typed controls or a non-visible path, then record a predecessor-safe resolution without advancing the parent.",
-        "severity": "critical",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "A Studio operation declared read-only performs no project or host filesystem mutation and returns a bounded empty model when no Knowledge Core state exists.",
@@ -914,9 +689,9 @@
         "finding": "KnowledgeCoreController construction for browse creates project knowledge state and StudioAuthorityStore can create project identity and host key material.",
         "id": "PX-OS-942",
         "linked_control_count": 0,
-        "next_action": "Read-only Knowledge Core construction exists; retain until lifecycle operation exercise.",
+        "next_action": "Retain current evidence and reopen only on contrary current-source behavior.",
         "severity": "critical",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "A predecessor-bound inventory revision can retire removed controls non-destructively, preserve their records and dispositions in history, declare exact replacements, and keep the current denominator equal to rendered controls.",
@@ -929,9 +704,9 @@
         "finding": "surface_inventory_revised rejects removal of every control with a disposition and exposes no retirement event, so twelve removed agentSelectSection controls cannot leave the current surface denominator.",
         "id": "PX-OS-943",
         "linked_control_count": 0,
-        "next_action": "Extend surface inventory revision with an exact non-destructive retired-controls transfer and replacement binding.",
+        "next_action": "Retain current governed evidence and reopen only on contrary source, replay, or validation behavior.",
         "severity": "critical",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "A control may be recorded operational only when the exact current control has a complete, evidence-bound applicable interaction chain; surface examination must distinguish rendered, exercised, skipped, not-rendered, gap, and operational outcomes without converting inventory coverage into behavior proof.",
@@ -944,9 +719,9 @@
         "finding": "The ledger accepts an operational control disposition with only a generic evidence claim, stores no per-stage chain, and derives a surface as examined solely from disposition coverage. The current live walk skipped both builders, did not render 345 controls, and completed zero interaction chains, yet the ledger schema has no direct proof contract capable of rejecting an unsupported operational classification.",
         "id": "PX-OS-944",
         "linked_control_count": 0,
-        "next_action": "Retain PX-OS-944 at implemented with 15/859 current observations; switch to PX-OS-880 and implement editable agent topology nodes before connections or runtime claims.",
+        "next_action": "Retain r128 operational evidence and reopen only on contradictory current-source or installed-host behavior.",
         "severity": "critical",
-        "status": "implemented"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Completion and closure require structured immutable evidence bound to exact artifacts, claims, verification scope, and the closing transition.",
@@ -959,9 +734,9 @@
         "finding": "completion_evidence is an arbitrary nonempty string array; closure checks only that a string exists.",
         "id": "PX-OS-946",
         "linked_control_count": 0,
-        "next_action": "Switch to PX-OS-951 and unify the evidence-deficiency denominator.",
+        "next_action": "Retain current governed evidence and reopen only on contrary source, replay, or validation behavior.",
         "severity": "critical",
-        "status": "narrowly_verified"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Host-owned, intentionally unsupported, and out-of-scope boundaries are explicit classifications with exact ownership and user-visible handoff evidence; operational verification rejects partial stages and unproved not-applicable claims.",
@@ -974,9 +749,9 @@
         "finding": "The classification set lacks intentionally-unsupported and out-of-scope; operational verification allows partial stages and does not require evidence for not-applicable ownership boundaries.",
         "id": "PX-OS-948",
         "linked_control_count": 0,
-        "next_action": "Switch to PX-OS-950 and bind reopen transitions to the contradicted verification event.",
+        "next_action": "Retain current governed evidence and reopen only on contrary source, replay, or validation behavior.",
         "severity": "critical",
-        "status": "narrowly_verified"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Report registration parses a bounded machine-readable finding manifest, verifies its content hash and exact finding denominator, and refuses omitted or invented finding IDs.",
@@ -989,9 +764,9 @@
         "finding": "Report registration trusts caller-supplied finding_ids and a supplied hash without verifying the source artifact or its embedded finding manifest.",
         "id": "PX-OS-949",
         "linked_control_count": 0,
-        "next_action": "Validate machine-readable report manifests against physical bytes before append.",
+        "next_action": "Retain current governed evidence and reopen only on contrary source, replay, or validation behavior.",
         "severity": "critical",
-        "status": "narrowly_verified"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "One versioned current-source manifest binds every concrete and templated control to its stable identity, route/state prerequisites, exact selector/instance key, source symbol/hash, interaction profile/effect, outbound contract, host/backend handler, and retirement predecessor.",
@@ -1004,9 +779,9 @@
         "finding": "The denominator is assembled from hardcoded and hand-reviewed sources; action declarations, operational inventory, rendered DOM, and handlers disagree. Most controls lack runtime selectors, share broad source refs, and source hashes are not bound.",
         "id": "PX-OS-953",
         "linked_control_count": 0,
-        "next_action": "Retain PX-OS-953 at narrowly_verified until a current host walk proves source/DOM/handler identity; switch now to PX-OS-944 observation import.",
+        "next_action": "Retain current operational evidence and reopen only on contradictory source, host, manifest, status, isolation, or admission behavior.",
         "severity": "critical",
-        "status": "narrowly_verified"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Walker status distinguishes process completion from operational completeness, binds all loaded source assets, captures host lifecycle anomalies, and remains open when routes, controls, chains, builders, or reconciliation are incomplete.",
@@ -1019,9 +794,9 @@
         "finding": "The launcher reports completed on child/process exit despite zero complete chains, skipped builders, missing routes, host unresponsive episodes, and unreported host diagnostics; host_errors remains empty.",
         "id": "PX-OS-954",
         "linked_control_count": 0,
-        "next_action": "Retain PX-OS-954 at narrowly_verified until a future current-source host walk confirms truthful terminal output; switch now to PX-OS-953 manifest authority.",
+        "next_action": "Retain current operational evidence and reopen only on contradictory source, host, manifest, status, isolation, or admission behavior.",
         "severity": "critical",
-        "status": "narrowly_verified"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Full replay accepts historically valid pre-retirement-schema inventory revisions as legacy history while requiring exact retirement declarations for new revisions.",
@@ -1034,9 +809,9 @@
         "finding": "Full replay fails with retired_controls must match the exact removed control set because older inventory revision events legitimately predate the retirement field.",
         "id": "PX-OS-955",
         "linked_control_count": 0,
-        "next_action": "Switch back to PX-OS-114 and finish the checkpoint enforcement proof.",
+        "next_action": "Retain current governed evidence and reopen only on contrary source, replay, or validation behavior.",
         "severity": "critical",
-        "status": "narrowly_verified"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Edit mode binds and verifies the exact existing source identity, version, authenticated revision hash, and catalog revision; identity changes require an explicit fork operation.",
@@ -1094,9 +869,9 @@
         "finding": "loadSkillPackageEditor has no request ID or source binding and any late result is combined with the current global Studio record, even after cancellation or selecting another record.",
         "id": "PX-OS-970",
         "linked_control_count": 0,
-        "next_action": "add end-to-end skill package load correlation and stale/cancel rejection",
+        "next_action": "Retain current governed evidence and reopen only on contrary exact-source or installed-system behavior.",
         "severity": "critical",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Project-Studio skill revisions use backend physical predecessor lookup and hashing; only imported packages use external-authenticated hashes.",
@@ -1109,9 +884,9 @@
         "finding": "Every skill allocation is hardcoded external-authenticated even though catalog/package loading distinguishes project-studio physical revisions.",
         "id": "PX-OS-972",
         "linked_control_count": 0,
-        "next_action": "bind package scope to allocation source mode and add physical project-studio skill coverage",
+        "next_action": "Retain current governed evidence and reopen only on contrary exact-source or installed-system behavior.",
         "severity": "critical",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Physical skill allocation results are correlated by request/kind/identity/source version/scope and their revision/content hashes are accepted only from the backend; external imports remain exactly bound to caller-supplied revision and package hashes.",
@@ -1124,9 +899,9 @@
         "finding": "The request correlation object stores package-reader source hashes for physical project-Studio skills, and allocation validation compares them to backend whole-revision hashes even though the two runtimes hash different structures.",
         "id": "PX-OS-978",
         "linked_control_count": 0,
-        "next_action": "implement a host-owned exact catalog/package selection token and a host-owned allocation proof; translate only trusted selection evidence into external next-version hashes and reject unproved allocations before approval",
+        "next_action": "Retain current governed evidence and reopen only on contrary exact-source or installed-system behavior.",
         "severity": "critical",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "A digest-addressed reusable staging target is accepted only when target and descendants are non-link/non-reparse, the complete regular-file set exactly equals editor_files, every byte matches, and no extra entry exists.",
@@ -1139,9 +914,9 @@
         "finding": "Reuse checks links only through the parent, compares declared files only, ignores undeclared extra files and descendant links, then reports the editor-derived digest/file count as if it described the actual target.",
         "id": "PX-OS-979",
         "linked_control_count": 0,
-        "next_action": "bound backend admission by directory count, total entries, depth, file count, per-file bytes, and aggregate bytes before source admission; own hostile empty-directory breadth",
+        "next_action": "Retain current governed evidence and reopen only on contrary exact-source or installed-system behavior.",
         "severity": "critical",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "The tree admitted and copied by the backend is cryptographically equal to the exact editor_files bytes the user approved, including after materialization and immediately before create.",
@@ -1154,9 +929,9 @@
         "finding": "The host coordinator discards materialization treeSha256/fileCount, admits only source_directory, and never compares the backend admission tree to the approved editor digest.",
         "id": "PX-OS-983",
         "linked_control_count": 0,
-        "next_action": "use an unambiguous cross-runtime length-framed tree commitment, enforce exact allowed-directory topology with no excluded injected entries, reject canonical path aliases, and require the admission receipt path/hash/count to equal the materializer receipt",
+        "next_action": "Retain current governed evidence and reopen only on contrary exact-source or installed-system behavior.",
         "severity": "critical",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Failure handling never follows a link or reparse point and moves temporary trees only into a verified Pacify-X-owned quarantine below the project root with a retained lifecycle receipt.",
@@ -1169,9 +944,9 @@
         "finding": "The error path creates and renames into .px/studio-inputs/.failed without checking that .failed is a non-link physical directory contained by the project.",
         "id": "PX-OS-984",
         "linked_control_count": 0,
-        "next_action": "remove the race by retaining failed PX-owned resources at their already-contained original path or use an actually anchored move primitive; add a swap-window owner and immutable lifecycle receipt",
+        "next_action": "Retain current governed evidence and reopen only on contrary exact-source or installed-system behavior.",
         "severity": "critical",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Every editor_files path maps one-to-one to one portable regular file; case aliases, NTFS alternate streams, device names, trailing dot/space aliases, reserved components, and directory-case collisions fail before write, followed by exact post-write verification.",
@@ -1184,9 +959,9 @@
         "finding": "Logical paths are case-folded only as complete strings and permit colons, reserved device components, trailing dots/spaces, and differently cased directory prefixes; safeSegment also sanitizes distinct identities into the same physical segment.",
         "id": "PX-OS-985",
         "linked_control_count": 0,
-        "next_action": "reject every duplicate canonical physical path during normalization and own separator-alias collisions before any filesystem write",
+        "next_action": "Retain current governed evidence and reopen only on contrary exact-source or installed-system behavior.",
         "severity": "critical",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Promotion and rollback publish one recoverable transaction whose package/projections are old, new, or deterministically reconciled.",
@@ -1214,9 +989,9 @@
         "finding": "Agent composition does not expose meaningful model-route, tool/skill/workflow selection, context/memory policy, output contract, or execution-preview relationships even though the surrounding product claims those systems exist.",
         "id": "PX-OS-005",
         "linked_control_count": 0,
-        "next_action": "Reconcile exact current source and installed-host behavior before any state advancement.",
+        "next_action": "Retain the exact child/control denominator and reopen only on contrary current evidence.",
         "severity": "high",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Candidate, tested, admitted, runnable, running, finalizing, completed, failed, and retired states are first-class, filterable, and linked to receipts and live controls.",
@@ -1229,9 +1004,9 @@
         "finding": "The Agents surface emphasizes 270 source records while showing zero runnable revisions and zero processes; Studio lifecycle and run evidence are not the primary operational view.",
         "id": "PX-OS-006",
         "linked_control_count": 0,
-        "next_action": "Reconcile exact current source and installed-host behavior before any state advancement.",
+        "next_action": "Retain the exact child denominator and reopen if any child or binding is contradicted.",
         "severity": "high",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Provide a usable pan/zoom canvas, typed handles, drag/keyboard composition, fit/layout, focused inspector, branching/approval/recovery nodes, validation overlays, and durable run trace projection.",
@@ -1244,9 +1019,9 @@
         "finding": "Workflow Studio is a primitive grid with three palette items and dropdown edge creation. It lacks direct port connection, useful node taxonomy, canvas navigation, automatic layout, execution trace overlay, and validation/approval visualization.",
         "id": "PX-OS-007",
         "linked_control_count": 0,
-        "next_action": "Reconcile exact current source and installed-host behavior before any state advancement.",
+        "next_action": "Retain the exact child/control denominator and reopen only on contrary current evidence.",
         "severity": "high",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Use adaptive hierarchical/force layouts, density-aware clustering, semantic color/shape, edge bundling or filtering, full-screen inspection, useful minimap, and responsive information density.",
@@ -1259,9 +1034,9 @@
         "finding": "The graph uses a large sparse canvas and a star-like neighborhood, leaving most space empty while labels, edge meaning, and structure remain difficult to read.",
         "id": "PX-OS-010",
         "linked_control_count": 0,
-        "next_action": "Reconcile exact current source and installed-host behavior before any state advancement.",
+        "next_action": "Retain the exact child denominator and reopen if any child or binding is contradicted.",
         "severity": "high",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Initialize/select a real canonical workspace and lease or clearly remain unconfigured; bind browser actions to it and report exact state-specific remediation without fixture substitution.",
@@ -1274,9 +1049,9 @@
         "finding": "Canonical memory is detached in the live workspace, while the retained screenshot fabricates a healthy portable workspace. The generic alert does not distinguish unconfigured, invalid, empty, or expired-lease states.",
         "id": "PX-OS-012",
         "linked_control_count": 0,
-        "next_action": "Reconcile exact current source and installed-host behavior before any state advancement.",
+        "next_action": "Retain operational evidence and reopen on contrary current-source or installed-host behavior.",
         "severity": "high",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Turn the project surface into an operational project map and lifecycle view with dense current evidence, navigation, refresh/build actions, and precise authority boundaries.",
@@ -1289,9 +1064,9 @@
         "finding": "The Projects surface wastes most of the viewport on two summary panels and does not expose project-map freshness, rebuild history, repository modules, risks, services, routes, test links, or governed project operations.",
         "id": "PX-OS-014",
         "linked_control_count": 0,
-        "next_action": "Reconcile exact current source and installed-host behavior before any state advancement.",
+        "next_action": "Retain the exact child denominator and reopen if any child or binding is contradicted.",
         "severity": "high",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Expose package editing, original-versus-PX comparison, semantic routing rationale, domain isolation, test/admission state, provenance, backup, promotion, and rollback with real backend receipts.",
@@ -1304,9 +1079,9 @@
         "finding": "Skills & Tools is mainly a catalog plus a static lifecycle strip. Skill creation/adaptation, preserved-original comparison, semantic broker selection, tests, admission, backup, promotion, and rollback are not first-class working flows.",
         "id": "PX-OS-015",
         "linked_control_count": 0,
-        "next_action": "Reconcile exact current source and installed-host behavior before any state advancement.",
+        "next_action": "Retain the exact child/control denominator and reopen only on contrary current evidence.",
         "severity": "high",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Each lifecycle operation is separately visible, approval-bound, reversible where possible, and verified against live host state.",
@@ -1319,9 +1094,9 @@
         "finding": "Plugin Manager is policy prose and inventory rows. It does not provide a complete governed discovery, compatibility, permission/effect review, install, update, enable/disable, uninstall, rollback, and conflict-resolution workflow.",
         "id": "PX-OS-016",
         "linked_control_count": 0,
-        "next_action": "Reconcile exact current source and installed-host behavior before any state advancement.",
+        "next_action": "Retain the exact child denominator and reopen if any child or binding is contradicted.",
         "severity": "high",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Provide bounded diagnostic traces with cause chains, affected owners, evidence links, safe repair actions, and post-repair verification without horizontal clipping.",
@@ -1349,9 +1124,9 @@
         "finding": "Runtime Core is static identity prose and hardware totals. It does not expose scheduler queues, execution placement decisions, resource ownership, provider routes, GPU eligibility/fallback, process lifecycle, bottlenecks, or latency traces.",
         "id": "PX-OS-020",
         "linked_control_count": 0,
-        "next_action": "Reconcile exact current source and installed-host behavior before any state advancement.",
+        "next_action": "Retain the exact child denominator and reopen if any child or binding is contradicted.",
         "severity": "high",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Empty sections collapse, content density adapts to available data, operational editors can use the full workspace, and no panel reserves space without useful content or action.",
@@ -1364,9 +1139,9 @@
         "finding": "Multiple surfaces allocate fixed-height panels to empty or disabled content, creating large dead regions while high-value live data is truncated, hidden below the fold, or relegated to modals.",
         "id": "PX-OS-022",
         "linked_control_count": 0,
-        "next_action": "Reconcile exact current source and installed-host behavior before any state advancement.",
+        "next_action": "Retain the exact child denominator and reopen if any child or binding is contradicted.",
         "severity": "high",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Current, enterprise, Microsoft, and preserved skill records resolve their declared package roots without crossing source boundaries.",
@@ -1379,9 +1154,9 @@
         "finding": "Skill package resolution can ignore package_root and preserved-backup metadata, causing retained originals to open the wrong package or fail to hydrate.",
         "id": "PX-OS-026",
         "linked_control_count": 0,
-        "next_action": "Reconcile exact current source and installed-host behavior before any state advancement.",
+        "next_action": "Retain current evidence and reopen only on contrary current-source or installed-system behavior.",
         "severity": "high",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Every editable project agent has an explicit reopen action; read-only or external agents explain why editing is unavailable.",
@@ -1409,9 +1184,9 @@
         "finding": "Lifecycle dialogs offer next actions without evaluating prerequisites and omit truthful pause, resume, cancel, stop, reconcile, and rollback state where those operations are relevant.",
         "id": "PX-OS-030",
         "linked_control_count": 0,
-        "next_action": "Reconcile exact current source and installed-host behavior before any state advancement.",
+        "next_action": "Retain the exact child denominator and reopen if any child or binding is contradicted.",
         "severity": "high",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Run requires an explicit objective and shows the resolved agent revision, inputs, grants, provider/model or deterministic harness, stop conditions, and result record.",
@@ -1423,10 +1198,10 @@
         "feature": "agent-execution",
         "finding": "The agent run path uses a hard-coded objective instead of collecting and recording the user's actual bounded task and execution inputs.",
         "id": "PX-OS-031",
-        "linked_control_count": 2,
-        "next_action": "Reconcile exact current source and installed-host behavior before any state advancement.",
+        "linked_control_count": 0,
+        "next_action": "Retain operational evidence and reopen on contrary current-source or installed-host behavior.",
         "severity": "high",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Every sidebar row routes to a real surface and opens the supplied current entity record or a specific not-found result.",
@@ -1439,9 +1214,9 @@
         "finding": "Sidebar deep links pass entity payloads that the dashboard ignores; providers route to a nonexistent governance surface and waves, orchestrations, providers, and attention records often open no usable detail.",
         "id": "PX-OS-033",
         "linked_control_count": 0,
-        "next_action": "Reconcile exact current source and installed-host behavior before any state advancement.",
+        "next_action": "Retain the exact child denominator and reopen if any child or binding is contradicted.",
         "severity": "high",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Observed execution evidence can enter a governed candidate lifecycle with provenance, comparison, validation, promotion/decay decisions, and measured reuse.",
@@ -1454,9 +1229,9 @@
         "finding": "The evidence-to-promotion implementation is isolated from production controllers, CLI operations, and UI, so the displayed learning lifecycle is not an operating experience pipeline.",
         "id": "PX-OS-034",
         "linked_control_count": 0,
-        "next_action": "Reconcile exact current source and installed-host behavior before any state advancement.",
+        "next_action": "Retain current evidence and reopen only on contrary current-source or installed-system behavior.",
         "severity": "high",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Verification wording matches performed checks and canonical hashes cover the exact governed content bytes represented by a revision.",
@@ -1469,9 +1244,9 @@
         "finding": "Knowledge UI language overstates independent verification, and directory identity can hash member names without hashing member contents while being presented as content identity.",
         "id": "PX-OS-035",
         "linked_control_count": 0,
-        "next_action": "Reconcile exact current source and installed-host behavior before any state advancement.",
+        "next_action": "Retain the exact child denominator and reopen if any child or binding is contradicted.",
         "severity": "high",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
         "acceptance": "Active, stale, historical, and terminal records are mutually classified from current timestamps/status and empty groups collapse.",
@@ -1483,30 +1258,255 @@
         "feature": "activity",
         "finding": "Stale sessions can appear in both active and stale groups, and empty activity sections reserve large space, making WHAT IS HAPPENING NOW both misleading and wasteful.",
         "id": "PX-OS-037",
-        "linked_control_count": 1,
-        "next_action": "Reconcile exact current source and installed-host behavior before any state advancement.",
+        "linked_control_count": 0,
+        "next_action": "Retain operational evidence and reopen on contrary current-source or installed-host behavior.",
         "severity": "high",
-        "status": "discovered"
+        "status": "operationally_verified"
       },
       {
-        "acceptance": "The action always acknowledges success/failure, initializes or blocks explicitly, and names the exact boundary between PX context preparation and Codex host execution authority.",
-        "area": "codex-handoff",
+        "acceptance": "Node type and configuration round-trip to runtime semantics, edges render on the canvas with compatible ports, and invalid connections are blocked with a specific reason.",
+        "area": "workflow-topology",
+        "assigned_owner": "codex-primary",
+        "canonical_surface": "workflow-studio",
+        "control_action": "historical finding; exact visible action must be reconciled",
+        "evidence_lacking": false,
+        "feature": "workflow-topology",
+        "finding": "Workflow palette node types are cosmetic because persisted nodes do not retain typed kind/configuration and the canvas lacks inspectable typed ports and drawn connections.",
+        "id": "PX-OS-039",
+        "linked_control_count": 0,
+        "next_action": "Retain the exact child/control denominator and reopen only on contrary current evidence.",
+        "severity": "high",
+        "status": "operationally_verified"
+      },
+      {
+        "acceptance": "A live repository-map view shows the reduced current graph and future rebuilds retain the exclusion.",
+        "area": "repository-map-inputs",
+        "assigned_owner": "codex-primary",
+        "canonical_surface": "projects",
+        "control_action": "historical finding; exact visible action must be reconciled",
+        "evidence_lacking": false,
+        "feature": "repository-map-inputs",
+        "finding": "Repository mapping included .venv-certify as project source, polluting the graph with third-party/generated files and obscuring the actual architecture.",
+        "id": "PX-OS-040",
+        "linked_control_count": 0,
+        "next_action": "Retain current evidence and reopen only on contrary current-source or installed-system behavior.",
+        "severity": "high",
+        "status": "operationally_verified"
+      },
+      {
+        "acceptance": "Malformed messages, action failures, and outbound delivery failures retain distinct classifications in provider inspection and the live Pacify-X output log.",
+        "area": "sidebar-observability",
+        "assigned_owner": "codex-primary",
+        "canonical_surface": "sidebar",
+        "control_action": "historical finding; exact visible action must be reconciled",
+        "evidence_lacking": false,
+        "feature": "sidebar-observability",
+        "finding": "Sidebar callback and outbound failures were caught as inbound schema rejections, producing misleading invalid-union diagnoses while Pacify-X output logs remained empty.",
+        "id": "PX-OS-041",
+        "linked_control_count": 0,
+        "next_action": "Retain current evidence and reopen only on contrary current-source or installed-system behavior.",
+        "severity": "high",
+        "status": "operationally_verified"
+      },
+      {
+        "acceptance": "Out-of-order success and failure responses affect only the matching active request.",
+        "area": "async-ui-state",
+        "assigned_owner": "codex-primary",
+        "canonical_surface": "dashboard-control-plane",
+        "control_action": "historical finding; exact visible action must be reconciled",
+        "evidence_lacking": false,
+        "feature": "async-ui-state",
+        "finding": "A stale graph, catalog, memory, or activity operationError could overwrite a newer successful request because failure handling ignored request identity.",
+        "id": "PX-OS-042",
+        "linked_control_count": 0,
+        "next_action": "Retain the exact child denominator and reopen if any child or binding is contradicted.",
+        "severity": "high",
+        "status": "operationally_verified"
+      },
+      {
+        "acceptance": "Canceling any pre-create host prompt leaves every draft field accessible and unchanged.",
+        "area": "studio-draft-custody",
+        "assigned_owner": "codex-primary",
+        "canonical_surface": "studio-lifecycle",
+        "control_action": "historical finding; exact visible action must be reconciled",
+        "evidence_lacking": false,
+        "feature": "studio-draft-custody",
+        "finding": "Saving a Studio draft closed the editor before host approval, so canceling approval left the unsaved draft inaccessible.",
+        "id": "PX-OS-043",
+        "linked_control_count": 0,
+        "next_action": "Retain operational evidence and reopen on contrary current-source or installed-host behavior.",
+        "severity": "high",
+        "status": "operationally_verified"
+      },
+      {
+        "acceptance": "Attached is shown only while canonical retrieval is configured, valid, registered, leased, and ready.",
+        "area": "memory-truth",
+        "assigned_owner": "codex-primary",
+        "canonical_surface": "memory",
+        "control_action": "historical finding; exact visible action must be reconciled",
+        "evidence_lacking": false,
+        "feature": "memory-truth",
+        "finding": "The service grid labeled canonical memory Attached from instrumentation presence rather than lease-bound retrieval readiness.",
+        "id": "PX-OS-045",
+        "linked_control_count": 0,
+        "next_action": "Retain operational evidence and reopen on contrary current-source or installed-host behavior.",
+        "severity": "high",
+        "status": "operationally_verified"
+      },
+      {
+        "acceptance": "Readiness wording and tone always match the current doctor report while connectors remain disabled.",
+        "area": "enterprise-readiness",
+        "assigned_owner": "codex-primary",
+        "canonical_surface": "assurance",
+        "control_action": "historical finding; exact visible action must be reconciled",
+        "evidence_lacking": false,
+        "feature": "enterprise-readiness",
+        "finding": "Enterprise panels hard-coded local control plane ready before a doctor result and even after failed checks.",
+        "id": "PX-OS-046",
+        "linked_control_count": 0,
+        "next_action": "Retain operational evidence and reopen on contrary current-source or installed-host behavior.",
+        "severity": "high",
+        "status": "operationally_verified"
+      },
+      {
+        "acceptance": "Changing identity or version produces one internally consistent native skill package or a specific blocking error.",
+        "area": "skill-studio-identity",
+        "assigned_owner": "codex-primary",
+        "canonical_surface": "skill-studio",
+        "control_action": "historical finding; exact visible action must be reconciled",
+        "evidence_lacking": false,
+        "feature": "skill-studio-identity",
+        "finding": "Skill Studio identity/version fields did not update capability.json, skill.yaml, or SKILL.md, allowing apparently valid but internally split candidates.",
+        "id": "PX-OS-047",
+        "linked_control_count": 0,
+        "next_action": "Retain operational evidence and reopen on contrary current-source or installed-host behavior.",
+        "severity": "high",
+        "status": "operationally_verified"
+      },
+      {
+        "acceptance": "Trace VS Code launch, ChatGPT extension activation, Codex app-server readiness, MCP readiness, skill discovery, and first usable tool separately; make optional MCP/plugin work lazy or explicitly bounded and retain a current end-to-end cold/warm readiness report.",
+        "area": "codex-startup",
         "assigned_owner": "codex-primary",
         "canonical_surface": "runtime-core",
         "control_action": "historical finding; exact visible action must be reconciled",
         "evidence_lacking": false,
-        "feature": "codex-handoff",
-        "finding": "Continue/handoff can silently do nothing when the dashboard has not initialized and currently prepares a JSON context package rather than providing a seamless governed continuation.",
-        "id": "PX-OS-038",
-        "linked_control_count": 4,
-        "next_action": "Reconcile exact current source and installed-host behavior before any state advancement.",
+        "feature": "codex-startup",
+        "finding": "The original long Codex startup question was answered with PX extension activation time, which measures the wrong boundary. Current host evidence shows eager VS Code extensions, Python/Pylance discovery, a 4-5 second Copilot activation blocker, a Node REPL MCP with a 120-second startup allowance, and multiple per-agent node_repl processes; the Codex code-mode host appeared roughly 94 seconds after the extension host restart.",
+        "id": "PX-OS-051",
+        "linked_control_count": 0,
+        "next_action": "Retain current evidence and reopen only on contrary current-source or installed-system behavior.",
         "severity": "high",
-        "status": "discovered"
+        "status": "operationally_verified"
+      },
+      {
+        "acceptance": "Define an enforceable host-compatible loading boundary or a truthful limitation: project work defaults to facade-only semantic selection, vendor/enterprise bodies require explicit intent and grants, and direct global discovery cannot be presented as PX-isolated.",
+        "area": "skill-host-boundary",
+        "assigned_owner": "codex-primary",
+        "canonical_surface": "skills-tools",
+        "control_action": "historical finding; exact visible action must be reconciled",
+        "evidence_lacking": false,
+        "feature": "skill-host-boundary",
+        "finding": "The project has 16 concise PX facades, but Codex still discovers global Microsoft/Foundry skills directly from the user .agents tree. PX domain policy applies only when the facade broker is used and cannot prevent host-level direct selection, so the requested no-bleed boundary is advisory rather than enforced.",
+        "id": "PX-OS-052",
+        "linked_control_count": 0,
+        "next_action": "Retain current evidence and reopen only on contrary current-source or installed-system behavior.",
+        "severity": "high",
+        "status": "operationally_verified"
+      },
+      {
+        "acceptance": "Every skill-index mutation atomically regenerates records, domain counts, revision, package projection, and catalog views from the same record set and refuses publication on denominator drift.",
+        "area": "skill-index-integrity",
+        "assigned_owner": "codex-primary",
+        "canonical_surface": "skills-tools",
+        "control_action": "historical finding; exact visible action must be reconciled",
+        "evidence_lacking": false,
+        "feature": "skill-index-integrity",
+        "finding": "The native skill index contains 177 px-standard records but its declared counts report 176. Adding the execution-placement skill updated records and the index revision without updating the denominator, allowing dashboard and lifecycle projections to disagree.",
+        "id": "PX-OS-053",
+        "linked_control_count": 0,
+        "next_action": "Retain current evidence and reopen only on contrary current-source or installed-system behavior.",
+        "severity": "high",
+        "status": "operationally_verified"
+      },
+      {
+        "acceptance": "Trace every expensive producer to one bounded admission owner, publish causal revisions and deltas through a canonical state bus, prove stable idle becomes quiet, and expose why work ran, joined, invalidated, waited, or fell back.",
+        "area": "runtime-efficiency-architecture",
+        "assigned_owner": "codex-primary",
+        "canonical_surface": "runtime-core",
+        "control_action": "historical finding; exact visible action must be reconciled",
+        "evidence_lacking": false,
+        "feature": "runtime-efficiency-architecture",
+        "finding": "A JavaScript WorkGovernor covers selected extension bridge operations, but the supplied architecture's canonical Event Hub, cross-runtime dependency/revision graph, State Bus, shared telemetry sampler, causal invalidation, incremental validation owner, adaptive idle governance, and single admission path for all expensive Python/extension work are not implemented as one operating system.",
+        "id": "PX-OS-054",
+        "linked_control_count": 0,
+        "next_action": "Retain current evidence and reopen only on contrary current-source or installed-system behavior.",
+        "severity": "high",
+        "status": "operationally_verified"
+      },
+      {
+        "acceptance": "Integrate keep-current decisions with observed workloads, matched before/after benchmarks, boundary contracts, partial-unit promotion, rollback, Runtime Core telemetry, and all defined promotion tiers without authorizing migration from the scorer alone.",
+        "area": "execution-placement",
+        "assigned_owner": "codex-primary",
+        "canonical_surface": "runtime-core",
+        "control_action": "historical finding; exact visible action must be reconciled",
+        "evidence_lacking": false,
+        "feature": "execution-placement",
+        "finding": "The supplied execution-placement add-on was reduced to side-effect-free CLI scoring. It is not connected to the live scheduler, Runtime Core, benchmark owner, rollback workflow, or UI; it implements promotion tiers only through 3 and does not produce the add-on's required Tier 4/5 production/reusable-pattern lifecycle or complete boundary/benchmark/rollback artifact set.",
+        "id": "PX-OS-055",
+        "linked_control_count": 0,
+        "next_action": "Retain current evidence and reopen only on contrary current-source or installed-system behavior.",
+        "severity": "high",
+        "status": "operationally_verified"
+      },
+      {
+        "acceptance": "Schedule ready nodes through bounded claim-safe pools, preserve deterministic joins and failure policy, expose queue/worker timing, and retain a serial fallback for conflicts or unsafe effects.",
+        "area": "workflow-scheduling",
+        "assigned_owner": "codex-primary",
+        "canonical_surface": "workflows",
+        "control_action": "historical finding; exact visible action must be reconciled",
+        "evidence_lacking": false,
+        "feature": "workflow-scheduling",
+        "finding": "Workflow execution iterates one topological order serially; independent ready branches never run concurrently even when their claims and dependencies permit it. This contradicts the requested bounded parallel execution and makes visually parallel workflows misleading and slow.",
+        "id": "PX-OS-057",
+        "linked_control_count": 0,
+        "next_action": "Retain current evidence and reopen only on contrary current-source or installed-system behavior.",
+        "severity": "high",
+        "status": "operationally_verified"
+      },
+      {
+        "acceptance": "Provide a durable session/run browser with only eligible lifecycle actions, exact approval progression for every node, live/finalizing/terminal traces, reconciliation, and visible acknowledgements.",
+        "area": "studio-run-lifecycle",
+        "assigned_owner": "codex-primary",
+        "canonical_surface": "studio-lifecycle",
+        "control_action": "historical finding; exact visible action must be reconciled",
+        "evidence_lacking": false,
+        "feature": "studio-run-lifecycle",
+        "finding": "The backend exposes status, pause, cancel, stop, resume, and reconcile, but Studio has no durable run monitor or controls for those operations. Multiple approval nodes are also mishandled because the UI offers Run after the first approval rather than the next required approval.",
+        "id": "PX-OS-058",
+        "linked_control_count": 0,
+        "next_action": "Retain the exact child denominator and reopen if any child or binding is contradicted.",
+        "severity": "high",
+        "status": "operationally_verified"
+      },
+      {
+        "acceptance": "Rename the current checks truthfully or implement typed admitted test definitions, scenario inputs, expected outcomes, evidence, and inspectable results; arbitrary text must not imply executable certification.",
+        "area": "agent-testing",
+        "assigned_owner": "codex-primary",
+        "canonical_surface": "studio-lifecycle",
+        "control_action": "historical finding; exact visible action must be reconciled",
+        "evidence_lacking": false,
+        "feature": "agent-testing",
+        "finding": "Agent Studio labels free-text IDs as required certification tests, but the runtime implements only identity and sandbox checks and rejects every other ID. There is no test authoring, scenario/fixture binding, capability-specific validation, section gate, or result explorer.",
+        "id": "PX-OS-059",
+        "linked_control_count": 0,
+        "next_action": "Retain operational evidence and reopen on contrary current-source or installed-host behavior.",
+        "severity": "high",
+        "status": "operationally_verified"
       }
     ],
-    "count": 1066,
+    "count": 1075,
     "limit": 100,
-    "open_count": 536,
+    "open_count": 16,
     "progress": {
       "aggregate_parent_cards": 25,
       "approved": 0,
@@ -1517,8 +1517,10 @@
       "cards_lacking_required_evidence": [],
       "cards_lacking_required_evidence_count": 0,
       "cards_lacking_required_evidence_truncated": false,
-      "cards_missing_source_symbols": [],
-      "cards_missing_source_symbols_count": 0,
+      "cards_missing_source_symbols": [
+        "PX-OS-1069"
+      ],
+      "cards_missing_source_symbols_count": 1,
       "cards_missing_source_symbols_truncated": false,
       "cards_with_unbound_evidence": [
         "PX-OS-008",
@@ -1526,17 +1528,22 @@
         "PX-OS-011",
         "PX-OS-045",
         "PX-OS-1065",
+        "PX-OS-1075",
         "PX-OS-976"
       ],
-      "cards_with_unbound_evidence_count": 6,
+      "cards_with_unbound_evidence_count": 7,
       "cards_with_unbound_evidence_truncated": false,
       "cards_with_unregistered_surface": [
-        "PX-OS-1065"
+        "PX-OS-1065",
+        "PX-OS-1073",
+        "PX-OS-1074"
       ],
-      "cards_with_unregistered_surface_count": 1,
+      "cards_with_unregistered_surface_count": 3,
       "cards_with_unregistered_surface_truncated": false,
       "cards_without_control_links": [
+        "PX-OS-001",
         "PX-OS-002",
+        "PX-OS-003",
         "PX-OS-004",
         "PX-OS-005",
         "PX-OS-006",
@@ -1550,107 +1557,104 @@
         "PX-OS-014",
         "PX-OS-015",
         "PX-OS-016",
+        "PX-OS-017",
         "PX-OS-018",
+        "PX-OS-019",
         "PX-OS-020",
+        "PX-OS-021",
         "PX-OS-022",
         "PX-OS-023",
         "PX-OS-024",
-        "PX-OS-026",
-        "PX-OS-027",
-        "PX-OS-028",
-        "PX-OS-029",
-        "PX-OS-030",
-        "PX-OS-032"
+        "PX-OS-025"
       ],
-      "cards_without_control_links_count": 774,
+      "cards_without_control_links_count": 1043,
       "cards_without_control_links_truncated": true,
       "cards_without_control_resolution": [
-        "PX-OS-002",
-        "PX-OS-004",
-        "PX-OS-005",
-        "PX-OS-006",
-        "PX-OS-007",
-        "PX-OS-008",
-        "PX-OS-009",
-        "PX-OS-010",
-        "PX-OS-011",
-        "PX-OS-012",
-        "PX-OS-013",
-        "PX-OS-014",
-        "PX-OS-015",
-        "PX-OS-016",
-        "PX-OS-018",
-        "PX-OS-020",
-        "PX-OS-022",
-        "PX-OS-024",
-        "PX-OS-027",
-        "PX-OS-028",
-        "PX-OS-030",
-        "PX-OS-033",
-        "PX-OS-035",
-        "PX-OS-036",
-        "PX-OS-039"
+        "PX-OS-1034",
+        "PX-OS-1035",
+        "PX-OS-1036",
+        "PX-OS-1037",
+        "PX-OS-1038",
+        "PX-OS-1039",
+        "PX-OS-1040",
+        "PX-OS-1041",
+        "PX-OS-1042",
+        "PX-OS-1043",
+        "PX-OS-1044",
+        "PX-OS-1045",
+        "PX-OS-1046",
+        "PX-OS-1047",
+        "PX-OS-1048",
+        "PX-OS-1049",
+        "PX-OS-1050",
+        "PX-OS-1051",
+        "PX-OS-1052",
+        "PX-OS-1054",
+        "PX-OS-1055",
+        "PX-OS-1056",
+        "PX-OS-1057",
+        "PX-OS-1058",
+        "PX-OS-1059"
       ],
-      "cards_without_control_resolution_count": 699,
+      "cards_without_control_resolution_count": 297,
       "cards_without_control_resolution_truncated": true,
-      "closed": 6,
+      "closed": 71,
       "controls_not_yet_disposed": 0,
-      "controls_with_current_observation": 912,
-      "controls_with_disposition": 929,
-      "controls_without_current_observation": 17,
+      "controls_with_current_observation": 931,
+      "controls_with_disposition": 931,
+      "controls_without_current_observation": 0,
       "deferred": 0,
-      "discovered": 426,
+      "discovered": 0,
       "evidence_deficient_cards": [
         "PX-OS-008",
         "PX-OS-009",
         "PX-OS-011",
         "PX-OS-045",
         "PX-OS-1065",
+        "PX-OS-1075",
         "PX-OS-976"
       ],
-      "evidence_deficient_cards_count": 6,
+      "evidence_deficient_cards_count": 7,
       "evidence_deficient_cards_truncated": false,
-      "examined_controls": 912,
+      "examined_controls": 931,
       "expected_surfaces_missing": [],
       "expected_surfaces_missing_count": 0,
       "expected_surfaces_missing_truncated": false,
-      "gap_controls": 292,
-      "gaps_discovered": 1066,
-      "implemented": 8,
-      "implementing": 1,
-      "integrated": 2,
+      "gap_controls": 29,
+      "gaps_discovered": 1075,
+      "implemented": 0,
+      "implementing": 0,
+      "integrated": 1,
       "inventory_drift_surfaces": [],
       "inventory_drift_surfaces_count": 0,
       "inventory_drift_surfaces_truncated": false,
-      "known_controls": 929,
-      "narrowly_verified": 86,
-      "non_visible_path_cards": 74,
-      "operational_controls": 637,
-      "operationally_verified": 522,
-      "reopened": 0,
+      "known_controls": 931,
+      "narrowly_verified": 13,
+      "non_visible_path_cards": 150,
+      "operational_controls": 902,
+      "operationally_verified": 981,
+      "reopened": 1,
       "report_findings": 251,
       "report_findings_reconciled": 251,
       "reports_registered": 20,
       "reproduced": 0,
-      "scoped": 13,
-      "superseded": 2,
-      "surfaces_examined": 18,
+      "scoped": 1,
+      "superseded": 7,
+      "surfaces_examined": 20,
       "surfaces_inventoried": 24,
       "surfaces_inventory_reconciled": 20,
       "surfaces_not_yet_examined": [
         "operational-gap-ledger",
-        "settings",
         "studio-catalog",
-        "studio-lifecycle",
         "studio-version-allocation",
         "testing-governance"
       ],
-      "surfaces_not_yet_examined_count": 6,
+      "surfaces_not_yet_examined_count": 4,
       "surfaces_not_yet_examined_truncated": false,
-      "surfaces_operationally_proven": 0,
+      "surfaces_operationally_proven": 7,
       "total_known_surfaces": 20,
-      "typed_control_cards": 299,
-      "unassigned": 12,
+      "typed_control_cards": 603,
+      "unassigned": 0,
       "unexpected_registered_surfaces": [
         "operational-gap-ledger",
         "studio-catalog",
@@ -1663,42 +1667,42 @@
       "unreconciled_report_findings_count": 0,
       "unreconciled_report_findings_truncated": false
     },
-    "retained_unclosed_count": 1060,
+    "retained_unclosed_count": 1004,
     "status_counts": {
       "approved": 0,
       "blocked": 0,
-      "closed": 6,
+      "closed": 71,
       "deferred": 0,
-      "discovered": 426,
-      "implemented": 8,
-      "implementing": 1,
-      "integrated": 2,
-      "narrowly_verified": 86,
-      "operationally_verified": 522,
-      "reopened": 0,
+      "discovered": 0,
+      "implemented": 0,
+      "implementing": 0,
+      "integrated": 1,
+      "narrowly_verified": 13,
+      "operationally_verified": 981,
+      "reopened": 1,
       "reproduced": 0,
-      "scoped": 13,
-      "superseded": 2
+      "scoped": 1,
+      "superseded": 7
     },
     "truncated": true
   },
-  "event_count": 23192,
-  "generated_utc": "2026-08-26T10:20:40.967204Z",
-  "head_event_sha256": "650f3cabcfe9f49f2b197de247900856b2b16c4cb32208043c302ec52ff9bd9e",
+  "event_count": 31714,
+  "generated_utc": "2026-09-01T05:33:15.621692Z",
+  "head_event_sha256": "94ca84ac85415767158f2f6fbae0ac51a93a2c209fb8ce39547026c4a0af3f3f",
   "ledger_fingerprint": {
-    "sha256": "c3f7ba34a3c561a13fffa7710fc8299fed7a5dbc68e4693090008a5cbbe353a2",
-    "size_bytes": 77109868
+    "sha256": "68bccb3fdc8e1f72b4828100bd486456577320536e3ace3423098d90257c978b",
+    "size_bytes": 98109641
   },
   "ledger_id": "PX-OPERATIONAL-GAPS-20260816",
-  "maximum_gap_ordinal": 1066,
-  "predecessor_event_sha256": "779793cad902a37c22bf2db8b81953cb56978548f2e0c436ca926ee2ce4fe877",
-  "previous_checkpoint_sha256": "8b8f6256a21f437897ccb395d6571c37045014d2d0270bf05748283b883e35bd",
+  "maximum_gap_ordinal": 1075,
+  "predecessor_event_sha256": "bdfa853358b8f2cd79e3979fefb4a0db7689018a90298d1940ba4d1253e08e29",
+  "previous_checkpoint_sha256": "dbb8578325965b2226c8a5b81387d1fa426f2b89ca325008c667ef50721488e8",
   "schema_version": "px.operational-gap-ledger-head/1.0",
-  "snapshot_sha256": "cd07ad0821b2e05b4600e10dfe0e091fe8bac31a19c370a9c955430efbfd2ea2",
-  "snapshot_size_bytes": 52153058,
+  "snapshot_sha256": "c47a1faa235109ee89330d4758e825d1af402e0b88b3568854ff28d0ba4f15e0",
+  "snapshot_size_bytes": 80878098,
   "verification_basis": {
-    "full_replay_anchor_event_count": 23027,
-    "full_replay_anchor_event_sha256": "e71d9d4267e86baad4d3ccce73da9777ed837f4b353f76c0fed955990b62ee4c",
+    "full_replay_anchor_event_count": 29319,
+    "full_replay_anchor_event_sha256": "c0a203fc4813b8109f2055839b0c488d722f8e3171f9247d20de9f5061468618",
     "kind": "incremental_from_verified_checkpoint"
   }
 }

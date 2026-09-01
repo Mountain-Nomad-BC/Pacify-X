@@ -3,6 +3,7 @@
   "command": [
     "node",
     "--test",
+    "--test-concurrency=1",
     "tests/hardening-boundaries.test.js",
     "tests/extension-contract.test.js",
     "tests/extension-studio-wiring.test.js",
@@ -22,15 +23,16 @@
     "tests/operational-ui-walk-installed-probe.test.js",
     "tests/isolated-current-source-walk.test.js",
     "tests/owned-engine-outage.test.js",
+    "tests/owned-native-input-client.test.js",
     "tests/contained-ui-action-walk.test.js"
   ],
   "cwd": "extension",
   "dependencies": [],
-  "duration_seconds": 36.664501,
+  "duration_seconds": 73.252687,
   "exit_code": 0,
-  "input_sha256": "a671b01989b39b7f6110669d3e2c73f4c8dd67cbbf6f57fe39da5b07045e14a1",
+  "input_sha256": "fe7d2b05209c5e0a7106d06859b887d75990d9d2f805d2e55ca1d26b80645b73",
   "passed": true,
-  "receipt_sha256": "58031800d828b290ecaa26741177fbc7d25b58bb0b8e20a1ea19bf691c7f68f2",
+  "receipt_sha256": "02a4676be12f57e029a0630b80ad86ffac61f05add821b58f653eb8aebc85852",
   "schema_version": "px.test-section-receipt/1.0",
   "section": "dashboard-extension",
   "timed_out": false

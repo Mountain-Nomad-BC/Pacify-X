@@ -1,0 +1,31 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "release-session:px-additive-lint-lifecycle-commit-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023203",
+  "authority": "User explicitly requested uninterrupted completion and canonical GitHub publication of all Pacify-X repairs.",
+  "expected_effect": "Create one additive local commit containing only the two lint corrections, the exact paused-observer lifecycle test correction, and its focused repair evidence; leave generated local custody and operational ledger state unstaged.",
+  "rollback": "Before publication, reset only the new local commit while preserving its working-tree changes; after publication, use a new corrective commit and never rewrite remote history.",
+  "expires_utc": "2026-09-04T12:00:00Z",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect only compact Git status/diff/index/branch metadata for runtime/studio_api.py, tests/test_agent_runtime.py, tests/test_operational_gap_ledger.py, evidence/release/agent-observer-resource-repair-20260826.json, and current HEAD."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Stage exactly runtime/studio_api.py, tests/test_agent_runtime.py, tests/test_operational_gap_ledger.py, and evidence/release/agent-observer-resource-repair-20260826.json; create one normal additive commit. Do not stage operational ledgers, section receipts, local custody, package, install, amend, rebase, or certify."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["Run only local non-network git status/diff/add/diff --cached/commit/show commands needed for the exact additive commit. Do not fetch, push, merge, run further tests, package, install, or certify."]
+    }
+  ],
+  "evidence": [
+    {
+      "reference": "evidence/release/agent-observer-resource-repair-20260826.json",
+      "claim": "Focused repair and governed-section proof for the exact additive files.",
+      "artifact_sha256": "2856fc5bf94a2bf84fd09f59f46dde071bd47a486816780acb92cebbe6764456",
+      "artifact_size": 1515
+    }
+  ]
+}

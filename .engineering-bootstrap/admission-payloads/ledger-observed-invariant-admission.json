@@ -1,0 +1,29 @@
+{
+  "gap_id": "PX-OS-1065",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000016539",
+  "session_id": "repair-session:px-ledger-observed-invariant-20260825",
+  "expires_utc": "2026-08-29T23:59:00Z",
+  "effect_scopes": [
+    {
+      "effect": "write",
+      "scope": [
+        "Modify only runtime/operational_gap_ledger.py and its direct tests so an operational observation requires direct observed/rendered evidence and a complete chain but does not universally require an active attempt; append the already derived exact observation and card reconciliation events; do not modify other product code, package, deploy, publish, or certify."
+      ]
+    },
+    {
+      "effect": "execute",
+      "scope": [
+        "Run focused operational-ledger, assembler, and reconciler tests, deterministic exact receipt reconciliation and coverage diagnostics, and the directly governed testing-governance section gate; do not run UI walks, full profile, validate, package, deploy, publish, or certify."
+      ]
+    }
+  ],
+  "authority": "The canonical validator and exact directly observed receipt establish the invariant mismatch; the user authorized reversible repairs.",
+  "expected_effect": "Permit complete direct read-only observations while preserving exact-source, observed/rendered, evidence, and complete-chain requirements.",
+  "rollback": "Revert only the bounded validator/test change; append-only observation events remain content-bound and can be superseded if necessary.",
+  "evidence": [
+    {
+      "reference": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000016539",
+      "claim": "Exact active ledger invariant checkpoint."
+    }
+  ]
+}

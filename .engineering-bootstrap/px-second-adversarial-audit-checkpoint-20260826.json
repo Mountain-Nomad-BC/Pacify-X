@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023185",
+  "learned": "The completed second adversarial pass reconciled all 19 supplied findings, found no open local product defect, repaired two additional scanner defects, and left only PX-AUD-016 remote Windows/Linux/macOS VS Code-host execution pending. Newer exact installed-host and canonical-workspace evidence does not reopen a local finding. The normal existing VS Code window still requires a reload to replace its in-memory 0.6.55 host with installed 0.6.59.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": [],
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "evidence": [
+    {
+      "reference": "evidence/adversarial-audit/second-adversarial-audit-operational-followup-20260826.json",
+      "claim": "Second adversarial audit and post-audit operational linkage.",
+      "artifact_sha256": "0a5b35758067fd131451f374c6103628b56ff77b20c0f73cea0cf10b655b96f6",
+      "artifact_size": 2035
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "session_id": "repair-session:px-supervised-marker-consumption-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023161",
+  "gap_id": "PX-OS-1065",
+  "authority": "User-authorized reversible repair of all Pacify-X defects blocking reinstall.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": [
+        "Inspect only runtime CLI orchestration claim/inheritance, supervised-child environment propagation and consumption, direct lock tests, the fresh core-a-f receipt, and the parent-to-child-to-grandchild process boundary."
+      ]
+    },
+    {
+      "effect": "write",
+      "scope": [
+        "Make the supervised-child marker one-generation by consuming it immediately after the exact run-stale child inherits the parent lease; add focused descendant-isolation assertions; retain proof; clear the unresolved track only when focused inheritance and nested standalone acquisition tests pass. Do not reconcile projections, run sections/groups/full profile/validate, package, install, publish, commit, push, merge, or certify."
+      ]
+    },
+    {
+      "effect": "execute",
+      "scope": [
+        "With PYTHONDONTWRITEBYTECODE=1 set, run only direct supervised-child consumption, nested standalone acquisition, contention/release focused tests, and syntax/import probes. Do not run group commands, projection reconciliation, sections/full profile/validate, package, install, publish, commit, push, merge, or certify."
+      ]
+    }
+  ],
+  "expected_effect": "Permit only the immediate supervised run-stale CLI child to inherit the parent lease while forcing every descendant to acquire physical ownership.",
+  "rollback": "Revert only marker-consumption logic and focused assertions if lease inheritance or restoration regresses.",
+  "expires_utc": "2026-08-31T12:00:00Z",
+  "evidence": [
+    {
+      "reference": "evidence/release/supervised-child-marker-descendant-leak-20260826.json",
+      "claim": "Exact descendant marker-leak denominator.",
+      "artifact_sha256": "9e8d01b25143615f6797abfa44ad14b8b3c5bf593883cbfba29a39d8919984ac",
+      "artifact_size": 983
+    }
+  ]
+}

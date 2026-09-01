@@ -1,0 +1,18 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023158",
+  "learned": "The live orchestration lock classification repair is operationally proven: release audit passes under the held lock. Core-a-f alone fails because the exact supervised-child marker remains set after the immediate run-stale CLI inherits its parent lease, allowing descendant pytest code to appear eligible for inheritance. The marker must be one-generation and consumed at child entry.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": [
+    "PX-OS-1065"
+  ],
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "evidence": [
+    {
+      "reference": "evidence/release/supervised-child-marker-descendant-leak-20260826.json",
+      "claim": "Exact one-generation marker leak denominator.",
+      "artifact_sha256": "9e8d01b25143615f6797abfa44ad14b8b3c5bf593883cbfba29a39d8919984ac",
+      "artifact_size": 983
+    }
+  ]
+}

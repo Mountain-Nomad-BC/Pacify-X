@@ -316,7 +316,11 @@ class FileLock:
         receipt: dict[str, object] = {
             "schema_version": LEASE_SCHEMA_VERSION,
             "receipt_type": "dead_file_lock_owner_recovery",
-            "lock_path": str(self.path.resolve()),
+            # The receipt is stored below the lock's own parent, so the sibling
+            # name is an exact portable locator. Never freeze a workstation-
+            # absolute checkout path into retained project evidence.
+            "lock_path": self.path.name,
+            "lock_path_basis": "receipt_parent",
             "recovered_utc": datetime.fromtimestamp(
                 recovered_ns / 1_000_000_000, timezone.utc
             ).isoformat(),

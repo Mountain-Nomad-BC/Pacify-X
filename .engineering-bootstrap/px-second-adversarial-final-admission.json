@@ -1,0 +1,31 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "audit-session:px-second-adversarial-final-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022996",
+  "authority": "User explicitly requested the second adversarial audit after all repairs and authorized all reversible read/write/execute work inside Pacify-X.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Read the user-supplied 19-finding audit, current finding reconciliation, current r4 exhaustive source report, installed operational receipts, dependency closure, and local CI/release definitions for final second-adversarial disposition only."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Write one superseding second-adversarial audit disposition and append-only audit/ledger evidence; do not modify product source, dependencies, Git state, GitHub, or release artifacts in this audit session."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["Run only bounded read-only reconciliation commands required to confirm the audit disposition. Do not rerun the exhaustive scan, broad section gates, full profile, validate, deploy, publish, merge, or certify."]
+    }
+  ],
+  "expected_effect": "Produce an evidence-bound post-repair disposition that separates repaired local findings from unexecuted remote multi-OS and GitHub checks without making a certification claim.",
+  "rollback": "Remove only the session-owned superseding report if malformed while retaining all source scans, repair evidence, and append-only ledger history.",
+  "expires_utc": "2026-08-26T16:00:00Z",
+  "evidence": [
+    {
+      "reference": "evidence/adversarial-audit/second-adversarial-source-scan-20260826-r4.json",
+      "artifact_sha256": "c039b7cc115db25793deefed714a5bd8606dfe6dcde5f22416a6ee4f84b45cbc",
+      "artifact_size": 2766094,
+      "claim": "The repaired exhaustive current-tree audit completed with zero errors."
+    }
+  ]
+}

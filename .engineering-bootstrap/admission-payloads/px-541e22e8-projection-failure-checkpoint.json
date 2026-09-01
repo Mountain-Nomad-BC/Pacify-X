@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023291",
+  "learned": "Canonical main 541e22e87ff71cf5260638115c2e3f32790de8bd triggered GitHub run 32977077401. Nineteen jobs passed, including the Python platform matrix observed so far, while independent generated, registry, and structural assurance gates failed at their governed gate step. The exact clean-checkout projection delta must be reproduced before another commit; local custody and ledger drift cannot be used as the diagnosis environment.",
+  "next_action": "Repair the ten remaining PX-CURRENT tracks in dependency order, beginning with the tested-source Studio worker handoff and current extension-host/listener health.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": [],
+  "evidence": [
+    {
+      "reference": "https://github.com/Mountain-Nomad-BC/Pacify-X/actions/runs/32977077401",
+      "artifact_sha256": "a1c85be36b7877dfde1d0f38c9b111b2c5924d841fb9019610ca5c009e2d85ed",
+      "artifact_size": 3469,
+      "claim": "Fresh canonical-main run with three independent projection gate failures and no certification claim."
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023009",
+  "unresolved_branch_gap_ids": ["PX-OS-1065"],
+  "newly_discovered_gap_ids": [],
+  "learned": "PX-AUD2-003 is repaired and causally verified. The shared product-source boundary now prunes nested build, dist, evidence, cache, and dependency trees before bounded walk accounting; the current effect-surface discovery completes, and the repair campaign is back at repair with zero unresolved items. Generated projection currentness is deliberately deferred until the next post-freeze reconciliation.",
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "evidence": [
+    {
+      "reference": "evidence/release/px-aud2-003-repair-20260826.json",
+      "artifact_sha256": "b5fb0aad5453c36e0864b439f1242af51510f16e11f9a6ea4b70a48817a0ef74",
+      "artifact_size": 1793,
+      "claim": "Generated-boundary repair and causal tests."
+    }
+  ]
+}

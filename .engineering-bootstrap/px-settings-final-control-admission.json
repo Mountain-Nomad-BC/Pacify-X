@@ -1,0 +1,37 @@
+{
+  "session_id": "repair-session:px-settings-inspect-metric-20260825",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022964",
+  "gap_id": "PX-OS-1065",
+  "authority": "User explicitly authorized all remaining reversible Pacify-X repairs; only irreversible destructive effects require approval.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": [
+        "Inspect extension/scripts/run-exhaustive-operational-control-walk.js and run-isolated-current-source-walk.js CLI selection behavior, the Settings inspectMetric renderer and controller path, focused dashboard tests, and current Settings control evidence only."
+      ]
+    },
+    {
+      "effect": "write",
+      "scope": [
+        "Only if the focused reproduction fails, modify the Settings inspectMetric renderer or controller, exact current-source control walker selection/observation logic, and focused dashboard tests; write the unique targeted evidence and append exact ledger events."
+      ]
+    },
+    {
+      "effect": "execute",
+      "scope": [
+        "Run one targeted current-source contained Settings inspectMetric operational reproduction; if source repair is required, run its focused Node tests and the dashboard-extension changed-section gate. Do not run full profile, validate, package, install, deploy, publish, merge, or certify."
+      ]
+    }
+  ],
+  "expected_effect": "Directly render and exercise pxui.settings.action.inspectMetric in a current-source contained browser with zero errors, or expose and repair its exact causal defect.",
+  "rollback": "Revert only any bounded Settings inspectMetric or targeted-walker repair while retaining append-only failed and successful reproduction evidence.",
+  "expires_utc": "2026-08-26T12:00:00Z",
+  "evidence": [
+    {
+      "reference": "evidence/current-source-final-visible-controls-20260825.json",
+      "artifact_sha256": "32fa9f6055eecc3327b83335831ab1d5ebeb87e16fcb40696684a8f4446d4752",
+      "artifact_size": 2706867,
+      "claim": "The prior exact visible-control run covered seven adjacent controls but not Settings inspectMetric."
+    }
+  ]
+}

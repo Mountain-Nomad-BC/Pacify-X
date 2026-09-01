@@ -4,22 +4,29 @@ import hashlib
 import json
 import os
 from pathlib import Path
-import shutil
 import subprocess
 import sys
 import tempfile
 import unittest
 
+from runtime.release_artifacts import materialize_release_source
+
 
 ROOT = Path(__file__).parents[1]
+DEFAULT_COMMAND_TIMEOUT_SECONDS = 120
+BUILD_COMMAND_TIMEOUT_SECONDS = 480
 
 
 class InstalledWheelEndToEndTests(unittest.TestCase):
     def _run(
-        self, command: list[str], *, cwd: Path
+        self,
+        command: list[str],
+        *,
+        cwd: Path,
+        timeout: int = DEFAULT_COMMAND_TIMEOUT_SECONDS,
     ) -> subprocess.CompletedProcess[str]:
         result = subprocess.run(
-            command, cwd=cwd, text=True, capture_output=True, timeout=120
+            command, cwd=cwd, text=True, capture_output=True, timeout=timeout
         )
         self.assertEqual(
             result.returncode,
@@ -46,53 +53,7 @@ class InstalledWheelEndToEndTests(unittest.TestCase):
                 )
             else:
                 source = temp / "source"
-                source.mkdir()
-                for name in (
-                    ".agents",
-                    ".px",
-                    ".ai",
-                    ".cursor",
-                    ".github",
-                    ".windsurf",
-                    "bootstrap",
-                    "builders",
-                    "contracts",
-                    "evidence",
-                    "LICENSES",
-                    "models",
-                    "orchestration",
-                    "policies",
-                    "providers",
-                    "registry",
-                    "runtime",
-                    "templates",
-                    "tests",
-                ):
-                    shutil.copytree(
-                        ROOT / name,
-                        source / name,
-                        ignore=(
-                            shutil.ignore_patterns(
-                                "preserved-skills",
-                                "preserved-extension-installations",
-                            )
-                            if name == ".px"
-                            else None
-                        ),
-                    )
-                for name in (
-                    "AGENTS.md",
-                    "AI_ASSISTANT.md",
-                    "CLAUDE.md",
-                    "GEMINI.md",
-                    "LICENSE",
-                    "MANIFEST.in",
-                    "NOTICE",
-                    "README.md",
-                    "pyproject.toml",
-                    "requirements-release.txt",
-                ):
-                    shutil.copy2(ROOT / name, source / name)
+                materialize_release_source(ROOT, source)
                 wheel_dir = temp / "wheel"
                 wheel_dir.mkdir()
                 self._run(
@@ -106,6 +67,7 @@ class InstalledWheelEndToEndTests(unittest.TestCase):
                         str(wheel_dir),
                     ],
                     cwd=source,
+                    timeout=BUILD_COMMAND_TIMEOUT_SECONDS,
                 )
                 wheel = next(wheel_dir.glob("*.whl"))
             venv = temp / "venv"

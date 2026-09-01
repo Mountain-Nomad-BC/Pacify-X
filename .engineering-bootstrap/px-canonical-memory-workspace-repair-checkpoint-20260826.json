@@ -1,0 +1,22 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023182",
+  "learned": "The configured canonical workspace and project were structurally valid; one expired historical project session made workspace_status invalid. Releasing that expired session through the retained lifecycle restored a valid workspace, healthy retrieval over 102 memory records, no dashboard attention, 8 runnable Agent revisions, and 3 runnable Workflow revisions. No product source changed. A reused install-proof filename is now explicitly corrected by a generation-unique receipt and independent installed-host proof.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": [],
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "evidence": [
+    {
+      "reference": "evidence/release/canonical-memory-workspace-repair-proof-20260826.json",
+      "claim": "Canonical workspace repair authority.",
+      "artifact_sha256": "32a3166e39db8dcae80044f43b04dabd559373a3158b13f30ecd2fa39373cafe",
+      "artifact_size": 1093
+    },
+    {
+      "reference": "evidence/release/install-proof-path-collision-correction-20260826.json",
+      "claim": "Evidence collision correction authority.",
+      "artifact_sha256": "823ad3058ff06953f7a2c4f3147bdacaed17e5ea91b3bb40257b94c2a9318995",
+      "artifact_size": 1708
+    }
+  ]
+}

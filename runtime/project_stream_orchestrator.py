@@ -16,6 +16,7 @@ from .knowledge_foundry import (
 )
 from .memory_fabric import MemoryRecord
 from .memory_vault import MemoryVault
+from .semantic_memory import SemanticEntity, SemanticEnvelope, SemanticRelation
 from .project_control_plane import (
     dispatch_workstreams,
     evaluate_resilience,
@@ -191,6 +192,37 @@ def memory_ingest_distill(context: ProjectStreamContext) -> Mapping[str, object]
             continue
         evidence_id = item.evidence_refs[0]
         source = source_lookup[evidence_id]
+        root_entity = f"knowledge:{item.object_id}"
+        related_entities = tuple(
+            SemanticEntity(
+                "reference:"
+                + hashlib.sha256(value.encode("utf-8")).hexdigest()[:24],
+                "reference",
+                (value,),
+            )
+            for value in sorted(set(item.relationships))
+            if value.strip()
+        )
+        semantic = SemanticEnvelope(
+            namespace=context.project_id,
+            record_type=item.kind,
+            payload={"statement": item.statement},
+            exact_keys=(item.object_id,),
+            tags=(item.kind,),
+            entities=(SemanticEntity(root_entity, item.kind), *related_entities),
+            relations=tuple(
+                SemanticRelation(
+                    root_entity,
+                    "RELATED_TO",
+                    entity.entity_id,
+                    item.confidence,
+                    evidence_id,
+                )
+                for entity in related_entities
+            ),
+            validation_status="candidate",
+            validation_checks=("source_hash_bound", "project_namespace_bound"),
+        )
         record = MemoryRecord(
             memory_id,
             context.workspace_id,
@@ -212,6 +244,7 @@ def memory_ingest_distill(context: ProjectStreamContext) -> Mapping[str, object]
             now,
             now,
             relationships=item.relationships,
+            semantic=semantic,
         )
         created.append(vault.append(record).memory_id)
     return {
@@ -236,9 +269,16 @@ def memory_maintenance(context: ProjectStreamContext) -> Mapping[str, object]:
             "hard_delete": False,
         }
     generation = vault.build_index()
+    validation = vault.validate_index_generation(generation.generation)
+    if validation["valid"] is not True:
+        raise ValueError("memory index candidate failed deterministic validation")
+    activation = vault.promote_index(generation.generation, approved=context.approval)
     return {
         "memory_health_report": "index_published",
         "generation": asdict(generation),
+        "validation": validation,
+        "activation": activation,
+        "authoritative_generation": f"{generation.generation:06d}",
         "previous_generations_preserved": True,
         "hard_delete": False,
     }

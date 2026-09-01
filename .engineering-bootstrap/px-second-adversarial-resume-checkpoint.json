@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022985",
+  "learned": "PX-AUD2-001 is causally repaired: excluded boundaries are metadata-only and bounded, 14 focused tests pass, and the exhaustive post-repair scan completed in 153 seconds with 115608 files and 6887647674 bytes accounted and zero errors.",
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": ["PX-OS-1065"],
+  "evidence": [
+    {
+      "reference": "evidence/adversarial-audit/px-aud2-001-repair-verification-20260826.json",
+      "artifact_sha256": "72926b846c5e22e6bb44475e87d8511445df0e529b29994ff38a324eeb5a64cb",
+      "artifact_size": 1993,
+      "claim": "Focused evidence closes PX-AUD2-001 and permits the second adversarial audit to resume."
+    }
+  ]
+}

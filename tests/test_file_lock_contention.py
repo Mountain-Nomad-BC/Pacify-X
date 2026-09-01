@@ -239,6 +239,8 @@ def test_file_lock_recovers_dead_owner_and_retains_receipt() -> None:
             assert receipt["receipt_type"] == "dead_file_lock_owner_recovery"
             assert receipt["reason"] == "recorded_owner_not_live"
             assert receipt["previous_lease"] == retained
+            assert receipt["lock_path"] == "control.lock"
+            assert receipt["lock_path_basis"] == "receipt_parent"
             assert acquired._lease is not None
             assert receipt["recovered_by"]["token"] == acquired._lease["token"]
         assert receipt_path.is_file()

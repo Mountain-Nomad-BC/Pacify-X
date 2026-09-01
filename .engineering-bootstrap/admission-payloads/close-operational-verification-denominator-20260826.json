@@ -1,0 +1,14 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-operational-verification-denominator-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023316",
+  "outcome": "completed",
+  "evidence": [
+    {
+      "reference": "evidence/adversarial-audit/current-environment-repair-closure-20260826.json",
+      "claim": "Classification confirms PX-CURRENT-001 through PX-CURRENT-009 have focused source and changed-section proof; PX-CURRENT-010/011 are the remaining ordered installed-host and operational-ledger closure tracks. The 233-card dashboard denominator is retained and must be reconciled from the one installed operational walk rather than mass-transitioned from source tests.",
+      "artifact_sha256": "35be49772bc1001a03a3ea0416748348eb23f94d8a2c9e1db8d9b87573f2d935",
+      "artifact_size": 3535
+    }
+  ]
+}

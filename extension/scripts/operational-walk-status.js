@@ -14,6 +14,32 @@ const WALK_EXIT_CODES = Object.freeze({
   [WALK_TERMINAL_STATES.BLOCKED]: 3
 });
 
+const EXACT_RECOVERED_AUTHORITY_BOUNDARY_IDS = new Set([
+  'pxui.dashboard-control-plane.command.pacifyX.continueWithCodex',
+  'pxui.dashboard-control-plane.command.pacifyX.refreshEnvironment',
+  'pxui.dashboard-control-plane.command.pacifyX.refreshOllama',
+  'pxui.dashboard-control-plane.command.pacifyX.rotateStudioApprovalIdentity',
+  'pxui.dashboard-control-plane.command.pacifyX.validateControlPlane',
+  'pxui.dashboard-control-plane.command.validate',
+  'pxui.diagnostics.action.dynamicRepair.refreshEnvironment',
+  'pxui.diagnostics.action.validate',
+  'pxui.runtime-core.action.validate',
+  'pxui.runtime-core.action.cleanupPermanent'
+]);
+
+function validRecoveredAuthorityBoundary(control) {
+  if (!control || !EXACT_RECOVERED_AUTHORITY_BOUNDARY_IDS.has(String(control.control_id || ''))) return false;
+  if (control.terminal_disposition !== 'skipped_requires_authority'
+    || control.rendered !== true || control.visible !== true || control.attempted !== true
+    || (Array.isArray(control.errors) && control.errors.length)) return false;
+  if (![control.authority, control.reason, control.expected_effect, control.return_condition]
+    .every(value => typeof value === 'string' && value.trim())) return false;
+  const stages = new Map((Array.isArray(control.stages) ? control.stages : []).map(stage => [stage?.stage, stage?.status]));
+  return stages.get('failure_handling') === 'observed'
+    && stages.get('recovery_rollback') === 'observed'
+    && [...stages.values()].some(status => !['observed', 'not_applicable'].includes(status));
+}
+
 const COMPLETE_BUILDER_DISPOSITIONS = new Set([
   'completed',
   'interaction_complete',
@@ -67,11 +93,31 @@ function dedupeIssues(items) {
     `${left.source}:${left.code}:${left.context || ''}`.localeCompare(`${right.source}:${right.code}:${right.context || ''}`));
 }
 
+function isExternalVsCodeMermaidToolDiagnostic(raw) {
+  if (String(raw?.source || '').toLowerCase() !== 'console') return false;
+  const message = String(raw?.message || '').trim();
+  const context = String(raw?.context || '').trim();
+  return /^%c\s+ERR\s+color:\s+#f33\s+Tool "renderMermaidDiagram" was not contributed\.$/.test(message)
+    && /^console:vscode-file:\/\/vscode-app\/.+\/resources\/app\/out\/vs\/workbench\/workbench\.desktop\.main\.js$/i.test(context.replace(/\\/g, '/'));
+}
+
+function isExternalOwnedFixtureMarketplaceDiagnostic(raw) {
+  if (String(raw?.source || '').toLowerCase() !== 'console') return false;
+  return String(raw?.message || '').trim() === 'Failed to load resource: the server responded with a status of 404 ()'
+    && String(raw?.context || '').trim() === 'console:https://marketplace.visualstudio.com/_apis/public/gallery/vscode/px-owned/fixture/latest';
+}
+
 function normalizeHostErrors(hostErrors = []) {
   const normalized = [];
   for (const raw of Array.isArray(hostErrors) ? hostErrors : []) {
     const source = String(raw?.source || '').toLowerCase();
-    const mapping = source === 'console'
+    const externalMermaidDiagnostic = isExternalVsCodeMermaidToolDiagnostic(raw);
+    const externalOwnedFixtureDiagnostic = isExternalOwnedFixtureMarketplaceDiagnostic(raw);
+    const mapping = externalMermaidDiagnostic
+      ? { source: 'external_host', code: 'external-vscode-optional-tool-unavailable', severity: 'warning', blocking: false }
+      : externalOwnedFixtureDiagnostic
+        ? { source: 'external_host', code: 'external-vscode-owned-fixture-marketplace-miss', severity: 'warning', blocking: false }
+      : source === 'console'
       ? { source: 'console', code: 'console-error' }
       : source === 'pageerror'
         ? { source: 'page', code: 'page-error' }
@@ -192,6 +238,17 @@ function focusedProfileIssues(value) {
   const incomplete = (code, message, details = null) => issues.push(issue({
     source: 'coverage', code, message, severity: 'incomplete', context: focused, details
   }));
+  const requiredStages = ['open_load', 'display', 'user_edit_action', 'input_validation', 'authorization', 'backend_dispatch', 'runtime_effect', 'progress_reporting', 'result_acknowledgement', 'persistence', 'reload_reopen', 'failure_handling', 'recovery_rollback'];
+  const completeOwnedProbe = profile => {
+    const records = Array.isArray(profile?.control_probe?.records) ? profile.control_probe.records : [];
+    const eligible = Number(profile?.control_probe?.eligible_control_count || 0);
+    return eligible > 0 && records.length === eligible
+      && records.every(record => record?.rendered === true
+        && record?.attempted === true
+        && !(record?.errors || []).length
+        && requiredStages.every(stage => ['present', 'not_applicable'].includes(record?.interaction_chain?.[stage]?.state)))
+      && !(profile?.observation?.errors || []).length;
+  };
   if (focused === 'studio-lifecycle') {
     const setup = value.studio_setup_profile?.observation;
     const candidates = value.studio_candidate_save_profile?.observations;
@@ -222,6 +279,77 @@ function focusedProfileIssues(value) {
     const records = Array.isArray(profile?.records) ? profile.records : [];
     if (!records.length || records.some(record => record?.attempted !== true || (record?.errors || []).length)) {
       incomplete('focused-configuration-incomplete', 'The focused reversible configuration journey did not complete every eligible control.', { eligible_control_count: profile?.eligible_control_count || 0, record_count: records.length });
+    }
+  } else if (focused === 'host-boundary') {
+    const profile = value.host_boundary_profile;
+    const records = Array.isArray(profile?.control_probe?.records) ? profile.control_probe.records : [];
+    const eligible = Number(profile?.control_probe?.eligible_control_count || 0);
+    const complete = records.length === eligible && eligible > 0 && records.every(record =>
+      record?.rendered === true
+      && record?.attempted === true
+      && !(record?.errors || []).length
+      && Object.values(record?.interaction_chain || {}).every(stage => ['present', 'not_applicable'].includes(stage?.state))
+    );
+    if (!complete || (profile?.observation?.errors || []).length) {
+      incomplete('focused-host-boundary-incomplete', 'The focused host-boundary journey did not complete every eligible typed host handoff and required recovery stage.', { eligible_control_count: eligible, record_count: records.length, profile_errors: profile?.observation?.errors || [] });
+    }
+  } else if (focused === 'native-dialog-boundary') {
+    const profiles = [
+      ['enterprise', value.enterprise_profile],
+      ['projects', value.projects_profile],
+      ['plugin-mutation', value.plugin_mutation_profile]
+    ];
+    const incompleteProfiles = profiles.filter(([, profile]) => !completeOwnedProbe(profile)).map(([name, profile]) => ({
+      name,
+      eligible_control_count: Number(profile?.control_probe?.eligible_control_count || 0),
+      record_count: Array.isArray(profile?.control_probe?.records) ? profile.control_probe.records.length : 0,
+      errors: profile?.observation?.errors || []
+    }));
+    if (incompleteProfiles.length) {
+      incomplete('focused-native-dialog-boundary-incomplete', 'The focused native-dialog journey did not complete Enterprise, Projects, and Plugin mutation through exact typed postconditions and recovery.', { incomplete_profiles: incompleteProfiles });
+    }
+  } else if (focused === 'codex-handoff') {
+    const profile = value.codex_handoff_profile;
+    if (!completeOwnedProbe(profile)) {
+      incomplete('focused-codex-handoff-incomplete', 'The focused Codex handoff journey did not complete the exact contributed command and Runtime Core continue/cancel controls through their required recovery stages.', {
+        eligible_control_count: Number(profile?.control_probe?.eligible_control_count || 0),
+        record_count: Array.isArray(profile?.control_probe?.records) ? profile.control_probe.records.length : 0,
+        profile_errors: profile?.observation?.errors || []
+      });
+    }
+  } else if (focused === 'error-indicators') {
+    const requiredIds = new Set([
+      'pxui.memory.indicator.queryError',
+      'pxui.knowledge-core.indicator.controllerError'
+    ]);
+    const profile = value.installed_control_probe;
+    const records = Array.isArray(profile?.records) ? profile.records : [];
+    const observedIds = records.map(record => String(record?.control_id || ''));
+    const exactIdentity = records.length === requiredIds.size
+      && new Set(observedIds).size === requiredIds.size
+      && observedIds.every(controlId => requiredIds.has(controlId));
+    const complete = Number(profile?.eligible_control_count || 0) === requiredIds.size
+      && exactIdentity
+      && records.every(record =>
+        record?.rendered === true
+        && record?.observed === true
+        && !(record?.errors || []).length
+        && Object.keys(record?.interaction_chain || {}).length === requiredStages.length
+        && requiredStages.every(stageName => {
+          const stage = record?.interaction_chain?.[stageName];
+          return (
+          ['present', 'not_applicable'].includes(stage?.state)
+          && Array.isArray(stage?.evidence)
+          && stage.evidence.length > 0
+          );
+        })
+      );
+    if (!complete) {
+      incomplete('focused-error-indicators-incomplete', 'The focused error-indicator journey did not prove both exact request-bound failure and recovery chains without substitution.', {
+        required_control_ids: [...requiredIds],
+        observed_control_ids: observedIds,
+        eligible_control_count: Number(profile?.eligible_control_count || 0)
+      });
     }
   } else {
     incomplete('focused-profile-unsupported', `The focused operational profile ${focused} has no scoped completion contract.`);
@@ -277,8 +405,15 @@ function evaluateOperationalWalk(receipt, { additionalIssues = [] } = {}) {
   const controls = Array.isArray(chain?.controls) ? chain.controls : [];
   const declaredControlCount = Number(chain?.aggregates?.control_count ?? chain?.inventory?.control_count);
   const controlCount = Number.isSafeInteger(declaredControlCount) && declaredControlCount >= 0 ? declaredControlCount : controls.length;
+  const attemptableKinds = new Set(['action', 'field', 'form', 'menu', 'editor', 'gesture', 'command']);
+  const attemptableControls = controls.filter(control => !control?.kind || attemptableKinds.has(control.kind));
   const attemptedControlCount = controls.filter(control => control?.attempted === true).length;
+  const attemptedAttemptableControlCount = attemptableControls.filter(control => control?.attempted === true).length;
   const completeChainCount = Number(chain?.aggregates?.complete_interaction_chains);
+  const authoritySkippedControls = controls.filter(control => control?.terminal_disposition === 'skipped_requires_authority');
+  const recoveredAuthorityBoundaries = authoritySkippedControls.filter(validRecoveredAuthorityBoundary);
+  const invalidAuthorityBoundaries = authoritySkippedControls.filter(control => !validRecoveredAuthorityBoundary(control));
+  const acceptedCoverageCount = (Number.isSafeInteger(completeChainCount) ? completeChainCount : 0) + recoveredAuthorityBoundaries.length;
   if (!chain || !Array.isArray(chain.controls) || !Number.isSafeInteger(controlCount) || controlCount < 1 || controls.length !== controlCount) {
     issues.push(issue({
       source: 'process',
@@ -287,22 +422,36 @@ function evaluateOperationalWalk(receipt, { additionalIssues = [] } = {}) {
       context: 'receipt-contract'
     }));
   } else if (!focusedEvaluation) {
-    if (attemptedControlCount < controlCount) {
+    if (invalidAuthorityBoundaries.length) {
+      issues.push(issue({
+        source: 'coverage',
+        code: 'authority-boundaries-invalid',
+        severity: 'incomplete',
+        message: `${invalidAuthorityBoundaries.length} authority-skipped control records are not exact rendered, attempted, error-free refusal-and-recovery boundaries.`,
+        details: { control_ids: invalidAuthorityBoundaries.map(control => control.control_id).sort() }
+      }));
+    }
+    if (attemptedAttemptableControlCount < attemptableControls.length) {
       issues.push(issue({
         source: 'coverage',
         code: 'controls-unattempted',
         severity: 'incomplete',
-        message: `${controlCount - attemptedControlCount} of ${controlCount} controls were not attempted.`,
-        details: { control_count: controlCount, attempted_control_count: attemptedControlCount }
+        message: `${attemptableControls.length - attemptedAttemptableControlCount} of ${attemptableControls.length} interactive controls were not attempted.`,
+        details: {
+          control_count: controlCount,
+          attemptable_control_count: attemptableControls.length,
+          attempted_control_count: attemptedControlCount,
+          attempted_attemptable_control_count: attemptedAttemptableControlCount
+        }
       }));
     }
-    if (!Number.isSafeInteger(completeChainCount) || completeChainCount < controlCount) {
+    if (!Number.isSafeInteger(completeChainCount) || acceptedCoverageCount < controlCount) {
       issues.push(issue({
         source: 'coverage',
         code: 'control-chains-incomplete',
         severity: 'incomplete',
-        message: `${Number.isSafeInteger(completeChainCount) ? completeChainCount : 0} of ${controlCount} controls have complete interaction chains.`,
-        details: { control_count: controlCount, complete_interaction_chains: Number.isSafeInteger(completeChainCount) ? completeChainCount : 0 }
+        message: `${Number.isSafeInteger(completeChainCount) ? completeChainCount : 0} complete interaction chains plus ${recoveredAuthorityBoundaries.length} exact recovered authority boundaries cover ${acceptedCoverageCount} of ${controlCount} controls.`,
+        details: { control_count: controlCount, complete_interaction_chains: Number.isSafeInteger(completeChainCount) ? completeChainCount : 0, recovered_authority_boundaries: recoveredAuthorityBoundaries.length, accepted_coverage_count: acceptedCoverageCount }
       }));
     }
   }
@@ -359,8 +508,13 @@ function evaluateOperationalWalk(receipt, { additionalIssues = [] } = {}) {
     },
     coverage: {
       control_count: controlCount,
+      attemptable_control_count: attemptableControls.length,
       attempted_control_count: attemptedControlCount,
+      attempted_attemptable_control_count: attemptedAttemptableControlCount,
       complete_interaction_chains: Number.isSafeInteger(completeChainCount) ? completeChainCount : 0,
+      recovered_authority_boundary_count: recoveredAuthorityBoundaries.length,
+      recovered_authority_boundary_ids: recoveredAuthorityBoundaries.map(control => control.control_id).sort(),
+      accepted_coverage_count: acceptedCoverageCount,
       expected_surface_ids: [...expectedSurfaceIds].sort(),
       observed_surface_ids: [...observedSurfaceIds].sort(),
       missing_surface_ids: missingSurfaceIds
@@ -443,6 +597,8 @@ module.exports = {
   evaluateLauncherTerminal,
   evaluateOperationalWalk,
   exitCodeForTerminalState,
+  isExternalVsCodeMermaidToolDiagnostic,
   normalizeHostErrors,
-  normalizeProcessOutput
+  normalizeProcessOutput,
+  validRecoveredAuthorityBoundary
 };

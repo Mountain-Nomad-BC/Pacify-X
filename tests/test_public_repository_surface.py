@@ -27,7 +27,7 @@ def test_status_language_does_not_claim_independent_certification() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     assert "**Status:** Certified deployment-ready" not in readme
     assert (
-        "**Status:** Signed self-certified release published; public assets reproduced and verified"
+        "**Status:** v0.7.0 is undergoing governed certification; no publication claim is made yet"
         in readme
     )
     assert "independent certification" in (ROOT / "evidence/README.md").read_text(
@@ -136,6 +136,22 @@ def test_release_wheelhouse_is_outside_the_classified_source_tree() -> None:
         "complete-evidence-custody" not in workflow
         or "Package durable complete evidence custody" in workflow
     )
+
+
+def test_marketplace_publication_uses_oidc_and_the_exact_certified_vsix() -> None:
+    workflow = (ROOT / ".github/workflows/release.yml").read_text(encoding="utf-8")
+    assert "  id-token: write" in workflow
+    assert "@vscode/vsce@3.9.2 publish --oidc --packagePath" in workflow
+    assert "PACIFY_X_CERTIFIED_VSIX_SHA256" in workflow
+    assert "certified VSIX bytes changed before Marketplace publication" in workflow
+    assert "certified VSIX bytes changed during Marketplace publication" in workflow
+    assert "VSCE_PAT" not in workflow
+    assert "AZURE_DEVOPS_EXT_PAT" not in workflow
+    marketplace_step = workflow.split(
+        "- name: Publish exact verified VSIX to Visual Studio Marketplace", 1
+    )[1].split("- name: Retain certification evidence", 1)[0]
+    assert "npm run package" not in marketplace_step
+    assert "npm ci" not in marketplace_step
 
 
 def test_governed_ci_runs_independent_receipted_assurance_gates() -> None:

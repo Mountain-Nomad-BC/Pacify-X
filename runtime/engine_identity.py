@@ -33,7 +33,12 @@ EXCLUDED_PATHS = {
     "registry/completion_status.json",
     "registry/current_evidence_index.json",
     "registry/engine_identity.json",
+    "registry/.operational-gap-ledger.lock",
+    "registry/operational_gap_ledger.head.json",
     "registry/test_group_index.json",
+}
+EXCLUDED_PATH_PREFIXES = {
+    "registry/.lock-recovery-receipts/",
 }
 EXCLUDED_SUFFIXES = {".pyc", ".pyo", ".tmp", ".vsix"}
 
@@ -67,6 +72,7 @@ def _files(root: Path) -> list[Path]:
                 or is_external_environment_relative(relative)
                 or relative.startswith("AUDIT_ARTIFACTS/")
                 or relative in EXCLUDED_PATHS
+                or any(relative.startswith(prefix) for prefix in EXCLUDED_PATH_PREFIXES)
                 or path.suffix.casefold() in EXCLUDED_SUFFIXES
                 or path.name == "SHA256SUMS.txt"
                 or path.name == "AUDIT_EXPORT_MANIFEST.json"

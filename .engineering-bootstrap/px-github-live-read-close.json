@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "audit-session:px-github-dependabot-live-read-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023000",
+  "outcome": "completed",
+  "reason": "Live public GitHub reconciliation confirms remote main 306dd98 is behind local main and two stale Dependabot one-file PRs fail only governed-gates/Fast correctness while all 23 platform, Python, extension, and assurance jobs pass. The correct next action is a unified local governed section gate followed by one repaired commit/push; the stale PRs must not be merged. Dependabot security alert details remain authentication-restricted and no zero-alert claim is made.",
+  "evidence": [
+    {
+      "reference": "evidence/adversarial-audit/github-dependabot-live-reconciliation-20260826.json",
+      "artifact_sha256": "4ee151d6fd794ea2101e42da8c2fd649ea138ace2726b7c63117836c2bc2bd48",
+      "artifact_size": 3099,
+      "claim": "Prompt-free live remote reconciliation identifies the exact red checks and the safe unified repair path."
+    }
+  ]
+}

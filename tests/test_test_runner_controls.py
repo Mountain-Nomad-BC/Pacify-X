@@ -4,13 +4,14 @@ import json
 import math
 import os
 from pathlib import Path
+import subprocess
 import sys
 import tempfile
 import time
 
 import pytest
 
-from runtime.resource_lifecycle import ResourceManager, ResourceStatus
+from runtime.resource_lifecycle import ResourceManager, ResourceStatus, _process_exists
 from runtime.test_profiles import resolve_test_profile
 from runtime.test_runner import run_test_command, validate_timeout
 
@@ -108,6 +109,121 @@ def test_pytest_uses_registered_isolated_basetemp_and_reclaims_it(
     assert workspace["cleanup_id"]
     record = manager.ledger.get(workspace["resource_id"])
     assert record.status == ResourceStatus.RECLAIMED.value
+
+
+@pytest.mark.skipif(os.name != "nt", reason="Windows Job Object proof")
+def test_abrupt_outer_owner_death_kills_tree_and_reconciles_workspace(
+    tmp_path: Path,
+) -> None:
+    ledger_path = tmp_path / "resource-ledger.json"
+    receipt_dir = tmp_path / "cleanup-receipts"
+    child_pid_path = tmp_path / "governed-child.pid"
+    nested_test = tmp_path / "test_abrupt_child.py"
+    nested_test.write_text(
+        "import os\n"
+        "from pathlib import Path\n"
+        "import time\n\n"
+        "def test_waits_for_abrupt_owner_death():\n"
+        "    Path(os.environ['PX_ABRUPT_CHILD_PID']).write_text(str(os.getpid()))\n"
+        "    print('abrupt-child-ready', flush=True)\n"
+        "    time.sleep(120)\n",
+        encoding="utf-8",
+    )
+    outer_script = tmp_path / "abrupt_outer_owner.py"
+    outer_script.write_text(
+        "import os\n"
+        "from pathlib import Path\n"
+        "import sys\n"
+        "from runtime.resource_lifecycle import ResourceManager\n"
+        "from runtime.test_runner import run_test_command\n\n"
+        "manager = ResourceManager(Path(sys.argv[1]), receipt_dir=Path(sys.argv[2]))\n"
+        "run_test_command(\n"
+        "    [sys.executable, '-m', 'pytest', '-q', sys.argv[3]],\n"
+        "    cwd=Path(sys.argv[4]),\n"
+        "    environment=os.environ,\n"
+        "    timeout_seconds=120,\n"
+        "    resource_manager=manager,\n"
+        "    run_id='abrupt-owner-drill',\n"
+        "    lane_id='governed-section-chunk',\n"
+        ")\n",
+        encoding="utf-8",
+    )
+    outer = subprocess.Popen(
+        [
+            sys.executable,
+            str(outer_script),
+            str(ledger_path),
+            str(receipt_dir),
+            str(nested_test),
+            str(ROOT),
+        ],
+        cwd=ROOT,
+        env={
+            **os.environ,
+            "PYTHONPATH": os.pathsep.join(
+                filter(None, (str(ROOT), os.environ.get("PYTHONPATH", "")))
+            ),
+            "PX_ABRUPT_CHILD_PID": str(child_pid_path),
+        },
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        shell=False,
+    )
+    try:
+        deadline = time.monotonic() + 30
+        while time.monotonic() < deadline and not child_pid_path.exists():
+            if outer.poll() is not None:
+                stdout, stderr = outer.communicate()
+                pytest.fail(f"outer owner exited before child readiness: {stdout} {stderr}")
+            time.sleep(0.05)
+        assert child_pid_path.exists(), "governed child did not become ready"
+        child_pid = int(child_pid_path.read_text(encoding="utf-8"))
+        manager = ResourceManager(ledger_path, receipt_dir=receipt_dir)
+        records = manager.ledger.load()
+        workspaces = [
+            item
+            for item in records
+            if item.resource_type == "path"
+            and item.run_id == "abrupt-owner-drill"
+            and item.lane_id == "governed-section-chunk"
+        ]
+        assert len(workspaces) == 1 and Path(workspaces[0].path or "").exists()
+
+        killed = subprocess.run(
+            ["taskkill", "/PID", str(outer.pid), "/F"],
+            capture_output=True,
+            text=True,
+            timeout=15,
+            check=False,
+            shell=False,
+        )
+        assert killed.returncode in {0, 128}, killed.stderr
+        outer.wait(timeout=15)
+        deadline = time.monotonic() + 15
+        while time.monotonic() < deadline and _process_exists(child_pid):
+            time.sleep(0.05)
+        assert not _process_exists(child_pid), "Job-contained child survived owner death"
+
+        reconciled = manager.reconcile(apply=True)
+        assert reconciled["valid"] is True, json.dumps(reconciled, indent=2)
+        assert reconciled["owned_child_processes_active"] == 0
+        assert reconciled["owned_ephemeral_unexplained"] == 0
+        workspace = manager.ledger.get(workspaces[0].resource_id)
+        assert workspace.run_state == "abandoned"
+        assert workspace.status == ResourceStatus.RECLAIMED.value
+        assert not Path(workspace.path or "").exists()
+    finally:
+        if outer.poll() is None:
+            subprocess.run(
+                ["taskkill", "/PID", str(outer.pid), "/T", "/F"],
+                capture_output=True,
+                text=True,
+                timeout=15,
+                check=False,
+                shell=False,
+            )
+            outer.wait(timeout=15)
 
 
 def test_pytest_shared_temp_corruption_fails_at_responsible_test(

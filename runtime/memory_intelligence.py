@@ -19,6 +19,7 @@ import time
 from typing import Callable, Iterable, Mapping, Sequence, TypeVar
 
 from .memory_fabric import MemoryRecord
+from .semantic_memory import SemanticEnvelope, semantic_envelope_from_mapping
 
 
 WORD = re.compile(r"[a-z0-9_./-]+")
@@ -206,6 +207,75 @@ def capture_event(
         "path": relative.as_posix(),
         "event": payload,
     }
+
+
+def semantic_candidate_from_capture(
+    capture: Mapping[str, object],
+    *,
+    workspace_id: str,
+    project_id: str,
+    owner_id: str,
+    session_id: str,
+    lease_id: str,
+    memory_id: str,
+    title: str,
+    summary: str,
+    memory_type: str,
+    semantic: SemanticEnvelope | Mapping[str, object],
+    confidence: float = 0.75,
+) -> MemoryRecord:
+    """Create a non-retrievable semantic candidate from admitted L0 evidence.
+
+    The caller supplies the structured proposal explicitly.  Raw text never
+    invents ontology, authority, or a trusted lifecycle state.
+    """
+    event_value = capture.get("event", capture)
+    if not isinstance(event_value, Mapping):
+        raise ValueError("captured memory event is required")
+    if event_value.get("admission_status") != "accepted":
+        raise ValueError("only accepted capture events may form candidates")
+    if event_value.get("project_id") != project_id:
+        raise ValueError("capture event crosses project boundary")
+    source = event_value.get("source")
+    if not isinstance(source, Mapping):
+        raise ValueError("capture source binding is required")
+    envelope = (
+        semantic
+        if isinstance(semantic, SemanticEnvelope)
+        else semantic_envelope_from_mapping(semantic)
+    )
+    semantic_errors = envelope.validation_errors(project_id=project_id)
+    if semantic_errors:
+        raise ValueError("invalid semantic proposal: " + ", ".join(semantic_errors))
+    captured_at = datetime.fromisoformat(str(event_value["captured_at"]))
+    record = MemoryRecord(
+        memory_id=memory_id,
+        workspace_id=workspace_id,
+        project_id=project_id,
+        owner_id=owner_id,
+        session_id=session_id,
+        lease_id=lease_id,
+        title=title,
+        memory_type=memory_type,
+        summary=summary,
+        source_artifact=str(source.get("locator") or ""),
+        source_sha256=str(event_value.get("content_hash") or ""),
+        evidence_locator=str(event_value.get("event_id") or ""),
+        epistemic_status="proposal",
+        confidence=confidence,
+        confidence_method="structured_capture_proposal",
+        classification="project-local",
+        acl=(project_id,),
+        observed_at=captured_at,
+        effective_at=captured_at,
+        certification_status="candidate",
+        retrieval_enabled=False,
+        semantic=envelope,
+    )
+    errors = record.validation_errors()
+    if errors:
+        raise ValueError("invalid semantic memory candidate: " + ", ".join(errors))
+    return record
 
 
 @dataclass(frozen=True, slots=True)

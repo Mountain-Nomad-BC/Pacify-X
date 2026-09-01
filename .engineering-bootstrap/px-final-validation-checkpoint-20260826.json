@@ -1,0 +1,11 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023167",
+  "learned": "The exact frozen source passed one ordered registry/declared-contract validation with six active capabilities and zero errors. The campaign is validated and ready for exactly one package operation.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": [],
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "evidence": [
+    {"reference": "evidence/release/final-validation-proof-20260826.json", "claim": "Passing validation authority.", "artifact_sha256": "676b54124e7beadbe3f9e68b6f9166f6c3a13d357f625e9d7a5af8c6484bcd3d", "artifact_size": 531}
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "audit-session:px-second-adversarial-final-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022997",
+  "outcome": "completed",
+  "reason": "The post-repair second adversarial audit found no open local product defect after reconciling all 19 supplied findings, current operational evidence, dependency closure, CI definitions, and the complete r4 source audit. Local repair freeze is permitted, but certification remains denied pending live GitHub/Dependabot reconciliation and remote real-host execution on Windows, Linux, and macOS.",
+  "evidence": [
+    {
+      "reference": "evidence/adversarial-audit/second-adversarial-audit-final-20260826.json",
+      "artifact_sha256": "3ae3299985693b4eee3b76d572ac206038b8b9caa7f323b808366bd0517fd2ce",
+      "artifact_size": 4066,
+      "claim": "The superseding second-adversarial disposition permits local repair freeze while explicitly withholding release certification."
+    }
+  ]
+}

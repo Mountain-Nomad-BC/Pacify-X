@@ -56,8 +56,10 @@ class SanitizationAuditTests(unittest.TestCase):
     def test_absolute_user_home_paths_are_non_portable(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
+            windows = "C:" + "\\Users\\LocalOwner\\project"
+            linux = "/" + "home/local-owner/project"
             (root / "host-paths.txt").write_text(
-                "C:\\Users\\LocalOwner\\project\n/home/local-owner/project\n",
+                windows + "\n" + linux + "\n",
                 encoding="utf-8",
             )
             result = audit(root)
@@ -66,6 +68,25 @@ class SanitizationAuditTests(unittest.TestCase):
             self.assertEqual(
                 result["gates"]["host_home_path_sanitation"]["status"], "failed"
             )
+
+    def test_lowercase_users_route_is_not_macos_home(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "routes.md").write_text("POST /users/new\n", encoding="utf-8")
+            self.assertEqual(audit(root)["host_home_path_hit_count"], 0)
+
+    def test_immutable_provenance_is_typed_without_weakening_other_paths(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            ledger = root / "registry/operational_gap_ledger.jsonl"
+            ledger.parent.mkdir()
+            host_path = "C:" + "/Users/Historical/attachment.txt"
+            ledger.write_text(host_path + "\n", encoding="utf-8")
+            result = audit(root)
+            self.assertEqual(result["host_home_path_hit_count"], 0)
+            self.assertEqual(result["host_home_path_exemption_count"], 1)
+            (root / "live-config.json").write_text(host_path, encoding="utf-8")
+            self.assertEqual(audit(root)["host_home_path_hit_count"], 1)
 
     def test_legacy_abbreviated_placeholder_is_non_certifying(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

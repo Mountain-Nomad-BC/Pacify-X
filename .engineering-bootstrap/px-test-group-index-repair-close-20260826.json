@@ -1,0 +1,14 @@
+{
+  "session_id": "repair-session:px-test-group-index-staleness-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023114",
+  "gap_id": "PX-OS-1065",
+  "outcome": "completed",
+  "evidence": [
+    {
+      "reference": "evidence/release/px-test-group-index-currentness-repair-20260826.json",
+      "artifact_sha256": "e1bcfa9f8ada3ccb97da87d056649e74da0e7cf941c80d2e196fb018cab80339",
+      "artifact_size": 804,
+      "claim": "Canonical test-group index currentness proof; all groups resolve with index_current true."
+    }
+  ]
+}

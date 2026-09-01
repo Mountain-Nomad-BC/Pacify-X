@@ -1,0 +1,17 @@
+{
+  "session_id": "verification-session:px-one-full-profile-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023041",
+  "gap_id": "PX-OS-1065",
+  "authority": "User requested completion after repairs and governed section currentness; AGENTS.md requires exactly one owned full profile before validation.",
+  "effect_scopes": [
+    {"effect": "read", "scope": ["Inspect only sections_current processing status, full profile definition, owned full-profile receipt, and registered process/workspace cleanup evidence."]},
+    {"effect": "write", "scope": ["Allow exactly one python -m runtime.cli test-profile run full to write its owned test-group/profile receipts and registered resources; advance campaign to full_profile_passed only if the owned receipt passes and all resources reconcile; retain evidence and append ledger events. Do not change product source or generated projections."]},
+    {"effect": "execute", "scope": ["Run exactly one python -m runtime.cli test-profile run full and inspect its owned result. Do not run raw unittest, a second full profile, validate, package, install, deploy, publish, commit, push, merge, or certify."]}
+  ],
+  "expected_effect": "Obtain the single current-revision whole-profile result required before validation.",
+  "rollback": "Retain the failed owned profile receipt and keep the campaign at sections_current if it fails; do not erase evidence or rerun in this session.",
+  "expires_utc": "2026-08-26T23:00:00Z",
+  "evidence": [
+    {"reference": "evidence/release/cache-repair-sections-current-20260826.json", "claim": "All required sections current before the sole full profile.", "artifact_sha256": "0b9a970953baa8fce9312192b0cc088ca78b4703712329d161cc436b83128827", "artifact_size": 1082}
+  ]
+}

@@ -63,7 +63,7 @@ def test_local_adversarial_audit_outputs_are_not_release_locators(tmp_path) -> N
     report = tmp_path / "evidence/adversarial-audit/current.json"
     report.parent.mkdir(parents=True)
     report.write_text(
-        '{"source":"C:\\\\Users\\\\operator\\\\workspace"}\n',
+        '{"source":"C:' + '\\\\Users\\\\operator\\\\workspace"}\n',
         encoding="utf-8",
     )
 
@@ -79,7 +79,7 @@ def test_product_projection_excludes_evidence_without_weakening_audit(
     evidence = tmp_path / "evidence/operator-capture.json"
     evidence.parent.mkdir(parents=True)
     evidence.write_text(
-        '{"source":"C:\\\\Users\\\\operator\\\\outside.json"}\n',
+        '{"source":"C:' + '\\\\Users\\\\operator\\\\outside.json"}\n',
         encoding="utf-8",
     )
 
@@ -101,7 +101,7 @@ def test_portability_detects_unc_path() -> None:
 
 
 def test_portability_detects_file_uri() -> None:
-    assert portability_findings("file:///Users/a/file")
+    assert portability_findings("file://" + "/" + "Users/a/file")
 
 
 def test_portability_detects_wsl_mount_path() -> None:

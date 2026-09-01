@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:operations:local-model-runtime",
+  "title": "Pacify-X governed local model runtime record",
+  "type": "object",
+  "required": ["schema_version", "session_id", "state", "resource_id", "model_sha256"],
+  "properties": {
+    "schema_version": {"const": "px.local-model-runtime/1.0"},
+    "session_id": {"type": "string", "pattern": "^local-model-session-[a-f0-9]{32}$"},
+    "state": {"enum": ["planned", "running", "start_failed", "stopped", "recovered_absent"]},
+    "resource_id": {"type": "string", "minLength": 1},
+    "model_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "executable_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "origin": {"type": "string", "pattern": "^http://(?:127\\.0\\.0\\.1|\\[::1\\]):[0-9]{4,5}$"},
+    "tree_closed": {"type": "boolean"},
+    "model_deleted": {"const": false},
+    "event_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  },
+  "additionalProperties": false
+}

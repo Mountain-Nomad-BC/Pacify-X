@@ -1,0 +1,11 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023044",
+  "learned": "PX-AUD2-008 is causally repaired with a reachable single top-level full-profile path that refreshes only stale groups through the existing supervised group owner. Repair is zero-unresolved; runtime/cli.py, its focused tests, generated projections, and testing-governance receipt are intentionally stale.",
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "unresolved_branch_gap_ids": ["PX-OS-1065"],
+  "newly_discovered_gap_ids": [],
+  "evidence": [
+    {"reference": "evidence/release/full-profile-group-orchestration-causal-proof-20260826.json", "claim": "Final single-profile orchestration repair.", "artifact_sha256": "14824f6e1fbbd9d774223eac1b2a3c25a16e2ffead63f0bb948c7c983c96be35", "artifact_size": 1085}
+  ]
+}

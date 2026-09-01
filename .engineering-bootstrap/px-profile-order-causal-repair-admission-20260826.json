@@ -1,0 +1,37 @@
+{
+  "session_id": "repair-session:px-profile-order-causal-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023155",
+  "gap_id": "PX-OS-1065",
+  "authority": "User-authorized reversible repair of all Pacify-X defects blocking reinstall.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": [
+        "Inspect only release-audit and core-a-f group definitions, their complete current test memberships, group runner scheduling and output parsing, direct release-audit/generated-ownership owners, process/session cleanup guards, and the two fresh failed receipts."
+      ]
+    },
+    {
+      "effect": "write",
+      "scope": [
+        "Repair only the causal shared-state, scheduling, output-capture, or cleanup defects reproducing release-audit and core-a-f failures under owned group execution; add focused regression coverage; retain proof; clear the unresolved track only when both owned groups pass from unchanged source. Do not reconcile projections, run sections/full profile/validate, package, install, publish, commit, push, merge, or certify."
+      ]
+    },
+    {
+      "effect": "execute",
+      "scope": [
+        "With PYTHONDONTWRITEBYTECODE=1 set, run only test-group show/status, one owned release-audit group reproduction, one owned core-a-f group reproduction, exact failing nodes or session guards exposed by those outputs, focused regression tests, and syntax/import probes. Do not run run-stale, projection reconciliation, governed sections/full profile/validate, package, install, publish, commit, push, merge, or certify."
+      ]
+    }
+  ],
+  "expected_effect": "Expose complete group-level failures and repair the order-dependent shared-state or process-custody cause without rerunning the full profile.",
+  "rollback": "Revert only direct causal repairs from this session on focused regression; retain all receipts and full output evidence.",
+  "expires_utc": "2026-08-30T12:00:00Z",
+  "evidence": [
+    {
+      "reference": "evidence/release/profile-order-dependent-failure-denominator-20260826.json",
+      "claim": "Exact owned-group repair denominator.",
+      "artifact_sha256": "d88d7c06ba0c6fce53b9cb20757468f597cbf253d203b1a019a7a6b8baeab780",
+      "artifact_size": 1533
+    }
+  ]
+}

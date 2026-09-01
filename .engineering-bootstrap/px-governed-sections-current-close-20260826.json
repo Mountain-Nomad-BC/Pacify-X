@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "verification-session:px-governed-sections-current-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023028",
+  "outcome": "superseded",
+  "reason": "Five required sections are current, but testing-governance completed with a fresh failed receipt (exit code 1, not timed out) after 134.95 seconds. The campaign remains revision_reconciled and did not advance. No profile, validation, packaging, installation, publication, or certification ran; focused diagnosis is required before a section retry.",
+  "evidence": [
+    {
+      "reference": "evidence/release/testing-governance-section-failure-20260826.json",
+      "claim": "Fresh governed section failure and exact diagnostic handoff.",
+      "artifact_sha256": "ee96f63ecb373210f22e2372af00c33f626091bc9c5f41d9ea28401078be1ffd",
+      "artifact_size": 1057
+    }
+  ]
+}

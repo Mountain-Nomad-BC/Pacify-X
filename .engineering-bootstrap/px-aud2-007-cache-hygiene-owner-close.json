@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-cache-hygiene-section-owner-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023034",
+  "outcome": "completed",
+  "reason": "PX-AUD2-007 is repaired: testing-governance owns the cleanup implementation and dedicated safety suite, the safety suite is in the command exactly once, and both focused ownership/identity tests pass. The campaign denominator is zero and remains in repair pending a separate freeze.",
+  "evidence": [
+    {
+      "reference": "evidence/release/cache-hygiene-governance-owner-proof-20260826.json",
+      "artifact_sha256": "016fbb0e1331c6aa4acd0b42c8abe69127486dcd21273477028f2559c20e21fc",
+      "artifact_size": 815,
+      "claim": "Exact governed ownership and input-identity proof."
+    }
+  ]
+}

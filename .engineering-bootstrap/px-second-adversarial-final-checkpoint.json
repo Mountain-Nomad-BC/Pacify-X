@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022993",
+  "learned": "Both defects exposed by the second adversarial audit toolchain are repaired. The current r4 exhaustive scan completed in 140.2 seconds with 5609 current files, 110464 excluded regular files, 50 excluded symlinks, 6893698483 total bytes accounted, and zero errors.",
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": ["PX-OS-1065"],
+  "evidence": [
+    {
+      "reference": "evidence/adversarial-audit/px-audit-nested-excluded-symlink-repair-20260826.json",
+      "artifact_sha256": "52580567166455c28d5594dad302211f42c549a144f25557b13b83acb504644a",
+      "artifact_size": 1649,
+      "claim": "The repaired audit scanner now produces a complete, bounded, zero-error exhaustive current-tree report."
+    }
+  ]
+}

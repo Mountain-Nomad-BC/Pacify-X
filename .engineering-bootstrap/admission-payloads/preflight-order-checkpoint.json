@@ -1,0 +1,22 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "learned": "Deep unsigned discovery was incorrectly blocked until the installed-operational certification phase. The release-preflight owner and CLI now require the validated package boundary instead, preserving finalizer certification admission while allowing pre-package defect discovery. Focused admission regressions pass.",
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000015121",
+  "unresolved_branch_gap_ids": [],
+  "newly_discovered_gap_ids": [],
+  "evidence": [
+    {
+      "reference": "runtime/release_preflight.py",
+      "claim": "Preflight processing-order owner now admits validated pre-package discovery."
+    },
+    {
+      "reference": "runtime/cli.py",
+      "claim": "CLI preflight and dry-run admission matches the validated package boundary."
+    },
+    {
+      "reference": "tests/test_release_preflight.py",
+      "claim": "Focused regression binds preflight to the package stage rather than certification."
+    }
+  ]
+}

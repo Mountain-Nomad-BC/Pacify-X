@@ -1,0 +1,18 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023146",
+  "learned": "The first race-free full profile completed without an orchestration collision but failed closed on three fresh nodes: release-audit live composed audit, CLI timeout failure formatting, and CLI lazy-loading hydration. Eight other groups passed. The campaign is back in repair and downstream closure remains blocked.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": [
+    "PX-OS-1065"
+  ],
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "evidence": [
+    {
+      "reference": "evidence/release/post-singleflight-full-profile-failure-cluster-20260826.json",
+      "claim": "Exact post-singleflight full-profile failure denominator.",
+      "artifact_sha256": "cb756346b4a02142e4d0e747e8d7a606766dda7c1ccf914c695aa7943e20e80e",
+      "artifact_size": 1338
+    }
+  ]
+}

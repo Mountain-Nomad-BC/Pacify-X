@@ -62,78 +62,78 @@
     ]
   },
   "summary": {
-    "extensions": 64,
+    "extensions": 66,
     "active_extensions": 0,
     "system_tools": 12,
     "available_tools": 5,
-    "python_packages": 269,
+    "python_packages": 14,
     "npm_global_packages": 0,
     "npm_project_packages": 0,
     "virtual_environments": 1,
-    "active_virtual_environments": 0,
+    "active_virtual_environments": 1,
     "environment_files": 1,
     "environment_variables": 15,
     "environment_scan_capped": false,
     "admitted_roots": 1,
-    "graph_nodes": 5766,
-    "graph_edges": 11553
+    "graph_nodes": 5524,
+    "graph_edges": 9680
   },
   "storage": {
     "mode": "compact-index-with-hash-verified-lazy-shards",
-    "snapshot_directory": "snapshots/a30b3f5e199acf5056e5c4fe63b145ecd345436d2cf80f29c3f959bc1cb575c4",
+    "snapshot_directory": "snapshots/d7c455b92a9a59df98e64f567cf62351618bc836704d273a245d332d5ff0993b",
     "per_extension_contracts": true
   },
   "datasets": {
     "extensions": {
-      "path": "snapshots/a30b3f5e199acf5056e5c4fe63b145ecd345436d2cf80f29c3f959bc1cb575c4/extensions-index.json",
-      "sha256": "8ddee7a35792fed498812b60f292e397ee4e1ebca7d69cb83ffb238f65ec0e72",
-      "records": 64
+      "path": "snapshots/d7c455b92a9a59df98e64f567cf62351618bc836704d273a245d332d5ff0993b/extensions-index.json",
+      "sha256": "38ff16c922a0cc5cd9b57ce55bf9b57f5cd679249d5273d4663f59901d1e6764",
+      "records": 66
     },
     "tools": {
-      "path": "snapshots/a30b3f5e199acf5056e5c4fe63b145ecd345436d2cf80f29c3f959bc1cb575c4/system-tools.json",
-      "sha256": "85e2eac9ae0ffa426e2287467b97deb8dca140598011fd7cda9c21e514342736",
+      "path": "snapshots/d7c455b92a9a59df98e64f567cf62351618bc836704d273a245d332d5ff0993b/system-tools.json",
+      "sha256": "dedd59cd3789cd6e7bd4ec64d6ccebfa5e543fa11a2ff7cf925316c4d9ecade7",
       "records": 12
     },
     "python": {
-      "path": "snapshots/a30b3f5e199acf5056e5c4fe63b145ecd345436d2cf80f29c3f959bc1cb575c4/python-packages.json",
-      "sha256": "ef958dc187f9d85c172c595423c543b958509842f1ac1e0515500324382c1fa6",
-      "records": 269
+      "path": "snapshots/d7c455b92a9a59df98e64f567cf62351618bc836704d273a245d332d5ff0993b/python-packages.json",
+      "sha256": "b5ce531daf25cb2ed0fccf9afdad4d043f22a69cf62c15201419efb0efc65f0f",
+      "records": 14
     },
     "npm_global": {
-      "path": "snapshots/a30b3f5e199acf5056e5c4fe63b145ecd345436d2cf80f29c3f959bc1cb575c4/npm-global-packages.json",
+      "path": "snapshots/d7c455b92a9a59df98e64f567cf62351618bc836704d273a245d332d5ff0993b/npm-global-packages.json",
       "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
       "records": 0
     },
     "npm_project": {
-      "path": "snapshots/a30b3f5e199acf5056e5c4fe63b145ecd345436d2cf80f29c3f959bc1cb575c4/npm-project-packages.json",
+      "path": "snapshots/d7c455b92a9a59df98e64f567cf62351618bc836704d273a245d332d5ff0993b/npm-project-packages.json",
       "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
       "records": 0
     },
     "environments": {
-      "path": "snapshots/a30b3f5e199acf5056e5c4fe63b145ecd345436d2cf80f29c3f959bc1cb575c4/virtual-environments.json",
-      "sha256": "3ca6ae65bec3920ae13a85282d443b49bdde79da6dd77a037b7caae97b1aceef",
+      "path": "snapshots/d7c455b92a9a59df98e64f567cf62351618bc836704d273a245d332d5ff0993b/virtual-environments.json",
+      "sha256": "d689bf83f016886a846075f1c4602ccc2b538419cabe5f4549f46af0bc4a02df",
       "records": 1
     },
     "environment_files": {
-      "path": "snapshots/a30b3f5e199acf5056e5c4fe63b145ecd345436d2cf80f29c3f959bc1cb575c4/environment-files.json",
-      "sha256": "f263652382bea6628303220df092416f1222de2e5fe9e819da15c0f19ba2266d",
+      "path": "snapshots/d7c455b92a9a59df98e64f567cf62351618bc836704d273a245d332d5ff0993b/environment-files.json",
+      "sha256": "4fca3c0820c8ae8974340bc5e4e717e2e6cfccff2da5e2c55f74b7c7f7de7933",
       "records": 1
     },
     "graph_nodes": {
-      "path": "snapshots/a30b3f5e199acf5056e5c4fe63b145ecd345436d2cf80f29c3f959bc1cb575c4/graph-nodes.json",
-      "sha256": "c05cf83e7f61ecb3c35c531260ffd2b40932c981c8e1812b12cfb50efcce724e",
-      "records": 5766
+      "path": "snapshots/d7c455b92a9a59df98e64f567cf62351618bc836704d273a245d332d5ff0993b/graph-nodes.json",
+      "sha256": "88c9db2171f6f02f00aaef6935bd030066241a2a254058544081ab3c7c60a4ae",
+      "records": 5524
     },
     "graph_edges": {
-      "path": "snapshots/a30b3f5e199acf5056e5c4fe63b145ecd345436d2cf80f29c3f959bc1cb575c4/graph-edges.json",
-      "sha256": "c3604bdd5d45eb3f07150d148990435c07676b95f1ee4094cb9ec973f991f720",
-      "records": 11553
+      "path": "snapshots/d7c455b92a9a59df98e64f567cf62351618bc836704d273a245d332d5ff0993b/graph-edges.json",
+      "sha256": "e7bb962fb2fdbc7be766a3ea32ba3a0147f8c262faaca43afeb6f24193520bdb",
+      "records": 9680
     }
   },
-  "content_hash": "a30b3f5e199acf5056e5c4fe63b145ecd345436d2cf80f29c3f959bc1cb575c4",
+  "content_hash": "d7c455b92a9a59df98e64f567cf62351618bc836704d273a245d332d5ff0993b",
   "discovery": {
     "completeness": "complete",
-    "scanned_entries": 5870,
+    "scanned_entries": 6084,
     "capped": false,
     "entry_limit": 20000,
     "max_depth": 7,
@@ -147,14 +147,14 @@
     "failures": [],
     "ambiguities": [],
     "symbolic_links_skipped": 0,
-    "generation": 5,
-    "captured_utc": "2026-08-22T04:50:16.855Z",
-    "expires_utc": "2026-08-23T04:50:16.855Z",
+    "generation": 6,
+    "captured_utc": "2026-08-26T13:41:31.700Z",
+    "expires_utc": "2026-08-27T13:41:31.700Z",
     "ttl_seconds": 86400,
-    "content_fingerprint": "a30b3f5e199acf5056e5c4fe63b145ecd345436d2cf80f29c3f959bc1cb575c4",
-    "previous_snapshot_hash": "60841404ac9e4b1c9b269eb1eef956b0dd853f2654b293bb7034408f4d5d145b",
+    "content_fingerprint": "d7c455b92a9a59df98e64f567cf62351618bc836704d273a245d332d5ff0993b",
+    "previous_snapshot_hash": "25ecf389c74b2510d6b6629654231b6b07fa391db3731fc362222d9d3dbb4d43",
     "changed_from_previous": true
   },
-  "generated_utc": "2026-08-22T04:50:16.695Z",
-  "snapshot_hash": "25ecf389c74b2510d6b6629654231b6b07fa391db3731fc362222d9d3dbb4d43"
+  "generated_utc": "2026-08-26T13:41:31.562Z",
+  "snapshot_hash": "8f270c95f02a1c92e691c0b10239f3a761cec970c3dfc667d52ea5cf65df1ef6"
 }

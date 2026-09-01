@@ -201,6 +201,12 @@
     "fixed_agent_ids": {"type": "array", "items": {"type": "string"}},
     "priority": {"type": "integer", "minimum": 0, "maximum": 100},
     "usage_success_rate": {"type": "number", "minimum": 0, "maximum": 1},
+    "semantic": {
+      "anyOf": [
+        {"$ref": "../memory/semantic-memory-envelope.schema.json"},
+        {"type": "null"}
+      ]
+    },
     "address": {
       "type": "object",
       "additionalProperties": false,

@@ -1,0 +1,14 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "closure-session:px-post-singleflight-reconcile-profile-current-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023101",
+  "outcome": "cancelled",
+  "evidence": [
+    {
+      "reference": "evidence/release/post-singleflight-full-profile-failures-20260826.json",
+      "artifact_sha256": "09cb8685ffca170c7224ad7440a553bb58312e003f1f753887d9237ebddfe1c0",
+      "artifact_size": 2959,
+      "claim": "The single-flight-owned profile failed closed with five current failing group receipts and no valid profile result."
+    }
+  ]
+}

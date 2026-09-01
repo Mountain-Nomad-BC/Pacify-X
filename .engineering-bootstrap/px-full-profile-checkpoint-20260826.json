@@ -1,0 +1,11 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023036",
+  "learned": "Final repairs are reconciled and all six required governed sections are passed, fresh, and dependency-current. The processing oracle allows exactly one owned full profile; validation and all later release stages remain blocked.",
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "unresolved_branch_gap_ids": ["PX-OS-1065"],
+  "newly_discovered_gap_ids": [],
+  "evidence": [
+    {"reference": "evidence/release/cache-repair-sections-current-20260826.json", "claim": "All-current governed section predecessor.", "artifact_sha256": "0b9a970953baa8fce9312192b0cc088ca78b4703712329d161cc436b83128827", "artifact_size": 1082}
+  ]
+}

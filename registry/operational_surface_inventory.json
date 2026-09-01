@@ -5,10 +5,10 @@
   "source_report": "evidence/operational-gap-ledger/agent-studio-control-revision-20260816.json",
   "source_report_sha256": "d978207d763e55f4bf3771b9f7fc8086ca60d768347e45f412451ecec3ab957a",
   "ui_action_inventory": "extension/resources/ui/action-inventory.json",
-  "ui_action_inventory_sha256": "9879b4e19bc43664aa935982be99ce2f30df5bb8198c92c1e9549498aeb5c8aa",
-  "ui_action_count": 201,
+  "ui_action_inventory_sha256": "c0c227e15fa40fce78f3e323720f7890381d0c05dda58fa7bf797112e720c6a7",
+  "ui_action_count": 205,
   "dashboard_controller": "extension/media/dashboard/90-controller.js",
-  "dashboard_controller_sha256": "b04392859c89e4e93f209be652cedbd121ed6ecf11c445005034730a28b7f287",
+  "dashboard_controller_sha256": "1d65df57d6eadca4e657c70876464bf02c8feee6fd937341de278f45457455bf",
   "dashboard_navigation_surface_count": 18,
   "surfaces": [
     {
@@ -3960,8 +3960,8 @@
     {
       "surface_id": "knowledge-graph",
       "name": "Knowledge Graph",
-      "expected_control_count": 70,
-      "expected_controls_sha256": "b58e1490aa82b190d66254dbb0207b39278b850804bdccbd28bd881fd6b1160d",
+      "expected_control_count": 72,
+      "expected_controls_sha256": "2e97c536b018d2a798b9768b6d72601aca0415325c61bb353aede10967dbd222",
       "source_files": [
         "extension/media/dashboard/48-graph-surface.js",
         "extension/media/dashboard/90-controller.js"
@@ -3979,6 +3979,7 @@
           "label": "buildRepositoryGraph",
           "source_refs": [
             "extension/media/dashboard/42-core-surfaces.js",
+            "extension/media/dashboard/45-system-surfaces.js",
             "extension/media/dashboard/48-graph-surface.js"
           ]
         },
@@ -4015,6 +4016,14 @@
           ]
         },
         {
+          "control_id": "pxui.knowledge-graph.action.graphClearEdgeBundle",
+          "kind": "action",
+          "label": "graphClearEdgeBundle",
+          "source_refs": [
+            "extension/media/dashboard/48-graph-surface.js"
+          ]
+        },
+        {
           "control_id": "pxui.knowledge-graph.action.graphCommunity.row",
           "kind": "action",
           "label": "graphCommunity.row",
@@ -4042,6 +4051,14 @@
           "control_id": "pxui.knowledge-graph.action.graphDepth.increase",
           "kind": "action",
           "label": "graphDepth.increase",
+          "source_refs": [
+            "extension/media/dashboard/48-graph-surface.js"
+          ]
+        },
+        {
+          "control_id": "pxui.knowledge-graph.action.graphFilterEdgeBundle",
+          "kind": "action",
+          "label": "graphFilterEdgeBundle",
           "source_refs": [
             "extension/media/dashboard/48-graph-surface.js"
           ]
@@ -5370,6 +5387,7 @@
           "label": "buildRepositoryGraph",
           "source_refs": [
             "extension/media/dashboard/42-core-surfaces.js",
+            "extension/media/dashboard/45-system-surfaces.js",
             "extension/media/dashboard/48-graph-surface.js"
           ]
         },
@@ -8588,8 +8606,8 @@
     {
       "surface_id": "workflows",
       "name": "Workflows",
-      "expected_control_count": 80,
-      "expected_controls_sha256": "a1863aff599abc5eb4710d16d3447c4e5a6dd5ad502bb5dc8f046eb3734e0806",
+      "expected_control_count": 82,
+      "expected_controls_sha256": "db14f137fb18035b79d6031baf82c8bb734bcc1a3b32a6c898a055ed56061b7a",
       "source_files": [
         "extension/media/dashboard/44-operational-surfaces.js",
         "extension/media/dashboard/90-controller.js"
@@ -8733,6 +8751,14 @@
           ]
         },
         {
+          "control_id": "pxui.workflows.action.executeEnvironmentLifecycleRestore",
+          "kind": "action",
+          "label": "executeEnvironmentLifecycleRestore",
+          "source_refs": [
+            "extension/media/dashboard/90-controller.js"
+          ]
+        },
+        {
           "control_id": "pxui.workflows.action.importCatalogDefinition.workflow",
           "kind": "action",
           "label": "importCatalogDefinition.workflow",
@@ -8808,6 +8834,14 @@
           "control_id": "pxui.workflows.action.previewEnvironmentLifecycle",
           "kind": "action",
           "label": "previewEnvironmentLifecycle",
+          "source_refs": [
+            "extension/media/dashboard/90-controller.js"
+          ]
+        },
+        {
+          "control_id": "pxui.workflows.action.previewEnvironmentLifecycleRestore",
+          "kind": "action",
+          "label": "previewEnvironmentLifecycleRestore",
           "source_refs": [
             "extension/media/dashboard/90-controller.js"
           ]

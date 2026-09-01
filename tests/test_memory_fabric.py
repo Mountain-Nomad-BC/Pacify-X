@@ -22,6 +22,7 @@ from runtime.memory_fabric import (
     plan_self_healing,
     memory_record_from_mapping,
 )
+from runtime.semantic_memory import SemanticEntity, SemanticEnvelope
 
 
 NOW = datetime.now(timezone.utc)
@@ -57,6 +58,54 @@ def record(**updates: object) -> MemoryRecord:
 
 
 class MemoryFabricTests(unittest.TestCase):
+    def test_structured_exact_route_is_first_and_still_project_scoped(self) -> None:
+        semantic = SemanticEnvelope(
+            namespace="prj_alpha",
+            record_type="decision",
+            payload={"statement": "Use the bounded gate."},
+            exact_keys=("gate-alpha",),
+            entities=(SemanticEntity("decision:gate-alpha", "decision"),),
+        )
+        exact = record(
+            memory_id="exact",
+            title="Unrelated title",
+            summary="Unrelated summary",
+            semantic=semantic,
+        )
+        lexical = record(memory_id="lexical", summary="Use gate alpha")
+        foreign = record(
+            memory_id="foreign",
+            project_id="prj_beta",
+            acl=("prj_beta",),
+            semantic=replace(semantic, namespace="prj_beta"),
+        )
+        assert candidate_memories(
+            "use gate alpha now",
+            (lexical, foreign, exact),
+            project_id="prj_alpha",
+            actor_id="agt_worker",
+            max_hamming=64,
+        ) == ("exact", "lexical")
+
+    def test_structured_semantics_round_trip_through_record_mapping(self) -> None:
+        semantic = SemanticEnvelope(
+            namespace="prj_alpha",
+            record_type="decision",
+            payload={"statement": "Keep boundaries explicit."},
+            exact_keys=("boundary-alpha",),
+        )
+        original = record(semantic=semantic)
+        mapping = {
+            name: getattr(original, name)
+            for name in original.__dataclass_fields__
+        }
+        mapping["observed_at"] = original.observed_at.isoformat()
+        mapping["effective_at"] = original.effective_at.isoformat()
+        mapping["semantic"] = semantic.canonical_mapping()
+        hydrated = memory_record_from_mapping(mapping)
+        assert hydrated.semantic is not None
+        assert hydrated.semantic.canonical_sha256() == semantic.canonical_sha256()
+
     def test_memory_template_contains_every_schema_required_field(self) -> None:
         schema = json.loads(
             (ROOT / "contracts/project_stream/memory_note.schema.json").read_text(

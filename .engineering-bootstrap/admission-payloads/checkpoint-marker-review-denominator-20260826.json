@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023297",
+  "learned": "The projection-owner omission is repaired locally and its focused tests, changed testing-governance section, generated gate, and registry gate are green. Structural now reaches its independent marker category and fails because 126 current incomplete-marker findings have no matching review disposition. This denominator must be classified from source before publication or operational freeze.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": [],
+  "next_action": "Repair the ten remaining PX-CURRENT tracks in dependency order, beginning with the tested-source Studio worker handoff and current extension-host/listener health.",
+  "evidence": [
+    {
+      "reference": "evidence/release/ci-541e22e8-projection-diagnosis-20260826.json",
+      "claim": "Focused green projection repair and newly exposed 126-item marker-review denominator.",
+      "artifact_sha256": "72ddbd5f9c2255bbdeeb0fce22d3a3bfdc90a1992e1a0eee5968ef355049727e",
+      "artifact_size": 2050
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "session_id": "repair-session:px-profile-child-environment-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023051",
+  "gap_id": "PX-OS-1065",
+  "authority": "User authorized all reversible Pacify-X repairs and requires actual full-stack operation before release certification.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect only the repaired full-profile stale-group helper, its focused mocked tests, host environment propagation, profile timeout budget, and bounded child execution summary."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Reopen repair for PX-AUD2-009; make the nested owned group runner inherit the host environment plus no-bytecode override, use the top-level full-profile timeout budget, retain only bounded execution metadata, remove redundant focused coverage, and clear the exact finding after causal proof. Do not refresh projections, sections, groups, or profile receipts."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["Run only focused mocked stale-group helper tests proving environment propagation, profile budget propagation, bounded output, failure closure, and current-group reuse. Do not run real groups, sections, revision reconciliation, full profile, validate, package, install, publish, or certify."]
+    }
+  ],
+  "expected_effect": "Ensure the single full-profile orchestration can discover host tools and remain bounded when it supervises stale group refresh.",
+  "rollback": "Revert only the helper environment/budget/summary refinement and its focused assertions while retaining PX-AUD2-008 evidence.",
+  "expires_utc": "2026-08-26T22:00:00Z",
+  "evidence": [
+    {
+      "reference": "evidence/release/full-profile-group-orchestration-causal-proof-20260826.json",
+      "artifact_sha256": "14824f6e1fbbd9d774223eac1b2a3c25a16e2ffead63f0bb948c7c983c96be35",
+      "artifact_size": 1085,
+      "claim": "PX-AUD2-008 predecessor and PX-AUD2-009 review basis."
+    }
+  ]
+}

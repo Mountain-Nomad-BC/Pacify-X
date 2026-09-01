@@ -1,6 +1,8 @@
 'use strict';
 
 const crypto = require('crypto');
+const fs = require('fs');
+const path = require('path');
 const { analyzeExtensionConflicts } = require('./extensionConflictAnalyzer');
 
 const EXTENSION_ID = /^[a-z0-9][a-z0-9-]{0,63}\.[a-z0-9][a-z0-9-]{0,127}$/;
@@ -8,6 +10,16 @@ const VERSION = /^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(?:[-.][a-z0-
 const TOKEN_TTL_MS = 5 * 60 * 1000;
 const MAX_TOKENS = 64;
 const ROLLBACK_HISTORY_KEY = 'px.extensionLifecycle.rollbackHistory';
+const LOCAL_SOURCE_KEY = 'px.extensionLifecycle.localSources';
+
+function localVsixSource(value) {
+  if (value == null || String(value).trim() === '') return null;
+  const resolved = fs.realpathSync(path.resolve(String(value).trim()));
+  if (path.extname(resolved).toLowerCase() !== '.vsix') throw new Error('extension-lifecycle-local-vsix-extension-invalid');
+  const stat = fs.statSync(resolved);
+  if (!stat.isFile() || stat.size < 1) throw new Error('extension-lifecycle-local-vsix-file-invalid');
+  return { path: resolved, sha256: crypto.createHash('sha256').update(fs.readFileSync(resolved)).digest('hex'), size: stat.size };
+}
 
 function exactId(value) {
   const id = String(value || '').trim().toLowerCase();
@@ -39,9 +51,35 @@ function reverseConsumers(extensions, id) {
   return records.sort((left, right) => `${left.extension_id}:${left.relationship}`.localeCompare(`${right.extension_id}:${right.relationship}`));
 }
 
-function createExtensionLifecycleHost({ commands, extensions, storage = null, now = () => Date.now(), uuid = () => crypto.randomUUID() }) {
+function createExtensionLifecycleHost({ commands, extensions, storage = null, now = () => Date.now(), uuid = () => crypto.randomUUID(), toInstallTarget = value => value }) {
   if (typeof commands?.executeCommand !== 'function' || typeof extensions?.getExtension !== 'function') throw new TypeError('extension-lifecycle-host-dependencies-invalid');
   const previews = new Map();
+
+  function sourceStillCurrent(source) {
+    if (!source) return true;
+    try { const current = localVsixSource(source.path); return current.sha256 === source.sha256 && current.size === source.size; }
+    catch { return false; }
+  }
+
+  async function retainLocalSource(extensionId, source) {
+    if (typeof storage?.get !== 'function' || typeof storage?.update !== 'function') return;
+    const prior = storage.get(LOCAL_SOURCE_KEY, {});
+    const next = { ...(prior && typeof prior === 'object' ? prior : {}) };
+    if (source) next[extensionId] = source; else delete next[extensionId];
+    await storage.update(LOCAL_SOURCE_KEY, next);
+  }
+
+  function retainedLocalSource(extensionId) {
+    const sources = typeof storage?.get === 'function' ? storage.get(LOCAL_SOURCE_KEY, {}) : {};
+    const source = sources && typeof sources === 'object' ? sources[extensionId] : null;
+    const currentVersion = installedVersion(extensions, extensionId);
+    return source
+      && source.extension_id === extensionId
+      && source.version === currentVersion
+      && sourceStillCurrent(source)
+      ? { ...source }
+      : null;
+  }
 
   function prune() {
     const current = now();
@@ -53,6 +91,8 @@ function createExtensionLifecycleHost({ commands, extensions, storage = null, no
     prune();
     const extension_id = exactId(input.extension_id);
     const version = exactVersion(input.version);
+    const localSource = localVsixSource(input.local_vsix_path);
+    const local_source = localSource ? { ...localSource, extension_id, version } : null;
     const before_version = installedVersion(extensions, extension_id);
     if (before_version) return {
       schema_version: 'px.extension-lifecycle-preview/1.0', allowed: false,
@@ -64,7 +104,7 @@ function createExtensionLifecycleHost({ commands, extensions, storage = null, no
     const preview = {
       schema_version: 'px.extension-lifecycle-preview/1.0', allowed: true,
       action: 'install', token, extension_id, version, exact_target,
-      before_version: null, effect: 'install', network_expected: !input.vsix,
+      before_version: null, effect: 'install', network_expected: !local_source, local_source,
       authority: 'PX governs exact scope and evidence; VS Code retains native install, publisher-trust, and security authority.',
       expires_at_ms: now() + TOKEN_TTL_MS
     };
@@ -76,6 +116,8 @@ function createExtensionLifecycleHost({ commands, extensions, storage = null, no
     prune();
     const extension_id = exactId(input.extension_id);
     const version = exactVersion(input.version);
+    const localSource = localVsixSource(input.local_vsix_path);
+    const local_source = localSource ? { ...localSource, extension_id, version } : null;
     const before_version = installedVersion(extensions, extension_id);
     if (!before_version) return {
       schema_version: 'px.extension-lifecycle-preview/1.0', allowed: false,
@@ -94,7 +136,7 @@ function createExtensionLifecycleHost({ commands, extensions, storage = null, no
       action: 'update', token, extension_id, version, exact_target, before_version,
       rollback_target: `${extension_id}@${before_version}`,
       compatibility_gate: 'VS Code enforces target engine compatibility and native security policy during update; PX does not pre-claim Marketplace compatibility.',
-      effect: 'update-installed-extension', network_expected: true,
+      effect: 'update-installed-extension', network_expected: !local_source, local_source,
       authority: 'PX governs exact scope, prior identity, confirmation, and evidence; VS Code retains native update, compatibility, publisher-trust, signature, and security authority.',
       expires_at_ms: now() + TOKEN_TTL_MS
     };
@@ -144,7 +186,7 @@ function createExtensionLifecycleHost({ commands, extensions, storage = null, no
     const preview = {
       schema_version: 'px.extension-lifecycle-preview/1.0', allowed: true, action: 'uninstall', token,
       extension_id, before_version, exact_target, consumers, consumer_ack_required: consumers.length > 0,
-      rollback_identity: { extension_id, version: before_version, exact_target: `${extension_id}@${before_version}`, source_availability: 'host-marketplace-or-original-source-not-yet-verified' },
+      rollback_identity: { extension_id, version: before_version, exact_target: `${extension_id}@${before_version}`, local_source: retainedLocalSource(extension_id), source_availability: retainedLocalSource(extension_id) ? 'hash-bound-local-vsix' : 'host-marketplace-or-original-source-not-yet-verified' },
       rollback_limit: 'PX retains the exact prior identity before dispatch. Reinstall still depends on the host accepting that exact version from a trusted available source; an installed directory is not treated as a signed package artifact.',
       authority: 'PX governs exact scope, consumer disclosure, rollback identity custody, confirmation, and evidence; VS Code retains native uninstall and security authority.',
       expires_at_ms: now() + TOKEN_TTL_MS
@@ -166,6 +208,7 @@ function createExtensionLifecycleHost({ commands, extensions, storage = null, no
       extension_id, version: retained.version, exact_target: retained.exact_target,
       retained_operation_id: retained.operation_id, custody_state: retained.custody_state,
       source_availability: retained.source_availability,
+      local_source: retained.local_source || null,
       source_gate: 'The exact historical version remains unverified until VS Code accepts and exposes it. PX will not consume custody on command failure, reload-pending state, or wrong-version observation.',
       authority: 'PX governs retained identity selection, exact target, confirmation, restored-version verification, and custody consumption; VS Code retains native source, compatibility, signature, trust, and install authority.',
       expires_at_ms: now() + TOKEN_TTL_MS
@@ -206,17 +249,21 @@ function createExtensionLifecycleHost({ commands, extensions, storage = null, no
     if (approval.approved !== true) throw new Error('extension-lifecycle-explicit-approval-required');
     if (String(approval.exact_target || '') !== preview.exact_target) throw new Error('extension-lifecycle-target-substitution');
     if (installedVersion(extensions, preview.extension_id) !== preview.before_version) throw new Error('extension-lifecycle-install-denominator-changed');
-    await commands.executeCommand('workbench.extensions.installExtension', preview.exact_target);
+    if (!sourceStillCurrent(preview.local_source)) throw new Error('extension-lifecycle-local-vsix-bytes-changed');
+    await commands.executeCommand('workbench.extensions.installExtension', preview.local_source ? toInstallTarget(preview.local_source.path) : preview.exact_target);
+    await retainLocalSource(preview.extension_id, preview.local_source);
     const observed = installedVersion(extensions, preview.extension_id);
     const expectedObserved = !preview.version || observed === preview.version;
-    return {
+    const receipt = {
       schema_version: 'px.extension-lifecycle-receipt/1.0', operation_id: uuid(),
       action: 'install', extension_id: preview.extension_id, exact_target: preview.exact_target,
       before_version: preview.before_version, after_version: observed,
       status: observed && expectedObserved ? 'installed' : 'pending-host-reload-or-refresh',
       reconciled: Boolean(observed && expectedObserved), command: 'workbench.extensions.installExtension',
-      authority: preview.authority, completed_utc: new Date(now()).toISOString()
+      authority: preview.authority, completed_utc: new Date(now()).toISOString(),
+      local_source: preview.local_source || null
     };
+    return receipt;
   }
 
   async function executeUpdate(token, approval = {}) {
@@ -227,10 +274,12 @@ function createExtensionLifecycleHost({ commands, extensions, storage = null, no
     if (approval.approved !== true) throw new Error('extension-lifecycle-explicit-approval-required');
     if (String(approval.exact_target || '') !== preview.exact_target) throw new Error('extension-lifecycle-target-substitution');
     if (installedVersion(extensions, preview.extension_id) !== preview.before_version) throw new Error('extension-lifecycle-update-denominator-changed');
-    await commands.executeCommand('workbench.extensions.installExtension', preview.exact_target);
+    if (!sourceStillCurrent(preview.local_source)) throw new Error('extension-lifecycle-local-vsix-bytes-changed');
+    await commands.executeCommand('workbench.extensions.installExtension', preview.local_source ? toInstallTarget(preview.local_source.path) : preview.exact_target);
+    await retainLocalSource(preview.extension_id, preview.local_source);
     const observed = installedVersion(extensions, preview.extension_id);
     const expectedObserved = Boolean(observed && (!preview.version || observed === preview.version));
-    return {
+    const receipt = {
       schema_version: 'px.extension-lifecycle-receipt/1.0', operation_id: uuid(),
       action: 'update', extension_id: preview.extension_id, exact_target: preview.exact_target,
       before_version: preview.before_version, after_version: observed,
@@ -238,8 +287,9 @@ function createExtensionLifecycleHost({ commands, extensions, storage = null, no
       status: expectedObserved ? (observed === preview.before_version ? 'host-reconciled-no-version-change' : 'updated') : 'pending-host-reload-or-refresh',
       reconciled: expectedObserved, command: 'workbench.extensions.installExtension',
       compatibility_gate: preview.compatibility_gate, authority: preview.authority,
-      completed_utc: new Date(now()).toISOString()
+      completed_utc: new Date(now()).toISOString(), local_source: preview.local_source || null
     };
+    return receipt;
   }
 
   async function executeEnablementHandoff(token, approval = {}) {
@@ -275,7 +325,7 @@ function createExtensionLifecycleHost({ commands, extensions, storage = null, no
     const operation_id = uuid();
     const prior = storage.get(ROLLBACK_HISTORY_KEY, []);
     const history = Array.isArray(prior) ? prior.filter(item => item && typeof item === 'object').slice(-63) : [];
-    const retained = { schema_version: 'px.extension-rollback-identity/1.0', operation_id, extension_id: preview.extension_id, version: preview.before_version, exact_target: preview.rollback_identity.exact_target, source_availability: preview.rollback_identity.source_availability, custody_state: 'retained-before-uninstall', recorded_utc: new Date(now()).toISOString() };
+    const retained = { schema_version: 'px.extension-rollback-identity/1.0', operation_id, extension_id: preview.extension_id, version: preview.before_version, exact_target: preview.rollback_identity.exact_target, local_source: preview.rollback_identity.local_source || null, source_availability: preview.rollback_identity.source_availability, custody_state: 'retained-before-uninstall', recorded_utc: new Date(now()).toISOString() };
     await storage.update(ROLLBACK_HISTORY_KEY, [...history, retained]);
     const observedHistory = storage.get(ROLLBACK_HISTORY_KEY, []);
     if (!Array.isArray(observedHistory) || !observedHistory.some(item => item?.operation_id === operation_id && item?.exact_target === retained.exact_target)) throw new Error('extension-lifecycle-rollback-custody-verification-failed');
@@ -296,7 +346,8 @@ function createExtensionLifecycleHost({ commands, extensions, storage = null, no
     const index = history.findIndex(item => item?.operation_id === preview.retained_operation_id && item?.extension_id === preview.extension_id && item?.exact_target === preview.exact_target && item?.custody_state === 'retained-before-uninstall');
     if (index < 0) throw new Error('extension-lifecycle-rollback-custody-stale');
     const operation_id = uuid();
-    await commands.executeCommand('workbench.extensions.installExtension', preview.exact_target);
+    if (!sourceStillCurrent(preview.local_source)) throw new Error('extension-lifecycle-local-vsix-bytes-changed');
+    await commands.executeCommand('workbench.extensions.installExtension', preview.local_source ? toInstallTarget(preview.local_source.path) : preview.exact_target);
     const observed = installedVersion(extensions, preview.extension_id);
     const reconciled = observed === preview.version;
     if (reconciled) {
@@ -305,7 +356,7 @@ function createExtensionLifecycleHost({ commands, extensions, storage = null, no
       const confirmed = storage.get(ROLLBACK_HISTORY_KEY, []).find(item => item?.operation_id === preview.retained_operation_id);
       if (confirmed?.custody_state !== 'rollback-consumed' || confirmed?.rollback_operation_id !== operation_id) throw new Error('extension-lifecycle-rollback-consumption-verification-failed');
     }
-    return { schema_version: 'px.extension-lifecycle-receipt/1.0', operation_id, action: 'rollback', extension_id: preview.extension_id, exact_target: preview.exact_target, before_version: null, after_version: observed, retained_operation_id: preview.retained_operation_id, custody_state: reconciled ? 'rollback-consumed' : 'retained-before-uninstall', source_availability: reconciled ? 'verified-by-host-exact-version-observation' : preview.source_availability, status: reconciled ? 'restored' : 'pending-host-reload-or-refresh', reconciled, command: 'workbench.extensions.installExtension', authority: preview.authority, completed_utc: new Date(now()).toISOString() };
+    return { schema_version: 'px.extension-lifecycle-receipt/1.0', operation_id, action: 'rollback', extension_id: preview.extension_id, exact_target: preview.exact_target, before_version: null, after_version: observed, retained_operation_id: preview.retained_operation_id, custody_state: reconciled ? 'rollback-consumed' : 'retained-before-uninstall', source_availability: reconciled ? 'verified-by-host-exact-version-observation' : preview.source_availability, local_source: preview.local_source || null, status: reconciled ? 'restored' : 'pending-host-reload-or-refresh', reconciled, command: 'workbench.extensions.installExtension', authority: preview.authority, completed_utc: new Date(now()).toISOString() };
   }
 
   async function executeConflictResolution(token, approval = {}) {
@@ -338,4 +389,4 @@ function createExtensionLifecycleHost({ commands, extensions, storage = null, no
   return Object.freeze({ previewInstall, executeInstall, previewUpdate, executeUpdate, previewEnablement, executeEnablementHandoff, previewUninstall, executeUninstall, previewRollback, executeRollback, conflictQuery, previewConflictResolution, executeConflictResolution, rollbackHistory, pendingCount: () => previews.size });
 }
 
-module.exports = { createExtensionLifecycleHost, exactId, exactVersion };
+module.exports = { createExtensionLifecycleHost, exactId, exactVersion, localVsixSource };

@@ -1,0 +1,33 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "release-session:px-github-prepublish-reconcile-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023188",
+  "authority": "User explicitly requested GitHub be current, merged, and complete after all local Pacify-X repairs.",
+  "expected_effect": "Reconcile the unified local repair set with the canonical GitHub repository using compact read-only local and remote metadata, then retain the exact topology required for a separate bounded publish admission.",
+  "rollback": "Do not force-push or rewrite published history; correct published mistakes with a new revert/fix commit, and reopen any reversibly closed pull request if reconciliation was wrong.",
+  "expires_utc": "2026-09-04T12:00:00Z",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect only compact Git worktree/index/branch/remote topology, intended unified Pacify-X repair diffs and untracked classifications, CLI authentication state, canonical GitHub main and open pull requests, current Actions/Dependabot results, and predecessor release/audit evidence."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["Run only compact read-only git status/diff/index/branch/remote commands and authenticated non-interactive read-only GitHub CLI queries for Mountain-Nomad-BC/Pacify-X authentication, canonical main, pull requests, Actions, and Dependabot state. Do not fetch, stage, commit, push, merge, close pull requests, rerun local governed tests/profile/validate/package/install, or certify."]
+    }
+  ],
+  "evidence": [
+    {
+      "reference": "evidence/adversarial-audit/second-adversarial-audit-operational-followup-20260826.json",
+      "artifact_sha256": "0a5b35758067fd131451f374c6103628b56ff77b20c0f73cea0cf10b655b96f6",
+      "artifact_size": 2035,
+      "claim": "Local second-pass and operational predecessor."
+    },
+    {
+      "reference": "evidence/adversarial-audit/github-dependabot-live-reconciliation-20260826.json",
+      "artifact_sha256": "4ee151d6fd794ea2101e42da8c2fd649ea138ace2726b7c63117836c2bc2bd48",
+      "artifact_size": 3099,
+      "claim": "Earlier GitHub/Dependabot state showing remote main stale and two incomplete Dependabot PRs."
+    }
+  ]
+}

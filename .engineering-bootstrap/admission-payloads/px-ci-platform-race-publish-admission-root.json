@@ -1,0 +1,19 @@
+{
+  "gap_id": "PX-OS-1065",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023281",
+  "effect": "network",
+  "scope": [
+    "With GIT_TERMINAL_PROMPT=0, fetch only origin main; verify 511cf6555e2278324fd82fe784e6feb566cf63e2 is a descendant of origin/main; if and only if fast-forward, push local main to origin main without force; then query only public GitHub Actions run/job metadata for the new head until complete. Do not authenticate, open VS Code/account selection, rewrite history, merge, rebase, create PRs/issues, alter settings, publish packages, install, validate, or certify."
+  ],
+  "authority": "User requested complete repair and current GitHub; this publishes the focused tested additive repair without interaction or history rewriting.",
+  "expected_effect": "Advance origin/main from 1a530d99ec0704c47007b8e66f61631c62e4c049 to 511cf6555e2278324fd82fe784e6feb566cf63e2 and obtain a fresh complete CI denominator.",
+  "rollback": "If fresh CI proves a regression, publish a new additive repair or revert commit; never force-push or delete remote history.",
+  "evidence": [
+    {
+      "reference": "commit:511cf6555e2278324fd82fe784e6feb566cf63e2",
+      "artifact_sha256": "8b6ca2402d3cad8fad1932c711964c15f0b7777651f757d39e0eb2317ceb4c39",
+      "artifact_size": 3535,
+      "claim": "The focused CI repair is ready for fast-forward publication."
+    }
+  ]
+}

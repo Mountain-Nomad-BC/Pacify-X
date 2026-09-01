@@ -8,6 +8,12 @@ from pathlib import Path
 
 
 ROOT_OWNERS = {
+    "local-model-runtime.schema.json": (
+        "runtime/local_model_runtime.py",
+        ["runtime/local_model_runtime.py"],
+        "local_model_lifecycle_runtime_boundary",
+        ["tests/test_local_model_runtime.py"],
+    ),
     "assurance-probe.schema.json": (
         "runtime/behavioral_assurance.py",
         ["runtime/behavioral_assurance.py"],
@@ -356,6 +362,12 @@ MEMORY_OWNERS = {
     "memory-recall-package.schema.json": ["runtime/memory_intelligence.py"],
     "memory-evaluation-fixture.schema.json": ["runtime/memory_intelligence.py"],
     "memory-remediation-plan.schema.json": ["runtime/memory_remediation.py"],
+    "semantic-memory-envelope.schema.json": [
+        "runtime/semantic_memory.py",
+        "runtime/memory_fabric.py",
+        "runtime/memory_intelligence.py",
+        "runtime/project_stream_orchestrator.py",
+    ],
 }
 
 EXTERNAL_CAPABILITY_OWNERS = {

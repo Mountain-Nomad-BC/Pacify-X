@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022981",
+  "unresolved_branch_gap_ids": ["PX-OS-1065"],
+  "newly_discovered_gap_ids": [],
+  "learned": "The second adversarial audit confirmed PX-AUD2-001: the admitted full-tree audit capability recursively opens and content-hashes every file beneath excluded boundaries, remaining unpublished after 1207.801 seconds on the managed workspace. Repair freeze is denied until excluded-boundary accounting remains deterministic and denominator-preserving without full body reads.",
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "evidence": [
+    {
+      "reference": "evidence/adversarial-audit/second-adversarial-audit-20260825.json",
+      "artifact_sha256": "958ba20ad0d62baeabce3a8c14e51629f97ee0dae635f1905785aa6e08841fd0",
+      "artifact_size": 2653,
+      "claim": "Confirmed second-audit repair finding PX-AUD2-001."
+    }
+  ]
+}

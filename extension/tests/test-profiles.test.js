@@ -33,6 +33,7 @@ test('R02 extension test profiles isolate browser and performance campaigns', ()
 test('governed dashboard section owns isolated host and physical outage regressions', () => {
   const registry = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'registry', 'test_profiles.json'), 'utf8'));
   const command = registry.sections['dashboard-extension'].command;
+  assert.deepEqual(command.slice(0, 3), ['node', '--test', '--test-concurrency=1']);
   for (const owner of [
     'tests/operational-ui-walk-installed-probe.test.js',
     'tests/isolated-current-source-walk.test.js',

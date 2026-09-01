@@ -1,0 +1,26 @@
+{
+  "lock_path": "C:\\Users\\Ben\\Downloads\\bootstrap_project\\Pacify-X\\registry\\.operational-gap-ledger.lock",
+  "previous_lease": {
+    "acquired_unix_ns": 1788200558484188500,
+    "acquired_utc": "2026-08-31T18:22:38.484189+00:00",
+    "heartbeat_unix_ns": 1788200568762625200,
+    "heartbeat_utc": "2026-08-31T18:22:48.762625+00:00",
+    "hostname": "DESKTOP-8JV854D",
+    "pid": 12576,
+    "process_start_fingerprint": "4720101f0f78b3ad3161c170a6c83d3426248ad7672cbb2b0b88d247e8b03e02",
+    "schema_version": "1.0",
+    "state": "held",
+    "token": "1210fda600acab3db3452f4f7c1381d5"
+  },
+  "reason": "recorded_owner_not_live",
+  "receipt_sha256": "059d3b900575bb2e1be884d559b6507f08ea27bf040741e06df4585dc7933532",
+  "receipt_type": "dead_file_lock_owner_recovery",
+  "recovered_by": {
+    "pid": 23964,
+    "process_start_fingerprint": "6f6dce50c7b0d3816c9ef3deecadef61f7f9ebfd3460e997024d6590980a14bc",
+    "token": "7b9a71b7260481b0c13b869e9aa7e127"
+  },
+  "recovered_unix_ns": 1788200584786132200,
+  "recovered_utc": "2026-08-31T18:23:04.786132+00:00",
+  "schema_version": "1.0"
+}

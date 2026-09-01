@@ -21,6 +21,18 @@ test('immediate pre-move snapshot rejects changed targets and retains the source
   const manager = new EnvironmentLifecycleManager(root); const preview = manager.preview({ id: 'env', kind: 'python-venv', path: target, active: false }); fs.writeFileSync(path.join(target, 'changed.txt'), 'changed');
   assert.throws(() => manager.execute(preview.token, { approved: true, exact_target: target }), /changed after preview/); assert.equal(fs.existsSync(target), true);
 });
+test('durable lifecycle receipts restore exact quarantined bytes after manager restart', t => {
+  const root = fixture(); t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const target = path.join(root, '.venv-owned'); fs.mkdirSync(target); fs.writeFileSync(path.join(target, 'marker.txt'), 'owned restore bytes');
+  const manager = new EnvironmentLifecycleManager(root);
+  const preview = manager.preview({ id: 'owned-env', path: target, kind: 'python-venv', active: false }, 'quarantine');
+  const quarantined = manager.execute(preview.token, { approved: true, exact_target: preview.target, consumer_impact_acknowledged: true });
+  const restarted = new EnvironmentLifecycleManager(root);
+  const restore = restarted.previewRestore(quarantined.receipt_id);
+  const restored = restarted.restore(restore.token, { approved: true, exact_target: restore.source });
+  assert.equal(restored.disposition, 'restored'); assert.equal(fs.readFileSync(path.join(target, 'marker.txt'), 'utf8'), 'owned restore bytes');
+  assert.throws(() => restarted.restore(restore.token, { approved: true, exact_target: restore.source }), /unknown or already consumed/);
+});
 test('root targets, escapes, and symbolic links are never lifecycle candidates', t => {
   const root = fixture(); t.after(() => fs.rmSync(root, { recursive: true, force: true })); assert.throws(() => metadataSnapshot(root, root), /outside or equal/); assert.throws(() => metadataSnapshot(path.dirname(root), root), /outside or equal/);
   const real = path.join(root, 'real'); const link = path.join(root, 'link'); fs.mkdirSync(real);

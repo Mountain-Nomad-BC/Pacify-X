@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023164",
+  "learned": "The final frozen revision passes all ten governed test groups across 204 discovered test files; release audit and core-a-f are current and green, 45 cross-group checks pass, and active cache/bytecode counts are zero. The campaign is full_profile_passed and ready for exactly one validation.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": [],
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "evidence": [
+    {
+      "reference": "evidence/release/one-generation-final-full-profile-proof-20260826.json",
+      "claim": "Final passing full-profile authority.",
+      "artifact_sha256": "6d8cfdbb2573dfbb05ad7e564560b68c1f6cf3a94b2399fde7aea338e4cb7f92",
+      "artifact_size": 1007
+    }
+  ]
+}

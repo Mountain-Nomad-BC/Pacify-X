@@ -1,0 +1,31 @@
+{
+  "session_id": "closure-session:px-one-generation-final-profile-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023164",
+  "gap_id": "PX-OS-1065",
+  "authority": "User-authorized ordered completion of all Pacify-X repairs required before reinstall.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect only zero-unresolved campaign state, one-generation marker proof, projection/section/group currentness, shared lock state, and resulting receipts."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Freeze repair; perform exactly one canonical projection reconciliation; advance to revision_reconciled after focused integrity; refresh only stale sections; advance to sections_current when all six are current; run exactly one full profile and advance to full_profile_passed only on success; retain evidence. On failure return to repair and stop. Do not validate, package, install, publish, commit, push, merge, or certify."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["With PYTHONDONTWRITEBYTECODE=1 set, run one canonical projection rebuild, focused marker/generated integrity, section status and only stale sections, then exactly one full profile. Do not run a second projection/profile, validate, package, install, publish, commit, push, merge, or certify."]
+    }
+  ],
+  "expected_effect": "Produce one current passing full profile with live-lock audit safety and one-generation child inheritance.",
+  "rollback": "Stop at the last passing phase, retain exact failure evidence, return to repair, and do not duplicate execution.",
+  "expires_utc": "2026-09-01T00:00:00Z",
+  "evidence": [
+    {
+      "reference": "evidence/release/supervised-child-marker-consumption-focused-proof-20260826.json",
+      "claim": "Complete one-generation repair predecessor.",
+      "artifact_sha256": "bc67f07e64b15371043984eb0a94b29d4af0702037d9742bc73d099fd5f547ab",
+      "artifact_size": 841
+    }
+  ]
+}

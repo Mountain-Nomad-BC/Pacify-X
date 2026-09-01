@@ -816,8 +816,22 @@ def test_skill_rollback_restores_package_and_every_projection_before_image(tmp_p
             tmp_path / ".engineering-bootstrap/studios/skills"
         ).glob("*/revisions/1.1.0/promotion-receipt.json")
     )
+    promoted_tree = materialization_attestation(target)[0]
+    with pytest.raises(PermissionError, match="skill identity mismatch"):
+        studio.rollback(
+            promotion_receipt,
+            approved=True,
+            approver="human:owner",
+            expected_skill_id="skill:substitution",
+            expected_version="1.1.0",
+        )
+    assert materialization_attestation(target)[0] == promoted_tree
     rollback = studio.rollback(
-        promotion_receipt, approved=True, approver="human:owner"
+        promotion_receipt,
+        approved=True,
+        approver="human:owner",
+        expected_skill_id=second_package.skill_id,
+        expected_version=second_package.version,
     )
 
     assert rollback["schema_version"] == "px.skill-rollback-receipt/1.2"

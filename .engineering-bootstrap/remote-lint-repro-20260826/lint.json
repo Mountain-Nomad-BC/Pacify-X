@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "gate": "lint",
+  "input_sha256": "f84e2f1afc1d6369a455fd7afcb633475f65626efd8219efd31a23d4bbdbe898",
+  "dependencies": [],
+  "passed": true,
+  "result": {
+    "valid": true,
+    "command": "python -m ruff check --no-cache .",
+    "exit_code": 0,
+    "output": "All checks passed!",
+    "cache_disabled": true,
+    "errors": []
+  },
+  "receipt_sha256": "987d832ef048d4fcea448c4e1a646821293b53993c22eafa4aa10ce949b6e404"
+}

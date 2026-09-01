@@ -1,0 +1,31 @@
+{
+  "session_id": "repair-session:px-cache-hygiene-boundary-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023030",
+  "gap_id": "PX-OS-1065",
+  "authority": "User authorized all reversible Pacify-X repairs and requires real operational correctness before validation or certification.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect only runtime/cli.py certification-hygiene discovery, runtime/repository_scope.py source exclusions, the failing tests/test_cli_commands.py case, and directly associated cleanup-safety tests."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Reopen the repair campaign for PX-AUD2-006; modify only certification-hygiene cleanup-target discovery and focused cleanup tests so owned __pycache__ files remain inventoried without weakening product-source exclusions; clear the exact unresolved item after causal proof; retain repair evidence and ledger events. Do not refresh generated projections or section receipts."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["Run only the exact failing certification-hygiene test and directly associated focused cleanup-safety tests. Do not run a governed section, revision reconciliation, full profile, validate, package, install, publish, or certify during repair."]
+    }
+  ],
+  "expected_effect": "Separate source-projection exclusions from cleanup inventory so certification hygiene can safely quarantine owned caches while generated source walks remain bounded.",
+  "rollback": "Revert only the focused hygiene discovery/test patch and restore the campaign predecessor while retaining the governed failure receipt.",
+  "expires_utc": "2026-08-26T20:00:00Z",
+  "evidence": [
+    {
+      "reference": ".engineering-bootstrap/test-evidence/sections/testing-governance.json",
+      "artifact_sha256": "b78a85365008b3f732f2927d88d3d37b0aef5e2dbdf9114af9704433edcb6443",
+      "artifact_size": 1228,
+      "claim": "PX-AUD2-006 governed failure receipt."
+    }
+  ]
+}

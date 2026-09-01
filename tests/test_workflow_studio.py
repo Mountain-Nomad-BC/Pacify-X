@@ -129,6 +129,53 @@ def test_workflow_revision_runnable_dry_run_and_real_run_are_distinct(tmp_path):
     assert len(approval_result["approval_id_sha256"]) == 64
 
 
+def test_workflow_multiple_approval_nodes_progress_independently_and_runs_are_durable(tmp_path):
+    definition, bindings, grants = fixture()
+    second = definition.nodes[1]
+    third = replace(second, node_id="node:three")
+    definition = replace(
+        definition,
+        nodes=(*definition.nodes, third),
+        edges=(*definition.edges, WorkflowEdge("node:two", "result", "node:three", "value")),
+    )
+    studio = WorkflowStudio(tmp_path)
+    studio.save_revision(definition)
+    studio.register_authority(
+        bindings,
+        grants,
+        {bindings[0].binding_id: "increment", bindings[1].binding_id: "double"},
+    )
+    assert studio.validate_and_admit(definition)["runnable_state"] == "runnable"
+
+    approvals = {
+        node_id: studio.issue_approval(
+            definition, node_id, approved_by="human:vscode-local-user"
+        )
+        for node_id in ("node:two", "node:three")
+    }
+    receipt = studio.execute(
+        definition, {"node:one.value": 2}, approvals, approval=True
+    )
+
+    assert receipt["run_state"] == "succeeded"
+    approval_receipts = {
+        row["node_id"]: row["approval_execution"]
+        for row in receipt["node_receipts"]
+        if row["node_id"] in approvals
+    }
+    assert set(approval_receipts) == set(approvals)
+    assert all(row["host_consumed"] is True for row in approval_receipts.values())
+    assert len({row["approval_id_sha256"] for row in approval_receipts.values()}) == 2
+
+    durable = studio.list_runs(limit=10)
+    run = next(row for row in durable["runs"] if row["run_id"] == receipt["run_id"])
+    assert run["state"] == "succeeded"
+    assert studio.status(receipt["run_id"])["last_event_sha256"] == run["last_event_sha256"]
+    assert len(run["revision_sha256"]) == 64
+    assert len(run["request_sha256"]) == 64
+    assert len(run["last_event_sha256"]) == 64
+
+
 def test_legacy_workflow_save_reports_initial_creation_and_exact_replay_truth(tmp_path):
     definition, _, _ = fixture()
     studio = WorkflowStudio(tmp_path)

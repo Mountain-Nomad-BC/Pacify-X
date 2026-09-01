@@ -1,0 +1,28 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022952",
+  "unresolved_branch_gap_ids": ["PX-OS-1065"],
+  "newly_discovered_gap_ids": [],
+  "learned": "The installed 0.6.59 campaign proved the Workflow finalizing-to-cancel race. The following exact current-source lifecycle campaign proved that deterministic local Agent start returns a durable run ID asynchronously, but resume_harness invokes the remaining worker synchronously. With a bounded 12-second task, Resume cannot return request-bound control in time and its pending request contaminates the following Workflow modal. Workflow approval and Skill promote-to-rollback paths are otherwise physically proven.",
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "evidence": [
+    {
+      "reference": "evidence/operational-ui-walk-installed-vsix-0.6.59-lifecycle-r1/receipt.json",
+      "artifact_sha256": "a50710436f1bd773e9af1ad1c547c954e97d95e81650715dccecb6bc8a79d7a3",
+      "artifact_size": 4874763,
+      "claim": "Exact installed proof of the Workflow finalizing cancellation race."
+    },
+    {
+      "reference": "evidence/operational-ui-walk-current-source-final-lifecycle-r5-20260825/receipt.json",
+      "artifact_sha256": "657a6d9400518d2ce3113d6b9e97b1e2e5022d89ef5b82197e1daafb873a2fbf",
+      "artifact_size": 4797857,
+      "claim": "Exact runtime/UI reproduction of the synchronous Resume timeout and downstream lifecycle contamination."
+    },
+    {
+      "reference": ".engineering-bootstrap/test-evidence/sections/dashboard-extension.json",
+      "artifact_sha256": "bdaa03330c947c7fde5eba46aa0d15e6d28643290e59172ed9d629928a642607",
+      "artifact_size": 1330,
+      "claim": "Current passing dashboard section receipt before runtime scope expansion."
+    }
+  ]
+}

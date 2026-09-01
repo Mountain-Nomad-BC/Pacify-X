@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023324",
+  "learned": "The fresh integrated operational walk failed closed before host launch because run-isolated-current-source-walk.js stages retained .engineering-bootstrap/diagnostics custody as product source and rejects a preserved diagnostic symlink. The owned process tree closed, temporary root was reclaimed, and the user's VS Code profile was untouched. The runner must exclude diagnostic custody while continuing to reject links in canonical product source.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": [],
+  "next_action": "Repair the ten remaining PX-CURRENT tracks in dependency order, beginning with the tested-source Studio worker handoff and current extension-host/listener health.",
+  "evidence": [
+    {
+      "reference": "evidence/release/integrated-current-source-operational-walk-20260826.json",
+      "artifact_sha256": "8f1c0dccc586a97e74bdc9ae439b0b103a807276ad6c2f98aedc873180de2389",
+      "artifact_size": 3767,
+      "claim": "Exact retained failure proving diagnostic custody contaminates isolated source staging."
+    }
+  ]
+}

@@ -317,6 +317,9 @@ def _rebuild_candidate_projections_unlocked(root: Path) -> None:
     )
     from scripts.build_domain_tool_projections import reconcile as reconcile_wrappers
     from scripts.build_profile_projections import reconcile as reconcile_profiles
+    from scripts.build_operational_control_proof_matrix import (
+        build as build_operational_control_proof_matrix,
+    )
     from scripts.build_python_dependency_ownership import build as build_dependencies
     from scripts.build_registry_envelope_inventory import build_inventory
     from runtime.generated_dependency import generated_dependency_graph
@@ -384,6 +387,11 @@ def _rebuild_candidate_projections_unlocked(root: Path) -> None:
         root / "registry/artifact_reachability.json", build_artifact_reachability(root)
     )
     _write_json(root / "registry/test_group_index.json", build_test_group_index(root))
+    _write_json(
+        root / "registry/operational_control_proof_matrix.json",
+        build_operational_control_proof_matrix(root),
+        sort_keys=False,
+    )
     # This is last among source/registry projections. Installed-host evidence
     # must bind these exact engine bytes; later test receipts, evidence, and
     # completion publications are deliberately excluded to avoid a hash cycle.

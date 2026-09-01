@@ -47,17 +47,25 @@ LOCAL_TEST_EVIDENCE_ROOTS = frozenset(
         "github-reconciliation-gates",
     }
 )
+MUTABLE_RUNTIME_PROJECTIONS = frozenset(
+    {
+        "registry/operational_gap_ledger.jsonl",
+        "registry/operational_gap_ledger.snapshot.json",
+    }
+)
 
 
 def is_external_environment_relative(relative: str | Path) -> bool:
     """Identify non-product dependency or retained-custody trees without scanning them."""
-    parts = Path(relative).parts
+    relative_path = Path(relative)
+    parts = relative_path.parts
     if not parts:
         return False
     top = parts[0]
     normalized_top = top.casefold()
     return (
-        top in EXTERNAL_ENVIRONMENT_ROOTS
+        relative_path.as_posix() in MUTABLE_RUNTIME_PROJECTIONS
+        or top in EXTERNAL_ENVIRONMENT_ROOTS
         or top in CANONICAL_WORKSPACE_CUSTODY_ROOTS
         or normalized_top.startswith(".tmp")
         or normalized_top.startswith("tmp_")

@@ -1,0 +1,37 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "release-session:px-complete-causal-repair-publish-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023291",
+  "authority": "User explicitly requested completion of all remaining Pacify-X repairs and that GitHub be current and merged, with approval required only for irreversible destructive actions.",
+  "expected_effect": "Publish one additive non-force main commit containing the complete tested Studio lifecycle and health-truthfulness repairs, current provider acceptance cards, repair evidence, and exact causal generated projections; then inspect the fresh GitHub matrix without certifying.",
+  "rollback": "Do not rewrite history. If the published commit fails remotely, retain its exact run evidence and correct only the proven defect in a later additive commit.",
+  "expires_utc": "2026-09-05T14:00:00Z",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": [
+        "Inspect compact git status, exact diffs, origin/main ancestry, the 14 admitted source/evidence/projection paths, commit identity, push result, and freshly triggered public GitHub Actions/Dependabot metadata. Exclude credentials, browser/account state, unrelated repositories, and local custody content."
+      ]
+    },
+    {
+      "effect": "write",
+      "scope": [
+        "Stage and commit only runtime/studio_terminal_observer.py, scripts/build_operation_health_snapshot.py, tests/test_agent_runtime.py, tests/test_workflow_studio.py, tests/test_operation_health_snapshot.py, evidence/punch-cards/O08-provider-invocation-gateway.json, evidence/punch-cards/O09-provider-budget-ledger.json, evidence/release/ci-1a530d99-platform-race-repair-20260826.json, evidence/release/adversarial-operational-audit-20260826.json, registry/effect_surface_ownership.json, registry/python_dependency_ownership.json, registry/provider_route_scan.json, registry/build_claims.json, and registry/artifact_reachability.json; create one normal additive commit and push main without force. Do not stage operational ledgers, environment inventory, section receipts, operation-health snapshots, diagnostic custody, package/install artifacts, or any other path."
+      ]
+    },
+    {
+      "effect": "execute",
+      "scope": [
+        "Run non-interactive git diff/check, fetch, exact-path staging, staged-boundary verification, normal commit, ancestry check, non-force push, and read-only public GitHub workflow/Dependabot observation. Do not rerun tests, sections, full profile, validate, package, install, service mutation, amend, rebase, force-push, merge or close pull requests, or certify."
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "reference": "evidence/release/adversarial-operational-audit-20260826.json",
+      "artifact_sha256": "a1c85be36b7877dfde1d0f38c9b111b2c5924d841fb9019610ca5c009e2d85ed",
+      "artifact_size": 3469,
+      "claim": "Tested and structurally valid repaired-source denominator with remaining live-health and release work explicitly open."
+    }
+  ]
+}

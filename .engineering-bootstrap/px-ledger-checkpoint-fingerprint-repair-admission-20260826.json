@@ -1,0 +1,35 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-ledger-checkpoint-fingerprint-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023176",
+  "authority": "User-authorized reversible repair of every Pacify-X operational blocker before packaging.",
+  "expected_effect": "Determine why the operational-gap-ledger checkpoint fingerprint is stale after an otherwise passing validation; repair derived checkpoint synchronization or its direct source owner; prove current operational-ledger availability before packaging.",
+  "rollback": "Revert only direct checkpoint synchronization repairs if focused validation regresses; retain the validation blocker and do not package.",
+  "expires_utc": "2026-09-01T12:00:00Z",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect only the final validation blocker, operational-gap-ledger checkpoint/head/snapshot fingerprint calculation and synchronization path, current ledger artifacts, direct tests, and packaging readiness dependency on that state."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Return the campaign to repair if product source must change; repair only operational-gap-ledger checkpoint fingerprint synchronization or regenerate only its owned derived checkpoint artifacts when source is already correct; add focused regression coverage; retain proof. Do not rerun validate or any governed section/group/profile, package, install, publish, commit, push, merge, or certify."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["With PYTHONDONTWRITEBYTECODE=1 set, run only operational-gap-ledger project/validate/fingerprint diagnostics, focused direct tests for checkpoint synchronization, and syntax/import probes for changed owners. Do not rerun runtime.cli validate or any governed section/group/profile, projection rebuild, package, install, publish, commit, push, merge, or certify."]
+    }
+  ],
+  "evidence": [
+    {
+      "reference": "evidence/release/final-validation-operational-blocker-20260826.json",
+      "claim": "Exact post-validation operational blocker preventing packaging."
+    },
+    {
+      "reference": "evidence/release/final-validation-proof-20260826.json",
+      "artifact_sha256": "676b54124e7beadbe3f9e68b6f9166f6c3a13d357f625e9d7a5af8c6484bcd3d",
+      "artifact_size": 531,
+      "claim": "Registry-valid predecessor with no operational certification claim."
+    }
+  ]
+}

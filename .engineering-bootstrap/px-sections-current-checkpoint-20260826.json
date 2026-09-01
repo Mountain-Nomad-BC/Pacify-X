@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023022",
+  "learned": "Repair is frozen and the repository-owned projection builder completed exactly once. Generated/effect integrity, dependency closure, and diff integrity all pass; the campaign is revision_reconciled and the next ordered work is to refresh every stale governed section receipt in dependency order.",
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "unresolved_branch_gap_ids": ["PX-OS-1065"],
+  "newly_discovered_gap_ids": [],
+  "evidence": [
+    {
+      "reference": "evidence/release/final-revision-reconciliation-20260826.json",
+      "claim": "Current revision-reconciled generated authority set.",
+      "artifact_sha256": "0056bbaad2b835d208216a44a371ed4eba62c53060647fc04df5fa6c092689ae",
+      "artifact_size": 2424
+    }
+  ]
+}

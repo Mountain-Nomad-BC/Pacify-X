@@ -7,7 +7,7 @@
     "effect": "none-outside-webview",
     "acknowledgement": "active surface and focus update"
   },
-  "action_count": 201,
+  "action_count": 205,
   "actions": [
     {
       "action": "acceptStudioVersionSuggestion",
@@ -260,6 +260,7 @@
       "receipt": "current project-map build receipt",
       "rendered_in": [
         "media/dashboard/42-core-surfaces.js",
+        "media/dashboard/45-system-surfaces.js",
         "media/dashboard/48-graph-surface.js"
       ]
     },
@@ -755,6 +756,25 @@
       ]
     },
     {
+      "action": "executeEnvironmentLifecycleRestore",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "environmentLifecycleRestoreExecute",
+        "fields": [
+          "token",
+          "exactTarget"
+        ]
+      },
+      "authority": "environment lifecycle controller",
+      "effect": "filesystem-write",
+      "state_transition": "environmentLifecycleRestoreResult or operationError",
+      "acknowledgement": "environmentLifecycleRestoreResult or operationError",
+      "receipt": "exact restoration receipt",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
       "action": "executeExtensionConflictResolution",
       "mode": "host",
       "inbound_schema": {
@@ -1032,6 +1052,39 @@
       ]
     },
     {
+      "action": "graphClearEdgeBundle",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "graphQuery",
+        "fields": [
+          "requestId",
+          "view",
+          "mode",
+          "cluster",
+          "node",
+          "target",
+          "query",
+          "relation",
+          "direction",
+          "kind",
+          "status",
+          "offset",
+          "edgeOffset",
+          "depth",
+          "maxNodes",
+          "maxEdges"
+        ]
+      },
+      "authority": "runtime.dashboard_api",
+      "effect": "read",
+      "state_transition": "graphResult",
+      "acknowledgement": "graphResult",
+      "receipt": "request-bound unfiltered relationship page with retained selected-node identity",
+      "rendered_in": [
+        "media/dashboard/48-graph-surface.js"
+      ]
+    },
+    {
       "action": "graphCommunity",
       "mode": "host",
       "inbound_schema": {
@@ -1088,6 +1141,39 @@
       "acknowledgement": "immediate visible UI state",
       "receipt": null,
       "behavior": "expand or contract the bounded graph neighborhood",
+      "rendered_in": [
+        "media/dashboard/48-graph-surface.js"
+      ]
+    },
+    {
+      "action": "graphFilterEdgeBundle",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "graphQuery",
+        "fields": [
+          "requestId",
+          "view",
+          "mode",
+          "cluster",
+          "node",
+          "target",
+          "query",
+          "relation",
+          "direction",
+          "kind",
+          "status",
+          "offset",
+          "edgeOffset",
+          "depth",
+          "maxNodes",
+          "maxEdges"
+        ]
+      },
+      "authority": "runtime.dashboard_api",
+      "effect": "read",
+      "state_transition": "graphResult",
+      "acknowledgement": "graphResult",
+      "receipt": "request-bound semantic relation page with retained selected-node identity",
       "rendered_in": [
         "media/dashboard/48-graph-surface.js"
       ]
@@ -1165,7 +1251,8 @@
       "acknowledgement": "graphResult",
       "receipt": "all remaining bounded record and relationship pages accumulated with explicit coverage",
       "rendered_in": [
-        "media/dashboard/48-graph-surface.js"
+        "media/dashboard/48-graph-surface.js",
+        "media/dashboard/90-controller.js"
       ]
     },
     {
@@ -2318,6 +2405,24 @@
       ]
     },
     {
+      "action": "previewEnvironmentLifecycleRestore",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "environmentLifecycleRestorePreview",
+        "fields": [
+          "receiptId"
+        ]
+      },
+      "authority": "environment lifecycle controller",
+      "effect": "read",
+      "state_transition": "environmentLifecycleRestorePreview or operationError",
+      "acknowledgement": "environmentLifecycleRestorePreview or operationError",
+      "receipt": "durable receipt-bound restore preview",
+      "rendered_in": [
+        "media/dashboard/90-controller.js"
+      ]
+    },
+    {
       "action": "previewExtensionConflictResolution",
       "mode": "host",
       "inbound_schema": {
@@ -2368,7 +2473,8 @@
         "fields": [
           "requestId",
           "extensionId",
-          "version"
+          "version",
+          "localVsixPath"
         ]
       },
       "authority": "exact extension lifecycle controller + current VS Code inventory",
@@ -2426,7 +2532,8 @@
         "fields": [
           "requestId",
           "extensionId",
-          "version"
+          "version",
+          "localVsixPath"
         ]
       },
       "authority": "exact extension lifecycle controller + current VS Code inventory",

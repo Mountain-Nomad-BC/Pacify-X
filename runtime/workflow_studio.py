@@ -1499,7 +1499,7 @@ class WorkflowStudio:
                     "status": published_state,
                     "terminal_target": target if defer_terminal_publication else None,
                     "completed_utc": None if defer_terminal_publication else _now(),
-                    "node_count": len(results),
+                    "node_count": len(completed_nodes),
                     "output_sha256": digest(results),
                     "node_task_cleanup_receipts": sorted(
                         {
@@ -1562,7 +1562,7 @@ class WorkflowStudio:
                     "status": published_state,
                     "terminal_target": target if published_state == "finalizing" else None,
                     "completed_utc": None if published_state == "finalizing" else (_now() if target == "cancelled" else None),
-                    "node_count": len(results),
+                    "node_count": len(completed_nodes),
                     "control_sequence": final["sequence"],
                     "resumable": target == "paused",
                 }
@@ -1579,7 +1579,7 @@ class WorkflowStudio:
                     "failure_type": type(error).__name__,
                     "failure_message": str(error)[:500],
                     "failure_correlation_id": failure_correlation_id,
-                    "node_count": len(results),
+                    "node_count": len(completed_nodes),
                 }
             )
             current = self.run_control.read(run_id)

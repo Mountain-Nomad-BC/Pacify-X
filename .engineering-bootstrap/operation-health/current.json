@@ -1,0 +1,41 @@
+{
+  "schema_version": "px.operation-coverage-health/1.0",
+  "route_states": [
+    {
+      "route_id": "extension.vscode-listener",
+      "kind": "observer",
+      "health": "healthy",
+      "observed_at": "2026-08-26T10:11:38.319000+00:00",
+      "receipt_path": "extension/evidence/installed-vsix-smoke.json",
+      "receipt_sha256": "2b814a09f14dd8ba685b52d53214af371df42bb48168905828e3e653aeec01b7",
+      "limitation": null
+    },
+    {
+      "route_id": "provider.remote-model",
+      "kind": "mediator",
+      "health": "unconfigured",
+      "observed_at": "2026-08-24T03:15:07+00:00",
+      "receipt_path": "registry/provider_adapters.json",
+      "receipt_sha256": "48c536236ca9ce60273803d9b9455c2c09230d1bb62d6a0011fcf448000162f8",
+      "limitation": "remote provider remains default-off"
+    },
+    {
+      "route_id": "provider.local-model",
+      "kind": "mediator",
+      "health": "healthy",
+      "observed_at": "2026-08-24T03:15:07+00:00",
+      "receipt_path": ".engineering-bootstrap/provider-budget/ledger.json",
+      "receipt_sha256": "3342315046d5214887012a30ef6ab1b3ff564caeef5724df2b5c75bf3258e8de",
+      "limitation": null
+    },
+    {
+      "route_id": "runtime.package-environment",
+      "kind": "observer",
+      "health": "healthy",
+      "observed_at": "2026-08-26T13:41:31.562000+00:00",
+      "receipt_path": ".engineering-bootstrap/environment/current.json",
+      "receipt_sha256": "bc2ca3b00b67aa678b5f2696d07de136016d43dd5a2507d22a9aacfc6cc517e6",
+      "limitation": null
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1067",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000031430",
+  "learned": "The late-card installed owner repair is frozen with zero unresolved repair items. Its clean dashboard section passes 427 tests, both durable promotion/rollback termination recoveries pass, owned artifacts are quarantined, and the oracle admits exactly one canonical revision/generated-projection reconciliation.",
+  "next_action": "Run the single revision/generated-projection reconciliation, make every governed section current, then execute exactly one full profile, validation, package, install, installed-system operational test, and certification in registered order.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": ["PX-OS-087", "PX-OS-119", "PX-OS-958", "PX-OS-959", "PX-OS-960", "PX-OS-961", "PX-OS-962", "PX-OS-967", "PX-OS-973", "PX-OS-976", "PX-OS-994", "PX-OS-995", "PX-OS-996", "PX-OS-998", "PX-OS-1065"],
+  "evidence": [
+    {
+      "reference": ".tmp/audit_walks_plans/542_exhaustive_installed_late_card_scenario_repair.md",
+      "artifact_sha256": "20b1daa604ae857b3faca1af6ebd0a89376ed33f24fc372acd2f35f7c7a466ad",
+      "artifact_size": 4670,
+      "claim": "Frozen verified repair predecessor."
+    }
+  ]
+}

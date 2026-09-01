@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "release-session:px-unified-revision-push-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023007",
+  "outcome": "superseded",
+  "reason": "The predecessor revision reconciliation failed closed with PX-AUD2-003 before this session staged, committed, or pushed anything. This card is superseded so the shared source-walker defect can reopen repair; no Git or GitHub mutation occurred.",
+  "evidence": [
+    {
+      "reference": "evidence/release/revision-reconciliation-failure-20260826.json",
+      "artifact_sha256": "26208a881f60a8e74931aa28823a31e4911498f3ca36f4fa75eabedab0147b4c",
+      "artifact_size": 1529,
+      "claim": "PX-AUD2-003 blocks revision reconciliation and therefore blocks staging, commit, and push."
+    }
+  ]
+}

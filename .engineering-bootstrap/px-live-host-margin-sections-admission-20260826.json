@@ -1,0 +1,31 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-live-host-margin-sections-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023233",
+  "authority": "User requested uninterrupted repair of every remaining Pacify-X and GitHub failure through complete operation.",
+  "expected_effect": "Raise only the owned Windows host outer timeout from 300 to 420 seconds based on the proved 293681 ms live duration, verify the timeout contract and syntax, and run exactly the two affected governed sections against stable generated inputs.",
+  "rollback": "Revert only the outer timeout change if extension contract tests regress; retain the successful 293681 ms live-host receipt and all proved lifecycle/projection repairs. Reconcile owned section processes on failure or timeout.",
+  "expires_utc": "2026-09-04T12:00:00Z",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect only extension/scripts/run-vscode-host-smoke.js timeout call, extension/tests/package-contract.test.js timeout assertions, current focused diffs, and studio-memory-graph/dashboard-extension section receipts."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Change only extension/scripts/run-vscode-host-smoke.js outer owned-host timeout from 300000 to 420000 milliseconds; update only an existing exact timeout assertion in extension/tests/package-contract.test.js if present; create one focused repair evidence JSON. Do not alter canonical snapshot timeout, runtime behavior, projections, dependencies, ledgers, package identity, installed extension, or certification state."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["With caches disabled, run only JavaScript syntax and exact package-contract timeout test, direct generated and registry validators if needed to confirm stability, exactly one studio-memory-graph section and one dashboard-extension section, and exact residual-process checks. Do not repeat the already passing live host, run full profile, runtime.cli validate, package, install, publish, or certify."]
+    }
+  ],
+  "evidence": [
+    {
+      "reference": "extension/evidence/vscode-host-process-lifecycle.json",
+      "claim": "Live host passed in 293681 ms with full process-tree closure, establishing the 420000 ms outer ceiling requirement.",
+      "artifact_sha256": "29e393ffc64d59834297adbc8e371156dc519e7e3ee0809a6cc997af91a2934c",
+      "artifact_size": 553
+    }
+  ]
+}

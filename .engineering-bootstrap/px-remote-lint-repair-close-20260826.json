@@ -1,0 +1,14 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-remote-lint-1f854583-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023198",
+  "outcome": "completed",
+  "evidence": [
+    {
+      "reference": "evidence/release/remote-lint-focused-repair-proof-20260826.json",
+      "claim": "Exact remote lint failure repaired; lint gate and changed Studio/memory section pass with process custody reconciled.",
+      "artifact_sha256": "4ce267b880c891bd06f4e8704d08e36e474fde7bb3dc1c74a10cc55f1b5e2e6a",
+      "artifact_size": 1792
+    }
+  ]
+}

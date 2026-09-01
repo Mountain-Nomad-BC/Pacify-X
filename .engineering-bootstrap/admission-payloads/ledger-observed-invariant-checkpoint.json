@@ -1,0 +1,18 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "learned": "The assembler and reconciler now correctly preserve complete direct read-only observations, but the CPU-authoritative operational ledger validator rejects an operational observation unless attempted=true. The attempted flag represents an active edit/action and is not applicable to read-only live-state observation; the validator already separately requires observed/rendered evidence, exact current source, and a complete interaction chain.",
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000016537",
+  "unresolved_branch_gap_ids": [],
+  "newly_discovered_gap_ids": [],
+  "evidence": [
+    {
+      "reference": "runtime/operational_gap_ledger.py",
+      "claim": "Canonical validator requires both observed and attempted for all operational dispositions."
+    },
+    {
+      "reference": "evidence/current-control-proof-installed-0656-20260825/assembled-sidebar-observed-r2.json",
+      "claim": "Exact direct receipt contains complete observed read-only chains rejected only by the attempted flag invariant."
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "session_id": "verification-session:px-profile-orchestration-hardened-handoff-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023055",
+  "gap_id": "PX-OS-1065",
+  "authority": "User requested completion through actual governed operation and authorized all reversible Pacify-X work.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect zero-unresolved repair state, processing oracles, projection owner, testing-governance currentness, owned group/profile receipts, and registered process/workspace cleanup evidence for the hardened final handoff."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Advance ordered phases through repair_frozen and revision_reconciled; rebuild generated projections exactly once; refresh only testing-governance; advance to sections_current only when all sections are current; run exactly one actual top-level full profile whose hardened owner may refresh stale groups; advance to full_profile_passed only on a passing reconciled result; retain evidence and append ledger events. Do not change product source."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["Run processing checks, one projection rebuild, focused generated/dependency/diff integrity, one testing-governance section, section status, and exactly one actual python -m runtime.cli test-profile run full. Do not run a second full profile, validate, package, install, deploy, publish, commit, push, merge, or certify."]
+    }
+  ],
+  "expected_effect": "Produce current governed sections and the sole actual passing full-profile result on the environment-safe orchestration revision.",
+  "rollback": "Stop at the last passed phase and retain failed owned receipts; do not rerun the full profile in this session or erase evidence.",
+  "expires_utc": "2026-08-27T02:00:00Z",
+  "evidence": [
+    {
+      "reference": "evidence/release/full-profile-child-environment-causal-proof-20260826.json",
+      "artifact_sha256": "614942000379326ec61f8392aa3929d18037ecd0af722405028b8f931e092058",
+      "artifact_size": 790,
+      "claim": "Hardened single-profile orchestration predecessor."
+    }
+  ]
+}

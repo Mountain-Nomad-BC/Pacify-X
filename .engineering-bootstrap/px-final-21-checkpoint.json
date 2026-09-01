@@ -1,0 +1,18 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022940",
+  "learned": "Current assembled exact evidence observes 908 of 929 controls and completes 662 chains. The 21 unobserved controls are five state-fixture controls and sixteen Studio lifecycle controls. Runtime source already implements authenticated pause, resume, cancel, stop, reconcile, workflow approval, and skill rollback; the installed lifecycle campaign currently exercises only the happy path and therefore never makes these controls eligible.",
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": ["PX-OS-1065"],
+  "evidence": [
+    {
+      "reference": "evidence/current-control-proof-installed-0657-20260825/assembled-current.json",
+      "claim": "Exact current assembly isolating 21 unobserved controls after the real installed campaign."
+    },
+    {
+      "reference": "evidence/operational-ui-walk-installed-vsix-0.6.57-20260825-r2/receipt.json",
+      "claim": "Exact installed host receipt proving happy-path lifecycle operations and identifying omitted transition coverage."
+    }
+  ]
+}

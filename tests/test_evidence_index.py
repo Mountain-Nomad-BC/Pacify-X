@@ -94,6 +94,39 @@ def test_engine_identity_excludes_test_group_topology(tmp_path) -> None:
     assert before == after
 
 
+def test_engine_identity_excludes_mutable_operational_ledger_controls(
+    tmp_path,
+) -> None:
+    (tmp_path / "runtime").mkdir()
+    source = tmp_path / "runtime/engine.py"
+    source.write_text("value = 1\n", encoding="utf-8")
+    registry = tmp_path / "registry"
+    registry.mkdir()
+    lock = registry / ".operational-gap-ledger.lock"
+    head = registry / "operational_gap_ledger.head.json"
+    recovery = (
+        registry
+        / ".lock-recovery-receipts"
+        / ".operational-gap-ledger.lock"
+        / "receipt.json"
+    )
+    recovery.parent.mkdir(parents=True)
+    lock.write_text('{"owner":1}\n', encoding="utf-8")
+    head.write_text('{"sequence":1}\n', encoding="utf-8")
+    recovery.write_text('{"recovered":1}\n', encoding="utf-8")
+    before = build_engine_identity(tmp_path)
+
+    lock.write_text('{"owner":2}\n', encoding="utf-8")
+    head.write_text('{"sequence":2}\n', encoding="utf-8")
+    recovery.write_text('{"recovered":2}\n', encoding="utf-8")
+    after_controls = build_engine_identity(tmp_path)
+    source.write_text("value = 2\n", encoding="utf-8")
+    after_source = build_engine_identity(tmp_path)
+
+    assert before == after_controls
+    assert before != after_source
+
+
 def test_engine_identity_excludes_external_runtime_custody(tmp_path) -> None:
     (tmp_path / "runtime").mkdir()
     source = tmp_path / "runtime/engine.py"

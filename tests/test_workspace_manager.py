@@ -248,6 +248,9 @@ class WorkspaceManagerTests(unittest.TestCase):
             self.assertEqual([item["memory_id"] for item in browser["records"]], [memory_id])
             self.assertEqual(browser["records"][0]["authority"], "canonical workspace memory vault")
             self.assertEqual(len(browser["records"][0]["record_sha256"]), 64)
+            self.assertEqual(browser["records"][0]["source"]["path"], "projects/alpha/notes.md")
+            self.assertEqual(browser["records"][0]["source"]["project_relative_path"], "notes.md")
+            self.assertEqual((workspace / browser["records"][0]["source"]["path"]).resolve(), source.resolve())
             correction = correct_memory(
                 workspace,
                 "prj_alpha",

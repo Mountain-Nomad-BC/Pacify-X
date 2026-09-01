@@ -1,0 +1,17 @@
+{
+  "session_id": "package-session:px-immutable-vsix-selection-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023173",
+  "gap_id": "PX-OS-1065",
+  "authority": "User-authorized Pacify-X rebuild and reinstall while preserving issued-version immutability.",
+  "effect_scopes": [
+    {"effect": "read", "scope": ["Inspect only validated campaign state, immutable 0.6.59 VSIX, SHA256SUMS, package manifest identity, bundled-source timestamps, and exact-installed predecessor receipts."]},
+    {"effect": "write", "scope": ["Select and bind exactly one already-issued immutable VSIX as the canonical package artifact; advance to packaged only when its hash, embedded version/publisher/name, recorded manifest, and source freshness match; retain evidence. Do not rebuild, install, publish, commit, push, merge, or certify."]},
+    {"effect": "execute", "scope": ["Run processing-order package checks and read-only SHA-256, ZIP manifest, extension identity, and bundled-source freshness verification for exactly one VSIX. Do not rebuild, rerun tests/validation/projections, install, publish, commit, push, merge, or certify."]}
+  ],
+  "expected_effect": "Advance to packaged with one exact immutable 0.6.59 VSIX bound by hash and embedded identity.",
+  "rollback": "Stop at validated if any identity/hash/freshness mismatch exists; retain the artifact unchanged.",
+  "expires_utc": "2026-09-02T12:00:00Z",
+  "evidence": [
+    {"reference": "evidence/release/immutable-vsix-package-selection-boundary-20260826.json", "claim": "Immutable artifact selection basis.", "artifact_sha256": "de649a0b11a47dcd4d8223720e45e9b40eda2ec569a675ca21ff6a6784d77e22", "artifact_size": 928}
+  ]
+}

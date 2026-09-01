@@ -1,0 +1,31 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-profile-order-dependent-state-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023155",
+  "authority": "User-authorized reversible causal repair of all remaining Pacify-X operational defects.",
+  "expected_effect": "Identify and repair the exact order-dependent state mutation causing the live release audit failure and the core-a-f session-level nonzero exit, then prove both in focused profile-equivalent contexts without rerunning the full profile.",
+  "rollback": "Revert only direct causal source/test-state repairs if focused reproductions regress; retain the profile failure denominator and stop before closure stages.",
+  "expires_utc": "2026-08-30T00:00:00Z",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect only the profile-order-dependent failure denominator, release-audit live composer and failing subreports, core-a-f group definition and pytest session guards, current generated/temporary state mutated by prior groups, and direct source/tests owning those paths."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Repair only the causal order-dependent shared-state, release-audit, group isolation, or pytest guard defects behind the fresh release-audit and core-a-f receipts; add direct regressions and retain focused proof; clear the unresolved track only when focused profile-equivalent reproductions pass. Do not rebuild canonical projections, run governed sections/groups/full profile, validate, package, install, publish, commit, push, merge, or certify."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["With PYTHONDONTWRITEBYTECODE=1 set, run only the exact live release-audit node, bounded failing-subreport probes, the exact core-a-f pytest member command needed to expose its session-level output, and focused direct regression/syntax probes for changed owners. Do not rebuild projections, run governed test-section/test-group/test-profile, validate, package, install, publish, commit, push, merge, or certify."]
+    }
+  ],
+  "evidence": [
+    {
+      "reference": "evidence/release/profile-order-dependent-failure-denominator-20260826.json",
+      "artifact_sha256": "d88d7c06ba0c6fce53b9cb20757468f597cbf253d203b1a019a7a6b8baeab780",
+      "artifact_size": 1533,
+      "claim": "Exact order-dependent profile failure denominator and source-stability proof."
+    }
+  ]
+}

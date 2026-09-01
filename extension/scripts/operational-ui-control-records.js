@@ -22,6 +22,31 @@ const CHAIN_STAGES = Object.freeze([
 ]);
 
 const LIVE_WALK_AUTHORITY = 'live installed VS Code host; read-only observation and reversible unsaved UI interaction only';
+const AUTHORITY_SKIP_RETURN_CONDITION = 'Provide explicit authority for this exact effect in an isolated disposable target, capture current pre-state digests, register rollback/recovery, and require a typed acknowledgement plus unchanged-or-expected post-state digest.';
+
+function nonempty(value) {
+  return typeof value === 'string' && value.trim() ? value.trim() : null;
+}
+
+function applyAuthoritySkipContract(record, {
+  authority = null,
+  reason = null,
+  expectedEffect = null,
+  returnCondition = null
+} = {}) {
+  if (!record || typeof record !== 'object') throw new Error('authority skip requires a control record');
+  const declaredEffect = Array.isArray(record.declared_effects)
+    ? record.declared_effects.map(nonempty).filter(Boolean).join('; ')
+    : null;
+  record.terminal_disposition = 'skipped_requires_authority';
+  record.authority = nonempty(authority) || nonempty(record.authority) || LIVE_WALK_AUTHORITY;
+  record.reason = nonempty(reason) || nonempty(record.reason)
+    || `The exact effect for ${String(record.control_id || 'this control')} exceeds the current walk authority.`;
+  record.expected_effect = nonempty(expectedEffect) || nonempty(record.expected_effect) || declaredEffect
+    || `Exercise the exact registered effect for ${String(record.control_id || 'this control')}.`;
+  record.return_condition = nonempty(returnCondition) || nonempty(record.return_condition) || AUTHORITY_SKIP_RETURN_CONDITION;
+  return record;
+}
 
 function sha256(buffer) {
   return crypto.createHash('sha256').update(buffer).digest('hex');
@@ -344,9 +369,8 @@ function buildPerControlRecords({ inventory, results = [], sidebar = null, hostS
     if (hostSourceMismatch) {
       record.reason = 'The installed VS Code host asset identity does not match the source identity that supplied this control inventory; interaction evidence would apply to the wrong implementation.';
       record.return_condition = 'Install and reload the exact source asset identity, verify the host/source identity receipt matches, then rerun this control under its profile-specific authority and evidence boundary.';
-    } else if (mutating) {
-      record.reason = effect;
-      record.return_condition = 'Provide explicit authority for this exact effect in an isolated disposable target, capture current pre-state digests, register rollback/recovery, and require a typed acknowledgement plus unchanged-or-expected post-state digest.';
+    } else if (terminalDisposition === 'skipped_requires_authority') {
+      applyAuthoritySkipContract(record, { reason: effect, expectedEffect: effect });
     }
     return record;
   }).sort((left, right) => left.control_id.localeCompare(right.control_id));
@@ -384,6 +408,7 @@ function buildPerControlRecords({ inventory, results = [], sidebar = null, hostS
 module.exports = {
   CHAIN_STAGES,
   LIVE_WALK_AUTHORITY,
+  applyAuthoritySkipContract,
   buildCurrentSourceControlManifest,
   buildPerControlRecords,
   canonicalSurfaceId,

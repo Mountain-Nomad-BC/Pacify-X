@@ -1,0 +1,31 @@
+{
+  "session_id": "repair-session:px-aud2-015-exact-installed-20260826",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023113",
+  "gap_id": "PX-OS-1065",
+  "authority": "User-authorized reversible repair work for the complete current three-node exact-installed denominator.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": ["Inspect only the three failure nodes named by .engineering-bootstrap/test-evidence/groups/exact-installed.json, their exact captured output, directly exercised corrective-release and Python ownership implementations, relevant admitted PX skill bodies, and current repair-campaign state."]
+    },
+    {
+      "effect": "write",
+      "scope": ["Return the campaign to repair with PX-AUD2-015 unresolved; repair only the shared causal defects behind the two corrective-release lifecycle failures and exact Python ownership failure; add focused regression coverage and retain bounded evidence. Do not reconcile revisions or projections broadly, run sections/groups/profile/validate, package, install, publish, commit, push, merge, or certify."]
+    },
+    {
+      "effect": "execute",
+      "scope": ["Run the required PX debug and engineering skill queries and hydrate one narrow admitted body from each route; run only the three exact failed test nodes and smaller causal probes while repairing. Do not run whole test files, governed sections, groups, full profile, validate, package, install, publish, commit, push, merge, or certify."]
+    }
+  ],
+  "expected_effect": "Make all three exact-installed failure nodes pass under the same group-relevant context before another repair freeze.",
+  "rollback": "Revert only scoped runtime, fixture, ownership, and focused-test edits that fail their exact causal nodes; retain the failed group receipt and focused output.",
+  "expires_utc": "2026-08-27T12:00:00Z",
+  "evidence": [
+    {
+      "reference": ".engineering-bootstrap/test-evidence/groups/exact-installed.json",
+      "artifact_sha256": "bd59328e821a44753e42891cea4c2d0cf9efc4b3008636d87ee03d246530730b",
+      "artifact_size": 1023,
+      "claim": "Complete current exact-installed failed-node denominator."
+    }
+  ]
+}

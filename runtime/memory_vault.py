@@ -18,6 +18,7 @@ from .memory_fabric import (
     simhash64,
 )
 from .file_lock import FileLock
+from .semantic_memory import semantic_index_projection, semantic_query_signals
 
 
 CATEGORIES = {
@@ -106,6 +107,16 @@ def _write_new(path: Path, value: str) -> None:
         stream.write(value)
 
 
+def _write_replace(path: Path, value: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_name(f".{path.name}.{os.getpid()}.tmp")
+    with temporary.open("x", encoding="utf-8", newline="\n") as stream:
+        stream.write(value)
+        stream.flush()
+        os.fsync(stream.fileno())
+    os.replace(temporary, path)
+
+
 def _record_payload(record: MemoryRecord) -> dict[str, object]:
     return asdict(record)
 
@@ -116,22 +127,9 @@ def _record_from_payload(value: dict[str, object]) -> MemoryRecord:
         for key, item in value.items()
         if key in MemoryRecord.__dataclass_fields__
     }
-    return MemoryRecord(
-        **{
-            **value,
-            "acl": tuple(value.get("acl", ())),
-            "supersedes": tuple(value.get("supersedes", ())),
-            "relationships": tuple(value.get("relationships", ())),
-            "negative_matches": tuple(value.get("negative_matches", ())),
-            "conflicts_with": tuple(value.get("conflicts_with", ())),
-            "fixed_agent_ids": tuple(value.get("fixed_agent_ids", ())),
-            "observed_at": datetime.fromisoformat(str(value["observed_at"])),
-            "effective_at": datetime.fromisoformat(str(value["effective_at"])),
-            "expires_at": datetime.fromisoformat(str(value["expires_at"]))
-            if value.get("expires_at")
-            else None,
-        }
-    )
+    from .memory_fabric import memory_record_from_mapping
+
+    return memory_record_from_mapping(value)
 
 
 def _hash_without(value: dict[str, object], field: str) -> str:
@@ -165,6 +163,8 @@ class IndexGeneration:
     record_count: int
     source_tree_sha256: str
     previous_generations_preserved: bool
+    status: str = "candidate"
+    active: bool = False
 
 
 class MemoryVault:
@@ -596,6 +596,12 @@ class MemoryVault:
             "relationships": list(record.relationships),
             "supersedes": list(record.supersedes),
             "conflicts_with": list(record.conflicts_with),
+            "semantic": (
+                record.semantic.canonical_mapping() if record.semantic else None
+            ),
+            "semantic_sha256": (
+                record.semantic.canonical_sha256() if record.semantic else None
+            ),
             "record_sha256": sealed["record_sha256"],
             "previous_record_sha256": sealed["previous_record_sha256"],
             "lifecycle_event_head_sha256": lifecycle_head_sha256,
@@ -699,18 +705,23 @@ class MemoryVault:
         for memory_id in ids:
             record = by_id[memory_id]
             terms = set(WORD.findall((record.title + " " + record.summary).casefold()))
-            semantic = len(query_terms & terms) / max(1, len(query_terms | terms))
+            lexical = len(query_terms & terms) / max(1, len(query_terms | terms))
+            exact_priority, structured = semantic_query_signals(query, record.semantic)
             graph = sum(
                 link.casefold() in query.casefold() for link in record.relationships
             )
             ranked.append(
-                (semantic + graph * 0.1, record.confidence, memory_id, record)
+                (
+                    exact_priority,
+                    -(structured * 0.55 + lexical * 0.35 + graph * 0.1),
+                    -record.confidence,
+                    memory_id,
+                    record,
+                )
             )
         return tuple(
             item[-1]
-            for item in sorted(ranked, key=lambda item: (-item[0], -item[1], item[2]))[
-                :limit
-            ]
+            for item in sorted(ranked)[:limit]
         )
 
     def build_index(self) -> IndexGeneration:
@@ -736,15 +747,16 @@ class MemoryVault:
                 "record_sha256": _stable(_record_payload(record)),
                 "simhash64": f"{simhash64(record.title + ' ' + record.summary):016x}",
                 "relationships": list(record.relationships),
+                "semantic": semantic_index_projection(record.semantic),
             }
             for record in records
         ]
         _write_new(directory / "entries.json", json.dumps(entries, indent=2) + "\n")
         source_hash = _stable(entries)
         manifest = {
-            "schema_version": "1.0",
+            "schema_version": "px.memory-index-generation/2.0",
             "generation": generation,
-            "status": "complete",
+            "status": "candidate",
             "record_count": len(entries),
             "source_tree_sha256": source_hash,
             "entries_sha256": hashlib.sha256(
@@ -760,7 +772,156 @@ class MemoryVault:
             len(entries),
             source_hash,
             bool(manifest["previous_generations_preserved"]),
+            "candidate",
+            False,
         )
+
+    def validate_index_generation(self, generation: int) -> dict[str, object]:
+        """Validate one immutable candidate against its exact record revisions."""
+        if generation < 1:
+            return {"valid": False, "generation": generation, "reasons": ("invalid_generation",)}
+        directory = (
+            self.root
+            / ".memory-control"
+            / "index"
+            / "generations"
+            / f"{generation:06d}"
+        )
+        manifest_path = directory / "manifest.json"
+        entries_path = directory / "entries.json"
+        reasons: list[str] = []
+        try:
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            entries = json.loads(entries_path.read_text(encoding="utf-8"))
+        except (OSError, UnicodeError, json.JSONDecodeError) as error:
+            return {
+                "valid": False,
+                "generation": generation,
+                "reasons": (f"generation_unreadable:{type(error).__name__}",),
+            }
+        if not isinstance(manifest, dict) or not isinstance(entries, list):
+            reasons.append("generation_shape_invalid")
+        else:
+            if manifest.get("schema_version") != "px.memory-index-generation/2.0":
+                reasons.append("generation_schema_invalid")
+            if manifest.get("generation") != generation:
+                reasons.append("generation_identity_invalid")
+            if manifest.get("status") != "candidate":
+                reasons.append("generation_status_invalid")
+            if manifest.get("record_count") != len(entries):
+                reasons.append("generation_count_invalid")
+            if manifest.get("entries_sha256") != hashlib.sha256(entries_path.read_bytes()).hexdigest():
+                reasons.append("generation_entries_hash_invalid")
+            if manifest.get("source_tree_sha256") != _stable(entries):
+                reasons.append("generation_source_hash_invalid")
+
+            records = {
+                (record.memory_id, record.revision): record for record in self.records()
+            }
+            for entry in entries:
+                if not isinstance(entry, dict):
+                    reasons.append("generation_entry_invalid")
+                    continue
+                key = (str(entry.get("memory_id", "")), entry.get("revision"))
+                record = records.get(key)
+                if record is None:
+                    reasons.append("generation_record_missing")
+                    continue
+                if entry.get("record_sha256") != _stable(_record_payload(record)):
+                    reasons.append("generation_record_hash_stale")
+                if entry.get("semantic") != semantic_index_projection(record.semantic):
+                    reasons.append("generation_semantic_projection_stale")
+        return {
+            "valid": not reasons,
+            "generation": generation,
+            "reasons": tuple(sorted(set(reasons))),
+            "manifest_sha256": (
+                hashlib.sha256(manifest_path.read_bytes()).hexdigest()
+                if manifest_path.is_file()
+                else None
+            ),
+        }
+
+    def _activation_events(self) -> tuple[dict[str, object], ...]:
+        root = self.root / ".memory-control" / "index" / "activation"
+        paths = tuple(sorted((root / "events").glob("*.json"))) if root.is_dir() else ()
+        events: list[dict[str, object]] = []
+        previous = "0" * 64
+        for sequence, path in enumerate(paths, start=1):
+            try:
+                event = json.loads(path.read_text(encoding="utf-8"))
+            except (OSError, UnicodeError, json.JSONDecodeError) as error:
+                raise ValueError("memory index activation integrity failure") from error
+            expected = _hash_without(event, "event_sha256")
+            if (
+                event.get("sequence") != sequence
+                or path.name != f"{sequence:08d}.json"
+                or event.get("previous_event_sha256") != previous
+                or event.get("event_sha256") != expected
+            ):
+                raise ValueError("memory index activation chain invalid")
+            events.append(event)
+            previous = expected
+        head_path = root / "head.json"
+        if head_path.is_file():
+            head = json.loads(head_path.read_text(encoding="utf-8"))
+            if not events or head.get("event_sha256") != events[-1].get("event_sha256"):
+                raise ValueError("memory index activation head invalid")
+        elif events:
+            raise ValueError("memory index activation head missing")
+        return tuple(events)
+
+    def _activate_index(self, generation: int, *, approved: bool, action: str) -> dict[str, object]:
+        if not approved:
+            raise PermissionError("memory index activation requires explicit approval")
+        if action not in {"promote", "rollback"}:
+            raise ValueError("memory index activation action is invalid")
+        with FileLock(self.root / ".memory-control" / "vault.lock"):
+            validation = self.validate_index_generation(generation)
+            if validation["valid"] is not True:
+                raise ValueError(
+                    "memory index candidate failed validation: "
+                    + ", ".join(map(str, validation["reasons"]))
+                )
+            prior = self._activation_events()
+            if action == "rollback" and not any(
+                event.get("generation") == generation for event in prior
+            ):
+                raise ValueError("rollback target was never active")
+            sequence = len(prior) + 1
+            previous_hash = str(prior[-1]["event_sha256"]) if prior else "0" * 64
+            event = {
+                "schema_version": "px.memory-index-activation/1.0",
+                "sequence": sequence,
+                "action": action,
+                "generation": generation,
+                "previous_active_generation": (
+                    int(prior[-1]["generation"]) if prior else None
+                ),
+                "manifest_sha256": validation["manifest_sha256"],
+                "previous_event_sha256": previous_hash,
+                "activated_utc": datetime.now(timezone.utc).isoformat(),
+            }
+            event["event_sha256"] = _hash_without(event, "event_sha256")
+            activation = self.root / ".memory-control" / "index" / "activation"
+            _write_new(
+                activation / "events" / f"{sequence:08d}.json",
+                json.dumps(event, indent=2) + "\n",
+            )
+            head = {
+                "schema_version": "px.memory-index-head/1.0",
+                "generation": generation,
+                "event_sha256": event["event_sha256"],
+                "manifest_sha256": validation["manifest_sha256"],
+            }
+            _write_replace(activation / "head.json", json.dumps(head, indent=2) + "\n")
+            return {**event, "valid": True}
+
+    def promote_index(self, generation: int, *, approved: bool) -> dict[str, object]:
+        return self._activate_index(generation, approved=approved, action="promote")
+
+    def rollback_index(self, generation: int, *, approved: bool) -> dict[str, object]:
+        return self._activate_index(generation, approved=approved, action="rollback")
 
     def reconcile_indexes(self) -> dict[str, object]:
         generations = self.root / ".memory-control" / "index" / "generations"
@@ -769,27 +930,42 @@ class MemoryVault:
             if generations.is_dir()
             else ()
         )
-        complete = []
+        valid = []
         orphaned = []
         for directory in directories:
-            manifest = directory / "manifest.json"
-            entries = directory / "entries.json"
-            if not manifest.is_file() or not entries.is_file():
+            try:
+                generation = int(directory.name)
+            except ValueError:
                 orphaned.append(directory.name)
                 continue
-            value = json.loads(manifest.read_text(encoding="utf-8"))
-            if (
-                value.get("status") != "complete"
-                or value.get("entries_sha256")
-                != hashlib.sha256(entries.read_bytes()).hexdigest()
-            ):
-                orphaned.append(directory.name)
-            else:
-                complete.append(directory.name)
+            validation = self.validate_index_generation(generation)
+            (valid if validation["valid"] else orphaned).append(directory.name)
+        active = None
+        activation_error = None
+        try:
+            events = self._activation_events()
+            if events:
+                selected = f"{int(events[-1]['generation']):06d}"
+                if selected in valid:
+                    active = selected
+                else:
+                    activation_error = "active_generation_invalid"
+        except (OSError, ValueError, json.JSONDecodeError) as error:
+            events = ()
+            activation_error = type(error).__name__
         return {
-            "complete_generations": tuple(complete),
+            "complete_generations": tuple(valid),
+            "candidate_generations": tuple(
+                item for item in valid if item != active
+            ),
             "orphan_generations": tuple(orphaned),
-            "authoritative_generation": complete[-1] if complete else None,
-            "action": "quarantine_orphans_after_review" if orphaned else "none",
+            "authoritative_generation": active,
+            "activation_event_count": len(events),
+            "activation_error": activation_error,
+            "action": (
+                "repair_activation_or_quarantine_orphans_after_review"
+                if activation_error or orphaned
+                else "none"
+            ),
             "hard_delete": False,
         }

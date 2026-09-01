@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-generated-boundary-exclusion-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023010",
+  "outcome": "superseded",
+  "reason": "The exact build/dist boundary repair is implemented and causally covered, but the focused current-root gate exposed the adjacent nested extension/evidence generated boundary before governed section execution. Twenty-one tests passed, two current-root projections failed at the same 2 GiB guard, and no reconciliation or downstream release action ran. A broadened exact repair card is required.",
+  "evidence": [
+    {
+      "reference": "evidence/release/generated-boundary-exclusion-followup-20260826.json",
+      "artifact_sha256": "a9552ecf027fc2e2fba1d44cab7b89f50f6276a9ee35586b9a52d6a0e26da42b",
+      "artifact_size": 1303,
+      "claim": "Focused evidence proves build/dist pruning and identifies nested evidence as the remaining generated-boundary defect."
+    }
+  ]
+}

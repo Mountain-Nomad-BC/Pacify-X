@@ -11,6 +11,7 @@ import pytest
 
 from runtime.memory_fabric import MemoryRecord, correction_plan
 from runtime.memory_vault import MemoryVault
+from runtime.semantic_memory import SemanticEnvelope
 
 
 def _record(memory_id: str = "mem-one") -> MemoryRecord:
@@ -70,6 +71,29 @@ def test_rewritten_memory_and_lifecycle_event_are_detected() -> None:
         )
         record_path.write_text(json.dumps(stored), encoding="utf-8")
         with pytest.raises(ValueError, match="protected head mismatch"):
+            vault.records()
+
+
+def test_semantic_payload_tampering_breaks_the_sealed_record_hash() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        root = Path(directory)
+        vault = MemoryVault(root, workspace_id="wsp", project_id="prj")
+        vault.append(
+            replace(
+                _record(),
+                semantic=SemanticEnvelope(
+                    namespace="prj",
+                    record_type="decision",
+                    payload={"statement": "Original bounded statement."},
+                    exact_keys=("decision-alpha",),
+                ),
+            )
+        )
+        record_path = next(root.rglob("record-*.json"))
+        stored = json.loads(record_path.read_text(encoding="utf-8"))
+        stored["semantic"]["payload"]["statement"] = "Tampered statement."
+        record_path.write_text(json.dumps(stored), encoding="utf-8")
+        with pytest.raises(ValueError, match="record digest mismatch"):
             vault.records()
 
 

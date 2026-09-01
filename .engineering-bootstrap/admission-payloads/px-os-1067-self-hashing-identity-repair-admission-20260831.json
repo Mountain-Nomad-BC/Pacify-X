@@ -1,0 +1,39 @@
+{
+  "gap_id": "PX-OS-1067",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000031623",
+  "session_id": "repair-session:px-os-1067-self-hashing-identity-20260831",
+  "expires_utc": "2026-09-04T12:00:00Z",
+  "authority": "The user explicitly directed clearing the invalid hash state and producing one correct identity. This authorizes repairing the proven self-hashing classifier defect, focused production-transition proof, immutable archival/supersession of the invalid attempt, one post-repair reconciliation, one corrected clear, and one corrected apply; it does not authorize certification before coherence is proven.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": [
+        "only AGENTS.md, policies/release-artifact-policy.json, runtime/release_artifacts.py, runtime/release_campaign.py, runtime/cli.py, exact release campaign/classification/CLI tests, prior release identity and repair campaign state, exact generated-projection owner, bounded Git/disk/process metadata, adversarial audit and identity failure evidence, and append-only operational ledger state"
+      ]
+    },
+    {
+      "effect": "write",
+      "scope": [
+        "only policies/release-artifact-policy.json, runtime/release_campaign.py, runtime/cli.py, tests/test_release_artifacts.py, tests/test_release_campaign.py, tests/test_cli_commands.py, the exact canonical revision/generated-projection outputs owned by the single post-repair reconciler, .engineering-bootstrap/processing-order/release-identity.json, .engineering-bootstrap/processing-order/repair-campaign.json, one immutable failed-identity archive under evidence/release/, evidence/release/pre-certification-adversarial-audit-20260831.json, one exact repair plan under .tmp/audit_walks_plans/, exact admission payloads under .engineering-bootstrap/admission-payloads/, one launcher-owned disposable exact repository copy, and append-only operational-gap ledger event/projection files under registry/"
+      ]
+    },
+    {
+      "effect": "execute",
+      "scope": [
+        "only operational-ledger guards, focused release artifact/campaign/CLI tests, syntax/JSON/diff checks, one disposable exact-repository clear-to-apply transition proof under bounded supervision with deterministic cleanup, exactly one post-repair canonical revision/generated-projection reconciliation under bounded supervision, exactly one invalid-identity archive-and-supersede clear operation, exactly one corrected live apply-release-identity operation, and bounded source identity/status/disk/process verification; prohibit governed sections, full profile, broad validation, package, install, operational walk, certification, publication, network access, recursive Temp traversal, broad deletion, unrelated process termination, any retry, or any second corrected clear/apply"
+      ]
+    }
+  ],
+  "expected_effect": "Mutable release campaign state is excluded from product identity, the real production classifier remains stable across a clear-to-apply transition in a disposable exact copy, the invalid attempt is immutably archived and superseded, and the live repository ends with exactly one current coherent identity at apply_count one and every certification stage pending.",
+  "rollback": "Before live supersession, retain the existing invalid state unchanged if any focused check fails. After live supersession begins, never retry; retain exact terminal evidence and stop before certification. The invalid attempt must remain recoverable in immutable evidence even after current state is cleared.",
+  "evidence": [
+    {
+      "reference": "evidence/release/pre-certification-adversarial-audit-20260831.json",
+      "claim": "High-confidence exact root-cause proof."
+    },
+    {
+      "reference": "host-instruction:20260831-clear-and-make-one-correct",
+      "claim": "Authority for one corrected current identity after clearing the invalid current state."
+    }
+  ]
+}

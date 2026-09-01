@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-runtime-lifecycle-finalization-20260825",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022957",
+  "outcome": "superseded",
+  "reason": "Exact repair scope must expand to runtime/studio_worker_launch.py so resumed generations finalize against the single active owned worker record.",
+  "evidence": [
+    {
+      "reference": "evidence/operational-ui-walk-current-source-final-lifecycle-r5-20260825/receipt.json",
+      "artifact_sha256": "657a6d9400518d2ce3113d6b9e97b1e2e5022d89ef5b82197e1daafb873a2fbf",
+      "artifact_size": 4797857,
+      "claim": "The current-source lifecycle receipt proves the synchronous Agent Resume timeout that requires the expanded repair scope."
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-workflow-cleanup-boundary-diagnosis-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023219",
+  "outcome": "completed",
+  "evidence": [
+    {
+      "reference": "evidence/release/agent-observer-resource-repair-20260826.json",
+      "claim": "The exact guarded Workflow Studio lifecycle test passed in isolation under Python 3.11 in 171.22 seconds with no residual process; the earlier temporary-root guard failure was coupled to overlapping timed-out diagnostic trees, not a reproducible standalone cleanup defect.",
+      "artifact_sha256": "2856fc5bf94a2bf84fd09f59f46dde071bd47a486816780acb92cebbe6764456",
+      "artifact_size": 1515
+    }
+  ]
+}

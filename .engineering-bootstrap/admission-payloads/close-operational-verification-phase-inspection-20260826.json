@@ -1,0 +1,14 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-operational-verification-phase-inspection-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023310",
+  "outcome": "completed",
+  "evidence": [
+    {
+      "reference": ".engineering-bootstrap/processing-order/repair-campaign.json",
+      "claim": "The campaign is valid at phase repair with intake closed and unresolved empty; operational_verification is the exact next phase, and revision reconciliation remains blocked until a later repair_frozen transition backed by complete live proof.",
+      "artifact_sha256": "1b9b536e63a72d236aa923cf8c9f237d06320a4a990b69bba81362805c6a1005",
+      "artifact_size": 4326
+    }
+  ]
+}

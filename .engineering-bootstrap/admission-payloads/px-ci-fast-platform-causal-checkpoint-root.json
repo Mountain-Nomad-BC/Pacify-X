@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1065",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023270",
+  "learned": "Public check-run output is empty, but exact job steps prove all seven matrix failures occur in the combined platform test command with elapsed times from 37 to 195 seconds, while the governed-gates failure is exactly Fast correctness profile after 185 seconds; package metadata and source archive passed. The variable position suggests an order/race defect. Run the exact fast profile and combined platform command under a longer bounded owner with first-failure verbosity, then repair only the captured cause.",
+  "unresolved_branch_gap_ids": [],
+  "newly_discovered_gap_ids": [],
+  "next_action": "Map all 19 findings to current source and current revision, reproduce confirmed defects in risk order, and repair without running certification early.",
+  "evidence": [
+    {
+      "reference": "https://github.com/Mountain-Nomad-BC/Pacify-X/actions/runs/32970782138",
+      "artifact_sha256": "7f56cf7d41209e4b71d7fface2e867e0fb86323c21c33dbf8503116e39d60404",
+      "artifact_size": 1265,
+      "claim": "Exact failed-step metadata identifies Fast correctness profile and the combined platform group as the two reproduction owners."
+    }
+  ]
+}

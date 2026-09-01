@@ -1,0 +1,14 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-541e22e8-clean-projection-diagnosis-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023295",
+  "outcome": "completed",
+  "evidence": [
+    {
+      "reference": "evidence/release/ci-541e22e8-clean-projection-repair-20260826.json",
+      "artifact_sha256": "79f30b2825af8ba5dbbcfeaa3889c8a69716e1780788a0a415408155b9cbdcf7",
+      "artifact_size": 2617,
+      "claim": "Exact full-checkout reproduction narrowed the remote chain to one artifact-reachability hash polluted by unrelated local test-profile state; the one-record repair passes contracts, generated, registry, and structural gates from the exact checkout model."
+    }
+  ]
+}

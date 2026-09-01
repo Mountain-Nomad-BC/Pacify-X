@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "verification-session:px-final-profile-handoff-r2-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023057",
+  "outcome": "superseded",
+  "reason": "The shared testing-governance attempt exposed PX-AUD2-010 and the active checkpoint switched before this session ran any separate group or full-profile command. No downstream action occurred.",
+  "evidence": [
+    {
+      "reference": ".engineering-bootstrap/test-evidence/sections/testing-governance.json",
+      "artifact_sha256": "09ff7e8e73465657b3a53e34d8db7d92cb0c7943fc3c07f4bd1178d327c60292",
+      "artifact_size": 1266,
+      "claim": "Shared PX-AUD2-010 governed failure."
+    }
+  ]
+}

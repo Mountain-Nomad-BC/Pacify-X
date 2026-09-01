@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "release-session:px-one-revision-reconciliation-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023005",
+  "outcome": "superseded",
+  "reason": "The single revision reconciliation failed closed before completion because the shared product-source walker included nested extension/dist generated package output and exceeded its 2 GiB cumulative bound. No downstream gate, package, install, commit, push, or certification action ran.",
+  "evidence": [
+    {
+      "reference": "evidence/release/revision-reconciliation-failure-20260826.json",
+      "artifact_sha256": "26208a881f60a8e74931aa28823a31e4911498f3ca36f4fa75eabedab0147b4c",
+      "artifact_size": 1529,
+      "claim": "Exact fail-closed generated-boundary defect and required repair."
+    }
+  ]
+}

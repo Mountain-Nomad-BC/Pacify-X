@@ -1,0 +1,31 @@
+{
+  "session_id": "repair-session:px-integrated-walk-control-denominator-classification-20260826",
+  "gap_id": "PX-OS-1065",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023335",
+  "authority": "User requested complete physical Pacify-X capability operation rather than technically passing partial checks.",
+  "expected_effect": "Classify every incomplete or unattempted control from the fresh exact-source operational receipt by control kind, surface, terminal disposition, render state, required authority, and missing chain stages to identify exact runner, inventory, UI, or product defects.",
+  "rollback": "Read-only classification creates no source rollback requirement; close before changing the runner, inventory, UI, operational cards, processing order, or evidence projections.",
+  "expires_utc": "2026-09-06T03:30:00Z",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": [
+        "Inspect only evidence/operational-ui-walk-current-source-final-r2-20260826/receipt.json, registry/operational_surface_inventory.json, extension/scripts/operational-walk-status.js, extension/scripts/run-operational-ui-walk.js, direct status/walk tests, and the retained competing-run report/owned-host lease metadata needed to classify the 929-control denominator and exact two coverage blockers."
+      ]
+    },
+    {
+      "effect": "execute",
+      "scope": [
+        "Run only bounded read-only JSON aggregations and source searches that group all 929 controls by kind, surface, terminal disposition, attempted/rendered state, authority requirement, and missing interaction stages, and verify whether any runner-owned process remains. Do not modify source, evidence, ledgers/cards, temp custody, processing order, services, packages, Git/GitHub, or certification state."
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "reference": "evidence/operational-ui-walk-current-source-final-r2-20260826/receipt.json",
+      "artifact_sha256": "774fcfd8f0ccb6a5c34a8dac379ba094beb7350aacdf756772a448f1bbe56d78",
+      "artifact_size": 9986164,
+      "claim": "Fresh authoritative 929-control operational denominator with complete named profiles and two coverage blockers."
+    }
+  ]
+}

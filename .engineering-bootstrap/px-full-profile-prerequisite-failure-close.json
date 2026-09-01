@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "verification-session:px-one-full-profile-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023042",
+  "outcome": "superseded",
+  "reason": "The sole full-profile command failed closed before executing any test because it requires ten current test-group receipts that the mandated section stage does not produce. No profile receipt, validation, package, install, publication, or certification occurred. Reopen repair for PX-AUD2-008 rather than rerunning unchanged.",
+  "evidence": [
+    {
+      "reference": "evidence/release/full-profile-prerequisite-failure-20260826.json",
+      "artifact_sha256": "1eaaae6928d7bcb3d81bb367f424f5eb2dfde1feafdb4ba18d48544c8df4e77b",
+      "artifact_size": 981,
+      "claim": "Current exact full-profile prerequisite contradiction with zero tests executed."
+    }
+  ]
+}

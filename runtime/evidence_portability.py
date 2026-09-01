@@ -36,6 +36,7 @@ EXCLUDED_PATH_PREFIXES = (
     "evidence/operational-gap-ledger/",
     "registry/operational_gap_ledger",
     "registry/instruction_reconciliation_",
+    "registry/.lock-recovery-receipts/",
 )
 TEXT_SUFFIXES = {".json", ".jsonl", ".md", ".txt", ".log", ".toml", ".yaml", ".yml"}
 PATH_KEYS = {

@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-generated-evidence-boundary-20260826",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023014",
+  "outcome": "superseded",
+  "reason": "PX-AUD2-004 is causally repaired, but governed proof cannot be claimed because runtime/repository_scope.py and its boundary tests are not owned by any governed section. PX-AUD2-005 must repair that mapping before re-freeze; no revision or downstream release work ran.",
+  "evidence": [
+    {
+      "reference": "evidence/release/generated-boundary-governance-gap-20260826.json",
+      "artifact_sha256": "be0ea84833d3a445941c90478ed701ff23a8a1490485c317ff3ee1e882e2d0b7",
+      "artifact_size": 1589,
+      "claim": "PX-AUD2-004 causal repair and PX-AUD2-005 governed-section ownership gap."
+    }
+  ]
+}

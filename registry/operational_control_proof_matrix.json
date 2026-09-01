@@ -3,13 +3,13 @@
   "authority": "Executable proof requirements only; this artifact is not evidence that any probe ran or passed.",
   "inventory": {
     "path": "registry/operational_surface_inventory.json",
-    "sha256": "78d7a73caacb0b31cf998ef9dc40dcc2a78aa7d27ba0ac8f0dd941e2f7963282",
+    "sha256": "6b00434a976a34ff2de0d1f08018ba1cefecffc18868e6094550cda0dc81877d",
     "inventory_id": "pacify-x-typed-surfaces-20260825-r15"
   },
   "action_inventory": {
     "path": "extension/resources/ui/action-inventory.json",
-    "sha256": "9879b4e19bc43664aa935982be99ce2f30df5bb8198c92c1e9549498aeb5c8aa",
-    "action_count": 201
+    "sha256": "0e14ffda1764d08c84153c500559413b7a6e5a93f5bdbdbab049e236d914bb3f",
+    "action_count": 205
   },
   "chain_stages": [
     "open_load",
@@ -26,7 +26,7 @@
     "failure_handling",
     "recovery_rollback"
   ],
-  "control_count": 929,
+  "control_count": 933,
   "controls": [
     {
       "control_id": "pxui.activity.action.activityPause",
@@ -14534,6 +14534,7 @@
       "kind": "action",
       "source_refs": [
         "extension/media/dashboard/42-core-surfaces.js",
+        "extension/media/dashboard/45-system-surfaces.js",
         "extension/media/dashboard/48-graph-surface.js"
       ],
       "evidence_mode": "contained_host_interaction",
@@ -14705,6 +14706,41 @@
       }
     },
     {
+      "control_id": "pxui.knowledge-graph.action.graphClearEdgeBundle",
+      "surface_id": "knowledge-graph",
+      "kind": "action",
+      "source_refs": [
+        "extension/media/dashboard/48-graph-surface.js"
+      ],
+      "evidence_mode": "contained_host_interaction",
+      "probe": "render exact action class and every declared dataset variant; exercise validation, activation, and acknowledgement in a fresh contained state",
+      "effect": "read",
+      "requires_disposable_target": false,
+      "requires_fault_injection": true,
+      "requires_restart": false,
+      "requires_real_external_authority": false,
+      "state_role": "direct_control",
+      "activation_condition": {
+        "mode": "always",
+        "trigger": "the owning surface and declared action variant are loaded"
+      },
+      "stage_policy": {
+        "open_load": "required",
+        "display": "required",
+        "user_edit_action": "required",
+        "input_validation": "required",
+        "authorization": "required",
+        "backend_dispatch": "required",
+        "runtime_effect": "required",
+        "progress_reporting": "not_applicable_with_evidence",
+        "result_acknowledgement": "required",
+        "persistence": "not_applicable_with_evidence",
+        "reload_reopen": "not_applicable_with_evidence",
+        "failure_handling": "required",
+        "recovery_rollback": "not_applicable_with_evidence"
+      }
+    },
+    {
       "control_id": "pxui.knowledge-graph.action.graphCommunity.row",
       "surface_id": "knowledge-graph",
       "kind": "action",
@@ -14841,6 +14877,41 @@
         "persistence": "not_applicable_with_evidence",
         "reload_reopen": "not_applicable_with_evidence",
         "failure_handling": "not_applicable_with_evidence",
+        "recovery_rollback": "not_applicable_with_evidence"
+      }
+    },
+    {
+      "control_id": "pxui.knowledge-graph.action.graphFilterEdgeBundle",
+      "surface_id": "knowledge-graph",
+      "kind": "action",
+      "source_refs": [
+        "extension/media/dashboard/48-graph-surface.js"
+      ],
+      "evidence_mode": "contained_host_interaction",
+      "probe": "render exact action class and every declared dataset variant; exercise validation, activation, and acknowledgement in a fresh contained state",
+      "effect": "read",
+      "requires_disposable_target": false,
+      "requires_fault_injection": true,
+      "requires_restart": false,
+      "requires_real_external_authority": false,
+      "state_role": "direct_control",
+      "activation_condition": {
+        "mode": "always",
+        "trigger": "the owning surface and declared action variant are loaded"
+      },
+      "stage_policy": {
+        "open_load": "required",
+        "display": "required",
+        "user_edit_action": "required",
+        "input_validation": "required",
+        "authorization": "required",
+        "backend_dispatch": "required",
+        "runtime_effect": "required",
+        "progress_reporting": "not_applicable_with_evidence",
+        "result_acknowledgement": "required",
+        "persistence": "not_applicable_with_evidence",
+        "reload_reopen": "not_applicable_with_evidence",
+        "failure_handling": "required",
         "recovery_rollback": "not_applicable_with_evidence"
       }
     },
@@ -19672,6 +19743,7 @@
       "kind": "action",
       "source_refs": [
         "extension/media/dashboard/42-core-surfaces.js",
+        "extension/media/dashboard/45-system-surfaces.js",
         "extension/media/dashboard/48-graph-surface.js"
       ],
       "evidence_mode": "contained_host_interaction",
@@ -31690,6 +31762,41 @@
       }
     },
     {
+      "control_id": "pxui.workflows.action.executeEnvironmentLifecycleRestore",
+      "surface_id": "workflows",
+      "kind": "action",
+      "source_refs": [
+        "extension/media/dashboard/90-controller.js"
+      ],
+      "evidence_mode": "contained_host_interaction",
+      "probe": "render exact action class and every declared dataset variant; exercise validation, activation, and acknowledgement in a fresh contained state",
+      "effect": "filesystem-write",
+      "requires_disposable_target": true,
+      "requires_fault_injection": true,
+      "requires_restart": true,
+      "requires_real_external_authority": false,
+      "state_role": "direct_control",
+      "activation_condition": {
+        "mode": "always",
+        "trigger": "the owning surface and declared action variant are loaded"
+      },
+      "stage_policy": {
+        "open_load": "required",
+        "display": "required",
+        "user_edit_action": "required",
+        "input_validation": "required",
+        "authorization": "required",
+        "backend_dispatch": "required",
+        "runtime_effect": "required",
+        "progress_reporting": "not_applicable_with_evidence",
+        "result_acknowledgement": "required",
+        "persistence": "required",
+        "reload_reopen": "required",
+        "failure_handling": "required",
+        "recovery_rollback": "required"
+      }
+    },
+    {
       "control_id": "pxui.workflows.action.importCatalogDefinition.workflow",
       "surface_id": "workflows",
       "kind": "action",
@@ -31979,6 +32086,41 @@
     },
     {
       "control_id": "pxui.workflows.action.previewEnvironmentLifecycle",
+      "surface_id": "workflows",
+      "kind": "action",
+      "source_refs": [
+        "extension/media/dashboard/90-controller.js"
+      ],
+      "evidence_mode": "contained_host_interaction",
+      "probe": "render exact action class and every declared dataset variant; exercise validation, activation, and acknowledgement in a fresh contained state",
+      "effect": "read",
+      "requires_disposable_target": false,
+      "requires_fault_injection": true,
+      "requires_restart": false,
+      "requires_real_external_authority": false,
+      "state_role": "direct_control",
+      "activation_condition": {
+        "mode": "always",
+        "trigger": "the owning surface and declared action variant are loaded"
+      },
+      "stage_policy": {
+        "open_load": "required",
+        "display": "required",
+        "user_edit_action": "required",
+        "input_validation": "required",
+        "authorization": "required",
+        "backend_dispatch": "required",
+        "runtime_effect": "required",
+        "progress_reporting": "not_applicable_with_evidence",
+        "result_acknowledgement": "required",
+        "persistence": "not_applicable_with_evidence",
+        "reload_reopen": "not_applicable_with_evidence",
+        "failure_handling": "required",
+        "recovery_rollback": "not_applicable_with_evidence"
+      }
+    },
+    {
+      "control_id": "pxui.workflows.action.previewEnvironmentLifecycleRestore",
       "surface_id": "workflows",
       "kind": "action",
       "source_refs": [
@@ -34066,5 +34208,5 @@
       }
     }
   ],
-  "matrix_sha256": "2784d0c799c5ede53ec99a0d618c2d2d87ef4f33fc6b3d5e68fd92c96be08ddc"
+  "matrix_sha256": "c6d72524dada708f1e539ccf2d05d3c3704bd5fec96eebfa31e1bc6a4be25d76"
 }

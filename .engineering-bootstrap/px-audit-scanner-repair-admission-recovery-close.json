@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-audit-scanner-boundary-20260825",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022986",
+  "outcome": "superseded",
+  "reason": "The admission event appended, but Windows denied its snapshot publication and left the compact checkpoint stale before any admitted source effect began. Close this card while replaying the append-only ledger to restore a current checkpoint projection.",
+  "evidence": [
+    {
+      "reference": "evidence/adversarial-audit/second-adversarial-audit-20260825.json",
+      "artifact_sha256": "958ba20ad0d62baeabce3a8c14e51629f97ee0dae635f1905785aa6e08841fd0",
+      "artifact_size": 2653,
+      "claim": "The repair finding remains unchanged while the failed admission publication is reconciled."
+    }
+  ]
+}

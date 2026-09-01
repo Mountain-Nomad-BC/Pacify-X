@@ -2,9 +2,18 @@
   "name": "pacify-x-vscode",
   "displayName": "Pacify-X Control Plane",
   "description": "Governed operational dashboard and native VS Code control surface for Pacify-X.",
-  "version": "0.6.59",
+  "version": "0.6.64",
   "publisher": "mountain-nomad-bc",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Mountain-Nomad-BC/Pacify-X.git",
+    "directory": "extension"
+  },
+  "homepage": "https://github.com/Mountain-Nomad-BC/Pacify-X#readme",
+  "bugs": {
+    "url": "https://github.com/Mountain-Nomad-BC/Pacify-X/issues"
+  },
   "engines": {
     "vscode": "^1.132.0"
   },
@@ -394,8 +403,10 @@
     ]
   },
   "scripts": {
+    "build:plugin-fixtures": "node scripts/build-plugin-lifecycle-fixtures.js",
     "build:ui-actions": "node scripts/build-ui-action-inventory.js",
-    "check:ui-actions": "node scripts/build-ui-action-inventory.js --check",
+    "check:ui-actions": "node scripts/build-ui-action-inventory.js --check && node scripts/check-operational-control-owners.js",
+    "check:operational-owners": "node scripts/check-operational-control-owners.js",
     "check:ui-scaffold": "node --check media/dashboard/00-foundation.js && node --check media/dashboard/10-state.js && node --check media/dashboard/20-bridge.js && node --check media/dashboard/25-health-state.js && node --check media/dashboard/30-components.js && node --check media/dashboard/40-surfaces.js && node --check media/dashboard/42-core-surfaces.js && node --check media/dashboard/43-catalog-surfaces.js && node --check media/dashboard/44-operational-surfaces.js && node --check media/dashboard/45-system-surfaces.js && node --check media/dashboard/46-observability-surfaces.js && node --check media/dashboard/47-advanced-surfaces.js && node --check media/dashboard/49-studio-editors.js && node --check media/dashboard/48-graph-surface.js && node --check scripts/audit-dashboard-css.js && node scripts/audit-dashboard-css.js --check",
     "check": "npm run check:ui-actions && npm run check:ui-scaffold && node --check src/extension.js && node --check src/studioBootstrap.js && node --check src/studioPackage.js && node --check src/instrumentationSdk.js && node --check src/mcpActivityIntegration.js && node --check src/activityObservability.js && node --check src/canonicalEventPublisher.js && node --check src/healthState.js && node --check src/uiActionInventory.js && node --check src/workGovernor.js && node --check src/runtimeRevisions.js && node --check src/pxBridge.js && node --check src/sourceFingerprintWorker.js && node --check src/runtimeBridge.js && node --check src/contextBridge.js && node --check src/stateInvariants.js && node --check src/coordinationManager.js && node --check src/activityManager.js && node --check src/teamFabricManager.js && node --check src/teamFabricWorker.js && node --check src/enterpriseManager.js && node --check src/discoveryManager.js && node --check src/discoveryWorker.js && node --check src/environmentLifecycleManager.js && node --check src/cleanupManager.js && node --check src/ollamaProvider.js && node --check src/sidebarProjection.js && node --check src/sidebarMessages.js && node --check src/sidebarView.js && node --check media/sidebar.js && node --check media/dashboard/90-controller.js && node --check server/source.mjs && node --check scripts/build-mcp.js && node --check scripts/build-ui-action-inventory.js && node --check scripts/run-test-profile.js && node --check scripts/package-vsix.js && node --check scripts/owned-host-runner.js && node --check scripts/owned-vscode-test-cache.js && node --check scripts/run-vscode-host-smoke.js && node --check scripts/run-installed-vsix-smoke.js && node --check tests/vscode-host/index.js",
     "test:unit": "node scripts/run-test-profile.js unit",

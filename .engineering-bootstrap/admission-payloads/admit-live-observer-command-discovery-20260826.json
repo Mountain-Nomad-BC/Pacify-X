@@ -1,0 +1,31 @@
+{
+  "session_id": "repair-session:px-live-observer-command-discovery-20260826",
+  "gap_id": "PX-OS-1065",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000023318",
+  "authority": "User requested complete live Pacify-X operation before revision reconciliation and certification.",
+  "expected_effect": "Identify the exact admitted commands and evidence owners for fresh local-model, package-environment, extension-host/listener, and current-source Studio operational observations without refreshing or mutating those observations yet.",
+  "rollback": "Read-only command discovery creates no product rollback requirement; close before running live observers, writing receipts, changing services, or advancing processing order.",
+  "expires_utc": "2026-09-05T22:00:00Z",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": [
+        "Inspect runtime CLI registrations, scripts, focused tests, existing current-source Studio walk receipts, health taxonomy/coverage registries, and retained admission examples only to identify exact commands for extension.vscode-listener, provider.local-model, runtime.package-environment, and Studio edit-save-reopen operational observation."
+      ]
+    },
+    {
+      "effect": "execute",
+      "scope": [
+        "Run only CLI help, bounded source searches, and compact JSON metadata projections needed to identify live observer commands and their mutation/evidence boundaries. Do not run the observers, mutate services or receipts, test, refresh projections, advance processing order, package, install, use Git/GitHub, or certify."
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "reference": "evidence/adversarial-audit/current-environment-repair-closure-20260826.json",
+      "artifact_sha256": "35be49772bc1001a03a3ea0416748348eb23f94d8a2c9e1db8d9b87573f2d935",
+      "artifact_size": 3535,
+      "claim": "Identifies the three stale real-observer routes and defers installed-host proof to the ordered phase."
+    }
+  ]
+}

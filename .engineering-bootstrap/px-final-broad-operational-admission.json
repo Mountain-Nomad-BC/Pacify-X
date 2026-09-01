@@ -1,0 +1,43 @@
+{
+  "session_id": "repair-session:px-final-broad-current-source-20260825",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022968",
+  "gap_id": "PX-OS-1065",
+  "authority": "User requested complete Pacify-X operational repair before testing and certification and authorized reversible repository operations.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": [
+        "Inspect extension/scripts/run-isolated-current-source-walk.js launch options, scripts/assemble_operational_control_evidence.py usage, the current 0.6.57 assembled predecessor, r6 Studio lifecycle receipt, final Settings receipt, and the active PX-OS-1065 evidence requirements only."
+      ]
+    },
+    {
+      "effect": "write",
+      "scope": [
+        "Write one uniquely named owned broad current-source operational campaign and host report, one uniquely named source-bound assembled operational-control artifact, and append exact campaign and ledger evidence events. Do not modify product source in this session; checkpoint and expand scope if the broad campaign exposes a causal defect."
+      ]
+    },
+    {
+      "effect": "execute",
+      "scope": [
+        "Run exactly one broad owned disposable current-source operational UI campaign and exactly one source-bound operational-control evidence assembly, plus focused integrity checks required by those owners. Do not run section gates, full profile, validate, package, install, deploy, publish, merge, or certify."
+      ]
+    }
+  ],
+  "expected_effect": "Detect any remaining cross-surface current-source operational failure once and produce a source-bound 929-control assembly suitable for the repair-freeze decision without entering release testing.",
+  "rollback": "Reclaim only the registered owned disposable host workspace after verified process closure; retain the append-only campaign, assembly, and failure evidence, and do not erase prior receipts.",
+  "expires_utc": "2026-08-26T12:00:00Z",
+  "evidence": [
+    {
+      "reference": "evidence/operational-ui-walk-current-source-final-lifecycle-r6-20260825/receipt.json",
+      "artifact_sha256": "8ea0d0f710320a04707c744e09ac5694e2e7240db9a13ce83219cd896f338fa3",
+      "artifact_size": 4876023,
+      "claim": "Fresh focused lifecycle evidence to be reconciled with the broad campaign."
+    },
+    {
+      "reference": "evidence/current-source-settings-inspect-metric-20260825.json",
+      "artifact_sha256": "18384ae8f5864807393ed3570ef53a452d623e8792006b339227de7c6c288a5f",
+      "artifact_size": 2701610,
+      "claim": "Fresh focused Settings evidence to be reconciled with the broad campaign."
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "gap_id": "PX-OS-1065",
+  "session_id": "repair-session:px-broad-operational-closure-20260825",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000022969",
+  "outcome": "superseded",
+  "reason": "Its initial broad attempt exposed the Windows lock-copy defect and was replaced by the exact repair session and successful r2 campaign; remaining evidence assembly requires a fresh checkpoint bound to r2.",
+  "evidence": [
+    {
+      "reference": "evidence/operational-ui-walk-installed-vsix-0.6.59-broad-r1-host.json",
+      "artifact_sha256": "893de6dd5d33243d57eb6c7d43393e8f57d5f4635e798cf30a989711de9e0349",
+      "artifact_size": 3778,
+      "claim": "The failed initial attempt was retained and causally resolved by the narrower lock-filter repair."
+    },
+    {
+      "reference": "evidence/operational-ui-walk-installed-vsix-0.6.59-broad-r2/receipt.json",
+      "artifact_sha256": "cc8ccb4fc6fdc10dc3f24f601fcc5596e36b53cbfcdd7f3b9886093a59b0c33a",
+      "artifact_size": 9995449,
+      "claim": "The replacement broad campaign completed successfully."
+    }
+  ]
+}

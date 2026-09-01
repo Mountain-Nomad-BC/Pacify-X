@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.64
+
+- Keep normal VS Code confirmation dialogs modal while exposing equivalent interactable notifications inside the explicitly owned disposable operational-test host.
+- Correlate Knowledge Graph results to the latest retry request and retain request-bound terminal evidence.
+- Emit hard-bounded progress for the post-plugin baseline reset and Agent/Workflow builder inspections so the installed owner cannot disappear into an uninstrumented timeout.
+
 ## 0.6.52
 
 - Make extension bridge tests install and exercise the exact locked Python runtime on every CI platform.
