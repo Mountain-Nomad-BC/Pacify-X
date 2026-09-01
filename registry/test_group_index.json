@@ -2083,7 +2083,7 @@
         "shutil"
       ],
       "index_state": "verified",
-      "sha256": "67d95010af96b0cb8bcb529e7190b3bc26c9ea9580c9732bd4f6936bd0fd21d5"
+      "sha256": "18682c40de5d1ad04c2aa29cc591a929f512c08ae4880957db33c06c34fb01fa"
     },
     "runtime/release_campaign.py": {
       "imports": [
@@ -5963,13 +5963,14 @@
     "tests/test_release_boundary_diff.py": {
       "imports": [
         "pathlib",
+        "runtime.file_lock",
         "runtime.release_boundary",
         "runtime.release_preflight",
         "shutil",
         "tests.release_preflight_testkit"
       ],
       "index_state": "verified",
-      "sha256": "44e896c06d4adce6d14d61a561650b716a13ae5fd4b961d3894f82e535644860"
+      "sha256": "865861f3db640e7f06120019bce1259e3c3278f75fea0fffdc0c2fb34f2e570a"
     },
     "tests/test_release_certification.py": {
       "imports": [
@@ -6875,7 +6876,7 @@
       ],
       "description": "Serial exact-tool, installed-wheel, corrective-release, and full-repair-ledger certification tests.",
       "group": "exact-installed",
-      "input_sha256": "f8f3d8d5c7f644a3a192968c2a55e7e7a0fdff29a99aa2f135f1035e60980697",
+      "input_sha256": "d6193014a9dbc5bb0662678d0a6d23f189bd8bf9f125dff634337f1c47c0fd13",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -6959,7 +6960,7 @@
       ],
       "description": "Serial release, distribution, artifact, and revocation certification tests excluding composed audit mutations.",
       "group": "release-build",
-      "input_sha256": "c12883018e7dc6bdadb15945d8511cfb335991ebc9e61af56505ddcca7162721",
+      "input_sha256": "8352079e6df0fb8016d89ac91aff1f2e7e1ff8371dd95f526974206706b29627",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -7033,7 +7034,7 @@
       ],
       "description": "Serial composed-audit and quarantine-mutation tests isolated from package builds.",
       "group": "release-audit",
-      "input_sha256": "4b14ae683c97f911f6e3ff3c57e7ec2472f42182ec88d799e8bc00cd76c9791b",
+      "input_sha256": "7151c213a7ea130801e265a0fde83dd3af8dc261f77d6aeb3cfeb76bfe0a62a5",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -7079,7 +7080,7 @@
       ],
       "description": "Serial full-tree structural mutation tests isolated from derived-artifact checks.",
       "group": "structural-adversarial",
-      "input_sha256": "b4255d444557d2f5485ed2b3689260e95421c78f38c7861bb347a63c2bee1028",
+      "input_sha256": "c8f866386b66025efdcace33d6a7762b638e650ec5f2572f37b38907421c6105",
       "inputs": [
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_agents_md_generator.py",
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_change_impact.py",
@@ -8728,7 +8729,7 @@
       ],
       "description": "Final serial generated-output, completion-projection, portability, effect-surface, and punch-card integrity gate.",
       "group": "derived-integrity",
-      "input_sha256": "ea25a84089783a39dd46bd00c2bee84605e2b333c49e574efba38d8aca1523be",
+      "input_sha256": "94fa484a20e5367d299670268509ff00ec74ad4f9287293c4767a2727aaf5bf3",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -9705,7 +9706,7 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin N through S; this lane reads or mutates shared canonical repository state.",
       "group": "core-n-s",
-      "input_sha256": "024d566df230e704e1ca6788081ca5996ec79e7aca4ee989a54ddfd880f9b026",
+      "input_sha256": "b41d612233d27138332003951b17f6bb70f3e4bef259f582dca9b3e8a3374eb2",
       "inputs": [
         "registry/test_profiles.json",
         "runtime/__init__.py",
