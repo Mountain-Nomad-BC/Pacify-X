@@ -9727,17 +9727,19 @@ function installedRuntimeSourceIdentityState(runtimeIdentity, currentSourceIdent
   const validHash = value => /^[a-f0-9]{64}$/.test(String(value || ''));
   const validRuntimeSide = value => value && typeof value === 'object'
     && typeof value.version === 'string' && value.version.length > 0
+    && validHash(value.package_sha256)
     && validHash(value.asset_sha256)
+    && Number.isSafeInteger(value.asset_file_count)
     && typeof value.asset_protocol === 'string' && value.asset_protocol.length > 0
     && typeof value.message_schema === 'string' && value.message_schema.length > 0;
   if (!validRuntimeSide(host) || !validRuntimeSide(source)) return 'unknown';
   if (runtimeIdentity.matches !== true) return runtimeIdentity.matches === false || (runtimeIdentity.mismatch_reasons || []).length ? 'mismatch' : 'unknown';
-  if (host.version !== source.version || host.asset_sha256 !== source.asset_sha256 || host.asset_protocol !== source.asset_protocol || host.message_schema !== source.message_schema) return 'mismatch';
+  if (host.version !== source.version || host.asset_sha256 !== source.asset_sha256 || host.asset_file_count !== source.asset_file_count || host.asset_protocol !== source.asset_protocol || host.message_schema !== source.message_schema) return 'mismatch';
   if (!currentSourceIdentity || !validHash(currentSourceIdentity.asset_sha256) || !validHash(currentSourceIdentity.package_sha256) || !Number.isSafeInteger(currentSourceIdentity.asset_file_count)) return 'unknown';
-  if (host.version !== currentSourceIdentity.version
-    || host.asset_sha256 !== currentSourceIdentity.asset_sha256
-    || host.package_sha256 !== currentSourceIdentity.package_sha256
-    || host.asset_file_count !== currentSourceIdentity.asset_file_count) return 'mismatch';
+  if (source.version !== currentSourceIdentity.version
+    || source.asset_sha256 !== currentSourceIdentity.asset_sha256
+    || source.package_sha256 !== currentSourceIdentity.package_sha256
+    || source.asset_file_count !== currentSourceIdentity.asset_file_count) return 'mismatch';
   return 'verified';
 }
 
@@ -9794,8 +9796,12 @@ function installedConsoleDiagnostic(message) {
     && /getLatestRawGalleryExtension[\s\S]*getLatestGalleryExtension/i.test(value)
     && /^vscode-file:\/\/vscode-app\/.+\/workbench\/workbench\.desktop\.main\.js$/i.test(sourceUrl);
   if (externalGalleryCancellation) return null;
-  if (value === 'Failed to load resource: the server responded with a status of 404 ()'
-    && sourceUrl === 'https://marketplace.visualstudio.com/_apis/public/gallery/vscode/mountain-nomad-bc/pacify-x-vscode/latest') return null;
+  const ownedUnpublishedMarketplaceLookup = value === 'Failed to load resource: the server responded with a status of 404 ()'
+    && [
+      'https://marketplace.visualstudio.com/_apis/public/gallery/vscode/mountain-nomad-bc/pacify-x-vscode/latest',
+      'https://marketplace.visualstudio.com/_apis/public/gallery/vscode/pacify-x-certification/pacify-x-installed-certifier/latest'
+    ].includes(sourceUrl);
+  if (ownedUnpublishedMarketplaceLookup) return null;
   return { source: 'console', context: sourceUrl ? `console:${sourceUrl}` : 'console:location-unavailable', source_url: sourceUrl || null, message: value };
 }
 

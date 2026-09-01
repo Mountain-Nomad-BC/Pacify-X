@@ -1030,6 +1030,9 @@ test('current-source host identity requires the typed runtime contract and exact
   const host = { ...current, schema_version: 'px.extension-host-identity/1.0', asset_protocol: 'px.sidebar.assets/1.0', message_schema: 'px.sidebar.messages/1.0' };
   const runtime = { schema_version: 'px.extension-runtime-identity/1.0', matches: true, host, source: { ...host }, mismatch_reasons: [] };
   assert.equal(installedRuntimeSourceIdentityState(runtime, current), 'verified');
+  const packagedHost = { ...host, package_sha256: 'a'.repeat(64) };
+  assert.equal(installedRuntimeSourceIdentityState({ ...runtime, host: packagedHost }, current), 'verified', 'the installed manifest intentionally points main at the generated bundle');
+  assert.equal(installedRuntimeSourceIdentityState({ ...runtime, host: packagedHost, source: { ...host, package_sha256: 'b'.repeat(64) } }, current), 'mismatch', 'the runtime source manifest must still bind the current raw source exactly');
   assert.equal(installedRuntimeSourceIdentityState({ ...runtime, matches: false, mismatch_reasons: ['host-assets-differ-from-source'] }, current), 'mismatch');
   assert.equal(installedRuntimeSourceIdentityState({ ...runtime, schema_version: 'substitute' }, current), 'unknown');
   assert.equal(installedRuntimeSourceIdentityState(runtime, { ...current, asset_sha256: 'f'.repeat(64) }), 'mismatch');
@@ -1298,7 +1301,7 @@ test('owned installed Studio setup accepts only the exact ready and succeeded re
   assert.match(identityProbe, /vscode\\\.mermaid-markdown-features[\s\S]*legacyToolReferenceFullNames[\s\S]*chatParticipantPrivate/);
   assert.match(identityProbe, /message\?\.location\?\.\(\)/);
   assert.match(identityProbe, /console:\$\{sourceUrl\}/);
-  assert.match(identityProbe, /value === 'Failed to load resource: the server responded with a status of 404 \(\)'[\s\S]*sourceUrl === 'https:\/\/marketplace\.visualstudio\.com\/_apis\/public\/gallery\/vscode\/mountain-nomad-bc\/pacify-x-vscode\/latest'/);
+  assert.match(identityProbe, /ownedUnpublishedMarketplaceLookup[\s\S]*mountain-nomad-bc\/pacify-x-vscode\/latest[\s\S]*pacify-x-certification\/pacify-x-installed-certifier\/latest[\s\S]*includes\(sourceUrl\)/);
   assert.match(identityProbe, /Cancelled:[\s\S]*Canceled:[\s\S]*getLatestRawGalleryExtension[\s\S]*getLatestGalleryExtension[\s\S]*workbench\\\/workbench\\\.desktop\\\.main\\\.js/);
   const launcher = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-isolated-current-source-walk.js'), 'utf8');
   assert.match(launcher, /path\.join\(config\.engineRoot, '\.px', 'owned-operational-prompts'\)[\s\S]*setup-studio\.marker[\s\S]*flag: 'wx'/);
