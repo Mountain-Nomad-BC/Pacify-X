@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.69
+
+- Make release packaging fail closed on a stale MCP bundle instead of regenerating a release-identity product input after identity application.
+
 ## 0.6.68
 
 - Preserve exact Studio trust-release proof identity in installed-host instrumentation.

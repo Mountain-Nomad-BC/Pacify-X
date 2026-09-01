@@ -2,7 +2,7 @@
   "name": "pacify-x-vscode",
   "displayName": "Pacify-X Control Plane",
   "description": "Governed operational dashboard and native VS Code control surface for Pacify-X.",
-  "version": "0.6.68",
+  "version": "0.6.69",
   "publisher": "mountain-nomad-bc",
   "license": "Apache-2.0",
   "repository": {
@@ -416,9 +416,10 @@
     "test:vscode-host": "node scripts/run-vscode-host-smoke.js",
     "measure:efficiency": "node scripts/measure-runtime-efficiency.js",
     "build:mcp": "node scripts/build-mcp.js",
+    "check:mcp": "node scripts/build-mcp.js --check",
     "probe:mcp-runtime": "node scripts/probe-mcp-runtime.js",
     "build": "npm run build:mcp && npm test",
-    "package": "npm run build && node scripts/package-vsix.js"
+    "package": "npm run check:mcp && npm test && node scripts/package-vsix.js"
   },
   "dependencies": {
     "@modelcontextprotocol/server": "2.0.0",

@@ -1053,6 +1053,10 @@ var require_coordinationManager = __commonJS({
         }
       };
     }
+    function workspacePathIdentity(value) {
+      const resolved = path2.resolve(value || "");
+      return process.platform === "win32" ? resolved.toLowerCase() : resolved;
+    }
     function defaultState(workspaceRoot2) {
       return {
         schema_version: SCHEMA_VERSION,
@@ -1140,7 +1144,7 @@ var require_coordinationManager = __commonJS({
         const evidence = quarantineCorruptAuthoritativeJson(paths, paths.state, raw, new Error("invalid-coordination-state-shape"));
         throw new Error(`coordination-authoritative-state-invalid:${evidence.fingerprint}:${evidence.receipt}`);
       }
-      if (path2.resolve(state.project.root || "") !== paths.workspace) {
+      if (workspacePathIdentity(state.project.root) !== workspacePathIdentity(paths.workspace)) {
         const evidence = quarantineCorruptAuthoritativeJson(paths, paths.state, raw, new Error("coordination-state-workspace-mismatch"));
         throw new Error(`coordination-authoritative-state-workspace-mismatch:${evidence.fingerprint}:${evidence.receipt}`);
       }
@@ -2506,11 +2510,18 @@ var require_processTree = __commonJS({
         let settled = false;
         let escalationTimer;
         let verifyTimer;
+        let killer = null;
         const finish = (value) => {
           if (settled) return;
           settled = true;
           clearTimeout(escalationTimer);
           clearTimeout(verifyTimer);
+          if (killer && killer.exitCode === null && killer.signalCode === null) {
+            try {
+              killer.kill();
+            } catch {
+            }
+          }
           resolve(value);
         };
         child?.once?.("close", () => finish(true));
@@ -2522,16 +2533,15 @@ var require_processTree = __commonJS({
         escalationTimer = setTimeout(() => {
           try {
             if (platform === "win32") {
-              const killer = spawn("taskkill", ["/pid", String(pid), "/t", "/f"], { windowsHide: true, shell: false, stdio: "ignore" });
+              killer = spawn("taskkill", ["/pid", String(pid), "/t", "/f"], { windowsHide: true, shell: false, stdio: "ignore" });
               killer.once?.("error", () => {
               });
+              killer.unref?.();
             } else kill(-pid, "SIGKILL");
           } catch {
           }
         }, graceMs);
         verifyTimer = setTimeout(() => finish(false), verifyMs);
-        escalationTimer.unref?.();
-        verifyTimer.unref?.();
       });
     }
     module2.exports = { processTreeSpawnOptions, terminateProcessTree, terminateProcessTreeAsync };
@@ -33041,7 +33051,7 @@ function readJsonFile(file2, fallback) {
     return fallback;
   }
 }
-var MCP_VERSION = "0.6.59";
+var MCP_VERSION = "0.6.69";
 function contextEnvelope() {
   const value = readJsonFile(process.env.PX_CONTEXT_PATH, {});
   return value?.envelope || value;

@@ -19,6 +19,12 @@ test('MCP build dependencies are pinned and the shipped server is bundled', () =
   assert.equal(pkg.devDependencies.esbuild, '0.28.2');
   assert.equal(fs.existsSync(path.join(root, 'server', 'index.js')), true);
   assert.match(pkg.scripts.package, /scripts\/package-vsix\.js/);
+  assert.match(pkg.scripts.package, /npm run check:mcp && npm test/);
+  assert.doesNotMatch(pkg.scripts.package, /npm run build(?:\s|&)/);
+  assert.equal(pkg.scripts['check:mcp'], 'node scripts/build-mcp.js --check');
+  const mcpBuilder = fs.readFileSync(path.join(root, 'scripts', 'build-mcp.js'), 'utf8');
+  assert.match(mcpBuilder, /write: !check/);
+  assert.match(mcpBuilder, /MCP bundle is stale/);
   const packager = fs.readFileSync(path.join(root, 'scripts', 'package-vsix.js'), 'utf8');
   assert.match(packager, /main: '\.\/src\/extension\.bundle\.js'/);
   assert.match(packager, /bundle: true/);
