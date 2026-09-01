@@ -61,6 +61,56 @@ test('owned native input client publishes one authenticated request and accepts 
   assert.deepEqual(request.correlation, { request_type: 'buildRepositoryGraph', request_id: 'host-request-7', action_label: 'Build graph' });
 });
 
+test('owned native approval can traverse into a trapped modal before Enter', async t => {
+  const value = fixture(t);
+  let serviced = false;
+  const proof = await requestOwnedNativeInput('Build graph', { type: 'buildRepositoryGraph' }, {
+    config: value.config,
+    focusTraversal: true,
+    timeoutMs: 1_000,
+    wait: async () => {
+      if (serviced) return;
+      const requestFile = fs.readdirSync(path.join(value.root, 'requests')).find(name => name.endsWith('.json'));
+      if (!requestFile) return;
+      serviced = true;
+      const request = JSON.parse(fs.readFileSync(path.join(value.root, 'requests', requestFile), 'utf8'));
+      assert.equal(request.key, 'tab-enter');
+      fs.writeFileSync(path.join(value.root, 'results', requestFile), `${JSON.stringify({
+        schema_version: 'px.owned-native-input-result/1.0', request_id: request.request_id, sequence: request.sequence,
+        status: 'sent', foreground_pid: 4300, foreground_hwnd: '993', owned_process: true, input_count: 4, focus_recovered: true,
+        observed_utc: new Date().toISOString()
+      })}\n`);
+    }
+  });
+  assert.equal(proof.key, 'tab-enter');
+  assert.equal(proof.input_count, 4);
+});
+
+test('owned native approval can traverse to the second semantic modal action', async t => {
+  const value = fixture(t);
+  let serviced = false;
+  const proof = await requestOwnedNativeInput('Build graph', { type: 'buildRepositoryGraph' }, {
+    config: value.config,
+    focusTraversalCount: 2,
+    timeoutMs: 1_000,
+    wait: async () => {
+      if (serviced) return;
+      const requestFile = fs.readdirSync(path.join(value.root, 'requests')).find(name => name.endsWith('.json'));
+      if (!requestFile) return;
+      serviced = true;
+      const request = JSON.parse(fs.readFileSync(path.join(value.root, 'requests', requestFile), 'utf8'));
+      assert.equal(request.key, 'tab-tab-enter');
+      fs.writeFileSync(path.join(value.root, 'results', requestFile), `${JSON.stringify({
+        schema_version: 'px.owned-native-input-result/1.0', request_id: request.request_id, sequence: request.sequence,
+        status: 'sent', foreground_pid: 4300, foreground_hwnd: '993', owned_process: true, input_count: 6, focus_recovered: true,
+        observed_utc: new Date().toISOString()
+      })}\n`);
+    }
+  });
+  assert.equal(proof.key, 'tab-tab-enter');
+  assert.equal(proof.input_count, 6);
+});
+
 test('owned native input proof fails closed on refusal, mismatch, or incomplete SendInput', () => {
   const request = { request_id: 'request', sequence: 4, action: 'approve', key: 'enter' };
   assert.throws(() => validateResult({ schema_version: 'px.owned-native-input-result/1.0', request_id: 'request', sequence: 4, status: 'refused', reason: 'foreground mismatch' }, request), /refused:foreground mismatch/);

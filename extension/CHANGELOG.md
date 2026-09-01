@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.65
+
+- Make owned native-dialog approval deterministic across notification and modal layouts without weakening normal-session confirmation boundaries.
+- Preserve the installed host across required workbench reloads and reconcile plugin lifecycle state against exact physical extension versions and VS Code tombstones.
+- Complete the exhaustive installed-host plugin install, update, uninstall, rollback, restart-reconstruction, and cleanup denominator with bounded failure handling.
+
 ## 0.6.64
 
 - Keep normal VS Code confirmation dialogs modal while exposing equivalent interactable notifications inside the explicitly owned disposable operational-test host.

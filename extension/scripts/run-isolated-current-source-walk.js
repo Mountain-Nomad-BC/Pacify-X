@@ -511,6 +511,7 @@ async function childMain(configPath) {
           PX_OWNED_VSCODE_HOST: '1',
           PX_OWNED_ENGINE_ROOT: config.engineRoot,
           PX_OWNED_VSCODE_WORKSPACE_ROOT: config.workspace,
+          PX_OWNED_VSCODE_EXTENSIONS_ROOT: config.extensions,
           ...(ownedExternalNetworkDeniedEnvironment() ? { PX_OWNED_EXTERNAL_NETWORK_DENIED: '1' } : {}),
           ...(config.knowledgeFixture ? {
             PX_OWNED_KNOWLEDGE_SOURCE_ID: config.knowledgeFixture.source_id,
@@ -828,7 +829,11 @@ function prepare(temporaryRoot, walkOutput, vsixPath = null, bootstrapOnly = fal
     nativeInputRoot: path.join(temporaryRoot, 'native-input'),
     nativeInputSecret: nativeInputRequired ? crypto.randomBytes(32).toString('hex') : null,
     postAuditLongRunning,
-    regularOperationalHost: !bootstrapOnly && !vsixPath,
+    // Operational walks must own a normal isolated host even when the product
+    // came from an exact VSIX. An extension-test host cannot survive the
+    // extension-host restart required to reconcile install/uninstall receipts.
+    // Bootstrap-only remains the sole extension-test-host campaign.
+    regularOperationalHost: !bootstrapOnly,
     vsixPath,
     vsixSha256: vsixPath ? sha256(vsixPath) : null
   };

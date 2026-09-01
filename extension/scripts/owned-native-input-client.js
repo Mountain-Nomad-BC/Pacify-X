@@ -49,6 +49,7 @@ function atomicJson(target, payload, fileSystem = fs) {
 }
 
 function validateResult(result, request) {
+  const expectedInputCount = request.key === 'tab-tab-enter' ? 6 : request.key === 'tab-enter' ? 4 : 2;
   if (result?.schema_version !== 'px.owned-native-input-result/1.0'
       || result.request_id !== request.request_id
       || result.sequence !== request.sequence
@@ -56,7 +57,7 @@ function validateResult(result, request) {
     throw new Error('owned-native-input-result-invalid');
   }
   if (result.status !== 'sent') throw new Error(`owned-native-input-refused:${String(result.reason || 'unknown').slice(0, 160)}`);
-  if (!Number.isSafeInteger(result.foreground_pid) || result.foreground_pid <= 0 || result.owned_process !== true || result.input_count !== 2 || typeof result.focus_recovered !== 'boolean') {
+  if (!Number.isSafeInteger(result.foreground_pid) || result.foreground_pid <= 0 || result.owned_process !== true || result.input_count !== expectedInputCount || typeof result.focus_recovered !== 'boolean') {
     throw new Error('owned-native-input-proof-invalid');
   }
   return Object.freeze({
@@ -69,7 +70,7 @@ function validateResult(result, request) {
     foreground_pid: result.foreground_pid,
     foreground_hwnd: String(result.foreground_hwnd || ''),
     owned_process: true,
-    input_count: 2,
+    input_count: expectedInputCount,
     focus_recovered: result.focus_recovered,
     observed_utc: String(result.observed_utc || '')
   });
@@ -84,7 +85,8 @@ async function requestOwnedNativeInput(label, outboundRequest, options = {}) {
   const requestType = String(outboundRequest?.type || '');
   if (!requestType) throw new Error('owned-native-input-correlation-missing');
   const action = label === 'Cancel' ? 'cancel' : 'approve';
-  const key = action === 'cancel' ? 'escape' : 'enter';
+  const traversalCount = Math.max(0, Math.min(2, Number(options.focusTraversalCount ?? (options.focusTraversal === true ? 1 : 0))));
+  const key = action === 'cancel' ? 'escape' : traversalCount === 2 ? 'tab-tab-enter' : traversalCount === 1 ? 'tab-enter' : 'enter';
   const maximumAttempts = Math.max(1, Math.min(2, Number(options.activationAttempts || 2)));
   let lastActivationRefusal = null;
   for (let attempt = 0; attempt < maximumAttempts; attempt += 1) {

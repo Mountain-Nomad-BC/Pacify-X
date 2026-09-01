@@ -121,6 +121,10 @@ class OwnedWindowsNativeInputTests(unittest.TestCase):
         request, now = self.request()
         config = {"secret": "a" * 64, "vscode_pid": 100}
         self.assertIs(MODULE.validate_request(request, config, 6, now), request)
+        focused = dict(request); focused["key"] = "tab-enter"
+        self.assertIs(MODULE.validate_request(focused, config, 6, now), focused)
+        second = dict(request); second["key"] = "tab-tab-enter"
+        self.assertIs(MODULE.validate_request(second, config, 6, now), second)
         for updates, message in [
             ({"secret": "b" * 64}, "authentication"),
             ({"sequence": 6}, "sequence stale"),

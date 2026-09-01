@@ -84,7 +84,7 @@ def validate_request(request: object, config: Mapping[str, object], last_sequenc
     if not REQUEST_ID.fullmatch(str(request.get("request_id", ""))):
         raise ValueError("request id invalid")
     action, key = request.get("action"), request.get("key")
-    if (action, key) not in {("cancel", "escape"), ("approve", "enter")}:
+    if (action, key) not in {("cancel", "escape"), ("approve", "enter"), ("approve", "tab-enter"), ("approve", "tab-tab-enter")}:
         raise ValueError("request action invalid")
     correlation = request.get("correlation")
     if not isinstance(correlation, dict) or not str(correlation.get("request_type", "")) or not str(correlation.get("action_label", "")):
@@ -236,15 +236,17 @@ class WindowsInput:
             self.kernel32.CloseHandle(handle)
 
     def send(self, key: str) -> int:
-        vk = {"escape": 0x1B, "enter": 0x0D}[key]
-        inputs = (_INPUT * 2)()
-        inputs[0].type = inputs[1].type = 1
-        inputs[0].ki = _KEYBDINPUT(vk, 0, 0, 0, None)
-        inputs[1].ki = _KEYBDINPUT(vk, 0, 0x0002, 0, None)
-        sent = int(self.user32.SendInput(2, inputs, sizeof(_INPUT)))
-        if sent != 2:
+        keys = (0x09, 0x09, 0x0D) if key == "tab-tab-enter" else (0x09, 0x0D) if key == "tab-enter" else ({"escape": 0x1B, "enter": 0x0D}[key],)
+        inputs = (_INPUT * (len(keys) * 2))()
+        for index, vk in enumerate(keys):
+            inputs[index * 2].type = inputs[index * 2 + 1].type = 1
+            inputs[index * 2].ki = _KEYBDINPUT(vk, 0, 0, 0, None)
+            inputs[index * 2 + 1].ki = _KEYBDINPUT(vk, 0, 0x0002, 0, None)
+        expected = len(inputs)
+        sent = int(self.user32.SendInput(expected, inputs, sizeof(_INPUT)))
+        if sent != expected:
             error = get_last_error()
-            raise OSError(error, f"SendInput incomplete:{sent}/2")
+            raise OSError(error, f"SendInput incomplete:{sent}/{expected}")
         return sent
 
 

@@ -349,7 +349,7 @@ test('focused native-dialog scheduling runs only the three exact confirmation pr
     const clause = source.slice(start, source.indexOf('\n', start));
     assert.match(clause, /focusedProfileOnly|hostBoundaryOnly/, `${profile} remains outside the native-dialog focus`);
   }
-  assert.match(source, /installedControlProbe = errorIndicatorsOnly/);
+  assert.match(source, /installedControlProbe = dashboardProfileBlocker[\s\S]*: errorIndicatorsOnly/);
   assert.match(source, /for \(const kind of focusedProfileOnly \? \[\] : \['agent', 'workflow'\]\)/);
 });
 
@@ -963,7 +963,7 @@ test('focused error-indicator scheduling probes exactly two identities and exclu
   assert.match(probe, /!controlIds \|\| controlIds\.has\(control\.control_id\)/);
   const schedulingStart = source.indexOf('const reversibleConfigurationProfile');
   const scheduling = source.slice(schedulingStart, source.indexOf('const engineOutageProfile', schedulingStart));
-  assert.match(scheduling, /installedControlProbe = errorIndicatorsOnly[\s\S]*timedProfile\('error-indicators'[\s\S]*ERROR_INDICATOR_CONTROL_IDS/);
+  assert.match(scheduling, /installedControlProbe = dashboardProfileBlocker[\s\S]*: errorIndicatorsOnly[\s\S]*timedProfile\('error-indicators'[\s\S]*ERROR_INDICATOR_CONTROL_IDS/);
   const studioChainClause = scheduling.slice(scheduling.indexOf('const studioChainAdmitted ='), scheduling.indexOf('\n', scheduling.indexOf('const studioChainAdmitted =')));
   assert.match(studioChainClause, /!errorIndicatorsOnly/);
   for (const profile of ['studioSetupProfile', 'studioCandidateSaveProfile', 'studioLifecycleProfile', 'studioRevisionEditProfile', 'knowledgeLifecycleProfile', 'learningLifecycleProfile']) {
@@ -1107,8 +1107,8 @@ test('R114 residual repair applies authoritative graph modes, owns exact navigat
   const probe = source.slice(source.indexOf('async function probeInstalledControls'), source.indexOf('function installedSidebarSelector'));
   assert.match(probe, /installedExactNavigationTransition\(control\)[\s\S]*exerciseInstalledExactNavigation/);
   const plugin = source.slice(source.indexOf('async function runInstalledPluginMutationProfile'), source.indexOf('function knowledgeLifecycleControlProbe'));
-  assert.match(plugin, /requiresWorkbenchReconstruction = receiptPending \|\| spec\.receiptAction === 'uninstall'/);
-  assert.match(plugin, /restartOwnedWorkbenchWindow\(workbench, frameHost, 60_000\)/);
+  assert.match(plugin, /requiresWorkbenchReconstruction = receiptPending/);
+  assert.match(plugin, /restartOwnedWorkbenchWindow\(workbench, frameHost, 75_000, \{[\s\S]*conflictSafeReconstruction: true[\s\S]*physicalExtensionId: extensionId[\s\S]*expectedPhysicalVersion: spec\.expectedVersion/);
 });
 
 test('R115 final mechanics stay in the content realm and settle physical graph predecessors', () => {
@@ -1224,8 +1224,10 @@ test('owned installed Studio setup accepts only the exact ready and succeeded re
   const nativeAction = source.slice(source.indexOf('async function clickNativeWorkbenchDialogAction'), source.indexOf('async function clickNativeStudioSetupAction'));
   assert.match(nativeAction, /owned-native-workbench-action-not-admitted/);
   assert.match(source, /NATIVE_WORKBENCH_ACTION_SELECTOR = '[^']*\.monaco-text-button/);
+  assert.doesNotMatch(source, /NATIVE_WORKBENCH_ACTION_SELECTOR = '[^']*tabindex/);
   assert.match(nativeAction, /label === 'Cancel'[\s\S]*keyboard\.press\('Escape'\)/);
-  assert.match(nativeAction, /OWNED_NATIVE_WORKBENCH_ACTIONS\.has\(label\)[\s\S]*keyboard\.press\('Enter'\)/);
+  assert.match(nativeAction, /exactActionTabCount = await candidate\.evaluate[\s\S]*element\.closest\('\.monaco-dialog-box, \.dialog-container, \[role="dialog"\]'\)[\s\S]*candidate\.evaluate\(element => element\.click\(\)[\s\S]*candidate\.focus\([\s\S]*domActionFocused = await candidate\.evaluate[\s\S]*OWNED_NATIVE_WORKBENCH_ACTIONS\.has\(label\)[\s\S]*nativeWorkbenchRequestFallbackAdmitted\(request, label[\s\S]*owned-native-workbench-exact-action-focus-unproven[\s\S]*focusTraversalCount: domActionFocused \? 0 : exactActionTabCount/);
+  assert.doesNotMatch(nativeAction, /OWNED_NATIVE_WORKBENCH_ACTIONS\.has\(label\)[\s\S]*keyboard\.press\('Enter'\)/);
   assert.match(source, /'Set up and run'[\s\S]*'Authorize native install'[\s\S]*'Authorize conflict route'/);
   const setupWait = source.slice(source.indexOf('async function waitForStudioSetupAction'), source.indexOf('async function runInstalledStudioSetupProfile'));
   assert.match(setupWait, /Date\.now\(\) \+ timeoutMs/);
@@ -1755,10 +1757,11 @@ test('native workbench keyboard fallback requires an exact newly captured outbou
   assert.match(helper, /requestObservedAt \?\?= Date\.now\(\)[\s\S]*Date\.now\(\) - requestObservedAt >= 750[\s\S]*__px_owned_native_keyboard_only: true/);
   assert.match(helper, /else requestObservedAt = null/);
   assert.match(helper, /dialog\?\.__px_owned_native_keyboard_only === true[\s\S]*findInstalledOutboundRequest\(dialog\.frame_host, dialog\.request_offset, dialog\.request_type\)[\s\S]*owned-native-workbench-keyboard-fallback-not-admitted/);
-  assert.match(helper, /requestOwnedNativeInput\(label, request\)/);
-  assert.match(helper, /workbench\.bringToFront\(\)[\s\S]*wait\(100\)[\s\S]*requestOwnedNativeInput\(label, request\)/);
+  assert.match(helper, /requestOwnedNativeInput\(label, request, \{ focusTraversal: label !== 'Cancel' \}\)/);
+  assert.match(helper, /workbench\.bringToFront\(\)[\s\S]*wait\(100\)[\s\S]*requestOwnedNativeInput\(label, request, \{ focusTraversal: label !== 'Cancel' \}\)/);
   assert.doesNotMatch(helper, /keyboard\.press\(label === 'Cancel'/);
   assert.match(helper, /findNativeWorkbenchDialog\(workbench, expected\)[\s\S]*visibleNativeWorkbenchModalBlockerCount\(workbench\) === 0[\s\S]*owned-native-workbench-dialog-recovery-timeout/);
+  assert.match(helper, /label === 'Cancel'[\s\S]*candidate\.click[\s\S]*candidate\.evaluate\(element => element\.click\(\)[\s\S]*dismissalDeadline[\s\S]*keyboard\.press\('Enter'\)[\s\S]*rendererEnterDeadline[\s\S]*candidate\.focus[\s\S]*nativeWorkbenchRequestFallbackAdmitted\(request, label[\s\S]*exact-action-focus-unproven/);
 
   const enterprise = source.slice(source.indexOf('async function runInstalledEnterpriseProfile'), source.indexOf('const INSTALLED_VALIDATION_CONTROL_IDS'));
   assert.match(enterprise, /responseOffset: beforeCancel, requestOffset: requestBeforeCancel, requestType: 'enterprisePackToggle', keyboardAction: 'Cancel'/);
@@ -2120,7 +2123,10 @@ test('owned Plugin mutation profile requires exact reconciled receipts and compl
   const projects = walkerSource.slice(walkerSource.indexOf('async function runInstalledProjectsProfile'), walkerSource.indexOf('function graphProjectionIdentity'));
   assert.match(projects, /const refreshBefore[\s\S]*data-action="refresh"[\s\S]*\.slice\(after\)/);
   const plugin = walkerSource.slice(walkerSource.indexOf('async function runInstalledPluginMutationProfile'), walkerSource.indexOf('function knowledgeLifecycleControlProbe'));
-  assert.match(plugin, /receiptPending[\s\S]*restartOwnedWorkbenchWindow[\s\S]*restartInstalledDashboardWebview[\s\S]*currentVersion[\s\S]*physicallyReconciled/);
+  assert.match(plugin, /receiptPending[\s\S]*requiresWorkbenchReconstruction = receiptPending[\s\S]*restartOwnedWorkbenchWindow\(workbench, frameHost, 75_000, \{[\s\S]*physicalExtensionId: extensionId[\s\S]*expectedPhysicalVersion: spec\.expectedVersion[\s\S]*currentVersion[\s\S]*physicallyReconciled/);
+  assert.match(walkerSource, /conflictSafeReconstruction === true[\s\S]*Pacify-X: Open Storage & Cleanup Manager/);
+  assert.match(walkerSource, /waitForOwnedPhysicalExtensionVersion\(options\.physicalExtensionId, options\.expectedPhysicalVersion/);
+  assert.match(walkerSource, /const obsoletePath = path\.join\(ownedExtensionsRoot, '\.obsolete'\)[\s\S]*obsolete\[entry\.name\] === true/);
   const currentVersion = plugin.slice(plugin.indexOf('const currentVersion'), plugin.indexOf('const mutate'));
   assert.match(currentVersion, /pluginRoutes[\s\S]*classList\.contains\('nav-item'\)[\s\S]*route\.click\(\)/);
   assert.match(currentVersion, /refreshedRendered[\s\S]*aria-current[\s\S]*control\.click\(\)/);

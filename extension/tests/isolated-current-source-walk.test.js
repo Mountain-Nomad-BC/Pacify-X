@@ -518,15 +518,15 @@ test('launcher exposes an exact Studio-only mode without claiming full completio
   assert.match(source, /focusedProfile = configurationOnly \? 'reversible-configuration' : studioLifecycleOnly \? 'studio-lifecycle'/);
   assert.match(source, /focused-\$\{focusedProfile\}-walk/);
   assert.match(source, /full_operational_completion_claimed: focusedProfile \? false/);
-  assert.match(source, /regularOperationalHost: !bootstrapOnly && !vsixPath/);
+  assert.match(source, /regularOperationalHost: !bootstrapOnly/);
   assert.match(source, /!regularOperationalHost \? \[`--extensionTestsPath=\$\{bootstrapPath\}`\] : \[\]/);
   assert.match(source, /status: 'deferred-to-operational-walker'/);
   assert.match(source, /test_mode: false/);
 });
 
-test('bootstrap-only and installed artifact harnesses retain extension test bootstrap mode', () => {
+test('only bootstrap-only retains extension test bootstrap mode', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-isolated-current-source-walk.js'), 'utf8');
-  assert.match(source, /regularOperationalHost: !bootstrapOnly && !vsixPath/);
+  assert.match(source, /regularOperationalHost: !bootstrapOnly/);
   assert.match(source, /if \(regularOperationalHost\)[\s\S]*deferred-to-operational-walker[\s\S]*else \{[\s\S]*waitForJsonFile\(config\.bootstrapReceipt, vscode\)/);
   assert.match(source, /assert\.equal\(lifecycle\.bootstrap\.command_executed, true/);
 });

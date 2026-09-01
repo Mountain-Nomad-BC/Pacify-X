@@ -448,6 +448,10 @@ const ownedWorkspaceRootValue = String(process.env.PX_OWNED_VSCODE_WORKSPACE_ROO
 const ownedWorkspaceRoot = ownedReversibleConfigurationAuthority && ownedWorkspaceRootValue
   ? path.resolve(ownedWorkspaceRootValue)
   : '';
+const ownedExtensionsRootValue = String(process.env.PX_OWNED_VSCODE_EXTENSIONS_ROOT || '').trim();
+const ownedExtensionsRoot = ownedReversibleConfigurationAuthority && ownedExtensionsRootValue
+  ? path.resolve(ownedExtensionsRootValue)
+  : '';
 const configurationOnly = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_CONFIGURATION_ONLY === '1';
 const studioLifecycleOnly = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_STUDIO_LIFECYCLE_ONLY === '1';
 const knowledgeLifecycleOnly = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_KNOWLEDGE_LIFECYCLE_ONLY === '1';
@@ -2599,6 +2603,50 @@ function ownedWorkbenchReloadIdentity(beforeTimeOrigin, afterTimeOrigin, workben
     && workbenchReady === true;
 }
 
+function ownedPhysicalExtensionVersion(extensionId) {
+  if (!ownedExtensionsRoot || !path.isAbsolute(ownedExtensionsRoot) || !fs.existsSync(ownedExtensionsRoot)) {
+    throw new Error('owned-extensions-root-unavailable');
+  }
+  let obsolete = {};
+  const obsoletePath = path.join(ownedExtensionsRoot, '.obsolete');
+  if (fs.existsSync(obsoletePath)) {
+    try {
+      const parsed = JSON.parse(fs.readFileSync(obsoletePath, 'utf8'));
+      if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) throw new Error('not-an-object');
+      obsolete = parsed;
+    } catch (error) {
+      throw new Error(`owned-extensions-obsolete-ledger-invalid:${String(error?.message || error).slice(0, 300)}`);
+    }
+  }
+  const versions = [];
+  for (const entry of fs.readdirSync(ownedExtensionsRoot, { withFileTypes: true })) {
+    if (!entry.isDirectory() || entry.isSymbolicLink()) continue;
+    if (obsolete[entry.name] === true) continue;
+    const manifestPath = path.join(ownedExtensionsRoot, entry.name, 'package.json');
+    if (!fs.existsSync(manifestPath)) continue;
+    try {
+      const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+      if (`${String(manifest.publisher || '').toLowerCase()}.${String(manifest.name || '').toLowerCase()}` === extensionId.toLowerCase()) {
+        versions.push(String(manifest.version || ''));
+      }
+    } catch { /* malformed unrelated extension directories are not owners */ }
+  }
+  const unique = [...new Set(versions.filter(Boolean))];
+  if (unique.length > 1) throw new Error(`owned-physical-extension-ambiguous:${extensionId}:${unique.join(',')}`);
+  return unique[0] || null;
+}
+
+async function waitForOwnedPhysicalExtensionVersion(extensionId, expectedVersion, timeoutMs = 20_000) {
+  const deadline = Date.now() + timeoutMs;
+  let observed = null;
+  do {
+    observed = ownedPhysicalExtensionVersion(extensionId);
+    if (observed === expectedVersion) return observed;
+    await wait(100);
+  } while (Date.now() < deadline);
+  throw new Error(`owned-physical-extension-version-timeout:${JSON.stringify({ extension_id: extensionId, expected: expectedVersion, observed })}`);
+}
+
 async function closeOwnedDashboardTabs(workbench, timeoutMs = 15_000) {
   const deadline = Date.now() + timeoutMs;
   const tabs = workbench.locator('[role="tab"]', { hasText: /PX.*Control Plane/i });
@@ -2622,7 +2670,7 @@ async function closeOwnedDashboardTabs(workbench, timeoutMs = 15_000) {
   throw new Error('owned-dashboard-restored-tab-close-timeout');
 }
 
-async function restartOwnedWorkbenchWindow(workbench, frameHost, timeoutMs = 60_000) {
+async function restartOwnedWorkbenchWindow(workbench, frameHost, timeoutMs = 60_000, options = {}) {
   const beforeTimeOrigin = await workbench.evaluate(() => Number(performance.timeOrigin || 0));
   await executeWorkbenchCommand(workbench, 'Developer: Reload Window');
   const deadline = Date.now() + timeoutMs;
@@ -2647,8 +2695,16 @@ async function restartOwnedWorkbenchWindow(workbench, frameHost, timeoutMs = 60_
   if (!ownedWorkbenchReloadIdentity(beforeTimeOrigin, afterTimeOrigin, workbenchReady)) {
     throw new Error(`owned-workbench-reload-unobserved:${JSON.stringify({ before_time_origin: beforeTimeOrigin, after_time_origin: afterTimeOrigin, workbench_ready: workbenchReady })}`);
   }
-  const restoredDashboardTabsClosed = await closeOwnedDashboardTabs(workbench, Math.max(1, Math.min(15_000, deadline - Date.now())));
-  await executeWorkbenchCommand(workbench, INSTALLED_SAFE_WORKBENCH_COMMANDS['pxui.dashboard-control-plane.command.pacifyX.openDashboard'].title);
+  if (options.physicalExtensionId) {
+    await waitForOwnedPhysicalExtensionVersion(options.physicalExtensionId, options.expectedPhysicalVersion ?? null, Math.max(1, Math.min(20_000, deadline - Date.now())));
+    await wait(500);
+  }
+  let restoredDashboardTabsClosed = 0;
+  restoredDashboardTabsClosed = await closeOwnedDashboardTabs(workbench, Math.max(1, Math.min(15_000, deadline - Date.now())));
+  const reconstructionCommand = options.conflictSafeReconstruction === true
+    ? 'Pacify-X: Open Storage & Cleanup Manager'
+    : INSTALLED_SAFE_WORKBENCH_COMMANDS['pxui.dashboard-control-plane.command.pacifyX.openDashboard'].title;
+  await executeWorkbenchCommand(workbench, reconstructionCommand);
   const remaining = deadline - Date.now();
   if (remaining <= 0) throw new Error('owned-workbench-reload-dashboard-reconstruction-budget-exhausted');
   const reopened = await reopenPacifyDashboardFromOwnedUi(workbench, frameHost, remaining);
@@ -2657,6 +2713,7 @@ async function restartOwnedWorkbenchWindow(workbench, frameHost, timeoutMs = 60_
     restarted: true,
     reconstructed: true,
     restored_dashboard_tabs_closed: restoredDashboardTabsClosed,
+    conflict_safe_reconstruction: options.conflictSafeReconstruction === true,
     before_time_origin: beforeTimeOrigin,
     after_time_origin: afterTimeOrigin
   };
@@ -5361,7 +5418,7 @@ async function waitForNativeStudioSetupDialog(workbench, frameHost, responseOffs
 }
 
 const NATIVE_WORKBENCH_DIALOG_SELECTOR = '.monaco-dialog-box:visible, .dialog-container:visible, [role="dialog"]:visible';
-const NATIVE_WORKBENCH_ACTION_SELECTOR = 'button, [role="button"], .monaco-button, .monaco-text-button, [tabindex="0"]';
+const NATIVE_WORKBENCH_ACTION_SELECTOR = 'button, [role="button"], .monaco-button, .monaco-text-button';
 const NATIVE_WORKBENCH_MODAL_BLOCKER_SELECTOR = '.monaco-modal-editor-block:visible';
 const OWNED_NATIVE_WORKBENCH_ACTIONS = new Set([
   'Set up and run', 'Build graph', 'Enable offline metadata', 'Disable pack metadata', 'Stage candidates',
@@ -5485,7 +5542,15 @@ async function waitForNativeWorkbenchDialog(workbench, expected, timeoutMs = 15_
   let requestObservedAt = null;
   do {
     const dialog = await findNativeWorkbenchDialog(workbench, expected);
-    if (dialog) return dialog;
+    if (dialog) {
+      // Preserve request correlation even for a discoverable Electron dialog.
+      // Its DOM click can resolve without actuating the native button.
+      dialog.__px_owned_native_keyboard_only = false;
+      dialog.request_type = diagnostics.requestType;
+      dialog.request_offset = diagnostics.requestOffset;
+      dialog.frame_host = diagnostics.frameHost;
+      return dialog;
+    }
     const blockerCount = await visibleNativeWorkbenchModalBlockerCount(workbench);
     const request = await findInstalledOutboundRequest(diagnostics.frameHost, diagnostics.requestOffset, diagnostics.requestType);
     if (ownedReversibleConfigurationAuthority && nativeWorkbenchRequestFallbackAdmitted(request, diagnostics.keyboardAction, diagnostics.requestType)) {
@@ -5537,29 +5602,78 @@ async function clickNativeWorkbenchDialogAction(workbench, dialog, label) {
     }
     await workbench.bringToFront();
     await wait(100);
-    const proof = await requestOwnedNativeInput(label, request);
+    // Request-only fallback means Playwright proved the exact PX request but
+    // could not address the modal DOM. Restoring the owned window foreground
+    // alone does not restore the modal's internal focus on Windows, so traverse
+    // once into its trapped button row before approval. Cancellation remains a
+    // single Escape and never changes the focused action.
+    const proof = await requestOwnedNativeInput(label, request, { focusTraversal: label !== 'Cancel' });
     nativeInputEvidence.push(proof);
     return true;
   }
   const actionSelector = NATIVE_WORKBENCH_ACTION_SELECTOR;
   const exact = new RegExp(`^\\s*${String(label).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*$`);
+  let domActionAttempted = false;
+  let domActionFocused = false;
+  let exactActionTabCount = 0;
   for (const scope of [dialog, workbench]) {
     const candidates = scope.locator(actionSelector).filter({ hasText: exact });
     const count = await candidates.count().catch(() => 0);
     for (let index = count - 1; index >= 0; index -= 1) {
       const candidate = candidates.nth(index);
       if (!await candidate.isVisible().catch(() => false)) continue;
-      await candidate.click({ timeout: 3_000 });
-      return true;
+      domActionAttempted = true;
+      exactActionTabCount = await candidate.evaluate((element, input) => {
+        const normalize = value => String(value || '').replace(/\s+/g, ' ').trim();
+        const container = element.closest('.monaco-dialog-box, .dialog-container, [role="dialog"]') || element.parentElement;
+        if (!container) return 0;
+        const actions = [...container.querySelectorAll(input.selector)]
+          .filter(node => node.offsetWidth || node.offsetHeight || node.getClientRects().length);
+        const indices = actions.map((node, position) => normalize(node.innerText || node.textContent || node.getAttribute('aria-label')) === input.label ? position : -1)
+          .filter(position => position >= 0);
+        return indices.length === 1 && indices[0] < 2 ? indices[0] + 1 : 0;
+      }, { selector: actionSelector, label: String(label).trim() }, { timeout: 2_000 }).catch(() => 0);
+      if (label === 'Cancel') {
+        await candidate.click({ timeout: 3_000 });
+      } else {
+        await candidate.evaluate(element => element.click(), undefined, { timeout: 2_000 });
+      }
+      const dismissalDeadline = Date.now() + 750;
+      do {
+        if (!await dialog.isVisible().catch(() => false) && await visibleNativeWorkbenchModalBlockerCount(workbench) === 0) return true;
+        await wait(50);
+      } while (Date.now() < dismissalDeadline);
+      if (label !== 'Cancel') {
+        await workbench.keyboard.press('Enter');
+        const rendererEnterDeadline = Date.now() + 750;
+        do {
+          if (!await dialog.isVisible().catch(() => false) && await visibleNativeWorkbenchModalBlockerCount(workbench) === 0) return true;
+          await wait(50);
+        } while (Date.now() < rendererEnterDeadline);
+      }
+      if (label !== 'Cancel' && !domActionFocused) {
+        await candidate.focus({ timeout: 2_000 }).catch(() => {});
+        domActionFocused = await candidate.evaluate(element => element === document.activeElement || element.contains(document.activeElement)).catch(() => false);
+      }
+      break;
     }
+    if (domActionAttempted) break;
   }
   if (label === 'Cancel') {
     await workbench.keyboard.press('Escape');
     return true;
   }
   if (OWNED_NATIVE_WORKBENCH_ACTIONS.has(label)) {
-    await workbench.keyboard.press('Enter');
-    return true;
+    const request = await findInstalledOutboundRequest(dialog?.frame_host, dialog?.request_offset, dialog?.request_type);
+    if (ownedReversibleConfigurationAuthority && nativeWorkbenchRequestFallbackAdmitted(request, label, dialog?.request_type)) {
+      if (!domActionFocused && exactActionTabCount === 0) throw new Error(`owned-native-workbench-exact-action-focus-unproven:${String(label).slice(0, 300)}:${dialog?.request_type || ''}`);
+      await workbench.bringToFront();
+      await wait(100);
+      const proof = await requestOwnedNativeInput(label, request, { focusTraversalCount: domActionFocused ? 0 : exactActionTabCount });
+      nativeInputEvidence.push(proof);
+      return true;
+    }
+    throw new Error(`owned-native-workbench-dom-action-inert:${String(label).slice(0, 300)}:${dialog?.request_type || ''}`);
   }
   throw new Error(`owned-native-workbench-action-not-admitted:${String(label).slice(0, 300)}`);
 }
@@ -8728,9 +8842,16 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
     const receiptPending = validPendingPluginMutationReceipt(spec.receiptAction, result, extensionId, spec.exactTarget);
     if (!receiptComplete && !receiptPending) throw new Error(`plugin-${spec.name}-receipt-invalid:${JSON.stringify(result)}`);
     await frameHost.evaluate(frame => frame.contentDocument?.querySelector('[data-action="closeModal"]')?.click()).catch(() => {});
-    const requiresWorkbenchReconstruction = receiptPending || spec.receiptAction === 'uninstall';
+    // Pending receipts require a full workbench reload to invalidate VS Code's
+    // extension inventory cache. Installed operational walks use a normal owned
+    // host, so this cannot terminate an extension-test runner.
+    const requiresWorkbenchReconstruction = receiptPending;
     const restart = requiresWorkbenchReconstruction
-      ? await restartOwnedWorkbenchWindow(workbench, frameHost, 60_000)
+      ? await restartOwnedWorkbenchWindow(workbench, frameHost, 75_000, {
+          conflictSafeReconstruction: true,
+          physicalExtensionId: extensionId,
+          expectedPhysicalVersion: spec.expectedVersion
+        })
       : await restartInstalledDashboardWebview(frameHost, 45_000);
     if (restart.restarted !== true || restart.reconstructed !== true) throw new Error(`plugin-${spec.name}-host-reconstruction-unobserved`);
     observation.webview_restart_count += 1;
@@ -9932,6 +10053,7 @@ async function main() {
     const pluginMutationProfile = ownedReversibleConfigurationAuthority && (!focusedProfileOnly || nativeDialogOnly)
       ? await timedProfile('plugin-local-lifecycle', () => runInstalledPluginMutationProfile(workbench, dashboard, proofMatrix))
       : { schema_version: 'px.installed-plugin-mutation-profile/1.0', authority: 'Not admitted outside a full owned disposable VS Code extension profile.', observation: { attempted: false, completed: false, errors: [] }, control_probe: { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside a full owned disposable VS Code extension profile.', eligible_control_count: 0, records: [] } };
+    if (returnedProfileErrors(pluginMutationProfile).length) dashboardProfileBlocker = 'plugin-local-lifecycle';
     // Builder inspection uses shared webview working-draft state. Run it only
     // after every state-producing profile has established and verified its
     // negative/positive denominators, but before the general probe aggregates
@@ -9977,7 +10099,9 @@ async function main() {
     // the disposable catalog, run, and revision state required for dynamic
     // controls to exist; probing first permanently misclassified those
     // controls as not rendered within the same campaign.
-    const installedControlProbe = errorIndicatorsOnly
+    const installedControlProbe = dashboardProfileBlocker
+      ? { schema_version: 'px.installed-operational-control-probe/1.0', authority: `Skipped because ${dashboardProfileBlocker} invalidated the live dashboard boundary.`, eligible_control_count: 0, records: [] }
+      : errorIndicatorsOnly
       ? await timedProfile('error-indicators', () => probeInstalledControls(dashboard, proofMatrix, hostErrors, ERROR_INDICATOR_CONTROL_IDS))
       : focusedProfileOnly
         ? { schema_version: 'px.installed-operational-control-probe/1.0', authority: `Skipped by exact owned ${focusedProfile} profile.`, eligible_control_count: 0, records: [] }
