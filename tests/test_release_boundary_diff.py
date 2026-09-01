@@ -64,6 +64,8 @@ def test_clean_product_excludes_the_live_test_orchestration_lock(
     lock_path = (
         source / ".engineering-bootstrap/test-evidence/.test-orchestration.lock"
     )
+    product_lock = source / "runtime/release-owner.lock"
+    product_lock.write_text("classified product input\n", encoding="utf-8")
     clean = tmp_path / "clean"
 
     with FileLock(lock_path, timeout_seconds=1):
@@ -72,6 +74,7 @@ def test_clean_product_excludes_the_live_test_orchestration_lock(
     assert not (
         clean / ".engineering-bootstrap/test-evidence/.test-orchestration.lock"
     ).exists()
+    assert (clean / "runtime/release-owner.lock").read_bytes() == product_lock.read_bytes()
     result = audit_clean_boundary(
         source, clean, identity_inputs=["runtime/owner.py"]
     )
