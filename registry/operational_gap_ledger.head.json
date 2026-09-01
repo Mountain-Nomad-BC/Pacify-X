@@ -1,5 +1,5 @@
 {
-  "checkpoint_sha256": "5c171deabe4f5f6459f723c056f3b0401e4f899ecfb955902e79c1ff7f4c0215",
+  "checkpoint_sha256": "fcf780b26ca4a393fb3b5df5e93b7f9bb08cc300197aa8027193925e35d849cd",
   "created_utc": "2026-08-16T17:14:48.634100Z",
   "dashboard": {
     "cards": [
@@ -1686,23 +1686,23 @@
     },
     "truncated": true
   },
-  "event_count": 31827,
-  "generated_utc": "2026-09-01T18:34:16.091070Z",
-  "head_event_sha256": "c2057f3be8af6f95a2d28c596ba5fff9a2becfe299fe99849dd7a698622f5bdd",
+  "event_count": 31877,
+  "generated_utc": "2026-09-01T19:13:56.283816Z",
+  "head_event_sha256": "8c298293ec0db25bbde86a412a5f53992a3b7f3527ddfb6b0db1284632b8469d",
   "ledger_fingerprint": {
-    "sha256": "ef1909b76cca07c832755eb600d587d80f1a27fb847318a6d2ae695b86233d60",
-    "size_bytes": 98307874
+    "sha256": "59137398a19f6f514da3cb69eb54e28962ea5842a0f2c80036ce0336aaab8e58",
+    "size_bytes": 98402291
   },
   "ledger_id": "PX-OPERATIONAL-GAPS-20260816",
   "maximum_gap_ordinal": 1075,
-  "predecessor_event_sha256": "6bc81cbe309062be70e356749b8796d800692744841dc265d3b738d4e5ffbdc2",
-  "previous_checkpoint_sha256": "fbed78b26227d3d4a4b17b95059472c4b0729e8627df173755be9acfa8d889f2",
+  "predecessor_event_sha256": "7ebcee9c9957b7631bbcee5c4ae640aaeaeae7495076ee4da7760e41c7fdb541",
+  "previous_checkpoint_sha256": "13b5548eec6956769c81d3c8d1f2dae16bd8717fb56a2d3079ee5fe227290551",
   "schema_version": "px.operational-gap-ledger-head/1.0",
-  "snapshot_sha256": "4111679ece38f520bad131747ddfbc22a141aa86e1c0e8d8bb2ceba2ae53b41c",
-  "snapshot_size_bytes": 81086203,
+  "snapshot_sha256": "67bf5de42f7a2356c45a6a2a0b468fd0f5f7b904e0db3c4d3c147da635a5ab94",
+  "snapshot_size_bytes": 81186082,
   "verification_basis": {
-    "full_replay_anchor_event_count": 29319,
-    "full_replay_anchor_event_sha256": "c0a203fc4813b8109f2055839b0c488d722f8e3171f9247d20de9f5061468618",
+    "full_replay_anchor_event_count": 31865,
+    "full_replay_anchor_event_sha256": "38979b600bab43a7d279e667765460bc04a3f5611b8c67ca386c9d5fbc2b21d4",
     "kind": "incremental_from_verified_checkpoint"
   }
 }
