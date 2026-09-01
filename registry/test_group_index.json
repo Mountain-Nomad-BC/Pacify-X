@@ -6876,7 +6876,7 @@
       ],
       "description": "Serial exact-tool, installed-wheel, corrective-release, and full-repair-ledger certification tests.",
       "group": "exact-installed",
-      "input_sha256": "188d9ae9d782b171cef0e399d70b6e2a88fb9ede95aa0df20b5a1b438857b468",
+      "input_sha256": "123d785844c824795c52a4beb28352a79e7a432c1481049597e15053a4a58997",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -6960,7 +6960,7 @@
       ],
       "description": "Serial release, distribution, artifact, and revocation certification tests excluding composed audit mutations.",
       "group": "release-build",
-      "input_sha256": "0dfa21b55919e9a19c30e329c6e549d592ec5b2b3f5408d08d821e6030fae63d",
+      "input_sha256": "11e9011d6cf8f68a396d70978a6fd489e0134222afc500a853d409ca35a70a2c",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -7034,7 +7034,7 @@
       ],
       "description": "Serial composed-audit and quarantine-mutation tests isolated from package builds.",
       "group": "release-audit",
-      "input_sha256": "5d0c560f66a356d4c6eb11707cf154efc271eb86a2a59099b82cb28c55dbd6ce",
+      "input_sha256": "a1a15a7e845d4503e335d7cabfb44e8ca4c7d64ae7e478455d967462e4b5d29d",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -7080,7 +7080,7 @@
       ],
       "description": "Serial full-tree structural mutation tests isolated from derived-artifact checks.",
       "group": "structural-adversarial",
-      "input_sha256": "c5dcb2b2374c8e3c4ffbbf2644dba05008bd396b6723b295d79a9ebae1a1e7cd",
+      "input_sha256": "fe8343913c57340596b78d0a078f327b31e8a1d2c63095862facad3738ee33f9",
       "inputs": [
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_agents_md_generator.py",
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_change_impact.py",
@@ -8729,7 +8729,7 @@
       ],
       "description": "Final serial generated-output, completion-projection, portability, effect-surface, and punch-card integrity gate.",
       "group": "derived-integrity",
-      "input_sha256": "f3efaa2b2d6e3ce03ab534d2c8208b01f14dbfb77efbe9d33c31d4428acb1807",
+      "input_sha256": "e1e0dd727c031e53b27399a7fb92343e22aa99cb977b8c384ade4e380b2a3c19",
       "inputs": [
         "README.md",
         "pyproject.toml",

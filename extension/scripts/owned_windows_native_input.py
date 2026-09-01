@@ -39,9 +39,17 @@ def is_owned_process(pid: int, root_pid: int, parents: Mapping[int, int]) -> boo
 
 
 def select_owned_window(windows: list[tuple[int, int, bool, bool]], root_pid: int, parents: Mapping[int, int]) -> tuple[int, int] | None:
-    candidates = [(hwnd, pid) for hwnd, pid, visible, enabled in windows
-                  if hwnd > 0 and pid > 0 and visible and enabled and is_owned_process(pid, root_pid, parents)]
-    return candidates[0] if len(candidates) == 1 else None
+    owned = [(hwnd, pid, visible) for hwnd, pid, visible, enabled in windows
+             if hwnd > 0 and pid > 0 and is_owned_process(pid, root_pid, parents)]
+    # EnumWindows returns top-level windows in top-to-bottom Z order.  Every
+    # retained candidate is already process-tree-bound to the one disposable
+    # VS Code host. Prefer its topmost visible window. The isolated Electron
+    # host is launched hidden, however, so a hidden owned top-level window is a
+    # valid recovery target: activate() restores it with ShowWindow and the
+    # caller re-verifies the foreground PID before sending input. Enabled state
+    # cannot define ownership because a native modal disables its owner.
+    candidate = next(((hwnd, pid) for hwnd, pid, visible in owned if visible), None)
+    return candidate or ((owned[0][0], owned[0][1]) if owned else None)
 
 
 def activation_thread_ids(current_thread: int, foreground_thread: int, target_thread: int) -> tuple[int, ...]:
@@ -57,9 +65,11 @@ def resolve_owned_foreground(native: object, root_pid: int, timeout_seconds: flo
     hwnd, pid = native.foreground()
     if is_owned_process(pid, root_pid, parents):
         return hwnd, pid, False
-    candidate = select_owned_window(native.windows(), root_pid, parents)
+    windows = native.windows()
+    candidate = select_owned_window(windows, root_pid, parents)
     if candidate is None:
-        raise PermissionError("foreground process is outside owned VS Code tree and owned window is ambiguous")
+        owned_processes = sum(1 for process_pid in parents if is_owned_process(process_pid, root_pid, parents))
+        raise PermissionError(f"foreground outside owned tree;no owned window:root={root_pid}:foreground={pid}:owned_processes={owned_processes}:windows={len(windows)}")
     if not native.activate(candidate[0]):
         raise PermissionError("owned VS Code window activation was refused")
     deadline = time.monotonic() + timeout_seconds

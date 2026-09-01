@@ -40,11 +40,14 @@ class OwnedWindowsNativeInputTests(unittest.TestCase):
         self.assertFalse(MODULE.is_owned_process(404, 100, parents))
         self.assertFalse(MODULE.is_owned_process(202, 999, {202: 303, 303: 202}))
 
-    def test_owned_window_selection_is_unique_visible_enabled_and_process_bound(self):
+    def test_owned_window_selection_prefers_visible_process_bound_window_and_recovers_hidden_host(self):
         parents = {303: 202, 202: 100, 100: 50, 304: 100, 404: 1}
         self.assertEqual(MODULE.select_owned_window([(11, 303, True, True), (12, 404, True, True)], 100, parents), (11, 303))
-        self.assertIsNone(MODULE.select_owned_window([(11, 303, False, True), (12, 404, True, True)], 100, parents))
-        self.assertIsNone(MODULE.select_owned_window([(11, 303, True, True), (13, 304, True, True)], 100, parents))
+        self.assertEqual(MODULE.select_owned_window([(11, 303, False, True), (12, 404, True, True)], 100, parents), (11, 303))
+        self.assertIsNone(MODULE.select_owned_window([(12, 404, True, True)], 100, parents))
+        self.assertEqual(MODULE.select_owned_window([(11, 303, True, True), (13, 304, True, True)], 100, parents), (11, 303))
+        self.assertEqual(MODULE.select_owned_window([(11, 303, True, False), (13, 304, True, True)], 100, parents), (11, 303))
+        self.assertEqual(MODULE.select_owned_window([(11, 303, False, False), (13, 304, True, True)], 100, parents), (13, 304))
 
     def test_activation_attaches_foreground_and_target_queues_once_without_self_attachment(self):
         self.assertEqual(MODULE.activation_thread_ids(10, 20, 30), (20, 30))
@@ -80,7 +83,7 @@ class OwnedWindowsNativeInputTests(unittest.TestCase):
         self.assertEqual(MODULE.resolve_owned_foreground(native, 100), (12, 202, False))
         self.assertEqual(native.activated, [])
 
-    def test_foreground_recovery_refuses_ambiguous_or_unverified_activation(self):
+    def test_foreground_recovery_selects_topmost_owned_window_and_refuses_unverified_activation(self):
         class Native:
             def __init__(self, windows, activated_pid=404):
                 self._windows = windows
@@ -100,10 +103,10 @@ class OwnedWindowsNativeInputTests(unittest.TestCase):
                 self.current = (hwnd, self.activated_pid)
                 return True
 
-        with self.assertRaisesRegex(PermissionError, "ambiguous"):
-            MODULE.resolve_owned_foreground(Native([(11, 303, True, True), (12, 304, True, True)]), 100, 0)
+        topmost = Native([(11, 303, True, True), (12, 304, True, True)], activated_pid=303)
+        self.assertEqual(MODULE.resolve_owned_foreground(topmost, 100, 0.05), (11, 303, True))
         with self.assertRaisesRegex(PermissionError, "did not become foreground"):
-            MODULE.resolve_owned_foreground(Native([(11, 303, True, True)]), 100, 0)
+            MODULE.resolve_owned_foreground(Native([(11, 303, True, True)]), 100, 0.05)
 
     def test_input_abi_includes_the_full_win32_union(self):
         pointer_64 = ctypes.sizeof(ctypes.c_void_p) == 8

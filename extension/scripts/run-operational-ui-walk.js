@@ -7319,8 +7319,7 @@ async function runInstalledLearningLifecycleProfile(frameHost, matrix, timeoutMs
     submit.click();
   }, { values, submitAction });
   const invoke = async (openSelector, submitAction, operation, values) => {
-    await waitForKnowledgeControl(frameHost, openSelector);
-    await frameHost.evaluate((frame, selector) => frame.contentDocument.querySelector(selector).click(), openSelector);
+    await clickWhenKnowledgeControlReady(frameHost, openSelector);
     await waitForKnowledgeControl(frameHost, `[data-action="${submitAction}"]`);
     const before = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
     await set(values, submitAction);
@@ -7343,7 +7342,7 @@ async function runInstalledLearningLifecycleProfile(frameHost, matrix, timeoutMs
     });
     await waitForKnowledgeControl(frameHost, '[data-action="learningObserve"]');
     observation.rendered = true; observation.attempted = true;
-    await frameHost.evaluate(frame => frame.contentDocument.querySelector('[data-action="learningObserve"]').click());
+    await clickWhenKnowledgeControlReady(frameHost, '[data-action="learningObserve"]');
     await waitForKnowledgeControl(frameHost, '[data-action="submitLearningObservation"]');
     const invalidBefore = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
     observation.invalid_form_rejected = await frameHost.evaluate((frame, before) => {
@@ -7386,7 +7385,7 @@ async function runInstalledLearningLifecycleProfile(frameHost, matrix, timeoutMs
     });
     await waitForKnowledgeControl(frameHost, pipelineSelector('learningAdmit'));
     const admitBefore = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
-    await frameHost.evaluate((frame, selector) => frame.contentDocument.querySelector(selector).click(), pipelineSelector('learningAdmit'));
+    await clickWhenKnowledgeControlReady(frameHost, pipelineSelector('learningAdmit'));
     const admitted = await waitForStudioOperationResult(frameHost, admitBefore, 'knowledge', 'admit-learning', timeoutMs);
     if (!validLearningLifecycleResult('admit-learning', admitted, { pipeline_id: observation.pipeline_id })) throw new Error(`learning-admit-receipt-invalid:${JSON.stringify(admitted)}`);
     const admittedRecord = admitted?.record || admitted; observation.proposal_id = admittedRecord.knowledge_proposal_id;
@@ -7399,7 +7398,7 @@ async function runInstalledLearningLifecycleProfile(frameHost, matrix, timeoutMs
       const selector = `[data-action="knowledgeTransition"][data-operation="${operation}"][data-proposal-id="${observation.proposal_id}"]`;
       await waitForKnowledgeControl(frameHost, selector);
       const before = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
-      await frameHost.evaluate((frame, query) => frame.contentDocument.querySelector(query).click(), selector);
+      await clickWhenKnowledgeControlReady(frameHost, selector);
       const settled = await settleKnowledgeMutation(frameHost, before, operation, { proposal_id: observation.proposal_id, candidate_sha256: candidateSha256 }, timeoutMs);
       observation.operations.push(settled);
     }
@@ -7892,6 +7891,14 @@ async function runInstalledKnowledgeGraphProfile(frameHost, matrix, timeoutMs = 
       const identity = requestBoundGraphResultIdentity(pair.request, pair.response);
       if (identity?.terminal === 'error') throw new Error(`knowledge-graph-query-failed:${identity.error}`);
       if (identity?.terminal === 'result') return pair.response.result;
+      if (pair.response?.type === 'graphResult') {
+        throw new Error(`knowledge-graph-result-invalid:${JSON.stringify({
+          available: pair.response.result?.available,
+          view: pair.response.result?.view,
+          nodes: Array.isArray(pair.response.result?.nodes),
+          edges: Array.isArray(pair.response.result?.edges)
+        })}`);
+      }
       if (!identity && !retried && Date.now() >= retryAt && typeof retry === 'function') {
         retried = true;
         await retry();
@@ -7913,7 +7920,13 @@ async function runInstalledKnowledgeGraphProfile(frameHost, matrix, timeoutMs = 
       responses: frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0,
       requests: frame.contentWindow?.__PX_INSTALLED_REQUESTS__?.length || 0
     }));
-    await frameHost.evaluate(frame => frame.contentDocument.querySelector('[data-action="graphView"][data-view="repository"]').click());
+    await frameHost.evaluateContent(() => {
+      state.graphView = 'repository'; state.graphMode = 'full'; state.graphLayout = 'community';
+      state.graphTarget = ''; state.graphKind = ''; state.graphStatus = ''; state.graphCommunity = '';
+      state.graphData = null;
+      requestGraph({ view: 'repository', mode: 'full', cluster: '', node: '', target: '', query: '', relation: '', direction: 'both', kind: '', status: '', offset: 0, edgeOffset: 0 });
+      render();
+    });
     const baseline = await waitForGraph(after, () => frameHost.evaluate(frame => {
       const control = frame.contentDocument?.querySelector('[data-action="graphView"][data-view="repository"]');
       if (!control || control.disabled) throw new Error('knowledge-graph-retry-control-unavailable');
@@ -8883,7 +8896,7 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
     }, spec);
     await waitForKnowledgeControl(frameHost, `[data-action="${spec.previewAction}"]`);
     const previewBefore = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
-    await frameHost.evaluate((frame, action) => frame.contentDocument.querySelector(`[data-action="${CSS.escape(action)}"]`).click(), spec.previewAction);
+    await clickWhenKnowledgeControlReady(frameHost, `[data-action="${spec.previewAction}"]`);
     const preview = (await waitForResponse(previewBefore, spec.previewType, spec.previewOperation)).result;
     if (preview?.schema_version !== 'px.extension-lifecycle-preview/1.0' || preview.allowed !== true || preview.extension_id !== extensionId || preview.exact_target !== spec.exactTarget) throw new Error(`plugin-${spec.name}-preview-invalid:${JSON.stringify(preview)}`);
     const localSource = preview.local_source || preview.rollback_identity?.local_source;
@@ -8892,7 +8905,7 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
     await waitForKnowledgeControl(frameHost, `[data-action="${spec.executeAction}"]`);
     const executeBefore = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
     const requestBeforeExecute = await installedOutboundRequestOffset(frameHost);
-    await frameHost.evaluate((frame, action) => frame.contentDocument.querySelector(`[data-action="${CSS.escape(action)}"]`).click(), spec.executeAction);
+    await clickWhenKnowledgeControlReady(frameHost, `[data-action="${spec.executeAction}"]`);
     try {
       const dialog = await waitForNativeWorkbenchDialog(workbench, spec.nativeApproval, 15_000, { frameHost, responseOffset: executeBefore, requestOffset: requestBeforeExecute, requestType: spec.executeOperation, keyboardAction: spec.nativeApproval });
       await clickNativeWorkbenchDialogAction(workbench, dialog, spec.nativeApproval);
@@ -8910,7 +8923,11 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
     // Pending receipts require a full workbench reload to invalidate VS Code's
     // extension inventory cache. Installed operational walks use a normal owned
     // host, so this cannot terminate an extension-test runner.
-    const requiresWorkbenchReconstruction = receiptPending;
+    // VS Code can acknowledge uninstall before its extension-service inventory
+    // cache converges. Reconstruct the owned workbench for every uninstall,
+    // including an initially complete receipt, before asserting physical
+    // absence. Other complete lifecycle receipts can use a webview restart.
+    const requiresWorkbenchReconstruction = receiptPending || spec.receiptAction === 'uninstall';
     const restart = requiresWorkbenchReconstruction
       ? await restartOwnedWorkbenchWindow(workbench, frameHost, 75_000, {
           conflictSafeReconstruction: true,
