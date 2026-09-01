@@ -40,6 +40,7 @@ test('H05 every rendered action has one effect/authority/schema/outcome contract
 test('installed runtime identity binds the generated action contract and host bridge sources', () => {
   const extension = fs.readFileSync(path.join(root, 'src', 'extension.js'), 'utf8');
   const owner = extension.slice(extension.indexOf('function extensionAssetIdentity'), extension.indexOf('function environmentLifecycle'));
+  assert.match(owner, /name !== 'extension\.bundle\.js'/);
   assert.match(owner, /hostSourceRoot[\s\S]*src/);
   assert.match(owner, /action-inventory\.json/);
 });

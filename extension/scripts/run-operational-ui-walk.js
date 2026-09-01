@@ -9696,7 +9696,7 @@ function currentSourceExtensionAssetIdentity(extensionRoot = path.resolve(__dirn
   }
   const hostSourceRoot = path.join(root, 'src');
   if (fs.existsSync(hostSourceRoot)) {
-    for (const name of fs.readdirSync(hostSourceRoot).filter(name => name.endsWith('.js'))) files.push(path.join(hostSourceRoot, name));
+    for (const name of fs.readdirSync(hostSourceRoot).filter(name => name.endsWith('.js') && name !== 'extension.bundle.js')) files.push(path.join(hostSourceRoot, name));
   }
   for (const relative of [path.join('media', 'dashboard.css'), path.join('media', 'sidebar.css'), path.join('media', 'sidebar.js'), path.join('resources', 'ui', 'action-inventory.json')]) {
     const target = path.join(root, relative);

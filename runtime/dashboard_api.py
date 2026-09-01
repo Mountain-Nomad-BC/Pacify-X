@@ -545,7 +545,13 @@ def _extension_source_identity(root: Path) -> dict[str, Any]:
     package_path = extension_root / "package.json"
     package = _read_json(package_path, {})
     asset_paths = sorted((extension_root / "media" / "dashboard").glob("*.js"))
-    asset_paths.extend(sorted((extension_root / "src").glob("*.js")))
+    asset_paths.extend(
+        sorted(
+            path
+            for path in (extension_root / "src").glob("*.js")
+            if path.name != "extension.bundle.js"
+        )
+    )
     asset_paths.extend(
         path
         for path in (

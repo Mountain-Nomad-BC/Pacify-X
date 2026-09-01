@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.67
+
+- Normalize extension source identity to the raw authored asset set, excluding the deterministic installed-only bundle whose bytes are verified independently during artifact installation.
+
 ## 0.6.66
 
 - Bind Studio setup cancellation and approval to the exact outbound request before using owned native input.

@@ -48,16 +48,21 @@ class DashboardApiTests(unittest.TestCase):
             )
             host_source = extension / "src" / "extension.js"
             host_source.write_text("host-v1", encoding="utf-8")
+            generated_bundle = extension / "src" / "extension.bundle.js"
+            generated_bundle.write_text("bundle-v1", encoding="utf-8")
             action_contract = extension / "resources" / "ui" / "action-inventory.json"
             action_contract.write_text('{"actions":[]}', encoding="utf-8")
 
             initial = dashboard_api._extension_source_identity(root)
+            generated_bundle.write_text("bundle-v2", encoding="utf-8")
+            bundle_changed = dashboard_api._extension_source_identity(root)
             host_source.write_text("host-v2", encoding="utf-8")
             host_changed = dashboard_api._extension_source_identity(root)
             action_contract.write_text('{"actions":["refresh"]}', encoding="utf-8")
             contract_changed = dashboard_api._extension_source_identity(root)
 
         self.assertEqual(initial["asset_file_count"], 5)
+        self.assertEqual(initial["asset_sha256"], bundle_changed["asset_sha256"])
         self.assertNotEqual(initial["asset_sha256"], host_changed["asset_sha256"])
         self.assertNotEqual(
             host_changed["asset_sha256"], contract_changed["asset_sha256"]

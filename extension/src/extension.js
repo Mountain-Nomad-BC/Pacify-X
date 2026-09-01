@@ -245,7 +245,7 @@ function extensionAssetIdentity(extensionRoot) {
   const dashboardRoot = path.join(extensionRoot, 'media', 'dashboard');
   if (fs.existsSync(dashboardRoot)) for (const name of fs.readdirSync(dashboardRoot).filter(name => name.endsWith('.js'))) files.push(path.join(dashboardRoot, name));
   const hostSourceRoot = path.join(extensionRoot, 'src');
-  if (fs.existsSync(hostSourceRoot)) for (const name of fs.readdirSync(hostSourceRoot).filter(name => name.endsWith('.js'))) files.push(path.join(hostSourceRoot, name));
+  if (fs.existsSync(hostSourceRoot)) for (const name of fs.readdirSync(hostSourceRoot).filter(name => name.endsWith('.js') && name !== 'extension.bundle.js')) files.push(path.join(hostSourceRoot, name));
   for (const relative of [path.join('media', 'dashboard' + '.css'), path.join('media', 'sidebar.css'), path.join('media', 'sidebar.js'), path.join('resources', 'ui', 'action-inventory.json')]) { const target = path.join(extensionRoot, relative); if (fs.existsSync(target)) files.push(target); }
   files.sort((left, right) => Buffer.compare(Buffer.from(path.relative(extensionRoot, left).replaceAll('\\', '/'), 'utf8'), Buffer.from(path.relative(extensionRoot, right).replaceAll('\\', '/'), 'utf8')));
   const digest = crypto.createHash('sha256');

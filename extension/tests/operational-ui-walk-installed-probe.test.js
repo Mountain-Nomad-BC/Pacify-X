@@ -993,6 +993,20 @@ test('focused Codex handoff opens its disposable plan from one settled visible c
 });
 
 test('current-source host identity requires the typed runtime contract and exact local asset binding', () => {
+  const fixtureRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'px-source-identity-'));
+  try {
+    fs.mkdirSync(path.join(fixtureRoot, 'src'), { recursive: true });
+    fs.writeFileSync(path.join(fixtureRoot, 'package.json'), JSON.stringify({ version: '1.2.3' }));
+    fs.writeFileSync(path.join(fixtureRoot, 'src', 'extension.js'), 'host-v1');
+    fs.writeFileSync(path.join(fixtureRoot, 'src', 'extension.bundle.js'), 'bundle-v1');
+    const beforeBundleChange = currentSourceExtensionAssetIdentity(fixtureRoot);
+    fs.writeFileSync(path.join(fixtureRoot, 'src', 'extension.bundle.js'), 'bundle-v2');
+    const afterBundleChange = currentSourceExtensionAssetIdentity(fixtureRoot);
+    assert.deepEqual(afterBundleChange, beforeBundleChange, 'the generated installed-only bundle is outside the raw-source identity');
+    assert.equal(beforeBundleChange.asset_file_count, 1);
+  } finally {
+    fs.rmSync(fixtureRoot, { recursive: true, force: true });
+  }
   const current = currentSourceExtensionAssetIdentity(path.join(__dirname, '..'));
   assert.match(current.asset_sha256, /^[a-f0-9]{64}$/);
   assert.match(current.package_sha256, /^[a-f0-9]{64}$/);
@@ -1011,6 +1025,7 @@ test('current-source host identity requires the typed runtime contract and exact
   const identitySource = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   const identityOwner = identitySource.slice(identitySource.indexOf('function currentSourceExtensionAssetIdentity'), identitySource.indexOf('function installedRuntimeSourceIdentityState'));
   assert.match(identityOwner, /hostSourceRoot[\s\S]*src/);
+  assert.match(identityOwner, /name !== 'extension\.bundle\.js'/);
   assert.match(identityOwner, /action-inventory\.json/);
   const host = { ...current, schema_version: 'px.extension-host-identity/1.0', asset_protocol: 'px.sidebar.assets/1.0', message_schema: 'px.sidebar.messages/1.0' };
   const runtime = { schema_version: 'px.extension-runtime-identity/1.0', matches: true, host, source: { ...host }, mismatch_reasons: [] };
