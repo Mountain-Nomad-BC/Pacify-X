@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.82
+
+- Bound canonical Plugins navigation and workbench reconstruction to acknowledged installed-host routes, and bounded transient VS Code `.obsolete` catalog publication races before issuing physical extension state.
+
 ## 0.6.81
 
 - Limit forced environment-discovery supersession to state-changing extension and environment lifecycle refreshes; settled manual and read observations coalesce on the current physical denominator.

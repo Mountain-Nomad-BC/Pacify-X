@@ -6,6 +6,9 @@ const path = require('node:path');
 const EXTENSION_ID = /^[a-z0-9][a-z0-9-]{0,63}\.[a-z0-9][a-z0-9-]{0,127}$/;
 const DEFAULT_MAX_ENTRIES = 4096;
 const DEFAULT_MAX_MANIFEST_BYTES = 1024 * 1024;
+const OBSOLETE_READ_ATTEMPTS = 8;
+const OBSOLETE_READ_RETRY_MS = 25;
+const obsoleteReadWaiter = new Int32Array(new SharedArrayBuffer(4));
 
 function boundedPositiveInteger(value, fallback, label) {
   const number = value == null ? fallback : Number(value);
@@ -31,7 +34,17 @@ function readBoundedJson(file, maxBytes, label) {
 function readObsolete(root, maxBytes) {
   const file = path.join(root, '.obsolete');
   if (!fs.existsSync(file)) return new Set();
-  const value = readBoundedJson(file, maxBytes, 'obsolete');
+  let value;
+  for (let attempt = 0; attempt < OBSOLETE_READ_ATTEMPTS; attempt += 1) {
+    try {
+      value = readBoundedJson(file, maxBytes, 'obsolete');
+      break;
+    } catch (error) {
+      const transientParse = error?.message === 'extension-physical-catalog-obsolete-invalid-json';
+      if (!transientParse || attempt === OBSOLETE_READ_ATTEMPTS - 1) throw error;
+      Atomics.wait(obsoleteReadWaiter, 0, 0, OBSOLETE_READ_RETRY_MS);
+    }
+  }
   if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error('extension-physical-catalog-obsolete-invalid-shape');
   const obsolete = new Set();
   for (const [name, state] of Object.entries(value)) {

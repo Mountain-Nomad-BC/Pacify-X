@@ -2410,7 +2410,8 @@ test('owned Plugin mutation profile requires exact reconciled receipts and compl
   assert.doesNotMatch(plugin, /restartOwnedExtensionHostCatalog\(/);
   assert.match(walkerSource, /conflictSafeReconstruction === true[\s\S]*Pacify-X: Open Storage & Cleanup Manager/);
   const conflictRoute = plugin.slice(plugin.indexOf('const exerciseConflictRoute'), plugin.indexOf('observation.conflict_route_completed'));
-  assert.match(conflictRoute, /Pacify-X: Open Storage & Cleanup Manager/);
+  assert.match(conflictRoute, /restartOwnedWorkbenchWindow\(workbench, frameHost, 75_000, \{[\s\S]*conflictSafeReconstruction: true[\s\S]*physicalExtensionId: extensionId[\s\S]*expectedPhysicalVersion: v2\.version[\s\S]*currentVersion\(v2\.version\)/);
+  assert.doesNotMatch(conflictRoute, /restartInstalledDashboardWebview/);
   assert.doesNotMatch(conflictRoute, /pxui\.dashboard-control-plane\.command\.pacifyX\.openDashboard/);
   assert.match(walkerSource, /waitForOwnedPhysicalExtensionVersion\(options\.physicalExtensionId, options\.expectedPhysicalVersion/);
   assert.match(walkerSource, /const obsoletePath = path\.join\(ownedExtensionsRoot, '\.obsolete'\)[\s\S]*obsolete\[entry\.name\] === true/);
@@ -2879,6 +2880,16 @@ test('advanced navigation selects only a visible route control before acknowledg
   const navigation = source.slice(source.indexOf('async function navigateInstalledSurface'), source.indexOf('function installedSurfaceControlAcknowledged'));
   assert.match(expansion, /getComputedStyle\(element\)[\s\S]*style\.display !== 'none'[\s\S]*visible\(element\)/);
   assert.match(navigation, /filter\(element => !element\.disabled && visible\(element\)\)[\s\S]*aria-current/);
+});
+
+test('installed plugin profiles require acknowledged Plugins navigation before lifecycle controls', () => {
+  const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
+  const readProfile = source.slice(source.indexOf('async function runInstalledPluginReadProfile'), source.indexOf('function validPluginMutationReceipt'));
+  const mutationProfile = source.slice(source.indexOf('async function runInstalledPluginMutationProfile'), source.indexOf('\nfunction ', source.indexOf('async function runInstalledPluginMutationProfile')));
+  assert.match(readProfile, /await navigateInstalledSurface\(frameHost, 'plugins', timeoutMs\);[\s\S]*previewExtensionEnablement/);
+  assert.ok((mutationProfile.match(/await navigateInstalledSurface\(frameHost, 'plugins', timeoutMs\);/g) || []).length >= 5);
+  assert.doesNotMatch(readProfile, /querySelector\('\[data-surface="plugins"\]'\)\?*\.click\(\)/);
+  assert.doesNotMatch(mutationProfile, /querySelector\('\[data-surface="plugins"\]'\)\?*\.click\(\)/);
 });
 
 test('owned lifecycle probe enters eight bounded admitted delays through the real agent start form', () => {

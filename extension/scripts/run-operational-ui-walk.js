@@ -8914,7 +8914,7 @@ async function runInstalledPluginReadProfile(workbench, frameHost, matrix, timeo
     await frameHost.evaluate(frame => frame.contentDocument?.querySelector('[data-action="closeModal"]')?.click()).catch(() => {});
   };
   try {
-    await frameHost.evaluate(frame => { const document = frame.contentDocument; document?.querySelector('[data-action="closeModal"]')?.click(); document?.querySelector('[data-surface="plugins"]')?.click(); });
+    await navigateInstalledSurface(frameHost, 'plugins', timeoutMs);
     await waitForKnowledgeControl(frameHost, '[data-action="previewExtensionEnablement"]');
     observation.rendered = true; observation.attempted = true;
     await invoke({ field: '#extension-enablement-id', action: 'previewExtensionEnablement', responseType: 'extensionEnablementPreview', operation: 'enablement-preview', executeAction: 'executeExtensionEnablement' });
@@ -9123,10 +9123,9 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
   };
 
   const mutate = async spec => {
+    await navigateInstalledSurface(frameHost, 'plugins', timeoutMs);
     await frameHost.evaluate((frame, item) => {
       const document = frame.contentDocument;
-      document?.querySelector('[data-action="closeModal"]')?.click();
-      document?.querySelector('[data-surface="plugins"]')?.click();
       for (const [selector, value] of Object.entries(item.fields)) {
         const field = document.querySelector(selector); if (!field) throw new Error(`plugin-field-unavailable:${selector}`);
         field.value = value; field.dispatchEvent(new Event('input', { bubbles: true }));
@@ -9181,7 +9180,7 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
   };
 
   const exerciseNativeManagerEntrypoints = async () => {
-    await frameHost.evaluate(frame => { const document = frame.contentDocument; document?.querySelector('[data-action="closeModal"]')?.click(); document?.querySelector('[data-surface="plugins"]')?.click(); });
+    await navigateInstalledSurface(frameHost, 'plugins', timeoutMs);
     await waitForKnowledgeControl(frameHost, '[data-action="openExtensionsView"]');
     const count = await frameHost.evaluate(frame => [...frame.contentDocument.querySelectorAll('[data-action="openExtensionsView"]')].filter(item => item.offsetWidth || item.offsetHeight || item.getClientRects().length).length);
     if (count < 2) throw new Error(`plugin-native-manager-entrypoints-missing:${count}`);
@@ -9196,8 +9195,7 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
       if (response.operation !== 'openExtensionsView' || response.disposition !== 'completed') throw new Error(`plugin-native-manager-ack-invalid:${JSON.stringify(response)}`);
       observation.native_manager_open_count += 1;
       await executeWorkbenchCommand(workbench, INSTALLED_SAFE_WORKBENCH_COMMANDS['pxui.dashboard-control-plane.command.pacifyX.openDashboard'].title);
-      await waitForKnowledgeControl(frameHost, '[data-surface="plugins"]');
-      await frameHost.evaluate(frame => frame.contentDocument.querySelector('[data-surface="plugins"]').click());
+      await navigateInstalledSurface(frameHost, 'plugins', timeoutMs);
     }
     const restart = await restartInstalledDashboardWebview(frameHost, 45_000);
     observation.webview_restart_count += restart.restarted === true ? 1 : 0;
@@ -9206,10 +9204,9 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
   };
 
   const queryConflicts = async () => {
+    await navigateInstalledSurface(frameHost, 'plugins', timeoutMs);
     await frameHost.evaluate((frame, id) => {
       const document = frame.contentDocument;
-      document?.querySelector('[data-action="closeModal"]')?.click();
-      document?.querySelector('[data-surface="plugins"]')?.click();
       const field = document.querySelector('#extension-conflict-id'); if (!field) throw new Error('plugin-conflict-field-unavailable');
       field.value = id; field.dispatchEvent(new Event('input', { bubbles: true }));
     }, extensionId);
@@ -9264,17 +9261,21 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
     }
     const result = (await waitForResponse(executeBefore, 'extensionConflictResolutionResult', 'extensionConflictResolutionExecute')).result;
     if (result?.schema_version !== 'px.extension-conflict-resolution-receipt/1.0' || result.action !== 'conflict-resolution' || result.signal_id !== signal.signal_id || result.target_extension_id !== extensionId || result.resolution !== 'inspect' || result.status !== 'exact-native-record-opened' || result.mutation_dispatched !== false) throw new Error(`plugin-conflict-route-result-invalid:${JSON.stringify(result)}`);
-    await executeWorkbenchCommand(workbench, 'Pacify-X: Open Storage & Cleanup Manager');
-    await waitForKnowledgeControl(frameHost, '[data-surface="plugins"]');
-    const restart = await restartInstalledDashboardWebview(frameHost, 45_000);
+    const restart = await restartOwnedWorkbenchWindow(workbench, frameHost, 75_000, {
+      conflictSafeReconstruction: true,
+      physicalExtensionId: extensionId,
+      expectedPhysicalVersion: v2.version
+    });
     observation.webview_restart_count += restart.restarted === true ? 1 : 0;
-    if (await currentVersion(v2.version) !== v2.version) throw new Error('plugin-conflict-route-changed-installed-denominator');
-    observation.operations.push({ name: 'inspect-deterministic-conflict', signal_id: signal.signal_id, preview, result, observed_version: v2.version, webview_restarted: restart.restarted === true });
-    observation.conflict_route_completed = restart.restarted === true;
+    observation.workbench_reload_count += restart.restarted === true ? 1 : 0;
+    const observedVersion = await currentVersion(v2.version);
+    if (observedVersion !== v2.version) throw new Error('plugin-conflict-route-changed-installed-denominator');
+    observation.operations.push({ name: 'inspect-deterministic-conflict', signal_id: signal.signal_id, preview, result, observed_version: observedVersion, webview_restarted: restart.restarted === true, workbench_reloaded: restart.restarted === true });
+    observation.conflict_route_completed = restart.restarted === true && restart.reconstructed === true;
   };
 
   try {
-    await frameHost.evaluate(frame => { const document = frame.contentDocument; document?.querySelector('[data-action="closeModal"]')?.click(); document?.querySelector('[data-surface="plugins"]')?.click(); });
+    await navigateInstalledSurface(frameHost, 'plugins', timeoutMs);
     await waitForKnowledgeControl(frameHost, '[data-action="previewExtensionInstall"]');
     observation.rendered = true; observation.attempted = true;
     const failureBefore = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);

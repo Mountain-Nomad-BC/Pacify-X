@@ -59,11 +59,29 @@ test('dynamic catalog follows update, uninstall, and rollback disk state without
   assert.equal(catalog.getExtension('publisher.demo').packageJSON.version, '2.0.0');
 });
 
+test('catalog bounds transient obsolete JSON retries while VS Code publishes its control file', t => {
+  const { root, current } = fixture(t);
+  manifest(root, 'publisher.demo-1.0.0', 'publisher', 'demo', '1.0.0');
+  fs.writeFileSync(path.join(root, '.obsolete'), '{}');
+  const originalRead = fs.readFileSync;
+  let obsoleteReads = 0;
+  fs.readFileSync = function patchedRead(file, ...args) {
+    if (path.basename(String(file)) === '.obsolete' && obsoleteReads++ < 2) return '{';
+    return originalRead.call(this, file, ...args);
+  };
+  t.after(() => { fs.readFileSync = originalRead; });
+  const records = readPhysicalExtensionCatalog({ currentExtensionPath: current, loadedExtensions: { all: [] } });
+  assert.equal(records.some(record => record.id === 'publisher.demo'), true);
+  assert.equal(obsoleteReads, 3);
+});
+
 test('catalog fails closed on current identity ambiguity, malformed control data, and bounded-entry overflow', t => {
   const { root, current } = fixture(t);
   manifest(root, 'publisher.demo-a', 'publisher', 'demo', '1.0.0');
   manifest(root, 'publisher.demo-b', 'publisher', 'demo', '2.0.0');
   assert.throws(() => readPhysicalExtensionCatalog({ currentExtensionPath: current, loadedExtensions: { all: [] } }), /identity-ambiguous:publisher\.demo/);
+  fs.writeFileSync(path.join(root, '.obsolete'), '{');
+  assert.throws(() => readPhysicalExtensionCatalog({ currentExtensionPath: current, loadedExtensions: { all: [] } }), /obsolete-invalid-json/);
   fs.writeFileSync(path.join(root, '.obsolete'), '[]');
   assert.throws(() => readPhysicalExtensionCatalog({ currentExtensionPath: current, loadedExtensions: { all: [] } }), /obsolete-invalid-shape/);
   fs.writeFileSync(path.join(root, '.obsolete'), '{}');
