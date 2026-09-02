@@ -734,10 +734,16 @@ function icon(name) {
 
 function showModal(title, kicker, body, actions = '', modalClass = '') {
   const requestedClasses = new Set(String(modalClass || '').split(/\s+/).filter(Boolean));
-  if (!requestedClasses.has('studio-modal') && studioEditorPresentationMatches(studioEditorPresentation)) {
+  const liveStudioModal = document.querySelector('.studio-modal');
+  const activeStudioKind = ['agent', 'workflow', 'skill'].includes(studioEditor?.kind) ? studioEditor.kind : null;
+  const liveStudioEditorMatches = Boolean(liveStudioModal && activeStudioKind && liveStudioModal.querySelector('.studio-editor-root'));
+  if (!requestedClasses.has('studio-modal') && (liveStudioEditorMatches || studioEditorPresentationMatches(studioEditorPresentation))) {
+    const identityKey = activeStudioKind === 'agent' ? 'agent_id' : activeStudioKind === 'workflow' ? 'workflow_id' : 'skill_id';
     recordStudioEditorTransition('modal-overwrite-blocked', {
-      request_id: studioVersionProofRequestId, kind: studioEditorPresentation.kind,
-      identity: studioEditorPresentation.identity, candidate_version: studioEditorPresentation.candidate_version,
+      request_id: studioVersionProofRequestId, kind: activeStudioKind || studioEditorPresentation?.kind || null,
+      identity: studioEditorPresentation?.identity || studioEditor?.draft?.[identityKey] || null,
+      candidate_version: studioEditorPresentation?.candidate_version || studioEditor?.draft?.version || null,
+      active_title: liveStudioModal?.querySelector('h2')?.textContent?.trim().slice(0, 200) || '',
       attempted_title: String(title || '').slice(0, 200), attempted_kicker: String(kicker || '').slice(0, 300),
       caller: String(new Error('studio-modal-overwrite-blocked').stack || '').slice(0, 1600)
     });

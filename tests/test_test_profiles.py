@@ -228,6 +228,75 @@ def test_studio_section_is_bounded_into_independently_addressed_chunks():
     assert "runtime/studio_api.py" in first_inputs & second_inputs
 
 
+def test_failed_monolithic_sections_are_serially_partitioned_per_file():
+    expected = {
+        "dashboard-extension": {"chunk_timeout": 180, "section_timeout": 600},
+        "testing-governance": {"chunk_timeout": 300, "section_timeout": 900},
+    }
+    for name, limits in expected.items():
+        section = resolve_test_section(ROOT, name)
+        cwd = Path(section["cwd"])
+        members = [
+            value
+            for value in section["command"]
+            if not value.startswith("-") and (cwd / value).is_file()
+        ]
+        chunks = section["chunks"]
+
+        assert len(members) == 21
+        assert section["max_parallel_chunks"] == 1
+        assert section["timeout_seconds"] == limits["section_timeout"]
+        assert len(chunks) == len(members)
+        assert [member for chunk in chunks for member in chunk["members"]] == members
+        assert all(chunk["member_count"] == 1 for chunk in chunks)
+        assert all(
+            chunk["timeout_seconds"] == limits["chunk_timeout"] for chunk in chunks
+        )
+        assert len({chunk["input_sha256"] for chunk in chunks}) == len(chunks)
+
+
+def test_section_identity_includes_its_executable_registry_definition(tmp_path):
+    source = tmp_path / "tests/test_owner.py"
+    source.parent.mkdir(parents=True)
+    source.write_text("def test_owner():\n    assert True\n", encoding="utf-8")
+    second_source = tmp_path / "tests/test_owner_second.py"
+    second_source.write_text(
+        "def test_owner_second():\n    assert True\n", encoding="utf-8"
+    )
+    registry = tmp_path / "registry/test_profiles.json"
+    registry.parent.mkdir()
+    config = {
+        "sections": {
+            "owner": {
+                "source_patterns": ["tests/test_owner*.py"],
+                "command": [
+                    "python",
+                    "-m",
+                    "pytest",
+                    "tests/test_owner.py",
+                    "tests/test_owner_second.py",
+                ],
+                "chunk_size": 1,
+                "max_parallel_chunks": 1,
+                "chunk_timeout_seconds": 30,
+                "timeout_seconds": 60,
+            }
+        }
+    }
+    registry.write_text(json.dumps(config), encoding="utf-8")
+    predecessor = resolve_test_section(tmp_path, "owner")
+
+    config["sections"]["owner"]["chunk_timeout_seconds"] = 45
+    registry.write_text(json.dumps(config), encoding="utf-8")
+    current = resolve_test_section(tmp_path, "owner")
+
+    assert "registry/test_profiles.json" in current["inputs"]
+    assert predecessor["input_sha256"] != current["input_sha256"]
+    assert predecessor["chunks"][0]["input_sha256"] != current["chunks"][0][
+        "input_sha256"
+    ]
+
+
 def test_section_chunk_receipt_is_atomic_bounded_and_content_addressed(tmp_path):
     section = {
         "section": "studio-memory-graph",
@@ -236,6 +305,7 @@ def test_section_chunk_receipt_is_atomic_bounded_and_content_addressed(tmp_path)
         "chunk_id": "chunk-03",
         "input_sha256": "a" * 64,
         "member_count": 2,
+        "members": ["tests/test_a.py", "tests/test_b.py"],
     }
     receipt = section_chunk_receipt(
         section,
@@ -245,6 +315,8 @@ def test_section_chunk_receipt_is_atomic_bounded_and_content_addressed(tmp_path)
             "exit_code": 0,
             "timed_out": False,
             "duration_seconds": 0.25,
+            "stdout": "2 passed\n",
+            "stderr": "",
         },
     )
     target = write_section_chunk_receipt(tmp_path, receipt)
@@ -255,8 +327,50 @@ def test_section_chunk_receipt_is_atomic_bounded_and_content_addressed(tmp_path)
         tmp_path, "studio-memory-graph", "chunk-03"
     ) == receipt
     assert receipt["passed"] is True
+    assert receipt["members"] == ["tests/test_a.py", "tests/test_b.py"]
+    assert receipt["output_evidence"]["stdout_bytes"] == len("2 passed\n")
+    assert receipt["output_evidence"]["failure_nodes"] == []
     assert len(receipt["receipt_sha256"]) == 64
     assert not list(target.parent.glob("*.tmp"))
+
+    failed = section_chunk_receipt(
+        section,
+        chunk,
+        {
+            "valid": True,
+            "exit_code": 1,
+            "timed_out": False,
+            "duration_seconds": 0.3,
+            "stdout": "FAILED tests/test_b.py::test_case - AssertionError: secret\n",
+            "stderr": "private diagnostic",
+        },
+    )
+    assert failed["output_evidence"]["failure_nodes"] == [
+        "tests/test_b.py::test_case"
+    ]
+    assert "secret" not in json.dumps(failed)
+    assert "private diagnostic" not in json.dumps(failed)
+
+    unsafe_body = {
+        key: value for key, value in receipt.items() if key != "receipt_sha256"
+    }
+    unsafe_body["output_evidence"] = {
+        **unsafe_body["output_evidence"],
+        "stdout": "secret raw output",
+    }
+    unsafe = {
+        **unsafe_body,
+        "receipt_sha256": hashlib.sha256(
+            json.dumps(
+                unsafe_body, sort_keys=True, separators=(",", ":")
+            ).encode()
+        ).hexdigest(),
+    }
+    target.write_text(json.dumps(unsafe), encoding="utf-8")
+    assert read_section_chunk_receipt(
+        tmp_path, "studio-memory-graph", "chunk-03"
+    ) == {}
+
     target.write_text(
         json.dumps({**receipt, "passed": False}), encoding="utf-8"
     )

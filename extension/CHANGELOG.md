@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.6.83
+
+- Preserve an active unsaved Studio editor when a late non-Studio response arrives, while retaining explicit close-then-transition flows.
+- Attribute builder modal displacement to the mutation that caused it and retain the active modal title, classes, and actions in focused host evidence.
+
 ## 0.6.82
 
 - Bound canonical Plugins navigation and workbench reconstruction to acknowledged installed-host routes, and bounded transient VS Code `.obsolete` catalog publication races before issuing physical extension state.

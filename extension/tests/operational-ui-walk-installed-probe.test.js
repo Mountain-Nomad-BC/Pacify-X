@@ -18,7 +18,7 @@ const { exactStudioSetupTerminalResponse } = require('../scripts/run-operational
 const { installedDashboardRestartIdentity } = require('../scripts/run-operational-ui-walk');
 
 const { boundedOwnedUiAction, waitForOwnedWebview } = require('../scripts/run-operational-ui-walk');
-const { clickWhenBuilderControlReady, clickWhenInstalledGraphControlReady, installedGraphExchangeOffset, waitForBuilderJsonControls, waitForInstalledGraphExchange, waitForInstalledGraphIdle } = require('../scripts/run-operational-ui-walk');
+const { clickWhenBuilderControlReady, clickWhenInstalledGraphControlReady, installedGraphExchangeOffset, invokeBuilderControl, waitForBuilderJsonControls, waitForInstalledGraphExchange, waitForInstalledGraphIdle } = require('../scripts/run-operational-ui-walk');
 
 const STAGES = ['open_load', 'display', 'user_edit_action', 'input_validation', 'authorization', 'backend_dispatch', 'runtime_effect', 'progress_reporting', 'result_acknowledgement', 'persistence', 'reload_reopen', 'failure_handling', 'recovery_rollback'];
 
@@ -247,6 +247,42 @@ test('builder action controls are atomically reacquired from the current install
   assert.deepEqual(result, { match_count: 1, label: '+' });
   assert.equal(clicks, 1);
   assert.ok(samples >= 3, 'the control must be reacquired after transient render replacement');
+});
+
+test('builder action continuity attributes a displaced Studio modal to the causing control', async () => {
+  let displaced = false;
+  const classes = (...items) => Object.assign(items, { contains: value => items.includes(value) });
+  const control = {
+    dataset: { action: 'agentRemoveBinding', index: '1' }, disabled: false, innerText: 'Remove',
+    classList: classes(), getAttribute: () => 'Remove binding', click: () => { displaced = true; }
+  };
+  const studioModal = {
+    classList: classes('control-modal', 'studio-modal'),
+    querySelector: selector => selector === 'h2' ? { textContent: 'Agent Studio' }
+      : selector === '[data-agent-editor-canvas]' ? { dataset: { agentScale: '1' } }
+        : selector === '.studio-editor-root' ? {} : null,
+    querySelectorAll: selector => selector === '[data-action]' ? [control] : []
+  };
+  const lateModal = {
+    classList: classes('control-modal'),
+    querySelector: selector => selector === 'h2' ? { textContent: 'Eligible skill candidates' } : null,
+    querySelectorAll: selector => selector === '[data-action]' ? [{ dataset: { action: 'closeModal' } }] : []
+  };
+  const frameHost = { evaluate: async (operation, argument) => operation({ contentDocument: {
+    querySelector: selector => selector === '.studio-modal' ? (displaced ? null : studioModal)
+      : selector === '.control-modal' ? (displaced ? lateModal : studioModal) : null
+  } }, argument) };
+  await assert.rejects(
+    invokeBuilderControl(frameHost, 'agent', 'pxui.agent-studio.action.agentRemoveBinding.row', 'agentRemoveBinding', {}, 'last'),
+    error => {
+      assert.match(error.message, /builder modal continuity lost after agentRemoveBinding/);
+      assert.equal(error.builderObservation.control_id, 'pxui.agent-studio.action.agentRemoveBinding.row');
+      assert.equal(error.builderObservation.after.active_modal_title, 'Eligible skill candidates');
+      assert.deepEqual(error.builderObservation.after.active_modal_classes, ['control-modal']);
+      assert.deepEqual(error.builderObservation.after.active_modal_actions, ['closeModal']);
+      return true;
+    }
+  );
 });
 
 test('graph action readiness requires the current enabled label before one atomic click', async () => {

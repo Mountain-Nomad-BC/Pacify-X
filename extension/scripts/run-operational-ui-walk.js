@@ -3104,6 +3104,7 @@ async function builderState(frameHost, kind) {
   return frameHost.evaluate((frame, builderKind) => {
     const document = frame.contentDocument;
     const modal = document?.querySelector('.studio-modal');
+    const activeModal = document?.querySelector('.control-modal');
     const values = selector => [...(modal?.querySelectorAll(selector) || [])].map(element => ({
       action: element.dataset.action || null,
       id: element.dataset.agentNodeId || element.dataset.nodeId || element.dataset.index || null,
@@ -3115,7 +3116,14 @@ async function builderState(frameHost, kind) {
     return {
       builder: builderKind,
       modal_present: Boolean(modal),
+      modal_kind: modal?.querySelector('[data-agent-editor-canvas]') ? 'agent'
+        : modal?.querySelector('[data-workflow-editor-canvas]') ? 'workflow'
+          : modal?.querySelector('.studio-editor-root') ? 'skill' : null,
       title: modal?.querySelector('h2')?.textContent?.trim() || '',
+      active_modal_present: Boolean(activeModal),
+      active_modal_title: activeModal?.querySelector('h2')?.textContent?.trim() || '',
+      active_modal_classes: [...(activeModal?.classList || [])].sort(),
+      active_modal_actions: [...new Set([...(activeModal?.querySelectorAll('[data-action]') || [])].map(element => element.dataset.action).filter(Boolean))].sort(),
       visible_tab: modal?.querySelector('[data-action="studioEditorTab"][aria-selected="true"]')?.dataset.tab || null,
       validation: modal?.querySelector('[data-studio-validation]')?.textContent?.trim().replace(/\s+/g, ' ').slice(0, 1200) || '',
       save_disabled: Boolean(modal?.querySelector('[data-action="submitStudioDraft"]')?.disabled),
@@ -3143,6 +3151,7 @@ async function clickWhenBuilderControlReady(frameHost, input, timeoutMs = 5_000)
     last = await frameHost.evaluate((frame, expected) => {
       const document = frame.contentDocument;
       const modal = document?.querySelector('.studio-modal');
+      const activeModal = document?.querySelector('.control-modal');
       const matches = [...(modal?.querySelectorAll('[data-action]') || [])].filter(element =>
         element.dataset.action === expected.action
         && Object.entries(expected.dataset).every(([key, value]) => String(element.dataset[key] || '') === String(value))
@@ -3152,6 +3161,10 @@ async function clickWhenBuilderControlReady(frameHost, input, timeoutMs = 5_000)
       const diagnostic = {
         clicked: false,
         modal_present: Boolean(modal),
+        active_modal_present: Boolean(activeModal),
+        active_modal_title: activeModal?.querySelector('h2')?.textContent?.trim() || '',
+        active_modal_classes: [...(activeModal?.classList || [])].sort(),
+        active_modal_actions: [...new Set([...(activeModal?.querySelectorAll('[data-action]') || [])].map(element => element.dataset.action).filter(Boolean))].sort(),
         match_count: matches.length,
         disabled: control ? Boolean(control.disabled) : null,
         agent_canvas_present: Boolean(modal?.querySelector('[data-agent-editor-canvas]')),
@@ -3174,7 +3187,7 @@ async function invokeBuilderControl(frameHost, kind, controlId, action, dataset 
   const invoked = await clickWhenBuilderControlReady(frameHost, { controlId, action, dataset, pick });
   await wait(180);
   const after = await builderState(frameHost, kind);
-  return {
+  const observation = {
     control_id: controlId,
     action,
     dataset,
@@ -3186,6 +3199,22 @@ async function invokeBuilderControl(frameHost, kind, controlId, action, dataset 
     after,
     observed_effects: ['bounded unsaved webview draft interaction; no save, host message, workspace write, or runtime execution']
   };
+  if (!after.modal_present || after.modal_kind !== kind || after.title !== before.title) {
+    const error = new Error(`${controlId}: builder modal continuity lost after ${action}:${JSON.stringify({
+      expected_kind: kind,
+      before_title: before.title,
+      after_title: after.title,
+      after_modal_present: after.modal_present,
+      after_modal_kind: after.modal_kind,
+      active_modal_present: after.active_modal_present,
+      active_modal_title: after.active_modal_title,
+      active_modal_classes: after.active_modal_classes,
+      active_modal_actions: after.active_modal_actions
+    })}`);
+    error.builderObservation = observation;
+    throw error;
+  }
+  return observation;
 }
 
 async function waitForBuilderJsonControls(frameHost, kind, timeoutMs = 5_000) {
@@ -3342,6 +3371,7 @@ async function inspectStudioBuilder(frameHost, kind, outputRoot, hostErrors) {
     try {
       observations.push(await invokeBuilderControl(frameHost, kind, controlId, action, dataset, pick));
     } catch (error) {
+      if (error.builderObservation) observations.push(error.builderObservation);
       error.builderEvidence = {
         observations,
         attempted_control_ids: observations.map(item => item.control_id),
@@ -10709,6 +10739,6 @@ module.exports = {
   validCoordinationResult, validKnowledgeLifecycleResult, validLearningLifecycleResult, validPermanentCleanupResult,
   validPluginLifecycleObservation, validPendingPluginMutationReceipt, validPluginMutationReceipt, validStudioDraftReceipt, validStudioLifecycleResult,
   captureSurfaceViews, surfaceCaptureCandidates, surfaceCaptureFileStem,
-  validStudioRevisionEditObservation, validStudioSetupResult, validationControlProbe, runInstalledValidationBoundaryProfile, clickWhenBuilderControlReady, waitForBuilderJsonControls, waitForCoordinationResult,
+  validStudioRevisionEditObservation, validStudioSetupResult, validationControlProbe, runInstalledValidationBoundaryProfile, clickWhenBuilderControlReady, invokeBuilderControl, waitForBuilderJsonControls, waitForCoordinationResult,
   clickWhenInstalledGraphControlReady, installedGraphExchangeOffset, waitForInstalledGraphExchange, waitForInstalledGraphIdle, waitForOwnedWebview
 };

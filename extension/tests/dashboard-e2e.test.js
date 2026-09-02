@@ -45,6 +45,18 @@ test('Agent builder retains current canvas controls across the exhaustive edit s
     assert.equal(await page.locator('[data-action="agentZoom"][data-delta="0.1"]').count(), 1, `${selector} must retain Zoom in`);
     assert.equal(await page.locator('[data-action="agentFit"]').count(), 2, `${selector} must retain toolbar and minimap Fit controls`);
     assert.equal(await page.locator('.agent-builder-pipeline').count(), 0, `${selector} must not leave the pre-upgrade placeholder`);
+    if (selector === '[data-action="agentRemoveBinding"]') {
+      await page.evaluate(() => window.dispatchEvent(new MessageEvent('message', { data: {
+        type: 'skillQueryResult',
+        result: { mode: 'semantic', query: 'late asynchronous candidate response', candidate_limit: 3, candidates: [] }
+      } })));
+      assert.equal(await page.locator('.studio-modal h2').textContent(), 'Agent Studio', 'a late non-Studio modal must not replace the active unsaved Agent Studio');
+      assert.equal(await page.locator('[data-action="agentAddGrant"]').count(), 1, 'the next exhaustive builder control must remain rendered after the late response');
+      const blocked = await page.evaluate(() => [...(window.__PX_STUDIO_EDITOR_TRANSITIONS__ || [])].reverse().find(item => item.stage === 'modal-overwrite-blocked'));
+      assert.equal(blocked.kind, 'agent');
+      assert.equal(blocked.active_title, 'Agent Studio');
+      assert.equal(blocked.attempted_title, 'Eligible skill candidates');
+    }
   }
   await page.locator('[data-action="agentZoom"][data-delta="0.1"]').click();
   await page.locator('[data-action="agentAutoLayout"]').click();

@@ -1765,7 +1765,7 @@
       "validation_level": "full-suite-and-installed-integration"
     },
     {
-      "bytes": 156772,
+      "bytes": 156882,
       "evidence": [
         "tests/test_bytecode_guard.py",
         "tests/test_certification_readiness.py",
@@ -1780,7 +1780,7 @@
       "packaged": true,
       "path": "runtime/cli.py",
       "role": "installed-runtime",
-      "sha256": "d8f1d8a902705245f940be1f8285c586880b566da92327c9e7d275a4f288fe18",
+      "sha256": "9327172f352d4e579de1ef5a0961b0285e0c105911fe5fc90ae8ceb35dcaade4",
       "syntax_valid": true,
       "validation_level": "evidence-association"
     },
@@ -4303,7 +4303,7 @@
       "validation_level": "full-suite-and-installed-integration"
     },
     {
-      "bytes": 44889,
+      "bytes": 46660,
       "evidence": [
         "tests",
         "tests/test_installed_wheel_e2e.py"
@@ -4312,7 +4312,7 @@
       "packaged": true,
       "path": "runtime/test_profiles.py",
       "role": "installed-runtime",
-      "sha256": "7ad599c2117f25b0928f1541745c30db73346c5787377a68ae0fe5c1165176ae",
+      "sha256": "0e79ab3216621a7fce1d354412d8c1b95c3645d95924e33f08df81d647a5e3eb",
       "syntax_valid": true,
       "validation_level": "full-suite-and-installed-integration"
     },
@@ -6271,7 +6271,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 35455,
+      "bytes": 36126,
       "evidence": [
         "tests/test_cli_commands.py"
       ],
@@ -6279,7 +6279,7 @@
       "packaged": true,
       "path": "tests/test_cli_commands.py",
       "role": "release-test",
-      "sha256": "dd909d66235e0bebfe68e218f6c5f79dcea804ac53d5438aadc3bd7ea5e0e1b9",
+      "sha256": "a4ed0ffb7d0b8df67ba081b6609971c00348e6ca0dda8e7caf3b557b14a4d959",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },
@@ -8429,7 +8429,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 31675,
+      "bytes": 35875,
       "evidence": [
         "tests/test_test_profiles.py"
       ],
@@ -8437,7 +8437,7 @@
       "packaged": true,
       "path": "tests/test_test_profiles.py",
       "role": "release-test",
-      "sha256": "aceaaa6735891c30278dbdc1079eb2efb6602076fe4dc23d2966b7229a24ccef",
+      "sha256": "13493276359f3f5ae04dbbf7a5f2bb7158e8f551f34f2294df9beac4f541d89f",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },

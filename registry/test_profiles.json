@@ -92,7 +92,10 @@
         "tests/test_operation_health_snapshot.py",
         "extension/tests/test_owned_windows_native_input.py"
       ],
-      "timeout_seconds": 420
+      "chunk_size": 1,
+      "max_parallel_chunks": 1,
+      "chunk_timeout_seconds": 300,
+      "timeout_seconds": 900
     },
     "dashboard-extension": {
       "description": "Dashboard renderer, message boundary, host bridge, and layout interaction gate.",
@@ -161,6 +164,9 @@
         "tests/owned-native-input-client.test.js",
         "tests/contained-ui-action-walk.test.js"
       ],
+      "chunk_size": 1,
+      "max_parallel_chunks": 1,
+      "chunk_timeout_seconds": 180,
       "cwd": "extension",
       "timeout_seconds": 600
     },

@@ -392,9 +392,13 @@ def resolve_test_section(root: Path, name: str) -> dict[str, Any]:
     if not isinstance(section, dict):
         raise ValueError(f"unknown test section: {name}")
     patterns = list(map(str, section.get("source_patterns", ())))
-    inputs = _section_files(root, patterns)
-    if not inputs:
+    matched_inputs = _section_files(root, patterns)
+    if not matched_inputs:
         raise ValueError(f"test section has no current inputs: {name}")
+    # The owner definition is executable governance, not metadata. Without it,
+    # changing commands, chunk topology, or timeouts could leave an older
+    # passing section receipt falsely current.
+    inputs = sorted({*matched_inputs, "registry/test_profiles.json"})
     command = list(map(str, section.get("command", ())))
     if not command:
         raise ValueError(f"test section has no command: {name}")
@@ -504,22 +508,71 @@ def section_receipt(
     }
 
 
+def _bounded_output_evidence(execution: Mapping[str, Any]) -> dict[str, object]:
+    """Retain attribution without persisting raw, potentially sensitive output."""
+    output_evidence: dict[str, object] = {}
+    failure_nodes: list[str] = []
+    for stream in ("stdout", "stderr"):
+        value = str(execution.get(stream) or "")
+        encoded = value.encode("utf-8")
+        output_evidence[f"{stream}_sha256"] = hashlib.sha256(encoded).hexdigest()
+        output_evidence[f"{stream}_bytes"] = len(encoded)
+        for line in value.splitlines():
+            if not line.startswith("FAILED "):
+                continue
+            node = line[len("FAILED ") :].split(" - ", 1)[0].strip()
+            if node and node not in failure_nodes:
+                failure_nodes.append(node[:300])
+    output_evidence["failure_nodes"] = failure_nodes[:50]
+    return output_evidence
+
+
+def _valid_bounded_output_evidence(value: object) -> bool:
+    if not isinstance(value, dict) or set(value) != {
+        "stdout_sha256",
+        "stdout_bytes",
+        "stderr_sha256",
+        "stderr_bytes",
+        "failure_nodes",
+    }:
+        return False
+    for stream in ("stdout", "stderr"):
+        sha256 = value[f"{stream}_sha256"]
+        byte_count = value[f"{stream}_bytes"]
+        if (
+            not isinstance(sha256, str)
+            or len(sha256) != 64
+            or any(character not in "0123456789abcdef" for character in sha256)
+            or not isinstance(byte_count, int)
+            or byte_count < 0
+        ):
+            return False
+    nodes = value["failure_nodes"]
+    return (
+        isinstance(nodes, list)
+        and len(nodes) <= 50
+        and all(isinstance(node, str) and 0 < len(node) <= 300 for node in nodes)
+    )
+
+
 def section_chunk_receipt(
     section: Mapping[str, Any], chunk: Mapping[str, Any], execution: Mapping[str, Any]
 ) -> dict[str, Any]:
     exit_code = execution.get("exit_code")
     body = {
-        "schema_version": "px.test-section-chunk-receipt/1.0",
+        "schema_version": "px.test-section-chunk-receipt/1.1",
         "section": section["section"],
         "chunk_id": chunk["chunk_id"],
         "input_sha256": chunk["input_sha256"],
         "member_count": chunk["member_count"],
+        "members": list(map(str, chunk.get("members", ()))),
         "passed": exit_code == 0
         and execution.get("timed_out") is not True
         and execution.get("valid") is True,
         "exit_code": exit_code,
         "timed_out": bool(execution.get("timed_out")),
         "duration_seconds": execution.get("duration_seconds"),
+        "output_evidence": _bounded_output_evidence(execution),
     }
     return {
         **body,
@@ -555,17 +608,22 @@ def read_section_chunk_receipt(root: Path, section: str, chunk_id: str) -> dict[
         "chunk_id",
         "input_sha256",
         "member_count",
+        "members",
         "passed",
         "exit_code",
         "timed_out",
         "duration_seconds",
+        "output_evidence",
         "receipt_sha256",
     }
     if (
         set(value) != expected_keys
-        or value.get("schema_version") != "px.test-section-chunk-receipt/1.0"
+        or value.get("schema_version") != "px.test-section-chunk-receipt/1.1"
         or value.get("section") != section
         or value.get("chunk_id") != chunk_id
+        or not isinstance(value.get("members"), list)
+        or len(value["members"]) != value.get("member_count")
+        or not _valid_bounded_output_evidence(value.get("output_evidence"))
     ):
         return {}
     supplied = str(value.get("receipt_sha256") or "")
@@ -1030,20 +1088,7 @@ def resolve_test_group(root: Path, name: str) -> dict[str, Any]:
 
 def group_receipt(group: dict[str, Any], execution: dict[str, Any]) -> dict[str, Any]:
     exit_code = execution.get("exit_code", execution.get("returncode"))
-    output_evidence: dict[str, object] = {}
-    failure_nodes: list[str] = []
-    for stream in ("stdout", "stderr"):
-        value = str(execution.get(stream) or "")
-        encoded = value.encode("utf-8")
-        output_evidence[f"{stream}_sha256"] = hashlib.sha256(encoded).hexdigest()
-        output_evidence[f"{stream}_bytes"] = len(encoded)
-        for line in value.splitlines():
-            if not line.startswith("FAILED "):
-                continue
-            node = line[len("FAILED ") :].split(" - ", 1)[0].strip()
-            if node and node not in failure_nodes:
-                failure_nodes.append(node[:300])
-    output_evidence["failure_nodes"] = failure_nodes[:50]
+    output_evidence = _bounded_output_evidence(execution)
     body = {
         "schema_version": "px.test-group-receipt/1.0",
         "group": group["group"],

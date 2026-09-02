@@ -2122,9 +2122,11 @@ def main(argv: list[str] | None = None) -> int:
                                         "chunk_id",
                                         "input_sha256",
                                         "member_count",
+                                        "members",
                                         "passed",
                                         "timed_out",
                                         "duration_seconds",
+                                        "output_evidence",
                                         "receipt_sha256",
                                         "reused",
                                     )

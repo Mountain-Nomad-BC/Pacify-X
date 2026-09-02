@@ -335,15 +335,23 @@ class CliCommandTests(unittest.TestCase):
                 }
 
             current = {
-                "schema_version": "px.test-section-chunk-receipt/1.0",
+                "schema_version": "px.test-section-chunk-receipt/1.1",
                 "section": "studio-memory-graph",
                 "chunk_id": "chunk-01",
                 "input_sha256": "1" * 64,
                 "member_count": 1,
+                "members": ["tests/test_1.py"],
                 "passed": True,
                 "exit_code": 0,
                 "timed_out": False,
                 "duration_seconds": 0.01,
+                "output_evidence": {
+                    "stdout_sha256": "0" * 64,
+                    "stdout_bytes": 0,
+                    "stderr_sha256": "0" * 64,
+                    "stderr_bytes": 0,
+                    "failure_nodes": [],
+                },
                 "receipt_sha256": "a" * 64,
             }
 
@@ -389,6 +397,16 @@ class CliCommandTests(unittest.TestCase):
             self.assertEqual(maximum_active, 2)
             self.assertTrue(result["chunk_results"][0]["reused"])
             self.assertTrue(result["section_receipt"]["passed"])
+            self.assertEqual(
+                result["section_receipt"]["chunks"][1]["members"],
+                ["tests/test_2.py"],
+            )
+            self.assertEqual(
+                result["section_receipt"]["chunks"][1]["output_evidence"][
+                    "stdout_bytes"
+                ],
+                len("chunk-02"),
+            )
 
     def test_audit_summary_bounds_large_detail_sets(self) -> None:
         report = {
