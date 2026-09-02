@@ -44,6 +44,20 @@ test('supersession cancels obsolete queued work without growing the queue', asyn
   assert.equal(governor.snapshot().metrics.superseded, 1);
 });
 
+test('active supersession preserves the governor reason over a producer-local AbortError', async () => {
+  const governor = new WorkGovernor({ pools: { background: { concurrency: 1, queueLimit: 3 } } });
+  const started = deferred();
+  const obsolete = governor.run('scan-active-a', signal => new Promise((_resolve, reject) => {
+    started.resolve();
+    signal.addEventListener('abort', () => reject(Object.assign(new Error('transport aborted'), { name: 'AbortError' })), { once: true });
+  }), { supersessionKey: 'environment-scan' });
+  await started.promise;
+  const replacement = governor.run('scan-active-b', async () => 'new', { supersessionKey: 'environment-scan' });
+  await assert.rejects(obsolete, error => error?.name === 'AbortError' && error.message === 'work-superseded');
+  assert.equal(await replacement, 'new');
+  assert.equal(governor.snapshot().metrics.superseded, 1);
+});
+
 test('repeated dependency failures open a quiet bounded circuit', async () => {
   let now = 1000;
   const governor = new WorkGovernor({ now: () => now, pools: { background: { concurrency: 1, queueLimit: 2 } } });

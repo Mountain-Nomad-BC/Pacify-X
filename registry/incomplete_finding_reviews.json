@@ -422,16 +422,6 @@
       "review_condition": "review whenever test fixture stub contracts evolve"
     },
     {
-      "id": "a1bfcac22ebbc8c0f87b",
-      "path": "runtime/dashboard_api.py",
-      "line": 91,
-      "rule": "python-pass",
-      "classification": "safe_degradation",
-      "rationale": "A malformed or stale artifact binding deliberately falls through to a live operational-ledger rebuild; the stored projection is used only by a fail-closed fallback that revokes certified and operationally complete claims.",
-      "owner": "dashboard-runtime",
-      "review_condition": "review whenever dashboard completion freshness or fallback authority changes"
-    },
-    {
       "id": "6ebefb620af1f712f118",
       "path": "runtime/studio_terminal_observer.py",
       "line": 128,

@@ -45,6 +45,31 @@ def _repository() -> Path:
     (root / "runtime").mkdir()
     (root / "runtime/version.py").write_text('VERSION = "1.2.3"\n', encoding="utf-8")
     (root / "README.md").write_text("**Current release:** v1.2.3\n", encoding="utf-8")
+    (root / "policies").mkdir()
+    (root / "policies/release-artifact-policy.json").write_text(
+        json.dumps(
+            {
+                "schema_version": "1.0",
+                "policy_version": "1.0.0",
+                "product_roots": ["policies", "runtime"],
+                "product_root_files": ["README.md", "pyproject.toml"],
+                "evidence_roots": ["evidence"],
+                "audit_roots": [],
+                "audit_root_files": [],
+                "audit_allowed_suffixes": [".json"],
+                "intermediate_names": [".git"],
+                "intermediate_name_suffixes": [],
+                "intermediate_suffixes": [".tmp"],
+                "control_output_paths": ["registry/control.json"],
+                "control_output_prefixes": [
+                    ".engineering-bootstrap/test-evidence/"
+                ],
+                "evidence_allowed_suffixes": [".json", ".xml"],
+                "unclassified_policy": "fail_closed",
+            }
+        ),
+        encoding="utf-8",
+    )
     _run(root, "git", "add", ".")
     _run(root, "git", "commit", "-qm", "release source")
     _run(root, "git", "tag", "-a", "v1.2.3", "-m", "release 1.2.3")
@@ -64,6 +89,47 @@ def test_dirty_tree_fails_before_release_staging() -> None:
     (root / "dirty.txt").write_text("dirty\n", encoding="utf-8")
     result = capture_git_identity(root, version="1.2.3")
     assert not result["valid"] and result["dirty"]
+
+
+def test_governed_control_progress_does_not_revoke_tagged_source() -> None:
+    root = _repository()
+    control = root / "registry/control.json"
+    control.parent.mkdir()
+    control.write_text('{"sequence":1}\n', encoding="utf-8")
+    receipt = root / ".engineering-bootstrap/test-evidence/groups/core.json"
+    receipt.parent.mkdir(parents=True)
+    receipt.write_text('{"passed":true}\n', encoding="utf-8")
+    result = capture_git_identity(root, version="1.2.3")
+    assert result["valid"], result["errors"]
+    assert result["worktree_dirty"] is True
+    assert result["dirty"] is False
+    assert result["dirty_paths"] == []
+    assert result["mutable_control_paths"] == [
+        ".engineering-bootstrap/test-evidence/groups/core.json",
+        "registry/control.json",
+    ]
+
+
+def test_product_change_still_revokes_tagged_source_with_control_progress() -> None:
+    root = _repository()
+    control = root / "registry/control.json"
+    control.parent.mkdir()
+    control.write_text('{"sequence":1}\n', encoding="utf-8")
+    (root / "runtime/version.py").write_text('VERSION = "9.9.9"\n', encoding="utf-8")
+    result = capture_git_identity(root, version="1.2.3")
+    assert not result["valid"] and result["dirty"]
+    assert result["dirty_paths"] == ["runtime/version.py"]
+    assert result["mutable_control_paths"] == ["registry/control.json"]
+
+
+def test_invalid_evidence_payload_revokes_tagged_source() -> None:
+    root = _repository()
+    payload = root / "evidence/execute.py"
+    payload.parent.mkdir()
+    payload.write_text("raise SystemExit(1)\n", encoding="utf-8")
+    result = capture_git_identity(root, version="1.2.3")
+    assert not result["valid"] and result["dirty"]
+    assert any("classification is invalid" in item for item in result["errors"])
 
 
 def test_wrong_repository_identity_fails() -> None:
@@ -109,7 +175,6 @@ def test_readme_release_projection_is_generated() -> None:
 
 def test_git_tree_change_during_run_aborts_certification() -> None:
     root = _repository()
-    (root / "policies").mkdir()
     (root / "policies/release-artifact-policy.json").write_text(
         json.dumps(
             {

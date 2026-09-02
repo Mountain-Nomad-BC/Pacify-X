@@ -350,6 +350,8 @@ test('environment map is compact, lazy, semantic, and never activates arbitrary 
   assert.match(discovery, /expected_inputs/);
   assert.match(discovery, /known_conflicts/);
   assert.doesNotMatch(discovery, /extensions\.getExtension\([^)]*\)\.activate/);
+  assert.match(extension, /message\?\.type === 'refreshEnvironment' && error\?\.name === 'AbortError' && detail === 'work-superseded'[\s\S]*environment-refresh-superseded[\s\S]*return;/);
+  assert.match(extension, /const requireFresh = reason\.startsWith\('extension-lifecycle-'\) \|\| reason\.startsWith\('environment-lifecycle-'\)/);
 });
 
 test('extension installation has an exact governed request, native approval, dispatch, and reconciliation path', () => {

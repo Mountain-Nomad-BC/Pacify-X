@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import runtime.host_boundaries as host_boundaries
 from runtime.host_boundaries import skill_host_boundary, startup_attribution
 
 
@@ -66,6 +67,44 @@ def test_startup_attribution_separates_host_owners_and_px(tmp_path: Path) -> Non
     assert next(
         row for row in report["milestones"] if row["id"] == "openai.codex.first-usable-tool"
     )["status"] == "host-marker-not-emitted"
+
+
+def test_startup_attribution_parses_timestamps_only_for_matching_markers(
+    tmp_path: Path, monkeypatch
+) -> None:
+    session = tmp_path / "20260816T120000"
+    exthost = session / "window1" / "exthost"
+    codex = exthost / "openai.chatgpt"
+    codex.mkdir(parents=True)
+    irrelevant = [
+        f"2026-08-16 12:00:00.{index % 1000:03d} [info] unrelated host noise {index}"
+        for index in range(5_000)
+    ]
+    (exthost / "exthost.log").write_text(
+        "\n".join([
+            "2026-08-16 12:00:00.000 [info] Extension host with pid 1 started",
+            *irrelevant,
+            "2026-08-16 12:00:01.000 [info] Eager extensions activated",
+        ]),
+        encoding="utf-8",
+    )
+    (codex / "Codex.log").write_text(
+        "2026-08-16 12:00:00.400 [info] Activating Codex extension\n",
+        encoding="utf-8",
+    )
+    calls = 0
+    original = host_boundaries._timestamp
+
+    def counted(line: str):
+        nonlocal calls
+        calls += 1
+        return original(line)
+
+    monkeypatch.setattr(host_boundaries, "_timestamp", counted)
+    report = startup_attribution(tmp_path)
+
+    assert report["available"] is True
+    assert calls < 40
 
 
 def test_skill_host_boundary_reports_global_vendor_gap_without_claiming_control(

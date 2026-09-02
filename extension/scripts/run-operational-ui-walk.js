@@ -925,6 +925,16 @@ async function reopenPacifyDashboardFromOwnedUi(workbench, frameHost = null, tim
             sampleBudget,
             'installed-dashboard-reopen-stability-instrument'
           ).catch(() => false);
+        if (stable) {
+          const state = await frameHost.evaluate(frame => {
+            const document = frame.contentDocument;
+            return {
+              canonical: Boolean(document?.querySelector('[data-surface="dashboard"]') && document?.querySelector('[data-surface="agents"]')),
+              connected: !document?.querySelector('#app')?.classList.contains('disconnected')
+            };
+          }, undefined, { timeout: sampleBudget }).catch(() => ({ canonical: false, connected: false }));
+          stable = state.canonical === true && state.connected === true;
+        }
         if (!stable) break;
       }
       if (stable) return { owner: lastOwner, executed: true, reconstructed: true, stability_samples: 2 };
@@ -1042,6 +1052,13 @@ async function resetInstalledDashboardBaseline(workbench, frameHost, timeoutMs =
   }
 }
 
+function installedDashboardRestartIdentity(state) {
+  return state?.document_ready === true
+    && state?.canonical_dashboard_dom === true
+    && state?.connected === true
+    && state?.restarted === true;
+}
+
 async function restartInstalledDashboardWebview(frameHost, timeoutMs = 30_000) {
   const before = await frameHost.evaluate(frame => Number(frame.contentWindow?.performance?.timeOrigin || 0));
   const workbench = frameHost.page();
@@ -1054,23 +1071,41 @@ async function restartInstalledDashboardWebview(frameHost, timeoutMs = 30_000) {
   await dashboardTab.waitFor({ state: 'visible', timeout: 30_000 });
   await dashboardTab.click();
   const deadline = Date.now() + timeoutMs;
+  const disconnectedRecoveryDelayMs = Math.max(1_000, Math.min(5_000, Math.floor(timeoutMs / 4)));
+  let disconnectedSince = null;
   let state = null;
   do {
     try {
       state = await frameHost.evaluate((frame, previousTimeOrigin) => {
         const inner = frame.contentWindow; const document = frame.contentDocument;
-        const text = String(document?.body?.innerText || '');
         return {
-          ready: document?.readyState === 'complete' && /PACIFY-X\s*\/\s*DASHBOARD/i.test(text),
+          document_ready: document?.readyState === 'complete',
+          canonical_dashboard_dom: Boolean(
+            document?.querySelector('[data-surface="dashboard"]')
+              && document?.querySelector('[data-surface="agents"]')
+          ),
           connected: !document?.querySelector('#app')?.classList.contains('disconnected'),
           time_origin: Number(inner?.performance?.timeOrigin || 0),
           restarted: Number(inner?.performance?.timeOrigin || 0) > 0
             && Number(inner?.performance?.timeOrigin || 0) !== previousTimeOrigin
         };
       }, before);
-      if (state.ready && state.connected && state.restarted) {
+      if (installedDashboardRestartIdentity(state)) {
         if (!await instrumentInstalledBridge(frameHost)) throw new Error('installed-dashboard-webview-restart-bridge-unavailable');
         return { before_time_origin: before, after_time_origin: state.time_origin, restarted: true, reconstructed: true };
+      }
+      const canonicalRestartDisconnected = state.document_ready === true
+        && state.canonical_dashboard_dom === true
+        && state.restarted === true
+        && state.connected === false;
+      if (canonicalRestartDisconnected) disconnectedSince ??= Date.now();
+      else disconnectedSince = null;
+      if (disconnectedSince !== null && Date.now() - disconnectedSince >= disconnectedRecoveryDelayMs) {
+        const remaining = deadline - Date.now();
+        if (remaining > 5_000) {
+          const recovery = await restartOwnedWorkbenchWindow(workbench, frameHost, remaining, { conflictSafeReconstruction: true });
+          return { ...recovery, webview_before_time_origin: before, recovery: 'owned-workbench-reconstruction-after-disconnect' };
+        }
       }
     } catch { /* the active frame is expected to rematerialize while reloading */ }
     await wait(150);
@@ -1085,15 +1120,21 @@ async function reloadInstalledDashboardWebview(frameHost, timeoutMs = 30_000) {
   let state = null;
   do {
     try {
-      state = await frameHost.evaluate((frame, previousTimeOrigin) => ({
-        ready: frame.contentDocument?.readyState === 'complete'
-          && /PACIFY-X\s*\/\s*DASHBOARD/i.test(String(frame.contentDocument?.body?.innerText || '')),
-        connected: !frame.contentDocument?.querySelector('#app')?.classList.contains('disconnected'),
-        time_origin: Number(frame.contentWindow?.performance?.timeOrigin || 0),
-        restarted: Number(frame.contentWindow?.performance?.timeOrigin || 0) > 0
-          && Number(frame.contentWindow?.performance?.timeOrigin || 0) !== previousTimeOrigin
-      }), before);
-      if (state.ready && state.connected && state.restarted) {
+      state = await frameHost.evaluate((frame, previousTimeOrigin) => {
+        const document = frame.contentDocument;
+        return {
+          document_ready: document?.readyState === 'complete',
+          canonical_dashboard_dom: Boolean(
+            document?.querySelector('[data-surface="dashboard"]')
+              && document?.querySelector('[data-surface="agents"]')
+          ),
+          connected: !document?.querySelector('#app')?.classList.contains('disconnected'),
+          time_origin: Number(frame.contentWindow?.performance?.timeOrigin || 0),
+          restarted: Number(frame.contentWindow?.performance?.timeOrigin || 0) > 0
+            && Number(frame.contentWindow?.performance?.timeOrigin || 0) !== previousTimeOrigin
+        };
+      }, before);
+      if (installedDashboardRestartIdentity(state)) {
         if (!await instrumentInstalledBridge(frameHost)) throw new Error('installed-dashboard-reload-bridge-unavailable');
         return { before_time_origin: before, after_time_origin: state.time_origin, restarted: true };
       }
@@ -2726,6 +2767,47 @@ async function restartOwnedWorkbenchWindow(workbench, frameHost, timeoutMs = 60_
   };
 }
 
+async function restartOwnedExtensionHostCatalog(workbench, frameHost, timeoutMs = 60_000, options = {}) {
+  const deadline = Date.now() + timeoutMs;
+  if (options.physicalExtensionId) {
+    await waitForOwnedPhysicalExtensionVersion(
+      options.physicalExtensionId,
+      options.expectedPhysicalVersion ?? null,
+      Math.max(1, Math.min(20_000, deadline - Date.now()))
+    );
+  }
+  const restart = await executeWorkbenchCommand(workbench, 'Developer: Restart Extension Host');
+  if (restart.executed !== true) throw new Error('owned-extension-host-restart-not-dispatched');
+  // The native extension service may finish its filesystem mutation before the
+  // current extension host catalog changes. Restart that catalog explicitly,
+  // discard the dashboard owned by the prior host, and require the Pacify-X
+  // command contributed by the new host before inspecting inventory again.
+  await wait(750);
+  const restoredDashboardTabsClosed = await closeOwnedDashboardTabs(
+    workbench,
+    Math.max(1, Math.min(15_000, deadline - Date.now()))
+  );
+  await executeWorkbenchCommand(workbench, 'Pacify-X: Open Storage & Cleanup Manager');
+  const remaining = deadline - Date.now();
+  if (remaining <= 0) throw new Error('owned-extension-host-dashboard-reconstruction-budget-exhausted');
+  const reopened = await reopenPacifyDashboardFromOwnedUi(workbench, frameHost, remaining);
+  if (reopened.reconstructed !== true) throw new Error('owned-extension-host-dashboard-reconstruction-unobserved');
+  const refresh = await requestInstalledRefreshBound(frameHost, Math.max(1, Math.min(20_000, deadline - Date.now())));
+  await waitForInstalledSnapshot(
+    frameHost,
+    refresh.responses,
+    snapshot => snapshot?.connected === true,
+    Math.max(1, Math.min(30_000, deadline - Date.now())),
+    refresh.request
+  );
+  return {
+    restarted: true,
+    reconstructed: true,
+    extension_host_catalog_restarted: true,
+    restored_dashboard_tabs_closed: restoredDashboardTabsClosed
+  };
+}
+
 function installedWorkbenchCommandSpec(control) {
   return INSTALLED_SAFE_WORKBENCH_COMMANDS[String(control?.control_id || '')] || null;
 }
@@ -4176,6 +4258,18 @@ async function settleInstalledEnvironmentRecord(frameHost, expectedIdentity, tim
 
 async function runInstalledEnterpriseProfile(workbench, frameHost, matrix, timeoutMs = 45_000) {
   const observation = { controls: {}, errors: [] };
+  try {
+    const refresh = await requestInstalledRefreshBound(frameHost, Math.min(timeoutMs, 20_000));
+    await waitForInstalledSnapshot(
+      frameHost,
+      refresh.responses,
+      snapshot => snapshot?.connected === true && Array.isArray(snapshot?.enterprise?.packs) && snapshot.enterprise.packs.length > 0,
+      timeoutMs,
+      refresh.request
+    );
+  } catch (error) {
+    observation.errors.push(`enterprise-snapshot:${String(error?.message || error).slice(0, 1200)}`);
+  }
   for (const route of ['agents', 'skillsTools']) {
     const prefix = route === 'agents' ? 'pxui.agents' : 'pxui.skills-tools';
     const toggleId = `${prefix}.action.enterprisePackToggle.row`;
@@ -7842,11 +7936,25 @@ async function runInstalledProjectsProfile(workbench, frameHost, matrix, timeout
       const responses = await frameHost.evaluate((frame, after) => (frame.contentWindow?.__PX_INSTALLED_RESPONSES__ || []).slice(after), before);
       observation.build_result = responses.find(value => value?.type === 'graphBuildResult')?.result || observation.build_result;
       const snapshot = responses.filter(value => value?.type === 'snapshot').at(-1)?.snapshot || null;
-      if (observation.build_result && projectMapIdentity(snapshot)) { observation.before_restart = snapshot.project; break; }
+      if (observation.build_result) {
+        if (projectMapIdentity(snapshot)) observation.before_restart = snapshot.project;
+        break;
+      }
       const failure = responses.find(value => value?.type === 'operationError');
       if (failure) throw new Error(`project-map-build-failed:${failure.error}`);
       await wait(150);
     } while (Date.now() < deadline);
+    if (observation.build_result && !projectMapIdentity({ project: observation.before_restart })) {
+      const refresh = await requestInstalledRefreshBound(frameHost, Math.min(timeoutMs, 30_000));
+      const snapshot = await waitForInstalledSnapshot(
+        frameHost,
+        refresh.responses,
+        candidate => Boolean(projectMapIdentity(candidate)),
+        Math.min(timeoutMs, 45_000),
+        refresh.request
+      );
+      observation.before_restart = snapshot.project;
+    }
     if (!observation.build_result || !projectMapIdentity({ project: observation.before_restart })) throw new Error('project-map-build-or-authoritative-snapshot-timeout');
     const expected = projectMapIdentity({ project: observation.before_restart });
     const restart = await restartInstalledDashboardWebview(frameHost, 45_000);
@@ -8482,8 +8590,8 @@ async function runInstalledCleanupProfile(workbench, frameHost, matrix, timeoutM
     await frameHost.evaluate(frame => {
       const document = frame.contentDocument; document?.querySelector('[data-action="closeModal"]')?.click();
       const toggle = document?.querySelector('[data-action="toggleAdvanced"]'); if (toggle && toggle.getAttribute('aria-expanded') !== 'true') toggle.click();
-      document?.querySelector('[data-surface="runtimeCore"]')?.click();
     });
+    await navigateInstalledSurface(frameHost, 'runtimeCore', Math.min(timeoutMs, 30_000));
     await waitForKnowledgeControl(frameHost, '[data-action="cleanupManager"]');
     const beforeScan = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
     await frameHost.evaluate(frame => frame.contentDocument.querySelector('[data-action="cleanupManager"]').click());
@@ -8545,8 +8653,8 @@ async function runInstalledCleanupProfile(workbench, frameHost, matrix, timeoutM
     await frameHost.evaluate(frame => {
       const document = frame.contentDocument;
       const toggle = document?.querySelector('[data-action="toggleAdvanced"]'); if (toggle && toggle.getAttribute('aria-expanded') !== 'true') toggle.click();
-      document?.querySelector('[data-surface="runtimeCore"]')?.click();
     });
+    await navigateInstalledSurface(frameHost, 'runtimeCore', Math.min(timeoutMs, 30_000));
     await waitForKnowledgeControl(frameHost, '[data-action="cleanupManager"]');
     if (!permanentFixture || !permanentFixture.startsWith(`${disposableEngine}${path.sep}`) || fs.existsSync(permanentFixtureParent)) throw new Error('cleanup-permanent-fixture-unavailable');
     fs.mkdirSync(permanentFixture, { recursive: true });
@@ -8990,14 +9098,11 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
     const receiptPending = validPendingPluginMutationReceipt(spec.receiptAction, result, extensionId, spec.exactTarget);
     if (!receiptComplete && !receiptPending) throw new Error(`plugin-${spec.name}-receipt-invalid:${JSON.stringify(result)}`);
     await frameHost.evaluate(frame => frame.contentDocument?.querySelector('[data-action="closeModal"]')?.click()).catch(() => {});
-    // Pending receipts require a full workbench reload to invalidate VS Code's
-    // extension inventory cache. Installed operational walks use a normal owned
-    // host, so this cannot terminate an extension-test runner.
-    // VS Code can acknowledge uninstall before its extension-service inventory
-    // cache converges. Reconstruct the owned workbench for every uninstall,
-    // including an initially complete receipt, before asserting physical
-    // absence. Other complete lifecycle receipts can use a webview restart.
-    const requiresWorkbenchReconstruction = receiptPending || spec.receiptAction === 'uninstall';
+    // A lifecycle receipt proves the native operation result, not that VS Code's
+    // extension-service cache or unrelated extension webviews remained connected.
+    // Reconstruct the owned workbench after every admitted lifecycle mutation
+    // before asserting the physical extension inventory.
+    const requiresWorkbenchReconstruction = ['install', 'update', 'uninstall', 'rollback'].includes(spec.receiptAction);
     const restart = requiresWorkbenchReconstruction
       ? await restartOwnedWorkbenchWindow(workbench, frameHost, 75_000, {
           conflictSafeReconstruction: true,
@@ -9011,7 +9116,7 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
     const observedVersion = await currentVersion(spec.expectedVersion);
     const physicallyReconciled = receiptComplete || (receiptPending && observedVersion === spec.expectedVersion);
     if (!physicallyReconciled) throw new Error(`plugin-${spec.name}-pending-receipt-not-reconciled:${JSON.stringify({ expected: spec.expectedVersion, observed: observedVersion })}`);
-    observation.operations.push({ name: spec.name, preview, result, observed_version: observedVersion, receipt_state: receiptComplete ? 'reconciled' : 'physically-reconciled-after-pending', webview_restarted: true, workbench_reloaded: requiresWorkbenchReconstruction });
+    observation.operations.push({ name: spec.name, preview, result, observed_version: observedVersion, receipt_state: receiptComplete ? 'reconciled' : 'physically-reconciled-after-pending', webview_restarted: true, workbench_reloaded: requiresWorkbenchReconstruction, catalog_reconstruction: requiresWorkbenchReconstruction ? 'owned-workbench-window' : 'dashboard-webview' });
     return result;
   };
 
@@ -9099,7 +9204,7 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
     }
     const result = (await waitForResponse(executeBefore, 'extensionConflictResolutionResult', 'extensionConflictResolutionExecute')).result;
     if (result?.schema_version !== 'px.extension-conflict-resolution-receipt/1.0' || result.action !== 'conflict-resolution' || result.signal_id !== signal.signal_id || result.target_extension_id !== extensionId || result.resolution !== 'inspect' || result.status !== 'exact-native-record-opened' || result.mutation_dispatched !== false) throw new Error(`plugin-conflict-route-result-invalid:${JSON.stringify(result)}`);
-    await executeWorkbenchCommand(workbench, INSTALLED_SAFE_WORKBENCH_COMMANDS['pxui.dashboard-control-plane.command.pacifyX.openDashboard'].title);
+    await executeWorkbenchCommand(workbench, 'Pacify-X: Open Storage & Cleanup Manager');
     await waitForKnowledgeControl(frameHost, '[data-surface="plugins"]');
     const restart = await restartInstalledDashboardWebview(frameHost, 45_000);
     observation.webview_restart_count += restart.restarted === true ? 1 : 0;
@@ -9453,7 +9558,7 @@ function reversibleConfigurationRecord(requirement, observation) {
   };
 }
 
-function partitionExpectedFaultDiagnostics(hostErrors, reversibleConfigurationProfile, hostBoundaryProfile, ownedExternalNetworkDenied = process.env.PX_OWNED_EXTERNAL_NETWORK_DENIED === '1', observationStateProfile = null) {
+function partitionExpectedFaultDiagnostics(hostErrors, reversibleConfigurationProfile, hostBoundaryProfile, ownedExternalNetworkDenied = process.env.PX_OWNED_EXTERNAL_NETWORK_DENIED === '1', observationStateProfile = null, nativeProfiles = null) {
   const completeProfile = profile => {
     const records = Array.isArray(profile?.records) ? profile.records : [];
     return Number(profile?.eligible_control_count || 0) > 0
@@ -9476,6 +9581,15 @@ function partitionExpectedFaultDiagnostics(hostErrors, reversibleConfigurationPr
           && record.interaction_chain.recovery_rollback.evidence.length > 0)))
     .map(record => hostBoundaryOperations.get(record.control_id))
     .filter(Boolean));
+  const enterpriseControls = Object.values(nativeProfiles?.enterprise?.observation?.controls || {});
+  const projectCancellations = Object.values(nativeProfiles?.projects?.observation?.cancelled_controls || {});
+  const expectedNativeCancellation = enterpriseControls.length === 5
+    && enterpriseControls.every(control => control?.completed === true && control?.cancelled_without_effect === true && (!Array.isArray(control.errors) || control.errors.length === 0))
+    && projectCancellations.length === 3
+    && projectCancellations.every(Boolean)
+    && nativeProfiles?.projects?.observation?.completed === true
+    && nativeProfiles?.cleanup?.observation?.completed === true
+    && nativeProfiles.cleanup.observation.permanent_refused_without_authorization === true;
   const retained = [];
   const recovered = [];
   for (const diagnostic of hostErrors) {
@@ -9496,14 +9610,29 @@ function partitionExpectedFaultDiagnostics(hostErrors, reversibleConfigurationPr
     const expectedExternalHostWarning = isExternalVsCodeMermaidToolDiagnostic(diagnostic)
       || isExternalOwnedFixtureMarketplaceDiagnostic(diagnostic);
     const graphLoadAll = observationStateProfile?.observations?.['pxui.knowledge-graph.action.graphLoadAll'];
-    const expectedGraphCancellation = message === 'Pacify-X graphQuery failed closed: work-superseded'
+    const focusedProjectCancellations = Object.values(nativeProfiles?.projects?.observation?.cancelled_controls || {});
+    const focusedGraphRecovery = focusedProjectCancellations.length === 3
+      && focusedProjectCancellations.every(Boolean)
+      && nativeProfiles?.projects?.observation?.completed === true
+      && nativeProfiles.projects.observation.exact_reconstruction === true
+      && nativeProfiles?.knowledgeGraph?.observation?.completed === true
+      && nativeProfiles.knowledgeGraph.observation.exact_reconstruction === true
+      && nativeProfiles.knowledgeGraph.observation.restored === true;
+    const expectedGraphCancellation = [
+      'Pacify-X graphQuery failed closed: work-superseded',
+      'Pacify-X graphQuery failed closed: Pacify-X dashboard API request was superseded.'
+    ].includes(message)
       && /workbench\.desktop\.main\.js/i.test(context)
-      && graphLoadAll?.attempted === true
-      && graphLoadAll?.cancelled === true
-      && graphLoadAll?.recovered === true
-      && graphLoadAll?.completed === true;
-    if (diagnostic?.source === 'console' && (expectedConfigurationFault || expectedHostActionFault || expectedExternalNetworkDenial || expectedExternalHostWarning || expectedGraphCancellation)) {
-      recovered.push({ ...diagnostic, disposition: expectedExternalHostWarning ? 'expected_external_host_warning' : expectedExternalNetworkDenial ? 'expected_owned_external_network_denial' : expectedGraphCancellation ? 'expected_graph_cancellation_recovered' : 'expected_owned_fault_recovered' });
+      && ((graphLoadAll?.attempted === true
+        && graphLoadAll?.cancelled === true
+        && graphLoadAll?.recovered === true
+        && graphLoadAll?.completed === true)
+        || focusedGraphRecovery);
+    const expectedNativeHostCancellation = message === 'Canceled'
+      && /workbench\.desktop\.main\.js/i.test(context)
+      && expectedNativeCancellation;
+    if (diagnostic?.source === 'console' && (expectedConfigurationFault || expectedHostActionFault || expectedExternalNetworkDenial || expectedExternalHostWarning || expectedGraphCancellation || expectedNativeHostCancellation)) {
+      recovered.push({ ...diagnostic, disposition: expectedExternalHostWarning ? 'expected_external_host_warning' : expectedExternalNetworkDenial ? 'expected_owned_external_network_denial' : expectedGraphCancellation ? 'expected_graph_cancellation_recovered' : expectedNativeHostCancellation ? 'expected_native_dialog_cancellation_recovered' : 'expected_owned_fault_recovered' });
     } else retained.push(diagnostic);
   }
   return { retained, recovered };
@@ -10059,7 +10188,7 @@ async function main() {
     // Another eager extension can steal editor focus while the command is
     // activating. Select the exact PX tab before VS Code materializes its
     // non-retained webview iframe, and keep failure specificity if it is absent.
-    await dashboardTab.waitFor({ state: 'visible', timeout: 30_000 });
+    await dashboardTab.waitFor({ state: 'visible', timeout: 90_000 });
     await dashboardTab.click();
 
     const dashboard = await waitForOwnedWebview(workbench, text => /PACIFY-X\s*\/\s*DASHBOARD/i.test(text), 90_000);
@@ -10337,7 +10466,12 @@ async function main() {
       enterpriseProfile.control_probe,
       validationProfile.control_probe
     ]);
-    const faultDiagnostics = partitionExpectedFaultDiagnostics(hostErrors, reversibleConfigurationProfile, hostBoundaryProfile.control_probe, undefined, observationStateProfile);
+    const faultDiagnostics = partitionExpectedFaultDiagnostics(hostErrors, reversibleConfigurationProfile, hostBoundaryProfile.control_probe, undefined, observationStateProfile, {
+      enterprise: enterpriseProfile,
+      projects: projectsProfile,
+      knowledgeGraph: knowledgeGraphProfile,
+      cleanup: cleanupProfile
+    });
     if (ownedReversibleConfigurationAuthority && installedSourceIdentityNeedsLateRefresh(installedIdentity)) {
       installedIdentity = await refreshInstalledSourceIdentity(dashboard, installedIdentity, 45_000, 'request-bound-late');
       hostSourceMismatch = installedIdentity.state === 'mismatch';
@@ -10494,6 +10628,7 @@ module.exports = {
   installedSurfaceControlAcknowledged, installedWorkbenchCommandSpec, installedWorkbenchAuthorityBoundarySpec, instrumentInstalledBridge, knowledgeBrowseHasHead, knowledgeGraphControlProbe,
   knowledgeLifecycleControlProbe, learningLifecycleControlProbe, nativeWorkbenchKeyboardActionAdmitted, nativeWorkbenchKeyboardFallbackAdmitted,
   nativeWorkbenchRequestFallbackAdmitted, ownedCleanupCandidate, ownedWorkbenchReloadIdentity, reacquirableOwnedFrameError,
+  installedDashboardRestartIdentity,
   pluginMutationControlProbe, pluginReadControlProbe,
   partitionExpectedFaultDiagnostics, prepareInstalledControl, probeInstalledControls, probeInstalledSidebarControls, probeInstalledWorkbenchCommands,
   openWorkbenchCommandPalette, projectMapIdentity, projectsControlProbe, reopenPacifyDashboardFromOwnedUi, revealInstalledControl, revealInstalledHostBoundaryControl, runInstalledCleanupProfile, settleInstalledSurfaceControl,

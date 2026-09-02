@@ -113,28 +113,42 @@ def build(
     instruction_requirements_complete = bool(
         instruction.get("completion_claim", {}).get("complete")
     )
-    ledger_path = root / "registry/operational_gap_ledger.snapshot.json"
+    ledger_path = root / "registry/operational_gap_ledger.head.json"
     ledger_error: str | None = None
     try:
-        from runtime.operational_gap_ledger import read_snapshot
+        from runtime.operational_gap_ledger import read_head, read_snapshot
 
-        operational_ledger = read_snapshot(root)
+        operational_head = read_head(root)
+        dashboard = operational_head.get("dashboard", {})
+        if not isinstance(dashboard, dict) or "critical_high_blocker_ids" not in dashboard:
+            # One-time compatibility for a checkpoint produced before the
+            # compact blocker index existed. The next admitted append upgrades
+            # it without rewriting the authoritative JSONL stream.
+            legacy_snapshot = read_snapshot(root)
+            legacy_cards = legacy_snapshot.get("cards", {})
+            completion_states = {"closed", "operationally_verified", "superseded"}
+            blocker_ids = sorted(
+                str(gap_id)
+                for gap_id, card in legacy_cards.items()
+                if isinstance(card, dict)
+                and str(card.get("severity", "")).casefold()
+                in {"blocker", "critical", "high"}
+                and str(card.get("current_state", "")) not in completion_states
+            )
+            dashboard = {**dict(dashboard), "critical_high_blocker_ids": blocker_ids}
+        operational_ledger = {
+            "ledger_id": operational_head.get("ledger_id"),
+            "event_count": operational_head.get("event_count"),
+            "head_event_sha256": operational_head.get("head_event_sha256"),
+            "generated_utc": operational_head.get("generated_utc"),
+            "critical_high_blocker_ids": list(dashboard.get("critical_high_blocker_ids", [])),
+        }
     except (OSError, ValueError, PermissionError, json.JSONDecodeError) as error:
         operational_ledger = {}
         ledger_error = f"{type(error).__name__}: {error}"
-    ledger_cards = operational_ledger.get("cards", {})
-    if not isinstance(ledger_cards, dict):
-        ledger_cards = {}
-        ledger_error = ledger_error or "operational ledger cards are unavailable"
-    completion_states = {"closed", "operationally_verified", "superseded"}
-    operational_blockers = sorted(
-        str(gap_id)
-        for gap_id, card in ledger_cards.items()
-        if isinstance(card, dict)
-        and str(card.get("severity", "")).casefold()
-        in {"blocker", "critical", "high"}
-        and str(card.get("current_state", "")) not in completion_states
-    )
+    operational_blockers = sorted(map(
+        str, operational_ledger.get("critical_high_blocker_ids", [])
+    ))
     operational_ledger_current = ledger_error is None and not operational_blockers
     operational_repairs_complete = not open_surface and not unknown_surface
     live_verification_complete = not live_pending_surface and not unknown_surface
@@ -203,6 +217,14 @@ def build(
     )
     evidence_identity_current = False
     evidence_identity_evaluated = False
+    engine_identity_path = root / "registry/engine_identity.json"
+    try:
+        engine_marker = json.loads(engine_identity_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        engine_marker = {}
+    engine_marker_sha256 = (
+        _sha(engine_identity_path) if engine_identity_path.is_file() else None
+    )
     if operationally_complete and not gate_blockers and evidence_receipts_current:
         from runtime.engine_identity import validate_engine_identity
 
@@ -245,6 +267,11 @@ def build(
             "source_revision": operational_ledger.get("head_event_sha256"),
             "authority_level": "non-certifying-current-state-projection",
             "marker": "current_at_generation",
+            "engine_identity": {
+                "marker_file_sha256": engine_marker_sha256,
+                "tree_sha256": engine_marker.get("tree_sha256"),
+                "file_total": engine_marker.get("file_total"),
+            },
             "invalidation_conditions": [
                 "any source-byte change",
                 "any operational-ledger event",

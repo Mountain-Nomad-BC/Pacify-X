@@ -12,6 +12,9 @@ import pytest
 
 from runtime.operational_gap_ledger import (
     PRIMARY_STATES,
+    LATEST_HISTORY_LIMIT,
+    PROJECTION_HISTORY_LIMIT,
+    WORK_HISTORY_LIMIT,
     _validate_card,
     _validate_control_observation,
     append_event,
@@ -1148,6 +1151,111 @@ def test_work_admission_binds_active_checkpoint_and_exact_effect_scope(tmp_path:
     assert snapshot["work_admissions"][-1]["gap_id"] == "PX-GAP-0001"
     assert snapshot["work_admissions"][-1]["checkpoint_event_id"] == checkpoint["event_id"]
     assert snapshot["work_admissions"][-1]["scope"] == ["runtime/operational_gap_ledger.py"]
+
+
+def test_materialized_projection_bounds_card_history_without_losing_evidence_authority(
+    tmp_path: Path,
+) -> None:
+    initialize(tmp_path)
+    append_event(tmp_path, "card_discovered", card(), actor="test")
+    for index in range(PROJECTION_HISTORY_LIMIT + 5):
+        append_event(
+            tmp_path,
+            "card_annotated",
+            {
+                "gap_id": "PX-GAP-0001",
+                "note": f"bounded history {index}",
+                "patch": {},
+                "evidence": evidence(f"history-{index}"),
+            },
+            actor="test",
+        )
+    snapshot = read_snapshot(tmp_path)
+    projected = snapshot["cards"]["PX-GAP-0001"]
+    early_target = evidence_reference_sha256(evidence("history-0")[0])
+    assert len(projected["history"]) == PROJECTION_HISTORY_LIMIT
+    assert projected["history"][0]["event"] == "discovered"
+    assert len(projected["annotations"]) == LATEST_HISTORY_LIMIT
+    assert projected["history_event_count"] == PROJECTION_HISTORY_LIMIT + 6
+    assert early_target in projected["history_evidence_sha256s"]
+    assert snapshot["projection_history"]["complete_history_in_jsonl"] is True
+    head = read_head(tmp_path)
+    assert head["dashboard"]["critical_high_blocker_ids"] == ["PX-GAP-0001"]
+    assert head["dashboard"]["critical_high_blocker_count"] == 1
+
+    append_event(
+        tmp_path,
+        "card_evidence_attested",
+        {
+            "gap_id": "PX-GAP-0001",
+            "target_evidence_sha256": early_target,
+            "artifact_sha256": "b" * 64,
+            "artifact_size": 17,
+            "verification_method": "exact fixture digest",
+            "evidence": evidence("attested after projection compaction"),
+        },
+        actor="test",
+    )
+    assert read_snapshot(tmp_path)["cards"]["PX-GAP-0001"]["evidence_attestations"][-1][
+        "target_evidence_sha256"
+    ] == early_target
+
+
+def test_materialized_projection_bounds_closed_work_history_and_rejects_reuse(
+    tmp_path: Path,
+) -> None:
+    initialize(tmp_path)
+    append_event(tmp_path, "card_discovered", card(), actor="test")
+    checkpoint = append_event(
+        tmp_path,
+        "work_checkpoint",
+        {
+            "active_gap_id": "PX-GAP-0001",
+            "learned": "Bounded work history remains exact.",
+            "next_action": "Implement a hash-bound editor sidecar.",
+            "unresolved_branch_gap_ids": [],
+            "newly_discovered_gap_ids": [],
+            "evidence": evidence("checkpoint"),
+        },
+        actor="test",
+    )
+
+    def session(index: int) -> dict[str, object]:
+        return {
+            "session_id": f"repair-session:bounded-{index}",
+            "gap_id": "PX-GAP-0001",
+            "checkpoint_event_id": checkpoint["event_id"],
+            "effect_scopes": [{"effect": "write", "scope": [f"runtime/{index}.py"]}],
+            "authority": "Exact test authority.",
+            "expected_effect": "Exercise bounded work projection.",
+            "rollback": "Close the exact disposable session.",
+            "expires_utc": "2099-01-01T00:00:00Z",
+            "evidence": evidence(f"session-{index}"),
+        }
+
+    for index in range(WORK_HISTORY_LIMIT + 3):
+        admission = append_event(
+            tmp_path, "work_admitted", session(index), actor="test"
+        )
+        append_event(
+            tmp_path,
+            "work_session_closed",
+            {
+                "gap_id": "PX-GAP-0001",
+                "session_id": f"repair-session:bounded-{index}",
+                "admission_event_id": admission["event_id"],
+                "outcome": "completed",
+                "evidence": evidence(f"closed-{index}"),
+            },
+            actor="test",
+        )
+    snapshot = read_snapshot(tmp_path)
+    assert len(snapshot["work_admissions"]) == WORK_HISTORY_LIMIT
+    assert len(snapshot["work_session_closures"]) == WORK_HISTORY_LIMIT
+    assert len(snapshot["work_session_id_sha256s"]) == WORK_HISTORY_LIMIT + 3
+    assert len(snapshot["closed_admission_event_id_sha256s"]) == WORK_HISTORY_LIMIT + 3
+    with pytest.raises(ValueError, match="session_id was already admitted"):
+        append_event(tmp_path, "work_admitted", session(0), actor="test")
 
 
 def test_work_guard_requires_exact_active_admission_event_effect_and_scope(tmp_path: Path) -> None:

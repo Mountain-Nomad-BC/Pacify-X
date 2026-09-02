@@ -6,6 +6,7 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const { createExtensionLifecycleHost } = require('../src/extensionLifecycleHost');
+const { createPhysicalExtensionCatalog } = require('../src/extensionPhysicalCatalog');
 
 function harness(initial = new Map(), manifests = new Map(), localTargets = new Map()) {
   let clock = Date.parse('2026-08-17T00:00:00Z');
@@ -144,6 +145,45 @@ test('exact update binds prior version, dispatches target, and retains rollback 
   assert.equal(receipt.after_version, '2.0.0');
   assert.equal(receipt.rollback_target, 'publisher.demo@1.2.3');
   assert.equal(receipt.reconciled, true);
+});
+
+test('lifecycle receipts reconcile update, uninstall, and rollback from physical state while the loaded catalog remains stale', async t => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'px-lifecycle-physical-'));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const writeManifest = (directory, version) => {
+    const target = path.join(root, directory); fs.mkdirSync(target, { recursive: true });
+    fs.writeFileSync(path.join(target, 'package.json'), JSON.stringify({ publisher: 'publisher', name: 'demo', version }));
+    return target;
+  };
+  const current = path.join(root, 'pacify-x.control-plane-0.6.77'); fs.mkdirSync(current);
+  fs.writeFileSync(path.join(current, 'package.json'), JSON.stringify({ publisher: 'pacify-x', name: 'control-plane', version: '0.6.77' }));
+  const v1 = writeManifest('publisher.demo-1.0.0', '1.0.0');
+  const loaded = { all: [{ id: 'publisher.demo', extensionPath: v1, packageJSON: { version: '1.0.0' }, isActive: true }] };
+  const catalog = createPhysicalExtensionCatalog({ currentExtensionPath: current, loadedExtensions: loaded });
+  const stored = new Map();
+  const host = createExtensionLifecycleHost({
+    extensions: catalog,
+    storage: { get: (key, fallback) => stored.has(key) ? stored.get(key) : fallback, update: async (key, value) => { stored.set(key, value); } },
+    commands: { executeCommand: async (command, target) => {
+      if (command === 'workbench.extensions.installExtension' && target === 'publisher.demo@2.0.0') {
+        writeManifest('publisher.demo-2.0.0', '2.0.0');
+        fs.writeFileSync(path.join(root, '.obsolete'), JSON.stringify({ 'publisher.demo-1.0.0': true }));
+      } else if (command === 'workbench.extensions.uninstallExtension' && target === 'publisher.demo') {
+        fs.writeFileSync(path.join(root, '.obsolete'), JSON.stringify({ 'publisher.demo-1.0.0': true, 'publisher.demo-2.0.0': true }));
+      } else if (command === 'workbench.extensions.installExtension' && target === 'publisher.demo@2.0.0') {
+        fs.writeFileSync(path.join(root, '.obsolete'), JSON.stringify({ 'publisher.demo-1.0.0': true, 'publisher.demo-2.0.0': false }));
+      }
+    } }
+  });
+  const update = host.previewUpdate({ extension_id: 'publisher.demo', version: '2.0.0' });
+  const updated = await host.executeUpdate(update.token, { approved: true, exact_target: update.exact_target });
+  assert.equal(updated.status, 'updated'); assert.equal(updated.after_version, '2.0.0'); assert.equal(updated.reconciled, true);
+  const uninstall = host.previewUninstall({ extension_id: 'publisher.demo' });
+  const removed = await host.executeUninstall(uninstall.token, { approved: true, exact_target: uninstall.exact_target, consumer_impact_acknowledged: false });
+  assert.equal(removed.status, 'uninstalled'); assert.equal(removed.after_version, null); assert.equal(removed.reconciled, true);
+  const rollback = host.previewRollback({ extension_id: 'publisher.demo' });
+  const restored = await host.executeRollback(rollback.token, { approved: true, exact_target: rollback.exact_target });
+  assert.equal(restored.status, 'restored'); assert.equal(restored.after_version, '2.0.0'); assert.equal(restored.reconciled, true);
 });
 
 test('update refuses absent/same/currently changed denominators and target substitution', async () => {

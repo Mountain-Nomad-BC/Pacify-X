@@ -3,12 +3,43 @@ from __future__ import annotations
 import json
 from collections import Counter
 from pathlib import Path
+from unittest.mock import patch
 
 from scripts.build_completion_status import build, write, write_runtime
 from runtime.test_profiles import group_status, section_status
 
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_completion_reads_compact_blocker_index_without_materialized_snapshot() -> None:
+    head = json.loads(
+        (ROOT / "registry/operational_gap_ledger.head.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    head["dashboard"] = {
+        **dict(head.get("dashboard", {})),
+        "critical_high_blocker_ids": ["PX-OS-1067"],
+        "critical_high_blocker_count": 1,
+    }
+    with patch(
+        "runtime.operational_gap_ledger.read_head", return_value=head
+    ), patch(
+        "runtime.operational_gap_ledger.read_snapshot",
+        side_effect=AssertionError("full materialized snapshot must stay lazy"),
+    ) as materialized:
+        generated = build(ROOT)
+    materialized.assert_not_called()
+    assert generated["current_operational_gap_ledger"][
+        "critical_high_blocker_ids"
+    ] == ["PX-OS-1067"]
+    assert len(
+        generated["projection_metadata"]["engine_identity"][
+            "marker_file_sha256"
+        ]
+    ) == 64
+    assert len(generated["projection_metadata"]["engine_identity"]["tree_sha256"]) == 64
 
 
 def test_generated_completion_status_is_current_and_does_not_overclaim() -> None:

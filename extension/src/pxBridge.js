@@ -414,7 +414,7 @@ class PxBridge {
     const args = ['-m', 'runtime.dashboard_api', 'snapshot', '--source-root', this.engineRoot];
     if (this.projectRoot) args.push('--project', this.projectRoot);
     if (this.workspaceRoot) args.push('--workspace-root', this.workspaceRoot);
-    const raw = await this.governor.run(`dashboard-snapshot:${fingerprint}`, signal => this.capture(this.pythonPath, args, { cwd: this.engineRoot, timeoutMs: 30_000, signal }), {
+    const raw = await this.governor.run(`dashboard-snapshot:${fingerprint}`, signal => this.capture(this.pythonPath, args, { cwd: this.engineRoot, timeoutMs: 60_000, signal }), {
       pool: 'background', priority: 3, reason,
       supersessionKey: 'dashboard-snapshot', circuitKey: 'dashboard-api', circuitThreshold: 3, circuitCooldownMs: 30_000
     });

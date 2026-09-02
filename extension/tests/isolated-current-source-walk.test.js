@@ -161,6 +161,16 @@ function fixture(t, { complete = true } = {}) {
   fs.writeFileSync(path.join(source, 'evidence', 'retained.json'), '{}\n');
   fs.mkdirSync(path.join(source, '.git'), { recursive: true });
   fs.writeFileSync(path.join(source, '.git', 'config'), 'must-not-copy\n');
+  fs.mkdirSync(path.join(source, '.tmp', 'retained-campaign'), { recursive: true });
+  fs.writeFileSync(path.join(source, '.tmp', 'retained-campaign', 'large-evidence.bin'), Buffer.alloc(4096, 7));
+  for (const directory of ['project-map', 'project-map-history', 'project-map-history-archives']) {
+    fs.mkdirSync(path.join(source, '.engineering-bootstrap', directory), { recursive: true });
+    fs.writeFileSync(path.join(source, '.engineering-bootstrap', directory, 'derived.bin'), Buffer.alloc(1024, 5));
+  }
+  fs.mkdirSync(path.join(source, '.venv-certify'), { recursive: true });
+  fs.writeFileSync(path.join(source, '.venv-certify', 'python.exe'), Buffer.alloc(1024, 3));
+  fs.mkdirSync(path.join(source, 'Python'), { recursive: true });
+  fs.writeFileSync(path.join(source, 'Python', 'python.exe'), Buffer.alloc(1024, 2));
   fs.mkdirSync(path.join(source, 'extension', 'node_modules', 'fixture'), { recursive: true });
   fs.writeFileSync(path.join(source, 'extension', 'node_modules', 'fixture', 'index.js'), 'must-not-copy\n');
   return { source, owned };
@@ -199,6 +209,12 @@ test('disposable engine copies current state beneath the owned root and excludes
   assert.equal(fs.lstatSync(result.root).isSymbolicLink(), false);
   assert.equal(fs.existsSync(path.join(result.root, 'evidence')), false);
   assert.equal(fs.existsSync(path.join(result.root, '.git')), false);
+  assert.equal(fs.existsSync(path.join(result.root, '.tmp')), false);
+  assert.equal(fs.existsSync(path.join(result.root, '.engineering-bootstrap', 'project-map')), false);
+  assert.equal(fs.existsSync(path.join(result.root, '.engineering-bootstrap', 'project-map-history')), false);
+  assert.equal(fs.existsSync(path.join(result.root, '.engineering-bootstrap', 'project-map-history-archives')), false);
+  assert.equal(fs.existsSync(path.join(result.root, '.venv-certify')), false);
+  assert.equal(fs.existsSync(path.join(result.root, 'Python')), false);
   assert.equal(fs.existsSync(path.join(result.root, 'extension', 'node_modules')), false);
   assert.equal(result.required_file_sha256['runtime/cli.py'], digest(path.join(source, 'runtime', 'cli.py')));
   assert.equal(result.required_file_sha256['registry/engine_identity.json'], digest(path.join(source, 'registry', 'engine_identity.json')));
@@ -213,6 +229,7 @@ test('disposable engine fails closed and reclaims its partial copy when required
 
 test('engine copy exclusion is exact and does not hide similarly named source directories', () => {
   assert.equal(excludedEnginePath('.git/objects/one'), true);
+  assert.equal(excludedEnginePath('.tmp/audit-campaign/retained.bin'), true);
   assert.equal(excludedEnginePath('extension/node_modules/pkg/index.js'), true);
   assert.equal(excludedEnginePath('evidence/retained.json'), true);
   assert.equal(excludedEnginePath('runtime/__pycache__/cli.pyc'), true);
@@ -223,10 +240,16 @@ test('engine copy exclusion is exact and does not hide similarly named source di
   assert.equal(excludedEnginePath('registry/.operational-gap-ledger.lock'), true);
   assert.equal(excludedEnginePath('registry/lock-policy.json'), false);
   assert.equal(excludedEnginePath('.engineering-bootstrap/operation-bus/wal/segment-1.jsonl'), true);
-  assert.equal(excludedEnginePath('.engineering-bootstrap/project-map/architecture-graph.json'), false);
+  assert.equal(excludedEnginePath('.engineering-bootstrap/project-map/architecture-graph.json'), true);
+  assert.equal(excludedEnginePath('.engineering-bootstrap/project-map-history/run/architecture-graph.json'), true);
+  assert.equal(excludedEnginePath('.engineering-bootstrap/project-map-history-archives/archive.zip'), true);
+  assert.equal(excludedEnginePath('.venv-certify/Scripts/python.exe'), true);
+  assert.equal(excludedEnginePath('Python/python.exe'), true);
+  assert.equal(excludedEnginePath('Python-tools/legitimate.py'), false);
   assert.equal(excludedEnginePath('.engineering-bootstrap/diagnostics-live/runtime.py'), false);
   assert.equal(excludedEnginePath('runtime/legitimate.py'), false);
   assert.equal(excludedEnginePath('docs/.git-notes.md'), false);
+  assert.equal(excludedEnginePath('docs/.tmp-notes.md'), false);
 });
 
 test('disposable engine skips linked retained diagnostics but still copies canonical source', t => {

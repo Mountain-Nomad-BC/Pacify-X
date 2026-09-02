@@ -24,6 +24,8 @@ const { initializeEnterprise, setPackEnabled, configureTarget, setExecutionPolic
 const { discoverEnvironment, readEnvironmentInventory, readEnvironmentSubject, readEnvironmentExtension, persistEnvironmentInventory, pathsFor: environmentPathsFor, optionalCurrentPathFor } = require('./discoveryManager');
 const { EnvironmentLifecycleManager } = require('./environmentLifecycleManager');
 const { createExtensionLifecycleHost } = require('./extensionLifecycleHost');
+const { createPhysicalExtensionCatalog } = require('./extensionPhysicalCatalog');
+const { createLatestDiscoveryCoordinator } = require('./latestDiscovery');
 const { CanonicalMemoryLeaseController } = require('./canonicalMemoryLease');
 const { materializeSkillPackage, readSkillPackage, reclaimMaterializedSkillPackage } = require('./studioPackage');
 const { createStudioTrustRegistry, dispatchStudioCreateMessage, exactAllocationEnvelope } = require('./studioDraftHost');
@@ -48,6 +50,7 @@ let activeRuntime;
 let environmentLifecycleState;
 let extensionLifecycleState;
 let extensionLifecycleStorage;
+let extensionPhysicalCatalogState;
 let pendingExtensionEnablementObservation;
 const activeHostRuns = new Map();
 
@@ -261,7 +264,7 @@ function environmentLifecycle() {
 }
 
 function extensionLifecycle() {
-  if (!extensionLifecycleState) extensionLifecycleState = createExtensionLifecycleHost({ commands: vscode.commands, extensions: vscode.extensions, storage: extensionLifecycleStorage, toInstallTarget: value => vscode.Uri.file(value) });
+  if (!extensionLifecycleState) extensionLifecycleState = createExtensionLifecycleHost({ commands: vscode.commands, extensions: extensionPhysicalCatalogState || vscode.extensions, storage: extensionLifecycleStorage, toInstallTarget: value => vscode.Uri.file(value) });
   return extensionLifecycleState;
 }
 
@@ -510,11 +513,11 @@ function activateImplementation(context, transaction) {
   });
   activeRuntime = { sessionId, canonicalPublisher, activated: false, disposed: false, dashboardGraph: null };
   extensionLifecycleStorage = context.globalState;
+  extensionPhysicalCatalogState = createPhysicalExtensionCatalog({ currentExtensionPath: context.extensionPath, loadedExtensions: vscode.extensions });
   let cleanupInventory;
   let publishPromise;
   let publishPromiseForce = false;
-  let discoveryPromise;
-  let discoveryController;
+  const environmentDiscovery = createLatestDiscoveryCoordinator();
   let activityPublishTimer;
   let sidebarRevisionTimer;
   let hostContextCache = null;
@@ -666,7 +669,6 @@ function activateImplementation(context, transaction) {
     clearTimeout(sidebarRevisionTimer); sidebarRevisionTimer = undefined;
     clearInterval(refreshTimer); refreshTimer = undefined;
     activityListenerGate.dispose(); activeRuntime.bridge?.dispose?.();
-    discoveryController?.abort('extension-deactivated'); discoveryController = undefined;
     canonicalPublisher.dispose();
   } };
   activeRuntime.lifecycle = runtimeLifecycle;
@@ -692,20 +694,24 @@ function activateImplementation(context, transaction) {
       if (approval !== 'Refresh and retain') return { cancelled: true, reason: 'environment-persistence-not-approved' };
       persist = true;
     }
-    if (!discoveryPromise) discoveryPromise = bridge().governor.run('environment-discovery', signal => discoverEnvironment({
-      extensions: vscode.extensions.all, projectRoot: root, engineRoot: engineRoot(),
-      pythonPath: settings().pythonPath, reason, signal, persist
-    }), {
-      pool: 'cpuWorkers', priority: notify ? 1 : 4, reason,
-      supersessionKey: 'environment-discovery', circuitKey: 'environment-discovery',
-      circuitThreshold: 3, circuitCooldownMs: 60_000, timeoutMs: 60_000
-    })
+    const requireFresh = reason.startsWith('extension-lifecycle-') || reason.startsWith('environment-lifecycle-');
+    const pending = environmentDiscovery.run(generation => {
+      const extensions = (extensionPhysicalCatalogState || vscode.extensions).all;
+      return bridge().governor.run(`environment-discovery:${generation}`, signal => discoverEnvironment({
+        extensions, projectRoot: root, engineRoot: engineRoot(),
+        pythonPath: settings().pythonPath, reason, signal, persist
+      }), {
+        pool: 'cpuWorkers', priority: notify ? 1 : 4, reason,
+        supersessionKey: 'environment-discovery', circuitKey: 'environment-discovery',
+        circuitThreshold: 3, circuitCooldownMs: 60_000, timeoutMs: 60_000
+      });
+    }, { requireFresh })
       .then(result => {
         currentEnvironment = result;
         if (currentSnapshot) { currentSnapshot.environment = result.inventory; currentSnapshot.environmentPaths = result.paths; }
         return result;
-      }).finally(() => { discoveryPromise = null; });
-    let result = await discoveryPromise;
+      });
+    let result = await pending;
     if (persist && result?.persistence === 'memory-only-read-discovery') {
       result = persistEnvironmentInventory(root, result.inventory, `${reason}-persistence-escalation`);
       currentEnvironment = result;
@@ -1750,6 +1756,10 @@ function activateImplementation(context, transaction) {
           }
         } catch (error) {
           const detail = error instanceof Error ? error.message : String(error);
+          if (message?.type === 'refreshEnvironment' && error?.name === 'AbortError' && detail === 'work-superseded') {
+            codexOutput.appendLine('[environment-refresh-superseded] A newer physical inventory refresh owns publication.');
+            return;
+          }
           const failedHostAction = hostActionTerminalRetained ? null : retainHostActionResult('failed', { error: detail });
           if (dashboardDisposed && isDisposedWebviewError(error)) {
             codexOutput.appendLine('[dashboard-operation-cancelled] Webview is disposed');
@@ -1983,7 +1993,7 @@ function activate(context) {
 
 function deactivate() {
   activeRuntime?.lifecycle?.dispose();
-  activeRuntime = undefined; currentEnvironment = undefined; environmentLifecycleState = undefined; extensionLifecycleState = undefined; extensionLifecycleStorage = undefined; pendingExtensionEnablementObservation = undefined;
+  activeRuntime = undefined; currentEnvironment = undefined; environmentLifecycleState = undefined; extensionLifecycleState = undefined; extensionLifecycleStorage = undefined; extensionPhysicalCatalogState = undefined; pendingExtensionEnablementObservation = undefined;
 }
 
 module.exports = { activate, deactivate, portableContextSnapshot, liveContextEnvelope, getHtml, actorIdentity, validationCacheKey, isDisposedWebviewError };

@@ -99,12 +99,70 @@ def _read_bounded_repository_graph(path: Path) -> tuple[Mapping[str, Any] | None
     return payload, None
 
 
-def _completion(root: Path) -> dict[str, Any]:
-    """Recompute live completion truth; use stored state only as a fallback.
+def _completion_projection_current(
+    root: Path, value: Mapping[str, Any]
+) -> tuple[bool, str]:
+    metadata = value.get("projection_metadata")
+    if not isinstance(metadata, Mapping):
+        return False, "projection metadata is absent"
+    try:
+        from .operational_gap_ledger import read_head
 
-    The registry projection is generated evidence, not an authority that may stay
-    green after the operational ledger changes.  Artifact custody can strengthen
-    the live result, but its absence must not suppress the ledger-backed rebuild.
+        head = read_head(root)
+        if metadata.get("source_revision") != head.get("head_event_sha256"):
+            return False, "operational ledger checkpoint changed"
+        expected_engine = metadata.get("engine_identity")
+        if not isinstance(expected_engine, Mapping):
+            return False, "engine identity is absent"
+        engine_marker_path = root / "registry" / "engine_identity.json"
+        marker_data = engine_marker_path.read_bytes()
+        if len(marker_data) > 32 * 1024 * 1024:
+            return False, "engine identity marker exceeds its bound"
+        current_engine = json.loads(marker_data)
+        if (
+            expected_engine.get("marker_file_sha256")
+            != hashlib.sha256(marker_data).hexdigest()
+            or expected_engine.get("tree_sha256") != current_engine.get("tree_sha256")
+            or expected_engine.get("file_total") != current_engine.get("file_total")
+        ):
+            return False, "engine identity reconciliation marker changed"
+        sources = value.get("sources")
+        if not isinstance(sources, list) or not sources or len(sources) > 64:
+            return False, "projection source inventory is invalid"
+        resolved_root = root.resolve(strict=True)
+        for item in sources:
+            if not isinstance(item, Mapping):
+                return False, "projection source entry is invalid"
+            relative = str(item.get("path") or "")
+            expected = str(item.get("sha256") or "").lower()
+            target = (resolved_root / relative).resolve(strict=True)
+            if (
+                target != resolved_root
+                and resolved_root not in target.parents
+                or target.is_symlink()
+                or not target.is_file()
+                or target.stat().st_size > 32 * 1024 * 1024
+                or not re.fullmatch(r"[0-9a-f]{64}", expected)
+            ):
+                return False, "projection source boundary is invalid"
+            digest = hashlib.sha256()
+            with target.open("rb") as handle:
+                while chunk := handle.read(1024 * 1024):
+                    digest.update(chunk)
+            if digest.hexdigest() != expected:
+                return False, f"projection source changed: {relative}"
+    except (ImportError, OSError, ValueError, json.JSONDecodeError):
+        return False, "projection authority could not be verified"
+    return True, "stored projection is checkpoint and source bound"
+
+
+def _completion(root: Path) -> dict[str, Any]:
+    """Read the generated projection and verify it without rebuilding gates.
+
+    Section/group resolution is a certification owner, not interactive refresh
+    work.  The dashboard verifies the stored projection against its exact
+    ledger, source-file, and engine identities and revokes every green claim on
+    any mismatch.
     """
     baseline = _read_json(root / "registry" / "completion_status.json", {})
     baseline = dict(baseline) if isinstance(baseline, Mapping) else {}
@@ -115,32 +173,31 @@ def _completion(root: Path) -> dict[str, Any]:
         / "completion_status.json"
     )
     runtime_value = _read_json(runtime_path, {})
-    artifact_dir: Path | None = None
-    if isinstance(runtime_value, Mapping):
-        runtime_projection = runtime_value.get("runtime_projection", {})
-        artifact_value = (
-            runtime_projection.get("artifact_dir")
-            if isinstance(runtime_projection, Mapping)
-            else None
-        )
-        if isinstance(artifact_value, str) and artifact_value.strip():
-            artifact_dir = Path(artifact_value)
-    try:
-        from scripts.build_completion_status import build
-
-        if artifact_dir is not None:
-            try:
-                return dict(build(root, artifact_dir=artifact_dir))
-            except (OSError, ValueError, json.JSONDecodeError):
-                # A malformed derived binding cannot preserve a prior claim.
-                pass
-        return dict(build(root))
-    except (ImportError, OSError, ValueError, json.JSONDecodeError):
-        fallback = dict(baseline)
-        fallback["projection_freshness"] = "stored_fallback_unverified"
-        fallback["certified"] = False
-        fallback["operationally_complete"] = False
-        return fallback
+    candidate = (
+        dict(runtime_value)
+        if isinstance(runtime_value, Mapping)
+        and isinstance(runtime_value.get("runtime_projection"), Mapping)
+        else baseline
+    )
+    current, reason = _completion_projection_current(root, candidate)
+    candidate["projection_freshness"] = (
+        "stored_checkpoint_verified" if current else "stored_checkpoint_stale"
+    )
+    candidate["projection_freshness_reason"] = reason
+    if current:
+        return candidate
+    candidate["complete"] = False
+    candidate["certified"] = False
+    candidate["operationally_complete"] = False
+    freshness = candidate.get("certification_freshness")
+    if isinstance(freshness, Mapping):
+        candidate["certification_freshness"] = {**dict(freshness), "fresh": False}
+    blocking = list(candidate.get("blocking_reasons") or [])
+    marker = f"stored completion projection is stale: {reason}"
+    if marker not in blocking:
+        blocking.append(marker)
+    candidate["blocking_reasons"] = blocking
+    return candidate
 
 
 def _git(root: Path, *args: str) -> str | None:
@@ -2256,7 +2313,7 @@ def build_snapshot(
         domains=("dashboard", "runtime"),
         lane="interactive",
         cache_seconds=0,
-        timeout_seconds=30.0,
+        timeout_seconds=60.0,
         authoritative=False,
     )
     result = dict(work["result"])

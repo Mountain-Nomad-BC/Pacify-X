@@ -1,5 +1,68 @@
 # Changelog
 
+## 0.6.81
+
+- Limit forced environment-discovery supersession to state-changing extension and environment lifecycle refreshes; settled manual and read observations coalesce on the current physical denominator.
+
+## 0.6.80
+
+- Contain expected refresh supersession before generic webview failure publication while preserving fail-closed handling for real errors.
+- Reconstruct the dashboard after deliberate command-conflict inspection through the non-conflicting cleanup-manager command.
+
+## 0.6.79
+
+- Give every coordinator-started environment discovery a unique governed work key so freshness-required requests reach the existing supersession boundary instead of joining stale work.
+- Prove the extension-change to physical-refresh race against the real work governor, including cancellation and late-settlement ownership.
+
+## 0.6.78
+
+- Supersede stale extension-change discovery when a manual or post-lifecycle refresh requires a current physical extension denominator.
+- Bind discovery single-flight cleanup to the promise that owns the active slot so late settlement cannot erase replacement work.
+
+## 0.6.77
+
+- Reconcile extension install, update, uninstall, and rollback against the bounded physical extension catalog while retaining loaded activation metadata only for an exact version match.
+- Fail closed on ambiguous physical identities, obsolete-catalog corruption, oversized manifests, and linked extension entries.
+- Use the same current physical identity for governed lifecycle receipts and environment discovery.
+
+## 0.6.76
+
+- Reconstruct the complete owned VS Code workbench catalog after every admitted extension install, update, uninstall, and rollback before asserting exact dashboard inventory.
+
+## 0.6.75
+
+- Reconstruct the complete owned VS Code workbench catalog after absence-producing extension lifecycle mutations before asserting dashboard inventory.
+- Classify graph supersession as recovered only from exact full-profile or focused Projects and Knowledge Graph recovery evidence.
+- Exclude derived project-map custody and certification-only Python environments from isolated host staging while preserving source and registry authority.
+
+## 0.6.74
+
+- Exclude repository-local temporary custody trees from isolated installed-extension staging so focused host walks cannot recursively copy their own output.
+- Allow the initial installed dashboard tab a single bounded 90-second convergence window while preserving exact fail-closed activation behavior.
+- Further bound derived operational-ledger histories while retaining the complete append-only JSONL authority and exact historical constraint indexes.
+
+## 0.6.73
+
+- Keep dashboard snapshots responsive as the append-only operational history grows by reading compact blocker authority and bounding derived history projections.
+- Preserve exact historical evidence, transition, session, and closure constraints through cryptographic projection indexes while retaining the complete JSONL authority.
+- Parse external-host startup timestamps only for matching markers and retain a defensive 60-second dashboard process ceiling.
+
+## 0.6.72
+
+- Require connected, request-bound dashboard hydration after webview and extension-host reconstruction.
+- Settle Enterprise, Projects, Knowledge Graph, Cleanup, and Plugin lifecycle profiles against exact refreshed state and route postconditions.
+- Classify generic VS Code native-dialog cancellation only after the complete cancellation and recovery denominator is green.
+
+## 0.6.71
+
+- Restart the owned VS Code extension-host catalog after every admitted local plugin lifecycle mutation, then reconstruct the dashboard from the newly registered Pacify-X command before asserting exact inventory.
+
+## 0.6.70
+
+- Reconstruct installed dashboard state from canonical DOM identity instead of a route-specific title, with one bounded owned-workbench recovery for persistent disconnects.
+- Preserve authoritative work-supersession reasons across producer aborts so recovered graph cancellation is classified exactly rather than promoted to a host failure.
+- Reconstruct the owned workbench after every admitted local plugin lifecycle mutation before verifying physical extension inventory.
+
 ## 0.6.69
 
 - Make release packaging fail closed on a stale MCP bundle instead of regenerating a release-identity product input after identity application.

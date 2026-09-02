@@ -164,7 +164,13 @@ class WorkGovernor {
           this.metrics[cancelled ? 'cancelled' : 'failed'] += 1;
           if (entry.timedOut) this.metrics.timedOut = (this.metrics.timedOut || 0) + 1;
           this._recordCircuit(entry, false, cancelled);
-          entry.reject(error);
+          // The producer can observe AbortSignal first and reject with a
+          // transport-local AbortError. Preserve the governor's authoritative
+          // cancellation reason whenever this entry owns the abort; callers
+          // must be able to distinguish supersession from deadline/disposal.
+          entry.reject(entry.controller.signal.aborted
+            ? abortError(String(entry.controller.signal.reason || 'work-cancelled'))
+            : error);
         })
         .finally(() => {
           clearTimeout(timeout);

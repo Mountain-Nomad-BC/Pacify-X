@@ -1561,6 +1561,7 @@
         "runtime/release_distribution.py",
         "runtime/release_environment.py",
         "runtime/release_evidence.py",
+        "runtime/release_identity.py",
         "runtime/release_preflight.py",
         "runtime/release_signing.py",
         "runtime/research_assimilation.py",
@@ -2694,7 +2695,6 @@
       "module": "scripts",
       "paths": [
         "runtime/cli.py",
-        "runtime/dashboard_api.py",
         "runtime/generated_artifacts.py",
         "runtime/release_certification.py",
         "runtime/release_preflight.py",
@@ -3509,6 +3509,7 @@
         "tests/test_cognitive_assurance.py",
         "tests/test_commissioning_apply.py",
         "tests/test_commissioning_questionnaire.py",
+        "tests/test_completion_status.py",
         "tests/test_config_and_registry.py",
         "tests/test_contract_runtime.py",
         "tests/test_corpus_pipeline.py",

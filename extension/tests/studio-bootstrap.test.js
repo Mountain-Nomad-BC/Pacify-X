@@ -11,6 +11,11 @@ const { generateApprovalKey } = require('../src/studioApprovalHost');
 const { createStudioDraftFromHost } = require('../src/studioDraftHost');
 const { materializeSkillPackage, reclaimMaterializedSkillPackage } = require('../src/studioPackage');
 
+test('dashboard snapshot bridge retains a defensive sixty second process ceiling', () => {
+  const source = fs.readFileSync(path.resolve(__dirname, '..', 'src', 'pxBridge.js'), 'utf8');
+  assert.match(source, /dashboard-snapshot:[\s\S]*timeoutMs: 60_000/);
+});
+
 test('Studio setup creates, admits, and runs editable starter agent and workflow revisions', async () => {
   const calls = [];
   const bridge = {

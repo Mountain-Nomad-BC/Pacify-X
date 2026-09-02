@@ -9,6 +9,7 @@ from unittest.mock import patch
 from runtime import dashboard_api
 from runtime.dashboard_api import (
     _completion,
+    _completion_projection_current,
     _hardware,
     _knowledge_core,
     _memory,
@@ -24,6 +25,55 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class DashboardApiTests(unittest.TestCase):
+    def test_stored_completion_projection_is_exact_source_and_engine_bound(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "authority.json"
+            source.write_text('{"state":"current"}', encoding="utf-8")
+            digest = __import__("hashlib").sha256(source.read_bytes()).hexdigest()
+            marker = root / "registry" / "engine_identity.json"
+            marker.parent.mkdir()
+            marker.write_text(
+                json.dumps({"tree_sha256": "c" * 64, "file_total": 7}),
+                encoding="utf-8",
+            )
+            marker_digest = __import__("hashlib").sha256(marker.read_bytes()).hexdigest()
+            value = {
+                "projection_metadata": {
+                    "source_revision": "a" * 64,
+                    "engine_identity": {
+                        "marker_file_sha256": marker_digest,
+                        "tree_sha256": "c" * 64,
+                        "file_total": 7,
+                    },
+                },
+                "sources": [{"path": "authority.json", "sha256": digest}],
+            }
+            with patch(
+                "runtime.operational_gap_ledger.read_head",
+                return_value={"head_event_sha256": "a" * 64},
+            ):
+                self.assertTrue(_completion_projection_current(root, value)[0])
+                source.write_text('{"state":"changed"}', encoding="utf-8")
+                current, reason = _completion_projection_current(root, value)
+        self.assertFalse(current)
+        self.assertIn("projection source changed", reason)
+
+    def test_snapshot_work_plane_retains_a_defensive_sixty_second_ceiling(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            with patch("runtime.work_admission.RuntimeWorkPlane") as work_plane:
+                work_plane.return_value.execute.return_value = {
+                    "result": {"connected": True},
+                    "admission": {"decision": "completed"},
+                }
+                result = build_snapshot(root)
+        self.assertTrue(result["connected"])
+        self.assertEqual(
+            work_plane.return_value.execute.call_args.kwargs["timeout_seconds"],
+            60.0,
+        )
+
     def test_extension_source_identity_binds_host_sources_and_action_contract(
         self,
     ) -> None:
@@ -68,7 +118,7 @@ class DashboardApiTests(unittest.TestCase):
             host_changed["asset_sha256"], contract_changed["asset_sha256"]
         )
 
-    def test_live_completion_recomputes_from_exact_artifact_binding(self) -> None:
+    def test_live_completion_selects_verified_exact_artifact_projection(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             runtime = root / ".engineering-bootstrap/runtime-core"
@@ -87,14 +137,17 @@ class DashboardApiTests(unittest.TestCase):
                 encoding="utf-8",
             )
             with patch(
-                "scripts.build_completion_status.build",
-                return_value={"complete": False, "certified": False},
-            ) as build:
+                "runtime.dashboard_api._completion_projection_current",
+                return_value=(True, "verified"),
+            ):
                 result = _completion(root)
-        self.assertEqual(result, {"complete": False, "certified": False})
-        build.assert_called_once_with(root, artifact_dir=artifact_dir)
+        self.assertTrue(result["complete"])
+        self.assertEqual(result["projection_freshness"], "stored_checkpoint_verified")
+        self.assertEqual(
+            result["runtime_projection"]["artifact_dir"], str(artifact_dir)
+        )
 
-    def test_live_completion_recomputes_without_artifact_binding(self) -> None:
+    def test_live_completion_selects_verified_registry_projection(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             registry = root / "registry"
@@ -104,14 +157,13 @@ class DashboardApiTests(unittest.TestCase):
                 encoding="utf-8",
             )
             with patch(
-                "scripts.build_completion_status.build",
-                return_value={"operationally_complete": False, "certified": False},
-            ) as build:
+                "runtime.dashboard_api._completion_projection_current",
+                return_value=(True, "verified"),
+            ):
                 result = _completion(root)
-        self.assertEqual(
-            result, {"operationally_complete": False, "certified": False}
-        )
-        build.assert_called_once_with(root)
+        self.assertTrue(result["operationally_complete"])
+        self.assertTrue(result["certified"])
+        self.assertEqual(result["projection_freshness"], "stored_checkpoint_verified")
 
     def test_completion_fallback_revokes_stale_green_claims(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -123,16 +175,18 @@ class DashboardApiTests(unittest.TestCase):
                 encoding="utf-8",
             )
             with patch(
-                "scripts.build_completion_status.build", side_effect=OSError("broken")
+                "runtime.dashboard_api._completion_projection_current",
+                return_value=(False, "engine source identity changed"),
             ):
                 result = _completion(root)
         self.assertFalse(result["operationally_complete"])
         self.assertFalse(result["certified"])
         self.assertEqual(
-            result["projection_freshness"], "stored_fallback_unverified"
+            result["projection_freshness"], "stored_checkpoint_stale"
         )
+        self.assertIn("engine source identity changed", result["blocking_reasons"][-1])
 
-    def test_completion_fallback_handles_source_only_builder_absence(self) -> None:
+    def test_completion_refresh_never_imports_the_certification_builder(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             registry = root / "registry"
@@ -141,20 +195,20 @@ class DashboardApiTests(unittest.TestCase):
                 json.dumps({"operationally_complete": True, "certified": True}),
                 encoding="utf-8",
             )
-            original_import = __import__
-
-            def installed_import(name, *args, **kwargs):
-                if name == "scripts.build_completion_status":
-                    raise ModuleNotFoundError(name)
-                return original_import(name, *args, **kwargs)
-
-            with patch("builtins.__import__", side_effect=installed_import):
+            with patch(
+                "runtime.dashboard_api._completion_projection_current",
+                return_value=(False, "projection metadata is absent"),
+            ), patch(
+                "scripts.build_completion_status.build",
+                side_effect=AssertionError("interactive refresh must stay lazy"),
+            ) as builder:
                 result = _completion(root)
 
+        builder.assert_not_called()
         self.assertFalse(result["operationally_complete"])
         self.assertFalse(result["certified"])
         self.assertEqual(
-            result["projection_freshness"], "stored_fallback_unverified"
+            result["projection_freshness"], "stored_checkpoint_stale"
         )
 
     def test_visual_fixture_declares_demo_data_and_tracks_current_denominators(self) -> None:

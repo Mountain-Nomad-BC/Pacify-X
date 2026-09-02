@@ -27,7 +27,7 @@ def _timestamp(line: str) -> datetime | None:
     if not match:
         return None
     try:
-        return datetime.strptime(match.group(1), "%Y-%m-%d %H:%M:%S.%f")
+        return datetime.fromisoformat(match.group(1))
     except ValueError:
         return None
 
@@ -94,9 +94,10 @@ def _first_matching(
 ) -> tuple[datetime, str] | None:
     expression = re.compile(pattern, re.I)
     for line in lines:
-        stamp = _timestamp(line)
-        if stamp is not None and stamp >= after and expression.search(line):
-            return stamp, line
+        if expression.search(line):
+            stamp = _timestamp(line)
+            if stamp is not None and stamp >= after:
+                return stamp, line
     return None
 
 

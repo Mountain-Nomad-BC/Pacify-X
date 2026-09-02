@@ -42,6 +42,13 @@ MAX_EVENT_BYTES = 4 * 1024 * 1024
 MAX_REPORT_BYTES = 16 * 1024 * 1024
 MAX_BATCH_EVENTS = 1_000
 MAX_EVENTS = 100_000
+# Retain the discovery anchor plus the latest predecessor/current pair.  A
+# two-row projection drops the exact closed/verified transition as soon as a
+# card is reopened, which makes the materialized history contradict the
+# authoritative transition chain even though the JSONL still retains it.
+PROJECTION_HISTORY_LIMIT = 3
+LATEST_HISTORY_LIMIT = 1
+WORK_HISTORY_LIMIT = 8
 GAP_ID_PATTERN = re.compile(r"^PX-(?:OS|GAP)-[0-9]{3,}$")
 SHA256_PATTERN = re.compile(r"^[0-9a-f]{64}$")
 NON_VISIBLE_PATH_ID_PATTERN = re.compile(r"^[a-z0-9][a-z0-9._:-]{2,200}$")
@@ -363,6 +370,31 @@ def evidence_reference_sha256(evidence: Mapping[str, Any]) -> str:
             "claim": str(evidence.get("claim") or ""),
         }
     )
+
+
+def _text_sha256(value: object) -> str:
+    return hashlib.sha256(str(value).encode("utf-8")).hexdigest()
+
+
+def _history_chain(rows: Iterable[Mapping[str, Any]]) -> str:
+    chain = hashlib.sha256(b"px.operational-projection-history/1.0").hexdigest()
+    for row in rows:
+        chain = _digest({"previous": chain, "row": dict(row)})
+    return chain
+
+
+def _bounded_history(
+    rows: Iterable[Mapping[str, Any]], *, preserve_first: bool = False,
+    limit: int = PROJECTION_HISTORY_LIMIT,
+) -> list[dict[str, Any]]:
+    values = [dict(row) for row in rows if isinstance(row, Mapping)]
+    if limit < 1:
+        raise ValueError("projection history limit must be positive")
+    if len(values) <= limit:
+        return values
+    if preserve_first:
+        return [values[0], *values[-(limit - 1):]] if limit > 1 else [values[0]]
+    return values[-limit:]
 
 
 def _validate_card_control_scope(
@@ -810,6 +842,8 @@ def project_events(
         checkpoints: list[dict[str, Any]] = []
         work_admissions: list[dict[str, Any]] = []
         work_session_closures: list[dict[str, Any]] = []
+        work_session_id_sha256s: set[str] = set()
+        closed_admission_event_id_sha256s: set[str] = set()
         expected_inventory: dict[str, Any] | None = None
         expected_inventory_history: list[dict[str, Any]] = []
         previous_hash: str | None = None
@@ -836,6 +870,14 @@ def project_events(
         checkpoints = json.loads(_canonical(base_snapshot.get("work_checkpoints", [])))
         work_admissions = json.loads(_canonical(base_snapshot.get("work_admissions", [])))
         work_session_closures = json.loads(_canonical(base_snapshot.get("work_session_closures", [])))
+        work_session_id_sha256s = set(map(str, base_snapshot.get(
+            "work_session_id_sha256s",
+            [_text_sha256(item.get("session_id")) for item in work_admissions if item.get("session_id")],
+        )))
+        closed_admission_event_id_sha256s = set(map(str, base_snapshot.get(
+            "closed_admission_event_id_sha256s",
+            [_text_sha256(item.get("admission_event_id")) for item in work_session_closures if item.get("admission_event_id")],
+        )))
         expected_inventory = json.loads(_canonical(base_snapshot.get("expected_inventory")))
         expected_inventory_history = json.loads(
             _canonical(base_snapshot.get("expected_inventory_history", []))
@@ -852,9 +894,54 @@ def project_events(
             card.setdefault("control_scope_disposition", None)
             card.setdefault("control_scope_history", [])
             card.setdefault("evidence_attestations", [])
+            history = card.get("history", [])
+            annotations = card.get("annotations", [])
+            card.setdefault("history_event_count", len(history))
+            card.setdefault("annotation_count", len(annotations))
+            card.setdefault("control_scope_history_count", len(card.get("control_scope_history", [])))
+            card.setdefault(
+                "history_evidence_sha256s",
+                sorted({
+                    evidence_reference_sha256(item)
+                    for row in history if isinstance(row, Mapping)
+                    for item in row.get("evidence", []) if isinstance(item, Mapping)
+                }),
+            )
+            card.setdefault(
+                "history_unbound_evidence_sha256s",
+                sorted({
+                    evidence_reference_sha256(item)
+                    for row in history if isinstance(row, Mapping)
+                    for item in row.get("evidence", []) if isinstance(item, Mapping)
+                    and "artifact_sha256" not in item
+                    and "#sha256=" not in str(item.get("reference", ""))
+                    and not str(item.get("reference", "")).startswith("sha256:")
+                }),
+            )
+            card.setdefault(
+                "verification_transition_event_sha256s",
+                sorted({
+                    str(row.get("event_sha256"))
+                    for row in history if isinstance(row, Mapping)
+                    and row.get("event") == "transition"
+                    and row.get("to") in {"narrowly_verified", "operationally_verified", "closed"}
+                    and SHA256_PATTERN.fullmatch(str(row.get("event_sha256") or ""))
+                }),
+            )
+            card.setdefault(
+                "history_required_evidence_complete",
+                bool(history) and all(
+                    row.get("evidence")
+                    for row in history if isinstance(row, Mapping)
+                    and row.get("event") in {"discovered", "transition"}
+                ),
+            )
         for surface in surfaces.values():
             surface["examined"] = False
             surface["examined_controls"] = []
+            surface.setdefault("examination_count", len(surface.get("examinations", [])))
+            surface.setdefault("inventory_revision_count", len(surface.get("inventory_revisions", [])))
+            surface.setdefault("retired_control_history_count", len(surface.get("retired_control_history", [])))
     start_sequence = event_count + 1
     if event_count + len(incoming) > MAX_EVENTS:
         raise ValueError("operational gap ledger exceeds its event bound")
@@ -951,6 +1038,7 @@ def project_events(
             current = surfaces[surface_id]
             current.setdefault("retired_controls", {})
             current.setdefault("retired_control_history", [])
+            current.setdefault("retired_control_history_count", len(current["retired_control_history"]))
             existing = set(map(str, current["known_controls"]))
             if current.get("control_records"):
                 added, records = _validate_control_records(controls)
@@ -977,6 +1065,7 @@ def project_events(
                     "restored_at": event["timestamp"],
                     "restored_by": event["actor"],
                 })
+                current["retired_control_history_count"] += 1
         elif kind == "surface_inventory_revised":
             surface_id = str(payload.get("surface_id") or "")
             if surface_id not in surfaces:
@@ -984,6 +1073,7 @@ def project_events(
             current = surfaces[surface_id]
             current.setdefault("retired_controls", {})
             current.setdefault("retired_control_history", [])
+            current.setdefault("retired_control_history_count", len(current["retired_control_history"]))
             previous_controls_sha256 = str(payload.get("previous_controls_sha256") or "").lower()
             current_controls = list(map(str, current["known_controls"]))
             previous_control_records = dict(current.get("control_records", {}))
@@ -999,6 +1089,7 @@ def project_events(
                     "restored_at": event["timestamp"],
                     "restored_by": event["actor"],
                 })
+                current["retired_control_history_count"] += 1
             declared_retirement_schema = "retired_controls" in payload
             retirement_rows = payload.get("retired_controls", [])
             if not isinstance(retirement_rows, list) or any(
@@ -1059,6 +1150,9 @@ def project_events(
                     "actor": event["actor"],
                 }
             )
+            current["inventory_revision_count"] = int(
+                current.get("inventory_revision_count", len(current["inventory_revisions"]) - 1)
+            ) + 1
             current["known_controls"] = controls
             current["control_records"] = records
             current["source_files"] = list(source_files)
@@ -1167,7 +1261,7 @@ def project_events(
             ):
                 raise ValueError("control disposition revision is a semantic no-op")
             prior_history = list(current.get("history", []))
-            prior_history.append({
+            superseded_row = {
                 "disposition": current["disposition"],
                 "gap_ids": list(current["gap_ids"]),
                 "evidence": list(current["evidence"]),
@@ -1177,8 +1271,9 @@ def project_events(
                 "superseded_by": event["actor"],
                 "revision_reason": reason,
                 "disposition_sha256": predecessor,
-            })
-            surfaces[surface_id]["control_dispositions"][control_id] = {
+            }
+            prior_history.append(superseded_row)
+            revised = {
                 "disposition": after,
                 "gap_ids": normalized_gap_ids,
                 "evidence": evidence,
@@ -1188,6 +1283,13 @@ def project_events(
                 "actor": event["actor"],
                 "history": prior_history,
             }
+            if "history_count" in current and "history_chain_sha256" in current:
+                revised["history_count"] = int(current["history_count"]) + 1
+                revised["history_chain_sha256"] = _digest({
+                    "previous": current["history_chain_sha256"],
+                    "row": superseded_row,
+                })
+            surfaces[surface_id]["control_dispositions"][control_id] = revised
         elif kind == "surface_examined":
             surface_id = str(payload.get("surface_id") or "")
             if surface_id not in surfaces:
@@ -1209,6 +1311,9 @@ def project_events(
                 raise ValueError("examined_controls contains a control not registered to the surface")
             row = {**dict(payload), "evidence": evidence, "timestamp": event["timestamp"]}
             surfaces[surface_id]["examinations"].append(row)
+            surfaces[surface_id]["examination_count"] = int(
+                surfaces[surface_id].get("examination_count", len(surfaces[surface_id]["examinations"]) - 1)
+            ) + 1
             surfaces[surface_id]["examined_controls"] = sorted(set(surfaces[surface_id]["examined_controls"]) | set(map(str, examined_controls)))
         elif kind == "card_discovered":
             card = _validate_card(payload, allow_local_discovery_empty_symbols=True)
@@ -1221,6 +1326,9 @@ def project_events(
             card["discovery_sequence"] = event["sequence"]
             card["history"] = [{"event": "discovered", "timestamp": event["timestamp"], "actor": event["actor"], "event_id": event["event_id"], "event_sha256": event["event_sha256"], "sequence": event["sequence"], "evidence": _evidence(discovery_evidence, "discovery_evidence")}]
             card["annotations"] = []
+            card["history_event_count"] = 1
+            card["annotation_count"] = 0
+            card["control_scope_history_count"] = 0
             card["control_scope_disposition"] = None
             card["control_scope_history"] = []
             card["evidence_attestations"] = []
@@ -1244,6 +1352,8 @@ def project_events(
             annotation = {"event": "annotated", "timestamp": event["timestamp"], "actor": event["actor"], "note": note, "evidence": evidence, "patch": dict(patch)}
             cards[gap_id]["annotations"].append(annotation)
             cards[gap_id]["history"].append(annotation)
+            cards[gap_id]["annotation_count"] = int(cards[gap_id].get("annotation_count", 0)) + 1
+            cards[gap_id]["history_event_count"] = int(cards[gap_id].get("history_event_count", 0)) + 1
         elif kind == "card_transition":
             gap_id = str(payload.get("gap_id") or "")
             if gap_id not in cards:
@@ -1299,6 +1409,7 @@ def project_events(
                     "target_event_sha256": event["event_sha256"],
                 }
             cards[gap_id]["history"].append(history_row)
+            cards[gap_id]["history_event_count"] = int(cards[gap_id].get("history_event_count", 0)) + 1
         elif kind == "transition_admission_backfilled":
             validated = [
                 value for value in admission_backfills.values()
@@ -1406,6 +1517,10 @@ def project_events(
             }
             cards[gap_id]["control_scope_disposition"] = disposition
             cards[gap_id]["control_scope_history"] = history
+            if kind == "card_control_scope_revised":
+                cards[gap_id]["control_scope_history_count"] = int(
+                    cards[gap_id].get("control_scope_history_count", len(history) - 1)
+                ) + 1
         elif kind == "card_evidence_attested":
             gap_id = str(payload.get("gap_id") or "")
             if gap_id not in cards:
@@ -1418,7 +1533,9 @@ def project_events(
                 for row in cards[gap_id].get("history", [])
                 for item in row.get("evidence", [])
             ]
-            if target not in {evidence_reference_sha256(item) for item in history_evidence}:
+            known_evidence = set(map(str, cards[gap_id].get("history_evidence_sha256s", [])))
+            known_evidence.update(evidence_reference_sha256(item) for item in history_evidence)
+            if target not in known_evidence:
                 raise ValueError("evidence attestation target is not present on the card")
             artifact_sha256 = str(payload.get("artifact_sha256") or "").lower()
             artifact_size = payload.get("artifact_size")
@@ -1490,7 +1607,8 @@ def project_events(
                 expires_utc = str(payload.get("expires_utc") or "").strip()
                 if not NON_VISIBLE_PATH_ID_PATTERN.fullmatch(session_id):
                     raise ValueError("work session requires a valid session_id")
-                if any(item.get("session_id") == session_id for item in work_admissions):
+                session_hash = _text_sha256(session_id)
+                if session_hash in work_session_id_sha256s:
                     raise ValueError("work session_id was already admitted")
                 if payload.get("effect") is not None or payload.get("scope") is not None:
                     raise ValueError("work session cannot mix legacy effect/scope fields")
@@ -1514,6 +1632,7 @@ def project_events(
                 normalized_payload["session_id"] = session_id
                 normalized_payload["expires_utc"] = expires_utc
                 normalized_payload["effect_scopes"] = normalized_effect_scopes
+                work_session_id_sha256s.add(session_hash)
             work_admissions.append({
                 **normalized_payload,
                 "evidence": _evidence(payload.get("evidence")),
@@ -1536,7 +1655,8 @@ def project_events(
                 raise ValueError("work session closure does not bind an admitted session")
             if outcome not in {"completed", "cancelled", "superseded"}:
                 raise ValueError("work session closure outcome is invalid")
-            if any(item.get("admission_event_id") == admission_event_id for item in work_session_closures):
+            admission_hash = _text_sha256(admission_event_id)
+            if admission_hash in closed_admission_event_id_sha256s:
                 raise ValueError("work session was already closed")
             work_session_closures.append({
                 **dict(payload), "evidence": _evidence(payload.get("evidence")),
@@ -1544,6 +1664,7 @@ def project_events(
                 "event_id": event["event_id"], "event_sha256": event["event_sha256"],
                 "sequence": event["sequence"],
             })
+            closed_admission_event_id_sha256s.add(admission_hash)
         previous_hash = str(event["event_sha256"])
     if event_count and ledger_id is None:
         raise ValueError("ledger is not initialized")
@@ -1559,20 +1680,32 @@ def project_events(
             item["state"] in {"present", "partial"} and not item.get("evidence")
             for item in card["interaction_chain"].values()
         )
-        if not history or chain_lacks or any(not row.get("evidence") for row in history if row.get("event") in {"discovered", "transition"}) or (card["current_state"] == "closed" and not card.get("completion_evidence")):
+        retained_history_complete = bool(
+            card.get(
+                "history_required_evidence_complete",
+                bool(history) and all(
+                    row.get("evidence")
+                    for row in history
+                    if row.get("event") in {"discovered", "transition"}
+                ),
+            )
+        )
+        if not retained_history_complete or chain_lacks or any(not row.get("evidence") for row in history if row.get("event") in {"discovered", "transition"}) or (card["current_state"] == "closed" and not card.get("completion_evidence")):
             lacking_evidence.append(gap_id)
         history_evidence = [evidence for row in history for evidence in row.get("evidence", [])]
         attested = {
             str(item.get("target_evidence_sha256") or "")
             for item in card.get("evidence_attestations", [])
         }
-        if any(
-            "artifact_sha256" not in evidence
+        unbound_candidates = set(map(str, card.get("history_unbound_evidence_sha256s", [])))
+        unbound_candidates.update(
+            evidence_reference_sha256(evidence)
+            for evidence in history_evidence
+            if "artifact_sha256" not in evidence
             and "#sha256=" not in str(evidence.get("reference", ""))
             and not str(evidence.get("reference", "")).startswith("sha256:")
-            and evidence_reference_sha256(evidence) not in attested
-            for evidence in history_evidence
-        ):
+        )
+        if unbound_candidates - attested:
             unbound_evidence.append(gap_id)
     for card in cards.values():
         canonical_surface = card["parent_surface"] if card["parent_surface"] in surfaces else surface_aliases.get(card["parent_surface"])
@@ -1711,6 +1844,73 @@ def project_events(
         row = expected_rows[surface_id]
         if len(surfaces[surface_id]["known_controls"]) != row["expected_control_count"] or hashlib.sha256(controls_json).hexdigest() != row["expected_controls_sha256"]:
             inventory_drift.append(surface_id)
+
+    # The JSONL stream remains the complete authority.  This projection keeps
+    # exact current state plus compact cryptographic/history indexes so normal
+    # reads and appends do not grow linearly with every audit iteration.
+    for card in cards.values():
+        history = [row for row in card.get("history", []) if isinstance(row, Mapping)]
+        history_evidence = [
+            item for row in history
+            for item in row.get("evidence", []) if isinstance(item, Mapping)
+        ]
+        evidence_hashes = set(map(str, card.get("history_evidence_sha256s", [])))
+        evidence_hashes.update(evidence_reference_sha256(item) for item in history_evidence)
+        unbound_hashes = set(map(str, card.get("history_unbound_evidence_sha256s", [])))
+        unbound_hashes.update(
+            evidence_reference_sha256(item)
+            for item in history_evidence
+            if "artifact_sha256" not in item
+            and "#sha256=" not in str(item.get("reference", ""))
+            and not str(item.get("reference", "")).startswith("sha256:")
+        )
+        verification_hashes = set(map(str, card.get("verification_transition_event_sha256s", [])))
+        verification_hashes.update(
+            str(row.get("event_sha256"))
+            for row in history
+            if row.get("event") == "transition"
+            and row.get("to") in {"narrowly_verified", "operationally_verified", "closed"}
+            and SHA256_PATTERN.fullmatch(str(row.get("event_sha256") or ""))
+        )
+        current_required_complete = bool(history) and all(
+            row.get("evidence")
+            for row in history if row.get("event") in {"discovered", "transition"}
+        )
+        card["history_required_evidence_complete"] = bool(
+            card.get("history_required_evidence_complete", current_required_complete)
+        ) and current_required_complete
+        card["history_evidence_sha256s"] = sorted(evidence_hashes)
+        card["history_unbound_evidence_sha256s"] = sorted(unbound_hashes)
+        card["verification_transition_event_sha256s"] = sorted(verification_hashes)
+        card["history"] = _bounded_history(history, preserve_first=True)
+        card["annotations"] = _bounded_history(card.get("annotations", []), limit=LATEST_HISTORY_LIMIT)
+        card["control_scope_history"] = _bounded_history(card.get("control_scope_history", []), limit=LATEST_HISTORY_LIMIT)
+    for surface in surfaces.values():
+        surface["examinations"] = _bounded_history(surface.get("examinations", []), limit=LATEST_HISTORY_LIMIT)
+        surface["inventory_revisions"] = _bounded_history(surface.get("inventory_revisions", []), limit=LATEST_HISTORY_LIMIT)
+        surface["retired_control_history"] = _bounded_history(surface.get("retired_control_history", []), limit=LATEST_HISTORY_LIMIT)
+        surface.setdefault("examination_count", len(surface["examinations"]))
+        surface.setdefault("inventory_revision_count", len(surface["inventory_revisions"]))
+        surface.setdefault("retired_control_history_count", len(surface["retired_control_history"]))
+        for disposition in surface.get("control_dispositions", {}).values():
+            history = [row for row in disposition.get("history", []) if isinstance(row, Mapping)]
+            disposition.setdefault("history_count", len(history))
+            disposition.setdefault("history_chain_sha256", _history_chain(history))
+            disposition["history"] = _bounded_history(history, limit=LATEST_HISTORY_LIMIT)
+    expected_inventory_history = _bounded_history(expected_inventory_history, limit=LATEST_HISTORY_LIMIT)
+    checkpoints = checkpoints[-WORK_HISTORY_LIMIT:]
+    recent_admissions = work_admissions[-WORK_HISTORY_LIMIT:]
+    open_admissions = [
+        item for item in work_admissions
+        if _text_sha256(item.get("event_id")) not in closed_admission_event_id_sha256s
+        and isinstance(item.get("effect_scopes"), list)
+    ]
+    work_admissions = list({
+        str(item.get("event_id")): item
+        for item in [*recent_admissions, *open_admissions]
+    }.values())
+    work_admissions.sort(key=lambda item: int(item.get("sequence") or 0))
+    work_session_closures = work_session_closures[-WORK_HISTORY_LIMIT:]
     return {
         "schema_version": SNAPSHOT_SCHEMA,
         "ledger_id": ledger_id,
@@ -1786,6 +1986,15 @@ def project_events(
         "work_checkpoints": checkpoints,
         "work_admissions": work_admissions,
         "work_session_closures": work_session_closures,
+        "work_session_id_sha256s": sorted(work_session_id_sha256s),
+        "closed_admission_event_id_sha256s": sorted(closed_admission_event_id_sha256s),
+        "projection_history": {
+            "authority": LEDGER_RELATIVE.as_posix(),
+            "retained_per_entity": PROJECTION_HISTORY_LIMIT,
+            "retained_latest_detail": LATEST_HISTORY_LIMIT,
+            "retained_work_records": WORK_HISTORY_LIMIT,
+            "complete_history_in_jsonl": True,
+        },
         "transition_admission_backfills": transition_admission_backfills,
     }
 
@@ -1902,11 +2111,20 @@ def _dashboard_index(snapshot: Mapping[str, Any], *, limit: int = 100) -> dict[s
     ]
     state_counts = dict(snapshot.get("state_counts", {}))
     resolved_states = {"closed", "operationally_verified", "superseded"}
+    critical_high_blocker_ids = sorted(
+        str(item.get("gap_id") or "")
+        for item in cards
+        if str(item.get("severity") or "").casefold()
+        in {"blocker", "critical", "high"}
+        and item.get("current_state") not in resolved_states
+    )
     return {
         "count": len(cards),
         "open_count": sum(1 for item in cards if item.get("current_state") not in resolved_states),
         "retained_unclosed_count": sum(1 for item in cards if item.get("current_state") != "closed"),
         "status_counts": state_counts,
+        "critical_high_blocker_ids": critical_high_blocker_ids,
+        "critical_high_blocker_count": len(critical_high_blocker_ids),
         "progress": _bounded_progress(snapshot.get("progress", {})),
         "cards": rows,
         "limit": limit,
@@ -2423,12 +2641,19 @@ def _validate_work_admission_append(
         for item in closures
         if isinstance(item, Mapping)
     }
+    closed_admission_hashes = set(map(
+        str, current.get("closed_admission_event_id_sha256s", [])
+    ))
     for existing in current.get("work_admissions", []):
         if not isinstance(existing, Mapping) or existing.get("gap_id") != gap_id:
             continue
         is_session = isinstance(existing.get("effect_scopes"), list)
         if is_session:
-            if str(existing.get("event_id") or "") in closed_admission_ids:
+            existing_id = str(existing.get("event_id") or "")
+            if (
+                existing_id in closed_admission_ids
+                or _text_sha256(existing_id) in closed_admission_hashes
+            ):
                 continue
         elif existing.get("checkpoint_event_id") != checkpoint_event_id:
             continue
@@ -2698,6 +2923,9 @@ def _prepare_event(
             if row.get("event") == "transition"
             and row.get("to") in {"narrowly_verified", "operationally_verified", "closed"}
         }
+        valid_targets.update(map(
+            str, card.get("verification_transition_event_sha256s", [])
+        ))
         if not SHA256_PATTERN.fullmatch(target) or target not in valid_targets:
             raise ValueError("reopen must bind an exact prior verification or closure event")
     if event_type == "card_transition" and prepared_payload.get("to_state") == "closed":

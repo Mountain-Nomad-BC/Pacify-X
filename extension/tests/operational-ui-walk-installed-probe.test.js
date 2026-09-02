@@ -15,11 +15,28 @@ const { mergeStudioLifecycleObservations } = require('../scripts/run-operational
 const { correlateCatalogExchange } = require('../scripts/run-operational-ui-walk');
 const { buildInstalledLateCardAdversarialProfile, buildInstalledLateCardScenarioProfile, runInstalledStudioBridgeConflictProfile } = require('../scripts/run-operational-ui-walk');
 const { exactStudioSetupTerminalResponse } = require('../scripts/run-operational-ui-walk');
+const { installedDashboardRestartIdentity } = require('../scripts/run-operational-ui-walk');
 
 const { boundedOwnedUiAction, waitForOwnedWebview } = require('../scripts/run-operational-ui-walk');
 const { installedGraphExchangeOffset, waitForBuilderJsonControls, waitForInstalledGraphExchange, waitForInstalledGraphIdle } = require('../scripts/run-operational-ui-walk');
 
 const STAGES = ['open_load', 'display', 'user_edit_action', 'input_validation', 'authorization', 'backend_dispatch', 'runtime_effect', 'progress_reporting', 'result_acknowledgement', 'persistence', 'reload_reopen', 'failure_handling', 'recovery_rollback'];
+
+test('dashboard restart identity follows canonical ownership instead of the restored visible surface title', () => {
+  const canonicalRestart = { document_ready: true, canonical_dashboard_dom: true, connected: true, restarted: true };
+  assert.equal(installedDashboardRestartIdentity(canonicalRestart), true);
+  for (const field of Object.keys(canonicalRestart)) {
+    assert.equal(installedDashboardRestartIdentity({ ...canonicalRestart, [field]: false }), false, `${field} must remain mandatory`);
+  }
+  const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
+  const restart = source.slice(source.indexOf('async function restartInstalledDashboardWebview'), source.indexOf('async function reloadInstalledDashboardWebview'));
+  const reload = source.slice(source.indexOf('async function reloadInstalledDashboardWebview'), source.indexOf('async function waitForInstalledStudioState'));
+  assert.match(restart, /canonical_dashboard_dom:[\s\S]*data-surface="dashboard"[\s\S]*data-surface="agents"/);
+  assert.match(restart, /canonicalRestartDisconnected[\s\S]*disconnectedRecoveryDelayMs[\s\S]*restartOwnedWorkbenchWindow\(workbench, frameHost, remaining, \{ conflictSafeReconstruction: true \}\)/);
+  assert.match(reload, /canonical_dashboard_dom:[\s\S]*data-surface="dashboard"[\s\S]*data-surface="agents"/);
+  assert.doesNotMatch(restart, /PACIFY-X\\s\*\\\/\\s\*DASHBOARD/);
+  assert.doesNotMatch(reload, /PACIFY-X\\s\*\\\/\\s\*DASHBOARD/);
+});
 
 test('Studio lifecycle projection preserves eligible and blocked Agent roles while replacing the primary Skill revision', () => {
   const eligibleAgent = { kind: 'agent', identity: 'agent:eligible', fixture_only: false, operations: [{ operation: 'start', valid: true }] };
@@ -215,9 +232,24 @@ test('graph cancellation diagnostic is nonblocking only after exact cancellation
     retained: [],
     recovered: [{ ...diagnostic, disposition: 'expected_graph_cancellation_recovered' }]
   });
+  const transportDiagnostic = { ...diagnostic, message: 'Pacify-X graphQuery failed closed: Pacify-X dashboard API request was superseded.' };
+  assert.deepEqual(partitionExpectedFaultDiagnostics([transportDiagnostic], null, null, false, complete), {
+    retained: [],
+    recovered: [{ ...transportDiagnostic, disposition: 'expected_graph_cancellation_recovered' }]
+  });
   const incomplete = { observations: { 'pxui.knowledge-graph.action.graphLoadAll': { attempted: true, cancelled: true, recovered: false, completed: false } } };
   assert.deepEqual(partitionExpectedFaultDiagnostics([diagnostic], null, null, false, incomplete), { retained: [diagnostic], recovered: [] });
   assert.equal(partitionExpectedFaultDiagnostics([{ ...diagnostic, message: `${diagnostic.message}:lookalike` }], null, null, false, complete).retained.length, 1);
+
+  const focused = {
+    projects: { observation: { completed: true, exact_reconstruction: true, cancelled_controls: { a: true, b: true, c: true } } },
+    knowledgeGraph: { observation: { completed: true, exact_reconstruction: true, restored: true } }
+  };
+  assert.equal(partitionExpectedFaultDiagnostics([diagnostic], null, null, false, null, focused).recovered[0]?.disposition, 'expected_graph_cancellation_recovered');
+  assert.deepEqual(partitionExpectedFaultDiagnostics([diagnostic], null, null, false, null, {
+    ...focused,
+    knowledgeGraph: { observation: { ...focused.knowledgeGraph.observation, restored: false } }
+  }), { retained: [diagnostic], recovered: [] });
 });
 
 test('late-card repair focus runs only observation state and controller adversarial profiles', () => {
@@ -1250,8 +1282,46 @@ test('R114 residual repair applies authoritative graph modes, owns exact navigat
   const probe = source.slice(source.indexOf('async function probeInstalledControls'), source.indexOf('function installedSidebarSelector'));
   assert.match(probe, /installedExactNavigationTransition\(control\)[\s\S]*exerciseInstalledExactNavigation/);
   const plugin = source.slice(source.indexOf('async function runInstalledPluginMutationProfile'), source.indexOf('function knowledgeLifecycleControlProbe'));
-  assert.match(plugin, /requiresWorkbenchReconstruction = receiptPending/);
-  assert.match(plugin, /restartOwnedWorkbenchWindow\(workbench, frameHost, 75_000, \{[\s\S]*conflictSafeReconstruction: true[\s\S]*physicalExtensionId: extensionId[\s\S]*expectedPhysicalVersion: spec\.expectedVersion/);
+  assert.match(plugin, /requiresWorkbenchReconstruction = \['install', 'update', 'uninstall', 'rollback'\]\.includes\(spec\.receiptAction\)/);
+  assert.match(plugin, /requiresWorkbenchReconstruction[\s\S]*restartOwnedWorkbenchWindow\(workbench, frameHost, 75_000, \{[\s\S]*physicalExtensionId: extensionId[\s\S]*expectedPhysicalVersion: spec\.expectedVersion/);
+  assert.doesNotMatch(plugin, /restartOwnedExtensionHostCatalog\(/);
+});
+
+test('Plugin lifecycle reconstruction reloads the complete owned workbench catalog before inventory assertion', () => {
+  const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
+  const helper = source.slice(source.indexOf('async function restartOwnedExtensionHostCatalog'), source.indexOf('function installedWorkbenchCommandSpec'));
+  assert.match(helper, /waitForOwnedPhysicalExtensionVersion[\s\S]*Developer: Restart Extension Host/);
+  assert.match(helper, /closeOwnedDashboardTabs[\s\S]*Pacify-X: Open Storage & Cleanup Manager[\s\S]*reopenPacifyDashboardFromOwnedUi/);
+  assert.match(helper, /requestInstalledRefreshBound[\s\S]*waitForInstalledSnapshot[\s\S]*snapshot\?\.connected === true/);
+  const plugin = source.slice(source.indexOf('async function runInstalledPluginMutationProfile'), source.indexOf('function knowledgeLifecycleControlProbe'));
+  assert.match(plugin, /restartOwnedWorkbenchWindow[\s\S]*currentVersion\(spec\.expectedVersion\)/);
+  assert.ok(plugin.indexOf('restartOwnedWorkbenchWindow') < plugin.indexOf('currentVersion(spec.expectedVersion)'));
+});
+
+test('native focused profiles require request-bound hydrated state and exact route settlement', () => {
+  const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
+  const reopen = source.slice(source.indexOf('async function reopenPacifyDashboardFromOwnedUi'), source.indexOf('async function waitForOwnedWorkbenchDisplacementSettled'));
+  assert.match(reopen, /canonical:[\s\S]*data-surface="dashboard"[\s\S]*connected:[\s\S]*classList\.contains\('disconnected'\)[\s\S]*state\.canonical === true && state\.connected === true/);
+  const enterprise = source.slice(source.indexOf('async function runInstalledEnterpriseProfile'), source.indexOf('const INSTALLED_VALIDATION_CONTROL_IDS'));
+  assert.match(enterprise, /requestInstalledRefreshBound[\s\S]*snapshot\?\.enterprise\?\.packs[\s\S]*enterprisePackToggle/);
+  const projects = source.slice(source.indexOf('async function runInstalledProjectsProfile'), source.indexOf('function graphProjectionIdentity'));
+  assert.match(projects, /observation\.build_result[\s\S]*requestInstalledRefreshBound[\s\S]*waitForInstalledSnapshot[\s\S]*projectMapIdentity/);
+  const cleanup = source.slice(source.indexOf('async function runInstalledCleanupProfile'), source.indexOf('function pluginReadControlProbe'));
+  assert.match(cleanup, /navigateInstalledSurface\(frameHost, 'runtimeCore'/);
+});
+
+test('initial installed dashboard activation allows the full bounded snapshot process window', () => {
+  const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
+  assert.match(source, /dashboardTab\.waitFor\(\{ state: 'visible', timeout: 90_000 \}\)/);
+});
+
+test('generic native cancellation is recovered only after the complete exact native denominator', () => {
+  const diagnostic = { source: 'console', context: 'console:vscode-file://vscode-app/workbench/workbench.desktop.main.js', message: 'Canceled' };
+  const enterprise = { observation: { controls: Object.fromEntries(Array.from({ length: 5 }, (_, index) => [`control-${index}`, { completed: true, cancelled_without_effect: true, errors: [] }])) } };
+  const projects = { observation: { completed: true, cancelled_controls: { a: true, b: true, c: true } } };
+  const cleanup = { observation: { completed: true, permanent_refused_without_authorization: true } };
+  assert.equal(partitionExpectedFaultDiagnostics([diagnostic], null, null, false, null, { enterprise, projects, cleanup }).recovered[0]?.disposition, 'expected_native_dialog_cancellation_recovered');
+  assert.deepEqual(partitionExpectedFaultDiagnostics([diagnostic], null, null, false, null, { enterprise, projects: { observation: { ...projects.observation, completed: false } }, cleanup }), { retained: [diagnostic], recovered: [] });
 });
 
 test('R115 final mechanics stay in the content realm and settle physical graph predecessors', () => {
@@ -2270,8 +2340,12 @@ test('owned Plugin mutation profile requires exact reconciled receipts and compl
   const projects = walkerSource.slice(walkerSource.indexOf('async function runInstalledProjectsProfile'), walkerSource.indexOf('function graphProjectionIdentity'));
   assert.match(projects, /const refreshBefore[\s\S]*data-action="refresh"[\s\S]*\.slice\(after\)/);
   const plugin = walkerSource.slice(walkerSource.indexOf('async function runInstalledPluginMutationProfile'), walkerSource.indexOf('function knowledgeLifecycleControlProbe'));
-  assert.match(plugin, /receiptPending[\s\S]*requiresWorkbenchReconstruction = receiptPending[\s\S]*restartOwnedWorkbenchWindow\(workbench, frameHost, 75_000, \{[\s\S]*physicalExtensionId: extensionId[\s\S]*expectedPhysicalVersion: spec\.expectedVersion[\s\S]*currentVersion[\s\S]*physicallyReconciled/);
+  assert.match(plugin, /receiptPending[\s\S]*requiresWorkbenchReconstruction = \['install', 'update', 'uninstall', 'rollback'\]\.includes\(spec\.receiptAction\)[\s\S]*restartOwnedWorkbenchWindow\(workbench, frameHost, 75_000, \{[\s\S]*physicalExtensionId: extensionId[\s\S]*expectedPhysicalVersion: spec\.expectedVersion[\s\S]*currentVersion[\s\S]*physicallyReconciled/);
+  assert.doesNotMatch(plugin, /restartOwnedExtensionHostCatalog\(/);
   assert.match(walkerSource, /conflictSafeReconstruction === true[\s\S]*Pacify-X: Open Storage & Cleanup Manager/);
+  const conflictRoute = plugin.slice(plugin.indexOf('const exerciseConflictRoute'), plugin.indexOf('observation.conflict_route_completed'));
+  assert.match(conflictRoute, /Pacify-X: Open Storage & Cleanup Manager/);
+  assert.doesNotMatch(conflictRoute, /pxui\.dashboard-control-plane\.command\.pacifyX\.openDashboard/);
   assert.match(walkerSource, /waitForOwnedPhysicalExtensionVersion\(options\.physicalExtensionId, options\.expectedPhysicalVersion/);
   assert.match(walkerSource, /const obsoletePath = path\.join\(ownedExtensionsRoot, '\.obsolete'\)[\s\S]*obsolete\[entry\.name\] === true/);
   const currentVersion = plugin.slice(plugin.indexOf('const currentVersion'), plugin.indexOf('const mutate'));

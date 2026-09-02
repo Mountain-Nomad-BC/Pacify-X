@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import importlib.metadata
+import json
 import re
 import subprocess
 import tomllib
@@ -89,6 +90,86 @@ def normalize_repository(value: str) -> str:
     return text
 
 
+def _git_changed_paths(root: Path) -> list[str]:
+    """Return every staged, unstaged, or untracked path without rename ambiguity."""
+
+    paths: set[str] = set()
+    commands = (
+        ("diff", "--name-only", "-z", "--no-renames"),
+        ("diff", "--cached", "--name-only", "-z", "--no-renames"),
+        ("ls-files", "--others", "--exclude-standard", "-z"),
+    )
+    for command in commands:
+        for value in _git(root, *command).split("\0"):
+            normalized = value.strip().replace("\\", "/")
+            if normalized:
+                paths.add(normalized)
+    return sorted(paths, key=str.casefold)
+
+
+def _declared_mutable_output(root: Path, relative: str) -> bool:
+    """Recognize only policy-owned control/evidence and external-custody paths."""
+
+    from .repository_scope import is_external_environment_relative
+
+    path = Path(relative)
+    if path.is_absolute() or ".." in path.parts:
+        return False
+    if is_external_environment_relative(path):
+        return True
+    policy_path = root / "policies/release-artifact-policy.json"
+    if not policy_path.is_file():
+        return False
+    policy = json.loads(policy_path.read_text(encoding="utf-8"))
+    folded = path.as_posix().casefold()
+    control_outputs = {
+        str(item).casefold() for item in policy.get("control_output_paths", ())
+    }
+    control_prefixes = tuple(
+        str(item).casefold() for item in policy.get("control_output_prefixes", ())
+    )
+    return folded in control_outputs or any(
+        folded.startswith(prefix) for prefix in control_prefixes
+    )
+
+
+def _release_dirty_state(root: Path) -> dict[str, Any]:
+    """Separate release-input drift from governed mutable control progress."""
+
+    changed = _git_changed_paths(root)
+    classifications: dict[str, str] = {}
+    classifier_errors: list[str] = []
+    policy_path = root / "policies/release-artifact-policy.json"
+    if policy_path.is_file():
+        from .release_artifacts import classify_tree
+
+        classified = classify_tree(root)
+        classifications = {
+            str(item["path"]): str(item["classification"])
+            for item in classified.get("records", ())
+        }
+        if classified.get("valid") is not True:
+            classifier_errors = [str(item) for item in classified.get("errors", ())]
+    allowed: list[str] = []
+    blocking: list[str] = []
+    for relative in changed:
+        classification = classifications.get(relative)
+        if classification in {"control_output", "evidence_output"} or _declared_mutable_output(
+            root, relative
+        ):
+            allowed.append(relative)
+        else:
+            blocking.append(relative)
+    return {
+        "worktree_dirty": bool(changed),
+        "dirty": bool(blocking or classifier_errors),
+        "changed_paths": changed,
+        "blocking_paths": blocking,
+        "mutable_control_paths": allowed,
+        "classifier_errors": classifier_errors,
+    }
+
+
 def capture_git_identity(
     root: Path,
     *,
@@ -102,7 +183,7 @@ def capture_git_identity(
     try:
         commit = _git(root, "rev-parse", "HEAD")
         tree = _git(root, "rev-parse", "HEAD^{tree}")
-        status = _git(root, "status", "--porcelain=v1", "--untracked-files=all")
+        dirty_state = _release_dirty_state(root)
         remote_url = _git(root, "remote", "get-url", "origin")
         repository = normalize_repository(remote_url)
         object_type = _git(root, "cat-file", "-t", f"refs/tags/{expected_tag}")
@@ -118,8 +199,16 @@ def capture_git_identity(
             "dirty": True,
             "errors": [str(error)],
         }
-    if status:
-        errors.append("Git worktree contains tracked or untracked changes")
+    if dirty_state["blocking_paths"]:
+        errors.append(
+            "Git release inputs contain tracked or untracked changes: "
+            + ", ".join(dirty_state["blocking_paths"])
+        )
+    if dirty_state["classifier_errors"]:
+        errors.append(
+            "release artifact classification is invalid: "
+            + "; ".join(dirty_state["classifier_errors"])
+        )
     if repository.casefold() != expected_repository.casefold():
         errors.append(
             f"repository identity {repository!r} does not match {expected_repository!r}"
@@ -138,7 +227,10 @@ def capture_git_identity(
         "tag": expected_tag,
         "tag_object_type": object_type,
         "tag_commit_sha": tag_commit,
-        "dirty": bool(status),
+        "dirty": dirty_state["dirty"],
+        "worktree_dirty": dirty_state["worktree_dirty"],
+        "dirty_paths": dirty_state["blocking_paths"],
+        "mutable_control_paths": dirty_state["mutable_control_paths"],
         "errors": errors,
     }
 
