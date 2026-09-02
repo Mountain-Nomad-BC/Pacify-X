@@ -18,7 +18,7 @@ const { exactStudioSetupTerminalResponse } = require('../scripts/run-operational
 const { installedDashboardRestartIdentity } = require('../scripts/run-operational-ui-walk');
 
 const { boundedOwnedUiAction, waitForOwnedWebview } = require('../scripts/run-operational-ui-walk');
-const { installedGraphExchangeOffset, waitForBuilderJsonControls, waitForInstalledGraphExchange, waitForInstalledGraphIdle } = require('../scripts/run-operational-ui-walk');
+const { clickWhenBuilderControlReady, clickWhenInstalledGraphControlReady, installedGraphExchangeOffset, waitForBuilderJsonControls, waitForInstalledGraphExchange, waitForInstalledGraphIdle } = require('../scripts/run-operational-ui-walk');
 
 const STAGES = ['open_load', 'display', 'user_edit_action', 'input_validation', 'authorization', 'backend_dispatch', 'runtime_effect', 'progress_reporting', 'result_acknowledgement', 'persistence', 'reload_reopen', 'failure_handling', 'recovery_rollback'];
 
@@ -219,6 +219,72 @@ test('builder JSON controls are reacquired from the current modal render', async
   assert.equal(ready.ready, true);
   assert.equal(ready.json_tab_selected, true);
   assert.ok(samples >= 2, 'the helper must tolerate a transiently replaced modal render');
+});
+
+test('builder action controls are atomically reacquired from the current installed render', async () => {
+  let samples = 0;
+  let clicks = 0;
+  const control = {
+    dataset: { action: 'agentZoom', delta: '0.1' },
+    disabled: false,
+    innerText: '+',
+    getAttribute: () => 'Zoom in',
+    click: () => { clicks += 1; }
+  };
+  const frameHost = { evaluate: async (operation, argument) => {
+    samples += 1;
+    const modal = {
+      querySelector: () => null,
+      querySelectorAll: selector => selector === '[data-action]' && samples >= 3 ? [control] : []
+    };
+    const document = { querySelector: selector => selector === '.studio-modal' ? modal : null };
+    return operation({ contentDocument: document }, argument);
+  } };
+  const result = await clickWhenBuilderControlReady(frameHost, {
+    controlId: 'pxui.agent-studio.action.agentZoom.in',
+    action: 'agentZoom', dataset: { delta: '0.1' }, pick: 'only'
+  }, 1_000);
+  assert.deepEqual(result, { match_count: 1, label: '+' });
+  assert.equal(clicks, 1);
+  assert.ok(samples >= 3, 'the control must be reacquired after transient render replacement');
+});
+
+test('graph action readiness requires the current enabled label before one atomic click', async () => {
+  let samples = 0;
+  let clicks = 0;
+  const control = {
+    dataset: { action: 'graphLoadAll' },
+    get disabled() { return samples < 3; },
+    textContent: 'Load all remaining pages',
+    click: () => { clicks += 1; }
+  };
+  const frameHost = { evaluate: async (operation, argument) => {
+    samples += 1;
+    return operation({ contentDocument: { querySelectorAll: () => [control] } }, argument);
+  } };
+  const result = await clickWhenInstalledGraphControlReady(frameHost, 'graphLoadAll', 'Load all remaining pages', 1_000);
+  assert.equal(result.clicked, true);
+  assert.equal(result.match_count, 1);
+  assert.equal(clicks, 1);
+  assert.ok(samples >= 3);
+});
+
+test('graph cancellation reseeds a bounded incomplete page before recovery and proves terminal completion', () => {
+  const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
+  const start = source.indexOf('async function runInstalledObservationStateProfile');
+  const profile = source.slice(start, source.indexOf("await navigateInstalledSurface(frameHost, 'memory'", start));
+  assert.match(profile, /const cancelled = await waitForInstalledGraphIdle[\s\S]*const recoverySeed = await requestGraphPage\(\)[\s\S]*graph-recovery-denominator-too-small[\s\S]*clickWhenInstalledGraphControlReady\(frameHost, 'graphLoadAll', 'Load all remaining pages'/);
+  assert.match(profile, /const allDone = completion\.idle && !completion\.node_has_more && !completion\.edge_has_more[\s\S]*completion\.control_disabled[\s\S]*Complete graph loaded/);
+  assert.doesNotMatch(profile, /querySelector\('\[data-action="graphLoadAll"\]'\)\?\.click/);
+});
+
+test('timed profile failures retain partial builder evidence and the exact failed control state', () => {
+  const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
+  const collector = source.slice(source.indexOf('const failedProfileResult'), source.indexOf('const skippedProfileResult'));
+  assert.match(collector, /failure\?\.builderEvidence/);
+  assert.match(collector, /observations: builderEvidence\?\.observations \|\| \[\]/);
+  assert.match(collector, /failed_control_id: builderEvidence\?\.failed_control_id \|\| null/);
+  assert.match(collector, /failure_state: builderEvidence\?\.failure_state \|\| null/);
 });
 
 test('graph cancellation diagnostic is nonblocking only after exact cancellation recovery', () => {

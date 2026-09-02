@@ -19,6 +19,39 @@ async function settled(page) {
   await page.waitForTimeout(180);
 }
 
+test('Agent builder retains current canvas controls across the exhaustive edit sequence', { timeout: 30000 }, async t => {
+  const browser = await chromium.launch({ executablePath: browserLane.executablePath, headless: true });
+  t.after(async () => { await browser.close(); });
+  const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  const errors = [];
+  page.on('pageerror', error => errors.push(String(error?.stack || error)));
+  page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+  await page.goto(`${preview}?surface=agents`); await settled(page);
+  await page.locator('[data-action="openStudioDraft"][data-kind="agent"]').click();
+  const sequence = [
+    ['[data-action="agentSelectNode"][data-agent-kind="model"]', 'first'],
+    ['[data-action="agentAddTopologyNode"][data-agent-kind="tools"]', 'first'],
+    ['[data-action="agentRemoveTopologyNode"][data-agent-node-id="agent-node:tools"]', 'first'],
+    ['[data-action="agentAddBinding"]', 'first'],
+    ['[data-action="agentRemoveBinding"]', 'last'],
+    ['[data-action="agentAddGrant"]', 'first'],
+    ['[data-action="agentRemoveGrant"]', 'last']
+  ];
+  for (const [selector, pick] of sequence) {
+    const controls = page.locator(selector);
+    const control = pick === 'last' ? controls.last() : controls.first();
+    await control.click();
+    await page.locator('[data-agent-editor-canvas]').waitFor({ state: 'visible' });
+    assert.equal(await page.locator('[data-action="agentZoom"][data-delta="0.1"]').count(), 1, `${selector} must retain Zoom in`);
+    assert.equal(await page.locator('[data-action="agentFit"]').count(), 2, `${selector} must retain toolbar and minimap Fit controls`);
+    assert.equal(await page.locator('.agent-builder-pipeline').count(), 0, `${selector} must not leave the pre-upgrade placeholder`);
+  }
+  await page.locator('[data-action="agentZoom"][data-delta="0.1"]').click();
+  await page.locator('[data-action="agentAutoLayout"]').click();
+  await page.locator('.agent-canvas-toolbar [data-action="agentFit"]').click();
+  assert.deepEqual(errors, []);
+});
+
 test('installed Studio controller adversarial profile executes every request-correlation predicate', { timeout: 30000 }, async t => {
   const browser = await chromium.launch({ executablePath: browserLane.executablePath, headless: true });
   t.after(async () => { await browser.close(); });

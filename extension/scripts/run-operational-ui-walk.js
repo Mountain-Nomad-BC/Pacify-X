@@ -3128,25 +3128,50 @@ async function builderState(frameHost, kind) {
       workflow_edges: values('[data-action="workflowRemoveEdge"]'),
       agent_scale: modal?.querySelector('[data-agent-editor-canvas]')?.dataset.agentScale || null,
       workflow_scale: modal?.querySelector('[data-workflow-editor-canvas]')?.dataset.workflowScale || null,
+      agent_canvas_present: Boolean(modal?.querySelector('[data-agent-editor-canvas]')),
+      agent_pipeline_placeholder_present: Boolean(modal?.querySelector('.agent-builder-pipeline')),
+      rendered_actions: [...new Set([...(modal?.querySelectorAll('[data-action]') || [])].map(element => element.dataset.action).filter(Boolean))].sort(),
       canonical_json: String(modal?.querySelector('#studio-draft-json')?.value || '').slice(0, 200_000)
     };
   }, kind);
 }
 
+async function clickWhenBuilderControlReady(frameHost, input, timeoutMs = 5_000) {
+  const deadline = Date.now() + timeoutMs;
+  let last = null;
+  do {
+    last = await frameHost.evaluate((frame, expected) => {
+      const document = frame.contentDocument;
+      const modal = document?.querySelector('.studio-modal');
+      const matches = [...(modal?.querySelectorAll('[data-action]') || [])].filter(element =>
+        element.dataset.action === expected.action
+        && Object.entries(expected.dataset).every(([key, value]) => String(element.dataset[key] || '') === String(value))
+      );
+      const multiplicityReady = expected.pick === 'only' ? matches.length === 1 : matches.length > 0;
+      const control = expected.pick === 'last' ? matches.at(-1) : matches[0];
+      const diagnostic = {
+        clicked: false,
+        modal_present: Boolean(modal),
+        match_count: matches.length,
+        disabled: control ? Boolean(control.disabled) : null,
+        agent_canvas_present: Boolean(modal?.querySelector('[data-agent-editor-canvas]')),
+        agent_pipeline_placeholder_present: Boolean(modal?.querySelector('.agent-builder-pipeline')),
+        rendered_actions: [...new Set([...(modal?.querySelectorAll('[data-action]') || [])].map(element => element.dataset.action).filter(Boolean))].sort()
+      };
+      if (!multiplicityReady || !control || control.disabled) return diagnostic;
+      const label = String(control.innerText || control.getAttribute('aria-label') || '').trim().slice(0, 240);
+      control.click();
+      return { ...diagnostic, clicked: true, label };
+    }, input);
+    if (last.clicked) return { match_count: last.match_count, label: last.label };
+    await wait(50);
+  } while (Date.now() < deadline);
+  throw new Error(`${input.controlId}: current rendered control readiness timeout:${JSON.stringify(last)}`);
+}
+
 async function invokeBuilderControl(frameHost, kind, controlId, action, dataset = {}, pick = 'only') {
   const before = await builderState(frameHost, kind);
-  const invoked = await frameHost.evaluate((frame, input) => {
-    const document = frame.contentDocument;
-    const matches = [...document.querySelectorAll(`[data-action="${CSS.escape(input.action)}"]`)].filter(element =>
-      Object.entries(input.dataset).every(([key, value]) => String(element.dataset[key] || '') === String(value))
-    );
-    if (!matches.length) throw new Error(`${input.controlId}: rendered control is missing`);
-    const control = input.pick === 'last' ? matches.at(-1) : matches[0];
-    if (input.pick === 'only' && matches.length !== 1) throw new Error(`${input.controlId}: expected one rendered control, found ${matches.length}`);
-    if (control.disabled) throw new Error(`${input.controlId}: rendered control is disabled`);
-    control.click();
-    return { match_count: matches.length, label: String(control.innerText || control.getAttribute('aria-label') || '').trim().slice(0, 240) };
-  }, { controlId, action, dataset, pick });
+  const invoked = await clickWhenBuilderControlReady(frameHost, { controlId, action, dataset, pick });
   await wait(180);
   const after = await builderState(frameHost, kind);
   return {
@@ -4223,6 +4248,31 @@ async function waitForInstalledGraphExchange(frameHost, after, timeoutMs = 30_00
   throw new Error(`installed-graph-request-bound-response-timeout:${JSON.stringify(diagnostic)}`);
 }
 
+async function clickWhenInstalledGraphControlReady(frameHost, action, expectedLabel, timeoutMs = 5_000) {
+  const deadline = Date.now() + timeoutMs;
+  let last = null;
+  do {
+    last = await frameHost.evaluate((frame, expected) => {
+      const controls = [...(frame.contentDocument?.querySelectorAll('[data-action]') || [])]
+        .filter(element => element.dataset.action === expected.action);
+      const control = controls.find(element => !element.disabled
+        && (!expected.expectedLabel || String(element.textContent || '').includes(expected.expectedLabel)));
+      const diagnostic = {
+        clicked: false,
+        match_count: controls.length,
+        labels: controls.map(element => String(element.textContent || '').trim().slice(0, 180)),
+        disabled: controls.map(element => Boolean(element.disabled))
+      };
+      if (!control) return diagnostic;
+      control.click();
+      return { ...diagnostic, clicked: true, label: String(control.textContent || '').trim().slice(0, 180) };
+    }, { action, expectedLabel });
+    if (last.clicked) return last;
+    await wait(50);
+  } while (Date.now() < deadline);
+  throw new Error(`installed-graph-control-readiness-timeout:${action}:${expectedLabel || '*'}:${JSON.stringify(last)}`);
+}
+
 async function waitForInstalledGraphIdle(frameHost, timeoutMs = 30_000) {
   const deadline = Date.now() + timeoutMs;
   do {
@@ -5088,24 +5138,29 @@ async function runInstalledLateCardRepairObservationProfile(frameHost, matrix, t
     if (!first.result?.page?.node_has_more && !first.result?.page?.edge_has_more) throw new Error('observation-state-graph-denominator-too-small');
     const initial = await frameHost.evaluate(frame => ({ more: Boolean(frame.contentDocument.querySelector('[data-action="graphLoadMore"]:not([disabled])')), all: Boolean(frame.contentDocument.querySelector('[data-action="graphLoadAll"]:not([disabled])')) }));
     let before = await installedGraphExchangeOffset(frameHost);
-    await frameHost.evaluate(frame => frame.contentDocument.querySelector('[data-action="graphLoadMore"]')?.click());
+    await clickWhenInstalledGraphControlReady(frameHost, 'graphLoadMore', 'Load next page', timeoutMs);
     await waitForInstalledGraphExchange(frameHost, before, timeoutMs);
     Object.assign(observations['pxui.knowledge-graph.action.graphLoadMore'], { rendered: initial.more, attempted: true, failure: true, recovered: true, completed: initial.more, failure_detail: 'The bounded first graph page withheld remaining records until the exact Load more action.', recovery_detail: 'Load more returned the next real host graph page.' });
     await requestGraphPage();
-    const cancellation = await frameHost.evaluate(frame => {
-      const first = frame.contentDocument.querySelector('[data-action="graphLoadAll"]');
-      first?.click();
-      const cancel = frame.contentDocument.querySelector('[data-action="graphLoadAll"]');
-      const cancelRendered = !cancel?.disabled && /Cancel load all/i.test(cancel?.textContent || '');
-      cancel?.click();
-      return { cancelRendered };
-    });
+    await clickWhenInstalledGraphControlReady(frameHost, 'graphLoadAll', 'Load all remaining pages', timeoutMs);
+    const cancellation = await clickWhenInstalledGraphControlReady(frameHost, 'graphLoadAll', 'Cancel load all', timeoutMs);
     const cancelled = await waitForInstalledGraphIdle(frameHost, timeoutMs);
-    if (!cancellation.cancelRendered || !cancelled) throw new Error('observation-state-graph-load-all-cancellation-failed');
+    if (!cancellation.clicked || !cancelled) throw new Error('observation-state-graph-load-all-cancellation-failed');
+    const recoverySeed = await requestGraphPage();
+    if (!recoverySeed.result?.page?.node_has_more && !recoverySeed.result?.page?.edge_has_more) throw new Error('observation-state-graph-recovery-denominator-too-small');
     before = await installedGraphExchangeOffset(frameHost);
-    await frameHost.evaluate(frame => frame.contentDocument.querySelector('[data-action="graphLoadAll"]')?.click());
+    await clickWhenInstalledGraphControlReady(frameHost, 'graphLoadAll', 'Load all remaining pages', timeoutMs);
     await waitForInstalledGraphExchange(frameHost, before, timeoutMs);
-    const allDone = await waitForInstalledGraphIdle(frameHost, timeoutMs);
+    await waitForInstalledGraphIdle(frameHost, timeoutMs);
+    const completion = await frameHost.evaluateContent(() => ({
+      idle: state.graphLoadAll === false && state.graphPending === false,
+      node_has_more: Boolean(state.graphData?.page?.node_has_more),
+      edge_has_more: Boolean(state.graphData?.page?.edge_has_more),
+      control_disabled: Boolean(document.querySelector('[data-action="graphLoadAll"]')?.disabled),
+      control_label: String(document.querySelector('[data-action="graphLoadAll"]')?.textContent || '').trim()
+    }));
+    const allDone = completion.idle && !completion.node_has_more && !completion.edge_has_more
+      && completion.control_disabled && /Complete graph loaded/i.test(completion.control_label);
     Object.assign(observations['pxui.knowledge-graph.action.graphLoadAll'], { rendered: initial.all, attempted: true, failure: true, cancelled, recovered: allDone, completed: initial.all && cancelled && allDone, failure_detail: 'The bounded first graph page exposed an incomplete-page state and the installed Cancel load all action stopped continuation after the in-flight bounded page.', recovery_detail: 'A subsequent Load all consumed real host pages until no continuation remained.' });
     const restoreBefore = await installedGraphExchangeOffset(frameHost);
     await frameHost.evaluateContent(() => requestGraph({ view: 'repository', mode: 'full', cluster: '', node: '', query: '', relation: '', direction: 'both', kind: '', status: '', offset: 0, edgeOffset: 0 }));
@@ -5201,25 +5256,30 @@ async function runInstalledObservationStateProfile(frameHost, sidebar, matrix, t
     if (!first.result?.page?.node_has_more && !first.result?.page?.edge_has_more) throw new Error('observation-state-graph-denominator-too-small');
     const initial = await frameHost.evaluate(frame => ({ more: Boolean(frame.contentDocument.querySelector('[data-action="graphLoadMore"]:not([disabled])')), all: Boolean(frame.contentDocument.querySelector('[data-action="graphLoadAll"]:not([disabled])')) }));
     let before = await installedGraphExchangeOffset(frameHost);
-    await frameHost.evaluate(frame => frame.contentDocument.querySelector('[data-action="graphLoadMore"]')?.click());
+    await clickWhenInstalledGraphControlReady(frameHost, 'graphLoadMore', 'Load next page', timeoutMs);
     await waitForInstalledGraphExchange(frameHost, before, timeoutMs);
     const moreId = 'pxui.knowledge-graph.action.graphLoadMore';
     Object.assign(observations[moreId], { rendered: initial.more, attempted: true, failure: true, recovered: true, completed: initial.more, failure_detail: 'The bounded first graph page withheld remaining records until the exact Load more action.', recovery_detail: 'Load more returned the next real host graph page.' });
     await requestGraphPage();
-    const cancellation = await frameHost.evaluate(frame => {
-      const first = frame.contentDocument.querySelector('[data-action="graphLoadAll"]');
-      first?.click();
-      const cancel = frame.contentDocument.querySelector('[data-action="graphLoadAll"]');
-      const cancelRendered = !cancel?.disabled && /Cancel load all/i.test(cancel?.textContent || '');
-      cancel?.click();
-      return { cancelRendered };
-    });
+    await clickWhenInstalledGraphControlReady(frameHost, 'graphLoadAll', 'Load all remaining pages', timeoutMs);
+    const cancellation = await clickWhenInstalledGraphControlReady(frameHost, 'graphLoadAll', 'Cancel load all', timeoutMs);
     const cancelled = await waitForInstalledGraphIdle(frameHost, timeoutMs);
-    if (!cancellation.cancelRendered || !cancelled) throw new Error('observation-state-graph-load-all-cancellation-failed');
+    if (!cancellation.clicked || !cancelled) throw new Error('observation-state-graph-load-all-cancellation-failed');
+    const recoverySeed = await requestGraphPage();
+    if (!recoverySeed.result?.page?.node_has_more && !recoverySeed.result?.page?.edge_has_more) throw new Error('observation-state-graph-recovery-denominator-too-small');
     before = await installedGraphExchangeOffset(frameHost);
-    await frameHost.evaluate(frame => frame.contentDocument.querySelector('[data-action="graphLoadAll"]')?.click());
+    await clickWhenInstalledGraphControlReady(frameHost, 'graphLoadAll', 'Load all remaining pages', timeoutMs);
     await waitForInstalledGraphExchange(frameHost, before, timeoutMs);
-    const allDone = await waitForInstalledGraphIdle(frameHost, timeoutMs);
+    await waitForInstalledGraphIdle(frameHost, timeoutMs);
+    const completion = await frameHost.evaluateContent(() => ({
+      idle: state.graphLoadAll === false && state.graphPending === false,
+      node_has_more: Boolean(state.graphData?.page?.node_has_more),
+      edge_has_more: Boolean(state.graphData?.page?.edge_has_more),
+      control_disabled: Boolean(document.querySelector('[data-action="graphLoadAll"]')?.disabled),
+      control_label: String(document.querySelector('[data-action="graphLoadAll"]')?.textContent || '').trim()
+    }));
+    const allDone = completion.idle && !completion.node_has_more && !completion.edge_has_more
+      && completion.control_disabled && /Complete graph loaded/i.test(completion.control_label);
     const allId = 'pxui.knowledge-graph.action.graphLoadAll';
     Object.assign(observations[allId], { rendered: initial.all, attempted: true, failure: true, cancelled, recovered: allDone, completed: initial.all && cancelled && allDone, failure_detail: 'The bounded first graph page exposed an incomplete-page state and the installed Cancel load all action stopped continuation after the in-flight bounded page.', recovery_detail: 'A subsequent Load all consumed real host pages until no continuation remained.' });
     const restoreBefore = await installedGraphExchangeOffset(frameHost);
@@ -10125,12 +10185,18 @@ async function main() {
     profileFailures.push(entry);
     return entry;
   };
-  const failedProfileResult = (profile, errors, authority = 'The profile terminated without a typed result; exact failure was retained and independent profiles remain eligible.') => {
+  const failedProfileResult = (profile, errors, authority = 'The profile terminated without a typed result; exact failure was retained and independent profiles remain eligible.', failure = null) => {
     const normalized = [...new Set(profileErrors(errors).map(error => String(error).slice(0, 1200)))];
+    const builderEvidence = failure?.builderEvidence || null;
     return {
       schema_version: 'px.installed-collected-profile-failure/1.0', profile, authority,
       completed: false, terminal_disposition: 'failed', errors: normalized,
-      observation: { attempted: true, completed: false, errors: normalized }, observations: [], records: [],
+      observation: { attempted: true, completed: false, errors: normalized },
+      observations: builderEvidence?.observations || [], records: [],
+      attempted_control_ids: builderEvidence?.attempted_control_ids || [],
+      failed_control_id: builderEvidence?.failed_control_id || null,
+      failed_action: builderEvidence?.failed_action || null,
+      failure_state: builderEvidence?.failure_state || null,
       control_probe: { schema_version: 'px.installed-operational-control-probe/1.0', authority, eligible_control_count: 0, records: [] }
     };
   };
@@ -10163,7 +10229,7 @@ async function main() {
       const message = String(error?.message || error).slice(0, 1200);
       recordProfileFailure(profile, 'threw', [message]);
       appendProfileProgress({ profile, state: 'threw', duration_ms: Date.now() - started, completed: false, error_count: 1, errors: [message], error: message });
-      return failedProfileResult(profile, [message]);
+      return failedProfileResult(profile, [message], undefined, error);
     }
   };
   const browser = await chromium.connectOverCDP(endpoint);
@@ -10642,6 +10708,6 @@ module.exports = {
   validCoordinationResult, validKnowledgeLifecycleResult, validLearningLifecycleResult, validPermanentCleanupResult,
   validPluginLifecycleObservation, validPendingPluginMutationReceipt, validPluginMutationReceipt, validStudioDraftReceipt, validStudioLifecycleResult,
   captureSurfaceViews, surfaceCaptureCandidates, surfaceCaptureFileStem,
-  validStudioRevisionEditObservation, validStudioSetupResult, validationControlProbe, runInstalledValidationBoundaryProfile, waitForBuilderJsonControls, waitForCoordinationResult,
-  installedGraphExchangeOffset, waitForInstalledGraphExchange, waitForInstalledGraphIdle, waitForOwnedWebview
+  validStudioRevisionEditObservation, validStudioSetupResult, validationControlProbe, runInstalledValidationBoundaryProfile, clickWhenBuilderControlReady, waitForBuilderJsonControls, waitForCoordinationResult,
+  clickWhenInstalledGraphControlReady, installedGraphExchangeOffset, waitForInstalledGraphExchange, waitForInstalledGraphIdle, waitForOwnedWebview
 };
