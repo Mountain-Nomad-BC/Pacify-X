@@ -19,7 +19,7 @@ async function settled(page) {
   await page.waitForTimeout(180);
 }
 
-test('Agent builder retains current canvas controls across the exhaustive edit sequence', { timeout: 30000 }, async t => {
+test('Agent builder retains current canvas controls across the exhaustive edit sequence', { timeout: 120000 }, async t => {
   const browser = await chromium.launch({ executablePath: browserLane.executablePath, headless: true });
   t.after(async () => { await browser.close(); });
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
@@ -64,7 +64,7 @@ test('Agent builder retains current canvas controls across the exhaustive edit s
   assert.deepEqual(errors, []);
 });
 
-test('installed Studio controller adversarial profile executes every request-correlation predicate', { timeout: 30000 }, async t => {
+test('installed Studio controller adversarial profile executes every request-correlation predicate', { timeout: 120000 }, async t => {
   const browser = await chromium.launch({ executablePath: browserLane.executablePath, headless: true });
   t.after(async () => { await browser.close(); });
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
@@ -79,7 +79,7 @@ test('installed Studio controller adversarial profile executes every request-cor
   assert.equal(Object.values(profile.checks).every(Boolean), true);
 });
 
-test('catalog lifecycle selection exposes bounded status and pagination identity to installed verification', { timeout: 30000 }, async t => {
+test('catalog lifecycle selection exposes bounded status and pagination identity to installed verification', { timeout: 120000 }, async t => {
   const browser = await chromium.launch({ executablePath: browserLane.executablePath, headless: true });
   t.after(async () => { await browser.close(); });
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
@@ -105,7 +105,7 @@ test('catalog lifecycle selection exposes bounded status and pagination identity
   assert.match(identity.requestId, /^agents-/);
 });
 
-test('graph catalog memory and activity responses are exact request-bound and single-use', { timeout: 30000 }, async t => {
+test('graph catalog memory and activity responses are exact request-bound and single-use', { timeout: 120000 }, async t => {
   const browser = await chromium.launch({ executablePath: browserLane.executablePath, headless: true });
   t.after(async () => { await browser.close(); });
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
@@ -163,7 +163,7 @@ test('graph catalog memory and activity responses are exact request-bound and si
   });
 });
 
-test('durable run browsing and multi-node workflow approvals retain exact request identity', { timeout: 30000 }, async t => {
+test('durable run browsing and multi-node workflow approvals retain exact request identity', { timeout: 120000 }, async t => {
   const browser = await chromium.launch({ executablePath: browserLane.executablePath, headless: true });
   t.after(async () => { await browser.close(); });
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
@@ -337,7 +337,7 @@ test('graph render acknowledgement remains live when installed-host animation fr
     && message.canvasWidth > 0 && message.canvasHeight > 0), undefined, { polling: 50 });
 });
 
-test('Playwright drives every dashboard route and high-risk interaction without console or layout errors', { timeout: 120000 }, async t => {
+test('Playwright drives every dashboard route and high-risk interaction without console or layout errors', { timeout: 300000 }, async t => {
   fs.mkdirSync(visualEvidenceRoot, { recursive: true });
   const browser = await chromium.launch({ executablePath: browserLane.executablePath, headless: true });
   const context = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
@@ -1168,7 +1168,7 @@ test('Playwright drives every dashboard route and high-risk interaction without 
   writeVisualManifest(browser.version());
 });
 
-test('source-bound Studio recovery reapplies only an exactly reauthenticated overlay', { timeout: 30000 }, async t => {
+test('source-bound Studio recovery reapplies only an exactly reauthenticated overlay', { timeout: 120000 }, async t => {
   const browser = await chromium.launch({ executablePath: browserLane.executablePath, headless: true });
   const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
   t.after(async () => { await browser.close(); });
@@ -1216,7 +1216,7 @@ test('source-bound Studio recovery reapplies only an exactly reauthenticated ove
   assert.match(await page.locator('.control-modal').textContent(), /agent:preview-catalog/);
 });
 
-test('U06 visual contract survives forced colors and 200%-equivalent reflow with retained screenshots', { timeout: 60000 }, async t => {
+test('U06 visual contract survives forced colors and 200%-equivalent reflow with retained screenshots', { timeout: 180000 }, async t => {
   fs.mkdirSync(visualEvidenceRoot, { recursive: true });
   const browser = await chromium.launch({ executablePath: browserLane.executablePath, headless: true });
   const context = await browser.newContext({

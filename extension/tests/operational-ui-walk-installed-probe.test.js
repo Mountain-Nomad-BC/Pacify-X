@@ -6,7 +6,7 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const { spawnSync } = require('node:child_process');
-const { applyInstalledProbeObservations, catalogPaginationControlProbe, cleanupControlProbe, clickWhenKnowledgeControlReady, commandPaletteAttemptDecision, coordinationMemoryControlProbe, eligibleInstalledControl, eligibleInstalledSidebarControl, engineOutageRecord, enterpriseControlProbe, environmentLifecycleControlProbe, exactPluginConflictSignal, graphProjectionIdentity, requestBoundGraphResultIdentity, hostBoundaryControlProbe, inlineCommandOwnerControlProbe, installedActionIdentity, installedConditionalRecoverySpec, installedConditionalScenario, installedFilesystemPathIdentity, installedFilesystemPathsMatch, installedFilesystemPathWithin, installedHostActionReceiptMatches, installedHostActionRequestIdentity, installedHostBoundaryRevealSelector, installedPreparationIdentity, installedSidebarHandoffRequestMatches, installedSidebarHandoffSpec, installedSidebarSelector, installedStudioControlScenario, installedStudioPrerequisites, installedSurfaceState, installedSurfaceAcknowledged, installedSurfaceControlAcknowledged, installedWorkbenchCommandSpec, installedWorkbenchAuthorityBoundarySpec, knowledgeBrowseHasHead, knowledgeGraphControlProbe, knowledgeLifecycleControlProbe, learningLifecycleControlProbe, nativeWorkbenchKeyboardActionAdmitted, nativeWorkbenchKeyboardFallbackAdmitted, nativeWorkbenchRequestFallbackAdmitted, ownedCleanupCandidate, ownedWorkbenchReloadIdentity, partitionExpectedFaultDiagnostics, pluginMutationControlProbe, pluginReadControlProbe, probeInstalledSidebarControls, projectMapIdentity, projectsControlProbe, reacquirableOwnedFrameError, restartInstalledSidebarWebview, revealInstalledHostBoundaryControl, selectLatestMatchingInstalledSnapshot, sidebarPreferenceRoundTripIdentity, sidebarReconstructionIdentity, sidebarStateControlProbe, sidebarStateControlVerified, skillQueryControlProbe, systemProjectionControlProbe, systemProjectionIdentity, requestBoundSystemSnapshotIdentity, validCleanupResult, validCoordinationResult, validKnowledgeLifecycleResult, validLearningLifecycleResult, validPermanentCleanupResult, validPendingPluginMutationReceipt, validPluginLifecycleObservation, validPluginMutationReceipt, validStudioDraftReceipt, validStudioLifecycleResult, validStudioRevisionEditObservation, validStudioSetupResult, validationControlProbe, workbenchCommandRowIdentity } = require('../scripts/run-operational-ui-walk');
+const { advanceInstalledSurfaceControlSettlement, applyInstalledProbeObservations, catalogPaginationControlProbe, cleanupControlProbe, clickWhenKnowledgeControlReady, commandPaletteAttemptDecision, coordinationMemoryControlProbe, eligibleInstalledControl, eligibleInstalledSidebarControl, engineOutageRecord, enterpriseControlProbe, environmentLifecycleControlProbe, exactPluginConflictSignal, graphProjectionIdentity, requestBoundGraphResultIdentity, hostBoundaryControlProbe, inlineCommandOwnerControlProbe, installedActionIdentity, installedConditionalRecoverySpec, installedConditionalScenario, installedFilesystemPathIdentity, installedFilesystemPathsMatch, installedFilesystemPathWithin, installedHostActionReceiptMatches, installedHostActionRequestIdentity, installedHostBoundaryRevealSelector, installedPluginControlPreservesModal, installedPreparationIdentity, installedSidebarHandoffRequestMatches, installedSidebarHandoffSpec, installedSidebarSelector, installedStudioControlScenario, installedStudioPrerequisites, installedSurfaceState, installedSurfaceAcknowledged, installedSurfaceControlAcknowledged, installedWorkbenchCommandSpec, installedWorkbenchAuthorityBoundarySpec, knowledgeBrowseHasHead, knowledgeGraphControlProbe, knowledgeLifecycleControlProbe, learningLifecycleControlProbe, nativeWorkbenchKeyboardActionAdmitted, nativeWorkbenchKeyboardFallbackAdmitted, nativeWorkbenchRequestFallbackAdmitted, ownedCleanupCandidate, ownedWorkbenchReloadIdentity, partitionExpectedFaultDiagnostics, pluginMutationControlProbe, pluginReadControlProbe, probeInstalledSidebarControls, projectMapIdentity, projectsControlProbe, reacquirableOwnedFrameError, restartInstalledSidebarWebview, revealInstalledHostBoundaryControl, selectLatestMatchingInstalledSnapshot, sidebarPreferenceRoundTripIdentity, sidebarReconstructionIdentity, sidebarStateControlProbe, sidebarStateControlVerified, skillQueryControlProbe, systemProjectionControlProbe, systemProjectionIdentity, requestBoundSystemSnapshotIdentity, validCleanupResult, validCoordinationResult, validKnowledgeLifecycleResult, validLearningLifecycleResult, validPermanentCleanupResult, validPendingPluginMutationReceipt, validPluginLifecycleObservation, validPluginMutationReceipt, validStudioDraftReceipt, validStudioLifecycleResult, validStudioRevisionEditObservation, validStudioSetupResult, validationControlProbe, workbenchCommandRowIdentity } = require('../scripts/run-operational-ui-walk');
 const { codexHandoffControlProbe } = require('../scripts/run-operational-ui-walk');
 const { installedSnapshotTimeoutIdentity } = require('../scripts/run-operational-ui-walk');
 const { currentSourceExtensionAssetIdentity, installedRuntimeSourceIdentityState } = require('../scripts/run-operational-ui-walk');
@@ -16,6 +16,8 @@ const { correlateCatalogExchange } = require('../scripts/run-operational-ui-walk
 const { buildInstalledLateCardAdversarialProfile, buildInstalledLateCardScenarioProfile, runInstalledStudioBridgeConflictProfile } = require('../scripts/run-operational-ui-walk');
 const { exactStudioSetupTerminalResponse } = require('../scripts/run-operational-ui-walk');
 const { installedDashboardRestartIdentity } = require('../scripts/run-operational-ui-walk');
+const { dispatchInstalledPluginConfirmation, dispatchInstalledPluginFormAction, installedPluginPreviewConfirmationMatches } = require('../scripts/run-operational-ui-walk');
+const { installedAdvancedFixtureStateAcknowledged } = require('../scripts/run-operational-ui-walk');
 
 const { boundedOwnedUiAction, waitForOwnedWebview } = require('../scripts/run-operational-ui-walk');
 const { clickWhenBuilderControlReady, clickWhenInstalledGraphControlReady, installedGraphExchangeOffset, invokeBuilderControl, waitForBuilderJsonControls, waitForInstalledGraphExchange, waitForInstalledGraphIdle } = require('../scripts/run-operational-ui-walk');
@@ -447,12 +449,40 @@ test('command palette attempts retry only after widget loss and dispatch only ex
 });
 
 test('profile control settlement requires the exact rendered surface, scope, and visible control', () => {
-  const exact = { rendered_surface: true, scope_current: true, control_visible: true };
+  const exact = { nav_current: true, rendered_surface: true, scope_current: true, control_visible: true };
   assert.equal(installedSurfaceControlAcknowledged(exact), true);
   for (const key of Object.keys(exact)) assert.equal(installedSurfaceControlAcknowledged({ ...exact, [key]: false }), false, key);
+  let settlement = advanceInstalledSurfaceControlSettlement(exact, 0, 4);
+  assert.deepEqual(settlement, { consecutive_samples: 1, complete: false });
+  settlement = advanceInstalledSurfaceControlSettlement(exact, settlement.consecutive_samples, 4);
+  assert.deepEqual(settlement, { consecutive_samples: 2, complete: false });
+  settlement = advanceInstalledSurfaceControlSettlement({ ...exact, nav_current: false }, settlement.consecutive_samples, 4);
+  assert.deepEqual(settlement, { consecutive_samples: 0, complete: false }, 'a late route invalidation must reset settlement');
+  for (let sample = 1; sample <= 4; sample += 1) {
+    settlement = advanceInstalledSurfaceControlSettlement(exact, settlement.consecutive_samples, 4);
+    assert.equal(settlement.complete, sample === 4);
+  }
   assert.equal(installedSurfaceAcknowledged({ nav_current: true, rendered_surface: false }), false);
   assert.equal(installedSurfaceAcknowledged({ nav_current: false, rendered_surface: true }), false);
   assert.equal(installedSurfaceAcknowledged({ nav_current: true, rendered_surface: true }), true);
+});
+
+test('plugin settlement preserves only exact request-bound execute confirmation modals', () => {
+  for (const action of [
+    'executeExtensionEnablement',
+    'executeExtensionInstall',
+    'executeExtensionUpdate',
+    'executeExtensionUninstall',
+    'executeExtensionRollback',
+    'executeExtensionConflictResolution'
+  ]) assert.equal(installedPluginControlPreservesModal(`[data-action="${action}"]`), true, action);
+  for (const selector of [
+    '#extension-install-id',
+    '[data-action="previewExtensionInstall"]',
+    '[data-action="queryExtensionConflicts"]',
+    '[data-action="openExtensionsView"]',
+    '[data-action="executeExtensionInstall"][data-token]'
+  ]) assert.equal(installedPluginControlPreservesModal(selector), false, selector);
 });
 
 test('host-boundary failure coverage is request-bound, pre-effect, one-shot, and recovered before success', () => {
@@ -682,7 +712,7 @@ test('Codex handoff informational notifications cannot delay request-bound termi
 test('plugin inventory refresh dispatch is atomic with exact route restoration', () => {
   const walker = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   const profile = walker.slice(walker.indexOf('async function runInstalledPluginMutationProfile('), walker.indexOf('function knowledgeLifecycleControlProbe('));
-  const currentVersion = profile.slice(profile.indexOf('const currentVersion = async expected =>'), profile.indexOf('const mutate = async spec =>'));
+  const currentVersion = profile.slice(profile.indexOf('const currentVersion = async ('), profile.indexOf('const mutate = async spec =>'));
   assert.match(currentVersion, /controlDeadline = Date\.now\(\) \+ Math\.min\(timeoutMs, 20_000\)/);
   assert.match(currentVersion, /if \(\(!rendered \|\| !current\) && route\) route\.click\(\)/);
   assert.match(currentVersion, /refreshedRendered && refreshedRoute\?\.getAttribute\('aria-current'\) === 'page' && control/);
@@ -966,11 +996,13 @@ test('conditional error indicators bind exact normal recovery actions and result
   assert.equal(installedConditionalRecoverySpec({ kind: 'action', control_id: 'pxui.agents.action.catalogRetry' }), null);
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   assert.match(source, /pxui\.memory\.indicator\.queryError': '\.surface-memory \.memory-errors\[role="alert"\]:has\(\[data-action="memoryRefresh"\]\)'/);
+  assert.match(source, /pxui\.activity\.indicator\.queryError': '\.surface-activity \.memory-errors\[role="alert"\]:has\(\[data-action="activityRefresh"\]\)'/);
   assert.match(source, /pxui\.knowledge-core\.indicator\.controllerError': '\.surface-knowledgeCore \.memory-errors\[role="alert"\]:has\(\[data-action="knowledgeRefresh"\]\)'/);
   const seed = source.slice(source.indexOf('async function seedInstalledConditionalScenario'), source.indexOf('async function recoverInstalledConditionalIndicator'));
   assert.match(seed, /control\.kind === 'indicator'[\s\S]*installedDirectSelector\(control\)[\s\S]*installed-conditional-control-settlement-timeout/);
   assert.match(seed, /state\.graphRequestId = requestId[\s\S]*state\.memoryRequestId = requestId[\s\S]*state\.activityRequestId = requestId[\s\S]*state\.catalogRequests\[kind\]\.requestId = requestId/);
   assert.match(seed, /operationError', operation, kind, requestId, error/);
+  assert.match(seed, /spec\.kind === 'activity'[\s\S]*state\.activityRequestId = requestId[\s\S]*state\.activityData = [\s\S]*error[\s\S]*render\(\)/);
   const probe = source.slice(source.indexOf('async function probeInstalledControls'), source.indexOf('function installedSidebarSelector'));
   assert.match(probe, /conditionalScenario = installedConditionalScenario\(control\)[\s\S]*probe\.failureObserved = true[\s\S]*recoverInstalledConditionalIndicator/);
 });
@@ -1369,9 +1401,30 @@ test('R113 advanced-route fixture settles prior control modals before rendering 
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   const fixture = source.slice(source.indexOf('async function prepareInstalledAdvancedControl'), source.indexOf('async function restoreInstalledAdvancedControl'));
   assert.match(fixture, /await settleInstalledModalBoundary\(frameHost, 5_000\);[\s\S]*frameHost\.evaluateContent/);
+  assert.match(fixture, /state\.settings = [\s\S]*state\.active = route;[\s\S]*state\.advancedOpen = true;[\s\S]*render\(\)/);
+  assert.match(fixture, /rendered_surface:[\s\S]*surface-\$\{route\}[\s\S]*installedAdvancedFixtureStateAcknowledged\(observed, target\)/);
   const modalSettlement = fixture.indexOf('settleInstalledModalBoundary');
   const predecessorCapture = fixture.indexOf('structuredClone(state.settings');
   assert.ok(modalSettlement >= 0 && modalSettlement < predecessorCapture);
+});
+
+test('advanced-route fixture tolerates deferred modal renders and restores every unsuccessful exit', () => {
+  const route = 'runtimeCore';
+  const ready = { settings_visible: true, active: route, advanced_open: true, rendered_surface: true, modal_count: 0 };
+  assert.equal(installedAdvancedFixtureStateAcknowledged(ready, route), true);
+  for (const observation of [
+    { ...ready, settings_visible: false },
+    { ...ready, active: 'dashboard' },
+    { ...ready, advanced_open: false },
+    { ...ready, rendered_surface: false },
+    null
+  ]) assert.equal(installedAdvancedFixtureStateAcknowledged(observation, route), false);
+
+  const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
+  const fixture = source.slice(source.indexOf('async function prepareInstalledAdvancedControl'), source.indexOf('async function restoreInstalledAdvancedControl'));
+  assert.match(fixture, /const deadline = Date\.now\(\) \+ 5_000;[\s\S]*do \{[\s\S]*settleInstalledModalBoundary[\s\S]*state\.settings = [\s\S]*render\(\)[\s\S]*installedAdvancedFixtureStateAcknowledged/);
+  assert.match(fixture, /catch \(error\)[\s\S]*restoreInstalledAdvancedControl\(frameHost, predecessor\)[\s\S]*installed-advanced-route-fixture-error/);
+  assert.match(fixture, /restoreInstalledAdvancedControl\(frameHost, predecessor\)[\s\S]*installed-advanced-route-fixture-state-unavailable/);
 });
 
 test('R114 residual repair applies authoritative graph modes, owns exact navigation, and reconstructs uninstall inventory', () => {
@@ -1381,12 +1434,24 @@ test('R114 residual repair applies authoritative graph modes, owns exact navigat
   assert.match(prepare, /state\.graphPending !== true[\s\S]*state\.graphData[\s\S]*installed-graph-physical-mode-settlement-timeout/);
   assert.match(source, /INSTALLED_EXACT_NAVIGATION_TRANSITIONS[\s\S]*navigate\.knowledgeCore[\s\S]*navigate\.runtimeCore[\s\S]*runtime-core\.action\.navigate\.workflows/);
   assert.match(source, /async function exerciseInstalledExactNavigation[\s\S]*installed-exact-navigation-control-unavailable[\s\S]*installed-exact-navigation-transition-timeout/);
+  assert.match(source, /target\.click\(\)[\s\S]*acknowledged: state\.active === spec\.target[\s\S]*if \(clicked\.acknowledged\) return completed\(\)/);
   const probe = source.slice(source.indexOf('async function probeInstalledControls'), source.indexOf('function installedSidebarSelector'));
   assert.match(probe, /installedExactNavigationTransition\(control\)[\s\S]*exerciseInstalledExactNavigation/);
   const plugin = source.slice(source.indexOf('async function runInstalledPluginMutationProfile'), source.indexOf('function knowledgeLifecycleControlProbe'));
   assert.match(plugin, /requiresWorkbenchReconstruction = \['install', 'update', 'uninstall', 'rollback'\]\.includes\(spec\.receiptAction\)/);
   assert.match(plugin, /requiresWorkbenchReconstruction[\s\S]*restartOwnedWorkbenchWindow\(workbench, frameHost, 75_000, \{[\s\S]*physicalExtensionId: extensionId[\s\S]*expectedPhysicalVersion: spec\.expectedVersion/);
   assert.doesNotMatch(plugin, /restartOwnedExtensionHostCatalog\(/);
+});
+
+test('final51 residual controls have exact scoped selectors and deterministic restoration', () => {
+  const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
+  assert.match(source, /pxui\.dashboard\.action\.inspectSensor\.row': '\.surface-dashboard \[data-action="inspectSensor"\]\[data-sensor-id\]'/);
+  assert.match(source, /pxui\.runtime-core\.action\.inspectSensor\.row': '\.surface-runtimeCore \[data-action="inspectSensor"\]\[data-sensor-id\]'/);
+  assert.match(source, /installed-sensor-row-settlement-timeout/);
+  assert.match(source, /pxui\.knowledge-graph\.field\.graphStatus': '\[data-graph-status-filter\]'/);
+  const graphField = source.slice(source.indexOf('async function exerciseInstalledExactGraphField'), source.indexOf('async function probeInstalledControls'));
+  assert.match(graphField, /endsWith\('\.graphStatus'\) \? 'full'/);
+  assert.match(graphField, /const current = document\.querySelector\(spec\.selector\)[\s\S]*current\.add\(new Option\(original, original\)\)[\s\S]*state\.graphStatus === original[\s\S]*restored\.value === original/);
 });
 
 test('Plugin lifecycle reconstruction reloads the complete owned workbench catalog before inventory assertion', () => {
@@ -1434,7 +1499,7 @@ test('R115 final mechanics stay in the content realm and settle physical graph p
   assert.match(navigation, /frameHost\.evaluateContent[\s\S]*state\.advancedOpen = true[\s\S]*state\.active === target/);
   const graphField = source.slice(source.indexOf('async function exerciseInstalledExactGraphField'), source.indexOf('async function probeInstalledControls'));
   assert.match(source, /INSTALLED_EXACT_GRAPH_FIELDS[\s\S]*graphDirection[\s\S]*graphTarget/);
-  assert.match(graphField, /frameHost\.evaluateContent[\s\S]*target\.dispatchEvent[\s\S]*restored: target\.value === original/);
+  assert.match(graphField, /frameHost\.evaluateContent[\s\S]*target\.dispatchEvent[\s\S]*const restored = document\.querySelector\(spec\.selector\)[\s\S]*restored: Boolean\(restored && restored\.value === original && stateRestored\)/);
   const probe = source.slice(source.indexOf('async function probeInstalledControls'), source.indexOf('function installedSidebarSelector'));
   assert.match(probe, /installedExactGraphField\(control\)[\s\S]*exerciseInstalledExactGraphField/);
 });
@@ -1442,7 +1507,7 @@ test('R115 final mechanics stay in the content realm and settle physical graph p
 test('R116 final graph fields atomically enter their real analysis mode before reversible input', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   const graphField = source.slice(source.indexOf('async function exerciseInstalledExactGraphField'), source.indexOf('async function probeInstalledControls'));
-  assert.match(graphField, /endsWith\('\.graphTarget'\) \? 'path' : 'dependencies'/);
+  assert.match(graphField, /endsWith\('\.graphTarget'\) \? 'path'[\s\S]*endsWith\('\.graphStatus'\) \? 'full' : 'dependencies'/);
   assert.match(graphField, /data-graph-analysis[\s\S]*analysis\.dispatchEvent\(new Event\('change'[\s\S]*document\.querySelector\(spec\.selector\)/);
   assert.ok(graphField.indexOf('analysis.dispatchEvent') < graphField.indexOf('document.querySelector(spec.selector)'));
 });
@@ -1453,8 +1518,10 @@ test('R117 depth menu owns focused predecessor and advanced fixture verifies sta
   assert.match(direct, /'pxui\.knowledge-graph\.menu\.depth': '\[role="group"\]\[aria-label="Relationship depth"\]'/);
   const prepare = source.slice(source.indexOf('async function prepareInstalledControl'), source.indexOf('async function revealInstalledControl'));
   assert.match(prepare, /'pxui\.knowledge-graph\.menu\.depth': 'depth-menu'[\s\S]*'depth-menu': 'neighborhood'/);
+  const acknowledgement = source.slice(source.indexOf('function installedAdvancedFixtureStateAcknowledged'), source.indexOf('async function prepareInstalledAdvancedControl'));
   const fixture = source.slice(source.indexOf('async function prepareInstalledAdvancedControl'), source.indexOf('async function restoreInstalledAdvancedControl'));
-  assert.match(fixture, /state\.settings\?\.showAdvancedSurfaces !== true \|\| state\.advancedOpen !== true/);
+  assert.match(acknowledgement, /settings_visible === true[\s\S]*active === route[\s\S]*advanced_open === true[\s\S]*rendered_surface === true/);
+  assert.match(fixture, /installedAdvancedFixtureStateAcknowledged\(observed, target\)/);
   assert.doesNotMatch(fixture, /document\.querySelector\(`\[data-surface=/);
 });
 
@@ -2922,10 +2989,181 @@ test('installed plugin profiles require acknowledged Plugins navigation before l
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   const readProfile = source.slice(source.indexOf('async function runInstalledPluginReadProfile'), source.indexOf('function validPluginMutationReceipt'));
   const mutationProfile = source.slice(source.indexOf('async function runInstalledPluginMutationProfile'), source.indexOf('\nfunction ', source.indexOf('async function runInstalledPluginMutationProfile')));
-  assert.match(readProfile, /await navigateInstalledSurface\(frameHost, 'plugins', timeoutMs\);[\s\S]*previewExtensionEnablement/);
-  assert.ok((mutationProfile.match(/await navigateInstalledSurface\(frameHost, 'plugins', timeoutMs\);/g) || []).length >= 5);
+  assert.match(readProfile, /await settleInstalledPluginControl\(frameHost, '\[data-action="previewExtensionEnablement"\]', timeoutMs\)/);
+  assert.ok((mutationProfile.match(/await settleInstalledPluginControl\(frameHost,/g) || []).length >= 8);
+  const settlement = source.slice(source.indexOf('async function settleInstalledSurfaceControl'), source.indexOf('async function runInstalledStudioSetupProfile'));
+  assert.match(settlement, /stableSamplesRequired = 1/);
+  assert.match(settlement, /if \(!preserveModal\) await navigateInstalledSurface/);
+  assert.match(settlement, /route && !expected\.preserveModal\) route\.click\(\)/);
+  assert.match(settlement, /!expected\.preserveModal \|\| control\.closest\('\.control-modal'\)/);
+  assert.match(settlement, /nav_current: navCurrent/);
+  assert.match(settlement, /advanceInstalledSurfaceControlSettlement\(state, consecutiveSamples, stableSamplesRequired\)/);
+  assert.match(settlement, /surface: 'plugins', selector, stableSamplesRequired: 4/);
+  assert.match(settlement, /preserveModal: installedPluginControlPreservesModal\(selector\)/);
   assert.doesNotMatch(readProfile, /querySelector\('\[data-surface="plugins"\]'\)\?*\.click\(\)/);
   assert.doesNotMatch(mutationProfile, /querySelector\('\[data-surface="plugins"\]'\)\?*\.click\(\)/);
+  const mutate = mutationProfile.slice(mutationProfile.indexOf('const mutate = async spec'), mutationProfile.indexOf('const exerciseNativeManagerEntrypoints'));
+  assert.ok(mutate.indexOf('for (const selector of Object.keys(spec.fields))') < mutate.indexOf('dispatchInstalledPluginFormAction(frameHost, spec.fields, spec.previewAction)'));
+  assert.match(mutate, /previewRequestBefore = await installedOutboundRequestOffset[\s\S]*waitForInstalledOutboundRequest\(frameHost, previewRequestBefore, spec\.previewOperation\)/);
+  assert.match(mutate, /requestId: previewRequest\.requestId[\s\S]*dispatchInstalledPluginConfirmation[\s\S]*responseOffset[\s\S]*requestOffset/);
+  assert.doesNotMatch(mutate, /settleInstalledPluginControl\(frameHost, `\[data-action="\$\{spec\.executeAction\}"\]`/);
+  assert.doesNotMatch(mutate, /dispatchEvent\(new Event\('input'[\s\S]*settleInstalledPluginControl/);
+  const conflicts = mutationProfile.slice(mutationProfile.indexOf('const queryConflicts = async'), mutationProfile.indexOf('const exerciseConflictRoute'));
+  assert.ok(conflicts.indexOf('[data-action="queryExtensionConflicts"]') < conflicts.indexOf('dispatchInstalledPluginFormAction'));
+  assert.match(mutationProfile, /physicalVersion = await currentVersion\(null, \{ acceptAny: true \}\)[\s\S]*failure-cleanup-uninstall-[\s\S]*observation\.failure_cleanup_restored = physicalVersion === null/);
+});
+
+test('installed plugin preview confirmation requires one exact request, token, target, and modal control', () => {
+  const expected = {
+    responseType: 'extensionUpdatePreview', requestId: 'request-2',
+    exactTarget: 'px-owned.fixture@2.0.0', executeAction: 'executeExtensionUpdate'
+  };
+  const observation = {
+    response: { type: expected.responseType, requestId: expected.requestId, result: { token: 'token-2', exact_target: expected.exactTarget } },
+    control: { action: expected.executeAction, token: 'token-2', exact_target: expected.exactTarget, visible: true, disabled: false, inside_modal: true }
+  };
+  assert.equal(installedPluginPreviewConfirmationMatches(observation, expected), true);
+  for (const [branch, value] of [
+    ['response.requestId', 'request-1'], ['response.result.token', 'token-1'],
+    ['response.result.exact_target', 'px-owned.fixture@1.0.0'], ['control.token', 'token-1'],
+    ['control.exact_target', 'px-owned.fixture@1.0.0'], ['control.visible', false],
+    ['control.disabled', true], ['control.inside_modal', false]
+  ]) {
+    const changed = structuredClone(observation);
+    const parts = branch.split('.');
+    let target = changed;
+    while (parts.length > 1) target = target[parts.shift()];
+    target[parts[0]] = value;
+    assert.equal(installedPluginPreviewConfirmationMatches(changed, expected), false, branch);
+  }
+});
+
+test('installed plugin confirmation dispatch selects the exact identity atomically among stale duplicate controls', async () => {
+  const clicked = [];
+  const control = (token, exactTarget) => ({
+    dataset: { action: 'executeExtensionUpdate', token, exactTarget },
+    hidden: false,
+    disabled: false,
+    getAttribute: name => name === 'data-action' ? 'executeExtensionUpdate' : null,
+    closest: selector => selector === '.control-modal' ? {} : null,
+    click: () => clicked.push(token)
+  });
+  const stale = control('token-1', 'px-owned.fixture@1.0.0');
+  const exact = control('token-2', 'px-owned.fixture@2.0.0');
+  const frame = {
+    contentDocument: { querySelectorAll: () => [stale, exact] },
+    contentWindow: {
+      __PX_INSTALLED_RESPONSES__: [{ type: 'extensionUpdatePreview' }],
+      __PX_INSTALLED_REQUESTS__: [{ type: 'extensionUpdatePreview' }],
+      getComputedStyle: () => ({ display: 'block', visibility: 'visible' })
+    }
+  };
+  const previousCss = globalThis.CSS;
+  globalThis.CSS = { escape: value => value };
+  try {
+    const result = await dispatchInstalledPluginConfirmation(
+      { evaluate: (operation, item) => operation(frame, item) },
+      { executeAction: 'executeExtensionUpdate', token: 'token-2', exactTarget: 'px-owned.fixture@2.0.0' },
+      1
+    );
+    assert.equal(result.dispatched, true);
+    assert.equal(result.responseOffset, 1);
+    assert.equal(result.requestOffset, 1);
+    assert.deepEqual(clicked, ['token-2']);
+  } finally {
+    globalThis.CSS = previousCss;
+  }
+});
+
+test('installed plugin confirmation dispatch tolerates transient replacement but never clicks a substituted identity', async () => {
+  const clicked = [];
+  const makeControl = (token, exactTarget) => ({
+    dataset: { action: 'executeExtensionUpdate', token, exactTarget },
+    hidden: false,
+    disabled: false,
+    getAttribute: name => name === 'data-action' ? 'executeExtensionUpdate' : null,
+    closest: selector => selector === '.control-modal' ? {} : null,
+    click: () => clicked.push(token)
+  });
+  const substituted = makeControl('token-substitute', 'px-owned.fixture@9.9.9');
+  const exact = makeControl('token-exact', 'px-owned.fixture@2.0.0');
+  let evaluations = 0;
+  const frame = {
+    contentDocument: { querySelectorAll: () => (++evaluations === 1 ? [substituted] : [substituted, exact]) },
+    contentWindow: {
+      __PX_INSTALLED_RESPONSES__: [],
+      __PX_INSTALLED_REQUESTS__: [],
+      getComputedStyle: () => ({ display: 'block', visibility: 'visible' })
+    }
+  };
+  const previousCss = globalThis.CSS;
+  globalThis.CSS = { escape: value => value };
+  try {
+    const result = await dispatchInstalledPluginConfirmation(
+      { evaluate: (operation, item) => operation(frame, item) },
+      { executeAction: 'executeExtensionUpdate', token: 'token-exact', exactTarget: 'px-owned.fixture@2.0.0' },
+      500
+    );
+    assert.equal(result.dispatched, true);
+    assert.ok(evaluations >= 2);
+    assert.deepEqual(clicked, ['token-exact']);
+
+    await assert.rejects(
+      dispatchInstalledPluginConfirmation(
+        { evaluate: (operation, item) => operation({ ...frame, contentDocument: { querySelectorAll: () => [substituted] } }, item) },
+        { executeAction: 'executeExtensionUpdate', token: 'token-exact', exactTarget: 'px-owned.fixture@2.0.0' },
+        1
+      ),
+      /installed-plugin-confirmation-identity-mismatch:executeExtensionUpdate/
+    );
+    assert.deepEqual(clicked, ['token-exact']);
+  } finally {
+    globalThis.CSS = previousCss;
+  }
+});
+
+test('installed plugin form dispatch atomically binds exact values and response offset before clicking', async () => {
+  const events = [];
+  const field = {
+    value: '', hidden: false, disabled: false,
+    getAttribute: () => null,
+    dispatchEvent: event => events.push(event.type)
+  };
+  const route = {
+    hidden: false, disabled: false,
+    classList: { contains: value => value === 'nav-item' },
+    getAttribute: name => name === 'aria-current' ? 'page' : null
+  };
+  const content = { classList: { contains: value => value === 'surface-plugins' } };
+  let clickedValue = null;
+  const action = {
+    hidden: false, disabled: false,
+    getAttribute: () => null,
+    click: () => { clickedValue = field.value; }
+  };
+  const document = {
+    querySelectorAll: selector => selector === '[data-surface="plugins"]' ? [route] : [],
+    querySelector: selector => ({ '.content': content, '#extension-conflict-id': field, '[data-action="queryExtensionConflicts"]': action })[selector] || null
+  };
+  const frame = {
+    contentDocument: document,
+    contentWindow: {
+      __PX_INSTALLED_RESPONSES__: [{ type: 'prior' }],
+      getComputedStyle: () => ({ display: 'block', visibility: 'visible' })
+    }
+  };
+  const frameHost = { evaluate: async (callback, item) => callback(frame, item) };
+  const priorCss = globalThis.CSS;
+  globalThis.CSS = { escape: value => value };
+  try {
+    const before = await dispatchInstalledPluginFormAction(frameHost, { '#extension-conflict-id': 'px-owned.fixture' }, 'queryExtensionConflicts');
+    assert.equal(before, 1);
+    assert.equal(clickedValue, 'px-owned.fixture');
+    assert.deepEqual(events, ['input']);
+  } finally {
+    if (priorCss === undefined) delete globalThis.CSS;
+    else globalThis.CSS = priorCss;
+  }
 });
 
 test('owned lifecycle probe enters eight bounded admitted delays through the real agent start form', () => {

@@ -1167,6 +1167,7 @@ def main(argv: list[str] | None = None) -> int:
     orchestration_lock: object | None = None
     previous_orchestration_owner: str | None = None
     release_stage_claim: dict[str, object] | None = None
+    release_stage_finish_deferred = False
     try:
         from .paths import framework_root
 
@@ -1994,6 +1995,19 @@ def main(argv: list[str] | None = None) -> int:
                             "test section dependencies are not current: "
                             + ", ".join(stale_dependencies)
                         )
+                    # Fail closed before launching any child. If the CLI or its
+                    # caller is interrupted mid-section, an older passing
+                    # receipt must not remain authoritative for this run.
+                    in_progress_receipt = section_receipt(
+                        output,
+                        {
+                            "valid": False,
+                            "exit_code": 1,
+                            "timed_out": False,
+                            "duration_seconds": 0.0,
+                        },
+                    )
+                    write_section_receipt(root, in_progress_receipt)
                     environment = dict(os.environ)
                     environment.update(output["environment"])
                     command = [
@@ -2440,12 +2454,17 @@ def main(argv: list[str] | None = None) -> int:
                     run_preflight,
                 )
 
-                if args.release_action in {"preflight", "dry-run"}:
+                if args.release_action == "preflight":
                     from .release_campaign import claim_release_stage
                     from .test_profiles import require_processing_stage
 
-                    require_processing_stage(root, "package")
-                    release_stage_claim = claim_release_stage(root, "package")
+                    # Installed equivalence is a certification prerequisite, so
+                    # authoritative preflight cannot consume package before the
+                    # later install and installed-operational stages.  Claim the
+                    # one certify attempt here and retain a successful claim for
+                    # crash-resumable finalization below.
+                    require_processing_stage(root, "certify")
+                    release_stage_claim = claim_release_stage(root, "certify")
                 if args.release_action == "preflight":
                     output = run_preflight(
                         root,
@@ -2453,6 +2472,7 @@ def main(argv: list[str] | None = None) -> int:
                         artifact=args.artifact,
                         deep=args.deep,
                     )
+                    release_stage_finish_deferred = output.get("valid") is True
                 elif args.release_action == "dry-run":
                     output = run_dry_run(
                         root, release=args.release, artifact=args.artifact
@@ -2462,11 +2482,26 @@ def main(argv: list[str] | None = None) -> int:
                         root, release=args.release, artifact=args.artifact
                     )
             else:
-                from .release_campaign import claim_release_stage
+                from .release_campaign import (
+                    claim_release_stage,
+                    release_campaign_status,
+                )
                 from .test_profiles import require_processing_stage
 
                 require_processing_stage(root, "certify")
-                release_stage_claim = claim_release_stage(root, "certify")
+                release_status = release_campaign_status(root, verify_source=True)
+                active_claim = release_status.get("active_claim")
+                if (
+                    isinstance(active_claim, dict)
+                    and active_claim.get("stage") == "certify"
+                    and active_claim.get("claim_id")
+                    == release_status.get("stages", {})
+                    .get("certify", {})
+                    .get("claim_id")
+                ):
+                    release_stage_claim = active_claim
+                else:
+                    release_stage_claim = claim_release_stage(root, "certify")
                 output = finalize_release(
                     root,
                     args.release,
@@ -3368,7 +3403,26 @@ def main(argv: list[str] | None = None) -> int:
                 )
         else:  # pragma: no cover
             raise AssertionError(args.command)
-        if release_stage_claim is not None:
+        if release_stage_claim is not None and release_stage_finish_deferred:
+            from .release_campaign import release_campaign_status
+
+            release_state = release_campaign_status(root, verify_source=True)
+            output["release_campaign"] = {
+                "campaign_id": release_state.get("campaign_id"),
+                "state": release_state.get("state"),
+                "release_identity_sha256": release_state.get("identity", {}).get(
+                    "release_identity_sha256"
+                )
+                if isinstance(release_state.get("identity"), dict)
+                else None,
+                "stage": release_stage_claim["stage"],
+                "stage_status": release_state.get("stages", {})
+                .get(str(release_stage_claim["stage"]), {})
+                .get("status"),
+                "completion_deferred_to": "release finalize",
+            }
+            release_stage_claim = None
+        elif release_stage_claim is not None:
             from .release_campaign import finish_release_stage
 
             release_state = finish_release_stage(

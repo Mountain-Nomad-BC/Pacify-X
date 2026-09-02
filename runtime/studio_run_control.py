@@ -299,8 +299,9 @@ class DurableRunControl:
             return self._read_unlocked(run_id)
 
     def read_snapshot(self, run_id: str) -> dict[str, object]:
-        """Verify an atomic durable snapshot without creating an advisory lock."""
-        return self._read_unlocked(run_id)
+        """Verify a durable snapshot serialized with event/head publication."""
+        with FileLock(self.lock_path, timeout_seconds=10):
+            return self._read_unlocked(run_id)
 
     def list_runs(
         self,

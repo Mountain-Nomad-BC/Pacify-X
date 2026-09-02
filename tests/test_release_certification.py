@@ -7,6 +7,8 @@ import subprocess
 import tempfile
 from unittest.mock import patch
 
+import pytest
+
 from runtime.release_certification import (
     FINALIZER_FULL_REPAIR_PENDING,
     _certificate_ledger_errors,
@@ -69,6 +71,77 @@ def test_clean_release_copy_uses_the_canonical_product_boundary() -> None:
         assert not (
             destination / ".engineering-bootstrap/.lock-recovery-receipts"
         ).exists()
+
+
+def test_finalizer_uses_bounded_packaged_evidence_materializer(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    root = tmp_path / "source"
+    root.mkdir()
+    key = tmp_path / "release-key"
+    key.write_text("private key fixture is not inspected\n", encoding="utf-8")
+    wheelhouse = tmp_path / "wheelhouse"
+    wheelhouse.mkdir()
+    observed: dict[str, Path] = {}
+
+    class MaterializationObserved(RuntimeError):
+        """Sentinel proving finalization reached bounded materialization."""
+
+    def stop_after_materialization(source: Path, destination: Path) -> None:
+        observed["source"] = source
+        observed["destination"] = destination
+        raise MaterializationObserved
+
+    monkeypatch.setattr(
+        "runtime.release_certification.validate_version_surfaces",
+        lambda _root, asserted=None: {
+            "authoritative_version": asserted,
+            "errors": [],
+        },
+    )
+    monkeypatch.setattr("runtime.release_certification._eligible_ledger", lambda _root: [])
+    monkeypatch.setattr(
+        "runtime.release_certification.capture_git_identity",
+        lambda _root, version=None: {"valid": True, "errors": []},
+    )
+    monkeypatch.setattr(
+        "runtime.release_preflight.validate_preflight_receipt",
+        lambda _root, _release: {"valid": True, "errors": []},
+    )
+    monkeypatch.setattr(
+        "runtime.release_certification.classify_tree",
+        lambda _root: {
+            "valid": True,
+            "product_valid": True,
+            "product_digest": "a" * 64,
+            "harness_digest": "b" * 64,
+            "errors": [],
+        },
+    )
+    monkeypatch.setattr(
+        "runtime.release_certification.build_wheelhouse_manifest",
+        lambda _wheelhouse, _requirements: {"valid": True, "errors": []},
+    )
+    monkeypatch.setattr(
+        "runtime.release_certification.materialize_release_source",
+        stop_after_materialization,
+    )
+    monkeypatch.setattr(
+        "runtime.release_certification.tempfile.gettempdir", lambda: str(tmp_path)
+    )
+
+    with pytest.raises(MaterializationObserved):
+        finalize_release(
+            root,
+            "0.7.0",
+            signing_key=key,
+            wheelhouse=wheelhouse,
+            artifact_dir=tmp_path / "artifacts",
+        )
+
+    assert observed["source"] == root.resolve()
+    assert observed["destination"].name == "product"
+    assert observed["destination"].parent.parent.name == "pacify-x-release-quarantine"
 
 
 def _eligible_clone() -> Path:

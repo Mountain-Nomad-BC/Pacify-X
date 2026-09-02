@@ -783,6 +783,18 @@ def _node_version() -> str | None:
 
 
 def _binding(root: Path, release: str, artifact: Path | None) -> dict[str, Any]:
+    root = root.resolve(strict=True)
+    resolved_artifact: Path | None = None
+    artifact_path: str | None = None
+    if artifact is not None:
+        resolved_artifact = artifact.resolve(strict=True)
+        try:
+            artifact_path = resolved_artifact.relative_to(root).as_posix()
+        except ValueError:
+            # An external artifact can be explored, but cannot be rebound by
+            # finalization from portable repository state and therefore will
+            # fail the exact receipt comparison below.
+            artifact_path = None
     product = classify_tree(root)
     engine = validate_engine_identity(root)
     git = capture_git_identity(root, version=release)
@@ -799,7 +811,10 @@ def _binding(root: Path, release: str, artifact: Path | None) -> dict[str, Any]:
         "engine_valid": engine.get("valid") is True,
         "policy_digest": _sha_bytes(policy_path.read_bytes()),
         "implementation_digest": _implementation_digest(root),
-        "artifact_sha256": _sha_bytes(artifact.read_bytes()) if artifact else None,
+        "artifact_path": artifact_path,
+        "artifact_sha256": _sha_bytes(resolved_artifact.read_bytes())
+        if resolved_artifact
+        else None,
         "platform": platform.system().casefold(),
         "python": platform.python_version(),
         "node": _node_version(),
@@ -862,7 +877,18 @@ def validate_preflight_receipt(
         }
     try:
         stored = _json(path)
-        current = _binding(root, release, None)
+        expected = stored.get("binding", {})
+        artifact_relative = expected.get("artifact_path")
+        artifact: Path | None = None
+        if artifact_relative is not None:
+            if not isinstance(artifact_relative, str) or not artifact_relative:
+                raise ValueError("preflight artifact path is malformed")
+            candidate = Path(artifact_relative)
+            if candidate.is_absolute() or ".." in candidate.parts:
+                raise ValueError("preflight artifact path escapes the repository")
+            artifact = (root / candidate).resolve(strict=True)
+            artifact.relative_to(root.resolve(strict=True))
+        current = _binding(root, release, artifact)
     except (OSError, ValueError, json.JSONDecodeError) as error:
         return {
             "valid": False,
@@ -872,7 +898,6 @@ def validate_preflight_receipt(
                 f"preflight receipt is unreadable: {type(error).__name__}: {error}"
             ],
         }
-    expected = stored.get("binding", {})
     sealed = dict(stored)
     recorded_sha256 = str(sealed.pop("receipt_sha256", ""))
     receipt_integrity = recorded_sha256 == _sha_bytes(_canonical(sealed))
@@ -888,6 +913,8 @@ def validate_preflight_receipt(
         "python",
         "node",
         "test_topology_digest",
+        "artifact_path",
+        "artifact_sha256",
     )
     mismatches = [key for key in keys if expected.get(key) != current.get(key)]
     valid = (
@@ -948,10 +975,12 @@ def run_preflight(
 
     started = time.monotonic()
     root = root.resolve(strict=True)
-    # Preflight is the admission owner for package/install/finalization work,
-    # so requiring the later installed-operational certification phase here
-    # creates a circular gate and prevents early defect discovery.
-    require_processing_stage(root, "package")
+    # A binding preflight includes exact installed-host equivalence.  It can
+    # therefore run only after package, install, and installed operational
+    # testing.  Discovery deliberately omits the release binding so repair can
+    # still collect a denominator without entering the certification campaign.
+    if enforce_release_binding:
+        require_processing_stage(root, "certify")
     release = release or authoritative_version(root)
     artifact = artifact.resolve(strict=True) if artifact else None
     policy = _json(root / PREFLIGHT_POLICY)

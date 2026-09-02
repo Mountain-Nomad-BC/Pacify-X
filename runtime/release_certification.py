@@ -23,7 +23,11 @@ from .exact_tool_certification import certify_exact_tools
 from .file_lock import FileLock
 from .generated_artifacts import validate_generated_artifacts
 from .full_repair import validate_full_repair_ledger
-from .release_artifacts import classify_tree, verify_frozen_product
+from .release_artifacts import (
+    classify_tree,
+    materialize_release_source,
+    verify_frozen_product,
+)
 from .release_boundary import copy_clean_product
 from .release_distribution import (
     bind_artifact_set,
@@ -928,7 +932,7 @@ def finalize_release(
         release_quarantine.mkdir(parents=True, exist_ok=True)
         directory = Path(tempfile.mkdtemp(prefix=f"{run_id}-", dir=release_quarantine))
         staged = directory / "product"
-        copy_clean_product(root, staged)
+        materialize_release_source(root, staged)
         frozen = classify_tree(staged)
         if not frozen["valid"] or frozen["product_digest"] != initial["product_digest"]:
             return {

@@ -2,6 +2,7 @@
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
+const { spawnSync } = require('node:child_process');
 const fs = require('node:fs');
 const path = require('node:path');
 const {
@@ -121,6 +122,17 @@ test('focused current-source walks remain truthful without inherited predecessor
   assert.ok(source.indexOf("if (controlPattern && selectedIndexes.length === 0)") < source.indexOf('const browser = await chromium.launch'));
 });
 
+test('help exits before browser launch instead of treating the flag as an output path', () => {
+  const script = path.join(__dirname, '../scripts/run-exhaustive-operational-control-walk.js');
+  const result = spawnSync(process.execPath, [script, '--help'], {
+    cwd: path.join(__dirname, '../..'), encoding: 'utf8', timeout: 5_000
+  });
+  assert.equal(result.error, undefined);
+  assert.equal(result.status, 0, result.stderr);
+  assert.match(result.stdout, /^Usage: node scripts\/run-exhaustive-operational-control-walk\.js/);
+  assert.equal(result.stderr, '');
+});
+
 test('variant graph actions use exact selectors', () => {
   assert.equal(exactActionSelectorFor({ control_id: 'pxui.knowledge-graph.action.graphDepth.decrease' }), '[data-action="graphDepth"][data-delta="-1"]');
   assert.equal(exactActionSelectorFor({ control_id: 'pxui.knowledge-graph.action.graphDepth.increase' }), '[data-action="graphDepth"][data-delta="1"]');
@@ -129,6 +141,7 @@ test('variant graph actions use exact selectors', () => {
   assert.equal(exactActionSelectorFor({ control_id: 'pxui.projects.action.inspectProjectMapRecord.test-link' }), '[data-action="inspectProjectMapRecord"][data-record-kind="test_links"]');
   assert.equal(exactActionSelectorFor({ control_id: 'pxui.plugins.action.inspectMachineManifest.footer' }), ':nth-match([data-action="inspectMachineManifest"], 2)');
   assert.equal(exactActionSelectorFor({ control_id: 'pxui.settings.action.openSettings.guardrails' }), ':nth-match([data-action="openSettings"], 3)');
+  assert.equal(exactActionSelectorFor({ control_id: 'pxui.runtime-core.action.inspectRuntimeRecord.startup' }), '[data-action="inspectRuntimeRecord"][data-runtime-kind="startup"]');
 });
 
 test('Studio landing actions remain outside the draft modal', () => {

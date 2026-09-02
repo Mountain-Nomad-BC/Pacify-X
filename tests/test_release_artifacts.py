@@ -23,6 +23,20 @@ from runtime.release_campaign import (
 
 
 ROOT = Path(__file__).parents[1]
+DECLARED_PACKAGED_EVIDENCE = (
+    "evidence/archive-catalog.json",
+    "evidence/bundles/archive-custody-20260803/manifest.json",
+    "evidence/bundles/archive-custody-20260803/complete_file_inventory.jsonl",
+    "evidence/capability-mining-receipt.json",
+    "evidence/contract-disposition-receipt.json",
+    "evidence/corpus-intake-receipt.json",
+    "evidence/domain-reference-receipt.json",
+    "evidence/external-source-admission-receipt.json",
+    "evidence/process-audit-intake-receipt.json",
+    "evidence/source-corpus-completeness.json",
+    "evidence/source-intake-receipt.json",
+    "evidence/source-migration-receipt.json",
+)
 
 
 def _minimal_tree() -> Path:
@@ -394,6 +408,13 @@ def test_materialized_release_source_is_bounded_and_complete() -> None:
 
         assert receipt["valid"]
         assert receipt["copied_bytes"] < 256 * 1024 * 1024
+        assert receipt["declared_evidence_file_count"] == len(
+            DECLARED_PACKAGED_EVIDENCE
+        )
+        for relative in DECLARED_PACKAGED_EVIDENCE:
+            assert (destination / relative).read_bytes() == (
+                ROOT / relative
+            ).read_bytes()
         assert (destination / "pyproject.toml").read_bytes() == (
             ROOT / "pyproject.toml"
         ).read_bytes()

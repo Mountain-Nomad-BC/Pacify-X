@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import sys
+import threading
 
 import pytest
 
@@ -10,6 +11,56 @@ from runtime.resource_lifecycle import ResourceManager
 from runtime.studio_run_control import DurableRunControl
 from runtime.studio_terminal_observer import _retryable_finalize_error
 from runtime.studio_worker_launch import finalize_studio_run_if_worker_exited
+
+
+def test_snapshot_read_waits_for_event_and_head_publication_window(
+    tmp_path, monkeypatch
+) -> None:
+    control = DurableRunControl(tmp_path, tmp_path / ".engineering-bootstrap/runs")
+    state = control.create(
+        kind="workflow",
+        subject_id="workflow:publication-window",
+        version="1.0.0",
+        owner="human:owner",
+        revision_sha256="a" * 64,
+        request_sha256="b" * 64,
+    )
+    event_published = threading.Event()
+    allow_head = threading.Event()
+    original_write = run_control_module.write_json_atomic
+
+    def pause_between_event_and_head(path, value):
+        original_write(path, value)
+        if path.name == "00000002.json":
+            event_published.set()
+            assert allow_head.wait(timeout=5), "test did not release head publication"
+
+    transition_errors: list[BaseException] = []
+
+    def transition() -> None:
+        try:
+            control.transition(
+                str(state["run_id"]), "running", actor="human:owner", approved=True
+            )
+        except BaseException as error:  # pragma: no cover - asserted below
+            transition_errors.append(error)
+
+    monkeypatch.setattr(
+        run_control_module, "write_json_atomic", pause_between_event_and_head
+    )
+    worker = threading.Thread(target=transition)
+    worker.start()
+    assert event_published.wait(timeout=5), "transition did not publish its event"
+    release = threading.Timer(0.1, allow_head.set)
+    release.start()
+    snapshot = control.read_snapshot(str(state["run_id"]))
+    worker.join(timeout=5)
+    release.join(timeout=5)
+
+    assert not worker.is_alive()
+    assert transition_errors == []
+    assert snapshot["state"] == "running"
+    assert snapshot["sequence"] == 2
 
 
 def test_durable_run_control_is_approval_gated_hash_chained_and_tamper_evident(

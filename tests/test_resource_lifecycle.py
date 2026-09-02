@@ -254,6 +254,63 @@ class ResourceLifecycleTests(unittest.TestCase):
         }
         self.assertEqual(stored, resource_ids)
 
+    def test_ledger_read_retries_transient_permission_errors(self) -> None:
+        record = self._workspace("read-retry")
+        ledger = self.manager.ledger.path
+        original_read_text = Path.read_text
+        attempts = 0
+
+        def transient_read(path, *args, **kwargs):
+            nonlocal attempts
+            if path == ledger and attempts < 2:
+                attempts += 1
+                raise PermissionError("transient scanner read denial")
+            return original_read_text(path, *args, **kwargs)
+
+        with mock.patch.object(Path, "read_text", new=transient_read):
+            stored = self.manager.ledger.load()
+
+        self.assertEqual(attempts, 2)
+        self.assertEqual({item.resource_id for item in stored}, {record.resource_id})
+
+    def test_ledger_replace_retries_transient_permission_errors(self) -> None:
+        ledger = self.manager.ledger.path
+        original_replace = os.replace
+        attempts = 0
+
+        def transient_replace(source, destination):
+            nonlocal attempts
+            if Path(destination) == ledger and attempts < 2:
+                attempts += 1
+                raise PermissionError("transient scanner replace denial")
+            return original_replace(source, destination)
+
+        with mock.patch("runtime.resource_lifecycle.os.replace", new=transient_replace):
+            record = self._workspace("replace-retry")
+
+        self.assertEqual(attempts, 2)
+        stored = self.manager.ledger.load()
+        self.assertEqual({item.resource_id for item in stored}, {record.resource_id})
+
+    def test_ledger_permission_retry_exhaustion_fails_closed(self) -> None:
+        self._workspace("persistent-denial")
+        ledger = self.manager.ledger.path
+        original_read_text = Path.read_text
+
+        def denied_read(path, *args, **kwargs):
+            if path == ledger:
+                raise PermissionError("persistent ledger denial")
+            return original_read_text(path, *args, **kwargs)
+
+        with (
+            mock.patch.object(Path, "read_text", new=denied_read),
+            mock.patch("runtime.resource_lifecycle.time.sleep") as sleep,
+            self.assertRaisesRegex(PermissionError, "persistent ledger denial"),
+        ):
+            self.manager.ledger.load()
+
+        self.assertEqual(sleep.call_count, 5)
+
     def test_normal_completion_reclaims_owned_workspace_and_receipts_are_exact(
         self,
     ) -> None:

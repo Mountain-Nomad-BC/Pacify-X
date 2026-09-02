@@ -530,7 +530,8 @@ function installedExactNavigationTransition(control) {
 
 const INSTALLED_EXACT_GRAPH_FIELDS = Object.freeze({
   'pxui.knowledge-graph.field.graphDirection': '[data-graph-direction]',
-  'pxui.knowledge-graph.field.graphTarget': '[data-graph-target]'
+  'pxui.knowledge-graph.field.graphTarget': '[data-graph-target]',
+  'pxui.knowledge-graph.field.graphStatus': '[data-graph-status-filter]'
 });
 
 function installedExactGraphField(control) {
@@ -550,6 +551,8 @@ function installedDirectSelector(control) {
     'pxui.dashboard-control-plane.indicator.loading': '.loading',
     'pxui.dashboard.indicator.heroConnection': '.hero-status > strong',
     'pxui.dashboard.indicator.sourceVersion': '.hero-status > small',
+    'pxui.activity.indicator.queryError': '.surface-activity .memory-errors[role="alert"]:has([data-action="activityRefresh"])',
+    'pxui.dashboard.action.inspectSensor.row': '.surface-dashboard [data-action="inspectSensor"][data-sensor-id]',
     'pxui.memory.indicator.queryError': '.surface-memory .memory-errors[role="alert"]:has([data-action="memoryRefresh"])',
     'pxui.knowledge-core.indicator.controllerError': '.surface-knowledgeCore .memory-errors[role="alert"]:has([data-action="knowledgeRefresh"])',
     'pxui.knowledge-graph.action.graphFit.button': '.graph-zoom-controls [data-action="graphFit"]',
@@ -566,6 +569,7 @@ function installedDirectSelector(control) {
     'pxui.knowledge-graph.menu.depth': '[role="group"][aria-label="Relationship depth"]',
     'pxui.knowledge-graph.indicator.relationshipCounts': '.relationship-counts',
     'pxui.runtime-core.action.refresh': '.surface-runtimeCore [data-action="refresh"]',
+    'pxui.runtime-core.action.inspectSensor.row': '.surface-runtimeCore [data-action="inspectSensor"][data-sensor-id]',
     'pxui.plugins.action.inspectMachineManifest.header': '.panel-heading [data-action="inspectMachineManifest"]',
     'pxui.plugins.action.inspectMachineManifest.footer': '.plugin-actions [data-action="inspectMachineManifest"]'
   }[id];
@@ -764,8 +768,18 @@ async function seedInstalledConditionalScenario(frameHost, control) {
     }
     const operation = spec.kind === 'knowledge-graph' ? 'graphQuery' : `${spec.kind}Query`;
     if (spec.type === 'query-error') {
-      sendError(operation, null, `Bounded installed current-source ${spec.kind} query failure`);
+      const error = `Bounded installed current-source ${spec.kind} query failure`;
+      sendError(operation, null, error);
       document.querySelector('[data-action="closeModal"]')?.click();
+      if (spec.kind === 'activity') {
+        state.activityRequestId = requestId;
+        state.activityPending = false;
+        state.activityData = {
+          events: [], active_operations: [], stale_operations: [], live_agents: [],
+          ...(state.activityData || {}), error
+        };
+        render();
+      }
       return true;
     }
     seedPending(operation, null);
@@ -1399,6 +1413,23 @@ async function prepareInstalledControl(frameHost, control) {
     }, surfaceState);
     await wait(80);
   }
+  const exactSensorSelector = ({
+    'pxui.dashboard.action.inspectSensor.row': installedDirectSelector(control),
+    'pxui.runtime-core.action.inspectSensor.row': installedDirectSelector(control)
+  })[control.control_id];
+  if (exactSensorSelector) {
+    const deadline = Date.now() + 20_000;
+    let ready = false;
+    while (Date.now() < deadline) {
+      ready = await frameHost.evaluate((frame, selector) => {
+        const target = frame.contentDocument?.querySelector(selector);
+        return Boolean(target && !target.disabled && (target.offsetWidth || target.offsetHeight || target.getClientRects().length));
+      }, exactSensorSelector);
+      if (ready) break;
+      await wait(100);
+    }
+    if (!ready) throw new Error(`installed-sensor-row-settlement-timeout:${control.control_id}:${exactSensorSelector}`);
+  }
   if (['agent-studio', 'workflow-studio', 'skill-studio'].includes(control.surface_id)) {
     const kind = control.surface_id.split('-')[0];
     await waitForInstalledStudioState(frameHost, kind, 'opener');
@@ -1601,24 +1632,49 @@ function installedAdvancedControlTarget(control) {
   return String(control?.control_id || '').match(/\.action\.navigate\.(knowledgeCore|runtimeCore)$/)?.[1] || null;
 }
 
+function installedAdvancedFixtureStateAcknowledged(observation, route) {
+  return observation?.settings_visible === true
+    && observation?.active === route
+    && observation?.advanced_open === true
+    && observation?.rendered_surface === true;
+}
+
 async function prepareInstalledAdvancedControl(frameHost, control) {
   const target = installedAdvancedControlTarget(control);
   if (!target) return null;
   await settleInstalledModalBoundary(frameHost, 5_000);
-  return frameHost.evaluateContent(route => {
-    const predecessor = {
-      settings: structuredClone(state.settings || {}),
-      active: state.active,
-      advancedOpen: state.advancedOpen
-    };
-    state.settings = { ...(state.settings || {}), showAdvancedSurfaces: true };
-    state.advancedOpen = true;
-    render();
-    if (state.settings?.showAdvancedSurfaces !== true || state.advancedOpen !== true) {
-      throw new Error(`installed-advanced-route-fixture-state-unavailable:${route}`);
-    }
-    return predecessor;
-  }, target);
+  const predecessor = await frameHost.evaluateContent(() => ({
+    settings: structuredClone(state.settings || {}),
+    active: state.active,
+    advancedOpen: state.advancedOpen
+  }));
+  const deadline = Date.now() + 5_000;
+  let observed = null;
+  try {
+    do {
+      await settleInstalledModalBoundary(frameHost, Math.max(250, Math.min(1_000, deadline - Date.now())));
+      observed = await frameHost.evaluateContent(route => {
+        state.settings = { ...(state.settings || {}), showAdvancedSurfaces: true };
+        state.active = route;
+        state.advancedOpen = true;
+        render();
+        return {
+          settings_visible: state.settings?.showAdvancedSurfaces === true,
+          active: state.active,
+          advanced_open: state.advancedOpen === true,
+          rendered_surface: document.querySelector('.content')?.classList.contains(`surface-${route}`) === true,
+          modal_count: document.querySelectorAll('.control-modal').length
+        };
+      }, target);
+      if (installedAdvancedFixtureStateAcknowledged(observed, target)) return predecessor;
+      await wait(75);
+    } while (Date.now() < deadline);
+  } catch (error) {
+    const restored = await restoreInstalledAdvancedControl(frameHost, predecessor).catch(() => false);
+    throw new Error(`installed-advanced-route-fixture-error:${target}:${JSON.stringify({ observed, restored, cause: String(error?.message || error).slice(0, 500) })}`);
+  }
+  const restored = await restoreInstalledAdvancedControl(frameHost, predecessor).catch(() => false);
+  throw new Error(`installed-advanced-route-fixture-state-unavailable:${target}:${JSON.stringify({ observed, restored })}`);
 }
 
 async function restoreInstalledAdvancedControl(frameHost, predecessor) {
@@ -1837,11 +1893,20 @@ async function exerciseInstalledExactNavigation(frameHost, control, timeoutMs = 
     }
     const controls = [...document.querySelectorAll(`[data-surface="${CSS.escape(spec.target)}"]`)];
     const target = controls.find(element => element.classList.contains('nav-item') && visible(element)) || controls.find(visible);
-    if (!target) return false;
+    if (!target) return { clicked: false, acknowledged: false };
     target.click();
-    return true;
+    const rendered = document.querySelector('.content')?.classList.contains(`surface-${spec.target}`) === true;
+    const current = [...document.querySelectorAll(`[data-surface="${CSS.escape(spec.target)}"]`)]
+      .some(element => element.getAttribute('aria-current') === 'page');
+    return { clicked: true, acknowledged: state.active === spec.target && rendered && current };
   }, transition);
-  if (!clicked) throw new Error(`installed-exact-navigation-control-unavailable:${control.control_id}:${transition.target}`);
+  if (!clicked.clicked) throw new Error(`installed-exact-navigation-control-unavailable:${control.control_id}:${transition.target}`);
+  const completed = () => ({
+    loaded: true, visible: true, attempted: true, validationObserved: true, acknowledged: true,
+    changed: true, restored: false, failureObserved: false, recoveryObserved: false,
+    details: { result_acknowledgement: `The exact visible ${transition.target} navigation control completed its physical route transition.` }, errors: []
+  });
+  if (clicked.acknowledged) return completed();
   const deadline = Date.now() + timeoutMs;
   do {
     const acknowledged = await frameHost.evaluateContent(target => {
@@ -1854,13 +1919,7 @@ async function exerciseInstalledExactNavigation(frameHost, control, timeoutMs = 
         && [...document.querySelectorAll('main h1')].some(element => element.textContent.trim() === advancedHeading));
       return state.active === target && rendered && (current || advancedCurrent);
     }, transition.target);
-    if (acknowledged) {
-      return {
-        loaded: true, visible: true, attempted: true, validationObserved: true, acknowledged: true,
-        changed: true, restored: false, failureObserved: false, recoveryObserved: false,
-        details: { result_acknowledgement: `The exact visible ${transition.target} navigation control completed its physical route transition.` }, errors: []
-      };
-    }
+    if (acknowledged) return completed();
     await wait(100);
   } while (Date.now() < deadline);
   throw new Error(`installed-exact-navigation-transition-timeout:${control.control_id}:${transition.target}`);
@@ -1872,7 +1931,8 @@ async function exerciseInstalledExactGraphField(frameHost, control) {
   const result = await frameHost.evaluateContent(spec => {
     const visible = element => Boolean(element && !element.disabled
       && (element.offsetWidth || element.offsetHeight || element.getClientRects().length));
-    const mode = spec.controlId.endsWith('.graphTarget') ? 'path' : 'dependencies';
+    const mode = spec.controlId.endsWith('.graphTarget') ? 'path'
+      : spec.controlId.endsWith('.graphStatus') ? 'full' : 'dependencies';
     const analysis = document.querySelector('[data-graph-analysis]');
     if (!visible(analysis) || ![...analysis.options].some(option => option.value === mode)) return { available: false, modeUnavailable: true };
     analysis.value = mode;
@@ -1890,9 +1950,16 @@ async function exerciseInstalledExactGraphField(frameHost, control) {
       target.dispatchEvent(new Event('input', { bubbles: true }));
     }
     const changed = target.value !== original;
-    target.value = original;
-    target.dispatchEvent(new Event(target.tagName === 'SELECT' ? 'change' : 'input', { bubbles: true }));
-    return { available: true, attempted: true, changed, restored: target.value === original };
+    const current = document.querySelector(spec.selector);
+    if (!visible(current)) return { available: true, attempted: true, changed, restored: false };
+    if (current.tagName === 'SELECT' && ![...current.options].some(option => option.value === original)) {
+      current.add(new Option(original, original));
+    }
+    current.value = original;
+    current.dispatchEvent(new Event(current.tagName === 'SELECT' ? 'change' : 'input', { bubbles: true }));
+    const restored = document.querySelector(spec.selector);
+    const stateRestored = spec.controlId.endsWith('.graphStatus') ? state.graphStatus === original : true;
+    return { available: true, attempted: true, changed, restored: Boolean(restored && restored.value === original && stateRestored) };
   }, { selector, controlId: control.control_id });
   if (!result.available) throw new Error(`installed-exact-graph-field-unavailable:${control.control_id}:${selector}`);
   if (!result.attempted || !result.changed || !result.restored) throw new Error(`installed-exact-graph-field-restoration-failed:${control.control_id}`);
@@ -6126,19 +6193,44 @@ async function navigateInstalledSurface(frameHost, surface, timeoutMs = 20_000) 
 }
 
 function installedSurfaceControlAcknowledged(state) {
-  return state?.rendered_surface === true
+  return state?.nav_current === true
+    && state?.rendered_surface === true
     && state?.scope_current === true
     && state?.control_visible === true;
 }
 
-async function settleInstalledSurfaceControl(frameHost, { surface, selector, scopeTarget = null, scope = null }, timeoutMs = 20_000) {
-  await navigateInstalledSurface(frameHost, surface, timeoutMs);
+function advanceInstalledSurfaceControlSettlement(state, consecutiveSamples = 0, requiredSamples = 1) {
+  const consecutive = installedSurfaceControlAcknowledged(state) ? consecutiveSamples + 1 : 0;
+  return { consecutive_samples: consecutive, complete: consecutive >= requiredSamples };
+}
+
+async function settleInstalledSurfaceControl(frameHost, { surface, selector, scopeTarget = null, scope = null, stableSamplesRequired = 1, preserveModal = false }, timeoutMs = 20_000) {
+  if (!preserveModal) await navigateInstalledSurface(frameHost, surface, timeoutMs);
   const deadline = Date.now() + timeoutMs;
   let state = null;
+  let consecutiveSamples = 0;
   do {
     state = await frameHost.evaluate((frame, expected) => {
       const document = frame.contentDocument;
-      const renderedSurface = document.querySelector('.content')?.classList.contains(`surface-${expected.surface}`) === true;
+      const visible = element => {
+        if (!element || element.hidden || element.getAttribute('aria-hidden') === 'true') return false;
+        const style = frame.contentWindow.getComputedStyle(element);
+        return style.display !== 'none' && style.visibility !== 'hidden';
+      };
+      const expectedAdvancedHeading = ({ knowledgeCore: 'Knowledge Core', runtimeCore: 'Runtime Core' })[expected.surface] || null;
+      const advancedCurrent = () => Boolean(expectedAdvancedHeading
+        && document.querySelector('[data-action="toggleAdvanced"].active')
+        && [...document.querySelectorAll('main h1')].some(element => element.textContent.trim() === expectedAdvancedHeading));
+      const routeControls = [...document.querySelectorAll(`[data-surface="${CSS.escape(expected.surface)}"]`)]
+        .filter(element => !element.disabled && visible(element));
+      const route = routeControls.find(element => element.classList.contains('nav-item')) || routeControls[0] || null;
+      let renderedSurface = document.querySelector('.content')?.classList.contains(`surface-${expected.surface}`) === true;
+      let navCurrent = route?.getAttribute('aria-current') === 'page' || advancedCurrent();
+      if ((!renderedSurface || !navCurrent) && route && !expected.preserveModal) route.click();
+      const activeRoute = [...document.querySelectorAll(`[data-surface="${CSS.escape(expected.surface)}"]`)]
+        .find(element => element.classList.contains('nav-item') && visible(element)) || route;
+      renderedSurface = document.querySelector('.content')?.classList.contains(`surface-${expected.surface}`) === true;
+      navCurrent = activeRoute?.getAttribute('aria-current') === 'page' || advancedCurrent();
       let scopeCurrent = expected.scope === null;
       if (expected.scope !== null) {
         const scopeControl = document.querySelector(`[data-action="surfaceScope"][data-target="${CSS.escape(expected.scopeTarget)}"][data-scope="${CSS.escape(expected.scope)}"]`);
@@ -6146,13 +6238,157 @@ async function settleInstalledSurfaceControl(frameHost, { surface, selector, sco
         scopeCurrent = scopeControl?.getAttribute('aria-pressed') === 'true';
       }
       const control = document.querySelector(expected.selector);
-      const controlVisible = Boolean(control && !control.disabled && !control.hidden && control.getAttribute('aria-hidden') !== 'true');
-      return { rendered_surface: renderedSurface, scope_current: scopeCurrent, control_visible: controlVisible };
-    }, { surface, selector, scopeTarget, scope });
-    if (installedSurfaceControlAcknowledged(state)) return state;
+      const controlVisible = Boolean(control && !control.disabled && visible(control)
+        && (!expected.preserveModal || control.closest('.control-modal')));
+      return { nav_current: navCurrent, rendered_surface: renderedSurface, scope_current: scopeCurrent, control_visible: controlVisible };
+    }, { surface, selector, scopeTarget, scope, preserveModal });
+    const settlement = advanceInstalledSurfaceControlSettlement(state, consecutiveSamples, stableSamplesRequired);
+    consecutiveSamples = settlement.consecutive_samples;
+    if (settlement.complete) return { ...state, stable_samples: consecutiveSamples };
     await wait(100);
   } while (Date.now() < deadline);
-  throw new Error(`installed-surface-control-settlement-timeout:${surface}:${scope || 'default'}:${selector}:${JSON.stringify(state)}`);
+  throw new Error(`installed-surface-control-settlement-timeout:${surface}:${scope || 'default'}:${selector}:${JSON.stringify({ ...state, stable_samples: consecutiveSamples, stable_samples_required: stableSamplesRequired })}`);
+}
+
+const INSTALLED_PLUGIN_MODAL_ACTIONS = new Set([
+  'executeExtensionEnablement',
+  'executeExtensionInstall',
+  'executeExtensionUpdate',
+  'executeExtensionUninstall',
+  'executeExtensionRollback',
+  'executeExtensionConflictResolution'
+]);
+
+function installedPluginControlPreservesModal(selector) {
+  const match = /^\[data-action="([^"]+)"\]$/.exec(String(selector || ''));
+  return Boolean(match && INSTALLED_PLUGIN_MODAL_ACTIONS.has(match[1]));
+}
+
+async function settleInstalledPluginControl(frameHost, selector, timeoutMs = 20_000) {
+  return settleInstalledSurfaceControl(frameHost, {
+    surface: 'plugins', selector, stableSamplesRequired: 4,
+    preserveModal: installedPluginControlPreservesModal(selector)
+  }, timeoutMs);
+}
+
+async function dispatchInstalledPluginFormAction(frameHost, fields, action) {
+  return frameHost.evaluate((frame, item) => {
+    const document = frame.contentDocument;
+    const visible = element => {
+      if (!element || element.hidden || element.disabled || element.getAttribute?.('aria-hidden') === 'true') return false;
+      const style = frame.contentWindow.getComputedStyle(element);
+      return style.display !== 'none' && style.visibility !== 'hidden';
+    };
+    const route = [...document.querySelectorAll('[data-surface="plugins"]')]
+      .find(element => element.classList.contains('nav-item') && visible(element));
+    const rendered = document.querySelector('.content')?.classList.contains('surface-plugins') === true;
+    if (!rendered || route?.getAttribute('aria-current') !== 'page') throw new Error('plugin-form-route-not-settled');
+    const controls = Object.entries(item.fields).map(([selector, value]) => {
+      const field = document.querySelector(selector);
+      if (!visible(field)) throw new Error(`plugin-field-unavailable:${selector}`);
+      return { selector, field, value: String(value) };
+    });
+    const control = document.querySelector(`[data-action="${CSS.escape(item.action)}"]`);
+    if (!visible(control)) throw new Error(`plugin-action-unavailable:${item.action}`);
+    for (const { field, value } of controls) {
+      field.value = value;
+      field.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+    const mismatch = controls.find(({ field, value }) => field.value !== value);
+    if (mismatch) throw new Error(`plugin-field-value-mismatch:${mismatch.selector}`);
+    const before = frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0;
+    control.click();
+    return before;
+  }, { fields, action });
+}
+
+function installedPluginPreviewConfirmationMatches(observation, expected) {
+  const response = observation?.response;
+  const result = response?.result;
+  const control = observation?.control;
+  return response?.type === expected?.responseType
+    && response?.requestId === expected?.requestId
+    && typeof result?.token === 'string'
+    && result.token.length > 0
+    && result?.exact_target === expected?.exactTarget
+    && control?.action === expected?.executeAction
+    && control?.token === result.token
+    && control?.exact_target === result.exact_target
+    && control?.visible === true
+    && control?.disabled === false
+    && control?.inside_modal === true;
+}
+
+async function waitForInstalledPluginPreviewConfirmation(frameHost, expected, timeoutMs = 20_000) {
+  const deadline = Date.now() + timeoutMs;
+  let observation = null;
+  do {
+    observation = await frameHost.evaluate((frame, item) => {
+      const responses = frame.contentWindow?.__PX_INSTALLED_RESPONSES__ || [];
+      const response = responses.slice(item.responseOffset)
+        .find(value => value?.type === item.responseType && value?.requestId === item.requestId) || null;
+      const control = frame.contentDocument?.querySelector(`[data-action="${CSS.escape(item.executeAction)}"]`) || null;
+      const visible = Boolean(control && !control.hidden && control.getAttribute?.('aria-hidden') !== 'true'
+        && (() => { const style = frame.contentWindow.getComputedStyle(control); return style.display !== 'none' && style.visibility !== 'hidden'; })());
+      return {
+        response,
+        control: control ? {
+          action: control.dataset?.action || control.getAttribute('data-action'),
+          token: control.dataset?.token || null,
+          exact_target: control.dataset?.exactTarget || null,
+          visible,
+          disabled: Boolean(control.disabled),
+          inside_modal: Boolean(control.closest('.control-modal'))
+        } : null
+      };
+    }, expected);
+    if (installedPluginPreviewConfirmationMatches(observation, expected)) return observation;
+    await wait(100);
+  } while (Date.now() < deadline);
+  throw new Error(`installed-plugin-preview-confirmation-timeout:${JSON.stringify({ expected, observation })}`);
+}
+
+async function dispatchInstalledPluginConfirmation(frameHost, expected, timeoutMs = 20_000) {
+  const deadline = Date.now() + timeoutMs;
+  let observation = null;
+  do {
+    observation = await frameHost.evaluate((frame, item) => {
+      const controls = [...(frame.contentDocument?.querySelectorAll(`[data-action="${CSS.escape(item.executeAction)}"]`) || [])];
+      const candidates = controls.map(control => {
+        const style = frame.contentWindow.getComputedStyle(control);
+        return {
+          control,
+          identity: {
+            action: control.dataset?.action || control.getAttribute?.('data-action') || null,
+            token: control.dataset?.token || null,
+            exact_target: control.dataset?.exactTarget || null,
+            visible: Boolean(!control.hidden && control.getAttribute?.('aria-hidden') !== 'true'
+              && style?.display !== 'none' && style?.visibility !== 'hidden'),
+            disabled: Boolean(control.disabled),
+            inside_modal: Boolean(control.closest('.control-modal'))
+          }
+        };
+      });
+      const exact = candidates.find(candidate => candidate.identity.action === item.executeAction
+        && candidate.identity.token === item.token
+        && candidate.identity.exact_target === item.exactTarget
+        && candidate.identity.visible === true
+        && candidate.identity.disabled === false
+        && candidate.identity.inside_modal === true);
+      if (!exact) return { dispatched: false, candidates: candidates.map(candidate => candidate.identity) };
+      const responseOffset = frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0;
+      const requestOffset = frame.contentWindow?.__PX_INSTALLED_REQUESTS__?.length || 0;
+      exact.control.click();
+      return { dispatched: true, responseOffset, requestOffset, candidates: candidates.map(candidate => candidate.identity) };
+    }, expected);
+    if (observation?.dispatched === true) return observation;
+    await wait(100);
+  } while (Date.now() < deadline);
+  throw new Error(`installed-plugin-confirmation-identity-mismatch:${expected.executeAction}:${JSON.stringify({
+    token: expected.token,
+    exact_target: expected.exactTarget,
+    candidates: observation?.candidates || []
+  })}`);
 }
 
 async function runInstalledStudioSetupProfile(workbench, frameHost, matrix, timeoutMs = 180_000) {
@@ -8898,6 +9134,7 @@ async function runInstalledPluginReadProfile(workbench, frameHost, matrix, timeo
   const extensionId = 'mountain-nomad-bc.pacify-x-vscode';
   const observation = { rendered: false, attempted: false, extension_id: extensionId, operations: {}, errors: [] };
   const invoke = async ({ field, value = extensionId, action, responseType, operation, executeAction = null, expectedExtensionId = extensionId }) => {
+    await settleInstalledPluginControl(frameHost, field, timeoutMs);
     await frameHost.evaluate((frame, item) => {
       const document = frame.contentDocument; document?.querySelector('[data-action="closeModal"]')?.click();
       const input = document.querySelector(item.field); if (!input) throw new Error(`plugin-field-unavailable:${item.field}`);
@@ -8916,7 +9153,7 @@ async function runInstalledPluginReadProfile(workbench, frameHost, matrix, timeo
     observation.operations[operation] = validPluginLifecycleObservation(operation, response.result, expectedExtensionId);
     if (!observation.operations[operation]) throw new Error(`plugin-${operation}-result-invalid:${JSON.stringify(response.result)}`);
     if (executeAction) {
-      await waitForKnowledgeControl(frameHost, `[data-action="${executeAction}"]`);
+      await settleInstalledPluginControl(frameHost, `[data-action="${executeAction}"]`, timeoutMs);
       const executeBefore = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
       const requestBeforeExecute = await installedOutboundRequestOffset(frameHost);
       await frameHost.evaluate((frame, actionName) => frame.contentDocument.querySelector(`[data-action="${CSS.escape(actionName)}"]`).click(), executeAction);
@@ -8944,8 +9181,7 @@ async function runInstalledPluginReadProfile(workbench, frameHost, matrix, timeo
     await frameHost.evaluate(frame => frame.contentDocument?.querySelector('[data-action="closeModal"]')?.click()).catch(() => {});
   };
   try {
-    await navigateInstalledSurface(frameHost, 'plugins', timeoutMs);
-    await waitForKnowledgeControl(frameHost, '[data-action="previewExtensionEnablement"]');
+    await settleInstalledPluginControl(frameHost, '[data-action="previewExtensionEnablement"]', timeoutMs);
     observation.rendered = true; observation.attempted = true;
     await invoke({ field: '#extension-enablement-id', action: 'previewExtensionEnablement', responseType: 'extensionEnablementPreview', operation: 'enablement-preview', executeAction: 'executeExtensionEnablement' });
     await invoke({ field: '#extension-conflict-id', action: 'queryExtensionConflicts', responseType: 'extensionConflictResult', operation: 'conflict-query' });
@@ -9083,8 +9319,9 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
     invalid_source_rejected: false, invalid_conflict_target_rejected: false, conflict_route_completed: false,
     native_manager_open_count: 0, native_manager_reopened: false,
     update_rollback_reconciled: false, uninstall_rollback_reconciled: false,
-    cleanup_restored: false, exact_reconstruction: false, webview_restart_count: 0, workbench_reload_count: 0, operations: [], errors: []
+    cleanup_restored: false, failure_cleanup_restored: false, exact_reconstruction: false, webview_restart_count: 0, workbench_reload_count: 0, operations: [], errors: []
   };
+  let physicalVersion = null;
 
   const waitForResponse = async (after, expectedType, expectedOperation = '') => {
     const deadline = Date.now() + timeoutMs;
@@ -9099,7 +9336,7 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
     throw new Error(`plugin-response-timeout:${expectedType}`);
   };
 
-  const currentVersion = async expected => {
+  const currentVersion = async (expected, { acceptAny = false } = {}) => {
     const controlDeadline = Date.now() + Math.min(timeoutMs, 20_000);
     let controlState = null;
     let before = null;
@@ -9145,7 +9382,7 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
       if (last?.available === true && Array.isArray(last.records)) {
         const record = last.records.find(item => item.id === extensionId);
         const observed = record ? String(record.version || '') : null;
-        if (observed === expected) return observed;
+        if (observed === expected || acceptAny) return observed;
       }
       await wait(150);
     } while (Date.now() < deadline);
@@ -9153,26 +9390,31 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
   };
 
   const mutate = async spec => {
-    await navigateInstalledSurface(frameHost, 'plugins', timeoutMs);
-    await frameHost.evaluate((frame, item) => {
-      const document = frame.contentDocument;
-      for (const [selector, value] of Object.entries(item.fields)) {
-        const field = document.querySelector(selector); if (!field) throw new Error(`plugin-field-unavailable:${selector}`);
-        field.value = value; field.dispatchEvent(new Event('input', { bubbles: true }));
-      }
-    }, spec);
-    await waitForKnowledgeControl(frameHost, `[data-action="${spec.previewAction}"]`);
-    const previewBefore = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
-    await clickWhenKnowledgeControlReady(frameHost, `[data-action="${spec.previewAction}"]`);
-    const preview = (await waitForResponse(previewBefore, spec.previewType, spec.previewOperation)).result;
+    for (const selector of Object.keys(spec.fields)) await settleInstalledPluginControl(frameHost, selector, timeoutMs);
+    await settleInstalledPluginControl(frameHost, `[data-action="${spec.previewAction}"]`, timeoutMs);
+    const previewRequestBefore = await installedOutboundRequestOffset(frameHost);
+    const previewBefore = await dispatchInstalledPluginFormAction(frameHost, spec.fields, spec.previewAction);
+    const previewRequest = await waitForInstalledOutboundRequest(frameHost, previewRequestBefore, spec.previewOperation);
+    if (!previewRequest) throw new Error(`plugin-${spec.name}-preview-request-not-observed`);
+    const confirmation = await waitForInstalledPluginPreviewConfirmation(frameHost, {
+      responseOffset: previewBefore,
+      responseType: spec.previewType,
+      requestId: previewRequest.requestId,
+      executeAction: spec.executeAction,
+      exactTarget: spec.exactTarget
+    }, timeoutMs);
+    const preview = confirmation.response.result;
     if (preview?.schema_version !== 'px.extension-lifecycle-preview/1.0' || preview.allowed !== true || preview.extension_id !== extensionId || preview.exact_target !== spec.exactTarget) throw new Error(`plugin-${spec.name}-preview-invalid:${JSON.stringify(preview)}`);
     const localSource = preview.local_source || preview.rollback_identity?.local_source;
     if (!localSource || localSource.path !== spec.fixture.path || localSource.sha256 !== spec.fixture.sha256 || localSource.size !== spec.fixture.size) throw new Error(`plugin-${spec.name}-local-source-substitution:${JSON.stringify(localSource)}`);
     if (Object.hasOwn(preview, 'network_expected') && preview.network_expected !== false) throw new Error(`plugin-${spec.name}-unexpected-network-source`);
-    await waitForKnowledgeControl(frameHost, `[data-action="${spec.executeAction}"]`);
-    const executeBefore = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
-    const requestBeforeExecute = await installedOutboundRequestOffset(frameHost);
-    await clickWhenKnowledgeControlReady(frameHost, `[data-action="${spec.executeAction}"]`);
+    const dispatch = await dispatchInstalledPluginConfirmation(frameHost, {
+      executeAction: spec.executeAction,
+      token: preview.token,
+      exactTarget: preview.exact_target
+    }, timeoutMs);
+    const executeBefore = dispatch.responseOffset;
+    const requestBeforeExecute = dispatch.requestOffset;
     try {
       const dialog = await waitForNativeWorkbenchDialog(workbench, spec.nativeApproval, 15_000, { frameHost, responseOffset: executeBefore, requestOffset: requestBeforeExecute, requestType: spec.executeOperation, keyboardAction: spec.nativeApproval });
       await clickNativeWorkbenchDialogAction(workbench, dialog, spec.nativeApproval);
@@ -9186,6 +9428,7 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
     const receiptComplete = validPluginMutationReceipt(spec.receiptAction, result, extensionId, spec.expectedVersion);
     const receiptPending = validPendingPluginMutationReceipt(spec.receiptAction, result, extensionId, spec.exactTarget);
     if (!receiptComplete && !receiptPending) throw new Error(`plugin-${spec.name}-receipt-invalid:${JSON.stringify(result)}`);
+    if (receiptComplete) physicalVersion = result.after_version == null ? null : String(result.after_version);
     await frameHost.evaluate(frame => frame.contentDocument?.querySelector('[data-action="closeModal"]')?.click()).catch(() => {});
     // A lifecycle receipt proves the native operation result, not that VS Code's
     // extension-service cache or unrelated extension webviews remained connected.
@@ -9203,6 +9446,7 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
     observation.webview_restart_count += 1;
     if (requiresWorkbenchReconstruction) observation.workbench_reload_count += 1;
     const observedVersion = await currentVersion(spec.expectedVersion);
+    physicalVersion = observedVersion;
     const physicallyReconciled = receiptComplete || (receiptPending && observedVersion === spec.expectedVersion);
     if (!physicallyReconciled) throw new Error(`plugin-${spec.name}-pending-receipt-not-reconciled:${JSON.stringify({ expected: spec.expectedVersion, observed: observedVersion })}`);
     observation.operations.push({ name: spec.name, preview, result, observed_version: observedVersion, receipt_state: receiptComplete ? 'reconciled' : 'physically-reconciled-after-pending', webview_restarted: true, workbench_reloaded: requiresWorkbenchReconstruction, catalog_reconstruction: requiresWorkbenchReconstruction ? 'owned-workbench-window' : 'dashboard-webview' });
@@ -9210,8 +9454,7 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
   };
 
   const exerciseNativeManagerEntrypoints = async () => {
-    await navigateInstalledSurface(frameHost, 'plugins', timeoutMs);
-    await waitForKnowledgeControl(frameHost, '[data-action="openExtensionsView"]');
+    await settleInstalledPluginControl(frameHost, '[data-action="openExtensionsView"]', timeoutMs);
     const count = await frameHost.evaluate(frame => [...frame.contentDocument.querySelectorAll('[data-action="openExtensionsView"]')].filter(item => item.offsetWidth || item.offsetHeight || item.getClientRects().length).length);
     if (count < 2) throw new Error(`plugin-native-manager-entrypoints-missing:${count}`);
     for (let index = 0; index < count; index += 1) {
@@ -9225,7 +9468,7 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
       if (response.operation !== 'openExtensionsView' || response.disposition !== 'completed') throw new Error(`plugin-native-manager-ack-invalid:${JSON.stringify(response)}`);
       observation.native_manager_open_count += 1;
       await executeWorkbenchCommand(workbench, INSTALLED_SAFE_WORKBENCH_COMMANDS['pxui.dashboard-control-plane.command.pacifyX.openDashboard'].title);
-      await navigateInstalledSurface(frameHost, 'plugins', timeoutMs);
+      await settleInstalledPluginControl(frameHost, '[data-action="openExtensionsView"]', timeoutMs);
     }
     const restart = await restartInstalledDashboardWebview(frameHost, 45_000);
     observation.webview_restart_count += restart.restarted === true ? 1 : 0;
@@ -9234,14 +9477,9 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
   };
 
   const queryConflicts = async () => {
-    await navigateInstalledSurface(frameHost, 'plugins', timeoutMs);
-    await frameHost.evaluate((frame, id) => {
-      const document = frame.contentDocument;
-      const field = document.querySelector('#extension-conflict-id'); if (!field) throw new Error('plugin-conflict-field-unavailable');
-      field.value = id; field.dispatchEvent(new Event('input', { bubbles: true }));
-    }, extensionId);
-    const before = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
-    await frameHost.evaluate(frame => frame.contentDocument.querySelector('[data-action="queryExtensionConflicts"]').click());
+    await settleInstalledPluginControl(frameHost, '#extension-conflict-id', timeoutMs);
+    await settleInstalledPluginControl(frameHost, '[data-action="queryExtensionConflicts"]', timeoutMs);
+    const before = await dispatchInstalledPluginFormAction(frameHost, { '#extension-conflict-id': extensionId }, 'queryExtensionConflicts');
     const result = (await waitForResponse(before, 'extensionConflictResult', 'extensionConflictQuery')).result;
     const signal = exactPluginConflictSignal(result, pxExtensionId, extensionId);
     if (!signal) throw new Error(`plugin-deterministic-conflict-signal-missing:${JSON.stringify(result)}`);
@@ -9276,7 +9514,7 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
     }, { signalId: signal.signal_id, extensionId });
     const preview = (await waitForResponse(previewBefore, 'extensionConflictResolutionPreview', 'extensionConflictResolutionPreview')).result;
     if (preview?.schema_version !== 'px.extension-conflict-resolution-preview/1.0' || preview.allowed !== true || preview.signal_id !== signal.signal_id || preview.target_extension_id !== extensionId || preview.resolution !== 'inspect') throw new Error(`plugin-conflict-preview-invalid:${JSON.stringify(preview)}`);
-    await waitForKnowledgeControl(frameHost, '[data-action="executeExtensionConflictResolution"]');
+    await settleInstalledPluginControl(frameHost, '[data-action="executeExtensionConflictResolution"]', timeoutMs);
     const executeBefore = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
     const requestBeforeExecute = await installedOutboundRequestOffset(frameHost);
     await frameHost.evaluate(frame => frame.contentDocument.querySelector('[data-action="executeExtensionConflictResolution"]').click());
@@ -9304,9 +9542,13 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
     observation.conflict_route_completed = restart.restarted === true && restart.reconstructed === true;
   };
 
+  const install = version => mutate({ name: `install-${version.version}`, fields: { '#extension-install-id': extensionId, '#extension-install-version': version.version, '#extension-install-vsix': version.path }, previewAction: 'previewExtensionInstall', previewType: 'extensionLifecyclePreview', previewOperation: 'extensionLifecyclePreview', executeAction: 'executeExtensionInstall', executeOperation: 'extensionLifecycleExecute', resultType: 'extensionLifecycleResult', nativeApproval: 'Authorize native install', receiptAction: 'install', exactTarget: `${extensionId}@${version.version}`, expectedVersion: version.version, fixture: version });
+  const update = (name, version) => mutate({ name, fields: { '#extension-update-id': extensionId, '#extension-update-version': version.version, '#extension-update-vsix': version.path }, previewAction: 'previewExtensionUpdate', previewType: 'extensionUpdatePreview', previewOperation: 'extensionUpdatePreview', executeAction: 'executeExtensionUpdate', executeOperation: 'extensionUpdateExecute', resultType: 'extensionUpdateResult', nativeApproval: 'Authorize native update', receiptAction: 'update', exactTarget: `${extensionId}@${version.version}`, expectedVersion: version.version, fixture: version });
+  const uninstall = (name, version = v2) => mutate({ name, fields: { '#extension-uninstall-id': extensionId }, previewAction: 'previewExtensionUninstall', previewType: 'extensionUninstallPreview', previewOperation: 'extensionUninstallPreview', executeAction: 'executeExtensionUninstall', executeOperation: 'extensionUninstallExecute', resultType: 'extensionUninstallResult', nativeApproval: 'Authorize native uninstall', receiptAction: 'uninstall', exactTarget: `${extensionId}@${version.version}#uninstall`, expectedVersion: null, fixture: version });
+  const rollback = () => mutate({ name: 'rollback-uninstall-v2', fields: { '#extension-rollback-id': extensionId }, previewAction: 'previewExtensionRollback', previewType: 'extensionRollbackPreview', previewOperation: 'extensionRollbackPreview', executeAction: 'executeExtensionRollback', executeOperation: 'extensionRollbackExecute', resultType: 'extensionRollbackResult', nativeApproval: 'Authorize exact rollback', receiptAction: 'rollback', exactTarget: `${extensionId}@2.0.0`, expectedVersion: v2.version, fixture: v2 });
+
   try {
-    await navigateInstalledSurface(frameHost, 'plugins', timeoutMs);
-    await waitForKnowledgeControl(frameHost, '[data-action="previewExtensionInstall"]');
+    await settleInstalledPluginControl(frameHost, '[data-action="previewExtensionInstall"]', timeoutMs);
     observation.rendered = true; observation.attempted = true;
     const failureBefore = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
     await frameHost.evaluate((frame, item) => {
@@ -9324,11 +9566,6 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
     } while (Date.now() < failureDeadline);
     if (!observation.invalid_source_rejected) throw new Error('plugin-missing-local-source-not-rejected');
     await exerciseNativeManagerEntrypoints();
-
-    const install = version => mutate({ name: `install-${version.version}`, fields: { '#extension-install-id': extensionId, '#extension-install-version': version.version, '#extension-install-vsix': version.path }, previewAction: 'previewExtensionInstall', previewType: 'extensionLifecyclePreview', previewOperation: 'extensionLifecyclePreview', executeAction: 'executeExtensionInstall', executeOperation: 'extensionLifecycleExecute', resultType: 'extensionLifecycleResult', nativeApproval: 'Authorize native install', receiptAction: 'install', exactTarget: `${extensionId}@${version.version}`, expectedVersion: version.version, fixture: version });
-    const update = (name, version) => mutate({ name, fields: { '#extension-update-id': extensionId, '#extension-update-version': version.version, '#extension-update-vsix': version.path }, previewAction: 'previewExtensionUpdate', previewType: 'extensionUpdatePreview', previewOperation: 'extensionUpdatePreview', executeAction: 'executeExtensionUpdate', executeOperation: 'extensionUpdateExecute', resultType: 'extensionUpdateResult', nativeApproval: 'Authorize native update', receiptAction: 'update', exactTarget: `${extensionId}@${version.version}`, expectedVersion: version.version, fixture: version });
-    const uninstall = (name, version = v2) => mutate({ name, fields: { '#extension-uninstall-id': extensionId }, previewAction: 'previewExtensionUninstall', previewType: 'extensionUninstallPreview', previewOperation: 'extensionUninstallPreview', executeAction: 'executeExtensionUninstall', executeOperation: 'extensionUninstallExecute', resultType: 'extensionUninstallResult', nativeApproval: 'Authorize native uninstall', receiptAction: 'uninstall', exactTarget: `${extensionId}@${version.version}#uninstall`, expectedVersion: null, fixture: version });
-    const rollback = () => mutate({ name: 'rollback-uninstall-v2', fields: { '#extension-rollback-id': extensionId }, previewAction: 'previewExtensionRollback', previewType: 'extensionRollbackPreview', previewOperation: 'extensionRollbackPreview', executeAction: 'executeExtensionRollback', executeOperation: 'extensionRollbackExecute', resultType: 'extensionRollbackResult', nativeApproval: 'Authorize exact rollback', receiptAction: 'rollback', exactTarget: `${extensionId}@2.0.0`, expectedVersion: v2.version, fixture: v2 });
 
     await install(v1);
     await update('update-v1-to-v2', v2);
@@ -9354,6 +9591,19 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
     observation.errors.push(String(error?.message || error).slice(0, 4000));
     await dismissOwnedNativeWorkbenchDialog(workbench, /Authorize native install|Authorize native update|Authorize native uninstall|Authorize exact rollback|Authorize conflict route/i)
       .catch(recoveryError => observation.errors.push(`dialog-recovery:${String(recoveryError?.message || recoveryError).slice(0, 1800)}`));
+    try {
+      physicalVersion = await currentVersion(null, { acceptAny: true });
+      if (physicalVersion !== null) {
+        const cleanupFixture = physicalVersion === v1.version ? v1 : physicalVersion === v2.version ? v2 : null;
+        if (!cleanupFixture) throw new Error(`plugin-failure-cleanup-version-unsupported:${physicalVersion}`);
+        await uninstall(`failure-cleanup-uninstall-${physicalVersion}`, cleanupFixture);
+      }
+      observation.failure_cleanup_restored = physicalVersion === null;
+      observation.cleanup_restored = observation.failure_cleanup_restored;
+      if (!observation.failure_cleanup_restored) throw new Error(`plugin-failure-cleanup-not-absent:${physicalVersion}`);
+    } catch (recoveryError) {
+      observation.errors.push(`failure-cleanup:${String(recoveryError?.message || recoveryError).slice(0, 1800)}`);
+    }
   }
   return { schema_version: 'px.installed-plugin-mutation-profile/1.0', authority: 'Exact hash-bound local inert VSIX lifecycle only inside the owned disposable VS Code extension profile; final state must match the initial absent state.', fixtures: { v1, v2 }, observation, control_probe: pluginMutationControlProbe(matrix, observation) };
 }
@@ -10722,10 +10972,10 @@ module.exports = {
   exactStudioSetupTerminalResponse, executeWorkbenchCommand, exactPluginConflictSignal, exerciseInstalledControl, graphProjectionIdentity, requestBoundGraphResultIdentity, hostBoundaryControlProbe, inlineCommandOwnerControlProbe, installedActionIdentity,
   installedConditionalRecoverySpec, installedConditionalScenario, installedHostBoundaryRevealSelector, installedPreparationIdentity, installedRuntimeSourceIdentityState, installedSourceIdentityNeedsLateRefresh, installedSidebarHandoffRequestMatches, installedSidebarHandoffSpec, installedSidebarSelector, installedStudioControlScenario, installedStudioPrerequisites, installedSurfaceState, installedSurfaceAcknowledged,
   installedFilesystemPathIdentity, installedFilesystemPathsMatch, installedFilesystemPathWithin, installedHostActionReceiptMatches, installedHostActionRequestIdentity,
-  installedSurfaceControlAcknowledged, installedWorkbenchCommandSpec, installedWorkbenchAuthorityBoundarySpec, instrumentInstalledBridge, knowledgeBrowseHasHead, knowledgeGraphControlProbe,
+  advanceInstalledSurfaceControlSettlement, installedSurfaceControlAcknowledged, installedWorkbenchCommandSpec, installedWorkbenchAuthorityBoundarySpec, instrumentInstalledBridge, knowledgeBrowseHasHead, knowledgeGraphControlProbe,
   knowledgeLifecycleControlProbe, learningLifecycleControlProbe, nativeWorkbenchKeyboardActionAdmitted, nativeWorkbenchKeyboardFallbackAdmitted,
   nativeWorkbenchRequestFallbackAdmitted, ownedCleanupCandidate, ownedWorkbenchReloadIdentity, reacquirableOwnedFrameError,
-  installedDashboardRestartIdentity,
+  dispatchInstalledPluginConfirmation, dispatchInstalledPluginFormAction, installedDashboardRestartIdentity, installedPluginControlPreservesModal, installedPluginPreviewConfirmationMatches,
   pluginMutationControlProbe, pluginReadControlProbe,
   partitionExpectedFaultDiagnostics, prepareInstalledControl, probeInstalledControls, probeInstalledSidebarControls, probeInstalledWorkbenchCommands,
   openWorkbenchCommandPalette, projectMapIdentity, projectsControlProbe, reopenPacifyDashboardFromOwnedUi, revealInstalledControl, revealInstalledHostBoundaryControl, runInstalledCleanupProfile, settleInstalledSurfaceControl,
@@ -10735,7 +10985,7 @@ module.exports = {
   restartInstalledSidebarWebview, runInstalledCatalogPaginationProfile, runInstalledProjectsProfile, runInstalledSidebarStateProfile, runInstalledSkillQueryProfile, runInstalledStudioCandidateSaveProfile,
   runInstalledStudioBridgeConflictProfile, runInstalledStudioControllerAdversarialProfile, runInstalledStudioLateCardWorker, runInstalledStudioLifecycleCrashProfile, runInstalledStudioLifecycleProfile, runInstalledStudioRevisionEditProfile, runInstalledStudioSetupProfile,
   runInstalledSystemProjectionProfile, runInstalledValidationProfile, seedInstalledConditionalScenario, sidebarPreferenceRoundTripIdentity, sidebarReconstructionIdentity, sidebarStateControlProbe, sidebarStateControlVerified,
-  installedSnapshotTimeoutIdentity, mergeStudioLifecycleObservations, selectLatestMatchingInstalledSnapshot, skillQueryControlProbe, studioLifecycleControlProbe, systemProjectionControlProbe, systemProjectionIdentity, requestBoundSystemSnapshotIdentity, validCleanupResult, workbenchCommandRowIdentity,
+  installedAdvancedFixtureStateAcknowledged, installedSnapshotTimeoutIdentity, mergeStudioLifecycleObservations, selectLatestMatchingInstalledSnapshot, skillQueryControlProbe, studioLifecycleControlProbe, systemProjectionControlProbe, systemProjectionIdentity, requestBoundSystemSnapshotIdentity, validCleanupResult, workbenchCommandRowIdentity,
   validCoordinationResult, validKnowledgeLifecycleResult, validLearningLifecycleResult, validPermanentCleanupResult,
   validPluginLifecycleObservation, validPendingPluginMutationReceipt, validPluginMutationReceipt, validStudioDraftReceipt, validStudioLifecycleResult,
   captureSurfaceViews, surfaceCaptureCandidates, surfaceCaptureFileStem,

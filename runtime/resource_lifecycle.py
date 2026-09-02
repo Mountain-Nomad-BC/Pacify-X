@@ -29,6 +29,22 @@ from .wal_transaction import JsonArtifact, JsonWal
 
 
 _RECLAIM_RETRY_DELAYS_SECONDS = (0.0, 0.05, 0.15, 0.35)
+_LEDGER_IO_RETRY_DELAYS_SECONDS = (0.0, 0.01, 0.05, 0.15, 0.35, 0.75)
+
+
+def _retry_transient_permission_error(operation: object) -> object:
+    """Retry only bounded access-denied ledger I/O, then fail closed."""
+
+    last_error: PermissionError | None = None
+    for delay in _LEDGER_IO_RETRY_DELAYS_SECONDS:
+        if delay:
+            time.sleep(delay)
+        try:
+            return operation()  # type: ignore[operator]
+        except PermissionError as error:
+            last_error = error
+    assert last_error is not None
+    raise last_error
 
 
 def _retry_writable_removal(function: object, path: str, _exc_info: object) -> None:
@@ -223,7 +239,12 @@ class ResourceLedger:
     def _load_unlocked(self) -> tuple[ResourceRecord, ...]:
         if not self.path.is_file():
             return ()
-        payload = json.loads(self.path.read_text(encoding="utf-8"))
+        encoded = _retry_transient_permission_error(
+            lambda: self.path.read_text(encoding="utf-8")
+        )
+        if not isinstance(encoded, str):
+            raise TypeError("resource ledger read did not return text")
+        payload = json.loads(encoded)
         if payload.get("schema_version") != "1.0":
             raise ValueError("unsupported resource ledger schema")
         return tuple(ResourceRecord(**item) for item in payload.get("resources", ()))
@@ -252,7 +273,9 @@ class ResourceLedger:
                 stream.write("\n")
                 stream.flush()
                 os.fsync(stream.fileno())
-            os.replace(temporary, self.path)
+            _retry_transient_permission_error(
+                lambda: os.replace(temporary, self.path)
+            )
         finally:
             if temporary.exists():
                 temporary.unlink()

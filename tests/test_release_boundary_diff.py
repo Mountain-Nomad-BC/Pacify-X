@@ -79,3 +79,23 @@ def test_clean_product_excludes_the_live_test_orchestration_lock(
         source, clean, identity_inputs=["runtime/owner.py"]
     )
     assert result["valid"], result
+
+
+def test_clean_product_excludes_the_held_release_control_lock(
+    tmp_path: Path,
+) -> None:
+    source = minimal_product(tmp_path / "source")
+    lock_path = source / ".engineering-bootstrap/release.lock"
+    product_lock = source / "runtime/release.lock"
+    product_lock.write_text("classified product input\n", encoding="utf-8")
+    clean = tmp_path / "clean"
+
+    with FileLock(lock_path, timeout_seconds=1):
+        copy_clean_product(source, clean)
+
+    assert not (clean / ".engineering-bootstrap/release.lock").exists()
+    assert (clean / "runtime/release.lock").read_bytes() == product_lock.read_bytes()
+    result = audit_clean_boundary(
+        source, clean, identity_inputs=["runtime/owner.py"]
+    )
+    assert result["valid"], result

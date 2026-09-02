@@ -1,6 +1,7 @@
 import hashlib
 import json
 from pathlib import Path
+import re
 import subprocess
 import sys
 
@@ -86,6 +87,23 @@ def test_fast_keeps_ordinary_contract_checks_and_excludes_expensive_artifact_gat
     assert (
         resolve_test_profile(ROOT, "release")["environment"]["PYTHONNOUSERSITE"] == "1"
     )
+
+
+def test_cross_group_total_budget_exceeds_one_slow_member_chunk() -> None:
+    config = json.loads((ROOT / "registry/test_profiles.json").read_text(encoding="utf-8"))
+    certification = config["certification"]
+    command_members = [
+        value
+        for value in certification["cross_group_command"]
+        if value.startswith("tests/")
+    ]
+    governance_chunk_timeout = config["sections"]["testing-governance"][
+        "chunk_timeout_seconds"
+    ]
+
+    assert len(command_members) == 4
+    assert certification["cross_group_timeout_seconds"] == 900
+    assert certification["cross_group_timeout_seconds"] >= governance_chunk_timeout * 3
 
 
 def test_sections_are_content_addressed_bounded_and_dependency_governed(tmp_path):
@@ -230,7 +248,7 @@ def test_studio_section_is_bounded_into_independently_addressed_chunks():
 
 def test_failed_monolithic_sections_are_serially_partitioned_per_file():
     expected = {
-        "dashboard-extension": {"chunk_timeout": 180, "section_timeout": 600},
+        "dashboard-extension": {"chunk_timeout": 600, "section_timeout": 3600},
         "testing-governance": {"chunk_timeout": 300, "section_timeout": 900},
     }
     for name, limits in expected.items():
@@ -253,6 +271,21 @@ def test_failed_monolithic_sections_are_serially_partitioned_per_file():
             chunk["timeout_seconds"] == limits["chunk_timeout"] for chunk in chunks
         )
         assert len({chunk["input_sha256"] for chunk in chunks}) == len(chunks)
+
+    dashboard_source = (ROOT / "extension/tests/dashboard-e2e.test.js").read_text(
+        encoding="utf-8"
+    )
+    dashboard_internal_timeouts = {
+        int(value) for value in re.findall(r"\{ timeout: (\d+) \}", dashboard_source)
+    }
+    assert dashboard_internal_timeouts == {120_000, 180_000, 300_000}
+    assert max(dashboard_internal_timeouts) < expected["dashboard-extension"][
+        "chunk_timeout"
+    ] * 1000
+    studio_source = (ROOT / "extension/tests/studio-bootstrap.test.js").read_text(
+        encoding="utf-8"
+    )
+    assert studio_source.count("{ timeout: 300000 }") == 2
 
 
 def test_section_identity_includes_its_executable_registry_definition(tmp_path):

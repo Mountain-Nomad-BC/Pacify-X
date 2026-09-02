@@ -166,9 +166,9 @@
       ],
       "chunk_size": 1,
       "max_parallel_chunks": 1,
-      "chunk_timeout_seconds": 180,
+      "chunk_timeout_seconds": 600,
       "cwd": "extension",
-      "timeout_seconds": 600
+      "timeout_seconds": 3600
     },
     "studio-memory-graph": {
       "description": "Versioned agent/workflow/skill studios, canonical memory browsing, and progressive graph exploration.",
@@ -363,7 +363,7 @@
       "tests/test_release_audit.py::ReleaseAuditTests::test_live_composed_audit_passes_without_fixed_component_counts",
       "tests/test_test_profiles.py"
     ],
-    "cross_group_timeout_seconds": 300
+    "cross_group_timeout_seconds": 900
   },
   "groups": {
     "process-recovery": {

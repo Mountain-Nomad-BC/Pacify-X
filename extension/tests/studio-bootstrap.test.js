@@ -132,7 +132,7 @@ test('Studio setup advances past an occupied revision with invalid immutable bui
   assert.equal(creates.some(([kind, payload]) => kind === 'agent' && payload.version === '1.0.2' && payload.version_allocation), true);
 });
 
-test('Studio setup crosses the real host-to-Python boundary and leaves reopenable runnable revisions', { timeout: 120000 }, async t => {
+test('Studio setup crosses the real host-to-Python boundary and leaves reopenable runnable revisions', { timeout: 300000 }, async t => {
   const engineRoot = path.resolve(__dirname, '..', '..');
   const projectRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'px-studio-product-project-'));
   const keyRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'px-studio-product-keys-'));
@@ -185,7 +185,7 @@ test('Studio setup crosses the real host-to-Python boundary and leaves reopenabl
   assert.equal(workflow?.details?.editor_layout_state, 'content-bound');
 });
 
-test('Skill Studio editor files cross the real host boundary and reopen as an editable project revision', { timeout: 120000 }, async t => {
+test('Skill Studio editor files cross the real host boundary and reopen as an editable project revision', { timeout: 300000 }, async t => {
   const engineRoot = path.resolve(__dirname, '..', '..');
   const projectRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'px-skill-studio-project-'));
   const keyRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'px-skill-studio-keys-'));

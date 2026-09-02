@@ -146,6 +146,52 @@ def test_preflight_receipt_tampering_fails_closed(tmp_path: Path, monkeypatch) -
     assert not result["valid"] and not result["receipt_integrity"]
 
 
+def test_finalizer_admission_rehashes_exact_preflight_artifact(
+    tmp_path: Path, monkeypatch
+) -> None:
+    artifact = tmp_path / "dist/exact.vsix"
+    artifact.parent.mkdir()
+    artifact.write_bytes(b"issued-artifact")
+    binding = {
+        "release": "1.0.0",
+        "source_revision": "a",
+        "product_digest": "b",
+        "engine_identity": "c",
+        "engine_manifest_sha256": "d",
+        "policy_digest": "e",
+        "implementation_digest": "f",
+        "platform": "windows",
+        "python": "3.14",
+        "node": "v24",
+        "test_topology_digest": "topology",
+        "source_identity_valid": True,
+        "product_valid": True,
+        "engine_valid": True,
+        "artifact_path": "dist/exact.vsix",
+        "artifact_sha256": _sha_bytes(artifact.read_bytes()),
+    }
+
+    def current_binding(root: Path, release: str, selected: Path | None):
+        assert selected == artifact
+        return {
+            **binding,
+            "artifact_sha256": _sha_bytes(selected.read_bytes()),
+        }
+
+    monkeypatch.setattr("runtime.release_preflight._binding", current_binding)
+    path = receipt_path(tmp_path, "1.0.0")
+    path.parent.mkdir(parents=True)
+    receipt = {"valid": True, "ready_for_certification": True, "binding": binding}
+    receipt["receipt_sha256"] = _sha_bytes(_canonical(receipt))
+    path.write_text(json.dumps(receipt))
+
+    assert validate_preflight_receipt(tmp_path, "1.0.0")["valid"]
+    artifact.write_bytes(b"replaced-artifact")
+    result = validate_preflight_receipt(tmp_path, "1.0.0")
+    assert not result["valid"]
+    assert result["mismatches"] == ["artifact_sha256"]
+
+
 def test_transaction_simulation_keeps_product_immutable(
     tmp_path: Path, monkeypatch
 ) -> None:
@@ -296,7 +342,7 @@ def test_deep_discovery_exhausts_checks_without_relaxing_certification_binding(
     assert observed["enforce_release_binding"] is False
 
 
-def test_preflight_admission_uses_validated_package_boundary(
+def test_preflight_admission_uses_installed_operational_certify_boundary(
     tmp_path: Path, monkeypatch
 ) -> None:
     observed = {}
@@ -317,7 +363,39 @@ def test_preflight_admission_uses_validated_package_boundary(
     else:
         raise AssertionError("preflight did not invoke its processing-order gate")
 
-    assert observed == {"root": tmp_path, "stage": "package"}
+    assert observed == {"root": tmp_path, "stage": "certify"}
+
+
+def test_unbound_discovery_bypasses_certification_stage_admission(
+    tmp_path: Path, monkeypatch
+) -> None:
+    observed = []
+
+    def reject_stage(root: Path, stage: str):
+        observed.append((root, stage))
+        raise AssertionError("discovery must not enter certification processing order")
+
+    def stop_after_admission(path: Path):
+        raise RuntimeError("past-admission")
+
+    monkeypatch.setattr(
+        "runtime.test_profiles.require_processing_stage", reject_stage
+    )
+    monkeypatch.setattr(release_preflight, "_json", stop_after_admission)
+
+    try:
+        release_preflight.run_preflight(
+            tmp_path,
+            release="1.0.0",
+            enforce_release_binding=False,
+            write_receipt=False,
+        )
+    except RuntimeError as error:
+        assert str(error) == "past-admission"
+    else:
+        raise AssertionError("discovery test did not reach the post-admission boundary")
+
+    assert observed == []
 
 
 def test_preflight_resource_ledger_is_outside_product_custody() -> None:
@@ -356,4 +434,10 @@ def test_preflight_binding_uses_exact_git_commit_sha(
         "runtime.release_preflight.capture_git_identity",
         lambda root, version: {"valid": True, "commit_sha": "a" * 40},
     )
-    assert _binding(tmp_path, "1.0.0", None)["source_revision"] == "a" * 40
+    artifact = tmp_path / "dist/exact.vsix"
+    artifact.parent.mkdir()
+    artifact.write_bytes(b"exact")
+    binding = _binding(tmp_path, "1.0.0", artifact)
+    assert binding["source_revision"] == "a" * 40
+    assert binding["artifact_path"] == "dist/exact.vsix"
+    assert binding["artifact_sha256"] == _sha_bytes(b"exact")

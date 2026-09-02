@@ -377,7 +377,7 @@ class CliCommandTests(unittest.TestCase):
                 patch(
                     "runtime.test_profiles.write_section_receipt",
                     return_value=root / "section.json",
-                ),
+                ) as section_writer,
                 patch("runtime.test_runner.run_test_command", side_effect=run_chunk),
                 patch("runtime.resource_lifecycle.ResourceManager"),
                 redirect_stdout(output),
@@ -395,6 +395,10 @@ class CliCommandTests(unittest.TestCase):
             self.assertEqual(status, 0)
             self.assertEqual(sorted(executed), ["chunk-02", "chunk-03"])
             self.assertEqual(maximum_active, 2)
+            self.assertEqual(section_writer.call_count, 2)
+            in_progress = section_writer.call_args_list[0].args[1]
+            self.assertFalse(in_progress["passed"])
+            self.assertEqual(in_progress["input_sha256"], "f" * 64)
             self.assertTrue(result["chunk_results"][0]["reused"])
             self.assertTrue(result["section_receipt"]["passed"])
             self.assertEqual(
@@ -844,18 +848,36 @@ class CliCommandTests(unittest.TestCase):
             self.assertEqual(allowed_status, 0)
             self.assertTrue(allowed["allowed"])
 
-    def test_release_preflight_claims_and_finishes_the_one_shot_package_stage(self):
+    def test_release_preflight_claims_certify_once_and_defers_success_to_finalize(self):
         source = (ROOT / "runtime/cli.py").read_text(encoding="utf-8")
         start = source.index('elif args.release_action in {"preflight", "dry-run", "discover"}')
-        branch = source[
-            start :
-            source.index('else:\n                from .release_campaign import claim_release_stage', start)
+        finalizer_start = source.index(
+            '            else:\n                from .release_campaign import (', start
+        )
+        branch = source[start:finalizer_start]
+        self.assertNotIn('require_processing_stage(root, "package")', branch)
+        self.assertNotIn('claim_release_stage(root, "package")', branch)
+        self.assertIn('require_processing_stage(root, "certify")', branch)
+        self.assertIn('release_stage_claim = claim_release_stage(root, "certify")', branch)
+        self.assertIn(
+            'release_stage_finish_deferred = output.get("valid") is True', branch
+        )
+        completion = source[
+            source.index(
+                "if release_stage_claim is not None and release_stage_finish_deferred:"
+            ) :
         ]
-        self.assertIn('require_processing_stage(root, "package")', branch)
-        self.assertIn('release_stage_claim = claim_release_stage(root, "package")', branch)
-        completion = source[source.index("if release_stage_claim is not None:") :]
         self.assertIn("finish_release_stage(", completion)
         self.assertIn('passed=output.get("valid") is True', completion)
+        self.assertIn('"completion_deferred_to": "release finalize"', completion)
+
+        finalizer = source[
+            finalizer_start :
+            source.index('elif args.command == "brief"', start)
+        ]
+        self.assertIn('active_claim.get("stage") == "certify"', finalizer)
+        self.assertIn('release_stage_claim = active_claim', finalizer)
+        self.assertIn('release_stage_claim = claim_release_stage(root, "certify")', finalizer)
 
     def test_release_finalize_participates_in_the_single_flight_lock(self):
         source = (ROOT / "runtime/cli.py").read_text(encoding="utf-8")

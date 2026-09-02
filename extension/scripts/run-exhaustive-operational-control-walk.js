@@ -1426,5 +1426,11 @@ async function main() {
   if (aggregates.errors) process.exitCode = 1;
 }
 
-if (require.main === module) main().catch(error => { process.stderr.write(`${error.stack || error.message}\n`); process.exitCode = 1; });
+if (require.main === module) {
+  if (process.argv.includes('--help')) {
+    process.stdout.write('Usage: node scripts/run-exhaustive-operational-control-walk.js [output] [--resume <receipt>]\nOptional environment: PX_OPERATIONAL_CONTROL_PATTERN=<regex>, PX_OPERATIONAL_WALK_WORKERS=<1-8>\n');
+  } else {
+    main().catch(error => { process.stderr.write(`${error.stack || error.message}\n`); process.exitCode = 1; });
+  }
+}
 module.exports = { STAGES, actionIdentity, candidateScore, canonicalJson, completeChain, currentSourceManifest, directSelectorFor, exactActionSelectorFor, exercise, exerciseGesture, meaningfulTokens, normalize, prepare, preparationKey, revealActionFor, revealControl, resolveAction, resolveSemantic, resumeReceiptCompatible, selectorForKind, semanticLabel, sidebarActionSelector, sidebarFixtureMessage, sourcePath, stageResult, studioDraftRequired, variantsMatch, visualVariantsMatch };
