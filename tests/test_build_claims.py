@@ -32,12 +32,25 @@ def test_registry_claim_ignores_mutable_operational_ledger_projections(
     registry = tmp_path / "registry"
     registry.mkdir()
     (registry / "owner.json").write_text("{}\n", encoding="utf-8")
-    (registry / "operational_gap_ledger.jsonl").write_text(
-        "{}\n", encoding="utf-8"
-    )
-    (registry / "operational_gap_ledger.snapshot.json").write_text(
-        "{}\n", encoding="utf-8"
-    )
+    for name in (
+        "completion_status.json",
+        "operational_gap_ledger.head.json",
+        "operational_gap_ledger.jsonl",
+        "operational_gap_ledger.snapshot.json",
+    ):
+        (registry / name).write_text("{}\n", encoding="utf-8")
+
+    assert _registry_artifact_count(tmp_path) == 1
+
+
+def test_registry_claim_ignores_host_local_lock_recovery_receipts(
+    tmp_path: Path,
+) -> None:
+    registry = tmp_path / "registry"
+    receipts = registry / ".lock-recovery-receipts" / "ledger-lock"
+    receipts.mkdir(parents=True)
+    (registry / "owner.json").write_text("{}\n", encoding="utf-8")
+    (receipts / "recovery.json").write_text("{}\n", encoding="utf-8")
 
     assert _registry_artifact_count(tmp_path) == 1
 

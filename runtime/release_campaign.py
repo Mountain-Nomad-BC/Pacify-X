@@ -472,6 +472,87 @@ def supersede_failed_release_campaign(
     return {**status, "superseded_archive": archive_path.relative_to(root).as_posix()}
 
 
+def supersede_consumed_cleared_release_campaign(
+    root: Path, *, campaign_id: str, reason: str
+) -> dict[str, Any]:
+    """Archive one unused cleared campaign after its reconciliation was consumed.
+
+    No identity or stage history exists to mark failed in this state. This
+    transition preserves that empty attempt instead of reusing it, and permits
+    only one pre-identity successor within the frozen repair generation.
+    """
+
+    root = root.resolve(strict=True)
+    replacement_id = campaign_id.strip()
+    explanation = reason.strip()
+    if not replacement_id or not explanation:
+        raise ReleaseCampaignBlocked(
+            "cleared campaign supersession requires a replacement ID and reason"
+        )
+    repair = _repair_campaign(root)
+    if (
+        repair.get("phase") != "repair_frozen"
+        or repair.get("intake_open") is not False
+        or repair.get("unresolved") != []
+    ):
+        raise ReleaseCampaignBlocked(
+            "cleared campaign supersession requires one frozen, zero-unresolved repair"
+        )
+    state_path = root / STATE_PATH
+    previous = _validate(json.loads(state_path.read_text(encoding="utf-8")))
+    if replacement_id == previous["campaign_id"]:
+        raise ReleaseCampaignBlocked("replacement campaign ID must be new")
+    if (
+        previous["state"] != "cleared"
+        or previous["apply_count"] != 0
+        or previous.get("identity") is not None
+        or previous.get("pre_identity_reconciliation_successor") is True
+    ):
+        raise ReleaseCampaignBlocked(
+            "only one original unused cleared campaign may be superseded"
+        )
+    archive_path = root / FAILED_IDENTITY_ARCHIVE_ROOT / (
+        f"consumed-cleared-release-campaign-{previous['campaign_id']}.json"
+    )
+    if archive_path.exists():
+        raise ReleaseCampaignBlocked("consumed cleared campaign archive already exists")
+    archive = {
+        "schema_version": "px.consumed-cleared-release-campaign/1.0",
+        "superseded_at": _now(),
+        "reason": explanation,
+        "replacement_campaign_id": replacement_id,
+        "campaign_state": previous,
+    }
+    archive["archive_sha256"] = _sha(archive)
+    archive_path.parent.mkdir(parents=True, exist_ok=True)
+    with archive_path.open("x", encoding="utf-8", newline="\n") as stream:
+        json.dump(archive, stream, indent=2, ensure_ascii=False)
+        stream.write("\n")
+        stream.flush()
+        os.fsync(stream.fileno())
+    cleared = {
+        "schema_version": "px.release-campaign/1.0",
+        "campaign_id": replacement_id,
+        "repair_campaign_id": repair["campaign_id"],
+        "state": "cleared",
+        "cleared_at": _now(),
+        "applied_at": None,
+        "apply_count": 0,
+        "identity": None,
+        "active_claim": None,
+        "pre_identity_reconciliation_successor": True,
+        "supersedes": {
+            "campaign_id": previous["campaign_id"],
+            "archive": archive_path.relative_to(root).as_posix(),
+            "archive_sha256": archive["archive_sha256"],
+        },
+        "stages": {name: {"status": "pending", "claim_id": None} for name in STAGES},
+    }
+    _write(state_path, cleared)
+    status = release_campaign_status(root)
+    return {**status, "superseded_archive": archive_path.relative_to(root).as_posix()}
+
+
 def supersede_invalid_active_release_campaign(
     root: Path, *, campaign_id: str, reason: str
 ) -> dict[str, Any]:

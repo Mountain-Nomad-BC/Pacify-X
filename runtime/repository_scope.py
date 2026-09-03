@@ -49,6 +49,7 @@ LOCAL_TEST_EVIDENCE_ROOTS = frozenset(
 )
 MUTABLE_RUNTIME_PROJECTIONS = frozenset(
     {
+        ".px/mcp-runtime-probe.json",
         "registry/operational_gap_ledger.jsonl",
         "registry/operational_gap_ledger.snapshot.json",
     }
@@ -74,6 +75,7 @@ def is_external_environment_relative(relative: str | Path) -> bool:
         or any(part.casefold() in EXTERNAL_ENVIRONMENT_PARTS for part in parts)
         or any(part.startswith(".venv") for part in parts)
         or top == ".git"
+        or ".lock-recovery-receipts" in parts
         or parts[:2]
         in {
             (".px", "global-skill-isolation"),

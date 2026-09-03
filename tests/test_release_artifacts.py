@@ -103,6 +103,26 @@ def test_live_test_orchestration_lock_is_control_output_not_product() -> None:
     assert record["sha256"] is None
 
 
+def test_host_local_probe_and_lock_recovery_receipts_are_excluded_from_release() -> None:
+    root = _minimal_tree()
+    paths = (
+        ".px/mcp-runtime-probe.json",
+        "registry/.lock-recovery-receipts/.operational-gap-ledger.lock/receipt.json",
+    )
+    for relative in paths:
+        path = root / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("C:" + "/Users/LocalOwner/runtime-state\n", encoding="utf-8")
+
+    result = classify_tree(root)
+    record_paths = {item["path"] for item in result["records"]}
+    product_paths = {item["path"] for item in result["product_records"]}
+
+    assert result["valid"], result["errors"]
+    assert not (record_paths & set(paths))
+    assert not (product_paths & set(paths))
+
+
 def test_governance_and_receipt_progress_cannot_mutate_frozen_product_identity() -> None:
     root = _minimal_tree()
     controls = {

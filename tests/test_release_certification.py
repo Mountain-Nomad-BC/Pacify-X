@@ -11,6 +11,8 @@ import pytest
 
 from runtime.release_certification import (
     FINALIZER_FULL_REPAIR_PENDING,
+    RELEASE_GATE_REQUIRED_REPOSITORY_CONTEXT,
+    RELEASE_SANITATION_EXCLUDED_NAMES,
     _certificate_ledger_errors,
     _commit_release_evidence,
     _compact_coverage_contexts,
@@ -22,8 +24,10 @@ from runtime.release_certification import (
     _portable_payload_gate,
     _redact_machine_local_value,
     _release_environment_gate,
+    _resolve_release_gate_roots,
     _sanitize_junit_metadata,
     finalize_release,
+    validate_release_gate_repository_context,
     verify_release_certificate,
 )
 from runtime.corrective_release import validate_corrective_ledger
@@ -32,6 +36,60 @@ from tests.repository_copy import canonical_copy_ignore
 
 
 ROOT = Path(__file__).parents[1]
+
+
+def test_release_gate_repository_context_fails_before_expensive_gates(
+    tmp_path: Path,
+) -> None:
+    candidate = tmp_path / "materialized-candidate"
+    candidate.mkdir()
+
+    result = validate_release_gate_repository_context(candidate)
+
+    assert result["valid"] is False
+    assert ".git" in result["missing"]
+    assert "evidence/externalized-payload-index.json" in result["missing"]
+
+
+def test_release_gate_roots_keep_authenticated_repository_distinct_from_candidate(
+    tmp_path: Path,
+) -> None:
+    source = tmp_path / "authenticated-source"
+    candidate = tmp_path / "frozen-candidate"
+    source.mkdir()
+    candidate.mkdir()
+    (source / ".git").mkdir()
+    for relative in RELEASE_GATE_REQUIRED_REPOSITORY_CONTEXT:
+        path = source / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("{}\n", encoding="utf-8")
+
+    roots = _resolve_release_gate_roots(candidate, source)
+
+    assert roots["candidate_root"] == candidate.resolve()
+    assert roots["authenticated_source_root"] == source.resolve()
+    assert roots["repository_context"]["valid"] is True
+    assert not (candidate / ".git").exists()
+
+
+def test_release_sanitation_excludes_generated_control_custody_only(
+    tmp_path: Path,
+) -> None:
+    from scripts.audit_sanitization import audit
+
+    generated = tmp_path / ".engineering-bootstrap/control.json"
+    generated.parent.mkdir()
+    generated.write_text(
+        "C:" + "/Users/LocalOwner/generated.json\n", encoding="utf-8"
+    )
+    live = tmp_path / "runtime/live.json"
+    live.parent.mkdir()
+    live.write_text("C:" + "/Users/LocalOwner/live.json\n", encoding="utf-8")
+
+    result = audit(tmp_path, excluded_names=RELEASE_SANITATION_EXCLUDED_NAMES)
+
+    assert result["host_home_path_hit_count"] == 1
+    assert result["host_home_path_hits"][0]["path"] == "runtime/live.json"
 
 
 def test_clean_release_copy_uses_the_canonical_product_boundary() -> None:

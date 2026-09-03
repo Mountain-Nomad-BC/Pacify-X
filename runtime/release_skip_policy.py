@@ -10,7 +10,7 @@ import xml.etree.ElementTree as ET
 ALLOWED_RELEASE_TEST_SKIPS = {
     (
         "tests.test_build_installed_host_control_evidence",
-        "test_current_host_receipt_remains_bound_when_retained_vsix_is_available",
+        "test_retained_host_receipt_is_current_or_explicitly_stale",
     ): "retained installed VSIX is external host custody",
     (
         "tests.test_clean_source_export",
@@ -24,6 +24,14 @@ ALLOWED_RELEASE_TEST_SKIPS = {
         "tests.test_skill_studio",
         "test_skill_source_rejects_duplicate_canonical_directory_aliases",
     ): "host filesystem does not permit distinct case aliases",
+    (
+        "tests.test_operation_health_snapshot",
+        "test_current_platform_listener_receipt_is_retained",
+    ): "current installed-host evidence is intentionally outside source control",
+    (
+        "tests.test_studio_api",
+        "test_worker_authority_environment_freezes_parent_home_key_root",
+    ): "POSIX HOME fallback semantics",
 }
 
 

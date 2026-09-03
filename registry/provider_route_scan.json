@@ -113,10 +113,10 @@
       "violations": []
     },
     {
-      "bytes": 6169,
+      "bytes": 6383,
       "path": "runtime/build_claims.py",
       "scan_state": "verified",
-      "sha256": "0dad03605f5daeaf12f2516f1896d2c36979378ee958dbafb470dd99078c89de",
+      "sha256": "74f275ae7dd3b1186e8c0694f4a27262f5a57be6a8c67ad1c4f89ac40891d830",
       "violations": []
     },
     {
@@ -1170,17 +1170,17 @@
       "violations": []
     },
     {
-      "bytes": 26318,
+      "bytes": 29627,
       "path": "runtime/release_campaign.py",
       "scan_state": "verified",
-      "sha256": "22e69f69870f6300555aacfe88aaecc2c97340cef8cbf1618fdd6beda3b4bab0",
+      "sha256": "bb5089a904c57bb531bab61831e81520cf2b7fe1f165efec51dda7059e88982e",
       "violations": []
     },
     {
-      "bytes": 52278,
+      "bytes": 53674,
       "path": "runtime/release_certification.py",
       "scan_state": "verified",
-      "sha256": "923a9d74582c2f12be46f2d4e3c01d5f9999616a4bf76b891df723fe61ee9c7a",
+      "sha256": "b998d620d5b0d7ac5c5791ebb8b6f016e84da4250ec02a7a45d14e75bfebea7e",
       "violations": []
     },
     {
@@ -1212,10 +1212,17 @@
       "violations": []
     },
     {
-      "bytes": 50870,
+      "bytes": 51087,
       "path": "runtime/release_preflight.py",
       "scan_state": "verified",
-      "sha256": "b54a1120df7317c4cf4c2a0746f819207b9b84e4a3fe153a2853a42826a057fb",
+      "sha256": "b99593a36c02b779f8b85a861803f494b530cdbf6e08b2c16b5e70e95f365792",
+      "violations": []
+    },
+    {
+      "bytes": 1424,
+      "path": "runtime/release_repository_context.py",
+      "scan_state": "verified",
+      "sha256": "0e31dcabcb76c9c3ef4f7212020988c0daf04a76d85d1e1eb1e6de09a8f5d7f1",
       "violations": []
     },
     {
@@ -1226,17 +1233,17 @@
       "violations": []
     },
     {
-      "bytes": 2066,
+      "bytes": 2403,
       "path": "runtime/release_skip_policy.py",
       "scan_state": "verified",
-      "sha256": "ea0329d81550fe7c2fde84c0b18b68e30b04d1913cdf1ded5c890dd32f851932",
+      "sha256": "e7f870f2fcc537281ca1397d4d1875cf2058c0fe052c106348541985815d9157",
       "violations": []
     },
     {
-      "bytes": 2887,
+      "bytes": 2971,
       "path": "runtime/repository_scope.py",
       "scan_state": "verified",
-      "sha256": "5aa42a3e0d9e9f556c7fe9f129b936bf25325a0277b779f25893d9d1e50f5ca7",
+      "sha256": "41baa011f84412dc90f76cb4d837f06f9d5770dcec964707d1c036dc6e5bd057",
       "violations": []
     },
     {
@@ -2218,5 +2225,5 @@
     "violations": []
   },
   "schema_version": "px.provider-route-index/1.3",
-  "verified_file_count": 315
+  "verified_file_count": 316
 }

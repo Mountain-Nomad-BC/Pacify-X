@@ -22,6 +22,7 @@ from runtime.release_campaign import (
     clear_release_identity,
     finish_release_stage,
     release_campaign_status,
+    supersede_consumed_cleared_release_campaign,
     supersede_failed_release_campaign,
 )
 
@@ -834,6 +835,37 @@ def test_terminal_failed_campaign_is_archived_before_one_cleared_successor(
             tmp_path,
             campaign_id="certification-second-successor",
             reason="must not supersede a cleared successor",
+        )
+
+
+def test_consumed_cleared_campaign_is_archived_before_one_preidentity_successor(
+    tmp_path: Path, release_classification
+) -> None:
+    _release_repair_state(tmp_path, "repair")
+    clear_release_identity(tmp_path, campaign_id="certification-reconciled-empty")
+    _release_repair_state(tmp_path, "repair_frozen")
+
+    cleared = supersede_consumed_cleared_release_campaign(
+        tmp_path,
+        campaign_id="certification-preidentity-successor",
+        reason="focused reconciliation denominator failed before identity apply",
+    )
+
+    assert cleared["state"] == "cleared"
+    assert cleared["identity"] is None
+    assert cleared["apply_count"] == 0
+    assert cleared["pre_identity_reconciliation_successor"] is True
+    archive = tmp_path / cleared["superseded_archive"]
+    retained = json.loads(archive.read_text(encoding="utf-8"))
+    assert retained["campaign_state"]["campaign_id"] == (
+        "certification-reconciled-empty"
+    )
+    assert retained["campaign_state"]["identity"] is None
+    with pytest.raises(ReleaseCampaignBlocked, match="only one original unused"):
+        supersede_consumed_cleared_release_campaign(
+            tmp_path,
+            campaign_id="certification-forbidden-second-successor",
+            reason="must not chain pre-identity successors",
         )
 
 

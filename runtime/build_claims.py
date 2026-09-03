@@ -8,12 +8,15 @@ import re
 import tomllib
 from typing import Any
 
+from .repository_scope import is_external_environment_relative
 from .release_identity import authoritative_version
 
 
 CLAIMS_PATH = Path("registry/build_claims.json")
 MUTABLE_REGISTRY_PROJECTIONS = frozenset(
     {
+        "completion_status.json",
+        "operational_gap_ledger.head.json",
         "operational_gap_ledger.jsonl",
         "operational_gap_ledger.snapshot.json",
     }
@@ -41,6 +44,7 @@ def _registry_artifact_count(root: Path) -> int:
         for path in (root / "registry").rglob("*")
         if path.is_file()
         and not (path.name.startswith(".") and path.suffix.casefold() == ".lock")
+        and not is_external_environment_relative(path.relative_to(root))
         and path.relative_to(root / "registry").as_posix()
         not in MUTABLE_REGISTRY_PROJECTIONS
     )

@@ -27,6 +27,7 @@ from .release_boundary import copy_clean_product
 from .release_identity import authoritative_version, capture_git_identity
 from .resource_lifecycle import ResourceManager, RunState
 from .release_skip_policy import ALLOWED_RELEASE_TEST_SKIPS, junit_skip_policy_gate
+from .release_repository_context import validate_release_gate_repository_context
 
 
 PREFLIGHT_POLICY = Path("policies/release-preflight.json")
@@ -1014,6 +1015,10 @@ def run_preflight(
         ("evidence_portability", lambda: evidence_portability(root)),
         ("evidence_budget", lambda: evidence_budget(root, policy)),
         ("skip_policy", lambda: skip_policy_preflight()),
+        (
+            "release_gate_repository_context",
+            lambda: validate_release_gate_repository_context(root),
+        ),
         ("test_group_readiness", lambda: certification_group_readiness(root)),
     ]
     for name, callback in static:

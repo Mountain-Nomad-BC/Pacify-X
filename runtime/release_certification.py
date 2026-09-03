@@ -51,6 +51,10 @@ from .release_identity import (
     verify_recorded_git_identity,
 )
 from .release_signing import sign_certificate, verify_certificate_signature
+from .release_repository_context import (
+    RELEASE_GATE_REQUIRED_REPOSITORY_CONTEXT,
+    validate_release_gate_repository_context,
+)
 from .release_skip_policy import (
     junit_skip_policy_gate as _junit_skip_policy_gate,
 )
@@ -61,6 +65,7 @@ FINALIZER_CARDS = {"REL-010-C", "REL-010-E", "REL-011-FULL-REPAIR"}
 FINALIZER_FULL_REPAIR_PENDING = frozenset(
     {"PC-001", "PC-002", "PC-003", "PC-004", "PC-005", "PC-006", "PC-037"}
 )
+RELEASE_SANITATION_EXCLUDED_NAMES = frozenset({".engineering-bootstrap"})
 MACHINE_LOCAL_PATH = re.compile(r"(?i)(?:[a-z]:[\\/]|/(?:users|home|tmp|var/tmp)/)")
 PROJECT_ESCAPE_PATH = re.compile(r"(?:^|[\\/])\.\.(?:[\\/]|$)")
 WINDOWS_LOCAL_FRAGMENT = re.compile(r"(?i)[a-z]:[\\/][^\s\"'<>]*")
@@ -83,6 +88,18 @@ def _dump(path: Path, value: object) -> None:
 
 def _sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _resolve_release_gate_roots(
+    candidate_root: Path, authenticated_source_root: Path
+) -> dict[str, Any]:
+    candidate = candidate_root.resolve(strict=True)
+    source = authenticated_source_root.resolve(strict=True)
+    return {
+        "candidate_root": candidate,
+        "authenticated_source_root": source,
+        "repository_context": validate_release_gate_repository_context(source),
+    }
 
 
 def _verify_coverage_binding(
@@ -512,6 +529,7 @@ def run_release_gates(
     root: Path,
     evidence_dir: Path,
     *,
+    authenticated_source_root: Path,
     release_python: str,
     artifact_dir: Path,
     artifact_records: list[dict[str, Any]],
@@ -519,8 +537,19 @@ def run_release_gates(
     wheelhouse_manifest: dict[str, Any],
     evidence_locator_prefix: str,
 ) -> dict[str, Any]:
-    """Run every release gate against the isolated staged product tree."""
+    """Run product gates on frozen bytes and repository gates on authenticated source."""
     started = time.monotonic()
+    roots = _resolve_release_gate_roots(root, authenticated_source_root)
+    root = roots["candidate_root"]
+    source_root = roots["authenticated_source_root"]
+    repository_context = roots["repository_context"]
+    if not repository_context["valid"]:
+        return {
+            "schema_version": "2.0",
+            "valid": False,
+            "errors": repository_context["errors"],
+            "gates": {"authenticated_repository_context": repository_context},
+        }
     environment = scrub_release_environment()
     wheel_record = next(
         (item for item in artifact_records if item.get("type") == "wheel"), None
@@ -573,7 +602,7 @@ def run_release_gates(
     _dump(evidence_dir / "installed-wheel.json", installed_receipt)
     from .test_profiles import resolve_test_profile
 
-    profile = resolve_test_profile(root, "release")
+    profile = resolve_test_profile(source_root, "release")
     tests_started = time.monotonic()
     junit_path = evidence_dir / "full-tests.junit.xml"
     coverage_path = evidence_dir / "coverage.json"
@@ -600,7 +629,7 @@ def run_release_gates(
     )
     test_process = run_test_command(
         test_command,
-        cwd=root,
+        cwd=source_root,
         environment=environment,
         timeout_seconds=profile["timeout_seconds"],
     )
@@ -637,13 +666,13 @@ def run_release_gates(
     ]
     coverage_process = run_test_command(
         coverage_command,
-        cwd=root,
+        cwd=source_root,
         environment=environment,
         timeout_seconds=min(float(profile["timeout_seconds"]), 300.0),
     )
     if coverage_path.is_file() and coverage_process["valid"]:
-        coverage_compaction = _compact_coverage_contexts(root, coverage_path)
-        coverage_gate = validate_coverage_evidence(root, coverage_path)
+        coverage_compaction = _compact_coverage_contexts(source_root, coverage_path)
+        coverage_gate = validate_coverage_evidence(source_root, coverage_path)
     else:
         coverage_compaction = {
             "governed_module_count": 0,
@@ -670,6 +699,7 @@ def run_release_gates(
     )
     _dump(evidence_dir / "artifact-inspection.json", artifact_binding)
     gates: dict[str, Any] = {
+        "authenticated_repository_context": repository_context,
         "release_toolchain": toolchain_gate,
         "full_tests": {
             "valid": test_exit == 0
@@ -753,18 +783,18 @@ def run_release_gates(
 
     licensing_result = validate_licensing(root)
     checks = {
-        "release_audit": audit_framework(root, require_external_manifests=True),
-        "structural_integrity": audit_structural_integrity(root),
-        "generated_artifacts": validate_generated_artifacts(root),
+        "release_audit": audit_framework(source_root, require_external_manifests=True),
+        "structural_integrity": audit_structural_integrity(source_root),
+        "generated_artifacts": validate_generated_artifacts(source_root),
         "dependency_ownership": validate_dependency_closure(root),
         "registry_envelopes": validate_registry_envelopes(root),
-        "external_evidence": validate_external_evidence(root, strict=True),
+        "external_evidence": validate_external_evidence(source_root, strict=True),
         "contracts": validate_contract_corpus(root),
         "graphs": validate_graph_artifacts(root),
         "integrations": validate_integrations(root, smoke=True),
         "registry": validate_registry(root),
         "corrective_release": validate_corrective_ledger(
-            root,
+            source_root,
             require_blocking_passed=True,
             allow_finalizer_in_progress=True,
         ),
@@ -787,7 +817,9 @@ def run_release_gates(
             "valid": bool(result.get("valid", result.get("complete", False))),
             "errors": errors,
         }
-    sanitation = audit_sanitization(root)
+    sanitation = audit_sanitization(
+        root, excluded_names=RELEASE_SANITATION_EXCLUDED_NAMES
+    )
     sanitation_controls = build_sanitation_summary(root, sanitation, licensing_result)
     _dump(evidence_dir / "sanitation-controls.json", sanitation_controls)
     gates["sanitation_summary"] = {
@@ -1038,6 +1070,7 @@ def finalize_release(
                 gates = gate_runner(
                     staged,
                     evidence_dir,
+                    authenticated_source_root=root,
                     release_python=str(release_python),
                     artifact_dir=selected_artifact_dir,
                     artifact_records=build["artifacts"],
