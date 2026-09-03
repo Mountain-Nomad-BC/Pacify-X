@@ -6325,6 +6325,56 @@ function installedPluginControlPreservesModal(selector) {
   return Boolean(match && INSTALLED_PLUGIN_MODAL_ACTIONS.has(match[1]));
 }
 
+function installedPluginConflictControlMatches(observation, expected) {
+  return observation?.exact_present === true
+    && observation?.exact_visible === true
+    && observation?.extension_id === expected?.extensionId
+    && observation?.signal_id === expected?.signalId
+    && observation?.target_extension_id === expected?.targetExtensionId
+    && observation?.resolution === expected?.resolution;
+}
+
+async function dispatchInstalledPluginConflictControl(frameHost, expected, options = {}) {
+  const timeoutMs = options.timeoutMs || 20_000;
+  const deadline = Date.now() + timeoutMs;
+  let observation = null;
+  do {
+    observation = await frameHost.evaluate((frame, item) => {
+      const visible = element => {
+        if (!element || element.hidden || element.disabled || element.getAttribute?.('aria-hidden') === 'true') return false;
+        const style = frame.contentWindow.getComputedStyle(element);
+        return style.display !== 'none' && style.visibility !== 'hidden'
+          && Boolean(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
+      };
+      const controls = [...(frame.contentDocument?.querySelectorAll('[data-action="previewExtensionConflictResolution"]') || [])];
+      const exactCandidates = controls.filter(control => control.dataset.extensionId === item.expected.extensionId
+        && control.dataset.signalId === item.expected.signalId
+        && control.dataset.targetExtensionId === item.expected.targetExtensionId
+        && control.dataset.resolution === item.expected.resolution);
+      const exact = exactCandidates.find(visible) || exactCandidates[0] || null;
+      const exactVisible = visible(exact);
+      const before = exactVisible ? frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0 : null;
+      if (exactVisible) {
+        if (typeof item.targetOverride === 'string') exact.dataset.targetExtensionId = item.targetOverride;
+        exact.click();
+      }
+      return {
+        exact_present: exactCandidates.length > 0, exact_visible: exactVisible,
+        extension_id: exact?.dataset.extensionId || null,
+        signal_id: exact?.dataset.signalId || null,
+        target_extension_id: item.targetOverride && exactVisible ? item.expected.targetExtensionId : exact?.dataset.targetExtensionId || null,
+        resolution: exact?.dataset.resolution || null,
+        candidate_count: controls.length,
+        dispatched: exactVisible,
+        response_offset: before
+      };
+    }, { expected, targetOverride: options.targetOverride || null });
+    if (observation?.dispatched === true && installedPluginConflictControlMatches(observation, expected)) return observation.response_offset;
+    await wait(100);
+  } while (Date.now() < deadline);
+  throw new Error(`plugin-conflict-preview-control-settlement-timeout:${JSON.stringify({ expected, observation })}`);
+}
+
 async function settleInstalledPluginControl(frameHost, selector, timeoutMs = 20_000) {
   return settleInstalledSurfaceControl(frameHost, {
     surface: 'plugins', selector, stableSamplesRequired: 4,
@@ -9549,14 +9599,10 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
 
   const exerciseConflictRoute = async () => {
     let signal = await queryConflicts();
-    const invalidBefore = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
-    await frameHost.evaluate((frame, item) => {
-      const button = [...frame.contentDocument.querySelectorAll('[data-action="previewExtensionConflictResolution"]')]
-        .find(value => value.dataset.signalId === item.signalId && value.dataset.resolution === 'inspect' && value.dataset.targetExtensionId === item.extensionId);
-      if (!button) throw new Error('plugin-conflict-preview-control-unavailable');
-      button.dataset.targetExtensionId = 'px-owned.absent';
-      button.click();
-    }, { signalId: signal.signal_id, extensionId });
+    const invalidBefore = await dispatchInstalledPluginConflictControl(frameHost, {
+      extensionId, signalId: signal.signal_id,
+      targetExtensionId: extensionId, resolution: 'inspect'
+    }, { timeoutMs, targetOverride: 'px-owned.absent' });
     const invalidDeadline = Date.now() + timeoutMs;
     do {
       const failure = await frameHost.evaluate((frame, after) => (frame.contentWindow?.__PX_INSTALLED_RESPONSES__ || []).slice(after)
@@ -9566,13 +9612,10 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
     } while (Date.now() < invalidDeadline);
     if (!observation.invalid_conflict_target_rejected) throw new Error('plugin-invalid-conflict-target-not-rejected');
     signal = await queryConflicts();
-    const previewBefore = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
-    await frameHost.evaluate((frame, item) => {
-      const button = [...frame.contentDocument.querySelectorAll('[data-action="previewExtensionConflictResolution"]')]
-        .find(value => value.dataset.signalId === item.signalId && value.dataset.resolution === 'inspect' && value.dataset.targetExtensionId === item.extensionId);
-      if (!button) throw new Error('plugin-conflict-preview-control-unavailable');
-      button.click();
-    }, { signalId: signal.signal_id, extensionId });
+    const previewBefore = await dispatchInstalledPluginConflictControl(frameHost, {
+      extensionId, signalId: signal.signal_id,
+      targetExtensionId: extensionId, resolution: 'inspect'
+    }, { timeoutMs });
     const preview = (await waitForResponse(previewBefore, 'extensionConflictResolutionPreview', 'extensionConflictResolutionPreview')).result;
     if (preview?.schema_version !== 'px.extension-conflict-resolution-preview/1.0' || preview.allowed !== true || preview.signal_id !== signal.signal_id || preview.target_extension_id !== extensionId || preview.resolution !== 'inspect') throw new Error(`plugin-conflict-preview-invalid:${JSON.stringify(preview)}`);
     const dispatch = await dispatchInstalledPluginConfirmation(frameHost, {
@@ -11075,7 +11118,7 @@ module.exports = {
   advanceInstalledSurfaceControlSettlement, installedSurfaceControlAcknowledged, installedWorkbenchCommandSpec, installedWorkbenchAuthorityBoundarySpec, instrumentInstalledBridge, knowledgeBrowseHasHead, knowledgeGraphControlProbe,
   knowledgeLifecycleControlProbe, learningLifecycleControlProbe, nativeWorkbenchKeyboardActionAdmitted, nativeWorkbenchKeyboardFallbackAdmitted,
   nativeWorkbenchRequestFallbackAdmitted, ownedCleanupCandidate, ownedWorkbenchReloadIdentity, reacquirableOwnedFrameError,
-  dispatchInstalledPluginConfirmation, dispatchInstalledPluginFormAction, installedDashboardRestartIdentity, installedPluginControlPreservesModal, installedPluginPreviewConfirmationMatches,
+  dispatchInstalledPluginConfirmation, dispatchInstalledPluginConflictControl, dispatchInstalledPluginFormAction, installedDashboardRestartIdentity, installedPluginConflictControlMatches, installedPluginControlPreservesModal, installedPluginPreviewConfirmationMatches,
   pluginMutationControlProbe, pluginReadControlProbe,
   partitionExpectedFaultDiagnostics, prepareInstalledControl, probeInstalledControls, probeInstalledSidebarControls, probeInstalledWorkbenchCommands,
   openWorkbenchCommandPalette, projectMapIdentity, projectsControlProbe, reopenPacifyDashboardFromOwnedUi, revealInstalledControl, revealInstalledHostBoundaryControl, runInstalledCleanupProfile, settleInstalledSurfaceControl,

@@ -17,6 +17,7 @@ const { buildInstalledLateCardAdversarialProfile, buildInstalledLateCardScenario
 const { exactStudioSetupTerminalResponse } = require('../scripts/run-operational-ui-walk');
 const { installedDashboardRestartIdentity } = require('../scripts/run-operational-ui-walk');
 const { dispatchInstalledPluginConfirmation, dispatchInstalledPluginFormAction, installedPluginPreviewConfirmationMatches } = require('../scripts/run-operational-ui-walk');
+const { dispatchInstalledPluginConflictControl, installedPluginConflictControlMatches } = require('../scripts/run-operational-ui-walk');
 const { installedAdvancedFixtureStateAcknowledged } = require('../scripts/run-operational-ui-walk');
 const { waitForInstalledCanonicalMemoryBaseline } = require('../scripts/run-operational-ui-walk');
 
@@ -511,6 +512,54 @@ test('plugin settlement preserves only exact request-bound execute confirmation 
   ]) assert.equal(installedPluginControlPreservesModal(selector), false, selector);
 });
 
+test('plugin conflict control settlement accepts only the exact visible request-bound route', async () => {
+  const expected = {
+    extensionId: 'px-owned.fixture',
+    signalId: 'extension-conflict:123456789012345678901234',
+    targetExtensionId: 'px-owned.fixture',
+    resolution: 'inspect'
+  };
+  const exact = {
+    exact_present: true,
+    exact_visible: true,
+    extension_id: expected.extensionId,
+    signal_id: expected.signalId,
+    target_extension_id: expected.targetExtensionId,
+    resolution: expected.resolution,
+    candidate_count: 8
+  };
+  assert.equal(installedPluginConflictControlMatches(exact, expected), true);
+  for (const field of ['exact_present', 'exact_visible']) {
+    assert.equal(installedPluginConflictControlMatches({ ...exact, [field]: false }, expected), false, field);
+  }
+  for (const [field, value] of [
+    ['extension_id', 'substitute.extension'],
+    ['signal_id', 'extension-conflict:stale'],
+    ['target_extension_id', 'px-owned.absent'],
+    ['resolution', 'disable-global']
+  ]) assert.equal(installedPluginConflictControlMatches({ ...exact, [field]: value }, expected), false, field);
+
+  let evaluations = 0;
+  const frameHost = {
+    evaluate: async () => {
+      evaluations += 1;
+      return evaluations === 1
+        ? { ...exact, exact_visible: false, dispatched: false, response_offset: null }
+        : { ...exact, dispatched: true, response_offset: 17 };
+    }
+  };
+  assert.equal(await dispatchInstalledPluginConflictControl(frameHost, expected, { timeoutMs: 1_000 }), 17);
+  assert.equal(evaluations, 2, 'a hidden exact candidate must be retried before the atomic dispatch');
+
+  const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
+  const profile = source.slice(source.indexOf('async function runInstalledPluginMutationProfile'), source.indexOf('function knowledgeLifecycleControlProbe'));
+  const conflictRoute = profile.slice(profile.indexOf('const exerciseConflictRoute'), profile.indexOf('observation.conflict_route_completed'));
+  assert.equal((conflictRoute.match(/dispatchInstalledPluginConflictControl\(frameHost/g) || []).length, 2);
+  assert.match(conflictRoute, /signalId: signal\.signal_id[\s\S]*targetExtensionId: extensionId[\s\S]*resolution: 'inspect'/);
+  assert.match(conflictRoute, /targetOverride: 'px-owned\.absent'/);
+  assert.doesNotMatch(conflictRoute, /plugin-conflict-preview-control-unavailable/);
+});
+
 test('plugin conflict route dispatches the authenticated confirmation without a second modal settlement window', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   const profile = source.slice(source.indexOf('async function runInstalledPluginMutationProfile'), source.indexOf('function knowledgeLifecycleControlProbe'));
@@ -806,7 +855,7 @@ test('Activity host-boundary admission waits for a coherent reversible generatio
 test('installed surface navigation owns advanced expansion behavior', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   const expansion = source.slice(source.indexOf('async function waitForAdvancedNavigationExpanded'), source.indexOf('async function navigateInstalledSurface'));
-  const navigation = source.slice(source.indexOf('async function navigateInstalledSurface'), source.indexOf('async function runInstalledStudioSetupProfile'));
+  const navigation = source.slice(source.indexOf('async function navigateInstalledSurface'), source.indexOf('function installedSurfaceControlAcknowledged'));
   assert.match(navigation, /\['knowledgeCore', 'runtimeCore'\]\.includes\(surface\)/);
   assert.match(navigation, /waitForAdvancedNavigationExpanded/);
   assert.match(expansion, /data-action="toggleAdvanced"/);
@@ -2691,7 +2740,7 @@ test('r16 prerequisites are geometry-independent, owned, reversible, and diagnos
   assert.doesNotMatch(expansion, /offsetWidth|offsetHeight|getClientRects/);
   assert.match(expansion, /!element\.disabled/);
   assert.match(expansion, /targetNavigation/);
-  const navigation = source.slice(source.indexOf('async function navigateInstalledSurface'), source.indexOf('async function runInstalledStudioSetupProfile'));
+  const navigation = source.slice(source.indexOf('async function navigateInstalledSurface'), source.indexOf('function installedSurfaceControlAcknowledged'));
   assert.doesNotMatch(navigation, /offsetWidth|offsetHeight|getClientRects/);
   const scenario = source.slice(source.indexOf('async function prepareInstalledHostBoundaryScenario'), source.indexOf('function hostBoundaryControlProbe'));
   assert.match(source, /stageOwnedActivityEnabled/);
