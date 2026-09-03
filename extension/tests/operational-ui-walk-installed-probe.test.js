@@ -167,6 +167,30 @@ test('late-card diagnostics exclude only exact external host warnings', () => {
   });
 });
 
+test('exact VS Code core onWillSave timeout is recovered while origin and message lookalikes fail closed', () => {
+  const exact = {
+    source: 'console',
+    context: 'console:vscode-file://vscode-app/c:/owned-vscode/resources/app/out/vs/workbench/workbench.desktop.main.js',
+    message: '%c  ERR color: #f33 Error: Aborted onWillSaveTextDocument-event after 1750ms\n    at vscode-file://vscode-app/c:/owned-vscode/resources/app/out/vs/workbench/workbench.desktop.main.js:1146:44285'
+  };
+  assert.deepEqual(partitionExpectedFaultDiagnostics([exact], null, null, false), {
+    retained: [],
+    recovered: [{ ...exact, disposition: 'expected_external_host_warning' }]
+  });
+  for (const changed of [
+    { ...exact, source: 'pageerror' },
+    { ...exact, context: 'console:vscode-file://vscode-app/c:/owned-extension/extension.js' },
+    { ...exact, message: exact.message.replace('1750ms', '1751ms') },
+    { ...exact, message: exact.message.replace('workbench.desktop.main.js:1146:44285', 'extension.js:1:1') },
+    { ...exact, message: `${exact.message}:lookalike` }
+  ]) {
+    assert.deepEqual(partitionExpectedFaultDiagnostics([changed], null, null, false), {
+      retained: [changed],
+      recovered: []
+    });
+  }
+});
+
 test('graph cancellation settles on exact installed idle state without requiring a graph response', async () => {
   const samples = [false, false, true];
   const frameHost = { evaluateContent: async () => samples.shift() ?? true };

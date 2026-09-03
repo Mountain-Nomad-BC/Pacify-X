@@ -9959,6 +9959,14 @@ function installedFilesystemPathWithin(root, target, options) {
   return Boolean(relative) && relative !== '..' && !relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative);
 }
 
+function isExternalVsCodeWillSaveTimeoutDiagnostic(diagnostic) {
+  const message = String(diagnostic?.message || '');
+  const context = String(diagnostic?.context || '');
+  return diagnostic?.source === 'console'
+    && /^%c\s+ERR\s+color:\s*#f33\s+Error:\s+Aborted onWillSaveTextDocument-event after 1750ms\r?\n\s+at vscode-file:\/\/vscode-app\/.+\/workbench\/workbench\.desktop\.main\.js:\d+:\d+$/i.test(message)
+    && /^console:vscode-file:\/\/vscode-app\/.+\/workbench\/workbench\.desktop\.main\.js$/i.test(context);
+}
+
 function reversibleConfigurationRecord(requirement, observation) {
   const evidenceRef = `installed-reversible-configuration:${requirement.control_id}`;
   const verified = observation.changed && observation.reopened && observation.restored;
@@ -10029,7 +10037,8 @@ function partitionExpectedFaultDiagnostics(hostErrors, reversibleConfigurationPr
       && (/workbench\.desktop\.main\.js/i.test(context)
         || /(?:marketplace\.visualstudio\.com|vscode-unpkg\.net|main\.vscode-cdn\.net)/i.test(context));
     const expectedExternalHostWarning = isExternalVsCodeMermaidToolDiagnostic(diagnostic)
-      || isExternalOwnedFixtureMarketplaceDiagnostic(diagnostic);
+      || isExternalOwnedFixtureMarketplaceDiagnostic(diagnostic)
+      || isExternalVsCodeWillSaveTimeoutDiagnostic(diagnostic);
     const graphLoadAll = observationStateProfile?.observations?.['pxui.knowledge-graph.action.graphLoadAll'];
     const focusedProjectCancellations = Object.values(nativeProfiles?.projects?.observation?.cancelled_controls || {});
     const focusedGraphRecovery = focusedProjectCancellations.length === 3
@@ -11062,7 +11071,7 @@ module.exports = {
   catalogPaginationControlProbe, clickWhenKnowledgeControlReady, correlateCatalogExchange, observationStateControlProbe, runInstalledObservationStateProfile, eligibleInstalledControl, eligibleInstalledSidebarControl, engineOutageRecord, enterpriseControlProbe, environmentLifecycleControlProbe,
   bindCurrentWorkbenchCommandRejection, ensureInstalledSensorRowSnapshot, exactStudioSetupTerminalResponse, executeWorkbenchCommand, exactPluginConflictSignal, exerciseInstalledControl, graphProjectionIdentity, requestBoundGraphResultIdentity, hostBoundaryControlProbe, inlineCommandOwnerControlProbe, installedActionIdentity,
   installedConditionalRecoverySpec, installedConditionalScenario, installedHostBoundaryRevealSelector, installedPreparationIdentity, installedRuntimeSourceIdentityState, installedSourceIdentityNeedsLateRefresh, installedSidebarHandoffRequestMatches, installedSidebarHandoffSpec, installedSidebarSelector, installedStudioControlScenario, installedStudioPrerequisites, installedSurfaceState, installedSurfaceAcknowledged,
-  installedFilesystemPathIdentity, installedFilesystemPathsMatch, installedFilesystemPathWithin, installedHostActionReceiptMatches, installedHostActionRequestIdentity,
+  installedFilesystemPathIdentity, installedFilesystemPathsMatch, installedFilesystemPathWithin, installedHostActionReceiptMatches, installedHostActionRequestIdentity, isExternalVsCodeWillSaveTimeoutDiagnostic,
   advanceInstalledSurfaceControlSettlement, installedSurfaceControlAcknowledged, installedWorkbenchCommandSpec, installedWorkbenchAuthorityBoundarySpec, instrumentInstalledBridge, knowledgeBrowseHasHead, knowledgeGraphControlProbe,
   knowledgeLifecycleControlProbe, learningLifecycleControlProbe, nativeWorkbenchKeyboardActionAdmitted, nativeWorkbenchKeyboardFallbackAdmitted,
   nativeWorkbenchRequestFallbackAdmitted, ownedCleanupCandidate, ownedWorkbenchReloadIdentity, reacquirableOwnedFrameError,
