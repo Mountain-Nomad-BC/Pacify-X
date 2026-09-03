@@ -158,6 +158,15 @@ test('conditional state fixtures have distinct preparation identities', () => {
   assert.notEqual(preparationKey({ surface_id: 'agents', control_id: 'pxui.agents.indicator.catalogError' }), preparationKey({ surface_id: 'agents', control_id: 'pxui.agents.indicator.catalogPending' }));
 });
 
+test('conditional query-error fixtures preserve the production request correlation boundary', () => {
+  const source = fs.readFileSync(path.join(__dirname, '../scripts/run-exhaustive-operational-control-walk.js'), 'utf8');
+  const preparation = source.slice(source.indexOf('async function prepare(page, surfaceId, control = null)'), source.indexOf('async function resolveAction'));
+  assert.match(preparation, /const requestId = window\.eval\('state\.activityRequestId'\);[\s\S]*operation: 'activityQuery', requestId/);
+  assert.match(preparation, /const requestId = window\.eval\('state\.memoryRequestId'\);[\s\S]*operation: 'memoryQuery', requestId/);
+  assert.match(preparation, /const requestId = window\.eval\('state\.graphRequestId'\);[\s\S]*operation: 'graphQuery', requestId/);
+  assert.match(preparation, /const requestId = window\.eval\('state\.catalogRequests'\)\?\.\[kind\]\?\.requestId;[\s\S]*operation: 'catalogQuery', kind, requestId/);
+});
+
 test('complete chain rejects any missing or partial required stage', () => {
   const complete = Object.fromEntries(STAGES.map(stage => [stage, { state: 'not_applicable' }]));
   complete.open_load.state = 'present';

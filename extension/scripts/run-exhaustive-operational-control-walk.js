@@ -584,7 +584,10 @@ async function prepare(page, surfaceId, control = null) {
   }
   const catalogKind = surfaceId === 'agents' ? 'agents' : surfaceId === 'workflows' ? 'workflows' : surfaceId === 'skills-tools' ? 'skills' : null;
   if (catalogKind && /\.(?:action\.catalogRetry|indicator\.catalog(?:Error|Pending))$/.test(String(control?.control_id || ''))) {
-    await page.evaluate(kind => window.dispatchEvent(new MessageEvent('message', { data: { type: 'operationError', operation: 'catalogQuery', kind, error: 'Bounded preview catalog failure' } })), catalogKind);
+    await page.evaluate(kind => {
+      const requestId = window.eval('state.catalogRequests')?.[kind]?.requestId;
+      window.dispatchEvent(new MessageEvent('message', { data: { type: 'operationError', operation: 'catalogQuery', kind, requestId, error: 'Bounded preview catalog failure' } }));
+    }, catalogKind);
     await page.locator('[data-action="closeModal"]').last().click().catch(() => {});
     if (String(control?.control_id || '').endsWith('.indicator.catalogPending')) {
       await page.evaluate(() => window.eval('vscode.postMessage = message => { (window.__PX_POSTED_MESSAGES__ ||= []).push(message); }'));
@@ -597,17 +600,26 @@ async function prepare(page, surfaceId, control = null) {
     await page.locator('[data-action="closeModal"]').last().click().catch(() => {}); await page.waitForTimeout(40);
   }
   if (surfaceId === 'activity' && String(control?.control_id || '').endsWith('.indicator.queryError')) {
-    await page.evaluate(() => window.dispatchEvent(new MessageEvent('message', { data: { type: 'operationError', operation: 'activityQuery', error: 'Bounded preview activity query failure' } })));
+    await page.evaluate(() => {
+      const requestId = window.eval('state.activityRequestId');
+      window.dispatchEvent(new MessageEvent('message', { data: { type: 'operationError', operation: 'activityQuery', requestId, error: 'Bounded preview activity query failure' } }));
+    });
     await page.locator('[data-action="closeModal"]').last().click().catch(() => {}); await page.waitForTimeout(40);
   }
   if (surfaceId === 'memory' && String(control?.control_id || '').endsWith('.indicator.queryError')) {
-    await page.evaluate(() => window.dispatchEvent(new MessageEvent('message', { data: { type: 'operationError', operation: 'memoryQuery', error: 'Bounded preview memory query failure' } })));
+    await page.evaluate(() => {
+      const requestId = window.eval('state.memoryRequestId');
+      window.dispatchEvent(new MessageEvent('message', { data: { type: 'operationError', operation: 'memoryQuery', requestId, error: 'Bounded preview memory query failure' } }));
+    });
     await page.locator('[data-action="closeModal"]').last().click().catch(() => {}); await page.waitForTimeout(40);
   }
   if (surfaceId === 'knowledge-graph') {
     const graphControl = String(control?.control_id || '');
     if (graphControl.endsWith('.indicator.queryError')) {
-      await page.evaluate(() => window.dispatchEvent(new MessageEvent('message', { data: { type: 'operationError', operation: 'graphQuery', error: 'Bounded preview graph query failure' } })));
+      await page.evaluate(() => {
+        const requestId = window.eval('state.graphRequestId');
+        window.dispatchEvent(new MessageEvent('message', { data: { type: 'operationError', operation: 'graphQuery', requestId, error: 'Bounded preview graph query failure' } }));
+      });
       await page.locator('[data-action="closeModal"]').last().click().catch(() => {}); await page.waitForTimeout(40);
     } else if (graphControl.endsWith('.indicator.queryPending')) {
       await page.evaluate(() => {
