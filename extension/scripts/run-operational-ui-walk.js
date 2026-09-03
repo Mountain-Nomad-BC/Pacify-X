@@ -896,12 +896,14 @@ async function reopenPacifyDashboardFromOwnedUi(workbench, frameHost = null, tim
   if (typeof workbench.isClosed === 'function' && workbench.isClosed()) throw new Error('owned-workbench-closed-before-dashboard-reopen');
   await boundedOwnedUiAction(() => workbench.bringToFront(), Math.max(1, deadline - Date.now()), 'owned-workbench-bring-to-front');
   let lastOwner = 'unavailable';
-  let staleExistingTabRotated = false;
+  let staleExistingTabRotations = 0;
+  const maximumStaleExistingTabRotations = 8;
   do {
     const dashboardTabs = workbench.locator('[role="tab"]', { hasText: /PX.*Control Plane/i });
     const dashboardTab = dashboardTabs.first();
     let owner;
-    if (await dashboardTab.isVisible().catch(() => false)) {
+    if (await dashboardTab.isVisible().catch(() => false)
+      && staleExistingTabRotations < maximumStaleExistingTabRotations) {
       owner = dashboardTab;
       lastOwner = 'existing-dashboard-tab';
     } else {
@@ -955,7 +957,7 @@ async function reopenPacifyDashboardFromOwnedUi(workbench, frameHost = null, tim
       }
       if (stable) return { owner: lastOwner, executed: true, reconstructed: true, stability_samples: 2 };
     }
-    if (lastOwner === 'existing-dashboard-tab' && !staleExistingTabRotated) {
+    if (lastOwner === 'existing-dashboard-tab' && staleExistingTabRotations < maximumStaleExistingTabRotations) {
       const beforeCount = await dashboardTabs.count();
       const rotationDeadline = Math.min(deadline, Date.now() + 4_000);
       if (beforeCount > 0 && rotationDeadline - Date.now() > 1_000) {
@@ -966,15 +968,15 @@ async function reopenPacifyDashboardFromOwnedUi(workbench, frameHost = null, tim
           await wait(100);
         } while (Date.now() < rotationDeadline);
         if (await dashboardTabs.count() >= beforeCount) throw new Error('installed-dashboard-stale-existing-tab-close-unobserved');
-        staleExistingTabRotated = true;
-        lastOwner = 'stale-existing-dashboard-tab-rotated';
+        staleExistingTabRotations += 1;
+        lastOwner = `stale-existing-dashboard-tab-rotated:${staleExistingTabRotations}`;
         await wait(150);
         continue;
       }
     }
     await wait(150);
   } while (Date.now() < deadline);
-  throw new Error(`installed-dashboard-owner-reopen-timeout:${lastOwner}`);
+  throw new Error(`installed-dashboard-owner-reopen-timeout:${lastOwner}:rotations=${staleExistingTabRotations}`);
 }
 
 async function waitForOwnedWorkbenchDisplacementSettled(workbench, timeoutMs = 15_000) {
@@ -2340,7 +2342,15 @@ async function probeInstalledSidebarControls(frameHost, matrix, hostErrors = [],
 
 async function safeScreenshot(locator, target, context, hostErrors) {
   try {
-    await locator.screenshot({ path: target, animations: 'disabled', timeout: 5_000 });
+    const page = typeof locator?.page === 'function' ? locator.page() : null;
+    if (!page || typeof page.screenshot !== 'function') throw new Error('owned-page-screenshot-boundary-unavailable');
+    // Locator screenshots wait for the target element to become geometrically
+    // stable. The dashboard intentionally contains continuously updating live
+    // regions, so that wait can never settle even though the viewport is ready.
+    // Capture the already-positioned owned page viewport instead: it preserves
+    // the exact visible VS Code + webview evidence without a moving-element
+    // stability dependency.
+    await page.screenshot({ path: target, animations: 'disabled', timeout: 5_000 });
     return { status: 'captured', path: path.basename(target) };
   } catch (error) {
     const message = String(error?.message || error).slice(0, 1000);
@@ -3682,35 +3692,76 @@ async function readInstalledConfigurationAction(frameHost, spec) {
   }, spec);
 }
 
+async function requestInstalledProjectionRefresh(frameHost, timeoutMs = 10_000) {
+  const before = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
+  await frameHost.evaluate(frame => frame.contentWindow?.PXDashboard?.require('hostQueries')?.refresh());
+  const deadline = Date.now() + timeoutMs;
+  let snapshot = null;
+  do {
+    snapshot = await frameHost.evaluate((frame, offset) => (frame.contentWindow?.__PX_INSTALLED_RESPONSES__ || [])
+      .slice(offset).find(value => value?.type === 'snapshot') || null, before);
+    if (snapshot) return snapshot;
+    await wait(100);
+  } while (Date.now() < deadline);
+  throw new Error('installed-projection-refresh-timeout');
+}
+
 async function waitForInstalledConfigurationTarget(frameHost, spec, predicate, timeoutMs = 10_000) {
   const deadline = Date.now() + timeoutMs;
   let current = null;
-  let nextRefreshAt = 0;
+  let nextRefreshAt = Date.now() + 500;
+  let refreshError = '';
   do {
     current = await readInstalledConfigurationAction(frameHost, spec);
     if (current.available && predicate(current.target_value)) return current;
     if (Date.now() >= nextRefreshAt) {
-      await frameHost.evaluate(frame => frame.contentWindow?.PXDashboard?.require('hostQueries')?.refresh());
-      nextRefreshAt = Date.now() + 750;
+      const remaining = deadline - Date.now();
+      if (remaining > 0) {
+        try {
+          await requestInstalledProjectionRefresh(frameHost, Math.max(1, Math.min(10_000, remaining)));
+          refreshError = '';
+        } catch (error) { refreshError = String(error?.message || error).slice(0, 500); }
+      }
+      nextRefreshAt = Date.now() + 500;
     }
     await wait(100);
   } while (Date.now() < deadline);
-  throw new Error(`${spec.action}-configuration-target-timeout:${current?.target_value || 'unavailable'}`);
+  throw new Error(`${spec.action}-configuration-target-timeout:${current?.target_value || 'unavailable'}${refreshError ? `:refresh:${refreshError}` : ''}`);
 }
 
 async function invokeInstalledConfigurationAction(workbench, frameHost, spec, targetValue) {
   const before = await readInstalledConfigurationAction(frameHost, spec);
   if (!before.available || before.target_value !== targetValue) throw new Error(`${spec.action}-target-state-mismatch:${before.target_value}:${targetValue}`);
-  await frameHost.evaluate((frame, action) => {
+  const requestBeforeDispatch = await installedOutboundRequestOffset(frameHost);
+  const startedAt = Date.now();
+  const requestId = await frameHost.evaluate((frame, action) => {
+    const hostQueries = frame.contentWindow?.PXDashboard?.require('hostQueries');
+    const previousRequestId = String(hostQueries?.hostActionIdentity()?.requestId || '');
     const control = [...frame.contentDocument.querySelectorAll(`[data-action="${CSS.escape(action)}"]`)]
       .find(element => !element.disabled && (element.offsetWidth || element.offsetHeight || element.getClientRects().length));
     if (!control) throw new Error(`configuration-action-unavailable:${action}`);
     control.click();
+    const operation = hostQueries?.hostActionIdentity() || {};
+    return operation.action === action && operation.requestId !== previousRequestId ? String(operation.requestId || '') : '';
   }, spec.action);
-  const readAcknowledgement = () => frameHost.evaluate((frame, item) => {
-    const responses = frame.contentWindow?.__PX_INSTALLED_RESPONSES__ || [];
-    return responses.slice(item.after).find(response => response?.type === item.responseType && response?.operation === item.operation) || null;
-  }, { after: before.response_count, responseType: spec.responseType, operation: spec.operation });
+  if (spec.responseType === 'hostActionResult') {
+    if (!requestId) throw new Error(`${spec.action}-request-identity-missing`);
+    await waitForInstalledOutboundHostAction(frameHost, requestBeforeDispatch, { operation: spec.operation, requestId }, 3_000);
+  }
+  const readAcknowledgement = async () => {
+    if (spec.responseType === 'hostActionResult') {
+      return waitForDurableHostActionResult(frameHost, {
+        after: before.response_count, operation: spec.operation, requestId, startedAt, refreshSnapshot: false
+      }, 250);
+    }
+    return frameHost.evaluate((frame, item) => {
+      const expectedEnabled = item.targetValue === 'true';
+      return (frame.contentWindow?.__PX_INSTALLED_RESPONSES__ || []).slice(item.after)
+        .find(response => response?.type === item.responseType
+          && response?.operation === item.operation
+          && Boolean(response?.result?.state?.execution_policy?.master_enabled) === expectedEnabled) || null;
+    }, { after: before.response_count, responseType: spec.responseType, operation: spec.operation, targetValue });
+  };
   let acknowledgement = null;
   if (spec.approvalLabel && targetValue === 'true') {
     const approval = workbench.getByRole('button', { name: spec.approvalLabel, exact: true }).last();
@@ -3729,6 +3780,9 @@ async function invokeInstalledConfigurationAction(workbench, frameHost, spec, ta
     await wait(100);
   } while (Date.now() < deadline);
   if (!acknowledgement) throw new Error(`${spec.action}-typed-acknowledgement-timeout`);
+  if (spec.responseType === 'hostActionResult' && acknowledgement.disposition !== 'completed') {
+    throw new Error(`${spec.action}-unexpected-disposition:${acknowledgement.disposition}`);
+  }
   return acknowledgement;
 }
 
@@ -9923,33 +9977,47 @@ async function readInstalledCanonicalMemoryState(frameHost) {
 async function waitForInstalledCanonicalMemoryBaseline(frameHost, timeoutMs = 30_000) {
   const deadline = Date.now() + timeoutMs;
   let current = null;
-  let nextRefreshAt = 0;
+  let nextRefreshAt = Date.now() + 500;
+  let refreshError = '';
   do {
     current = await readInstalledCanonicalMemoryState(frameHost);
     if (current.attached !== current.detached && (current.attached || current.detached)) return current;
     if (Date.now() >= nextRefreshAt) {
-      await frameHost.evaluate(frame => frame.contentWindow?.PXDashboard?.require('hostQueries')?.refresh());
-      nextRefreshAt = Date.now() + 750;
+      const remaining = deadline - Date.now();
+      if (remaining > 0) {
+        try {
+          await requestInstalledProjectionRefresh(frameHost, Math.max(1, Math.min(10_000, remaining)));
+          refreshError = '';
+        } catch (error) { refreshError = String(error?.message || error).slice(0, 500); }
+      }
+      nextRefreshAt = Date.now() + 500;
     }
     await wait(250);
   } while (Date.now() < deadline);
-  throw new Error(`canonical-memory-baseline-timeout:${JSON.stringify(current)}`);
+  throw new Error(`canonical-memory-baseline-timeout:${JSON.stringify({ current, refresh_error: refreshError || null })}`);
 }
 
 async function waitForInstalledCanonicalMemoryState(frameHost, attached, timeoutMs = 30_000) {
   const deadline = Date.now() + timeoutMs;
   let current = null;
-  let nextRefreshAt = 0;
+  let nextRefreshAt = Date.now() + 500;
+  let refreshError = '';
   do {
     current = await readInstalledCanonicalMemoryState(frameHost);
     if (attached ? current.attached : current.detached) return current;
     if (Date.now() >= nextRefreshAt) {
-      await frameHost.evaluate(frame => frame.contentWindow?.PXDashboard?.require('hostQueries')?.refresh());
-      nextRefreshAt = Date.now() + 750;
+      const remaining = deadline - Date.now();
+      if (remaining > 0) {
+        try {
+          await requestInstalledProjectionRefresh(frameHost, Math.max(1, Math.min(10_000, remaining)));
+          refreshError = '';
+        } catch (error) { refreshError = String(error?.message || error).slice(0, 500); }
+      }
+      nextRefreshAt = Date.now() + 500;
     }
     await wait(250);
   } while (Date.now() < deadline);
-  throw new Error(`canonical-memory-state-timeout:${attached ? 'attached' : 'detached'}:${JSON.stringify(current)}`);
+  throw new Error(`canonical-memory-state-timeout:${attached ? 'attached' : 'detached'}:${JSON.stringify({ current, refresh_error: refreshError || null })}`);
 }
 
 async function settleInstalledCanonicalMemoryRecord(frameHost, timeoutMs = 30_000) {

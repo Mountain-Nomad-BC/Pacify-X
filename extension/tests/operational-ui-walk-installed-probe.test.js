@@ -412,7 +412,7 @@ test('physical host mechanics reopen the owned editor, preserve command mode, an
   assert.match(source, /dashboardTab\.click\(\)[\s\S]*Control\+W[\s\S]*reopenPacifyDashboardFromOwnedUi\(workbench, frameHost\)/);
   assert.match(source, /async function reopenPacifyDashboardFromOwnedUi\(workbench, frameHost = null[\s\S]*\[role="tab"\][\s\S]*dashboardTab\.isVisible\(\)[\s\S]*lastOwner = 'existing-dashboard-tab'[\s\S]*lastOwner = 'pacify-statusbar'[\s\S]*keyboard\.press\('Escape'\)[\s\S]*owner\.click\([\s\S]*owner\.evaluate\(element => element\.click\([\s\S]*frameHost\.reacquire[\s\S]*instrumentInstalledBridge\(frameHost, reconstructionBudget\)[\s\S]*installed-dashboard-owner-reopen-timeout/);
   assert.match(source, /for \(let sample = 0; sample < 2; sample \+= 1\)[\s\S]*frameHost\.reacquire[\s\S]*stability_samples: 2/);
-  assert.match(source, /staleExistingTabRotated[\s\S]*dashboardTabs\.count\(\)[\s\S]*Control\+W[\s\S]*installed-dashboard-stale-existing-tab-close-unobserved[\s\S]*stale-existing-dashboard-tab-rotated/);
+  assert.match(source, /staleExistingTabRotations = 0[\s\S]*maximumStaleExistingTabRotations = 8[\s\S]*dashboardTabs\.count\(\)[\s\S]*Control\+W[\s\S]*installed-dashboard-stale-existing-tab-close-unobserved[\s\S]*staleExistingTabRotations \+= 1/);
   assert.match(source, /after_time_origin: state\.time_origin, restarted: true, reconstructed: true/);
   assert.match(source, /async function closeOwnedDashboardTabs[\s\S]*PX\.\*Control Plane[\s\S]*Control\+W[\s\S]*restored-tab-close-unobserved/);
   assert.match(source, /restartOwnedWorkbenchWindow[\s\S]*closeOwnedDashboardTabs[\s\S]*Pacify-X: Open Control Plane|restartOwnedWorkbenchWindow[\s\S]*closeOwnedDashboardTabs[\s\S]*openDashboard[\s\S]*reopenPacifyDashboardFromOwnedUi/);
@@ -886,11 +886,15 @@ test('surface screenshots retain stable first-fold and proof-matrix deep-panel i
 
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   const capture = source.slice(source.indexOf('async function captureSurfaceViews'), source.indexOf('async function allPages'));
+  const safeCapture = source.slice(source.indexOf('async function safeScreenshot'), source.indexOf('function surfaceCaptureCandidates'));
   assert.match(capture, /surface:\$\{surface\}:first-fold/);
   assert.match(source, /const installedRoute = INSTALLED_ROUTES\[surface\] \|\| surface/);
   assert.match(capture, /control:\$\{deepTarget\.control_id\}:deep-panel/);
   assert.match(capture, /document\.scrollingElement\.scrollTop = 0/);
   assert.match(capture, /scrollIntoView\(\{ block: 'center', inline: 'nearest' \}\)/);
+  assert.match(safeCapture, /const page = typeof locator\?\.page === 'function' \? locator\.page\(\) : null/);
+  assert.match(safeCapture, /await page\.screenshot\(\{ path: target, animations: 'disabled', timeout: 5_000 \}\)/);
+  assert.doesNotMatch(safeCapture, /locator\.screenshot\(/);
   assert.match(source, /result\.captures = await captureSurfaceViews\(dashboard, proofMatrix, surface/);
   assert.match(source, /result\.screenshot = result\.captures\.first_fold\.screenshot/);
 });
@@ -2914,6 +2918,9 @@ test('installed control probe retains exact denominator, bridge, and receipt con
   const configurationInvocation = source.slice(source.indexOf('async function invokeInstalledConfigurationAction'), source.indexOf('async function exerciseOwnedConfigurationFailure'));
   assert.match(configurationInvocation, /const readAcknowledgement[\s\S]*approvalDeadline = Date\.now\(\) \+ 15_000[\s\S]*acknowledgement = await readAcknowledgement\(\)[\s\S]*approval\.isVisible\(\)[\s\S]*approval\.click\(\)/);
   assert.doesNotMatch(configurationInvocation, /timeout: 750/);
+  assert.match(configurationInvocation, /requestBeforeDispatch[\s\S]*hostActionIdentity\(\)[\s\S]*waitForInstalledOutboundHostAction[\s\S]*waitForDurableHostActionResult/);
+  assert.match(configurationInvocation, /response\?\.result\?\.state\?\.execution_policy\?\.master_enabled/);
+  assert.match(configurationInvocation, /unexpected-disposition/);
   assert.match(source, /invokeInstalledHostAction/);
   assert.match(source, /waitForInstalledCanonicalMemoryState/);
   assert.match(source, /memory-authority/);
@@ -2990,7 +2997,10 @@ test('reversible configuration profile injects exact owned faults before writes 
   assert.match(profile, /exerciseOwnedConfigurationFailure[\s\S]*resetInstalledDashboardBaseline\(workbench, frameHost, 30_000\)[\s\S]*waitForInstalledConfigurationTarget\(frameHost, spec, value => value === before\.target_value, 30_000\)[\s\S]*observation\.failure_handling = true[\s\S]*invokeInstalledConfigurationAction/);
   assert.match(profile, /catch \(error\)[\s\S]*resetInstalledDashboardBaseline\(workbench, frameHost, 30_000\)[\s\S]*const current = await readInstalledConfigurationAction/);
   const targetWait = source.slice(source.indexOf('async function waitForInstalledConfigurationTarget'), source.indexOf('async function invokeInstalledConfigurationAction'));
-  assert.match(targetWait, /nextRefreshAt[\s\S]*PXDashboard\?\.require\('hostQueries'\)\?\.refresh\(\)/);
+  assert.match(targetWait, /nextRefreshAt[\s\S]*requestInstalledProjectionRefresh\(frameHost[\s\S]*nextRefreshAt = Date\.now\(\) \+ 500/);
+  assert.doesNotMatch(targetWait, /hostQueries'\)\?\.refresh\(\)/);
+  const projectionRefresh = source.slice(source.indexOf('async function requestInstalledProjectionRefresh'), source.indexOf('async function waitForInstalledConfigurationTarget'));
+  assert.match(projectionRefresh, /const before = await frameHost\.evaluate[\s\S]*hostQueries'\)\?\.refresh\(\)[\s\S]*slice\(offset\)\.find\(value => value\?\.type === 'snapshot'\)/);
   assert.match(source, /exerciseOwnedConfigurationFailure\(frameHost, \{ route: 'memory', action: 'configureCanonicalMemory', operation: 'configureCanonicalMemory' \}/);
   assert.match(source, /exerciseOwnedConfigurationFailure\(frameHost, \{ route: 'memory', action: 'disconnectCanonicalMemory', operation: 'disconnectCanonicalMemory' \}[\s\S]*setup\.failure_handling = true/);
   assert.match(source, /stage === 'failure_handling'[\s\S]*observation\.failure_handling[\s\S]*matched pre-write failure/);
@@ -3003,7 +3013,8 @@ test('canonical memory reversible profile accepts an attached fixture and restor
   assert.ok(start >= 0);
   assert.match(profile, /resetInstalledDashboardBaseline\(workbench, frameHost, 30_000\)[\s\S]*navigateInstalledSurface\(frameHost, 'memory', 30_000\)[\s\S]*const initial = await waitForInstalledCanonicalMemoryBaseline\(frameHost, 30_000\)/);
   const memoryBaseline = source.slice(source.indexOf('async function waitForInstalledCanonicalMemoryBaseline'), source.indexOf('async function waitForInstalledCanonicalMemoryState'));
-  assert.match(memoryBaseline, /current\.attached !== current\.detached[\s\S]*PXDashboard\?\.require\('hostQueries'\)\?\.refresh\(\)[\s\S]*canonical-memory-baseline-timeout/);
+  assert.match(memoryBaseline, /current\.attached !== current\.detached[\s\S]*requestInstalledProjectionRefresh\(frameHost[\s\S]*canonical-memory-baseline-timeout/);
+  assert.doesNotMatch(memoryBaseline, /hostQueries'\)\?\.refresh\(\)/);
   assert.match(profile, /if \(initial\.attached\)[\s\S]*disconnectCanonicalMemory[\s\S]*profile_initial_target[\s\S]*waitForInstalledCanonicalMemoryState\(frameHost, false\)/);
   assert.match(profile, /exerciseOwnedConfigurationFailure\(frameHost, \{ route: 'memory', action: 'configureCanonicalMemory'/);
   assert.match(profile, /exerciseOwnedConfigurationFailure\(frameHost, \{ route: 'memory', action: 'disconnectCanonicalMemory'/);
@@ -3034,10 +3045,11 @@ test('canonical memory baseline refreshes an incoherent projection before accept
       }
     },
     contentWindow: {
+      __PX_INSTALLED_RESPONSES__: [],
       PXDashboard: {
         require(name) {
           assert.equal(name, 'hostQueries');
-          return { refresh() { refreshes += 1; coherent = true; } };
+          return { refresh() { refreshes += 1; coherent = true; frame.contentWindow.__PX_INSTALLED_RESPONSES__.push({ type: 'snapshot' }); } };
         }
       }
     }
