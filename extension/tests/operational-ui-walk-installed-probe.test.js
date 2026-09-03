@@ -3000,7 +3000,8 @@ test('installed plugin profiles require acknowledged Plugins navigation before l
   const readProfile = source.slice(source.indexOf('async function runInstalledPluginReadProfile'), source.indexOf('function validPluginMutationReceipt'));
   const mutationProfile = source.slice(source.indexOf('async function runInstalledPluginMutationProfile'), source.indexOf('\nfunction ', source.indexOf('async function runInstalledPluginMutationProfile')));
   assert.match(readProfile, /await settleInstalledPluginControl\(frameHost, '\[data-action="previewExtensionEnablement"\]', timeoutMs\)/);
-  assert.ok((mutationProfile.match(/await settleInstalledPluginControl\(frameHost,/g) || []).length >= 8);
+  assert.equal((mutationProfile.match(/await settleInstalledPluginControl\(frameHost,/g) || []).length, 7);
+  assert.match(mutationProfile, /const dispatch = await dispatchInstalledPluginConfirmation\(frameHost, \{[\s\S]*executeAction: 'executeExtensionConflictResolution'/);
   const settlement = source.slice(source.indexOf('async function settleInstalledSurfaceControl'), source.indexOf('async function runInstalledStudioSetupProfile'));
   assert.match(settlement, /stableSamplesRequired = 1/);
   assert.match(settlement, /if \(!preserveModal\) await navigateInstalledSurface/);
