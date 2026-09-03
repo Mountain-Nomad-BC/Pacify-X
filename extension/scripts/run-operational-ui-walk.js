@@ -1418,17 +1418,7 @@ async function prepareInstalledControl(frameHost, control) {
     'pxui.runtime-core.action.inspectSensor.row': installedDirectSelector(control)
   })[control.control_id];
   if (exactSensorSelector) {
-    const deadline = Date.now() + 20_000;
-    let ready = false;
-    while (Date.now() < deadline) {
-      ready = await frameHost.evaluate((frame, selector) => {
-        const target = frame.contentDocument?.querySelector(selector);
-        return Boolean(target && !target.disabled && (target.offsetWidth || target.offsetHeight || target.getClientRects().length));
-      }, exactSensorSelector);
-      if (ready) break;
-      await wait(100);
-    }
-    if (!ready) throw new Error(`installed-sensor-row-settlement-timeout:${control.control_id}:${exactSensorSelector}`);
+    await ensureInstalledSensorRowSnapshot(frameHost, exactSensorSelector, 20_000);
   }
   if (['agent-studio', 'workflow-studio', 'skill-studio'].includes(control.surface_id)) {
     const kind = control.surface_id.split('-')[0];
@@ -1624,6 +1614,35 @@ async function prepareInstalledControl(frameHost, control) {
     if (!exactControlVisible) throw new Error(`installed-graph-exact-control-timeout:${control.control_id}:${exactSelector}`);
   }
   await seedInstalledConditionalScenario(frameHost, control);
+}
+
+async function ensureInstalledSensorRowSnapshot(frameHost, selector, timeoutMs = 20_000) {
+  const rowVisible = () => frameHost.evaluate((frame, exactSelector) => {
+    const target = frame.contentDocument?.querySelector(exactSelector);
+    return Boolean(target && !target.disabled && (target.offsetWidth || target.offsetHeight || target.getClientRects().length));
+  }, selector);
+  if (await rowVisible()) return { refreshed: false, response_type: null };
+  const refresh = await frameHost.evaluate(frame => {
+    const document = frame.contentDocument;
+    const visible = element => Boolean(element && !element.disabled && !element.hidden
+      && element.getAttribute('aria-hidden') !== 'true'
+      && (element.offsetWidth || element.offsetHeight || element.getClientRects().length));
+    const target = [...(document?.querySelectorAll('[data-action="refresh"]') || [])].find(visible);
+    if (!target) return { requested: false, after: null };
+    const after = frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0;
+    target.click();
+    return { requested: true, after };
+  });
+  if (refresh?.requested !== true || !Number.isSafeInteger(refresh.after)) {
+    throw new Error(`installed-sensor-snapshot-refresh-unavailable:${selector}`);
+  }
+  const response = await waitForInstalledResponse(frameHost, refresh.after, { types: ['snapshot'] }, timeoutMs);
+  const deadline = Date.now() + timeoutMs;
+  do {
+    if (await rowVisible()) return { refreshed: true, response_type: response.type };
+    await wait(100);
+  } while (Date.now() < deadline);
+  throw new Error(`installed-sensor-row-settlement-timeout:${selector}:snapshot-refreshed`);
 }
 
 function installedAdvancedControlTarget(control) {
@@ -2652,12 +2671,8 @@ async function executeWorkbenchCommand(workbench, title, options = {}) {
     } while (Date.now() < deadline);
     if (decision === 'dispatch') {
       if (options.rejectBeforeDispatch === true) {
-        const input = widget.locator('input').first();
-        await input.evaluate(element => element.addEventListener('keydown', event => {
-          if (event.key !== 'Enter') return;
-          event.preventDefault();
-          event.stopImmediatePropagation();
-        }, { capture: true, once: true }));
+        const rejection = await bindCurrentWorkbenchCommandRejection(workbench);
+        if (rejection.bound !== true) throw new Error(`workbench-command-rejection-input-unavailable:${rejection.reason}`);
         await workbench.keyboard.press('Enter');
         await wait(80);
         const retained = await widget.isVisible().catch(() => false);
@@ -2709,6 +2724,28 @@ async function executeWorkbenchCommand(workbench, title, options = {}) {
     await workbench.keyboard.press('Escape').catch(() => {});
   }
   throw new Error(`workbench-command-unavailable:${title}:${failures.join('|')}`);
+}
+
+async function bindCurrentWorkbenchCommandRejection(workbench) {
+  return workbench.evaluate(() => {
+    const visible = element => {
+      if (!element || element.hidden || element.getAttribute?.('aria-hidden') === 'true') return false;
+      const style = globalThis.getComputedStyle?.(element);
+      return (!style || (style.display !== 'none' && style.visibility !== 'hidden'))
+        && Boolean(element.offsetWidth || element.offsetHeight || element.getClientRects?.().length);
+    };
+    const widgets = [...document.querySelectorAll('.quick-input-widget')].filter(visible);
+    if (widgets.length !== 1) return { bound: false, reason: `visible-widget-count:${widgets.length}` };
+    const input = widgets[0].querySelector('input');
+    if (!visible(input)) return { bound: false, reason: 'visible-input-missing' };
+    if (document.activeElement !== input) return { bound: false, reason: 'visible-input-not-focused' };
+    input.addEventListener('keydown', event => {
+      if (event.key !== 'Enter') return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }, { capture: true, once: true });
+    return { bound: true, reason: 'exact-current-focused-input' };
+  });
 }
 
 function ownedWorkbenchReloadIdentity(beforeTimeOrigin, afterTimeOrigin, workbenchReady) {
@@ -10972,7 +11009,7 @@ if (require.main === module) {
 module.exports = {
   applyInstalledProbeObservations, boundedOwnedUiAction, buildInstalledLateCardAdversarialProfile, buildInstalledLateCardScenarioProfile, cleanupControlProbe, codexHandoffControlProbe, commandPaletteAttemptDecision, coordinationMemoryControlProbe, currentSourceExtensionAssetIdentity,
   catalogPaginationControlProbe, clickWhenKnowledgeControlReady, correlateCatalogExchange, observationStateControlProbe, runInstalledObservationStateProfile, eligibleInstalledControl, eligibleInstalledSidebarControl, engineOutageRecord, enterpriseControlProbe, environmentLifecycleControlProbe,
-  exactStudioSetupTerminalResponse, executeWorkbenchCommand, exactPluginConflictSignal, exerciseInstalledControl, graphProjectionIdentity, requestBoundGraphResultIdentity, hostBoundaryControlProbe, inlineCommandOwnerControlProbe, installedActionIdentity,
+  bindCurrentWorkbenchCommandRejection, ensureInstalledSensorRowSnapshot, exactStudioSetupTerminalResponse, executeWorkbenchCommand, exactPluginConflictSignal, exerciseInstalledControl, graphProjectionIdentity, requestBoundGraphResultIdentity, hostBoundaryControlProbe, inlineCommandOwnerControlProbe, installedActionIdentity,
   installedConditionalRecoverySpec, installedConditionalScenario, installedHostBoundaryRevealSelector, installedPreparationIdentity, installedRuntimeSourceIdentityState, installedSourceIdentityNeedsLateRefresh, installedSidebarHandoffRequestMatches, installedSidebarHandoffSpec, installedSidebarSelector, installedStudioControlScenario, installedStudioPrerequisites, installedSurfaceState, installedSurfaceAcknowledged,
   installedFilesystemPathIdentity, installedFilesystemPathsMatch, installedFilesystemPathWithin, installedHostActionReceiptMatches, installedHostActionRequestIdentity,
   advanceInstalledSurfaceControlSettlement, installedSurfaceControlAcknowledged, installedWorkbenchCommandSpec, installedWorkbenchAuthorityBoundarySpec, instrumentInstalledBridge, knowledgeBrowseHasHead, knowledgeGraphControlProbe,

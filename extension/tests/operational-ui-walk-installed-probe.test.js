@@ -1581,17 +1581,35 @@ test('inline command denominator is owned only by the exact completed production
 test('installed workbench commands reject one exact pre-dispatch event before fresh recovery', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   const executeStart = source.indexOf('async function executeWorkbenchCommand');
-  const execute = source.slice(executeStart, source.indexOf('function ownedWorkbenchReloadIdentity', executeStart));
+  const execute = source.slice(executeStart, source.indexOf('async function bindCurrentWorkbenchCommandRejection', executeStart));
+  const rejectionStart = source.indexOf('async function bindCurrentWorkbenchCommandRejection');
+  const rejection = source.slice(rejectionStart, source.indexOf('function ownedWorkbenchReloadIdentity', rejectionStart));
   const probeStart = source.indexOf('async function probeInstalledWorkbenchCommands');
   const probe = source.slice(probeStart, source.indexOf('async function inspectSurface', probeStart));
   assert.match(execute, /options\.rejectBeforeDispatch === true/);
-  assert.match(execute, /event\.preventDefault\(\);[\s\S]*event\.stopImmediatePropagation\(\)/);
+  assert.match(execute, /bindCurrentWorkbenchCommandRejection\(workbench\)/);
+  assert.doesNotMatch(execute, /widget\.locator\('input'\)\.first\(\)\.evaluate/);
+  assert.match(rejection, /document\.activeElement !== input/);
+  assert.match(rejection, /event\.preventDefault\(\);[\s\S]*event\.stopImmediatePropagation\(\)/);
   assert.match(execute, /const retained = await widget\.isVisible/);
   assert.match(execute, /executed: false, rejected: true, restored: true/);
   assert.match(probe, /executeWorkbenchCommand\(workbench, spec\.title, \{ rejectBeforeDispatch: true \}\)/);
   assert.match(probe, /probe\.failureObserved = rejected\.listed === true[\s\S]*rejected\.restored === true/);
   assert.match(probe, /const command = await executeWorkbenchCommand\(workbench, spec\.title\)/);
   assert.match(probe, /probe\.recoveryObserved = probe\.failureObserved/);
+});
+
+test('installed sensor rows require a typed snapshot refresh before their exact settlement retry', () => {
+  const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
+  const prepareStart = source.indexOf('async function prepareInstalledControl');
+  const prepare = source.slice(prepareStart, source.indexOf('async function ensureInstalledSensorRowSnapshot', prepareStart));
+  const ensureStart = source.indexOf('async function ensureInstalledSensorRowSnapshot');
+  const ensure = source.slice(ensureStart, source.indexOf('async function prepareInstalledAdvancedControl', ensureStart));
+  assert.match(prepare, /ensureInstalledSensorRowSnapshot\(frameHost, exactSensorSelector, 20_000\)/);
+  assert.match(ensure, /\[data-action="refresh"\]/);
+  assert.match(ensure, /waitForInstalledResponse\(frameHost, refresh\.after, \{ types: \['snapshot'\] \}, timeoutMs\)/);
+  assert.match(ensure, /installed-sensor-snapshot-refresh-unavailable/);
+  assert.match(ensure, /snapshot-refreshed/);
 });
 
 test('owned installed Studio setup accepts only the exact ready and succeeded result contract', () => {

@@ -7,7 +7,12 @@ const os = require('node:os');
 const path = require('node:path');
 const { failureContained, recoveryObserved, stageMap } = require('../scripts/run-operational-fault-recovery-walk');
 const { STAGES, currentSourceManifest } = require('../scripts/run-exhaustive-operational-control-walk');
-const { executeWorkbenchCommand, reopenPacifyDashboardFromOwnedUi } = require('../scripts/run-operational-ui-walk');
+const {
+  bindCurrentWorkbenchCommandRejection,
+  ensureInstalledSensorRowSnapshot,
+  executeWorkbenchCommand,
+  reopenPacifyDashboardFromOwnedUi
+} = require('../scripts/run-operational-ui-walk');
 
 test('fault evidence rejects page errors and unchanged stale success', () => {
   const base = { baselineVisible: true, baselineText: '7 runnable agents', faultVisible: true, faultText: '7 runnable agents', mainVisible: true, alertText: '', newPageErrors: 0 };
@@ -87,6 +92,67 @@ test('workbench command execution retries the palette through the stable F1 and 
     process.platform === 'darwin' ? 'Meta+A' : 'Control+A', 'Enter'
   ]);
   assert.deepEqual(typed, ['>Pacify-X: Open Control Plane']);
+});
+
+test('workbench rejection binds only the exact current visible focused input without retaining a locator', async t => {
+  let listener = null;
+  const input = {
+    offsetWidth: 120, offsetHeight: 24, hidden: false,
+    getAttribute() { return null; },
+    getClientRects() { return [1]; },
+    addEventListener(type, handler, options) {
+      assert.equal(type, 'keydown');
+      assert.deepEqual(options, { capture: true, once: true });
+      listener = handler;
+    }
+  };
+  const widget = {
+    offsetWidth: 300, offsetHeight: 220, hidden: false,
+    getAttribute() { return null; },
+    getClientRects() { return [1]; },
+    querySelector(selector) { assert.equal(selector, 'input'); return input; }
+  };
+  const originalDocument = global.document;
+  const originalStyle = global.getComputedStyle;
+  t.after(() => { global.document = originalDocument; global.getComputedStyle = originalStyle; });
+  global.document = {
+    activeElement: input,
+    querySelectorAll(selector) { assert.equal(selector, '.quick-input-widget'); return [widget]; }
+  };
+  global.getComputedStyle = () => ({ display: 'block', visibility: 'visible' });
+  const workbench = { async evaluate(operation) { return operation(); } };
+  assert.deepEqual(await bindCurrentWorkbenchCommandRejection(workbench), {
+    bound: true, reason: 'exact-current-focused-input'
+  });
+  let prevented = false;
+  let stopped = false;
+  listener({ key: 'Enter', preventDefault() { prevented = true; }, stopImmediatePropagation() { stopped = true; } });
+  assert.equal(prevented, true);
+  assert.equal(stopped, true);
+});
+
+test('sensor row preparation requests and awaits one typed snapshot before accepting the exact row', async () => {
+  let sensorVisible = false;
+  let refreshClicks = 0;
+  const responses = [];
+  const sensor = { disabled: false, offsetWidth: 180, offsetHeight: 30, getClientRects() { return [1]; } };
+  const refresh = {
+    disabled: false, hidden: false, offsetWidth: 80, offsetHeight: 24,
+    getAttribute() { return null; }, getClientRects() { return [1]; },
+    click() { refreshClicks += 1; sensorVisible = true; responses.push({ type: 'snapshot' }); }
+  };
+  const frame = {
+    contentDocument: {
+      querySelector(selector) { return selector === '[data-action="inspectSensor"][data-sensor-id]' && sensorVisible ? sensor : null; },
+      querySelectorAll(selector) { assert.equal(selector, '[data-action="refresh"]'); return [refresh]; }
+    },
+    contentWindow: { __PX_INSTALLED_RESPONSES__: responses }
+  };
+  const frameHost = { async evaluate(operation, argument) { return operation(frame, argument); } };
+  assert.deepEqual(await ensureInstalledSensorRowSnapshot(frameHost, '[data-action="inspectSensor"][data-sensor-id]', 1_000), {
+    refreshed: true, response_type: 'snapshot'
+  });
+  assert.equal(refreshClicks, 1);
 });
 
 test('dashboard restart selects the persistent Pacify-X editor tab when it exists', async () => {
