@@ -891,13 +891,15 @@ async function instrumentInstalledBridge(frameHost, timeoutMs = 10_000) {
   }, undefined, { timeout: Math.max(1, timeoutMs) });
 }
 
-async function reopenPacifyDashboardFromOwnedUi(workbench, frameHost = null, timeoutMs = 15_000) {
+async function reopenPacifyDashboardFromOwnedUi(workbench, frameHost = null, timeoutMs = 25_000) {
   const deadline = Date.now() + timeoutMs;
   if (typeof workbench.isClosed === 'function' && workbench.isClosed()) throw new Error('owned-workbench-closed-before-dashboard-reopen');
   await boundedOwnedUiAction(() => workbench.bringToFront(), Math.max(1, deadline - Date.now()), 'owned-workbench-bring-to-front');
   let lastOwner = 'unavailable';
+  let staleExistingTabRotated = false;
   do {
-    const dashboardTab = workbench.locator('[role="tab"]', { hasText: /PX.*Control Plane/i }).first();
+    const dashboardTabs = workbench.locator('[role="tab"]', { hasText: /PX.*Control Plane/i });
+    const dashboardTab = dashboardTabs.first();
     let owner;
     if (await dashboardTab.isVisible().catch(() => false)) {
       owner = dashboardTab;
@@ -952,6 +954,23 @@ async function reopenPacifyDashboardFromOwnedUi(workbench, frameHost = null, tim
         if (!stable) break;
       }
       if (stable) return { owner: lastOwner, executed: true, reconstructed: true, stability_samples: 2 };
+    }
+    if (lastOwner === 'existing-dashboard-tab' && !staleExistingTabRotated) {
+      const beforeCount = await dashboardTabs.count();
+      const rotationDeadline = Math.min(deadline, Date.now() + 4_000);
+      if (beforeCount > 0 && rotationDeadline - Date.now() > 1_000) {
+        await dashboardTab.click({ timeout: Math.max(1, Math.min(1_500, rotationDeadline - Date.now())) }).catch(() => {});
+        await workbench.keyboard.press(process.platform === 'darwin' ? 'Meta+W' : 'Control+W');
+        do {
+          if (await dashboardTabs.count() < beforeCount) break;
+          await wait(100);
+        } while (Date.now() < rotationDeadline);
+        if (await dashboardTabs.count() >= beforeCount) throw new Error('installed-dashboard-stale-existing-tab-close-unobserved');
+        staleExistingTabRotated = true;
+        lastOwner = 'stale-existing-dashboard-tab-rotated';
+        await wait(150);
+        continue;
+      }
     }
     await wait(150);
   } while (Date.now() < deadline);
@@ -3666,9 +3685,14 @@ async function readInstalledConfigurationAction(frameHost, spec) {
 async function waitForInstalledConfigurationTarget(frameHost, spec, predicate, timeoutMs = 10_000) {
   const deadline = Date.now() + timeoutMs;
   let current = null;
+  let nextRefreshAt = 0;
   do {
     current = await readInstalledConfigurationAction(frameHost, spec);
     if (current.available && predicate(current.target_value)) return current;
+    if (Date.now() >= nextRefreshAt) {
+      await frameHost.evaluate(frame => frame.contentWindow?.PXDashboard?.require('hostQueries')?.refresh());
+      nextRefreshAt = Date.now() + 750;
+    }
     await wait(100);
   } while (Date.now() < deadline);
   throw new Error(`${spec.action}-configuration-target-timeout:${current?.target_value || 'unavailable'}`);
@@ -9853,6 +9877,22 @@ async function readInstalledCanonicalMemoryState(frameHost) {
   });
 }
 
+async function waitForInstalledCanonicalMemoryBaseline(frameHost, timeoutMs = 30_000) {
+  const deadline = Date.now() + timeoutMs;
+  let current = null;
+  let nextRefreshAt = 0;
+  do {
+    current = await readInstalledCanonicalMemoryState(frameHost);
+    if (current.attached !== current.detached && (current.attached || current.detached)) return current;
+    if (Date.now() >= nextRefreshAt) {
+      await frameHost.evaluate(frame => frame.contentWindow?.PXDashboard?.require('hostQueries')?.refresh());
+      nextRefreshAt = Date.now() + 750;
+    }
+    await wait(250);
+  } while (Date.now() < deadline);
+  throw new Error(`canonical-memory-baseline-timeout:${JSON.stringify(current)}`);
+}
+
 async function waitForInstalledCanonicalMemoryState(frameHost, attached, timeoutMs = 30_000) {
   const deadline = Date.now() + timeoutMs;
   let current = null;
@@ -10029,6 +10069,7 @@ async function runInstalledReversibleConfigurationProfile(workbench, frameHost, 
   for (const spec of specs) {
     const observation = { available: false, attempted: false, changed: false, reopened: false, restored: false, failure_handling: false, before_target: '', errors: [] };
     try {
+      await resetInstalledDashboardBaseline(workbench, frameHost, 30_000);
       const before = await readInstalledConfigurationAction(frameHost, spec);
       observation.available = before.available; observation.before_target = before.target_value;
       if (!before.available || !['true', 'false'].includes(before.target_value)) throw new Error(`${spec.action}-prestate-unavailable`);
@@ -10037,6 +10078,8 @@ async function runInstalledReversibleConfigurationProfile(workbench, frameHost, 
         const unchanged = await readInstalledConfigurationAction(frameHost, spec);
         return unchanged.available && unchanged.target_value === before.target_value;
       });
+      await resetInstalledDashboardBaseline(workbench, frameHost, 30_000);
+      await waitForInstalledConfigurationTarget(frameHost, spec, value => value === before.target_value, 30_000);
       observation.failure_handling = true;
       await invokeInstalledConfigurationAction(workbench, frameHost, spec, before.target_value);
       const changed = await waitForInstalledConfigurationTarget(frameHost, spec, value => value !== before.target_value);
@@ -10053,6 +10096,7 @@ async function runInstalledReversibleConfigurationProfile(workbench, frameHost, 
     } catch (error) {
       observation.errors.push(String(error?.message || error).slice(0, 1000));
       try {
+        await resetInstalledDashboardBaseline(workbench, frameHost, 30_000);
         const current = await readInstalledConfigurationAction(frameHost, spec);
         if (observation.before_target && current.available && current.target_value !== observation.before_target) {
           await invokeInstalledConfigurationAction(workbench, frameHost, spec, current.target_value);
@@ -10072,9 +10116,9 @@ async function runInstalledReversibleConfigurationProfile(workbench, frameHost, 
     const setup = { available: true, attempted: false, changed: false, reopened: false, restored: false, failure_handling: false, before_target: '', profile_initial_target: '', profile_initial_target_identity: '', profile_initial_attached: false, configured_target: '', restored_target: '', restored_target_identity: '', errors: [] };
     try {
       setup.attempted = true;
-      await frameHost.evaluate(frame => frame.contentDocument?.querySelector('[data-surface="memory"]')?.click());
-      const initial = await readInstalledCanonicalMemoryState(frameHost);
-      if (!initial.attached && !initial.detached) throw new Error(`canonical-memory-initial-state-incoherent:${JSON.stringify(initial)}`);
+      await resetInstalledDashboardBaseline(workbench, frameHost, 30_000);
+      await navigateInstalledSurface(frameHost, 'memory', 30_000);
+      const initial = await waitForInstalledCanonicalMemoryBaseline(frameHost, 30_000);
       setup.profile_initial_attached = initial.attached;
       if (initial.attached) {
         const normalized = await invokeInstalledHostAction(frameHost, { route: 'memory', action: 'disconnectCanonicalMemory', operation: 'disconnectCanonicalMemory' });
@@ -10089,19 +10133,25 @@ async function runInstalledReversibleConfigurationProfile(workbench, frameHost, 
         try { await waitForInstalledCanonicalMemoryState(frameHost, false, 2_000); return true; }
         catch { return false; }
       });
+      await resetInstalledDashboardBaseline(workbench, frameHost, 30_000);
+      await navigateInstalledSurface(frameHost, 'memory', 30_000);
+      await waitForInstalledCanonicalMemoryState(frameHost, false, 30_000);
       const configured = await invokeInstalledHostAction(frameHost, { route: 'memory', action: 'configureCanonicalMemory', operation: 'configureCanonicalMemory' });
       setup.before_target = String(configured.detail?.previousWorkspaceRoot || '');
       setup.configured_target = String(configured.detail?.workspaceRoot || '');
       setup.changed = Boolean(setup.configured_target) && setup.configured_target !== setup.before_target;
       await waitForInstalledCanonicalMemoryState(frameHost, true);
       const restart = await restartInstalledDashboardWebview(frameHost, 45_000);
-      await frameHost.evaluate(frame => frame.contentDocument?.querySelector('[data-surface="memory"]')?.click());
+      await navigateInstalledSurface(frameHost, 'memory', 30_000);
       await waitForInstalledCanonicalMemoryState(frameHost, true);
       setup.reopened = restart.restarted === true;
       await exerciseOwnedConfigurationFailure(frameHost, { route: 'memory', action: 'disconnectCanonicalMemory', operation: 'disconnectCanonicalMemory' }, async () => {
         try { await waitForInstalledCanonicalMemoryState(frameHost, true, 2_000); return true; }
         catch { return false; }
       });
+      await resetInstalledDashboardBaseline(workbench, frameHost, 30_000);
+      await navigateInstalledSurface(frameHost, 'memory', 30_000);
+      await waitForInstalledCanonicalMemoryState(frameHost, true, 30_000);
       setup.failure_handling = true;
       const detached = await invokeInstalledHostAction(frameHost, { route: 'memory', action: 'disconnectCanonicalMemory', operation: 'disconnectCanonicalMemory' });
       await waitForInstalledCanonicalMemoryState(frameHost, false);
@@ -10120,7 +10170,8 @@ async function runInstalledReversibleConfigurationProfile(workbench, frameHost, 
     } catch (error) {
       setup.errors.push(String(error?.message || error).slice(0, 1000));
       try {
-        await navigateInstalledSurface(frameHost, 'memory', 15_000);
+        await resetInstalledDashboardBaseline(workbench, frameHost, 30_000);
+        await navigateInstalledSurface(frameHost, 'memory', 30_000);
         const current = await readInstalledCanonicalMemoryState(frameHost);
         if (setup.profile_initial_attached && !current.attached) {
           const restored = await invokeInstalledHostAction(frameHost, { route: 'memory', action: 'configureCanonicalMemory', operation: 'configureCanonicalMemory' }, 30_000);
@@ -11029,6 +11080,6 @@ module.exports = {
   validCoordinationResult, validKnowledgeLifecycleResult, validLearningLifecycleResult, validPermanentCleanupResult,
   validPluginLifecycleObservation, validPendingPluginMutationReceipt, validPluginMutationReceipt, validStudioDraftReceipt, validStudioLifecycleResult,
   captureSurfaceViews, surfaceCaptureCandidates, surfaceCaptureFileStem,
-  validStudioRevisionEditObservation, validStudioSetupResult, validationControlProbe, runInstalledValidationBoundaryProfile, clickWhenBuilderControlReady, invokeBuilderControl, waitForBuilderJsonControls, waitForCoordinationResult,
+  validStudioRevisionEditObservation, validStudioSetupResult, validationControlProbe, runInstalledValidationBoundaryProfile, clickWhenBuilderControlReady, invokeBuilderControl, waitForBuilderJsonControls, waitForCoordinationResult, waitForInstalledCanonicalMemoryBaseline,
   clickWhenInstalledGraphControlReady, installedGraphExchangeOffset, waitForInstalledGraphExchange, waitForInstalledGraphIdle, waitForOwnedWebview
 };

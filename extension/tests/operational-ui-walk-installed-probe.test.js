@@ -18,6 +18,7 @@ const { exactStudioSetupTerminalResponse } = require('../scripts/run-operational
 const { installedDashboardRestartIdentity } = require('../scripts/run-operational-ui-walk');
 const { dispatchInstalledPluginConfirmation, dispatchInstalledPluginFormAction, installedPluginPreviewConfirmationMatches } = require('../scripts/run-operational-ui-walk');
 const { installedAdvancedFixtureStateAcknowledged } = require('../scripts/run-operational-ui-walk');
+const { waitForInstalledCanonicalMemoryBaseline } = require('../scripts/run-operational-ui-walk');
 
 const { boundedOwnedUiAction, waitForOwnedWebview } = require('../scripts/run-operational-ui-walk');
 const { clickWhenBuilderControlReady, clickWhenInstalledGraphControlReady, installedGraphExchangeOffset, invokeBuilderControl, waitForBuilderJsonControls, waitForInstalledGraphExchange, waitForInstalledGraphIdle } = require('../scripts/run-operational-ui-walk');
@@ -386,6 +387,7 @@ test('physical host mechanics reopen the owned editor, preserve command mode, an
   assert.match(source, /dashboardTab\.click\(\)[\s\S]*Control\+W[\s\S]*reopenPacifyDashboardFromOwnedUi\(workbench, frameHost\)/);
   assert.match(source, /async function reopenPacifyDashboardFromOwnedUi\(workbench, frameHost = null[\s\S]*\[role="tab"\][\s\S]*dashboardTab\.isVisible\(\)[\s\S]*lastOwner = 'existing-dashboard-tab'[\s\S]*lastOwner = 'pacify-statusbar'[\s\S]*keyboard\.press\('Escape'\)[\s\S]*owner\.click\([\s\S]*owner\.evaluate\(element => element\.click\([\s\S]*frameHost\.reacquire[\s\S]*instrumentInstalledBridge\(frameHost, reconstructionBudget\)[\s\S]*installed-dashboard-owner-reopen-timeout/);
   assert.match(source, /for \(let sample = 0; sample < 2; sample \+= 1\)[\s\S]*frameHost\.reacquire[\s\S]*stability_samples: 2/);
+  assert.match(source, /staleExistingTabRotated[\s\S]*dashboardTabs\.count\(\)[\s\S]*Control\+W[\s\S]*installed-dashboard-stale-existing-tab-close-unobserved[\s\S]*stale-existing-dashboard-tab-rotated/);
   assert.match(source, /after_time_origin: state\.time_origin, restarted: true, reconstructed: true/);
   assert.match(source, /async function closeOwnedDashboardTabs[\s\S]*PX\.\*Control Plane[\s\S]*Control\+W[\s\S]*restored-tab-close-unobserved/);
   assert.match(source, /restartOwnedWorkbenchWindow[\s\S]*closeOwnedDashboardTabs[\s\S]*Pacify-X: Open Control Plane|restartOwnedWorkbenchWindow[\s\S]*closeOwnedDashboardTabs[\s\S]*openDashboard[\s\S]*reopenPacifyDashboardFromOwnedUi/);
@@ -2909,6 +2911,13 @@ test('reversible configuration profile injects exact owned faults before writes 
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   assert.match(source, /function exerciseOwnedConfigurationFailure[\s\S]*owned-operational-faults[\s\S]*operationError[\s\S]*owned-injected-configuration-fault[\s\S]*verifyUnchanged/);
   assert.match(source, /setActivityPaused[\s\S]*exerciseOwnedConfigurationFailure[\s\S]*readInstalledConfigurationAction[\s\S]*failure_handling = true/);
+  const profileStart = source.indexOf('async function runInstalledReversibleConfigurationProfile');
+  const profile = source.slice(profileStart, source.indexOf('\nasync function main', profileStart));
+  assert.match(profile, /for \(const spec of specs\)[\s\S]*resetInstalledDashboardBaseline\(workbench, frameHost, 30_000\)[\s\S]*const before = await readInstalledConfigurationAction/);
+  assert.match(profile, /exerciseOwnedConfigurationFailure[\s\S]*resetInstalledDashboardBaseline\(workbench, frameHost, 30_000\)[\s\S]*waitForInstalledConfigurationTarget\(frameHost, spec, value => value === before\.target_value, 30_000\)[\s\S]*observation\.failure_handling = true[\s\S]*invokeInstalledConfigurationAction/);
+  assert.match(profile, /catch \(error\)[\s\S]*resetInstalledDashboardBaseline\(workbench, frameHost, 30_000\)[\s\S]*const current = await readInstalledConfigurationAction/);
+  const targetWait = source.slice(source.indexOf('async function waitForInstalledConfigurationTarget'), source.indexOf('async function invokeInstalledConfigurationAction'));
+  assert.match(targetWait, /nextRefreshAt[\s\S]*PXDashboard\?\.require\('hostQueries'\)\?\.refresh\(\)/);
   assert.match(source, /exerciseOwnedConfigurationFailure\(frameHost, \{ route: 'memory', action: 'configureCanonicalMemory', operation: 'configureCanonicalMemory' \}/);
   assert.match(source, /exerciseOwnedConfigurationFailure\(frameHost, \{ route: 'memory', action: 'disconnectCanonicalMemory', operation: 'disconnectCanonicalMemory' \}[\s\S]*setup\.failure_handling = true/);
   assert.match(source, /stage === 'failure_handling'[\s\S]*observation\.failure_handling[\s\S]*matched pre-write failure/);
@@ -2919,13 +2928,52 @@ test('canonical memory reversible profile accepts an attached fixture and restor
   const start = source.indexOf("const memoryRequirements = ['pxui.memory.action.configureCanonicalMemory'");
   const profile = source.slice(start, source.indexOf("return {\n    schema_version: 'px.installed-operational-control-probe/1.0'", start));
   assert.ok(start >= 0);
-  assert.match(profile, /const initial = await readInstalledCanonicalMemoryState/);
+  assert.match(profile, /resetInstalledDashboardBaseline\(workbench, frameHost, 30_000\)[\s\S]*navigateInstalledSurface\(frameHost, 'memory', 30_000\)[\s\S]*const initial = await waitForInstalledCanonicalMemoryBaseline\(frameHost, 30_000\)/);
+  const memoryBaseline = source.slice(source.indexOf('async function waitForInstalledCanonicalMemoryBaseline'), source.indexOf('async function waitForInstalledCanonicalMemoryState'));
+  assert.match(memoryBaseline, /current\.attached !== current\.detached[\s\S]*PXDashboard\?\.require\('hostQueries'\)\?\.refresh\(\)[\s\S]*canonical-memory-baseline-timeout/);
   assert.match(profile, /if \(initial\.attached\)[\s\S]*disconnectCanonicalMemory[\s\S]*profile_initial_target[\s\S]*waitForInstalledCanonicalMemoryState\(frameHost, false\)/);
   assert.match(profile, /exerciseOwnedConfigurationFailure\(frameHost, \{ route: 'memory', action: 'configureCanonicalMemory'/);
   assert.match(profile, /exerciseOwnedConfigurationFailure\(frameHost, \{ route: 'memory', action: 'disconnectCanonicalMemory'/);
+  assert.match(profile, /configureCanonicalMemory'[\s\S]*resetInstalledDashboardBaseline\(workbench, frameHost, 30_000\)[\s\S]*navigateInstalledSurface\(frameHost, 'memory', 30_000\)[\s\S]*waitForInstalledCanonicalMemoryState\(frameHost, false, 30_000\)[\s\S]*const configured/);
+  assert.match(profile, /disconnectCanonicalMemory'[\s\S]*resetInstalledDashboardBaseline\(workbench, frameHost, 30_000\)[\s\S]*navigateInstalledSurface\(frameHost, 'memory', 30_000\)[\s\S]*waitForInstalledCanonicalMemoryState\(frameHost, true, 30_000\)[\s\S]*setup\.failure_handling = true/);
+  assert.match(profile, /catch \(error\)[\s\S]*resetInstalledDashboardBaseline\(workbench, frameHost, 30_000\)[\s\S]*navigateInstalledSurface\(frameHost, 'memory', 30_000\)[\s\S]*const current = await readInstalledCanonicalMemoryState/);
   assert.match(profile, /if \(setup\.profile_initial_attached\)[\s\S]*configureCanonicalMemory[\s\S]*installedFilesystemPathsMatch\(setup\.restored_target, setup\.profile_initial_target\)[\s\S]*waitForInstalledCanonicalMemoryState\(frameHost, true\)/);
   assert.match(profile, /else if \(!setup\.profile_initial_attached && !current\.detached\)[\s\S]*disconnectCanonicalMemory[\s\S]*waitForInstalledCanonicalMemoryState\(frameHost, false/);
   assert.match(profile, /canonical-memory-restoration-mismatch:[\s\S]*initial_target[\s\S]*initial_identity[\s\S]*restored_target[\s\S]*restored_identity/);
+});
+
+test('canonical memory baseline refreshes an incoherent projection before accepting exact detached state', async () => {
+  let coherent = false;
+  let refreshes = 0;
+  const authority = {
+    classList: {
+      contains: name => coherent && name === 'detached',
+      [Symbol.iterator]: function* () { if (coherent) yield 'detached'; }
+    }
+  };
+  const frame = {
+    contentDocument: {
+      querySelector(selector) {
+        if (selector === '.memory-authority') return authority;
+        if (selector === '[data-action="memoryRefresh"]') return { disabled: coherent };
+        if (selector === '[data-action="disconnectCanonicalMemory"]') return null;
+        return null;
+      }
+    },
+    contentWindow: {
+      PXDashboard: {
+        require(name) {
+          assert.equal(name, 'hostQueries');
+          return { refresh() { refreshes += 1; coherent = true; } };
+        }
+      }
+    }
+  };
+  const frameHost = { evaluate: async callback => callback(frame) };
+  const baseline = await waitForInstalledCanonicalMemoryBaseline(frameHost, 2_000);
+  assert.equal(refreshes, 1);
+  assert.equal(baseline.attached, false);
+  assert.equal(baseline.detached, true);
 });
 
 test('installed filesystem identity compares Windows paths semantically and keeps substitutions distinct', () => {
