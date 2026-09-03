@@ -114,8 +114,24 @@ function retainedHostProgress(outputRoot) {
   }
 }
 
+const OWNED_EXTERNAL_NETWORK_DENIAL_PROXY = 'http://127.0.0.1:9';
+
+function ownedExternalNetworkDeniedLaunchEnvironment(extra = {}, source = process.env) {
+  return {
+    ...nonBillableEnvironment(source),
+    ...extra,
+    HTTP_PROXY: OWNED_EXTERNAL_NETWORK_DENIAL_PROXY,
+    HTTPS_PROXY: OWNED_EXTERNAL_NETWORK_DENIAL_PROXY,
+    http_proxy: OWNED_EXTERNAL_NETWORK_DENIAL_PROXY,
+    https_proxy: OWNED_EXTERNAL_NETWORK_DENIAL_PROXY,
+    NO_PROXY: '127.0.0.1,localhost,::1',
+    no_proxy: '127.0.0.1,localhost,::1',
+    PX_OWNED_EXTERNAL_NETWORK_DENIED: '1'
+  };
+}
+
 function electronHostEnvironment(extra = {}) {
-  const environment = { ...nonBillableEnvironment(), ...extra };
+  const environment = ownedExternalNetworkDeniedLaunchEnvironment(extra);
   // Codex and CLI hosts may intentionally run Electron as Node. A VS Code
   // desktop child must not inherit that mode or it interprets the workspace
   // path as a JavaScript entry point.
@@ -124,7 +140,7 @@ function electronHostEnvironment(extra = {}) {
 }
 
 function ownedExternalNetworkDeniedEnvironment(environment = process.env) {
-  const denied = 'http://127.0.0.1:9';
+  const denied = OWNED_EXTERNAL_NETWORK_DENIAL_PROXY;
   return String(environment.HTTP_PROXY || '').toLowerCase() === denied
     && String(environment.HTTPS_PROXY || '').toLowerCase() === denied;
 }
@@ -510,13 +526,11 @@ async function childMain(configPath) {
         shell: false,
         windowsHide: true,
         stdio: ['ignore', 'pipe', 'pipe'],
-        env: {
-          ...nonBillableEnvironment(),
+        env: ownedExternalNetworkDeniedLaunchEnvironment({
           PX_OWNED_VSCODE_HOST: '1',
           PX_OWNED_ENGINE_ROOT: config.engineRoot,
           PX_OWNED_VSCODE_WORKSPACE_ROOT: config.workspace,
           PX_OWNED_VSCODE_EXTENSIONS_ROOT: config.extensions,
-          ...(ownedExternalNetworkDeniedEnvironment() ? { PX_OWNED_EXTERNAL_NETWORK_DENIED: '1' } : {}),
           ...(config.knowledgeFixture ? {
             PX_OWNED_KNOWLEDGE_SOURCE_ID: config.knowledgeFixture.source_id,
             PX_OWNED_KNOWLEDGE_SOURCE_SHA256: config.knowledgeFixture.source_sha256
@@ -537,7 +551,7 @@ async function childMain(configPath) {
             PX_OWNED_NATIVE_INPUT_VSCODE_PID: String(lifecycle.vscode_pid)
           } : {}),
           ...(config.postAuditLongRunning ? { PX_OPERATIONAL_POST_AUDIT_LONG_RUNNING: '1' } : {})
-        }
+        })
       });
       lifecycle.walker_pid = Number(walker.pid) || null;
       appendHostProgress(config.walkOutput, 'walker-spawned', { pid: lifecycle.walker_pid });
@@ -1030,7 +1044,7 @@ async function main() {
       // before the child can publish its receipt and reconcile its resources.
       timeoutMs: postAuditLongRunning ? 3_600_000 : 1_800_000,
       ownershipToken: config.userData,
-      env: { ...nonBillableEnvironment(), PX_OWNED_VSCODE_HOST: '1' },
+      env: ownedExternalNetworkDeniedLaunchEnvironment({ PX_OWNED_VSCODE_HOST: '1' }),
       stdout: process.stdout,
       stderr: process.stderr,
       onReceipt: value => { lifecycle = value; }
@@ -1126,4 +1140,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { acquireWalkOwnership, appendHostProgress, boundedDelay, classifySharedStoragePath, excludedEnginePath, ownedExternalNetworkDeniedEnvironment, reconcileOwnedPrelaunchFailure, reconcilePrelaunchFailure, reserveLoopbackPort, retainedHostProgress, retainedProfileProgress, stageDisposableEngine, stageOwnedGitAuthority, stageOwnedHostBoundaryFixture, stageOwnedKnowledgeFixture, stageOwnedProviderPaginationFixture, waitForIsolatedStorageBoundary };
+module.exports = { acquireWalkOwnership, appendHostProgress, boundedDelay, classifySharedStoragePath, excludedEnginePath, ownedExternalNetworkDeniedEnvironment, ownedExternalNetworkDeniedLaunchEnvironment, reconcileOwnedPrelaunchFailure, reconcilePrelaunchFailure, reserveLoopbackPort, retainedHostProgress, retainedProfileProgress, stageDisposableEngine, stageOwnedGitAuthority, stageOwnedHostBoundaryFixture, stageOwnedKnowledgeFixture, stageOwnedProviderPaginationFixture, waitForIsolatedStorageBoundary };

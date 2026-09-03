@@ -485,6 +485,16 @@ test('plugin settlement preserves only exact request-bound execute confirmation 
   ]) assert.equal(installedPluginControlPreservesModal(selector), false, selector);
 });
 
+test('plugin conflict route dispatches the authenticated confirmation without a second modal settlement window', () => {
+  const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
+  const profile = source.slice(source.indexOf('async function runInstalledPluginMutationProfile'), source.indexOf('function knowledgeLifecycleControlProbe'));
+  const conflictRoute = profile.slice(profile.indexOf('const exerciseConflictRoute'), profile.indexOf('observation.conflict_route_completed'));
+  assert.match(conflictRoute, /waitForResponse\(previewBefore, 'extensionConflictResolutionPreview'[^]*dispatchInstalledPluginConfirmation\(frameHost, \{[^]*executeAction: 'executeExtensionConflictResolution'[^]*token: preview\.token[^]*exactTarget: preview\.exact_target/);
+  assert.match(conflictRoute, /const executeBefore = dispatch\.responseOffset;[^]*const requestBeforeExecute = dispatch\.requestOffset;/);
+  assert.doesNotMatch(conflictRoute, /settleInstalledPluginControl\(frameHost, '\[data-action="executeExtensionConflictResolution"\]'/);
+  assert.doesNotMatch(conflictRoute, /querySelector\('\[data-action="executeExtensionConflictResolution"\]'\)\.click\(\)/);
+});
+
 test('host-boundary failure coverage is request-bound, pre-effect, one-shot, and recovered before success', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   const outbound = source.slice(source.indexOf('async function waitForInstalledOutboundHostAction'), source.indexOf('async function exerciseOwnedHostActionFailure'));

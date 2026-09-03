@@ -18,7 +18,19 @@ const platformSuffix = process.platform === 'win32' ? '' : `-${process.platform}
 const retainedReceipt = path.join(extensionRoot, 'evidence', `installed-vsix-smoke${platformSuffix}.json`);
 const retainedLifecycleReceipt = path.join(extensionRoot, 'evidence', `installed-vsix-process-lifecycle${platformSuffix}.json`);
 const vscodeVersion = '1.132.1';
+const ownedExternalNetworkDenialProxy = 'http://127.0.0.1:9';
 const digest = file => crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
+const ownedExternalNetworkDeniedEnvironment = extra => ({
+  ...nonBillableEnvironment(),
+  ...extra,
+  HTTP_PROXY: ownedExternalNetworkDenialProxy,
+  HTTPS_PROXY: ownedExternalNetworkDenialProxy,
+  http_proxy: ownedExternalNetworkDenialProxy,
+  https_proxy: ownedExternalNetworkDenialProxy,
+  NO_PROXY: '127.0.0.1,localhost,::1',
+  no_proxy: '127.0.0.1,localhost,::1',
+  PX_OWNED_EXTERNAL_NETWORK_DENIED: '1'
+});
 const engineIdentity = engineRoot => {
   if (!engineRoot) return null;
   const manifestPath = path.join(engineRoot, 'registry', 'engine_identity.json');
@@ -125,14 +137,13 @@ async function main() {
     const run = await runOwnedHostWorker({
       scriptPath: __filename, childFlag: CHILD_FLAG, configPath, cwd: extensionRoot, timeoutMs: 300_000,
       ownershipToken: config.userData,
-      env: {
-        ...nonBillableEnvironment(),
+      env: ownedExternalNetworkDeniedEnvironment({
         PX_OWNED_VSCODE_HOST: '1',
         // The pinned Linux desktop host is intentionally exercised under WSL
         // with an isolated profile.  Its CLI otherwise prompts interactively
         // before extension installation and makes the governed lane hang.
         ...(process.platform === 'linux' ? { DONT_PROMPT_WSL_INSTALL: '1' } : {})
-      }, stdout: process.stdout, stderr: process.stderr,
+      }), stdout: process.stdout, stderr: process.stderr,
       onReceipt: value => { lifecycle = value; }
     });
     assert.equal(run.receipt.worker_exit_verified, true, 'Installed VSIX worker process exit was not verified');

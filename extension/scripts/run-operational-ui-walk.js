@@ -9514,10 +9514,13 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
     }, { signalId: signal.signal_id, extensionId });
     const preview = (await waitForResponse(previewBefore, 'extensionConflictResolutionPreview', 'extensionConflictResolutionPreview')).result;
     if (preview?.schema_version !== 'px.extension-conflict-resolution-preview/1.0' || preview.allowed !== true || preview.signal_id !== signal.signal_id || preview.target_extension_id !== extensionId || preview.resolution !== 'inspect') throw new Error(`plugin-conflict-preview-invalid:${JSON.stringify(preview)}`);
-    await settleInstalledPluginControl(frameHost, '[data-action="executeExtensionConflictResolution"]', timeoutMs);
-    const executeBefore = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
-    const requestBeforeExecute = await installedOutboundRequestOffset(frameHost);
-    await frameHost.evaluate(frame => frame.contentDocument.querySelector('[data-action="executeExtensionConflictResolution"]').click());
+    const dispatch = await dispatchInstalledPluginConfirmation(frameHost, {
+      executeAction: 'executeExtensionConflictResolution',
+      token: preview.token,
+      exactTarget: preview.exact_target
+    }, timeoutMs);
+    const executeBefore = dispatch.responseOffset;
+    const requestBeforeExecute = dispatch.requestOffset;
     try {
       const dialog = await waitForNativeWorkbenchDialog(workbench, 'Authorize conflict route', 15_000, { frameHost, responseOffset: executeBefore, requestOffset: requestBeforeExecute, requestType: 'extensionConflictResolutionExecute', keyboardAction: 'Authorize conflict route' });
       await clickNativeWorkbenchDialogAction(workbench, dialog, 'Authorize conflict route');

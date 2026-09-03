@@ -7,7 +7,7 @@ const crypto = require('node:crypto');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const { acquireWalkOwnership, appendHostProgress, boundedDelay, excludedEnginePath, ownedExternalNetworkDeniedEnvironment, reconcileOwnedPrelaunchFailure, reconcilePrelaunchFailure, reserveLoopbackPort, retainedHostProgress, retainedProfileProgress, stageDisposableEngine, stageOwnedGitAuthority, stageOwnedHostBoundaryFixture, stageOwnedKnowledgeFixture, stageOwnedProviderPaginationFixture, waitForIsolatedStorageBoundary } = require('../scripts/run-isolated-current-source-walk');
+const { acquireWalkOwnership, appendHostProgress, boundedDelay, excludedEnginePath, ownedExternalNetworkDeniedEnvironment, ownedExternalNetworkDeniedLaunchEnvironment, reconcileOwnedPrelaunchFailure, reconcilePrelaunchFailure, reserveLoopbackPort, retainedHostProgress, retainedProfileProgress, stageDisposableEngine, stageOwnedGitAuthority, stageOwnedHostBoundaryFixture, stageOwnedKnowledgeFixture, stageOwnedProviderPaginationFixture, waitForIsolatedStorageBoundary } = require('../scripts/run-isolated-current-source-walk');
 const { acquireHostLease } = require('../scripts/owned-host-runner');
 const { cachedVSCodeLayout, markOwnedHostWorkspace } = require('../scripts/owned-vscode-test-cache');
 const { gitSnapshot } = require('../src/contextBridge');
@@ -18,6 +18,42 @@ test('owned external-network denial sentinel requires both exact dead-loopback p
   assert.equal(ownedExternalNetworkDeniedEnvironment({ HTTP_PROXY: 'http://127.0.0.1:9', HTTPS_PROXY: 'http://127.0.0.1:9' }), true);
   assert.equal(ownedExternalNetworkDeniedEnvironment({ HTTP_PROXY: 'http://127.0.0.1:9', HTTPS_PROXY: 'http://127.0.0.1:10' }), false);
   assert.equal(ownedExternalNetworkDeniedEnvironment({ HTTP_PROXY: 'http://proxy.example', HTTPS_PROXY: 'http://proxy.example' }), false);
+});
+
+test('owned operational host self-enforces external-network denial after an empty parent environment', () => {
+  const environment = ownedExternalNetworkDeniedLaunchEnvironment(
+    { PX_OWNED_VSCODE_HOST: '1' },
+    { PATH: 'owned-path', OPENAI_API_KEY: 'must-not-propagate' }
+  );
+  assert.equal(ownedExternalNetworkDeniedEnvironment(environment), true);
+  assert.equal(environment.PX_OWNED_EXTERNAL_NETWORK_DENIED, '1');
+  assert.equal(environment.HTTP_PROXY, 'http://127.0.0.1:9');
+  assert.equal(environment.HTTPS_PROXY, 'http://127.0.0.1:9');
+  assert.equal(environment.http_proxy, 'http://127.0.0.1:9');
+  assert.equal(environment.https_proxy, 'http://127.0.0.1:9');
+  assert.equal(environment.NO_PROXY, '127.0.0.1,localhost,::1');
+  assert.equal(environment.no_proxy, '127.0.0.1,localhost,::1');
+  assert.equal(environment.PATH, 'owned-path');
+  assert.equal(environment.PX_OWNED_VSCODE_HOST, '1');
+  assert.equal(environment.OPENAI_API_KEY, undefined);
+  const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-isolated-current-source-walk.js'), 'utf8');
+  assert.equal((source.match(/env: ownedExternalNetworkDeniedLaunchEnvironment\(\{/g) || []).length, 2, 'both the owned worker and walker must receive the denial environment');
+  const electronEnvironment = source.slice(source.indexOf('function electronHostEnvironment'), source.indexOf('function ownedExternalNetworkDeniedEnvironment'));
+  assert.match(electronEnvironment, /ownedExternalNetworkDeniedLaunchEnvironment\(extra\)/, 'the VS Code desktop child must receive the denial environment');
+});
+
+test('installed smoke canonical Python invocation cannot create repository bytecode', () => {
+  const source = fs.readFileSync(path.join(__dirname, 'vscode-host', 'index.js'), 'utf8');
+  const invocation = source.slice(source.indexOf('const canonical = childProcess.spawnSync'), source.indexOf('assert.equal(canonical.error'));
+  assert.match(invocation, /\[\s*'-B', '-m', 'runtime\.dashboard_api'/);
+  assert.match(invocation, /env: \{ \.\.\.process\.env, PYTHONDONTWRITEBYTECODE: '1' \}/);
+});
+
+test('installed smoke worker self-enforces external-network denial for both platform lanes', () => {
+  const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-installed-vsix-smoke.js'), 'utf8');
+  assert.match(source, /ownedExternalNetworkDenialProxy = 'http:\/\/127\.0\.0\.1:9'/);
+  assert.match(source, /HTTP_PROXY: ownedExternalNetworkDenialProxy[^]*HTTPS_PROXY: ownedExternalNetworkDenialProxy[^]*NO_PROXY: '127\.0\.0\.1,localhost,::1'[^]*PX_OWNED_EXTERNAL_NETWORK_DENIED: '1'/);
+  assert.match(source, /runOwnedHostWorker\(\{[^]*env: ownedExternalNetworkDeniedEnvironment\(\{[^]*PX_OWNED_VSCODE_HOST: '1'[^]*DONT_PROMPT_WSL_INSTALL/);
 });
 
 test('owned cached VS Code layout requires the exact complete nonlink Windows archive', t => {
