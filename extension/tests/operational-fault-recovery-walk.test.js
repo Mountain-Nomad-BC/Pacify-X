@@ -11,6 +11,7 @@ const {
   bindCurrentWorkbenchCommandRejection,
   ensureInstalledSensorRowSnapshot,
   executeWorkbenchCommand,
+  observeCurrentWorkbenchCommandRejection,
   reopenPacifyDashboardFromOwnedUi
 } = require('../scripts/run-operational-ui-walk');
 
@@ -99,36 +100,62 @@ test('workbench rejection binds only the exact current visible focused input wit
   const input = {
     offsetWidth: 120, offsetHeight: 24, hidden: false,
     getAttribute() { return null; },
-    getClientRects() { return [1]; },
-    addEventListener(type, handler, options) {
-      assert.equal(type, 'keydown');
-      assert.deepEqual(options, { capture: true, once: true });
-      listener = handler;
-    }
+    getClientRects() { return [1]; }
   };
   const widget = {
     offsetWidth: 300, offsetHeight: 220, hidden: false,
     getAttribute() { return null; },
     getClientRects() { return [1]; },
-    querySelector(selector) { assert.equal(selector, 'input'); return input; }
+    querySelector(selector) { assert.equal(selector, 'input'); return input; },
+    contains(target) { return target === input; }
   };
   const originalDocument = global.document;
   const originalStyle = global.getComputedStyle;
-  t.after(() => { global.document = originalDocument; global.getComputedStyle = originalStyle; });
+  const originalAddEventListener = global.addEventListener;
+  const originalRemoveEventListener = global.removeEventListener;
+  t.after(() => {
+    global.document = originalDocument;
+    global.getComputedStyle = originalStyle;
+    global.addEventListener = originalAddEventListener;
+    global.removeEventListener = originalRemoveEventListener;
+    delete global.__PX_OWNED_WORKBENCH_COMMAND_REJECTION__;
+  });
   global.document = {
     activeElement: input,
     querySelectorAll(selector) { assert.equal(selector, '.quick-input-widget'); return [widget]; }
   };
   global.getComputedStyle = () => ({ display: 'block', visibility: 'visible' });
-  const workbench = { async evaluate(operation) { return operation(); } };
-  assert.deepEqual(await bindCurrentWorkbenchCommandRejection(workbench), {
-    bound: true, reason: 'exact-current-focused-input'
-  });
+  global.addEventListener = (type, handler, options) => {
+    assert.equal(type, 'keydown');
+    assert.deepEqual(options, { capture: true, once: true });
+    listener = handler;
+  };
+  global.removeEventListener = (type, handler, capture) => {
+    assert.equal(type, 'keydown');
+    assert.equal(handler, listener);
+    assert.equal(capture, true);
+  };
+  const workbench = { async evaluate(operation, argument) { return operation(argument); } };
+  const bound = await bindCurrentWorkbenchCommandRejection(workbench);
+  assert.equal(bound.bound, true);
+  assert.equal(bound.reason, 'exact-current-focused-input-window-capture');
+  assert.equal(typeof bound.token, 'string');
+  assert.ok(bound.token.length > 0);
   let prevented = false;
+  let propagationStopped = false;
   let stopped = false;
-  listener({ key: 'Enter', preventDefault() { prevented = true; }, stopImmediatePropagation() { stopped = true; } });
+  listener({
+    key: 'Enter', target: input,
+    preventDefault() { prevented = true; },
+    stopPropagation() { propagationStopped = true; },
+    stopImmediatePropagation() { stopped = true; }
+  });
   assert.equal(prevented, true);
+  assert.equal(propagationStopped, true);
   assert.equal(stopped, true);
+  assert.deepEqual(await observeCurrentWorkbenchCommandRejection(workbench, bound.token), {
+    rejected: true, reason: 'exact-current-focused-input-enter-rejected'
+  });
 });
 
 test('sensor row preparation requests and awaits one typed snapshot before accepting the exact row', async () => {
