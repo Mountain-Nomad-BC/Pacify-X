@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import io
+import json
 from pathlib import Path
 import subprocess
 import sys
@@ -21,6 +22,7 @@ from runtime.release_distribution import (
     install_exact_wheel,
     inspect_sdist,
     inspect_wheel,
+    validate_artifact_manifest,
     verify_built_artifact,
     verify_declared_projection_duplicates,
     verify_artifact_records,
@@ -250,6 +252,78 @@ def test_sdist_matches_generated_artifact_manifest(built_distribution) -> None:
     _, _, sdist, manifest = built_distribution
     result = verify_built_artifact(sdist, manifest, package_target="sdist")
     assert result["valid"], result["errors"]
+
+
+def test_frozen_artifact_manifest_remains_authoritative_after_live_state_changes(
+    built_distribution,
+) -> None:
+    source, wheel, sdist, manifest = built_distribution
+    records = [file_record(wheel, "wheel"), file_record(sdist, "sdist")]
+    build_time = bind_artifact_set(
+        wheel.parent,
+        records,
+        source_product_digest="a" * 64,
+        version="0.7.0",
+        source_root=source,
+    )
+    mutable = source / "registry/completion_status.json"
+    mutable.parent.mkdir(parents=True, exist_ok=True)
+    mutable.write_text('{"complete":true}\n', encoding="utf-8")
+
+    live_manifest = generate_artifact_manifest(source)
+    result = bind_artifact_set(
+        wheel.parent,
+        records,
+        source_product_digest="a" * 64,
+        version="0.7.0",
+        artifact_manifest=manifest,
+    )
+
+    assert build_time["valid"], build_time["errors"]
+    assert build_time["artifact_manifest_sha256"] == manifest["manifest_sha256"]
+    assert live_manifest["manifest_sha256"] != manifest["manifest_sha256"]
+    assert result["valid"], result["errors"]
+    assert result["artifact_manifest_sha256"] == manifest["manifest_sha256"]
+
+
+def test_tampered_frozen_artifact_manifest_fails_intrinsic_digest_check(
+    built_distribution,
+) -> None:
+    _, wheel, sdist, manifest = built_distribution
+    changed = json.loads(json.dumps(manifest))
+    changed["records"][0]["source_sha256"] = "0" * 64
+    records = [file_record(wheel, "wheel"), file_record(sdist, "sdist")]
+
+    result = bind_artifact_set(
+        wheel.parent,
+        records,
+        source_product_digest="a" * 64,
+        version="0.7.0",
+        artifact_manifest=changed,
+    )
+
+    assert not validate_artifact_manifest(changed)["valid"]
+    assert not result["valid"]
+    assert "artifact manifest intrinsic digest mismatch" in result["errors"]
+
+
+def test_artifact_manifest_authority_must_not_be_ambiguous(
+    built_distribution,
+) -> None:
+    source, wheel, sdist, manifest = built_distribution
+    records = [file_record(wheel, "wheel"), file_record(sdist, "sdist")]
+
+    result = bind_artifact_set(
+        wheel.parent,
+        records,
+        source_product_digest="a" * 64,
+        version="0.7.0",
+        source_root=source,
+        artifact_manifest=manifest,
+    )
+
+    assert not result["valid"]
+    assert "artifact manifest authority is ambiguous" in result["errors"]
 
 
 def test_required_resource_omission_fails_build(built_distribution, tmp_path) -> None:

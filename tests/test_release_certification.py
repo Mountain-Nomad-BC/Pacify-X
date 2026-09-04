@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 import shutil
@@ -658,3 +659,98 @@ def test_manual_state_promotion_without_certificate_fails_closed() -> None:
     result = verify_release_certificate(root, release="9.9.9")
     assert not result["valid"]
     assert any("missing" in item for item in result["errors"])
+
+
+def test_certificate_verifier_binds_artifacts_to_recorded_frozen_manifest(
+    tmp_path: Path, monkeypatch
+) -> None:
+    release = "0.7.0"
+    product_digest = "1" * 64
+    harness_digest = "2" * 64
+    manifest_digest = "3" * 64
+    release_root = tmp_path / f"evidence/releases/{release}"
+    run_root = release_root / "run-frozen"
+    run_root.mkdir(parents=True)
+    evidence_manifest = run_root / "evidence-manifest.json"
+    evidence_manifest.write_text("{}\n", encoding="utf-8")
+    artifact_manifest = {
+        "schema_version": "1.0",
+        "manifest_sha256": manifest_digest,
+        "records": [],
+    }
+    (run_root / "artifact-manifest.json").write_text(
+        json.dumps(artifact_manifest), encoding="utf-8"
+    )
+    certificate = {
+        "release": release,
+        "status": "self_certified",
+        "certification_platform": {},
+        "signature": {"path": "certificate.json.sig"},
+        "source_control": {},
+        "product_digest": product_digest,
+        "harness_digest": harness_digest,
+        "coverage_evidence": f"evidence/releases/{release}/run-frozen/coverage.json",
+        "evidence_manifest": f"evidence/releases/{release}/run-frozen/evidence-manifest.json",
+        "evidence_manifest_sha256": hashlib.sha256(
+            evidence_manifest.read_bytes()
+        ).hexdigest(),
+        "artifact_manifest": f"evidence/releases/{release}/run-frozen/artifact-manifest.json",
+        "artifact_manifest_sha256": manifest_digest,
+        "artifacts": [],
+    }
+    (release_root / "certificate.json").write_text(
+        json.dumps(certificate), encoding="utf-8"
+    )
+    artifact_dir = tmp_path / "artifacts"
+    artifact_dir.mkdir()
+    observed: dict[str, object] = {}
+
+    monkeypatch.setattr(
+        "runtime.release_certification.validate_certification_platform",
+        lambda *_args, **_kwargs: {"errors": []},
+    )
+    monkeypatch.setattr(
+        "runtime.release_certification.verify_certificate_signature",
+        lambda *_args, **_kwargs: {"errors": [], "identity": {}},
+    )
+    monkeypatch.setattr(
+        "runtime.release_certification.validate_version_surfaces",
+        lambda *_args, **_kwargs: {"errors": []},
+    )
+    monkeypatch.setattr(
+        "runtime.release_certification.verify_recorded_git_identity",
+        lambda *_args, **_kwargs: {"errors": []},
+    )
+    monkeypatch.setattr(
+        "runtime.release_certification.classify_tree",
+        lambda *_args, **_kwargs: {
+            "errors": [],
+            "product_digest": product_digest,
+            "harness_digest": harness_digest,
+        },
+    )
+    monkeypatch.setattr(
+        "runtime.release_certification._verify_coverage_binding",
+        lambda *_args, **_kwargs: {"errors": []},
+    )
+    monkeypatch.setattr(
+        "runtime.release_certification.verify_evidence_manifest",
+        lambda *_args, **_kwargs: {"errors": []},
+    )
+    monkeypatch.setattr(
+        "runtime.release_certification._certificate_ledger_errors", lambda *_args: []
+    )
+
+    def bind(*_args, **kwargs):
+        observed.update(kwargs)
+        return {"errors": [], "artifact_manifest_sha256": manifest_digest}
+
+    monkeypatch.setattr("runtime.release_certification.bind_artifact_set", bind)
+
+    result = verify_release_certificate(
+        tmp_path, release=release, artifact_dir=artifact_dir
+    )
+
+    assert result["valid"], result["errors"]
+    assert observed["artifact_manifest"] == artifact_manifest
+    assert "source_root" not in observed

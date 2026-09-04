@@ -1366,6 +1366,7 @@ def verify_release_certificate(
             errors.extend(evidence_check["errors"])
     artifact_manifest_relative = str(certificate.get("artifact_manifest", ""))
     artifact_manifest_path = (root / artifact_manifest_relative).resolve(strict=False)
+    artifact_manifest: dict[str, Any] | None = None
     if (
         not artifact_manifest_relative.startswith(f"evidence/releases/{release}/")
         or not artifact_manifest_path.is_file()
@@ -1374,13 +1375,24 @@ def verify_release_certificate(
             "certificate artifact manifest is missing or outside its release root"
         )
     else:
-        artifact_manifest = _json(artifact_manifest_path)
-        if artifact_manifest.get("manifest_sha256") != certificate.get(
-            "artifact_manifest_sha256"
-        ):
+        try:
+            value = _json(artifact_manifest_path)
+        except (OSError, ValueError, json.JSONDecodeError) as error:
             errors.append(
-                "recorded artifact manifest digest does not match certificate"
+                "recorded artifact manifest is unreadable: "
+                f"{type(error).__name__}: {error}"
             )
+        else:
+            if not isinstance(value, dict):
+                errors.append("recorded artifact manifest is malformed")
+            else:
+                artifact_manifest = value
+                if artifact_manifest.get("manifest_sha256") != certificate.get(
+                    "artifact_manifest_sha256"
+                ):
+                    errors.append(
+                        "recorded artifact manifest digest does not match certificate"
+                    )
     records = certificate.get("artifacts")
     if artifact_dir is None:
         errors.append("artifact directory is required to verify exact release bytes")
@@ -1389,18 +1401,19 @@ def verify_release_certificate(
     else:
         artifact_check = verify_artifact_records(artifact_dir, records)
         errors.extend(artifact_check["errors"])
-        artifact_binding = bind_artifact_set(
-            artifact_dir,
-            records,
-            source_product_digest=current["product_digest"],
-            version=release,
-            source_root=root,
-        )
-        errors.extend(artifact_binding["errors"])
-        if artifact_binding.get("artifact_manifest_sha256") != certificate.get(
-            "artifact_manifest_sha256"
-        ):
-            errors.append("artifact manifest digest does not match certificate")
+        if artifact_manifest is not None:
+            artifact_binding = bind_artifact_set(
+                artifact_dir,
+                records,
+                source_product_digest=current["product_digest"],
+                version=release,
+                artifact_manifest=artifact_manifest,
+            )
+            errors.extend(artifact_binding["errors"])
+            if artifact_binding.get("artifact_manifest_sha256") != certificate.get(
+                "artifact_manifest_sha256"
+            ):
+                errors.append("artifact manifest digest does not match certificate")
     errors.extend(_certificate_ledger_errors(root))
     return {
         "valid": not errors,

@@ -3779,7 +3779,7 @@
       "validation_level": "full-suite-and-installed-integration"
     },
     {
-      "bytes": 55039,
+      "bytes": 55666,
       "evidence": [
         "tests/test_rel009_release.py",
         "tests/test_release_certification.py",
@@ -3789,12 +3789,12 @@
       "packaged": true,
       "path": "runtime/release_certification.py",
       "role": "installed-runtime",
-      "sha256": "eddc5b65cb9787ed9cd014f365a601b1483206f31f3239d2292482292647184c",
+      "sha256": "cc4c94969dc50f77033344bd4acfb2ba1e0c94e8093f5e24b07c3d36e486789c",
       "syntax_valid": true,
       "validation_level": "evidence-association"
     },
     {
-      "bytes": 33386,
+      "bytes": 37297,
       "evidence": [
         "tests",
         "tests/test_installed_wheel_e2e.py"
@@ -3803,7 +3803,7 @@
       "packaged": true,
       "path": "runtime/release_distribution.py",
       "role": "installed-runtime",
-      "sha256": "115f9a6d793967182e56a61a5ead146509c8ff2b8a50bb526fbfd5dc5536536e",
+      "sha256": "783bee28d13831112abfc331d76f19d680f98506aff1914373dfe15de56218c9",
       "syntax_valid": true,
       "validation_level": "full-suite-and-installed-integration"
     },
@@ -7819,7 +7819,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 24786,
+      "bytes": 28282,
       "evidence": [
         "tests/test_release_certification.py"
       ],
@@ -7827,7 +7827,7 @@
       "packaged": true,
       "path": "tests/test_release_certification.py",
       "role": "release-test",
-      "sha256": "ab6596a90fabf2a68952ccfd2e29fe7b800c0bceb7d4adff378d27dc9dded221",
+      "sha256": "21972dfad3a864b4e1f377b8d11ddff35da0ac53ff621c76cee1de8159d4eb6b",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },
@@ -7845,7 +7845,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 12327,
+      "bytes": 14755,
       "evidence": [
         "tests/test_release_distribution_controls.py"
       ],
@@ -7853,7 +7853,7 @@
       "packaged": true,
       "path": "tests/test_release_distribution_controls.py",
       "role": "release-test",
-      "sha256": "191d6fd5855375dd5fd8c84f71b25a7cc644ead2404b42eb9d5e0f852fe7fb30",
+      "sha256": "1b3a3b8e2bd08123e383055cad9ffef0253c2e656a8dc881e1074450e724d643",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },

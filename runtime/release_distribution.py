@@ -466,6 +466,80 @@ def generate_artifact_manifest(root: Path) -> dict[str, Any]:
     }
 
 
+def validate_artifact_manifest(manifest: Mapping[str, Any]) -> dict[str, Any]:
+    """Validate one frozen source-to-distribution manifest intrinsically."""
+
+    errors: list[str] = []
+    if manifest.get("schema_version") != "1.0":
+        errors.append("artifact manifest schema is unsupported")
+    for field in ("distribution_model", "project", "version"):
+        if not isinstance(manifest.get(field), str) or not manifest.get(field):
+            errors.append(f"artifact manifest {field} is missing or malformed")
+    records = manifest.get("records")
+    if not isinstance(records, list):
+        errors.append("artifact manifest records are malformed")
+        records = []
+    required_record_fields = {
+        "source_path",
+        "installed_path",
+        "artifact_type",
+        "owner",
+        "source_sha256",
+        "source_size_bytes",
+        "required",
+        "package_target",
+        "designation",
+        "generated",
+    }
+    for index, record in enumerate(records):
+        if not isinstance(record, Mapping):
+            errors.append(f"artifact manifest record is malformed: {index}")
+            continue
+        missing = sorted(required_record_fields - set(record))
+        if missing:
+            errors.append(
+                f"artifact manifest record is missing fields: {index}:{','.join(missing)}"
+            )
+        if record.get("package_target") not in {"wheel", "sdist"}:
+            errors.append(f"artifact manifest record target is invalid: {index}")
+    allowed_generated = manifest.get("allowed_generated")
+    if not isinstance(allowed_generated, Mapping) or any(
+        not isinstance(allowed_generated.get(target), list)
+        or any(not isinstance(pattern, str) for pattern in allowed_generated[target])
+        for target in ("wheel", "sdist")
+    ):
+        errors.append("artifact manifest generated-file policy is malformed")
+    if not isinstance(manifest.get("skill_projection"), Mapping):
+        errors.append("artifact manifest skill projection is malformed")
+    declared_errors = manifest.get("errors")
+    if not isinstance(declared_errors, list):
+        errors.append("artifact manifest errors are malformed")
+    elif declared_errors:
+        errors.extend(
+            f"artifact manifest generation error: {item}" for item in declared_errors
+        )
+    if manifest.get("valid") is not True:
+        errors.append("artifact manifest is not valid")
+    canonical = json.dumps(
+        {
+            key: value
+            for key, value in manifest.items()
+            if key not in {"errors", "valid", "manifest_sha256"}
+        },
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode()
+    observed_digest = hashlib.sha256(canonical).hexdigest()
+    if manifest.get("manifest_sha256") != observed_digest:
+        errors.append("artifact manifest intrinsic digest mismatch")
+    return {
+        "valid": not errors,
+        "manifest_sha256": observed_digest,
+        "record_count": len(records),
+        "errors": errors,
+    }
+
+
 def verify_declared_projection_duplicates(
     manifest: Mapping[str, Any],
     wheel_entries: Mapping[str, Mapping[str, Any]] | None = None,
@@ -828,6 +902,7 @@ def bind_artifact_set(
     source_product_digest: str,
     version: str,
     source_root: Path | None = None,
+    artifact_manifest: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     verified = verify_artifact_records(directory, records)
     errors = list(verified["errors"])
@@ -848,32 +923,52 @@ def bind_artifact_set(
         errors.append("wheel metadata version does not match authoritative version")
     if sdist["version"] != version:
         errors.append("sdist metadata version does not match authoritative version")
-    manifest = (
-        generate_artifact_manifest(source_root) if source_root is not None else None
-    )
+    if source_root is not None and artifact_manifest is not None:
+        errors.append("artifact manifest authority is ambiguous")
+        manifest = None
+    elif artifact_manifest is not None:
+        manifest = artifact_manifest
+    else:
+        manifest = (
+            generate_artifact_manifest(source_root) if source_root is not None else None
+        )
     artifact_checks: dict[str, Any] = {}
     if manifest is not None:
-        wheel_check = verify_built_artifact(
-            directory / str(wheel_record["filename"]), manifest, package_target="wheel"
-        )
-        sdist_check = verify_built_artifact(
-            directory / str(sdist_record["filename"]), manifest, package_target="sdist"
-        )
-        projection_check = verify_declared_projection_duplicates(
-            manifest, wheel_check["entries"], sdist_check["entries"]
-        )
-        artifact_checks = {
-            "wheel": wheel_check,
-            "sdist": sdist_check,
-            "projections": projection_check,
-        }
-        errors.extend(
-            [
-                *wheel_check["errors"],
-                *sdist_check["errors"],
-                *projection_check["errors"],
-            ]
-        )
+        manifest_check = validate_artifact_manifest(manifest)
+        artifact_checks["manifest"] = manifest_check
+        errors.extend(manifest_check["errors"])
+        if manifest.get("version") != version:
+            errors.append(
+                "artifact manifest version does not match authoritative version"
+            )
+        if manifest_check["valid"]:
+            wheel_check = verify_built_artifact(
+                directory / str(wheel_record["filename"]),
+                manifest,
+                package_target="wheel",
+            )
+            sdist_check = verify_built_artifact(
+                directory / str(sdist_record["filename"]),
+                manifest,
+                package_target="sdist",
+            )
+            projection_check = verify_declared_projection_duplicates(
+                manifest, wheel_check["entries"], sdist_check["entries"]
+            )
+            artifact_checks.update(
+                {
+                    "wheel": wheel_check,
+                    "sdist": sdist_check,
+                    "projections": projection_check,
+                }
+            )
+            errors.extend(
+                [
+                    *wheel_check["errors"],
+                    *sdist_check["errors"],
+                    *projection_check["errors"],
+                ]
+            )
     return {
         "valid": not errors,
         "version": version,
