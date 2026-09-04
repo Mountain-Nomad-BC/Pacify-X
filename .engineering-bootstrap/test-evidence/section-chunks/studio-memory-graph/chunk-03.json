@@ -1,12 +1,23 @@
 {
   "chunk_id": "chunk-03",
-  "duration_seconds": 56.855981,
+  "duration_seconds": 48.330661,
   "exit_code": 0,
-  "input_sha256": "a3deade349574dbe74f828663fcac42a87afe7cc4d5c0f4367659a059b060965",
+  "input_sha256": "946df9ba5c0b0404209e1b9bd00c9c00fb85e7b7edbb0ad18d9537f552e4f977",
   "member_count": 2,
+  "members": [
+    "tests/test_process_supervisor.py",
+    "tests/test_agent_runtime.py"
+  ],
+  "output_evidence": {
+    "failure_nodes": [],
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout_bytes": 102,
+    "stdout_sha256": "48e3d2934781c9196a323812e0a22754be4fed21c591d16b4e087472795a4a13"
+  },
   "passed": true,
-  "receipt_sha256": "7406607cdca1061d46a330a41fb5523edb47d873389541ae5f9a4ebcde3d38d3",
-  "schema_version": "px.test-section-chunk-receipt/1.0",
+  "receipt_sha256": "379e33daf83c146d819140ea89a02feaa188b12ad2df499a9db1e724538eb3da",
+  "schema_version": "px.test-section-chunk-receipt/1.1",
   "section": "studio-memory-graph",
   "timed_out": false
 }

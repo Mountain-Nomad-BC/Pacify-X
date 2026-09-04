@@ -5,9 +5,17 @@ const os = require('os');
 const path = require('path');
 
 const CACHE_SCHEMA = 'px.owned-vscode-test-cache/1.0';
-const CACHE_ROOT = path.join(os.tmpdir(), 'pacify-x-vscode-test-cache');
 const MARKER_NAME = '.pacify-x-owned-cache.json';
 const VERSION_PATTERN = /^\d+\.\d+\.\d+$/;
+
+function defaultOwnedCacheRoot({ platform = process.platform, homeDirectory = os.homedir(), temporaryRoot = os.tmpdir() } = {}) {
+  const parent = platform === 'linux'
+    ? path.join(path.resolve(homeDirectory), '.cache')
+    : path.resolve(temporaryRoot);
+  return path.join(parent, 'pacify-x-vscode-test-cache');
+}
+
+const CACHE_ROOT = defaultOwnedCacheRoot();
 
 function normalizedVersion(version) {
   if (typeof version !== 'string' || !VERSION_PATTERN.test(version)) {
@@ -18,8 +26,7 @@ function normalizedVersion(version) {
 
 function ownedCacheRoot(options = {}) {
   const root = path.resolve(options.cacheRoot || CACHE_ROOT);
-  const temporaryRoot = path.resolve(os.tmpdir());
-  if (path.dirname(root) !== temporaryRoot || path.basename(root) !== 'pacify-x-vscode-test-cache') {
+  if (root !== path.resolve(CACHE_ROOT)) {
     throw new Error(`vscode-test-cache-outside-admitted-root:${root}`);
   }
   return root;
@@ -81,10 +88,15 @@ function cachedVSCodeLayout(cacheRoot, version, options = {}) {
   const platform = options.platform || process.platform;
   const arch = options.arch || process.arch;
   const retainedVersion = normalizedVersion(version);
-  if (platform !== 'win32' || !['x64', 'arm64'].includes(arch)) throw new Error(`vscode-test-cache-platform-unsupported:${platform}-${arch}`);
-  const directory = path.join(root, `vscode-win32-${arch}-archive-${retainedVersion}`);
+  const platformName = platform === 'win32' && ['x64', 'arm64'].includes(arch)
+    ? `win32-${arch}-archive`
+    : platform === 'linux' && ['x64', 'arm64', 'arm'].includes(arch)
+      ? `linux-${arch === 'arm' ? 'armhf' : arch}`
+      : null;
+  if (!platformName) throw new Error(`vscode-test-cache-platform-unsupported:${platform}-${arch}`);
+  const directory = path.join(root, `vscode-${platformName}-${retainedVersion}`);
   const complete = path.join(directory, 'is-complete');
-  const executable = path.join(directory, 'Code.exe');
+  const executable = path.join(directory, platform === 'win32' ? 'Code.exe' : 'code');
   for (const [target, kind] of [[root, 'directory'], [directory, 'directory'], [complete, 'file'], [executable, 'file']]) {
     if (!fs.existsSync(target)) throw new Error(`vscode-test-cache-${kind}-missing:${path.basename(target)}`);
     const status = fs.lstatSync(target);
@@ -118,6 +130,7 @@ function markOwnedHostWorkspace(root, kind) {
 module.exports = {
   CACHE_ROOT,
   cachedVSCodeLayout,
+  defaultOwnedCacheRoot,
   ensureOwnedVscodeTestCache,
   markOwnedHostWorkspace,
   readOwnedVscodeTestCache,

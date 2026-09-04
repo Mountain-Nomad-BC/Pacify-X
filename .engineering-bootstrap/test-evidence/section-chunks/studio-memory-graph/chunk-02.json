@@ -1,12 +1,23 @@
 {
   "chunk_id": "chunk-02",
-  "duration_seconds": 14.264411,
+  "duration_seconds": 12.253977,
   "exit_code": 0,
-  "input_sha256": "0c62d7e97e1162c2b02c0a41a940e4d7fe4284b67a47e96a1ba3d73e2cd1eda3",
+  "input_sha256": "1347eb91b30aab250f56ea00c8fa82dcc0d8ce88eff49dbe4346589af69ae1e3",
   "member_count": 2,
+  "members": [
+    "tests/test_studio_api.py",
+    "tests/test_studio_run_control.py"
+  ],
+  "output_evidence": {
+    "failure_nodes": [],
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout_bytes": 113,
+    "stdout_sha256": "0d363822c17b1d090928befdcce51c80c7e4849846852ae83ad7fa8c81704243"
+  },
   "passed": true,
-  "receipt_sha256": "c432b867fa291ac9dfe3be3092eb688bbcb551839f49f150e263ae14a201f1af",
-  "schema_version": "px.test-section-chunk-receipt/1.0",
+  "receipt_sha256": "0b8eb0d5b9f294a86e557020af7d9c0fc1759b0a0a7e0ea41bf99ca88361f078",
+  "schema_version": "px.test-section-chunk-receipt/1.1",
   "section": "studio-memory-graph",
   "timed_out": false
 }

@@ -2,13 +2,13 @@
   "schema_version": "px.completion-status/1.4",
   "authority": "generated projection; current operational and instruction ledgers supersede historical audit acceptance as completion authority",
   "projection_metadata": {
-    "generated_at": "2026-09-02T01:45:05.388055Z",
-    "source_revision": "3eb6e790549094195f5bfd82ca8cd92a7dd96503d6ded9f2abd126e0df2cba30",
+    "generated_at": "2026-09-04T03:02:07.880500Z",
+    "source_revision": "56a056b24b848c98a08f05be8dc39ea25d683835b0b2cfafe1c7cef0c2786067",
     "authority_level": "non-certifying-current-state-projection",
     "marker": "current_at_generation",
     "engine_identity": {
-      "marker_file_sha256": "927d983e6c47cd65d3cd0fbf93c9dc2361b87e508ea4b22fc320184985dc58b0",
-      "tree_sha256": "1ea99fce089d1a5e14ba8806849d10b89abf59e3f4fed02ebbb1d45b0fe15790",
+      "marker_file_sha256": "f07c4621a4790c3aa2010fb8890be75cd779c2ebeb4cea7a27b92ecbb0a6de9b",
+      "tree_sha256": "97c4fcc1edd25d352340b95628b9eec324269b8948c85b8ab9627b16a6a0dc89",
       "file_total": 3810
     },
     "invalidation_conditions": [
@@ -57,7 +57,7 @@
     },
     {
       "path": "registry/operational_gap_ledger.head.json",
-      "sha256": "65ad68b3f8f84a71a59f8b150cf3cba28a1a8b051ef56cb6182a5f99eec14e9c"
+      "sha256": "df5d6977916cf77c5a936118d1bebfe2aeb1e784feb4b6d5964b54f4f061a6a0"
     },
     {
       "path": "registry/current_evidence_index.json",
@@ -99,8 +99,8 @@
   "current_operational_gap_ledger": {
     "valid": true,
     "ledger_id": "PX-OPERATIONAL-GAPS-20260816",
-    "event_count": 31994,
-    "head_event_sha256": "3eb6e790549094195f5bfd82ca8cd92a7dd96503d6ded9f2abd126e0df2cba30",
+    "event_count": 33284,
+    "head_event_sha256": "56a056b24b848c98a08f05be8dc39ea25d683835b0b2cfafe1c7cef0c2786067",
     "critical_high_blocker_count": 16,
     "critical_high_blocker_ids": [
       "PX-OS-087",

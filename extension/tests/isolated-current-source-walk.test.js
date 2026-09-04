@@ -9,7 +9,7 @@ const os = require('node:os');
 const path = require('node:path');
 const { acquireWalkOwnership, appendHostProgress, boundedDelay, excludedEnginePath, ownedExternalNetworkDeniedEnvironment, ownedExternalNetworkDeniedLaunchEnvironment, reconcileOwnedPrelaunchFailure, reconcilePrelaunchFailure, reserveLoopbackPort, retainedHostProgress, retainedProfileProgress, stageDisposableEngine, stageOwnedGitAuthority, stageOwnedHostBoundaryFixture, stageOwnedKnowledgeFixture, stageOwnedProviderPaginationFixture, waitForIsolatedStorageBoundary } = require('../scripts/run-isolated-current-source-walk');
 const { acquireHostLease } = require('../scripts/owned-host-runner');
-const { cachedVSCodeLayout, markOwnedHostWorkspace } = require('../scripts/owned-vscode-test-cache');
+const { cachedVSCodeLayout, defaultOwnedCacheRoot, markOwnedHostWorkspace } = require('../scripts/owned-vscode-test-cache');
 const { gitSnapshot } = require('../src/contextBridge');
 
 const digest = target => crypto.createHash('sha256').update(fs.readFileSync(target)).digest('hex');
@@ -56,7 +56,7 @@ test('installed smoke worker self-enforces external-network denial for both plat
   assert.match(source, /runOwnedHostWorker\(\{[^]*env: ownedExternalNetworkDeniedEnvironment\(\{[^]*PX_OWNED_VSCODE_HOST: '1'[^]*DONT_PROMPT_WSL_INSTALL/);
 });
 
-test('owned cached VS Code layout requires the exact complete nonlink Windows archive', t => {
+test('owned cached VS Code layout requires exact complete nonlink platform archives', t => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'px-cache-layout-'));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   const directory = path.join(root, 'vscode-win32-x64-archive-1.132.1');
@@ -68,7 +68,15 @@ test('owned cached VS Code layout requires the exact complete nonlink Windows ar
   fs.rmSync(path.join(directory, 'is-complete'));
   assert.throws(() => cachedVSCodeLayout(root, '1.132.1', { platform: 'win32', arch: 'x64' }), /file-missing:is-complete/);
   assert.throws(() => cachedVSCodeLayout(root, 'latest', { platform: 'win32', arch: 'x64' }), /version-invalid/);
-  assert.throws(() => cachedVSCodeLayout(root, '1.132.1', { platform: 'linux', arch: 'x64' }), /platform-unsupported/);
+  const linuxDirectory = path.join(root, 'vscode-linux-x64-1.132.1');
+  fs.mkdirSync(linuxDirectory);
+  fs.writeFileSync(path.join(linuxDirectory, 'is-complete'), '');
+  fs.writeFileSync(path.join(linuxDirectory, 'code'), 'fixture');
+  const linux = cachedVSCodeLayout(root, '1.132.1', { platform: 'linux', arch: 'x64' });
+  assert.equal(linux.executable, path.join(linuxDirectory, 'code'));
+  assert.equal(defaultOwnedCacheRoot({ platform: 'linux', homeDirectory: '/home/px', temporaryRoot: '/tmp' }), path.resolve('/home/px/.cache/pacify-x-vscode-test-cache'));
+  assert.equal(defaultOwnedCacheRoot({ platform: 'win32', homeDirectory: 'C:/ignored', temporaryRoot: 'C:/owned-temp' }), path.resolve('C:/owned-temp/pacify-x-vscode-test-cache'));
+  assert.throws(() => cachedVSCodeLayout(root, '1.132.1', { platform: 'darwin', arch: 'x64' }), /platform-unsupported/);
 });
 
 function runIsolatedCacheOwner(t, body) {
@@ -217,6 +225,7 @@ test('timeout evidence retains bounded hash-bound physical profile progress', t 
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   const records = [
     { schema_version: 'px.operational-profile-progress/1.0', observed_utc: '2026-08-27T00:00:00Z', profile: 'host-boundary', state: 'started' },
+    { schema_version: 'px.operational-profile-progress/1.0', observed_utc: '2026-08-27T00:00:01Z', profile: 'plugin-local-lifecycle-step', state: 'budgeted', total_budget_ms: 360000 },
     { schema_version: 'px.operational-profile-progress/1.0', observed_utc: '2026-08-27T00:00:30Z', profile: 'host-boundary-control', control_id: 'one', state: 'returned', error_count: 0, errors: [] },
     { schema_version: 'px.operational-profile-progress/1.0', observed_utc: '2026-08-27T00:01:00Z', profile: 'host-boundary', state: 'returned', error_count: 1, errors: ['exact-failure'] },
     { schema_version: 'px.operational-profile-progress/1.0', observed_utc: '2026-08-27T00:01:01Z', profile: 'dependent', state: 'skipped', error_count: 1, errors: ['dependency-failed'] },
@@ -227,13 +236,14 @@ test('timeout evidence retains bounded hash-bound physical profile progress', t 
   const retained = retainedProfileProgress(root);
   assert.equal(retained.valid, true);
   assert.equal(retained.sha256, digest(target));
-  assert.equal(retained.record_count, 5);
+  assert.equal(retained.record_count, 6);
   assert.equal(retained.started_count, 1);
+  assert.equal(retained.budgeted_count, 1);
   assert.equal(retained.returned_count, 2);
   assert.equal(retained.terminal_count, 4);
   assert.equal(retained.terminal_with_errors, 3);
   assert.equal(retained.returned_with_errors, 1);
-  assert.deepEqual(retained.last_record, records[4]);
+  assert.deepEqual(retained.last_record, records[5]);
   fs.writeFileSync(target, '{"schema_version":"wrong"}\n', 'utf8');
   assert.equal(retainedProfileProgress(root).valid, false);
 });

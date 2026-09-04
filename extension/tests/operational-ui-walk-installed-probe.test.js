@@ -1203,15 +1203,37 @@ test('installed sidebar probe resolves and exercises exact physical controls', a
       validationObserved: spec.kind === 'action', acknowledged: true, details: {}, errors: []
     })
   };
+  const progress = [];
   const result = await probeInstalledSidebarControls(frameHost, { controls: [
     { control_id: 'pxui.sidebar.action.open-control-plane', surface_id: 'sidebar', kind: 'action', evidence_mode: 'contained_sidebar_interaction', effect: 'host-ui-or-read', stage_policy: policy },
     { control_id: 'pxui.sidebar.indicator.providerBudget', surface_id: 'sidebar', kind: 'indicator', evidence_mode: 'live_state_observation', effect: 'read', stage_policy: { ...policy, user_edit_action: 'not_applicable_with_evidence', input_validation: 'not_applicable_with_evidence' } }
-  ] }, []);
+  ] }, [], null, { onProgress: event => progress.push(event) });
   assert.equal(result.eligible_control_count, 2);
   assert.equal(result.records[0].attempted, true);
   assert.equal(result.records[0].interaction_chain.result_acknowledgement.state, 'present');
   assert.equal(result.records[1].rendered, true);
   assert.equal(result.records[1].attempted, false);
+  assert.deepEqual(progress.map(event => event.state), ['started', 'returned', 'started', 'returned']);
+});
+
+test('installed sidebar probe bounds a stuck control and skips the dependent remainder', async () => {
+  const policy = Object.fromEntries(STAGES.map(stage => [stage, 'required']));
+  const controls = ['one', 'two'].map(id => ({
+    control_id: `pxui.sidebar.indicator.${id}`, surface_id: 'sidebar', kind: 'indicator',
+    evidence_mode: 'live_state_observation', effect: 'read', stage_policy: policy
+  }));
+  const progress = [];
+  const hostErrors = [];
+  const frameHost = { evaluate: async () => new Promise(() => {}) };
+  const result = await probeInstalledSidebarControls(frameHost, { controls }, hostErrors, null, {
+    controlTimeoutMs: 10,
+    onProgress: event => progress.push(event)
+  });
+  assert.equal(result.eligible_control_count, 2);
+  assert.match(result.records[0].errors[0], /installed-sidebar-control-pxui\.sidebar\.indicator\.one-timeout:10/);
+  assert.equal(result.records[1].errors[0], 'dependency-failed:sidebar-control-boundary:pxui.sidebar.indicator.one');
+  assert.deepEqual(progress.map(event => event.state), ['started', 'returned', 'skipped']);
+  assert.equal(hostErrors.length, 1);
 });
 
 test('R100 sidebar native handoffs bind exact requests, rejection, dashboard identity, and replay', () => {
@@ -1238,6 +1260,9 @@ test('R100 sidebar native handoffs bind exact requests, rejection, dashboard ide
   assert.match(source, /const dashboardVisible = Boolean\(document\?\.querySelector\('\[data-surface="dashboard"\]'\)/);
   const records = source.slice(source.indexOf('async function probeInstalledSidebarControls'), source.indexOf('async function safeScreenshot'));
   assert.match(records, /frameHost\.reacquire\(10_000\)/);
+  assert.match(records, /boundedOwnedUiAction/);
+  assert.match(records, /onProgress/);
+  assert.match(records, /dependency-failed:sidebar-control-boundary/);
   assert.match(records, /\['authorization', 'backend_dispatch', 'runtime_effect', 'progress_reporting'\]/);
   assert.match(records, /\['persistence', 'reload_reopen'\]/);
 });
@@ -3448,6 +3473,8 @@ test('focused Knowledge execution skips unrelated profiles and keeps append-only
   assert.match(source, /ownedReversibleConfigurationAuthority && !configurationOnly && !knowledgeLifecycleOnly[\s\S]*runInstalledStudioSetupProfile/);
   assert.match(source, /ownedReversibleConfigurationAuthority && !configurationOnly && !studioLifecycleOnly[\s\S]*runInstalledKnowledgeLifecycleProfile/);
   assert.match(source, /profile-progress\.ndjson/);
+  assert.match(source, /timedProfile\('sidebar-controls'/);
+  assert.match(source, /profile: 'sidebar-control'/);
   assert.match(source, /fs\.appendFileSync\(profileProgressPath/);
   assert.match(source, /PX_OPERATIONAL_CONFIGURATION_ONLY === '1'/);
   assert.match(source, /returnedProfileErrors/);

@@ -6,10 +6,10 @@ const crypto = require('crypto');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-const { downloadAndUnzipVSCode, resolveCliArgsFromVSCodeExecutablePath, runTests } = require('@vscode/test-electron');
+const { resolveCliArgsFromVSCodeExecutablePath, runTests } = require('@vscode/test-electron');
 const { nonBillableEnvironment } = require('../src/contextBridge');
 const { runOwnedHostWorker } = require('./owned-host-runner');
-const { ensureOwnedVscodeTestCache, markOwnedHostWorkspace } = require('./owned-vscode-test-cache');
+const { markOwnedHostWorkspace, resolveOwnedCachedVSCode } = require('./owned-vscode-test-cache');
 
 const CHILD_FLAG = '--owned-host-child';
 const extensionRoot = path.resolve(__dirname, '..');
@@ -59,8 +59,8 @@ function portableHostReceipt(value) {
 async function childMain(configPath) {
   const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
   const before = digest(config.vsixPath);
-  const cache = ensureOwnedVscodeTestCache(vscodeVersion);
-  const executable = await downloadAndUnzipVSCode({ version: vscodeVersion, cachePath: cache.root });
+  const cache = resolveOwnedCachedVSCode(vscodeVersion);
+  const executable = cache.executable;
   const [cli, ...cliPrefix] = resolveCliArgsFromVSCodeExecutablePath(executable, { reuseMachineInstall: true });
   const install = childProcess.spawnSync(
     cli, [...cliPrefix, `--extensions-dir=${config.extensions}`, `--user-data-dir=${config.userData}`, '--install-extension', config.vsixPath, '--force'],

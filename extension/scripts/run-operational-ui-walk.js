@@ -2270,39 +2270,55 @@ async function probeInstalledSidebarHandoff(frameHost, workbench, selector, hand
   }
 }
 
-async function probeInstalledSidebarControls(frameHost, matrix, hostErrors = [], workbench = null) {
+async function probeInstalledSidebarControls(frameHost, matrix, hostErrors = [], workbench = null, options = {}) {
   const eligible = matrix.controls.filter(eligibleInstalledSidebarControl);
   const records = [];
+  const onProgress = typeof options.onProgress === 'function' ? options.onProgress : () => {};
+  const configuredTimeoutMs = Number(options.controlTimeoutMs || 0);
+  let boundaryFailure = null;
   for (const control of eligible) {
     let probe = { loaded: false, visible: false, attempted: false, validationObserved: false, acknowledged: false, details: {}, errors: [] };
     const selector = installedSidebarSelector(control);
     const handoff = installedSidebarHandoffSpec(control);
-    try {
-      if (handoff && typeof frameHost.reacquire === 'function' && !await frameHost.reacquire(10_000)) {
-        throw new Error(`installed-sidebar-frame-reacquisition-failed:${control.control_id}`);
-      }
-      probe = handoff && workbench ? await probeInstalledSidebarHandoff(frameHost, workbench, selector, handoff) : await frameHost.evaluate((frame, spec) => {
-        const document = frame.contentDocument;
-        if (!document) throw new Error('PX installed sidebar contentDocument is unavailable.');
-        const visible = element => Boolean(element && (element.offsetWidth || element.offsetHeight || element.getClientRects().length));
-        const target = spec.selector ? [...document.querySelectorAll(spec.selector)].find(visible) : null;
-        const state = { loaded: true, visible: Boolean(target), attempted: false, validationObserved: false, acknowledged: false, details: {}, errors: [] };
-        if (!target) return state;
-        if (spec.kind === 'indicator') { state.acknowledged = true; return state; }
-        if (spec.kind === 'action' && !target.disabled) {
-          const before = String(document.body?.innerText || '');
-          target.click();
-          state.attempted = true;
-          state.validationObserved = true;
-          state.acknowledged = String(document.body?.innerText || '') !== before;
-          if (state.acknowledged) state.details.result_acknowledgement = 'The installed sidebar visibly acknowledged the exact reversible local interaction.';
-        }
-        return state;
-      }, { kind: control.kind, selector });
-    } catch (error) {
-      const message = String(error?.message || error).slice(0, 1000);
+    const controlTimeoutMs = configuredTimeoutMs > 0 ? configuredTimeoutMs : handoff ? 75_000 : 15_000;
+    const started = Date.now();
+    if (boundaryFailure) {
+      const message = `dependency-failed:sidebar-control-boundary:${boundaryFailure}`;
       probe.errors.push(message);
-      hostErrors.push({ source: 'installed-sidebar-probe', context: control.control_id, message });
+      onProgress({ control_id: control.control_id, state: 'skipped', dependency: boundaryFailure, error_count: 1, errors: [message] });
+    } else {
+      onProgress({ control_id: control.control_id, state: 'started', budget_ms: controlTimeoutMs });
+      try {
+        probe = await boundedOwnedUiAction(async () => {
+          if (handoff && typeof frameHost.reacquire === 'function' && !await frameHost.reacquire(10_000)) {
+            throw new Error(`installed-sidebar-frame-reacquisition-failed:${control.control_id}`);
+          }
+          return handoff && workbench ? probeInstalledSidebarHandoff(frameHost, workbench, selector, handoff) : frameHost.evaluate((frame, spec) => {
+            const document = frame.contentDocument;
+            if (!document) throw new Error('PX installed sidebar contentDocument is unavailable.');
+            const visible = element => Boolean(element && (element.offsetWidth || element.offsetHeight || element.getClientRects().length));
+            const target = spec.selector ? [...document.querySelectorAll(spec.selector)].find(visible) : null;
+            const state = { loaded: true, visible: Boolean(target), attempted: false, validationObserved: false, acknowledged: false, details: {}, errors: [] };
+            if (!target) return state;
+            if (spec.kind === 'indicator') { state.acknowledged = true; return state; }
+            if (spec.kind === 'action' && !target.disabled) {
+              const before = String(document.body?.innerText || '');
+              target.click();
+              state.attempted = true;
+              state.validationObserved = true;
+              state.acknowledged = String(document.body?.innerText || '') !== before;
+              if (state.acknowledged) state.details.result_acknowledgement = 'The installed sidebar visibly acknowledged the exact reversible local interaction.';
+            }
+            return state;
+          }, { kind: control.kind, selector });
+        }, controlTimeoutMs, `installed-sidebar-control-${control.control_id}`);
+      } catch (error) {
+        const message = String(error?.message || error).slice(0, 1000);
+        probe.errors.push(message);
+        hostErrors.push({ source: 'installed-sidebar-probe', context: control.control_id, message });
+        if (message === `installed-sidebar-control-${control.control_id}-timeout:${controlTimeoutMs}`) boundaryFailure = control.control_id;
+      }
+      onProgress({ control_id: control.control_id, state: 'returned', duration_ms: Date.now() - started, error_count: probe.errors.length, errors: probe.errors });
     }
     const evidenceRef = `installed-sidebar-receipt:${control.control_id}`;
     const interactionChain = Object.fromEntries(STAGES.map(stage => [stage, stageResult(control, probe, stage, evidenceRef)]));
@@ -11053,7 +11069,9 @@ async function main() {
     } : null;
     const sidebarScreenshot = sidebar ? await safeScreenshot(sidebar, path.join(outputRoot, 'sidebar.png'), 'sidebar', hostErrors) : null;
     const sidebarControlProbe = sidebar && !focusedProfileOnly && !hostSourceMismatch
-      ? await probeInstalledSidebarControls(sidebar, proofMatrix, hostErrors, workbench)
+      ? await timedProfile('sidebar-controls', () => probeInstalledSidebarControls(sidebar, proofMatrix, hostErrors, workbench, {
+          onProgress: event => appendProfileProgress({ profile: 'sidebar-control', ...event })
+        }), { resetBaseline: false })
       : { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Sidebar probe unavailable outside the full exact-source owned host.', eligible_control_count: 0, records: [] };
     workbenchCommandProfile = ownedReversibleConfigurationAuthority && !focusedProfileOnly && !hostSourceMismatch
       ? await timedProfile('workbench-commands', () => probeInstalledWorkbenchCommands(workbench, dashboard, proofMatrix, hostErrors))
