@@ -512,11 +512,12 @@ const codexHandoffOnly = ownedReversibleConfigurationAuthority && process.env.PX
 const errorIndicatorsOnly = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_ERROR_INDICATORS_ONLY === '1';
 const lateCardRepairOnly = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_LATE_CARD_REPAIR_ONLY === '1';
 const builderOnly = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_BUILDER_ONLY === '1';
+const workbenchCommandOnly = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_WORKBENCH_COMMAND_ONLY === '1';
 const ERROR_INDICATOR_CONTROL_IDS = new Set([
   'pxui.memory.indicator.queryError',
   'pxui.knowledge-core.indicator.controllerError'
 ]);
-const focusedProfile = configurationOnly ? 'reversible-configuration' : studioLifecycleOnly ? 'studio-lifecycle' : knowledgeLifecycleOnly ? 'knowledge-lifecycle' : hostBoundaryOnly ? 'host-boundary' : nativeDialogOnly ? 'native-dialog-boundary' : codexHandoffOnly ? 'codex-handoff' : errorIndicatorsOnly ? 'error-indicators' : lateCardRepairOnly ? 'late-card-repair' : builderOnly ? 'builder' : null;
+const focusedProfile = configurationOnly ? 'reversible-configuration' : studioLifecycleOnly ? 'studio-lifecycle' : knowledgeLifecycleOnly ? 'knowledge-lifecycle' : hostBoundaryOnly ? 'host-boundary' : nativeDialogOnly ? 'native-dialog-boundary' : codexHandoffOnly ? 'codex-handoff' : errorIndicatorsOnly ? 'error-indicators' : lateCardRepairOnly ? 'late-card-repair' : builderOnly ? 'builder' : workbenchCommandOnly ? 'workbench-command' : null;
 const focusedProfileOnly = Boolean(focusedProfile);
 const postAuditLongRunningAuthority = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_POST_AUDIT_LONG_RUNNING === '1';
 // Long-running operational coverage is not validation authority. Repository
@@ -2790,11 +2791,12 @@ async function executeWorkbenchCommand(workbench, title, options = {}) {
         if (rejection.bound !== true) throw new Error(`workbench-command-rejection-input-unavailable:${rejection.reason}`);
         await workbench.keyboard.press('Enter');
         await wait(80);
+        const rejectionObservation = await observeCurrentWorkbenchCommandRejection(workbench, rejection.token);
         const retained = await widget.isVisible().catch(() => false);
         await workbench.keyboard.press('Escape').catch(() => {});
         await widget.waitFor({ state: 'hidden', timeout: 5_000 }).catch(() => {});
         const restored = !await widget.isVisible().catch(() => false);
-        if (!retained || !restored) throw new Error(`workbench-command-owned-rejection-unobserved:${title}:${JSON.stringify({ retained, restored })}`);
+        if (rejectionObservation.rejected !== true || !retained || !restored) throw new Error(`workbench-command-owned-rejection-unobserved:${title}:${JSON.stringify({ rejected: rejectionObservation.rejected, reason: rejectionObservation.reason, retained, restored })}`);
         return { listed: true, executed: false, rejected: true, restored: true, title, palette_attempt: attempt };
       }
       // VS Code rebuilds command-palette rows as scoring and keybinding metadata
@@ -2843,6 +2845,7 @@ async function executeWorkbenchCommand(workbench, title, options = {}) {
 
 async function bindCurrentWorkbenchCommandRejection(workbench) {
   return workbench.evaluate(() => {
+    const stateKey = '__PX_OWNED_WORKBENCH_COMMAND_REJECTION__';
     const visible = element => {
       if (!element || element.hidden || element.getAttribute?.('aria-hidden') === 'true') return false;
       const style = globalThis.getComputedStyle?.(element);
@@ -2854,13 +2857,36 @@ async function bindCurrentWorkbenchCommandRejection(workbench) {
     const input = widgets[0].querySelector('input');
     if (!visible(input)) return { bound: false, reason: 'visible-input-missing' };
     if (document.activeElement !== input) return { bound: false, reason: 'visible-input-not-focused' };
-    input.addEventListener('keydown', event => {
+    const prior = globalThis[stateKey];
+    if (prior?.handler) globalThis.removeEventListener('keydown', prior.handler, true);
+    const token = globalThis.crypto?.randomUUID?.() || `owned-command-rejection-${Date.now()}-${Math.random()}`;
+    const state = { token, rejected: false, reason: 'enter-not-observed', handler: null };
+    state.handler = event => {
       if (event.key !== 'Enter') return;
       event.preventDefault();
+      event.stopPropagation();
       event.stopImmediatePropagation();
-    }, { capture: true, once: true });
-    return { bound: true, reason: 'exact-current-focused-input' };
+      const currentWidgets = [...document.querySelectorAll('.quick-input-widget')].filter(visible);
+      const currentInput = currentWidgets.length === 1 ? currentWidgets[0].querySelector('input') : null;
+      const exactTarget = currentInput === document.activeElement && currentWidgets[0]?.contains(event.target) === true;
+      state.rejected = exactTarget;
+      state.reason = exactTarget ? 'exact-current-focused-input-enter-rejected' : 'enter-rejected-after-input-identity-changed';
+    };
+    globalThis[stateKey] = state;
+    globalThis.addEventListener('keydown', state.handler, { capture: true, once: true });
+    return { bound: true, reason: 'exact-current-focused-input-window-capture', token };
   });
+}
+
+async function observeCurrentWorkbenchCommandRejection(workbench, token) {
+  return workbench.evaluate(expectedToken => {
+    const stateKey = '__PX_OWNED_WORKBENCH_COMMAND_REJECTION__';
+    const state = globalThis[stateKey];
+    if (!state || state.token !== expectedToken) return { rejected: false, reason: 'rejection-observation-token-missing' };
+    if (state.handler) globalThis.removeEventListener('keydown', state.handler, true);
+    delete globalThis[stateKey];
+    return { rejected: state.rejected === true, reason: state.reason };
+  }, token);
 }
 
 function ownedWorkbenchReloadIdentity(beforeTimeOrigin, afterTimeOrigin, workbenchReady) {
@@ -10976,7 +11002,7 @@ async function main() {
     if (ownedReversibleConfigurationAuthority && returnedProfileErrors(reversibleConfigurationProfile).length) {
       dashboardProfileBlocker = 'reversible-configuration';
     }
-    const studioChainAdmitted = ownedReversibleConfigurationAuthority && !configurationOnly && !knowledgeLifecycleOnly && !hostBoundaryOnly && !nativeDialogOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly && !builderOnly;
+    const studioChainAdmitted = ownedReversibleConfigurationAuthority && !configurationOnly && !knowledgeLifecycleOnly && !hostBoundaryOnly && !nativeDialogOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly && !builderOnly && !workbenchCommandOnly;
     const studioSetupProfile = studioChainAdmitted
       ? await timedProfile('studio-setup', () => runInstalledStudioSetupProfile(workbench, dashboard, proofMatrix))
       : { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside an owned isolated host.', eligible_control_count: 0, records: [] };
@@ -11031,10 +11057,10 @@ async function main() {
     if (!focusedProfileOnly && !hostSourceMismatch && studioLifecycleCrashProfile.completed !== true && returnedProfileErrors(studioLifecycleCrashProfile).length === 0) {
       recordProfileFailure('studio-lifecycle-crash-recovery', 'returned-incomplete', studioLifecycleCrashProfile.errors?.length ? studioLifecycleCrashProfile.errors : ['profile-incomplete-without-error']);
     }
-    const knowledgeLifecycleProfile = ownedReversibleConfigurationAuthority && !configurationOnly && !studioLifecycleOnly && !hostBoundaryOnly && !nativeDialogOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly && !builderOnly
+    const knowledgeLifecycleProfile = ownedReversibleConfigurationAuthority && !configurationOnly && !studioLifecycleOnly && !hostBoundaryOnly && !nativeDialogOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly && !builderOnly && !workbenchCommandOnly
       ? await timedProfile('knowledge-lifecycle', () => runInstalledKnowledgeLifecycleProfile(dashboard, proofMatrix))
       : { schema_version: 'px.installed-knowledge-lifecycle-profile/1.0', authority: 'Not admitted outside an owned isolated host and disposable workspace.', observation: { attempted: false, completed: false, errors: [] }, control_probe: { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside an owned isolated host and disposable workspace.', eligible_control_count: 0, records: [] } };
-    const learningLifecycleProfile = ownedReversibleConfigurationAuthority && !configurationOnly && !studioLifecycleOnly && !hostBoundaryOnly && !nativeDialogOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly && !builderOnly
+    const learningLifecycleProfile = ownedReversibleConfigurationAuthority && !configurationOnly && !studioLifecycleOnly && !hostBoundaryOnly && !nativeDialogOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly && !builderOnly && !workbenchCommandOnly
       ? await timedProfile('learning-lifecycle', () => runInstalledLearningLifecycleProfile(dashboard, proofMatrix))
       : { schema_version: 'px.installed-learning-lifecycle-profile/1.0', authority: 'Not admitted outside an owned isolated host and disposable workspace.', observation: { attempted: false, completed: false, errors: [] }, control_probe: { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside an owned isolated host and disposable workspace.', eligible_control_count: 0, records: [] } };
     const coordinationMemoryProfile = ownedReversibleConfigurationAuthority && !focusedProfileOnly
@@ -11199,7 +11225,7 @@ async function main() {
           onProgress: event => appendProfileProgress({ profile: 'sidebar-control', ...event })
         }), { resetBaseline: false })
       : { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Sidebar probe unavailable outside the full exact-source owned host.', eligible_control_count: 0, records: [] };
-    workbenchCommandProfile = ownedReversibleConfigurationAuthority && !focusedProfileOnly && !hostSourceMismatch
+    workbenchCommandProfile = ownedReversibleConfigurationAuthority && (!focusedProfileOnly || workbenchCommandOnly) && !hostSourceMismatch
       ? await timedProfile('workbench-commands', () => probeInstalledWorkbenchCommands(workbench, dashboard, proofMatrix, hostErrors))
       : workbenchCommandProfile;
     const inlineCommandProfile = inlineCommandOwnerControlProbe(proofMatrix, [
@@ -11366,7 +11392,7 @@ if (require.main === module) {
 module.exports = {
   applyInstalledProbeObservations, boundedOwnedUiAction, createOwnedContentEvaluationBoundary, createOwnedLocatorEvaluationBoundary, remainingOwnedUiBudget, buildInstalledLateCardAdversarialProfile, buildInstalledLateCardScenarioProfile, cleanupControlProbe, codexHandoffControlProbe, commandPaletteAttemptDecision, coordinationMemoryControlProbe, currentSourceExtensionAssetIdentity,
   catalogPaginationControlProbe, clickWhenKnowledgeControlReady, correlateCatalogExchange, observationStateControlProbe, runInstalledObservationStateProfile, eligibleInstalledControl, eligibleInstalledSidebarControl, engineOutageRecord, enterpriseControlProbe, environmentLifecycleControlProbe,
-  bindCurrentWorkbenchCommandRejection, ensureInstalledSensorRowSnapshot, exactStudioSetupTerminalResponse, executeWorkbenchCommand, exactPluginConflictSignal, exerciseInstalledControl, graphProjectionIdentity, requestBoundGraphResultIdentity, hostBoundaryControlProbe, inlineCommandOwnerControlProbe, installedActionIdentity,
+  bindCurrentWorkbenchCommandRejection, observeCurrentWorkbenchCommandRejection, ensureInstalledSensorRowSnapshot, exactStudioSetupTerminalResponse, executeWorkbenchCommand, exactPluginConflictSignal, exerciseInstalledControl, graphProjectionIdentity, requestBoundGraphResultIdentity, hostBoundaryControlProbe, inlineCommandOwnerControlProbe, installedActionIdentity,
   installedConditionalRecoverySpec, installedConditionalScenario, installedHostBoundaryRevealSelector, installedPreparationIdentity, installedRuntimeSourceIdentityState, installedSourceIdentityNeedsLateRefresh, installedSidebarHandoffRequestMatches, installedSidebarHandoffSpec, installedSidebarSelector, installedStudioControlScenario, installedStudioPrerequisites, installedSurfaceState, installedSurfaceAcknowledged,
   installedFilesystemPathIdentity, installedFilesystemPathsMatch, installedFilesystemPathWithin, installedHostActionReceiptMatches, installedHostActionRequestIdentity, isExternalVsCodeWillSaveTimeoutDiagnostic,
   advanceInstalledSurfaceControlSettlement, installedSurfaceControlAcknowledged, installedWorkbenchCommandSpec, installedWorkbenchAuthorityBoundarySpec, instrumentInstalledBridge, knowledgeBrowseHasHead, knowledgeGraphControlProbe,

@@ -21,6 +21,7 @@ const { dispatchInstalledPluginConflictControl, installedPluginConflictControlMa
 const { installedAdvancedFixtureStateAcknowledged } = require('../scripts/run-operational-ui-walk');
 const { waitForInstalledCanonicalMemoryBaseline } = require('../scripts/run-operational-ui-walk');
 const { closeOwnedDashboardTabs, remainingOwnedUiBudget } = require('../scripts/run-operational-ui-walk');
+const { bindCurrentWorkbenchCommandRejection, observeCurrentWorkbenchCommandRejection } = require('../scripts/run-operational-ui-walk');
 
 const { boundedOwnedUiAction, createOwnedContentEvaluationBoundary, createOwnedLocatorEvaluationBoundary, waitForOwnedWebview } = require('../scripts/run-operational-ui-walk');
 const { clickWhenBuilderControlReady, clickWhenInstalledGraphControlReady, installedGraphExchangeOffset, invokeBuilderControl, waitForBuilderJsonControls, waitForInstalledGraphExchange, waitForInstalledGraphIdle } = require('../scripts/run-operational-ui-walk');
@@ -426,7 +427,7 @@ test('late-card repair focus runs only observation state and controller adversar
 test('builder focus runs only the two unsaved builder durability profiles', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   assert.match(source, /PX_OPERATIONAL_BUILDER_ONLY === '1'/);
-  assert.match(source, /builderOnly \? 'builder' : null/);
+  assert.match(source, /builderOnly \? 'builder' : workbenchCommandOnly \? 'workbench-command' : null/);
   assert.match(source, /for \(const kind of focusedProfileOnly && !builderOnly \? \[\] : \['agent', 'workflow'\]\)/);
   assert.match(source, /if \(focusedProfileOnly && !builderOnly\)/);
   assert.match(source, /studioChainAdmitted =[^\n]*!builderOnly/);
@@ -746,7 +747,7 @@ test('environment and Codex conditional profiles wait for their exact authoritat
 test('focused host-boundary scheduling runs only its exact typed-host profile', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   assert.match(source, /PX_OPERATIONAL_HOST_BOUNDARY_ONLY === '1'/);
-  assert.match(source, /hostBoundaryOnly \? 'host-boundary' : nativeDialogOnly \? 'native-dialog-boundary' : codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : builderOnly \? 'builder' : null/);
+  assert.match(source, /hostBoundaryOnly \? 'host-boundary' : nativeDialogOnly \? 'native-dialog-boundary' : codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : builderOnly \? 'builder' : workbenchCommandOnly \? 'workbench-command' : null/);
   assert.match(source, /hostBoundaryProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| hostBoundaryOnly\)/);
   assert.match(source, /studioChainAdmitted = ownedReversibleConfigurationAuthority && !configurationOnly && !knowledgeLifecycleOnly && !hostBoundaryOnly/);
   assert.match(source, /studioSetupProfile = studioChainAdmitted/);
@@ -758,7 +759,7 @@ test('focused host-boundary scheduling runs only its exact typed-host profile', 
 test('focused native-dialog scheduling runs the exact confirmation profiles and dependent recovery checks', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   assert.match(source, /PX_OPERATIONAL_NATIVE_DIALOG_ONLY === '1'/);
-  assert.match(source, /nativeDialogOnly \? 'native-dialog-boundary' : codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : builderOnly \? 'builder' : null/);
+  assert.match(source, /nativeDialogOnly \? 'native-dialog-boundary' : codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : builderOnly \? 'builder' : workbenchCommandOnly \? 'workbench-command' : null/);
   assert.match(source, /reversibleConfigurationProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| configurationOnly\)/);
   assert.match(source, /enterpriseProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| nativeDialogOnly\)/);
   assert.match(source, /projectsProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| nativeDialogOnly\)/);
@@ -1403,7 +1404,7 @@ test('Codex handoff profile owns the exact contributed command without contradic
 test('focused Codex handoff scheduling excludes every unrelated stateful profile', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   assert.match(source, /PX_OPERATIONAL_CODEX_HANDOFF_ONLY === '1'/);
-  assert.match(source, /codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : builderOnly \? 'builder' : null/);
+  assert.match(source, /codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : builderOnly \? 'builder' : workbenchCommandOnly \? 'workbench-command' : null/);
   assert.match(source, /const codexHandoffProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| codexHandoffOnly\)/);
   const schedulingStart = source.indexOf('const reversibleConfigurationProfile');
   const scheduling = source.slice(schedulingStart, source.indexOf('const engineOutageProfile', schedulingStart));
@@ -1417,7 +1418,7 @@ test('focused Codex handoff scheduling excludes every unrelated stateful profile
 test('focused error-indicator scheduling probes exactly two identities and excludes unrelated stateful profiles', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   assert.match(source, /PX_OPERATIONAL_ERROR_INDICATORS_ONLY === '1'/);
-  assert.match(source, /errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : builderOnly \? 'builder' : null/);
+  assert.match(source, /errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : builderOnly \? 'builder' : workbenchCommandOnly \? 'workbench-command' : null/);
   const identityBlock = source.slice(source.indexOf('const ERROR_INDICATOR_CONTROL_IDS'), source.indexOf('const focusedProfile'));
   assert.match(identityBlock, /pxui\.memory\.indicator\.queryError/);
   assert.match(identityBlock, /pxui\.knowledge-core\.indicator\.controllerError/);
@@ -1753,13 +1754,63 @@ test('installed workbench commands reject one exact pre-dispatch event before fr
   assert.match(execute, /bindCurrentWorkbenchCommandRejection\(workbench\)/);
   assert.doesNotMatch(execute, /widget\.locator\('input'\)\.first\(\)\.evaluate/);
   assert.match(rejection, /document\.activeElement !== input/);
-  assert.match(rejection, /event\.preventDefault\(\);[\s\S]*event\.stopImmediatePropagation\(\)/);
+  assert.match(rejection, /globalThis\.addEventListener\('keydown', state\.handler, \{ capture: true, once: true \}\)/);
+  assert.match(rejection, /event\.preventDefault\(\);[\s\S]*event\.stopPropagation\(\);[\s\S]*event\.stopImmediatePropagation\(\)/);
+  assert.match(rejection, /exact-current-focused-input-enter-rejected/);
   assert.match(execute, /const retained = await widget\.isVisible/);
+  assert.match(execute, /observeCurrentWorkbenchCommandRejection\(workbench, rejection\.token\)/);
+  assert.match(execute, /rejectionObservation\.rejected !== true/);
   assert.match(execute, /executed: false, rejected: true, restored: true/);
   assert.match(probe, /executeWorkbenchCommand\(workbench, spec\.title, \{ rejectBeforeDispatch: true \}\)/);
   assert.match(probe, /probe\.failureObserved = rejected\.listed === true[\s\S]*rejected\.restored === true/);
   assert.match(probe, /const command = await executeWorkbenchCommand\(workbench, spec\.title\)/);
   assert.match(probe, /probe\.recoveryObserved = probe\.failureObserved/);
+});
+
+test('workbench command rejection is observed at window capture and removes its owned listener', async () => {
+  const input = { hidden: false, offsetWidth: 20, offsetHeight: 10, getClientRects: () => [1], getAttribute: () => null };
+  const widget = { hidden: false, offsetWidth: 40, offsetHeight: 20, getClientRects: () => [1], getAttribute: () => null,
+    querySelector: selector => selector === 'input' ? input : null, contains: target => target === input };
+  const originalDocument = globalThis.document;
+  const originalGetComputedStyle = globalThis.getComputedStyle;
+  const originalAddEventListener = globalThis.addEventListener;
+  const originalRemoveEventListener = globalThis.removeEventListener;
+  const listeners = new Set();
+  globalThis.document = { activeElement: input, querySelectorAll: selector => selector === '.quick-input-widget' ? [widget] : [] };
+  globalThis.getComputedStyle = () => ({ display: 'block', visibility: 'visible' });
+  globalThis.addEventListener = (type, listener) => { assert.equal(type, 'keydown'); listeners.add(listener); };
+  globalThis.removeEventListener = (type, listener) => { assert.equal(type, 'keydown'); listeners.delete(listener); };
+  const workbench = { evaluate: async (callback, argument) => callback(argument) };
+  try {
+    const binding = await bindCurrentWorkbenchCommandRejection(workbench);
+    assert.equal(binding.bound, true);
+    assert.equal(listeners.size, 1);
+    const event = { key: 'Enter', target: input, defaultPrevented: false, propagationStopped: false, immediateStopped: false,
+      preventDefault() { this.defaultPrevented = true; }, stopPropagation() { this.propagationStopped = true; }, stopImmediatePropagation() { this.immediateStopped = true; } };
+    [...listeners][0](event);
+    assert.deepEqual([event.defaultPrevented, event.propagationStopped, event.immediateStopped], [true, true, true]);
+    const observation = await observeCurrentWorkbenchCommandRejection(workbench, binding.token);
+    assert.deepEqual(observation, { rejected: true, reason: 'exact-current-focused-input-enter-rejected' });
+    assert.equal(listeners.size, 0);
+  } finally {
+    delete globalThis.__PX_OWNED_WORKBENCH_COMMAND_REJECTION__;
+    if (originalDocument === undefined) delete globalThis.document; else globalThis.document = originalDocument;
+    if (originalGetComputedStyle === undefined) delete globalThis.getComputedStyle; else globalThis.getComputedStyle = originalGetComputedStyle;
+    if (originalAddEventListener === undefined) delete globalThis.addEventListener; else globalThis.addEventListener = originalAddEventListener;
+    if (originalRemoveEventListener === undefined) delete globalThis.removeEventListener; else globalThis.removeEventListener = originalRemoveEventListener;
+  }
+});
+
+test('focused workbench-command scheduling runs only its exact installed profile', () => {
+  const walker = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
+  const launcher = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-isolated-current-source-walk.js'), 'utf8');
+  assert.match(walker, /PX_OPERATIONAL_WORKBENCH_COMMAND_ONLY === '1'/);
+  assert.match(walker, /workbenchCommandOnly \? 'workbench-command' : null/);
+  assert.match(walker, /studioChainAdmitted =[^\n]*!workbenchCommandOnly/);
+  assert.match(walker, /\(!focusedProfileOnly \|\| workbenchCommandOnly\)[\s\S]*probeInstalledWorkbenchCommands/);
+  assert.match(walker, /!builderOnly && !workbenchCommandOnly[\s\S]*runInstalledKnowledgeLifecycleProfile/);
+  assert.match(launcher, /--workbench-command-only/);
+  assert.match(launcher, /PX_OPERATIONAL_WORKBENCH_COMMAND_ONLY: '1'/);
 });
 
 test('installed sensor rows require a typed snapshot refresh before their exact settlement retry', () => {

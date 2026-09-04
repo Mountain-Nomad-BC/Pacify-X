@@ -240,14 +240,14 @@ function focusedProfileIssues(value) {
   }));
   const requiredStages = ['open_load', 'display', 'user_edit_action', 'input_validation', 'authorization', 'backend_dispatch', 'runtime_effect', 'progress_reporting', 'result_acknowledgement', 'persistence', 'reload_reopen', 'failure_handling', 'recovery_rollback'];
   const completeOwnedProbe = profile => {
-    const records = Array.isArray(profile?.control_probe?.records) ? profile.control_probe.records : [];
-    const eligible = Number(profile?.control_probe?.eligible_control_count || 0);
+    const records = Array.isArray(profile?.control_probe?.records) ? profile.control_probe.records : Array.isArray(profile?.records) ? profile.records : [];
+    const eligible = Number(profile?.control_probe?.eligible_control_count ?? profile?.eligible_control_count ?? 0);
     return eligible > 0 && records.length === eligible
       && records.every(record => record?.rendered === true
         && record?.attempted === true
         && !(record?.errors || []).length
         && requiredStages.every(stage => ['present', 'not_applicable'].includes(record?.interaction_chain?.[stage]?.state)))
-      && !(profile?.observation?.errors || []).length;
+      && !(profile?.observation?.errors || profile?.errors || []).length;
   };
   if (focused === 'studio-lifecycle') {
     const setup = value.studio_setup_profile?.observation;
@@ -400,6 +400,34 @@ function focusedProfileIssues(value) {
         required_control_ids: [...requiredIds],
         observed_control_ids: observedIds,
         eligible_control_count: Number(profile?.eligible_control_count || 0)
+      });
+    }
+  } else if (focused === 'workbench-command') {
+    const profile = value.installed_workbench_command_profile;
+    const records = Array.isArray(profile?.records) ? profile.records : [];
+    const eligible = Number(profile?.eligible_control_count || 0);
+    const refusedEffectStages = new Set(['authorization', 'backend_dispatch', 'runtime_effect', 'progress_reporting', 'result_acknowledgement']);
+    const complete = eligible > 0
+      && records.length === eligible
+      && new Set(records.map(record => record?.control_id)).size === eligible
+      && !(profile?.errors || []).length
+      && records.every(record => {
+        if (record?.rendered !== true || record?.observed !== true || record?.attempted !== true || (record?.errors || []).length) return false;
+        if (record?.authority_skipped === true) {
+          return EXACT_RECOVERED_AUTHORITY_BOUNDARY_IDS.has(String(record.control_id || ''))
+            && record?.interaction_chain?.failure_handling?.state === 'present'
+            && record?.interaction_chain?.recovery_rollback?.state === 'present'
+            && requiredStages.every(stage => refusedEffectStages.has(stage)
+              ? record?.interaction_chain?.[stage]?.state === 'missing'
+              : ['present', 'not_applicable'].includes(record?.interaction_chain?.[stage]?.state));
+        }
+        return requiredStages.every(stage => ['present', 'not_applicable'].includes(record?.interaction_chain?.[stage]?.state));
+      });
+    if (!complete) {
+      incomplete('focused-workbench-command-incomplete', 'The focused workbench-command journey did not complete every exact registered safe command and authority boundary through required rejection, dispatch, acknowledgement, and recovery stages.', {
+        eligible_control_count: eligible,
+        record_count: records.length,
+        profile_errors: profile?.errors || []
       });
     }
   } else {

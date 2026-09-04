@@ -442,7 +442,7 @@ test('launcher exposes an exact host-boundary-only mode without Studio setup or 
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-isolated-current-source-walk.js'), 'utf8');
   assert.match(source, /process\.argv\.includes\('--host-boundary-only'\)/);
   assert.match(source, /PX_OPERATIONAL_HOST_BOUNDARY_ONLY: '1'/);
-  assert.match(source, /hostBoundaryOnly \? 'host-boundary' : nativeDialogOnly \? 'native-dialog-boundary' : codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : builderOnly \? 'builder' : null/);
+  assert.match(source, /hostBoundaryOnly \? 'host-boundary' : nativeDialogOnly \? 'native-dialog-boundary' : codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : builderOnly \? 'builder' : workbenchCommandOnly \? 'workbench-command' : null/);
   assert.match(source, /!config\.knowledgeLifecycleOnly && !config\.hostBoundaryOnly && !config\.nativeDialogOnly[\s\S]*PX_OPERATIONAL_EXERCISE_STUDIO_APPROVAL/);
   assert.match(source, /full_operational_completion_claimed: focusedProfile \? false/);
   assert.match(source, /--host-boundary-only/);
@@ -456,12 +456,12 @@ test('launcher exposes an exact native-dialog-only mode without unrelated fixtur
   assert.match(source, /native_input_helper_pid/);
   assert.match(source, /PX_OWNED_NATIVE_INPUT_SECRET: config\.nativeInputSecret/);
   assert.match(source, /native_input_helper_termination_verified/);
-  assert.match(source, /nativeDialogOnly \? 'native-dialog-boundary' : codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : builderOnly \? 'builder' : null/);
+  assert.match(source, /nativeDialogOnly \? 'native-dialog-boundary' : codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : builderOnly \? 'builder' : workbenchCommandOnly \? 'workbench-command' : null/);
   assert.match(source, /focused-launcher-modes-are-mutually-exclusive/);
-  assert.match(source, /postAuditLongRunning && \(bootstrapOnly \|\| configurationOnly \|\| studioLifecycleOnly \|\| knowledgeLifecycleOnly \|\| hostBoundaryOnly \|\| nativeDialogOnly \|\| codexHandoffOnly \|\| errorIndicatorsOnly \|\| lateCardRepairOnly \|\| builderOnly\)/);
+  assert.match(source, /postAuditLongRunning && \(bootstrapOnly \|\| configurationOnly \|\| studioLifecycleOnly \|\| knowledgeLifecycleOnly \|\| hostBoundaryOnly \|\| nativeDialogOnly \|\| codexHandoffOnly \|\| errorIndicatorsOnly \|\| lateCardRepairOnly \|\| builderOnly \|\| workbenchCommandOnly\)/);
   assert.match(source, /!config\.hostBoundaryOnly && !config\.nativeDialogOnly[\s\S]*PX_OPERATIONAL_EXERCISE_STUDIO_APPROVAL/);
-  assert.match(source, /studioLifecycleOnly \|\| nativeDialogOnly \|\| codexHandoffOnly \|\| builderOnly \? null : stageOwnedKnowledgeFixture/);
-  assert.match(source, /prepare\(temporaryRoot, walkOutput, vsixPath, bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly, hostBoundaryOnly, nativeDialogOnly, codexHandoffOnly, errorIndicatorsOnly, lateCardRepairOnly, builderOnly, postAuditLongRunning\)/);
+  assert.match(source, /studioLifecycleOnly \|\| nativeDialogOnly \|\| codexHandoffOnly \|\| builderOnly \|\| workbenchCommandOnly \? null : stageOwnedKnowledgeFixture/);
+  assert.match(source, /prepare\(temporaryRoot, walkOutput, vsixPath, bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly, hostBoundaryOnly, nativeDialogOnly, codexHandoffOnly, errorIndicatorsOnly, lateCardRepairOnly, builderOnly, workbenchCommandOnly, postAuditLongRunning\)/);
   assert.match(source, /full_operational_completion_claimed: focusedProfile \? false/);
   assert.match(source, /timeoutMs: postAuditLongRunning \? 3_600_000 : 1_800_000/);
 });
@@ -470,12 +470,12 @@ test('launcher exposes an exact Codex-handoff-only mode without unrelated fixtur
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-isolated-current-source-walk.js'), 'utf8');
   assert.match(source, /process\.argv\.includes\('--codex-handoff-only'\)/);
   assert.match(source, /PX_OPERATIONAL_CODEX_HANDOFF_ONLY: '1'/);
-  assert.match(source, /codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : builderOnly \? 'builder' : null/);
+  assert.match(source, /codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : builderOnly \? 'builder' : workbenchCommandOnly \? 'workbench-command' : null/);
   assert.match(source, /focused-launcher-modes-are-mutually-exclusive/);
-  assert.match(source, /postAuditLongRunning && \(bootstrapOnly \|\| configurationOnly \|\| studioLifecycleOnly \|\| knowledgeLifecycleOnly \|\| hostBoundaryOnly \|\| nativeDialogOnly \|\| codexHandoffOnly \|\| errorIndicatorsOnly \|\| lateCardRepairOnly \|\| builderOnly\)/);
+  assert.match(source, /postAuditLongRunning && \(bootstrapOnly \|\| configurationOnly \|\| studioLifecycleOnly \|\| knowledgeLifecycleOnly \|\| hostBoundaryOnly \|\| nativeDialogOnly \|\| codexHandoffOnly \|\| errorIndicatorsOnly \|\| lateCardRepairOnly \|\| builderOnly \|\| workbenchCommandOnly\)/);
   assert.match(source, /!config\.nativeDialogOnly && !config\.codexHandoffOnly[\s\S]*PX_OPERATIONAL_EXERCISE_STUDIO_APPROVAL/);
-  assert.match(source, /studioLifecycleOnly \|\| nativeDialogOnly \|\| codexHandoffOnly \|\| builderOnly \? null : stageOwnedKnowledgeFixture/);
-  assert.match(source, /prepare\(temporaryRoot, walkOutput, vsixPath, bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly, hostBoundaryOnly, nativeDialogOnly, codexHandoffOnly, errorIndicatorsOnly, lateCardRepairOnly, builderOnly, postAuditLongRunning\)/);
+  assert.match(source, /studioLifecycleOnly \|\| nativeDialogOnly \|\| codexHandoffOnly \|\| builderOnly \|\| workbenchCommandOnly \? null : stageOwnedKnowledgeFixture/);
+  assert.match(source, /prepare\(temporaryRoot, walkOutput, vsixPath, bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly, hostBoundaryOnly, nativeDialogOnly, codexHandoffOnly, errorIndicatorsOnly, lateCardRepairOnly, builderOnly, workbenchCommandOnly, postAuditLongRunning\)/);
   assert.match(source, /--codex-handoff-only/);
   assert.match(source, /full_operational_completion_claimed: focusedProfile \? false/);
 });
@@ -484,11 +484,11 @@ test('launcher exposes an exact error-indicators-only mode without unrelated sta
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-isolated-current-source-walk.js'), 'utf8');
   assert.match(source, /process\.argv\.includes\('--error-indicators-only'\)/);
   assert.match(source, /PX_OPERATIONAL_ERROR_INDICATORS_ONLY: '1'/);
-  assert.match(source, /errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : builderOnly \? 'builder' : null/);
-  assert.match(source, /\[bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly, hostBoundaryOnly, nativeDialogOnly, codexHandoffOnly, errorIndicatorsOnly, lateCardRepairOnly, builderOnly\]/);
-  assert.match(source, /postAuditLongRunning && \(bootstrapOnly \|\| configurationOnly \|\| studioLifecycleOnly \|\| knowledgeLifecycleOnly \|\| hostBoundaryOnly \|\| nativeDialogOnly \|\| codexHandoffOnly \|\| errorIndicatorsOnly \|\| lateCardRepairOnly \|\| builderOnly\)/);
+  assert.match(source, /errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : builderOnly \? 'builder' : workbenchCommandOnly \? 'workbench-command' : null/);
+  assert.match(source, /\[bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly, hostBoundaryOnly, nativeDialogOnly, codexHandoffOnly, errorIndicatorsOnly, lateCardRepairOnly, builderOnly, workbenchCommandOnly\]/);
+  assert.match(source, /postAuditLongRunning && \(bootstrapOnly \|\| configurationOnly \|\| studioLifecycleOnly \|\| knowledgeLifecycleOnly \|\| hostBoundaryOnly \|\| nativeDialogOnly \|\| codexHandoffOnly \|\| errorIndicatorsOnly \|\| lateCardRepairOnly \|\| builderOnly \|\| workbenchCommandOnly\)/);
   assert.match(source, /!config\.codexHandoffOnly && !config\.errorIndicatorsOnly[\s\S]*PX_OPERATIONAL_EXERCISE_STUDIO_APPROVAL/);
-  assert.match(source, /prepare\(temporaryRoot, walkOutput, vsixPath, bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly, hostBoundaryOnly, nativeDialogOnly, codexHandoffOnly, errorIndicatorsOnly, lateCardRepairOnly, builderOnly, postAuditLongRunning\)/);
+  assert.match(source, /prepare\(temporaryRoot, walkOutput, vsixPath, bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly, hostBoundaryOnly, nativeDialogOnly, codexHandoffOnly, errorIndicatorsOnly, lateCardRepairOnly, builderOnly, workbenchCommandOnly, postAuditLongRunning\)/);
   assert.match(source, /--error-indicators-only/);
   assert.match(source, /full_operational_completion_claimed: focusedProfile \? false/);
 });
@@ -562,7 +562,7 @@ test('owned provider pagination fixture fails closed and changes only a disposab
 test('full current-source walks stage the certified disposable host-boundary fixture before launch', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-isolated-current-source-walk.js'), 'utf8');
   const prepare = source.slice(source.indexOf('function prepare('), source.indexOf('function reconcilePrelaunchFailure'));
-  assert.match(prepare, /hostBoundaryFixtureRequired = hostBoundaryOnly \|\| \(!bootstrapOnly && !configurationOnly && !studioLifecycleOnly && !knowledgeLifecycleOnly && !nativeDialogOnly && !builderOnly\)/);
+  assert.match(prepare, /hostBoundaryFixtureRequired = hostBoundaryOnly \|\| \(!bootstrapOnly && !configurationOnly && !studioLifecycleOnly && !knowledgeLifecycleOnly && !nativeDialogOnly && !builderOnly && !workbenchCommandOnly\)/);
   assert.match(prepare, /'pacifyX\.workspaceRoot': hostBoundaryFixtureRequired \? config\.workspace : ''/);
   assert.match(prepare, /config\.hostBoundaryFixture = hostBoundaryFixtureRequired \? stageOwnedHostBoundaryFixture/);
   assert.match(prepare, /config\.gitAuthority = fullOperationalWalk \? stageOwnedGitAuthority\(config\.workspace\) : null/);
@@ -641,10 +641,10 @@ test('launcher exposes a bounded builder-only mode without mutation fixtures or 
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-isolated-current-source-walk.js'), 'utf8');
   assert.match(source, /process\.argv\.includes\('--builder-only'\)/);
   assert.match(source, /PX_OPERATIONAL_BUILDER_ONLY: '1'/);
-  assert.match(source, /builderOnly \? 'builder' : null/);
-  assert.match(source, /fullOperationalWalk =[^\n]*!builderOnly/);
-  assert.match(source, /!config\.errorIndicatorsOnly && !config\.builderOnly[\s\S]*PX_OPERATIONAL_EXERCISE_STUDIO_APPROVAL/);
-  assert.match(source, /codexHandoffOnly \|\| builderOnly \? null : stageOwnedKnowledgeFixture/);
+  assert.match(source, /builderOnly \? 'builder' : workbenchCommandOnly \? 'workbench-command' : null/);
+  assert.match(source, /fullOperationalWalk =[^\n]*!builderOnly && !workbenchCommandOnly/);
+  assert.match(source, /!config\.errorIndicatorsOnly && !config\.builderOnly && !config\.workbenchCommandOnly[\s\S]*PX_OPERATIONAL_EXERCISE_STUDIO_APPROVAL/);
+  assert.match(source, /codexHandoffOnly \|\| builderOnly \|\| workbenchCommandOnly \? null : stageOwnedKnowledgeFixture/);
   assert.match(source, /full_operational_completion_claimed: focusedProfile \? false/);
 });
 
@@ -654,7 +654,7 @@ test('launcher requires explicit full-profile authority for post-audit long-runn
   assert.match(source, /PX_OPERATIONAL_POST_AUDIT_LONG_RUNNING: '1'/);
   assert.match(source, /post-audit-long-running-requires-full-profile/);
   assert.match(source, /post_audit_long_running_authority: postAuditLongRunning/);
-  assert.match(source, /prepare\(temporaryRoot, walkOutput, vsixPath, bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly, hostBoundaryOnly, nativeDialogOnly, codexHandoffOnly, errorIndicatorsOnly, lateCardRepairOnly, builderOnly, postAuditLongRunning\)/);
+  assert.match(source, /prepare\(temporaryRoot, walkOutput, vsixPath, bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly, hostBoundaryOnly, nativeDialogOnly, codexHandoffOnly, errorIndicatorsOnly, lateCardRepairOnly, builderOnly, workbenchCommandOnly, postAuditLongRunning\)/);
   assert.match(source, /timeoutMs: postAuditLongRunning \? 3_600_000 : 1_800_000/);
   assert.match(source, /workerExitVerified: run\?\.receipt\?\.worker_exit_verified \?\? lifecycle\?\.worker_exit_verified/);
   assert.match(source, /partial_profile_progress: child\?\.walk_receipt \? null : retainedProfileProgress\(walkOutput\)/);

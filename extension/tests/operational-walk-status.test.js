@@ -389,6 +389,45 @@ test('focused error-indicator completion fails closed when an exact required sta
   assert.ok(status.issues.some(item => item.code === 'focused-error-indicators-incomplete'));
 });
 
+test('focused workbench-command completion requires every exact command chain', () => {
+  const receipt = completeReceipt();
+  receipt.focused_profile = 'workbench-command';
+  receipt.control_chains.controls.forEach(control => { control.attempted = false; });
+  receipt.control_chains.aggregates.complete_interaction_chains = 0;
+  const stages = ['open_load', 'display', 'user_edit_action', 'input_validation', 'authorization', 'backend_dispatch', 'runtime_effect', 'progress_reporting', 'result_acknowledgement', 'persistence', 'reload_reopen', 'failure_handling', 'recovery_rollback'];
+  const chain = Object.fromEntries(stages.map(stage => [stage, { state: ['user_edit_action', 'input_validation', 'persistence', 'reload_reopen'].includes(stage) ? 'not_applicable' : 'present' }]));
+  const refusedChain = structuredClone(chain);
+  for (const stage of ['authorization', 'backend_dispatch', 'runtime_effect', 'progress_reporting', 'result_acknowledgement']) refusedChain[stage] = { state: 'missing' };
+  receipt.installed_workbench_command_profile = {
+    eligible_control_count: 2,
+    records: [
+      { control_id: 'safe-command', rendered: true, observed: true, attempted: true, authority_skipped: false, errors: [], interaction_chain: chain },
+      { control_id: 'pxui.dashboard-control-plane.command.pacifyX.refreshEnvironment', rendered: true, observed: true, attempted: true, authority_skipped: true, errors: [], interaction_chain: refusedChain }
+    ]
+  };
+  const status = evaluateOperationalWalk(receipt);
+  assert.equal(status.terminal_state, 'completed', JSON.stringify(status.issues));
+  assert.equal(status.scope_complete, true);
+  assert.equal(status.operationally_complete, false);
+  assert.equal(status.evaluated_scope, 'workbench-command');
+});
+
+test('focused workbench-command completion fails closed on a missing rejection chain', () => {
+  const receipt = completeReceipt();
+  receipt.focused_profile = 'workbench-command';
+  const stages = ['open_load', 'display', 'user_edit_action', 'input_validation', 'authorization', 'backend_dispatch', 'runtime_effect', 'progress_reporting', 'result_acknowledgement', 'persistence', 'reload_reopen', 'failure_handling', 'recovery_rollback'];
+  const chain = Object.fromEntries(stages.map(stage => [stage, { state: 'present' }]));
+  for (const stage of ['authorization', 'backend_dispatch', 'runtime_effect', 'progress_reporting', 'result_acknowledgement']) chain[stage] = { state: 'missing' };
+  chain.failure_handling = { state: 'missing' };
+  receipt.installed_workbench_command_profile = {
+    eligible_control_count: 1,
+    records: [{ control_id: 'pxui.dashboard-control-plane.command.pacifyX.refreshEnvironment', rendered: true, observed: true, attempted: true, authority_skipped: true, errors: [], interaction_chain: chain }]
+  };
+  const status = evaluateOperationalWalk(receipt);
+  assert.equal(status.terminal_state, 'incomplete');
+  assert.ok(status.issues.some(item => item.code === 'focused-workbench-command-incomplete'));
+});
+
 test('skipped builders, modal surfaces, controls, and chains remain operationally incomplete', () => {
   const receipt = completeReceipt();
   receipt.builders.agent = { terminal_disposition: 'skipped_requires_exact_control_instrumentation' };

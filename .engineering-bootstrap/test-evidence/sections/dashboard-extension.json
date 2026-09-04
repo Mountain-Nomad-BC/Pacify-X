@@ -2,8 +2,8 @@
   "chunks": [
     {
       "chunk_id": "chunk-01",
-      "duration_seconds": 3.354796,
-      "input_sha256": "7584dd7c21eba435f32dc13f5ed71854e6e5238ff5e16b39164367322196957a",
+      "duration_seconds": 1.197885,
+      "input_sha256": "4c2c089fd714de544b90e0fa890193b04e34ac611f9a93b4553abd8554b7209f",
       "member_count": 1,
       "members": [
         "tests/hardening-boundaries.test.js"
@@ -12,18 +12,18 @@
         "failure_nodes": [],
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "stdout_bytes": 1373,
-        "stdout_sha256": "d8e2515111e504fabe17c7678a2a2a2d09deb1e25cc5aca2d49848f8e8627508"
+        "stdout_bytes": 1369,
+        "stdout_sha256": "2bc6e0eec23ac788ab8b805598fb7e2ce3703b7f6bd380d69f1e8ffb953b5099"
       },
       "passed": true,
-      "receipt_sha256": "04c97f8d544f0c6c81eab492f65e620e9235fe66c72e1a29c488ef400169686e",
+      "receipt_sha256": "96f25c0a967f637bc66ea1fce20d1868280f79ae5660d27ac5162b02b653bdfa",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-02",
-      "duration_seconds": 2.284434,
-      "input_sha256": "f516735764b1aab6926c65b8714e4c83861e4d65e7c9e5e78e4a842832ba6287",
+      "duration_seconds": 1.140773,
+      "input_sha256": "44cb1b01c850f3ca658f695673a625f8678b3c03927cd811d2cd2d8cb2be9d05",
       "member_count": 1,
       "members": [
         "tests/extension-contract.test.js"
@@ -32,18 +32,18 @@
         "failure_nodes": [],
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "stdout_bytes": 4549,
-        "stdout_sha256": "df381faf69ee7068446ead8b66babe0f080e27804f6f9a9fb8ae22d26794d23c"
+        "stdout_bytes": 4552,
+        "stdout_sha256": "b0511db0076273d93500b6e295a5ecfffd416b1dab20a7909e9cc4b90cd18174"
       },
       "passed": true,
-      "receipt_sha256": "596eb2fba70301a90cd6bf63858584c4fff65f6e43c8f7fa82da0fc2d162b9f9",
+      "receipt_sha256": "bb9e9a3173aa35e447e528e88e40c377d8d9e64671fbec348107acba0bf7fb90",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-03",
-      "duration_seconds": 3.461115,
-      "input_sha256": "36997962f01e1861e3629beb722170f05b9d254e81a49d8406595a02dd4310a3",
+      "duration_seconds": 1.040826,
+      "input_sha256": "9fd9d053381b6165d89159d064d004e1f1e7a1a9e3b810371b95c86d965b6bf7",
       "member_count": 1,
       "members": [
         "tests/extension-studio-wiring.test.js"
@@ -52,18 +52,18 @@
         "failure_nodes": [],
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "stdout_bytes": 894,
-        "stdout_sha256": "fbedae720204e62d6a7bce95328f4ae474673f4048eebad6327303fa3b6cfa76"
+        "stdout_bytes": 895,
+        "stdout_sha256": "b0fe2cee43b82e647982fd127b817542a1c0726bee6d39666c0f630eeb7223cc"
       },
       "passed": true,
-      "receipt_sha256": "dd94ed59b144f5f638928955ad8b8605e751f901c46577776495d221cee9b7c9",
+      "receipt_sha256": "21f74ae787dc2c2e2561d03e8c08b9d3a35569fdd7766c31ca6df8797bdc6e24",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-04",
-      "duration_seconds": 37.301801,
-      "input_sha256": "6374f52dde9889a173e26e36670e177520da0add30e15676a15da188dc6771df",
+      "duration_seconds": 16.992277,
+      "input_sha256": "e8b4cf785faefce13858ae93306269993f7197069001d37a35e35d0ac4f751e2",
       "member_count": 1,
       "members": [
         "tests/studio-bootstrap.test.js"
@@ -72,18 +72,18 @@
         "failure_nodes": [],
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "stdout_bytes": 828,
-        "stdout_sha256": "93288c732c143d1893751c2cebe9fffc0d72418e283497582d6f3a57fbc57ad0"
+        "stdout_bytes": 826,
+        "stdout_sha256": "5f39798722ea439e89949a50c79da82ab3973c53cf0a40cb184e28625631e7d4"
       },
       "passed": true,
-      "receipt_sha256": "04391eb27d056b8b007f4d34faeb045922b2ae5b4b7556f12329be9ce659c3a3",
+      "receipt_sha256": "94e6324c133892b77e6e370812703b8f689e51d800ad5d73d802304c4862429b",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-05",
-      "duration_seconds": 4.420793,
-      "input_sha256": "ab434e5187c9680fcbbf9159d00f24293c5739a4a32ae2995d0088d91de47b5b",
+      "duration_seconds": 1.088578,
+      "input_sha256": "cf04cffb6d2b26fce5699df2f25ba12b95fa1ed19e03394b1c759f6c0dc88001",
       "member_count": 1,
       "members": [
         "tests/studio-dashboard-host.test.js"
@@ -93,17 +93,17 @@
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "stdout_bytes": 420,
-        "stdout_sha256": "d938c509b1e8c93734b6981b62f0943ac02619261e442eab914c6996a36024d9"
+        "stdout_sha256": "31e5a237adb4a2eeb029f47e110d2007e31c3486c9012c7191b56fb125261631"
       },
       "passed": true,
-      "receipt_sha256": "91dd76869686934bb28b7fe270cb0cced0c30d97b8cedcf3fa19630a7eb9f777",
+      "receipt_sha256": "0747ea44621c86081363f9b71b993df98914cb753360af0b52851e6cad3afaa6",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-06",
-      "duration_seconds": 3.313742,
-      "input_sha256": "9dcc4df4e44daaf4d157eae2e53e41f1dd90fd02fdbedfb7d78d044dee2874ce",
+      "duration_seconds": 1.093258,
+      "input_sha256": "9195bedbd8d0c9f9137267c2ce297312d0edf660d2d32fc611fd6f980bcb712e",
       "member_count": 1,
       "members": [
         "tests/studio-draft-host.test.js"
@@ -112,18 +112,18 @@
         "failure_nodes": [],
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "stdout_bytes": 3116,
-        "stdout_sha256": "63640b37dbfd2911bed68ad57925d4ed503bf87480ab011325193d7031f42585"
+        "stdout_bytes": 3115,
+        "stdout_sha256": "85e91d29cfa70a9265dfcaed5fe2d70418ebe899c97dd28e8b6641a6ea039065"
       },
       "passed": true,
-      "receipt_sha256": "1246848d1a52e932e11c5f204c5124504c22351b706c6797cdd37d7bd4e58e3f",
+      "receipt_sha256": "ad73073171b5a2d5b7d53993588c1c532b990db8a7b099a811388e6c6678fce6",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-07",
-      "duration_seconds": 4.41185,
-      "input_sha256": "90827402f658bb5d5913e56ead3b15a6de035fc8550cd8813bb67ea52eb1696e",
+      "duration_seconds": 1.390768,
+      "input_sha256": "c5df39e391a60a38417306e84b09a9931fef8bbbd4ef02773c7ead32850c6a84",
       "member_count": 1,
       "members": [
         "tests/studio-package.test.js"
@@ -133,17 +133,17 @@
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "stdout_bytes": 1934,
-        "stdout_sha256": "88fd0a820bc9941ab78bb4dc3625a6ff2177888e60d07595bda55b639315f5e9"
+        "stdout_sha256": "5441974bb5e4ced01b2929115ad3d25dfee887b08cb8e9c2caf453b9a7cd4830"
       },
       "passed": true,
-      "receipt_sha256": "5011bd145fc647b0899a27f8223a4e55c40f4a9a520b0cc1c92bc1f90e818e24",
+      "receipt_sha256": "59b413137a8c531d6ac21af6423f66e34e1c7d8f506286d491b605c41b232995",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-08",
-      "duration_seconds": 16.904045,
-      "input_sha256": "dfa85fe6b54742bb43cc741a2f474c9da2829b2e1f90ceb20a801245dd1bbdef",
+      "duration_seconds": 7.940474,
+      "input_sha256": "14df172133e21424ec7a9eda54d6b1cb30931de92e39b88d4421511566bd6cc2",
       "member_count": 1,
       "members": [
         "tests/px-bridge-cache.test.js"
@@ -152,18 +152,18 @@
         "failure_nodes": [],
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "stdout_bytes": 2145,
-        "stdout_sha256": "11989f565b4b60bd2ed11cf083a2a2add92043dd69308ca08c23c2d7c39dccb8"
+        "stdout_bytes": 2143,
+        "stdout_sha256": "64edd8fdce1c6e6c63c894abbe37efd2084527afe35ce636f69cb90be039cf2c"
       },
       "passed": true,
-      "receipt_sha256": "6a4984fe99dba86aa1caa8caac457bcb7095ee7aa82fc45b3020dde3d8789dad",
+      "receipt_sha256": "ae0796cd5cf8c8464545cc66423e1578e7a7b30968c571fe1ac62523f4cf2590",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-09",
-      "duration_seconds": 100.282782,
-      "input_sha256": "a02b263fb041df7be1f17ccf414678ad5403f2ef08e07256372a45705c69b420",
+      "duration_seconds": 42.206453,
+      "input_sha256": "8cd79d2aadbfefce078960da3998fddd2da07c47ff6d8edc5f6ebc52f1a2adbe",
       "member_count": 1,
       "members": [
         "tests/dashboard-e2e.test.js"
@@ -172,18 +172,18 @@
         "failure_nodes": [],
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "stdout_bytes": 1303,
-        "stdout_sha256": "15966b2522df3c8f57af5fa581873c4577dae7adae377235c88b0e92e4fd64b8"
+        "stdout_bytes": 1297,
+        "stdout_sha256": "9d75dd225c4903fd32352358e9fd98cb1d2189a0e9812be228f1e2831eb5e42a"
       },
       "passed": true,
-      "receipt_sha256": "96d5210b81a1e9621853624b6e7a9345074ca8a0b4f596d504a5bd6ee471199f",
+      "receipt_sha256": "3bc8502ec5a26e0f70d8b935c106ee0e58694fe2a9bb70eeff6b00dcd7018acd",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-10",
-      "duration_seconds": 2.815132,
-      "input_sha256": "e085fba9d4f694b2c1f51961d84db0baca13d2d24703ee7a9e00324824893b71",
+      "duration_seconds": 1.186888,
+      "input_sha256": "b374155117aa6f436a0564fff8d5332d1cfa95786ebae84f81310126ee20cb10",
       "member_count": 1,
       "members": [
         "tests/ui-scaffold.test.js"
@@ -193,17 +193,17 @@
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "stdout_bytes": 2221,
-        "stdout_sha256": "950c7e0a7fd05c27c49b6640980b5342288f8af8ba810c7a255265b87bf01eec"
+        "stdout_sha256": "f787f3338576fa092ea268229d3ca55ce0ae2a94240cc0f61bf71773cde7e77d"
       },
       "passed": true,
-      "receipt_sha256": "022114e48650bcef77357f009ca52bb849fcd27396de02a954045e8bf3fb57e8",
+      "receipt_sha256": "722ce8e529e16117e43d73073590589da958d44553c40db65cde2d8b6e3e24d0",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-11",
-      "duration_seconds": 4.16244,
-      "input_sha256": "8a5cebb79d9828e951e2bb2e638f4002d24a4b58de4fb7551c00386dacfeb1b9",
+      "duration_seconds": 1.153009,
+      "input_sha256": "b84269b7d54733d63dfe462a3d9c896cc4fbb5788cc90f72425df62d89b240cf",
       "member_count": 1,
       "members": [
         "tests/studio-catalog-workflow-layout.test.js"
@@ -213,17 +213,17 @@
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "stdout_bytes": 380,
-        "stdout_sha256": "4923300d7dfcc84873b46b649e52af8b31cc5497e4411a039730a6e33f20fb54"
+        "stdout_sha256": "918897ade92eae127bca4e932fded1353cf64330b5159fb9714ae61ab0161639"
       },
       "passed": true,
-      "receipt_sha256": "ba04e0e494c32954700ab2cc08fb1fe9bd4da3f8a3292ba4b33b06331566bfbf",
+      "receipt_sha256": "2bccf97d5cdc36e2488ef79762211665f31a30ce779c1bf6480bc6f06075aabe",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-12",
-      "duration_seconds": 3.02259,
-      "input_sha256": "2eb9c9d91d563bbc050a59338c925493d2ea39735583726be6e18d295fd58247",
+      "duration_seconds": 1.194668,
+      "input_sha256": "451905c1e3803040f2c03c64da02bb7b969883c9593b4f0ed391557293d6e88e",
       "member_count": 1,
       "members": [
         "tests/studio-catalog-agent-builder.test.js"
@@ -232,18 +232,18 @@
         "failure_nodes": [],
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "stdout_bytes": 845,
-        "stdout_sha256": "81bea3973b49e86a01c833fc373373b62392218339a0c7e17cb4528692dc4622"
+        "stdout_bytes": 842,
+        "stdout_sha256": "1618a890671517176ec312bf45ac8e166a88aa3e47e2c3db7a3bb0d1a384d04b"
       },
       "passed": true,
-      "receipt_sha256": "d3e35ea9f3c64d5ab58b4268415c06f5900fb130d880e5f726544b8fb5fb4a3a",
+      "receipt_sha256": "dfa3f918d497cb97fdad1dab1798a5394083cf4bfc472e6f97b6c4449dd7bc85",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-13",
-      "duration_seconds": 2.658063,
-      "input_sha256": "87fbcc9785e11a3caf60437e61f61fb47e171015351aa8305fd13b383d4639b9",
+      "duration_seconds": 1.033581,
+      "input_sha256": "fb8dd53f283eae3ecd6e0f0a41a505e51f4f44dd74a20de5421b06326b172854",
       "member_count": 1,
       "members": [
         "tests/workflow-trace-projection.test.js"
@@ -252,18 +252,18 @@
         "failure_nodes": [],
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "stdout_bytes": 863,
-        "stdout_sha256": "0e81b3e0880885710f2621fcf192006a35aba31592453fcb51d234da83c50142"
+        "stdout_bytes": 862,
+        "stdout_sha256": "c326d88c7ae52144e2a9ec2f103f1e0e5e33c6607ad8b218dfd9b0a91e95206e"
       },
       "passed": true,
-      "receipt_sha256": "f229f61010a5384a9a7bb56bf51d91e5dfa8fa97c8f5c550b306a3833c7ca180",
+      "receipt_sha256": "f053b8ed6b62eca82a2b5b1bbd95fdf98bb9672b1396d94ec9697fb5d3f77457",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-14",
-      "duration_seconds": 4.991036,
-      "input_sha256": "e3be1fda2002f746a09d1e24006149af7838817cd008039e82e1a88bfbff5e8a",
+      "duration_seconds": 1.862273,
+      "input_sha256": "5a5a39773673b1789b166ed5eae3dfda6a78d82afc0171dd8498c9dc7a3b57e0",
       "member_count": 1,
       "members": [
         "tests/ui-action-inventory.test.js"
@@ -272,18 +272,18 @@
         "failure_nodes": [],
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "stdout_bytes": 1161,
-        "stdout_sha256": "f9cff68b15ed47b7b7bdc6b0c6c2eccea567b639b464360256c281f036307884"
+        "stdout_bytes": 1152,
+        "stdout_sha256": "1d592f05d0c339d2be6363cc7188d945f41f9d4aa1abf7af11715b24d7b91d6d"
       },
       "passed": true,
-      "receipt_sha256": "d772dbbaedbc0d7591f2920f643b6bccb2da0e34cccb2f1034af728e1a5a0827",
+      "receipt_sha256": "1090d98143e65feae8c3deb165e3a0bb383d7ea9ecc548ca73af2cfbd8ad4785",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-15",
-      "duration_seconds": 2.568602,
-      "input_sha256": "6ecb71768487f7e1f29a67f30d067a413fc2d6ac4a604125d172d6a693cbb226",
+      "duration_seconds": 1.155786,
+      "input_sha256": "09200344ff5b7c5b29bdfb6c26908ea8c45a2c6a5ea2e0334d3d50030a51ac78",
       "member_count": 1,
       "members": [
         "tests/operational-walk-status.test.js"
@@ -292,18 +292,18 @@
         "failure_nodes": [],
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "stdout_bytes": 3244,
-        "stdout_sha256": "04303452022c4ee92a9027076f1e18446e5e03631faa9b3ea7c7fbffcdb97a64"
+        "stdout_bytes": 3241,
+        "stdout_sha256": "3a8527cb8c9256097e7ae49bb27fa3354264b93f5404505c4bedbb0303a424f5"
       },
       "passed": true,
-      "receipt_sha256": "0c302c026b7218ca079548148286b1acfd531972fdf22ac40fe4600482b1b887",
+      "receipt_sha256": "83a69795933d7fc7d47d92e4796055475e406df8c2cfd6d1aaae636e26be2f74",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-16",
-      "duration_seconds": 3.533264,
-      "input_sha256": "fd461fb03fadf8c9a7ad640efc891350b085b8571bfc3e8ddff733a354bf15f0",
+      "duration_seconds": 1.387211,
+      "input_sha256": "93537c0ad422eee0251a589f26a50a615540e9dfcd58151aa059ae28903d2213",
       "member_count": 1,
       "members": [
         "tests/operational-fault-recovery-walk.test.js"
@@ -312,18 +312,18 @@
         "failure_nodes": [],
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "stdout_bytes": 1074,
-        "stdout_sha256": "b017ac57a196d0db377a90411c5ba2fce15213ea291c423fbbb808ce338c1ff5"
+        "stdout_bytes": 1070,
+        "stdout_sha256": "19fdfb2ff6d8c61cccfa60d8972d8490f40457db29fb7ce1116a5551afc7d18c"
       },
       "passed": true,
-      "receipt_sha256": "9e8bbcbcbac91de70117a69f86462496d3a200c834d960d8aa8680f22f7e6ce4",
+      "receipt_sha256": "a9f15d282b1b7f31b3009725ddedf56ccd56d23ff11c915929590aff6e7d3834",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-17",
-      "duration_seconds": 18.965036,
-      "input_sha256": "a474a84d604c1d5d70f3ccbe52206eb8ea213d2c47549eac988853f9f110e476",
+      "duration_seconds": 9.290844,
+      "input_sha256": "f3cda13ee9cab446e4ea0ea5a030fccad6199d01cafe9c25786541f4a96ce3b6",
       "member_count": 1,
       "members": [
         "tests/operational-ui-walk-installed-probe.test.js"
@@ -332,18 +332,18 @@
         "failure_nodes": [],
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "stdout_bytes": 19702,
-        "stdout_sha256": "c828ffa351e9ae65399fbf95fd0bf3feb683138947a247caef3d7a82dafab5f7"
+        "stdout_bytes": 19863,
+        "stdout_sha256": "40c2e936ac598f074e5fce23879d20a5a215f93114e736528666d0e9fba3ae5f"
       },
       "passed": true,
-      "receipt_sha256": "eb71a3f8b51417530568b3f64f9e44400ca8e15a12937ae8314407c65c056e84",
+      "receipt_sha256": "fb4483ac62667c78ab5da321c1720f5d8028aeaabfceb44e76563a8b891690fe",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-18",
-      "duration_seconds": 4.14696,
-      "input_sha256": "1cb45fb43c5628853dc2577016b857bb33591f81373a656611e5c067e713d952",
+      "duration_seconds": 1.560823,
+      "input_sha256": "c31df2be26675191ddedc039c645501a1d74f04fccdf694f8ef36f262ddab38f",
       "member_count": 1,
       "members": [
         "tests/isolated-current-source-walk.test.js"
@@ -352,18 +352,18 @@
         "failure_nodes": [],
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "stdout_bytes": 4077,
-        "stdout_sha256": "e29316c4ef01614392e53c2825c5db6878edd8344d30c4a77c4acfa20a5ca484"
+        "stdout_bytes": 4075,
+        "stdout_sha256": "9fe369a22eeca29016e26d41400028f047eda04e6e1ed4ac50a3a3cff6e933c4"
       },
       "passed": true,
-      "receipt_sha256": "916021c93c1d8154b493014e85993cbffd0edc89499855cdf122879f6c7bfad7",
+      "receipt_sha256": "1d07c26948e71389ff2bc8f31189530efbad449c990efa4af270c37984c55989",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-19",
-      "duration_seconds": 2.760574,
-      "input_sha256": "13c5f99328ff59482db86a10c2c978005387a2c186d3f2146e6808a83beb606f",
+      "duration_seconds": 1.072842,
+      "input_sha256": "fbec9f6a8a93cfb83be294a496e93438aede92681b6f2d29cf41cc5d47aac61c",
       "member_count": 1,
       "members": [
         "tests/owned-engine-outage.test.js"
@@ -372,18 +372,18 @@
         "failure_nodes": [],
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "stdout_bytes": 383,
-        "stdout_sha256": "095d05e797597044d30e70813bebe0020393d77f517d1f7a5f0cc4e030190e74"
+        "stdout_bytes": 380,
+        "stdout_sha256": "38cbcfa5db2a9b89e143f475bc07fafa57ae8dca813ad3825ffd764ce7e076a3"
       },
       "passed": true,
-      "receipt_sha256": "44bf23a8c6afdbbb012339d2664ba26df4c66965db5afbc758301eba25f69574",
+      "receipt_sha256": "8f9116dfc3fccde84ab22a2f5e55eb59d872335067c0aee4fdc1d8e3e81049d1",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-20",
-      "duration_seconds": 3.180974,
-      "input_sha256": "6bf3e4d16dac3bd104d720f5c433c7f0989ab11bfd849333136445371c34d988",
+      "duration_seconds": 1.095868,
+      "input_sha256": "fb989f519dfdf86d61fcc133065824b24ff569f443a5eda5d3a9c24f4e8564b0",
       "member_count": 1,
       "members": [
         "tests/owned-native-input-client.test.js"
@@ -392,18 +392,18 @@
         "failure_nodes": [],
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "stdout_bytes": 663,
-        "stdout_sha256": "0dd2250c9d65c10e03bbed4bb6b77f426354a82f73713f18ab74242f1c429c10"
+        "stdout_bytes": 661,
+        "stdout_sha256": "48946c8b4446d4d706920c1a7de70c4ab81a307a01ec6a981e1ce4c92bce285f"
       },
       "passed": true,
-      "receipt_sha256": "39014e451febe5b41527f0a33be9ec7f943ff9a2466d8351005fc37e51313d84",
+      "receipt_sha256": "8968dcbd7c368122a84b82969edb71c79c2a9c89d59a3b939162515518d99b2a",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-21",
-      "duration_seconds": 3.174819,
-      "input_sha256": "3385fe37e64a69b2361ad5f3d1810b2e79eb5c4de1c10e11f3c4ba8289b7f1a2",
+      "duration_seconds": 1.242627,
+      "input_sha256": "b920722042862a6d1f7f5da5501d4058d90ec2dbdb32a52df40cceca6f934c82",
       "member_count": 1,
       "members": [
         "tests/contained-ui-action-walk.test.js"
@@ -413,10 +413,10 @@
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "stdout_bytes": 317,
-        "stdout_sha256": "4c9a4a0e935c4950dd3b098ec889df5a4ca781e9c089e7023fd07349ac2c1df9"
+        "stdout_sha256": "75baa1acc6551fa9b731fff8cda20b4b84ecac13e8b56ace0d62cf78541f89c1"
       },
       "passed": true,
-      "receipt_sha256": "aa7592b997ab55d497701522449f437c575fd98341c9cee81062d2870b3f6cea",
+      "receipt_sha256": "aede78cb37db68bc2afa015851770b09a88c680bfeafbc368e1760fcfd1cb481",
       "reused": false,
       "timed_out": false
     }
@@ -449,11 +449,11 @@
   ],
   "cwd": "extension",
   "dependencies": [],
-  "duration_seconds": 232.137046,
+  "duration_seconds": 97.438945,
   "exit_code": 0,
-  "input_sha256": "958445d4548f5e928e1a3c36d8f37e751502d702c816e07d1de8a298b74e303b",
+  "input_sha256": "474cc03fea7050468334a05137cd7b5f156d3518d641aeb0551d9394fc89dbcd",
   "passed": true,
-  "receipt_sha256": "8db61477bafa9c98c478a1638a475b91269c8124292bd7df0cbd50d395e7ddcc",
+  "receipt_sha256": "dbd014f106447fcf7772313c8d34b4e9311f76a09bdcedec1fae8a7b85c97c3f",
   "schema_version": "px.test-section-receipt/1.0",
   "section": "dashboard-extension",
   "timed_out": false
