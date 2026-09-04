@@ -39,7 +39,19 @@ const MAX_CAPTURE = 2 * 1024 * 1024;
 const MAX_PROFILE_PROGRESS = 2 * 1024 * 1024;
 const HOST_PROGRESS_STAGES = new Set(['child-started', 'cache-ready', 'executable-ready', 'port-reserved', 'vscode-spawned', 'cdp-ready', 'storage-ready', 'native-helper-spawned', 'native-helper-ready', 'walker-spawned', 'walker-closed', 'native-helper-stop-requested', 'native-helper-closed', 'vscode-termination-started', 'vscode-closed', 'child-result-written']);
 const ENGINE_COPY_EXCLUDED_ROOTS = new Set(['.git', '.tmp', '.vscode', '.pytest_cache', '.mypy_cache', '.ruff_cache', '.venv', '.venv-certify', 'venv', 'node_modules', 'Python', 'evidence']);
-const ENGINE_COPY_EXCLUDED_PATHS = new Set(['extension/node_modules', 'extension/dist', '.engineering-bootstrap/diagnostics', '.engineering-bootstrap/test-evidence', '.engineering-bootstrap/resource-lifecycle', '.engineering-bootstrap/operation-bus', '.engineering-bootstrap/project-map', '.engineering-bootstrap/project-map-history', '.engineering-bootstrap/project-map-history-archives']);
+const ENGINE_COPY_EXCLUDED_PATHS = new Set([
+  'extension/node_modules', 'extension/dist',
+  '.engineering-bootstrap/diagnostics', '.engineering-bootstrap/test-evidence',
+  '.engineering-bootstrap/resource-lifecycle', '.engineering-bootstrap/operation-bus',
+  '.engineering-bootstrap/project-map', '.engineering-bootstrap/project-map-history',
+  '.engineering-bootstrap/project-map-history-archives',
+  // These directories are live process-coordination state, not engine source.
+  // Copying one while an owner.json atomic publication is in flight can leave
+  // the disposable engine with an ownerless lock that no process can reclaim.
+  '.engineering-bootstrap/runtime-core/locks',
+  '.engineering-bootstrap/runtime-core/pools',
+  '.engineering-bootstrap/runtime-core/orphaned-locks'
+]);
 const REQUIRED_ENGINE_FILES = ['runtime/cli.py', 'registry/engine_identity.json'];
 
 const utcStamp = () => new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z');

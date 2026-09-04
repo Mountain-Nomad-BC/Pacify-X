@@ -1,18 +1,18 @@
 {
-  "duration_seconds": 223.518745,
-  "exit_code": 1,
+  "duration_seconds": 224.044338,
+  "exit_code": 0,
   "group": "release-build",
-  "input_sha256": "e1321e9e932561a3060bbedde0a4da3375b80fb514325081012aa1ea9d353e90",
+  "input_sha256": "637c51f4918742e6cc53c8980c47cd7e6f2e054e00372eea704d4fb311da8471",
   "member_count": 9,
   "output_evidence": {
     "failure_nodes": [],
     "stderr_bytes": 0,
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "stdout_bytes": 20916,
-    "stdout_sha256": "0193fd4816e6ddae7311c53cc51fa928477b816c2c3dcfbdd8063727f8669cea"
+    "stdout_bytes": 2545,
+    "stdout_sha256": "5b210eb30df5f4aae293e7ef98aa32b20bacefd6990cc3c8985b56bb9017a80d"
   },
-  "passed": false,
-  "receipt_sha256": "289abc25ddcdf814512f3e02c8fb2f08fc39d7e79f93a58fc06023d0fbe5cbd4",
+  "passed": true,
+  "receipt_sha256": "9af8aeee9eb261a9b4f0c8f250171119c31d34f001ed1f1c0889f076cb2f4c69",
   "schema_version": "px.test-group-receipt/1.0",
   "timed_out": false
 }
