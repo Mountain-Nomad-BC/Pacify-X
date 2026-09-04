@@ -15,6 +15,7 @@ import json
 import os
 from pathlib import Path
 import re
+import time
 from typing import Callable, Iterable, Mapping
 import uuid
 
@@ -29,6 +30,7 @@ MAX_TRANSACTION_BYTES = 64 * 1024 * 1024
 MAX_PENDING_TRANSACTIONS = 128
 MAX_INSPECTION_FILES = 4096
 MAX_INSPECTION_BYTES = 256 * 1024 * 1024
+_REPLACE_RETRY_DELAYS_SECONDS = (0.0, 0.01, 0.05, 0.15, 0.35, 0.75)
 _IDENTIFIER = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]{0,95}\Z")
 
 
@@ -97,6 +99,22 @@ def _write_new(path: Path, payload: bytes) -> None:
     _fsync_directory(path.parent)
 
 
+def _replace_with_bounded_permission_retry(source: Path, destination: Path) -> None:
+    """Keep one replace atomic while tolerating bounded Windows handle races."""
+
+    last_error: PermissionError | None = None
+    for delay in _REPLACE_RETRY_DELAYS_SECONDS:
+        if delay:
+            time.sleep(delay)
+        try:
+            os.replace(source, destination)
+            return
+        except PermissionError as error:
+            last_error = error
+    assert last_error is not None
+    raise last_error
+
+
 def _atomic_replace(
     path: Path,
     payload: bytes,
@@ -116,7 +134,7 @@ def _atomic_replace(
         _write_new(temporary, payload)
         if fault_injector is not None:
             fault_injector(f"{label}:staged")
-    os.replace(temporary, path)
+    _replace_with_bounded_permission_retry(temporary, path)
     _fsync_directory(path.parent)
     if fault_injector is not None:
         fault_injector(f"{label}:published")
@@ -463,9 +481,7 @@ class JsonWal:
                     if require_after_images
                     else "target changed outside transaction"
                 )
-                raise WalIntegrityError(
-                    f"{transaction.name}: {label}: {target}"
-                )
+                raise WalIntegrityError(f"{transaction.name}: {label}: {target}")
         return {
             "artifact_count": len(artifacts),
             "targets_before": targets_before,
@@ -560,7 +576,7 @@ class JsonWal:
             raise WalIntegrityError(
                 f"{transaction.name}: rolled-back transaction identity collision"
             )
-        os.replace(transaction, destination)
+        _replace_with_bounded_permission_retry(transaction, destination)
         _fsync_directory(self._transactions_root)
         _fsync_directory(self._rolled_back_root)
         return destination
@@ -576,7 +592,7 @@ class JsonWal:
             raise WalIntegrityError(
                 f"{transaction.name}: committed transaction identity collision"
             )
-        os.replace(transaction, destination)
+        _replace_with_bounded_permission_retry(transaction, destination)
         _fsync_directory(self._transactions_root)
         _fsync_directory(self._committed_root)
         if fault_injector is not None:

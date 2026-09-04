@@ -4428,7 +4428,7 @@
       "validation_level": "evidence-association"
     },
     {
-      "bytes": 29837,
+      "bytes": 30477,
       "evidence": [
         "tests",
         "tests/test_installed_wheel_e2e.py"
@@ -4437,7 +4437,7 @@
       "packaged": true,
       "path": "runtime/wal_transaction.py",
       "role": "installed-runtime",
-      "sha256": "ba42f568f7cdcacf06b4afa72ea6ee7423ada9f7392f1f0b74f5b59107f43723",
+      "sha256": "2fdb87cf1edf7fde5e9cde9a6acb24051bc6b067babbb653784867d94158dfd4",
       "syntax_valid": true,
       "validation_level": "full-suite-and-installed-integration"
     },
@@ -8547,7 +8547,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 9897,
+      "bytes": 14922,
       "evidence": [
         "tests/test_wal_transaction.py"
       ],
@@ -8555,7 +8555,7 @@
       "packaged": true,
       "path": "tests/test_wal_transaction.py",
       "role": "release-test",
-      "sha256": "89b348bfd2c1362f86a2285c1319c05babaea3dca8a89709dd461b3adb096ed9",
+      "sha256": "accf958022afbfb4a332ce74f95beb8376ad8a529defff3e100e3615451e22c6",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },

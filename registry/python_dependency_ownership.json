@@ -1875,7 +1875,8 @@
         "tests/test_resource_lifecycle.py",
         "tests/test_structural_integrity.py",
         "tests/test_studio_api.py",
-        "tests/test_test_runner_controls.py"
+        "tests/test_test_runner_controls.py",
+        "tests/test_wal_transaction.py"
       ]
     },
     {
@@ -3201,6 +3202,7 @@
         "runtime/studio_session_worker.py",
         "runtime/studio_terminal_observer.py",
         "runtime/studio_worker_launch.py",
+        "runtime/wal_transaction.py",
         "runtime/work_admission.py",
         "runtime/workflow_worker.py",
         "tests/test_agent_runtime.py",

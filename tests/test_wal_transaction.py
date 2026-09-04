@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -10,6 +11,7 @@ import textwrap
 import pytest
 
 from runtime.wal_transaction import (
+    _REPLACE_RETRY_DELAYS_SECONDS,
     JsonArtifact,
     JsonWal,
     WalIntegrityError,
@@ -77,6 +79,142 @@ def test_commit_coordinates_every_semantic_json_artifact(tmp_path: Path) -> None
     )
     assert manifest["phase"] == "committed"
     assert [item["role"] for item in manifest["artifacts"]] == list(ROLES)
+
+
+def test_commit_retries_transient_permission_denial_during_file_publication(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _seed(tmp_path)
+    original_replace = os.replace
+    denied = 0
+
+    def transient_replace(source: object, destination: object) -> None:
+        nonlocal denied
+        target = Path(destination)
+        if target.name == "manifest.json" and denied < 2:
+            denied += 1
+            raise PermissionError("simulated transient manifest handle")
+        original_replace(source, destination)
+
+    monkeypatch.setattr("runtime.wal_transaction.os.replace", transient_replace)
+    result = JsonWal(tmp_path / "wal", tmp_path).commit(
+        _artifacts(tmp_path, "after"), transaction_id="transient-manifest"
+    )
+
+    assert result["state"] == "committed"
+    assert denied == 2
+    assert _values(tmp_path) == {"after"}
+
+
+def test_commit_retries_transient_permission_denial_during_committed_archive(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _seed(tmp_path)
+    original_replace = os.replace
+    denied = 0
+
+    def transient_replace(source: object, destination: object) -> None:
+        nonlocal denied
+        source_path = Path(source)
+        target = Path(destination)
+        if (
+            source_path.parent.name == "transactions"
+            and target.parent.name == "committed"
+            and denied < 2
+        ):
+            denied += 1
+            raise PermissionError("simulated transient directory handle")
+        original_replace(source, destination)
+
+    monkeypatch.setattr("runtime.wal_transaction.os.replace", transient_replace)
+    result = JsonWal(tmp_path / "wal", tmp_path).commit(
+        _artifacts(tmp_path, "after"), transaction_id="transient-archive"
+    )
+
+    assert result["state"] == "committed"
+    assert denied == 2
+    assert (tmp_path / "wal" / "committed" / "transient-archive").is_dir()
+
+
+def test_recovery_retries_transient_permission_denial_during_rollback_archive(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    transaction = tmp_path / "wal" / "transactions" / "unprepared"
+    transaction.mkdir(parents=True)
+    original_replace = os.replace
+    denied = 0
+
+    def transient_replace(source: object, destination: object) -> None:
+        nonlocal denied
+        target = Path(destination)
+        if target.parent.name == "rolled-back" and denied < 2:
+            denied += 1
+            raise PermissionError("simulated transient rollback handle")
+        original_replace(source, destination)
+
+    monkeypatch.setattr("runtime.wal_transaction.os.replace", transient_replace)
+    result = JsonWal(tmp_path / "wal", tmp_path).recover()
+
+    assert result["rolled_back"] == ["unprepared"]
+    assert denied == 2
+    assert (tmp_path / "wal" / "rolled-back" / "unprepared").is_dir()
+
+
+def test_persistent_permission_denial_is_bounded_and_recoverable(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _seed(tmp_path)
+    original_replace = os.replace
+    denied = 0
+
+    def denied_archive(source: object, destination: object) -> None:
+        nonlocal denied
+        source_path = Path(source)
+        target = Path(destination)
+        if (
+            source_path.parent.name == "transactions"
+            and target.parent.name == "committed"
+        ):
+            denied += 1
+            raise PermissionError("simulated persistent directory handle")
+        original_replace(source, destination)
+
+    monkeypatch.setattr("runtime.wal_transaction.os.replace", denied_archive)
+    wal = JsonWal(tmp_path / "wal", tmp_path)
+    with pytest.raises(PermissionError, match="persistent directory handle"):
+        wal.commit(_artifacts(tmp_path, "after"), transaction_id="persistent-denial")
+
+    assert denied == len(_REPLACE_RETRY_DELAYS_SECONDS)
+    assert (tmp_path / "wal" / "transactions" / "persistent-denial").is_dir()
+    assert not (tmp_path / "wal" / "committed" / "persistent-denial").exists()
+    assert _values(tmp_path) == {"after"}
+
+    monkeypatch.setattr("runtime.wal_transaction.os.replace", original_replace)
+    assert wal.recover()["completed"] == ["persistent-denial"]
+
+
+def test_non_permission_replace_error_fails_immediately(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _seed(tmp_path)
+    original_replace = os.replace
+    attempts = 0
+
+    def invalid_replace(source: object, destination: object) -> None:
+        nonlocal attempts
+        target = Path(destination)
+        if target.name == "manifest.json":
+            attempts += 1
+            raise OSError("simulated non-transient replace failure")
+        original_replace(source, destination)
+
+    monkeypatch.setattr("runtime.wal_transaction.os.replace", invalid_replace)
+    with pytest.raises(OSError, match="non-transient replace failure"):
+        JsonWal(tmp_path / "wal", tmp_path).commit(
+            _artifacts(tmp_path, "after"), transaction_id="non-permission"
+        )
+
+    assert attempts == 1
 
 
 def test_real_process_kill_at_every_write_boundary_recovers_atomically(

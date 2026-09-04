@@ -2768,11 +2768,12 @@
         "os",
         "pathlib",
         "re",
+        "time",
         "typing",
         "uuid"
       ],
       "index_state": "verified",
-      "sha256": "ba42f568f7cdcacf06b4afa72ea6ee7423ada9f7392f1f0b74f5b59107f43723"
+      "sha256": "2fdb87cf1edf7fde5e9cde9a6acb24051bc6b067babbb653784867d94158dfd4"
     },
     "runtime/work_admission.py": {
       "imports": [
@@ -6692,6 +6693,7 @@
         "__future__",
         "hashlib",
         "json",
+        "os",
         "pathlib",
         "pytest",
         "runtime.wal_transaction",
@@ -6700,7 +6702,7 @@
         "textwrap"
       ],
       "index_state": "verified",
-      "sha256": "89b348bfd2c1362f86a2285c1319c05babaea3dca8a89709dd461b3adb096ed9"
+      "sha256": "accf958022afbfb4a332ce74f95beb8376ad8a529defff3e100e3615451e22c6"
     },
     "tests/test_wave5_builders.py": {
       "imports": [
@@ -6815,7 +6817,7 @@
       ],
       "description": "Serial process custody, recovery, test-runner, WAL, resource-lifecycle, and workspace mutation tests.",
       "group": "process-recovery",
-      "input_sha256": "bb9718789d910f2961121bfc07cf26dd884cced9ff948b66de6543d22ba50219",
+      "input_sha256": "80b6d0b0dd3668d98d89d98c3cb1836faee383d9658a4fe43cc49f3963cc4696",
       "inputs": [
         "registry/test_profiles.json",
         "runtime/commissioning.py",
@@ -6892,7 +6894,7 @@
       ],
       "description": "Serial exact-tool, installed-wheel, corrective-release, and full-repair-ledger certification tests.",
       "group": "exact-installed",
-      "input_sha256": "412343ce09c5a3009acc13632be0bd4aaccf5646e01b1121fa2a3abe35b00bf8",
+      "input_sha256": "1ddcd70b347ea031f9d2a082443e81be1ef570107481f5c17d60ab216183f658",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -6976,7 +6978,7 @@
       ],
       "description": "Serial release, distribution, artifact, and revocation certification tests excluding composed audit mutations.",
       "group": "release-build",
-      "input_sha256": "d581713d5fc2cfb1e9a622c87ae57dc469770a269f888f1cee1d39bf9aeddf9c",
+      "input_sha256": "c6d3efa42b29afecdb141d1b724f1da98304be6d74358d2e3b74a77a9dcc8b77",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -7050,7 +7052,7 @@
       ],
       "description": "Serial composed-audit and quarantine-mutation tests isolated from package builds.",
       "group": "release-audit",
-      "input_sha256": "58f2f0093da73c5a57f223a5b3b52a61e68f22a88c4bbc4b864217415c78cd43",
+      "input_sha256": "b666951beea5cfd90f3ed802a64c88aab9d0e762c94ccd3009c50cbf6707ec0f",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -7096,7 +7098,7 @@
       ],
       "description": "Serial full-tree structural mutation tests isolated from derived-artifact checks.",
       "group": "structural-adversarial",
-      "input_sha256": "eae855b5d13d8c705659e2f8bcf657f09e098ecd89b4b87232de26f5464ca78a",
+      "input_sha256": "bf649204fbf83c3c6c82ff2df335703fcc03d84006e1a577751cd3b49844fd85",
       "inputs": [
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_agents_md_generator.py",
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_change_impact.py",
@@ -8755,7 +8757,7 @@
       ],
       "description": "Final serial generated-output, completion-projection, portability, effect-surface, and punch-card integrity gate.",
       "group": "derived-integrity",
-      "input_sha256": "fe899d5425f6bd83df621d47bea6f22b3a199b4f097d1ef7cd39ad3fef49bfed",
+      "input_sha256": "227ceb7f4f73fc309987fd4c3f6dc487579c921fe1c8382193e952ed3262e63e",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -9732,7 +9734,7 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin N through S; this lane reads or mutates shared canonical repository state.",
       "group": "core-n-s",
-      "input_sha256": "8f8c667ea5d86454add5de59235e87578f0dd55f6e0b0178f8e8fc9135001eb0",
+      "input_sha256": "ecc113133259fb2c8bf30af66d771457a8ddf6b5227112699ee5e1149f7fda9c",
       "inputs": [
         "registry/test_profiles.json",
         "runtime/__init__.py",

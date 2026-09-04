@@ -17,7 +17,7 @@
       },
       "passed": true,
       "receipt_sha256": "54463a5c2b14bf39704445c74fe5d0fd2b90028a7e3f0df05ac09546ecdc536d",
-      "reused": false,
+      "reused": true,
       "timed_out": false
     },
     {
@@ -37,7 +37,7 @@
       },
       "passed": true,
       "receipt_sha256": "7470619eeb1ca2062a55ca149cd5fb4d825d557f803fe49e3e194b2e5957ded9",
-      "reused": false,
+      "reused": true,
       "timed_out": false
     },
     {
@@ -57,7 +57,7 @@
       },
       "passed": true,
       "receipt_sha256": "e3daecabb6e208467407dbd42f8a27c185737a78ffecf8f254f4f530988ccbfa",
-      "reused": false,
+      "reused": true,
       "timed_out": false
     },
     {
@@ -77,7 +77,7 @@
       },
       "passed": true,
       "receipt_sha256": "9ec830438eb4a56ac5c5017c8ee0df5594d34d4922c35c57e7647664657fbde1",
-      "reused": false,
+      "reused": true,
       "timed_out": false
     },
     {
@@ -97,7 +97,7 @@
       },
       "passed": true,
       "receipt_sha256": "ce548e51f74329119e5381f4e3a734796ac96251f415613183dc4154db5e7fdd",
-      "reused": false,
+      "reused": true,
       "timed_out": false
     },
     {
@@ -117,7 +117,7 @@
       },
       "passed": true,
       "receipt_sha256": "c1956f2560e620ed62cf21c5e2522d7954dc4a36cdf7f1e87fc9b5c98bf52759",
-      "reused": false,
+      "reused": true,
       "timed_out": false
     },
     {
@@ -137,7 +137,7 @@
       },
       "passed": true,
       "receipt_sha256": "3912b637d8ecacd5bb355fb5f33ffc710a6f4381b27f6925a4399ee19ab944ab",
-      "reused": false,
+      "reused": true,
       "timed_out": false
     },
     {
@@ -157,7 +157,7 @@
       },
       "passed": true,
       "receipt_sha256": "d1a7731bc23c9c06b3b76fa6edc055cfe9667db4d1fcc17ebd0cee5cf68b49d1",
-      "reused": false,
+      "reused": true,
       "timed_out": false
     },
     {
@@ -177,7 +177,7 @@
       },
       "passed": true,
       "receipt_sha256": "b8ba349259032165c486d979f3f606e3578b8fb5fe5b281da2770280e356e08d",
-      "reused": false,
+      "reused": true,
       "timed_out": false
     },
     {
@@ -197,7 +197,7 @@
       },
       "passed": true,
       "receipt_sha256": "613e10f8dabbd6b326a48d7299febd6706900ed599b34b9334c547b015ce4ad5",
-      "reused": false,
+      "reused": true,
       "timed_out": false
     },
     {
@@ -217,7 +217,7 @@
       },
       "passed": true,
       "receipt_sha256": "bda94f8a6a94b9e9f78ddfb79ea928cacf112c2a7587de4f90d69f9283cb8da0",
-      "reused": false,
+      "reused": true,
       "timed_out": false
     },
     {
@@ -237,7 +237,7 @@
       },
       "passed": true,
       "receipt_sha256": "909569312bdc2c28d2cd75ff145dbc324de06b7aa05e243526b8e6be512648c4",
-      "reused": false,
+      "reused": true,
       "timed_out": false
     },
     {
@@ -257,7 +257,7 @@
       },
       "passed": true,
       "receipt_sha256": "a6a1afa699a87fd2ebd6de3c0d79abb5a940bef9a0dee5c990a5ed4007ef738d",
-      "reused": false,
+      "reused": true,
       "timed_out": false
     },
     {
@@ -277,7 +277,7 @@
       },
       "passed": true,
       "receipt_sha256": "23b8f49243c36abb5d7274673c8010f1e2a2cfaa396f8c0940a8db4250e90d1a",
-      "reused": false,
+      "reused": true,
       "timed_out": false
     },
     {
@@ -297,7 +297,7 @@
       },
       "passed": true,
       "receipt_sha256": "b53a6999bcf9c89629df26707a6c1b6f2762fb7f1a74d47393a1e88ca2f1bd82",
-      "reused": false,
+      "reused": true,
       "timed_out": false
     },
     {
@@ -317,7 +317,7 @@
       },
       "passed": true,
       "receipt_sha256": "5ef27b180cd66e659508150d983c852878b0e1bae143286aaa1c998102e80374",
-      "reused": false,
+      "reused": true,
       "timed_out": false
     },
     {
@@ -337,13 +337,13 @@
       },
       "passed": true,
       "receipt_sha256": "58330866f1f250477e6fff6f174f7e62664f3647fd0d9e1a1d03c2a66d58e72a",
-      "reused": false,
+      "reused": true,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-18",
-      "duration_seconds": 1.604967,
-      "input_sha256": "7be1a405d94f9588d90efb94cbcdd180d137dad97d996dec72b4495f1ffcbb31",
+      "duration_seconds": 1.575429,
+      "input_sha256": "f744b83d0c83dddcbc81f5f96d51cb826cc7b19632818a9662f4160111723f6a",
       "member_count": 1,
       "members": [
         "tests/isolated-current-source-walk.test.js"
@@ -352,11 +352,11 @@
         "failure_nodes": [],
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "stdout_bytes": 4070,
-        "stdout_sha256": "5030ecde8e60dc19fd1f755e21be5276b1c9da9325dd4b3f7e2024a585267759"
+        "stdout_bytes": 4072,
+        "stdout_sha256": "43a6ed512740a7513c1668618a77e3eb629487b98d2df28cd3333c66ba4da7ea"
       },
       "passed": true,
-      "receipt_sha256": "26e6b9ca453d79c4766689c538988fd6d45f89fa0eca56220d1638efd7baab68",
+      "receipt_sha256": "cfecf6cfc9a2d60177bab0beb32b9dd0adabe1ad3f1618034c396c146da66ca5",
       "reused": false,
       "timed_out": false
     },
@@ -377,7 +377,7 @@
       },
       "passed": true,
       "receipt_sha256": "50c392321398f6353c1c7882ae2631da8c87c1a32fe38cdf4212ced2f699505d",
-      "reused": false,
+      "reused": true,
       "timed_out": false
     },
     {
@@ -397,7 +397,7 @@
       },
       "passed": true,
       "receipt_sha256": "71fc01fe96a74ecca3c0175841b5ebb561fbd0755b2b99f00687d5a7c5022746",
-      "reused": false,
+      "reused": true,
       "timed_out": false
     },
     {
@@ -417,7 +417,7 @@
       },
       "passed": true,
       "receipt_sha256": "933f07c452c8d8e869d7c4b5f0fe7418e0d18c052bc0a8de42d3f73c8d2da3d4",
-      "reused": false,
+      "reused": true,
       "timed_out": false
     }
   ],
@@ -449,11 +449,11 @@
   ],
   "cwd": "extension",
   "dependencies": [],
-  "duration_seconds": 96.081282,
+  "duration_seconds": 1.58146,
   "exit_code": 0,
-  "input_sha256": "12fce271f83919b82b89e53c9df05ce668441ec7ed50df8e5773a7261ec62cc2",
+  "input_sha256": "8ffce682080b377da12f2d9f8bc0b0dd413391f1b5a9738b7f1adda799c971d4",
   "passed": true,
-  "receipt_sha256": "cc85a80986b5e92ea6cac7f6256074e9b0317009edaf18d0611ae7a792a56f31",
+  "receipt_sha256": "06240c5f318debda8b8f5a4fca7ff101bd68f0d0b1ec2d72dd51de7b7e61b678",
   "schema_version": "px.test-section-receipt/1.0",
   "section": "dashboard-extension",
   "timed_out": false
