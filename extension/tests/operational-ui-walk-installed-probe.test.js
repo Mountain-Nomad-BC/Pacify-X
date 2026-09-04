@@ -600,14 +600,31 @@ test('host-boundary failure coverage is request-bound, pre-effect, one-shot, and
 test('host-boundary progress identifies every exact control within its bounded budget', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   const profile = source.slice(source.indexOf('async function runInstalledHostBoundaryProfile'), source.indexOf('const INSTALLED_ENTERPRISE_CONTROLS'));
-  assert.match(profile, /onProgress\(\{ control_id: spec\.controlId, state: 'started', budget_ms: controlBudgetMs \}\)/);
-  assert.match(profile, /const recoveryReserveMs = 10_000;[\s\S]*const activeControlDeadline = controlDeadline - recoveryReserveMs/);
+  assert.match(profile, /canonicalActiveControlBudgetMs = 180_000/);
+  assert.match(profile, /const recoveryReserveMs = spec\.scenario === 'canonical-memory' \? 15_000 : 10_000;[\s\S]*canonicalActiveControlBudgetMs \+ recoveryReserveMs[\s\S]*const activeControlDeadline = controlDeadline - recoveryReserveMs/);
+  assert.match(profile, /control_id: spec\.controlId,[\s\S]*state: 'started',[\s\S]*budget_ms: controlBudgetMs,[\s\S]*active_budget_ms: controlBudgetMs - recoveryReserveMs,[\s\S]*recovery_reserve_ms: recoveryReserveMs/);
   assert.match(profile, /boundedOwnedUiAction\(async \(\) => \{[\s\S]*Math\.max\(1, activeControlDeadline - controlStarted\), `\$\{spec\.controlId\}-host-boundary-control`/);
   assert.match(profile, /host-boundary-control-timeout:[\s\S]*terminalControlTimeout = error/);
   assert.match(profile, /host-boundary-restoration[\s\S]*host-boundary-baseline-recovery/);
   assert.match(profile, /if \(terminalControlTimeout\) throw terminalControlTimeout/);
   assert.match(profile, /state: 'returned',[\s\S]*duration_ms: Date\.now\(\) - controlStarted,[\s\S]*acknowledged: result\.acknowledged === true,[\s\S]*error_count: result\.errors\.length/);
   assert.match(source, /profile: 'host-boundary-control', \.\.\.event/);
+});
+
+test('plugin lifecycle cannot consume the owner lease and emits exact mutation progress', () => {
+  const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
+  const profile = source.slice(source.indexOf('async function runInstalledPluginMutationProfile'), source.indexOf('function knowledgeLifecycleControlProbe'));
+  assert.match(profile, /activeProfileBudgetMs = 240_000/);
+  assert.match(profile, /recoveryReserveMs = 120_000/);
+  assert.match(profile, /activeProfileDeadline = profileStarted \+ activeProfileBudgetMs/);
+  assert.match(profile, /recoveryDeadline = activeProfileDeadline \+ recoveryReserveMs/);
+  assert.match(profile, /plugin-local-lifecycle-\$\{label\}-deadline-exhausted/);
+  assert.match(profile, /progressStep\(`mutation:\$\{spec\.name\}`/);
+  assert.match(profile, /state: 'started'[\s\S]*state: 'returned'[\s\S]*state: 'threw'/);
+  assert.match(profile, /currentVersion\(null, \{ acceptAny: true, deadline: recoveryDeadline \}\)/);
+  const schedule = source.slice(source.indexOf("const pluginMutationProfile ="), source.indexOf("if (returnedProfileErrors(pluginMutationProfile)"));
+  assert.match(schedule, /profile: 'plugin-local-lifecycle-step'/);
+  assert.match(schedule, /\{ timeoutMs: 370_000 \}/);
 });
 
 test('every native-displacing host boundary waits for exact displacement or durable retained-dashboard acknowledgement', () => {
@@ -797,8 +814,8 @@ test('Codex handoff informational notifications cannot delay request-bound termi
 test('plugin inventory refresh dispatch is atomic with exact route restoration', () => {
   const walker = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   const profile = walker.slice(walker.indexOf('async function runInstalledPluginMutationProfile('), walker.indexOf('function knowledgeLifecycleControlProbe('));
-  const currentVersion = profile.slice(profile.indexOf('const currentVersion = async ('), profile.indexOf('const mutate = async spec =>'));
-  assert.match(currentVersion, /controlDeadline = Date\.now\(\) \+ Math\.min\(timeoutMs, 20_000\)/);
+  const currentVersion = profile.slice(profile.indexOf('const currentVersion = async ('), profile.indexOf('const mutate = async (spec,'));
+  assert.match(currentVersion, /controlDeadline = Math\.min\(deadline, Date\.now\(\) \+ remainingBudget\('inventory-control', Math\.min\(timeoutMs, 20_000\), deadline\)\)/);
   assert.match(currentVersion, /if \(\(!rendered \|\| !current\) && route\) route\.click\(\)/);
   assert.match(currentVersion, /refreshedRendered && refreshedRoute\?\.getAttribute\('aria-current'\) === 'page' && control/);
   assert.ok(currentVersion.indexOf('const responseOffset =') < currentVersion.indexOf('control.click()'));
@@ -1528,7 +1545,7 @@ test('R114 residual repair applies authoritative graph modes, owns exact navigat
   assert.match(probe, /installedExactNavigationTransition\(control\)[\s\S]*exerciseInstalledExactNavigation/);
   const plugin = source.slice(source.indexOf('async function runInstalledPluginMutationProfile'), source.indexOf('function knowledgeLifecycleControlProbe'));
   assert.match(plugin, /requiresWorkbenchReconstruction = \['install', 'update', 'uninstall', 'rollback'\]\.includes\(spec\.receiptAction\)/);
-  assert.match(plugin, /requiresWorkbenchReconstruction[\s\S]*restartOwnedWorkbenchWindow\(workbench, frameHost, 75_000, \{[\s\S]*physicalExtensionId: extensionId[\s\S]*expectedPhysicalVersion: spec\.expectedVersion/);
+  assert.match(plugin, /requiresWorkbenchReconstruction[\s\S]*restartOwnedWorkbenchWindow\(workbench, frameHost, remainingBudget\(`\$\{spec\.name\}-workbench-reconstruction`, 75_000, deadline\), \{[\s\S]*physicalExtensionId: extensionId[\s\S]*expectedPhysicalVersion: spec\.expectedVersion/);
   assert.doesNotMatch(plugin, /restartOwnedExtensionHostCatalog\(/);
 });
 
@@ -1550,8 +1567,8 @@ test('Plugin lifecycle reconstruction reloads the complete owned workbench catal
   assert.match(helper, /closeOwnedDashboardTabs[\s\S]*Pacify-X: Open Storage & Cleanup Manager[\s\S]*reopenPacifyDashboardFromOwnedUi/);
   assert.match(helper, /requestInstalledRefreshBound[\s\S]*waitForInstalledSnapshot[\s\S]*snapshot\?\.connected === true/);
   const plugin = source.slice(source.indexOf('async function runInstalledPluginMutationProfile'), source.indexOf('function knowledgeLifecycleControlProbe'));
-  assert.match(plugin, /restartOwnedWorkbenchWindow[\s\S]*currentVersion\(spec\.expectedVersion\)/);
-  assert.ok(plugin.indexOf('restartOwnedWorkbenchWindow') < plugin.indexOf('currentVersion(spec.expectedVersion)'));
+  assert.match(plugin, /restartOwnedWorkbenchWindow[\s\S]*currentVersion\(spec\.expectedVersion, \{ deadline \}\)/);
+  assert.ok(plugin.indexOf('restartOwnedWorkbenchWindow') < plugin.indexOf('currentVersion(spec.expectedVersion, { deadline })'));
 });
 
 test('native focused profiles require request-bound hydrated state and exact route settlement', () => {
@@ -2616,11 +2633,11 @@ test('owned Plugin mutation profile requires exact reconciled receipts and compl
   const projects = walkerSource.slice(walkerSource.indexOf('async function runInstalledProjectsProfile'), walkerSource.indexOf('function graphProjectionIdentity'));
   assert.match(projects, /const refreshBefore[\s\S]*data-action="refresh"[\s\S]*\.slice\(after\)/);
   const plugin = walkerSource.slice(walkerSource.indexOf('async function runInstalledPluginMutationProfile'), walkerSource.indexOf('function knowledgeLifecycleControlProbe'));
-  assert.match(plugin, /receiptPending[\s\S]*requiresWorkbenchReconstruction = \['install', 'update', 'uninstall', 'rollback'\]\.includes\(spec\.receiptAction\)[\s\S]*restartOwnedWorkbenchWindow\(workbench, frameHost, 75_000, \{[\s\S]*physicalExtensionId: extensionId[\s\S]*expectedPhysicalVersion: spec\.expectedVersion[\s\S]*currentVersion[\s\S]*physicallyReconciled/);
+  assert.match(plugin, /receiptPending[\s\S]*requiresWorkbenchReconstruction = \['install', 'update', 'uninstall', 'rollback'\]\.includes\(spec\.receiptAction\)[\s\S]*restartOwnedWorkbenchWindow\(workbench, frameHost, remainingBudget\(`\$\{spec\.name\}-workbench-reconstruction`, 75_000, deadline\), \{[\s\S]*physicalExtensionId: extensionId[\s\S]*expectedPhysicalVersion: spec\.expectedVersion[\s\S]*currentVersion[\s\S]*physicallyReconciled/);
   assert.doesNotMatch(plugin, /restartOwnedExtensionHostCatalog\(/);
   assert.match(walkerSource, /conflictSafeReconstruction === true[\s\S]*Pacify-X: Open Storage & Cleanup Manager/);
   const conflictRoute = plugin.slice(plugin.indexOf('const exerciseConflictRoute'), plugin.indexOf('observation.conflict_route_completed'));
-  assert.match(conflictRoute, /restartOwnedWorkbenchWindow\(workbench, frameHost, 75_000, \{[\s\S]*conflictSafeReconstruction: true[\s\S]*physicalExtensionId: extensionId[\s\S]*expectedPhysicalVersion: v2\.version[\s\S]*currentVersion\(v2\.version\)/);
+  assert.match(conflictRoute, /restartOwnedWorkbenchWindow\(workbench, frameHost, remainingBudget\('conflict-workbench-reconstruction', 75_000, deadline\), \{[\s\S]*conflictSafeReconstruction: true[\s\S]*physicalExtensionId: extensionId[\s\S]*expectedPhysicalVersion: v2\.version[\s\S]*currentVersion\(v2\.version, \{ deadline \}\)/);
   assert.doesNotMatch(conflictRoute, /restartInstalledDashboardWebview/);
   assert.doesNotMatch(conflictRoute, /pxui\.dashboard-control-plane\.command\.pacifyX\.openDashboard/);
   assert.match(walkerSource, /waitForOwnedPhysicalExtensionVersion\(options\.physicalExtensionId, options\.expectedPhysicalVersion/);
@@ -2678,18 +2695,18 @@ test('installed Plugin mutation source uses deterministic local fixtures and res
   assert.match(profile, /target-not-admitted/);
   assert.match(profile, /exerciseNativeManagerEntrypoints/);
   assert.match(profile, /hostActionResult/);
-  assert.match(profile, /waitForNativeWorkbenchDialog\(workbench, spec\.nativeApproval, 15_000, \{ frameHost, responseOffset: executeBefore, requestOffset: requestBeforeExecute, requestType: spec\.executeOperation, keyboardAction: spec\.nativeApproval \}\)/);
+  assert.match(profile, /waitForNativeWorkbenchDialog\(workbench, spec\.nativeApproval, remainingBudget\(`\$\{spec\.name\}-native-dialog`, 15_000, deadline\), \{ frameHost, responseOffset: executeBefore, requestOffset: requestBeforeExecute, requestType: spec\.executeOperation, keyboardAction: spec\.nativeApproval \}\)/);
   assert.match(profile, /clickNativeWorkbenchDialogAction\(workbench, dialog, spec\.nativeApproval\)/);
   assert.match(profile, /waitForNativeWorkbenchDialog\(workbench, 'Authorize conflict route'/);
   assert.match(profile, /dismissOwnedNativeWorkbenchDialog\(workbench, \/Authorize native install\|Authorize native update\|Authorize native uninstall\|Authorize exact rollback\|Authorize conflict route\/i\)/);
   assert.doesNotMatch(profile, /workbench\.locator\('\.monaco-dialog-box:visible'/);
   assert.ok(profile.indexOf("await install(v1)") < profile.indexOf("await update('update-v1-to-v2', v2)"));
-  assert.ok(profile.indexOf("await update('update-v1-to-v2', v2)") < profile.indexOf('await exerciseConflictRoute()'));
+  assert.ok(profile.indexOf("await update('update-v1-to-v2', v2)") < profile.indexOf("await progressStep('conflict-route', () => exerciseConflictRoute())"));
   assert.ok(profile.indexOf("await update('update-v1-to-v2', v2)") < profile.indexOf("await uninstall('rollback-stage-uninstall-v2')"));
   assert.ok(profile.indexOf("await uninstall('rollback-stage-uninstall-v2')") < profile.indexOf('await rollback()'));
   assert.ok(profile.indexOf('await rollback()') < profile.indexOf("await uninstall('restore-update-uninstall-v2')"));
-  assert.ok(profile.indexOf("await uninstall('restore-update-uninstall-v2')") < profile.indexOf('observation.update_rollback_reconciled = await currentVersion(v1.version)'));
-  assert.ok(profile.indexOf('observation.update_rollback_reconciled = await currentVersion(v1.version)') < profile.indexOf("await uninstall('final-cleanup-uninstall-v1', v1)"));
+  assert.ok(profile.indexOf("await uninstall('restore-update-uninstall-v2')") < profile.indexOf('observation.update_rollback_reconciled = await currentVersion(v1.version,'));
+  assert.ok(profile.indexOf('observation.update_rollback_reconciled = await currentVersion(v1.version,') < profile.indexOf("await uninstall('final-cleanup-uninstall-v1', v1)"));
   assert.match(profile, /restartInstalledDashboardWebview/);
   assert.match(profile, /environmentResult/);
   assert.match(profile, /network_expected/);
@@ -2755,6 +2772,7 @@ test('r16 prerequisites are geometry-independent, owned, reversible, and diagnos
   assert.match(profile, /for \(const spec of INSTALLED_HOST_BOUNDARY_SPECS\)[\s\S]*resetInstalledDashboardBaseline\(workbench, frameHost[\s\S]*navigateInstalledSurface\(frameHost, spec\.route/);
   assert.match(profile, /canonicalScenarioTimeoutMs/);
   assert.match(profile, /canonicalScenarioTimeoutMs = 75_000/);
+  assert.match(profile, /canonicalActiveControlBudgetMs = 180_000/);
   assert.match(profile, /Math\.max\(35_000, Math\.min\(50_000, timeoutMs \+ 20_000\)\)/);
   assert.match(source, /inspectHostActionReceiptFailure/);
   assert.match(profile, /response_diagnostics/);
@@ -3164,7 +3182,7 @@ test('installed plugin profiles require acknowledged Plugins navigation before l
   assert.match(settlement, /preserveModal: installedPluginControlPreservesModal\(selector\)/);
   assert.doesNotMatch(readProfile, /querySelector\('\[data-surface="plugins"\]'\)\?*\.click\(\)/);
   assert.doesNotMatch(mutationProfile, /querySelector\('\[data-surface="plugins"\]'\)\?*\.click\(\)/);
-  const mutate = mutationProfile.slice(mutationProfile.indexOf('const mutate = async spec'), mutationProfile.indexOf('const exerciseNativeManagerEntrypoints'));
+  const mutate = mutationProfile.slice(mutationProfile.indexOf('const mutate = async (spec,'), mutationProfile.indexOf('const exerciseNativeManagerEntrypoints'));
   assert.ok(mutate.indexOf('for (const selector of Object.keys(spec.fields))') < mutate.indexOf('dispatchInstalledPluginFormAction(frameHost, spec.fields, spec.previewAction)'));
   assert.match(mutate, /previewRequestBefore = await installedOutboundRequestOffset[\s\S]*waitForInstalledOutboundRequest\(frameHost, previewRequestBefore, spec\.previewOperation\)/);
   assert.match(mutate, /requestId: previewRequest\.requestId[\s\S]*dispatchInstalledPluginConfirmation[\s\S]*responseOffset[\s\S]*requestOffset/);
@@ -3172,7 +3190,7 @@ test('installed plugin profiles require acknowledged Plugins navigation before l
   assert.doesNotMatch(mutate, /dispatchEvent\(new Event\('input'[\s\S]*settleInstalledPluginControl/);
   const conflicts = mutationProfile.slice(mutationProfile.indexOf('const queryConflicts = async'), mutationProfile.indexOf('const exerciseConflictRoute'));
   assert.ok(conflicts.indexOf('[data-action="queryExtensionConflicts"]') < conflicts.indexOf('dispatchInstalledPluginFormAction'));
-  assert.match(mutationProfile, /physicalVersion = await currentVersion\(null, \{ acceptAny: true \}\)[\s\S]*failure-cleanup-uninstall-[\s\S]*observation\.failure_cleanup_restored = physicalVersion === null/);
+  assert.match(mutationProfile, /physicalVersion = await currentVersion\(null, \{ acceptAny: true, deadline: recoveryDeadline \}\)[\s\S]*failure-cleanup-uninstall-[\s\S]*deadline: recoveryDeadline[\s\S]*observation\.failure_cleanup_restored = physicalVersion === null/);
 });
 
 test('installed plugin preview confirmation requires one exact request, token, target, and modal control', () => {

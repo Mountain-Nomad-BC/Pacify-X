@@ -4234,22 +4234,29 @@ function hostBoundaryControlProbe(matrix, observation) {
 async function runInstalledHostBoundaryProfile(workbench, frameHost, matrix, timeoutMs = 30_000, onProgress = () => {}) {
   const observation = { operations: {}, errors: [] };
   const canonicalScenarioTimeoutMs = 75_000;
+  const canonicalActiveControlBudgetMs = 180_000;
   for (const spec of INSTALLED_HOST_BOUNDARY_SPECS) {
     const displacingOperation = DISPLACING_HOST_OPERATIONS.has(spec.operation);
+    const recoveryReserveMs = spec.scenario === 'canonical-memory' ? 15_000 : 10_000;
     const controlBudgetMs = spec.scenario === 'canonical-memory'
-      ? canonicalScenarioTimeoutMs
+      ? canonicalActiveControlBudgetMs + recoveryReserveMs
       : displacingOperation
         ? Math.max(45_000, Math.min(60_000, timeoutMs + 30_000))
         : Math.max(35_000, Math.min(50_000, timeoutMs + 20_000));
     const controlDeadline = Date.now() + controlBudgetMs;
-    const recoveryReserveMs = 10_000;
     const activeControlDeadline = controlDeadline - recoveryReserveMs;
     const result = { rendered: false, attempted: false, acknowledged: false, dashboard_reopened: false, failure_handling: false, failure_dashboard_recovered: false, refused_without_effect: false, errors: [] };
     let scenario = null;
     let terminalControlTimeout = null;
     observation.operations[spec.controlId] = result;
     const controlStarted = Date.now();
-    onProgress({ control_id: spec.controlId, state: 'started', budget_ms: controlBudgetMs });
+    onProgress({
+      control_id: spec.controlId,
+      state: 'started',
+      budget_ms: controlBudgetMs,
+      active_budget_ms: controlBudgetMs - recoveryReserveMs,
+      recovery_reserve_ms: recoveryReserveMs
+    });
     try {
       await boundedOwnedUiAction(async () => {
       await resetInstalledDashboardBaseline(workbench, frameHost, Math.max(1_000, Math.min(5_000, activeControlDeadline - Date.now())));
@@ -9463,9 +9470,38 @@ function pluginMutationControlProbe(matrix, observation) {
   };
 }
 
-async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, timeoutMs = 90_000) {
+async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, timeoutMs = 90_000, onProgress = () => {}) {
   const extensionId = 'px-owned.fixture';
   const pxExtensionId = 'mountain-nomad-bc.pacify-x-vscode';
+  const activeProfileBudgetMs = 240_000;
+  const recoveryReserveMs = 120_000;
+  const profileStarted = Date.now();
+  const activeProfileDeadline = profileStarted + activeProfileBudgetMs;
+  const recoveryDeadline = activeProfileDeadline + recoveryReserveMs;
+  const remainingBudget = (label, ceilingMs = timeoutMs, deadline = activeProfileDeadline) => {
+    const remaining = deadline - Date.now();
+    if (remaining <= 0) throw new Error(`plugin-local-lifecycle-${label}-deadline-exhausted`);
+    return Math.max(1, Math.min(ceilingMs, remaining));
+  };
+  const progressStep = async (step, operation) => {
+    const started = Date.now();
+    onProgress({ step, state: 'started', remaining_active_ms: Math.max(0, activeProfileDeadline - started) });
+    try {
+      const value = await operation();
+      onProgress({ step, state: 'returned', duration_ms: Date.now() - started });
+      return value;
+    } catch (error) {
+      const message = String(error?.message || error).slice(0, 1000);
+      onProgress({ step, state: 'threw', duration_ms: Date.now() - started, error: message });
+      throw error;
+    }
+  };
+  onProgress({
+    step: 'profile-budget', state: 'budgeted',
+    active_budget_ms: activeProfileBudgetMs,
+    recovery_reserve_ms: recoveryReserveMs,
+    total_budget_ms: activeProfileBudgetMs + recoveryReserveMs
+  });
   const fixtureRoot = path.resolve(__dirname, '..', 'tests', 'generated', 'plugin-lifecycle');
   const fixtureReceipt = JSON.parse(fs.readFileSync(path.join(fixtureRoot, 'receipt.json'), 'utf8'));
   const fixture = version => {
@@ -9488,8 +9524,8 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
   };
   let physicalVersion = null;
 
-  const waitForResponse = async (after, expectedType, expectedOperation = '') => {
-    const deadline = Date.now() + timeoutMs;
+  const waitForResponse = async (after, expectedType, expectedOperation = '', deadline = activeProfileDeadline) => {
+    const responseDeadline = Math.min(deadline, Date.now() + remainingBudget(`response-${expectedType}`, timeoutMs, deadline));
     do {
       const response = await frameHost.evaluate((frame, item) => (frame.contentWindow?.__PX_INSTALLED_RESPONSES__ || []).slice(item.after)
         .find(value => value?.type === item.expected || (value?.type === 'operationError' && (!item.operation || value.operation === item.operation))) || null,
@@ -9497,12 +9533,12 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
       if (response?.type === 'operationError') throw new Error(`plugin-host-operation-failed:${response.operation}:${response.error}`);
       if (response) return response;
       await wait(150);
-    } while (Date.now() < deadline);
+    } while (Date.now() < responseDeadline);
     throw new Error(`plugin-response-timeout:${expectedType}`);
   };
 
-  const currentVersion = async (expected, { acceptAny = false } = {}) => {
-    const controlDeadline = Date.now() + Math.min(timeoutMs, 20_000);
+  const currentVersion = async (expected, { acceptAny = false, deadline = activeProfileDeadline } = {}) => {
+    const controlDeadline = Math.min(deadline, Date.now() + remainingBudget('inventory-control', Math.min(timeoutMs, 20_000), deadline));
     let controlState = null;
     let before = null;
     do {
@@ -9537,7 +9573,7 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
       await wait(100);
     } while (Date.now() < controlDeadline);
     if (before === null) throw new Error(`plugin-inventory-control-unavailable:${JSON.stringify(controlState)}`);
-    const deadline = Date.now() + timeoutMs;
+    const inventoryDeadline = Math.min(deadline, Date.now() + remainingBudget('inventory-response', timeoutMs, deadline));
     let last = null;
     do {
       const responses = await frameHost.evaluate((frame, after) => (frame.contentWindow?.__PX_INSTALLED_RESPONSES__ || []).slice(after), before);
@@ -9550,13 +9586,13 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
         if (observed === expected || acceptAny) return observed;
       }
       await wait(150);
-    } while (Date.now() < deadline);
+    } while (Date.now() < inventoryDeadline);
     throw new Error(`plugin-inventory-version-mismatch:${JSON.stringify({ expected, observed: last?.records?.find(item => item.id === extensionId)?.version || null })}`);
   };
 
-  const mutate = async spec => {
-    for (const selector of Object.keys(spec.fields)) await settleInstalledPluginControl(frameHost, selector, timeoutMs);
-    await settleInstalledPluginControl(frameHost, `[data-action="${spec.previewAction}"]`, timeoutMs);
+  const mutate = async (spec, { deadline = activeProfileDeadline } = {}) => progressStep(`mutation:${spec.name}`, async () => {
+    for (const selector of Object.keys(spec.fields)) await settleInstalledPluginControl(frameHost, selector, remainingBudget(`${spec.name}-field`, timeoutMs, deadline));
+    await settleInstalledPluginControl(frameHost, `[data-action="${spec.previewAction}"]`, remainingBudget(`${spec.name}-preview-control`, timeoutMs, deadline));
     const previewRequestBefore = await installedOutboundRequestOffset(frameHost);
     const previewBefore = await dispatchInstalledPluginFormAction(frameHost, spec.fields, spec.previewAction);
     const previewRequest = await waitForInstalledOutboundRequest(frameHost, previewRequestBefore, spec.previewOperation);
@@ -9567,7 +9603,7 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
       requestId: previewRequest.requestId,
       executeAction: spec.executeAction,
       exactTarget: spec.exactTarget
-    }, timeoutMs);
+    }, remainingBudget(`${spec.name}-preview-confirmation`, timeoutMs, deadline));
     const preview = confirmation.response.result;
     if (preview?.schema_version !== 'px.extension-lifecycle-preview/1.0' || preview.allowed !== true || preview.extension_id !== extensionId || preview.exact_target !== spec.exactTarget) throw new Error(`plugin-${spec.name}-preview-invalid:${JSON.stringify(preview)}`);
     const localSource = preview.local_source || preview.rollback_identity?.local_source;
@@ -9577,11 +9613,11 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
       executeAction: spec.executeAction,
       token: preview.token,
       exactTarget: preview.exact_target
-    }, timeoutMs);
+    }, remainingBudget(`${spec.name}-confirmation-dispatch`, timeoutMs, deadline));
     const executeBefore = dispatch.responseOffset;
     const requestBeforeExecute = dispatch.requestOffset;
     try {
-      const dialog = await waitForNativeWorkbenchDialog(workbench, spec.nativeApproval, 15_000, { frameHost, responseOffset: executeBefore, requestOffset: requestBeforeExecute, requestType: spec.executeOperation, keyboardAction: spec.nativeApproval });
+      const dialog = await waitForNativeWorkbenchDialog(workbench, spec.nativeApproval, remainingBudget(`${spec.name}-native-dialog`, 15_000, deadline), { frameHost, responseOffset: executeBefore, requestOffset: requestBeforeExecute, requestType: spec.executeOperation, keyboardAction: spec.nativeApproval });
       await clickNativeWorkbenchDialogAction(workbench, dialog, spec.nativeApproval);
     } catch (error) {
       await dismissOwnedNativeWorkbenchDialog(workbench, spec.nativeApproval).catch(recoveryError => {
@@ -9589,7 +9625,7 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
       });
       throw error;
     }
-    const result = (await waitForResponse(executeBefore, spec.resultType, spec.executeOperation)).result;
+    const result = (await waitForResponse(executeBefore, spec.resultType, spec.executeOperation, deadline)).result;
     const receiptComplete = validPluginMutationReceipt(spec.receiptAction, result, extensionId, spec.expectedVersion);
     const receiptPending = validPendingPluginMutationReceipt(spec.receiptAction, result, extensionId, spec.exactTarget);
     if (!receiptComplete && !receiptPending) throw new Error(`plugin-${spec.name}-receipt-invalid:${JSON.stringify(result)}`);
@@ -9601,25 +9637,25 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
     // before asserting the physical extension inventory.
     const requiresWorkbenchReconstruction = ['install', 'update', 'uninstall', 'rollback'].includes(spec.receiptAction);
     const restart = requiresWorkbenchReconstruction
-      ? await restartOwnedWorkbenchWindow(workbench, frameHost, 75_000, {
+      ? await restartOwnedWorkbenchWindow(workbench, frameHost, remainingBudget(`${spec.name}-workbench-reconstruction`, 75_000, deadline), {
           conflictSafeReconstruction: true,
           physicalExtensionId: extensionId,
           expectedPhysicalVersion: spec.expectedVersion
         })
-      : await restartInstalledDashboardWebview(frameHost, 45_000);
+      : await restartInstalledDashboardWebview(frameHost, remainingBudget(`${spec.name}-webview-reconstruction`, 45_000, deadline));
     if (restart.restarted !== true || restart.reconstructed !== true) throw new Error(`plugin-${spec.name}-host-reconstruction-unobserved`);
     observation.webview_restart_count += 1;
     if (requiresWorkbenchReconstruction) observation.workbench_reload_count += 1;
-    const observedVersion = await currentVersion(spec.expectedVersion);
+    const observedVersion = await currentVersion(spec.expectedVersion, { deadline });
     physicalVersion = observedVersion;
     const physicallyReconciled = receiptComplete || (receiptPending && observedVersion === spec.expectedVersion);
     if (!physicallyReconciled) throw new Error(`plugin-${spec.name}-pending-receipt-not-reconciled:${JSON.stringify({ expected: spec.expectedVersion, observed: observedVersion })}`);
     observation.operations.push({ name: spec.name, preview, result, observed_version: observedVersion, receipt_state: receiptComplete ? 'reconciled' : 'physically-reconciled-after-pending', webview_restarted: true, workbench_reloaded: requiresWorkbenchReconstruction, catalog_reconstruction: requiresWorkbenchReconstruction ? 'owned-workbench-window' : 'dashboard-webview' });
     return result;
-  };
+  });
 
-  const exerciseNativeManagerEntrypoints = async () => {
-    await settleInstalledPluginControl(frameHost, '[data-action="openExtensionsView"]', timeoutMs);
+  const exerciseNativeManagerEntrypoints = async (deadline = activeProfileDeadline) => {
+    await settleInstalledPluginControl(frameHost, '[data-action="openExtensionsView"]', remainingBudget('native-manager-control', timeoutMs, deadline));
     const count = await frameHost.evaluate(frame => [...frame.contentDocument.querySelectorAll('[data-action="openExtensionsView"]')].filter(item => item.offsetWidth || item.offsetHeight || item.getClientRects().length).length);
     if (count < 2) throw new Error(`plugin-native-manager-entrypoints-missing:${count}`);
     for (let index = 0; index < count; index += 1) {
@@ -9629,35 +9665,35 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
         if (!controls[position]) throw new Error(`plugin-native-manager-entrypoint-unavailable:${position}`);
         controls[position].click();
       }, index);
-      const response = await waitForResponse(before, 'hostActionResult', 'openExtensionsView');
+      const response = await waitForResponse(before, 'hostActionResult', 'openExtensionsView', deadline);
       if (response.operation !== 'openExtensionsView' || response.disposition !== 'completed') throw new Error(`plugin-native-manager-ack-invalid:${JSON.stringify(response)}`);
       observation.native_manager_open_count += 1;
       await executeWorkbenchCommand(workbench, INSTALLED_SAFE_WORKBENCH_COMMANDS['pxui.dashboard-control-plane.command.pacifyX.openDashboard'].title);
-      await settleInstalledPluginControl(frameHost, '[data-action="openExtensionsView"]', timeoutMs);
+      await settleInstalledPluginControl(frameHost, '[data-action="openExtensionsView"]', remainingBudget('native-manager-reopen-control', timeoutMs, deadline));
     }
-    const restart = await restartInstalledDashboardWebview(frameHost, 45_000);
+    const restart = await restartInstalledDashboardWebview(frameHost, remainingBudget('native-manager-webview-reconstruction', 45_000, deadline));
     observation.webview_restart_count += restart.restarted === true ? 1 : 0;
-    observation.native_manager_reopened = restart.restarted === true && await currentVersion(null) === null;
+    observation.native_manager_reopened = restart.restarted === true && await currentVersion(null, { deadline }) === null;
     if (!observation.native_manager_reopened) throw new Error('plugin-native-manager-dashboard-reopen-or-denominator-invalid');
   };
 
-  const queryConflicts = async () => {
-    await settleInstalledPluginControl(frameHost, '#extension-conflict-id', timeoutMs);
-    await settleInstalledPluginControl(frameHost, '[data-action="queryExtensionConflicts"]', timeoutMs);
+  const queryConflicts = async (deadline = activeProfileDeadline) => {
+    await settleInstalledPluginControl(frameHost, '#extension-conflict-id', remainingBudget('conflict-field', timeoutMs, deadline));
+    await settleInstalledPluginControl(frameHost, '[data-action="queryExtensionConflicts"]', remainingBudget('conflict-query-control', timeoutMs, deadline));
     const before = await dispatchInstalledPluginFormAction(frameHost, { '#extension-conflict-id': extensionId }, 'queryExtensionConflicts');
-    const result = (await waitForResponse(before, 'extensionConflictResult', 'extensionConflictQuery')).result;
+    const result = (await waitForResponse(before, 'extensionConflictResult', 'extensionConflictQuery', deadline)).result;
     const signal = exactPluginConflictSignal(result, pxExtensionId, extensionId);
     if (!signal) throw new Error(`plugin-deterministic-conflict-signal-missing:${JSON.stringify(result)}`);
     return signal;
   };
 
-  const exerciseConflictRoute = async () => {
-    let signal = await queryConflicts();
+  const exerciseConflictRoute = async (deadline = activeProfileDeadline) => {
+    let signal = await queryConflicts(deadline);
     const invalidBefore = await dispatchInstalledPluginConflictControl(frameHost, {
       extensionId, signalId: signal.signal_id,
       targetExtensionId: extensionId, resolution: 'inspect'
-    }, { timeoutMs, targetOverride: 'px-owned.absent' });
-    const invalidDeadline = Date.now() + timeoutMs;
+    }, { timeoutMs: remainingBudget('invalid-conflict-dispatch', timeoutMs, deadline), targetOverride: 'px-owned.absent' });
+    const invalidDeadline = Math.min(deadline, Date.now() + remainingBudget('invalid-conflict-response', timeoutMs, deadline));
     do {
       const failure = await frameHost.evaluate((frame, after) => (frame.contentWindow?.__PX_INSTALLED_RESPONSES__ || []).slice(after)
         .find(value => value?.type === 'operationError' && value.operation === 'extensionConflictResolutionPreview') || null, invalidBefore);
@@ -9665,22 +9701,22 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
       await wait(150);
     } while (Date.now() < invalidDeadline);
     if (!observation.invalid_conflict_target_rejected) throw new Error('plugin-invalid-conflict-target-not-rejected');
-    signal = await queryConflicts();
+    signal = await queryConflicts(deadline);
     const previewBefore = await dispatchInstalledPluginConflictControl(frameHost, {
       extensionId, signalId: signal.signal_id,
       targetExtensionId: extensionId, resolution: 'inspect'
-    }, { timeoutMs });
-    const preview = (await waitForResponse(previewBefore, 'extensionConflictResolutionPreview', 'extensionConflictResolutionPreview')).result;
+    }, { timeoutMs: remainingBudget('conflict-preview-dispatch', timeoutMs, deadline) });
+    const preview = (await waitForResponse(previewBefore, 'extensionConflictResolutionPreview', 'extensionConflictResolutionPreview', deadline)).result;
     if (preview?.schema_version !== 'px.extension-conflict-resolution-preview/1.0' || preview.allowed !== true || preview.signal_id !== signal.signal_id || preview.target_extension_id !== extensionId || preview.resolution !== 'inspect') throw new Error(`plugin-conflict-preview-invalid:${JSON.stringify(preview)}`);
     const dispatch = await dispatchInstalledPluginConfirmation(frameHost, {
       executeAction: 'executeExtensionConflictResolution',
       token: preview.token,
       exactTarget: preview.exact_target
-    }, timeoutMs);
+    }, remainingBudget('conflict-confirmation-dispatch', timeoutMs, deadline));
     const executeBefore = dispatch.responseOffset;
     const requestBeforeExecute = dispatch.requestOffset;
     try {
-      const dialog = await waitForNativeWorkbenchDialog(workbench, 'Authorize conflict route', 15_000, { frameHost, responseOffset: executeBefore, requestOffset: requestBeforeExecute, requestType: 'extensionConflictResolutionExecute', keyboardAction: 'Authorize conflict route' });
+      const dialog = await waitForNativeWorkbenchDialog(workbench, 'Authorize conflict route', remainingBudget('conflict-native-dialog', 15_000, deadline), { frameHost, responseOffset: executeBefore, requestOffset: requestBeforeExecute, requestType: 'extensionConflictResolutionExecute', keyboardAction: 'Authorize conflict route' });
       await clickNativeWorkbenchDialogAction(workbench, dialog, 'Authorize conflict route');
     } catch (error) {
       await dismissOwnedNativeWorkbenchDialog(workbench, 'Authorize conflict route').catch(recoveryError => {
@@ -9688,28 +9724,28 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
       });
       throw error;
     }
-    const result = (await waitForResponse(executeBefore, 'extensionConflictResolutionResult', 'extensionConflictResolutionExecute')).result;
+    const result = (await waitForResponse(executeBefore, 'extensionConflictResolutionResult', 'extensionConflictResolutionExecute', deadline)).result;
     if (result?.schema_version !== 'px.extension-conflict-resolution-receipt/1.0' || result.action !== 'conflict-resolution' || result.signal_id !== signal.signal_id || result.target_extension_id !== extensionId || result.resolution !== 'inspect' || result.status !== 'exact-native-record-opened' || result.mutation_dispatched !== false) throw new Error(`plugin-conflict-route-result-invalid:${JSON.stringify(result)}`);
-    const restart = await restartOwnedWorkbenchWindow(workbench, frameHost, 75_000, {
+    const restart = await restartOwnedWorkbenchWindow(workbench, frameHost, remainingBudget('conflict-workbench-reconstruction', 75_000, deadline), {
       conflictSafeReconstruction: true,
       physicalExtensionId: extensionId,
       expectedPhysicalVersion: v2.version
     });
     observation.webview_restart_count += restart.restarted === true ? 1 : 0;
     observation.workbench_reload_count += restart.restarted === true ? 1 : 0;
-    const observedVersion = await currentVersion(v2.version);
+    const observedVersion = await currentVersion(v2.version, { deadline });
     if (observedVersion !== v2.version) throw new Error('plugin-conflict-route-changed-installed-denominator');
     observation.operations.push({ name: 'inspect-deterministic-conflict', signal_id: signal.signal_id, preview, result, observed_version: observedVersion, webview_restarted: restart.restarted === true, workbench_reloaded: restart.restarted === true });
     observation.conflict_route_completed = restart.restarted === true && restart.reconstructed === true;
   };
 
-  const install = version => mutate({ name: `install-${version.version}`, fields: { '#extension-install-id': extensionId, '#extension-install-version': version.version, '#extension-install-vsix': version.path }, previewAction: 'previewExtensionInstall', previewType: 'extensionLifecyclePreview', previewOperation: 'extensionLifecyclePreview', executeAction: 'executeExtensionInstall', executeOperation: 'extensionLifecycleExecute', resultType: 'extensionLifecycleResult', nativeApproval: 'Authorize native install', receiptAction: 'install', exactTarget: `${extensionId}@${version.version}`, expectedVersion: version.version, fixture: version });
-  const update = (name, version) => mutate({ name, fields: { '#extension-update-id': extensionId, '#extension-update-version': version.version, '#extension-update-vsix': version.path }, previewAction: 'previewExtensionUpdate', previewType: 'extensionUpdatePreview', previewOperation: 'extensionUpdatePreview', executeAction: 'executeExtensionUpdate', executeOperation: 'extensionUpdateExecute', resultType: 'extensionUpdateResult', nativeApproval: 'Authorize native update', receiptAction: 'update', exactTarget: `${extensionId}@${version.version}`, expectedVersion: version.version, fixture: version });
-  const uninstall = (name, version = v2) => mutate({ name, fields: { '#extension-uninstall-id': extensionId }, previewAction: 'previewExtensionUninstall', previewType: 'extensionUninstallPreview', previewOperation: 'extensionUninstallPreview', executeAction: 'executeExtensionUninstall', executeOperation: 'extensionUninstallExecute', resultType: 'extensionUninstallResult', nativeApproval: 'Authorize native uninstall', receiptAction: 'uninstall', exactTarget: `${extensionId}@${version.version}#uninstall`, expectedVersion: null, fixture: version });
-  const rollback = () => mutate({ name: 'rollback-uninstall-v2', fields: { '#extension-rollback-id': extensionId }, previewAction: 'previewExtensionRollback', previewType: 'extensionRollbackPreview', previewOperation: 'extensionRollbackPreview', executeAction: 'executeExtensionRollback', executeOperation: 'extensionRollbackExecute', resultType: 'extensionRollbackResult', nativeApproval: 'Authorize exact rollback', receiptAction: 'rollback', exactTarget: `${extensionId}@2.0.0`, expectedVersion: v2.version, fixture: v2 });
+  const install = (version, options = {}) => mutate({ name: `install-${version.version}`, fields: { '#extension-install-id': extensionId, '#extension-install-version': version.version, '#extension-install-vsix': version.path }, previewAction: 'previewExtensionInstall', previewType: 'extensionLifecyclePreview', previewOperation: 'extensionLifecyclePreview', executeAction: 'executeExtensionInstall', executeOperation: 'extensionLifecycleExecute', resultType: 'extensionLifecycleResult', nativeApproval: 'Authorize native install', receiptAction: 'install', exactTarget: `${extensionId}@${version.version}`, expectedVersion: version.version, fixture: version }, options);
+  const update = (name, version, options = {}) => mutate({ name, fields: { '#extension-update-id': extensionId, '#extension-update-version': version.version, '#extension-update-vsix': version.path }, previewAction: 'previewExtensionUpdate', previewType: 'extensionUpdatePreview', previewOperation: 'extensionUpdatePreview', executeAction: 'executeExtensionUpdate', executeOperation: 'extensionUpdateExecute', resultType: 'extensionUpdateResult', nativeApproval: 'Authorize native update', receiptAction: 'update', exactTarget: `${extensionId}@${version.version}`, expectedVersion: version.version, fixture: version }, options);
+  const uninstall = (name, version = v2, options = {}) => mutate({ name, fields: { '#extension-uninstall-id': extensionId }, previewAction: 'previewExtensionUninstall', previewType: 'extensionUninstallPreview', previewOperation: 'extensionUninstallPreview', executeAction: 'executeExtensionUninstall', executeOperation: 'extensionUninstallExecute', resultType: 'extensionUninstallResult', nativeApproval: 'Authorize native uninstall', receiptAction: 'uninstall', exactTarget: `${extensionId}@${version.version}#uninstall`, expectedVersion: null, fixture: version }, options);
+  const rollback = (options = {}) => mutate({ name: 'rollback-uninstall-v2', fields: { '#extension-rollback-id': extensionId }, previewAction: 'previewExtensionRollback', previewType: 'extensionRollbackPreview', previewOperation: 'extensionRollbackPreview', executeAction: 'executeExtensionRollback', executeOperation: 'extensionRollbackExecute', resultType: 'extensionRollbackResult', nativeApproval: 'Authorize exact rollback', receiptAction: 'rollback', exactTarget: `${extensionId}@2.0.0`, expectedVersion: v2.version, fixture: v2 }, options);
 
   try {
-    await settleInstalledPluginControl(frameHost, '[data-action="previewExtensionInstall"]', timeoutMs);
+    await settleInstalledPluginControl(frameHost, '[data-action="previewExtensionInstall"]', remainingBudget('initial-install-control', timeoutMs));
     observation.rendered = true; observation.attempted = true;
     const failureBefore = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
     await frameHost.evaluate((frame, item) => {
@@ -9719,18 +9755,18 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
       document.querySelector('#extension-install-vsix').value = item.path;
       document.querySelector('[data-action="previewExtensionInstall"]').click();
     }, { id: extensionId, version: v1.version, path: v1.path.replace(/\.vsix$/i, '.missing.vsix') });
-    const failureDeadline = Date.now() + timeoutMs;
+    const failureDeadline = Math.min(activeProfileDeadline, Date.now() + remainingBudget('missing-source-response', timeoutMs));
     do {
       const failure = await frameHost.evaluate((frame, after) => (frame.contentWindow?.__PX_INSTALLED_RESPONSES__ || []).slice(after).find(value => value?.type === 'operationError' && value.operation === 'extensionLifecyclePreview') || null, failureBefore);
       if (failure && /ENOENT|realpath|no such file/i.test(String(failure.error || ''))) { observation.invalid_source_rejected = true; break; }
       await wait(150);
     } while (Date.now() < failureDeadline);
     if (!observation.invalid_source_rejected) throw new Error('plugin-missing-local-source-not-rejected');
-    await exerciseNativeManagerEntrypoints();
+    await progressStep('native-manager-entrypoints', () => exerciseNativeManagerEntrypoints());
 
     await install(v1);
     await update('update-v1-to-v2', v2);
-    await exerciseConflictRoute();
+    await progressStep('conflict-route', () => exerciseConflictRoute());
     await uninstall('rollback-stage-uninstall-v2');
     try {
       await rollback();
@@ -9742,7 +9778,7 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
     observation.uninstall_rollback_reconciled = true;
     await uninstall('restore-update-uninstall-v2');
     await install(v1);
-    observation.update_rollback_reconciled = await currentVersion(v1.version) === v1.version;
+    observation.update_rollback_reconciled = await currentVersion(v1.version, { deadline: activeProfileDeadline }) === v1.version;
     if (!observation.update_rollback_reconciled) throw new Error('plugin-update-predecessor-reconstruction-failed');
     await uninstall('final-cleanup-uninstall-v1', v1);
     observation.cleanup_restored = true;
@@ -9753,11 +9789,11 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
     await dismissOwnedNativeWorkbenchDialog(workbench, /Authorize native install|Authorize native update|Authorize native uninstall|Authorize exact rollback|Authorize conflict route/i)
       .catch(recoveryError => observation.errors.push(`dialog-recovery:${String(recoveryError?.message || recoveryError).slice(0, 1800)}`));
     try {
-      physicalVersion = await currentVersion(null, { acceptAny: true });
+      physicalVersion = await currentVersion(null, { acceptAny: true, deadline: recoveryDeadline });
       if (physicalVersion !== null) {
         const cleanupFixture = physicalVersion === v1.version ? v1 : physicalVersion === v2.version ? v2 : null;
         if (!cleanupFixture) throw new Error(`plugin-failure-cleanup-version-unsupported:${physicalVersion}`);
-        await uninstall(`failure-cleanup-uninstall-${physicalVersion}`, cleanupFixture);
+        await uninstall(`failure-cleanup-uninstall-${physicalVersion}`, cleanupFixture, { deadline: recoveryDeadline });
       }
       observation.failure_cleanup_restored = physicalVersion === null;
       observation.cleanup_restored = observation.failure_cleanup_restored;
@@ -9766,6 +9802,8 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
       observation.errors.push(`failure-cleanup:${String(recoveryError?.message || recoveryError).slice(0, 1800)}`);
     }
   }
+  observation.profile_duration_ms = Date.now() - profileStarted;
+  observation.profile_budget_ms = activeProfileBudgetMs + recoveryReserveMs;
   return { schema_version: 'px.installed-plugin-mutation-profile/1.0', authority: 'Exact hash-bound local inert VSIX lifecycle only inside the owned disposable VS Code extension profile; final state must match the initial absent state.', fixtures: { v1, v2 }, observation, control_probe: pluginMutationControlProbe(matrix, observation) };
 }
 
@@ -10905,7 +10943,11 @@ async function main() {
       ? await timedProfile('plugin-read-handoff', () => runInstalledPluginReadProfile(workbench, dashboard, proofMatrix))
       : { schema_version: 'px.installed-plugin-read-profile/1.0', authority: 'Not admitted outside a full owned isolated host.', observation: { attempted: false, operations: {}, errors: [] }, control_probe: { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside a full owned isolated host.', eligible_control_count: 0, records: [] } };
     const pluginMutationProfile = ownedReversibleConfigurationAuthority && (!focusedProfileOnly || nativeDialogOnly)
-      ? await timedProfile('plugin-local-lifecycle', () => runInstalledPluginMutationProfile(workbench, dashboard, proofMatrix))
+      ? await timedProfile(
+          'plugin-local-lifecycle',
+          () => runInstalledPluginMutationProfile(workbench, dashboard, proofMatrix, 90_000, event => appendProfileProgress({ profile: 'plugin-local-lifecycle-step', ...event })),
+          { timeoutMs: 370_000 }
+        )
       : { schema_version: 'px.installed-plugin-mutation-profile/1.0', authority: 'Not admitted outside a full owned disposable VS Code extension profile.', observation: { attempted: false, completed: false, errors: [] }, control_probe: { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside a full owned disposable VS Code extension profile.', eligible_control_count: 0, records: [] } };
     if (returnedProfileErrors(pluginMutationProfile).length) dashboardProfileBlocker = 'plugin-local-lifecycle';
     if (!dashboardProfileBlocker && profileFailures.length) dashboardProfileBlocker = profileFailures[0].profile;
