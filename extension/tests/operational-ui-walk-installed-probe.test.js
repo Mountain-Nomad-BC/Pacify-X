@@ -20,6 +20,7 @@ const { dispatchInstalledPluginConfirmation, dispatchInstalledPluginFormAction, 
 const { dispatchInstalledPluginConflictControl, installedPluginConflictControlMatches } = require('../scripts/run-operational-ui-walk');
 const { installedAdvancedFixtureStateAcknowledged } = require('../scripts/run-operational-ui-walk');
 const { waitForInstalledCanonicalMemoryBaseline } = require('../scripts/run-operational-ui-walk');
+const { closeOwnedDashboardTabs, remainingOwnedUiBudget } = require('../scripts/run-operational-ui-walk');
 
 const { boundedOwnedUiAction, createOwnedContentEvaluationBoundary, waitForOwnedWebview } = require('../scripts/run-operational-ui-walk');
 const { clickWhenBuilderControlReady, clickWhenInstalledGraphControlReady, installedGraphExchangeOffset, invokeBuilderControl, waitForBuilderJsonControls, waitForInstalledGraphExchange, waitForInstalledGraphIdle } = require('../scripts/run-operational-ui-walk');
@@ -40,6 +41,30 @@ test('dashboard restart identity follows canonical ownership instead of the rest
   assert.match(reload, /canonical_dashboard_dom:[\s\S]*data-surface="dashboard"[\s\S]*data-surface="agents"/);
   assert.doesNotMatch(restart, /PACIFY-X\\s\*\\\/\\s\*DASHBOARD/);
   assert.doesNotMatch(reload, /PACIFY-X\\s\*\\\/\\s\*DASHBOARD/);
+  assert.match(restart, /const deadline = Date\.now\(\) \+ timeoutMs[\s\S]*remainingOwnedUiBudget\(deadline, `installed-dashboard-restart-\$\{label\}`\)[\s\S]*closeOwnedDashboardTabs\(workbench, remaining\('close-owned-tabs'\)\)[\s\S]*reopenPacifyDashboardFromOwnedUi\(workbench, frameHost, remaining\('reopen'\)\)/);
+  assert.doesNotMatch(restart, /waitFor\(\{ state: '(?:visible|hidden)', timeout: (?:15_000|30_000) \}\)/);
+});
+
+test('dashboard reconstruction drains every owned matching tab before reopening one generation', async () => {
+  let count = 3;
+  let clicks = 0;
+  const tabs = {
+    count: async () => count,
+    first: () => ({ click: async () => { clicks += 1; } })
+  };
+  const workbench = {
+    locator: () => tabs,
+    keyboard: { press: async key => { assert.match(key, /W$/); count -= 1; } }
+  };
+  const closed = await closeOwnedDashboardTabs(workbench, 1_000);
+  assert.equal(closed, 3);
+  assert.equal(clicks, 3);
+  assert.equal(count, 0);
+});
+
+test('owned UI deadline budgets fail closed after the single caller deadline', () => {
+  assert.ok(remainingOwnedUiBudget(Date.now() + 1_000, 'focused-owner') > 0);
+  assert.throws(() => remainingOwnedUiBudget(Date.now() - 1, 'focused-owner'), /focused-owner-deadline-exhausted/);
 });
 
 test('Studio lifecycle projection preserves eligible and blocked Agent roles while replacing the primary Skill revision', () => {
@@ -1269,7 +1294,7 @@ test('R100 sidebar native handoffs bind exact requests, rejection, dashboard ide
   assert.match(profile, /const rejected = inner\.__PX_INSTALLED_SIDEBAR_REQUESTS__\.length === offset/);
   assert.match(profile, /waitForInstalledSidebarHandoffRequest\(frameHost, attempt\.offset, attempt\.expected/);
   assert.match(profile, /waitForInstalledSidebarDashboardIdentity\(dashboard, attempt\.expected/);
-  assert.match(profile, /restartInstalledDashboardWebview\(dashboard, timeoutMs\)/);
+  assert.match(profile, /const deadline = Date\.now\(\) \+ timeoutMs[\s\S]*remainingOwnedUiBudget\(deadline, `installed-sidebar-handoff-\$\{label\}`\)[\s\S]*restartInstalledDashboardWebview\(dashboard, remaining\('dashboard-reconstruction'\)\)/);
   assert.match(profile, /waitForInstalledSidebarHandoffRequest\(frameHost, replayOffset, attempt\.expected/);
   assert.match(source, /prepareInstalledSidebarHandoffTarget[\s\S]*fixture\.dataset\.pxOwnedHandoffFixture[\s\S]*px-owned-\$\{spec\.handoff\.entityType\}-handoff/);
   assert.match(profile, /finally[\s\S]*removeInstalledSidebarHandoffTarget/);
@@ -1279,6 +1304,7 @@ test('R100 sidebar native handoffs bind exact requests, rejection, dashboard ide
   assert.match(records, /boundedOwnedUiAction/);
   assert.match(records, /onProgress/);
   assert.match(records, /dependency-failed:sidebar-control-boundary/);
+  assert.match(records, /probeInstalledSidebarHandoff\(frameHost, workbench, selector, handoff, controlTimeoutMs\)/);
   assert.match(records, /\['authorization', 'backend_dispatch', 'runtime_effect', 'progress_reporting'\]/);
   assert.match(records, /\['persistence', 'reload_reopen'\]/);
 });

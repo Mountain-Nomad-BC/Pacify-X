@@ -447,6 +447,12 @@ async function boundedOwnedUiAction(operation, timeoutMs, label) {
   }
 }
 
+function remainingOwnedUiBudget(deadline, label) {
+  const budget = Number(deadline) - Date.now();
+  if (budget <= 0) throw new Error(`${label}-deadline-exhausted`);
+  return Math.max(1, budget);
+}
+
 function createOwnedContentEvaluationBoundary(defaultTimeoutMs = 10_000) {
   const ceilingMs = Math.max(1, Number(defaultTimeoutMs) || 10_000);
   let timeoutBlocker = null;
@@ -1115,17 +1121,20 @@ function installedDashboardRestartIdentity(state) {
 }
 
 async function restartInstalledDashboardWebview(frameHost, timeoutMs = 30_000) {
-  const before = await frameHost.evaluate(frame => Number(frame.contentWindow?.performance?.timeOrigin || 0));
-  const workbench = frameHost.page();
-  const dashboardTab = workbench.locator('[role="tab"]', { hasText: /PX.*Control Plane/i }).first();
-  await dashboardTab.waitFor({ state: 'visible', timeout: 15_000 });
-  await dashboardTab.click();
-  await workbench.keyboard.press(process.platform === 'darwin' ? 'Meta+W' : 'Control+W');
-  await dashboardTab.waitFor({ state: 'hidden', timeout: 15_000 });
-  await reopenPacifyDashboardFromOwnedUi(workbench, frameHost);
-  await dashboardTab.waitFor({ state: 'visible', timeout: 30_000 });
-  await dashboardTab.click();
   const deadline = Date.now() + timeoutMs;
+  const remaining = label => remainingOwnedUiBudget(deadline, `installed-dashboard-restart-${label}`);
+  const before = await boundedOwnedUiAction(
+    () => frameHost.evaluate(frame => Number(frame.contentWindow?.performance?.timeOrigin || 0), undefined, { timeout: remaining('baseline') }),
+    remaining('baseline'),
+    'installed-dashboard-restart-baseline'
+  );
+  const workbench = frameHost.page();
+  const closedDashboardTabs = await closeOwnedDashboardTabs(workbench, remaining('close-owned-tabs'));
+  if (closedDashboardTabs < 1) throw new Error('installed-dashboard-restart-owned-tab-unavailable');
+  await reopenPacifyDashboardFromOwnedUi(workbench, frameHost, remaining('reopen'));
+  const dashboardTab = workbench.locator('[role="tab"]', { hasText: /PX.*Control Plane/i }).first();
+  await dashboardTab.waitFor({ state: 'visible', timeout: remaining('reopened-tab-visible') });
+  await boundedOwnedUiAction(() => dashboardTab.click(), remaining('reopened-tab-focus'), 'installed-dashboard-restart-reopened-tab-focus');
   const disconnectedRecoveryDelayMs = Math.max(1_000, Math.min(5_000, Math.floor(timeoutMs / 4)));
   let disconnectedSince = null;
   let state = null;
@@ -1146,8 +1155,8 @@ async function restartInstalledDashboardWebview(frameHost, timeoutMs = 30_000) {
         };
       }, before);
       if (installedDashboardRestartIdentity(state)) {
-        if (!await instrumentInstalledBridge(frameHost)) throw new Error('installed-dashboard-webview-restart-bridge-unavailable');
-        return { before_time_origin: before, after_time_origin: state.time_origin, restarted: true, reconstructed: true };
+        if (!await instrumentInstalledBridge(frameHost, remaining('bridge'))) throw new Error('installed-dashboard-webview-restart-bridge-unavailable');
+        return { before_time_origin: before, after_time_origin: state.time_origin, restarted: true, reconstructed: true, closed_dashboard_tabs: closedDashboardTabs };
       }
       const canonicalRestartDisconnected = state.document_ready === true
         && state.canonical_dashboard_dom === true
@@ -2227,7 +2236,13 @@ async function removeInstalledSidebarHandoffTarget(frameHost, fixtureToken) {
 }
 
 async function probeInstalledSidebarHandoff(frameHost, workbench, selector, handoff, timeoutMs = 30_000) {
-  const prepared = await prepareInstalledSidebarHandoffTarget(frameHost, selector, handoff);
+  const deadline = Date.now() + timeoutMs;
+  const remaining = label => remainingOwnedUiBudget(deadline, `installed-sidebar-handoff-${label}`);
+  const prepared = await boundedOwnedUiAction(
+    () => prepareInstalledSidebarHandoffTarget(frameHost, selector, handoff),
+    remaining('prepare'),
+    'installed-sidebar-handoff-prepare'
+  );
   try {
   await frameHost.evaluate(frame => {
     const inner = frame.contentWindow;
@@ -2239,7 +2254,7 @@ async function probeInstalledSidebarHandoff(frameHost, workbench, selector, hand
       catch { inner.__PX_INSTALLED_SIDEBAR_REQUESTS__.push({ type: 'unserializable-request' }); }
     });
     inner.__PX_INSTALLED_SIDEBAR_HANDOFF_INSTRUMENTED__ = true;
-  });
+  }, undefined, { timeout: remaining('instrument') });
   const attempt = await frameHost.evaluate((frame, spec) => {
     const document = frame.contentDocument; const inner = frame.contentWindow;
     const visible = element => Boolean(element && (element.offsetWidth || element.offsetHeight || element.getClientRects().length));
@@ -2256,22 +2271,22 @@ async function probeInstalledSidebarHandoff(frameHost, workbench, selector, hand
     const rejected = inner.__PX_INSTALLED_SIDEBAR_REQUESTS__.length === offset;
     target.click();
     return { expected, offset, rejected, visible: true };
-  }, { selector, handoff });
+  }, { selector, handoff }, { timeout: remaining('initial-dispatch') });
   if (!attempt.rejected) throw new Error(`installed-sidebar-handoff-owned-rejection-failed:${JSON.stringify(attempt.expected)}`);
-  await waitForInstalledSidebarHandoffRequest(frameHost, attempt.offset, attempt.expected, timeoutMs);
-  const dashboard = await waitForOwnedWebview(workbench, text => /PACIFY-X\s*\/\s*DASHBOARD|SIDEBAR DEEP LINK/i.test(text), timeoutMs);
+  await waitForInstalledSidebarHandoffRequest(frameHost, attempt.offset, attempt.expected, remaining('initial-request'));
+  const dashboard = await waitForOwnedWebview(workbench, text => /PACIFY-X\s*\/\s*DASHBOARD|SIDEBAR DEEP LINK/i.test(text), remaining('dashboard-discovery'));
   if (!dashboard) throw new Error(`installed-sidebar-dashboard-unavailable:${JSON.stringify(attempt.expected)}`);
-  await waitForInstalledSidebarDashboardIdentity(dashboard, attempt.expected, timeoutMs);
-  const restart = await restartInstalledDashboardWebview(dashboard, timeoutMs);
+  await waitForInstalledSidebarDashboardIdentity(dashboard, attempt.expected, remaining('initial-dashboard-identity'));
+  const restart = await restartInstalledDashboardWebview(dashboard, remaining('dashboard-reconstruction'));
   const replayOffset = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_SIDEBAR_REQUESTS__?.length || 0);
   await frameHost.evaluate((frame, spec) => {
     const visible = element => Boolean(element && (element.offsetWidth || element.offsetHeight || element.getClientRects().length));
     const target = spec.selector ? [...frame.contentDocument.querySelectorAll(spec.selector)].find(visible) : null;
     if (!target || target.disabled) throw new Error(`installed-sidebar-handoff-replay-target-unavailable:${spec.selector}`);
     target.click();
-  }, { selector });
-  await waitForInstalledSidebarHandoffRequest(frameHost, replayOffset, attempt.expected, timeoutMs);
-  await waitForInstalledSidebarDashboardIdentity(dashboard, attempt.expected, timeoutMs);
+  }, { selector }, { timeout: remaining('replay-dispatch') });
+  await waitForInstalledSidebarHandoffRequest(frameHost, replayOffset, attempt.expected, remaining('replay-request'));
+  await waitForInstalledSidebarDashboardIdentity(dashboard, attempt.expected, remaining('replay-dashboard-identity'));
   return {
     loaded: true, visible: attempt.visible, attempted: true, validationObserved: true, acknowledged: true,
     failureObserved: true, recoveryObserved: true, changed: true, restored: restart.restarted === true && restart.reconstructed === true,
@@ -2313,7 +2328,7 @@ async function probeInstalledSidebarControls(frameHost, matrix, hostErrors = [],
           if (handoff && typeof frameHost.reacquire === 'function' && !await frameHost.reacquire(10_000)) {
             throw new Error(`installed-sidebar-frame-reacquisition-failed:${control.control_id}`);
           }
-          return handoff && workbench ? probeInstalledSidebarHandoff(frameHost, workbench, selector, handoff) : frameHost.evaluate((frame, spec) => {
+          return handoff && workbench ? probeInstalledSidebarHandoff(frameHost, workbench, selector, handoff, controlTimeoutMs) : frameHost.evaluate((frame, spec) => {
             const document = frame.contentDocument;
             if (!document) throw new Error('PX installed sidebar contentDocument is unavailable.');
             const visible = element => Boolean(element && (element.offsetWidth || element.offsetHeight || element.getClientRects().length));
@@ -2878,22 +2893,29 @@ async function waitForOwnedPhysicalExtensionVersion(extensionId, expectedVersion
 
 async function closeOwnedDashboardTabs(workbench, timeoutMs = 15_000) {
   const deadline = Date.now() + timeoutMs;
+  const remaining = label => Math.min(2_500, remainingOwnedUiBudget(deadline, `owned-dashboard-${label}`));
   const tabs = workbench.locator('[role="tab"]', { hasText: /PX.*Control Plane/i });
   let closed = 0;
   while (Date.now() < deadline) {
-    const count = await tabs.count();
+    const count = await boundedOwnedUiAction(() => tabs.count(), remaining('tab-count'), 'owned-dashboard-tab-count');
     if (count === 0) return closed;
-    if (closed >= 4) throw new Error(`owned-dashboard-restored-tab-bound-exceeded:${count}`);
+    if (closed >= 8) throw new Error(`owned-dashboard-restored-tab-bound-exceeded:${count}`);
     const tab = tabs.first();
-    await tab.click();
-    await workbench.keyboard.press(process.platform === 'darwin' ? 'Meta+W' : 'Control+W');
+    await boundedOwnedUiAction(() => tab.click(), remaining('tab-focus'), 'owned-dashboard-tab-focus');
+    await boundedOwnedUiAction(
+      () => workbench.keyboard.press(process.platform === 'darwin' ? 'Meta+W' : 'Control+W'),
+      remaining('tab-close-command'),
+      'owned-dashboard-tab-close-command'
+    );
     const previousCount = count;
     const closeDeadline = Math.min(deadline, Date.now() + 5_000);
     do {
-      if (await tabs.count() < previousCount) break;
+      if (await boundedOwnedUiAction(() => tabs.count(), remaining('tab-close-observation'), 'owned-dashboard-tab-close-observation') < previousCount) break;
       await wait(100);
     } while (Date.now() < closeDeadline);
-    if (await tabs.count() >= previousCount) throw new Error('owned-dashboard-restored-tab-close-unobserved');
+    if (await boundedOwnedUiAction(() => tabs.count(), remaining('tab-close-terminal'), 'owned-dashboard-tab-close-terminal') >= previousCount) {
+      throw new Error('owned-dashboard-restored-tab-close-unobserved');
+    }
     closed += 1;
   }
   throw new Error('owned-dashboard-restored-tab-close-timeout');
@@ -11311,7 +11333,7 @@ if (require.main === module) {
 }
 
 module.exports = {
-  applyInstalledProbeObservations, boundedOwnedUiAction, createOwnedContentEvaluationBoundary, buildInstalledLateCardAdversarialProfile, buildInstalledLateCardScenarioProfile, cleanupControlProbe, codexHandoffControlProbe, commandPaletteAttemptDecision, coordinationMemoryControlProbe, currentSourceExtensionAssetIdentity,
+  applyInstalledProbeObservations, boundedOwnedUiAction, createOwnedContentEvaluationBoundary, remainingOwnedUiBudget, buildInstalledLateCardAdversarialProfile, buildInstalledLateCardScenarioProfile, cleanupControlProbe, codexHandoffControlProbe, commandPaletteAttemptDecision, coordinationMemoryControlProbe, currentSourceExtensionAssetIdentity,
   catalogPaginationControlProbe, clickWhenKnowledgeControlReady, correlateCatalogExchange, observationStateControlProbe, runInstalledObservationStateProfile, eligibleInstalledControl, eligibleInstalledSidebarControl, engineOutageRecord, enterpriseControlProbe, environmentLifecycleControlProbe,
   bindCurrentWorkbenchCommandRejection, ensureInstalledSensorRowSnapshot, exactStudioSetupTerminalResponse, executeWorkbenchCommand, exactPluginConflictSignal, exerciseInstalledControl, graphProjectionIdentity, requestBoundGraphResultIdentity, hostBoundaryControlProbe, inlineCommandOwnerControlProbe, installedActionIdentity,
   installedConditionalRecoverySpec, installedConditionalScenario, installedHostBoundaryRevealSelector, installedPreparationIdentity, installedRuntimeSourceIdentityState, installedSourceIdentityNeedsLateRefresh, installedSidebarHandoffRequestMatches, installedSidebarHandoffSpec, installedSidebarSelector, installedStudioControlScenario, installedStudioPrerequisites, installedSurfaceState, installedSurfaceAcknowledged,
@@ -11322,7 +11344,7 @@ module.exports = {
   dispatchInstalledPluginConfirmation, dispatchInstalledPluginConflictControl, dispatchInstalledPluginFormAction, installedDashboardRestartIdentity, installedPluginConflictControlMatches, installedPluginControlPreservesModal, installedPluginPreviewConfirmationMatches,
   pluginMutationControlProbe, pluginReadControlProbe,
   partitionExpectedFaultDiagnostics, prepareInstalledControl, probeInstalledControls, probeInstalledSidebarControls, probeInstalledWorkbenchCommands,
-  openWorkbenchCommandPalette, projectMapIdentity, projectsControlProbe, reopenPacifyDashboardFromOwnedUi, revealInstalledControl, revealInstalledHostBoundaryControl, runInstalledCleanupProfile, settleInstalledSurfaceControl,
+  closeOwnedDashboardTabs, openWorkbenchCommandPalette, projectMapIdentity, projectsControlProbe, reopenPacifyDashboardFromOwnedUi, revealInstalledControl, revealInstalledHostBoundaryControl, restartInstalledDashboardWebview, runInstalledCleanupProfile, settleInstalledSurfaceControl,
   runInstalledCodexHandoffProfile, runInstalledCoordinationMemoryProfile, runInstalledEngineOutageProfile, runInstalledEnterpriseProfile, runInstalledEnvironmentLifecycleProfile,
   runInstalledHostBoundaryProfile, runInstalledKnowledgeGraphProfile, runInstalledKnowledgeLifecycleProfile,
   runInstalledLearningLifecycleProfile, runInstalledPluginMutationProfile, runInstalledPluginReadProfile,
