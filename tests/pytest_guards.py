@@ -5,13 +5,16 @@ from __future__ import annotations
 import os
 from pathlib import Path
 import shutil
+import stat
 import threading
+import time
 
 import pytest
 
 
 _INITIAL_NON_DAEMON_THREADS: set[int] = set()
 _MANAGED_PROCESS_TEMP_ENV = "PACIFY_X_PYTEST_PROCESS_TEMP_ROOT"
+_TEMP_RECLAIM_RETRY_DELAYS_SECONDS = (0.0, 0.05, 0.15, 0.35, 0.75, 1.25)
 
 
 def _non_daemon_threads() -> list[threading.Thread]:
@@ -30,13 +33,39 @@ def pytest_sessionstart(session: pytest.Session) -> None:
     )
 
 
+def _retry_owned_writable_removal(
+    function: object, path: str, exc_info: tuple[type[BaseException], BaseException, object]
+) -> None:
+    """Make only an owned read-only child writable, then retry its operation."""
+
+    error = exc_info[1]
+    if not isinstance(error, PermissionError):
+        raise error
+    os.chmod(path, stat.S_IREAD | stat.S_IWRITE)
+    function(path)  # type: ignore[operator]
+
+
 def _remove_owned_child(path: Path) -> None:
-    if path.is_symlink() or path.is_file():
-        path.unlink()
-    elif path.is_dir():
-        shutil.rmtree(path)
-    elif path.exists():
-        raise OSError(f"unsupported managed temporary entry: {path}")
+    """Remove one owned child with bounded transient-access-denied retries."""
+
+    last_error: PermissionError | None = None
+    for delay in _TEMP_RECLAIM_RETRY_DELAYS_SECONDS:
+        if delay:
+            time.sleep(delay)
+        try:
+            if path.is_symlink() or path.is_file():
+                path.unlink()
+            elif path.is_dir():
+                shutil.rmtree(path, onerror=_retry_owned_writable_removal)
+            elif path.exists():
+                raise OSError(f"unsupported managed temporary entry: {path}")
+            return
+        except PermissionError as error:
+            last_error = error
+            if not path.exists():
+                return
+    assert last_error is not None
+    raise last_error
 
 
 @pytest.fixture(autouse=True)

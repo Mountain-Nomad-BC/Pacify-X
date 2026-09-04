@@ -2853,6 +2853,7 @@
         "runtime/skill_studio.py",
         "runtime/studio_filesystem.py",
         "runtime/studio_models.py",
+        "tests/pytest_guards.py",
         "tests/test_platform_support.py"
       ]
     },
@@ -3146,6 +3147,7 @@
         "tests/test_release_feedback_audit.py",
         "tests/test_repository_scope.py",
         "tests/test_studio_api.py",
+        "tests/test_test_runner_controls.py",
         "tests/test_workflow_studio.py"
       ]
     },
@@ -3209,6 +3211,7 @@
         "runtime/wal_transaction.py",
         "runtime/work_admission.py",
         "runtime/workflow_worker.py",
+        "tests/pytest_guards.py",
         "tests/test_agent_runtime.py",
         "tests/test_cli_commands.py",
         "tests/test_memory_operations.py",

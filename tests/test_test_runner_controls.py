@@ -15,6 +15,7 @@ import pytest
 from runtime.resource_lifecycle import ResourceManager, ResourceStatus, _process_exists
 from runtime.test_profiles import resolve_test_profile
 from runtime.test_runner import run_test_command, validate_timeout
+from tests import pytest_guards
 
 
 ROOT = Path(__file__).parents[1]
@@ -24,6 +25,65 @@ ROOT = Path(__file__).parents[1]
 def test_invalid_timeout_is_rejected(value: object) -> None:
     with pytest.raises(ValueError, match="finite positive"):
         validate_timeout(value)
+
+
+def test_per_test_temp_reclaim_retries_only_transient_permission_errors(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    owned = tmp_path / "owned"
+    owned.mkdir()
+    (owned / "payload").write_text("owned", encoding="utf-8")
+    real_rmtree = pytest_guards.shutil.rmtree
+    attempts = 0
+    delays: list[float] = []
+
+    def transient_rmtree(path: Path, **_kwargs: object) -> None:
+        nonlocal attempts
+        attempts += 1
+        if attempts < 3:
+            raise PermissionError(5, "simulated transient access denial", str(path))
+        real_rmtree(path)
+
+    monkeypatch.setattr(pytest_guards.shutil, "rmtree", transient_rmtree)
+    monkeypatch.setattr(pytest_guards.time, "sleep", delays.append)
+
+    pytest_guards._remove_owned_child(owned)
+
+    assert attempts == 3
+    assert delays == [0.05, 0.15]
+    assert not owned.exists()
+
+
+def test_per_test_temp_reclaim_does_not_retry_non_permission_errors(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    owned = tmp_path / "owned"
+    owned.mkdir()
+    attempts = 0
+
+    def invalid_rmtree(_path: Path, **_kwargs: object) -> None:
+        nonlocal attempts
+        attempts += 1
+        raise OSError("non-transient cleanup defect")
+
+    monkeypatch.setattr(pytest_guards.shutil, "rmtree", invalid_rmtree)
+    with pytest.raises(OSError, match="non-transient cleanup defect"):
+        pytest_guards._remove_owned_child(owned)
+    assert attempts == 1
+
+
+def test_per_test_temp_reclaim_repairs_only_owned_read_only_entries(
+    tmp_path: Path,
+) -> None:
+    owned = tmp_path / "owned"
+    owned.mkdir()
+    read_only = owned / "git-object"
+    read_only.write_bytes(b"object")
+    read_only.chmod(0o444)
+
+    pytest_guards._remove_owned_child(owned)
+
+    assert not owned.exists()
 
 
 def test_pytest_disk_budget_is_bound_to_managed_and_explicit_owned_paths(

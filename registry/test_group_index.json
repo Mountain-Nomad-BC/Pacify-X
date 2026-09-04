@@ -6607,11 +6607,12 @@
         "subprocess",
         "sys",
         "tempfile",
+        "tests",
         "time",
         "types"
       ],
       "index_state": "verified",
-      "sha256": "e2c3cfaa29389ae50387be57ed316711b91e00981e7c62a0ff9c0d074b1de271"
+      "sha256": "6d8f9c7c6a9f7eec5dc37c521632283599d8db44b45609304fc16274f973e918"
     },
     "tests/test_tool_intake.py": {
       "imports": [
@@ -6819,7 +6820,7 @@
       ],
       "description": "Serial process custody, recovery, test-runner, WAL, resource-lifecycle, and workspace mutation tests.",
       "group": "process-recovery",
-      "input_sha256": "2088452954731e3b67422a51ab3106aca8d7090c037e196a60b4acd6ceb49763",
+      "input_sha256": "0ab59fe87526a91fef588f401db4fd8b738fda29c502cbb9f5ca1bb601fabf87",
       "inputs": [
         "registry/test_profiles.json",
         "runtime/commissioning.py",
@@ -6896,7 +6897,7 @@
       ],
       "description": "Serial exact-tool, installed-wheel, corrective-release, and full-repair-ledger certification tests.",
       "group": "exact-installed",
-      "input_sha256": "0f8cf35bfefab45bd556900a1514ab005f7d58988202cd5607ee0986b85f4899",
+      "input_sha256": "6e2d984d6f33565598c95062eb1b0ab7df9a3141a0d833c5f2029d89db4d3eb5",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -6980,7 +6981,7 @@
       ],
       "description": "Serial release, distribution, artifact, and revocation certification tests excluding composed audit mutations.",
       "group": "release-build",
-      "input_sha256": "e1321e9e932561a3060bbedde0a4da3375b80fb514325081012aa1ea9d353e90",
+      "input_sha256": "637c51f4918742e6cc53c8980c47cd7e6f2e054e00372eea704d4fb311da8471",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -7054,7 +7055,7 @@
       ],
       "description": "Serial composed-audit and quarantine-mutation tests isolated from package builds.",
       "group": "release-audit",
-      "input_sha256": "da8d6f338232ff704b97367474fe25fae5bb919b0f81f5ff5def3d3de573016a",
+      "input_sha256": "6be42fa13e871bb2344122b42d7222957595c60ba22001f63cfd7c622474e63a",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -7100,7 +7101,7 @@
       ],
       "description": "Serial full-tree structural mutation tests isolated from derived-artifact checks.",
       "group": "structural-adversarial",
-      "input_sha256": "224fad8eacee18503dbc91f1a3ff141dcc3a4b40055dc333b358ea49f6f0de27",
+      "input_sha256": "8b9305b33df6452c298f6cbdb1b4df99f8a31ec67688d6ebbb1782da2f7aff1e",
       "inputs": [
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_agents_md_generator.py",
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_change_impact.py",
@@ -8759,7 +8760,7 @@
       ],
       "description": "Final serial generated-output, completion-projection, portability, effect-surface, and punch-card integrity gate.",
       "group": "derived-integrity",
-      "input_sha256": "31b2cc496054dbd283ecebfaa26425790088b5b7164845e61af98dee31bd6920",
+      "input_sha256": "39472edfe7cd3d2209a3918ce7b6580ff948bb6c080ab137a05d6ce620837dc3",
       "inputs": [
         "README.md",
         "pyproject.toml",
