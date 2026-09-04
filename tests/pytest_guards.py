@@ -2,13 +2,16 @@
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
+import shutil
 import threading
 
 import pytest
 
 
 _INITIAL_NON_DAEMON_THREADS: set[int] = set()
+_MANAGED_PROCESS_TEMP_ENV = "PACIFY_X_PYTEST_PROCESS_TEMP_ROOT"
 
 
 def _non_daemon_threads() -> list[threading.Thread]:
@@ -25,6 +28,46 @@ def pytest_sessionstart(session: pytest.Session) -> None:
     _INITIAL_NON_DAEMON_THREADS.update(
         id(thread) for thread in _non_daemon_threads()
     )
+
+
+def _remove_owned_child(path: Path) -> None:
+    if path.is_symlink() or path.is_file():
+        path.unlink()
+    elif path.is_dir():
+        shutil.rmtree(path)
+    elif path.exists():
+        raise OSError(f"unsupported managed temporary entry: {path}")
+
+
+@pytest.fixture(autouse=True)
+def _reclaim_per_test_process_temp() -> object:
+    """Bound direct tempfile growth inside a governed pytest session.
+
+    The runner supplies an explicit owned root.  Snapshotting after wider
+    scoped fixtures are established and reclaiming at function-fixture
+    teardown preserves session baselines while removing only entries created
+    for the completed test.  Direct pytest runs without the marker are inert.
+    """
+
+    configured = os.environ.get(_MANAGED_PROCESS_TEMP_ENV)
+    if not configured:
+        yield
+        return
+    root = Path(configured).resolve(strict=True)
+    baseline = {entry.name for entry in root.iterdir()}
+    yield
+    if not root.is_dir():
+        pytest.fail(f"test destroyed managed process temporary root: {root}")
+    errors: list[str] = []
+    for entry in root.iterdir():
+        if entry.name in baseline:
+            continue
+        try:
+            _remove_owned_child(entry)
+        except OSError as error:
+            errors.append(f"{entry.name}: {type(error).__name__}: {error}")
+    if errors:
+        pytest.fail("managed per-test temporary cleanup failed: " + "; ".join(errors))
 
 
 @pytest.hookimpl(hookwrapper=True)

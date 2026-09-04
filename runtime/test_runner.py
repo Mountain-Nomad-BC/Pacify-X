@@ -149,6 +149,14 @@ def run_test_command(
         # strand framework clones or build/release fixtures in the user temp.
         for variable in ("TMP", "TEMP", "TMPDIR"):
             effective_environment[variable] = str(process_temp_path)
+        # The lifecycle guard uses this explicit ownership marker to reclaim
+        # only per-test children of the runner-owned temporary directory.  A
+        # full release profile otherwise retains direct ``tempfile.mkdtemp``
+        # trees from hundreds of tests until session end and can cross the
+        # fail-closed disk ceiling before pytest writes JUnit evidence.
+        effective_environment["PACIFY_X_PYTEST_PROCESS_TEMP_ROOT"] = str(
+            process_temp_path
+        )
         # Governed test runs must never read, create, or mutate the operator's
         # real host authority keys. Give every managed pytest subprocess its own
         # authority root inside the exact registered/reclaimed workspace. An

@@ -39,6 +39,7 @@ def test_pytest_disk_budget_is_bound_to_managed_and_explicit_owned_paths(
     def run(_self, command, **kwargs):
         observed["command"] = command
         observed["action"] = kwargs["action"]
+        observed["environment"] = kwargs["environment"]
         empty = SimpleNamespace(text="")
         return SimpleNamespace(
             status="exited",
@@ -65,6 +66,11 @@ def test_pytest_disk_budget_is_bound_to_managed_and_explicit_owned_paths(
     accounting = [Path(path) for path in observed["action"]["disk_consumption_paths"]]
     assert output in accounting
     assert any(path.name.startswith("pacify-x-pytest-") for path in accounting)
+    managed_temp = Path(
+        observed["environment"]["PACIFY_X_PYTEST_PROCESS_TEMP_ROOT"]
+    )
+    assert managed_temp.name == "process-temp"
+    assert managed_temp.parent == accounting[1]
     assert result["test_workspace"]["reclaimed"] is True
 
 
@@ -152,6 +158,104 @@ def test_pytest_uses_registered_isolated_basetemp_and_reclaims_it(
     assert workspace["cleanup_id"]
     record = manager.ledger.get(workspace["resource_id"])
     assert record.status == ResourceStatus.RECLAIMED.value
+
+
+def test_governed_pytest_reclaims_direct_tempfile_children_after_each_test(
+    tmp_path: Path,
+) -> None:
+    observation = tmp_path / "created-path.txt"
+    test_file = tmp_path / "test_per_test_temp_cleanup.py"
+    test_file.write_text(
+        "import os\n"
+        "from pathlib import Path\n"
+        "import tempfile\n\n"
+        "import pytest\n\n"
+        "@pytest.mark.parametrize('index', range(12))\n"
+        "def test_direct_temporary_tree_is_bounded_per_test(index):\n"
+        "    observation = Path(os.environ['PX_TEMP_OBSERVATION'])\n"
+        "    if observation.exists():\n"
+        "        assert not Path(observation.read_text()).exists()\n"
+        "    created = Path(tempfile.mkdtemp())\n"
+        "    (created / 'payload.bin').write_bytes(b'x' * (16 * 1024 * 1024))\n"
+        "    observation.write_text(str(created))\n"
+        "    assert created.exists()\n",
+        encoding="utf-8",
+    )
+    manager = ResourceManager(
+        tmp_path / "disk-ledger.json", receipt_dir=tmp_path / "disk-receipts"
+    )
+    result = run_test_command(
+        [sys.executable, "-m", "pytest", "-q", str(test_file)],
+        cwd=ROOT,
+        environment={**os.environ, "PX_TEMP_OBSERVATION": str(observation)},
+        timeout_seconds=30,
+        resource_manager=manager,
+        run_id="per-test-temp-cleanup",
+    )
+
+    assert result["valid"] is True, json.dumps(result, indent=2, default=str)
+    assert "12 passed" in result["stdout"]
+    created = Path(observation.read_text(encoding="utf-8"))
+    assert not created.exists()
+    workspace = result["test_workspace"]
+    assert workspace["reclaimed"] is True
+    record = manager.ledger.get(workspace["resource_id"])
+    assert record.bytes < 32 * 1024 * 1024
+
+
+def test_per_test_temp_cleanup_preserves_failure_and_junit_evidence(
+    tmp_path: Path,
+) -> None:
+    observation = tmp_path / "failed-created-path.txt"
+    junit = tmp_path / "nested.junit.xml"
+    test_file = tmp_path / "test_failed_temp_cleanup.py"
+    test_file.write_text(
+        "import os\n"
+        "from pathlib import Path\n"
+        "import tempfile\n\n"
+        "def test_fails_after_creating_direct_temp():\n"
+        "    created = Path(tempfile.mkdtemp())\n"
+        "    (created / 'payload.bin').write_bytes(b'x' * (2 * 1024 * 1024))\n"
+        "    Path(os.environ['PX_FAILED_TEMP_OBSERVATION']).write_text(str(created))\n"
+        "    assert False, 'intentional failure remains visible'\n\n"
+        "def test_failure_temp_was_still_reclaimed():\n"
+        "    created = Path(Path(os.environ['PX_FAILED_TEMP_OBSERVATION']).read_text())\n"
+        "    assert not created.exists()\n",
+        encoding="utf-8",
+    )
+    manager = ResourceManager(
+        tmp_path / "failure-ledger.json",
+        receipt_dir=tmp_path / "failure-receipts",
+    )
+    result = run_test_command(
+        [
+            sys.executable,
+            "-m",
+            "pytest",
+            "-q",
+            str(test_file),
+            f"--junitxml={junit}",
+        ],
+        cwd=ROOT,
+        environment={
+            **os.environ,
+            "PX_FAILED_TEMP_OBSERVATION": str(observation),
+        },
+        timeout_seconds=30,
+        resource_manager=manager,
+        run_id="failed-per-test-temp-cleanup",
+    )
+
+    assert result["valid"] is False
+    assert result["exit_code"] == 1
+    assert "intentional failure remains visible" in result["stdout"]
+    assert "1 failed, 1 passed" in result["stdout"]
+    assert junit.is_file()
+    junit_text = junit.read_text(encoding="utf-8")
+    assert "intentional failure remains visible" in junit_text
+    assert 'failures="1"' in junit_text
+    assert not Path(observation.read_text(encoding="utf-8")).exists()
+    assert result["test_workspace"]["reclaimed"] is True
 
 
 @pytest.mark.skipif(os.name != "nt", reason="Windows Job Object proof")
