@@ -446,6 +446,26 @@ async function boundedOwnedUiAction(operation, timeoutMs, label) {
     if (timer) clearTimeout(timer);
   }
 }
+
+function createOwnedContentEvaluationBoundary(defaultTimeoutMs = 10_000) {
+  const ceilingMs = Math.max(1, Number(defaultTimeoutMs) || 10_000);
+  let timeoutBlocker = null;
+  return {
+    run: async (operation, timeoutMs = ceilingMs) => {
+      if (timeoutBlocker) throw new Error(timeoutBlocker);
+      const budget = Math.max(1, Math.min(Number(timeoutMs) || ceilingMs, ceilingMs));
+      try {
+        return await boundedOwnedUiAction(operation, budget, 'owned-webview-content-evaluate');
+      } catch (error) {
+        const message = String(error?.message || error);
+        if (message === `owned-webview-content-evaluate-timeout:${budget}`) timeoutBlocker = message;
+        throw error;
+      }
+    },
+    reset: () => { timeoutBlocker = null; },
+    blocker: () => timeoutBlocker
+  };
+}
 const ownedReversibleConfigurationAuthority = process.env.PX_OWNED_VSCODE_HOST === '1'
   && process.argv.some(value => String(value).startsWith('--px-owned-token='));
 const ownedHostToken = String(process.argv.find(value => String(value).startsWith('--px-owned-token=')) || '').slice('--px-owned-token='.length);
@@ -2541,6 +2561,7 @@ function reacquirableOwnedFrameError(error) {
 async function waitForOwnedWebview(workbench, predicate, timeoutMs = 30_000) {
   let current = null;
   let identityMode = null;
+  const contentEvaluationBoundary = createOwnedContentEvaluationBoundary(10_000);
   const hasDashboardOwnership = frameHost => frameHost.evaluate(frame => Boolean(
     frame.contentDocument?.querySelector('[data-surface="dashboard"]')
       && frame.contentDocument?.querySelector('[data-surface="agents"]')
@@ -2618,7 +2639,7 @@ async function waitForOwnedWebview(workbench, predicate, timeoutMs = 30_000) {
       argument,
       { ...options, timeout: Math.max(1, Math.min(Number(options.timeout) || 10_000, 10_000)) }
     ]),
-    evaluateContent: async (...args) => {
+    evaluateContent: async (operation, argument, options = {}) => {
       for (let attempt = 0; attempt < 2; attempt += 1) {
         let handle = null;
         try {
@@ -2626,19 +2647,30 @@ async function waitForOwnedWebview(workbench, predicate, timeoutMs = 30_000) {
           if (!handle) throw new Error('owned-webview-current-frame-handle-unavailable');
           const content = await handle.contentFrame();
           if (!content) throw new Error('owned-webview-current-content-frame-unavailable');
-          return await content.evaluate(...args);
+          return await contentEvaluationBoundary.run(
+            () => content.evaluate(operation, argument),
+            Math.max(1, Math.min(Number(options.timeout) || 10_000, 10_000))
+          );
         } catch (error) {
           if (attempt > 0 || !reacquirableOwnedFrameError(error)) throw error;
           current = null;
         } finally {
-          await handle?.dispose();
+          if (handle) {
+            await boundedOwnedUiAction(
+              () => handle.dispose(),
+              1_000,
+              'owned-webview-content-handle-dispose'
+            ).catch(() => {});
+          }
         }
       }
       throw new Error('owned-webview-current-content-frame-unavailable');
     },
     reacquire: async (limitMs = Math.min(10_000, timeoutMs)) => {
       current = null;
-      return Boolean(await resolve(Math.max(1, Math.min(limitMs, timeoutMs))));
+      const reacquired = Boolean(await resolve(Math.max(1, Math.min(limitMs, timeoutMs))));
+      if (reacquired) contentEvaluationBoundary.reset();
+      return reacquired;
     },
     screenshot: async (...args) => invokeCurrent('screenshot', args),
     page: () => workbench
@@ -7630,9 +7662,24 @@ async function exerciseStudioLifecycleFailureStates(frameHost, candidate) {
   return { notAccepted, errorRendered, recovered };
 }
 
-async function runInstalledStudioLifecycleProfile(frameHost, candidateProfile, matrix) {
+async function runInstalledStudioLifecycleProfile(frameHost, candidateProfile, matrix, options = {}) {
+  const onProgress = typeof options.onProgress === 'function' ? options.onProgress : () => {};
+  const runLifecycleStep = async (candidate, operation, callback) => {
+    const started = Date.now();
+    onProgress({ scope: 'operation', kind: candidate.kind, identity: candidate.identity, operation, state: 'started' });
+    try {
+      const result = await callback();
+      onProgress({ scope: 'operation', kind: candidate.kind, identity: candidate.identity, operation, state: 'returned', duration_ms: Date.now() - started });
+      return result;
+    } catch (error) {
+      onProgress({ scope: 'operation', kind: candidate.kind, identity: candidate.identity, operation, state: 'threw', duration_ms: Date.now() - started, error: String(error?.message || error).slice(0, 1200) });
+      throw error;
+    }
+  };
   const observations = [];
   for (const candidate of candidateProfile.observations || []) {
+    const candidateStarted = Date.now();
+    onProgress({ scope: 'candidate', kind: candidate.kind, identity: candidate.identity, state: 'started' });
     const operations = candidate.kind === 'agent'
       ? ['test', 'register-authority', 'admit', 'preview', ...(candidate.fixture_only ? [] : ['start'])]
       : candidate.kind === 'workflow'
@@ -7641,7 +7688,7 @@ async function runInstalledStudioLifecycleProfile(frameHost, candidateProfile, m
     const observation = { kind: candidate.kind, identity: candidate.identity, version: candidate.version, fixture_only: candidate.fixture_only === true, memory_binding_id: candidate.memory_binding_id || null, catalog_record_id: candidate.catalog_record_id, exact_catalog_selection: false, invalid_transition_rejected: false, blocked_preview_verified: false, blocked_preview_rendered: false, blocked_preview_start_suppressed: false, operations: [], run_id: null, webview_restarted: false, durable_run_reopened: false, lifecycle_hub_run_browser: false, lifecycle_not_accepted_rendered: false, lifecycle_error_rendered: false, lifecycle_failure_recovered: false, errors: [] };
     try {
       if (!candidate.typed_creation_receipt || !candidate.reopened_catalog_match || !candidate.catalog_record_id) throw new Error(`studio-${candidate.kind}-lifecycle-candidate-prerequisite-missing`);
-      observation.exact_catalog_selection = await openExactStudioCatalogRow(frameHost, candidate);
+      observation.exact_catalog_selection = await runLifecycleStep(candidate, 'catalog-open', () => openExactStudioCatalogRow(frameHost, candidate));
       await wait(120);
       await frameHost.evaluate((frame, kind) => {
         const control = [...frame.contentDocument.querySelectorAll('[data-action="operateStudioRevision"]')].find(element => element.dataset.kind === kind && !element.disabled);
@@ -7660,63 +7707,65 @@ async function runInstalledStudioLifecycleProfile(frameHost, candidateProfile, m
       }, { kind: candidate.kind, before: invalidBefore });
       if (!observation.invalid_transition_rejected) throw new Error(`studio-${candidate.kind}-out-of-order-transition-not-rejected`);
       for (const operation of operations) {
-        const before = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
-        await frameHost.evaluate((frame, item) => {
-          const document = frame.contentDocument;
-          const action = [...document.querySelectorAll('[data-action="studioLifecycle"]')].find(element => element.dataset.kind === item.kind && element.dataset.operation === item.operation && !element.disabled);
-          if (!action) throw new Error(`studio-${item.kind}-${item.operation}-control-unavailable`);
-          action.click();
-          if (item.operation === 'start' && item.kind === 'agent') {
-            const objective = document.querySelector('#studio-agent-objective');
-            const toolCalls = document.querySelector('#studio-agent-tool-calls');
-            const submit = document.querySelector('[data-action="submitStudioAgentRun"]');
-            if (!objective || !toolCalls || !submit || submit.disabled) throw new Error('studio-agent-start-form-unavailable');
-            objective.value = 'Return a bounded identity result without external effects.';
-            objective.dispatchEvent(new Event('input', { bubbles: true }));
-            toolCalls.value = JSON.stringify(Array.from({ length: 8 }, () => ({ tool: 'delay', input: 1.5 })));
-            toolCalls.dispatchEvent(new Event('input', { bubbles: true }));
-            submit.click();
-          }
-          if (item.operation === 'start' && item.kind === 'workflow') {
-            const inputs = document.querySelector('#studio-workflow-inputs');
-            const submit = document.querySelector('[data-action="submitStudioWorkflowRun"]');
-            if (!inputs || !submit || submit.disabled) throw new Error('studio-workflow-start-form-unavailable');
-            inputs.value = JSON.stringify({ 'step:one.seconds': 8 }, null, 2);
-            inputs.dispatchEvent(new Event('input', { bubbles: true }));
-            submit.click();
-          }
-        }, { kind: candidate.kind, operation });
-        const result = await waitForStudioOperationResult(frameHost, before, candidate.kind, operation);
-        const valid = operation === 'preview' && candidate.fixture_only
-          ? validStudioBlockedPreviewResult(result, candidate)
-          : validStudioLifecycleResult(candidate.kind, operation, result);
-        observation.operations.push({ operation, valid, result });
-        if (!valid) throw new Error(`studio-${candidate.kind}-${operation}-receipt-invalid:${JSON.stringify(result)}`);
-        if (operation === 'preview' && candidate.fixture_only) {
-          const physical = await frameHost.evaluate((frame, item) => {
+        await runLifecycleStep(candidate, operation, async () => {
+          const before = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
+          await frameHost.evaluate((frame, item) => {
             const document = frame.contentDocument;
-            const modal = document.querySelector('#modal-root .control-modal');
-            const text = String(modal?.textContent || '').replace(/\s+/g, ' ').trim();
-            const start = [...document.querySelectorAll('[data-action="studioLifecycle"]')]
-              .find(element => element.dataset.kind === 'agent' && element.dataset.operation === 'start' && !element.disabled);
-            const dispatchedStarts = (frame.contentWindow?.__PX_INSTALLED_REQUESTS__ || [])
-              .filter(value => value?.type === 'studioOperation' && value?.kind === 'agent' && value?.operation === 'start' && value?.payload?.agent_id === item.identity).length;
-            return {
-              rendered: Boolean(modal) && text.includes('RESOLVED EXECUTION BLOCKED') && text.includes(item.identity)
-                && text.includes(item.version) && text.includes('memory_bindings_not_runtime_resolved'),
-              start_suppressed: !start && dispatchedStarts === 0
-            };
-          }, candidate);
-          observation.blocked_preview_rendered = physical.rendered === true;
-          observation.blocked_preview_start_suppressed = physical.start_suppressed === true;
-          observation.blocked_preview_verified = observation.blocked_preview_rendered && observation.blocked_preview_start_suppressed;
-          if (!observation.blocked_preview_verified) throw new Error(`studio-agent-blocked-preview-physical-proof-incomplete:${JSON.stringify(physical)}`);
-        }
-        if (operation === 'start') observation.run_id = String((result?.record || result)?.run_id || '');
-        if (operation !== 'start') await wait(100);
+            const action = [...document.querySelectorAll('[data-action="studioLifecycle"]')].find(element => element.dataset.kind === item.kind && element.dataset.operation === item.operation && !element.disabled);
+            if (!action) throw new Error(`studio-${item.kind}-${item.operation}-control-unavailable`);
+            action.click();
+            if (item.operation === 'start' && item.kind === 'agent') {
+              const objective = document.querySelector('#studio-agent-objective');
+              const toolCalls = document.querySelector('#studio-agent-tool-calls');
+              const submit = document.querySelector('[data-action="submitStudioAgentRun"]');
+              if (!objective || !toolCalls || !submit || submit.disabled) throw new Error('studio-agent-start-form-unavailable');
+              objective.value = 'Return a bounded identity result without external effects.';
+              objective.dispatchEvent(new Event('input', { bubbles: true }));
+              toolCalls.value = JSON.stringify(Array.from({ length: 8 }, () => ({ tool: 'delay', input: 1.5 })));
+              toolCalls.dispatchEvent(new Event('input', { bubbles: true }));
+              submit.click();
+            }
+            if (item.operation === 'start' && item.kind === 'workflow') {
+              const inputs = document.querySelector('#studio-workflow-inputs');
+              const submit = document.querySelector('[data-action="submitStudioWorkflowRun"]');
+              if (!inputs || !submit || submit.disabled) throw new Error('studio-workflow-start-form-unavailable');
+              inputs.value = JSON.stringify({ 'step:one.seconds': 8 }, null, 2);
+              inputs.dispatchEvent(new Event('input', { bubbles: true }));
+              submit.click();
+            }
+          }, { kind: candidate.kind, operation });
+          const result = await waitForStudioOperationResult(frameHost, before, candidate.kind, operation);
+          const valid = operation === 'preview' && candidate.fixture_only
+            ? validStudioBlockedPreviewResult(result, candidate)
+            : validStudioLifecycleResult(candidate.kind, operation, result);
+          observation.operations.push({ operation, valid, result });
+          if (!valid) throw new Error(`studio-${candidate.kind}-${operation}-receipt-invalid:${JSON.stringify(result)}`);
+          if (operation === 'preview' && candidate.fixture_only) {
+            const physical = await frameHost.evaluate((frame, item) => {
+              const document = frame.contentDocument;
+              const modal = document.querySelector('#modal-root .control-modal');
+              const text = String(modal?.textContent || '').replace(/\s+/g, ' ').trim();
+              const start = [...document.querySelectorAll('[data-action="studioLifecycle"]')]
+                .find(element => element.dataset.kind === 'agent' && element.dataset.operation === 'start' && !element.disabled);
+              const dispatchedStarts = (frame.contentWindow?.__PX_INSTALLED_REQUESTS__ || [])
+                .filter(value => value?.type === 'studioOperation' && value?.kind === 'agent' && value?.operation === 'start' && value?.payload?.agent_id === item.identity).length;
+              return {
+                rendered: Boolean(modal) && text.includes('RESOLVED EXECUTION BLOCKED') && text.includes(item.identity)
+                  && text.includes(item.version) && text.includes('memory_bindings_not_runtime_resolved'),
+                start_suppressed: !start && dispatchedStarts === 0
+              };
+            }, candidate);
+            observation.blocked_preview_rendered = physical.rendered === true;
+            observation.blocked_preview_start_suppressed = physical.start_suppressed === true;
+            observation.blocked_preview_verified = observation.blocked_preview_rendered && observation.blocked_preview_start_suppressed;
+            if (!observation.blocked_preview_verified) throw new Error(`studio-agent-blocked-preview-physical-proof-incomplete:${JSON.stringify(physical)}`);
+          }
+          if (operation === 'start') observation.run_id = String((result?.record || result)?.run_id || '');
+          if (operation !== 'start') await wait(100);
+        });
       }
       if (candidate.kind === 'skill') {
-        const failureStates = await exerciseStudioLifecycleFailureStates(frameHost, candidate);
+        const failureStates = await runLifecycleStep(candidate, 'failure-states', () => exerciseStudioLifecycleFailureStates(frameHost, candidate));
         observation.lifecycle_not_accepted_rendered = failureStates.notAccepted === true;
         observation.lifecycle_error_rendered = failureStates.errorRendered === true;
         observation.lifecycle_failure_recovered = failureStates.recovered === true;
@@ -7806,6 +7855,7 @@ async function runInstalledStudioLifecycleProfile(frameHost, candidateProfile, m
       }
     } catch (error) { observation.errors.push(String(error?.message || error).slice(0, 2400)); }
     observations.push(observation);
+    onProgress({ scope: 'candidate', kind: candidate.kind, identity: candidate.identity, state: observation.errors.length ? 'threw' : 'returned', duration_ms: Date.now() - candidateStarted, error_count: observation.errors.length, errors: observation.errors });
   }
   return { schema_version: 'px.installed-studio-lifecycle-profile/1.0', authority: 'Exact candidate lifecycle operations executed only inside the owned isolated VS Code host.', observations, control_probe: studioLifecycleControlProbe(matrix, observations) };
 }
@@ -10869,7 +10919,9 @@ async function main() {
     const studioCandidateHealthy = returnedProfileErrors(studioCandidateSaveProfile).length === 0;
     let studioLifecycleProfile = studioChainAdmitted
       ? studioCandidateHealthy
-        ? await timedProfile('studio-lifecycle', () => runInstalledStudioLifecycleProfile(dashboard, studioCandidateSaveProfile, proofMatrix))
+        ? await timedProfile('studio-lifecycle', () => runInstalledStudioLifecycleProfile(dashboard, studioCandidateSaveProfile, proofMatrix, {
+          onProgress: event => appendProfileProgress({ profile: 'studio-lifecycle-step', ...event })
+        }), { timeoutMs: 180_000 })
         : skippedProfileResult('studio-lifecycle', 'studio-candidate-save')
       : { schema_version: 'px.installed-studio-lifecycle-profile/1.0', authority: 'Not admitted outside an owned isolated host.', observations: [], control_probe: { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside an owned isolated host.', eligible_control_count: 0, records: [] } };
     const studioRevisionEditProfile = studioChainAdmitted
@@ -10889,7 +10941,9 @@ async function main() {
           reopened_catalog_match: revisedSkill.reopened_catalog_match,
           expect_rollback: true
         };
-        const rollbackProfile = await timedProfile('studio-skill-revision-rollback', () => runInstalledStudioLifecycleProfile(dashboard, { observations: [rollbackCandidate] }, proofMatrix));
+        const rollbackProfile = await timedProfile('studio-skill-revision-rollback', () => runInstalledStudioLifecycleProfile(dashboard, { observations: [rollbackCandidate] }, proofMatrix, {
+          onProgress: event => appendProfileProgress({ profile: 'studio-skill-revision-rollback-step', ...event })
+        }), { timeoutMs: 180_000 });
         const mergedObservations = mergeStudioLifecycleObservations(studioLifecycleProfile.observations, rollbackProfile.observations);
         studioLifecycleProfile = {
           ...studioLifecycleProfile,
@@ -11238,7 +11292,7 @@ if (require.main === module) {
 }
 
 module.exports = {
-  applyInstalledProbeObservations, boundedOwnedUiAction, buildInstalledLateCardAdversarialProfile, buildInstalledLateCardScenarioProfile, cleanupControlProbe, codexHandoffControlProbe, commandPaletteAttemptDecision, coordinationMemoryControlProbe, currentSourceExtensionAssetIdentity,
+  applyInstalledProbeObservations, boundedOwnedUiAction, createOwnedContentEvaluationBoundary, buildInstalledLateCardAdversarialProfile, buildInstalledLateCardScenarioProfile, cleanupControlProbe, codexHandoffControlProbe, commandPaletteAttemptDecision, coordinationMemoryControlProbe, currentSourceExtensionAssetIdentity,
   catalogPaginationControlProbe, clickWhenKnowledgeControlReady, correlateCatalogExchange, observationStateControlProbe, runInstalledObservationStateProfile, eligibleInstalledControl, eligibleInstalledSidebarControl, engineOutageRecord, enterpriseControlProbe, environmentLifecycleControlProbe,
   bindCurrentWorkbenchCommandRejection, ensureInstalledSensorRowSnapshot, exactStudioSetupTerminalResponse, executeWorkbenchCommand, exactPluginConflictSignal, exerciseInstalledControl, graphProjectionIdentity, requestBoundGraphResultIdentity, hostBoundaryControlProbe, inlineCommandOwnerControlProbe, installedActionIdentity,
   installedConditionalRecoverySpec, installedConditionalScenario, installedHostBoundaryRevealSelector, installedPreparationIdentity, installedRuntimeSourceIdentityState, installedSourceIdentityNeedsLateRefresh, installedSidebarHandoffRequestMatches, installedSidebarHandoffSpec, installedSidebarSelector, installedStudioControlScenario, installedStudioPrerequisites, installedSurfaceState, installedSurfaceAcknowledged,

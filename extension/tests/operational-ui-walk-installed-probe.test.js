@@ -21,7 +21,7 @@ const { dispatchInstalledPluginConflictControl, installedPluginConflictControlMa
 const { installedAdvancedFixtureStateAcknowledged } = require('../scripts/run-operational-ui-walk');
 const { waitForInstalledCanonicalMemoryBaseline } = require('../scripts/run-operational-ui-walk');
 
-const { boundedOwnedUiAction, waitForOwnedWebview } = require('../scripts/run-operational-ui-walk');
+const { boundedOwnedUiAction, createOwnedContentEvaluationBoundary, waitForOwnedWebview } = require('../scripts/run-operational-ui-walk');
 const { clickWhenBuilderControlReady, clickWhenInstalledGraphControlReady, installedGraphExchangeOffset, invokeBuilderControl, waitForBuilderJsonControls, waitForInstalledGraphExchange, waitForInstalledGraphIdle } = require('../scripts/run-operational-ui-walk');
 
 const STAGES = ['open_load', 'display', 'user_edit_action', 'input_validation', 'authorization', 'backend_dispatch', 'runtime_effect', 'progress_reporting', 'result_acknowledgement', 'persistence', 'reload_reopen', 'failure_handling', 'recovery_rollback'];
@@ -918,7 +918,7 @@ test('surface screenshots retain stable first-fold and proof-matrix deep-panel i
 
 test('physical owner dynamically reacquires reconstructed webviews and causally skips dependent profiles', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
-  assert.match(source, /async function waitForOwnedWebview[\s\S]*let current = null[\s\S]*requireCurrent[\s\S]*evaluate: async[\s\S]*evaluateContent: async[\s\S]*elementHandle\(\)[\s\S]*handle\.contentFrame\(\)[\s\S]*handle\?\.dispose\(\)[\s\S]*reacquire: async[\s\S]*current = null[\s\S]*resolve[\s\S]*screenshot: async/);
+  assert.match(source, /async function waitForOwnedWebview[\s\S]*let current = null[\s\S]*requireCurrent[\s\S]*evaluate: async[\s\S]*evaluateContent: async[\s\S]*elementHandle\(\)[\s\S]*handle\.contentFrame\(\)[\s\S]*boundedOwnedUiAction[\s\S]*handle\.dispose\(\)[\s\S]*owned-webview-content-handle-dispose[\s\S]*reacquire: async[\s\S]*current = null[\s\S]*resolve[\s\S]*screenshot: async/);
   assert.match(source, /dashboardProfileBlocker = 'reversible-configuration'/);
   assert.match(source, /if \(!dashboardProfileBlocker && profileFailures\.length\) dashboardProfileBlocker = profileFailures\[0\]\.profile/);
   assert.match(source, /!dashboardProfileBlocker && profileDashboardBaseline/);
@@ -1932,6 +1932,13 @@ test('owned installed Studio lifecycle accepts only operation-exact typed receip
   assert.match(profile, /navigateInstalledSurface\(frameHost, 'studio-lifecycle', 20_000\)/);
   assert.match(profile, /observation\.lifecycle_hub_run_browser/);
   assert.match(profile, /exerciseStudioLifecycleFailureStates\(frameHost, candidate\)/);
+  assert.match(profile, /runLifecycleStep\(candidate, 'catalog-open'/);
+  assert.match(profile, /scope: 'candidate'/);
+  assert.match(profile, /scope: 'operation'/);
+  assert.match(source, /timedProfile\('studio-lifecycle'[\s\S]*profile: 'studio-lifecycle-step'[\s\S]*timeoutMs: 180_000/);
+  const ownedFrame = source.slice(source.indexOf('async function waitForOwnedWebview'), source.indexOf('async function openWorkbenchCommandPalette'));
+  assert.match(ownedFrame, /contentEvaluationBoundary\.run\([\s\S]*content\.evaluate\(operation, argument\)/);
+  assert.match(ownedFrame, /owned-webview-content-handle-dispose[\s\S]*reacquire:[\s\S]*if \(reacquired\) contentEvaluationBoundary\.reset\(\)/);
   assert.match(source, /function validStudioBlockedPreviewResult[\s\S]*memory_bindings_not_runtime_resolved/);
   assert.match(profile, /candidate\.fixture_only[\s\S]*blocked_preview_verified/);
   assert.match(profile, /RESOLVED EXECUTION BLOCKED[\s\S]*start_suppressed/);
@@ -1946,6 +1953,25 @@ test('owned installed Studio lifecycle accepts only operation-exact typed receip
   assert.match(failureProfile, /openExactStudioCatalogRow\(frameHost, candidate\)[\s\S]*await wait\(120\)/);
   assert.match(failureProfile, /#modal-root \.control-modal[\s\S]*!modal\.querySelector\('\[role="alert"\]'\)[\s\S]*text\.includes\(item\.identity\)[\s\S]*text\.includes\(item\.version\)/);
   assert.doesNotMatch(failureProfile, /operateStudioRevision/);
+});
+
+test('owned content evaluation times out, latches fail-fast, and resets only after explicit reacquisition', async () => {
+  const boundary = createOwnedContentEvaluationBoundary(20);
+  let dispatches = 0;
+  await assert.rejects(
+    boundary.run(() => { dispatches += 1; return new Promise(() => {}); }),
+    /owned-webview-content-evaluate-timeout:20/
+  );
+  assert.equal(boundary.blocker(), 'owned-webview-content-evaluate-timeout:20');
+  await assert.rejects(
+    boundary.run(async () => { dispatches += 1; return 'must-not-run'; }),
+    /owned-webview-content-evaluate-timeout:20/
+  );
+  assert.equal(dispatches, 1, 'latched evaluation must fail before dispatch');
+  boundary.reset();
+  assert.equal(boundary.blocker(), null);
+  assert.equal(await boundary.run(async () => { dispatches += 1; return 'reacquired'; }), 'reacquired');
+  assert.equal(dispatches, 2);
 });
 
 test('owned Studio lifecycle maps all four abstract lifecycle paths to physical exact-kind evidence', () => {
