@@ -389,6 +389,8 @@ test('late-card repair focus runs only observation state and controller adversar
   assert.match(source, /lateCardRepairOnly[\s\S]*runInstalledLateCardRepairObservationProfile\(dashboard, proofMatrix\)[\s\S]*runInstalledObservationStateProfile\(dashboard, sidebar, proofMatrix\)/);
   assert.match(source, /INSTALLED_GRAPH_PAGINATION_OBSERVATION_IDS[\s\S]*observationStateControlProbe\(matrix, observations, INSTALLED_GRAPH_PAGINATION_OBSERVATION_IDS\)/);
   assert.match(source, /lateCardControllerProfile = \(!focusedProfileOnly \|\| lateCardRepairOnly\)/);
+  assert.match(source, /sidebarControlProbe = sidebar && \(!focusedProfileOnly \|\| lateCardRepairOnly\) && !hostSourceMismatch/);
+  assert.match(source, /timedProfile\('sidebar-controls'/);
   assert.match(source, /studioChainAdmitted =[\s\S]*!lateCardRepairOnly/);
   assert.match(source, /knowledgeLifecycleProfile =[\s\S]*!lateCardRepairOnly/);
   assert.match(source, /learningLifecycleProfile =[\s\S]*!lateCardRepairOnly/);
@@ -557,7 +559,21 @@ test('plugin conflict control settlement accepts only the exact visible request-
   assert.equal((conflictRoute.match(/dispatchInstalledPluginConflictControl\(frameHost/g) || []).length, 2);
   assert.match(conflictRoute, /signalId: signal\.signal_id[\s\S]*targetExtensionId: extensionId[\s\S]*resolution: 'inspect'/);
   assert.match(conflictRoute, /targetOverride: 'px-owned\.absent'/);
+  assert.match(conflictRoute, /invalidRequestBefore = await installedOutboundRequestOffset\(frameHost\)[\s\S]*waitForInstalledOutboundRequest\(frameHost, invalidRequestBefore, 'extensionConflictResolutionPreview'[\s\S]*value\.requestId === item\.requestId/);
+  assert.match(conflictRoute, /plugin-invalid-conflict-target-not-rejected[\s\S]*progressStep\('conflict-refusal-reconstruction'[\s\S]*restartInstalledDashboardWebview[\s\S]*currentVersion\(v2\.version, \{ deadline \}\)[\s\S]*invalid_conflict_refusal_recovered = true[\s\S]*signal = await queryConflicts\(deadline\)/);
+  assert.match(conflictRoute, /previewRequestBefore = await installedOutboundRequestOffset\(frameHost\)[\s\S]*waitForInstalledOutboundRequest\(frameHost, previewRequestBefore, 'extensionConflictResolutionPreview'[\s\S]*previewRequest\.requestId/);
   assert.doesNotMatch(conflictRoute, /plugin-conflict-preview-control-unavailable/);
+});
+
+test('plugin conflict query and refusal recovery are request-bound before a fresh rendered route', () => {
+  const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
+  const profile = source.slice(source.indexOf('async function runInstalledPluginMutationProfile'), source.indexOf('function knowledgeLifecycleControlProbe'));
+  const query = profile.slice(profile.indexOf('const queryConflicts'), profile.indexOf('const exerciseConflictRoute'));
+  assert.match(query, /requestBefore = await installedOutboundRequestOffset\(frameHost\)/);
+  assert.match(query, /waitForInstalledOutboundRequest\(frameHost, requestBefore, 'extensionConflictQuery'/);
+  assert.match(query, /waitForResponse\(before, 'extensionConflictResult', 'extensionConflictQuery', deadline, request\.requestId\)/);
+  assert.match(profile, /invalid_conflict_refusal_recovered: false/);
+  assert.match(profile, /observation\.invalid_conflict_refusal_recovered && observation\.conflict_route_completed/);
 });
 
 test('plugin conflict route dispatches the authenticated confirmation without a second modal settlement window', () => {
@@ -2689,7 +2705,7 @@ test('owned Plugin mutation profile requires exact reconciled receipts and compl
   assert.match(walkerSource, /conflictSafeReconstruction === true[\s\S]*Pacify-X: Open Storage & Cleanup Manager/);
   const conflictRoute = plugin.slice(plugin.indexOf('const exerciseConflictRoute'), plugin.indexOf('observation.conflict_route_completed'));
   assert.match(conflictRoute, /restartOwnedWorkbenchWindow\(workbench, frameHost, remainingBudget\('conflict-workbench-reconstruction', 75_000, deadline\), \{[\s\S]*conflictSafeReconstruction: true[\s\S]*physicalExtensionId: extensionId[\s\S]*expectedPhysicalVersion: v2\.version[\s\S]*currentVersion\(v2\.version, \{ deadline \}\)/);
-  assert.doesNotMatch(conflictRoute, /restartInstalledDashboardWebview/);
+  assert.match(conflictRoute, /plugin-invalid-conflict-target-not-rejected[\s\S]*restartInstalledDashboardWebview\(frameHost, remainingBudget\('invalid-conflict-webview-reconstruction', 45_000, deadline\)\)[\s\S]*currentVersion\(v2\.version, \{ deadline \}\)[\s\S]*signal = await queryConflicts\(deadline\)[\s\S]*restartOwnedWorkbenchWindow/);
   assert.doesNotMatch(conflictRoute, /pxui\.dashboard-control-plane\.command\.pacifyX\.openDashboard/);
   assert.match(walkerSource, /waitForOwnedPhysicalExtensionVersion\(options\.physicalExtensionId, options\.expectedPhysicalVersion/);
   assert.match(walkerSource, /const obsoletePath = path\.join\(ownedExtensionsRoot, '\.obsolete'\)[\s\S]*obsolete\[entry\.name\] === true/);
@@ -2708,7 +2724,7 @@ test('owned Plugin mutation profile requires exact reconciled receipts and compl
     { control_id: 'pxui.plugins.reload_reopen.authoritativeState', surface_id: 'plugins', kind: 'reload_reopen' },
     { control_id: 'pxui.plugins.failure_recovery.surface', surface_id: 'plugins', kind: 'failure_recovery' }
   ].map(control => ({ ...control, stage_policy: Object.fromEntries(STAGES.map(stage => [stage, 'required'])) }));
-  const observation = { rendered: true, attempted: true, completed: true, invalid_source_rejected: true, invalid_conflict_target_rejected: true, conflict_route_completed: true, native_manager_reopened: true, update_rollback_reconciled: true, uninstall_rollback_reconciled: true, cleanup_restored: true, exact_reconstruction: true, errors: [] };
+  const observation = { rendered: true, attempted: true, completed: true, invalid_source_rejected: true, invalid_conflict_target_rejected: true, invalid_conflict_refusal_recovered: true, conflict_route_completed: true, native_manager_reopened: true, update_rollback_reconciled: true, uninstall_rollback_reconciled: true, cleanup_restored: true, exact_reconstruction: true, errors: [] };
   const probe = pluginMutationControlProbe({ controls }, observation);
   assert.equal(probe.eligible_control_count, controls.length);
   assert.ok(probe.records.every(record => STAGES.every(stage => record.interaction_chain[stage].state === 'present')));

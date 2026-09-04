@@ -9507,7 +9507,7 @@ function pluginMutationControlProbe(matrix, observation) {
     'pxui.plugins.failure_recovery.surface'
   ]);
   const requirements = matrix.controls.filter(control => admitted.has(control.control_id));
-  const completed = observation.completed === true && observation.exact_reconstruction === true && observation.cleanup_restored === true && observation.conflict_route_completed === true && observation.native_manager_reopened === true;
+  const completed = observation.completed === true && observation.exact_reconstruction === true && observation.cleanup_restored === true && observation.conflict_route_completed === true && observation.invalid_conflict_refusal_recovered === true && observation.native_manager_reopened === true;
   const recovered = observation.update_rollback_reconciled === true && observation.uninstall_rollback_reconciled === true && observation.cleanup_restored === true;
   return {
     schema_version: 'px.installed-operational-control-probe/1.0',
@@ -9520,7 +9520,7 @@ function pluginMutationControlProbe(matrix, observation) {
         evidence_mode: 'owned_disposable_plugin_mutation', rendered: observation.rendered, observed: observation.attempted, attempted: observation.attempted,
         interaction_chain: Object.fromEntries(STAGES.map(stage => {
           if (requirement.stage_policy[stage] !== 'required') return [stage, { state: 'not_applicable', detail: `Canonical matrix marks ${stage} not applicable.`, evidence: [evidenceRef] }];
-          if (stage === 'failure_handling') return [stage, observation.invalid_source_rejected && observation.invalid_conflict_target_rejected
+        if (stage === 'failure_handling') return [stage, observation.invalid_source_rejected && observation.invalid_conflict_target_rejected && observation.invalid_conflict_refusal_recovered
             ? { state: 'present', detail: 'A missing local VSIX source and a non-admitted conflict target were each rejected before native mutation.', evidence: [evidenceRef] }
             : { state: 'missing', detail: 'Both the invalid local-source and non-admitted conflict-target requests were not proven fail-closed.', evidence: [] }];
           if (stage === 'recovery_rollback') return [stage, recovered
@@ -9583,19 +9583,20 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
   const v2 = fixture('2.0.0');
   const observation = {
     rendered: false, attempted: false, completed: false, extension_id: extensionId,
-    invalid_source_rejected: false, invalid_conflict_target_rejected: false, conflict_route_completed: false,
+    invalid_source_rejected: false, invalid_conflict_target_rejected: false, invalid_conflict_refusal_recovered: false, conflict_route_completed: false,
     native_manager_open_count: 0, native_manager_reopened: false,
     update_rollback_reconciled: false, uninstall_rollback_reconciled: false,
     cleanup_restored: false, failure_cleanup_restored: false, exact_reconstruction: false, webview_restart_count: 0, workbench_reload_count: 0, operations: [], errors: []
   };
   let physicalVersion = null;
 
-  const waitForResponse = async (after, expectedType, expectedOperation = '', deadline = activeProfileDeadline) => {
+  const waitForResponse = async (after, expectedType, expectedOperation = '', deadline = activeProfileDeadline, expectedRequestId = null) => {
     const responseDeadline = Math.min(deadline, Date.now() + remainingBudget(`response-${expectedType}`, timeoutMs, deadline));
     do {
       const response = await frameHost.evaluate((frame, item) => (frame.contentWindow?.__PX_INSTALLED_RESPONSES__ || []).slice(item.after)
-        .find(value => value?.type === item.expected || (value?.type === 'operationError' && (!item.operation || value.operation === item.operation))) || null,
-      { after, expected: expectedType, operation: expectedOperation });
+        .find(value => (!item.requestId || value?.requestId === item.requestId)
+          && (value?.type === item.expected || (value?.type === 'operationError' && (!item.operation || value.operation === item.operation)))) || null,
+      { after, expected: expectedType, operation: expectedOperation, requestId: expectedRequestId });
       if (response?.type === 'operationError') throw new Error(`plugin-host-operation-failed:${response.operation}:${response.error}`);
       if (response) return response;
       await wait(150);
@@ -9746,8 +9747,11 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
   const queryConflicts = async (deadline = activeProfileDeadline) => {
     await settleInstalledPluginControl(frameHost, '#extension-conflict-id', remainingBudget('conflict-field', timeoutMs, deadline));
     await settleInstalledPluginControl(frameHost, '[data-action="queryExtensionConflicts"]', remainingBudget('conflict-query-control', timeoutMs, deadline));
+    const requestBefore = await installedOutboundRequestOffset(frameHost);
     const before = await dispatchInstalledPluginFormAction(frameHost, { '#extension-conflict-id': extensionId }, 'queryExtensionConflicts');
-    const result = (await waitForResponse(before, 'extensionConflictResult', 'extensionConflictQuery', deadline)).result;
+    const request = await waitForInstalledOutboundRequest(frameHost, requestBefore, 'extensionConflictQuery', remainingBudget('conflict-query-request', timeoutMs, deadline));
+    if (!request) throw new Error('plugin-conflict-query-request-not-observed');
+    const result = (await waitForResponse(before, 'extensionConflictResult', 'extensionConflictQuery', deadline, request.requestId)).result;
     const signal = exactPluginConflictSignal(result, pxExtensionId, extensionId);
     if (!signal) throw new Error(`plugin-deterministic-conflict-signal-missing:${JSON.stringify(result)}`);
     return signal;
@@ -9755,24 +9759,39 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
 
   const exerciseConflictRoute = async (deadline = activeProfileDeadline) => {
     let signal = await queryConflicts(deadline);
+    const invalidRequestBefore = await installedOutboundRequestOffset(frameHost);
     const invalidBefore = await dispatchInstalledPluginConflictControl(frameHost, {
       extensionId, signalId: signal.signal_id,
       targetExtensionId: extensionId, resolution: 'inspect'
     }, { timeoutMs: remainingBudget('invalid-conflict-dispatch', timeoutMs, deadline), targetOverride: 'px-owned.absent' });
+    const invalidRequest = await waitForInstalledOutboundRequest(frameHost, invalidRequestBefore, 'extensionConflictResolutionPreview', remainingBudget('invalid-conflict-request', timeoutMs, deadline));
+    if (!invalidRequest) throw new Error('plugin-invalid-conflict-preview-request-not-observed');
     const invalidDeadline = Math.min(deadline, Date.now() + remainingBudget('invalid-conflict-response', timeoutMs, deadline));
     do {
-      const failure = await frameHost.evaluate((frame, after) => (frame.contentWindow?.__PX_INSTALLED_RESPONSES__ || []).slice(after)
-        .find(value => value?.type === 'operationError' && value.operation === 'extensionConflictResolutionPreview') || null, invalidBefore);
+      const failure = await frameHost.evaluate((frame, item) => (frame.contentWindow?.__PX_INSTALLED_RESPONSES__ || []).slice(item.after)
+        .find(value => value?.type === 'operationError' && value.operation === 'extensionConflictResolutionPreview' && value.requestId === item.requestId) || null,
+      { after: invalidBefore, requestId: invalidRequest.requestId });
       if (failure && /target-not-admitted/i.test(String(failure.error || ''))) { observation.invalid_conflict_target_rejected = true; break; }
       await wait(150);
     } while (Date.now() < invalidDeadline);
     if (!observation.invalid_conflict_target_rejected) throw new Error('plugin-invalid-conflict-target-not-rejected');
+    await progressStep('conflict-refusal-reconstruction', async () => {
+      const restart = await restartInstalledDashboardWebview(frameHost, remainingBudget('invalid-conflict-webview-reconstruction', 45_000, deadline));
+      if (restart.restarted !== true || restart.reconstructed !== true) throw new Error('plugin-invalid-conflict-refusal-reconstruction-unobserved');
+      observation.webview_restart_count += 1;
+      const observedVersion = await currentVersion(v2.version, { deadline });
+      if (observedVersion !== v2.version) throw new Error(`plugin-invalid-conflict-refusal-changed-installed-denominator:${JSON.stringify({ expected: v2.version, observed: observedVersion })}`);
+      observation.invalid_conflict_refusal_recovered = true;
+    });
     signal = await queryConflicts(deadline);
+    const previewRequestBefore = await installedOutboundRequestOffset(frameHost);
     const previewBefore = await dispatchInstalledPluginConflictControl(frameHost, {
       extensionId, signalId: signal.signal_id,
       targetExtensionId: extensionId, resolution: 'inspect'
     }, { timeoutMs: remainingBudget('conflict-preview-dispatch', timeoutMs, deadline) });
-    const preview = (await waitForResponse(previewBefore, 'extensionConflictResolutionPreview', 'extensionConflictResolutionPreview', deadline)).result;
+    const previewRequest = await waitForInstalledOutboundRequest(frameHost, previewRequestBefore, 'extensionConflictResolutionPreview', remainingBudget('conflict-preview-request', timeoutMs, deadline));
+    if (!previewRequest) throw new Error('plugin-conflict-preview-request-not-observed');
+    const preview = (await waitForResponse(previewBefore, 'extensionConflictResolutionPreview', 'extensionConflictResolutionPreview', deadline, previewRequest.requestId)).result;
     if (preview?.schema_version !== 'px.extension-conflict-resolution-preview/1.0' || preview.allowed !== true || preview.signal_id !== signal.signal_id || preview.target_extension_id !== extensionId || preview.resolution !== 'inspect') throw new Error(`plugin-conflict-preview-invalid:${JSON.stringify(preview)}`);
     const dispatch = await dispatchInstalledPluginConfirmation(frameHost, {
       executeAction: 'executeExtensionConflictResolution',
@@ -9849,7 +9868,7 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
     await uninstall('final-cleanup-uninstall-v1', v1);
     observation.cleanup_restored = true;
     observation.exact_reconstruction = observation.operations.length === 8 && observation.operations.every(item => item.webview_restarted === true);
-    observation.completed = observation.invalid_source_rejected && observation.invalid_conflict_target_rejected && observation.conflict_route_completed && observation.native_manager_reopened && observation.exact_reconstruction && observation.cleanup_restored;
+    observation.completed = observation.invalid_source_rejected && observation.invalid_conflict_target_rejected && observation.invalid_conflict_refusal_recovered && observation.conflict_route_completed && observation.native_manager_reopened && observation.exact_reconstruction && observation.cleanup_restored;
   } catch (error) {
     observation.errors.push(String(error?.message || error).slice(0, 4000));
     await dismissOwnedNativeWorkbenchDialog(workbench, /Authorize native install|Authorize native update|Authorize native uninstall|Authorize exact rollback|Authorize conflict route/i)
@@ -11122,7 +11141,7 @@ async function main() {
       })))
     } : null;
     const sidebarScreenshot = sidebar ? await safeScreenshot(sidebar, path.join(outputRoot, 'sidebar.png'), 'sidebar', hostErrors) : null;
-    const sidebarControlProbe = sidebar && !focusedProfileOnly && !hostSourceMismatch
+    const sidebarControlProbe = sidebar && (!focusedProfileOnly || lateCardRepairOnly) && !hostSourceMismatch
       ? await timedProfile('sidebar-controls', () => probeInstalledSidebarControls(sidebar, proofMatrix, hostErrors, workbench, {
           onProgress: event => appendProfileProgress({ profile: 'sidebar-control', ...event })
         }), { resetBaseline: false })
