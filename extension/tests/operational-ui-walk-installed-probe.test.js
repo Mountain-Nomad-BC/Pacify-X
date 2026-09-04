@@ -22,7 +22,7 @@ const { installedAdvancedFixtureStateAcknowledged } = require('../scripts/run-op
 const { waitForInstalledCanonicalMemoryBaseline } = require('../scripts/run-operational-ui-walk');
 const { closeOwnedDashboardTabs, remainingOwnedUiBudget } = require('../scripts/run-operational-ui-walk');
 
-const { boundedOwnedUiAction, createOwnedContentEvaluationBoundary, waitForOwnedWebview } = require('../scripts/run-operational-ui-walk');
+const { boundedOwnedUiAction, createOwnedContentEvaluationBoundary, createOwnedLocatorEvaluationBoundary, waitForOwnedWebview } = require('../scripts/run-operational-ui-walk');
 const { clickWhenBuilderControlReady, clickWhenInstalledGraphControlReady, installedGraphExchangeOffset, invokeBuilderControl, waitForBuilderJsonControls, waitForInstalledGraphExchange, waitForInstalledGraphIdle } = require('../scripts/run-operational-ui-walk');
 
 const STAGES = ['open_load', 'display', 'user_edit_action', 'input_validation', 'authorization', 'backend_dispatch', 'runtime_effect', 'progress_reporting', 'result_acknowledgement', 'persistence', 'reload_reopen', 'failure_handling', 'recovery_rollback'];
@@ -1980,7 +1980,7 @@ test('owned installed Studio lifecycle accepts only operation-exact typed receip
   assert.match(source, /timedProfile\('studio-lifecycle'[\s\S]*profile: 'studio-lifecycle-step'[\s\S]*timeoutMs: 180_000/);
   const ownedFrame = source.slice(source.indexOf('async function waitForOwnedWebview'), source.indexOf('async function openWorkbenchCommandPalette'));
   assert.match(ownedFrame, /contentEvaluationBoundary\.run\([\s\S]*content\.evaluate\(operation, argument\)/);
-  assert.match(ownedFrame, /owned-webview-content-handle-dispose[\s\S]*reacquire:[\s\S]*if \(reacquired\) contentEvaluationBoundary\.reset\(\)/);
+  assert.match(ownedFrame, /owned-webview-content-handle-dispose[\s\S]*reacquire:[\s\S]*if \(reacquired\) \{[\s\S]*contentEvaluationBoundary\.reset\(\)[\s\S]*locatorEvaluationBoundary\.reset\(\)/);
   assert.match(source, /function validStudioBlockedPreviewResult[\s\S]*memory_bindings_not_runtime_resolved/);
   assert.match(profile, /candidate\.fixture_only[\s\S]*blocked_preview_verified/);
   assert.match(profile, /RESOLVED EXECUTION BLOCKED[\s\S]*start_suppressed/);
@@ -2014,6 +2014,41 @@ test('owned content evaluation times out, latches fail-fast, and resets only aft
   assert.equal(boundary.blocker(), null);
   assert.equal(await boundary.run(async () => { dispatches += 1; return 'reacquired'; }), 'reacquired');
   assert.equal(dispatches, 2);
+});
+
+test('owned locator evaluation has a real timeout boundary instead of an ignored Playwright option', async () => {
+  const boundary = createOwnedLocatorEvaluationBoundary(20);
+  let dispatches = 0;
+  await assert.rejects(
+    boundary.run(() => { dispatches += 1; return new Promise(() => {}); }),
+    /owned-webview-locator-evaluate-timeout:20/
+  );
+  assert.equal(boundary.blocker(), 'owned-webview-locator-evaluate-timeout:20');
+  await assert.rejects(
+    boundary.run(async () => { dispatches += 1; return 'must-not-run'; }),
+    /owned-webview-locator-evaluate-timeout:20/
+  );
+  assert.equal(dispatches, 1, 'latched locator evaluation must fail before dispatch');
+  boundary.reset();
+  assert.equal(await boundary.run(async () => { dispatches += 1; return 'reacquired'; }), 'reacquired');
+  assert.equal(dispatches, 2);
+
+  const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
+  const owner = source.slice(source.indexOf('async function waitForOwnedWebview'), source.indexOf('async function openWorkbenchCommandPalette'));
+  assert.match(owner, /locatorEvaluationBoundary\.run\([\s\S]*invokeCurrent\('evaluate', \[operation, argument\]\)/);
+  assert.doesNotMatch(owner, /invokeCurrent\('evaluate', \[[\s\S]*timeout:/);
+  assert.match(owner, /if \(reacquired\) \{[\s\S]*locatorEvaluationBoundary\.reset\(\)/);
+});
+
+test('Studio candidate save has a local profile ceiling and per-candidate progress attribution', () => {
+  const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
+  const profile = source.slice(source.indexOf('async function runInstalledStudioCandidateSaveProfile'), source.indexOf('function studioRevisionEditRecord'));
+  const main = source.slice(source.indexOf("const studioCandidateSaveProfile"), source.indexOf("const studioCandidateHealthy"));
+  assert.match(profile, /onProgress.*scope: 'candidate'.*state: 'started'/s);
+  assert.match(profile, /onProgress.*scope: 'candidate'.*state: 'returned'/s);
+  assert.match(profile, /onProgress.*scope: 'candidate'.*state: 'threw'/s);
+  assert.match(main, /profile: 'studio-candidate-save-step'/);
+  assert.match(main, /timeoutMs: 900_000/);
 });
 
 test('owned Studio lifecycle maps all four abstract lifecycle paths to physical exact-kind evidence', () => {
@@ -2949,7 +2984,7 @@ test('r21 dynamic dashboard resolution bounds a non-responsive frame shell enume
   const baseline = source.slice(source.indexOf('async function resetInstalledDashboardBaseline'), source.indexOf('async function restartInstalledDashboardWebview'));
   assert.match(resolver, /boundedResolveAction\(\(\) => shells\.count\(\), 'owned-webview-shell-count'\)/);
   assert.match(resolver, /boundedResolveAction\(\(\) => shell\.isVisible\(\), 'owned-webview-shell-visibility'\)/);
-  assert.match(resolver, /timeout: Math\.max\(1, Math\.min\(Number\(options\.timeout\) \|\| 10_000, 10_000\)\)/);
+  assert.match(resolver, /locatorEvaluationBoundary\.run\([\s\S]*Math\.max\(1, Math\.min\(Number\(options\.timeout\) \|\| 10_000, 10_000\)\)/);
   assert.match(baseline, /instrumentInstalledBridge\(frameHost, initialProbeBudget\)/);
   assert.match(baseline, /\{ timeout: locatorBudget\(\) \}/);
 });

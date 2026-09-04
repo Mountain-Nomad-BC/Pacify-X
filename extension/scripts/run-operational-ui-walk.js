@@ -472,6 +472,26 @@ function createOwnedContentEvaluationBoundary(defaultTimeoutMs = 10_000) {
     blocker: () => timeoutBlocker
   };
 }
+
+function createOwnedLocatorEvaluationBoundary(defaultTimeoutMs = 10_000) {
+  const ceilingMs = Math.max(1, Number(defaultTimeoutMs) || 10_000);
+  let timeoutBlocker = null;
+  return {
+    run: async (operation, timeoutMs = ceilingMs) => {
+      if (timeoutBlocker) throw new Error(timeoutBlocker);
+      const budget = Math.max(1, Math.min(Number(timeoutMs) || ceilingMs, ceilingMs));
+      try {
+        return await boundedOwnedUiAction(operation, budget, 'owned-webview-locator-evaluate');
+      } catch (error) {
+        const message = String(error?.message || error);
+        if (message === `owned-webview-locator-evaluate-timeout:${budget}`) timeoutBlocker = message;
+        throw error;
+      }
+    },
+    reset: () => { timeoutBlocker = null; },
+    blocker: () => timeoutBlocker
+  };
+}
 const ownedReversibleConfigurationAuthority = process.env.PX_OWNED_VSCODE_HOST === '1'
   && process.argv.some(value => String(value).startsWith('--px-owned-token='));
 const ownedHostToken = String(process.argv.find(value => String(value).startsWith('--px-owned-token=')) || '').slice('--px-owned-token='.length);
@@ -2577,6 +2597,7 @@ async function waitForOwnedWebview(workbench, predicate, timeoutMs = 30_000) {
   let current = null;
   let identityMode = null;
   const contentEvaluationBoundary = createOwnedContentEvaluationBoundary(10_000);
+  const locatorEvaluationBoundary = createOwnedLocatorEvaluationBoundary(10_000);
   const hasDashboardOwnership = frameHost => frameHost.evaluate(frame => Boolean(
     frame.contentDocument?.querySelector('[data-surface="dashboard"]')
       && frame.contentDocument?.querySelector('[data-surface="agents"]')
@@ -2649,11 +2670,10 @@ async function waitForOwnedWebview(workbench, predicate, timeoutMs = 30_000) {
     throw new Error('owned-webview-current-frame-unavailable');
   };
   return {
-    evaluate: async (operation, argument, options = {}) => invokeCurrent('evaluate', [
-      operation,
-      argument,
-      { ...options, timeout: Math.max(1, Math.min(Number(options.timeout) || 10_000, 10_000)) }
-    ]),
+    evaluate: async (operation, argument, options = {}) => locatorEvaluationBoundary.run(
+      () => invokeCurrent('evaluate', [operation, argument]),
+      Math.max(1, Math.min(Number(options.timeout) || 10_000, 10_000))
+    ),
     evaluateContent: async (operation, argument, options = {}) => {
       for (let attempt = 0; attempt < 2; attempt += 1) {
         let handle = null;
@@ -2684,7 +2704,10 @@ async function waitForOwnedWebview(workbench, predicate, timeoutMs = 30_000) {
     reacquire: async (limitMs = Math.min(10_000, timeoutMs)) => {
       current = null;
       const reacquired = Boolean(await resolve(Math.max(1, Math.min(limitMs, timeoutMs))));
-      if (reacquired) contentEvaluationBoundary.reset();
+      if (reacquired) {
+        contentEvaluationBoundary.reset();
+        locatorEvaluationBoundary.reset();
+      }
       return reacquired;
     },
     screenshot: async (...args) => invokeCurrent('screenshot', args),
@@ -6783,7 +6806,7 @@ function studioCandidateSaveRecord(requirement, observation) {
   };
 }
 
-async function runInstalledStudioCandidateSaveProfile(frameHost, matrix, timeoutMs = 150_000, includeBlockedAgentFixture = false) {
+async function runInstalledStudioCandidateSaveProfile(frameHost, matrix, timeoutMs = 150_000, includeBlockedAgentFixture = false, { onProgress = null } = {}) {
   const specifications = [
     { kind: 'agent', route: 'agents', controlIds: ['pxui.agent-studio.action.submitStudioDraft.agent', 'pxui.agent-studio.form.candidateMetadata', 'pxui.agent-studio.failure_recovery.surface', 'pxui.agent-studio.persistence.authoritativeState', 'pxui.agent-studio.reload_reopen.authoritativeState', 'pxui.agents.persistence.authoritativeState', 'pxui.agents.reload_reopen.authoritativeState'], prefix: 'agent:px-owned-save-' },
     { kind: 'workflow', route: 'workflows', controlIds: ['pxui.workflow-studio.action.submitStudioDraft.workflow', 'pxui.workflow-studio.form.candidateMetadata', 'pxui.workflow-studio.failure_recovery.surface', 'pxui.workflow-studio.persistence.authoritativeState', 'pxui.workflow-studio.reload_reopen.authoritativeState', 'pxui.workflows.persistence.authoritativeState', 'pxui.workflows.reload_reopen.authoritativeState'], prefix: 'workflow:px-owned-save-' },
@@ -6801,6 +6824,8 @@ async function runInstalledStudioCandidateSaveProfile(frameHost, matrix, timeout
     });
     const identity = `${spec.prefix}${Date.now().toString(36)}-${index}`;
     const observation = { kind: spec.kind, route: spec.route, identity, version: '1.0.0', fixture_only: spec.fixture_only === true, memory_binding_id: spec.memory_binding_id || null, catalog_record_id: null, catalog_request_id: null, available: false, attempted: false, save_dispatched_atomically: false, invalid_rejected: false, recovered_before_save: false, typed_creation_receipt: false, webview_restarted: false, catalog_query_dispatched: false, reopened_catalog_match: false, reopened_catalog_row_rendered: false, result: null, errors: [] };
+    const candidateStarted = Date.now();
+    if (onProgress) onProgress({ scope: 'candidate', kind: spec.kind, identity, fixture_only: spec.fixture_only === true, state: 'started' });
     try {
       await frameHost.evaluate((frame, item) => {
         const document = frame.contentDocument;
@@ -6973,7 +6998,11 @@ async function runInstalledStudioCandidateSaveProfile(frameHost, matrix, timeout
         await wait(100);
       } while (Date.now() < renderedDeadline);
       if (!observation.reopened_catalog_row_rendered) throw new Error(`studio-${spec.kind}-catalog-reopen-row-not-rendered`);
-    } catch (error) { observation.errors.push(String(error?.message || error).slice(0, 2400)); }
+      if (onProgress) onProgress({ scope: 'candidate', kind: spec.kind, identity, fixture_only: spec.fixture_only === true, state: 'returned', duration_ms: Date.now() - candidateStarted, error_count: 0, errors: [] });
+    } catch (error) {
+      observation.errors.push(String(error?.message || error).slice(0, 2400));
+      if (onProgress) onProgress({ scope: 'candidate', kind: spec.kind, identity, fixture_only: spec.fixture_only === true, state: 'threw', duration_ms: Date.now() - candidateStarted, error_count: observation.errors.length, errors: observation.errors });
+    }
     observations.push(observation);
     if (!spec.fixture_only) records.push(...profileRequirements.map(requirement => studioCandidateSaveRecord(requirement, observation)));
   }
@@ -10954,7 +10983,9 @@ async function main() {
     const studioSetupHealthy = returnedProfileErrors(studioSetupProfile).length === 0;
     const studioCandidateSaveProfile = studioChainAdmitted
       ? studioSetupHealthy
-        ? await timedProfile('studio-candidate-save', () => runInstalledStudioCandidateSaveProfile(dashboard, proofMatrix, studioLifecycleOnly ? 45_000 : 150_000, true))
+        ? await timedProfile('studio-candidate-save', () => runInstalledStudioCandidateSaveProfile(dashboard, proofMatrix, studioLifecycleOnly ? 45_000 : 150_000, true, {
+          onProgress: event => appendProfileProgress({ profile: 'studio-candidate-save-step', ...event })
+        }), { timeoutMs: 900_000 })
         : skippedProfileResult('studio-candidate-save', 'studio-setup')
       : { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside an owned isolated host.', eligible_control_count: 0, records: [] };
     const studioCandidateHealthy = returnedProfileErrors(studioCandidateSaveProfile).length === 0;
@@ -11333,7 +11364,7 @@ if (require.main === module) {
 }
 
 module.exports = {
-  applyInstalledProbeObservations, boundedOwnedUiAction, createOwnedContentEvaluationBoundary, remainingOwnedUiBudget, buildInstalledLateCardAdversarialProfile, buildInstalledLateCardScenarioProfile, cleanupControlProbe, codexHandoffControlProbe, commandPaletteAttemptDecision, coordinationMemoryControlProbe, currentSourceExtensionAssetIdentity,
+  applyInstalledProbeObservations, boundedOwnedUiAction, createOwnedContentEvaluationBoundary, createOwnedLocatorEvaluationBoundary, remainingOwnedUiBudget, buildInstalledLateCardAdversarialProfile, buildInstalledLateCardScenarioProfile, cleanupControlProbe, codexHandoffControlProbe, commandPaletteAttemptDecision, coordinationMemoryControlProbe, currentSourceExtensionAssetIdentity,
   catalogPaginationControlProbe, clickWhenKnowledgeControlReady, correlateCatalogExchange, observationStateControlProbe, runInstalledObservationStateProfile, eligibleInstalledControl, eligibleInstalledSidebarControl, engineOutageRecord, enterpriseControlProbe, environmentLifecycleControlProbe,
   bindCurrentWorkbenchCommandRejection, ensureInstalledSensorRowSnapshot, exactStudioSetupTerminalResponse, executeWorkbenchCommand, exactPluginConflictSignal, exerciseInstalledControl, graphProjectionIdentity, requestBoundGraphResultIdentity, hostBoundaryControlProbe, inlineCommandOwnerControlProbe, installedActionIdentity,
   installedConditionalRecoverySpec, installedConditionalScenario, installedHostBoundaryRevealSelector, installedPreparationIdentity, installedRuntimeSourceIdentityState, installedSourceIdentityNeedsLateRefresh, installedSidebarHandoffRequestMatches, installedSidebarHandoffSpec, installedSidebarSelector, installedStudioControlScenario, installedStudioPrerequisites, installedSurfaceState, installedSurfaceAcknowledged,
