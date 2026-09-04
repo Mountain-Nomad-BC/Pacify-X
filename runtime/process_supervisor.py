@@ -47,6 +47,52 @@ def _inside(path: Path, root: Path) -> bool:
         return False
 
 
+def _path_consumption_bytes(path: Path) -> int:
+    """Return bounded-path logical bytes without following directory symlinks."""
+
+    try:
+        if path.is_symlink():
+            return 0
+        if path.is_file():
+            return path.stat().st_size
+        if not path.is_dir():
+            return 0
+    except OSError:
+        return 0
+    total = 0
+    pending = [path]
+    while pending:
+        directory = pending.pop()
+        try:
+            with os.scandir(directory) as entries:
+                for entry in entries:
+                    try:
+                        if entry.is_symlink():
+                            continue
+                        if entry.is_dir(follow_symlinks=False):
+                            pending.append(Path(entry.path))
+                        elif entry.is_file(follow_symlinks=False):
+                            total += entry.stat(follow_symlinks=False).st_size
+                    except OSError:
+                        continue
+        except OSError:
+            continue
+    return total
+
+
+def _disk_consumption_bytes(paths: Sequence[Path]) -> int:
+    """Measure unique declared paths, dropping descendants of another path."""
+
+    roots: list[Path] = []
+    for candidate in sorted(
+        {path.resolve(strict=False) for path in paths},
+        key=lambda item: (len(item.parts), str(item).casefold()),
+    ):
+        if not any(_inside(candidate, root) for root in roots):
+            roots.append(candidate)
+    return sum(_path_consumption_bytes(path) for path in roots)
+
+
 @dataclass(frozen=True, slots=True)
 class ProcessBudgets:
     startup_timeout_seconds: float
@@ -438,7 +484,7 @@ class ProcessSupervisor:
 
     def _authorize(
         self, action: Mapping[str, object], cwd: Path
-    ) -> tuple[ProcessBudgets, str]:
+    ) -> tuple[ProcessBudgets, str, tuple[Path, ...]]:
         if (
             not isinstance(action.get("action_id"), str)
             or not str(action["action_id"]).strip()
@@ -467,12 +513,22 @@ class ProcessSupervisor:
             resolved_target = Path(str(target)).resolve(strict=False)
             if not any(_inside(resolved_target, root) for root in owned):
                 raise PermissionError("process target is outside supplied owned paths")
+        raw_disk_paths = action.get("disk_consumption_paths", ())
+        if not isinstance(raw_disk_paths, (list, tuple)) or len(raw_disk_paths) > 32:
+            raise ValueError("disk-consumption paths must be a bounded sequence")
+        disk_paths = tuple(
+            Path(str(item)).resolve(strict=False) for item in raw_disk_paths
+        )
+        if any(not any(_inside(path, root) for root in owned) for path in disk_paths):
+            raise PermissionError(
+                "disk-consumption accounting path is outside supplied owned paths"
+            )
         budget = ProcessBudgets.from_mapping(dict(action.get("budget", {})))
         limits = ProcessBudgets.from_mapping(dict(action.get("limits", {})))
         for field in ProcessBudgets.__dataclass_fields__:
             if getattr(budget, field) > getattr(limits, field):
                 raise PermissionError(f"process budget exceeds limit: {field}")
-        return budget, str(decision.outputs["audit_record_hash"])
+        return budget, str(decision.outputs["audit_record_hash"]), disk_paths
 
     def _receipt(self, result: ProcessResult) -> str:
         receipt_id = f"process-{uuid4().hex}"
@@ -648,7 +704,7 @@ class ProcessSupervisor:
         cancel_event: threading.Event | None = None,
     ) -> ProcessResult:
         self.command_plan(command)
-        budget, audit_hash = self._authorize(action, cwd)
+        budget, audit_hash, disk_paths = self._authorize(action, cwd)
         # ``run`` executes in the process that owns and supervises the child.
         # Its own PID is the custody identity.  Using getppid() binds the child
         # to the supervisor's launcher, which is intentionally short-lived for
@@ -660,6 +716,9 @@ class ProcessSupervisor:
             raise RuntimeError("supervising process identity cannot be proven")
         disk_root = Path(cwd.resolve(strict=True).anchor or cwd.resolve(strict=True))
         initial_disk_free = shutil.disk_usage(disk_root).free
+        initial_owned_consumption = (
+            _disk_consumption_bytes(disk_paths) if disk_paths else None
+        )
         action_id = str(action["action_id"])
         started_at = _now()
         started = time.monotonic()
@@ -773,12 +832,20 @@ class ProcessSupervisor:
                 owner_alive = False
             if not owner_alive:
                 return "owner_lost"
-            current_disk_free = shutil.disk_usage(disk_root).free
-            if (
-                initial_disk_free - current_disk_free
-                > budget.disk_consumption_limit_bytes
-            ):
-                return "disk_budget_exceeded"
+            if initial_owned_consumption is not None:
+                current_owned_consumption = _disk_consumption_bytes(disk_paths)
+                if (
+                    current_owned_consumption - initial_owned_consumption
+                    > budget.disk_consumption_limit_bytes
+                ):
+                    return "disk_budget_exceeded"
+            else:
+                current_disk_free = shutil.disk_usage(disk_root).free
+                if (
+                    initial_disk_free - current_disk_free
+                    > budget.disk_consumption_limit_bytes
+                ):
+                    return "disk_budget_exceeded"
             return None
 
         try:

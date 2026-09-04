@@ -442,6 +442,59 @@ def test_disk_consumption_ceiling_is_reconciled_after_a_fast_exit(
     assert result.tree_closed
 
 
+def test_declared_disk_accounting_ignores_unrelated_volume_consumption(
+    harness, monkeypatch
+) -> None:
+    root = harness[0]
+    tracked = root / "owned-output"
+    tracked.mkdir()
+    observations = iter((10_000, 9_000))
+    owned_observations = iter((0, 0))
+
+    monkeypatch.setattr(
+        "runtime.process_supervisor.shutil.disk_usage",
+        lambda _path: SimpleNamespace(
+            total=20_000, used=10_000, free=next(observations, 9_000)
+        ),
+    )
+    monkeypatch.setattr(
+        "runtime.process_supervisor._disk_consumption_bytes",
+        lambda _paths: next(owned_observations, 0),
+    )
+    action = _action(root, disk_consumption_limit_bytes=64)
+    action["disk_consumption_paths"] = [str(tracked)]
+
+    result = _run(harness, "pass", action=action)
+
+    assert result.status == "exited"
+    assert result.exit_code == 0
+    assert result.tree_closed
+
+
+def test_declared_disk_accounting_closes_tree_on_owned_growth(
+    harness, monkeypatch
+) -> None:
+    root = harness[0]
+    tracked = root / "owned-output"
+    tracked.mkdir()
+    observations = iter((0, 100))
+    monkeypatch.setattr(
+        "runtime.process_supervisor._disk_consumption_bytes",
+        lambda _paths: next(observations, 100),
+    )
+    action = _action(root, disk_consumption_limit_bytes=64)
+    action["disk_consumption_paths"] = [str(tracked)]
+
+    result = _run(
+        harness,
+        "import time;print('ready',flush=True);time.sleep(30)",
+        action=action,
+    )
+
+    assert result.status == "disk_budget_exceeded"
+    assert result.tree_closed
+
+
 def test_unprovable_launching_parent_fails_before_spawn(harness, monkeypatch) -> None:
     owner_pid = os.getpid()
     real_fingerprint = _process_start_fingerprint

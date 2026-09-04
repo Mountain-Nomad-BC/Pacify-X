@@ -52,7 +52,7 @@ from .release_identity import (
 )
 from .release_signing import sign_certificate, verify_certificate_signature
 from .release_repository_context import (
-    RELEASE_GATE_REQUIRED_REPOSITORY_CONTEXT,
+    RELEASE_GATE_REQUIRED_REPOSITORY_CONTEXT,  # noqa: F401 - public compatibility export
     validate_release_gate_repository_context,
 )
 from .release_skip_policy import (
@@ -525,6 +525,39 @@ def _certificate_ledger_errors(root: Path) -> list[str]:
     return [*corrective["errors"], *full_repair["errors"]]
 
 
+def _run_release_test_process(
+    source_root: Path,
+    command: list[str],
+    environment: dict[str, str],
+    *,
+    timeout_seconds: object,
+    disk_consumption_paths: tuple[Path, ...],
+) -> tuple[dict[str, Any], dict[str, object]]:
+    """Refresh the mutable test projection before starting the exact test owner."""
+
+    from .release_preflight import prepare_release_test_completion_projection
+
+    projection = prepare_release_test_completion_projection(source_root)
+    if not projection["valid"]:
+        return projection, {
+            "valid": False,
+            "exit_code": None,
+            "timed_out": False,
+            "stdout": "",
+            "stderr": "release-test completion projection preparation failed",
+            "errors": [
+                failure["message"] for failure in projection.get("failures", ())
+            ],
+        }
+    return projection, run_test_command(
+        command,
+        cwd=source_root,
+        environment=environment,
+        timeout_seconds=timeout_seconds,
+        disk_consumption_paths=disk_consumption_paths,
+    )
+
+
 def run_release_gates(
     root: Path,
     evidence_dir: Path,
@@ -627,11 +660,16 @@ def run_release_gates(
             ),
         }
     )
-    test_process = run_test_command(
+    completion_projection_gate, test_process = _run_release_test_process(
+        source_root,
         test_command,
-        cwd=source_root,
-        environment=environment,
+        environment,
         timeout_seconds=profile["timeout_seconds"],
+        disk_consumption_paths=(
+            junit_path,
+            Path(environment["COVERAGE_FILE"]),
+            release_home,
+        ),
     )
     test_stdout = str(test_process.get("stdout", ""))
     test_stderr = str(test_process.get("stderr", ""))
@@ -701,6 +739,7 @@ def run_release_gates(
     gates: dict[str, Any] = {
         "authenticated_repository_context": repository_context,
         "release_toolchain": toolchain_gate,
+        "release_test_completion_projection": completion_projection_gate,
         "full_tests": {
             "valid": test_exit == 0
             and not test_timed_out

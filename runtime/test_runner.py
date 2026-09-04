@@ -106,6 +106,7 @@ def run_test_command(
     project_id: str = "pacify-x",
     run_id: str = "test-profile",
     lane_id: str = "tests",
+    disk_consumption_paths: Sequence[Path] = (),
 ) -> dict[str, object]:
     timeout = validate_timeout(timeout_seconds)
     effective_timeout = max(1.0, timeout)
@@ -120,6 +121,8 @@ def run_test_command(
     workspace_path: Path | None = None
     effective_command = list(command)
     effective_environment = dict(environment)
+    accounting_paths = [Path(path).resolve(strict=False) for path in disk_consumption_paths]
+    owned_paths = [cwd.resolve(strict=True)]
     if _is_pytest_command(effective_command) and not _has_pytest_basetemp(
         effective_command
     ):
@@ -133,6 +136,8 @@ def run_test_command(
             prefix="pacify-x-pytest-",
         )
         workspace_path = Path(workspace_record.path or "")
+        accounting_paths.append(workspace_path.resolve(strict=True))
+        owned_paths.append(workspace_path.resolve(strict=True))
         pytest_path = workspace_path / "pytest"
         process_temp_path = workspace_path / "process-temp"
         pytest_path.mkdir()
@@ -151,6 +156,11 @@ def run_test_command(
         effective_environment["PX_STUDIO_KEY_ROOT"] = str(
             process_temp_path / "authority-keys"
         )
+    for path in accounting_paths:
+        owner = path if path.is_dir() else path.parent
+        resolved_owner = owner.resolve(strict=True)
+        if resolved_owner not in owned_paths:
+            owned_paths.append(resolved_owner)
     if _is_pytest_command(effective_command):
         if not _has_pytest_rootdir(effective_command):
             effective_command.append(f"--rootdir={cwd.resolve(strict=True)}")
@@ -177,8 +187,12 @@ def run_test_command(
             "action_id": f"test-runner:{run_id}",
             "effects": ["process"],
             "allowed_effects": ["process"],
-            "target_paths": [str(cwd.resolve(strict=True))],
-            "owned_paths": [str(cwd.resolve(strict=True))],
+            "target_paths": [
+                str(cwd.resolve(strict=True)),
+                *(str(path) for path in accounting_paths),
+            ],
+            "owned_paths": [str(path) for path in owned_paths],
+            "disk_consumption_paths": [str(path) for path in accounting_paths],
             "budget": {
                 field: getattr(budgets, field)
                 for field in ProcessBudgets.__dataclass_fields__

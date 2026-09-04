@@ -25,6 +25,7 @@ from runtime.release_certification import (
     _redact_machine_local_value,
     _release_environment_gate,
     _resolve_release_gate_roots,
+    _run_release_test_process,
     _sanitize_junit_metadata,
     finalize_release,
     validate_release_gate_repository_context,
@@ -36,6 +37,69 @@ from tests.repository_copy import canonical_copy_ignore
 
 
 ROOT = Path(__file__).parents[1]
+
+
+def test_release_test_owner_refreshes_projection_before_process(
+    tmp_path: Path, monkeypatch
+) -> None:
+    events = []
+
+    def prepare(root: Path):
+        events.append(("prepare", root))
+        return {"valid": True, "failures": []}
+
+    def run(command, **kwargs):
+        events.append(("run", list(command), kwargs))
+        return {"valid": True, "exit_code": 0, "timed_out": False}
+
+    monkeypatch.setattr(
+        "runtime.release_preflight.prepare_release_test_completion_projection",
+        prepare,
+    )
+    monkeypatch.setattr("runtime.release_certification.run_test_command", run)
+    output = tmp_path / "output.xml"
+
+    projection, process = _run_release_test_process(
+        tmp_path,
+        ["python", "-m", "pytest"],
+        {"SAFE": "1"},
+        timeout_seconds=30,
+        disk_consumption_paths=(output,),
+    )
+
+    assert projection["valid"] is True
+    assert process["valid"] is True
+    assert events[0] == ("prepare", tmp_path)
+    assert events[1][0] == "run"
+    assert events[1][2]["disk_consumption_paths"] == (output,)
+
+
+def test_release_test_owner_does_not_start_when_projection_refresh_fails(
+    tmp_path: Path, monkeypatch
+) -> None:
+    monkeypatch.setattr(
+        "runtime.release_preflight.prepare_release_test_completion_projection",
+        lambda root: {
+            "valid": False,
+            "failures": [{"code": "RP-TST-002", "message": "stale"}],
+        },
+    )
+    monkeypatch.setattr(
+        "runtime.release_certification.run_test_command",
+        lambda *args, **kwargs: pytest.fail("test process must not start"),
+    )
+
+    projection, process = _run_release_test_process(
+        tmp_path,
+        ["python", "-m", "pytest"],
+        {},
+        timeout_seconds=30,
+        disk_consumption_paths=(),
+    )
+
+    assert projection["valid"] is False
+    assert process["valid"] is False
+    assert process["exit_code"] is None
 
 
 def test_release_gate_repository_context_fails_before_expensive_gates(

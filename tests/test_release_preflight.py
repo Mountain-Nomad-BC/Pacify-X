@@ -13,6 +13,7 @@ from runtime.release_preflight import (
     _canonical,
     _sha_bytes,
     installed_equivalence,
+    prepare_release_test_completion_projection,
     rebuild_equivalence,
     receipt_path,
     require_stable_source_binding,
@@ -82,6 +83,51 @@ def test_current_test_groups_admit_preflight_readiness(
     assert result["current_groups"] == ["core"]
     assert result["stale_groups"] == []
     assert result["failures"] == []
+
+
+def test_release_test_completion_projection_is_refreshed_and_verified(
+    tmp_path: Path, monkeypatch
+) -> None:
+    target = tmp_path / "registry/completion_status.json"
+    target.parent.mkdir()
+    projection = {"complete": False, "certified": False, "value": "current"}
+
+    def write(root: Path):
+        assert root == tmp_path
+        target.write_text(json.dumps(projection), encoding="utf-8")
+        return dict(projection)
+
+    monkeypatch.setattr("scripts.build_completion_status.write", write)
+    monkeypatch.setattr(
+        "scripts.build_completion_status.build", lambda root: dict(projection)
+    )
+
+    result = prepare_release_test_completion_projection(tmp_path)
+
+    assert result["valid"] is True
+    assert result["path"] == "registry/completion_status.json"
+    assert result["projection_sha256"]
+
+
+def test_release_test_completion_projection_fails_closed_on_drift(
+    tmp_path: Path, monkeypatch
+) -> None:
+    target = tmp_path / "registry/completion_status.json"
+    target.parent.mkdir()
+
+    def write(_root: Path):
+        target.write_text('{"value":"stored"}', encoding="utf-8")
+        return {"value": "stored"}
+
+    monkeypatch.setattr("scripts.build_completion_status.write", write)
+    monkeypatch.setattr(
+        "scripts.build_completion_status.build", lambda root: {"value": "newer"}
+    )
+
+    result = prepare_release_test_completion_projection(tmp_path)
+
+    assert result["valid"] is False
+    assert result["failures"][0]["code"] == "RP-TST-002"
 
 
 def test_finalizer_admission_requires_exact_current_binding(

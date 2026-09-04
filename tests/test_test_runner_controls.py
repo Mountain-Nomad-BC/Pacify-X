@@ -8,6 +8,7 @@ import subprocess
 import sys
 import tempfile
 import time
+from types import SimpleNamespace
 
 import pytest
 
@@ -23,6 +24,48 @@ ROOT = Path(__file__).parents[1]
 def test_invalid_timeout_is_rejected(value: object) -> None:
     with pytest.raises(ValueError, match="finite positive"):
         validate_timeout(value)
+
+
+def test_pytest_disk_budget_is_bound_to_managed_and_explicit_owned_paths(
+    tmp_path: Path, monkeypatch
+) -> None:
+    observed = {}
+    output = tmp_path / "evidence" / "report.xml"
+    output.parent.mkdir()
+    manager = ResourceManager(
+        tmp_path / "ledger.json", receipt_dir=tmp_path / "cleanup-receipts"
+    )
+
+    def run(_self, command, **kwargs):
+        observed["command"] = command
+        observed["action"] = kwargs["action"]
+        empty = SimpleNamespace(text="")
+        return SimpleNamespace(
+            status="exited",
+            exit_code=0,
+            tree_closed=True,
+            duration_seconds=0.01,
+            stdout=empty,
+            stderr=empty,
+            shutdown_mode="natural",
+            receipt_path="receipt.json",
+            resource_id="process-test",
+        )
+
+    monkeypatch.setattr("runtime.test_runner.ProcessSupervisor.run", run)
+    result = run_test_command(
+        [sys.executable, "-m", "pytest", "tests/test_example.py"],
+        cwd=ROOT,
+        environment=os.environ,
+        timeout_seconds=30,
+        resource_manager=manager,
+        disk_consumption_paths=(output,),
+    )
+
+    accounting = [Path(path) for path in observed["action"]["disk_consumption_paths"]]
+    assert output in accounting
+    assert any(path.name.startswith("pacify-x-pytest-") for path in accounting)
+    assert result["test_workspace"]["reclaimed"] is True
 
 
 def test_timeout_kills_process_tree() -> None:

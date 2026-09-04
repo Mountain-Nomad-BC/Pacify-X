@@ -759,6 +759,44 @@ def certification_group_readiness(root: Path) -> dict[str, Any]:
     }
 
 
+def prepare_release_test_completion_projection(root: Path) -> dict[str, Any]:
+    """Publish and verify the exact control projection consumed by release tests."""
+
+    root = root.resolve(strict=True)
+    target = root / "registry/completion_status.json"
+    try:
+        from scripts.build_completion_status import build, write
+
+        published = write(root)
+        current = build(root)
+        stored = _json(target)
+        valid = published == current == stored
+        error = None
+    except (OSError, ValueError, KeyError, json.JSONDecodeError) as caught:
+        published = {}
+        current = {}
+        stored = {}
+        valid = False
+        error = f"{type(caught).__name__}: {caught}"
+    return {
+        "schema_version": "px.release-test-completion-projection/1.0",
+        "valid": valid,
+        "path": "registry/completion_status.json",
+        "projection_sha256": _sha_bytes(_canonical(stored)) if stored else None,
+        "complete": bool(current.get("complete")),
+        "certified": bool(current.get("certified")),
+        "failures": []
+        if valid
+        else [
+            PreflightFailure(
+                "RP-TST-002",
+                "release-test completion projection could not be published at its execution boundary"
+                + (f": {error}" if error else ""),
+            ).as_dict()
+        ],
+    }
+
+
 def _implementation_digest(root: Path) -> str:
     paths = [
         root / "runtime/release_preflight.py",
@@ -1020,6 +1058,10 @@ def run_preflight(
             lambda: validate_release_gate_repository_context(root),
         ),
         ("test_group_readiness", lambda: certification_group_readiness(root)),
+        (
+            "release_test_completion_projection",
+            lambda: prepare_release_test_completion_projection(root),
+        ),
     ]
     for name, callback in static:
         if not phase(name, callback):
