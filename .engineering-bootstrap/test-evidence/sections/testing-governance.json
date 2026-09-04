@@ -2,8 +2,8 @@
   "chunks": [
     {
       "chunk_id": "chunk-01",
-      "duration_seconds": 4.286825,
-      "input_sha256": "b17ae202e605a9be46d7ecaa9d8e797c4a2780b5902f8208764188540e7bb596",
+      "duration_seconds": 4.478112,
+      "input_sha256": "3ef342008c981a3a465bc8b84fa500b54c5a1b5d39478e4f1b8ae54b3e70760c",
       "member_count": 1,
       "members": [
         "tests/test_test_profiles.py"
@@ -13,17 +13,17 @@
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "stdout_bytes": 101,
-        "stdout_sha256": "bd255e20d0e5d817e852220c0cb077ba2fa53d723903a763dbbfcfe3532ebd76"
+        "stdout_sha256": "c27b4e2d957cac1af55b14a90820e6d4f00d6ce0b09bed69098a06d846e8b0f5"
       },
       "passed": true,
-      "receipt_sha256": "29ce67f8f5a3c5e3b7a00ee31d9ef079448604c854d23d9cae10e729ad63f75b",
+      "receipt_sha256": "e910bba138cc7ad69a9ebe4300c63f9d13ea6975df822ca4e32ac03abe4fdcda",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-02",
-      "duration_seconds": 40.799176,
-      "input_sha256": "91bc038a6abc6b95252d669a0d9a330bee908ea289fe8c00dc326f067d405b4d",
+      "duration_seconds": 40.60762,
+      "input_sha256": "7e98b3ddc488053c802e612e3391bcdc19ecdcc7305310b836475ad0f150ef64",
       "member_count": 1,
       "members": [
         "tests/test_test_runner_controls.py"
@@ -33,17 +33,17 @@
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "stdout_bytes": 102,
-        "stdout_sha256": "0f4178e2159ccc1c452bb8684545d4b23806c591ed2fc3c2f35375fb1ec06554"
+        "stdout_sha256": "d3d83d2c45a2db868765f4660c8f0ff564413fba63b0144bcbb6067957c5ac26"
       },
       "passed": true,
-      "receipt_sha256": "03feec8f3295ceb1f40abcf8e4aec4ba861faa64e640b96573693122c84a47fa",
+      "receipt_sha256": "432d05596ec884a297c7fad7a4ccfb0552822d90a1771c9398ebac5e30073e0e",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-03",
-      "duration_seconds": 1.892517,
-      "input_sha256": "20eb30329eb3b8883f896fb2f3361516cea53b7dbef1d019909902450bf02feb",
+      "duration_seconds": 1.921351,
+      "input_sha256": "0c1338c1c3f3ad4f3b02bec2ea2d16fc4337122b89226c78c2cc6d9ab74bf8c4",
       "member_count": 1,
       "members": [
         "tests/test_evidence_index.py"
@@ -53,17 +53,17 @@
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "stdout_bytes": 100,
-        "stdout_sha256": "983338caa61ab3af2781ad74f3d7a5a9e9f1751f0986d006af351a8b75c7787d"
+        "stdout_sha256": "139f13b127e13dd73e85a70500b9ff12f3686e5fc09e71c3664883636e8a6797"
       },
       "passed": true,
-      "receipt_sha256": "83c559c73d67539b3c5a20bdd5c46292e030aef13553f34c0f7a7c6b656ea113",
+      "receipt_sha256": "1e33df4b53481538c693269d4ddc2febe7a6fc8d06465d71b0641c36fd9c20f8",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-04",
-      "duration_seconds": 4.366585,
-      "input_sha256": "54b4c5af116dcf307c146a4e976a9ac14b365a2b3b591323a58b02e6abe32b2b",
+      "duration_seconds": 4.396158,
+      "input_sha256": "8c1c4480cdad6e8172746f6eb61c10de475fd03188d082a9b10c345c5be5602c",
       "member_count": 1,
       "members": [
         "tests/test_cli_commands.py"
@@ -76,14 +76,14 @@
         "stdout_sha256": "0f77f75265c14fd950d981b53c79294e56d8ada9112da3d1c33f6e5f66f99cea"
       },
       "passed": true,
-      "receipt_sha256": "8d891ccb63508eb96e0b270dfb35133b747025bf584816d23a933c86a515a022",
+      "receipt_sha256": "69ae38061514fce3a664bc02d8ab47b39f9fa097d3c3d69086d3a3d8c846374d",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-05",
-      "duration_seconds": 1.378158,
-      "input_sha256": "863b763ff44c437b3ec80de662a9e0b92a1564705540ebf9326d4b277168f4dc",
+      "duration_seconds": 1.384879,
+      "input_sha256": "fc2c61ac2cfe536fe1ee3bd4e400028e88f13576a167d0f5fa79fff69d8df1df",
       "member_count": 1,
       "members": [
         "tests/test_cache_quarantine.py"
@@ -93,17 +93,17 @@
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "stdout_bytes": 100,
-        "stdout_sha256": "156d0f6c64c611404b8dd8337cd68f97646bc72fcd4be7d74e793ea1e30df742"
+        "stdout_sha256": "faba4362ed858461c9928ec7f97b0e4aa1fa7073e972d94c2f65bf19010404bd"
       },
       "passed": true,
-      "receipt_sha256": "7e5d8206f87db81652280abbd26e14d81103b04a4e06f5633c92cfe0cb9f6700",
+      "receipt_sha256": "41d37aac5c73da0bc71466b57c278e5285e8ac50655481fc9beffe0b761a11af",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-06",
-      "duration_seconds": 2.048258,
-      "input_sha256": "fb0e75b8a7f8dc8bdc54f680f23768fedc88d875fc331bf47c6698b7b77ab474",
+      "duration_seconds": 2.098873,
+      "input_sha256": "6b61065ba9661b8d96abfaef0c5bc3ed7a2de97bf9be88ac1f9255a5505db2cc",
       "member_count": 1,
       "members": [
         "tests/test_capability_mining_skills.py"
@@ -113,17 +113,17 @@
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "stdout_bytes": 101,
-        "stdout_sha256": "9eee3745b7258104bb658f943c80386ab733f903e9388f04a5cf5b1e018c080e"
+        "stdout_sha256": "9d75679da6faae7dd10a5c5ec1bd55e09fa8391e02b4a5f1568d82af73921b1e"
       },
       "passed": true,
-      "receipt_sha256": "997d61a6c3d015575c1d8981d2b25ff914998b6f9d42e27d49fe9fabc5c15587",
+      "receipt_sha256": "ff4d40dd31dbf824ae33263777fb172ce53e605a4d9e49d11b8266569b5024d5",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-07",
-      "duration_seconds": 7.386402,
-      "input_sha256": "86c745329905b1e27b7ea64d4dd3fa987eb93ae12f1eb64f66bcc7094326ecc1",
+      "duration_seconds": 7.414254,
+      "input_sha256": "0542b16946290637734168a4b225c7f54e154e3f519e74969e62ec27616e4805",
       "member_count": 1,
       "members": [
         "tests/test_resource_lifecycle.py"
@@ -133,17 +133,17 @@
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "stdout_bytes": 101,
-        "stdout_sha256": "1c4a23a670c8bf64dd1c746a2ba25e815ffdba299b37bbe4aeaf47d8b198a444"
+        "stdout_sha256": "09b99ed4e063a06f3027939a48187236bd71d4d91aff42dbb2f2fee2f071535b"
       },
       "passed": true,
-      "receipt_sha256": "949c0f803ab155d6a516df0d00c9648400c98b638e76f2a0e48fc154827e86dd",
+      "receipt_sha256": "a9e509c1c65f73fa15522f8a64337530f59ba9090970493f2e937a3da9dcc193",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-08",
-      "duration_seconds": 2.0787,
-      "input_sha256": "fafb8cd69aed5a54f422f7b083d776c7fb196c498bb961b966a07e63699aad21",
+      "duration_seconds": 2.186011,
+      "input_sha256": "f92e277fa013bedd572bb6bab9088798105aac722854c95403e10c527a356b26",
       "member_count": 1,
       "members": [
         "tests/test_file_lock_contention.py"
@@ -153,17 +153,17 @@
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "stdout_bytes": 101,
-        "stdout_sha256": "451e5a86216db02a09805a684e63d0164d924be8d62b99266ba0b2127d30cf55"
+        "stdout_sha256": "c1c6d53759aa2f69e2a404d778b4c279b93e213490ee9968206fca6543a72adf"
       },
       "passed": true,
-      "receipt_sha256": "5cbe14901c31bf6bb46368b18eb746360587f0a11e38d0557982fac02b09e291",
+      "receipt_sha256": "8771a5ee4ff46496545bcfa04fd8d43d83d7e44df11420213df75e1fdb9f8f63",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-09",
-      "duration_seconds": 1.405923,
-      "input_sha256": "42825fde924110733124e92da7cfacbf01d15dc00c838fbf54b2eaf1c98d8a3b",
+      "duration_seconds": 1.418213,
+      "input_sha256": "40a9915324c1d62f200dc84c2808802dbc98a784d4d469e0483e0940a9f6d964",
       "member_count": 1,
       "members": [
         "tests/test_bytecode_guard.py"
@@ -173,17 +173,17 @@
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "stdout_bytes": 100,
-        "stdout_sha256": "7994ba6e618c029ed595e4a1809c05158405568a8878bc44db8ba7f30aebd0b5"
+        "stdout_sha256": "fc3f634a394467412c7733d0b0fb8796f5e2caebfb5caa708ac29c72fc64d260"
       },
       "passed": true,
-      "receipt_sha256": "06b0bc6c941ad17b86a78e52064361e1195dbe03ca77f3337468b40ef319d0ef",
+      "receipt_sha256": "1531308612a313f4b711953effc47580f6dbef8aa53833296aefcea77f26f650",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-10",
-      "duration_seconds": 1.437709,
-      "input_sha256": "52a80445f3a0a22c4576cea756051e660e8de7b0ec6aa6f270d1e0e9df29c33a",
+      "duration_seconds": 1.377633,
+      "input_sha256": "2cc113e564e914aa4083bb7e1f1a360d6d7894a284f23e45fca2fc6eaf6f7b40",
       "member_count": 1,
       "members": [
         "tests/test_repository_scope.py"
@@ -193,17 +193,17 @@
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "stdout_bytes": 100,
-        "stdout_sha256": "603b1a324e6a4775c6100fc0f449b04382e3c38abd43b6e0e0619ed154b34463"
+        "stdout_sha256": "5ecba242b02ec850da76ffde88104df086be1f7ca54f1fa149c07ad3ca1373e6"
       },
       "passed": true,
-      "receipt_sha256": "fc4715d466c73047b88f13496bb4b9b383c4e2db6d1573414212512425eef2f1",
+      "receipt_sha256": "f73289c3b5237f107ff67a54bac2a1127fb846c5ac36a610dd99c835948761d2",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-11",
-      "duration_seconds": 70.784771,
-      "input_sha256": "7c349385d9bfb90e65df6c67720f2fc4a0c15f852fc08fa7dc69f87fddd62f8d",
+      "duration_seconds": 66.970998,
+      "input_sha256": "e8453212b4c81e82ea61117126ba8824b84219e4bdae7834272431647fa6001b",
       "member_count": 1,
       "members": [
         "tests/test_release_artifacts.py"
@@ -213,17 +213,17 @@
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "stdout_bytes": 112,
-        "stdout_sha256": "dfb9eafcee7d9416714128d97edd5f7d41f5e90146f11a31283a5e8c77342d60"
+        "stdout_sha256": "cba21bded1d7bf2738d1471f2db8530ca20b912ca6b76c7b5c5dda31cb3f8e42"
       },
       "passed": true,
-      "receipt_sha256": "0ec141a51b004f9cb8c788f0d6cb78b10625e047e9ff455ca37831b088f1be3a",
+      "receipt_sha256": "7a6a635e2f28b9d5c8a19001082b141629fa57843119c3ae9c9ade2f30bdddaf",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-12",
-      "duration_seconds": 3.030729,
-      "input_sha256": "9a4f9f74d20b552cb091ab6789e7503c2c65cb9e0bfbed624d7f319d1c7e4374",
+      "duration_seconds": 2.93833,
+      "input_sha256": "5f7a659aa1ffbb7a63f4e3465fbc28b27205833e83d8e9381bb6361dfd63acaa",
       "member_count": 1,
       "members": [
         "tests/test_effect_surface.py"
@@ -236,14 +236,14 @@
         "stdout_sha256": "362c114af7c6fe2febd55d49eec290bdd87a2c2b0c54966b307c7a5c1cf84d84"
       },
       "passed": true,
-      "receipt_sha256": "fc8270afb96efe8eb273a3c522d3ac2642df87c58e5321142c5ed2cb84cfc05e",
+      "receipt_sha256": "3ceb9072d4d11cb147a3e6035f787694a7c3d3646130321d2a1296490b76f920",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-13",
-      "duration_seconds": 7.317613,
-      "input_sha256": "6735558dd57f4b35874802a5e39357dc3601ec3051512b02a18e7a0733f94c73",
+      "duration_seconds": 7.102139,
+      "input_sha256": "f8c24d2e6aace8690c1601d8098039a586694594f738235d47b0b3b1ac43f7e8",
       "member_count": 1,
       "members": [
         "tests/test_clean_source_export.py"
@@ -253,17 +253,17 @@
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "stdout_bytes": 111,
-        "stdout_sha256": "dbee629f0f97b32421e9c4eaed42c46f00d589e36cccd3b6565990d851b1b44f"
+        "stdout_sha256": "a10af679ad178a7a82b67c83941ee15b30ed3aa6c8ab61886d4c3a9aa418856f"
       },
       "passed": true,
-      "receipt_sha256": "5f6616e7f922f0ebdd8fc7eed79f5524aaa1f65a0fb455f97fed9dae45405c81",
+      "receipt_sha256": "e9a216e112ffc8280c0c01290c540fc3affa6c5305b7d026b1a3f08cdecfa7b0",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-14",
-      "duration_seconds": 50.479424,
-      "input_sha256": "69216493673d90f4fe06ebb003e823fdac8df178a6689368b9b29c8d7b219f22",
+      "duration_seconds": 49.926179,
+      "input_sha256": "bd9d68f018956882ea62062a838ce23a18e44a7f8d4811d50112195844df8569",
       "member_count": 1,
       "members": [
         "tests/test_operational_gap_ledger.py"
@@ -273,17 +273,17 @@
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "stdout_bytes": 183,
-        "stdout_sha256": "e887b4b36e3554e765e8c22b87664d074b50a17e30de19d681043eaaa0a8ffa0"
+        "stdout_sha256": "44acceb0ceb2e50b1c02ddc0f3afb2f1d30593eada74790dd684abb1ad77f607"
       },
       "passed": true,
-      "receipt_sha256": "96f1246db9eaba01277d4bae31a83c49c140dca9e733216e084bc24f12c290bf",
+      "receipt_sha256": "32be6e30945ec0a2b7be6bb6b2812243e0a29abbb00c52d3a3a77d1a3913a4d9",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-15",
-      "duration_seconds": 1.451501,
-      "input_sha256": "2ed361661816134b7ba01dbd9f7b732cba12cb302d37b216f79fc830fef106fe",
+      "duration_seconds": 1.471149,
+      "input_sha256": "eddd62b31c1fa24989029b161b9a5b2eaf23c1a4fdbaa338fec5b94788fb2732",
       "member_count": 1,
       "members": [
         "tests/test_reconcile_unverified_operational_controls.py"
@@ -296,14 +296,14 @@
         "stdout_sha256": "8e1a3a579ccfece32cedafde3d5b644180de6cff584fd685a606a1152e898704"
       },
       "passed": true,
-      "receipt_sha256": "4268a337f9c2190e002393130798097fad16ed4d12233b0df753e5f7cc069d2f",
+      "receipt_sha256": "d8e8ebafd0cc653c063604a4093857d236a244aee3eb1ddd29087e486de24d4d",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-16",
-      "duration_seconds": 1.388132,
-      "input_sha256": "eb908feb182cdf0aee841cec7e689de932d02f3613767e196dd3a085da7fbfa6",
+      "duration_seconds": 1.520408,
+      "input_sha256": "bfa151cc1bbc960eb94654db0a1d105c93e97d50300dc6258ad56f8fe5d5b408",
       "member_count": 1,
       "members": [
         "tests/test_operational_control_proof_matrix.py"
@@ -316,14 +316,14 @@
         "stdout_sha256": "9923ba1ded2c101ef3c5f20bc813bde917b4e08fcd48a9a57cf24a115f262c92"
       },
       "passed": true,
-      "receipt_sha256": "2efda3d592859a1ad70da0c104bbf9b370f9e94b051fabf57b0d3b494e9f7920",
+      "receipt_sha256": "66505c306a3b666c84924f6ef8bfbf836730a2e20ca5522f1db03728eb6ecea3",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-17",
-      "duration_seconds": 1.562382,
-      "input_sha256": "e2747537f2e034cf15124be8e13c099266c68e182376d0821664492bc4f771d0",
+      "duration_seconds": 1.567161,
+      "input_sha256": "8b670743a06d52b63ff42c556adb77aa2fd49430f1b61572db005dd82734b739",
       "member_count": 1,
       "members": [
         "tests/test_assemble_operational_control_evidence.py"
@@ -336,14 +336,14 @@
         "stdout_sha256": "8fa6832637ac2074e4e43a0c2411d3440d491818ccc463748ea7295e7b16dbe2"
       },
       "passed": true,
-      "receipt_sha256": "92fcfda2a924a983493905376c9e23b4ec5d7ef871c77680c4ef95e529113058",
+      "receipt_sha256": "d9885b9d767784d4df1dcbfe3fba7391ca34bcee9b41432974d5fa4057ea6205",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-18",
-      "duration_seconds": 1.50432,
-      "input_sha256": "2ae56c057e34e78bc1d0340d4f7163e50069a3a3f4b6b9684e3e2945dd8263e4",
+      "duration_seconds": 1.476298,
+      "input_sha256": "d64122e60da92aba04cebbddc7a4880a44149b9e3c09bfc6742dfb2fe20e54cd",
       "member_count": 1,
       "members": [
         "tests/test_build_installed_host_control_evidence.py"
@@ -356,14 +356,14 @@
         "stdout_sha256": "9c59e497271d608c060428b358b09d66d98a3b7b66df69262b5b5fa5e6d14eb1"
       },
       "passed": true,
-      "receipt_sha256": "e0e174c2d6db7bf2c2e94c7dbbcb447dd397e7f54f967a07a302b46c1851b801",
+      "receipt_sha256": "b4864e48144e9d627137cdee6eb3970945f39f8e4dfecf304e502cc44caaf0eb",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-19",
-      "duration_seconds": 1.564133,
-      "input_sha256": "ce8b608fd1c2c5b592e09d5bcc944fbbf00fbb2130b37a4e7961400f877ff951",
+      "duration_seconds": 1.531093,
+      "input_sha256": "80213338787e8cda8b685bc50f5b768a41a4e9265a11f319cc1be364d6f6539b",
       "member_count": 1,
       "members": [
         "tests/test_build_installed_probe_control_evidence.py"
@@ -373,17 +373,17 @@
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "stdout_bytes": 100,
-        "stdout_sha256": "ec1704c34b0a48aec2cb5ee385ccc57f3c397cc6b33da2564b180523fda37f43"
+        "stdout_sha256": "d6cc10dc61069c05acb0c7dd337abf9192c59f30bf59943ba70929f0ce642a57"
       },
       "passed": true,
-      "receipt_sha256": "5ab33436b56ec7389493c00a746ff29c3ed2cb32e37fbbe911207a456ea83f55",
+      "receipt_sha256": "6d0d7f65fa3247bbcec1c3d5776bd56203246ec001c6c2d85b6b7226c8c99dc8",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-20",
-      "duration_seconds": 1.33992,
-      "input_sha256": "fc5ed3d8e7dcde8e536d6fc14b13338a49fad589b5b85567af3ec01b6614c438",
+      "duration_seconds": 1.362553,
+      "input_sha256": "971d63a0f16bf64f9bc5bb824b6620fbbde134498a7eb77dcfeaf1ec0323e1ac",
       "member_count": 1,
       "members": [
         "tests/test_operation_health_snapshot.py"
@@ -396,14 +396,14 @@
         "stdout_sha256": "2121fcbd538375480bd7b91a4b7ce39c4ccecf9369b677f7d3d039c284ca36b8"
       },
       "passed": true,
-      "receipt_sha256": "61abee0dfdcb8d8d6314d5aa5adfab74396784d5f25f6b87454e760c84b8f701",
+      "receipt_sha256": "6437157d311a5ee9f82e2c498cae259d3c56494e3c1d4f43e0ceeb02a9cf11b4",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-21",
-      "duration_seconds": 1.404313,
-      "input_sha256": "107f73e6c3a6f0dd31a481ef7a1e87261ee60386633ced28caa1f7608613298d",
+      "duration_seconds": 1.366615,
+      "input_sha256": "93ad62290db3d9d83e8e5af0c579bfafc10950b3bac3df4efc7fe6dc652038e7",
       "member_count": 1,
       "members": [
         "extension/tests/test_owned_windows_native_input.py"
@@ -416,7 +416,7 @@
         "stdout_sha256": "1fc2ebe41f169a8fdc6458e343c0dcc22a922426a3414cbfbc160012eaf345eb"
       },
       "passed": true,
-      "receipt_sha256": "080f85921703bc5031e2531eb234ec71568f58250037fc86dc4cce2898f0c23b",
+      "receipt_sha256": "1970c277083d4a3e3f493690ec5b7d87f3a3c23be98d05987b4fd98c27623b44",
       "reused": false,
       "timed_out": false
     }
@@ -452,11 +452,11 @@
   ],
   "cwd": ".",
   "dependencies": [],
-  "duration_seconds": 234.678683,
+  "duration_seconds": 230.317257,
   "exit_code": 0,
-  "input_sha256": "0edf095443fa85539e33f067887e2b239b42b496db5e782a795e5c89f3b6e1a7",
+  "input_sha256": "9ae45351d0d5e4e485cd2bedb906d2fc6cf099623ca31a916cce7a6cf5f57f99",
   "passed": true,
-  "receipt_sha256": "ac407e26d0777a4768a79829eea0bafbd6eb3f5255e8eeaf4a918d465d0ce815",
+  "receipt_sha256": "883ffa4b85b92da5b84339281176574d67b9cfb969f77f9696cd2391909cc0a0",
   "schema_version": "px.test-section-receipt/1.0",
   "section": "testing-governance",
   "timed_out": false

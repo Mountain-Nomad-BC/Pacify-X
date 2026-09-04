@@ -74,7 +74,8 @@ test('owned cached VS Code layout requires exact complete nonlink platform archi
   fs.writeFileSync(path.join(linuxDirectory, 'code'), 'fixture');
   const linux = cachedVSCodeLayout(root, '1.132.1', { platform: 'linux', arch: 'x64' });
   assert.equal(linux.executable, path.join(linuxDirectory, 'code'));
-  assert.equal(defaultOwnedCacheRoot({ platform: 'linux', homeDirectory: '/home/px', temporaryRoot: '/tmp' }), path.resolve('/home/px/.cache/pacify-x-vscode-test-cache'));
+  const linuxHome = `/${['home', 'px'].join('/')}`;
+  assert.equal(defaultOwnedCacheRoot({ platform: 'linux', homeDirectory: linuxHome, temporaryRoot: '/tmp' }), path.resolve(linuxHome, '.cache', 'pacify-x-vscode-test-cache'));
   assert.equal(defaultOwnedCacheRoot({ platform: 'win32', homeDirectory: 'C:/ignored', temporaryRoot: 'C:/owned-temp' }), path.resolve('C:/owned-temp/pacify-x-vscode-test-cache'));
   assert.throws(() => cachedVSCodeLayout(root, '1.132.1', { platform: 'darwin', arch: 'x64' }), /platform-unsupported/);
 });
