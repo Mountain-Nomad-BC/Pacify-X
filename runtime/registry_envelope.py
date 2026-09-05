@@ -14,7 +14,10 @@ COUNT_SUFFIX = "_count"
 
 UNOWNED_COUNT_FIELDS = {
     ("registry/operational_gap_ledger.head.json", "event_count"),
+    ("registry/operational_gap_ledger.head.json", "snapshot_event_count"),
     ("registry/operational_gap_ledger.snapshot.json", "event_count"),
+    ("registry/px_world_state.json", "ledger_event_count"),
+    ("registry/px_world_state.json", "open_blocker_count"),
     (
         "registry/operational_surface_inventory.json",
         "dashboard_navigation_surface_count",

@@ -28,6 +28,28 @@ def test_externally_derived_surface_counts_are_not_local_collection_invariants()
     ) not in discovered
 
 
+def test_mutable_ledger_projection_counts_are_not_live_envelope_invariants():
+    excluded = {
+        (path, key)
+        for path, key in UNOWNED_COUNT_FIELDS
+        if path
+        in {
+            "registry/operational_gap_ledger.head.json",
+            "registry/operational_gap_ledger.snapshot.json",
+            "registry/px_world_state.json",
+        }
+    }
+    assert excluded == {
+        ("registry/operational_gap_ledger.head.json", "event_count"),
+        ("registry/operational_gap_ledger.head.json", "snapshot_event_count"),
+        ("registry/operational_gap_ledger.snapshot.json", "event_count"),
+        ("registry/px_world_state.json", "ledger_event_count"),
+        ("registry/px_world_state.json", "open_blocker_count"),
+    }
+    discovered = discover_count_fields(ROOT)
+    assert excluded.isdisjoint(discovered)
+
+
 def test_every_count_bearing_registry_field_has_one_owner_and_invariant():
     result = validate_registry_envelopes(ROOT)
     assert result["valid"], result["errors"]

@@ -43,6 +43,19 @@ def test_registry_claim_ignores_mutable_operational_ledger_projections(
     assert _registry_artifact_count(tmp_path) == 1
 
 
+def test_registry_claim_ignores_append_only_operational_ledger_deltas(
+    tmp_path: Path,
+) -> None:
+    registry = tmp_path / "registry"
+    deltas = registry / "operational_gap_ledger.deltas"
+    deltas.mkdir(parents=True)
+    (registry / "owner.json").write_text("{}\n", encoding="utf-8")
+    (deltas / "first.jsonl").write_text("{}\n", encoding="utf-8")
+    (deltas / "second.jsonl").write_text("{}\n", encoding="utf-8")
+
+    assert _registry_artifact_count(tmp_path) == 1
+
+
 def test_registry_claim_ignores_host_local_lock_recovery_receipts(
     tmp_path: Path,
 ) -> None:

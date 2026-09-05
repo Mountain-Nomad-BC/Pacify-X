@@ -122,12 +122,12 @@
         },
         {
           "path": "scripts/build_registry_envelope_inventory.py",
-          "revision": "94dff43b76479a0f41a77811ac91ec180f51ed503b422b7d666a1bc3d7e93efe"
+          "revision": "97758cd711c5c5b2cc229743e292c9a231d29d95b24b84cb883460825bd23f11"
         }
       ],
       "invalidation_rule": "any_dependency_revision_change",
       "output": "registry/registry_envelope_inventory.json",
-      "output_revision": "d6f1cabd9a90734279acf9d850b7ff6322e3f279b3974e14889e795a51731e1d",
+      "output_revision": "ffd99c7d41310b39039ca6dec429a372cd662c864fe4b4ba3550125bd17ad633",
       "owner": "scripts.build_registry_envelope_inventory",
       "projection_id": "registry-envelope-inventory",
       "rebuild_gate": "rebuild_before_use"

@@ -21,6 +21,7 @@ MUTABLE_REGISTRY_PROJECTIONS = frozenset(
         "operational_gap_ledger.snapshot.json",
     }
 )
+MUTABLE_REGISTRY_PREFIXES = ("operational_gap_ledger.deltas/",)
 README_COUNT_LABELS = {
     "Runtime modules": "runtime_modules",
     "Contracts": "contracts",
@@ -45,8 +46,17 @@ def _registry_artifact_count(root: Path) -> int:
         if path.is_file()
         and not (path.name.startswith(".") and path.suffix.casefold() == ".lock")
         and not is_external_environment_relative(path.relative_to(root))
-        and path.relative_to(root / "registry").as_posix()
-        not in MUTABLE_REGISTRY_PROJECTIONS
+        and not _is_mutable_registry_projection(
+            path.relative_to(root / "registry").as_posix()
+        )
+    )
+
+
+def _is_mutable_registry_projection(relative: str) -> bool:
+    """Identify live ledger projections that cannot change build claims."""
+
+    return relative in MUTABLE_REGISTRY_PROJECTIONS or relative.startswith(
+        MUTABLE_REGISTRY_PREFIXES
     )
 
 

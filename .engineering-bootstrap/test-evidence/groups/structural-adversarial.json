@@ -1,18 +1,21 @@
 {
-  "duration_seconds": 455.22261,
-  "exit_code": 0,
+  "duration_seconds": 588.14563,
+  "exit_code": 1,
   "group": "structural-adversarial",
-  "input_sha256": "247bcca6cbfc034ec75e44c75931d49b8afab0f74e251a766a0293371fc42113",
+  "input_sha256": "5d2f157d25ba80d9e47e9b713974bb7e1aed296f693d233e94c6f61af0c1996d",
   "member_count": 1,
   "output_evidence": {
-    "failure_nodes": [],
+    "failure_nodes": [
+      "tests/test_structural_integrity.py::test_structural_integrity_has_closed_denominators",
+      "tests/test_structural_integrity.py::test_hash_ledger_head_and_anchor_are_a_reviewed_exact_projection"
+    ],
     "stderr_bytes": 0,
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "stdout_bytes": 1919,
-    "stdout_sha256": "071e7b317f32adfae2b68bde5587d50f8388a354c465eb2a29389847c2e899f0"
+    "stdout_bytes": 4239,
+    "stdout_sha256": "dbe4eca239d29711c4cd1b30e80c358997f5121bf706864c187a2c6b1e3030d4"
   },
-  "passed": true,
-  "receipt_sha256": "db7caa4566e61bc95d4f465cde73cf2628425dc5c7bf64a6937793ba09d1202b",
+  "passed": false,
+  "receipt_sha256": "6bee8b5fe3c6180c0c9c116ab9100919293810bf75c15f783178b4dfea93fd9f",
   "schema_version": "px.test-group-receipt/1.0",
   "timed_out": false
 }

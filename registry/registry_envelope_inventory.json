@@ -493,36 +493,12 @@
       "builder": "runtime/world_state.py",
       "collection_key": "details",
       "consumer": "runtime/registry_envelope.py",
-      "count_key": "ledger_event_count",
-      "path": "registry/px_world_state.json",
-      "rule": "external_scalar",
-      "schema": "root schema_version plus shared registry-envelope invariant",
-      "source_default": 0,
-      "source_key": "event_count",
-      "source_path": "registry/operational_gap_ledger.head.json"
-    },
-    {
-      "builder": "runtime/world_state.py",
-      "collection_key": "details",
-      "consumer": "runtime/registry_envelope.py",
       "count_key": "model_count",
       "path": "registry/px_world_state.json",
       "rule": "external_length",
       "schema": "root schema_version plus shared registry-envelope invariant",
       "source_key": "models",
       "source_path": "registry/models.json"
-    },
-    {
-      "builder": "runtime/world_state.py",
-      "collection_key": "details",
-      "consumer": "runtime/registry_envelope.py",
-      "count_key": "open_blocker_count",
-      "path": "registry/px_world_state.json",
-      "rule": "external_scalar",
-      "schema": "root schema_version plus shared registry-envelope invariant",
-      "source_default": 0,
-      "source_key": "dashboard.critical_high_blocker_count",
-      "source_path": "registry/operational_gap_ledger.head.json"
     },
     {
       "builder": "runtime/world_state.py",
