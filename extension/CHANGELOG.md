@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.85
+
+- Make installed workbench-command rejection testing deterministic at the exact live DOM boundary while retaining a fresh real-command recovery dispatch.
+- Wait for the dashboard webview's bounded ready handshake before publishing command-originated snapshots, deep links, and cleanup inventory so first-open messages cannot be lost.
+- Preserve the issued 0.6.84 VSIX unchanged; the repaired command and readiness behavior receives a new immutable package identity.
+
 ## 0.6.84
 
 - Bind the extension package to the completed cohesion release source, including canonical provider execution-policy enforcement.

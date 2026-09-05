@@ -2789,7 +2789,10 @@ async function executeWorkbenchCommand(workbench, title, options = {}) {
       if (options.rejectBeforeDispatch === true) {
         const rejection = await bindCurrentWorkbenchCommandRejection(workbench);
         if (rejection.bound !== true) throw new Error(`workbench-command-rejection-input-unavailable:${rejection.reason}`);
-        await workbench.keyboard.press('Enter');
+        const injected = await dispatchCurrentWorkbenchCommandRejection(workbench, rejection.token);
+        if (injected.dispatched !== true || injected.default_prevented !== true || injected.rejected !== true) {
+          throw new Error(`workbench-command-rejection-injection-failed:${JSON.stringify(injected)}`);
+        }
         await wait(80);
         const rejectionObservation = await observeCurrentWorkbenchCommandRejection(workbench, rejection.token);
         const retained = await widget.isVisible().catch(() => false);
@@ -2886,6 +2889,35 @@ async function observeCurrentWorkbenchCommandRejection(workbench, token) {
     if (state.handler) globalThis.removeEventListener('keydown', state.handler, true);
     delete globalThis[stateKey];
     return { rejected: state.rejected === true, reason: state.reason };
+  }, token);
+}
+
+async function dispatchCurrentWorkbenchCommandRejection(workbench, token) {
+  return workbench.evaluate(expectedToken => {
+    const stateKey = '__PX_OWNED_WORKBENCH_COMMAND_REJECTION__';
+    const state = globalThis[stateKey];
+    if (!state || state.token !== expectedToken) {
+      return { dispatched: false, default_prevented: false, rejected: false, reason: 'rejection-dispatch-token-missing' };
+    }
+    const input = document.activeElement;
+    if (!input || typeof input.dispatchEvent !== 'function') {
+      return { dispatched: false, default_prevented: false, rejected: false, reason: 'rejection-dispatch-focused-input-missing' };
+    }
+    const event = new KeyboardEvent('keydown', {
+      key: 'Enter',
+      code: 'Enter',
+      bubbles: true,
+      cancelable: true,
+      composed: true
+    });
+    const propagationResult = input.dispatchEvent(event);
+    return {
+      dispatched: true,
+      default_prevented: event.defaultPrevented === true,
+      propagation_result: propagationResult,
+      rejected: state.rejected === true,
+      reason: state.reason
+    };
   }, token);
 }
 
@@ -11392,7 +11424,7 @@ if (require.main === module) {
 module.exports = {
   applyInstalledProbeObservations, boundedOwnedUiAction, createOwnedContentEvaluationBoundary, createOwnedLocatorEvaluationBoundary, remainingOwnedUiBudget, buildInstalledLateCardAdversarialProfile, buildInstalledLateCardScenarioProfile, cleanupControlProbe, codexHandoffControlProbe, commandPaletteAttemptDecision, coordinationMemoryControlProbe, currentSourceExtensionAssetIdentity,
   catalogPaginationControlProbe, clickWhenKnowledgeControlReady, correlateCatalogExchange, observationStateControlProbe, runInstalledObservationStateProfile, eligibleInstalledControl, eligibleInstalledSidebarControl, engineOutageRecord, enterpriseControlProbe, environmentLifecycleControlProbe,
-  bindCurrentWorkbenchCommandRejection, observeCurrentWorkbenchCommandRejection, ensureInstalledSensorRowSnapshot, exactStudioSetupTerminalResponse, executeWorkbenchCommand, exactPluginConflictSignal, exerciseInstalledControl, graphProjectionIdentity, requestBoundGraphResultIdentity, hostBoundaryControlProbe, inlineCommandOwnerControlProbe, installedActionIdentity,
+  bindCurrentWorkbenchCommandRejection, dispatchCurrentWorkbenchCommandRejection, observeCurrentWorkbenchCommandRejection, ensureInstalledSensorRowSnapshot, exactStudioSetupTerminalResponse, executeWorkbenchCommand, exactPluginConflictSignal, exerciseInstalledControl, graphProjectionIdentity, requestBoundGraphResultIdentity, hostBoundaryControlProbe, inlineCommandOwnerControlProbe, installedActionIdentity,
   installedConditionalRecoverySpec, installedConditionalScenario, installedHostBoundaryRevealSelector, installedPreparationIdentity, installedRuntimeSourceIdentityState, installedSourceIdentityNeedsLateRefresh, installedSidebarHandoffRequestMatches, installedSidebarHandoffSpec, installedSidebarSelector, installedStudioControlScenario, installedStudioPrerequisites, installedSurfaceState, installedSurfaceAcknowledged,
   installedFilesystemPathIdentity, installedFilesystemPathsMatch, installedFilesystemPathWithin, installedHostActionReceiptMatches, installedHostActionRequestIdentity, isExternalVsCodeWillSaveTimeoutDiagnostic,
   advanceInstalledSurfaceControlSettlement, installedSurfaceControlAcknowledged, installedWorkbenchCommandSpec, installedWorkbenchAuthorityBoundarySpec, instrumentInstalledBridge, knowledgeBrowseHasHead, knowledgeGraphControlProbe,

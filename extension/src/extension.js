@@ -519,6 +519,7 @@ function activateImplementation(context, transaction) {
   extensionLifecycleStorage = context.globalState;
   extensionPhysicalCatalogState = createPhysicalExtensionCatalog({ currentExtensionPath: context.extensionPath, loadedExtensions: vscode.extensions });
   let cleanupInventory;
+  const dashboardReadyByPanel = new WeakMap();
   let publishPromise;
   let publishPromiseForce = false;
   const environmentDiscovery = createLatestDiscoveryCoordinator();
@@ -1215,6 +1216,9 @@ function activateImplementation(context, transaction) {
         localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath, 'media'))]
       };
       panel = dashboardPanel;
+      let settleDashboardReady;
+      const createdDashboardReady = new Promise(resolve => { settleDashboardReady = resolve; });
+      dashboardReadyByPanel.set(dashboardPanel, createdDashboardReady);
       let dashboardDisposed = false;
       const publishDashboardMessage = async message => {
         if (dashboardDisposed) return false;
@@ -1263,7 +1267,11 @@ function activateImplementation(context, transaction) {
           }
           switch (message?.type) {
             case 'dashboardViewState': rememberDashboardViewState(message.state); break;
-            case 'ready': await publishSnapshot(false, dashboardPanel.webview); break;
+            case 'ready':
+              settleDashboardReady?.(true);
+              settleDashboardReady = undefined;
+              await publishSnapshot(false, dashboardPanel.webview);
+              break;
             case 'refresh': await publishSnapshot(true, dashboardPanel.webview); break;
             case 'catalogQuery': await dashboardPanel.webview.postMessage({ type: 'catalogResult', requestId: message.requestId, result: await bridge().catalog(message) }); break;
             case 'operationalCardsQuery': await dashboardPanel.webview.postMessage({ type: 'operationalCardsResult', requestId: message.requestId, result: await bridge().operationalCards(message) }); break;
@@ -1804,6 +1812,9 @@ function activateImplementation(context, transaction) {
       }, undefined, context.subscriptions);
       dashboardPanel.onDidDispose(() => {
         dashboardDisposed = true;
+        settleDashboardReady?.(false);
+        settleDashboardReady = undefined;
+        dashboardReadyByPanel.delete(dashboardPanel);
         panelOrigin.dispose();
         studioTrust.disposeOrigin(panelOriginId);
         for (const operation of studioCreateOperations.values()) if (operation.origin === panelOrigin) operation.detached = true;
@@ -1815,6 +1826,15 @@ function activateImplementation(context, transaction) {
       panel.reveal(vscode.ViewColumn.One);
     }
     const targetPanel = panel;
+    const dashboardReadyPromise = targetPanel ? dashboardReadyByPanel.get(targetPanel) : undefined;
+    if (dashboardReadyPromise) {
+      let readyTimer;
+      const ready = await Promise.race([
+        dashboardReadyPromise,
+        new Promise(resolve => { readyTimer = setTimeout(() => resolve(false), 15_000); })
+      ]).finally(() => clearTimeout(readyTimer));
+      if (!ready || panel !== targetPanel) throw new Error('Pacify-X dashboard webview did not become ready within 15 seconds.');
+    }
     await publishSnapshot(true, targetPanel?.webview);
     if (panel === targetPanel) await targetPanel?.webview.postMessage({ type: 'deepLink', route, entity: deepLinkEntity });
     reconcileRefreshTimer();

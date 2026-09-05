@@ -21,7 +21,7 @@ const { dispatchInstalledPluginConflictControl, installedPluginConflictControlMa
 const { installedAdvancedFixtureStateAcknowledged } = require('../scripts/run-operational-ui-walk');
 const { waitForInstalledCanonicalMemoryBaseline } = require('../scripts/run-operational-ui-walk');
 const { closeOwnedDashboardTabs, remainingOwnedUiBudget } = require('../scripts/run-operational-ui-walk');
-const { bindCurrentWorkbenchCommandRejection, observeCurrentWorkbenchCommandRejection } = require('../scripts/run-operational-ui-walk');
+const { bindCurrentWorkbenchCommandRejection, dispatchCurrentWorkbenchCommandRejection, observeCurrentWorkbenchCommandRejection } = require('../scripts/run-operational-ui-walk');
 
 const { boundedOwnedUiAction, createOwnedContentEvaluationBoundary, createOwnedLocatorEvaluationBoundary, waitForOwnedWebview } = require('../scripts/run-operational-ui-walk');
 const { clickWhenBuilderControlReady, clickWhenInstalledGraphControlReady, installedGraphExchangeOffset, invokeBuilderControl, waitForBuilderJsonControls, waitForInstalledGraphExchange, waitForInstalledGraphIdle } = require('../scripts/run-operational-ui-walk');
@@ -1752,6 +1752,8 @@ test('installed workbench commands reject one exact pre-dispatch event before fr
   const probe = source.slice(probeStart, source.indexOf('async function inspectSurface', probeStart));
   assert.match(execute, /options\.rejectBeforeDispatch === true/);
   assert.match(execute, /bindCurrentWorkbenchCommandRejection\(workbench\)/);
+  assert.match(execute, /dispatchCurrentWorkbenchCommandRejection\(workbench, rejection\.token\)/);
+  assert.match(execute, /injected\.default_prevented !== true/);
   assert.doesNotMatch(execute, /widget\.locator\('input'\)\.first\(\)\.evaluate/);
   assert.match(rejection, /document\.activeElement !== input/);
   assert.match(rejection, /globalThis\.addEventListener\('keydown', state\.handler, \{ capture: true, once: true \}\)/);
@@ -1775,20 +1777,42 @@ test('workbench command rejection is observed at window capture and removes its 
   const originalGetComputedStyle = globalThis.getComputedStyle;
   const originalAddEventListener = globalThis.addEventListener;
   const originalRemoveEventListener = globalThis.removeEventListener;
+  const originalKeyboardEvent = globalThis.KeyboardEvent;
   const listeners = new Set();
+  input.dispatchEvent = event => {
+    event.target = input;
+    for (const listener of [...listeners]) listener(event);
+    return event.defaultPrevented !== true;
+  };
   globalThis.document = { activeElement: input, querySelectorAll: selector => selector === '.quick-input-widget' ? [widget] : [] };
   globalThis.getComputedStyle = () => ({ display: 'block', visibility: 'visible' });
   globalThis.addEventListener = (type, listener) => { assert.equal(type, 'keydown'); listeners.add(listener); };
   globalThis.removeEventListener = (type, listener) => { assert.equal(type, 'keydown'); listeners.delete(listener); };
+  globalThis.KeyboardEvent = class KeyboardEvent {
+    constructor(type, options) {
+      this.type = type;
+      Object.assign(this, options);
+      this.defaultPrevented = false;
+      this.propagationStopped = false;
+      this.immediateStopped = false;
+    }
+    preventDefault() { this.defaultPrevented = true; }
+    stopPropagation() { this.propagationStopped = true; }
+    stopImmediatePropagation() { this.immediateStopped = true; }
+  };
   const workbench = { evaluate: async (callback, argument) => callback(argument) };
   try {
     const binding = await bindCurrentWorkbenchCommandRejection(workbench);
     assert.equal(binding.bound, true);
     assert.equal(listeners.size, 1);
-    const event = { key: 'Enter', target: input, defaultPrevented: false, propagationStopped: false, immediateStopped: false,
-      preventDefault() { this.defaultPrevented = true; }, stopPropagation() { this.propagationStopped = true; }, stopImmediatePropagation() { this.immediateStopped = true; } };
-    [...listeners][0](event);
-    assert.deepEqual([event.defaultPrevented, event.propagationStopped, event.immediateStopped], [true, true, true]);
+    const dispatch = await dispatchCurrentWorkbenchCommandRejection(workbench, binding.token);
+    assert.deepEqual(dispatch, {
+      dispatched: true,
+      default_prevented: true,
+      propagation_result: false,
+      rejected: true,
+      reason: 'exact-current-focused-input-enter-rejected'
+    });
     const observation = await observeCurrentWorkbenchCommandRejection(workbench, binding.token);
     assert.deepEqual(observation, { rejected: true, reason: 'exact-current-focused-input-enter-rejected' });
     assert.equal(listeners.size, 0);
@@ -1798,6 +1822,7 @@ test('workbench command rejection is observed at window capture and removes its 
     if (originalGetComputedStyle === undefined) delete globalThis.getComputedStyle; else globalThis.getComputedStyle = originalGetComputedStyle;
     if (originalAddEventListener === undefined) delete globalThis.addEventListener; else globalThis.addEventListener = originalAddEventListener;
     if (originalRemoveEventListener === undefined) delete globalThis.removeEventListener; else globalThis.removeEventListener = originalRemoveEventListener;
+    if (originalKeyboardEvent === undefined) delete globalThis.KeyboardEvent; else globalThis.KeyboardEvent = originalKeyboardEvent;
   }
 });
 
@@ -1811,6 +1836,20 @@ test('focused workbench-command scheduling runs only its exact installed profile
   assert.match(walker, /!builderOnly && !workbenchCommandOnly[\s\S]*runInstalledKnowledgeLifecycleProfile/);
   assert.match(launcher, /--workbench-command-only/);
   assert.match(launcher, /PX_OPERATIONAL_WORKBENCH_COMMAND_ONLY: '1'/);
+});
+
+test('workbench cleanup command waits for the dashboard ready handshake before publishing inventory', () => {
+  const source = fs.readFileSync(path.join(__dirname, '..', 'src', 'extension.js'), 'utf8');
+  const openStart = source.indexOf('async function openDashboard');
+  const open = source.slice(openStart, source.indexOf('registerActivityHooks()', openStart));
+  const commandStart = source.indexOf("vscode.commands.registerCommand('pacifyX.openCleanupManager'");
+  const command = source.slice(commandStart, source.indexOf("vscode.commands.registerCommand('pacifyX.continueWithCodex'", commandStart));
+  assert.match(open, /dashboardReadyByPanel\.set\(dashboardPanel, createdDashboardReady\)/);
+  assert.match(open, /case 'ready':[\s\S]*settleDashboardReady\?\.\(true\)/);
+  assert.match(open, /dashboardReadyByPanel\.delete\(dashboardPanel\)/);
+  assert.match(open, /Promise\.race\(\[[\s\S]*dashboardReadyPromise[\s\S]*15_000/);
+  assert.ok(open.indexOf('if (dashboardReadyPromise)') < open.lastIndexOf('await publishSnapshot(true, targetPanel?.webview)'));
+  assert.match(command, /await openDashboard\(\); await publishCleanupCandidates\(\);/);
 });
 
 test('installed sensor rows require a typed snapshot refresh before their exact settlement retry', () => {
