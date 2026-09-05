@@ -48,6 +48,11 @@ from .studio_models import (
     write_json_atomic,
     write_versioned_record,
 )
+from .task_execution_plan import (
+    persist_task_execution_plan,
+    task_execution_plan_from_dict,
+    validate_task_execution_plan,
+)
 
 
 class _WorkflowLifecycleSignal(RuntimeError):
@@ -956,6 +961,24 @@ class WorkflowStudio:
     ) -> tuple[dict[str, object], dict[str, object]]:
         executor, _ = self.authority.resolve_executor(node.executor_binding_id)
         authority_hashes, _ = self._node_authority(definition, node)
+        task_plan_receipt = None
+        configured_plan = node.config.get("task_execution_plan")
+        if configured_plan is not None:
+            if not isinstance(configured_plan, Mapping):
+                raise ValueError("workflow task execution plan must be an object")
+            task_plan = task_execution_plan_from_dict(configured_plan)
+            validation = validate_task_execution_plan(task_plan)
+            if not validation["valid"]:
+                raise ValueError(
+                    "workflow task execution plan is invalid: "
+                    + "; ".join(validation["errors"])
+                )
+            plan_path = persist_task_execution_plan(self.project_root, task_plan)
+            task_plan_receipt = {
+                "plan_id": task_plan.plan_id,
+                "plan_sha256": task_plan.plan_sha256,
+                "path": plan_path.relative_to(self.project_root).as_posix(),
+            }
         request = self.authority.sign_receipt(
             {
                 "schema_version": "px.workflow-node-task/1.0",
@@ -971,6 +994,7 @@ class WorkflowStudio:
                 "approval_required": node.approval_required,
                 "approval_execution": dict(approval_execution or {}),
                 "inputs": dict(node_inputs),
+                "task_execution_plan": task_plan_receipt,
                 "effect_grant_ids": list(node.effect_grant_ids),
                 "created_utc": _now(),
                 "nonce": uuid4().hex,

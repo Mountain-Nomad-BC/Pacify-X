@@ -1,8 +1,29 @@
 {
   "schema_version": "2.0",
   "policy": "Every shipped schema has one explicit owner and an honest enforcement classification.",
-  "contract_count": 167,
+  "contract_count": 174,
   "records": [
+    {
+      "path": "contracts/agent_handoff_packet.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:agent_handoff_packet",
+      "contract_version": "1.0.0",
+      "title": "PX AgentHandoffPacket",
+      "owner": "runtime/agent_handoff.py",
+      "producers": [
+        "runtime/agent_handoff.py",
+        "runtime/agent_runtime.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "agent_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_agent_handoff.py",
+        "tests/test_agent_governed_integration.py"
+      ]
+    },
     {
       "path": "contracts/agents/agency-agent-manifest.schema.json",
       "contract_id": "urn:engineering-loop-bootstrap:contract:agents:agency-agent-manifest",
@@ -392,6 +413,26 @@
       "tests": [
         "tests/test_contract_runtime.py",
         "tests/test_config_and_registry.py"
+      ]
+    },
+    {
+      "path": "contracts/capability_semantic_profile.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:capability_semantic_profile",
+      "contract_version": "1.0.0",
+      "title": "PX Capability Semantic Profile",
+      "owner": "runtime/capability_semantics.py",
+      "producers": [
+        "runtime/capability_semantics.py",
+        "runtime/semantic_index.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_enforced",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_capability_semantics.py"
       ]
     },
     {
@@ -973,6 +1014,26 @@
       ]
     },
     {
+      "path": "contracts/foundry_candidate_skill.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:foundry_candidate_skill",
+      "contract_version": "1.0.0",
+      "title": "PX FoundryCandidateSkill",
+      "owner": "runtime/foundry_studio_bridge.py",
+      "producers": [
+        "runtime/foundry_studio_bridge.py",
+        "runtime/knowledge_foundry.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_enforced",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_foundry_studio_bridge.py"
+      ]
+    },
+    {
       "path": "contracts/hardware-equivalence.schema.json",
       "contract_id": "urn:engineering-loop-bootstrap:contract:hardware-equivalence",
       "contract_version": "1.0.0",
@@ -1333,6 +1394,27 @@
       ]
     },
     {
+      "path": "contracts/memory_query_plan.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:memory_query_plan",
+      "contract_version": "1.0.0",
+      "title": "PX MemoryQueryPlan",
+      "owner": "runtime/memory_broker.py",
+      "producers": [
+        "runtime/memory_broker.py",
+        "runtime/agent_runtime.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "memory_lifecycle_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_memory_broker.py",
+        "tests/test_agent_governed_integration.py"
+      ]
+    },
+    {
       "path": "contracts/metacognitive/agent-cognitive-profile.schema.json",
       "contract_id": "urn:engineering-loop-bootstrap:contract:metacognitive:agent-cognitive-profile",
       "contract_version": "1.0.0",
@@ -1615,6 +1697,27 @@
       "tests": [
         "tests/test_contract_runtime.py",
         "tests/test_retrieval_and_models.py"
+      ]
+    },
+    {
+      "path": "contracts/model_attachment.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:model_attachment",
+      "contract_version": "1.0.0",
+      "title": "PX ModelAttachment",
+      "owner": "runtime/model_attachment.py",
+      "producers": [
+        "runtime/model_attachment.py",
+        "runtime/execution_placement.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_enforced",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_model_attachment.py",
+        "tests/test_execution_placement.py"
       ]
     },
     {
@@ -2243,6 +2346,27 @@
       "tests": [
         "tests/test_contract_runtime.py",
         "tests/test_temp2_completeness.py"
+      ]
+    },
+    {
+      "path": "contracts/provider_execution_policy.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:provider_execution_policy",
+      "contract_version": "1.0.0",
+      "title": "PX Provider Execution Policy",
+      "owner": "runtime/provider_gateway.py",
+      "producers": [
+        "runtime/provider_gateway.py",
+        "extension/src/providerExecutionPolicy.js"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_enforced",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_provider_gateway.py",
+        "extension/tests/provider-execution-policy.test.js"
       ]
     },
     {
@@ -3070,6 +3194,26 @@
       "tests": [
         "tests/test_contract_runtime.py",
         "tests/test_declared_suite_support.py"
+      ]
+    },
+    {
+      "path": "contracts/task_execution_plan.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:task_execution_plan",
+      "contract_version": "1.0.0",
+      "title": "PX TaskExecutionPlan",
+      "owner": "runtime/task_execution_plan.py",
+      "producers": [
+        "runtime/task_execution_plan.py",
+        "runtime/capability_routing.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_enforced",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_task_execution_plan.py"
       ]
     },
     {

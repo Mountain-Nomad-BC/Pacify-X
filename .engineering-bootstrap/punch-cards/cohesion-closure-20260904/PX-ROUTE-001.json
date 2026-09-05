@@ -1,0 +1,72 @@
+{
+  "card_id": "PX-ROUTE-001",
+  "title": "Canonical capability semantic profile",
+  "severity": "critical",
+  "type": "integration",
+  "status": "planned",
+  "root_cause": "Capability routing lacks one complete semantic contract and derives intent almost exclusively from contract.provides.",
+  "source_requirement": "Normalize positive/negative intents, domains, mechanisms, I/O, effects, exclusions, synonyms, ambiguity guards, failure modes, and maturity.",
+  "live_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#PX-AUD-002"
+  ],
+  "files": [
+    "runtime/capability_semantics.py",
+    "contracts/capability_semantic_profile.schema.json",
+    "tests/test_capability_semantics.py"
+  ],
+  "symbols": [
+    "CapabilitySemanticProfile",
+    "build_capability_semantic_profile",
+    "validate_capability_semantic_profile"
+  ],
+  "dependencies": [
+    "PX-CORE-002",
+    "PX-CORE-003"
+  ],
+  "downstream_consumers": [
+    "PX-ROUTE-002",
+    "PX-ROUTE-004",
+    "PX-ROUTE-005",
+    "PX-SKILL-002"
+  ],
+  "change_classes": [
+    "SCHEMA",
+    "SEMANTIC",
+    "AUTHORITY"
+  ],
+  "implementation_steps": [
+    "Define canonical schema and deterministic normalizer.",
+    "Map current skill metadata/contracts without inventing unsupported intent.",
+    "Include maturity and ambiguity guards.",
+    "Reject contradictory or ownerless profiles."
+  ],
+  "negative_cases": [
+    "Positive and negative intent overlap.",
+    "Missing canonical owner.",
+    "Unsupported maturity claim.",
+    "Ambiguous synonym without guard."
+  ],
+  "focused_tests": [
+    "tests/test_capability_semantics.py"
+  ],
+  "affected_tests": [
+    "Semantic-index and capability-routing tests."
+  ],
+  "affected_sections": [
+    "testing-governance"
+  ],
+  "projection_invalidations": [
+    "semantic capability index",
+    "routing receipts",
+    "world state"
+  ],
+  "evidence_required": [
+    "Schema, normalization, and ambiguity vectors."
+  ],
+  "rollback": "Remove the semantic profile adapter while preserving source skill metadata.",
+  "acceptance_criteria": [
+    "Every active routable skill can produce one valid semantic profile.",
+    "Profiles distinguish negative intent and ambiguity."
+  ],
+  "completion_evidence": []
+}

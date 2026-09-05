@@ -94,6 +94,21 @@ def test_engine_identity_excludes_test_group_topology(tmp_path) -> None:
     assert before == after
 
 
+def test_engine_identity_excludes_generated_world_state_projection(tmp_path) -> None:
+    (tmp_path / "runtime").mkdir()
+    (tmp_path / "runtime/engine.py").write_text("value = 1\n", encoding="utf-8")
+    (tmp_path / "registry").mkdir()
+    world_state = tmp_path / "registry/px_world_state.json"
+    world_state.write_text('{"source_revision":"first"}\n', encoding="utf-8")
+    before = build_engine_identity(tmp_path)
+    world_state.write_text('{"source_revision":"second"}\n', encoding="utf-8")
+    after_projection = build_engine_identity(tmp_path)
+    (tmp_path / "runtime/engine.py").write_text("value = 2\n", encoding="utf-8")
+    after_source = build_engine_identity(tmp_path)
+    assert before == after_projection
+    assert before != after_source
+
+
 def test_engine_identity_excludes_mutable_operational_ledger_controls(
     tmp_path,
 ) -> None:

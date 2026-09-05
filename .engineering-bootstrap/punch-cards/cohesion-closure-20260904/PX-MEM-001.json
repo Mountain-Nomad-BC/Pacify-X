@@ -1,0 +1,72 @@
+{
+  "card_id": "PX-MEM-001",
+  "title": "MemoryQueryPlan / memory broker",
+  "severity": "high",
+  "type": "integration",
+  "status": "planned",
+  "root_cause": "Agent runtime treats memory bindings as opaque IDs and cannot resolve bounded, trustworthy runtime context.",
+  "source_requirement": "Replace bare bindings with a project-scoped MemoryQueryPlan and brokered materialization.",
+  "live_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#PX-AUD-007"
+  ],
+  "files": [
+    "runtime/memory_broker.py",
+    "contracts/memory_query_plan.schema.json",
+    "runtime/agent_runtime.py",
+    "tests/test_memory_broker.py"
+  ],
+  "symbols": [
+    "MemoryQueryPlan",
+    "materialize_memory_context",
+    "validate_memory_query_plan"
+  ],
+  "dependencies": [
+    "PX-CORE-001",
+    "PX-CORE-004"
+  ],
+  "downstream_consumers": [
+    "PX-AGENT-002"
+  ],
+  "change_classes": [
+    "SCHEMA",
+    "AUTHORITY",
+    "BEHAVIORAL"
+  ],
+  "implementation_steps": [
+    "Define scope, class/tier, byte/token/item budgets, trust, freshness, conflict, provenance, and writeback fields.",
+    "Resolve only current project/subject records.",
+    "Quarantine conflicts and enforce budgets.",
+    "Return immutable materialization receipt."
+  ],
+  "negative_cases": [
+    "Foreign-project memory.",
+    "Budget overflow.",
+    "Below-trust or stale memory.",
+    "Conflict silently resolved.",
+    "Writeback without policy."
+  ],
+  "focused_tests": [
+    "tests/test_memory_broker.py"
+  ],
+  "affected_tests": [
+    "Agent runtime and memory fabric tests."
+  ],
+  "affected_sections": [
+    "testing-governance",
+    "structural-adversarial"
+  ],
+  "projection_invalidations": [
+    "agent run previews",
+    "memory materialization receipts",
+    "world state"
+  ],
+  "evidence_required": [
+    "Positive, isolation, budget, stale, conflict, and writeback vectors."
+  ],
+  "rollback": "Disable broker materialization and retain unresolved blockers rather than injecting raw bindings.",
+  "acceptance_criteria": [
+    "Every materialized memory item is bounded, scoped, trusted, fresh, and provenance-bound.",
+    "Foreign or conflicting context fails closed."
+  ],
+  "completion_evidence": []
+}

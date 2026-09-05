@@ -3,6 +3,8 @@ from pathlib import Path
 import pytest
 
 from runtime.execution_placement import (
+    PlacementCapacityLedger,
+    _hash,
     decide_observed_placement,
     decide_placement,
     observe_workload,
@@ -11,11 +13,108 @@ from runtime.execution_placement import (
     promotion_gate,
     publish_placement_artifact,
     reusable_pattern_gate,
+    route_hardware,
+)
+from runtime.hardware_routing import (
+    BenchmarkEvidence,
+    HardwareProfile,
+    WorkloadKind,
+    WorkloadProfile,
 )
 from runtime.work_admission import RuntimeWorkPlane
+from runtime.agent_runtime import execute_agent_plan
 
 
 H = "a" * 64
+
+
+def _hardware():
+    return HardwareProfile(
+        False,
+        None,
+        None,
+        None,
+        0,
+        0,
+        16 * 1024**3,
+        "windows",
+        8,
+        4,
+        False,
+        (),
+        (),
+        cuda_executor_available=False,
+    )
+
+
+def _workload():
+    return WorkloadProfile(
+        WorkloadKind.TEXT_ANALYSIS,
+        10,
+        1024,
+        False,
+        operation_id="agent",
+    )
+
+
+def _benchmark(workload):
+    from datetime import datetime, timezone
+
+    return BenchmarkEvidence(
+        "agent",
+        _hardware().fingerprint,
+        2.0,
+        1.0,
+        True,
+        0,
+        datetime.now(timezone.utc).isoformat(),
+        workload_fingerprint=workload.fingerprint,
+    )
+
+
+def _plan(benchmark_revision):
+    from runtime.model_attachment import build_model_attachment
+
+    attachment = build_model_attachment(
+        Path("."),
+        model_id="model",
+        model_revision="exact",
+        artifact_sha256="e" * 64,
+        runtime="provider-gateway",
+        context_tokens=4096,
+        modalities=("text",),
+        supports_tools=False,
+        privacy="local",
+        authority_class="contained",
+        benchmark_revision=benchmark_revision,
+        hardware_requirements={"memory": "1GiB"},
+    ).as_dict()
+    plan = {
+        "schema_version": "px.task-execution-plan/1.0",
+        "project_id": "project",
+        "source_revision": "source",
+        "created_utc": "2026-09-04T12:00:00Z",
+        "task_envelope_sha256": H,
+        "route_receipt_sha256": H,
+        "package_id": "package",
+        "package_receipt_sha256": H,
+        "projection_revisions": {
+            "model_attachment": attachment["attachment_sha256"]
+        },
+        "selected_capabilities": [],
+        "effect_budget": ["read"],
+        "authority_bindings": ["authority:read"],
+        "attachments": {},
+        "model_attachment": attachment,
+        "model_ranking_receipt": {
+            "selected_attachment_sha256": attachment["attachment_sha256"]
+        },
+    }
+    from runtime.task_execution_plan import _digest
+
+    plan["plan_id"] = f"task-plan-{_digest(plan)[:24]}"
+    plan["plan_sha256"] = _digest(plan)
+    return plan
 
 
 def candidate(identifier, kind, score, *, current=False, boundary=.02, gates=True):
@@ -168,3 +267,84 @@ def test_observation_rejects_ambiguous_route_and_unverified_cuda(tmp_path):
                 "fallback": False,
             },
         )
+
+
+def test_governed_hardware_route_binds_current_benchmark_and_capacity(tmp_path):
+    workload = _workload()
+    benchmark = _benchmark(workload)
+    plan = _plan(benchmark.revision)
+    placement = route_hardware(
+        plan, workload=workload, hardware=_hardware(), benchmark=benchmark
+    )
+    assert placement["selected_device"] == "cpu"
+    assert placement["task_plan_sha256"] == plan["plan_sha256"]
+    assert placement["required_capacity_bytes"] == 1024**3
+    ledger = PlacementCapacityLedger(tmp_path)
+    lease = ledger.reserve(placement, run_id="run-1")
+    release = ledger.release(lease, outcome_sha256="c" * 64)
+    assert release["released"] is True
+    assert ledger._read()["active"] == {}
+
+
+def test_governed_hardware_route_rejects_stale_benchmark_and_overbooking(tmp_path):
+    workload = _workload()
+    benchmark = _benchmark(workload)
+    with pytest.raises(ValueError, match="benchmark revision"):
+        route_hardware(
+            _plan("d" * 64),
+            workload=workload,
+            hardware=_hardware(),
+            benchmark=benchmark,
+        )
+    placement = route_hardware(
+        _plan(benchmark.revision),
+        workload=workload,
+        hardware=_hardware(),
+        benchmark=benchmark,
+    )
+    placement = {
+        **placement,
+        "required_capacity_bytes": placement["available_capacity_bytes"],
+    }
+    placement["placement_sha256"] = _hash(
+        {key: value for key, value in placement.items() if key != "placement_sha256"}
+    )
+    ledger = PlacementCapacityLedger(tmp_path)
+    ledger.reserve(placement, run_id="run-1")
+    with pytest.raises(RuntimeError, match="unavailable"):
+        ledger.reserve(placement, run_id="run-2")
+
+
+def test_agent_plan_execution_receipts_outcome_and_releases_capacity(tmp_path):
+    workload = _workload()
+    benchmark = _benchmark(workload)
+    plan = _plan(benchmark.revision)
+    placement = route_hardware(
+        plan, workload=workload, hardware=_hardware(), benchmark=benchmark
+    )
+    value, outcome = execute_agent_plan(
+        tmp_path,
+        plan,
+        placement,
+        run_id="run-success",
+        gpu_fn=lambda _batch: "gpu",
+        cpu_fn=lambda: "cpu",
+    )
+    assert value == "cpu"
+    assert outcome["status"] == "succeeded"
+    assert outcome["capacity_release"]["released"] is True
+    assert PlacementCapacityLedger(tmp_path)._read()["active"] == {}
+
+    def fail():
+        raise LookupError("planned failure")
+
+    with pytest.raises(LookupError, match="planned failure"):
+        execute_agent_plan(
+            tmp_path,
+            plan,
+            placement,
+            run_id="run-failure",
+            gpu_fn=lambda _batch: "gpu",
+            cpu_fn=fail,
+        )
+    assert PlacementCapacityLedger(tmp_path)._read()["active"] == {}

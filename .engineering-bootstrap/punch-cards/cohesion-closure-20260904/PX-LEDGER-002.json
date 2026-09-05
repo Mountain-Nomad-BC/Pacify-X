@@ -1,0 +1,78 @@
+{
+  "card_id": "PX-LEDGER-002",
+  "title": "Ledger sharding / evidence cache",
+  "severity": "critical",
+  "type": "migration",
+  "status": "planned",
+  "root_cause": "The current append path republishes a full 39 MB materialized snapshot for a 101 MB ledger and validation has unacceptable time and memory cost.",
+  "source_requirement": "Migrate to bounded immutable segments/hot projections/content roots only as justified by PX-LEDGER-001, while keeping old ledger verifiable.",
+  "live_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#PX-AUD-013"
+  ],
+  "files": [
+    "runtime/operational_gap_ledger.py",
+    "runtime/evidence_cache.py",
+    "registry/operational_gap_ledger.head.json",
+    "registry/operational_gap_ledger.snapshot.json",
+    "tests/test_operational_gap_ledger_scaling.py",
+    "tests/test_evidence_cache.py"
+  ],
+  "symbols": [
+    "append_events",
+    "read_snapshot",
+    "validate_ledger",
+    "EvidenceCache"
+  ],
+  "dependencies": [
+    "PX-CORE-004",
+    "PX-EFF-002",
+    "PX-LEDGER-001"
+  ],
+  "downstream_consumers": [],
+  "change_classes": [
+    "SCHEMA",
+    "AUTHORITY",
+    "RUNTIME",
+    "MIGRATION",
+    "RELEASE_CRITICAL"
+  ],
+  "implementation_steps": [
+    "Choose the smallest benchmark-justified segmented/hot-projection design.",
+    "Retain immutable predecessor-bound event history.",
+    "Add compact global head/root and revision-scoped projections/cache.",
+    "Produce migration receipt binding old head, segments, new root, count, order, and recovery.",
+    "Run old/new equivalence and crash/concurrency tests."
+  ],
+  "negative_cases": [
+    "Event loss or reordering.",
+    "Old head unverifiable.",
+    "Cache hit across revision/authority/toolchain mismatch.",
+    "Torn segment/head.",
+    "Concurrent writers fork history.",
+    "Hot projection treated as canonical history."
+  ],
+  "focused_tests": [
+    "Ledger migration/equivalence/recovery/concurrency/cache tests."
+  ],
+  "affected_tests": [
+    "Operational gap ledger, work admission, evidence custody, release preflight/certification tests."
+  ],
+  "affected_sections": [
+    "testing-governance",
+    "structural-adversarial"
+  ],
+  "projection_invalidations": [
+    "ledger head/snapshot/hot projections",
+    "all ledger-bound evidence receipts"
+  ],
+  "evidence_required": [
+    "Migration custody receipt, equivalence proof, benchmark delta, and recovery matrix."
+  ],
+  "rollback": "Switch readers back to the untouched old ledger/head and invalidate new cache/projections; never delete old events.",
+  "acceptance_criteria": [
+    "Old ledger remains fully verifiable with identical count/order.",
+    "Measured hot-path budgets pass.",
+    "Cache keys bind every declared revision and authority input."
+  ],
+  "completion_evidence": []
+}

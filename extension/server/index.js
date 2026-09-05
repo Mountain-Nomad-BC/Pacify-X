@@ -743,6 +743,16 @@ var require_stateInvariants = __commonJS({
     "use strict";
     var crypto2 = require("crypto");
     var SCHEMA_VERSION = "1.2";
+    var CONFORMANCE_SCHEMA = "px.coordination-state-conformance/1.0";
+    var CONFORMANCE_VIOLATION_IDS = [
+      "PX-COORD-SCHEMA-VERSION",
+      "PX-COORD-CLAIM-EXPIRED",
+      "PX-COORD-MULTIPLE-ACTIVE-PLANS",
+      "PX-COORD-SESSION-MALFORMED",
+      "PX-COORD-DEPENDENCY-INCOMPLETE",
+      "PX-COORD-TASK-CLAIM-MISMATCH",
+      "PX-COORD-FENCING-STALE"
+    ];
     var TASK_STATUSES = /* @__PURE__ */ new Set(["planned", "ready", "claimed", "in_progress", "waiting", "blocked", "completed", "reconciled", "released"]);
     var CLAIM_STATUSES = /* @__PURE__ */ new Set(["active", "expired", "released"]);
     var PLAN_STATUSES = /* @__PURE__ */ new Set(["active", "superseded", "completed"]);
@@ -808,6 +818,57 @@ var require_stateInvariants = __commonJS({
       const a = normalizeTarget(left);
       const b = normalizeTarget(right);
       return a === b || a.startsWith(`${b}/`) || b.startsWith(`${a}/`);
+    }
+    function coordinationConformanceReport(state, options = {}) {
+      const found = /* @__PURE__ */ new Set();
+      const candidate = isRecord(state) ? state : {};
+      if (candidate.schema_version !== SCHEMA_VERSION) found.add("PX-COORD-SCHEMA-VERSION");
+      const tasks = new Map((Array.isArray(candidate.tasks) ? candidate.tasks : []).filter(isRecord).map((task) => [String(task.id || "").trim(), task]));
+      const plans = Array.isArray(candidate.plans) ? candidate.plans : [];
+      if (plans.filter((plan) => isRecord(plan) && plan.status === "active").length > 1) {
+        found.add("PX-COORD-MULTIPLE-ACTIVE-PLANS");
+      }
+      const sessions = candidate.sessions;
+      if (!Array.isArray(sessions) || sessions.some((session) => !isRecord(session) || typeof session.actor_id !== "string" || !session.actor_id.trim() || typeof session.session_id !== "string" || !session.session_id.trim() || typeof session.harness !== "string" || !session.harness.trim() || !SESSION_STATUSES.has(session.status))) {
+        found.add("PX-COORD-SESSION-MALFORMED");
+      }
+      const fabric = isRecord(candidate.team_fabric) ? candidate.team_fabric : {};
+      const fences = isRecord(fabric.fencing_by_target) ? fabric.fencing_by_target : {};
+      const claims = (Array.isArray(candidate.claims) ? candidate.claims : []).filter((claim) => isRecord(claim) && claim.status === "active");
+      const now = Number.isFinite(Date.parse(options.nowUtc || "")) ? Date.parse(options.nowUtc) : Date.now();
+      for (const claim of claims) {
+        if (!Number.isFinite(Date.parse(claim.expires_utc)) || Date.parse(claim.expires_utc) <= now) {
+          found.add("PX-COORD-CLAIM-EXPIRED");
+        }
+        const task = tasks.get(String(claim.task_id || "").trim());
+        const actor2 = isRecord(claim.actor) ? claim.actor : {};
+        const owner = task && isRecord(task.owner) ? task.owner : {};
+        if (!task || actor2.actor_id !== owner.actor_id || actor2.session_id !== owner.session_id) {
+          found.add("PX-COORD-TASK-CLAIM-MISMATCH");
+        }
+        if (task && Array.isArray(task.depends_on) && task.depends_on.some((dependency) => {
+          const required2 = tasks.get(String(dependency));
+          return !required2 || !["completed", "reconciled"].includes(required2.status);
+        })) found.add("PX-COORD-DEPENDENCY-INCOMPLETE");
+        if (!Array.isArray(claim.targets) || !isRecord(claim.fencing_tokens)) {
+          found.add("PX-COORD-FENCING-STALE");
+          continue;
+        }
+        for (const rawTarget of claim.targets) {
+          let target;
+          try {
+            target = normalizeTarget(rawTarget);
+          } catch {
+            target = "";
+          }
+          const token = claim.fencing_tokens[target];
+          if (!target || !Number.isSafeInteger(token) || token < 1 || fences[target] !== token) {
+            found.add("PX-COORD-FENCING-STALE");
+          }
+        }
+      }
+      const violationIds = CONFORMANCE_VIOLATION_IDS.filter((item) => found.has(item));
+      return { schema_version: CONFORMANCE_SCHEMA, valid: violationIds.length === 0, violation_ids: violationIds };
     }
     function assertActor(actor2, code) {
       requireRecord(actor2, `${code}-shape`);
@@ -939,6 +1000,8 @@ var require_stateInvariants = __commonJS({
         if (!/^[a-f0-9]{64}$/.test(String(state.state_hash || ""))) fail("state-seal-format");
         if (state.state_hash !== sealedHash(state, "state_hash")) fail("state-seal-mismatch");
       }
+      const conformance = coordinationConformanceReport(state, options);
+      if (!conformance.valid) fail(conformance.violation_ids[0]);
       return true;
     }
     function assertEventAncestry(events, expectedStateHash, expectedProjectId = null) {
@@ -996,7 +1059,18 @@ var require_stateInvariants = __commonJS({
       if (event.event_sha256 !== eventHash(event)) fail("new-event-seal", event.event_id);
       return true;
     }
-    module2.exports = { SCHEMA_VERSION, sha, sealedHash, eventHash, assertCoordinationState, assertEventAncestry, assertCoordinationTransition };
+    module2.exports = {
+      SCHEMA_VERSION,
+      CONFORMANCE_SCHEMA,
+      CONFORMANCE_VIOLATION_IDS,
+      sha,
+      sealedHash,
+      eventHash,
+      coordinationConformanceReport,
+      assertCoordinationState,
+      assertEventAncestry,
+      assertCoordinationTransition
+    };
   }
 });
 
@@ -33051,7 +33125,7 @@ function readJsonFile(file2, fallback) {
     return fallback;
   }
 }
-var MCP_VERSION = "0.6.83";
+var MCP_VERSION = "0.6.84";
 function contextEnvelope() {
   const value = readJsonFile(process.env.PX_CONTEXT_PATH, {});
   return value?.envelope || value;

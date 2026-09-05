@@ -1,0 +1,69 @@
+{
+  "card_id": "PX-ROUTE-004",
+  "title": "Canonical Hybrid Retrieval",
+  "severity": "high",
+  "type": "repair",
+  "status": "planned",
+  "root_cause": "The advertised hybrid capability delegates to a lexical/token-cosine script while accepting non-lexical signal fields that cannot affect scoring.",
+  "source_requirement": "Delegate to the strongest existing retrieval owner and expose independent lexical, dense/vector, metadata, structured, graph, and freshness/trust signals.",
+  "live_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#PX-AUD-005"
+  ],
+  "files": [
+    ".px/skills/operate-memory-retrieval-observability/scripts/authoritative_hybrid_retrieval.py",
+    ".px/skills/operate-memory-retrieval-observability/references/capabilities/hybrid-retrieval.json",
+    "runtime/capability_routing.py",
+    "tests/test_hybrid_retrieval.py"
+  ],
+  "symbols": [
+    "score_records",
+    "rank_candidates"
+  ],
+  "dependencies": [
+    "PX-CORE-004",
+    "PX-ROUTE-001"
+  ],
+  "downstream_consumers": [
+    "PX-ROUTE-003"
+  ],
+  "change_classes": [
+    "BEHAVIORAL",
+    "SEMANTIC"
+  ],
+  "implementation_steps": [
+    "Inventory current retrieval owners and select the strongest canonical implementation.",
+    "Adapt the advertised skill to that owner.",
+    "Produce per-signal score components and source revisions.",
+    "Keep deterministic fallback when optional signals are unavailable."
+  ],
+  "negative_cases": [
+    "Dense input cannot influence score.",
+    "Graph/trust fields accepted but ignored.",
+    "Missing signal silently reported as present.",
+    "Duplicate retrieval authority introduced."
+  ],
+  "focused_tests": [
+    "Independent signal-ablation vectors.",
+    "Deterministic ranking and unavailable-signal tests."
+  ],
+  "affected_tests": [
+    "Capability routing and memory retrieval observability tests."
+  ],
+  "affected_sections": [
+    "structural-adversarial"
+  ],
+  "projection_invalidations": [
+    "hybrid retrieval capability evidence",
+    "semantic profile",
+    "routing receipts"
+  ],
+  "evidence_required": [
+    "Ablation receipt proving each declared signal independently affects or is explicitly unavailable."
+  ],
+  "rollback": "Restore the prior skill adapter; do not remove the selected canonical retrieval owner.",
+  "acceptance_criteria": [
+    "No parallel retrieval engine is created.",
+    "Receipts truthfully expose all independent signals and revisions."
+  ],
+  "completion_evidence": []
+}

@@ -378,3 +378,36 @@ def validate_project_change_intelligence_orchestration(
         "step_count": len(actual),
         "errors": errors,
     }
+
+
+def as_invalidation_inputs(
+    impact: Mapping[str, object],
+    *,
+    revision_bindings: Mapping[str, object],
+) -> tuple[list[dict[str, str]], list[dict[str, str]]]:
+    """Adapt one valid impact receipt to universal invalidation graph inputs."""
+    if impact.get("valid") is not True:
+        raise ValueError("a valid project-impact receipt is required")
+    target = str(impact.get("resolved_target") or "")
+    if not target:
+        raise ValueError("project-impact receipt has no resolved target")
+    typed: dict[str, str] = {target: "source"}
+    for record in impact.get("affected_files", []):
+        if isinstance(record, Mapping) and record.get("path"):
+            typed[f"file:{record['path']}"] = "source"
+    for path in impact.get("affected_tests", []):
+        typed[f"test:{path}"] = "test"
+    nodes = [
+        {
+            "node_id": node_id,
+            "kind": typed[node_id],
+            "revision": str(revision_bindings.get(node_id) or ""),
+        }
+        for node_id in sorted(typed)
+    ]
+    edges = [
+        {"dependency": target, "consumer": node_id}
+        for node_id in sorted(typed)
+        if node_id != target
+    ]
+    return nodes, edges

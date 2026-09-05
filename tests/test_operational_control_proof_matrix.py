@@ -14,6 +14,13 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_canonical_reconciliation_owns_the_operational_proof_matrix() -> None:
     source = inspect.getsource(_rebuild_candidate_projections_unlocked)
     assert "build_operational_control_proof_matrix" in source
+    assert "build_semantic_index" in source
+    assert "build_cognitive_index" in source
+    assert "build_agent_graph" in source
+    assert "reconcile_active_capability_hashes" in source
+    assert "reconcile_projection_dependencies" in source
+    assert "build_projection_staleness" in source
+    assert "write_world_state" in source
     assert 'root / "registry/operational_control_proof_matrix.json"' in source
 
 

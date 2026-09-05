@@ -1,0 +1,53 @@
+{
+  "card_id": "PX-COMM-001",
+  "title": "Final85 terminal-state verification",
+  "severity": "critical",
+  "type": "audit",
+  "status": "closed",
+  "root_cause": "The interrupted final85 campaign could otherwise be mistaken for a resumable or partially certifying run.",
+  "source_requirement": "Prove final85 is terminal, preserve its evidence, and forbid resume/retry.",
+  "live_evidence": [
+    "evidence/release/final85-full-profile-interrupted-terminal-denominator-20260905.json",
+    "evidence/commencement-audit-20260905T002921Z/live-state.json"
+  ],
+  "files": [
+    "evidence/commencement-audit-20260905T002921Z/live-state.json"
+  ],
+  "symbols": [],
+  "dependencies": [],
+  "downstream_consumers": [
+    "PX-COMM-002",
+    "PX-COMM-003",
+    "PX-COMM-004",
+    "PX-COMM-005"
+  ],
+  "change_classes": [
+    "METADATA_ONLY"
+  ],
+  "implementation_steps": [
+    "Inspect campaign identity and stage states.",
+    "Verify apply_count is one and terminal state is failed.",
+    "Record that no later stage ran."
+  ],
+  "negative_cases": [
+    "Do not infer certification from green section receipts.",
+    "Do not resume or retry final85."
+  ],
+  "focused_tests": [
+    "Read-only campaign-state reconciliation."
+  ],
+  "affected_tests": [],
+  "affected_sections": [],
+  "projection_invalidations": [],
+  "evidence_required": [
+    "Terminal campaign identity, state, stage denominator, and source/release hashes."
+  ],
+  "rollback": "Evidence-only card; preserve the prior campaign and remove only erroneous new audit projection.",
+  "acceptance_criteria": [
+    "final85 is recorded terminal with resume_or_retry_allowed=false.",
+    "No final85 artifact is mutated."
+  ],
+  "completion_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/live-state.json"
+  ]
+}

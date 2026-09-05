@@ -10,6 +10,56 @@ from scripts.reconcile_unverified_operational_controls import (
 from runtime.operational_gap_ledger import CHAIN_STAGES, control_disposition_sha256
 
 
+def _feature_requirements() -> dict[str, object]:
+    return {
+        "schema_version": "px.feature-acceptance-requirements/1.0",
+        "source_revision": "a" * 64,
+        "dependency_revisions": {},
+        "criteria": [
+            {
+                "criterion_id": "feature-runtime",
+                "required_evidence_classes": ["runtime_effect"],
+                "required_authority_class": "installed_host",
+                "required_tests": ["exact current installed-host control probe"],
+                "allow_not_applicable": False,
+            }
+        ],
+    }
+
+
+def _feature_acceptance() -> dict[str, object]:
+    return {
+        "schema_version": "px.feature-acceptance/1.0",
+        "source_revision": "a" * 64,
+        "dependency_revisions": {},
+        "criteria": [
+            {
+                "criterion_id": "feature-runtime",
+                "status": "verified",
+                "evidence_classes": ["runtime_effect"],
+                "authority_class": "installed_host",
+                "tests_run": ["exact current installed-host control probe"],
+                "evidence": [
+                    {
+                        "reference": "sha256:" + "b" * 64,
+                        "claim": "The exact feature runtime behavior passed.",
+                    }
+                ],
+            }
+        ],
+    }
+
+
+def _accepted_card(severity: str = "medium", state: str = "discovered") -> dict[str, object]:
+    return {
+        "severity": severity,
+        "classification": "UI",
+        "current_state": state,
+        "feature_acceptance_requirements": _feature_requirements(),
+        "feature_acceptance": _feature_acceptance(),
+    }
+
+
 def _disposition(gap_id: str) -> dict[str, object]:
     return {
         "disposition": "gap",
@@ -336,7 +386,7 @@ def test_card_reconciliation_selects_only_fully_operational_historical_scope() -
     incomplete = _disposition("PX-OS-002")
     snapshot = {
         "cards": {
-            "PX-OS-001": {"severity": "medium", "classification": "UI", "current_state": "discovered"},
+            "PX-OS-001": _accepted_card(),
             "PX-OS-002": {"severity": "critical", "classification": "UI", "current_state": "scoped"},
             "PX-OS-003": {"severity": "high", "classification": "backend", "current_state": "discovered"},
         },
@@ -351,6 +401,7 @@ def test_card_reconciliation_selects_only_fully_operational_historical_scope() -
     assert events[0]["event_type"] == "card_annotated"
     assert events[0]["payload"]["patch"]["completion_evidence"] == ["evidence/exact.json"]
     assert events[-1]["payload"]["to_state"] == "operationally_verified"
+    assert events[-1]["payload"]["feature_acceptance"] == _feature_acceptance()
     assert all(event["payload"]["gap_id"] != "PX-OS-002" for event in events)
     assert all(event["payload"]["gap_id"] != "PX-OS-003" for event in events)
 
@@ -358,7 +409,7 @@ def test_card_reconciliation_selects_only_fully_operational_historical_scope() -
 def test_dry_run_observation_simulation_preserves_gap_binding_for_reconciliation() -> None:
     snapshot = _snapshot()
     snapshot["cards"] = {
-        "PX-OS-001": {"severity": "medium", "classification": "UI", "current_state": "discovered"},
+        "PX-OS-001": _accepted_card(),
         "PX-OS-002": {"severity": "medium", "classification": "UI", "current_state": "discovered"},
     }
     receipt = _receipt()
@@ -378,3 +429,43 @@ def test_dry_run_observation_simulation_preserves_gap_binding_for_reconciliation
     assert disposition["disposition"] == "operational"
     assert disposition["gap_ids"] == []
     assert disposition["history"][-1]["gap_ids"] == ["PX-OS-001"]
+
+
+def test_green_control_does_not_select_feature_with_missing_runtime_acceptance() -> None:
+    chain = {
+        stage: {
+            "state": "not_applicable",
+            "detail": "The control itself has no direct runtime stage.",
+            "evidence": [f"receipt#{stage}"],
+        }
+        for stage in CHAIN_STAGES
+    }
+    operational = _disposition("PX-OS-001")
+    operational.update(
+        {
+            "disposition": "operational",
+            "gap_ids": [],
+            "observation": {"outcome": "operational", "interaction_chain": chain},
+            "history": [{"gap_ids": ["PX-OS-001"]}],
+        }
+    )
+    snapshot = {
+        "cards": {
+            "PX-OS-001": {
+                "severity": "critical",
+                "classification": "runtime",
+                "current_state": "scoped",
+                "required_runtime_features": ["memory-broker"],
+            }
+        },
+        "surfaces": {
+            "surface-one": {"control_dispositions": {"green-textbox": operational}}
+        },
+    }
+
+    events, selected = plan_operational_card_reconciliations(
+        snapshot, "evidence/exact.json"
+    )
+
+    assert events == []
+    assert selected == []

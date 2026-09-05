@@ -1,0 +1,75 @@
+{
+  "card_id": "PX-AGENT-003",
+  "title": "Integrate Studio runtime",
+  "severity": "critical",
+  "type": "integration",
+  "status": "planned",
+  "root_cause": "Agent Runtime exposes memory and handoff as blockers rather than broker-backed governed inputs.",
+  "source_requirement": "Integrate Agency adapter, memory broker, handoff packet, model attachment, and placement into existing Studio execution.",
+  "live_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#PX-AUD-007"
+  ],
+  "files": [
+    "runtime/agent_runtime.py",
+    "runtime/studio_run_control.py",
+    "runtime/agency_studio_adapter.py",
+    "runtime/memory_broker.py",
+    "runtime/agent_handoff.py",
+    "tests/test_agent_runtime.py"
+  ],
+  "symbols": [
+    "_resolved_preview",
+    "execute_agent_plan"
+  ],
+  "dependencies": [
+    "PX-AGENT-001",
+    "PX-AGENT-002",
+    "PX-MODEL-003"
+  ],
+  "downstream_consumers": [
+    "PX-PROVIDER-001",
+    "PX-SYS-001"
+  ],
+  "change_classes": [
+    "AUTHORITY",
+    "RUNTIME",
+    "BEHAVIORAL"
+  ],
+  "implementation_steps": [
+    "Resolve broker-backed memory and acknowledged handoffs during preview.",
+    "Carry immutable task/model/placement bindings to execution.",
+    "Keep effects behind Studio admission.",
+    "Emit unified outcome and cleanup receipt."
+  ],
+  "negative_cases": [
+    "Deleting blockers without resolution.",
+    "Execution outside Studio.",
+    "Attachment or placement drift.",
+    "Unacknowledged handoff.",
+    "Resource leak after cancellation."
+  ],
+  "focused_tests": [
+    "Agent preview and governed execution integration tests."
+  ],
+  "affected_tests": [
+    "Studio run control, provider gateway, resource lifecycle, dashboard tests."
+  ],
+  "affected_sections": [
+    "dashboard-extension",
+    "structural-adversarial"
+  ],
+  "projection_invalidations": [
+    "Studio agent session receipts",
+    "dashboard runtime state",
+    "world state"
+  ],
+  "evidence_required": [
+    "Contained end-to-end agent run with memory, handoff, model, placement, outcome, and cleanup."
+  ],
+  "rollback": "Reinstate explicit blockers and stop before effects; preserve all receipts.",
+  "acceptance_criteria": [
+    "Memory and handoff are resolved through canonical brokers.",
+    "Every effect remains Studio-admitted and fully receipted."
+  ],
+  "completion_evidence": []
+}

@@ -3,20 +3,55 @@
   "version": "0.1.0",
   "owner": "independent-bootstrap-runtime",
   "status": "active",
-  "provenance": {"type": "clean_room", "basis": ["reviewed assurance patterns", "local requirements"]},
+  "provenance": {
+    "type": "clean_room",
+    "basis": [
+      "reviewed assurance patterns",
+      "local requirements"
+    ]
+  },
   "hash": "44a17314be94ae5495344010fc38119cec5c6f5fbb8f9e47875223456147d65c",
   "license": "Apache-2.0",
-  "provides": ["independent verification decision"],
-  "consumes": ["postconditions", "evidence records", "policy decision", "executor claim"],
-  "effects": ["read_local"],
-  "permissions": ["read_local"],
+  "provides": [
+    "independent verification decision"
+  ],
+  "consumes": [
+    "postconditions",
+    "evidence records",
+    "policy decision",
+    "executor claim"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
   "dependencies": [],
   "conflicts": [],
-  "cost": {"class": "bounded", "max_tool_calls": 0},
-  "latency": {"class": "local", "max_seconds": 1},
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 1
+  },
   "risk": "R1",
-  "validation": {"suite": "tests/test_outcome_verifier.py", "passed": 5, "failed": 0},
-  "approval": {"deployment": "required", "runtime": "not required for verification-only operation"},
-  "evidence": {"suite": "tests/test_outcome_verifier.py", "status": "current"},
-  "rollback": {"strategy": "remove from active capability map"}
+  "validation": {
+    "suite": "tests/test_outcome_verifier.py",
+    "passed": 5,
+    "failed": 0
+  },
+  "approval": {
+    "deployment": "required",
+    "runtime": "not required for verification-only operation"
+  },
+  "evidence": {
+    "suite": "tests/test_outcome_verifier.py",
+    "status": "current"
+  },
+  "rollback": {
+    "strategy": "remove from active capability map"
+  }
 }

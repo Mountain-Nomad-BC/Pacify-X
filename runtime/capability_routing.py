@@ -253,6 +253,7 @@ class ExecutionPackage:
     complete: bool
     executable: bool
     errors: tuple[str, ...]
+    routing_influences: Mapping[str, object]
     receipt_sha256: str
 
 
@@ -516,6 +517,7 @@ def rank_candidates(
     *,
     graph_paths: Mapping[str, tuple[str, ...]] | None = None,
     max_risk: str = "R4",
+    project_features: Mapping[str, object] | None = None,
 ) -> tuple[RankedCandidate, ...]:
     """Fuse independently discovered records with explainable 0-100 scoring."""
     if max_risk not in RISK_ORDER:
@@ -585,15 +587,22 @@ def rank_candidates(
             "output_compatibility": 1
             * _overlap(envelope.required_outputs, record.outputs),
             "lexical_support": 5 * min(1.0, max(row.confidence for row in rows)),
+            "project_context_match": 6
+            * _overlap(
+                fields,
+                tuple(project_features.get("feature_tokens", ()))
+                if project_features
+                else (),
+            ),
         }
-        normalized_request = " ".join(_tokens(envelope.raw_request))
+        request_terms = set(_tokens(envelope.raw_request))
         negative_hit = any(
-            " ".join(_tokens(item)) in normalized_request
+            set(_tokens(item)) <= request_terms
             for item in record.negative_matches
             if _tokens(item)
         )
         avoid_hit = any(
-            " ".join(_tokens(item)) in normalized_request
+            set(_tokens(item)) <= request_terms
             for item in record.avoid_when
             if _tokens(item)
         )
@@ -664,6 +673,7 @@ def build_minimum_package(
     *,
     max_total: int = 15,
     kind_limits: Mapping[str, int] | None = None,
+    project_features: Mapping[str, object] | None = None,
 ) -> ExecutionPackage:
     """Build the smallest dependency-complete, policy-compatible package."""
     limits = {
@@ -756,6 +766,22 @@ def build_minimum_package(
     # A package containing agents must pass through the separate agent compile
     # and task-authorization boundaries before any effects can be executed.
     executable = complete and not by_kind.get("agent")
+    routing_influences = (
+        {
+            "feature_policy": project_features.get("feature_policy"),
+            "feature_revision": project_features.get("feature_revision"),
+            "map_revision": project_features.get("map_revision"),
+            "project_scope_sha256": project_features.get("project_scope_sha256"),
+            "hit_ids": tuple(project_features.get("hit_ids", ())),
+            "candidate_components": {
+                row.canonical_id: row.component_scores.get("project_context_match", 0.0)
+                for row in ranked
+                if row.component_scores.get("project_context_match", 0.0) > 0
+            },
+        }
+        if project_features
+        else {}
+    )
     payload = {
         "task_envelope_sha256": envelope.task_envelope_sha256,
         "selected": selected,
@@ -769,6 +795,7 @@ def build_minimum_package(
         "complete": complete,
         "executable": executable,
         "errors": sorted(set(errors)),
+        "routing_influences": routing_influences,
     }
     package_id = "pkg_" + _stable(payload)[:20]
     receipt = _stable({"package_id": package_id, **payload})
@@ -784,6 +811,7 @@ def build_minimum_package(
         complete=complete,
         executable=executable,
         errors=tuple(sorted(set(errors))),
+        routing_influences=routing_influences,
         receipt_sha256=receipt,
     )
 
@@ -806,7 +834,8 @@ def route_task(
     )
     project_map: Mapping[str, object] | None = None
     if envelope.repository_context_required and project is not None:
-        from .project_intelligence import validate_project_map
+        from .project_intelligence import project_routing_features, validate_project_map
+        from .project_intelligence import _map_dir
         from .project_map_retrieval import query_project_map
 
         validation = validate_project_map(project, check_freshness=True)
@@ -815,6 +844,13 @@ def route_task(
                 f"fresh project map required: {validation.get('errors', [])}"
             )
         project_map = query_project_map(project, request, top_k=10, relation_depth=2)
+        manifest = json.loads(
+            (_map_dir(project) / "project-manifest.json").read_text(encoding="utf-8")
+        )
+        project_map = {
+            **project_map,
+            "routing_features": project_routing_features(project, manifest, project_map),
+        }
     materialized = {name: tuple(items) for name, items in sources.items()}
     records = dict(canonical_records or {})
     for items in materialized.values():
@@ -833,9 +869,19 @@ def route_task(
     seeds = [row.candidate_id for rows in discovery.values() for row in rows[:5]]
     graph_paths = expand_graph(seeds, relations)
     ranked = rank_candidates(
-        envelope, discovery, records, graph_paths=graph_paths, max_risk=max_risk
+        envelope,
+        discovery,
+        records,
+        graph_paths=graph_paths,
+        max_risk=max_risk,
+        project_features=project_map.get("routing_features") if project_map else None,
     )
-    package = build_minimum_package(envelope, ranked, records)
+    package = build_minimum_package(
+        envelope,
+        ranked,
+        records,
+        project_features=project_map.get("routing_features") if project_map else None,
+    )
     receipt_payload = {
         "envelope": envelope.task_envelope_sha256,
         "discovery_sources": {
@@ -858,3 +904,141 @@ def route_task(
 def as_jsonable(result: RouteResult) -> dict[str, object]:
     """Convert an immutable route result to a stable JSON-compatible object."""
     return asdict(result)
+
+
+def compile_route_plan(
+    result: RouteResult,
+    *,
+    project_id: str,
+    source_revision: str,
+    projection_revisions: Mapping[str, object],
+    effect_budget: Sequence[str],
+    authority_bindings: Sequence[str],
+    attachments: Mapping[str, object] | None = None,
+    model_inventory: Iterable[Mapping[str, object]] | None = None,
+    semantic_profile: Mapping[str, object] | None = None,
+    model_requirements: Mapping[str, object] | None = None,
+    model_root: Path | None = None,
+    created_utc: str | None = None,
+):
+    """Adapt canonical routing output to a descriptive TaskExecutionPlan."""
+    from .task_execution_plan import compile_task_execution_plan
+
+    bound_revisions = dict(projection_revisions)
+    if result.project_map and isinstance(result.project_map.get("routing_features"), Mapping):
+        features = result.project_map["routing_features"]
+        bound_revisions["project_map"] = str(features.get("map_revision"))
+        bound_revisions["project_routing_features"] = str(
+            features.get("feature_revision")
+        )
+    model_attachment = None
+    model_ranking_receipt = None
+    if model_inventory is not None:
+        from .model_attachment import select_model_attachment
+
+        requirements = dict(model_requirements or {})
+        selected, model_ranking_receipt = select_model_attachment(
+            model_root or Path.cwd(),
+            result,
+            model_inventory,
+            semantic_profile=semantic_profile,
+            required_traits=tuple(requirements.get("required_traits", ())),
+            required_modalities=tuple(requirements.get("required_modalities", ("text",))),
+            min_context_tokens=int(requirements.get("min_context_tokens", 1)),
+            tools_required=bool(requirements.get("tools_required", False)),
+            sensitive=bool(requirements.get("sensitive", False)),
+        )
+        model_attachment = selected.as_dict()
+        bound_revisions["model_attachment"] = selected.attachment_sha256
+    return compile_task_execution_plan(
+        result,
+        project_id=project_id,
+        source_revision=source_revision,
+        projection_revisions=bound_revisions,
+        effect_budget=effect_budget,
+        authority_bindings=authority_bindings,
+        attachments=attachments,
+        model_attachment=model_attachment,
+        model_ranking_receipt=model_ranking_receipt,
+        created_utc=created_utc,
+    )
+
+
+def certify_router(
+    corpus: Mapping[str, object],
+    records: Mapping[str, CapabilitySummary],
+    *,
+    index_revision: str,
+    project_revision: str | None,
+) -> dict[str, object]:
+    """Run a fixed adversarial routing corpus with explicit ranking metrics."""
+    cases = corpus.get("cases")
+    if not isinstance(cases, list) or not cases:
+        raise ValueError("router certification corpus requires cases")
+    outcomes = []
+    numerators = {1: 0, 3: 0, 5: 0}
+    denominators = {1: 0, 3: 0, 5: 0}
+    must_not_failures = []
+    deterministic = True
+    source = tuple(records.values())
+    for case in cases:
+        if not isinstance(case, Mapping):
+            raise ValueError("router certification case must be an object")
+        case_id = str(case.get("case_id", ""))
+        query = str(case.get("query", ""))
+        expected = set(map(str, case.get("expected", ())))
+        forbidden = set(map(str, case.get("must_not_return", ())))
+        if not case_id or not query or not expected:
+            raise ValueError("router certification case is incomplete")
+        first = route_task(query, {"adversarial": source}, canonical_records=records)
+        second = route_task(query, {"adversarial": tuple(reversed(source))}, canonical_records=records)
+        first_ids = tuple(item.canonical_id for item in first.ranked if item.disposition == "selectable")
+        second_ids = tuple(item.canonical_id for item in second.ranked if item.disposition == "selectable")
+        deterministic = deterministic and first_ids == second_ids
+        forbidden_found = tuple(sorted(forbidden & set(first_ids)))
+        if forbidden_found:
+            must_not_failures.append({"case_id": case_id, "found": forbidden_found})
+        for k in (1, 3, 5):
+            window = first_ids[:k]
+            numerators[k] += len(expected & set(window))
+            denominators[k] += max(1, len(window))
+        outcomes.append(
+            {
+                "case_id": case_id,
+                "ranked": first_ids[:5],
+                "expected": tuple(sorted(expected)),
+                "must_not_return": tuple(sorted(forbidden)),
+                "forbidden_found": forbidden_found,
+                "top1_correct": bool(first_ids and first_ids[0] in expected),
+            }
+        )
+    metrics = {
+        f"precision_at_{k}": round(numerators[k] / denominators[k], 6)
+        for k in (1, 3, 5)
+    }
+    thresholds = {
+        str(key): float(value)
+        for key, value in dict(corpus.get("thresholds", {})).items()
+    }
+    threshold_pass = all(
+        metrics[name] >= thresholds.get(name, 0.0) for name in metrics
+    )
+    corpus_sha256 = _stable(corpus)
+    payload = {
+        "schema_version": "px.router-certification/1.0",
+        "corpus_sha256": corpus_sha256,
+        "index_revision": index_revision,
+        "project_revision": project_revision,
+        "case_outcomes": outcomes,
+        "metrics": metrics,
+        "thresholds": thresholds,
+        "must_not_return_pass": not must_not_failures,
+        "must_not_return_failures": must_not_failures,
+        "deterministic_ties": deterministic,
+        "threshold_pass": threshold_pass,
+    }
+    return {
+        **payload,
+        "valid": not must_not_failures and deterministic and threshold_pass,
+        "receipt_sha256": _stable(payload),
+    }

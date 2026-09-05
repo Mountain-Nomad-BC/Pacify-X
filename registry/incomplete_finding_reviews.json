@@ -460,6 +460,16 @@
       "rationale": "A release fixture destination outside the source root is the required safe case; only a successful relative-to-source conversion enters the rejecting branch.",
       "owner": "release-artifacts",
       "review_condition": "review whenever release fixture containment rules change"
+    },
+    {
+      "id": "2d60299a88c0fdaf3efa",
+      "path": "scripts/benchmark_operational_gap_ledger.py",
+      "line": 161,
+      "rule": "python-pass",
+      "classification": "expected_control_flow",
+      "rationale": "The inner lock acquisition must fail; the pass body makes an unexpected acquisition observable through the unchanged false rejection flag.",
+      "owner": "operational-gap-ledger-benchmark",
+      "review_condition": "review whenever the benchmark lock-contention probe changes"
     }
   ]
 }

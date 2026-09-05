@@ -6,7 +6,7 @@ from pathlib import Path
 import sysconfig
 
 
-SOURCE_ONLY_ROOTS = {"tests", "scripts"}
+SOURCE_ONLY_ROOTS = {"extension", "tests", "scripts"}
 
 
 def framework_root() -> Path:
@@ -52,3 +52,16 @@ def resolve_declared_path(root: Path, relative: str | Path) -> Path | None:
 def declared_file_available(root: Path, relative: str | Path) -> bool:
     resolved = resolve_declared_path(root, relative)
     return resolved is None or resolved.is_file()
+
+
+def resolve_repository_relative(root: Path, relative: object) -> Path | None:
+    """Resolve one repository-relative path without permitting an escape."""
+    if not isinstance(relative, str) or not relative or "\\" in relative:
+        return None
+    resolved_root = root.resolve()
+    path = (resolved_root / relative).resolve()
+    try:
+        path.relative_to(resolved_root)
+    except ValueError:
+        return None
+    return path

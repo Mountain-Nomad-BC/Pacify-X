@@ -1,0 +1,70 @@
+{
+  "card_id": "PX-ROUTE-002",
+  "title": "Semantic index migration",
+  "severity": "critical",
+  "type": "migration",
+  "status": "planned",
+  "root_cause": "Only four of 178 current semantic records have nonempty intent data because the index projects only contract.provides.",
+  "source_requirement": "Build the active semantic index from canonical semantic profiles and retain source revisions.",
+  "live_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#PX-AUD-002"
+  ],
+  "files": [
+    "runtime/semantic_index.py",
+    "registry/semantic_capability_index.json",
+    "builders/semantic_index_builder.py",
+    "tests/test_semantic_index.py"
+  ],
+  "symbols": [
+    "build_semantic_index"
+  ],
+  "dependencies": [
+    "PX-ROUTE-001"
+  ],
+  "downstream_consumers": [
+    "PX-ROUTE-003",
+    "PX-MODEL-002",
+    "PX-SKILL-003"
+  ],
+  "change_classes": [
+    "SEMANTIC",
+    "MIGRATION",
+    "METADATA_ONLY"
+  ],
+  "implementation_steps": [
+    "Adapt index builder to canonical profiles.",
+    "Backfill active routable skills from supported metadata.",
+    "Record profile/source revisions.",
+    "Regenerate deterministically and compare coverage."
+  ],
+  "negative_cases": [
+    "Routable skill without profile.",
+    "Empty positive intent without explicit non-routable disposition.",
+    "Stale profile revision.",
+    "Duplicate semantic identity."
+  ],
+  "focused_tests": [
+    "Semantic index migration and deterministic regeneration tests."
+  ],
+  "affected_tests": [
+    "Capability routing, skill registry, generated artifacts."
+  ],
+  "affected_sections": [
+    "testing-governance",
+    "structural-adversarial"
+  ],
+  "projection_invalidations": [
+    "registry/semantic_capability_index.json",
+    "routing evidence",
+    "skill projection freshness"
+  ],
+  "evidence_required": [
+    "Before/after coverage denominator and deterministic builder receipt."
+  ],
+  "rollback": "Restore prior generated index and builder together.",
+  "acceptance_criteria": [
+    "Active routable skills no longer depend on the nearly empty provides projection.",
+    "Every index record binds its profile/source revision."
+  ],
+  "completion_evidence": []
+}

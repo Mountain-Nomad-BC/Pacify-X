@@ -9,12 +9,14 @@ from runtime.project_stream_controls import (
     LeaseRequest,
     ScopeEnvelope,
     SwitchEvidence,
+    TransferEvidenceReferences,
     TransferPackage,
     authorize_context,
     authorize_lease,
     authorize_transfer,
     validate_project_switch,
 )
+from runtime.trusted_evidence import ResolvedEvidence
 
 
 def scope(project: str = "prj_alpha", session: str = "ses_one") -> ScopeEnvelope:
@@ -67,9 +69,38 @@ class ProjectStreamControlTests(unittest.TestCase):
             True,
             True,
         )
-        self.assertEqual(authorize_transfer(package).decision, "allow")
+        self.assertEqual(authorize_transfer(package).decision, "deny")
         private = replace(package, includes_private_memory=True)
         self.assertEqual(authorize_transfer(private).decision, "deny")
+
+    def test_transfer_requires_four_exact_receipts_and_derives_booleans(self) -> None:
+        package = TransferPackage(
+            "xfer_generic", "prj_alpha", "prj_beta", "sanitized_capability",
+            ("evd_one",), "MIT", (), ("test_one",), False, False, False,
+        )
+        refs = TransferEvidenceReferences(
+            "evidence:sanitize", "evidence:approve", "evidence:own", "evidence:test"
+        )
+
+        class Resolver:
+            def resolve(self, reference, **kwargs):
+                record = {
+                    "source_project_id": "prj_alpha",
+                    "destination_project_id": "prj_beta",
+                    "result": {"accepted": True},
+                }
+                return ResolvedEvidence(reference, record, True, True, True, True, True, True, ())
+
+        self.assertEqual(authorize_transfer(package, refs, Resolver()).decision, "allow")
+
+        class ForeignResolver(Resolver):
+            def resolve(self, reference, **kwargs):
+                value = super().resolve(reference, **kwargs)
+                return replace(value, record={**value.record, "destination_project_id": "prj_other"})
+
+        denied = authorize_transfer(package, refs, ForeignResolver())
+        self.assertEqual(denied.decision, "deny")
+        self.assertTrue(any("destination_project_mismatch" in reason for reason in denied.reasons))
 
     def test_one_session_cannot_hold_foreign_writable_leases(self) -> None:
         expiry = datetime.now(timezone.utc) + timedelta(minutes=10)

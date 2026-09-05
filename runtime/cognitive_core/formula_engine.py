@@ -556,6 +556,35 @@ def engine_from_payload(payload: Mapping[str, Any]) -> FormulaEngine:
     )
 
 
+def validate_dimensions(
+    expression: str,
+    variables: Mapping[str, str | Mapping[str, float]],
+    output_dimension: str | Mapping[str, float],
+) -> dict[str, Any]:
+    """Validate expression dimensions without evaluating or registering a formula."""
+    declared = {
+        str(name): Variable(str(name), Dimension.parse(dimension))
+        for name, dimension in variables.items()
+    }
+    tree = ast.parse(expression, mode="eval")
+    _validate_ast(tree, set(declared))
+    actual = _dimension(tree, declared)
+    expected = Dimension.parse(output_dimension)
+    if actual != expected:
+        raise ValueError(
+            f"formula output dimension {actual.render()} != {expected.render()}"
+        )
+    return {
+        "valid": True,
+        "expression": expression,
+        "variable_dimensions": {
+            name: variable.dimension.render() for name, variable in declared.items()
+        },
+        "output_dimension": actual.render(),
+        "authority": "runtime.cognitive_core.formula_engine.validate_dimensions",
+    }
+
+
 def evaluate_formula(payload: Mapping[str, Any]) -> dict[str, Any]:
     engine = engine_from_payload(payload)
     return engine.evaluate(

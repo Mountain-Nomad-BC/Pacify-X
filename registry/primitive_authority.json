@@ -1,0 +1,71 @@
+{
+  "schema_version": "px.primitive-authority/1.0",
+  "primitive_count": 13,
+  "primitives": [
+    {
+      "primitive": "task_normalization",
+      "canonical_owner": {"language": "python", "module": "runtime.capability_routing", "path": "runtime/capability_routing.py", "symbol": "normalize_task"},
+      "federated_owners": [], "bypass_policy": "deny_unless_exception", "declared_bypasses": [], "bypass_exceptions": []
+    },
+    {
+      "primitive": "retrieval",
+      "canonical_owner": {"language": "python", "module": "runtime.retrieval", "path": "runtime/retrieval.py", "symbol": "retrieve"},
+      "federated_owners": [], "bypass_policy": "deny_unless_exception", "declared_bypasses": [], "bypass_exceptions": []
+    },
+    {
+      "primitive": "dimensional_formulas",
+      "canonical_owner": {"language": "python", "module": "runtime.cognitive_core.formula_engine", "path": "runtime/cognitive_core/formula_engine.py", "symbol": "evaluate_formula"},
+      "federated_owners": [], "bypass_policy": "deny_unless_exception", "declared_bypasses": [], "bypass_exceptions": []
+    },
+    {
+      "primitive": "impact",
+      "canonical_owner": {"language": "python", "module": "runtime.project_impact", "path": "runtime/project_impact.py", "symbol": "analyze_project_impact"},
+      "federated_owners": [], "bypass_policy": "deny_unless_exception", "declared_bypasses": [], "bypass_exceptions": []
+    },
+    {
+      "primitive": "specialist_selection",
+      "canonical_owner": {"language": "python", "module": "runtime.agent_provider", "path": "runtime/agent_provider.py", "symbol": "route_agents"},
+      "federated_owners": [], "bypass_policy": "deny_unless_exception", "declared_bypasses": [], "bypass_exceptions": []
+    },
+    {
+      "primitive": "agent_execution",
+      "canonical_owner": {"language": "python", "module": "runtime.agent_runtime", "path": "runtime/agent_runtime.py", "symbol": "AgentRuntimeController.invoke_harness"},
+      "federated_owners": [], "bypass_policy": "deny_unless_exception", "declared_bypasses": [], "bypass_exceptions": []
+    },
+    {
+      "primitive": "model_selection",
+      "canonical_owner": {"language": "python", "module": "runtime.models", "path": "runtime/models.py", "symbol": "rank_models"},
+      "federated_owners": [], "bypass_policy": "deny_unless_exception", "declared_bypasses": [], "bypass_exceptions": []
+    },
+    {
+      "primitive": "hardware_placement",
+      "canonical_owner": {"language": "python", "module": "runtime.execution_placement", "path": "runtime/execution_placement.py", "symbol": "decide_placement"},
+      "federated_owners": [], "bypass_policy": "deny_unless_exception", "declared_bypasses": [], "bypass_exceptions": []
+    },
+    {
+      "primitive": "memory_resolution",
+      "canonical_owner": {"language": "python", "module": "runtime.memory_intelligence", "path": "runtime/memory_intelligence.py", "symbol": "resolve_loadout"},
+      "federated_owners": [], "bypass_policy": "deny_unless_exception", "declared_bypasses": [], "bypass_exceptions": []
+    },
+    {
+      "primitive": "handoff",
+      "canonical_owner": {"language": "python", "module": "runtime.agent_runtime", "path": "runtime/agent_runtime.py", "symbol": "AgentRuntimeController.prepare_host_run"},
+      "federated_owners": [], "bypass_policy": "deny_unless_exception", "declared_bypasses": [], "bypass_exceptions": []
+    },
+    {
+      "primitive": "behavioral_assurance",
+      "canonical_owner": {"language": "python", "module": "runtime.behavioral_assurance", "path": "runtime/behavioral_assurance.py", "symbol": "run_behavioral_probe"},
+      "federated_owners": [], "bypass_policy": "deny_unless_exception", "declared_bypasses": [], "bypass_exceptions": []
+    },
+    {
+      "primitive": "work_admission",
+      "canonical_owner": {"language": "python", "module": "runtime.operational_gap_ledger", "path": "runtime/operational_gap_ledger.py", "symbol": "guard_work_admission"},
+      "federated_owners": [], "bypass_policy": "deny_unless_exception", "declared_bypasses": [], "bypass_exceptions": []
+    },
+    {
+      "primitive": "evidence_custody",
+      "canonical_owner": {"language": "python", "module": "runtime.evidence_custody", "path": "runtime/evidence_custody.py", "symbol": "build_evidence_custody"},
+      "federated_owners": [], "bypass_policy": "deny_unless_exception", "declared_bypasses": [], "bypass_exceptions": []
+    }
+  ]
+}

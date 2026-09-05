@@ -33,6 +33,7 @@ EXCLUDED_PATHS = {
     "registry/completion_status.json",
     "registry/current_evidence_index.json",
     "registry/engine_identity.json",
+    "registry/px_world_state.json",
     "registry/.operational-gap-ledger.lock",
     "registry/operational_gap_ledger.head.json",
     "registry/test_group_index.json",

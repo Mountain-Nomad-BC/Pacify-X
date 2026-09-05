@@ -20,6 +20,11 @@ import time
 from typing import Any, Iterable, Mapping
 from uuid import uuid4
 
+from .evidence_claims import (
+    feature_acceptance_for_card,
+    validate_feature_acceptance,
+    validate_feature_acceptance_requirements,
+)
 from .file_lock import FileLock
 
 
@@ -29,6 +34,9 @@ HEAD_SCHEMA = "px.operational-gap-ledger-head/1.0"
 LEDGER_RELATIVE = Path("registry/operational_gap_ledger.jsonl")
 SNAPSHOT_RELATIVE = Path("registry/operational_gap_ledger.snapshot.json")
 HEAD_RELATIVE = Path("registry/operational_gap_ledger.head.json")
+SEGMENT_MANIFEST_RELATIVE = Path("evidence/operational-gap-ledger/migration/segments.json")
+SEGMENT_DIRECTORY_RELATIVE = Path("evidence/operational-gap-ledger/migration/segments")
+DELTA_DIRECTORY_RELATIVE = Path("registry/operational_gap_ledger.deltas")
 LOCK_RELATIVE = Path("registry/.operational-gap-ledger.lock")
 # The complete append-only operational denominator and its materialized
 # projection now exceed the original bootstrap-era 64 MiB envelope. Keep both
@@ -42,6 +50,8 @@ MAX_EVENT_BYTES = 4 * 1024 * 1024
 MAX_REPORT_BYTES = 16 * 1024 * 1024
 MAX_BATCH_EVENTS = 1_000
 MAX_EVENTS = 100_000
+DELTA_CHECKPOINT_THRESHOLD_BYTES = 8 * 1024 * 1024
+MAX_DELTA_CHECKPOINT_BYTES = 16 * 1024 * 1024
 # Retain the discovery anchor plus the latest predecessor/current pair.  A
 # two-row projection drops the exact closed/verified transition as soon as a
 # card is reopened, which makes the materialized history contradict the
@@ -577,6 +587,24 @@ def _validate_card(
         raise ValueError("completion_evidence entries must be non-empty strings")
     chain = _validate_chain(card["interaction_chain"])
     result = json.loads(_canonical(dict(card)))
+    if "feature_acceptance_requirements" in card:
+        result["feature_acceptance_requirements"] = (
+            validate_feature_acceptance_requirements(
+                card["feature_acceptance_requirements"]
+            )
+        )
+        if "feature_acceptance" in card:
+            result["feature_acceptance"] = validate_feature_acceptance(
+                card["feature_acceptance"]
+            )
+            decision = feature_acceptance_for_card(result)
+            result["feature_acceptance_status"] = decision.status
+        else:
+            result["feature_acceptance_status"] = "unverified"
+    elif isinstance(card.get("required_runtime_features"), list) and card.get(
+        "required_runtime_features"
+    ):
+        result["feature_acceptance_status"] = "unverified"
     result["severity"] = str(card["severity"]).lower()
     result["interaction_chain"] = chain
     result["current_state"] = "discovered"
@@ -594,6 +622,12 @@ def _validate_current_card(card: Mapping[str, Any]) -> None:
         {field: card[field] for field in CARD_REQUIRED},
         allow_local_discovery_empty_symbols=True,
     )
+    if "feature_acceptance_requirements" in card:
+        validate_feature_acceptance_requirements(
+            card["feature_acceptance_requirements"]
+        )
+        if "feature_acceptance" in card:
+            validate_feature_acceptance(card["feature_acceptance"])
 
 
 def _resolved_evidence_path(root: Path, reference: str) -> Path | None:
@@ -1342,12 +1376,26 @@ def project_events(
             if not note:
                 raise ValueError("card annotation requires a note")
             patch = payload.get("patch", {})
-            allowed = {"source_refs", "interaction_chain", "dependencies", "blockers", "assigned_owner", "tests_required", "completion_evidence", "next_action", "operational_impact", "reopen_reason", "defer_skip"}
+            allowed = {"source_refs", "interaction_chain", "dependencies", "blockers", "assigned_owner", "tests_required", "completion_evidence", "next_action", "operational_impact", "reopen_reason", "defer_skip", "feature_acceptance_requirements", "feature_acceptance"}
             if not isinstance(patch, Mapping) or set(patch) - allowed:
                 raise ValueError("card annotation contains immutable or unknown fields")
             if "interaction_chain" in patch:
                 patch = {**patch, "interaction_chain": _validate_chain(patch["interaction_chain"])}
             cards[gap_id].update(json.loads(_canonical(dict(patch))))
+            if "feature_acceptance_requirements" in patch:
+                cards[gap_id]["feature_acceptance_requirements"] = (
+                    validate_feature_acceptance_requirements(
+                        cards[gap_id]["feature_acceptance_requirements"]
+                    )
+                )
+            if "feature_acceptance" in patch:
+                cards[gap_id]["feature_acceptance"] = validate_feature_acceptance(
+                    cards[gap_id]["feature_acceptance"]
+                )
+            if "feature_acceptance_requirements" in cards[gap_id]:
+                decision = feature_acceptance_for_card(cards[gap_id])
+                cards[gap_id]["feature_acceptance_status"] = decision.status
+                cards[gap_id]["feature_acceptance_reasons"] = list(decision.reasons)
             _validate_current_card(cards[gap_id])
             annotation = {"event": "annotated", "timestamp": event["timestamp"], "actor": event["actor"], "note": note, "evidence": evidence, "patch": dict(patch)}
             cards[gap_id]["annotations"].append(annotation)
@@ -1390,6 +1438,18 @@ def project_events(
                 cards[gap_id]["defer_skip"] = dict(defer)
             if after == "reopened":
                 cards[gap_id]["reopen_reason"] = str(payload["reopen_reason"])
+                if "feature_acceptance_requirements" in cards[gap_id]:
+                    cards[gap_id]["feature_acceptance_status"] = "stale"
+                    cards[gap_id]["feature_acceptance_reasons"] = [
+                        "feature_acceptance_contradicted_by_reopen"
+                    ]
+            if after == "operationally_verified" and "feature_acceptance" in effective_payload:
+                cards[gap_id]["feature_acceptance"] = validate_feature_acceptance(
+                    effective_payload["feature_acceptance"]
+                )
+                decision = feature_acceptance_for_card(cards[gap_id])
+                cards[gap_id]["feature_acceptance_status"] = decision.status
+                cards[gap_id]["feature_acceptance_reasons"] = list(decision.reasons)
             cards[gap_id]["current_state"] = after
             history_row = {"event": "transition", "from": before, "to": after, "timestamp": event["timestamp"], "actor": event["actor"], "event_id": event["event_id"], "event_sha256": event["event_sha256"], "sequence": event["sequence"], "reason": reason, "evidence": evidence}
             for field in (
@@ -1397,6 +1457,7 @@ def project_events(
                 "operational_evidence", "replacement_gap_id", "authority",
                 "reopen_reason", "regression_strengthening", "defer_skip",
                 "boundary_evidence",
+                "feature_acceptance",
                 "contradicted_transition_event_sha256",
                 "closure_evidence",
             ):
@@ -1962,6 +2023,21 @@ def project_events(
                 if not card["control_resolution"].get("resolved")
             ),
             "card_control_scope_conflicts": sorted(control_scope_conflicts),
+            "cards_with_declared_feature_acceptance": sorted(
+                gap_id for gap_id, card in cards.items()
+                if "feature_acceptance_requirements" in card
+            ),
+            "cards_with_unmet_feature_acceptance": sorted(
+                gap_id for gap_id, card in cards.items()
+                if (
+                    "feature_acceptance_requirements" in card
+                    or (
+                        isinstance(card.get("required_runtime_features"), list)
+                        and card.get("required_runtime_features")
+                    )
+                )
+                and not feature_acceptance_for_card(card).verified
+            ),
             "typed_control_cards": sum(
                 1 for card in cards.values()
                 if card["control_resolution"].get("kind") == "typed_controls"
@@ -2111,16 +2187,30 @@ def _dashboard_index(snapshot: Mapping[str, Any], *, limit: int = 100) -> dict[s
     ]
     state_counts = dict(snapshot.get("state_counts", {}))
     resolved_states = {"closed", "operationally_verified", "superseded"}
+
+    def feature_resolved(item: Mapping[str, Any]) -> bool:
+        declares = (
+            "feature_acceptance_requirements" in item
+            or (
+                isinstance(item.get("required_runtime_features"), list)
+                and bool(item.get("required_runtime_features"))
+            )
+        )
+        return not declares or feature_acceptance_for_card(item).verified
+
+    def resolved(item: Mapping[str, Any]) -> bool:
+        return item.get("current_state") in resolved_states and feature_resolved(item)
+
     critical_high_blocker_ids = sorted(
         str(item.get("gap_id") or "")
         for item in cards
         if str(item.get("severity") or "").casefold()
         in {"blocker", "critical", "high"}
-        and item.get("current_state") not in resolved_states
+        and not resolved(item)
     )
     return {
         "count": len(cards),
-        "open_count": sum(1 for item in cards if item.get("current_state") not in resolved_states),
+        "open_count": sum(1 for item in cards if not resolved(item)),
         "retained_unclosed_count": sum(1 for item in cards if item.get("current_state") != "closed"),
         "status_counts": state_counts,
         "critical_high_blocker_ids": critical_high_blocker_ids,
@@ -2259,6 +2349,51 @@ def _build_head(
     return body, encoded
 
 
+def _build_delta_head(
+    current: Mapping[str, Any],
+    current_bytes: bytes,
+    base: Mapping[str, Any],
+    base_bytes: bytes,
+    *,
+    delta_relative: str,
+    delta_bytes: bytes,
+    delta_count: int,
+    fingerprint: Mapping[str, Any],
+    tail_event: Mapping[str, Any],
+    verification_basis: Mapping[str, Any],
+    previous_checkpoint_sha256: str | None,
+) -> tuple[dict[str, Any], bytes]:
+    head, _encoded = _build_head(
+        current,
+        base_bytes,
+        fingerprint=fingerprint,
+        tail_event=tail_event,
+        verification_basis=verification_basis,
+        previous_checkpoint_sha256=previous_checkpoint_sha256,
+    )
+    head.pop("checkpoint_sha256")
+    head.update(
+        {
+            "snapshot_event_count": base.get("event_count"),
+            "snapshot_head_event_sha256": base.get("head_event_sha256"),
+            "snapshot_ledger_size_bytes": base.get("ledger_size_bytes"),
+            "current_projection_sha256": hashlib.sha256(current_bytes).hexdigest(),
+            "delta_projection": {
+                "path": delta_relative,
+                "event_count": delta_count,
+                "size_bytes": len(delta_bytes),
+                "sha256": hashlib.sha256(delta_bytes).hexdigest(),
+                "authoritative": False,
+            },
+        }
+    )
+    head["checkpoint_sha256"] = _digest(head)
+    encoded = _encoded_json(head)
+    if len(encoded) > MAX_HEAD_BYTES:
+        raise ValueError("operational gap ledger compact head byte bound would be exceeded")
+    return head, encoded
+
+
 def _last_event_unlocked(root: Path) -> dict[str, Any] | None:
     path = _inside(root, root / LEDGER_RELATIVE)
     if not path.exists() or path.stat().st_size == 0:
@@ -2356,14 +2491,49 @@ def _read_checkpoint_once(
             or hashlib.sha256(snapshot_bytes).hexdigest() != head.get("snapshot_sha256")
         ):
             raise ValueError("operational gap ledger snapshot does not match its checkpoint")
-        if (
-            value.get("event_count") != head.get("event_count")
-            or value.get("head_event_sha256") != head.get("head_event_sha256")
-            or value.get("ledger_id") != head.get("ledger_id")
-            or value.get("ledger_size_bytes") != head["ledger_fingerprint"]["size_bytes"]
-        ):
-            raise ValueError("operational gap ledger snapshot state is stale")
-        snapshot = value
+        delta = head.get("delta_projection")
+        if isinstance(delta, Mapping):
+            if (
+                value.get("event_count") != head.get("snapshot_event_count")
+                or value.get("head_event_sha256") != head.get("snapshot_head_event_sha256")
+                or value.get("ledger_size_bytes") != head.get("snapshot_ledger_size_bytes")
+                or value.get("ledger_id") != head.get("ledger_id")
+            ):
+                raise ValueError("operational gap ledger base snapshot state is stale")
+            relative = str(delta.get("path") or "")
+            delta_path = _inside(root, root / relative)
+            delta_bytes = _read_bounded_regular(
+                delta_path, MAX_DELTA_CHECKPOINT_BYTES, "operational gap ledger delta projection"
+            )
+            if (
+                len(delta_bytes) != delta.get("size_bytes")
+                or hashlib.sha256(delta_bytes).hexdigest() != delta.get("sha256")
+            ):
+                raise ValueError("operational gap ledger delta projection hash is invalid")
+            rows = _parse_jsonl_bytes(delta_bytes)
+            if len(rows) != delta.get("event_count"):
+                raise ValueError("operational gap ledger delta projection count is invalid")
+            current = project_events(rows, base_snapshot=value)
+            sealed, current_bytes = _seal_snapshot(
+                current, ledger_size_bytes=head["ledger_fingerprint"]["size_bytes"]
+            )
+            if (
+                sealed.get("event_count") != head.get("event_count")
+                or sealed.get("head_event_sha256") != head.get("head_event_sha256")
+                or hashlib.sha256(current_bytes).hexdigest()
+                != head.get("current_projection_sha256")
+            ):
+                raise ValueError("operational gap ledger delta projection is stale")
+            snapshot = sealed
+        else:
+            if (
+                value.get("event_count") != head.get("event_count")
+                or value.get("head_event_sha256") != head.get("head_event_sha256")
+                or value.get("ledger_id") != head.get("ledger_id")
+                or value.get("ledger_size_bytes") != head["ledger_fingerprint"]["size_bytes"]
+            ):
+                raise ValueError("operational gap ledger snapshot state is stale")
+            snapshot = value
     if _read_bounded_regular(
         head_path, MAX_HEAD_BYTES, "operational gap ledger compact head"
     ) != head_a_bytes:
@@ -2493,7 +2663,12 @@ def guard_work_admission(
     }
 
 
-def _validate_transition_admission(card: Mapping[str, Any], payload: Mapping[str, Any]) -> None:
+def _validate_transition_admission(
+    card: Mapping[str, Any],
+    payload: Mapping[str, Any],
+    *,
+    require_declared_feature_acceptance: bool = False,
+) -> None:
     after = str(payload.get("to_state") or "")
     if after == "implemented":
         _evidence(payload.get("implementation_evidence"), "implementation_evidence")
@@ -2516,6 +2691,26 @@ def _validate_transition_admission(card: Mapping[str, Any], payload: Mapping[str
         if unresolved:
             raise ValueError(f"operationally_verified requires complete evidence-bound interaction stages: {unresolved}")
         _evidence(payload.get("operational_evidence"), "operational_evidence")
+        decision = feature_acceptance_for_card(
+            card, payload.get("feature_acceptance")
+        )
+        declares_feature_acceptance = (
+            "feature_acceptance_requirements" in card
+            or (
+                isinstance(card.get("required_runtime_features"), list)
+                and bool(card.get("required_runtime_features"))
+            )
+            or "feature_acceptance" in payload
+        )
+        if require_declared_feature_acceptance and not declares_feature_acceptance:
+            raise ValueError(
+                "operationally_verified requires declared feature acceptance requirements"
+            )
+        if declares_feature_acceptance and not decision.verified:
+            raise ValueError(
+                "operationally_verified requires current typed feature acceptance: "
+                + ", ".join(decision.reasons)
+            )
         if card.get("classification") in {
             "host-owned", "intentionally-unsupported", "out-of-scope"
         }:
@@ -2531,6 +2726,13 @@ def _validate_transition_admission(card: Mapping[str, Any], payload: Mapping[str
         authority = str(payload.get("authority") or "")
         if not GAP_ID_PATTERN.fullmatch(replacement) or not authority.strip():
             raise ValueError("superseded requires replacement_gap_id and authority")
+    elif after == "closed" and "feature_acceptance_requirements" in card:
+        decision = feature_acceptance_for_card(card)
+        if not decision.verified:
+            raise ValueError(
+                "closed requires current typed feature acceptance: "
+                + ", ".join(decision.reasons)
+            )
     elif after == "reopened":
         strengthening = payload.get("regression_strengthening")
         if not isinstance(strengthening, list) or not strengthening or any(not isinstance(item, str) or not item.strip() for item in strengthening):
@@ -2890,6 +3092,11 @@ def _prepare_event(
         after = str(prepared_payload.get("to_state") or "")
         if before != card.get("current_state") or not _transition_allowed(before, after):
             raise ValueError(f"invalid card transition {gap_id}: {before} -> {after}")
+        _validate_transition_admission(
+            card,
+            prepared_payload,
+            require_declared_feature_acceptance=(after == "operationally_verified"),
+        )
     if event_type in {"control_disposition", "control_disposition_revised"}:
         disposition = str(
             prepared_payload.get(
@@ -3189,16 +3396,63 @@ def append_events(
         )
         if actual_fingerprint["size_bytes"] != predicted_size:
             raise OSError("operational gap ledger append size is inconsistent")
-        published = _write_snapshot_unlocked(root, current, predicted_size)
-        published_bytes = _encoded_json(published)
-        _head, head_bytes = _build_head(
-            published,
-            published_bytes,
-            fingerprint=actual_fingerprint,
-            tail_event=events[-1],
-            verification_basis=basis,
-            previous_checkpoint_sha256=previous_checkpoint,
-        )
+        snapshot_path = _inside(root, root / SNAPSHOT_RELATIVE)
+        existing_snapshot_bytes = snapshot_path.read_bytes() if snapshot_path.is_file() else b""
+        if len(existing_snapshot_bytes) >= DELTA_CHECKPOINT_THRESHOLD_BYTES:
+            base_snapshot = json.loads(existing_snapshot_bytes)
+            prior_delta = b""
+            prior_count = 0
+            if predecessor and isinstance(predecessor.get("delta_projection"), Mapping):
+                projection = predecessor["delta_projection"]
+                prior_path = _inside(root, root / str(projection.get("path") or ""))
+                prior_delta = _read_bounded_regular(
+                    prior_path, MAX_DELTA_CHECKPOINT_BYTES, "operational gap ledger prior delta"
+                )
+                prior_count = int(projection.get("event_count") or 0)
+            delta_bytes = prior_delta + appended
+            if len(delta_bytes) > MAX_DELTA_CHECKPOINT_BYTES:
+                published = _write_snapshot_unlocked(root, current, predicted_size)
+                published_bytes = _encoded_json(published)
+                _head, head_bytes = _build_head(
+                    published,
+                    published_bytes,
+                    fingerprint=actual_fingerprint,
+                    tail_event=events[-1],
+                    verification_basis=basis,
+                    previous_checkpoint_sha256=previous_checkpoint,
+                )
+            else:
+                delta_sha = hashlib.sha256(delta_bytes).hexdigest()
+                delta_relative = (DELTA_DIRECTORY_RELATIVE / f"{delta_sha}.jsonl").as_posix()
+                delta_path = _inside(root, root / delta_relative)
+                delta_path.parent.mkdir(parents=True, exist_ok=True)
+                if not delta_path.exists():
+                    _write_bytes_atomically(delta_path, delta_bytes)
+                published, published_bytes = _seal_snapshot(current, ledger_size_bytes=predicted_size)
+                _head, head_bytes = _build_delta_head(
+                    published,
+                    published_bytes,
+                    base_snapshot,
+                    existing_snapshot_bytes,
+                    delta_relative=delta_relative,
+                    delta_bytes=delta_bytes,
+                    delta_count=prior_count + len(events),
+                    fingerprint=actual_fingerprint,
+                    tail_event=events[-1],
+                    verification_basis=basis,
+                    previous_checkpoint_sha256=previous_checkpoint,
+                )
+        else:
+            published = _write_snapshot_unlocked(root, current, predicted_size)
+            published_bytes = _encoded_json(published)
+            _head, head_bytes = _build_head(
+                published,
+                published_bytes,
+                fingerprint=actual_fingerprint,
+                tail_event=events[-1],
+                verification_basis=basis,
+                previous_checkpoint_sha256=previous_checkpoint,
+            )
         _write_bytes_atomically(_inside(root, root / HEAD_RELATIVE), head_bytes)
         return events
 
@@ -3350,3 +3604,111 @@ def write_snapshot(root: Path) -> dict[str, Any]:
         )
         _write_bytes_atomically(_inside(root, root / HEAD_RELATIVE), head_bytes)
         return published
+
+
+def migrate_ledger_segments(root: Path, *, segment_events: int = 1000) -> dict[str, Any]:
+    """Publish an immutable, predecessor-bound segmentation without replacing JSONL."""
+    root = root.resolve(strict=True)
+    if not 1 <= segment_events <= MAX_BATCH_EVENTS:
+        raise ValueError("ledger segment size is outside the bounded event range")
+    events = read_events(root)
+    projected = project_events(events)
+    old_fingerprint = _ledger_fingerprint(root)
+    directory = _inside(root, root / SEGMENT_DIRECTORY_RELATIVE)
+    manifest_path = _inside(root, root / SEGMENT_MANIFEST_RELATIVE)
+    directory.mkdir(parents=True, exist_ok=True)
+    segments = []
+    for offset in range(0, len(events), segment_events):
+        rows = events[offset : offset + segment_events]
+        data = b"".join(
+            json.dumps(row, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode("utf-8") + b"\n"
+            for row in rows
+        )
+        content = hashlib.sha256(data).hexdigest()
+        target = directory / f"{content}.jsonl"
+        if target.exists() and target.read_bytes() != data:
+            raise RuntimeError("immutable ledger segment collision")
+        if not target.exists():
+            _write_bytes_atomically(target, data)
+        segments.append(
+            {
+                "first_sequence": rows[0]["sequence"],
+                "last_sequence": rows[-1]["sequence"],
+                "event_count": len(rows),
+                "first_previous_event_sha256": rows[0]["previous_event_sha256"],
+                "head_event_sha256": rows[-1]["event_sha256"],
+                "content_sha256": content,
+                "bytes": len(data),
+            }
+        )
+    body = {
+        "schema_version": "px.operational-gap-ledger-segments/1.0",
+        "legacy_ledger": LEDGER_RELATIVE.as_posix(),
+        "legacy_ledger_sha256": old_fingerprint["sha256"],
+        "legacy_ledger_bytes": old_fingerprint["size_bytes"],
+        "event_count": len(events),
+        "head_event_sha256": projected["head_event_sha256"],
+        "segment_event_limit": segment_events,
+        "segments": segments,
+        "legacy_retained": True,
+        "hot_projection_authoritative": False,
+    }
+    manifest = {**body, "segment_root_sha256": _digest(body)}
+    encoded = _encoded_json(manifest)
+    if manifest_path.exists() and manifest_path.read_bytes() != encoded:
+        raise RuntimeError("ledger segmentation identity already exists with different bytes")
+    if not manifest_path.exists():
+        _write_bytes_atomically(manifest_path, encoded)
+    report = validate_ledger_segments(root)
+    if not report["valid"]:
+        raise RuntimeError("published ledger segments failed equivalence validation")
+    return {**manifest, "validation": report}
+
+
+def validate_ledger_segments(root: Path) -> dict[str, Any]:
+    """Verify segment bytes, ancestry, order, and exact legacy equivalence."""
+    root = root.resolve(strict=True)
+    try:
+        manifest = json.loads(
+            _inside(root, root / SEGMENT_MANIFEST_RELATIVE).read_text(encoding="utf-8")
+        )
+        claimed = manifest.pop("segment_root_sha256")
+        if claimed != _digest(manifest):
+            raise ValueError("segment manifest hash mismatch")
+        events: list[dict[str, Any]] = []
+        for segment in manifest["segments"]:
+            path = _inside(
+                root,
+                root / SEGMENT_DIRECTORY_RELATIVE / f"{segment['content_sha256']}.jsonl",
+            )
+            data = path.read_bytes()
+            if (
+                len(data) != segment["bytes"]
+                or hashlib.sha256(data).hexdigest() != segment["content_sha256"]
+            ):
+                raise ValueError("segment content mismatch")
+            rows = [json.loads(line) for line in data.splitlines() if line.strip()]
+            if len(rows) != segment["event_count"]:
+                raise ValueError("segment event count mismatch")
+            events.extend(rows)
+        legacy = read_events(root)
+        if events != legacy:
+            raise ValueError("segmented events differ from retained legacy ledger")
+        projected = project_events(events)
+        fingerprint = _ledger_fingerprint(root)
+        if (
+            fingerprint["sha256"] != manifest["legacy_ledger_sha256"]
+            or fingerprint["size_bytes"] != manifest["legacy_ledger_bytes"]
+            or len(events) != manifest["event_count"]
+            or projected["head_event_sha256"] != manifest["head_event_sha256"]
+        ):
+            raise ValueError("segment manifest differs from legacy identity")
+        return {
+            "valid": True,
+            "event_count": len(events),
+            "head_event_sha256": projected["head_event_sha256"],
+            "segment_count": len(manifest["segments"]),
+            "legacy_retained": True,
+        }
+    except (OSError, KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
+        return {"valid": False, "error": str(error)}

@@ -59,7 +59,9 @@ def test_historical_corrective_release_stays_closed_after_intake_validation():
             "preserve the validated development tree"
         )
     else:
-        assert "A08" in state["checkpoint"]["next_safe_action"]
+        active_card = state["work"]["active_punch_card"]
+        assert active_card
+        assert active_card in state["checkpoint"]["next_safe_action"]
     assert any(
         "REL-013 closed after two matching 4,030-file" in fact
         for fact in state["knowledge"]["facts"]

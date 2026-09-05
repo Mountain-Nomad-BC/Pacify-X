@@ -1,0 +1,65 @@
+{
+  "card_id": "PX-EFF-002",
+  "title": "Semantic revision fingerprint",
+  "severity": "high",
+  "type": "integration",
+  "status": "planned",
+  "root_cause": "Byte identity alone causes avoidable invalidation while semantic claims can silently drift under superficial equality.",
+  "source_requirement": "Compute a bounded semantic fingerprint separately from the immutable byte hash.",
+  "live_evidence": [
+    "C:/Users/Ben/Downloads/px looks/PX_COMMENCEMENT_ORCHESTRATION_2026-09-04.md#PX-EFF-002"
+  ],
+  "files": [
+    "runtime/semantic_revision.py",
+    "tests/test_semantic_revision.py"
+  ],
+  "symbols": [
+    "compute_semantic_revision",
+    "SemanticRevision"
+  ],
+  "dependencies": [
+    "PX-EFF-001"
+  ],
+  "downstream_consumers": [
+    "PX-EFF-003",
+    "PX-LEDGER-002"
+  ],
+  "change_classes": [
+    "SEMANTIC",
+    "SCHEMA"
+  ],
+  "implementation_steps": [
+    "Define supported canonicalizers for initial artifact types.",
+    "Always retain byte hash alongside semantic hash.",
+    "Version canonicalization rules.",
+    "Fail closed to byte revision for unsupported types."
+  ],
+  "negative_cases": [
+    "Whitespace-only change alters supported semantic hash.",
+    "Behavioral token change leaves semantic hash unchanged.",
+    "Unsupported artifact receives guessed semantic hash.",
+    "Canonicalizer revision omitted."
+  ],
+  "focused_tests": [
+    "Semantic/byte distinction vectors."
+  ],
+  "affected_tests": [
+    "Dependency invalidation and affected proof tests."
+  ],
+  "affected_sections": [
+    "testing-governance"
+  ],
+  "projection_invalidations": [
+    "dependency revision keys",
+    "evidence cache keys"
+  ],
+  "evidence_required": [
+    "Canonicalization version and positive/negative fingerprint vectors."
+  ],
+  "rollback": "Use byte hashes exclusively; never erase original byte identities.",
+  "acceptance_criteria": [
+    "Byte and semantic revisions remain separate and visible.",
+    "Unsupported types safely use byte revision."
+  ],
+  "completion_evidence": []
+}

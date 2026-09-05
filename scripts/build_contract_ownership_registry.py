@@ -8,6 +8,48 @@ from pathlib import Path
 
 
 ROOT_OWNERS = {
+    "agent_handoff_packet.schema.json": (
+        "runtime/agent_handoff.py",
+        ["runtime/agent_handoff.py", "runtime/agent_runtime.py"],
+        "agent_runtime_boundary",
+        ["tests/test_agent_handoff.py", "tests/test_agent_governed_integration.py"],
+    ),
+    "capability_semantic_profile.schema.json": (
+        "runtime/capability_semantics.py",
+        ["runtime/capability_semantics.py", "runtime/semantic_index.py"],
+        "runtime_enforced",
+        ["tests/test_capability_semantics.py"],
+    ),
+    "foundry_candidate_skill.schema.json": (
+        "runtime/foundry_studio_bridge.py",
+        ["runtime/foundry_studio_bridge.py", "runtime/knowledge_foundry.py"],
+        "runtime_enforced",
+        ["tests/test_foundry_studio_bridge.py"],
+    ),
+    "memory_query_plan.schema.json": (
+        "runtime/memory_broker.py",
+        ["runtime/memory_broker.py", "runtime/agent_runtime.py"],
+        "memory_lifecycle_runtime_boundary",
+        ["tests/test_memory_broker.py", "tests/test_agent_governed_integration.py"],
+    ),
+    "model_attachment.schema.json": (
+        "runtime/model_attachment.py",
+        ["runtime/model_attachment.py", "runtime/execution_placement.py"],
+        "runtime_enforced",
+        ["tests/test_model_attachment.py", "tests/test_execution_placement.py"],
+    ),
+    "provider_execution_policy.schema.json": (
+        "runtime/provider_gateway.py",
+        ["runtime/provider_gateway.py", "extension/src/providerExecutionPolicy.js"],
+        "runtime_enforced",
+        ["tests/test_provider_gateway.py", "extension/tests/provider-execution-policy.test.js"],
+    ),
+    "task_execution_plan.schema.json": (
+        "runtime/task_execution_plan.py",
+        ["runtime/task_execution_plan.py", "runtime/capability_routing.py"],
+        "runtime_enforced",
+        ["tests/test_task_execution_plan.py"],
+    ),
     "local-model-runtime.schema.json": (
         "runtime/local_model_runtime.py",
         ["runtime/local_model_runtime.py"],

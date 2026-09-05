@@ -22,11 +22,13 @@ from .event_ledger import append_chained_event
 from .project_stream_controls import (
     ScopeEnvelope,
     SwitchEvidence,
+    TransferEvidenceReferences,
     TransferPackage,
     authorize_transfer,
     validate_project_switch,
 )
 from .scheduler import ResourcePolicy, ResourceScheduler
+from .trusted_evidence import TrustedEvidenceResolver
 
 
 def _sha(path: Path) -> str:
@@ -253,11 +255,13 @@ def import_transfer(
     destination: Path,
     package: TransferPackage,
     ledger: Path,
+    evidence_references: TransferEvidenceReferences,
+    evidence_resolver: TrustedEvidenceResolver,
 ) -> dict[str, object]:
     root = workspace_root.resolve()
     source = source.resolve()
     destination = destination.resolve()
-    decision = authorize_transfer(package)
+    decision = authorize_transfer(package, evidence_references, evidence_resolver)
     reasons = list(decision.reasons)
     if (
         not root.is_dir()

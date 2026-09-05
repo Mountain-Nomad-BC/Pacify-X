@@ -36,6 +36,10 @@ const { ListenerHealth, ListenerRegistrationGate, buildActivityAttestation, list
 const { CanonicalEventPublisher } = require('./canonicalEventPublisher');
 const { ActivationTransaction } = require('./activationTransaction');
 const {
+  buildProviderExecutionPolicy,
+  providerExecutionPolicyReport
+} = require('./providerExecutionPolicy');
+const {
   readCoordination, createParallelPlan, claimTask, renewClaim, recordProgress,
   reconcileTask, releaseTask, captureMemory, readMemoryTelemetry, taskHandoff
 } = require('./coordinationManager');
@@ -1996,4 +2000,15 @@ function deactivate() {
   activeRuntime = undefined; currentEnvironment = undefined; environmentLifecycleState = undefined; extensionLifecycleState = undefined; extensionLifecycleStorage = undefined; extensionPhysicalCatalogState = undefined; pendingExtensionEnablementObservation = undefined;
 }
 
-module.exports = { activate, deactivate, portableContextSnapshot, liveContextEnvelope, getHtml, actorIdentity, validationCacheKey, isDisposedWebviewError };
+module.exports = {
+  activate,
+  deactivate,
+  portableContextSnapshot,
+  liveContextEnvelope,
+  getHtml,
+  actorIdentity,
+  validationCacheKey,
+  isDisposedWebviewError,
+  buildProviderExecutionPolicy,
+  providerExecutionPolicyReport
+};

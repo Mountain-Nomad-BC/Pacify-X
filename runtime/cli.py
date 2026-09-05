@@ -231,6 +231,7 @@ def _refresh_stale_groups_for_full_profile(
         ),
         run_id=f"test-profile-group-refresh-{uuid4().hex}",
         lane_id="profile:group-refresh",
+        manage_process_temp=True,
     )
     supervision_contained = (
         execution.get("supervision_status") == "exited"

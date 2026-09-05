@@ -3533,6 +3533,60 @@ def validate_project_map(
     }
 
 
+def project_routing_features(
+    project: Path,
+    manifest: Mapping[str, object],
+    retrieval_result: Mapping[str, object],
+    *,
+    max_features: int = 128,
+) -> dict[str, object]:
+    """Extract the only project-map facts allowed to influence routing.
+
+    The extractor accepts metadata already produced by the verified project
+    mapper.  Source bodies, arbitrary configuration values, and foreign map
+    facts are deliberately excluded.
+    """
+    if max_features < 1 or max_features > 256:
+        raise ValueError("project routing feature budget must be between 1 and 256")
+    root = project.resolve()
+    recorded_root = Path(str(manifest.get("project_root", ""))).resolve()
+    if recorded_root != root:
+        raise ValueError("foreign-project map cannot influence routing")
+    revision = str(manifest.get("map_revision", ""))
+    if re.fullmatch(r"[a-f0-9]{64}", revision) is None:
+        raise ValueError("project-map revision is missing or invalid")
+    if retrieval_result.get("map_revision") != revision:
+        raise ValueError("stale or substituted project-map retrieval result")
+    hits = retrieval_result.get("hits", ())
+    if not isinstance(hits, list):
+        raise ValueError("project-map retrieval hits must be a list")
+    allowed: set[str] = set()
+    hit_ids: list[str] = []
+    for hit in hits[:25]:
+        if not isinstance(hit, Mapping):
+            raise ValueError("project-map retrieval hit must be an object")
+        hit_ids.append(str(hit.get("id", "")))
+        values = [hit.get(name, "") for name in ("kind", "title", "path", "summary")]
+        reasons = hit.get("reasons", ())
+        if isinstance(reasons, (list, tuple)):
+            values.extend(reasons)
+        allowed.update(_tokenize(*values))
+    tokens = tuple(sorted(allowed)[:max_features])
+    payload = {
+        "project_scope_sha256": hashlib.sha256(
+            root.as_posix().casefold().encode("utf-8")
+        ).hexdigest(),
+        "map_revision": revision,
+        "source_inventory_sha256": str(
+            manifest.get("source_inventory_sha256", "")
+        ),
+        "feature_tokens": tokens,
+        "hit_ids": tuple(sorted(set(filter(None, hit_ids)))),
+        "feature_policy": "px.project-routing-features/1.0",
+    }
+    return {**payload, "feature_revision": _stable_hash(payload)}
+
+
 def project_map_status(
     project: Path, *, verify_integrity: bool = True
 ) -> dict[str, object]:

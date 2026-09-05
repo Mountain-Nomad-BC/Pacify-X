@@ -1,0 +1,75 @@
+{
+  "card_id": "PX-CORE-001",
+  "title": "TaskExecutionPlan",
+  "severity": "critical",
+  "type": "integration",
+  "status": "planned",
+  "root_cause": "Router, CLI, extension, Studio, workflow, agent, and provider front doors do not compile to one immutable execution contract.",
+  "source_requirement": "Add a validated, persisted, hash-bound TaskExecutionPlan that describes but never executes work.",
+  "live_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#PX-AUD-012"
+  ],
+  "files": [
+    "runtime/task_execution_plan.py",
+    "contracts/task_execution_plan.schema.json",
+    "runtime/capability_routing.py",
+    "tests/test_task_execution_plan.py"
+  ],
+  "symbols": [
+    "TaskExecutionPlan",
+    "compile_task_execution_plan",
+    "validate_task_execution_plan"
+  ],
+  "dependencies": [
+    "PX-COMM-006"
+  ],
+  "downstream_consumers": [
+    "PX-ROUTE-005",
+    "PX-MODEL-001",
+    "PX-AGENT-001",
+    "PX-MEM-001",
+    "PX-AGENT-002",
+    "PX-SYS-002"
+  ],
+  "change_classes": [
+    "SCHEMA",
+    "AUTHORITY",
+    "BEHAVIORAL"
+  ],
+  "implementation_steps": [
+    "Define canonical fields and schema.",
+    "Normalize and hash plans deterministically.",
+    "Persist immutable plans under project control state.",
+    "Adapt current router output into a plan without executing."
+  ],
+  "negative_cases": [
+    "Mutable plan after hashing.",
+    "Missing project/revision/effect/authority binding.",
+    "Stale projection revision.",
+    "Execution attempted from plan module."
+  ],
+  "focused_tests": [
+    "tests/test_task_execution_plan.py"
+  ],
+  "affected_tests": [
+    "Routing, agent runtime, workflow Studio, provider gateway, and CLI tests."
+  ],
+  "affected_sections": [
+    "testing-governance",
+    "dashboard-extension"
+  ],
+  "projection_invalidations": [
+    "task plan receipts",
+    "routing package receipts",
+    "world state"
+  ],
+  "evidence_required": [
+    "Schema vectors, deterministic hash vectors, persistence and no-execute proof."
+  ],
+  "rollback": "Keep old router output path available while removing only the plan adapter/projection.",
+  "acceptance_criteria": [
+    "Every compiled plan is immutable, validated, hash-bound, and persisted.",
+    "The module performs no effectful execution."
+  ],
+  "completion_evidence": []
+}

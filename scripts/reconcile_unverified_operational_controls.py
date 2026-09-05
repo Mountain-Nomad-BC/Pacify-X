@@ -26,6 +26,7 @@ from runtime.operational_gap_ledger import (
     control_disposition_sha256,
     read_snapshot,
 )
+from runtime.evidence_claims import feature_acceptance_for_card
 
 
 INVENTORY = "registry/operational_surface_inventory.json"
@@ -245,7 +246,7 @@ def _simulate_inventory_revisions(
 def plan_operational_card_reconciliations(
     snapshot: dict[str, object], evidence_reference: str,
 ) -> tuple[list[dict[str, object]], list[str]]:
-    """Advance only cards whose full historical control scope is current and operational."""
+    """Advance only cards with both current feature and control evidence."""
     cards = snapshot.get("cards")
     surfaces = snapshot.get("surfaces")
     if not isinstance(cards, dict) or not isinstance(surfaces, dict):
@@ -267,11 +268,18 @@ def plan_operational_card_reconciliations(
     selected: list[str] = []
     for gap_id, controls in sorted(bindings.items()):
         card = cards.get(gap_id)
+        feature_acceptance = (
+            feature_acceptance_for_card(card)
+            if isinstance(card, dict)
+            else None
+        )
         if (
             not isinstance(card, dict)
             or card.get("current_state") in CARD_COMPLETION_STATES
             or card.get("classification") in {"host-owned", "intentionally-unsupported", "out-of-scope"}
             or not controls
+            or feature_acceptance is None
+            or not feature_acceptance.verified
             or any(
                 disposition.get("disposition") != "operational"
                 or not isinstance(disposition.get("observation"), dict)
@@ -336,6 +344,7 @@ def plan_operational_card_reconciliations(
                 payload["integration_evidence"] = evidence
             elif next_state == "operationally_verified":
                 payload["operational_evidence"] = evidence
+                payload["feature_acceptance"] = card["feature_acceptance"]
             events.append({"event_type": "card_transition", "actor": ACTOR, "timestamp": _now(), "payload": payload})
             state = next_state
     return events, selected

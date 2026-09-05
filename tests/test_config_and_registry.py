@@ -7,6 +7,7 @@ import unittest
 
 from runtime.config import load_startup_config
 from runtime.registry import validate_registry
+from scripts.reconcile_active_capability_hashes import reconcile
 
 
 ROOT = Path(__file__).parents[1]
@@ -61,6 +62,33 @@ class ConfigAndRegistryTests(unittest.TestCase):
             result = validate_registry(target)
             self.assertFalse(result["valid"])
             self.assertTrue(any("ledger" in error for error in result["errors"]))
+
+    def test_active_contract_hash_reconciliation_is_explicit_and_exact(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            target = Path(directory)
+            implementation = target / "runtime/example.py"
+            contract = target / "registry/skills/example.json"
+            implementation.parent.mkdir(parents=True)
+            contract.parent.mkdir(parents=True)
+            implementation.write_text("VALUE = 1\n", encoding="utf-8")
+            contract.write_text('{"id":"example","hash":"stale"}\n', encoding="utf-8")
+            (target / "registry/capability_map.json").write_text(
+                json.dumps(
+                    {
+                        "active_capabilities": [
+                            {
+                                "id": "example",
+                                "contract": "registry/skills/example.json",
+                                "implementation": "runtime/example.py",
+                            }
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+            self.assertFalse(reconcile(target, check=True)["valid"])
+            self.assertFalse(reconcile(target, check=False)["valid"])
+            self.assertTrue(reconcile(target, check=True)["valid"])
 
 
 if __name__ == "__main__":

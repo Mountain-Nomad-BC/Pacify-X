@@ -5,31 +5,46 @@
     "approved_effects": [
       "read_local",
       "write_workspace",
-      "execute_local",
-      "install_local_dependencies"
+      "execute_local_focused"
     ],
     "budgets": {
       "maximum_heavy_lanes": 1,
       "maximum_selected_skills": 3
     },
     "changed_file_sha256": {},
-    "degraded_components": [],
-    "failures": [],
-    "next_safe_action": "complete A08 by repairing the owned full-profile failures and latency, then validate the unchanged tree before remaining punch cards",
-    "open_circuits": [],
+    "degraded_components": [
+      "feature-acceptance",
+      "coordination-state-conformance",
+      "semantic-routing",
+      "knowledge-decay-invalidation",
+      "hybrid-retrieval",
+      "model-attachment",
+      "agency-studio-memory-handoff",
+      "foundry-formulas",
+      "skill-projection-invalidation",
+      "project-transfer-authority",
+      "operational-ledger-scaling"
+    ],
+    "failures": [
+      "final85 full profile was interrupted and the campaign is terminal"
+    ],
+    "next_safe_action": "finish the expanded 58-test downstream cone for PX-ASSURE-001 and close only after all mapped consumers pass",
+    "open_circuits": [
+      "release validation and all later broad stages remain closed until repair freeze and successor-campaign admission"
+    ],
     "repository": {
       "branch": "main",
-      "commit": "98470f6d70fb6b2c52530136004485407f5caa6b",
+      "commit": "19761e2a769885d6df25dc448c673e339eaf9c8c",
       "root": ".",
       "working_tree_sha256": null
     },
     "retries": [],
-    "revision": 40,
+    "revision": 43,
     "runtime_version": "0.7.0",
     "tool_versions": {},
     "validation": {
-      "tests": "extension 0.5.4: 183 passed; exact installed VSIX host passed; five section receipts current; raw/full Python certification timed out and remains open; runtime CLI validation passed before current evidence refresh",
-      "verifier": "evidence/full-unittest-timeout-20260812.json"
+      "tests": "PX-ASSURE-001 focused and initial downstream proof is green; fresh impact mapping expanded the release-artifact compatibility cone to 58 tests, so closure remains withheld",
+      "verifier": ".engineering-bootstrap/project-map/map-receipt.json"
     },
     "versions": {
       "assumptions": 13,
@@ -99,7 +114,7 @@
     }
   ],
   "pending_approvals": [
-    "deployment, credential use, billable provider calls, destructive cleanup, and release publication remain unauthorized"
+    "release publication is user-authorized as the final objective but remains procedurally deferred until repair freeze and one successor campaign; credential disclosure, billable provider calls, and destructive cleanup remain unauthorized"
   ],
     "risks": [
     {
@@ -156,13 +171,13 @@
       "The 13-file audit repair pack closed on two matching snapshots after a 30-second stability interval at tree SHA-256 e4c7e20be030148b55afd1da861632f945c7c7812b61f572c6c17e4f4ca1f369 and moved to recoverable external quarantine without hard deletion."
     ],
     "unknowns": [
-      "The final current-tree validation result remains unknown until A08 closes against one unchanged digest.",
-      "Final current-tree certification remains unknown until A08 and its locally attainable prerequisite cards close against one unchanged digest."
+      "The successor current-tree validation result remains unknown until all 37 repair/integration/proof cards are downstream green and one repair freeze binds an unchanged digest.",
+      "Final publication remains contingent on one clean successor campaign and real external macOS execution authority."
     ]
   },
   "lifecycle": {
-    "next_action": "complete A08 by repairing the owned full-profile failures and latency, then validate the unchanged tree before remaining punch cards",
-    "phase": "remaining-punch-card-implementation",
+    "next_action": "finish the expanded 58-test downstream cone for PX-ASSURE-001 and close only after all mapped consumers pass",
+    "phase": "cohesion-closure-repair-implementation",
     "status": "repair-in-progress"
   },
   "project": {
@@ -172,7 +187,7 @@
   },
   "schema_version": "1.0",
   "work": {
-    "active_punch_card": "A08",
+    "active_punch_card": "PX-ASSURE-001",
     "backlog": [
       {
         "id": "REL-008-LAST-ROUND",
@@ -247,6 +262,11 @@
       {
         "id": "A08-CURRENT-TREE-CERTIFICATION",
         "outcome": "All state, maps, evidence, tests, distribution projections, and acceptance hashes agree on one unchanged product digest.",
+        "status": "superseded"
+      },
+      {
+        "id": "COHESION-CLOSURE-20260904",
+        "outcome": "All 43 source-bound audit, repair, cohesion, proof, authority, and scaling cards reach downstream green before exactly one successor release campaign.",
         "status": "active"
       }
     ],
@@ -320,10 +340,11 @@
     "objective": "Deliver a model-agnostic drop-in bootstrap for governed new-project and existing-project engineering loops with durable management, lazy skills, bounded orchestration, and evidence-backed completion.",
     "scope": {
       "excluded": [
-        "automatic provider or model selection",
         "credential ownership",
         "unapproved external deployment",
-        "certification of future user applications"
+        "billable provider execution during repair",
+        "destructive cleanup",
+        "the seven explicitly deferred post-release enhancements"
       ],
       "included": [
         "new-project commissioning",
@@ -331,6 +352,8 @@
         "project management and compact dossier",
         "metadata-only startup and explicit skill hydration",
         "bounded orchestration, evidence, recovery, and quarantine",
+        "canonical task, semantic, model, hardware, agent, memory, handoff, Foundry, skill, graph, authority, and affected-proof cohesion",
+        "automatic governed provider and model attachment without billable repair-wave calls",
         "source and installed-wheel certification"
       ]
     }

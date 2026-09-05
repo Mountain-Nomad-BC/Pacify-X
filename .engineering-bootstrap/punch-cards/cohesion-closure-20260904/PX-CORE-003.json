@@ -1,0 +1,71 @@
+{
+  "card_id": "PX-CORE-003",
+  "title": "Capability maturity model",
+  "severity": "high",
+  "type": "integration",
+  "status": "planned",
+  "root_cause": "Capability labels conflate knowledge, contract, executable, behavioral, operational, and external-authority proof.",
+  "source_requirement": "Derive L0-L6 maturity only from typed evidence and current dependency revisions.",
+  "live_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/current-owners-and-gaps.json"
+  ],
+  "files": [
+    "runtime/capability_maturity.py",
+    "registry/capability_maturity_policy.json",
+    "tests/test_capability_maturity.py"
+  ],
+  "symbols": [
+    "evaluate_capability_maturity",
+    "validate_maturity_policy"
+  ],
+  "dependencies": [
+    "PX-ASSURE-001"
+  ],
+  "downstream_consumers": [
+    "PX-ROUTE-001",
+    "PX-MODEL-001",
+    "PX-FOUNDRY-002",
+    "PX-SKILL-001"
+  ],
+  "change_classes": [
+    "SCHEMA",
+    "AUTHORITY",
+    "BEHAVIORAL"
+  ],
+  "implementation_steps": [
+    "Define L0-L6 requirements.",
+    "Map evidence types and authority classes to levels.",
+    "Cap maturity when dependencies are stale.",
+    "Expose reasons and missing evidence."
+  ],
+  "negative_cases": [
+    "Name implies maturity without evidence.",
+    "Contained evidence yields L6.",
+    "Stale L4 evidence remains L4.",
+    "Missing lower level skipped."
+  ],
+  "focused_tests": [
+    "tests/test_capability_maturity.py"
+  ],
+  "affected_tests": [
+    "Semantic index, Skill Studio, operational ledger, and routing tests."
+  ],
+  "affected_sections": [
+    "testing-governance",
+    "structural-adversarial"
+  ],
+  "projection_invalidations": [
+    "skill catalog maturity",
+    "semantic profiles",
+    "world state"
+  ],
+  "evidence_required": [
+    "Level boundary vectors and stale-evidence downgrade receipt."
+  ],
+  "rollback": "Remove derived maturity projection; preserve underlying evidence.",
+  "acceptance_criteria": [
+    "Maturity is monotonic by evidence requirements and cannot exceed current proof.",
+    "L6 requires external-authority certification."
+  ],
+  "completion_evidence": []
+}

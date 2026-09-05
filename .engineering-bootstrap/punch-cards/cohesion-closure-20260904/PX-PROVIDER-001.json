@@ -1,0 +1,76 @@
+{
+  "card_id": "PX-PROVIDER-001",
+  "title": "Provider/model execution policy convergence",
+  "severity": "critical",
+  "type": "integration",
+  "status": "planned",
+  "root_cause": "Python provider execution and extension local/provider paths do not share one semantic authority, egress, cost, fallback, and evidence contract.",
+  "source_requirement": "Converge policy/evidence semantics across languages without forcing one implementation language.",
+  "live_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/current-owners-and-gaps.json"
+  ],
+  "files": [
+    "runtime/provider_gateway.py",
+    "runtime/model_attachment.py",
+    "extension/src/extension.js",
+    "contracts/provider_execution_policy.schema.json",
+    "tests/test_provider_gateway.py",
+    "extension/test/providerExecutionPolicy.test.js"
+  ],
+  "symbols": [
+    "execute_provider_request",
+    "ModelAttachment"
+  ],
+  "dependencies": [
+    "PX-AGENT-003",
+    "PX-ASSURE-002",
+    "PX-MODEL-003"
+  ],
+  "downstream_consumers": [
+    "PX-SYS-001",
+    "PX-AUTH-001"
+  ],
+  "change_classes": [
+    "SCHEMA",
+    "AUTHORITY",
+    "RUNTIME"
+  ],
+  "implementation_steps": [
+    "Define shared provider execution policy schema.",
+    "Bind task/model/authority/egress/cost/fallback revisions.",
+    "Align Python and extension outcomes and violation IDs.",
+    "Require exact provider/model receipt or fail closed."
+  ],
+  "negative_cases": [
+    "Unapproved egress.",
+    "Cost cap exceeded.",
+    "Fallback changes privacy or model identity.",
+    "Provider claims success without exact receipt.",
+    "Cross-language policy divergence."
+  ],
+  "focused_tests": [
+    "Python/Node shared provider-policy vectors.",
+    "Contained provider adapter tests."
+  ],
+  "affected_tests": [
+    "Agent runtime, extension local/provider, model attachment tests."
+  ],
+  "affected_sections": [
+    "dashboard-extension",
+    "structural-adversarial"
+  ],
+  "projection_invalidations": [
+    "provider execution evidence",
+    "model outcome receipts",
+    "authority topology"
+  ],
+  "evidence_required": [
+    "Cross-language conformance and contained execution receipts; no billable call."
+  ],
+  "rollback": "Disable converged execution entry and keep provider effects blocked.",
+  "acceptance_criteria": [
+    "Both runtimes enforce the same policy semantics and stable outcomes.",
+    "No fallback or egress occurs outside the immutable plan authority."
+  ],
+  "completion_evidence": []
+}

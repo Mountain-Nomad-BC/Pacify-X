@@ -87,6 +87,18 @@
       "index_state": "verified",
       "sha256": "abb448e61c139389bc8f23a123781ecef81862e014507aab424bfc5025883533"
     },
+    "builders/semantic_index_builder.py": {
+      "imports": [
+        "__future__",
+        "argparse",
+        "json",
+        "pathlib",
+        "runtime.semantic_index",
+        "sys"
+      ],
+      "index_state": "verified",
+      "sha256": "7d05d665d6613d42c3af249cc272e7c2669514dc6a3087868d509fdb7d9b7cc6"
+    },
     "builders/skill_builder.py": {
       "imports": [
         "__future__",
@@ -128,6 +140,28 @@
       "index_state": "verified",
       "sha256": "ae9d7a3a649cf53a0f2db63e9758979c623db3d74e1d0ab4fc5dac6f719bf307"
     },
+    "runtime/affected_proof.py": {
+      "imports": [
+        "__future__",
+        "hashlib",
+        "json",
+        "pathlib",
+        "typing"
+      ],
+      "index_state": "verified",
+      "sha256": "d2588965b83b53d35bfafe55211668473c70c36cc281de2ba3babf33e5a48cbe"
+    },
+    "runtime/agency_studio_adapter.py": {
+      "imports": [
+        "__future__",
+        "dataclasses",
+        "hashlib",
+        "json",
+        "typing"
+      ],
+      "index_state": "verified",
+      "sha256": "88e50223294d98e74d9cd5b97afa98f9bfa6e19322b54955b1ca6667a0693c2e"
+    },
     "runtime/agent_builder.py": {
       "imports": [
         "__future__",
@@ -155,6 +189,20 @@
       ],
       "index_state": "verified",
       "sha256": "9533d0367ccd8b1a322c849c77c82bb7080664862d552be595864ad4ce080f39"
+    },
+    "runtime/agent_handoff.py": {
+      "imports": [
+        "__future__",
+        "dataclasses",
+        "datetime",
+        "hashlib",
+        "json",
+        "pathlib",
+        "re",
+        "typing"
+      ],
+      "index_state": "verified",
+      "sha256": "cb2bfb870d99c661bc443191bf5f9e7bb8692795d99c9eb9c2665125e3ae2bdd"
     },
     "runtime/agent_harness_worker.py": {
       "imports": [
@@ -195,7 +243,17 @@
         "uuid"
       ],
       "index_state": "verified",
-      "sha256": "a9bb03386dcda7d1ed59fb4edff4cb93377d93555607f4dbaa8bf5939d275bac"
+      "sha256": "c5dcad86997bca78bfd8c3b82e265e15625245478ef2c96ef8d466248100dc1e"
+    },
+    "runtime/architecture_invariants.py": {
+      "imports": [
+        "__future__",
+        "json",
+        "pathlib",
+        "typing"
+      ],
+      "index_state": "verified",
+      "sha256": "20e80a23e23ef205fe292a5d52c389821d475f1a9cbf55ff19a47214c1a37fbc"
     },
     "runtime/artifact_reachability.py": {
       "imports": [
@@ -205,7 +263,7 @@
         "pathlib"
       ],
       "index_state": "verified",
-      "sha256": "388beda7c745c7a7d2df0912f2343074ab10768403e5678ccc71fe89334f4433"
+      "sha256": "f34bd77474658d7e671d7eb953f19a9b5ad5166b0c91d21e662cb191c510c126"
     },
     "runtime/assurance_controls.py": {
       "imports": [
@@ -231,6 +289,17 @@
       ],
       "index_state": "verified",
       "sha256": "931bd8d17de5c1678f55cfaa1dd733d68152d95bb30366af15bbf9584c86f976"
+    },
+    "runtime/authority_topology.py": {
+      "imports": [
+        "__future__",
+        "ast",
+        "json",
+        "pathlib",
+        "typing"
+      ],
+      "index_state": "verified",
+      "sha256": "8b7e740d02cdedbcf41d8d0b4db8875ded60ccfd82b91d6a136e493bb9ba34ae"
     },
     "runtime/backend_capabilities.py": {
       "imports": [
@@ -314,6 +383,16 @@
       "index_state": "verified",
       "sha256": "555a764289b45de5309a4105012e745592ace1f0f0098d5497eb4034d1de92f6"
     },
+    "runtime/capability_maturity.py": {
+      "imports": [
+        "__future__",
+        "json",
+        "pathlib",
+        "typing"
+      ],
+      "index_state": "verified",
+      "sha256": "7e8f9d4c14d3c71c940a70d5dcfc2b9f1d3bb0e9b27343ea37964c3a7e95e44a"
+    },
     "runtime/capability_routing.py": {
       "imports": [
         "__future__",
@@ -326,7 +405,7 @@
         "typing"
       ],
       "index_state": "verified",
-      "sha256": "1e158ddfebd68058e14c0b3a296749d8697bc24b6815c2697fcfa7ed54e783e3"
+      "sha256": "a517aa5769ebdce7b7d6afafa44b759bb3e74305bc0120f4a78eb88d9d088f83"
     },
     "runtime/capability_scheduler.py": {
       "imports": [
@@ -340,6 +419,16 @@
       ],
       "index_state": "verified",
       "sha256": "af33d5337cb93d01b1059cc9ddb1fa2ba7e2c21d4c7f005e082e5367b0f0cb4d"
+    },
+    "runtime/capability_semantics.py": {
+      "imports": [
+        "__future__",
+        "dataclasses",
+        "re",
+        "typing"
+      ],
+      "index_state": "verified",
+      "sha256": "caaa274bd828ddd8477d3e06b04681f3c4d018d52ec2f3c05e85a35d4115cae4"
     },
     "runtime/certification_readiness.py": {
       "imports": [
@@ -358,6 +447,16 @@
       ],
       "index_state": "verified",
       "sha256": "0d33243debdcb67c32de91da6b61438d9ec0fe3f33b8d2e3f8a9a4ceba3b8887"
+    },
+    "runtime/change_classification.py": {
+      "imports": [
+        "__future__",
+        "enum",
+        "re",
+        "typing"
+      ],
+      "index_state": "verified",
+      "sha256": "9389ad18bea9323b69e581d57220bf27a51ecf12f926f8600b96df032ccffaa5"
     },
     "runtime/classifier.py": {
       "imports": [
@@ -397,7 +496,7 @@
         "uuid"
       ],
       "index_state": "verified",
-      "sha256": "806efa055dd35ec6fcacf6f5ef2ce630cc8e2348b9cd5230d0a4c6776cb54704"
+      "sha256": "315c823eb55fde9b9e427a9887705d44fc5162ba58f8867f79cf0c6bf1256f28"
     },
     "runtime/cognitive_assurance.py": {
       "imports": [
@@ -499,7 +598,7 @@
         "typing"
       ],
       "index_state": "verified",
-      "sha256": "8048aa37e5d0f7914b1fccba8185f21b25c68e6822f1f07ab0996067f79c3810"
+      "sha256": "19d3abc2fb87289162265a0c3ba120d1a0c070be92ba15f2521b3ed08c5bb839"
     },
     "runtime/cognitive_core/index_builder.py": {
       "imports": [
@@ -634,7 +733,7 @@
         "urllib.parse"
       ],
       "index_state": "verified",
-      "sha256": "33a815d6d93875537ec57ae3d24a6825487093de2aec84c993c0fb7d5e65084d"
+      "sha256": "62dc66f4c38c118d150c2d2f61f134141276771d6ec11d2843dbbe223fb1882b"
     },
     "runtime/corrective_release.py": {
       "imports": [
@@ -729,6 +828,17 @@
       "index_state": "verified",
       "sha256": "58928996a99e1ad934234751909f63e19bc6d0ae8e6b174d92745d53df13cab9"
     },
+    "runtime/dependency_invalidation.py": {
+      "imports": [
+        "__future__",
+        "collections",
+        "json",
+        "pathlib",
+        "typing"
+      ],
+      "index_state": "verified",
+      "sha256": "f8a040ad4a1a35318e2a5106ee76fb99fb91fe767e54f7db2e191329838b055a"
+    },
     "runtime/durable_state.py": {
       "imports": [
         "__future__",
@@ -775,7 +885,7 @@
         "typing"
       ],
       "index_state": "verified",
-      "sha256": "4f1ba24653060ad8625892a586b5f2f5fb6518d1eda4bf8449b17375e10b5405"
+      "sha256": "95af8039862c835084168eafa4095f9435ac0653b8191d6003cedcf473a3b328"
     },
     "runtime/engineering_intelligence.py": {
       "imports": [
@@ -823,6 +933,32 @@
       ],
       "index_state": "verified",
       "sha256": "52038e79a6119db39283146108f05eb2fabc5f68e9d9b9222ece1a8498bd7419"
+    },
+    "runtime/evidence_cache.py": {
+      "imports": [
+        "__future__",
+        "hashlib",
+        "json",
+        "os",
+        "pathlib",
+        "re",
+        "typing",
+        "uuid"
+      ],
+      "index_state": "verified",
+      "sha256": "39d5bf56250e7fb1b478b6bd5db6840236b884dd331e82f3da1d7a41d6318abe"
+    },
+    "runtime/evidence_claims.py": {
+      "imports": [
+        "__future__",
+        "dataclasses",
+        "json",
+        "pathlib",
+        "re",
+        "typing"
+      ],
+      "index_state": "verified",
+      "sha256": "82087b77bd1349e640e5fcb53e0d47bf691b2e49bf1a38b17a8d743cbefc8fe8"
     },
     "runtime/evidence_custody.py": {
       "imports": [
@@ -894,7 +1030,7 @@
         "typing"
       ],
       "index_state": "verified",
-      "sha256": "05f3d4d520a931c0d4585b0b6cb6d155fe4e333ed534336c962d2b8c9050a863"
+      "sha256": "c5f8c249b2f2a60efdfd2002ffb106e310982859ed46fdc4d2eef848fec45bbf"
     },
     "runtime/execution_placement.py": {
       "imports": [
@@ -904,11 +1040,12 @@
         "math",
         "os",
         "pathlib",
+        "re",
         "typing",
         "uuid"
       ],
       "index_state": "verified",
-      "sha256": "5cb71c0fabb53b3411577388b11a637b0dea601fb0f1698057a23ee44005d011"
+      "sha256": "5b6ede513457a87c33581355b7b482a6abb1db43096f6bc67b2573694360dc46"
     },
     "runtime/exit_codes.py": {
       "imports": [
@@ -991,6 +1128,18 @@
       ],
       "index_state": "verified",
       "sha256": "608230612367c0950da208c36e188c79728951f7402c43a5b5d2d47ed76a578a"
+    },
+    "runtime/foundry_studio_bridge.py": {
+      "imports": [
+        "__future__",
+        "dataclasses",
+        "hashlib",
+        "json",
+        "re",
+        "typing"
+      ],
+      "index_state": "verified",
+      "sha256": "b9a81217e0168675fb8ab7686c07716b4ad090ced137b53a5b5341e5861ef9c9"
     },
     "runtime/full_repair.py": {
       "imports": [
@@ -1099,7 +1248,7 @@
         "typing"
       ],
       "index_state": "verified",
-      "sha256": "51269b8b25c0903c326fed9316199fd49f48f6aeea4f27280ed7d753b8569707"
+      "sha256": "0e38c15e922ee165be145ec999d956d055b68d90377acb7367876772f78e35b8"
     },
     "runtime/health_model.py": {
       "imports": [
@@ -1210,7 +1359,7 @@
         "uuid"
       ],
       "index_state": "verified",
-      "sha256": "2f281b00019cdcc005a7351827e2245c929604db51047e426b27f272951f08fd"
+      "sha256": "29fd4d97382f4513dfacac15344396c0a22b6f0d25b1a76a618669cf3b49e58b"
     },
     "runtime/knowledge_foundry.py": {
       "imports": [
@@ -1225,7 +1374,7 @@
         "typing"
       ],
       "index_state": "verified",
-      "sha256": "deaff59b42fb0a3627bc1fbb92cefe495372eac92cb7bab70eaa6f3bae6fb735"
+      "sha256": "3a8e72ff33efea40963e98eb5074ae8f9172d50c360bf1d4afd12d45f4828055"
     },
     "runtime/knowledge_refinery.py": {
       "imports": [
@@ -1263,7 +1412,7 @@
         "typing"
       ],
       "index_state": "verified",
-      "sha256": "8735ec423ab3b148f4c8b629e86afbf0ce79d8d4a213a8be1fe5edf998431fa2"
+      "sha256": "c7b5015f140f056d1ac4912afc9dd5a16c0d99c76d234e23786e1edca72c0a0c"
     },
     "runtime/licensing.py": {
       "imports": [
@@ -1309,6 +1458,20 @@
       ],
       "index_state": "verified",
       "sha256": "2e032839268ac4bbf5db8fc62caa8f7de2160281b86ad3f2e4f1c4c4dcdcb751"
+    },
+    "runtime/memory_broker.py": {
+      "imports": [
+        "__future__",
+        "dataclasses",
+        "datetime",
+        "hashlib",
+        "json",
+        "math",
+        "re",
+        "typing"
+      ],
+      "index_state": "verified",
+      "sha256": "de6f8ddfa794842ce36bf5cffe7f5b5b0150d6236639d00e436e0231f86fcb0c"
     },
     "runtime/memory_fabric.py": {
       "imports": [
@@ -1551,6 +1714,19 @@
       "index_state": "verified",
       "sha256": "88d65f4d3488bd336f1d561d6c6d1427e7ec473d0b9d2478a6dd4f2d400e51a3"
     },
+    "runtime/model_attachment.py": {
+      "imports": [
+        "__future__",
+        "dataclasses",
+        "hashlib",
+        "json",
+        "pathlib",
+        "re",
+        "typing"
+      ],
+      "index_state": "verified",
+      "sha256": "9d19da5dcaa0e09715db7bb06fc1ea3330a521d1f0fbf0ceff7b5bf8ca76d906"
+    },
     "runtime/models.py": {
       "imports": [
         "__future__",
@@ -1640,7 +1816,7 @@
         "uuid"
       ],
       "index_state": "verified",
-      "sha256": "d614d9b107a4c71650eba33397db4762fda415d572a6b64e7f4f6989eefc3278"
+      "sha256": "2c306d3202782e8d6a5520b1d3b4d74472b517d88d4e8a7675c74fac1fc6c699"
     },
     "runtime/operational_observers.py": {
       "imports": [
@@ -1702,7 +1878,7 @@
         "sysconfig"
       ],
       "index_state": "verified",
-      "sha256": "ebafa3ad5873678d322449fc1e97f7519f9473ca410c0ca8a4a247001ccfa2fb"
+      "sha256": "8ead4a177204458ab9dedc4968ae6265c72cf126a57570515aa73a7262c2d6bf"
     },
     "runtime/planner.py": {
       "imports": [
@@ -1740,6 +1916,28 @@
       ],
       "index_state": "verified",
       "sha256": "19900c5e74bb7b08a49988cd6f60e07007561fa09f51acf515e7898d1a790660"
+    },
+    "runtime/primitive_authority.py": {
+      "imports": [
+        "__future__",
+        "ast",
+        "json",
+        "pathlib",
+        "typing"
+      ],
+      "index_state": "verified",
+      "sha256": "38f8756b10bbf2cf770ef886db2aad3f45546211dd5e05a0ffab1c6a2a8e7849"
+    },
+    "runtime/primitive_lint.py": {
+      "imports": [
+        "__future__",
+        "ast",
+        "datetime",
+        "pathlib",
+        "typing"
+      ],
+      "index_state": "verified",
+      "sha256": "9a9316b20f30e6b314c0495e09f7a85fc59b7282114f0e74d526a4f86fac9ff2"
     },
     "runtime/process_memory.py": {
       "imports": [
@@ -1798,7 +1996,7 @@
         "typing"
       ],
       "index_state": "verified",
-      "sha256": "ba2b8ee1ccdb5f32a340ea8b33557308b716705901f46ee4afcd01cfb127d644"
+      "sha256": "59c2a5722b3e7554f0c305bfd72631c99d311f8648442b198a27762823da22de"
     },
     "runtime/project_impact.py": {
       "imports": [
@@ -1809,7 +2007,7 @@
         "typing"
       ],
       "index_state": "verified",
-      "sha256": "a7f074503934ed83ee05d0a074b964db852559a0c07216079c1baf51c54addc3"
+      "sha256": "b769893ba2a805632b13dd3fa46c10b08e950f734afb2416ae172b797772f3d1"
     },
     "runtime/project_intelligence.py": {
       "imports": [
@@ -1832,7 +2030,7 @@
         "yaml"
       ],
       "index_state": "verified",
-      "sha256": "459e5d273748f488bb0fab03f748819dfda23b7fe757ac37c1e1844b530db131"
+      "sha256": "1f9b5a1d8eba49b8399372050a0ab0a2491c5a598c30128e045cb735f47327e0"
     },
     "runtime/project_management.py": {
       "imports": [
@@ -1903,7 +2101,7 @@
         "typing"
       ],
       "index_state": "verified",
-      "sha256": "ea5692e00bafb6cb85f733115cdfd46818f29ff061015618d87e22d6db734443"
+      "sha256": "7b567c94a5fcf37fd58d3b59eb92f56938692ff976f714e0d61b41504c31bf6e"
     },
     "runtime/project_stream_orchestrator.py": {
       "imports": [
@@ -1916,7 +2114,23 @@
         "typing"
       ],
       "index_state": "verified",
-      "sha256": "ceac58afb164dda0f703f30ec4395e6583864b4f8d60576795f094fce75fb3dd"
+      "sha256": "a16041e89861ab5c799afd1f746878e2f9f91d9285455277ec4ccd57951a4f31"
+    },
+    "runtime/projection_dependencies.py": {
+      "imports": [
+        "__future__",
+        "collections",
+        "hashlib",
+        "json",
+        "os",
+        "pathlib",
+        "re",
+        "scripts.build_registry_envelope_inventory",
+        "typing",
+        "uuid"
+      ],
+      "index_state": "verified",
+      "sha256": "e405349fa7d47fc3e6cc25be8178916c286b90770602aa255a5bc52d4d3fd8b8"
     },
     "runtime/provider_budget.py": {
       "imports": [
@@ -1958,7 +2172,7 @@
         "urllib.request"
       ],
       "index_state": "verified",
-      "sha256": "f3f84902bf8df23c7a9f9126be3d5ae71dfb39fa2617e9ff63e2654fe62a10b5"
+      "sha256": "231f9479f587103fb599d9d7953a369c65f85619c0663a782254dd2898551d68"
     },
     "runtime/px_doctor.py": {
       "imports": [
@@ -2048,7 +2262,7 @@
         "typing"
       ],
       "index_state": "verified",
-      "sha256": "d8e01db67fd27c3072c2acd77d943d3efc01a4137cbaf7249177ce0453b99cc7"
+      "sha256": "8c91e59f802004c596787e54a2a97befdb6106b15ed7079a90dc604659f05ecb"
     },
     "runtime/release_artifacts.py": {
       "imports": [
@@ -2061,7 +2275,7 @@
         "typing"
       ],
       "index_state": "verified",
-      "sha256": "9925bf5f6dcf9f458c97268ac7fb5727a4dd8ee529a92d8046cdf356f65e723d"
+      "sha256": "23a4b0738c45bb24925395c35363e5d17e183762d949b0b36d30c843a8c1aea6"
     },
     "runtime/release_audit.py": {
       "imports": [
@@ -2241,6 +2455,16 @@
       "index_state": "verified",
       "sha256": "e7f870f2fcc537281ca1397d4d1875cf2058c0fe052c106348541985815d9157"
     },
+    "runtime/repair_root_analysis.py": {
+      "imports": [
+        "__future__",
+        "hashlib",
+        "json",
+        "typing"
+      ],
+      "index_state": "verified",
+      "sha256": "994293d6ea9a47ab8ee9924a370cfb5404743b98b2b0118362df643e8801662e"
+    },
     "runtime/repository_scope.py": {
       "imports": [
         "__future__",
@@ -2290,11 +2514,12 @@
       "imports": [
         "__future__",
         "dataclasses",
+        "json",
         "re",
         "typing"
       ],
       "index_state": "verified",
-      "sha256": "66a35e21cac98952ff0f456253dec52523fc1bf331af285bbee3c699866ce8ce"
+      "sha256": "ad059d32dea4cc48e0fddbb1137d4fb9dfbfe234c4d852836118f01102ea8623"
     },
     "runtime/runtime_lifecycle.py": {
       "imports": [
@@ -2354,7 +2579,7 @@
         "tomllib"
       ],
       "index_state": "verified",
-      "sha256": "129e0a1cb4ec2bcde189946d44f6a334e355d9704dd22395864215bde491e13b"
+      "sha256": "ec2e2063c974d358aae88cd30a8427ed4400936277399584633cf66541c4ae64"
     },
     "runtime/semantic_memory.py": {
       "imports": [
@@ -2367,6 +2592,20 @@
       ],
       "index_state": "verified",
       "sha256": "515b3064c578888e17e15b114f547054fec6ecec291145361c558a2ec8452ec3"
+    },
+    "runtime/semantic_revision.py": {
+      "imports": [
+        "__future__",
+        "ast",
+        "dataclasses",
+        "hashlib",
+        "json",
+        "pathlib",
+        "typing",
+        "yaml"
+      ],
+      "index_state": "verified",
+      "sha256": "26c10b0b629eb773e3b32973ea0ecef31d00590e786b262b57bab69a397e82fb"
     },
     "runtime/service_capability_provider.py": {
       "imports": [
@@ -2414,7 +2653,7 @@
         "yaml"
       ],
       "index_state": "verified",
-      "sha256": "32a69556781b0f9281fe74aeaa7eb656e8c662d7a918db806016a69bb26e3e82"
+      "sha256": "4a6bf11f3a0d659283a2836e3a6a5372ad4aa39c243323ee4208552bfb30b033"
     },
     "runtime/source_coverage.py": {
       "imports": [
@@ -2438,7 +2677,7 @@
         "typing"
       ],
       "index_state": "verified",
-      "sha256": "2ef047a51641a1eb263e50aef200f7ae54c56ce52715f14a9052b7c57bd09296"
+      "sha256": "5a789191a6be0fe1732a381b27b30a0480864195a69b363c7e141bfb1b952855"
     },
     "runtime/state_invariants.py": {
       "imports": [
@@ -2453,7 +2692,7 @@
         "typing"
       ],
       "index_state": "verified",
-      "sha256": "82761d9a94e4fbbeffb9210f0cdc50efb5f49e4dd9f613abc748d79af02c321a"
+      "sha256": "5cd7e8d655cf7c7f961b38d73859c3c677ced09a384351f6a78bad8be79ed18c"
     },
     "runtime/structural_integrity.py": {
       "imports": [
@@ -2637,6 +2876,19 @@
       "index_state": "verified",
       "sha256": "c96719968ce6b32c9db7f0c975d29f0f02ea8382f4090b321b1bd3f99632cdfd"
     },
+    "runtime/task_execution_plan.py": {
+      "imports": [
+        "__future__",
+        "dataclasses",
+        "datetime",
+        "hashlib",
+        "json",
+        "pathlib",
+        "typing"
+      ],
+      "index_state": "verified",
+      "sha256": "18367d844da7fc52cf5243182951734273c268341dd90a80f7a66f165b5550fc"
+    },
     "runtime/test_orchestration_lock.py": {
       "imports": [
         "__future__",
@@ -2675,7 +2927,7 @@
         "typing"
       ],
       "index_state": "verified",
-      "sha256": "c1aa2ff654d99ada70a7146f77d9d2f4c1763d922ca76f5bb6d8acc07463fab6"
+      "sha256": "4b82c5afb6de4796bfa9de6dc9a1739486dc8838f4cd5bdac2e470ecd4b8b280"
     },
     "runtime/tool_intake.py": {
       "imports": [
@@ -2808,7 +3060,7 @@
         "uuid"
       ],
       "index_state": "verified",
-      "sha256": "010eb4f4a3e0aa6b74ea6c466b31400a8fbd4da5a3c44494d00b15eaf7895246"
+      "sha256": "fefeb6c8dad08057b1b998dfcd4e9b6665ff436c8a6e48e9d5d66a9765adfc19"
     },
     "runtime/workflow_worker.py": {
       "imports": [
@@ -2839,7 +3091,21 @@
         "typing"
       ],
       "index_state": "verified",
-      "sha256": "27ff3f2bf08c55e9c179cc184cb9c67d00c2c8b2877c8211270b1bafad7ff752"
+      "sha256": "7a70fa48ca939b7db77bfec9b45c42ce2f276378c793feb4eb4822fbd861b5ed"
+    },
+    "runtime/world_state.py": {
+      "imports": [
+        "__future__",
+        "hashlib",
+        "json",
+        "os",
+        "pathlib",
+        "re",
+        "typing",
+        "uuid"
+      ],
+      "index_state": "verified",
+      "sha256": "919e1fdbaf9e54cc91f8e5c854f966b81bfb9d92a4a2fcc5e592c4c2499e3cff"
     },
     "scripts/apply_typed_control_gap_links.py": {
       "imports": [
@@ -2947,6 +3213,28 @@
       ],
       "index_state": "verified",
       "sha256": "79e98a17413fbe78445880660312af9d19ecef5d0b3f36109731329030b1531e"
+    },
+    "scripts/benchmark_operational_gap_ledger.py": {
+      "imports": [
+        "__future__",
+        "argparse",
+        "concurrent.futures",
+        "datetime",
+        "json",
+        "os",
+        "pathlib",
+        "platform",
+        "psutil",
+        "runtime",
+        "runtime.file_lock",
+        "shutil",
+        "tempfile",
+        "threading",
+        "time",
+        "typing"
+      ],
+      "index_state": "verified",
+      "sha256": "270963bf98ddfc9b6f25f499587c4d83ae4f7b9bf9a727f97750bed0b4d2fd73"
     },
     "scripts/bootstrap_certification.py": {
       "imports": [
@@ -3058,7 +3346,7 @@
         "pathlib"
       ],
       "index_state": "verified",
-      "sha256": "65a651d9d280fcbaded4f54dc2ef774df6593324091aff1d0e28738aa0381a95"
+      "sha256": "07ab81a10e6b36b1c140c63c29ea55d63fc2efacc4850aebf211e8b88276618f"
     },
     "scripts/build_current_evidence_index.py": {
       "imports": [
@@ -3294,7 +3582,7 @@
         "pathlib"
       ],
       "index_state": "verified",
-      "sha256": "fac8693dc61386918c8ea6586174df3bf8da6df663dae6a6139b86326acf71ef"
+      "sha256": "94dff43b76479a0f41a77811ac91ec180f51ed503b422b7d666a1bc3d7e93efe"
     },
     "scripts/build_registry_graphs.py": {
       "imports": [
@@ -3418,8 +3706,10 @@
         "json",
         "os",
         "pathlib",
+        "runtime.agent_provider",
         "runtime.artifact_reachability",
         "runtime.build_claims",
+        "runtime.cognitive_core.index_builder",
         "runtime.effect_surface",
         "runtime.engine_identity",
         "runtime.evidence_index",
@@ -3429,16 +3719,20 @@
         "runtime.generated_dependency",
         "runtime.graph_registry",
         "runtime.licensing",
+        "runtime.projection_dependencies",
         "runtime.provider_gateway",
         "runtime.python_surface_certification",
         "runtime.registry",
+        "runtime.release_artifacts",
         "runtime.release_audit",
         "runtime.repository_scope",
         "runtime.resource_lifecycle",
         "runtime.sanitation_assurance",
+        "runtime.semantic_index",
         "runtime.structural_integrity",
         "runtime.test_orchestration_lock",
         "runtime.test_profiles",
+        "runtime.world_state",
         "scripts.audit_sanitization",
         "scripts.build_completion_status",
         "scripts.build_contract_ownership_registry",
@@ -3448,6 +3742,7 @@
         "scripts.build_profile_projections",
         "scripts.build_python_dependency_ownership",
         "scripts.build_registry_envelope_inventory",
+        "scripts.reconcile_active_capability_hashes",
         "scripts.reconcile_commissioned_skill_registry",
         "scripts.reconcile_declared_tool_hashes",
         "shutil",
@@ -3457,7 +3752,7 @@
         "zipfile"
       ],
       "index_state": "verified",
-      "sha256": "d67d9a84dd9275956fe70dd25fe448994daaa07b699a110210e358194002ddc8"
+      "sha256": "f415c1edc283561ef6a2e032f7b139cba65d7655d5f5c95e82a7ecd10c858b2a"
     },
     "scripts/cleanup_python_caches.py": {
       "imports": [
@@ -3801,6 +4096,18 @@
       "index_state": "verified",
       "sha256": "8ba532f28786e98191d92814eab1cb5fdb4ea7dfb3df368e166a4aed47bd6d31"
     },
+    "scripts/reconcile_active_capability_hashes.py": {
+      "imports": [
+        "__future__",
+        "hashlib",
+        "json",
+        "os",
+        "pathlib",
+        "uuid"
+      ],
+      "index_state": "verified",
+      "sha256": "9d2341ca2f93b2165a77c12d8c1df6f93a3b2a84afad6f636a1d1af80349de57"
+    },
     "scripts/reconcile_commissioned_skill_registry.py": {
       "imports": [
         "__future__",
@@ -3941,11 +4248,12 @@
         "json",
         "pathlib",
         "re",
+        "runtime.evidence_claims",
         "runtime.operational_gap_ledger",
         "sys"
       ],
       "index_state": "verified",
-      "sha256": "70e3dd6a1d6353f6fa4c13b40b72f283ebbbd9a74bd7effc9189ffdfa4531056"
+      "sha256": "6a0311dead223869faf57297f98900ad3f518f478154be7f1557f555ec88ae4e"
     },
     "scripts/register_card_control_resolution_review.py": {
       "imports": [
@@ -4129,6 +4437,26 @@
       "index_state": "verified",
       "sha256": "11466fcd9450d8a5d5a8f5da5bf4950582c4261dcd7c8d0d6ba904499f092073"
     },
+    "tests/test_affected_proof.py": {
+      "imports": [
+        "__future__",
+        "json",
+        "pathlib",
+        "runtime.affected_proof"
+      ],
+      "index_state": "verified",
+      "sha256": "2bb7a41a405268fdc301b856b58912e4995bf4feff9c6f58c2713def29660f4c"
+    },
+    "tests/test_agency_studio_adapter.py": {
+      "imports": [
+        "__future__",
+        "dataclasses",
+        "pytest",
+        "runtime.agency_studio_adapter"
+      ],
+      "index_state": "verified",
+      "sha256": "3123527fc1a4e9c0b438419552e875a271d784a0eb0f20c76544499182d14588"
+    },
     "tests/test_agent_builder.py": {
       "imports": [
         "__future__",
@@ -4140,6 +4468,37 @@
       ],
       "index_state": "verified",
       "sha256": "022542931d4d41a615faec1a9717e9cbf6ebe68731306f7e6ee086b29ac884b3"
+    },
+    "tests/test_agent_governed_integration.py": {
+      "imports": [
+        "__future__",
+        "datetime",
+        "hashlib",
+        "pathlib",
+        "runtime.agent_handoff",
+        "runtime.agent_runtime",
+        "runtime.capability_routing",
+        "runtime.execution_placement",
+        "runtime.hardware_routing",
+        "runtime.memory_broker",
+        "runtime.memory_fabric",
+        "runtime.model_attachment",
+        "runtime.skill_navigator",
+        "runtime.studio_models",
+        "runtime.task_execution_plan"
+      ],
+      "index_state": "verified",
+      "sha256": "a19f56adea259a942261c68de031ba0d279eb02f944dc4c675e61d86cb8799fe"
+    },
+    "tests/test_agent_handoff.py": {
+      "imports": [
+        "__future__",
+        "dataclasses",
+        "pytest",
+        "runtime.agent_handoff"
+      ],
+      "index_state": "verified",
+      "sha256": "d8290f8ef267c52716919539a17de8f830de1602ba74d3a74d8e1e368c99efbc"
     },
     "tests/test_agent_provider.py": {
       "imports": [
@@ -4185,6 +4544,14 @@
       ],
       "index_state": "verified",
       "sha256": "e8db4195760df9297d08632f1226ec4c24a46051923d45779375e13b7f6b2f85"
+    },
+    "tests/test_architecture_invariants.py": {
+      "imports": [
+        "pytest",
+        "runtime.architecture_invariants"
+      ],
+      "index_state": "verified",
+      "sha256": "3acdedaa1da37bcc202dbf8ad2c496128d52b2ba6bb94b92d31a106414802744"
     },
     "tests/test_archive_catalog_v2.py": {
       "imports": [
@@ -4256,6 +4623,17 @@
       ],
       "index_state": "verified",
       "sha256": "e5abd1c50f40fc28fa8eb4bbd54c2188e1624f483e4677080b8779a193f15518"
+    },
+    "tests/test_authority_topology.py": {
+      "imports": [
+        "copy",
+        "json",
+        "pathlib",
+        "pytest",
+        "runtime.authority_topology"
+      ],
+      "index_state": "verified",
+      "sha256": "d5736685390e870f8f081f46ed2de087ce5bb7527790af3b29b95fe4dae123a5"
     },
     "tests/test_behavioral_assurance.py": {
       "imports": [
@@ -4386,6 +4764,15 @@
       "index_state": "verified",
       "sha256": "35761f90666c1dec622168cc279cc07312c8ff9b5617912fdf52981d1d407d5f"
     },
+    "tests/test_capability_maturity.py": {
+      "imports": [
+        "__future__",
+        "pathlib",
+        "runtime.capability_maturity"
+      ],
+      "index_state": "verified",
+      "sha256": "658ebc6bde22d9b01c2574a8f47c906baeb4fc8bf8f1195127fe6878810172c3"
+    },
     "tests/test_capability_mining_skills.py": {
       "imports": [
         "__future__",
@@ -4408,11 +4795,23 @@
         "pytest",
         "runtime.capability_routing",
         "runtime.contracts",
+        "runtime.project_intelligence",
         "runtime.registry",
         "runtime.skill_navigator"
       ],
       "index_state": "verified",
-      "sha256": "c7741da9a90383402b0f91ccd46b88caabacf2a2b0d5b323270cb3d945688ccb"
+      "sha256": "8b3e67c0adaeead60cda94df70ccdb4cc22c01dd4e072b53c9972a469d34b698"
+    },
+    "tests/test_capability_routing_adversarial.py": {
+      "imports": [
+        "__future__",
+        "json",
+        "pathlib",
+        "runtime.capability_routing",
+        "runtime.skill_navigator"
+      ],
+      "index_state": "verified",
+      "sha256": "de5abf14b26fff912b5ce25788a3c7bd3b87cf323c6fed7f5b562948ad643d03"
     },
     "tests/test_capability_scheduler.py": {
       "imports": [
@@ -4423,6 +4822,15 @@
       ],
       "index_state": "verified",
       "sha256": "6f2e17d9ef7637486f7a5f5b1c7b56e73d67f22724d29c240672e8f561ec6020"
+    },
+    "tests/test_capability_semantics.py": {
+      "imports": [
+        "__future__",
+        "dataclasses",
+        "runtime.capability_semantics"
+      ],
+      "index_state": "verified",
+      "sha256": "00a65d79d94aee739bc6dcf4296dd9ed86dc9d75af541940cc09c2033b1e2ad4"
     },
     "tests/test_certification_readiness.py": {
       "imports": [
@@ -4439,6 +4847,15 @@
       ],
       "index_state": "verified",
       "sha256": "7a1159206e1e04f64174eca3652d05c5ac3d0c7ebb7c072a1fc435c621b719c8"
+    },
+    "tests/test_change_classification.py": {
+      "imports": [
+        "__future__",
+        "pytest",
+        "runtime.change_classification"
+      ],
+      "index_state": "verified",
+      "sha256": "c33d0cbd60e08a4c851c4f200ae6486e446496f48e6641a016b5b09388d13302"
     },
     "tests/test_clean_room_capabilities.py": {
       "imports": [
@@ -4510,7 +4927,7 @@
         "unittest.mock"
       ],
       "index_state": "verified",
-      "sha256": "75e9595f525bdbd32bcb840398e10fcf1dbfa35174fa6b87d6581b28e703de4b"
+      "sha256": "1b6c5e99e8d2d61aa527c8ab596b888413f2d044486f7d3e82d225ee194a5d25"
     },
     "tests/test_cli_lazy_loading.py": {
       "imports": [
@@ -4647,11 +5064,12 @@
         "pathlib",
         "runtime.config",
         "runtime.registry",
+        "scripts.reconcile_active_capability_hashes",
         "tempfile",
         "unittest"
       ],
       "index_state": "verified",
-      "sha256": "cf0b3f52ca3e5914bf01b5eeab76fbe50d5c1fadf20486029e0ee65401862287"
+      "sha256": "7d71e5a609aa24c11e1b0803f9829fce785639ad47bcbbf706f02352d1af45b6"
     },
     "tests/test_contract_ownership_registry.py": {
       "imports": [
@@ -4668,11 +5086,12 @@
         "os",
         "pathlib",
         "runtime.contracts",
+        "runtime.paths",
         "tempfile",
         "unittest"
       ],
       "index_state": "verified",
-      "sha256": "0c7bf61da81efdf06447d5fdf4b85f77653178fb1c61503e9224a94f122f0cdf"
+      "sha256": "e8cabb7ec8b0ba4166ce0df3bc647f511edff8b0f5f46b3a02af25b0747d1d3b"
     },
     "tests/test_corpus_pipeline.py": {
       "imports": [
@@ -4701,7 +5120,7 @@
         "tests.repository_copy"
       ],
       "index_state": "verified",
-      "sha256": "c201addd40e08874e5ac3bc3fd21be23224069cda1e64bf3f926fd54fae8933a"
+      "sha256": "a340cccad4011d8e1447d3bb46296caf183b8470e71f17a4598da8943dc8982c"
     },
     "tests/test_coverage_assurance.py": {
       "imports": [
@@ -4806,6 +5225,18 @@
       "index_state": "verified",
       "sha256": "e7d552b3f509dbbbb36a1f8e914a11d7d75128619be1a5145d12bd7e1f8b9346"
     },
+    "tests/test_dependency_invalidation.py": {
+      "imports": [
+        "__future__",
+        "copy",
+        "pathlib",
+        "pytest",
+        "runtime.dependency_invalidation",
+        "runtime.project_impact"
+      ],
+      "index_state": "verified",
+      "sha256": "eafc134765dbf882752865f16f45f6e34f4be76f6a98c00711e83df3e1c37100"
+    },
     "tests/test_drop_in_bootstrap.py": {
       "imports": [
         "__future__",
@@ -4895,6 +5326,22 @@
       "index_state": "verified",
       "sha256": "beb629a833ef3ff49f5ba72e4dc044301b4066d4d7482c33c8994c83371a4e82"
     },
+    "tests/test_evidence_cache.py": {
+      "imports": [
+        "runtime.evidence_cache"
+      ],
+      "index_state": "verified",
+      "sha256": "5334e17b58c17ca8114e6fb183284b7f854ec59ee6a1179726b2d87b42526e81"
+    },
+    "tests/test_evidence_claims.py": {
+      "imports": [
+        "__future__",
+        "pathlib",
+        "runtime.evidence_claims"
+      ],
+      "index_state": "verified",
+      "sha256": "eabdcd00df991fe081ae0e850d18039ac0be7c8fe35456c823092ec87c7e807b"
+    },
     "tests/test_evidence_custody.py": {
       "imports": [
         "__future__",
@@ -4917,7 +5364,7 @@
         "zipfile"
       ],
       "index_state": "verified",
-      "sha256": "0f5a42834d8308cdafc833d8b66f1adcbad702078ffa9ee7c16e2d618728d37d"
+      "sha256": "913de3865eb724a01e0343beff13e2fe9e084eee8722b6dceb24bdaacdb367f5"
     },
     "tests/test_evidence_portability.py": {
       "imports": [
@@ -4955,13 +5402,18 @@
     },
     "tests/test_execution_placement.py": {
       "imports": [
+        "datetime",
         "pathlib",
         "pytest",
+        "runtime.agent_runtime",
         "runtime.execution_placement",
+        "runtime.hardware_routing",
+        "runtime.model_attachment",
+        "runtime.task_execution_plan",
         "runtime.work_admission"
       ],
       "index_state": "verified",
-      "sha256": "965d7db8fbd38ad668ad49e9e8345e84883285f38de1f45206cbedc99e7d3544"
+      "sha256": "109597a06cd78b780ca63d7dc2be867fd0d9e9310fa43e41cfac41f766520522"
     },
     "tests/test_external_audit_disposition.py": {
       "imports": [
@@ -5056,6 +5508,18 @@
       "index_state": "verified",
       "sha256": "ffc577fc320db535486882a5ce8bbcb19afd266e138218c3e7e2166f75741f14"
     },
+    "tests/test_foundry_studio_bridge.py": {
+      "imports": [
+        "__future__",
+        "dataclasses",
+        "hashlib",
+        "pytest",
+        "runtime.foundry_studio_bridge",
+        "runtime.knowledge_foundry"
+      ],
+      "index_state": "verified",
+      "sha256": "2612271b0b92f3cbd66e0bdd1a362b6aefda4bb06a511eab87daadbec363d64f"
+    },
     "tests/test_full_repair_ledger.py": {
       "imports": [
         "json",
@@ -5079,7 +5543,7 @@
         "shutil"
       ],
       "index_state": "verified",
-      "sha256": "378972a5ae500e37b78786162ea82099e247f5bf25ffe7765e28418fbf7b67e9"
+      "sha256": "1314a01ff039f376f3a375e7165c497a26520213878fbd71c9bba2f50fd13a79"
     },
     "tests/test_generated_dependency_graph.py": {
       "imports": [
@@ -5099,6 +5563,17 @@
       ],
       "index_state": "verified",
       "sha256": "29db3992d9a28960c0980a564695ad3dceeb892fb14400567f274d2761d78337"
+    },
+    "tests/test_graph_authority_manifest.py": {
+      "imports": [
+        "__future__",
+        "copy",
+        "json",
+        "pathlib",
+        "runtime.projection_dependencies"
+      ],
+      "index_state": "verified",
+      "sha256": "8aec9a1b344cb506653f98f677c06b33f8cb9880ef7fea09092736b7e0d9b61c"
     },
     "tests/test_graphs_and_orchestrations.py": {
       "imports": [
@@ -5151,6 +5626,20 @@
       ],
       "index_state": "verified",
       "sha256": "5d1eed87b8f7f449a71b68aff2a0319bce54aa6456c74932bf37ffd1ad54ed8a"
+    },
+    "tests/test_hybrid_retrieval.py": {
+      "imports": [
+        "__future__",
+        "dataclasses",
+        "json",
+        "pathlib",
+        "pytest",
+        "runtime.retrieval",
+        "subprocess",
+        "sys"
+      ],
+      "index_state": "verified",
+      "sha256": "0fe2a75b00dbca750385789b15752717471bbba8c0837788bfa667830dde2215"
     },
     "tests/test_independent_gate_runner.py": {
       "imports": [
@@ -5242,13 +5731,15 @@
         "__future__",
         "hashlib",
         "json",
+        "pathlib",
         "pytest",
+        "runtime.dependency_invalidation",
         "runtime.knowledge_core_controller",
         "runtime.studio_api",
         "tests.studio_approval_testkit"
       ],
       "index_state": "verified",
-      "sha256": "257993dd2e95e6a0fdf84ff32b4f02a96174e7926d66b4cc1e160f7012b9b74a"
+      "sha256": "4d028f49ecfe0f2ab36d5c806dd998299974a8cded7e9f500a57934a36937436"
     },
     "tests/test_knowledge_foundry.py": {
       "imports": [
@@ -5261,7 +5752,7 @@
         "unittest"
       ],
       "index_state": "verified",
-      "sha256": "578aa5b180708d5217dda43d100b0c23b2991c7124f26ec0db00b915037b8d77"
+      "sha256": "c4db5d4beca741918708dbd4678b92347abc4cff4756fa12a67a05cd06ec3bba"
     },
     "tests/test_knowledge_refinery.py": {
       "imports": [
@@ -5333,6 +5824,16 @@
       ],
       "index_state": "verified",
       "sha256": "6da9381aeb91ef5c0970368124d87932f385b96f6d8b5b145f390bf064001bb3"
+    },
+    "tests/test_memory_broker.py": {
+      "imports": [
+        "__future__",
+        "datetime",
+        "runtime.memory_broker",
+        "runtime.memory_fabric"
+      ],
+      "index_state": "verified",
+      "sha256": "4b6ac561a8f05c1b6b76ddc01ea0d26b23796d399907d25b589acaed6d9ab869"
     },
     "tests/test_memory_fabric.py": {
       "imports": [
@@ -5425,6 +5926,20 @@
       "index_state": "verified",
       "sha256": "29d468ae2558887a74193048151b37719d60f00226357baebcb9c4484b3cb895"
     },
+    "tests/test_model_attachment.py": {
+      "imports": [
+        "__future__",
+        "dataclasses",
+        "hashlib",
+        "pathlib",
+        "pytest",
+        "runtime.capability_routing",
+        "runtime.model_attachment",
+        "runtime.skill_navigator"
+      ],
+      "index_state": "verified",
+      "sha256": "7aa5f7ec826a124ceb5d0b3e0fd0e706152c8caf334c82e28b6e645b90f5b2c8"
+    },
     "tests/test_native_skills.py": {
       "imports": [
         "__future__",
@@ -5481,7 +5996,7 @@
         "scripts.clean_source_export"
       ],
       "index_state": "verified",
-      "sha256": "74707192d142c57a266ef8750214bfe470ff59f0a6c766322b9c54caa91fd889"
+      "sha256": "415dda0002011e1fccbfa13feead45a811a7e629ec6b9303ee180235b46e3632"
     },
     "tests/test_operational_controls.py": {
       "imports": [
@@ -5523,7 +6038,17 @@
         "time"
       ],
       "index_state": "verified",
-      "sha256": "8b89748e89b5faed9d6ea8da215e4caa7d7e89e462520cadcefd1b476bbda634"
+      "sha256": "a9d4d165ab5397aa1f719668e31935c326e783511954b93e4583caa49127a0b7"
+    },
+    "tests/test_operational_gap_ledger_scaling.py": {
+      "imports": [
+        "concurrent.futures",
+        "json",
+        "pathlib",
+        "runtime.operational_gap_ledger"
+      ],
+      "index_state": "verified",
+      "sha256": "9369a8feca3e41f728e07e959f750b6e7e896e76a60908027473725047806f04"
     },
     "tests/test_operational_observers.py": {
       "imports": [
@@ -5599,6 +6124,29 @@
       "index_state": "verified",
       "sha256": "cda77af9eb9c73f61b89f801937e89868cb6b43097330cbe834a87343abacacb"
     },
+    "tests/test_primitive_authority.py": {
+      "imports": [
+        "__future__",
+        "copy",
+        "pathlib",
+        "pytest",
+        "runtime.primitive_authority"
+      ],
+      "index_state": "verified",
+      "sha256": "4aafc0565d7e81b41b85bf7f8209fc2203b86af1f3f74adc1666b6afd1f1aa5b"
+    },
+    "tests/test_primitive_lint.py": {
+      "imports": [
+        "__future__",
+        "copy",
+        "datetime",
+        "pathlib",
+        "runtime.primitive_authority",
+        "runtime.primitive_lint"
+      ],
+      "index_state": "verified",
+      "sha256": "ecb603684a34f715074fdd5a836637c6a32d05fc421607cee3b117186717a769"
+    },
     "tests/test_process_memory.py": {
       "imports": [
         "pathlib",
@@ -5649,11 +6197,12 @@
         "pathlib",
         "runtime.project_control_plane",
         "runtime.project_stream_controls",
+        "runtime.trusted_evidence",
         "tempfile",
         "unittest"
       ],
       "index_state": "verified",
-      "sha256": "ffaa8eefb0a8c45fb67b5a853687ef2c7944a512489955dab35b34f6b04b4073"
+      "sha256": "9460701b66433067274ef098ab4b67160c5e9ab63fac13a4c50173c5af129bb7"
     },
     "tests/test_project_map_history_archive.py": {
       "imports": [
@@ -5715,10 +6264,11 @@
         "dataclasses",
         "datetime",
         "runtime.project_stream_controls",
+        "runtime.trusted_evidence",
         "unittest"
       ],
       "index_state": "verified",
-      "sha256": "c6c5d31036d59508ac6dd0957747b5559021242f52d2f018140ab248df49ceed"
+      "sha256": "756ba2f6462fe1046e517151677230e628656abcc2542b61dcbf933aaf777465"
     },
     "tests/test_project_stream_orchestrator.py": {
       "imports": [
@@ -5736,6 +6286,17 @@
       ],
       "index_state": "verified",
       "sha256": "3ed83e6e8c507438bc5fffb0bc18aa29c6e4d603e0a7b448b47b4c5802e7c55a"
+    },
+    "tests/test_projection_dependencies.py": {
+      "imports": [
+        "__future__",
+        "hashlib",
+        "pathlib",
+        "pytest",
+        "runtime.projection_dependencies"
+      ],
+      "index_state": "verified",
+      "sha256": "0dfce4b84fd1a192e55cdd0a24012cc66c71409363ede2bbdeea2d88e527e6c0"
     },
     "tests/test_provider_budget.py": {
       "imports": [
@@ -5766,6 +6327,7 @@
     "tests/test_provider_gateway.py": {
       "imports": [
         "__future__",
+        "dataclasses",
         "json",
         "os",
         "pathlib",
@@ -5777,7 +6339,7 @@
         "tempfile"
       ],
       "index_state": "verified",
-      "sha256": "1553819f74e29cd8968503a27d9b2df924641b6f7dbf2aa351d5bb5a9cc49240"
+      "sha256": "ec06df50de58b6e7f0a2be26e77268dcaa666096144dcbcf0c28df45b91c7346"
     },
     "tests/test_public_repository_surface.py": {
       "imports": [
@@ -5864,7 +6426,7 @@
         "scripts.reconcile_unverified_operational_controls"
       ],
       "index_state": "verified",
-      "sha256": "0edc350b232edf9bcdc9406b39acff89363645f1d282a72092391cd06b3e85c1"
+      "sha256": "3548b9962dae71b3d03619c7d96995191a28efcda899d61857e99b6a8614de75"
     },
     "tests/test_recovery.py": {
       "imports": [
@@ -5913,7 +6475,7 @@
         "scripts.build_registry_envelope_inventory"
       ],
       "index_state": "verified",
-      "sha256": "ac12c08564292b22b4e92a060741fc0f9aa09c0bf9ab4e763482a85419697f04"
+      "sha256": "2f682b90040313b23139ace941fe0c26fb4659a83eb970661e230e2d39dd4433"
     },
     "tests/test_rel008_assimilation.py": {
       "imports": [
@@ -5959,7 +6521,7 @@
         "tempfile"
       ],
       "index_state": "verified",
-      "sha256": "a728072c89037f8f4deb5e74bdce55ca3304b2ae9b7117a90365cf06b0ac6e48"
+      "sha256": "f71f55e6803eb770c2852c6ebd01dc6422d577de47847e8be534112df5bbe89e"
     },
     "tests/test_release_audit.py": {
       "imports": [
@@ -6133,6 +6695,15 @@
       "index_state": "verified",
       "sha256": "39693ac9069465d09ab2ac3b5c79d0b228365767070f4d681a68a8f7a2cb4912"
     },
+    "tests/test_repair_root_analysis.py": {
+      "imports": [
+        "__future__",
+        "pytest",
+        "runtime.repair_root_analysis"
+      ],
+      "index_state": "verified",
+      "sha256": "c0b82728e36f4528136924bcb965b9dddad70e98c08b6ec4dbaef33bbc53df34"
+    },
     "tests/test_repository_scope.py": {
       "imports": [
         "pathlib",
@@ -6281,7 +6852,7 @@
         "unittest"
       ],
       "index_state": "verified",
-      "sha256": "04e8e0f9dc0fc94442ed9553a45a22af5567678e7a42f70041c979df07c02efe"
+      "sha256": "ba995784b96a3cc1a6a6da876b28eca87c05dad5e33af8e33e6c3838585f4c90"
     },
     "tests/test_semantic_memory.py": {
       "imports": [
@@ -6291,6 +6862,15 @@
       ],
       "index_state": "verified",
       "sha256": "218c2734022e42d97fac70f63ef69355934b7bfd22f8329128a173bbbd953943"
+    },
+    "tests/test_semantic_revision.py": {
+      "imports": [
+        "__future__",
+        "pytest",
+        "runtime.semantic_revision"
+      ],
+      "index_state": "verified",
+      "sha256": "80292611a71b52459c00f73eaf21932e32a90751964c52fb6039a3fbe5db1966"
     },
     "tests/test_service_capability_provider.py": {
       "imports": [
@@ -6365,7 +6945,7 @@
         "struct"
       ],
       "index_state": "verified",
-      "sha256": "c23b8002112d6453c6023eacfdfa41189ef69fd91a80481b17b0e1d1fc867200"
+      "sha256": "65903f11e5d85f2bdf89efca71a911daf13ad4d9b9b6cb43d054576a11118644"
     },
     "tests/test_skill_support_scripts.py": {
       "imports": [
@@ -6459,16 +7039,18 @@
       "imports": [
         "__future__",
         "copy",
+        "datetime",
         "hashlib",
         "json",
         "pathlib",
         "pytest",
         "runtime.startup",
         "runtime.state_invariants",
-        "runtime.wal_transaction"
+        "runtime.wal_transaction",
+        "subprocess"
       ],
       "index_state": "verified",
-      "sha256": "18920415a2f30df512fd80ed1f61e86a501d8330dbfb214d2c63b12ff9c0615f"
+      "sha256": "fae00f38e82c8863d04d5d0b4e750515e63aa28e40c829f467e5133d8c659bf2"
     },
     "tests/test_structural_integrity.py": {
       "imports": [
@@ -6558,6 +7140,21 @@
       "index_state": "verified",
       "sha256": "82fc8898a6aadcbec7dde36eeedf4449deb88aad7c1368a5794e90c7911d69e2"
     },
+    "tests/test_task_execution_plan.py": {
+      "imports": [
+        "__future__",
+        "dataclasses",
+        "json",
+        "pathlib",
+        "pytest",
+        "runtime.capability_routing",
+        "runtime.execution_contract",
+        "runtime.skill_navigator",
+        "runtime.task_execution_plan"
+      ],
+      "index_state": "verified",
+      "sha256": "45a54adf2fe6afaf1c831cfe557b1cd95bd7ee516684042b70c78c3af6a96348"
+    },
     "tests/test_temp2_completeness.py": {
       "imports": [
         "__future__",
@@ -6569,13 +7166,14 @@
         "runtime.memory_vault",
         "runtime.project_stream_controls",
         "runtime.project_stream_orchestrator",
+        "runtime.trusted_evidence",
         "tempfile",
         "tomllib",
         "unittest",
         "yaml"
       ],
       "index_state": "verified",
-      "sha256": "ffe8a5ff64e6ca32c8dd0b67720bc6f19347b8ae9e74a3bbf007b552ff0296a4"
+      "sha256": "5fcad3a290c8ce0bd93edfb79cc283e92ff4db880b8ee5bbb6de150d6f88fce2"
     },
     "tests/test_test_profiles.py": {
       "imports": [
@@ -6612,7 +7210,7 @@
         "types"
       ],
       "index_state": "verified",
-      "sha256": "6d8f9c7c6a9f7eec5dc37c521632283599d8db44b45609304fc16274f973e918"
+      "sha256": "b1eda2740a27b4470c270aafbcf93db2d0e3c535d9d3889ab5ba1c35e5729e63"
     },
     "tests/test_tool_intake.py": {
       "imports": [
@@ -6782,13 +7380,22 @@
         "runtime.file_lock",
         "runtime.project_control_plane",
         "runtime.test_profiles",
+        "runtime.trusted_evidence",
         "runtime.workspace_manager",
         "tempfile",
         "unittest",
         "unittest.mock"
       ],
       "index_state": "verified",
-      "sha256": "b7e21ca57cf4facd8cfe3fcc194d01cdf3dda4de84f9b79a0aa1735424162d16"
+      "sha256": "5c965e7c04d5e6f085df2575005c990f57476d371c922d7f7de1b1b22a09cec8"
+    },
+    "tests/test_world_state.py": {
+      "imports": [
+        "json",
+        "runtime.world_state"
+      ],
+      "index_state": "verified",
+      "sha256": "31268414b18e8ef3bce8045fa1d8355b49a06fcb7351257f35a78d02c642caba"
     }
   },
   "groups": [
@@ -6805,6 +7412,7 @@
         "runtime/resource_lifecycle.py",
         "runtime/test_profiles.py",
         "runtime/test_runner.py",
+        "runtime/trusted_evidence.py",
         "runtime/wal_transaction.py",
         "runtime/workspace_manager.py",
         "tests/test_file_lock_contention.py",
@@ -6820,7 +7428,7 @@
       ],
       "description": "Serial process custody, recovery, test-runner, WAL, resource-lifecycle, and workspace mutation tests.",
       "group": "process-recovery",
-      "input_sha256": "0ab59fe87526a91fef588f401db4fd8b738fda29c502cbb9f5ca1bb601fabf87",
+      "input_sha256": "23eabc00879e2389dffc4bf3f07f71abec48966d2906f38c2ab5e95e13d3ca54",
       "inputs": [
         "registry/test_profiles.json",
         "runtime/commissioning.py",
@@ -6833,6 +7441,7 @@
         "runtime/resource_lifecycle.py",
         "runtime/test_profiles.py",
         "runtime/test_runner.py",
+        "runtime/trusted_evidence.py",
         "runtime/wal_transaction.py",
         "runtime/workspace_manager.py",
         "tests/test_file_lock_contention.py",
@@ -6897,7 +7506,7 @@
       ],
       "description": "Serial exact-tool, installed-wheel, corrective-release, and full-repair-ledger certification tests.",
       "group": "exact-installed",
-      "input_sha256": "6e2d984d6f33565598c95062eb1b0ab7df9a3141a0d833c5f2029d89db4d3eb5",
+      "input_sha256": "afcd2a64dcd36cbf0220814b7f155d46d1e73709caa8a332c05985c93cf06bf6",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -6981,7 +7590,7 @@
       ],
       "description": "Serial release, distribution, artifact, and revocation certification tests excluding composed audit mutations.",
       "group": "release-build",
-      "input_sha256": "637c51f4918742e6cc53c8980c47cd7e6f2e054e00372eea704d4fb311da8471",
+      "input_sha256": "22e022a0e23100c216fb3b6f23e1e2f3de48572ca06b2a14daa37aa875fb39ec",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -7055,7 +7664,7 @@
       ],
       "description": "Serial composed-audit and quarantine-mutation tests isolated from package builds.",
       "group": "release-audit",
-      "input_sha256": "6be42fa13e871bb2344122b42d7222957595c60ba22001f63cfd7c622474e63a",
+      "input_sha256": "ecd7c302ad42d9d9c18b5bddd200365f3d8005e1deaa0405df9a763c82bdd1f6",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -7101,7 +7710,7 @@
       ],
       "description": "Serial full-tree structural mutation tests isolated from derived-artifact checks.",
       "group": "structural-adversarial",
-      "input_sha256": "8102948d8252344e0b648fc4273b126f6eff81edc85b2094277599965c32e4ae",
+      "input_sha256": "b8552131df4e4c45717de20e24320710702e2ce06eb9130c329ae6959e669502",
       "inputs": [
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_agents_md_generator.py",
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_change_impact.py",
@@ -7201,6 +7810,7 @@
         "builders/last_round_assimilation_builder.py",
         "builders/orchestration_builder.py",
         "builders/repair_pattern_builder.py",
+        "builders/semantic_index_builder.py",
         "builders/skill_builder.py",
         "builders/test_evidence_builder.py",
         "conftest.py",
@@ -7244,6 +7854,7 @@
         "extension/scripts/run-isolated-current-source-walk.js",
         "extension/scripts/run-operational-fault-recovery-walk.js",
         "extension/scripts/run-operational-ui-walk.js",
+        "extension/scripts/run-state-invariant-vectors.js",
         "extension/scripts/run-test-profile.js",
         "extension/scripts/run-vscode-host-smoke.js",
         "extension/src/activationTransaction.js",
@@ -7272,6 +7883,7 @@
         "extension/src/ollamaProvider.js",
         "extension/src/operationAuthority.js",
         "extension/src/processTree.js",
+        "extension/src/providerExecutionPolicy.js",
         "extension/src/pxBridge.js",
         "extension/src/runtimeBridge.js",
         "extension/src/runtimeRevisions.js",
@@ -7337,6 +7949,7 @@
         "extension/tests/owned-native-input-client.test.js",
         "extension/tests/package-contract.test.js",
         "extension/tests/plugin-lifecycle-fixtures.test.js",
+        "extension/tests/provider-execution-policy.test.js",
         "extension/tests/px-bridge-cache.test.js",
         "extension/tests/runtime-efficiency-load.test.js",
         "extension/tests/runtime-revisions.test.js",
@@ -7373,14 +7986,19 @@
         "runtime/__init__.py",
         "runtime/__main__.py",
         "runtime/admission_controller.py",
+        "runtime/affected_proof.py",
+        "runtime/agency_studio_adapter.py",
         "runtime/agent_builder.py",
         "runtime/agent_fleet_controls.py",
+        "runtime/agent_handoff.py",
         "runtime/agent_harness_worker.py",
         "runtime/agent_provider.py",
         "runtime/agent_runtime.py",
+        "runtime/architecture_invariants.py",
         "runtime/artifact_reachability.py",
         "runtime/assurance_controls.py",
         "runtime/authoritative_json.py",
+        "runtime/authority_topology.py",
         "runtime/backend_capabilities.py",
         "runtime/behavioral_assurance.py",
         "runtime/behavioral_certification.py",
@@ -7388,9 +8006,12 @@
         "runtime/bounded_walk.py",
         "runtime/build_claims.py",
         "runtime/capability_assimilation.py",
+        "runtime/capability_maturity.py",
         "runtime/capability_routing.py",
         "runtime/capability_scheduler.py",
+        "runtime/capability_semantics.py",
         "runtime/certification_readiness.py",
+        "runtime/change_classification.py",
         "runtime/classifier.py",
         "runtime/clean_room_capabilities.py",
         "runtime/cli.py",
@@ -7422,6 +8043,7 @@
         "runtime/declared_suite.py",
         "runtime/declared_suite_formulas.py",
         "runtime/dependency_audit.py",
+        "runtime/dependency_invalidation.py",
         "runtime/durable_state.py",
         "runtime/effect_grants.py",
         "runtime/effect_surface.py",
@@ -7430,6 +8052,8 @@
         "runtime/engineering_lifecycle.py",
         "runtime/event_ledger.py",
         "runtime/evidence_assembler.py",
+        "runtime/evidence_cache.py",
+        "runtime/evidence_claims.py",
         "runtime/evidence_custody.py",
         "runtime/evidence_index.py",
         "runtime/evidence_portability.py",
@@ -7442,6 +8066,7 @@
         "runtime/external_toolchain.py",
         "runtime/file_lock.py",
         "runtime/foundation_assurance.py",
+        "runtime/foundry_studio_bridge.py",
         "runtime/full_repair.py",
         "runtime/gate_runner.py",
         "runtime/generated_artifacts.py",
@@ -7466,6 +8091,7 @@
         "runtime/licensing.py",
         "runtime/lifecycle.py",
         "runtime/local_model_runtime.py",
+        "runtime/memory_broker.py",
         "runtime/memory_fabric.py",
         "runtime/memory_intelligence.py",
         "runtime/memory_operations.py",
@@ -7495,6 +8121,7 @@
         "runtime/metacognitive_evolution/semantic_contracts/linter.py",
         "runtime/metacognitive_evolution/theory_induction/__init__.py",
         "runtime/metacognitive_evolution/theory_induction/inducer.py",
+        "runtime/model_attachment.py",
         "runtime/models.py",
         "runtime/native_skills.py",
         "runtime/operation_authority.py",
@@ -7510,6 +8137,8 @@
         "runtime/planner.py",
         "runtime/platform_support.py",
         "runtime/portable_audit_bundle.py",
+        "runtime/primitive_authority.py",
+        "runtime/primitive_lint.py",
         "runtime/process_memory.py",
         "runtime/process_supervisor.py",
         "runtime/profiles.py",
@@ -7524,6 +8153,7 @@
         "runtime/project_reasoning/glossary_audit.py",
         "runtime/project_stream_controls.py",
         "runtime/project_stream_orchestrator.py",
+        "runtime/projection_dependencies.py",
         "runtime/provider_budget.py",
         "runtime/provider_certification.py",
         "runtime/provider_gateway.py",
@@ -7547,6 +8177,7 @@
         "runtime/release_repository_context.py",
         "runtime/release_signing.py",
         "runtime/release_skip_policy.py",
+        "runtime/repair_root_analysis.py",
         "runtime/repository_scope.py",
         "runtime/research_assimilation.py",
         "runtime/resource_lifecycle.py",
@@ -7557,6 +8188,7 @@
         "runtime/secret_scanning.py",
         "runtime/semantic_index.py",
         "runtime/semantic_memory.py",
+        "runtime/semantic_revision.py",
         "runtime/service_capability_provider.py",
         "runtime/skill_navigator.py",
         "runtime/skill_studio.py",
@@ -7576,6 +8208,7 @@
         "runtime/studio_terminal_observer.py",
         "runtime/studio_worker_launch.py",
         "runtime/system_graph.py",
+        "runtime/task_execution_plan.py",
         "runtime/test_orchestration_lock.py",
         "runtime/test_profiles.py",
         "runtime/test_runner.py",
@@ -7590,6 +8223,7 @@
         "runtime/workflow_studio.py",
         "runtime/workflow_worker.py",
         "runtime/workspace_manager.py",
+        "runtime/world_state.py",
         "scripts/apply_typed_control_gap_links.py",
         "scripts/archive_committed_wal.py",
         "scripts/archive_project_map_history.py",
@@ -7597,6 +8231,7 @@
         "scripts/attest_operational_card_evidence.py",
         "scripts/audit_sanitization.py",
         "scripts/audit_source_archive.py",
+        "scripts/benchmark_operational_gap_ledger.py",
         "scripts/bootstrap_certification.py",
         "scripts/bootstrap_operational_gap_ledger.py",
         "scripts/build_admission_queue.py",
@@ -7661,6 +8296,7 @@
         "scripts/pipeline_common.py",
         "scripts/portable_audit_bundle.py",
         "scripts/quarantine_paths.py",
+        "scripts/reconcile_active_capability_hashes.py",
         "scripts/reconcile_commissioned_skill_registry.py",
         "scripts/reconcile_declared_owner_hashes.py",
         "scripts/reconcile_declared_tool_hashes.py",
@@ -7695,16 +8331,22 @@
         "tests/repository_copy.py",
         "tests/studio_approval_testkit.py",
         "tests/test_admission_controller.py",
+        "tests/test_affected_proof.py",
+        "tests/test_agency_studio_adapter.py",
         "tests/test_agent_builder.py",
+        "tests/test_agent_governed_integration.py",
+        "tests/test_agent_handoff.py",
         "tests/test_agent_provider.py",
         "tests/test_agent_runtime.py",
         "tests/test_agent_session_coordinator.py",
+        "tests/test_architecture_invariants.py",
         "tests/test_archive_catalog_v2.py",
         "tests/test_archive_inventory.py",
         "tests/test_assemble_operational_control_evidence.py",
         "tests/test_assurance_controls.py",
         "tests/test_authoritative_json.py",
         "tests/test_authoritative_skill_compiler.py",
+        "tests/test_authority_topology.py",
         "tests/test_behavioral_assurance.py",
         "tests/test_benchmark_operations.py",
         "tests/test_bootstrap_cli.py",
@@ -7716,10 +8358,14 @@
         "tests/test_bytecode_guard.py",
         "tests/test_cache_quarantine.py",
         "tests/test_capability_assimilation.py",
+        "tests/test_capability_maturity.py",
         "tests/test_capability_mining_skills.py",
         "tests/test_capability_routing.py",
+        "tests/test_capability_routing_adversarial.py",
         "tests/test_capability_scheduler.py",
+        "tests/test_capability_semantics.py",
         "tests/test_certification_readiness.py",
+        "tests/test_change_classification.py",
         "tests/test_clean_room_capabilities.py",
         "tests/test_clean_source_export.py",
         "tests/test_cli_commands.py",
@@ -7746,6 +8392,7 @@
         "tests/test_declared_suite_reconstruction.py",
         "tests/test_declared_suite_support.py",
         "tests/test_dependency_audit.py",
+        "tests/test_dependency_invalidation.py",
         "tests/test_drop_in_bootstrap.py",
         "tests/test_effect_grants.py",
         "tests/test_effect_surface.py",
@@ -7753,6 +8400,8 @@
         "tests/test_engineering_lifecycle.py",
         "tests/test_event_ledger_integrity.py",
         "tests/test_evidence_assembler.py",
+        "tests/test_evidence_cache.py",
+        "tests/test_evidence_claims.py",
         "tests/test_evidence_custody.py",
         "tests/test_evidence_index.py",
         "tests/test_evidence_portability.py",
@@ -7767,14 +8416,17 @@
         "tests/test_extract_structured_text.py",
         "tests/test_file_lock_contention.py",
         "tests/test_foundation_assurance.py",
+        "tests/test_foundry_studio_bridge.py",
         "tests/test_full_repair_ledger.py",
         "tests/test_generated_artifacts.py",
         "tests/test_generated_dependency_graph.py",
         "tests/test_global_skill_isolation.py",
+        "tests/test_graph_authority_manifest.py",
         "tests/test_graphs_and_orchestrations.py",
         "tests/test_hardware_routing.py",
         "tests/test_health_model.py",
         "tests/test_host_boundaries.py",
+        "tests/test_hybrid_retrieval.py",
         "tests/test_independent_gate_runner.py",
         "tests/test_installed_wheel_e2e.py",
         "tests/test_instrumentation_sdk.py",
@@ -7789,12 +8441,14 @@
         "tests/test_licensing.py",
         "tests/test_local_model_capabilities.py",
         "tests/test_local_model_runtime.py",
+        "tests/test_memory_broker.py",
         "tests/test_memory_fabric.py",
         "tests/test_memory_integrity_controls.py",
         "tests/test_memory_intelligence.py",
         "tests/test_memory_operations.py",
         "tests/test_memory_vault.py",
         "tests/test_metacognitive_evolution.py",
+        "tests/test_model_attachment.py",
         "tests/test_native_skills.py",
         "tests/test_operation_authority.py",
         "tests/test_operation_coverage.py",
@@ -7803,12 +8457,15 @@
         "tests/test_operational_controls.py",
         "tests/test_operational_event_bus.py",
         "tests/test_operational_gap_ledger.py",
+        "tests/test_operational_gap_ledger_scaling.py",
         "tests/test_operational_observers.py",
         "tests/test_operational_visibility.py",
         "tests/test_orchestrator.py",
         "tests/test_outcome_verifier.py",
         "tests/test_platform_support.py",
         "tests/test_portable_audit_bundle.py",
+        "tests/test_primitive_authority.py",
+        "tests/test_primitive_lint.py",
         "tests/test_process_memory.py",
         "tests/test_process_supervisor.py",
         "tests/test_project_brief.py",
@@ -7819,6 +8476,7 @@
         "tests/test_project_reasoning.py",
         "tests/test_project_stream_controls.py",
         "tests/test_project_stream_orchestrator.py",
+        "tests/test_projection_dependencies.py",
         "tests/test_provider_budget.py",
         "tests/test_provider_certification.py",
         "tests/test_provider_gateway.py",
@@ -7853,6 +8511,7 @@
         "tests/test_release_mutation_probe.py",
         "tests/test_release_preflight.py",
         "tests/test_release_supply_chain_evidence.py",
+        "tests/test_repair_root_analysis.py",
         "tests/test_repository_scope.py",
         "tests/test_research_contract_admission.py",
         "tests/test_resource_lifecycle.py",
@@ -7866,6 +8525,7 @@
         "tests/test_secret_scanner.py",
         "tests/test_semantic_capability_query.py",
         "tests/test_semantic_memory.py",
+        "tests/test_semantic_revision.py",
         "tests/test_service_capability_provider.py",
         "tests/test_skill_first_initialization.py",
         "tests/test_skill_library.py",
@@ -7887,6 +8547,7 @@
         "tests/test_studio_models.py",
         "tests/test_studio_run_control.py",
         "tests/test_system_graph.py",
+        "tests/test_task_execution_plan.py",
         "tests/test_temp2_completeness.py",
         "tests/test_test_profiles.py",
         "tests/test_test_runner_controls.py",
@@ -7901,7 +8562,8 @@
         "tests/test_work_admission.py",
         "tests/test_workflow_studio.py",
         "tests/test_workspace_cli.py",
-        "tests/test_workspace_manager.py"
+        "tests/test_workspace_manager.py",
+        "tests/test_world_state.py"
       ],
       "member_count": 1,
       "members": [
@@ -8006,6 +8668,7 @@
         "builders/last_round_assimilation_builder.py",
         "builders/orchestration_builder.py",
         "builders/repair_pattern_builder.py",
+        "builders/semantic_index_builder.py",
         "builders/skill_builder.py",
         "builders/test_evidence_builder.py",
         "conftest.py",
@@ -8049,6 +8712,7 @@
         "extension/scripts/run-isolated-current-source-walk.js",
         "extension/scripts/run-operational-fault-recovery-walk.js",
         "extension/scripts/run-operational-ui-walk.js",
+        "extension/scripts/run-state-invariant-vectors.js",
         "extension/scripts/run-test-profile.js",
         "extension/scripts/run-vscode-host-smoke.js",
         "extension/src/activationTransaction.js",
@@ -8077,6 +8741,7 @@
         "extension/src/ollamaProvider.js",
         "extension/src/operationAuthority.js",
         "extension/src/processTree.js",
+        "extension/src/providerExecutionPolicy.js",
         "extension/src/pxBridge.js",
         "extension/src/runtimeBridge.js",
         "extension/src/runtimeRevisions.js",
@@ -8142,6 +8807,7 @@
         "extension/tests/owned-native-input-client.test.js",
         "extension/tests/package-contract.test.js",
         "extension/tests/plugin-lifecycle-fixtures.test.js",
+        "extension/tests/provider-execution-policy.test.js",
         "extension/tests/px-bridge-cache.test.js",
         "extension/tests/runtime-efficiency-load.test.js",
         "extension/tests/runtime-revisions.test.js",
@@ -8168,14 +8834,19 @@
         "runtime/__init__.py",
         "runtime/__main__.py",
         "runtime/admission_controller.py",
+        "runtime/affected_proof.py",
+        "runtime/agency_studio_adapter.py",
         "runtime/agent_builder.py",
         "runtime/agent_fleet_controls.py",
+        "runtime/agent_handoff.py",
         "runtime/agent_harness_worker.py",
         "runtime/agent_provider.py",
         "runtime/agent_runtime.py",
+        "runtime/architecture_invariants.py",
         "runtime/artifact_reachability.py",
         "runtime/assurance_controls.py",
         "runtime/authoritative_json.py",
+        "runtime/authority_topology.py",
         "runtime/backend_capabilities.py",
         "runtime/behavioral_assurance.py",
         "runtime/behavioral_certification.py",
@@ -8183,9 +8854,12 @@
         "runtime/bounded_walk.py",
         "runtime/build_claims.py",
         "runtime/capability_assimilation.py",
+        "runtime/capability_maturity.py",
         "runtime/capability_routing.py",
         "runtime/capability_scheduler.py",
+        "runtime/capability_semantics.py",
         "runtime/certification_readiness.py",
+        "runtime/change_classification.py",
         "runtime/classifier.py",
         "runtime/clean_room_capabilities.py",
         "runtime/cli.py",
@@ -8217,6 +8891,7 @@
         "runtime/declared_suite.py",
         "runtime/declared_suite_formulas.py",
         "runtime/dependency_audit.py",
+        "runtime/dependency_invalidation.py",
         "runtime/durable_state.py",
         "runtime/effect_grants.py",
         "runtime/effect_surface.py",
@@ -8225,6 +8900,8 @@
         "runtime/engineering_lifecycle.py",
         "runtime/event_ledger.py",
         "runtime/evidence_assembler.py",
+        "runtime/evidence_cache.py",
+        "runtime/evidence_claims.py",
         "runtime/evidence_custody.py",
         "runtime/evidence_index.py",
         "runtime/evidence_portability.py",
@@ -8237,6 +8914,7 @@
         "runtime/external_toolchain.py",
         "runtime/file_lock.py",
         "runtime/foundation_assurance.py",
+        "runtime/foundry_studio_bridge.py",
         "runtime/full_repair.py",
         "runtime/gate_runner.py",
         "runtime/generated_artifacts.py",
@@ -8261,6 +8939,7 @@
         "runtime/licensing.py",
         "runtime/lifecycle.py",
         "runtime/local_model_runtime.py",
+        "runtime/memory_broker.py",
         "runtime/memory_fabric.py",
         "runtime/memory_intelligence.py",
         "runtime/memory_operations.py",
@@ -8290,6 +8969,7 @@
         "runtime/metacognitive_evolution/semantic_contracts/linter.py",
         "runtime/metacognitive_evolution/theory_induction/__init__.py",
         "runtime/metacognitive_evolution/theory_induction/inducer.py",
+        "runtime/model_attachment.py",
         "runtime/models.py",
         "runtime/native_skills.py",
         "runtime/operation_authority.py",
@@ -8305,6 +8985,8 @@
         "runtime/planner.py",
         "runtime/platform_support.py",
         "runtime/portable_audit_bundle.py",
+        "runtime/primitive_authority.py",
+        "runtime/primitive_lint.py",
         "runtime/process_memory.py",
         "runtime/process_supervisor.py",
         "runtime/profiles.py",
@@ -8319,6 +9001,7 @@
         "runtime/project_reasoning/glossary_audit.py",
         "runtime/project_stream_controls.py",
         "runtime/project_stream_orchestrator.py",
+        "runtime/projection_dependencies.py",
         "runtime/provider_budget.py",
         "runtime/provider_certification.py",
         "runtime/provider_gateway.py",
@@ -8342,6 +9025,7 @@
         "runtime/release_repository_context.py",
         "runtime/release_signing.py",
         "runtime/release_skip_policy.py",
+        "runtime/repair_root_analysis.py",
         "runtime/repository_scope.py",
         "runtime/research_assimilation.py",
         "runtime/resource_lifecycle.py",
@@ -8352,6 +9036,7 @@
         "runtime/secret_scanning.py",
         "runtime/semantic_index.py",
         "runtime/semantic_memory.py",
+        "runtime/semantic_revision.py",
         "runtime/service_capability_provider.py",
         "runtime/skill_navigator.py",
         "runtime/skill_studio.py",
@@ -8371,6 +9056,7 @@
         "runtime/studio_terminal_observer.py",
         "runtime/studio_worker_launch.py",
         "runtime/system_graph.py",
+        "runtime/task_execution_plan.py",
         "runtime/test_orchestration_lock.py",
         "runtime/test_profiles.py",
         "runtime/test_runner.py",
@@ -8385,6 +9071,7 @@
         "runtime/workflow_studio.py",
         "runtime/workflow_worker.py",
         "runtime/workspace_manager.py",
+        "runtime/world_state.py",
         "scripts/apply_typed_control_gap_links.py",
         "scripts/archive_committed_wal.py",
         "scripts/archive_project_map_history.py",
@@ -8392,6 +9079,7 @@
         "scripts/attest_operational_card_evidence.py",
         "scripts/audit_sanitization.py",
         "scripts/audit_source_archive.py",
+        "scripts/benchmark_operational_gap_ledger.py",
         "scripts/bootstrap_certification.py",
         "scripts/bootstrap_operational_gap_ledger.py",
         "scripts/build_admission_queue.py",
@@ -8456,6 +9144,7 @@
         "scripts/pipeline_common.py",
         "scripts/portable_audit_bundle.py",
         "scripts/quarantine_paths.py",
+        "scripts/reconcile_active_capability_hashes.py",
         "scripts/reconcile_commissioned_skill_registry.py",
         "scripts/reconcile_declared_owner_hashes.py",
         "scripts/reconcile_declared_tool_hashes.py",
@@ -8490,16 +9179,22 @@
         "tests/repository_copy.py",
         "tests/studio_approval_testkit.py",
         "tests/test_admission_controller.py",
+        "tests/test_affected_proof.py",
+        "tests/test_agency_studio_adapter.py",
         "tests/test_agent_builder.py",
+        "tests/test_agent_governed_integration.py",
+        "tests/test_agent_handoff.py",
         "tests/test_agent_provider.py",
         "tests/test_agent_runtime.py",
         "tests/test_agent_session_coordinator.py",
+        "tests/test_architecture_invariants.py",
         "tests/test_archive_catalog_v2.py",
         "tests/test_archive_inventory.py",
         "tests/test_assemble_operational_control_evidence.py",
         "tests/test_assurance_controls.py",
         "tests/test_authoritative_json.py",
         "tests/test_authoritative_skill_compiler.py",
+        "tests/test_authority_topology.py",
         "tests/test_behavioral_assurance.py",
         "tests/test_benchmark_operations.py",
         "tests/test_bootstrap_cli.py",
@@ -8511,10 +9206,14 @@
         "tests/test_bytecode_guard.py",
         "tests/test_cache_quarantine.py",
         "tests/test_capability_assimilation.py",
+        "tests/test_capability_maturity.py",
         "tests/test_capability_mining_skills.py",
         "tests/test_capability_routing.py",
+        "tests/test_capability_routing_adversarial.py",
         "tests/test_capability_scheduler.py",
+        "tests/test_capability_semantics.py",
         "tests/test_certification_readiness.py",
+        "tests/test_change_classification.py",
         "tests/test_clean_room_capabilities.py",
         "tests/test_clean_source_export.py",
         "tests/test_cli_commands.py",
@@ -8541,6 +9240,7 @@
         "tests/test_declared_suite_reconstruction.py",
         "tests/test_declared_suite_support.py",
         "tests/test_dependency_audit.py",
+        "tests/test_dependency_invalidation.py",
         "tests/test_drop_in_bootstrap.py",
         "tests/test_effect_grants.py",
         "tests/test_effect_surface.py",
@@ -8548,6 +9248,8 @@
         "tests/test_engineering_lifecycle.py",
         "tests/test_event_ledger_integrity.py",
         "tests/test_evidence_assembler.py",
+        "tests/test_evidence_cache.py",
+        "tests/test_evidence_claims.py",
         "tests/test_evidence_custody.py",
         "tests/test_evidence_index.py",
         "tests/test_evidence_portability.py",
@@ -8562,14 +9264,17 @@
         "tests/test_extract_structured_text.py",
         "tests/test_file_lock_contention.py",
         "tests/test_foundation_assurance.py",
+        "tests/test_foundry_studio_bridge.py",
         "tests/test_full_repair_ledger.py",
         "tests/test_generated_artifacts.py",
         "tests/test_generated_dependency_graph.py",
         "tests/test_global_skill_isolation.py",
+        "tests/test_graph_authority_manifest.py",
         "tests/test_graphs_and_orchestrations.py",
         "tests/test_hardware_routing.py",
         "tests/test_health_model.py",
         "tests/test_host_boundaries.py",
+        "tests/test_hybrid_retrieval.py",
         "tests/test_independent_gate_runner.py",
         "tests/test_installed_wheel_e2e.py",
         "tests/test_instrumentation_sdk.py",
@@ -8584,12 +9289,14 @@
         "tests/test_licensing.py",
         "tests/test_local_model_capabilities.py",
         "tests/test_local_model_runtime.py",
+        "tests/test_memory_broker.py",
         "tests/test_memory_fabric.py",
         "tests/test_memory_integrity_controls.py",
         "tests/test_memory_intelligence.py",
         "tests/test_memory_operations.py",
         "tests/test_memory_vault.py",
         "tests/test_metacognitive_evolution.py",
+        "tests/test_model_attachment.py",
         "tests/test_native_skills.py",
         "tests/test_operation_authority.py",
         "tests/test_operation_coverage.py",
@@ -8598,12 +9305,15 @@
         "tests/test_operational_controls.py",
         "tests/test_operational_event_bus.py",
         "tests/test_operational_gap_ledger.py",
+        "tests/test_operational_gap_ledger_scaling.py",
         "tests/test_operational_observers.py",
         "tests/test_operational_visibility.py",
         "tests/test_orchestrator.py",
         "tests/test_outcome_verifier.py",
         "tests/test_platform_support.py",
         "tests/test_portable_audit_bundle.py",
+        "tests/test_primitive_authority.py",
+        "tests/test_primitive_lint.py",
         "tests/test_process_memory.py",
         "tests/test_process_supervisor.py",
         "tests/test_project_brief.py",
@@ -8614,6 +9324,7 @@
         "tests/test_project_reasoning.py",
         "tests/test_project_stream_controls.py",
         "tests/test_project_stream_orchestrator.py",
+        "tests/test_projection_dependencies.py",
         "tests/test_provider_budget.py",
         "tests/test_provider_certification.py",
         "tests/test_provider_gateway.py",
@@ -8648,6 +9359,7 @@
         "tests/test_release_mutation_probe.py",
         "tests/test_release_preflight.py",
         "tests/test_release_supply_chain_evidence.py",
+        "tests/test_repair_root_analysis.py",
         "tests/test_repository_scope.py",
         "tests/test_research_contract_admission.py",
         "tests/test_resource_lifecycle.py",
@@ -8661,6 +9373,7 @@
         "tests/test_secret_scanner.py",
         "tests/test_semantic_capability_query.py",
         "tests/test_semantic_memory.py",
+        "tests/test_semantic_revision.py",
         "tests/test_service_capability_provider.py",
         "tests/test_skill_first_initialization.py",
         "tests/test_skill_library.py",
@@ -8682,6 +9395,7 @@
         "tests/test_studio_models.py",
         "tests/test_studio_run_control.py",
         "tests/test_system_graph.py",
+        "tests/test_task_execution_plan.py",
         "tests/test_temp2_completeness.py",
         "tests/test_test_profiles.py",
         "tests/test_test_runner_controls.py",
@@ -8696,7 +9410,8 @@
         "tests/test_work_admission.py",
         "tests/test_workflow_studio.py",
         "tests/test_workspace_cli.py",
-        "tests/test_workspace_manager.py"
+        "tests/test_workspace_manager.py",
+        "tests/test_world_state.py"
       ],
       "timeout_seconds": 1200.0
     },
@@ -8711,8 +9426,10 @@
         "registry/python_surface_ownership.json",
         "registry/registry_envelope_inventory.json",
         "registry/test_profiles.json",
+        "runtime/agent_provider.py",
         "runtime/artifact_reachability.py",
         "runtime/build_claims.py",
+        "runtime/cognitive_core/index_builder.py",
         "runtime/commissioning.py",
         "runtime/effect_surface.py",
         "runtime/engine_identity.py",
@@ -8724,19 +9441,23 @@
         "runtime/graph_registry.py",
         "runtime/licensing.py",
         "runtime/operational_gap_ledger.py",
+        "runtime/projection_dependencies.py",
         "runtime/provider_gateway.py",
         "runtime/python_surface_certification.py",
         "runtime/registry.py",
         "runtime/registry_envelope.py",
+        "runtime/release_artifacts.py",
         "runtime/release_audit.py",
         "runtime/release_certification.py",
         "runtime/release_preflight.py",
         "runtime/repository_scope.py",
         "runtime/resource_lifecycle.py",
         "runtime/sanitation_assurance.py",
+        "runtime/semantic_index.py",
         "runtime/structural_integrity.py",
         "runtime/test_orchestration_lock.py",
         "runtime/test_profiles.py",
+        "runtime/world_state.py",
         "scripts/audit_sanitization.py",
         "scripts/build_completion_status.py",
         "scripts/build_contract_ownership_registry.py",
@@ -8747,6 +9468,7 @@
         "scripts/build_python_dependency_ownership.py",
         "scripts/build_registry_envelope_inventory.py",
         "scripts/clean_source_export.py",
+        "scripts/reconcile_active_capability_hashes.py",
         "scripts/reconcile_commissioned_skill_registry.py",
         "scripts/reconcile_declared_tool_hashes.py",
         "scripts/reconcile_punch_card_evidence.py",
@@ -8760,7 +9482,7 @@
       ],
       "description": "Final serial generated-output, completion-projection, portability, effect-surface, and punch-card integrity gate.",
       "group": "derived-integrity",
-      "input_sha256": "39472edfe7cd3d2209a3918ce7b6580ff948bb6c080ab137a05d6ce620837dc3",
+      "input_sha256": "61d606cb0f2106293cda55a72d38d78f6daeee188446af4e174afa0655e132aa",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -8771,8 +9493,10 @@
         "registry/python_surface_ownership.json",
         "registry/registry_envelope_inventory.json",
         "registry/test_profiles.json",
+        "runtime/agent_provider.py",
         "runtime/artifact_reachability.py",
         "runtime/build_claims.py",
+        "runtime/cognitive_core/index_builder.py",
         "runtime/commissioning.py",
         "runtime/effect_surface.py",
         "runtime/engine_identity.py",
@@ -8784,19 +9508,23 @@
         "runtime/graph_registry.py",
         "runtime/licensing.py",
         "runtime/operational_gap_ledger.py",
+        "runtime/projection_dependencies.py",
         "runtime/provider_gateway.py",
         "runtime/python_surface_certification.py",
         "runtime/registry.py",
         "runtime/registry_envelope.py",
+        "runtime/release_artifacts.py",
         "runtime/release_audit.py",
         "runtime/release_certification.py",
         "runtime/release_preflight.py",
         "runtime/repository_scope.py",
         "runtime/resource_lifecycle.py",
         "runtime/sanitation_assurance.py",
+        "runtime/semantic_index.py",
         "runtime/structural_integrity.py",
         "runtime/test_orchestration_lock.py",
         "runtime/test_profiles.py",
+        "runtime/world_state.py",
         "scripts/audit_sanitization.py",
         "scripts/build_completion_status.py",
         "scripts/build_contract_ownership_registry.py",
@@ -8807,6 +9535,7 @@
         "scripts/build_python_dependency_ownership.py",
         "scripts/build_registry_envelope_inventory.py",
         "scripts/clean_source_export.py",
+        "scripts/reconcile_active_capability_hashes.py",
         "scripts/reconcile_commissioned_skill_registry.py",
         "scripts/reconcile_declared_tool_hashes.py",
         "scripts/reconcile_punch_card_evidence.py",
@@ -8839,13 +9568,18 @@
         "registry/test_profiles.json",
         "runtime/__init__.py",
         "runtime/admission_controller.py",
+        "runtime/affected_proof.py",
+        "runtime/agency_studio_adapter.py",
         "runtime/agent_builder.py",
         "runtime/agent_fleet_controls.py",
+        "runtime/agent_handoff.py",
         "runtime/agent_provider.py",
         "runtime/agent_runtime.py",
+        "runtime/architecture_invariants.py",
         "runtime/artifact_reachability.py",
         "runtime/assurance_controls.py",
         "runtime/authoritative_json.py",
+        "runtime/authority_topology.py",
         "runtime/backend_capabilities.py",
         "runtime/behavioral_assurance.py",
         "runtime/behavioral_certification.py",
@@ -8853,9 +9587,12 @@
         "runtime/bounded_walk.py",
         "runtime/build_claims.py",
         "runtime/capability_assimilation.py",
+        "runtime/capability_maturity.py",
         "runtime/capability_routing.py",
         "runtime/capability_scheduler.py",
+        "runtime/capability_semantics.py",
         "runtime/certification_readiness.py",
+        "runtime/change_classification.py",
         "runtime/clean_room_capabilities.py",
         "runtime/cli.py",
         "runtime/cognitive_assurance.py",
@@ -8881,6 +9618,7 @@
         "runtime/declared_suite.py",
         "runtime/declared_suite_formulas.py",
         "runtime/dependency_audit.py",
+        "runtime/dependency_invalidation.py",
         "runtime/durable_state.py",
         "runtime/effect_grants.py",
         "runtime/effect_surface.py",
@@ -8889,6 +9627,8 @@
         "runtime/engineering_lifecycle.py",
         "runtime/event_ledger.py",
         "runtime/evidence_assembler.py",
+        "runtime/evidence_cache.py",
+        "runtime/evidence_claims.py",
         "runtime/evidence_custody.py",
         "runtime/evidence_index.py",
         "runtime/evidence_portability.py",
@@ -8900,23 +9640,34 @@
         "runtime/external_toolchain.py",
         "runtime/file_lock.py",
         "runtime/foundation_assurance.py",
+        "runtime/foundry_studio_bridge.py",
         "runtime/generated_artifacts.py",
         "runtime/generated_dependency.py",
         "runtime/graph_registry.py",
+        "runtime/hardware_routing.py",
         "runtime/intake.py",
         "runtime/intake_lifecycle.py",
+        "runtime/knowledge_foundry.py",
         "runtime/licensing.py",
+        "runtime/memory_broker.py",
+        "runtime/memory_fabric.py",
         "runtime/memory_remediation.py",
         "runtime/metacognitive_evolution/common/io.py",
+        "runtime/model_attachment.py",
         "runtime/operational_event_bus.py",
         "runtime/operational_gap_ledger.py",
+        "runtime/paths.py",
         "runtime/process_supervisor.py",
+        "runtime/project_impact.py",
+        "runtime/project_intelligence.py",
         "runtime/project_management.py",
+        "runtime/projection_dependencies.py",
         "runtime/provider_budget.py",
         "runtime/provider_gateway.py",
         "runtime/python_surface_certification.py",
         "runtime/reasoning_controls.py",
         "runtime/registry.py",
+        "runtime/release_artifacts.py",
         "runtime/release_audit.py",
         "runtime/release_certification.py",
         "runtime/release_signing.py",
@@ -8929,10 +9680,12 @@
         "runtime/startup.py",
         "runtime/structural_integrity.py",
         "runtime/studio_models.py",
+        "runtime/task_execution_plan.py",
         "runtime/test_orchestration_lock.py",
         "runtime/test_profiles.py",
         "runtime/version.py",
         "runtime/work_admission.py",
+        "runtime/world_state.py",
         "scripts/archive_committed_wal.py",
         "scripts/archive_project_map_history.py",
         "scripts/assemble_operational_control_evidence.py",
@@ -8955,20 +9708,27 @@
         "scripts/inventory/build_partition_campaign_report.py",
         "scripts/inventory/merge_inventory_partitions.py",
         "scripts/map_archives.py",
+        "scripts/reconcile_active_capability_hashes.py",
         "scripts/reconcile_commissioned_skill_registry.py",
         "scripts/reconcile_declared_owner_hashes.py",
         "scripts/reconcile_declared_tool_hashes.py",
         "tests/test_admission_controller.py",
+        "tests/test_affected_proof.py",
+        "tests/test_agency_studio_adapter.py",
         "tests/test_agent_builder.py",
+        "tests/test_agent_governed_integration.py",
+        "tests/test_agent_handoff.py",
         "tests/test_agent_provider.py",
         "tests/test_agent_runtime.py",
         "tests/test_agent_session_coordinator.py",
+        "tests/test_architecture_invariants.py",
         "tests/test_archive_catalog_v2.py",
         "tests/test_archive_inventory.py",
         "tests/test_assemble_operational_control_evidence.py",
         "tests/test_assurance_controls.py",
         "tests/test_authoritative_json.py",
         "tests/test_authoritative_skill_compiler.py",
+        "tests/test_authority_topology.py",
         "tests/test_behavioral_assurance.py",
         "tests/test_benchmark_operations.py",
         "tests/test_bootstrap_cli.py",
@@ -8980,10 +9740,14 @@
         "tests/test_bytecode_guard.py",
         "tests/test_cache_quarantine.py",
         "tests/test_capability_assimilation.py",
+        "tests/test_capability_maturity.py",
         "tests/test_capability_mining_skills.py",
         "tests/test_capability_routing.py",
+        "tests/test_capability_routing_adversarial.py",
         "tests/test_capability_scheduler.py",
+        "tests/test_capability_semantics.py",
         "tests/test_certification_readiness.py",
+        "tests/test_change_classification.py",
         "tests/test_clean_room_capabilities.py",
         "tests/test_clean_source_export.py",
         "tests/test_cli_commands.py",
@@ -9008,12 +9772,15 @@
         "tests/test_declared_suite_reconstruction.py",
         "tests/test_declared_suite_support.py",
         "tests/test_dependency_audit.py",
+        "tests/test_dependency_invalidation.py",
         "tests/test_drop_in_bootstrap.py",
         "tests/test_effect_grants.py",
         "tests/test_engineering_intelligence.py",
         "tests/test_engineering_lifecycle.py",
         "tests/test_event_ledger_integrity.py",
         "tests/test_evidence_assembler.py",
+        "tests/test_evidence_cache.py",
+        "tests/test_evidence_claims.py",
         "tests/test_evidence_custody.py",
         "tests/test_evidence_index.py",
         "tests/test_execution_contract.py",
@@ -9024,11 +9791,12 @@
         "tests/test_external_evidence.py",
         "tests/test_external_toolchain.py",
         "tests/test_extract_structured_text.py",
-        "tests/test_foundation_assurance.py"
+        "tests/test_foundation_assurance.py",
+        "tests/test_foundry_studio_bridge.py"
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin A through F; this lane shares canonical registry state with core-n-s and must not overlap it.",
       "group": "core-a-f",
-      "input_sha256": "04fe4753204b957c2dba304336dd65b3513421a2e69295bf371dcfc955f91680",
+      "input_sha256": "3b788b2fa0007ddfbe6753161bf9bd197cd529e3376eed53812a821059feaccf",
       "inputs": [
         "builders/declared_suite_builder.py",
         "builders/declared_suite_support_builder.py",
@@ -9036,13 +9804,18 @@
         "registry/test_profiles.json",
         "runtime/__init__.py",
         "runtime/admission_controller.py",
+        "runtime/affected_proof.py",
+        "runtime/agency_studio_adapter.py",
         "runtime/agent_builder.py",
         "runtime/agent_fleet_controls.py",
+        "runtime/agent_handoff.py",
         "runtime/agent_provider.py",
         "runtime/agent_runtime.py",
+        "runtime/architecture_invariants.py",
         "runtime/artifact_reachability.py",
         "runtime/assurance_controls.py",
         "runtime/authoritative_json.py",
+        "runtime/authority_topology.py",
         "runtime/backend_capabilities.py",
         "runtime/behavioral_assurance.py",
         "runtime/behavioral_certification.py",
@@ -9050,9 +9823,12 @@
         "runtime/bounded_walk.py",
         "runtime/build_claims.py",
         "runtime/capability_assimilation.py",
+        "runtime/capability_maturity.py",
         "runtime/capability_routing.py",
         "runtime/capability_scheduler.py",
+        "runtime/capability_semantics.py",
         "runtime/certification_readiness.py",
+        "runtime/change_classification.py",
         "runtime/clean_room_capabilities.py",
         "runtime/cli.py",
         "runtime/cognitive_assurance.py",
@@ -9078,6 +9854,7 @@
         "runtime/declared_suite.py",
         "runtime/declared_suite_formulas.py",
         "runtime/dependency_audit.py",
+        "runtime/dependency_invalidation.py",
         "runtime/durable_state.py",
         "runtime/effect_grants.py",
         "runtime/effect_surface.py",
@@ -9086,6 +9863,8 @@
         "runtime/engineering_lifecycle.py",
         "runtime/event_ledger.py",
         "runtime/evidence_assembler.py",
+        "runtime/evidence_cache.py",
+        "runtime/evidence_claims.py",
         "runtime/evidence_custody.py",
         "runtime/evidence_index.py",
         "runtime/evidence_portability.py",
@@ -9097,23 +9876,34 @@
         "runtime/external_toolchain.py",
         "runtime/file_lock.py",
         "runtime/foundation_assurance.py",
+        "runtime/foundry_studio_bridge.py",
         "runtime/generated_artifacts.py",
         "runtime/generated_dependency.py",
         "runtime/graph_registry.py",
+        "runtime/hardware_routing.py",
         "runtime/intake.py",
         "runtime/intake_lifecycle.py",
+        "runtime/knowledge_foundry.py",
         "runtime/licensing.py",
+        "runtime/memory_broker.py",
+        "runtime/memory_fabric.py",
         "runtime/memory_remediation.py",
         "runtime/metacognitive_evolution/common/io.py",
+        "runtime/model_attachment.py",
         "runtime/operational_event_bus.py",
         "runtime/operational_gap_ledger.py",
+        "runtime/paths.py",
         "runtime/process_supervisor.py",
+        "runtime/project_impact.py",
+        "runtime/project_intelligence.py",
         "runtime/project_management.py",
+        "runtime/projection_dependencies.py",
         "runtime/provider_budget.py",
         "runtime/provider_gateway.py",
         "runtime/python_surface_certification.py",
         "runtime/reasoning_controls.py",
         "runtime/registry.py",
+        "runtime/release_artifacts.py",
         "runtime/release_audit.py",
         "runtime/release_certification.py",
         "runtime/release_signing.py",
@@ -9126,10 +9916,12 @@
         "runtime/startup.py",
         "runtime/structural_integrity.py",
         "runtime/studio_models.py",
+        "runtime/task_execution_plan.py",
         "runtime/test_orchestration_lock.py",
         "runtime/test_profiles.py",
         "runtime/version.py",
         "runtime/work_admission.py",
+        "runtime/world_state.py",
         "scripts/archive_committed_wal.py",
         "scripts/archive_project_map_history.py",
         "scripts/assemble_operational_control_evidence.py",
@@ -9152,20 +9944,27 @@
         "scripts/inventory/build_partition_campaign_report.py",
         "scripts/inventory/merge_inventory_partitions.py",
         "scripts/map_archives.py",
+        "scripts/reconcile_active_capability_hashes.py",
         "scripts/reconcile_commissioned_skill_registry.py",
         "scripts/reconcile_declared_owner_hashes.py",
         "scripts/reconcile_declared_tool_hashes.py",
         "tests/test_admission_controller.py",
+        "tests/test_affected_proof.py",
+        "tests/test_agency_studio_adapter.py",
         "tests/test_agent_builder.py",
+        "tests/test_agent_governed_integration.py",
+        "tests/test_agent_handoff.py",
         "tests/test_agent_provider.py",
         "tests/test_agent_runtime.py",
         "tests/test_agent_session_coordinator.py",
+        "tests/test_architecture_invariants.py",
         "tests/test_archive_catalog_v2.py",
         "tests/test_archive_inventory.py",
         "tests/test_assemble_operational_control_evidence.py",
         "tests/test_assurance_controls.py",
         "tests/test_authoritative_json.py",
         "tests/test_authoritative_skill_compiler.py",
+        "tests/test_authority_topology.py",
         "tests/test_behavioral_assurance.py",
         "tests/test_benchmark_operations.py",
         "tests/test_bootstrap_cli.py",
@@ -9177,10 +9976,14 @@
         "tests/test_bytecode_guard.py",
         "tests/test_cache_quarantine.py",
         "tests/test_capability_assimilation.py",
+        "tests/test_capability_maturity.py",
         "tests/test_capability_mining_skills.py",
         "tests/test_capability_routing.py",
+        "tests/test_capability_routing_adversarial.py",
         "tests/test_capability_scheduler.py",
+        "tests/test_capability_semantics.py",
         "tests/test_certification_readiness.py",
+        "tests/test_change_classification.py",
         "tests/test_clean_room_capabilities.py",
         "tests/test_clean_source_export.py",
         "tests/test_cli_commands.py",
@@ -9205,12 +10008,15 @@
         "tests/test_declared_suite_reconstruction.py",
         "tests/test_declared_suite_support.py",
         "tests/test_dependency_audit.py",
+        "tests/test_dependency_invalidation.py",
         "tests/test_drop_in_bootstrap.py",
         "tests/test_effect_grants.py",
         "tests/test_engineering_intelligence.py",
         "tests/test_engineering_lifecycle.py",
         "tests/test_event_ledger_integrity.py",
         "tests/test_evidence_assembler.py",
+        "tests/test_evidence_cache.py",
+        "tests/test_evidence_claims.py",
         "tests/test_evidence_custody.py",
         "tests/test_evidence_index.py",
         "tests/test_execution_contract.py",
@@ -9221,21 +10027,28 @@
         "tests/test_external_evidence.py",
         "tests/test_external_toolchain.py",
         "tests/test_extract_structured_text.py",
-        "tests/test_foundation_assurance.py"
+        "tests/test_foundation_assurance.py",
+        "tests/test_foundry_studio_bridge.py"
       ],
-      "member_count": 67,
+      "member_count": 81,
       "members": [
         "tests/test_admission_controller.py",
+        "tests/test_affected_proof.py",
+        "tests/test_agency_studio_adapter.py",
         "tests/test_agent_builder.py",
+        "tests/test_agent_governed_integration.py",
+        "tests/test_agent_handoff.py",
         "tests/test_agent_provider.py",
         "tests/test_agent_runtime.py",
         "tests/test_agent_session_coordinator.py",
+        "tests/test_architecture_invariants.py",
         "tests/test_archive_catalog_v2.py",
         "tests/test_archive_inventory.py",
         "tests/test_assemble_operational_control_evidence.py",
         "tests/test_assurance_controls.py",
         "tests/test_authoritative_json.py",
         "tests/test_authoritative_skill_compiler.py",
+        "tests/test_authority_topology.py",
         "tests/test_behavioral_assurance.py",
         "tests/test_benchmark_operations.py",
         "tests/test_bootstrap_cli.py",
@@ -9247,10 +10060,14 @@
         "tests/test_bytecode_guard.py",
         "tests/test_cache_quarantine.py",
         "tests/test_capability_assimilation.py",
+        "tests/test_capability_maturity.py",
         "tests/test_capability_mining_skills.py",
         "tests/test_capability_routing.py",
+        "tests/test_capability_routing_adversarial.py",
         "tests/test_capability_scheduler.py",
+        "tests/test_capability_semantics.py",
         "tests/test_certification_readiness.py",
+        "tests/test_change_classification.py",
         "tests/test_clean_room_capabilities.py",
         "tests/test_clean_source_export.py",
         "tests/test_cli_commands.py",
@@ -9275,12 +10092,15 @@
         "tests/test_declared_suite_reconstruction.py",
         "tests/test_declared_suite_support.py",
         "tests/test_dependency_audit.py",
+        "tests/test_dependency_invalidation.py",
         "tests/test_drop_in_bootstrap.py",
         "tests/test_effect_grants.py",
         "tests/test_engineering_intelligence.py",
         "tests/test_engineering_lifecycle.py",
         "tests/test_event_ledger_integrity.py",
         "tests/test_evidence_assembler.py",
+        "tests/test_evidence_cache.py",
+        "tests/test_evidence_claims.py",
         "tests/test_evidence_custody.py",
         "tests/test_evidence_index.py",
         "tests/test_execution_contract.py",
@@ -9291,7 +10111,8 @@
         "tests/test_external_evidence.py",
         "tests/test_external_toolchain.py",
         "tests/test_extract_structured_text.py",
-        "tests/test_foundation_assurance.py"
+        "tests/test_foundation_assurance.py",
+        "tests/test_foundry_studio_bridge.py"
       ],
       "parallel_safe": false,
       "scan_inputs": [],
@@ -9302,12 +10123,16 @@
         "builders/common.py",
         "builders/orchestration_builder.py",
         "registry/test_profiles.json",
+        "runtime/agent_provider.py",
         "runtime/artifact_reachability.py",
         "runtime/bounded_walk.py",
         "runtime/build_claims.py",
+        "runtime/capability_routing.py",
         "runtime/cli.py",
+        "runtime/cognitive_core/index_builder.py",
         "runtime/commissioning.py",
         "runtime/contracts.py",
+        "runtime/dependency_invalidation.py",
         "runtime/effect_surface.py",
         "runtime/engine_identity.py",
         "runtime/evidence_index.py",
@@ -9334,26 +10159,32 @@
         "runtime/learning_promotion.py",
         "runtime/licensing.py",
         "runtime/local_model_runtime.py",
+        "runtime/memory_broker.py",
         "runtime/memory_fabric.py",
         "runtime/memory_intelligence.py",
         "runtime/memory_operations.py",
         "runtime/memory_vault.py",
         "runtime/metacognitive_evolution/facade.py",
+        "runtime/model_attachment.py",
         "runtime/native_skills.py",
         "runtime/operational_gap_ledger.py",
         "runtime/process_supervisor.py",
+        "runtime/projection_dependencies.py",
         "runtime/provider_budget.py",
         "runtime/provider_gateway.py",
         "runtime/python_surface_certification.py",
         "runtime/recovery.py",
         "runtime/registry.py",
+        "runtime/release_artifacts.py",
         "runtime/release_audit.py",
         "runtime/release_certification.py",
         "runtime/release_preflight.py",
         "runtime/repository_scope.py",
         "runtime/resource_lifecycle.py",
+        "runtime/retrieval.py",
         "runtime/sanitation_assurance.py",
         "runtime/scheduler.py",
+        "runtime/semantic_index.py",
         "runtime/semantic_memory.py",
         "runtime/skill_navigator.py",
         "runtime/startup.py",
@@ -9361,6 +10192,7 @@
         "runtime/studio_api.py",
         "runtime/test_orchestration_lock.py",
         "runtime/test_profiles.py",
+        "runtime/world_state.py",
         "scripts/audit_sanitization.py",
         "scripts/build_completion_status.py",
         "scripts/build_contract_ownership_registry.py",
@@ -9372,14 +10204,17 @@
         "scripts/build_registry_envelope_inventory.py",
         "scripts/clean_source_export.py",
         "scripts/cleanup_python_caches.py",
+        "scripts/reconcile_active_capability_hashes.py",
         "scripts/reconcile_commissioned_skill_registry.py",
         "scripts/reconcile_declared_tool_hashes.py",
         "tests/test_generated_dependency_graph.py",
         "tests/test_global_skill_isolation.py",
+        "tests/test_graph_authority_manifest.py",
         "tests/test_graphs_and_orchestrations.py",
         "tests/test_hardware_routing.py",
         "tests/test_health_model.py",
         "tests/test_host_boundaries.py",
+        "tests/test_hybrid_retrieval.py",
         "tests/test_independent_gate_runner.py",
         "tests/test_instrumentation_sdk.py",
         "tests/test_intake_lifecycle.py",
@@ -9393,26 +10228,32 @@
         "tests/test_licensing.py",
         "tests/test_local_model_capabilities.py",
         "tests/test_local_model_runtime.py",
+        "tests/test_memory_broker.py",
         "tests/test_memory_fabric.py",
         "tests/test_memory_integrity_controls.py",
         "tests/test_memory_intelligence.py",
         "tests/test_memory_operations.py",
         "tests/test_memory_vault.py",
-        "tests/test_metacognitive_evolution.py"
+        "tests/test_metacognitive_evolution.py",
+        "tests/test_model_attachment.py"
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin G through M; this lane reads or mutates shared canonical repository state.",
       "group": "core-g-m",
-      "input_sha256": "6b529ff2e697bc7229e9972faa27ede57f6fb32c8d5c6ed39ddf2d2f89be17b5",
+      "input_sha256": "4d37677a2e921ee1c4a9b88ba5e32feb2709cbd2c16b1d72c1f26e68a8c8e685",
       "inputs": [
         "builders/common.py",
         "builders/orchestration_builder.py",
         "registry/test_profiles.json",
+        "runtime/agent_provider.py",
         "runtime/artifact_reachability.py",
         "runtime/bounded_walk.py",
         "runtime/build_claims.py",
+        "runtime/capability_routing.py",
         "runtime/cli.py",
+        "runtime/cognitive_core/index_builder.py",
         "runtime/commissioning.py",
         "runtime/contracts.py",
+        "runtime/dependency_invalidation.py",
         "runtime/effect_surface.py",
         "runtime/engine_identity.py",
         "runtime/evidence_index.py",
@@ -9439,26 +10280,32 @@
         "runtime/learning_promotion.py",
         "runtime/licensing.py",
         "runtime/local_model_runtime.py",
+        "runtime/memory_broker.py",
         "runtime/memory_fabric.py",
         "runtime/memory_intelligence.py",
         "runtime/memory_operations.py",
         "runtime/memory_vault.py",
         "runtime/metacognitive_evolution/facade.py",
+        "runtime/model_attachment.py",
         "runtime/native_skills.py",
         "runtime/operational_gap_ledger.py",
         "runtime/process_supervisor.py",
+        "runtime/projection_dependencies.py",
         "runtime/provider_budget.py",
         "runtime/provider_gateway.py",
         "runtime/python_surface_certification.py",
         "runtime/recovery.py",
         "runtime/registry.py",
+        "runtime/release_artifacts.py",
         "runtime/release_audit.py",
         "runtime/release_certification.py",
         "runtime/release_preflight.py",
         "runtime/repository_scope.py",
         "runtime/resource_lifecycle.py",
+        "runtime/retrieval.py",
         "runtime/sanitation_assurance.py",
         "runtime/scheduler.py",
+        "runtime/semantic_index.py",
         "runtime/semantic_memory.py",
         "runtime/skill_navigator.py",
         "runtime/startup.py",
@@ -9466,6 +10313,7 @@
         "runtime/studio_api.py",
         "runtime/test_orchestration_lock.py",
         "runtime/test_profiles.py",
+        "runtime/world_state.py",
         "scripts/audit_sanitization.py",
         "scripts/build_completion_status.py",
         "scripts/build_contract_ownership_registry.py",
@@ -9477,14 +10325,17 @@
         "scripts/build_registry_envelope_inventory.py",
         "scripts/clean_source_export.py",
         "scripts/cleanup_python_caches.py",
+        "scripts/reconcile_active_capability_hashes.py",
         "scripts/reconcile_commissioned_skill_registry.py",
         "scripts/reconcile_declared_tool_hashes.py",
         "tests/test_generated_dependency_graph.py",
         "tests/test_global_skill_isolation.py",
+        "tests/test_graph_authority_manifest.py",
         "tests/test_graphs_and_orchestrations.py",
         "tests/test_hardware_routing.py",
         "tests/test_health_model.py",
         "tests/test_host_boundaries.py",
+        "tests/test_hybrid_retrieval.py",
         "tests/test_independent_gate_runner.py",
         "tests/test_instrumentation_sdk.py",
         "tests/test_intake_lifecycle.py",
@@ -9498,21 +10349,25 @@
         "tests/test_licensing.py",
         "tests/test_local_model_capabilities.py",
         "tests/test_local_model_runtime.py",
+        "tests/test_memory_broker.py",
         "tests/test_memory_fabric.py",
         "tests/test_memory_integrity_controls.py",
         "tests/test_memory_intelligence.py",
         "tests/test_memory_operations.py",
         "tests/test_memory_vault.py",
-        "tests/test_metacognitive_evolution.py"
+        "tests/test_metacognitive_evolution.py",
+        "tests/test_model_attachment.py"
       ],
-      "member_count": 25,
+      "member_count": 29,
       "members": [
         "tests/test_generated_dependency_graph.py",
         "tests/test_global_skill_isolation.py",
+        "tests/test_graph_authority_manifest.py",
         "tests/test_graphs_and_orchestrations.py",
         "tests/test_hardware_routing.py",
         "tests/test_health_model.py",
         "tests/test_host_boundaries.py",
+        "tests/test_hybrid_retrieval.py",
         "tests/test_independent_gate_runner.py",
         "tests/test_instrumentation_sdk.py",
         "tests/test_intake_lifecycle.py",
@@ -9526,12 +10381,14 @@
         "tests/test_licensing.py",
         "tests/test_local_model_capabilities.py",
         "tests/test_local_model_runtime.py",
+        "tests/test_memory_broker.py",
         "tests/test_memory_fabric.py",
         "tests/test_memory_integrity_controls.py",
         "tests/test_memory_intelligence.py",
         "tests/test_memory_operations.py",
         "tests/test_memory_vault.py",
-        "tests/test_metacognitive_evolution.py"
+        "tests/test_metacognitive_evolution.py",
+        "tests/test_model_attachment.py"
       ],
       "parallel_safe": false,
       "scan_inputs": [],
@@ -9542,17 +10399,20 @@
         "registry/test_profiles.json",
         "runtime/__init__.py",
         "runtime/admission_controller.py",
+        "runtime/agent_provider.py",
         "runtime/artifact_reachability.py",
         "runtime/bounded_walk.py",
         "runtime/build_claims.py",
         "runtime/classifier.py",
         "runtime/cli.py",
+        "runtime/cognitive_core/index_builder.py",
         "runtime/commissioning.py",
         "runtime/contracts.py",
         "runtime/dashboard_api.py",
         "runtime/effect_surface.py",
         "runtime/engine_identity.py",
         "runtime/evidence_assembler.py",
+        "runtime/evidence_claims.py",
         "runtime/evidence_index.py",
         "runtime/evidence_portability.py",
         "runtime/exact_tool_certification.py",
@@ -9584,6 +10444,8 @@
         "runtime/planner.py",
         "runtime/platform_support.py",
         "runtime/portable_audit_bundle.py",
+        "runtime/primitive_authority.py",
+        "runtime/primitive_lint.py",
         "runtime/process_supervisor.py",
         "runtime/profiles.py",
         "runtime/project_control_plane.py",
@@ -9593,6 +10455,7 @@
         "runtime/project_reasoning/__init__.py",
         "runtime/project_stream_controls.py",
         "runtime/project_stream_orchestrator.py",
+        "runtime/projection_dependencies.py",
         "runtime/provider_budget.py",
         "runtime/provider_certification.py",
         "runtime/provider_gateway.py",
@@ -9601,12 +10464,14 @@
         "runtime/query_certification.py",
         "runtime/recovery.py",
         "runtime/registry.py",
+        "runtime/release_artifacts.py",
         "runtime/release_audit.py",
         "runtime/release_boundary.py",
         "runtime/release_certification.py",
         "runtime/release_distribution.py",
         "runtime/release_environment.py",
         "runtime/release_preflight.py",
+        "runtime/repair_root_analysis.py",
         "runtime/repository_scope.py",
         "runtime/research_assimilation.py",
         "runtime/resource_lifecycle.py",
@@ -9617,6 +10482,7 @@
         "runtime/secret_scanning.py",
         "runtime/semantic_index.py",
         "runtime/semantic_memory.py",
+        "runtime/semantic_revision.py",
         "runtime/service_capability_provider.py",
         "runtime/skill_navigator.py",
         "runtime/skill_studio.py",
@@ -9635,7 +10501,9 @@
         "runtime/system_graph.py",
         "runtime/test_orchestration_lock.py",
         "runtime/test_profiles.py",
+        "runtime/trusted_evidence.py",
         "runtime/wal_transaction.py",
+        "runtime/world_state.py",
         "scripts/archive_project_map_history.py",
         "scripts/audit_sanitization.py",
         "scripts/audit_source_archive.py",
@@ -9655,6 +10523,7 @@
         "scripts/migration/sync_skill_packaging.py",
         "scripts/operational_gap_ledger.py",
         "scripts/quarantine_paths.py",
+        "scripts/reconcile_active_capability_hashes.py",
         "scripts/reconcile_commissioned_skill_registry.py",
         "scripts/reconcile_declared_tool_hashes.py",
         "scripts/reconcile_unverified_operational_controls.py",
@@ -9668,12 +10537,15 @@
         "tests/test_operational_controls.py",
         "tests/test_operational_event_bus.py",
         "tests/test_operational_gap_ledger.py",
+        "tests/test_operational_gap_ledger_scaling.py",
         "tests/test_operational_observers.py",
         "tests/test_operational_visibility.py",
         "tests/test_orchestrator.py",
         "tests/test_outcome_verifier.py",
         "tests/test_platform_support.py",
         "tests/test_portable_audit_bundle.py",
+        "tests/test_primitive_authority.py",
+        "tests/test_primitive_lint.py",
         "tests/test_project_brief.py",
         "tests/test_project_control_plane.py",
         "tests/test_project_map_history_archive.py",
@@ -9682,6 +10554,7 @@
         "tests/test_project_reasoning.py",
         "tests/test_project_stream_controls.py",
         "tests/test_project_stream_orchestrator.py",
+        "tests/test_projection_dependencies.py",
         "tests/test_provider_budget.py",
         "tests/test_provider_certification.py",
         "tests/test_provider_gateway.py",
@@ -9702,6 +10575,7 @@
         "tests/test_release_fixed_point.py",
         "tests/test_release_mutation_probe.py",
         "tests/test_release_preflight.py",
+        "tests/test_repair_root_analysis.py",
         "tests/test_repository_scope.py",
         "tests/test_research_contract_admission.py",
         "tests/test_retrieval_and_models.py",
@@ -9714,6 +10588,7 @@
         "tests/test_secret_scanner.py",
         "tests/test_semantic_capability_query.py",
         "tests/test_semantic_memory.py",
+        "tests/test_semantic_revision.py",
         "tests/test_service_capability_provider.py",
         "tests/test_skill_first_initialization.py",
         "tests/test_skill_library.py",
@@ -9737,22 +10612,25 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin N through S; this lane reads or mutates shared canonical repository state.",
       "group": "core-n-s",
-      "input_sha256": "14b54cad7e2125023eed2da0f151599cfbf5a33bff7c5dc8df371822786941f0",
+      "input_sha256": "ce7a2a930c779aa69c2ba67035eef66cb9053742aa772f0f9268548df8785554",
       "inputs": [
         "registry/test_profiles.json",
         "runtime/__init__.py",
         "runtime/admission_controller.py",
+        "runtime/agent_provider.py",
         "runtime/artifact_reachability.py",
         "runtime/bounded_walk.py",
         "runtime/build_claims.py",
         "runtime/classifier.py",
         "runtime/cli.py",
+        "runtime/cognitive_core/index_builder.py",
         "runtime/commissioning.py",
         "runtime/contracts.py",
         "runtime/dashboard_api.py",
         "runtime/effect_surface.py",
         "runtime/engine_identity.py",
         "runtime/evidence_assembler.py",
+        "runtime/evidence_claims.py",
         "runtime/evidence_index.py",
         "runtime/evidence_portability.py",
         "runtime/exact_tool_certification.py",
@@ -9784,6 +10662,8 @@
         "runtime/planner.py",
         "runtime/platform_support.py",
         "runtime/portable_audit_bundle.py",
+        "runtime/primitive_authority.py",
+        "runtime/primitive_lint.py",
         "runtime/process_supervisor.py",
         "runtime/profiles.py",
         "runtime/project_control_plane.py",
@@ -9793,6 +10673,7 @@
         "runtime/project_reasoning/__init__.py",
         "runtime/project_stream_controls.py",
         "runtime/project_stream_orchestrator.py",
+        "runtime/projection_dependencies.py",
         "runtime/provider_budget.py",
         "runtime/provider_certification.py",
         "runtime/provider_gateway.py",
@@ -9801,12 +10682,14 @@
         "runtime/query_certification.py",
         "runtime/recovery.py",
         "runtime/registry.py",
+        "runtime/release_artifacts.py",
         "runtime/release_audit.py",
         "runtime/release_boundary.py",
         "runtime/release_certification.py",
         "runtime/release_distribution.py",
         "runtime/release_environment.py",
         "runtime/release_preflight.py",
+        "runtime/repair_root_analysis.py",
         "runtime/repository_scope.py",
         "runtime/research_assimilation.py",
         "runtime/resource_lifecycle.py",
@@ -9817,6 +10700,7 @@
         "runtime/secret_scanning.py",
         "runtime/semantic_index.py",
         "runtime/semantic_memory.py",
+        "runtime/semantic_revision.py",
         "runtime/service_capability_provider.py",
         "runtime/skill_navigator.py",
         "runtime/skill_studio.py",
@@ -9835,7 +10719,9 @@
         "runtime/system_graph.py",
         "runtime/test_orchestration_lock.py",
         "runtime/test_profiles.py",
+        "runtime/trusted_evidence.py",
         "runtime/wal_transaction.py",
+        "runtime/world_state.py",
         "scripts/archive_project_map_history.py",
         "scripts/audit_sanitization.py",
         "scripts/audit_source_archive.py",
@@ -9855,6 +10741,7 @@
         "scripts/migration/sync_skill_packaging.py",
         "scripts/operational_gap_ledger.py",
         "scripts/quarantine_paths.py",
+        "scripts/reconcile_active_capability_hashes.py",
         "scripts/reconcile_commissioned_skill_registry.py",
         "scripts/reconcile_declared_tool_hashes.py",
         "scripts/reconcile_unverified_operational_controls.py",
@@ -9868,12 +10755,15 @@
         "tests/test_operational_controls.py",
         "tests/test_operational_event_bus.py",
         "tests/test_operational_gap_ledger.py",
+        "tests/test_operational_gap_ledger_scaling.py",
         "tests/test_operational_observers.py",
         "tests/test_operational_visibility.py",
         "tests/test_orchestrator.py",
         "tests/test_outcome_verifier.py",
         "tests/test_platform_support.py",
         "tests/test_portable_audit_bundle.py",
+        "tests/test_primitive_authority.py",
+        "tests/test_primitive_lint.py",
         "tests/test_project_brief.py",
         "tests/test_project_control_plane.py",
         "tests/test_project_map_history_archive.py",
@@ -9882,6 +10772,7 @@
         "tests/test_project_reasoning.py",
         "tests/test_project_stream_controls.py",
         "tests/test_project_stream_orchestrator.py",
+        "tests/test_projection_dependencies.py",
         "tests/test_provider_budget.py",
         "tests/test_provider_certification.py",
         "tests/test_provider_gateway.py",
@@ -9902,6 +10793,7 @@
         "tests/test_release_fixed_point.py",
         "tests/test_release_mutation_probe.py",
         "tests/test_release_preflight.py",
+        "tests/test_repair_root_analysis.py",
         "tests/test_repository_scope.py",
         "tests/test_research_contract_admission.py",
         "tests/test_retrieval_and_models.py",
@@ -9914,6 +10806,7 @@
         "tests/test_secret_scanner.py",
         "tests/test_semantic_capability_query.py",
         "tests/test_semantic_memory.py",
+        "tests/test_semantic_revision.py",
         "tests/test_service_capability_provider.py",
         "tests/test_skill_first_initialization.py",
         "tests/test_skill_library.py",
@@ -9935,7 +10828,7 @@
         "tests/test_studio_run_control.py",
         "tests/test_system_graph.py"
       ],
-      "member_count": 74,
+      "member_count": 80,
       "members": [
         "tests/test_native_skills.py",
         "tests/test_operation_authority.py",
@@ -9945,12 +10838,15 @@
         "tests/test_operational_controls.py",
         "tests/test_operational_event_bus.py",
         "tests/test_operational_gap_ledger.py",
+        "tests/test_operational_gap_ledger_scaling.py",
         "tests/test_operational_observers.py",
         "tests/test_operational_visibility.py",
         "tests/test_orchestrator.py",
         "tests/test_outcome_verifier.py",
         "tests/test_platform_support.py",
         "tests/test_portable_audit_bundle.py",
+        "tests/test_primitive_authority.py",
+        "tests/test_primitive_lint.py",
         "tests/test_project_brief.py",
         "tests/test_project_control_plane.py",
         "tests/test_project_map_history_archive.py",
@@ -9959,6 +10855,7 @@
         "tests/test_project_reasoning.py",
         "tests/test_project_stream_controls.py",
         "tests/test_project_stream_orchestrator.py",
+        "tests/test_projection_dependencies.py",
         "tests/test_provider_budget.py",
         "tests/test_provider_certification.py",
         "tests/test_provider_gateway.py",
@@ -9979,6 +10876,7 @@
         "tests/test_release_fixed_point.py",
         "tests/test_release_mutation_probe.py",
         "tests/test_release_preflight.py",
+        "tests/test_repair_root_analysis.py",
         "tests/test_repository_scope.py",
         "tests/test_research_contract_admission.py",
         "tests/test_retrieval_and_models.py",
@@ -9991,6 +10889,7 @@
         "tests/test_secret_scanner.py",
         "tests/test_semantic_capability_query.py",
         "tests/test_semantic_memory.py",
+        "tests/test_semantic_revision.py",
         "tests/test_service_capability_provider.py",
         "tests/test_skill_first_initialization.py",
         "tests/test_skill_library.py",
@@ -10028,6 +10927,7 @@
         "runtime/__init__.py",
         "runtime/admission_controller.py",
         "runtime/bounded_walk.py",
+        "runtime/capability_routing.py",
         "runtime/cli.py",
         "runtime/commissioning.py",
         "runtime/engine_identity.py",
@@ -10046,9 +10946,11 @@
         "runtime/release_signing.py",
         "runtime/repository_scope.py",
         "runtime/resource_lifecycle.py",
+        "runtime/skill_navigator.py",
         "runtime/startup.py",
         "runtime/studio_models.py",
         "runtime/studio_terminal_observer.py",
+        "runtime/task_execution_plan.py",
         "runtime/test_profiles.py",
         "runtime/tool_intake.py",
         "runtime/tool_recommendations.py",
@@ -10057,10 +10959,12 @@
         "runtime/trusted_evidence.py",
         "runtime/work_admission.py",
         "runtime/workflow_studio.py",
+        "runtime/world_state.py",
         "scripts/audit_sanitization.py",
         "scripts/build_completion_status.py",
         "scripts/build_typed_operational_surface_inventory.py",
         "scripts/cleanup_python_caches.py",
+        "tests/test_task_execution_plan.py",
         "tests/test_temp2_completeness.py",
         "tests/test_test_profiles.py",
         "tests/test_tool_intake.py",
@@ -10071,11 +10975,12 @@
         "tests/test_typed_operational_surface_inventory.py",
         "tests/test_wave5_builders.py",
         "tests/test_work_admission.py",
-        "tests/test_workflow_studio.py"
+        "tests/test_workflow_studio.py",
+        "tests/test_world_state.py"
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin T through Z; this lane reads or mutates shared canonical repository state.",
       "group": "core-t-z",
-      "input_sha256": "f05f9fda34659ce04bb19d349366d684a71cf30398a3a7bcdcd653f8797a299f",
+      "input_sha256": "567f52ed25298853cc8b0ad464a0204f2ef6ab416766a1b785ceae1417534d3c",
       "inputs": [
         "builders/adapter_builder.py",
         "builders/common.py",
@@ -10087,6 +10992,7 @@
         "runtime/__init__.py",
         "runtime/admission_controller.py",
         "runtime/bounded_walk.py",
+        "runtime/capability_routing.py",
         "runtime/cli.py",
         "runtime/commissioning.py",
         "runtime/engine_identity.py",
@@ -10105,9 +11011,11 @@
         "runtime/release_signing.py",
         "runtime/repository_scope.py",
         "runtime/resource_lifecycle.py",
+        "runtime/skill_navigator.py",
         "runtime/startup.py",
         "runtime/studio_models.py",
         "runtime/studio_terminal_observer.py",
+        "runtime/task_execution_plan.py",
         "runtime/test_profiles.py",
         "runtime/tool_intake.py",
         "runtime/tool_recommendations.py",
@@ -10116,10 +11024,12 @@
         "runtime/trusted_evidence.py",
         "runtime/work_admission.py",
         "runtime/workflow_studio.py",
+        "runtime/world_state.py",
         "scripts/audit_sanitization.py",
         "scripts/build_completion_status.py",
         "scripts/build_typed_operational_surface_inventory.py",
         "scripts/cleanup_python_caches.py",
+        "tests/test_task_execution_plan.py",
         "tests/test_temp2_completeness.py",
         "tests/test_test_profiles.py",
         "tests/test_tool_intake.py",
@@ -10130,10 +11040,12 @@
         "tests/test_typed_operational_surface_inventory.py",
         "tests/test_wave5_builders.py",
         "tests/test_work_admission.py",
-        "tests/test_workflow_studio.py"
+        "tests/test_workflow_studio.py",
+        "tests/test_world_state.py"
       ],
-      "member_count": 11,
+      "member_count": 13,
       "members": [
+        "tests/test_task_execution_plan.py",
         "tests/test_temp2_completeness.py",
         "tests/test_test_profiles.py",
         "tests/test_tool_intake.py",
@@ -10144,7 +11056,8 @@
         "tests/test_typed_operational_surface_inventory.py",
         "tests/test_wave5_builders.py",
         "tests/test_work_admission.py",
-        "tests/test_workflow_studio.py"
+        "tests/test_workflow_studio.py",
+        "tests/test_world_state.py"
       ],
       "parallel_safe": false,
       "scan_inputs": [],
@@ -10152,8 +11065,8 @@
     }
   ],
   "schema_version": "px.test-group-index/1.1",
-  "test_file_count": 208,
+  "test_file_count": 234,
   "topology_sha256": "b5b65e8880f06a175189196aa9e07463f75ee51a792e294a4e649b7a75fe03f1",
-  "tracked_python_file_count": 534,
-  "verified_file_count": 534
+  "tracked_python_file_count": 584,
+  "verified_file_count": 584
 }

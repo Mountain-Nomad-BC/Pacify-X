@@ -11,6 +11,7 @@ const {
 const {
   assertCoordinationState, assertCoordinationTransition, eventHash, sha
 } = require('../src/stateInvariants');
+const { runVectors } = require('../scripts/run-state-invariant-vectors');
 
 const actorA = { actorId: 'actor-a', sessionId: 'session-a', harness: 'VS Code', accountableOwner: 'tester' };
 const actorB = { actorId: 'actor-b', sessionId: 'session-b', harness: 'Codex', accountableOwner: 'tester' };
@@ -34,6 +35,17 @@ function claimedState(t) {
   claimTask(root, actorB, { taskId: 'right' });
   return { root, state: readCoordination(root).state };
 }
+
+test('shared coordination vectors preserve stable validity and violation IDs', () => {
+  const corpus = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'tests', 'coordination_conformance', 'coordination_state_conformance_vectors.json'), 'utf8'));
+  const results = runVectors(corpus);
+  assert.deepEqual(results, corpus.vectors.map(vector => ({
+    id: vector.id,
+    schema_version: 'px.coordination-state-conformance/1.0',
+    valid: vector.expected_valid,
+    violation_ids: vector.expected_violation_ids
+  })));
+});
 
 test('semantic state guard rejects hostile DAG, ownership, overlap, fencing, budget, memory, and seal mutations', t => {
   const { state } = claimedState(t);

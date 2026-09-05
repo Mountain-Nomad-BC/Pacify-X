@@ -1,0 +1,81 @@
+{
+  "card_id": "PX-SKILL-003",
+  "title": "Skill promotion invalidation/rebuild",
+  "severity": "critical",
+  "type": "repair",
+  "status": "planned",
+  "root_cause": "Skill Studio promotion atomically updates four projections but leaves semantic, cognitive, and graph dependents unchanged.",
+  "source_requirement": "Publish the canonical revision, invalidate every dependent projection, rebuild cheap projections, and block stale expensive projections.",
+  "live_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#PX-AUD-008"
+  ],
+  "files": [
+    "runtime/skill_studio.py",
+    "runtime/projection_dependencies.py",
+    "runtime/dependency_invalidation.py",
+    "registry/semantic_capability_index.json",
+    "registry/graph_authority_manifest.json",
+    "tests/test_skill_studio.py",
+    "tests/test_projection_dependencies.py"
+  ],
+  "symbols": [
+    "promote",
+    "_projection_updates",
+    "invalidate_projections",
+    "plan_projection_rebuild"
+  ],
+  "dependencies": [
+    "PX-FOUNDRY-002",
+    "PX-GRAPH-001",
+    "PX-ROUTE-002",
+    "PX-SKILL-001",
+    "PX-SKILL-002"
+  ],
+  "downstream_consumers": [
+    "PX-SYS-001",
+    "PX-AUTH-001"
+  ],
+  "change_classes": [
+    "AUTHORITY",
+    "BEHAVIORAL",
+    "MIGRATION"
+  ],
+  "implementation_steps": [
+    "Extend atomic promotion transaction with dependency invalidation.",
+    "Rebuild cheap semantic/catalog/package projections inside the transaction.",
+    "Mark expensive cognitive/graph projections stale until governed rebuild.",
+    "Rollback all transactional changes on failure."
+  ],
+  "negative_cases": [
+    "Semantic index unchanged after promotion.",
+    "Cognitive/graph stale state omitted.",
+    "Partial projection publication.",
+    "Builder failure leaves canonical promotion.",
+    "Old revision remains routable."
+  ],
+  "focused_tests": [
+    "Disposable promotion success, invalidation, rebuild, failure rollback, and stale-consumer tests."
+  ],
+  "affected_tests": [
+    "Semantic/cognitive/graph, routing, catalog, generated artifact tests."
+  ],
+  "affected_sections": [
+    "testing-governance",
+    "structural-adversarial"
+  ],
+  "projection_invalidations": [
+    "semantic index",
+    "cognitive indexes",
+    "graph projections",
+    "skill package/catalog indexes"
+  ],
+  "evidence_required": [
+    "Before/after hashes, invalidation cone, rebuilt revisions, and rollback receipt."
+  ],
+  "rollback": "Use the existing transaction journal to restore all pre-promotion bytes and statuses.",
+  "acceptance_criteria": [
+    "Every dependent projection is rebuilt or explicitly stale before promotion commits.",
+    "No stale skill revision is routable."
+  ],
+  "completion_evidence": []
+}

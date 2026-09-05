@@ -1,0 +1,19 @@
+{
+  "schema_version": "px.dependency-authority/1.0",
+  "node_kind_count": 11,
+  "cycle_policy": "declared_components",
+  "allowed_cycle_components": [],
+  "node_kinds": [
+    {"kind": "source", "canonical_owner": "runtime/project_intelligence.py", "invalidation_owner": "runtime/dependency_invalidation.py", "rebuild_gate": "project-map-current"},
+    {"kind": "skill", "canonical_owner": "runtime/skill_studio.py", "invalidation_owner": "runtime/dependency_invalidation.py", "rebuild_gate": "skill-projections-current"},
+    {"kind": "agent", "canonical_owner": "runtime/agent_runtime.py", "invalidation_owner": "runtime/dependency_invalidation.py", "rebuild_gate": "agent-revision-current"},
+    {"kind": "workflow", "canonical_owner": "runtime/workflow_studio.py", "invalidation_owner": "runtime/dependency_invalidation.py", "rebuild_gate": "workflow-revision-current"},
+    {"kind": "knowledge", "canonical_owner": "runtime/knowledge_core_controller.py", "invalidation_owner": "runtime/dependency_invalidation.py", "rebuild_gate": "knowledge-revalidated"},
+    {"kind": "formula", "canonical_owner": "runtime/cognitive_core/formula_engine.py", "invalidation_owner": "runtime/dependency_invalidation.py", "rebuild_gate": "formula-dimensionally-valid"},
+    {"kind": "model_profile", "canonical_owner": "runtime/models.py", "invalidation_owner": "runtime/dependency_invalidation.py", "rebuild_gate": "model-profile-current"},
+    {"kind": "projection", "canonical_owner": "runtime/generated_artifacts.py", "invalidation_owner": "runtime/dependency_invalidation.py", "rebuild_gate": "generated-artifact-current"},
+    {"kind": "test", "canonical_owner": "runtime/test_profiles.py", "invalidation_owner": "runtime/dependency_invalidation.py", "rebuild_gate": "affected-test-green"},
+    {"kind": "section", "canonical_owner": "runtime/test_profiles.py", "invalidation_owner": "runtime/dependency_invalidation.py", "rebuild_gate": "affected-section-green"},
+    {"kind": "release_evidence", "canonical_owner": "runtime/release_evidence.py", "invalidation_owner": "runtime/dependency_invalidation.py", "rebuild_gate": "release-evidence-current"}
+  ]
+}

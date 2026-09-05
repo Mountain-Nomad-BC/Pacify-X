@@ -64,6 +64,11 @@ class SemanticCapabilityQueryTests(unittest.TestCase):
         self.assertEqual(built, loaded)
         self.assertEqual(built["record_count"], len(load_skill_catalog(ROOT)["skills"]))
         self.assertTrue(validate_semantic_index(ROOT)["valid"])
+        active = [record for record in built["records"] if record["status"] == "active"]
+        self.assertTrue(active)
+        self.assertTrue(all(record["intents"] for record in active))
+        self.assertTrue(all(record["profile_revision"] for record in active))
+        self.assertTrue(all(record["semantic_profile"] for record in active))
 
     def test_recovery_aliases_route_to_canonical_owners(self) -> None:
         from runtime.registry import skill_navigation_index

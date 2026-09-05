@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:memory_query_plan",
+  "title": "PX MemoryQueryPlan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "plan_id", "project_id", "subject_id", "actor_id", "agent_id", "binding_ids", "memory_classes", "tiers", "max_items", "max_bytes", "max_tokens", "trust_floor", "max_age_seconds", "conflict_policy", "provenance_required", "writeback_policy", "source_revision", "dependency_revisions", "plan_sha256"],
+  "properties": {
+    "schema_version": {"const": "px.memory-query-plan/1.0"},
+    "plan_id": {"type": "string", "pattern": "^memory-plan-[0-9a-f]{24}$"},
+    "project_id": {"type": "string", "minLength": 1}, "subject_id": {"type": "string", "minLength": 1}, "actor_id": {"type": "string", "minLength": 1}, "agent_id": {"type": "string", "minLength": 1},
+    "binding_ids": {"$ref": "#/$defs/nonemptyStrings"}, "memory_classes": {"$ref": "#/$defs/nonemptyStrings"}, "tiers": {"$ref": "#/$defs/nonemptyStrings"},
+    "max_items": {"type": "integer", "minimum": 1}, "max_bytes": {"type": "integer", "minimum": 1}, "max_tokens": {"type": "integer", "minimum": 1},
+    "trust_floor": {"type": "number", "minimum": 0, "maximum": 1}, "max_age_seconds": {"type": "integer", "minimum": 1},
+    "conflict_policy": {"enum": ["reject", "quarantine"]}, "provenance_required": {"const": true}, "writeback_policy": {"enum": ["deny", "proposal_only"]},
+    "source_revision": {"type": "string", "minLength": 1}, "dependency_revisions": {"type": "object", "additionalProperties": {"type": "string", "minLength": 1}},
+    "plan_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "$defs": {"nonemptyStrings": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}}
+}

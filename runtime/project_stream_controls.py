@@ -13,6 +13,8 @@ import json
 import re
 from typing import Iterable, Mapping
 
+from .trusted_evidence import EvidenceScope, ResolvedEvidence, TrustedEvidenceResolver
+
 
 ID_PATTERN = re.compile(r"^[a-z][a-z0-9_-]{2,127}$")
 PRIVATE_KINDS = frozenset(
@@ -229,23 +231,112 @@ class TransferPackage:
     includes_private_memory: bool = False
 
 
-def authorize_transfer(package: TransferPackage) -> BoundaryDecision:
-    reasons = []
+@dataclass(frozen=True, slots=True)
+class TransferEvidenceReferences:
+    sanitization: str
+    human_approval: str
+    destination_ownership: str
+    tests: str
+
+
+TRANSFER_EVIDENCE_POLICY = {
+    "sanitization": ("transfer_sanitization", frozenset({"sanitization-auditor"}), 86400),
+    "human_approval": ("human_approval", frozenset({"approval-authority"}), 86400),
+    "destination_ownership": ("destination_ownership", frozenset({"project-control-plane"}), 3600),
+    "tests": ("transfer_tests", frozenset({"test-authority"}), 86400),
+}
+
+
+def validate_transfer_evidence(
+    package: TransferPackage,
+    references: TransferEvidenceReferences,
+    resolver: TrustedEvidenceResolver,
+) -> tuple[dict[str, ResolvedEvidence], tuple[str, ...]]:
+    """Resolve all four exact transfer receipts and bind them to both projects."""
+    resolved: dict[str, ResolvedEvidence] = {}
+    reasons: list[str] = []
+    for name, (evidence_type, producers, max_age) in TRANSFER_EVIDENCE_POLICY.items():
+        evidence = resolver.resolve(
+            getattr(references, name),
+            scope=EvidenceScope(
+                project_id=package.destination_project_id,
+                subject_id=package.transfer_id,
+            ),
+            accepted_producers=set(producers),
+            max_age_seconds=max_age,
+            required_type=evidence_type,
+        )
+        resolved[name] = evidence
+        if not evidence.verified:
+            reasons.extend(f"{name}:{reason}" for reason in evidence.reasons)
+            continue
+        record = evidence.record or {}
+        if record.get("source_project_id") != package.source_project_id:
+            reasons.append(f"{name}:source_project_mismatch")
+        if record.get("destination_project_id") != package.destination_project_id:
+            reasons.append(f"{name}:destination_project_mismatch")
+        result = record.get("result")
+        if not isinstance(result, Mapping) or result.get("accepted") is not True:
+            reasons.append(f"{name}:receipt_not_accepted")
+    return resolved, tuple(sorted(set(reasons)))
+
+
+def authorize_project_transfer(
+    package: TransferPackage,
+    references: TransferEvidenceReferences,
+    resolver: TrustedEvidenceResolver,
+) -> BoundaryDecision:
+    """Authorize transfer only from fresh, signed, scoped, type-correct receipts."""
+    reasons: list[str] = []
     if not ID_PATTERN.fullmatch(package.transfer_id):
         reasons.append("invalid_transfer_id")
     if package.source_project_id == package.destination_project_id:
         reasons.append("source_equals_destination")
     if not package.provenance or not package.license or not package.tests:
         reasons.append("transfer_evidence_incomplete")
-    if not package.sanitization_passed:
-        reasons.append("sanitization_not_passed")
-    if not package.human_approved:
-        reasons.append("approval_missing")
-    if not package.destination_owned:
-        reasons.append("destination_ownership_missing")
     if package.includes_private_memory:
         reasons.append("private_memory_transfer_forbidden")
-    payload = asdict(package)
+    resolved, evidence_reasons = validate_transfer_evidence(package, references, resolver)
+    reasons.extend(evidence_reasons)
+    derived = {
+        "sanitization_passed": resolved["sanitization"].verified,
+        "human_approved": resolved["human_approval"].verified,
+        "destination_owned": resolved["destination_ownership"].verified,
+        "tests_passed": resolved["tests"].verified,
+    }
+    payload = {
+        "package": asdict(package),
+        "evidence_references": asdict(references),
+        "derived_compatibility": derived,
+        "reasons": sorted(set(reasons)),
+    }
+    return BoundaryDecision(
+        "allow" if not reasons else "deny",
+        tuple(sorted(set(reasons))),
+        (package.transfer_id,) if not reasons else (),
+        () if not reasons else (package.transfer_id,),
+        _stable(payload),
+    )
+
+
+def authorize_transfer(
+    package: TransferPackage,
+    references: TransferEvidenceReferences | None = None,
+    resolver: TrustedEvidenceResolver | None = None,
+) -> BoundaryDecision:
+    """Compatibility entry point; caller booleans never grant authority."""
+    if references is not None and resolver is not None:
+        return authorize_project_transfer(package, references, resolver)
+    reasons = ["authoritative_transfer_receipts_missing"]
+    if not ID_PATTERN.fullmatch(package.transfer_id):
+        reasons.append("invalid_transfer_id")
+    if package.source_project_id == package.destination_project_id:
+        reasons.append("source_equals_destination")
+    if not package.provenance or not package.license or not package.tests:
+        reasons.append("transfer_evidence_incomplete")
+    if package.includes_private_memory:
+        reasons.append("private_memory_transfer_forbidden")
+    payload = {"package": asdict(package), "reasons": sorted(set(reasons))}
     return BoundaryDecision(
         "allow" if not reasons else "deny",
         tuple(reasons),

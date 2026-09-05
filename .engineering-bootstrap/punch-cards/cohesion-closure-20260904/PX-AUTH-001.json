@@ -1,0 +1,70 @@
+{
+  "card_id": "PX-AUTH-001",
+  "title": "Authority topology",
+  "severity": "critical",
+  "type": "integration",
+  "status": "planned",
+  "root_cause": "Federated effect gates and runtimes lack one explicit topology tying effects to authority, evidence, rollback, bypass detection, and conformance.",
+  "source_requirement": "Create a machine-readable authority topology without forcing a single-language runtime.",
+  "live_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/current-owners-and-gaps.json"
+  ],
+  "files": [
+    "registry/authority_topology.json",
+    "runtime/primitive_authority.py",
+    "runtime/architecture_invariants.py",
+    "tests/test_authority_topology.py"
+  ],
+  "symbols": [
+    "validate_authority_topology",
+    "resolve_effect_authority"
+  ],
+  "dependencies": [
+    "PX-PROVIDER-001",
+    "PX-SKILL-003",
+    "PX-SYS-002"
+  ],
+  "downstream_consumers": [
+    "PX-AUTH-002"
+  ],
+  "change_classes": [
+    "SCHEMA",
+    "AUTHORITY"
+  ],
+  "implementation_steps": [
+    "Inventory effect types and authoritative gates.",
+    "Bind language/runtime owners, receipts, rollback, bypass detection, and tests.",
+    "Resolve symbols and evidence contracts.",
+    "Reject gaps and ambiguous owners."
+  ],
+  "negative_cases": [
+    "Effect has no gate.",
+    "Gate has no rollback.",
+    "Bypass unobserved.",
+    "Cross-language semantics lack conformance.",
+    "Two authoritative gates."
+  ],
+  "focused_tests": [
+    "tests/test_authority_topology.py"
+  ],
+  "affected_tests": [
+    "Architecture invariants, provider, work admission, skill promotion tests."
+  ],
+  "affected_sections": [
+    "testing-governance",
+    "structural-adversarial"
+  ],
+  "projection_invalidations": [
+    "world state authority summary",
+    "repair freeze evidence"
+  ],
+  "evidence_required": [
+    "Complete effect inventory and conformance-owner receipt."
+  ],
+  "rollback": "Remove topology consumers and retain current explicit gate implementations.",
+  "acceptance_criteria": [
+    "Every effect type has one declared authoritative gate and rollback owner.",
+    "Federated implementations share an evidence contract."
+  ],
+  "completion_evidence": []
+}

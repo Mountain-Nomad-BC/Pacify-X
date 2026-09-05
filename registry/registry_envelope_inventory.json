@@ -38,6 +38,24 @@
       "schema": "root schema_version plus shared registry-envelope invariant"
     },
     {
+      "builder": "runtime/authority_topology.py",
+      "collection_key": "effects",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "effect_count",
+      "path": "registry/authority_topology.json",
+      "rule": "length",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "runtime/capability_maturity.py",
+      "collection_key": "levels",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "level_count",
+      "path": "registry/capability_maturity_policy.json",
+      "rule": "length",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
       "builder": "scripts/build_contract_ownership_registry.py",
       "collection_key": "records",
       "consumer": "runtime/registry_envelope.py",
@@ -126,6 +144,15 @@
       "schema": "root schema_version plus shared registry-envelope invariant"
     },
     {
+      "builder": "runtime/dependency_invalidation.py",
+      "collection_key": "node_kinds",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "node_kind_count",
+      "path": "registry/dependency_authority.json",
+      "rule": "length",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
       "builder": "runtime/corrective_release.py",
       "collection_key": "cards",
       "consumer": "runtime/registry_envelope.py",
@@ -149,6 +176,15 @@
       "consumer": "runtime/registry_envelope.py",
       "count_key": "record_count",
       "path": "registry/effect_surface_ownership.json",
+      "rule": "length",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "runtime/evidence_claims.py",
+      "collection_key": "evidence_types",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "evidence_type_count",
+      "path": "registry/evidence_type_policy.json",
       "rule": "length",
       "schema": "root schema_version plus shared registry-envelope invariant"
     },
@@ -370,6 +406,15 @@
       "schema": "root schema_version plus shared registry-envelope invariant"
     },
     {
+      "builder": "runtime/primitive_authority.py",
+      "collection_key": "primitives",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "primitive_count",
+      "path": "registry/primitive_authority.json",
+      "rule": "length",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
       "builder": "scripts/reconcile_project_stream_registry.py",
       "collection_key": "workflows",
       "consumer": "runtime/registry_envelope.py",
@@ -410,6 +455,87 @@
       "path": "registry/provider_route_scan.json",
       "rule": "filtered",
       "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "runtime/world_state.py",
+      "collection_key": "details",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "agent_count",
+      "path": "registry/px_world_state.json",
+      "rule": "external_length",
+      "schema": "root schema_version plus shared registry-envelope invariant",
+      "source_key": "agents",
+      "source_path": "registry/agency_agent_registry.json"
+    },
+    {
+      "builder": "runtime/world_state.py",
+      "collection_key": "details",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "authority_effect_count",
+      "path": "registry/px_world_state.json",
+      "rule": "external_length",
+      "schema": "root schema_version plus shared registry-envelope invariant",
+      "source_key": "effects",
+      "source_path": "registry/authority_topology.json"
+    },
+    {
+      "builder": "runtime/world_state.py",
+      "collection_key": "details",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "capability_count",
+      "path": "registry/px_world_state.json",
+      "rule": "external_length",
+      "schema": "root schema_version plus shared registry-envelope invariant",
+      "source_key": "records",
+      "source_path": "registry/semantic_capability_index.json"
+    },
+    {
+      "builder": "runtime/world_state.py",
+      "collection_key": "details",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "ledger_event_count",
+      "path": "registry/px_world_state.json",
+      "rule": "external_scalar",
+      "schema": "root schema_version plus shared registry-envelope invariant",
+      "source_default": 0,
+      "source_key": "event_count",
+      "source_path": "registry/operational_gap_ledger.head.json"
+    },
+    {
+      "builder": "runtime/world_state.py",
+      "collection_key": "details",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "model_count",
+      "path": "registry/px_world_state.json",
+      "rule": "external_length",
+      "schema": "root schema_version plus shared registry-envelope invariant",
+      "source_key": "models",
+      "source_path": "registry/models.json"
+    },
+    {
+      "builder": "runtime/world_state.py",
+      "collection_key": "details",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "open_blocker_count",
+      "path": "registry/px_world_state.json",
+      "rule": "external_scalar",
+      "schema": "root schema_version plus shared registry-envelope invariant",
+      "source_default": 0,
+      "source_key": "dashboard.critical_high_blocker_count",
+      "source_path": "registry/operational_gap_ledger.head.json"
+    },
+    {
+      "builder": "runtime/world_state.py",
+      "collection_key": "details",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "stale_projection_count",
+      "equals": true,
+      "field": "stale",
+      "path": "registry/px_world_state.json",
+      "rule": "external_filtered",
+      "schema": "root schema_version plus shared registry-envelope invariant",
+      "source_key": "projections",
+      "source_path": "registry/projection_staleness.json"
     },
     {
       "builder": "scripts/build_python_surface_ownership.py",

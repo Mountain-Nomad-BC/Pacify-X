@@ -13,6 +13,7 @@ from typing import Mapping
 from .effect_grants import validate_effect_grant
 from .operation_authority import AuthorityRequest, decide as decide_authority
 from .trusted_evidence import EvidenceScope, TrustedEvidenceResolver
+from .task_execution_plan import TaskExecutionPlan, validate_task_execution_plan
 
 NON_READ_EFFECTS = {
     "write_workspace",
@@ -46,6 +47,35 @@ class ContractDecision:
     approved: bool
     reasons: tuple[str, ...]
     requires_verification: bool
+
+
+def execution_request_from_plan(
+    plan: TaskExecutionPlan,
+    *,
+    capability_id: str | None = None,
+    timeout_seconds: int = 30,
+    max_tool_calls: int = 0,
+    idempotency_key: str | None = None,
+) -> ExecutionRequest:
+    """Adapt one validated plan without changing capability or effect decisions."""
+    report = validate_task_execution_plan(plan)
+    if not report["valid"]:
+        raise ValueError("invalid task execution plan: " + "; ".join(report["errors"]))
+    selected = tuple(plan.selected_capabilities)
+    chosen = capability_id or (selected[0] if len(selected) == 1 else None)
+    if chosen is None or chosen not in selected:
+        raise ValueError("execution request requires one capability selected by the plan")
+    if timeout_seconds < 1 or max_tool_calls < 0:
+        raise ValueError("execution request budgets are invalid")
+    if set(plan.effect_budget) & NON_READ_EFFECTS and not idempotency_key:
+        raise ValueError("mutating plan execution requires an idempotency key")
+    return ExecutionRequest(
+        chosen,
+        tuple(plan.effect_budget),
+        timeout_seconds,
+        max_tool_calls,
+        idempotency_key,
+    )
 
 
 def enforce(

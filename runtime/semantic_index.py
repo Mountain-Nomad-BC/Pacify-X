@@ -8,6 +8,11 @@ from pathlib import Path
 import re
 import tomllib
 
+from .capability_semantics import (
+    build_capability_semantic_profile,
+    validate_capability_semantic_profile,
+)
+
 
 DESCRIPTION = re.compile(r"(?m)^description:\s*[\"']?(.*?)[\"']?\s*$")
 
@@ -16,16 +21,31 @@ def _load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def _description(path: Path) -> str:
-    match = DESCRIPTION.search(path.read_text(encoding="utf-8"))
+def _description_text(text: str) -> str:
+    match = DESCRIPTION.search(text)
     return match.group(1).strip() if match else ""
 
 
-def build_semantic_index(root: Path) -> dict[str, object]:
+def build_semantic_index(
+    root: Path, *, overlays: dict[str, bytes] | None = None
+) -> dict[str, object]:
     root = root.resolve()
-    catalog = tomllib.loads(
-        (root / "registry" / "skill_catalog.toml").read_text(encoding="utf-8")
-    )
+    overlay_bytes = dict(overlays or {})
+
+    def read_bytes(path: Path) -> bytes | None:
+        relative = path.relative_to(root).as_posix()
+        if relative in overlay_bytes:
+            return overlay_bytes[relative]
+        return path.read_bytes() if path.is_file() else None
+
+    def read_json(path: Path) -> dict:
+        data = read_bytes(path)
+        return json.loads(data.decode("utf-8")) if data is not None else {}
+
+    catalog_data = read_bytes(root / "registry" / "skill_catalog.toml")
+    if catalog_data is None:
+        raise FileNotFoundError("skill catalog is unavailable")
+    catalog = tomllib.loads(catalog_data.decode("utf-8"))
     workflow_path = root / "registry" / "skill_orchestrations.json"
     workflow_membership: dict[str, set[str]] = {}
     alias_path = root / "registry" / "capability_aliases.json"
@@ -47,26 +67,50 @@ def build_semantic_index(root: Path) -> dict[str, object]:
         skill_id = str(item["id"])
         body = root / str(item["body"])
         contract_path = root / str(item["contract"])
-        contract = _load_json(contract_path) if contract_path.is_file() else {}
+        contract = read_json(contract_path)
+        body_data = read_bytes(body)
+        contract_data = read_bytes(contract_path)
         tags = sorted({str(value) for value in item.get("tags", ())})
-        provides = [str(value) for value in contract.get("provides", ())]
         resources = [str(value) for value in contract.get("resources", ())]
+        profile = build_capability_semantic_profile(
+            {
+                **item,
+                "aliases": sorted(aliases_by_owner.get(skill_id, set())),
+                "triggers": contract.get("triggers", ()),
+            },
+            contract,
+            maturity=None,
+        )
+        semantic_profile = profile.as_dict()
+        profile_revision = hashlib.sha256(
+            json.dumps(
+                semantic_profile, sort_keys=True, separators=(",", ":")
+            ).encode("utf-8")
+        ).hexdigest()
         records.append(
             {
                 "id": skill_id,
                 "kind": "skill",
                 "status": str(item.get("status", "candidate")),
-                "description": _description(body) if body.is_file() else "",
-                "domains": tags,
-                "intents": sorted(set(provides)),
-                "concepts": sorted(set((*tags, *skill_id.split("-")))),
-                "synonyms": sorted(
-                    {skill_id.replace("-", " "), *aliases_by_owner.get(skill_id, set())}
+                "description": _description_text(body_data.decode("utf-8"))
+                if body_data is not None
+                else "",
+                "domains": list(profile.domains),
+                "intents": list(profile.positive_intents),
+                "negative_intents": list(profile.negative_intents),
+                "concepts": sorted(
+                    set((*tags, *skill_id.split("-"), *profile.domains))
                 ),
+                "synonyms": list(profile.synonyms),
                 "tools": sorted({Path(value).stem for value in resources if value}),
                 "relations": sorted(workflow_membership.get(skill_id, ())),
-                "body_sha256": hashlib.sha256(body.read_bytes()).hexdigest()
-                if body.is_file()
+                "semantic_profile": semantic_profile,
+                "profile_revision": profile_revision,
+                "contract_revision": hashlib.sha256(contract_data).hexdigest()
+                if contract_data is not None
+                else "",
+                "body_sha256": hashlib.sha256(body_data).hexdigest()
+                if body_data is not None
                 else "",
             }
         )
@@ -111,6 +155,27 @@ def validate_semantic_index(root: Path) -> dict[str, object]:
             seen_aliases[alias] = owner
     if actual != expected:
         errors.append("semantic capability index is stale or non-deterministic")
+    seen: set[str] = set()
+    for record in expected["records"]:
+        capability_id = str(record.get("id") or "")
+        if capability_id in seen:
+            errors.append(f"duplicate semantic identity: {capability_id}")
+        seen.add(capability_id)
+        profile = record.get("semantic_profile")
+        report = (
+            validate_capability_semantic_profile(profile)
+            if isinstance(profile, dict)
+            else {"valid": False, "errors": ["profile missing"]}
+        )
+        if not report["valid"]:
+            errors.append(f"{capability_id}: invalid semantic profile: {report['errors']}")
+        if record.get("status") == "active" and not record.get("intents"):
+            errors.append(f"{capability_id}: active routable skill has empty positive intent")
+        calculated = hashlib.sha256(
+            json.dumps(profile, sort_keys=True, separators=(",", ":")).encode("utf-8")
+        ).hexdigest()
+        if record.get("profile_revision") != calculated:
+            errors.append(f"{capability_id}: stale semantic profile revision")
     return {
         "valid": not errors,
         "record_count": expected["record_count"],

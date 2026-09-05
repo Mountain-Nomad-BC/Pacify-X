@@ -2,11 +2,13 @@ from __future__ import annotations
 
 import hashlib
 import json
+from pathlib import Path
 
 import pytest
 
 import runtime.knowledge_core_controller as knowledge_module
 from runtime.knowledge_core_controller import KnowledgeCoreController
+from runtime.dependency_invalidation import build_dependency_graph
 from runtime.studio_api import studio_operation
 from tests.studio_approval_testkit import authorized_payload
 
@@ -468,6 +470,72 @@ def test_learning_hash_roles_remain_bound_through_admission_and_measured_reuse(
         == measured["promotion_decision"]["record_sha256"]
     )
     assert controller._read_learning(pipeline_id) == measured
+
+    proposal = controller._read(proposal_id)
+    knowledge_node = f"knowledge:{proposal['record_id']}"
+    graph = build_dependency_graph(
+        Path(knowledge_module.__file__).resolve().parents[1],
+        [
+            {
+                "node_id": knowledge_node,
+                "kind": "knowledge",
+                "revision": proposal["candidate_sha256"],
+            },
+            {"node_id": "projection:semantic", "kind": "projection", "revision": "1"},
+            {"node_id": "release:evidence", "kind": "release_evidence", "revision": "1"},
+        ],
+        [
+            {"dependency": knowledge_node, "consumer": "projection:semantic"},
+            {"dependency": "projection:semantic", "consumer": "release:evidence"},
+        ],
+    )
+    historical = Path(
+        controller.browse()["canonical"][0]["revision"]
+    )
+    historical_path = tmp_path / historical
+    historical_sha256 = hashlib.sha256(historical_path.read_bytes()).hexdigest()
+    decayed = controller.measure_learning_reuse(
+        pipeline_id,
+        uses=24,
+        successes=12,
+        regressions=12,
+        approved=True,
+        measured_by="human:owner",
+        dependency_graph=graph,
+    )
+    assert decayed["state"] == "decayed"
+    assert decayed["decay_decision"]["revalidation_required"] is True
+    assert decayed["dependent_invalidation"]["direct_consumers"] == [
+        "projection:semantic"
+    ]
+    assert decayed["dependent_invalidation"]["transitive_consumers"] == [
+        "release:evidence"
+    ]
+    canonical = controller.browse()["canonical"][0]
+    assert canonical["authority_status"] == "suspect"
+    assert canonical["authoritative"] is False
+    with pytest.raises(PermissionError, match="requires revalidation"):
+        controller.resolve_canonical(str(proposal["record_id"]))
+    assert hashlib.sha256(historical_path.read_bytes()).hexdigest() == historical_sha256
+    with pytest.raises(PermissionError, match="fresh hash-bound evidence"):
+        controller.revalidate_learning(
+            pipeline_id,
+            evidence_ref="new validation",
+            evidence_sha256="missing",
+            approved=True,
+            revalidated_by="reviewer:one",
+        )
+    revalidated = controller.revalidate_learning(
+        pipeline_id,
+        evidence_ref="evidence:fresh-validation",
+        evidence_sha256=hashlib.sha256(b"fresh validation").hexdigest(),
+        approved=True,
+        revalidated_by="reviewer:one",
+    )
+    assert revalidated["state"] == "canonical"
+    resolved = controller.resolve_canonical(str(proposal["record_id"]))
+    assert resolved["head"]["authoritative"] is True
+    assert resolved["historical"] is True
 
 
 def test_learning_read_and_recovery_reject_resigned_nested_hash_role_corruption(

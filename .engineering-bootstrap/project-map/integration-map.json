@@ -1,19 +1,50 @@
 {
   "network_origins": [
     {
+      "origin": "http://(",
+      "sources": [
+        "contracts/operations/local-model-runtime.schema.json"
+      ]
+    },
+    {
+      "origin": "http://127.0.0.1:10",
+      "sources": [
+        "extension/tests/isolated-current-source-walk.test.js"
+      ]
+    },
+    {
       "origin": "http://127.0.0.1:11434",
       "sources": [
         ".px/preserved-extension-installations/initial/mountain-nomad-bc.pacify-x-vscode-0.5.0/package.json",
         ".px/preserved-extension-installations/initial/mountain-nomad-bc.pacify-x-vscode-0.5.0/src/extension.js",
+        ".vscode/settings.json",
         "extension/package.json",
         "extension/src/extension.js",
-        "extension/tests/context-bridge.test.js"
+        "extension/tests/context-bridge.test.js",
+        "runtime/provider_gateway.py",
+        "tests/test_provider_gateway.py"
+      ]
+    },
+    {
+      "origin": "http://127.0.0.1:18080",
+      "sources": [
+        "tests/test_local_model_runtime.py"
+      ]
+    },
+    {
+      "origin": "http://127.0.0.1:9",
+      "sources": [
+        "extension/scripts/run-installed-vsix-smoke.js",
+        "extension/scripts/run-isolated-current-source-walk.js",
+        "extension/tests/isolated-current-source-walk.test.js"
       ]
     },
     {
       "origin": "http://127.0.0.1:9333",
       "sources": [
-        "extension/scripts/run-operational-ui-walk.js"
+        "extension/scripts/run-operational-ui-walk.js",
+        "extension/tests/operational-walk-status.test.js",
+        "registry/operational_gap_ledger.jsonl"
       ]
     },
     {
@@ -37,9 +68,21 @@
       ]
     },
     {
+      "origin": "http://localhost:11434",
+      "sources": [
+        "tests/test_provider_gateway.py"
+      ]
+    },
+    {
       "origin": "http://localhost:18060",
       "sources": [
         "providers/agency_agents/agents/marketing/marketing-multi-platform-publisher.md"
+      ]
+    },
+    {
+      "origin": "http://localhost:18080",
+      "sources": [
+        "tests/test_local_model_runtime.py"
       ]
     },
     {
@@ -65,15 +108,23 @@
       ]
     },
     {
+      "origin": "http://proxy.example",
+      "sources": [
+        "extension/tests/isolated-current-source-walk.test.js"
+      ]
+    },
+    {
       "origin": "http://schemas.microsoft.com",
       "sources": [
         ".px/preserved-extension-installations/initial/mountain-nomad-bc.pacify-x-vscode-0.5.0/.vsixmanifest",
+        "extension/scripts/build-plugin-lifecycle-fixtures.js",
         "extension/scripts/package-vsix.js"
       ]
     },
     {
       "origin": "http://schemas.openxmlformats.org",
       "sources": [
+        "extension/scripts/build-plugin-lifecycle-fixtures.js",
         "extension/scripts/package-vsix.js"
       ]
     },
@@ -122,7 +173,8 @@
     {
       "origin": "https://127.0.0.1:11434",
       "sources": [
-        "extension/tests/context-bridge.test.js"
+        "extension/tests/context-bridge.test.js",
+        "tests/test_provider_gateway.py"
       ]
     },
     {
@@ -649,6 +701,7 @@
     {
       "origin": "https://example.invalid",
       "sources": [
+        "extension/scripts/run-operational-ui-walk.js",
         "templates/service_capabilities/supabase/functions/example/index.ts",
         "tests/test_release_environment.py",
         "tests/test_release_supply_chain_evidence.py",
@@ -732,6 +785,7 @@
         "README.md",
         "docs/release-process.md",
         "extension/package-lock.json",
+        "extension/package.json",
         "extension/server/index.js",
         "providers/agency_agents/agents/engineering/engineering-technical-writer.md",
         "providers/agency_agents/agents/marketing/marketing-multi-platform-publisher.md",
@@ -826,6 +880,7 @@
         ".px/skills/quarantine-external-tools/contracts/external-tool-intake.schema.json",
         "builders/declared_suite_support_builder.py",
         "builders/last_round_assimilation_builder.py",
+        "contracts/agent_handoff_packet.schema.json",
         "contracts/agents/agency-agent-manifest.schema.json",
         "contracts/agents/agent-evidence-receipt.schema.json",
         "contracts/agents/agent-handoff.schema.json",
@@ -846,6 +901,7 @@
         "contracts/builder-contract.schema.json",
         "contracts/candidate-admission-request.schema.json",
         "contracts/capability-contract.schema.json",
+        "contracts/capability_semantic_profile.schema.json",
         "contracts/certification-readiness.schema.json",
         "contracts/claim.schema.json",
         "contracts/cognitive/behavioral-delta-certificate.schema.json",
@@ -876,6 +932,7 @@
         "contracts/external_capabilities/session-snapshot.schema.json",
         "contracts/failure-attribution.schema.json",
         "contracts/failure.schema.json",
+        "contracts/foundry_candidate_skill.schema.json",
         "contracts/hardware-equivalence.schema.json",
         "contracts/improvement-candidate.schema.json",
         "contracts/incident.schema.json",
@@ -893,6 +950,8 @@
         "contracts/memory/memory-promotion-decision.schema.json",
         "contracts/memory/memory-recall-package.schema.json",
         "contracts/memory/memory-remediation-plan.schema.json",
+        "contracts/memory/semantic-memory-envelope.schema.json",
+        "contracts/memory_query_plan.schema.json",
         "contracts/metacognitive/agent-cognitive-profile.schema.json",
         "contracts/metacognitive/assumption-lineage.schema.json",
         "contracts/metacognitive/capability-genome.schema.json",
@@ -908,8 +967,10 @@
         "contracts/metacognitive/reasoning-trace.schema.json",
         "contracts/metacognitive/semantic-effect-contract.schema.json",
         "contracts/model-contract.schema.json",
+        "contracts/model_attachment.schema.json",
         "contracts/operations/health-model-registry.schema.json",
         "contracts/operations/health-report.schema.json",
+        "contracts/operations/local-model-runtime.schema.json",
         "contracts/operations/operation-event.schema.json",
         "contracts/operations/os-observer-registry.schema.json",
         "contracts/operations/provider-adapter-registry.schema.json",
@@ -940,6 +1001,7 @@
         "contracts/project_stream/workspace-registry.schema.json",
         "contracts/project_stream/workspace_config.schema.json",
         "contracts/project_stream/workstream.schema.json",
+        "contracts/provider_execution_policy.schema.json",
         "contracts/reasoning/communication-budget.schema.json",
         "contracts/reasoning/decision-frontier.schema.json",
         "contracts/reasoning/glossary-audit.schema.json",
@@ -982,6 +1044,7 @@
         "contracts/source-intake-event.schema.json",
         "contracts/task-envelope.schema.json",
         "contracts/task-state.schema.json",
+        "contracts/task_execution_plan.schema.json",
         "contracts/tool-contract.schema.json",
         "contracts/trace-link.schema.json",
         "contracts/transcripts/transcript-ontology.schema.json",
@@ -1241,6 +1304,15 @@
       ]
     },
     {
+      "origin": "https://marketplace.visualstudio.com",
+      "sources": [
+        "extension/scripts/operational-walk-status.js",
+        "extension/scripts/run-operational-ui-walk.js",
+        "extension/tests/operational-ui-walk-installed-probe.test.js",
+        "extension/tests/operational-walk-status.test.js"
+      ]
+    },
+    {
       "origin": "https://migueldeicaza.github.io",
       "sources": [
         "providers/agency_agents/agents/spatial-computing/terminal-integration-specialist.md"
@@ -1287,6 +1359,12 @@
         ".px/preserved-skills/host-isolation/global-skills-53ca206527fb0d42/verified-copy/microsoft-foundry/foundry-agent/trace/trace.md",
         ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/trace/references/kql-templates.md",
         ".px/preserved-skills/initial/user-original/microsoft-foundry/foundry-agent/trace/trace.md"
+      ]
+    },
+    {
+      "origin": "https://outside.invalid",
+      "sources": [
+        "tests/coordination_conformance/provider_execution_policy_vectors.json"
       ]
     },
     {
@@ -1507,6 +1585,12 @@
       ]
     },
     {
+      "origin": "https://www.vscode-unpkg.net",
+      "sources": [
+        "extension/tests/operational-ui-walk-installed-probe.test.js"
+      ]
+    },
+    {
       "origin": "https://www.w3.org",
       "sources": [
         "registry/adversarial_reaudit_20260813.json"
@@ -1634,10 +1718,12 @@
       "name": "build",
       "scopes": [
         "optional:build",
-        "optional:release"
+        "optional:release",
+        "runtime"
       ],
       "sources": [
-        "pyproject.toml"
+        "pyproject.toml",
+        "requirements-release.txt"
       ]
     },
     {
@@ -1645,10 +1731,12 @@
       "ecosystem": "python",
       "name": "colorama",
       "scopes": [
-        "optional:release"
+        "optional:release",
+        "runtime"
       ],
       "sources": [
-        "pyproject.toml"
+        "pyproject.toml",
+        "requirements-release.txt"
       ]
     },
     {
@@ -1656,10 +1744,12 @@
       "ecosystem": "python",
       "name": "coverage",
       "scopes": [
-        "optional:release"
+        "optional:release",
+        "runtime"
       ],
       "sources": [
-        "pyproject.toml"
+        "pyproject.toml",
+        "requirements-release.txt"
       ]
     },
     {
@@ -1677,10 +1767,12 @@
       "ecosystem": "python",
       "name": "iniconfig",
       "scopes": [
-        "optional:release"
+        "optional:release",
+        "runtime"
       ],
       "sources": [
-        "pyproject.toml"
+        "pyproject.toml",
+        "requirements-release.txt"
       ]
     },
     {
@@ -1700,10 +1792,12 @@
       "ecosystem": "python",
       "name": "packaging",
       "scopes": [
-        "optional:release"
+        "optional:release",
+        "runtime"
       ],
       "sources": [
-        "pyproject.toml"
+        "pyproject.toml",
+        "requirements-release.txt"
       ]
     },
     {
@@ -1711,10 +1805,12 @@
       "ecosystem": "python",
       "name": "pluggy",
       "scopes": [
-        "optional:release"
+        "optional:release",
+        "runtime"
       ],
       "sources": [
-        "pyproject.toml"
+        "pyproject.toml",
+        "requirements-release.txt"
       ]
     },
     {
@@ -1722,10 +1818,12 @@
       "ecosystem": "python",
       "name": "pygments",
       "scopes": [
-        "optional:release"
+        "optional:release",
+        "runtime"
       ],
       "sources": [
-        "pyproject.toml"
+        "pyproject.toml",
+        "requirements-release.txt"
       ]
     },
     {
@@ -1733,10 +1831,12 @@
       "ecosystem": "python",
       "name": "pyproject-hooks",
       "scopes": [
-        "optional:release"
+        "optional:release",
+        "runtime"
       ],
       "sources": [
-        "pyproject.toml"
+        "pyproject.toml",
+        "requirements-release.txt"
       ]
     },
     {
@@ -1745,10 +1845,12 @@
       "name": "pytest",
       "scopes": [
         "optional:release",
-        "optional:test"
+        "optional:test",
+        "runtime"
       ],
       "sources": [
-        "pyproject.toml"
+        "pyproject.toml",
+        "requirements-release.txt"
       ]
     },
     {
@@ -1757,10 +1859,12 @@
       "name": "pyyaml",
       "scopes": [
         "optional:release",
-        "optional:test"
+        "optional:test",
+        "runtime"
       ],
       "sources": [
-        "pyproject.toml"
+        "pyproject.toml",
+        "requirements-release.txt"
       ]
     },
     {
@@ -1781,10 +1885,12 @@
       "name": "ruff",
       "scopes": [
         "optional:lint",
-        "optional:release"
+        "optional:release",
+        "runtime"
       ],
       "sources": [
-        "pyproject.toml"
+        "pyproject.toml",
+        "requirements-release.txt"
       ]
     },
     {
@@ -1793,10 +1899,12 @@
       "name": "setuptools",
       "scopes": [
         "optional:build",
-        "optional:release"
+        "optional:release",
+        "runtime"
       ],
       "sources": [
-        "pyproject.toml"
+        "pyproject.toml",
+        "requirements-release.txt"
       ]
     },
     {
@@ -1805,10 +1913,12 @@
       "name": "wheel",
       "scopes": [
         "optional:build",
-        "optional:release"
+        "optional:release",
+        "runtime"
       ],
       "sources": [
-        "pyproject.toml"
+        "pyproject.toml",
+        "requirements-release.txt"
       ]
     }
   ],

@@ -11,6 +11,8 @@ from pathlib import Path
 import re
 from typing import Iterable, Mapping
 
+from .cognitive_core.formula_engine import Dimension, validate_dimensions
+
 
 WORD = re.compile(r"[a-z0-9]+")
 WIKI_LINK = re.compile(r"\[\[([^\]]+)\]\]")
@@ -47,6 +49,51 @@ MAX_CALCULATION_AST_NODES = 64
 MAX_CALCULATION_DEPTH = 16
 MAX_CALCULATION_MAGNITUDE = 1e100
 MAX_CALCULATION_EXPONENT = 16
+FORMULA_ENGINE_PATH = Path(__file__).parent / "cognitive_core" / "formula_engine.py"
+KNOWN_UNIT_DIMENSIONS = {
+    "1": "1",
+    "dimensionless": "1",
+    "u": "U",
+    "m": "L",
+    "km": "L",
+    "cm": "L",
+    "mm": "L",
+    "s": "T",
+    "ms": "T",
+    "min": "T",
+    "h": "T",
+    "kg": "M",
+    "g": "M",
+    "K": "Theta",
+    "degC": "Theta",
+    "delta_degC": "Theta",
+}
+
+
+def _unit_dimension(unit: str) -> Dimension:
+    text = str(unit).strip()
+    if not text:
+        raise ValueError("unknown unit: empty")
+    parts = re.split(r"([*/])", text)
+    result = Dimension()
+    operation = "*"
+    for part in parts:
+        token = part.strip()
+        if not token:
+            continue
+        if token in {"*", "/"}:
+            operation = token
+            continue
+        name, marker, exponent_text = token.partition("^")
+        if name not in KNOWN_UNIT_DIMENSIONS:
+            raise ValueError(f"unknown unit: {name}")
+        try:
+            exponent = float(exponent_text) if marker else 1.0
+        except ValueError as error:
+            raise ValueError(f"invalid unit exponent: {token}") from error
+        dimension = Dimension.parse(KNOWN_UNIT_DIMENSIONS[name]) ** exponent
+        result = result * dimension if operation == "*" else result / dimension
+    return result
 
 
 def _expression_depth(node: ast.AST) -> int:
@@ -279,6 +326,8 @@ class CalculationPackage:
     python_source: str
     javascript_source: str
     input_schema: Mapping[str, object]
+    normalized_dimension: str
+    formula_engine_revision: str
     edge_cases: tuple[str, ...]
     failure_cases: tuple[str, ...]
 
@@ -295,6 +344,14 @@ def compile_calculation(spec: CalculationSpec) -> CalculationPackage:
         )
     tree = ast.parse(spec.equation, mode="eval")
     _validate_calculation_tree(tree, spec.variables)
+    variable_dimensions = {
+        variable: _unit_dimension(spec.units[variable]).render()
+        for variable in spec.variables
+    }
+    expected_dimension = _unit_dimension(spec.units["result"]).render()
+    dimension_receipt = validate_dimensions(
+        spec.equation, variable_dimensions, expected_dimension
+    )
     arguments = ", ".join(spec.variables)
     python_source = f"def {name}({arguments}):\n    return {spec.equation}\n"
     javascript_expression = _render_javascript(tree)
@@ -323,6 +380,8 @@ def compile_calculation(spec: CalculationSpec) -> CalculationPackage:
         python_source,
         javascript_source,
         schema,
+        str(dimension_receipt["output_dimension"]),
+        hashlib.sha256(FORMULA_ENGINE_PATH.read_bytes()).hexdigest(),
         (
             "zero",
             "negative input where domain permits",

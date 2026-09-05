@@ -1,0 +1,70 @@
+{
+  "card_id": "PX-MODEL-001",
+  "title": "First-class ModelAttachment",
+  "severity": "critical",
+  "type": "integration",
+  "status": "planned",
+  "root_cause": "Model metadata, local artifacts, runtime details, hardware requirements, and fallback chains are not bound into one immutable attachment.",
+  "source_requirement": "Add a validated ModelAttachment with exact model revision/hash and local GGUF/quantization/path where applicable.",
+  "live_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#PX-AUD-006"
+  ],
+  "files": [
+    "runtime/model_attachment.py",
+    "contracts/model_attachment.schema.json",
+    "tests/test_model_attachment.py"
+  ],
+  "symbols": [
+    "ModelAttachment",
+    "build_model_attachment",
+    "validate_model_attachment"
+  ],
+  "dependencies": [
+    "PX-CORE-001",
+    "PX-CORE-003"
+  ],
+  "downstream_consumers": [
+    "PX-MODEL-002"
+  ],
+  "change_classes": [
+    "SCHEMA",
+    "AUTHORITY",
+    "BEHAVIORAL"
+  ],
+  "implementation_steps": [
+    "Define immutable attachment schema.",
+    "Bind runtime, context, modality, tools, privacy, benchmark revision, hardware, and fallback.",
+    "Hash exact local artifacts when applicable.",
+    "Reject attachment drift."
+  ],
+  "negative_cases": [
+    "Floating model revision.",
+    "GGUF path without hash.",
+    "Benchmark revision missing.",
+    "Fallback violates privacy/authority.",
+    "Attachment changes after plan hash."
+  ],
+  "focused_tests": [
+    "tests/test_model_attachment.py"
+  ],
+  "affected_tests": [
+    "Model inventory and local runtime tests."
+  ],
+  "affected_sections": [
+    "testing-governance"
+  ],
+  "projection_invalidations": [
+    "task plans",
+    "model routing evidence",
+    "world state"
+  ],
+  "evidence_required": [
+    "Local and remote attachment vectors with deterministic identity."
+  ],
+  "rollback": "Remove attachment consumers and retain existing model inventory records.",
+  "acceptance_criteria": [
+    "Every attachment names an exact immutable model identity.",
+    "Local artifacts bind path, quantization, and content hash."
+  ],
+  "completion_evidence": []
+}

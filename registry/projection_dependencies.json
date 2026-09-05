@@ -1,0 +1,137 @@
+{
+  "projections": [
+    {
+      "builder": "builders/last_round_assimilation_builder.py",
+      "cost": "expensive",
+      "dependencies": [
+        {
+          "path": ".px/skills",
+          "revision": "22f215f85555c3669dd2344772fb527f1b7c8e59b407b170f6cb657b75706571"
+        },
+        {
+          "path": "builders/last_round_assimilation_builder.py",
+          "revision": "fbe5b843326ef4670dcfc60842363469452e336ef9375dfaa5ffa024c26e2e44"
+        }
+      ],
+      "invalidation_rule": "any_dependency_revision_change",
+      "output": "registry/skill_catalog.toml",
+      "output_revision": "d0f006a76eac089fb63b116bc1a262b6a7b3fdd6ac4f480a46033a0f2c011817",
+      "owner": "builders.last_round_assimilation_builder",
+      "projection_id": "skill-package-catalog",
+      "rebuild_gate": "block_until_rebuilt"
+    },
+    {
+      "builder": "builders/semantic_index_builder.py",
+      "cost": "cheap_synchronous",
+      "dependencies": [
+        {
+          "path": "registry/skill_catalog.toml",
+          "revision": "d0f006a76eac089fb63b116bc1a262b6a7b3fdd6ac4f480a46033a0f2c011817"
+        },
+        {
+          "path": "registry/skill_orchestrations.json",
+          "revision": "f414cfac2de6fed178df4c3a599bb3ff8aa859d3441cebd9722e55acd8854115"
+        },
+        {
+          "path": "registry/capability_aliases.json",
+          "revision": "70b9e44c4f35cb9bfd642b5820c51f73ad97bd2653aa1443bc32a772b8cec421"
+        },
+        {
+          "path": "runtime/semantic_index.py",
+          "revision": "ec2e2063c974d358aae88cd30a8427ed4400936277399584633cf66541c4ae64"
+        },
+        {
+          "path": "builders/semantic_index_builder.py",
+          "revision": "7d05d665d6613d42c3af249cc272e7c2669514dc6a3087868d509fdb7d9b7cc6"
+        }
+      ],
+      "invalidation_rule": "any_dependency_revision_change",
+      "output": "registry/semantic_capability_index.json",
+      "output_revision": "65208b028251e32b634dec795914930711b4d2df29941aa0aa2b4a220910c738",
+      "owner": "runtime.semantic_index",
+      "projection_id": "semantic-capability-index",
+      "rebuild_gate": "rebuild_before_use"
+    },
+    {
+      "builder": "scripts/build_cognitive_index.py",
+      "cost": "expensive",
+      "dependencies": [
+        {
+          "path": "registry/skill_catalog.toml",
+          "revision": "d0f006a76eac089fb63b116bc1a262b6a7b3fdd6ac4f480a46033a0f2c011817"
+        },
+        {
+          "path": "registry/skill_orchestrations.json",
+          "revision": "f414cfac2de6fed178df4c3a599bb3ff8aa859d3441cebd9722e55acd8854115"
+        },
+        {
+          "path": "runtime/cognitive_core/index_builder.py",
+          "revision": "67b82c0fe1bfd9be82756ad8cc0355d8db5e56a43962786211ab6c079bd1018a"
+        },
+        {
+          "path": "scripts/build_cognitive_index.py",
+          "revision": "e8bbeb15e26efe5b74db9f786650631d220656ee9fd3d7f89829287ddd4bb1a0"
+        }
+      ],
+      "invalidation_rule": "any_dependency_revision_change",
+      "output": "registry/cognitive_map_index.json",
+      "output_revision": "0ef88af22fcba1e96a8186a407db49caf292472be819e6d14d5f342f16a42f79",
+      "owner": "runtime.cognitive_core.index_builder",
+      "projection_id": "cognitive-map-index",
+      "rebuild_gate": "block_until_rebuilt"
+    },
+    {
+      "builder": "scripts/build_agency_agent_graph.py",
+      "cost": "cheap_synchronous",
+      "dependencies": [
+        {
+          "path": "registry/agency_agent_registry.json",
+          "revision": "258d34007098b8dc4229fe26017081118248601fec017a9b85747badca5fb9c7"
+        },
+        {
+          "path": "runtime/agent_provider.py",
+          "revision": "8a59f63962f329754b9ee4a0a8589e33e07c01dba2bacea99f3407fa41d299f4"
+        },
+        {
+          "path": "scripts/build_agency_agent_graph.py",
+          "revision": "85cf64342cd380b5090c0092848f4308d8c84a841aab7eb3da0dd4ff1a01c6d4"
+        }
+      ],
+      "invalidation_rule": "any_dependency_revision_change",
+      "output": "registry/agency_agent_graph.json",
+      "output_revision": "ea2643fd20c95d482b5d02a69c96109310319b6c4daddca85199bc514703702a",
+      "owner": "runtime.agent_provider",
+      "projection_id": "agency-agent-graph",
+      "rebuild_gate": "rebuild_before_use"
+    },
+    {
+      "builder": "scripts/build_registry_envelope_inventory.py",
+      "cost": "cheap_synchronous",
+      "dependencies": [
+        {
+          "path": "registry/semantic_capability_index.json",
+          "revision": "65208b028251e32b634dec795914930711b4d2df29941aa0aa2b4a220910c738"
+        },
+        {
+          "path": "registry/cognitive_map_index.json",
+          "revision": "0ef88af22fcba1e96a8186a407db49caf292472be819e6d14d5f342f16a42f79"
+        },
+        {
+          "path": "registry/agency_agent_graph.json",
+          "revision": "ea2643fd20c95d482b5d02a69c96109310319b6c4daddca85199bc514703702a"
+        },
+        {
+          "path": "scripts/build_registry_envelope_inventory.py",
+          "revision": "94dff43b76479a0f41a77811ac91ec180f51ed503b422b7d666a1bc3d7e93efe"
+        }
+      ],
+      "invalidation_rule": "any_dependency_revision_change",
+      "output": "registry/registry_envelope_inventory.json",
+      "output_revision": "d6f1cabd9a90734279acf9d850b7ff6322e3f279b3974e14889e795a51731e1d",
+      "owner": "scripts.build_registry_envelope_inventory",
+      "projection_id": "registry-envelope-inventory",
+      "rebuild_gate": "rebuild_before_use"
+    }
+  ],
+  "schema_version": "px.projection-dependencies/1.0"
+}

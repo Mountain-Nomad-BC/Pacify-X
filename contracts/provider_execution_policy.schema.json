@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:provider_execution_policy",
+  "title": "PX Provider Execution Policy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "task_plan_sha256", "model", "authority", "egress", "cost", "fallbacks", "exact_receipt_required", "policy_sha256"],
+  "properties": {
+    "schema_version": {"const": "px.provider-execution-policy/1.0"},
+    "task_plan_sha256": {"$ref": "#/$defs/sha256"},
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider_id", "adapter_id", "model_id", "model_revision", "attachment_sha256", "privacy", "authority_class"],
+      "properties": {
+        "provider_id": {"type": "string", "minLength": 1},
+        "adapter_id": {"type": "string", "minLength": 1},
+        "model_id": {"type": "string", "minLength": 1},
+        "model_revision": {"type": "string", "minLength": 1},
+        "attachment_sha256": {"$ref": "#/$defs/sha256"},
+        "privacy": {"enum": ["policy_gated", "isolated", "local"]},
+        "authority_class": {"enum": ["contained", "installed_host", "external_authority"]}
+      }
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["revision", "provider_effect"],
+      "properties": {
+        "revision": {"$ref": "#/$defs/sha256"},
+        "provider_effect": {"const": true}
+      }
+    },
+    "egress": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "allowed_destinations"],
+      "properties": {
+        "mode": {"enum": ["deny", "loopback_only", "allowlist"]},
+        "allowed_destinations": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}
+      }
+    },
+    "cost": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["budget_id", "max_charge_microunits"],
+      "properties": {
+        "budget_id": {"type": "string", "minLength": 1},
+        "max_charge_microunits": {"type": "integer", "minimum": 0}
+      }
+    },
+    "fallbacks": {"type": "array", "items": {"$ref": "#/$defs/fallback"}},
+    "exact_receipt_required": {"const": true},
+    "policy_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "fallback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider_id", "adapter_id", "model_id", "model_revision", "artifact_sha256", "privacy", "authority_class"],
+      "properties": {
+        "provider_id": {"type": "string", "minLength": 1},
+        "adapter_id": {"type": "string", "minLength": 1},
+        "model_id": {"type": "string", "minLength": 1},
+        "model_revision": {"type": "string", "minLength": 1},
+        "artifact_sha256": {"$ref": "#/$defs/sha256"},
+        "privacy": {"enum": ["policy_gated", "isolated", "local"]},
+        "authority_class": {"enum": ["contained", "installed_host", "external_authority"]}
+      }
+    }
+  }
+}

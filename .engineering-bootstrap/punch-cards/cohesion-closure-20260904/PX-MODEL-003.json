@@ -1,0 +1,75 @@
+{
+  "card_id": "PX-MODEL-003",
+  "title": "Hardware placement integration",
+  "severity": "high",
+  "type": "integration",
+  "status": "planned",
+  "root_cause": "Hardware routing and execution placement exist but are not obligatorily attached to every governed agent run.",
+  "source_requirement": "Carry one exact placement decision, reserve, benchmark freshness, fallback, and outcome through governed execution.",
+  "live_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#PX-AUD-006"
+  ],
+  "files": [
+    "runtime/hardware_routing.py",
+    "runtime/execution_placement.py",
+    "runtime/model_attachment.py",
+    "runtime/agent_runtime.py",
+    "tests/test_hardware_routing.py",
+    "tests/test_execution_placement.py"
+  ],
+  "symbols": [
+    "route_hardware",
+    "decide_execution_placement",
+    "execute_agent_plan"
+  ],
+  "dependencies": [
+    "PX-CORE-002",
+    "PX-MODEL-002"
+  ],
+  "downstream_consumers": [
+    "PX-AGENT-003",
+    "PX-PROVIDER-001"
+  ],
+  "change_classes": [
+    "AUTHORITY",
+    "RUNTIME",
+    "BEHAVIORAL"
+  ],
+  "implementation_steps": [
+    "Resolve placement from attachment requirements and live inventory.",
+    "Reserve bounded capacity before execution.",
+    "Bind benchmark freshness and fallback.",
+    "Record actual outcome and release reserve."
+  ],
+  "negative_cases": [
+    "Stale benchmark accepted.",
+    "Capacity not reserved.",
+    "Hardware incompatible with quantization/context.",
+    "Fallback changes authority/privacy.",
+    "Reserve leaked after failure."
+  ],
+  "focused_tests": [
+    "Placement compatibility and reserve lifecycle tests."
+  ],
+  "affected_tests": [
+    "Agent runtime, resource lifecycle, and provider gateway tests."
+  ],
+  "affected_sections": [
+    "testing-governance",
+    "structural-adversarial"
+  ],
+  "projection_invalidations": [
+    "execution placement receipts",
+    "resource state",
+    "world state"
+  ],
+  "evidence_required": [
+    "Exact placement/reserve/outcome receipt and cleanup proof."
+  ],
+  "rollback": "Disable automatic placement and release any session-owned reserve.",
+  "acceptance_criteria": [
+    "Every governed agent run has exactly one current placement decision.",
+    "Actual outcome and cleanup are receipted."
+  ],
+  "completion_evidence": []
+}

@@ -1,0 +1,16 @@
+{
+  "schema_version": "px.adversarial-router-corpus/1.0",
+  "thresholds": {
+    "precision_at_1": 1.0,
+    "precision_at_3": 0.333333,
+    "precision_at_5": 0.2
+  },
+  "cases": [
+    {"case_id": "disk-not-personal-growth", "query": "analyze disk storage capacity growth", "expected": ["disk-capacity-analyzer"], "must_not_return": ["personal-growth-coach"]},
+    {"case_id": "process-not-n8n", "query": "debug crashing operating system process", "expected": ["process-debugger"], "must_not_return": ["n8n-workflow-debugger"]},
+    {"case_id": "agent-memory-not-database", "query": "optimize AI agent memory retrieval", "expected": ["agent-memory-retrieval"], "must_not_return": ["database-storage-manager"]},
+    {"case_id": "model-state-not-product-model", "query": "inspect machine learning model checkpoint state", "expected": ["ml-model-state-inspector"], "must_not_return": ["product-domain-modeler"]},
+    {"case_id": "negative-delete", "query": "review data while preserving it without deleting", "expected": ["safe-data-reviewer"], "must_not_return": ["unsafe-data-deleter"]},
+    {"case_id": "superseded-skill", "query": "deploy governed service release", "expected": ["current-deployment-skill"], "must_not_return": ["stale-deployment-skill"]}
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "px.capability-maturity-policy/1.0",
+  "level_count": 7,
+  "levels": [
+    {"level": "L0", "name": "knowledge_only", "required_evidence_type": "knowledge_artifact", "required_authority_class": "contained"},
+    {"level": "L1", "name": "contract", "required_evidence_type": "contract", "required_authority_class": "contained"},
+    {"level": "L2", "name": "reference", "required_evidence_type": "reference", "required_authority_class": "contained"},
+    {"level": "L3", "name": "executable", "required_evidence_type": "executable", "required_authority_class": "contained"},
+    {"level": "L4", "name": "behavior_validated", "required_evidence_type": "behavioral_validation", "required_authority_class": "contained"},
+    {"level": "L5", "name": "operationally_verified", "required_evidence_type": "operational_verification", "required_authority_class": "installed_host"},
+    {"level": "L6", "name": "external_authority_certified", "required_evidence_type": "external_certification", "required_authority_class": "external_authority"}
+  ]
+}

@@ -20,6 +20,7 @@ from uuid import uuid4
 import yaml
 
 from .file_lock import FileLock
+from .capability_maturity import evaluate_capability_maturity, load_maturity_policy
 from .studio_filesystem import assert_exact_tree, publish_directory_no_replace
 from .resource_lifecycle import ResourceManager, RunState
 from .native_skills import build_skill_index, validate_skill_index
@@ -513,6 +514,24 @@ class SkillStudio:
         self.lifecycle_lock = self.drafts / ".skill-lifecycle.lock"
         with FileLock(self.lifecycle_lock, timeout_seconds=30):
             self._recover_lifecycle_transactions_locked()
+
+    def intake_foundry_candidate(
+        self,
+        candidate: object,
+        *,
+        studio_decision: str,
+        decided_by: str,
+        decision_reason: str,
+    ) -> object:
+        """Exercise Studio's explicit intake authority without auto-promotion."""
+        from .foundry_studio_bridge import build_skill_studio_draft
+
+        return build_skill_studio_draft(
+            candidate,
+            studio_decision=studio_decision,
+            decided_by=decided_by,
+            decision_reason=decision_reason,
+        )
 
     def admit_source(
         self,
@@ -1254,6 +1273,64 @@ class SkillStudio:
             )
             tomllib.loads(rendered)
             updates[pyproject] = rendered.encode("utf-8")
+        # The semantic projection is cheap and must describe the unpublished
+        # after-tree before the lifecycle transaction can commit it.
+        from .semantic_index import build_semantic_index
+
+        overlay = {
+            path.relative_to(self.root).as_posix(): data
+            for path, data in updates.items()
+        }
+        for path in staged_target.rglob("*"):
+            if path.is_file():
+                relative = path.relative_to(staged_target).as_posix()
+                overlay[f".px/skills/{name}/{relative}"] = path.read_bytes()
+        semantic_path = self.root / "registry" / "semantic_capability_index.json"
+        if catalog_path.is_file() or catalog_path in updates:
+            semantic = build_semantic_index(self.root, overlays=overlay)
+            updates[semantic_path] = (
+                json.dumps(semantic, indent=2, ensure_ascii=False) + "\n"
+            ).encode("utf-8")
+            # Cognitive and graph projections are intentionally not recomputed in
+            # the promotion critical section. Their stale state is itself an atomic
+            # after-image, so consumers fail closed until governed rebuild.
+            stale_paths = [
+                "registry/cognitive_map_index.json",
+                *sorted(
+                    path.relative_to(self.root).as_posix()
+                    for path in (self.root / "registry").glob("*graph*.json")
+                    if path.name != "graph_authority_manifest.json"
+                ),
+                *sorted(
+                    path.relative_to(self.root).as_posix()
+                    for path in (self.root / "registry/graphs").glob("*graph*.json")
+                    if path.name != "graph_manifest.json"
+                ),
+            ]
+            staleness = {
+                "schema_version": "px.skill-promotion-projection-staleness/1.0",
+                "skill_id": package.skill_id,
+                "skill_version": package.version,
+                "skill_tree_sha256": _tree_attestation(staged_target)[1],
+                "rebuilt": {
+                    "registry/semantic_capability_index.json": hashlib.sha256(
+                        updates[semantic_path]
+                    ).hexdigest(),
+                    **(
+                        {
+                            "registry/skill_catalog.toml": hashlib.sha256(
+                                updates[catalog_path]
+                            ).hexdigest()
+                        }
+                        if catalog_path in updates
+                        else {}
+                    ),
+                },
+                "stale_blocked": sorted(set(stale_paths)),
+                "consumer_policy": "block_until_governed_rebuild",
+            }
+            staleness_path = self.root / "registry/projection_staleness.json"
+            updates[staleness_path] = _json_bytes(staleness)
         return updates
 
     def _validate_projection_denominators(self) -> None:
@@ -1779,7 +1856,14 @@ class SkillStudio:
         with FileLock(self.lifecycle_lock, timeout_seconds=30):
             return self._recover_lifecycle_transactions_locked()
 
-    def promote(self, package: SkillPackage, *, approved: bool) -> dict[str, object]:
+    def promote(
+        self,
+        package: SkillPackage,
+        *,
+        approved: bool,
+        maturity_evidence: tuple[Mapping[str, object], ...] = (),
+        claimed_maturity: str | None = None,
+    ) -> dict[str, object]:
         with FileLock(self.lifecycle_lock, timeout_seconds=30):
             self._recover_lifecycle_transactions_locked()
             self.recover_projection_transactions()
@@ -1798,6 +1882,39 @@ class SkillStudio:
                 (draft / "package-record.json").read_text(encoding="utf-8")
             )
             current_rows, current_tree_sha256 = _tree_attestation(payload)
+            base_maturity_evidence = tuple(
+                {
+                    "evidence_id": f"skill-studio:{package.skill_id}:{evidence_type}",
+                    "evidence_type": evidence_type,
+                    "authority_class": "contained",
+                    "source_revision": current_tree_sha256,
+                    "dependency_revisions": {},
+                    "valid": True,
+                }
+                for evidence_type in (
+                    "knowledge_artifact",
+                    "contract",
+                    "reference",
+                    "executable",
+                )
+            )
+            maturity = evaluate_capability_maturity(
+                {
+                    "capability_id": package.skill_id,
+                    "evidence": [*base_maturity_evidence, *maturity_evidence],
+                },
+                current_source_revision=current_tree_sha256,
+                current_dependency_revisions={},
+                policy=load_maturity_policy(Path(__file__).resolve().parents[1]),
+            )
+            maturity_rank = int(str(maturity.get("level") or "L-1")[1:])
+            if claimed_maturity is not None:
+                if not re.fullmatch(r"L[0-6]", claimed_maturity):
+                    raise ValueError("claimed skill maturity is invalid")
+                if int(claimed_maturity[1:]) > maturity_rank:
+                    raise PermissionError(
+                        "skill promotion maturity claim exceeds current typed evidence"
+                    )
             preserved_original = _preserved_original_provenance(self.root, package)
             if not approved or admission.get("decision") != "admitted":
                 raise PermissionError(
@@ -1853,7 +1970,7 @@ class SkillStudio:
                 updates=projection_updates,
                 receipt_path=receipt_path,
                 receipt_payload={
-                    "schema_version": "px.skill-promotion-receipt/1.3",
+                    "schema_version": "px.skill-promotion-receipt/1.4",
                     "skill_id": package.skill_id,
                     "version": package.version,
                     "target_relative": target.relative_to(self.root).as_posix(),
@@ -1862,6 +1979,7 @@ class SkillStudio:
                     else None,
                     "retired_relative": retired.relative_to(self.root).as_posix(),
                     "promoted_tree_sha256": current_tree_sha256,
+                    "maturity": maturity,
                     "preserved_original": preserved_original,
                     "projection_updates": projection_paths,
                     "projection_after_sha256": {

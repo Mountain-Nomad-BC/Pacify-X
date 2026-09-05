@@ -1,0 +1,72 @@
+{
+  "card_id": "PX-ROUTE-003",
+  "title": "Adversarial router certification",
+  "severity": "critical",
+  "type": "test",
+  "status": "planned",
+  "root_cause": "Current routing has no fixed adversarial corpus measuring ambiguity, negative intent, alias/supersession, and stale/duplicate behavior.",
+  "source_requirement": "Certify the migrated router with precision@1/3/5, must-not-return, and deterministic tie metrics.",
+  "live_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#PX-AUD-002",
+    "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#PX-AUD-011"
+  ],
+  "files": [
+    "tests/fixtures/adversarial_router_corpus.json",
+    "tests/test_capability_routing_adversarial.py",
+    "runtime/capability_routing.py"
+  ],
+  "symbols": [
+    "rank_candidates",
+    "route_task"
+  ],
+  "dependencies": [
+    "PX-ROUTE-002",
+    "PX-ROUTE-004",
+    "PX-ROUTE-005"
+  ],
+  "downstream_consumers": [
+    "PX-AGENT-001",
+    "PX-SYS-001"
+  ],
+  "change_classes": [
+    "BEHAVIORAL",
+    "SEMANTIC"
+  ],
+  "implementation_steps": [
+    "Author required ambiguity and negative-intent cases.",
+    "Define metric thresholds and deterministic tie rule.",
+    "Run against exact index/project revisions.",
+    "Persist per-case outcomes and aggregate metrics."
+  ],
+  "negative_cases": [
+    "Disk growth confused with personal growth.",
+    "Process debugging confused with n8n/Supabase debugging.",
+    "AI memory confused with database storage.",
+    "Model state confused with product model.",
+    "Must-not-return candidate present.",
+    "Stale or superseded skill selected."
+  ],
+  "focused_tests": [
+    "tests/test_capability_routing_adversarial.py"
+  ],
+  "affected_tests": [
+    "Semantic index and router unit tests."
+  ],
+  "affected_sections": [
+    "testing-governance",
+    "structural-adversarial"
+  ],
+  "projection_invalidations": [
+    "router certification evidence"
+  ],
+  "evidence_required": [
+    "Exact corpus hash, index revision, per-case results, and precision/must-not-return metrics."
+  ],
+  "rollback": "Remove only the new corpus/certification projection; retain repaired router behavior.",
+  "acceptance_criteria": [
+    "All must-not-return cases pass.",
+    "Tie results are deterministic.",
+    "Configured precision@1/3/5 thresholds pass."
+  ],
+  "completion_evidence": []
+}

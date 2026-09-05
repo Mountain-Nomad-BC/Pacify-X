@@ -13,8 +13,19 @@ import json
 import math
 import os
 from pathlib import Path
+import re
 from typing import Any, Mapping, Sequence
 from uuid import uuid4
+
+from .file_lock import FileLock
+from .hardware_routing import (
+    BenchmarkEvidence,
+    Device,
+    HardwareProfile,
+    RoutingPolicy,
+    WorkloadProfile,
+    route_workload,
+)
 
 
 MODES = {"language_runtime", "deployment_platform", "database_storage"}
@@ -24,6 +35,211 @@ CLASSES = {
     "database_storage": {"relational", "key_value", "document", "graph", "vector", "time_series", "object_blob", "cache", "queue_log", "embedded", "search_index", "hybrid_projection"},
 }
 DEFAULT_WEIGHTS = {"correctness": 0.30, "latency": 0.17, "throughput": 0.12, "operability": 0.12, "portability": 0.08, "cost": 0.08, "maintainability": 0.08, "reversibility": 0.05}
+
+_CAPACITY = re.compile(r"^(\d+(?:\.\d+)?)\s*(b|kb|kib|mb|mib|gb|gib|tb|tib)$", re.I)
+
+
+def _capacity_bytes(value: object) -> int:
+    if isinstance(value, int) and value >= 0:
+        return value
+    match = _CAPACITY.fullmatch(str(value).strip())
+    if not match:
+        raise ValueError(f"invalid hardware capacity: {value}")
+    units = {
+        "b": 1,
+        "kb": 1000,
+        "kib": 1024,
+        "mb": 1000**2,
+        "mib": 1024**2,
+        "gb": 1000**3,
+        "gib": 1024**3,
+        "tb": 1000**4,
+        "tib": 1024**4,
+    }
+    return int(float(match.group(1)) * units[match.group(2).casefold()])
+
+
+def route_hardware(
+    task_plan: Mapping[str, Any],
+    *,
+    workload: WorkloadProfile,
+    hardware: HardwareProfile,
+    benchmark: BenchmarkEvidence,
+    policy: RoutingPolicy = RoutingPolicy(),
+    requested_device: str = "auto",
+    project_root: Path | None = None,
+) -> dict[str, Any]:
+    """Bind one current hardware decision to an immutable task/model plan."""
+    from .task_execution_plan import validate_task_execution_plan
+    from .model_attachment import model_attachment_from_dict, validate_model_attachment
+
+    plan_report = validate_task_execution_plan(task_plan)
+    if not plan_report["valid"]:
+        raise ValueError("hardware routing requires an intact task execution plan")
+    attachment = task_plan.get("model_attachment")
+    if not isinstance(attachment, Mapping):
+        raise ValueError("hardware routing requires one exact model attachment")
+    attachment_report = validate_model_attachment(
+        model_attachment_from_dict(attachment), root=project_root
+    )
+    if not attachment_report["valid"]:
+        raise ValueError("hardware routing requires an intact model attachment")
+    if benchmark.revision != attachment.get("benchmark_revision"):
+        raise ValueError("model attachment benchmark revision is stale or mismatched")
+    requirements = attachment.get("hardware_requirements")
+    if not isinstance(requirements, Mapping) or not requirements:
+        raise ValueError("model attachment hardware requirements are missing")
+
+    decision = route_workload(
+        workload,
+        hardware,
+        policy=policy,
+        benchmark=benchmark,
+        requested_device=requested_device,  # type: ignore[arg-type]
+    )
+    memory_required = _capacity_bytes(requirements.get("memory", 0))
+    vram_required = _capacity_bytes(requirements.get("vram", 0))
+    required = max(
+        int(workload.estimated_device_bytes or workload.total_bytes),
+        vram_required if decision.device is Device.CUDA else memory_required,
+    )
+    available = (
+        hardware.free_vram_bytes
+        if decision.device is Device.CUDA
+        else hardware.system_ram_bytes
+    )
+    if required > available:
+        raise ValueError("selected hardware cannot satisfy model capacity requirements")
+    fallback = {
+        "device": decision.fallback_device.value,
+        "model_id": attachment.get("model_id"),
+        "model_revision": attachment.get("model_revision"),
+        "privacy": attachment.get("privacy"),
+        "authority_class": attachment.get("authority_class"),
+    }
+    record = {
+        "schema_version": "px.governed-hardware-placement/1.0",
+        "task_plan_sha256": task_plan.get("plan_sha256"),
+        "model_attachment_sha256": attachment.get("attachment_sha256"),
+        "benchmark_revision": benchmark.revision,
+        "benchmark_measured_at": benchmark.measured_at,
+        "benchmark_current": "benchmark_current" in decision.required_checks
+        and benchmark.correctness_passed,
+        "workload_fingerprint": workload.fingerprint,
+        "hardware_fingerprint": hardware.fingerprint,
+        "selected_device": decision.device.value,
+        "executor_backend": decision.executor_backend,
+        "device_index": decision.device_index,
+        "batch_size": decision.batch_size,
+        "required_checks": list(decision.required_checks),
+        "reason": decision.reason,
+        "required_capacity_bytes": required,
+        "available_capacity_bytes": available,
+        "fallback": fallback,
+        "reservation_required": True,
+    }
+    return {**record, "placement_sha256": _hash(record)}
+
+
+class PlacementCapacityLedger:
+    """Cross-process logical capacity leases for governed model execution."""
+
+    def __init__(self, root: Path) -> None:
+        self.root = root.resolve()
+        self.directory = self.root / ".engineering-bootstrap/runtime-core/placement"
+        self.state_path = self.directory / "capacity-reservations.json"
+        self.lock_path = self.directory / ".capacity-reservations.lock"
+
+    def _read(self) -> dict[str, Any]:
+        try:
+            payload = json.loads(self.state_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            payload = {}
+        active = payload.get("active") if isinstance(payload, Mapping) else None
+        return {
+            "schema_version": "px.placement-capacity-ledger/1.0",
+            "active": dict(active) if isinstance(active, Mapping) else {},
+        }
+
+    def _write(self, payload: Mapping[str, Any]) -> None:
+        self.directory.mkdir(parents=True, exist_ok=True)
+        prepared = self.state_path.with_name(
+            f".{self.state_path.name}.{uuid4().hex}.prepared"
+        )
+        prepared.write_text(
+            json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+        )
+        os.replace(prepared, self.state_path)
+
+    def reserve(self, placement: Mapping[str, Any], *, run_id: str) -> dict[str, Any]:
+        unsigned = {
+            key: value for key, value in placement.items() if key != "placement_sha256"
+        }
+        if placement.get("placement_sha256") != _hash(unsigned):
+            raise ValueError("capacity reservation requires an intact placement decision")
+        if not run_id.strip() or placement.get("reservation_required") is not True:
+            raise ValueError("capacity reservation identity is incomplete")
+        required = int(placement.get("required_capacity_bytes", -1))
+        available = int(placement.get("available_capacity_bytes", -1))
+        if required < 0 or available < 0:
+            raise ValueError("placement capacity is invalid")
+        self.directory.mkdir(parents=True, exist_ok=True)
+        with FileLock(self.lock_path, timeout_seconds=10):
+            state = self._read()
+            active = state["active"]
+            assert isinstance(active, dict)
+            in_use = sum(
+                int(item.get("reserved_bytes", 0))
+                for item in active.values()
+                if isinstance(item, Mapping)
+                and item.get("hardware_fingerprint")
+                == placement.get("hardware_fingerprint")
+                and item.get("selected_device") == placement.get("selected_device")
+            )
+            if required > available - in_use:
+                raise RuntimeError("bounded hardware capacity reserve is unavailable")
+            reservation_id = f"placement-reserve-{uuid4().hex}"
+            base = {
+                "schema_version": "px.placement-capacity-reservation/1.0",
+                "reservation_id": reservation_id,
+                "run_id": run_id,
+                "placement_sha256": placement["placement_sha256"],
+                "hardware_fingerprint": placement["hardware_fingerprint"],
+                "selected_device": placement["selected_device"],
+                "reserved_bytes": required,
+            }
+            receipt = {**base, "reservation_sha256": _hash(base)}
+            active[reservation_id] = receipt
+            self._write(state)
+            return receipt
+
+    def release(
+        self,
+        reservation: Mapping[str, Any],
+        *,
+        outcome_sha256: str,
+    ) -> dict[str, Any]:
+        reservation_id = str(reservation.get("reservation_id", ""))
+        if not reservation_id or not _valid_hash(outcome_sha256):
+            raise ValueError("capacity release requires reservation and outcome identities")
+        self.directory.mkdir(parents=True, exist_ok=True)
+        with FileLock(self.lock_path, timeout_seconds=10):
+            state = self._read()
+            active = state["active"]
+            assert isinstance(active, dict)
+            current = active.get(reservation_id)
+            if current != dict(reservation):
+                raise RuntimeError("capacity reservation is absent or drifted")
+            del active[reservation_id]
+            self._write(state)
+        base = {
+            "schema_version": "px.placement-capacity-release/1.0",
+            "reservation_id": reservation_id,
+            "reservation_sha256": reservation.get("reservation_sha256"),
+            "outcome_sha256": outcome_sha256,
+            "released": True,
+        }
+        return {**base, "release_sha256": _hash(base)}
 
 
 def _hash(value: object) -> str:

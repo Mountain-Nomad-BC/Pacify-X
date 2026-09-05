@@ -1,0 +1,76 @@
+{
+  "card_id": "PX-MODEL-002",
+  "title": "Automatic task to model attachment",
+  "severity": "critical",
+  "type": "integration",
+  "status": "planned",
+  "root_cause": "The existing rank_models primitive has no production caller that joins task semantics, capability package, inventory, and exact model attachment.",
+  "source_requirement": "Select and attach a model automatically from the canonical task plan, semantic profile, ranking, inventory, and policy.",
+  "live_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#PX-AUD-006"
+  ],
+  "files": [
+    "runtime/models.py",
+    "runtime/local_model_runtime.py",
+    "runtime/capability_routing.py",
+    "runtime/task_execution_plan.py",
+    "runtime/model_attachment.py",
+    "tests/test_model_attachment.py",
+    "tests/test_models.py"
+  ],
+  "symbols": [
+    "rank_models",
+    "route_task",
+    "compile_task_execution_plan"
+  ],
+  "dependencies": [
+    "PX-MODEL-001",
+    "PX-ROUTE-002",
+    "PX-ROUTE-005"
+  ],
+  "downstream_consumers": [
+    "PX-MODEL-003"
+  ],
+  "change_classes": [
+    "AUTHORITY",
+    "BEHAVIORAL"
+  ],
+  "implementation_steps": [
+    "Adapt rank_models into the plan compiler.",
+    "Filter by semantic/task, privacy, context, modality, and tool needs.",
+    "Resolve exact inventory artifact.",
+    "Persist ranking reasons and chosen attachment in the plan."
+  ],
+  "negative_cases": [
+    "No compatible model.",
+    "Unavailable local artifact.",
+    "Privacy-incompatible remote fallback.",
+    "Ranking result not carried into plan.",
+    "Exact artifact differs at execution."
+  ],
+  "focused_tests": [
+    "Automatic selection from task/profile/package vectors.",
+    "No-compatible-model fail-closed tests."
+  ],
+  "affected_tests": [
+    "Routing, local model runtime, task plan, provider tests."
+  ],
+  "affected_sections": [
+    "testing-governance",
+    "structural-adversarial"
+  ],
+  "projection_invalidations": [
+    "task plans",
+    "model selection receipts",
+    "provider execution evidence"
+  ],
+  "evidence_required": [
+    "End-to-end task-to-attachment receipt with exact artifact binding."
+  ],
+  "rollback": "Return plan model attachment to unresolved and retain prior explicit model selection.",
+  "acceptance_criteria": [
+    "A production path invokes canonical ranking.",
+    "The selected exact attachment is part of the immutable task plan."
+  ],
+  "completion_evidence": []
+}

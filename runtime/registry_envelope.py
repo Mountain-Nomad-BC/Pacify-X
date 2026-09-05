@@ -49,9 +49,62 @@ def _collection(payload: Mapping[str, Any], key: str) -> list[Any] | dict[str, A
     return value
 
 
-def derive_count(payload: Mapping[str, Any], record: Mapping[str, Any]) -> int:
-    collection = _collection(payload, str(record["collection_key"]))
+def _external_value(root: Path | None, record: Mapping[str, Any]) -> Any:
+    if root is None:
+        raise ValueError("external registry-envelope rule requires repository root")
+    relative = str(record.get("source_path", ""))
+    if not relative or "\\" in relative:
+        raise ValueError("external registry-envelope source path is invalid")
+    resolved_root = root.resolve()
+    source = (resolved_root / relative).resolve()
+    try:
+        source.relative_to(resolved_root)
+    except ValueError as error:
+        raise ValueError("external registry-envelope source escapes repository") from error
+    try:
+        value: Any = json.loads(source.read_text(encoding="utf-8"))
+    except FileNotFoundError:
+        if "source_default" in record:
+            return record["source_default"]
+        raise
+    for key in str(record.get("source_key", "")).split("."):
+        if not key:
+            continue
+        if not isinstance(value, Mapping) or key not in value:
+            if "source_default" in record:
+                return record["source_default"]
+            raise ValueError(f"external registry-envelope source key is missing: {key}")
+        value = value[key]
+    return value
+
+
+def derive_count(
+    payload: Mapping[str, Any],
+    record: Mapping[str, Any],
+    *,
+    root: Path | None = None,
+) -> int:
     rule = record["rule"]
+    if rule == "external_length":
+        value = _external_value(root, record)
+        if not isinstance(value, (list, dict)):
+            raise ValueError("external_length requires a list or object source")
+        return len(value)
+    if rule == "external_scalar":
+        value = _external_value(root, record)
+        if isinstance(value, bool) or not isinstance(value, int):
+            raise ValueError("external_scalar requires an integer source")
+        return value
+    if rule == "external_filtered":
+        value = _external_value(root, record)
+        if not isinstance(value, list):
+            raise ValueError("external_filtered requires a list source")
+        return sum(
+            isinstance(item, dict)
+            and item.get(record["field"]) == record.get("equals")
+            for item in value
+        )
+    collection = _collection(payload, str(record["collection_key"]))
     if rule == "length":
         return len(collection)
     if rule == "filtered_values":
@@ -114,14 +167,17 @@ def derive_count(payload: Mapping[str, Any], record: Mapping[str, Any]) -> int:
 
 
 def validate_envelope_document(
-    payload: Mapping[str, Any], record: Mapping[str, Any]
+    payload: Mapping[str, Any],
+    record: Mapping[str, Any],
+    *,
+    root: Path | None = None,
 ) -> list[str]:
     key = str(record["count_key"])
     value = payload.get(key)
     if isinstance(value, bool) or not isinstance(value, int):
         return [f"{key} must be an integer"]
     try:
-        expected = derive_count(payload, record)
+        expected = derive_count(payload, record, root=root)
     except (KeyError, TypeError, ValueError) as error:
         return [str(error)]
     return (
@@ -153,7 +209,7 @@ def validate_registry_envelopes(root: Path) -> dict[str, Any]:
         )
         errors.extend(
             f"{relative}: {error}"
-            for error in validate_envelope_document(payload, item)
+            for error in validate_envelope_document(payload, item, root=root)
         )
         for required in ("schema", "builder", "consumer"):
             if not item.get(required):

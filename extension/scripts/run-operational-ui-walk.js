@@ -7532,12 +7532,12 @@ function validStudioLifecycleResult(kind, operation, result) {
   if (operation === 'register-authority') return record.schema_version === 'px.studio-authority-transaction/1.0' && record.status === 'registered' && record.authenticated === true;
   if (kind === 'agent' && operation === 'test') return record.schema_version === 'px.agent-preflight-receipt/1.2' && record.passed === true;
   if (kind === 'agent' && operation === 'admit') return record.schema_version === 'px.agent-admission-receipt/1.1' && record.decision === 'admitted';
-  if (kind === 'agent' && operation === 'preview') return record.schema_version === 'px.agent-execution-preview/1.0' && record.effects_executed === false && record.eligible === true;
+  if (kind === 'agent' && operation === 'preview') return record.schema_version === 'px.agent-execution-preview/1.1' && record.effects_executed === false && record.eligible === true;
   if (kind === 'workflow' && operation === 'validate') return record.schema_version === 'px.workflow-admission-receipt/1.1' && record.decision === 'admitted';
   if (kind === 'workflow' && operation === 'dry-run') return record.schema_version === 'px.workflow-dry-run/1.1' && record.effects_executed === false;
   if (kind === 'skill' && operation === 'validate') return record.schema_version === 'px.skill-validation-receipt/1.1' && record.passed === true;
   if (kind === 'skill' && operation === 'admit') return record.schema_version === 'px.skill-admission-receipt/1.1' && record.decision === 'admitted';
-  if (kind === 'skill' && operation === 'promote') return record.schema_version === 'px.skill-promotion-receipt/1.3' && record.state === 'promoted' && typeof record.promotion_receipt_relative === 'string';
+  if (kind === 'skill' && operation === 'promote') return record.schema_version === 'px.skill-promotion-receipt/1.4' && record.state === 'promoted' && typeof record.promotion_receipt_relative === 'string';
   if (kind === 'skill' && operation === 'rollback') return record.state === 'rolled-back';
   if (kind === 'workflow' && operation === 'approve') return record.schema_version === 'px.workflow-approval-result/1.0' && typeof record.approval_id === 'string' && record.approval_id.length > 0;
   if (['agent', 'workflow'].includes(kind) && operation === 'start') return record.schema_version === `px.${kind}-session-start/1.1` && record.accepted === true && typeof record.run_id === 'string' && record.run_id.length > 0;
@@ -7551,7 +7551,7 @@ function validStudioLifecycleResult(kind, operation, result) {
 
 function validStudioBlockedPreviewResult(result, candidate) {
   const record = result?.record && typeof result.record === 'object' ? result.record : result;
-  return record?.schema_version === 'px.agent-execution-preview/1.0'
+  return record?.schema_version === 'px.agent-execution-preview/1.1'
     && record.agent_id === candidate.identity && record.version === candidate.version
     && record.effects_executed === false && record.eligible === false && record.status === 'blocked'
     && Array.isArray(record.blockers) && record.blockers.includes('memory_bindings_not_runtime_resolved')
@@ -11410,7 +11410,7 @@ module.exports = {
   runInstalledSystemProjectionProfile, runInstalledValidationProfile, seedInstalledConditionalScenario, sidebarPreferenceRoundTripIdentity, sidebarReconstructionIdentity, sidebarStateControlProbe, sidebarStateControlVerified,
   installedAdvancedFixtureStateAcknowledged, installedSnapshotTimeoutIdentity, mergeStudioLifecycleObservations, selectLatestMatchingInstalledSnapshot, skillQueryControlProbe, studioLifecycleControlProbe, systemProjectionControlProbe, systemProjectionIdentity, requestBoundSystemSnapshotIdentity, validCleanupResult, workbenchCommandRowIdentity,
   validCoordinationResult, validKnowledgeLifecycleResult, validLearningLifecycleResult, validPermanentCleanupResult,
-  validPluginLifecycleObservation, validPendingPluginMutationReceipt, validPluginMutationReceipt, validStudioDraftReceipt, validStudioLifecycleResult,
+  validPluginLifecycleObservation, validPendingPluginMutationReceipt, validPluginMutationReceipt, validStudioBlockedPreviewResult, validStudioDraftReceipt, validStudioLifecycleResult,
   captureSurfaceViews, surfaceCaptureCandidates, surfaceCaptureFileStem,
   validStudioRevisionEditObservation, validStudioSetupResult, validationControlProbe, runInstalledValidationBoundaryProfile, clickWhenBuilderControlReady, invokeBuilderControl, waitForBuilderJsonControls, waitForCoordinationResult, waitForInstalledCanonicalMemoryBaseline,
   clickWhenInstalledGraphControlReady, installedGraphExchangeOffset, waitForInstalledGraphExchange, waitForInstalledGraphIdle, waitForOwnedWebview

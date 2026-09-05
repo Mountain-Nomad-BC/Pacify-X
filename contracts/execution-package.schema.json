@@ -15,6 +15,7 @@
     "complete",
     "executable",
     "errors",
+    "routing_influences",
     "receipt_sha256"
   ],
   "properties": {
@@ -29,6 +30,7 @@
     "complete": {"type": "boolean"},
     "executable": {"type": "boolean"},
     "errors": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "routing_influences": {"type": "object"},
     "receipt_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
   },
   "additionalProperties": false

@@ -154,6 +154,25 @@ class BenchmarkEvidence:
             return 0.0
         return self.cpu_seconds / self.gpu_end_to_end_seconds
 
+    @property
+    def revision(self) -> str:
+        """Content identity used by governed model-placement attachments."""
+        payload = {
+            "operation_id": self.operation_id,
+            "hardware_fingerprint": self.hardware_fingerprint,
+            "cpu_seconds": self.cpu_seconds,
+            "gpu_end_to_end_seconds": self.gpu_end_to_end_seconds,
+            "correctness_passed": self.correctness_passed,
+            "peak_vram_bytes": self.peak_vram_bytes,
+            "measured_at": self.measured_at,
+            "numerical_tolerance": self.numerical_tolerance,
+            "workload_fingerprint": self.workload_fingerprint,
+            "software_fingerprint": self.software_fingerprint,
+        }
+        return hashlib.sha256(
+            json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
+        ).hexdigest()
+
 
 @dataclass(frozen=True, slots=True)
 class RoutingPolicy:

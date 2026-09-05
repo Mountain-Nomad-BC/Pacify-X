@@ -1,0 +1,53 @@
+{
+  "card_id": "PX-COMM-005",
+  "title": "Live forensic finding dispositions",
+  "severity": "critical",
+  "type": "audit",
+  "status": "closed",
+  "root_cause": "Archive findings required direct falsification against the live source before entering the repair denominator.",
+  "source_requirement": "Reproduce or falsify PX-AUD-001 through PX-AUD-013 on the current tree with bounded probes.",
+  "live_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json",
+    "evidence/commencement-audit-20260905T002921Z/current-owners-and-gaps.json"
+  ],
+  "files": [
+    "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json",
+    "evidence/commencement-audit-20260905T002921Z/current-owners-and-gaps.json"
+  ],
+  "symbols": [],
+  "dependencies": [
+    "PX-COMM-001"
+  ],
+  "downstream_consumers": [
+    "PX-COMM-006"
+  ],
+  "change_classes": [
+    "METADATA_ONLY"
+  ],
+  "implementation_steps": [
+    "Trace each reported owner.",
+    "Run focused read-only or disposable falsification.",
+    "Record current disposition, measured result, owner, and conclusion."
+  ],
+  "negative_cases": [
+    "Do not copy archive claims without live evidence.",
+    "Do not run broad test stages."
+  ],
+  "focused_tests": [
+    "Thirteen focused forensic probes."
+  ],
+  "affected_tests": [],
+  "affected_sections": [],
+  "projection_invalidations": [],
+  "evidence_required": [
+    "One source-bound disposition for every mandatory forensic finding."
+  ],
+  "rollback": "Remove only invalid audit projections; preserve source and archive evidence.",
+  "acceptance_criteria": [
+    "All 13 mandatory findings are accounted for.",
+    "Any PRESENT_LIVE finding maps to repair cards."
+  ],
+  "completion_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json"
+  ]
+}

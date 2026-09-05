@@ -39,6 +39,7 @@ def test_artifact_reachability_excludes_live_receipt_projection_cycle():
     assert "registry/test_group_index.json" not in paths
     assert "registry/operational_gap_ledger.head.json" not in paths
     assert "registry/operational_gap_ledger.snapshot.json" not in paths
+    assert "registry/px_world_state.json" not in paths
 
 
 def test_one_projection_mutation_is_detected_without_rewriting(tmp_path):

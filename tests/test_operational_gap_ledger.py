@@ -17,6 +17,7 @@ from runtime.operational_gap_ledger import (
     WORK_HISTORY_LIMIT,
     _validate_card,
     _validate_control_observation,
+    _dashboard_index,
     append_event,
     append_events,
     append_transition_admission_backfill,
@@ -40,6 +41,49 @@ from runtime.dashboard_api import (
 
 def evidence(claim: str = "observed") -> list[dict[str, str]]:
     return [{"reference": "source:file.py:symbol", "claim": claim}]
+
+
+FEATURE_REVISION = "a" * 64
+
+
+def feature_requirements() -> dict[str, object]:
+    return {
+        "schema_version": "px.feature-acceptance-requirements/1.0",
+        "source_revision": FEATURE_REVISION,
+        "dependency_revisions": {},
+        "criteria": [
+            {
+                "criterion_id": "revision-reopens",
+                "required_evidence_classes": ["runtime_effect", "persistence"],
+                "required_authority_class": "contained",
+                "required_tests": ["save-reopen equality"],
+                "allow_not_applicable": False,
+            }
+        ],
+    }
+
+
+def feature_acceptance() -> dict[str, object]:
+    return {
+        "schema_version": "px.feature-acceptance/1.0",
+        "source_revision": FEATURE_REVISION,
+        "dependency_revisions": {},
+        "criteria": [
+            {
+                "criterion_id": "revision-reopens",
+                "status": "verified",
+                "evidence_classes": ["runtime_effect", "persistence"],
+                "authority_class": "contained",
+                "tests_run": ["save-reopen equality"],
+                "evidence": [
+                    {
+                        "reference": "sha256:" + "b" * 64,
+                        "claim": "The feature runtime and persistence behavior passed.",
+                    }
+                ],
+            }
+        ],
+    }
 
 
 def control_observation(
@@ -143,6 +187,7 @@ def card(identifier: str = "PX-GAP-0001") -> dict[str, object]:
         "blockers": [],
         "assigned_owner": "codex-primary",
         "tests_required": ["save-reopen equality"],
+        "feature_acceptance_requirements": feature_requirements(),
         "completion_evidence": [],
         "reopen_reason": None,
         "defer_skip": None,
@@ -228,6 +273,7 @@ def transition_payload(identifier: str, before: str, after: str) -> dict[str, ob
         payload["integration_evidence"] = evidence("integrated")
     elif after == "operationally_verified":
         payload["operational_evidence"] = evidence("operational")
+        payload["feature_acceptance"] = feature_acceptance()
     return payload
 
 
@@ -978,6 +1024,7 @@ def test_operational_verification_rejects_partial_and_unproved_host_boundary(
     base = {
         "gap_id": "PX-GAP-0001", "from_state": "integrated", "to_state": "operationally_verified",
         "reason": "claim boundary", "evidence": evidence(), "operational_evidence": evidence("host result"),
+        "feature_acceptance": feature_acceptance(),
     }
     with pytest.raises(ValueError, match="complete evidence-bound"):
         append_event(tmp_path, "card_transition", base, actor="test")
@@ -992,6 +1039,75 @@ def test_operational_verification_rejects_partial_and_unproved_host_boundary(
         actor="test",
     )
     assert read_snapshot(tmp_path)["cards"]["PX-GAP-0001"]["current_state"] == "operationally_verified"
+
+
+def test_green_control_cannot_close_a_feature_with_missing_runtime_acceptance() -> None:
+    snapshot = {
+        "cards": {
+            "PX-GAP-0001": {
+                "gap_id": "PX-GAP-0001",
+                "severity": "critical",
+                "current_state": "operationally_verified",
+                "required_runtime_features": ["memory-broker"],
+            }
+        },
+        "state_counts": {"operationally_verified": 1},
+        "progress": {},
+    }
+
+    dashboard = _dashboard_index(snapshot)
+
+    assert dashboard["open_count"] == 1
+    assert dashboard["critical_high_blocker_ids"] == ["PX-GAP-0001"]
+
+
+def test_new_operational_transition_requires_declared_current_feature_acceptance(
+    tmp_path: Path,
+) -> None:
+    initialize(tmp_path)
+    append_event(tmp_path, "card_discovered", card(), actor="test")
+    resolved = {
+        stage: {
+            "state": "present",
+            "detail": "The exact feature path was exercised.",
+            "evidence": ["sha256:" + "c" * 64],
+        }
+        for stage in blank_interaction_chain()
+    }
+    append_event(
+        tmp_path,
+        "card_annotated",
+        {
+            "gap_id": "PX-GAP-0001",
+            "note": "Resolve the interaction chain.",
+            "patch": {"interaction_chain": resolved},
+            "evidence": evidence(),
+        },
+        actor="test",
+    )
+    current = "discovered"
+    for state in PRIMARY_STATES[1:8]:
+        append_event(
+            tmp_path,
+            "card_transition",
+            transition_payload("PX-GAP-0001", current, state),
+            actor="test",
+        )
+        current = state
+    payload = transition_payload(
+        "PX-GAP-0001", "integrated", "operationally_verified"
+    )
+    payload.pop("feature_acceptance")
+
+    with pytest.raises(ValueError, match="current typed feature acceptance"):
+        append_event(tmp_path, "card_transition", payload, actor="test")
+
+    stale = transition_payload(
+        "PX-GAP-0001", "integrated", "operationally_verified"
+    )
+    stale["feature_acceptance"]["source_revision"] = "d" * 64
+    with pytest.raises(ValueError, match="source_revision_stale"):
+        append_event(tmp_path, "card_transition", stale, actor="test")
 
 
 def test_surface_examination_requires_evidence_and_gap_reference(tmp_path: Path) -> None:

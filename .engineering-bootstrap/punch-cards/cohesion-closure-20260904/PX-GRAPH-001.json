@@ -1,0 +1,66 @@
+{
+  "card_id": "PX-GRAPH-001",
+  "title": "Graph authority manifest",
+  "severity": "high",
+  "type": "integration",
+  "status": "planned",
+  "root_cause": "Multiple legitimate graph projections exist without an explicit purpose, authority, source revision, builder, consumer, invalidation, and rebuild manifest.",
+  "source_requirement": "Describe each major graph without merging different graph semantics.",
+  "live_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/current-owners-and-gaps.json"
+  ],
+  "files": [
+    "registry/graph_authority_manifest.json",
+    "runtime/dependency_invalidation.py",
+    "runtime/projection_dependencies.py",
+    "tests/test_graph_authority_manifest.py"
+  ],
+  "symbols": [
+    "validate_graph_authority_manifest"
+  ],
+  "dependencies": [
+    "PX-CORE-002",
+    "PX-SKILL-002"
+  ],
+  "downstream_consumers": [
+    "PX-SKILL-003"
+  ],
+  "change_classes": [
+    "SCHEMA",
+    "AUTHORITY",
+    "METADATA_ONLY"
+  ],
+  "implementation_steps": [
+    "Inventory major current graphs.",
+    "Declare purpose and authority per graph.",
+    "Bind source revisions, builder, consumers, invalidation, and gate.",
+    "Reject duplicate authority or unowned graph."
+  ],
+  "negative_cases": [
+    "One giant graph replaces distinct semantics.",
+    "Missing builder/source revision.",
+    "Two authority owners.",
+    "Consumer uses stale graph."
+  ],
+  "focused_tests": [
+    "Graph authority manifest validation."
+  ],
+  "affected_tests": [
+    "Generated graph and architecture invariant tests."
+  ],
+  "affected_sections": [
+    "testing-governance"
+  ],
+  "projection_invalidations": [
+    "graph freshness and consumer evidence"
+  ],
+  "evidence_required": [
+    "Complete graph inventory and owner-resolution receipt."
+  ],
+  "rollback": "Remove manifest consumers while preserving existing independent graph files.",
+  "acceptance_criteria": [
+    "Every major graph is accounted for with one authority contract.",
+    "Different graph purposes remain separate."
+  ],
+  "completion_evidence": []
+}

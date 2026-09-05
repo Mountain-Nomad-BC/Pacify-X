@@ -1,0 +1,69 @@
+{
+  "card_id": "PX-LEDGER-001",
+  "title": "Operational ledger benchmark",
+  "severity": "critical",
+  "type": "performance",
+  "status": "planned",
+  "root_cause": "The ledger is a large hot workload, but migration decisions lack repeatable live-size latency, I/O, memory, recovery, lock, concurrency, rebuild, and certification-attribution budgets.",
+  "source_requirement": "Benchmark current live ledger before finalizing the custody-preserving migration design.",
+  "live_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#PX-AUD-013"
+  ],
+  "files": [
+    "runtime/operational_gap_ledger.py",
+    "scripts/benchmark_operational_gap_ledger.py",
+    "tests/test_operational_gap_ledger_scaling.py",
+    "evidence/commencement-repair/ledger-benchmark.json"
+  ],
+  "symbols": [
+    "append_event",
+    "read_snapshot",
+    "validate_ledger",
+    "benchmark_ledger"
+  ],
+  "dependencies": [
+    "PX-COMM-006"
+  ],
+  "downstream_consumers": [
+    "PX-LEDGER-002"
+  ],
+  "change_classes": [
+    "RUNTIME",
+    "RELEASE_CRITICAL"
+  ],
+  "implementation_steps": [
+    "Define explicit latency/I/O/memory/recovery/lock/rebuild budgets.",
+    "Measure append p50/p95/p99 and bytes read/written.",
+    "Measure decode/verify, peak memory, recovery, locking, concurrent writers, rebuild, and certification attribution.",
+    "Preserve exact environment and ledger identity in receipt."
+  ],
+  "negative_cases": [
+    "Archive-size synthetic used instead of live size.",
+    "Warm cache reported as cold.",
+    "Failed samples dropped.",
+    "Concurrent writer corruption.",
+    "Recovery loses/reorders event."
+  ],
+  "focused_tests": [
+    "Repeatable bounded ledger benchmark and adversarial recovery tests."
+  ],
+  "affected_tests": [
+    "Operational ledger, work admission, release preflight tests."
+  ],
+  "affected_sections": [
+    "testing-governance"
+  ],
+  "projection_invalidations": [
+    "ledger performance evidence",
+    "PX-LEDGER-002 design assumptions"
+  ],
+  "evidence_required": [
+    "Raw samples, percentiles, I/O counters, memory peak, recovery/concurrency results, environment, and budgets."
+  ],
+  "rollback": "Benchmark is read/disposable-write only; remove temporary copies and retain receipt.",
+  "acceptance_criteria": [
+    "Every mandated metric has a reproducible live-size result.",
+    "Budget pass/fail is explicit and no custody guarantee is weakened."
+  ],
+  "completion_evidence": []
+}

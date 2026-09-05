@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:agent_handoff_packet",
+  "title": "PX AgentHandoffPacket",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "packet_id", "project_id", "task_plan_id", "task_plan_revision", "run_id", "sender_agent_id", "sender_revision", "receiver_agent_id", "receiver_revision", "evidence", "hypotheses", "open_questions", "authority", "budgets", "memory_query_plan_sha256", "created_utc", "expires_utc", "recovery_of", "packet_sha256"],
+  "properties": {
+    "schema_version": {"const": "px.agent-handoff-packet/1.0"},
+    "packet_id": {"type": "string", "pattern": "^handoff-[a-f0-9]{24}$"},
+    "project_id": {"type": "string", "minLength": 1},
+    "task_plan_id": {"type": "string", "minLength": 1},
+    "task_plan_revision": {"$ref": "#/$defs/sha256"},
+    "run_id": {"type": "string", "minLength": 1},
+    "sender_agent_id": {"type": "string", "minLength": 1},
+    "sender_revision": {"$ref": "#/$defs/sha256"},
+    "receiver_agent_id": {"type": "string", "minLength": 1},
+    "receiver_revision": {"$ref": "#/$defs/sha256"},
+    "evidence": {"type": "array", "minItems": 1, "items": {"type": "object", "required": ["ref", "sha256", "revision"]}},
+    "hypotheses": {"type": "array", "items": {"type": "string"}},
+    "open_questions": {"type": "array", "items": {"type": "string"}},
+    "authority": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+    "budgets": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 1}},
+    "memory_query_plan_sha256": {"$ref": "#/$defs/sha256"},
+    "created_utc": {"type": "string", "format": "date-time"},
+    "expires_utc": {"type": "string", "format": "date-time"},
+    "recovery_of": {"type": ["string", "null"]},
+    "packet_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {"sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}}
+}

@@ -1,0 +1,71 @@
+{
+  "card_id": "PX-ASSURE-003",
+  "title": "Canonical decay/revalidation semantics",
+  "severity": "high",
+  "type": "repair",
+  "status": "planned",
+  "root_cause": "Learning decay updates pipeline state without marking canonical knowledge or its dependents suspect.",
+  "source_requirement": "Preserve historical canon while making decayed knowledge revalidation-required and transitively invalidating dependents.",
+  "live_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#PX-AUD-004"
+  ],
+  "files": [
+    "runtime/knowledge_core_controller.py",
+    "runtime/learning_promotion.py",
+    "runtime/dependency_invalidation.py",
+    "tests/test_knowledge_core_controller.py",
+    "tests/test_learning_promotion.py"
+  ],
+  "symbols": [
+    "measure_learning_reuse",
+    "decay_decision",
+    "browse",
+    "compute_invalidation_cone"
+  ],
+  "dependencies": [
+    "PX-CORE-004"
+  ],
+  "downstream_consumers": [
+    "PX-SYS-002"
+  ],
+  "change_classes": [
+    "BEHAVIORAL",
+    "AUTHORITY"
+  ],
+  "implementation_steps": [
+    "Add canonical suspect/revalidation state.",
+    "Trigger dependency invalidation when decay crosses policy.",
+    "Block authoritative consumption/routing until revalidated.",
+    "Keep historical canonical bytes browsable with explicit status."
+  ],
+  "negative_cases": [
+    "Decayed head used as current authority.",
+    "Dependent evidence remains current.",
+    "Revalidation without fresh evidence.",
+    "Historical canon deleted."
+  ],
+  "focused_tests": [
+    "Disposable promote-decay-revalidate lifecycle.",
+    "Dependency invalidation tests."
+  ],
+  "affected_tests": [
+    "Knowledge browser, routing eligibility, evidence freshness tests."
+  ],
+  "affected_sections": [
+    "structural-adversarial"
+  ],
+  "projection_invalidations": [
+    "knowledge heads",
+    "capability eligibility",
+    "dependent evidence"
+  ],
+  "evidence_required": [
+    "Lifecycle receipt proving suspect state, transitive invalidation, and non-deletion."
+  ],
+  "rollback": "Remove new status projections and hooks without deleting canonical history.",
+  "acceptance_criteria": [
+    "Decayed canon becomes suspect/revalidation-required.",
+    "All revision-bound dependents become stale until fresh validation."
+  ],
+  "completion_evidence": []
+}

@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 import hashlib
 import json
 from pathlib import Path
-from typing import Callable, Mapping, Protocol
+from typing import Callable, Mapping, Protocol, Sequence
 from urllib.parse import urlsplit
 from urllib.request import ProxyHandler, Request, build_opener
 
@@ -82,6 +82,143 @@ class ProviderRequest:
     budget_id: str | None = None
     max_input_tokens: int = 0
     max_output_tokens: int = 0
+    task_plan_sha256: str | None = None
+    model_revision: str | None = None
+    model_attachment_sha256: str | None = None
+    authority_revision: str | None = None
+    requested_egress: str = "deny"
+    expected_charge_microunits: int = 0
+
+
+PROVIDER_POLICY_VIOLATION_IDS = (
+    "PX-PROVIDER-SCHEMA",
+    "PX-PROVIDER-POLICY-HASH",
+    "PX-PROVIDER-PLAN-BINDING",
+    "PX-PROVIDER-MODEL-BINDING",
+    "PX-PROVIDER-AUTHORITY",
+    "PX-PROVIDER-EGRESS",
+    "PX-PROVIDER-COST",
+    "PX-PROVIDER-FALLBACK",
+    "PX-PROVIDER-RECEIPT",
+)
+
+
+def _sha(value: object) -> bool:
+    text = str(value or "")
+    return len(text) == 64 and all(char in "0123456789abcdef" for char in text)
+
+
+def build_provider_execution_policy(**values: object) -> dict[str, object]:
+    base = {
+        "schema_version": "px.provider-execution-policy/1.0",
+        **values,
+    }
+    base.pop("policy_sha256", None)
+    return {**base, "policy_sha256": _digest(base, limit=MAX_REQUEST_BYTES)}
+
+
+def provider_execution_policy_report(
+    policy: Mapping[str, object], request: Mapping[str, object]
+) -> dict[str, object]:
+    """Language-neutral fail-closed policy semantics and stable violation IDs."""
+    violations: list[str] = []
+    if policy.get("schema_version") != "px.provider-execution-policy/1.0":
+        violations.append(PROVIDER_POLICY_VIOLATION_IDS[0])
+    unsigned = {key: value for key, value in policy.items() if key != "policy_sha256"}
+    if policy.get("policy_sha256") != _digest(unsigned, limit=MAX_REQUEST_BYTES):
+        violations.append(PROVIDER_POLICY_VIOLATION_IDS[1])
+    if (
+        not _sha(policy.get("task_plan_sha256"))
+        or policy.get("task_plan_sha256") != request.get("task_plan_sha256")
+    ):
+        violations.append(PROVIDER_POLICY_VIOLATION_IDS[2])
+    model = policy.get("model")
+    if not isinstance(model, Mapping) or any(
+        (
+            not str(model.get(field, "")).strip()
+            if field in {"provider_id", "adapter_id", "model_id", "model_revision"}
+            else not _sha(model.get(field))
+        )
+        for field in (
+            "provider_id",
+            "adapter_id",
+            "model_id",
+            "model_revision",
+            "attachment_sha256",
+        )
+    ) or any(
+        model.get(field) != request.get(request_field)
+        for field, request_field in (
+            ("adapter_id", "adapter_id"),
+            ("model_id", "model_id"),
+            ("model_revision", "model_revision"),
+            ("attachment_sha256", "model_attachment_sha256"),
+        )
+    ):
+        violations.append(PROVIDER_POLICY_VIOLATION_IDS[3])
+    authority = policy.get("authority")
+    if (
+        not isinstance(authority, Mapping)
+        or not _sha(authority.get("revision"))
+        or authority.get("revision") != request.get("authority_revision")
+        or authority.get("provider_effect") is not True
+    ):
+        violations.append(PROVIDER_POLICY_VIOLATION_IDS[4])
+    egress = policy.get("egress")
+    egress_valid = False
+    if isinstance(egress, Mapping):
+        mode = egress.get("mode")
+        requested = request.get("requested_egress")
+        destinations = egress.get("allowed_destinations", ())
+        egress_valid = bool(
+            (mode == "deny" and requested == "deny")
+            or (mode == "loopback_only" and requested == "loopback")
+            or (
+                mode == "allowlist"
+                and isinstance(destinations, Sequence)
+                and not isinstance(destinations, (str, bytes))
+                and requested in destinations
+            )
+        )
+    if not egress_valid:
+        violations.append(PROVIDER_POLICY_VIOLATION_IDS[5])
+    cost = policy.get("cost")
+    if (
+        not isinstance(cost, Mapping)
+        or cost.get("budget_id") != request.get("budget_id")
+        or not isinstance(cost.get("max_charge_microunits"), int)
+        or int(cost.get("max_charge_microunits", -1)) < 0
+        or int(request.get("expected_charge_microunits", -1))
+        > int(cost.get("max_charge_microunits", -1))
+    ):
+        violations.append(PROVIDER_POLICY_VIOLATION_IDS[6])
+    privacy = {"policy_gated": 0, "isolated": 1, "local": 2}
+    authority_levels = {"contained": 0, "installed_host": 1, "external_authority": 2}
+    fallback_valid = isinstance(model, Mapping)
+    for fallback in policy.get("fallbacks", ()):
+        if not isinstance(fallback, Mapping) or any(
+            not str(fallback.get(field, "")).strip()
+            for field in ("provider_id", "adapter_id", "model_id", "model_revision")
+        ) or not _sha(fallback.get("artifact_sha256")):
+            fallback_valid = False
+            continue
+        if (
+            privacy.get(str(fallback.get("privacy")), -1)
+            < privacy.get(str(model.get("privacy")), -1)
+            or authority_levels.get(str(fallback.get("authority_class")), -1)
+            < authority_levels.get(str(model.get("authority_class")), -1)
+        ):
+            fallback_valid = False
+    if not fallback_valid:
+        violations.append(PROVIDER_POLICY_VIOLATION_IDS[7])
+    if policy.get("exact_receipt_required") is not True:
+        violations.append(PROVIDER_POLICY_VIOLATION_IDS[8])
+    ordered = [item for item in PROVIDER_POLICY_VIOLATION_IDS if item in violations]
+    return {
+        "schema_version": "px.provider-execution-policy-conformance/1.0",
+        "valid": not ordered,
+        "violation_ids": ordered,
+    }
 
 
 class OllamaHttpAdapter:
@@ -772,3 +909,60 @@ class ProviderInvocationGateway:
                 fallback_adapter,
                 fallback_from=request.invocation_id,
             )
+
+
+def execute_provider_request(
+    gateway: ProviderInvocationGateway,
+    policy: Mapping[str, object],
+    request: ProviderRequest,
+    adapter: ProviderAdapter,
+    *,
+    fallback_adapter: ProviderAdapter | None = None,
+) -> tuple[object, dict[str, object]]:
+    """Execute only through an exact policy and return a policy-bound receipt."""
+    request_view = {
+        "task_plan_sha256": request.task_plan_sha256,
+        "adapter_id": request.adapter_id,
+        "model_id": request.model_id,
+        "model_revision": request.model_revision,
+        "model_attachment_sha256": request.model_attachment_sha256,
+        "authority_revision": request.authority_revision,
+        "requested_egress": request.requested_egress,
+        "budget_id": request.budget_id,
+        "expected_charge_microunits": request.expected_charge_microunits,
+    }
+    report = provider_execution_policy_report(policy, request_view)
+    if not report["valid"]:
+        raise PermissionError(
+            "provider execution policy rejected request: "
+            + ",".join(map(str, report["violation_ids"]))
+        )
+    allowed_fallbacks = {
+        str(item.get("adapter_id")): item
+        for item in policy.get("fallbacks", ())
+        if isinstance(item, Mapping)
+    }
+    if fallback_adapter is not None and fallback_adapter.adapter_id not in allowed_fallbacks:
+        raise PermissionError("provider fallback is outside the immutable policy")
+    value, provider_receipt = gateway.invoke(
+        request, adapter, fallback_adapter=fallback_adapter
+    )
+    if (
+        provider_receipt.get("model_id") != request.model_id
+        or provider_receipt.get("adapter_id")
+        not in {request.adapter_id, getattr(fallback_adapter, "adapter_id", None)}
+        or not _sha(provider_receipt.get("output_sha256"))
+        or not _sha(provider_receipt.get("budget_receipt_sha256"))
+    ):
+        raise ProviderInvocationError(request.adapter_id, "ExactReceiptMissing")
+    receipt = {
+        "schema_version": "px.provider-execution-outcome/1.0",
+        "policy_sha256": policy["policy_sha256"],
+        "task_plan_sha256": request.task_plan_sha256,
+        "model_attachment_sha256": request.model_attachment_sha256,
+        "model_revision": request.model_revision,
+        "authority_revision": request.authority_revision,
+        "provider_receipt": provider_receipt,
+        "exact_receipt": True,
+    }
+    return value, {**receipt, "outcome_sha256": _digest(receipt, limit=MAX_RESPONSE_BYTES)}

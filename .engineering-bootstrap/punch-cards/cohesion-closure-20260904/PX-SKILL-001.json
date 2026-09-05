@@ -1,0 +1,69 @@
+{
+  "card_id": "PX-SKILL-001",
+  "title": "Behavioral Assurance promotion gate",
+  "severity": "critical",
+  "type": "integration",
+  "status": "planned",
+  "root_cause": "Package validity, semantic behavioral validation, and operational certification can be represented as one undifferentiated promotion state.",
+  "source_requirement": "Gate promotion with distinct maturity and typed evidence states.",
+  "live_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/current-owners-and-gaps.json"
+  ],
+  "files": [
+    "runtime/skill_studio.py",
+    "runtime/capability_maturity.py",
+    "runtime/evidence_claims.py",
+    "tests/test_skill_studio.py"
+  ],
+  "symbols": [
+    "promote",
+    "evaluate_capability_maturity"
+  ],
+  "dependencies": [
+    "PX-ASSURE-001",
+    "PX-CORE-003"
+  ],
+  "downstream_consumers": [
+    "PX-SKILL-003"
+  ],
+  "change_classes": [
+    "AUTHORITY",
+    "BEHAVIORAL"
+  ],
+  "implementation_steps": [
+    "Define separate package, semantic behavior, operational, and external evidence gates.",
+    "Require current dependency revisions.",
+    "Expose current maturity and missing next evidence.",
+    "Keep admission and certification distinct."
+  ],
+  "negative_cases": [
+    "Valid package promoted as behavior-validated.",
+    "Local evidence presented as external certification.",
+    "Stale behavior evidence.",
+    "Skipped maturity level."
+  ],
+  "focused_tests": [
+    "Skill promotion maturity boundary tests."
+  ],
+  "affected_tests": [
+    "Capability maturity, evidence claims, skill catalog tests."
+  ],
+  "affected_sections": [
+    "testing-governance",
+    "structural-adversarial"
+  ],
+  "projection_invalidations": [
+    "skill catalog maturity",
+    "promotion receipts",
+    "semantic profiles"
+  ],
+  "evidence_required": [
+    "Promotion vectors for each maturity boundary and rejection reason."
+  ],
+  "rollback": "Return promotion to package-only admission and mark higher claims unavailable.",
+  "acceptance_criteria": [
+    "Package validity, behavioral validation, and operational certification remain distinct.",
+    "Promotion cannot overstate maturity."
+  ],
+  "completion_evidence": []
+}

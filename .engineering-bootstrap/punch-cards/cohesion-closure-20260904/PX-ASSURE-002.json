@@ -1,0 +1,73 @@
+{
+  "card_id": "PX-ASSURE-002",
+  "title": "Python/Node coordination conformance",
+  "severity": "critical",
+  "type": "repair",
+  "status": "planned",
+  "root_cause": "Python and Node independently encode authoritative coordination invariants with divergent validity and violation IDs.",
+  "source_requirement": "Drive both implementations from one shared conformance corpus and stable semantic contract.",
+  "live_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#PX-AUD-003"
+  ],
+  "files": [
+    "runtime/state_invariants.py",
+    "extension/src/stateInvariants.js",
+    "contracts/coordination_state_conformance_vectors.json",
+    "tests/test_state_invariants.py",
+    "extension/test/stateInvariants.test.js"
+  ],
+  "symbols": [
+    "validate_coordination_state",
+    "assertCoordinationState"
+  ],
+  "dependencies": [
+    "PX-COMM-006"
+  ],
+  "downstream_consumers": [
+    "PX-PROVIDER-001",
+    "PX-SYS-002"
+  ],
+  "change_classes": [
+    "SCHEMA",
+    "BEHAVIORAL"
+  ],
+  "implementation_steps": [
+    "Freeze stable violation IDs and evaluation order.",
+    "Author shared positive/negative vectors.",
+    "Make Python and Node consume equivalent rules.",
+    "Add cross-runtime parity runner."
+  ],
+  "negative_cases": [
+    "Invalid schema version.",
+    "Expired active claim.",
+    "Multiple active plans.",
+    "Malformed session.",
+    "Incomplete dependency.",
+    "Task/claim mismatch.",
+    "Stale fencing token."
+  ],
+  "focused_tests": [
+    "Python shared-vector conformance.",
+    "Node shared-vector conformance.",
+    "Cross-runtime result equality."
+  ],
+  "affected_tests": [
+    "Coordination state and extension dashboard tests."
+  ],
+  "affected_sections": [
+    "dashboard-extension",
+    "structural-adversarial"
+  ],
+  "projection_invalidations": [
+    "coordination state receipts",
+    "extension state-validation evidence"
+  ],
+  "evidence_required": [
+    "One vector corpus and byte-comparable Python/Node result receipt."
+  ],
+  "rollback": "Restore both validators together; never leave one runtime authoritative alone.",
+  "acceptance_criteria": [
+    "Python and Node return identical validity and stable violation IDs for every authoritative vector."
+  ],
+  "completion_evidence": []
+}

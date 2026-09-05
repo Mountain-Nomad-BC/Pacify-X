@@ -1,0 +1,64 @@
+{
+  "card_id": "PX-EFF-001",
+  "title": "Change classification",
+  "severity": "high",
+  "type": "integration",
+  "status": "planned",
+  "root_cause": "Repair proof selection lacks one canonical deterministic change-class vocabulary.",
+  "source_requirement": "Classify changes as DOC_ONLY, METADATA_ONLY, SEMANTIC, BEHAVIORAL, SCHEMA, AUTHORITY, RUNTIME, or RELEASE_CRITICAL.",
+  "live_evidence": [
+    "C:/Users/Ben/Downloads/px looks/PX_COMMENCEMENT_ORCHESTRATION_2026-09-04.md#PX-EFF-001"
+  ],
+  "files": [
+    "runtime/change_classification.py",
+    "tests/test_change_classification.py"
+  ],
+  "symbols": [
+    "ChangeClass",
+    "classify_changes"
+  ],
+  "dependencies": [
+    "PX-CORE-002"
+  ],
+  "downstream_consumers": [
+    "PX-EFF-002",
+    "PX-EFF-003"
+  ],
+  "change_classes": [
+    "SCHEMA",
+    "AUTHORITY"
+  ],
+  "implementation_steps": [
+    "Define enum and precedence.",
+    "Map paths/symbols/declared effects to classes.",
+    "Allow explicit evidence-bound overrides.",
+    "Return reasons and owner."
+  ],
+  "negative_cases": [
+    "Runtime change classified doc-only.",
+    "Authority file classified metadata-only.",
+    "Unknown change defaults low-risk.",
+    "Conflicting override."
+  ],
+  "focused_tests": [
+    "tests/test_change_classification.py"
+  ],
+  "affected_tests": [
+    "Affected proof and release boundary tests."
+  ],
+  "affected_sections": [
+    "testing-governance"
+  ],
+  "projection_invalidations": [
+    "affected proof plans"
+  ],
+  "evidence_required": [
+    "Boundary vectors for every class and conservative fallback."
+  ],
+  "rollback": "Disable automatic classification and require explicit highest-risk class.",
+  "acceptance_criteria": [
+    "Classification is deterministic and conservative.",
+    "Unknown or mixed changes cannot reduce required proof."
+  ],
+  "completion_evidence": []
+}

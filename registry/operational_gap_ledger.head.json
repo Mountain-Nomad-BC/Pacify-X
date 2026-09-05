@@ -1,5 +1,5 @@
 {
-  "checkpoint_sha256": "d120c79c83ec3e9dc59dba543412706be0140a2ecdd5694a0814e31fb96d22cd",
+  "checkpoint_sha256": "ef55c503b56840608469df035a3eb840d97aef1b47692aa4eec4926d7e4a963d",
   "created_utc": "2026-08-16T17:14:48.634100Z",
   "dashboard": {
     "cards": [
@@ -1705,23 +1705,23 @@
     },
     "truncated": true
   },
-  "event_count": 33625,
-  "generated_utc": "2026-09-04T23:36:18.575442Z",
-  "head_event_sha256": "d6886f019a65dd13592f997b75894667f4fc8e19e46096fa04405d8d421fe3a3",
+  "event_count": 33638,
+  "generated_utc": "2026-09-05T01:09:18.660602Z",
+  "head_event_sha256": "4262c246dda21fb57662d5d536c35ab0bb593bb3cf9b808f001f5f0776fbec47",
   "ledger_fingerprint": {
-    "sha256": "209394ef4b264e94fec3c7be24c7ebd0390171bd12bac5e759b0232d1f0c7338",
-    "size_bytes": 101811007
+    "sha256": "ecd7887f685c7e2b15571d37b0bcadfe54e719755f495fc12c171a2e76f908c3",
+    "size_bytes": 101832036
   },
   "ledger_id": "PX-OPERATIONAL-GAPS-20260816",
   "maximum_gap_ordinal": 1075,
-  "predecessor_event_sha256": "caa0469b9759198f94406d3c1a3dfc3848bd4076cdba2bfd091e2b0486d3f649",
-  "previous_checkpoint_sha256": "b29645fca72c3405f43add4eb7e5b443d0235c9d6fee289d5cd838df88bed39a",
+  "predecessor_event_sha256": "e82854e91b8ac7246bc2be4cabbf59385e2b13de72fba29a45e597d879fbf627",
+  "previous_checkpoint_sha256": "9ef4f021d891a57932ac358a04e4be617a0c4d29f067b895da0b35fe392392bf",
   "schema_version": "px.operational-gap-ledger-head/1.0",
-  "snapshot_sha256": "b7b4e25d99fdfd1c8a08f7d235fe29dfdd5814ba04b124c7732e2c7feaddb5f0",
-  "snapshot_size_bytes": 37262382,
+  "snapshot_sha256": "605722a70f8861666c12c65a59b53f0fa20fbe7f28f8563dd9120c3a1a533032",
+  "snapshot_size_bytes": 39234107,
   "verification_basis": {
-    "full_replay_anchor_event_count": 31865,
-    "full_replay_anchor_event_sha256": "38979b600bab43a7d279e667765460bc04a3f5611b8c67ca386c9d5fbc2b21d4",
+    "full_replay_anchor_event_count": 33631,
+    "full_replay_anchor_event_sha256": "6e2bfb9356f9e6c8eb335074abc85c830b8649422cd11097ce2cbd2910f0b749",
     "kind": "incremental_from_verified_checkpoint"
   }
 }

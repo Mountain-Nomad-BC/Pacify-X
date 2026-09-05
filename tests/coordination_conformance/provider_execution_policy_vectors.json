@@ -1,0 +1,40 @@
+{
+  "schema_version": "px.provider-execution-policy-vectors/1.0",
+  "base_policy": {
+    "task_plan_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "model": {
+      "provider_id": "provider",
+      "adapter_id": "adapter",
+      "model_id": "model",
+      "model_revision": "exact-1",
+      "attachment_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "privacy": "local",
+      "authority_class": "contained"
+    },
+    "authority": {"revision": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc", "provider_effect": true},
+    "egress": {"mode": "loopback_only", "allowed_destinations": []},
+    "cost": {"budget_id": "budget", "max_charge_microunits": 0},
+    "fallbacks": [],
+    "exact_receipt_required": true
+  },
+  "base_request": {
+    "task_plan_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "adapter_id": "adapter",
+    "model_id": "model",
+    "model_revision": "exact-1",
+    "model_attachment_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "authority_revision": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "requested_egress": "loopback",
+    "budget_id": "budget",
+    "expected_charge_microunits": 0
+  },
+  "vectors": [
+    {"id": "valid", "policy_mutations": {}, "request_mutations": {}, "reseal": false, "expected_valid": true, "expected_violation_ids": []},
+    {"id": "plan-drift", "policy_mutations": {}, "request_mutations": {"task_plan_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"}, "reseal": false, "expected_valid": false, "expected_violation_ids": ["PX-PROVIDER-PLAN-BINDING"]},
+    {"id": "egress-denied", "policy_mutations": {}, "request_mutations": {"requested_egress": "https://outside.invalid"}, "reseal": false, "expected_valid": false, "expected_violation_ids": ["PX-PROVIDER-EGRESS"]},
+    {"id": "cost-overrun", "policy_mutations": {}, "request_mutations": {"expected_charge_microunits": 1}, "reseal": false, "expected_valid": false, "expected_violation_ids": ["PX-PROVIDER-COST"]},
+    {"id": "fallback-weakens-privacy", "policy_mutations": {"fallbacks": [{"provider_id": "provider", "adapter_id": "fallback", "model_id": "fallback-model", "model_revision": "exact-2", "artifact_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", "privacy": "policy_gated", "authority_class": "contained"}]}, "request_mutations": {}, "reseal": true, "expected_valid": false, "expected_violation_ids": ["PX-PROVIDER-FALLBACK"]},
+    {"id": "receipt-optional", "policy_mutations": {"exact_receipt_required": false}, "request_mutations": {}, "reseal": true, "expected_valid": false, "expected_violation_ids": ["PX-PROVIDER-RECEIPT"]},
+    {"id": "policy-tampered", "policy_mutations": {"cost": {"budget_id": "budget", "max_charge_microunits": 1}}, "request_mutations": {}, "reseal": false, "expected_valid": false, "expected_violation_ids": ["PX-PROVIDER-POLICY-HASH"]}
+  ]
+}

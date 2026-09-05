@@ -12,12 +12,28 @@ from runtime.contracts import (
     validate_contract_corpus,
     validate_instance,
 )
+from runtime.paths import declared_file_available, resolve_declared_path
 
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 class ContractRuntimeTests(unittest.TestCase):
+    def test_extension_declarations_are_source_only_in_the_python_wheel(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            installed_root = Path(directory)
+            self.assertIsNone(
+                resolve_declared_path(
+                    installed_root, "extension/src/providerExecutionPolicy.js"
+                )
+            )
+            self.assertTrue(
+                declared_file_available(
+                    installed_root,
+                    "extension/tests/provider-execution-policy.test.js",
+                )
+            )
+
     def _write_schema(self, root: Path, name: str, rule: dict) -> Path:
         root.mkdir(parents=True, exist_ok=True)
         path = root / name

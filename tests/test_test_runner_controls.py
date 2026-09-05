@@ -21,6 +21,27 @@ from tests import pytest_guards
 ROOT = Path(__file__).parents[1]
 
 
+def _successful_supervision(observed: dict[str, object]):
+    def run(_self, command, **kwargs):
+        observed["command"] = command
+        observed["action"] = kwargs["action"]
+        observed["environment"] = kwargs["environment"]
+        empty = SimpleNamespace(text="")
+        return SimpleNamespace(
+            status="exited",
+            exit_code=0,
+            tree_closed=True,
+            duration_seconds=0.01,
+            stdout=empty,
+            stderr=empty,
+            shutdown_mode="natural",
+            receipt_path="receipt.json",
+            resource_id="process-test",
+        )
+
+    return run
+
+
 @pytest.mark.parametrize("value", [0, -1, True, float("inf"), float("nan"), "10", None])
 def test_invalid_timeout_is_rejected(value: object) -> None:
     with pytest.raises(ValueError, match="finite positive"):
@@ -96,24 +117,9 @@ def test_pytest_disk_budget_is_bound_to_managed_and_explicit_owned_paths(
         tmp_path / "ledger.json", receipt_dir=tmp_path / "cleanup-receipts"
     )
 
-    def run(_self, command, **kwargs):
-        observed["command"] = command
-        observed["action"] = kwargs["action"]
-        observed["environment"] = kwargs["environment"]
-        empty = SimpleNamespace(text="")
-        return SimpleNamespace(
-            status="exited",
-            exit_code=0,
-            tree_closed=True,
-            duration_seconds=0.01,
-            stdout=empty,
-            stderr=empty,
-            shutdown_mode="natural",
-            receipt_path="receipt.json",
-            resource_id="process-test",
-        )
-
-    monkeypatch.setattr("runtime.test_runner.ProcessSupervisor.run", run)
+    monkeypatch.setattr(
+        "runtime.test_runner.ProcessSupervisor.run", _successful_supervision(observed)
+    )
     result = run_test_command(
         [sys.executable, "-m", "pytest", "tests/test_example.py"],
         cwd=ROOT,
@@ -131,6 +137,35 @@ def test_pytest_disk_budget_is_bound_to_managed_and_explicit_owned_paths(
     )
     assert managed_temp.name == "process-temp"
     assert managed_temp.parent == accounting[1]
+    assert result["test_workspace"]["reclaimed"] is True
+
+
+def test_nested_cli_disk_budget_uses_one_managed_temp_custody_root(
+    tmp_path: Path, monkeypatch
+) -> None:
+    observed = {}
+    manager = ResourceManager(
+        tmp_path / "ledger.json", receipt_dir=tmp_path / "cleanup-receipts"
+    )
+
+    monkeypatch.setattr(
+        "runtime.test_runner.ProcessSupervisor.run", _successful_supervision(observed)
+    )
+    result = run_test_command(
+        [sys.executable, "-m", "runtime.cli", "test-group", "run-stale"],
+        cwd=ROOT,
+        environment=os.environ,
+        timeout_seconds=30,
+        resource_manager=manager,
+        manage_process_temp=True,
+    )
+
+    accounting = [Path(path) for path in observed["action"]["disk_consumption_paths"]]
+    assert len(accounting) == 1
+    assert accounting[0].name.startswith("pacify-x-process-")
+    for variable in ("TMP", "TEMP", "TMPDIR"):
+        assert Path(observed["environment"][variable]).parent == accounting[0]
+    assert result["test_workspace"]["kind"] == "managed_process_temp"
     assert result["test_workspace"]["reclaimed"] is True
 
 

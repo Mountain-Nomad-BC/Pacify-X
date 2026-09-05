@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from dataclasses import replace
 import json
 import os
 from pathlib import Path
@@ -16,8 +17,11 @@ from runtime.provider_gateway import (
     ProviderInvocationGateway,
     ProviderRequest,
     ProviderResponse,
+    build_provider_execution_policy,
     build_provider_route_index,
+    execute_provider_request,
     load_provider_registry,
+    provider_execution_policy_report,
     scan_direct_provider_routes,
 )
 
@@ -390,3 +394,62 @@ def test_request_size_bound_fails_before_adapter_or_event() -> None:
             gateway.invoke(request, adapter)
         assert adapter.calls == 0
         assert gateway.event_bus.replay()["revision"] == 0
+
+
+def test_shared_provider_execution_policy_vectors() -> None:
+    corpus = json.loads(
+        (ROOT / "tests/coordination_conformance/provider_execution_policy_vectors.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    for vector in corpus["vectors"]:
+        policy = build_provider_execution_policy(**corpus["base_policy"])
+        policy.update(vector["policy_mutations"])
+        if vector["reseal"]:
+            policy = build_provider_execution_policy(**policy)
+        request = {**corpus["base_request"], **vector["request_mutations"]}
+        report = provider_execution_policy_report(policy, request)
+        assert report["valid"] is vector["expected_valid"], vector["id"]
+        assert report["violation_ids"] == vector["expected_violation_ids"]
+
+
+def test_contained_provider_execution_requires_exact_policy_and_receipt() -> None:
+    with tempfile.TemporaryDirectory() as directory:
+        root = _project(directory, mode="local", billing_state="local_non_billable")
+        allowed = Path(directory) / "state"
+        allowed.mkdir()
+        request = replace(
+            _request(),
+            task_plan_sha256="a" * 64,
+            model_revision="exact-1",
+            model_attachment_sha256="b" * 64,
+            authority_revision="c" * 64,
+            requested_egress="loopback",
+            expected_charge_microunits=0,
+        )
+        policy = build_provider_execution_policy(
+            task_plan_sha256=request.task_plan_sha256,
+            model={
+                "provider_id": "fixture-provider",
+                "adapter_id": request.adapter_id,
+                "model_id": request.model_id,
+                "model_revision": request.model_revision,
+                "attachment_sha256": request.model_attachment_sha256,
+                "privacy": "local",
+                "authority_class": "contained",
+            },
+            authority={"revision": request.authority_revision, "provider_effect": True},
+            egress={"mode": "loopback_only", "allowed_destinations": []},
+            cost={"budget_id": request.budget_id, "max_charge_microunits": 0},
+            fallbacks=[],
+            exact_receipt_required=True,
+        )
+        value, receipt = execute_provider_request(
+            _gateway(root, allowed),
+            policy,
+            request,
+            FakeAdapter("fixture-adapter", billing_state="local_non_billable"),
+        )
+        assert value["model"] == request.model_id
+        assert receipt["policy_sha256"] == policy["policy_sha256"]
+        assert receipt["exact_receipt"] is True

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:model_attachment",
+  "title": "PX ModelAttachment",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "attachment_id", "model_id", "model_revision", "artifact_sha256", "runtime", "context_tokens", "modalities", "supports_tools", "privacy", "authority_class", "benchmark_revision", "hardware_requirements", "local_artifact_path", "quantization", "fallback_chain", "attachment_sha256"],
+  "properties": {
+    "schema_version": {"const": "px.model-attachment/1.0"},
+    "attachment_id": {"type": "string", "pattern": "^model-attachment-[0-9a-f]{24}$"},
+    "model_id": {"type": "string", "minLength": 1},
+    "model_revision": {"type": "string", "minLength": 1},
+    "artifact_sha256": {"$ref": "#/$defs/sha256"},
+    "runtime": {"type": "string", "minLength": 1},
+    "context_tokens": {"type": "integer", "minimum": 1},
+    "modalities": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "supports_tools": {"type": "boolean"},
+    "privacy": {"enum": ["local", "isolated", "policy_gated"]},
+    "authority_class": {"enum": ["contained", "installed_host", "external_authority"]},
+    "benchmark_revision": {"$ref": "#/$defs/sha256"},
+    "hardware_requirements": {"type": "object", "additionalProperties": {"type": "string"}},
+    "local_artifact_path": {"type": ["string", "null"]},
+    "quantization": {"type": ["string", "null"]},
+    "fallback_chain": {"type": "array", "items": {"$ref": "#/$defs/fallback"}},
+    "attachment_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "fallback": {"type": "object", "additionalProperties": false, "required": ["model_id", "model_revision", "artifact_sha256", "privacy", "authority_class"], "properties": {"model_id": {"type": "string", "minLength": 1}, "model_revision": {"type": "string", "minLength": 1}, "artifact_sha256": {"$ref": "#/$defs/sha256"}, "privacy": {"enum": ["local", "isolated", "policy_gated"]}, "authority_class": {"enum": ["contained", "installed_host", "external_authority"]}}}
+  }
+}

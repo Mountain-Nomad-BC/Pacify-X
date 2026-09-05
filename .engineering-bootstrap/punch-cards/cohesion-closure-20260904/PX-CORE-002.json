@@ -1,0 +1,74 @@
+{
+  "card_id": "PX-CORE-002",
+  "title": "Primitive authority registry",
+  "severity": "critical",
+  "type": "integration",
+  "status": "planned",
+  "root_cause": "Canonical primitives exist across modules but their authority and bypass boundaries are not declared in one machine-readable registry.",
+  "source_requirement": "Declare one canonical owner for every required primitive without forcing a monolithic implementation.",
+  "live_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/current-owners-and-gaps.json"
+  ],
+  "files": [
+    "runtime/primitive_authority.py",
+    "registry/primitive_authority.json",
+    "tests/test_primitive_authority.py"
+  ],
+  "symbols": [
+    "load_primitive_authority",
+    "validate_primitive_authority",
+    "resolve_primitive_owner"
+  ],
+  "dependencies": [
+    "PX-COMM-006"
+  ],
+  "downstream_consumers": [
+    "PX-CORE-004",
+    "PX-ROUTE-001",
+    "PX-MODEL-003",
+    "PX-AGENT-001",
+    "PX-FOUNDRY-001",
+    "PX-GRAPH-001",
+    "PX-EFF-001",
+    "PX-SYS-003"
+  ],
+  "change_classes": [
+    "AUTHORITY",
+    "SCHEMA",
+    "METADATA_ONLY"
+  ],
+  "implementation_steps": [
+    "Define registry schema and loader.",
+    "Map all thirteen required primitive classes to current or planned owners.",
+    "Reject missing owners, duplicate owners, and undeclared bypasses."
+  ],
+  "negative_cases": [
+    "Missing primitive.",
+    "Two canonical owners.",
+    "Unknown owner symbol.",
+    "Bypass without exception."
+  ],
+  "focused_tests": [
+    "tests/test_primitive_authority.py"
+  ],
+  "affected_tests": [
+    "Generated artifact and registry integrity tests."
+  ],
+  "affected_sections": [
+    "testing-governance"
+  ],
+  "projection_invalidations": [
+    "authority topology",
+    "architecture invariants",
+    "world state"
+  ],
+  "evidence_required": [
+    "Validated registry and owner-symbol resolution receipt."
+  ],
+  "rollback": "Remove the new registry/loader and restore consumers to their previous explicit owners.",
+  "acceptance_criteria": [
+    "Every required primitive resolves to exactly one canonical owner.",
+    "Federated language/runtime owners remain explicit."
+  ],
+  "completion_evidence": []
+}

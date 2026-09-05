@@ -1,0 +1,64 @@
+{
+  "card_id": "PX-AUTH-002",
+  "title": "Evidence-bound project transfer",
+  "severity": "critical",
+  "type": "repair",
+  "status": "planned",
+  "root_cause": "Project transfer accepts caller-trusted booleans as primary sanitization, approval, ownership, and test authority.",
+  "source_requirement": "Make exact receipts primary authority and keep booleans only as derived projections.",
+  "live_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/current-owners-and-gaps.json"
+  ],
+  "files": [
+    "runtime/project_stream_controls.py",
+    "runtime/trusted_evidence.py",
+    "tests/test_project_stream_controls.py"
+  ],
+  "symbols": [
+    "authorize_project_transfer",
+    "validate_transfer_evidence"
+  ],
+  "dependencies": [
+    "PX-ASSURE-001",
+    "PX-AUTH-001"
+  ],
+  "downstream_consumers": [],
+  "change_classes": [
+    "AUTHORITY",
+    "BEHAVIORAL"
+  ],
+  "implementation_steps": [
+    "Define required receipt types and freshness.",
+    "Resolve sanitization, human approval, destination ownership, and test evidence.",
+    "Derive compatibility booleans from accepted receipts.",
+    "Fail closed on missing, stale, foreign, or mismatched evidence."
+  ],
+  "negative_cases": [
+    "Caller sets true without receipt.",
+    "Receipt belongs to other project/destination.",
+    "Approval stale or wrong subject.",
+    "Test evidence source mismatch."
+  ],
+  "focused_tests": [
+    "Evidence-bound transfer authorization vectors."
+  ],
+  "affected_tests": [
+    "Project stream, trusted evidence, workspace transfer tests."
+  ],
+  "affected_sections": [
+    "structural-adversarial"
+  ],
+  "projection_invalidations": [
+    "project transfer authorization receipts",
+    "world state blockers"
+  ],
+  "evidence_required": [
+    "Positive and each negative authority-case receipt."
+  ],
+  "rollback": "Disable transfer effects and retain prior booleans only as non-authoritative display data.",
+  "acceptance_criteria": [
+    "No caller boolean independently authorizes transfer.",
+    "Every transfer binds all four current receipt classes."
+  ],
+  "completion_evidence": []
+}

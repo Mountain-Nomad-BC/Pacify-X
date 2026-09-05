@@ -371,7 +371,7 @@ def decay_decision(measurement: Mapping[str, Any], *, minimum_uses: int = 10, mi
         raise ValueError("decay decision requires a reuse measurement and valid policy")
     enough = int(measurement.get("uses", 0)) >= minimum_uses
     decay = enough and (float(measurement.get("success_rate") or 0) < minimum_success_rate or int(measurement.get("regressions", 0)) > maximum_regressions)
-    return _record("decay_decision", {"measurement_sha256": measurement.get("record_sha256"), "enough_evidence": enough, "decay": decay, "next_state": "decayed" if decay else "canonical", "automatic_delete_allowed": False})
+    return _record("decay_decision", {"measurement_sha256": measurement.get("record_sha256"), "enough_evidence": enough, "decay": decay, "next_state": "decayed" if decay else "canonical", "canonical_authority_status": "suspect" if decay else "current", "revalidation_required": decay, "historical_canon_retained": True, "automatic_delete_allowed": False})
 
 
 def hash_tree(units: Mapping[str, object], dependencies: Mapping[str, Sequence[str]] = {}) -> dict[str, Any]:

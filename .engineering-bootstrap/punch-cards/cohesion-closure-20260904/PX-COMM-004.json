@@ -1,0 +1,53 @@
+{
+  "card_id": "PX-COMM-004",
+  "title": "PX-AUD-016 Windows/Linux/macOS evidence binding",
+  "severity": "high",
+  "type": "evidence",
+  "status": "closed",
+  "root_cause": "OS support declarations and old smoke receipts are not equivalent to current revision-bound execution proof.",
+  "source_requirement": "Bind exact Windows and Linux artifact evidence and classify absent macOS execution honestly.",
+  "live_evidence": [
+    "extension/evidence/installed-vsix-smoke.json",
+    "extension/evidence/installed-vsix-smoke-linux.json",
+    "evidence/commencement-audit-20260905T002921Z/px-aud-016-os-evidence.json"
+  ],
+  "files": [
+    "evidence/commencement-audit-20260905T002921Z/px-aud-016-os-evidence.json"
+  ],
+  "symbols": [],
+  "dependencies": [
+    "PX-COMM-001"
+  ],
+  "downstream_consumers": [
+    "PX-COMM-006"
+  ],
+  "change_classes": [
+    "METADATA_ONLY"
+  ],
+  "implementation_steps": [
+    "Verify OS, VS Code version, extension version, result, and artifact binding.",
+    "Separate historical exact-artifact proof from successor proof.",
+    "Classify macOS as external-authority-required."
+  ],
+  "negative_cases": [
+    "A workflow declaration is not execution evidence.",
+    "Windows/Linux success cannot stand in for macOS."
+  ],
+  "focused_tests": [
+    "Receipt hash and field reconciliation."
+  ],
+  "affected_tests": [],
+  "affected_sections": [],
+  "projection_invalidations": [],
+  "evidence_required": [
+    "Exact Windows/Linux receipt hashes and explicit macOS disposition."
+  ],
+  "rollback": "Evidence-only; preserve original smoke receipts.",
+  "acceptance_criteria": [
+    "Windows and Linux are accurately bound to immutable 0.6.83.",
+    "macOS remains BLOCKED_BY_EXTERNAL_OS_AUTHORITY until a real run exists."
+  ],
+  "completion_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/px-aud-016-os-evidence.json"
+  ]
+}

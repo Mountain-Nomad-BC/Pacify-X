@@ -1,0 +1,75 @@
+{
+  "card_id": "PX-CORE-004",
+  "title": "Universal dependency/invalidation service",
+  "severity": "critical",
+  "type": "integration",
+  "status": "planned",
+  "root_cause": "Dependency and stale-state propagation is fragmented across project impact and generated graphs.",
+  "source_requirement": "Provide one revision-bound invalidation service covering source, skills, agents, workflows, knowledge, formulas, models, projections, tests, sections, and release evidence.",
+  "live_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/current-owners-and-gaps.json"
+  ],
+  "files": [
+    "runtime/dependency_invalidation.py",
+    "runtime/project_impact.py",
+    "registry/dependency_authority.json",
+    "tests/test_dependency_invalidation.py"
+  ],
+  "symbols": [
+    "build_dependency_graph",
+    "compute_invalidation_cone",
+    "validate_dependency_authority"
+  ],
+  "dependencies": [
+    "PX-CORE-002"
+  ],
+  "downstream_consumers": [
+    "PX-ASSURE-003",
+    "PX-ROUTE-004",
+    "PX-MEM-001",
+    "PX-SKILL-002",
+    "PX-EFF-003",
+    "PX-LEDGER-002"
+  ],
+  "change_classes": [
+    "SCHEMA",
+    "AUTHORITY",
+    "BEHAVIORAL"
+  ],
+  "implementation_steps": [
+    "Define typed dependency nodes and revision bindings.",
+    "Adapt existing project-impact and generated graph data.",
+    "Compute deterministic direct and transitive invalidation cones.",
+    "Expose stale reasons and required rebuild gates."
+  ],
+  "negative_cases": [
+    "Unknown dependency node.",
+    "Cycle without declared handling.",
+    "Dependency revision drift.",
+    "Missing invalidation owner."
+  ],
+  "focused_tests": [
+    "tests/test_dependency_invalidation.py"
+  ],
+  "affected_tests": [
+    "Project-impact, generated graph, release-evidence, and projection tests."
+  ],
+  "affected_sections": [
+    "testing-governance",
+    "structural-adversarial"
+  ],
+  "projection_invalidations": [
+    "generated dependency graph",
+    "projection freshness",
+    "release evidence cache"
+  ],
+  "evidence_required": [
+    "Deterministic cone vectors and affected-consumer receipt."
+  ],
+  "rollback": "Disable consumers and retain prior project-impact paths until the authority registry is restored.",
+  "acceptance_criteria": [
+    "Every supported dependency class participates in revision-bound transitive invalidation.",
+    "Historical artifacts are retained while stale current claims fail closed."
+  ],
+  "completion_evidence": []
+}

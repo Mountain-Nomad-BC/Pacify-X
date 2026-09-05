@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:foundry_candidate_skill",
+  "title": "PX FoundryCandidateSkill",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "bundle_id", "skill_id", "purpose", "source_lineage",
+    "mechanisms", "formulas", "uncertainty", "semantics", "effects", "tests",
+    "unknowns", "contradictions", "candidate_sha256", "lineage_signature",
+    "authority_state"
+  ],
+  "properties": {
+    "schema_version": {"const": "px.foundry-candidate-skill/1.0"},
+    "bundle_id": {"$ref": "#/$defs/sha256"},
+    "skill_id": {"type": "string", "minLength": 1},
+    "purpose": {"type": "string", "minLength": 1},
+    "source_lineage": {"type": "array", "minItems": 1, "items": {"type": "object", "required": ["source_id", "sha256", "citation"]}},
+    "mechanisms": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "formulas": {"type": "array", "items": {"type": "object"}},
+    "uncertainty": {"type": "object"},
+    "semantics": {"type": "object"},
+    "effects": {"type": "array", "items": {"type": "string"}},
+    "tests": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "unknowns": {"type": "array", "items": {"type": "string"}},
+    "contradictions": {"type": "array", "items": {"type": "string"}},
+    "candidate_sha256": {"$ref": "#/$defs/sha256"},
+    "lineage_signature": {"type": "object", "required": ["algorithm", "signed_by", "value"]},
+    "authority_state": {"const": "foundry_candidate_only"}
+  },
+  "$defs": {"sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}}
+}

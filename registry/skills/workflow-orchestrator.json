@@ -3,28 +3,70 @@
   "version": "0.1.0",
   "owner": "independent-bootstrap-runtime",
   "status": "active",
-  "provenance": {"type": "clean_room", "basis": ["reviewed orchestration patterns", "local requirements"]},
+  "provenance": {
+    "type": "clean_room",
+    "basis": [
+      "reviewed orchestration patterns",
+      "local requirements"
+    ]
+  },
   "hash": "2220cd06d09506866d402bde72704e875beda8c1d6952c6c9b4157133e19563f",
   "license": "Apache-2.0",
-  "provides": ["bounded task lifecycle", "lazy capability activation", "checkpointed verified result"],
-  "consumes": ["task request", "policy decision", "runtime handler resolver"],
-  "effects": ["read_local"],
-  "permissions": ["read_local"],
-  "dependencies": ["skill-navigator", "execution-contract-enforcer", "evidence-assembler", "outcome-verifier"],
+  "provides": [
+    "bounded task lifecycle",
+    "lazy capability activation",
+    "checkpointed verified result"
+  ],
+  "consumes": [
+    "task request",
+    "policy decision",
+    "runtime handler resolver"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [
+    "skill-navigator",
+    "execution-contract-enforcer",
+    "evidence-assembler",
+    "outcome-verifier"
+  ],
   "conflicts": [],
-  "cost": {"class": "bounded", "max_tool_calls": 12},
-  "latency": {"class": "bounded", "max_seconds": 120},
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 12
+  },
+  "latency": {
+    "class": "bounded",
+    "max_seconds": 120
+  },
   "risk": "R1",
   "validation": {
     "suite": "tests/test_orchestrator.py",
     "passed": 8,
     "failed": 0,
-    "covers": ["happy path", "late activation", "policy denial", "missing inputs", "failed verification", "failure capture", "checkpoints"]
+    "covers": [
+      "happy path",
+      "late activation",
+      "policy denial",
+      "missing inputs",
+      "failed verification",
+      "failure capture",
+      "checkpoints"
+    ]
   },
   "approval": {
     "deployment": "required",
     "runtime": "follows selected capability effects"
   },
-  "evidence": {"suite": "tests/test_orchestrator.py", "status": "current"},
-  "rollback": {"strategy": "remove from active capability map and use component APIs directly"}
+  "evidence": {
+    "suite": "tests/test_orchestrator.py",
+    "status": "current"
+  },
+  "rollback": {
+    "strategy": "remove from active capability map and use component APIs directly"
+  }
 }

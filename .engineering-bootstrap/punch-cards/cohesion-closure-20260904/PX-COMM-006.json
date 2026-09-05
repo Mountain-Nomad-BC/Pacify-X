@@ -1,0 +1,62 @@
+{
+  "card_id": "PX-COMM-006",
+  "title": "Combined finite denominator / repair freeze baseline",
+  "severity": "critical",
+  "type": "evidence",
+  "status": "closed",
+  "root_cause": "Repair and cohesion work lacked one finite, hash-bound source/control denominator.",
+  "source_requirement": "Freeze product defects, assurance defects, reconciliation, installed proof, architecture, migrations, tests, and exclusions before source edits.",
+  "live_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/confirmed-denominator.json",
+    "evidence/commencement-audit-20260905T002921Z/SHA256SUMS"
+  ],
+  "files": [
+    "evidence/commencement-audit-20260905T002921Z/confirmed-denominator.json",
+    "evidence/commencement-audit-20260905T002921Z/confirmed-denominator.md",
+    "evidence/commencement-audit-20260905T002921Z/SHA256SUMS"
+  ],
+  "symbols": [],
+  "dependencies": [
+    "PX-COMM-002",
+    "PX-COMM-003",
+    "PX-COMM-004",
+    "PX-COMM-005"
+  ],
+  "downstream_consumers": [
+    "PX-ASSURE-001",
+    "PX-ASSURE-002",
+    "PX-CORE-002",
+    "PX-CORE-001",
+    "PX-LEDGER-001"
+  ],
+  "change_classes": [
+    "METADATA_ONLY"
+  ],
+  "implementation_steps": [
+    "Unify all confirmed current obligations.",
+    "Enumerate 43 required cards and explicit exclusions.",
+    "Bind exact evidence bytes with SHA-256."
+  ],
+  "negative_cases": [
+    "Do not begin source changes before the denominator exists.",
+    "Do not allow deferred enhancements to grow the campaign."
+  ],
+  "focused_tests": [
+    "JSON parse, count reconciliation, and SHA256SUMS verification."
+  ],
+  "affected_tests": [],
+  "affected_sections": [],
+  "projection_invalidations": [],
+  "evidence_required": [
+    "Source head, product/harness digests, all card IDs, proof obligations, exclusions, and repair rules."
+  ],
+  "rollback": "Supersede with a new explicitly hash-bound denominator; never edit old evidence in place after implementation begins.",
+  "acceptance_criteria": [
+    "The denominator is finite, parseable, and hash-bound.",
+    "The required card count is exactly 43."
+  ],
+  "completion_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/confirmed-denominator.json",
+    "evidence/commencement-audit-20260905T002921Z/SHA256SUMS"
+  ]
+}

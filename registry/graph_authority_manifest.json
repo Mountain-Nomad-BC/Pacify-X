@@ -1,0 +1,195 @@
+{
+  "graphs": [
+    {
+      "authority": "runtime.agent_provider.build_agent_graph",
+      "builder": "scripts/build_agency_agent_graph.py",
+      "consumers": [
+        "runtime.agent_provider"
+      ],
+      "graph_id": "agency-agent",
+      "graph_revision": "ea2643fd20c95d482b5d02a69c96109310319b6c4daddca85199bc514703702a",
+      "invalidation_rule": "any source revision change",
+      "path": "registry/agency_agent_graph.json",
+      "purpose": "specialist selection and handoff topology",
+      "rebuild_gate": "rebuild_before_use",
+      "source_revisions": [
+        {
+          "path": "scripts/build_agency_agent_graph.py",
+          "revision": "85cf64342cd380b5090c0092848f4308d8c84a841aab7eb3da0dd4ff1a01c6d4"
+        }
+      ]
+    },
+    {
+      "authority": "builders.declared_suite_support_builder",
+      "builder": "builders/declared_suite_support_builder.py",
+      "consumers": [
+        "runtime.declared_suite"
+      ],
+      "graph_id": "declared-suite-dependency",
+      "graph_revision": "55bebce1eea4c4efbaea9298b51b1c9da00835332678f38b9630579c814fc2de",
+      "invalidation_rule": "any source revision change",
+      "path": "registry/declared_suite_dependency_graph.json",
+      "purpose": "declared capability suite dependency closure",
+      "rebuild_gate": "block_until_rebuilt",
+      "source_revisions": [
+        {
+          "path": "builders/declared_suite_support_builder.py",
+          "revision": "56f1081ffc74fff176ba1925ac00c5263be6783fd7cf6ea9e162ee9bda2d6d8f"
+        }
+      ]
+    },
+    {
+      "authority": "scripts.build_external_candidate_registry",
+      "builder": "scripts/build_external_candidate_registry.py",
+      "consumers": [
+        "runtime.external_capability_provider"
+      ],
+      "graph_id": "external-candidate",
+      "graph_revision": "15d82f0359be6d6046680a2385053593b1da853c1f1c352aae5fad1fd3d00f52",
+      "invalidation_rule": "any source revision change",
+      "path": "registry/external_candidate_graph.json",
+      "purpose": "external capability candidate relationships",
+      "rebuild_gate": "block_until_rebuilt",
+      "source_revisions": [
+        {
+          "path": "scripts/build_external_candidate_registry.py",
+          "revision": "7ecfcd85848efee74da01829dd9e20720b9902ebd4bbd07bf0973634f297413b"
+        }
+      ]
+    },
+    {
+      "authority": "runtime.generated_dependency.generated_dependency_graph",
+      "builder": "scripts/generated_dependency_graph.py",
+      "consumers": [
+        "runtime.generated_artifacts"
+      ],
+      "graph_id": "generated-dependency",
+      "graph_revision": "ffd4e14ba9d3dae912e061c31693f0d89de6591466934ca2b318f8e516820577",
+      "invalidation_rule": "any source revision change",
+      "path": "registry/generated_dependency_graph.json",
+      "purpose": "generated artifact producer dependency tracking",
+      "rebuild_gate": "rebuild_before_use",
+      "source_revisions": [
+        {
+          "path": "scripts/generated_dependency_graph.py",
+          "revision": "4adb5b2ad9446518f597e8140fc49dcd817a7c5d8b8c2edd086922c12ee9872a"
+        }
+      ]
+    },
+    {
+      "authority": "builders.last_round_assimilation_builder",
+      "builder": "builders/last_round_assimilation_builder.py",
+      "consumers": [
+        "runtime.metacognitive_evolution"
+      ],
+      "graph_id": "metacognitive-dependency",
+      "graph_revision": "c7041ace23821132a650119ad2779e55a33e71522bc2fdbc85209e70de092bce",
+      "invalidation_rule": "any source revision change",
+      "path": "registry/metacognitive_dependency_graph.json",
+      "purpose": "metacognitive capability dependency relationships",
+      "rebuild_gate": "block_until_rebuilt",
+      "source_revisions": [
+        {
+          "path": "builders/last_round_assimilation_builder.py",
+          "revision": "fbe5b843326ef4670dcfc60842363469452e336ef9375dfaa5ffa024c26e2e44"
+        }
+      ]
+    },
+    {
+      "authority": "runtime.graph_registry.build_graph_artifacts",
+      "builder": "runtime/graph_registry.py",
+      "consumers": [
+        "runtime.registry"
+      ],
+      "graph_id": "capability",
+      "graph_revision": "84ffc4bbca0e29cb813a94220cc0270f6dac91c3af334d33bd430d67c481e1be",
+      "invalidation_rule": "graph manifest source drift",
+      "path": "registry/graphs/capability_graph.json",
+      "purpose": "canonical capability membership relationships",
+      "rebuild_gate": "rebuild_before_use",
+      "source_revisions": [
+        {
+          "path": "runtime/graph_registry.py",
+          "revision": "11c2b8d85214530e82f37f919b21eed065646557966f9d2cc75764162a047497"
+        }
+      ]
+    },
+    {
+      "authority": "runtime.graph_registry.build_graph_artifacts",
+      "builder": "runtime/graph_registry.py",
+      "consumers": [
+        "runtime.graphs"
+      ],
+      "graph_id": "dependency-effect",
+      "graph_revision": "638f34a9fcc56e13eff376d7a5d09ca3298855b7ab071b4f37d028b67a3cd407",
+      "invalidation_rule": "graph manifest source drift",
+      "path": "registry/graphs/dependency_effect_graph.json",
+      "purpose": "capability dependency and effect relationships",
+      "rebuild_gate": "rebuild_before_use",
+      "source_revisions": [
+        {
+          "path": "runtime/graph_registry.py",
+          "revision": "11c2b8d85214530e82f37f919b21eed065646557966f9d2cc75764162a047497"
+        }
+      ]
+    },
+    {
+      "authority": "runtime.graph_registry.build_graph_artifacts",
+      "builder": "runtime/graph_registry.py",
+      "consumers": [
+        "runtime.graphs"
+      ],
+      "graph_id": "io",
+      "graph_revision": "63bc8e6e4baab55c236f6cd0003ecfc58dbca3a92d2e8e78d20a6c170ec6a806",
+      "invalidation_rule": "graph manifest source drift",
+      "path": "registry/graphs/io_graph.json",
+      "purpose": "capability input and output compatibility relationships",
+      "rebuild_gate": "rebuild_before_use",
+      "source_revisions": [
+        {
+          "path": "runtime/graph_registry.py",
+          "revision": "11c2b8d85214530e82f37f919b21eed065646557966f9d2cc75764162a047497"
+        }
+      ]
+    },
+    {
+      "authority": "runtime.graph_registry.build_graph_artifacts",
+      "builder": "runtime/graph_registry.py",
+      "consumers": [
+        "runtime.project_stream_orchestrator"
+      ],
+      "graph_id": "project-stream-dependency",
+      "graph_revision": "a0276b85653ac57747b7685c691f02a0352c852b0f55cb0ddb1c26962c3b4a85",
+      "invalidation_rule": "graph manifest source drift",
+      "path": "registry/graphs/project_stream_dependency_graph.json",
+      "purpose": "project stream orchestration execution order",
+      "rebuild_gate": "block_until_rebuilt",
+      "source_revisions": [
+        {
+          "path": "runtime/graph_registry.py",
+          "revision": "11c2b8d85214530e82f37f919b21eed065646557966f9d2cc75764162a047497"
+        }
+      ]
+    },
+    {
+      "authority": "runtime.graph_registry.build_graph_artifacts",
+      "builder": "runtime/graph_registry.py",
+      "consumers": [
+        "runtime.system_graph"
+      ],
+      "graph_id": "system-asset",
+      "graph_revision": "1d08b6cc8c0fed96c02192c1a7dffe990d0c386f2f7329f13d74ca1eb655f624",
+      "invalidation_rule": "graph manifest source drift",
+      "path": "registry/graphs/system_asset_graph.json",
+      "purpose": "system asset ownership and integration topology",
+      "rebuild_gate": "block_until_rebuilt",
+      "source_revisions": [
+        {
+          "path": "runtime/graph_registry.py",
+          "revision": "11c2b8d85214530e82f37f919b21eed065646557966f9d2cc75764162a047497"
+        }
+      ]
+    }
+  ],
+  "schema_version": "px.graph-authority-manifest/1.0"
+}

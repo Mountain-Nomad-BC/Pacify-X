@@ -40,7 +40,7 @@ def test_every_inventoried_count_rejects_deliberate_corruption():
         payload = json.loads((ROOT / record["path"]).read_text(encoding="utf-8"))
         corrupted = copy.deepcopy(payload)
         corrupted[record["count_key"]] += 1
-        assert validate_envelope_document(corrupted, record), (
+        assert validate_envelope_document(corrupted, record, root=ROOT), (
             record["path"],
             record["count_key"],
         )

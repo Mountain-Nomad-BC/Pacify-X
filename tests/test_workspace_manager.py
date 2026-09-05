@@ -37,6 +37,7 @@ import runtime.workspace_manager as workspace_runtime
 from runtime.file_lock import FileLock, FileLockTimeout
 from runtime.event_ledger import validate_event_ledger
 from runtime.test_profiles import ProcessingOrderBlocked
+from runtime.trusted_evidence import ResolvedEvidence
 
 
 ROOT = Path(__file__).parents[1]
@@ -335,6 +336,8 @@ class WorkspaceManagerTests(unittest.TestCase):
                     workspace, "prj_alpha", "evidence", actor_id="agent_operator"
                 )
             transfer_request = Path(directory) / "transfer.json"
+            evidence_store = workspace / "projects_tracking/transfer-evidence"
+            evidence_store.mkdir()
             transfer_request.write_text(
                 json.dumps(
                     {
@@ -347,6 +350,13 @@ class WorkspaceManagerTests(unittest.TestCase):
                         "payload": {
                             "source": "notes.md",
                             "destination": "imports/alpha-note.md",
+                            "evidence_store": "projects_tracking/transfer-evidence",
+                            "evidence_references": {
+                                "sanitization": "evidence:sanitize",
+                                "human_approval": "evidence:approve",
+                                "destination_ownership": "evidence:own",
+                                "tests": "evidence:test"
+                            },
                             "package": {
                                 "transfer_id": "transfer_alpha_beta",
                                 "source_project_id": "prj_alpha",
@@ -368,9 +378,28 @@ class WorkspaceManagerTests(unittest.TestCase):
                 + "\n",
                 encoding="utf-8",
             )
-            transferred = run_workflow_request(
-                workspace, transfer_request, source_root=ROOT, apply=True
-            )
+            verified_transfer_record = {
+                "source_project_id": "prj_alpha",
+                "destination_project_id": "prj_beta",
+                "result": {"accepted": True},
+            }
+            with patch(
+                "runtime.workspace_manager.TrustedEvidenceResolver.resolve",
+                return_value=ResolvedEvidence(
+                    "evidence:verified",
+                    verified_transfer_record,
+                    True,
+                    True,
+                    True,
+                    True,
+                    True,
+                    True,
+                    (),
+                ),
+            ):
+                transferred = run_workflow_request(
+                    workspace, transfer_request, source_root=ROOT, apply=True
+                )
             self.assertTrue(transferred["valid"])
             self.assertEqual(
                 (workspace / "projects/beta/imports/alpha-note.md").read_bytes(),

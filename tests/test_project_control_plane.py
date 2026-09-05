@@ -24,8 +24,10 @@ from runtime.project_control_plane import (
 from runtime.project_stream_controls import (
     ScopeEnvelope,
     SwitchEvidence,
+    TransferEvidenceReferences,
     TransferPackage,
 )
+from runtime.trusted_evidence import ResolvedEvidence
 
 
 def scope(project: str) -> ScopeEnvelope:
@@ -157,8 +159,39 @@ class ProjectControlPlaneTests(unittest.TestCase):
                 True,
                 True,
             )
+            references = TransferEvidenceReferences(
+                "evidence:sanitize",
+                "evidence:approve",
+                "evidence:own",
+                "evidence:test",
+            )
+
+            class VerifiedTransferResolver:
+                def resolve(self, reference, **_kwargs):
+                    return ResolvedEvidence(
+                        reference,
+                        {
+                            "source_project_id": "old",
+                            "destination_project_id": "new",
+                            "result": {"accepted": True},
+                        },
+                        True,
+                        True,
+                        True,
+                        True,
+                        True,
+                        True,
+                        (),
+                    )
+
             imported = import_transfer(
-                root, source, root / "destination" / "capability.txt", package, ledger
+                root,
+                source,
+                root / "destination" / "capability.txt",
+                package,
+                ledger,
+                references,
+                VerifiedTransferResolver(),
             )
             self.assertEqual(imported["decision"], "imported")
 

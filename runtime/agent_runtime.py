@@ -857,6 +857,13 @@ class AgentRuntimeController:
         spec: AgentSpec,
         admission: Mapping[str, object],
         live_hashes: Mapping[str, str],
+        *,
+        memory_context: Mapping[str, object] | None = None,
+        handoff_contexts: Sequence[Mapping[str, object]] = (),
+        task_plan: Mapping[str, object] | None = None,
+        placement: Mapping[str, object] | None = None,
+        governed: bool = False,
+        resolution_errors: Sequence[str] = (),
     ) -> dict[str, object]:
         tools: list[dict[str, object]] = []
         for binding_id in spec.tool_binding_ids:
@@ -872,15 +879,67 @@ class AgentRuntimeController:
                     "effect_grant_ids": list(binding.get("effect_grant_ids", [])),
                 }
             )
-        blockers: list[str] = []
+        blockers: list[str] = list(map(str, resolution_errors))
         if tools and spec.model.get("provider") == "pacify-local":
             blockers.append("local_model_tool_calling_unavailable")
-        if spec.memory_binding_ids:
+        memory_resolved = bool(
+            not spec.memory_binding_ids
+            or (
+                memory_context
+                and memory_context.get("eligible") is True
+                and tuple(sorted(map(str, memory_context.get("binding_ids", ()))))
+                == tuple(sorted(spec.memory_binding_ids))
+                and memory_context.get("project_id") == spec.project_id
+            )
+        )
+        if not memory_resolved:
             blockers.append("memory_bindings_not_runtime_resolved")
-        if spec.handoff_agent_ids:
+        handoff_senders = tuple(
+            sorted(
+                str(item.get("sender_agent_id"))
+                for item in handoff_contexts
+                if item.get("consumable") is True
+                and item.get("receiver_agent_id") == spec.agent_id
+                and item.get("project_id") == spec.project_id
+                and item.get("receiver_revision")
+                == admission.get("agent_revision_sha256")
+            )
+        )
+        handoffs_resolved = not spec.handoff_agent_ids or handoff_senders == tuple(
+            sorted(spec.handoff_agent_ids)
+        )
+        if not handoffs_resolved:
             blockers.append("handoff_agents_not_runtime_resolved")
+        if governed:
+            from .execution_placement import _hash
+            from .task_execution_plan import validate_task_execution_plan
+
+            plan_valid = bool(
+                task_plan
+                and validate_task_execution_plan(task_plan)["valid"]
+                and task_plan.get("project_id") == spec.project_id
+            )
+            if not plan_valid:
+                blockers.append("task_plan_not_runtime_resolved")
+            placement_unsigned = {
+                key: value
+                for key, value in (placement or {}).items()
+                if key != "placement_sha256"
+            }
+            placement_valid = bool(
+                plan_valid
+                and placement
+                and placement.get("placement_sha256") == _hash(placement_unsigned)
+                and placement.get("task_plan_sha256") == task_plan.get("plan_sha256")
+                and isinstance(task_plan.get("model_attachment"), Mapping)
+                and placement.get("model_attachment_sha256")
+                == task_plan["model_attachment"].get("attachment_sha256")
+            )
+            if not placement_valid:
+                blockers.append("placement_not_runtime_resolved")
+        blockers = sorted(set(blockers))
         return {
-            "schema_version": "px.agent-execution-preview/1.0",
+            "schema_version": "px.agent-execution-preview/1.1",
             "agent_id": spec.agent_id,
             "version": spec.version,
             "eligible": not blockers,
@@ -894,6 +953,19 @@ class AgentRuntimeController:
             "tools": tools,
             "memory_binding_ids": list(spec.memory_binding_ids),
             "handoff_agent_ids": list(spec.handoff_agent_ids),
+            "memory_context_receipt_sha256": (
+                memory_context.get("receipt_sha256") if memory_context else None
+            ),
+            "handoff_packet_sha256": sorted(
+                str(item.get("packet_sha256")) for item in handoff_contexts
+            ),
+            "task_plan_sha256": task_plan.get("plan_sha256") if task_plan else None,
+            "model_attachment_sha256": (
+                task_plan.get("model_attachment", {}).get("attachment_sha256")
+                if task_plan and isinstance(task_plan.get("model_attachment"), Mapping)
+                else None
+            ),
+            "placement_sha256": placement.get("placement_sha256") if placement else None,
             "input_schema": dict(spec.input_schema),
             "output_schema": dict(spec.output_schema),
             "authority_record_hashes": dict(live_hashes),
@@ -906,6 +978,198 @@ class AgentRuntimeController:
         """Resolve the exact saved execution contract without launching anything."""
         _record_path, admission, live_hashes = self._admitted_context(spec)
         return self._resolved_preview(spec, admission, live_hashes)
+
+    def preview_governed(
+        self,
+        spec: AgentSpec,
+        *,
+        task_plan: Mapping[str, object],
+        placement: Mapping[str, object],
+        memory_query_plan=None,
+        memory_records=(),
+        handoff_inputs: Sequence[Mapping[str, object]] = (),
+        memory_now_utc=None,
+    ) -> dict[str, object]:
+        """Resolve broker memory and acknowledged handoffs without effects."""
+        from .agent_handoff import consume_handoff
+        from .memory_broker import materialize_memory_context
+
+        _record_path, admission, live_hashes = self._admitted_context(spec)
+        errors: list[str] = []
+        memory_context = None
+        if spec.memory_binding_ids:
+            try:
+                if (
+                    memory_query_plan.project_id != spec.project_id
+                    or memory_query_plan.agent_id != spec.agent_id
+                    or tuple(sorted(memory_query_plan.binding_ids))
+                    != tuple(sorted(spec.memory_binding_ids))
+                ):
+                    raise PermissionError("memory query plan does not bind this agent")
+                memory_context = materialize_memory_context(
+                    memory_query_plan, memory_records, now_utc=memory_now_utc
+                )
+                if memory_context.get("eligible") is not True:
+                    errors.append("memory_context_quarantined")
+            except Exception as error:
+                errors.append(f"memory_context_invalid:{type(error).__name__}")
+        handoff_contexts = []
+        for item in handoff_inputs:
+            try:
+                handoff_contexts.append(
+                    consume_handoff(
+                        item["packet"],
+                        item.get("acknowledgment"),
+                        **dict(item.get("validation_context", {})),
+                    )
+                )
+            except Exception as error:
+                errors.append(f"handoff_invalid:{type(error).__name__}")
+        for context in handoff_contexts:
+            if (
+                context.get("task_plan_id") != task_plan.get("plan_id")
+                or context.get("task_plan_revision") != task_plan.get("plan_sha256")
+                or (
+                    memory_query_plan is not None
+                    and context.get("memory_query_plan_sha256")
+                    != memory_query_plan.plan_sha256
+                )
+            ):
+                errors.append("handoff_plan_binding_mismatch")
+        return self._resolved_preview(
+            spec,
+            admission,
+            live_hashes,
+            memory_context=memory_context,
+            handoff_contexts=handoff_contexts,
+            task_plan=task_plan,
+            placement=placement,
+            governed=True,
+            resolution_errors=errors,
+        )
+
+    def execute_governed_plan(
+        self,
+        spec: AgentSpec,
+        *,
+        task_plan: Mapping[str, object],
+        placement: Mapping[str, object],
+        approval: bool,
+        gpu_fn,
+        cpu_fn,
+        memory_query_plan=None,
+        memory_records=(),
+        handoff_inputs: Sequence[Mapping[str, object]] = (),
+        memory_now_utc=None,
+    ) -> dict[str, object]:
+        """Run exact plan inputs only after Studio durable admission."""
+        if not approval:
+            raise PermissionError("governed agent execution requires explicit host approval")
+        record_path, admission, _live_hashes = self._admitted_context(spec)
+        preview = self.preview_governed(
+            spec,
+            task_plan=task_plan,
+            placement=placement,
+            memory_query_plan=memory_query_plan,
+            memory_records=memory_records,
+            handoff_inputs=handoff_inputs,
+            memory_now_utc=memory_now_utc,
+        )
+        if preview["eligible"] is not True:
+            raise PermissionError(
+                "governed agent preview is blocked: "
+                + ", ".join(map(str, preview["blockers"]))
+            )
+        request_sha = digest(
+            {
+                "task_plan_sha256": task_plan["plan_sha256"],
+                "placement_sha256": placement["placement_sha256"],
+                "memory_context_receipt_sha256": preview[
+                    "memory_context_receipt_sha256"
+                ],
+                "handoff_packet_sha256": preview["handoff_packet_sha256"],
+            }
+        )
+        state = self.run_control.create(
+            kind="agent",
+            subject_id=spec.agent_id,
+            version=spec.version,
+            owner=spec.owner,
+            revision_sha256=str(admission["agent_revision_sha256"]),
+            request_sha256=request_sha,
+            checkpoint={
+                "phase": "governed-plan-authorized",
+                "task_plan_sha256": task_plan["plan_sha256"],
+                "placement_sha256": placement["placement_sha256"],
+            },
+        )
+        run_id = str(state["run_id"])
+        self.run_control.transition(
+            run_id,
+            "running",
+            actor=spec.owner,
+            approved=True,
+            checkpoint={**dict(state["checkpoint"]), "phase": "governed-plan-running"},
+            operation="agent.governed-plan.start",
+        )
+        try:
+            value, outcome = execute_agent_plan(
+                self.project_root,
+                task_plan,
+                placement,
+                run_id=run_id,
+                gpu_fn=gpu_fn,
+                cpu_fn=cpu_fn,
+            )
+        except Exception as error:
+            current = self.run_control.read(run_id)
+            self.run_control.transition(
+                run_id,
+                "failed",
+                actor=spec.owner,
+                approved=True,
+                checkpoint={**dict(current["checkpoint"]), "phase": "failed"},
+                failure={"code": type(error).__name__, "message": str(error)[:500]},
+                operation="agent.governed-plan.failed",
+            )
+            raise
+        current = self.run_control.read(run_id)
+        final = self.run_control.transition(
+            run_id,
+            "succeeded",
+            actor=spec.owner,
+            approved=True,
+            checkpoint={
+                **dict(current["checkpoint"]),
+                "phase": "succeeded",
+                "outcome_sha256": outcome["outcome_sha256"],
+                "capacity_release_sha256": outcome["capacity_release"][
+                    "release_sha256"
+                ],
+            },
+            operation="agent.governed-plan.succeeded",
+        )
+        receipt = {
+            "schema_version": "px.agent-governed-execution-receipt/1.0",
+            "run_id": run_id,
+            "agent_id": spec.agent_id,
+            "agent_revision_sha256": admission["agent_revision_sha256"],
+            "task_plan_sha256": task_plan["plan_sha256"],
+            "model_attachment_sha256": preview["model_attachment_sha256"],
+            "placement_sha256": placement["placement_sha256"],
+            "memory_context_receipt_sha256": preview[
+                "memory_context_receipt_sha256"
+            ],
+            "handoff_packet_sha256": preview["handoff_packet_sha256"],
+            "outcome": outcome,
+            "result_sha256": digest(value),
+            "control_sequence": final["sequence"],
+            "effects_studio_admitted": True,
+            "host_authority_retained": True,
+        }
+        signed = self.authority.sign_receipt(receipt)
+        write_json_atomic(record_path.parent / "runs" / f"{run_id}.json", signed)
+        return signed
 
     def _new_session(
         self, spec: AgentSpec, task: Mapping[str, object], *, approval: bool
@@ -1849,4 +2113,91 @@ class AgentRuntimeController:
             actor=approved_by,
             approved=approved,
             stale_after_seconds=stale_after_seconds,
+        )
+
+def consume_agent_handoff(packet, acknowledgment, **validation_context):
+    """Runtime boundary: no handoff context is usable before acknowledgment."""
+    from .agent_handoff import consume_handoff
+
+    return consume_handoff(packet, acknowledgment, **validation_context)
+
+
+def submit_agency_selection_to_studio(controller, request):
+    """Keep Studio run control as the only executor for Agency selections."""
+    from .agency_studio_adapter import submit_studio_agent_request
+
+    return submit_studio_agent_request(controller, request)
+
+
+def execute_agent_plan(
+    root,
+    task_plan,
+    placement,
+    *,
+    run_id,
+    gpu_fn,
+    cpu_fn,
+    oom_retry_count=2,
+):
+    """Execute one plan through its exact placement and always release capacity."""
+    from .execution_placement import PlacementCapacityLedger, _hash
+    from .hardware_routing import Device, RoutingDecision, execute_with_fallback
+    from .task_execution_plan import validate_task_execution_plan
+
+    report = validate_task_execution_plan(task_plan)
+    if not report["valid"] or placement.get("task_plan_sha256") != task_plan.get(
+        "plan_sha256"
+    ):
+        raise ValueError("agent execution requires a placement bound to an intact plan")
+    unsigned = {
+        key: value for key, value in placement.items() if key != "placement_sha256"
+    }
+    if placement.get("placement_sha256") != _hash(unsigned):
+        raise ValueError("agent execution placement is invalid")
+    attachment = task_plan.get("model_attachment")
+    if not isinstance(attachment, Mapping) or placement.get(
+        "model_attachment_sha256"
+    ) != attachment.get("attachment_sha256"):
+        raise ValueError("agent execution placement does not match its model")
+
+    ledger = PlacementCapacityLedger(Path(root))
+    reservation = ledger.reserve(placement, run_id=str(run_id))
+    outcome = {
+        "schema_version": "px.governed-agent-placement-outcome/1.0",
+        "run_id": str(run_id),
+        "task_plan_sha256": task_plan["plan_sha256"],
+        "placement_sha256": placement["placement_sha256"],
+        "reservation_sha256": reservation["reservation_sha256"],
+        "status": "failed",
+    }
+    try:
+        decision = RoutingDecision(
+            Device(str(placement["selected_device"])),
+            str(placement.get("reason", "")),
+            batch_size=placement.get("batch_size"),
+            fallback_device=Device(str(placement["fallback"]["device"])),
+            required_checks=tuple(map(str, placement.get("required_checks", ()))),
+            executor_backend=placement.get("executor_backend"),
+            device_index=placement.get("device_index"),
+        )
+        value, telemetry = execute_with_fallback(
+            decision,
+            gpu_fn=gpu_fn,
+            cpu_fn=cpu_fn,
+            oom_retry_count=oom_retry_count,
+        )
+        outcome.update({"status": "succeeded", "telemetry": telemetry})
+        return value, outcome
+    except Exception as error:
+        outcome.update(
+            {
+                "failure_type": type(error).__name__,
+                "failure_message": str(error)[:500],
+            }
+        )
+        raise
+    finally:
+        outcome["outcome_sha256"] = _hash(outcome)
+        outcome["capacity_release"] = ledger.release(
+            reservation, outcome_sha256=str(outcome["outcome_sha256"])
         )

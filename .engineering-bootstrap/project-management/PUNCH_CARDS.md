@@ -1,19 +1,16 @@
 # Punch Cards
 
-Use bounded cards with explicit acceptance evidence.
+The active durable card set is `.engineering-bootstrap/punch-cards/cohesion-closure-20260904/`.
 
-## PM-001 — Commission bootstrap
+- Denominator: `evidence/commencement-audit-20260905T002921Z/confirmed-denominator.json`
+- DAG: `.engineering-bootstrap/punch-cards/cohesion-closure-20260904/dag.json`
+- Exact hashes: `.engineering-bootstrap/punch-cards/cohesion-closure-20260904/SHA256SUMS`
+- Cards: 43 total; six audit cards closed; 37 repair/integration/proof cards remain
+- Graph: 86 edges, zero unknown dependencies, zero cycles
+- Active card: `PX-ASSURE-001`
 
-Status: complete after `engineering-bootstrap project-check --project .` passes.
+Lifecycle: `planned -> admitted -> in_progress -> focused_green -> downstream_green -> closed`.
 
-## PM-002 — Confirm project brief
+A card with downstream consumers cannot close at `focused_green`. During repair, each source-changing card must record its exact changed files/symbols, calculate the full transitive consumer cone, run focused and discriminating negative tests, run all affected downstream tests and governed sections, and prove zero leaked resources.
 
-Status: complete. The user confirmed the adversarial audit, full local repair/implementation scope, bounded PX-native skill architecture, and deployment/destructive exclusions.
-
-## PM-003 — Freeze acceptance contract
-
-Status: complete. The acceptance contract is the dependency-ordered ledger in `docs/PX_UNIVERSAL_VISIBILITY_PUNCH_CARDS.md`, including current hashes, negative tests, startup budgets, and exact-package validation.
-
-## PM-004 — Repair current operational product surfaces
-
-Status: active. Historical card receipts are retained, but they do not close the current product. The authoritative frontier is `registry/operational_surface_audit_20260816.json`: 67 traced findings, 40 open and 27 pending live verification. The requirement crosswalk and dependency order are in `registry/instruction_reconciliation_audit_20260816.json`. No certification work is authorized until the operational frontier closes and the user explicitly resumes certification.
+No full profile, validation certification gate, package, install, installed-operational, preflight, certification, publication, or release identity/tag mutation is permitted until the complete DAG is downstream green and repair-frozen.

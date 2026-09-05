@@ -1,0 +1,51 @@
+{
+  "card_id": "PX-COMM-003",
+  "title": "Ledger-quality warning adjudication",
+  "severity": "high",
+  "type": "audit",
+  "status": "closed",
+  "root_cause": "Ledger diagnostics mixed historical modeling debt, current evidence deficiency, and inventory reconciliation.",
+  "source_requirement": "Classify every warning without treating hash-chain validity as release cleanliness.",
+  "live_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/ledger-quality-dispositions.json"
+  ],
+  "files": [
+    "evidence/commencement-audit-20260905T002921Z/ledger-quality-dispositions.json"
+  ],
+  "symbols": [],
+  "dependencies": [
+    "PX-COMM-001"
+  ],
+  "downstream_consumers": [
+    "PX-COMM-006"
+  ],
+  "change_classes": [
+    "METADATA_ONLY"
+  ],
+  "implementation_steps": [
+    "Enumerate all live warnings.",
+    "Assign one required classification and action.",
+    "Reconcile classification totals."
+  ],
+  "negative_cases": [
+    "Do not infer current feature proof from historical control resolution.",
+    "Do not delete or normalize historical debt."
+  ],
+  "focused_tests": [
+    "Warning-count and classification-total reconciliation."
+  ],
+  "affected_tests": [],
+  "affected_sections": [],
+  "projection_invalidations": [],
+  "evidence_required": [
+    "All 19 warnings with action and product-defect flag."
+  ],
+  "rollback": "Remove only erroneous audit annotations.",
+  "acceptance_criteria": [
+    "Six reconciliation items, three current deficiencies, and ten historical debts are explicit.",
+    "Totals equal the warning denominator."
+  ],
+  "completion_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/ledger-quality-dispositions.json"
+  ]
+}

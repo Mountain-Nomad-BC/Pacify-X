@@ -1,0 +1,51 @@
+{
+  "card_id": "PX-COMM-002",
+  "title": "16-card operational-gap adjudication",
+  "severity": "critical",
+  "type": "audit",
+  "status": "closed",
+  "root_cause": "Sixteen non-final operational cards had strong historical behavior evidence without a current-source successor binding.",
+  "source_requirement": "Classify each named card independently without upgrading historical evidence into current proof.",
+  "live_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/ledger-card-dispositions.json"
+  ],
+  "files": [
+    "evidence/commencement-audit-20260905T002921Z/ledger-card-dispositions.json"
+  ],
+  "symbols": [],
+  "dependencies": [
+    "PX-COMM-001"
+  ],
+  "downstream_consumers": [
+    "PX-COMM-006"
+  ],
+  "change_classes": [
+    "METADATA_ONLY"
+  ],
+  "implementation_steps": [
+    "Read each current ledger card.",
+    "Bind historical final82 evidence to its exact old identity.",
+    "Assign a current disposition and successor proof obligation."
+  ],
+  "negative_cases": [
+    "Do not bulk-close cards from aggregate control evidence.",
+    "Do not discard historical installed evidence."
+  ],
+  "focused_tests": [
+    "Operational-card disposition completeness check."
+  ],
+  "affected_tests": [],
+  "affected_sections": [],
+  "projection_invalidations": [],
+  "evidence_required": [
+    "One disposition for each of the 16 required card IDs."
+  ],
+  "rollback": "Restore only the audit projection; never rewrite ledger history.",
+  "acceptance_criteria": [
+    "All 16 cards are accounted for exactly once.",
+    "Every card retains its current ledger state and explicit proof obligation."
+  ],
+  "completion_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/ledger-card-dispositions.json"
+  ]
+}

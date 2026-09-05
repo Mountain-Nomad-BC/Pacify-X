@@ -1,0 +1,70 @@
+{
+  "card_id": "PX-SYS-001",
+  "title": "Compact PX world state",
+  "severity": "high",
+  "type": "integration",
+  "status": "planned",
+  "root_cause": "Operators must hydrate many large registries to learn current source, blockers, staleness, capability, agent, model, hardware, authority, and evidence state.",
+  "source_requirement": "Generate a small metadata-only world-state projection with lazy detail links.",
+  "live_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/current-owners-and-gaps.json"
+  ],
+  "files": [
+    "runtime/world_state.py",
+    "registry/px_world_state.json",
+    "tests/test_world_state.py"
+  ],
+  "symbols": [
+    "build_world_state",
+    "validate_world_state"
+  ],
+  "dependencies": [
+    "PX-AGENT-003",
+    "PX-EFF-003",
+    "PX-PROVIDER-001",
+    "PX-ROUTE-003",
+    "PX-SKILL-003"
+  ],
+  "downstream_consumers": [
+    "PX-SYS-002"
+  ],
+  "change_classes": [
+    "SCHEMA",
+    "METADATA_ONLY"
+  ],
+  "implementation_steps": [
+    "Define bounded projection schema and size budget.",
+    "Collect only compact current summaries and exact revisions.",
+    "List blockers/stale projections and next actions.",
+    "Link rather than embed details."
+  ],
+  "negative_cases": [
+    "Private memory/logs embedded.",
+    "Unbounded card or evidence history.",
+    "Stale source revision.",
+    "Missing blocker.",
+    "Detail hydrated during startup."
+  ],
+  "focused_tests": [
+    "tests/test_world_state.py"
+  ],
+  "affected_tests": [
+    "Startup metadata, generated artifacts, dashboard API tests."
+  ],
+  "affected_sections": [
+    "dashboard-extension",
+    "testing-governance"
+  ],
+  "projection_invalidations": [
+    "registry/px_world_state.json"
+  ],
+  "evidence_required": [
+    "Deterministic projection, size budget, metadata-only startup proof."
+  ],
+  "rollback": "Remove generated world-state consumer and retain source registries.",
+  "acceptance_criteria": [
+    "Projection stays within declared size/count budgets.",
+    "Startup reads summaries without hydrating detail bodies."
+  ],
+  "completion_evidence": []
+}

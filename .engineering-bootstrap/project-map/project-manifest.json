@@ -1,30 +1,30 @@
 {
   "adapter_version": "2026-08-06.1",
   "build_stats": {
-    "rescanned_file_facts": 291,
-    "reused_file_facts": 5475
+    "rescanned_file_facts": 8,
+    "reused_file_facts": 5992
   },
   "caller_exclude_prefixes": [],
   "counts": {
-    "architecture_edges": 13392,
-    "architecture_nodes": 6145,
-    "call_edges": 12980,
-    "configuration_keys": 43429,
-    "contracts": 201,
-    "data_flows": 3724,
-    "dependency_edges": 7382,
-    "files": 5766,
+    "architecture_edges": 15518,
+    "architecture_nodes": 6417,
+    "call_edges": 17571,
+    "configuration_keys": 13635,
+    "contracts": 226,
+    "data_flows": 5350,
+    "dependency_edges": 9236,
+    "files": 6000,
     "integrations": 22,
-    "retrieval_documents": 57673,
-    "risks": 5,
+    "retrieval_documents": 30668,
+    "risks": 6,
     "routes": 9,
     "services": 0,
-    "symbols": 8241,
-    "test_links": 1196
+    "symbols": 10770,
+    "test_links": 631
   },
   "exclusion_counts": {
-    "default": 40,
-    "gitignore": 2,
+    "default": 35,
+    "gitignore": 12,
     "sensitive_file": 1,
     "virtual_environment": 1
   },
@@ -32,7 +32,7 @@
     "available": true,
     "command": "git ls-files --cached --others --exclude-standard",
     "mode": "git-exclude-standard",
-    "record_count": 7240
+    "record_count": 8899
   },
   "incremental": true,
   "limits": {
@@ -61,7 +61,7 @@
     "retrieval-index.json",
     "map-summary.md"
   ],
-  "map_revision": "9b9bcefc6882b1bd80548b86e1bc121ae863a21b8401fce485ec669afb3c46f7",
+  "map_revision": "74da011871fe44fbb2fc49a9eb74d2852d7438da9cc8c5549054c6f9f970351f",
   "mapper_version": "0.4.0",
   "project_name": "Pacify-X",
   "project_root": "C:/Users/Ben/Downloads/bootstrap_project/Pacify-X",
@@ -121,5 +121,5 @@
     "quarantine",
     "venv"
   ],
-  "source_inventory_sha256": "70b52e0d3610a29d1977326903c27f298fc97bcc26d549799182424d7a4ea10b"
+  "source_inventory_sha256": "3fcd8228fdcd90f9ad342cecdb9fe6c21dc5569a8d9c233d7c1143a5a93409f6"
 }

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:capability_semantic_profile",
+  "title": "PX Capability Semantic Profile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "capability_id", "canonical_owner", "positive_intents", "negative_intents", "domains", "mechanisms", "inputs", "outputs", "effects", "exclusions", "synonyms", "ambiguous_synonyms", "ambiguity_guards", "failure_modes", "maturity", "evidence_sources"],
+  "properties": {
+    "schema_version": {"const": "px.capability-semantic-profile/1.0"},
+    "capability_id": {"type": "string", "minLength": 1},
+    "canonical_owner": {"type": "string", "minLength": 1},
+    "positive_intents": {"$ref": "#/$defs/stringsNonempty"},
+    "negative_intents": {"$ref": "#/$defs/strings"},
+    "domains": {"$ref": "#/$defs/strings"},
+    "mechanisms": {"$ref": "#/$defs/strings"},
+    "inputs": {"$ref": "#/$defs/strings"},
+    "outputs": {"$ref": "#/$defs/strings"},
+    "effects": {"$ref": "#/$defs/strings"},
+    "exclusions": {"$ref": "#/$defs/strings"},
+    "synonyms": {"$ref": "#/$defs/strings"},
+    "ambiguous_synonyms": {"$ref": "#/$defs/strings"},
+    "ambiguity_guards": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["term", "disambiguate_by"], "properties": {"term": {"type": "string", "minLength": 1}, "disambiguate_by": {"type": "string", "minLength": 1}}}},
+    "failure_modes": {"$ref": "#/$defs/stringsNonempty"},
+    "maturity": {"type": ["string", "null"], "enum": ["L0", "L1", "L2", "L3", "L4", "L5", "L6", null]},
+    "evidence_sources": {"$ref": "#/$defs/stringsNonempty"}
+  },
+  "$defs": {
+    "strings": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "stringsNonempty": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+  }
+}

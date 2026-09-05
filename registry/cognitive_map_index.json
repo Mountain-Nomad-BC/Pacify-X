@@ -1,7 +1,7 @@
 {
   "schema_version": "1.1",
   "loading_rule": "metadata_only_global_map_then_hydrate_selected_records",
-  "revision": "aa9ee42a6795196e78eb1a9128d7a90d6ebde81819879ec96478bdf9f506138f",
+  "revision": "d8740ff21b7844825c6cb0d9907a0365084443b2b0a143522b02a07a4307fedf",
   "record_count": 985,
   "edge_count": 1917,
   "kind_counts": {
@@ -19,7 +19,7 @@
       "id": "agency.academic.anthropologist",
       "kind": "agent",
       "title": "Anthropologist",
-      "summary": "Expert in cultural systems, rituals, kinship, belief systems, and ethnographic method — builds culturally coherent societies that feel lived-in rather than invented",
+      "summary": "Expert in cultural systems, rituals, kinship, belief systems, and ethnographic method \u2014 builds culturally coherent societies that feel lived-in rather than invented",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "academic",
@@ -69,7 +69,7 @@
       "id": "agency.academic.geographer",
       "kind": "agent",
       "title": "Geographer",
-      "summary": "Expert in physical and human geography, climate systems, cartography, and spatial analysis — builds geographically coherent worlds where terrain, climate, resources, and settlement patterns make scientific sense",
+      "summary": "Expert in physical and human geography, climate systems, cartography, and spatial analysis \u2014 builds geographically coherent worlds where terrain, climate, resources, and settlement patterns make scientific sense",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "academic",
@@ -124,7 +124,7 @@
       "id": "agency.academic.historian",
       "kind": "agent",
       "title": "Historian",
-      "summary": "Expert in historical analysis, periodization, material culture, and historiography — validates historical coherence and enriches settings with authentic period detail grounded in primary and secondary sources",
+      "summary": "Expert in historical analysis, periodization, material culture, and historiography \u2014 validates historical coherence and enriches settings with authentic period detail grounded in primary and secondary sources",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "academic",
@@ -170,7 +170,7 @@
       "id": "agency.academic.narratologist",
       "kind": "agent",
       "title": "Narratologist",
-      "summary": "Expert in narrative theory, story structure, character arcs, and literary analysis — grounds advice in established frameworks from Propp to Campbell to modern narratology",
+      "summary": "Expert in narrative theory, story structure, character arcs, and literary analysis \u2014 grounds advice in established frameworks from Propp to Campbell to modern narratology",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "academic",
@@ -214,7 +214,7 @@
       "id": "agency.academic.psychologist",
       "kind": "agent",
       "title": "Psychologist",
-      "summary": "Expert in human behavior, personality theory, motivation, and cognitive patterns — builds psychologically credible characters and interactions grounded in clinical and research frameworks",
+      "summary": "Expert in human behavior, personality theory, motivation, and cognitive patterns \u2014 builds psychologically credible characters and interactions grounded in clinical and research frameworks",
       "owner": "runtime/agent_provider.py",
       "status": "reference_only",
       "domain": "academic",
@@ -264,7 +264,7 @@
       "id": "agency.academic.statistician",
       "kind": "agent",
       "title": "Statistician",
-      "summary": "Expert in quantitative research methodology, experimental design, and statistical inference — pressure-tests claims, designs sound studies, and separates real signal from noise, chance, and bias",
+      "summary": "Expert in quantitative research methodology, experimental design, and statistical inference \u2014 pressure-tests claims, designs sound studies, and separates real signal from noise, chance, and bias",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "academic",
@@ -470,7 +470,7 @@
       "id": "agency.design.persona-walkthrough-specialist",
       "kind": "agent",
       "title": "Persona Walkthrough Specialist",
-      "summary": "Simulate cognitive walkthroughs of web pages from a defined persona's psychological perspective — captures emotional reactions and rational thought at each scroll position, then delivers structured CRO reports grounded in LIFT, Cialdini, and Fogg frameworks",
+      "summary": "Simulate cognitive walkthroughs of web pages from a defined persona's psychological perspective \u2014 captures emotional reactions and rational thought at each scroll position, then delivers structured CRO reports grounded in LIFT, Cialdini, and Fogg frameworks",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "design",
@@ -848,7 +848,7 @@
       "id": "agency.engineering.ai-data-remediation-engineer",
       "kind": "agent",
       "title": "AI Data Remediation Engineer",
-      "summary": "\"Specialist in self-healing data pipelines — uses air-gapped local SLMs and semantic clustering to automatically detect, classify, and fix data anomalies at scale. Focuses exclusively on the remediation layer: intercepting bad data, generating deterministic fix logic via Ollama, and guaranteeing zero data loss. Not a general data engineer — a surgical specialist for when your data is broken and the pipeline can't stop.\"",
+      "summary": "\"Specialist in self-healing data pipelines \u2014 uses air-gapped local SLMs and semantic clustering to automatically detect, classify, and fix data anomalies at scale. Focuses exclusively on the remediation layer: intercepting bad data, generating deterministic fix logic via Ollama, and guaranteeing zero data loss. Not a general data engineer \u2014 a surgical specialist for when your data is broken and the pipeline can't stop.\"",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "engineering",
@@ -954,7 +954,7 @@
       "id": "agency.engineering.api-platform-engineer",
       "kind": "agent",
       "title": "API Platform Engineer",
-      "summary": "Expert API platform engineer for public and partner APIs — contract-first design (OpenAPI/gRPC), versioning and deprecation policy, SDK generation, API gateway concerns (auth, rate limiting, quotas), and developer-portal DX.",
+      "summary": "Expert API platform engineer for public and partner APIs \u2014 contract-first design (OpenAPI/gRPC), versioning and deprecation policy, SDK generation, API gateway concerns (auth, rate limiting, quotas), and developer-portal DX.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "engineering",
@@ -1170,7 +1170,7 @@
       "id": "agency.engineering.code-reviewer",
       "kind": "agent",
       "title": "Code Reviewer",
-      "summary": "Expert code reviewer who provides constructive, actionable feedback focused on correctness, maintainability, security, and performance — not style preferences.",
+      "summary": "Expert code reviewer who provides constructive, actionable feedback focused on correctness, maintainability, security, and performance \u2014 not style preferences.",
       "owner": "runtime/agent_provider.py",
       "status": "reference_only",
       "domain": "engineering",
@@ -1317,7 +1317,7 @@
       "id": "agency.engineering.data-visualization-engineer",
       "kind": "agent",
       "title": "Data Visualization Engineer",
-      "summary": "Expert data visualization engineer — chart-type selection by data and question, perceptually honest encodings, colorblind-safe data palettes, accessible and interactive charts, and rendering large datasets performantly with D3, Vega, and charting libraries.",
+      "summary": "Expert data visualization engineer \u2014 chart-type selection by data and question, perceptually honest encodings, colorblind-safe data palettes, accessible and interactive charts, and rendering large datasets performantly with D3, Vega, and charting libraries.",
       "owner": "runtime/agent_provider.py",
       "status": "reference_only",
       "domain": "engineering",
@@ -1409,7 +1409,7 @@
       "id": "agency.engineering.database-reliability-engineer",
       "kind": "agent",
       "title": "Database Reliability Engineer",
-      "summary": "Expert database reliability engineer (DBRE) — high availability and replication, automated failover, backup and point-in-time recovery, zero-downtime online schema migrations, connection pooling, and disaster-recovery drills. Focused on keeping data safe and available, not query tuning.",
+      "summary": "Expert database reliability engineer (DBRE) \u2014 high availability and replication, automated failover, backup and point-in-time recovery, zero-downtime online schema migrations, connection pooling, and disaster-recovery drills. Focused on keeping data safe and available, not query tuning.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "engineering",
@@ -1458,7 +1458,7 @@
       "id": "agency.engineering.desktop-app-engineer",
       "kind": "agent",
       "title": "Desktop App Engineer",
-      "summary": "Expert desktop application engineer for Electron and Tauri — secure IPC and process isolation, code signing and notarization, auto-update pipelines, native OS integration, and resource-footprint discipline.",
+      "summary": "Expert desktop application engineer for Electron and Tauri \u2014 secure IPC and process isolation, code signing and notarization, auto-update pipelines, native OS integration, and resource-footprint discipline.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "engineering",
@@ -1507,7 +1507,7 @@
       "id": "agency.engineering.developer-tooling-engineer",
       "kind": "agent",
       "title": "Developer Tooling Engineer",
-      "summary": "Expert developer-tooling and CLI engineer — building command-line tools and internal developer platforms with great DX: intuitive command design, helpful errors, shell completions, fast startup, cross-platform distribution, and scriptable, composable interfaces.",
+      "summary": "Expert developer-tooling and CLI engineer \u2014 building command-line tools and internal developer platforms with great DX: intuitive command design, helpful errors, shell completions, fast startup, cross-platform distribution, and scriptable, composable interfaces.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "engineering",
@@ -1837,7 +1837,7 @@
       "id": "agency.engineering.feishu-integration-developer",
       "kind": "agent",
       "title": "Feishu Integration Developer",
-      "summary": "Full-stack integration expert specializing in the Feishu (Lark) Open Platform — proficient in Feishu bots, mini programs, approval workflows, Bitable (multidimensional spreadsheets), interactive message cards, Webhooks, SSO authentication, and workflow automation, building enterprise-grade collaboration and automation solutions within the Feishu ecosystem.",
+      "summary": "Full-stack integration expert specializing in the Feishu (Lark) Open Platform \u2014 proficient in Feishu bots, mini programs, approval workflows, Bitable (multidimensional spreadsheets), interactive message cards, Webhooks, SSO authentication, and workflow automation, building enterprise-grade collaboration and automation solutions within the Feishu ecosystem.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "engineering",
@@ -1890,7 +1890,7 @@
       "id": "agency.engineering.filament-optimization-specialist",
       "kind": "agent",
       "title": "Filament Optimization Specialist",
-      "summary": "Expert in restructuring and optimizing Filament PHP admin interfaces for maximum usability and efficiency. Focuses on impactful structural changes — not just cosmetic tweaks.",
+      "summary": "Expert in restructuring and optimizing Filament PHP admin interfaces for maximum usability and efficiency. Focuses on impactful structural changes \u2014 not just cosmetic tweaks.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "engineering",
@@ -1941,7 +1941,7 @@
       "id": "agency.engineering.finops-engineer",
       "kind": "agent",
       "title": "FinOps Engineer",
-      "summary": "Expert cloud cost engineer for AWS/GCP/Azure — cost allocation and tagging, rightsizing, commitment planning (reserved instances/savings plans), egress and storage optimization, and unit-economics dashboards that tie spend to business value.",
+      "summary": "Expert cloud cost engineer for AWS/GCP/Azure \u2014 cost allocation and tagging, rightsizing, commitment planning (reserved instances/savings plans), egress and storage optimization, and unit-economics dashboards that tie spend to business value.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "engineering",
@@ -2045,7 +2045,7 @@
       "id": "agency.engineering.gaussdb-expert-engineer",
       "kind": "agent",
       "title": "GaussDB Expert Engineer",
-      "summary": "Expert database specialist focusing on GaussDB OLTP — Huawei's self-developed enterprise-grade relational database (NOT GaussDB(DWS) OLAP, NOT GaussDB(for openGauss) cloud service, NOT GaussDB(for MySQL)). Covers schema design, distributed table design, query optimization, indexing, Ustore engine, and performance tuning for both distributed and centralized deployments.",
+      "summary": "Expert database specialist focusing on GaussDB OLTP \u2014 Huawei's self-developed enterprise-grade relational database (NOT GaussDB(DWS) OLAP, NOT GaussDB(for openGauss) cloud service, NOT GaussDB(for MySQL)). Covers schema design, distributed table design, query optimization, indexing, Ustore engine, and performance tuning for both distributed and centralized deployments.",
       "owner": "runtime/agent_provider.py",
       "status": "reference_only",
       "domain": "engineering",
@@ -2292,7 +2292,7 @@
       "id": "agency.engineering.iot-fleet-engineer",
       "kind": "agent",
       "title": "IoT Fleet Engineer",
-      "summary": "Expert IoT and edge fleet engineer — device provisioning and identity, MQTT/telemetry pipelines, staged over-the-air (OTA) firmware updates with rollback, edge compute, and observability across fleets of unreliable, intermittently-connected devices.",
+      "summary": "Expert IoT and edge fleet engineer \u2014 device provisioning and identity, MQTT/telemetry pipelines, staged over-the-air (OTA) firmware updates with rollback, edge compute, and observability across fleets of unreliable, intermittently-connected devices.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "engineering",
@@ -2343,7 +2343,7 @@
       "id": "agency.engineering.it-service-manager",
       "kind": "agent",
       "title": "IT Service Manager",
-      "summary": "Expert IT service management specialist using ITIL 4 framework for service catalog design, incident and problem management, change control, SLA governance, CMDB maintenance, and continual service improvement — ensuring IT delivers reliable, measurable business value across any organization size",
+      "summary": "Expert IT service management specialist using ITIL 4 framework for service catalog design, incident and problem management, change control, SLA governance, CMDB maintenance, and continual service improvement \u2014 ensuring IT delivers reliable, measurable business value across any organization size",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "engineering",
@@ -2447,7 +2447,7 @@
       "id": "agency.engineering.minimal-change-engineer",
       "kind": "agent",
       "title": "Minimal Change Engineer",
-      "summary": "Engineering specialist focused on minimum-viable diffs — fixes only what was asked, refuses scope creep, prefers three similar lines over a premature abstraction. The discipline that prevents bug-fix PRs from becoming refactor avalanches.",
+      "summary": "Engineering specialist focused on minimum-viable diffs \u2014 fixes only what was asked, refuses scope creep, prefers three similar lines over a premature abstraction. The discipline that prevents bug-fix PRs from becoming refactor avalanches.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "engineering",
@@ -2555,7 +2555,7 @@
       "id": "agency.engineering.mobile-release-engineer",
       "kind": "agent",
       "title": "Mobile Release Engineer",
-      "summary": "Expert mobile release and distribution engineer for iOS and Android — code signing, provisioning, fastlane pipelines, App Store Connect and Play Console submission, phased rollouts, and crash-triaged release health.",
+      "summary": "Expert mobile release and distribution engineer for iOS and Android \u2014 code signing, provisioning, fastlane pipelines, App Store Connect and Play Console submission, phased rollouts, and crash-triaged release health.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "engineering",
@@ -2608,7 +2608,7 @@
       "id": "agency.engineering.multi-agent-systems-architect",
       "kind": "agent",
       "title": "Multi-Agent Systems Architect",
-      "summary": "Systems architect specializing in the design, coordination, and governance of multi-agent AI pipelines — covering topology selection, context management, inter-agent trust, failure recovery, human-in-the-loop gating, and observability for production-grade agent systems.",
+      "summary": "Systems architect specializing in the design, coordination, and governance of multi-agent AI pipelines \u2014 covering topology selection, context management, inter-agent trust, failure recovery, human-in-the-loop gating, and observability for production-grade agent systems.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "engineering",
@@ -2824,7 +2824,7 @@
       "id": "agency.engineering.privacy-engineer",
       "kind": "agent",
       "title": "Privacy Engineer",
-      "summary": "Expert privacy engineer who implements privacy in code — PII discovery and classification, data minimization, consent enforcement at the API layer, automated DSAR and deletion across services, pseudonymization/tokenization, and retention automation. Builds the technical controls a privacy policy only promises.",
+      "summary": "Expert privacy engineer who implements privacy in code \u2014 PII discovery and classification, data minimization, consent enforcement at the API layer, automated DSAR and deletion across services, pseudonymization/tokenization, and retention automation. Builds the technical controls a privacy policy only promises.",
       "owner": "runtime/agent_provider.py",
       "status": "reference_only",
       "domain": "engineering",
@@ -2878,7 +2878,7 @@
       "id": "agency.engineering.prompt-engineer",
       "kind": "agent",
       "title": "Prompt Engineer",
-      "summary": "Specialist in crafting, testing, and systematically optimizing prompts for LLMs — turning vague instructions into reliable, production-grade AI behaviors.",
+      "summary": "Specialist in crafting, testing, and systematically optimizing prompts for LLMs \u2014 turning vague instructions into reliable, production-grade AI behaviors.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "engineering",
@@ -2929,7 +2929,7 @@
       "id": "agency.engineering.rag-pipeline-engineer",
       "kind": "agent",
       "title": "RAG Pipeline Engineer",
-      "summary": "Production RAG specialist focused on chunking strategy, retrieval quality, hybrid search, re-ranking, and eval-driven iteration. Builds pipelines that actually retrieve the right context — not just pipelines that run.",
+      "summary": "Production RAG specialist focused on chunking strategy, retrieval quality, hybrid search, re-ranking, and eval-driven iteration. Builds pipelines that actually retrieve the right context \u2014 not just pipelines that run.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "engineering",
@@ -3139,7 +3139,7 @@
       "id": "agency.engineering.search-relevance-engineer",
       "kind": "agent",
       "title": "Search Relevance Engineer",
-      "summary": "Expert search engineer for Elasticsearch and OpenSearch — index and analyzer design, BM25 query tuning, hybrid lexical+vector retrieval, and judgment-based relevance evaluation with nDCG and online experiments.",
+      "summary": "Expert search engineer for Elasticsearch and OpenSearch \u2014 index and analyzer design, BM25 query tuning, hybrid lexical+vector retrieval, and judgment-based relevance evaluation with nDCG and online experiments.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "engineering",
@@ -3557,7 +3557,7 @@
       "id": "agency.engineering.video-streaming-engineer",
       "kind": "agent",
       "title": "Video Streaming Engineer",
-      "summary": "Expert video streaming engineer for adaptive bitrate delivery — HLS/DASH packaging, ffmpeg transcode ladders, CMAF low-latency, DRM, CDN delivery, and QoE-driven player tuning.",
+      "summary": "Expert video streaming engineer for adaptive bitrate delivery \u2014 HLS/DASH packaging, ffmpeg transcode ladders, CMAF low-latency, DRM, CDN delivery, and QoE-driven player tuning.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "engineering",
@@ -3602,7 +3602,7 @@
       "id": "agency.engineering.voice-ai-integration-engineer",
       "kind": "agent",
       "title": "Voice AI Integration Engineer",
-      "summary": "Expert in building end-to-end speech transcription pipelines using Whisper-style models and cloud ASR services — from raw audio ingestion through preprocessing, transcript cleanup, subtitle generation, speaker diarization, and structured downstream integration into apps, APIs, and CMS platforms.",
+      "summary": "Expert in building end-to-end speech transcription pipelines using Whisper-style models and cloud ASR services \u2014 from raw audio ingestion through preprocessing, transcript cleanup, subtitle generation, speaker diarization, and structured downstream integration into apps, APIs, and CMS platforms.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "engineering",
@@ -3663,7 +3663,7 @@
       "id": "agency.engineering.webassembly-engineer",
       "kind": "agent",
       "title": "WebAssembly Engineer",
-      "summary": "Expert WebAssembly engineer — compiling Rust/C++/Go to Wasm, JS interop and the boundary marshalling cost, WASI and server-side runtimes (Wasmtime/Wasmer), the component model, and near-native performance tuning.",
+      "summary": "Expert WebAssembly engineer \u2014 compiling Rust/C++/Go to Wasm, JS interop and the boundary marshalling cost, WASI and server-side runtimes (Wasmtime/Wasmer), the component model, and near-native performance tuning.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "engineering",
@@ -3720,7 +3720,7 @@
       "id": "agency.engineering.wechat-mini-program-developer",
       "kind": "agent",
       "title": "WeChat Mini Program Developer",
-      "summary": "Expert WeChat Mini Program developer specializing in 小程序 development with WXML/WXSS/WXS, WeChat API integration, payment systems, subscription messaging, and the full WeChat ecosystem.",
+      "summary": "Expert WeChat Mini Program developer specializing in \u5c0f\u7a0b\u5e8f development with WXML/WXSS/WXS, WeChat API integration, payment systems, subscription messaging, and the full WeChat ecosystem.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "engineering",
@@ -5300,7 +5300,7 @@
       "id": "agency.gis.bim-gis-specialist",
       "kind": "agent",
       "title": "BIM/GIS Specialist",
-      "summary": "Integration specialist who bridges Building Information Modeling and Geographic Information Systems — Revit/IFC data conversion, indoor mapping, digital twin architecture, and facility management data models.",
+      "summary": "Integration specialist who bridges Building Information Modeling and Geographic Information Systems \u2014 Revit/IFC data conversion, indoor mapping, digital twin architecture, and facility management data models.",
       "owner": "runtime/agent_provider.py",
       "status": "reference_only",
       "domain": "gis",
@@ -5354,7 +5354,7 @@
       "id": "agency.gis.cartography-designer",
       "kind": "agent",
       "title": "Cartography Designer",
-      "summary": "Map aesthetics specialist who designs beautiful, readable, and effective maps — color theory, typography, label placement, basemap selection, and visual hierarchy for both print and web.",
+      "summary": "Map aesthetics specialist who designs beautiful, readable, and effective maps \u2014 color theory, typography, label placement, basemap selection, and visual hierarchy for both print and web.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "gis",
@@ -5400,7 +5400,7 @@
       "id": "agency.gis.drone-reality-mapping-specialist",
       "kind": "agent",
       "title": "Drone/Reality Mapping Specialist",
-      "summary": "Photogrammetry and reality capture expert who processes drone imagery into orthomosaics, digital terrain models, point clouds, and 3D meshes — bridging field capture and GIS-ready products.",
+      "summary": "Photogrammetry and reality capture expert who processes drone imagery into orthomosaics, digital terrain models, point clouds, and 3D meshes \u2014 bridging field capture and GIS-ready products.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "gis",
@@ -5497,7 +5497,7 @@
       "id": "agency.gis.geoprocessing-specialist",
       "kind": "agent",
       "title": "Geoprocessing Specialist",
-      "summary": "ArcPy and Python toolbox expert who automates spatial workflows — builds .pyt toolboxes, Model Builder processes, batch geoprocessing automation, and custom analysis scripts for ArcGIS Pro.",
+      "summary": "ArcPy and Python toolbox expert who automates spatial workflows \u2014 builds .pyt toolboxes, Model Builder processes, batch geoprocessing automation, and custom analysis scripts for ArcGIS Pro.",
       "owner": "runtime/agent_provider.py",
       "status": "reference_only",
       "domain": "gis",
@@ -5595,7 +5595,7 @@
       "id": "agency.gis.gis-qa-engineer",
       "kind": "agent",
       "title": "GIS QA Engineer",
-      "summary": "Quality assurance specialist who validates geospatial data integrity — topology checks, metadata audits, CRS consistency, accuracy assessment, and compliance verification.",
+      "summary": "Quality assurance specialist who validates geospatial data integrity \u2014 topology checks, metadata audits, CRS consistency, accuracy assessment, and compliance verification.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "gis",
@@ -5686,7 +5686,7 @@
       "id": "agency.gis.spatial-data-engineer",
       "kind": "agent",
       "title": "Spatial Data Engineer",
-      "summary": "ETL specialist who transforms messy geospatial data from any source into clean, standardized, production-ready datasets — format conversion, CRS reprojection, attribute normalization, and automated pipelines.",
+      "summary": "ETL specialist who transforms messy geospatial data from any source into clean, standardized, production-ready datasets \u2014 format conversion, CRS reprojection, attribute normalization, and automated pipelines.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "gis",
@@ -5733,7 +5733,7 @@
       "id": "agency.gis.spatial-data-scientist",
       "kind": "agent",
       "title": "Spatial Data Scientist",
-      "summary": "Advanced spatial analytics specialist who applies statistical modeling, spatial econometrics, clustering, and predictive analytics to geospatial data — finding patterns that aren't visible on a map.",
+      "summary": "Advanced spatial analytics specialist who applies statistical modeling, spatial econometrics, clustering, and predictive analytics to geospatial data \u2014 finding patterns that aren't visible on a map.",
       "owner": "runtime/agent_provider.py",
       "status": "reference_only",
       "domain": "gis",
@@ -5786,7 +5786,7 @@
       "id": "agency.gis.technical-consultant",
       "kind": "agent",
       "title": "Technical Consultant",
-      "summary": "Strategic GIS advisor who translates business problems into geospatial solutions — gap analysis, technology roadmaps, RFP responses, and digital transformation strategy across Esri and open-source ecosystems.",
+      "summary": "Strategic GIS advisor who translates business problems into geospatial solutions \u2014 gap analysis, technology roadmaps, RFP responses, and digital transformation strategy across Esri and open-source ecosystems.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "gis",
@@ -5836,7 +5836,7 @@
       "id": "agency.gis.web-gis-developer",
       "kind": "agent",
       "title": "Web GIS Developer",
-      "summary": "Full-stack web GIS engineer who builds interactive mapping applications — MapLibre GL JS, ArcGIS JS API, Leaflet, real-time dashboards, REST API integration, and geospatial web services.",
+      "summary": "Full-stack web GIS engineer who builds interactive mapping applications \u2014 MapLibre GL JS, ArcGIS JS API, Leaflet, real-time dashboards, REST API integration, and geospatial web services.",
       "owner": "runtime/agent_provider.py",
       "status": "reference_only",
       "domain": "gis",
@@ -6039,7 +6039,7 @@
       "id": "agency.marketing.aeo-foundations-architect",
       "kind": "agent",
       "title": "AEO Foundations Architect",
-      "summary": "Expert in AI Engine Optimization infrastructure — implements llms.txt, AI-aware robots.txt, token-budgeted content, structured Markdown availability, and agent discovery files so AI crawlers, citation engines, and browsing agents can find, parse, and act on your site",
+      "summary": "Expert in AI Engine Optimization infrastructure \u2014 implements llms.txt, AI-aware robots.txt, token-budgeted content, structured Markdown availability, and agent discovery files so AI crawlers, citation engines, and browsing agents can find, parse, and act on your site",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "marketing",
@@ -6101,7 +6101,7 @@
       "id": "agency.marketing.agentic-search-optimizer",
       "kind": "agent",
       "title": "Agentic Search Optimizer",
-      "summary": "Expert in WebMCP readiness and agentic task completion — audits whether AI agents can actually accomplish tasks on your site (book, buy, register, subscribe), implements WebMCP declarative and imperative patterns, and measures task completion rates across AI browsing agents",
+      "summary": "Expert in WebMCP readiness and agentic task completion \u2014 audits whether AI agents can actually accomplish tasks on your site (book, buy, register, subscribe), implements WebMCP declarative and imperative patterns, and measures task completion rates across AI browsing agents",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "marketing",
@@ -6156,7 +6156,7 @@
       "id": "agency.marketing.ai-citation-strategist",
       "kind": "agent",
       "title": "AI Citation Strategist",
-      "summary": "Expert in AI recommendation engine optimization (AEO/GEO) — audits brand visibility across ChatGPT, Claude, Gemini, and Perplexity, identifies why competitors get cited instead, and delivers content fixes that improve AI citations",
+      "summary": "Expert in AI recommendation engine optimization (AEO/GEO) \u2014 audits brand visibility across ChatGPT, Claude, Gemini, and Perplexity, identifies why competitors get cited instead, and delivers content fixes that improve AI citations",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "marketing",
@@ -6333,7 +6333,7 @@
       "id": "agency.marketing.bilibili-content-strategist",
       "kind": "agent",
       "title": "Bilibili Content Strategist",
-      "summary": "Expert Bilibili marketing specialist focused on UP主 growth, danmaku culture mastery, B站 algorithm optimization, community building, and branded content strategy for China's leading video community platform.",
+      "summary": "Expert Bilibili marketing specialist focused on UP\u4e3b growth, danmaku culture mastery, B\u7ad9 algorithm optimization, community building, and branded content strategy for China's leading video community platform.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "marketing",
@@ -6993,7 +6993,7 @@
       "id": "agency.marketing.kuaishou-strategist",
       "kind": "agent",
       "title": "Kuaishou Strategist",
-      "summary": "Expert Kuaishou marketing strategist specializing in short-video content for China's lower-tier city markets, live commerce operations, community trust building, and grassroots audience growth on 快手.",
+      "summary": "Expert Kuaishou marketing strategist specializing in short-video content for China's lower-tier city markets, live commerce operations, community trust building, and grassroots audience growth on \u5feb\u624b.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "marketing",
@@ -7160,7 +7160,7 @@
       "id": "agency.marketing.multi-platform-publisher",
       "kind": "agent",
       "title": "Multi-Platform Publisher",
-      "summary": "Expert orchestrator for one-click Chinese blog publishing. Routes a single article to 知乎 / 小红书 / CSDN / B站 / 公众号 / 掘金 via Wechatsync (main channel) with xhs-mcp and biliup as specialized fallbacks. Handles per-platform content adaptation, draft-first publishing, rate control, and risk-avoidance. Does NOT auto-publish — always stops at draft for human review.",
+      "summary": "Expert orchestrator for one-click Chinese blog publishing. Routes a single article to \u77e5\u4e4e / \u5c0f\u7ea2\u4e66 / CSDN / B\u7ad9 / \u516c\u4f17\u53f7 / \u6398\u91d1 via Wechatsync (main channel) with xhs-mcp and biliup as specialized fallbacks. Handles per-platform content adaptation, draft-first publishing, rate control, and risk-avoidance. Does NOT auto-publish \u2014 always stops at draft for human review.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "marketing",
@@ -7260,7 +7260,7 @@
       "id": "agency.marketing.pr-communications-manager",
       "kind": "agent",
       "title": "PR & Communications Manager",
-      "summary": "Strategic public relations and communications specialist for media relations, press releases, crisis communications, executive thought leadership, brand reputation management, and integrated communications planning — building and protecting reputations through earned media, storytelling, and proactive narrative control",
+      "summary": "Strategic public relations and communications specialist for media relations, press releases, crisis communications, executive thought leadership, brand reputation management, and integrated communications planning \u2014 building and protecting reputations through earned media, storytelling, and proactive narrative control",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "marketing",
@@ -8459,7 +8459,7 @@
       "id": "agency.product.product-manager",
       "kind": "agent",
       "title": "Product Manager",
-      "summary": "Holistic product leader who owns the full product lifecycle — from discovery and strategy through roadmap, stakeholder alignment, go-to-market, and outcome measurement. Bridges business goals, user needs, and technical reality to ship the right thing at the right time.",
+      "summary": "Holistic product leader who owns the full product lifecycle \u2014 from discovery and strategy through roadmap, stakeholder alignment, go-to-market, and outcome measurement. Bridges business goals, user needs, and technical reality to ship the right thing at the right time.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "product",
@@ -9040,7 +9040,7 @@
       "id": "agency.sales.discovery-coach",
       "kind": "agent",
       "title": "Discovery Coach",
-      "summary": "Coaches sales teams on elite discovery methodology — question design, current-state mapping, gap quantification, and call structure that surfaces real buying motivation.",
+      "summary": "Coaches sales teams on elite discovery methodology \u2014 question design, current-state mapping, gap quantification, and call structure that surfaces real buying motivation.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "sales",
@@ -9133,7 +9133,7 @@
       "id": "agency.sales.outbound-strategist",
       "kind": "agent",
       "title": "Outbound Strategist",
-      "summary": "Signal-based outbound specialist who designs multi-channel prospecting sequences, defines ICPs, and builds pipeline through research-driven personalization — not volume.",
+      "summary": "Signal-based outbound specialist who designs multi-channel prospecting sequences, defines ICPs, and builds pipeline through research-driven personalization \u2014 not volume.",
       "owner": "runtime/agent_provider.py",
       "status": "reference_only",
       "domain": "sales",
@@ -9392,7 +9392,7 @@
       "id": "agency.security.ai-generated-code-security-auditor",
       "kind": "agent",
       "title": "AI-Generated Code Security Auditor",
-      "summary": "Security reviewer for AI-generated and vibe-coded apps — hunts the hardcoded secrets, broken row-level security, and prompt-injection sinks that coding assistants ship by default, then drives a scan, fix, and rescan loop with honest, CWE-mapped findings.",
+      "summary": "Security reviewer for AI-generated and vibe-coded apps \u2014 hunts the hardcoded secrets, broken row-level security, and prompt-injection sinks that coding assistants ship by default, then drives a scan, fix, and rescan loop with honest, CWE-mapped findings.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "security",
@@ -9623,7 +9623,7 @@
       "id": "agency.security.compliance-auditor",
       "kind": "agent",
       "title": "Compliance Auditor",
-      "summary": "Expert technical compliance auditor specializing in SOC 2, ISO 27001, HIPAA, and PCI-DSS audits — from readiness assessment through evidence collection to certification.",
+      "summary": "Expert technical compliance auditor specializing in SOC 2, ISO 27001, HIPAA, and PCI-DSS audits \u2014 from readiness assessment through evidence collection to certification.",
       "owner": "runtime/agent_provider.py",
       "status": "reference_only",
       "domain": "security",
@@ -9775,7 +9775,7 @@
       "id": "agency.security.secrets-credential-hygiene-engineer",
       "kind": "agent",
       "title": "Secrets & Credential Hygiene Engineer",
-      "summary": "Owns the full lifecycle of secrets and credentials — detection, prevention, vaulting, rotation, and leak response — so an application runs on short-lived, least-privilege credentials that are never in the code and are already rotated by the time a leak is found.",
+      "summary": "Owns the full lifecycle of secrets and credentials \u2014 detection, prevention, vaulting, rotation, and leak response \u2014 so an application runs on short-lived, least-privilege credentials that are never in the code and are already rotated by the time a leak is found.",
       "owner": "runtime/agent_provider.py",
       "status": "reference_only",
       "domain": "security",
@@ -9895,7 +9895,7 @@
       "id": "agency.security.senior-secops-engineer",
       "kind": "agent",
       "title": "Senior SecOps Engineer",
-      "summary": "Defensive application security specialist who scans every code submission for secrets and sensitive data exposure before anything else, then implements or audits security controls following the organization's security standard — covering authentication, authorization, tokens, cookies, HTTP headers, CORS, rate limiting, CSP, secrets management, input validation, and secure logging.",
+      "summary": "Defensive application security specialist who scans every code submission for secrets and sensitive data exposure before anything else, then implements or audits security controls following the organization's security standard \u2014 covering authentication, authorization, tokens, cookies, HTTP headers, CORS, rate limiting, CSP, secrets management, input validation, and secure logging.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "security",
@@ -10334,7 +10334,7 @@
       "id": "agency.specialized.accounts-payable-agent",
       "kind": "agent",
       "title": "Accounts Payable Agent",
-      "summary": "Autonomous payment processing specialist that executes vendor payments, contractor invoices, and recurring bills across any payment rail — crypto, fiat, stablecoins. Integrates with AI agent workflows via tool calls.",
+      "summary": "Autonomous payment processing specialist that executes vendor payments, contractor invoices, and recurring bills across any payment rail \u2014 crypto, fiat, stablecoins. Integrates with AI agent workflows via tool calls.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "specialized",
@@ -10607,7 +10607,7 @@
       "id": "agency.specialized.business-strategist",
       "kind": "agent",
       "title": "Business Strategist",
-      "summary": "Senior management consulting specialist for competitive analysis, market entry strategy, business model design, growth planning, organizational strategy, and strategic decision-making — translating complex market dynamics into clear, actionable strategies that create sustainable competitive advantage",
+      "summary": "Senior management consulting specialist for competitive analysis, market entry strategy, business model design, growth planning, organizational strategy, and strategic decision-making \u2014 translating complex market dynamics into clear, actionable strategies that create sustainable competitive advantage",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "specialized",
@@ -10655,7 +10655,7 @@
       "id": "agency.specialized.change-management-consultant",
       "kind": "agent",
       "title": "Change Management Consultant",
-      "summary": "Expert change management specialist using ADKAR, Kotter, and Prosci frameworks to guide organizations through technology implementations, restructuring, culture transformation, and M&A integration — managing resistance, building adoption, and ensuring changes stick long after go-live",
+      "summary": "Expert change management specialist using ADKAR, Kotter, and Prosci frameworks to guide organizations through technology implementations, restructuring, culture transformation, and M&A integration \u2014 managing resistance, building adoption, and ensuring changes stick long after go-live",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "specialized",
@@ -10707,7 +10707,7 @@
       "id": "agency.specialized.chief-financial-officer",
       "kind": "agent",
       "title": "Chief Financial Officer",
-      "summary": "Strategic finance executive who governs capital allocation, treasury operations, financial planning, M&A finance, investor relations, and board reporting — translating financial complexity into clear decisions that drive business performance and stakeholder confidence.",
+      "summary": "Strategic finance executive who governs capital allocation, treasury operations, financial planning, M&A finance, investor relations, and board reporting \u2014 translating financial complexity into clear decisions that drive business performance and stakeholder confidence.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "specialized",
@@ -10767,7 +10767,7 @@
       "id": "agency.specialized.chief-of-staff",
       "kind": "agent",
       "title": "Chief of Staff",
-      "summary": "Master coordinator for founders and executives — filters noise, owns processes, enforces consistency, routes decisions, and positions outputs for impact so the boss can think clearly.",
+      "summary": "Master coordinator for founders and executives \u2014 filters noise, owns processes, enforces consistency, routes decisions, and positions outputs for impact so the boss can think clearly.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "specialized",
@@ -10812,7 +10812,7 @@
       "id": "agency.specialized.civil-engineer",
       "kind": "agent",
       "title": "Civil Engineer",
-      "summary": "Expert civil and structural engineer with global standards coverage — Eurocode, DIN, ACI, AISC, ASCE, AS/NZS, CSA, GB, IS, AIJ, and more. Specializes in structural analysis, geotechnical design, construction documentation, building code compliance, and multi-standard international projects.",
+      "summary": "Expert civil and structural engineer with global standards coverage \u2014 Eurocode, DIN, ACI, AISC, ASCE, AS/NZS, CSA, GB, IS, AIJ, and more. Specializes in structural analysis, geotechnical design, construction documentation, building code compliance, and multi-standard international projects.",
       "owner": "runtime/agent_provider.py",
       "status": "reference_only",
       "domain": "specialized",
@@ -10912,7 +10912,7 @@
       "id": "agency.specialized.corporate-training-designer",
       "kind": "agent",
       "title": "Corporate Training Designer",
-      "summary": "Expert in enterprise training system design and curriculum development — proficient in training needs analysis, instructional design methodology, blended learning program design, internal trainer development, leadership programs, and training effectiveness evaluation and continuous optimization.",
+      "summary": "Expert in enterprise training system design and curriculum development \u2014 proficient in training needs analysis, instructional design methodology, blended learning program design, internal trainer development, leadership programs, and training effectiveness evaluation and continuous optimization.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "specialized",
@@ -11015,7 +11015,7 @@
       "id": "agency.specialized.customer-service",
       "kind": "agent",
       "title": "Customer Service",
-      "summary": "Friendly, professional customer service specialist for any industry — handling inquiries, complaints, account support, FAQs, and seamless escalation with warmth, efficiency, and a genuine commitment to customer satisfaction",
+      "summary": "Friendly, professional customer service specialist for any industry \u2014 handling inquiries, complaints, account support, FAQs, and seamless escalation with warmth, efficiency, and a genuine commitment to customer satisfaction",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "specialized",
@@ -11061,7 +11061,7 @@
       "id": "agency.specialized.customer-success-manager",
       "kind": "agent",
       "title": "Customer Success Manager",
-      "summary": "Strategic customer success specialist for onboarding, health scoring, QBR facilitation, churn prevention, expansion identification, and renewal management — driving net revenue retention by turning customers into long-term partners who achieve measurable outcomes",
+      "summary": "Strategic customer success specialist for onboarding, health scoring, QBR facilitation, churn prevention, expansion identification, and renewal management \u2014 driving net revenue retention by turning customers into long-term partners who achieve measurable outcomes",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "specialized",
@@ -11165,7 +11165,7 @@
       "id": "agency.specialized.data-privacy-officer",
       "kind": "agent",
       "title": "Data Privacy Officer",
-      "summary": "Corporate data privacy specialist and DPO who builds GDPR, CCPA, and global privacy compliance programs — covering data mapping, privacy impact assessments, consent management, breach response, vendor due diligence, and regulatory engagement.",
+      "summary": "Corporate data privacy specialist and DPO who builds GDPR, CCPA, and global privacy compliance programs \u2014 covering data mapping, privacy impact assessments, consent management, breach response, vendor due diligence, and regulatory engagement.",
       "owner": "runtime/agent_provider.py",
       "status": "reference_only",
       "domain": "specialized",
@@ -11371,7 +11371,7 @@
       "id": "agency.specialized.fedramp-rmf-compliance-engineer",
       "kind": "agent",
       "title": "FedRAMP & RMF Compliance Engineer",
-      "summary": "Expert FedRAMP and NIST Risk Management Framework compliance engineer specializing in both FedRAMP authorization pathways — the traditional Rev5 path (NIST 800-53 Rev 5 control implementation, System Security Plans, 3PAO assessment, agency authorization) and the modernized FedRAMP 20x path (Key Security Indicators, automated machine-readable validation, compliance-as-code) — plus the ATO process, continuous monitoring (ConMon), POA&M management, FIPS 199 categorization, authorization boundary diagrams, OSCAL machine-readable packages, and cloud security compliance for government and regulated industries",
+      "summary": "Expert FedRAMP and NIST Risk Management Framework compliance engineer specializing in both FedRAMP authorization pathways \u2014 the traditional Rev5 path (NIST 800-53 Rev 5 control implementation, System Security Plans, 3PAO assessment, agency authorization) and the modernized FedRAMP 20x path (Key Security Indicators, automated machine-readable validation, compliance-as-code) \u2014 plus the ATO process, continuous monitoring (ConMon), POA&M management, FIPS 199 categorization, authorization boundary diagrams, OSCAL machine-readable packages, and cloud security compliance for government and regulated industries",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "specialized",
@@ -11423,7 +11423,7 @@
       "id": "agency.specialized.french-consulting-market-navigator",
       "kind": "agent",
       "title": "French Consulting Market Navigator",
-      "summary": "Navigate the French ESN/SI freelance ecosystem — margin models, platform mechanics (Malt, collective.work), portage salarial, rate positioning, and payment cycle realities",
+      "summary": "Navigate the French ESN/SI freelance ecosystem \u2014 margin models, platform mechanics (Malt, collective.work), portage salarial, rate positioning, and payment cycle realities",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "specialized",
@@ -11475,7 +11475,7 @@
       "id": "agency.specialized.government-digital-presales-consultant",
       "kind": "agent",
       "title": "Government Digital Presales Consultant",
-      "summary": "Presales expert for China's government digital transformation market (ToG), proficient in policy interpretation, solution design, bid document preparation, POC validation, compliance requirements (classified protection/cryptographic assessment/Xinchuang domestic IT), and stakeholder management — helping technical teams efficiently win government IT projects.",
+      "summary": "Presales expert for China's government digital transformation market (ToG), proficient in policy interpretation, solution design, bid document preparation, POC validation, compliance requirements (classified protection/cryptographic assessment/Xinchuang domestic IT), and stakeholder management \u2014 helping technical teams efficiently win government IT projects.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "specialized",
@@ -11543,7 +11543,7 @@
       "id": "agency.specialized.grant-writer",
       "kind": "agent",
       "title": "Grant Writer",
-      "summary": "Expert grant writing specialist for nonprofits, research institutions, and social enterprises — covering prospect research, letter of inquiry writing, full proposal development, budget narratives, federal and foundation grants, and post-award reporting to maximize funding success",
+      "summary": "Expert grant writing specialist for nonprofits, research institutions, and social enterprises \u2014 covering prospect research, letter of inquiry writing, full proposal development, budget narratives, federal and foundation grants, and post-award reporting to maximize funding success",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "specialized",
@@ -11654,7 +11654,7 @@
       "id": "agency.specialized.healthcare-marketing-compliance-specialist",
       "kind": "agent",
       "title": "Healthcare Marketing Compliance Specialist",
-      "summary": "Expert in healthcare marketing compliance in China, proficient in the Advertising Law, Medical Advertisement Management Measures, Drug Administration Law, and related regulations — covering pharmaceuticals, medical devices, medical aesthetics, health supplements, and internet healthcare across content review, risk control, platform rule interpretation, and patient privacy protection, helping enterprises conduct effective health marketing within legal boundaries.",
+      "summary": "Expert in healthcare marketing compliance in China, proficient in the Advertising Law, Medical Advertisement Management Measures, Drug Administration Law, and related regulations \u2014 covering pharmaceuticals, medical devices, medical aesthetics, health supplements, and internet healthcare across content review, risk control, platform rule interpretation, and patient privacy protection, helping enterprises conduct effective health marketing within legal boundaries.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "specialized",
@@ -11714,7 +11714,7 @@
       "id": "agency.specialized.hospitality-guest-services",
       "kind": "agent",
       "title": "Hospitality Guest Services",
-      "summary": "Comprehensive hospitality guest services specialist for hotels, resorts, restaurants, and event venues — covering reservations, check-in/check-out, concierge services, guest complaint resolution, loyalty program management, and post-stay follow-up to deliver exceptional guest experiences that drive loyalty and revenue",
+      "summary": "Comprehensive hospitality guest services specialist for hotels, resorts, restaurants, and event venues \u2014 covering reservations, check-in/check-out, concierge services, guest complaint resolution, loyalty program management, and post-stay follow-up to deliver exceptional guest experiences that drive loyalty and revenue",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "specialized",
@@ -11760,7 +11760,7 @@
       "id": "agency.specialized.hr-onboarding",
       "kind": "agent",
       "title": "HR Onboarding",
-      "summary": "Comprehensive HR onboarding specialist for employee orientation, documentation management, compliance tracking, benefits enrollment, culture integration, and new hire support — delivering a seamless first-day-to-first-year experience that drives retention and productivity",
+      "summary": "Comprehensive HR onboarding specialist for employee orientation, documentation management, compliance tracking, benefits enrollment, culture integration, and new hire support \u2014 delivering a seamless first-day-to-first-year experience that drives retention and productivity",
       "owner": "runtime/agent_provider.py",
       "status": "reference_only",
       "domain": "specialized",
@@ -11867,7 +11867,7 @@
       "id": "agency.specialized.korean-business-navigator",
       "kind": "agent",
       "title": "Korean Business Navigator",
-      "summary": "Korean business culture for foreign professionals — 품의 decision process, nunchi reading, KakaoTalk business etiquette, hierarchy navigation, and relationship-first deal mechanics",
+      "summary": "Korean business culture for foreign professionals \u2014 \ud488\uc758 decision process, nunchi reading, KakaoTalk business etiquette, hierarchy navigation, and relationship-first deal mechanics",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "specialized",
@@ -11912,7 +11912,7 @@
       "id": "agency.specialized.language-translator",
       "kind": "agent",
       "title": "Language Translator",
-      "summary": "Real-time Spanish ↔ English translation specialist with cultural context, regional dialect awareness, travel phrase guidance, and tone-appropriate communication for everyday, business, and emergency situations",
+      "summary": "Real-time Spanish \u2194 English translation specialist with cultural context, regional dialect awareness, travel phrase guidance, and tone-appropriate communication for everyday, business, and emergency situations",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "specialized",
@@ -11956,7 +11956,7 @@
       "id": "agency.specialized.legal-billing-time-tracking",
       "kind": "agent",
       "title": "Legal Billing & Time Tracking",
-      "summary": "Comprehensive legal billing and time tracking specialist for accurate time capture, invoice generation, billing narrative writing, collections management, trust account compliance, and billing analysis — maximizing revenue recovery while maintaining client relationships and ethical compliance across any firm size or billing model",
+      "summary": "Comprehensive legal billing and time tracking specialist for accurate time capture, invoice generation, billing narrative writing, collections management, trust account compliance, and billing analysis \u2014 maximizing revenue recovery while maintaining client relationships and ethical compliance across any firm size or billing model",
       "owner": "runtime/agent_provider.py",
       "status": "reference_only",
       "domain": "specialized",
@@ -12056,7 +12056,7 @@
       "id": "agency.specialized.legal-document-review",
       "kind": "agent",
       "title": "Legal Document Review",
-      "summary": "Comprehensive legal document review specialist for contracts, litigation documents, and real estate agreements — summarizing documents, flagging risk clauses, comparing contract versions, and checking compliance across any law firm size or practice area",
+      "summary": "Comprehensive legal document review specialist for contracts, litigation documents, and real estate agreements \u2014 summarizing documents, flagging risk clauses, comparing contract versions, and checking compliance across any law firm size or practice area",
       "owner": "runtime/agent_provider.py",
       "status": "reference_only",
       "domain": "specialized",
@@ -12106,7 +12106,7 @@
       "id": "agency.specialized.loan-officer-assistant",
       "kind": "agent",
       "title": "Loan Officer Assistant",
-      "summary": "Comprehensive loan officer assistant for mortgage and lending professionals — covering borrower intake, pre-qualification, document collection, pipeline management, compliance tracking, rate quoting, and closing coordination across residential, commercial, and consumer lending",
+      "summary": "Comprehensive loan officer assistant for mortgage and lending professionals \u2014 covering borrower intake, pre-qualification, document collection, pipeline management, compliance tracking, rate quoting, and closing coordination across residential, commercial, and consumer lending",
       "owner": "runtime/agent_provider.py",
       "status": "reference_only",
       "domain": "specialized",
@@ -12206,7 +12206,7 @@
       "id": "agency.specialized.m-a-integration-manager",
       "kind": "agent",
       "title": "M&A Integration Manager",
-      "summary": "Mergers and acquisitions integration specialist who designs and executes post-merger integration programs — covering Day 1 readiness, 100-day planning, synergy tracking, cultural integration, functional workstream coordination, and transition service agreement management.",
+      "summary": "Mergers and acquisitions integration specialist who designs and executes post-merger integration programs \u2014 covering Day 1 readiness, 100-day planning, synergy tracking, cultural integration, functional workstream coordination, and transition service agreement management.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "specialized",
@@ -12322,7 +12322,7 @@
       "id": "agency.specialized.medical-billing-coding-specialist",
       "kind": "agent",
       "title": "Medical Billing & Coding Specialist",
-      "summary": "Expert medical billing and coding specialist for ICD-10-CM/PCS, CPT, and HCPCS coding, claim submission, denial management, revenue cycle optimization, compliance auditing, and payer contract analysis — maximizing clean claim rates and revenue recovery for healthcare providers of all sizes",
+      "summary": "Expert medical billing and coding specialist for ICD-10-CM/PCS, CPT, and HCPCS coding, claim submission, denial management, revenue cycle optimization, compliance auditing, and payer contract analysis \u2014 maximizing clean claim rates and revenue recovery for healthcare providers of all sizes",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "specialized",
@@ -12432,7 +12432,7 @@
       "id": "agency.specialized.operations-manager",
       "kind": "agent",
       "title": "Operations Manager",
-      "summary": "Business operations specialist who applies Lean, Six Sigma, and systems thinking to process mapping, capacity planning, KPI governance, vendor management, and organizational efficiency — turning operational complexity into repeatable, measurable performance.",
+      "summary": "Business operations specialist who applies Lean, Six Sigma, and systems thinking to process mapping, capacity planning, KPI governance, vendor management, and organizational efficiency \u2014 turning operational complexity into repeatable, measurable performance.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "specialized",
@@ -12484,7 +12484,7 @@
       "id": "agency.specialized.organizational-psychologist",
       "kind": "agent",
       "title": "Organizational Psychologist",
-      "summary": "Applied organizational psychologist who diagnoses team dynamics, psychological safety, burnout risk, and culture health — using evidence-based frameworks to help leaders build high-performing, resilient, and psychologically safe organizations.",
+      "summary": "Applied organizational psychologist who diagnoses team dynamics, psychological safety, burnout risk, and culture health \u2014 using evidence-based frameworks to help leaders build high-performing, resilient, and psychologically safe organizations.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "specialized",
@@ -12576,7 +12576,7 @@
       "id": "agency.specialized.pricing-analyst",
       "kind": "agent",
       "title": "Pricing Analyst",
-      "summary": "Specialized pricing analyst who develops optimal pricing models through market research, competitor analysis, cost structure evaluation, and margin optimization — turning pricing from guesswork into a data-driven competitive advantage.",
+      "summary": "Specialized pricing analyst who develops optimal pricing models through market research, competitor analysis, cost structure evaluation, and margin optimization \u2014 turning pricing from guesswork into a data-driven competitive advantage.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "specialized",
@@ -12635,7 +12635,7 @@
       "id": "agency.specialized.real-estate-buyer-seller",
       "kind": "agent",
       "title": "Real Estate Buyer & Seller",
-      "summary": "Comprehensive real estate agent assistant for buyer representation, seller representation, listing management, offer negotiation, transaction coordination, and closing support — delivering a world-class client experience from first showing to final closing across residential and investment real estate",
+      "summary": "Comprehensive real estate agent assistant for buyer representation, seller representation, listing management, offer negotiation, transaction coordination, and closing support \u2014 delivering a world-class client experience from first showing to final closing across residential and investment real estate",
       "owner": "runtime/agent_provider.py",
       "status": "reference_only",
       "domain": "specialized",
@@ -12683,7 +12683,7 @@
       "id": "agency.specialized.recruitment-specialist",
       "kind": "agent",
       "title": "Recruitment Specialist",
-      "summary": "Expert recruitment operations and talent acquisition specialist — skilled in China's major hiring platforms, talent assessment frameworks, and labor law compliance. Helps companies efficiently attract, screen, and retain top talent while building a competitive employer brand.",
+      "summary": "Expert recruitment operations and talent acquisition specialist \u2014 skilled in China's major hiring platforms, talent assessment frameworks, and labor law compliance. Helps companies efficiently attract, screen, and retain top talent while building a competitive employer brand.",
       "owner": "runtime/agent_provider.py",
       "status": "reference_only",
       "domain": "specialized",
@@ -12842,7 +12842,7 @@
       "id": "agency.specialized.retail-customer-returns",
       "kind": "agent",
       "title": "Retail Customer Returns",
-      "summary": "Comprehensive retail customer returns specialist for processing returns, exchanges, and refunds across in-store, online, and omnichannel retail — handling policy enforcement, fraud prevention, customer retention, vendor returns, and returns analytics to maximize recovery while preserving customer loyalty",
+      "summary": "Comprehensive retail customer returns specialist for processing returns, exchanges, and refunds across in-store, online, and omnichannel retail \u2014 handling policy enforcement, fraud prevention, customer retention, vendor returns, and returns analytics to maximize recovery while preserving customer loyalty",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "specialized",
@@ -12935,7 +12935,7 @@
       "id": "agency.specialized.sales-outreach",
       "kind": "agent",
       "title": "Sales Outreach",
-      "summary": "Consultative B2B sales outreach specialist for cold prospecting, lead follow-up, objection handling, proposal writing, and pipeline management — combining data-driven targeting with genuine relationship-building to open doors and close deals",
+      "summary": "Consultative B2B sales outreach specialist for cold prospecting, lead follow-up, objection handling, proposal writing, and pipeline management \u2014 combining data-driven targeting with genuine relationship-building to open doors and close deals",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "specialized",
@@ -12986,7 +12986,7 @@
       "id": "agency.specialized.salesforce-architect",
       "kind": "agent",
       "title": "Salesforce Architect",
-      "summary": "Solution architecture for Salesforce platform — multi-cloud design, integration patterns, governor limits, deployment strategy, and data model governance for enterprise-scale orgs",
+      "summary": "Solution architecture for Salesforce platform \u2014 multi-cloud design, integration patterns, governor limits, deployment strategy, and data model governance for enterprise-scale orgs",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "specialized",
@@ -13086,7 +13086,7 @@
       "id": "agency.specialized.study-abroad-advisor",
       "kind": "agent",
       "title": "Study Abroad Advisor",
-      "summary": "Full-spectrum study abroad planning expert covering the US, UK, Canada, Australia, Europe, Hong Kong, and Singapore — proficient in undergraduate, master's, and PhD application strategy, school selection, essay coaching, profile enhancement, standardized test planning, visa preparation, and overseas life adaptation, helping Chinese students craft personalized end-to-end study abroad plans.",
+      "summary": "Full-spectrum study abroad planning expert covering the US, UK, Canada, Australia, Europe, Hong Kong, and Singapore \u2014 proficient in undergraduate, master's, and PhD application strategy, school selection, essay coaching, profile enhancement, standardized test planning, visa preparation, and overseas life adaptation, helping Chinese students craft personalized end-to-end study abroad plans.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "specialized",
@@ -13138,7 +13138,7 @@
       "id": "agency.specialized.supply-chain-strategist",
       "kind": "agent",
       "title": "Supply Chain Strategist",
-      "summary": "Expert supply chain management and procurement strategy specialist — skilled in supplier development, strategic sourcing, quality control, and supply chain digitalization. Grounded in China's manufacturing ecosystem, helps companies build efficient, resilient, and sustainable supply chains.",
+      "summary": "Expert supply chain management and procurement strategy specialist \u2014 skilled in supplier development, strategic sourcing, quality control, and supply chain digitalization. Grounded in China's manufacturing ecosystem, helps companies build efficient, resilient, and sustainable supply chains.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "specialized",
@@ -13192,7 +13192,7 @@
       "id": "agency.specialized.workflow-architect",
       "kind": "agent",
       "title": "Workflow Architect",
-      "summary": "Workflow design specialist who maps complete workflow trees for every system, user journey, and agent interaction — covering happy paths, all branch conditions, failure modes, recovery paths, handoff contracts, and observable states to produce build-ready specs that agents can implement against and QA can test against.",
+      "summary": "Workflow design specialist who maps complete workflow trees for every system, user journey, and agent interaction \u2014 covering happy paths, all branch conditions, failure modes, recovery paths, handoff contracts, and observable states to produce build-ready specs that agents can implement against and QA can test against.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "specialized",
@@ -13632,7 +13632,7 @@
       "id": "agency.testing.accessibility-auditor",
       "kind": "agent",
       "title": "Accessibility Auditor",
-      "summary": "Expert accessibility specialist who audits interfaces against WCAG standards, tests with assistive technologies, and ensures inclusive design. Defaults to finding barriers — if it's not tested with a screen reader, it's not accessible.",
+      "summary": "Expert accessibility specialist who audits interfaces against WCAG standards, tests with assistive technologies, and ensures inclusive design. Defaults to finding barriers \u2014 if it's not tested with a screen reader, it's not accessible.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "testing",
@@ -13885,7 +13885,7 @@
       "id": "agency.testing.test-automation-engineer",
       "kind": "agent",
       "title": "Test Automation Engineer",
-      "summary": "Expert end-to-end test automation engineer for Playwright and Cypress — resilient selectors, flake elimination, isolated test data, CI parallelization, and trace-driven failure debugging.",
+      "summary": "Expert end-to-end test automation engineer for Playwright and Cypress \u2014 resilient selectors, flake elimination, isolated test data, CI parallelization, and trace-driven failure debugging.",
       "owner": "runtime/agent_provider.py",
       "status": "admitted",
       "domain": "testing",
@@ -19132,7 +19132,7 @@
       "id": "engineering-dna-profiler",
       "kind": "capability",
       "title": "Engineering DNA Profiler",
-      "summary": "Profile recurring project practices in architecture, testing, deployment, documentation, recovery, change control, and failure handling from observable evidence—not personality guesses.",
+      "summary": "Profile recurring project practices in architecture, testing, deployment, documentation, recovery, change control, and failure handling from observable evidence\u2014not personality guesses.",
       "owner": "govern-metacognitive-evolution",
       "status": "active",
       "domain": "engineering-dna",
@@ -23650,7 +23650,7 @@
       "id": "reasoning-trace-recorder",
       "kind": "capability",
       "title": "Reasoning Trace Recorder",
-      "summary": "Record sanitized operational events: capability selection, assumptions, evidence references, tool calls, policy gates, state transitions, alternatives, and outcomes—without storing private chain-of-thought.",
+      "summary": "Record sanitized operational events: capability selection, assumptions, evidence references, tool calls, policy gates, state transitions, alternatives, and outcomes\u2014without storing private chain-of-thought.",
       "owner": "govern-metacognitive-evolution",
       "status": "active",
       "domain": "introspection",
@@ -25321,7 +25321,7 @@
       "id": "semantic-effect-contract-designer",
       "kind": "capability",
       "title": "Semantic Effect Contract Designer",
-      "summary": "Declare how a capability changes knowledge, confidence, memory, registries, evidence, permissions, external systems, and runtime state—not merely its input and output types.",
+      "summary": "Declare how a capability changes knowledge, confidence, memory, registries, evidence, permissions, external systems, and runtime state\u2014not merely its input and output types.",
       "owner": "govern-metacognitive-evolution",
       "status": "active",
       "domain": "semantic-contracts",
@@ -27019,7 +27019,7 @@
       "status": "formula",
       "domain": "formula",
       "aliases": [
-        "R_a=impact·uncertainty·dependency_count·age_factor",
+        "R_a=impact\u00b7uncertainty\u00b7dependency_count\u00b7age_factor",
         "assumption risk score"
       ],
       "triggers": [
@@ -27049,7 +27049,7 @@
       "status": "formula",
       "domain": "formula",
       "aliases": [
-        "A_s=centrality·coexecution_affinity·dependency_growth·outcome_quality",
+        "A_s=centrality\u00b7coexecution_affinity\u00b7dependency_growth\u00b7outcome_quality",
         "attractor strength"
       ],
       "triggers": [
@@ -27109,7 +27109,7 @@
       "status": "reference",
       "domain": "formula",
       "aliases": [
-        "P(y|do(x))=Σ_z P(y|x,z)P(z)",
+        "P(y|do(x))=\u03a3_z P(y|x,z)P(z)",
         "backdoor adjustment reference"
       ],
       "triggers": [
@@ -27232,7 +27232,7 @@
       "status": "formula",
       "domain": "formula",
       "aliases": [
-        "B=Σ_d criticality(d)·propagation_probability(d)",
+        "B=\u03a3_d criticality(d)\u00b7propagation_probability(d)",
         "blast radius score"
       ],
       "triggers": [
@@ -27262,7 +27262,7 @@
       "status": "formula",
       "domain": "formula",
       "aliases": [
-        "BS=(1/N)Σ(p_i-y_i)²",
+        "BS=(1/N)\u03a3(p_i-y_i)\u00b2",
         "brier score"
       ],
       "triggers": [
@@ -27497,7 +27497,7 @@
       "status": "formula",
       "domain": "formula",
       "aliases": [
-        "P(F|C)=count(F∩C)/count(C)",
+        "P(F|C)=count(F\u2229C)/count(C)",
         "conditional failure rate"
       ],
       "triggers": [
@@ -27552,7 +27552,7 @@
       "status": "reference",
       "domain": "formula",
       "aliases": [
-        "Estimate θ ± uncertainty using an appropriate analytic or bootstrap method.",
+        "Estimate \u03b8 \u00b1 uncertainty using an appropriate analytic or bootstrap method.",
         "confidence interval reference"
       ],
       "triggers": [
@@ -27582,7 +27582,7 @@
       "status": "formula",
       "domain": "formula",
       "aliases": [
-        "D_c=Σ_i w_i·distance(source_i,target_i)",
+        "D_c=\u03a3_i w_i\u00b7distance(source_i,target_i)",
         "context distance"
       ],
       "triggers": [
@@ -27667,7 +27667,7 @@
       "status": "formula",
       "domain": "formula",
       "aliases": [
-        "CP=severity·evidence_quality·blast_radius·unresolved_factor",
+        "CP=severity\u00b7evidence_quality\u00b7blast_radius\u00b7unresolved_factor",
         "contradiction pressure"
       ],
       "triggers": [
@@ -27697,7 +27697,7 @@
       "status": "formula",
       "domain": "formula",
       "aliases": [
-        "O_c=messages·latency+handoff_failures+context_duplication",
+        "O_c=messages\u00b7latency+handoff_failures+context_duplication",
         "coordination overhead"
       ],
       "triggers": [
@@ -27727,7 +27727,7 @@
       "status": "formula",
       "domain": "formula",
       "aliases": [
-        "cos(a,b)=(a·b)/(‖a‖‖b‖)",
+        "cos(a,b)=(a\u00b7b)/(\u2016a\u2016\u2016b\u2016)",
         "cosine similarity"
       ],
       "triggers": [
@@ -27788,7 +27788,7 @@
       "domain": "formula",
       "aliases": [
         "counterfactual delta",
-        "Δ_cf=Y_with_factor-Y_without_factor"
+        "\u0394_cf=Y_with_factor-Y_without_factor"
       ],
       "triggers": [
         "Measure replay or intervention influence."
@@ -27817,7 +27817,7 @@
       "status": "formula",
       "domain": "formula",
       "aliases": [
-        "A≻B iff A is no worse on all required coverage dimensions and better on at least one",
+        "A\u227bB iff A is no worse on all required coverage dimensions and better on at least one",
         "coverage dominance"
       ],
       "triggers": [
@@ -27847,7 +27847,7 @@
       "status": "formula",
       "domain": "formula",
       "aliases": [
-        "S_t=max(0,S_{t-1}+x_t-μ₀-k)",
+        "S_t=max(0,S_{t-1}+x_t-\u03bc\u2080-k)",
         "cusum drift"
       ],
       "triggers": [
@@ -27877,14 +27877,14 @@
       "status": "formula",
       "domain": "formula",
       "aliases": [
-        "T_child←T_child·(1-α(1-T_parent))",
+        "T_child\u2190T_child\u00b7(1-\u03b1(1-T_parent))",
         "dependency decay propagation"
       ],
       "triggers": [
         "Propagate bounded trust loss."
       ],
       "concepts": [
-        "α must be calibrated and capped."
+        "\u03b1 must be calibrated and capped."
       ],
       "inputs": [],
       "outputs": [],
@@ -27967,7 +27967,7 @@
       "status": "formula",
       "domain": "formula",
       "aliases": [
-        "N_eff=(Σw_i)²/Σw_i²",
+        "N_eff=(\u03a3w_i)\u00b2/\u03a3w_i\u00b2",
         "effective independent evidence"
       ],
       "triggers": [
@@ -28060,7 +28060,7 @@
       "domain": "formula",
       "aliases": [
         "entropy reduction",
-        "ΔH=H_before-H_after"
+        "\u0394H=H_before-H_after"
       ],
       "triggers": [
         "Measure reduction in distributional uncertainty."
@@ -28089,7 +28089,7 @@
       "status": "formula",
       "domain": "formula",
       "aliases": [
-        "C_xy=linked_events/(candidate_related_events+ε)",
+        "C_xy=linked_events/(candidate_related_events+\u03b5)",
         "event correlation score"
       ],
       "triggers": [
@@ -28120,13 +28120,13 @@
       "domain": "formula",
       "aliases": [
         "ewma drift",
-        "z_t=λx_t+(1-λ)z_{t-1}"
+        "z_t=\u03bbx_t+(1-\u03bb)z_{t-1}"
       ],
       "triggers": [
         "Detect sustained shifts."
       ],
       "concepts": [
-        "Calibrate λ and control limits."
+        "Calibrate \u03bb and control limits."
       ],
       "inputs": [],
       "outputs": [],
@@ -28149,7 +28149,7 @@
       "status": "formula",
       "domain": "formula",
       "aliases": [
-        "ECE=Σ_b (n_b/N)|acc(b)-conf(b)|",
+        "ECE=\u03a3_b (n_b/N)|acc(b)-conf(b)|",
         "expected calibration error"
       ],
       "triggers": [
@@ -28179,7 +28179,7 @@
       "status": "formula",
       "domain": "formula",
       "aliases": [
-        "E[U(plan)]=Σ_o P(o|plan)U(o)-cost-risk",
+        "E[U(plan)]=\u03a3_o P(o|plan)U(o)-cost-risk",
         "expected plan utility"
       ],
       "triggers": [
@@ -28269,7 +28269,7 @@
       "status": "formula",
       "domain": "formula",
       "aliases": [
-        "T(t)=T₀·2^{-t/h}",
+        "T(t)=T\u2080\u00b72^{-t/h}",
         "exponential trust decay"
       ],
       "triggers": [
@@ -28331,7 +28331,7 @@
       "status": "formula",
       "domain": "formula",
       "aliases": [
-        "P_fc=Σ_{i<j} corr(F_i,F_j)·severity_ij",
+        "P_fc=\u03a3_{i<j} corr(F_i,F_j)\u00b7severity_ij",
         "failure correlation penalty"
       ],
       "triggers": [
@@ -28471,7 +28471,7 @@
       "status": "formula",
       "domain": "formula",
       "aliases": [
-        "JSD(P,Q)=½KL(P∥M)+½KL(Q∥M), M=(P+Q)/2",
+        "JSD(P,Q)=\u00bdKL(P\u2225M)+\u00bdKL(Q\u2225M), M=(P+Q)/2",
         "jensen shannon divergence"
       ],
       "triggers": [
@@ -28526,7 +28526,7 @@
       "status": "formula",
       "domain": "formula",
       "aliases": [
-        "L_p=affected_descendants·recurrence·generation_factor",
+        "L_p=affected_descendants\u00b7recurrence\u00b7generation_factor",
         "lineage propagation score"
       ],
       "triggers": [
@@ -28581,7 +28581,7 @@
       "status": "formula",
       "domain": "formula",
       "aliases": [
-        "LL=-(1/N)Σ[y_i log p_i+(1-y_i)log(1-p_i)]",
+        "LL=-(1/N)\u03a3[y_i log p_i+(1-y_i)log(1-p_i)]",
         "log loss"
       ],
       "triggers": [
@@ -28641,7 +28641,7 @@
       "status": "formula",
       "domain": "formula",
       "aliases": [
-        "M_i=usage_evidence·scope_fit·counterfactual_effect",
+        "M_i=usage_evidence\u00b7scope_fit\u00b7counterfactual_effect",
         "memory influence score"
       ],
       "triggers": [
@@ -28756,7 +28756,7 @@
       "status": "formula",
       "domain": "formula",
       "aliases": [
-        "I=(candidate-baseline)/max(|baseline|,ε)",
+        "I=(candidate-baseline)/max(|baseline|,\u03b5)",
         "normalized improvement"
       ],
       "triggers": [
@@ -28877,7 +28877,7 @@
       "status": "formula",
       "domain": "formula",
       "aliases": [
-        "P_e=linked_decisions·evidence_coverage·policy_coverage",
+        "P_e=linked_decisions\u00b7evidence_coverage\u00b7policy_coverage",
         "path explanation score"
       ],
       "triggers": [
@@ -28987,7 +28987,7 @@
       "status": "formula",
       "domain": "formula",
       "aliases": [
-        "T=Σ_k benchmark_weight_k·normalized_result_k·confidence_k",
+        "T=\u03a3_k benchmark_weight_k\u00b7normalized_result_k\u00b7confidence_k",
         "profile trait score"
       ],
       "triggers": [
@@ -29072,7 +29072,7 @@
       "status": "formula",
       "domain": "formula",
       "aliases": [
-        "R_g=impact·magnitude·duration·scope",
+        "R_g=impact\u00b7magnitude\u00b7duration\u00b7scope",
         "regression severity"
       ],
       "triggers": [
@@ -29273,7 +29273,7 @@
       "status": "formula",
       "domain": "formula",
       "aliases": [
-        "P_r=criticality·(1-trust)+contradiction_pressure+dependency_change+age_factor",
+        "P_r=criticality\u00b7(1-trust)+contradiction_pressure+dependency_change+age_factor",
         "revalidation priority"
       ],
       "triggers": [
@@ -29303,7 +29303,7 @@
       "status": "formula",
       "domain": "formula",
       "aliases": [
-        "B_r=base_authority·(1-uncertainty)·(1-blast_radius)·verification_strength",
+        "B_r=base_authority\u00b7(1-uncertainty)\u00b7(1-blast_radius)\u00b7verification_strength",
         "risk budget score"
       ],
       "triggers": [
@@ -29390,7 +29390,7 @@
       "status": "formula",
       "domain": "formula",
       "aliases": [
-        "U_r=fit·quality-confidence_penalty-cost-latency-risk",
+        "U_r=fit\u00b7quality-confidence_penalty-cost-latency-risk",
         "routing utility"
       ],
       "triggers": [
@@ -29538,7 +29538,7 @@
       "status": "formula",
       "domain": "formula",
       "aliases": [
-        "S_i=|Δoutput/Δinput_i| normalized",
+        "S_i=|\u0394output/\u0394input_i| normalized",
         "sensitivity index"
       ],
       "triggers": [
@@ -29568,7 +29568,7 @@
       "status": "formula",
       "domain": "formula",
       "aliases": [
-        "H(X)=-Σ p_i log₂ p_i",
+        "H(X)=-\u03a3 p_i log\u2082 p_i",
         "shannon entropy"
       ],
       "triggers": [
@@ -29598,7 +29598,7 @@
       "status": "formula",
       "domain": "formula",
       "aliases": [
-        "R_s=scope·irreversibility·permission_sensitivity·uncertainty",
+        "R_s=scope\u00b7irreversibility\u00b7permission_sensitivity\u00b7uncertainty",
         "side effect risk score"
       ],
       "triggers": [
@@ -29689,13 +29689,13 @@
       "domain": "formula",
       "aliases": [
         "temporal evidence decay",
-        "w(t)=w₀ exp(-λt)"
+        "w(t)=w\u2080 exp(-\u03bbt)"
       ],
       "triggers": [
         "Discount time-sensitive evidence."
       ],
       "concepts": [
-        "Choose λ by domain; stable facts should barely decay."
+        "Choose \u03bb by domain; stable facts should barely decay."
       ],
       "inputs": [],
       "outputs": [],
@@ -29778,7 +29778,7 @@
       "status": "formula",
       "domain": "formula",
       "aliases": [
-        "F_t=evidence·(1-context_distance)·adaptability",
+        "F_t=evidence\u00b7(1-context_distance)\u00b7adaptability",
         "transfer fit score"
       ],
       "triggers": [
@@ -29838,7 +29838,7 @@
       "status": "formula",
       "domain": "formula",
       "aliases": [
-        "URR=(H_before-H_after)/max(H_before,ε)",
+        "URR=(H_before-H_after)/max(H_before,\u03b5)",
         "uncertainty reduction ratio"
       ],
       "triggers": [
@@ -29898,7 +29898,7 @@
       "status": "formula",
       "domain": "formula",
       "aliases": [
-        "Q=Σ_j α_j q_j, Σ_j α_j=1",
+        "Q=\u03a3_j \u03b1_j q_j, \u03a3_j \u03b1_j=1",
         "weighted evidence quality"
       ],
       "triggers": [
@@ -29928,7 +29928,7 @@
       "status": "formula",
       "domain": "formula",
       "aliases": [
-        "J_w(A,B)=Σmin(a_i,b_i)/Σmax(a_i,b_i)",
+        "J_w(A,B)=\u03a3min(a_i,b_i)/\u03a3max(a_i,b_i)",
         "weighted jaccard"
       ],
       "triggers": [
@@ -29983,7 +29983,7 @@
       "status": "formula",
       "domain": "formula",
       "aliases": [
-        "U=Σ_i w_i·normalized_metric_i",
+        "U=\u03a3_i w_i\u00b7normalized_metric_i",
         "weighted utility"
       ],
       "triggers": [
@@ -31262,7 +31262,7 @@
       ],
       "path": ".px/skills/operate-memory-retrieval-observability/references/scripts/hybrid-retrieval.json",
       "implementation_path": ".px/skills/operate-memory-retrieval-observability/scripts/authoritative_hybrid_retrieval.py",
-      "source_sha256": "b78e682249a2ad3273c3630b6764712df699ce76f3b2a80002a3f13e8823b101",
+      "source_sha256": "e6d5e910057cc4301385b51b4ae6cf23cd6637a3fdaa4c315e029dfbe2a72960",
       "risk": "R1",
       "loading_rule": "metadata_only_until_selected"
     },
@@ -32554,11 +32554,13 @@
       "summary": "Acquire and install n8n through a supported, pinned, reversible channel.",
       "owner": "acquire-install-n8n",
       "status": "active",
-      "domain": "docker installation n8n npm version-pinning",
+      "domain": "docker installation n8n npm version pinning",
       "aliases": [
         "acquire install n8n"
       ],
-      "triggers": [],
+      "triggers": [
+        "acquire install n8n"
+      ],
       "concepts": [
         "acquire",
         "docker",
@@ -32566,6 +32568,7 @@
         "installation",
         "n8n",
         "npm",
+        "version pinning",
         "version-pinning"
       ],
       "inputs": [],
@@ -32589,18 +32592,24 @@
       "summary": "Acquire and install the Supabase CLI and official agent resources using supported, pinned channels.",
       "owner": "acquire-install-supabase",
       "status": "active",
-      "domain": "agent-skills local-stack project-dependency supabase supabase-cli",
+      "domain": "agent skills local stack project dependency supabase supabase cli",
       "aliases": [
         "acquire install supabase"
       ],
-      "triggers": [],
+      "triggers": [
+        "acquire install supabase"
+      ],
       "concepts": [
         "acquire",
+        "agent skills",
         "agent-skills",
         "install",
+        "local stack",
         "local-stack",
+        "project dependency",
         "project-dependency",
         "supabase",
+        "supabase cli",
         "supabase-cli"
       ],
       "inputs": [],
@@ -32628,7 +32637,9 @@
       "aliases": [
         "active evaluation selector"
       ],
-      "triggers": [],
+      "triggers": [
+        "active evaluation selector"
+      ],
       "concepts": [
         "active",
         "evaluation",
@@ -32653,24 +32664,33 @@
       "summary": "Clean-room adaptive-learning and progress-tracking mechanisms with strong",
       "owner": "adapt-human-learning-loop",
       "status": "mapped_deferred",
-      "domain": "adapt adaptive-learning authorization event-history external-candidate human human-feedback human-safety learning learning-evaluation loop reinforcement state-machine",
+      "domain": "adapt adaptive learning authorization event history external candidate human human feedback human safety learning learning evaluation loop reinforcement state machine",
       "aliases": [
         "adapt human learning loop"
       ],
-      "triggers": [],
+      "triggers": [
+        "adapt human learning loop"
+      ],
       "concepts": [
         "adapt",
+        "adaptive learning",
         "adaptive-learning",
         "authorization",
+        "event history",
         "event-history",
+        "external candidate",
         "external-candidate",
         "human",
+        "human feedback",
+        "human safety",
         "human-feedback",
         "human-safety",
         "learning",
+        "learning evaluation",
         "learning-evaluation",
         "loop",
         "reinforcement",
+        "state machine",
         "state-machine"
       ],
       "inputs": [],
@@ -32697,7 +32717,8 @@
         "admit capability"
       ],
       "triggers": [
-        "admit/restrict/quarantine/reject decision"
+        "admit capability",
+        "admit restrict quarantine reject decision"
       ],
       "concepts": [
         "admission",
@@ -32726,20 +32747,24 @@
       "summary": "Detect architecture drift, dependency shockwaves, semantic contract changes, knowledge collisions, future debt, code structure changes, engineering health gaps, and refactoring candidates. Use when assessing the impact or fitness of a repository or proposed change from bounded manifests and source excerpts.",
       "owner": "analyze-engineering-intelligence",
       "status": "active",
-      "domain": "architecture dependency engineering-health refactoring research semantic-drift",
+      "domain": "architecture dependency engineering health refactoring research semantic drift",
       "aliases": [
         "analyze engineering intelligence"
       ],
-      "triggers": [],
+      "triggers": [
+        "analyze engineering intelligence"
+      ],
       "concepts": [
         "analyze",
         "architecture",
         "dependency",
         "engineering",
+        "engineering health",
         "engineering-health",
         "intelligence",
         "refactoring",
         "research",
+        "semantic drift",
         "semantic-drift"
       ],
       "inputs": [],
@@ -32761,7 +32786,7 @@
       "summary": "Map repositories, symbols, dependencies, configuration, runtime paths, ownership, change impact, reproductions, migrations, and test scope. Use before modifying an unfamiliar codebase or when a defect or change crosses files, services, or configuration layers.",
       "owner": "analyze-repository-intelligence",
       "status": "active",
-      "domain": "analyze declared-suite intelligence repository",
+      "domain": "analyze declared suite intelligence repository",
       "aliases": [
         "agent computer interface designer",
         "agents md generator",
@@ -32799,9 +32824,12 @@
         "trace runtime request",
         "understand repository"
       ],
-      "triggers": [],
+      "triggers": [
+        "analyze repository intelligence"
+      ],
       "concepts": [
         "analyze",
+        "declared suite",
         "declared-suite",
         "intelligence",
         "repository"
@@ -32825,15 +32853,18 @@
       "summary": "Find shallow abstractions, leakage, duplication, and misplaced seams, then rank deepening opportunities.",
       "owner": "architecture-deepening-audit",
       "status": "active",
-      "domain": "architecture audit deepening engineering-reasoning",
+      "domain": "architecture audit deepening engineering reasoning",
       "aliases": [
         "architecture deepening audit"
       ],
-      "triggers": [],
+      "triggers": [
+        "architecture deepening audit"
+      ],
       "concepts": [
         "architecture",
         "audit",
         "deepening",
+        "engineering reasoning",
         "engineering-reasoning"
       ],
       "inputs": [],
@@ -32861,7 +32892,9 @@
       "aliases": [
         "audit ai runtime assurance"
       ],
-      "triggers": [],
+      "triggers": [
+        "audit ai runtime assurance"
+      ],
       "concepts": [
         "ai",
         "assurance",
@@ -32894,7 +32927,9 @@
       "aliases": [
         "audit incomplete implementations"
       ],
-      "triggers": [],
+      "triggers": [
+        "audit incomplete implementations"
+      ],
       "concepts": [
         "audit",
         "completeness",
@@ -32924,16 +32959,20 @@
       "summary": "Verify complete user action paths and final resolved state rather than",
       "owner": "audit-interactive-systems",
       "status": "mapped_deferred",
-      "domain": "audit external-candidate interactive systems ui-verification",
+      "domain": "audit external candidate interactive systems ui verification",
       "aliases": [
         "audit interactive systems"
       ],
-      "triggers": [],
+      "triggers": [
+        "audit interactive systems"
+      ],
       "concepts": [
         "audit",
+        "external candidate",
         "external-candidate",
         "interactive",
         "systems",
+        "ui verification",
         "ui-verification"
       ],
       "inputs": [],
@@ -32959,7 +32998,9 @@
       "aliases": [
         "audit source capabilities"
       ],
-      "triggers": [],
+      "triggers": [
+        "audit source capabilities"
+      ],
       "concepts": [
         "audit",
         "capabilities",
@@ -32992,14 +33033,17 @@
       "summary": "Automate Supabase events and operations through n8n with authenticated triggers, idempotency, durable state, and reconciliation.",
       "owner": "automate-supabase-with-n8n",
       "status": "active",
-      "domain": "cross database-webhooks idempotency outbox reconciliation",
+      "domain": "cross database webhooks idempotency outbox reconciliation",
       "aliases": [
         "automate supabase with n8n"
       ],
-      "triggers": [],
+      "triggers": [
+        "automate supabase with n8n"
+      ],
       "concepts": [
         "automate",
         "cross",
+        "database webhooks",
         "database-webhooks",
         "idempotency",
         "n8n",
@@ -33031,7 +33075,9 @@
       "aliases": [
         "backup deploy recover supabase"
       ],
-      "triggers": [],
+      "triggers": [
+        "backup deploy recover supabase"
+      ],
       "concepts": [
         "backup",
         "deploy",
@@ -33066,7 +33112,9 @@
       "aliases": [
         "backup upgrade restore n8n"
       ],
-      "triggers": [],
+      "triggers": [
+        "backup upgrade restore n8n"
+      ],
       "concepts": [
         "backup",
         "n8n",
@@ -33100,7 +33148,9 @@
       "aliases": [
         "behavior to code mapper"
       ],
-      "triggers": [],
+      "triggers": [
+        "behavior to code mapper"
+      ],
       "concepts": [
         "behavior",
         "code",
@@ -33127,17 +33177,21 @@
       "summary": "Benchmark agent behavior and route models using evidence, reliability,",
       "owner": "benchmark-and-route-agents",
       "status": "mapped_deferred",
-      "domain": "agents and benchmark evaluation external-candidate model-routing route",
+      "domain": "agents and benchmark evaluation external candidate model routing route",
       "aliases": [
         "benchmark and route agents"
       ],
-      "triggers": [],
+      "triggers": [
+        "benchmark and route agents"
+      ],
       "concepts": [
         "agents",
         "and",
         "benchmark",
         "evaluation",
+        "external candidate",
         "external-candidate",
+        "model routing",
         "model-routing",
         "route"
       ],
@@ -33160,15 +33214,18 @@
       "summary": "Translate an academic benchmark into independent framework domain cases, outcomes, risks, and evidence requirements. Use when the task requires this bounded operational control; keep it inactive otherwise.",
       "owner": "benchmark-domain-adapter",
       "status": "mapped_deferred",
-      "domain": "adapter benchmark domain research-ops",
+      "domain": "adapter benchmark domain research ops",
       "aliases": [
         "benchmark domain adapter"
       ],
-      "triggers": [],
+      "triggers": [
+        "benchmark domain adapter"
+      ],
       "concepts": [
         "adapter",
         "benchmark",
         "domain",
+        "research ops",
         "research-ops"
       ],
       "inputs": [],
@@ -33194,7 +33251,9 @@
       "aliases": [
         "bounded workflow topology selector"
       ],
-      "triggers": [],
+      "triggers": [
+        "bounded workflow topology selector"
+      ],
       "concepts": [
         "advanced",
         "bounded",
@@ -33221,11 +33280,13 @@
       "summary": "Build n8n AI workflows with bounded model/tool authority, structured outputs, retrieval evidence, evaluation, and escalation.",
       "owner": "build-n8n-ai-workflows",
       "status": "active",
-      "domain": "agents evaluation llm n8n structured-output tools",
+      "domain": "agents evaluation llm n8n structured output tools",
       "aliases": [
         "build n8n ai workflows"
       ],
-      "triggers": [],
+      "triggers": [
+        "build n8n ai workflows"
+      ],
       "concepts": [
         "agents",
         "ai",
@@ -33233,6 +33294,7 @@
         "evaluation",
         "llm",
         "n8n",
+        "structured output",
         "structured-output",
         "tools",
         "workflows"
@@ -33256,15 +33318,18 @@
       "summary": "Develop custom n8n nodes with typed operations, separate credentials, pagination, errors, tests, and release governance.",
       "owner": "build-n8n-custom-nodes",
       "status": "active",
-      "domain": "credentials custom-node n8n pagination typescript",
+      "domain": "credentials custom node n8n pagination typescript",
       "aliases": [
         "build n8n custom nodes"
       ],
-      "triggers": [],
+      "triggers": [
+        "build n8n custom nodes"
+      ],
       "concepts": [
         "build",
         "credentials",
         "custom",
+        "custom node",
         "custom-node",
         "n8n",
         "nodes",
@@ -33290,19 +33355,23 @@
       "summary": "Build governed RAG ingestion and retrieval with n8n and Supabase pgvector.",
       "owner": "build-n8n-supabase-rag",
       "status": "active",
-      "domain": "cross ingestion match_documents pgvector rag retrieval-evaluation",
+      "domain": "cross ingestion match documents pgvector rag retrieval evaluation",
       "aliases": [
         "build n8n supabase rag"
       ],
-      "triggers": [],
+      "triggers": [
+        "build n8n supabase rag"
+      ],
       "concepts": [
         "build",
         "cross",
         "ingestion",
+        "match documents",
         "match_documents",
         "n8n",
         "pgvector",
         "rag",
+        "retrieval evaluation",
         "retrieval-evaluation",
         "supabase"
       ],
@@ -33327,16 +33396,19 @@
       "summary": "Build Supabase Edge Functions with explicit auth, secrets, CORS, bounds, idempotency, tests, and deployment evidence.",
       "owner": "build-supabase-edge-functions",
       "status": "active",
-      "domain": "cors deno edge-functions idempotency supabase",
+      "domain": "cors deno edge functions idempotency supabase",
       "aliases": [
         "build supabase edge functions"
       ],
-      "triggers": [],
+      "triggers": [
+        "build supabase edge functions"
+      ],
       "concepts": [
         "build",
         "cors",
         "deno",
         "edge",
+        "edge functions",
         "edge-functions",
         "functions",
         "idempotency",
@@ -33365,7 +33437,9 @@
       "aliases": [
         "candidate memory promoter"
       ],
-      "triggers": [],
+      "triggers": [
+        "candidate memory promoter"
+      ],
       "concepts": [
         "candidate",
         "memory",
@@ -33394,7 +33468,9 @@
       "aliases": [
         "certify reversible validation"
       ],
-      "triggers": [],
+      "triggers": [
+        "certify reversible validation"
+      ],
       "concepts": [
         "certify",
         "recovery",
@@ -33428,7 +33504,9 @@
         "certify skeptical engineering",
         "generate certification report"
       ],
-      "triggers": [],
+      "triggers": [
+        "certify skeptical engineering"
+      ],
       "concepts": [
         "certification",
         "certify",
@@ -33460,7 +33538,9 @@
       "aliases": [
         "commission evidence first project"
       ],
-      "triggers": [],
+      "triggers": [
+        "commission evidence first project"
+      ],
       "concepts": [
         "accessibility",
         "assumptions",
@@ -33497,6 +33577,7 @@
       "triggers": [
         "bounded task lifecycle",
         "checkpointed verified result",
+        "commission project",
         "lazy capability activation"
       ],
       "concepts": [
@@ -33524,16 +33605,21 @@
       "summary": "Configure n8n URLs, database, encryption, execution, logging, retention, and runtime settings from an explicit contract.",
       "owner": "configure-n8n",
       "status": "active",
-      "domain": "environment-variables n8n reverse-proxy runtime-contract",
+      "domain": "environment variables n8n reverse proxy runtime contract",
       "aliases": [
         "configure n8n"
       ],
-      "triggers": [],
+      "triggers": [
+        "configure n8n"
+      ],
       "concepts": [
         "configure",
+        "environment variables",
         "environment-variables",
         "n8n",
+        "reverse proxy",
         "reverse-proxy",
+        "runtime contract",
         "runtime-contract"
       ],
       "inputs": [],
@@ -33557,20 +33643,26 @@
       "summary": "Connect n8n to Supabase through the built-in node, Data API, RPC, or Postgres with correct URLs, schemas, credentials, and RLS semantics.",
       "owner": "connect-n8n-to-supabase",
       "status": "active",
-      "domain": "cross custom-schema data-api rpc service-role supabase-node",
+      "domain": "cross custom schema data api rpc service role supabase node",
       "aliases": [
         "connect n8n to supabase"
       ],
-      "triggers": [],
+      "triggers": [
+        "connect n8n to supabase"
+      ],
       "concepts": [
         "connect",
         "cross",
+        "custom schema",
         "custom-schema",
+        "data api",
         "data-api",
         "n8n",
         "rpc",
+        "service role",
         "service-role",
         "supabase",
+        "supabase node",
         "supabase-node",
         "to"
       ],
@@ -33595,15 +33687,19 @@
       "summary": "Compress repeated progress and context within an explicit item budget while preserving failures, uncertainty, authority boundaries, recovery instructions, evidence, goals, and unresolved work. Use at context checkpoints, handoffs, or bounded multi-agent status aggregation.",
       "owner": "context-compactor",
       "status": "active",
-      "domain": "communication-budget context evidence-preservation orchestration",
+      "domain": "communication budget context evidence preservation orchestration",
       "aliases": [
         "context compactor"
       ],
-      "triggers": [],
+      "triggers": [
+        "context compactor"
+      ],
       "concepts": [
+        "communication budget",
         "communication-budget",
         "compactor",
         "context",
+        "evidence preservation",
         "evidence-preservation",
         "orchestration"
       ],
@@ -33628,13 +33724,16 @@
       "summary": "Produce a compact, evidence-linked state transfer that lets another agent continue without reconstructing the project.",
       "owner": "context-handoff-package",
       "status": "active",
-      "domain": "context engineering-reasoning handoff package",
+      "domain": "context engineering reasoning handoff package",
       "aliases": [
         "context handoff package"
       ],
-      "triggers": [],
+      "triggers": [
+        "context handoff package"
+      ],
       "concepts": [
         "context",
+        "engineering reasoning",
         "engineering-reasoning",
         "handoff",
         "package"
@@ -33664,7 +33763,9 @@
       "aliases": [
         "corpus to skill tree compiler"
       ],
-      "triggers": [],
+      "triggers": [
+        "corpus to skill tree compiler"
+      ],
       "concepts": [
         "compiler",
         "corpus",
@@ -33692,16 +33793,19 @@
       "summary": "Combine compatible research primitives into a stronger subsystem while exposing conflicts. Use when the task requires this bounded operational control; keep it inactive otherwise.",
       "owner": "cross-paper-mechanism-fuser",
       "status": "mapped_deferred",
-      "domain": "cross fuser mechanism paper research-ops",
+      "domain": "cross fuser mechanism paper research ops",
       "aliases": [
         "cross paper mechanism fuser"
       ],
-      "triggers": [],
+      "triggers": [
+        "cross paper mechanism fuser"
+      ],
       "concepts": [
         "cross",
         "fuser",
         "mechanism",
         "paper",
+        "research ops",
         "research-ops"
       ],
       "inputs": [],
@@ -33723,17 +33827,22 @@
       "summary": "Benchmark and select a correct bulk-data sorting strategy without mutating source data. Use for JSON, JSONL, NDJSON, CSV, or line-oriented datasets when a sort must be chosen from measured evidence, especially when the full input is too large for an in-memory experiment.",
       "owner": "data-sort-dry-run-picker",
       "status": "active",
-      "domain": "benchmark bulk-data correctness-trace dry-run sorting",
+      "domain": "benchmark bulk data correctness trace dry run sorting",
       "aliases": [
         "data sort dry run picker"
       ],
-      "triggers": [],
+      "triggers": [
+        "data sort dry run picker"
+      ],
       "concepts": [
         "benchmark",
+        "bulk data",
         "bulk-data",
+        "correctness trace",
         "correctness-trace",
         "data",
         "dry",
+        "dry run",
         "dry-run",
         "picker",
         "run",
@@ -33761,13 +33870,16 @@
       "summary": "Map long-horizon uncertain work as decision tickets and advance only the unblocked knowledge frontier.",
       "owner": "decision-wayfinding",
       "status": "active",
-      "domain": "decision engineering-reasoning wayfinding",
+      "domain": "decision engineering reasoning wayfinding",
       "aliases": [
         "decision wayfinding"
       ],
-      "triggers": [],
+      "triggers": [
+        "decision wayfinding"
+      ],
       "concepts": [
         "decision",
+        "engineering reasoning",
         "engineering-reasoning",
         "wayfinding"
       ],
@@ -33793,14 +33905,17 @@
       "summary": "Design deep modules with small stable interfaces, strong locality, and explicit seams.",
       "owner": "deep-module-design",
       "status": "active",
-      "domain": "deep design engineering-reasoning module",
+      "domain": "deep design engineering reasoning module",
       "aliases": [
         "deep module design"
       ],
-      "triggers": [],
+      "triggers": [
+        "deep module design"
+      ],
       "concepts": [
         "deep",
         "design",
+        "engineering reasoning",
         "engineering-reasoning",
         "module"
       ],
@@ -33829,7 +33944,9 @@
       "aliases": [
         "dependency impact tracer"
       ],
-      "triggers": [],
+      "triggers": [
+        "dependency impact tracer"
+      ],
       "concepts": [
         "dependency",
         "engineering",
@@ -33859,7 +33976,9 @@
       "aliases": [
         "deploy isolated model worker"
       ],
-      "triggers": [],
+      "triggers": [
+        "deploy isolated model worker"
+      ],
       "concepts": [
         "container",
         "deploy",
@@ -33888,14 +34007,17 @@
       "summary": "Deploy a durable single-main n8n instance with Docker or Compose, TLS boundaries, health checks, and backup hooks.",
       "owner": "deploy-n8n-docker",
       "status": "active",
-      "domain": "docker-compose n8n persistence postgres tls",
+      "domain": "docker compose n8n persistence postgres tls",
       "aliases": [
         "deploy n8n docker"
       ],
-      "triggers": [],
+      "triggers": [
+        "deploy n8n docker"
+      ],
       "concepts": [
         "deploy",
         "docker",
+        "docker compose",
         "docker-compose",
         "n8n",
         "persistence",
@@ -33923,18 +34045,23 @@
       "summary": "Design maintainable n8n workflows with explicit contracts, modularity, idempotency, errors, and operator evidence.",
       "owner": "design-build-n8n-workflows",
       "status": "active",
-      "domain": "error-paths idempotency n8n sub-workflows workflow-design",
+      "domain": "error paths idempotency n8n sub workflows workflow design",
       "aliases": [
         "design build n8n workflows"
       ],
-      "triggers": [],
+      "triggers": [
+        "design build n8n workflows"
+      ],
       "concepts": [
         "build",
         "design",
+        "error paths",
         "error-paths",
         "idempotency",
         "n8n",
+        "sub workflows",
         "sub-workflows",
+        "workflow design",
         "workflow-design",
         "workflows"
       ],
@@ -33959,13 +34086,16 @@
       "summary": "Generate and compare genuinely different interface designs before locking an important seam.",
       "owner": "design-it-twice",
       "status": "active",
-      "domain": "design engineering-reasoning it twice",
+      "domain": "design engineering reasoning it twice",
       "aliases": [
         "design it twice"
       ],
-      "triggers": [],
+      "triggers": [
+        "design it twice"
+      ],
       "concepts": [
         "design",
+        "engineering reasoning",
         "engineering-reasoning",
         "it",
         "twice"
@@ -33995,7 +34125,9 @@
       "aliases": [
         "design n8n supabase reliability"
       ],
-      "triggers": [],
+      "triggers": [
+        "design n8n supabase reliability"
+      ],
       "concepts": [
         "backpressure",
         "cross",
@@ -34028,12 +34160,15 @@
       "summary": "Design trust boundaries between n8n users/workflows, Supabase RLS, service credentials, webhooks, logs, and AI tools.",
       "owner": "design-n8n-supabase-security-boundaries",
       "status": "active",
-      "domain": "ai-boundaries cross rbac rls service-role webhook-security",
+      "domain": "ai boundaries cross rbac rls service role webhook security",
       "aliases": [
         "design n8n supabase security boundaries"
       ],
-      "triggers": [],
+      "triggers": [
+        "design n8n supabase security boundaries"
+      ],
       "concepts": [
+        "ai boundaries",
         "ai-boundaries",
         "boundaries",
         "cross",
@@ -34042,8 +34177,10 @@
         "rbac",
         "rls",
         "security",
+        "service role",
         "service-role",
         "supabase",
+        "webhook security",
         "webhook-security"
       ],
       "inputs": [],
@@ -34072,7 +34209,9 @@
       "aliases": [
         "design supabase postgres"
       ],
-      "triggers": [],
+      "triggers": [
+        "design supabase postgres"
+      ],
       "concepts": [
         "constraints",
         "design",
@@ -34103,16 +34242,20 @@
       "summary": "Work safely in the supplied n8n monorepo using repository-local agent rules, pnpm, package boundaries, and evidence gates.",
       "owner": "develop-n8n-monorepo",
       "status": "active",
-      "domain": "agents.md monorepo n8n package-gates pnpm",
+      "domain": "agents md monorepo n8n package gates pnpm",
       "aliases": [
         "develop n8n monorepo"
       ],
-      "triggers": [],
+      "triggers": [
+        "develop n8n monorepo"
+      ],
       "concepts": [
+        "agents md",
         "agents.md",
         "develop",
         "monorepo",
         "n8n",
+        "package gates",
         "package-gates",
         "pnpm"
       ],
@@ -34135,14 +34278,17 @@
       "summary": "Run Supabase locally with reproducible config, migrations, seeds, tests, and clean reset behavior.",
       "owner": "develop-supabase-locally",
       "status": "active",
-      "domain": "docker local-development migrations seed supabase",
+      "domain": "docker local development migrations seed supabase",
       "aliases": [
         "develop supabase locally"
       ],
-      "triggers": [],
+      "triggers": [
+        "develop supabase locally"
+      ],
       "concepts": [
         "develop",
         "docker",
+        "local development",
         "local-development",
         "locally",
         "migrations",
@@ -34174,7 +34320,9 @@
       "aliases": [
         "diagnose python repair"
       ],
-      "triggers": [],
+      "triggers": [
+        "diagnose python repair"
+      ],
       "concepts": [
         "diagnose",
         "diagnosis",
@@ -34204,7 +34352,9 @@
       "aliases": [
         "discover environment safely"
       ],
-      "triggers": [],
+      "triggers": [
+        "discover environment safely"
+      ],
       "concepts": [
         "bootstrap",
         "discover",
@@ -34232,13 +34382,16 @@
       "summary": "Maintain a canonical project vocabulary and challenge ambiguous or overloaded terms during work.",
       "owner": "domain-language-maintenance",
       "status": "active",
-      "domain": "domain engineering-reasoning language maintenance",
+      "domain": "domain engineering reasoning language maintenance",
       "aliases": [
         "domain language maintenance"
       ],
-      "triggers": [],
+      "triggers": [
+        "domain language maintenance"
+      ],
       "concepts": [
         "domain",
+        "engineering reasoning",
         "engineering-reasoning",
         "language",
         "maintenance"
@@ -34264,15 +34417,18 @@
       "summary": "Review changes independently for repository standards and specification fidelity, then reconcile findings.",
       "owner": "dual-axis-code-review",
       "status": "active",
-      "domain": "axis code dual engineering-reasoning review",
+      "domain": "axis code dual engineering reasoning review",
       "aliases": [
         "dual axis code review"
       ],
-      "triggers": [],
+      "triggers": [
+        "dual axis code review"
+      ],
       "concepts": [
         "axis",
         "code",
         "dual",
+        "engineering reasoning",
         "engineering-reasoning",
         "review"
       ],
@@ -34297,11 +34453,13 @@
       "summary": "Design or audit service clients and proxies so cached network identity is never trusted beyond its validity window. Use for DNS, registries, orchestrators, proxies, sidecars, container networks, endpoint caches, failover, or recurring stale-address failures; NGINX variable-based DNS is one implementation, not the scope of the skill.",
       "owner": "dynamic-service-discovery",
       "status": "active",
-      "domain": "cache dns identity network service-discovery",
+      "domain": "cache dns identity network service discovery",
       "aliases": [
         "dynamic service discovery"
       ],
-      "triggers": [],
+      "triggers": [
+        "dynamic service discovery"
+      ],
       "concepts": [
         "cache",
         "discovery",
@@ -34310,6 +34468,7 @@
         "identity",
         "network",
         "service",
+        "service discovery",
         "service-discovery"
       ],
       "inputs": [],
@@ -34338,7 +34497,9 @@
       "aliases": [
         "dynamic skill detonator"
       ],
-      "triggers": [],
+      "triggers": [
+        "dynamic skill detonator"
+      ],
       "concepts": [
         "detonator",
         "dynamic",
@@ -34368,7 +34529,9 @@
       "aliases": [
         "enforce governance controls"
       ],
-      "triggers": [],
+      "triggers": [
+        "enforce governance controls"
+      ],
       "concepts": [
         "authorization",
         "controls",
@@ -34401,7 +34564,9 @@
       "aliases": [
         "enforce source import boundaries"
       ],
-      "triggers": [],
+      "triggers": [
+        "enforce source import boundaries"
+      ],
       "concepts": [
         "architecture",
         "boundaries",
@@ -34438,7 +34603,9 @@
       "aliases": [
         "engineer hybrid retrieval"
       ],
-      "triggers": [],
+      "triggers": [
+        "engineer hybrid retrieval"
+      ],
       "concepts": [
         "engineer",
         "governance",
@@ -34470,7 +34637,7 @@
       "summary": "Design and run unit, integration, contract, differential, property, metamorphic, fuzz, mutation, performance, judge-calibration, trajectory, and long-horizon evaluations. Use when correctness or behavioral quality needs adversarial, independent, or regression-grade evidence.",
       "owner": "engineer-verification-lab",
       "status": "active",
-      "domain": "declared-suite engineer lab verification",
+      "domain": "declared suite engineer lab verification",
       "aliases": [
         "agent trajectory evaluator",
         "benchmark contamination auditor",
@@ -34512,8 +34679,11 @@
         "trajectory scorer",
         "unit test designer"
       ],
-      "triggers": [],
+      "triggers": [
+        "engineer verification lab"
+      ],
       "concepts": [
+        "declared suite",
         "declared-suite",
         "engineer",
         "lab",
@@ -34541,13 +34711,17 @@
       "summary": "Evaluate whether n8n fits the workload compared with code, native integrations, or another orchestrator.",
       "owner": "evaluate-n8n-fit",
       "status": "active",
-      "domain": "architecture-fit decision-record n8n tradeoffs",
+      "domain": "architecture fit decision record n8n tradeoffs",
       "aliases": [
         "evaluate n8n fit"
       ],
-      "triggers": [],
+      "triggers": [
+        "evaluate n8n fit"
+      ],
       "concepts": [
+        "architecture fit",
         "architecture-fit",
+        "decision record",
         "decision-record",
         "evaluate",
         "fit",
@@ -34579,7 +34753,9 @@
       "aliases": [
         "evaluate retrieval readiness"
       ],
-      "triggers": [],
+      "triggers": [
+        "evaluate retrieval readiness"
+      ],
       "concepts": [
         "activation",
         "evaluate",
@@ -34614,15 +34790,19 @@
       "summary": "Evaluate Supabase against direct Postgres, another backend platform, or custom services.",
       "owner": "evaluate-supabase-fit",
       "status": "active",
-      "domain": "architecture-fit postgres-platform supabase tradeoffs",
+      "domain": "architecture fit postgres platform supabase tradeoffs",
       "aliases": [
         "evaluate supabase fit"
       ],
-      "triggers": [],
+      "triggers": [
+        "evaluate supabase fit"
+      ],
       "concepts": [
+        "architecture fit",
         "architecture-fit",
         "evaluate",
         "fit",
+        "postgres platform",
         "postgres-platform",
         "supabase",
         "tradeoffs"
@@ -34650,7 +34830,9 @@
       "aliases": [
         "evaluation budget allocator"
       ],
-      "triggers": [],
+      "triggers": [
+        "evaluation budget allocator"
+      ],
       "concepts": [
         "allocator",
         "budget",
@@ -34679,7 +34861,9 @@
       "aliases": [
         "evidence assembler"
       ],
-      "triggers": [],
+      "triggers": [
+        "evidence assembler"
+      ],
       "concepts": [
         "assembler",
         "assurance",
@@ -34706,14 +34890,18 @@
       "summary": "Convert bounded session evidence into project-scoped candidate knowledge",
       "owner": "evolve-session-learning",
       "status": "mapped_deferred",
-      "domain": "continuous-learning evolve external-candidate learning session",
+      "domain": "continuous learning evolve external candidate learning session",
       "aliases": [
         "evolve session learning"
       ],
-      "triggers": [],
+      "triggers": [
+        "evolve session learning"
+      ],
       "concepts": [
+        "continuous learning",
         "continuous-learning",
         "evolve",
+        "external candidate",
         "external-candidate",
         "learning",
         "session"
@@ -34741,7 +34929,9 @@
       "aliases": [
         "execution contract enforcer"
       ],
-      "triggers": [],
+      "triggers": [
+        "execution contract enforcer"
+      ],
       "concepts": [
         "contract",
         "enforcer",
@@ -34769,12 +34959,15 @@
       "summary": "Decide whether a bounded workload should keep its current language/runtime, deployment/platform, or database/storage placement. Use when comparing migrations, sidecars, native workers, services, accelerators, hosting classes, or primary-plus-secondary storage patterns using baselines, total boundary cost, rollback, benchmarks, and promotion evidence.",
       "owner": "execution-placement-decision",
       "status": "active",
-      "domain": "a-b baseline database deployment placement promotion rollback runtime",
+      "domain": "a b baseline database deployment placement promotion rollback runtime",
       "aliases": [
         "execution placement decision"
       ],
-      "triggers": [],
+      "triggers": [
+        "execution placement decision"
+      ],
       "concepts": [
+        "a b",
         "a-b",
         "baseline",
         "database",
@@ -34809,7 +35002,9 @@
       "aliases": [
         "experience reconstructor"
       ],
-      "triggers": [],
+      "triggers": [
+        "experience reconstructor"
+      ],
       "concepts": [
         "experience",
         "memory",
@@ -34838,7 +35033,9 @@
       "aliases": [
         "forge skills from knowledge"
       ],
-      "triggers": [],
+      "triggers": [
+        "forge skills from knowledge"
+      ],
       "concepts": [
         "calculation",
         "certification",
@@ -34870,12 +35067,15 @@
       "summary": "Interrogate a plan by maintaining a question frontier instead of asking random or repeated questions.",
       "owner": "frontier-questioning",
       "status": "active",
-      "domain": "engineering-reasoning frontier questioning",
+      "domain": "engineering reasoning frontier questioning",
       "aliases": [
         "frontier questioning"
       ],
-      "triggers": [],
+      "triggers": [
+        "frontier questioning"
+      ],
       "concepts": [
+        "engineering reasoning",
         "engineering-reasoning",
         "frontier",
         "questioning"
@@ -34901,11 +35101,13 @@
       "summary": "Gate training, evaluation, fine-tuning, adapter, and conversion inputs by provenance, license, consent, privacy, content hashes, split leakage, labels, drift, supply-chain integrity, and rollback evidence. Use before preparing datasets, behavior packs, model adapters, conversion jobs, or model promotion.",
       "owner": "gate-model-data-lifecycle",
       "status": "active",
-      "domain": "dataset leakage model privacy provenance supply-chain training",
+      "domain": "dataset leakage model privacy provenance supply chain training",
       "aliases": [
         "gate model data lifecycle"
       ],
-      "triggers": [],
+      "triggers": [
+        "gate model data lifecycle"
+      ],
       "concepts": [
         "data",
         "dataset",
@@ -34915,6 +35117,7 @@
         "model",
         "privacy",
         "provenance",
+        "supply chain",
         "supply-chain",
         "training"
       ],
@@ -34939,16 +35142,21 @@
       "summary": "Compile untrusted sources into governed capability candidates, preserve candidate identity through explicit resolver stages, score candidates independently, and build dependency-complete execution packages with reasoned exclusions. Use for source-to-skill compilation, candidate routing, package optimization, generated-skill admission, or resolver diagnostics.",
       "owner": "govern-candidate-resolution-pipeline",
       "status": "active",
-      "domain": "candidate-compiler fold-in package-optimization ranking resolver",
+      "domain": "candidate compiler fold in package optimization ranking resolver",
       "aliases": [
         "govern candidate resolution pipeline"
       ],
-      "triggers": [],
+      "triggers": [
+        "govern candidate resolution pipeline"
+      ],
       "concepts": [
         "candidate",
+        "candidate compiler",
         "candidate-compiler",
+        "fold in",
         "fold-in",
         "govern",
+        "package optimization",
         "package-optimization",
         "pipeline",
         "ranking",
@@ -34976,14 +35184,18 @@
       "summary": "Project capabilities across harnesses and MCP surfaces without losing",
       "owner": "govern-cross-harness-runtime",
       "status": "mapped_deferred",
-      "domain": "cross cross-harness external-candidate govern harness mcp runtime",
+      "domain": "cross cross harness external candidate govern harness mcp runtime",
       "aliases": [
         "govern cross harness runtime"
       ],
-      "triggers": [],
+      "triggers": [
+        "govern cross harness runtime"
+      ],
       "concepts": [
         "cross",
+        "cross harness",
         "cross-harness",
+        "external candidate",
         "external-candidate",
         "govern",
         "harness",
@@ -35009,20 +35221,25 @@
       "summary": "Discover, rank, and selectively hydrate the external cybersecurity catalog while enforcing R0-R4 authority, target scope, evidence, finding, tool, cleanup, and production safeguards. Use for security architecture, AI/MCP, supply-chain, vulnerability, incident response, hunting, cloud, identity, network, OT/ICS, application/API, cryptography, privacy, or authorized lab validation work.",
       "owner": "govern-cybersecurity-capabilities",
       "status": "active",
-      "domain": "authority cybersecurity evidence external-provider framework-mapping risk selective-hydration",
+      "domain": "authority cybersecurity evidence external provider framework mapping risk selective hydration",
       "aliases": [
         "govern cybersecurity capabilities"
       ],
-      "triggers": [],
+      "triggers": [
+        "govern cybersecurity capabilities"
+      ],
       "concepts": [
         "authority",
         "capabilities",
         "cybersecurity",
         "evidence",
+        "external provider",
         "external-provider",
+        "framework mapping",
         "framework-mapping",
         "govern",
         "risk",
+        "selective hydration",
         "selective-hydration"
       ],
       "inputs": [],
@@ -35050,7 +35267,9 @@
       "aliases": [
         "govern deployment safety"
       ],
-      "triggers": [],
+      "triggers": [
+        "govern deployment safety"
+      ],
       "concepts": [
         "deployment",
         "govern",
@@ -35081,11 +35300,13 @@
       "summary": "Coordinate organization-scoped goals, atomic work checkout, multidimensional budgets, runtime placement, quotas, capability and secret leases, external jobs, and operator handoff without cross-project state bleed. Use for multi-project or multi-runtime execution, remote agents, notebooks, containers, MCP, A2A, or expensive operations.",
       "owner": "govern-distributed-work-runtime",
       "status": "active",
-      "domain": "a2a budget lease mcp multi-project runtime-placement",
+      "domain": "a2a budget lease mcp multi project runtime placement",
       "aliases": [
         "govern distributed work runtime"
       ],
-      "triggers": [],
+      "triggers": [
+        "govern distributed work runtime"
+      ],
       "concepts": [
         "a2a",
         "budget",
@@ -35093,8 +35314,10 @@
         "govern",
         "lease",
         "mcp",
+        "multi project",
         "multi-project",
         "runtime",
+        "runtime placement",
         "runtime-placement",
         "work"
       ],
@@ -35120,17 +35343,21 @@
       "summary": "Manage bitemporal and epistemic claims, causal invalidation, retrieval traces, and isolated skill-improvement experiments with independent judging and no live self-editing. Use when facts change over time, derived observations need recomputation, or a skill candidate must be evaluated safely.",
       "owner": "govern-epistemic-skill-evolution",
       "status": "active",
-      "domain": "bitemporal causal-invalidation epistemic offline-skill-evaluation",
+      "domain": "bitemporal causal invalidation epistemic offline skill evaluation",
       "aliases": [
         "govern epistemic skill evolution"
       ],
-      "triggers": [],
+      "triggers": [
+        "govern epistemic skill evolution"
+      ],
       "concepts": [
         "bitemporal",
+        "causal invalidation",
         "causal-invalidation",
         "epistemic",
         "evolution",
         "govern",
+        "offline skill evaluation",
         "offline-skill-evaluation",
         "skill"
       ],
@@ -35155,20 +35382,24 @@
       "summary": "Search and assess non-canonical external capability metadata, create bounded project-local staging plans, govern hook re-entrancy, normalize cross-harness session snapshots, and evaluate routing economics without executing imported source or granting authority. Use when reviewing, staging, comparing, or revoking external capability candidates.",
       "owner": "govern-external-capability-intake",
       "status": "active",
-      "domain": "admission external-candidates hooks routing session-fabric staging",
+      "domain": "admission external candidates hooks routing session fabric staging",
       "aliases": [
         "govern external capability intake"
       ],
-      "triggers": [],
+      "triggers": [
+        "govern external capability intake"
+      ],
       "concepts": [
         "admission",
         "capability",
         "external",
+        "external candidates",
         "external-candidates",
         "govern",
         "hooks",
         "intake",
         "routing",
+        "session fabric",
         "session-fabric",
         "staging"
       ],
@@ -35193,13 +35424,16 @@
       "summary": "Treat hooks and agent configuration as governed, validated runtime supply-chain",
       "owner": "govern-hooked-execution",
       "status": "mapped_deferred",
-      "domain": "execution external-candidate govern hooked hooks security",
+      "domain": "execution external candidate govern hooked hooks security",
       "aliases": [
         "govern hooked execution"
       ],
-      "triggers": [],
+      "triggers": [
+        "govern hooked execution"
+      ],
       "concepts": [
         "execution",
+        "external candidate",
         "external-candidate",
         "govern",
         "hooked",
@@ -35225,14 +35459,17 @@
       "summary": "Inventory and admit untrusted knowledge sources, classify semantic novelty, plan non-destructive merges, audit graph coherence, simulate retrieval, and stage approval-bound proposals without writing canon. Use when adding or reconciling knowledge, skills, workflows, formulas, registries, or research corpora.",
       "owner": "govern-knowledge-refinery",
       "status": "active",
-      "domain": "admission graph-coherence knowledge novelty ranking retrieval",
+      "domain": "admission graph coherence knowledge novelty ranking retrieval",
       "aliases": [
         "govern knowledge refinery"
       ],
-      "triggers": [],
+      "triggers": [
+        "govern knowledge refinery"
+      ],
       "concepts": [
         "admission",
         "govern",
+        "graph coherence",
         "graph-coherence",
         "knowledge",
         "novelty",
@@ -35262,18 +35499,22 @@
       "summary": "Govern project-scoped memory from sanitized evidence capture through layered distillation, conflict resolution, promotion, scoped loadouts, hybrid retrieval, bounded context assembly, reversible offload, evaluation, repair, and provider isolation. Use when ingesting, retrieving, assigning, compacting, repairing, transferring, or certifying memory and derived indexes.",
       "owner": "govern-memory-fabric",
       "status": "active",
-      "domain": "capture context-assembly evaluation isolation layered-memory loadout memory offload provenance repair sharding",
+      "domain": "capture context assembly evaluation isolation layered memory loadout memory offload provenance repair sharding",
       "aliases": [
         "govern memory fabric"
       ],
-      "triggers": [],
+      "triggers": [
+        "govern memory fabric"
+      ],
       "concepts": [
         "capture",
+        "context assembly",
         "context-assembly",
         "evaluation",
         "fabric",
         "govern",
         "isolation",
+        "layered memory",
         "layered-memory",
         "loadout",
         "memory",
@@ -35305,7 +35546,7 @@
       "summary": "Govern explicit uncertainty, contradiction handling, sanitized decision reconstruction, capability-graph evolution, evidence-based agent routing, bounded optimization, theory induction, observable engineering-practice analysis, and decomposed knowledge-dynamics signals. Use when reasoning quality or the engineering system itself must be inspected, compared, improved, or revalidated without capturing private chain-of-thought or creating a second control plane.",
       "owner": "govern-metacognitive-evolution",
       "status": "active",
-      "domain": "introspection knowledge-dynamics metacognition optimization uncertainty",
+      "domain": "introspection knowledge dynamics metacognition optimization uncertainty",
       "aliases": [
         "agent cognitive profile designer",
         "agent failure mode calibrator",
@@ -35359,11 +35600,14 @@
         "uncertainty reduction contract",
         "workflow autotuning advisor"
       ],
-      "triggers": [],
+      "triggers": [
+        "govern metacognitive evolution"
+      ],
       "concepts": [
         "evolution",
         "govern",
         "introspection",
+        "knowledge dynamics",
         "knowledge-dynamics",
         "metacognition",
         "metacognitive",
@@ -35391,19 +35635,23 @@
       "summary": "Assess, admit, isolate, pin, update, and retire n8n community nodes as executable supply-chain components.",
       "owner": "govern-n8n-community-nodes",
       "status": "active",
-      "domain": "allowlist community-nodes n8n npm supply-chain",
+      "domain": "allowlist community nodes n8n npm supply chain",
       "aliases": [
         "govern n8n community nodes"
       ],
-      "triggers": [],
+      "triggers": [
+        "govern n8n community nodes"
+      ],
       "concepts": [
         "allowlist",
         "community",
+        "community nodes",
         "community-nodes",
         "govern",
         "n8n",
         "nodes",
         "npm",
+        "supply chain",
         "supply-chain"
       ],
       "inputs": [],
@@ -35427,7 +35675,7 @@
       "summary": "Govern capability routing, typed execution, permissions, assumptions, claims, durable state, recovery, learning promotion, and independent verification. Use when a task needs explicit authority, evidence, failure handling, or resumable control-plane state.",
       "owner": "govern-operating-kernel",
       "status": "active",
-      "domain": "declared-suite govern kernel operating",
+      "domain": "declared suite govern kernel operating",
       "aliases": [
         "abstention and escalation",
         "assumption register",
@@ -35461,8 +35709,11 @@
         "unknown field guardian",
         "validate pack"
       ],
-      "triggers": [],
+      "triggers": [
+        "govern operating kernel"
+      ],
       "concepts": [
+        "declared suite",
         "declared-suite",
         "govern",
         "kernel",
@@ -35487,7 +35738,7 @@
       "summary": "Probe hardware and serving backends, plan capacity and cost, validate model and protocol compatibility, import governed tools, route models, manage caches and batching, compare canaries, degrade safely, and package human handoffs. Use for runtime selection, protocol integration, or deployment decisions.",
       "owner": "govern-runtime-protocol-deployment",
       "status": "active",
-      "domain": "declared-suite deployment govern protocol runtime",
+      "domain": "declared suite deployment govern protocol runtime",
       "aliases": [
         "a2a agent adapter",
         "approval request",
@@ -35529,8 +35780,11 @@
         "tool output sanitizer",
         "validate protocol compatibility"
       ],
-      "triggers": [],
+      "triggers": [
+        "govern runtime protocol deployment"
+      ],
       "concepts": [
+        "declared suite",
         "declared-suite",
         "deployment",
         "govern",
@@ -35563,7 +35817,9 @@
       "aliases": [
         "govern visual runtime accessibility"
       ],
-      "triggers": [],
+      "triggers": [
+        "govern visual runtime accessibility"
+      ],
       "concepts": [
         "accessibility",
         "govern",
@@ -35590,12 +35846,15 @@
       "summary": "Generate a resumable human-guided procedure for setup, migration, or other manual state transitions.",
       "owner": "guided-procedure-wizard",
       "status": "active",
-      "domain": "engineering-reasoning guided procedure wizard",
+      "domain": "engineering reasoning guided procedure wizard",
       "aliases": [
         "guided procedure wizard"
       ],
-      "triggers": [],
+      "triggers": [
+        "guided procedure wizard"
+      ],
       "concepts": [
+        "engineering reasoning",
         "engineering-reasoning",
         "guided",
         "procedure",
@@ -35622,19 +35881,24 @@
       "summary": "Diagnose failed, stuck, slow, or incorrect executions from evidence without unsafe reruns.",
       "owner": "handle-debug-n8n-executions",
       "status": "active",
-      "domain": "error-workflow execution-debugging n8n replay root-cause",
+      "domain": "error workflow execution debugging n8n replay root cause",
       "aliases": [
         "handle debug n8n executions"
       ],
-      "triggers": [],
+      "triggers": [
+        "handle debug n8n executions"
+      ],
       "concepts": [
         "debug",
+        "error workflow",
         "error-workflow",
+        "execution debugging",
         "execution-debugging",
         "executions",
         "handle",
         "n8n",
         "replay",
+        "root cause",
         "root-cause"
       ],
       "inputs": [],
@@ -35656,17 +35920,20 @@
       "summary": "Design or audit container images and service definitions for non-root execution, explicit Linux capabilities, immutable filesystems, isolated networks, bounded resources, health checks, and minimal build context. Use when editing Dockerfiles, Compose files, Kubernetes workloads, or container security baselines.",
       "owner": "harden-container-boundaries",
       "status": "active",
-      "domain": "container database isolation least-privilege",
+      "domain": "container database isolation least privilege",
       "aliases": [
         "harden container boundaries"
       ],
-      "triggers": [],
+      "triggers": [
+        "harden container boundaries"
+      ],
       "concepts": [
         "boundaries",
         "container",
         "database",
         "harden",
         "isolation",
+        "least privilege",
         "least-privilege"
       ],
       "inputs": [],
@@ -35694,7 +35961,9 @@
       "aliases": [
         "hardware aware execution routing"
       ],
-      "triggers": [],
+      "triggers": [
+        "hardware aware execution routing"
+      ],
       "concepts": [
         "aware",
         "benchmark",
@@ -35732,7 +36001,9 @@
       "aliases": [
         "human handoff state transfer"
       ],
-      "triggers": [],
+      "triggers": [
+        "human handoff state transfer"
+      ],
       "concepts": [
         "handoff",
         "human",
@@ -35763,7 +36034,9 @@
       "aliases": [
         "implement supabase auth"
       ],
-      "triggers": [],
+      "triggers": [
+        "implement supabase auth"
+      ],
       "concepts": [
         "auth",
         "authentication",
@@ -35799,7 +36072,9 @@
       "aliases": [
         "inspect live contracts"
       ],
-      "triggers": [],
+      "triggers": [
+        "inspect live contracts"
+      ],
       "concepts": [
         "contract",
         "contracts",
@@ -35830,18 +36105,21 @@
       "summary": "Inspect an LLM configuration without importing model code, normalize architecture fields, classify attention and model topology, and estimate parameter, weight, and KV-cache requirements with explicit assumptions. Use for unknown model configs, architecture comparisons, VRAM estimates, long-context feasibility, quantization planning, MoE review, or evidence-backed local deployment analysis.",
       "owner": "inspect-llm-architecture",
       "status": "active",
-      "domain": "architecture inspection local-inference memory model",
+      "domain": "architecture inspection local inference memory model",
       "aliases": [
         "inspect llm architecture",
         "inspect model config",
         "llm architecture calculator"
       ],
-      "triggers": [],
+      "triggers": [
+        "inspect llm architecture"
+      ],
       "concepts": [
         "architecture",
         "inspect",
         "inspection",
         "llm",
+        "local inference",
         "local-inference",
         "memory",
         "model"
@@ -35867,13 +36145,16 @@
       "summary": "Plan and apply target-specific capability subsets with deterministic",
       "owner": "install-capabilities-selectively",
       "status": "mapped_deferred",
-      "domain": "capabilities external-candidate install installation selectively",
+      "domain": "capabilities external candidate install installation selectively",
       "aliases": [
         "install capabilities selectively"
       ],
-      "triggers": [],
+      "triggers": [
+        "install capabilities selectively"
+      ],
       "concepts": [
         "capabilities",
+        "external candidate",
         "external-candidate",
         "install",
         "installation",
@@ -35898,11 +36179,13 @@
       "summary": "Build secure webhook and API integrations with authentication, validation, pagination, rate limits, timeouts, and idempotency.",
       "owner": "integrate-n8n-webhooks-and-apis",
       "status": "active",
-      "domain": "http n8n pagination rate-limits signatures webhooks",
+      "domain": "http n8n pagination rate limits signatures webhooks",
       "aliases": [
         "integrate n8n webhooks and apis"
       ],
-      "triggers": [],
+      "triggers": [
+        "integrate n8n webhooks and apis"
+      ],
       "concepts": [
         "and",
         "apis",
@@ -35910,6 +36193,7 @@
         "integrate",
         "n8n",
         "pagination",
+        "rate limits",
         "rate-limits",
         "signatures",
         "webhooks"
@@ -35933,22 +36217,27 @@
       "summary": "Use Supabase clients and Data APIs with correct keys, RLS, projection, pagination, errors, typing, and connection boundaries.",
       "owner": "integrate-supabase-data-api-and-clients",
       "status": "active",
-      "domain": "connection-modes data-api pagination rpc supabase supabase-js",
+      "domain": "connection modes data api pagination rpc supabase supabase js",
       "aliases": [
         "integrate supabase data api and clients"
       ],
-      "triggers": [],
+      "triggers": [
+        "integrate supabase data api and clients"
+      ],
       "concepts": [
         "and",
         "api",
         "clients",
+        "connection modes",
         "connection-modes",
         "data",
+        "data api",
         "data-api",
         "integrate",
         "pagination",
         "rpc",
         "supabase",
+        "supabase js",
         "supabase-js"
       ],
       "inputs": [],
@@ -35967,15 +36256,18 @@
       "id": "intent-preserving-merge-resolution",
       "kind": "skill",
       "title": "intent preserving merge resolution",
-      "summary": "Resolve merge and rebase conflicts by reconstructing each side’s intent and preserving both valid outcomes.",
+      "summary": "Resolve merge and rebase conflicts by reconstructing each side\u2019s intent and preserving both valid outcomes.",
       "owner": "intent-preserving-merge-resolution",
       "status": "active",
-      "domain": "engineering-reasoning intent merge preserving resolution",
+      "domain": "engineering reasoning intent merge preserving resolution",
       "aliases": [
         "intent preserving merge resolution"
       ],
-      "triggers": [],
+      "triggers": [
+        "intent preserving merge resolution"
+      ],
       "concepts": [
+        "engineering reasoning",
         "engineering-reasoning",
         "intent",
         "merge",
@@ -36007,7 +36299,9 @@
       "aliases": [
         "isolate project streams"
       ],
-      "triggers": [],
+      "triggers": [
+        "isolate project streams"
+      ],
       "concepts": [
         "isolate",
         "isolation",
@@ -36036,19 +36330,24 @@
       "summary": "Manage long-running goals as project-scoped state machines with continuation budgets, isolated pause and resume, acceptance-backed completion, repeated-evidence blocked semantics, and durable evidence history. Use when work spans sessions, agents, or bounded continuation turns.",
       "owner": "long-horizon-progress-ledger",
       "status": "active",
-      "domain": "acceptance durable-goals long-horizon progress state-machine",
+      "domain": "acceptance durable goals long horizon progress state machine",
       "aliases": [
         "long horizon progress ledger"
       ],
-      "triggers": [],
+      "triggers": [
+        "long horizon progress ledger"
+      ],
       "concepts": [
         "acceptance",
+        "durable goals",
         "durable-goals",
         "horizon",
         "ledger",
         "long",
+        "long horizon",
         "long-horizon",
         "progress",
+        "state machine",
         "state-machine"
       ],
       "inputs": [],
@@ -36072,19 +36371,26 @@
       "summary": "Keep skills, rules, decisions, and workspace recommendations searchable,",
       "owner": "maintain-capability-catalog",
       "status": "mapped_deferred",
-      "domain": "architecture-governance capability capability-discovery catalog external-candidate maintain rule-governance skill-governance",
+      "domain": "architecture governance capability capability discovery catalog external candidate maintain rule governance skill governance",
       "aliases": [
         "maintain capability catalog"
       ],
-      "triggers": [],
+      "triggers": [
+        "maintain capability catalog"
+      ],
       "concepts": [
+        "architecture governance",
         "architecture-governance",
         "capability",
+        "capability discovery",
         "capability-discovery",
         "catalog",
+        "external candidate",
         "external-candidate",
         "maintain",
+        "rule governance",
         "rule-governance",
+        "skill governance",
         "skill-governance"
       ],
       "inputs": [],
@@ -36106,17 +36412,20 @@
       "summary": "Inspect and plan optional terminal-session adapter actions without executing, attaching, or persisting a process unless the exact action has separate authority and remains project scoped. Use for resumable terminal or harness session integrations.",
       "owner": "manage-agent-session-fabric",
       "status": "active",
-      "domain": "agent authority session terminal-adapter",
+      "domain": "agent authority session terminal adapter",
       "aliases": [
         "manage agent session fabric"
       ],
-      "triggers": [],
+      "triggers": [
+        "manage agent session fabric"
+      ],
       "concepts": [
         "agent",
         "authority",
         "fabric",
         "manage",
         "session",
+        "terminal adapter",
         "terminal-adapter"
       ],
       "inputs": [],
@@ -36141,12 +36450,15 @@
       "summary": "Discover, register, prioritize, probe, certify, disable, and recover Model Context Protocol servers without loading all tools at startup. Use when bootstrapping MCP configuration, verifying stdio servers, reconciling registered servers, pruning stale entries, or preventing tool catalogs from exhausting context or startup resources.",
       "owner": "manage-mcp-lifecycle",
       "status": "active",
-      "domain": "lazy-loading lifecycle mcp tooling",
+      "domain": "lazy loading lifecycle mcp tooling",
       "aliases": [
         "manage mcp lifecycle"
       ],
-      "triggers": [],
+      "triggers": [
+        "manage mcp lifecycle"
+      ],
       "concepts": [
+        "lazy loading",
         "lazy-loading",
         "lifecycle",
         "manage",
@@ -36174,17 +36486,21 @@
       "summary": "Create, scope, rotate, test, and retire n8n credentials without exposing values or breaking hidden consumers.",
       "owner": "manage-n8n-credentials",
       "status": "active",
-      "domain": "credential-lifecycle n8n oauth secret-rotation",
+      "domain": "credential lifecycle n8n oauth secret rotation",
       "aliases": [
         "manage n8n credentials"
       ],
-      "triggers": [],
+      "triggers": [
+        "manage n8n credentials"
+      ],
       "concepts": [
+        "credential lifecycle",
         "credential-lifecycle",
         "credentials",
         "manage",
         "n8n",
         "oauth",
+        "secret rotation",
         "secret-rotation"
       ],
       "inputs": [],
@@ -36208,16 +36524,19 @@
       "summary": "Classify, register, retain, reconcile, and safely reclaim PACIFY-X-owned workspaces and process trees with fail-closed path, evidence, quarantine, recovery, budget, and receipt controls. Use when tests, scans, builds, temporary environments, staging, certification, cancellation, restart recovery, cleanup, storage pressure, or quarantine disposition create resources that must not leak or be deleted unsafely.",
       "owner": "manage-resource-lifecycle",
       "status": "active",
-      "domain": "cleanup ephemeral lifecycle process-tree quarantine recovery retention",
+      "domain": "cleanup ephemeral lifecycle process tree quarantine recovery retention",
       "aliases": [
         "manage resource lifecycle"
       ],
-      "triggers": [],
+      "triggers": [
+        "manage resource lifecycle"
+      ],
       "concepts": [
         "cleanup",
         "ephemeral",
         "lifecycle",
         "manage",
+        "process tree",
         "process-tree",
         "quarantine",
         "recovery",
@@ -36245,7 +36564,7 @@
       "summary": "Reconcile manifests, detect duplicates and collisions, enforce completion cutlines, verify archives and packages, aggregate evidence, certify capabilities, revoke stale claims, calculate recertification impact, and convert field feedback into regressions. Use for integration and release readiness.",
       "owner": "manage-revocable-certification",
       "status": "active",
-      "domain": "certification declared-suite manage revocable",
+      "domain": "certification declared suite manage revocable",
       "aliases": [
         "adversarial robustness certifier",
         "archive hygiene",
@@ -36278,9 +36597,12 @@
         "revocable certification manager",
         "revoke certification"
       ],
-      "triggers": [],
+      "triggers": [
+        "manage revocable certification"
+      ],
       "concepts": [
         "certification",
+        "declared suite",
         "declared-suite",
         "manage",
         "revocable"
@@ -36304,16 +36626,20 @@
       "summary": "Isolate local, preview, staging, and production Supabase projects, credentials, links, secrets, and promotion paths.",
       "owner": "manage-supabase-environments",
       "status": "active",
-      "domain": "environment-isolation preview project-ref staging supabase",
+      "domain": "environment isolation preview project ref staging supabase",
       "aliases": [
         "manage supabase environments"
       ],
-      "triggers": [],
+      "triggers": [
+        "manage supabase environments"
+      ],
       "concepts": [
+        "environment isolation",
         "environment-isolation",
         "environments",
         "manage",
         "preview",
+        "project ref",
         "project-ref",
         "staging",
         "supabase"
@@ -36339,16 +36665,20 @@
       "summary": "Create, review, test, deploy, reconcile, and roll back Supabase migrations without dashboard drift.",
       "owner": "manage-supabase-migrations",
       "status": "active",
-      "domain": "backfill expand-contract migrations schema-drift supabase",
+      "domain": "backfill expand contract migrations schema drift supabase",
       "aliases": [
         "manage supabase migrations"
       ],
-      "triggers": [],
+      "triggers": [
+        "manage supabase migrations"
+      ],
       "concepts": [
         "backfill",
+        "expand contract",
         "expand-contract",
         "manage",
         "migrations",
+        "schema drift",
         "schema-drift",
         "supabase"
       ],
@@ -36373,17 +36703,20 @@
       "summary": "Build or refresh a complete, evidence-backed project map covering files, symbols, dependencies, calls, runtime services, data flow, integrations, configuration keys, ownership, contracts, tests, traceability, risks, and retrieval. Use when onboarding a project, before broad changes, after architecture drift, or when the AI lacks a dependable model of how the project works.",
       "owner": "map-project-intelligence",
       "status": "active",
-      "domain": "architecture inventory project-map repository retrieval",
+      "domain": "architecture inventory project map repository retrieval",
       "aliases": [
         "map project intelligence"
       ],
-      "triggers": [],
+      "triggers": [
+        "map project intelligence"
+      ],
       "concepts": [
         "architecture",
         "intelligence",
         "inventory",
         "map",
         "project",
+        "project map",
         "project-map",
         "repository",
         "retrieval"
@@ -36414,7 +36747,9 @@
       "aliases": [
         "memory applicability critic"
       ],
-      "triggers": [],
+      "triggers": [
+        "memory applicability critic"
+      ],
       "concepts": [
         "applicability",
         "critic",
@@ -36443,7 +36778,9 @@
       "aliases": [
         "memory injection firewall"
       ],
-      "triggers": [],
+      "triggers": [
+        "memory injection firewall"
+      ],
       "concepts": [
         "firewall",
         "injection",
@@ -36469,17 +36806,21 @@
       "summary": "Diagnose Supabase database, API, RLS, Auth, Storage, Realtime, Function, and client failures from correlated evidence.",
       "owner": "observe-debug-supabase",
       "status": "active",
-      "domain": "connections logging query-plans rls-debugging supabase",
+      "domain": "connections logging query plans rls debugging supabase",
       "aliases": [
         "observe debug supabase"
       ],
-      "triggers": [],
+      "triggers": [
+        "observe debug supabase"
+      ],
       "concepts": [
         "connections",
         "debug",
         "logging",
         "observe",
+        "query plans",
         "query-plans",
+        "rls debugging",
         "rls-debugging",
         "supabase"
       ],
@@ -36506,7 +36847,9 @@
       "aliases": [
         "observe operate n8n"
       ],
-      "triggers": [],
+      "triggers": [
+        "observe operate n8n"
+      ],
       "concepts": [
         "capacity",
         "logs",
@@ -36538,19 +36881,25 @@
       "summary": "Discover and compare engineering repositories and research sources at mechanism level, fingerprint versions, score evidence, synthesize cross-source patterns, and submit provenance-bound capability deltas. Use for distributed engineering research, trend analysis, or research-to-capability intake.",
       "owner": "operate-engineering-research-engine",
       "status": "active",
-      "domain": "capability-delta mechanism-graph repository-fingerprint research version-drift",
+      "domain": "capability delta mechanism graph repository fingerprint research version drift",
       "aliases": [
         "operate engineering research engine"
       ],
-      "triggers": [],
+      "triggers": [
+        "operate engineering research engine"
+      ],
       "concepts": [
+        "capability delta",
         "capability-delta",
         "engine",
         "engineering",
+        "mechanism graph",
         "mechanism-graph",
         "operate",
+        "repository fingerprint",
         "repository-fingerprint",
         "research",
+        "version drift",
         "version-drift"
       ],
       "inputs": [],
@@ -36574,7 +36923,7 @@
       "summary": "Design isolated memory, ingestion, indexing, hybrid retrieval, reranking, context budgeting, provenance, retention, trace correlation, replay, and quality-drift controls. Use for grounded retrieval, agent memory, run reconstruction, telemetry, or scoped deletion.",
       "owner": "operate-memory-retrieval-observability",
       "status": "active",
-      "domain": "declared-suite memory observability operate retrieval",
+      "domain": "declared suite memory observability operate retrieval",
       "aliases": [
         "context budget",
         "context budget manager",
@@ -36616,8 +36965,11 @@
         "trace recorder",
         "working memory manager"
       ],
-      "triggers": [],
+      "triggers": [
+        "operate memory retrieval observability"
+      ],
       "concepts": [
+        "declared suite",
         "declared-suite",
         "memory",
         "observability",
@@ -36645,11 +36997,13 @@
       "summary": "Operate a production n8n-Supabase stack with combined SLOs, capacity, cost, backup, security, incident, and change controls.",
       "owner": "operate-n8n-supabase-production",
       "status": "active",
-      "domain": "capacity cost cross incident production-operations recovery slo",
+      "domain": "capacity cost cross incident production operations recovery slo",
       "aliases": [
         "operate n8n supabase production"
       ],
-      "triggers": [],
+      "triggers": [
+        "operate n8n supabase production"
+      ],
       "concepts": [
         "capacity",
         "cost",
@@ -36658,6 +37012,7 @@
         "n8n",
         "operate",
         "production",
+        "production operations",
         "production-operations",
         "recovery",
         "slo",
@@ -36684,17 +37039,21 @@
       "summary": "Design and operate pgvector schemas, embedding lifecycle, indexes, filtered matching RPCs, and retrieval evaluation.",
       "owner": "operate-supabase-vector-search",
       "status": "active",
-      "domain": "embeddings hnsw match_documents pgvector retrieval-evaluation supabase",
+      "domain": "embeddings hnsw match documents pgvector retrieval evaluation supabase",
       "aliases": [
         "operate supabase vector search"
       ],
-      "triggers": [],
+      "triggers": [
+        "operate supabase vector search"
+      ],
       "concepts": [
         "embeddings",
         "hnsw",
+        "match documents",
         "match_documents",
         "operate",
         "pgvector",
+        "retrieval evaluation",
         "retrieval-evaluation",
         "search",
         "supabase",
@@ -36721,15 +37080,20 @@
       "summary": "Audit and reduce the gap between available agent tooling and reliable",
       "owner": "optimize-agent-harness",
       "status": "mapped_deferred",
-      "domain": "agent agent-harness context-management external-candidate harness optimize",
+      "domain": "agent agent harness context management external candidate harness optimize",
       "aliases": [
         "optimize agent harness"
       ],
-      "triggers": [],
+      "triggers": [
+        "optimize agent harness"
+      ],
       "concepts": [
         "agent",
+        "agent harness",
         "agent-harness",
+        "context management",
         "context-management",
+        "external candidate",
         "external-candidate",
         "harness",
         "optimize"
@@ -36753,14 +37117,18 @@
       "summary": "Evaluate and coordinate a bounded project-scoped agent fleet with stable identity, explicit permissions and ownership, heartbeat freshness, cost caps, an isolated bounded inbox, and fail-closed cross-project checks. Use before activating or continuing multi-agent work.",
       "owner": "orchestrate-agent-fleets",
       "status": "active",
-      "domain": "agent bounded-inbox fleet-readiness isolation orchestration",
+      "domain": "agent bounded inbox fleet readiness isolation orchestration",
       "aliases": [
         "orchestrate agent fleets"
       ],
-      "triggers": [],
+      "triggers": [
+        "orchestrate agent fleets"
+      ],
       "concepts": [
         "agent",
+        "bounded inbox",
         "bounded-inbox",
+        "fleet readiness",
         "fleet-readiness",
         "fleets",
         "isolation",
@@ -36822,7 +37190,9 @@
         "scheduler policy validator",
         "skill arbitration engine"
       ],
-      "triggers": [],
+      "triggers": [
+        "orchestrate capability scheduling"
+      ],
       "concepts": [
         "budgets",
         "capability",
@@ -36860,7 +37230,8 @@
       "triggers": [
         "bounded task lifecycle",
         "checkpointed verified result",
-        "lazy capability activation"
+        "lazy capability activation",
+        "orchestrate engineering loop"
       ],
       "concepts": [
         "engineering",
@@ -36892,7 +37263,9 @@
       "aliases": [
         "orchestrate security validation"
       ],
-      "triggers": [],
+      "triggers": [
+        "orchestrate security validation"
+      ],
       "concepts": [
         "aggregation",
         "orchestrate",
@@ -36925,7 +37298,9 @@
       "aliases": [
         "outcome verifier"
       ],
-      "triggers": [],
+      "triggers": [
+        "outcome verifier"
+      ],
       "concepts": [
         "assurance",
         "outcome",
@@ -36950,13 +37325,16 @@
       "summary": "Inspect Pacify-X Studio revision, authority, admission, and durable-run state without changing it.",
       "owner": "pacify-x-studio-operator",
       "status": "active",
-      "domain": "explicit Pacify-X Studio inspection",
+      "domain": "explicit pacify x studio inspection",
       "aliases": [
         "pacify x studio operator"
       ],
-      "triggers": [],
+      "triggers": [
+        "pacify x studio operator"
+      ],
       "concepts": [
         "explicit Pacify-X Studio inspection",
+        "explicit pacify x studio inspection",
         "operator",
         "pacify",
         "studio",
@@ -36981,15 +37359,18 @@
       "summary": "Extract the actual mechanism, assumptions, data, evidence, and limitations from a paper. Use when the task requires this bounded operational control; keep it inactive otherwise.",
       "owner": "paper-mechanism-extractor",
       "status": "mapped_deferred",
-      "domain": "extractor mechanism paper research-ops",
+      "domain": "extractor mechanism paper research ops",
       "aliases": [
         "paper mechanism extractor"
       ],
-      "triggers": [],
+      "triggers": [
+        "paper mechanism extractor"
+      ],
       "concepts": [
         "extractor",
         "mechanism",
         "paper",
+        "research ops",
         "research-ops"
       ],
       "inputs": [],
@@ -37015,7 +37396,9 @@
       "aliases": [
         "permission diff auditor"
       ],
-      "triggers": [],
+      "triggers": [
+        "permission diff auditor"
+      ],
       "concepts": [
         "auditor",
         "diff",
@@ -37041,15 +37424,18 @@
       "summary": "Build a constraint-first feasibility matrix for local model inference, conversion, offload, streaming, quantization, retrieval augmentation, or remote fallback. Use when selecting a local model/runtime strategy, checking RAM/VRAM/disk fit, planning transformation caches, ranking constrained execution options, or defining validation and rollback gates before deployment.",
       "owner": "plan-local-model-deployment",
       "status": "active",
-      "domain": "deployment feasibility local-inference model resources",
+      "domain": "deployment feasibility local inference model resources",
       "aliases": [
         "plan local model deployment"
       ],
-      "triggers": [],
+      "triggers": [
+        "plan local model deployment"
+      ],
       "concepts": [
         "deployment",
         "feasibility",
         "local",
+        "local inference",
         "local-inference",
         "model",
         "plan",
@@ -37080,7 +37466,9 @@
       "aliases": [
         "procedural memory compiler"
       ],
-      "triggers": [],
+      "triggers": [
+        "procedural memory compiler"
+      ],
       "concepts": [
         "compiler",
         "memory",
@@ -37105,15 +37493,18 @@
       "summary": "Identify what a research prototype lacks before safe operational use. Use when the task requires this bounded operational control; keep it inactive otherwise.",
       "owner": "productization-gap-analyzer",
       "status": "mapped_deferred",
-      "domain": "analyzer gap productization research-ops",
+      "domain": "analyzer gap productization research ops",
       "aliases": [
         "productization gap analyzer"
       ],
-      "triggers": [],
+      "triggers": [
+        "productization gap analyzer"
+      ],
       "concepts": [
         "analyzer",
         "gap",
         "productization",
+        "research ops",
         "research-ops"
       ],
       "inputs": [],
@@ -37139,7 +37530,9 @@
       "aliases": [
         "propose change intelligence"
       ],
-      "triggers": [],
+      "triggers": [
+        "propose change intelligence"
+      ],
       "concepts": [
         "architecture",
         "candidate",
@@ -37171,7 +37564,9 @@
       "aliases": [
         "provenance signature verifier"
       ],
-      "triggers": [],
+      "triggers": [
+        "provenance signature verifier"
+      ],
       "concepts": [
         "provenance",
         "security",
@@ -37197,16 +37592,20 @@
       "summary": "Apply a Pacify-X-native lean engineering gate before coding, designing, refactoring, adding dependencies, or creating abstractions. Use to trace the real flow, query repository intelligence and canonical capability owners, prefer native or existing mechanisms, minimize the correct change, and retain evidence without weakening security, validation, accessibility, recovery, or explicit requirements.",
       "owner": "px-lean-engineering",
       "status": "active",
-      "domain": "lean-engineering repository-intelligence reuse verification",
+      "domain": "lean engineering repository intelligence reuse verification",
       "aliases": [
         "px lean engineering"
       ],
-      "triggers": [],
+      "triggers": [
+        "px lean engineering"
+      ],
       "concepts": [
         "engineering",
         "lean",
+        "lean engineering",
         "lean-engineering",
         "px",
+        "repository intelligence",
         "repository-intelligence",
         "reuse",
         "verification"
@@ -37236,7 +37635,9 @@
       "aliases": [
         "px work stop diagnostics"
       ],
-      "triggers": [],
+      "triggers": [
+        "px work stop diagnostics"
+      ],
       "concepts": [
         "coordination",
         "diagnostics",
@@ -37267,15 +37668,18 @@
       "summary": "Quarantine and assess packages, extensions, MCPs, binaries, containers, dependencies, and third-party integrations before execution. Use when proposing installation, connection, upgrade, or adoption of external tooling.",
       "owner": "quarantine-external-tools",
       "status": "active",
-      "domain": "quarantine security supply-chain tools",
+      "domain": "quarantine security supply chain tools",
       "aliases": [
         "quarantine external tools"
       ],
-      "triggers": [],
+      "triggers": [
+        "quarantine external tools"
+      ],
       "concepts": [
         "external",
         "quarantine",
         "security",
+        "supply chain",
         "supply-chain",
         "tools"
       ],
@@ -37301,16 +37705,19 @@
       "summary": "Search a PACIFY-X project intelligence map, produce a minimal source hydration plan, and calculate bounded upstream/downstream symbol impact. Use before exploring an unfamiliar project, locating implementation ownership, tracing behavior, planning or editing symbols, debugging, replacing GitNexus-style blast-radius checks, or answering architecture questions.",
       "owner": "query-project-map",
       "status": "active",
-      "domain": "evidence hydration project-map repository retrieval",
+      "domain": "evidence hydration project map repository retrieval",
       "aliases": [
         "query project map"
       ],
-      "triggers": [],
+      "triggers": [
+        "query project map"
+      ],
       "concepts": [
         "evidence",
         "hydration",
         "map",
         "project",
+        "project map",
         "project-map",
         "query",
         "repository",
@@ -37338,13 +37745,16 @@
       "summary": "Turn unresolved decisions into an evidence-bearing questionnaire for the person or system that actually owns the answers.",
       "owner": "questionnaire-delegation",
       "status": "active",
-      "domain": "delegation engineering-reasoning questionnaire",
+      "domain": "delegation engineering reasoning questionnaire",
       "aliases": [
         "questionnaire delegation"
       ],
-      "triggers": [],
+      "triggers": [
+        "questionnaire delegation"
+      ],
       "concepts": [
         "delegation",
+        "engineering reasoning",
         "engineering-reasoning",
         "questionnaire"
       ],
@@ -37373,7 +37783,9 @@
       "aliases": [
         "read only speculation controller"
       ],
-      "triggers": [],
+      "triggers": [
+        "read only speculation controller"
+      ],
       "concepts": [
         "advanced",
         "controller",
@@ -37404,7 +37816,9 @@
       "aliases": [
         "reasoning utility controller"
       ],
-      "triggers": [],
+      "triggers": [
+        "reasoning utility controller"
+      ],
       "concepts": [
         "controller",
         "evaluation",
@@ -37434,7 +37848,9 @@
       "aliases": [
         "recovery coordinator"
       ],
-      "triggers": [],
+      "triggers": [
+        "recovery coordinator"
+      ],
       "concepts": [
         "coordinator",
         "orchestration",
@@ -37463,7 +37879,9 @@
       "aliases": [
         "repair corrupted text"
       ],
-      "triggers": [],
+      "triggers": [
+        "repair corrupted text"
+      ],
       "concepts": [
         "corrupted",
         "ocr",
@@ -37492,13 +37910,16 @@
       "summary": "Ground current technology use in authoritative, version-aware documentation",
       "owner": "research-first-capability-use",
       "status": "mapped_deferred",
-      "domain": "capability external-candidate first research use",
+      "domain": "capability external candidate first research use",
       "aliases": [
         "research first capability use"
       ],
-      "triggers": [],
+      "triggers": [
+        "research first capability use"
+      ],
       "concepts": [
         "capability",
+        "external candidate",
         "external-candidate",
         "first",
         "research",
@@ -37523,13 +37944,16 @@
       "summary": "Convert papers, standards, benchmarks, and sourced technical research into bounded candidate capabilities with claims, methods, assumptions, prerequisites, operational value, lineage, limitations, tests, and admission evidence. Use when research may inform tooling or orchestration without treating publication as production proof.",
       "owner": "research-to-capability",
       "status": "active",
-      "domain": "capability-building provenance research",
+      "domain": "capability building provenance research",
       "aliases": [
         "research to capability"
       ],
-      "triggers": [],
+      "triggers": [
+        "research to capability"
+      ],
       "concepts": [
         "capability",
+        "capability building",
         "capability-building",
         "provenance",
         "research",
@@ -37554,14 +37978,17 @@
       "summary": "Convert a validated research mechanism into a bounded skill, service, workflow, or evaluation. Use when the task requires this bounded operational control; keep it inactive otherwise.",
       "owner": "research-to-operation-translator",
       "status": "mapped_deferred",
-      "domain": "operation research research-ops to translator",
+      "domain": "operation research research ops to translator",
       "aliases": [
         "research to operation translator"
       ],
-      "triggers": [],
+      "triggers": [
+        "research to operation translator"
+      ],
       "concepts": [
         "operation",
         "research",
+        "research ops",
         "research-ops",
         "to",
         "translator"
@@ -37585,17 +38012,21 @@
       "summary": "Route n8n requests to the smallest relevant PACIFY-X capability set.",
       "owner": "route-n8n-capabilities",
       "status": "active",
-      "domain": "capability-selection n8n routing workflow-automation",
+      "domain": "capability selection n8n routing workflow automation",
       "aliases": [
         "route n8n capabilities"
       ],
-      "triggers": [],
+      "triggers": [
+        "route n8n capabilities"
+      ],
       "concepts": [
         "capabilities",
+        "capability selection",
         "capability-selection",
         "n8n",
         "route",
         "routing",
+        "workflow automation",
         "workflow-automation"
       ],
       "inputs": [],
@@ -37617,12 +38048,15 @@
       "summary": "Route combined n8n and Supabase work across integration, automation, RAG, security, reliability, testing, and operations.",
       "owner": "route-n8n-supabase-stack",
       "status": "active",
-      "domain": "combined-stack cross routing trust-boundaries",
+      "domain": "combined stack cross routing trust boundaries",
       "aliases": [
         "route n8n supabase stack"
       ],
-      "triggers": [],
+      "triggers": [
+        "route n8n supabase stack"
+      ],
       "concepts": [
+        "combined stack",
         "combined-stack",
         "cross",
         "n8n",
@@ -37630,6 +38064,7 @@
         "routing",
         "stack",
         "supabase",
+        "trust boundaries",
         "trust-boundaries"
       ],
       "inputs": [],
@@ -37651,14 +38086,17 @@
       "summary": "Select and compile a bounded panel from PACIFY-X's local specialist-agent provider. Use when a task materially benefits from a domain specialist or independent reviewer and the agent corpus must remain metadata-first, project-scoped, evidence-governed, and authority-neutral.",
       "owner": "route-specialist-agents",
       "status": "active",
-      "domain": "agents governance lazy-loading routing specialists",
+      "domain": "agents governance lazy loading routing specialists",
       "aliases": [
         "route specialist agents"
       ],
-      "triggers": [],
+      "triggers": [
+        "route specialist agents"
+      ],
       "concepts": [
         "agents",
         "governance",
+        "lazy loading",
         "lazy-loading",
         "route",
         "routing",
@@ -37686,14 +38124,18 @@
       "summary": "Route Supabase requests across Postgres, RLS, Auth, Storage, Realtime, Edge Functions, vectors, CLI, self-hosting, and MCP.",
       "owner": "route-supabase-capabilities",
       "status": "active",
-      "domain": "capability-selection postgres-platform routing supabase",
+      "domain": "capability selection postgres platform routing supabase",
       "aliases": [
         "route supabase capabilities"
       ],
-      "triggers": [],
+      "triggers": [
+        "route supabase capabilities"
+      ],
       "concepts": [
         "capabilities",
+        "capability selection",
         "capability-selection",
+        "postgres platform",
         "postgres-platform",
         "route",
         "routing",
@@ -37722,7 +38164,9 @@
       "aliases": [
         "run evidence campaigns"
       ],
-      "triggers": [],
+      "triggers": [
+        "run evidence campaigns"
+      ],
       "concepts": [
         "campaign",
         "campaigns",
@@ -37762,7 +38206,9 @@
       "aliases": [
         "run resilience drills"
       ],
-      "triggers": [],
+      "triggers": [
+        "run resilience drills"
+      ],
       "concepts": [
         "chaos",
         "drills",
@@ -37792,18 +38238,22 @@
       "summary": "Design and operate n8n queue mode with Postgres, Redis, workers, webhook processors, and task runners.",
       "owner": "scale-n8n-queue-mode",
       "status": "active",
-      "domain": "n8n queue-mode redis task-runners workers",
+      "domain": "n8n queue mode redis task runners workers",
       "aliases": [
         "scale n8n queue mode"
       ],
-      "triggers": [],
+      "triggers": [
+        "scale n8n queue mode"
+      ],
       "concepts": [
         "mode",
         "n8n",
         "queue",
+        "queue mode",
         "queue-mode",
         "redis",
         "scale",
+        "task runners",
         "task-runners",
         "workers"
       ],
@@ -37830,7 +38280,9 @@
       "aliases": [
         "scenario audit generator"
       ],
-      "triggers": [],
+      "triggers": [
+        "scenario audit generator"
+      ],
       "concepts": [
         "audit",
         "evaluation",
@@ -37856,7 +38308,7 @@
       "summary": "Threat-model agent systems, enforce identity and tool authority, scan secrets and injection, design sandboxes and egress controls, generate software and AI bills of materials, prove provenance, reproduce builds, and handle security incidents. Use for security review, external tools, artifacts, models, or data flows.",
       "owner": "secure-agent-supply-chain",
       "status": "active",
-      "domain": "agent chain declared-suite secure supply",
+      "domain": "agent chain declared suite secure supply",
       "aliases": [
         "agent identity authentication",
         "agent red teaming",
@@ -37899,10 +38351,13 @@
         "tool policy enforcer",
         "validate tool authority"
       ],
-      "triggers": [],
+      "triggers": [
+        "secure agent supply chain"
+      ],
       "concepts": [
         "agent",
         "chain",
+        "declared suite",
         "declared-suite",
         "secure",
         "supply"
@@ -37926,17 +38381,22 @@
       "summary": "Harden n8n identity, network, credentials, execution, nodes, updates, and retained data.",
       "owner": "secure-n8n",
       "status": "active",
-      "domain": "execution-isolation least-privilege n8n retention webhook-security",
+      "domain": "execution isolation least privilege n8n retention webhook security",
       "aliases": [
         "secure n8n"
       ],
-      "triggers": [],
+      "triggers": [
+        "secure n8n"
+      ],
       "concepts": [
+        "execution isolation",
         "execution-isolation",
+        "least privilege",
         "least-privilege",
         "n8n",
         "retention",
         "secure",
+        "webhook security",
         "webhook-security"
       ],
       "inputs": [],
@@ -37960,17 +38420,21 @@
       "summary": "Design and test Supabase Row Level Security for anonymous, authenticated, service, tenant, and administrative access.",
       "owner": "secure-supabase-rls",
       "status": "active",
-      "domain": "auth.uid policies rls supabase tenant-isolation",
+      "domain": "auth uid policies rls supabase tenant isolation",
       "aliases": [
         "secure supabase rls"
       ],
-      "triggers": [],
+      "triggers": [
+        "secure supabase rls"
+      ],
       "concepts": [
+        "auth uid",
         "auth.uid",
         "policies",
         "rls",
         "secure",
         "supabase",
+        "tenant isolation",
         "tenant-isolation"
       ],
       "inputs": [],
@@ -37994,17 +38458,20 @@
       "summary": "Evaluate, deploy, secure, update, and operate self-hosted Supabase with ownership of every service.",
       "owner": "self-host-supabase",
       "status": "active",
-      "domain": "docker operations secrets self-hosting supabase",
+      "domain": "docker operations secrets self hosting supabase",
       "aliases": [
         "self host supabase"
       ],
-      "triggers": [],
+      "triggers": [
+        "self host supabase"
+      ],
       "concepts": [
         "docker",
         "host",
         "operations",
         "secrets",
         "self",
+        "self hosting",
         "self-hosting",
         "supabase"
       ],
@@ -38031,7 +38498,9 @@
       "aliases": [
         "skill admission controller"
       ],
-      "triggers": [],
+      "triggers": [
+        "skill admission controller"
+      ],
       "concepts": [
         "admission",
         "controller",
@@ -38064,7 +38533,9 @@
       "aliases": [
         "skill bundle resolver"
       ],
-      "triggers": [],
+      "triggers": [
+        "skill bundle resolver"
+      ],
       "concepts": [
         "bundle",
         "orchestration",
@@ -38097,7 +38568,9 @@
       "aliases": [
         "skill coexecution graph builder"
       ],
-      "triggers": [],
+      "triggers": [
+        "skill coexecution graph builder"
+      ],
       "concepts": [
         "builder",
         "coexecution",
@@ -38128,7 +38601,9 @@
       "aliases": [
         "skill navigator"
       ],
-      "triggers": [],
+      "triggers": [
+        "skill navigator"
+      ],
       "concepts": [
         "navigator",
         "orchestration",
@@ -38159,7 +38634,9 @@
       "aliases": [
         "supervise contained execution"
       ],
-      "triggers": [],
+      "triggers": [
+        "supervise contained execution"
+      ],
       "concepts": [
         "authorization",
         "contained",
@@ -38195,7 +38672,9 @@
       "aliases": [
         "synchronize derived architecture"
       ],
-      "triggers": [],
+      "triggers": [
+        "synchronize derived architecture"
+      ],
       "concepts": [
         "architecture",
         "derived",
@@ -38225,18 +38704,22 @@
       "summary": "Test n8n-Supabase integrations end to end with local services, seeded role matrices, failures, and external outcome assertions.",
       "owner": "test-n8n-supabase-integrations",
       "status": "active",
-      "domain": "cross e2e failure-injection fixtures rls-tests",
+      "domain": "cross e2e failure injection fixtures rls tests",
       "aliases": [
         "test n8n supabase integrations"
       ],
-      "triggers": [],
+      "triggers": [
+        "test n8n supabase integrations"
+      ],
       "concepts": [
         "cross",
         "e2e",
+        "failure injection",
         "failure-injection",
         "fixtures",
         "integrations",
         "n8n",
+        "rls tests",
         "rls-tests",
         "supabase",
         "test"
@@ -38264,16 +38747,20 @@
       "summary": "Test n8n workflows using fixtures, contracts, failure injection, replay checks, and external outcome assertions.",
       "owner": "test-validate-n8n-workflows",
       "status": "active",
-      "domain": "contracts failure-injection fixtures n8n outcome-verification",
+      "domain": "contracts failure injection fixtures n8n outcome verification",
       "aliases": [
         "test validate n8n workflows"
       ],
-      "triggers": [],
+      "triggers": [
+        "test validate n8n workflows"
+      ],
       "concepts": [
         "contracts",
+        "failure injection",
         "failure-injection",
         "fixtures",
         "n8n",
+        "outcome verification",
         "outcome-verification",
         "test",
         "validate",
@@ -38304,7 +38791,9 @@
       "aliases": [
         "tool loop circuit breaker"
       ],
-      "triggers": [],
+      "triggers": [
+        "tool loop circuit breaker"
+      ],
       "concepts": [
         "breaker",
         "circuit",
@@ -38335,7 +38824,9 @@
       "aliases": [
         "trace to skill compiler"
       ],
-      "triggers": [],
+      "triggers": [
+        "trace to skill compiler"
+      ],
       "concepts": [
         "compiler",
         "improvement",
@@ -38362,13 +38853,16 @@
       "summary": "Break work into vertical, independently verifiable slices with explicit blocking edges.",
       "owner": "tracer-bullet-planning",
       "status": "active",
-      "domain": "bullet engineering-reasoning planning tracer",
+      "domain": "bullet engineering reasoning planning tracer",
       "aliases": [
         "tracer bullet planning"
       ],
-      "triggers": [],
+      "triggers": [
+        "tracer bullet planning"
+      ],
       "concepts": [
         "bullet",
+        "engineering reasoning",
         "engineering-reasoning",
         "planning",
         "tracer"
@@ -38399,7 +38893,9 @@
       "aliases": [
         "trajectory failure sentinel"
       ],
-      "triggers": [],
+      "triggers": [
+        "trajectory failure sentinel"
+      ],
       "concepts": [
         "evaluation",
         "failure",
@@ -38429,7 +38925,9 @@
       "aliases": [
         "transcript analysis"
       ],
-      "triggers": [],
+      "triggers": [
+        "transcript analysis"
+      ],
       "concepts": [
         "analysis",
         "evidence",
@@ -38464,7 +38962,9 @@
       "aliases": [
         "triage cross surface failures"
       ],
-      "triggers": [],
+      "triggers": [
+        "triage cross surface failures"
+      ],
       "concepts": [
         "correlation",
         "cross",
@@ -38495,13 +38995,16 @@
       "summary": "Use n8n items, expressions, mappings, and transformations without cardinality, type, or item-linking mistakes.",
       "owner": "use-n8n-expressions-and-data",
       "status": "active",
-      "domain": "binary-data expressions items mapping n8n",
+      "domain": "binary data expressions items mapping n8n",
       "aliases": [
         "use n8n expressions and data"
       ],
-      "triggers": [],
+      "triggers": [
+        "use n8n expressions and data"
+      ],
       "concepts": [
         "and",
+        "binary data",
         "binary-data",
         "data",
         "expressions",
@@ -38529,16 +39032,20 @@
       "summary": "Expose or consume n8n capabilities through MCP with narrow tools, authentication, schemas, approvals, and injection defenses.",
       "owner": "use-n8n-mcp",
       "status": "active",
-      "domain": "approval mcp n8n prompt-injection tool-schemas",
+      "domain": "approval mcp n8n prompt injection tool schemas",
       "aliases": [
         "use n8n mcp"
       ],
-      "triggers": [],
+      "triggers": [
+        "use n8n mcp"
+      ],
       "concepts": [
         "approval",
         "mcp",
         "n8n",
+        "prompt injection",
         "prompt-injection",
+        "tool schemas",
         "tool-schemas",
         "use"
       ],
@@ -38563,18 +39070,23 @@
       "summary": "Install and use official Supabase MCP, agent skills, or plugin with project scope, read-only defaults, and injection defenses.",
       "owner": "use-supabase-mcp-and-agent-skills",
       "status": "active",
-      "domain": "agent-skills mcp plugin prompt-injection read-only supabase",
+      "domain": "agent skills mcp plugin prompt injection read only supabase",
       "aliases": [
         "use supabase mcp and agent skills"
       ],
-      "triggers": [],
+      "triggers": [
+        "use supabase mcp and agent skills"
+      ],
       "concepts": [
         "agent",
+        "agent skills",
         "agent-skills",
         "and",
         "mcp",
         "plugin",
+        "prompt injection",
         "prompt-injection",
+        "read only",
         "read-only",
         "skills",
         "supabase",
@@ -38605,7 +39117,9 @@
       "aliases": [
         "use supabase realtime"
       ],
-      "triggers": [],
+      "triggers": [
+        "use supabase realtime"
+      ],
       "concepts": [
         "broadcast",
         "presence",
@@ -38633,16 +39147,21 @@
       "summary": "Design Supabase Storage buckets, paths, uploads, signed access, transformations, and RLS policies.",
       "owner": "use-supabase-storage",
       "status": "active",
-      "domain": "buckets object-storage signed-urls storage-rls supabase",
+      "domain": "buckets object storage signed urls storage rls supabase",
       "aliases": [
         "use supabase storage"
       ],
-      "triggers": [],
+      "triggers": [
+        "use supabase storage"
+      ],
       "concepts": [
         "buckets",
+        "object storage",
         "object-storage",
+        "signed urls",
         "signed-urls",
         "storage",
+        "storage rls",
         "storage-rls",
         "supabase",
         "use"
@@ -38670,7 +39189,9 @@
       "aliases": [
         "validate contract boundaries"
       ],
-      "triggers": [],
+      "triggers": [
+        "validate contract boundaries"
+      ],
       "concepts": [
         "api",
         "boundaries",
@@ -38706,7 +39227,9 @@
       "aliases": [
         "validate engineering outcomes"
       ],
-      "triggers": [],
+      "triggers": [
+        "validate engineering outcomes"
+      ],
       "concepts": [
         "architecture",
         "deployment",
@@ -38748,7 +39271,9 @@
       "aliases": [
         "validate knowledge relationships"
       ],
-      "triggers": [],
+      "triggers": [
+        "validate knowledge relationships"
+      ],
       "concepts": [
         "graph",
         "integrity",
@@ -38784,7 +39309,9 @@
       "aliases": [
         "validate physical media deliverables"
       ],
-      "triggers": [],
+      "triggers": [
+        "validate physical media deliverables"
+      ],
       "concepts": [
         "cad",
         "deliverables",
@@ -38820,7 +39347,9 @@
       "aliases": [
         "validate production containers"
       ],
-      "triggers": [],
+      "triggers": [
+        "validate production containers"
+      ],
       "concepts": [
         "container",
         "containers",
@@ -38855,7 +39384,8 @@
         "verify outcome"
       ],
       "triggers": [
-        "independent verification decision"
+        "independent verification decision",
+        "verify outcome"
       ],
       "concepts": [
         "evidence",

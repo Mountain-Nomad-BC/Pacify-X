@@ -78,6 +78,21 @@ def test_executable_payload_cannot_hide_in_evidence() -> None:
     assert any("evidence payload" in item for item in result["errors"])
 
 
+def test_standard_sha256sums_manifest_is_admitted_as_non_executable_evidence() -> None:
+    root = _minimal_tree()
+    (root / "evidence").mkdir()
+    manifest = root / "evidence/audit/SHA256SUMS"
+    manifest.parent.mkdir()
+    manifest.write_text(f"{'a' * 64}  receipt.json\n", encoding="utf-8")
+
+    result = classify_tree(root)
+
+    record = next(item for item in result["records"] if item["path"] == "evidence/audit/SHA256SUMS")
+    assert result["valid"], result["errors"]
+    assert record["classification"] == "evidence_output"
+    assert record["sha256"] is None
+
+
 def test_only_evidence_change_does_not_change_product_digest() -> None:
     root = _minimal_tree()
     (root / "evidence").mkdir()

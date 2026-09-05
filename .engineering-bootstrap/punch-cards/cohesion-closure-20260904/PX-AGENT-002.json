@@ -1,0 +1,74 @@
+{
+  "card_id": "PX-AGENT-002",
+  "title": "Durable AgentHandoffPacket",
+  "severity": "high",
+  "type": "integration",
+  "status": "planned",
+  "root_cause": "Agent handoff identities are unresolved and no durable packet binds revisions, evidence, authority, budgets, acknowledgment, and recovery.",
+  "source_requirement": "Add a validated immutable AgentHandoffPacket and lifecycle.",
+  "live_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#PX-AUD-007"
+  ],
+  "files": [
+    "runtime/agent_handoff.py",
+    "contracts/agent_handoff_packet.schema.json",
+    "runtime/agent_runtime.py",
+    "tests/test_agent_handoff.py"
+  ],
+  "symbols": [
+    "AgentHandoffPacket",
+    "create_handoff_packet",
+    "acknowledge_handoff",
+    "validate_handoff_packet"
+  ],
+  "dependencies": [
+    "PX-CORE-001",
+    "PX-MEM-001"
+  ],
+  "downstream_consumers": [
+    "PX-AGENT-003"
+  ],
+  "change_classes": [
+    "SCHEMA",
+    "AUTHORITY",
+    "BEHAVIORAL"
+  ],
+  "implementation_steps": [
+    "Define packet and deterministic hash.",
+    "Bind sender/receiver/task/run/evidence/hypotheses/questions/authority/budgets.",
+    "Require receiver acknowledgment before use.",
+    "Define expiration, rejection, and recovery."
+  ],
+  "negative_cases": [
+    "Receiver revision mismatch.",
+    "Authority widened.",
+    "Budget omitted.",
+    "Unacknowledged packet consumed.",
+    "Expired packet.",
+    "Evidence missing or stale."
+  ],
+  "focused_tests": [
+    "tests/test_agent_handoff.py"
+  ],
+  "affected_tests": [
+    "Agent runtime, Studio, and coordination tests."
+  ],
+  "affected_sections": [
+    "testing-governance",
+    "structural-adversarial"
+  ],
+  "projection_invalidations": [
+    "agent session state",
+    "handoff receipts",
+    "world state"
+  ],
+  "evidence_required": [
+    "Create/acknowledge/reject/expire/recover lifecycle vectors."
+  ],
+  "rollback": "Stop consuming packets and preserve packet records as non-authoritative history.",
+  "acceptance_criteria": [
+    "Packets are immutable and revision-bound.",
+    "No receiver consumes a packet before valid acknowledgment."
+  ],
+  "completion_evidence": []
+}

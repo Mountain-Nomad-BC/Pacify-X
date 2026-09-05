@@ -1,0 +1,70 @@
+{
+  "card_id": "PX-EFF-003",
+  "title": "Affected proof planner",
+  "severity": "critical",
+  "type": "integration",
+  "status": "planned",
+  "root_cause": "Repairs repeatedly run either too little downstream proof or premature broad certification instead of a computed transitive cone.",
+  "source_requirement": "Plan minimum sufficient focused, affected, section, and stale-evidence proof from change class, dependency invalidation, and test ownership.",
+  "live_evidence": [
+    "C:/Users/Ben/Downloads/px looks/PX_COMMENCEMENT_ORCHESTRATION_2026-09-04.md#PX-EFF-003"
+  ],
+  "files": [
+    "runtime/affected_proof.py",
+    "runtime/dependency_invalidation.py",
+    "registry/test_group_index.json",
+    "tests/test_affected_proof.py"
+  ],
+  "symbols": [
+    "build_affected_proof_plan",
+    "validate_proof_completion"
+  ],
+  "dependencies": [
+    "PX-CORE-004",
+    "PX-EFF-001",
+    "PX-EFF-002"
+  ],
+  "downstream_consumers": [
+    "PX-REPAIR-001",
+    "PX-SYS-001"
+  ],
+  "change_classes": [
+    "AUTHORITY",
+    "BEHAVIORAL"
+  ],
+  "implementation_steps": [
+    "Resolve changed nodes and classifications.",
+    "Compute direct/transitive consumers.",
+    "Map nodes to focused/affected tests and governed sections.",
+    "List stale evidence/projections and completion rules."
+  ],
+  "negative_cases": [
+    "Downstream consumer omitted.",
+    "Broad profile selected during repair.",
+    "Stale evidence not listed.",
+    "Unowned test mapping.",
+    "Focused green closes card with consumers."
+  ],
+  "focused_tests": [
+    "tests/test_affected_proof.py"
+  ],
+  "affected_tests": [
+    "Test ownership, section runner, and dependency invalidation tests."
+  ],
+  "affected_sections": [
+    "testing-governance"
+  ],
+  "projection_invalidations": [
+    "card proof plans",
+    "test evidence freshness"
+  ],
+  "evidence_required": [
+    "Deterministic plan vectors and complete cone comparison."
+  ],
+  "rollback": "Fall back to conservative explicit affected lists; do not run broad certification during repair.",
+  "acceptance_criteria": [
+    "Every changed card receives focused, negative, affected, and section proof.",
+    "Cards with consumers cannot close before downstream green."
+  ],
+  "completion_evidence": []
+}

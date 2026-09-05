@@ -14,6 +14,7 @@ from .registry import load_json, load_skill_catalog, navigation_index
 from .skill_navigator import CapabilitySummary
 from .state_invariants import assert_coordination_startup
 from .tooling import startup_candidates
+from .world_state import load_world_state_for_startup
 
 
 @dataclass(frozen=True, slots=True)
@@ -26,6 +27,8 @@ class StartupSnapshot:
     project_profile: Mapping[str, object]
     skill_catalog_metadata: tuple[Mapping[str, object], ...] = ()
     hydrated_skill_bodies: tuple[str, ...] = ()
+    world_state: Mapping[str, object] | None = None
+    lazy_hydration: tuple[str, ...] = ()
 
 
 def _probe(name: str, resolver: Callable[[str], str | None]) -> tuple[str, str | None]:
@@ -42,11 +45,15 @@ def bounded_startup(
     tool_names: Iterable[str] | None = None,
     tool_resolver: Callable[[str], str | None] = shutil.which,
     max_probe_workers: int = 4,
+    current_source_revision: str | None = None,
 ) -> StartupSnapshot:
     root = root.resolve()
     project_root = project_root.resolve()
     if max_probe_workers < 1 or max_probe_workers > 8:
         raise ValueError("max_probe_workers must be between 1 and 8")
+    world = load_world_state_for_startup(
+        root, current_source_revision=current_source_revision
+    )
     config = load_startup_config(root / "bootstrap" / "startup.toml")
     assert_coordination_startup(project_root)
     capabilities = tuple(navigation_index(root))
@@ -95,5 +102,14 @@ def bounded_startup(
     if len(skill_metadata) > config.budget.max_initial_registry_records:
         raise ValueError("skill metadata exceeds startup budget")
     return StartupSnapshot(
-        config, capabilities, policy_summaries, tools, models, profile, skill_metadata
+        config,
+        capabilities,
+        policy_summaries,
+        tools,
+        models,
+        profile,
+        skill_metadata,
+        (),
+        world.get("world_state"),
+        tuple(map(str, world.get("hydrate", ()))),
     )

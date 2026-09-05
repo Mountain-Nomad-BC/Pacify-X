@@ -163,6 +163,97 @@
           "dataclass"
         ]
       },
+      "id": "python:runtime/agency_studio_adapter.py:StudioAgentRequest",
+      "kind": "python_model",
+      "line": 18,
+      "name": "StudioAgentRequest",
+      "path": "runtime/agency_studio_adapter.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/agent_builder.py:AgentBuilderEdge",
+      "kind": "python_model",
+      "line": 172,
+      "name": "AgentBuilderEdge",
+      "path": "runtime/agent_builder.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/agent_builder.py:AgentBuilderGraph",
+      "kind": "python_model",
+      "line": 249,
+      "name": "AgentBuilderGraph",
+      "path": "runtime/agent_builder.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/agent_builder.py:AgentBuilderNode",
+      "kind": "python_model",
+      "line": 148,
+      "name": "AgentBuilderNode",
+      "path": "runtime/agent_builder.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/agent_builder.py:AgentBuilderPort",
+      "kind": "python_model",
+      "line": 43,
+      "name": "AgentBuilderPort",
+      "path": "runtime/agent_builder.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/agent_handoff.py:AgentHandoffPacket",
+      "kind": "python_model",
+      "line": 33,
+      "name": "AgentHandoffPacket",
+      "path": "runtime/agent_handoff.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/agent_handoff.py:HandoffAcknowledgment",
+      "kind": "python_model",
+      "line": 57,
+      "name": "HandoffAcknowledgment",
+      "path": "runtime/agent_handoff.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
       "id": "python:runtime/agent_provider.py:AgentCandidate",
       "kind": "python_model",
       "line": 271,
@@ -388,7 +479,7 @@
       },
       "id": "python:runtime/capability_routing.py:RouteResult",
       "kind": "python_model",
-      "line": 260,
+      "line": 261,
       "name": "RouteResult",
       "path": "runtime/capability_routing.py"
     },
@@ -430,6 +521,32 @@
       "line": 76,
       "name": "Task",
       "path": "runtime/capability_scheduler.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/capability_semantics.py:CapabilitySemanticProfile",
+      "kind": "python_model",
+      "line": 30,
+      "name": "CapabilitySemanticProfile",
+      "path": "runtime/capability_semantics.py"
+    },
+    {
+      "evidence": {
+        "bases": [
+          "IntEnum"
+        ],
+        "decorators": []
+      },
+      "id": "python:runtime/change_classification.py:ChangeClass",
+      "kind": "python_model",
+      "line": 10,
+      "name": "ChangeClass",
+      "path": "runtime/change_classification.py"
     },
     {
       "evidence": {
@@ -842,6 +959,32 @@
           "dataclass"
         ]
       },
+      "id": "python:runtime/evidence_claims.py:EvidenceClaim",
+      "kind": "python_model",
+      "line": 34,
+      "name": "EvidenceClaim",
+      "path": "runtime/evidence_claims.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/evidence_claims.py:FeatureAcceptanceDecision",
+      "kind": "python_model",
+      "line": 84,
+      "name": "FeatureAcceptanceDecision",
+      "path": "runtime/evidence_claims.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
       "id": "python:runtime/exact_tool_certification.py:ToolCase",
       "kind": "python_model",
       "line": 22,
@@ -857,7 +1000,7 @@
       },
       "id": "python:runtime/execution_contract.py:ContractDecision",
       "kind": "python_model",
-      "line": 45,
+      "line": 46,
       "name": "ContractDecision",
       "path": "runtime/execution_contract.py"
     },
@@ -870,7 +1013,7 @@
       },
       "id": "python:runtime/execution_contract.py:ExecutionRequest",
       "kind": "python_model",
-      "line": 29,
+      "line": 30,
       "name": "ExecutionRequest",
       "path": "runtime/execution_contract.py"
     },
@@ -883,7 +1026,7 @@
       },
       "id": "python:runtime/execution_contract.py:PolicyDecision",
       "kind": "python_model",
-      "line": 38,
+      "line": 39,
       "name": "PolicyDecision",
       "path": "runtime/execution_contract.py"
     },
@@ -959,9 +1102,35 @@
           "dataclass"
         ]
       },
+      "id": "python:runtime/foundry_studio_bridge.py:FoundryCandidateSkill",
+      "kind": "python_model",
+      "line": 32,
+      "name": "FoundryCandidateSkill",
+      "path": "runtime/foundry_studio_bridge.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/foundry_studio_bridge.py:SkillStudioDraft",
+      "kind": "python_model",
+      "line": 52,
+      "name": "SkillStudioDraft",
+      "path": "runtime/foundry_studio_bridge.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
       "id": "python:runtime/gate_runner.py:GateSpec",
       "kind": "python_model",
-      "line": 15,
+      "line": 17,
       "name": "GateSpec",
       "path": "runtime/gate_runner.py"
     },
@@ -1053,7 +1222,7 @@
       },
       "id": "python:runtime/hardware_routing.py:RoutingDecision",
       "kind": "python_model",
-      "line": 203,
+      "line": 222,
       "name": "RoutingDecision",
       "path": "runtime/hardware_routing.py"
     },
@@ -1066,7 +1235,7 @@
       },
       "id": "python:runtime/hardware_routing.py:RoutingPolicy",
       "kind": "python_model",
-      "line": 159,
+      "line": 178,
       "name": "RoutingPolicy",
       "path": "runtime/hardware_routing.py"
     },
@@ -1106,7 +1275,7 @@
       },
       "id": "python:runtime/knowledge_foundry.py:CalculationPackage",
       "kind": "python_model",
-      "line": 273,
+      "line": 320,
       "name": "CalculationPackage",
       "path": "runtime/knowledge_foundry.py"
     },
@@ -1119,7 +1288,7 @@
       },
       "id": "python:runtime/knowledge_foundry.py:CalculationSpec",
       "kind": "python_model",
-      "line": 264,
+      "line": 311,
       "name": "CalculationSpec",
       "path": "runtime/knowledge_foundry.py"
     },
@@ -1132,7 +1301,7 @@
       },
       "id": "python:runtime/knowledge_foundry.py:CandidateSkill",
       "kind": "python_model",
-      "line": 222,
+      "line": 269,
       "name": "CandidateSkill",
       "path": "runtime/knowledge_foundry.py"
     },
@@ -1145,7 +1314,7 @@
       },
       "id": "python:runtime/knowledge_foundry.py:FoundryBundle",
       "kind": "python_model",
-      "line": 359,
+      "line": 418,
       "name": "FoundryBundle",
       "path": "runtime/knowledge_foundry.py"
     },
@@ -1158,7 +1327,7 @@
       },
       "id": "python:runtime/knowledge_foundry.py:KnowledgeObject",
       "kind": "python_model",
-      "line": 212,
+      "line": 259,
       "name": "KnowledgeObject",
       "path": "runtime/knowledge_foundry.py"
     },
@@ -1171,7 +1340,7 @@
       },
       "id": "python:runtime/knowledge_foundry.py:SourceArtifact",
       "kind": "python_model",
-      "line": 174,
+      "line": 221,
       "name": "SourceArtifact",
       "path": "runtime/knowledge_foundry.py"
     },
@@ -1247,9 +1416,48 @@
           "dataclass"
         ]
       },
+      "id": "python:runtime/local_model_runtime.py:ModelAdmission",
+      "kind": "python_model",
+      "line": 159,
+      "name": "ModelAdmission",
+      "path": "runtime/local_model_runtime.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/local_model_runtime.py:ServerPlan",
+      "kind": "python_model",
+      "line": 174,
+      "name": "ServerPlan",
+      "path": "runtime/local_model_runtime.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/memory_broker.py:MemoryQueryPlan",
+      "kind": "python_model",
+      "line": 28,
+      "name": "MemoryQueryPlan",
+      "path": "runtime/memory_broker.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
       "id": "python:runtime/memory_fabric.py:BackendResult",
       "kind": "python_model",
-      "line": 451,
+      "line": 469,
       "name": "BackendResult",
       "path": "runtime/memory_fabric.py"
     },
@@ -1262,7 +1470,7 @@
       },
       "id": "python:runtime/memory_fabric.py:MaintenancePlan",
       "kind": "python_model",
-      "line": 468,
+      "line": 486,
       "name": "MaintenancePlan",
       "path": "runtime/memory_fabric.py"
     },
@@ -1275,7 +1483,7 @@
       },
       "id": "python:runtime/memory_fabric.py:MemoryDecision",
       "kind": "python_model",
-      "line": 248,
+      "line": 257,
       "name": "MemoryDecision",
       "path": "runtime/memory_fabric.py"
     },
@@ -1288,7 +1496,7 @@
       },
       "id": "python:runtime/memory_fabric.py:MemoryRecord",
       "kind": "python_model",
-      "line": 144,
+      "line": 150,
       "name": "MemoryRecord",
       "path": "runtime/memory_fabric.py"
     },
@@ -1301,7 +1509,7 @@
       },
       "id": "python:runtime/memory_fabric.py:ProviderIsolationConfig",
       "kind": "python_model",
-      "line": 399,
+      "line": 417,
       "name": "ProviderIsolationConfig",
       "path": "runtime/memory_fabric.py"
     },
@@ -1314,7 +1522,7 @@
       },
       "id": "python:runtime/memory_fabric.py:ProviderIsolationEvidence",
       "kind": "python_model",
-      "line": 410,
+      "line": 428,
       "name": "ProviderIsolationEvidence",
       "path": "runtime/memory_fabric.py"
     },
@@ -1327,7 +1535,7 @@
       },
       "id": "python:runtime/memory_fabric.py:ShardAddress",
       "kind": "python_model",
-      "line": 87,
+      "line": 93,
       "name": "ShardAddress",
       "path": "runtime/memory_fabric.py"
     },
@@ -1340,7 +1548,7 @@
       },
       "id": "python:runtime/memory_intelligence.py:CaptureResult",
       "kind": "python_model",
-      "line": 86,
+      "line": 87,
       "name": "CaptureResult",
       "path": "runtime/memory_intelligence.py"
     },
@@ -1353,7 +1561,7 @@
       },
       "id": "python:runtime/memory_intelligence.py:ConflictDecision",
       "kind": "python_model",
-      "line": 212,
+      "line": 282,
       "name": "ConflictDecision",
       "path": "runtime/memory_intelligence.py"
     },
@@ -1366,7 +1574,7 @@
       },
       "id": "python:runtime/memory_intelligence.py:ContextPackage",
       "kind": "python_model",
-      "line": 577,
+      "line": 647,
       "name": "ContextPackage",
       "path": "runtime/memory_intelligence.py"
     },
@@ -1379,7 +1587,7 @@
       },
       "id": "python:runtime/memory_intelligence.py:LoadoutBinding",
       "kind": "python_model",
-      "line": 366,
+      "line": 436,
       "name": "LoadoutBinding",
       "path": "runtime/memory_intelligence.py"
     },
@@ -1392,7 +1600,7 @@
       },
       "id": "python:runtime/memory_intelligence.py:MemoryCaller",
       "kind": "python_model",
-      "line": 334,
+      "line": 404,
       "name": "MemoryCaller",
       "path": "runtime/memory_intelligence.py"
     },
@@ -1405,7 +1613,7 @@
       },
       "id": "python:runtime/memory_intelligence.py:OffloadPointer",
       "kind": "python_model",
-      "line": 656,
+      "line": 726,
       "name": "OffloadPointer",
       "path": "runtime/memory_intelligence.py"
     },
@@ -1418,7 +1626,7 @@
       },
       "id": "python:runtime/memory_intelligence.py:PromotionDecision",
       "kind": "python_model",
-      "line": 270,
+      "line": 340,
       "name": "PromotionDecision",
       "path": "runtime/memory_intelligence.py"
     },
@@ -1431,7 +1639,7 @@
       },
       "id": "python:runtime/memory_intelligence.py:RankedMemory",
       "kind": "python_model",
-      "line": 423,
+      "line": 493,
       "name": "RankedMemory",
       "path": "runtime/memory_intelligence.py"
     },
@@ -1444,7 +1652,7 @@
       },
       "id": "python:runtime/memory_intelligence.py:RecallResult",
       "kind": "python_model",
-      "line": 431,
+      "line": 501,
       "name": "RecallResult",
       "path": "runtime/memory_intelligence.py"
     },
@@ -1457,7 +1665,7 @@
       },
       "id": "python:runtime/memory_intelligence.py:Scene",
       "kind": "python_model",
-      "line": 629,
+      "line": 699,
       "name": "Scene",
       "path": "runtime/memory_intelligence.py"
     },
@@ -1470,7 +1678,7 @@
       },
       "id": "python:runtime/memory_intelligence.py:WriteReceipt",
       "kind": "python_model",
-      "line": 762,
+      "line": 832,
       "name": "WriteReceipt",
       "path": "runtime/memory_intelligence.py"
     },
@@ -1574,7 +1782,7 @@
       },
       "id": "python:runtime/memory_vault.py:IndexGeneration",
       "kind": "python_model",
-      "line": 162,
+      "line": 160,
       "name": "IndexGeneration",
       "path": "runtime/memory_vault.py"
     },
@@ -1587,7 +1795,7 @@
       },
       "id": "python:runtime/memory_vault.py:LifecycleDecision",
       "kind": "python_model",
-      "line": 153,
+      "line": 151,
       "name": "LifecycleDecision",
       "path": "runtime/memory_vault.py"
     },
@@ -1600,9 +1808,35 @@
       },
       "id": "python:runtime/memory_vault.py:VaultWrite",
       "kind": "python_model",
-      "line": 142,
+      "line": 140,
       "name": "VaultWrite",
       "path": "runtime/memory_vault.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/model_attachment.py:ModelAttachment",
+      "kind": "python_model",
+      "line": 45,
+      "name": "ModelAttachment",
+      "path": "runtime/model_attachment.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/model_attachment.py:ModelFallback",
+      "kind": "python_model",
+      "line": 27,
+      "name": "ModelFallback",
+      "path": "runtime/model_attachment.py"
     },
     {
       "evidence": {
@@ -1821,7 +2055,7 @@
       },
       "id": "python:runtime/process_supervisor.py:CaptureResult",
       "kind": "python_model",
-      "line": 106,
+      "line": 165,
       "name": "CaptureResult",
       "path": "runtime/process_supervisor.py"
     },
@@ -1834,7 +2068,7 @@
       },
       "id": "python:runtime/process_supervisor.py:ProcessBudgets",
       "kind": "python_model",
-      "line": 47,
+      "line": 97,
       "name": "ProcessBudgets",
       "path": "runtime/process_supervisor.py"
     },
@@ -1847,7 +2081,7 @@
       },
       "id": "python:runtime/process_supervisor.py:ProcessResult",
       "kind": "python_model",
-      "line": 116,
+      "line": 175,
       "name": "ProcessResult",
       "path": "runtime/process_supervisor.py"
     },
@@ -1860,7 +2094,7 @@
       },
       "id": "python:runtime/project_stream_controls.py:BoundaryDecision",
       "kind": "python_model",
-      "line": 63,
+      "line": 65,
       "name": "BoundaryDecision",
       "path": "runtime/project_stream_controls.py"
     },
@@ -1873,7 +2107,7 @@
       },
       "id": "python:runtime/project_stream_controls.py:ContextObject",
       "kind": "python_model",
-      "line": 52,
+      "line": 54,
       "name": "ContextObject",
       "path": "runtime/project_stream_controls.py"
     },
@@ -1886,7 +2120,7 @@
       },
       "id": "python:runtime/project_stream_controls.py:LeaseDecision",
       "kind": "python_model",
-      "line": 136,
+      "line": 138,
       "name": "LeaseDecision",
       "path": "runtime/project_stream_controls.py"
     },
@@ -1899,7 +2133,7 @@
       },
       "id": "python:runtime/project_stream_controls.py:LeaseRequest",
       "kind": "python_model",
-      "line": 126,
+      "line": 128,
       "name": "LeaseRequest",
       "path": "runtime/project_stream_controls.py"
     },
@@ -1912,7 +2146,7 @@
       },
       "id": "python:runtime/project_stream_controls.py:ScopeEnvelope",
       "kind": "python_model",
-      "line": 33,
+      "line": 35,
       "name": "ScopeEnvelope",
       "path": "runtime/project_stream_controls.py"
     },
@@ -1925,8 +2159,21 @@
       },
       "id": "python:runtime/project_stream_controls.py:SwitchEvidence",
       "kind": "python_model",
-      "line": 182,
+      "line": 184,
       "name": "SwitchEvidence",
+      "path": "runtime/project_stream_controls.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/project_stream_controls.py:TransferEvidenceReferences",
+      "kind": "python_model",
+      "line": 235,
+      "name": "TransferEvidenceReferences",
       "path": "runtime/project_stream_controls.py"
     },
     {
@@ -1938,7 +2185,7 @@
       },
       "id": "python:runtime/project_stream_controls.py:TransferPackage",
       "kind": "python_model",
-      "line": 217,
+      "line": 219,
       "name": "TransferPackage",
       "path": "runtime/project_stream_controls.py"
     },
@@ -1951,7 +2198,7 @@
       },
       "id": "python:runtime/project_stream_orchestrator.py:ProjectStreamContext",
       "kind": "python_model",
-      "line": 37,
+      "line": 44,
       "name": "ProjectStreamContext",
       "path": "runtime/project_stream_orchestrator.py"
     },
@@ -1964,7 +2211,7 @@
       },
       "id": "python:runtime/project_stream_orchestrator.py:ProjectStreamResult",
       "kind": "python_model",
-      "line": 54,
+      "line": 61,
       "name": "ProjectStreamResult",
       "path": "runtime/project_stream_orchestrator.py"
     },
@@ -2016,7 +2263,7 @@
       },
       "id": "python:runtime/provider_gateway.py:ProviderRequest",
       "kind": "python_model",
-      "line": 66,
+      "line": 68,
       "name": "ProviderRequest",
       "path": "runtime/provider_gateway.py"
     },
@@ -2029,7 +2276,7 @@
       },
       "id": "python:runtime/provider_gateway.py:ProviderResponse",
       "kind": "python_model",
-      "line": 58,
+      "line": 60,
       "name": "ProviderResponse",
       "path": "runtime/provider_gateway.py"
     },
@@ -2079,6 +2326,19 @@
           "dataclass"
         ]
       },
+      "id": "python:runtime/release_preflight.py:PreflightFailure",
+      "kind": "python_model",
+      "line": 45,
+      "name": "PreflightFailure",
+      "path": "runtime/release_preflight.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
       "id": "python:runtime/research_assimilation.py:ResearchMechanism",
       "kind": "python_model",
       "line": 48,
@@ -2094,7 +2354,7 @@
       },
       "id": "python:runtime/resource_lifecycle.py:CleanupReceipt",
       "kind": "python_model",
-      "line": 177,
+      "line": 193,
       "name": "CleanupReceipt",
       "path": "runtime/resource_lifecycle.py"
     },
@@ -2108,7 +2368,7 @@
       },
       "id": "python:runtime/resource_lifecycle.py:ResourceClassification",
       "kind": "python_model",
-      "line": 71,
+      "line": 87,
       "name": "ResourceClassification",
       "path": "runtime/resource_lifecycle.py"
     },
@@ -2121,7 +2381,7 @@
       },
       "id": "python:runtime/resource_lifecycle.py:ResourceRecord",
       "kind": "python_model",
-      "line": 145,
+      "line": 161,
       "name": "ResourceRecord",
       "path": "runtime/resource_lifecycle.py"
     },
@@ -2135,7 +2395,7 @@
       },
       "id": "python:runtime/resource_lifecycle.py:ResourceStatus",
       "kind": "python_model",
-      "line": 79,
+      "line": 95,
       "name": "ResourceStatus",
       "path": "runtime/resource_lifecycle.py"
     },
@@ -2149,7 +2409,7 @@
       },
       "id": "python:runtime/resource_lifecycle.py:RetentionClass",
       "kind": "python_model",
-      "line": 103,
+      "line": 119,
       "name": "RetentionClass",
       "path": "runtime/resource_lifecycle.py"
     },
@@ -2163,7 +2423,7 @@
       },
       "id": "python:runtime/resource_lifecycle.py:RunState",
       "kind": "python_model",
-      "line": 87,
+      "line": 103,
       "name": "RunState",
       "path": "runtime/resource_lifecycle.py"
     },
@@ -2176,7 +2436,7 @@
       },
       "id": "python:runtime/resource_lifecycle.py:StorageBudget",
       "kind": "python_model",
-      "line": 205,
+      "line": 221,
       "name": "StorageBudget",
       "path": "runtime/resource_lifecycle.py"
     },
@@ -2190,7 +2450,7 @@
       },
       "id": "python:runtime/resource_lifecycle.py:StoragePressure",
       "kind": "python_model",
-      "line": 96,
+      "line": 112,
       "name": "StoragePressure",
       "path": "runtime/resource_lifecycle.py"
     },
@@ -2203,7 +2463,7 @@
       },
       "id": "python:runtime/retrieval.py:RetrievalDecision",
       "kind": "python_model",
-      "line": 35,
+      "line": 72,
       "name": "RetrievalDecision",
       "path": "runtime/retrieval.py"
     },
@@ -2216,7 +2476,7 @@
       },
       "id": "python:runtime/retrieval.py:RetrievalHit",
       "kind": "python_model",
-      "line": 25,
+      "line": 58,
       "name": "RetrievalHit",
       "path": "runtime/retrieval.py"
     },
@@ -2229,7 +2489,7 @@
       },
       "id": "python:runtime/retrieval.py:RetrievalSource",
       "kind": "python_model",
-      "line": 14,
+      "line": 40,
       "name": "RetrievalSource",
       "path": "runtime/retrieval.py"
     },
@@ -2258,6 +2518,58 @@
       "line": 11,
       "name": "ResourcePolicy",
       "path": "runtime/scheduler.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/semantic_memory.py:SemanticEntity",
+      "kind": "python_model",
+      "line": 99,
+      "name": "SemanticEntity",
+      "path": "runtime/semantic_memory.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/semantic_memory.py:SemanticEnvelope",
+      "kind": "python_model",
+      "line": 131,
+      "name": "SemanticEnvelope",
+      "path": "runtime/semantic_memory.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/semantic_memory.py:SemanticRelation",
+      "kind": "python_model",
+      "line": 113,
+      "name": "SemanticRelation",
+      "path": "runtime/semantic_memory.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
+      "id": "python:runtime/semantic_revision.py:SemanticRevision",
+      "kind": "python_model",
+      "line": 19,
+      "name": "SemanticRevision",
+      "path": "runtime/semantic_revision.py"
     },
     {
       "evidence": {
@@ -2333,7 +2645,7 @@
       },
       "id": "python:runtime/startup.py:StartupSnapshot",
       "kind": "python_model",
-      "line": 20,
+      "line": 21,
       "name": "StartupSnapshot",
       "path": "runtime/startup.py"
     },
@@ -2346,7 +2658,7 @@
       },
       "id": "python:runtime/state_invariants.py:InvariantViolation",
       "kind": "python_model",
-      "line": 83,
+      "line": 94,
       "name": "InvariantViolation",
       "path": "runtime/state_invariants.py"
     },
@@ -2359,7 +2671,7 @@
       },
       "id": "python:runtime/studio_models.py:AgentSpec",
       "kind": "python_model",
-      "line": 254,
+      "line": 788,
       "name": "AgentSpec",
       "path": "runtime/studio_models.py"
     },
@@ -2372,7 +2684,7 @@
       },
       "id": "python:runtime/studio_models.py:CapabilityBinding",
       "kind": "python_model",
-      "line": 212,
+      "line": 746,
       "name": "CapabilityBinding",
       "path": "runtime/studio_models.py"
     },
@@ -2385,7 +2697,7 @@
       },
       "id": "python:runtime/studio_models.py:EffectGrant",
       "kind": "python_model",
-      "line": 173,
+      "line": 707,
       "name": "EffectGrant",
       "path": "runtime/studio_models.py"
     },
@@ -2398,7 +2710,7 @@
       },
       "id": "python:runtime/studio_models.py:LifecycleDimensions",
       "kind": "python_model",
-      "line": 128,
+      "line": 662,
       "name": "LifecycleDimensions",
       "path": "runtime/studio_models.py"
     },
@@ -2411,7 +2723,7 @@
       },
       "id": "python:runtime/studio_models.py:SkillPackage",
       "kind": "python_model",
-      "line": 536,
+      "line": 1104,
       "name": "SkillPackage",
       "path": "runtime/studio_models.py"
     },
@@ -2424,7 +2736,7 @@
       },
       "id": "python:runtime/studio_models.py:WorkflowDefinition",
       "kind": "python_model",
-      "line": 480,
+      "line": 1023,
       "name": "WorkflowDefinition",
       "path": "runtime/studio_models.py"
     },
@@ -2437,7 +2749,7 @@
       },
       "id": "python:runtime/studio_models.py:WorkflowEdge",
       "kind": "python_model",
-      "line": 463,
+      "line": 1006,
       "name": "WorkflowEdge",
       "path": "runtime/studio_models.py"
     },
@@ -2450,7 +2762,7 @@
       },
       "id": "python:runtime/studio_models.py:WorkflowNode",
       "kind": "python_model",
-      "line": 358,
+      "line": 901,
       "name": "WorkflowNode",
       "path": "runtime/studio_models.py"
     },
@@ -2463,7 +2775,7 @@
       },
       "id": "python:runtime/studio_models.py:WorkflowPort",
       "kind": "python_model",
-      "line": 343,
+      "line": 886,
       "name": "WorkflowPort",
       "path": "runtime/studio_models.py"
     },
@@ -2513,6 +2825,19 @@
           "dataclass"
         ]
       },
+      "id": "python:runtime/task_execution_plan.py:TaskExecutionPlan",
+      "kind": "python_model",
+      "line": 46,
+      "name": "TaskExecutionPlan",
+      "path": "runtime/task_execution_plan.py"
+    },
+    {
+      "evidence": {
+        "bases": [],
+        "decorators": [
+          "dataclass"
+        ]
+      },
       "id": "python:runtime/tooling.py:ToolProbe",
       "kind": "python_model",
       "line": 13,
@@ -2554,7 +2879,7 @@
       },
       "id": "python:runtime/wal_transaction.py:JsonArtifact",
       "kind": "python_model",
-      "line": 40,
+      "line": 42,
       "name": "JsonArtifact",
       "path": "runtime/wal_transaction.py"
     },
@@ -2567,7 +2892,7 @@
       },
       "id": "python:runtime/wal_transaction.py:JsonTransition",
       "kind": "python_model",
-      "line": 52,
+      "line": 54,
       "name": "JsonTransition",
       "path": "runtime/wal_transaction.py"
     },
@@ -2580,7 +2905,7 @@
       },
       "id": "python:runtime/workspace_manager.py:WorkspacePaths",
       "kind": "python_model",
-      "line": 76,
+      "line": 82,
       "name": "WorkspacePaths",
       "path": "runtime/workspace_manager.py"
     },
@@ -2612,7 +2937,7 @@
       "path": "templates/service_capabilities/supabase/migrations/0001_secure_example.sql"
     }
   ],
-  "count": 201,
+  "count": 226,
   "limitations": [
     "Schema compatibility and runtime conformance require language-specific validators or generated-client tests."
   ],

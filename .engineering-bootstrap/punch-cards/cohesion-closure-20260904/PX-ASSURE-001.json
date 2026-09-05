@@ -1,0 +1,108 @@
+{
+  "card_id": "PX-ASSURE-001",
+  "title": "Typed feature acceptance vs control evidence",
+  "severity": "critical",
+  "type": "repair",
+  "status": "in_progress",
+  "root_cause": "Operational transition logic can accept green child-control evidence while a required runtime feature is explicitly missing.",
+  "source_requirement": "Make feature acceptance typed, revision-bound, and distinct from control-interaction evidence.",
+  "live_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#PX-AUD-001"
+  ],
+  "files": [
+    "runtime/operational_gap_ledger.py",
+    "runtime/evidence_claims.py",
+    "runtime/trusted_evidence.py",
+    "runtime/evidence_custody.py",
+    "scripts/reconcile_unverified_operational_controls.py",
+    "scripts/build_completion_status.py",
+    "tests/test_operational_gap_ledger.py",
+    "tests/test_evidence_claims.py"
+  ],
+  "symbols": [
+    "_validate_transition_admission",
+    "plan_operational_card_reconciliations",
+    "build"
+  ],
+  "dependencies": [
+    "PX-COMM-006"
+  ],
+  "downstream_consumers": [
+    "PX-CORE-003",
+    "PX-SKILL-001",
+    "PX-SYS-002",
+    "PX-AUTH-002"
+  ],
+  "change_classes": [
+    "SCHEMA",
+    "AUTHORITY",
+    "BEHAVIORAL"
+  ],
+  "implementation_steps": [
+    "Define typed feature/control/external evidence requirements.",
+    "Enforce required-runtime-feature and authority-class checks in reconciliation and transition admission.",
+    "Make completion projection consume accepted feature claims only.",
+    "Bind evidence freshness to source and dependency revisions."
+  ],
+  "negative_cases": [
+    "Green UI control with missing runtime feature.",
+    "Contained/local receipt offered for real external claim.",
+    "Evidence bound to stale source revision.",
+    "Child control N/A offered as parent feature N/A."
+  ],
+  "focused_tests": [
+    "tests/test_evidence_claims.py",
+    "tests/test_operational_gap_ledger.py - transition admission and reconciliation cases"
+  ],
+  "affected_tests": [
+    "tests/test_completion_status.py",
+    "tests/test_trust_boundaries.py",
+    "tests/test_evidence_custody.py"
+  ],
+  "affected_sections": [
+    "testing-governance"
+  ],
+  "affected_groups": [
+    "structural-adversarial"
+  ],
+  "projection_invalidations": [
+    "completion status",
+    "operational ledger control resolution",
+    "feature acceptance evidence"
+  ],
+  "evidence_required": [
+    "Focused negative vectors and affected-section receipts at the changed revision."
+  ],
+  "rollback": "Restore prior acceptance functions and discard only newly generated current projections.",
+  "acceptance_criteria": [
+    "A green control cannot prove missing runtime behavior.",
+    "Real external claims reject contained evidence.",
+    "Stale source revisions invalidate feature evidence."
+  ],
+  "completion_evidence": [],
+  "status_history": [
+    {
+      "status": "planned",
+      "at": "2026-09-05T01:06:00Z"
+    },
+    {
+      "status": "admitted",
+      "at": "2026-09-05T01:08:47Z",
+      "evidence": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000033638"
+    },
+    {
+      "status": "in_progress",
+      "at": "2026-09-05T01:09:00Z"
+    },
+    {
+      "status": "focused_green",
+      "at": "2026-09-05T01:47:00Z",
+      "evidence": "100 focused tests passed; 393 downstream tests passed with one skip and 12 subtests"
+    },
+    {
+      "status": "in_progress",
+      "at": "2026-09-05T02:24:00Z",
+      "evidence": "Fresh impact mapping expanded the release-artifact compatibility cone to 58 tests; downstream closure is withheld until that cone passes."
+    }
+  ]
+}

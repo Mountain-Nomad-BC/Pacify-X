@@ -599,6 +599,41 @@ def test_skill_promotion_fails_without_admission(tmp_path):
         studio.promote(package(), approved=True)
 
 
+def test_skill_promotion_keeps_package_behavior_and_operations_distinct(tmp_path):
+    projection_scaffold(tmp_path)
+    studio = SkillStudio(tmp_path)
+    candidate = source(tmp_path, "candidate")
+    token = studio.admit_source(candidate, approved_by="human:owner")
+    studio.stage_draft(package(), candidate, source_token=token)
+    assert studio.validate(package())["passed"]
+    assert studio.admit(
+        package(), approved=True, approver="human:owner"
+    )["decision"] == "admitted"
+
+    with pytest.raises(PermissionError, match="maturity claim exceeds"):
+        studio.promote(package(), approved=True, claimed_maturity="L4")
+
+    payload = next(studio.drafts.glob("skill-demo-*/revisions/1.0.0/payload"))
+    tree_sha256 = _tree_attestation(payload)[1]
+    receipt = studio.promote(
+        package(),
+        approved=True,
+        claimed_maturity="L4",
+        maturity_evidence=(
+            {
+                "evidence_id": "behavior-current",
+                "evidence_type": "behavioral_validation",
+                "authority_class": "contained",
+                "source_revision": tree_sha256,
+                "dependency_revisions": {},
+                "valid": True,
+            },
+        ),
+    )
+    assert receipt["maturity"]["level"] == "L4"
+    assert receipt["maturity"]["missing_evidence"] == ["operational_verification"]
+
+
 def test_skill_validation_is_idempotent_and_metadata_is_not_promoted(tmp_path):
     studio = SkillStudio(tmp_path)
     draft_source = source(tmp_path, "draft")
@@ -736,6 +771,8 @@ def test_skill_projection_updates_use_an_authenticated_recoverable_transaction(
     assert set(receipt["projection_updates"]) == {
         ".px/skill-index.json",
         "registry/admission_ledger.json",
+        "registry/projection_staleness.json",
+        "registry/semantic_capability_index.json",
         "registry/skill_catalog.toml",
         "registry/skill_packages/demo.json",
     }
@@ -794,6 +831,8 @@ def test_skill_rollback_restores_package_and_every_projection_before_image(tmp_p
     projection_paths = (
         tmp_path / ".px/skill-index.json",
         tmp_path / "registry/admission_ledger.json",
+        tmp_path / "registry/projection_staleness.json",
+        tmp_path / "registry/semantic_capability_index.json",
         tmp_path / "registry/skill_catalog.toml",
         tmp_path / "registry/skill_packages/demo.json",
     )

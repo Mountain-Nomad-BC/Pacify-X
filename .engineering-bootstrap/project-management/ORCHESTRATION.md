@@ -1,18 +1,22 @@
 # Orchestration
 
-Operate through compact metadata and hydrate only the selected capability.
+Operate through the source-bound 43-card DAG and compact metadata.
 
 ## Loop
 
-Validate → inspect project state → classify goal → select at most three metadata candidates → hydrate one skill → declare effects → obtain approval when required → execute → verify → checkpoint → release context.
+Guard admitted effect -> select one dependency-ready root -> inspect exact owners/consumers -> implement one root -> compute invalidation cone -> focused/negative tests -> affected downstream tests -> affected governed sections -> resource/disk check -> card evidence/status -> checkpoint.
 
 ## Commands
 
-`engineering-bootstrap validate`  
-`engineering-bootstrap startup --project .`  
-`engineering-bootstrap working-set --goal "<goal>"`  
-`engineering-bootstrap hydrate --skill <selected-id>`
+The console script is not installed on the active shell path; use the repository-local equivalent:
+
+`python -m runtime.cli project-check --project .`  
+`python -m runtime.cli startup --project .`  
+`python -m runtime.cli working-set --goal "<goal>"`  
+`python -m runtime.cli hydrate --skill <selected-id>`
+
+`python -m runtime.cli validate` remains intentionally blocked at `sections_current` and is not a repair-wave command.
 
 ## Stop conditions
 
-Stop on unknown mutation, secret exposure, project-root ambiguity, unresolved high-risk assumptions, registry failure, or unverifiable completion.
+Stop on unknown mutation, secret exposure, project-root ambiguity, admission/scope mismatch, unclassified source change, incomplete downstream cone, registry/invariant failure, leaked owned resource, or unverifiable completion. Do not enter a broad release stage during repair.

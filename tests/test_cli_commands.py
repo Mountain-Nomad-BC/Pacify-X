@@ -199,6 +199,7 @@ class CliCommandTests(unittest.TestCase):
         self.assertEqual(environment["PYTHONDONTWRITEBYTECODE"], "1")
         self.assertTrue(any(key.casefold() == "path" for key in environment))
         self.assertEqual(runner.call_args.kwargs["timeout_seconds"], 560)
+        self.assertIs(runner.call_args.kwargs["manage_process_temp"], True)
         self.assertEqual(result["requested_timeout_seconds"], 321)
         self.assertEqual(result["effective_timeout_seconds"], 560)
         self.assertNotIn("stdout", result["execution"])

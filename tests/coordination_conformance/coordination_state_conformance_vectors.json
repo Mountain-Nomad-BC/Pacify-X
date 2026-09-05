@@ -1,0 +1,263 @@
+{
+  "schema_version": "px.coordination-state-conformance-vectors/1.0",
+  "evaluation_order": [
+    "PX-COORD-SCHEMA-VERSION",
+    "PX-COORD-CLAIM-EXPIRED",
+    "PX-COORD-MULTIPLE-ACTIVE-PLANS",
+    "PX-COORD-SESSION-MALFORMED",
+    "PX-COORD-DEPENDENCY-INCOMPLETE",
+    "PX-COORD-TASK-CLAIM-MISMATCH",
+    "PX-COORD-FENCING-STALE"
+  ],
+  "now_utc": "2026-09-05T00:00:00Z",
+  "base_state": {
+    "schema_version": "1.2",
+    "project": {
+      "id": "project-conformance",
+      "root": "C:/bounded/project"
+    },
+    "revision": 2,
+    "updated_utc": "2026-09-05T00:00:00Z",
+    "state_hash": null,
+    "active_plan": "plan-a",
+    "plans": [
+      {
+        "id": "plan-a",
+        "status": "active",
+        "task_ids": [
+          "dependency",
+          "work"
+        ]
+      }
+    ],
+    "tasks": [
+      {
+        "id": "dependency",
+        "status": "reconciled",
+        "depends_on": [],
+        "claim_targets": [
+          "runtime/dependency.py"
+        ],
+        "owner": null,
+        "budget": {
+          "max_minutes": 30,
+          "max_tokens": 1000,
+          "max_cost_usd": 5,
+          "hard_stop": true
+        },
+        "usage": {
+          "minutes": 1,
+          "tokens": 10,
+          "cost_usd": 0,
+          "status": "healthy"
+        }
+      },
+      {
+        "id": "work",
+        "status": "claimed",
+        "depends_on": [
+          "dependency"
+        ],
+        "claim_targets": [
+          "runtime/work.py"
+        ],
+        "owner": {
+          "actor_id": "agent-a",
+          "session_id": "session-a",
+          "harness": "conformance"
+        },
+        "budget": {
+          "max_minutes": 30,
+          "max_tokens": 1000,
+          "max_cost_usd": 5,
+          "hard_stop": true
+        },
+        "usage": {
+          "minutes": 1,
+          "tokens": 10,
+          "cost_usd": 0,
+          "status": "healthy"
+        }
+      }
+    ],
+    "claims": [
+      {
+        "id": "claim-a",
+        "task_id": "work",
+        "actor": {
+          "actor_id": "agent-a",
+          "session_id": "session-a",
+          "harness": "conformance"
+        },
+        "targets": [
+          "runtime/work.py"
+        ],
+        "mode": "exclusive",
+        "authority": "local",
+        "status": "active",
+        "expires_utc": "2099-01-01T00:00:00Z",
+        "fencing_tokens": {
+          "runtime/work.py": 1
+        }
+      }
+    ],
+    "sessions": [
+      {
+        "actor_id": "agent-a",
+        "session_id": "session-a",
+        "harness": "conformance",
+        "status": "active"
+      }
+    ],
+    "memory": {
+      "session_records": 0,
+      "project_records": 0,
+      "state_records": 0,
+      "system_candidates": 0
+    },
+    "team_fabric": {
+      "fencing_by_target": {
+        "runtime/work.py": 1
+      },
+      "budgets": {}
+    }
+  },
+  "vectors": [
+    {
+      "id": "valid-current-state",
+      "mutations": [],
+      "expected_valid": true,
+      "expected_violation_ids": []
+    },
+    {
+      "id": "invalid-schema-version",
+      "mutations": [
+        {
+          "op": "set",
+          "path": [
+            "schema_version"
+          ],
+          "value": "0.9"
+        }
+      ],
+      "expected_valid": false,
+      "expected_violation_ids": [
+        "PX-COORD-SCHEMA-VERSION"
+      ]
+    },
+    {
+      "id": "expired-active-claim",
+      "mutations": [
+        {
+          "op": "set",
+          "path": [
+            "claims",
+            0,
+            "expires_utc"
+          ],
+          "value": "2020-01-01T00:00:00Z"
+        }
+      ],
+      "expected_valid": false,
+      "expected_violation_ids": [
+        "PX-COORD-CLAIM-EXPIRED"
+      ]
+    },
+    {
+      "id": "multiple-active-plans",
+      "mutations": [
+        {
+          "op": "append",
+          "path": [
+            "plans"
+          ],
+          "value": {
+            "id": "plan-b",
+            "status": "active",
+            "task_ids": [
+              "dependency",
+              "work"
+            ]
+          }
+        }
+      ],
+      "expected_valid": false,
+      "expected_violation_ids": [
+        "PX-COORD-MULTIPLE-ACTIVE-PLANS"
+      ]
+    },
+    {
+      "id": "malformed-session",
+      "mutations": [
+        {
+          "op": "set",
+          "path": [
+            "sessions",
+            0,
+            "harness"
+          ],
+          "value": ""
+        }
+      ],
+      "expected_valid": false,
+      "expected_violation_ids": [
+        "PX-COORD-SESSION-MALFORMED"
+      ]
+    },
+    {
+      "id": "incomplete-dependency",
+      "mutations": [
+        {
+          "op": "set",
+          "path": [
+            "tasks",
+            0,
+            "status"
+          ],
+          "value": "planned"
+        }
+      ],
+      "expected_valid": false,
+      "expected_violation_ids": [
+        "PX-COORD-DEPENDENCY-INCOMPLETE"
+      ]
+    },
+    {
+      "id": "task-claim-actor-mismatch",
+      "mutations": [
+        {
+          "op": "set",
+          "path": [
+            "claims",
+            0,
+            "actor",
+            "session_id"
+          ],
+          "value": "session-b"
+        }
+      ],
+      "expected_valid": false,
+      "expected_violation_ids": [
+        "PX-COORD-TASK-CLAIM-MISMATCH"
+      ]
+    },
+    {
+      "id": "stale-fencing-token",
+      "mutations": [
+        {
+          "op": "set",
+          "path": [
+            "team_fabric",
+            "fencing_by_target",
+            "runtime/work.py"
+          ],
+          "value": 2
+        }
+      ],
+      "expected_valid": false,
+      "expected_violation_ids": [
+        "PX-COORD-FENCING-STALE"
+      ]
+    }
+  ]
+}

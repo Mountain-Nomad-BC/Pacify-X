@@ -15,12 +15,14 @@ from runtime.memory_vault import MemoryVault
 from runtime.project_stream_controls import (
     ScopeEnvelope,
     SwitchEvidence,
+    TransferEvidenceReferences,
     TransferPackage,
 )
 from runtime.project_stream_orchestrator import (
     ProjectStreamContext,
     execute_project_stream,
 )
+from runtime.trusted_evidence import ResolvedEvidence, TrustedEvidenceResolver
 
 
 ROOT = Path(__file__).parents[1]
@@ -33,6 +35,29 @@ PREFLIGHT = {
         "side_effect_budget_set",
     )
 }
+
+
+class _SyntheticTransferEvidenceResolver(TrustedEvidenceResolver):
+    def __init__(self) -> None:
+        self.store = ROOT
+        self.trust_policy = ROOT / "policies/effect-grant-trust.json"
+
+    def resolve(self, reference: str, **_kwargs: object) -> ResolvedEvidence:
+        return ResolvedEvidence(
+            reference,
+            {
+                "source_project_id": "project-old",
+                "destination_project_id": "project-new",
+                "result": {"accepted": True},
+            },
+            True,
+            True,
+            True,
+            True,
+            True,
+            True,
+            (),
+        )
 
 
 def _load_json(relative: str) -> dict[str, object]:
@@ -268,6 +293,13 @@ class TempTwoCompletenessTests(unittest.TestCase):
                         True,
                         True,
                     ),
+                    "evidence_references": TransferEvidenceReferences(
+                        "evidence:sanitization",
+                        "evidence:human-approval",
+                        "evidence:destination-ownership",
+                        "evidence:tests",
+                    ),
+                    "evidence_resolver": _SyntheticTransferEvidenceResolver(),
                 },
                 "guarded_change": {
                     "active_root": active_change,

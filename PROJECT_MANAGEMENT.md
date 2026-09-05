@@ -9,12 +9,12 @@ Deliver a model-agnostic, drop-in bootstrap that lets an LLM safely commission e
 ## Current state
 
 Mode: `existing`  
-Phase: `remaining punch-card implementation`
-Status: `authorized local repair wave in progress; A08 current-tree convergence passed; prior release evidence retained as historical`
-Active card: `U02 - renderer surface migration batches`
-Next action: finish `U02` and `U05`, then remove the legacy renderer owner in `U03`; proceed through the sidebar, governed-maintenance, accelerator, visual, and exact-release frontier in the dependency order recorded in `docs/PX_UNIVERSAL_VISIBILITY_PUNCH_CARDS.md`.
+Phase: `cohesion-closure repair implementation`
+Status: `43-card source-bound denominator admitted; Wave 0 audit closed; 37 repair/integration/proof cards remain`
+Active card: `PX-ASSURE-001 - typed feature acceptance vs control evidence`
+Next action: finish the expanded 58-test release-artifact compatibility cone for `PX-ASSURE-001`, then close it only if all downstream and resource checks pass.
 
-The user authorized non-destructive local repository writes, local execution, validation, and necessary local dependency work for this repair wave. That authority is session-scoped and does not authorize deployment, credential use, billable provider calls, destructive cleanup, or rewriting historical release evidence.
+The user authorized completion and publication. The active repair admission permits non-destructive local repository writes and focused local execution only; it excludes broad release stages, package/install mutation, release identity/tag mutation, publication, billable provider calls, destructive cleanup, and rewriting historical evidence until a separate repair-freeze/successor-release admission exists.
 
 Release 0.6.3 is the current signed, self-certified release. The annotated tag, exact public distribution files, trusted publisher signature, complete evidence set, checksums, SBOM, provenance, and fresh installed-wheel verification agree. Canonical evidence is under `evidence/releases/0.6.3/`; the public release is at [GitHub v0.6.3](https://github.com/Mountain-Nomad-BC/Pacify-X/releases/tag/v0.6.3).
 

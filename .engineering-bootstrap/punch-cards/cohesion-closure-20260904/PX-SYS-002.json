@@ -1,0 +1,73 @@
+{
+  "card_id": "PX-SYS-002",
+  "title": "Architecture invariants",
+  "severity": "critical",
+  "type": "test",
+  "status": "planned",
+  "root_cause": "Cohesion rules are documented but not enforced as one current-tree invariant gate.",
+  "source_requirement": "Enforce semantic profile, revision, primitive owner, duplicate exception, evidence class, conformance, dependency, task-plan, model, release identity, and parent/child N/A invariants.",
+  "live_evidence": [
+    "C:/Users/Ben/Downloads/px looks/PX_COMMENCEMENT_ORCHESTRATION_2026-09-04.md#PX-SYS-002"
+  ],
+  "files": [
+    "runtime/architecture_invariants.py",
+    "tests/test_architecture_invariants.py"
+  ],
+  "symbols": [
+    "validate_architecture_invariants"
+  ],
+  "dependencies": [
+    "PX-ASSURE-001",
+    "PX-ASSURE-002",
+    "PX-ASSURE-003",
+    "PX-CORE-001",
+    "PX-SYS-001",
+    "PX-SYS-003"
+  ],
+  "downstream_consumers": [
+    "PX-AUTH-001"
+  ],
+  "change_classes": [
+    "AUTHORITY",
+    "BEHAVIORAL"
+  ],
+  "implementation_steps": [
+    "Implement each mandated invariant with stable ID.",
+    "Bind every check to authoritative registry/source.",
+    "Return complete finding set.",
+    "Register focused test and governed section owner."
+  ],
+  "negative_cases": [
+    "Routable skill lacks profile.",
+    "Projection lacks source revision.",
+    "Duplicate primitive lacks exception.",
+    "Evidence class omitted.",
+    "Shared state lacks vectors.",
+    "Stale dependency/task plan/model attachment.",
+    "Mutation under fixed release identity.",
+    "Child control N/A promotes parent N/A."
+  ],
+  "focused_tests": [
+    "tests/test_architecture_invariants.py"
+  ],
+  "affected_tests": [
+    "Registry, generated artifact, release boundary, routing, skill, and coordination tests."
+  ],
+  "affected_sections": [
+    "testing-governance",
+    "structural-adversarial"
+  ],
+  "projection_invalidations": [
+    "architecture invariant evidence",
+    "repair freeze eligibility"
+  ],
+  "evidence_required": [
+    "One failing and one passing vector for every invariant ID."
+  ],
+  "rollback": "Remove gate registration while keeping individual validators available; do not claim repair freeze.",
+  "acceptance_criteria": [
+    "All mandated invariants execute and return stable IDs.",
+    "Complete current tree passes before repair freeze."
+  ],
+  "completion_evidence": []
+}

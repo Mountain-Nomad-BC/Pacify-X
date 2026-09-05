@@ -1,0 +1,61 @@
+{
+  "card_id": "PX-REPAIR-001",
+  "title": "Repair-root grouping",
+  "severity": "high",
+  "type": "integration",
+  "status": "planned",
+  "root_cause": "Final60-final85 history repeatedly treated symptoms as isolated repairs and re-entered certification before the complete root set was known.",
+  "source_requirement": "Provide a diagnostic-only root grouping workflow from complete failures to discriminating tests and confirmed roots.",
+  "live_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/live-state.json"
+  ],
+  "files": [
+    "runtime/repair_root_analysis.py",
+    "tests/test_repair_root_analysis.py"
+  ],
+  "symbols": [
+    "group_candidate_roots",
+    "build_discriminating_test_plan"
+  ],
+  "dependencies": [
+    "PX-EFF-003"
+  ],
+  "downstream_consumers": [],
+  "change_classes": [
+    "SEMANTIC",
+    "BEHAVIORAL"
+  ],
+  "implementation_steps": [
+    "Normalize complete failure records.",
+    "Cluster only by deterministic shared evidence/owners/dependencies.",
+    "Propose discriminating tests.",
+    "Require human/agent confirmation before repair."
+  ],
+  "negative_cases": [
+    "One failure omitted from denominator.",
+    "ML/LLM guesses root.",
+    "Cluster treated as confirmed.",
+    "Repair mutation initiated."
+  ],
+  "focused_tests": [
+    "tests/test_repair_root_analysis.py"
+  ],
+  "affected_tests": [
+    "Affected proof planner tests."
+  ],
+  "affected_sections": [
+    "testing-governance"
+  ],
+  "projection_invalidations": [
+    "repair diagnostic plans"
+  ],
+  "evidence_required": [
+    "Deterministic grouping and discrimination vectors."
+  ],
+  "rollback": "Remove diagnostic projection; no product effect path exists.",
+  "acceptance_criteria": [
+    "The module is diagnostic only.",
+    "No candidate root becomes authority without confirmation."
+  ],
+  "completion_evidence": []
+}

@@ -1,0 +1,70 @@
+{
+  "card_id": "PX-ROUTE-005",
+  "title": "Project-context-aware routing",
+  "severity": "high",
+  "type": "repair",
+  "status": "planned",
+  "root_cause": "Project-map revision is receipted but its typed facts do not influence ranking or capability package construction.",
+  "source_requirement": "Feed bounded typed project features into routing scores and receipts, or explicitly constrain the project map to evidence-only use.",
+  "live_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#PX-AUD-011"
+  ],
+  "files": [
+    "runtime/capability_routing.py",
+    "runtime/project_intelligence.py",
+    "tests/test_capability_routing.py"
+  ],
+  "symbols": [
+    "route_task",
+    "rank_candidates",
+    "build_capability_package"
+  ],
+  "dependencies": [
+    "PX-CORE-001",
+    "PX-ROUTE-001"
+  ],
+  "downstream_consumers": [
+    "PX-ROUTE-003",
+    "PX-MODEL-002"
+  ],
+  "change_classes": [
+    "BEHAVIORAL",
+    "SEMANTIC"
+  ],
+  "implementation_steps": [
+    "Define allowed project-map routing features.",
+    "Bind feature revision into the task plan.",
+    "Apply bounded deterministic score adjustments.",
+    "Expose each influence in the package receipt."
+  ],
+  "negative_cases": [
+    "Two materially different project maps yield identical relevant routing.",
+    "Foreign-project fact enters scoring.",
+    "Stale map revision accepted.",
+    "Opaque score adjustment."
+  ],
+  "focused_tests": [
+    "Paired project-map influence vectors.",
+    "Foreign/stale map rejection."
+  ],
+  "affected_tests": [
+    "Task plan, capability routing, and project intelligence tests."
+  ],
+  "affected_sections": [
+    "testing-governance"
+  ],
+  "projection_invalidations": [
+    "routing package receipts",
+    "task execution plans",
+    "project-map consumer evidence"
+  ],
+  "evidence_required": [
+    "Paired-map discriminating receipt with transparent score components."
+  ],
+  "rollback": "Disable project features and retain revision-only evidence behavior explicitly.",
+  "acceptance_criteria": [
+    "Relevant typed project facts affect scoring/package construction deterministically.",
+    "Every influence is project-scoped and receipted."
+  ],
+  "completion_evidence": []
+}

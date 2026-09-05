@@ -170,6 +170,29 @@
   ],
   "failure_policy": "Fail closed on missing scope, authority, consumer, oracle, rollback, or evidence; preserve the last valid state and report the exact blocker.",
   "id": "hybrid-retrieval",
+  "canonical_runtime_owner": {
+    "module": "runtime.retrieval",
+    "symbol": "retrieve",
+    "revision": "2.0.0"
+  },
+  "retrieval_signal_contract": {
+    "signals": [
+      "lexical",
+      "dense_vector",
+      "metadata",
+      "structured",
+      "graph",
+      "freshness",
+      "trust"
+    ],
+    "missing_signal_policy": "report_unavailable_without_imputation",
+    "receipt_fields": [
+      "component_scores",
+      "signal_status",
+      "signal_revisions",
+      "source_revision"
+    ]
+  },
   "inputs": {
     "constraints": "Authority, time, cost, privacy, compatibility, and mutation limits.",
     "evidence_context": "Known facts, source hashes, prior receipts, and unresolved contradictions.",

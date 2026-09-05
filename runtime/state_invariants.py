@@ -22,6 +22,17 @@ from .wal_transaction import JsonTransition
 
 
 SCHEMA_VERSION = "px.coordination-invariants/1.0"
+COORDINATION_STATE_SCHEMA = "1.2"
+CONFORMANCE_SCHEMA = "px.coordination-state-conformance/1.0"
+CONFORMANCE_VIOLATION_IDS = (
+    "PX-COORD-SCHEMA-VERSION",
+    "PX-COORD-CLAIM-EXPIRED",
+    "PX-COORD-MULTIPLE-ACTIVE-PLANS",
+    "PX-COORD-SESSION-MALFORMED",
+    "PX-COORD-DEPENDENCY-INCOMPLETE",
+    "PX-COORD-TASK-CLAIM-MISMATCH",
+    "PX-COORD-FENCING-STALE",
+)
 MAX_EVENT_BYTES = 32 * 1024 * 1024
 MAX_EVENTS = 5_000
 MAX_MEMORY_BYTES = 64 * 1024 * 1024
@@ -211,6 +222,102 @@ def _parse_timestamp(value: object) -> datetime | None:
     if parsed.tzinfo is None:
         return None
     return parsed.astimezone(timezone.utc)
+
+
+def coordination_conformance_report(
+    state: object, *, now_utc: datetime | None = None
+) -> dict[str, object]:
+    """Evaluate the cross-runtime coordination rules in stable ID order."""
+
+    found: set[str] = set()
+    if not isinstance(state, Mapping):
+        found.add("PX-COORD-SCHEMA-VERSION")
+        candidate: Mapping[str, object] = {}
+    else:
+        candidate = state
+    if candidate.get("schema_version") != COORDINATION_STATE_SCHEMA:
+        found.add("PX-COORD-SCHEMA-VERSION")
+
+    tasks = {
+        _identifier(item.get("id")): item
+        for item in candidate.get("tasks", ())
+        if isinstance(item, Mapping) and _identifier(item.get("id"))
+    }
+    plans = candidate.get("plans", ())
+    if isinstance(plans, list):
+        active_plans = [
+            item
+            for item in plans
+            if isinstance(item, Mapping) and item.get("status") == "active"
+        ]
+        if len(active_plans) > 1:
+            found.add("PX-COORD-MULTIPLE-ACTIVE-PLANS")
+
+    sessions = candidate.get("sessions", ())
+    if not isinstance(sessions, list) or any(
+        not isinstance(item, Mapping)
+        or _actor_identity(item) is None
+        or not _identifier(item.get("harness"))
+        or item.get("status") not in {"active", "stale"}
+        for item in sessions
+    ):
+        found.add("PX-COORD-SESSION-MALFORMED")
+
+    fabric = candidate.get("team_fabric")
+    fencing = fabric.get("fencing_by_target", {}) if isinstance(fabric, Mapping) else {}
+    if not isinstance(fencing, Mapping):
+        fencing = {}
+    claims = candidate.get("claims", ())
+    active_claims = (
+        [
+            item
+            for item in claims
+            if isinstance(item, Mapping) and item.get("status") == "active"
+        ]
+        if isinstance(claims, list)
+        else []
+    )
+    stamp = (now_utc or datetime.now(timezone.utc)).astimezone(timezone.utc)
+    for claim in active_claims:
+        expires = _parse_timestamp(claim.get("expires_utc"))
+        if expires is None or expires <= stamp:
+            found.add("PX-COORD-CLAIM-EXPIRED")
+        task = tasks.get(_identifier(claim.get("task_id")))
+        if task is None or _actor_identity(claim.get("actor")) != _actor_identity(
+            task.get("owner") if task is not None else None
+        ):
+            found.add("PX-COORD-TASK-CLAIM-MISMATCH")
+        if task is not None:
+            dependencies = task.get("depends_on", ())
+            if isinstance(dependencies, list) and any(
+                dependency not in tasks
+                or tasks[str(dependency)].get("status")
+                not in {"completed", "reconciled"}
+                for dependency in map(str, dependencies)
+            ):
+                found.add("PX-COORD-DEPENDENCY-INCOMPLETE")
+        targets = claim.get("targets", ())
+        tokens = claim.get("fencing_tokens", {})
+        if not isinstance(targets, list) or not isinstance(tokens, Mapping):
+            found.add("PX-COORD-FENCING-STALE")
+            continue
+        for target in targets:
+            normalized = _normalize_target(target)
+            token = tokens.get(normalized)
+            if (
+                not normalized
+                or not _valid_revision(token)
+                or int(token) < 1
+                or fencing.get(normalized) != token
+            ):
+                found.add("PX-COORD-FENCING-STALE")
+
+    violation_ids = [item for item in CONFORMANCE_VIOLATION_IDS if item in found]
+    return {
+        "schema_version": CONFORMANCE_SCHEMA,
+        "valid": not violation_ids,
+        "violation_ids": violation_ids,
+    }
 
 
 def _check_dependencies(
@@ -487,6 +594,11 @@ def validate_coordination_state(
         candidate: Mapping[str, object] = {}
     else:
         candidate = state
+    conformance = coordination_conformance_report(candidate, now_utc=now_utc)
+    violations.extend(
+        InvariantViolation(code, "$", "shared coordination conformance violation")
+        for code in conformance["violation_ids"]
+    )
     project = candidate.get("project")
     if (
         not isinstance(project, Mapping)

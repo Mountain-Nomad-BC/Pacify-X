@@ -1,18 +1,18 @@
 # Project Intelligence Map
 
-Map revision: `9b9bcefc6882b1bd80548b86e1bc121ae863a21b8401fce485ec669afb3c46f7`
-Source inventory: `70b52e0d3610a29d1977326903c27f298fc97bcc26d549799182424d7a4ea10b`
+Map revision: `74da011871fe44fbb2fc49a9eb74d2852d7438da9cc8c5549054c6f9f970351f`
+Source inventory: `3fcd8228fdcd90f9ad342cecdb9fe6c21dc5569a8d9c233d7c1143a5a93409f6`
 
 ## Coverage
 
-- Files: 5766
-- Symbols: 8241
-- Dependency edges: 7382
+- Files: 6000
+- Symbols: 10770
+- Dependency edges: 9236
 - Routes: 9
 - Runtime services: 0
-- Contracts: 201
-- Configuration keys: 43429
-- Retrieval documents: 57673
+- Contracts: 226
+- Configuration keys: 13635
+- Retrieval documents: 30668
 
 ## Runtime markers
 
@@ -20,11 +20,12 @@ Source inventory: `70b52e0d3610a29d1977326903c27f298fc97bcc26d549799182424d7a4ea
 
 ## Risks and unknowns
 
-- **medium — unresolved-imports**: 1312 imports or service dependencies could not be resolved statically
-- **low — truncated-text-scans**: 2 files exceeded the per-file text scan ceiling
-- **medium — untested-source-candidates**: 305 source files have no static test link
-- **informational — sensitive-config-keys**: 261 sensitive-looking configuration keys are referenced; values were not captured
-- **informational — generated-surfaces**: 2 generated or vendor-like files were mapped
+- **medium — parse-errors**: 1 parser errors or unsupported structures
+- **medium — unresolved-imports**: 1625 imports or service dependencies could not be resolved statically
+- **low — truncated-text-scans**: 3 files exceeded the per-file text scan ceiling
+- **medium — untested-source-candidates**: 493 source files have no static test link
+- **informational — sensitive-config-keys**: 100 sensitive-looking configuration keys are referenced; values were not captured
+- **informational — generated-surfaces**: 3 generated or vendor-like files were mapped
 - Unknown: Dynamic runtime paths, reflection, plugin loading, external consumers, deployed configuration values, and production traffic are not proven by static mapping.
 
 ## Retrieval

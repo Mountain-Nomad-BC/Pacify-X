@@ -11,6 +11,11 @@ from typing import Mapping, Sequence
 from uuid import uuid4
 
 from .file_lock import FileLock
+from .dependency_invalidation import (
+    build_dependency_graph,
+    compute_invalidation_cone,
+    load_dependency_authority,
+)
 from .learning_promotion import (
     aggregate_operations,
     compare_revisions,
@@ -80,7 +85,7 @@ LEARNING_TRANSITIONS = {
     "validated": frozenset({"admitted"}),
     "admitted": frozenset({"canonical", "decayed"}),
     "canonical": frozenset({"canonical", "decayed"}),
-    "decayed": frozenset(),
+    "decayed": frozenset({"canonical"}),
 }
 
 
@@ -1394,6 +1399,8 @@ class KnowledgeCoreController:
         regressions: int,
         approved: bool,
         measured_by: str,
+        dependency_graph: Mapping[str, object] | None = None,
+        dependency_current_revisions: Mapping[str, object] | None = None,
     ) -> dict[str, object]:
         current = self._read_learning(pipeline_id)
         proposal_id = str(current.get("knowledge_proposal_id") or "")
@@ -1421,6 +1428,53 @@ class KnowledgeCoreController:
         if len(measurements) >= 100:
             raise ValueError("learning reuse measurement history bound has been reached")
         measurements.append(measurement)
+        invalidation: Mapping[str, object] | None = None
+        if decay["decay"]:
+            record_id = str(proposal.get("record_id") or "")
+            knowledge_node = f"knowledge:{record_id}"
+            graph = dependency_graph
+            if graph is None:
+                graph = build_dependency_graph(
+                    Path(__file__).resolve().parents[1],
+                    [
+                        {
+                            "node_id": knowledge_node,
+                            "kind": "knowledge",
+                            "revision": str(proposal.get("candidate_sha256") or ""),
+                        }
+                    ],
+                    [],
+                )
+            graph_nodes = {
+                str(item.get("node_id"))
+                for item in graph.get("nodes", [])
+                if isinstance(item, Mapping)
+            }
+            if knowledge_node not in graph_nodes:
+                raise ValueError("decay dependency graph omits canonical knowledge node")
+            revisions = dict(dependency_current_revisions or {})
+            revisions[knowledge_node] = f"decayed:{decay['record_sha256']}"
+            invalidation = compute_invalidation_cone(
+                graph,
+                revisions,
+                authority=load_dependency_authority(Path(__file__).resolve().parents[1]),
+            )
+            canonical_root = self._canonical_root(record_id)
+            head_path = canonical_root / "head.json"
+            head = self._verify_signed(head_path)
+            if head.get("candidate_sha256") != proposal.get("candidate_sha256"):
+                raise PermissionError("canonical knowledge changed before decay invalidation")
+            suspect_head = {
+                **head,
+                "updated_utc": _now(),
+                "authority_status": "suspect",
+                "authoritative": False,
+                "revalidation_required": True,
+                "decay_decision_sha256": decay["record_sha256"],
+                "dependent_invalidation": invalidation,
+            }
+            suspect_head.pop("host_authority", None)
+            write_json_atomic(head_path, self.authority.sign_receipt(suspect_head))
         return self._transition_learning(
             pipeline_id,
             allowed_states=("admitted", "canonical"),
@@ -1431,10 +1485,95 @@ class KnowledgeCoreController:
             updates={
                 "reuse_measurements": measurements,
                 "decay_decision": decay,
+                "dependent_invalidation": invalidation,
+                "revalidation_evidence": None,
                 "canonical_writes_performed": False,
             },
             expected_revision_sha256=str(current["pipeline_revision_sha256"]),
         )
+
+    def revalidate_learning(
+        self,
+        pipeline_id: str,
+        *,
+        evidence_ref: str,
+        evidence_sha256: str,
+        approved: bool,
+        revalidated_by: str,
+    ) -> dict[str, object]:
+        """Restore canonical authority only from fresh, hash-bound evidence."""
+        current = self._read_learning(pipeline_id)
+        if current["state"] != "decayed":
+            raise PermissionError("only decayed canonical knowledge may be revalidated")
+        if (
+            not approved
+            or not str(evidence_ref).strip()
+            or not re.fullmatch(r"[a-f0-9]{64}", str(evidence_sha256))
+        ):
+            raise PermissionError("canonical revalidation requires fresh hash-bound evidence")
+        proposal_id = str(current.get("knowledge_proposal_id") or "")
+        proposal = self._read(proposal_id)
+        record_id = str(proposal.get("record_id") or "")
+        head_path = self._canonical_root(record_id) / "head.json"
+        head = self._verify_signed(head_path)
+        if (
+            head.get("authority_status") != "suspect"
+            or head.get("candidate_sha256") != proposal.get("candidate_sha256")
+        ):
+            raise PermissionError("canonical suspect identity changed before revalidation")
+        dependent_invalidation = current.get("dependent_invalidation")
+        if not isinstance(dependent_invalidation, Mapping):
+            dependent_invalidation = {}
+        revalidation = {
+            "schema_version": "px.knowledge-revalidation/1.0",
+            "evidence_ref": evidence_ref,
+            "evidence_sha256": evidence_sha256,
+            "canonical_revision": head["candidate_sha256"],
+            "revalidated_by": revalidated_by,
+            "revalidated_utc": _now(),
+            "dependent_rebuild_required": bool(
+                dependent_invalidation.get("direct_consumers")
+                or dependent_invalidation.get("transitive_consumers")
+            ),
+        }
+        transitioned = self._transition_learning(
+            pipeline_id,
+            allowed_states=("decayed",),
+            target="canonical",
+            actor=revalidated_by,
+            approved=approved,
+            operation="reuse.revalidate",
+            updates={
+                "revalidation_evidence": revalidation,
+                "canonical_writes_performed": False,
+            },
+            expected_revision_sha256=str(current["pipeline_revision_sha256"]),
+        )
+        current_head = {
+            **head,
+            "updated_utc": _now(),
+            "authority_status": "current",
+            "authoritative": True,
+            "revalidation_required": False,
+            "revalidation": revalidation,
+        }
+        current_head.pop("host_authority", None)
+        write_json_atomic(head_path, self.authority.sign_receipt(current_head))
+        return transitioned
+
+    def resolve_canonical(
+        self, record_id: str, *, require_authoritative: bool = True
+    ) -> dict[str, object]:
+        """Resolve current canonical bytes, failing closed while they are suspect."""
+        root = self._canonical_root(record_id)
+        head = self._verify_signed(root / "head.json")
+        if require_authoritative and (
+            head.get("authority_status") == "suspect"
+            or head.get("revalidation_required") is True
+        ):
+            raise PermissionError("canonical knowledge is suspect and requires revalidation")
+        revision = self._verify_signed(self.project_root / str(head["revision"]))
+        return {"head": head, "canonical": revision, "historical": True}
 
     def _browse_learning(self, *, query: str, limit: int) -> dict[str, object]:
         needle = query.casefold().strip()
@@ -1984,7 +2123,15 @@ class KnowledgeCoreController:
                                     "revision": revision_path.relative_to(self.project_root).as_posix(),
                                 }
                             )
-                canonical.append({**head, "rollback_targets": rollback_targets})
+                canonical.append(
+                    {
+                        **head,
+                        "authority_status": head.get("authority_status", "current"),
+                        "authoritative": head.get("authority_status") != "suspect",
+                        "revalidation_required": head.get("revalidation_required", False),
+                        "rollback_targets": rollback_targets,
+                    }
+                )
             if len(canonical) >= limit:
                 break
         sources = list(self._sources().values())

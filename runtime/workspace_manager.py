@@ -34,11 +34,13 @@ from .project_stream_controls import (
     ContextObject,
     ScopeEnvelope,
     SwitchEvidence,
+    TransferEvidenceReferences,
     TransferPackage,
     authorize_context,
 )
 from .paths import framework_root
 from .work_admission import RuntimeWorkPlane
+from .trusted_evidence import TrustedEvidenceResolver
 from .test_profiles import (
     initialize_project_repair_campaign,
     repair_campaign_status,
@@ -2293,6 +2295,7 @@ def _materialize_workflow_payload(
     project: Path,
     workspace_id: str,
     project_id: str,
+    source_root: Path,
 ) -> dict[str, object]:
     payload: dict[str, object] = dict(raw)
     payload["ledger"] = _event_ledger(paths)
@@ -2342,6 +2345,37 @@ def _materialize_workflow_payload(
         payload["destination"] = _request_path(paths, project, raw.get("destination"))
         if package_raw.get("destination_project_id") != project_id:
             raise ValueError("transfer destination must equal the active project")
+        references_raw = raw.get("evidence_references")
+        if not isinstance(references_raw, Mapping):
+            raise ValueError("cross-project transfer requires evidence references")
+        required_references = {
+            "sanitization",
+            "human_approval",
+            "destination_ownership",
+            "tests",
+        }
+        if set(references_raw) != required_references:
+            raise ValueError(
+                "cross-project transfer requires exactly four evidence references"
+            )
+        payload["evidence_references"] = TransferEvidenceReferences(
+            **{name: str(references_raw[name]) for name in required_references}
+        )
+        evidence_store_relative = Path(str(raw.get("evidence_store", "")))
+        evidence_store = (paths.root / evidence_store_relative).resolve()
+        if (
+            evidence_store_relative.is_absolute()
+            or ".." in evidence_store_relative.parts
+            or not _inside(evidence_store, paths.root)
+            or not evidence_store.is_dir()
+        ):
+            raise ValueError(
+                "cross-project transfer evidence_store must be an existing workspace-relative directory"
+            )
+        payload["evidence_resolver"] = TrustedEvidenceResolver(
+            evidence_store,
+            source_root.resolve(strict=True) / "policies/effect-grant-trust.json",
+        )
     else:
         for field in ("source", "destination"):
             if field in raw:
@@ -2384,6 +2418,8 @@ def _validate_workflow_payload_shape(
             "source": str,
             "destination": str,
             "package": Mapping,
+            "evidence_store": str,
+            "evidence_references": Mapping,
         },
         "guarded_change": {
             "staged_file": str,
@@ -2515,6 +2551,7 @@ def run_workflow_request(
         project=project,
         workspace_id=str(config["workspace_id"]),
         project_id=project_id,
+        source_root=source_root,
     )
     scope = ScopeEnvelope(**active["scope"])
     payload["lease_id"] = scope.lease_id

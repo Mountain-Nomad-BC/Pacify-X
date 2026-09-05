@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from datetime import datetime
 import hashlib
 import json
 from pathlib import Path
+import subprocess
 
 import pytest
 
@@ -11,6 +13,7 @@ from runtime.startup import bounded_startup
 from runtime.state_invariants import (
     CoordinationPreCommitGuard,
     StateInvariantError,
+    coordination_conformance_report,
     validate_coordination_startup,
     validate_coordination_state,
 )
@@ -18,6 +21,7 @@ from runtime.wal_transaction import JsonArtifact, JsonWal
 
 
 ROOT = Path(__file__).resolve().parents[1]
+CONFORMANCE_VECTORS = ROOT / "tests/coordination_conformance/coordination_state_conformance_vectors.json"
 
 
 def _hash(value: object) -> str:
@@ -123,6 +127,72 @@ def _states(
 
 def _codes(report: dict[str, object]) -> set[str]:
     return {str(item["code"]) for item in report["violations"]}
+
+
+def _apply_conformance_mutations(
+    state: dict[str, object], mutations: list[dict[str, object]]
+) -> None:
+    for mutation in mutations:
+        target: object = state
+        path = mutation["path"]
+        assert isinstance(path, list) and path
+        for part in path[:-1]:
+            target = target[part]  # type: ignore[index]
+        leaf = path[-1]
+        if mutation["op"] == "set":
+            target[leaf] = deepcopy(mutation["value"])  # type: ignore[index]
+        elif mutation["op"] == "append":
+            target[leaf].append(deepcopy(mutation["value"]))  # type: ignore[index,union-attr]
+        else:
+            raise AssertionError(f"unsupported mutation: {mutation['op']}")
+
+
+def _python_conformance_results() -> list[dict[str, object]]:
+    corpus = json.loads(CONFORMANCE_VECTORS.read_text(encoding="utf-8"))
+    now_utc = datetime.fromisoformat(corpus["now_utc"].replace("Z", "+00:00"))
+    results: list[dict[str, object]] = []
+    for vector in corpus["vectors"]:
+        state = deepcopy(corpus["base_state"])
+        _apply_conformance_mutations(state, vector["mutations"])
+        results.append(
+            {
+                "id": vector["id"],
+                **coordination_conformance_report(state, now_utc=now_utc),
+            }
+        )
+    return results
+
+
+def test_shared_coordination_vectors_match_stable_expected_results() -> None:
+    corpus = json.loads(CONFORMANCE_VECTORS.read_text(encoding="utf-8"))
+    actual = _python_conformance_results()
+    expected = [
+        {
+            "id": vector["id"],
+            "schema_version": "px.coordination-state-conformance/1.0",
+            "valid": vector["expected_valid"],
+            "violation_ids": vector["expected_violation_ids"],
+        }
+        for vector in corpus["vectors"]
+    ]
+    assert actual == expected
+
+
+def test_python_and_node_coordination_conformance_are_byte_comparable() -> None:
+    completed = subprocess.run(
+        [
+            "node",
+            "extension/scripts/run-state-invariant-vectors.js",
+            CONFORMANCE_VECTORS.as_posix(),
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+        timeout=30,
+    )
+    node_results = json.loads(completed.stdout)["results"]
+    assert node_results == _python_conformance_results()
 
 
 def test_valid_transition_checks_every_invariant_family(tmp_path: Path) -> None:

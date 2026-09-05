@@ -467,6 +467,14 @@ def _pattern_example(pattern: str) -> str:
         return "sha256:" + "a" * 64
     if pattern == "^local-model-session-[a-f0-9]{32}$":
         return "local-model-session-" + "a" * 32
+    if pattern == "^handoff-[a-f0-9]{24}$":
+        return "handoff-" + "a" * 24
+    if pattern == "^memory-plan-[0-9a-f]{24}$":
+        return "memory-plan-" + "a" * 24
+    if pattern == "^model-attachment-[0-9a-f]{24}$":
+        return "model-attachment-" + "a" * 24
+    if pattern == "^task-plan-[0-9a-f]{24}$":
+        return "task-plan-" + "a" * 24
     if pattern == "^evidence/bundles/[A-Za-z0-9._/-]+\\.json$":
         return "evidence/bundles/example/manifest.json"
     if "64}" in pattern:

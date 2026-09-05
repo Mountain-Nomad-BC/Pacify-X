@@ -3,7 +3,7 @@
     {
       "external_actions": [
         "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
-        "actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+        "actions/setup-node@820762786026740c76f36085b0efc47a31fe5020",
         "actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97",
         "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a"
       ],
@@ -29,31 +29,31 @@
           "name": "matrix"
         },
         {
-          "line": 46,
+          "line": 57,
           "name": "platform-matrix"
         },
         {
-          "line": 48,
+          "line": 59,
           "name": "strategy"
         },
         {
-          "line": 50,
+          "line": 61,
           "name": "matrix"
         },
         {
-          "line": 70,
+          "line": 81,
           "name": "assurance-gates"
         },
         {
-          "line": 72,
+          "line": 83,
           "name": "strategy"
         },
         {
-          "line": 74,
+          "line": 85,
           "name": "matrix"
         },
         {
-          "line": 98,
+          "line": 109,
           "name": "governed-gates"
         }
       ],
@@ -62,7 +62,7 @@
     {
       "external_actions": [
         "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
-        "actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+        "actions/setup-node@820762786026740c76f36085b0efc47a31fe5020",
         "actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97",
         "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a"
       ],
@@ -88,7 +88,7 @@
           "name": "release_tag"
         },
         {
-          "line": 22,
+          "line": 23,
           "name": "certify-and-publish"
         }
       ],
@@ -97,7 +97,7 @@
     {
       "external_actions": [
         "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
-        "actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+        "actions/setup-node@820762786026740c76f36085b0efc47a31fe5020",
         "actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97"
       ],
       "jobs": [
@@ -163,12 +163,27 @@
     },
     {
       "kind": "npm_script",
+      "name": "build:plugin-fixtures",
+      "source": "extension/package.json"
+    },
+    {
+      "kind": "npm_script",
       "name": "build:ui-actions",
       "source": "extension/package.json"
     },
     {
       "kind": "npm_script",
       "name": "check",
+      "source": "extension/package.json"
+    },
+    {
+      "kind": "npm_script",
+      "name": "check:mcp",
+      "source": "extension/package.json"
+    },
+    {
+      "kind": "npm_script",
+      "name": "check:operational-owners",
       "source": "extension/package.json"
     },
     {
@@ -189,6 +204,11 @@
     {
       "kind": "npm_script",
       "name": "package",
+      "source": "extension/package.json"
+    },
+    {
+      "kind": "npm_script",
+      "name": "probe:mcp-runtime",
       "source": "extension/package.json"
     },
     {
@@ -225,6 +245,107 @@
   ],
   "limitations": [
     "Runtime topology is static and must be reconciled with deployed evidence for production claims."
+  ],
+  "routes": [
+    {
+      "file": "tests/test_hardware_routing.py",
+      "framework_hint": "patch",
+      "handler": "HardwareRoutingTests.test_hardware_telemetry_normalizes_gpu_and_cpu_sensors",
+      "id": "route:tests/test_hardware_routing.py:264:runtime.hardware_routing.importlib.import_module",
+      "line": 264,
+      "methods": [
+        "PATCH"
+      ],
+      "path": "runtime.hardware_routing.importlib.import_module"
+    },
+    {
+      "file": "tests/test_hardware_routing.py",
+      "framework_hint": "patch",
+      "handler": "HardwareRoutingTests.test_hardware_telemetry_normalizes_gpu_and_cpu_sensors",
+      "id": "route:tests/test_hardware_routing.py:264:runtime.hardware_routing.shutil.which",
+      "line": 264,
+      "methods": [
+        "PATCH"
+      ],
+      "path": "runtime.hardware_routing.shutil.which"
+    },
+    {
+      "file": "tests/test_hardware_routing.py",
+      "framework_hint": "patch",
+      "handler": "HardwareRoutingTests.test_hardware_telemetry_normalizes_gpu_and_cpu_sensors",
+      "id": "route:tests/test_hardware_routing.py:264:runtime.hardware_routing.subprocess.run",
+      "line": 264,
+      "methods": [
+        "PATCH"
+      ],
+      "path": "runtime.hardware_routing.subprocess.run"
+    },
+    {
+      "file": "tests/test_hardware_routing.py",
+      "framework_hint": "patch",
+      "handler": "HardwareRoutingTests.test_hardware_telemetry_preserves_unavailable_providers",
+      "id": "route:tests/test_hardware_routing.py:287:runtime.hardware_routing.importlib.import_module",
+      "line": 287,
+      "methods": [
+        "PATCH"
+      ],
+      "path": "runtime.hardware_routing.importlib.import_module"
+    },
+    {
+      "file": "tests/test_hardware_routing.py",
+      "framework_hint": "patch",
+      "handler": "HardwareRoutingTests.test_hardware_telemetry_preserves_unavailable_providers",
+      "id": "route:tests/test_hardware_routing.py:287:runtime.hardware_routing.shutil.which",
+      "line": 287,
+      "methods": [
+        "PATCH"
+      ],
+      "path": "runtime.hardware_routing.shutil.which"
+    },
+    {
+      "file": "tests/test_hardware_routing.py",
+      "framework_hint": "patch",
+      "handler": "HardwareRoutingTests.test_hardware_report_uses_one_nvidia_probe_and_exposes_routing_truth",
+      "id": "route:tests/test_hardware_routing.py:302:runtime.hardware_routing._probe_psutil_telemetry",
+      "line": 302,
+      "methods": [
+        "PATCH"
+      ],
+      "path": "runtime.hardware_routing._probe_psutil_telemetry"
+    },
+    {
+      "file": "tests/test_hardware_routing.py",
+      "framework_hint": "patch",
+      "handler": "HardwareRoutingTests.test_hardware_report_uses_one_nvidia_probe_and_exposes_routing_truth",
+      "id": "route:tests/test_hardware_routing.py:302:runtime.hardware_routing.shutil.which",
+      "line": 302,
+      "methods": [
+        "PATCH"
+      ],
+      "path": "runtime.hardware_routing.shutil.which"
+    },
+    {
+      "file": "tests/test_hardware_routing.py",
+      "framework_hint": "patch",
+      "handler": "HardwareRoutingTests.test_hardware_report_uses_one_nvidia_probe_and_exposes_routing_truth",
+      "id": "route:tests/test_hardware_routing.py:302:runtime.hardware_routing.subprocess.run",
+      "line": 302,
+      "methods": [
+        "PATCH"
+      ],
+      "path": "runtime.hardware_routing.subprocess.run"
+    },
+    {
+      "file": "tests/test_hardware_routing.py",
+      "framework_hint": "patch",
+      "handler": "HardwareRoutingTests.test_optional_library_probe_is_bounded_and_reports_child_termination",
+      "id": "route:tests/test_hardware_routing.py:328:runtime.hardware_routing.subprocess.run",
+      "line": 328,
+      "methods": [
+        "PATCH"
+      ],
+      "path": "runtime.hardware_routing.subprocess.run"
+    }
   ],
   "runtime_markers": {},
   "schema_version": "1.1",

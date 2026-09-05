@@ -84,6 +84,8 @@ class KnowledgeFoundryTests(unittest.TestCase):
         self.assertEqual(
             package.input_schema["properties"]["outdoor"]["x-unit"], "degC"
         )
+        self.assertEqual(package.normalized_dimension, "Theta^1")
+        self.assertEqual(len(package.formula_engine_revision), 64)
         with self.assertRaisesRegex(ValueError, "unsupported"):
             compile_calculation(
                 CalculationSpec(
@@ -94,23 +96,29 @@ class KnowledgeFoundryTests(unittest.TestCase):
     def test_calculation_interpreter_supports_only_bounded_finite_arithmetic(
         self,
     ) -> None:
-        units = {"x": "u", "y": "u", "result": "u"}
-        cases = {
-            "x + y": 5.0,
-            "x - y": 1.0,
-            "x * y": 6.0,
-            "x / y": 1.5,
-            "x % y": 1.0,
-            "x ** y": 9.0,
-            "-x + +y": -1.0,
-        }
-        for equation, expected in cases.items():
+        cases = (
+            ("x + y", "u", "u", "u", 5.0),
+            ("x - y", "u", "u", "u", 1.0),
+            ("x * y", "u", "u", "u^2", 6.0),
+            ("x / y", "u", "u", "1", 1.5),
+            ("x % y", "u", "u", "u", 1.0),
+            ("x ** 2", "u", "1", "u^2", 9.0),
+            ("-x + +y", "u", "u", "u", -1.0),
+        )
+        for equation, x_unit, y_unit, result_unit, expected in cases:
             package = compile_calculation(
-                CalculationSpec("bounded", equation, ("x", "y"), units)
+                CalculationSpec(
+                    "bounded",
+                    equation,
+                    ("x", "y"),
+                    {"x": x_unit, "y": y_unit, "result": result_unit},
+                )
             )
             self.assertEqual(evaluate_calculation(package, {"x": 3, "y": 2}), expected)
         modulo = compile_calculation(
-            CalculationSpec("modulo", "x % y", ("x", "y"), units)
+            CalculationSpec(
+                "modulo", "x % y", ("x", "y"), {"x": "u", "y": "u", "result": "u"}
+            )
         )
         self.assertIn("pyMod", modulo.javascript_source)
         self.assertEqual(evaluate_calculation(modulo, {"x": -3, "y": 2}), 1.0)
@@ -120,14 +128,18 @@ class KnowledgeFoundryTests(unittest.TestCase):
     ) -> None:
         units = {"x": "u", "result": "u"}
         package = compile_calculation(
-            CalculationSpec("bounded", "x + 1", ("x",), units)
+            CalculationSpec("bounded", "x + 1", ("x",), {"x": "1", "result": "1"})
         )
         for value in (True, math.nan, math.inf, -math.inf, 1e101):
             with self.assertRaises(ValueError):
                 evaluate_calculation(package, {"x": value})
         with self.assertRaisesRegex(ValueError, "exponent"):
             evaluate_calculation(
-                compile_calculation(CalculationSpec("power", "x ** 17", ("x",), units)),
+                compile_calculation(
+                    CalculationSpec(
+                        "power", "x ** 17", ("x",), {"x": "u", "result": "u^17"}
+                    )
+                ),
                 {"x": 2},
             )
         with self.assertRaisesRegex(ValueError, "depth"):
@@ -147,8 +159,46 @@ class KnowledgeFoundryTests(unittest.TestCase):
         ):
             with self.assertRaises(ValueError, msg=equation):
                 compile_calculation(
-                    CalculationSpec("forbidden", equation, ("x",), units)
+                CalculationSpec("forbidden", equation, ("x",), units)
                 )
+
+    def test_calculation_requires_canonical_dimensional_proof(self) -> None:
+        with self.assertRaisesRegex(ValueError, "dimension mismatch"):
+            compile_calculation(
+                CalculationSpec(
+                    "bad add",
+                    "distance + duration",
+                    ("distance", "duration"),
+                    {"distance": "m", "duration": "s", "result": "m"},
+                )
+            )
+        with self.assertRaisesRegex(ValueError, "exponent must be dimensionless"):
+            compile_calculation(
+                CalculationSpec(
+                    "bad exponent",
+                    "distance ** duration",
+                    ("distance", "duration"),
+                    {"distance": "m", "duration": "s", "result": "m"},
+                )
+            )
+        with self.assertRaisesRegex(ValueError, "output dimension"):
+            compile_calculation(
+                CalculationSpec(
+                    "bad result",
+                    "distance / duration",
+                    ("distance", "duration"),
+                    {"distance": "m", "duration": "s", "result": "m"},
+                )
+            )
+        with self.assertRaisesRegex(ValueError, "unknown unit"):
+            compile_calculation(
+                CalculationSpec(
+                    "unknown",
+                    "x",
+                    ("x",),
+                    {"x": "not_a_unit", "result": "not_a_unit"},
+                )
+            )
 
     def test_materialization_is_candidate_only_append_only_and_complete(self) -> None:
         bundle = compile_foundry_bundle(

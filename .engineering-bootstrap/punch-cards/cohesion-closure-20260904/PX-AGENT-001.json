@@ -1,0 +1,71 @@
+{
+  "card_id": "PX-AGENT-001",
+  "title": "Agency to Studio adapter",
+  "severity": "high",
+  "type": "integration",
+  "status": "planned",
+  "root_cause": "Agency specialist selection and Studio governed execution are disconnected surfaces.",
+  "source_requirement": "Translate Agency selection into a validated Studio execution request while keeping Studio as executor.",
+  "live_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#PX-AUD-007"
+  ],
+  "files": [
+    "runtime/agency_studio_adapter.py",
+    "runtime/agent_runtime.py",
+    "runtime/studio_run_control.py",
+    "tests/test_agency_studio_adapter.py"
+  ],
+  "symbols": [
+    "compile_studio_agent_request",
+    "validate_agency_selection"
+  ],
+  "dependencies": [
+    "PX-CORE-001",
+    "PX-CORE-002",
+    "PX-ROUTE-003"
+  ],
+  "downstream_consumers": [
+    "PX-AGENT-003"
+  ],
+  "change_classes": [
+    "SCHEMA",
+    "AUTHORITY",
+    "BEHAVIORAL"
+  ],
+  "implementation_steps": [
+    "Define the adapter contract.",
+    "Resolve selected specialist revision and allowed capabilities.",
+    "Bind task plan, authority, and budgets.",
+    "Submit only to the existing Studio run-control owner."
+  ],
+  "negative_cases": [
+    "Unknown specialist.",
+    "Unpinned specialist revision.",
+    "Agency executes directly.",
+    "Authority or budget widened in translation."
+  ],
+  "focused_tests": [
+    "tests/test_agency_studio_adapter.py"
+  ],
+  "affected_tests": [
+    "Agent runtime and Studio run-control tests."
+  ],
+  "affected_sections": [
+    "dashboard-extension",
+    "structural-adversarial"
+  ],
+  "projection_invalidations": [
+    "agent run previews",
+    "Studio run receipts",
+    "world state"
+  ],
+  "evidence_required": [
+    "Agency-selection-to-Studio-request conformance vectors."
+  ],
+  "rollback": "Remove adapter call and leave Studio/Agency prior paths unchanged.",
+  "acceptance_criteria": [
+    "Agency only selects specialists.",
+    "Studio remains the sole governed executor."
+  ],
+  "completion_evidence": []
+}

@@ -31,7 +31,13 @@ from .project_control_plane import (
     recover_incident,
     switch_project,
 )
-from .project_stream_controls import ScopeEnvelope, SwitchEvidence, TransferPackage
+from .project_stream_controls import (
+    ScopeEnvelope,
+    SwitchEvidence,
+    TransferEvidenceReferences,
+    TransferPackage,
+)
+from .trusted_evidence import TrustedEvidenceResolver
 
 
 @dataclass(frozen=True, slots=True)
@@ -330,12 +336,20 @@ def cross_project_transfer(context: ProjectStreamContext) -> Mapping[str, object
     package = context.payload.get("package")
     if not isinstance(package, TransferPackage):
         raise ValueError("transfer workflow requires TransferPackage")
+    evidence_references = context.payload.get("evidence_references")
+    evidence_resolver = context.payload.get("evidence_resolver")
+    if not isinstance(evidence_references, TransferEvidenceReferences):
+        raise ValueError("transfer workflow requires four evidence references")
+    if not isinstance(evidence_resolver, TrustedEvidenceResolver):
+        raise ValueError("transfer workflow requires a trusted evidence resolver")
     result = import_transfer(
         _path(context, "workspace_root"),
         _path(context, "source"),
         _path(context, "destination"),
         package,
         _path(context, "ledger"),
+        evidence_references,
+        evidence_resolver,
     )
     return {"destination_owned_import": result}
 

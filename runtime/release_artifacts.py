@@ -64,6 +64,9 @@ def classify_tree(root: Path) -> dict[str, Any]:
     evidence_suffixes = {
         item.casefold() for item in policy["evidence_allowed_suffixes"]
     }
+    evidence_names = {
+        item.casefold() for item in policy.get("evidence_allowed_names", [])
+    }
     records: list[dict[str, Any]] = []
     errors: list[str] = []
     product_errors: list[str] = []
@@ -130,7 +133,7 @@ def classify_tree(root: Path) -> dict[str, Any]:
             elif any(part in evidence_roots for part in folded_parts):
                 classification = "evidence_output"
                 reason = "non-executable evidence namespace"
-                if suffix not in evidence_suffixes:
+                if suffix not in evidence_suffixes and path.name.casefold() not in evidence_names:
                     errors.append(
                         f"executable or unapproved evidence payload: {relative}"
                     )

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.84
+
+- Bind the extension package to the completed cohesion release source, including canonical provider execution-policy enforcement.
+- Accept the current typed Agent Studio preview and Skill Studio promotion receipt contracts in installed-host certification.
+- Preserve all previously issued VSIX artifacts; 0.6.84 is a new immutable package identity.
+
 ## 0.6.83
 
 - Preserve an active unsaved Studio editor when a late non-Studio response arrives, while retaining explicit close-then-transition flows.

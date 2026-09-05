@@ -71,6 +71,11 @@ def build_artifact_reachability(root: Path) -> dict:
             # section/group receipts. Hashing it into the static artifact graph
             # would make advancing a receipt invalidate the graph it summarizes.
             or path.name == "completion_status.json"
+            # World state binds the final product digest while remaining a
+            # mutable, bounded startup projection. Hashing it into the static
+            # reachability graph would feed its source revision back into that
+            # digest and create an unsatisfiable cycle.
+            or path.name == "px_world_state.json"
             # The operational gap ledger head and snapshot are live projections
             # advanced by every mandatory work admission. Hashing either into
             # the static graph would make the admission for a verification run

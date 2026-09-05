@@ -1,0 +1,68 @@
+{
+  "card_id": "PX-FOUNDRY-001",
+  "title": "Canonical formula engine integration",
+  "severity": "high",
+  "type": "repair",
+  "status": "planned",
+  "root_cause": "Knowledge Foundry validates unit labels but not dimensional consistency and bypasses the canonical formula engine.",
+  "source_requirement": "Delegate dimensional proof to runtime/cognitive_core/formula_engine.py and fail invalid equations before materialization.",
+  "live_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#PX-AUD-010"
+  ],
+  "files": [
+    "runtime/knowledge_foundry.py",
+    "runtime/cognitive_core/formula_engine.py",
+    "tests/test_knowledge_foundry.py",
+    "tests/test_formula_engine.py"
+  ],
+  "symbols": [
+    "compile_calculation",
+    "compile_formula",
+    "validate_dimensions"
+  ],
+  "dependencies": [
+    "PX-CORE-002"
+  ],
+  "downstream_consumers": [
+    "PX-FOUNDRY-002"
+  ],
+  "change_classes": [
+    "AUTHORITY",
+    "BEHAVIORAL"
+  ],
+  "implementation_steps": [
+    "Adapt Foundry formula input to the canonical engine.",
+    "Require dimensional proof for operators and result.",
+    "Carry normalized dimension and engine revision in receipt.",
+    "Reject unsupported dimensions explicitly."
+  ],
+  "negative_cases": [
+    "distance plus duration.",
+    "Dimensionless exponent violation.",
+    "Result unit contradicts expression.",
+    "Unknown unit.",
+    "Foundry bypasses canonical engine."
+  ],
+  "focused_tests": [
+    "Dimensionally valid/invalid Foundry compilation vectors."
+  ],
+  "affected_tests": [
+    "Formula engine and knowledge Foundry tests."
+  ],
+  "affected_sections": [
+    "structural-adversarial"
+  ],
+  "projection_invalidations": [
+    "Foundry candidate formula evidence",
+    "formula dependency graph"
+  ],
+  "evidence_required": [
+    "Compile vectors proving dimensionally invalid formulas fail."
+  ],
+  "rollback": "Restore Foundry's prior syntax-only behavior only behind a fail-closed blocker; preserve candidate inputs.",
+  "acceptance_criteria": [
+    "Unit labels alone cannot satisfy dimensional proof.",
+    "Foundry and the canonical formula engine agree on validity."
+  ],
+  "completion_evidence": []
+}

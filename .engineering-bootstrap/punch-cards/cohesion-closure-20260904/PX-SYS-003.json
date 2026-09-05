@@ -1,0 +1,64 @@
+{
+  "card_id": "PX-SYS-003",
+  "title": "Duplicate primitive lint",
+  "severity": "high",
+  "type": "test",
+  "status": "planned",
+  "root_cause": "New implementations can accidentally introduce parallel authority for an existing primitive.",
+  "source_requirement": "Statically and conservatively flag duplicate primitive definitions unless an explicit exception exists.",
+  "live_evidence": [
+    "C:/Users/Ben/Downloads/px looks/PX_COMMENCEMENT_ORCHESTRATION_2026-09-04.md#PX-SYS-003"
+  ],
+  "files": [
+    "runtime/primitive_lint.py",
+    "registry/primitive_authority.json",
+    "tests/test_primitive_lint.py"
+  ],
+  "symbols": [
+    "scan_duplicate_primitives",
+    "validate_primitive_exceptions"
+  ],
+  "dependencies": [
+    "PX-CORE-002"
+  ],
+  "downstream_consumers": [
+    "PX-SYS-002"
+  ],
+  "change_classes": [
+    "AUTHORITY",
+    "BEHAVIORAL"
+  ],
+  "implementation_steps": [
+    "Define conservative symbol/signature patterns.",
+    "Resolve matches against authority registry.",
+    "Support narrow reviewed exceptions.",
+    "Emit deterministic findings; use no AI guessing."
+  ],
+  "negative_cases": [
+    "Canonical owner flagged alone.",
+    "Duplicate owner missed.",
+    "Broad wildcard exception.",
+    "Dynamic ambiguity treated as clean."
+  ],
+  "focused_tests": [
+    "tests/test_primitive_lint.py"
+  ],
+  "affected_tests": [
+    "Architecture invariants and registry validation."
+  ],
+  "affected_sections": [
+    "testing-governance"
+  ],
+  "projection_invalidations": [
+    "architecture invariant evidence"
+  ],
+  "evidence_required": [
+    "Known duplicate, alias, exception, and ambiguity vectors."
+  ],
+  "rollback": "Disable lint gate and retain authority registry; never auto-delete implementations.",
+  "acceptance_criteria": [
+    "Known duplicate primitives fail without a narrow exception.",
+    "Ambiguity is reported, not guessed clean."
+  ],
+  "completion_evidence": []
+}

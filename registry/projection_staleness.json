@@ -1,0 +1,36 @@
+{
+  "consumer_policy": "block_until_governed_rebuild",
+  "projections": [
+    {
+      "output": "registry/skill_catalog.toml",
+      "output_revision": "d0f006a76eac089fb63b116bc1a262b6a7b3fdd6ac4f480a46033a0f2c011817",
+      "projection_id": "skill-package-catalog",
+      "stale": false
+    },
+    {
+      "output": "registry/semantic_capability_index.json",
+      "output_revision": "65208b028251e32b634dec795914930711b4d2df29941aa0aa2b4a220910c738",
+      "projection_id": "semantic-capability-index",
+      "stale": false
+    },
+    {
+      "output": "registry/cognitive_map_index.json",
+      "output_revision": "0ef88af22fcba1e96a8186a407db49caf292472be819e6d14d5f342f16a42f79",
+      "projection_id": "cognitive-map-index",
+      "stale": false
+    },
+    {
+      "output": "registry/agency_agent_graph.json",
+      "output_revision": "ea2643fd20c95d482b5d02a69c96109310319b6c4daddca85199bc514703702a",
+      "projection_id": "agency-agent-graph",
+      "stale": false
+    },
+    {
+      "output": "registry/registry_envelope_inventory.json",
+      "output_revision": "d6f1cabd9a90734279acf9d850b7ff6322e3f279b3974e14889e795a51731e1d",
+      "projection_id": "registry-envelope-inventory",
+      "stale": false
+    }
+  ],
+  "schema_version": "px.projection-staleness/1.0"
+}

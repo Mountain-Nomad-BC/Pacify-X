@@ -107,6 +107,7 @@ def run_test_command(
     run_id: str = "test-profile",
     lane_id: str = "tests",
     disk_consumption_paths: Sequence[Path] = (),
+    manage_process_temp: bool = False,
 ) -> dict[str, object]:
     timeout = validate_timeout(timeout_seconds)
     effective_timeout = max(1.0, timeout)
@@ -119,30 +120,38 @@ def run_test_command(
         )
     workspace_record = None
     workspace_path: Path | None = None
+    workspace_kind: str | None = None
     effective_command = list(command)
     effective_environment = dict(environment)
     accounting_paths = [Path(path).resolve(strict=False) for path in disk_consumption_paths]
     owned_paths = [cwd.resolve(strict=True)]
-    if _is_pytest_command(effective_command) and not _has_pytest_basetemp(
+    pytest_workspace = _is_pytest_command(effective_command) and not _has_pytest_basetemp(
         effective_command
-    ):
+    )
+    if pytest_workspace or manage_process_temp:
         temporary_root = Path(tempfile.gettempdir()).resolve(strict=True)
+        workspace_kind = (
+            "managed_pytest_basetemp"
+            if pytest_workspace
+            else "managed_process_temp"
+        )
         workspace_record = resource_manager.create_workspace(
             temporary_root,
             project_id=project_id,
             run_id=run_id,
             lane_id=lane_id,
             creator="runtime.test_runner.pytest",
-            prefix="pacify-x-pytest-",
+            prefix=("pacify-x-pytest-" if pytest_workspace else "pacify-x-process-"),
         )
         workspace_path = Path(workspace_record.path or "")
         accounting_paths.append(workspace_path.resolve(strict=True))
         owned_paths.append(workspace_path.resolve(strict=True))
-        pytest_path = workspace_path / "pytest"
         process_temp_path = workspace_path / "process-temp"
-        pytest_path.mkdir()
         process_temp_path.mkdir()
-        effective_command.append(f"--basetemp={pytest_path}")
+        if pytest_workspace:
+            pytest_path = workspace_path / "pytest"
+            pytest_path.mkdir()
+            effective_command.append(f"--basetemp={pytest_path}")
         # Test code frequently uses tempfile directly rather than pytest's
         # tmp_path fixture. Bind every inherited temporary-directory spelling
         # to the same registered workspace so failures and timeouts cannot
@@ -154,9 +163,10 @@ def run_test_command(
         # full release profile otherwise retains direct ``tempfile.mkdtemp``
         # trees from hundreds of tests until session end and can cross the
         # fail-closed disk ceiling before pytest writes JUnit evidence.
-        effective_environment["PACIFY_X_PYTEST_PROCESS_TEMP_ROOT"] = str(
-            process_temp_path
-        )
+        if pytest_workspace:
+            effective_environment["PACIFY_X_PYTEST_PROCESS_TEMP_ROOT"] = str(
+                process_temp_path
+            )
         # Governed test runs must never read, create, or mutate the operator's
         # real host authority keys. Give every managed pytest subprocess its own
         # authority root inside the exact registered/reclaimed workspace. An
@@ -271,7 +281,7 @@ def run_test_command(
             )
             resource_manager.reclaim(
                 workspace_record.resource_id,
-                reason="pytest_process_spawn_failed",
+                reason="managed_process_spawn_failed",
                 apply=True,
             )
         raise
@@ -293,14 +303,14 @@ def run_test_command(
                 )
                 cleanup = resource_manager.reclaim(
                     workspace_record.resource_id,
-                    reason="pytest_managed_basetemp_scope_closed",
+                    reason="managed_process_temp_scope_closed",
                     apply=True,
                 )
                 cleanup_id = cleanup.cleanup_id
                 cleanup_errors.extend(cleanup.errors)
                 reclaimed = cleanup.resources_reclaimed == 1
             result["test_workspace"] = {
-                "kind": "managed_pytest_basetemp",
+                "kind": workspace_kind,
                 "path": str(workspace_path),
                 "resource_id": (
                     workspace_record.resource_id if workspace_record else None

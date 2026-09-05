@@ -301,6 +301,8 @@ def _rebuild_candidate_projections_unlocked(root: Path) -> None:
     archive writer nor extracted replay may change a payload byte afterward.
     """
     from runtime.artifact_reachability import build_artifact_reachability
+    from runtime.agent_provider import build_agent_graph
+    from runtime.cognitive_core.index_builder import build_cognitive_index
     from runtime.effect_surface import discover_effect_surfaces
     from runtime.evidence_portability import discover_historical_references
     from runtime.exact_tool_certification import certify_exact_tools
@@ -312,6 +314,13 @@ def _rebuild_candidate_projections_unlocked(root: Path) -> None:
     )
     from runtime.build_claims import expected_build_claims, update_readme_claims
     from runtime.provider_gateway import build_provider_route_index
+    from runtime.projection_dependencies import (
+        build_projection_staleness,
+        reconcile_projection_dependencies,
+    )
+    from runtime.release_artifacts import classify_tree
+    from runtime.semantic_index import build_semantic_index
+    from runtime.world_state import write_world_state
     from scripts.build_declared_suite_template_projections import (
         reconcile as reconcile_templates,
     )
@@ -328,15 +337,37 @@ def _rebuild_candidate_projections_unlocked(root: Path) -> None:
         reconcile as reconcile_skills,
     )
     from scripts.reconcile_declared_tool_hashes import expected as declared_tool_outputs
+    from scripts.reconcile_active_capability_hashes import (
+        reconcile as reconcile_active_capability_hashes,
+    )
 
     reconcile_wrappers(root, check=False)
     reconcile_templates(root, check=False)
     reconcile_profiles(root, check=False)
     reconcile_skills(root, check=False)
+    reconcile_active_capability_hashes(root, check=False)
     for relative, payload in declared_tool_outputs(root).items():
         target = root / relative
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes(payload)
+    # Skill/catalog reconciliation changes inputs to all three metadata-first
+    # discovery projections. Rebuild their bytes before any downstream graph,
+    # envelope, or dependency revision is allowed to bind them.
+    _write_json(
+        root / "registry/semantic_capability_index.json",
+        build_semantic_index(root),
+        sort_keys=False,
+    )
+    _write_json(
+        root / "registry/cognitive_map_index.json",
+        build_cognitive_index(root),
+        sort_keys=False,
+    )
+    _write_json(
+        root / "registry/agency_agent_graph.json",
+        build_agent_graph(root),
+        sort_keys=False,
+    )
     write_graph_artifacts(root)
     _write_json(
         root / "registry/contract_ownership.json",
@@ -372,9 +403,6 @@ def _rebuild_candidate_projections_unlocked(root: Path) -> None:
             "records": references,
         },
     )
-    claims = expected_build_claims(root)
-    _write_json(root / "registry/build_claims.json", claims, sort_keys=False)
-    update_readme_claims(root, claims)
     preflight_policy = json.loads(
         (root / "policies/release-preflight.json").read_text(encoding="utf-8")
     )
@@ -382,20 +410,36 @@ def _rebuild_candidate_projections_unlocked(root: Path) -> None:
         root / "registry/generated_dependency_graph.json",
         generated_dependency_graph(preflight_policy["generated_authorities"]),
     )
-    _write_json(root / "registry/registry_envelope_inventory.json", build_inventory())
-    _write_json(
-        root / "registry/artifact_reachability.json", build_artifact_reachability(root)
-    )
-    _write_json(root / "registry/test_group_index.json", build_test_group_index(root))
     _write_json(
         root / "registry/operational_control_proof_matrix.json",
         build_operational_control_proof_matrix(root),
         sort_keys=False,
     )
+    _write_json(root / "registry/registry_envelope_inventory.json", build_inventory())
+    projection_registry = reconcile_projection_dependencies(root)
+    _write_json(
+        root / "registry/projection_staleness.json",
+        build_projection_staleness(projection_registry),
+    )
+    # Detached/installed candidates intentionally omit the live world-state
+    # control output. Materialize it before counting registry artifacts, then
+    # replace its placeholder binding after all product bytes are final.
+    write_world_state(root, source_revision="0" * 64)
+    claims = expected_build_claims(root)
+    _write_json(root / "registry/build_claims.json", claims, sort_keys=False)
+    update_readme_claims(root, claims)
+    _write_json(
+        root / "registry/artifact_reachability.json", build_artifact_reachability(root)
+    )
+    _write_json(root / "registry/test_group_index.json", build_test_group_index(root))
     # This is last among source/registry projections. Installed-host evidence
     # must bind these exact engine bytes; later test receipts, evidence, and
     # completion publications are deliberately excluded to avoid a hash cycle.
     write_engine_identity(root)
+    classification = classify_tree(root)
+    if not classification["valid"] or not classification["product_valid"]:
+        raise ValueError("candidate source classification failed before world-state bind")
+    write_world_state(root, source_revision=str(classification["product_digest"]))
 
 
 def _rebuild_candidate_projections(root: Path) -> None:

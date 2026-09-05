@@ -16,6 +16,7 @@ from runtime.capability_routing import (
     route_task,
 )
 from runtime.contracts import validate_instance
+from runtime.project_intelligence import project_routing_features
 from runtime.registry import skill_discovery_sources, skill_navigation_index
 from runtime.skill_navigator import CapabilitySummary
 
@@ -210,3 +211,60 @@ def test_canonical_dedup_uses_semantic_responsibility_and_explicit_supersession(
     assert owners["different-name"] == "canonical"
     assert owners["legacy"] == "replacement"
     assert ("different-name", "canonical", "exact_semantic_shadow") in reasons
+
+
+def test_project_features_change_relevant_ranking_and_are_receipted(tmp_path: Path):
+    root = tmp_path.resolve()
+    revision = "a" * 64
+    manifest = {
+        "project_root": root.as_posix(),
+        "map_revision": revision,
+        "source_inventory_sha256": "b" * 64,
+    }
+    python_map = {
+        "map_revision": revision,
+        "hits": [{"id": "file:py", "kind": "file", "path": "src/main.py", "title": "Python service", "summary": "python api"}],
+    }
+    rust_map = {
+        "map_revision": revision,
+        "hits": [{"id": "file:rs", "kind": "file", "path": "src/main.rs", "title": "Rust service", "summary": "rust api"}],
+    }
+    py_features = project_routing_features(root, manifest, python_map)
+    rs_features = project_routing_features(root, manifest, rust_map)
+    candidates = (
+        CapabilitySummary("python-tool", "operate python api", capability_tags=("python", "api")),
+        CapabilitySummary("rust-tool", "operate rust api", capability_tags=("rust", "api")),
+    )
+    envelope = normalize_task("operate api")
+    discovery = discover_independently(envelope, {"catalog": candidates})
+    mapping = {item.capability_id: item for item in candidates}
+    py_ranked = rank_candidates(envelope, discovery, mapping, project_features=py_features)
+    rs_ranked = rank_candidates(envelope, discovery, mapping, project_features=rs_features)
+    assert py_ranked[0].canonical_id == "python-tool"
+    assert rs_ranked[0].canonical_id == "rust-tool"
+    package = build_minimum_package(
+        envelope, py_ranked, mapping, project_features=py_features
+    )
+    assert package.routing_influences["feature_revision"] == py_features["feature_revision"]
+    assert package.routing_influences["candidate_components"]["python-tool"] > 0
+
+
+def test_project_features_reject_foreign_and_stale_maps(tmp_path: Path):
+    project = tmp_path / "project"
+    foreign = tmp_path / "foreign"
+    project.mkdir()
+    foreign.mkdir()
+    revision = "a" * 64
+    retrieval = {"map_revision": revision, "hits": []}
+    with pytest.raises(ValueError, match="foreign-project"):
+        project_routing_features(
+            project,
+            {"project_root": foreign.as_posix(), "map_revision": revision},
+            retrieval,
+        )
+    with pytest.raises(ValueError, match="stale or substituted"):
+        project_routing_features(
+            project,
+            {"project_root": project.as_posix(), "map_revision": revision},
+            {"map_revision": "b" * 64, "hits": []},
+        )

@@ -1,0 +1,20 @@
+{
+  "schema_version": "px.evidence-type-policy/1.0",
+  "evidence_type_count": 14,
+  "evidence_types": [
+    {"evidence_type":"artifact_integrity","allowed_claim_types":["artifact.integrity","source.identity"]},
+    {"evidence_type":"behavioral_probe","allowed_claim_types":["feature.semantic_behavior"]},
+    {"evidence_type":"durability","allowed_claim_types":["feature.durability","feature.persistence"]},
+    {"evidence_type":"external_authority","allowed_claim_types":["feature.external_authority"]},
+    {"evidence_type":"host_observation","allowed_claim_types":["feature.installed_host","feature.ui_render"]},
+    {"evidence_type":"human_approval","allowed_claim_types":["authority.human_approval"]},
+    {"evidence_type":"persistence","allowed_claim_types":["feature.persistence"]},
+    {"evidence_type":"policy_decision","allowed_claim_types":["authority.policy_decision"]},
+    {"evidence_type":"restart_recovery","allowed_claim_types":["feature.recovery","feature.durability"]},
+    {"evidence_type":"runtime_effect","allowed_claim_types":["feature.runtime_effect"]},
+    {"evidence_type":"source_analysis","allowed_claim_types":["implementation.present","source.identity"]},
+    {"evidence_type":"test_result","allowed_claim_types":["feature.semantic_behavior","implementation.test_result"]},
+    {"evidence_type":"ui_interaction","allowed_claim_types":["feature.ui_interaction"]},
+    {"evidence_type":"ui_render","allowed_claim_types":["feature.ui_render"]}
+  ]
+}

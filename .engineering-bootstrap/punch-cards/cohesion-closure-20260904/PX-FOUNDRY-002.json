@@ -1,0 +1,72 @@
+{
+  "card_id": "PX-FOUNDRY-002",
+  "title": "FoundryCandidateSkill to SkillStudioDraft",
+  "severity": "high",
+  "type": "integration",
+  "status": "planned",
+  "root_cause": "Foundry materializes candidate files without a typed, signed, lineage-preserving Studio intake envelope.",
+  "source_requirement": "Bridge Foundry candidates into Skill Studio drafts while preserving hashes, citations, mechanisms, formulas, uncertainty, semantics, effects, and tests.",
+  "live_evidence": [
+    "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#PX-AUD-009"
+  ],
+  "files": [
+    "runtime/foundry_studio_bridge.py",
+    "runtime/knowledge_foundry.py",
+    "runtime/skill_studio.py",
+    "contracts/foundry_candidate_skill.schema.json",
+    "tests/test_foundry_studio_bridge.py"
+  ],
+  "symbols": [
+    "FoundryCandidateSkill",
+    "build_skill_studio_draft",
+    "validate_foundry_candidate"
+  ],
+  "dependencies": [
+    "PX-CORE-003",
+    "PX-FOUNDRY-001"
+  ],
+  "downstream_consumers": [
+    "PX-SKILL-003"
+  ],
+  "change_classes": [
+    "SCHEMA",
+    "AUTHORITY",
+    "BEHAVIORAL"
+  ],
+  "implementation_steps": [
+    "Define candidate and draft envelope schemas.",
+    "Bind source lineage and candidate hash.",
+    "Translate supported fields without losing unknowns/contradictions.",
+    "Require explicit Studio accept or reject; prohibit direct canonical promotion."
+  ],
+  "negative_cases": [
+    "Missing citation/hash.",
+    "Unknowns dropped.",
+    "Effects widened.",
+    "Unsigned lineage.",
+    "Direct Foundry-to-canonical promotion."
+  ],
+  "focused_tests": [
+    "tests/test_foundry_studio_bridge.py"
+  ],
+  "affected_tests": [
+    "Knowledge Foundry and Skill Studio tests."
+  ],
+  "affected_sections": [
+    "testing-governance",
+    "structural-adversarial"
+  ],
+  "projection_invalidations": [
+    "Skill Studio draft index",
+    "Foundry candidate status"
+  ],
+  "evidence_required": [
+    "Accept/reject lineage vectors and no-direct-promotion proof."
+  ],
+  "rollback": "Disable bridge intake and preserve Foundry candidate bundle unchanged.",
+  "acceptance_criteria": [
+    "Every draft binds the exact candidate and lineage.",
+    "Only Skill Studio can advance the draft toward canonical promotion."
+  ],
+  "completion_evidence": []
+}
