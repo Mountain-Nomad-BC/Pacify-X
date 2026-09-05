@@ -1,18 +1,20 @@
 {
-  "duration_seconds": 172.072407,
-  "exit_code": 0,
+  "duration_seconds": 207.155363,
+  "exit_code": 1,
   "group": "core-n-s",
-  "input_sha256": "ce7a2a930c779aa69c2ba67035eef66cb9053742aa772f0f9268548df8785554",
+  "input_sha256": "af3f75cba13ad7edba91d5220b545a7df1d15023e50e1022a50b05d17b8e420e",
   "member_count": 80,
   "output_evidence": {
-    "failure_nodes": [],
+    "failure_nodes": [
+      "tests/test_skill_studio.py::test_skill_rollback_restores_package_and_every_projection_before_image"
+    ],
     "stderr_bytes": 0,
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "stdout_bytes": 3629,
-    "stdout_sha256": "4a964b33bb5e7c299e873490eb5951f379fafa94ee8ac3025446c47687dcbeca"
+    "stdout_bytes": 11715,
+    "stdout_sha256": "f46d2a3b26d6c86f67ac5cad7b5d38c387abbe35f0f9df38813cb4308f906bfb"
   },
-  "passed": true,
-  "receipt_sha256": "462b7f15efbba254c41fe594634572e04900aa57a0a9cd71988cf1733c57bcff",
+  "passed": false,
+  "receipt_sha256": "00cff024e8d8a8f31884978d8e315fab9fa18cf140e22ffb903e56b87a8cf288",
   "schema_version": "px.test-group-receipt/1.0",
   "timed_out": false
 }

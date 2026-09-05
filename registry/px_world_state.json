@@ -6,7 +6,7 @@
     "authority": {
       "evidence_reference": "registry/authority_topology.json",
       "reason_codes": [],
-      "source_revision": "60aebeb6754f9d550c5e74c2a35bc61f5a20d539ff340182adf5417f1da59db8",
+      "source_revision": "dd56a57befa08dbbfe63942a5dd2661ff04abd534f2882e00afe94ba5cb74d31",
       "state": "GREEN"
     },
     "operations": {
@@ -14,13 +14,13 @@
       "reason_codes": [
         "critical_high_blocker"
       ],
-      "source_revision": "60aebeb6754f9d550c5e74c2a35bc61f5a20d539ff340182adf5417f1da59db8",
+      "source_revision": "dd56a57befa08dbbfe63942a5dd2661ff04abd534f2882e00afe94ba5cb74d31",
       "state": "BLOCKED"
     },
     "projections": {
       "evidence_reference": "registry/projection_staleness.json",
       "reason_codes": [],
-      "source_revision": "60aebeb6754f9d550c5e74c2a35bc61f5a20d539ff340182adf5417f1da59db8",
+      "source_revision": "dd56a57befa08dbbfe63942a5dd2661ff04abd534f2882e00afe94ba5cb74d31",
       "state": "GREEN"
     }
   },
@@ -38,8 +38,8 @@
   },
   "hardware_profile_revision": null,
   "health_state": "BLOCKED",
-  "ledger_checkpoint_sha256": "58182def4bd3658ae0f1a3cf482c9b86d16bd83e1baf8c252b28e7595c09da09",
-  "ledger_event_count": 33656,
+  "ledger_checkpoint_sha256": "d971b7002988c456c69b6ae6b28c8ff46c577603d72134e0adbe7c6bfd00c5d4",
+  "ledger_event_count": 33671,
   "model_count": 2,
   "open_blocker_count": 16,
   "open_blocker_ids": [
@@ -65,11 +65,11 @@
   "recommended_next_actions": [
     "resolve_current_blockers"
   ],
-  "release_campaign_id": "pacify-x-certification-20260905-final97-single",
+  "release_campaign_id": "pacify-x-certification-20260905-final98-single",
   "release_state": "cleared",
   "schema_version": "px.world-state/1.0",
-  "source_revision": "60aebeb6754f9d550c5e74c2a35bc61f5a20d539ff340182adf5417f1da59db8",
+  "source_revision": "dd56a57befa08dbbfe63942a5dd2661ff04abd534f2882e00afe94ba5cb74d31",
   "stale_projection_count": 0,
   "stale_projection_ids": [],
-  "world_state_sha256": "4ead0840ef0e638d8bbbe88d103260ade5c0434feb344904ccb2a7091c24f051"
+  "world_state_sha256": "39299fa650d3d0832d6dcd848152bf1b70d92715acb4d3c99f37764197629b7f"
 }
