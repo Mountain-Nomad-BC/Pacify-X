@@ -3844,8 +3844,16 @@ async function readInstalledConfigurationAction(frameHost, spec) {
 }
 
 async function requestInstalledProjectionRefresh(frameHost, timeoutMs = 10_000) {
+  const instrumented = await instrumentInstalledBridge(frameHost, Math.max(1, Math.min(2_500, timeoutMs)));
+  if (!instrumented) throw new Error('installed-projection-refresh-instrumentation-unavailable');
   const before = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
-  await frameHost.evaluate(frame => frame.contentWindow?.PXDashboard?.require('hostQueries')?.refresh());
+  const dispatched = await frameHost.evaluate(frame => {
+    const refresh = frame.contentWindow?.PXDashboard?.require('hostQueries')?.refresh;
+    if (typeof refresh !== 'function') return false;
+    refresh();
+    return true;
+  });
+  if (!dispatched) throw new Error('installed-projection-refresh-dispatch-unavailable');
   const deadline = Date.now() + timeoutMs;
   let snapshot = null;
   do {
@@ -3881,20 +3889,27 @@ async function waitForInstalledConfigurationTarget(frameHost, spec, predicate, t
 }
 
 async function invokeInstalledConfigurationAction(workbench, frameHost, spec, targetValue) {
-  const before = await readInstalledConfigurationAction(frameHost, spec);
-  if (!before.available || before.target_value !== targetValue) throw new Error(`${spec.action}-target-state-mismatch:${before.target_value}:${targetValue}`);
+  await waitForInstalledConfigurationTarget(frameHost, spec, value => value === targetValue, 10_000);
   const requestBeforeDispatch = await installedOutboundRequestOffset(frameHost);
   const startedAt = Date.now();
-  const requestId = await frameHost.evaluate((frame, action) => {
+  const dispatch = await frameHost.evaluate((frame, item) => {
     const hostQueries = frame.contentWindow?.PXDashboard?.require('hostQueries');
     const previousRequestId = String(hostQueries?.hostActionIdentity()?.requestId || '');
-    const control = [...frame.contentDocument.querySelectorAll(`[data-action="${CSS.escape(action)}"]`)]
+    const control = [...frame.contentDocument.querySelectorAll(`[data-action="${CSS.escape(item.action)}"]`)]
       .find(element => !element.disabled && (element.offsetWidth || element.offsetHeight || element.getClientRects().length));
-    if (!control) throw new Error(`configuration-action-unavailable:${action}`);
+    if (!control) throw new Error(`configuration-action-unavailable:${item.action}`);
+    const observedTarget = String(control.dataset[item.datasetKey] || '');
+    if (observedTarget !== item.targetValue) throw new Error(`${item.action}-target-state-mismatch:${observedTarget}:${item.targetValue}`);
+    const responseCount = frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0;
     control.click();
     const operation = hostQueries?.hostActionIdentity() || {};
-    return operation.action === action && operation.requestId !== previousRequestId ? String(operation.requestId || '') : '';
-  }, spec.action);
+    return {
+      response_count: responseCount,
+      request_id: operation.action === item.action && operation.requestId !== previousRequestId ? String(operation.requestId || '') : ''
+    };
+  }, { action: spec.action, datasetKey: spec.datasetKey, targetValue });
+  const before = { response_count: dispatch.response_count };
+  const requestId = dispatch.request_id;
   if (spec.responseType === 'hostActionResult') {
     if (!requestId) throw new Error(`${spec.action}-request-identity-missing`);
     await waitForInstalledOutboundHostAction(frameHost, requestBeforeDispatch, { operation: spec.operation, requestId }, 3_000);
@@ -10218,7 +10233,7 @@ async function waitForInstalledCanonicalMemoryBaseline(frameHost, timeoutMs = 30
       const remaining = deadline - Date.now();
       if (remaining > 0) {
         try {
-          await requestInstalledProjectionRefresh(frameHost, Math.max(1, Math.min(10_000, remaining)));
+          await requestInstalledProjectionRefresh(frameHost, Math.max(1, Math.min(2_000, remaining)));
           refreshError = '';
         } catch (error) { refreshError = String(error?.message || error).slice(0, 500); }
       }
@@ -10229,11 +10244,20 @@ async function waitForInstalledCanonicalMemoryBaseline(frameHost, timeoutMs = 30
   throw new Error(`canonical-memory-baseline-timeout:${JSON.stringify({ current, refresh_error: refreshError || null })}`);
 }
 
-async function waitForInstalledCanonicalMemoryState(frameHost, attached, timeoutMs = 30_000) {
+async function recoverInstalledCanonicalMemoryProjection(frameHost, timeoutMs) {
+  const workbench = typeof frameHost.page === 'function' ? frameHost.page() : null;
+  if (!workbench) throw new Error('canonical-memory-projection-recovery-workbench-unavailable');
+  await resetInstalledDashboardBaseline(workbench, frameHost, timeoutMs);
+  await navigateInstalledSurface(frameHost, 'memory', timeoutMs);
+  return true;
+}
+
+async function waitForInstalledCanonicalMemoryState(frameHost, attached, timeoutMs = 30_000, recoverProjection = recoverInstalledCanonicalMemoryProjection) {
   const deadline = Date.now() + timeoutMs;
   let current = null;
   let nextRefreshAt = Date.now() + 500;
   let refreshError = '';
+  let projectionRecovered = false;
   do {
     current = await readInstalledCanonicalMemoryState(frameHost);
     if (attached ? current.attached : current.detached) return current;
@@ -10241,9 +10265,21 @@ async function waitForInstalledCanonicalMemoryState(frameHost, attached, timeout
       const remaining = deadline - Date.now();
       if (remaining > 0) {
         try {
-          await requestInstalledProjectionRefresh(frameHost, Math.max(1, Math.min(10_000, remaining)));
+          await requestInstalledProjectionRefresh(frameHost, Math.max(1, Math.min(2_000, remaining)));
           refreshError = '';
-        } catch (error) { refreshError = String(error?.message || error).slice(0, 500); }
+        } catch (error) {
+          refreshError = String(error?.message || error).slice(0, 500);
+          const recoveryRemaining = deadline - Date.now();
+          if (!projectionRecovered && recoveryRemaining > 1_000) {
+            try {
+              await recoverProjection(frameHost, Math.max(1, Math.min(15_000, recoveryRemaining)));
+              projectionRecovered = true;
+              refreshError = '';
+            } catch (recoveryError) {
+              refreshError = `${refreshError}:recovery:${String(recoveryError?.message || recoveryError).slice(0, 300)}`;
+            }
+          }
+        }
       }
       nextRefreshAt = Date.now() + 500;
     }
@@ -11444,6 +11480,6 @@ module.exports = {
   validCoordinationResult, validKnowledgeLifecycleResult, validLearningLifecycleResult, validPermanentCleanupResult,
   validPluginLifecycleObservation, validPendingPluginMutationReceipt, validPluginMutationReceipt, validStudioBlockedPreviewResult, validStudioDraftReceipt, validStudioLifecycleResult,
   captureSurfaceViews, surfaceCaptureCandidates, surfaceCaptureFileStem,
-  validStudioRevisionEditObservation, validStudioSetupResult, validationControlProbe, runInstalledValidationBoundaryProfile, clickWhenBuilderControlReady, invokeBuilderControl, waitForBuilderJsonControls, waitForCoordinationResult, waitForInstalledCanonicalMemoryBaseline,
+  validStudioRevisionEditObservation, validStudioSetupResult, validationControlProbe, runInstalledValidationBoundaryProfile, clickWhenBuilderControlReady, invokeBuilderControl, waitForBuilderJsonControls, waitForCoordinationResult, waitForInstalledCanonicalMemoryBaseline, waitForInstalledCanonicalMemoryState,
   clickWhenInstalledGraphControlReady, installedGraphExchangeOffset, waitForInstalledGraphExchange, waitForInstalledGraphIdle, waitForOwnedWebview
 };

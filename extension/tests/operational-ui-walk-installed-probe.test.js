@@ -19,7 +19,7 @@ const { installedDashboardRestartIdentity } = require('../scripts/run-operationa
 const { dispatchInstalledPluginConfirmation, dispatchInstalledPluginFormAction, installedPluginPreviewConfirmationMatches } = require('../scripts/run-operational-ui-walk');
 const { dispatchInstalledPluginConflictControl, installedPluginConflictControlMatches } = require('../scripts/run-operational-ui-walk');
 const { installedAdvancedFixtureStateAcknowledged } = require('../scripts/run-operational-ui-walk');
-const { waitForInstalledCanonicalMemoryBaseline } = require('../scripts/run-operational-ui-walk');
+const { waitForInstalledCanonicalMemoryBaseline, waitForInstalledCanonicalMemoryState } = require('../scripts/run-operational-ui-walk');
 const { closeOwnedDashboardTabs, remainingOwnedUiBudget } = require('../scripts/run-operational-ui-walk');
 const { bindCurrentWorkbenchCommandRejection, dispatchCurrentWorkbenchCommandRejection, observeCurrentWorkbenchCommandRejection } = require('../scripts/run-operational-ui-walk');
 
@@ -3243,7 +3243,10 @@ test('reversible configuration profile injects exact owned faults before writes 
   assert.match(targetWait, /nextRefreshAt[\s\S]*requestInstalledProjectionRefresh\(frameHost[\s\S]*nextRefreshAt = Date\.now\(\) \+ 500/);
   assert.doesNotMatch(targetWait, /hostQueries'\)\?\.refresh\(\)/);
   const projectionRefresh = source.slice(source.indexOf('async function requestInstalledProjectionRefresh'), source.indexOf('async function waitForInstalledConfigurationTarget'));
-  assert.match(projectionRefresh, /const before = await frameHost\.evaluate[\s\S]*hostQueries'\)\?\.refresh\(\)[\s\S]*slice\(offset\)\.find\(value => value\?\.type === 'snapshot'\)/);
+  assert.match(projectionRefresh, /instrumentInstalledBridge\(frameHost[\s\S]*const before = await frameHost\.evaluate[\s\S]*require\('hostQueries'\)\?\.refresh[\s\S]*refresh\(\)[\s\S]*slice\(offset\)\.find\(value => value\?\.type === 'snapshot'\)/);
+  const configurationDispatch = source.slice(source.indexOf('async function invokeInstalledConfigurationAction'), source.indexOf('async function exerciseOwnedConfigurationFailure'));
+  assert.match(configurationDispatch, /waitForInstalledConfigurationTarget\(frameHost[\s\S]*frameHost\.evaluate[\s\S]*control\.dataset\[item\.datasetKey\][\s\S]*observedTarget !== item\.targetValue[\s\S]*control\.click\(\)/);
+  assert.doesNotMatch(configurationDispatch, /const before = await readInstalledConfigurationAction/);
   assert.match(source, /exerciseOwnedConfigurationFailure\(frameHost, \{ route: 'memory', action: 'configureCanonicalMemory', operation: 'configureCanonicalMemory' \}/);
   assert.match(source, /exerciseOwnedConfigurationFailure\(frameHost, \{ route: 'memory', action: 'disconnectCanonicalMemory', operation: 'disconnectCanonicalMemory' \}[\s\S]*setup\.failure_handling = true/);
   assert.match(source, /stage === 'failure_handling'[\s\S]*observation\.failure_handling[\s\S]*matched pre-write failure/);
@@ -3289,6 +3292,7 @@ test('canonical memory baseline refreshes an incoherent projection before accept
     },
     contentWindow: {
       __PX_INSTALLED_RESPONSES__: [],
+      __PX_INSTALLED_BRIDGE_INSTRUMENTED__: true,
       PXDashboard: {
         require(name) {
           assert.equal(name, 'hostQueries');
@@ -3302,6 +3306,40 @@ test('canonical memory baseline refreshes an incoherent projection before accept
   assert.equal(refreshes, 1);
   assert.equal(baseline.attached, false);
   assert.equal(baseline.detached, true);
+});
+
+test('canonical memory state recovers one dead projection before accepting exact detached state', async () => {
+  let coherent = false;
+  let recoveries = 0;
+  const authority = {
+    classList: {
+      contains: name => coherent && name === 'detached',
+      [Symbol.iterator]: function* () { if (coherent) yield 'detached'; }
+    }
+  };
+  const frame = {
+    contentDocument: {
+      querySelector(selector) {
+        if (selector === '.memory-authority') return authority;
+        if (selector === '[data-action="memoryRefresh"]') return { disabled: coherent };
+        if (selector === '[data-action="disconnectCanonicalMemory"]') return null;
+        return null;
+      }
+    },
+    contentWindow: {
+      __PX_INSTALLED_RESPONSES__: [],
+      __PX_INSTALLED_BRIDGE_INSTRUMENTED__: true,
+      PXDashboard: { require() { return { refresh() { throw new Error('owned-dead-projection'); } }; } }
+    }
+  };
+  const frameHost = { evaluate: async callback => callback(frame) };
+  const state = await waitForInstalledCanonicalMemoryState(frameHost, false, 2_000, async () => {
+    recoveries += 1;
+    coherent = true;
+  });
+  assert.equal(recoveries, 1);
+  assert.equal(state.attached, false);
+  assert.equal(state.detached, true);
 });
 
 test('installed filesystem identity compares Windows paths semantically and keeps substitutions distinct', () => {

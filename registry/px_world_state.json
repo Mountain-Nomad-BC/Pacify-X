@@ -6,7 +6,7 @@
     "authority": {
       "evidence_reference": "registry/authority_topology.json",
       "reason_codes": [],
-      "source_revision": "9063866a84641a44c5933a680f684636793f703e50bc12d3fdb0cb73873c0a73",
+      "source_revision": "6513d51a8bee33c06174c8354ea039345453ba70e898028050e9577c5337ce41",
       "state": "GREEN"
     },
     "operations": {
@@ -14,13 +14,13 @@
       "reason_codes": [
         "critical_high_blocker"
       ],
-      "source_revision": "9063866a84641a44c5933a680f684636793f703e50bc12d3fdb0cb73873c0a73",
+      "source_revision": "6513d51a8bee33c06174c8354ea039345453ba70e898028050e9577c5337ce41",
       "state": "BLOCKED"
     },
     "projections": {
       "evidence_reference": "registry/projection_staleness.json",
       "reason_codes": [],
-      "source_revision": "9063866a84641a44c5933a680f684636793f703e50bc12d3fdb0cb73873c0a73",
+      "source_revision": "6513d51a8bee33c06174c8354ea039345453ba70e898028050e9577c5337ce41",
       "state": "GREEN"
     }
   },
@@ -65,11 +65,11 @@
   "recommended_next_actions": [
     "resolve_current_blockers"
   ],
-  "release_campaign_id": "pacify-x-certification-20260905-final95-single",
+  "release_campaign_id": "pacify-x-certification-20260905-final96-single",
   "release_state": "cleared",
   "schema_version": "px.world-state/1.0",
-  "source_revision": "9063866a84641a44c5933a680f684636793f703e50bc12d3fdb0cb73873c0a73",
+  "source_revision": "6513d51a8bee33c06174c8354ea039345453ba70e898028050e9577c5337ce41",
   "stale_projection_count": 0,
   "stale_projection_ids": [],
-  "world_state_sha256": "b035efb84e25f238431b30ede14155e9b54d8db2bce16df239b4b6ebfd5e62b4"
+  "world_state_sha256": "481deddab2c6a6d662f7e63dc603c1193c86ab5b800629f12a5d9b0336dd2e3a"
 }
