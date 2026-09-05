@@ -3264,6 +3264,7 @@ test('canonical memory reversible profile accepts an attached fixture and restor
   assert.match(profile, /if \(initial\.attached\)[\s\S]*disconnectCanonicalMemory[\s\S]*profile_initial_target[\s\S]*waitForInstalledCanonicalMemoryState\(frameHost, false\)/);
   assert.match(profile, /exerciseOwnedConfigurationFailure\(frameHost, \{ route: 'memory', action: 'configureCanonicalMemory'/);
   assert.match(profile, /exerciseOwnedConfigurationFailure\(frameHost, \{ route: 'memory', action: 'disconnectCanonicalMemory'/);
+  assert.match(source, /exerciseOwnedConfigurationFailure\(frameHost, spec[\s\S]*waitForInstalledConfigurationTarget\(frameHost, spec, value => value === before\.target_value, 10_000\)/);
   assert.match(profile, /configureCanonicalMemory'[\s\S]*resetInstalledDashboardBaseline\(workbench, frameHost, 30_000\)[\s\S]*navigateInstalledSurface\(frameHost, 'memory', 30_000\)[\s\S]*waitForInstalledCanonicalMemoryState\(frameHost, false, 30_000\)[\s\S]*const configured/);
   assert.match(profile, /disconnectCanonicalMemory'[\s\S]*resetInstalledDashboardBaseline\(workbench, frameHost, 30_000\)[\s\S]*navigateInstalledSurface\(frameHost, 'memory', 30_000\)[\s\S]*waitForInstalledCanonicalMemoryState\(frameHost, true, 30_000\)[\s\S]*setup\.failure_handling = true/);
   assert.match(profile, /catch \(error\)[\s\S]*resetInstalledDashboardBaseline\(workbench, frameHost, 30_000\)[\s\S]*navigateInstalledSurface\(frameHost, 'memory', 30_000\)[\s\S]*const current = await readInstalledCanonicalMemoryState/);
@@ -3333,10 +3334,80 @@ test('canonical memory state recovers one dead projection before accepting exact
     }
   };
   const frameHost = { evaluate: async callback => callback(frame) };
-  const state = await waitForInstalledCanonicalMemoryState(frameHost, false, 2_000, async () => {
+  const state = await waitForInstalledCanonicalMemoryState(frameHost, false, 3_000, async () => {
     recoveries += 1;
     coherent = true;
   });
+  assert.equal(recoveries, 1);
+  assert.equal(state.attached, false);
+  assert.equal(state.detached, true);
+});
+
+test('canonical memory state reacquires a projection that disappears again during the same transition', async () => {
+  let coherent = false;
+  let recoveries = 0;
+  const authority = {
+    classList: {
+      contains: name => coherent && name === 'detached',
+      [Symbol.iterator]: function* () { if (coherent) yield 'detached'; }
+    }
+  };
+  const frame = {
+    contentDocument: {
+      querySelector(selector) {
+        if (selector === '.memory-authority') return coherent ? authority : null;
+        if (selector === '[data-action="memoryRefresh"]') return coherent ? { disabled: true } : null;
+        if (selector === '[data-action="disconnectCanonicalMemory"]') return null;
+        return null;
+      }
+    },
+    contentWindow: {
+      __PX_INSTALLED_RESPONSES__: [],
+      __PX_INSTALLED_BRIDGE_INSTRUMENTED__: true,
+      PXDashboard: { require() { return { refresh() { throw new Error('owned-dead-projection'); } }; } }
+    }
+  };
+  const frameHost = { evaluate: async callback => callback(frame) };
+  const state = await waitForInstalledCanonicalMemoryState(frameHost, false, 4_000, async () => {
+    recoveries += 1;
+    coherent = recoveries >= 2;
+  });
+  assert.equal(recoveries, 2);
+  assert.equal(state.attached, false);
+  assert.equal(state.detached, true);
+});
+
+test('canonical memory state reacquires a persistently incoherent projection after successful refresh responses', async () => {
+  let coherent = false;
+  let recoveries = 0;
+  let refreshes = 0;
+  const authority = {
+    classList: {
+      contains: name => coherent && name === 'detached',
+      [Symbol.iterator]: function* () { if (coherent) yield 'detached'; }
+    }
+  };
+  const frame = {
+    contentDocument: {
+      querySelector(selector) {
+        if (selector === '.memory-authority') return coherent ? authority : null;
+        if (selector === '[data-action="memoryRefresh"]') return coherent ? { disabled: true } : null;
+        if (selector === '[data-action="disconnectCanonicalMemory"]') return null;
+        return null;
+      }
+    },
+    contentWindow: {
+      __PX_INSTALLED_RESPONSES__: [],
+      __PX_INSTALLED_BRIDGE_INSTRUMENTED__: true,
+      PXDashboard: { require() { return { refresh() { refreshes += 1; frame.contentWindow.__PX_INSTALLED_RESPONSES__.push({ type: 'snapshot' }); } }; } }
+    }
+  };
+  const frameHost = { evaluate: async callback => callback(frame) };
+  const state = await waitForInstalledCanonicalMemoryState(frameHost, false, 3_000, async () => {
+    recoveries += 1;
+    coherent = true;
+  });
+  assert.ok(refreshes >= 1);
   assert.equal(recoveries, 1);
   assert.equal(state.attached, false);
   assert.equal(state.detached, true);

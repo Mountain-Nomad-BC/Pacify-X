@@ -10257,10 +10257,14 @@ async function waitForInstalledCanonicalMemoryState(frameHost, attached, timeout
   let current = null;
   let nextRefreshAt = Date.now() + 500;
   let refreshError = '';
-  let projectionRecovered = false;
+  let nextRecoveryAt = 0;
+  let incoherentSince = 0;
   do {
     current = await readInstalledCanonicalMemoryState(frameHost);
     if (attached ? current.attached : current.detached) return current;
+    if (!current.attached && !current.detached) {
+      if (!incoherentSince) incoherentSince = Date.now();
+    } else incoherentSince = 0;
     if (Date.now() >= nextRefreshAt) {
       const remaining = deadline - Date.now();
       if (remaining > 0) {
@@ -10269,15 +10273,16 @@ async function waitForInstalledCanonicalMemoryState(frameHost, attached, timeout
           refreshError = '';
         } catch (error) {
           refreshError = String(error?.message || error).slice(0, 500);
-          const recoveryRemaining = deadline - Date.now();
-          if (!projectionRecovered && recoveryRemaining > 1_000) {
-            try {
-              await recoverProjection(frameHost, Math.max(1, Math.min(15_000, recoveryRemaining)));
-              projectionRecovered = true;
-              refreshError = '';
-            } catch (recoveryError) {
-              refreshError = `${refreshError}:recovery:${String(recoveryError?.message || recoveryError).slice(0, 300)}`;
-            }
+        }
+        const recoveryRemaining = deadline - Date.now();
+        if (incoherentSince && Date.now() - incoherentSince >= 750 && Date.now() >= nextRecoveryAt && recoveryRemaining > 1_000) {
+          try {
+            await recoverProjection(frameHost, Math.max(1, Math.min(15_000, recoveryRemaining)));
+            nextRecoveryAt = Date.now() + 500;
+            refreshError = '';
+          } catch (recoveryError) {
+            nextRecoveryAt = Date.now() + 500;
+            refreshError = `${refreshError || 'installed-projection-incoherent'}:recovery:${String(recoveryError?.message || recoveryError).slice(0, 300)}`;
           }
         }
       }
@@ -10463,8 +10468,10 @@ async function runInstalledReversibleConfigurationProfile(workbench, frameHost, 
       if (!before.available || !['true', 'false'].includes(before.target_value)) throw new Error(`${spec.action}-prestate-unavailable`);
       observation.attempted = true;
       await exerciseOwnedConfigurationFailure(frameHost, spec, async () => {
-        const unchanged = await readInstalledConfigurationAction(frameHost, spec);
-        return unchanged.available && unchanged.target_value === before.target_value;
+        try {
+          const unchanged = await waitForInstalledConfigurationTarget(frameHost, spec, value => value === before.target_value, 10_000);
+          return unchanged.available && unchanged.target_value === before.target_value;
+        } catch { return false; }
       });
       await resetInstalledDashboardBaseline(workbench, frameHost, 30_000);
       await waitForInstalledConfigurationTarget(frameHost, spec, value => value === before.target_value, 30_000);
