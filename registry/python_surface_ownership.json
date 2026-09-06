@@ -1888,7 +1888,7 @@
       "validation_level": "full-suite-and-installed-integration"
     },
     {
-      "bytes": 163044,
+      "bytes": 163298,
       "evidence": [
         "tests/test_bytecode_guard.py",
         "tests/test_certification_readiness.py",
@@ -1903,7 +1903,7 @@
       "packaged": true,
       "path": "runtime/cli.py",
       "role": "installed-runtime",
-      "sha256": "f350407acd6ae108f74eee83186432cf515b42d46a9e4fff3fd95754dda60746",
+      "sha256": "3abe36648444d7fe6a4c9fdb49384f61a8d010d5015d7e8fc3ae71e11419aa7b",
       "syntax_valid": true,
       "validation_level": "evidence-association"
     },
@@ -6827,7 +6827,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 43456,
+      "bytes": 45503,
       "evidence": [
         "tests/test_cli_commands.py"
       ],
@@ -6835,7 +6835,7 @@
       "packaged": true,
       "path": "tests/test_cli_commands.py",
       "role": "release-test",
-      "sha256": "b732865c67c9c1c909fb48d76120f3c5cb7145602c88150c3b3692084b96c5d5",
+      "sha256": "1d600fc9c9c2f0acea27a7b11ec2fdce366fa46438e4797a45fa412a79e5e671",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },

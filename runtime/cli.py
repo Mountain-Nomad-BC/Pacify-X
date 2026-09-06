@@ -268,12 +268,18 @@ def _refresh_stale_groups_for_full_profile(
         final_records = resource_manager.ledger.load()
         newly_unresolved = None
         if baseline_unresolved_ids is not None and isinstance(final_records, list):
+            current_owner_pids = {os.getpid(), os.getppid()}
             newly_unresolved = [
                 record
                 for record in final_records
                 if record.resource_id not in baseline_unresolved_ids
                 and record.classification == "ephemeral"
                 and record.status not in {"reclaimed", "retained"}
+                and not (
+                    record.resource_type == "process"
+                    and record.active
+                    and record.pid in current_owner_pids
+                )
             ]
         nested_resources_valid = (
             not newly_unresolved
