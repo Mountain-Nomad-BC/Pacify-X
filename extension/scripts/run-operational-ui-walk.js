@@ -509,6 +509,7 @@ const knowledgeLifecycleOnly = ownedReversibleConfigurationAuthority && process.
 const coordinationMemoryOnly = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_COORDINATION_MEMORY_ONLY === '1';
 const hostBoundaryOnly = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_HOST_BOUNDARY_ONLY === '1';
 const nativeDialogOnly = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_NATIVE_DIALOG_ONLY === '1';
+const knowledgeGraphOnly = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_KNOWLEDGE_GRAPH_ONLY === '1';
 const pluginLifecycleOnly = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_PLUGIN_LIFECYCLE_ONLY === '1';
 const codexHandoffOnly = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_CODEX_HANDOFF_ONLY === '1';
 const errorIndicatorsOnly = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_ERROR_INDICATORS_ONLY === '1';
@@ -520,7 +521,7 @@ const ERROR_INDICATOR_CONTROL_IDS = new Set([
   'pxui.memory.indicator.queryError',
   'pxui.knowledge-core.indicator.controllerError'
 ]);
-const focusedProfile = configurationOnly ? 'reversible-configuration' : studioLifecycleOnly ? 'studio-lifecycle' : knowledgeLifecycleOnly ? 'knowledge-lifecycle' : coordinationMemoryOnly ? 'coordination-memory' : hostBoundaryOnly ? 'host-boundary' : nativeDialogOnly ? 'native-dialog-boundary' : pluginLifecycleOnly ? 'plugin-lifecycle' : codexHandoffOnly ? 'codex-handoff' : errorIndicatorsOnly ? 'error-indicators' : lateCardRepairOnly ? 'late-card-repair' : catalogPaginationOnly ? 'catalog-pagination' : builderOnly ? 'builder' : workbenchCommandOnly ? 'workbench-command' : null;
+const focusedProfile = configurationOnly ? 'reversible-configuration' : studioLifecycleOnly ? 'studio-lifecycle' : knowledgeLifecycleOnly ? 'knowledge-lifecycle' : coordinationMemoryOnly ? 'coordination-memory' : hostBoundaryOnly ? 'host-boundary' : nativeDialogOnly ? 'native-dialog-boundary' : knowledgeGraphOnly ? 'knowledge-graph' : pluginLifecycleOnly ? 'plugin-lifecycle' : codexHandoffOnly ? 'codex-handoff' : errorIndicatorsOnly ? 'error-indicators' : lateCardRepairOnly ? 'late-card-repair' : catalogPaginationOnly ? 'catalog-pagination' : builderOnly ? 'builder' : workbenchCommandOnly ? 'workbench-command' : null;
 const focusedProfileOnly = Boolean(focusedProfile);
 const postAuditLongRunningAuthority = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_POST_AUDIT_LONG_RUNNING === '1';
 // Long-running operational coverage is not validation authority. Repository
@@ -9114,15 +9115,22 @@ async function runInstalledKnowledgeGraphProfile(frameHost, matrix, timeoutMs = 
     }, viewName)));
     observation.exact_reconstruction = JSON.stringify(observation.after_restart) === JSON.stringify(observation.before_restart);
     if (!observation.exact_reconstruction) throw new Error(`knowledge-graph-projection-substitution:${JSON.stringify({ before: observation.before_restart, after: observation.after_restart })}`);
-    await settleInstalledSurfaceControl(frameHost, {
-      surface: 'knowledgeGraph',
-      selector: '[data-action="graphDeleteSavedView"]',
-      stableSamplesRequired: 2
-    }, Math.min(timeoutMs, 20_000));
     const deleteDeadline = Date.now() + Math.min(timeoutMs, 20_000);
     let deleteReadySamples = 0;
     let lastDeleteIdentity = null;
     do {
+      try {
+        await settleInstalledSurfaceControl(frameHost, {
+          surface: 'knowledgeGraph',
+          selector: '[data-action="graphApplySavedView"]',
+          stableSamplesRequired: 2
+        }, Math.min(5_000, Math.max(1_000, deleteDeadline - Date.now())));
+      } catch (error) {
+        lastDeleteIdentity = { routeSettlementError: String(error?.message || error).slice(0, 1800) };
+        deleteReadySamples = 0;
+        await wait(100);
+        continue;
+      }
       const deleteIdentity = await frameHost.evaluateContent(name => {
         const viewIndex = (state.graphSavedViews || []).findIndex(item => item?.name === name);
         const apply = viewIndex >= 0
@@ -11439,7 +11447,7 @@ async function main() {
     if (ownedReversibleConfigurationAuthority && returnedProfileErrors(reversibleConfigurationProfile).length) {
       dashboardProfileBlocker = 'reversible-configuration';
     }
-    const studioChainAdmitted = ownedReversibleConfigurationAuthority && !configurationOnly && !knowledgeLifecycleOnly && !coordinationMemoryOnly && !hostBoundaryOnly && !nativeDialogOnly && !pluginLifecycleOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly && !catalogPaginationOnly && !builderOnly && !workbenchCommandOnly;
+    const studioChainAdmitted = ownedReversibleConfigurationAuthority && !configurationOnly && !knowledgeLifecycleOnly && !coordinationMemoryOnly && !hostBoundaryOnly && !nativeDialogOnly && !knowledgeGraphOnly && !pluginLifecycleOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly && !catalogPaginationOnly && !builderOnly && !workbenchCommandOnly;
     const studioSetupProfile = studioChainAdmitted
       ? await timedProfile('studio-setup', () => runInstalledStudioSetupProfile(workbench, dashboard, proofMatrix))
       : { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside an owned isolated host.', eligible_control_count: 0, records: [] };
@@ -11494,10 +11502,10 @@ async function main() {
     if (!focusedProfileOnly && !hostSourceMismatch && studioLifecycleCrashProfile.completed !== true && returnedProfileErrors(studioLifecycleCrashProfile).length === 0) {
       recordProfileFailure('studio-lifecycle-crash-recovery', 'returned-incomplete', studioLifecycleCrashProfile.errors?.length ? studioLifecycleCrashProfile.errors : ['profile-incomplete-without-error']);
     }
-    const knowledgeLifecycleProfile = ownedReversibleConfigurationAuthority && !configurationOnly && !studioLifecycleOnly && !coordinationMemoryOnly && !hostBoundaryOnly && !nativeDialogOnly && !pluginLifecycleOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly && !catalogPaginationOnly && !builderOnly && !workbenchCommandOnly
+    const knowledgeLifecycleProfile = ownedReversibleConfigurationAuthority && !configurationOnly && !studioLifecycleOnly && !coordinationMemoryOnly && !hostBoundaryOnly && !nativeDialogOnly && !knowledgeGraphOnly && !pluginLifecycleOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly && !catalogPaginationOnly && !builderOnly && !workbenchCommandOnly
       ? await timedProfile('knowledge-lifecycle', () => runInstalledKnowledgeLifecycleProfile(dashboard, proofMatrix))
       : { schema_version: 'px.installed-knowledge-lifecycle-profile/1.0', authority: 'Not admitted outside an owned isolated host and disposable workspace.', observation: { attempted: false, completed: false, errors: [] }, control_probe: { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside an owned isolated host and disposable workspace.', eligible_control_count: 0, records: [] } };
-    const learningLifecycleProfile = ownedReversibleConfigurationAuthority && !configurationOnly && !studioLifecycleOnly && !coordinationMemoryOnly && !hostBoundaryOnly && !nativeDialogOnly && !pluginLifecycleOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly && !catalogPaginationOnly && !builderOnly && !workbenchCommandOnly
+    const learningLifecycleProfile = ownedReversibleConfigurationAuthority && !configurationOnly && !studioLifecycleOnly && !coordinationMemoryOnly && !hostBoundaryOnly && !nativeDialogOnly && !knowledgeGraphOnly && !pluginLifecycleOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly && !catalogPaginationOnly && !builderOnly && !workbenchCommandOnly
       ? await timedProfile('learning-lifecycle', () => runInstalledLearningLifecycleProfile(dashboard, proofMatrix))
       : { schema_version: 'px.installed-learning-lifecycle-profile/1.0', authority: 'Not admitted outside an owned isolated host and disposable workspace.', observation: { attempted: false, completed: false, errors: [] }, control_probe: { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside an owned isolated host and disposable workspace.', eligible_control_count: 0, records: [] } };
     const coordinationMemoryProfile = ownedReversibleConfigurationAuthority && (!focusedProfileOnly || coordinationMemoryOnly)
@@ -11532,10 +11540,10 @@ async function main() {
       eligible_control_count: hostBoundaryProfile.control_probe.eligible_control_count + enterpriseProfile.control_probe.eligible_control_count + environmentLifecycleProfile.control_probe.eligible_control_count + codexHandoffProfile.control_probe.eligible_control_count + validationProfile.control_probe.eligible_control_count,
       records: [...hostBoundaryProfile.control_probe.records, ...enterpriseProfile.control_probe.records, ...environmentLifecycleProfile.control_probe.records, ...codexHandoffProfile.control_probe.records, ...validationProfile.control_probe.records]
     };
-    const projectsProfile = ownedReversibleConfigurationAuthority && (!focusedProfileOnly || nativeDialogOnly)
+    const projectsProfile = ownedReversibleConfigurationAuthority && (!focusedProfileOnly || nativeDialogOnly || knowledgeGraphOnly)
       ? await timedProfile('projects-map-restart', () => runInstalledProjectsProfile(workbench, dashboard, proofMatrix))
       : { schema_version: 'px.installed-projects-profile/1.0', authority: 'Not admitted outside a full owned isolated host and disposable workspace.', observation: { attempted: false, completed: false, errors: [] }, control_probe: { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside a full owned isolated host and disposable workspace.', eligible_control_count: 0, records: [] } };
-    const knowledgeGraphProfile = ownedReversibleConfigurationAuthority && (!focusedProfileOnly || nativeDialogOnly)
+    const knowledgeGraphProfile = ownedReversibleConfigurationAuthority && (!focusedProfileOnly || nativeDialogOnly || knowledgeGraphOnly)
       ? await timedProfile('knowledge-graph-restart', () => runInstalledKnowledgeGraphProfile(dashboard, proofMatrix))
       : { schema_version: 'px.installed-knowledge-graph-profile/1.0', authority: 'Not admitted outside a full owned isolated host and disposable workspace.', observation: { attempted: false, completed: false, errors: [] }, control_probe: { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside a full owned isolated host and disposable workspace.', eligible_control_count: 0, records: [] } };
     const systemProjectionProfile = ownedReversibleConfigurationAuthority && !focusedProfileOnly

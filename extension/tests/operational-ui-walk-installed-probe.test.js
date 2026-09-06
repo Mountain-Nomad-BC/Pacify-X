@@ -82,7 +82,8 @@ test('Knowledge Graph restart reacquires the exact saved view stably before appl
   const profile = source.slice(source.indexOf('async function runInstalledKnowledgeGraphProfile'), source.indexOf('async function runInstalledSystemProjectionProfile'));
   assert.match(profile, /restartInstalledDashboardWebview[\s\S]*settleInstalledSurfaceControl\(frameHost, \{[\s\S]*surface: 'knowledgeGraph'[\s\S]*selector: '\[data-action="graphApplySavedView"\]'[\s\S]*stableSamplesRequired: 2/);
   assert.match(profile, /stableSavedViewSamples[\s\S]*item\.textContent\.trim\(\) === name && !item\.disabled[\s\S]*stableSavedViewSamples < 2[\s\S]*knowledge-graph-restarted-view-missing/);
-  assert.match(profile, /selector: '\[data-action="graphDeleteSavedView"\]'[\s\S]*state\.graphSavedViews[\s\S]*data-view-index[\s\S]*stateMatches === 1[\s\S]*deleteMatches === true[\s\S]*knowledge-graph-view-delete-unavailable/);
+  assert.match(profile, /const deleteDeadline[\s\S]*do \{[\s\S]*settleInstalledSurfaceControl\(frameHost, \{[\s\S]*surface: 'knowledgeGraph'[\s\S]*selector: '\[data-action="graphApplySavedView"\]'[\s\S]*stableSamplesRequired: 2[\s\S]*const deleteIdentity/);
+  assert.match(profile, /state\.graphSavedViews[\s\S]*data-action="graphDeleteSavedView"\]\[data-view-index="\$\{viewIndex\}"\][\s\S]*stateMatches === 1[\s\S]*deleteMatches === true[\s\S]*knowledge-graph-view-delete-unavailable/);
   assert.match(profile, /remove\.click\(\)[\s\S]*deleteSettledSamples[\s\S]*stateAbsent[\s\S]*domAbsent[\s\S]*deleteSettledSamples >= 2/);
 });
 
@@ -823,11 +824,11 @@ test('focused host-boundary scheduling runs only its exact typed-host profile', 
 test('focused native-dialog scheduling runs the exact confirmation profiles and dependent recovery checks', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   assert.match(source, /PX_OPERATIONAL_NATIVE_DIALOG_ONLY === '1'/);
-  assert.match(source, /nativeDialogOnly \? 'native-dialog-boundary' : pluginLifecycleOnly \? 'plugin-lifecycle' : codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : catalogPaginationOnly \? 'catalog-pagination' : builderOnly \? 'builder' : workbenchCommandOnly \? 'workbench-command' : null/);
+  assert.match(source, /nativeDialogOnly \? 'native-dialog-boundary' : knowledgeGraphOnly \? 'knowledge-graph' : pluginLifecycleOnly \? 'plugin-lifecycle' : codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : catalogPaginationOnly \? 'catalog-pagination' : builderOnly \? 'builder' : workbenchCommandOnly \? 'workbench-command' : null/);
   assert.match(source, /reversibleConfigurationProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| configurationOnly\)/);
   assert.match(source, /enterpriseProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| nativeDialogOnly\)/);
-  assert.match(source, /projectsProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| nativeDialogOnly\)/);
-  assert.match(source, /knowledgeGraphProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| nativeDialogOnly\)/);
+  assert.match(source, /projectsProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| nativeDialogOnly \|\| knowledgeGraphOnly\)/);
+  assert.match(source, /knowledgeGraphProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| nativeDialogOnly \|\| knowledgeGraphOnly\)/);
   assert.match(source, /cleanupProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| nativeDialogOnly\)/);
   assert.match(source, /pluginMutationProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| nativeDialogOnly \|\| pluginLifecycleOnly\)/);
   const studioChainClause = source.slice(source.indexOf('const studioChainAdmitted ='), source.indexOf('\n', source.indexOf('const studioChainAdmitted =')));

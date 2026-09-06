@@ -321,6 +321,40 @@ function focusedProfileIssues(value) {
     if (!complete || (profile?.observation?.errors || []).length) {
       incomplete('focused-host-boundary-incomplete', 'The focused host-boundary journey did not complete every eligible typed host handoff and required recovery stage.', { eligible_control_count: eligible, record_count: records.length, profile_errors: profile?.observation?.errors || [] });
     }
+  } else if (focused === 'knowledge-graph') {
+    const projects = value.projects_profile;
+    const graph = value.knowledge_graph_profile;
+    const projectsObservation = projects?.observation;
+    const graphObservation = graph?.observation;
+    const projectsComplete = completeOwnedProbe(projects)
+      && projectsObservation?.completed === true
+      && projectsObservation?.webview_restarted === true
+      && projectsObservation?.exact_reconstruction === true;
+    const graphComplete = completeOwnedProbe(graph)
+      && graphObservation?.completed === true
+      && graphObservation?.invalid_rejected === true
+      && graphObservation?.saved_view_created === true
+      && graphObservation?.saved_view_applied === true
+      && graphObservation?.saved_view_deleted === true
+      && graphObservation?.webview_restarted === true
+      && graphObservation?.exact_reconstruction === true
+      && graphObservation?.restored === true;
+    if (!projectsComplete || !graphComplete) {
+      incomplete('focused-knowledge-graph-incomplete', 'The focused Knowledge Graph journey did not complete its prerequisite project-map reconstruction and exact saved-view restart, apply, deletion, and restoration contract.', {
+        projects: {
+          complete: projectsComplete,
+          eligible_control_count: Number(projects?.control_probe?.eligible_control_count || 0),
+          record_count: Array.isArray(projects?.control_probe?.records) ? projects.control_probe.records.length : 0,
+          errors: projectsObservation?.errors || []
+        },
+        knowledge_graph: {
+          complete: graphComplete,
+          eligible_control_count: Number(graph?.control_probe?.eligible_control_count || 0),
+          record_count: Array.isArray(graph?.control_probe?.records) ? graph.control_probe.records.length : 0,
+          errors: graphObservation?.errors || []
+        }
+      });
+    }
   } else if (focused === 'native-dialog-boundary') {
     const cleanup = value.cleanup_recycle_profile;
     const cleanupRecords = Array.isArray(cleanup?.control_probe?.records) ? cleanup.control_probe.records : [];

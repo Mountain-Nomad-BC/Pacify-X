@@ -177,6 +177,44 @@ test('focused host-boundary completion fails closed on a missing rendered action
   assert.ok(status.issues.some(item => item.code === 'focused-host-boundary-incomplete'));
 });
 
+test('focused Knowledge Graph completion requires exact project reconstruction and saved-view restoration', () => {
+  const receipt = completeReceipt();
+  receipt.focused_profile = 'knowledge-graph';
+  receipt.control_chains.controls.forEach(control => { control.attempted = false; });
+  receipt.control_chains.aggregates.complete_interaction_chains = 0;
+  const stages = ['open_load', 'display', 'user_edit_action', 'input_validation', 'authorization', 'backend_dispatch', 'runtime_effect', 'progress_reporting', 'result_acknowledgement', 'persistence', 'reload_reopen', 'failure_handling', 'recovery_rollback'];
+  const completeProfile = (controlId, observation) => ({
+    observation: { ...observation, errors: [] },
+    control_probe: {
+      eligible_control_count: 1,
+      records: [{ control_id: controlId, rendered: true, attempted: true, errors: [], interaction_chain: Object.fromEntries(stages.map(stage => [stage, { state: 'present' }])) }]
+    }
+  });
+  receipt.projects_profile = completeProfile('pxui.projects.action.buildRepositoryGraph', {
+    completed: true, webview_restarted: true, exact_reconstruction: true
+  });
+  receipt.knowledge_graph_profile = completeProfile('pxui.knowledge-graph.action.graphDeleteSavedView.row', {
+    completed: true,
+    invalid_rejected: true,
+    saved_view_created: true,
+    saved_view_applied: true,
+    saved_view_deleted: true,
+    webview_restarted: true,
+    exact_reconstruction: true,
+    restored: true
+  });
+  const completed = evaluateOperationalWalk(receipt);
+  assert.equal(completed.terminal_state, 'completed');
+  assert.equal(completed.scope_complete, true);
+  assert.equal(completed.operationally_complete, false);
+  assert.equal(completed.evaluated_scope, 'knowledge-graph');
+
+  receipt.knowledge_graph_profile.observation.saved_view_deleted = false;
+  const failed = evaluateOperationalWalk(receipt);
+  assert.equal(failed.terminal_state, 'incomplete');
+  assert.ok(failed.issues.some(item => item.code === 'focused-knowledge-graph-incomplete'));
+});
+
 test('focused native-dialog completion requires its exact five-profile denominator', () => {
   const receipt = completeReceipt();
   receipt.focused_profile = 'native-dialog-boundary';

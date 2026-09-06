@@ -484,14 +484,25 @@ test('launcher exposes an exact native-dialog-only mode without unrelated fixtur
   assert.match(source, /native_input_helper_pid/);
   assert.match(source, /PX_OWNED_NATIVE_INPUT_SECRET: config\.nativeInputSecret/);
   assert.match(source, /native_input_helper_termination_verified/);
-  assert.match(source, /nativeDialogOnly \? 'native-dialog-boundary' : pluginLifecycleOnly \? 'plugin-lifecycle' : codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : catalogPaginationOnly \? 'catalog-pagination' : builderOnly \? 'builder' : workbenchCommandOnly \? 'workbench-command' : null/);
+  assert.match(source, /nativeDialogOnly \? 'native-dialog-boundary' : knowledgeGraphOnly \? 'knowledge-graph' : pluginLifecycleOnly \? 'plugin-lifecycle' : codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : catalogPaginationOnly \? 'catalog-pagination' : builderOnly \? 'builder' : workbenchCommandOnly \? 'workbench-command' : null/);
   assert.match(source, /focused-launcher-modes-are-mutually-exclusive/);
-  assert.match(source, /postAuditLongRunning && \(bootstrapOnly \|\| configurationOnly \|\| studioLifecycleOnly \|\| knowledgeLifecycleOnly \|\| coordinationMemoryOnly \|\| hostBoundaryOnly \|\| nativeDialogOnly \|\| pluginLifecycleOnly \|\| codexHandoffOnly \|\| errorIndicatorsOnly \|\| lateCardRepairOnly \|\| catalogPaginationOnly \|\| builderOnly \|\| workbenchCommandOnly\)/);
-  assert.match(source, /!config\.hostBoundaryOnly && !config\.nativeDialogOnly[\s\S]*PX_OPERATIONAL_EXERCISE_STUDIO_APPROVAL/);
-  assert.match(source, /studioLifecycleOnly \|\| nativeDialogOnly \|\| pluginLifecycleOnly \|\| codexHandoffOnly \|\| catalogPaginationOnly \|\| builderOnly \|\| workbenchCommandOnly \? null : stageOwnedKnowledgeFixture/);
-  assert.match(source, /prepare\(temporaryRoot, walkOutput, vsixPath, bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly, coordinationMemoryOnly, hostBoundaryOnly, nativeDialogOnly, pluginLifecycleOnly, codexHandoffOnly, errorIndicatorsOnly, lateCardRepairOnly, catalogPaginationOnly, builderOnly, workbenchCommandOnly, postAuditLongRunning\)/);
+  assert.match(source, /postAuditLongRunning && \(bootstrapOnly \|\| configurationOnly \|\| studioLifecycleOnly \|\| knowledgeLifecycleOnly \|\| coordinationMemoryOnly \|\| hostBoundaryOnly \|\| nativeDialogOnly \|\| knowledgeGraphOnly \|\| pluginLifecycleOnly \|\| codexHandoffOnly \|\| errorIndicatorsOnly \|\| lateCardRepairOnly \|\| catalogPaginationOnly \|\| builderOnly \|\| workbenchCommandOnly\)/);
+  assert.match(source, /!config\.hostBoundaryOnly && !config\.nativeDialogOnly && !config\.knowledgeGraphOnly[\s\S]*PX_OPERATIONAL_EXERCISE_STUDIO_APPROVAL/);
+  assert.match(source, /studioLifecycleOnly \|\| nativeDialogOnly \|\| knowledgeGraphOnly \|\| pluginLifecycleOnly \|\| codexHandoffOnly \|\| catalogPaginationOnly \|\| builderOnly \|\| workbenchCommandOnly \? null : stageOwnedKnowledgeFixture/);
+  assert.match(source, /prepare\(temporaryRoot, walkOutput, vsixPath, bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly, coordinationMemoryOnly, hostBoundaryOnly, nativeDialogOnly, knowledgeGraphOnly, pluginLifecycleOnly, codexHandoffOnly, errorIndicatorsOnly, lateCardRepairOnly, catalogPaginationOnly, builderOnly, workbenchCommandOnly, postAuditLongRunning\)/);
   assert.match(source, /full_operational_completion_claimed: focusedProfile \? false/);
   assert.match(source, /timeoutMs: postAuditLongRunning \? 3_600_000 : 1_800_000/);
+});
+
+test('launcher exposes a Knowledge-Graph-only focused mode with isolated native prerequisites', () => {
+  const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-isolated-current-source-walk.js'), 'utf8');
+  assert.match(source, /process\.argv\.includes\('--knowledge-graph-only'\)/);
+  assert.match(source, /PX_OPERATIONAL_KNOWLEDGE_GRAPH_ONLY: '1'/);
+  assert.match(source, /knowledgeGraphOnly \? 'knowledge-graph'/);
+  assert.match(source, /nativeInputRequired = studioLifecycleOnly \|\| nativeDialogOnly \|\| knowledgeGraphOnly/);
+  assert.match(source, /nativeDialogOnly, knowledgeGraphOnly, pluginLifecycleOnly/);
+  assert.match(source, /--knowledge-graph-only/);
+  assert.match(source, /full_operational_completion_claimed: focusedProfile \? false/);
 });
 
 test('launcher exposes an exact plugin-lifecycle-only repair proof', () => {
@@ -499,7 +510,7 @@ test('launcher exposes an exact plugin-lifecycle-only repair proof', () => {
   assert.match(source, /process\.argv\.includes\('--plugin-lifecycle-only'\)/);
   assert.match(source, /PX_OPERATIONAL_PLUGIN_LIFECYCLE_ONLY: '1'/);
   assert.match(source, /pluginLifecycleOnly \? 'plugin-lifecycle'/);
-  assert.match(source, /studioLifecycleOnly \|\| nativeDialogOnly \|\| pluginLifecycleOnly \|\| postAuditLongRunning \|\| fullOperationalWalk/);
+  assert.match(source, /studioLifecycleOnly \|\| nativeDialogOnly \|\| knowledgeGraphOnly \|\| pluginLifecycleOnly \|\| postAuditLongRunning \|\| fullOperationalWalk/);
   assert.match(source, /full_operational_completion_claimed: focusedProfile \? false/);
 });
 
@@ -509,10 +520,10 @@ test('launcher exposes an exact Codex-handoff-only mode without unrelated fixtur
   assert.match(source, /PX_OPERATIONAL_CODEX_HANDOFF_ONLY: '1'/);
   assert.match(source, /pluginLifecycleOnly \? 'plugin-lifecycle' : codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : catalogPaginationOnly \? 'catalog-pagination' : builderOnly \? 'builder' : workbenchCommandOnly \? 'workbench-command' : null/);
   assert.match(source, /focused-launcher-modes-are-mutually-exclusive/);
-  assert.match(source, /postAuditLongRunning && \(bootstrapOnly \|\| configurationOnly \|\| studioLifecycleOnly \|\| knowledgeLifecycleOnly \|\| coordinationMemoryOnly \|\| hostBoundaryOnly \|\| nativeDialogOnly \|\| pluginLifecycleOnly \|\| codexHandoffOnly \|\| errorIndicatorsOnly \|\| lateCardRepairOnly \|\| catalogPaginationOnly \|\| builderOnly \|\| workbenchCommandOnly\)/);
-  assert.match(source, /!config\.nativeDialogOnly && !config\.pluginLifecycleOnly && !config\.codexHandoffOnly[\s\S]*PX_OPERATIONAL_EXERCISE_STUDIO_APPROVAL/);
-  assert.match(source, /studioLifecycleOnly \|\| nativeDialogOnly \|\| pluginLifecycleOnly \|\| codexHandoffOnly \|\| catalogPaginationOnly \|\| builderOnly \|\| workbenchCommandOnly \? null : stageOwnedKnowledgeFixture/);
-  assert.match(source, /prepare\(temporaryRoot, walkOutput, vsixPath, bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly, coordinationMemoryOnly, hostBoundaryOnly, nativeDialogOnly, pluginLifecycleOnly, codexHandoffOnly, errorIndicatorsOnly, lateCardRepairOnly, catalogPaginationOnly, builderOnly, workbenchCommandOnly, postAuditLongRunning\)/);
+  assert.match(source, /postAuditLongRunning && \(bootstrapOnly \|\| configurationOnly \|\| studioLifecycleOnly \|\| knowledgeLifecycleOnly \|\| coordinationMemoryOnly \|\| hostBoundaryOnly \|\| nativeDialogOnly \|\| knowledgeGraphOnly \|\| pluginLifecycleOnly \|\| codexHandoffOnly \|\| errorIndicatorsOnly \|\| lateCardRepairOnly \|\| catalogPaginationOnly \|\| builderOnly \|\| workbenchCommandOnly\)/);
+  assert.match(source, /!config\.nativeDialogOnly && !config\.knowledgeGraphOnly && !config\.pluginLifecycleOnly && !config\.codexHandoffOnly[\s\S]*PX_OPERATIONAL_EXERCISE_STUDIO_APPROVAL/);
+  assert.match(source, /studioLifecycleOnly \|\| nativeDialogOnly \|\| knowledgeGraphOnly \|\| pluginLifecycleOnly \|\| codexHandoffOnly \|\| catalogPaginationOnly \|\| builderOnly \|\| workbenchCommandOnly \? null : stageOwnedKnowledgeFixture/);
+  assert.match(source, /prepare\(temporaryRoot, walkOutput, vsixPath, bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly, coordinationMemoryOnly, hostBoundaryOnly, nativeDialogOnly, knowledgeGraphOnly, pluginLifecycleOnly, codexHandoffOnly, errorIndicatorsOnly, lateCardRepairOnly, catalogPaginationOnly, builderOnly, workbenchCommandOnly, postAuditLongRunning\)/);
   assert.match(source, /--codex-handoff-only/);
   assert.match(source, /full_operational_completion_claimed: focusedProfile \? false/);
 });
@@ -522,10 +533,10 @@ test('launcher exposes an exact error-indicators-only mode without unrelated sta
   assert.match(source, /process\.argv\.includes\('--error-indicators-only'\)/);
   assert.match(source, /PX_OPERATIONAL_ERROR_INDICATORS_ONLY: '1'/);
   assert.match(source, /errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : catalogPaginationOnly \? 'catalog-pagination' : builderOnly \? 'builder' : workbenchCommandOnly \? 'workbench-command' : null/);
-  assert.match(source, /\[bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly, coordinationMemoryOnly, hostBoundaryOnly, nativeDialogOnly, pluginLifecycleOnly, codexHandoffOnly, errorIndicatorsOnly, lateCardRepairOnly, catalogPaginationOnly, builderOnly, workbenchCommandOnly\]/);
-  assert.match(source, /postAuditLongRunning && \(bootstrapOnly \|\| configurationOnly \|\| studioLifecycleOnly \|\| knowledgeLifecycleOnly \|\| coordinationMemoryOnly \|\| hostBoundaryOnly \|\| nativeDialogOnly \|\| pluginLifecycleOnly \|\| codexHandoffOnly \|\| errorIndicatorsOnly \|\| lateCardRepairOnly \|\| catalogPaginationOnly \|\| builderOnly \|\| workbenchCommandOnly\)/);
+  assert.match(source, /\[bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly, coordinationMemoryOnly, hostBoundaryOnly, nativeDialogOnly, knowledgeGraphOnly, pluginLifecycleOnly, codexHandoffOnly, errorIndicatorsOnly, lateCardRepairOnly, catalogPaginationOnly, builderOnly, workbenchCommandOnly\]/);
+  assert.match(source, /postAuditLongRunning && \(bootstrapOnly \|\| configurationOnly \|\| studioLifecycleOnly \|\| knowledgeLifecycleOnly \|\| coordinationMemoryOnly \|\| hostBoundaryOnly \|\| nativeDialogOnly \|\| knowledgeGraphOnly \|\| pluginLifecycleOnly \|\| codexHandoffOnly \|\| errorIndicatorsOnly \|\| lateCardRepairOnly \|\| catalogPaginationOnly \|\| builderOnly \|\| workbenchCommandOnly\)/);
   assert.match(source, /!config\.codexHandoffOnly && !config\.errorIndicatorsOnly[\s\S]*PX_OPERATIONAL_EXERCISE_STUDIO_APPROVAL/);
-  assert.match(source, /prepare\(temporaryRoot, walkOutput, vsixPath, bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly, coordinationMemoryOnly, hostBoundaryOnly, nativeDialogOnly, pluginLifecycleOnly, codexHandoffOnly, errorIndicatorsOnly, lateCardRepairOnly, catalogPaginationOnly, builderOnly, workbenchCommandOnly, postAuditLongRunning\)/);
+  assert.match(source, /prepare\(temporaryRoot, walkOutput, vsixPath, bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly, coordinationMemoryOnly, hostBoundaryOnly, nativeDialogOnly, knowledgeGraphOnly, pluginLifecycleOnly, codexHandoffOnly, errorIndicatorsOnly, lateCardRepairOnly, catalogPaginationOnly, builderOnly, workbenchCommandOnly, postAuditLongRunning\)/);
   assert.match(source, /--error-indicators-only/);
   assert.match(source, /full_operational_completion_claimed: focusedProfile \? false/);
 });
@@ -599,7 +610,7 @@ test('owned provider pagination fixture fails closed and changes only a disposab
 test('full current-source walks stage the certified disposable host-boundary fixture before launch', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-isolated-current-source-walk.js'), 'utf8');
   const prepare = source.slice(source.indexOf('function prepare('), source.indexOf('function reconcilePrelaunchFailure'));
-  assert.match(prepare, /hostBoundaryFixtureRequired = hostBoundaryOnly \|\| \(!bootstrapOnly && !configurationOnly && !studioLifecycleOnly && !knowledgeLifecycleOnly && !coordinationMemoryOnly && !nativeDialogOnly && !pluginLifecycleOnly && !catalogPaginationOnly && !builderOnly && !workbenchCommandOnly\)/);
+  assert.match(prepare, /hostBoundaryFixtureRequired = hostBoundaryOnly \|\| \(!bootstrapOnly && !configurationOnly && !studioLifecycleOnly && !knowledgeLifecycleOnly && !coordinationMemoryOnly && !nativeDialogOnly && !knowledgeGraphOnly && !pluginLifecycleOnly && !catalogPaginationOnly && !builderOnly && !workbenchCommandOnly\)/);
   assert.match(prepare, /'pacifyX\.workspaceRoot': hostBoundaryFixtureRequired \? config\.workspace : ''/);
   assert.match(prepare, /config\.hostBoundaryFixture = hostBoundaryFixtureRequired \? stageOwnedHostBoundaryFixture/);
   assert.match(prepare, /config\.gitAuthority = fullOperationalWalk \? stageOwnedGitAuthority\(config\.workspace\) : null/);
@@ -687,7 +698,7 @@ test('launcher exposes a bounded late-card repair mode without full-walk or nati
   assert.match(source, /PX_OPERATIONAL_LATE_CARD_REPAIR_ONLY: '1'/);
   assert.match(source, /lateCardRepairOnly \? 'late-card-repair'/);
   assert.match(source, /fullOperationalWalk =[\s\S]*!lateCardRepairOnly/);
-  assert.match(source, /nativeInputRequired = studioLifecycleOnly \|\| nativeDialogOnly \|\| pluginLifecycleOnly \|\| postAuditLongRunning \|\| fullOperationalWalk/);
+  assert.match(source, /nativeInputRequired = studioLifecycleOnly \|\| nativeDialogOnly \|\| knowledgeGraphOnly \|\| pluginLifecycleOnly \|\| postAuditLongRunning \|\| fullOperationalWalk/);
   assert.match(source, /full_operational_completion_claimed: focusedProfile \? false/);
 });
 
@@ -718,13 +729,13 @@ test('launcher requires explicit full-profile authority for post-audit long-runn
   assert.match(source, /PX_OPERATIONAL_POST_AUDIT_LONG_RUNNING: '1'/);
   assert.match(source, /post-audit-long-running-requires-full-profile/);
   assert.match(source, /post_audit_long_running_authority: postAuditLongRunning/);
-  assert.match(source, /prepare\(temporaryRoot, walkOutput, vsixPath, bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly, coordinationMemoryOnly, hostBoundaryOnly, nativeDialogOnly, pluginLifecycleOnly, codexHandoffOnly, errorIndicatorsOnly, lateCardRepairOnly, catalogPaginationOnly, builderOnly, workbenchCommandOnly, postAuditLongRunning\)/);
+  assert.match(source, /prepare\(temporaryRoot, walkOutput, vsixPath, bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly, coordinationMemoryOnly, hostBoundaryOnly, nativeDialogOnly, knowledgeGraphOnly, pluginLifecycleOnly, codexHandoffOnly, errorIndicatorsOnly, lateCardRepairOnly, catalogPaginationOnly, builderOnly, workbenchCommandOnly, postAuditLongRunning\)/);
   assert.match(source, /timeoutMs: postAuditLongRunning \? 3_600_000 : 1_800_000/);
   assert.match(source, /workerExitVerified: run\?\.receipt\?\.worker_exit_verified \?\? lifecycle\?\.worker_exit_verified/);
   assert.match(source, /partial_profile_progress: child\?\.walk_receipt \? null : retainedProfileProgress\(walkOutput\)/);
   assert.match(source, /partial_host_progress: child\?\.walk_receipt \? null : retainedHostProgress\(walkOutput\)/);
   assert.match(source, /const nativeInputRequired = config\.nativeInputRequired === true/);
-  assert.match(source, /const nativeInputRequired = studioLifecycleOnly \|\| nativeDialogOnly \|\| pluginLifecycleOnly \|\| postAuditLongRunning \|\| fullOperationalWalk/);
+  assert.match(source, /const nativeInputRequired = studioLifecycleOnly \|\| nativeDialogOnly \|\| knowledgeGraphOnly \|\| pluginLifecycleOnly \|\| postAuditLongRunning \|\| fullOperationalWalk/);
   assert.match(source, /nativeInputRequired,/);
   assert.match(source, /nativeInputRequired \? \{[\s\S]*PX_OWNED_NATIVE_INPUT_SECRET: config\.nativeInputSecret/);
   assert.match(source, /nativeInputRequired \? resolveOwnedCachedVSCode/);
@@ -735,6 +746,6 @@ test('ordinary full operational walks start the owned native input helper used b
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-isolated-current-source-walk.js'), 'utf8');
   const prepareSource = source.slice(source.indexOf('function prepare('), source.indexOf('function stageOwnedGitAuthority'));
   assert.match(prepareSource, /fullOperationalWalk/);
-  assert.match(prepareSource, /nativeDialogOnly \|\| pluginLifecycleOnly \|\| postAuditLongRunning \|\| fullOperationalWalk/);
+  assert.match(prepareSource, /nativeDialogOnly \|\| knowledgeGraphOnly \|\| pluginLifecycleOnly \|\| postAuditLongRunning \|\| fullOperationalWalk/);
   assert.match(prepareSource, /nativeInputSecret: nativeInputRequired \? crypto\.randomBytes\(32\)\.toString\('hex'\) : null/);
 });
