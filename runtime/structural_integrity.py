@@ -159,19 +159,23 @@ def _sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def _is_committed_wal(parts: tuple[str, ...]) -> bool:
+    """Recognize committed custody below any engineering-bootstrap WAL owner."""
+    if not parts or parts[0] != ".engineering-bootstrap":
+        return False
+    try:
+        wal_index = parts.index("wal", 1)
+    except ValueError:
+        return False
+    return "committed" in parts[wal_index + 1 :]
+
+
 def _is_inactive_derived_path(path: Path, root: Path) -> bool:
     """Exclude retained custody and versioned map projections from source audits."""
     if not is_project_source(path, root):
         return True
     parts = path.relative_to(root).parts
-    if (
-        parts
-        and parts[0] == ".engineering-bootstrap"
-        and any(
-            parts[index : index + 2] == ("wal", "committed")
-            for index in range(1, len(parts) - 1)
-        )
-    ):
+    if _is_committed_wal(parts):
         return True
     return len(parts) >= 2 and parts[0] == ".engineering-bootstrap" and parts[1] in {
         "environment",
@@ -191,13 +195,7 @@ def _exclude_structural_path(relative: str) -> bool:
         return False
     if parts[0] == "evidence" or "__pycache__" in parts:
         return True
-    if (
-        parts[0] == ".engineering-bootstrap"
-        and any(
-            parts[index : index + 2] == ("wal", "committed")
-            for index in range(1, len(parts) - 1)
-        )
-    ):
+    if _is_committed_wal(parts):
         return True
     return len(parts) >= 2 and parts[0] == ".engineering-bootstrap" and parts[1] in {
         "environment", "diagnostics", "project-map", "project-map-history",
@@ -457,10 +455,19 @@ def _logic_duplicates(root: Path, files: tuple[Path, ...] | None = None) -> tupl
             for path in paths
         ):
             classification = "json-atomic-write"
-        elif names == {"_load"} and set(paths) == {
-            "scripts/assemble_operational_control_evidence.py",
-            "scripts/build_installed_probe_control_evidence.py",
-        }:
+        elif (
+            names == {"_load"}
+            and set(paths) == {
+                "scripts/assemble_operational_control_evidence.py",
+                "scripts/build_installed_probe_control_evidence.py",
+            }
+        ) or (
+            names == {"_object", "load_object"}
+            and set(paths) == {
+                "scripts/run_installed_operational_owner.py",
+                "scripts/run_release_stage_owner.py",
+            }
+        ):
             classification = "bounded-json-loaders"
         elif names == {"_bounded_operational_progress", "_bounded_progress"} and all(
             path.startswith("runtime/") for path in paths
@@ -480,6 +487,7 @@ def _logic_duplicates(root: Path, files: tuple[Path, ...] | None = None) -> tupl
             "hash_file",
             "_file_sha256",
             "_sha256",
+            "sha256",
             "sha256_file",
         }:
             classification = "digest-adapters"

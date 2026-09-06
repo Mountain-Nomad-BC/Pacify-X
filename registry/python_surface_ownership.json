@@ -1,7 +1,7 @@
 {
   "direct_behavior_count": 63,
   "errors": [],
-  "evidence_association_count": 110,
+  "evidence_association_count": 117,
   "map_current": true,
   "packaged_file_count": 586,
   "python_file_count": 696,
@@ -2187,8 +2187,7 @@
     {
       "bytes": 37983,
       "evidence": [
-        "tests",
-        "tests/test_installed_wheel_e2e.py"
+        "tests/test_structural_integrity.py"
       ],
       "owner": "engineering_bootstrap",
       "packaged": true,
@@ -2196,7 +2195,7 @@
       "role": "installed-runtime",
       "sha256": "62dc66f4c38c118d150c2d2f61f134141276771d6ec11d2843dbbe223fb1882b",
       "syntax_valid": true,
-      "validation_level": "full-suite-and-installed-integration"
+      "validation_level": "evidence-association"
     },
     {
       "bytes": 8541,
@@ -3407,8 +3406,7 @@
     {
       "bytes": 28192,
       "evidence": [
-        "tests",
-        "tests/test_installed_wheel_e2e.py"
+        "tests/test_structural_integrity.py"
       ],
       "owner": "engineering_bootstrap",
       "packaged": true,
@@ -3416,7 +3414,7 @@
       "role": "installed-runtime",
       "sha256": "d2576ff6b7652d0ad2cd8afa1678c84f71bb34adcb1147e2b4ac920285ef81b3",
       "syntax_valid": true,
-      "validation_level": "full-suite-and-installed-integration"
+      "validation_level": "evidence-association"
     },
     {
       "bytes": 4835,
@@ -3671,8 +3669,7 @@
     {
       "bytes": 34672,
       "evidence": [
-        "tests",
-        "tests/test_installed_wheel_e2e.py"
+        "tests/test_structural_integrity.py"
       ],
       "owner": "engineering_bootstrap",
       "packaged": true,
@@ -3680,7 +3677,7 @@
       "role": "installed-runtime",
       "sha256": "59c2a5722b3e7554f0c305bfd72631c99d311f8648442b198a27762823da22de",
       "syntax_valid": true,
-      "validation_level": "full-suite-and-installed-integration"
+      "validation_level": "evidence-association"
     },
     {
       "bytes": 14495,
@@ -3699,7 +3696,8 @@
     {
       "bytes": 137119,
       "evidence": [
-        "tests/test_dependency_audit.py"
+        "tests/test_dependency_audit.py",
+        "tests/test_structural_integrity.py"
       ],
       "owner": "engineering_bootstrap",
       "packaged": true,
@@ -4401,7 +4399,7 @@
       "validation_level": "full-suite-and-installed-integration"
     },
     {
-      "bytes": 37380,
+      "bytes": 37686,
       "evidence": [
         "tests/test_test_profiles.py"
       ],
@@ -4409,7 +4407,7 @@
       "packaged": true,
       "path": "runtime/structural_integrity.py",
       "role": "installed-runtime",
-      "sha256": "e66a682a0725975f49fb81572a338ca00240c102b99139c45e3bc0bf4e6d0f25",
+      "sha256": "58c6fccb34319dba3adf531c4ce4d70d2823253555e509aa0338bd10ebbf270f",
       "syntax_valid": true,
       "validation_level": "evidence-association"
     },
@@ -4776,8 +4774,7 @@
     {
       "bytes": 120190,
       "evidence": [
-        "tests",
-        "tests/test_installed_wheel_e2e.py"
+        "tests/test_structural_integrity.py"
       ],
       "owner": "engineering_bootstrap",
       "packaged": true,
@@ -4785,7 +4782,7 @@
       "role": "installed-runtime",
       "sha256": "7a70fa48ca939b7db77bfec9b45c42ce2f276378c793feb4eb4822fbd861b5ed",
       "syntax_valid": true,
-      "validation_level": "full-suite-and-installed-integration"
+      "validation_level": "evidence-association"
     },
     {
       "bytes": 8112,
@@ -4832,8 +4829,7 @@
     {
       "bytes": 8430,
       "evidence": [
-        "structural AST validation",
-        "project-management release boundary"
+        "tests/test_structural_integrity.py"
       ],
       "owner": "project-release-control",
       "packaged": false,
@@ -4841,7 +4837,7 @@
       "role": "source-build-control",
       "sha256": "84096e67956df0359d14fd6463508ba9efa20336715c5774b6c6da8ec48658e0",
       "syntax_valid": true,
-      "validation_level": "source-only-structural"
+      "validation_level": "evidence-association"
     },
     {
       "bytes": 12658,
@@ -5677,8 +5673,7 @@
     {
       "bytes": 10993,
       "evidence": [
-        "structural AST validation",
-        "project-management release boundary"
+        "tests/test_structural_integrity.py"
       ],
       "owner": "project-release-control",
       "packaged": false,
@@ -5686,7 +5681,7 @@
       "role": "source-build-control",
       "sha256": "c57bfde8d3d53dfbdbdfa87aee5f0f2c19d5f6c5600b99210cbd43a726725303",
       "syntax_valid": true,
-      "validation_level": "source-only-structural"
+      "validation_level": "evidence-association"
     },
     {
       "bytes": 11394,
@@ -6122,7 +6117,8 @@
     {
       "bytes": 33468,
       "evidence": [
-        "tests/test_effect_surface.py"
+        "tests/test_effect_surface.py",
+        "tests/test_structural_integrity.py"
       ],
       "owner": "project-release-control",
       "packaged": false,
@@ -6135,8 +6131,7 @@
     {
       "bytes": 49160,
       "evidence": [
-        "structural AST validation",
-        "project-management release boundary"
+        "tests/test_structural_integrity.py"
       ],
       "owner": "project-release-control",
       "packaged": false,
@@ -6144,7 +6139,7 @@
       "role": "source-build-control",
       "sha256": "435a1ff35896774e31febb3b9e076ce2ce7e72fad7e8edc10f6163f8bb46927b",
       "syntax_valid": true,
-      "validation_level": "source-only-structural"
+      "validation_level": "evidence-association"
     },
     {
       "bytes": 5289,
@@ -6161,15 +6156,16 @@
       "validation_level": "source-only-structural"
     },
     {
-      "bytes": 46938,
+      "bytes": 48832,
       "evidence": [
-        "tests/test_effect_surface.py"
+        "tests/test_effect_surface.py",
+        "tests/test_structural_integrity.py"
       ],
       "owner": "project-release-control",
       "packaged": false,
       "path": "scripts/run_release_stage_owner.py",
       "role": "source-build-control",
-      "sha256": "9de5584f540ee7f841337449e346d14a7b9486b5369ac2aa739a523816dfbf60",
+      "sha256": "e3dc544faf609adf05b13642bbdc7da910d4debd743c3b397db860dfb4ab4b7a",
       "syntax_valid": true,
       "validation_level": "evidence-association"
     },
@@ -6219,7 +6215,8 @@
       "bytes": 15194,
       "evidence": [
         "tests/test_effect_surface.py",
-        "tests/test_public_repository_surface.py"
+        "tests/test_public_repository_surface.py",
+        "tests/test_structural_integrity.py"
       ],
       "owner": "project-release-control",
       "packaged": false,
@@ -7011,7 +7008,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 6439,
+      "bytes": 6659,
       "evidence": [
         "tests/test_corrective_release.py"
       ],
@@ -7019,7 +7016,7 @@
       "packaged": true,
       "path": "tests/test_corrective_release.py",
       "role": "release-test",
-      "sha256": "a340cccad4011d8e1447d3bb46296caf183b8470e71f17a4598da8943dc8982c",
+      "sha256": "91feaa1e9622284a5121e55350057a377ae3e186fd3f0eb30ee397c4a6a9efc7",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },
@@ -8454,7 +8451,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 2651,
+      "bytes": 2752,
       "evidence": [
         "tests/test_rel009_release.py"
       ],
@@ -8462,7 +8459,7 @@
       "packaged": true,
       "path": "tests/test_rel009_release.py",
       "role": "release-test",
-      "sha256": "5a8cf522b6871697efeea4415822dfd157a2bce06fa9ce9c962d85e8f4f42d59",
+      "sha256": "0e357ee2d8d233961c54af25265f0de30e46e30e50e4e6d58b629e0f69d16b75",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },
@@ -8688,7 +8685,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 17803,
+      "bytes": 19022,
       "evidence": [
         "tests/test_release_stage_owner.py"
       ],
@@ -8696,7 +8693,7 @@
       "packaged": true,
       "path": "tests/test_release_stage_owner.py",
       "role": "release-test",
-      "sha256": "7e2a9a0308091f691faf19b8b5cd494ac0a3bdf51775e7e945657e45409d0fa8",
+      "sha256": "67080675c0bef39ec34ccfc6e12650d75bd516fbf43785df247389f87d04630a",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },
@@ -9117,7 +9114,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 10119,
+      "bytes": 11742,
       "evidence": [
         "tests/test_structural_integrity.py"
       ],
@@ -9125,7 +9122,7 @@
       "packaged": true,
       "path": "tests/test_structural_integrity.py",
       "role": "release-test",
-      "sha256": "dc26ae42a4faa8c8dbe2f8488505972cb3d0817efe14991800f2cc6854d3a309",
+      "sha256": "54634499cae07f76be0a9bae28a714d019bb891590aaa777197a1cc5a0068ed2",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },
@@ -9442,15 +9439,15 @@
     "source-example": 1
   },
   "schema_version": "1.0",
-  "source_only_structural_count": 86,
+  "source_only_structural_count": 83,
   "syntax_valid_count": 696,
   "valid": true,
   "validation_counts": {
     "direct-isolated-behavior": 63,
-    "evidence-association": 110,
+    "evidence-association": 117,
     "executable-test": 245,
-    "full-suite-and-installed-integration": 190,
-    "source-only-structural": 86,
+    "full-suite-and-installed-integration": 186,
+    "source-only-structural": 83,
     "unvalidated": 2
   }
 }

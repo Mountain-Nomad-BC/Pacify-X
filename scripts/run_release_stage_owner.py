@@ -9,6 +9,7 @@ import json
 import os
 from pathlib import Path, PurePosixPath
 import re
+import signal
 import stat
 import subprocess
 import sys
@@ -424,11 +425,18 @@ class ProductionEffects:
         value["phase"] = after
         atomic_json(path, value)
 
-    def command(self, config: Config, name: str, argv: list[str]) -> dict[str, Any]:
+    def command(
+        self,
+        config: Config,
+        name: str,
+        argv: list[str],
+        *,
+        timeout_seconds: int,
+    ) -> dict[str, Any]:
         config.log_dir.mkdir(parents=True, exist_ok=True)
         log = config.log_dir / f"{config.candidate_id}-{name}.log"
         with log.open("x", encoding="utf-8", newline="\n") as stream:
-            result = subprocess.run(
+            process = subprocess.Popen(
                 argv,
                 cwd=config.root,
                 stdout=stream,
@@ -437,12 +445,48 @@ class ProductionEffects:
                 encoding="utf-8",
                 errors="replace",
                 shell=False,
-                check=False,
-                timeout=1800,
+                start_new_session=os.name != "nt",
                 env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
             )
-        if result.returncode:
-            raise OwnerBlocked(f"{name} exited {result.returncode}")
+            try:
+                returncode = process.wait(timeout=timeout_seconds)
+            except subprocess.TimeoutExpired as error:
+                if os.name == "nt":
+                    cleanup = subprocess.run(
+                        ["taskkill", "/PID", str(process.pid), "/T", "/F"],
+                        capture_output=True,
+                        text=True,
+                        encoding="utf-8",
+                        errors="replace",
+                        shell=False,
+                        check=False,
+                        timeout=30,
+                    )
+                    if cleanup.returncode not in {0, 128} and process.poll() is None:
+                        raise OwnerBlocked(
+                            f"{name} timed out and its process tree did not close"
+                        ) from error
+                else:
+                    os.killpg(process.pid, signal.SIGTERM)
+                try:
+                    process.wait(timeout=10)
+                except subprocess.TimeoutExpired:
+                    if os.name == "nt":
+                        subprocess.run(
+                            ["taskkill", "/PID", str(process.pid), "/T", "/F"],
+                            capture_output=True,
+                            shell=False,
+                            check=False,
+                            timeout=30,
+                        )
+                    else:
+                        os.killpg(process.pid, signal.SIGKILL)
+                    process.wait(timeout=10)
+                raise OwnerBlocked(
+                    f"{name} timed out after {timeout_seconds} seconds"
+                ) from error
+        if returncode:
+            raise OwnerBlocked(f"{name} exited {returncode}")
         return {
             "path": config.relative(log),
             "sha256": sha256(log),
@@ -918,6 +962,7 @@ class ProductionEffects:
                             "run",
                             name,
                         ],
+                        timeout_seconds=900,
                     )
                     for name in stale
                 ]
@@ -964,7 +1009,10 @@ class ProductionEffects:
                 else ["validate"]
             )
             log = self.command(
-                config, step, [sys.executable, "-B", "-m", "runtime.cli", *action]
+                config,
+                step,
+                [sys.executable, "-B", "-m", "runtime.cli", *action],
+                timeout_seconds=3000 if step == "full_profile" else 900,
             )
             current = release(config)
             kernel = current.get("identity", {})

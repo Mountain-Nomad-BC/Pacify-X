@@ -52,16 +52,20 @@ def test_historical_corrective_release_stays_closed_after_intake_validation():
     assert state["lifecycle"]["status"] in {
         "integration-complete",
         "repair-in-progress",
+        "downstream-green-release-pending",
     }
     assert result["valid"], result["errors"]
     if state["lifecycle"]["status"] == "integration-complete":
         assert state["checkpoint"]["next_safe_action"].startswith(
             "preserve the validated development tree"
         )
-    else:
+    elif state["lifecycle"]["status"] == "repair-in-progress":
         active_card = state["work"]["active_punch_card"]
         assert active_card
         assert active_card in state["checkpoint"]["next_safe_action"]
+    else:
+        assert state["work"]["active_punch_card"] is None
+        assert state["checkpoint"]["next_safe_action"]
     assert any(
         "REL-013 closed after two matching 4,030-file" in fact
         for fact in state["knowledge"]["facts"]

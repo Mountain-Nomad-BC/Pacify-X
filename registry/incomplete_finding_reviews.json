@@ -470,6 +470,116 @@
       "rationale": "The inner lock acquisition must fail; the pass body makes an unexpected acquisition observable through the unchanged false rejection flag.",
       "owner": "operational-gap-ledger-benchmark",
       "review_condition": "review whenever the benchmark lock-contention probe changes"
+    },
+    {
+      "id": "87b9982cccbe116e5092",
+      "path": "scripts/run_installed_operational_owner.py",
+      "line": 152,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "rationale": "The ellipsis declares the bounded running-process Protocol wait method implemented by the supervised process wrapper.",
+      "owner": "installed-operational-owner",
+      "review_condition": "review whenever installed operational process supervision changes"
+    },
+    {
+      "id": "e1496fd26676cfa404e5",
+      "path": "scripts/run_installed_operational_owner.py",
+      "line": 156,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "rationale": "The ellipsis declares the installed operational Effects claim contract implemented by production and test effects.",
+      "owner": "installed-operational-owner",
+      "review_condition": "review whenever the Effects protocol changes"
+    },
+    {
+      "id": "24ef9bb53dd52bd74f07",
+      "path": "scripts/run_installed_operational_owner.py",
+      "line": 157,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "rationale": "The ellipsis declares the installed operational Effects finish contract implemented by production and test effects.",
+      "owner": "installed-operational-owner",
+      "review_condition": "review whenever the Effects protocol changes"
+    },
+    {
+      "id": "49a973e8c29e63132c34",
+      "path": "scripts/run_installed_operational_owner.py",
+      "line": 158,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "rationale": "The ellipsis declares the installed operational Effects phase-advance contract implemented by production and test effects.",
+      "owner": "installed-operational-owner",
+      "review_condition": "review whenever the Effects protocol changes"
+    },
+    {
+      "id": "8f9eb5bbcb281c2ec668",
+      "path": "scripts/run_installed_operational_owner.py",
+      "line": 159,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "rationale": "The ellipsis declares the installed operational Effects member-start contract implemented by production and test effects.",
+      "owner": "installed-operational-owner",
+      "review_condition": "review whenever the Effects protocol changes"
+    },
+    {
+      "id": "d683b20a048a102914ca",
+      "path": "scripts/run_release_candidate.py",
+      "line": 511,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "rationale": "The ellipsis declares the release candidate owner runner execution contract implemented by the production runner and fixtures.",
+      "owner": "release-candidate-owner",
+      "review_condition": "review whenever candidate owner dispatch changes"
+    },
+    {
+      "id": "4e934dccb06c9987e3d5",
+      "path": "scripts/run_release_candidate.py",
+      "line": 513,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "rationale": "The ellipsis declares the release candidate owner runner verification contract implemented by the production runner and fixtures.",
+      "owner": "release-candidate-owner",
+      "review_condition": "review whenever candidate owner verification changes"
+    },
+    {
+      "id": "34437d5abc5c546a28d8",
+      "path": "scripts/run_release_stage_owner.py",
+      "line": 382,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "rationale": "The ellipsis declares the release-stage Effects execution contract implemented by production and test effects.",
+      "owner": "release-stage-owner",
+      "review_condition": "review whenever release-stage Effects execution changes"
+    },
+    {
+      "id": "61a6dcabee30435a6105",
+      "path": "scripts/run_release_stage_owner.py",
+      "line": 383,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "rationale": "The ellipsis declares the release-stage Effects verification contract implemented by production and test effects.",
+      "owner": "release-stage-owner",
+      "review_condition": "review whenever release-stage Effects verification changes"
+    },
+    {
+      "id": "f7a3b2024643aeb8cf4c",
+      "path": "scripts/run_release_stage_owner.py",
+      "line": 944,
+      "rule": "python-pass",
+      "classification": "safe_degradation",
+      "rationale": "Failure to publish the secondary failed-stage transition must not replace the original section-owner exception; the campaign remains fail-closed.",
+      "owner": "release-stage-owner",
+      "review_condition": "review whenever section failure finalization changes"
+    },
+    {
+      "id": "e22e9edda7b7cff27bab",
+      "path": "tests/test_wal_transaction.py",
+      "line": 31,
+      "rule": "unimplemented-error",
+      "classification": "test_fixture",
+      "rationale": "The test fixture catches the platform NotImplementedError raised when symbolic-link creation is unavailable and skips that platform-specific case.",
+      "owner": "wal-transaction-tests",
+      "review_condition": "review whenever the symbolic-link fixture boundary changes"
     }
   ]
 }

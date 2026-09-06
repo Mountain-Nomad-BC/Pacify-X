@@ -28,6 +28,12 @@ def test_completed_wal_images_are_inactive_but_pending_wal_remains_auditable() -
     assert not _exclude_structural_path(
         ".engineering-bootstrap/doctor/wal/pending/tx/after/0000.json"
     )
+    assert _exclude_structural_path(
+        ".engineering-bootstrap/wal/cohesion-card-reconciliation/committed/tx/after/0000.json"
+    )
+    assert not _exclude_structural_path(
+        ".engineering-bootstrap/wal/cohesion-card-reconciliation/pending/tx/after/0000.json"
+    )
 
 
 def test_logic_review_identity_is_interpreter_neutral() -> None:
@@ -282,3 +288,39 @@ def test_runtime_file_digest_helpers_are_reviewed_digest_adapters() -> None:
     assert len(helpers) == 1
     assert helpers[0]["classification"] == "digest-adapters"
     assert helpers[0]["equivalence_rule"] == "behavioral parity"
+
+
+def test_release_owner_digest_and_json_helpers_are_reviewed() -> None:
+    result = audit_structural_integrity(ROOT)
+    groups = result["duplicate_logic_groups"]
+    digest_paths = {
+        "runtime/native_skills.py",
+        "runtime/project_control_plane.py",
+        "runtime/project_intelligence.py",
+        "runtime/workspace_manager.py",
+        "scripts/archive_project_map_history.py",
+        "scripts/migration/extract_behavior_contracts.py",
+        "scripts/run_installed_operational_owner.py",
+        "scripts/run_release_candidate.py",
+        "scripts/run_release_stage_owner.py",
+        "scripts/verify_release_publication.py",
+    }
+    digest_group = next(
+        item
+        for item in groups
+        if {location.split(":", 1)[0] for location in item["locations"]}
+        == digest_paths
+    )
+    loader_group = next(
+        item
+        for item in groups
+        if {location.split(":", 1)[0] for location in item["locations"]}
+        == {
+            "scripts/run_installed_operational_owner.py",
+            "scripts/run_release_stage_owner.py",
+        }
+        and {location.rsplit(":", 1)[-1] for location in item["locations"]}
+        == {"_object", "load_object"}
+    )
+    assert digest_group["classification"] == "digest-adapters"
+    assert loader_group["classification"] == "bounded-json-loaders"

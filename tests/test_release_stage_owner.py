@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 from pathlib import Path
+import subprocess
 
 import pytest
 
@@ -363,6 +364,44 @@ def test_child_resource_postcondition_allows_only_exact_supervised_self(
     value["resources"][0]["pid"] = 456
     ledger.write_text(json.dumps(value), encoding="utf-8")
     assert resource_postcondition(config)["valid"] is False
+
+
+def test_command_timeout_closes_owned_process_tree(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    config = fixture(tmp_path, "full_profile")
+    waits = 0
+    cleanup_calls: list[list[str]] = []
+
+    class Process:
+        pid = 321
+
+        def wait(self, timeout: int) -> int:
+            nonlocal waits
+            waits += 1
+            if waits == 1:
+                raise subprocess.TimeoutExpired(["owner"], timeout)
+            return 1
+
+        def poll(self) -> None:
+            return None
+
+    monkeypatch.setattr(
+        "scripts.run_release_stage_owner.subprocess.Popen", lambda *args, **kwargs: Process()
+    )
+    monkeypatch.setattr(
+        "scripts.run_release_stage_owner.subprocess.run",
+        lambda argv, **kwargs: cleanup_calls.append(argv)
+        or type("Result", (), {"returncode": 0})(),
+    )
+    monkeypatch.setattr("scripts.run_release_stage_owner.os.name", "nt")
+
+    with pytest.raises(OwnerBlocked, match="timed out after 1 seconds"):
+        ProductionEffects().command(
+            config, "full_profile", ["owner"], timeout_seconds=1
+        )
+    assert cleanup_calls == [["taskkill", "/PID", "321", "/T", "/F"]]
+    assert waits == 2
 
 
 def test_identity_uses_explicit_cached_set_and_one_annotated_retag(

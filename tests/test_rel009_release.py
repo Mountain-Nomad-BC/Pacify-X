@@ -49,9 +49,13 @@ class Rel009ReleaseTests(unittest.TestCase):
         self.assertNotEqual(state["lifecycle"]["phase"], "deployment-certified")
         self.assertIn(
             state["lifecycle"]["status"],
-            {"integration-complete", "repair-in-progress"},
+            {
+                "integration-complete",
+                "repair-in-progress",
+                "downstream-green-release-pending",
+            },
         )
-        if state["lifecycle"]["status"] == "repair-in-progress":
+        if state["lifecycle"]["status"] != "integration-complete":
             self.assertTrue(state["checkpoint"]["next_safe_action"])
         self.assertEqual(
             state["evidence"]["validation_receipt"],

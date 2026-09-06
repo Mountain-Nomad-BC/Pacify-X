@@ -2714,7 +2714,7 @@
         "typing"
       ],
       "index_state": "verified",
-      "sha256": "e66a682a0725975f49fb81572a338ca00240c102b99139c45e3bc0bf4e6d0f25"
+      "sha256": "58c6fccb34319dba3adf531c4ce4d70d2823253555e509aa0338bd10ebbf270f"
     },
     "runtime/studio_api.py": {
       "imports": [
@@ -4469,6 +4469,7 @@
         "runtime.resource_lifecycle",
         "runtime.test_profiles",
         "scripts.clean_source_export",
+        "signal",
         "stat",
         "subprocess",
         "sys",
@@ -4477,7 +4478,7 @@
         "zipfile"
       ],
       "index_state": "verified",
-      "sha256": "9de5584f540ee7f841337449e346d14a7b9486b5369ac2aa739a523816dfbf60"
+      "sha256": "e3dc544faf609adf05b13642bbdc7da910d4debd743c3b397db860dfb4ab4b7a"
     },
     "scripts/sanitize_host_bound_cleanup_evidence.py": {
       "imports": [
@@ -5232,7 +5233,7 @@
         "tests.repository_copy"
       ],
       "index_state": "verified",
-      "sha256": "a340cccad4011d8e1447d3bb46296caf183b8470e71f17a4598da8943dc8982c"
+      "sha256": "91feaa1e9622284a5121e55350057a377ae3e186fd3f0eb30ee397c4a6a9efc7"
     },
     "tests/test_coverage_assurance.py": {
       "imports": [
@@ -6622,7 +6623,7 @@
         "unittest"
       ],
       "index_state": "verified",
-      "sha256": "5a8cf522b6871697efeea4415822dfd157a2bce06fa9ce9c962d85e8f4f42d59"
+      "sha256": "0e357ee2d8d233961c54af25265f0de30e46e30e50e4e6d58b629e0f69d16b75"
     },
     "tests/test_rel011_revocation.py": {
       "imports": [
@@ -6831,10 +6832,11 @@
         "json",
         "pathlib",
         "pytest",
-        "scripts.run_release_stage_owner"
+        "scripts.run_release_stage_owner",
+        "subprocess"
       ],
       "index_state": "verified",
-      "sha256": "7e2a9a0308091f691faf19b8b5cd494ac0a3bdf51775e7e945657e45409d0fa8"
+      "sha256": "67080675c0bef39ec34ccfc6e12650d75bd516fbf43785df247389f87d04630a"
     },
     "tests/test_release_supply_chain_evidence.py": {
       "imports": [
@@ -7232,7 +7234,7 @@
         "sys"
       ],
       "index_state": "verified",
-      "sha256": "dc26ae42a4faa8c8dbe2f8488505972cb3d0817efe14991800f2cc6854d3a309"
+      "sha256": "54634499cae07f76be0a9bae28a714d019bb891590aaa777197a1cc5a0068ed2"
     },
     "tests/test_studio_api.py": {
       "imports": [
@@ -7683,7 +7685,7 @@
       ],
       "description": "Serial exact-tool, installed-wheel, corrective-release, and full-repair-ledger certification tests.",
       "group": "exact-installed",
-      "input_sha256": "6e3ddf9ca7abaeb25f612e2ddfc0f65bebf914a0e9d0725db6c2428ae88b4d91",
+      "input_sha256": "00baec3b8d7ab12dfb007cabe5cd5d1cd1c7982f8ed6582328cb6ae9cdc8762b",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -7773,7 +7775,7 @@
       ],
       "description": "Serial release, distribution, artifact, and revocation certification tests excluding composed audit mutations.",
       "group": "release-build",
-      "input_sha256": "3d39bb0d0b6f81b433a70c0be19dc1af3ab6485d3ea4a537646e96154bb62eac",
+      "input_sha256": "9ab19d999381eff909312203e6c79cef27a7bead8f82c0d1334ad82146d4dfdd",
       "inputs": [
         ".github/workflows/release.yml",
         "README.md",
@@ -7855,7 +7857,7 @@
       ],
       "description": "Serial composed-audit and quarantine-mutation tests isolated from package builds.",
       "group": "release-audit",
-      "input_sha256": "af1248de98331d56db8e14247385097e9991a146adbd528f856432a6d4f6abce",
+      "input_sha256": "75cda74c621cd1c241eaa01834cac74d314964af3bba8b4fadce42b56a0097f5",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -7901,7 +7903,7 @@
       ],
       "description": "Serial full-tree structural mutation tests isolated from derived-artifact checks.",
       "group": "structural-adversarial",
-      "input_sha256": "a4f98cc29f547d8653dd83a9db4adfd10f092ed70bc00270f5dc505652f78327",
+      "input_sha256": "afe59d7d45cb5f70a08a79e73aecddbcfbfee670befa26182747cac151e3770c",
       "inputs": [
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_agents_md_generator.py",
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_change_impact.py",
@@ -9693,7 +9695,7 @@
       ],
       "description": "Final serial generated-output, completion-projection, portability, effect-surface, and punch-card integrity gate.",
       "group": "derived-integrity",
-      "input_sha256": "1c8f9075217bdcaca0e7c2563edfe7b657a1521761340a32199d6f3ec595aa8a",
+      "input_sha256": "b100b5b34774dca600cdc19675c25badf43cd7dd271c0bf0267b31d951ef8670",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -10005,7 +10007,7 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin A through F; this lane shares canonical registry state with core-n-s and must not overlap it.",
       "group": "core-a-f",
-      "input_sha256": "f98d9dea19b9a9c8b0ef56179b43d929272a9656da589ebc9995efd4f5afc653",
+      "input_sha256": "649b5adda47e76dd9db16f654f0837adf95b33fee4af85cd708de656d44ad5f9",
       "inputs": [
         "builders/declared_suite_builder.py",
         "builders/declared_suite_support_builder.py",
@@ -10445,7 +10447,7 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin G through M; this lane reads or mutates shared canonical repository state.",
       "group": "core-g-m",
-      "input_sha256": "7b7bfb286feea21e217f3e79702ea52a03ebbeb29d3ae3026f06c241c251d7de",
+      "input_sha256": "ed13081a9c2410e7549beb71184785e927e83ed1cb949917fc7468219ed7514f",
       "inputs": [
         "builders/common.py",
         "builders/orchestration_builder.py",
@@ -10828,7 +10830,7 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin N through S; this lane reads or mutates shared canonical repository state.",
       "group": "core-n-s",
-      "input_sha256": "c973167603ed299b418bdcf5bc47c666535ec44514a890bfe61b6ea25995fabe",
+      "input_sha256": "20daeb850b5af3ad3812fea28a5c28a6e706061530579e1852139ad477bae732",
       "inputs": [
         "registry/test_profiles.json",
         "runtime/__init__.py",
