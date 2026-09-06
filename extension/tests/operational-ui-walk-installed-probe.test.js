@@ -82,7 +82,16 @@ test('Knowledge Graph restart reacquires the exact saved view stably before appl
   const profile = source.slice(source.indexOf('async function runInstalledKnowledgeGraphProfile'), source.indexOf('async function runInstalledSystemProjectionProfile'));
   assert.match(profile, /restartInstalledDashboardWebview[\s\S]*settleInstalledSurfaceControl\(frameHost, \{[\s\S]*surface: 'knowledgeGraph'[\s\S]*selector: '\[data-action="graphApplySavedView"\]'[\s\S]*stableSamplesRequired: 2/);
   assert.match(profile, /stableSavedViewSamples[\s\S]*item\.textContent\.trim\(\) === name && !item\.disabled[\s\S]*stableSavedViewSamples < 2[\s\S]*knowledge-graph-restarted-view-missing/);
-  assert.match(profile, /selector: '\[data-action="graphDeleteSavedView"\]'[\s\S]*deleteReadySamples[\s\S]*item\.textContent\.trim\(\) === name[\s\S]*knowledge-graph-view-delete-unavailable/);
+  assert.match(profile, /selector: '\[data-action="graphDeleteSavedView"\]'[\s\S]*state\.graphSavedViews[\s\S]*data-view-index[\s\S]*stateMatches === 1[\s\S]*deleteMatches === true[\s\S]*knowledge-graph-view-delete-unavailable/);
+  assert.match(profile, /remove\.click\(\)[\s\S]*deleteSettledSamples[\s\S]*stateAbsent[\s\S]*domAbsent[\s\S]*deleteSettledSamples >= 2/);
+});
+
+test('cleanup manager dispatch atomically settles the runtimeCore route and exact control before each scan', () => {
+  const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
+  const profile = source.slice(source.indexOf('async function runInstalledCleanupProfile'), source.indexOf('function pluginReadControlProbe'));
+  assert.match(profile, /const openCleanupManager = async[\s\S]*settleInstalledSurfaceControl\(frameHost, \{[\s\S]*surface: 'runtimeCore'[\s\S]*selector: '\[data-action="cleanupManager"\]'[\s\S]*stableSamplesRequired: 2/);
+  assert.match(profile, /surface-runtimeCore[\s\S]*__PX_INSTALLED_RESPONSES__[\s\S]*control\.click\(\)[\s\S]*return dispatched\.before/);
+  assert.equal((profile.match(/await openCleanupManager\(\)/g) || []).length, 2);
 });
 
 test('owned UI deadline budgets fail closed after the single caller deadline', () => {
@@ -1708,7 +1717,7 @@ test('native focused profiles require request-bound hydrated state and exact rou
   const projects = source.slice(source.indexOf('async function runInstalledProjectsProfile'), source.indexOf('function graphProjectionIdentity'));
   assert.match(projects, /observation\.build_result[\s\S]*requestInstalledRefreshBound[\s\S]*waitForInstalledSnapshot[\s\S]*projectMapIdentity/);
   const cleanup = source.slice(source.indexOf('async function runInstalledCleanupProfile'), source.indexOf('function pluginReadControlProbe'));
-  assert.match(cleanup, /navigateInstalledSurface\(frameHost, 'runtimeCore'/);
+  assert.match(cleanup, /openCleanupManager[\s\S]*settleInstalledSurfaceControl\(frameHost, \{[\s\S]*surface: 'runtimeCore'[\s\S]*surface-runtimeCore/);
 });
 
 test('initial installed dashboard activation allows the full bounded snapshot process window', () => {

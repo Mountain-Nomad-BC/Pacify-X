@@ -9121,26 +9121,60 @@ async function runInstalledKnowledgeGraphProfile(frameHost, matrix, timeoutMs = 
     }, Math.min(timeoutMs, 20_000));
     const deleteDeadline = Date.now() + Math.min(timeoutMs, 20_000);
     let deleteReadySamples = 0;
+    let lastDeleteIdentity = null;
     do {
-      const deleteReady = await frameHost.evaluate((frame, name) => {
-        const apply = [...(frame.contentDocument?.querySelectorAll('[data-action="graphApplySavedView"]') || [])]
-          .find(item => item.textContent.trim() === name);
-        const remove = apply?.parentElement?.querySelector('[data-action="graphDeleteSavedView"]');
-        return Boolean(remove && !remove.disabled);
+      const deleteIdentity = await frameHost.evaluateContent(name => {
+        const viewIndex = (state.graphSavedViews || []).findIndex(item => item?.name === name);
+        const apply = viewIndex >= 0
+          ? document.querySelector(`[data-action="graphApplySavedView"][data-view-index="${viewIndex}"]`)
+          : null;
+        const remove = viewIndex >= 0
+          ? document.querySelector(`[data-action="graphDeleteSavedView"][data-view-index="${viewIndex}"]`)
+          : null;
+        return {
+          viewIndex,
+          stateMatches: (state.graphSavedViews || []).filter(item => item?.name === name).length,
+          applyMatches: Boolean(apply && apply.textContent.trim() === name && !apply.disabled),
+          deleteMatches: Boolean(remove && !remove.disabled)
+        };
       }, viewName);
+      lastDeleteIdentity = deleteIdentity;
+      const deleteReady = deleteIdentity.viewIndex >= 0
+        && deleteIdentity.stateMatches === 1
+        && deleteIdentity.applyMatches === true
+        && deleteIdentity.deleteMatches === true;
       deleteReadySamples = deleteReady ? deleteReadySamples + 1 : 0;
       if (deleteReadySamples >= 2) break;
       await wait(100);
     } while (Date.now() < deleteDeadline);
-    if (deleteReadySamples < 2) throw new Error('knowledge-graph-view-delete-unavailable');
-    await frameHost.evaluate((frame, name) => {
-      const apply = [...frame.contentDocument.querySelectorAll('[data-action="graphApplySavedView"]')]
-        .find(item => item.textContent.trim() === name);
-      const remove = apply?.parentElement?.querySelector('[data-action="graphDeleteSavedView"]');
-      if (!remove || remove.disabled) throw new Error('knowledge-graph-view-delete-unavailable');
+    if (deleteReadySamples < 2) throw new Error(`knowledge-graph-view-delete-unavailable:${JSON.stringify(lastDeleteIdentity)}`);
+    await frameHost.evaluateContent(name => {
+      const viewIndex = (state.graphSavedViews || []).findIndex(item => item?.name === name);
+      const apply = viewIndex >= 0
+        ? document.querySelector(`[data-action="graphApplySavedView"][data-view-index="${viewIndex}"]`)
+        : null;
+      const remove = viewIndex >= 0
+        ? document.querySelector(`[data-action="graphDeleteSavedView"][data-view-index="${viewIndex}"]`)
+        : null;
+      if (!apply || apply.textContent.trim() !== name || apply.disabled || !remove || remove.disabled) {
+        throw new Error('knowledge-graph-view-delete-unavailable');
+      }
       remove.click();
     }, viewName);
-    observation.restored = await frameHost.evaluate((frame, name) => ![...frame.contentDocument.querySelectorAll('[data-action="graphApplySavedView"]')].some(item => item.textContent.trim() === name), viewName);
+    const deleteSettledDeadline = Date.now() + Math.min(timeoutMs, 10_000);
+    let deleteSettledSamples = 0;
+    do {
+      const removed = await frameHost.evaluateContent(name => {
+        const stateAbsent = !(state.graphSavedViews || []).some(item => item?.name === name);
+        const domAbsent = ![...document.querySelectorAll('[data-action="graphApplySavedView"]')]
+          .some(item => item.textContent.trim() === name);
+        return stateAbsent && domAbsent;
+      }, viewName);
+      deleteSettledSamples = removed ? deleteSettledSamples + 1 : 0;
+      if (deleteSettledSamples >= 2) break;
+      await wait(100);
+    } while (Date.now() < deleteSettledDeadline);
+    observation.restored = deleteSettledSamples >= 2;
     observation.saved_view_deleted = observation.restored;
     if (!observation.restored) throw new Error('knowledge-graph-view-rollback-failed');
     observation.completed = true;
@@ -9575,18 +9609,42 @@ async function runInstalledCleanupProfile(workbench, frameHost, matrix, timeoutM
   const recycleFixture = recycleFixtureParent ? path.resolve(recycleFixtureParent, '__pycache__') : '';
   const permanentFixtureParent = disposableEngine ? path.resolve(disposableEngine, '.px-operational-permanent') : '';
   const permanentFixture = permanentFixtureParent ? path.resolve(permanentFixtureParent, '__pycache__') : '';
+  const openCleanupManager = async () => {
+    const deadline = Date.now() + Math.min(timeoutMs, 30_000);
+    let lastError = '';
+    do {
+      const remaining = deadline - Date.now();
+      if (remaining <= 0) break;
+      try {
+        await settleInstalledSurfaceControl(frameHost, {
+          surface: 'runtimeCore',
+          selector: '[data-action="cleanupManager"]',
+          stableSamplesRequired: 2
+        }, Math.min(remaining, 5_000));
+        const dispatched = await frameHost.evaluate(frame => {
+          const document = frame.contentDocument;
+          const control = document?.querySelector('[data-action="cleanupManager"]');
+          const surfaceCurrent = document?.querySelector('.content')?.classList.contains('surface-runtimeCore') === true;
+          const visible = Boolean(control && !control.disabled
+            && (control.offsetWidth || control.offsetHeight || control.getClientRects().length));
+          if (!surfaceCurrent || !visible) return { clicked: false, before: null };
+          const before = frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0;
+          control.click();
+          return { clicked: true, before };
+        });
+        if (dispatched.clicked === true) return dispatched.before;
+      } catch (error) {
+        lastError = String(error?.message || error).slice(0, 1800);
+      }
+      await wait(100);
+    } while (Date.now() < deadline);
+    throw new Error(`cleanup-manager-route-control-settlement-timeout:${lastError}`);
+  };
   try {
     if (!recycleFixture || !recycleFixture.startsWith(`${disposableEngine}${path.sep}`) || fs.existsSync(recycleFixtureParent)) throw new Error('cleanup-recycle-fixture-unavailable');
     fs.mkdirSync(recycleFixture, { recursive: true });
     fs.writeFileSync(path.join(recycleFixture, 'owned-cache.pyc'), 'PX owned disposable cache\n', { encoding: 'utf8', flag: 'wx' });
-    await frameHost.evaluate(frame => {
-      const document = frame.contentDocument; document?.querySelector('[data-action="closeModal"]')?.click();
-      const toggle = document?.querySelector('[data-action="toggleAdvanced"]'); if (toggle && toggle.getAttribute('aria-expanded') !== 'true') toggle.click();
-    });
-    await navigateInstalledSurface(frameHost, 'runtimeCore', Math.min(timeoutMs, 30_000));
-    await waitForKnowledgeControl(frameHost, '[data-action="cleanupManager"]');
-    const beforeScan = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
-    await frameHost.evaluate(frame => frame.contentDocument.querySelector('[data-action="cleanupManager"]').click());
+    const beforeScan = await openCleanupManager();
     const inventory = await (async () => {
       const deadline = Date.now() + timeoutMs;
       do {
@@ -9642,17 +9700,10 @@ async function runInstalledCleanupProfile(workbench, frameHost, matrix, timeoutM
     if (!validCleanupResult(observation.result)) throw new Error(`cleanup-recycle-receipt-invalid:${JSON.stringify(observation.result)}`);
     const restart = await restartInstalledDashboardWebview(frameHost, 45_000);
     observation.webview_restarted = restart.restarted === true;
-    await frameHost.evaluate(frame => {
-      const document = frame.contentDocument;
-      const toggle = document?.querySelector('[data-action="toggleAdvanced"]'); if (toggle && toggle.getAttribute('aria-expanded') !== 'true') toggle.click();
-    });
-    await navigateInstalledSurface(frameHost, 'runtimeCore', Math.min(timeoutMs, 30_000));
-    await waitForKnowledgeControl(frameHost, '[data-action="cleanupManager"]');
     if (!permanentFixture || !permanentFixture.startsWith(`${disposableEngine}${path.sep}`) || fs.existsSync(permanentFixtureParent)) throw new Error('cleanup-permanent-fixture-unavailable');
     fs.mkdirSync(permanentFixture, { recursive: true });
     fs.writeFileSync(path.join(permanentFixture, 'owned-cache.pyc'), 'PX owned disposable cache\n', { encoding: 'utf8', flag: 'wx' });
-    const afterRestartScan = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
-    await frameHost.evaluate(frame => frame.contentDocument.querySelector('[data-action="cleanupManager"]').click());
+    const afterRestartScan = await openCleanupManager();
     const reopenedInventory = await (async () => {
       const scanDeadline = Date.now() + timeoutMs;
       do {
