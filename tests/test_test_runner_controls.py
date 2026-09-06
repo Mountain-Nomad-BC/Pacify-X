@@ -432,15 +432,10 @@ def test_abrupt_outer_owner_death_kills_tree_and_reconciles_workspace(
         ]
         assert len(workspaces) == 1 and Path(workspaces[0].path or "").exists()
 
-        killed = subprocess.run(
-            ["taskkill", "/PID", str(outer.pid), "/F"],
-            capture_output=True,
-            text=True,
-            timeout=15,
-            check=False,
-            shell=False,
-        )
-        assert killed.returncode in {0, 128}, killed.stderr
+        # Terminate through the process handle we created.  Invoking taskkill here
+        # adds an unrelated shell/ACL authority boundary and can be denied even
+        # though this process owns a fully privileged handle to its child.
+        outer.kill()
         outer.wait(timeout=15)
         deadline = time.monotonic() + 15
         while time.monotonic() < deadline and _process_exists(child_pid):
@@ -457,14 +452,7 @@ def test_abrupt_outer_owner_death_kills_tree_and_reconciles_workspace(
         assert not Path(workspace.path or "").exists()
     finally:
         if outer.poll() is None:
-            subprocess.run(
-                ["taskkill", "/PID", str(outer.pid), "/T", "/F"],
-                capture_output=True,
-                text=True,
-                timeout=15,
-                check=False,
-                shell=False,
-            )
+            outer.kill()
             outer.wait(timeout=15)
 
 
