@@ -514,7 +514,7 @@ async function childMain(configPath) {
         PX_ENGINE_ROOT: config.engineRoot,
         PX_OPERATIONAL_WALK_BOOTSTRAP_RECEIPT: config.bootstrapReceipt,
         PX_OPERATIONAL_WALK_BOOTSTRAP_SENTINEL: config.bootstrapSentinel,
-        ...(!config.bootstrapOnly && !config.configurationOnly && !config.knowledgeLifecycleOnly && !config.coordinationMemoryOnly && !config.hostBoundaryOnly && !config.nativeDialogOnly && !config.knowledgeGraphOnly && !config.pluginLifecycleOnly && !config.codexHandoffOnly && !config.errorIndicatorsOnly && !config.catalogPaginationOnly && !config.builderOnly && !config.workbenchCommandOnly
+        ...(!config.bootstrapOnly && !config.configurationOnly && !config.knowledgeLifecycleOnly && !config.coordinationMemoryOnly && !config.hostBoundaryOnly && !config.nativeDialogOnly && !config.knowledgeGraphOnly && !config.surfaceCaptureOnly && !config.pluginLifecycleOnly && !config.codexHandoffOnly && !config.errorIndicatorsOnly && !config.catalogPaginationOnly && !config.builderOnly && !config.workbenchCommandOnly
           ? { PX_OPERATIONAL_EXERCISE_STUDIO_APPROVAL: '1' }
           : {})
       })
@@ -594,6 +594,7 @@ async function childMain(configPath) {
           ...(config.hostBoundaryOnly ? { PX_OPERATIONAL_HOST_BOUNDARY_ONLY: '1' } : {}),
           ...(config.nativeDialogOnly ? { PX_OPERATIONAL_NATIVE_DIALOG_ONLY: '1' } : {}),
           ...(config.knowledgeGraphOnly ? { PX_OPERATIONAL_KNOWLEDGE_GRAPH_ONLY: '1' } : {}),
+          ...(config.surfaceCaptureOnly ? { PX_OPERATIONAL_SURFACE_CAPTURE_ONLY: '1' } : {}),
           ...(config.pluginLifecycleOnly ? { PX_OPERATIONAL_PLUGIN_LIFECYCLE_ONLY: '1' } : {}),
           ...(config.codexHandoffOnly ? { PX_OPERATIONAL_CODEX_HANDOFF_ONLY: '1' } : {}),
           ...(config.errorIndicatorsOnly ? { PX_OPERATIONAL_ERROR_INDICATORS_ONLY: '1' } : {}),
@@ -877,10 +878,10 @@ function stageOwnedHostBoundaryFixture(workspaceRoot, engineRoot, { runtimeComma
   };
 }
 
-function prepare(temporaryRoot, walkOutput, vsixPath = null, bootstrapOnly = false, configurationOnly = false, studioLifecycleOnly = false, knowledgeLifecycleOnly = false, coordinationMemoryOnly = false, hostBoundaryOnly = false, nativeDialogOnly = false, knowledgeGraphOnly = false, pluginLifecycleOnly = false, codexHandoffOnly = false, errorIndicatorsOnly = false, lateCardRepairOnly = false, catalogPaginationOnly = false, builderOnly = false, workbenchCommandOnly = false, postAuditLongRunning = false) {
+function prepare(temporaryRoot, walkOutput, vsixPath = null, bootstrapOnly = false, configurationOnly = false, studioLifecycleOnly = false, knowledgeLifecycleOnly = false, coordinationMemoryOnly = false, hostBoundaryOnly = false, nativeDialogOnly = false, knowledgeGraphOnly = false, surfaceCaptureOnly = false, pluginLifecycleOnly = false, codexHandoffOnly = false, errorIndicatorsOnly = false, lateCardRepairOnly = false, catalogPaginationOnly = false, builderOnly = false, workbenchCommandOnly = false, postAuditLongRunning = false) {
   const stagedEngine = stageDisposableEngine(repositoryRoot, temporaryRoot);
-  const hostBoundaryFixtureRequired = hostBoundaryOnly || (!bootstrapOnly && !configurationOnly && !studioLifecycleOnly && !knowledgeLifecycleOnly && !coordinationMemoryOnly && !nativeDialogOnly && !knowledgeGraphOnly && !pluginLifecycleOnly && !catalogPaginationOnly && !builderOnly && !workbenchCommandOnly);
-  const fullOperationalWalk = !bootstrapOnly && !configurationOnly && !studioLifecycleOnly && !knowledgeLifecycleOnly && !coordinationMemoryOnly && !hostBoundaryOnly && !nativeDialogOnly && !knowledgeGraphOnly && !pluginLifecycleOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly && !catalogPaginationOnly && !builderOnly && !workbenchCommandOnly;
+  const hostBoundaryFixtureRequired = hostBoundaryOnly || (!bootstrapOnly && !configurationOnly && !studioLifecycleOnly && !knowledgeLifecycleOnly && !coordinationMemoryOnly && !nativeDialogOnly && !knowledgeGraphOnly && !surfaceCaptureOnly && !pluginLifecycleOnly && !catalogPaginationOnly && !builderOnly && !workbenchCommandOnly);
+  const fullOperationalWalk = !bootstrapOnly && !configurationOnly && !studioLifecycleOnly && !knowledgeLifecycleOnly && !coordinationMemoryOnly && !hostBoundaryOnly && !nativeDialogOnly && !knowledgeGraphOnly && !surfaceCaptureOnly && !pluginLifecycleOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly && !catalogPaginationOnly && !builderOnly && !workbenchCommandOnly;
   const nativeInputRequired = studioLifecycleOnly || nativeDialogOnly || knowledgeGraphOnly || pluginLifecycleOnly || postAuditLongRunning || fullOperationalWalk;
   const config = {
     workspace: path.join(temporaryRoot, 'workspace'),
@@ -902,6 +903,7 @@ function prepare(temporaryRoot, walkOutput, vsixPath = null, bootstrapOnly = fal
     hostBoundaryOnly,
     nativeDialogOnly,
     knowledgeGraphOnly,
+    surfaceCaptureOnly,
     pluginLifecycleOnly,
     codexHandoffOnly,
     errorIndicatorsOnly,
@@ -950,7 +952,7 @@ function prepare(temporaryRoot, walkOutput, vsixPath = null, bootstrapOnly = fal
   fs.writeFileSync(path.join(config.workspace, 'README.md'), '# PACIFY-X owned operational walk workspace\n', 'utf8');
   config.gitAuthority = fullOperationalWalk ? stageOwnedGitAuthority(config.workspace) : null;
   config.hostBoundaryFixture = hostBoundaryFixtureRequired ? stageOwnedHostBoundaryFixture(config.workspace, config.engineRoot) : null;
-  if (!bootstrapOnly && !configurationOnly && !knowledgeLifecycleOnly && !coordinationMemoryOnly && !hostBoundaryOnly && !nativeDialogOnly && !knowledgeGraphOnly && !pluginLifecycleOnly && !codexHandoffOnly && !errorIndicatorsOnly && !catalogPaginationOnly && !builderOnly && !workbenchCommandOnly) {
+  if (!bootstrapOnly && !configurationOnly && !knowledgeLifecycleOnly && !coordinationMemoryOnly && !hostBoundaryOnly && !nativeDialogOnly && !knowledgeGraphOnly && !surfaceCaptureOnly && !pluginLifecycleOnly && !codexHandoffOnly && !errorIndicatorsOnly && !catalogPaginationOnly && !builderOnly && !workbenchCommandOnly) {
     const promptRoot = path.join(config.engineRoot, '.px', 'owned-operational-prompts');
     const setupPrompt = path.join(promptRoot, 'setup-studio.marker');
     if (!inside(config.engineRoot, promptRoot) || !inside(config.engineRoot, setupPrompt)) throw new Error('owned-setup-prompt-marker-outside-engine');
@@ -958,7 +960,7 @@ function prepare(temporaryRoot, walkOutput, vsixPath = null, bootstrapOnly = fal
     if (fs.lstatSync(promptRoot).isSymbolicLink()) throw new Error('owned-setup-prompt-root-linked');
     fs.writeFileSync(setupPrompt, 'exercise-native-setup-approval\n', { encoding: 'utf8', flag: 'wx' });
   }
-  config.knowledgeFixture = bootstrapOnly || configurationOnly || studioLifecycleOnly || nativeDialogOnly || knowledgeGraphOnly || pluginLifecycleOnly || codexHandoffOnly || catalogPaginationOnly || builderOnly || workbenchCommandOnly ? null : stageOwnedKnowledgeFixture(config.workspace, config.engineRoot);
+  config.knowledgeFixture = bootstrapOnly || configurationOnly || studioLifecycleOnly || nativeDialogOnly || knowledgeGraphOnly || surfaceCaptureOnly || pluginLifecycleOnly || codexHandoffOnly || catalogPaginationOnly || builderOnly || workbenchCommandOnly ? null : stageOwnedKnowledgeFixture(config.workspace, config.engineRoot);
   return config;
 }
 
@@ -1062,6 +1064,7 @@ async function main() {
   const hostBoundaryOnly = process.argv.includes('--host-boundary-only');
   const nativeDialogOnly = process.argv.includes('--native-dialog-only');
   const knowledgeGraphOnly = process.argv.includes('--knowledge-graph-only');
+  const surfaceCaptureOnly = process.argv.includes('--surface-capture-only');
   const pluginLifecycleOnly = process.argv.includes('--plugin-lifecycle-only');
   const codexHandoffOnly = process.argv.includes('--codex-handoff-only');
   const errorIndicatorsOnly = process.argv.includes('--error-indicators-only');
@@ -1070,10 +1073,10 @@ async function main() {
   const builderOnly = process.argv.includes('--builder-only');
   const workbenchCommandOnly = process.argv.includes('--workbench-command-only');
   const postAuditLongRunning = process.argv.includes('--post-audit-long-running');
-  if ([bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly, coordinationMemoryOnly, hostBoundaryOnly, nativeDialogOnly, knowledgeGraphOnly, pluginLifecycleOnly, codexHandoffOnly, errorIndicatorsOnly, lateCardRepairOnly, catalogPaginationOnly, builderOnly, workbenchCommandOnly].filter(Boolean).length > 1) throw new Error('focused-launcher-modes-are-mutually-exclusive');
-  if (postAuditLongRunning && (bootstrapOnly || configurationOnly || studioLifecycleOnly || knowledgeLifecycleOnly || coordinationMemoryOnly || hostBoundaryOnly || nativeDialogOnly || knowledgeGraphOnly || pluginLifecycleOnly || codexHandoffOnly || errorIndicatorsOnly || lateCardRepairOnly || catalogPaginationOnly || builderOnly || workbenchCommandOnly)) throw new Error('post-audit-long-running-requires-full-profile');
+  if ([bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly, coordinationMemoryOnly, hostBoundaryOnly, nativeDialogOnly, knowledgeGraphOnly, surfaceCaptureOnly, pluginLifecycleOnly, codexHandoffOnly, errorIndicatorsOnly, lateCardRepairOnly, catalogPaginationOnly, builderOnly, workbenchCommandOnly].filter(Boolean).length > 1) throw new Error('focused-launcher-modes-are-mutually-exclusive');
+  if (postAuditLongRunning && (bootstrapOnly || configurationOnly || studioLifecycleOnly || knowledgeLifecycleOnly || coordinationMemoryOnly || hostBoundaryOnly || nativeDialogOnly || knowledgeGraphOnly || surfaceCaptureOnly || pluginLifecycleOnly || codexHandoffOnly || errorIndicatorsOnly || lateCardRepairOnly || catalogPaginationOnly || builderOnly || workbenchCommandOnly)) throw new Error('post-audit-long-running-requires-full-profile');
   if (vsixPath && (!fs.existsSync(vsixPath) || path.extname(vsixPath).toLowerCase() !== '.vsix')) throw new Error(`exact-vsix-missing:${vsixPath}`);
-  const focusedProfile = configurationOnly ? 'reversible-configuration' : studioLifecycleOnly ? 'studio-lifecycle' : knowledgeLifecycleOnly ? 'knowledge-lifecycle' : coordinationMemoryOnly ? 'coordination-memory' : hostBoundaryOnly ? 'host-boundary' : nativeDialogOnly ? 'native-dialog-boundary' : knowledgeGraphOnly ? 'knowledge-graph' : pluginLifecycleOnly ? 'plugin-lifecycle' : codexHandoffOnly ? 'codex-handoff' : errorIndicatorsOnly ? 'error-indicators' : lateCardRepairOnly ? 'late-card-repair' : catalogPaginationOnly ? 'catalog-pagination' : builderOnly ? 'builder' : workbenchCommandOnly ? 'workbench-command' : null;
+  const focusedProfile = configurationOnly ? 'reversible-configuration' : studioLifecycleOnly ? 'studio-lifecycle' : knowledgeLifecycleOnly ? 'knowledge-lifecycle' : coordinationMemoryOnly ? 'coordination-memory' : hostBoundaryOnly ? 'host-boundary' : nativeDialogOnly ? 'native-dialog-boundary' : knowledgeGraphOnly ? 'knowledge-graph' : surfaceCaptureOnly ? 'surface-capture' : pluginLifecycleOnly ? 'plugin-lifecycle' : codexHandoffOnly ? 'codex-handoff' : errorIndicatorsOnly ? 'error-indicators' : lateCardRepairOnly ? 'late-card-repair' : catalogPaginationOnly ? 'catalog-pagination' : builderOnly ? 'builder' : workbenchCommandOnly ? 'workbench-command' : null;
   const mode = `${vsixPath ? 'installed-vsix' : 'current-source'}${bootstrapOnly ? '-bootstrap' : focusedProfile ? `-${focusedProfile}` : ''}`;
   const parallelProofLane = argument('--parallel-proof-lane');
   const proofLockPath = parallelProofHostLock(parallelProofLane, focusedProfile);
@@ -1095,7 +1098,7 @@ async function main() {
   let config = null;
   let configPath = null;
   try {
-    config = prepare(temporaryRoot, walkOutput, vsixPath, bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly, coordinationMemoryOnly, hostBoundaryOnly, nativeDialogOnly, knowledgeGraphOnly, pluginLifecycleOnly, codexHandoffOnly, errorIndicatorsOnly, lateCardRepairOnly, catalogPaginationOnly, builderOnly, workbenchCommandOnly, postAuditLongRunning);
+    config = prepare(temporaryRoot, walkOutput, vsixPath, bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly, coordinationMemoryOnly, hostBoundaryOnly, nativeDialogOnly, knowledgeGraphOnly, surfaceCaptureOnly, pluginLifecycleOnly, codexHandoffOnly, errorIndicatorsOnly, lateCardRepairOnly, catalogPaginationOnly, builderOnly, workbenchCommandOnly, postAuditLongRunning);
     configPath = path.join(temporaryRoot, 'host-config.json');
     fs.writeFileSync(configPath, `${JSON.stringify(config, null, 2)}\n`, { encoding: 'utf8', flag: 'wx' });
   } catch (error) {
@@ -1221,7 +1224,7 @@ if (require.main === module) {
       process.exitCode = 1;
     });
   } else if (process.argv.includes('--help')) {
-    process.stdout.write('Usage: node scripts/run-isolated-current-source-walk.js [--post-audit-long-running | --bootstrap-only | --configuration-only | --studio-lifecycle-only | --knowledge-lifecycle-only | --host-boundary-only | --native-dialog-only | --knowledge-graph-only | --plugin-lifecycle-only | --codex-handoff-only | --error-indicators-only | --late-card-repair-only | --catalog-pagination-only | --builder-only | --workbench-command-only] [--parallel-proof-lane <lane>] [--vsix <path>] [--output <path>] [--report <path>]\n');
+    process.stdout.write('Usage: node scripts/run-isolated-current-source-walk.js [--post-audit-long-running | --bootstrap-only | --configuration-only | --studio-lifecycle-only | --knowledge-lifecycle-only | --host-boundary-only | --native-dialog-only | --knowledge-graph-only | --surface-capture-only | --plugin-lifecycle-only | --codex-handoff-only | --error-indicators-only | --late-card-repair-only | --catalog-pagination-only | --builder-only | --workbench-command-only] [--parallel-proof-lane <lane>] [--vsix <path>] [--output <path>] [--report <path>]\n');
   } else {
     main().catch(error => {
       process.stderr.write(`${error.stack || error.message}\n`);

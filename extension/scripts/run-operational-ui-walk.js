@@ -510,6 +510,7 @@ const coordinationMemoryOnly = ownedReversibleConfigurationAuthority && process.
 const hostBoundaryOnly = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_HOST_BOUNDARY_ONLY === '1';
 const nativeDialogOnly = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_NATIVE_DIALOG_ONLY === '1';
 const knowledgeGraphOnly = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_KNOWLEDGE_GRAPH_ONLY === '1';
+const surfaceCaptureOnly = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_SURFACE_CAPTURE_ONLY === '1';
 const pluginLifecycleOnly = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_PLUGIN_LIFECYCLE_ONLY === '1';
 const codexHandoffOnly = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_CODEX_HANDOFF_ONLY === '1';
 const errorIndicatorsOnly = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_ERROR_INDICATORS_ONLY === '1';
@@ -521,7 +522,7 @@ const ERROR_INDICATOR_CONTROL_IDS = new Set([
   'pxui.memory.indicator.queryError',
   'pxui.knowledge-core.indicator.controllerError'
 ]);
-const focusedProfile = configurationOnly ? 'reversible-configuration' : studioLifecycleOnly ? 'studio-lifecycle' : knowledgeLifecycleOnly ? 'knowledge-lifecycle' : coordinationMemoryOnly ? 'coordination-memory' : hostBoundaryOnly ? 'host-boundary' : nativeDialogOnly ? 'native-dialog-boundary' : knowledgeGraphOnly ? 'knowledge-graph' : pluginLifecycleOnly ? 'plugin-lifecycle' : codexHandoffOnly ? 'codex-handoff' : errorIndicatorsOnly ? 'error-indicators' : lateCardRepairOnly ? 'late-card-repair' : catalogPaginationOnly ? 'catalog-pagination' : builderOnly ? 'builder' : workbenchCommandOnly ? 'workbench-command' : null;
+const focusedProfile = configurationOnly ? 'reversible-configuration' : studioLifecycleOnly ? 'studio-lifecycle' : knowledgeLifecycleOnly ? 'knowledge-lifecycle' : coordinationMemoryOnly ? 'coordination-memory' : hostBoundaryOnly ? 'host-boundary' : nativeDialogOnly ? 'native-dialog-boundary' : knowledgeGraphOnly ? 'knowledge-graph' : surfaceCaptureOnly ? 'surface-capture' : pluginLifecycleOnly ? 'plugin-lifecycle' : codexHandoffOnly ? 'codex-handoff' : errorIndicatorsOnly ? 'error-indicators' : lateCardRepairOnly ? 'late-card-repair' : catalogPaginationOnly ? 'catalog-pagination' : builderOnly ? 'builder' : workbenchCommandOnly ? 'workbench-command' : null;
 const focusedProfileOnly = Boolean(focusedProfile);
 const postAuditLongRunningAuthority = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_POST_AUDIT_LONG_RUNNING === '1';
 // Long-running operational coverage is not validation authority. Repository
@@ -2488,9 +2489,40 @@ function surfaceCaptureFileStem(surface, view, controlId = '') {
   return `${safe(surface)}--${safe(view)}${controlId ? `--${safe(controlId)}` : ''}`;
 }
 
+async function settleInstalledSurfaceForCapture(frameHost, surface, timeoutMs = 20_000) {
+  const deadline = Date.now() + timeoutMs;
+  let stableSamples = 0;
+  let lastState = null;
+  do {
+    try {
+      await navigateInstalledSurface(frameHost, surface, Math.min(5_000, Math.max(1_000, deadline - Date.now())));
+      lastState = await frameHost.evaluate((frame, target) => {
+        const document = frame.contentDocument;
+        const expectedAdvancedHeading = ({ knowledgeCore: 'Knowledge Core', runtimeCore: 'Runtime Core' })[target] || null;
+        const advancedCurrent = Boolean(expectedAdvancedHeading
+          && document?.querySelector('[data-action="toggleAdvanced"].active')
+          && [...(document?.querySelectorAll('main h1') || [])].some(element => element.textContent.trim() === expectedAdvancedHeading));
+        const navigation = document?.querySelector(`[data-surface="${CSS.escape(target)}"].nav-item`);
+        return {
+          nav_current: navigation?.getAttribute('aria-current') === 'page' || advancedCurrent,
+          rendered_surface: document?.querySelector('.content')?.classList.contains(`surface-${target}`) === true
+        };
+      }, surface);
+      stableSamples = lastState.nav_current === true && lastState.rendered_surface === true ? stableSamples + 1 : 0;
+      if (stableSamples >= 2) return { ...lastState, stable_samples: stableSamples };
+    } catch (error) {
+      lastState = { error: String(error?.message || error).slice(0, 1800) };
+      stableSamples = 0;
+    }
+    await wait(100);
+  } while (Date.now() < deadline);
+  throw new Error(`installed-surface-capture-settlement-timeout:${surface}:${JSON.stringify({ ...lastState, stable_samples: stableSamples })}`);
+}
+
 async function captureSurfaceViews(frameHost, proofMatrix, surface, ordinal, outputRoot, hostErrors) {
   const prefix = String(ordinal).padStart(2, '0');
   const candidates = surfaceCaptureCandidates(proofMatrix, surface);
+  await settleInstalledSurfaceForCapture(frameHost, surface, 20_000);
   const firstFoldPosition = await frameHost.evaluate((frame, activeSurface) => {
     const document = frame.contentDocument;
     if (!document) throw new Error('PX webview document is unavailable for first-fold capture.');
@@ -2508,6 +2540,7 @@ async function captureSurfaceViews(frameHost, proofMatrix, surface, ordinal, out
     hostErrors
   );
 
+  await settleInstalledSurfaceForCapture(frameHost, surface, 20_000);
   const deepTarget = await frameHost.evaluate((frame, input) => {
     const document = frame.contentDocument;
     if (!document) throw new Error('PX webview document is unavailable for deep-panel capture.');
@@ -3416,16 +3449,10 @@ async function inspectSurface(frameHost, surface) {
     document.querySelector('[data-action="closeModal"]')?.click();
     document.scrollingElement.scrollTop = document.scrollingElement.scrollHeight;
     const before = Number(document.scrollingElement.scrollTop || 0);
-    let control = document.querySelector(`[data-surface="${CSS.escape(activeSurface)}"]`);
-    if (!control && ['knowledgeCore', 'runtimeCore'].includes(activeSurface)) {
-      document.querySelector('[data-action="toggleAdvanced"]')?.click();
-      control = document.querySelector(`[data-surface="${CSS.escape(activeSurface)}"]`);
-    }
-    if (!control) throw new Error(`PX surface is missing: ${activeSurface}`);
-    control.click();
     return before;
   }, surface);
-  await wait(700);
+  await settleInstalledSurfaceForCapture(frameHost, surface, 20_000);
+  await wait(100);
   if (surface === 'knowledgeGraph') {
     const started = Date.now();
     while (Date.now() - started < 30_000) {
@@ -11423,7 +11450,7 @@ async function main() {
     }
     const surfaces = await dashboard.evaluate(frame => [...new Set([...frame.contentDocument.querySelectorAll('[data-surface]')].map(item => item.dataset.surface).filter(Boolean))]);
     const results = [];
-    if (!hostSourceMismatch && !focusedProfileOnly) {
+    if (!hostSourceMismatch && (!focusedProfileOnly || surfaceCaptureOnly)) {
       for (const surface of surfaces) {
         const result = await inspectSurface(dashboard, surface);
         attemptedControlIds.push(`pxui.dashboard-control-plane.action.navigate.${surface}`);
@@ -11447,7 +11474,7 @@ async function main() {
     if (ownedReversibleConfigurationAuthority && returnedProfileErrors(reversibleConfigurationProfile).length) {
       dashboardProfileBlocker = 'reversible-configuration';
     }
-    const studioChainAdmitted = ownedReversibleConfigurationAuthority && !configurationOnly && !knowledgeLifecycleOnly && !coordinationMemoryOnly && !hostBoundaryOnly && !nativeDialogOnly && !knowledgeGraphOnly && !pluginLifecycleOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly && !catalogPaginationOnly && !builderOnly && !workbenchCommandOnly;
+    const studioChainAdmitted = ownedReversibleConfigurationAuthority && !configurationOnly && !knowledgeLifecycleOnly && !coordinationMemoryOnly && !hostBoundaryOnly && !nativeDialogOnly && !knowledgeGraphOnly && !surfaceCaptureOnly && !pluginLifecycleOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly && !catalogPaginationOnly && !builderOnly && !workbenchCommandOnly;
     const studioSetupProfile = studioChainAdmitted
       ? await timedProfile('studio-setup', () => runInstalledStudioSetupProfile(workbench, dashboard, proofMatrix))
       : { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside an owned isolated host.', eligible_control_count: 0, records: [] };
@@ -11502,10 +11529,10 @@ async function main() {
     if (!focusedProfileOnly && !hostSourceMismatch && studioLifecycleCrashProfile.completed !== true && returnedProfileErrors(studioLifecycleCrashProfile).length === 0) {
       recordProfileFailure('studio-lifecycle-crash-recovery', 'returned-incomplete', studioLifecycleCrashProfile.errors?.length ? studioLifecycleCrashProfile.errors : ['profile-incomplete-without-error']);
     }
-    const knowledgeLifecycleProfile = ownedReversibleConfigurationAuthority && !configurationOnly && !studioLifecycleOnly && !coordinationMemoryOnly && !hostBoundaryOnly && !nativeDialogOnly && !knowledgeGraphOnly && !pluginLifecycleOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly && !catalogPaginationOnly && !builderOnly && !workbenchCommandOnly
+    const knowledgeLifecycleProfile = ownedReversibleConfigurationAuthority && !configurationOnly && !studioLifecycleOnly && !coordinationMemoryOnly && !hostBoundaryOnly && !nativeDialogOnly && !knowledgeGraphOnly && !surfaceCaptureOnly && !pluginLifecycleOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly && !catalogPaginationOnly && !builderOnly && !workbenchCommandOnly
       ? await timedProfile('knowledge-lifecycle', () => runInstalledKnowledgeLifecycleProfile(dashboard, proofMatrix))
       : { schema_version: 'px.installed-knowledge-lifecycle-profile/1.0', authority: 'Not admitted outside an owned isolated host and disposable workspace.', observation: { attempted: false, completed: false, errors: [] }, control_probe: { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside an owned isolated host and disposable workspace.', eligible_control_count: 0, records: [] } };
-    const learningLifecycleProfile = ownedReversibleConfigurationAuthority && !configurationOnly && !studioLifecycleOnly && !coordinationMemoryOnly && !hostBoundaryOnly && !nativeDialogOnly && !knowledgeGraphOnly && !pluginLifecycleOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly && !catalogPaginationOnly && !builderOnly && !workbenchCommandOnly
+    const learningLifecycleProfile = ownedReversibleConfigurationAuthority && !configurationOnly && !studioLifecycleOnly && !coordinationMemoryOnly && !hostBoundaryOnly && !nativeDialogOnly && !knowledgeGraphOnly && !surfaceCaptureOnly && !pluginLifecycleOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly && !catalogPaginationOnly && !builderOnly && !workbenchCommandOnly
       ? await timedProfile('learning-lifecycle', () => runInstalledLearningLifecycleProfile(dashboard, proofMatrix))
       : { schema_version: 'px.installed-learning-lifecycle-profile/1.0', authority: 'Not admitted outside an owned isolated host and disposable workspace.', observation: { attempted: false, completed: false, errors: [] }, control_probe: { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside an owned isolated host and disposable workspace.', eligible_control_count: 0, records: [] } };
     const coordinationMemoryProfile = ownedReversibleConfigurationAuthority && (!focusedProfileOnly || coordinationMemoryOnly)

@@ -215,6 +215,34 @@ test('focused Knowledge Graph completion requires exact project reconstruction a
   assert.ok(failed.issues.some(item => item.code === 'focused-knowledge-graph-incomplete'));
 });
 
+test('focused surface capture requires exact first-fold and deep-panel evidence for all installed surfaces', () => {
+  const receipt = completeReceipt();
+  receipt.focused_profile = 'surface-capture';
+  receipt.control_chains.controls.forEach(control => { control.attempted = false; });
+  receipt.control_chains.aggregates.complete_interaction_chains = 0;
+  const surfaces = ['dashboard', 'projects', 'agents', 'agent-studio', 'workflow-studio', 'skill-studio', 'knowledgeGraph', 'skillsTools', 'workflows', 'plugins', 'memory', 'activity', 'diagnostics', 'assurance', 'studio-lifecycle', 'settings', 'knowledgeCore', 'runtimeCore'];
+  receipt.results = surfaces.map(surface => ({
+    surface,
+    navigation_active: true,
+    captures: {
+      surface_id: surface,
+      first_fold: { screenshot: { status: 'captured' } },
+      deep_panel: { screenshot: { status: 'captured' } }
+    }
+  }));
+  const completed = evaluateOperationalWalk(receipt);
+  assert.equal(completed.terminal_state, 'completed');
+  assert.equal(completed.scope_complete, true);
+  assert.equal(completed.operationally_complete, false);
+  assert.equal(completed.evaluated_scope, 'surface-capture');
+
+  receipt.results.find(result => result.surface === 'projects').captures.first_fold.screenshot.status = 'failed';
+  const failed = evaluateOperationalWalk(receipt);
+  assert.equal(failed.terminal_state, 'incomplete');
+  const finding = failed.issues.find(item => item.code === 'focused-surface-capture-incomplete');
+  assert.deepEqual(finding.details.incomplete_surfaces, ['projects']);
+});
+
 test('focused native-dialog completion requires its exact five-profile denominator', () => {
   const receipt = completeReceipt();
   receipt.focused_profile = 'native-dialog-boundary';
@@ -755,6 +783,22 @@ test('extension-host unresponsive output remains blocking even after recovery', 
   assert.equal(unresponsive.blocking, true);
   assert.equal(warning.blocking, false);
   assert.equal(evaluateOperationalWalk(completeReceipt(), { additionalIssues: processIssues }).terminal_state, 'blocked');
+});
+
+test('only the exact paired external Windows Jump List persistence diagnostic is non-blocking', () => {
+  const pair = [
+    '[20664:0906/102045.946:ERROR:electron\\shell\\browser\\api\\electron_api_app.cc:1430] Failed to commit changes to custom Jump List.',
+    '[main 2026-09-06T14:20:45.948Z] updateWindowsJumpList#setJumpList unexpected result: error'
+  ];
+  const classified = normalizeProcessOutput({ stderr: pair.join('\n'), walkerExit: { code: 0, signal: null }, processTreeClosedVerified: true });
+  assert.equal(classified.length, 1);
+  assert.equal(classified[0].code, 'external-windows-jump-list-persistence-unavailable');
+  assert.equal(classified[0].blocking, false);
+  assert.equal(classified[0].occurrences, 2);
+  for (const stderr of [pair[0], pair[1], pair.join('\n').replace('custom Jump List', 'project list')]) {
+    const blocked = normalizeProcessOutput({ stderr, walkerExit: { code: 0, signal: null }, processTreeClosedVerified: true });
+    assert.ok(blocked.some(item => item.code === 'stderr-error' && item.blocking === true));
+  }
 });
 
 test('launcher requires both semantic completion and verified process closure', () => {

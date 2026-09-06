@@ -166,7 +166,21 @@ function normalizeProcessOutput({ stdout = '', stderr = '', walkerExit = null, e
       occurrences: tokenWarnings.length
     }));
   }
-  const alreadyClassified = new Set([...unresponsive, ...responsive, ...tokenWarnings]);
+  const jumpListCommit = stderrLines.find(line => /^\[\d+:\d+\/\d+\.\d+:ERROR:electron\\shell\\browser\\api\\electron_api_app\.cc:1430\] Failed to commit changes to custom Jump List\.$/.test(line.trim()));
+  const jumpListUpdate = stderrLines.find(line => /^\[main \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z\] updateWindowsJumpList#setJumpList unexpected result: error$/.test(line.trim()));
+  const jumpListWarnings = jumpListCommit && jumpListUpdate ? [jumpListCommit, jumpListUpdate] : [];
+  if (jumpListWarnings.length === 2) {
+    normalized.push(issue({
+      source: 'external_host',
+      code: 'external-windows-jump-list-persistence-unavailable',
+      severity: 'warning',
+      blocking: false,
+      message: 'VS Code could not persist its external Windows Jump List while isolated hosts were running concurrently.',
+      context: 'captured-host-output',
+      occurrences: 2
+    }));
+  }
+  const alreadyClassified = new Set([...unresponsive, ...responsive, ...tokenWarnings, ...jumpListWarnings]);
   for (const line of stderrLines) {
     if (alreadyClassified.has(line) || !/\b(?:error|failed|failure|exception|uncaught|fatal)\b/i.test(line)) continue;
     normalized.push(issue({
@@ -353,6 +367,26 @@ function focusedProfileIssues(value) {
           record_count: Array.isArray(graph?.control_probe?.records) ? graph.control_probe.records.length : 0,
           errors: graphObservation?.errors || []
         }
+      });
+    }
+  } else if (focused === 'surface-capture') {
+    const expectedSurfaces = ['dashboard', 'projects', 'agents', 'agent-studio', 'workflow-studio', 'skill-studio', 'knowledgeGraph', 'skillsTools', 'workflows', 'plugins', 'memory', 'activity', 'diagnostics', 'assurance', 'studio-lifecycle', 'settings', 'knowledgeCore', 'runtimeCore'];
+    const results = Array.isArray(value.results) ? value.results : [];
+    const bySurface = new Map(results.map(result => [String(result?.surface || ''), result]));
+    const incompleteSurfaces = expectedSurfaces.filter(surface => {
+      const result = bySurface.get(surface);
+      return result?.navigation_active !== true
+        || result?.captures?.surface_id !== surface
+        || result?.captures?.first_fold?.screenshot?.status !== 'captured'
+        || result?.captures?.deep_panel?.screenshot?.status !== 'captured';
+    });
+    const unexpectedSurfaces = [...bySurface.keys()].filter(surface => !expectedSurfaces.includes(surface));
+    if (results.length !== expectedSurfaces.length || incompleteSurfaces.length || unexpectedSurfaces.length) {
+      incomplete('focused-surface-capture-incomplete', 'The focused surface-capture journey did not stably navigate and capture exact first-fold and deep-panel evidence for every registered installed surface.', {
+        expected_count: expectedSurfaces.length,
+        result_count: results.length,
+        incomplete_surfaces: incompleteSurfaces,
+        unexpected_surfaces: unexpectedSurfaces
       });
     }
   } else if (focused === 'native-dialog-boundary') {

@@ -824,7 +824,7 @@ test('focused host-boundary scheduling runs only its exact typed-host profile', 
 test('focused native-dialog scheduling runs the exact confirmation profiles and dependent recovery checks', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   assert.match(source, /PX_OPERATIONAL_NATIVE_DIALOG_ONLY === '1'/);
-  assert.match(source, /nativeDialogOnly \? 'native-dialog-boundary' : knowledgeGraphOnly \? 'knowledge-graph' : pluginLifecycleOnly \? 'plugin-lifecycle' : codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : catalogPaginationOnly \? 'catalog-pagination' : builderOnly \? 'builder' : workbenchCommandOnly \? 'workbench-command' : null/);
+  assert.match(source, /nativeDialogOnly \? 'native-dialog-boundary' : knowledgeGraphOnly \? 'knowledge-graph' : surfaceCaptureOnly \? 'surface-capture' : pluginLifecycleOnly \? 'plugin-lifecycle' : codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : catalogPaginationOnly \? 'catalog-pagination' : builderOnly \? 'builder' : workbenchCommandOnly \? 'workbench-command' : null/);
   assert.match(source, /reversibleConfigurationProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| configurationOnly\)/);
   assert.match(source, /enterpriseProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| nativeDialogOnly\)/);
   assert.match(source, /projectsProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| nativeDialogOnly \|\| knowledgeGraphOnly\)/);
@@ -1010,11 +1010,16 @@ test('surface screenshots retain stable first-fold and proof-matrix deep-panel i
 
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   const capture = source.slice(source.indexOf('async function captureSurfaceViews'), source.indexOf('async function allPages'));
+  const settlement = source.slice(source.indexOf('async function settleInstalledSurfaceForCapture'), source.indexOf('async function captureSurfaceViews'));
+  const inspection = source.slice(source.indexOf('async function inspectSurface'), source.indexOf('async function inspectSidebar'));
   const safeCapture = source.slice(source.indexOf('async function safeScreenshot'), source.indexOf('function surfaceCaptureCandidates'));
   assert.match(capture, /surface:\$\{surface\}:first-fold/);
   assert.match(source, /const installedRoute = INSTALLED_ROUTES\[surface\] \|\| surface/);
   assert.match(capture, /control:\$\{deepTarget\.control_id\}:deep-panel/);
   assert.match(capture, /document\.scrollingElement\.scrollTop = 0/);
+  assert.equal((capture.match(/settleInstalledSurfaceForCapture\(frameHost, surface, 20_000\)/g) || []).length, 2);
+  assert.match(settlement, /navigateInstalledSurface\(frameHost, surface[\s\S]*stableSamples >= 2[\s\S]*installed-surface-capture-settlement-timeout/);
+  assert.match(inspection, /settleInstalledSurfaceForCapture\(frameHost, surface, 20_000\)/);
   assert.match(capture, /scrollIntoView\(\{ block: 'center', inline: 'nearest' \}\)/);
   assert.match(safeCapture, /const page = typeof locator\?\.page === 'function' \? locator\.page\(\) : null/);
   assert.match(safeCapture, /await page\.screenshot\(\{ path: target, animations: 'disabled', timeout: 5_000 \}\)/);
