@@ -241,6 +241,32 @@ test('focused native-dialog completion fails closed on missing recovery or profi
   assert.deepEqual(finding.details.incomplete_profiles.map(item => item.name), ['projects', 'knowledge-graph', 'cleanup', 'plugin-mutation']);
 });
 
+test('focused Plugin lifecycle requires exact rollback and absent-state reconstruction', () => {
+  const receipt = completeReceipt();
+  receipt.focused_profile = 'plugin-lifecycle';
+  receipt.control_chains.controls.forEach(control => { control.attempted = false; });
+  receipt.control_chains.aggregates.complete_interaction_chains = 0;
+  const stages = ['open_load', 'display', 'user_edit_action', 'input_validation', 'authorization', 'backend_dispatch', 'runtime_effect', 'progress_reporting', 'result_acknowledgement', 'persistence', 'reload_reopen', 'failure_handling', 'recovery_rollback'];
+  receipt.plugin_mutation_profile = {
+    observation: {
+      completed: true, exact_reconstruction: true, cleanup_restored: true,
+      uninstall_rollback_reconciled: true, update_rollback_reconciled: true, errors: []
+    },
+    control_probe: {
+      eligible_control_count: 1,
+      records: [{ control_id: 'plugin-mutation', rendered: true, attempted: true, errors: [], interaction_chain: Object.fromEntries(stages.map(stage => [stage, { state: 'present' }])) }]
+    }
+  };
+  const status = evaluateOperationalWalk(receipt);
+  assert.equal(status.terminal_state, 'completed', JSON.stringify(status.issues));
+  assert.equal(status.scope_complete, true);
+  assert.equal(status.operationally_complete, false);
+  receipt.plugin_mutation_profile.observation.cleanup_restored = false;
+  const failed = evaluateOperationalWalk(receipt);
+  assert.equal(failed.terminal_state, 'incomplete');
+  assert.ok(failed.issues.some(item => item.code === 'focused-plugin-lifecycle-incomplete'));
+});
+
 test('focused Codex handoff completion requires its exact three-control typed probe', () => {
   const receipt = completeReceipt();
   receipt.focused_profile = 'codex-handoff';

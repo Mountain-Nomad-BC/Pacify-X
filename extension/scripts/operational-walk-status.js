@@ -356,6 +356,21 @@ function focusedProfileIssues(value) {
     if (incompleteProfiles.length) {
       incomplete('focused-native-dialog-boundary-incomplete', 'The focused native-dialog journey did not complete Enterprise, Projects, Knowledge Graph, Cleanup, and Plugin mutation through exact typed postconditions and recovery.', { incomplete_profiles: incompleteProfiles });
     }
+  } else if (focused === 'plugin-lifecycle') {
+    const profile = value.plugin_mutation_profile;
+    const observation = profile?.observation;
+    if (!completeOwnedProbe(profile)
+      || observation?.completed !== true
+      || observation?.exact_reconstruction !== true
+      || observation?.cleanup_restored !== true
+      || observation?.uninstall_rollback_reconciled !== true
+      || observation?.update_rollback_reconciled !== true) {
+      incomplete('focused-plugin-lifecycle-incomplete', 'The focused Plugin lifecycle did not complete its exact install, update, uninstall, rollback, reconstruction, and absent-state restoration contract.', {
+        eligible_control_count: Number(profile?.control_probe?.eligible_control_count || 0),
+        record_count: Array.isArray(profile?.control_probe?.records) ? profile.control_probe.records.length : 0,
+        profile_errors: observation?.errors || []
+      });
+    }
   } else if (focused === 'codex-handoff') {
     const profile = value.codex_handoff_profile;
     if (!completeOwnedProbe(profile)) {

@@ -21,7 +21,7 @@ const { dispatchInstalledPluginConflictControl, installedPluginConflictControlMa
 const { installedAdvancedFixtureStateAcknowledged } = require('../scripts/run-operational-ui-walk');
 const { waitForInstalledCanonicalMemoryBaseline, waitForInstalledCanonicalMemoryState } = require('../scripts/run-operational-ui-walk');
 const { closeOwnedDashboardTabs, remainingOwnedUiBudget } = require('../scripts/run-operational-ui-walk');
-const { bindCurrentWorkbenchCommandRejection, dispatchCurrentWorkbenchCommandRejection, observeCurrentWorkbenchCommandRejection } = require('../scripts/run-operational-ui-walk');
+const { bindCurrentWorkbenchCommandRejection, dispatchCurrentWorkbenchCommandRejection, dispatchWorkbenchCommandSelection, observeCurrentWorkbenchCommandRejection } = require('../scripts/run-operational-ui-walk');
 
 const { boundedOwnedUiAction, createOwnedContentEvaluationBoundary, createOwnedLocatorEvaluationBoundary, waitForOwnedWebview } = require('../scripts/run-operational-ui-walk');
 const { clickWhenBuilderControlReady, clickWhenInstalledGraphControlReady, installedGraphExchangeOffset, invokeBuilderControl, waitForBuilderJsonControls, waitForInstalledGraphExchange, waitForInstalledGraphIdle } = require('../scripts/run-operational-ui-walk');
@@ -66,6 +66,29 @@ test('dashboard reconstruction drains every owned matching tab before reopening 
 test('owned UI deadline budgets fail closed after the single caller deadline', () => {
   assert.ok(remainingOwnedUiBudget(Date.now() + 1_000, 'focused-owner') > 0);
   assert.throws(() => remainingOwnedUiBudget(Date.now() - 1, 'focused-owner'), /focused-owner-deadline-exhausted/);
+});
+
+test('renderer-displacing command dispatch settles on correlated main-frame navigation', async () => {
+  const listeners = new Map();
+  const mainFrame = {};
+  const workbench = {
+    keyboard: { press: () => new Promise(() => {}) },
+    mainFrame: () => mainFrame,
+    on: (event, listener) => listeners.set(event, listener),
+    off: (event, listener) => {
+      if (listeners.get(event) === listener) listeners.delete(event);
+    }
+  };
+  setImmediate(() => listeners.get('framenavigated')?.(mainFrame));
+  assert.equal(await dispatchWorkbenchCommandSelection(workbench, { navigationExpected: true, timeoutMs: 250 }), 'main-frame-navigation');
+  assert.equal(listeners.has('framenavigated'), false);
+});
+
+test('ordinary command dispatch still requires a bounded keyboard acknowledgement', async () => {
+  const workbench = { keyboard: { press: async key => assert.equal(key, 'Enter') } };
+  assert.equal(await dispatchWorkbenchCommandSelection(workbench, { timeoutMs: 250 }), 'keyboard-acknowledged');
+  const blocked = { keyboard: { press: () => new Promise(() => {}) } };
+  await assert.rejects(dispatchWorkbenchCommandSelection(blocked, { timeoutMs: 10 }), /workbench-command-enter-timeout:10/);
 });
 
 test('Studio lifecycle projection preserves eligible and blocked Agent roles while replacing the primary Skill revision', () => {
@@ -448,7 +471,7 @@ test('physical host mechanics reopen the owned editor, preserve command mode, an
   assert.doesNotMatch(source, /inner\.location\.reload\(\)/);
   assert.match(source, /async function openWorkbenchCommandPalette[\s\S]*quick-input-widget:visible[\s\S]*keyboard\.press\('Escape'\)[\s\S]*state: 'hidden'[\s\S]*shortcuts = \['F1'[\s\S]*Control\+Shift\+P/);
   assert.match(source, /keyboard\.press\(process\.platform === 'darwin' \? 'Meta\+A' : 'Control\+A'\)[\s\S]*keyboard\.type\(`>\$\{title\}`\)/);
-  assert.match(source, /quick-input-list \.monaco-list-row[\s\S]*\.label-name[\s\S]*workbenchCommandRowIdentity[\s\S]*keyboard\.press\('Enter'\)[\s\S]*widget\.waitFor\(\{ state: 'hidden'/);
+  assert.match(source, /quick-input-list \.monaco-list-row[\s\S]*\.label-name[\s\S]*workbenchCommandRowIdentity[\s\S]*dispatchWorkbenchCommandSelection[\s\S]*widget\.waitFor\(\{ state: 'hidden'/);
   assert.doesNotMatch(source, /getByText\(title, \{ exact: true \}\)\.first\(\)/);
   assert.doesNotMatch(source, /await exact\.click\(\)/);
   const hostBoundary = source.slice(source.indexOf('async function runInstalledHostBoundaryProfile'), source.indexOf('const INSTALLED_ENTERPRISE_CONTROLS'));
@@ -764,13 +787,13 @@ test('focused host-boundary scheduling runs only its exact typed-host profile', 
 test('focused native-dialog scheduling runs the exact confirmation profiles and dependent recovery checks', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   assert.match(source, /PX_OPERATIONAL_NATIVE_DIALOG_ONLY === '1'/);
-  assert.match(source, /nativeDialogOnly \? 'native-dialog-boundary' : codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : catalogPaginationOnly \? 'catalog-pagination' : builderOnly \? 'builder' : workbenchCommandOnly \? 'workbench-command' : null/);
+  assert.match(source, /nativeDialogOnly \? 'native-dialog-boundary' : pluginLifecycleOnly \? 'plugin-lifecycle' : codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : catalogPaginationOnly \? 'catalog-pagination' : builderOnly \? 'builder' : workbenchCommandOnly \? 'workbench-command' : null/);
   assert.match(source, /reversibleConfigurationProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| configurationOnly\)/);
   assert.match(source, /enterpriseProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| nativeDialogOnly\)/);
   assert.match(source, /projectsProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| nativeDialogOnly\)/);
   assert.match(source, /knowledgeGraphProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| nativeDialogOnly\)/);
   assert.match(source, /cleanupProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| nativeDialogOnly\)/);
-  assert.match(source, /pluginMutationProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| nativeDialogOnly\)/);
+  assert.match(source, /pluginMutationProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| nativeDialogOnly \|\| pluginLifecycleOnly\)/);
   const studioChainClause = source.slice(source.indexOf('const studioChainAdmitted ='), source.indexOf('\n', source.indexOf('const studioChainAdmitted =')));
   assert.match(studioChainClause, /!nativeDialogOnly/);
   for (const profile of ['studioSetupProfile', 'studioCandidateSaveProfile', 'studioLifecycleProfile', 'studioRevisionEditProfile', 'knowledgeLifecycleProfile', 'learningLifecycleProfile']) {
