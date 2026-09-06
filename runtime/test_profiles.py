@@ -533,6 +533,8 @@ def _bounded_output_evidence(execution: Mapping[str, Any]) -> dict[str, object]:
                 _prefix, separator, title = stripped.partition(" - ")
                 if separator:
                     node = title.strip()
+            if node.casefold().rstrip(":") == "failing tests":
+                node = ""
             if node and node not in failure_nodes:
                 failure_nodes.append(node[:300])
     exit_code = execution.get("exit_code")

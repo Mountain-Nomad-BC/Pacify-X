@@ -2083,6 +2083,7 @@ def main(argv: list[str] | None = None) -> int:
                                 ),
                                 run_id=f"test-section-{args.name}-{chunk_id}-{uuid4().hex}",
                                 lane_id=f"section:{args.name}:{chunk_id}",
+                                manage_process_temp=True,
                             )
                             receipt = section_chunk_receipt(output, chunk, execution)
                             receipt_path = write_section_chunk_receipt(root, receipt)
@@ -2178,6 +2179,7 @@ def main(argv: list[str] | None = None) -> int:
                             ),
                             run_id=f"test-section-{args.name}-{uuid4().hex}",
                             lane_id=f"section:{args.name}",
+                            manage_process_temp=True,
                         )
                     receipt = section_receipt(output, execution)
                     receipt_path = write_section_receipt(root, receipt)
@@ -2258,6 +2260,7 @@ def main(argv: list[str] | None = None) -> int:
                     resource_manager=resource_manager,
                     run_id=run_id,
                     lane_id=args.name,
+                    manage_process_temp=True,
                 )
                 output = {
                     **output,
@@ -2361,6 +2364,7 @@ def main(argv: list[str] | None = None) -> int:
                         resource_manager=manager,
                         run_id=f"test-group-{group['group']}-{uuid4().hex}",
                         lane_id=f"group:{group['group']}",
+                        manage_process_temp=True,
                     )
                     receipt = group_receipt(group, execution)
                     path = write_group_receipt(root, receipt)

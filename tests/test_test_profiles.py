@@ -436,6 +436,22 @@ def test_section_chunk_receipt_is_atomic_bounded_and_content_addressed(tmp_path)
         "request-bound navigation settles exactly"
     ]
 
+    node_summary = section_chunk_receipt(
+        section,
+        chunk,
+        {
+            "valid": True,
+            "exit_code": 1,
+            "timed_out": False,
+            "duration_seconds": 0.2,
+            "stdout": "✖ failing tests:\n",
+            "stderr": "",
+        },
+    )
+    assert node_summary["output_evidence"]["failure_nodes"] == [
+        "unattributed-process-exit:1"
+    ]
+
     tap_failed = section_chunk_receipt(
         section,
         chunk,

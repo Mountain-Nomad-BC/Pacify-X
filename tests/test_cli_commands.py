@@ -366,12 +366,14 @@ class CliCommandTests(unittest.TestCase):
             active = 0
             maximum_active = 0
             executed: list[str] = []
+            managed_temp_flags: list[bool] = []
 
-            def run_chunk(command, **_kwargs):
+            def run_chunk(command, **kwargs):
                 nonlocal active, maximum_active
                 chunk_id = command[-1]
                 with lock:
                     executed.append(chunk_id)
+                    managed_temp_flags.append(kwargs.get("manage_process_temp"))
                     active += 1
                     maximum_active = max(maximum_active, active)
                 barrier.wait(timeout=2)
@@ -447,6 +449,7 @@ class CliCommandTests(unittest.TestCase):
             result = json.loads(output.getvalue())
             self.assertEqual(status, 0)
             self.assertEqual(sorted(executed), ["chunk-02", "chunk-03"])
+            self.assertEqual(managed_temp_flags, [True, True])
             self.assertEqual(maximum_active, 2)
             self.assertEqual(section_writer.call_count, 2)
             in_progress = section_writer.call_args_list[0].args[1]

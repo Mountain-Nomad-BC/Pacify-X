@@ -496,7 +496,7 @@
         "uuid"
       ],
       "index_state": "verified",
-      "sha256": "73d1bfcd5874f617edc20985f5cddf023b5b93d75a3accf00f27288e9339ff74"
+      "sha256": "e7ba2769324bb2680e27d8ad6f4fad2fa76fdbd84663f78b08199050748b83c6"
     },
     "runtime/cognitive_assurance.py": {
       "imports": [
@@ -2917,7 +2917,7 @@
         "typing"
       ],
       "index_state": "verified",
-      "sha256": "1b3a3df4aaf86c9ec67663b4465ae0ece4baa8281c30279eba003f3e92571003"
+      "sha256": "88e74257317879f1a09e4e0a773f1d398fa9c63e49694be98d1f12d36d33784b"
     },
     "runtime/test_runner.py": {
       "imports": [
@@ -5042,7 +5042,7 @@
         "unittest.mock"
       ],
       "index_state": "verified",
-      "sha256": "39e2c23690c6a0b53d556fc9c7721524997061ef92a7d4d5774fffa7f126f588"
+      "sha256": "90afbd087e9204d5e429e6c848f924d74573e09c0cacfeea3d7fa480a4c9c804"
     },
     "tests/test_cli_lazy_loading.py": {
       "imports": [
@@ -7359,7 +7359,7 @@
         "sys"
       ],
       "index_state": "verified",
-      "sha256": "f9949051e2a32d0b3a5e16c8c9f96a39ff5b702b6ca66966bb4d30119431680e"
+      "sha256": "ee7c98dbc3b2abe40e961d55d2d8316dee9c42632e7c8f700719b87ad6502854"
     },
     "tests/test_test_runner_controls.py": {
       "imports": [
@@ -7611,7 +7611,7 @@
       ],
       "description": "Serial process custody, recovery, test-runner, WAL, resource-lifecycle, and workspace mutation tests.",
       "group": "process-recovery",
-      "input_sha256": "0ad6cfc5ca000cfdc4e835634f28270cfb7cf62cfba7558ceaa98c97be4cd022",
+      "input_sha256": "9621abb28b3fb67609b87180b6c1b62651b66937f898131921dc124e2b32612f",
       "inputs": [
         "registry/test_profiles.json",
         "runtime/commissioning.py",
@@ -7689,7 +7689,7 @@
       ],
       "description": "Serial exact-tool, installed-wheel, corrective-release, and full-repair-ledger certification tests.",
       "group": "exact-installed",
-      "input_sha256": "12d98681794f1536f906e72b308ca089d15bad3c7753179bd3813eba25e1faff",
+      "input_sha256": "024d5e3419c627da02a8e34c03a5454a515fc100d6ad83df2c15b8630b75aa30",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -7779,7 +7779,7 @@
       ],
       "description": "Serial release, distribution, artifact, and revocation certification tests excluding composed audit mutations.",
       "group": "release-build",
-      "input_sha256": "e71295de11383e6f0a9cc219a72c8dd02b3ced5df14a7bc96777b5271cfe2aa8",
+      "input_sha256": "d7e5564ba081569ad28304728fe7ecf915b8056da3d52fd13a5d70c31cf8a07c",
       "inputs": [
         ".github/workflows/release.yml",
         "README.md",
@@ -7861,7 +7861,7 @@
       ],
       "description": "Serial composed-audit and quarantine-mutation tests isolated from package builds.",
       "group": "release-audit",
-      "input_sha256": "709bc273b5271c7fb806183f687c596c4a4ce161fcfa3be06092eda0012d17fe",
+      "input_sha256": "900dcf71cb20ef62b89ba3b7ceaa225126283e95237f2134759938c54577b5c9",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -7907,7 +7907,7 @@
       ],
       "description": "Serial full-tree structural mutation tests isolated from derived-artifact checks.",
       "group": "structural-adversarial",
-      "input_sha256": "37e46bde9b8da22857511f421729f611a17b3d9bb22d53744ceb949e318f7a98",
+      "input_sha256": "1cca796c82d94769d9767ac3f43069640c8444b94156440bcece729a698e4a7d",
       "inputs": [
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_agents_md_generator.py",
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_change_impact.py",
@@ -9699,7 +9699,7 @@
       ],
       "description": "Final serial generated-output, completion-projection, portability, effect-surface, and punch-card integrity gate.",
       "group": "derived-integrity",
-      "input_sha256": "78e1bbbda0079e67732b175ec3d0ea2433c2725cde3ea5f6cc8c764ba50f9d63",
+      "input_sha256": "02dfc1958df55d5160b50b16fa4fe205913d9b721cb77683cc774d612c4ffcc3",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -10011,7 +10011,7 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin A through F; this lane shares canonical registry state with core-n-s and must not overlap it.",
       "group": "core-a-f",
-      "input_sha256": "0d99fe835a72f34bdeeed261bb4339fe7cdb03b01c1e610099440cf9b26e2fdf",
+      "input_sha256": "6d31128f42f285398ba47f0e80d3ce0d88ec9de11c9811a495f430212d1e5f15",
       "inputs": [
         "builders/declared_suite_builder.py",
         "builders/declared_suite_support_builder.py",
@@ -10451,7 +10451,7 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin G through M; this lane reads or mutates shared canonical repository state.",
       "group": "core-g-m",
-      "input_sha256": "d30b7ea3875ddc9da7547d743dc6c03c5bb847f41fc5e965b47470229e4c3d9d",
+      "input_sha256": "9a811443397b60bab8caa89459ee01ba05484462a9babb11e784ef012bc56643",
       "inputs": [
         "builders/common.py",
         "builders/orchestration_builder.py",
@@ -10834,7 +10834,7 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin N through S; this lane reads or mutates shared canonical repository state.",
       "group": "core-n-s",
-      "input_sha256": "23b12b84807fab57ce404ba965d82d8eeb24df80fc20d380723fc6590d2a1011",
+      "input_sha256": "84cbd947b9ae6df87c8f0da6cd7d204cf84ee9c7ef691875c33edeb21f2aadaf",
       "inputs": [
         "registry/test_profiles.json",
         "runtime/__init__.py",
@@ -11216,7 +11216,7 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin T through Z; this lane reads or mutates shared canonical repository state.",
       "group": "core-t-z",
-      "input_sha256": "b2410894976ce9a452735fbe18e8ccd9c97cab10f54199598ba56b8c0e1913c8",
+      "input_sha256": "4aa9d69d3b31cc26c27c0bc8bb5c00291216d7373eea81e289dde884710c8dff",
       "inputs": [
         "builders/adapter_builder.py",
         "builders/common.py",
