@@ -91,15 +91,69 @@ def test_initial_readiness_allows_one_unused_cleared_predecessor(
     (control / "release-identity.json").write_text(
         json.dumps(
             {
+                "schema_version": "px.release-campaign/1.0",
                 "campaign_id": value.predecessor_campaign_id,
+                "repair_campaign_id": value.repair_campaign_id,
                 "state": "cleared",
                 "apply_count": 0,
                 "identity": None,
                 "active_claim": None,
+                "stages": {
+                    name: {"status": "pending", "claim_id": None}
+                    for name in RELEASE_STAGE_PHASES
+                },
             }
         ),
         encoding="utf-8",
     )
+    assert readiness(value)["valid"] is True
+
+
+def test_initial_readiness_requires_marker_for_chained_preidentity_predecessor(
+    tmp_path: Path,
+) -> None:
+    value = config(tmp_path)
+    control = tmp_path / ".engineering-bootstrap/processing-order"
+    control.mkdir(parents=True)
+    (control / "repair-campaign.json").write_text(
+        json.dumps(
+            {
+                "campaign_id": value.repair_campaign_id,
+                "phase": "repair_frozen",
+                "intake_open": False,
+                "unresolved": [],
+            }
+        ),
+        encoding="utf-8",
+    )
+    release = {
+        "schema_version": "px.release-campaign/1.0",
+        "campaign_id": value.predecessor_campaign_id,
+        "repair_campaign_id": value.repair_campaign_id,
+        "state": "cleared",
+        "apply_count": 0,
+        "identity": None,
+        "active_claim": None,
+        "pre_identity_reconciliation_successor": True,
+        "stages": {
+            name: {"status": "pending", "claim_id": None}
+            for name in RELEASE_STAGE_PHASES
+        },
+    }
+    release_path = control / "release-identity.json"
+    release_path.write_text(json.dumps(release), encoding="utf-8")
+    assert readiness(value)["valid"] is False
+
+    release["pre_identity_failure"] = {
+        "schema_version": "px.pre-identity-owner-failure/1.0",
+        "campaign_id": value.predecessor_campaign_id,
+        "owner": "reconcile",
+        "status": "failed",
+        "attempt_count": 1,
+        "error": "ValueError: failed classification",
+        "recorded_at": "2026-09-06T00:00:00Z",
+    }
+    release_path.write_text(json.dumps(release), encoding="utf-8")
     assert readiness(value)["valid"] is True
 
 

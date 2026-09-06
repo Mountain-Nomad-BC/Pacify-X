@@ -284,6 +284,7 @@ def resource_postcondition(config: Config) -> dict[str, Any]:
     )
     valid = (
         status.get("valid") is True
+        and status.get("active_paths") == 0
         and status.get("reclaimable_paths") == 0
         and status.get("cleanup_failures") == 0
         and (status.get("active_processes") == 0 or exact_self)
@@ -292,6 +293,8 @@ def resource_postcondition(config: Config) -> dict[str, Any]:
 
 
 def check(config: Config, step: str) -> dict[str, Any]:
+    from runtime.release_campaign import cleared_campaign_can_be_superseded
+
     errors: list[str] = []
     if step not in STEPS:
         errors.append("unsupported step")
@@ -343,6 +346,7 @@ def check(config: Config, step: str) -> dict[str, Any]:
                     and (
                         current_release.get("apply_count") != 0
                         or current_release.get("identity") is not None
+                        or not cleared_campaign_can_be_superseded(current_release)
                     )
                 )
                 or (
@@ -1232,6 +1236,7 @@ def main(argv: list[str] | None = None) -> int:
     modes.add_argument("--check", action="store_true")
     modes.add_argument("--execute", action="store_true")
     args = parser.parse_args(argv)
+    config: Config | None = None
     try:
         config = Config.load(args.config.resolve(strict=True))
         if not args.check and not args.execute:
@@ -1243,10 +1248,32 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps(output, indent=2))
         return 0 if output.get("valid") else 1
     except (OwnerBlocked, OSError, ValueError, json.JSONDecodeError) as exc:
-        print(
-            json.dumps(
-                {"valid": False, "errors": [f"{type(exc).__name__}: {exc}"]}, indent=2
+        marker_error: Exception | None = None
+        if args.execute and config is not None and args.step in {"archive_clear", "reconcile"}:
+            try:
+                current = release(config)
+                if (
+                    current.get("campaign_id") == config.candidate_id
+                    and current.get("state") == "cleared"
+                ):
+                    from runtime.release_campaign import mark_pre_identity_owner_failure
+
+                    mark_pre_identity_owner_failure(
+                        config.root,
+                        campaign_id=config.candidate_id,
+                        owner=args.step,
+                        error=f"{type(exc).__name__}: {exc}",
+                    )
+            except (OSError, ValueError, json.JSONDecodeError) as marker_exc:
+                marker_error = marker_exc
+        errors = [f"{type(exc).__name__}: {exc}"]
+        if marker_error is not None:
+            errors.append(
+                "pre-identity failure marker could not be recorded: "
+                f"{type(marker_error).__name__}: {marker_error}"
             )
+        print(
+            json.dumps({"valid": False, "errors": errors}, indent=2)
         )
         return 1
 

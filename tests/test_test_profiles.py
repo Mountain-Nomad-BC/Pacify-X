@@ -21,6 +21,7 @@ from runtime.release_campaign import (
     claim_release_stage,
     clear_release_identity,
     finish_release_stage,
+    mark_pre_identity_owner_failure,
     release_campaign_status,
     supersede_consumed_cleared_release_campaign,
     supersede_failed_release_campaign,
@@ -284,7 +285,7 @@ def test_studio_section_is_bounded_into_independently_addressed_chunks():
 def test_failed_monolithic_sections_are_serially_partitioned_per_file():
     expected = {
         "dashboard-extension": {"chunk_timeout": 600, "section_timeout": 3600},
-        "testing-governance": {"chunk_timeout": 300, "section_timeout": 900},
+        "testing-governance": {"chunk_timeout": 300, "section_timeout": 1800},
     }
     for name, limits in expected.items():
         section = resolve_test_section(ROOT, name)
@@ -872,7 +873,7 @@ def test_terminal_failed_campaign_is_archived_before_one_cleared_successor(
         )
 
 
-def test_consumed_cleared_campaign_is_archived_before_one_preidentity_successor(
+def test_chained_preidentity_successor_requires_exact_terminal_failure_marker(
     tmp_path: Path, release_classification
 ) -> None:
     _release_repair_state(tmp_path, "repair")
@@ -895,12 +896,32 @@ def test_consumed_cleared_campaign_is_archived_before_one_preidentity_successor(
         "certification-reconciled-empty"
     )
     assert retained["campaign_state"]["identity"] is None
-    with pytest.raises(ReleaseCampaignBlocked, match="only one original unused"):
+    with pytest.raises(ReleaseCampaignBlocked, match="terminal pre-identity marker"):
         supersede_consumed_cleared_release_campaign(
             tmp_path,
             campaign_id="certification-forbidden-second-successor",
             reason="must not chain pre-identity successors",
         )
+    marked = mark_pre_identity_owner_failure(
+        tmp_path,
+        campaign_id="certification-preidentity-successor",
+        owner="reconcile",
+        error="ValueError: candidate source classification failed",
+    )
+    assert marked["changed"] is True
+    second = supersede_consumed_cleared_release_campaign(
+        tmp_path,
+        campaign_id="certification-proven-second-successor",
+        reason="preserve the terminal reconcile attempt before continuing",
+    )
+    assert second["state"] == "cleared"
+    assert second["pre_identity_reconciliation_attempt"] == 2
+    second_archive = json.loads(
+        (tmp_path / second["superseded_archive"]).read_text(encoding="utf-8")
+    )
+    assert second_archive["campaign_state"]["pre_identity_failure"]["owner"] == (
+        "reconcile"
+    )
 
 
 def test_claimed_package_stage_remains_admitted_for_its_exact_command(

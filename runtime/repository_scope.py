@@ -30,6 +30,7 @@ DERIVED_CUSTODY_ROOTS = frozenset(
         "coordination",
         "diagnostics",
         "environment",
+        "focused-temp",
         "project-map",
         "project-map-history",
         "project-map-history-archives",

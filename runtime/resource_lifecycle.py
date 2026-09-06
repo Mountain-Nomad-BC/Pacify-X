@@ -1325,6 +1325,9 @@ def resource_status(
         "active_processes": sum(
             item.resource_type == "process" and item.active for item in records
         ),
+        "active_paths": sum(
+            item.resource_type == "path" and item.active for item in records
+        ),
         "reclaimable_paths": sum(
             item.resource_type == "path"
             and item.status == ResourceStatus.RECLAIMABLE.value

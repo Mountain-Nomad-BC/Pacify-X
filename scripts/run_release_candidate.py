@@ -392,6 +392,8 @@ def _invalid_active_predecessor_kind(
 
 
 def readiness(config: Config) -> dict[str, Any]:
+    from runtime.release_campaign import cleared_campaign_can_be_superseded
+
     errors: list[str] = []
     initial = not config.automation_state.exists()
     if not config.root.is_dir():
@@ -450,6 +452,7 @@ def readiness(config: Config) -> dict[str, Any]:
                     release.get("apply_count") == 0
                     and release.get("identity") is None
                     and repair_phase == "repair_frozen"
+                    and cleared_campaign_can_be_superseded(release)
                 )
             active_kind = _invalid_active_predecessor_kind(config, release)
             if release.get("state") == "active":

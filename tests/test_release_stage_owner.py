@@ -13,6 +13,7 @@ from scripts.run_release_stage_owner import (
     ProductionEffects,
     STEPS,
     check,
+    main,
     plan,
     run,
     resource_postcondition,
@@ -163,16 +164,115 @@ def test_archive_check_allows_one_unused_cleared_predecessor(tmp_path: Path) -> 
     state.write_text(
         json.dumps(
             {
+                "schema_version": "px.release-campaign/1.0",
                 "campaign_id": config.predecessor_id,
+                "repair_campaign_id": "pacify-x-cohesion-closure-repair12-20260905",
                 "state": "cleared",
                 "apply_count": 0,
                 "identity": None,
                 "active_claim": None,
+                "stages": {
+                    name: {"status": "pending", "claim_id": None}
+                    for name in (
+                        "sections",
+                        "full_profile",
+                        "validate",
+                        "package",
+                        "install",
+                        "installed_operational",
+                        "certify",
+                    )
+                },
             }
         ),
         encoding="utf-8",
     )
     assert check(config, "archive_clear")["valid"] is True
+
+
+def test_archive_check_rejects_unmarked_chained_preidentity_predecessor(
+    tmp_path: Path,
+) -> None:
+    config = fixture(tmp_path, "archive_clear")
+    state = tmp_path / ".engineering-bootstrap/processing-order/release-identity.json"
+    value = json.loads(state.read_text(encoding="utf-8"))
+    value.update(
+        schema_version="px.release-campaign/1.0",
+        repair_campaign_id="pacify-x-cohesion-closure-repair12-20260905",
+        state="cleared",
+        apply_count=0,
+        identity=None,
+        pre_identity_reconciliation_successor=True,
+        stages={
+            name: {"status": "pending", "claim_id": None}
+            for name in (
+                "sections",
+                "full_profile",
+                "validate",
+                "package",
+                "install",
+                "installed_operational",
+                "certify",
+            )
+        },
+    )
+    state.write_text(json.dumps(value), encoding="utf-8")
+
+    assert check(config, "archive_clear")["valid"] is False
+
+    value["pre_identity_failure"] = {
+        "schema_version": "px.pre-identity-owner-failure/1.0",
+        "campaign_id": config.predecessor_id,
+        "owner": "reconcile",
+        "status": "failed",
+        "attempt_count": 1,
+        "error": "ValueError: failed classification",
+        "recorded_at": "2026-09-06T00:00:00Z",
+    }
+    state.write_text(json.dumps(value), encoding="utf-8")
+    assert check(config, "archive_clear")["valid"] is True
+
+
+def test_execute_failure_marks_exact_current_preidentity_candidate(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    config = fixture(tmp_path, "reconcile")
+    state = tmp_path / ".engineering-bootstrap/processing-order/release-identity.json"
+    value = json.loads(state.read_text(encoding="utf-8"))
+    value.update(
+        schema_version="px.release-campaign/1.0",
+        repair_campaign_id="pacify-x-cohesion-closure-repair12-20260905",
+        stages={
+            name: {"status": "pending", "claim_id": None}
+            for name in (
+                "sections",
+                "full_profile",
+                "validate",
+                "package",
+                "install",
+                "installed_operational",
+                "certify",
+            )
+        },
+    )
+    state.write_text(json.dumps(value), encoding="utf-8")
+    config_path = tmp_path / "config.json"
+    config_path.write_text("{}", encoding="utf-8")
+    monkeypatch.setattr(
+        "scripts.run_release_stage_owner.Config.load", lambda _path: config
+    )
+    monkeypatch.setattr(
+        "scripts.run_release_stage_owner.run",
+        lambda *_args, **_kwargs: (_ for _ in ()).throw(
+            OwnerBlocked("classification failed")
+        ),
+    )
+
+    assert main(["--config", str(config_path), "--step", "reconcile", "--execute"]) == 1
+    marked = json.loads(state.read_text(encoding="utf-8"))["pre_identity_failure"]
+    assert marked["campaign_id"] == config.candidate_id
+    assert marked["owner"] == "reconcile"
+    assert marked["attempt_count"] == 1
 
 
 def test_archive_check_allows_one_unused_invalid_identity_predecessor(
@@ -455,16 +555,21 @@ def test_child_resource_postcondition_allows_only_exact_supervised_self(
         encoding="utf-8",
     )
     monkeypatch.setattr("scripts.run_release_stage_owner.os.getpid", lambda: 123)
+    observed_status = {
+        "valid": True,
+        "active_processes": 1,
+        "active_paths": 0,
+        "reclaimable_paths": 0,
+        "cleanup_failures": 0,
+    }
     monkeypatch.setattr(
         "runtime.resource_lifecycle.resource_status",
-        lambda _path: {
-            "valid": True,
-            "active_processes": 1,
-            "reclaimable_paths": 0,
-            "cleanup_failures": 0,
-        },
+        lambda _path: observed_status,
     )
     assert resource_postcondition(config)["valid"] is True
+    observed_status["active_paths"] = 1
+    assert resource_postcondition(config)["valid"] is False
+    observed_status["active_paths"] = 0
     value = json.loads(ledger.read_text(encoding="utf-8"))
     value["resources"][0]["pid"] = 456
     ledger.write_text(json.dumps(value), encoding="utf-8")

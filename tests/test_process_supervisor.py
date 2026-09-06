@@ -12,6 +12,7 @@ from types import SimpleNamespace
 
 import pytest
 
+import runtime.process_supervisor as process_supervisor_module
 from runtime.file_lock import _process_exists, _process_start_fingerprint
 from runtime.process_supervisor import ProcessSupervisor, _BoundedCapture
 from runtime.resource_lifecycle import ResourceManager, ResourceStatus
@@ -345,6 +346,29 @@ def test_signal_resistant_process_uses_forced_shutdown(harness) -> None:
     finally:
         canceller.join(timeout=6)
     assert result.status == "cancelled"
+    assert result.shutdown_mode == "forced"
+    assert result.tree_closed
+
+
+@pytest.mark.skipif(os.name != "nt", reason="Windows Job Object fallback")
+def test_denied_job_termination_falls_back_to_owned_process_handle(
+    harness, monkeypatch
+) -> None:
+    def deny_job_termination(_job, exit_code: int = 137) -> None:
+        del exit_code
+        raise OSError("simulated TerminateJobObject denial")
+
+    monkeypatch.setattr(
+        process_supervisor_module._WindowsJob,
+        "terminate",
+        deny_job_termination,
+    )
+    result = _run(
+        harness,
+        "import signal,time;signal.signal(signal.SIGBREAK,signal.SIG_IGN);print('ready',flush=True);time.sleep(30)",
+    )
+
+    assert result.status == "idle_timeout"
     assert result.shutdown_mode == "forced"
     assert result.tree_closed
 

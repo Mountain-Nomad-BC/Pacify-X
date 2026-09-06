@@ -140,6 +140,20 @@ def test_host_local_probe_and_lock_recovery_receipts_are_excluded_from_release()
     assert not (product_paths & set(paths))
 
 
+def test_project_local_focused_test_custody_is_excluded_from_release() -> None:
+    root = _minimal_tree()
+    generated = root / ".engineering-bootstrap/focused-temp/pytest/generated.py"
+    generated.parent.mkdir(parents=True)
+    generated.write_text("raise RuntimeError('test-only')\n", encoding="utf-8")
+
+    result = classify_tree(root)
+
+    assert result["valid"], result["errors"]
+    assert generated.relative_to(root).as_posix() not in {
+        item["path"] for item in result["records"]
+    }
+
+
 def test_governance_and_receipt_progress_cannot_mutate_frozen_product_identity() -> None:
     root = _minimal_tree()
     controls = {

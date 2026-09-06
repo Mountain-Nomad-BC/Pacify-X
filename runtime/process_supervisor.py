@@ -654,7 +654,21 @@ class ProcessSupervisor:
             mode = "forced"
             try:
                 if job is not None:
-                    job.terminate()
+                    try:
+                        job.terminate()
+                    except OSError:
+                        # TerminateJobObject can be denied by a containing host
+                        # policy even though this supervisor still owns the
+                        # exact Popen process handle.  Kill that root through
+                        # the retained handle; its nested kill-on-close jobs
+                        # then close their own descendants.
+                        if (
+                            process.poll() is None
+                            and _process_start_fingerprint(process.pid) == fingerprint
+                        ):
+                            process.kill()
+                        else:
+                            raise
                 elif (
                     os.name == "nt"
                     and _process_start_fingerprint(process.pid) == fingerprint
@@ -674,6 +688,10 @@ class ProcessSupervisor:
                         pass
                     self._signal_proven_posix(tracked, signal.SIGKILL)
                 process.wait(timeout=budget.force_shutdown_seconds)
+                if job is not None and not job.wait_closed(
+                    budget.force_shutdown_seconds, budget.poll_interval_seconds
+                ):
+                    return "forced_failed", False
             except (OSError, subprocess.SubprocessError):
                 return "forced_failed", False
         if os.name != "nt":

@@ -44,6 +44,7 @@ STAGE_PHASES = {
     "certify": "installed_operational",
 }
 SHA256_PATTERN = re.compile(r"^[a-f0-9]{64}$")
+PRE_IDENTITY_FAILURE_SCHEMA = "px.pre-identity-owner-failure/1.0"
 
 
 class ReleaseCampaignBlocked(ValueError):
@@ -62,6 +63,19 @@ def _canonical(value: object) -> bytes:
 
 def _sha(value: object) -> str:
     return hashlib.sha256(_canonical(value)).hexdigest()
+
+
+def _valid_pre_identity_failure(value: object, campaign_id: str) -> bool:
+    return (
+        isinstance(value, dict)
+        and value.get("schema_version") == PRE_IDENTITY_FAILURE_SCHEMA
+        and value.get("campaign_id") == campaign_id
+        and value.get("owner") in {"archive_clear", "reconcile"}
+        and value.get("status") == "failed"
+        and value.get("attempt_count") == 1
+        and bool(str(value.get("error") or "").strip())
+        and bool(str(value.get("recorded_at") or "").strip())
+    )
 
 
 def _write(path: Path, value: object) -> None:
@@ -109,6 +123,11 @@ def _validate(value: object) -> dict[str, Any]:
     ):
         raise ReleaseCampaignBlocked("release campaign state is malformed")
     identity = value.get("identity")
+    pre_identity_failure = value.get("pre_identity_failure")
+    if pre_identity_failure is not None and not _valid_pre_identity_failure(
+        pre_identity_failure, str(value["campaign_id"])
+    ):
+        raise ReleaseCampaignBlocked("pre-identity failure marker is malformed")
     if value["state"] == "cleared":
         if (
             value["apply_count"] != 0
@@ -176,6 +195,71 @@ def _validate(value: object) -> dict[str, Any]:
         ):
             raise ReleaseCampaignBlocked("certified release campaign stage state is malformed")
     return value
+
+
+def cleared_campaign_can_be_superseded(value: object) -> bool:
+    """Require a terminal marker before chaining a pre-identity successor."""
+
+    try:
+        campaign = _validate(value)
+    except ReleaseCampaignBlocked:
+        return False
+    if (
+        campaign.get("state") != "cleared"
+        or campaign.get("apply_count") != 0
+        or campaign.get("identity") is not None
+        or campaign.get("active_claim") is not None
+    ):
+        return False
+    if campaign.get("pre_identity_reconciliation_successor") is not True:
+        return True
+    return _valid_pre_identity_failure(
+        campaign.get("pre_identity_failure"), str(campaign["campaign_id"])
+    )
+
+
+def mark_pre_identity_owner_failure(
+    root: Path, *, campaign_id: str, owner: str, error: str
+) -> dict[str, Any]:
+    """Durably mark one failed pre-identity owner without replaying its campaign."""
+
+    root = root.resolve(strict=True)
+    candidate = campaign_id.strip()
+    owner_name = owner.strip()
+    explanation = error.strip()
+    if owner_name not in {"archive_clear", "reconcile"} or not explanation:
+        raise ReleaseCampaignBlocked("pre-identity failure marker is incomplete")
+    path = root / STATE_PATH
+    value = _validate(json.loads(path.read_text(encoding="utf-8")))
+    if (
+        value.get("campaign_id") != candidate
+        or value.get("state") != "cleared"
+        or value.get("apply_count") != 0
+        or value.get("identity") is not None
+        or value.get("active_claim") is not None
+    ):
+        raise ReleaseCampaignBlocked(
+            "pre-identity failure marker requires the exact current cleared campaign"
+        )
+    marker = {
+        "schema_version": PRE_IDENTITY_FAILURE_SCHEMA,
+        "campaign_id": candidate,
+        "owner": owner_name,
+        "status": "failed",
+        "attempt_count": 1,
+        "error": explanation,
+        "recorded_at": _now(),
+    }
+    existing = value.get("pre_identity_failure")
+    if existing is not None:
+        comparable = {key: existing.get(key) for key in marker if key != "recorded_at"}
+        expected = {key: item for key, item in marker.items() if key != "recorded_at"}
+        if comparable != expected:
+            raise ReleaseCampaignBlocked("pre-identity failure marker is already bound")
+        return {"valid": True, "marker": existing, "changed": False}
+    value["pre_identity_failure"] = marker
+    _write(path, value)
+    return {"valid": True, "marker": marker, "changed": True}
 
 
 def release_campaign_status(root: Path, *, verify_source: bool = False) -> dict[str, Any]:
@@ -588,14 +672,9 @@ def supersede_consumed_cleared_release_campaign(
     previous = _validate(json.loads(state_path.read_text(encoding="utf-8")))
     if replacement_id == previous["campaign_id"]:
         raise ReleaseCampaignBlocked("replacement campaign ID must be new")
-    if (
-        previous["state"] != "cleared"
-        or previous["apply_count"] != 0
-        or previous.get("identity") is not None
-        or previous.get("pre_identity_reconciliation_successor") is True
-    ):
+    if not cleared_campaign_can_be_superseded(previous):
         raise ReleaseCampaignBlocked(
-            "only one original unused cleared campaign may be superseded"
+            "a chained cleared campaign requires one exact terminal pre-identity marker"
         )
     archive_path = root / FAILED_IDENTITY_ARCHIVE_ROOT / (
         f"consumed-cleared-release-campaign-{previous['campaign_id']}.json"
@@ -627,6 +706,10 @@ def supersede_consumed_cleared_release_campaign(
         "identity": None,
         "active_claim": None,
         "pre_identity_reconciliation_successor": True,
+        "pre_identity_reconciliation_attempt": int(
+            previous.get("pre_identity_reconciliation_attempt") or 0
+        )
+        + 1,
         "supersedes": {
             "campaign_id": previous["campaign_id"],
             "archive": archive_path.relative_to(root).as_posix(),

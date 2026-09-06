@@ -20,6 +20,7 @@ from runtime.resource_lifecycle import (
     ResourceStatus,
     RunState,
     StorageBudget,
+    resource_status,
 )
 
 
@@ -67,6 +68,13 @@ class ResourceLifecycleTests(unittest.TestCase):
 
         stored = {record.resource_id for record in self.manager.ledger.load()}
         self.assertEqual(stored, resource_ids)
+
+    def test_resource_status_reports_active_paths(self) -> None:
+        workspace = self._workspace("active-path")
+        self.assertEqual(resource_status(self.manager.ledger.path)["active_paths"], 1)
+
+        self.manager.update(workspace.resource_id, active=False)
+        self.assertEqual(resource_status(self.manager.ledger.path)["active_paths"], 0)
 
     def test_load_waits_for_cross_instance_mutation(self) -> None:
         self._workspace("seed")
