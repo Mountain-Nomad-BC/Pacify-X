@@ -17,6 +17,7 @@ from runtime.release_campaign import (
     claim_release_stage,
     clear_release_identity,
     finish_release_stage,
+    rewind_invalid_release_identity_reconciliation,
     supersede_invalid_active_release_campaign,
     supersede_invalid_release_identity,
 )
@@ -141,6 +142,7 @@ def test_host_local_probe_and_lock_recovery_receipts_are_excluded_from_release()
 def test_governance_and_receipt_progress_cannot_mutate_frozen_product_identity() -> None:
     root = _minimal_tree()
     controls = {
+        ".engineering-bootstrap/admission-payloads/release-stage.json": '{"effect":"execute"}\n',
         ".engineering-bootstrap/processing-order/repair-campaign.json": '{"phase":"repair_frozen"}\n',
         ".engineering-bootstrap/processing-order/release-identity.json": '{"state":"cleared"}\n',
         ".engineering-bootstrap/test-evidence/sections/testing-governance.json": '{"passed":true}\n',
@@ -164,6 +166,7 @@ def test_governance_and_receipt_progress_cannot_mutate_frozen_product_identity()
     assert frozen["product_digest"] == current["product_digest"]
     records = {item["path"]: item for item in current["records"]}
     for relative in (
+        ".engineering-bootstrap/admission-payloads/release-stage.json",
         ".engineering-bootstrap/processing-order/repair-campaign.json",
         ".engineering-bootstrap/processing-order/release-identity.json",
         ".engineering-bootstrap/test-evidence/sections/testing-governance.json",
@@ -299,7 +302,11 @@ def test_real_classifier_is_stable_across_identity_apply_and_invalid_supersessio
             reason="invalid attempt to replace a coherent identity",
         )
 
+    _write_release_repair_state(root, "revision_reconciled")
     (root / "runtime/module.py").write_text("VALUE = 2\n", encoding="utf-8")
+    rewind = rewind_invalid_release_identity_reconciliation(root)
+    assert rewind["valid"] is True
+    assert rewind["phase"] == "repair_frozen"
     superseded = supersede_invalid_release_identity(
         root,
         campaign_id="identity-corrected",

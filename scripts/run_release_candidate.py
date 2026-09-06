@@ -355,12 +355,14 @@ def readiness(config: Config) -> dict[str, Any]:
     if initial and any(path.exists() for path in config.fresh_paths):
         errors.append("one or more fresh output paths already exist before the first step")
     if initial:
+        repair_phase: str | None = None
         try:
             repair = _repair(config)
+            repair_phase = str(repair.get("phase") or "")
             if repair.get("campaign_id") != config.repair_campaign_id:
                 errors.append("repair campaign ID differs from configuration")
             if (
-                repair.get("phase") != "repair_frozen"
+                repair_phase not in {"repair_frozen", "revision_reconciled"}
                 or repair.get("intake_open") is not False
                 or repair.get("unresolved") != []
             ):
@@ -376,8 +378,45 @@ def readiness(config: Config) -> dict[str, Any]:
                 and release.get("apply_count") == 0
                 and release.get("identity") is None
             )
+            unused_invalid_identity = False
+            if (
+                release.get("state") == "active"
+                and release.get("apply_count") == 1
+                and isinstance(release.get("identity"), dict)
+                and release.get("active_claim") is None
+                and tuple(release.get("stages", {}))
+                == (
+                    "sections",
+                    "full_profile",
+                    "validate",
+                    "package",
+                    "install",
+                    "installed_operational",
+                    "certify",
+                )
+                and all(
+                    isinstance(record, dict) and record.get("status") == "pending"
+                    for record in release.get("stages", {}).values()
+                )
+            ):
+                from runtime.release_campaign import release_campaign_status
+
+                verification = release_campaign_status(config.root, verify_source=True)
+                unused_invalid_identity = (
+                    verification.get("valid") is False
+                    and bool(verification.get("errors"))
+                )
+                predecessor_ready = unused_invalid_identity
+            if repair_phase == "revision_reconciled" and not unused_invalid_identity:
+                errors.append(
+                    "a reconciled predecessor is allowed only for one unused "
+                    "invalid identity"
+                )
             if not predecessor_ready or release.get("active_claim") is not None:
-                errors.append("predecessor is not terminal failed or unused cleared")
+                errors.append(
+                    "predecessor is not terminal failed, unused cleared, or an "
+                    "unused invalid identity"
+                )
         except (OSError, ValueError, json.JSONDecodeError) as exc:
             errors.append(f"release campaign is unreadable: {type(exc).__name__}")
     else:

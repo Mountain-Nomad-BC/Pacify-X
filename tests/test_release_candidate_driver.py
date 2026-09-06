@@ -102,6 +102,54 @@ def test_initial_readiness_allows_one_unused_cleared_predecessor(
     assert readiness(value)["valid"] is True
 
 
+def test_initial_readiness_allows_one_unused_invalid_identity_predecessor(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    value = config(tmp_path)
+    control = tmp_path / ".engineering-bootstrap/processing-order"
+    control.mkdir(parents=True)
+    (control / "repair-campaign.json").write_text(
+        json.dumps(
+            {
+                "campaign_id": value.repair_campaign_id,
+                "phase": "revision_reconciled",
+                "intake_open": False,
+                "unresolved": [],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (control / "release-identity.json").write_text(
+        json.dumps(
+            {
+                "campaign_id": value.predecessor_campaign_id,
+                "state": "active",
+                "apply_count": 1,
+                "identity": {"release_identity_sha256": "a" * 64},
+                "active_claim": None,
+                "stages": {
+                    name: {"status": "pending", "claim_id": None}
+                    for name in (
+                        "sections",
+                        "full_profile",
+                        "validate",
+                        "package",
+                        "install",
+                        "installed_operational",
+                        "certify",
+                    )
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(
+        "runtime.release_campaign.release_campaign_status",
+        lambda root, verify_source=False: {"valid": False, "errors": ["drift"]},
+    )
+    assert readiness(value)["valid"] is True
+
+
 def test_identity_manifest_is_written_before_owner_and_contains_only_dirty_sets(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:

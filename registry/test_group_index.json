@@ -2315,7 +2315,7 @@
         "uuid"
       ],
       "index_state": "verified",
-      "sha256": "bb5089a904c57bb531bab61831e81520cf2b7fe1f165efec51dda7059e88982e"
+      "sha256": "5a75c260f49331e75edcdff67d895b66ef54640eb8aea75c7dfc2883ebb0d067"
     },
     "runtime/release_certification.py": {
       "imports": [
@@ -4426,6 +4426,7 @@
         "os",
         "pathlib",
         "re",
+        "runtime.release_campaign",
         "runtime.release_identity",
         "runtime.resource_lifecycle",
         "scripts.reconcile_unverified_operational_controls",
@@ -4435,7 +4436,7 @@
         "uuid"
       ],
       "index_state": "verified",
-      "sha256": "daf308a87133e35cfbd5f78b358aec21ddae34c91452a6d27658a97dff9eb37d"
+      "sha256": "8c66b5de17a1ae2e8344ce0a01aa5f02a3bc00b3a29c5c33de3bd794b499df28"
     },
     "scripts/run_release_fault_campaign.py": {
       "imports": [
@@ -4476,7 +4477,7 @@
         "zipfile"
       ],
       "index_state": "verified",
-      "sha256": "c0b76f570375ac8ae0adad48b3dff91ba67cd0d437c5073cf4c2d0090d0b9ff6"
+      "sha256": "47a3a1116cb3d60fb820ae56107f78540a891fcf4507196dcede7321a38b7e26"
     },
     "scripts/sanitize_host_bound_cleanup_evidence.py": {
       "imports": [
@@ -6646,7 +6647,7 @@
         "tempfile"
       ],
       "index_state": "verified",
-      "sha256": "3d4217309ad0d4715c6b4b4ae946d7d4af6e62a9f1667c189213b338344458ee"
+      "sha256": "cbc22176e332143da80bd467eb2a988ec392e8f8cbb18d56315278d19dc63ce3"
     },
     "tests/test_release_audit.py": {
       "imports": [
@@ -6684,7 +6685,7 @@
         "types"
       ],
       "index_state": "verified",
-      "sha256": "e00e4db9dc222907b04bb865fcdeba3e39b0d7e80c7428a5c319f689a7607ce8"
+      "sha256": "34db74e28bffa1b3bb78cc425ed38249a6161bf866e62c28c13e9f14bfbc596e"
     },
     "tests/test_release_certification.py": {
       "imports": [
@@ -6833,7 +6834,7 @@
         "scripts.run_release_stage_owner"
       ],
       "index_state": "verified",
-      "sha256": "3b79b9decf2b6f7feebc979cbb67fc616d3e05c8994552c9f5c361b7f2cf755d"
+      "sha256": "ed93d735ae0e08b75f97f29e5a86f49632ab5c55b473a89a54b4661225abc037"
     },
     "tests/test_release_supply_chain_evidence.py": {
       "imports": [
@@ -7682,7 +7683,7 @@
       ],
       "description": "Serial exact-tool, installed-wheel, corrective-release, and full-repair-ledger certification tests.",
       "group": "exact-installed",
-      "input_sha256": "ecca337338a04bab3d7b78764e54194efd49c98f1d15557523ff34ffce3f4eb3",
+      "input_sha256": "2e45ec07174181590b5a19758b29420b69e74971b97429563e6ce2846d53e7aa",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -7772,7 +7773,7 @@
       ],
       "description": "Serial release, distribution, artifact, and revocation certification tests excluding composed audit mutations.",
       "group": "release-build",
-      "input_sha256": "223a6b03c893df215f3dae5d3ae8e18d0b029aedea36567e2cba064ee9d25957",
+      "input_sha256": "8095e7ab6b428a4ad79a6b5aebd0d20d686dbea31856eef5a04c1ac8edea2e9d",
       "inputs": [
         ".github/workflows/release.yml",
         "README.md",
@@ -7854,7 +7855,7 @@
       ],
       "description": "Serial composed-audit and quarantine-mutation tests isolated from package builds.",
       "group": "release-audit",
-      "input_sha256": "9cb7bca857a65209e5145de09d75940b21326bd1f1d9bef8a36f42f77b805780",
+      "input_sha256": "4d412eb72d289d3fa6cb14a87f34b9a9352db6840a897d8dc27f4e5fd820c69d",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -7900,7 +7901,7 @@
       ],
       "description": "Serial full-tree structural mutation tests isolated from derived-artifact checks.",
       "group": "structural-adversarial",
-      "input_sha256": "b601f69378379a3c094cfa84bfb9acd0277c9a8eeb012bfe7544574c230063da",
+      "input_sha256": "f43d0c82eebbb64f4b7eb7380cfa4395d8f6ec25ca779d1bea8d7db6d6213ac2",
       "inputs": [
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_agents_md_generator.py",
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_change_impact.py",
@@ -9692,7 +9693,7 @@
       ],
       "description": "Final serial generated-output, completion-projection, portability, effect-surface, and punch-card integrity gate.",
       "group": "derived-integrity",
-      "input_sha256": "b0eb759943dbc4b605c8785902aa43f03ef05198426d3ee896d2b19b5ba1f667",
+      "input_sha256": "0b100d9769e84f30ee0751a6f9f01297f3cdebf072cc062e826a3910af937f88",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -10827,7 +10828,7 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin N through S; this lane reads or mutates shared canonical repository state.",
       "group": "core-n-s",
-      "input_sha256": "9cb209cfdddc3cdd368455905e1c56a5c4b7ade2cf90d5d2b59644d3d668acfb",
+      "input_sha256": "7fc0eab50508445fd980104981ec210bd8dac9606d579d3681bf0fe0feb5056d",
       "inputs": [
         "registry/test_profiles.json",
         "runtime/__init__.py",
@@ -11209,7 +11210,7 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin T through Z; this lane reads or mutates shared canonical repository state.",
       "group": "core-t-z",
-      "input_sha256": "992c9ebc19fe5d3baa97d17fbbfefc1cfa7edd9c8bdd6184b0e3800ac5f1a212",
+      "input_sha256": "ad60dbd20dfe71c1c4b4544dc3a27d5324551a2aa89fa85b5a184ef091e10e8b",
       "inputs": [
         "builders/adapter_builder.py",
         "builders/common.py",

@@ -36,7 +36,7 @@ The verification command fails before installation if the certificate, signature
 11. Push the admitted evidence commit and annotated tag, create a draft GitHub Release, and upload only the signed receipt, detached receipt signature, receipt-listed chunks, and the standalone byte-identical VSIX. Do not rebuild, re-certify, or place a private key in CI.
 12. Manually dispatch `.github/workflows/release.yml` for that tag. It authenticates and reconstructs custody, independently verifies the certificate and Python artifacts, exercises the exact VSIX, publishes that VSIX to Marketplace with OIDC, and only then makes the existing GitHub draft public. Its duplicate-safe Marketplace step and draft-state check make a partial rerun idempotent.
 
-For v0.7.0, the local custody handoff is prepared only after the final101 certificate exists:
+For v0.7.0, the local custody handoff is prepared only after the final102 certificate exists:
 
 ```powershell
 $release = "0.7.0"
@@ -44,7 +44,7 @@ $tag = "v$release"
 $assets = Join-Path $env:TEMP "pacify-x-$tag-draft-assets"
 $work = Join-Path $env:TEMP "pacify-x-$tag-custody-work"
 $artifactDir = "<artifact_dir returned by release finalize>"
-$summary = "evidence/release/final101-installed-operational-summary.json"
+$summary = "evidence/release/final102-installed-operational-summary.json"
 $vsix = "extension/dist/pacify-x-vscode-0.6.85.vsix"
 New-Item -ItemType Directory -Path $assets | Out-Null
 Copy-Item -LiteralPath $vsix -Destination $assets
@@ -55,7 +55,7 @@ python -B scripts/package_release_evidence.py `
   --release $release `
   --source-commit (git rev-list -n 1 $tag) `
   --certificate "evidence/releases/$release/certificate.json" `
-  --candidate-id "pacify-x-certification-20260906-final101-single" `
+  --candidate-id "pacify-x-certification-20260906-final102-single" `
   --vsix $vsix `
   --installed-summary $summary `
   --output $assets `

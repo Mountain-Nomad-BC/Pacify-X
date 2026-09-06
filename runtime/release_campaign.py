@@ -395,6 +395,51 @@ def supersede_invalid_release_identity(
     return {**status, "superseded_archive": archive_path.relative_to(root).as_posix()}
 
 
+def rewind_invalid_release_identity_reconciliation(root: Path) -> dict[str, Any]:
+    """Return one unused invalid identity to the frozen-repair boundary.
+
+    A source defect can be discovered after identity apply but before the first
+    release-stage claim.  Reconciliation for that identity is then stale.  This
+    narrow transition reopens only that reconciliation boundary so the existing
+    immutable invalid-identity supersession can establish one fresh successor.
+    """
+
+    root = root.resolve(strict=True)
+    repair = _repair_campaign(root)
+    value = _validate(
+        json.loads((root / STATE_PATH).read_text(encoding="utf-8"))
+    )
+    if (
+        repair.get("phase") != "revision_reconciled"
+        or repair.get("intake_open") is not False
+        or repair.get("unresolved") != []
+    ):
+        raise ReleaseCampaignBlocked(
+            "invalid identity rewind requires a zero-unresolved reconciled repair"
+        )
+    if (
+        value.get("state") != "active"
+        or value.get("apply_count") != 1
+        or value.get("active_claim") is not None
+        or any(value["stages"][stage]["status"] != "pending" for stage in STAGES)
+    ):
+        raise ReleaseCampaignBlocked(
+            "invalid identity rewind requires one unused active identity"
+        )
+    verification = release_campaign_status(root, verify_source=True)
+    if verification["valid"] or not verification["errors"]:
+        raise ReleaseCampaignBlocked("a coherent release identity cannot be rewound")
+    repair["phase"] = "repair_frozen"
+    _write(root / REPAIR_CAMPAIGN_PATH, repair)
+    return {
+        "schema_version": "px.release-identity-reconciliation-rewind/1.0",
+        "campaign_id": value["campaign_id"],
+        "phase": "repair_frozen",
+        "source_verification_errors": list(verification["errors"]),
+        "valid": True,
+    }
+
+
 def supersede_failed_release_campaign(
     root: Path, *, campaign_id: str, reason: str
 ) -> dict[str, Any]:

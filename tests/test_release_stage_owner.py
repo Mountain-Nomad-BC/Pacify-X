@@ -174,6 +174,94 @@ def test_archive_check_allows_one_unused_cleared_predecessor(tmp_path: Path) -> 
     assert check(config, "archive_clear")["valid"] is True
 
 
+def test_archive_check_allows_one_unused_invalid_identity_predecessor(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    config = fixture(tmp_path, "archive_clear")
+    repair = tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    repair_value = json.loads(repair.read_text(encoding="utf-8"))
+    repair_value["phase"] = "revision_reconciled"
+    repair.write_text(json.dumps(repair_value), encoding="utf-8")
+    state = tmp_path / ".engineering-bootstrap/processing-order/release-identity.json"
+    state.write_text(
+        json.dumps(
+            {
+                "campaign_id": config.predecessor_id,
+                "state": "active",
+                "apply_count": 1,
+                "identity": {"release_identity_sha256": "a" * 64},
+                "active_claim": None,
+                "stages": {
+                    name: {"status": "pending", "claim_id": None}
+                    for name in (
+                        "sections",
+                        "full_profile",
+                        "validate",
+                        "package",
+                        "install",
+                        "installed_operational",
+                        "certify",
+                    )
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(
+        "runtime.release_campaign.release_campaign_status",
+        lambda root, verify_source=False: {"valid": False, "errors": ["drift"]},
+    )
+    assert check(config, "archive_clear")["valid"] is True
+
+
+def test_archive_effect_routes_unused_invalid_identity_to_canonical_successor(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    config = fixture(tmp_path, "archive_clear")
+    repair = tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    repair_value = json.loads(repair.read_text(encoding="utf-8"))
+    repair_value["phase"] = "revision_reconciled"
+    repair.write_text(json.dumps(repair_value), encoding="utf-8")
+    state = tmp_path / ".engineering-bootstrap/processing-order/release-identity.json"
+    value = json.loads(state.read_text(encoding="utf-8"))
+    value.update(
+        state="active",
+        apply_count=1,
+        identity={"release_identity_sha256": "a" * 64},
+        stages={
+            name: {"status": "pending", "claim_id": None}
+            for name in (
+                "sections",
+                "full_profile",
+                "validate",
+                "package",
+                "install",
+                "installed_operational",
+                "certify",
+            )
+        },
+    )
+    state.write_text(json.dumps(value), encoding="utf-8")
+    calls: list[str] = []
+
+    def supersede(root: Path, *, campaign_id: str, reason: str) -> dict[str, object]:
+        calls.append(campaign_id)
+        return {"valid": True, "superseded_archive": "archive.json"}
+
+    monkeypatch.setattr(
+        "runtime.release_campaign.supersede_invalid_release_identity", supersede
+    )
+    rewinds: list[Path] = []
+    monkeypatch.setattr(
+        "runtime.release_campaign.rewind_invalid_release_identity_reconciliation",
+        lambda root: rewinds.append(root) or {"valid": True},
+    )
+    receipt = ProductionEffects().execute("archive_clear", config)
+    assert receipt["valid"] is True
+    assert calls == [config.candidate_id]
+    assert rewinds == [config.root]
+
+
 def test_child_resource_postcondition_allows_only_exact_supervised_self(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:

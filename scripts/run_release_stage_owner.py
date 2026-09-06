@@ -256,19 +256,44 @@ def check(config: Config, step: str) -> dict[str, Any]:
     try:
         current_repair = repair(config)
         current_release = release(config)
+        repair_phase_valid = current_repair.get("phase") == PHASES.get(
+            step, (None,)
+        )[0] or (
+            step == "archive_clear"
+            and current_repair.get("phase") == "revision_reconciled"
+        )
         if (
             current_repair.get("campaign_id")
             != "pacify-x-cohesion-closure-repair12-20260905"
-            or current_repair.get("phase") != PHASES.get(step, (None,))[0]
+            or not repair_phase_valid
             or current_repair.get("intake_open") is not False
             or current_repair.get("unresolved") != []
         ):
             errors.append(f"repair12 phase is not exact for {step}")
         if step == "archive_clear":
+            unused_invalid_identity = False
+            if (
+                current_release.get("state") == "active"
+                and current_release.get("apply_count") == 1
+                and isinstance(current_release.get("identity"), dict)
+                and current_release.get("active_claim") is None
+                and tuple(current_release.get("stages", {})) == STAGES
+                and all(
+                    isinstance(record, dict) and record.get("status") == "pending"
+                    for record in current_release.get("stages", {}).values()
+                )
+            ):
+                from runtime.release_campaign import release_campaign_status
+
+                verification = release_campaign_status(config.root, verify_source=True)
+                unused_invalid_identity = (
+                    verification.get("valid") is False
+                    and bool(verification.get("errors"))
+                )
             if (
                 current_release.get("campaign_id") != config.predecessor_id
                 or current_release.get("active_claim") is not None
-                or current_release.get("state") not in {"failed", "cleared"}
+                or current_release.get("state") not in {"failed", "cleared", "active"}
                 or (
                     current_release.get("state") == "cleared"
                     and (
@@ -276,8 +301,19 @@ def check(config: Config, step: str) -> dict[str, Any]:
                         or current_release.get("identity") is not None
                     )
                 )
+                or (
+                    current_release.get("state") == "active"
+                    and not unused_invalid_identity
+                )
+                or (
+                    current_repair.get("phase") == "revision_reconciled"
+                    and not unused_invalid_identity
+                )
             ):
-                errors.append("archive_clear requires a terminal failed or unused cleared predecessor")
+                errors.append(
+                    "archive_clear requires a terminal failed, unused cleared, "
+                    "or unused invalid-identity predecessor"
+                )
         elif step in {"reconcile", "identity"}:
             if (
                 current_release.get("campaign_id") != config.candidate_id
@@ -730,6 +766,8 @@ class ProductionEffects:
             finish_release_stage,
             supersede_consumed_cleared_release_campaign,
             supersede_failed_release_campaign,
+            supersede_invalid_release_identity,
+            rewind_invalid_release_identity_reconciliation,
         )
 
         stale: list[str] = []
@@ -782,6 +820,17 @@ class ProductionEffects:
                     campaign_id=config.candidate_id,
                     reason=(
                         f"{config.predecessor_id} is terminal and repair12 is frozen; "
+                        f"establish {config.candidate_id} once."
+                    ),
+                )
+            elif current.get("state") == "active":
+                if repair(config).get("phase") == "revision_reconciled":
+                    rewind_invalid_release_identity_reconciliation(config.root)
+                status = supersede_invalid_release_identity(
+                    config.root,
+                    campaign_id=config.candidate_id,
+                    reason=(
+                        f"{config.predecessor_id} has one unused invalid identity; "
                         f"establish {config.candidate_id} once."
                     ),
                 )
