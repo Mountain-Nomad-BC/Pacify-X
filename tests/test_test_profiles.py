@@ -420,6 +420,54 @@ def test_section_chunk_receipt_is_atomic_bounded_and_content_addressed(tmp_path)
     assert "secret" not in json.dumps(failed)
     assert "private diagnostic" not in json.dumps(failed)
 
+    node_failed = section_chunk_receipt(
+        section,
+        chunk,
+        {
+            "valid": True,
+            "exit_code": 1,
+            "timed_out": False,
+            "duration_seconds": 0.2,
+            "stdout": "✖ request-bound navigation settles exactly (12.34ms)\n",
+            "stderr": "",
+        },
+    )
+    assert node_failed["output_evidence"]["failure_nodes"] == [
+        "request-bound navigation settles exactly"
+    ]
+
+    tap_failed = section_chunk_receipt(
+        section,
+        chunk,
+        {
+            "valid": True,
+            "exit_code": 1,
+            "timed_out": False,
+            "duration_seconds": 0.2,
+            "stdout": "not ok 7 - exact modal continuity\n",
+            "stderr": "",
+        },
+    )
+    assert tap_failed["output_evidence"]["failure_nodes"] == [
+        "exact modal continuity"
+    ]
+
+    unattributed = section_chunk_receipt(
+        section,
+        chunk,
+        {
+            "valid": True,
+            "exit_code": 2,
+            "timed_out": False,
+            "duration_seconds": 0.2,
+            "stdout": "",
+            "stderr": "process loader failed",
+        },
+    )
+    assert unattributed["output_evidence"]["failure_nodes"] == [
+        "unattributed-process-exit:2"
+    ]
+
     unsafe_body = {
         key: value for key, value in receipt.items() if key != "receipt_sha256"
     }

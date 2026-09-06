@@ -518,11 +518,26 @@ def _bounded_output_evidence(execution: Mapping[str, Any]) -> dict[str, object]:
         output_evidence[f"{stream}_sha256"] = hashlib.sha256(encoded).hexdigest()
         output_evidence[f"{stream}_bytes"] = len(encoded)
         for line in value.splitlines():
-            if not line.startswith("FAILED "):
-                continue
-            node = line[len("FAILED ") :].split(" - ", 1)[0].strip()
+            stripped = line.strip()
+            node = ""
+            if stripped.startswith("FAILED "):
+                node = stripped[len("FAILED ") :].split(" - ", 1)[0].strip()
+            elif stripped.startswith("✖ "):
+                node = stripped[len("✖ ") :].strip()
+                name, separator, duration = node.rpartition(" (")
+                if separator and duration.endswith("ms)"):
+                    milliseconds = duration[:-3]
+                    if milliseconds.replace(".", "", 1).isdigit():
+                        node = name.strip()
+            elif stripped.startswith("not ok "):
+                _prefix, separator, title = stripped.partition(" - ")
+                if separator:
+                    node = title.strip()
             if node and node not in failure_nodes:
                 failure_nodes.append(node[:300])
+    exit_code = execution.get("exit_code")
+    if exit_code not in {0, None} and not failure_nodes:
+        failure_nodes.append(f"unattributed-process-exit:{exit_code}"[:300])
     output_evidence["failure_nodes"] = failure_nodes[:50]
     return output_evidence
 
