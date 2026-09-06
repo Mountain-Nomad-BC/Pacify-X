@@ -3,7 +3,7 @@
   "title": "Automatic task to model attachment",
   "severity": "critical",
   "type": "integration",
-  "status": "planned",
+  "status": "downstream_green",
   "root_cause": "The existing rank_models primitive has no production caller that joins task semantics, capability package, inventory, and exact model attachment.",
   "source_requirement": "Select and attach a model automatically from the canonical task plan, semantic profile, ranking, inventory, and policy.",
   "live_evidence": [
@@ -72,5 +72,166 @@
     "A production path invokes canonical ranking.",
     "The selected exact attachment is part of the immutable task plan."
   ],
-  "completion_evidence": []
+  "completion_evidence": [
+    "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+    "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+    "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+    "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+    "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#sha256=7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b#anchor=PX-AUD-006",
+    "runtime/models.py#sha256=2ed1ae83b4c9055694e6119a8d589c73666b02b9c4a2bbe699a31c290aced441",
+    "runtime/local_model_runtime.py#sha256=2e032839268ac4bbf5db8fc62caa8f7de2160281b86ad3f2e4f1c4c4dcdcb751",
+    "runtime/capability_routing.py#sha256=a517aa5769ebdce7b7d6afafa44b759bb3e74305bc0120f4a78eb88d9d088f83",
+    "runtime/task_execution_plan.py#sha256=18367d844da7fc52cf5243182951734273c268341dd90a80f7a66f165b5550fc",
+    "runtime/model_attachment.py#sha256=9d19da5dcaa0e09715db7bb06fc1ea3330a521d1f0fbf0ceff7b5bf8ca76d906",
+    "tests/test_model_attachment.py#sha256=7aa5f7ec826a124ceb5d0b3e0fd0e706152c8caf334c82e28b6e645b90f5b2c8"
+  ],
+  "status_history": [
+    {
+      "status": "admitted",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#sha256=7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b#anchor=PX-AUD-006",
+        "runtime/models.py#sha256=2ed1ae83b4c9055694e6119a8d589c73666b02b9c4a2bbe699a31c290aced441",
+        "runtime/local_model_runtime.py#sha256=2e032839268ac4bbf5db8fc62caa8f7de2160281b86ad3f2e4f1c4c4dcdcb751",
+        "runtime/capability_routing.py#sha256=a517aa5769ebdce7b7d6afafa44b759bb3e74305bc0120f4a78eb88d9d088f83",
+        "runtime/task_execution_plan.py#sha256=18367d844da7fc52cf5243182951734273c268341dd90a80f7a66f165b5550fc",
+        "runtime/model_attachment.py#sha256=9d19da5dcaa0e09715db7bb06fc1ea3330a521d1f0fbf0ceff7b5bf8ca76d906",
+        "tests/test_model_attachment.py#sha256=7aa5f7ec826a124ceb5d0b3e0fd0e706152c8caf334c82e28b6e645b90f5b2c8"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "in_progress",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#sha256=7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b#anchor=PX-AUD-006",
+        "runtime/models.py#sha256=2ed1ae83b4c9055694e6119a8d589c73666b02b9c4a2bbe699a31c290aced441",
+        "runtime/local_model_runtime.py#sha256=2e032839268ac4bbf5db8fc62caa8f7de2160281b86ad3f2e4f1c4c4dcdcb751",
+        "runtime/capability_routing.py#sha256=a517aa5769ebdce7b7d6afafa44b759bb3e74305bc0120f4a78eb88d9d088f83",
+        "runtime/task_execution_plan.py#sha256=18367d844da7fc52cf5243182951734273c268341dd90a80f7a66f165b5550fc",
+        "runtime/model_attachment.py#sha256=9d19da5dcaa0e09715db7bb06fc1ea3330a521d1f0fbf0ceff7b5bf8ca76d906",
+        "tests/test_model_attachment.py#sha256=7aa5f7ec826a124ceb5d0b3e0fd0e706152c8caf334c82e28b6e645b90f5b2c8"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "focused_green",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#sha256=7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b#anchor=PX-AUD-006",
+        "runtime/models.py#sha256=2ed1ae83b4c9055694e6119a8d589c73666b02b9c4a2bbe699a31c290aced441",
+        "runtime/local_model_runtime.py#sha256=2e032839268ac4bbf5db8fc62caa8f7de2160281b86ad3f2e4f1c4c4dcdcb751",
+        "runtime/capability_routing.py#sha256=a517aa5769ebdce7b7d6afafa44b759bb3e74305bc0120f4a78eb88d9d088f83",
+        "runtime/task_execution_plan.py#sha256=18367d844da7fc52cf5243182951734273c268341dd90a80f7a66f165b5550fc",
+        "runtime/model_attachment.py#sha256=9d19da5dcaa0e09715db7bb06fc1ea3330a521d1f0fbf0ceff7b5bf8ca76d906",
+        "tests/test_model_attachment.py#sha256=7aa5f7ec826a124ceb5d0b3e0fd0e706152c8caf334c82e28b6e645b90f5b2c8"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "downstream_green",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#sha256=7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b#anchor=PX-AUD-006",
+        "runtime/models.py#sha256=2ed1ae83b4c9055694e6119a8d589c73666b02b9c4a2bbe699a31c290aced441",
+        "runtime/local_model_runtime.py#sha256=2e032839268ac4bbf5db8fc62caa8f7de2160281b86ad3f2e4f1c4c4dcdcb751",
+        "runtime/capability_routing.py#sha256=a517aa5769ebdce7b7d6afafa44b759bb3e74305bc0120f4a78eb88d9d088f83",
+        "runtime/task_execution_plan.py#sha256=18367d844da7fc52cf5243182951734273c268341dd90a80f7a66f165b5550fc",
+        "runtime/model_attachment.py#sha256=9d19da5dcaa0e09715db7bb06fc1ea3330a521d1f0fbf0ceff7b5bf8ca76d906",
+        "tests/test_model_attachment.py#sha256=7aa5f7ec826a124ceb5d0b3e0fd0e706152c8caf334c82e28b6e645b90f5b2c8"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    }
+  ],
+  "closure_reconciliation": {
+    "schema_version": "px.cohesion-card-reconciliation/1.0",
+    "target_status": "downstream_green",
+    "reconciled_at": "2026-09-06T00:26:20.1402452Z",
+    "acceptance_criteria_count": 2,
+    "evidence": [
+      {
+        "path": "evidence/commencement-repair/repair-freeze-20260905.json",
+        "sha256": "7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "size": 1727,
+        "schema_version": "px.repair-freeze/1.0"
+      },
+      {
+        "path": "evidence/release/final99-full-profile-pass-20260905.json",
+        "sha256": "b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "size": 1276,
+        "schema_version": "px.full-profile-receipt/1.0"
+      },
+      {
+        "path": "evidence/release/final99-validation-pass-20260905.json",
+        "sha256": "07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "size": 937,
+        "schema_version": "px.validation-receipt/1.0"
+      },
+      {
+        "path": "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json",
+        "sha256": "6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "size": 4317,
+        "schema_version": "px.focused-repair-evidence/1.0"
+      },
+      {
+        "path": "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json",
+        "sha256": "7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b",
+        "size": 10258,
+        "anchor": "PX-AUD-006",
+        "evidence_kind": "card_live_evidence"
+      },
+      {
+        "path": "runtime/models.py",
+        "sha256": "2ed1ae83b4c9055694e6119a8d589c73666b02b9c4a2bbe699a31c290aced441",
+        "size": 5203,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "runtime/local_model_runtime.py",
+        "sha256": "2e032839268ac4bbf5db8fc62caa8f7de2160281b86ad3f2e4f1c4c4dcdcb751",
+        "size": 18944,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "runtime/capability_routing.py",
+        "sha256": "a517aa5769ebdce7b7d6afafa44b759bb3e74305bc0120f4a78eb88d9d088f83",
+        "size": 36177,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "runtime/task_execution_plan.py",
+        "sha256": "18367d844da7fc52cf5243182951734273c268341dd90a80f7a66f165b5550fc",
+        "size": 11215,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "runtime/model_attachment.py",
+        "sha256": "9d19da5dcaa0e09715db7bb06fc1ea3330a521d1f0fbf0ceff7b5bf8ca76d906",
+        "size": 16271,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "tests/test_model_attachment.py",
+        "sha256": "7aa5f7ec826a124ceb5d0b3e0fd0e706152c8caf334c82e28b6e645b90f5b2c8",
+        "size": 5891,
+        "evidence_kind": "declared_implementation_file"
+      }
+    ]
+  }
 }

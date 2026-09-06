@@ -32,8 +32,50 @@ The verification command fails before installation if the certificate, signature
 7. Generate the evidence manifest, SBOM, provenance, checksums, and certificate.
 8. Sign the canonical certificate with the trusted Ed25519 publisher key. The private key must remain outside the repository.
 9. Verify signature, evidence, artifacts, Git identity, version parity, and published-byte parity independently.
-10. Package the complete evidence set as content-addressed chunks, sign its custody receipt, and publish those chunks with the release so verification does not depend on temporary CI retention.
-11. Commit only non-product evidence, then atomically push the evidence commit and annotated tag. Publish the exact staged files as GitHub Release assets without rebuilding.
+10. After the final successor campaign succeeds, package the complete release evidence, exact wheel/sdist directory, immutable VSIX, and its installed-operational summary into content-addressed chunks. The local packager validates the full installed-host denominator, cross-binds its product/harness identity to the signed certificate, and signs the custody receipt with the operator-held key.
+11. Push the admitted evidence commit and annotated tag, create a draft GitHub Release, and upload only the signed receipt, detached receipt signature, receipt-listed chunks, and the standalone byte-identical VSIX. Do not rebuild, re-certify, or place a private key in CI.
+12. Manually dispatch `.github/workflows/release.yml` for that tag. It authenticates and reconstructs custody, independently verifies the certificate and Python artifacts, exercises the exact VSIX, publishes that VSIX to Marketplace with OIDC, and only then makes the existing GitHub draft public. Its duplicate-safe Marketplace step and draft-state check make a partial rerun idempotent.
+
+For v0.7.0, the local custody handoff is prepared only after the final101 certificate exists:
+
+```powershell
+$release = "0.7.0"
+$tag = "v$release"
+$assets = Join-Path $env:TEMP "pacify-x-$tag-draft-assets"
+$work = Join-Path $env:TEMP "pacify-x-$tag-custody-work"
+$artifactDir = "<artifact_dir returned by release finalize>"
+$summary = "evidence/release/final101-installed-operational-summary.json"
+$vsix = "extension/dist/pacify-x-vscode-0.6.85.vsix"
+New-Item -ItemType Directory -Path $assets | Out-Null
+Copy-Item -LiteralPath $vsix -Destination $assets
+python -B scripts/package_release_evidence.py `
+  --root . `
+  --input "evidence/releases/$release" `
+  --input $artifactDir `
+  --release $release `
+  --source-commit (git rev-list -n 1 $tag) `
+  --certificate "evidence/releases/$release/certificate.json" `
+  --candidate-id "pacify-x-certification-20260906-final101-single" `
+  --vsix $vsix `
+  --installed-summary $summary `
+  --output $assets `
+  --work-dir $work `
+  --locator-base "https://github.com/Mountain-Nomad-BC/Pacify-X/releases/download/$tag" `
+  --signing-key ".git/pacify-x-release-key-2026"
+```
+
+On an admitted network-capable operator host, create the draft and upload the exact denominator without a wildcard:
+
+```powershell
+$receiptPath = Join-Path $assets "pacify-x-v$release-complete-evidence-custody.json"
+$receipt = Get-Content -LiteralPath $receiptPath -Raw | ConvertFrom-Json
+gh release create $tag --draft --verify-tag --title "PACIFY-X $release"
+gh release upload $tag $receiptPath "${receiptPath}.sig" (Join-Path $assets "pacify-x-vscode-0.6.85.vsix")
+foreach ($chunk in $receipt.chunks) {
+  gh release upload $tag (Join-Path $assets $chunk.filename)
+}
+gh workflow run release.yml -f "release_tag=$tag"
+```
 
 ## Key rotation and revocation
 

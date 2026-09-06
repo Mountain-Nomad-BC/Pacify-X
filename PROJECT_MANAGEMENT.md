@@ -9,16 +9,18 @@ Deliver a model-agnostic, drop-in bootstrap that lets an LLM safely commission e
 ## Current state
 
 Mode: `existing`  
-Phase: `cohesion-closure repair implementation`
-Status: `43-card source-bound denominator admitted; Wave 0 audit closed; 37 repair/integration/proof cards remain`
-Active card: `PX-ASSURE-001 - typed feature acceptance vs control evidence`
-Next action: finish the expanded 58-test release-artifact compatibility cone for `PX-ASSURE-001`, then close it only if all downstream and resource checks pass.
+Phase: `v0.7.0 release-candidate convergence`
+Status: `implementation and focused repair complete; canonical cohesion lifecycle reconciliation, repair freeze, successor certification, and publication pending`
+Active control: `repair12 convergence under the cohesion DAG and release-ordering contract`
+Next action: repair12 is ready to freeze with all 37 source/proof cards evidence-bound at `downstream_green` and zero remaining repair work; enter the single final100 campaign. The cards close only inside final100 after its exact installed-operational proof succeeds.
 
-The user authorized completion and publication. The active repair admission permits non-destructive local repository writes and focused local execution only; it excludes broad release stages, package/install mutation, release identity/tag mutation, publication, billable provider calls, destructive cleanup, and rewriting historical evidence until a separate repair-freeze/successor-release admission exists.
+The user authorized completion and eventual publication. The current convergence admission permits only its exact local repair, documentation, reconciliation, and focused-check scopes. It does not authorize certification, release publication, network push, destructive cleanup, or treating final99 as resumable. Those effects remain governed by their own ordered successor stages and admissions.
 
 Release 0.6.3 is the current signed, self-certified release. The annotated tag, exact public distribution files, trusted publisher signature, complete evidence set, checksums, SBOM, provenance, and fresh installed-wheel verification agree. Canonical evidence is under `evidence/releases/0.6.3/`; the public release is at [GitHub v0.6.3](https://github.com/Mountain-Nomad-BC/Pacify-X/releases/tag/v0.6.3).
 
-The prior development checkpoint added the REL-012 trust-boundary repairs, the REL-013 full-capability integration, and the REL-014 distribution-integrity repairs and recorded the validations below. The 2026-08-11 adversarial audit reopened current-tree acceptance because source/evidence drift, a doctor read-only violation, extension startup failures, split authority, and unbounded skill discovery invalidate current completion claims. Those historical results remain evidence of their exact earlier bytes; they are not acceptance evidence for the active tree. A future signed release must bind the repaired bytes before they are described as release-certified.
+The v0.7.0 implementation and focused repair work are complete. Final99 passed its governed source profile, validation, immutable-package audit, existing-install audit, and Windows/Ubuntu smoke checks, but its one exhaustive installed-host walk exposed five direct route/projection settlement failures and therefore ended terminally without certification. Repair12 resolved all five direct paths through focused exact-0.6.85 host proofs with zero issues or host errors. That focused evidence does not substitute for a fresh successor exhaustive walk, exact-artifact certification, publication, public-asset verification, or real-host macOS proof.
+
+The earlier development checkpoints added the REL-012 trust-boundary repairs, the REL-013 full-capability integration, and the REL-014 distribution-integrity repairs and recorded the validations below. Historical results remain evidence of their exact earlier bytes; they are not acceptance evidence for the active candidate. A future signed release must bind the final repaired bytes before they are described as release-certified.
 
 Release 0.6.2 is historical and revoked for deployment. Its validation proved internal consistency under the included profile, but did not authenticate one immutable chain from Git commit through the exact tested and publicly distributed package bytes. Revocation evidence is retained at `evidence/release-revocation-0.6.2.json`; the original certificate remains unchanged as historical evidence.
 

@@ -3,7 +3,7 @@
   "title": "Authority topology",
   "severity": "critical",
   "type": "integration",
-  "status": "planned",
+  "status": "downstream_green",
   "root_cause": "Federated effect gates and runtimes lack one explicit topology tying effects to authority, evidence, rollback, bypass detection, and conformance.",
   "source_requirement": "Create a machine-readable authority topology without forcing a single-language runtime.",
   "live_evidence": [
@@ -66,5 +66,144 @@
     "Every effect type has one declared authoritative gate and rollback owner.",
     "Federated implementations share an evidence contract."
   ],
-  "completion_evidence": []
+  "completion_evidence": [
+    "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+    "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+    "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+    "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+    "evidence/commencement-audit-20260905T002921Z/current-owners-and-gaps.json#sha256=c045567157fcac8338848266aab4755c2551810d49dd80ab5f628ef9606f5b41",
+    "registry/authority_topology.json#sha256=9f366f6469bb5397a46e31d694620de95254fdb5d52077f3dcfb180f529f5ed0",
+    "runtime/primitive_authority.py#sha256=38f8756b10bbf2cf770ef886db2aad3f45546211dd5e05a0ffab1c6a2a8e7849",
+    "runtime/architecture_invariants.py#sha256=20e80a23e23ef205fe292a5d52c389821d475f1a9cbf55ff19a47214c1a37fbc",
+    "tests/test_authority_topology.py#sha256=d5736685390e870f8f081f46ed2de087ce5bb7527790af3b29b95fe4dae123a5"
+  ],
+  "status_history": [
+    {
+      "status": "admitted",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/current-owners-and-gaps.json#sha256=c045567157fcac8338848266aab4755c2551810d49dd80ab5f628ef9606f5b41",
+        "registry/authority_topology.json#sha256=9f366f6469bb5397a46e31d694620de95254fdb5d52077f3dcfb180f529f5ed0",
+        "runtime/primitive_authority.py#sha256=38f8756b10bbf2cf770ef886db2aad3f45546211dd5e05a0ffab1c6a2a8e7849",
+        "runtime/architecture_invariants.py#sha256=20e80a23e23ef205fe292a5d52c389821d475f1a9cbf55ff19a47214c1a37fbc",
+        "tests/test_authority_topology.py#sha256=d5736685390e870f8f081f46ed2de087ce5bb7527790af3b29b95fe4dae123a5"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "in_progress",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/current-owners-and-gaps.json#sha256=c045567157fcac8338848266aab4755c2551810d49dd80ab5f628ef9606f5b41",
+        "registry/authority_topology.json#sha256=9f366f6469bb5397a46e31d694620de95254fdb5d52077f3dcfb180f529f5ed0",
+        "runtime/primitive_authority.py#sha256=38f8756b10bbf2cf770ef886db2aad3f45546211dd5e05a0ffab1c6a2a8e7849",
+        "runtime/architecture_invariants.py#sha256=20e80a23e23ef205fe292a5d52c389821d475f1a9cbf55ff19a47214c1a37fbc",
+        "tests/test_authority_topology.py#sha256=d5736685390e870f8f081f46ed2de087ce5bb7527790af3b29b95fe4dae123a5"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "focused_green",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/current-owners-and-gaps.json#sha256=c045567157fcac8338848266aab4755c2551810d49dd80ab5f628ef9606f5b41",
+        "registry/authority_topology.json#sha256=9f366f6469bb5397a46e31d694620de95254fdb5d52077f3dcfb180f529f5ed0",
+        "runtime/primitive_authority.py#sha256=38f8756b10bbf2cf770ef886db2aad3f45546211dd5e05a0ffab1c6a2a8e7849",
+        "runtime/architecture_invariants.py#sha256=20e80a23e23ef205fe292a5d52c389821d475f1a9cbf55ff19a47214c1a37fbc",
+        "tests/test_authority_topology.py#sha256=d5736685390e870f8f081f46ed2de087ce5bb7527790af3b29b95fe4dae123a5"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "downstream_green",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/current-owners-and-gaps.json#sha256=c045567157fcac8338848266aab4755c2551810d49dd80ab5f628ef9606f5b41",
+        "registry/authority_topology.json#sha256=9f366f6469bb5397a46e31d694620de95254fdb5d52077f3dcfb180f529f5ed0",
+        "runtime/primitive_authority.py#sha256=38f8756b10bbf2cf770ef886db2aad3f45546211dd5e05a0ffab1c6a2a8e7849",
+        "runtime/architecture_invariants.py#sha256=20e80a23e23ef205fe292a5d52c389821d475f1a9cbf55ff19a47214c1a37fbc",
+        "tests/test_authority_topology.py#sha256=d5736685390e870f8f081f46ed2de087ce5bb7527790af3b29b95fe4dae123a5"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    }
+  ],
+  "closure_reconciliation": {
+    "schema_version": "px.cohesion-card-reconciliation/1.0",
+    "target_status": "downstream_green",
+    "reconciled_at": "2026-09-06T00:26:20.1402452Z",
+    "acceptance_criteria_count": 2,
+    "evidence": [
+      {
+        "path": "evidence/commencement-repair/repair-freeze-20260905.json",
+        "sha256": "7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "size": 1727,
+        "schema_version": "px.repair-freeze/1.0"
+      },
+      {
+        "path": "evidence/release/final99-full-profile-pass-20260905.json",
+        "sha256": "b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "size": 1276,
+        "schema_version": "px.full-profile-receipt/1.0"
+      },
+      {
+        "path": "evidence/release/final99-validation-pass-20260905.json",
+        "sha256": "07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "size": 937,
+        "schema_version": "px.validation-receipt/1.0"
+      },
+      {
+        "path": "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json",
+        "sha256": "6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "size": 4317,
+        "schema_version": "px.focused-repair-evidence/1.0"
+      },
+      {
+        "path": "evidence/commencement-audit-20260905T002921Z/current-owners-and-gaps.json",
+        "sha256": "c045567157fcac8338848266aab4755c2551810d49dd80ab5f628ef9606f5b41",
+        "size": 7645,
+        "anchor": null,
+        "evidence_kind": "card_live_evidence"
+      },
+      {
+        "path": "registry/authority_topology.json",
+        "sha256": "9f366f6469bb5397a46e31d694620de95254fdb5d52077f3dcfb180f529f5ed0",
+        "size": 4412,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "runtime/primitive_authority.py",
+        "sha256": "38f8756b10bbf2cf770ef886db2aad3f45546211dd5e05a0ffab1c6a2a8e7849",
+        "size": 9003,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "runtime/architecture_invariants.py",
+        "sha256": "20e80a23e23ef205fe292a5d52c389821d475f1a9cbf55ff19a47214c1a37fbc",
+        "size": 6233,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "tests/test_authority_topology.py",
+        "sha256": "d5736685390e870f8f081f46ed2de087ce5bb7527790af3b29b95fe4dae123a5",
+        "size": 1499,
+        "evidence_kind": "declared_implementation_file"
+      }
+    ]
+  }
 }

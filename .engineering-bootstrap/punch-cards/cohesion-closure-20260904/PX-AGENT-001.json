@@ -3,7 +3,7 @@
   "title": "Agency to Studio adapter",
   "severity": "high",
   "type": "integration",
-  "status": "planned",
+  "status": "downstream_green",
   "root_cause": "Agency specialist selection and Studio governed execution are disconnected surfaces.",
   "source_requirement": "Translate Agency selection into a validated Studio execution request while keeping Studio as executor.",
   "live_evidence": [
@@ -67,5 +67,144 @@
     "Agency only selects specialists.",
     "Studio remains the sole governed executor."
   ],
-  "completion_evidence": []
+  "completion_evidence": [
+    "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+    "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+    "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+    "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+    "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#sha256=7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b#anchor=PX-AUD-007",
+    "runtime/agency_studio_adapter.py#sha256=88e50223294d98e74d9cd5b97afa98f9bfa6e19322b54955b1ca6667a0693c2e",
+    "runtime/agent_runtime.py#sha256=c5dcad86997bca78bfd8c3b82e265e15625245478ef2c96ef8d466248100dc1e",
+    "runtime/studio_run_control.py#sha256=16fb466ded845ae2fb205d6b22e6e5c94f9ffd4e0889e1a7a2bf019a0dc2426e",
+    "tests/test_agency_studio_adapter.py#sha256=3123527fc1a4e9c0b438419552e875a271d784a0eb0f20c76544499182d14588"
+  ],
+  "status_history": [
+    {
+      "status": "admitted",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#sha256=7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b#anchor=PX-AUD-007",
+        "runtime/agency_studio_adapter.py#sha256=88e50223294d98e74d9cd5b97afa98f9bfa6e19322b54955b1ca6667a0693c2e",
+        "runtime/agent_runtime.py#sha256=c5dcad86997bca78bfd8c3b82e265e15625245478ef2c96ef8d466248100dc1e",
+        "runtime/studio_run_control.py#sha256=16fb466ded845ae2fb205d6b22e6e5c94f9ffd4e0889e1a7a2bf019a0dc2426e",
+        "tests/test_agency_studio_adapter.py#sha256=3123527fc1a4e9c0b438419552e875a271d784a0eb0f20c76544499182d14588"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "in_progress",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#sha256=7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b#anchor=PX-AUD-007",
+        "runtime/agency_studio_adapter.py#sha256=88e50223294d98e74d9cd5b97afa98f9bfa6e19322b54955b1ca6667a0693c2e",
+        "runtime/agent_runtime.py#sha256=c5dcad86997bca78bfd8c3b82e265e15625245478ef2c96ef8d466248100dc1e",
+        "runtime/studio_run_control.py#sha256=16fb466ded845ae2fb205d6b22e6e5c94f9ffd4e0889e1a7a2bf019a0dc2426e",
+        "tests/test_agency_studio_adapter.py#sha256=3123527fc1a4e9c0b438419552e875a271d784a0eb0f20c76544499182d14588"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "focused_green",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#sha256=7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b#anchor=PX-AUD-007",
+        "runtime/agency_studio_adapter.py#sha256=88e50223294d98e74d9cd5b97afa98f9bfa6e19322b54955b1ca6667a0693c2e",
+        "runtime/agent_runtime.py#sha256=c5dcad86997bca78bfd8c3b82e265e15625245478ef2c96ef8d466248100dc1e",
+        "runtime/studio_run_control.py#sha256=16fb466ded845ae2fb205d6b22e6e5c94f9ffd4e0889e1a7a2bf019a0dc2426e",
+        "tests/test_agency_studio_adapter.py#sha256=3123527fc1a4e9c0b438419552e875a271d784a0eb0f20c76544499182d14588"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "downstream_green",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#sha256=7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b#anchor=PX-AUD-007",
+        "runtime/agency_studio_adapter.py#sha256=88e50223294d98e74d9cd5b97afa98f9bfa6e19322b54955b1ca6667a0693c2e",
+        "runtime/agent_runtime.py#sha256=c5dcad86997bca78bfd8c3b82e265e15625245478ef2c96ef8d466248100dc1e",
+        "runtime/studio_run_control.py#sha256=16fb466ded845ae2fb205d6b22e6e5c94f9ffd4e0889e1a7a2bf019a0dc2426e",
+        "tests/test_agency_studio_adapter.py#sha256=3123527fc1a4e9c0b438419552e875a271d784a0eb0f20c76544499182d14588"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    }
+  ],
+  "closure_reconciliation": {
+    "schema_version": "px.cohesion-card-reconciliation/1.0",
+    "target_status": "downstream_green",
+    "reconciled_at": "2026-09-06T00:26:20.1402452Z",
+    "acceptance_criteria_count": 2,
+    "evidence": [
+      {
+        "path": "evidence/commencement-repair/repair-freeze-20260905.json",
+        "sha256": "7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "size": 1727,
+        "schema_version": "px.repair-freeze/1.0"
+      },
+      {
+        "path": "evidence/release/final99-full-profile-pass-20260905.json",
+        "sha256": "b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "size": 1276,
+        "schema_version": "px.full-profile-receipt/1.0"
+      },
+      {
+        "path": "evidence/release/final99-validation-pass-20260905.json",
+        "sha256": "07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "size": 937,
+        "schema_version": "px.validation-receipt/1.0"
+      },
+      {
+        "path": "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json",
+        "sha256": "6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "size": 4317,
+        "schema_version": "px.focused-repair-evidence/1.0"
+      },
+      {
+        "path": "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json",
+        "sha256": "7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b",
+        "size": 10258,
+        "anchor": "PX-AUD-007",
+        "evidence_kind": "card_live_evidence"
+      },
+      {
+        "path": "runtime/agency_studio_adapter.py",
+        "sha256": "88e50223294d98e74d9cd5b97afa98f9bfa6e19322b54955b1ca6667a0693c2e",
+        "size": 5253,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "runtime/agent_runtime.py",
+        "sha256": "c5dcad86997bca78bfd8c3b82e265e15625245478ef2c96ef8d466248100dc1e",
+        "size": 94313,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "runtime/studio_run_control.py",
+        "sha256": "16fb466ded845ae2fb205d6b22e6e5c94f9ffd4e0889e1a7a2bf019a0dc2426e",
+        "size": 27255,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "tests/test_agency_studio_adapter.py",
+        "sha256": "3123527fc1a4e9c0b438419552e875a271d784a0eb0f20c76544499182d14588",
+        "size": 3187,
+        "evidence_kind": "declared_implementation_file"
+      }
+    ]
+  }
 }

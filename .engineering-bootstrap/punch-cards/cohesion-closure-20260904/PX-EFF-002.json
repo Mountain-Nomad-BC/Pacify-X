@@ -3,7 +3,7 @@
   "title": "Semantic revision fingerprint",
   "severity": "high",
   "type": "integration",
-  "status": "planned",
+  "status": "downstream_green",
   "root_cause": "Byte identity alone causes avoidable invalidation while semantic claims can silently drift under superficial equality.",
   "source_requirement": "Compute a bounded semantic fingerprint separately from the immutable byte hash.",
   "live_evidence": [
@@ -61,5 +61,122 @@
     "Byte and semantic revisions remain separate and visible.",
     "Unsupported types safely use byte revision."
   ],
-  "completion_evidence": []
+  "completion_evidence": [
+    "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+    "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+    "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+    "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+    "C:/Users/Ben/Downloads/px looks/PX_COMMENCEMENT_ORCHESTRATION_2026-09-04.md#sha256=2082a48c33db8745e76044f1ec2a441d5f00a1ba6576522ea682f40dd1ac3f89#anchor=PX-EFF-002",
+    "runtime/semantic_revision.py#sha256=26c10b0b629eb773e3b32973ea0ecef31d00590e786b262b57bab69a397e82fb",
+    "tests/test_semantic_revision.py#sha256=80292611a71b52459c00f73eaf21932e32a90751964c52fb6039a3fbe5db1966"
+  ],
+  "status_history": [
+    {
+      "status": "admitted",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "C:/Users/Ben/Downloads/px looks/PX_COMMENCEMENT_ORCHESTRATION_2026-09-04.md#sha256=2082a48c33db8745e76044f1ec2a441d5f00a1ba6576522ea682f40dd1ac3f89#anchor=PX-EFF-002",
+        "runtime/semantic_revision.py#sha256=26c10b0b629eb773e3b32973ea0ecef31d00590e786b262b57bab69a397e82fb",
+        "tests/test_semantic_revision.py#sha256=80292611a71b52459c00f73eaf21932e32a90751964c52fb6039a3fbe5db1966"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "in_progress",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "C:/Users/Ben/Downloads/px looks/PX_COMMENCEMENT_ORCHESTRATION_2026-09-04.md#sha256=2082a48c33db8745e76044f1ec2a441d5f00a1ba6576522ea682f40dd1ac3f89#anchor=PX-EFF-002",
+        "runtime/semantic_revision.py#sha256=26c10b0b629eb773e3b32973ea0ecef31d00590e786b262b57bab69a397e82fb",
+        "tests/test_semantic_revision.py#sha256=80292611a71b52459c00f73eaf21932e32a90751964c52fb6039a3fbe5db1966"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "focused_green",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "C:/Users/Ben/Downloads/px looks/PX_COMMENCEMENT_ORCHESTRATION_2026-09-04.md#sha256=2082a48c33db8745e76044f1ec2a441d5f00a1ba6576522ea682f40dd1ac3f89#anchor=PX-EFF-002",
+        "runtime/semantic_revision.py#sha256=26c10b0b629eb773e3b32973ea0ecef31d00590e786b262b57bab69a397e82fb",
+        "tests/test_semantic_revision.py#sha256=80292611a71b52459c00f73eaf21932e32a90751964c52fb6039a3fbe5db1966"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "downstream_green",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "C:/Users/Ben/Downloads/px looks/PX_COMMENCEMENT_ORCHESTRATION_2026-09-04.md#sha256=2082a48c33db8745e76044f1ec2a441d5f00a1ba6576522ea682f40dd1ac3f89#anchor=PX-EFF-002",
+        "runtime/semantic_revision.py#sha256=26c10b0b629eb773e3b32973ea0ecef31d00590e786b262b57bab69a397e82fb",
+        "tests/test_semantic_revision.py#sha256=80292611a71b52459c00f73eaf21932e32a90751964c52fb6039a3fbe5db1966"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    }
+  ],
+  "closure_reconciliation": {
+    "schema_version": "px.cohesion-card-reconciliation/1.0",
+    "target_status": "downstream_green",
+    "reconciled_at": "2026-09-06T00:26:20.1402452Z",
+    "acceptance_criteria_count": 2,
+    "evidence": [
+      {
+        "path": "evidence/commencement-repair/repair-freeze-20260905.json",
+        "sha256": "7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "size": 1727,
+        "schema_version": "px.repair-freeze/1.0"
+      },
+      {
+        "path": "evidence/release/final99-full-profile-pass-20260905.json",
+        "sha256": "b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "size": 1276,
+        "schema_version": "px.full-profile-receipt/1.0"
+      },
+      {
+        "path": "evidence/release/final99-validation-pass-20260905.json",
+        "sha256": "07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "size": 937,
+        "schema_version": "px.validation-receipt/1.0"
+      },
+      {
+        "path": "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json",
+        "sha256": "6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "size": 4317,
+        "schema_version": "px.focused-repair-evidence/1.0"
+      },
+      {
+        "path": "C:/Users/Ben/Downloads/px looks/PX_COMMENCEMENT_ORCHESTRATION_2026-09-04.md",
+        "sha256": "2082a48c33db8745e76044f1ec2a441d5f00a1ba6576522ea682f40dd1ac3f89",
+        "size": 34387,
+        "anchor": "PX-EFF-002",
+        "evidence_kind": "card_live_evidence"
+      },
+      {
+        "path": "runtime/semantic_revision.py",
+        "sha256": "26c10b0b629eb773e3b32973ea0ecef31d00590e786b262b57bab69a397e82fb",
+        "size": 2783,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "tests/test_semantic_revision.py",
+        "sha256": "80292611a71b52459c00f73eaf21932e32a90751964c52fb6039a3fbe5db1966",
+        "size": 1722,
+        "evidence_kind": "declared_implementation_file"
+      }
+    ]
+  }
 }

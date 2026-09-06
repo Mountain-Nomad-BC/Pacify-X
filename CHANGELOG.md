@@ -4,7 +4,12 @@ All notable changes to PACIFY-X are recorded here. The project follows semantic 
 
 ## Unreleased
 
-- Repair installed-host graph cancellation, Studio trust-release instrumentation, and exact external-warning partitioning behind a bounded focused verification profile.
+- Prepared the v0.7.0 candidate without claiming certification or publication; v0.6.3 remains the current supported signed release.
+- Completed the cohesion implementation and focused repair work while leaving canonical card lifecycle projection to the evidence-bound DAG reconciler.
+- Retained final99 as a terminal failed campaign after its source profile, validation, package audit, existing-install audit, and Windows/Ubuntu smoke checks passed but its exhaustive installed-host walk exposed five direct profile failures.
+- Repaired those Studio, coordination-memory, Projects, Knowledge Graph, and plugin lifecycle paths in repair12; exact-artifact focused host proofs completed with zero issues and host errors, while successor exhaustive installed-host testing and certification remain pending.
+- Recorded no real-host macOS proof for the v0.7.0 candidate yet.
+- Repaired installed-host graph cancellation, Studio trust-release instrumentation, and exact external-warning partitioning behind a bounded focused verification profile.
 - Normalize extension source identity to the raw authored asset set, excluding the deterministic installed-only bundle whose bytes are verified independently during artifact installation.
 - Replaced caller-asserted outcome, authorization, and candidate-admission authority with one signed, scoped evidence resolver and explicit non-authoritative compatibility commands.
 - Added stable governed CLI exit codes, Python 3.11–3.14 runtime enforcement, command-local CLI loading, durable chunked release-evidence custody, and hash-locked normal CI.

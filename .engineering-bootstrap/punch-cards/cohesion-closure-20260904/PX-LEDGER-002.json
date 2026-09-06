@@ -3,7 +3,7 @@
   "title": "Ledger sharding / evidence cache",
   "severity": "critical",
   "type": "migration",
-  "status": "planned",
+  "status": "downstream_green",
   "root_cause": "The current append path republishes a full 39 MB materialized snapshot for a 101 MB ledger and validation has unacceptable time and memory cost.",
   "source_requirement": "Migrate to bounded immutable segments/hot projections/content roots only as justified by PX-LEDGER-001, while keeping old ledger verifiable.",
   "live_evidence": [
@@ -74,5 +74,166 @@
     "Measured hot-path budgets pass.",
     "Cache keys bind every declared revision and authority input."
   ],
-  "completion_evidence": []
+  "completion_evidence": [
+    "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+    "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+    "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+    "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+    "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#sha256=7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b#anchor=PX-AUD-013",
+    "runtime/operational_gap_ledger.py#sha256=2c306d3202782e8d6a5520b1d3b4d74472b517d88d4e8a7675c74fac1fc6c699",
+    "runtime/evidence_cache.py#sha256=39d5bf56250e7fb1b478b6bd5db6840236b884dd331e82f3da1d7a41d6318abe",
+    "registry/operational_gap_ledger.head.json#sha256=381e56c5ff19afc4588c74fa92733e03b754741208b2cae7042f78d536558645",
+    "registry/operational_gap_ledger.snapshot.json#sha256=50623681d6136a30b0414159031b854fcc26a562351be968bac4965d931cae9e",
+    "tests/test_operational_gap_ledger_scaling.py#sha256=9369a8feca3e41f728e07e959f750b6e7e896e76a60908027473725047806f04",
+    "tests/test_evidence_cache.py#sha256=5334e17b58c17ca8114e6fb183284b7f854ec59ee6a1179726b2d87b42526e81"
+  ],
+  "status_history": [
+    {
+      "status": "admitted",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#sha256=7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b#anchor=PX-AUD-013",
+        "runtime/operational_gap_ledger.py#sha256=2c306d3202782e8d6a5520b1d3b4d74472b517d88d4e8a7675c74fac1fc6c699",
+        "runtime/evidence_cache.py#sha256=39d5bf56250e7fb1b478b6bd5db6840236b884dd331e82f3da1d7a41d6318abe",
+        "registry/operational_gap_ledger.head.json#sha256=381e56c5ff19afc4588c74fa92733e03b754741208b2cae7042f78d536558645",
+        "registry/operational_gap_ledger.snapshot.json#sha256=50623681d6136a30b0414159031b854fcc26a562351be968bac4965d931cae9e",
+        "tests/test_operational_gap_ledger_scaling.py#sha256=9369a8feca3e41f728e07e959f750b6e7e896e76a60908027473725047806f04",
+        "tests/test_evidence_cache.py#sha256=5334e17b58c17ca8114e6fb183284b7f854ec59ee6a1179726b2d87b42526e81"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "in_progress",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#sha256=7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b#anchor=PX-AUD-013",
+        "runtime/operational_gap_ledger.py#sha256=2c306d3202782e8d6a5520b1d3b4d74472b517d88d4e8a7675c74fac1fc6c699",
+        "runtime/evidence_cache.py#sha256=39d5bf56250e7fb1b478b6bd5db6840236b884dd331e82f3da1d7a41d6318abe",
+        "registry/operational_gap_ledger.head.json#sha256=381e56c5ff19afc4588c74fa92733e03b754741208b2cae7042f78d536558645",
+        "registry/operational_gap_ledger.snapshot.json#sha256=50623681d6136a30b0414159031b854fcc26a562351be968bac4965d931cae9e",
+        "tests/test_operational_gap_ledger_scaling.py#sha256=9369a8feca3e41f728e07e959f750b6e7e896e76a60908027473725047806f04",
+        "tests/test_evidence_cache.py#sha256=5334e17b58c17ca8114e6fb183284b7f854ec59ee6a1179726b2d87b42526e81"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "focused_green",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#sha256=7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b#anchor=PX-AUD-013",
+        "runtime/operational_gap_ledger.py#sha256=2c306d3202782e8d6a5520b1d3b4d74472b517d88d4e8a7675c74fac1fc6c699",
+        "runtime/evidence_cache.py#sha256=39d5bf56250e7fb1b478b6bd5db6840236b884dd331e82f3da1d7a41d6318abe",
+        "registry/operational_gap_ledger.head.json#sha256=381e56c5ff19afc4588c74fa92733e03b754741208b2cae7042f78d536558645",
+        "registry/operational_gap_ledger.snapshot.json#sha256=50623681d6136a30b0414159031b854fcc26a562351be968bac4965d931cae9e",
+        "tests/test_operational_gap_ledger_scaling.py#sha256=9369a8feca3e41f728e07e959f750b6e7e896e76a60908027473725047806f04",
+        "tests/test_evidence_cache.py#sha256=5334e17b58c17ca8114e6fb183284b7f854ec59ee6a1179726b2d87b42526e81"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "downstream_green",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#sha256=7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b#anchor=PX-AUD-013",
+        "runtime/operational_gap_ledger.py#sha256=2c306d3202782e8d6a5520b1d3b4d74472b517d88d4e8a7675c74fac1fc6c699",
+        "runtime/evidence_cache.py#sha256=39d5bf56250e7fb1b478b6bd5db6840236b884dd331e82f3da1d7a41d6318abe",
+        "registry/operational_gap_ledger.head.json#sha256=381e56c5ff19afc4588c74fa92733e03b754741208b2cae7042f78d536558645",
+        "registry/operational_gap_ledger.snapshot.json#sha256=50623681d6136a30b0414159031b854fcc26a562351be968bac4965d931cae9e",
+        "tests/test_operational_gap_ledger_scaling.py#sha256=9369a8feca3e41f728e07e959f750b6e7e896e76a60908027473725047806f04",
+        "tests/test_evidence_cache.py#sha256=5334e17b58c17ca8114e6fb183284b7f854ec59ee6a1179726b2d87b42526e81"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    }
+  ],
+  "closure_reconciliation": {
+    "schema_version": "px.cohesion-card-reconciliation/1.0",
+    "target_status": "downstream_green",
+    "reconciled_at": "2026-09-06T00:26:20.1402452Z",
+    "acceptance_criteria_count": 3,
+    "evidence": [
+      {
+        "path": "evidence/commencement-repair/repair-freeze-20260905.json",
+        "sha256": "7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "size": 1727,
+        "schema_version": "px.repair-freeze/1.0"
+      },
+      {
+        "path": "evidence/release/final99-full-profile-pass-20260905.json",
+        "sha256": "b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "size": 1276,
+        "schema_version": "px.full-profile-receipt/1.0"
+      },
+      {
+        "path": "evidence/release/final99-validation-pass-20260905.json",
+        "sha256": "07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "size": 937,
+        "schema_version": "px.validation-receipt/1.0"
+      },
+      {
+        "path": "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json",
+        "sha256": "6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "size": 4317,
+        "schema_version": "px.focused-repair-evidence/1.0"
+      },
+      {
+        "path": "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json",
+        "sha256": "7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b",
+        "size": 10258,
+        "anchor": "PX-AUD-013",
+        "evidence_kind": "card_live_evidence"
+      },
+      {
+        "path": "runtime/operational_gap_ledger.py",
+        "sha256": "2c306d3202782e8d6a5520b1d3b4d74472b517d88d4e8a7675c74fac1fc6c699",
+        "size": 182849,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "runtime/evidence_cache.py",
+        "sha256": "39d5bf56250e7fb1b478b6bd5db6840236b884dd331e82f3da1d7a41d6318abe",
+        "size": 4033,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "registry/operational_gap_ledger.head.json",
+        "sha256": "381e56c5ff19afc4588c74fa92733e03b754741208b2cae7042f78d536558645",
+        "size": 106876,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "registry/operational_gap_ledger.snapshot.json",
+        "sha256": "50623681d6136a30b0414159031b854fcc26a562351be968bac4965d931cae9e",
+        "size": 39240149,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "tests/test_operational_gap_ledger_scaling.py",
+        "sha256": "9369a8feca3e41f728e07e959f750b6e7e896e76a60908027473725047806f04",
+        "size": 3147,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "tests/test_evidence_cache.py",
+        "sha256": "5334e17b58c17ca8114e6fb183284b7f854ec59ee6a1179726b2d87b42526e81",
+        "size": 1227,
+        "evidence_kind": "declared_implementation_file"
+      }
+    ]
+  }
 }

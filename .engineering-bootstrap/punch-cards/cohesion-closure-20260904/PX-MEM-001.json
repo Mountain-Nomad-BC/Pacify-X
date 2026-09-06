@@ -3,7 +3,7 @@
   "title": "MemoryQueryPlan / memory broker",
   "severity": "high",
   "type": "integration",
-  "status": "planned",
+  "status": "downstream_green",
   "root_cause": "Agent runtime treats memory bindings as opaque IDs and cannot resolve bounded, trustworthy runtime context.",
   "source_requirement": "Replace bare bindings with a project-scoped MemoryQueryPlan and brokered materialization.",
   "live_evidence": [
@@ -68,5 +68,144 @@
     "Every materialized memory item is bounded, scoped, trusted, fresh, and provenance-bound.",
     "Foreign or conflicting context fails closed."
   ],
-  "completion_evidence": []
+  "completion_evidence": [
+    "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+    "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+    "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+    "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+    "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#sha256=7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b#anchor=PX-AUD-007",
+    "runtime/memory_broker.py#sha256=de6f8ddfa794842ce36bf5cffe7f5b5b0150d6236639d00e436e0231f86fcb0c",
+    "contracts/memory_query_plan.schema.json#sha256=39816d010d4d2daf309673b7a2abdbb76f466333ddff81bbbdb45115053978ee",
+    "runtime/agent_runtime.py#sha256=c5dcad86997bca78bfd8c3b82e265e15625245478ef2c96ef8d466248100dc1e",
+    "tests/test_memory_broker.py#sha256=4b6ac561a8f05c1b6b76ddc01ea0d26b23796d399907d25b589acaed6d9ab869"
+  ],
+  "status_history": [
+    {
+      "status": "admitted",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#sha256=7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b#anchor=PX-AUD-007",
+        "runtime/memory_broker.py#sha256=de6f8ddfa794842ce36bf5cffe7f5b5b0150d6236639d00e436e0231f86fcb0c",
+        "contracts/memory_query_plan.schema.json#sha256=39816d010d4d2daf309673b7a2abdbb76f466333ddff81bbbdb45115053978ee",
+        "runtime/agent_runtime.py#sha256=c5dcad86997bca78bfd8c3b82e265e15625245478ef2c96ef8d466248100dc1e",
+        "tests/test_memory_broker.py#sha256=4b6ac561a8f05c1b6b76ddc01ea0d26b23796d399907d25b589acaed6d9ab869"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "in_progress",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#sha256=7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b#anchor=PX-AUD-007",
+        "runtime/memory_broker.py#sha256=de6f8ddfa794842ce36bf5cffe7f5b5b0150d6236639d00e436e0231f86fcb0c",
+        "contracts/memory_query_plan.schema.json#sha256=39816d010d4d2daf309673b7a2abdbb76f466333ddff81bbbdb45115053978ee",
+        "runtime/agent_runtime.py#sha256=c5dcad86997bca78bfd8c3b82e265e15625245478ef2c96ef8d466248100dc1e",
+        "tests/test_memory_broker.py#sha256=4b6ac561a8f05c1b6b76ddc01ea0d26b23796d399907d25b589acaed6d9ab869"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "focused_green",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#sha256=7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b#anchor=PX-AUD-007",
+        "runtime/memory_broker.py#sha256=de6f8ddfa794842ce36bf5cffe7f5b5b0150d6236639d00e436e0231f86fcb0c",
+        "contracts/memory_query_plan.schema.json#sha256=39816d010d4d2daf309673b7a2abdbb76f466333ddff81bbbdb45115053978ee",
+        "runtime/agent_runtime.py#sha256=c5dcad86997bca78bfd8c3b82e265e15625245478ef2c96ef8d466248100dc1e",
+        "tests/test_memory_broker.py#sha256=4b6ac561a8f05c1b6b76ddc01ea0d26b23796d399907d25b589acaed6d9ab869"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "downstream_green",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#sha256=7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b#anchor=PX-AUD-007",
+        "runtime/memory_broker.py#sha256=de6f8ddfa794842ce36bf5cffe7f5b5b0150d6236639d00e436e0231f86fcb0c",
+        "contracts/memory_query_plan.schema.json#sha256=39816d010d4d2daf309673b7a2abdbb76f466333ddff81bbbdb45115053978ee",
+        "runtime/agent_runtime.py#sha256=c5dcad86997bca78bfd8c3b82e265e15625245478ef2c96ef8d466248100dc1e",
+        "tests/test_memory_broker.py#sha256=4b6ac561a8f05c1b6b76ddc01ea0d26b23796d399907d25b589acaed6d9ab869"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    }
+  ],
+  "closure_reconciliation": {
+    "schema_version": "px.cohesion-card-reconciliation/1.0",
+    "target_status": "downstream_green",
+    "reconciled_at": "2026-09-06T00:26:20.1402452Z",
+    "acceptance_criteria_count": 2,
+    "evidence": [
+      {
+        "path": "evidence/commencement-repair/repair-freeze-20260905.json",
+        "sha256": "7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "size": 1727,
+        "schema_version": "px.repair-freeze/1.0"
+      },
+      {
+        "path": "evidence/release/final99-full-profile-pass-20260905.json",
+        "sha256": "b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "size": 1276,
+        "schema_version": "px.full-profile-receipt/1.0"
+      },
+      {
+        "path": "evidence/release/final99-validation-pass-20260905.json",
+        "sha256": "07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "size": 937,
+        "schema_version": "px.validation-receipt/1.0"
+      },
+      {
+        "path": "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json",
+        "sha256": "6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "size": 4317,
+        "schema_version": "px.focused-repair-evidence/1.0"
+      },
+      {
+        "path": "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json",
+        "sha256": "7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b",
+        "size": 10258,
+        "anchor": "PX-AUD-007",
+        "evidence_kind": "card_live_evidence"
+      },
+      {
+        "path": "runtime/memory_broker.py",
+        "sha256": "de6f8ddfa794842ce36bf5cffe7f5b5b0150d6236639d00e436e0231f86fcb0c",
+        "size": 10639,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "contracts/memory_query_plan.schema.json",
+        "sha256": "39816d010d4d2daf309673b7a2abdbb76f466333ddff81bbbdb45115053978ee",
+        "size": 1858,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "runtime/agent_runtime.py",
+        "sha256": "c5dcad86997bca78bfd8c3b82e265e15625245478ef2c96ef8d466248100dc1e",
+        "size": 94313,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "tests/test_memory_broker.py",
+        "sha256": "4b6ac561a8f05c1b6b76ddc01ea0d26b23796d399907d25b589acaed6d9ab869",
+        "size": 3695,
+        "evidence_kind": "declared_implementation_file"
+      }
+    ]
+  }
 }

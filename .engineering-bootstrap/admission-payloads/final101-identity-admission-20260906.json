@@ -1,0 +1,12 @@
+{
+  "gap_id":"PX-OS-1067","checkpoint_event_id":"gap-event:PX-OPERATIONAL-GAPS-20260816:000000033756","session_id":"release-session:final101-identity-20260906",
+  "authority":"Freeze the exact reconciled final101 source/control state in one commit, move the local annotated v0.7.0 tag once from its declared prior target, and apply one release identity.",
+  "effect_scopes":[
+    {"effect":"read","scope":["Final101 passed reconciliation receipt and cleared state, exact Git-visible blocking/mutable path sets, HEAD and annotated v0.7.0 target, release identity inputs, immutable VSIX, ledger checkpoint, and resources."]},
+    {"effect":"write","scope":["Generate the exact final101 identity path manifest; stage only its declared Git-visible source paths; create one commit named Freeze final101 reconciled release state; force-replace the local annotated v0.7.0 tag from exact target 0cf881533070214130ac30e797299b9758e6aa29 to new HEAD; apply release identity exactly once; write identity journal/log/receipt, bounded evidence/audit note, and ledger events. No remote push, section/profile/validation/package/install/host/card/certification/network/publication."]},
+    {"effect":"execute","scope":["Exactly one final101 execute-next identity owner, including exact dirty-set verification, one git add/commit, one annotated local retag, one identity apply, and postconditions. No retry or later step."]}
+  ],
+  "expected_effect":"Final101 becomes active with apply_count one and an exact source/product/harness/VSIX identity; local v0.7.0 points to the new commit; all stages remain pending; sections is next.",
+  "rollback":"Identity and tag history are not replayable. On failure retain terminal final101 evidence and do not amend, retag again, or continue.","expires_utc":"2026-09-07T08:00:00Z",
+  "evidence":[{"reference":"evidence/release/final101-stage-receipts/pacify-x-certification-20260906-final101-single-reconcile.json","artifact_sha256":"b86653ec7b4df246fab05cbc9209a515a69db887364238b2ece4096da5a813f0","artifact_size":357,"claim":"Final101 reconciliation passed once and identity is next."}]
+}

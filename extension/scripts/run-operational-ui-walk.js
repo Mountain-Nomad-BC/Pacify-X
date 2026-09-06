@@ -506,6 +506,7 @@ const ownedExtensionsRoot = ownedReversibleConfigurationAuthority && ownedExtens
 const configurationOnly = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_CONFIGURATION_ONLY === '1';
 const studioLifecycleOnly = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_STUDIO_LIFECYCLE_ONLY === '1';
 const knowledgeLifecycleOnly = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_KNOWLEDGE_LIFECYCLE_ONLY === '1';
+const coordinationMemoryOnly = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_COORDINATION_MEMORY_ONLY === '1';
 const hostBoundaryOnly = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_HOST_BOUNDARY_ONLY === '1';
 const nativeDialogOnly = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_NATIVE_DIALOG_ONLY === '1';
 const codexHandoffOnly = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_CODEX_HANDOFF_ONLY === '1';
@@ -517,7 +518,7 @@ const ERROR_INDICATOR_CONTROL_IDS = new Set([
   'pxui.memory.indicator.queryError',
   'pxui.knowledge-core.indicator.controllerError'
 ]);
-const focusedProfile = configurationOnly ? 'reversible-configuration' : studioLifecycleOnly ? 'studio-lifecycle' : knowledgeLifecycleOnly ? 'knowledge-lifecycle' : hostBoundaryOnly ? 'host-boundary' : nativeDialogOnly ? 'native-dialog-boundary' : codexHandoffOnly ? 'codex-handoff' : errorIndicatorsOnly ? 'error-indicators' : lateCardRepairOnly ? 'late-card-repair' : builderOnly ? 'builder' : workbenchCommandOnly ? 'workbench-command' : null;
+const focusedProfile = configurationOnly ? 'reversible-configuration' : studioLifecycleOnly ? 'studio-lifecycle' : knowledgeLifecycleOnly ? 'knowledge-lifecycle' : coordinationMemoryOnly ? 'coordination-memory' : hostBoundaryOnly ? 'host-boundary' : nativeDialogOnly ? 'native-dialog-boundary' : codexHandoffOnly ? 'codex-handoff' : errorIndicatorsOnly ? 'error-indicators' : lateCardRepairOnly ? 'late-card-repair' : builderOnly ? 'builder' : workbenchCommandOnly ? 'workbench-command' : null;
 const focusedProfileOnly = Boolean(focusedProfile);
 const postAuditLongRunningAuthority = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_POST_AUDIT_LONG_RUNNING === '1';
 // Long-running operational coverage is not validation authority. Repository
@@ -6609,35 +6610,44 @@ async function settleInstalledPluginControl(frameHost, selector, timeoutMs = 20_
   }, timeoutMs);
 }
 
-async function dispatchInstalledPluginFormAction(frameHost, fields, action) {
-  return frameHost.evaluate((frame, item) => {
-    const document = frame.contentDocument;
-    const visible = element => {
-      if (!element || element.hidden || element.disabled || element.getAttribute?.('aria-hidden') === 'true') return false;
-      const style = frame.contentWindow.getComputedStyle(element);
-      return style.display !== 'none' && style.visibility !== 'hidden';
-    };
-    const route = [...document.querySelectorAll('[data-surface="plugins"]')]
-      .find(element => element.classList.contains('nav-item') && visible(element));
-    const rendered = document.querySelector('.content')?.classList.contains('surface-plugins') === true;
-    if (!rendered || route?.getAttribute('aria-current') !== 'page') throw new Error('plugin-form-route-not-settled');
-    const controls = Object.entries(item.fields).map(([selector, value]) => {
-      const field = document.querySelector(selector);
-      if (!visible(field)) throw new Error(`plugin-field-unavailable:${selector}`);
-      return { selector, field, value: String(value) };
-    });
-    const control = document.querySelector(`[data-action="${CSS.escape(item.action)}"]`);
-    if (!visible(control)) throw new Error(`plugin-action-unavailable:${item.action}`);
-    for (const { field, value } of controls) {
-      field.value = value;
-      field.dispatchEvent(new Event('input', { bubbles: true }));
-    }
-    const mismatch = controls.find(({ field, value }) => field.value !== value);
-    if (mismatch) throw new Error(`plugin-field-value-mismatch:${mismatch.selector}`);
-    const before = frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0;
-    control.click();
-    return before;
-  }, { fields, action });
+async function dispatchInstalledPluginFormAction(frameHost, fields, action, timeoutMs = 20_000) {
+  const deadline = Date.now() + timeoutMs;
+  let state = null;
+  do {
+    state = await frameHost.evaluate((frame, item) => {
+      const document = frame.contentDocument;
+      const visible = element => {
+        if (!element || element.hidden || element.disabled || element.getAttribute?.('aria-hidden') === 'true') return false;
+        const style = frame.contentWindow.getComputedStyle(element);
+        return style.display !== 'none' && style.visibility !== 'hidden';
+      };
+      const route = [...(document?.querySelectorAll('[data-surface="plugins"]') || [])]
+        .find(element => element.classList.contains('nav-item') && visible(element));
+      const rendered = document?.querySelector('.content')?.classList.contains('surface-plugins') === true;
+      const navCurrent = route?.getAttribute('aria-current') === 'page';
+      if ((!rendered || !navCurrent) && route) route.click();
+      if (!rendered || !navCurrent) return { dispatched: false, reason: 'route-not-settled' };
+      const controls = Object.entries(item.fields).map(([selector, value]) => ({
+        selector, field: document.querySelector(selector), value: String(value)
+      }));
+      const unavailableField = controls.find(({ field }) => !visible(field));
+      if (unavailableField) return { dispatched: false, reason: 'field-unavailable', selector: unavailableField.selector };
+      const control = document.querySelector(`[data-action="${CSS.escape(item.action)}"]`);
+      if (!visible(control)) return { dispatched: false, reason: 'action-unavailable', action: item.action };
+      for (const { field, value } of controls) {
+        field.value = value;
+        field.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+      const mismatch = controls.find(({ field, value }) => field.value !== value);
+      if (mismatch) return { dispatched: false, reason: 'field-value-mismatch', selector: mismatch.selector };
+      const before = frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0;
+      control.click();
+      return { dispatched: true, before };
+    }, { fields, action });
+    if (state?.dispatched === true) return state.before;
+    await wait(100);
+  } while (Date.now() < deadline);
+  throw new Error(`plugin-form-control-settlement-timeout:${JSON.stringify(state)}`);
 }
 
 function installedPluginPreviewConfirmationMatches(observation, expected) {
@@ -6900,26 +6910,15 @@ async function runInstalledStudioCandidateSaveProfile(frameHost, matrix, timeout
     const candidateStarted = Date.now();
     if (onProgress) onProgress({ scope: 'candidate', kind: spec.kind, identity, fixture_only: spec.fixture_only === true, state: 'started' });
     try {
-      await frameHost.evaluate((frame, item) => {
-        const document = frame.contentDocument;
-        document?.querySelector('[data-action="closeModal"]')?.click();
-        document?.querySelector(`[data-surface="${CSS.escape(item.route)}"]`)?.click();
-      }, spec);
-      await wait(180);
-      await frameHost.evaluate((frame, item) => {
-        if (!['agents', 'workflows'].includes(item.route)) return;
-        const document = frame.contentDocument;
-        const coreScope = document?.querySelector(`[data-action="surfaceScope"][data-target="${CSS.escape(item.route)}"][data-scope="core"]`);
-        if (!coreScope || coreScope.disabled) throw new Error(`studio-${item.kind}-core-scope-unavailable`);
-        if (coreScope.getAttribute('aria-pressed') !== 'true') coreScope.click();
-      }, spec);
-      await wait(120);
-      await frameHost.evaluate((frame, kind) => {
-        const document = frame.contentDocument;
-        const open = [...document.querySelectorAll('[data-action="openStudioDraft"]')].find(element => element.dataset.kind === kind && !element.disabled);
-        if (!open) throw new Error(`studio-${kind}-fresh-draft-opener-unavailable`);
-        open.click();
-      }, spec.kind);
+      const openerSelector = `[data-action="openStudioDraft"][data-kind="${spec.kind}"]`;
+      await settleInstalledSurfaceControl(frameHost, {
+        surface: spec.route,
+        selector: openerSelector,
+        scopeTarget: spec.route,
+        scope: ['agents', 'workflows'].includes(spec.route) ? 'core' : null,
+        stableSamplesRequired: 2
+      }, Math.min(timeoutMs, 20_000));
+      await clickWhenKnowledgeControlReady(frameHost, openerSelector, Math.min(timeoutMs, 20_000));
       await wait(120);
       await frameHost.evaluate((frame, kind) => {
         const discard = [...frame.contentDocument.querySelectorAll('[data-action="discardWorkingStudioDraft"]')].find(element => element.dataset.kind === kind && !element.disabled);
@@ -8328,37 +8327,71 @@ function coordinationMemoryControlProbe(matrix, observation) {
 
 async function runInstalledCoordinationMemoryProfile(frameHost, matrix, timeoutMs = 30_000) {
   const observation = { rendered: false, attempted: false, completed: false, webview_restarted: false, invalid_release_rejected: false, invalid_memory_rejected: false, task_complete: '', task_release: '', memory_content: '', portable_memory_id: '', operations: [], errors: [] };
+  const settleOpener = async (surface, selector) => settleInstalledSurfaceControl(frameHost, {
+    surface,
+    selector,
+    ...(surface === 'workflows' ? { scopeTarget: 'workflows', scope: 'core' } : {}),
+    stableSamplesRequired: 2
+  }, timeoutMs);
+  const dispatchForm = async (values, submitAction) => {
+    const deadline = Date.now() + timeoutMs;
+    let state = null;
+    do {
+      state = await frameHost.evaluate((frame, item) => {
+        const document = frame.contentDocument;
+        const visible = element => {
+          if (!element || element.hidden || element.disabled || element.getAttribute?.('aria-hidden') === 'true') return false;
+          const style = frame.contentWindow.getComputedStyle(element);
+          return style.display !== 'none' && style.visibility !== 'hidden' && element.closest('.control-modal') != null;
+        };
+        const controls = Object.entries(item.values).map(([selector, value]) => ({ selector, field: document.querySelector(selector), value }));
+        const unavailable = controls.find(({ field }) => !visible(field));
+        if (unavailable) return { dispatched: false, reason: 'field-unavailable', selector: unavailable.selector };
+        const submit = document.querySelector(`[data-action="${CSS.escape(item.submitAction)}"]`);
+        if (!visible(submit)) return { dispatched: false, reason: 'submit-unavailable', action: item.submitAction };
+        for (const { field, value } of controls) {
+          if (field.type === 'checkbox') field.checked = Boolean(value); else field.value = String(value);
+          field.dispatchEvent(new Event(field.tagName === 'SELECT' || field.type === 'checkbox' ? 'change' : 'input', { bubbles: true }));
+        }
+        const mismatched = controls.find(({ field, value }) => field.type === 'checkbox'
+          ? field.checked !== Boolean(value)
+          : field.value !== String(value));
+        if (mismatched) return { dispatched: false, reason: 'field-value-mismatch', selector: mismatched.selector };
+        const before = frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0;
+        submit.click();
+        return { dispatched: true, before };
+      }, { values, submitAction });
+      if (state?.dispatched === true) return state.before;
+      await wait(100);
+    } while (Date.now() < deadline);
+    throw new Error(`coordination-form-control-settlement-timeout:${JSON.stringify(state)}`);
+  };
   const post = async (openSelector, submitAction, operation, values, expected) => {
-    await waitForKnowledgeControl(frameHost, openSelector);
-    await frameHost.evaluate((frame, selector) => frame.contentDocument.querySelector(selector).click(), openSelector);
-    await waitForKnowledgeControl(frameHost, `[data-action="${submitAction}"]`);
-    const before = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
-    await frameHost.evaluate((frame, item) => {
-      const document = frame.contentDocument;
-      for (const [selector, value] of Object.entries(item.values)) {
-        const field = document.querySelector(selector); if (!field) throw new Error(`coordination-field-unavailable:${selector}`);
-        if (field.type === 'checkbox') field.checked = Boolean(value); else field.value = String(value);
-        field.dispatchEvent(new Event(field.tagName === 'SELECT' || field.type === 'checkbox' ? 'change' : 'input', { bubbles: true }));
-      }
-      const submit = document.querySelector(`[data-action="${CSS.escape(item.submitAction)}"]`);
-      if (!submit || submit.disabled) throw new Error(`coordination-submit-unavailable:${item.submitAction}`);
-      submit.click();
-    }, { values, submitAction });
+    await settleOpener(operation === 'captureCoordinationMemory' ? 'memory' : 'workflows', openSelector);
+    await clickWhenKnowledgeControlReady(frameHost, openSelector, timeoutMs);
+    const before = await dispatchForm(values, submitAction);
     const response = await waitForCoordinationResult(frameHost, before, operation, timeoutMs);
     if (!validCoordinationResult(operation, response, expected)) throw new Error(`coordination-${operation}-receipt-invalid:${JSON.stringify(response)}`);
-    observation.operations.push({ operation, response });
+    let refreshed_state_hash = null;
+    const returnedStateHash = String(response?.result?.state?.state_hash || '');
+    if (operation !== 'releaseCoordinationTask' && returnedStateHash) {
+      const refreshed = await refreshInstalledDashboardSnapshot(
+        frameHost,
+        snapshot => String(snapshot?.coordination?.state_hash || '') === returnedStateHash,
+        timeoutMs
+      );
+      refreshed_state_hash = String(refreshed?.coordination?.state_hash || '');
+    }
+    observation.operations.push({ operation, response, refreshed_state_hash });
     return response;
   };
   try {
     const unique = Date.now().toString(36);
     observation.task_complete = `px-complete-${unique}`; observation.task_release = `px-release-${unique}`;
     observation.memory_content = `PX owned operational memory ${unique}`;
-    await frameHost.evaluate(frame => {
-      const document = frame.contentDocument; document?.querySelector('[data-action="closeModal"]')?.click();
-      document?.querySelector('[data-surface="workflows"]')?.click();
-      const core = document?.querySelector('[data-action="surfaceScope"][data-target="workflows"][data-scope="core"]'); if (core && core.getAttribute('aria-pressed') !== 'true') core.click();
-    });
-    await waitForKnowledgeControl(frameHost, '[data-action="newParallelPlan"]');
+    await settleInstalledSurfaceControl(frameHost, {
+      surface: 'workflows', selector: '[data-action="newParallelPlan"]', scopeTarget: 'workflows', scope: 'core', stableSamplesRequired: 2
+    }, timeoutMs);
     observation.rendered = true; observation.attempted = true;
     await post('[data-action="newParallelPlan"]', 'submitParallelPlan', 'createParallelPlan', {
       '#plan-objective': 'Exercise the owned disposable coordination lifecycle.', '#plan-goal': 'operational verification',
@@ -8368,9 +8401,10 @@ async function runInstalledCoordinationMemoryProfile(frameHost, matrix, timeoutM
       '#claim-mode': 'exclusive', '#claim-authority': 'local', '#claim-ttl': '30'
     }, { event: 'task-claimed', task_id: observation.task_complete });
     const completedClaimId = completedClaim.result.result.receipt.claim_id;
+    const renewSelector = `[data-action="renewClaim"][data-task-id="${observation.task_complete}"][data-claim-id="${completedClaimId}"]`;
+    await settleOpener('workflows', renewSelector);
     const renewBefore = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
-    await waitForKnowledgeControl(frameHost, `[data-action="renewClaim"][data-task-id="${observation.task_complete}"][data-claim-id="${completedClaimId}"]`);
-    await frameHost.evaluate((frame, selector) => frame.contentDocument.querySelector(selector).click(), `[data-action="renewClaim"][data-task-id="${observation.task_complete}"][data-claim-id="${completedClaimId}"]`);
+    await clickWhenKnowledgeControlReady(frameHost, renewSelector, timeoutMs);
     const renewed = await waitForCoordinationResult(frameHost, renewBefore, 'renewCoordinationClaim', timeoutMs);
     if (!validCoordinationResult('renewCoordinationClaim', renewed, { event: 'task-lease-renewed', task_id: observation.task_complete, claim_id: completedClaimId })) throw new Error(`coordination-renew-receipt-invalid:${JSON.stringify(renewed)}`);
     observation.operations.push({ operation: 'renewCoordinationClaim', response: renewed });
@@ -8384,6 +8418,7 @@ async function runInstalledCoordinationMemoryProfile(frameHost, matrix, timeoutM
       '#claim-mode': 'exclusive', '#claim-authority': 'local', '#claim-ttl': '30'
     }, { event: 'task-claimed', task_id: observation.task_release });
     const releaseSelector = `[data-action="releaseTask"][data-task-id="${observation.task_release}"]`;
+    await settleOpener('workflows', releaseSelector);
     await clickWhenKnowledgeControlReady(frameHost, releaseSelector, timeoutMs);
     await waitForKnowledgeControl(frameHost, '[data-action="submitReleaseTask"]');
     const invalidReleaseBefore = await frameHost.evaluate(frame => (frame.contentWindow?.__PX_INSTALLED_RESPONSES__ || [])
@@ -8407,12 +8442,8 @@ async function runInstalledCoordinationMemoryProfile(frameHost, matrix, timeoutM
     }, { event: 'task-released', task_id: observation.task_release });
     await frameHost.evaluate(frame => frame.contentDocument?.querySelector('[data-action="closeModal"]')?.click());
     await navigateInstalledSurface(frameHost, 'memory', timeoutMs);
-    await waitForKnowledgeControl(frameHost, '[data-action="captureMemory"]');
-    await frameHost.evaluate(frame => {
-      const capture = frame.contentDocument.querySelector('[data-action="captureMemory"]');
-      if (!capture || capture.disabled) throw new Error('memory-capture-control-unavailable');
-      capture.click();
-    });
+    await settleOpener('memory', '[data-action="captureMemory"]');
+    await clickWhenKnowledgeControlReady(frameHost, '[data-action="captureMemory"]', timeoutMs);
     await waitForKnowledgeControl(frameHost, '[data-action="submitMemory"]');
     const invalidMemoryBefore = await installedOutboundRequestOffset(frameHost);
     await frameHost.evaluate(frame => {
@@ -8437,9 +8468,9 @@ async function runInstalledCoordinationMemoryProfile(frameHost, matrix, timeoutM
     observation.portable_memory_id = capturedMemory.result.result.receipt.memory_id;
     const restart = await restartInstalledDashboardWebview(frameHost, 45_000);
     observation.webview_restarted = restart.restarted === true;
-    await frameHost.evaluate(frame => { const document = frame.contentDocument; document?.querySelector('[data-surface="dashboard"]')?.click(); document?.querySelector('[data-surface="workflows"]')?.click(); });
+    await navigateInstalledSurface(frameHost, 'workflows', timeoutMs);
     const workflowsText = await waitForInstalledMemoryText(frameHost, new RegExp(`${observation.task_complete}|${observation.task_release}`), timeoutMs);
-    await frameHost.evaluate(frame => frame.contentDocument?.querySelector('[data-surface="memory"]')?.click());
+    await navigateInstalledSurface(frameHost, 'memory', timeoutMs);
     const portableSelector = `[data-action="inspectMemoryRecord"][data-portable-memory-id="${observation.portable_memory_id}"]`;
     await waitForKnowledgeControl(frameHost, portableSelector);
     const portableRow = await frameHost.evaluate((frame, selector) => String(frame.contentDocument.querySelector(selector)?.innerText || ''), portableSelector);
@@ -8582,14 +8613,11 @@ async function runInstalledProjectsProfile(workbench, frameHost, matrix, timeout
       ['knowledgeGraph', 'pxui.knowledge-graph.action.buildRepositoryGraph'],
       ['diagnostics', 'pxui.diagnostics.action.dynamicRepair.buildRepositoryGraph']
     ]) {
-      await frameHost.evaluate((frame, target) => {
-        const document = frame.contentDocument; document?.querySelector('[data-action="closeModal"]')?.click(); document?.querySelector(`[data-surface="${CSS.escape(target)}"]`)?.click();
-      }, route);
-      await waitForKnowledgeControl(frameHost, '[data-action="buildRepositoryGraph"]');
+      await settleInstalledSurfaceControl(frameHost, { surface: route, selector: '[data-action="buildRepositoryGraph"]', stableSamplesRequired: 2 }, Math.min(timeoutMs, 30_000));
       observation.rendered_controls[controlId] = true;
       const cancelBefore = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
       const requestBeforeCancel = await installedOutboundRequestOffset(frameHost);
-      await frameHost.evaluate(frame => frame.contentDocument.querySelector('[data-action="buildRepositoryGraph"]').click());
+      await clickWhenKnowledgeControlReady(frameHost, '[data-action="buildRepositoryGraph"]', Math.min(timeoutMs, 20_000));
       const cancelledDialog = await waitForNativeWorkbenchDialog(workbench, /Build or refresh the bounded repository architecture graph/i, 15_000, { frameHost, responseOffset: cancelBefore, requestOffset: requestBeforeCancel, requestType: 'buildRepositoryGraph', keyboardAction: 'Cancel' });
       await clickNativeWorkbenchDialogAction(workbench, cancelledDialog, 'Cancel');
       await waitForKnowledgeControl(frameHost, '[data-action="buildRepositoryGraph"]');
@@ -8597,18 +8625,13 @@ async function runInstalledProjectsProfile(workbench, frameHost, matrix, timeout
       observation.cancelled_controls[controlId] = !cancelResponses.some(value => value?.type === 'graphBuildResult');
       observation.attempted_controls[controlId] = true;
     }
-    await frameHost.evaluate(frame => {
-      const document = frame.contentDocument;
-      document?.querySelector('[data-action="closeModal"]')?.click();
-      document?.querySelector('[data-surface="projects"]')?.click();
-    });
-    await waitForKnowledgeControl(frameHost, '[data-action="buildRepositoryGraph"]');
+    await settleInstalledSurfaceControl(frameHost, { surface: 'projects', selector: '[data-action="buildRepositoryGraph"]', stableSamplesRequired: 2 }, Math.min(timeoutMs, 30_000));
     observation.rendered = true; observation.attempted = true;
     observation.rendered_controls['pxui.projects.action.buildRepositoryGraph'] = true;
     observation.attempted_controls['pxui.projects.action.buildRepositoryGraph'] = true;
     const projectsCancelBefore = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
     const projectsRequestBeforeCancel = await installedOutboundRequestOffset(frameHost);
-    await frameHost.evaluate(frame => frame.contentDocument.querySelector('[data-action="buildRepositoryGraph"]').click());
+    await clickWhenKnowledgeControlReady(frameHost, '[data-action="buildRepositoryGraph"]', Math.min(timeoutMs, 20_000));
     const projectsCancelledDialog = await waitForNativeWorkbenchDialog(workbench, buildDialogText, 15_000, { frameHost, responseOffset: projectsCancelBefore, requestOffset: projectsRequestBeforeCancel, requestType: 'buildRepositoryGraph', keyboardAction: 'Cancel' });
     await clickNativeWorkbenchDialogAction(workbench, projectsCancelledDialog, 'Cancel');
     await waitForKnowledgeControl(frameHost, '[data-action="buildRepositoryGraph"]');
@@ -8616,7 +8639,7 @@ async function runInstalledProjectsProfile(workbench, frameHost, matrix, timeout
     observation.cancelled_controls['pxui.projects.action.buildRepositoryGraph'] = !projectsCancelResponses.some(value => value?.type === 'graphBuildResult');
     const before = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
     const requestBeforeBuild = await installedOutboundRequestOffset(frameHost);
-    await frameHost.evaluate(frame => frame.contentDocument.querySelector('[data-action="buildRepositoryGraph"]').click());
+    await clickWhenKnowledgeControlReady(frameHost, '[data-action="buildRepositoryGraph"]', Math.min(timeoutMs, 20_000));
     const dialog = await waitForNativeWorkbenchDialog(workbench, /Build or refresh the bounded repository architecture graph/i, 15_000, { frameHost, responseOffset: before, requestOffset: requestBeforeBuild, requestType: 'buildRepositoryGraph', keyboardAction: 'Build graph' });
     await clickNativeWorkbenchDialogAction(workbench, dialog, 'Build graph');
     const deadline = Date.now() + timeoutMs;
@@ -8648,11 +8671,8 @@ async function runInstalledProjectsProfile(workbench, frameHost, matrix, timeout
     const restart = await restartInstalledDashboardWebview(frameHost, 45_000);
     observation.webview_restarted = restart.restarted === true;
     const refreshBefore = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
-    await frameHost.evaluate(frame => {
-      const document = frame.contentDocument;
-      document?.querySelector('[data-action="refresh"]')?.click();
-      document?.querySelector('[data-surface="projects"]')?.click();
-    });
+    await clickWhenKnowledgeControlReady(frameHost, '[data-action="refresh"]', Math.min(timeoutMs, 20_000));
+    await navigateInstalledSurface(frameHost, 'projects', Math.min(timeoutMs, 20_000));
     const reopenDeadline = Date.now() + 30_000;
     do {
       const snapshot = await frameHost.evaluate((frame, after) => (frame.contentWindow?.__PX_INSTALLED_RESPONSES__ || []).slice(after).filter(value => value?.type === 'snapshot').at(-1)?.snapshot || null, refreshBefore);
@@ -8746,6 +8766,8 @@ async function runInstalledKnowledgeGraphProfile(frameHost, matrix, timeoutMs = 
     const deadline = Date.now() + timeoutMs;
     const retryAt = Date.now() + Math.min(5_000, Math.max(1_000, Math.floor(timeoutMs / 3)));
     let retried = false;
+    let firstInvalidRequestId = null;
+    let lastInvalidResult = null;
     do {
       const pair = await frameHost.evaluate((frame, after) => {
         const request = (frame.contentWindow?.__PX_INSTALLED_REQUESTS__ || []).slice(after.requests)
@@ -8758,12 +8780,16 @@ async function runInstalledKnowledgeGraphProfile(frameHost, matrix, timeoutMs = 
       if (identity?.terminal === 'error') throw new Error(`knowledge-graph-query-failed:${identity.error}`);
       if (identity?.terminal === 'result') return pair.response.result;
       if (pair.response?.type === 'graphResult') {
-        throw new Error(`knowledge-graph-result-invalid:${JSON.stringify({
+        lastInvalidResult = {
           available: pair.response.result?.available,
           view: pair.response.result?.view,
           nodes: Array.isArray(pair.response.result?.nodes),
           edges: Array.isArray(pair.response.result?.edges)
-        })}`);
+        };
+        firstInvalidRequestId ||= pair.request?.requestId || null;
+        if (retried && pair.request?.requestId && pair.request.requestId !== firstInvalidRequestId) {
+          throw new Error(`knowledge-graph-result-invalid:${JSON.stringify(lastInvalidResult)}`);
+        }
       }
       if (!identity && !retried && Date.now() >= retryAt && typeof retry === 'function') {
         retried = true;
@@ -8771,15 +8797,11 @@ async function runInstalledKnowledgeGraphProfile(frameHost, matrix, timeoutMs = 
       }
       await wait(150);
     } while (Date.now() < deadline);
+    if (lastInvalidResult) throw new Error(`knowledge-graph-result-invalid:${JSON.stringify(lastInvalidResult)}`);
     throw new Error('knowledge-graph-request-bound-result-timeout');
   };
   try {
-    await frameHost.evaluate(frame => {
-      const document = frame.contentDocument;
-      document?.querySelector('[data-action="closeModal"]')?.click();
-      document?.querySelector('[data-surface="knowledgeGraph"]')?.click();
-    });
-    await waitForKnowledgeControl(frameHost, '[data-action="graphView"][data-view="repository"]');
+    await settleInstalledSurfaceControl(frameHost, { surface: 'knowledgeGraph', selector: '[data-action="graphView"][data-view="repository"]', stableSamplesRequired: 2 }, Math.min(timeoutMs, 30_000));
     observation.rendered = true;
     observation.attempted = true;
     let after = await frameHost.evaluate(frame => ({
@@ -11077,7 +11099,7 @@ async function main() {
     if (ownedReversibleConfigurationAuthority && returnedProfileErrors(reversibleConfigurationProfile).length) {
       dashboardProfileBlocker = 'reversible-configuration';
     }
-    const studioChainAdmitted = ownedReversibleConfigurationAuthority && !configurationOnly && !knowledgeLifecycleOnly && !hostBoundaryOnly && !nativeDialogOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly && !builderOnly && !workbenchCommandOnly;
+    const studioChainAdmitted = ownedReversibleConfigurationAuthority && !configurationOnly && !knowledgeLifecycleOnly && !coordinationMemoryOnly && !hostBoundaryOnly && !nativeDialogOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly && !builderOnly && !workbenchCommandOnly;
     const studioSetupProfile = studioChainAdmitted
       ? await timedProfile('studio-setup', () => runInstalledStudioSetupProfile(workbench, dashboard, proofMatrix))
       : { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside an owned isolated host.', eligible_control_count: 0, records: [] };
@@ -11132,13 +11154,13 @@ async function main() {
     if (!focusedProfileOnly && !hostSourceMismatch && studioLifecycleCrashProfile.completed !== true && returnedProfileErrors(studioLifecycleCrashProfile).length === 0) {
       recordProfileFailure('studio-lifecycle-crash-recovery', 'returned-incomplete', studioLifecycleCrashProfile.errors?.length ? studioLifecycleCrashProfile.errors : ['profile-incomplete-without-error']);
     }
-    const knowledgeLifecycleProfile = ownedReversibleConfigurationAuthority && !configurationOnly && !studioLifecycleOnly && !hostBoundaryOnly && !nativeDialogOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly && !builderOnly && !workbenchCommandOnly
+    const knowledgeLifecycleProfile = ownedReversibleConfigurationAuthority && !configurationOnly && !studioLifecycleOnly && !coordinationMemoryOnly && !hostBoundaryOnly && !nativeDialogOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly && !builderOnly && !workbenchCommandOnly
       ? await timedProfile('knowledge-lifecycle', () => runInstalledKnowledgeLifecycleProfile(dashboard, proofMatrix))
       : { schema_version: 'px.installed-knowledge-lifecycle-profile/1.0', authority: 'Not admitted outside an owned isolated host and disposable workspace.', observation: { attempted: false, completed: false, errors: [] }, control_probe: { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside an owned isolated host and disposable workspace.', eligible_control_count: 0, records: [] } };
-    const learningLifecycleProfile = ownedReversibleConfigurationAuthority && !configurationOnly && !studioLifecycleOnly && !hostBoundaryOnly && !nativeDialogOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly && !builderOnly && !workbenchCommandOnly
+    const learningLifecycleProfile = ownedReversibleConfigurationAuthority && !configurationOnly && !studioLifecycleOnly && !coordinationMemoryOnly && !hostBoundaryOnly && !nativeDialogOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly && !builderOnly && !workbenchCommandOnly
       ? await timedProfile('learning-lifecycle', () => runInstalledLearningLifecycleProfile(dashboard, proofMatrix))
       : { schema_version: 'px.installed-learning-lifecycle-profile/1.0', authority: 'Not admitted outside an owned isolated host and disposable workspace.', observation: { attempted: false, completed: false, errors: [] }, control_probe: { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside an owned isolated host and disposable workspace.', eligible_control_count: 0, records: [] } };
-    const coordinationMemoryProfile = ownedReversibleConfigurationAuthority && !focusedProfileOnly
+    const coordinationMemoryProfile = ownedReversibleConfigurationAuthority && (!focusedProfileOnly || coordinationMemoryOnly)
       ? await timedProfile('coordination-memory', () => runInstalledCoordinationMemoryProfile(dashboard, proofMatrix))
       : { schema_version: 'px.installed-coordination-memory-profile/1.0', authority: 'Not admitted outside a full owned isolated host and disposable workspace.', observation: { attempted: false, completed: false, errors: [] }, control_probe: { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside a full owned isolated host and disposable workspace.', eligible_control_count: 0, records: [] } };
     const skillQueryProfile = ownedReversibleConfigurationAuthority && !focusedProfileOnly

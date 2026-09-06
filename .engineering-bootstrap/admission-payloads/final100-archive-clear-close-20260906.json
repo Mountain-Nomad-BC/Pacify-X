@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1067",
+  "session_id": "release-session:final100-archive-clear-20260906",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000033745",
+  "outcome": "completed",
+  "reason": "The single archive_clear invocation completed the final99 archive and cleared-final100 state effect but failed its child-owner postcondition because the child counted its parent-registered self as an active resource. Final100 is terminal, was not retried, and has zero residual resources.",
+  "evidence": [
+    {
+      "reference": "evidence/release/final100-archive-clear-postcondition-failure-20260906.json",
+      "artifact_sha256": "d0ef93632bbc2f3edb5dda43fea146192b634dfd8cc695127d9c41ee48d0dac5",
+      "artifact_size": 2052,
+      "claim": "Complete single-attempt effect and postcondition failure denominator with canonical successor rule."
+    }
+  ]
+}

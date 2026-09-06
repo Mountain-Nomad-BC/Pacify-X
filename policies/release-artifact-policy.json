@@ -11,7 +11,7 @@
   "intermediate_name_suffixes": [".egg-info"],
   "intermediate_suffixes": [".pyc", ".pyo", ".tmp"],
   "control_output_paths": [".engineering-bootstrap/release.lock", ".engineering-bootstrap/release-transaction.json", ".engineering-bootstrap/processing-order/repair-campaign.json", ".engineering-bootstrap/processing-order/release-identity.json", ".engineering-bootstrap/test-evidence/.test-orchestration.lock", ".px/mcp-runtime-probe.json", "extension/SHA256SUMS.txt", "registry/.operational-gap-ledger.lock", "registry/completion_status.json", "registry/operational_gap_ledger.head.json", "registry/px_world_state.json"],
-  "control_output_prefixes": [".engineering-bootstrap/test-evidence/", ".engineering-bootstrap/resource-lifecycle/", "registry/.lock-recovery-receipts/", "registry/operational_gap_ledger.deltas/"],
+  "control_output_prefixes": [".engineering-bootstrap/test-evidence/", ".engineering-bootstrap/resource-lifecycle/", ".engineering-bootstrap/wal/", "registry/.lock-recovery-receipts/", "registry/operational_gap_ledger.deltas/"],
   "evidence_allowed_suffixes": [".json", ".jsonl", ".ndjson", ".md", ".txt", ".log", ".xml", ".png", ".svg", ".sig"],
   "evidence_allowed_names": ["SHA256SUMS"],
   "skill_source_only": [],

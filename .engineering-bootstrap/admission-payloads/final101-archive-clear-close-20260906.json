@@ -1,0 +1,5 @@
+{
+  "gap_id": "PX-OS-1067", "session_id": "release-session:final101-archive-clear-20260906", "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000033751", "outcome": "completed",
+  "reason": "Final101 archive_clear passed once through the canonical consumed-cleared transition; final100 is retained, final101 is cleared with every stage pending, and parent-observed resources are zero.",
+  "evidence": [{"reference": "evidence/release/final101-stage-receipts/pacify-x-certification-20260906-final101-single-archive_clear.json", "artifact_sha256": "9c053af4613c5eb942fe9cf6689e62d46189ad6ebbe005e79d4dafa05f7e13d4", "artifact_size": 265, "claim": "Final101 archive_clear passed exactly once; reconcile is next."}]
+}

@@ -3,7 +3,7 @@
   "title": "Architecture invariants",
   "severity": "critical",
   "type": "test",
-  "status": "planned",
+  "status": "downstream_green",
   "root_cause": "Cohesion rules are documented but not enforced as one current-tree invariant gate.",
   "source_requirement": "Enforce semantic profile, revision, primitive owner, duplicate exception, evidence class, conformance, dependency, task-plan, model, release identity, and parent/child N/A invariants.",
   "live_evidence": [
@@ -69,5 +69,122 @@
     "All mandated invariants execute and return stable IDs.",
     "Complete current tree passes before repair freeze."
   ],
-  "completion_evidence": []
+  "completion_evidence": [
+    "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+    "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+    "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+    "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+    "C:/Users/Ben/Downloads/px looks/PX_COMMENCEMENT_ORCHESTRATION_2026-09-04.md#sha256=2082a48c33db8745e76044f1ec2a441d5f00a1ba6576522ea682f40dd1ac3f89#anchor=PX-SYS-002",
+    "runtime/architecture_invariants.py#sha256=20e80a23e23ef205fe292a5d52c389821d475f1a9cbf55ff19a47214c1a37fbc",
+    "tests/test_architecture_invariants.py#sha256=3acdedaa1da37bcc202dbf8ad2c496128d52b2ba6bb94b92d31a106414802744"
+  ],
+  "status_history": [
+    {
+      "status": "admitted",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "C:/Users/Ben/Downloads/px looks/PX_COMMENCEMENT_ORCHESTRATION_2026-09-04.md#sha256=2082a48c33db8745e76044f1ec2a441d5f00a1ba6576522ea682f40dd1ac3f89#anchor=PX-SYS-002",
+        "runtime/architecture_invariants.py#sha256=20e80a23e23ef205fe292a5d52c389821d475f1a9cbf55ff19a47214c1a37fbc",
+        "tests/test_architecture_invariants.py#sha256=3acdedaa1da37bcc202dbf8ad2c496128d52b2ba6bb94b92d31a106414802744"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "in_progress",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "C:/Users/Ben/Downloads/px looks/PX_COMMENCEMENT_ORCHESTRATION_2026-09-04.md#sha256=2082a48c33db8745e76044f1ec2a441d5f00a1ba6576522ea682f40dd1ac3f89#anchor=PX-SYS-002",
+        "runtime/architecture_invariants.py#sha256=20e80a23e23ef205fe292a5d52c389821d475f1a9cbf55ff19a47214c1a37fbc",
+        "tests/test_architecture_invariants.py#sha256=3acdedaa1da37bcc202dbf8ad2c496128d52b2ba6bb94b92d31a106414802744"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "focused_green",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "C:/Users/Ben/Downloads/px looks/PX_COMMENCEMENT_ORCHESTRATION_2026-09-04.md#sha256=2082a48c33db8745e76044f1ec2a441d5f00a1ba6576522ea682f40dd1ac3f89#anchor=PX-SYS-002",
+        "runtime/architecture_invariants.py#sha256=20e80a23e23ef205fe292a5d52c389821d475f1a9cbf55ff19a47214c1a37fbc",
+        "tests/test_architecture_invariants.py#sha256=3acdedaa1da37bcc202dbf8ad2c496128d52b2ba6bb94b92d31a106414802744"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "downstream_green",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "C:/Users/Ben/Downloads/px looks/PX_COMMENCEMENT_ORCHESTRATION_2026-09-04.md#sha256=2082a48c33db8745e76044f1ec2a441d5f00a1ba6576522ea682f40dd1ac3f89#anchor=PX-SYS-002",
+        "runtime/architecture_invariants.py#sha256=20e80a23e23ef205fe292a5d52c389821d475f1a9cbf55ff19a47214c1a37fbc",
+        "tests/test_architecture_invariants.py#sha256=3acdedaa1da37bcc202dbf8ad2c496128d52b2ba6bb94b92d31a106414802744"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    }
+  ],
+  "closure_reconciliation": {
+    "schema_version": "px.cohesion-card-reconciliation/1.0",
+    "target_status": "downstream_green",
+    "reconciled_at": "2026-09-06T00:26:20.1402452Z",
+    "acceptance_criteria_count": 2,
+    "evidence": [
+      {
+        "path": "evidence/commencement-repair/repair-freeze-20260905.json",
+        "sha256": "7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "size": 1727,
+        "schema_version": "px.repair-freeze/1.0"
+      },
+      {
+        "path": "evidence/release/final99-full-profile-pass-20260905.json",
+        "sha256": "b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "size": 1276,
+        "schema_version": "px.full-profile-receipt/1.0"
+      },
+      {
+        "path": "evidence/release/final99-validation-pass-20260905.json",
+        "sha256": "07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "size": 937,
+        "schema_version": "px.validation-receipt/1.0"
+      },
+      {
+        "path": "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json",
+        "sha256": "6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "size": 4317,
+        "schema_version": "px.focused-repair-evidence/1.0"
+      },
+      {
+        "path": "C:/Users/Ben/Downloads/px looks/PX_COMMENCEMENT_ORCHESTRATION_2026-09-04.md",
+        "sha256": "2082a48c33db8745e76044f1ec2a441d5f00a1ba6576522ea682f40dd1ac3f89",
+        "size": 34387,
+        "anchor": "PX-SYS-002",
+        "evidence_kind": "card_live_evidence"
+      },
+      {
+        "path": "runtime/architecture_invariants.py",
+        "sha256": "20e80a23e23ef205fe292a5d52c389821d475f1a9cbf55ff19a47214c1a37fbc",
+        "size": 6233,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "tests/test_architecture_invariants.py",
+        "sha256": "3acdedaa1da37bcc202dbf8ad2c496128d52b2ba6bb94b92d31a106414802744",
+        "size": 547,
+        "evidence_kind": "declared_implementation_file"
+      }
+    ]
+  }
 }

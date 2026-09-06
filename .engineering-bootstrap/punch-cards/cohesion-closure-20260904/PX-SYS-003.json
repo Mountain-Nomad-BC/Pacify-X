@@ -3,7 +3,7 @@
   "title": "Duplicate primitive lint",
   "severity": "high",
   "type": "test",
-  "status": "planned",
+  "status": "downstream_green",
   "root_cause": "New implementations can accidentally introduce parallel authority for an existing primitive.",
   "source_requirement": "Statically and conservatively flag duplicate primitive definitions unless an explicit exception exists.",
   "live_evidence": [
@@ -60,5 +60,133 @@
     "Known duplicate primitives fail without a narrow exception.",
     "Ambiguity is reported, not guessed clean."
   ],
-  "completion_evidence": []
+  "completion_evidence": [
+    "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+    "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+    "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+    "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+    "C:/Users/Ben/Downloads/px looks/PX_COMMENCEMENT_ORCHESTRATION_2026-09-04.md#sha256=2082a48c33db8745e76044f1ec2a441d5f00a1ba6576522ea682f40dd1ac3f89#anchor=PX-SYS-003",
+    "runtime/primitive_lint.py#sha256=9a9316b20f30e6b314c0495e09f7a85fc59b7282114f0e74d526a4f86fac9ff2",
+    "registry/primitive_authority.json#sha256=8b936734cdecae8d128bad60473f3a061f580093f00e40ea15a1026df5c7c08d",
+    "tests/test_primitive_lint.py#sha256=ecb603684a34f715074fdd5a836637c6a32d05fc421607cee3b117186717a769"
+  ],
+  "status_history": [
+    {
+      "status": "admitted",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "C:/Users/Ben/Downloads/px looks/PX_COMMENCEMENT_ORCHESTRATION_2026-09-04.md#sha256=2082a48c33db8745e76044f1ec2a441d5f00a1ba6576522ea682f40dd1ac3f89#anchor=PX-SYS-003",
+        "runtime/primitive_lint.py#sha256=9a9316b20f30e6b314c0495e09f7a85fc59b7282114f0e74d526a4f86fac9ff2",
+        "registry/primitive_authority.json#sha256=8b936734cdecae8d128bad60473f3a061f580093f00e40ea15a1026df5c7c08d",
+        "tests/test_primitive_lint.py#sha256=ecb603684a34f715074fdd5a836637c6a32d05fc421607cee3b117186717a769"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "in_progress",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "C:/Users/Ben/Downloads/px looks/PX_COMMENCEMENT_ORCHESTRATION_2026-09-04.md#sha256=2082a48c33db8745e76044f1ec2a441d5f00a1ba6576522ea682f40dd1ac3f89#anchor=PX-SYS-003",
+        "runtime/primitive_lint.py#sha256=9a9316b20f30e6b314c0495e09f7a85fc59b7282114f0e74d526a4f86fac9ff2",
+        "registry/primitive_authority.json#sha256=8b936734cdecae8d128bad60473f3a061f580093f00e40ea15a1026df5c7c08d",
+        "tests/test_primitive_lint.py#sha256=ecb603684a34f715074fdd5a836637c6a32d05fc421607cee3b117186717a769"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "focused_green",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "C:/Users/Ben/Downloads/px looks/PX_COMMENCEMENT_ORCHESTRATION_2026-09-04.md#sha256=2082a48c33db8745e76044f1ec2a441d5f00a1ba6576522ea682f40dd1ac3f89#anchor=PX-SYS-003",
+        "runtime/primitive_lint.py#sha256=9a9316b20f30e6b314c0495e09f7a85fc59b7282114f0e74d526a4f86fac9ff2",
+        "registry/primitive_authority.json#sha256=8b936734cdecae8d128bad60473f3a061f580093f00e40ea15a1026df5c7c08d",
+        "tests/test_primitive_lint.py#sha256=ecb603684a34f715074fdd5a836637c6a32d05fc421607cee3b117186717a769"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "downstream_green",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "C:/Users/Ben/Downloads/px looks/PX_COMMENCEMENT_ORCHESTRATION_2026-09-04.md#sha256=2082a48c33db8745e76044f1ec2a441d5f00a1ba6576522ea682f40dd1ac3f89#anchor=PX-SYS-003",
+        "runtime/primitive_lint.py#sha256=9a9316b20f30e6b314c0495e09f7a85fc59b7282114f0e74d526a4f86fac9ff2",
+        "registry/primitive_authority.json#sha256=8b936734cdecae8d128bad60473f3a061f580093f00e40ea15a1026df5c7c08d",
+        "tests/test_primitive_lint.py#sha256=ecb603684a34f715074fdd5a836637c6a32d05fc421607cee3b117186717a769"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    }
+  ],
+  "closure_reconciliation": {
+    "schema_version": "px.cohesion-card-reconciliation/1.0",
+    "target_status": "downstream_green",
+    "reconciled_at": "2026-09-06T00:26:20.1402452Z",
+    "acceptance_criteria_count": 2,
+    "evidence": [
+      {
+        "path": "evidence/commencement-repair/repair-freeze-20260905.json",
+        "sha256": "7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "size": 1727,
+        "schema_version": "px.repair-freeze/1.0"
+      },
+      {
+        "path": "evidence/release/final99-full-profile-pass-20260905.json",
+        "sha256": "b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "size": 1276,
+        "schema_version": "px.full-profile-receipt/1.0"
+      },
+      {
+        "path": "evidence/release/final99-validation-pass-20260905.json",
+        "sha256": "07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "size": 937,
+        "schema_version": "px.validation-receipt/1.0"
+      },
+      {
+        "path": "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json",
+        "sha256": "6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "size": 4317,
+        "schema_version": "px.focused-repair-evidence/1.0"
+      },
+      {
+        "path": "C:/Users/Ben/Downloads/px looks/PX_COMMENCEMENT_ORCHESTRATION_2026-09-04.md",
+        "sha256": "2082a48c33db8745e76044f1ec2a441d5f00a1ba6576522ea682f40dd1ac3f89",
+        "size": 34387,
+        "anchor": "PX-SYS-003",
+        "evidence_kind": "card_live_evidence"
+      },
+      {
+        "path": "runtime/primitive_lint.py",
+        "sha256": "9a9316b20f30e6b314c0495e09f7a85fc59b7282114f0e74d526a4f86fac9ff2",
+        "size": 7131,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "registry/primitive_authority.json",
+        "sha256": "8b936734cdecae8d128bad60473f3a061f580093f00e40ea15a1026df5c7c08d",
+        "size": 4416,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "tests/test_primitive_lint.py",
+        "sha256": "ecb603684a34f715074fdd5a836637c6a32d05fc421607cee3b117186717a769",
+        "size": 2269,
+        "evidence_kind": "declared_implementation_file"
+      }
+    ]
+  }
 }

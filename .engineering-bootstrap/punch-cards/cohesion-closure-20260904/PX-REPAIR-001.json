@@ -3,7 +3,7 @@
   "title": "Repair-root grouping",
   "severity": "high",
   "type": "integration",
-  "status": "planned",
+  "status": "downstream_green",
   "root_cause": "Final60-final85 history repeatedly treated symptoms as isolated repairs and re-entered certification before the complete root set was known.",
   "source_requirement": "Provide a diagnostic-only root grouping workflow from complete failures to discriminating tests and confirmed roots.",
   "live_evidence": [
@@ -57,5 +57,122 @@
     "The module is diagnostic only.",
     "No candidate root becomes authority without confirmation."
   ],
-  "completion_evidence": []
+  "completion_evidence": [
+    "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+    "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+    "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+    "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+    "evidence/commencement-audit-20260905T002921Z/live-state.json#sha256=73534ca79e11a962728e7ea9fa271ac4adbfaec1f54f0da6cd3dc156fe364222",
+    "runtime/repair_root_analysis.py#sha256=994293d6ea9a47ab8ee9924a370cfb5404743b98b2b0118362df643e8801662e",
+    "tests/test_repair_root_analysis.py#sha256=c0b82728e36f4528136924bcb965b9dddad70e98c08b6ec4dbaef33bbc53df34"
+  ],
+  "status_history": [
+    {
+      "status": "admitted",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/live-state.json#sha256=73534ca79e11a962728e7ea9fa271ac4adbfaec1f54f0da6cd3dc156fe364222",
+        "runtime/repair_root_analysis.py#sha256=994293d6ea9a47ab8ee9924a370cfb5404743b98b2b0118362df643e8801662e",
+        "tests/test_repair_root_analysis.py#sha256=c0b82728e36f4528136924bcb965b9dddad70e98c08b6ec4dbaef33bbc53df34"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "in_progress",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/live-state.json#sha256=73534ca79e11a962728e7ea9fa271ac4adbfaec1f54f0da6cd3dc156fe364222",
+        "runtime/repair_root_analysis.py#sha256=994293d6ea9a47ab8ee9924a370cfb5404743b98b2b0118362df643e8801662e",
+        "tests/test_repair_root_analysis.py#sha256=c0b82728e36f4528136924bcb965b9dddad70e98c08b6ec4dbaef33bbc53df34"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "focused_green",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/live-state.json#sha256=73534ca79e11a962728e7ea9fa271ac4adbfaec1f54f0da6cd3dc156fe364222",
+        "runtime/repair_root_analysis.py#sha256=994293d6ea9a47ab8ee9924a370cfb5404743b98b2b0118362df643e8801662e",
+        "tests/test_repair_root_analysis.py#sha256=c0b82728e36f4528136924bcb965b9dddad70e98c08b6ec4dbaef33bbc53df34"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "downstream_green",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/live-state.json#sha256=73534ca79e11a962728e7ea9fa271ac4adbfaec1f54f0da6cd3dc156fe364222",
+        "runtime/repair_root_analysis.py#sha256=994293d6ea9a47ab8ee9924a370cfb5404743b98b2b0118362df643e8801662e",
+        "tests/test_repair_root_analysis.py#sha256=c0b82728e36f4528136924bcb965b9dddad70e98c08b6ec4dbaef33bbc53df34"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    }
+  ],
+  "closure_reconciliation": {
+    "schema_version": "px.cohesion-card-reconciliation/1.0",
+    "target_status": "downstream_green",
+    "reconciled_at": "2026-09-06T00:26:20.1402452Z",
+    "acceptance_criteria_count": 2,
+    "evidence": [
+      {
+        "path": "evidence/commencement-repair/repair-freeze-20260905.json",
+        "sha256": "7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "size": 1727,
+        "schema_version": "px.repair-freeze/1.0"
+      },
+      {
+        "path": "evidence/release/final99-full-profile-pass-20260905.json",
+        "sha256": "b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "size": 1276,
+        "schema_version": "px.full-profile-receipt/1.0"
+      },
+      {
+        "path": "evidence/release/final99-validation-pass-20260905.json",
+        "sha256": "07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "size": 937,
+        "schema_version": "px.validation-receipt/1.0"
+      },
+      {
+        "path": "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json",
+        "sha256": "6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "size": 4317,
+        "schema_version": "px.focused-repair-evidence/1.0"
+      },
+      {
+        "path": "evidence/commencement-audit-20260905T002921Z/live-state.json",
+        "sha256": "73534ca79e11a962728e7ea9fa271ac4adbfaec1f54f0da6cd3dc156fe364222",
+        "size": 3926,
+        "anchor": null,
+        "evidence_kind": "card_live_evidence"
+      },
+      {
+        "path": "runtime/repair_root_analysis.py",
+        "sha256": "994293d6ea9a47ab8ee9924a370cfb5404743b98b2b0118362df643e8801662e",
+        "size": 3978,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "tests/test_repair_root_analysis.py",
+        "sha256": "c0b82728e36f4528136924bcb965b9dddad70e98c08b6ec4dbaef33bbc53df34",
+        "size": 1682,
+        "evidence_kind": "declared_implementation_file"
+      }
+    ]
+  }
 }

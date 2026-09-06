@@ -2,16 +2,16 @@
 
 Execute the hash-bound cohesion-closure DAG in dependency order.
 
-## Active wave
+## Active convergence
 
-Wave 0 audit/adjudication is closed. Finish the fresh-map-expanded downstream cone for `PX-ASSURE-001`; `PX-ASSURE-002`, `PX-CORE-001`, `PX-CORE-002`, and the read/disposable portion of `PX-LEDGER-001` remain available only under the same admitted denominator and exact work guard.
+Implementation, focused repair, resource reconciliation, documentation convergence, and the single atomic 37-card transition to `downstream_green` are complete. Freeze repair12 at its zero-unresolved denominator, then enter the one ordered final100 campaign. The cards do not close until final100 installed-operational proof succeeds. The DAG/reconciler, not this narrative file, owns lifecycle state.
 
-## Later waves
+## Successor release
 
-Follow `.engineering-bootstrap/punch-cards/cohesion-closure-20260904/dag.json`. Dependency order is authoritative even when a prerequisite crosses a numbered wave. Implement one root at a time, reuse the registered canonical primitive, and update card status/evidence only from observable results.
+Final99 is terminal: its source profile, validation, package audit, existing-install audit, and Windows/Ubuntu smoke checks passed, while its exhaustive installed-host walk failed and certification never started. Repair12 focused proofs resolved all five direct failures but do not convert final99 into a passing campaign.
 
-For every change: classify it, compute direct/transitive consumers, invalidate stale projections/evidence, run focused and negative tests, run affected downstream tests, run affected governed sections once, inspect resources/disk, then advance to `focused_green` and `downstream_green` as earned.
+After repair freeze, admit one successor and execute the registered order exactly once: revision/generated-projection reconciliation; current governed sections; one full profile; one validation; one package; one install; installed-system operational testing; one certification; then separately admitted publication and public-asset verification. Do not claim real-host macOS coverage unless that proof is actually produced.
 
 ## Resume contract
 
-On resume, verify the denominator/card hashes, repository drift, active admission/checkpoint, processing order, resources, and current card evidence before continuing. Final85 is terminal and must never be resumed.
+On resume, verify the denominator/card hashes, repository drift, active admission/checkpoint, processing order, resources, and current card evidence before continuing. Final99 and every earlier terminal campaign must never be resumed.

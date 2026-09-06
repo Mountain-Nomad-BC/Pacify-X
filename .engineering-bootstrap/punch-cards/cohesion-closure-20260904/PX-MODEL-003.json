@@ -3,7 +3,7 @@
   "title": "Hardware placement integration",
   "severity": "high",
   "type": "integration",
-  "status": "planned",
+  "status": "downstream_green",
   "root_cause": "Hardware routing and execution placement exist but are not obligatorily attached to every governed agent run.",
   "source_requirement": "Carry one exact placement decision, reserve, benchmark freshness, fallback, and outcome through governed execution.",
   "live_evidence": [
@@ -71,5 +71,166 @@
     "Every governed agent run has exactly one current placement decision.",
     "Actual outcome and cleanup are receipted."
   ],
-  "completion_evidence": []
+  "completion_evidence": [
+    "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+    "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+    "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+    "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+    "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#sha256=7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b#anchor=PX-AUD-006",
+    "runtime/hardware_routing.py#sha256=0e38c15e922ee165be145ec999d956d055b68d90377acb7367876772f78e35b8",
+    "runtime/execution_placement.py#sha256=5b6ede513457a87c33581355b7b482a6abb1db43096f6bc67b2573694360dc46",
+    "runtime/model_attachment.py#sha256=9d19da5dcaa0e09715db7bb06fc1ea3330a521d1f0fbf0ceff7b5bf8ca76d906",
+    "runtime/agent_runtime.py#sha256=c5dcad86997bca78bfd8c3b82e265e15625245478ef2c96ef8d466248100dc1e",
+    "tests/test_hardware_routing.py#sha256=f047b09fe2c95734dffac9318f989448e221f196c6828d5b392aed5a1d9adabd",
+    "tests/test_execution_placement.py#sha256=109597a06cd78b780ca63d7dc2be867fd0d9e9310fa43e41cfac41f766520522"
+  ],
+  "status_history": [
+    {
+      "status": "admitted",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#sha256=7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b#anchor=PX-AUD-006",
+        "runtime/hardware_routing.py#sha256=0e38c15e922ee165be145ec999d956d055b68d90377acb7367876772f78e35b8",
+        "runtime/execution_placement.py#sha256=5b6ede513457a87c33581355b7b482a6abb1db43096f6bc67b2573694360dc46",
+        "runtime/model_attachment.py#sha256=9d19da5dcaa0e09715db7bb06fc1ea3330a521d1f0fbf0ceff7b5bf8ca76d906",
+        "runtime/agent_runtime.py#sha256=c5dcad86997bca78bfd8c3b82e265e15625245478ef2c96ef8d466248100dc1e",
+        "tests/test_hardware_routing.py#sha256=f047b09fe2c95734dffac9318f989448e221f196c6828d5b392aed5a1d9adabd",
+        "tests/test_execution_placement.py#sha256=109597a06cd78b780ca63d7dc2be867fd0d9e9310fa43e41cfac41f766520522"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "in_progress",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#sha256=7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b#anchor=PX-AUD-006",
+        "runtime/hardware_routing.py#sha256=0e38c15e922ee165be145ec999d956d055b68d90377acb7367876772f78e35b8",
+        "runtime/execution_placement.py#sha256=5b6ede513457a87c33581355b7b482a6abb1db43096f6bc67b2573694360dc46",
+        "runtime/model_attachment.py#sha256=9d19da5dcaa0e09715db7bb06fc1ea3330a521d1f0fbf0ceff7b5bf8ca76d906",
+        "runtime/agent_runtime.py#sha256=c5dcad86997bca78bfd8c3b82e265e15625245478ef2c96ef8d466248100dc1e",
+        "tests/test_hardware_routing.py#sha256=f047b09fe2c95734dffac9318f989448e221f196c6828d5b392aed5a1d9adabd",
+        "tests/test_execution_placement.py#sha256=109597a06cd78b780ca63d7dc2be867fd0d9e9310fa43e41cfac41f766520522"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "focused_green",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#sha256=7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b#anchor=PX-AUD-006",
+        "runtime/hardware_routing.py#sha256=0e38c15e922ee165be145ec999d956d055b68d90377acb7367876772f78e35b8",
+        "runtime/execution_placement.py#sha256=5b6ede513457a87c33581355b7b482a6abb1db43096f6bc67b2573694360dc46",
+        "runtime/model_attachment.py#sha256=9d19da5dcaa0e09715db7bb06fc1ea3330a521d1f0fbf0ceff7b5bf8ca76d906",
+        "runtime/agent_runtime.py#sha256=c5dcad86997bca78bfd8c3b82e265e15625245478ef2c96ef8d466248100dc1e",
+        "tests/test_hardware_routing.py#sha256=f047b09fe2c95734dffac9318f989448e221f196c6828d5b392aed5a1d9adabd",
+        "tests/test_execution_placement.py#sha256=109597a06cd78b780ca63d7dc2be867fd0d9e9310fa43e41cfac41f766520522"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "downstream_green",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#sha256=7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b#anchor=PX-AUD-006",
+        "runtime/hardware_routing.py#sha256=0e38c15e922ee165be145ec999d956d055b68d90377acb7367876772f78e35b8",
+        "runtime/execution_placement.py#sha256=5b6ede513457a87c33581355b7b482a6abb1db43096f6bc67b2573694360dc46",
+        "runtime/model_attachment.py#sha256=9d19da5dcaa0e09715db7bb06fc1ea3330a521d1f0fbf0ceff7b5bf8ca76d906",
+        "runtime/agent_runtime.py#sha256=c5dcad86997bca78bfd8c3b82e265e15625245478ef2c96ef8d466248100dc1e",
+        "tests/test_hardware_routing.py#sha256=f047b09fe2c95734dffac9318f989448e221f196c6828d5b392aed5a1d9adabd",
+        "tests/test_execution_placement.py#sha256=109597a06cd78b780ca63d7dc2be867fd0d9e9310fa43e41cfac41f766520522"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    }
+  ],
+  "closure_reconciliation": {
+    "schema_version": "px.cohesion-card-reconciliation/1.0",
+    "target_status": "downstream_green",
+    "reconciled_at": "2026-09-06T00:26:20.1402452Z",
+    "acceptance_criteria_count": 2,
+    "evidence": [
+      {
+        "path": "evidence/commencement-repair/repair-freeze-20260905.json",
+        "sha256": "7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "size": 1727,
+        "schema_version": "px.repair-freeze/1.0"
+      },
+      {
+        "path": "evidence/release/final99-full-profile-pass-20260905.json",
+        "sha256": "b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "size": 1276,
+        "schema_version": "px.full-profile-receipt/1.0"
+      },
+      {
+        "path": "evidence/release/final99-validation-pass-20260905.json",
+        "sha256": "07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "size": 937,
+        "schema_version": "px.validation-receipt/1.0"
+      },
+      {
+        "path": "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json",
+        "sha256": "6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "size": 4317,
+        "schema_version": "px.focused-repair-evidence/1.0"
+      },
+      {
+        "path": "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json",
+        "sha256": "7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b",
+        "size": 10258,
+        "anchor": "PX-AUD-006",
+        "evidence_kind": "card_live_evidence"
+      },
+      {
+        "path": "runtime/hardware_routing.py",
+        "sha256": "0e38c15e922ee165be145ec999d956d055b68d90377acb7367876772f78e35b8",
+        "size": 38693,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "runtime/execution_placement.py",
+        "sha256": "5b6ede513457a87c33581355b7b482a6abb1db43096f6bc67b2573694360dc46",
+        "size": 28908,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "runtime/model_attachment.py",
+        "sha256": "9d19da5dcaa0e09715db7bb06fc1ea3330a521d1f0fbf0ceff7b5bf8ca76d906",
+        "size": 16271,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "runtime/agent_runtime.py",
+        "sha256": "c5dcad86997bca78bfd8c3b82e265e15625245478ef2c96ef8d466248100dc1e",
+        "size": 94313,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "tests/test_hardware_routing.py",
+        "sha256": "f047b09fe2c95734dffac9318f989448e221f196c6828d5b392aed5a1d9adabd",
+        "size": 13604,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "tests/test_execution_placement.py",
+        "sha256": "109597a06cd78b780ca63d7dc2be867fd0d9e9310fa43e41cfac41f766520522",
+        "size": 12744,
+        "evidence_kind": "declared_implementation_file"
+      }
+    ]
+  }
 }

@@ -747,12 +747,12 @@ test('environment and Codex conditional profiles wait for their exact authoritat
 test('focused host-boundary scheduling runs only its exact typed-host profile', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   assert.match(source, /PX_OPERATIONAL_HOST_BOUNDARY_ONLY === '1'/);
-  assert.match(source, /hostBoundaryOnly \? 'host-boundary' : nativeDialogOnly \? 'native-dialog-boundary' : codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : builderOnly \? 'builder' : workbenchCommandOnly \? 'workbench-command' : null/);
+  assert.match(source, /coordinationMemoryOnly \? 'coordination-memory' : hostBoundaryOnly \? 'host-boundary' : nativeDialogOnly \? 'native-dialog-boundary'/);
   assert.match(source, /hostBoundaryProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| hostBoundaryOnly\)/);
-  assert.match(source, /studioChainAdmitted = ownedReversibleConfigurationAuthority && !configurationOnly && !knowledgeLifecycleOnly && !hostBoundaryOnly/);
+  assert.match(source, /studioChainAdmitted = ownedReversibleConfigurationAuthority && !configurationOnly && !knowledgeLifecycleOnly && !coordinationMemoryOnly && !hostBoundaryOnly/);
   assert.match(source, /studioSetupProfile = studioChainAdmitted/);
-  assert.match(source, /knowledgeLifecycleProfile = ownedReversibleConfigurationAuthority && !configurationOnly && !studioLifecycleOnly && !hostBoundaryOnly/);
-  assert.match(source, /coordinationMemoryProfile = ownedReversibleConfigurationAuthority && !focusedProfileOnly/);
+  assert.match(source, /knowledgeLifecycleProfile = ownedReversibleConfigurationAuthority && !configurationOnly && !studioLifecycleOnly && !coordinationMemoryOnly && !hostBoundaryOnly/);
+  assert.match(source, /coordinationMemoryProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| coordinationMemoryOnly\)/);
   assert.match(source, /enterpriseProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| nativeDialogOnly\)/);
 });
 
@@ -2433,7 +2433,11 @@ test('coordination profile renews the exact claim and host-boundary controls hav
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   assert.match(source, /renewCoordinationClaim[\s\S]*task-lease-renewed[\s\S]*coordination-renew-receipt-invalid/);
   assert.match(source, /const releaseSelector = `[\s\S]*clickWhenKnowledgeControlReady\(frameHost, releaseSelector, timeoutMs\)/);
-  assert.match(source, /navigateInstalledSurface\(frameHost, 'memory', timeoutMs\)[\s\S]*waitForKnowledgeControl\(frameHost, '\[data-action="captureMemory"\]'\)[\s\S]*memory-capture-control-unavailable/);
+  assert.match(source, /navigateInstalledSurface\(frameHost, 'memory', timeoutMs\)[\s\S]*clickWhenKnowledgeControlReady\(frameHost, '\[data-action="captureMemory"\]', timeoutMs\)/);
+  assert.match(source, /surface: 'workflows'[\s\S]*selector: '\[data-action="newParallelPlan"\]'[\s\S]*scope: 'core'[\s\S]*stableSamplesRequired: 2/);
+  assert.match(source, /const dispatchForm = async[\s\S]*field-value-mismatch[\s\S]*submit\.click\(\)[\s\S]*await clickWhenKnowledgeControlReady\(frameHost, openSelector, timeoutMs\)[\s\S]*const before = await dispatchForm/);
+  assert.match(source, /returnedStateHash[\s\S]*operation !== 'releaseCoordinationTask'[\s\S]*refreshInstalledDashboardSnapshot[\s\S]*snapshot\?\.coordination\?\.state_hash[\s\S]*refreshed_state_hash/);
+  assert.match(source, /const settleOpener = async[\s\S]*scopeTarget: 'workflows'[\s\S]*stableSamplesRequired: 2[\s\S]*settleOpener\(operation === 'captureCoordinationMemory' \? 'memory' : 'workflows', openSelector\)/);
   assert.match(source, /data-action="closeModal"[\s\S]*navigateInstalledSurface\(frameHost, 'memory', timeoutMs\)[\s\S]*data-action="captureMemory"/);
   const matrix = { controls: [{ control_id: 'pxui.projects.action.openEngineRoot', surface_id: 'projects', kind: 'action', stage_policy: Object.fromEntries(STAGES.map(stage => [stage, stage === 'open_load' ? 'required' : 'not_applicable_with_evidence'])) }] };
   const probe = hostBoundaryControlProbe(matrix, { operations: { 'pxui.projects.action.openEngineRoot': { rendered: true, attempted: true, acknowledged: true, dashboard_reopened: true, errors: [] } } });
@@ -3678,6 +3682,81 @@ test('installed plugin form dispatch atomically binds exact values and response 
     if (priorCss === undefined) delete globalThis.CSS;
     else globalThis.CSS = priorCss;
   }
+});
+
+test('installed plugin form dispatch waits through a transient route rerender before the sole click', async () => {
+  const events = [];
+  const field = {
+    value: '', hidden: false, disabled: false,
+    getAttribute: () => null,
+    dispatchEvent: event => events.push(event.type)
+  };
+  const route = {
+    hidden: false, disabled: false,
+    classList: { contains: value => value === 'nav-item' },
+    getAttribute: name => name === 'aria-current' ? 'page' : null
+  };
+  const content = { classList: { contains: value => value === 'surface-plugins' } };
+  let evaluations = 0;
+  let clicks = 0;
+  const action = {
+    hidden: false, disabled: false,
+    getAttribute: () => null,
+    click: () => { clicks += 1; assert.equal(field.value, 'px-owned.fixture'); }
+  };
+  const settled = {
+    querySelectorAll: selector => selector === '[data-surface="plugins"]' ? [route] : [],
+    querySelector: selector => ({ '.content': content, '#extension-conflict-id': field, '[data-action="queryExtensionConflicts"]': action })[selector] || null
+  };
+  const frame = {
+    contentDocument: null,
+    contentWindow: {
+      __PX_INSTALLED_RESPONSES__: [{ type: 'prior' }],
+      getComputedStyle: () => ({ display: 'block', visibility: 'visible' })
+    }
+  };
+  const frameHost = {
+    evaluate: async (callback, item) => {
+      evaluations += 1;
+      frame.contentDocument = evaluations === 1 ? {
+        querySelectorAll: () => [],
+        querySelector: () => null
+      } : settled;
+      return callback(frame, item);
+    }
+  };
+  const priorCss = globalThis.CSS;
+  globalThis.CSS = { escape: value => value };
+  try {
+    const before = await dispatchInstalledPluginFormAction(frameHost, { '#extension-conflict-id': 'px-owned.fixture' }, 'queryExtensionConflicts', 1_000);
+    assert.equal(before, 1);
+    assert.ok(evaluations >= 2);
+    assert.equal(clicks, 1);
+    assert.deepEqual(events, ['input']);
+  } finally {
+    if (priorCss === undefined) delete globalThis.CSS;
+    else globalThis.CSS = priorCss;
+  }
+});
+
+test('stateful installed profiles use bounded acknowledged navigation and atomic control dispatch', () => {
+  const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
+  const candidate = source.slice(source.indexOf('async function runInstalledStudioCandidateSaveProfile'), source.indexOf('function validStudioBlockedPreviewResult'));
+  assert.match(candidate, /settleInstalledSurfaceControl\(frameHost, \{[\s\S]*surface: spec\.route[\s\S]*scope: \['agents', 'workflows'\]\.includes\(spec\.route\) \? 'core' : null/);
+  assert.match(candidate, /clickWhenKnowledgeControlReady\(frameHost, openerSelector/);
+
+  const coordination = source.slice(source.indexOf('async function runInstalledCoordinationMemoryProfile'), source.indexOf('function validCleanupResult'));
+  assert.match(coordination, /restartInstalledDashboardWebview[\s\S]*navigateInstalledSurface\(frameHost, 'workflows'/);
+  assert.match(coordination, /navigateInstalledSurface\(frameHost, 'memory'/);
+
+  const projects = source.slice(source.indexOf('async function runInstalledProjectsProfile'), source.indexOf('function graphProjectionIdentity'));
+  assert.match(projects, /settleInstalledSurfaceControl\(frameHost, \{ surface: route, selector: '\[data-action="buildRepositoryGraph"\]'/);
+  assert.ok((projects.match(/clickWhenKnowledgeControlReady\(frameHost, '\[data-action="buildRepositoryGraph"\]'/g) || []).length >= 3);
+  assert.doesNotMatch(projects, /frame\.contentDocument\.querySelector\('\[data-action="buildRepositoryGraph"\]'\)\.click\(\)/);
+
+  const graph = source.slice(source.indexOf('async function runInstalledKnowledgeGraphProfile'), source.indexOf('function systemProjectionIdentity'));
+  assert.match(graph, /lastInvalidResult[\s\S]*if \(retried && pair\.request\?\.requestId && pair\.request\.requestId !== firstInvalidRequestId\)/);
+  assert.match(graph, /if \(!identity && !retried && Date\.now\(\) >= retryAt/);
 });
 
 test('owned lifecycle probe enters eight bounded admitted delays through the real agent start form', () => {

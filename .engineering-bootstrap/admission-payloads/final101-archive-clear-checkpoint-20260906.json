@@ -1,0 +1,7 @@
+{
+  "active_gap_id": "PX-OS-1067", "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000033750",
+  "learned": "Final101 archive_clear passed once. The consumed-cleared archive is retained, release state is cleared with apply_count zero and all stages pending, the child and parent resource postconditions both passed, and reconcile is the sole next step.",
+  "next_action": "Run the single revision/generated-projection reconciliation, make every governed section current, then execute exactly one full profile, validation, package, install, installed-system operational test, and certification in registered order.",
+  "newly_discovered_gap_ids": [], "unresolved_branch_gap_ids": [],
+  "evidence": [{"reference": "evidence/release/final101-stage-receipts/pacify-x-certification-20260906-final101-single-archive_clear.json", "artifact_sha256": "9c053af4613c5eb942fe9cf6689e62d46189ad6ebbe005e79d4dafa05f7e13d4", "artifact_size": 265, "claim": "Final101 archive_clear passed exactly once with reconcile next."}]
+}

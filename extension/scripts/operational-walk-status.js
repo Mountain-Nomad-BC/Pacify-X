@@ -274,6 +274,15 @@ function focusedProfileIssues(value) {
     if (observation?.attempted !== true || observation?.completed !== true || (observation?.errors || []).length) {
       incomplete('focused-knowledge-lifecycle-incomplete', 'The focused Knowledge lifecycle did not complete its source-bound mutation and refreshed-state journey.', observation || null);
     }
+  } else if (focused === 'coordination-memory') {
+    const profile = value.coordination_memory_profile;
+    if (!completeOwnedProbe(profile) || profile?.observation?.completed !== true || profile?.observation?.webview_restarted !== true) {
+      incomplete('focused-coordination-memory-incomplete', 'The focused Coordination and portable-memory journey did not complete its exact lifecycle and restart reconstruction contract.', {
+        eligible_control_count: Number(profile?.control_probe?.eligible_control_count || 0),
+        record_count: Array.isArray(profile?.control_probe?.records) ? profile.control_probe.records.length : 0,
+        profile_errors: profile?.observation?.errors || []
+      });
+    }
   } else if (focused === 'reversible-configuration') {
     const profile = value.reversible_configuration_profile;
     const records = Array.isArray(profile?.records) ? profile.records : [];
@@ -294,19 +303,39 @@ function focusedProfileIssues(value) {
       incomplete('focused-host-boundary-incomplete', 'The focused host-boundary journey did not complete every eligible typed host handoff and required recovery stage.', { eligible_control_count: eligible, record_count: records.length, profile_errors: profile?.observation?.errors || [] });
     }
   } else if (focused === 'native-dialog-boundary') {
+    const cleanup = value.cleanup_recycle_profile;
+    const cleanupRecords = Array.isArray(cleanup?.control_probe?.records) ? cleanup.control_probe.records : [];
+    const cleanupEligible = Number(cleanup?.control_probe?.eligible_control_count || 0);
+    const cleanupComplete = cleanupEligible > 0 && cleanupRecords.length === cleanupEligible
+      && cleanupRecords.every(record => record?.rendered === true && record?.attempted === true && !(record?.errors || []).length
+        && (record?.control_id === 'pxui.runtime-core.action.cleanupPermanent'
+          ? record?.authority_skipped === true
+            && record?.interaction_chain?.failure_handling?.state === 'present'
+            && record?.interaction_chain?.recovery_rollback?.state === 'present'
+          : requiredStages.every(stage => ['present', 'not_applicable'].includes(record?.interaction_chain?.[stage]?.state))))
+      && cleanup?.observation?.completed === true
+      && cleanup?.observation?.webview_restarted === true
+      && cleanup?.observation?.invalid_selection_rejected === true
+      && cleanup?.observation?.select_all_round_trip === true
+      && cleanup?.observation?.permanent_refused_without_authorization === true
+      && cleanup?.observation?.permanent_completed === false
+      && cleanup?.observation?.reclaimed_absent_after_restart === true
+      && !(cleanup?.observation?.errors || []).length;
     const profiles = [
-      ['enterprise', value.enterprise_profile],
-      ['projects', value.projects_profile],
-      ['plugin-mutation', value.plugin_mutation_profile]
+      ['enterprise', value.enterprise_profile, completeOwnedProbe(value.enterprise_profile)],
+      ['projects', value.projects_profile, completeOwnedProbe(value.projects_profile)],
+      ['knowledge-graph', value.knowledge_graph_profile, completeOwnedProbe(value.knowledge_graph_profile)],
+      ['cleanup', cleanup, cleanupComplete],
+      ['plugin-mutation', value.plugin_mutation_profile, completeOwnedProbe(value.plugin_mutation_profile)]
     ];
-    const incompleteProfiles = profiles.filter(([, profile]) => !completeOwnedProbe(profile)).map(([name, profile]) => ({
+    const incompleteProfiles = profiles.filter(([, , complete]) => !complete).map(([name, profile]) => ({
       name,
       eligible_control_count: Number(profile?.control_probe?.eligible_control_count || 0),
       record_count: Array.isArray(profile?.control_probe?.records) ? profile.control_probe.records.length : 0,
       errors: profile?.observation?.errors || []
     }));
     if (incompleteProfiles.length) {
-      incomplete('focused-native-dialog-boundary-incomplete', 'The focused native-dialog journey did not complete Enterprise, Projects, and Plugin mutation through exact typed postconditions and recovery.', { incomplete_profiles: incompleteProfiles });
+      incomplete('focused-native-dialog-boundary-incomplete', 'The focused native-dialog journey did not complete Enterprise, Projects, Knowledge Graph, Cleanup, and Plugin mutation through exact typed postconditions and recovery.', { incomplete_profiles: incompleteProfiles });
     }
   } else if (focused === 'codex-handoff') {
     const profile = value.codex_handoff_profile;

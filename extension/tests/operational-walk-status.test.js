@@ -98,6 +98,27 @@ test('focused Studio completion fails closed when one physical revision cannot b
   assert.ok(status.issues.some(item => item.code === 'focused-studio-revision-edit-incomplete'));
 });
 
+test('focused coordination-memory completion requires the exact control denominator and restart reconstruction', () => {
+  const receipt = completeReceipt();
+  receipt.focused_profile = 'coordination-memory';
+  const stages = ['open_load', 'display', 'user_edit_action', 'input_validation', 'authorization', 'backend_dispatch', 'runtime_effect', 'progress_reporting', 'result_acknowledgement', 'persistence', 'reload_reopen', 'failure_handling', 'recovery_rollback'];
+  receipt.coordination_memory_profile = {
+    observation: { attempted: true, completed: true, webview_restarted: true, errors: [] },
+    control_probe: {
+      eligible_control_count: 1,
+      records: [{ control_id: 'coordination-memory', rendered: true, attempted: true, errors: [], interaction_chain: Object.fromEntries(stages.map(stage => [stage, { state: 'present' }])) }]
+    }
+  };
+  const status = evaluateOperationalWalk(receipt);
+  assert.equal(status.terminal_state, 'completed');
+  assert.equal(status.scope_complete, true);
+  assert.equal(status.operationally_complete, false);
+  receipt.coordination_memory_profile.observation.webview_restarted = false;
+  const failed = evaluateOperationalWalk(receipt);
+  assert.equal(failed.terminal_state, 'incomplete');
+  assert.ok(failed.issues.some(item => item.code === 'focused-coordination-memory-incomplete'));
+});
+
 test('focused host-boundary completion is judged only by its exact typed handoff records', () => {
   const receipt = completeReceipt();
   receipt.focused_profile = 'host-boundary';
@@ -136,7 +157,7 @@ test('focused host-boundary completion fails closed on a missing rendered action
   assert.ok(status.issues.some(item => item.code === 'focused-host-boundary-incomplete'));
 });
 
-test('focused native-dialog completion requires exact complete Enterprise, Projects, and Plugin mutation probes', () => {
+test('focused native-dialog completion requires its exact five-profile denominator', () => {
   const receipt = completeReceipt();
   receipt.focused_profile = 'native-dialog-boundary';
   receipt.control_chains.controls.forEach(control => { control.attempted = false; });
@@ -154,12 +175,24 @@ test('focused native-dialog completion requires exact complete Enterprise, Proje
   });
   receipt.enterprise_profile = completeProfile('enterprise');
   receipt.projects_profile = completeProfile('projects');
+  receipt.knowledge_graph_profile = completeProfile('knowledge-graph');
+  receipt.cleanup_recycle_profile = completeProfile('pxui.runtime-core.action.cleanupPermanent');
+  receipt.cleanup_recycle_profile.control_probe.records[0].authority_skipped = true;
+  Object.assign(receipt.cleanup_recycle_profile.observation, {
+    webview_restarted: true, invalid_selection_rejected: true, select_all_round_trip: true,
+    permanent_refused_without_authorization: true, permanent_completed: false, reclaimed_absent_after_restart: true
+  });
+  receipt.cleanup_recycle_profile.control_probe.records[0].interaction_chain.open_load = { state: 'missing' };
   receipt.plugin_mutation_profile = completeProfile('plugin-mutation');
   const status = evaluateOperationalWalk(receipt);
   assert.equal(status.terminal_state, 'completed');
   assert.equal(status.scope_complete, true);
   assert.equal(status.operationally_complete, false);
   assert.equal(status.evaluated_scope, 'native-dialog-boundary');
+  receipt.cleanup_recycle_profile.control_probe.records[0].control_id = 'pxui.runtime-core.action.unknownPermanent';
+  const substituted = evaluateOperationalWalk(receipt);
+  assert.equal(substituted.terminal_state, 'incomplete');
+  assert.ok(substituted.issues.some(item => item.code === 'focused-native-dialog-boundary-incomplete'));
 });
 
 test('focused native-dialog completion fails closed on missing recovery or profile errors', () => {
@@ -169,14 +202,23 @@ test('focused native-dialog completion fails closed on missing recovery or profi
   const completeProfile = name => ({ observation: { errors: [] }, control_probe: { eligible_control_count: 1, records: [{ control_id: name, rendered: true, attempted: true, errors: [], interaction_chain: Object.fromEntries(stages.map(stage => [stage, { state: 'present' }])) }] } });
   receipt.enterprise_profile = completeProfile('enterprise');
   receipt.projects_profile = completeProfile('projects');
+  receipt.knowledge_graph_profile = completeProfile('knowledge-graph');
+  receipt.cleanup_recycle_profile = completeProfile('pxui.runtime-core.action.cleanupPermanent');
+  receipt.cleanup_recycle_profile.control_probe.records[0].authority_skipped = true;
+  Object.assign(receipt.cleanup_recycle_profile.observation, {
+    webview_restarted: true, invalid_selection_rejected: true, select_all_round_trip: true,
+    permanent_refused_without_authorization: true, permanent_completed: false, reclaimed_absent_after_restart: true
+  });
   receipt.plugin_mutation_profile = completeProfile('plugin-mutation');
   receipt.projects_profile.control_probe.records[0].interaction_chain.recovery_rollback = { state: 'missing' };
+  receipt.knowledge_graph_profile.control_probe.records[0].interaction_chain.reload_reopen = { state: 'missing' };
+  receipt.cleanup_recycle_profile.observation.errors.push('cleanup-restoration-mismatch');
   receipt.plugin_mutation_profile.observation.errors.push('typed-restoration-mismatch');
   const status = evaluateOperationalWalk(receipt);
   assert.equal(status.terminal_state, 'incomplete');
   const finding = status.issues.find(item => item.code === 'focused-native-dialog-boundary-incomplete');
   assert.ok(finding);
-  assert.deepEqual(finding.details.incomplete_profiles.map(item => item.name), ['projects', 'plugin-mutation']);
+  assert.deepEqual(finding.details.incomplete_profiles.map(item => item.name), ['projects', 'knowledge-graph', 'cleanup', 'plugin-mutation']);
 });
 
 test('focused Codex handoff completion requires its exact three-control typed probe', () => {

@@ -12,14 +12,24 @@ import pytest
 
 from runtime.wal_transaction import (
     _REPLACE_RETRY_DELAYS_SECONDS,
+    BytesArtifact,
     JsonArtifact,
+    JsonTextArtifact,
     JsonWal,
+    TextArtifact,
     WalIntegrityError,
     planned_write_boundaries,
 )
 
 
 ROLES = ("state", "event", "receipt", "handoff", "projection")
+
+
+def _symlink_or_skip(target: Path, link: Path, *, directory: bool = False) -> None:
+    try:
+        link.symlink_to(target, target_is_directory=directory)
+    except (NotImplementedError, OSError) as error:
+        pytest.skip(f"symlink creation is unavailable: {error}")
 
 
 def _artifacts(root: Path, generation: str) -> tuple[JsonArtifact, ...]:
@@ -79,6 +89,154 @@ def test_commit_coordinates_every_semantic_json_artifact(tmp_path: Path) -> None
     )
     assert manifest["phase"] == "committed"
     assert [item["role"] for item in manifest["artifacts"]] == list(ROLES)
+
+
+def test_commit_coordinates_json_text_and_exact_bytes(tmp_path: Path) -> None:
+    json_path = tmp_path / "projection.json"
+    text_path = tmp_path / "README.md"
+    bytes_path = tmp_path / "SHA256SUMS"
+    json_path.write_text('{"before":true}\n', encoding="utf-8")
+    text_path.write_text("before\n", encoding="utf-8")
+    bytes_path.write_bytes(b"before-bytes\n")
+
+    result = JsonWal(tmp_path / "wal", tmp_path).commit(
+        (
+            JsonArtifact("projection", json_path, {"after": True}),
+            TextArtifact("projection", text_path, "after\n"),
+            BytesArtifact("projection", bytes_path, b"after-bytes\n"),
+        ),
+        transaction_id="mixed-artifacts",
+    )
+
+    assert result["artifact_count"] == 3
+    assert json.loads(json_path.read_text(encoding="utf-8")) == {"after": True}
+    assert text_path.read_text(encoding="utf-8") == "after\n"
+    assert bytes_path.read_bytes() == b"after-bytes\n"
+    staged = tmp_path / "wal" / "committed" / "mixed-artifacts" / "after"
+    assert {path.suffix for path in staged.iterdir()} == {".json", ".txt", ".bin"}
+
+
+def test_text_artifact_rejects_non_utf8_existing_target(tmp_path: Path) -> None:
+    target = tmp_path / "README.md"
+    target.write_bytes(b"\xff")
+
+    with pytest.raises(WalIntegrityError, match="not UTF-8"):
+        JsonWal(tmp_path / "wal", tmp_path).commit(
+            (TextArtifact("projection", target, "valid\n"),),
+            transaction_id="invalid-existing-text",
+        )
+
+
+def test_json_text_artifact_preserves_exact_valid_serialization(tmp_path: Path) -> None:
+    target = tmp_path / "projection.json"
+    target.write_text('{"before":true}\n', encoding="utf-8")
+    rendered = '{\n  "after": true\n}\n'
+
+    JsonWal(tmp_path / "wal", tmp_path).commit(
+        (JsonTextArtifact("projection", target, rendered),),
+        transaction_id="exact-json-text",
+    )
+
+    assert target.read_text(encoding="utf-8") == rendered
+
+
+@pytest.mark.parametrize("invalid", ("{", '{"value":NaN}', '{"value":Infinity}'))
+def test_json_text_artifact_rejects_invalid_desired_json(
+    tmp_path: Path, invalid: str
+) -> None:
+    with pytest.raises(ValueError, match="not strict JSON"):
+        JsonWal(tmp_path / "wal", tmp_path).commit(
+            (JsonTextArtifact("projection", tmp_path / "bad.json", invalid),),
+            transaction_id="invalid-json-text",
+        )
+
+
+def test_commit_rejects_nominal_symlink_target(tmp_path: Path) -> None:
+    actual = tmp_path / "actual.json"
+    actual.write_text("{}\n", encoding="utf-8")
+    link = tmp_path / "linked.json"
+    _symlink_or_skip(actual, link)
+
+    with pytest.raises(WalIntegrityError, match="symlink/reparse"):
+        JsonWal(tmp_path / "wal", tmp_path).commit(
+            (JsonArtifact("projection", link, {"changed": True}),),
+            transaction_id="symlink-target",
+        )
+
+
+def test_commit_rejects_nominal_symlink_parent(tmp_path: Path) -> None:
+    actual = tmp_path / "actual"
+    actual.mkdir()
+    linked = tmp_path / "linked"
+    _symlink_or_skip(actual, linked, directory=True)
+
+    with pytest.raises(WalIntegrityError, match="symlink/reparse"):
+        JsonWal(tmp_path / "wal", tmp_path).commit(
+            (JsonArtifact("projection", linked / "value.json", {"changed": True}),),
+            transaction_id="symlink-parent",
+        )
+
+
+def test_constructor_rejects_nominal_symlink_wal_root(tmp_path: Path) -> None:
+    actual = tmp_path / "actual-wal"
+    actual.mkdir()
+    linked = tmp_path / "linked-wal"
+    _symlink_or_skip(actual, linked, directory=True)
+
+    with pytest.raises(WalIntegrityError, match="symlink/reparse"):
+        JsonWal(linked, tmp_path)
+
+
+def test_recovery_rejects_staged_before_image_symlink(tmp_path: Path) -> None:
+    target = tmp_path / "target.json"
+    target.write_text('{"value":"before"}\n', encoding="utf-8")
+    wal = JsonWal(tmp_path / "wal", tmp_path)
+
+    def interrupt_after_applying(boundary: str) -> None:
+        if boundary == "manifest:applying:published":
+            raise KeyboardInterrupt
+
+    with pytest.raises(KeyboardInterrupt):
+        wal.commit(
+            (JsonArtifact("projection", target, {"value": "after"}),),
+            transaction_id="recovery-before-link",
+            fault_injector=interrupt_after_applying,
+        )
+    staged = (
+        tmp_path
+        / "wal/transactions/recovery-before-link/before/0000.json"
+    )
+    retained = tmp_path / "retained-before.json"
+    retained.write_bytes(staged.read_bytes())
+    staged.unlink()
+    _symlink_or_skip(retained, staged)
+
+    with pytest.raises(WalIntegrityError, match="symlink/reparse"):
+        wal.recover()
+
+
+def test_recovery_rejects_target_replaced_by_symlink(tmp_path: Path) -> None:
+    target = tmp_path / "target.json"
+    target.write_text('{"value":"before"}\n', encoding="utf-8")
+    wal = JsonWal(tmp_path / "wal", tmp_path)
+
+    def interrupt_after_applying(boundary: str) -> None:
+        if boundary == "manifest:applying:published":
+            raise KeyboardInterrupt
+
+    with pytest.raises(KeyboardInterrupt):
+        wal.commit(
+            (JsonArtifact("projection", target, {"value": "after"}),),
+            transaction_id="recovery-symlink",
+            fault_injector=interrupt_after_applying,
+        )
+    replacement = tmp_path / "replacement.json"
+    replacement.write_text('{"value":"external"}\n', encoding="utf-8")
+    target.unlink()
+    _symlink_or_skip(replacement, target)
+
+    with pytest.raises(WalIntegrityError, match="symlink/reparse"):
+        wal.recover()
 
 
 def test_commit_retries_transient_permission_denial_during_file_publication(

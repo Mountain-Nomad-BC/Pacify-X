@@ -1,4 +1,4 @@
-"""Crash-consistent, bounded transactions over related JSON artifacts.
+"""Crash-consistent, bounded transactions over related artifacts.
 
 The transaction protocol stages exact before-images and canonical after-images,
 publishes a hash-sealed write-ahead manifest, and only then replaces targets.
@@ -15,6 +15,7 @@ import json
 import os
 from pathlib import Path
 import re
+import stat
 import time
 from typing import Callable, Iterable, Mapping
 import uuid
@@ -47,17 +48,47 @@ class JsonArtifact:
     value: object
 
 
+@dataclass(frozen=True)
+class JsonTextArtifact:
+    """One exact UTF-8 JSON serialization, validated before it is staged."""
+
+    role: str
+    path: Path
+    value: str
+
+
+@dataclass(frozen=True)
+class BytesArtifact:
+    """One exact byte payload and its semantic role in a transaction."""
+
+    role: str
+    path: Path
+    value: bytes
+
+
+@dataclass(frozen=True)
+class TextArtifact:
+    """One exact UTF-8 text payload and its semantic role in a transaction."""
+
+    role: str
+    path: Path
+    value: str
+
+
+Artifact = JsonArtifact | JsonTextArtifact | BytesArtifact | TextArtifact
+
+
 FaultInjector = Callable[[str], None]
 
 
 @dataclass(frozen=True)
 class JsonTransition:
-    """Decoded before/after values exposed to a fail-closed pre-commit guard."""
+    """Typed before/after values exposed to a fail-closed pre-commit guard."""
 
     role: str
     path: Path
-    before: object | None
-    after: object
+    before: object | bytes | str | None
+    after: object | bytes | str
 
 
 PreCommitValidator = Callable[[tuple[JsonTransition, ...]], None]
@@ -74,6 +105,13 @@ def _canonical(value: object) -> bytes:
         ).encode("utf-8")
         + b"\n"
     )
+
+
+def _strict_json_loads(value: str) -> object:
+    def reject_constant(token: str) -> object:
+        raise ValueError(f"non-standard JSON constant: {token}")
+
+    return json.loads(value, parse_constant=reject_constant)
 
 
 def _sha_bytes(value: bytes) -> str:
@@ -146,6 +184,29 @@ def _inside(path: Path, root: Path) -> bool:
         return True
     except ValueError:
         return False
+
+
+def _is_symlink_or_reparse(path: Path) -> bool:
+    if path.is_symlink():
+        return True
+    try:
+        attributes = int(getattr(path.lstat(), "st_file_attributes", 0))
+    except FileNotFoundError:
+        return False
+    reparse_flag = int(getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0))
+    return bool(reparse_flag and attributes & reparse_flag)
+
+
+def _reject_nominal_link_chain(path: Path, root: Path, *, label: str) -> None:
+    try:
+        relative = path.relative_to(root)
+    except ValueError as error:
+        raise ValueError(f"{label} escapes allowed root: {path}") from error
+    current = root
+    for part in relative.parts:
+        current /= part
+        if _is_symlink_or_reparse(current):
+            raise WalIntegrityError(f"{label} traverses a symlink/reparse point: {current}")
 
 
 def _sealed_manifest(value: Mapping[str, object]) -> dict[str, object]:
@@ -231,7 +292,7 @@ def _validate_manifest(value: object, transaction_id: str) -> dict[str, object]:
     return manifest
 
 
-def planned_write_boundaries(artifacts: Iterable[JsonArtifact]) -> tuple[str, ...]:
+def planned_write_boundaries(artifacts: Iterable[Artifact]) -> tuple[str, ...]:
     """Return every durable boundary a commit will expose to fault injection."""
     items = tuple(artifacts)
     boundaries: list[str] = []
@@ -260,9 +321,20 @@ class JsonWal:
         precommit_validator: PreCommitValidator | None = None,
     ) -> None:
         self.allowed_root = allowed_root.resolve()
-        self.journal_root = journal_root.resolve()
         if not self.allowed_root.is_dir():
             raise ValueError("allowed root must be an existing directory")
+        journal_nominal = (
+            journal_root
+            if journal_root.is_absolute()
+            else self.allowed_root / journal_root
+        )
+        journal_nominal = Path(os.path.abspath(journal_nominal))
+        _reject_nominal_link_chain(
+            journal_nominal,
+            self.allowed_root,
+            label="journal root",
+        )
+        self.journal_root = journal_nominal.resolve()
         if not _inside(self.journal_root, self.allowed_root):
             raise ValueError("journal root must be inside the allowed root")
         self.lock_timeout_seconds = lock_timeout_seconds
@@ -285,48 +357,92 @@ class JsonWal:
         return self.journal_root / "committed"
 
     def _normalize(
-        self, artifacts: Iterable[JsonArtifact]
-    ) -> tuple[tuple[JsonArtifact, Path, bytes], ...]:
+        self, artifacts: Iterable[Artifact]
+    ) -> tuple[tuple[Artifact, Path, bytes], ...]:
         items = tuple(artifacts)
         if not 1 <= len(items) <= MAX_ARTIFACTS:
             raise ValueError(f"transaction must contain 1..{MAX_ARTIFACTS} artifacts")
-        normalized: list[tuple[JsonArtifact, Path, bytes]] = []
+        normalized: list[tuple[Artifact, Path, bytes]] = []
         targets: set[Path] = set()
         total = 0
         for artifact in items:
             if artifact.role not in ARTIFACT_ROLES:
                 raise ValueError(f"unsupported JSON artifact role: {artifact.role}")
-            target = artifact.path.resolve()
-            if not _inside(target, self.allowed_root):
-                raise ValueError(f"artifact escapes allowed root: {artifact.path}")
+            target = self._safe_target(artifact.path, label="artifact")
             if _inside(target, self.journal_root):
                 raise ValueError("transaction targets cannot be inside the WAL journal")
             if target in targets:
                 raise ValueError(f"duplicate transaction target: {target}")
             targets.add(target)
-            try:
-                rendered = _canonical(artifact.value)
-            except (TypeError, ValueError) as error:
-                raise ValueError(f"artifact is not strict JSON: {target}") from error
+            if isinstance(artifact, JsonArtifact):
+                try:
+                    rendered = _canonical(artifact.value)
+                except (TypeError, ValueError) as error:
+                    raise ValueError(f"artifact is not strict JSON: {target}") from error
+            elif isinstance(artifact, JsonTextArtifact):
+                if not isinstance(artifact.value, str):
+                    raise ValueError(f"JSON text artifact is not a string: {target}")
+                try:
+                    _strict_json_loads(artifact.value)
+                except ValueError as error:
+                    raise ValueError(f"artifact is not strict JSON: {target}") from error
+                rendered = artifact.value.encode("utf-8")
+            elif isinstance(artifact, TextArtifact):
+                if not isinstance(artifact.value, str):
+                    raise ValueError(f"text artifact is not a string: {target}")
+                rendered = artifact.value.encode("utf-8")
+            elif isinstance(artifact, BytesArtifact):
+                if not isinstance(artifact.value, bytes):
+                    raise ValueError(f"byte artifact is not bytes: {target}")
+                rendered = artifact.value
+            else:
+                raise TypeError(f"unsupported artifact type: {type(artifact).__name__}")
             total += len(rendered)
             if total > MAX_TRANSACTION_BYTES:
                 raise ValueError("transaction payload exceeds the bounded byte limit")
             normalized.append((artifact, target, rendered))
         return tuple(normalized)
 
-    def _read_existing(self, path: Path) -> bytes | None:
+    def _safe_target(self, path: Path, *, label: str) -> Path:
+        if ".." in path.parts:
+            raise ValueError(f"{label} contains parent traversal: {path}")
+        nominal = path if path.is_absolute() else self.allowed_root / path
+        nominal = Path(os.path.abspath(nominal))
+        _reject_nominal_link_chain(nominal, self.allowed_root, label=label)
+        target = nominal.resolve(strict=False)
+        if not _inside(target, self.allowed_root):
+            raise ValueError(f"{label} escapes allowed root: {path}")
+        return target
+
+    def _read_existing(self, artifact: Artifact, path: Path) -> bytes | None:
         if not path.exists():
             return None
-        if not path.is_file():
-            raise WalIntegrityError(f"JSON target is not a regular file: {path}")
+        if not path.is_file() or path.is_symlink():
+            raise WalIntegrityError(f"target is not a regular file: {path}")
         raw = path.read_bytes()
-        try:
-            json.loads(raw.decode("utf-8"))
-        except (UnicodeError, json.JSONDecodeError) as error:
-            raise WalIntegrityError(
-                f"existing JSON target is invalid: {path}"
-            ) from error
+        if isinstance(artifact, (JsonArtifact, JsonTextArtifact)):
+            try:
+                _strict_json_loads(raw.decode("utf-8"))
+            except (UnicodeError, ValueError) as error:
+                raise WalIntegrityError(
+                    f"existing JSON target is invalid: {path}"
+                ) from error
+        elif isinstance(artifact, TextArtifact):
+            try:
+                raw.decode("utf-8")
+            except UnicodeError as error:
+                raise WalIntegrityError(
+                    f"existing text target is not UTF-8: {path}"
+                ) from error
         return raw
+
+    @staticmethod
+    def _transition_value(artifact: Artifact, payload: bytes) -> object | bytes | str:
+        if isinstance(artifact, (JsonArtifact, JsonTextArtifact)):
+            return _strict_json_loads(payload.decode("utf-8"))
+        if isinstance(artifact, TextArtifact):
+            return payload.decode("utf-8")
+        return payload
 
     def _write_manifest(
         self,
@@ -361,19 +477,30 @@ class JsonWal:
     ) -> tuple[Path, Path, Path | None, str, str | None]:
         try:
             relative = Path(str(record["path"]))
-            target = (self.allowed_root / relative).resolve()
+            if relative.is_absolute():
+                raise ValueError
+            target = self._safe_target(relative, label="recovery target")
             after_record = record["after"]
             before_record = record["before"]
             if not isinstance(after_record, Mapping) or not isinstance(
                 before_record, Mapping
             ):
                 raise ValueError
-            after = (transaction / str(after_record["stage"])).resolve()
-            before = (
-                (transaction / str(before_record["stage"])).resolve()
-                if before_record.get("exists") is True
-                else None
+            after_nominal = transaction / str(after_record["stage"])
+            _reject_nominal_link_chain(
+                after_nominal, transaction, label="staged after-image"
             )
+            after = after_nominal.resolve()
+            before_nominal = transaction / str(before_record["stage"])
+            if before_record.get("exists") is True:
+                _reject_nominal_link_chain(
+                    before_nominal,
+                    transaction,
+                    label="staged before-image",
+                )
+                before = before_nominal.resolve()
+            else:
+                before = None
             after_sha = str(after_record["sha256"])
             before_sha = (
                 str(before_record["sha256"])
@@ -670,7 +797,7 @@ class JsonWal:
 
     def commit(
         self,
-        artifacts: Iterable[JsonArtifact],
+        artifacts: Iterable[Artifact],
         *,
         transaction_id: str | None = None,
         fault_injector: FaultInjector | None = None,
@@ -683,16 +810,19 @@ class JsonWal:
         self.journal_root.mkdir(parents=True, exist_ok=True)
         with FileLock(self._lock_path, timeout_seconds=self.lock_timeout_seconds):
             self._recover_locked()
-            before_images = [self._read_existing(target) for _, target, _ in items]
+            before_images = [
+                self._read_existing(artifact, target)
+                for artifact, target, _ in items
+            ]
             if self.precommit_validator is not None:
                 transitions = tuple(
                     JsonTransition(
                         artifact.role,
                         target,
-                        json.loads(before.decode("utf-8"))
+                        self._transition_value(artifact, before)
                         if before is not None
                         else None,
-                        json.loads(after.decode("utf-8")),
+                        self._transition_value(artifact, after),
                     )
                     for (artifact, target, after), before in zip(
                         items, before_images, strict=True
@@ -713,8 +843,15 @@ class JsonWal:
             for index, ((artifact, target, after), before) in enumerate(
                 zip(items, before_images, strict=True)
             ):
-                before_stage = f"before/{index:04d}.json"
-                after_stage = f"after/{index:04d}.json"
+                suffix = (
+                    ".json"
+                    if isinstance(artifact, (JsonArtifact, JsonTextArtifact))
+                    else ".txt"
+                    if isinstance(artifact, TextArtifact)
+                    else ".bin"
+                )
+                before_stage = f"before/{index:04d}{suffix}"
+                after_stage = f"after/{index:04d}{suffix}"
                 if before is not None:
                     _write_new(transaction / before_stage, before)
                     if fault_injector is not None:

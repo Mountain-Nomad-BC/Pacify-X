@@ -406,16 +406,22 @@
       "description": "Serial release, distribution, artifact, and revocation certification tests excluding composed audit mutations.",
       "include_patterns": [
         "tests/test_rel[0-9]*.py",
+        "tests/test_evidence_custody.py",
         "tests/test_release_artifacts.py",
         "tests/test_release_certification.py",
         "tests/test_release_distribution_controls.py",
         "tests/test_release_environment.py",
         "tests/test_release_identity_controls.py",
-        "tests/test_release_supply_chain_evidence.py"
+        "tests/test_release_supply_chain_evidence.py",
+        "tests/test_verify_release_publication.py"
       ],
       "input_patterns": [
+        ".github/workflows/release.yml",
         "pyproject.toml",
         "README.md",
+        "runtime/evidence_custody.py",
+        "scripts/package_release_evidence.py",
+        "scripts/verify_release_publication.py",
         "registry/python_surface_ownership.json",
         "registry/python_dependency_ownership.json",
         "registry/effect_surface_ownership.json",

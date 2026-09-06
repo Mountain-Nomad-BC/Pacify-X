@@ -826,7 +826,7 @@
         "typing"
       ],
       "index_state": "verified",
-      "sha256": "58928996a99e1ad934234751909f63e19bc6d0ae8e6b174d92745d53df13cab9"
+      "sha256": "4a0a69066f1c00e7a5bbaf80af923dbaae045111a7ba38e9fc7d35828f800c8e"
     },
     "runtime/dependency_invalidation.py": {
       "imports": [
@@ -965,12 +965,16 @@
         "__future__",
         "hashlib",
         "json",
+        "os",
         "pathlib",
+        "shutil",
+        "stat",
         "typing",
+        "uuid",
         "zipfile"
       ],
       "index_state": "verified",
-      "sha256": "b4c0939bdd433863c3cc02cf1f34894c040eb6d26a38d566995a6ab803ca8cf6"
+      "sha256": "e960f5e7ee3bfa448c9af666174dae83fa24a11e4cdbcf518db77713149d93d1"
     },
     "runtime/evidence_index.py": {
       "imports": [
@@ -3020,12 +3024,13 @@
         "os",
         "pathlib",
         "re",
+        "stat",
         "time",
         "typing",
         "uuid"
       ],
       "index_state": "verified",
-      "sha256": "2fdb87cf1edf7fde5e9cde9a6acb24051bc6b067babbb653784867d94158dfd4"
+      "sha256": "9f93b593a3f966021632375c15a491ef9ebbd8a21ae8a56a18e8678716d13910"
     },
     "runtime/work_admission.py": {
       "imports": [
@@ -4052,10 +4057,11 @@
         "json",
         "pathlib",
         "runtime.evidence_custody",
-        "runtime.release_signing"
+        "runtime.release_signing",
+        "scripts.reconcile_cohesion_cards"
       ],
       "index_state": "verified",
-      "sha256": "5596d9b8ae3468fd0bc2d641e3efd38c1cc2e4fb1782400e6af65c8643cff39b"
+      "sha256": "193805fafec565d7ed25f64b49ca0174e9fbf677cd1a1f48637d5c6a8a4c32ff"
     },
     "scripts/pipeline_common.py": {
       "imports": [
@@ -4107,6 +4113,24 @@
       ],
       "index_state": "verified",
       "sha256": "9d2341ca2f93b2165a77c12d8c1df6f93a3b2a84afad6f636a1d1af80349de57"
+    },
+    "scripts/reconcile_cohesion_cards.py": {
+      "imports": [
+        "__future__",
+        "argparse",
+        "datetime",
+        "hashlib",
+        "json",
+        "pathlib",
+        "re",
+        "runtime.resource_lifecycle",
+        "runtime.wal_transaction",
+        "subprocess",
+        "sys",
+        "typing"
+      ],
+      "index_state": "verified",
+      "sha256": "896e8b681e749a55a771aac9c5d2ee97505aebe0790bde7f698fb7c5de1bedcb"
     },
     "scripts/reconcile_commissioned_skill_registry.py": {
       "imports": [
@@ -4253,7 +4277,7 @@
         "sys"
       ],
       "index_state": "verified",
-      "sha256": "6a0311dead223869faf57297f98900ad3f518f478154be7f1557f555ec88ae4e"
+      "sha256": "2a6b1eaced4263d0472d6e9c250c31a2e2ed1e5592684ccb5053dc620f55aa5e"
     },
     "scripts/register_card_control_resolution_review.py": {
       "imports": [
@@ -4371,6 +4395,48 @@
       "index_state": "verified",
       "sha256": "eef4ad0c3d400f30de7f2961c3164666031ce02256d118e7f6ddd047c6ed6247"
     },
+    "scripts/run_installed_operational_owner.py": {
+      "imports": [
+        "__future__",
+        "argparse",
+        "dataclasses",
+        "datetime",
+        "hashlib",
+        "json",
+        "os",
+        "pathlib",
+        "runtime.release_campaign",
+        "signal",
+        "subprocess",
+        "sys",
+        "typing",
+        "uuid"
+      ],
+      "index_state": "verified",
+      "sha256": "89fa3b8b83d8c2ec1239b229f65c7c2e68fa8f9f17b1772f7f705cf05f3833f7"
+    },
+    "scripts/run_release_candidate.py": {
+      "imports": [
+        "__future__",
+        "argparse",
+        "dataclasses",
+        "datetime",
+        "hashlib",
+        "json",
+        "os",
+        "pathlib",
+        "re",
+        "runtime.release_identity",
+        "runtime.resource_lifecycle",
+        "scripts.reconcile_unverified_operational_controls",
+        "subprocess",
+        "time",
+        "typing",
+        "uuid"
+      ],
+      "index_state": "verified",
+      "sha256": "daf308a87133e35cfbd5f78b358aec21ddae34c91452a6d27658a97dff9eb37d"
+    },
     "scripts/run_release_fault_campaign.py": {
       "imports": [
         "__future__",
@@ -4384,6 +4450,33 @@
       ],
       "index_state": "verified",
       "sha256": "26d042b0a1c51f8404323993115ed2f0bc4ed3afb3701852fed8378c9744218d"
+    },
+    "scripts/run_release_stage_owner.py": {
+      "imports": [
+        "__future__",
+        "argparse",
+        "dataclasses",
+        "hashlib",
+        "json",
+        "os",
+        "pathlib",
+        "re",
+        "runtime.generated_artifacts",
+        "runtime.release_artifacts",
+        "runtime.release_campaign",
+        "runtime.release_identity",
+        "runtime.resource_lifecycle",
+        "runtime.test_profiles",
+        "scripts.clean_source_export",
+        "stat",
+        "subprocess",
+        "sys",
+        "typing",
+        "uuid",
+        "zipfile"
+      ],
+      "index_state": "verified",
+      "sha256": "c0b76f570375ac8ae0adad48b3dff91ba67cd0d437c5073cf4c2d0090d0b9ff6"
     },
     "scripts/sanitize_host_bound_cleanup_evidence.py": {
       "imports": [
@@ -4427,6 +4520,24 @@
       ],
       "index_state": "verified",
       "sha256": "7167a2e3dbfe6798416049db4a31c2e37a80c4278feeaea62c2742f4e709fa4b"
+    },
+    "scripts/verify_release_publication.py": {
+      "imports": [
+        "__future__",
+        "argparse",
+        "hashlib",
+        "json",
+        "os",
+        "pathlib",
+        "re",
+        "runtime.evidence_custody",
+        "runtime.release_signing",
+        "shutil",
+        "typing",
+        "uuid"
+      ],
+      "index_state": "verified",
+      "sha256": "d10c2f95b6b155bd88bcfcdec5990399c6d102e7a8dbf69b0ea5c52f882c18be"
     },
     "tests/test_admission_controller.py": {
       "imports": [
@@ -5345,12 +5456,13 @@
     "tests/test_evidence_custody.py": {
       "imports": [
         "__future__",
+        "hashlib",
         "pathlib",
         "runtime.evidence_custody",
         "zipfile"
       ],
       "index_state": "verified",
-      "sha256": "88082d84f6c15689a383c6b1b1809a7711f46edf95e8fb54677d6afb2fad49d2"
+      "sha256": "5e72410d612c274312706d16a06dc2e80803c28a8639d2844667194653108215"
     },
     "tests/test_evidence_index.py": {
       "imports": [
@@ -6350,7 +6462,7 @@
         "tomllib"
       ],
       "index_state": "verified",
-      "sha256": "fd3dd2e7a30335315697b18301f6eced003759010632cc502f922a657c8221f0"
+      "sha256": "cbab240c84a705a1471cbbf5ea11a08671b6b30fa88c577e972bb20160855a5d"
     },
     "tests/test_punch_card_reconciliation.py": {
       "imports": [
@@ -6417,6 +6529,19 @@
       "index_state": "verified",
       "sha256": "4936d66551b9db09216a7bed0812fa49884b4dce3766c0dcb14bf7888d743ff2"
     },
+    "tests/test_reconcile_cohesion_cards.py": {
+      "imports": [
+        "__future__",
+        "hashlib",
+        "json",
+        "pathlib",
+        "pytest",
+        "scripts.reconcile_cohesion_cards",
+        "shutil"
+      ],
+      "index_state": "verified",
+      "sha256": "7650ef8e0c0a829708519312f91cdf35431b431cdfa9778e656992e2e0b37442"
+    },
     "tests/test_reconcile_unverified_operational_controls.py": {
       "imports": [
         "__future__",
@@ -6426,7 +6551,7 @@
         "scripts.reconcile_unverified_operational_controls"
       ],
       "index_state": "verified",
-      "sha256": "3548b9962dae71b3d03619c7d96995191a28efcda899d61857e99b6a8614de75"
+      "sha256": "aceace3f7f3c78bf49c95f3cb474258e1f21a3d6ac623aeab94ac3d1b2e633a1"
     },
     "tests/test_recovery.py": {
       "imports": [
@@ -6508,7 +6633,7 @@
         "unittest"
       ],
       "index_state": "verified",
-      "sha256": "c9f044e0e9e6a956b615613eb7c03e26cba72c23a9ce49551cd1761d14bc40d2"
+      "sha256": "37f9d1b0c952ff5dc44ef30b16192cae917fd8e4e702d5e487e6765786120785"
     },
     "tests/test_release_artifacts.py": {
       "imports": [
@@ -6521,7 +6646,7 @@
         "tempfile"
       ],
       "index_state": "verified",
-      "sha256": "f71f55e6803eb770c2852c6ebd01dc6422d577de47847e8be534112df5bbe89e"
+      "sha256": "3d4217309ad0d4715c6b4b4ae946d7d4af6e62a9f1667c189213b338344458ee"
     },
     "tests/test_release_audit.py": {
       "imports": [
@@ -6545,6 +6670,21 @@
       ],
       "index_state": "verified",
       "sha256": "190bac4c610b574adaab3d16f1b6773d08f2fd468c9c3d5c48f533fb03330d73"
+    },
+    "tests/test_release_candidate_driver.py": {
+      "imports": [
+        "__future__",
+        "hashlib",
+        "json",
+        "pathlib",
+        "pytest",
+        "scripts.run_release_candidate",
+        "scripts.run_release_stage_owner",
+        "subprocess",
+        "types"
+      ],
+      "index_state": "verified",
+      "sha256": "e00e4db9dc222907b04bb865fcdeba3e39b0d7e80c7428a5c319f689a7607ce8"
     },
     "tests/test_release_certification.py": {
       "imports": [
@@ -6683,6 +6823,18 @@
       "index_state": "verified",
       "sha256": "d87a863ae5c02ceab3c35215075506987a848ad23b461f0e8bad6835a348857c"
     },
+    "tests/test_release_stage_owner.py": {
+      "imports": [
+        "__future__",
+        "hashlib",
+        "json",
+        "pathlib",
+        "pytest",
+        "scripts.run_release_stage_owner"
+      ],
+      "index_state": "verified",
+      "sha256": "3b79b9decf2b6f7feebc979cbb67fc616d3e05c8994552c9f5c361b7f2cf755d"
+    },
     "tests/test_release_supply_chain_evidence.py": {
       "imports": [
         "__future__",
@@ -6764,6 +6916,18 @@
       ],
       "index_state": "verified",
       "sha256": "8079189ded5227c6fb1f18976182bf588aa1c64a105736d506b36c83d88b4845"
+    },
+    "tests/test_run_installed_operational_owner.py": {
+      "imports": [
+        "__future__",
+        "hashlib",
+        "json",
+        "pathlib",
+        "pytest",
+        "scripts.run_installed_operational_owner"
+      ],
+      "index_state": "verified",
+      "sha256": "b7da2cecd62be4976e1fc472536f348519b977b0e7f0ca5b7c0427b8aca5e10c"
     },
     "tests/test_runtime_lifecycle.py": {
       "imports": [
@@ -7289,6 +7453,18 @@
       "index_state": "verified",
       "sha256": "1d4e4ab2580000102d8852b4ab0c954d571550468293d7d26f66d9ae41a52ee4"
     },
+    "tests/test_verify_release_publication.py": {
+      "imports": [
+        "__future__",
+        "hashlib",
+        "json",
+        "pathlib",
+        "pytest",
+        "scripts"
+      ],
+      "index_state": "verified",
+      "sha256": "10cae3ec544f785cd1a6058f600cd763af566490947b8345bfc091de7be004ae"
+    },
     "tests/test_wal_transaction.py": {
       "imports": [
         "__future__",
@@ -7303,7 +7479,7 @@
         "textwrap"
       ],
       "index_state": "verified",
-      "sha256": "accf958022afbfb4a332ce74f95beb8376ad8a529defff3e100e3615451e22c6"
+      "sha256": "8ab5604f4eb4304ed950ec6459a978f851783d7d539bd199a7eec5abbbaeadd4"
     },
     "tests/test_wave5_builders.py": {
       "imports": [
@@ -7428,7 +7604,7 @@
       ],
       "description": "Serial process custody, recovery, test-runner, WAL, resource-lifecycle, and workspace mutation tests.",
       "group": "process-recovery",
-      "input_sha256": "23eabc00879e2389dffc4bf3f07f71abec48966d2906f38c2ab5e95e13d3ca54",
+      "input_sha256": "7fefda9871f96d37f2ffc8b924e3a7f080c210b17582c32dba8106f4c584012b",
       "inputs": [
         "registry/test_profiles.json",
         "runtime/commissioning.py",
@@ -7506,7 +7682,7 @@
       ],
       "description": "Serial exact-tool, installed-wheel, corrective-release, and full-repair-ledger certification tests.",
       "group": "exact-installed",
-      "input_sha256": "0a24303e383fb5ceaa3dabcdb5ba4fd158796dd5b86dbeca3b211b6e61d6c9a0",
+      "input_sha256": "ecca337338a04bab3d7b78764e54194efd49c98f1d15557523ff34ffce3f4eb3",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -7551,6 +7727,7 @@
     },
     {
       "base_inputs": [
+        ".github/workflows/release.yml",
         "README.md",
         "pyproject.toml",
         "registry/artifact_reachability.json",
@@ -7562,6 +7739,7 @@
         "registry/test_profiles.json",
         "runtime/corrective_release.py",
         "runtime/engine_identity.py",
+        "runtime/evidence_custody.py",
         "runtime/file_lock.py",
         "runtime/full_repair.py",
         "runtime/operational_gap_ledger.py",
@@ -7577,7 +7755,10 @@
         "runtime/test_profiles.py",
         "scripts/audit_sanitization.py",
         "scripts/build_completion_status.py",
+        "scripts/package_release_evidence.py",
+        "scripts/verify_release_publication.py",
         "templates/generated/domain_tool.py",
+        "tests/test_evidence_custody.py",
         "tests/test_rel008_assimilation.py",
         "tests/test_rel009_release.py",
         "tests/test_rel011_revocation.py",
@@ -7586,12 +7767,14 @@
         "tests/test_release_distribution_controls.py",
         "tests/test_release_environment.py",
         "tests/test_release_identity_controls.py",
-        "tests/test_release_supply_chain_evidence.py"
+        "tests/test_release_supply_chain_evidence.py",
+        "tests/test_verify_release_publication.py"
       ],
       "description": "Serial release, distribution, artifact, and revocation certification tests excluding composed audit mutations.",
       "group": "release-build",
-      "input_sha256": "3d5489bf8d86f2164f6a80830e7e6a01f6d530ee5f9ac79a9f803d7d0f92f81b",
+      "input_sha256": "223a6b03c893df215f3dae5d3ae8e18d0b029aedea36567e2cba064ee9d25957",
       "inputs": [
+        ".github/workflows/release.yml",
         "README.md",
         "pyproject.toml",
         "registry/artifact_reachability.json",
@@ -7603,6 +7786,7 @@
         "registry/test_profiles.json",
         "runtime/corrective_release.py",
         "runtime/engine_identity.py",
+        "runtime/evidence_custody.py",
         "runtime/file_lock.py",
         "runtime/full_repair.py",
         "runtime/operational_gap_ledger.py",
@@ -7618,7 +7802,10 @@
         "runtime/test_profiles.py",
         "scripts/audit_sanitization.py",
         "scripts/build_completion_status.py",
+        "scripts/package_release_evidence.py",
+        "scripts/verify_release_publication.py",
         "templates/generated/domain_tool.py",
+        "tests/test_evidence_custody.py",
         "tests/test_rel008_assimilation.py",
         "tests/test_rel009_release.py",
         "tests/test_rel011_revocation.py",
@@ -7627,10 +7814,12 @@
         "tests/test_release_distribution_controls.py",
         "tests/test_release_environment.py",
         "tests/test_release_identity_controls.py",
-        "tests/test_release_supply_chain_evidence.py"
+        "tests/test_release_supply_chain_evidence.py",
+        "tests/test_verify_release_publication.py"
       ],
-      "member_count": 9,
+      "member_count": 11,
       "members": [
+        "tests/test_evidence_custody.py",
         "tests/test_rel008_assimilation.py",
         "tests/test_rel009_release.py",
         "tests/test_rel011_revocation.py",
@@ -7639,7 +7828,8 @@
         "tests/test_release_distribution_controls.py",
         "tests/test_release_environment.py",
         "tests/test_release_identity_controls.py",
-        "tests/test_release_supply_chain_evidence.py"
+        "tests/test_release_supply_chain_evidence.py",
+        "tests/test_verify_release_publication.py"
       ],
       "parallel_safe": false,
       "scan_inputs": [],
@@ -7664,7 +7854,7 @@
       ],
       "description": "Serial composed-audit and quarantine-mutation tests isolated from package builds.",
       "group": "release-audit",
-      "input_sha256": "08caa64a944af23a16619bbe589902a03ed564d3d04226b69095ab3b3c25a765",
+      "input_sha256": "9cb7bca857a65209e5145de09d75940b21326bd1f1d9bef8a36f42f77b805780",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -7710,7 +7900,7 @@
       ],
       "description": "Serial full-tree structural mutation tests isolated from derived-artifact checks.",
       "group": "structural-adversarial",
-      "input_sha256": "3c4178379f283aa3b4a1e3e33de4e1946ed7f27f2c6806f083cf077008727df4",
+      "input_sha256": "b601f69378379a3c094cfa84bfb9acd0277c9a8eeb012bfe7544574c230063da",
       "inputs": [
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_agents_md_generator.py",
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_change_impact.py",
@@ -8297,6 +8487,7 @@
         "scripts/portable_audit_bundle.py",
         "scripts/quarantine_paths.py",
         "scripts/reconcile_active_capability_hashes.py",
+        "scripts/reconcile_cohesion_cards.py",
         "scripts/reconcile_commissioned_skill_registry.py",
         "scripts/reconcile_declared_owner_hashes.py",
         "scripts/reconcile_declared_tool_hashes.py",
@@ -8318,10 +8509,14 @@
         "scripts/release_fixed_point.py",
         "scripts/release_mutation_probe.py",
         "scripts/release_skip_preflight.py",
+        "scripts/run_installed_operational_owner.py",
+        "scripts/run_release_candidate.py",
         "scripts/run_release_fault_campaign.py",
+        "scripts/run_release_stage_owner.py",
         "scripts/sanitize_host_bound_cleanup_evidence.py",
         "scripts/sanitize_tree.py",
         "scripts/split_operational_aggregate_cards.py",
+        "scripts/verify_release_publication.py",
         "sitecustomize.py",
         "templates/generated/domain_tool.py",
         "templates/service_capabilities/supabase/functions/example/index.ts",
@@ -8487,6 +8682,7 @@
         "tests/test_quarantine_paths.py",
         "tests/test_quickstart_demo.py",
         "tests/test_reclamation_learning_promotion.py",
+        "tests/test_reconcile_cohesion_cards.py",
         "tests/test_reconcile_unverified_operational_controls.py",
         "tests/test_recovery.py",
         "tests/test_recovery_coordinator_retention.py",
@@ -8498,6 +8694,7 @@
         "tests/test_release_artifacts.py",
         "tests/test_release_audit.py",
         "tests/test_release_boundary_diff.py",
+        "tests/test_release_candidate_driver.py",
         "tests/test_release_certification.py",
         "tests/test_release_concurrency_stress.py",
         "tests/test_release_distribution_controls.py",
@@ -8510,6 +8707,7 @@
         "tests/test_release_identity_controls.py",
         "tests/test_release_mutation_probe.py",
         "tests/test_release_preflight.py",
+        "tests/test_release_stage_owner.py",
         "tests/test_release_supply_chain_evidence.py",
         "tests/test_repair_root_analysis.py",
         "tests/test_repository_scope.py",
@@ -8517,6 +8715,7 @@
         "tests/test_resource_lifecycle.py",
         "tests/test_retrieval_and_models.py",
         "tests/test_retrieval_strategy.py",
+        "tests/test_run_installed_operational_owner.py",
         "tests/test_runtime_lifecycle.py",
         "tests/test_runtime_wave4.py",
         "tests/test_sanitation_assurance.py",
@@ -8557,6 +8756,7 @@
         "tests/test_transcript_analysis.py",
         "tests/test_trust_boundaries.py",
         "tests/test_typed_operational_surface_inventory.py",
+        "tests/test_verify_release_publication.py",
         "tests/test_wal_transaction.py",
         "tests/test_wave5_builders.py",
         "tests/test_work_admission.py",
@@ -9145,6 +9345,7 @@
         "scripts/portable_audit_bundle.py",
         "scripts/quarantine_paths.py",
         "scripts/reconcile_active_capability_hashes.py",
+        "scripts/reconcile_cohesion_cards.py",
         "scripts/reconcile_commissioned_skill_registry.py",
         "scripts/reconcile_declared_owner_hashes.py",
         "scripts/reconcile_declared_tool_hashes.py",
@@ -9166,10 +9367,14 @@
         "scripts/release_fixed_point.py",
         "scripts/release_mutation_probe.py",
         "scripts/release_skip_preflight.py",
+        "scripts/run_installed_operational_owner.py",
+        "scripts/run_release_candidate.py",
         "scripts/run_release_fault_campaign.py",
+        "scripts/run_release_stage_owner.py",
         "scripts/sanitize_host_bound_cleanup_evidence.py",
         "scripts/sanitize_tree.py",
         "scripts/split_operational_aggregate_cards.py",
+        "scripts/verify_release_publication.py",
         "sitecustomize.py",
         "templates/generated/domain_tool.py",
         "templates/service_capabilities/supabase/functions/example/index.ts",
@@ -9335,6 +9540,7 @@
         "tests/test_quarantine_paths.py",
         "tests/test_quickstart_demo.py",
         "tests/test_reclamation_learning_promotion.py",
+        "tests/test_reconcile_cohesion_cards.py",
         "tests/test_reconcile_unverified_operational_controls.py",
         "tests/test_recovery.py",
         "tests/test_recovery_coordinator_retention.py",
@@ -9346,6 +9552,7 @@
         "tests/test_release_artifacts.py",
         "tests/test_release_audit.py",
         "tests/test_release_boundary_diff.py",
+        "tests/test_release_candidate_driver.py",
         "tests/test_release_certification.py",
         "tests/test_release_concurrency_stress.py",
         "tests/test_release_distribution_controls.py",
@@ -9358,6 +9565,7 @@
         "tests/test_release_identity_controls.py",
         "tests/test_release_mutation_probe.py",
         "tests/test_release_preflight.py",
+        "tests/test_release_stage_owner.py",
         "tests/test_release_supply_chain_evidence.py",
         "tests/test_repair_root_analysis.py",
         "tests/test_repository_scope.py",
@@ -9365,6 +9573,7 @@
         "tests/test_resource_lifecycle.py",
         "tests/test_retrieval_and_models.py",
         "tests/test_retrieval_strategy.py",
+        "tests/test_run_installed_operational_owner.py",
         "tests/test_runtime_lifecycle.py",
         "tests/test_runtime_wave4.py",
         "tests/test_sanitation_assurance.py",
@@ -9405,6 +9614,7 @@
         "tests/test_transcript_analysis.py",
         "tests/test_trust_boundaries.py",
         "tests/test_typed_operational_surface_inventory.py",
+        "tests/test_verify_release_publication.py",
         "tests/test_wal_transaction.py",
         "tests/test_wave5_builders.py",
         "tests/test_work_admission.py",
@@ -9482,7 +9692,7 @@
       ],
       "description": "Final serial generated-output, completion-projection, portability, effect-surface, and punch-card integrity gate.",
       "group": "derived-integrity",
-      "input_sha256": "56118454c4b7c0857e24491fd088d583ee8e928d44ee20e97d71e4d8e631b810",
+      "input_sha256": "b0eb759943dbc4b605c8785902aa43f03ef05198426d3ee896d2b19b5ba1f667",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -9629,7 +9839,6 @@
         "runtime/evidence_assembler.py",
         "runtime/evidence_cache.py",
         "runtime/evidence_claims.py",
-        "runtime/evidence_custody.py",
         "runtime/evidence_index.py",
         "runtime/evidence_portability.py",
         "runtime/exact_tool_certification.py",
@@ -9781,7 +9990,6 @@
         "tests/test_evidence_assembler.py",
         "tests/test_evidence_cache.py",
         "tests/test_evidence_claims.py",
-        "tests/test_evidence_custody.py",
         "tests/test_evidence_index.py",
         "tests/test_execution_contract.py",
         "tests/test_execution_placement.py",
@@ -9796,7 +10004,7 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin A through F; this lane shares canonical registry state with core-n-s and must not overlap it.",
       "group": "core-a-f",
-      "input_sha256": "36bbf9884a12aa9704d99ab9ba311493c457a67d2719d92d224cba0ada2a67aa",
+      "input_sha256": "6e25de239612e52addc37245150d3ee040553ae472c6c004f26a61086a159e7e",
       "inputs": [
         "builders/declared_suite_builder.py",
         "builders/declared_suite_support_builder.py",
@@ -9865,7 +10073,6 @@
         "runtime/evidence_assembler.py",
         "runtime/evidence_cache.py",
         "runtime/evidence_claims.py",
-        "runtime/evidence_custody.py",
         "runtime/evidence_index.py",
         "runtime/evidence_portability.py",
         "runtime/exact_tool_certification.py",
@@ -10017,7 +10224,6 @@
         "tests/test_evidence_assembler.py",
         "tests/test_evidence_cache.py",
         "tests/test_evidence_claims.py",
-        "tests/test_evidence_custody.py",
         "tests/test_evidence_index.py",
         "tests/test_execution_contract.py",
         "tests/test_execution_placement.py",
@@ -10030,7 +10236,7 @@
         "tests/test_foundation_assurance.py",
         "tests/test_foundry_studio_bridge.py"
       ],
-      "member_count": 81,
+      "member_count": 80,
       "members": [
         "tests/test_admission_controller.py",
         "tests/test_affected_proof.py",
@@ -10101,7 +10307,6 @@
         "tests/test_evidence_assembler.py",
         "tests/test_evidence_cache.py",
         "tests/test_evidence_claims.py",
-        "tests/test_evidence_custody.py",
         "tests/test_evidence_index.py",
         "tests/test_execution_contract.py",
         "tests/test_execution_placement.py",
@@ -10239,7 +10444,7 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin G through M; this lane reads or mutates shared canonical repository state.",
       "group": "core-g-m",
-      "input_sha256": "b603e4c2ebae94b5c7d33b2d782c7545b21004a0c958ab6bbe793069f28ea5ec",
+      "input_sha256": "aabdd98df87c622c2e1df775a4689f10b51471cd276424921d0ad2b76567af70",
       "inputs": [
         "builders/common.py",
         "builders/orchestration_builder.py",
@@ -10467,9 +10672,11 @@
         "runtime/release_artifacts.py",
         "runtime/release_audit.py",
         "runtime/release_boundary.py",
+        "runtime/release_campaign.py",
         "runtime/release_certification.py",
         "runtime/release_distribution.py",
         "runtime/release_environment.py",
+        "runtime/release_identity.py",
         "runtime/release_preflight.py",
         "runtime/repair_root_analysis.py",
         "runtime/repository_scope.py",
@@ -10524,10 +10731,14 @@
         "scripts/operational_gap_ledger.py",
         "scripts/quarantine_paths.py",
         "scripts/reconcile_active_capability_hashes.py",
+        "scripts/reconcile_cohesion_cards.py",
         "scripts/reconcile_commissioned_skill_registry.py",
         "scripts/reconcile_declared_tool_hashes.py",
         "scripts/reconcile_unverified_operational_controls.py",
+        "scripts/run_installed_operational_owner.py",
+        "scripts/run_release_candidate.py",
         "scripts/run_release_fault_campaign.py",
+        "scripts/run_release_stage_owner.py",
         "scripts/sanitize_tree.py",
         "tests/test_native_skills.py",
         "tests/test_operation_authority.py",
@@ -10564,9 +10775,11 @@
         "tests/test_quarantine_paths.py",
         "tests/test_quickstart_demo.py",
         "tests/test_reclamation_learning_promotion.py",
+        "tests/test_reconcile_cohesion_cards.py",
         "tests/test_reconcile_unverified_operational_controls.py",
         "tests/test_reference_candidate_truth.py",
         "tests/test_release_boundary_diff.py",
+        "tests/test_release_candidate_driver.py",
         "tests/test_release_concurrency_stress.py",
         "tests/test_release_evidence_budget.py",
         "tests/test_release_evidence_portability.py",
@@ -10575,11 +10788,13 @@
         "tests/test_release_fixed_point.py",
         "tests/test_release_mutation_probe.py",
         "tests/test_release_preflight.py",
+        "tests/test_release_stage_owner.py",
         "tests/test_repair_root_analysis.py",
         "tests/test_repository_scope.py",
         "tests/test_research_contract_admission.py",
         "tests/test_retrieval_and_models.py",
         "tests/test_retrieval_strategy.py",
+        "tests/test_run_installed_operational_owner.py",
         "tests/test_runtime_lifecycle.py",
         "tests/test_runtime_wave4.py",
         "tests/test_sanitation_assurance.py",
@@ -10612,7 +10827,7 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin N through S; this lane reads or mutates shared canonical repository state.",
       "group": "core-n-s",
-      "input_sha256": "af3f75cba13ad7edba91d5220b545a7df1d15023e50e1022a50b05d17b8e420e",
+      "input_sha256": "9cb209cfdddc3cdd368455905e1c56a5c4b7ade2cf90d5d2b59644d3d668acfb",
       "inputs": [
         "registry/test_profiles.json",
         "runtime/__init__.py",
@@ -10685,9 +10900,11 @@
         "runtime/release_artifacts.py",
         "runtime/release_audit.py",
         "runtime/release_boundary.py",
+        "runtime/release_campaign.py",
         "runtime/release_certification.py",
         "runtime/release_distribution.py",
         "runtime/release_environment.py",
+        "runtime/release_identity.py",
         "runtime/release_preflight.py",
         "runtime/repair_root_analysis.py",
         "runtime/repository_scope.py",
@@ -10742,10 +10959,14 @@
         "scripts/operational_gap_ledger.py",
         "scripts/quarantine_paths.py",
         "scripts/reconcile_active_capability_hashes.py",
+        "scripts/reconcile_cohesion_cards.py",
         "scripts/reconcile_commissioned_skill_registry.py",
         "scripts/reconcile_declared_tool_hashes.py",
         "scripts/reconcile_unverified_operational_controls.py",
+        "scripts/run_installed_operational_owner.py",
+        "scripts/run_release_candidate.py",
         "scripts/run_release_fault_campaign.py",
+        "scripts/run_release_stage_owner.py",
         "scripts/sanitize_tree.py",
         "tests/test_native_skills.py",
         "tests/test_operation_authority.py",
@@ -10782,9 +11003,11 @@
         "tests/test_quarantine_paths.py",
         "tests/test_quickstart_demo.py",
         "tests/test_reclamation_learning_promotion.py",
+        "tests/test_reconcile_cohesion_cards.py",
         "tests/test_reconcile_unverified_operational_controls.py",
         "tests/test_reference_candidate_truth.py",
         "tests/test_release_boundary_diff.py",
+        "tests/test_release_candidate_driver.py",
         "tests/test_release_concurrency_stress.py",
         "tests/test_release_evidence_budget.py",
         "tests/test_release_evidence_portability.py",
@@ -10793,11 +11016,13 @@
         "tests/test_release_fixed_point.py",
         "tests/test_release_mutation_probe.py",
         "tests/test_release_preflight.py",
+        "tests/test_release_stage_owner.py",
         "tests/test_repair_root_analysis.py",
         "tests/test_repository_scope.py",
         "tests/test_research_contract_admission.py",
         "tests/test_retrieval_and_models.py",
         "tests/test_retrieval_strategy.py",
+        "tests/test_run_installed_operational_owner.py",
         "tests/test_runtime_lifecycle.py",
         "tests/test_runtime_wave4.py",
         "tests/test_sanitation_assurance.py",
@@ -10828,7 +11053,7 @@
         "tests/test_studio_run_control.py",
         "tests/test_system_graph.py"
       ],
-      "member_count": 80,
+      "member_count": 84,
       "members": [
         "tests/test_native_skills.py",
         "tests/test_operation_authority.py",
@@ -10865,9 +11090,11 @@
         "tests/test_quarantine_paths.py",
         "tests/test_quickstart_demo.py",
         "tests/test_reclamation_learning_promotion.py",
+        "tests/test_reconcile_cohesion_cards.py",
         "tests/test_reconcile_unverified_operational_controls.py",
         "tests/test_reference_candidate_truth.py",
         "tests/test_release_boundary_diff.py",
+        "tests/test_release_candidate_driver.py",
         "tests/test_release_concurrency_stress.py",
         "tests/test_release_evidence_budget.py",
         "tests/test_release_evidence_portability.py",
@@ -10876,11 +11103,13 @@
         "tests/test_release_fixed_point.py",
         "tests/test_release_mutation_probe.py",
         "tests/test_release_preflight.py",
+        "tests/test_release_stage_owner.py",
         "tests/test_repair_root_analysis.py",
         "tests/test_repository_scope.py",
         "tests/test_research_contract_admission.py",
         "tests/test_retrieval_and_models.py",
         "tests/test_retrieval_strategy.py",
+        "tests/test_run_installed_operational_owner.py",
         "tests/test_runtime_lifecycle.py",
         "tests/test_runtime_wave4.py",
         "tests/test_sanitation_assurance.py",
@@ -10980,7 +11209,7 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin T through Z; this lane reads or mutates shared canonical repository state.",
       "group": "core-t-z",
-      "input_sha256": "567f52ed25298853cc8b0ad464a0204f2ef6ab416766a1b785ceae1417534d3c",
+      "input_sha256": "992c9ebc19fe5d3baa97d17fbbfefc1cfa7edd9c8bdd6184b0e3800ac5f1a212",
       "inputs": [
         "builders/adapter_builder.py",
         "builders/common.py",
@@ -11065,8 +11294,8 @@
     }
   ],
   "schema_version": "px.test-group-index/1.1",
-  "test_file_count": 234,
-  "topology_sha256": "b5b65e8880f06a175189196aa9e07463f75ee51a792e294a4e649b7a75fe03f1",
-  "tracked_python_file_count": 584,
-  "verified_file_count": 584
+  "test_file_count": 239,
+  "topology_sha256": "24500e5d0a4cb9f3254844aaac3d8eca0663558b2f52b998da3fbbfa89d4ef4b",
+  "tracked_python_file_count": 594,
+  "verified_file_count": 594
 }

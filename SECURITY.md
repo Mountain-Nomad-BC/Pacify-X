@@ -2,6 +2,8 @@
 
 PACIFY-X 0.6.3 is the current supported signed release. Its public assets were downloaded separately and verified against the trusted signature, certificate, checksums, SBOM, provenance, and install checks.
 
+PACIFY-X 0.7.0 is a local release candidate, not a supported or published release. Its implementation and focused repair evidence are complete, but final exact-artifact certification and publication remain pending. Windows and Ubuntu candidate smoke evidence exists; real-host macOS proof has not been recorded. Security reports against the candidate are welcome, but no candidate tag or artifact should be treated as supported release evidence until the successor campaign completes and public verification succeeds.
+
 ## Reporting a vulnerability
 
 Do not open a public issue for a suspected vulnerability, exposed credential, unsafe path/effect boundary, signature problem, or cross-project data leak. Email `bjc274@gmail.com` with:

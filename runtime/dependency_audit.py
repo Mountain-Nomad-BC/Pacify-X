@@ -93,13 +93,18 @@ def validate_dependency_closure(root: Path) -> dict[str, Any]:
     release_workflow = (root / ".github/workflows/release.yml").read_text(
         encoding="utf-8"
     )
-    if (
-        "python -m pip download --require-hashes -r requirements-release.txt"
-        not in release_workflow
-    ):
-        errors.append(
-            ".github/workflows/release.yml does not materialize the authoritative hash lock"
-        )
+    forbidden_release_builders = (
+        "release finalize",
+        "pip download",
+        "PACIFY_X_RELEASE_SIGNING_KEY",
+        "npm run package",
+    )
+    for forbidden in forbidden_release_builders:
+        if forbidden in release_workflow:
+            errors.append(
+                ".github/workflows/release.yml post-certification transport contains "
+                f"a forbidden builder or signing authority: {forbidden}"
+            )
     return {
         "schema_version": "1.0",
         "valid": not errors,

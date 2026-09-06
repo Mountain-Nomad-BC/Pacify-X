@@ -112,46 +112,53 @@ def test_public_governance_files_are_present_and_project_specific() -> None:
     assert "No hard deletion" in contributing or "do not hard-delete" in contributing
 
 
-def test_release_wheelhouse_is_outside_the_classified_source_tree() -> None:
+def test_release_workflow_is_manual_post_certification_transport_only() -> None:
     workflow = (ROOT / ".github/workflows/release.yml").read_text(encoding="utf-8")
-    assert 'Join-Path $env:RUNNER_TEMP "pacify-x-release-wheelhouse"' in workflow
-    assert "PACIFY_X_RELEASE_WHEELHOUSE=$wheelhouse" in workflow
-    assert "--wheelhouse $env:PACIFY_X_RELEASE_WHEELHOUSE" in workflow
-    assert 'Join-Path $env:RUNNER_TEMP "pacify-x-release-artifacts"' in workflow
-    assert "PACIFY_X_RELEASE_ARTIFACT_DIR=$artifactDir" in workflow
-    assert "--artifact-dir $env:PACIFY_X_RELEASE_ARTIFACT_DIR" in workflow
-    assert 'Join-Path $env:RUNNER_TEMP "pacify-x-release-result.json"' in workflow
-    assert 'Join-Path $env:RUNNER_TEMP "pacify-x-release-verification.json"' in workflow
-    assert "Tee-Object release-result.json" not in workflow
-    assert "Tee-Object release-verification.json" not in workflow
-    assert 'icacls $keyPath /inheritance:r /grant:r "${env:USERNAME}:(R,W)"' in workflow
-    assert "ssh-keygen -y -f $keyPath" in workflow
-    assert 'WriteAllText("${keyPath}.pub"' in workflow
-    assert "release signing key is not trusted by repository policy" in workflow
-    assert "-Path wheelhouse" not in workflow
-    assert "-d wheelhouse" not in workflow
-    assert "New-Item -ItemType Directory -Path release-artifacts" not in workflow
-    assert "package_release_evidence.py" in workflow
-    assert (
-        "complete-evidence-custody" not in workflow
-        or "Package durable complete evidence custody" in workflow
-    )
+    assert "workflow_dispatch:" in workflow
+    assert "push:" not in workflow
+    assert "verify_release_publication.py" in workflow
+    assert "gh release download" in workflow
+    assert "release verify" in workflow
+    assert "run-installed-vsix-smoke.js" in workflow
+    assert "--replace-release-evidence" in workflow
+    for forbidden in (
+        "release finalize",
+        "pip download",
+        "PACIFY_X_RELEASE_SIGNING_KEY",
+        "npm run package",
+        "gh release create",
+        "gh release upload",
+    ):
+        assert forbidden not in workflow
 
 
 def test_marketplace_publication_uses_oidc_and_the_exact_certified_vsix() -> None:
     workflow = (ROOT / ".github/workflows/release.yml").read_text(encoding="utf-8")
-    assert "  id-token: write" in workflow
-    assert "@vscode/vsce@3.9.2 publish --oidc --packagePath" in workflow
-    assert "PACIFY_X_CERTIFIED_VSIX_SHA256" in workflow
-    assert "certified VSIX bytes changed before Marketplace publication" in workflow
-    assert "certified VSIX bytes changed during Marketplace publication" in workflow
+    assert "      id-token: write" in workflow
+    assert "@vscode/vsce@3.9.2 publish --oidc --skip-duplicate --packagePath" in workflow
+    assert "dae75fa9ecd4084ff85353ff404b6b1b9c87df146b763bae6f64006deeb04cd3" in workflow
+    assert "Marketplace input differs from signed VSIX" in workflow
+    assert "VSIX bytes changed during Marketplace publication" in workflow
     assert "VSCE_PAT" not in workflow
     assert "AZURE_DEVOPS_EXT_PAT" not in workflow
-    marketplace_step = workflow.split(
-        "- name: Publish exact verified VSIX to Visual Studio Marketplace", 1
-    )[1].split("- name: Retain certification evidence", 1)[0]
-    assert "npm run package" not in marketplace_step
-    assert "npm ci" not in marketplace_step
+    marketplace_job = workflow.split("  publish-marketplace:", 1)[1].split(
+        "  publish-github:", 1
+    )[0]
+    assert "npm run package" not in marketplace_job
+    assert "npm ci" not in marketplace_job
+
+
+def test_release_publication_is_ordered_least_privilege_and_idempotent() -> None:
+    workflow = (ROOT / ".github/workflows/release.yml").read_text(encoding="utf-8")
+    marketplace = workflow.index("  publish-marketplace:")
+    github = workflow.index("  publish-github:")
+    assert marketplace < github
+    assert "needs: verify-certified-draft" in workflow[marketplace:github]
+    assert "needs: [verify-certified-draft, publish-marketplace]" in workflow[github:]
+    assert "permissions: {}" in workflow
+    assert "--skip-duplicate" in workflow[marketplace:github]
+    assert "if ($release.isDraft)" in workflow[github:]
+    assert "--draft=false" in workflow[github:]
 
 
 def test_governed_ci_runs_independent_receipted_assurance_gates() -> None:

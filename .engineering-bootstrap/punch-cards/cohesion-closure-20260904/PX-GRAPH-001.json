@@ -3,7 +3,7 @@
   "title": "Graph authority manifest",
   "severity": "high",
   "type": "integration",
-  "status": "planned",
+  "status": "downstream_green",
   "root_cause": "Multiple legitimate graph projections exist without an explicit purpose, authority, source revision, builder, consumer, invalidation, and rebuild manifest.",
   "source_requirement": "Describe each major graph without merging different graph semantics.",
   "live_evidence": [
@@ -62,5 +62,144 @@
     "Every major graph is accounted for with one authority contract.",
     "Different graph purposes remain separate."
   ],
-  "completion_evidence": []
+  "completion_evidence": [
+    "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+    "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+    "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+    "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+    "evidence/commencement-audit-20260905T002921Z/current-owners-and-gaps.json#sha256=c045567157fcac8338848266aab4755c2551810d49dd80ab5f628ef9606f5b41",
+    "registry/graph_authority_manifest.json#sha256=d2f307a5b868bc40bbd3d62fa94bde4d429591b9937314fe57a7264524a1a361",
+    "runtime/dependency_invalidation.py#sha256=f8a040ad4a1a35318e2a5106ee76fb99fb91fe767e54f7db2e191329838b055a",
+    "runtime/projection_dependencies.py#sha256=e405349fa7d47fc3e6cc25be8178916c286b90770602aa255a5bc52d4d3fd8b8",
+    "tests/test_graph_authority_manifest.py#sha256=8aec9a1b344cb506653f98f677c06b33f8cb9880ef7fea09092736b7e0d9b61c"
+  ],
+  "status_history": [
+    {
+      "status": "admitted",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/current-owners-and-gaps.json#sha256=c045567157fcac8338848266aab4755c2551810d49dd80ab5f628ef9606f5b41",
+        "registry/graph_authority_manifest.json#sha256=d2f307a5b868bc40bbd3d62fa94bde4d429591b9937314fe57a7264524a1a361",
+        "runtime/dependency_invalidation.py#sha256=f8a040ad4a1a35318e2a5106ee76fb99fb91fe767e54f7db2e191329838b055a",
+        "runtime/projection_dependencies.py#sha256=e405349fa7d47fc3e6cc25be8178916c286b90770602aa255a5bc52d4d3fd8b8",
+        "tests/test_graph_authority_manifest.py#sha256=8aec9a1b344cb506653f98f677c06b33f8cb9880ef7fea09092736b7e0d9b61c"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "in_progress",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/current-owners-and-gaps.json#sha256=c045567157fcac8338848266aab4755c2551810d49dd80ab5f628ef9606f5b41",
+        "registry/graph_authority_manifest.json#sha256=d2f307a5b868bc40bbd3d62fa94bde4d429591b9937314fe57a7264524a1a361",
+        "runtime/dependency_invalidation.py#sha256=f8a040ad4a1a35318e2a5106ee76fb99fb91fe767e54f7db2e191329838b055a",
+        "runtime/projection_dependencies.py#sha256=e405349fa7d47fc3e6cc25be8178916c286b90770602aa255a5bc52d4d3fd8b8",
+        "tests/test_graph_authority_manifest.py#sha256=8aec9a1b344cb506653f98f677c06b33f8cb9880ef7fea09092736b7e0d9b61c"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "focused_green",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/current-owners-and-gaps.json#sha256=c045567157fcac8338848266aab4755c2551810d49dd80ab5f628ef9606f5b41",
+        "registry/graph_authority_manifest.json#sha256=d2f307a5b868bc40bbd3d62fa94bde4d429591b9937314fe57a7264524a1a361",
+        "runtime/dependency_invalidation.py#sha256=f8a040ad4a1a35318e2a5106ee76fb99fb91fe767e54f7db2e191329838b055a",
+        "runtime/projection_dependencies.py#sha256=e405349fa7d47fc3e6cc25be8178916c286b90770602aa255a5bc52d4d3fd8b8",
+        "tests/test_graph_authority_manifest.py#sha256=8aec9a1b344cb506653f98f677c06b33f8cb9880ef7fea09092736b7e0d9b61c"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "downstream_green",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/current-owners-and-gaps.json#sha256=c045567157fcac8338848266aab4755c2551810d49dd80ab5f628ef9606f5b41",
+        "registry/graph_authority_manifest.json#sha256=d2f307a5b868bc40bbd3d62fa94bde4d429591b9937314fe57a7264524a1a361",
+        "runtime/dependency_invalidation.py#sha256=f8a040ad4a1a35318e2a5106ee76fb99fb91fe767e54f7db2e191329838b055a",
+        "runtime/projection_dependencies.py#sha256=e405349fa7d47fc3e6cc25be8178916c286b90770602aa255a5bc52d4d3fd8b8",
+        "tests/test_graph_authority_manifest.py#sha256=8aec9a1b344cb506653f98f677c06b33f8cb9880ef7fea09092736b7e0d9b61c"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    }
+  ],
+  "closure_reconciliation": {
+    "schema_version": "px.cohesion-card-reconciliation/1.0",
+    "target_status": "downstream_green",
+    "reconciled_at": "2026-09-06T00:26:20.1402452Z",
+    "acceptance_criteria_count": 2,
+    "evidence": [
+      {
+        "path": "evidence/commencement-repair/repair-freeze-20260905.json",
+        "sha256": "7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "size": 1727,
+        "schema_version": "px.repair-freeze/1.0"
+      },
+      {
+        "path": "evidence/release/final99-full-profile-pass-20260905.json",
+        "sha256": "b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "size": 1276,
+        "schema_version": "px.full-profile-receipt/1.0"
+      },
+      {
+        "path": "evidence/release/final99-validation-pass-20260905.json",
+        "sha256": "07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "size": 937,
+        "schema_version": "px.validation-receipt/1.0"
+      },
+      {
+        "path": "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json",
+        "sha256": "6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "size": 4317,
+        "schema_version": "px.focused-repair-evidence/1.0"
+      },
+      {
+        "path": "evidence/commencement-audit-20260905T002921Z/current-owners-and-gaps.json",
+        "sha256": "c045567157fcac8338848266aab4755c2551810d49dd80ab5f628ef9606f5b41",
+        "size": 7645,
+        "anchor": null,
+        "evidence_kind": "card_live_evidence"
+      },
+      {
+        "path": "registry/graph_authority_manifest.json",
+        "sha256": "d2f307a5b868bc40bbd3d62fa94bde4d429591b9937314fe57a7264524a1a361",
+        "size": 7821,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "runtime/dependency_invalidation.py",
+        "sha256": "f8a040ad4a1a35318e2a5106ee76fb99fb91fe767e54f7db2e191329838b055a",
+        "size": 10512,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "runtime/projection_dependencies.py",
+        "sha256": "e405349fa7d47fc3e6cc25be8178916c286b90770602aa255a5bc52d4d3fd8b8",
+        "size": 17063,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "tests/test_graph_authority_manifest.py",
+        "sha256": "8aec9a1b344cb506653f98f677c06b33f8cb9880ef7fea09092736b7e0d9b61c",
+        "size": 1493,
+        "evidence_kind": "declared_implementation_file"
+      }
+    ]
+  }
 }

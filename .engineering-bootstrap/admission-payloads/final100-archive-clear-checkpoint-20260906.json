@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1067",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000033744",
+  "learned": "Final100 archive_clear ran once. The state effect is exact, but the child owner failed by treating its own parent-registered process as forbidden residue. Final100 is terminal without identity or stage execution; the process tree closed and resources are empty. Repair must move the global-zero resource assertion to the parent after child exit or explicitly exclude the currently supervised child, then use the canonical one-time consumed-cleared successor transition without replaying final100.",
+  "next_action": "Run the single revision/generated-projection reconciliation, make every governed section current, then execute exactly one full profile, validation, package, install, installed-system operational test, and certification in registered order.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": [],
+  "evidence": [
+    {
+      "reference": "evidence/release/final100-archive-clear-postcondition-failure-20260906.json",
+      "artifact_sha256": "d0ef93632bbc2f3edb5dda43fea146192b634dfd8cc695127d9c41ee48d0dac5",
+      "artifact_size": 2052,
+      "claim": "Final100 retained terminal; focused owner repair and a new successor are required."
+    }
+  ]
+}

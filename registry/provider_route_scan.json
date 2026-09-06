@@ -414,10 +414,10 @@
       "violations": []
     },
     {
-      "bytes": 5101,
+      "bytes": 5301,
       "path": "runtime/dependency_audit.py",
       "scan_state": "verified",
-      "sha256": "58928996a99e1ad934234751909f63e19bc6d0ae8e6b174d92745d53df13cab9",
+      "sha256": "4a0a69066f1c00e7a5bbaf80af923dbaae045111a7ba38e9fc7d35828f800c8e",
       "violations": []
     },
     {
@@ -498,10 +498,10 @@
       "violations": []
     },
     {
-      "bytes": 5062,
+      "bytes": 11459,
       "path": "runtime/evidence_custody.py",
       "scan_state": "verified",
-      "sha256": "b4c0939bdd433863c3cc02cf1f34894c040eb6d26a38d566995a6ab803ca8cf6",
+      "sha256": "e960f5e7ee3bfa448c9af666174dae83fa24a11e4cdbcf518db77713149d93d1",
       "violations": []
     },
     {
@@ -1646,10 +1646,10 @@
       "violations": []
     },
     {
-      "bytes": 30477,
+      "bytes": 35613,
       "path": "runtime/wal_transaction.py",
       "scan_state": "verified",
-      "sha256": "2fdb87cf1edf7fde5e9cde9a6acb24051bc6b067babbb653784867d94158dfd4",
+      "sha256": "9f93b593a3f966021632375c15a491ef9ebbd8a21ae8a56a18e8678716d13910",
       "violations": []
     },
     {
@@ -2164,10 +2164,10 @@
       "violations": []
     },
     {
-      "bytes": 1920,
+      "bytes": 4590,
       "path": "scripts/package_release_evidence.py",
       "scan_state": "verified",
-      "sha256": "5596d9b8ae3468fd0bc2d641e3efd38c1cc2e4fb1782400e6af65c8643cff39b",
+      "sha256": "193805fafec565d7ed25f64b49ca0174e9fbf677cd1a1f48637d5c6a8a4c32ff",
       "violations": []
     },
     {
@@ -2196,6 +2196,13 @@
       "path": "scripts/reconcile_active_capability_hashes.py",
       "scan_state": "verified",
       "sha256": "9d2341ca2f93b2165a77c12d8c1df6f93a3b2a84afad6f636a1d1af80349de57",
+      "violations": []
+    },
+    {
+      "bytes": 66062,
+      "path": "scripts/reconcile_cohesion_cards.py",
+      "scan_state": "verified",
+      "sha256": "896e8b681e749a55a771aac9c5d2ee97505aebe0790bde7f698fb7c5de1bedcb",
       "violations": []
     },
     {
@@ -2276,10 +2283,10 @@
       "violations": []
     },
     {
-      "bytes": 34849,
+      "bytes": 48798,
       "path": "scripts/reconcile_unverified_operational_controls.py",
       "scan_state": "verified",
-      "sha256": "6a0311dead223869faf57297f98900ad3f518f478154be7f1557f555ec88ae4e",
+      "sha256": "2a6b1eaced4263d0472d6e9c250c31a2e2ed1e5592684ccb5053dc620f55aa5e",
       "violations": []
     },
     {
@@ -2346,10 +2353,31 @@
       "violations": []
     },
     {
+      "bytes": 33468,
+      "path": "scripts/run_installed_operational_owner.py",
+      "scan_state": "verified",
+      "sha256": "89fa3b8b83d8c2ec1239b229f65c7c2e68fa8f9f17b1772f7f705cf05f3833f7",
+      "violations": []
+    },
+    {
+      "bytes": 46607,
+      "path": "scripts/run_release_candidate.py",
+      "scan_state": "verified",
+      "sha256": "daf308a87133e35cfbd5f78b358aec21ddae34c91452a6d27658a97dff9eb37d",
+      "violations": []
+    },
+    {
       "bytes": 5289,
       "path": "scripts/run_release_fault_campaign.py",
       "scan_state": "verified",
       "sha256": "26d042b0a1c51f8404323993115ed2f0bc4ed3afb3701852fed8378c9744218d",
+      "violations": []
+    },
+    {
+      "bytes": 43817,
+      "path": "scripts/run_release_stage_owner.py",
+      "scan_state": "verified",
+      "sha256": "c0b76f570375ac8ae0adad48b3dff91ba67cd0d437c5073cf4c2d0090d0b9ff6",
       "violations": []
     },
     {
@@ -2372,6 +2400,13 @@
       "scan_state": "verified",
       "sha256": "7167a2e3dbfe6798416049db4a31c2e37a80c4278feeaea62c2742f4e709fa4b",
       "violations": []
+    },
+    {
+      "bytes": 15194,
+      "path": "scripts/verify_release_publication.py",
+      "scan_state": "verified",
+      "sha256": "d10c2f95b6b155bd88bcfcdec5990399c6d102e7a8dbf69b0ea5c52f882c18be",
+      "violations": []
     }
   ],
   "report": {
@@ -2386,5 +2421,5 @@
     "violations": []
   },
   "schema_version": "px.provider-route-index/1.3",
-  "verified_file_count": 339
+  "verified_file_count": 344
 }

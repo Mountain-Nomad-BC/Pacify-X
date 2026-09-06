@@ -1,0 +1,15 @@
+{
+  "gap_id": "PX-OS-1067",
+  "session_id": "release-session:final100-integration-contract-20260906",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000033739",
+  "outcome": "completed",
+  "reason": "Final100 integration contracts are focused-green without opening the candidate. Artifact schema and stage semantics, retained WAL classification, exact identity manifest generation, operational/card reconciliation, exact command inputs, and bounded registered process-tree ownership are implemented and verified. Publication transport remains a separate pre-release repair because the existing tag workflow would rebuild different VSIX bytes.",
+  "evidence": [
+    {
+      "reference": "evidence/release/final100-integration-contract-green-20260906.json",
+      "artifact_sha256": "277eaf610ed9d6d65e281a318139dcca473164ecdd2de3f6f6c0b6538652ea57",
+      "artifact_size": 5632,
+      "claim": "Ninety-nine focused Python tests and ten Node contract tests pass with exact candidate, artifact, ledger, classifier, and resource state retained."
+    }
+  ]
+}

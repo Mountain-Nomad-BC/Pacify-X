@@ -3,7 +3,7 @@
   "title": "Typed feature acceptance vs control evidence",
   "severity": "critical",
   "type": "repair",
-  "status": "in_progress",
+  "status": "downstream_green",
   "root_cause": "Operational transition logic can accept green child-control evidence while a required runtime feature is explicitly missing.",
   "source_requirement": "Make feature acceptance typed, revision-bound, and distinct from control-interaction evidence.",
   "live_evidence": [
@@ -79,7 +79,21 @@
     "Real external claims reject contained evidence.",
     "Stale source revisions invalidate feature evidence."
   ],
-  "completion_evidence": [],
+  "completion_evidence": [
+    "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+    "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+    "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+    "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+    "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#sha256=7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b#anchor=PX-AUD-001",
+    "runtime/operational_gap_ledger.py#sha256=2c306d3202782e8d6a5520b1d3b4d74472b517d88d4e8a7675c74fac1fc6c699",
+    "runtime/evidence_claims.py#sha256=82087b77bd1349e640e5fcb53e0d47bf691b2e49bf1a38b17a8d743cbefc8fe8",
+    "runtime/trusted_evidence.py#sha256=2d71eb84b27a2d8ba4d740df51942d20810e1fde2621d761d281db571d904aa2",
+    "runtime/evidence_custody.py#sha256=b4c0939bdd433863c3cc02cf1f34894c040eb6d26a38d566995a6ab803ca8cf6",
+    "scripts/reconcile_unverified_operational_controls.py#sha256=6a0311dead223869faf57297f98900ad3f518f478154be7f1557f555ec88ae4e",
+    "scripts/build_completion_status.py#sha256=83157f86fc0fc7bc406c1e176951391418571eb80eb38b0909b6cbf484063972",
+    "tests/test_operational_gap_ledger.py#sha256=a9d4d165ab5397aa1f719668e31935c326e783511954b93e4583caa49127a0b7",
+    "tests/test_evidence_claims.py#sha256=eabdcd00df991fe081ae0e850d18039ac0be7c8fe35456c823092ec87c7e807b"
+  ],
   "status_history": [
     {
       "status": "planned",
@@ -103,6 +117,133 @@
       "status": "in_progress",
       "at": "2026-09-05T02:24:00Z",
       "evidence": "Fresh impact mapping expanded the release-artifact compatibility cone to 58 tests; downstream closure is withheld until that cone passes."
+    },
+    {
+      "status": "focused_green",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#sha256=7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b#anchor=PX-AUD-001",
+        "runtime/operational_gap_ledger.py#sha256=2c306d3202782e8d6a5520b1d3b4d74472b517d88d4e8a7675c74fac1fc6c699",
+        "runtime/evidence_claims.py#sha256=82087b77bd1349e640e5fcb53e0d47bf691b2e49bf1a38b17a8d743cbefc8fe8",
+        "runtime/trusted_evidence.py#sha256=2d71eb84b27a2d8ba4d740df51942d20810e1fde2621d761d281db571d904aa2",
+        "runtime/evidence_custody.py#sha256=b4c0939bdd433863c3cc02cf1f34894c040eb6d26a38d566995a6ab803ca8cf6",
+        "scripts/reconcile_unverified_operational_controls.py#sha256=6a0311dead223869faf57297f98900ad3f518f478154be7f1557f555ec88ae4e",
+        "scripts/build_completion_status.py#sha256=83157f86fc0fc7bc406c1e176951391418571eb80eb38b0909b6cbf484063972",
+        "tests/test_operational_gap_ledger.py#sha256=a9d4d165ab5397aa1f719668e31935c326e783511954b93e4583caa49127a0b7",
+        "tests/test_evidence_claims.py#sha256=eabdcd00df991fe081ae0e850d18039ac0be7c8fe35456c823092ec87c7e807b"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "downstream_green",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#sha256=7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b#anchor=PX-AUD-001",
+        "runtime/operational_gap_ledger.py#sha256=2c306d3202782e8d6a5520b1d3b4d74472b517d88d4e8a7675c74fac1fc6c699",
+        "runtime/evidence_claims.py#sha256=82087b77bd1349e640e5fcb53e0d47bf691b2e49bf1a38b17a8d743cbefc8fe8",
+        "runtime/trusted_evidence.py#sha256=2d71eb84b27a2d8ba4d740df51942d20810e1fde2621d761d281db571d904aa2",
+        "runtime/evidence_custody.py#sha256=b4c0939bdd433863c3cc02cf1f34894c040eb6d26a38d566995a6ab803ca8cf6",
+        "scripts/reconcile_unverified_operational_controls.py#sha256=6a0311dead223869faf57297f98900ad3f518f478154be7f1557f555ec88ae4e",
+        "scripts/build_completion_status.py#sha256=83157f86fc0fc7bc406c1e176951391418571eb80eb38b0909b6cbf484063972",
+        "tests/test_operational_gap_ledger.py#sha256=a9d4d165ab5397aa1f719668e31935c326e783511954b93e4583caa49127a0b7",
+        "tests/test_evidence_claims.py#sha256=eabdcd00df991fe081ae0e850d18039ac0be7c8fe35456c823092ec87c7e807b"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
     }
-  ]
+  ],
+  "closure_reconciliation": {
+    "schema_version": "px.cohesion-card-reconciliation/1.0",
+    "target_status": "downstream_green",
+    "reconciled_at": "2026-09-06T00:26:20.1402452Z",
+    "acceptance_criteria_count": 3,
+    "evidence": [
+      {
+        "path": "evidence/commencement-repair/repair-freeze-20260905.json",
+        "sha256": "7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "size": 1727,
+        "schema_version": "px.repair-freeze/1.0"
+      },
+      {
+        "path": "evidence/release/final99-full-profile-pass-20260905.json",
+        "sha256": "b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "size": 1276,
+        "schema_version": "px.full-profile-receipt/1.0"
+      },
+      {
+        "path": "evidence/release/final99-validation-pass-20260905.json",
+        "sha256": "07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "size": 937,
+        "schema_version": "px.validation-receipt/1.0"
+      },
+      {
+        "path": "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json",
+        "sha256": "6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "size": 4317,
+        "schema_version": "px.focused-repair-evidence/1.0"
+      },
+      {
+        "path": "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json",
+        "sha256": "7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b",
+        "size": 10258,
+        "anchor": "PX-AUD-001",
+        "evidence_kind": "card_live_evidence"
+      },
+      {
+        "path": "runtime/operational_gap_ledger.py",
+        "sha256": "2c306d3202782e8d6a5520b1d3b4d74472b517d88d4e8a7675c74fac1fc6c699",
+        "size": 182849,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "runtime/evidence_claims.py",
+        "sha256": "82087b77bd1349e640e5fcb53e0d47bf691b2e49bf1a38b17a8d743cbefc8fe8",
+        "size": 15448,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "runtime/trusted_evidence.py",
+        "sha256": "2d71eb84b27a2d8ba4d740df51942d20810e1fde2621d761d281db571d904aa2",
+        "size": 10269,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "runtime/evidence_custody.py",
+        "sha256": "b4c0939bdd433863c3cc02cf1f34894c040eb6d26a38d566995a6ab803ca8cf6",
+        "size": 5062,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "scripts/reconcile_unverified_operational_controls.py",
+        "sha256": "6a0311dead223869faf57297f98900ad3f518f478154be7f1557f555ec88ae4e",
+        "size": 34849,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "scripts/build_completion_status.py",
+        "sha256": "83157f86fc0fc7bc406c1e176951391418571eb80eb38b0909b6cbf484063972",
+        "size": 20273,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "tests/test_operational_gap_ledger.py",
+        "sha256": "a9d4d165ab5397aa1f719668e31935c326e783511954b93e4583caa49127a0b7",
+        "size": 115077,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "tests/test_evidence_claims.py",
+        "sha256": "eabdcd00df991fe081ae0e850d18039ac0be7c8fe35456c823092ec87c7e807b",
+        "size": 3779,
+        "evidence_kind": "declared_implementation_file"
+      }
+    ]
+  }
 }

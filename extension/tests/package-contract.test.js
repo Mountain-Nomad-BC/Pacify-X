@@ -34,6 +34,8 @@ test('MCP build dependencies are pinned and the shipped server is bundled', () =
   assert.match(packager, /release-artifacts.*vscode/);
   const installedRunner = fs.readFileSync(path.join(root, 'scripts', 'run-installed-vsix-smoke.js'), 'utf8');
   assert.match(installedRunner, /--expected-sha256/);
+  assert.match(installedRunner, /--receipt/);
+  assert.match(installedRunner, /--lifecycle-receipt/);
   assert.match(installedRunner, /Exact VSIX preflight SHA-256 mismatch/);
   assert.match(installedRunner, /resolveOwnedCachedVSCode/);
   assert.match(installedRunner, /const executable = cache\.executable/);

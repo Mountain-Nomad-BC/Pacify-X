@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1067",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000033747",
+  "learned": "The stage child may observe its exact registered self while executing, and the candidate parent now proves global resource closure after the child exits. The canonical consumed-cleared transition permits one final101 successor without editing or replaying final100. Focused proof is 27/27; final101 checks valid with archive_clear next, resources empty, and immutable VSIX unchanged.",
+  "next_action": "Run the single revision/generated-projection reconciliation, make every governed section current, then execute exactly one full profile, validation, package, install, installed-system operational test, and certification in registered order.",
+  "newly_discovered_gap_ids": [],
+  "unresolved_branch_gap_ids": [],
+  "evidence": [
+    {
+      "reference": "evidence/release/final100-resource-postcondition-focused-repair-20260906.json",
+      "artifact_sha256": "4a14e0f3b006403497c450405b64e3d28dd6318c2a3ec8d982f29671a51d972c",
+      "artifact_size": 2174,
+      "claim": "Final101 is the only admissible next candidate and archive_clear is its sole next step."
+    }
+  ]
+}

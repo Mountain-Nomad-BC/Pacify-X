@@ -348,6 +348,21 @@ def test_control_output_prefix_does_not_hide_neighboring_product_source() -> Non
     assert frozen["product_digest"] != current["product_digest"]
 
 
+def test_retained_wal_transaction_custody_is_control_output() -> None:
+    root = _minimal_tree()
+    first = classify_tree(root)
+    journal = root / ".engineering-bootstrap/wal/cohesion/committed/tx/manifest.json"
+    journal.parent.mkdir(parents=True)
+    journal.write_text('{"state":"committed"}\n', encoding="utf-8")
+    second = classify_tree(root)
+    record = next(
+        item for item in second["records"] if item["path"] == journal.relative_to(root).as_posix()
+    )
+    assert second["valid"], second["errors"]
+    assert record["classification"] == "control_output"
+    assert first["product_digest"] == second["product_digest"]
+
+
 def test_nested_evidence_is_not_a_product_input() -> None:
     root = _minimal_tree()
     evidence = root / "runtime/evidence/result.json"

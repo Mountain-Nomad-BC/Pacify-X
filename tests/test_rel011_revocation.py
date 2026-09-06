@@ -35,7 +35,11 @@ class Rel011RevocationTests(unittest.TestCase):
         self.assertNotEqual(state["lifecycle"]["phase"], "post-release-hardening")
         self.assertIn(
             state["lifecycle"]["status"],
-            {"integration-complete", "repair-in-progress"},
+            {
+                "integration-complete",
+                "repair-in-progress",
+                "downstream-green-release-pending",
+            },
         )
         if state["lifecycle"]["status"] == "repair-in-progress":
             self.assertTrue(state["checkpoint"]["next_safe_action"])

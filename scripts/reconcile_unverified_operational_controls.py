@@ -243,6 +243,56 @@ def _simulate_inventory_revisions(
     return active
 
 
+def _simulate_card_discoveries(
+    snapshot: dict[str, object], events: list[dict[str, object]],
+) -> dict[str, object]:
+    active = copy.deepcopy(snapshot)
+    cards = active.setdefault("cards", {})
+    for event in events:
+        payload = copy.deepcopy(event["payload"])
+        payload["current_state"] = "discovered"
+        cards[payload["gap_id"]] = payload
+    return active
+
+
+def _operational_feature_acceptance(
+    card: dict[str, object], evidence_reference: str,
+) -> dict[str, object] | None:
+    current = card.get("feature_acceptance")
+    if current is not None and feature_acceptance_for_card(card).verified:
+        return dict(current)
+    if card.get("feature") != "unverified-operational-control":
+        return None
+    requirements = card.get("feature_acceptance_requirements")
+    if not isinstance(requirements, dict) or not isinstance(
+        requirements.get("criteria"), list
+    ):
+        return None
+    acceptance = {
+        "schema_version": "px.feature-acceptance/1.0",
+        "source_revision": requirements.get("source_revision"),
+        "dependency_revisions": requirements.get("dependency_revisions", {}),
+        "criteria": [
+            {
+                "criterion_id": criterion.get("criterion_id"),
+                "status": "verified",
+                "evidence_classes": list(
+                    criterion.get("required_evidence_classes", [])
+                ),
+                "authority_class": criterion.get("required_authority_class"),
+                "tests_run": list(criterion.get("required_tests", [])),
+                "evidence": [{
+                    "reference": evidence_reference,
+                    "claim": "The exact typed control completed every applicable installed-host interaction-chain stage.",
+                }],
+            }
+            for criterion in requirements["criteria"]
+            if isinstance(criterion, dict)
+        ],
+    }
+    return acceptance if feature_acceptance_for_card(card, acceptance).verified else None
+
+
 def plan_operational_card_reconciliations(
     snapshot: dict[str, object], evidence_reference: str,
 ) -> tuple[list[dict[str, object]], list[str]]:
@@ -269,7 +319,7 @@ def plan_operational_card_reconciliations(
     for gap_id, controls in sorted(bindings.items()):
         card = cards.get(gap_id)
         feature_acceptance = (
-            feature_acceptance_for_card(card)
+            _operational_feature_acceptance(card, evidence_reference)
             if isinstance(card, dict)
             else None
         )
@@ -279,7 +329,6 @@ def plan_operational_card_reconciliations(
             or card.get("classification") in {"host-owned", "intentionally-unsupported", "out-of-scope"}
             or not controls
             or feature_acceptance is None
-            or not feature_acceptance.verified
             or any(
                 disposition.get("disposition") != "operational"
                 or not isinstance(disposition.get("observation"), dict)
@@ -324,6 +373,7 @@ def plan_operational_card_reconciliations(
                     "interaction_chain": chain,
                     "completion_evidence": [evidence_reference],
                     "next_action": "Retain operational evidence and reopen on contrary current-source or installed-host behavior.",
+                    "feature_acceptance": feature_acceptance,
                 },
             },
         })
@@ -344,7 +394,7 @@ def plan_operational_card_reconciliations(
                 payload["integration_evidence"] = evidence
             elif next_state == "operationally_verified":
                 payload["operational_evidence"] = evidence
-                payload["feature_acceptance"] = card["feature_acceptance"]
+                payload["feature_acceptance"] = feature_acceptance
             events.append({"event_type": "card_transition", "actor": ACTOR, "timestamp": _now(), "payload": payload})
             state = next_state
     return events, selected
@@ -441,9 +491,9 @@ def _typed_observation(
     }
 
 
-def plan_observation_revisions(
+def _receipt_observations(
     snapshot: dict[str, object], receipt: dict[str, object], reference: str,
-) -> tuple[list[dict[str, object]], int]:
+) -> list[tuple[str, str, dict[str, object]]]:
     if not _positive_current_source(receipt):
         raise ValueError("walk receipt lacks positive current-source host identity")
     chain = receipt.get("control_chains")
@@ -468,20 +518,30 @@ def plan_observation_revisions(
         or any(not identifier for identifier in identifiers)
     ):
         raise ValueError("walk receipt does not match the complete ledger control denominator")
-    events: list[dict[str, object]] = []
-    examined = 0
+    observations: list[tuple[str, str, dict[str, object]]] = []
     for record in records:
         if not isinstance(record, dict):
             raise ValueError("walk receipt control record is invalid")
         observation = _typed_observation(receipt, record, reference, source_sha256)
         if observation is None:
             continue
-        examined += 1
         surface_id = str(record.get("surface_id") or "")
         control_id = str(record.get("control_id") or "")
         surface = surfaces.get(surface_id)
         if not isinstance(surface, dict) or control_id not in surface.get("known_controls", []):
             raise ValueError(f"examined control is absent from the ledger inventory: {surface_id}/{control_id}")
+        observations.append((surface_id, control_id, observation))
+    return observations
+
+
+def plan_observation_revisions(
+    snapshot: dict[str, object], receipt: dict[str, object], reference: str,
+) -> tuple[list[dict[str, object]], int]:
+    events: list[dict[str, object]] = []
+    observations = _receipt_observations(snapshot, receipt, reference)
+    surfaces = snapshot["surfaces"]
+    for surface_id, control_id, observation in observations:
+        surface = surfaces[surface_id]
         current = surface.get("control_dispositions", {}).get(control_id)
         if not isinstance(current, dict):
             raise ValueError(f"examined control lacks a predecessor disposition: {surface_id}/{control_id}")
@@ -520,7 +580,7 @@ def plan_observation_revisions(
                 "observation": observation,
             },
         })
-    return events, examined
+    return events, len(observations)
 
 
 def _simulate_observation_revisions(
@@ -562,6 +622,102 @@ def _simulate_observation_revisions(
     return active
 
 
+def operational_reconciliation_status(
+    root: Path, walk_receipt: Path,
+) -> dict[str, object]:
+    """Return the exact live typed-control/card denominator after reconciliation."""
+
+    root = root.resolve(strict=True)
+    snapshot = read_snapshot(root)
+    inventory = json.loads((root / INVENTORY).read_text(encoding="utf-8"))
+    receipt, reference = _load_walk_receipt(root, walk_receipt)
+    observations = _receipt_observations(snapshot, receipt, reference)
+    expected_count = sum(
+        len(surface.get("known_controls", []))
+        for surface in snapshot["surfaces"].values()
+    )
+    inventory_count = sum(
+        len(surface.get("controls", [])) for surface in inventory.get("surfaces", [])
+    )
+    receipt_inventory = receipt.get("control_chains", {}).get("inventory", {})
+    if not isinstance(receipt_inventory, dict):
+        receipt_inventory = {}
+    receipt_sha256 = str(receipt_inventory.get("sha256") or "")
+    receipt_controls = receipt.get("control_chains", {}).get("controls", [])
+    receipt_count = len(receipt_controls) if isinstance(receipt_controls, list) else 0
+    operational_receipt_count = sum(
+        observation.get("outcome") == "operational"
+        for _, _, observation in observations
+    )
+    unresolved: list[str] = []
+    bound_cards: set[str] = set()
+    source_hashes: set[str] = set()
+    for surface_id, surface in snapshot["surfaces"].items():
+        for control_id in surface.get("known_controls", []):
+            disposition = surface.get("control_dispositions", {}).get(control_id)
+            if not isinstance(disposition, dict):
+                unresolved.append(f"{surface_id}/{control_id}")
+                continue
+            for row in [disposition, *disposition.get("history", [])]:
+                if isinstance(row, dict):
+                    bound_cards.update(map(str, row.get("gap_ids", [])))
+            observation = disposition.get("observation")
+            if isinstance(observation, dict):
+                source_hashes.add(
+                    str(observation.get("source_identity", {}).get("source_sha256", ""))
+                )
+            if (
+                disposition.get("disposition") != "operational"
+                or disposition.get("gap_ids") != []
+                or disposition.get("proof_status") != "current_typed"
+                or not isinstance(observation, dict)
+                or observation.get("outcome") != "operational"
+            ):
+                unresolved.append(f"{surface_id}/{control_id}")
+    nonterminal = sorted(
+        gap_id
+        for gap_id in bound_cards
+        if gap_id in snapshot["cards"]
+        and snapshot["cards"][gap_id].get("current_state")
+        not in CARD_COMPLETION_STATES
+    )
+    inventory_valid = (
+        inventory.get("schema_version") == "px.operational-surface-inventory/2.0"
+        and inventory_count == expected_count
+        and receipt_inventory.get("path") is not None
+        and Path(str(receipt_inventory["path"])).resolve() == (root / INVENTORY).resolve()
+        and receipt_inventory.get("schema_version")
+        == "px.current-source-control-manifest/1.0"
+        and receipt_inventory.get("inventory_id")
+        == f"pacify-x-current-source-controls/{inventory.get('inventory_id')}"
+        and receipt_inventory.get("surface_count") == len(inventory.get("surfaces", []))
+        and receipt_inventory.get("control_count") == expected_count
+        and SHA256_RE.fullmatch(receipt_sha256) is not None
+    )
+    valid = (
+        inventory_valid
+        and receipt_count == expected_count
+        and len(observations) == expected_count
+        and operational_receipt_count == expected_count
+        and source_hashes == {receipt_sha256}
+        and not unresolved
+        and not nonterminal
+    )
+    return {
+        "schema_version": "px.operational-control-reconciliation-status/1.0",
+        "valid": valid,
+        "expected_control_count": expected_count,
+        "receipt_control_count": receipt_count,
+        "examined_control_count": len(observations),
+        "operational_receipt_count": operational_receipt_count,
+        "receipt_inventory_sha256": receipt_sha256,
+        "receipt_inventory_valid": inventory_valid,
+        "observation_source_hashes": sorted(source_hashes),
+        "unresolved_control_ids": sorted(unresolved),
+        "nonterminal_bound_card_ids": nonterminal,
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=Path, default=Path.cwd())
@@ -572,9 +728,10 @@ def main() -> int:
     root = args.root.resolve(strict=True)
     snapshot = read_snapshot(root)
     inventory_bytes = (root / INVENTORY).read_bytes()
+    inventory_sha256 = hashlib.sha256(inventory_bytes).hexdigest()
     inventory = json.loads(inventory_bytes)
     expected_inventory_events = plan_expected_inventory_revision(
-        snapshot, inventory, INVENTORY, hashlib.sha256(inventory_bytes).hexdigest()
+        snapshot, inventory, INVENTORY, inventory_sha256
     )
     inventory_events = plan_inventory_revisions(snapshot, inventory, INVENTORY)
     if not args.check:
@@ -587,6 +744,16 @@ def main() -> int:
     receipt_reference = LIVE_WALK
     if args.walk_receipt:
         receipt, receipt_reference = _load_walk_receipt(root, args.walk_receipt)
+    receipt_observations = (
+        _receipt_observations(snapshot, receipt, receipt_reference)
+        if receipt is not None
+        else []
+    )
+    direct_operational = {
+        (surface_id, control_id): observation
+        for surface_id, control_id, observation in receipt_observations
+        if observation.get("outcome") == "operational"
+    }
     proof_reference = receipt_reference if receipt is not None else LIVE_WALK
     maximum = max((_ordinal(gap_id) for gap_id in snapshot["cards"]), default=0)
     existing_by_control = {
@@ -598,11 +765,16 @@ def main() -> int:
     discovery_events: list[dict[str, object]] = []
     disposition_events: list[dict[str, object]] = []
     assigned: dict[tuple[str, str], str] = {}
+    direct: dict[tuple[str, str], dict[str, object]] = {}
 
     for surface_id in sorted(snapshot["surfaces"]):
         surface = snapshot["surfaces"][surface_id]
         for control_id in sorted(surface["known_controls"]):
             if control_id in surface["control_dispositions"]:
+                continue
+            direct_observation = direct_operational.get((surface_id, control_id))
+            if direct_observation is not None:
+                direct[(surface_id, control_id)] = direct_observation
                 continue
             record = surface["control_records"][control_id]
             gap_id = existing_by_control.get(control_id)
@@ -646,6 +818,18 @@ def main() -> int:
                             "Record explicit skipped-stage authority for destructive, billable, installation, or externally owned effects.",
                         ],
                         "completion_evidence": [],
+                        "feature_acceptance_requirements": {
+                            "schema_version": "px.feature-acceptance-requirements/1.0",
+                            "source_revision": inventory_sha256,
+                            "dependency_revisions": {},
+                            "criteria": [{
+                                "criterion_id": "exact-installed-control-chain",
+                                "required_evidence_classes": ["runtime_effect"],
+                                "required_authority_class": "installed_host",
+                                "required_tests": ["exact current installed-host control probe"],
+                                "allow_not_applicable": False,
+                            }],
+                        },
                         "next_action": "Re-exercise this exact control in the current-source operational walk and update every chain stage.",
                         "discovery_evidence": [{
                             "reference": INVENTORY,
@@ -663,7 +847,31 @@ def main() -> int:
         for batch in _batches(discovery_events):
             append_events(root, batch)
 
-    active = read_snapshot(root) if not args.check else snapshot
+    active = (
+        read_snapshot(root)
+        if not args.check
+        else _simulate_card_discoveries(snapshot, discovery_events)
+    )
+    for (surface_id, control_id), observation in direct.items():
+        disposition_events.append({
+            "event_type": "control_disposition",
+            "actor": ACTOR,
+            "timestamp": timestamp,
+            "payload": {
+                "surface_id": surface_id,
+                "control_id": control_id,
+                "disposition": "operational",
+                "gap_ids": [],
+                "observation": observation,
+                "evidence": [{
+                    "reference": proof_reference,
+                    "claim": "The complete current-source receipt directly proves this newly inventoried control operational.",
+                }, {
+                    "reference": INVENTORY,
+                    "claim": "The exact control is retained in the canonical typed inventory.",
+                }],
+            },
+        })
     for (surface_id, control_id), gap_id in assigned.items():
         if control_id in active["surfaces"][surface_id]["control_dispositions"]:
             continue
@@ -706,11 +914,13 @@ def main() -> int:
             for event in disposition_events:
                 payload = event["payload"]
                 active["surfaces"][payload["surface_id"]]["control_dispositions"][payload["control_id"]] = {
-                    "disposition": "gap",
+                    "disposition": payload["disposition"],
                     "gap_ids": list(payload["gap_ids"]),
                     "evidence": list(payload["evidence"]),
-                    "observation": None,
-                    "proof_status": "legacy_unbound",
+                    "observation": copy.deepcopy(payload.get("observation")),
+                    "proof_status": (
+                        "current_typed" if payload.get("observation") else "legacy_unbound"
+                    ),
                     "timestamp": timestamp,
                     "actor": ACTOR,
                     "history": [],
@@ -735,7 +945,94 @@ def main() -> int:
             for batch in _batches(card_events):
                 append_events(root, batch)
 
+    final_snapshot = read_snapshot(root) if not args.check else active
+    unresolved_controls = sorted(
+        f"{surface_id}/{control_id}"
+        for surface_id, surface in final_snapshot["surfaces"].items()
+        for control_id in surface.get("known_controls", [])
+        if (
+            not isinstance(surface.get("control_dispositions", {}).get(control_id), dict)
+            or surface["control_dispositions"][control_id].get("disposition") != "operational"
+            or surface["control_dispositions"][control_id].get("gap_ids") != []
+            or surface["control_dispositions"][control_id].get("proof_status") != "current_typed"
+            or not isinstance(
+                surface["control_dispositions"][control_id].get("observation"), dict
+            )
+            or surface["control_dispositions"][control_id]["observation"].get("outcome")
+            != "operational"
+        )
+    )
+    historically_bound_cards = {
+        str(gap_id)
+        for surface in final_snapshot["surfaces"].values()
+        for disposition in surface.get("control_dispositions", {}).values()
+        if isinstance(disposition, dict)
+        for row in [disposition, *disposition.get("history", [])]
+        if isinstance(row, dict)
+        for gap_id in row.get("gap_ids", [])
+    }
+    nonterminal_cards = sorted(
+        gap_id
+        for gap_id in historically_bound_cards
+        if gap_id in final_snapshot["cards"]
+        and final_snapshot["cards"][gap_id].get("current_state")
+        not in CARD_COMPLETION_STATES
+        and gap_id not in reconciled_cards
+    )
+    expected_control_count = sum(
+        len(surface.get("known_controls", []))
+        for surface in final_snapshot["surfaces"].values()
+    )
+    receipt_control_count = len(
+        receipt.get("control_chains", {}).get("controls", [])
+    ) if receipt is not None else 0
+    receipt_inventory = (
+        receipt.get("control_chains", {}).get("inventory", {})
+        if receipt is not None
+        else {}
+    )
+    if not isinstance(receipt_inventory, dict):
+        receipt_inventory = {}
+    receipt_inventory_sha256 = str(receipt_inventory.get("sha256") or "")
+    receipt_inventory_valid = (
+        receipt_inventory.get("schema_version")
+        == "px.current-source-control-manifest/1.0"
+        and receipt_inventory.get("inventory_id")
+        == f"pacify-x-current-source-controls/{inventory.get('inventory_id')}"
+        and receipt_inventory.get("surface_count") == len(inventory.get("surfaces", []))
+        and receipt_inventory.get("control_count") == expected_control_count
+        and SHA256_RE.fullmatch(receipt_inventory_sha256) is not None
+        and Path(str(receipt_inventory.get("path") or "")).resolve()
+        == (root / INVENTORY).resolve()
+    )
+    receipt_operational_count = sum(
+        observation.get("outcome") == "operational"
+        for _, _, observation in receipt_observations
+    )
+    observation_source_hashes = {
+        str(
+            disposition.get("observation", {})
+            .get("source_identity", {})
+            .get("source_sha256", "")
+        )
+        for surface in final_snapshot["surfaces"].values()
+        for disposition in surface.get("control_dispositions", {}).values()
+        if isinstance(disposition, dict) and isinstance(disposition.get("observation"), dict)
+    }
+    valid = (
+        receipt is not None
+        and receipt_control_count == expected_control_count
+        and len(receipt_observations) == expected_control_count
+        and receipt_operational_count == expected_control_count
+        and receipt_inventory_valid
+        and observation_source_hashes == {receipt_inventory_sha256}
+        and not unresolved_controls
+        and not nonterminal_cards
+    )
+
     print(json.dumps({
+        "schema_version": "px.operational-control-reconciliation/1.0",
+        "valid": valid,
         "expected_inventory_revision_events": len(expected_inventory_events),
         "inventory_revision_events": len(inventory_events),
         "mode": "check" if args.check else "apply",
@@ -751,8 +1048,18 @@ def main() -> int:
         ),
         "reconciled_operational_cards": reconciled_cards,
         "card_reconciliation_events": len(card_events),
+        "expected_control_count": expected_control_count,
+        "receipt_control_count": receipt_control_count,
+        "examined_control_count": len(receipt_observations),
+        "receipt_operational_count": receipt_operational_count,
+        "receipt_inventory_sha256": receipt_inventory_sha256,
+        "receipt_inventory_valid": receipt_inventory_valid,
+        "observation_source_hashes": sorted(observation_source_hashes),
+        "operational_control_count": expected_control_count - len(unresolved_controls),
+        "unresolved_control_ids": unresolved_controls,
+        "nonterminal_bound_card_ids": nonterminal_cards,
     }, indent=2))
-    return 0
+    return 0 if valid else 1
 
 
 if __name__ == "__main__":

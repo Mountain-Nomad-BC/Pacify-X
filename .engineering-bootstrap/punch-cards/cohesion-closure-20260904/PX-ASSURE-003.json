@@ -3,7 +3,7 @@
   "title": "Canonical decay/revalidation semantics",
   "severity": "high",
   "type": "repair",
-  "status": "planned",
+  "status": "downstream_green",
   "root_cause": "Learning decay updates pipeline state without marking canonical knowledge or its dependents suspect.",
   "source_requirement": "Preserve historical canon while making decayed knowledge revalidation-required and transitively invalidating dependents.",
   "live_evidence": [
@@ -67,5 +67,155 @@
     "Decayed canon becomes suspect/revalidation-required.",
     "All revision-bound dependents become stale until fresh validation."
   ],
-  "completion_evidence": []
+  "completion_evidence": [
+    "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+    "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+    "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+    "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+    "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#sha256=7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b#anchor=PX-AUD-004",
+    "runtime/knowledge_core_controller.py#sha256=29fd4d97382f4513dfacac15344396c0a22b6f0d25b1a76a618669cf3b49e58b",
+    "runtime/learning_promotion.py#sha256=c7b5015f140f056d1ac4912afc9dd5a16c0d99c76d234e23786e1edca72c0a0c",
+    "runtime/dependency_invalidation.py#sha256=f8a040ad4a1a35318e2a5106ee76fb99fb91fe767e54f7db2e191329838b055a",
+    "tests/test_knowledge_core_controller.py#sha256=4d028f49ecfe0f2ab36d5c806dd998299974a8cded7e9f500a57934a36937436",
+    "tests/test_learning_promotion.py#sha256=c6dc236d898e5e72e442ecac3d075c28ba818c3c7354fce2c0b1ca151890226a"
+  ],
+  "status_history": [
+    {
+      "status": "admitted",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#sha256=7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b#anchor=PX-AUD-004",
+        "runtime/knowledge_core_controller.py#sha256=29fd4d97382f4513dfacac15344396c0a22b6f0d25b1a76a618669cf3b49e58b",
+        "runtime/learning_promotion.py#sha256=c7b5015f140f056d1ac4912afc9dd5a16c0d99c76d234e23786e1edca72c0a0c",
+        "runtime/dependency_invalidation.py#sha256=f8a040ad4a1a35318e2a5106ee76fb99fb91fe767e54f7db2e191329838b055a",
+        "tests/test_knowledge_core_controller.py#sha256=4d028f49ecfe0f2ab36d5c806dd998299974a8cded7e9f500a57934a36937436",
+        "tests/test_learning_promotion.py#sha256=c6dc236d898e5e72e442ecac3d075c28ba818c3c7354fce2c0b1ca151890226a"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "in_progress",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#sha256=7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b#anchor=PX-AUD-004",
+        "runtime/knowledge_core_controller.py#sha256=29fd4d97382f4513dfacac15344396c0a22b6f0d25b1a76a618669cf3b49e58b",
+        "runtime/learning_promotion.py#sha256=c7b5015f140f056d1ac4912afc9dd5a16c0d99c76d234e23786e1edca72c0a0c",
+        "runtime/dependency_invalidation.py#sha256=f8a040ad4a1a35318e2a5106ee76fb99fb91fe767e54f7db2e191329838b055a",
+        "tests/test_knowledge_core_controller.py#sha256=4d028f49ecfe0f2ab36d5c806dd998299974a8cded7e9f500a57934a36937436",
+        "tests/test_learning_promotion.py#sha256=c6dc236d898e5e72e442ecac3d075c28ba818c3c7354fce2c0b1ca151890226a"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "focused_green",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#sha256=7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b#anchor=PX-AUD-004",
+        "runtime/knowledge_core_controller.py#sha256=29fd4d97382f4513dfacac15344396c0a22b6f0d25b1a76a618669cf3b49e58b",
+        "runtime/learning_promotion.py#sha256=c7b5015f140f056d1ac4912afc9dd5a16c0d99c76d234e23786e1edca72c0a0c",
+        "runtime/dependency_invalidation.py#sha256=f8a040ad4a1a35318e2a5106ee76fb99fb91fe767e54f7db2e191329838b055a",
+        "tests/test_knowledge_core_controller.py#sha256=4d028f49ecfe0f2ab36d5c806dd998299974a8cded7e9f500a57934a36937436",
+        "tests/test_learning_promotion.py#sha256=c6dc236d898e5e72e442ecac3d075c28ba818c3c7354fce2c0b1ca151890226a"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "downstream_green",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#sha256=7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b#anchor=PX-AUD-004",
+        "runtime/knowledge_core_controller.py#sha256=29fd4d97382f4513dfacac15344396c0a22b6f0d25b1a76a618669cf3b49e58b",
+        "runtime/learning_promotion.py#sha256=c7b5015f140f056d1ac4912afc9dd5a16c0d99c76d234e23786e1edca72c0a0c",
+        "runtime/dependency_invalidation.py#sha256=f8a040ad4a1a35318e2a5106ee76fb99fb91fe767e54f7db2e191329838b055a",
+        "tests/test_knowledge_core_controller.py#sha256=4d028f49ecfe0f2ab36d5c806dd998299974a8cded7e9f500a57934a36937436",
+        "tests/test_learning_promotion.py#sha256=c6dc236d898e5e72e442ecac3d075c28ba818c3c7354fce2c0b1ca151890226a"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    }
+  ],
+  "closure_reconciliation": {
+    "schema_version": "px.cohesion-card-reconciliation/1.0",
+    "target_status": "downstream_green",
+    "reconciled_at": "2026-09-06T00:26:20.1402452Z",
+    "acceptance_criteria_count": 2,
+    "evidence": [
+      {
+        "path": "evidence/commencement-repair/repair-freeze-20260905.json",
+        "sha256": "7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "size": 1727,
+        "schema_version": "px.repair-freeze/1.0"
+      },
+      {
+        "path": "evidence/release/final99-full-profile-pass-20260905.json",
+        "sha256": "b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "size": 1276,
+        "schema_version": "px.full-profile-receipt/1.0"
+      },
+      {
+        "path": "evidence/release/final99-validation-pass-20260905.json",
+        "sha256": "07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "size": 937,
+        "schema_version": "px.validation-receipt/1.0"
+      },
+      {
+        "path": "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json",
+        "sha256": "6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "size": 4317,
+        "schema_version": "px.focused-repair-evidence/1.0"
+      },
+      {
+        "path": "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json",
+        "sha256": "7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b",
+        "size": 10258,
+        "anchor": "PX-AUD-004",
+        "evidence_kind": "card_live_evidence"
+      },
+      {
+        "path": "runtime/knowledge_core_controller.py",
+        "sha256": "29fd4d97382f4513dfacac15344396c0a22b6f0d25b1a76a618669cf3b49e58b",
+        "size": 95124,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "runtime/learning_promotion.py",
+        "sha256": "c7b5015f140f056d1ac4912afc9dd5a16c0d99c76d234e23786e1edca72c0a0c",
+        "size": 32926,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "runtime/dependency_invalidation.py",
+        "sha256": "f8a040ad4a1a35318e2a5106ee76fb99fb91fe767e54f7db2e191329838b055a",
+        "size": 10512,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "tests/test_knowledge_core_controller.py",
+        "sha256": "4d028f49ecfe0f2ab36d5c806dd998299974a8cded7e9f500a57934a36937436",
+        "size": 22381,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "tests/test_learning_promotion.py",
+        "sha256": "c6dc236d898e5e72e442ecac3d075c28ba818c3c7354fce2c0b1ca151890226a",
+        "size": 8996,
+        "evidence_kind": "declared_implementation_file"
+      }
+    ]
+  }
 }

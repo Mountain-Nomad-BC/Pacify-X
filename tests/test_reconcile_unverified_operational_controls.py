@@ -1,7 +1,10 @@
 from __future__ import annotations
 
+import json
+
 from scripts.reconcile_unverified_operational_controls import (
     _simulate_observation_revisions,
+    operational_reconciliation_status,
     plan_expected_inventory_revision,
     plan_inventory_revisions,
     plan_operational_card_reconciliations,
@@ -469,3 +472,63 @@ def test_green_control_does_not_select_feature_with_missing_runtime_acceptance()
 
     assert events == []
     assert selected == []
+
+
+def test_operational_status_rejects_complete_count_with_unexamined_control(
+    tmp_path, monkeypatch,
+) -> None:
+    inventory_path = tmp_path / "registry/operational_surface_inventory.json"
+    inventory_path.parent.mkdir(parents=True)
+    inventory_path.write_text(
+        json.dumps({
+            "schema_version": "px.operational-surface-inventory/2.0",
+            "inventory_id": "inventory-r1",
+            "surfaces": [{"surface_id": "surface-one", "controls": [{}, {}]}],
+        }),
+        encoding="utf-8",
+    )
+    receipt = _receipt()
+    receipt["control_chains"]["inventory"].update({
+        "path": str(inventory_path.resolve()),
+        "schema_version": "px.current-source-control-manifest/1.0",
+        "inventory_id": "pacify-x-current-source-controls/inventory-r1",
+        "surface_count": 1,
+        "control_count": 2,
+        "sha256": "a" * 64,
+    })
+    for record in receipt["control_chains"]["controls"]:
+        for stage in record["stages"]:
+            stage.update(
+                {"status": "observed", "evidence": "exact", "reason": None}
+            )
+        record["terminal_disposition"] = "interaction_complete"
+    receipt_path = tmp_path / "receipt.json"
+    receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
+    snapshot = _snapshot()
+    snapshot["cards"] = {}
+    for disposition in snapshot["surfaces"]["surface-one"]["control_dispositions"].values():
+        disposition.update({
+            "disposition": "operational",
+            "gap_ids": [],
+            "proof_status": "current_typed",
+            "observation": {
+                "outcome": "operational",
+                "source_identity": {"source_sha256": "a" * 64},
+            },
+        })
+    monkeypatch.setattr(
+        "scripts.reconcile_unverified_operational_controls.read_snapshot",
+        lambda root: snapshot,
+    )
+
+    invalid = operational_reconciliation_status(tmp_path, receipt_path)
+    assert invalid["valid"] is False
+    assert invalid["examined_control_count"] == 1
+
+    second = receipt["control_chains"]["controls"][1]
+    second["observed"] = True
+    second["terminal_disposition"] = "observed_complete"
+    receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
+    valid = operational_reconciliation_status(tmp_path, receipt_path)
+    assert valid["valid"] is True
+    assert valid["operational_receipt_count"] == 2

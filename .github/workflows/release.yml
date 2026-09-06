@@ -1,204 +1,177 @@
-name: Exact signed release
+name: Publish exact certified release
 
 on:
-  push:
-    tags:
-      - "v*.*.*"
   workflow_dispatch:
     inputs:
       release_tag:
-        description: Existing annotated release tag to certify and publish
+        description: Existing annotated tag with a pre-staged signed draft release
         required: true
         type: string
 
-permissions:
-  contents: write
-  id-token: write
+permissions: {}
 
 concurrency:
-  group: pacify-x-release-${{ github.ref }}
+  group: pacify-x-release-${{ inputs.release_tag }}
   cancel-in-progress: false
 
 jobs:
-  certify-and-publish:
+  verify-certified-draft:
     runs-on: windows-latest
     timeout-minutes: 90
+    permissions:
+      contents: read
+    outputs:
+      release: ${{ steps.verify.outputs.release }}
+      vsix_name: ${{ steps.verify.outputs.vsix_name }}
+      vsix_sha256: ${{ steps.verify.outputs.vsix_sha256 }}
+      vsix_size: ${{ steps.verify.outputs.vsix_size }}
     env:
       PYTHONDONTWRITEBYTECODE: "1"
       PYTHONNOUSERSITE: "1"
       PIP_DISABLE_PIP_VERSION_CHECK: "1"
-      PACIFY_X_RELEASE_TAG: ${{ inputs.release_tag || github.ref_name }}
+      PACIFY_X_RELEASE_TAG: ${{ inputs.release_tag }}
+      PACIFY_X_VSIX_NAME: pacify-x-vscode-0.6.85.vsix
+      PACIFY_X_VSIX_SHA256: dae75fa9ecd4084ff85353ff404b6b1b9c87df146b763bae6f64006deeb04cd3
+      PACIFY_X_VSIX_SIZE: "4267484"
+      PACIFY_X_CANDIDATE_ID: pacify-x-certification-20260906-final101-single
     steps:
       - name: Checkout exact annotated tag
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
-          ref: ${{ inputs.release_tag || github.ref }}
+          ref: ${{ inputs.release_tag }}
 
-      - name: Set up tested release Python
+      - name: Set up verification Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.14"
 
-      - name: Set up tested extension Node runtime
+      - name: Set up installed-host Node runtime
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: "22"
           cache: npm
           cache-dependency-path: extension/package-lock.json
 
-      - name: Require annotated tag and clean source
-        shell: pwsh
-        run: |
-          if ($env:PACIFY_X_RELEASE_TAG -notmatch '^v[0-9]+\.[0-9]+\.[0-9]+$') { throw "release tag is malformed" }
-          git fetch --force origin "refs/tags/$($env:PACIFY_X_RELEASE_TAG):refs/tags/$($env:PACIFY_X_RELEASE_TAG)"
-          if ((git cat-file -t $env:PACIFY_X_RELEASE_TAG) -ne "tag") { throw "release tag must be annotated" }
-          if ((git rev-list -n 1 $env:PACIFY_X_RELEASE_TAG) -ne (git rev-parse HEAD)) { throw "release tag does not point to checked-out HEAD" }
-          if (git status --porcelain=v1 --untracked-files=all) { throw "release checkout is not clean" }
-
-      - name: Prepare hash-locked wheelhouse
-        shell: pwsh
-        run: |
-          $wheelhouse = Join-Path $env:RUNNER_TEMP "pacify-x-release-wheelhouse"
-          $artifactDir = Join-Path $env:RUNNER_TEMP "pacify-x-release-artifacts"
-          New-Item -ItemType Directory -Path $wheelhouse | Out-Null
-          New-Item -ItemType Directory -Path $artifactDir | Out-Null
-          python -m pip download --require-hashes -r requirements-release.txt -d $wheelhouse
-          "PACIFY_X_RELEASE_WHEELHOUSE=$wheelhouse" | Out-File -FilePath $env:GITHUB_ENV -Append
-          "PACIFY_X_RELEASE_ARTIFACT_DIR=$artifactDir" | Out-File -FilePath $env:GITHUB_ENV -Append
-
-      - name: Materialize protected publisher key
-        shell: pwsh
-        env:
-          RELEASE_KEY_B64: ${{ secrets.PACIFY_X_RELEASE_SIGNING_KEY_B64 }}
-        run: |
-          if (-not $env:RELEASE_KEY_B64) { throw "PACIFY_X_RELEASE_SIGNING_KEY_B64 is required" }
-          $keyPath = Join-Path $PWD ".git\pacify-x-release-key"
-          [IO.File]::WriteAllBytes($keyPath, [Convert]::FromBase64String($env:RELEASE_KEY_B64))
-          & icacls $keyPath /inheritance:r /grant:r "${env:USERNAME}:(R,W)" | Out-Null
-          if ($LASTEXITCODE -ne 0) { throw "release private key permission hardening failed" }
-          $publicKey = (& ssh-keygen -y -f $keyPath)
-          if ($LASTEXITCODE -ne 0 -or -not $publicKey) { throw "release public key derivation failed" }
-          [IO.File]::WriteAllText("${keyPath}.pub", "$publicKey`n", [Text.Encoding]::ASCII)
-          $fingerprintFields = (& ssh-keygen -lf "${keyPath}.pub" -E sha256) -split '\s+'
-          if ($LASTEXITCODE -ne 0 -or $fingerprintFields.Count -lt 2) { throw "release public key validation failed" }
-          $trustedFingerprints = @((Get-Content policies/release-trust.json -Raw | ConvertFrom-Json).trusted_signers | ForEach-Object { $_.fingerprint })
-          if ($trustedFingerprints -notcontains $fingerprintFields[1]) { throw "release signing key is not trusted by repository policy" }
-          "PACIFY_X_RELEASE_SIGNING_KEY=$keyPath" | Out-File -FilePath $env:GITHUB_ENV -Append
-
-      - name: Run one-build certification against exact artifacts
-        shell: pwsh
-        run: |
-          $resultPath = Join-Path $env:RUNNER_TEMP "pacify-x-release-result.json"
-          python -m runtime.cli --root . release finalize `
-            --release $env:PACIFY_X_RELEASE_TAG.Substring(1) `
-            --artifact-dir $env:PACIFY_X_RELEASE_ARTIFACT_DIR `
-            --wheelhouse $env:PACIFY_X_RELEASE_WHEELHOUSE `
-            --signing-key $env:PACIFY_X_RELEASE_SIGNING_KEY | Tee-Object $resultPath
-          $result = Get-Content $resultPath -Raw | ConvertFrom-Json
-          if (-not $result.valid -or -not $result.certified) { throw "release certification failed" }
-          "PACIFY_X_RUN_ID=$($result.run_id)" | Out-File -FilePath $env:GITHUB_ENV -Append
-          "PACIFY_X_RELEASE=$($env:PACIFY_X_RELEASE_TAG.Substring(1))" | Out-File -FilePath $env:GITHUB_ENV -Append
-
-      - name: Independently verify exact staged bytes
-        shell: pwsh
-        run: |
-          $verificationPath = Join-Path $env:RUNNER_TEMP "pacify-x-release-verification.json"
-          python -m runtime.cli --root . release verify --release $env:PACIFY_X_RELEASE --artifact-dir $env:PACIFY_X_RELEASE_ARTIFACT_DIR | Tee-Object $verificationPath
-          $result = Get-Content $verificationPath -Raw | ConvertFrom-Json
-          if (-not $result.valid) { throw "independent release verification failed" }
-
-      - name: Build and exercise the exact VSIX without rebuilding it
-        shell: pwsh
-        run: |
-          npm ci --ignore-scripts --prefix extension
-          npm run package --prefix extension
-          $package = Get-Content extension/package.json -Raw | ConvertFrom-Json
-          $vsix = (Resolve-Path "extension/dist/$($package.name)-$($package.version).vsix").Path
-          $sha = (Get-FileHash -LiteralPath $vsix -Algorithm SHA256).Hash.ToLowerInvariant()
-          node extension/scripts/run-installed-vsix-smoke.js --engine-root $PWD --vsix $vsix --expected-sha256 $sha
-          if ((Get-FileHash -LiteralPath $vsix -Algorithm SHA256).Hash.ToLowerInvariant() -ne $sha) { throw "VSIX changed during installed-host certification" }
-          "PACIFY_X_CERTIFIED_VSIX=$vsix" | Out-File -FilePath $env:GITHUB_ENV -Append
-          "PACIFY_X_CERTIFIED_VSIX_SHA256=$sha" | Out-File -FilePath $env:GITHUB_ENV -Append
-
-      - name: Assemble immutable release assets without rebuilding
-        shell: pwsh
-        run: |
-          $run = "evidence\releases\$env:PACIFY_X_RELEASE\$env:PACIFY_X_RUN_ID"
-          New-Item -ItemType Directory -Path release-assets | Out-Null
-          Copy-Item "$env:PACIFY_X_RELEASE_ARTIFACT_DIR\*" release-assets\
-          Copy-Item "$run\SHA256SUMS.txt" release-assets\
-          Copy-Item "$run\sbom.cdx.json" release-assets\
-          Copy-Item "$run\provenance.intoto.json" release-assets\
-          Copy-Item "$run\evidence-manifest.json" release-assets\
-          Copy-Item "evidence\releases\$env:PACIFY_X_RELEASE\certificate.json" release-assets\
-          Copy-Item "evidence\releases\$env:PACIFY_X_RELEASE\certificate.json.sig" release-assets\
-          Copy-Item $env:PACIFY_X_CERTIFIED_VSIX release-assets\
-          Copy-Item extension/evidence/installed-vsix-smoke.json release-assets\installed-vsix-smoke.json
-          if (Test-Path "evidence\release-revocation-$env:PACIFY_X_RELEASE.json") {
-            Copy-Item "evidence\release-revocation-$env:PACIFY_X_RELEASE.json" release-assets\
-          }
-          @"
-          PACIFY-X $env:PACIFY_X_RELEASE
-
-          Self-certified release; signed evidence and reproducible verification included.
-          These are the exact artifacts built, tested, inspected, signed, and verified by this run. No release asset was rebuilt after certification.
-          "@ | Set-Content release-notes.md
-
-      - name: Package durable complete evidence custody
-        shell: pwsh
-        run: |
-          $run = "evidence\releases\$env:PACIFY_X_RELEASE\$env:PACIFY_X_RUN_ID"
-          $custodyWork = Join-Path $env:RUNNER_TEMP "pacify-x-evidence-custody"
-          $commit = git rev-parse HEAD
-          python scripts/package_release_evidence.py `
-            --input $run `
-            --input "$env:RUNNER_TEMP\pacify-x-release-result.json" `
-            --input "$env:RUNNER_TEMP\pacify-x-release-verification.json" `
-            --input $env:PACIFY_X_RELEASE_ARTIFACT_DIR `
-            --release $env:PACIFY_X_RELEASE `
-            --source-commit $commit `
-            --certificate "evidence\releases\$env:PACIFY_X_RELEASE\certificate.json" `
-            --output release-assets `
-            --work-dir $custodyWork `
-            --locator-base "https://github.com/$env:GITHUB_REPOSITORY/releases/download/$env:PACIFY_X_RELEASE_TAG" `
-            --signing-key $env:PACIFY_X_RELEASE_SIGNING_KEY
-
-      - name: Publish exact GitHub Release assets
+      - name: Require exact tag and existing release
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create $env:PACIFY_X_RELEASE_TAG release-assets\* --verify-tag --title "PACIFY-X $env:PACIFY_X_RELEASE" --notes-file release-notes.md
-
-      - name: Publish exact verified VSIX to Visual Studio Marketplace
-        shell: pwsh
         run: |
-          if (-not $env:PACIFY_X_CERTIFIED_VSIX -or -not (Test-Path -LiteralPath $env:PACIFY_X_CERTIFIED_VSIX -PathType Leaf)) {
-            throw "certified VSIX is unavailable"
-          }
-          if ($env:PACIFY_X_CERTIFIED_VSIX_SHA256 -notmatch '^[0-9a-f]{64}$') {
-            throw "certified VSIX SHA-256 is unavailable or malformed"
-          }
-          $before = (Get-FileHash -LiteralPath $env:PACIFY_X_CERTIFIED_VSIX -Algorithm SHA256).Hash.ToLowerInvariant()
-          if ($before -ne $env:PACIFY_X_CERTIFIED_VSIX_SHA256) {
-            throw "certified VSIX bytes changed before Marketplace publication"
-          }
-          npx --yes @vscode/vsce@3.9.2 publish --oidc --packagePath $env:PACIFY_X_CERTIFIED_VSIX
-          if ($LASTEXITCODE -ne 0) { throw "Marketplace OIDC publication failed" }
-          $after = (Get-FileHash -LiteralPath $env:PACIFY_X_CERTIFIED_VSIX -Algorithm SHA256).Hash.ToLowerInvariant()
-          if ($after -ne $before) { throw "certified VSIX bytes changed during Marketplace publication" }
+          if ($env:PACIFY_X_RELEASE_TAG -notmatch '^v[0-9]+\.[0-9]+\.[0-9]+$') { throw "release tag is malformed" }
+          if ((git cat-file -t $env:PACIFY_X_RELEASE_TAG) -ne "tag") { throw "release tag must be annotated" }
+          if ((git rev-list -n 1 $env:PACIFY_X_RELEASE_TAG) -ne (git rev-parse HEAD)) { throw "release tag does not point to checked-out HEAD" }
+          if (git status --porcelain=v1 --untracked-files=all) { throw "release checkout is not clean" }
+          $remote = gh release view $env:PACIFY_X_RELEASE_TAG --repo $env:GITHUB_REPOSITORY --json tagName,isDraft,isPrerelease | ConvertFrom-Json
+          if ($remote.tagName -ne $env:PACIFY_X_RELEASE_TAG -or $remote.isPrerelease) { throw "remote release identity is invalid" }
 
-      - name: Retain certification evidence on failure or success
+      - name: Install hash-locked verification dependencies
+        shell: pwsh
+        run: python -m pip install --require-hashes -r requirements-release.txt
+
+      - name: Download and authenticate the certified draft
+        id: verify
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $assets = Join-Path $env:RUNNER_TEMP "pacify-x-release-assets"
+          $restored = Join-Path $env:RUNNER_TEMP "pacify-x-restored-custody"
+          $resultPath = Join-Path $env:RUNNER_TEMP "pacify-x-publication-verification.json"
+          gh release download $env:PACIFY_X_RELEASE_TAG --repo $env:GITHUB_REPOSITORY --dir $assets
+          if ($LASTEXITCODE -ne 0) { throw "release asset download failed" }
+          $release = $env:PACIFY_X_RELEASE_TAG.Substring(1)
+          $commit = git rev-parse HEAD
+          python -B scripts/verify_release_publication.py `
+            --assets $assets `
+            --output $restored `
+            --repository . `
+            --release $release `
+            --source-commit $commit `
+            --candidate-id $env:PACIFY_X_CANDIDATE_ID `
+            --vsix-name $env:PACIFY_X_VSIX_NAME `
+            --vsix-sha256 $env:PACIFY_X_VSIX_SHA256 `
+            --vsix-size $env:PACIFY_X_VSIX_SIZE `
+            --replace-release-evidence | Tee-Object $resultPath
+          if ($LASTEXITCODE -ne 0) { throw "signed publication custody verification failed" }
+          $result = Get-Content $resultPath -Raw | ConvertFrom-Json
+          if (-not $result.valid) { throw "signed publication custody is not valid" }
+          python -B -m runtime.cli --root . release verify --release $release --artifact-dir $result.artifact_dir
+          if ($LASTEXITCODE -ne 0) { throw "independent release verification failed" }
+          npm ci --ignore-scripts --prefix extension
+          node extension/scripts/run-installed-vsix-smoke.js `
+            --engine-root . `
+            --vsix $result.vsix `
+            --expected-sha256 $env:PACIFY_X_VSIX_SHA256 `
+            --receipt (Join-Path $env:RUNNER_TEMP "publication-installed-smoke.json") `
+            --lifecycle-receipt (Join-Path $env:RUNNER_TEMP "publication-installed-lifecycle.json")
+          if ($LASTEXITCODE -ne 0) { throw "publication VSIX smoke failed" }
+          $after = (Get-FileHash -LiteralPath $result.vsix -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($after -ne $env:PACIFY_X_VSIX_SHA256 -or (Get-Item -LiteralPath $result.vsix).Length -ne [int64]$env:PACIFY_X_VSIX_SIZE) { throw "verified VSIX bytes changed" }
+          "release=$release" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          "vsix_name=$env:PACIFY_X_VSIX_NAME" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          "vsix_sha256=$env:PACIFY_X_VSIX_SHA256" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          "vsix_size=$env:PACIFY_X_VSIX_SIZE" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+
+      - name: Retain verification receipts
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: pacify-x-release-${{ env.PACIFY_X_RELEASE_TAG }}
+          name: pacify-x-publication-verification-${{ inputs.release_tag }}
           path: |
-            ${{ runner.temp }}/pacify-x-release-result.json
-            ${{ runner.temp }}/pacify-x-release-verification.json
-            ${{ runner.temp }}/pacify-x-release-artifacts/
-            release-assets/
-            evidence/releases/
-            ${{ runner.temp }}/pacify-x-release-quarantine/**/release-evidence/
+            ${{ runner.temp }}/pacify-x-publication-verification.json
+            ${{ runner.temp }}/publication-installed-smoke.json
+            ${{ runner.temp }}/publication-installed-lifecycle.json
           if-no-files-found: warn
           retention-days: 90
+
+  publish-marketplace:
+    needs: verify-certified-draft
+    runs-on: windows-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Download the exact verified VSIX
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $target = Join-Path $env:RUNNER_TEMP "marketplace"
+          gh release download "${{ inputs.release_tag }}" --repo $env:GITHUB_REPOSITORY --pattern "${{ needs.verify-certified-draft.outputs.vsix_name }}" --dir $target
+          if ($LASTEXITCODE -ne 0) { throw "verified VSIX download failed" }
+          $vsix = Join-Path $target "${{ needs.verify-certified-draft.outputs.vsix_name }}"
+          $sha = (Get-FileHash -LiteralPath $vsix -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($sha -ne "${{ needs.verify-certified-draft.outputs.vsix_sha256 }}" -or (Get-Item -LiteralPath $vsix).Length -ne [int64]"${{ needs.verify-certified-draft.outputs.vsix_size }}") { throw "Marketplace input differs from signed VSIX" }
+          npx --yes @vscode/vsce@3.9.2 publish --oidc --skip-duplicate --packagePath $vsix
+          if ($LASTEXITCODE -ne 0) { throw "Marketplace OIDC publication failed" }
+          $after = (Get-FileHash -LiteralPath $vsix -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($after -ne $sha -or (Get-Item -LiteralPath $vsix).Length -ne [int64]"${{ needs.verify-certified-draft.outputs.vsix_size }}") { throw "VSIX bytes changed during Marketplace publication" }
+
+  publish-github:
+    needs: [verify-certified-draft, publish-marketplace]
+    runs-on: windows-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - name: Reverify bytes and make the existing release public
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $target = Join-Path $env:RUNNER_TEMP "github-release"
+          gh release download "${{ inputs.release_tag }}" --repo $env:GITHUB_REPOSITORY --pattern "${{ needs.verify-certified-draft.outputs.vsix_name }}" --dir $target
+          if ($LASTEXITCODE -ne 0) { throw "verified VSIX redownload failed" }
+          $vsix = Join-Path $target "${{ needs.verify-certified-draft.outputs.vsix_name }}"
+          $sha = (Get-FileHash -LiteralPath $vsix -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($sha -ne "${{ needs.verify-certified-draft.outputs.vsix_sha256 }}" -or (Get-Item -LiteralPath $vsix).Length -ne [int64]"${{ needs.verify-certified-draft.outputs.vsix_size }}") { throw "GitHub publication input differs from signed VSIX" }
+          $release = gh release view "${{ inputs.release_tag }}" --repo $env:GITHUB_REPOSITORY --json isDraft,isPrerelease | ConvertFrom-Json
+          if ($release.isPrerelease) { throw "prerelease state is not admitted" }
+          if ($release.isDraft) {
+            gh release edit "${{ inputs.release_tag }}" --repo $env:GITHUB_REPOSITORY --draft=false
+            if ($LASTEXITCODE -ne 0) { throw "GitHub release publication failed" }
+          }
+          $final = gh release view "${{ inputs.release_tag }}" --repo $env:GITHUB_REPOSITORY --json isDraft | ConvertFrom-Json
+          if ($final.isDraft) { throw "GitHub release remains a draft" }

@@ -1,0 +1,37 @@
+{
+  "gap_id": "PX-OS-1067",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000033738",
+  "session_id": "release-session:final100-integration-contract-20260906",
+  "authority": "Normalize the final100 package/install receipt contract and classify retained WAL custody before any successor-campaign effect.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": [
+        "Final100 driver, stage and installed owners/configs/tests; cohesion reconciler closure contract/tests; release artifact policy/classifier; retained cohesion WAL; current dirty-state classification; exact artifact, repair, release, ledger, and resource state."
+      ]
+    },
+    {
+      "effect": "write",
+      "scope": [
+        "Minimal nested artifact-object normalization in scripts/reconcile_cohesion_cards.py and tests; .engineering-bootstrap/wal/ mutable-control classification in policies/release-artifact-policy.json and focused tests; any direct final100 helper/config contract correction exposed by combined proof; bounded integration evidence, external audit note, and ledger lifecycle events. No campaign, phase, card, revision, commit, tag, artifact, install, governed stage, certification, network, or publication mutation."
+      ]
+    },
+    {
+      "effect": "execute",
+      "scope": [
+        "Focused reconciler/driver/stage/installed-owner/release-classification tests, Node syntax/contract tests, Ruff, diff/config/classification/ledger/resource checks, and plan/check modes only. No final100 owner execution, release clear/apply/claim/finish, generated reconciliation, Git mutation, governed section/group/profile/validation/package/install/VS Code host/preflight/finalizer, service, network, destructive cleanup, push, or publication."
+      ]
+    }
+  ],
+  "expected_effect": "Every final100 producer and consumer accepts one exact nested artifact object, retained cohesion WAL is explicitly mutable control evidence, combined focused proof is green, the candidate remains unopened, and an exact post-reconciliation source/mutable manifest can be generated safely.",
+  "rollback": "If normalization or classification proof fails, retain repair12 frozen and final99 terminal, do not start final100, and revert only the newly introduced contract/policy edits in a later admitted repair.",
+  "expires_utc": "2026-09-06T18:00:00Z",
+  "evidence": [
+    {
+      "reference": "evidence/release/final100-owner-wiring-readiness-20260906.json",
+      "artifact_sha256": "4cfe771c4dad59f7a1418b1dfbc343051e1cf3f47afaca522e54b49e3ba7747a",
+      "artifact_size": 2403,
+      "claim": "Owner wiring is focused-green and identifies the two exact remaining integration blockers before release start."
+    }
+  ]
+}

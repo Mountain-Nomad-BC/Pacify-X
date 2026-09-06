@@ -15,8 +15,8 @@ const CHILD_FLAG = '--owned-host-child';
 const extensionRoot = path.resolve(__dirname, '..');
 const extensionPackage = JSON.parse(fs.readFileSync(path.join(extensionRoot, 'package.json'), 'utf8'));
 const platformSuffix = process.platform === 'win32' ? '' : `-${process.platform}`;
-const retainedReceipt = path.join(extensionRoot, 'evidence', `installed-vsix-smoke${platformSuffix}.json`);
-const retainedLifecycleReceipt = path.join(extensionRoot, 'evidence', `installed-vsix-process-lifecycle${platformSuffix}.json`);
+const defaultRetainedReceipt = path.join(extensionRoot, 'evidence', `installed-vsix-smoke${platformSuffix}.json`);
+const defaultRetainedLifecycleReceipt = path.join(extensionRoot, 'evidence', `installed-vsix-process-lifecycle${platformSuffix}.json`);
 const vscodeVersion = '1.132.1';
 const ownedExternalNetworkDenialProxy = 'http://127.0.0.1:9';
 const digest = file => crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
@@ -127,6 +127,8 @@ async function main() {
   const boundEngineIdentity = engineIdentity(engineRoot);
   const vsixPath = path.resolve(argument('--vsix') || process.env.PX_VSIX_PATH || path.join(extensionRoot, 'dist', `${extensionPackage.name}-${extensionPackage.version}.vsix`));
   const expectedSha256 = String(argument('--expected-sha256') || '').toLowerCase();
+  const retainedReceipt = path.resolve(argument('--receipt') || defaultRetainedReceipt);
+  const retainedLifecycleReceipt = path.resolve(argument('--lifecycle-receipt') || defaultRetainedLifecycleReceipt);
   if (expectedSha256) assert.equal(digest(vsixPath), expectedSha256, 'Exact VSIX preflight SHA-256 mismatch');
   const temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'pacify-x-installed-vsix-'));
   markOwnedHostWorkspace(temporaryRoot, 'installed-vsix-smoke');
@@ -170,5 +172,5 @@ async function main() {
 }
 
 if (process.argv[2] === CHILD_FLAG) childMain(process.argv[3]).then(code => { process.exitCode = code; }).catch(error => { process.stderr.write(`${error.stack || error.message}\n`); process.exitCode = 1; });
-else if (process.argv.includes('--help')) process.stdout.write('Usage: node scripts/run-installed-vsix-smoke.js --engine-root <path> --vsix <path> [--expected-sha256 <sha256>]\n');
+else if (process.argv.includes('--help')) process.stdout.write('Usage: node scripts/run-installed-vsix-smoke.js --engine-root <path> --vsix <path> [--expected-sha256 <sha256>] [--receipt <path>] [--lifecycle-receipt <path>]\n');
 else main().catch(error => { process.stderr.write(`${error.stack || error.message}\n`); process.exitCode = 1; });

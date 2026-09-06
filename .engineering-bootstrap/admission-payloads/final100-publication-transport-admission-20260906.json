@@ -1,0 +1,37 @@
+{
+  "gap_id": "PX-OS-1067",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000033741",
+  "session_id": "release-session:final100-publication-transport-20260906",
+  "authority": "Repair and prove the post-certification publication transport so GitHub and Marketplace consume the exact locally certified artifacts without rebuilding or replaying certification.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": [
+        "Release workflow, publication tests, evidence custody packager/verifier, release trust policy, finalizer/certificate outputs, immutable VSIX identity, publication documentation, current release/repair/ledger/resource state, and remote command contracts without network access."
+      ]
+    },
+    {
+      "effect": "write",
+      "scope": [
+        "Minimal manual post-certification release workflow; exact signed-custody verification and artifact-binding helpers; focused workflow/custody tests and registered generated projections; bounded readiness evidence, external audit note, and ledger lifecycle events. No campaign, phase, card, revision, commit, tag, artifact, install, governed stage, certification, credential, network, push, Marketplace, GitHub Release, or public publication mutation."
+      ]
+    },
+    {
+      "effect": "execute",
+      "scope": [
+        "Focused offline workflow/custody tests, syntax, Ruff, diff/config/classification/ledger/resource checks, and plan/check/read-only verification modes. No release owner execution, generated reconciliation apply, Git mutation, governed section/group/profile/validation/package/install/host/preflight/finalizer, destructive cleanup, service, network, push, or publication."
+      ]
+    }
+  ],
+  "expected_effect": "The release workflow is manual-only, cannot rebuild the VSIX or replay finalization, verifies signed custody and the exact immutable VSIX before publishing the same bytes via OIDC, separates channel reruns, and is offline focused-green before final100 opens.",
+  "rollback": "If the publication transport cannot prove exact artifact custody offline, retain final100 unopened and revert only this publication-transport repair in a later admitted session.",
+  "expires_utc": "2026-09-06T20:00:00Z",
+  "evidence": [
+    {
+      "reference": "evidence/release/final100-integration-contract-green-20260906.json",
+      "artifact_sha256": "277eaf610ed9d6d65e281a318139dcca473164ecdd2de3f6f6c0b6538652ea57",
+      "artifact_size": 5632,
+      "claim": "Final100 integration is green and release execution remains unopened; publication transport is the remaining pre-release blocker."
+    }
+  ]
+}

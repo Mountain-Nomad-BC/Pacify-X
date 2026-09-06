@@ -3,7 +3,7 @@
   "title": "Compact PX world state",
   "severity": "high",
   "type": "integration",
-  "status": "planned",
+  "status": "downstream_green",
   "root_cause": "Operators must hydrate many large registries to learn current source, blockers, staleness, capability, agent, model, hardware, authority, and evidence state.",
   "source_requirement": "Generate a small metadata-only world-state projection with lazy detail links.",
   "live_evidence": [
@@ -66,5 +66,133 @@
     "Projection stays within declared size/count budgets.",
     "Startup reads summaries without hydrating detail bodies."
   ],
-  "completion_evidence": []
+  "completion_evidence": [
+    "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+    "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+    "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+    "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+    "evidence/commencement-audit-20260905T002921Z/current-owners-and-gaps.json#sha256=c045567157fcac8338848266aab4755c2551810d49dd80ab5f628ef9606f5b41",
+    "runtime/world_state.py#sha256=919e1fdbaf9e54cc91f8e5c854f966b81bfb9d92a4a2fcc5e592c4c2499e3cff",
+    "registry/px_world_state.json#sha256=351a4078d6553d1de3d53299d700b7a746911fd81650961df320742d915adeff",
+    "tests/test_world_state.py#sha256=31268414b18e8ef3bce8045fa1d8355b49a06fcb7351257f35a78d02c642caba"
+  ],
+  "status_history": [
+    {
+      "status": "admitted",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/current-owners-and-gaps.json#sha256=c045567157fcac8338848266aab4755c2551810d49dd80ab5f628ef9606f5b41",
+        "runtime/world_state.py#sha256=919e1fdbaf9e54cc91f8e5c854f966b81bfb9d92a4a2fcc5e592c4c2499e3cff",
+        "registry/px_world_state.json#sha256=351a4078d6553d1de3d53299d700b7a746911fd81650961df320742d915adeff",
+        "tests/test_world_state.py#sha256=31268414b18e8ef3bce8045fa1d8355b49a06fcb7351257f35a78d02c642caba"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "in_progress",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/current-owners-and-gaps.json#sha256=c045567157fcac8338848266aab4755c2551810d49dd80ab5f628ef9606f5b41",
+        "runtime/world_state.py#sha256=919e1fdbaf9e54cc91f8e5c854f966b81bfb9d92a4a2fcc5e592c4c2499e3cff",
+        "registry/px_world_state.json#sha256=351a4078d6553d1de3d53299d700b7a746911fd81650961df320742d915adeff",
+        "tests/test_world_state.py#sha256=31268414b18e8ef3bce8045fa1d8355b49a06fcb7351257f35a78d02c642caba"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "focused_green",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/current-owners-and-gaps.json#sha256=c045567157fcac8338848266aab4755c2551810d49dd80ab5f628ef9606f5b41",
+        "runtime/world_state.py#sha256=919e1fdbaf9e54cc91f8e5c854f966b81bfb9d92a4a2fcc5e592c4c2499e3cff",
+        "registry/px_world_state.json#sha256=351a4078d6553d1de3d53299d700b7a746911fd81650961df320742d915adeff",
+        "tests/test_world_state.py#sha256=31268414b18e8ef3bce8045fa1d8355b49a06fcb7351257f35a78d02c642caba"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "downstream_green",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/current-owners-and-gaps.json#sha256=c045567157fcac8338848266aab4755c2551810d49dd80ab5f628ef9606f5b41",
+        "runtime/world_state.py#sha256=919e1fdbaf9e54cc91f8e5c854f966b81bfb9d92a4a2fcc5e592c4c2499e3cff",
+        "registry/px_world_state.json#sha256=351a4078d6553d1de3d53299d700b7a746911fd81650961df320742d915adeff",
+        "tests/test_world_state.py#sha256=31268414b18e8ef3bce8045fa1d8355b49a06fcb7351257f35a78d02c642caba"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    }
+  ],
+  "closure_reconciliation": {
+    "schema_version": "px.cohesion-card-reconciliation/1.0",
+    "target_status": "downstream_green",
+    "reconciled_at": "2026-09-06T00:26:20.1402452Z",
+    "acceptance_criteria_count": 2,
+    "evidence": [
+      {
+        "path": "evidence/commencement-repair/repair-freeze-20260905.json",
+        "sha256": "7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "size": 1727,
+        "schema_version": "px.repair-freeze/1.0"
+      },
+      {
+        "path": "evidence/release/final99-full-profile-pass-20260905.json",
+        "sha256": "b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "size": 1276,
+        "schema_version": "px.full-profile-receipt/1.0"
+      },
+      {
+        "path": "evidence/release/final99-validation-pass-20260905.json",
+        "sha256": "07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "size": 937,
+        "schema_version": "px.validation-receipt/1.0"
+      },
+      {
+        "path": "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json",
+        "sha256": "6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "size": 4317,
+        "schema_version": "px.focused-repair-evidence/1.0"
+      },
+      {
+        "path": "evidence/commencement-audit-20260905T002921Z/current-owners-and-gaps.json",
+        "sha256": "c045567157fcac8338848266aab4755c2551810d49dd80ab5f628ef9606f5b41",
+        "size": 7645,
+        "anchor": null,
+        "evidence_kind": "card_live_evidence"
+      },
+      {
+        "path": "runtime/world_state.py",
+        "sha256": "919e1fdbaf9e54cc91f8e5c854f966b81bfb9d92a4a2fcc5e592c4c2499e3cff",
+        "size": 8112,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "registry/px_world_state.json",
+        "sha256": "351a4078d6553d1de3d53299d700b7a746911fd81650961df320742d915adeff",
+        "size": 2707,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "tests/test_world_state.py",
+        "sha256": "31268414b18e8ef3bce8045fa1d8355b49a06fcb7351257f35a78d02c642caba",
+        "size": 2513,
+        "evidence_kind": "declared_implementation_file"
+      }
+    ]
+  }
 }

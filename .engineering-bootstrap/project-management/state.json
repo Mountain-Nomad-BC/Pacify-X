@@ -12,39 +12,27 @@
       "maximum_selected_skills": 3
     },
     "changed_file_sha256": {},
-    "degraded_components": [
-      "feature-acceptance",
-      "coordination-state-conformance",
-      "semantic-routing",
-      "knowledge-decay-invalidation",
-      "hybrid-retrieval",
-      "model-attachment",
-      "agency-studio-memory-handoff",
-      "foundry-formulas",
-      "skill-projection-invalidation",
-      "project-transfer-authority",
-      "operational-ledger-scaling"
-    ],
+    "degraded_components": [],
     "failures": [
-      "final85 full profile was interrupted and the campaign is terminal"
+      "final99 is terminal after its one installed-operational denominator; repair12 focused proofs closed all five direct route/projection roots without replay."
     ],
-    "next_safe_action": "finish the expanded 58-test downstream cone for PX-ASSURE-001 and close only after all mapped consumers pass",
+    "next_safe_action": "Freeze repair12, reconcile generated projections once, and enter final100's registered release stages.",
     "open_circuits": [
-      "release validation and all later broad stages remain closed until repair freeze and successor-campaign admission"
+      "final100 release stages remain closed until repair12 is frozen"
     ],
     "repository": {
       "branch": "main",
-      "commit": "19761e2a769885d6df25dc448c673e339eaf9c8c",
+      "commit": "0cf881533070214130ac30e797299b9758e6aa29",
       "root": ".",
       "working_tree_sha256": null
     },
     "retries": [],
-    "revision": 43,
+    "revision": 44,
     "runtime_version": "0.7.0",
     "tool_versions": {},
     "validation": {
-      "tests": "PX-ASSURE-001 focused and initial downstream proof is green; fresh impact mapping expanded the release-artifact compatibility cone to 58 tests, so closure remains withheld",
-      "verifier": ".engineering-bootstrap/project-map/map-receipt.json"
+      "tests": "All 37 cohesion source/proof cards are evidence-bound and downstream-green; final99 full/validation and repair12 focused owners passed.",
+      "verifier": "scripts/reconcile_cohesion_cards.py"
     },
     "versions": {
       "assumptions": 13,
@@ -87,51 +75,51 @@
         "id": "D-002",
         "status": "accepted"
       },
-    {
-      "decision": "cleanup uses recoverable quarantine only",
-      "id": "D-003",
-      "status": "accepted"
-    },
-    {
-      "decision": "run the authorized adversarial repair wave locally without deployment, credentials, billable provider calls, destructive cleanup, or historical-evidence rewrites",
-      "id": "D-004",
-      "status": "accepted"
-    },
-    {
-      "decision": "move detailed PX skills to native .px packages, retain only a bounded Codex-visible facade taxonomy, and prevent standard, Microsoft/vendor, and enterprise-restricted skill domains from bleeding into one another",
-      "id": "D-005",
-      "status": "accepted"
-    },
-    {
-      "decision": "first initialization preserves a hash-bound recoverable backup and provenance for every pre-existing user/workspace skill without changing originals; backups are user-owned evidence, never auto-purged, and restore-verified; PX may adapt attributes only through admission and must expose origin and selection rationale in the Skills projection",
-      "id": "D-006",
-      "status": "accepted"
-    },
-    {
-      "decision": "PX defines governance, scope, policy, contracts, validation, observation, and evidence for PX-controlled work; Codex retains native host authority and approval/security mechanisms and executes within those PX constraints; the extension never starts a competing Codex process",
-      "id": "D-007",
-      "status": "accepted"
-    }
-  ],
-  "pending_approvals": [
-    "release publication is user-authorized as the final objective but remains procedurally deferred until repair freeze and one successor campaign; credential disclosure, billable provider calls, and destructive cleanup remain unauthorized"
-  ],
+      {
+        "decision": "cleanup uses recoverable quarantine only",
+        "id": "D-003",
+        "status": "accepted"
+      },
+      {
+        "decision": "run the authorized adversarial repair wave locally without deployment, credentials, billable provider calls, destructive cleanup, or historical-evidence rewrites",
+        "id": "D-004",
+        "status": "accepted"
+      },
+      {
+        "decision": "move detailed PX skills to native .px packages, retain only a bounded Codex-visible facade taxonomy, and prevent standard, Microsoft/vendor, and enterprise-restricted skill domains from bleeding into one another",
+        "id": "D-005",
+        "status": "accepted"
+      },
+      {
+        "decision": "first initialization preserves a hash-bound recoverable backup and provenance for every pre-existing user/workspace skill without changing originals; backups are user-owned evidence, never auto-purged, and restore-verified; PX may adapt attributes only through admission and must expose origin and selection rationale in the Skills projection",
+        "id": "D-006",
+        "status": "accepted"
+      },
+      {
+        "decision": "PX defines governance, scope, policy, contracts, validation, observation, and evidence for PX-controlled work; Codex retains native host authority and approval/security mechanisms and executes within those PX constraints; the extension never starts a competing Codex process",
+        "id": "D-007",
+        "status": "accepted"
+      }
+    ],
+    "pending_approvals": [
+      "release publication is user-authorized as the final objective but remains procedurally deferred until repair freeze and one successor campaign; credential disclosure, billable provider calls, and destructive cleanup remain unauthorized"
+    ],
     "risks": [
-    {
-      "id": "R-REL-001",
-      "mitigation": "rerun all gates after final mutation",
-      "risk": "release evidence can become stale after implementation changes"
-    },
-    {
-      "id": "R-PXA-001",
-      "mitigation": "reopen hash-invalid cards and regenerate evidence only from one unchanged final digest",
-      "risk": "historical passing evidence is being mistaken for current-tree acceptance"
-    },
-    {
-      "id": "R-PXA-002",
-      "mitigation": "separate standard, Microsoft/vendor, and enterprise-restricted skill indexes and fail closed on implicit cross-domain routing",
-      "risk": "semantic skill routing can select an ineligible distribution domain"
-    }
+      {
+        "id": "R-REL-001",
+        "mitigation": "rerun all gates after final mutation",
+        "risk": "release evidence can become stale after implementation changes"
+      },
+      {
+        "id": "R-PXA-001",
+        "mitigation": "reopen hash-invalid cards and regenerate evidence only from one unchanged final digest",
+        "risk": "historical passing evidence is being mistaken for current-tree acceptance"
+      },
+      {
+        "id": "R-PXA-002",
+        "mitigation": "separate standard, Microsoft/vendor, and enterprise-restricted skill indexes and fail closed on implicit cross-domain routing",
+        "risk": "semantic skill routing can select an ineligible distribution domain"
+      }
     ]
   },
   "knowledge": {
@@ -171,14 +159,14 @@
       "The 13-file audit repair pack closed on two matching snapshots after a 30-second stability interval at tree SHA-256 e4c7e20be030148b55afd1da861632f945c7c7812b61f572c6c17e4f4ca1f369 and moved to recoverable external quarantine without hard deletion."
     ],
     "unknowns": [
-      "The successor current-tree validation result remains unknown until all 37 repair/integration/proof cards are downstream green and one repair freeze binds an unchanged digest.",
-      "Final publication remains contingent on one clean successor campaign and real external macOS execution authority."
+      "Final publication remains contingent on one ordered final100 release campaign.",
+      "Real macOS installed-host execution remains external-authority evidence and must not be inferred from declarations."
     ]
   },
   "lifecycle": {
-    "next_action": "finish the expanded 58-test downstream cone for PX-ASSURE-001 and close only after all mapped consumers pass",
-    "phase": "cohesion-closure-repair-implementation",
-    "status": "repair-in-progress"
+    "next_action": "Freeze repair12, reconcile generated projections once, and enter final100's registered release stages.",
+    "phase": "repair12-freeze-and-final100-release",
+    "status": "downstream-green-release-pending"
   },
   "project": {
     "mode": "existing",
@@ -187,7 +175,7 @@
   },
   "schema_version": "1.0",
   "work": {
-    "active_punch_card": "PX-ASSURE-001",
+    "active_punch_card": null,
     "backlog": [
       {
         "id": "REL-008-LAST-ROUND",
@@ -355,6 +343,19 @@
         "canonical task, semantic, model, hardware, agent, memory, handoff, Foundry, skill, graph, authority, and affected-proof cohesion",
         "automatic governed provider and model attachment without billable repair-wave calls",
         "source and installed-wheel certification"
+      ]
+    },
+    "cohesion_card_summary": {
+      "audit_cards_closed": 6,
+      "source_or_proof_cards": 37,
+      "source_or_proof_downstream_green": 37,
+      "source_or_proof_closed": 0,
+      "remaining": 0,
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913"
       ]
     }
   }

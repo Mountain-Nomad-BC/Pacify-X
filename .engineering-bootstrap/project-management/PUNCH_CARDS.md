@@ -5,12 +5,13 @@ The active durable card set is `.engineering-bootstrap/punch-cards/cohesion-clos
 - Denominator: `evidence/commencement-audit-20260905T002921Z/confirmed-denominator.json`
 - DAG: `.engineering-bootstrap/punch-cards/cohesion-closure-20260904/dag.json`
 - Exact hashes: `.engineering-bootstrap/punch-cards/cohesion-closure-20260904/SHA256SUMS`
-- Cards: 43 total; six audit cards closed; 37 repair/integration/proof cards remain
+- Cards: 43 total; implementation and focused repair work are complete; canonical lifecycle state is owned by the DAG reconciler
 - Graph: 86 edges, zero unknown dependencies, zero cycles
-- Active card: `PX-ASSURE-001`
+- Current projection: six audit cards are `closed`; all 37 source/proof cards are evidence-backed at `downstream_green`; zero repair cards remain
+- Closure boundary: the 37 source/proof cards remain short of `closed` until final100 installed-operational proof succeeds
 
 Lifecycle: `planned -> admitted -> in_progress -> focused_green -> downstream_green -> closed`.
 
-A card with downstream consumers cannot close at `focused_green`. During repair, each source-changing card must record its exact changed files/symbols, calculate the full transitive consumer cone, run focused and discriminating negative tests, run all affected downstream tests and governed sections, and prove zero leaked resources.
+A card with downstream consumers cannot close at `focused_green`. The reconciler must derive every lifecycle transition from retained implementation, focused, downstream, governed-section, and resource evidence; documentation does not grant or substitute card state.
 
-No full profile, validation certification gate, package, install, installed-operational, preflight, certification, publication, or release identity/tag mutation is permitted until the complete DAG is downstream green and repair-frozen.
+Final99 is terminal and cannot be resumed. Repair12 focused exact-artifact proofs closed its five direct installed-host failure paths, but no final certification or publication is claimed. A successor campaign may begin only after the complete DAG is reconciled, the repair denominator is zero, and repair12 is frozen.

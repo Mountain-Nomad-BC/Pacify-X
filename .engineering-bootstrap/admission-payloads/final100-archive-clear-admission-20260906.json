@@ -1,0 +1,37 @@
+{
+  "gap_id": "PX-OS-1067",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000033744",
+  "session_id": "release-session:final100-archive-clear-20260906",
+  "authority": "Open final100 exactly once by archiving terminal final99 and creating only the registered cleared successor campaign state.",
+  "effect_scopes": [
+    {
+      "effect": "read",
+      "scope": [
+        "Terminal final99 campaign, frozen repair12 state, final100 automation/stage-owner configs, immutable VSIX identity, release campaign state, ledger checkpoint, and resource status."
+      ]
+    },
+    {
+      "effect": "write",
+      "scope": [
+        "Only the registered final100 archive_clear owner outputs, final100 automation journal/log/receipt, release campaign archive/current state, bounded evidence, external audit note, and ledger lifecycle events. No source repair, generated reconciliation, identity, commit, tag, section, test profile, validation, package, install, host walk, card transition, certification, network, push, or publication."
+      ]
+    },
+    {
+      "effect": "execute",
+      "scope": [
+        "Exactly one final100 candidate-driver execute-next call whose sole pending step is archive_clear, plus its registered stage owner and postcondition checks. No later step, retry, broad test, service, network, or publication."
+      ]
+    }
+  ],
+  "expected_effect": "Final99 is retained as terminal history; final100 becomes the one cleared successor with archive_clear passed exactly once and reconcile as the sole next step.",
+  "rollback": "The campaign transition is append-only and not replayable. If its postcondition fails, retain the failed final100 evidence and do not retry or advance.",
+  "expires_utc": "2026-09-07T04:00:00Z",
+  "evidence": [
+    {
+      "reference": "evidence/release/final100-publication-transport-ready-20260906.json",
+      "artifact_sha256": "428a92109421e67e523f072c0b7d6d2c535862c979d99f5649112d1dababbb79",
+      "artifact_size": 3597,
+      "claim": "All pre-final100 integration and publication-transport blockers are focused-green; candidate readiness is valid with archive_clear next."
+    }
+  ]
+}

@@ -3,7 +3,7 @@
   "title": "Semantic index migration",
   "severity": "critical",
   "type": "migration",
-  "status": "planned",
+  "status": "downstream_green",
   "root_cause": "Only four of 178 current semantic records have nonempty intent data because the index projects only contract.provides.",
   "source_requirement": "Build the active semantic index from canonical semantic profiles and retain source revisions.",
   "live_evidence": [
@@ -66,5 +66,133 @@
     "Active routable skills no longer depend on the nearly empty provides projection.",
     "Every index record binds its profile/source revision."
   ],
-  "completion_evidence": []
+  "completion_evidence": [
+    "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+    "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+    "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+    "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+    "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#sha256=7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b#anchor=PX-AUD-002",
+    "runtime/semantic_index.py#sha256=ec2e2063c974d358aae88cd30a8427ed4400936277399584633cf66541c4ae64",
+    "registry/semantic_capability_index.json#sha256=65208b028251e32b634dec795914930711b4d2df29941aa0aa2b4a220910c738",
+    "builders/semantic_index_builder.py#sha256=7d05d665d6613d42c3af249cc272e7c2669514dc6a3087868d509fdb7d9b7cc6"
+  ],
+  "status_history": [
+    {
+      "status": "admitted",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#sha256=7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b#anchor=PX-AUD-002",
+        "runtime/semantic_index.py#sha256=ec2e2063c974d358aae88cd30a8427ed4400936277399584633cf66541c4ae64",
+        "registry/semantic_capability_index.json#sha256=65208b028251e32b634dec795914930711b4d2df29941aa0aa2b4a220910c738",
+        "builders/semantic_index_builder.py#sha256=7d05d665d6613d42c3af249cc272e7c2669514dc6a3087868d509fdb7d9b7cc6"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "in_progress",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#sha256=7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b#anchor=PX-AUD-002",
+        "runtime/semantic_index.py#sha256=ec2e2063c974d358aae88cd30a8427ed4400936277399584633cf66541c4ae64",
+        "registry/semantic_capability_index.json#sha256=65208b028251e32b634dec795914930711b4d2df29941aa0aa2b4a220910c738",
+        "builders/semantic_index_builder.py#sha256=7d05d665d6613d42c3af249cc272e7c2669514dc6a3087868d509fdb7d9b7cc6"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "focused_green",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#sha256=7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b#anchor=PX-AUD-002",
+        "runtime/semantic_index.py#sha256=ec2e2063c974d358aae88cd30a8427ed4400936277399584633cf66541c4ae64",
+        "registry/semantic_capability_index.json#sha256=65208b028251e32b634dec795914930711b4d2df29941aa0aa2b4a220910c738",
+        "builders/semantic_index_builder.py#sha256=7d05d665d6613d42c3af249cc272e7c2669514dc6a3087868d509fdb7d9b7cc6"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    },
+    {
+      "status": "downstream_green",
+      "at": "2026-09-06T00:26:20.1402452Z",
+      "evidence": [
+        "evidence/commencement-repair/repair-freeze-20260905.json#sha256=7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "evidence/release/final99-full-profile-pass-20260905.json#sha256=b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "evidence/release/final99-validation-pass-20260905.json#sha256=07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json#sha256=6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json#sha256=7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b#anchor=PX-AUD-002",
+        "runtime/semantic_index.py#sha256=ec2e2063c974d358aae88cd30a8427ed4400936277399584633cf66541c4ae64",
+        "registry/semantic_capability_index.json#sha256=65208b028251e32b634dec795914930711b4d2df29941aa0aa2b4a220910c738",
+        "builders/semantic_index_builder.py#sha256=7d05d665d6613d42c3af249cc272e7c2669514dc6a3087868d509fdb7d9b7cc6"
+      ],
+      "reason": "Evidence-backed reconciliation of the frozen 43-card denominator."
+    }
+  ],
+  "closure_reconciliation": {
+    "schema_version": "px.cohesion-card-reconciliation/1.0",
+    "target_status": "downstream_green",
+    "reconciled_at": "2026-09-06T00:26:20.1402452Z",
+    "acceptance_criteria_count": 2,
+    "evidence": [
+      {
+        "path": "evidence/commencement-repair/repair-freeze-20260905.json",
+        "sha256": "7cf12bcdaa64b3c8068ed0bb11de14b4bb25e1bd1ac41fa02e474ed31d781330",
+        "size": 1727,
+        "schema_version": "px.repair-freeze/1.0"
+      },
+      {
+        "path": "evidence/release/final99-full-profile-pass-20260905.json",
+        "sha256": "b6a21d12b0fc4419ad8e767bb8ff6dd089049a076ece2db07820905ad1a3a62e",
+        "size": 1276,
+        "schema_version": "px.full-profile-receipt/1.0"
+      },
+      {
+        "path": "evidence/release/final99-validation-pass-20260905.json",
+        "sha256": "07502ecb925be95445a02b28ac2fa131a9ceb60dae04b854a526567279bd0fdb",
+        "size": 937,
+        "schema_version": "px.validation-receipt/1.0"
+      },
+      {
+        "path": "evidence/release/final99-route-projection-settlement-complete-focused-repair-20260905.json",
+        "sha256": "6ff329a5955800c2b41e18c89359d3f32289407897d5b2c0dbd25210a5f2c913",
+        "size": 4317,
+        "schema_version": "px.focused-repair-evidence/1.0"
+      },
+      {
+        "path": "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json",
+        "sha256": "7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b",
+        "size": 10258,
+        "anchor": "PX-AUD-002",
+        "evidence_kind": "card_live_evidence"
+      },
+      {
+        "path": "runtime/semantic_index.py",
+        "sha256": "ec2e2063c974d358aae88cd30a8427ed4400936277399584633cf66541c4ae64",
+        "size": 7488,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "registry/semantic_capability_index.json",
+        "sha256": "65208b028251e32b634dec795914930711b4d2df29941aa0aa2b4a220910c738",
+        "size": 425889,
+        "evidence_kind": "declared_implementation_file"
+      },
+      {
+        "path": "builders/semantic_index_builder.py",
+        "sha256": "7d05d665d6613d42c3af249cc272e7c2669514dc6a3087868d509fdb7d9b7cc6",
+        "size": 819,
+        "evidence_kind": "declared_implementation_file"
+      }
+    ]
+  }
 }
