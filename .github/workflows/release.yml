@@ -33,7 +33,7 @@ jobs:
       PACIFY_X_VSIX_NAME: pacify-x-vscode-0.6.85.vsix
       PACIFY_X_VSIX_SHA256: dae75fa9ecd4084ff85353ff404b6b1b9c87df146b763bae6f64006deeb04cd3
       PACIFY_X_VSIX_SIZE: "4267484"
-      PACIFY_X_CANDIDATE_ID: pacify-x-certification-20260906-final103-single
+      PACIFY_X_CANDIDATE_ID: pacify-x-certification-20260906-final104-single
     steps:
       - name: Checkout exact annotated tag
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

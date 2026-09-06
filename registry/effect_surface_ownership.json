@@ -4043,7 +4043,7 @@
       "line": 61,
       "owner": "runtime",
       "path": "runtime/evidence_custody.py",
-      "policy": "policies/artifact-preservation.json",
+      "policy": "policies/operational-evidence-retention.json",
       "shell": null,
       "timeout": null
     },
@@ -4057,7 +4057,7 @@
       "line": 62,
       "owner": "runtime",
       "path": "runtime/evidence_custody.py",
-      "policy": "policies/artifact-preservation.json",
+      "policy": "policies/operational-evidence-retention.json",
       "shell": null,
       "timeout": null
     },
@@ -4071,7 +4071,7 @@
       "line": 218,
       "owner": "runtime",
       "path": "runtime/evidence_custody.py",
-      "policy": "policies/artifact-preservation.json",
+      "policy": "policies/operational-evidence-retention.json",
       "shell": null,
       "timeout": null
     },
@@ -4085,7 +4085,7 @@
       "line": 228,
       "owner": "runtime",
       "path": "runtime/evidence_custody.py",
-      "policy": "policies/artifact-preservation.json",
+      "policy": "policies/operational-evidence-retention.json",
       "shell": null,
       "timeout": null
     },
@@ -4099,7 +4099,7 @@
       "line": 273,
       "owner": "runtime",
       "path": "runtime/evidence_custody.py",
-      "policy": "policies/artifact-preservation.json",
+      "policy": "policies/operational-evidence-retention.json",
       "shell": null,
       "timeout": null
     },
@@ -4113,7 +4113,7 @@
       "line": 83,
       "owner": "runtime",
       "path": "runtime/evidence_custody.py",
-      "policy": "policies/artifact-preservation.json",
+      "policy": "policies/operational-evidence-retention.json",
       "shell": null,
       "timeout": null
     },
@@ -4127,7 +4127,7 @@
       "line": 283,
       "owner": "runtime",
       "path": "runtime/evidence_custody.py",
-      "policy": "policies/artifact-preservation.json",
+      "policy": "policies/operational-evidence-retention.json",
       "shell": null,
       "timeout": null
     },
@@ -4141,7 +4141,7 @@
       "line": 285,
       "owner": "runtime",
       "path": "runtime/evidence_custody.py",
-      "policy": "policies/artifact-preservation.json",
+      "policy": "policies/operational-evidence-retention.json",
       "shell": null,
       "timeout": null
     },
@@ -4155,7 +4155,7 @@
       "line": 238,
       "owner": "runtime",
       "path": "runtime/evidence_custody.py",
-      "policy": "policies/artifact-preservation.json",
+      "policy": "policies/operational-evidence-retention.json",
       "shell": null,
       "timeout": null
     },
@@ -4169,7 +4169,7 @@
       "line": 269,
       "owner": "runtime",
       "path": "runtime/evidence_custody.py",
-      "policy": "policies/artifact-preservation.json",
+      "policy": "policies/operational-evidence-retention.json",
       "shell": null,
       "timeout": null
     },
@@ -4183,7 +4183,7 @@
       "line": 267,
       "owner": "runtime",
       "path": "runtime/evidence_custody.py",
-      "policy": "policies/artifact-preservation.json",
+      "policy": "policies/operational-evidence-retention.json",
       "shell": null,
       "timeout": null
     },
@@ -4197,7 +4197,7 @@
       "line": 265,
       "owner": "runtime",
       "path": "runtime/evidence_custody.py",
-      "policy": "policies/artifact-preservation.json",
+      "policy": "policies/operational-evidence-retention.json",
       "shell": null,
       "timeout": null
     },
@@ -13997,7 +13997,7 @@
       "line": 74,
       "owner": "scripts",
       "path": "scripts/run_installed_operational_owner.py",
-      "policy": "policies/artifact-preservation.json",
+      "policy": "policies/operational-evidence-retention.json",
       "shell": null,
       "timeout": null
     },
@@ -14011,7 +14011,7 @@
       "line": 84,
       "owner": "scripts",
       "path": "scripts/run_installed_operational_owner.py",
-      "policy": "policies/artifact-preservation.json",
+      "policy": "policies/operational-evidence-retention.json",
       "shell": null,
       "timeout": null
     },
@@ -14025,7 +14025,7 @@
       "line": 239,
       "owner": "scripts",
       "path": "scripts/run_installed_operational_owner.py",
-      "policy": "policies/artifact-preservation.json",
+      "policy": "policies/operational-evidence-retention.json",
       "shell": null,
       "timeout": null
     },
@@ -14039,7 +14039,7 @@
       "line": 242,
       "owner": "scripts",
       "path": "scripts/run_installed_operational_owner.py",
-      "policy": "policies/artifact-preservation.json",
+      "policy": "policies/operational-evidence-retention.json",
       "shell": null,
       "timeout": null
     },
@@ -14053,7 +14053,7 @@
       "line": 754,
       "owner": "scripts",
       "path": "scripts/run_installed_operational_owner.py",
-      "policy": "policies/artifact-preservation.json",
+      "policy": "policies/operational-evidence-retention.json",
       "shell": null,
       "timeout": null
     },
@@ -14067,7 +14067,7 @@
       "line": 87,
       "owner": "scripts",
       "path": "scripts/run_installed_operational_owner.py",
-      "policy": "policies/artifact-preservation.json",
+      "policy": "policies/operational-evidence-retention.json",
       "shell": null,
       "timeout": null
     },
@@ -14083,7 +14083,7 @@
       "path": "scripts/run_installed_operational_owner.py",
       "policy": "policies/contained-execution.json",
       "shell": "False",
-      "timeout": null
+      "timeout": "owned_member_wait_timeout_and_process_tree_closure"
     },
     {
       "approval": "required_for_material_or_external_effects",
@@ -14235,7 +14235,7 @@
       "line": 112,
       "owner": "scripts",
       "path": "scripts/run_release_stage_owner.py",
-      "policy": "policies/artifact-preservation.json",
+      "policy": "policies/operational-evidence-retention.json",
       "shell": null,
       "timeout": null
     },
@@ -14249,7 +14249,7 @@
       "line": 121,
       "owner": "scripts",
       "path": "scripts/run_release_stage_owner.py",
-      "policy": "policies/artifact-preservation.json",
+      "policy": "policies/operational-evidence-retention.json",
       "shell": null,
       "timeout": null
     },
@@ -14263,7 +14263,7 @@
       "line": 388,
       "owner": "scripts",
       "path": "scripts/run_release_stage_owner.py",
-      "policy": "policies/artifact-preservation.json",
+      "policy": "policies/operational-evidence-retention.json",
       "shell": null,
       "timeout": null
     },
@@ -14277,7 +14277,7 @@
       "line": 428,
       "owner": "scripts",
       "path": "scripts/run_release_stage_owner.py",
-      "policy": "policies/artifact-preservation.json",
+      "policy": "policies/operational-evidence-retention.json",
       "shell": null,
       "timeout": null
     },
@@ -14287,8 +14287,8 @@
       "containment": "validated_path_and_bounded_scope",
       "destructive": false,
       "effect": "process",
-      "id": "1f70f8624296290ee62c",
-      "line": 452,
+      "id": "32cde78790300c449556",
+      "line": 453,
       "owner": "scripts",
       "path": "scripts/run_release_stage_owner.py",
       "policy": "policies/contained-execution.json",
@@ -14301,13 +14301,13 @@
       "containment": "validated_path_and_bounded_scope",
       "destructive": false,
       "effect": "process",
-      "id": "9ec905a107ec855268c6",
-      "line": 679,
+      "id": "66248ada1654e1c688ae",
+      "line": 680,
       "owner": "scripts",
       "path": "scripts/run_release_stage_owner.py",
       "policy": "policies/contained-execution.json",
       "shell": null,
-      "timeout": null
+      "timeout": "60"
     },
     {
       "approval": "required_for_material_or_external_effects",
@@ -14321,7 +14321,7 @@
       "path": "scripts/run_release_stage_owner.py",
       "policy": "policies/contained-execution.json",
       "shell": "False",
-      "timeout": null
+      "timeout": "1800"
     },
     {
       "approval": "required_for_material_or_external_effects",
@@ -14333,7 +14333,7 @@
       "line": 399,
       "owner": "scripts",
       "path": "scripts/run_release_stage_owner.py",
-      "policy": "policies/artifact-preservation.json",
+      "policy": "policies/operational-evidence-retention.json",
       "shell": null,
       "timeout": null
     },
@@ -14557,7 +14557,7 @@
       "line": 74,
       "owner": "scripts",
       "path": "scripts/verify_release_publication.py",
-      "policy": "policies/artifact-preservation.json",
+      "policy": "policies/operational-evidence-retention.json",
       "shell": null,
       "timeout": null
     },
@@ -14571,7 +14571,7 @@
       "line": 79,
       "owner": "scripts",
       "path": "scripts/verify_release_publication.py",
-      "policy": "policies/artifact-preservation.json",
+      "policy": "policies/operational-evidence-retention.json",
       "shell": null,
       "timeout": null
     },
@@ -14585,7 +14585,7 @@
       "line": 85,
       "owner": "scripts",
       "path": "scripts/verify_release_publication.py",
-      "policy": "policies/artifact-preservation.json",
+      "policy": "policies/operational-evidence-retention.json",
       "shell": null,
       "timeout": null
     },
@@ -14599,7 +14599,7 @@
       "line": 83,
       "owner": "scripts",
       "path": "scripts/verify_release_publication.py",
-      "policy": "policies/artifact-preservation.json",
+      "policy": "policies/operational-evidence-retention.json",
       "shell": null,
       "timeout": null
     },
@@ -14613,7 +14613,7 @@
       "line": 87,
       "owner": "scripts",
       "path": "scripts/verify_release_publication.py",
-      "policy": "policies/artifact-preservation.json",
+      "policy": "policies/operational-evidence-retention.json",
       "shell": null,
       "timeout": null
     },
@@ -14627,7 +14627,7 @@
       "line": 94,
       "owner": "scripts",
       "path": "scripts/verify_release_publication.py",
-      "policy": "policies/artifact-preservation.json",
+      "policy": "policies/operational-evidence-retention.json",
       "shell": null,
       "timeout": null
     },
@@ -14641,7 +14641,7 @@
       "line": 90,
       "owner": "scripts",
       "path": "scripts/verify_release_publication.py",
-      "policy": "policies/artifact-preservation.json",
+      "policy": "policies/operational-evidence-retention.json",
       "shell": null,
       "timeout": null
     }

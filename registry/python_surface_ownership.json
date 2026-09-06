@@ -1,7 +1,7 @@
 {
   "direct_behavior_count": 63,
   "errors": [],
-  "evidence_association_count": 107,
+  "evidence_association_count": 110,
   "map_current": true,
   "packaged_file_count": 586,
   "python_file_count": 696,
@@ -2337,7 +2337,7 @@
       "validation_level": "full-suite-and-installed-integration"
     },
     {
-      "bytes": 8384,
+      "bytes": 9034,
       "evidence": [
         "tests/test_test_profiles.py"
       ],
@@ -2345,7 +2345,7 @@
       "packaged": true,
       "path": "runtime/effect_surface.py",
       "role": "installed-runtime",
-      "sha256": "5d2fe894f6a14aececa97fb79d385363843123c8c7b1d761c5ca7d2d694973c3",
+      "sha256": "53ceabfa4d4cd81e1fc119da6129d9a1bb6a959f02d675a55cdf0504459a1e9e",
       "syntax_valid": true,
       "validation_level": "evidence-association"
     },
@@ -2450,8 +2450,7 @@
     {
       "bytes": 11459,
       "evidence": [
-        "tests",
-        "tests/test_installed_wheel_e2e.py"
+        "tests/test_effect_surface.py"
       ],
       "owner": "engineering_bootstrap",
       "packaged": true,
@@ -2459,7 +2458,7 @@
       "role": "installed-runtime",
       "sha256": "e960f5e7ee3bfa448c9af666174dae83fa24a11e4cdbcf518db77713149d93d1",
       "syntax_valid": true,
-      "validation_level": "full-suite-and-installed-integration"
+      "validation_level": "evidence-association"
     },
     {
       "bytes": 12237,
@@ -6123,8 +6122,7 @@
     {
       "bytes": 33468,
       "evidence": [
-        "structural AST validation",
-        "project-management release boundary"
+        "tests/test_effect_surface.py"
       ],
       "owner": "project-release-control",
       "packaged": false,
@@ -6132,7 +6130,7 @@
       "role": "source-build-control",
       "sha256": "89fa3b8b83d8c2ec1239b229f65c7c2e68fa8f9f17b1772f7f705cf05f3833f7",
       "syntax_valid": true,
-      "validation_level": "source-only-structural"
+      "validation_level": "evidence-association"
     },
     {
       "bytes": 49160,
@@ -6163,18 +6161,17 @@
       "validation_level": "source-only-structural"
     },
     {
-      "bytes": 46884,
+      "bytes": 46938,
       "evidence": [
-        "structural AST validation",
-        "project-management release boundary"
+        "tests/test_effect_surface.py"
       ],
       "owner": "project-release-control",
       "packaged": false,
       "path": "scripts/run_release_stage_owner.py",
       "role": "source-build-control",
-      "sha256": "9da9ac1abdeaba74f78a48a0e186d5f9bbb397c0010a07870515c443653559bc",
+      "sha256": "9de5584f540ee7f841337449e346d14a7b9486b5369ac2aa739a523816dfbf60",
       "syntax_valid": true,
-      "validation_level": "source-only-structural"
+      "validation_level": "evidence-association"
     },
     {
       "bytes": 2687,
@@ -6221,6 +6218,7 @@
     {
       "bytes": 15194,
       "evidence": [
+        "tests/test_effect_surface.py",
         "tests/test_public_repository_surface.py"
       ],
       "owner": "project-release-control",
@@ -7169,7 +7167,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 4622,
+      "bytes": 5741,
       "evidence": [
         "tests/test_effect_surface.py"
       ],
@@ -7177,7 +7175,7 @@
       "packaged": true,
       "path": "tests/test_effect_surface.py",
       "role": "release-test",
-      "sha256": "03608811a636d7d2d4da65d67a2ed40177eed1aa4fb4ceb0b35ca01652fc3906",
+      "sha256": "558703b21d4b8d35893cfaaf7cee4eb62a228d39cd204e056b5d8ddd9e66127d",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },
@@ -9444,15 +9442,15 @@
     "source-example": 1
   },
   "schema_version": "1.0",
-  "source_only_structural_count": 88,
+  "source_only_structural_count": 86,
   "syntax_valid_count": 696,
   "valid": true,
   "validation_counts": {
     "direct-isolated-behavior": 63,
-    "evidence-association": 107,
+    "evidence-association": 110,
     "executable-test": 245,
-    "full-suite-and-installed-integration": 191,
-    "source-only-structural": 88,
+    "full-suite-and-installed-integration": 190,
+    "source-only-structural": 86,
     "unvalidated": 2
   }
 }

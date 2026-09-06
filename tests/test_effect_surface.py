@@ -41,6 +41,37 @@ def test_every_executable_effect_surface_is_owned_and_bounded() -> None:
     assert result["counts"]["filesystem_mutation"] > 0
 
 
+def test_release_effects_have_explicit_bounded_or_recovery_ownership() -> None:
+    records = discover_effect_surfaces(ROOT)
+    affected = {
+        record["path"]: []
+        for record in records
+        if record["path"]
+        in {
+            "runtime/evidence_custody.py",
+            "scripts/run_installed_operational_owner.py",
+            "scripts/run_release_stage_owner.py",
+            "scripts/verify_release_publication.py",
+        }
+    }
+    for record in records:
+        if record["path"] in affected:
+            affected[record["path"]].append(record)
+
+    assert set(affected) == {
+        "runtime/evidence_custody.py",
+        "scripts/run_installed_operational_owner.py",
+        "scripts/run_release_stage_owner.py",
+        "scripts/verify_release_publication.py",
+    }
+    for records_for_owner in affected.values():
+        for record in records_for_owner:
+            if record["destructive"]:
+                assert record["policy"] == "policies/operational-evidence-retention.json"
+            if record["effect"] == "process":
+                assert record["timeout"] is not None
+
+
 def test_discovery_prunes_external_custody_before_parsing() -> None:
     root = _copy_effect_fixture(Path(tempfile.mkdtemp()))
     hostile = (

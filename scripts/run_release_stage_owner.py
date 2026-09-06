@@ -438,6 +438,7 @@ class ProductionEffects:
                 errors="replace",
                 shell=False,
                 check=False,
+                timeout=1800,
                 env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
             )
         if result.returncode:
@@ -683,6 +684,7 @@ class ProductionEffects:
             text=True,
             encoding="utf-8",
             errors="replace",
+            timeout=60,
             check=False,
         )
         with zipfile.ZipFile(config.artifact) as archive:

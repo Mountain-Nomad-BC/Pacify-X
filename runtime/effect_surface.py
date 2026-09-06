@@ -40,14 +40,23 @@ MUTATION_NAMES = {
 DESTRUCTIVE_NAMES = {"rmtree", "unlink", "rmdir"}
 RESOURCE_LIFECYCLE_OWNER = "runtime/resource_lifecycle.py"
 RECOVERABLE_RECLAMATION_OWNERS = {
+    "runtime/evidence_custody.py": "policies/operational-evidence-retention.json",
     "scripts/archive_committed_wal.py": "policies/operational-evidence-retention.json",
     "scripts/archive_project_map_history.py": "policies/operational-evidence-retention.json",
+    "scripts/run_installed_operational_owner.py": "policies/operational-evidence-retention.json",
+    "scripts/run_release_stage_owner.py": "policies/operational-evidence-retention.json",
+    "scripts/verify_release_publication.py": "policies/operational-evidence-retention.json",
     "runtime/global_skill_isolation.py": "policies/operational-evidence-retention.json",
     "runtime/operational_gap_ledger.py": "policies/operational-evidence-retention.json",
     "runtime/skill_studio.py": "policies/operational-evidence-retention.json",
     "runtime/studio_authority.py": "policies/operational-evidence-retention.json",
     "runtime/studio_models.py": "policies/operational-evidence-retention.json",
     "runtime/work_admission.py": "policies/operational-evidence-retention.json",
+}
+OWNED_PROCESS_SUPERVISORS = {
+    "scripts/run_installed_operational_owner.py": (
+        "owned_member_wait_timeout_and_process_tree_closure"
+    ),
 }
 
 
@@ -143,6 +152,8 @@ def discover_effect_surfaces(root: Path) -> list[dict[str, Any]]:
                 process_timeout = _popen_communication_timeout(tree, node)
                 if relative == RESOURCE_LIFECYCLE_OWNER:
                     process_timeout = "owned_resource_lifecycle_process_tree_receipt"
+                elif relative in OWNED_PROCESS_SUPERVISORS:
+                    process_timeout = OWNED_PROCESS_SUPERVISORS[relative]
             # Identity is a source locator, not an interpreter serialization.
             # ast.dump() changes when Python adds AST fields (for example
             # type_params in 3.12), which made the same bytes produce different
@@ -159,10 +170,10 @@ def discover_effect_surfaces(root: Path) -> list[dict[str, Any]]:
                     "policy": (
                         "policies/resource-lifecycle-retention.json"
                         if relative == RESOURCE_LIFECYCLE_OWNER
-                        else RECOVERABLE_RECLAMATION_OWNERS[relative]
-                        if relative in RECOVERABLE_RECLAMATION_OWNERS
                         else "policies/contained-execution.json"
                         if effect in {"process", "network"}
+                        else RECOVERABLE_RECLAMATION_OWNERS[relative]
+                        if relative in RECOVERABLE_RECLAMATION_OWNERS
                         else "policies/artifact-preservation.json"
                     ),
                     "approval": "required_for_material_or_external_effects",
