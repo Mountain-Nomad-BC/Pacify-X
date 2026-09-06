@@ -5975,7 +5975,7 @@
       "validation_level": "source-only-structural"
     },
     {
-      "bytes": 48798,
+      "bytes": 58063,
       "evidence": [
         "tests/test_release_candidate_driver.py",
         "tests/test_test_profiles.py"
@@ -5984,7 +5984,7 @@
       "packaged": false,
       "path": "scripts/reconcile_unverified_operational_controls.py",
       "role": "source-build-control",
-      "sha256": "2a6b1eaced4263d0472d6e9c250c31a2e2ed1e5592684ccb5053dc620f55aa5e",
+      "sha256": "37befe00fd4a252a05f783a7159bede818c14d2f5b30425d38e685d2c1d16853",
       "syntax_valid": true,
       "validation_level": "evidence-association"
     },
@@ -6129,7 +6129,7 @@
       "validation_level": "evidence-association"
     },
     {
-      "bytes": 49160,
+      "bytes": 49914,
       "evidence": [
         "tests/test_structural_integrity.py"
       ],
@@ -6137,7 +6137,7 @@
       "packaged": false,
       "path": "scripts/run_release_candidate.py",
       "role": "source-build-control",
-      "sha256": "435a1ff35896774e31febb3b9e076ce2ce7e72fad7e8edc10f6163f8bb46927b",
+      "sha256": "4eec4bd27acdc71e020be178c0fbee19d871330292796dcd0aef2f14113215fa",
       "syntax_valid": true,
       "validation_level": "evidence-association"
     },
@@ -6156,7 +6156,7 @@
       "validation_level": "source-only-structural"
     },
     {
-      "bytes": 48845,
+      "bytes": 50550,
       "evidence": [
         "tests/test_effect_surface.py",
         "tests/test_structural_integrity.py"
@@ -6165,7 +6165,7 @@
       "packaged": false,
       "path": "scripts/run_release_stage_owner.py",
       "role": "source-build-control",
-      "sha256": "0e3fd2c88136efd844d2b26e72aa984cd94f646ceb8428e814409c6d655670fc",
+      "sha256": "de2bb20c0027ef64652af29ab68c524a7692c44c43dbe9461c5ce64f0132cabb",
       "syntax_valid": true,
       "validation_level": "evidence-association"
     },
@@ -8373,7 +8373,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 19515,
+      "bytes": 30587,
       "evidence": [
         "tests/test_reconcile_unverified_operational_controls.py"
       ],
@@ -8381,7 +8381,7 @@
       "packaged": true,
       "path": "tests/test_reconcile_unverified_operational_controls.py",
       "role": "release-test",
-      "sha256": "aceace3f7f3c78bf49c95f3cb474258e1f21a3d6ac623aeab94ac3d1b2e633a1",
+      "sha256": "e7fbb527d1d918c0d53f5d8789dd02f346d2e2c48a27cc69e2ec5020844a81cf",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },
@@ -8516,7 +8516,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 22661,
+      "bytes": 25813,
       "evidence": [
         "tests/test_release_candidate_driver.py"
       ],
@@ -8524,7 +8524,7 @@
       "packaged": true,
       "path": "tests/test_release_candidate_driver.py",
       "role": "release-test",
-      "sha256": "ce76c70ee7337319dfc6722c91df2cd9d4f4413a9a06776c1a49cd3d2323a612",
+      "sha256": "f532d72a10074a36cd5793a1b90183d1842e3b4b6833d202f88d287941768bd0",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },
@@ -8685,7 +8685,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 19103,
+      "bytes": 23132,
       "evidence": [
         "tests/test_release_stage_owner.py"
       ],
@@ -8693,7 +8693,7 @@
       "packaged": true,
       "path": "tests/test_release_stage_owner.py",
       "role": "release-test",
-      "sha256": "ba38bc450194a7e80b00a9a0a6fbf5bf776d633b65b88b9e379ec86be0d23a4a",
+      "sha256": "9923e47d2095da3b390222a6ae06138d59daa94eeed934876333c1fa60e97e43",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },

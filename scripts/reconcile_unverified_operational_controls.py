@@ -40,6 +40,18 @@ COMPLETE_TERMINAL_DISPOSITIONS = {
     "installed_operational_interaction_complete",
     "reversible_ui_interaction_observed",
 }
+EXACT_RECOVERED_AUTHORITY_BOUNDARY_IDS = {
+    "pxui.dashboard-control-plane.command.pacifyX.continueWithCodex",
+    "pxui.dashboard-control-plane.command.pacifyX.refreshEnvironment",
+    "pxui.dashboard-control-plane.command.pacifyX.refreshOllama",
+    "pxui.dashboard-control-plane.command.pacifyX.rotateStudioApprovalIdentity",
+    "pxui.dashboard-control-plane.command.pacifyX.validateControlPlane",
+    "pxui.dashboard-control-plane.command.validate",
+    "pxui.diagnostics.action.dynamicRepair.refreshEnvironment",
+    "pxui.diagnostics.action.validate",
+    "pxui.runtime-core.action.validate",
+    "pxui.runtime-core.action.cleanupPermanent",
+}
 CARD_COMPLETION_STATES = {"closed", "operationally_verified", "superseded"}
 CARD_PRIMARY_STATES = (
     "discovered", "reproduced", "scoped", "approved", "implementing",
@@ -255,6 +267,29 @@ def _simulate_card_discoveries(
     return active
 
 
+def _simulate_initial_dispositions(
+    active: dict[str, object], events: list[dict[str, object]], timestamp: str,
+) -> dict[str, object]:
+    """Project initial dispositions without discarding simulated discoveries."""
+
+    projected = copy.deepcopy(active)
+    for event in events:
+        payload = event["payload"]
+        projected["surfaces"][payload["surface_id"]]["control_dispositions"][payload["control_id"]] = {
+            "disposition": payload["disposition"],
+            "gap_ids": list(payload["gap_ids"]),
+            "evidence": copy.deepcopy(payload["evidence"]),
+            "observation": copy.deepcopy(payload.get("observation")),
+            "proof_status": (
+                "current_typed" if payload.get("observation") else "legacy_unbound"
+            ),
+            "timestamp": timestamp,
+            "actor": ACTOR,
+            "history": [],
+        }
+    return projected
+
+
 def _operational_feature_acceptance(
     card: dict[str, object], evidence_reference: str,
 ) -> dict[str, object] | None:
@@ -421,9 +456,7 @@ def _positive_current_source(receipt: dict[str, object]) -> bool:
     status = receipt.get("status_truth")
     source = status.get("source_identity") if isinstance(status, dict) else None
     state = str(source.get("state") or "") if isinstance(source, dict) else ""
-    return receipt.get("host_source_mismatch") is False and state in {
-        "match", "reported_match", "verified"
-    }
+    return receipt.get("host_source_mismatch") is False and state == "verified"
 
 
 def _observation_chain(record: dict[str, object], reference: str) -> dict[str, dict[str, object]]:
@@ -464,7 +497,8 @@ def _typed_observation(
 ) -> dict[str, object] | None:
     attempted = record.get("attempted") is True
     observed = record.get("observed") is True
-    if not attempted and not observed:
+    rendered = record.get("rendered") is True
+    if not attempted and not observed and not rendered:
         return None
     chain = _observation_chain(record, reference)
     complete = all(
@@ -472,9 +506,32 @@ def _typed_observation(
         for item in chain.values()
     )
     terminal = str(record.get("terminal_disposition") or "")
-    outcome = "operational" if complete and terminal in COMPLETE_TERMINAL_DISPOSITIONS else "observed_only"
-    return {
-        "schema_version": "px.control-observation/1.0",
+    complete_terminal = complete and terminal in COMPLETE_TERMINAL_DISPOSITIONS
+    errors = record.get("errors")
+    clean_errors = isinstance(errors, list) and errors == []
+    omitted_observed_indicator = (
+        not attempted
+        and not observed
+        and record.get("kind") == "indicator"
+        and rendered
+        and record.get("visible") is True
+        and clean_errors
+        and complete_terminal
+    )
+    # The installed probe merger historically omitted ``observed`` while
+    # retaining rendered=true plus the complete terminal chain.  That exact
+    # record is still a typed observation; a merely rendered partial record is
+    # not.
+    if not attempted and not observed and not omitted_observed_indicator:
+        return None
+    recovered_authority_boundary = _valid_recovered_authority_boundary(record)
+    outcome = "operational" if complete_terminal and clean_errors else "observed_only"
+    observation = {
+        "schema_version": (
+            "px.control-observation/2.0"
+            if recovered_authority_boundary
+            else "px.control-observation/1.0"
+        ),
         "outcome": outcome,
         "authority": str(record.get("authority") or receipt.get("authority") or "current-source operational walk"),
         "observed_at": str(record.get("observed_at") or receipt.get("observed_at") or ""),
@@ -484,11 +541,153 @@ def _typed_observation(
             "current_source": True,
             "host_source_mismatch": False,
         },
-        "rendered": bool(record.get("rendered")),
+        "rendered": rendered,
+        "visible": record.get("visible") is True,
         "attempted": attempted,
         "observed": observed,
+        "terminal_disposition": terminal,
+        "errors": list(errors) if isinstance(errors, list) else ["invalid-errors-field"],
+        "reason": str(record.get("reason") or ""),
+        "expected_effect": str(record.get("expected_effect") or ""),
+        "return_condition": str(record.get("return_condition") or ""),
+        "recovered_authority_boundary": recovered_authority_boundary,
         "interaction_chain": chain,
     }
+    if recovered_authority_boundary:
+        observation.update({
+            "control_kind": str(record.get("kind") or ""),
+            "evidence_mode": "contained_fault_injection",
+            # The attempted refusal plus directly observed failure/recovery
+            # stages is itself an observation, even though the withheld effect
+            # was not executed.
+            "observed": True,
+        })
+    return observation
+
+
+def _valid_recovered_authority_boundary(record: dict[str, object]) -> bool:
+    """Mirror the installed-walk exact refusal-and-recovery contract."""
+
+    control_id = str(record.get("control_id") or "")
+    if control_id not in EXACT_RECOVERED_AUTHORITY_BOUNDARY_IDS:
+        return False
+    expected_kind = "command" if ".command." in control_id else "action"
+    if (
+        record.get("kind") != expected_kind
+        or
+        record.get("terminal_disposition") != "skipped_requires_authority"
+        or record.get("rendered") is not True
+        or record.get("visible") is not True
+        or record.get("attempted") is not True
+        or not isinstance(record.get("errors"), list)
+        or record.get("errors") != []
+    ):
+        return False
+    if not all(
+        isinstance(record.get(field), str) and bool(str(record[field]).strip())
+        for field in ("authority", "reason", "expected_effect", "return_condition")
+    ):
+        return False
+    stages = {
+        str(item.get("stage") or ""): str(item.get("status") or "")
+        for item in record.get("stages", [])
+        if isinstance(item, dict)
+    }
+    return (
+        stages.get("failure_handling") == "observed"
+        and stages.get("recovery_rollback") == "observed"
+        and any(
+            status not in {"observed", "not_applicable"}
+            for status in stages.values()
+        )
+    )
+
+
+def _accepted_recovered_authority_observation(
+    control_id: str, observation: object,
+) -> bool:
+    """Accept an exact current refusal boundary without calling it operational."""
+
+    if not isinstance(observation, dict):
+        return False
+    chain = observation.get("interaction_chain")
+    return (
+        control_id in EXACT_RECOVERED_AUTHORITY_BOUNDARY_IDS
+        and observation.get("schema_version") == "px.control-observation/2.0"
+        and observation.get("outcome") == "observed_only"
+        and observation.get("terminal_disposition") == "skipped_requires_authority"
+        and observation.get("rendered") is True
+        and observation.get("visible") is True
+        and observation.get("attempted") is True
+        and observation.get("errors") == []
+        and all(
+            isinstance(observation.get(field), str)
+            and bool(str(observation[field]).strip())
+            for field in ("authority", "reason", "expected_effect", "return_condition")
+        )
+        and isinstance(chain, dict)
+        and chain.get("failure_handling", {}).get("state") == "present"
+        and chain.get("recovery_rollback", {}).get("state") == "present"
+        and any(
+            isinstance(item, dict)
+            and item.get("state") not in {"present", "not_applicable"}
+            for item in chain.values()
+        )
+    )
+
+
+def _durable_recovered_authority_observation(
+    control_id: str, observation: object,
+) -> bool:
+    """Validate the boundary fields retained by ledger normalization."""
+
+    if not isinstance(observation, dict):
+        return False
+    chain = observation.get("interaction_chain")
+    expected_kind = "command" if ".command." in control_id else "action"
+    return (
+        control_id in EXACT_RECOVERED_AUTHORITY_BOUNDARY_IDS
+        and observation.get("schema_version") == "px.control-observation/2.0"
+        and observation.get("outcome") == "observed_only"
+        and observation.get("rendered") is True
+        and observation.get("attempted") is True
+        and observation.get("observed") is True
+        and observation.get("control_kind") == expected_kind
+        and observation.get("evidence_mode") == "contained_fault_injection"
+        and isinstance(chain, dict)
+        and chain.get("failure_handling", {}).get("state") == "present"
+        and chain.get("recovery_rollback", {}).get("state") == "present"
+        and any(
+            isinstance(item, dict)
+            and item.get("state") not in {"present", "not_applicable"}
+            for item in chain.values()
+        )
+    )
+
+
+def _strictly_operational_disposition(disposition: object) -> bool:
+    return (
+        isinstance(disposition, dict)
+        and disposition.get("disposition") == "operational"
+        and disposition.get("gap_ids") == []
+        and disposition.get("proof_status") == "current_typed"
+        and isinstance(disposition.get("observation"), dict)
+        and disposition["observation"].get("outcome") == "operational"
+    )
+
+
+def _accepted_current_disposition(control_id: str, disposition: object) -> bool:
+    if _strictly_operational_disposition(disposition):
+        return True
+    return (
+        isinstance(disposition, dict)
+        and disposition.get("disposition") == "gap"
+        and bool(disposition.get("gap_ids"))
+        and disposition.get("proof_status") == "current_typed"
+        and _durable_recovered_authority_observation(
+            control_id, disposition.get("observation")
+        )
+    )
 
 
 def _receipt_observations(
@@ -561,6 +760,10 @@ def plan_observation_revisions(
             and list(current.get("gap_ids", [])) == gap_ids
         ):
             continue
+        evidence = [{
+            "reference": reference,
+            "claim": f"The current-source walk directly examined {control_id} and retained every chain-stage result.",
+        }]
         events.append({
             "event_type": "control_disposition_revised",
             "actor": ACTOR,
@@ -573,10 +776,7 @@ def plan_observation_revisions(
                 "previous_disposition_sha256": control_disposition_sha256(current),
                 "gap_ids": gap_ids,
                 "reason": "Attach the exact directly examined current-source control observation without promoting incomplete chains.",
-                "evidence": [{
-                    "reference": reference,
-                    "claim": f"The current-source walk directly examined {control_id} and retained every chain-stage result.",
-                }],
+                "evidence": evidence,
                 "observation": observation,
             },
         })
@@ -649,8 +849,17 @@ def operational_reconciliation_status(
         observation.get("outcome") == "operational"
         for _, _, observation in observations
     )
+    recovered_authority_boundary_ids = sorted(
+        control_id
+        for _, control_id, observation in observations
+        if _accepted_recovered_authority_observation(control_id, observation)
+    )
+    accepted_receipt_count = (
+        operational_receipt_count + len(recovered_authority_boundary_ids)
+    )
     unresolved: list[str] = []
     bound_cards: set[str] = set()
+    nonblocking_boundary_cards: set[str] = set()
     source_hashes: set[str] = set()
     for surface_id, surface in snapshot["surfaces"].items():
         for control_id in surface.get("known_controls", []):
@@ -667,12 +876,11 @@ def operational_reconciliation_status(
                     str(observation.get("source_identity", {}).get("source_sha256", ""))
                 )
             if (
-                disposition.get("disposition") != "operational"
-                or disposition.get("gap_ids") != []
-                or disposition.get("proof_status") != "current_typed"
-                or not isinstance(observation, dict)
-                or observation.get("outcome") != "operational"
+                _accepted_current_disposition(control_id, disposition)
+                and not _strictly_operational_disposition(disposition)
             ):
+                nonblocking_boundary_cards.update(map(str, disposition.get("gap_ids", [])))
+            if not _accepted_current_disposition(control_id, disposition):
                 unresolved.append(f"{surface_id}/{control_id}")
     nonterminal = sorted(
         gap_id
@@ -680,6 +888,7 @@ def operational_reconciliation_status(
         if gap_id in snapshot["cards"]
         and snapshot["cards"][gap_id].get("current_state")
         not in CARD_COMPLETION_STATES
+        and gap_id not in nonblocking_boundary_cards
     )
     inventory_valid = (
         inventory.get("schema_version") == "px.operational-surface-inventory/2.0"
@@ -698,7 +907,7 @@ def operational_reconciliation_status(
         inventory_valid
         and receipt_count == expected_count
         and len(observations) == expected_count
-        and operational_receipt_count == expected_count
+        and accepted_receipt_count == expected_count
         and source_hashes == {receipt_sha256}
         and not unresolved
         and not nonterminal
@@ -710,6 +919,9 @@ def operational_reconciliation_status(
         "receipt_control_count": receipt_count,
         "examined_control_count": len(observations),
         "operational_receipt_count": operational_receipt_count,
+        "recovered_authority_boundary_count": len(recovered_authority_boundary_ids),
+        "recovered_authority_boundary_ids": recovered_authority_boundary_ids,
+        "accepted_receipt_count": accepted_receipt_count,
         "receipt_inventory_sha256": receipt_sha256,
         "receipt_inventory_valid": inventory_valid,
         "observation_source_hashes": sorted(source_hashes),
@@ -907,24 +1119,16 @@ def main() -> int:
                 isinstance(record, dict) and record.get("attempted") is True
                 for record in receipt_records
             )
-        active = read_snapshot(root) if not args.check else json.loads(json.dumps(snapshot))
+        # ``active`` already contains simulated discoveries in check mode.
+        # Resetting it to ``snapshot`` here made dry-run dispositions reference
+        # cards that had disappeared from the projection.
+        active = read_snapshot(root) if not args.check else active
         if args.check:
             # Dry-run the exact post-initialization state so --check can validate
             # a receipt that attempts controls first discovered by this run.
-            for event in disposition_events:
-                payload = event["payload"]
-                active["surfaces"][payload["surface_id"]]["control_dispositions"][payload["control_id"]] = {
-                    "disposition": payload["disposition"],
-                    "gap_ids": list(payload["gap_ids"]),
-                    "evidence": list(payload["evidence"]),
-                    "observation": copy.deepcopy(payload.get("observation")),
-                    "proof_status": (
-                        "current_typed" if payload.get("observation") else "legacy_unbound"
-                    ),
-                    "timestamp": timestamp,
-                    "actor": ACTOR,
-                    "history": [],
-                }
+            active = _simulate_initial_dispositions(
+                active, disposition_events, timestamp
+            )
         observation_events, examined_controls = plan_observation_revisions(
             active, receipt, receipt_reference
         )
@@ -950,18 +1154,19 @@ def main() -> int:
         f"{surface_id}/{control_id}"
         for surface_id, surface in final_snapshot["surfaces"].items()
         for control_id in surface.get("known_controls", [])
-        if (
-            not isinstance(surface.get("control_dispositions", {}).get(control_id), dict)
-            or surface["control_dispositions"][control_id].get("disposition") != "operational"
-            or surface["control_dispositions"][control_id].get("gap_ids") != []
-            or surface["control_dispositions"][control_id].get("proof_status") != "current_typed"
-            or not isinstance(
-                surface["control_dispositions"][control_id].get("observation"), dict
-            )
-            or surface["control_dispositions"][control_id]["observation"].get("outcome")
-            != "operational"
+        if not _accepted_current_disposition(
+            control_id, surface.get("control_dispositions", {}).get(control_id)
         )
     )
+    nonblocking_boundary_cards = {
+        str(gap_id)
+        for surface in final_snapshot["surfaces"].values()
+        for control_id, disposition in surface.get("control_dispositions", {}).items()
+        if isinstance(disposition, dict)
+        and _accepted_current_disposition(str(control_id), disposition)
+        and not _strictly_operational_disposition(disposition)
+        for gap_id in disposition.get("gap_ids", [])
+    }
     historically_bound_cards = {
         str(gap_id)
         for surface in final_snapshot["surfaces"].values()
@@ -978,6 +1183,7 @@ def main() -> int:
         and final_snapshot["cards"][gap_id].get("current_state")
         not in CARD_COMPLETION_STATES
         and gap_id not in reconciled_cards
+        and gap_id not in nonblocking_boundary_cards
     )
     expected_control_count = sum(
         len(surface.get("known_controls", []))
@@ -1009,6 +1215,14 @@ def main() -> int:
         observation.get("outcome") == "operational"
         for _, _, observation in receipt_observations
     )
+    recovered_authority_boundary_ids = sorted(
+        control_id
+        for _, control_id, observation in receipt_observations
+        if _accepted_recovered_authority_observation(control_id, observation)
+    )
+    accepted_receipt_count = (
+        receipt_operational_count + len(recovered_authority_boundary_ids)
+    )
     observation_source_hashes = {
         str(
             disposition.get("observation", {})
@@ -1023,7 +1237,7 @@ def main() -> int:
         receipt is not None
         and receipt_control_count == expected_control_count
         and len(receipt_observations) == expected_control_count
-        and receipt_operational_count == expected_control_count
+        and accepted_receipt_count == expected_control_count
         and receipt_inventory_valid
         and observation_source_hashes == {receipt_inventory_sha256}
         and not unresolved_controls
@@ -1052,10 +1266,18 @@ def main() -> int:
         "receipt_control_count": receipt_control_count,
         "examined_control_count": len(receipt_observations),
         "receipt_operational_count": receipt_operational_count,
+        "recovered_authority_boundary_count": len(recovered_authority_boundary_ids),
+        "recovered_authority_boundary_ids": recovered_authority_boundary_ids,
+        "accepted_receipt_count": accepted_receipt_count,
         "receipt_inventory_sha256": receipt_inventory_sha256,
         "receipt_inventory_valid": receipt_inventory_valid,
         "observation_source_hashes": sorted(observation_source_hashes),
-        "operational_control_count": expected_control_count - len(unresolved_controls),
+        "operational_control_count": sum(
+            _strictly_operational_disposition(disposition)
+            for surface in final_snapshot["surfaces"].values()
+            for disposition in surface.get("control_dispositions", {}).values()
+        ),
+        "accepted_control_count": expected_control_count - len(unresolved_controls),
         "unresolved_control_ids": unresolved_controls,
         "nonterminal_bound_card_ids": nonterminal_cards,
     }, indent=2))

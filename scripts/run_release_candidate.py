@@ -17,9 +17,14 @@ import os
 from pathlib import Path
 import re
 import subprocess
+import sys
 import time
 from typing import Any, Mapping, Protocol
 from uuid import uuid4
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 
 CONFIG_SCHEMA = "px.release-candidate-automation/1.0"
@@ -344,6 +349,48 @@ def _repair(config: Config) -> dict[str, Any]:
     )
 
 
+def _invalid_active_predecessor_kind(
+    config: Config, release: Mapping[str, Any]
+) -> str | None:
+    """Classify only structurally valid campaigns invalidated by source drift."""
+
+    if (
+        release.get("state") != "active"
+        or release.get("apply_count") != 1
+        or not isinstance(release.get("identity"), dict)
+        or release.get("active_claim") is not None
+    ):
+        return None
+    stages = release.get("stages")
+    if not isinstance(stages, dict) or set(stages) != set(RELEASE_STAGE_PHASES):
+        return None
+    statuses = [
+        stages[name].get("status") if isinstance(stages.get(name), dict) else None
+        for name in RELEASE_STAGE_PHASES
+    ]
+    from runtime.release_campaign import release_campaign_status
+
+    structural = release_campaign_status(config.root, verify_source=False)
+    source = release_campaign_status(config.root, verify_source=True)
+    if (
+        structural.get("valid") is not True
+        or source.get("valid") is not False
+        or not source.get("errors")
+    ):
+        return None
+    if all(status == "pending" for status in statuses):
+        return "unused_invalid_identity"
+    passed = next(
+        (index for index, status in enumerate(statuses) if status != "passed"),
+        len(statuses),
+    )
+    if 0 < passed < len(statuses) and statuses == (
+        ["passed"] * passed + ["pending"] * (len(statuses) - passed)
+    ):
+        return "invalid_active_with_retained_passes"
+    return None
+
+
 def readiness(config: Config) -> dict[str, Any]:
     errors: list[str] = []
     initial = not config.automation_state.exists()
@@ -404,42 +451,19 @@ def readiness(config: Config) -> dict[str, Any]:
                     and release.get("identity") is None
                     and repair_phase == "repair_frozen"
                 )
-            unused_invalid_identity = False
-            if (
-                release.get("state") == "active"
-                and release.get("apply_count") == 1
-                and isinstance(release.get("identity"), dict)
-                and release.get("active_claim") is None
-                and tuple(release.get("stages", {}))
-                == (
-                    "sections",
-                    "full_profile",
-                    "validate",
-                    "package",
-                    "install",
-                    "installed_operational",
-                    "certify",
-                )
-                and all(
-                    isinstance(record, dict) and record.get("status") == "pending"
-                    for record in release.get("stages", {}).values()
-                )
-            ):
-                from runtime.release_campaign import release_campaign_status
-
-                verification = release_campaign_status(config.root, verify_source=True)
-                unused_invalid_identity = (
-                    verification.get("valid") is False
-                    and bool(verification.get("errors"))
-                )
+            active_kind = _invalid_active_predecessor_kind(config, release)
+            if release.get("state") == "active":
                 predecessor_ready = (
-                    unused_invalid_identity
+                    active_kind == "unused_invalid_identity"
                     and repair_phase in {"repair_frozen", "revision_reconciled"}
+                ) or (
+                    active_kind == "invalid_active_with_retained_passes"
+                    and repair_phase == "repair_frozen"
                 )
             if not predecessor_ready or release.get("active_claim") is not None:
                 errors.append(
                     "predecessor is not terminal failed, unused cleared, or an "
-                    "unused invalid identity"
+                    "source-invalid active predecessor"
                 )
         except (OSError, ValueError, json.JSONDecodeError) as exc:
             errors.append(f"release campaign is unreadable: {type(exc).__name__}")

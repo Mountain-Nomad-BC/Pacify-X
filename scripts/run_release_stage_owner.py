@@ -220,6 +220,48 @@ def repair(config: Config) -> dict[str, Any]:
     )
 
 
+def invalid_active_predecessor_kind(
+    config: Config, current_release: Mapping[str, Any]
+) -> str | None:
+    """Classify only structurally valid campaigns invalidated by source drift."""
+
+    if (
+        current_release.get("state") != "active"
+        or current_release.get("apply_count") != 1
+        or not isinstance(current_release.get("identity"), dict)
+        or current_release.get("active_claim") is not None
+    ):
+        return None
+    stages = current_release.get("stages")
+    if not isinstance(stages, dict) or set(stages) != set(STAGES):
+        return None
+    statuses = [
+        stages[name].get("status") if isinstance(stages.get(name), dict) else None
+        for name in STAGES
+    ]
+    from runtime.release_campaign import release_campaign_status
+
+    structural = release_campaign_status(config.root, verify_source=False)
+    source = release_campaign_status(config.root, verify_source=True)
+    if (
+        structural.get("valid") is not True
+        or source.get("valid") is not False
+        or not source.get("errors")
+    ):
+        return None
+    if all(status == "pending" for status in statuses):
+        return "unused_invalid_identity"
+    passed = next(
+        (index for index, status in enumerate(statuses) if status != "passed"),
+        len(statuses),
+    )
+    if 0 < passed < len(statuses) and statuses == (
+        ["passed"] * passed + ["pending"] * (len(statuses) - passed)
+    ):
+        return "invalid_active_with_retained_passes"
+    return None
+
+
 def resource_postcondition(config: Config) -> dict[str, Any]:
     """Allow only this supervised child while it is proving its own effects."""
 
@@ -267,6 +309,7 @@ def check(config: Config, step: str) -> dict[str, Any]:
         current_repair = repair(config)
         current_release = release(config)
         archive_recovery_phase = None
+        active_kind = None
         if step == "archive_clear" and current_release.get("state") == "failed":
             failed_stages = [
                 name
@@ -276,7 +319,9 @@ def check(config: Config, step: str) -> dict[str, Any]:
             if len(failed_stages) == 1 and failed_stages[0] in STAGE_PHASES:
                 archive_recovery_phase = STAGE_PHASES[failed_stages[0]]
         elif step == "archive_clear" and current_release.get("state") == "active":
-            archive_recovery_phase = "revision_reconciled"
+            active_kind = invalid_active_predecessor_kind(config, current_release)
+            if active_kind == "unused_invalid_identity":
+                archive_recovery_phase = "revision_reconciled"
         repair_phase_valid = current_repair.get("phase") == PHASES.get(
             step, (None,)
         )[0] or current_repair.get("phase") == archive_recovery_phase
@@ -289,25 +334,6 @@ def check(config: Config, step: str) -> dict[str, Any]:
         ):
             errors.append(f"repair12 phase is not exact for {step}")
         if step == "archive_clear":
-            unused_invalid_identity = False
-            if (
-                current_release.get("state") == "active"
-                and current_release.get("apply_count") == 1
-                and isinstance(current_release.get("identity"), dict)
-                and current_release.get("active_claim") is None
-                and tuple(current_release.get("stages", {})) == STAGES
-                and all(
-                    isinstance(record, dict) and record.get("status") == "pending"
-                    for record in current_release.get("stages", {}).values()
-                )
-            ):
-                from runtime.release_campaign import release_campaign_status
-
-                verification = release_campaign_status(config.root, verify_source=True)
-                unused_invalid_identity = (
-                    verification.get("valid") is False
-                    and bool(verification.get("errors"))
-                )
             if (
                 current_release.get("campaign_id") != config.predecessor_id
                 or current_release.get("active_claim") is not None
@@ -321,12 +347,15 @@ def check(config: Config, step: str) -> dict[str, Any]:
                 )
                 or (
                     current_release.get("state") == "active"
-                    and not unused_invalid_identity
+                    and active_kind not in {
+                        "unused_invalid_identity",
+                        "invalid_active_with_retained_passes",
+                    }
                 )
             ):
                 errors.append(
                     "archive_clear requires a terminal failed, unused cleared, "
-                    "or unused invalid-identity predecessor"
+                    "or source-invalid active predecessor"
                 )
         elif step in {"reconcile", "identity"}:
             if (
@@ -825,6 +854,7 @@ class ProductionEffects:
             finish_release_stage,
             supersede_consumed_cleared_release_campaign,
             supersede_failed_release_campaign,
+            supersede_invalid_active_release_campaign,
             supersede_invalid_release_identity,
             rewind_failed_release_campaign_repair,
             rewind_invalid_release_identity_reconciliation,
@@ -885,16 +915,32 @@ class ProductionEffects:
                     ),
                 )
             elif current.get("state") == "active":
-                if repair(config).get("phase") == "revision_reconciled":
-                    rewind_invalid_release_identity_reconciliation(config.root)
-                status = supersede_invalid_release_identity(
-                    config.root,
-                    campaign_id=config.candidate_id,
-                    reason=(
-                        f"{config.predecessor_id} has one unused invalid identity; "
-                        f"establish {config.candidate_id} once."
-                    ),
+                stages = current.get("stages", {})
+                retained_passes = any(
+                    isinstance(stages.get(name), dict)
+                    and stages[name].get("status") == "passed"
+                    for name in STAGES
                 )
+                if retained_passes:
+                    status = supersede_invalid_active_release_campaign(
+                        config.root,
+                        campaign_id=config.candidate_id,
+                        reason=(
+                            f"{config.predecessor_id} is source-invalid with retained "
+                            f"passed stages; establish {config.candidate_id} once."
+                        ),
+                    )
+                else:
+                    if repair(config).get("phase") == "revision_reconciled":
+                        rewind_invalid_release_identity_reconciliation(config.root)
+                    status = supersede_invalid_release_identity(
+                        config.root,
+                        campaign_id=config.candidate_id,
+                        reason=(
+                            f"{config.predecessor_id} has one unused invalid identity; "
+                            f"establish {config.candidate_id} once."
+                        ),
+                    )
             else:
                 status = supersede_consumed_cleared_release_campaign(
                     config.root,

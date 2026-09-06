@@ -210,9 +210,64 @@ def test_archive_check_allows_one_unused_invalid_identity_predecessor(
     )
     monkeypatch.setattr(
         "runtime.release_campaign.release_campaign_status",
-        lambda root, verify_source=False: {"valid": False, "errors": ["drift"]},
+        lambda root, verify_source=False: {
+            "valid": not verify_source,
+            "errors": ["drift"] if verify_source else [],
+        },
     )
     assert check(config, "archive_clear")["valid"] is True
+
+
+def test_archive_check_allows_only_frozen_source_invalid_retained_prefix(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    config = fixture(tmp_path, "archive_clear")
+    state_dir = tmp_path / ".engineering-bootstrap/processing-order"
+    repair = state_dir / "repair-campaign.json"
+    repair_value = json.loads(repair.read_text(encoding="utf-8"))
+    repair_value["phase"] = "repair_frozen"
+    repair.write_text(json.dumps(repair_value), encoding="utf-8")
+    state = state_dir / "release-identity.json"
+    state.write_text(
+        json.dumps({
+            "campaign_id": config.predecessor_id,
+            "state": "active",
+            "apply_count": 1,
+            "identity": {"release_identity_sha256": "a" * 64},
+            "active_claim": None,
+            "stages": {
+                name: {
+                    "status": "passed" if index < 6 else "pending",
+                    "claim_id": None,
+                }
+                for index, name in enumerate((
+                    "sections", "full_profile", "validate", "package", "install",
+                    "installed_operational", "certify",
+                ))
+            },
+        }),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(
+        "runtime.release_campaign.release_campaign_status",
+        lambda root, verify_source=False: {
+            "valid": not verify_source,
+            "errors": ["source drift"] if verify_source else [],
+        },
+    )
+    assert check(config, "archive_clear")["valid"] is True
+
+    repair_value["phase"] = "installed_operational"
+    repair.write_text(json.dumps(repair_value), encoding="utf-8")
+    assert check(config, "archive_clear")["valid"] is False
+
+    repair_value["phase"] = "repair_frozen"
+    repair.write_text(json.dumps(repair_value), encoding="utf-8")
+    monkeypatch.setattr(
+        "runtime.release_campaign.release_campaign_status",
+        lambda root, verify_source=False: {"valid": True, "errors": []},
+    )
+    assert check(config, "archive_clear")["valid"] is False
 
 
 def test_archive_effect_routes_unused_invalid_identity_to_canonical_successor(
@@ -252,6 +307,13 @@ def test_archive_effect_routes_unused_invalid_identity_to_canonical_successor(
     monkeypatch.setattr(
         "runtime.release_campaign.supersede_invalid_release_identity", supersede
     )
+    monkeypatch.setattr(
+        "runtime.release_campaign.release_campaign_status",
+        lambda root, verify_source=False: {
+            "valid": not verify_source,
+            "errors": ["drift"] if verify_source else [],
+        },
+    )
     rewinds: list[Path] = []
     monkeypatch.setattr(
         "runtime.release_campaign.rewind_invalid_release_identity_reconciliation",
@@ -261,6 +323,49 @@ def test_archive_effect_routes_unused_invalid_identity_to_canonical_successor(
     assert receipt["valid"] is True
     assert calls == [config.candidate_id]
     assert rewinds == [config.root]
+
+
+def test_archive_effect_routes_retained_passes_to_active_supersession(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    config = fixture(tmp_path, "archive_clear")
+    state_dir = tmp_path / ".engineering-bootstrap/processing-order"
+    state = state_dir / "release-identity.json"
+    value = json.loads(state.read_text(encoding="utf-8"))
+    value.update(
+        state="active",
+        apply_count=1,
+        identity={"release_identity_sha256": "a" * 64},
+        stages={
+            name: {
+                "status": "passed" if index < 6 else "pending",
+                "claim_id": None,
+            }
+            for index, name in enumerate((
+                "sections", "full_profile", "validate", "package", "install",
+                "installed_operational", "certify",
+            ))
+        },
+    )
+    state.write_text(json.dumps(value), encoding="utf-8")
+    calls: list[str] = []
+    monkeypatch.setattr(
+        "runtime.release_campaign.supersede_invalid_active_release_campaign",
+        lambda root, *, campaign_id, reason: calls.append(campaign_id)
+        or {"valid": True, "superseded_archive": "archive.json"},
+    )
+    monkeypatch.setattr(
+        "runtime.release_campaign.supersede_invalid_release_identity",
+        lambda *args, **kwargs: pytest.fail("unused-identity superseder called"),
+    )
+    monkeypatch.setattr(
+        "runtime.release_campaign.rewind_invalid_release_identity_reconciliation",
+        lambda root: pytest.fail("unused-identity rewind called"),
+    )
+
+    receipt = ProductionEffects().execute("archive_clear", config)
+    assert receipt["valid"] is True
+    assert calls == [config.candidate_id]
 
 
 def test_archive_check_allows_failed_stage_at_its_exact_repair_phase(

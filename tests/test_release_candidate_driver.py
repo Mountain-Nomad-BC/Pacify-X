@@ -146,9 +146,94 @@ def test_initial_readiness_allows_one_unused_invalid_identity_predecessor(
     )
     monkeypatch.setattr(
         "runtime.release_campaign.release_campaign_status",
-        lambda root, verify_source=False: {"valid": False, "errors": ["drift"]},
+        lambda root, verify_source=False: {
+            "valid": not verify_source,
+            "errors": ["drift"] if verify_source else [],
+        },
     )
     assert readiness(value)["valid"] is True
+
+
+def test_initial_readiness_allows_only_source_invalid_active_retained_prefix(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    value = config(tmp_path)
+    control = tmp_path / ".engineering-bootstrap/processing-order"
+    control.mkdir(parents=True)
+    (control / "repair-campaign.json").write_text(
+        json.dumps({
+            "campaign_id": value.repair_campaign_id,
+            "phase": "repair_frozen",
+            "intake_open": False,
+            "unresolved": [],
+        }),
+        encoding="utf-8",
+    )
+    stages = {
+        name: {"status": "passed" if index < 6 else "pending", "claim_id": None}
+        for index, name in enumerate(RELEASE_STAGE_PHASES)
+    }
+    (control / "release-identity.json").write_text(
+        json.dumps({
+            "campaign_id": value.predecessor_campaign_id,
+            "state": "active",
+            "apply_count": 1,
+            "identity": {"release_identity_sha256": "a" * 64},
+            "active_claim": None,
+            "stages": stages,
+        }),
+        encoding="utf-8",
+    )
+
+    monkeypatch.setattr(
+        "runtime.release_campaign.release_campaign_status",
+        lambda root, verify_source=False: {
+            "valid": not verify_source,
+            "errors": ["source drift"] if verify_source else [],
+        },
+    )
+    assert readiness(value)["valid"] is True
+
+    repair = json.loads((control / "repair-campaign.json").read_text(encoding="utf-8"))
+    repair["phase"] = "installed_operational"
+    (control / "repair-campaign.json").write_text(json.dumps(repair), encoding="utf-8")
+    assert readiness(value)["valid"] is False
+
+    repair["phase"] = "repair_frozen"
+    (control / "repair-campaign.json").write_text(json.dumps(repair), encoding="utf-8")
+    monkeypatch.setattr(
+        "runtime.release_campaign.release_campaign_status",
+        lambda root, verify_source=False: {"valid": True, "errors": []},
+    )
+    assert readiness(value)["valid"] is False
+
+    monkeypatch.setattr(
+        "runtime.release_campaign.release_campaign_status",
+        lambda root, verify_source=False: {
+            "valid": False,
+            "errors": ["structural"] if not verify_source else ["source drift"],
+        },
+    )
+    assert readiness(value)["valid"] is False
+
+    monkeypatch.setattr(
+        "runtime.release_campaign.release_campaign_status",
+        lambda root, verify_source=False: {
+            "valid": not verify_source,
+            "errors": ["source drift"] if verify_source else [],
+        },
+    )
+    release_path = control / "release-identity.json"
+    malformed = json.loads(release_path.read_text(encoding="utf-8"))
+    malformed["active_claim"] = {"stage": "certify"}
+    release_path.write_text(json.dumps(malformed), encoding="utf-8")
+    assert readiness(value)["valid"] is False
+
+    malformed["active_claim"] = None
+    malformed["stages"]["validate"]["status"] = "pending"
+    malformed["stages"]["package"]["status"] = "passed"
+    release_path.write_text(json.dumps(malformed), encoding="utf-8")
+    assert readiness(value)["valid"] is False
 
 
 def test_initial_readiness_allows_failed_stage_at_exact_repair_phase(

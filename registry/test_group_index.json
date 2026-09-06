@@ -4278,7 +4278,7 @@
         "sys"
       ],
       "index_state": "verified",
-      "sha256": "2a6b1eaced4263d0472d6e9c250c31a2e2ed1e5592684ccb5053dc620f55aa5e"
+      "sha256": "37befe00fd4a252a05f783a7159bede818c14d2f5b30425d38e685d2c1d16853"
     },
     "scripts/register_card_control_resolution_review.py": {
       "imports": [
@@ -4432,12 +4432,13 @@
         "runtime.resource_lifecycle",
         "scripts.reconcile_unverified_operational_controls",
         "subprocess",
+        "sys",
         "time",
         "typing",
         "uuid"
       ],
       "index_state": "verified",
-      "sha256": "435a1ff35896774e31febb3b9e076ce2ce7e72fad7e8edc10f6163f8bb46927b"
+      "sha256": "4eec4bd27acdc71e020be178c0fbee19d871330292796dcd0aef2f14113215fa"
     },
     "scripts/run_release_fault_campaign.py": {
       "imports": [
@@ -4479,7 +4480,7 @@
         "zipfile"
       ],
       "index_state": "verified",
-      "sha256": "0e3fd2c88136efd844d2b26e72aa984cd94f646ceb8428e814409c6d655670fc"
+      "sha256": "de2bb20c0027ef64652af29ab68c524a7692c44c43dbe9461c5ce64f0132cabb"
     },
     "scripts/sanitize_host_bound_cleanup_evidence.py": {
       "imports": [
@@ -6554,7 +6555,7 @@
         "scripts.reconcile_unverified_operational_controls"
       ],
       "index_state": "verified",
-      "sha256": "aceace3f7f3c78bf49c95f3cb474258e1f21a3d6ac623aeab94ac3d1b2e633a1"
+      "sha256": "e7fbb527d1d918c0d53f5d8789dd02f346d2e2c48a27cc69e2ec5020844a81cf"
     },
     "tests/test_recovery.py": {
       "imports": [
@@ -6687,7 +6688,7 @@
         "types"
       ],
       "index_state": "verified",
-      "sha256": "ce76c70ee7337319dfc6722c91df2cd9d4f4413a9a06776c1a49cd3d2323a612"
+      "sha256": "f532d72a10074a36cd5793a1b90183d1842e3b4b6833d202f88d287941768bd0"
     },
     "tests/test_release_certification.py": {
       "imports": [
@@ -6837,7 +6838,7 @@
         "subprocess"
       ],
       "index_state": "verified",
-      "sha256": "ba38bc450194a7e80b00a9a0a6fbf5bf776d633b65b88b9e379ec86be0d23a4a"
+      "sha256": "9923e47d2095da3b390222a6ae06138d59daa94eeed934876333c1fa60e97e43"
     },
     "tests/test_release_supply_chain_evidence.py": {
       "imports": [
@@ -7687,7 +7688,7 @@
       ],
       "description": "Serial exact-tool, installed-wheel, corrective-release, and full-repair-ledger certification tests.",
       "group": "exact-installed",
-      "input_sha256": "4dc098f90f5ada9ff4b37d2cec43d0b9de1feffca45c48293d161363b47de11b",
+      "input_sha256": "98fbed153429c73d609a4238758bb84abb10bd1027ccb843f17b0c0953854a41",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -7777,7 +7778,7 @@
       ],
       "description": "Serial release, distribution, artifact, and revocation certification tests excluding composed audit mutations.",
       "group": "release-build",
-      "input_sha256": "134b38d9f5ccb8124a8bfca944fd4706a7004824ff1f507819823923b6d0404d",
+      "input_sha256": "03c6cacb8f0caf30c431510973db9bd37744792b103ea7c67a536a0cd1d2e154",
       "inputs": [
         ".github/workflows/release.yml",
         "README.md",
@@ -7859,7 +7860,7 @@
       ],
       "description": "Serial composed-audit and quarantine-mutation tests isolated from package builds.",
       "group": "release-audit",
-      "input_sha256": "901e9f5b62a9003d4a6adfe54248aa373f787d1f3affa7cc1c8d512d9666410e",
+      "input_sha256": "9ae895c30d476f66a68900cd004cb8deb73038bae74da423e58a8ad10867c1b6",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -7905,7 +7906,7 @@
       ],
       "description": "Serial full-tree structural mutation tests isolated from derived-artifact checks.",
       "group": "structural-adversarial",
-      "input_sha256": "59a2c019a7620522fb4b9db60a52e565ec400ff1eff05888941d48cbc9fc25f1",
+      "input_sha256": "acd26efc7ca0c7383fd8b1838fc25254f262a88202d103aed1cb341800fcaf35",
       "inputs": [
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_agents_md_generator.py",
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_change_impact.py",
@@ -9697,7 +9698,7 @@
       ],
       "description": "Final serial generated-output, completion-projection, portability, effect-surface, and punch-card integrity gate.",
       "group": "derived-integrity",
-      "input_sha256": "e6c39cc102b3ef5fab62dd05e4e11dccf86b58a18648608295f9e0838d8b6cb3",
+      "input_sha256": "2b71d4e27e1b266550a569c780484bddd97ccbe17f8003054875a456a6f9fd95",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -10832,7 +10833,7 @@
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin N through S; this lane reads or mutates shared canonical repository state.",
       "group": "core-n-s",
-      "input_sha256": "9993cc0d80c26d53435224727baa5cc8f334d2ed5f9f6b9f42b7bb53ba25ab60",
+      "input_sha256": "05815e7c2a3d93f992bfbf13fa7ab48c618c13f79805546bc9055478f6d60768",
       "inputs": [
         "registry/test_profiles.json",
         "runtime/__init__.py",
