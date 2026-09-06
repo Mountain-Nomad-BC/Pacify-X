@@ -98,6 +98,26 @@ test('focused Studio completion fails closed when one physical revision cannot b
   assert.ok(status.issues.some(item => item.code === 'focused-studio-revision-edit-incomplete'));
 });
 
+test('focused catalog pagination requires exact bidirectional paging and restored state', () => {
+  const receipt = completeReceipt();
+  receipt.focused_profile = 'catalog-pagination';
+  const stages = ['open_load', 'display', 'user_edit_action', 'input_validation', 'authorization', 'backend_dispatch', 'runtime_effect', 'progress_reporting', 'result_acknowledgement', 'persistence', 'reload_reopen', 'failure_handling', 'recovery_rollback'];
+  receipt.catalog_pagination_profile = {
+    observations: [{ surface: 'agents', rendered: true, attempted: true, first_page_previous_disabled: true, forward: true, backward: true, restored: true, errors: [] }],
+    control_probe: {
+      eligible_control_count: 1,
+      records: [{ control_id: 'pxui.agents.action.catalogNext', rendered: true, attempted: true, errors: [], interaction_chain: Object.fromEntries(stages.map(stage => [stage, { state: 'present' }])) }]
+    }
+  };
+  const status = evaluateOperationalWalk(receipt);
+  assert.equal(status.terminal_state, 'completed');
+  assert.equal(status.scope_complete, true);
+  receipt.catalog_pagination_profile.observations[0].restored = false;
+  const failed = evaluateOperationalWalk(receipt);
+  assert.equal(failed.terminal_state, 'incomplete');
+  assert.ok(failed.issues.some(item => item.code === 'focused-catalog-pagination-incomplete'));
+});
+
 test('focused coordination-memory completion requires the exact control denominator and restart reconstruction', () => {
   const receipt = completeReceipt();
   receipt.focused_profile = 'coordination-memory';
@@ -687,6 +707,14 @@ test('launcher requires both semantic completion and verified process closure', 
   });
   assert.equal(failed.terminal_state, 'failed');
   assert.ok(failed.issues.some(item => item.code === 'owner-process-tree-closure-unverified'));
+  const cleanupFailed = evaluateLauncherTerminal({
+    walkStatus,
+    processTreeClosedVerified: true,
+    workerExitVerified: true,
+    cleanupReclaimed: false
+  });
+  assert.equal(cleanupFailed.terminal_state, 'failed');
+  assert.ok(cleanupFailed.issues.some(item => item.code === 'owned-ephemeral-cleanup-unreclaimed'));
 });
 
 test('verified owned timeout remains blocking without inventing an unverified worker exit', () => {

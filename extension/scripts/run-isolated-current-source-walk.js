@@ -376,8 +376,47 @@ function safeOwnedEphemeralCleanup(temporaryRoot, processTreeClosedVerified) {
   if (marker.owner !== 'PACIFY-X' || marker.classification !== 'ephemeral') {
     return { reclaimed: false, reason: 'ownership-marker-invalid' };
   }
-  fs.rmSync(resolved, { recursive: true, force: true });
+  try {
+    // Windows can retain a just-closed SQLite or renderer handle briefly after
+    // the verified process-tree boundary. Node's recursive retry policy is
+    // bounded and applies specifically to EPERM/EBUSY-style cleanup races.
+    fs.rmSync(resolved, { recursive: true, force: true, maxRetries: 8, retryDelay: 250 });
+  } catch (error) {
+    return { reclaimed: false, reason: `owned-ephemeral-cleanup-failed:${String(error?.code || 'unknown')}` };
+  }
   return { reclaimed: !fs.existsSync(resolved), reason: 'verified-process-tree-closure' };
+}
+
+async function settleOwnedEphemeralCleanup(temporaryRoot, processTreeClosedVerified, options = {}) {
+  const resolved = path.resolve(temporaryRoot);
+  const allowedParent = path.resolve(os.tmpdir());
+  const markerPath = path.join(resolved, '.pacify-x-owned-ephemeral.json');
+  if (!processTreeClosedVerified) return { reclaimed: false, reason: 'process-tree-closure-unverified' };
+  if (path.dirname(resolved) !== allowedParent || !path.basename(resolved).startsWith('pacify-x-current-source-walk-')) {
+    return { reclaimed: false, reason: 'target-outside-owned-ephemeral-root' };
+  }
+  if (!fs.existsSync(markerPath) || fs.lstatSync(resolved).isSymbolicLink()) {
+    return { reclaimed: false, reason: 'ownership-marker-missing-or-linked-root' };
+  }
+  const marker = JSON.parse(fs.readFileSync(markerPath, 'utf8'));
+  if (marker.owner !== 'PACIFY-X' || marker.classification !== 'ephemeral') {
+    return { reclaimed: false, reason: 'ownership-marker-invalid' };
+  }
+  const attempts = Number(options.attempts || 20);
+  const retryDelayMs = Number(options.retryDelayMs || 250);
+  let lastCode = 'unknown';
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      fs.rmSync(resolved, { recursive: true, force: true, maxRetries: 2, retryDelay: retryDelayMs });
+      if (!fs.existsSync(resolved)) return { reclaimed: true, reason: 'verified-process-tree-closure' };
+      lastCode = 'retained-root';
+    } catch (error) {
+      lastCode = String(error?.code || 'unknown');
+      if (!['EPERM', 'EBUSY', 'ENOTEMPTY'].includes(lastCode)) break;
+    }
+    if (attempt < attempts) await new Promise(resolve => setTimeout(resolve, retryDelayMs));
+  }
+  return { reclaimed: false, reason: `owned-ephemeral-cleanup-failed:${lastCode}` };
 }
 
 async function childMain(configPath) {
@@ -475,7 +514,7 @@ async function childMain(configPath) {
         PX_ENGINE_ROOT: config.engineRoot,
         PX_OPERATIONAL_WALK_BOOTSTRAP_RECEIPT: config.bootstrapReceipt,
         PX_OPERATIONAL_WALK_BOOTSTRAP_SENTINEL: config.bootstrapSentinel,
-        ...(!config.bootstrapOnly && !config.configurationOnly && !config.knowledgeLifecycleOnly && !config.coordinationMemoryOnly && !config.hostBoundaryOnly && !config.nativeDialogOnly && !config.codexHandoffOnly && !config.errorIndicatorsOnly && !config.builderOnly && !config.workbenchCommandOnly
+        ...(!config.bootstrapOnly && !config.configurationOnly && !config.knowledgeLifecycleOnly && !config.coordinationMemoryOnly && !config.hostBoundaryOnly && !config.nativeDialogOnly && !config.codexHandoffOnly && !config.errorIndicatorsOnly && !config.catalogPaginationOnly && !config.builderOnly && !config.workbenchCommandOnly
           ? { PX_OPERATIONAL_EXERCISE_STUDIO_APPROVAL: '1' }
           : {})
       })
@@ -557,6 +596,7 @@ async function childMain(configPath) {
           ...(config.codexHandoffOnly ? { PX_OPERATIONAL_CODEX_HANDOFF_ONLY: '1' } : {}),
           ...(config.errorIndicatorsOnly ? { PX_OPERATIONAL_ERROR_INDICATORS_ONLY: '1' } : {}),
           ...(config.lateCardRepairOnly ? { PX_OPERATIONAL_LATE_CARD_REPAIR_ONLY: '1' } : {}),
+          ...(config.catalogPaginationOnly ? { PX_OPERATIONAL_CATALOG_PAGINATION_ONLY: '1' } : {}),
           ...(config.builderOnly ? { PX_OPERATIONAL_BUILDER_ONLY: '1' } : {}),
           ...(config.workbenchCommandOnly ? { PX_OPERATIONAL_WORKBENCH_COMMAND_ONLY: '1' } : {}),
           ...(nativeInputRequired ? {
@@ -835,10 +875,10 @@ function stageOwnedHostBoundaryFixture(workspaceRoot, engineRoot, { runtimeComma
   };
 }
 
-function prepare(temporaryRoot, walkOutput, vsixPath = null, bootstrapOnly = false, configurationOnly = false, studioLifecycleOnly = false, knowledgeLifecycleOnly = false, coordinationMemoryOnly = false, hostBoundaryOnly = false, nativeDialogOnly = false, codexHandoffOnly = false, errorIndicatorsOnly = false, lateCardRepairOnly = false, builderOnly = false, workbenchCommandOnly = false, postAuditLongRunning = false) {
+function prepare(temporaryRoot, walkOutput, vsixPath = null, bootstrapOnly = false, configurationOnly = false, studioLifecycleOnly = false, knowledgeLifecycleOnly = false, coordinationMemoryOnly = false, hostBoundaryOnly = false, nativeDialogOnly = false, codexHandoffOnly = false, errorIndicatorsOnly = false, lateCardRepairOnly = false, catalogPaginationOnly = false, builderOnly = false, workbenchCommandOnly = false, postAuditLongRunning = false) {
   const stagedEngine = stageDisposableEngine(repositoryRoot, temporaryRoot);
-  const hostBoundaryFixtureRequired = hostBoundaryOnly || (!bootstrapOnly && !configurationOnly && !studioLifecycleOnly && !knowledgeLifecycleOnly && !coordinationMemoryOnly && !nativeDialogOnly && !builderOnly && !workbenchCommandOnly);
-  const fullOperationalWalk = !bootstrapOnly && !configurationOnly && !studioLifecycleOnly && !knowledgeLifecycleOnly && !coordinationMemoryOnly && !hostBoundaryOnly && !nativeDialogOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly && !builderOnly && !workbenchCommandOnly;
+  const hostBoundaryFixtureRequired = hostBoundaryOnly || (!bootstrapOnly && !configurationOnly && !studioLifecycleOnly && !knowledgeLifecycleOnly && !coordinationMemoryOnly && !nativeDialogOnly && !catalogPaginationOnly && !builderOnly && !workbenchCommandOnly);
+  const fullOperationalWalk = !bootstrapOnly && !configurationOnly && !studioLifecycleOnly && !knowledgeLifecycleOnly && !coordinationMemoryOnly && !hostBoundaryOnly && !nativeDialogOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly && !catalogPaginationOnly && !builderOnly && !workbenchCommandOnly;
   const nativeInputRequired = studioLifecycleOnly || nativeDialogOnly || postAuditLongRunning || fullOperationalWalk;
   const config = {
     workspace: path.join(temporaryRoot, 'workspace'),
@@ -862,6 +902,7 @@ function prepare(temporaryRoot, walkOutput, vsixPath = null, bootstrapOnly = fal
     codexHandoffOnly,
     errorIndicatorsOnly,
     lateCardRepairOnly,
+    catalogPaginationOnly,
     builderOnly,
     workbenchCommandOnly,
     nativeInputRequired,
@@ -905,7 +946,7 @@ function prepare(temporaryRoot, walkOutput, vsixPath = null, bootstrapOnly = fal
   fs.writeFileSync(path.join(config.workspace, 'README.md'), '# PACIFY-X owned operational walk workspace\n', 'utf8');
   config.gitAuthority = fullOperationalWalk ? stageOwnedGitAuthority(config.workspace) : null;
   config.hostBoundaryFixture = hostBoundaryFixtureRequired ? stageOwnedHostBoundaryFixture(config.workspace, config.engineRoot) : null;
-  if (!bootstrapOnly && !configurationOnly && !knowledgeLifecycleOnly && !coordinationMemoryOnly && !hostBoundaryOnly && !nativeDialogOnly && !codexHandoffOnly && !errorIndicatorsOnly && !builderOnly && !workbenchCommandOnly) {
+  if (!bootstrapOnly && !configurationOnly && !knowledgeLifecycleOnly && !coordinationMemoryOnly && !hostBoundaryOnly && !nativeDialogOnly && !codexHandoffOnly && !errorIndicatorsOnly && !catalogPaginationOnly && !builderOnly && !workbenchCommandOnly) {
     const promptRoot = path.join(config.engineRoot, '.px', 'owned-operational-prompts');
     const setupPrompt = path.join(promptRoot, 'setup-studio.marker');
     if (!inside(config.engineRoot, promptRoot) || !inside(config.engineRoot, setupPrompt)) throw new Error('owned-setup-prompt-marker-outside-engine');
@@ -913,7 +954,7 @@ function prepare(temporaryRoot, walkOutput, vsixPath = null, bootstrapOnly = fal
     if (fs.lstatSync(promptRoot).isSymbolicLink()) throw new Error('owned-setup-prompt-root-linked');
     fs.writeFileSync(setupPrompt, 'exercise-native-setup-approval\n', { encoding: 'utf8', flag: 'wx' });
   }
-  config.knowledgeFixture = bootstrapOnly || configurationOnly || studioLifecycleOnly || nativeDialogOnly || codexHandoffOnly || builderOnly || workbenchCommandOnly ? null : stageOwnedKnowledgeFixture(config.workspace, config.engineRoot);
+  config.knowledgeFixture = bootstrapOnly || configurationOnly || studioLifecycleOnly || nativeDialogOnly || codexHandoffOnly || catalogPaginationOnly || builderOnly || workbenchCommandOnly ? null : stageOwnedKnowledgeFixture(config.workspace, config.engineRoot);
   return config;
 }
 
@@ -1010,13 +1051,14 @@ async function main() {
   const codexHandoffOnly = process.argv.includes('--codex-handoff-only');
   const errorIndicatorsOnly = process.argv.includes('--error-indicators-only');
   const lateCardRepairOnly = process.argv.includes('--late-card-repair-only');
+  const catalogPaginationOnly = process.argv.includes('--catalog-pagination-only');
   const builderOnly = process.argv.includes('--builder-only');
   const workbenchCommandOnly = process.argv.includes('--workbench-command-only');
   const postAuditLongRunning = process.argv.includes('--post-audit-long-running');
-  if ([bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly, coordinationMemoryOnly, hostBoundaryOnly, nativeDialogOnly, codexHandoffOnly, errorIndicatorsOnly, lateCardRepairOnly, builderOnly, workbenchCommandOnly].filter(Boolean).length > 1) throw new Error('focused-launcher-modes-are-mutually-exclusive');
-  if (postAuditLongRunning && (bootstrapOnly || configurationOnly || studioLifecycleOnly || knowledgeLifecycleOnly || coordinationMemoryOnly || hostBoundaryOnly || nativeDialogOnly || codexHandoffOnly || errorIndicatorsOnly || lateCardRepairOnly || builderOnly || workbenchCommandOnly)) throw new Error('post-audit-long-running-requires-full-profile');
+  if ([bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly, coordinationMemoryOnly, hostBoundaryOnly, nativeDialogOnly, codexHandoffOnly, errorIndicatorsOnly, lateCardRepairOnly, catalogPaginationOnly, builderOnly, workbenchCommandOnly].filter(Boolean).length > 1) throw new Error('focused-launcher-modes-are-mutually-exclusive');
+  if (postAuditLongRunning && (bootstrapOnly || configurationOnly || studioLifecycleOnly || knowledgeLifecycleOnly || coordinationMemoryOnly || hostBoundaryOnly || nativeDialogOnly || codexHandoffOnly || errorIndicatorsOnly || lateCardRepairOnly || catalogPaginationOnly || builderOnly || workbenchCommandOnly)) throw new Error('post-audit-long-running-requires-full-profile');
   if (vsixPath && (!fs.existsSync(vsixPath) || path.extname(vsixPath).toLowerCase() !== '.vsix')) throw new Error(`exact-vsix-missing:${vsixPath}`);
-  const focusedProfile = configurationOnly ? 'reversible-configuration' : studioLifecycleOnly ? 'studio-lifecycle' : knowledgeLifecycleOnly ? 'knowledge-lifecycle' : coordinationMemoryOnly ? 'coordination-memory' : hostBoundaryOnly ? 'host-boundary' : nativeDialogOnly ? 'native-dialog-boundary' : codexHandoffOnly ? 'codex-handoff' : errorIndicatorsOnly ? 'error-indicators' : lateCardRepairOnly ? 'late-card-repair' : builderOnly ? 'builder' : workbenchCommandOnly ? 'workbench-command' : null;
+  const focusedProfile = configurationOnly ? 'reversible-configuration' : studioLifecycleOnly ? 'studio-lifecycle' : knowledgeLifecycleOnly ? 'knowledge-lifecycle' : coordinationMemoryOnly ? 'coordination-memory' : hostBoundaryOnly ? 'host-boundary' : nativeDialogOnly ? 'native-dialog-boundary' : codexHandoffOnly ? 'codex-handoff' : errorIndicatorsOnly ? 'error-indicators' : lateCardRepairOnly ? 'late-card-repair' : catalogPaginationOnly ? 'catalog-pagination' : builderOnly ? 'builder' : workbenchCommandOnly ? 'workbench-command' : null;
   const mode = `${vsixPath ? 'installed-vsix' : 'current-source'}${bootstrapOnly ? '-bootstrap' : focusedProfile ? `-${focusedProfile}` : ''}`;
   const walkOutput = path.resolve(argument('--output') || path.join(repositoryRoot, 'evidence', `operational-ui-walk-${mode}-${stamp}`));
   const reportPath = path.resolve(argument('--report') || path.join(repositoryRoot, 'evidence', 'operational-gap-ledger', `${mode}-host-walk-${stamp}.json`));
@@ -1035,7 +1077,7 @@ async function main() {
   let config = null;
   let configPath = null;
   try {
-    config = prepare(temporaryRoot, walkOutput, vsixPath, bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly, coordinationMemoryOnly, hostBoundaryOnly, nativeDialogOnly, codexHandoffOnly, errorIndicatorsOnly, lateCardRepairOnly, builderOnly, workbenchCommandOnly, postAuditLongRunning);
+    config = prepare(temporaryRoot, walkOutput, vsixPath, bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly, coordinationMemoryOnly, hostBoundaryOnly, nativeDialogOnly, codexHandoffOnly, errorIndicatorsOnly, lateCardRepairOnly, catalogPaginationOnly, builderOnly, workbenchCommandOnly, postAuditLongRunning);
     configPath = path.join(temporaryRoot, 'host-config.json');
     fs.writeFileSync(configPath, `${JSON.stringify(config, null, 2)}\n`, { encoding: 'utf8', flag: 'wx' });
   } catch (error) {
@@ -1133,9 +1175,20 @@ async function main() {
     owner_lifecycle: lifecycle,
     error: error ? String(error?.stack || error?.message || error).slice(0, 4000) : null
   };
-  const cleanup = safeOwnedEphemeralCleanup(temporaryRoot, Boolean(lifecycle?.process_tree_closed_verified));
+  const cleanup = await settleOwnedEphemeralCleanup(temporaryRoot, Boolean(lifecycle?.process_tree_closed_verified));
   report.cleanup = cleanup;
-  if (!cleanup.reclaimed) report.recovery = { retained_temporary_root: temporaryRoot, reason: cleanup.reason };
+  if (!cleanup.reclaimed) {
+    report.recovery = { retained_temporary_root: temporaryRoot, reason: cleanup.reason };
+    const cleanupStatus = evaluateLauncherTerminal({
+      walkStatus: child?.operational_status || null,
+      processTreeClosedVerified: lifecycle?.process_tree_closed_verified,
+      workerExitVerified: run?.receipt?.worker_exit_verified ?? lifecycle?.worker_exit_verified,
+      cleanupReclaimed: false,
+      error
+    });
+    report.status_truth = cleanupStatus;
+    report.status = cleanupStatus.terminal_state;
+  }
   fs.mkdirSync(path.dirname(reportPath), { recursive: true });
   fs.writeFileSync(reportPath, `${JSON.stringify(report, null, 2)}\n`, { encoding: 'utf8', flag: 'wx' });
   process.stdout.write(`${JSON.stringify({ status: report.status, report: reportPath, walk: walkOutput, cleanup }, null, 2)}\n`);
@@ -1150,7 +1203,7 @@ if (require.main === module) {
       process.exitCode = 1;
     });
   } else if (process.argv.includes('--help')) {
-    process.stdout.write('Usage: node scripts/run-isolated-current-source-walk.js [--post-audit-long-running | --bootstrap-only | --configuration-only | --studio-lifecycle-only | --knowledge-lifecycle-only | --host-boundary-only | --native-dialog-only | --codex-handoff-only | --error-indicators-only | --late-card-repair-only | --builder-only | --workbench-command-only] [--vsix <path>] [--output <path>] [--report <path>]\n');
+    process.stdout.write('Usage: node scripts/run-isolated-current-source-walk.js [--post-audit-long-running | --bootstrap-only | --configuration-only | --studio-lifecycle-only | --knowledge-lifecycle-only | --host-boundary-only | --native-dialog-only | --codex-handoff-only | --error-indicators-only | --late-card-repair-only | --catalog-pagination-only | --builder-only | --workbench-command-only] [--vsix <path>] [--output <path>] [--report <path>]\n');
   } else {
     main().catch(error => {
       process.stderr.write(`${error.stack || error.message}\n`);
@@ -1159,4 +1212,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { acquireWalkOwnership, appendHostProgress, boundedDelay, classifySharedStoragePath, excludedEnginePath, ownedExternalNetworkDeniedEnvironment, ownedExternalNetworkDeniedLaunchEnvironment, reconcileOwnedPrelaunchFailure, reconcilePrelaunchFailure, reserveLoopbackPort, retainedHostProgress, retainedProfileProgress, stageDisposableEngine, stageOwnedGitAuthority, stageOwnedHostBoundaryFixture, stageOwnedKnowledgeFixture, stageOwnedProviderPaginationFixture, waitForIsolatedStorageBoundary };
+module.exports = { acquireWalkOwnership, appendHostProgress, boundedDelay, classifySharedStoragePath, excludedEnginePath, ownedExternalNetworkDeniedEnvironment, ownedExternalNetworkDeniedLaunchEnvironment, reconcileOwnedPrelaunchFailure, reconcilePrelaunchFailure, reserveLoopbackPort, retainedHostProgress, retainedProfileProgress, settleOwnedEphemeralCleanup, stageDisposableEngine, stageOwnedGitAuthority, stageOwnedHostBoundaryFixture, stageOwnedKnowledgeFixture, stageOwnedProviderPaginationFixture, waitForIsolatedStorageBoundary };

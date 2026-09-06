@@ -512,13 +512,14 @@ const nativeDialogOnly = ownedReversibleConfigurationAuthority && process.env.PX
 const codexHandoffOnly = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_CODEX_HANDOFF_ONLY === '1';
 const errorIndicatorsOnly = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_ERROR_INDICATORS_ONLY === '1';
 const lateCardRepairOnly = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_LATE_CARD_REPAIR_ONLY === '1';
+const catalogPaginationOnly = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_CATALOG_PAGINATION_ONLY === '1';
 const builderOnly = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_BUILDER_ONLY === '1';
 const workbenchCommandOnly = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_WORKBENCH_COMMAND_ONLY === '1';
 const ERROR_INDICATOR_CONTROL_IDS = new Set([
   'pxui.memory.indicator.queryError',
   'pxui.knowledge-core.indicator.controllerError'
 ]);
-const focusedProfile = configurationOnly ? 'reversible-configuration' : studioLifecycleOnly ? 'studio-lifecycle' : knowledgeLifecycleOnly ? 'knowledge-lifecycle' : coordinationMemoryOnly ? 'coordination-memory' : hostBoundaryOnly ? 'host-boundary' : nativeDialogOnly ? 'native-dialog-boundary' : codexHandoffOnly ? 'codex-handoff' : errorIndicatorsOnly ? 'error-indicators' : lateCardRepairOnly ? 'late-card-repair' : builderOnly ? 'builder' : workbenchCommandOnly ? 'workbench-command' : null;
+const focusedProfile = configurationOnly ? 'reversible-configuration' : studioLifecycleOnly ? 'studio-lifecycle' : knowledgeLifecycleOnly ? 'knowledge-lifecycle' : coordinationMemoryOnly ? 'coordination-memory' : hostBoundaryOnly ? 'host-boundary' : nativeDialogOnly ? 'native-dialog-boundary' : codexHandoffOnly ? 'codex-handoff' : errorIndicatorsOnly ? 'error-indicators' : lateCardRepairOnly ? 'late-card-repair' : catalogPaginationOnly ? 'catalog-pagination' : builderOnly ? 'builder' : workbenchCommandOnly ? 'workbench-command' : null;
 const focusedProfileOnly = Boolean(focusedProfile);
 const postAuditLongRunningAuthority = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_POST_AUDIT_LONG_RUNNING === '1';
 // Long-running operational coverage is not validation authority. Repository
@@ -2203,6 +2204,14 @@ async function waitForInstalledSidebarHandoffRequest(frameHost, offset, expected
 async function waitForInstalledSidebarDashboardIdentity(dashboard, expected, timeoutMs = 15_000) {
   const deadline = Date.now() + timeoutMs;
   let state = null;
+  let stableSamples = 0;
+  if (expected?.type === 'openControlPlane') {
+    await settleInstalledSurfaceControl(dashboard, {
+      surface: 'dashboard',
+      selector: '[data-surface="dashboard"]',
+      stableSamplesRequired: 2
+    }, remainingOwnedUiBudget(deadline, 'installed-sidebar-dashboard-route-settlement'));
+  }
   do {
     state = await dashboard.evaluate((frame, item) => {
       const document = frame.contentDocument;
@@ -2212,12 +2221,26 @@ async function waitForInstalledSidebarDashboardIdentity(dashboard, expected, tim
       const expectedId = item.entityId || item.planId || '';
       const exactDataset = expectedId ? [...(document?.querySelectorAll('*') || [])]
         .some(element => Object.values(element.dataset || {}).some(value => String(value) === expectedId)) : true;
-      return { dashboardVisible, expectedId, exactIdentity: !expectedId || exactDataset || text.includes(expectedId) };
+      return {
+        documentReady: document?.readyState === 'complete',
+        dashboardVisible,
+        dashboardRouteCurrent: document?.querySelector('.content')?.classList.contains('surface-dashboard') === true,
+        expectedId,
+        exactIdentity: !expectedId || exactDataset || text.includes(expectedId)
+      };
     }, expected);
-    if (state.dashboardVisible && state.exactIdentity) return state;
+    stableSamples = installedSidebarDashboardIdentity(state, expected) ? stableSamples + 1 : 0;
+    if (stableSamples >= 2) return { ...state, stableSamples };
     await wait(100);
   } while (Date.now() < deadline);
-  throw new Error(`installed-sidebar-dashboard-identity-timeout:${JSON.stringify({ expected, state })}`);
+  throw new Error(`installed-sidebar-dashboard-identity-timeout:${JSON.stringify({ expected, state, stableSamples })}`);
+}
+
+function installedSidebarDashboardIdentity(state, expected) {
+  return state?.documentReady === true
+    && state?.dashboardVisible === true
+    && state?.exactIdentity === true
+    && (expected?.type !== 'openControlPlane' || state?.dashboardRouteCurrent === true);
 }
 
 async function prepareInstalledSidebarHandoffTarget(frameHost, selector, handoff) {
@@ -2259,10 +2282,13 @@ async function removeInstalledSidebarHandoffTarget(frameHost, fixtureToken) {
 
 async function probeInstalledSidebarHandoff(frameHost, workbench, selector, handoff, timeoutMs = 30_000) {
   const deadline = Date.now() + timeoutMs;
-  const remaining = label => remainingOwnedUiBudget(deadline, `installed-sidebar-handoff-${label}`);
+  // Preserve a small outer-owner reserve so a phase-specific diagnostic always
+  // wins the race against the enclosing per-control timeout.
+  const remaining = label => remainingOwnedUiBudget(deadline - 1_000, `installed-sidebar-handoff-${label}`);
+  const phaseBudget = (label, ceilingMs) => Math.min(ceilingMs, remaining(label));
   const prepared = await boundedOwnedUiAction(
     () => prepareInstalledSidebarHandoffTarget(frameHost, selector, handoff),
-    remaining('prepare'),
+    phaseBudget('prepare', 5_000),
     'installed-sidebar-handoff-prepare'
   );
   try {
@@ -2276,7 +2302,7 @@ async function probeInstalledSidebarHandoff(frameHost, workbench, selector, hand
       catch { inner.__PX_INSTALLED_SIDEBAR_REQUESTS__.push({ type: 'unserializable-request' }); }
     });
     inner.__PX_INSTALLED_SIDEBAR_HANDOFF_INSTRUMENTED__ = true;
-  }, undefined, { timeout: remaining('instrument') });
+  }, undefined, { timeout: phaseBudget('instrument', 5_000) });
   const attempt = await frameHost.evaluate((frame, spec) => {
     const document = frame.contentDocument; const inner = frame.contentWindow;
     const visible = element => Boolean(element && (element.offsetWidth || element.offsetHeight || element.getClientRects().length));
@@ -2293,22 +2319,26 @@ async function probeInstalledSidebarHandoff(frameHost, workbench, selector, hand
     const rejected = inner.__PX_INSTALLED_SIDEBAR_REQUESTS__.length === offset;
     target.click();
     return { expected, offset, rejected, visible: true };
-  }, { selector, handoff }, { timeout: remaining('initial-dispatch') });
+  }, { selector, handoff }, { timeout: phaseBudget('initial-dispatch', 5_000) });
   if (!attempt.rejected) throw new Error(`installed-sidebar-handoff-owned-rejection-failed:${JSON.stringify(attempt.expected)}`);
-  await waitForInstalledSidebarHandoffRequest(frameHost, attempt.offset, attempt.expected, remaining('initial-request'));
-  const dashboard = await waitForOwnedWebview(workbench, text => /PACIFY-X\s*\/\s*DASHBOARD|SIDEBAR DEEP LINK/i.test(text), remaining('dashboard-discovery'));
+  await waitForInstalledSidebarHandoffRequest(frameHost, attempt.offset, attempt.expected, phaseBudget('initial-request', 10_000));
+  const dashboard = await waitForOwnedWebview(workbench, text => /PACIFY-X\s*\/\s*DASHBOARD|SIDEBAR DEEP LINK/i.test(text), phaseBudget('dashboard-discovery', 20_000));
   if (!dashboard) throw new Error(`installed-sidebar-dashboard-unavailable:${JSON.stringify(attempt.expected)}`);
-  await waitForInstalledSidebarDashboardIdentity(dashboard, attempt.expected, remaining('initial-dashboard-identity'));
-  const restart = await restartInstalledDashboardWebview(dashboard, remaining('dashboard-reconstruction'));
-  const replayOffset = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_SIDEBAR_REQUESTS__?.length || 0);
+  await waitForInstalledSidebarDashboardIdentity(dashboard, attempt.expected, phaseBudget('initial-dashboard-identity', 15_000));
+  const restart = await restartInstalledDashboardWebview(dashboard, phaseBudget('dashboard-reconstruction', 30_000));
+  const replayOffset = await frameHost.evaluate(
+    frame => frame.contentWindow?.__PX_INSTALLED_SIDEBAR_REQUESTS__?.length || 0,
+    undefined,
+    { timeout: phaseBudget('replay-offset', 5_000) }
+  );
   await frameHost.evaluate((frame, spec) => {
     const visible = element => Boolean(element && (element.offsetWidth || element.offsetHeight || element.getClientRects().length));
     const target = spec.selector ? [...frame.contentDocument.querySelectorAll(spec.selector)].find(visible) : null;
     if (!target || target.disabled) throw new Error(`installed-sidebar-handoff-replay-target-unavailable:${spec.selector}`);
     target.click();
-  }, { selector }, { timeout: remaining('replay-dispatch') });
-  await waitForInstalledSidebarHandoffRequest(frameHost, replayOffset, attempt.expected, remaining('replay-request'));
-  await waitForInstalledSidebarDashboardIdentity(dashboard, attempt.expected, remaining('replay-dashboard-identity'));
+  }, { selector }, { timeout: phaseBudget('replay-dispatch', 5_000) });
+  await waitForInstalledSidebarHandoffRequest(frameHost, replayOffset, attempt.expected, phaseBudget('replay-request', 10_000));
+  await waitForInstalledSidebarDashboardIdentity(dashboard, attempt.expected, phaseBudget('replay-dashboard-identity', 15_000));
   return {
     loaded: true, visible: attempt.visible, attempted: true, validationObserved: true, acknowledged: true,
     failureObserved: true, recoveryObserved: true, changed: true, restored: restart.restarted === true && restart.reconstructed === true,
@@ -4286,9 +4316,16 @@ function installedHostBoundaryRevealSelector(spec) {
   return '';
 }
 
-async function revealInstalledHostBoundaryControl(frameHost, spec) {
+async function revealInstalledHostBoundaryControl(frameHost, spec, timeoutMs = 10_000) {
   const selector = installedHostBoundaryRevealSelector(spec);
   if (!selector) return true;
+  if (spec?.route) {
+    await settleInstalledSurfaceControl(frameHost, {
+      surface: spec.route,
+      selector,
+      stableSamplesRequired: 2
+    }, timeoutMs);
+  }
   return frameHost.evaluate((frame, exactSelector) => {
     const control = [...frame.contentDocument.querySelectorAll(exactSelector)]
       .find(item => !item.disabled && (item.offsetWidth || item.offsetHeight || item.getClientRects().length));
@@ -4431,7 +4468,7 @@ async function runInstalledHostBoundaryProfile(workbench, frameHost, matrix, tim
       const scenarioTimeout = spec.scenario === 'canonical-memory' ? canonicalScenarioTimeoutMs : timeoutMs;
       scenario = await prepareInstalledHostBoundaryScenario(frameHost, spec, Math.max(1_000, Math.min(scenarioTimeout, activeControlDeadline - Date.now())));
       if (spec.revealAction) {
-        const revealed = await revealInstalledHostBoundaryControl(frameHost, spec);
+        const revealed = await revealInstalledHostBoundaryControl(frameHost, spec, Math.max(1_000, Math.min(10_000, activeControlDeadline - Date.now())));
         if (!revealed) throw new Error(`${spec.controlId}-reveal-control-not-rendered`);
         await wait(120);
       }
@@ -4442,7 +4479,7 @@ async function runInstalledHostBoundaryProfile(workbench, frameHost, matrix, tim
       await navigateInstalledSurface(frameHost, spec.route, Math.max(1_000, Math.min(5_000, activeControlDeadline - Date.now())));
       await prepareInstalledHostBoundaryScenario(frameHost, spec, Math.max(1_000, Math.min(timeoutMs, activeControlDeadline - Date.now())));
       if (spec.revealAction) {
-        const revealed = await revealInstalledHostBoundaryControl(frameHost, spec);
+        const revealed = await revealInstalledHostBoundaryControl(frameHost, spec, Math.max(1_000, Math.min(10_000, activeControlDeadline - Date.now())));
         if (!revealed) throw new Error(`${spec.controlId}-post-failure-reveal-control-not-rendered`);
         await wait(120);
       }
@@ -5215,23 +5252,49 @@ function correlateCatalogExchange(requests = [], responses = [], expected = {}) 
 
 async function waitForInstalledCatalogExchange(frameHost, after, expected, timeoutMs = 30_000) {
   const deadline = Date.now() + timeoutMs;
+  let diagnostic = { requests: [], responses: [] };
   do {
     const exchange = await frameHost.evaluate((frame, item) => {
       const requests = frame.contentWindow?.__PX_INSTALLED_REQUESTS__ || [];
       const responses = frame.contentWindow?.__PX_INSTALLED_RESPONSES__ || [];
-      const request = requests.slice(item.requestAfter || 0).find(value => value?.type === 'catalogQuery'
+      const request = requests.slice(item.requestId ? 0 : (item.requestAfter || 0)).find(value => value?.type === 'catalogQuery'
+        && (!item.requestId || value?.requestId === item.requestId)
         && value?.kind === item.kind
+        && (item.query === undefined || value?.query === item.query)
         && (item.status === undefined || value?.status === item.status)
+        && (item.sort === undefined || value?.sort === item.sort)
         && (item.offset === undefined || Number(value?.offset) === item.offset)
         && (item.limit === undefined || Number(value?.limit) === item.limit)) || null;
-      const response = request?.requestId ? responses.slice(item.responseAfter || 0).find(value => value?.type === 'catalogResult'
-        && value?.requestId === request.requestId && value?.result?.kind === item.kind) || null : null;
-      return { request, response };
+      const requestId = item.requestId || request?.requestId || null;
+      const response = requestId ? responses.slice(item.requestId ? 0 : (item.responseAfter || 0)).find(value => value?.requestId === requestId
+        && (value?.type === 'catalogResult' || (value?.type === 'operationError' && value?.operation === 'catalogQuery'))) || null : null;
+      return {
+        request,
+        response,
+        diagnostic: {
+          requests: requests.slice(-8).map(value => ({ type: value?.type, requestId: value?.requestId || null, kind: value?.kind || null, query: value?.query, status: value?.status, sort: value?.sort, offset: value?.offset, limit: value?.limit })),
+          responses: responses.slice(-8).map(value => ({ type: value?.type, requestId: value?.requestId || null, operation: value?.operation || null, kind: value?.kind || value?.result?.kind || null, error: String(value?.error || '').slice(0, 300) }))
+        }
+      };
     }, { ...expected, requestAfter: after.requests, responseAfter: after.responses });
-    if (exchange.request && exchange.response) return exchange;
+    if (exchange.response?.type === 'operationError') throw new Error(`catalog-pagination-query-failed:${expected.kind}:${String(exchange.response.error || 'unknown').slice(0, 800)}`);
+    if ((exchange.request || expected.requestId) && exchange.response) return exchange;
+    diagnostic = exchange.diagnostic || diagnostic;
     await wait(100);
   } while (Date.now() < deadline);
-  throw new Error(`catalog-pagination-result-timeout:${expected.kind}`);
+  throw new Error(`catalog-pagination-result-timeout:${expected.kind}:${JSON.stringify(diagnostic)}`);
+}
+
+async function dispatchInstalledCatalogQuery(frameHost, kind, updates) {
+  return frameHost.evaluateContent(item => {
+    const requestAfter = window.__PX_INSTALLED_REQUESTS__?.length || 0;
+    const responseAfter = window.__PX_INSTALLED_RESPONSES__?.length || 0;
+    requestCatalog(item.kind, item.updates);
+    const requestId = state.catalogRequests[item.kind]?.requestId || null;
+    const request = (window.__PX_INSTALLED_REQUESTS__ || []).slice(requestAfter)
+      .find(value => value?.type === 'catalogQuery' && value?.kind === item.kind && value?.requestId === requestId) || null;
+    return { request_after: requestAfter, response_after: responseAfter, request_id: requestId, request };
+  }, { kind, updates });
 }
 
 async function waitForInstalledCatalogControls(frameHost, kind, timeoutMs = 30_000) {
@@ -5254,6 +5317,29 @@ async function waitForInstalledCatalogControls(frameHost, kind, timeoutMs = 30_0
   return controls;
 }
 
+async function dispatchInstalledCatalogPager(frameHost, kind, action, expectedOffset, timeoutMs = 10_000) {
+  const deadline = Date.now() + timeoutMs;
+  let state = null;
+  do {
+    state = await frameHost.evaluate((frame, item) => {
+      const inner = frame.contentWindow;
+      const requests = inner?.__PX_INSTALLED_REQUESTS__ || [];
+      const responses = inner?.__PX_INSTALLED_RESPONSES__ || [];
+      const requestAfter = requests.length;
+      const control = [...frame.contentDocument.querySelectorAll(`[data-action="${CSS.escape(item.action)}"][data-kind="${CSS.escape(item.kind)}"]`)]
+        .find(element => !element.disabled && (element.offsetWidth || element.offsetHeight || element.getClientRects().length));
+      if (!control) return { request_after: requestAfter, response_after: responses.length, request: null, rendered: false };
+      control.click();
+      const request = requests.slice(requestAfter).find(value => value?.type === 'catalogQuery'
+        && value?.kind === item.kind && Number(value?.offset) === item.expectedOffset) || null;
+      return { request_after: requestAfter, response_after: responses.length, request, rendered: true };
+    }, { kind, action, expectedOffset });
+    if (state?.request?.requestId) return state;
+    await wait(100);
+  } while (Date.now() < deadline);
+  throw new Error(`catalog-pagination-dispatch-timeout:${kind}:${action}:${JSON.stringify(state)}`);
+}
+
 async function runInstalledCatalogPaginationProfile(frameHost, matrix, timeoutMs = 30_000, includedSurfaces = null, requireAgentLifecycleState = false) {
   const allSpecifications = [
     { surface: 'agents', route: 'agents', kind: 'agents', target: 'agents', scope: 'core' },
@@ -5266,29 +5352,36 @@ async function runInstalledCatalogPaginationProfile(frameHost, matrix, timeoutMs
   for (const spec of specifications) {
     const observation = { ...spec, rendered: false, attempted: false, first_page_previous_disabled: false, forward: false, backward: false, restored: false, lifecycle_filter_required: requireAgentLifecycleState && spec.surface === 'agents', lifecycle_filter_verified: false, empty_state_verified: false, filter_restored: false, errors: [] };
     try {
-      await navigateInstalledSurface(frameHost, spec.route, timeoutMs);
-      await frameHost.evaluate((frame, item) => {
-        const document = frame.contentDocument;
-        if (item.target) document.querySelector(`[data-action="surfaceScope"][data-target="${item.target}"][data-scope="${item.scope}"]`)?.click();
-        if (item.capability) document.querySelector(`[data-action="capabilityTab"][data-kind="${item.capability}"]`)?.click();
-      }, spec);
-      const before = await frameHost.evaluate(frame => ({ requests: frame.contentWindow?.__PX_INSTALLED_REQUESTS__?.length || 0, responses: frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0 }));
-      await frameHost.evaluateContent(kind => requestCatalog(kind, { offset: 0, limit: 1 }), spec.kind);
-      const firstExchange = await waitForInstalledCatalogExchange(frameHost, before, { kind: spec.kind, offset: 0, limit: 1 }, timeoutMs);
+      await settleInstalledSurfaceControl(frameHost, {
+        surface: spec.route,
+        selector: `[data-catalog-search="${spec.kind}"]`,
+        scopeTarget: spec.target || null,
+        scope: spec.scope || null,
+        capability: spec.capability || null,
+        stableSamplesRequired: 2
+      }, timeoutMs);
+      const firstDispatch = await dispatchInstalledCatalogQuery(frameHost, spec.kind, { query: '', status: '', sort: 'label', offset: 0, limit: 1 });
+      if (!firstDispatch.request_id || !firstDispatch.request) throw new Error(`catalog-pagination-initial-dispatch-missing:${spec.kind}`);
+      const firstExchange = await waitForInstalledCatalogExchange(frameHost, { requests: firstDispatch.request_after, responses: firstDispatch.response_after }, { requestId: firstDispatch.request_id, kind: spec.kind, query: '', status: '', sort: 'label', offset: 0, limit: 1 }, timeoutMs);
       const first = firstExchange.response;
       if (Number(first.result?.total || 0) < 2) throw new Error(`catalog-pagination-denominator-too-small:${spec.kind}`);
+      await settleInstalledSurfaceControl(frameHost, {
+        surface: spec.route,
+        selector: `[data-action="catalogNext"][data-kind="${spec.kind}"]`,
+        scopeTarget: spec.target || null,
+        scope: spec.scope || null,
+        capability: spec.capability || null,
+        stableSamplesRequired: 2
+      }, timeoutMs);
       const initial = await waitForInstalledCatalogControls(frameHost, spec.kind, timeoutMs);
       observation.rendered = initial.next_ready; observation.first_page_previous_disabled = initial.previous_disabled; observation.attempted = true;
       if (!initial.next_ready || !initial.previous_disabled) throw new Error(`catalog-pagination-controls-not-ready:${spec.kind}`);
-      let offset = await frameHost.evaluate(frame => ({ requests: frame.contentWindow?.__PX_INSTALLED_REQUESTS__?.length || 0, responses: frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0 }));
-      await frameHost.evaluate((frame, kind) => frame.contentDocument.querySelector(`[data-action="catalogNext"][data-kind="${kind}"]`).click(), spec.kind);
-      const second = (await waitForInstalledCatalogExchange(frameHost, offset, { kind: spec.kind, offset: 1, limit: 1 }, timeoutMs)).response; observation.forward = Number(second.result?.offset) === 1;
-      offset = await frameHost.evaluate(frame => ({ requests: frame.contentWindow?.__PX_INSTALLED_REQUESTS__?.length || 0, responses: frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0 }));
-      await frameHost.evaluate((frame, kind) => frame.contentDocument.querySelector(`[data-action="catalogPrevious"][data-kind="${kind}"]`).click(), spec.kind);
-      const returned = (await waitForInstalledCatalogExchange(frameHost, offset, { kind: spec.kind, offset: 0, limit: 1 }, timeoutMs)).response; observation.backward = Number(returned.result?.offset) === 0;
-      offset = await frameHost.evaluate(frame => ({ requests: frame.contentWindow?.__PX_INSTALLED_REQUESTS__?.length || 0, responses: frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0 }));
-      await frameHost.evaluateContent(kind => requestCatalog(kind, { query: '', status: '', offset: 0, limit: 50 }), spec.kind);
-      const restored = (await waitForInstalledCatalogExchange(frameHost, offset, { kind: spec.kind, offset: 0, limit: 50 }, timeoutMs)).response;
+      const forwardDispatch = await dispatchInstalledCatalogPager(frameHost, spec.kind, 'catalogNext', 1, timeoutMs);
+      const second = (await waitForInstalledCatalogExchange(frameHost, { requests: forwardDispatch.request_after, responses: forwardDispatch.response_after }, { requestId: forwardDispatch.request.requestId, kind: spec.kind, query: '', status: '', sort: 'label', offset: 1, limit: 1 }, timeoutMs)).response; observation.forward = Number(second.result?.offset) === 1;
+      const backwardDispatch = await dispatchInstalledCatalogPager(frameHost, spec.kind, 'catalogPrevious', 0, timeoutMs);
+      const returned = (await waitForInstalledCatalogExchange(frameHost, { requests: backwardDispatch.request_after, responses: backwardDispatch.response_after }, { requestId: backwardDispatch.request.requestId, kind: spec.kind, query: '', status: '', sort: 'label', offset: 0, limit: 1 }, timeoutMs)).response; observation.backward = Number(returned.result?.offset) === 0;
+      const restoreDispatch = await dispatchInstalledCatalogQuery(frameHost, spec.kind, { query: '', status: '', sort: 'label', offset: 0, limit: 50 });
+      const restored = (await waitForInstalledCatalogExchange(frameHost, { requests: restoreDispatch.request_after, responses: restoreDispatch.response_after }, { requestId: restoreDispatch.request_id, kind: spec.kind, query: '', status: '', sort: 'label', offset: 0, limit: 50 }, timeoutMs)).response;
       observation.restored = Number(restored.result?.offset) === 0 && Number(restored.result?.limit) === 50;
       if (observation.lifecycle_filter_required) {
         const filterBefore = await frameHost.evaluate(frame => ({
@@ -5328,9 +5421,8 @@ async function runInstalledCatalogPaginationProfile(frameHost, matrix, timeoutMs
           && await frameHost.evaluate(frame => /No records match this lifecycle and search filter\./.test(String(frame.contentDocument.body?.innerText || '')));
         if (!observation.empty_state_verified) throw new Error(`catalog-agents-empty-state-missing:${JSON.stringify(empty.result)}`);
 
-        const restoreBefore = await frameHost.evaluate(frame => ({ requests: frame.contentWindow?.__PX_INSTALLED_REQUESTS__?.length || 0, responses: frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0 }));
-        await frameHost.evaluateContent(kind => requestCatalog(kind, { query: '', status: '', offset: 0, limit: 50 }), spec.kind);
-        const filterRestore = (await waitForInstalledCatalogExchange(frameHost, restoreBefore, { kind: spec.kind, status: '', offset: 0, limit: 50 }, timeoutMs)).response;
+        const filterRestoreDispatch = await dispatchInstalledCatalogQuery(frameHost, spec.kind, { query: '', status: '', sort: 'label', offset: 0, limit: 50 });
+        const filterRestore = (await waitForInstalledCatalogExchange(frameHost, { requests: filterRestoreDispatch.request_after, responses: filterRestoreDispatch.response_after }, { requestId: filterRestoreDispatch.request_id, kind: spec.kind, query: '', status: '', sort: 'label', offset: 0, limit: 50 }, timeoutMs)).response;
         await wait(120);
         observation.filter_restored = Number(filterRestore.result?.offset) === 0 && Number(filterRestore.result?.limit) === 50
           && Number(filterRestore.result?.total || 0) > 0
@@ -5522,6 +5614,11 @@ async function runInstalledLateCardRepairObservationProfile(frameHost, matrix, t
     };
     const first = await requestGraphPage();
     if (!first.result?.page?.node_has_more && !first.result?.page?.edge_has_more) throw new Error('observation-state-graph-denominator-too-small');
+    await settleInstalledSurfaceControl(frameHost, {
+      surface: 'knowledgeGraph',
+      selector: '[data-action="graphLoadMore"]:not([disabled])',
+      stableSamplesRequired: 2
+    }, timeoutMs);
     const initial = await frameHost.evaluate(frame => ({ more: Boolean(frame.contentDocument.querySelector('[data-action="graphLoadMore"]:not([disabled])')), all: Boolean(frame.contentDocument.querySelector('[data-action="graphLoadAll"]:not([disabled])')) }));
     let before = await installedGraphExchangeOffset(frameHost);
     await clickWhenInstalledGraphControlReady(frameHost, 'graphLoadMore', 'Load next page', timeoutMs);
@@ -5640,6 +5737,11 @@ async function runInstalledObservationStateProfile(frameHost, sidebar, matrix, t
     };
     const first = await requestGraphPage();
     if (!first.result?.page?.node_has_more && !first.result?.page?.edge_has_more) throw new Error('observation-state-graph-denominator-too-small');
+    await settleInstalledSurfaceControl(frameHost, {
+      surface: 'knowledgeGraph',
+      selector: '[data-action="graphLoadMore"]:not([disabled])',
+      stableSamplesRequired: 2
+    }, timeoutMs);
     const initial = await frameHost.evaluate(frame => ({ more: Boolean(frame.contentDocument.querySelector('[data-action="graphLoadMore"]:not([disabled])')), all: Boolean(frame.contentDocument.querySelector('[data-action="graphLoadAll"]:not([disabled])')) }));
     let before = await installedGraphExchangeOffset(frameHost);
     await clickWhenInstalledGraphControlReady(frameHost, 'graphLoadMore', 'Load next page', timeoutMs);
@@ -6485,6 +6587,7 @@ function installedSurfaceControlAcknowledged(state) {
   return state?.nav_current === true
     && state?.rendered_surface === true
     && state?.scope_current === true
+    && (state?.capability_current ?? true) === true
     && state?.control_visible === true;
 }
 
@@ -6493,7 +6596,7 @@ function advanceInstalledSurfaceControlSettlement(state, consecutiveSamples = 0,
   return { consecutive_samples: consecutive, complete: consecutive >= requiredSamples };
 }
 
-async function settleInstalledSurfaceControl(frameHost, { surface, selector, scopeTarget = null, scope = null, stableSamplesRequired = 1, preserveModal = false }, timeoutMs = 20_000) {
+async function settleInstalledSurfaceControl(frameHost, { surface, selector, scopeTarget = null, scope = null, capability = null, stableSamplesRequired = 1, preserveModal = false }, timeoutMs = 20_000) {
   if (!preserveModal) await navigateInstalledSurface(frameHost, surface, timeoutMs);
   const deadline = Date.now() + timeoutMs;
   let state = null;
@@ -6526,11 +6629,19 @@ async function settleInstalledSurfaceControl(frameHost, { surface, selector, sco
         if (scopeControl && scopeControl.getAttribute('aria-pressed') !== 'true') scopeControl.click();
         scopeCurrent = scopeControl?.getAttribute('aria-pressed') === 'true';
       }
-      const control = document.querySelector(expected.selector);
-      const controlVisible = Boolean(control && !control.disabled && visible(control)
-        && (!expected.preserveModal || control.closest('.control-modal')));
-      return { nav_current: navCurrent, rendered_surface: renderedSurface, scope_current: scopeCurrent, control_visible: controlVisible };
-    }, { surface, selector, scopeTarget, scope, preserveModal });
+      let capabilityCurrent = expected.capability === null;
+      if (expected.capability !== null) {
+        const capabilityControl = document.querySelector(`[data-action="capabilityTab"][data-kind="${CSS.escape(expected.capability)}"]`);
+        if (capabilityControl && capabilityControl.getAttribute('aria-pressed') !== 'true') capabilityControl.click();
+        capabilityCurrent = capabilityControl?.getAttribute('aria-pressed') === 'true';
+      }
+      const control = [...document.querySelectorAll(expected.selector)]
+        .find(element => !element.disabled && visible(element)
+          && (element.offsetWidth || element.offsetHeight || element.getClientRects().length)
+          && (!expected.preserveModal || element.closest('.control-modal')));
+      const controlVisible = Boolean(control);
+      return { nav_current: navCurrent, rendered_surface: renderedSurface, scope_current: scopeCurrent, capability_current: capabilityCurrent, control_visible: controlVisible };
+    }, { surface, selector, scopeTarget, scope, capability, preserveModal });
     const settlement = advanceInstalledSurfaceControlSettlement(state, consecutiveSamples, stableSamplesRequired);
     consecutiveSamples = settlement.consecutive_samples;
     if (settlement.complete) return { ...state, stable_samples: consecutiveSamples };
@@ -6908,8 +7019,14 @@ async function runInstalledStudioCandidateSaveProfile(frameHost, matrix, timeout
     const identity = `${spec.prefix}${Date.now().toString(36)}-${index}`;
     const observation = { kind: spec.kind, route: spec.route, identity, version: '1.0.0', fixture_only: spec.fixture_only === true, memory_binding_id: spec.memory_binding_id || null, catalog_record_id: null, catalog_request_id: null, available: false, attempted: false, save_dispatched_atomically: false, invalid_rejected: false, recovered_before_save: false, typed_creation_receipt: false, webview_restarted: false, catalog_query_dispatched: false, reopened_catalog_match: false, reopened_catalog_row_rendered: false, result: null, errors: [] };
     const candidateStarted = Date.now();
+    const candidateWatchdogMs = Math.max(60_000, Math.min(180_000, timeoutMs * 3));
+    const candidateProgress = phase => {
+      if (onProgress) onProgress({ scope: 'candidate-phase', kind: spec.kind, identity, fixture_only: spec.fixture_only === true, phase, state: 'reached', duration_ms: Date.now() - candidateStarted });
+    };
+    let watchdogExpired = false;
     if (onProgress) onProgress({ scope: 'candidate', kind: spec.kind, identity, fixture_only: spec.fixture_only === true, state: 'started' });
     try {
+      await boundedOwnedUiAction(async () => {
       const openerSelector = `[data-action="openStudioDraft"][data-kind="${spec.kind}"]`;
       await settleInstalledSurfaceControl(frameHost, {
         surface: spec.route,
@@ -6925,6 +7042,7 @@ async function runInstalledStudioCandidateSaveProfile(frameHost, matrix, timeout
         discard?.click();
       }, spec.kind);
       await waitForInstalledStudioState(frameHost, spec.kind, 'modal');
+      candidateProgress('modal-ready');
       const before = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
       const preflight = await frameHost.evaluate((frame, item) => {
         const document = frame.contentDocument;
@@ -6986,6 +7104,7 @@ async function runInstalledStudioCandidateSaveProfile(frameHost, matrix, timeout
         return { available, dispatched: available, invalidRejected, recovered: invalidRejected && available && identityInput.checkValidity() };
       }, { identity, kind: spec.kind, memoryBindingId: spec.memory_binding_id || null });
       observation.available = preflight.available; observation.save_dispatched_atomically = preflight.dispatched; observation.invalid_rejected = preflight.invalidRejected; observation.recovered_before_save = preflight.recovered;
+      candidateProgress('save-dispatched');
       if (!observation.available) throw new Error(`studio-${spec.kind}-save-unavailable-after-valid-identity`);
       if (!observation.save_dispatched_atomically) throw new Error(`studio-${spec.kind}-save-dispatch-missing`);
       observation.attempted = true;
@@ -7001,27 +7120,19 @@ async function runInstalledStudioCandidateSaveProfile(frameHost, matrix, timeout
       } while (Date.now() < deadline);
       observation.typed_creation_receipt = validStudioDraftReceipt(spec.kind, observation.result, identity);
       if (!observation.typed_creation_receipt) throw new Error(`studio-${spec.kind}-creation-receipt-invalid:${JSON.stringify(observation.result)}`);
+      candidateProgress('creation-receipt-verified');
       const restart = await restartInstalledDashboardWebview(frameHost, 45_000);
       observation.webview_restarted = restart.restarted === true;
-      await navigateInstalledSurface(frameHost, spec.route, 20_000);
+      candidateProgress('webview-restarted');
       const catalogKind = `${spec.kind}s`;
-      const searchDeadline = Date.now() + 30_000;
-      let searchReady = false;
-      do {
-        searchReady = await frameHost.evaluate((frame, item) => {
-          const document = frame.contentDocument;
-          document?.querySelector('[data-action="closeModal"]')?.click();
-          if (item.kind === 'skill') {
-            const skills = document?.querySelector('[data-action="capabilityTab"][data-kind="skills"]');
-            if (skills && skills.getAttribute('aria-pressed') !== 'true') skills.click();
-          }
-          const input = document?.querySelector(`[data-catalog-search="${CSS.escape(item.catalogKind)}"]`);
-          return Boolean(input && !input.disabled && (input.offsetWidth || input.offsetHeight || input.getClientRects().length));
-        }, { kind: spec.kind, catalogKind });
-        if (searchReady) break;
-        await wait(100);
-      } while (Date.now() < searchDeadline);
-      if (!searchReady) throw new Error(`studio-${spec.kind}-catalog-search-readiness-timeout`);
+      await settleInstalledSurfaceControl(frameHost, {
+        surface: spec.route,
+        selector: `[data-catalog-search="${catalogKind}"]`,
+        scopeTarget: spec.route,
+        scope: ['agents', 'workflows'].includes(spec.route) ? 'core' : null,
+        capability: spec.kind === 'skill' ? 'skills' : null,
+        stableSamplesRequired: 2
+      }, 30_000);
       const catalogOffsets = await frameHost.evaluate(frame => ({
         requests: frame.contentWindow?.__PX_INSTALLED_REQUESTS__?.length || 0,
         responses: frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0
@@ -7035,6 +7146,7 @@ async function runInstalledStudioCandidateSaveProfile(frameHost, matrix, timeout
         return true;
       }, { identity, catalogKind });
       if (!observation.catalog_query_dispatched) throw new Error(`studio-${spec.kind}-catalog-query-dispatch-missing`);
+      candidateProgress('catalog-query-dispatched');
       const catalogDeadline = Date.now() + 30_000;
       do {
         const query = await frameHost.evaluate((frame, item) => {
@@ -7059,24 +7171,28 @@ async function runInstalledStudioCandidateSaveProfile(frameHost, matrix, timeout
         await wait(150);
       } while (Date.now() < catalogDeadline);
       if (!observation.reopened_catalog_match) throw new Error(`studio-${spec.kind}-catalog-reopen-match-missing`);
-      const renderedDeadline = Date.now() + 10_000;
-      do {
-        observation.reopened_catalog_row_rendered = await frameHost.evaluate((frame, item) => {
-          const catalogKind = `${item.kind}s`;
-          return [...frame.contentDocument.querySelectorAll('[data-action="inspectCatalogItem"]')]
-            .some(element => element.dataset.kind === catalogKind && element.dataset.id === item.recordId && !element.disabled);
-        }, { kind: spec.kind, recordId: observation.catalog_record_id });
-        if (observation.reopened_catalog_row_rendered) break;
-        await wait(100);
-      } while (Date.now() < renderedDeadline);
+      const escapedRecordId = String(observation.catalog_record_id).replaceAll('\\', '\\\\').replaceAll('"', '\\"');
+      await settleInstalledSurfaceControl(frameHost, {
+        surface: spec.route,
+        selector: `[data-action="inspectCatalogItem"][data-kind="${catalogKind}"][data-id="${escapedRecordId}"]`,
+        scopeTarget: spec.route,
+        scope: ['agents', 'workflows'].includes(spec.route) ? 'core' : null,
+        capability: spec.kind === 'skill' ? 'skills' : null,
+        stableSamplesRequired: 2
+      }, 10_000);
+      observation.reopened_catalog_row_rendered = true;
       if (!observation.reopened_catalog_row_rendered) throw new Error(`studio-${spec.kind}-catalog-reopen-row-not-rendered`);
+      candidateProgress('catalog-row-settled');
+      }, candidateWatchdogMs, `studio-candidate-${spec.kind}-watchdog`);
       if (onProgress) onProgress({ scope: 'candidate', kind: spec.kind, identity, fixture_only: spec.fixture_only === true, state: 'returned', duration_ms: Date.now() - candidateStarted, error_count: 0, errors: [] });
     } catch (error) {
       observation.errors.push(String(error?.message || error).slice(0, 2400));
+      watchdogExpired = observation.errors.some(message => message === `studio-candidate-${spec.kind}-watchdog-timeout:${candidateWatchdogMs}`);
       if (onProgress) onProgress({ scope: 'candidate', kind: spec.kind, identity, fixture_only: spec.fixture_only === true, state: 'threw', duration_ms: Date.now() - candidateStarted, error_count: observation.errors.length, errors: observation.errors });
     }
     observations.push(observation);
     if (!spec.fixture_only) records.push(...profileRequirements.map(requirement => studioCandidateSaveRecord(requirement, observation)));
+    if (watchdogExpired) break;
   }
   return { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Exact immutable candidate saves executed only inside the owned isolated VS Code host.', eligible_control_count: records.length, observations, records };
 }
@@ -7710,14 +7826,16 @@ async function waitForStudioOperationResult(frameHost, after, kind, operation, t
 
 async function openExactStudioCatalogRow(frameHost, candidate, timeoutMs = 30_000) {
   await frameHost.evaluate(frame => frame.contentDocument?.querySelector('[data-action="closeModal"]')?.click());
-  await navigateInstalledSurface(frameHost, candidate.route, timeoutMs);
   if (['agents', 'workflows'].includes(candidate.route)) {
-    await frameHost.evaluate((frame, item) => {
-      const scope = frame.contentDocument?.querySelector(`[data-action="surfaceScope"][data-target="${CSS.escape(item.route)}"][data-scope="core"]`);
-      if (!scope || scope.disabled) throw new Error(`studio-${item.kind}-lifecycle-core-scope-unavailable`);
-      if (scope.getAttribute('aria-pressed') !== 'true') scope.click();
-    }, candidate);
+    await settleInstalledSurfaceControl(frameHost, {
+      surface: candidate.route,
+      selector: `[data-catalog-search="${candidate.kind}s"]`,
+      scopeTarget: candidate.route,
+      scope: 'core',
+      stableSamplesRequired: 2
+    }, timeoutMs);
   } else if (candidate.route === 'skillsTools') {
+    await navigateInstalledSurface(frameHost, candidate.route, timeoutMs);
     await frameHost.evaluate(frame => {
       const native = [...frame.contentDocument.querySelectorAll('[data-action="capabilityTab"]')].find(element => element.dataset.kind === 'skills' && !element.disabled);
       if (!native) throw new Error('studio-skill-native-catalog-tab-unavailable');
@@ -7933,7 +8051,9 @@ async function runInstalledStudioLifecycleProfile(frameHost, candidateProfile, m
           await waitForState(['running']);
           await invokeRunControl('cancel');
         }
-        const statusDeadline = Date.now() + 20_000;
+        // Workflow cancellation can remain in its explicit finalizing state
+        // while the owned subprocess tree and durable receipt settle.
+        const statusDeadline = Date.now() + 45_000;
         let terminalState = '';
         do {
           const before = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
@@ -11099,7 +11219,7 @@ async function main() {
     if (ownedReversibleConfigurationAuthority && returnedProfileErrors(reversibleConfigurationProfile).length) {
       dashboardProfileBlocker = 'reversible-configuration';
     }
-    const studioChainAdmitted = ownedReversibleConfigurationAuthority && !configurationOnly && !knowledgeLifecycleOnly && !coordinationMemoryOnly && !hostBoundaryOnly && !nativeDialogOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly && !builderOnly && !workbenchCommandOnly;
+    const studioChainAdmitted = ownedReversibleConfigurationAuthority && !configurationOnly && !knowledgeLifecycleOnly && !coordinationMemoryOnly && !hostBoundaryOnly && !nativeDialogOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly && !catalogPaginationOnly && !builderOnly && !workbenchCommandOnly;
     const studioSetupProfile = studioChainAdmitted
       ? await timedProfile('studio-setup', () => runInstalledStudioSetupProfile(workbench, dashboard, proofMatrix))
       : { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside an owned isolated host.', eligible_control_count: 0, records: [] };
@@ -11154,10 +11274,10 @@ async function main() {
     if (!focusedProfileOnly && !hostSourceMismatch && studioLifecycleCrashProfile.completed !== true && returnedProfileErrors(studioLifecycleCrashProfile).length === 0) {
       recordProfileFailure('studio-lifecycle-crash-recovery', 'returned-incomplete', studioLifecycleCrashProfile.errors?.length ? studioLifecycleCrashProfile.errors : ['profile-incomplete-without-error']);
     }
-    const knowledgeLifecycleProfile = ownedReversibleConfigurationAuthority && !configurationOnly && !studioLifecycleOnly && !coordinationMemoryOnly && !hostBoundaryOnly && !nativeDialogOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly && !builderOnly && !workbenchCommandOnly
+    const knowledgeLifecycleProfile = ownedReversibleConfigurationAuthority && !configurationOnly && !studioLifecycleOnly && !coordinationMemoryOnly && !hostBoundaryOnly && !nativeDialogOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly && !catalogPaginationOnly && !builderOnly && !workbenchCommandOnly
       ? await timedProfile('knowledge-lifecycle', () => runInstalledKnowledgeLifecycleProfile(dashboard, proofMatrix))
       : { schema_version: 'px.installed-knowledge-lifecycle-profile/1.0', authority: 'Not admitted outside an owned isolated host and disposable workspace.', observation: { attempted: false, completed: false, errors: [] }, control_probe: { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside an owned isolated host and disposable workspace.', eligible_control_count: 0, records: [] } };
-    const learningLifecycleProfile = ownedReversibleConfigurationAuthority && !configurationOnly && !studioLifecycleOnly && !coordinationMemoryOnly && !hostBoundaryOnly && !nativeDialogOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly && !builderOnly && !workbenchCommandOnly
+    const learningLifecycleProfile = ownedReversibleConfigurationAuthority && !configurationOnly && !studioLifecycleOnly && !coordinationMemoryOnly && !hostBoundaryOnly && !nativeDialogOnly && !codexHandoffOnly && !errorIndicatorsOnly && !lateCardRepairOnly && !catalogPaginationOnly && !builderOnly && !workbenchCommandOnly
       ? await timedProfile('learning-lifecycle', () => runInstalledLearningLifecycleProfile(dashboard, proofMatrix))
       : { schema_version: 'px.installed-learning-lifecycle-profile/1.0', authority: 'Not admitted outside an owned isolated host and disposable workspace.', observation: { attempted: false, completed: false, errors: [] }, control_probe: { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside an owned isolated host and disposable workspace.', eligible_control_count: 0, records: [] } };
     const coordinationMemoryProfile = ownedReversibleConfigurationAuthority && (!focusedProfileOnly || coordinationMemoryOnly)
@@ -11166,8 +11286,8 @@ async function main() {
     const skillQueryProfile = ownedReversibleConfigurationAuthority && !focusedProfileOnly
       ? await timedProfile('skill-query-read', () => runInstalledSkillQueryProfile(dashboard, proofMatrix))
       : { schema_version: 'px.installed-skill-query-profile/1.0', authority: 'Not admitted outside a full owned isolated host.', observation: { attempted: false, completed: false, errors: [] }, control_probe: skillQueryControlProbe(proofMatrix, { errors: [] }) };
-    const catalogPaginationProfile = ownedReversibleConfigurationAuthority && (!focusedProfileOnly || studioLifecycleOnly)
-      ? await timedProfile('catalog-pagination-read', () => runInstalledCatalogPaginationProfile(dashboard, proofMatrix, 30_000, studioLifecycleOnly ? new Set(['agents']) : null, true))
+    const catalogPaginationProfile = ownedReversibleConfigurationAuthority && (!focusedProfileOnly || studioLifecycleOnly || catalogPaginationOnly)
+      ? await timedProfile('catalog-pagination-read', () => runInstalledCatalogPaginationProfile(dashboard, proofMatrix, 30_000, (studioLifecycleOnly || catalogPaginationOnly) ? new Set(['agents']) : null, studioLifecycleOnly))
       : { schema_version: 'px.installed-catalog-pagination-profile/1.0', authority: 'Not admitted outside a full owned isolated host.', observations: [], control_probe: catalogPaginationControlProbe(proofMatrix, []) };
     let observationStateProfile = { schema_version: 'px.installed-observation-state-profile/1.0', authority: 'Not admitted before both dashboard and sidebar frame owners are initialized in a full owned isolated host.', observations: {}, control_probe: observationStateControlProbe(proofMatrix, {}) };
     const hostBoundaryProfile = ownedReversibleConfigurationAuthority && (!focusedProfileOnly || hostBoundaryOnly)
@@ -11490,7 +11610,7 @@ module.exports = {
   applyInstalledProbeObservations, boundedOwnedUiAction, createOwnedContentEvaluationBoundary, createOwnedLocatorEvaluationBoundary, remainingOwnedUiBudget, buildInstalledLateCardAdversarialProfile, buildInstalledLateCardScenarioProfile, cleanupControlProbe, codexHandoffControlProbe, commandPaletteAttemptDecision, coordinationMemoryControlProbe, currentSourceExtensionAssetIdentity,
   catalogPaginationControlProbe, clickWhenKnowledgeControlReady, correlateCatalogExchange, observationStateControlProbe, runInstalledObservationStateProfile, eligibleInstalledControl, eligibleInstalledSidebarControl, engineOutageRecord, enterpriseControlProbe, environmentLifecycleControlProbe,
   bindCurrentWorkbenchCommandRejection, dispatchCurrentWorkbenchCommandRejection, observeCurrentWorkbenchCommandRejection, ensureInstalledSensorRowSnapshot, exactStudioSetupTerminalResponse, executeWorkbenchCommand, exactPluginConflictSignal, exerciseInstalledControl, graphProjectionIdentity, requestBoundGraphResultIdentity, hostBoundaryControlProbe, inlineCommandOwnerControlProbe, installedActionIdentity,
-  installedConditionalRecoverySpec, installedConditionalScenario, installedHostBoundaryRevealSelector, installedPreparationIdentity, installedRuntimeSourceIdentityState, installedSourceIdentityNeedsLateRefresh, installedSidebarHandoffRequestMatches, installedSidebarHandoffSpec, installedSidebarSelector, installedStudioControlScenario, installedStudioPrerequisites, installedSurfaceState, installedSurfaceAcknowledged,
+  installedConditionalRecoverySpec, installedConditionalScenario, installedHostBoundaryRevealSelector, installedPreparationIdentity, installedRuntimeSourceIdentityState, installedSourceIdentityNeedsLateRefresh, installedSidebarDashboardIdentity, installedSidebarHandoffRequestMatches, installedSidebarHandoffSpec, installedSidebarSelector, installedStudioControlScenario, installedStudioPrerequisites, installedSurfaceState, installedSurfaceAcknowledged,
   installedFilesystemPathIdentity, installedFilesystemPathsMatch, installedFilesystemPathWithin, installedHostActionReceiptMatches, installedHostActionRequestIdentity, isExternalVsCodeWillSaveTimeoutDiagnostic,
   advanceInstalledSurfaceControlSettlement, installedSurfaceControlAcknowledged, installedWorkbenchCommandSpec, installedWorkbenchAuthorityBoundarySpec, instrumentInstalledBridge, knowledgeBrowseHasHead, knowledgeGraphControlProbe,
   knowledgeLifecycleControlProbe, learningLifecycleControlProbe, nativeWorkbenchKeyboardActionAdmitted, nativeWorkbenchKeyboardFallbackAdmitted,

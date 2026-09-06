@@ -6,7 +6,7 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const { spawnSync } = require('node:child_process');
-const { advanceInstalledSurfaceControlSettlement, applyInstalledProbeObservations, catalogPaginationControlProbe, cleanupControlProbe, clickWhenKnowledgeControlReady, commandPaletteAttemptDecision, coordinationMemoryControlProbe, eligibleInstalledControl, eligibleInstalledSidebarControl, engineOutageRecord, enterpriseControlProbe, environmentLifecycleControlProbe, exactPluginConflictSignal, graphProjectionIdentity, requestBoundGraphResultIdentity, hostBoundaryControlProbe, inlineCommandOwnerControlProbe, installedActionIdentity, installedConditionalRecoverySpec, installedConditionalScenario, installedFilesystemPathIdentity, installedFilesystemPathsMatch, installedFilesystemPathWithin, installedHostActionReceiptMatches, installedHostActionRequestIdentity, installedHostBoundaryRevealSelector, installedPluginControlPreservesModal, installedPreparationIdentity, installedSidebarHandoffRequestMatches, installedSidebarHandoffSpec, installedSidebarSelector, installedStudioControlScenario, installedStudioPrerequisites, installedSurfaceState, installedSurfaceAcknowledged, installedSurfaceControlAcknowledged, installedWorkbenchCommandSpec, installedWorkbenchAuthorityBoundarySpec, knowledgeBrowseHasHead, knowledgeGraphControlProbe, knowledgeLifecycleControlProbe, learningLifecycleControlProbe, nativeWorkbenchKeyboardActionAdmitted, nativeWorkbenchKeyboardFallbackAdmitted, nativeWorkbenchRequestFallbackAdmitted, ownedCleanupCandidate, ownedWorkbenchReloadIdentity, partitionExpectedFaultDiagnostics, pluginMutationControlProbe, pluginReadControlProbe, probeInstalledSidebarControls, projectMapIdentity, projectsControlProbe, reacquirableOwnedFrameError, restartInstalledSidebarWebview, revealInstalledHostBoundaryControl, selectLatestMatchingInstalledSnapshot, sidebarPreferenceRoundTripIdentity, sidebarReconstructionIdentity, sidebarStateControlProbe, sidebarStateControlVerified, skillQueryControlProbe, systemProjectionControlProbe, systemProjectionIdentity, requestBoundSystemSnapshotIdentity, validCleanupResult, validCoordinationResult, validKnowledgeLifecycleResult, validLearningLifecycleResult, validPermanentCleanupResult, validPendingPluginMutationReceipt, validPluginLifecycleObservation, validPluginMutationReceipt, validStudioBlockedPreviewResult, validStudioDraftReceipt, validStudioLifecycleResult, validStudioRevisionEditObservation, validStudioSetupResult, validationControlProbe, workbenchCommandRowIdentity } = require('../scripts/run-operational-ui-walk');
+const { advanceInstalledSurfaceControlSettlement, applyInstalledProbeObservations, catalogPaginationControlProbe, cleanupControlProbe, clickWhenKnowledgeControlReady, commandPaletteAttemptDecision, coordinationMemoryControlProbe, eligibleInstalledControl, eligibleInstalledSidebarControl, engineOutageRecord, enterpriseControlProbe, environmentLifecycleControlProbe, exactPluginConflictSignal, graphProjectionIdentity, requestBoundGraphResultIdentity, hostBoundaryControlProbe, inlineCommandOwnerControlProbe, installedActionIdentity, installedConditionalRecoverySpec, installedConditionalScenario, installedFilesystemPathIdentity, installedFilesystemPathsMatch, installedFilesystemPathWithin, installedHostActionReceiptMatches, installedHostActionRequestIdentity, installedHostBoundaryRevealSelector, installedPluginControlPreservesModal, installedPreparationIdentity, installedSidebarDashboardIdentity, installedSidebarHandoffRequestMatches, installedSidebarHandoffSpec, installedSidebarSelector, installedStudioControlScenario, installedStudioPrerequisites, installedSurfaceState, installedSurfaceAcknowledged, installedSurfaceControlAcknowledged, installedWorkbenchCommandSpec, installedWorkbenchAuthorityBoundarySpec, knowledgeBrowseHasHead, knowledgeGraphControlProbe, knowledgeLifecycleControlProbe, learningLifecycleControlProbe, nativeWorkbenchKeyboardActionAdmitted, nativeWorkbenchKeyboardFallbackAdmitted, nativeWorkbenchRequestFallbackAdmitted, ownedCleanupCandidate, ownedWorkbenchReloadIdentity, partitionExpectedFaultDiagnostics, pluginMutationControlProbe, pluginReadControlProbe, probeInstalledSidebarControls, projectMapIdentity, projectsControlProbe, reacquirableOwnedFrameError, restartInstalledSidebarWebview, revealInstalledHostBoundaryControl, selectLatestMatchingInstalledSnapshot, sidebarPreferenceRoundTripIdentity, sidebarReconstructionIdentity, sidebarStateControlProbe, sidebarStateControlVerified, skillQueryControlProbe, systemProjectionControlProbe, systemProjectionIdentity, requestBoundSystemSnapshotIdentity, validCleanupResult, validCoordinationResult, validKnowledgeLifecycleResult, validLearningLifecycleResult, validPermanentCleanupResult, validPendingPluginMutationReceipt, validPluginLifecycleObservation, validPluginMutationReceipt, validStudioBlockedPreviewResult, validStudioDraftReceipt, validStudioLifecycleResult, validStudioRevisionEditObservation, validStudioSetupResult, validationControlProbe, workbenchCommandRowIdentity } = require('../scripts/run-operational-ui-walk');
 const { codexHandoffControlProbe } = require('../scripts/run-operational-ui-walk');
 const { installedSnapshotTimeoutIdentity } = require('../scripts/run-operational-ui-walk');
 const { currentSourceExtensionAssetIdentity, installedRuntimeSourceIdentityState } = require('../scripts/run-operational-ui-walk');
@@ -506,6 +506,8 @@ test('command palette attempts retry only after widget loss and dispatch only ex
 test('profile control settlement requires the exact rendered surface, scope, and visible control', () => {
   const exact = { nav_current: true, rendered_surface: true, scope_current: true, control_visible: true };
   assert.equal(installedSurfaceControlAcknowledged(exact), true);
+  assert.equal(installedSurfaceControlAcknowledged({ ...exact, capability_current: true }), true);
+  assert.equal(installedSurfaceControlAcknowledged({ ...exact, capability_current: false }), false);
   for (const key of Object.keys(exact)) assert.equal(installedSurfaceControlAcknowledged({ ...exact, [key]: false }), false, key);
   let settlement = advanceInstalledSurfaceControlSettlement(exact, 0, 4);
   assert.deepEqual(settlement, { consecutive_samples: 1, complete: false });
@@ -709,6 +711,9 @@ test('mixed portable and canonical memory reveals only an exact canonical record
   assert.equal(await revealInstalledHostBoundaryControl(frameHost, spec), true);
   assert.equal(canonicalClicked, true);
   assert.equal(portableClicked, false);
+  const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
+  const reveal = source.slice(source.indexOf('async function revealInstalledHostBoundaryControl'), source.indexOf('async function settleInstalledOwnedTaskRow'));
+  assert.match(reveal, /settleInstalledSurfaceControl\(frameHost,[\s\S]*stableSamplesRequired: 2/);
 });
 
 test('conditional host scenarios settle exact owned rows instead of assuming route readiness', () => {
@@ -759,7 +764,7 @@ test('focused host-boundary scheduling runs only its exact typed-host profile', 
 test('focused native-dialog scheduling runs the exact confirmation profiles and dependent recovery checks', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   assert.match(source, /PX_OPERATIONAL_NATIVE_DIALOG_ONLY === '1'/);
-  assert.match(source, /nativeDialogOnly \? 'native-dialog-boundary' : codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : builderOnly \? 'builder' : workbenchCommandOnly \? 'workbench-command' : null/);
+  assert.match(source, /nativeDialogOnly \? 'native-dialog-boundary' : codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : catalogPaginationOnly \? 'catalog-pagination' : builderOnly \? 'builder' : workbenchCommandOnly \? 'workbench-command' : null/);
   assert.match(source, /reversibleConfigurationProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| configurationOnly\)/);
   assert.match(source, /enterpriseProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| nativeDialogOnly\)/);
   assert.match(source, /projectsProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| nativeDialogOnly\)/);
@@ -1288,6 +1293,9 @@ test('R100 sidebar native handoffs bind exact requests, rejection, dashboard ide
   assert.equal(installedSidebarHandoffRequestMatches({ type: 'openEntity', entityType: 'task', entityId: 'task-1' }, { type: 'openEntity', entityType: 'task', entityId: 'task-1' }), true);
   assert.equal(installedSidebarHandoffRequestMatches({ type: 'openEntity', entityType: 'plan', entityId: 'task-1' }, { type: 'openEntity', entityType: 'task', entityId: 'task-1' }), false);
   assert.equal(installedSidebarHandoffRequestMatches({ type: 'openPlanFromPunch', planId: 'plan-1' }, { type: 'openPlanFromPunch', planId: 'plan-1' }), true);
+  assert.equal(installedSidebarDashboardIdentity({ documentReady: true, dashboardVisible: true, dashboardRouteCurrent: true, exactIdentity: true }, { type: 'openControlPlane' }), true);
+  assert.equal(installedSidebarDashboardIdentity({ documentReady: true, dashboardVisible: true, dashboardRouteCurrent: false, exactIdentity: true }, { type: 'openControlPlane' }), false);
+  assert.equal(installedSidebarDashboardIdentity({ documentReady: true, dashboardVisible: true, dashboardRouteCurrent: false, exactIdentity: true }, { type: 'openEntity', entityId: 'agent-1' }), true);
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   const start = source.indexOf('async function probeInstalledSidebarHandoff');
   const profile = source.slice(start, source.indexOf('async function probeInstalledSidebarControls', start));
@@ -1295,7 +1303,9 @@ test('R100 sidebar native handoffs bind exact requests, rejection, dashboard ide
   assert.match(profile, /const rejected = inner\.__PX_INSTALLED_SIDEBAR_REQUESTS__\.length === offset/);
   assert.match(profile, /waitForInstalledSidebarHandoffRequest\(frameHost, attempt\.offset, attempt\.expected/);
   assert.match(profile, /waitForInstalledSidebarDashboardIdentity\(dashboard, attempt\.expected/);
-  assert.match(profile, /const deadline = Date\.now\(\) \+ timeoutMs[\s\S]*remainingOwnedUiBudget\(deadline, `installed-sidebar-handoff-\$\{label\}`\)[\s\S]*restartInstalledDashboardWebview\(dashboard, remaining\('dashboard-reconstruction'\)\)/);
+  assert.match(source, /waitForInstalledSidebarDashboardIdentity[\s\S]*settleInstalledSurfaceControl\(dashboard,[\s\S]*stableSamplesRequired: 2/);
+  assert.match(profile, /deadline - 1_000[\s\S]*phaseBudget\('dashboard-reconstruction', 30_000\)/);
+  assert.match(profile, /const deadline = Date\.now\(\) \+ timeoutMs[\s\S]*remainingOwnedUiBudget\(deadline - 1_000, `installed-sidebar-handoff-\$\{label\}`\)[\s\S]*restartInstalledDashboardWebview\(dashboard, phaseBudget\('dashboard-reconstruction', 30_000\)\)/);
   assert.match(profile, /waitForInstalledSidebarHandoffRequest\(frameHost, replayOffset, attempt\.expected/);
   assert.match(source, /prepareInstalledSidebarHandoffTarget[\s\S]*fixture\.dataset\.pxOwnedHandoffFixture[\s\S]*px-owned-\$\{spec\.handoff\.entityType\}-handoff/);
   assert.match(profile, /finally[\s\S]*removeInstalledSidebarHandoffTarget/);
@@ -1404,7 +1414,7 @@ test('Codex handoff profile owns the exact contributed command without contradic
 test('focused Codex handoff scheduling excludes every unrelated stateful profile', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   assert.match(source, /PX_OPERATIONAL_CODEX_HANDOFF_ONLY === '1'/);
-  assert.match(source, /codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : builderOnly \? 'builder' : workbenchCommandOnly \? 'workbench-command' : null/);
+  assert.match(source, /codexHandoffOnly \? 'codex-handoff' : errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : catalogPaginationOnly \? 'catalog-pagination' : builderOnly \? 'builder' : workbenchCommandOnly \? 'workbench-command' : null/);
   assert.match(source, /const codexHandoffProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| codexHandoffOnly\)/);
   const schedulingStart = source.indexOf('const reversibleConfigurationProfile');
   const scheduling = source.slice(schedulingStart, source.indexOf('const engineOutageProfile', schedulingStart));
@@ -1418,7 +1428,7 @@ test('focused Codex handoff scheduling excludes every unrelated stateful profile
 test('focused error-indicator scheduling probes exactly two identities and excludes unrelated stateful profiles', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   assert.match(source, /PX_OPERATIONAL_ERROR_INDICATORS_ONLY === '1'/);
-  assert.match(source, /errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : builderOnly \? 'builder' : workbenchCommandOnly \? 'workbench-command' : null/);
+  assert.match(source, /errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : catalogPaginationOnly \? 'catalog-pagination' : builderOnly \? 'builder' : workbenchCommandOnly \? 'workbench-command' : null/);
   const identityBlock = source.slice(source.indexOf('const ERROR_INDICATOR_CONTROL_IDS'), source.indexOf('const focusedProfile'));
   assert.match(identityBlock, /pxui\.memory\.indicator\.queryError/);
   assert.match(identityBlock, /pxui\.knowledge-core\.indicator\.controllerError/);
@@ -1713,6 +1723,7 @@ test('R118 catalog pagination waits for kind-specific controls after the exact c
   assert.match(settlement, /catalogPrevious[\s\S]*catalogNext[\s\S]*previous_rendered[\s\S]*next_rendered[\s\S]*previous_disabled[\s\S]*next_ready/);
   assert.match(settlement, /do \{[\s\S]*await wait\(100\);[\s\S]*Date\.now\(\) < deadline/);
   const profile = source.slice(source.indexOf('async function runInstalledCatalogPaginationProfile'), source.indexOf('const INSTALLED_OBSERVATION_STATE_IDS'));
+  assert.match(profile, /settleInstalledSurfaceControl\(frameHost,[\s\S]*capability: spec\.capability \|\| null,[\s\S]*stableSamplesRequired: 2/);
   assert.match(profile, /waitForInstalledCatalogExchange[\s\S]*waitForInstalledCatalogControls\(frameHost, spec\.kind, timeoutMs\)/);
   assert.ok(profile.indexOf('waitForInstalledCatalogExchange') < profile.indexOf('waitForInstalledCatalogControls'));
 });
@@ -1977,9 +1988,7 @@ test('owned installed Studio candidate save accepts only kind-exact durable rece
   assert.match(profile, /const available = Boolean\(save && !save\.disabled\);[\s\S]*if \(available\) save\.click\(\);[\s\S]*dispatched: available/);
   assert.match(profile, /save_dispatched_atomically/);
   assert.doesNotMatch(profile, /querySelector\('\[data-action="submitStudioDraft"\]'\)\.click\(\)/);
-  assert.match(profile, /navigateInstalledSurface\(frameHost, spec\.route, 20_000\)/);
-  assert.match(profile, /studio-\$\{spec\.kind\}-catalog-search-readiness-timeout/);
-  assert.match(profile, /input\.offsetWidth \|\| input\.offsetHeight \|\| input\.getClientRects\(\)\.length/);
+  assert.match(profile, /settleInstalledSurfaceControl\(frameHost,[\s\S]*capability: spec\.kind === 'skill' \? 'skills' : null,[\s\S]*stableSamplesRequired: 2/);
   assert.match(profile, /requests: frame\.contentWindow\?\.__PX_INSTALLED_REQUESTS__/);
   assert.match(profile, /responses: frame\.contentWindow\?\.__PX_INSTALLED_RESPONSES__/);
   assert.match(profile, /\[data-catalog-search="\$\{CSS\.escape\(item\.catalogKind\)\}"\]/);
@@ -1992,7 +2001,7 @@ test('owned installed Studio candidate save accepts only kind-exact durable rece
   assert.match(profile, /includeBlockedAgentFixture[\s\S]*memory:px-owned-unresolved/);
   assert.match(profile, /draft\.memory_binding_ids = \[item\.memoryBindingId\]/);
   assert.match(profile, /if \(!spec\.fixture_only\) records\.push/);
-  assert.match(profile, /element\.dataset\.kind === catalogKind && element\.dataset\.id === item\.recordId/);
+  assert.match(profile, /selector: `\[data-action="inspectCatalogItem"\]\[data-kind="\$\{catalogKind\}"\]\[data-id="\$\{escapedRecordId\}"\]`[\s\S]*stableSamplesRequired: 2/);
 });
 
 test('owned installed revision edit requires changed content, preserved predecessor, and physical reopen', () => {
@@ -2056,7 +2065,7 @@ test('owned installed Studio lifecycle accepts only operation-exact typed receip
   const profile = source.slice(source.indexOf('async function runInstalledStudioLifecycleProfile'), source.indexOf('function validKnowledgeLifecycleResult'));
   const catalogOpen = source.slice(source.indexOf('async function openExactStudioCatalogRow'), source.indexOf('async function runInstalledStudioLifecycleProfile'));
   assert.match(profile, /openExactStudioCatalogRow\(frameHost, candidate\)/);
-  assert.match(catalogOpen, /navigateInstalledSurface\(frameHost, candidate\.route, timeoutMs\)/);
+  assert.match(catalogOpen, /settleInstalledSurfaceControl\(frameHost,[\s\S]*scopeTarget: candidate\.route,[\s\S]*scope: 'core',[\s\S]*stableSamplesRequired: 2/);
   assert.match(catalogOpen, /data-catalog-search[^\n]+catalogKind[\s\S]*search\.value !== item\.identity[\s\S]*search\.dispatchEvent\(new Event\('input', \{ bubbles: true \}\)\)[\s\S]*data-action="inspectCatalogItem"/);
   assert.match(catalogOpen, /exact-catalog-row-timeout/);
   assert.match(catalogOpen, /search_value:/);
@@ -2068,6 +2077,7 @@ test('owned installed Studio lifecycle accepts only operation-exact typed receip
   assert.match(source, /node\.inputs = \[\{ name: 'seconds', data_type: 'number', required: true \}\]/);
   assert.match(source, /draft\.run_inputs = \{ \[`\$\{node\.node_id\}\.seconds`\]: 8 \}/);
   assert.match(profile, /await waitForState\(\['running'\]\);[\s\S]*await invokeRunControl\('cancel'\)/);
+  assert.match(profile, /const statusDeadline = Date\.now\(\) \+ 45_000/);
   assert.match(profile, /navigateInstalledSurface\(frameHost, 'studio-lifecycle', 20_000\)/);
   assert.match(profile, /observation\.lifecycle_hub_run_browser/);
   assert.match(profile, /exerciseStudioLifecycleFailureStates\(frameHost, candidate\)/);
@@ -2144,6 +2154,8 @@ test('Studio candidate save has a local profile ceiling and per-candidate progre
   assert.match(profile, /onProgress.*scope: 'candidate'.*state: 'started'/s);
   assert.match(profile, /onProgress.*scope: 'candidate'.*state: 'returned'/s);
   assert.match(profile, /onProgress.*scope: 'candidate'.*state: 'threw'/s);
+  assert.match(profile, /studio-candidate-\$\{spec\.kind\}-watchdog/);
+  assert.match(profile, /scope: 'candidate-phase'.*phase, state: 'reached'/s);
   assert.match(main, /profile: 'studio-candidate-save-step'/);
   assert.match(main, /timeoutMs: 900_000/);
 });
@@ -2365,8 +2377,13 @@ test('read-only catalog pagination binds real offsets and restores the normal qu
   assert.ok(probe.records.every(record => record.interaction_chain.recovery_rollback.state === 'present'));
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   const profile = source.slice(source.indexOf('async function runInstalledCatalogPaginationProfile'), source.indexOf('const INSTALLED_CODEX_HANDOFF_IDS'));
-  assert.match(profile, /evaluateContent\(kind => requestCatalog\(kind, \{ offset: 0, limit: 1 \}\)/);
-  assert.match(profile, /evaluateContent\(kind => requestCatalog\(kind, \{ query: '', status: '', offset: 0, limit: 50 \}\)/);
+  assert.match(source, /async function dispatchInstalledCatalogQuery[\s\S]*requestCatalog\(item\.kind, item\.updates\)[\s\S]*request_id: requestId/);
+  assert.match(profile, /dispatchInstalledCatalogQuery\(frameHost, spec\.kind, \{ query: '', status: '', sort: 'label', offset: 0, limit: 1 \}\)/);
+  assert.match(profile, /waitForInstalledCatalogExchange\(frameHost,[\s\S]*requestId: firstDispatch\.request_id[\s\S]*query: '', status: '', sort: 'label', offset: 0, limit: 1/);
+  assert.match(source, /catalog-pagination-query-failed:[\s\S]*catalog-pagination-result-timeout:[\s\S]*diagnostic/);
+  assert.match(source, /async function dispatchInstalledCatalogPager[\s\S]*control\.click\(\)[\s\S]*requests\.slice\(requestAfter\)[\s\S]*catalog-pagination-dispatch-timeout/);
+  assert.match(profile, /dispatchInstalledCatalogPager\(frameHost, spec\.kind, 'catalogNext', 1, timeoutMs\)[\s\S]*dispatchInstalledCatalogPager\(frameHost, spec\.kind, 'catalogPrevious', 0, timeoutMs\)/);
+  assert.match(profile, /dispatchInstalledCatalogQuery\(frameHost, spec\.kind, \{ query: '', status: '', sort: 'label', offset: 0, limit: 50 \}\)/);
   assert.match(profile, /surface: 'diagnostics', route: 'diagnostics', kind: 'enterprise-integrations'/);
   assert.doesNotMatch(profile, /\.eval\(/);
   const agentControls = controls.filter(control => control.surface_id === 'agents');
@@ -2374,7 +2391,7 @@ test('read-only catalog pagination binds real offsets and restores the normal qu
   assert.equal(focused.records.length, 3);
   assert.ok(focused.records.every(record => record.interaction_chain.open_load.state === 'present'));
   assert.match(profile, /data-catalog-status[\s\S]*lifecycle_filter_verified[\s\S]*No records match this lifecycle and search filter[\s\S]*filter_restored/);
-  assert.match(source, /\(!focusedProfileOnly \|\| studioLifecycleOnly\)[\s\S]*new Set\(\['agents'\]\)/);
+  assert.match(source, /\(!focusedProfileOnly \|\| studioLifecycleOnly \|\| catalogPaginationOnly\)[\s\S]*new Set\(\['agents'\]\)/);
 });
 
 test('owned observation-state profile covers the fourteen bounded reversible state controls', () => {
@@ -2390,6 +2407,7 @@ test('owned observation-state profile covers the fourteen bounded reversible sta
     'pxui.sidebar.action.provider-next', 'pxui.sidebar.action.provider-previous'
   ]) assert.match(profile, new RegExp(id.replaceAll('.', '\\.')));
   assert.match(profile, /requestGraph\(\{ view: 'repository',[\s\S]*maxNodes: 1, maxEdges: 1/);
+  assert.match(profile, /surface: 'knowledgeGraph'[\s\S]*selector: '\[data-action="graphLoadMore"\]:not\(\[disabled\]\)'[\s\S]*stableSamplesRequired: 2/);
   assert.match(profile, /type: 'memoryQuery'[\s\S]*offset: 0, limit: 1/);
   assert.match(profile, /state\.memoryOffset = -59[\s\S]*Number\(next\.result\?\.offset\) === 1[\s\S]*Number\(previous\.result\?\.offset\) === 0/);
   assert.match(profile, /clearWorkingStudioDraft\('agent'\)/);
@@ -3513,7 +3531,7 @@ test('installed plugin profiles require acknowledged Plugins navigation before l
   assert.match(settlement, /stableSamplesRequired = 1/);
   assert.match(settlement, /if \(!preserveModal\) await navigateInstalledSurface/);
   assert.match(settlement, /route && !expected\.preserveModal\) route\.click\(\)/);
-  assert.match(settlement, /!expected\.preserveModal \|\| control\.closest\('\.control-modal'\)/);
+  assert.match(settlement, /!expected\.preserveModal \|\| element\.closest\('\.control-modal'\)/);
   assert.match(settlement, /nav_current: navCurrent/);
   assert.match(settlement, /advanceInstalledSurfaceControlSettlement\(state, consecutiveSamples, stableSamplesRequired\)/);
   assert.match(settlement, /surface: 'plugins', selector, stableSamplesRequired: 4/);

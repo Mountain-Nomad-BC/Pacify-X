@@ -274,6 +274,25 @@ function focusedProfileIssues(value) {
     if (observation?.attempted !== true || observation?.completed !== true || (observation?.errors || []).length) {
       incomplete('focused-knowledge-lifecycle-incomplete', 'The focused Knowledge lifecycle did not complete its source-bound mutation and refreshed-state journey.', observation || null);
     }
+  } else if (focused === 'catalog-pagination') {
+    const profile = value.catalog_pagination_profile;
+    const observations = Array.isArray(profile?.observations) ? profile.observations : [];
+    const complete = observations.length > 0
+      && observations.every(observation => observation?.rendered === true
+        && observation?.attempted === true
+        && observation?.first_page_previous_disabled === true
+        && observation?.forward === true
+        && observation?.backward === true
+        && observation?.restored === true
+        && !(observation?.errors || []).length)
+      && completeOwnedProbe(profile);
+    if (!complete) {
+      incomplete('focused-catalog-pagination-incomplete', 'The focused catalog pagination journey did not complete exact forward, backward, first-page refusal, result acknowledgement, and local-state restoration.', {
+        eligible_control_count: Number(profile?.control_probe?.eligible_control_count || 0),
+        record_count: Array.isArray(profile?.control_probe?.records) ? profile.control_probe.records.length : 0,
+        observations
+      });
+    }
   } else if (focused === 'coordination-memory') {
     const profile = value.coordination_memory_profile;
     if (!completeOwnedProbe(profile) || profile?.observation?.completed !== true || profile?.observation?.webview_restarted !== true) {
@@ -632,7 +651,7 @@ function evaluateOperationalWalk(receipt, { additionalIssues = [] } = {}) {
   };
 }
 
-function evaluateLauncherTerminal({ walkStatus = null, processTreeClosedVerified = null, workerExitVerified = null, error = null } = {}) {
+function evaluateLauncherTerminal({ walkStatus = null, processTreeClosedVerified = null, workerExitVerified = null, cleanupReclaimed = null, error = null } = {}) {
   const issues = Array.isArray(walkStatus?.issues) ? [...walkStatus.issues] : [];
   if (!walkStatus || typeof walkStatus !== 'object') {
     issues.push(issue({ source: 'process', code: 'walk-status-missing', message: 'The child did not retain a typed walk status.' }));
@@ -642,6 +661,9 @@ function evaluateLauncherTerminal({ walkStatus = null, processTreeClosedVerified
   }
   if (workerExitVerified !== true) {
     issues.push(issue({ source: 'process', code: 'owned-worker-exit-unverified', message: 'The owned worker exit was not verified.' }));
+  }
+  if (cleanupReclaimed === false) {
+    issues.push(issue({ source: 'process', code: 'owned-ephemeral-cleanup-unreclaimed', message: 'The verified closed process tree retained its PACIFY-X-owned ephemeral host root.' }));
   }
   if (error) {
     issues.push(issue({ source: 'process', code: 'launcher-error', message: String(error?.stack || error?.message || error) }));
