@@ -13,6 +13,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import tempfile
 import time
 from typing import Any, Callable, Sequence, TypeVar
 from uuid import uuid4
@@ -66,7 +67,21 @@ def _atomic_json(path: Path, payload: object) -> None:
 class RuntimeWorkPlane:
     def __init__(self, root: Path) -> None:
         self.root = root.resolve()
-        self.plane = self.root / ".engineering-bootstrap" / "runtime-core"
+        owned_plane = os.environ.get("PX_OWNED_RUNTIME_WORK_PLANE_ROOT", "").strip()
+        if owned_plane:
+            if os.environ.get("PX_OWNED_VSCODE_HOST") != "1":
+                raise ValueError(
+                    "runtime work-plane override requires an owned VS Code host"
+                )
+            candidate = Path(owned_plane).resolve()
+            temporary = Path(tempfile.gettempdir()).resolve()
+            if not candidate.is_relative_to(temporary):
+                raise ValueError(
+                    "owned runtime work-plane override must remain under the OS temporary root"
+                )
+            self.plane = candidate
+        else:
+            self.plane = self.root / ".engineering-bootstrap" / "runtime-core"
         self.locks = self.plane / "locks"
         self.pools = self.plane / "pools"
         self.cache = self.plane / "cache"

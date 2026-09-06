@@ -18,6 +18,9 @@ from runtime.release_signing import verify_certificate_signature
 
 SHA256 = re.compile(r"^[a-f0-9]{64}$")
 COMMIT = re.compile(r"^[a-f0-9]{40}$")
+CANDIDATE = re.compile(
+    r"^pacify-x-certification-\d{8}-final[1-9]\d*-single$"
+)
 
 
 class PublicationBlocked(RuntimeError):
@@ -101,7 +104,7 @@ def verify_publication(
     repository: Path,
     release: str,
     source_commit: str,
-    candidate_id: str,
+    candidate_id: str | None = None,
     vsix_name: str,
     vsix_sha256: str,
     vsix_size: int,
@@ -185,6 +188,13 @@ def verify_publication(
         subjects["installed_operational_summary"],
         "installed-operational summary",
     )
+    summary_subject = subjects["installed_operational_summary"]
+    signed_candidate_id = str(summary_subject.get("campaign_id") or "")
+    if not CANDIDATE.fullmatch(signed_candidate_id):
+        raise PublicationBlocked("signed candidate identity is malformed")
+    if candidate_id is not None and candidate_id != signed_candidate_id:
+        raise PublicationBlocked("supplied candidate differs from signed custody")
+    candidate_id = signed_candidate_id
     summary = _object(installed_summary)
     expected_artifact = {
         "path": f"extension/dist/{vsix_name}",
@@ -232,7 +242,6 @@ def verify_publication(
         }.items()
     ):
         raise PublicationBlocked("installed exhaustive-host denominator is incomplete")
-    summary_subject = subjects["installed_operational_summary"]
     for key in (
         "schema_version",
         "campaign_id",
@@ -346,7 +355,7 @@ def main() -> int:
     parser.add_argument("--repository", type=Path, required=True)
     parser.add_argument("--release", required=True)
     parser.add_argument("--source-commit", required=True)
-    parser.add_argument("--candidate-id", required=True)
+    parser.add_argument("--candidate-id")
     parser.add_argument("--vsix-name", required=True)
     parser.add_argument("--vsix-sha256", required=True)
     parser.add_argument("--vsix-size", type=int, required=True)

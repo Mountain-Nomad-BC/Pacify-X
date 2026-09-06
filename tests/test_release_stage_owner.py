@@ -465,7 +465,8 @@ def test_identity_uses_explicit_cached_set_and_one_annotated_retag(
     result = GitEffects().identity(config)
     assert result["valid"] is True
     assert ("add", "--", "one.txt", "two.txt") in calls
-    assert any(call[:4] == ("tag", "-f", "-a", "v0.7.0") for call in calls)
+    tag_call = next(call for call in calls if call[:4] == ("tag", "-f", "-a", "v0.7.0"))
+    assert tag_call[4:6] == ("-m", f"v0.7.0 {config.candidate_id}")
     assert sum(call[:2] == ("commit", "-m") for call in calls) == 1
 
 

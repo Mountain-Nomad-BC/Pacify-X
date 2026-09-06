@@ -121,6 +121,9 @@ def test_release_workflow_is_manual_post_certification_transport_only() -> None:
     assert "release verify" in workflow
     assert "run-installed-vsix-smoke.js" in workflow
     assert "--replace-release-evidence" in workflow
+    assert "PACIFY_X_CANDIDATE_ID" not in workflow
+    assert "--candidate-id" not in workflow
+    assert "final105" not in workflow
     for forbidden in (
         "release finalize",
         "pip download",
@@ -130,6 +133,10 @@ def test_release_workflow_is_manual_post_certification_transport_only() -> None:
         "gh release upload",
     ):
         assert forbidden not in workflow
+
+    release_process = (ROOT / "docs/release-process.md").read_text(encoding="utf-8")
+    assert "final105" not in release_process
+    assert "$candidate" in release_process
 
 
 def test_marketplace_publication_uses_oidc_and_the_exact_certified_vsix() -> None:

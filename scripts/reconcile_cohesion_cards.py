@@ -2,8 +2,8 @@
 
 The command is check-only by default.  ``--apply`` is required to change the
 card projection.  The first supported target is ``downstream_green``.  Closing
-the source/proof cards additionally requires a successful final100 installed
-operational summary.
+the source/proof cards additionally requires a successful successor-candidate
+installed-operational summary.
 """
 
 from __future__ import annotations
@@ -716,21 +716,21 @@ def _verified_artifact(
 def _validate_installed_proof(root: Path, relative: Path) -> dict[str, object]:
     path = _inside(root, relative)
     if not path.is_file():
-        raise ReconciliationError(f"final100 installed proof is absent: {relative}")
+        raise ReconciliationError(f"installed-operational proof is absent: {relative}")
     proof = _load_json(path)
     if proof.get("schema_version") != "px.installed-operational-run-summary/1.1":
-        raise ReconciliationError("final100 installed proof has the wrong schema")
+        raise ReconciliationError("installed-operational proof has the wrong schema")
     campaign_id = str(proof.get("campaign_id") or "")
     if not re.fullmatch(
-        r"pacify-x-certification-\d{8}-final100-single",
+        r"pacify-x-certification-\d{8}-final[1-9]\d*-single",
         campaign_id,
     ):
-        raise ReconciliationError("installed proof is not bound to final100")
+        raise ReconciliationError("installed proof is not bound to a successor candidate")
     claim_id = str(proof.get("claim_id") or "")
     if not claim_id.startswith(
         f"release-stage:{campaign_id}:installed_operational:"
     ):
-        raise ReconciliationError("installed proof claim is not bound to final100")
+        raise ReconciliationError("installed proof claim is not bound to its candidate")
     identity_sha = str(proof.get("release_identity_sha256") or "")
     product_digest = str(proof.get("source_product_digest") or "")
     harness_digest = str(proof.get("source_harness_digest") or "")
@@ -745,10 +745,10 @@ def _validate_installed_proof(root: Path, relative: Path) -> dict[str, object]:
         or proof.get("windows_hosts_serialized") is not True
     ):
         raise ReconciliationError(
-            "final100 installed denominator lacks its passing concurrency contract"
+            "installed denominator lacks its passing concurrency contract"
         )
     if proof.get("retries") != 0:
-        raise ReconciliationError("final100 installed denominator contains a retry")
+        raise ReconciliationError("installed denominator contains a retry")
     finished_utc = _utc_timestamp(proof.get("finished_utc"), label="finished_utc")
     artifact = _verified_artifact(
         root, proof.get("artifact"), label="artifact", require_size=True
@@ -770,9 +770,9 @@ def _validate_installed_proof(root: Path, relative: Path) -> dict[str, object]:
             "exhaustive-installed-exact-vsix-host-walk",
         }
     ):
-        raise ReconciliationError("final100 installed denominator members are not exact")
+        raise ReconciliationError("installed denominator members are not exact")
     if any(not isinstance(row, dict) or row.get("exit_code") != 0 for row in members):
-        raise ReconciliationError("a final100 installed member did not pass")
+        raise ReconciliationError("an installed-operational member did not pass")
     for row in members:
         member = str(row["member"])
         for field in ("log", "receipt"):
@@ -805,7 +805,7 @@ def _validate_installed_proof(root: Path, relative: Path) -> dict[str, object]:
     }
     mismatched = {key: (exhaustive.get(key), value) for key, value in required.items() if exhaustive.get(key) != value}
     if mismatched:
-        raise ReconciliationError(f"final100 exhaustive proof is incomplete: {mismatched}")
+        raise ReconciliationError(f"exhaustive installed proof is incomplete: {mismatched}")
     _verified_artifact(root, exhaustive.get("report"), label="exhaustive.report")
     return {
         "path": relative.as_posix(),
@@ -837,12 +837,12 @@ def _validate_close_control_plane(
         raise ReconciliationError("release identity has the wrong schema")
     if identity.get("campaign_id") != installed_evidence.get("campaign_id"):
         raise ReconciliationError(
-            "release identity campaign does not match the final100 installed proof"
+            "release identity campaign does not match the installed proof"
         )
     if identity.get("active_claim") is not None:
         raise ReconciliationError("release identity still has an active claim")
     if identity.get("state") != "active" or identity.get("apply_count") != 1:
-        raise ReconciliationError("release identity is not the single active final100 identity")
+        raise ReconciliationError("release identity is not the single active candidate")
     kernel = identity.get("identity")
     if not isinstance(kernel, dict):
         raise ReconciliationError("release identity kernel is absent")
@@ -934,7 +934,7 @@ def _validate_close_control_plane(
         or repair12_artifact.get("unchanged") is not True
     ):
         raise ReconciliationError(
-            "final100 installed artifact does not match repair12 immutable artifact"
+            "installed artifact does not match repair12 immutable artifact"
         )
     if artifact.get("path") != (
         f"extension/dist/pacify-x-vscode-{kernel.get('extension_version')}.vsix"
@@ -960,7 +960,7 @@ def _validate_close_control_plane(
         == kernel.get("source_harness_digest")
     )
     if not common_identity:
-        raise ReconciliationError("package/install evidence identity does not match final100")
+        raise ReconciliationError("package/install evidence identity does not match candidate")
     if (
         package.get("schema_version") != "px.release-stage-evidence/1.0"
         or package.get("stage") != "package"
@@ -974,13 +974,13 @@ def _validate_close_control_plane(
         or package.get("valid") is not True
     ):
         raise ReconciliationError("package evidence does not bind the installed artifact")
-    _require_zero_resources(package, label="final100 package")
+    _require_zero_resources(package, label="candidate package")
     _validate_path_hash_fields(
         root,
         package,
         path_field="audit_log",
         hash_field="audit_log_sha256",
-        label="final100 package audit log",
+        label="candidate package audit log",
     )
     if (
         install_receipt.get("schema_version") != "px.install-audit-denominator/1.0"
@@ -995,18 +995,18 @@ def _validate_close_control_plane(
         or install_receipt.get("valid") is not True
     ):
         raise ReconciliationError("install evidence does not bind the installed artifact")
-    _require_zero_resources(install_receipt, label="final100 install")
+    _require_zero_resources(install_receipt, label="candidate install")
     _validate_path_hash_fields(
         root,
         install_receipt,
         path_field="audit_log",
         hash_field="audit_log_sha256",
-        label="final100 install audit log",
+        label="candidate install audit log",
     )
 
     automation_path = _inside(root, automation_state)
     if not automation_path.is_file() or automation_path.is_symlink():
-        raise ReconciliationError("final100 automation state is not a regular file")
+        raise ReconciliationError("candidate automation state is not a regular file")
     automation = _load_json(automation_path)
     steps = automation.get("steps")
     expected_steps = (*PRIOR_AUTOMATION_STEPS, "card_reconcile")
@@ -1017,7 +1017,7 @@ def _validate_close_control_plane(
         or not isinstance(steps, dict)
         or tuple(steps) != expected_steps
     ):
-        raise ReconciliationError("final100 automation stage inventory/order is not exact")
+        raise ReconciliationError("candidate automation stage inventory/order is not exact")
     previous_step_finished: datetime | None = None
     for step_name in PRIOR_AUTOMATION_STEPS:
         step = steps[step_name]
@@ -1031,7 +1031,7 @@ def _validate_close_control_plane(
             or step["details"].get("valid") is not True
         ):
             raise ReconciliationError(
-                f"final100 automation step {step_name} was not passed exactly once"
+                f"candidate automation step {step_name} was not passed exactly once"
             )
         started = _utc_timestamp(
             step.get("started_utc"), label=f"{step_name}.started_utc"
@@ -1045,7 +1045,7 @@ def _validate_close_control_plane(
             previous_step_finished is not None and started_at < previous_step_finished
         ):
             raise ReconciliationError(
-                f"final100 automation step {step_name} is out of order"
+                f"candidate automation step {step_name} is out of order"
             )
         if step_name in release_windows:
             claimed_at, stage_finished_at = release_windows[step_name]
@@ -1053,7 +1053,7 @@ def _validate_close_control_plane(
                 started_at <= claimed_at <= stage_finished_at <= finished_at
             ):
                 raise ReconciliationError(
-                    f"final100 automation step {step_name} does not enclose its release stage"
+                    f"candidate automation step {step_name} does not enclose its release stage"
                 )
         previous_step_finished = finished_at
     running = steps["card_reconcile"]
@@ -1064,13 +1064,13 @@ def _validate_close_control_plane(
         or not str(running.get("admission_event_id") or "").strip()
     )
     if common_running:
-        raise ReconciliationError("final100 card_reconcile step is not the sole running owner")
+        raise ReconciliationError("candidate card_reconcile step is not the sole running owner")
     card_started = _utc_timestamp(
         running.get("started_utc"), label="card_reconcile.started_utc"
     )
     card_started_at = datetime.fromisoformat(card_started.replace("Z", "+00:00"))
     if previous_step_finished is not None and card_started_at < previous_step_finished:
-        raise ReconciliationError("final100 card_reconcile step is out of order")
+        raise ReconciliationError("candidate card_reconcile step is out of order")
     if allow_completed:
         if (
             running.get("status") != "passed"
@@ -1090,7 +1090,7 @@ def _validate_close_control_plane(
         or "finished_utc" in running
         or "details" in running
     ):
-        raise ReconciliationError("final100 card_reconcile step is not the sole running owner")
+        raise ReconciliationError("candidate card_reconcile step is not the sole running owner")
 
     try:
         status = _resource_status(
@@ -1215,14 +1215,14 @@ def _project_management_state(
         "final99 is terminal after its one installed-operational denominator; repair12 focused proofs closed all five direct route/projection roots without replay."
     ]
     checkpoint["next_safe_action"] = (
-        "Run final100 certification once from the passing installed-operational denominator."
+        "Run successor-candidate certification once from the passing installed-operational denominator."
         if target == "closed"
-        else "Freeze repair12, reconcile generated projections once, and enter final100's registered release stages."
+        else "Freeze repair12, reconcile generated projections once, and enter the successor candidate's registered release stages."
     )
     checkpoint["open_circuits"] = (
-        ["publication remains closed until final100 certification passes"]
+        ["publication remains closed until successor-candidate certification passes"]
         if target == "closed"
-        else ["final100 release stages remain closed until repair12 is frozen"]
+        else ["successor-candidate release stages remain closed until repair12 is frozen"]
     )
     repository = checkpoint.get("repository")
     if not isinstance(repository, dict):
@@ -1233,7 +1233,7 @@ def _project_management_state(
     if not isinstance(validation, dict):
         raise ReconciliationError("project-management checkpoint lacks validation")
     validation["tests"] = (
-        "All 37 cohesion source/proof cards are closed against the exact passing final100 installed-operational proof."
+        "All 37 cohesion source/proof cards are closed against the exact passing successor-candidate installed-operational proof."
         if target == "closed"
         else "All 37 cohesion source/proof cards are evidence-bound and downstream-green; final99 full/validation and repair12 focused owners passed."
     )
@@ -1243,9 +1243,9 @@ def _project_management_state(
         {
             "next_action": checkpoint["next_safe_action"],
             "phase": (
-                "final100-certification"
+                "successor-candidate-certification"
                 if target == "closed"
-                else "repair12-freeze-and-final100-release"
+                else "repair12-freeze-and-successor-release"
             ),
             "status": (
                 "installed-operational-green-certification-pending"
@@ -1267,9 +1267,9 @@ def _project_management_state(
     }
     updated["knowledge"]["unknowns"] = [
         (
-            "Final publication remains contingent on one passing final100 certification and its separately admitted network publication."
+            "Final publication remains contingent on one passing successor-candidate certification and its separately admitted network publication."
             if target == "closed"
-            else "Final publication remains contingent on one ordered final100 release campaign."
+            else "Final publication remains contingent on one ordered successor release campaign."
         ),
         "Real macOS installed-host execution remains external-authority evidence and must not be inferred from declarations.",
     ]
@@ -1285,7 +1285,7 @@ def _readme(cards: Mapping[str, Mapping[str, object]]) -> str:
     if closed == 37:
         progress = (
             "Current progress: six audit cards and all 37 source/proof cards are "
-            "closed. The exact final100 installed-operational proof was accepted; "
+            "closed. The exact successor-candidate installed-operational proof was accepted; "
             "certification is pending."
         )
     else:
@@ -1302,7 +1302,7 @@ def _readme(cards: Mapping[str, Mapping[str, object]]) -> str:
         f"{progress}\n\n"
         "Lifecycle: `planned -> admitted -> in_progress -> focused_green -> "
         "downstream_green -> closed`. A source/proof card can become closed only after "
-        "the exact final100 installed-operational denominator passes without retry.\n\n"
+        "the exact successor-candidate installed-operational denominator passes without retry.\n\n"
         "Every completion reference is content-hash-bound. Reconciliation is check-only "
         "unless `scripts/reconcile_cohesion_cards.py --apply` is invoked explicitly.\n"
     )
@@ -1429,9 +1429,9 @@ def reconcile(
                 "closed requires all 37 cards in one downstream_green or closed projection"
             )
         if installed_proof is None:
-            raise ReconciliationError("closed requires --installed-proof from final100")
+            raise ReconciliationError("closed requires --installed-proof from the candidate")
         if automation_state is None:
-            raise ReconciliationError("closed requires --automation-state from final100")
+            raise ReconciliationError("closed requires --automation-state from the candidate")
         installed_evidence = _validate_installed_proof(root, installed_proof)
         _validate_close_control_plane(
             root,

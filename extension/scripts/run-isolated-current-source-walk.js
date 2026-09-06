@@ -1028,6 +1028,15 @@ function acquireWalkOwnership(options = {}) {
   }
 }
 
+function parallelProofHostLock(lane, focusedProfile) {
+  if (!lane) return null;
+  if (!focusedProfile) throw new Error('parallel-proof-lane-requires-focused-profile');
+  if (!/^[a-z0-9][a-z0-9-]{0,31}$/.test(lane)) {
+    throw new Error('parallel-proof-lane-invalid');
+  }
+  return path.join(os.tmpdir(), `pacify-x-vscode-host-proof-${lane}.lock.json`);
+}
+
 function reconcileOwnedPrelaunchFailure(ownership, reportPath, walkOutput, error) {
   try {
     return reconcilePrelaunchFailure(ownership.temporaryRoot, reportPath, walkOutput, error);
@@ -1063,6 +1072,8 @@ async function main() {
   if (vsixPath && (!fs.existsSync(vsixPath) || path.extname(vsixPath).toLowerCase() !== '.vsix')) throw new Error(`exact-vsix-missing:${vsixPath}`);
   const focusedProfile = configurationOnly ? 'reversible-configuration' : studioLifecycleOnly ? 'studio-lifecycle' : knowledgeLifecycleOnly ? 'knowledge-lifecycle' : coordinationMemoryOnly ? 'coordination-memory' : hostBoundaryOnly ? 'host-boundary' : nativeDialogOnly ? 'native-dialog-boundary' : pluginLifecycleOnly ? 'plugin-lifecycle' : codexHandoffOnly ? 'codex-handoff' : errorIndicatorsOnly ? 'error-indicators' : lateCardRepairOnly ? 'late-card-repair' : catalogPaginationOnly ? 'catalog-pagination' : builderOnly ? 'builder' : workbenchCommandOnly ? 'workbench-command' : null;
   const mode = `${vsixPath ? 'installed-vsix' : 'current-source'}${bootstrapOnly ? '-bootstrap' : focusedProfile ? `-${focusedProfile}` : ''}`;
+  const parallelProofLane = argument('--parallel-proof-lane');
+  const proofLockPath = parallelProofHostLock(parallelProofLane, focusedProfile);
   const walkOutput = path.resolve(argument('--output') || path.join(repositoryRoot, 'evidence', `operational-ui-walk-${mode}-${stamp}`));
   const reportPath = path.resolve(argument('--report') || path.join(repositoryRoot, 'evidence', 'operational-gap-ledger', `${mode}-host-walk-${stamp}.json`));
   for (const target of [walkOutput, reportPath, ...(vsixPath ? [vsixPath] : [])]) {
@@ -1070,11 +1081,12 @@ async function main() {
     if (relative.startsWith('..') || path.isAbsolute(relative)) throw new Error(`walk-input-or-evidence-target-outside-repository:${target}`);
   }
   if (fs.existsSync(reportPath)) throw new Error(`evidence-report-already-exists:${reportPath}`);
-  // Acquire the single-host lease before allocating any output namespace or
-  // owned ephemeral. A rejected duplicate therefore has no report, output,
-  // or cleanup authority belonging to the legitimate in-flight owner.
+  // Ordinary and certification walks retain the machine-wide lease. Explicit
+  // focused proof lanes may use separate validated lease keys so independently
+  // isolated hosts can exercise distinct consumers concurrently.
   const ownership = acquireWalkOwnership({
-    ownershipLabel: `${vsixPath ? 'installed-vsix' : 'current-source'}-${bootstrapOnly ? 'bootstrap-activation' : focusedProfile || 'operational-ui-walk'}`
+    ownershipLabel: `${vsixPath ? 'installed-vsix' : 'current-source'}-${bootstrapOnly ? 'bootstrap-activation' : focusedProfile || 'operational-ui-walk'}`,
+    ...(proofLockPath ? { lockPath: proofLockPath } : {})
   });
   const { lease: hostLease, temporaryRoot } = ownership;
   let config = null;
@@ -1206,7 +1218,7 @@ if (require.main === module) {
       process.exitCode = 1;
     });
   } else if (process.argv.includes('--help')) {
-    process.stdout.write('Usage: node scripts/run-isolated-current-source-walk.js [--post-audit-long-running | --bootstrap-only | --configuration-only | --studio-lifecycle-only | --knowledge-lifecycle-only | --host-boundary-only | --native-dialog-only | --plugin-lifecycle-only | --codex-handoff-only | --error-indicators-only | --late-card-repair-only | --catalog-pagination-only | --builder-only | --workbench-command-only] [--vsix <path>] [--output <path>] [--report <path>]\n');
+    process.stdout.write('Usage: node scripts/run-isolated-current-source-walk.js [--post-audit-long-running | --bootstrap-only | --configuration-only | --studio-lifecycle-only | --knowledge-lifecycle-only | --host-boundary-only | --native-dialog-only | --plugin-lifecycle-only | --codex-handoff-only | --error-indicators-only | --late-card-repair-only | --catalog-pagination-only | --builder-only | --workbench-command-only] [--parallel-proof-lane <lane>] [--vsix <path>] [--output <path>] [--report <path>]\n');
   } else {
     main().catch(error => {
       process.stderr.write(`${error.stack || error.message}\n`);
@@ -1215,4 +1227,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { acquireWalkOwnership, appendHostProgress, boundedDelay, classifySharedStoragePath, excludedEnginePath, ownedExternalNetworkDeniedEnvironment, ownedExternalNetworkDeniedLaunchEnvironment, reconcileOwnedPrelaunchFailure, reconcilePrelaunchFailure, reserveLoopbackPort, retainedHostProgress, retainedProfileProgress, settleOwnedEphemeralCleanup, stageDisposableEngine, stageOwnedGitAuthority, stageOwnedHostBoundaryFixture, stageOwnedKnowledgeFixture, stageOwnedProviderPaginationFixture, waitForIsolatedStorageBoundary };
+module.exports = { acquireWalkOwnership, appendHostProgress, boundedDelay, classifySharedStoragePath, excludedEnginePath, ownedExternalNetworkDeniedEnvironment, ownedExternalNetworkDeniedLaunchEnvironment, parallelProofHostLock, reconcileOwnedPrelaunchFailure, reconcilePrelaunchFailure, reserveLoopbackPort, retainedHostProgress, retainedProfileProgress, settleOwnedEphemeralCleanup, stageDisposableEngine, stageOwnedGitAuthority, stageOwnedHostBoundaryFixture, stageOwnedKnowledgeFixture, stageOwnedProviderPaginationFixture, waitForIsolatedStorageBoundary };

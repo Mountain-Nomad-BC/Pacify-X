@@ -5,6 +5,8 @@ from pathlib import Path
 from threading import Event
 import time
 
+import pytest
+
 from runtime.work_admission import RuntimeWorkPlane
 
 
@@ -105,3 +107,38 @@ def test_corrupt_cache_is_rejected_and_rebuilt(tmp_path: Path) -> None:
 
     assert result["admission"]["decision"] == "ran"
     assert result["result"] == {"cpu": 3}
+
+
+def test_owned_vscode_host_can_isolate_its_runtime_work_plane(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    isolated = tmp_path / "installed-host-runtime"
+    monkeypatch.setattr(
+        "runtime.work_admission.tempfile.gettempdir", lambda: str(tmp_path)
+    )
+    monkeypatch.setenv("PX_OWNED_VSCODE_HOST", "1")
+    monkeypatch.setenv("PX_OWNED_RUNTIME_WORK_PLANE_ROOT", str(isolated))
+
+    plane = RuntimeWorkPlane(tmp_path / "engine")
+    result = plane.execute(
+        "sensor",
+        lambda: {"isolated": True},
+        reason="parallel installed-host proof",
+        input_fingerprint="owned-host",
+        domains=("runtime",),
+    )
+
+    assert plane.plane == isolated.resolve()
+    assert result["result"] == {"isolated": True}
+    assert (isolated / "state.json").is_file()
+    assert not (tmp_path / "engine/.engineering-bootstrap/runtime-core").exists()
+
+
+def test_runtime_work_plane_override_rejects_unowned_process(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.delenv("PX_OWNED_VSCODE_HOST", raising=False)
+    monkeypatch.setenv("PX_OWNED_RUNTIME_WORK_PLANE_ROOT", str(tmp_path / "runtime"))
+
+    with pytest.raises(ValueError, match="owned VS Code host"):
+        RuntimeWorkPlane(tmp_path / "engine")

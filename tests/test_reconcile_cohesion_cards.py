@@ -242,8 +242,15 @@ def _fixture(tmp_path: Path) -> Path:
     return root
 
 
-def _installed_proof(root: Path) -> Path:
-    relative = Path("evidence/release/final100-installed-operational-pass.json")
+def _installed_proof(
+    root: Path,
+    *,
+    campaign_id: str = "pacify-x-certification-20260906-final100-single",
+    evidence_label: str = "final100",
+) -> Path:
+    relative = Path(
+        f"evidence/release/{evidence_label}-installed-operational-pass.json"
+    )
     def artifact(path: str, content: bytes) -> dict[str, object]:
         target = root / path
         target.parent.mkdir(parents=True, exist_ok=True)
@@ -257,7 +264,6 @@ def _installed_proof(root: Path) -> Path:
     product = artifact(
         "extension/dist/pacify-x-vscode-0.6.85.vsix", b"repair12-vsix"
     )
-    campaign_id = "pacify-x-certification-20260906-final100-single"
     package_claim = f"release-stage:{campaign_id}:package:fixture"
     install_claim = f"release-stage:{campaign_id}:install:fixture"
     installed_claim = f"release-stage:{campaign_id}:installed_operational:fixture"
@@ -274,8 +280,8 @@ def _installed_proof(root: Path) -> Path:
     identity_sha = hashlib.sha256(
         json.dumps(kernel, sort_keys=True, separators=(",", ":")).encode()
     ).hexdigest()
-    package_log = artifact(".tmp/final100-package.log", b"package-log")
-    package_path = "evidence/release/final100-package.json"
+    package_log = artifact(f".tmp/{evidence_label}-package.log", b"package-log")
+    package_path = f"evidence/release/{evidence_label}-package.json"
     _json(
         root / package_path,
         {
@@ -300,8 +306,8 @@ def _installed_proof(root: Path) -> Path:
             "valid": True,
         },
     )
-    install_log = artifact(".tmp/final100-install.log", b"install-log")
-    install_path = "evidence/release/final100-install.json"
+    install_log = artifact(f".tmp/{evidence_label}-install.log", b"install-log")
+    install_path = f"evidence/release/{evidence_label}-install.json"
     _json(
         root / install_path,
         {
@@ -472,7 +478,7 @@ def _installed_proof(root: Path) -> Path:
         "admission_event_id": "admission-card-reconcile",
     }
     _json(
-        root / AUTOMATION_STATE,
+        root / f"evidence/release/{evidence_label}-automation-state.json",
         {
             "schema_version": "px.release-candidate-automation-state/1.0",
             "candidate_id": campaign_id,
@@ -678,6 +684,26 @@ def test_closed_requires_prior_downstream_projection_and_exact_final100_proof(
     )
     assert repeated["proposed_card_transition_count"] == 0
     assert repeated["changed_file_count"] == 0
+
+
+def test_closed_accepts_a_later_successor_candidate(tmp_path: Path) -> None:
+    root = _fixture(tmp_path)
+    _reconcile(root, apply=True, at="2026-09-06T01:00:00Z")
+    campaign_id = "pacify-x-certification-20260906-final108-single"
+    proof = _installed_proof(
+        root,
+        campaign_id=campaign_id,
+        evidence_label="final108",
+    )
+    report = _reconcile(
+        root,
+        target="closed",
+        installed_proof=proof,
+        automation_state=Path("evidence/release/final108-automation-state.json"),
+        at="2026-09-06T02:00:00Z",
+    )
+    assert report["proposed_card_transition_count"] == 37
+    assert report["evidence"][-1]["campaign_id"] == campaign_id
 
 
 def test_closed_rejects_duplicate_member_and_identity_digest_drift(

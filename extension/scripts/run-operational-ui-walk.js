@@ -3067,12 +3067,36 @@ async function closeOwnedDashboardTabs(workbench, timeoutMs = 15_000) {
     if (closed >= 8) throw new Error(`owned-dashboard-restored-tab-bound-exceeded:${count}`);
     const tab = tabs.first();
     await boundedOwnedUiAction(() => tab.click(), remaining('tab-focus'), 'owned-dashboard-tab-focus');
-    await boundedOwnedUiAction(
-      () => workbench.keyboard.press(process.platform === 'darwin' ? 'Meta+W' : 'Control+W'),
-      remaining('tab-close-command'),
+    const previousCount = count;
+    const closeObserved = async () => {
+      const observationDeadline = Math.min(deadline, Date.now() + 5_000);
+      do {
+        try {
+          if (await tabs.count() < previousCount) return { disposition: 'tab-count-decreased' };
+        } catch { /* renderer replacement is settled by the next sample */ }
+        await wait(100);
+      } while (Date.now() < observationDeadline);
+      throw new Error('owned-dashboard-tab-close-observation-timeout');
+    };
+    const keyboard = Promise.resolve()
+      .then(() => workbench.keyboard.press(process.platform === 'darwin' ? 'Meta+W' : 'Control+W'))
+      .then(
+        () => ({ disposition: 'keyboard-acknowledged' }),
+        error => ({ disposition: 'keyboard-rejected', error })
+      );
+    let closeOutcome = await boundedOwnedUiAction(
+      () => Promise.race([keyboard, closeObserved()]),
+      Math.min(5_000, remainingOwnedUiBudget(deadline, 'owned-dashboard-tab-close-command')),
       'owned-dashboard-tab-close-command'
     );
-    const previousCount = count;
+    if (closeOutcome.disposition === 'keyboard-rejected') {
+      closeOutcome = await boundedOwnedUiAction(
+        closeObserved,
+        Math.min(1_000, remainingOwnedUiBudget(deadline, 'owned-dashboard-tab-close-after-keyboard-rejection')),
+        'owned-dashboard-tab-close-after-keyboard-rejection'
+      ).catch(() => { throw closeOutcome.error; });
+    }
+    if (closeOutcome.disposition === 'tab-count-decreased') keyboard.catch(() => {});
     const closeDeadline = Math.min(deadline, Date.now() + 5_000);
     do {
       if (await boundedOwnedUiAction(() => tabs.count(), remaining('tab-close-observation'), 'owned-dashboard-tab-close-observation') < previousCount) break;
@@ -7886,39 +7910,75 @@ async function waitForStudioOperationResult(frameHost, after, kind, operation, t
 
 async function openExactStudioCatalogRow(frameHost, candidate, timeoutMs = 30_000) {
   await frameHost.evaluate(frame => frame.contentDocument?.querySelector('[data-action="closeModal"]')?.click());
-  if (['agents', 'workflows'].includes(candidate.route)) {
-    await settleInstalledSurfaceControl(frameHost, {
-      surface: candidate.route,
-      selector: `[data-catalog-search="${candidate.kind}s"]`,
-      scopeTarget: candidate.route,
-      scope: 'core',
-      stableSamplesRequired: 2
-    }, timeoutMs);
-  } else if (candidate.route === 'skillsTools') {
-    await navigateInstalledSurface(frameHost, candidate.route, timeoutMs);
-    await frameHost.evaluate(frame => {
-      const native = [...frame.contentDocument.querySelectorAll('[data-action="capabilityTab"]')].find(element => element.dataset.kind === 'skills' && !element.disabled);
-      if (!native) throw new Error('studio-skill-native-catalog-tab-unavailable');
-      native.click();
-    });
-  }
+  const catalogKind = `${candidate.kind}s`;
+  const searchSelector = `[data-catalog-search="${catalogKind}"]`;
+  const settleSearch = budget => settleInstalledSurfaceControl(frameHost, {
+    surface: candidate.route,
+    selector: searchSelector,
+    scopeTarget: candidate.route,
+    scope: ['agents', 'workflows'].includes(candidate.route) ? 'core' : null,
+    capability: candidate.kind === 'skill' ? 'skills' : null,
+    stableSamplesRequired: 2
+  }, budget);
   const deadline = Date.now() + timeoutMs;
+  let lastRequestId = null;
   do {
-    const opened = await frameHost.evaluate((frame, item) => {
-      const document = frame.contentDocument;
-      const catalogKind = `${item.kind}s`;
-      const search = document.querySelector(`[data-catalog-search="${CSS.escape(catalogKind)}"]`);
+    const remaining = deadline - Date.now();
+    if (remaining <= 0) break;
+    await settleSearch(Math.min(5_000, remaining));
+    const offsets = await frameHost.evaluate(frame => ({
+      requests: frame.contentWindow?.__PX_INSTALLED_REQUESTS__?.length || 0,
+      responses: frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0
+    }));
+    const dispatched = await frameHost.evaluate((frame, item) => {
+      const search = frame.contentDocument?.querySelector(`[data-catalog-search="${CSS.escape(item.catalogKind)}"]`);
       if (!search || search.disabled) return false;
-      if (search.value !== item.identity) {
-        search.value = item.identity;
-        search.dispatchEvent(new Event('input', { bubbles: true }));
-      }
-      const row = [...document.querySelectorAll('[data-action="inspectCatalogItem"]')]
-        .find(element => element.dataset.kind === `${item.kind}s` && element.dataset.id === item.catalog_record_id && !element.disabled);
-      if (!row) return false;
-      row.click();
+      search.value = item.identity;
+      search.dispatchEvent(new Event('input', { bubbles: true }));
       return true;
-    }, candidate);
+    }, { catalogKind, identity: candidate.identity });
+    if (!dispatched) continue;
+    let exactResponse = false;
+    const responseDeadline = Math.min(deadline, Date.now() + 5_000);
+    do {
+      const query = await frameHost.evaluate((frame, item) => {
+        const requests = frame.contentWindow?.__PX_INSTALLED_REQUESTS__ || [];
+        const responses = frame.contentWindow?.__PX_INSTALLED_RESPONSES__ || [];
+        const request = requests.slice(item.offsets.requests).find(value => value?.type === 'catalogQuery'
+          && value?.kind === item.catalogKind
+          && typeof value.requestId === 'string' && value.requestId);
+        const response = request ? responses.slice(item.offsets.responses).find(value => value?.requestId === request.requestId
+          && (value?.type === 'catalogResult' || (value?.type === 'operationError' && value?.operation === 'catalogQuery'))) : null;
+        const record = response?.type === 'catalogResult' && response.result?.kind === item.catalogKind
+          ? (response.result?.items || []).find(value => value?.id === item.recordId)
+          : null;
+        return { request_id: request?.requestId || null, error: response?.type === 'operationError' ? response.error : null, exact: Boolean(record) };
+      }, { offsets, catalogKind, identity: candidate.identity, recordId: candidate.catalog_record_id });
+      lastRequestId = query.request_id || lastRequestId;
+      if (query.error) throw new Error(`studio-${candidate.kind}-catalog-query-failed:${query.error}`);
+      if (query.exact) { exactResponse = true; break; }
+      await wait(100);
+    } while (Date.now() < responseDeadline);
+    if (!exactResponse) continue;
+    const escapedRecordId = String(candidate.catalog_record_id).replaceAll('\\', '\\\\').replaceAll('"', '\\"');
+    try {
+      await settleInstalledSurfaceControl(frameHost, {
+        surface: candidate.route,
+        selector: `[data-action="inspectCatalogItem"][data-kind="${catalogKind}"][data-id="${escapedRecordId}"]`,
+        scopeTarget: candidate.route,
+        scope: ['agents', 'workflows'].includes(candidate.route) ? 'core' : null,
+        capability: candidate.kind === 'skill' ? 'skills' : null,
+        stableSamplesRequired: 2
+      }, Math.min(5_000, Math.max(1, deadline - Date.now())));
+    } catch {
+      continue;
+    }
+    const opened = await frameHost.evaluate((frame, item) => {
+      const row = [...frame.contentDocument.querySelectorAll('[data-action="inspectCatalogItem"]')]
+        .find(element => element.dataset.kind === item.catalogKind && element.dataset.id === item.recordId && !element.disabled);
+      row?.click();
+      return Boolean(row);
+    }, { catalogKind, recordId: candidate.catalog_record_id });
     if (opened) return true;
     await wait(150);
   } while (Date.now() < deadline);
@@ -7926,8 +7986,9 @@ async function openExactStudioCatalogRow(frameHost, candidate, timeoutMs = 30_00
     active: [...frame.contentDocument.querySelectorAll('.nav-item[aria-current="page"]')].map(element => element.dataset.surface),
     search_value: frame.contentDocument.querySelector(`[data-catalog-search="${CSS.escape(`${item.kind}s`)}"]`)?.value || null,
     rows: [...frame.contentDocument.querySelectorAll('[data-action="inspectCatalogItem"]')].slice(0, 200).map(element => ({ kind: element.dataset.kind, id: element.dataset.id, disabled: Boolean(element.disabled) })),
-    expected: { kind: `${item.kind}s`, id: item.catalog_record_id }
-  }), candidate).catch(() => ({ active: [], rows: [], expected: { kind: `${candidate.kind}s`, id: candidate.catalog_record_id } }));
+    expected: { kind: `${item.kind}s`, id: item.catalog_record_id },
+    request_id: item.requestId
+  }), { ...candidate, requestId: lastRequestId }).catch(() => ({ active: [], rows: [], expected: { kind: `${candidate.kind}s`, id: candidate.catalog_record_id }, request_id: lastRequestId }));
   throw new Error(`studio-${candidate.kind}-exact-catalog-row-timeout:${JSON.stringify(state)}`);
 }
 
@@ -8800,7 +8861,11 @@ async function runInstalledProjectsProfile(workbench, frameHost, matrix, timeout
       await clickWhenKnowledgeControlReady(frameHost, '[data-action="buildRepositoryGraph"]', Math.min(timeoutMs, 20_000));
       const cancelledDialog = await waitForNativeWorkbenchDialog(workbench, /Build or refresh the bounded repository architecture graph/i, 15_000, { frameHost, responseOffset: cancelBefore, requestOffset: requestBeforeCancel, requestType: 'buildRepositoryGraph', keyboardAction: 'Cancel' });
       await clickNativeWorkbenchDialogAction(workbench, cancelledDialog, 'Cancel');
-      await waitForKnowledgeControl(frameHost, '[data-action="buildRepositoryGraph"]');
+      await settleInstalledSurfaceControl(frameHost, {
+        surface: route,
+        selector: '[data-action="buildRepositoryGraph"]',
+        stableSamplesRequired: 2
+      }, Math.min(timeoutMs, 30_000));
       const cancelResponses = await frameHost.evaluate((frame, after) => (frame.contentWindow?.__PX_INSTALLED_RESPONSES__ || []).slice(after), cancelBefore);
       observation.cancelled_controls[controlId] = !cancelResponses.some(value => value?.type === 'graphBuildResult');
       observation.attempted_controls[controlId] = true;
@@ -8814,7 +8879,11 @@ async function runInstalledProjectsProfile(workbench, frameHost, matrix, timeout
     await clickWhenKnowledgeControlReady(frameHost, '[data-action="buildRepositoryGraph"]', Math.min(timeoutMs, 20_000));
     const projectsCancelledDialog = await waitForNativeWorkbenchDialog(workbench, buildDialogText, 15_000, { frameHost, responseOffset: projectsCancelBefore, requestOffset: projectsRequestBeforeCancel, requestType: 'buildRepositoryGraph', keyboardAction: 'Cancel' });
     await clickNativeWorkbenchDialogAction(workbench, projectsCancelledDialog, 'Cancel');
-    await waitForKnowledgeControl(frameHost, '[data-action="buildRepositoryGraph"]');
+    await settleInstalledSurfaceControl(frameHost, {
+      surface: 'projects',
+      selector: '[data-action="buildRepositoryGraph"]',
+      stableSamplesRequired: 2
+    }, Math.min(timeoutMs, 30_000));
     const projectsCancelResponses = await frameHost.evaluate((frame, after) => (frame.contentWindow?.__PX_INSTALLED_RESPONSES__ || []).slice(after), projectsCancelBefore);
     observation.cancelled_controls['pxui.projects.action.buildRepositoryGraph'] = !projectsCancelResponses.some(value => value?.type === 'graphBuildResult');
     const before = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
@@ -9012,8 +9081,21 @@ async function runInstalledKnowledgeGraphProfile(frameHost, matrix, timeoutMs = 
     observation.before_restart = graphProjectionIdentity(baseline);
     const restart = await restartInstalledDashboardWebview(frameHost, 45_000);
     observation.webview_restarted = restart.restarted === true;
-    await frameHost.evaluate(frame => frame.contentDocument?.querySelector('[data-surface="knowledgeGraph"]')?.click());
-    await waitForKnowledgeControl(frameHost, '[data-action="graphApplySavedView"]');
+    await settleInstalledSurfaceControl(frameHost, {
+      surface: 'knowledgeGraph',
+      selector: '[data-action="graphApplySavedView"]',
+      stableSamplesRequired: 2
+    }, Math.min(timeoutMs, 30_000));
+    const savedViewDeadline = Date.now() + Math.min(timeoutMs, 20_000);
+    let stableSavedViewSamples = 0;
+    do {
+      const exactReady = await frameHost.evaluate((frame, name) => [...(frame.contentDocument?.querySelectorAll('[data-action="graphApplySavedView"]') || [])]
+        .some(item => item.textContent.trim() === name && !item.disabled), viewName);
+      stableSavedViewSamples = exactReady ? stableSavedViewSamples + 1 : 0;
+      if (stableSavedViewSamples >= 2) break;
+      await wait(100);
+    } while (Date.now() < savedViewDeadline);
+    if (stableSavedViewSamples < 2) throw new Error('knowledge-graph-restarted-view-missing');
     after = await frameHost.evaluate(frame => ({
       responses: frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0,
       requests: frame.contentWindow?.__PX_INSTALLED_REQUESTS__?.length || 0
@@ -9032,10 +9114,30 @@ async function runInstalledKnowledgeGraphProfile(frameHost, matrix, timeoutMs = 
     }, viewName)));
     observation.exact_reconstruction = JSON.stringify(observation.after_restart) === JSON.stringify(observation.before_restart);
     if (!observation.exact_reconstruction) throw new Error(`knowledge-graph-projection-substitution:${JSON.stringify({ before: observation.before_restart, after: observation.after_restart })}`);
+    await settleInstalledSurfaceControl(frameHost, {
+      surface: 'knowledgeGraph',
+      selector: '[data-action="graphDeleteSavedView"]',
+      stableSamplesRequired: 2
+    }, Math.min(timeoutMs, 20_000));
+    const deleteDeadline = Date.now() + Math.min(timeoutMs, 20_000);
+    let deleteReadySamples = 0;
+    do {
+      const deleteReady = await frameHost.evaluate((frame, name) => {
+        const apply = [...(frame.contentDocument?.querySelectorAll('[data-action="graphApplySavedView"]') || [])]
+          .find(item => item.textContent.trim() === name);
+        const remove = apply?.parentElement?.querySelector('[data-action="graphDeleteSavedView"]');
+        return Boolean(remove && !remove.disabled);
+      }, viewName);
+      deleteReadySamples = deleteReady ? deleteReadySamples + 1 : 0;
+      if (deleteReadySamples >= 2) break;
+      await wait(100);
+    } while (Date.now() < deleteDeadline);
+    if (deleteReadySamples < 2) throw new Error('knowledge-graph-view-delete-unavailable');
     await frameHost.evaluate((frame, name) => {
-      const apply = [...frame.contentDocument.querySelectorAll('[data-action="graphApplySavedView"]')].find(item => item.textContent.trim() === name);
+      const apply = [...frame.contentDocument.querySelectorAll('[data-action="graphApplySavedView"]')]
+        .find(item => item.textContent.trim() === name);
       const remove = apply?.parentElement?.querySelector('[data-action="graphDeleteSavedView"]');
-      if (!remove) throw new Error('knowledge-graph-view-delete-unavailable');
+      if (!remove || remove.disabled) throw new Error('knowledge-graph-view-delete-unavailable');
       remove.click();
     }, viewName);
     observation.restored = await frameHost.evaluate((frame, name) => ![...frame.contentDocument.querySelectorAll('[data-action="graphApplySavedView"]')].some(item => item.textContent.trim() === name), viewName);
@@ -9875,16 +9977,17 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
     if (remaining <= 0) throw new Error(`plugin-local-lifecycle-${label}-deadline-exhausted`);
     return Math.max(1, Math.min(ceilingMs, remaining));
   };
-  const progressStep = async (step, operation) => {
+  const progressStep = async (step, operation, deadline = activeProfileDeadline) => {
     const started = Date.now();
-    onProgress({ step, state: 'started', remaining_active_ms: Math.max(0, activeProfileDeadline - started) });
+    const budgetLane = deadline === recoveryDeadline ? 'recovery' : 'active';
+    onProgress({ step, state: 'started', budget_lane: budgetLane, remaining_budget_ms: Math.max(0, deadline - started), remaining_active_ms: Math.max(0, activeProfileDeadline - started) });
     try {
       const value = await operation();
-      onProgress({ step, state: 'returned', duration_ms: Date.now() - started });
+      onProgress({ step, state: 'returned', budget_lane: budgetLane, remaining_budget_ms: Math.max(0, deadline - Date.now()), duration_ms: Date.now() - started });
       return value;
     } catch (error) {
       const message = String(error?.message || error).slice(0, 1000);
-      onProgress({ step, state: 'threw', duration_ms: Date.now() - started, error: message });
+      onProgress({ step, state: 'threw', budget_lane: budgetLane, remaining_budget_ms: Math.max(0, deadline - Date.now()), duration_ms: Date.now() - started, error: message });
       throw error;
     }
   };
@@ -9931,10 +10034,11 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
   };
 
   const currentVersion = async (expected, { acceptAny = false, deadline = activeProfileDeadline } = {}) => {
-    const controlDeadline = Math.min(deadline, Date.now() + remainingBudget('inventory-control', Math.min(timeoutMs, 20_000), deadline));
     let controlState = null;
-    let before = null;
+    let last = null;
     do {
+      const controlDeadline = Math.min(deadline, Date.now() + remainingBudget('inventory-control', Math.min(timeoutMs, 20_000), deadline));
+      let before = null;
       controlState = await frameHost.evaluate(frame => {
         const document = frame.contentDocument;
         document?.querySelector('[data-action="closeModal"]')?.click();
@@ -9962,24 +10066,29 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
           control_visible: Boolean(control)
         };
       });
-      if (controlState.dispatched) { before = controlState.before; break; }
-      await wait(100);
-    } while (Date.now() < controlDeadline);
-    if (before === null) throw new Error(`plugin-inventory-control-unavailable:${JSON.stringify(controlState)}`);
-    const inventoryDeadline = Math.min(deadline, Date.now() + remainingBudget('inventory-response', timeoutMs, deadline));
-    let last = null;
-    do {
-      const responses = await frameHost.evaluate((frame, after) => (frame.contentWindow?.__PX_INSTALLED_RESPONSES__ || []).slice(after), before);
-      const failure = responses.find(value => value?.type === 'operationError');
-      if (failure) throw new Error(`plugin-inventory-refresh-failed:${failure.error}`);
-      last = responses.filter(value => value?.type === 'environmentResult' && value.subject === 'extensions').at(-1)?.result || last;
-      if (last?.available === true && Array.isArray(last.records)) {
-        const record = last.records.find(item => item.id === extensionId);
-        const observed = record ? String(record.version || '') : null;
-        if (observed === expected || acceptAny) return observed;
+      if (!controlState.dispatched) {
+        if (Date.now() >= controlDeadline) throw new Error(`plugin-inventory-control-unavailable:${JSON.stringify(controlState)}`);
+        await wait(100);
+        continue;
       }
-      await wait(150);
-    } while (Date.now() < inventoryDeadline);
+      before = controlState.before;
+      const responseDeadline = Math.min(deadline, Date.now() + remainingBudget('inventory-response', Math.min(timeoutMs, 5_000), deadline));
+      do {
+        const responses = await frameHost.evaluate((frame, after) => (frame.contentWindow?.__PX_INSTALLED_RESPONSES__ || []).slice(after), before);
+        const failure = responses.find(value => value?.type === 'operationError');
+        if (failure) throw new Error(`plugin-inventory-refresh-failed:${failure.error}`);
+        const refreshed = responses.filter(value => value?.type === 'environmentResult' && value.subject === 'extensions').at(-1)?.result;
+        if (refreshed) last = refreshed;
+        if (last?.available === true && Array.isArray(last.records)) {
+          const record = last.records.find(item => item.id === extensionId);
+          const observed = record ? String(record.version || '') : null;
+          if (observed === expected || acceptAny) return observed;
+          if (refreshed) break;
+        }
+        await wait(150);
+      } while (Date.now() < responseDeadline);
+      await wait(250);
+    } while (Date.now() < deadline);
     throw new Error(`plugin-inventory-version-mismatch:${JSON.stringify({ expected, observed: last?.records?.find(item => item.id === extensionId)?.version || null })}`);
   };
 
@@ -10045,7 +10154,7 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
     if (!physicallyReconciled) throw new Error(`plugin-${spec.name}-pending-receipt-not-reconciled:${JSON.stringify({ expected: spec.expectedVersion, observed: observedVersion })}`);
     observation.operations.push({ name: spec.name, preview, result, observed_version: observedVersion, receipt_state: receiptComplete ? 'reconciled' : 'physically-reconciled-after-pending', webview_restarted: true, workbench_reloaded: requiresWorkbenchReconstruction, catalog_reconstruction: requiresWorkbenchReconstruction ? 'owned-workbench-window' : 'dashboard-webview' });
     return result;
-  });
+  }, deadline);
 
   const exerciseNativeManagerEntrypoints = async (deadline = activeProfileDeadline) => {
     await settleInstalledPluginControl(frameHost, '[data-action="openExtensionsView"]', remainingBudget('native-manager-control', timeoutMs, deadline));
@@ -10108,7 +10217,7 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
       const observedVersion = await currentVersion(v2.version, { deadline });
       if (observedVersion !== v2.version) throw new Error(`plugin-invalid-conflict-refusal-changed-installed-denominator:${JSON.stringify({ expected: v2.version, observed: observedVersion })}`);
       observation.invalid_conflict_refusal_recovered = true;
-    });
+    }, deadline);
     signal = await queryConflicts(deadline);
     const previewRequestBefore = await installedOutboundRequestOffset(frameHost);
     const previewBefore = await dispatchInstalledPluginConflictControl(frameHost, {
@@ -10191,7 +10300,7 @@ async function runInstalledPluginMutationProfile(workbench, frameHost, matrix, t
     await install(v1);
     observation.update_rollback_reconciled = await currentVersion(v1.version, { deadline: activeProfileDeadline }) === v1.version;
     if (!observation.update_rollback_reconciled) throw new Error('plugin-update-predecessor-reconstruction-failed');
-    await uninstall('final-cleanup-uninstall-v1', v1);
+    await uninstall('final-cleanup-uninstall-v1', v1, { deadline: recoveryDeadline });
     observation.cleanup_restored = true;
     observation.exact_reconstruction = observation.operations.length === 8 && observation.operations.every(item => item.webview_restarted === true);
     observation.completed = observation.invalid_source_rejected && observation.invalid_conflict_target_rejected && observation.invalid_conflict_refusal_recovered && observation.conflict_route_completed && observation.native_manager_reopened && observation.exact_reconstruction && observation.cleanup_restored;

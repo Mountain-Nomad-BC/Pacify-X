@@ -63,6 +63,28 @@ test('dashboard reconstruction drains every owned matching tab before reopening 
   assert.equal(count, 0);
 });
 
+test('dashboard tab closure settles on the physical tab count when keyboard acknowledgement is displaced', async () => {
+  let count = 1;
+  const tabs = {
+    count: async () => count,
+    first: () => ({ click: async () => {} })
+  };
+  const workbench = {
+    locator: () => tabs,
+    keyboard: { press: () => new Promise(() => {}) }
+  };
+  setTimeout(() => { count = 0; }, 20);
+  assert.equal(await closeOwnedDashboardTabs(workbench, 500), 1);
+});
+
+test('Knowledge Graph restart reacquires the exact saved view stably before applying it', () => {
+  const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
+  const profile = source.slice(source.indexOf('async function runInstalledKnowledgeGraphProfile'), source.indexOf('async function runInstalledSystemProjectionProfile'));
+  assert.match(profile, /restartInstalledDashboardWebview[\s\S]*settleInstalledSurfaceControl\(frameHost, \{[\s\S]*surface: 'knowledgeGraph'[\s\S]*selector: '\[data-action="graphApplySavedView"\]'[\s\S]*stableSamplesRequired: 2/);
+  assert.match(profile, /stableSavedViewSamples[\s\S]*item\.textContent\.trim\(\) === name && !item\.disabled[\s\S]*stableSavedViewSamples < 2[\s\S]*knowledge-graph-restarted-view-missing/);
+  assert.match(profile, /selector: '\[data-action="graphDeleteSavedView"\]'[\s\S]*deleteReadySamples[\s\S]*item\.textContent\.trim\(\) === name[\s\S]*knowledge-graph-view-delete-unavailable/);
+});
+
 test('owned UI deadline budgets fail closed after the single caller deadline', () => {
   assert.ok(remainingOwnedUiBudget(Date.now() + 1_000, 'focused-owner') > 0);
   assert.throws(() => remainingOwnedUiBudget(Date.now() - 1, 'focused-owner'), /focused-owner-deadline-exhausted/);
@@ -686,9 +708,14 @@ test('plugin lifecycle cannot consume the owner lease and emits exact mutation p
   assert.match(profile, /activeProfileDeadline = profileStarted \+ activeProfileBudgetMs/);
   assert.match(profile, /recoveryDeadline = activeProfileDeadline \+ recoveryReserveMs/);
   assert.match(profile, /plugin-local-lifecycle-\$\{label\}-deadline-exhausted/);
-  assert.match(profile, /progressStep\(`mutation:\$\{spec\.name\}`/);
+  assert.match(profile, /progressStep = async \(step, operation, deadline = activeProfileDeadline\)/);
+  assert.match(profile, /budgetLane = deadline === recoveryDeadline \? 'recovery' : 'active'/);
+  assert.match(profile, /budget_lane: budgetLane, remaining_budget_ms: Math\.max\(0, deadline - started\)/);
+  assert.match(profile, /progressStep\(`mutation:\$\{spec\.name\}`[\s\S]*\}, deadline\)/);
   assert.match(profile, /state: 'started'[\s\S]*state: 'returned'[\s\S]*state: 'threw'/);
   assert.match(profile, /currentVersion\(null, \{ acceptAny: true, deadline: recoveryDeadline \}\)/);
+  assert.match(profile, /const currentVersion[\s\S]*responseDeadline[\s\S]*if \(refreshed\) last = refreshed[\s\S]*if \(refreshed\) break[\s\S]*while \(Date\.now\(\) < deadline\)/);
+  assert.match(profile, /uninstall\('final-cleanup-uninstall-v1', v1, \{ deadline: recoveryDeadline \}\)/);
   const schedule = source.slice(source.indexOf("const pluginMutationProfile ="), source.indexOf("if (returnedProfileErrors(pluginMutationProfile)"));
   assert.match(schedule, /profile: 'plugin-local-lifecycle-step'/);
   assert.match(schedule, /\{ timeoutMs: 370_000 \}/);
@@ -2088,8 +2115,14 @@ test('owned installed Studio lifecycle accepts only operation-exact typed receip
   const profile = source.slice(source.indexOf('async function runInstalledStudioLifecycleProfile'), source.indexOf('function validKnowledgeLifecycleResult'));
   const catalogOpen = source.slice(source.indexOf('async function openExactStudioCatalogRow'), source.indexOf('async function runInstalledStudioLifecycleProfile'));
   assert.match(profile, /openExactStudioCatalogRow\(frameHost, candidate\)/);
-  assert.match(catalogOpen, /settleInstalledSurfaceControl\(frameHost,[\s\S]*scopeTarget: candidate\.route,[\s\S]*scope: 'core',[\s\S]*stableSamplesRequired: 2/);
-  assert.match(catalogOpen, /data-catalog-search[^\n]+catalogKind[\s\S]*search\.value !== item\.identity[\s\S]*search\.dispatchEvent\(new Event\('input', \{ bubbles: true \}\)\)[\s\S]*data-action="inspectCatalogItem"/);
+  assert.match(catalogOpen, /settleInstalledSurfaceControl\(frameHost,[\s\S]*scopeTarget: candidate\.route,[\s\S]*scope: \['agents', 'workflows'\]\.includes\(candidate\.route\) \? 'core' : null,[\s\S]*capability: candidate\.kind === 'skill' \? 'skills' : null,[\s\S]*stableSamplesRequired: 2/);
+  assert.match(catalogOpen, /data-catalog-search[^\n]+catalogKind[\s\S]*search\.value = item\.identity[\s\S]*search\.dispatchEvent\(new Event\('input', \{ bubbles: true \}\)\)/);
+  assert.match(catalogOpen, /value\?\.type === 'catalogQuery'[\s\S]*value\?\.kind === item\.catalogKind[\s\S]*value\?\.requestId === request\.requestId[\s\S]*value\?\.type === 'catalogResult'/);
+  const controllerSource = fs.readFileSync(path.join(__dirname, '..', 'media', 'dashboard', '90-controller.js'), 'utf8');
+  assert.match(controllerSource, /pxOutboundRequestIdentity[\s\S]*for \(const key of \['requestId', 'operation', 'kind', 'status', 'sort'/);
+  assert.doesNotMatch(controllerSource.slice(controllerSource.indexOf('function pxOutboundRequestIdentity'), controllerSource.indexOf('const vscode =')), /'query'/);
+  assert.match(catalogOpen, /response\.result\?\.kind === item\.catalogKind[\s\S]*response\.result\?\.items[\s\S]*value\?\.id === item\.recordId/);
+  assert.match(catalogOpen, /selector: `\[data-action="inspectCatalogItem"\]\[data-kind="\$\{catalogKind\}"\]\[data-id="\$\{escapedRecordId\}"\]`[\s\S]*stableSamplesRequired: 2/);
   assert.match(catalogOpen, /exact-catalog-row-timeout/);
   assert.match(catalogOpen, /search_value:/);
   assert.match(catalogOpen, /expected: \{ kind: `\$\{item\.kind\}s`, id: item\.catalog_record_id \}/);
@@ -2552,6 +2585,8 @@ test('native workbench keyboard fallback requires an exact newly captured outbou
   const projects = source.slice(source.indexOf('async function runInstalledProjectsProfile'), source.indexOf('function graphProjectionIdentity'));
   assert.match(projects, /responseOffset: cancelBefore, requestOffset: requestBeforeCancel, requestType: 'buildRepositoryGraph', keyboardAction: 'Cancel'/);
   assert.match(projects, /responseOffset: before, requestOffset: requestBeforeBuild, requestType: 'buildRepositoryGraph', keyboardAction: 'Build graph'/);
+  assert.match(projects, /clickNativeWorkbenchDialogAction\(workbench, cancelledDialog, 'Cancel'\);[\s\S]*settleInstalledSurfaceControl\(frameHost, \{[\s\S]*surface: route,[\s\S]*selector: '\[data-action="buildRepositoryGraph"\]',[\s\S]*stableSamplesRequired: 2/);
+  assert.match(projects, /clickNativeWorkbenchDialogAction\(workbench, projectsCancelledDialog, 'Cancel'\);[\s\S]*settleInstalledSurfaceControl\(frameHost, \{[\s\S]*surface: 'projects',[\s\S]*selector: '\[data-action="buildRepositoryGraph"\]',[\s\S]*stableSamplesRequired: 2/);
   const plugins = source.slice(source.indexOf('async function runInstalledPluginMutationProfile'), source.indexOf('function knowledgeLifecycleControlProbe'));
   assert.match(plugins, /responseOffset: executeBefore, requestOffset: requestBeforeExecute, requestType: spec\.executeOperation, keyboardAction: spec\.nativeApproval/);
   assert.match(plugins, /responseOffset: executeBefore, requestOffset: requestBeforeExecute, requestType: 'extensionConflictResolutionExecute', keyboardAction: 'Authorize conflict route'/);
@@ -2976,7 +3011,7 @@ test('installed Plugin mutation source uses deterministic local fixtures and res
   assert.ok(profile.indexOf("await uninstall('rollback-stage-uninstall-v2')") < profile.indexOf('await rollback()'));
   assert.ok(profile.indexOf('await rollback()') < profile.indexOf("await uninstall('restore-update-uninstall-v2')"));
   assert.ok(profile.indexOf("await uninstall('restore-update-uninstall-v2')") < profile.indexOf('observation.update_rollback_reconciled = await currentVersion(v1.version,'));
-  assert.ok(profile.indexOf('observation.update_rollback_reconciled = await currentVersion(v1.version,') < profile.indexOf("await uninstall('final-cleanup-uninstall-v1', v1)"));
+  assert.ok(profile.indexOf('observation.update_rollback_reconciled = await currentVersion(v1.version,') < profile.indexOf("await uninstall('final-cleanup-uninstall-v1', v1, { deadline: recoveryDeadline })"));
   assert.match(profile, /restartInstalledDashboardWebview/);
   assert.match(profile, /environmentResult/);
   assert.match(profile, /network_expected/);

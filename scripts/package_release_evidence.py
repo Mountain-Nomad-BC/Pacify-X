@@ -54,7 +54,9 @@ def main() -> int:
         or certificate_value.get("source_control", {}).get("commit_sha")
         != args.source_commit
     ):
-        raise ValueError("certificate, final100 proof, and VSIX identity do not agree")
+        raise ValueError(
+            "certificate, installed-operational proof, and VSIX identity do not agree"
+        )
     inputs = list(args.input)
     for required in (certificate, signature, vsix, summary):
         if not _covered(required, inputs):

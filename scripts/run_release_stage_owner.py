@@ -576,7 +576,7 @@ class ProductionEffects:
             "-a",
             config.release_tag,
             "-m",
-            f"{config.release_tag} final100",
+            f"{config.release_tag} {config.candidate_id}",
             head,
         )
         if self.git(config, "rev-list", "-n", "1", config.release_tag) != head:

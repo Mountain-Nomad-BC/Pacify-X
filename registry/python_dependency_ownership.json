@@ -2594,6 +2594,7 @@
         "tests/test_transcript_analysis.py",
         "tests/test_verify_release_publication.py",
         "tests/test_wal_transaction.py",
+        "tests/test_work_admission.py",
         "tests/test_workflow_studio.py"
       ]
     },
@@ -3310,6 +3311,7 @@
         "runtime/resource_lifecycle.py",
         "runtime/test_runner.py",
         "runtime/trusted_evidence.py",
+        "runtime/work_admission.py",
         "tests/test_archive_catalog_v2.py",
         "tests/test_archive_inventory.py",
         "tests/test_bootstrap_cli.py",

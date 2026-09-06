@@ -78,7 +78,8 @@ async function childMain(configPath) {
       PX_VSCODE_SMOKE_RECEIPT: config.hostReceipt,
       PX_EXPECT_CANONICAL_BUS: config.engineRoot ? '1' : '0',
       PX_ENGINE_ROOT: config.engineRoot || '',
-      PX_PYTHON_PATH: process.platform === 'win32' ? 'python' : 'python3'
+      PX_PYTHON_PATH: process.platform === 'win32' ? 'python' : 'python3',
+      PX_OWNED_RUNTIME_WORK_PLANE_ROOT: config.runtimeWorkPlane
     },
     launchArgs: [config.workspace, `--user-data-dir=${config.userData}`, `--extensions-dir=${config.extensions}`, '--disable-updates', '--disable-workspace-trust', '--skip-welcome', '--skip-release-notes', ...(process.platform === 'linux' ? ['--no-sandbox', '--disable-gpu'] : [])]
   });
@@ -95,7 +96,8 @@ function prepare(temporaryRoot, engineRoot, vsixPath) {
   if (engineRoot) assert.ok(fs.existsSync(path.join(engineRoot, 'runtime', 'cli.py')), 'PX_ENGINE_ROOT must contain runtime/cli.py');
   const config = {
     workspace: path.join(temporaryRoot, 'workspace'), userData: path.join(temporaryRoot, 'user-data'), extensions: path.join(temporaryRoot, 'extensions'),
-    hostReceipt: path.join(temporaryRoot, 'host-receipt.json'), childResult: path.join(temporaryRoot, 'child-result.json'), engineRoot, vsixPath
+    hostReceipt: path.join(temporaryRoot, 'host-receipt.json'), childResult: path.join(temporaryRoot, 'child-result.json'),
+    runtimeWorkPlane: path.join(temporaryRoot, 'runtime-work-plane'), engineRoot, vsixPath
   };
   for (const directory of [config.workspace, config.userData, config.extensions]) fs.mkdirSync(directory, { recursive: true });
   fs.writeFileSync(path.join(config.workspace, 'listener-matrix.txt'), 'initial\n', 'utf8');

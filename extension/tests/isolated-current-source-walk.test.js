@@ -7,7 +7,7 @@ const crypto = require('node:crypto');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const { acquireWalkOwnership, appendHostProgress, boundedDelay, excludedEnginePath, ownedExternalNetworkDeniedEnvironment, ownedExternalNetworkDeniedLaunchEnvironment, reconcileOwnedPrelaunchFailure, reconcilePrelaunchFailure, reserveLoopbackPort, retainedHostProgress, retainedProfileProgress, stageDisposableEngine, stageOwnedGitAuthority, stageOwnedHostBoundaryFixture, stageOwnedKnowledgeFixture, stageOwnedProviderPaginationFixture, waitForIsolatedStorageBoundary } = require('../scripts/run-isolated-current-source-walk');
+const { acquireWalkOwnership, appendHostProgress, boundedDelay, excludedEnginePath, ownedExternalNetworkDeniedEnvironment, ownedExternalNetworkDeniedLaunchEnvironment, parallelProofHostLock, reconcileOwnedPrelaunchFailure, reconcilePrelaunchFailure, reserveLoopbackPort, retainedHostProgress, retainedProfileProgress, stageDisposableEngine, stageOwnedGitAuthority, stageOwnedHostBoundaryFixture, stageOwnedKnowledgeFixture, stageOwnedProviderPaginationFixture, waitForIsolatedStorageBoundary } = require('../scripts/run-isolated-current-source-walk');
 const { acquireHostLease } = require('../scripts/owned-host-runner');
 const { cachedVSCodeLayout, defaultOwnedCacheRoot, markOwnedHostWorkspace } = require('../scripts/owned-vscode-test-cache');
 const { gitSnapshot } = require('../src/contextBridge');
@@ -54,6 +54,8 @@ test('installed smoke worker self-enforces external-network denial for both plat
   assert.match(source, /ownedExternalNetworkDenialProxy = 'http:\/\/127\.0\.0\.1:9'/);
   assert.match(source, /HTTP_PROXY: ownedExternalNetworkDenialProxy[^]*HTTPS_PROXY: ownedExternalNetworkDenialProxy[^]*NO_PROXY: '127\.0\.0\.1,localhost,::1'[^]*PX_OWNED_EXTERNAL_NETWORK_DENIED: '1'/);
   assert.match(source, /runOwnedHostWorker\(\{[^]*env: ownedExternalNetworkDeniedEnvironment\(\{[^]*PX_OWNED_VSCODE_HOST: '1'[^]*DONT_PROMPT_WSL_INSTALL/);
+  assert.match(source, /runtimeWorkPlane: path\.join\(temporaryRoot, 'runtime-work-plane'\)/);
+  assert.match(source, /PX_OWNED_RUNTIME_WORK_PLANE_ROOT: config\.runtimeWorkPlane/);
 });
 
 test('owned cached VS Code layout requires exact complete nonlink platform archives', t => {
@@ -632,6 +634,23 @@ test('launcher exposes an exact Studio-only mode without claiming full completio
   assert.match(source, /!regularOperationalHost \? \[`--extensionTestsPath=\$\{bootstrapPath\}`\] : \[\]/);
   assert.match(source, /status: 'deferred-to-operational-walker'/);
   assert.match(source, /test_mode: false/);
+});
+
+test('parallel proof leases are explicit, focused-only, and lane-isolated', () => {
+  assert.equal(parallelProofHostLock(null, 'studio-lifecycle'), null);
+  assert.throws(
+    () => parallelProofHostLock('studio', null),
+    /parallel-proof-lane-requires-focused-profile/
+  );
+  assert.throws(
+    () => parallelProofHostLock('../studio', 'studio-lifecycle'),
+    /parallel-proof-lane-invalid/
+  );
+  const studio = parallelProofHostLock('studio', 'studio-lifecycle');
+  const native = parallelProofHostLock('native', 'native-dialog-boundary');
+  assert.equal(path.dirname(studio), os.tmpdir());
+  assert.match(path.basename(studio), /^pacify-x-vscode-host-proof-studio\.lock\.json$/);
+  assert.notEqual(studio, native);
 });
 
 test('only bootstrap-only retains extension test bootstrap mode', () => {

@@ -189,14 +189,16 @@ def _fixture(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> dict[str, objec
     }
 
 
-def _verify(values: dict[str, object]) -> dict[str, object]:
+def _verify(
+    values: dict[str, object], *, candidate_id: str | None = None
+) -> dict[str, object]:
     return publication.verify_publication(
         assets=values["assets"],
         output=values["output"],
         repository=values["repository"],
         release=RELEASE,
         source_commit=COMMIT,
-        candidate_id=CANDIDATE,
+        candidate_id=candidate_id,
         vsix_name=values["vsix_name"],
         vsix_sha256=values["vsix_sha256"],
         vsix_size=values["vsix_size"],
@@ -209,8 +211,23 @@ def test_exact_signed_publication_bundle_is_admitted(
     values = _fixture(tmp_path, monkeypatch)
     result = _verify(values)
     assert result["valid"]
+    assert result["candidate_id"] == CANDIDATE
     assert result["vsix"] == str(values["assets"] / values["vsix_name"])
     assert (values["repository"] / "evidence/releases/0.7.0/certificate.json").is_file()
+
+
+def test_supplied_candidate_must_match_signed_custody(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    values = _fixture(tmp_path, monkeypatch)
+    with pytest.raises(
+        publication.PublicationBlocked,
+        match="supplied candidate differs from signed custody",
+    ):
+        _verify(
+            values,
+            candidate_id="pacify-x-certification-20260906-final101-single",
+        )
 
 
 def test_standalone_vsix_substitution_is_rejected(
