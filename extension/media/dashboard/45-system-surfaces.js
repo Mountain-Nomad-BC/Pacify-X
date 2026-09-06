@@ -32,11 +32,8 @@
     if (snapshot.extensionIdentity?.matches !== true) {
       operationalBlockers.push('Host/source identity mismatch');
     }
-    if (snapshot.project?.map?.valid !== true) {
-      operationalBlockers.push('Project map is unavailable or stale');
-    }
-    if (snapshot.memory?.retrieval_ready !== true) {
-      operationalBlockers.push('Canonical memory is not ready');
+    if (snapshot.project?.map?.available === true && snapshot.project?.map?.valid !== true) {
+      operationalBlockers.push('Existing project map is invalid or stale');
     }
     if (freshness === 'stale') {
       operationalBlockers.push('Environment inventory is stale');
@@ -66,8 +63,7 @@
     const traces = [];
     const historicalRuntimeFailures = Number(snapshot.runtime?.bottlenecks?.historical_failures ?? snapshot.runtime?.core?.counters?.failures ?? 0);
     if (!identityMatches) traces.push({ id: 'host-identity', severity: 'critical', cause: extensionDetail, owner: 'VS Code extension host + installed Pacify-X assets', evidence: `host ${snapshot.extensionIdentity?.host?.version || 'unknown'} / source ${snapshot.extensionIdentity?.source?.version || snapshot.source?.version || 'unknown'}`, repair: 'refresh', repairLabel: 'Re-read identity', verify: 'Host and source version, assets, protocol, and message schema must all match.' });
-    if (snapshot.project?.map?.valid !== true) traces.push({ id: 'project-map', severity: 'high', cause: (snapshot.project?.map?.errors || [snapshot.project?.map?.error || 'Project map is unavailable.']).join('; '), owner: 'runtime.project_intelligence', evidence: snapshot.project?.map?.map_revision || 'no current map revision', repair: 'buildRepositoryGraph', repairLabel: 'Rebuild map', verify: 'A new sealed map receipt must be visible and valid.' });
-    if (snapshot.memory?.retrieval_ready !== true) traces.push({ id: 'canonical-memory', severity: 'high', cause: snapshot.memory?.error || 'Canonical workspace, project registration, or active lease is incomplete.', owner: 'canonical workspace memory vault', evidence: snapshot.memory?.status || 'detached', repair: 'configureCanonicalMemory', repairLabel: 'Repair memory setup', verify: 'Workspace configuration, project registration, vault, lease, and retrieval must all be current.' });
+    if (snapshot.project?.map?.available === true && snapshot.project?.map?.valid !== true) traces.push({ id: 'project-map', severity: 'high', cause: (snapshot.project?.map?.errors || [snapshot.project?.map?.error || 'Existing project map is invalid.']).join('; '), owner: 'runtime.project_intelligence', evidence: snapshot.project?.map?.map_revision || 'invalid existing map', repair: 'buildRepositoryGraph', repairLabel: 'Rebuild map', verify: 'A new sealed map receipt must be visible and valid.' });
     const skillBoundary = snapshot.runtime?.skill_host_boundary || {};
     const globalSkillCount = Number(skillBoundary.codex_host?.global_skill_count || 0);
     if (globalSkillCount > 0) traces.push({ id: 'host-skill-reappearance', severity: 'high', cause: `${number(globalSkillCount)} user-global skill package${globalSkillCount === 1 ? '' : 's'} are directly visible to the Codex host outside PX broker enforcement.`, owner: 'Codex host skill discovery', evidence: skillBoundary.codex_host?.global_skill_root || 'global skill root unavailable', surface: 'skillsTools', repairLabel: 'Inspect skill boundary', verify: 'The host-visible global count is zero, or each remaining package is explicitly accepted as host-owned exposure.' });

@@ -14,7 +14,12 @@ import pytest
 
 from runtime.resource_lifecycle import ResourceManager, ResourceStatus, _process_exists
 from runtime.test_profiles import resolve_test_profile
-from runtime.test_runner import run_test_command, validate_timeout
+from runtime.test_runner import (
+    TEST_DISK_CONSUMPTION_LIMIT_BYTES,
+    aggregate_test_disk_consumption_limit,
+    run_test_command,
+    validate_timeout,
+)
 from tests import pytest_guards
 
 
@@ -132,6 +137,10 @@ def test_pytest_disk_budget_is_bound_to_managed_and_explicit_owned_paths(
     accounting = [Path(path) for path in observed["action"]["disk_consumption_paths"]]
     assert output in accounting
     assert any(path.name.startswith("pacify-x-pytest-") for path in accounting)
+    assert (
+        observed["action"]["budget"]["disk_consumption_limit_bytes"]
+        == TEST_DISK_CONSUMPTION_LIMIT_BYTES
+    )
     managed_temp = Path(
         observed["environment"]["PACIFY_X_PYTEST_PROCESS_TEMP_ROOT"]
     )
@@ -157,16 +166,39 @@ def test_nested_cli_disk_budget_uses_one_managed_temp_custody_root(
         environment=os.environ,
         timeout_seconds=30,
         resource_manager=manager,
+        disk_consumption_limit_bytes=aggregate_test_disk_consumption_limit(3),
         manage_process_temp=True,
     )
 
     accounting = [Path(path) for path in observed["action"]["disk_consumption_paths"]]
     assert len(accounting) == 1
     assert accounting[0].name.startswith("pacify-x-process-")
+    assert (
+        observed["action"]["budget"]["disk_consumption_limit_bytes"]
+        == 3 * TEST_DISK_CONSUMPTION_LIMIT_BYTES
+    )
+    assert (
+        result["disk_consumption_limit_bytes"]
+        == 3 * TEST_DISK_CONSUMPTION_LIMIT_BYTES
+    )
     for variable in ("TMP", "TEMP", "TMPDIR"):
         assert Path(observed["environment"][variable]).parent == accounting[0]
     assert result["test_workspace"]["kind"] == "managed_process_temp"
     assert result["test_workspace"]["reclaimed"] is True
+
+
+@pytest.mark.parametrize("work_units", [0, -1, True, 1.5, None])
+def test_aggregate_test_disk_limit_rejects_invalid_work_units(work_units) -> None:
+    with pytest.raises(ValueError, match="positive integer"):
+        aggregate_test_disk_consumption_limit(work_units)
+
+
+def test_aggregate_test_disk_limit_is_proportional_and_hard_bounded() -> None:
+    assert aggregate_test_disk_consumption_limit(1) == TEST_DISK_CONSUMPTION_LIMIT_BYTES
+    assert aggregate_test_disk_consumption_limit(10) == (
+        10 * TEST_DISK_CONSUMPTION_LIMIT_BYTES
+    )
+    assert aggregate_test_disk_consumption_limit(10_000) == 1024**4
 
 
 def test_timeout_kills_process_tree() -> None:

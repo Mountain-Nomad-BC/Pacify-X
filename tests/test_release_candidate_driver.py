@@ -14,6 +14,7 @@ from scripts.run_release_candidate import (
     RELEASE_STAGE_PHASES,
     SubprocessOwners,
     STEP_ORDER,
+    execute_all,
     execute_next,
     next_pending_step,
     plan,
@@ -34,6 +35,32 @@ class FakeOwners:
 
     def verify(self, step: str) -> None:
         self.verified.append(step)
+
+
+class FakeGovernance:
+    def __init__(self):
+        self.admitted: list[str] = []
+        self.settled: list[tuple[str, bool]] = []
+
+    def admit(self, step: str) -> dict[str, str]:
+        self.admitted.append(step)
+        return {
+            "event_id": f"admission:{step}",
+            "session_id": f"session:{step}",
+            "checkpoint_event_id": f"checkpoint:{step}",
+        }
+
+    def settle(self, step: str, admission: dict[str, str], *, passed: bool) -> dict[str, str]:
+        self.settled.append((step, passed))
+        return {
+            "closure_event_id": f"closure:{step}",
+            "checkpoint_event_id": f"next-checkpoint:{step}",
+        }
+
+
+class FailingAdmissionGovernance(FakeGovernance):
+    def admit(self, step: str) -> dict[str, str]:
+        raise ValueError("admission rejected")
 
 
 def config(tmp_path: Path) -> Config:
@@ -69,6 +96,63 @@ def test_plan_is_read_only_and_canonical(tmp_path: Path) -> None:
     assert [item["step"] for item in result["steps"]] == list(STEP_ORDER)
     assert result["default_mode"] == "plan-only"
     assert not value.automation_state.exists()
+
+
+def test_execute_all_runs_every_owner_once_and_writes_one_report(tmp_path: Path) -> None:
+    value = config(tmp_path)
+    owners = FakeOwners()
+    governance = FakeGovernance()
+    report_path = tmp_path / "campaign-report.json"
+    result = execute_all(
+        value,
+        owners,
+        gap_id="PX-OS-1067",
+        report_path=report_path,
+        governance=governance,
+    )
+    assert result["valid"] is True
+    assert result["completed_stage_count"] == len(STEP_ORDER)
+    assert owners.runs == list(STEP_ORDER)
+    assert governance.admitted == list(STEP_ORDER)
+    assert governance.settled == [(step, True) for step in STEP_ORDER]
+    assert json.loads(report_path.read_text(encoding="utf-8"))["valid"] is True
+
+
+def test_execute_all_stops_after_the_single_failed_owner(tmp_path: Path) -> None:
+    value = config(tmp_path)
+    owners = FakeOwners(fail="identity")
+    governance = FakeGovernance()
+    result = execute_all(
+        value,
+        owners,
+        gap_id="PX-OS-1067",
+        report_path=tmp_path / "failed-campaign.json",
+        governance=governance,
+    )
+    assert result["valid"] is False
+    assert owners.runs == ["archive_clear", "reconcile", "identity"]
+    assert governance.settled[-1] == ("identity", False)
+    assert "owner failed" in result["failure"]
+
+
+def test_execute_all_records_admission_failure_before_any_owner_runs(tmp_path: Path) -> None:
+    value = config(tmp_path)
+    owners = FakeOwners()
+    report_path = tmp_path / "admission-failed-campaign.json"
+    result = execute_all(
+        value,
+        owners,
+        gap_id="PX-OS-1067",
+        report_path=report_path,
+        governance=FailingAdmissionGovernance(),
+    )
+    assert result["valid"] is False
+    assert result["completed_stage_count"] == 0
+    assert result["stages"][0]["step"] == "archive_clear"
+    assert result["stages"][0]["admission_event_id"] is None
+    assert result["failure"] == "ValueError: admission rejected"
+    assert owners.runs == []
+    assert json.loads(report_path.read_text(encoding="utf-8")) == result
 
 
 def test_initial_readiness_allows_one_unused_cleared_predecessor(
@@ -428,6 +512,40 @@ def test_owner_timeout_terminates_exact_registered_process_tree(
             "archive_clear", (("owner", "archive_clear"),)
         )
     assert manager.terminated == ["process-timeout"]
+
+
+def test_owner_exit_fails_closed_when_an_active_path_remains(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    value = config(tmp_path)
+    monkeypatch.setattr(SubprocessOwners, "verify", lambda self, step: None)
+    monkeypatch.setattr(
+        "runtime.resource_lifecycle.resource_status",
+        lambda ledger: {
+            "active_processes": 0,
+            "active_paths": 1,
+            "reclaimable_paths": 0,
+            "cleanup_failures": 0,
+        },
+    )
+
+    class Process:
+        def wait(self, *, timeout: float) -> int:
+            return 0
+
+    class Manager:
+        def spawn_owned_process(self, argv: list[str], **kwargs: object):
+            return SimpleNamespace(resource_id="process-one", pid=123), Process()
+
+        def complete_process(self, resource_id: str):
+            return SimpleNamespace(
+                status="reclaimed", run_state="completed", cleanup_result="exit_0"
+            )
+
+    with pytest.raises(AutomationBlocked, match="owner resources did not close"):
+        SubprocessOwners(value, Manager()).run(
+            "archive_clear", (("owner", "archive_clear"),)
+        )
 
 
 def test_each_invocation_runs_exactly_one_next_step(tmp_path: Path) -> None:

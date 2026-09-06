@@ -157,6 +157,17 @@ def _inside(target: Path, root: Path) -> bool:
         return False
 
 
+def _lexically_inside(target: Path, root: Path) -> bool:
+    """Check an absent target's registered lexical containment without resolving it."""
+
+    try:
+        target_value = os.path.normcase(os.path.abspath(os.fspath(target)))
+        root_value = os.path.normcase(os.path.abspath(os.fspath(root)))
+        return os.path.commonpath((target_value, root_value)) == root_value
+    except ValueError:
+        return False
+
+
 @dataclass(frozen=True, slots=True)
 class ResourceRecord:
     resource_id: str
@@ -552,6 +563,22 @@ class ResourceManager:
 
     def reclamation_gate(self, record: ResourceRecord) -> tuple[bool, tuple[str, ...]]:
         reasons: list[str] = []
+        target = Path(record.path or ".")
+        allowed_root = (
+            Path(record.allowed_cleanup_root)
+            if record.allowed_cleanup_root
+            else None
+        )
+        # When both registered paths are already physically absent there is
+        # nothing left to delete or resolve through links.  Lexical containment
+        # is sufficient only to close that no-effect ledger record.  Any path
+        # that still exists continues through the strict resolved check below.
+        absent_registered_chain = bool(
+            record.path
+            and allowed_root is not None
+            and not os.path.lexists(target)
+            and not os.path.lexists(allowed_root)
+        )
         if record.resource_type != "path" or not record.path:
             reasons.append("resource is not a registered path")
         if record.classification == ResourceClassification.QUARANTINE.value:
@@ -572,15 +599,26 @@ class ResourceManager:
             reasons.append("promoted output is missing")
         if self._active_dependants(record.resource_id):
             reasons.append("active child resources still reference the target")
-        if not record.allowed_cleanup_root:
+        if allowed_root is None:
             reasons.append("allowed cleanup root is missing")
-        elif not _inside(Path(record.path or "."), Path(record.allowed_cleanup_root)):
+        elif absent_registered_chain:
+            if not _lexically_inside(target, allowed_root):
+                reasons.append("target is not lexically inside its absent allowed cleanup root")
+        elif not _inside(target, allowed_root):
             reasons.append("target does not resolve inside its allowed cleanup root")
-        if record.path and record.allowed_cleanup_root:
+        if record.path and allowed_root is not None:
             try:
-                if Path(record.path).resolve(strict=False) == Path(
-                    record.allowed_cleanup_root
-                ).resolve(strict=True):
+                if absent_registered_chain:
+                    target_value = os.path.normcase(os.path.abspath(os.fspath(target)))
+                    root_value = os.path.normcase(
+                        os.path.abspath(os.fspath(allowed_root))
+                    )
+                    same_target = target_value == root_value
+                else:
+                    same_target = target.resolve(strict=False) == allowed_root.resolve(
+                        strict=True
+                    )
+                if same_target:
                     reasons.append("cleanup target is the allowed root itself")
             except OSError:
                 reasons.append("target resolution is ambiguous")

@@ -40,7 +40,7 @@ const {
   providerExecutionPolicyReport
 } = require('./providerExecutionPolicy');
 const {
-  readCoordination, createParallelPlan, claimTask, renewClaim, recordProgress,
+  readCoordination, registerSession, createParallelPlan, claimTask, renewClaim, recordProgress,
   reconcileTask, releaseTask, captureMemory, readMemoryTelemetry, taskHandoff
 } = require('./coordinationManager');
 
@@ -276,8 +276,14 @@ function settings() {
   const config = vscode.workspace.getConfiguration('pacifyX');
   const providerAllowlist = config.get('guardrails.providerAllowlist');
   const workspaceRootInspection = config.inspect('workspaceRoot') || {};
-  const workspaceRootExplicitlyConfigured = ['globalValue', 'workspaceValue', 'workspaceFolderValue']
-    .some(key => workspaceRootInspection[key] !== undefined);
+  const workspaceRootScope = workspaceRootInspection.workspaceFolderValue !== undefined
+    ? 'workspace-folder'
+    : workspaceRootInspection.workspaceValue !== undefined
+      ? 'workspace'
+      : workspaceRootInspection.globalValue !== undefined
+        ? 'global'
+        : 'default';
+  const workspaceRootExplicitlyConfigured = workspaceRootScope !== 'default';
   const openProjectRoot = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath || '';
   return {
     showAdvancedSurfaces: Boolean(config.get('showAdvancedSurfaces')),
@@ -291,6 +297,7 @@ function settings() {
     workspaceRoot: resolveCanonicalWorkspaceRoot({
       configuredValue: config.get('workspaceRoot'),
       explicitlyConfigured: workspaceRootExplicitlyConfigured,
+      configuredScope: workspaceRootScope,
       projectRoot: openProjectRoot
     }),
     activity: {
@@ -683,7 +690,7 @@ function activateImplementation(context, transaction) {
     const data = coordination();
     if (currentSnapshot) {
       currentSnapshot.coordinationData = data;
-      currentSnapshot.coordination = data?.state || { instrumented: false };
+      currentSnapshot.coordination = data?.state ? { ...data.state, instrumented: data.instrumented === true } : { instrumented: false };
     }
     await targetWebview?.postMessage({ type: 'coordination', coordination: data });
     if (currentSnapshot) await sidebar.pushSnapshot(currentSnapshot);
@@ -782,7 +789,9 @@ function activateImplementation(context, transaction) {
       currentSnapshot.environment = currentEnvironment?.inventory || null;
       currentSnapshot.environmentPaths = currentEnvironment?.paths || (root ? environmentPathsFor(root) : null);
       currentSnapshot.coordinationData = coordinationData;
-      currentSnapshot.coordination = coordinationData?.state || currentSnapshot.coordination || { instrumented: false };
+      currentSnapshot.coordination = coordinationData?.state
+        ? { ...coordinationData.state, instrumented: coordinationData.instrumented === true }
+        : currentSnapshot.coordination || { instrumented: false };
       currentSnapshot.lastHostActionRequest = activeRuntime.lastHostActionRequest || null;
       currentSnapshot.lastHostActionResult = activeRuntime.lastHostActionResult || null;
       currentSnapshot.observability = {
@@ -1234,7 +1243,7 @@ function activateImplementation(context, transaction) {
       const panelOrigin = createPanelOrigin(dashboardPanel.webview);
       const panelOriginId = `dashboard:${crypto.randomUUID()}`;
       const durableHostActionTypes = new Set([
-        'setActivityPaused', 'reconcileStaleActivity', 'configureCanonicalMemory', 'disconnectCanonicalMemory',
+        'initializeProject', 'setActivityPaused', 'reconcileStaleActivity', 'configureCanonicalMemory', 'disconnectCanonicalMemory',
         'copyTaskHandoff', 'openCoordinationHandoff', 'openSettings', 'createContextSnapshot', 'copyText',
         'exportRecordJson', 'openExtensionsView', 'continueCodex', 'cancelCodex', 'openFile'
       ]);
@@ -1588,6 +1597,24 @@ function activateImplementation(context, transaction) {
               await dashboardPanel.webview.postMessage({ type: 'graphBuildResult', result });
               await publishSnapshot(true, dashboardPanel.webview); break;
             }
+            case 'initializeProject': {
+              const root = workspaceRoot();
+              if (!root) throw new Error('Open a folder before initializing Pacify-X project coordination.');
+              const existing = readCoordination(root, { eventLimit: 1 });
+              if (existing.instrumented) {
+                await acknowledgeHostAction('no-op', { reason: 'project-already-initialized' });
+              } else {
+                const approval = await vscode.window.showWarningMessage('Initialize Pacify-X for the open project? This creates only the project-owned rolling coordination ledger under .engineering-bootstrap.', governedConfirmationOptions(), 'Initialize project');
+                if (approval !== 'Initialize project') {
+                  await acknowledgeHostAction('cancelled', { stage: 'project-initialization' });
+                  break;
+                }
+                const result = registerSession(root, actorIdentity(sessionId));
+                await acknowledgeHostAction('completed', { projectId: result?.result?.project_id || path.basename(root) });
+              }
+              hostContextCache = null;
+              await publishSnapshot(true, dashboardPanel.webview); break;
+            }
             case 'createParallelPlan':
             case 'claimCoordinationTask':
             case 'renewCoordinationClaim':
@@ -1853,7 +1880,7 @@ function activateImplementation(context, transaction) {
         try {
           const data = coordination();
           if (!currentSnapshot) return;
-          currentSnapshot.coordinationData = data; currentSnapshot.coordination = data?.state || { instrumented: false };
+          currentSnapshot.coordinationData = data; currentSnapshot.coordination = data?.state ? { ...data.state, instrumented: data.instrumented === true } : { instrumented: false };
           await sidebar.pushSnapshot(currentSnapshot);
           await panel?.webview.postMessage({ type: 'coordination', coordination: data });
         } catch (error) { codexOutput.appendLine(`Sidebar revision update failed closed: ${error.message}`); }

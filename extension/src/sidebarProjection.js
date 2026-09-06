@@ -227,6 +227,7 @@ function runtimeSubsystemState(snapshot) {
 function coordinationSubsystemState(coordination) {
   const status = String(coordination?.event_log_health?.status || '').toLowerCase();
   if (status === 'degraded') return 'degraded';
+  if (coordination?.instrumented === false || coordination?.persistence === 'not-initialized-read-only') return 'unconfigured';
   if (status === 'healthy' || status === 'valid') return 'healthy';
   return coordination?.state ? 'degraded' : 'unavailable';
 }

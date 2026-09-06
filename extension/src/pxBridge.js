@@ -292,7 +292,7 @@ function normalizeSnapshot(raw) {
       assurance: { count: counts.assurance || 0, available: true }, effects: { count: counts.effects || 0, available: true },
       graph: { count: counts.graph_records || 0, edges: counts.graph_edges || 0, available: true, modified: raw.generated_at }
     },
-    attention: raw.attention || [], authorities: authorityMap(connected, raw), memory: raw.memory || {}, knowledgeCore: raw.knowledge_core || {}, extensionSourceIdentity: raw.extension_identity || {},
+    attention: raw.attention || [], onboarding: raw.onboarding || { required: false, state: 'ready', project_initialized: true, project_map_ready: true, actions: {} }, authorities: authorityMap(connected, raw), memory: raw.memory || {}, knowledgeCore: raw.knowledge_core || {}, extensionSourceIdentity: raw.extension_identity || {},
     completion: raw.completion || {},
     providerActivity: Array.isArray(raw.providerActivity) ? raw.providerActivity : [],
     coordination: raw.coordination || { instrumented: false }, runtime: raw.runtime || {},

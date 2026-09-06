@@ -42,6 +42,7 @@ const ENGINE_COPY_EXCLUDED_ROOTS = new Set(['.git', '.tmp', '.vscode', '.pytest_
 const ENGINE_COPY_EXCLUDED_PATHS = new Set([
   'extension/node_modules', 'extension/dist',
   '.engineering-bootstrap/diagnostics', '.engineering-bootstrap/test-evidence',
+  '.engineering-bootstrap/focused-temp', '.engineering-bootstrap/quarantine',
   '.engineering-bootstrap/resource-lifecycle', '.engineering-bootstrap/operation-bus',
   '.engineering-bootstrap/project-map', '.engineering-bootstrap/project-map-history',
   '.engineering-bootstrap/project-map-history-archives',

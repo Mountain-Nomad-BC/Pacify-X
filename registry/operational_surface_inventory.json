@@ -5,10 +5,10 @@
   "source_report": "evidence/operational-gap-ledger/agent-studio-control-revision-20260816.json",
   "source_report_sha256": "d978207d763e55f4bf3771b9f7fc8086ca60d768347e45f412451ecec3ab957a",
   "ui_action_inventory": "extension/resources/ui/action-inventory.json",
-  "ui_action_inventory_sha256": "c0c227e15fa40fce78f3e323720f7890381d0c05dda58fa7bf797112e720c6a7",
-  "ui_action_count": 205,
+  "ui_action_inventory_sha256": "b6a9b536eea2b3fd51c9492f9aa8318d047029eee158c0edbbb17b760e0709c5",
+  "ui_action_count": 206,
   "dashboard_controller": "extension/media/dashboard/90-controller.js",
-  "dashboard_controller_sha256": "1d65df57d6eadca4e657c70876464bf02c8feee6fd937341de278f45457455bf",
+  "dashboard_controller_sha256": "ec317c0e6e97d6e8780e38f5a98679234890facb7247f57d803eaef6749bbe0b",
   "dashboard_navigation_surface_count": 18,
   "surfaces": [
     {
@@ -1914,8 +1914,8 @@
     {
       "surface_id": "dashboard",
       "name": "Dashboard",
-      "expected_control_count": 16,
-      "expected_controls_sha256": "5378de9226af7bafecd02394d159598c28527062f428b811b1261294b230dfaf",
+      "expected_control_count": 17,
+      "expected_controls_sha256": "e219c66b3a89c9607820e6f584d3cfbd66698fbdd8455ba85fcb40eccec23d77",
       "source_files": [
         "extension/media/dashboard/42-core-surfaces.js"
       ],
@@ -1923,6 +1923,14 @@
         "extension/media/dashboard/42-core-surfaces.js:21-31"
       ],
       "controls": [
+        {
+          "control_id": "pxui.dashboard.action.initializeProject",
+          "kind": "action",
+          "label": "initializeProject",
+          "source_refs": [
+            "extension/media/dashboard/42-core-surfaces.js"
+          ]
+        },
         {
           "control_id": "pxui.dashboard.action.inspectMetric",
           "kind": "action",
@@ -4109,7 +4117,8 @@
           "kind": "action",
           "label": "graphLoadAll",
           "source_refs": [
-            "extension/media/dashboard/48-graph-surface.js"
+            "extension/media/dashboard/48-graph-surface.js",
+            "extension/media/dashboard/90-controller.js"
           ]
         },
         {
@@ -5372,8 +5381,8 @@
     {
       "surface_id": "projects",
       "name": "Projects",
-      "expected_control_count": 26,
-      "expected_controls_sha256": "6f005237b0c401e5e9ede9a8b11614b8b8450552baa8892506ec75214f7bc2e5",
+      "expected_control_count": 27,
+      "expected_controls_sha256": "5d603c394f616cce13cb744442eaaaa1e0d1578628bf35b44d03a8fab90366ef",
       "source_files": [
         "extension/media/dashboard/42-core-surfaces.js"
       ],
@@ -5389,6 +5398,14 @@
             "extension/media/dashboard/42-core-surfaces.js",
             "extension/media/dashboard/45-system-surfaces.js",
             "extension/media/dashboard/48-graph-surface.js"
+          ]
+        },
+        {
+          "control_id": "pxui.projects.action.initializeProject",
+          "kind": "action",
+          "label": "initializeProject",
+          "source_refs": [
+            "extension/media/dashboard/42-core-surfaces.js"
           ]
         },
         {

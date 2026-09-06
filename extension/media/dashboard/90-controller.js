@@ -159,11 +159,8 @@ function readinessLiveBlockers(snapshot = {}) {
   if (state.extensionIdentity?.matches !== true) {
     blockers.push('Host/source identity mismatch');
   }
-  if (state.project?.map?.valid !== true) {
-    blockers.push('Project map is unavailable or stale');
-  }
-  if (state.memory?.retrieval_ready !== true) {
-    blockers.push('Canonical memory is not ready');
+  if (state.project?.map?.available === true && state.project?.map?.valid !== true) {
+    blockers.push('Existing project map is invalid or stale');
   }
   if (Number(state.runtime?.core?.counters?.failures || 0) > 0) {
     blockers.push(`${state.runtime.core.counters.failures} runtime failures are retained`);
@@ -1951,12 +1948,12 @@ function eventTimeline(limit) {
 }
 
 function serviceGrid() {
-  const s = state.snapshot; const connection = healthState.operational(s); const rows = [
+  const s = state.snapshot; const connection = healthState.operational(s); const projectMapAvailable = healthState.feature(s, 'projectMap').available; const coordinationAvailable = healthState.feature(s, 'coordination').available; const portableMemoryAvailable = state.coordination?.memory?.instrumented === true; const rows = [
     ['Pacify-X control plane', connection.label, connection.tone],
-    ['Project map', healthState.feature(s, 'projectMap').available ? 'Available' : 'Unavailable', healthState.feature(s, 'projectMap').available ? 'success' : 'warning'],
+    ['Project map', projectMapAvailable ? 'Available' : s.project?.map?.available === false ? 'Not created yet' : 'Unavailable', projectMapAvailable ? 'success' : s.project?.map?.available === false ? 'neutral' : 'warning'],
     ['Canonical memory vault', healthState.feature(s, 'canonicalMemory').available ? 'Attached' : 'Detached; configure workspace + lease', healthState.feature(s, 'canonicalMemory').available ? 'success' : 'neutral'],
-    ['Portable memory', state.coordination?.memory?.instrumented ? `${number(state.coordination.memory.record_count)} records; non-canonical` : 'Unavailable', state.coordination?.memory?.integrity?.valid ? 'info' : 'warning'],
-    ['Cross-IDE ledger', healthState.feature(s, 'coordination').available ? 'Instrumented' : 'Unavailable', healthState.feature(s, 'coordination').available ? 'success' : 'warning'],
+    ['Portable memory', portableMemoryAvailable ? `${number(state.coordination.memory.record_count)} records; non-canonical` : coordinationAvailable ? 'No records yet' : 'Available after initialization', portableMemoryAvailable ? (state.coordination?.memory?.integrity?.valid ? 'info' : 'warning') : 'neutral'],
+    ['Cross-IDE ledger', coordinationAvailable ? 'Instrumented' : 'Not initialized yet', coordinationAvailable ? 'success' : 'neutral'],
     ['Ollama', state.settings.ollamaEnabled ? 'Enabled; probe on model request' : 'Disabled', state.settings.ollamaEnabled ? 'info' : 'neutral'],
     ['TurboVec', turbovecDisplay(s).detail, turbovecDisplay(s).tone],
     ['MS+Enterprise', healthState.feature(s, 'enterpriseCatalog').available ? 'Catalog available; connectors remain offline' : 'Unavailable', healthState.feature(s, 'enterpriseCatalog').available ? 'info' : 'neutral']
@@ -2702,6 +2699,7 @@ app.addEventListener('click', event => {
   if (action === 'submitReleaseTask') { const taskId = document.getElementById('release-task')?.value || ''; const reason = document.getElementById('release-reason')?.value.trim() || ''; const confirmed = document.getElementById('release-confirm')?.checked === true; const validation = document.querySelector('[data-release-validation]'); if (reason.length < 10 || !confirmed) { if (validation) { validation.hidden = false; validation.textContent = reason.length < 10 ? 'Enter a specific release reason of at least 10 characters.' : 'Confirm the exact task release before continuing.'; } return; } const requestId = studioAllocationRequestId(); pendingTaskRelease = { requestId, taskId, reason, startedAt: new Date().toISOString() }; vscode.postMessage({ type: 'releaseCoordinationTask', requestId, taskId, reason, acknowledgement: { boundary: 'explicit-dashboard-confirmation', confirmed: true, taskId } }); closeModal(); return; }
   if (action === 'copyTaskHandoff') { postHostAction(action, 'copyTaskHandoff', { taskId: control.dataset.taskId }); return; }
   if (action === 'captureMemory') { captureMemoryModal(); return; }
+  if (action === 'initializeProject') { postHostAction(action, 'initializeProject'); return; }
   if (action === 'configureCanonicalMemory') { postHostAction(action, 'configureCanonicalMemory'); return; }
   if (action === 'disconnectCanonicalMemory') { postHostAction(action, 'disconnectCanonicalMemory'); return; }
   if (action === 'submitMemory') { const content = document.getElementById('memory-content').value.trim(); if (!content) { document.getElementById('memory-content').focus(); return; } vscode.postMessage({ type: 'captureCoordinationMemory', layer: document.getElementById('memory-layer').value, kind: document.getElementById('memory-kind').value, content }); closeModal(); return; }

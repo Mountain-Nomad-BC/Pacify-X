@@ -100,6 +100,20 @@ test('S09 provider subsystem distinguishes unconfigured from unavailable telemet
   assert.equal(buildSidebarProjection(configured, { nowMs: NOW }).status.subsystems.find(item => item.id === 'provider').state, 'unavailable');
 });
 
+test('S09 fresh coordination is unconfigured rather than degraded', () => {
+  const fresh = fixture();
+  fresh.coordinationData = {
+    instrumented: false,
+    persistence: 'not-initialized-read-only',
+    event_log_health: { status: 'missing' },
+    state: { revision: 0, plans: [], tasks: [], claims: [] },
+    events: []
+  };
+  const projection = buildSidebarProjection(fresh, { nowMs: NOW });
+  assert.equal(projection.status.subsystems.find(item => item.id === 'coordination').state, 'unconfigured');
+  assert.equal(projection.attention.length, 0);
+});
+
 test('S10 idle, disconnected, degraded, and recovering states remain distinct', () => {
   const idle = fixture(); idle.coordinationData.state.active_plan = null; idle.coordinationData.state.plans[0].status = 'completed'; idle.coordinationData.state.plans[0].completed_utc = '2026-08-11T17:50:00Z';
   assert.equal(buildSidebarProjection(idle, { nowMs: NOW }).execution, null);

@@ -295,6 +295,9 @@ test('engine copy exclusion is exact and does not hide similarly named source di
   assert.equal(excludedEnginePath('.engineering-bootstrap/diagnostics/retained-workspaces/source/runtime.py'), true);
   assert.equal(excludedEnginePath('.engineering-bootstrap/test-evidence/adversarial-repair-gates/run/linked-fixture'), true);
   assert.equal(excludedEnginePath('.engineering-bootstrap/test-evidence/sections/dashboard-extension.json'), true);
+  assert.equal(excludedEnginePath('.engineering-bootstrap/focused-temp/fresh-repo-dashboard-api/locked'), true);
+  assert.equal(excludedEnginePath('.engineering-bootstrap/quarantine/disposable-cache/certification-preflight/.pytest_cache'), true);
+  assert.equal(excludedEnginePath('.engineering-bootstrap/focused-temporary/legitimate.py'), false);
   assert.equal(excludedEnginePath('.engineering-bootstrap/operation-bus/wal/.wal.lock'), true);
   assert.equal(excludedEnginePath('registry/.operational-gap-ledger.lock'), true);
   assert.equal(excludedEnginePath('registry/lock-policy.json'), false);

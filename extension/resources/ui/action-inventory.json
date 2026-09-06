@@ -7,7 +7,7 @@
     "effect": "none-outside-webview",
     "acknowledgement": "active surface and focus update"
   },
-  "action_count": 205,
+  "action_count": 206,
   "actions": [
     {
       "action": "acceptStudioVersionSuggestion",
@@ -1502,6 +1502,24 @@
       "behavior": "select human or machine record view",
       "rendered_in": [
         "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "initializeProject",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "initializeProject",
+        "fields": [
+          "requestId"
+        ]
+      },
+      "authority": "project coordination controller",
+      "effect": "workspace-write",
+      "state_transition": "hostActionResult or operationError",
+      "acknowledgement": "hostActionResult or operationError",
+      "receipt": "initialized project-owned rolling coordination ledger",
+      "rendered_in": [
+        "media/dashboard/42-core-surfaces.js"
       ]
     },
     {

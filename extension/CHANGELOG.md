@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.86
+
+- Treat a newly opened repository as onboarding rather than an attention condition: missing project-map, coordination, and optional canonical-memory setup no longer produce false issue alerts.
+- Add explicit **Initialize project** and **Create project map** actions, with neutral first-run service states and warning styling reserved for genuinely invalid existing artifacts.
+- Keep user-global canonical-memory configuration from attaching to unrelated repositories; workspace and workspace-folder settings remain project-scoped.
+
 ## 0.6.85
 
 - Make installed workbench-command rejection testing deterministic at the exact live DOM boundary while retaining a fresh real-command recovery dispatch.

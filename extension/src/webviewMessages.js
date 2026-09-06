@@ -13,7 +13,7 @@ const STUDIO_PROTOCOL = require('../resources/studio-operations.json');
 if (STUDIO_PROTOCOL.schema_version !== 'px.studio-operation-contract/1.0' || !STUDIO_PROTOCOL.kinds) throw new Error('studio-operation-contract-invalid');
 
 const CONTRACTS = Object.freeze({
-  ready: [], refresh: [], dashboardViewState: ['state'], openCoordinationHandoff: ['requestId'], openSettings: ['requestId'], configureCanonicalMemory: ['requestId'], disconnectCanonicalMemory: ['requestId'], buildRepositoryGraph: [], validate: [], createContextSnapshot: ['requestId'], openExtensionsView: ['requestId'], scanCleanup: [], teamPackPreview: [], refreshEnvironment: [], continueCodex: ['requestId'], cancelCodex: ['requestId'], listHostModels: [],
+  ready: [], refresh: [], dashboardViewState: ['state'], initializeProject: ['requestId'], openCoordinationHandoff: ['requestId'], openSettings: ['requestId'], configureCanonicalMemory: ['requestId'], disconnectCanonicalMemory: ['requestId'], buildRepositoryGraph: [], validate: [], createContextSnapshot: ['requestId'], openExtensionsView: ['requestId'], scanCleanup: [], teamPackPreview: [], refreshEnvironment: [], continueCodex: ['requestId'], cancelCodex: ['requestId'], listHostModels: [],
   skillQuery: ['goal', 'domain'], skillHydrate: ['skill', 'domain'], skillCompare: ['requestId', 'skill'], setupStudio: ['requestId'],
   createStudioDraft: ['requestId', 'kind', 'payload'],
   detachStudioDraft: ['requestId', 'kind'],
@@ -56,7 +56,7 @@ const CONTRACTS = Object.freeze({
 });
 
 const HOST_ACTION_REQUEST_TYPES = new Set([
-  'openCoordinationHandoff', 'openSettings', 'configureCanonicalMemory', 'disconnectCanonicalMemory', 'createContextSnapshot',
+  'initializeProject', 'openCoordinationHandoff', 'openSettings', 'configureCanonicalMemory', 'disconnectCanonicalMemory', 'createContextSnapshot',
   'openExtensionsView', 'continueCodex', 'cancelCodex', 'setActivityPaused',
   'copyTaskHandoff', 'copyText', 'exportRecordJson', 'openFile', 'reconcileStaleActivity', 'setupStudio'
 ]);

@@ -18,6 +18,23 @@ test('preserves explicit detach instead of automatically reattaching', () => {
   }), '');
 });
 
+test('does not attach a user-global canonical workspace to an unrelated project', () => {
+  const projectRoot = path.resolve('C:/fresh-project');
+  assert.equal(resolveCanonicalWorkspaceRoot({
+    configuredValue: 'C:/unrelated-canonical', explicitlyConfigured: true,
+    configuredScope: 'global', projectRoot, exists: () => false
+  }), '');
+});
+
+test('ignores a global value while still auto-detecting the open canonical workspace', () => {
+  const projectRoot = path.resolve('C:/current-canonical');
+  assert.equal(resolveCanonicalWorkspaceRoot({
+    configuredValue: 'C:/unrelated-canonical', explicitlyConfigured: true,
+    configuredScope: 'global', projectRoot,
+    exists: candidate => candidate === path.join(projectRoot, 'engineering-workspace.toml')
+  }), projectRoot);
+});
+
 test('automatically selects an initialized open PX workspace when unset', () => {
   const projectRoot = path.resolve('C:/project');
   assert.equal(resolveCanonicalWorkspaceRoot({

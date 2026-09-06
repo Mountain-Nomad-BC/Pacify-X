@@ -91,6 +91,7 @@ const UI_ONLY = Object.freeze({
 });
 
 const HOST = Object.freeze({
+  initializeProject: ['initializeProject', 'workspace-write', 'project coordination controller', 'hostActionResult or operationError', 'initialized project-owned rolling coordination ledger'],
   setupStudio: ['setupStudio', 'workspace-write-and-owned-process', 'authenticated Pacify-X Studio controller + one explicit host confirmation', 'studioSetupResult or operationError', 'admitted starter agent/workflow revisions plus bounded successful run receipts'],
   submitSkillQuery: ['skillQuery', 'read', 'PX-native bounded skill broker', 'skillQueryResult or operationError', 'at most three eligible metadata candidates with selection rationale'],
   hydrateSkillCandidate: ['skillHydrate', 'read', 'PX-native exact-ID skill hydrator', 'skillHydrateResult or operationError', 'exactly one selected admitted skill body'],

@@ -8,6 +8,7 @@ from unittest.mock import patch
 
 from runtime import dashboard_api
 from runtime.dashboard_api import (
+    _build_snapshot_admitted,
     _completion,
     _completion_projection_current,
     _hardware,
@@ -527,6 +528,109 @@ class DashboardApiTests(unittest.TestCase):
             "Canonical memory telemetry unavailable",
             {item["title"] for item in snapshot["attention"]},
         )
+
+    def test_new_repository_is_onboarding_not_attention(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            project = Path(directory) / "new-repository"
+            project.mkdir()
+            with (
+                patch(
+                    "runtime.project_intelligence.project_map_status",
+                    return_value={
+                        "available": False,
+                        "valid": False,
+                        "error": "project map is not built",
+                    },
+                ),
+                patch(
+                    "runtime.workspace_manager.workspace_monitor",
+                    return_value={
+                        "workspace": {
+                            "valid": False,
+                            "active_session_count": 0,
+                            "errors": ["workspace marker missing"],
+                        },
+                        "memory": [],
+                        "memory_valid": False,
+                        "memory_errors": [],
+                        "integrations": {"valid": False},
+                    },
+                ),
+            ):
+                snapshot = _build_snapshot_admitted(
+                    ROOT,
+                    project=project,
+                    workspace_root=project / "unconfigured-memory-root",
+                )
+
+        self.assertEqual(snapshot["onboarding"]["state"], "new-project")
+        self.assertTrue(snapshot["onboarding"]["required"])
+        self.assertTrue(snapshot["onboarding"]["actions"]["initialize_project"])
+        self.assertTrue(snapshot["onboarding"]["actions"]["create_project_map"])
+        self.assertTrue(snapshot["memory"]["configured"])
+        self.assertEqual(
+            {item["title"] for item in snapshot["attention"]}
+            & {
+                "Project map unavailable or invalid",
+                "Canonical memory workspace invalid",
+                "Cross-IDE coordination not initialized",
+            },
+            set(),
+        )
+
+    def test_existing_invalid_project_map_remains_attention(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            project = Path(directory) / "initialized-repository"
+            coordination = project / ".engineering-bootstrap" / "coordination"
+            coordination.mkdir(parents=True)
+            (coordination / "state.json").write_text(
+                json.dumps({"claims": [], "tasks": []}), encoding="utf-8"
+            )
+            with patch(
+                "runtime.project_intelligence.project_map_status",
+                return_value={
+                    "available": True,
+                    "valid": False,
+                    "error": "existing map digest mismatch",
+                },
+            ):
+                snapshot = _build_snapshot_admitted(ROOT, project=project)
+
+        self.assertIn(
+            "Project map unavailable or invalid",
+            {item["title"] for item in snapshot["attention"]},
+        )
+
+    def test_new_repository_does_not_inherit_shared_memory_lease_attention(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            project = Path(directory) / "new-repository"
+            project.mkdir()
+            with (
+                patch(
+                    "runtime.project_intelligence.project_map_status",
+                    return_value={"available": False, "valid": False},
+                ),
+                patch(
+                    "runtime.workspace_manager.workspace_monitor",
+                    return_value={
+                        "workspace": {
+                            "valid": True,
+                            "registered_count": 1,
+                            "active_session_count": 0,
+                        },
+                        "memory": [{"project_id": "another-project"}],
+                        "memory_valid": True,
+                        "memory_errors": [],
+                        "integrations": {"valid": True},
+                    },
+                ),
+            ):
+                snapshot = _build_snapshot_admitted(
+                    ROOT, project=project, workspace_root=project / "shared-memory"
+                )
+
+        self.assertEqual(snapshot["onboarding"]["state"], "new-project")
+        self.assertEqual(snapshot["attention"], [])
 
     def test_configured_empty_workspace_memory_is_valid_but_not_attached_or_ready(
         self,

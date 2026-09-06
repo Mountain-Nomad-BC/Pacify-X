@@ -174,7 +174,11 @@ def _refresh_stale_groups_for_full_profile(
     from .resource_lifecycle import ResourceManager
     from .test_orchestration_lock import OWNER_ENV, SUPERVISED_CHILD_ENV
     from .test_profiles import group_status, resolve_test_groups
-    from .test_runner import run_test_command, validate_timeout
+    from .test_runner import (
+        aggregate_test_disk_consumption_limit,
+        run_test_command,
+        validate_timeout,
+    )
 
     before = group_status(root)
     stale = [row["group"] for row in before["groups"] if not row["current"]]
@@ -232,6 +236,9 @@ def _refresh_stale_groups_for_full_profile(
         resource_manager=resource_manager,
         run_id=f"test-profile-group-refresh-{uuid4().hex}",
         lane_id="profile:group-refresh",
+        disk_consumption_limit_bytes=aggregate_test_disk_consumption_limit(
+            len(stale)
+        ),
         manage_process_temp=True,
     )
     supervision_contained = (
@@ -239,11 +246,8 @@ def _refresh_stale_groups_for_full_profile(
         and execution.get("process_tree_terminated") is True
         and execution.get("timed_out") is not True
     )
-    if execution.get("valid") is not True and not supervision_contained:
-        detail = str(execution.get("stderr") or execution.get("stdout") or "")[-4000:]
-        raise ValueError(f"owned stale test-group refresh failed: {detail}")
     nested_resource_reconciliation = None
-    if supervision_contained:
+    if execution.get("process_tree_terminated") is True:
         # The contained child owns nested group processes and workspaces. Its
         # process tree is already closed here, so persisted active records can
         # only describe exited children or an unresolved identity. Reconcile
@@ -257,6 +261,15 @@ def _refresh_stale_groups_for_full_profile(
                 f"unexplained={nested_resource_reconciliation.get('owned_ephemeral_unexplained')} "
                 f"cleanup_failures={nested_resource_reconciliation.get('cleanup_failures')}"
             )
+    if execution.get("valid") is not True and not supervision_contained:
+        detail = str(
+            execution.get("stderr")
+            or execution.get("stdout")
+            or "; ".join(str(item) for item in execution.get("errors", ()))
+            or execution.get("supervision_status")
+            or "invalid supervised execution"
+        )[-4000:]
+        raise ValueError(f"owned stale test-group refresh failed: {detail}")
     after = group_status(root)
     remaining = [row["group"] for row in after["groups"] if not row.get("fresh")]
     if remaining:
@@ -285,6 +298,7 @@ def _refresh_stale_groups_for_full_profile(
                 "resource_id",
                 "supervision_receipt",
                 "supervision_status",
+                "disk_consumption_limit_bytes",
             )
         },
         "requested_timeout_seconds": validate_timeout(timeout_seconds),

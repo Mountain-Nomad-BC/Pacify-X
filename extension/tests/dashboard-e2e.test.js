@@ -19,6 +19,34 @@ async function settled(page) {
   await page.waitForTimeout(180);
 }
 
+test('fresh repository renders neutral onboarding and dispatches both setup actions', { timeout: 120000 }, async t => {
+  const browser = await chromium.launch({ executablePath: browserLane.executablePath, headless: true });
+  t.after(async () => { await browser.close(); });
+  const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  await page.goto(`${preview}?surface=dashboard`); await settled(page);
+  await page.evaluate(() => {
+    window.__PX_POSTED_MESSAGES__.length = 0;
+    const snapshot = structuredClone(window.__PX_TEST_SNAPSHOT__);
+    snapshot.project = { ...snapshot.project, name: 'fresh-repository', map: { available: false, valid: false, errors: ['project map not built'] } };
+    snapshot.memory = { instrumented: false, status: 'detached', retrieval_ready: false };
+    snapshot.attention = [];
+    snapshot.onboarding = { required: true, state: 'new-project', project_initialized: false, project_map_ready: false, actions: { initialize_project: true, create_project_map: true } };
+    const coordination = { instrumented: false, persistence: 'not-initialized-read-only', event_log_health: { status: 'missing' }, state: { revision: 0, active_plan: null, plans: [], tasks: [], claims: [], sessions: [] }, events: [], memory: { instrumented: false, record_count: 0 } };
+    window.dispatchEvent(new MessageEvent('message', { data: { type: 'snapshot', snapshot, coordination, clientActor: { actorId: 'fresh-user', sessionId: 'fresh-session', harness: 'VS Code' }, settings: { showAdvancedSurfaces: true, glassIntensity: .66 } } }));
+  });
+  await page.getByRole('heading', { name: 'Set up this project' }).waitFor({ state: 'visible' });
+  assert.equal(await page.locator('.attention-list .attention').count(), 0);
+  assert.equal(await page.locator('.memory-errors[role="alert"]').count(), 0);
+  assert.match(await page.locator('.service-grid').textContent(), /Project mapNot created yet/);
+  assert.match(await page.locator('.service-grid').textContent(), /Cross-IDE ledgerNot initialized yet/);
+  await page.getByRole('button', { name: 'Initialize project', exact: true }).click();
+  await page.getByRole('button', { name: 'Create project map', exact: true }).click();
+  const requests = await page.evaluate(() => window.__PX_POSTED_MESSAGES__.filter(message => ['initializeProject', 'buildRepositoryGraph'].includes(message.type)));
+  assert.equal(requests.filter(message => message.type === 'initializeProject').length, 1);
+  assert.match(requests.find(message => message.type === 'initializeProject').requestId, /^[a-zA-Z0-9._:-]{1,200}$/);
+  assert.equal(requests.filter(message => message.type === 'buildRepositoryGraph').length, 1);
+});
+
 test('Agent builder retains current canvas controls across the exhaustive edit sequence', { timeout: 120000 }, async t => {
   const browser = await chromium.launch({ executablePath: browserLane.executablePath, headless: true });
   t.after(async () => { await browser.close(); });

@@ -207,6 +207,10 @@ class CliCommandTests(unittest.TestCase):
         self.assertEqual(environment["PYTHONDONTWRITEBYTECODE"], "1")
         self.assertTrue(any(key.casefold() == "path" for key in environment))
         self.assertEqual(runner.call_args.kwargs["timeout_seconds"], 560)
+        self.assertEqual(
+            runner.call_args.kwargs["disk_consumption_limit_bytes"],
+            16 * 1024 * 1024 * 1024,
+        )
         self.assertIs(runner.call_args.kwargs["manage_process_temp"], True)
         self.assertEqual(result["requested_timeout_seconds"], 321)
         self.assertEqual(result["effective_timeout_seconds"], 560)
@@ -293,6 +297,43 @@ class CliCommandTests(unittest.TestCase):
                 "cleanup_failures": 0,
             }
             _refresh_stale_groups_for_full_profile(ROOT)
+
+    def test_full_profile_reconciles_closed_tree_before_disk_budget_failure(self) -> None:
+        stale = {
+            "valid": False,
+            "groups": [
+                {"group": "derived-integrity", "current": False, "fresh": False}
+            ],
+        }
+        with (
+            patch("runtime.test_profiles.group_status", return_value=stale),
+            patch(
+                "runtime.test_profiles.resolve_test_groups",
+                return_value=[{"group": "derived-integrity", "timeout_seconds": 30}],
+            ),
+            patch(
+                "runtime.test_runner.run_test_command",
+                return_value={
+                    "valid": False,
+                    "exit_code": 3221225786,
+                    "timed_out": False,
+                    "supervision_status": "disk_budget_exceeded",
+                    "process_tree_terminated": True,
+                    "errors": ["test process exceeded disk consumption ceiling"],
+                },
+            ),
+            patch("runtime.resource_lifecycle.ResourceManager") as manager_type,
+            self.assertRaisesRegex(ValueError, "disk consumption ceiling"),
+        ):
+            manager_type.return_value.reconcile.return_value = {
+                "valid": True,
+                "owned_child_processes_active": 0,
+                "owned_ephemeral_unexplained": 0,
+                "cleanup_failures": 0,
+            }
+            _refresh_stale_groups_for_full_profile(ROOT)
+
+        manager_type.return_value.reconcile.assert_called_once_with(apply=True)
 
     def test_full_profile_group_refresh_fails_closed(self) -> None:
         stale = {"valid": False, "groups": [{"group": "broken", "current": False}]}

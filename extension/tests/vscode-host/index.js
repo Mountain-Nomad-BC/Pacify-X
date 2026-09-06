@@ -55,15 +55,20 @@ async function run() {
     return current?.snapshot?.connected ? current : null;
   }, 30000, 250);
   assert.ok(liveInspection, 'Installed extension never exposed a connected canonical dashboard snapshot');
-  const populatedSidebar = await waitFor(async () => {
+  const freshSidebar = await waitFor(async () => {
     const current = await vscode.commands.executeCommand('pacifyX.inspectObservability');
     const sidebar = current?.sidebar;
     const revision = current?.snapshot?.coordinationData?.state?.revision ?? 0;
-    return sidebar?.rendered?.connected && sidebar.rendered.revision === revision && sidebar.rendered.visibleComponentCount >= 4 ? sidebar : null;
+    return sidebar?.rendered?.connected
+      && sidebar.rendered.revision === revision
+      && sidebar.rendered.visibleComponentCount >= 3
+      && sidebar.rendered.attentionCount === 0
+      ? sidebar
+      : null;
   }, 12000, 100);
-  assert.ok(populatedSidebar, 'Installed Control Center did not acknowledge a populated canonical sidebar projection at the current revision');
-  assert.ok(populatedSidebar.ready_count >= 1, 'Installed sidebar renderer never completed its ready handshake');
-  assert.ok(populatedSidebar.render_ack_count >= 1, 'Installed sidebar renderer never acknowledged a rendered snapshot');
+  assert.ok(freshSidebar, 'Installed Control Center did not acknowledge a neutral zero-attention first-run sidebar projection at the current revision');
+  assert.ok(freshSidebar.ready_count >= 1, 'Installed sidebar renderer never completed its ready handshake');
+  assert.ok(freshSidebar.render_ack_count >= 1, 'Installed sidebar renderer never acknowledged a rendered snapshot');
   const engineRoot = process.env.PX_ENGINE_ROOT;
   assert.ok(engineRoot, 'PX_ENGINE_ROOT is required for installed runtime certification');
   const canonical = childProcess.spawnSync(configuredPython(), [
@@ -379,7 +384,7 @@ async function run() {
       container_opened: true,
       focus_command_executed: true,
       contributed_type: contributedView.type,
-      provider: populatedSidebar
+      provider: freshSidebar
     },
     live_dashboard: {
       opened: true,

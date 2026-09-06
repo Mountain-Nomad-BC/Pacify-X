@@ -6312,14 +6312,15 @@ const NATIVE_WORKBENCH_DIALOG_SELECTOR = '.monaco-dialog-box:visible, .dialog-co
 const NATIVE_WORKBENCH_ACTION_SELECTOR = 'button, [role="button"], .monaco-button, .monaco-text-button';
 const NATIVE_WORKBENCH_MODAL_BLOCKER_SELECTOR = '.monaco-modal-editor-block:visible';
 const OWNED_NATIVE_WORKBENCH_ACTIONS = new Set([
-  'Set up and run', 'Build graph', 'Enable offline metadata', 'Disable pack metadata', 'Stage candidates',
+  'Set up and run', 'Initialize project', 'Build graph', 'Enable offline metadata', 'Disable pack metadata', 'Stage candidates',
   'Move to Recycle Bin', 'Permanently Delete',
   'Authorize native install', 'Authorize native update', 'Authorize native uninstall', 'Authorize exact rollback',
   'Authorize conflict route', 'Open exact native record'
 ]);
 const OWNED_NATIVE_REQUESTS_BY_ACTION = new Map([
-  ['Cancel', new Set(['setupStudio', 'enterprisePackToggle', 'buildRepositoryGraph', 'executeCleanup'])],
+  ['Cancel', new Set(['setupStudio', 'initializeProject', 'enterprisePackToggle', 'buildRepositoryGraph', 'executeCleanup'])],
   ['Set up and run', new Set(['setupStudio'])],
+  ['Initialize project', new Set(['initializeProject'])],
   ['Build graph', new Set(['buildRepositoryGraph'])],
   ['Enable offline metadata', new Set(['enterprisePackToggle'])],
   ['Disable pack metadata', new Set(['enterprisePackToggle'])],
@@ -8831,12 +8832,17 @@ function projectMapIdentity(snapshot) {
 }
 
 function projectsControlProbe(matrix, observation) {
+  const initializeControlIds = [
+    'pxui.dashboard.action.initializeProject',
+    'pxui.projects.action.initializeProject'
+  ];
   const buildControlIds = [
     'pxui.projects.action.buildRepositoryGraph',
     'pxui.knowledge-graph.action.buildRepositoryGraph',
     'pxui.diagnostics.action.dynamicRepair.buildRepositoryGraph'
   ];
   const exactControls = new Set([
+    ...initializeControlIds,
     ...buildControlIds,
     'pxui.projects.persistence.authoritativeState',
     'pxui.projects.reload_reopen.authoritativeState'
@@ -8845,27 +8851,40 @@ function projectsControlProbe(matrix, observation) {
   const verified = observation.completed === true && observation.webview_restarted === true && observation.exact_reconstruction === true
     && projectMapIdentity({ project: observation.before_restart }) !== null;
   const allBuildControlsCancelled = buildControlIds.every(controlId => observation.cancelled_controls?.[controlId] === true);
+  const initializeCancellationObserved = initializeControlIds.some(controlId => observation.cancelled_controls?.[controlId] === true)
+    && initializeControlIds.every(controlId => observation.attempted_controls?.[controlId] === true);
   const records = requirements.map(requirement => {
     const evidenceRef = `installed-project-map-restart:${requirement.control_id}`;
-    const isBuildControl = Object.prototype.hasOwnProperty.call(observation.cancelled_controls || {}, requirement.control_id);
-    const exactRendered = isBuildControl ? observation.rendered_controls?.[requirement.control_id] === true : observation.rendered === true;
-    const exactAttempted = isBuildControl ? observation.attempted_controls?.[requirement.control_id] === true : observation.attempted === true;
-    const exactVerified = verified && exactRendered && exactAttempted;
+    const isInitializeControl = initializeControlIds.includes(requirement.control_id);
+    const isBuildControl = buildControlIds.includes(requirement.control_id);
+    const exactRendered = isInitializeControl || isBuildControl ? observation.rendered_controls?.[requirement.control_id] === true : observation.rendered === true;
+    const exactAttempted = isInitializeControl || isBuildControl ? observation.attempted_controls?.[requirement.control_id] === true : observation.attempted === true;
+    const exactVerified = isInitializeControl
+      ? observation.initialization?.completed === true && observation.initialization?.persisted_after_restart === true && exactRendered && exactAttempted
+      : verified && exactRendered && exactAttempted;
     return {
       control_id: requirement.control_id, surface_id: requirement.surface_id, control_kind: requirement.kind,
       evidence_mode: 'owned_disposable_project_map_restart', rendered: exactRendered, observed: exactRendered, attempted: exactAttempted,
       interaction_chain: Object.fromEntries(STAGES.map(stage => {
         if (requirement.stage_policy[stage] !== 'required') return [stage, { state: 'not_applicable', detail: `Canonical matrix marks ${stage} not applicable.`, evidence: [evidenceRef] }];
         if (['failure_handling', 'recovery_rollback'].includes(stage)) {
-          const cancelled = isBuildControl ? observation.cancelled_controls?.[requirement.control_id] === true : allBuildControlsCancelled;
+          const cancelled = isInitializeControl
+            ? initializeCancellationObserved
+            : isBuildControl ? observation.cancelled_controls?.[requirement.control_id] === true : allBuildControlsCancelled;
           return [stage, cancelled
             ? { state: 'present', detail: stage === 'failure_handling'
-              ? 'The exact physical map-build entry point reached its native approval boundary and was cancelled before effect.'
-              : 'Cancellation emitted no graph-build result and the same exact rendered entry point remained available for the later owned build.', evidence: [evidenceRef] }
+              ? isInitializeControl
+                ? 'Both physical project-initialization entry points were attempted and their shared native host operation produced an exact cancellation before effect.'
+                : 'The exact physical map-build entry point reached its native approval boundary and was cancelled before effect.'
+              : isInitializeControl
+                ? 'The shared initialization cancellation emitted no effect, both first-run controls remained available, and the later owned initialization completed.'
+                : 'Cancellation emitted no graph-build result and the same exact rendered entry point remained available for the later owned action.', evidence: [evidenceRef] }
             : { state: 'missing', detail: 'The exact native cancellation and no-effect recovery were not both observed for this entry point.', evidence: [] }];
         }
         return [stage, exactVerified
-          ? { state: 'present', detail: 'This exact physical map-build entry point reached the shared native approval boundary; the expensive derived map build executed once in the disposable workspace, returned a typed result and authoritative snapshot, and reconstructed the same exact map identity after webview restart.', evidence: [evidenceRef] }
+          ? { state: 'present', detail: isInitializeControl
+            ? 'This exact first-run entry point reached the shared native approval boundary; initialization executed once in the disposable repository, returned a request-bound host receipt, and remained instrumented after webview restart.'
+            : 'This exact physical map-build entry point reached the shared native approval boundary; the expensive derived map build executed once in the disposable workspace, returned a typed result and authoritative snapshot, and reconstructed the same exact map identity after webview restart.', evidence: [evidenceRef] }
           : { state: 'missing', detail: `The owned Projects map profile did not prove ${stage}.`, evidence: [] }];
       })),
       errors: observation.errors
@@ -8875,9 +8894,61 @@ function projectsControlProbe(matrix, observation) {
 }
 
 async function runInstalledProjectsProfile(workbench, frameHost, matrix, timeoutMs = 120_000) {
-  const observation = { rendered: false, attempted: false, rendered_controls: {}, attempted_controls: {}, cancelled_controls: {}, completed: false, webview_restarted: false, exact_reconstruction: false, build_result: null, before_restart: null, after_restart: null, errors: [] };
+  const observation = { rendered: false, attempted: false, rendered_controls: {}, attempted_controls: {}, cancelled_controls: {}, initialization: { completed: false, initial_attention_count: null, after_attention_count: null, persisted_after_restart: false }, completed: false, webview_restarted: false, exact_reconstruction: false, build_result: null, before_restart: null, after_restart: null, errors: [] };
   const buildDialogText = /Build or refresh the bounded repository architecture graph/i;
+  const initializeDialogText = /Initialize Pacify-X for the open project/i;
   try {
+    const initialRefresh = await requestInstalledRefreshBound(frameHost, Math.min(timeoutMs, 30_000));
+    const initialSnapshot = await waitForInstalledSnapshot(
+      frameHost,
+      initialRefresh.responses,
+      candidate => candidate?.onboarding?.required === true,
+      Math.min(timeoutMs, 30_000),
+      initialRefresh.request
+    );
+    observation.initialization.initial_attention_count = initialSnapshot.attention?.length || 0;
+    if (observation.initialization.initial_attention_count !== 0) throw new Error(`fresh-project-presented-attention:${observation.initialization.initial_attention_count}`);
+    for (const [route, controlId] of [
+      ['dashboard', 'pxui.dashboard.action.initializeProject'],
+      ['projects', 'pxui.projects.action.initializeProject']
+    ]) {
+      await settleInstalledSurfaceControl(frameHost, { surface: route, selector: '[data-action="initializeProject"]', stableSamplesRequired: 2 }, Math.min(timeoutMs, 30_000));
+      observation.rendered_controls[controlId] = true;
+      const before = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
+      const requestBefore = await installedOutboundRequestOffset(frameHost);
+      await clickWhenKnowledgeControlReady(frameHost, '[data-action="initializeProject"]', Math.min(timeoutMs, 20_000));
+      const dialog = await waitForNativeWorkbenchDialog(workbench, initializeDialogText, 15_000, { frameHost, responseOffset: before, requestOffset: requestBefore, requestType: 'initializeProject', keyboardAction: 'Cancel' });
+      await clickNativeWorkbenchDialogAction(workbench, dialog, 'Cancel');
+      const deadline = Date.now() + 15_000;
+      let cancelled = false;
+      do {
+        const responses = await frameHost.evaluate((frame, after) => (frame.contentWindow?.__PX_INSTALLED_RESPONSES__ || []).slice(after), before);
+        cancelled = responses.some(value => value?.type === 'hostActionResult' && value?.operation === 'initializeProject' && value?.disposition === 'cancelled');
+        if (cancelled) break;
+        await wait(100);
+      } while (Date.now() < deadline);
+      observation.cancelled_controls[controlId] = cancelled;
+      observation.attempted_controls[controlId] = true;
+    }
+    await settleInstalledSurfaceControl(frameHost, { surface: 'projects', selector: '[data-action="initializeProject"]', stableSamplesRequired: 2 }, Math.min(timeoutMs, 30_000));
+    const initializeBefore = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
+    const initializeRequestBefore = await installedOutboundRequestOffset(frameHost);
+    await clickWhenKnowledgeControlReady(frameHost, '[data-action="initializeProject"]', Math.min(timeoutMs, 20_000));
+    const initializeDialog = await waitForNativeWorkbenchDialog(workbench, initializeDialogText, 15_000, { frameHost, responseOffset: initializeBefore, requestOffset: initializeRequestBefore, requestType: 'initializeProject', keyboardAction: 'Initialize project' });
+    await clickNativeWorkbenchDialogAction(workbench, initializeDialog, 'Initialize project');
+    const initializeDeadline = Date.now() + 30_000;
+    do {
+      const responses = await frameHost.evaluate((frame, after) => (frame.contentWindow?.__PX_INSTALLED_RESPONSES__ || []).slice(after), initializeBefore);
+      const result = responses.find(value => value?.type === 'hostActionResult' && value?.operation === 'initializeProject' && value?.disposition === 'completed');
+      const snapshot = responses.filter(value => value?.type === 'snapshot').at(-1)?.snapshot || null;
+      if (result && snapshot?.coordination?.instrumented === true && snapshot?.onboarding?.project_initialized === true) {
+        observation.initialization.completed = true;
+        observation.initialization.after_attention_count = snapshot.attention?.length || 0;
+        break;
+      }
+      await wait(100);
+    } while (Date.now() < initializeDeadline);
+    if (!observation.initialization.completed || observation.initialization.after_attention_count !== 0) throw new Error('fresh-project-initialization-did-not-settle-with-zero-attention');
     for (const [route, controlId] of [
       ['knowledgeGraph', 'pxui.knowledge-graph.action.buildRepositoryGraph'],
       ['diagnostics', 'pxui.diagnostics.action.dynamicRepair.buildRepositoryGraph']
@@ -8956,6 +9027,9 @@ async function runInstalledProjectsProfile(workbench, frameHost, matrix, timeout
       const actual = projectMapIdentity(snapshot);
       if (actual) {
         observation.after_restart = snapshot.project;
+        observation.initialization.persisted_after_restart = snapshot?.coordination?.instrumented === true
+          && snapshot?.onboarding?.project_initialized === true
+          && (snapshot?.attention?.length || 0) === 0;
         observation.exact_reconstruction = JSON.stringify(actual) === JSON.stringify(expected);
         if (observation.exact_reconstruction) break;
       }
@@ -11468,6 +11542,11 @@ async function main() {
       }
     }
     const builders = {};
+    // The first effectful profile in the disposable repository must prove the
+    // genuine first-run experience before any other profile can initialize it.
+    const projectsProfile = ownedReversibleConfigurationAuthority && (!focusedProfileOnly || nativeDialogOnly || knowledgeGraphOnly)
+      ? await timedProfile('projects-map-restart', () => runInstalledProjectsProfile(workbench, dashboard, proofMatrix))
+      : { schema_version: 'px.installed-projects-profile/1.0', authority: 'Not admitted outside a full owned isolated host and disposable workspace.', observation: { attempted: false, completed: false, errors: [] }, control_probe: { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside a full owned isolated host and disposable workspace.', eligible_control_count: 0, records: [] } };
     const reversibleConfigurationProfile = ownedReversibleConfigurationAuthority && (!focusedProfileOnly || configurationOnly)
       ? await timedProfile('reversible-configuration', () => runInstalledReversibleConfigurationProfile(workbench, dashboard, proofMatrix))
       : { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside an owned isolated host.', eligible_control_count: 0, records: [] };
@@ -11567,9 +11646,6 @@ async function main() {
       eligible_control_count: hostBoundaryProfile.control_probe.eligible_control_count + enterpriseProfile.control_probe.eligible_control_count + environmentLifecycleProfile.control_probe.eligible_control_count + codexHandoffProfile.control_probe.eligible_control_count + validationProfile.control_probe.eligible_control_count,
       records: [...hostBoundaryProfile.control_probe.records, ...enterpriseProfile.control_probe.records, ...environmentLifecycleProfile.control_probe.records, ...codexHandoffProfile.control_probe.records, ...validationProfile.control_probe.records]
     };
-    const projectsProfile = ownedReversibleConfigurationAuthority && (!focusedProfileOnly || nativeDialogOnly || knowledgeGraphOnly)
-      ? await timedProfile('projects-map-restart', () => runInstalledProjectsProfile(workbench, dashboard, proofMatrix))
-      : { schema_version: 'px.installed-projects-profile/1.0', authority: 'Not admitted outside a full owned isolated host and disposable workspace.', observation: { attempted: false, completed: false, errors: [] }, control_probe: { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside a full owned isolated host and disposable workspace.', eligible_control_count: 0, records: [] } };
     const knowledgeGraphProfile = ownedReversibleConfigurationAuthority && (!focusedProfileOnly || nativeDialogOnly || knowledgeGraphOnly)
       ? await timedProfile('knowledge-graph-restart', () => runInstalledKnowledgeGraphProfile(dashboard, proofMatrix))
       : { schema_version: 'px.installed-knowledge-graph-profile/1.0', authority: 'Not admitted outside a full owned isolated host and disposable workspace.', observation: { attempted: false, completed: false, errors: [] }, control_probe: { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside a full owned isolated host and disposable workspace.', eligible_control_count: 0, records: [] } };

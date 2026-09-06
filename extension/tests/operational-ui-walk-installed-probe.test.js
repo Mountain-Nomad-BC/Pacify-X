@@ -2537,7 +2537,7 @@ test('coordination profile renews the exact claim and host-boundary controls hav
 
 test('native workbench keyboard fallback requires an exact newly captured outbound request and admitted action', () => {
   const admitted = [
-    'Cancel', 'Set up and run', 'Build graph', 'Enable offline metadata', 'Disable pack metadata', 'Stage candidates',
+    'Cancel', 'Set up and run', 'Initialize project', 'Build graph', 'Enable offline metadata', 'Disable pack metadata', 'Stage candidates',
     'Authorize native install', 'Authorize native update', 'Authorize native uninstall', 'Authorize exact rollback',
     'Authorize conflict route'
   ];
@@ -2551,6 +2551,7 @@ test('native workbench keyboard fallback requires an exact newly captured outbou
   assert.equal(nativeWorkbenchKeyboardFallbackAdmitted(-1, 'Cancel'), false);
   assert.equal(nativeWorkbenchKeyboardFallbackAdmitted(1.5, 'Cancel'), false);
   const admittedRequests = [
+    ['Cancel', 'initializeProject'], ['Initialize project', 'initializeProject'],
     ['Cancel', 'enterprisePackToggle'], ['Cancel', 'buildRepositoryGraph'], ['Build graph', 'buildRepositoryGraph'],
     ['Enable offline metadata', 'enterprisePackToggle'], ['Disable pack metadata', 'enterprisePackToggle'],
     ['Stage candidates', 'teamPackPreview'], ['Authorize native install', 'extensionLifecycleExecute'],
@@ -2627,6 +2628,24 @@ test('project map profile requires an exact physical attempt for all three build
   const dynamic = projectsControlProbe(dynamicMatrix, { cancelled_controls: { [dynamicId]: true }, errors: [] }).records[0];
   assert.equal(dynamic.interaction_chain.failure_handling.state, 'present');
   assert.equal(dynamic.interaction_chain.recovery_rollback.state, 'present');
+});
+
+test('project initialization entry points share one exact cancellation owner', () => {
+  const ids = ['pxui.dashboard.action.initializeProject', 'pxui.projects.action.initializeProject'];
+  const controls = ids.map(control_id => ({
+    control_id,
+    surface_id: control_id.split('.')[1],
+    kind: 'action',
+    stage_policy: Object.fromEntries(STAGES.map(stage => [stage, ['failure_handling', 'recovery_rollback'].includes(stage) ? 'required' : 'not_applicable_with_evidence']))
+  }));
+  const attempted_controls = Object.fromEntries(ids.map(id => [id, true]));
+  const rendered_controls = { ...attempted_controls };
+  const cancelled_controls = { [ids[0]]: false, [ids[1]]: true };
+  const records = projectsControlProbe({ controls }, { attempted_controls, rendered_controls, cancelled_controls, errors: [] }).records;
+  assert.ok(records.every(record => record.interaction_chain.failure_handling.state === 'present'));
+  assert.ok(records.every(record => record.interaction_chain.recovery_rollback.state === 'present'));
+  const missingAttempt = projectsControlProbe({ controls }, { attempted_controls: { [ids[1]]: true }, rendered_controls, cancelled_controls, errors: [] }).records;
+  assert.ok(missingAttempt.every(record => record.interaction_chain.failure_handling.state === 'missing'));
 });
 
 test('Projects profile owns the current native workbench dialog and cannot strand it', () => {

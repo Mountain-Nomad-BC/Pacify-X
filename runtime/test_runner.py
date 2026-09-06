@@ -10,11 +10,30 @@ import subprocess
 import tempfile
 from typing import Mapping, Sequence
 
-from .process_supervisor import ProcessBudgets, ProcessSupervisor
+from .process_supervisor import (
+    MAX_DISK_CONSUMPTION_LIMIT_BYTES,
+    ProcessBudgets,
+    ProcessSupervisor,
+)
 from .resource_lifecycle import ResourceManager, ResourceStatus, RunState
 
 
 TEST_DISK_CONSUMPTION_LIMIT_BYTES = 8 * 1024 * 1024 * 1024
+
+
+def aggregate_test_disk_consumption_limit(work_units: int) -> int:
+    """Bound a coordinator without weakening each owned test-unit ceiling."""
+
+    if (
+        isinstance(work_units, bool)
+        or not isinstance(work_units, int)
+        or work_units < 1
+    ):
+        raise ValueError("aggregate test work units must be a positive integer")
+    return min(
+        TEST_DISK_CONSUMPTION_LIMIT_BYTES * work_units,
+        MAX_DISK_CONSUMPTION_LIMIT_BYTES,
+    )
 
 
 def validate_timeout(value: object) -> float:
@@ -107,6 +126,7 @@ def run_test_command(
     run_id: str = "test-profile",
     lane_id: str = "tests",
     disk_consumption_paths: Sequence[Path] = (),
+    disk_consumption_limit_bytes: int = TEST_DISK_CONSUMPTION_LIMIT_BYTES,
     manage_process_temp: bool = False,
 ) -> dict[str, object]:
     timeout = validate_timeout(timeout_seconds)
@@ -199,7 +219,7 @@ def run_test_command(
             force_shutdown_seconds=force_timeout,
             stdout_limit_bytes=64 * 1024 * 1024,
             stderr_limit_bytes=64 * 1024 * 1024,
-            disk_consumption_limit_bytes=TEST_DISK_CONSUMPTION_LIMIT_BYTES,
+            disk_consumption_limit_bytes=disk_consumption_limit_bytes,
         )
         action = {
             "action_id": f"test-runner:{run_id}",
@@ -260,6 +280,7 @@ def run_test_command(
             "resource_id": supervised.resource_id,
             "supervision_receipt": supervised.receipt_path,
             "supervision_status": supervised.status,
+            "disk_consumption_limit_bytes": budgets.disk_consumption_limit_bytes,
         }
         if timed_out:
             result["errors"] = [f"test profile exceeded {timeout:g} seconds"]
@@ -269,7 +290,8 @@ def run_test_command(
             ]
         elif supervised.status == "disk_budget_exceeded":
             result["errors"] = [
-                "test process exceeded the 8 GiB disk-consumption ceiling"
+                "test process exceeded its "
+                f"{budgets.disk_consumption_limit_bytes} byte disk-consumption ceiling"
             ]
     except BaseException:
         if workspace_path is not None and workspace_record is not None:

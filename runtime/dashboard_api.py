@@ -2000,8 +2000,28 @@ def _build_snapshot_admitted(
             "authority": "active project-local repair-order denominator",
         }
     project_state = _project(root, project)
+    map_available = project_state["map"].get("available") is True
+    map_valid = project_state["map"].get("valid") is True
+    coordination_initialized = coordination.get("instrumented") is True
+    onboarding = {
+        "schema_version": "px.project-onboarding/1.0",
+        "required": not (map_valid and coordination_initialized),
+        "state": "ready"
+        if map_valid and coordination_initialized
+        else "new-project"
+        if not map_available and not coordination_initialized
+        else "setup-incomplete",
+        "project_initialized": coordination_initialized,
+        "project_map_ready": map_valid,
+        "actions": {
+            "initialize_project": not coordination_initialized,
+            "create_project_map": not map_valid,
+        },
+    }
     attention: list[dict[str, str]] = []
-    if not project_state["map"].get("valid"):
+    # Missing derived state is a normal first-run condition. An existing but
+    # invalid map is a genuine attention item.
+    if map_available and not map_valid:
         attention.append(
             {
                 "severity": "warning",
@@ -2009,31 +2029,19 @@ def _build_snapshot_admitted(
                 "detail": str(project_state["map"].get("error") or project.name),
             }
         )
-    if memory.get("configured") and not memory.get("configuration_valid"):
-        attention.append(
-            {
-                "severity": "warning",
-                "title": "Canonical memory workspace invalid",
-                "detail": str(
-                    memory.get("error")
-                    or "Repair or select a valid Pacify-X canonical workspace."
-                ),
-            }
-        )
-    elif memory.get("project_registered") and not memory.get("lease_active"):
+    # Canonical memory is optional project configuration. Its dedicated Memory
+    # surface owns setup and repair; only an already registered project's lost
+    # lease is actionable enough for the global attention queue.
+    if (
+        coordination_initialized
+        and memory.get("project_registered")
+        and not memory.get("lease_active")
+    ):
         attention.append(
             {
                 "severity": "warning",
                 "title": "Canonical memory lease required",
                 "detail": "Reacquire a bounded project lease to enable canonical retrieval.",
-            }
-        )
-    if not coordination.get("instrumented"):
-        attention.append(
-            {
-                "severity": "info",
-                "title": "Cross-IDE coordination not initialized",
-                "detail": "The extension initializes the project-owned rolling ledger when this workspace is opened.",
             }
         )
     counts = {
@@ -2194,6 +2202,7 @@ def _build_snapshot_admitted(
         },
         "extension_identity": _extension_source_identity(root),
         "project": project_state,
+        "onboarding": onboarding,
         "counts": counts,
         "memory": memory,
         "knowledge_core": knowledge_core,

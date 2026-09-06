@@ -492,6 +492,27 @@ test('canonical snapshot normalization preserves complete catalog cardinalities'
   assert.equal(normalized.catalogSource, 'runtime.dashboard_api');
 });
 
+test('canonical snapshot normalization preserves first-run onboarding', () => {
+  const normalized = normalizeSnapshot({
+    schema_version: '2.0.0', generated_at: '2026-09-06T00:00:00Z', connected: true, mode: 'canonical-dashboard-api',
+    source: { root: 'C:/px', version: '0.6.86' }, project: { name: 'fresh', map: { available: false, valid: false } }, counts: {},
+    attention: [], onboarding: { required: true, state: 'new-project', project_initialized: false, project_map_ready: false, actions: { initialize_project: true, create_project_map: true } }
+  });
+  assert.equal(normalized.attention.length, 0);
+  assert.equal(normalized.onboarding.state, 'new-project');
+  assert.equal(normalized.onboarding.actions.initialize_project, true);
+  assert.equal(normalized.onboarding.actions.create_project_map, true);
+});
+
+test('fresh repository exposes explicit initialization and map actions', () => {
+  assert.match(coreSurfaces, /NEW REPOSITORY · NO PROBLEMS DETECTED/);
+  assert.match(coreSurfaces, /data-action="initializeProject">Initialize project/);
+  assert.match(coreSurfaces, /data-action="buildRepositoryGraph">Create project map/);
+  assert.match(extension, /readCoordination, registerSession/);
+  assert.match(extension, /case 'initializeProject'[\s\S]*registerSession\(root, actorIdentity\(sessionId\)\)[\s\S]*publishSnapshot\(true/);
+  assert.match(dashboard, /action === 'initializeProject'[\s\S]{0,100}postHostAction\(action, 'initializeProject'\)/);
+});
+
 test('path boundary rejects sibling-prefix and traversal escapes', () => {
   const base = path.resolve('C:/admitted/root');
   assert.equal(bridge.isPathWithin(path.join(base, 'docs', 'a.md'), [base]), true);

@@ -41,6 +41,10 @@ DASHBOARD_SURFACE_BINDINGS = {
 # actions to stable per-surface identities.  Generation fails closed when a
 # current action contract has no typed surface owner.
 CURRENT_ACTION_SURFACE_BINDINGS: dict[str, dict[str, list[str]]] = {
+    "initializeProject": {
+        "dashboard": ["initializeProject"],
+        "projects": ["initializeProject"],
+    },
     "previewEnvironmentLifecycleRestore": {"workflows": ["previewEnvironmentLifecycleRestore"]},
     "executeEnvironmentLifecycleRestore": {"workflows": ["executeEnvironmentLifecycleRestore"]},
     "resumeWorkingStudioDraft": {

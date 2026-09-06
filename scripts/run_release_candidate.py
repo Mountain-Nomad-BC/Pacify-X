@@ -1,16 +1,17 @@
-"""Plan, check, or advance one step of an ordered PACIFY-X release candidate.
+"""Plan, check, advance one step, or run an ordered PACIFY-X release candidate.
 
 The default mode prints a plan and has no effects. ``--check`` is read-only.
 ``--execute-next`` journals and runs exactly one next pending owner, then exits.
-Every invocation needs a fresh externally guarded admission identifier. Failed
-or indeterminate owners are never replayed.
+``--execute-all`` owns the full remaining campaign in one process, creating and
+closing a distinct governed work session for every stage and writing one report.
+Failed or indeterminate owners are never replayed.
 """
 
 from __future__ import annotations
 
 import argparse
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 import hashlib
 import json
 import os
@@ -916,6 +917,7 @@ class SubprocessOwners:
                         post_resources.get(field) != 0
                         for field in (
                             "active_processes",
+                            "active_paths",
                             "reclaimable_paths",
                             "cleanup_failures",
                         )
@@ -1121,15 +1123,276 @@ def execute_next(
     }
 
 
+class LedgerCampaignGovernance:
+    """Open, close, and checkpoint one exact ledger session per campaign step."""
+
+    def __init__(self, config: Config, gap_id: str):
+        self.config = config
+        self.gap_id = gap_id
+
+    def _snapshot(self) -> dict[str, Any]:
+        from runtime.operational_gap_ledger import read_snapshot
+
+        return read_snapshot(self.config.root)
+
+    def admit(self, step: str) -> dict[str, str]:
+        from runtime.operational_gap_ledger import append_event
+
+        snapshot = self._snapshot()
+        checkpoint = snapshot.get("work_checkpoints", [])[-1]
+        if checkpoint.get("active_gap_id") != self.gap_id:
+            raise AutomationBlocked("campaign gap differs from the active checkpoint")
+        session_id = (
+            f"release-campaign:{self.config.evidence_prefix}:{step}:{uuid4().hex[:12]}"
+        )
+        expires = datetime.now(timezone.utc) + timedelta(
+            seconds=self.config.timeouts_seconds[step] + 3600
+        )
+        event = append_event(
+            self.config.root,
+            "work_admitted",
+            {
+                "gap_id": self.gap_id,
+                "checkpoint_event_id": checkpoint["event_id"],
+                "session_id": session_id,
+                "authority": (
+                    f"Run the {self.config.candidate_id} {step} owner exactly once "
+                    "inside the registered release campaign order."
+                ),
+                "effect_scopes": [
+                    {
+                        "effect": "read",
+                        "scope": [
+                            "Exact candidate configuration, predecessor state, artifact, stage evidence, and lifecycle resources."
+                        ],
+                    },
+                    {
+                        "effect": "write",
+                        "scope": [
+                            "Only the current candidate stage state, registered evidence/logs, governed projections, and this work-session ledger trail."
+                        ],
+                    },
+                    {
+                        "effect": "execute",
+                        "scope": [
+                            f"Exactly one registered {step} owner under its {self.config.timeouts_seconds[step]}-second deadline."
+                        ],
+                    },
+                ],
+                "expected_effect": (
+                    f"The {step} owner reaches its exact postcondition once and the "
+                    "campaign advances only to the next registered stage."
+                ),
+                "rollback": (
+                    "On failure retain terminal evidence, close owned resources, stop "
+                    "the campaign, and do not replay the failed owner."
+                ),
+                "expires_utc": expires.isoformat().replace("+00:00", "Z"),
+                "evidence": [{
+                    "reference": self.config.relative(self.config.artifact),
+                    "artifact_sha256": self.config.artifact_sha256,
+                    "artifact_size": self.config.artifact_size,
+                    "claim": (
+                        f"The campaign admission is bound to the exact immutable "
+                        f"{self.config.candidate_id} VSIX bytes."
+                    ),
+                }],
+            },
+            actor="codex-primary:release-campaign-runner",
+        )
+        return {
+            "event_id": str(event["event_id"]),
+            "session_id": session_id,
+            "checkpoint_event_id": str(checkpoint["event_id"]),
+        }
+
+    def _state_evidence(self, step: str) -> list[dict[str, Any]]:
+        if not self.config.automation_state.is_file():
+            return []
+        return [{
+            "reference": self.config.relative(self.config.automation_state),
+            "artifact_sha256": _sha256(self.config.automation_state),
+            "artifact_size": self.config.automation_state.stat().st_size,
+            "claim": f"The append-only candidate journal records the sole {step} terminal result.",
+        }]
+
+    def settle(self, step: str, admission: Mapping[str, str], *, passed: bool) -> dict[str, str]:
+        from runtime.operational_gap_ledger import append_event
+
+        evidence = self._state_evidence(step)
+        closure = append_event(
+            self.config.root,
+            "work_session_closed",
+            {
+                "gap_id": self.gap_id,
+                "session_id": admission["session_id"],
+                "admission_event_id": admission["event_id"],
+                "outcome": "completed" if passed else "cancelled",
+                "reason": (
+                    f"{self.config.candidate_id} {step} passed its exact postcondition once."
+                    if passed else
+                    f"{self.config.candidate_id} {step} terminated without a passing postcondition; downstream stages were not run."
+                ),
+                "evidence": evidence,
+            },
+            actor="codex-primary:release-campaign-runner",
+        )
+        snapshot = self._snapshot()
+        prior = snapshot.get("work_checkpoints", [])[-1]
+        cards = snapshot.get("cards", {})
+        card = cards.get(self.gap_id, {})
+        prior_sequence = int(prior.get("sequence") or 0)
+        newly = sorted(
+            gap_id for gap_id, value in cards.items()
+            if int(value.get("discovery_sequence") or 0) > prior_sequence
+        )
+        unresolved = sorted(
+            gap_id for gap_id in newly
+            if gap_id != self.gap_id
+            and cards[gap_id].get("current_state") not in {"closed", "superseded"}
+        )
+        checkpoint = append_event(
+            self.config.root,
+            "work_checkpoint",
+            {
+                "active_gap_id": self.gap_id,
+                "previous_checkpoint_event_id": prior["event_id"],
+                "learned": (
+                    f"{self.config.candidate_id} {step} passed exactly once; the campaign runner will continue in registered order."
+                    if passed else
+                    f"{self.config.candidate_id} {step} failed once; the candidate is terminal and downstream stages remain unexecuted."
+                ),
+                "next_action": card.get("next_action"),
+                "newly_discovered_gap_ids": newly,
+                "unresolved_branch_gap_ids": unresolved,
+                "evidence": evidence,
+            },
+            actor="codex-primary:release-campaign-runner",
+        )
+        return {
+            "closure_event_id": str(closure["event_id"]),
+            "checkpoint_event_id": str(checkpoint["event_id"]),
+        }
+
+
+def execute_all(
+    config: Config,
+    owners: OwnerRunner,
+    *,
+    gap_id: str,
+    report_path: Path,
+    governance: Any | None = None,
+) -> dict[str, Any]:
+    """Run every remaining owner once and retain one aggregate campaign report."""
+
+    report_path = _inside(config.root, report_path, "campaign_report")
+    if report_path.exists():
+        raise AutomationBlocked(f"campaign report already exists: {report_path}")
+    governance = governance or LedgerCampaignGovernance(config, gap_id)
+    started = _now()
+    stages: list[dict[str, Any]] = []
+    failure: str | None = None
+    while True:
+        step = next_pending_step(config, owners)
+        if step is None:
+            break
+        print(json.dumps({"campaign_progress": "started", "step": step}), flush=True)
+        step_started = time.monotonic()
+        try:
+            admission = governance.admit(step)
+        except Exception as exc:
+            failure = f"{type(exc).__name__}: {exc}"
+            stages.append({
+                "step": step,
+                "passed": False,
+                "duration_seconds": round(time.monotonic() - step_started, 3),
+                "admission_event_id": None,
+                "closure_event_id": None,
+                "checkpoint_event_id": None,
+                "outcome": None,
+                "error": failure,
+            })
+            partial = {
+                "schema_version": "px.release-candidate-campaign-report/1.0",
+                "candidate_id": config.candidate_id,
+                "started_utc": started,
+                "finished_utc": _now(),
+                "valid": False,
+                "completed_stage_count": 0,
+                "stage_count": len(STEP_ORDER),
+                "stages": stages,
+                "failure": failure,
+            }
+            _atomic_json(report_path, partial)
+            print(json.dumps({
+                "campaign_progress": "failed",
+                "step": step,
+                "report": config.relative(report_path),
+            }), flush=True)
+            return partial
+        passed = False
+        outcome: dict[str, Any] | None = None
+        try:
+            outcome = execute_next(
+                config,
+                owners,
+                admission_event_id=admission["event_id"],
+                gap_id=gap_id,
+            )
+            passed = outcome.get("valid") is True
+        except Exception as exc:  # retain the single terminal failure in the report
+            failure = f"{type(exc).__name__}: {exc}"
+        settlement = governance.settle(step, admission, passed=passed)
+        stages.append({
+            "step": step,
+            "passed": passed,
+            "duration_seconds": round(time.monotonic() - step_started, 3),
+            "admission_event_id": admission["event_id"],
+            **settlement,
+            "outcome": outcome,
+            "error": failure,
+        })
+        partial = {
+            "schema_version": "px.release-candidate-campaign-report/1.0",
+            "candidate_id": config.candidate_id,
+            "started_utc": started,
+            "finished_utc": _now() if failure else None,
+            "valid": failure is None and len(stages) == len(STEP_ORDER),
+            "completed_stage_count": sum(1 for item in stages if item["passed"]),
+            "stage_count": len(STEP_ORDER),
+            "stages": stages,
+            "failure": failure,
+        }
+        _atomic_json(report_path, partial)
+        print(json.dumps({"campaign_progress": "passed" if passed else "failed", "step": step, "report": config.relative(report_path)}), flush=True)
+        if failure or not passed:
+            return partial
+    result = {
+        "schema_version": "px.release-candidate-campaign-report/1.0",
+        "candidate_id": config.candidate_id,
+        "started_utc": started,
+        "finished_utc": _now(),
+        "valid": len(stages) == len(STEP_ORDER),
+        "completed_stage_count": len(stages),
+        "stage_count": len(STEP_ORDER),
+        "stages": stages,
+        "failure": None,
+    }
+    _atomic_json(report_path, result)
+    return result
+
+
 def parser() -> argparse.ArgumentParser:
     result = argparse.ArgumentParser(description=__doc__)
     result.add_argument("--config", type=Path, required=True)
     mode = result.add_mutually_exclusive_group()
     mode.add_argument("--check", action="store_true")
     mode.add_argument("--execute-next", action="store_true")
+    mode.add_argument("--execute-all", action="store_true")
     result.add_argument("--confirm-candidate")
     result.add_argument("--gap-id")
     result.add_argument("--admission-event-id")
+    result.add_argument("--campaign-report", type=Path)
     return result
 
 
@@ -1137,7 +1400,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parser().parse_args(argv)
     try:
         config = Config.load(args.config.resolve(strict=True))
-        if not args.check and not args.execute_next:
+        if not args.check and not args.execute_next and not args.execute_all:
             print(json.dumps(plan(config), indent=2))
             return 0
         if args.check:
@@ -1148,9 +1411,28 @@ def main(argv: list[str] | None = None) -> int:
             return 0 if report["valid"] else 1
         if args.confirm_candidate != config.candidate_id:
             raise AutomationBlocked(
-                "--execute-next requires --confirm-candidate equal to candidate_id"
+                "execution requires --confirm-candidate equal to candidate_id"
             )
-        if not str(args.gap_id or "").strip() or not str(args.admission_event_id or "").strip():
+        if not str(args.gap_id or "").strip():
+            raise AutomationBlocked("execution requires --gap-id")
+        if args.execute_all:
+            if args.admission_event_id:
+                raise AutomationBlocked("--execute-all creates its own per-stage admissions")
+            if args.campaign_report is None:
+                raise AutomationBlocked("--execute-all requires --campaign-report")
+            report = readiness(config)
+            if report["valid"] is not True:
+                print(json.dumps(report, indent=2))
+                return 1
+            outcome = execute_all(
+                config,
+                SubprocessOwners(config),
+                gap_id=args.gap_id,
+                report_path=args.campaign_report,
+            )
+            print(json.dumps(outcome, indent=2))
+            return 0 if outcome["valid"] else 1
+        if not str(args.admission_event_id or "").strip():
             raise AutomationBlocked("--execute-next requires --gap-id and --admission-event-id")
         report = readiness(config)
         if report["valid"] is not True:

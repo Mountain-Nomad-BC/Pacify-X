@@ -338,6 +338,63 @@ class ResourceLifecycleTests(unittest.TestCase):
             (self.manager.receipt_dir / f"{receipt.cleanup_id}.json").is_file()
         )
 
+    def test_absent_registered_root_closes_child_as_already_absent(self) -> None:
+        allowed_root = self.root / "already-removed-root"
+        target = allowed_root / "owned-child"
+        target.mkdir(parents=True)
+        record = self.manager.register_path(
+            target,
+            allowed_cleanup_root=allowed_root,
+            project_id="project",
+            run_id="absent-run",
+            lane_id="lane",
+            creator="test",
+        )
+        self.manager.mark_run_ended("absent-run", RunState.ABANDONED)
+        shutil.rmtree(allowed_root)
+
+        receipt = self.manager.reclaim(
+            record.resource_id, reason="already removed by closed owner tree", apply=True
+        )
+
+        self.assertEqual(receipt.resources_reclaimed, 1)
+        closed = self.manager.ledger.get(record.resource_id)
+        self.assertEqual(closed.status, ResourceStatus.RECLAIMED.value)
+        self.assertEqual(closed.cleanup_result, "already_absent")
+
+    def test_absent_path_outside_absent_registered_root_remains_blocked(self) -> None:
+        now = "2026-09-06T00:00:00+00:00"
+        record = ResourceRecord(
+            resource_id="path-absent-escape",
+            resource_type="path",
+            project_id="project",
+            run_id="absent-escape",
+            lane_id="lane",
+            creator="test",
+            classification=ResourceClassification.EPHEMERAL.value,
+            created_at=now,
+            last_activity_at=now,
+            expected_cleanup_event="run_exit",
+            retention_required=False,
+            run_state=RunState.ABANDONED.value,
+            active=False,
+            status=ResourceStatus.RECLAIMABLE.value,
+            path=str(self.root / "outside-absent"),
+            allowed_cleanup_root=str(self.root / "missing-root"),
+        )
+        self.manager.ledger.upsert(record)
+
+        receipt = self.manager.reclaim(
+            record.resource_id, reason="must remain blocked", apply=True
+        )
+
+        self.assertEqual(receipt.resources_reclaimed, 0)
+        self.assertTrue(any("not lexically inside" in item for item in receipt.errors))
+        self.assertEqual(
+            self.manager.ledger.get(record.resource_id).status,
+            ResourceStatus.RECLAIMABLE.value,
+        )
+
     def test_failed_scope_cleans_unless_debug_retention_is_governed(self) -> None:
         with self.assertRaisesRegex(RuntimeError, "boom"):
             with self.manager.workspace(

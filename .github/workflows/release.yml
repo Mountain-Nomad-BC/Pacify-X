@@ -30,9 +30,9 @@ jobs:
       PYTHONNOUSERSITE: "1"
       PIP_DISABLE_PIP_VERSION_CHECK: "1"
       PACIFY_X_RELEASE_TAG: ${{ inputs.release_tag }}
-      PACIFY_X_VSIX_NAME: pacify-x-vscode-0.6.85.vsix
-      PACIFY_X_VSIX_SHA256: dae75fa9ecd4084ff85353ff404b6b1b9c87df146b763bae6f64006deeb04cd3
-      PACIFY_X_VSIX_SIZE: "4267484"
+      PACIFY_X_VSIX_NAME: pacify-x-vscode-0.6.86.vsix
+      PACIFY_X_VSIX_SHA256: d99f5255eccce3742b729d6ed0f1a53289c22d93f44ba346eb516426fb1e4d35
+      PACIFY_X_VSIX_SIZE: "4268960"
     steps:
       - name: Checkout exact annotated tag
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

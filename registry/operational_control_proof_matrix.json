@@ -3,13 +3,13 @@
   "authority": "Executable proof requirements only; this artifact is not evidence that any probe ran or passed.",
   "inventory": {
     "path": "registry/operational_surface_inventory.json",
-    "sha256": "6b00434a976a34ff2de0d1f08018ba1cefecffc18868e6094550cda0dc81877d",
+    "sha256": "e3a69f31711db927abedbe0beaf276a4b9b503bc9ae1be20497d7ee472c0ee2e",
     "inventory_id": "pacify-x-typed-surfaces-20260825-r15"
   },
   "action_inventory": {
     "path": "extension/resources/ui/action-inventory.json",
-    "sha256": "0e14ffda1764d08c84153c500559413b7a6e5a93f5bdbdbab049e236d914bb3f",
-    "action_count": 205
+    "sha256": "b6a9b536eea2b3fd51c9492f9aa8318d047029eee158c0edbbb17b760e0709c5",
+    "action_count": 206
   },
   "chain_stages": [
     "open_load",
@@ -26,7 +26,7 @@
     "failure_handling",
     "recovery_rollback"
   ],
-  "control_count": 933,
+  "control_count": 935,
   "controls": [
     {
       "control_id": "pxui.activity.action.activityPause",
@@ -8899,6 +8899,41 @@
       }
     },
     {
+      "control_id": "pxui.dashboard.action.initializeProject",
+      "surface_id": "dashboard",
+      "kind": "action",
+      "source_refs": [
+        "extension/media/dashboard/42-core-surfaces.js"
+      ],
+      "evidence_mode": "contained_host_interaction",
+      "probe": "render exact action class and every declared dataset variant; exercise validation, activation, and acknowledgement in a fresh contained state",
+      "effect": "workspace-write",
+      "requires_disposable_target": true,
+      "requires_fault_injection": true,
+      "requires_restart": true,
+      "requires_real_external_authority": false,
+      "state_role": "direct_control",
+      "activation_condition": {
+        "mode": "always",
+        "trigger": "the owning surface and declared action variant are loaded"
+      },
+      "stage_policy": {
+        "open_load": "required",
+        "display": "required",
+        "user_edit_action": "required",
+        "input_validation": "required",
+        "authorization": "required",
+        "backend_dispatch": "required",
+        "runtime_effect": "required",
+        "progress_reporting": "not_applicable_with_evidence",
+        "result_acknowledgement": "required",
+        "persistence": "required",
+        "reload_reopen": "required",
+        "failure_handling": "required",
+        "recovery_rollback": "required"
+      }
+    },
+    {
       "control_id": "pxui.dashboard.action.inspectMetric",
       "surface_id": "dashboard",
       "kind": "action",
@@ -15096,7 +15131,8 @@
       "surface_id": "knowledge-graph",
       "kind": "action",
       "source_refs": [
-        "extension/media/dashboard/48-graph-surface.js"
+        "extension/media/dashboard/48-graph-surface.js",
+        "extension/media/dashboard/90-controller.js"
       ],
       "evidence_mode": "contained_host_interaction",
       "probe": "render exact action class and every declared dataset variant; exercise validation, activation, and acknowledgement in a fresh contained state",
@@ -19745,6 +19781,41 @@
         "extension/media/dashboard/42-core-surfaces.js",
         "extension/media/dashboard/45-system-surfaces.js",
         "extension/media/dashboard/48-graph-surface.js"
+      ],
+      "evidence_mode": "contained_host_interaction",
+      "probe": "render exact action class and every declared dataset variant; exercise validation, activation, and acknowledgement in a fresh contained state",
+      "effect": "workspace-write",
+      "requires_disposable_target": true,
+      "requires_fault_injection": true,
+      "requires_restart": true,
+      "requires_real_external_authority": false,
+      "state_role": "direct_control",
+      "activation_condition": {
+        "mode": "always",
+        "trigger": "the owning surface and declared action variant are loaded"
+      },
+      "stage_policy": {
+        "open_load": "required",
+        "display": "required",
+        "user_edit_action": "required",
+        "input_validation": "required",
+        "authorization": "required",
+        "backend_dispatch": "required",
+        "runtime_effect": "required",
+        "progress_reporting": "not_applicable_with_evidence",
+        "result_acknowledgement": "required",
+        "persistence": "required",
+        "reload_reopen": "required",
+        "failure_handling": "required",
+        "recovery_rollback": "required"
+      }
+    },
+    {
+      "control_id": "pxui.projects.action.initializeProject",
+      "surface_id": "projects",
+      "kind": "action",
+      "source_refs": [
+        "extension/media/dashboard/42-core-surfaces.js"
       ],
       "evidence_mode": "contained_host_interaction",
       "probe": "render exact action class and every declared dataset variant; exercise validation, activation, and acknowledgement in a fresh contained state",
@@ -34208,5 +34279,5 @@
       }
     }
   ],
-  "matrix_sha256": "c6d72524dada708f1e539ccf2d05d3c3704bd5fec96eebfa31e1bc6a4be25d76"
+  "matrix_sha256": "94407ca5a768feb1093a507efd40a08175c9fe4f37c31dc6340bb01e97d0f914"
 }
