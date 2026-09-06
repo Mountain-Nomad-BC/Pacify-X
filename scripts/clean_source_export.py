@@ -479,24 +479,12 @@ def _run_candidate_command(root: Path, *arguments: str, timeout: int) -> None:
 
 def _certify_candidate_bytes(root: Path, artifacts: tuple[Path, ...]) -> None:
     """Own candidate-local receipts and one full certification before sealing."""
-    from runtime.test_profiles import section_status
+    from runtime.test_profiles import section_status, stale_section_execution_order
 
     # Projection rebuilding can stale only the sections whose exact input sets
     # changed. Refresh those chunks, preserving dependency order.
-    for _ in range(2):
-        status = section_status(root)
-        stale = [row["section"] for row in status["sections"] if not row["current"]]
-        if not stale:
-            break
-        progressed = False
-        current = {row["section"]: row for row in status["sections"]}
-        for name in stale:
-            dependencies = current[name].get("dependencies", ())
-            if all(current.get(item, {}).get("current") for item in dependencies):
-                _run_candidate_command(root, "test-section", "run", name, timeout=360)
-                progressed = True
-        if not progressed:
-            raise ValueError("candidate section dependencies cannot be made current")
+    for name in stale_section_execution_order(section_status(root)):
+        _run_candidate_command(root, "test-section", "run", name, timeout=360)
     if not section_status(root)["valid"]:
         raise ValueError(
             "candidate section receipts remain stale after bounded refresh"

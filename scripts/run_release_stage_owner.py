@@ -50,6 +50,15 @@ STAGES = (
     "installed_operational",
     "certify",
 )
+STAGE_PHASES = {
+    "sections": "revision_reconciled",
+    "full_profile": "sections_current",
+    "validate": "full_profile_passed",
+    "package": "validated",
+    "install": "packaged",
+    "installed_operational": "installed",
+    "certify": "installed_operational",
+}
 
 
 class OwnerBlocked(RuntimeError):
@@ -256,12 +265,20 @@ def check(config: Config, step: str) -> dict[str, Any]:
     try:
         current_repair = repair(config)
         current_release = release(config)
+        archive_recovery_phase = None
+        if step == "archive_clear" and current_release.get("state") == "failed":
+            failed_stages = [
+                name
+                for name, record in current_release.get("stages", {}).items()
+                if isinstance(record, dict) and record.get("status") == "failed"
+            ]
+            if len(failed_stages) == 1 and failed_stages[0] in STAGE_PHASES:
+                archive_recovery_phase = STAGE_PHASES[failed_stages[0]]
+        elif step == "archive_clear" and current_release.get("state") == "active":
+            archive_recovery_phase = "revision_reconciled"
         repair_phase_valid = current_repair.get("phase") == PHASES.get(
             step, (None,)
-        )[0] or (
-            step == "archive_clear"
-            and current_repair.get("phase") == "revision_reconciled"
-        )
+        )[0] or current_repair.get("phase") == archive_recovery_phase
         if (
             current_repair.get("campaign_id")
             != "pacify-x-cohesion-closure-repair12-20260905"
@@ -303,10 +320,6 @@ def check(config: Config, step: str) -> dict[str, Any]:
                 )
                 or (
                     current_release.get("state") == "active"
-                    and not unused_invalid_identity
-                )
-                or (
-                    current_repair.get("phase") == "revision_reconciled"
                     and not unused_invalid_identity
                 )
             ):
@@ -767,6 +780,7 @@ class ProductionEffects:
             supersede_consumed_cleared_release_campaign,
             supersede_failed_release_campaign,
             supersede_invalid_release_identity,
+            rewind_failed_release_campaign_repair,
             rewind_invalid_release_identity_reconciliation,
         )
 
@@ -776,13 +790,12 @@ class ProductionEffects:
         ):
             raise OwnerBlocked("identity path manifest is not a regular file")
         if step == "sections":
-            from runtime.test_profiles import section_status
+            from runtime.test_profiles import (
+                section_status,
+                stale_section_execution_order,
+            )
 
-            stale = [
-                str(row["section"])
-                for row in section_status(config.root)["sections"]
-                if row.get("current") is not True
-            ]
+            stale = stale_section_execution_order(section_status(config.root))
         if step == "package" and self.package_audit(
             config, {"claim_id": "preclaim-audit"}
         ).get("valid") is not True:
@@ -815,6 +828,8 @@ class ProductionEffects:
         if step == "archive_clear":
             current = release(config)
             if current.get("state") == "failed":
+                if repair(config).get("phase") != "repair_frozen":
+                    rewind_failed_release_campaign_repair(config.root)
                 status = supersede_failed_release_campaign(
                     config.root,
                     campaign_id=config.candidate_id,

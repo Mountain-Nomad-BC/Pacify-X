@@ -17,6 +17,7 @@ from runtime.release_campaign import (
     claim_release_stage,
     clear_release_identity,
     finish_release_stage,
+    rewind_failed_release_campaign_repair,
     rewind_invalid_release_identity_reconciliation,
     supersede_invalid_active_release_campaign,
     supersede_invalid_release_identity,
@@ -251,6 +252,33 @@ def test_invalid_active_campaign_with_passed_stages_is_archived_before_successor
     retained = __import__("json").loads(archive.read_text(encoding="utf-8"))
     assert retained["campaign_state"]["campaign_id"] == "active-before-defect"
     assert retained["campaign_state"]["stages"]["sections"]["status"] == "passed"
+
+
+def test_failed_stage_rewinds_only_from_its_exact_repair_phase(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    root = _minimal_tree()
+    extension = root / "extension/package.json"
+    extension.parent.mkdir(parents=True)
+    extension.write_text('{"version":"1.2.3"}\n', encoding="utf-8")
+    monkeypatch.setattr(
+        "runtime.release_campaign.authoritative_version", lambda _root: "1.2.3"
+    )
+    _write_release_repair_state(root, "repair")
+    clear_release_identity(root, campaign_id="failed-stage")
+    _write_release_repair_state(root, "revision_reconciled")
+    apply_release_identity(root)
+    claim = claim_release_stage(root, "sections")
+    finish_release_stage(
+        root, stage="sections", claim_id=claim["claim_id"], passed=False
+    )
+
+    rewind = rewind_failed_release_campaign_repair(root)
+
+    assert rewind["valid"] is True
+    assert rewind["failed_stage"] == "sections"
+    assert rewind["prior_phase"] == "revision_reconciled"
+    assert rewind["phase"] == "repair_frozen"
 
 
 def _write_release_repair_state(root: Path, phase: str) -> None:

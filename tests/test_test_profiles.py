@@ -40,6 +40,7 @@ from runtime.test_profiles import (
     section_chunk_receipt_path,
     section_receipt,
     section_status,
+    stale_section_execution_order,
     write_section_chunk_receipt,
 )
 
@@ -122,6 +123,39 @@ def test_sections_are_content_addressed_bounded_and_dependency_governed(tmp_path
     assert receipt["cwd"] == "."
     placement = resolve_test_section(ROOT, "execution-placement")
     assert placement["dependencies"] == ["learning-promotion"]
+
+
+def test_stale_sections_are_dependency_topological() -> None:
+    status = {
+        "sections": [
+            {"section": "execution-placement", "dependencies": ["learning-promotion"], "current": False},
+            {"section": "dashboard-extension", "dependencies": [], "current": True},
+            {"section": "learning-promotion", "dependencies": [], "current": False},
+            {"section": "hardware-routing", "dependencies": [], "current": False},
+        ]
+    }
+    order = stale_section_execution_order(status)
+    assert order == ["hardware-routing", "learning-promotion", "execution-placement"]
+
+
+@pytest.mark.parametrize(
+    "sections, match",
+    [
+        ([{"section": "one", "dependencies": ["missing"], "current": False}], "missing dependencies"),
+        (
+            [
+                {"section": "one", "dependencies": ["two"], "current": False},
+                {"section": "two", "dependencies": ["one"], "current": False},
+            ],
+            "stale cycle",
+        ),
+    ],
+)
+def test_stale_section_order_rejects_incomplete_or_cyclic_topology(
+    sections: list[dict[str, object]], match: str
+) -> None:
+    with pytest.raises(ValueError, match=match):
+        stale_section_execution_order({"sections": sections})
 
 
 def test_builder_and_trace_control_planes_have_exact_section_owners():

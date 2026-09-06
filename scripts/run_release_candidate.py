@@ -59,6 +59,15 @@ PHASE_ORDER = (
     "installed_operational",
     "certified",
 )
+RELEASE_STAGE_PHASES = {
+    "sections": "revision_reconciled",
+    "full_profile": "sections_current",
+    "validate": "full_profile_passed",
+    "package": "validated",
+    "install": "packaged",
+    "installed_operational": "installed",
+    "certify": "installed_operational",
+}
 STAGE_AFTER = {
     "sections": "sections",
     "full_profile": "full_profile",
@@ -362,7 +371,7 @@ def readiness(config: Config) -> dict[str, Any]:
             if repair.get("campaign_id") != config.repair_campaign_id:
                 errors.append("repair campaign ID differs from configuration")
             if (
-                repair_phase not in {"repair_frozen", "revision_reconciled"}
+                repair_phase not in {"repair_frozen", *RELEASE_STAGE_PHASES.values()}
                 or repair.get("intake_open") is not False
                 or repair.get("unresolved") != []
             ):
@@ -373,11 +382,28 @@ def readiness(config: Config) -> dict[str, Any]:
             release = _release(config)
             if release.get("campaign_id") != config.predecessor_campaign_id:
                 errors.append("predecessor campaign ID differs from configuration")
-            predecessor_ready = release.get("state") == "failed" or (
-                release.get("state") == "cleared"
-                and release.get("apply_count") == 0
-                and release.get("identity") is None
-            )
+            predecessor_ready = False
+            if release.get("state") == "failed":
+                failed_stages = [
+                    name
+                    for name, record in release.get("stages", {}).items()
+                    if isinstance(record, dict) and record.get("status") == "failed"
+                ]
+                predecessor_ready = (
+                    len(failed_stages) == 1
+                    and failed_stages[0] in RELEASE_STAGE_PHASES
+                    and repair_phase
+                    in {
+                        "repair_frozen",
+                        RELEASE_STAGE_PHASES[failed_stages[0]],
+                    }
+                )
+            elif release.get("state") == "cleared":
+                predecessor_ready = (
+                    release.get("apply_count") == 0
+                    and release.get("identity") is None
+                    and repair_phase == "repair_frozen"
+                )
             unused_invalid_identity = False
             if (
                 release.get("state") == "active"
@@ -406,11 +432,9 @@ def readiness(config: Config) -> dict[str, Any]:
                     verification.get("valid") is False
                     and bool(verification.get("errors"))
                 )
-                predecessor_ready = unused_invalid_identity
-            if repair_phase == "revision_reconciled" and not unused_invalid_identity:
-                errors.append(
-                    "a reconciled predecessor is allowed only for one unused "
-                    "invalid identity"
+                predecessor_ready = (
+                    unused_invalid_identity
+                    and repair_phase in {"repair_frozen", "revision_reconciled"}
                 )
             if not predecessor_ready or release.get("active_claim") is not None:
                 errors.append(

@@ -440,6 +440,47 @@ def rewind_invalid_release_identity_reconciliation(root: Path) -> dict[str, Any]
     }
 
 
+def rewind_failed_release_campaign_repair(root: Path) -> dict[str, Any]:
+    """Return one terminal failed stage from its exact phase to repair freeze."""
+
+    root = root.resolve(strict=True)
+    repair = _repair_campaign(root)
+    value = _validate(
+        json.loads((root / STATE_PATH).read_text(encoding="utf-8"))
+    )
+    failed = [
+        stage for stage in STAGES if value["stages"][stage]["status"] == "failed"
+    ]
+    if (
+        value.get("state") != "failed"
+        or value.get("active_claim") is not None
+        or len(failed) != 1
+    ):
+        raise ReleaseCampaignBlocked(
+            "failed campaign rewind requires one terminal failed stage"
+        )
+    failed_stage = failed[0]
+    expected_phase = STAGE_PHASES[failed_stage]
+    if (
+        repair.get("phase") != expected_phase
+        or repair.get("intake_open") is not False
+        or repair.get("unresolved") != []
+    ):
+        raise ReleaseCampaignBlocked(
+            "failed campaign rewind requires the failed stage's exact repair phase"
+        )
+    repair["phase"] = "repair_frozen"
+    _write(root / REPAIR_CAMPAIGN_PATH, repair)
+    return {
+        "schema_version": "px.failed-release-campaign-repair-rewind/1.0",
+        "campaign_id": value["campaign_id"],
+        "failed_stage": failed_stage,
+        "prior_phase": expected_phase,
+        "phase": "repair_frozen",
+        "valid": True,
+    }
+
+
 def supersede_failed_release_campaign(
     root: Path, *, campaign_id: str, reason: str
 ) -> dict[str, Any]:

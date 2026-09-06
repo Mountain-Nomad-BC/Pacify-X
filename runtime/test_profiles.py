@@ -723,6 +723,58 @@ def section_status(root: Path) -> dict[str, Any]:
     }
 
 
+def stale_section_execution_order(status: Mapping[str, Any]) -> list[str]:
+    """Return stale sections in deterministic dependency-topological order."""
+
+    raw_rows = status.get("sections")
+    if not isinstance(raw_rows, list):
+        raise ValueError("test section status is missing its section denominator")
+    rows: dict[str, Mapping[str, Any]] = {}
+    for raw in raw_rows:
+        if not isinstance(raw, Mapping):
+            raise ValueError("test section status contains a malformed row")
+        name = str(raw.get("section") or "")
+        dependencies = raw.get("dependencies")
+        if (
+            not name
+            or name in rows
+            or not isinstance(dependencies, list)
+            or any(not isinstance(item, str) or not item for item in dependencies)
+        ):
+            raise ValueError("test section status has an invalid section topology")
+        rows[name] = raw
+    missing = sorted(
+        {
+            dependency
+            for row in rows.values()
+            for dependency in row["dependencies"]
+            if dependency not in rows
+        }
+    )
+    if missing:
+        raise ValueError(
+            "test section topology has missing dependencies: " + ", ".join(missing)
+        )
+    current = {name for name, row in rows.items() if row.get("current") is True}
+    pending = set(rows) - current
+    ordered: list[str] = []
+    while pending:
+        ready = sorted(
+            (
+                name
+                for name in pending
+                if all(dependency in current for dependency in rows[name]["dependencies"])
+            ),
+            key=str.casefold,
+        )
+        if not ready:
+            raise ValueError("test section dependencies contain a stale cycle")
+        ordered.extend(ready)
+        current.update(ready)
+        pending.difference_update(ready)
+    return ordered
+
+
 def _local_module_paths(root: Path) -> dict[str, str]:
     module_paths: dict[str, str] = {}
     for top in ("runtime", "builders", "scripts"):

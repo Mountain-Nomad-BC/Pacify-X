@@ -11,6 +11,7 @@ import pytest
 from scripts.run_release_candidate import (
     AutomationBlocked,
     Config,
+    RELEASE_STAGE_PHASES,
     SubprocessOwners,
     STEP_ORDER,
     execute_next,
@@ -146,6 +147,45 @@ def test_initial_readiness_allows_one_unused_invalid_identity_predecessor(
     monkeypatch.setattr(
         "runtime.release_campaign.release_campaign_status",
         lambda root, verify_source=False: {"valid": False, "errors": ["drift"]},
+    )
+    assert readiness(value)["valid"] is True
+
+
+def test_initial_readiness_allows_failed_stage_at_exact_repair_phase(
+    tmp_path: Path,
+) -> None:
+    value = config(tmp_path)
+    control = tmp_path / ".engineering-bootstrap/processing-order"
+    control.mkdir(parents=True)
+    (control / "repair-campaign.json").write_text(
+        json.dumps(
+            {
+                "campaign_id": value.repair_campaign_id,
+                "phase": "revision_reconciled",
+                "intake_open": False,
+                "unresolved": [],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (control / "release-identity.json").write_text(
+        json.dumps(
+            {
+                "campaign_id": value.predecessor_campaign_id,
+                "state": "failed",
+                "apply_count": 1,
+                "identity": {"release_identity_sha256": "a" * 64},
+                "active_claim": None,
+                "stages": {
+                    name: {
+                        "status": "failed" if name == "sections" else "pending",
+                        "claim_id": "claim" if name == "sections" else None,
+                    }
+                    for name in RELEASE_STAGE_PHASES
+                },
+            }
+        ),
+        encoding="utf-8",
     )
     assert readiness(value)["valid"] is True
 

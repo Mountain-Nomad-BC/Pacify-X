@@ -262,6 +262,70 @@ def test_archive_effect_routes_unused_invalid_identity_to_canonical_successor(
     assert rewinds == [config.root]
 
 
+def test_archive_check_allows_failed_stage_at_its_exact_repair_phase(
+    tmp_path: Path,
+) -> None:
+    config = fixture(tmp_path, "archive_clear")
+    repair = tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    repair_value = json.loads(repair.read_text(encoding="utf-8"))
+    repair_value["phase"] = "revision_reconciled"
+    repair.write_text(json.dumps(repair_value), encoding="utf-8")
+    state = tmp_path / ".engineering-bootstrap/processing-order/release-identity.json"
+    state.write_text(
+        json.dumps(
+            {
+                "campaign_id": config.predecessor_id,
+                "state": "failed",
+                "apply_count": 1,
+                "identity": {"release_identity_sha256": "a" * 64},
+                "active_claim": None,
+                "stages": {
+                    name: {
+                        "status": "failed" if name == "sections" else "pending",
+                        "claim_id": "claim" if name == "sections" else None,
+                    }
+                    for name in (
+                        "sections",
+                        "full_profile",
+                        "validate",
+                        "package",
+                        "install",
+                        "installed_operational",
+                        "certify",
+                    )
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    assert check(config, "archive_clear")["valid"] is True
+
+
+def test_archive_effect_rewinds_failed_stage_before_canonical_successor(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    config = fixture(tmp_path, "archive_clear")
+    repair = tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    repair_value = json.loads(repair.read_text(encoding="utf-8"))
+    repair_value["phase"] = "revision_reconciled"
+    repair.write_text(json.dumps(repair_value), encoding="utf-8")
+    rewinds: list[Path] = []
+    successors: list[str] = []
+    monkeypatch.setattr(
+        "runtime.release_campaign.rewind_failed_release_campaign_repair",
+        lambda root: rewinds.append(root) or {"valid": True},
+    )
+    monkeypatch.setattr(
+        "runtime.release_campaign.supersede_failed_release_campaign",
+        lambda root, *, campaign_id, reason: successors.append(campaign_id)
+        or {"valid": True, "superseded_archive": "archive.json"},
+    )
+    receipt = ProductionEffects().execute("archive_clear", config)
+    assert receipt["valid"] is True
+    assert rewinds == [config.root]
+    assert successors == [config.candidate_id]
+
+
 def test_child_resource_postcondition_allows_only_exact_supervised_self(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
