@@ -29,6 +29,7 @@ MAX_TIMEOUT_SECONDS = 86_400.0
 MAX_CAPTURE_BYTES = 64 * 1024 * 1024
 DEFAULT_DISK_CONSUMPTION_LIMIT_BYTES = 8 * 1024 * 1024 * 1024
 MAX_DISK_CONSUMPTION_LIMIT_BYTES = 1024 * 1024 * 1024 * 1024
+MIN_DISK_ACCOUNTING_INTERVAL_SECONDS = 1.0
 
 
 def _now() -> str:
@@ -820,8 +821,9 @@ class ProcessSupervisor:
         tree_closed = True
         tracked = {process.pid: fingerprint}
         next_safety_check = supervision_started
+        next_disk_check = supervision_started
 
-        def terminal_safety_status() -> str | None:
+        def terminal_safety_status(*, check_disk: bool) -> str | None:
             if owner_liveness is not None:
                 owner_alive = owner_liveness.alive()
             elif owner_fingerprint is not None:
@@ -832,6 +834,8 @@ class ProcessSupervisor:
                 owner_alive = False
             if not owner_alive:
                 return "owner_lost"
+            if not check_disk:
+                return None
             if initial_owned_consumption is not None:
                 current_owned_consumption = _disk_consumption_bytes(disk_paths)
                 if (
@@ -862,7 +866,13 @@ class ProcessSupervisor:
                     next_safety_check = now + max(
                         0.25, budget.poll_interval_seconds
                     )
-                    safety_status = terminal_safety_status()
+                    check_disk = now >= next_disk_check
+                    if check_disk:
+                        next_disk_check = now + max(
+                            MIN_DISK_ACCOUNTING_INTERVAL_SECONDS,
+                            budget.poll_interval_seconds,
+                        )
+                    safety_status = terminal_safety_status(check_disk=check_disk)
                     if safety_status is not None:
                         status = safety_status
                         break
@@ -884,7 +894,10 @@ class ProcessSupervisor:
             # otherwise an over-budget or cancelled process can be published as
             # a successful natural exit under host contention.
             if status == "exited":
-                safety_status = terminal_safety_status()
+                # A final unconditional disk measurement preserves the hard
+                # ceiling for fast-exit commands while avoiding a recursive
+                # full-tree walk on every 20 ms supervision poll.
+                safety_status = terminal_safety_status(check_disk=True)
                 if safety_status is not None:
                     status = safety_status
                 elif cancel_event is not None and cancel_event.is_set():

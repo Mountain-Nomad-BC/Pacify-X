@@ -4,6 +4,7 @@ import json
 import ast
 import hashlib
 import importlib.util
+from functools import lru_cache
 import os
 from pathlib import Path
 import shutil
@@ -19,6 +20,13 @@ from runtime.repository_scope import is_external_environment_relative
 
 
 ROOT = Path(__file__).parents[1]
+
+
+@lru_cache(maxsize=1)
+def _root_audit() -> dict[str, object]:
+    """Share the immutable live-root audit across read-only assertions."""
+
+    return audit_structural_integrity(ROOT)
 
 
 def test_completed_wal_images_are_inactive_but_pending_wal_remains_auditable() -> None:
@@ -126,7 +134,7 @@ def test_structural_mutation_clone_excludes_retained_evidence() -> None:
 
 
 def test_structural_integrity_has_closed_denominators() -> None:
-    result = audit_structural_integrity(ROOT)
+    result = _root_audit()
     non_document_errors = [
         item
         for item in result["errors"]
@@ -136,7 +144,7 @@ def test_structural_integrity_has_closed_denominators() -> None:
 
 
 def test_hash_ledger_head_and_anchor_are_a_reviewed_exact_projection() -> None:
-    result = audit_structural_integrity(ROOT)
+    result = _root_audit()
     groups = [
         item
         for item in result["duplicate_file_groups"]
@@ -237,7 +245,7 @@ def test_project_management_checkpoint_drift_fails_closed(tmp_path) -> None:
 
 
 def test_declared_generated_duplicates_regenerate_cleanly() -> None:
-    result = audit_structural_integrity(ROOT)
+    result = _root_audit()
     declared = [
         item
         for item in result["duplicate_file_groups"]
@@ -259,7 +267,7 @@ def test_undeclared_duplicate_group_fails_audit(tmp_path) -> None:
 
 
 def test_portable_hash_helpers_have_behavioral_parity() -> None:
-    result = audit_structural_integrity(ROOT)
+    result = _root_audit()
     helpers = [
         item
         for item in result["duplicate_logic_groups"]
@@ -269,7 +277,7 @@ def test_portable_hash_helpers_have_behavioral_parity() -> None:
 
 
 def test_runtime_file_digest_helpers_are_reviewed_digest_adapters() -> None:
-    result = audit_structural_integrity(ROOT)
+    result = _root_audit()
     helpers = [
         item
         for item in result["duplicate_logic_groups"]
@@ -291,7 +299,7 @@ def test_runtime_file_digest_helpers_are_reviewed_digest_adapters() -> None:
 
 
 def test_release_owner_digest_and_json_helpers_are_reviewed() -> None:
-    result = audit_structural_integrity(ROOT)
+    result = _root_audit()
     groups = result["duplicate_logic_groups"]
     digest_paths = {
         "runtime/native_skills.py",

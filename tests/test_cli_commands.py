@@ -183,10 +183,18 @@ class CliCommandTests(unittest.TestCase):
                     "exit_code": 0,
                     "duration_seconds": 1.25,
                     "stdout": "child detail must not be embedded",
+                    "supervision_status": "exited",
+                    "process_tree_terminated": True,
                 },
             ) as runner,
-            patch("runtime.resource_lifecycle.ResourceManager"),
+            patch("runtime.resource_lifecycle.ResourceManager") as manager_type,
         ):
+            manager_type.return_value.reconcile.return_value = {
+                "valid": True,
+                "owned_child_processes_active": 0,
+                "owned_ephemeral_unexplained": 0,
+                "cleanup_failures": 0,
+            }
             result = _refresh_stale_groups_for_full_profile(
                 ROOT, timeout_seconds=321
             )
@@ -202,6 +210,8 @@ class CliCommandTests(unittest.TestCase):
         self.assertIs(runner.call_args.kwargs["manage_process_temp"], True)
         self.assertEqual(result["requested_timeout_seconds"], 321)
         self.assertEqual(result["effective_timeout_seconds"], 560)
+        self.assertTrue(result["nested_resource_reconciliation"]["valid"])
+        manager_type.return_value.reconcile.assert_called_once_with(apply=True)
         self.assertNotIn("stdout", result["execution"])
 
     def test_full_profile_collects_all_fresh_failed_groups_before_repair(self) -> None:
@@ -236,11 +246,53 @@ class CliCommandTests(unittest.TestCase):
                     "process_tree_terminated": True,
                 },
             ),
-            patch("runtime.resource_lifecycle.ResourceManager"),
+            patch("runtime.resource_lifecycle.ResourceManager") as manager_type,
         ):
+            manager_type.return_value.reconcile.return_value = {
+                "valid": True,
+                "owned_child_processes_active": 0,
+                "owned_ephemeral_unexplained": 0,
+                "cleanup_failures": 0,
+            }
             result = _refresh_stale_groups_for_full_profile(ROOT)
         self.assertFalse(result["valid"])
         self.assertEqual(result["failed_groups"], ["broken-a", "broken-b"])
+
+    def test_full_profile_group_refresh_fails_if_nested_resources_remain(self) -> None:
+        stale = {
+            "valid": False,
+            "groups": [
+                {"group": "broken", "current": False, "fresh": False, "passed": False}
+            ],
+        }
+        with (
+            patch("runtime.test_profiles.group_status", return_value=stale),
+            patch(
+                "runtime.test_profiles.resolve_test_groups",
+                return_value=[{"group": "broken", "timeout_seconds": 30}],
+            ),
+            patch(
+                "runtime.test_runner.run_test_command",
+                return_value={
+                    "valid": False,
+                    "exit_code": 1,
+                    "timed_out": False,
+                    "supervision_status": "exited",
+                    "process_tree_terminated": True,
+                },
+            ),
+            patch("runtime.resource_lifecycle.ResourceManager") as manager_type,
+            self.assertRaisesRegex(
+                ValueError, "owned stale test-group resource reconciliation failed"
+            ),
+        ):
+            manager_type.return_value.reconcile.return_value = {
+                "valid": False,
+                "owned_child_processes_active": 1,
+                "owned_ephemeral_unexplained": 2,
+                "cleanup_failures": 0,
+            }
+            _refresh_stale_groups_for_full_profile(ROOT)
 
     def test_full_profile_group_refresh_fails_closed(self) -> None:
         stale = {"valid": False, "groups": [{"group": "broken", "current": False}]}

@@ -495,6 +495,43 @@ def test_declared_disk_accounting_closes_tree_on_owned_growth(
     assert result.tree_closed
 
 
+def test_declared_disk_accounting_is_sampled_instead_of_walked_every_poll(
+    harness, monkeypatch
+) -> None:
+    root = harness[0]
+    tracked = root / "owned-output"
+    tracked.mkdir()
+    calls = 0
+
+    def consumption(_paths):
+        nonlocal calls
+        calls += 1
+        return 0
+
+    monkeypatch.setattr(
+        "runtime.process_supervisor._disk_consumption_bytes", consumption
+    )
+    action = _action(
+        root,
+        idle_timeout_seconds=1.0,
+        total_timeout_seconds=2.0,
+        poll_interval_seconds=0.01,
+    )
+    action["disk_consumption_paths"] = [str(tracked)]
+
+    result = _run(
+        harness,
+        "import time;time.sleep(0.3)",
+        action=action,
+    )
+
+    assert result.status == "exited"
+    assert result.tree_closed
+    # Initial accounting, the first safety poll, and the unconditional
+    # terminal reconciliation are sufficient for a sub-second command.
+    assert 2 <= calls <= 4
+
+
 def test_unprovable_launching_parent_fails_before_spawn(harness, monkeypatch) -> None:
     owner_pid = os.getpid()
     real_fingerprint = _process_start_fingerprint

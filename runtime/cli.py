@@ -207,6 +207,9 @@ def _refresh_stale_groups_for_full_profile(
         validate_timeout(timeout_seconds),
         registered_budget + custody_allowance,
     )
+    resource_manager = ResourceManager(
+        root / ".engineering-bootstrap/resource-lifecycle/ledger.json"
+    )
     execution = run_test_command(
         [
             sys.executable,
@@ -226,9 +229,7 @@ def _refresh_stale_groups_for_full_profile(
             SUPERVISED_CHILD_ENV: os.environ.get(OWNER_ENV, ""),
         },
         timeout_seconds=effective_timeout,
-        resource_manager=ResourceManager(
-            root / ".engineering-bootstrap/resource-lifecycle/ledger.json"
-        ),
+        resource_manager=resource_manager,
         run_id=f"test-profile-group-refresh-{uuid4().hex}",
         lane_id="profile:group-refresh",
         manage_process_temp=True,
@@ -241,6 +242,21 @@ def _refresh_stale_groups_for_full_profile(
     if execution.get("valid") is not True and not supervision_contained:
         detail = str(execution.get("stderr") or execution.get("stdout") or "")[-4000:]
         raise ValueError(f"owned stale test-group refresh failed: {detail}")
+    nested_resource_reconciliation = None
+    if supervision_contained:
+        # The contained child owns nested group processes and workspaces. Its
+        # process tree is already closed here, so persisted active records can
+        # only describe exited children or an unresolved identity. Reconcile
+        # them before the release driver evaluates its zero-resource
+        # postcondition; ambiguity remains fail-closed in ResourceManager.
+        nested_resource_reconciliation = resource_manager.reconcile(apply=True)
+        if nested_resource_reconciliation.get("valid") is not True:
+            raise ValueError(
+                "owned stale test-group resource reconciliation failed: "
+                f"active={nested_resource_reconciliation.get('owned_child_processes_active')} "
+                f"unexplained={nested_resource_reconciliation.get('owned_ephemeral_unexplained')} "
+                f"cleanup_failures={nested_resource_reconciliation.get('cleanup_failures')}"
+            )
     after = group_status(root)
     remaining = [row["group"] for row in after["groups"] if not row.get("fresh")]
     if remaining:
@@ -273,6 +289,7 @@ def _refresh_stale_groups_for_full_profile(
         },
         "requested_timeout_seconds": validate_timeout(timeout_seconds),
         "effective_timeout_seconds": effective_timeout,
+        "nested_resource_reconciliation": nested_resource_reconciliation,
         "status": after,
     }
 
