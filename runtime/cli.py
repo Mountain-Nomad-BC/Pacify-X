@@ -214,6 +214,17 @@ def _refresh_stale_groups_for_full_profile(
     resource_manager = ResourceManager(
         root / ".engineering-bootstrap/resource-lifecycle/ledger.json"
     )
+    baseline_records = resource_manager.ledger.load()
+    baseline_unresolved_ids = (
+        {
+            record.resource_id
+            for record in baseline_records
+            if record.classification == "ephemeral"
+            and record.status not in {"reclaimed", "retained"}
+        }
+        if isinstance(baseline_records, list)
+        else None
+    )
     execution = run_test_command(
         [
             sys.executable,
@@ -254,12 +265,42 @@ def _refresh_stale_groups_for_full_profile(
         # them before the release driver evaluates its zero-resource
         # postcondition; ambiguity remains fail-closed in ResourceManager.
         nested_resource_reconciliation = resource_manager.reconcile(apply=True)
-        if nested_resource_reconciliation.get("valid") is not True:
+        final_records = resource_manager.ledger.load()
+        newly_unresolved = None
+        if baseline_unresolved_ids is not None and isinstance(final_records, list):
+            newly_unresolved = [
+                record
+                for record in final_records
+                if record.resource_id not in baseline_unresolved_ids
+                and record.classification == "ephemeral"
+                and record.status not in {"reclaimed", "retained"}
+            ]
+        nested_resources_valid = (
+            not newly_unresolved
+            if newly_unresolved is not None
+            else nested_resource_reconciliation.get("valid") is True
+        )
+        if not nested_resources_valid:
+            active = (
+                sum(record.resource_type == "process" and record.active for record in newly_unresolved)
+                if newly_unresolved is not None
+                else nested_resource_reconciliation.get("owned_child_processes_active")
+            )
+            unexplained = (
+                len(newly_unresolved)
+                if newly_unresolved is not None
+                else nested_resource_reconciliation.get("owned_ephemeral_unexplained")
+            )
+            cleanup_failures = (
+                sum(record.status == "cleanup_failed" for record in newly_unresolved)
+                if newly_unresolved is not None
+                else nested_resource_reconciliation.get("cleanup_failures")
+            )
             raise ValueError(
                 "owned stale test-group resource reconciliation failed: "
-                f"active={nested_resource_reconciliation.get('owned_child_processes_active')} "
-                f"unexplained={nested_resource_reconciliation.get('owned_ephemeral_unexplained')} "
-                f"cleanup_failures={nested_resource_reconciliation.get('cleanup_failures')}"
+                f"active={active} "
+                f"unexplained={unexplained} "
+                f"cleanup_failures={cleanup_failures}"
             )
     if execution.get("valid") is not True and not supervision_contained:
         detail = str(
