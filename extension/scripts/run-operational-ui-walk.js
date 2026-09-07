@@ -51,7 +51,7 @@ const wait = milliseconds => new Promise(resolve => setTimeout(resolve, millisec
 function runInstalledStudioLifecycleCrashProfile() {
   const engineRoot = path.resolve(String(process.env.PX_OWNED_ENGINE_ROOT || ''));
   const harness = path.resolve(__dirname, '..', 'tests', 'installed-harness', 'studio_lifecycle_crash_worker.py');
-  const python = String(process.env.PYTHON || process.env.PYTHON_EXECUTABLE || 'python');
+  const python = String(process.env.PX_PYTHON_PATH || process.env.PYTHON || process.env.PYTHON_EXECUTABLE || 'python');
   const custodyRoot = path.resolve(ownedHostToken, 'px-owned-studio-lifecycle-crash');
   if (!ownedReversibleConfigurationAuthority || !engineRoot || !ownedHostToken) {
     return { schema_version: 'px.installed-studio-lifecycle-crash-profile/1.0', completed: false, errors: ['owned-lifecycle-crash-authority-missing'], observations: [] };
@@ -101,7 +101,7 @@ function runInstalledStudioLifecycleCrashProfile() {
 function runInstalledStudioLateCardWorker() {
   const engineRoot = path.resolve(String(process.env.PX_OWNED_ENGINE_ROOT || ''));
   const harness = path.resolve(__dirname, '..', 'tests', 'installed-harness', 'studio_late_card_worker.py');
-  const python = String(process.env.PYTHON || process.env.PYTHON_EXECUTABLE || 'python');
+  const python = String(process.env.PX_PYTHON_PATH || process.env.PYTHON || process.env.PYTHON_EXECUTABLE || 'python');
   const custodyRoot = path.resolve(ownedHostToken, 'px-owned-studio-late-cards');
   if (!ownedReversibleConfigurationAuthority || !engineRoot || !ownedHostToken) {
     return { schema_version: 'px.installed-studio-late-card-worker/1.0', completed: false, errors: ['owned-late-card-authority-missing'] };
@@ -3737,19 +3737,16 @@ async function inspectStudioBuilder(frameHost, kind, outputRoot, hostErrors) {
   const surface = kind === 'agent' ? 'agents' : 'workflows';
   const studioSurface = kind === 'agent' ? 'agent-studio' : 'workflow-studio';
   const observations = [];
-  await frameHost.evaluate((frame, values) => {
-    const document = frame.contentDocument;
-    document.querySelector('[data-action="closeModal"]')?.click();
-    document.querySelector(`[data-surface="${CSS.escape(values.surface)}"]`)?.click();
-  }, { surface });
-  await wait(500);
+  const openSelector = `[data-action="openStudioDraft"][data-kind="${kind}"]`;
+  await settleInstalledSurfaceControl(frameHost, {
+    surface,
+    selector: openSelector,
+    scopeTarget: surface,
+    scope: 'core',
+    stableSamplesRequired: 2
+  });
   const catalogBefore = await builderState(frameHost, kind);
-  await frameHost.evaluate((frame, builderKind) => {
-    const document = frame.contentDocument;
-    const open = [...document.querySelectorAll('[data-action="openStudioDraft"]')].find(button => button.dataset.kind === builderKind);
-    if (!open) throw new Error(`${builderKind} Studio create control is missing.`);
-    open.click();
-  }, kind);
+  await frameHost.evaluate((frame, selector) => frame.contentDocument.querySelector(selector).click(), openSelector);
   await wait(500);
   let opened = await builderState(frameHost, kind);
   if (!opened.modal_present) {
@@ -5259,12 +5256,12 @@ function skillQueryControlProbe(matrix, observation) {
 async function runInstalledSkillQueryProfile(frameHost, matrix, timeoutMs = 30_000) {
   const observation = { rendered: false, attempted: false, invalid_rejected: false, pending_observed: false, no_match_observed: false, results_observed: false, hydrated: false, completed: false, errors: [] };
   const openQuery = async () => {
-    await navigateInstalledSurface(frameHost, 'skillsTools', timeoutMs);
-    await frameHost.evaluate(frame => {
-      const native = frame.contentDocument?.querySelector('[data-action="capabilityTab"][data-kind="skills"]');
-      if (native && native.getAttribute('aria-pressed') !== 'true') native.click();
-    });
-    await waitForKnowledgeControl(frameHost, '[data-action="skillSemanticQuery"][data-domain="px-standard"]');
+    await settleInstalledSurfaceControl(frameHost, {
+      surface: 'skillsTools',
+      capability: 'skills',
+      selector: '[data-action="skillSemanticQuery"][data-domain="px-standard"]',
+      stableSamplesRequired: 2
+    }, timeoutMs);
     await frameHost.evaluate(frame => frame.contentDocument.querySelector('[data-action="skillSemanticQuery"][data-domain="px-standard"]').click());
     await waitForKnowledgeControl(frameHost, '[data-action="submitSkillQuery"]');
   };

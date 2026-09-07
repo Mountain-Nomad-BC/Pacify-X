@@ -245,6 +245,10 @@ async function run() {
   quarantine.renameFile(renamed, quarantined, { overwrite: false });
   assert.equal(await vscode.workspace.applyEdit(quarantine), true);
   assert.equal(Buffer.from(await vscode.workspace.fs.readFile(quarantined)).length, 0);
+  const remove = new vscode.WorkspaceEdit();
+  remove.deleteFile(quarantined, { recursive: false, ignoreIfNotExists: false });
+  assert.equal(await vscode.workspace.applyEdit(remove), true);
+  assert.equal(fs.existsSync(quarantined.fsPath), false);
   attempts.filesystem = 'exercised-live';
 
   const watchedDirectory = vscode.Uri.joinPath(folder.uri, 'tests');

@@ -62,6 +62,20 @@ const argument = name => {
   return index >= 0 && process.argv[index + 1] ? process.argv[index + 1] : null;
 };
 
+function resolveOwnedPython(engineRoot, options = {}) {
+  const requested = String(options.requested ?? process.env.PX_PYTHON_PATH ?? '').trim();
+  if (requested) return requested;
+  const platform = options.platform || process.platform;
+  const candidate = engineRoot && (platform === 'win32'
+    ? path.join(engineRoot, '.venv-certify', 'Scripts', 'python.exe')
+    : path.join(engineRoot, '.venv-certify', 'bin', 'python'));
+  if (candidate && fs.existsSync(candidate)) {
+    const status = fs.lstatSync(candidate);
+    if (status.isFile() && !status.isSymbolicLink()) return candidate;
+  }
+  return platform === 'win32' ? 'python' : 'python3';
+}
+
 function capture(stream, collector) {
   stream?.on('data', chunk => collector(chunk.toString('utf8')));
 }
@@ -514,6 +528,7 @@ async function childMain(configPath) {
         PX_OWNED_VSCODE_HOST_CONFIRM_REVERSIBLE_WRITES: '1',
         PX_STUDIO_KEY_ROOT: config.studioKeyRoot,
         PX_ENGINE_ROOT: config.engineRoot,
+        PX_PYTHON_PATH: config.pythonPath,
         PX_OPERATIONAL_WALK_BOOTSTRAP_RECEIPT: config.bootstrapReceipt,
         PX_OPERATIONAL_WALK_BOOTSTRAP_SENTINEL: config.bootstrapSentinel,
         ...(!config.bootstrapOnly && !config.configurationOnly && !config.knowledgeLifecycleOnly && !config.coordinationMemoryOnly && !config.hostBoundaryOnly && !config.nativeDialogOnly && !config.knowledgeGraphOnly && !config.surfaceCaptureOnly && !config.pluginLifecycleOnly && !config.codexHandoffOnly && !config.errorIndicatorsOnly && !config.catalogPaginationOnly && !config.builderOnly && !config.workbenchCommandOnly
@@ -583,6 +598,7 @@ async function childMain(configPath) {
         env: ownedExternalNetworkDeniedLaunchEnvironment({
           PX_OWNED_VSCODE_HOST: '1',
           PX_OWNED_ENGINE_ROOT: config.engineRoot,
+          PX_PYTHON_PATH: config.pythonPath,
           PX_OWNED_VSCODE_WORKSPACE_ROOT: config.workspace,
           PX_OWNED_VSCODE_EXTENSIONS_ROOT: config.extensions,
           ...(config.hostBoundaryFixtureDeferred ? {
@@ -900,6 +916,7 @@ function prepare(temporaryRoot, walkOutput, vsixPath = null, bootstrapOnly = fal
     walkOutput,
     walkReceipt: path.join(walkOutput, 'receipt.json'),
     engineRoot: stagedEngine.root,
+    pythonPath: resolveOwnedPython(repositoryRoot, { requested: argument('--python') }),
     stagedEngine,
     bootstrapOnly,
     configurationOnly,
@@ -947,7 +964,7 @@ function prepare(temporaryRoot, walkOutput, vsixPath = null, bootstrapOnly = fal
   fs.writeFileSync(path.join(config.workspace, '.vscode', 'settings.json'), `${JSON.stringify({
     'pacifyX.engineRoot': config.engineRoot,
     'pacifyX.workspaceRoot': hostBoundaryFixtureRequired ? config.workspace : '',
-    'pacifyX.pythonPath': process.platform === 'win32' ? 'python' : 'python3',
+    'pacifyX.pythonPath': config.pythonPath,
     'pacifyX.activity.enabled': false
   }, null, 2)}\n`, 'utf8');
   fs.mkdirSync(path.join(config.userData, 'User'), { recursive: true });
@@ -1241,7 +1258,7 @@ if (require.main === module) {
       process.exitCode = 1;
     });
   } else if (process.argv.includes('--help')) {
-    process.stdout.write('Usage: node scripts/run-isolated-current-source-walk.js [--post-audit-long-running | --bootstrap-only | --configuration-only | --studio-lifecycle-only | --knowledge-lifecycle-only | --host-boundary-only | --native-dialog-only | --knowledge-graph-only | --surface-capture-only | --plugin-lifecycle-only | --codex-handoff-only | --error-indicators-only | --late-card-repair-only | --catalog-pagination-only | --builder-only | --workbench-command-only] [--parallel-proof-lane <lane>] [--vsix <path>] [--output <path>] [--report <path>]\n');
+    process.stdout.write('Usage: node scripts/run-isolated-current-source-walk.js [--post-audit-long-running | --bootstrap-only | --configuration-only | --studio-lifecycle-only | --knowledge-lifecycle-only | --host-boundary-only | --native-dialog-only | --knowledge-graph-only | --surface-capture-only | --plugin-lifecycle-only | --codex-handoff-only | --error-indicators-only | --late-card-repair-only | --catalog-pagination-only | --builder-only | --workbench-command-only] [--parallel-proof-lane <lane>] [--python <executable>] [--vsix <path>] [--output <path>] [--report <path>]\n');
   } else {
     main().catch(error => {
       process.stderr.write(`${error.stack || error.message}\n`);
@@ -1250,4 +1267,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { acquireWalkOwnership, appendHostProgress, boundedDelay, classifySharedStoragePath, excludedEnginePath, ownedExternalNetworkDeniedEnvironment, ownedExternalNetworkDeniedLaunchEnvironment, parallelProofHostLock, reconcileOwnedPrelaunchFailure, reconcilePrelaunchFailure, reserveLoopbackPort, retainedHostProgress, retainedProfileProgress, settleOwnedEphemeralCleanup, stageDisposableEngine, stageOwnedGitAuthority, stageOwnedHostBoundaryFixture, stageOwnedKnowledgeFixture, stageOwnedProviderPaginationFixture, waitForIsolatedStorageBoundary };
+module.exports = { acquireWalkOwnership, appendHostProgress, boundedDelay, classifySharedStoragePath, excludedEnginePath, ownedExternalNetworkDeniedEnvironment, ownedExternalNetworkDeniedLaunchEnvironment, parallelProofHostLock, reconcileOwnedPrelaunchFailure, reconcilePrelaunchFailure, reserveLoopbackPort, resolveOwnedPython, retainedHostProgress, retainedProfileProgress, settleOwnedEphemeralCleanup, stageDisposableEngine, stageOwnedGitAuthority, stageOwnedHostBoundaryFixture, stageOwnedKnowledgeFixture, stageOwnedProviderPaginationFixture, waitForIsolatedStorageBoundary };

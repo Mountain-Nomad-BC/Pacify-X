@@ -2422,6 +2422,9 @@ test('read-only skill query profile separates invalid, pending, empty, result, a
   assert.ok(probe.records.every(record => record.interaction_chain.open_load.state === 'present'));
   assert.ok(probe.records.every(record => record.interaction_chain.progress_reporting.state === 'present'));
   assert.ok(probe.records.every(record => record.interaction_chain.failure_handling.state === 'present'));
+  const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
+  const profile = source.slice(source.indexOf('async function runInstalledSkillQueryProfile'), source.indexOf('async function runInstalledCatalogPaginationProfile'));
+  assert.match(profile, /settleInstalledSurfaceControl\(frameHost, \{[\s\S]*surface: 'skillsTools',[\s\S]*capability: 'skills',[\s\S]*selector: '\[data-action="skillSemanticQuery"\]\[data-domain="px-standard"\]'[\s\S]*stableSamplesRequired: 2/);
 });
 
 test('read-only catalog pagination binds real offsets and restores the normal query denominator', () => {
@@ -4025,8 +4028,10 @@ test('profile progress error collection normalizes keyed collections and scalar 
 test('post-plugin baseline and builder work emit bounded profile progress', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   const timed = source.slice(source.indexOf('const timedProfile ='), source.indexOf('const browser ='));
+  const builder = source.slice(source.indexOf('async function inspectStudioBuilder'), source.indexOf('function applyBuilderObservations'));
   assert.match(timed, /\{ resetBaseline = true, timeoutMs = null \}/);
   assert.match(timed, /boundedOwnedUiAction\(execute, timeoutMs, `installed-profile-\$\{profile\}`\)/);
+  assert.match(builder, /settleInstalledSurfaceControl\(frameHost, \{[\s\S]*surface,[\s\S]*selector: openSelector,[\s\S]*scopeTarget: surface,[\s\S]*scope: 'core',[\s\S]*stableSamplesRequired: 2/);
   const builders = source.slice(source.indexOf('// Builder inspection uses shared webview working-draft state.'), source.indexOf('// Stateful profiles intentionally precede the general probe.'));
   assert.match(builders, /timedProfile\([\s\S]*'pre-builder-baseline'[\s\S]*resetBaseline: false, timeoutMs: 30_000/);
   assert.match(builders, /`\$\{kind\}-builder`[\s\S]*inspectStudioBuilder[\s\S]*resetBaseline: false, timeoutMs: 120_000/);

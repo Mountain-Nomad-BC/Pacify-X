@@ -7,7 +7,7 @@ const crypto = require('node:crypto');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const { acquireWalkOwnership, appendHostProgress, boundedDelay, excludedEnginePath, ownedExternalNetworkDeniedEnvironment, ownedExternalNetworkDeniedLaunchEnvironment, parallelProofHostLock, reconcileOwnedPrelaunchFailure, reconcilePrelaunchFailure, reserveLoopbackPort, retainedHostProgress, retainedProfileProgress, stageDisposableEngine, stageOwnedGitAuthority, stageOwnedHostBoundaryFixture, stageOwnedKnowledgeFixture, stageOwnedProviderPaginationFixture, waitForIsolatedStorageBoundary } = require('../scripts/run-isolated-current-source-walk');
+const { acquireWalkOwnership, appendHostProgress, boundedDelay, excludedEnginePath, ownedExternalNetworkDeniedEnvironment, ownedExternalNetworkDeniedLaunchEnvironment, parallelProofHostLock, reconcileOwnedPrelaunchFailure, reconcilePrelaunchFailure, reserveLoopbackPort, resolveOwnedPython, retainedHostProgress, retainedProfileProgress, stageDisposableEngine, stageOwnedGitAuthority, stageOwnedHostBoundaryFixture, stageOwnedKnowledgeFixture, stageOwnedProviderPaginationFixture, waitForIsolatedStorageBoundary } = require('../scripts/run-isolated-current-source-walk');
 const { acquireHostLease } = require('../scripts/owned-host-runner');
 const { cachedVSCodeLayout, defaultOwnedCacheRoot, markOwnedHostWorkspace } = require('../scripts/owned-vscode-test-cache');
 const { gitSnapshot } = require('../src/contextBridge');
@@ -47,6 +47,30 @@ test('installed smoke canonical Python invocation cannot create repository bytec
   const invocation = source.slice(source.indexOf('const canonical = childProcess.spawnSync'), source.indexOf('assert.equal(canonical.error'));
   assert.match(invocation, /\[\s*'-B', '-m', 'runtime\.dashboard_api'/);
   assert.match(invocation, /env: \{ \.\.\.process\.env, PYTHONDONTWRITEBYTECODE: '1' \}/);
+});
+
+test('owned host launchers select dependency-complete certification Python before system Python', t => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'px-owned-python-'));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const windowsPython = path.join(root, '.venv-certify', 'Scripts', 'python.exe');
+  fs.mkdirSync(path.dirname(windowsPython), { recursive: true });
+  fs.writeFileSync(windowsPython, 'fixture');
+  assert.equal(resolveOwnedPython(root, { platform: 'win32', requested: '' }), windowsPython);
+  assert.equal(resolveOwnedPython(root, { platform: 'linux', requested: '' }), 'python3');
+  assert.equal(resolveOwnedPython(root, { platform: 'win32', requested: 'C:/explicit/python.exe' }), 'C:/explicit/python.exe');
+  const installed = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-installed-vsix-smoke.js'), 'utf8');
+  const walker = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
+  const launcher = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-isolated-current-source-walk.js'), 'utf8');
+  assert.match(installed, /PX_PYTHON_PATH: config\.pythonPath/);
+  assert.match(installed, /'pacifyX\.pythonPath': config\.pythonPath/);
+  assert.match(launcher, /PX_OWNED_ENGINE_ROOT: config\.engineRoot,\s+PX_PYTHON_PATH: config\.pythonPath/);
+  assert.equal((walker.match(/process\.env\.PX_PYTHON_PATH \|\| process\.env\.PYTHON/g) || []).length, 2);
+});
+
+test('installed listener smoke explicitly issues its required disposable delete event', () => {
+  const source = fs.readFileSync(path.join(__dirname, 'vscode-host', 'index.js'), 'utf8');
+  assert.match(source, /remove\.deleteFile\(quarantined, \{ recursive: false, ignoreIfNotExists: false \}\)/);
+  assert.match(source, /fs\.existsSync\(quarantined\.fsPath\), false/);
 });
 
 test('installed smoke worker self-enforces external-network denial for both platform lanes', () => {
@@ -768,4 +792,5 @@ test('ordinary full operational walks start the owned native input helper used b
   assert.match(prepareSource, /nativeInputSecret: nativeInputRequired \? crypto\.randomBytes\(32\)\.toString\('hex'\) : null/);
   assert.match(prepareSource, /studioKeyRoot: path\.join\(temporaryRoot, 'authority-keys'\)/);
   assert.match(source, /PX_STUDIO_KEY_ROOT: config\.studioKeyRoot/);
+  assert.match(source, /nativeInputHelper = childProcess\.spawn\('python'/);
 });

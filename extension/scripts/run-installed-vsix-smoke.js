@@ -50,6 +50,20 @@ const argument = name => {
   return index >= 0 && process.argv[index + 1] ? process.argv[index + 1] : null;
 };
 
+function resolveOwnedPython(engineRoot, options = {}) {
+  const requested = String(options.requested ?? process.env.PX_PYTHON_PATH ?? '').trim();
+  if (requested) return requested;
+  const platform = options.platform || process.platform;
+  const candidate = engineRoot && (platform === 'win32'
+    ? path.join(engineRoot, '.venv-certify', 'Scripts', 'python.exe')
+    : path.join(engineRoot, '.venv-certify', 'bin', 'python'));
+  if (candidate && fs.existsSync(candidate)) {
+    const status = fs.lstatSync(candidate);
+    if (status.isFile() && !status.isSymbolicLink()) return candidate;
+  }
+  return platform === 'win32' ? 'python' : 'python3';
+}
+
 function portableHostReceipt(value) {
   const portable = JSON.parse(JSON.stringify(value));
   if (portable?.live_dashboard?.source?.engineRoot) portable.live_dashboard.source.engineRoot = '[connected-engine-root]';
@@ -78,7 +92,7 @@ async function childMain(configPath) {
       PX_VSCODE_SMOKE_RECEIPT: config.hostReceipt,
       PX_EXPECT_CANONICAL_BUS: config.engineRoot ? '1' : '0',
       PX_ENGINE_ROOT: config.engineRoot || '',
-      PX_PYTHON_PATH: process.platform === 'win32' ? 'python' : 'python3',
+      PX_PYTHON_PATH: config.pythonPath,
       PX_OWNED_RUNTIME_WORK_PLANE_ROOT: config.runtimeWorkPlane
     },
     launchArgs: [config.workspace, `--user-data-dir=${config.userData}`, `--extensions-dir=${config.extensions}`, '--disable-updates', '--disable-workspace-trust', '--skip-welcome', '--skip-release-notes', ...(process.platform === 'linux' ? ['--no-sandbox', '--disable-gpu'] : [])]
@@ -97,7 +111,8 @@ function prepare(temporaryRoot, engineRoot, vsixPath) {
   const config = {
     workspace: path.join(temporaryRoot, 'workspace'), userData: path.join(temporaryRoot, 'user-data'), extensions: path.join(temporaryRoot, 'extensions'),
     hostReceipt: path.join(temporaryRoot, 'host-receipt.json'), childResult: path.join(temporaryRoot, 'child-result.json'),
-    runtimeWorkPlane: path.join(temporaryRoot, 'runtime-work-plane'), engineRoot, vsixPath
+    runtimeWorkPlane: path.join(temporaryRoot, 'runtime-work-plane'), engineRoot, vsixPath,
+    pythonPath: resolveOwnedPython(engineRoot, { requested: argument('--python') })
   };
   for (const directory of [config.workspace, config.userData, config.extensions]) fs.mkdirSync(directory, { recursive: true });
   fs.writeFileSync(path.join(config.workspace, 'listener-matrix.txt'), 'initial\n', 'utf8');
@@ -105,9 +120,9 @@ function prepare(temporaryRoot, engineRoot, vsixPath) {
     fs.mkdirSync(path.join(config.workspace, '.vscode'), { recursive: true });
     fs.writeFileSync(path.join(config.workspace, '.vscode', 'settings.json'), `${JSON.stringify({
       'pacifyX.engineRoot': engineRoot,
-      // Linux distributions commonly expose only python3.  Keep the Windows
-      // lane on its native launcher while making the platform receipt explicit.
-      'pacifyX.pythonPath': process.platform === 'win32' ? 'python' : 'python3',
+      // Certification must use a dependency-complete interpreter even when
+      // user-site packages are deliberately disabled.
+      'pacifyX.pythonPath': config.pythonPath,
       // The headless Linux host has no desktop trash service.  This keeps the
       // WorkspaceEdit delete path (and its will/did file-operation listeners)
       // deterministic inside the disposable owned workspace.
@@ -174,5 +189,5 @@ async function main() {
 }
 
 if (process.argv[2] === CHILD_FLAG) childMain(process.argv[3]).then(code => { process.exitCode = code; }).catch(error => { process.stderr.write(`${error.stack || error.message}\n`); process.exitCode = 1; });
-else if (process.argv.includes('--help')) process.stdout.write('Usage: node scripts/run-installed-vsix-smoke.js --engine-root <path> --vsix <path> [--expected-sha256 <sha256>] [--receipt <path>] [--lifecycle-receipt <path>]\n');
+else if (process.argv.includes('--help')) process.stdout.write('Usage: node scripts/run-installed-vsix-smoke.js --engine-root <path> --vsix <path> [--python <executable>] [--expected-sha256 <sha256>] [--receipt <path>] [--lifecycle-receipt <path>]\n');
 else main().catch(error => { process.stderr.write(`${error.stack || error.message}\n`); process.exitCode = 1; });
