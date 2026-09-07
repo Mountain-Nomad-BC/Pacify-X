@@ -2472,6 +2472,9 @@ def main(argv: list[str] | None = None) -> int:
                         resource_manager=manager,
                         run_id=f"test-group-{group['group']}-{uuid4().hex}",
                         lane_id=f"group:{group['group']}",
+                        disk_consumption_limit_bytes=int(
+                            group["disk_consumption_limit_bytes"]
+                        ),
                         manage_process_temp=True,
                     )
                     receipt = group_receipt(group, execution)

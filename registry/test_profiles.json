@@ -497,6 +497,7 @@
         "templates/generated/**"
       ],
       "parallel_safe": false,
+      "disk_work_units": 6,
       "timeout_seconds": 600
     },
     "core-a-f": {

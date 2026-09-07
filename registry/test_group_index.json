@@ -496,7 +496,7 @@
         "uuid"
       ],
       "index_state": "verified",
-      "sha256": "ca0e20387df38ddb5ed1fb7d8927be8b4d786c9f8700a53423d7bfe723bcf7ae"
+      "sha256": "db31199f266c043a7438ea209af416172e1568456e83080190a119d27fc48a35"
     },
     "runtime/cognitive_assurance.py": {
       "imports": [
@@ -2917,7 +2917,7 @@
         "typing"
       ],
       "index_state": "verified",
-      "sha256": "88e74257317879f1a09e4e0a773f1d398fa9c63e49694be98d1f12d36d33784b"
+      "sha256": "1843302e9ab9d096cc69c481d0ac777aa52118228b444bd7c638fb6a5597346e"
     },
     "runtime/test_runner.py": {
       "imports": [
@@ -7408,7 +7408,7 @@
         "sys"
       ],
       "index_state": "verified",
-      "sha256": "ee7c98dbc3b2abe40e961d55d2d8316dee9c42632e7c8f700719b87ad6502854"
+      "sha256": "2ee4757d957b6d67100e1e76c6c568b6b3561a394efeaf038068e33a25c56294"
     },
     "tests/test_test_runner_controls.py": {
       "imports": [
@@ -7659,8 +7659,10 @@
         "tests/test_workspace_manager.py"
       ],
       "description": "Serial process custody, recovery, test-runner, WAL, resource-lifecycle, and workspace mutation tests.",
+      "disk_consumption_limit_bytes": 8589934592,
+      "disk_work_units": 1,
       "group": "process-recovery",
-      "input_sha256": "e3dfbc01462c498d23df385e8d92801c817a7f473f5a6dbba9363d7557691034",
+      "input_sha256": "872987d6f0de68d30d5d619de9216b88960774ef09db5e2f44d62696b570f3ca",
       "inputs": [
         "registry/test_profiles.json",
         "runtime/commissioning.py",
@@ -7737,8 +7739,10 @@
         "tests/test_installed_wheel_e2e.py"
       ],
       "description": "Serial exact-tool, installed-wheel, corrective-release, and full-repair-ledger certification tests.",
+      "disk_consumption_limit_bytes": 8589934592,
+      "disk_work_units": 1,
       "group": "exact-installed",
-      "input_sha256": "6c883c0c10755483a086e332dc015798e2733014db8d2a9e17b41cdc90fafe98",
+      "input_sha256": "9e998fa9b9b1c28fdb8c153d18b1be9b9d9774f5ad1444f61c69ba9ceb9064c1",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -7827,8 +7831,10 @@
         "tests/test_verify_release_publication.py"
       ],
       "description": "Serial release, distribution, artifact, and revocation certification tests excluding composed audit mutations.",
+      "disk_consumption_limit_bytes": 8589934592,
+      "disk_work_units": 1,
       "group": "release-build",
-      "input_sha256": "713637e2c69f426cceeddd7266422ffe2cdce7364811f72f9dcaec393bb975a4",
+      "input_sha256": "7a0071ea8280e6098452a283118bc50078669b8b6f864a6a6778ae65c40a58fe",
       "inputs": [
         ".github/workflows/release.yml",
         "README.md",
@@ -7909,8 +7915,10 @@
         "tests/test_release_audit.py"
       ],
       "description": "Serial composed-audit and quarantine-mutation tests isolated from package builds.",
+      "disk_consumption_limit_bytes": 8589934592,
+      "disk_work_units": 1,
       "group": "release-audit",
-      "input_sha256": "065eab911567141a5b3f3cf0a9c5a92244a183c25a37b846153d5a5b3ef23ad4",
+      "input_sha256": "6d824ef62f74a8d05e81849729e14c4aacb9f0510fddfba4bee7660bc00903db",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -7955,8 +7963,10 @@
         "tests/test_structural_integrity.py"
       ],
       "description": "Serial full-tree structural mutation tests isolated from derived-artifact checks.",
+      "disk_consumption_limit_bytes": 8589934592,
+      "disk_work_units": 1,
       "group": "structural-adversarial",
-      "input_sha256": "b34f922cab7fc8ac7ff4402fd5f45956c13ac7360c680573babf599fd4b5e411",
+      "input_sha256": "d7d0962a2d430d9085fd80831edc0fcb62253c05899b96a0503c8fa97de5d95a",
       "inputs": [
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_agents_md_generator.py",
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_change_impact.py",
@@ -9753,8 +9763,10 @@
         "tests/test_registry_envelopes.py"
       ],
       "description": "Final serial generated-output, completion-projection, portability, effect-surface, and punch-card integrity gate.",
+      "disk_consumption_limit_bytes": 51539607552,
+      "disk_work_units": 6,
       "group": "derived-integrity",
-      "input_sha256": "03851ce0ee30f73e6f6829a42a3d1f12f8be6f9d63e533fa6cd9ee0fd5e358db",
+      "input_sha256": "814a2e04cda232e08ccad3bcf4768e2fc104b4b7839423fd2889e39d6703a13c",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -10065,8 +10077,10 @@
         "tests/test_foundry_studio_bridge.py"
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin A through F; this lane shares canonical registry state with core-n-s and must not overlap it.",
+      "disk_consumption_limit_bytes": 8589934592,
+      "disk_work_units": 1,
       "group": "core-a-f",
-      "input_sha256": "6a9dc8814682efe39d0f79a261900ea167fb9c8d0ce3c62e303425fc6b35e29e",
+      "input_sha256": "aa0b3e24476abe81d3fe095b51273d290c64c199f0863c2ce6826084f278b6ab",
       "inputs": [
         "builders/declared_suite_builder.py",
         "builders/declared_suite_support_builder.py",
@@ -10505,8 +10519,10 @@
         "tests/test_model_attachment.py"
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin G through M; this lane reads or mutates shared canonical repository state.",
+      "disk_consumption_limit_bytes": 8589934592,
+      "disk_work_units": 1,
       "group": "core-g-m",
-      "input_sha256": "0c66d8ae6d0a26c56221455bafad7559f098b0fb251b7068773c85dea6c1d0fd",
+      "input_sha256": "c20d834b4c3f56f8135a4190ea9e45d2960e719a9703790e2e22a80186614d6d",
       "inputs": [
         "builders/common.py",
         "builders/orchestration_builder.py",
@@ -10890,8 +10906,10 @@
         "tests/test_system_graph.py"
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin N through S; this lane reads or mutates shared canonical repository state.",
+      "disk_consumption_limit_bytes": 8589934592,
+      "disk_work_units": 1,
       "group": "core-n-s",
-      "input_sha256": "f82c818d1d0b3d81b78b29177981288f791f04ef2016db46058ff65e9f84254e",
+      "input_sha256": "6b99b5790450eb467f27f6d45ac337cb5d14f15b84a6d001790adffe7cc6db55",
       "inputs": [
         "registry/test_profiles.json",
         "runtime/__init__.py",
@@ -11275,8 +11293,10 @@
         "tests/test_world_state.py"
       ],
       "description": "Serial ordinary unit and contract tests whose file IDs begin T through Z; this lane reads or mutates shared canonical repository state.",
+      "disk_consumption_limit_bytes": 8589934592,
+      "disk_work_units": 1,
       "group": "core-t-z",
-      "input_sha256": "eca7608397b9ae0705dd55ec4b467f6b1c3d74fa1fca6e59e455786916898ec5",
+      "input_sha256": "7649c47265741ecaa4780505606f9274029f226a02649e86475c9a83d9ec94b5",
       "inputs": [
         "builders/adapter_builder.py",
         "builders/common.py",
@@ -11362,7 +11382,7 @@
   ],
   "schema_version": "px.test-group-index/1.1",
   "test_file_count": 240,
-  "topology_sha256": "24500e5d0a4cb9f3254844aaac3d8eca0663558b2f52b998da3fbbfa89d4ef4b",
+  "topology_sha256": "06a26db959b284ac20e92dfcf270b10fa662744558553498ad8cca77eeb0e855",
   "tracked_python_file_count": 597,
   "verified_file_count": 597
 }

@@ -484,6 +484,23 @@ def test_section_chunk_receipt_is_atomic_bounded_and_content_addressed(tmp_path)
         "unattributed-process-exit:2"
     ]
 
+    supervised = section_chunk_receipt(
+        section,
+        chunk,
+        {
+            "valid": False,
+            "exit_code": 3221225786,
+            "timed_out": False,
+            "duration_seconds": 30.0,
+            "stdout": "",
+            "stderr": "",
+            "supervision_status": "disk_budget_exceeded",
+        },
+    )
+    assert supervised["output_evidence"]["failure_nodes"] == [
+        "supervision:disk_budget_exceeded"
+    ]
+
     unsafe_body = {
         key: value for key, value in receipt.items() if key != "receipt_sha256"
     }
@@ -561,7 +578,11 @@ def test_certification_groups_are_exhaustive_exclusive_and_bounded():
     assert names.index("derived-integrity") > names.index("structural-adversarial")
     derived = next(group for group in groups if group["group"] == "derived-integrity")
     assert "tests/test_completion_status.py" in derived["members"]
+    assert derived["disk_work_units"] == 6
+    assert derived["disk_consumption_limit_bytes"] == 48 * 1024**3
     exact = next(group for group in groups if group["group"] == "exact-installed")
+    assert exact["disk_work_units"] == 1
+    assert exact["disk_consumption_limit_bytes"] == 8 * 1024**3
     assert "tests/test_installed_wheel_e2e.py" in exact["members"]
     assert "registry/python_surface_ownership.json" in exact["inputs"]
     assert "registry/artifact_reachability.json" in exact["inputs"]

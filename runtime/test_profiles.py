@@ -12,7 +12,7 @@ from pathlib import Path
 import sys
 from typing import Any, Mapping
 
-from .test_runner import validate_timeout
+from .test_runner import aggregate_test_disk_consumption_limit, validate_timeout
 
 
 REPAIR_CAMPAIGN_PATH = Path("registry/repair_campaign.json")
@@ -539,7 +539,11 @@ def _bounded_output_evidence(execution: Mapping[str, Any]) -> dict[str, object]:
                 failure_nodes.append(node[:300])
     exit_code = execution.get("exit_code")
     if exit_code not in {0, None} and not failure_nodes:
-        failure_nodes.append(f"unattributed-process-exit:{exit_code}"[:300])
+        supervision_status = str(execution.get("supervision_status") or "").strip()
+        if supervision_status and supervision_status != "exited":
+            failure_nodes.append(f"supervision:{supervision_status}"[:300])
+        else:
+            failure_nodes.append(f"unattributed-process-exit:{exit_code}"[:300])
     output_evidence["failure_nodes"] = failure_nodes[:50]
     return output_evidence
 
@@ -870,6 +874,8 @@ def _discover_test_groups(root: Path) -> list[dict[str, Any]]:
         assigned.update(members)
         inputs = _local_python_dependencies(root, members, module_paths)
         timeout = validate_timeout(definition.get("timeout_seconds"))
+        disk_work_units = definition.get("disk_work_units", 1)
+        disk_limit = aggregate_test_disk_consumption_limit(disk_work_units)
         groups.append(
             {
                 "schema_version": "px.test-group/1.0",
@@ -882,6 +888,8 @@ def _discover_test_groups(root: Path) -> list[dict[str, Any]]:
                 "input_sha256": _fingerprint(root, inputs),
                 "parallel_safe": definition.get("parallel_safe") is True,
                 "timeout_seconds": timeout,
+                "disk_work_units": disk_work_units,
+                "disk_consumption_limit_bytes": disk_limit,
                 "environment": dict(config.get("environment", {})),
                 "command": [
                     sys.executable,
@@ -1021,6 +1029,8 @@ def _build_test_group_index_direct(root: Path) -> dict[str, Any]:
             else []
         )
         inputs = sorted({*base_inputs, *scan_inputs})
+        disk_work_units = definition.get("disk_work_units", 1)
+        disk_limit = aggregate_test_disk_consumption_limit(disk_work_units)
         groups.append(
             {
                 "group": name,
@@ -1033,6 +1043,8 @@ def _build_test_group_index_direct(root: Path) -> dict[str, Any]:
                 "input_sha256": _fingerprint(root, inputs),
                 "parallel_safe": definition.get("parallel_safe") is True,
                 "timeout_seconds": validate_timeout(definition.get("timeout_seconds")),
+                "disk_work_units": disk_work_units,
+                "disk_consumption_limit_bytes": disk_limit,
             }
         )
     missing = sorted(set(all_tests) - assigned)
