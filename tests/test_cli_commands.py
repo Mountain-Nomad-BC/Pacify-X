@@ -16,6 +16,7 @@ from runtime.cli import (
     _prepare_certification_hygiene,
     _release_test_orchestration_single_flight,
     _refresh_stale_groups_for_full_profile,
+    _require_claimed_full_profile_campaign,
     _summarize_audit,
     main,
 )
@@ -38,6 +39,26 @@ def invoke(*arguments: str) -> tuple[int, dict]:
 
 
 class CliCommandTests(unittest.TestCase):
+    def test_claimed_full_profile_child_uses_structural_exact_claim(self) -> None:
+        claim = {
+            "stage": "full_profile",
+            "claim_id": "release-stage:PX:full_profile:one",
+        }
+        release = {
+            "valid": True,
+            "state": "active",
+            "active_claim": claim,
+            "stages": {
+                "full_profile": {"status": "claimed", "claim_id": claim["claim_id"]}
+            },
+        }
+        with patch(
+            "runtime.release_campaign.release_campaign_status",
+            return_value=release,
+        ) as status:
+            self.assertEqual(_require_claimed_full_profile_campaign(ROOT), release)
+        status.assert_called_once_with(ROOT, verify_source=False)
+
     def test_full_profile_orchestration_is_repository_single_flight(self) -> None:
         from argparse import Namespace
         from runtime.file_lock import FileLockTimeout

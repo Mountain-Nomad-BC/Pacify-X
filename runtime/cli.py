@@ -222,7 +222,7 @@ def _refresh_stale_groups_for_full_profile(
             if record.classification == "ephemeral"
             and record.status not in {"reclaimed", "retained"}
         }
-        if isinstance(baseline_records, list)
+        if isinstance(baseline_records, (list, tuple))
         else None
     )
     execution = run_test_command(
@@ -267,7 +267,7 @@ def _refresh_stale_groups_for_full_profile(
         nested_resource_reconciliation = resource_manager.reconcile(apply=True)
         final_records = resource_manager.ledger.load()
         newly_unresolved = None
-        if baseline_unresolved_ids is not None and isinstance(final_records, list):
+        if baseline_unresolved_ids is not None and isinstance(final_records, (list, tuple)):
             current_owner_pids = {os.getpid(), os.getppid()}
             release_owner_run_id = os.environ.get("PX_RELEASE_OWNER_RUN_ID", "")
             release_owner_lane_id = os.environ.get("PX_RELEASE_OWNER_LANE_ID", "")
@@ -313,11 +313,27 @@ def _refresh_stale_groups_for_full_profile(
                 if newly_unresolved is not None
                 else nested_resource_reconciliation.get("cleanup_failures")
             )
+            identities = (
+                [
+                    {
+                        "resource_id": record.resource_id,
+                        "resource_type": record.resource_type,
+                        "pid": record.pid,
+                        "run_id": record.run_id,
+                        "lane_id": record.lane_id,
+                        "creator": record.creator,
+                    }
+                    for record in newly_unresolved
+                ]
+                if newly_unresolved is not None
+                else []
+            )
             raise ValueError(
                 "owned stale test-group resource reconciliation failed: "
                 f"active={active} "
                 f"unexplained={unexplained} "
-                f"cleanup_failures={cleanup_failures}"
+                f"cleanup_failures={cleanup_failures} "
+                f"resources={json.dumps(identities, sort_keys=True)}"
             )
     if execution.get("valid") is not True and not supervision_contained:
         detail = str(
@@ -331,9 +347,17 @@ def _refresh_stale_groups_for_full_profile(
     after = group_status(root)
     remaining = [row["group"] for row in after["groups"] if not row.get("fresh")]
     if remaining:
+        detail = str(
+            execution.get("stderr")
+            or execution.get("stdout")
+            or "; ".join(str(item) for item in execution.get("errors", ()))
+            or execution.get("supervision_status")
+            or "no child detail"
+        )[-4000:]
         raise ValueError(
             "owned stale test-group refresh left stale receipts: "
             + ", ".join(remaining)
+            + f"; child={detail}"
         )
     failed = [
         row["group"]
@@ -364,6 +388,34 @@ def _refresh_stale_groups_for_full_profile(
         "nested_resource_reconciliation": nested_resource_reconciliation,
         "status": after,
     }
+
+
+def _require_claimed_full_profile_campaign(root: Path) -> dict[str, object]:
+    """Validate the already source-verified claim inside its single-flight child.
+
+    The profile parent verifies source while atomically claiming the release
+    stage.  Its immediate ``run-stale`` child inherits the same physical
+    orchestration lease, so reclassifying the live lock and resource files here
+    would make the child invalidate its own execution environment.
+    """
+    from .release_campaign import release_campaign_status
+
+    release = release_campaign_status(root, verify_source=False)
+    claim = release.get("active_claim")
+    if (
+        release.get("valid") is not True
+        or release.get("state") != "active"
+        or not isinstance(claim, dict)
+        or claim.get("stage") != "full_profile"
+        or release.get("stages", {}).get("full_profile", {}).get("status")
+        != "claimed"
+        or release.get("stages", {}).get("full_profile", {}).get("claim_id")
+        != claim.get("claim_id")
+    ):
+        raise ValueError(
+            "test-group execution requires the one claimed full-profile campaign"
+        )
+    return release
 
 
 def parser() -> argparse.ArgumentParser:
@@ -2380,23 +2432,7 @@ def main(argv: list[str] | None = None) -> int:
                 from .test_profiles import MANAGED_PROJECT_MARKER
 
                 if (root / MANAGED_PROJECT_MARKER).is_file():
-                    from .release_campaign import release_campaign_status
-
-                    release = release_campaign_status(root, verify_source=True)
-                    claim = release.get("active_claim")
-                    if (
-                        release.get("valid") is not True
-                        or release.get("state") != "active"
-                        or not isinstance(claim, dict)
-                        or claim.get("stage") != "full_profile"
-                        or release.get("stages", {})
-                        .get("full_profile", {})
-                        .get("status")
-                        != "claimed"
-                    ):
-                        raise ValueError(
-                            "test-group execution requires the one claimed full-profile campaign"
-                        )
+                    _require_claimed_full_profile_campaign(root)
                 if args.action == "run":
                     if not args.name:
                         raise ValueError("test group name is required for run")
