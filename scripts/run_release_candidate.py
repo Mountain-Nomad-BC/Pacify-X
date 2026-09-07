@@ -392,6 +392,19 @@ def _invalid_active_predecessor_kind(
     return None
 
 
+def _validate_pre_candidate_hygiene(config: Config) -> None:
+    """Require a current certificate-backed hygiene report before a successor."""
+    from scripts.pre_candidate_hygiene import validate_report_for_candidate
+
+    validate_report_for_candidate(
+        config.root,
+        predecessor_campaign_id=config.predecessor_campaign_id,
+        artifact=config.artifact,
+        artifact_sha256=config.artifact_sha256,
+        artifact_size=config.artifact_size,
+    )
+
+
 def readiness(config: Config) -> dict[str, Any]:
     from runtime.release_campaign import cleared_campaign_can_be_superseded
 
@@ -415,6 +428,10 @@ def readiness(config: Config) -> dict[str, Any]:
         errors.append("one or more fresh output paths already exist before the first step")
     if initial:
         repair_phase: str | None = None
+        try:
+            _validate_pre_candidate_hygiene(config)
+        except (OSError, ValueError, json.JSONDecodeError, RuntimeError) as exc:
+            errors.append(f"pre-candidate hygiene gate failed: {exc}")
         try:
             repair = _repair(config)
             repair_phase = str(repair.get("phase") or "")

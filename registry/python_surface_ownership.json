@@ -1,10 +1,10 @@
 {
   "direct_behavior_count": 63,
   "errors": [],
-  "evidence_association_count": 117,
+  "evidence_association_count": 118,
   "map_current": true,
-  "packaged_file_count": 586,
-  "python_file_count": 697,
+  "packaged_file_count": 587,
+  "python_file_count": 699,
   "records": [
     {
       "bytes": 1275,
@@ -5794,6 +5794,19 @@
       "validation_level": "source-only-structural"
     },
     {
+      "bytes": 35729,
+      "evidence": [
+        "tests/test_structural_integrity.py"
+      ],
+      "owner": "project-release-control",
+      "packaged": false,
+      "path": "scripts/pre_candidate_hygiene.py",
+      "role": "source-build-control",
+      "sha256": "790b4091d5c507165ed33c1f31a732849f59236b5af71b710f52a038b101b6cc",
+      "syntax_valid": true,
+      "validation_level": "evidence-association"
+    },
+    {
       "bytes": 5877,
       "evidence": [
         "structural AST validation",
@@ -6143,7 +6156,7 @@
       "validation_level": "evidence-association"
     },
     {
-      "bytes": 62143,
+      "bytes": 62834,
       "evidence": [
         "tests/test_structural_integrity.py"
       ],
@@ -6151,7 +6164,7 @@
       "packaged": false,
       "path": "scripts/run_release_candidate.py",
       "role": "source-build-control",
-      "sha256": "8d6a1c7f2ec645e0d35e825d7df7af26da5f82cc36068c141ec192c158303039",
+      "sha256": "f0432ba3cca262514ddd099a585ab95d6770ff497ae197a22a9541d8aaada3c5",
       "syntax_valid": true,
       "validation_level": "evidence-association"
     },
@@ -8075,6 +8088,19 @@
       "validation_level": "executable-test"
     },
     {
+      "bytes": 4769,
+      "evidence": [
+        "tests/test_pre_candidate_hygiene.py"
+      ],
+      "owner": "release-verification",
+      "packaged": true,
+      "path": "tests/test_pre_candidate_hygiene.py",
+      "role": "release-test",
+      "sha256": "0100805ee816dad4b73385cba45f66bb76d566e93144af02c931b466bf6511ef",
+      "syntax_valid": true,
+      "validation_level": "executable-test"
+    },
+    {
       "bytes": 2319,
       "evidence": [
         "tests/test_primitive_authority.py"
@@ -8291,7 +8317,7 @@
       "packaged": true,
       "path": "tests/test_public_repository_surface.py",
       "role": "release-test",
-      "sha256": "ef0c65ad3ee1fe57a4d15fd5a3cf9cada0f5406f835cb64b1ac98d73db93d701",
+      "sha256": "cb74ab647da16ad42dba4e6e65ef0a191cfba69b9d1f4e375af4b3d0aaa371b2",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },
@@ -8530,7 +8556,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 33181,
+      "bytes": 33899,
       "evidence": [
         "tests/test_release_candidate_driver.py"
       ],
@@ -8538,7 +8564,7 @@
       "packaged": true,
       "path": "tests/test_release_candidate_driver.py",
       "role": "release-test",
-      "sha256": "be4bc08a9d17cc013ab63abd8db6291ffec8cc157cc33925e04a3e5a482948e9",
+      "sha256": "751279fc9dae9269299aebb8e977950546ddcc5e22ea9d7762d8ce5f14ec28ef",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },
@@ -9128,7 +9154,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 11844,
+      "bytes": 11888,
       "evidence": [
         "tests/test_structural_integrity.py"
       ],
@@ -9136,7 +9162,7 @@
       "packaged": true,
       "path": "tests/test_structural_integrity.py",
       "role": "release-test",
-      "sha256": "ac34ceef08a6f6654fb621ca2de3dd1bb89517d5a13f3c85b093c680af4db7f0",
+      "sha256": "12398f1f5a45d2bdf723a3c1d9bbb6cfe48d6adab54815dc310b1270000ae52c",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },
@@ -9447,19 +9473,19 @@
     "installed-generator-template": 1,
     "installed-runtime": 241,
     "installed-skill-tool": 89,
-    "release-test": 244,
+    "release-test": 245,
     "release-test-harness": 1,
-    "source-build-control": 105,
+    "source-build-control": 106,
     "source-example": 1
   },
   "schema_version": "1.0",
   "source_only_structural_count": 84,
-  "syntax_valid_count": 697,
+  "syntax_valid_count": 699,
   "valid": true,
   "validation_counts": {
     "direct-isolated-behavior": 63,
-    "evidence-association": 117,
-    "executable-test": 245,
+    "evidence-association": 118,
+    "executable-test": 246,
     "full-suite-and-installed-integration": 186,
     "source-only-structural": 84,
     "unvalidated": 2

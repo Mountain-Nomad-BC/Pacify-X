@@ -308,6 +308,7 @@ def test_release_owner_digest_and_json_helpers_are_reviewed() -> None:
         "runtime/workspace_manager.py",
         "scripts/archive_project_map_history.py",
         "scripts/migration/extract_behavior_contracts.py",
+        "scripts/pre_candidate_hygiene.py",
         "scripts/run_installed_operational_owner.py",
         "scripts/run_release_candidate.py",
         "scripts/run_release_stage_owner.py",

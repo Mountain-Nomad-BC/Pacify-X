@@ -143,7 +143,7 @@ def test_marketplace_publication_uses_oidc_and_the_exact_certified_vsix() -> Non
     workflow = (ROOT / ".github/workflows/release.yml").read_text(encoding="utf-8")
     assert "      id-token: write" in workflow
     assert "@vscode/vsce@3.9.2 publish --oidc --skip-duplicate --packagePath" in workflow
-    assert "dae75fa9ecd4084ff85353ff404b6b1b9c87df146b763bae6f64006deeb04cd3" in workflow
+    assert "d99f5255eccce3742b729d6ed0f1a53289c22d93f44ba346eb516426fb1e4d35" in workflow
     assert "Marketplace input differs from signed VSIX" in workflow
     assert "VSIX bytes changed during Marketplace publication" in workflow
     assert "VSCE_PAT" not in workflow

@@ -1,20 +1,27 @@
 {
-  "artifact_count": 1,
+  "artifact_count": 0,
   "authority": "Exact byte identities plus live semantic receipt currentness; historical evidence is never current by presence alone.",
-  "blocking_reasons": [],
-  "current_required_receipt_count": 16,
+  "blocking_reasons": [
+    "At least one required receipt is stale or failed.",
+    "No exact VSIX artifact is indexed; source/test evidence alone is not an installed-artifact certification.",
+    "Required linux installed-VSIX smoke does not bind the current exact artifact and engine manifest.",
+    "Required test groups are not current: exact-installed, release-build, release-audit, structural-adversarial, derived-integrity, core-n-s",
+    "Required test sections are not current: testing-governance",
+    "Required win32 installed-VSIX smoke does not bind the current exact artifact and engine manifest."
+  ],
+  "current_required_receipt_count": 9,
   "engine_identity": {
-    "file_total": 3784,
+    "file_total": 4520,
     "manifest_path": "registry/engine_identity.json",
-    "manifest_sha256": "5c01f6ea0af35b061cb98dc1c3ea5ee9c7f4696e9de71d726b160eacd3d0ea4f",
+    "manifest_sha256": "a56f51e9994c89a2fccec690e0fa4efe7009956ac4b0866188e6b1dd4edb1f99",
     "schema_version": "px.engine-identity-validation/1.0",
-    "tree_sha256": "0f80fa9d1c75ec008f0a27f35cec5815da1a89c6ce1fa53b9f202e5faf9b4830",
+    "tree_sha256": "a9d5a648b082c88b83b0949bf1f15d7ee8ea03a9a8d72de2410d605d75b0292c",
     "valid": true
   },
-  "generated_utc": "2026-08-23T22:16:47.107066Z",
+  "generated_utc": "2026-09-07T04:47:23.097609Z",
   "identity": {
-    "extension_version": "0.6.49",
-    "python_version": "0.7.0.dev0"
+    "extension_version": "0.6.86",
+    "python_version": "0.7.0"
   },
   "limitations": [
     "linux installed smoke: Extension installation or enablement was not mutated in the live host; the extensions event is covered by the injected VS Code API matrix.",
@@ -26,259 +33,250 @@
     "win32 installed smoke: Terminal shell integration, debug-adapter startup, and built-in Git activation are host-dependent; their exact live results are reported without promotion.",
     "win32 installed smoke: test:unsupported:The test-result event is proposed/host-gated in some VS Code builds; unavailable getters are reported instead of breaking activation."
   ],
-  "namespace": "python-0.7.0.dev0__vscode-0.6.49",
-  "record_count": 19,
+  "namespace": "python-0.7.0__vscode-0.6.86",
+  "record_count": 18,
   "records": [
     {
-      "bytes": 1162,
+      "bytes": 16894,
       "kind": "test-receipt",
       "path": ".engineering-bootstrap/test-evidence/sections/dashboard-extension.json",
       "receipt_state": {
         "current": true,
         "dependencies_current": true,
-        "expected_input_sha256": "b6ebe0f894d6a98a44e5efebf640b37d1630107e7f0cc339af4baca40236c7c3",
+        "expected_input_sha256": "25869963a7f709ec9255190987b9a4f901849d3e9a0bc5f3cb2139d7a3c231a6",
         "fresh": true,
         "passed": true,
         "receipt_id": "dashboard-extension",
         "receipt_scope": "section"
       },
-      "sha256": "f0f31fe82aac21f7284a352972efae045d4c6a19c6d8b8bc4ca367993dc20070"
+      "sha256": "bf0d64e4c874662f7dd04ba32e410139c0da02d85cbd7b29c42463dbc0ce29e5"
     },
     {
-      "bytes": 686,
+      "bytes": 660,
       "kind": "test-receipt",
       "path": ".engineering-bootstrap/test-evidence/sections/execution-placement.json",
       "receipt_state": {
         "current": true,
         "dependencies_current": true,
-        "expected_input_sha256": "e3ceebe18e12bf19c9838bf83f3d33c34ef5529eec53619644ccc02432ab2863",
+        "expected_input_sha256": "d09ecd55f41dae172d65f4c40650898dfdf617d340d1e2799fd9365824f40444",
         "fresh": true,
         "passed": true,
         "receipt_id": "execution-placement",
         "receipt_scope": "section"
       },
-      "sha256": "93f8e87486b18350565272894559488f604a5134665da227f6cad40092397a00"
+      "sha256": "6d1bcf227f6f8ee936df23835dcd33ce5ac69bb1f1836b9e5cc5004a580ab8fe"
     },
     {
-      "bytes": 564,
+      "bytes": 583,
       "kind": "test-receipt",
       "path": ".engineering-bootstrap/test-evidence/sections/hardware-routing.json",
       "receipt_state": {
         "current": true,
         "dependencies_current": true,
-        "expected_input_sha256": "ea263a6bd0cd30941c239bf5d8323499ea1837a50e04a282e5c1d2d54dea1a69",
+        "expected_input_sha256": "b23cf4a96e1c717ab65db4e9ea7d69d92b27c836344a4db19db5e7c9af06c9ab",
         "fresh": true,
         "passed": true,
         "receipt_id": "hardware-routing",
         "receipt_scope": "section"
       },
-      "sha256": "1504f0a469a099a91e9cba7b72fb4c6cc7bde1b6ae09bf4a8b92e64950c03294"
+      "sha256": "daa899332297255a08d17e18483ec4109a0a05e9bf7c9b4d359413a3747b6884"
     },
     {
-      "bytes": 621,
+      "bytes": 598,
       "kind": "test-receipt",
       "path": ".engineering-bootstrap/test-evidence/sections/learning-promotion.json",
       "receipt_state": {
         "current": true,
         "dependencies_current": true,
-        "expected_input_sha256": "6a770ee4c5bc35fd783e4cbb5c1de1085ae7755fbe7928111e569c721cc8b8d9",
+        "expected_input_sha256": "9dec7bd95066e4347bf2eddca95b04831fa667aa72834188e674d66e132e5dea",
         "fresh": true,
         "passed": true,
         "receipt_id": "learning-promotion",
         "receipt_scope": "section"
       },
-      "sha256": "10256608f0f622271990ce108c82acccb64cbed5b4e6351c01e2536e41f8f2c7"
+      "sha256": "129e63fcbdf2c534e3db23b74bef2995bfcf0832bea351503b7a90d8f3afd69d"
     },
     {
-      "bytes": 3649,
+      "bytes": 8966,
       "kind": "test-receipt",
       "path": ".engineering-bootstrap/test-evidence/sections/studio-memory-graph.json",
       "receipt_state": {
         "current": true,
         "dependencies_current": true,
-        "expected_input_sha256": "99946367f460eee852f7f229502a1946762f05119f524cd960c7379280ba4e8a",
+        "expected_input_sha256": "8acb686d2eb4ad78fcf93d566ae0a3cc5f2525a5a769a82445ed0ccdcb8e522d",
         "fresh": true,
         "passed": true,
         "receipt_id": "studio-memory-graph",
         "receipt_scope": "section"
       },
-      "sha256": "bf9433cac23942d017b90f70ec2b06fe64484fa4886f2dfe265c693ba09f47f5"
+      "sha256": "f66b699c6b7e62d7fadbb7175adab96c86a121c29741e352378bf9c15a76032f"
     },
     {
-      "bytes": 961,
+      "bytes": 16959,
       "kind": "test-receipt",
       "path": ".engineering-bootstrap/test-evidence/sections/testing-governance.json",
       "receipt_state": {
-        "current": true,
+        "current": false,
         "dependencies_current": true,
-        "expected_input_sha256": "bf20b9b04c56d009358a8a6497a176442be26323fefef59f430d89d375dfc12d",
-        "fresh": true,
+        "expected_input_sha256": "4dfc98c900727228c87e79bd62233bd329962c03de3ca14e9487c21b7d68f69a",
+        "fresh": false,
         "passed": true,
         "receipt_id": "testing-governance",
         "receipt_scope": "section"
       },
-      "sha256": "3004e0149e474cb3d4f4b4b2de3bdbc829aa561ee9fe1a93c6ab242eab65c679"
+      "sha256": "a210c87b4067714a05a99f2690b847dcd788a4bdc4d9b6cd8359f79ed5bb2994"
     },
     {
-      "bytes": 658,
+      "bytes": 641,
       "kind": "test-receipt",
       "path": ".engineering-bootstrap/test-evidence/groups/core-a-f.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "bde23e554a889cf142e42aac2370d1a815f592778de768d5b268c239de8b4014",
+        "expected_input_sha256": "6a9dc8814682efe39d0f79a261900ea167fb9c8d0ce3c62e303425fc6b35e29e",
         "fresh": true,
         "passed": true,
         "receipt_id": "core-a-f",
         "receipt_scope": "group"
       },
-      "sha256": "4c66a2a34dc1742e2c9a8c4b65e069b9e8f58866c990b93611d91a1f51079c3d"
+      "sha256": "c92ef86841684b75e0fc05bbb3f53c9a9818a9e40c5f694a446a639965309c3e"
     },
     {
-      "bytes": 659,
+      "bytes": 639,
       "kind": "test-receipt",
       "path": ".engineering-bootstrap/test-evidence/groups/core-g-m.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "a58670e0c153403c241a7ce6702a6f18dc890c8715ffe4dab525eb4709747e14",
+        "expected_input_sha256": "0c66d8ae6d0a26c56221455bafad7559f098b0fb251b7068773c85dea6c1d0fd",
         "fresh": true,
         "passed": true,
         "receipt_id": "core-g-m",
         "receipt_scope": "group"
       },
-      "sha256": "533dcd52fc5086f89f45b83944af0009e230ad0975b2169d97ebbe5d26621669"
+      "sha256": "0649afdd4689e7eb076f3a48465eb0a6e9998b64a4db9b24f7f98caefe906f2f"
     },
     {
-      "bytes": 660,
+      "bytes": 765,
       "kind": "test-receipt",
       "path": ".engineering-bootstrap/test-evidence/groups/core-n-s.json",
       "receipt_state": {
-        "current": true,
-        "expected_input_sha256": "dee12022690a54049dfc993461e699a96f52dfdf10d7b99a5f4551f83196543f",
-        "fresh": true,
-        "passed": true,
+        "current": false,
+        "expected_input_sha256": "f82c818d1d0b3d81b78b29177981288f791f04ef2016db46058ff65e9f84254e",
+        "fresh": false,
+        "passed": false,
         "receipt_id": "core-n-s",
         "receipt_scope": "group"
       },
-      "sha256": "f6f1be21486739f7973261777d2a0e6a67519c4f50c5772a759c0e799d79b2b1"
+      "sha256": "d5d47f05e60c74a3f470326fab867da7c846ad5744b3a74c4043898c1d2f7e99"
     },
     {
-      "bytes": 658,
+      "bytes": 641,
       "kind": "test-receipt",
       "path": ".engineering-bootstrap/test-evidence/groups/core-t-z.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "91bda8d473e036766e3f321c0cbdc78df807e73a9e76934ca92ea66a12f82f81",
+        "expected_input_sha256": "eca7608397b9ae0705dd55ec4b467f6b1c3d74fa1fca6e59e455786916898ec5",
         "fresh": true,
         "passed": true,
         "receipt_id": "core-t-z",
         "receipt_scope": "group"
       },
-      "sha256": "fd73b55692d4229abd8171448aab3312db8b6d08d637bc43ef4241537a6462e8"
+      "sha256": "942d85ebd12d543f1e33a9841d43b4930b150be328eb4e6553fe67907831a1a2"
     },
     {
-      "bytes": 667,
+      "bytes": 707,
       "kind": "test-receipt",
       "path": ".engineering-bootstrap/test-evidence/groups/derived-integrity.json",
       "receipt_state": {
-        "current": true,
-        "expected_input_sha256": "11239c3b39f4e2fc0da61f9b6bb9dcaa305432f141b0c2dac64c4ea1672d6b1a",
-        "fresh": true,
-        "passed": true,
+        "current": false,
+        "expected_input_sha256": "03851ce0ee30f73e6f6829a42a3d1f12f8be6f9d63e533fa6cd9ee0fd5e358db",
+        "fresh": false,
+        "passed": false,
         "receipt_id": "derived-integrity",
         "receipt_scope": "group"
       },
-      "sha256": "9957d1db37f155b8bb23e959382a025ba43e4b3a77db1d2091556096d507a838"
+      "sha256": "6626be0a9a1fe619b76b4ab4aa87b0fa27174c09f340d7772ee21d3bdac59115"
     },
     {
-      "bytes": 666,
+      "bytes": 647,
       "kind": "test-receipt",
       "path": ".engineering-bootstrap/test-evidence/groups/exact-installed.json",
       "receipt_state": {
-        "current": true,
-        "expected_input_sha256": "c3f48eb31d69f3a3a86479b403dbba55078b476b9ebd3dae246e0017759bb680",
-        "fresh": true,
+        "current": false,
+        "expected_input_sha256": "6c883c0c10755483a086e332dc015798e2733014db8d2a9e17b41cdc90fafe98",
+        "fresh": false,
         "passed": true,
         "receipt_id": "exact-installed",
         "receipt_scope": "group"
       },
-      "sha256": "920f898a22d4f02a6138ac9d7fa61e7546e63ceba2c5c6c05aed38dfac9d3479"
+      "sha256": "832f748ee2d5b1df89ceea06184c5d68c295487ec42d8b10409aadcb3bebd7ee"
     },
     {
-      "bytes": 668,
+      "bytes": 650,
       "kind": "test-receipt",
       "path": ".engineering-bootstrap/test-evidence/groups/process-recovery.json",
       "receipt_state": {
         "current": true,
-        "expected_input_sha256": "169f88904d7d270fd2f3b47ba6bf85cd42f76fec9207af5b77ec2aeed0f08ff0",
+        "expected_input_sha256": "e3dfbc01462c498d23df385e8d92801c817a7f473f5a6dbba9363d7557691034",
         "fresh": true,
         "passed": true,
         "receipt_id": "process-recovery",
         "receipt_scope": "group"
       },
-      "sha256": "e4f5897659a2f4f7c53e336dd10a7158a8210c525490262961277a1b6b04ba67"
+      "sha256": "7177b0051744e2a9a12dfc136298f454ce53138c8bda22008137f750c1d78fa5"
     },
     {
-      "bytes": 663,
+      "bytes": 644,
       "kind": "test-receipt",
       "path": ".engineering-bootstrap/test-evidence/groups/release-audit.json",
       "receipt_state": {
-        "current": true,
-        "expected_input_sha256": "2221a701ddf69a6b550e39bb5f68ddc8fcd98b14a901138ec2937849de9b70ad",
-        "fresh": true,
+        "current": false,
+        "expected_input_sha256": "065eab911567141a5b3f3cf0a9c5a92244a183c25a37b846153d5a5b3ef23ad4",
+        "fresh": false,
         "passed": true,
         "receipt_id": "release-audit",
         "receipt_scope": "group"
       },
-      "sha256": "67b2652a041ecd7bb236852b17cfd6ed51b37f90186370b2d5bd3566254650a5"
+      "sha256": "395b0ccf20336dc710455a4f9a56426234edf83d2663e714961e58ce20dfd017"
     },
     {
-      "bytes": 664,
+      "bytes": 647,
       "kind": "test-receipt",
       "path": ".engineering-bootstrap/test-evidence/groups/release-build.json",
       "receipt_state": {
-        "current": true,
-        "expected_input_sha256": "d68be25802e7404e0f3eacfb54497464ae4b56df67066af649636b344a25c113",
-        "fresh": true,
+        "current": false,
+        "expected_input_sha256": "713637e2c69f426cceeddd7266422ffe2cdce7364811f72f9dcaec393bb975a4",
+        "fresh": false,
         "passed": true,
         "receipt_id": "release-build",
         "receipt_scope": "group"
       },
-      "sha256": "c846e75f28e5475968b05631ad876bb589bff7db60e956aeac684fb8b1ccb07b"
+      "sha256": "740571e7463d9a2c25eae49f9f5e2d6abf95b70e6a1ac2a59432989ea7a2b8cb"
     },
     {
-      "bytes": 673,
+      "bytes": 655,
       "kind": "test-receipt",
       "path": ".engineering-bootstrap/test-evidence/groups/structural-adversarial.json",
       "receipt_state": {
-        "current": true,
-        "expected_input_sha256": "c29c716d9db7930d4353d8c5bebd23dd6f31d96a4e87272bf9883a904195bcc2",
-        "fresh": true,
+        "current": false,
+        "expected_input_sha256": "b34f922cab7fc8ac7ff4402fd5f45956c13ac7360c680573babf599fd4b5e411",
+        "fresh": false,
         "passed": true,
         "receipt_id": "structural-adversarial",
         "receipt_scope": "group"
       },
-      "sha256": "57652768478f26681f0b48397f2f56a086abd2ef1c1dd54c73a3e6ba00d18b19"
+      "sha256": "25ec2cc20f3dc03e363a90799be558aa0ec1e1e1651e92118ab27ec244969539"
     },
     {
-      "artifact_version": "0.6.49",
-      "bytes": 4217144,
-      "kind": "vsix",
-      "locator_kind": "repository-relative",
-      "path": "extension/dist/pacify-x-vscode-0.6.49.vsix",
-      "sha256": "c167ccf2dc04648a1b6fa205a4af8e4bd7ed109b97e5cd5b74d200ed0f6c6cfa",
-      "version_current": true
-    },
-    {
-      "artifact_bound": true,
-      "artifact_sha256": "c167ccf2dc04648a1b6fa205a4af8e4bd7ed109b97e5cd5b74d200ed0f6c6cfa",
-      "bytes": 20516,
+      "artifact_bound": false,
+      "artifact_sha256": "dae75fa9ecd4084ff85353ff404b6b1b9c87df146b763bae6f64006deeb04cd3",
+      "bytes": 20646,
       "coverage_complete": true,
       "coverage_tier": "B",
       "engine_identity": {
-        "file_total": 3784,
+        "file_total": 3941,
         "manifest_path": "registry/engine_identity.json",
-        "manifest_sha256": "5c01f6ea0af35b061cb98dc1c3ea5ee9c7f4696e9de71d726b160eacd3d0ea4f",
-        "tree_sha256": "0f80fa9d1c75ec008f0a27f35cec5815da1a89c6ce1fa53b9f202e5faf9b4830"
+        "manifest_sha256": "4087787e41ffe3fa1b00dd9a0b57253ed1055bb358c279180e265f39fe76b2f6",
+        "tree_sha256": "59af17dddcb622e66f7e58a12a63186c73a5b46452ace4f0ea0f7ee5175dbb01"
       },
       "kind": "installed-vsix-smoke",
       "limitations": [
@@ -289,19 +287,19 @@
       ],
       "path": "extension/evidence/installed-vsix-smoke.json",
       "platform": "win32",
-      "sha256": "6caefab9751aecb42e6157025fbbf19efe5cbf0afefd85e1a02724479ca138cb"
+      "sha256": "0620657ded2f87f07b1feb4ecb65c93d94f33ef03167b0ccfcccf7044f3b8af2"
     },
     {
-      "artifact_bound": true,
-      "artifact_sha256": "c167ccf2dc04648a1b6fa205a4af8e4bd7ed109b97e5cd5b74d200ed0f6c6cfa",
-      "bytes": 20542,
+      "artifact_bound": false,
+      "artifact_sha256": "dae75fa9ecd4084ff85353ff404b6b1b9c87df146b763bae6f64006deeb04cd3",
+      "bytes": 20566,
       "coverage_complete": true,
       "coverage_tier": "B",
       "engine_identity": {
-        "file_total": 3784,
+        "file_total": 3941,
         "manifest_path": "registry/engine_identity.json",
-        "manifest_sha256": "5c01f6ea0af35b061cb98dc1c3ea5ee9c7f4696e9de71d726b160eacd3d0ea4f",
-        "tree_sha256": "0f80fa9d1c75ec008f0a27f35cec5815da1a89c6ce1fa53b9f202e5faf9b4830"
+        "manifest_sha256": "4087787e41ffe3fa1b00dd9a0b57253ed1055bb358c279180e265f39fe76b2f6",
+        "tree_sha256": "59af17dddcb622e66f7e58a12a63186c73a5b46452ace4f0ea0f7ee5175dbb01"
       },
       "kind": "installed-vsix-smoke",
       "limitations": [
@@ -312,10 +310,10 @@
       ],
       "path": "extension/evidence/installed-vsix-smoke-linux.json",
       "platform": "linux",
-      "sha256": "9f021213803a536f6f45bcdee6f6c336a555227109a2f6d7af9c632faf5bdb81"
+      "sha256": "d92b5eb7891f9b63028f3ca9188c55215898c374d0b227e2390c0727cb656839"
     }
   ],
   "required_receipt_count": 16,
   "schema_version": "px.current-evidence-index/1.3",
-  "valid": true
+  "valid": false
 }

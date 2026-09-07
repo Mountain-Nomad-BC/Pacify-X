@@ -2192,6 +2192,13 @@
       "violations": []
     },
     {
+      "bytes": 35729,
+      "path": "scripts/pre_candidate_hygiene.py",
+      "scan_state": "verified",
+      "sha256": "790b4091d5c507165ed33c1f31a732849f59236b5af71b710f52a038b101b6cc",
+      "violations": []
+    },
+    {
       "bytes": 5877,
       "path": "scripts/quarantine_paths.py",
       "scan_state": "verified",
@@ -2367,10 +2374,10 @@
       "violations": []
     },
     {
-      "bytes": 62143,
+      "bytes": 62834,
       "path": "scripts/run_release_candidate.py",
       "scan_state": "verified",
-      "sha256": "8d6a1c7f2ec645e0d35e825d7df7af26da5f82cc36068c141ec192c158303039",
+      "sha256": "f0432ba3cca262514ddd099a585ab95d6770ff497ae197a22a9541d8aaada3c5",
       "violations": []
     },
     {
@@ -2428,5 +2435,5 @@
     "violations": []
   },
   "schema_version": "px.provider-route-index/1.3",
-  "verified_file_count": 345
+  "verified_file_count": 346
 }

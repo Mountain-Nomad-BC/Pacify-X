@@ -24,6 +24,13 @@ from scripts.run_release_candidate import (
 )
 
 
+@pytest.fixture(autouse=True)
+def current_pre_candidate_hygiene_gate():
+    """Most driver tests isolate release-state logic from the hygiene module."""
+    with patch("scripts.run_release_candidate._validate_pre_candidate_hygiene"):
+        yield
+
+
 class FakeOwners:
     def __init__(self, *, fail: str | None = None):
         self.fail = fail
@@ -228,6 +235,19 @@ def test_initial_readiness_allows_one_unused_cleared_predecessor(
         encoding="utf-8",
     )
     assert readiness(value)["valid"] is True
+
+
+def test_initial_readiness_fails_closed_when_pre_candidate_hygiene_is_not_current(
+    tmp_path: Path,
+) -> None:
+    value = config(tmp_path)
+    with patch(
+        "scripts.run_release_candidate._validate_pre_candidate_hygiene",
+        side_effect=RuntimeError("transient custody remains"),
+    ):
+        result = readiness(value)
+    assert result["valid"] is False
+    assert "pre-candidate hygiene gate failed: transient custody remains" in result["errors"]
 
 
 def test_initial_readiness_requires_marker_for_chained_preidentity_predecessor(
