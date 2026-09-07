@@ -104,6 +104,7 @@ def test_cross_group_total_budget_exceeds_one_slow_member_chunk() -> None:
         "chunk_timeout_seconds"
     ]
 
+    assert certification["cross_group_command"][:3] == ["python", "-B", "-m"]
     assert len(command_members) == 4
     assert certification["cross_group_timeout_seconds"] == 900
     assert certification["cross_group_timeout_seconds"] >= governance_chunk_timeout * 3

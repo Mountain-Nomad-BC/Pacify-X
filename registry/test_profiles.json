@@ -353,6 +353,7 @@
     ],
     "cross_group_command": [
       "python",
+      "-B",
       "-m",
       "pytest",
       "-q",
