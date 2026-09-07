@@ -15,6 +15,18 @@ SPEC.loader.exec_module(MODULE)
 
 
 class CacheQuarantineTests(unittest.TestCase):
+    def test_repository_root_pytest_cache_is_external_tool_custody(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            cache = root / ".pytest_cache"
+            cache.mkdir()
+            (cache / "state.json").write_text("{}\n", encoding="utf-8")
+
+            result = MODULE.cleanup(root, apply=False)
+
+            self.assertEqual(result["cache_directory_count"], 0)
+            self.assertEqual(result["inventoried_file_count"], 0)
+
     def test_external_runtime_caches_are_never_quarantined(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

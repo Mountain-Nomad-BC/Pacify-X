@@ -3984,7 +3984,7 @@
       "validation_level": "evidence-association"
     },
     {
-      "bytes": 15607,
+      "bytes": 15692,
       "evidence": [
         "tests/test_release_audit.py",
         "tests/test_test_runner_controls.py"
@@ -3993,7 +3993,7 @@
       "packaged": true,
       "path": "runtime/release_audit.py",
       "role": "installed-runtime",
-      "sha256": "4f9a6369b8c19d7f8bcfe9417654b8dd164696809514363666c5b4a0c018424f",
+      "sha256": "3a0274b9cc961f8dc7877112f22e6f083a06e7c357d196e56678e1079c89a721",
       "syntax_valid": true,
       "validation_level": "evidence-association"
     },
@@ -5449,7 +5449,7 @@
       "validation_level": "evidence-association"
     },
     {
-      "bytes": 6208,
+      "bytes": 6561,
       "evidence": [
         "tests/test_cache_quarantine.py",
         "tests/test_test_profiles.py"
@@ -5458,7 +5458,7 @@
       "packaged": false,
       "path": "scripts/cleanup_python_caches.py",
       "role": "source-build-control",
-      "sha256": "a31cde3a614cb550a99a94c615ee6507d46f813b2bbdbf3f56ffc366d862574d",
+      "sha256": "5e84e7f4adef1d48df31c9caad55baa3a1d853c959938d59bf38f2b8f51bf9ad",
       "syntax_valid": true,
       "validation_level": "evidence-association"
     },
@@ -6671,7 +6671,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 4895,
+      "bytes": 5399,
       "evidence": [
         "tests/test_cache_quarantine.py"
       ],
@@ -6679,7 +6679,7 @@
       "packaged": true,
       "path": "tests/test_cache_quarantine.py",
       "role": "release-test",
-      "sha256": "c3cd31a8fa76fc9fc4f60b9175bd35bac7edbee90ffcdf10aa810305489d4189",
+      "sha256": "83929f399998a8ff621b529d7d8804d3797b5246417f66acdd7bb76f457ed312",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },
@@ -8504,7 +8504,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 3801,
+      "bytes": 4265,
       "evidence": [
         "tests/test_release_audit.py"
       ],
@@ -8512,7 +8512,7 @@
       "packaged": true,
       "path": "tests/test_release_audit.py",
       "role": "release-test",
-      "sha256": "4f07553463ac750d7e2bc3da600a296b8fe953e8512b44186f739f75d1deb279",
+      "sha256": "6959b52b3eba61850a1080342a132e638b42b9c614970352da0137fd334d0761",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },

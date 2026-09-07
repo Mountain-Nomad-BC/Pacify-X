@@ -78,6 +78,8 @@ def _release_audit_walk(root: Path):
     def exclude_audit_path(relative: str | Path) -> bool:
         path = Path(relative)
         parts = path.parts
+        if parts and parts[0].casefold() == ".pytest_cache":
+            return True
         if parts[:2] == _QUARANTINE_PREFIX:
             return True
         if (

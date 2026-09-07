@@ -24,9 +24,15 @@ BYTECODE_SUFFIXES = {".pyc", ".pyo"}
 
 def _is_cleanup_excluded(relative: str) -> bool:
     """Prune external custody without pruning the cache targets themselves."""
+    relative_path = Path(relative)
+    if relative_path.parts and relative_path.parts[0].casefold() == ".pytest_cache":
+        # Repository-root pytest custody is ignored by Git and excluded from
+        # every product/export boundary. Do not require access to tool-owned
+        # cache internals in order to certify source bytes.
+        return True
     parts = tuple(
         part
-        for part in Path(relative).parts
+        for part in relative_path.parts
         if part.casefold() not in CACHE_DIRECTORIES
     )
     return bool(parts) and is_external_environment_relative(Path(*parts))

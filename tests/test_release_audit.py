@@ -42,6 +42,17 @@ class ReleaseAuditTests(unittest.TestCase):
             self.assertTrue(any(".ruff_cache" in item for item in hygiene["evidence"]))
             self.assertTrue(any("__pycache__" in item for item in hygiene["evidence"]))
 
+    def test_repository_root_pytest_cache_is_external_tool_custody(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            clone = Path(directory) / "framework"
+            cache = clone / ".pytest_cache"
+            cache.mkdir(parents=True)
+            (cache / "state.json").write_text("{}\n", encoding="utf-8")
+
+            hygiene = audit_generated_artifact_hygiene(clone)
+
+            self.assertTrue(hygiene["passed"], hygiene)
+
     def test_quarantined_cache_is_retained_but_not_active(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             clone = Path(directory) / "framework"
