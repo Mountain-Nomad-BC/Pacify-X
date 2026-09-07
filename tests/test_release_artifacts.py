@@ -17,6 +17,7 @@ from runtime.release_campaign import (
     claim_release_stage,
     clear_release_identity,
     finish_release_stage,
+    rewind_consumed_cleared_release_campaign_repair,
     rewind_failed_release_campaign_repair,
     rewind_invalid_active_release_campaign_repair,
     rewind_invalid_release_identity_reconciliation,
@@ -340,6 +341,19 @@ def _write_release_repair_state(root: Path, phase: str) -> None:
         '"intake_open":false,"unresolved":[]}\n',
         encoding="utf-8",
     )
+
+
+def test_consumed_cleared_campaign_rewinds_only_reconciled_repair() -> None:
+    root = _minimal_tree()
+    _write_release_repair_state(root, "repair_frozen")
+    clear_release_identity(root, campaign_id="unused-cleared")
+    _write_release_repair_state(root, "revision_reconciled")
+
+    result = rewind_consumed_cleared_release_campaign_repair(root)
+
+    assert result["valid"] is True
+    assert result["campaign_id"] == "unused-cleared"
+    assert result["phase"] == "repair_frozen"
 
 
 def test_real_classifier_is_stable_across_identity_apply_and_invalid_supersession(

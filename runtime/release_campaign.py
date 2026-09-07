@@ -70,7 +70,7 @@ def _valid_pre_identity_failure(value: object, campaign_id: str) -> bool:
         isinstance(value, dict)
         and value.get("schema_version") == PRE_IDENTITY_FAILURE_SCHEMA
         and value.get("campaign_id") == campaign_id
-        and value.get("owner") in {"archive_clear", "reconcile"}
+        and value.get("owner") in {"archive_clear", "reconcile", "identity"}
         and value.get("status") == "failed"
         and value.get("attempt_count") == 1
         and bool(str(value.get("error") or "").strip())
@@ -227,7 +227,7 @@ def mark_pre_identity_owner_failure(
     candidate = campaign_id.strip()
     owner_name = owner.strip()
     explanation = error.strip()
-    if owner_name not in {"archive_clear", "reconcile"} or not explanation:
+    if owner_name not in {"archive_clear", "reconcile", "identity"} or not explanation:
         raise ReleaseCampaignBlocked("pre-identity failure marker is incomplete")
     path = root / STATE_PATH
     value = _validate(json.loads(path.read_text(encoding="utf-8")))
@@ -520,6 +520,34 @@ def rewind_invalid_release_identity_reconciliation(root: Path) -> dict[str, Any]
         "campaign_id": value["campaign_id"],
         "phase": "repair_frozen",
         "source_verification_errors": list(verification["errors"]),
+        "valid": True,
+    }
+
+
+def rewind_consumed_cleared_release_campaign_repair(root: Path) -> dict[str, Any]:
+    """Return one unused reconciled cleared campaign to repair freeze."""
+
+    root = root.resolve(strict=True)
+    repair = _repair_campaign(root)
+    value = _validate(json.loads((root / STATE_PATH).read_text(encoding="utf-8")))
+    if (
+        repair.get("phase") != "revision_reconciled"
+        or repair.get("intake_open") is not False
+        or repair.get("unresolved") != []
+    ):
+        raise ReleaseCampaignBlocked(
+            "cleared campaign rewind requires a zero-unresolved reconciled repair"
+        )
+    if not cleared_campaign_can_be_superseded(value):
+        raise ReleaseCampaignBlocked(
+            "cleared campaign rewind requires one unused supersedable campaign"
+        )
+    repair["phase"] = "repair_frozen"
+    _write(root / REPAIR_CAMPAIGN_PATH, repair)
+    return {
+        "schema_version": "px.consumed-cleared-reconciliation-rewind/1.0",
+        "campaign_id": value["campaign_id"],
+        "phase": "repair_frozen",
         "valid": True,
     }
 

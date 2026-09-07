@@ -235,6 +235,11 @@ def test_initial_readiness_allows_one_unused_cleared_predecessor(
         encoding="utf-8",
     )
     assert readiness(value)["valid"] is True
+    repair_path = control / "repair-campaign.json"
+    repair = json.loads(repair_path.read_text(encoding="utf-8"))
+    repair["phase"] = "revision_reconciled"
+    repair_path.write_text(json.dumps(repair), encoding="utf-8")
+    assert readiness(value)["valid"] is True
 
 
 def test_initial_readiness_fails_closed_when_pre_candidate_hygiene_is_not_current(

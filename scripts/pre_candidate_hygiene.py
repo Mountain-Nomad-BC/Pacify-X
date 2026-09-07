@@ -212,6 +212,26 @@ def _source_invalid_active_predecessor(
     )
 
 
+def _cleared_preidentity_predecessor(
+    release: dict[str, Any], predecessor_campaign_id: str
+) -> bool:
+    """Mirror the driver's exact terminal cleared-campaign boundary."""
+
+    from runtime.release_campaign import cleared_campaign_can_be_superseded
+
+    return bool(
+        release.get("valid") is True
+        and release.get("campaign_id") == predecessor_campaign_id
+        and release.get("state") == "cleared"
+        and release.get("apply_count") == 0
+        and release.get("identity") is None
+        and release.get("active_claim") is None
+        and cleared_campaign_can_be_superseded(
+            {**release, "schema_version": "px.release-campaign/1.0"}
+        )
+    )
+
+
 def _entry_snapshot(root: Path) -> list[dict[str, Any]]:
     """Hash a tree without following links; retain empty directories."""
     if not _lexists(root):
@@ -635,12 +655,21 @@ def assess(
     source_invalid_active_lineage = _source_invalid_active_predecessor(
         release, source_release, predecessor_campaign_id
     )
-    lineage_valid = terminal_failed_lineage or source_invalid_active_lineage
+    cleared_preidentity_lineage = _cleared_preidentity_predecessor(
+        release, predecessor_campaign_id
+    )
+    lineage_valid = (
+        terminal_failed_lineage
+        or source_invalid_active_lineage
+        or cleared_preidentity_lineage
+    )
     lineage_kind = (
         "terminal_failed"
         if terminal_failed_lineage
         else "source_invalid_active_with_retained_passes"
         if source_invalid_active_lineage
+        else "terminal_cleared_preidentity"
+        if cleared_preidentity_lineage
         else None
     )
     artifact_valid = (

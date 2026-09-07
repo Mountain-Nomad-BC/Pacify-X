@@ -2315,7 +2315,7 @@
         "uuid"
       ],
       "index_state": "verified",
-      "sha256": "4d0d2d96024c1594445c60f7d9b39349bb575639b1c3af17e11519bed2bf3d4f"
+      "sha256": "71496a4bbc63652686f138c44ec610f4a5c711f7470b0a4759e7be78da41a04a"
     },
     "runtime/release_certification.py": {
       "imports": [
@@ -4121,7 +4121,7 @@
         "uuid"
       ],
       "index_state": "verified",
-      "sha256": "358ba656a1dcdd52d87321f4b2a711199f81e2ce27e8d09fb3bacfd08c6545b6"
+      "sha256": "cd015f26f040bfa25744e42f184fd75b1f9b8dad3a86bd516b03c279a029ba36"
     },
     "scripts/quarantine_paths.py": {
       "imports": [
@@ -4165,7 +4165,7 @@
         "typing"
       ],
       "index_state": "verified",
-      "sha256": "3e327423c02ea4450e949cc94a129d80d19ffd2694d35af047f19bf121069807"
+      "sha256": "d1d33e264bec3ea2964b016b607e2604b8990e212f2e72a2e478f2fb7b809097"
     },
     "scripts/reconcile_commissioned_skill_registry.py": {
       "imports": [
@@ -4474,7 +4474,7 @@
         "uuid"
       ],
       "index_state": "verified",
-      "sha256": "78d316a59b3f4778d628a934527f94a1b06a7f4b046dec9d2efb316d761c15a2"
+      "sha256": "b6fdc4ac2c7a1c8b4c2597591afcce2826e3638d6a1ca980b6a88dd6782aa360"
     },
     "scripts/run_release_fault_campaign.py": {
       "imports": [
@@ -4517,7 +4517,7 @@
         "zipfile"
       ],
       "index_state": "verified",
-      "sha256": "885a93dadfdfb94346efbfc1e8e0508b173fd9eb2feae9f5929c742c4703ee63"
+      "sha256": "251056a7e7f2de8436d37e8a80df92ef83a0fc5e64db411c63d47cd83bb28aff"
     },
     "scripts/sanitize_host_bound_cleanup_evidence.py": {
       "imports": [
@@ -6283,11 +6283,12 @@
         "__future__",
         "json",
         "pathlib",
+        "runtime.release_campaign",
         "scripts.pre_candidate_hygiene",
         "unittest.mock"
       ],
       "index_state": "verified",
-      "sha256": "8f8de3e821b9ecb8f42fdcb40fd7cceddc8bacb6f238093ca983e9b263868efe"
+      "sha256": "fff0b0bd7bb97b42c41815e403224866e19c7aacc6f45a0fde607fec3e885808"
     },
     "tests/test_primitive_authority.py": {
       "imports": [
@@ -6593,7 +6594,7 @@
         "shutil"
       ],
       "index_state": "verified",
-      "sha256": "9bbf6116dc8531749aa9ab97d3442aac452eaddbaecb74ca3e21882761cc19e7"
+      "sha256": "ff998134cb80d02ede3a5d17d589036ffd8a18f40d768cb34c6317db0087f564"
     },
     "tests/test_reconcile_unverified_operational_controls.py": {
       "imports": [
@@ -6699,7 +6700,7 @@
         "tempfile"
       ],
       "index_state": "verified",
-      "sha256": "4f8fd5a979dc7da28a9d787660a0c6252067da0ef44842ef3e6c7b776ff463b4"
+      "sha256": "3e4b6e9b6b86e596f4f901d941b8b9f957cfdcfbbf4ece390bb3f19cbfea5cb8"
     },
     "tests/test_release_audit.py": {
       "imports": [
@@ -6738,7 +6739,7 @@
         "unittest.mock"
       ],
       "index_state": "verified",
-      "sha256": "b87c29aebef0404d58cbce554b563384a6a74079c5ca6014acff49d8c5a88b2b"
+      "sha256": "c0003e893c438f1b462c244bd1d1bf77e569f761e5d13e129271c49dc15d859d"
     },
     "tests/test_release_certification.py": {
       "imports": [
@@ -6888,7 +6889,7 @@
         "subprocess"
       ],
       "index_state": "verified",
-      "sha256": "b54f51a9d4e6a0cc1e222cd1a13c4d8bc45c96816092fd26fc19bd4f9fe23aa7"
+      "sha256": "21629f7aacd7d89fba51c5b73c18127cd66ed2f5ac82ff39c68a00c1a1f742b6"
     },
     "tests/test_release_supply_chain_evidence.py": {
       "imports": [
@@ -7743,7 +7744,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "exact-installed",
-      "input_sha256": "068f311e87c9cfddba134d46f0132607a0a4cc7a0399995496f5c02f80cc493b",
+      "input_sha256": "33d2f3cea27e1962757cc6b1ee8351402435ef360f4c663521d656e8a5c095c7",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -7835,7 +7836,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "release-build",
-      "input_sha256": "9753a5d4a43c256781d30301cf113c6a5b763e3ce72601a2d31cd63c8f22f90c",
+      "input_sha256": "2d00ca146224ed65310940dd887e06bdf4e068d2fd7165228c0ac898bf7dbb02",
       "inputs": [
         ".github/workflows/release.yml",
         "README.md",
@@ -7919,7 +7920,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "release-audit",
-      "input_sha256": "90386e0d6914ea2929f3ca85682b07fc62dca71b2158f210836577e699d654c8",
+      "input_sha256": "0d1d067d968f11bccebd6d307f7c8e202977d1948bf672aded501e1bee8b27d8",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -7967,7 +7968,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "structural-adversarial",
-      "input_sha256": "4c93098f73dda26fa56ed8e02d3caa313ad81a436e833beec1c45458f00dfa2c",
+      "input_sha256": "b7103f68d2f55a0d4370c259df41d4e005bfe4e4e22db67e792e2eda2b4b8187",
       "inputs": [
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_agents_md_generator.py",
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_change_impact.py",
@@ -9767,7 +9768,7 @@
       "disk_consumption_limit_bytes": 51539607552,
       "disk_work_units": 6,
       "group": "derived-integrity",
-      "input_sha256": "be37d3026b2aa5caf904ada71db9b4c6b215645070a74bdf15a04a6302e48625",
+      "input_sha256": "a2d292fe1ed5a61d053ece93129999722c7a8cf9cc977e7619eaad736b5b599d",
       "inputs": [
         "README.md",
         "pyproject.toml",
@@ -10910,7 +10911,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "core-n-s",
-      "input_sha256": "c952ea7131847f7c3f9887185a1961b298b5073113916affa4083b5d8a9b2d8a",
+      "input_sha256": "206b4724a7f77f894fdb41d08a22d1fddb5f1bba6a973bfca85ee88aeaebf2d2",
       "inputs": [
         "registry/test_profiles.json",
         "runtime/__init__.py",
@@ -11297,7 +11298,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "core-t-z",
-      "input_sha256": "2db7a4288e59556b80a52636501b1b2949a8ed781ee7e73b6976ac1b7d46cd6b",
+      "input_sha256": "10393f6e6deca0fc381798524083acdc4e9db9c02db153c4f52fbd7ae7a8bc5b",
       "inputs": [
         "builders/adapter_builder.py",
         "builders/common.py",

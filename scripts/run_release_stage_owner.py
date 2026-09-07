@@ -333,6 +333,9 @@ def check(config: Config, step: str) -> dict[str, Any]:
                     if current_release["stages"][name].get("status") == "passed"
                 ]
                 archive_recovery_phase = STAGE_PHASES[STAGES[len(passed_stages)]]
+        elif step == "archive_clear" and current_release.get("state") == "cleared":
+            if cleared_campaign_can_be_superseded(current_release):
+                archive_recovery_phase = "revision_reconciled"
         repair_phase_valid = current_repair.get("phase") == PHASES.get(
             step, (None,)
         )[0] or current_repair.get("phase") == archive_recovery_phase
@@ -893,6 +896,7 @@ class ProductionEffects:
             supersede_invalid_active_release_campaign,
             supersede_invalid_release_identity,
             rewind_failed_release_campaign_repair,
+            rewind_consumed_cleared_release_campaign_repair,
             rewind_invalid_active_release_campaign_repair,
             rewind_invalid_release_identity_reconciliation,
         )
@@ -981,6 +985,8 @@ class ProductionEffects:
                         ),
                     )
             else:
+                if repair(config).get("phase") == "revision_reconciled":
+                    rewind_consumed_cleared_release_campaign_repair(config.root)
                 status = supersede_consumed_cleared_release_campaign(
                     config.root,
                     campaign_id=config.candidate_id,
@@ -1284,7 +1290,11 @@ def main(argv: list[str] | None = None) -> int:
         return 0 if output.get("valid") else 1
     except (OwnerBlocked, OSError, ValueError, json.JSONDecodeError) as exc:
         marker_error: Exception | None = None
-        if args.execute and config is not None and args.step in {"archive_clear", "reconcile"}:
+        if args.execute and config is not None and args.step in {
+            "archive_clear",
+            "reconcile",
+            "identity",
+        }:
             try:
                 current = release(config)
                 if (

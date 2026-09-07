@@ -5,6 +5,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from scripts.pre_candidate_hygiene import (
+    _cleared_preidentity_predecessor,
     _is_preserved_evidence_reparse,
     _source_invalid_active_predecessor,
     _terminal_predecessor_intentionally_stale,
@@ -12,6 +13,34 @@ from scripts.pre_candidate_hygiene import (
     quarantine,
     validate_quarantine,
 )
+
+
+def test_cleared_preidentity_predecessor_requires_exact_supersedable_state() -> None:
+    from runtime.release_campaign import STAGES
+
+    campaign_id = "candidate-final135"
+    release = {
+        "schema_version": "px.release-campaign-status/1.0",
+        "valid": True,
+        "campaign_id": campaign_id,
+        "repair_campaign_id": "repair12",
+        "state": "cleared",
+        "apply_count": 0,
+        "identity": None,
+        "active_claim": None,
+        "pre_identity_reconciliation_successor": False,
+        "stages": {
+            name: {"status": "pending", "claim_id": None} for name in STAGES
+        },
+    }
+
+    assert _cleared_preidentity_predecessor(release, campaign_id)
+    assert not _cleared_preidentity_predecessor(release, "another-campaign")
+    release["apply_count"] = 1
+    assert not _cleared_preidentity_predecessor(release, campaign_id)
+    release["apply_count"] = 0
+    release["pre_identity_reconciliation_successor"] = True
+    assert not _cleared_preidentity_predecessor(release, campaign_id)
 
 
 def test_source_invalid_active_predecessor_requires_exact_retained_pass_prefix() -> None:

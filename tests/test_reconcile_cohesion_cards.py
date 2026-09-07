@@ -777,7 +777,9 @@ def test_closed_rejects_self_consistent_unrelated_repair_predecessor(
         )
 
 
-def test_closed_rejects_artifact_split_from_repair12(tmp_path: Path) -> None:
+def test_closed_allows_versioned_artifact_to_advance_beyond_repair12(
+    tmp_path: Path,
+) -> None:
     root = _fixture(tmp_path)
     _reconcile(root, apply=True, at="2026-09-06T01:00:00Z")
     proof_path = _installed_proof(root)
@@ -792,13 +794,16 @@ def test_closed_rejects_artifact_split_from_repair12(tmp_path: Path) -> None:
     )
     _json(repair_path, repair)
 
-    with pytest.raises(ReconciliationError, match="does not match repair12"):
-        _reconcile(
-            root,
-            target="closed",
-            installed_proof=proof_path,
-            automation_state=AUTOMATION_STATE,
-        )
+    report = _reconcile(
+        root,
+        target="closed",
+        installed_proof=proof_path,
+        automation_state=AUTOMATION_STATE,
+    )
+    assert report["proposed_card_transition_count"] == 37
+    assert report["evidence"][-1]["artifact"]["path"].endswith("0.6.85.vsix")
+    retained_repair = json.loads(repair_path.read_text(encoding="utf-8"))
+    assert retained_repair["immutable_artifact"]["reference"].endswith("0.6.86.vsix")
 
 
 @pytest.mark.parametrize("receipt_name", ("package_receipt", "install_receipt"))

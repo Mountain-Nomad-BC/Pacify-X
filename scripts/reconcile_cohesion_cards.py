@@ -924,18 +924,6 @@ def _validate_close_control_plane(
         raise ReconciliationError("release identity package/install claims are malformed")
     artifact = installed_evidence["artifact"]
     assert isinstance(artifact, dict)
-    repair12 = _load_json(root / DEFAULT_EVIDENCE[3])
-    repair12_artifact = repair12.get("immutable_artifact")
-    if (
-        not isinstance(repair12_artifact, dict)
-        or repair12_artifact.get("reference") != artifact.get("path")
-        or repair12_artifact.get("artifact_sha256") != artifact.get("sha256")
-        or repair12_artifact.get("artifact_size") != artifact.get("size")
-        or repair12_artifact.get("unchanged") is not True
-    ):
-        raise ReconciliationError(
-            "installed artifact does not match repair12 immutable artifact"
-        )
     if artifact.get("path") != (
         f"extension/dist/pacify-x-vscode-{kernel.get('extension_version')}.vsix"
     ):

@@ -188,6 +188,11 @@ def test_archive_check_allows_one_unused_cleared_predecessor(tmp_path: Path) -> 
         encoding="utf-8",
     )
     assert check(config, "archive_clear")["valid"] is True
+    repair = tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    repair_value = json.loads(repair.read_text(encoding="utf-8"))
+    repair_value["phase"] = "revision_reconciled"
+    repair.write_text(json.dumps(repair_value), encoding="utf-8")
+    assert check(config, "archive_clear")["valid"] is True
 
 
 def test_archive_check_rejects_unmarked_chained_preidentity_predecessor(
@@ -233,10 +238,11 @@ def test_archive_check_rejects_unmarked_chained_preidentity_predecessor(
     assert check(config, "archive_clear")["valid"] is True
 
 
+@pytest.mark.parametrize("step", ["reconcile", "identity"])
 def test_execute_failure_marks_exact_current_preidentity_candidate(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, step: str
 ) -> None:
-    config = fixture(tmp_path, "reconcile")
+    config = fixture(tmp_path, step)
     state = tmp_path / ".engineering-bootstrap/processing-order/release-identity.json"
     value = json.loads(state.read_text(encoding="utf-8"))
     value.update(
@@ -268,10 +274,10 @@ def test_execute_failure_marks_exact_current_preidentity_candidate(
         ),
     )
 
-    assert main(["--config", str(config_path), "--step", "reconcile", "--execute"]) == 1
+    assert main(["--config", str(config_path), "--step", step, "--execute"]) == 1
     marked = json.loads(state.read_text(encoding="utf-8"))["pre_identity_failure"]
     assert marked["campaign_id"] == config.candidate_id
-    assert marked["owner"] == "reconcile"
+    assert marked["owner"] == step
     assert marked["attempt_count"] == 1
 
 
