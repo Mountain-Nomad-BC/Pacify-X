@@ -184,7 +184,10 @@ async function scanCleanupCandidates(root, options = {}) {
       const relative = path.relative(resolvedRoot, target);
       const evidenceRoot = 'evidence';
       const quarantineRoot = path.join('.engineering-bootstrap', 'quarantine');
-      if (relative === evidenceRoot || relative.startsWith(`${evidenceRoot}${path.sep}`) || relative === quarantineRoot || relative.startsWith(`${quarantineRoot}${path.sep}`)) continue;
+      const operatorQuarantineRoot = '.quarantine';
+      if (relative === evidenceRoot || relative.startsWith(`${evidenceRoot}${path.sep}`)
+        || relative === quarantineRoot || relative.startsWith(`${quarantineRoot}${path.sep}`)
+        || relative === operatorQuarantineRoot || relative.startsWith(`${operatorQuarantineRoot}${path.sep}`)) continue;
       if (SAFE_CACHE_DIRECTORY_NAMES.has(child.name)) {
         if (candidates.length >= maxCandidates) throw new Error('cleanup-candidate-limit-exceeded');
         try {
@@ -412,13 +415,38 @@ async function executeCleanup({ root, candidates, ids, disposition, deletePath, 
         resource.phase = 'retained-after-disposition-failure';
         resource.error = adapterError ? errorText(adapterError) : 'target-remains-after-cleanup';
         if (resource.result === 'failed-retained-unchanged') {
-          try {
-            if (await restoreUnchangedStage(stagePath, target, stagedInventory, resource)) resource.result = 'failed-restored';
-          } catch (error) {
-            resource.restore_error = errorText(error);
+          if (disposition === 'recycle') {
+            try {
+              const quarantineRoot = path.join(resolvedRoot, '.quarantine', cleanupId);
+              const quarantinePath = path.join(quarantineRoot, `${index}-${path.basename(target)}`);
+              if (!isInside(quarantineRoot, resolvedRoot) || !isInside(quarantinePath, quarantineRoot) || (await pathState(quarantinePath)).exists) {
+                throw new Error('cleanup-quarantine-path-unavailable');
+              }
+              await fs.promises.mkdir(quarantineRoot, { recursive: true });
+              const quarantineRootStat = await fs.promises.lstat(quarantineRoot);
+              if (!quarantineRootStat.isDirectory() || quarantineRootStat.isSymbolicLink()) throw new Error('cleanup-quarantine-root-invalid');
+              await fs.promises.rename(stagePath, quarantinePath);
+              const quarantinedInventory = await inventoryDirectory(quarantinePath);
+              if (!sameInventory(stagedInventory, quarantinedInventory)) throw new Error('cleanup-quarantine-tree-mismatch');
+              resource.recycle_error = resource.error;
+              delete resource.error;
+              resource.quarantine_relative_path = path.relative(resolvedRoot, quarantinePath).split(path.sep).join('/');
+              resource.quarantine_tree_sha256 = quarantinedInventory.treeHash;
+              resource.result = 'moved-to-local-quarantine';
+              resource.phase = 'quarantined-after-recycle-unavailable';
+            } catch (error) {
+              resource.quarantine_error = errorText(error);
+            }
+          }
+          if (resource.result === 'failed-retained-unchanged') {
+            try {
+              if (await restoreUnchangedStage(stagePath, target, stagedInventory, resource)) resource.result = 'failed-restored';
+            } catch (error) {
+              resource.restore_error = errorText(error);
+            }
           }
         }
-        receipt.errors.push(`${candidate.relativePath}: ${resource.error}`);
+        if (resource.result !== 'moved-to-local-quarantine') receipt.errors.push(`${candidate.relativePath}: ${resource.error}`);
       }
     } catch (error) {
       resource.error = errorText(error);
@@ -446,7 +474,7 @@ async function executeCleanup({ root, candidates, ids, disposition, deletePath, 
   }
   receipt.completed_utc = new Date().toISOString();
   receipt.state = receipt.errors.length ? 'completed-with-errors' : 'completed';
-  const confirmedResults = new Set(['moved-to-recycle-bin', 'permanently-reclaimed']);
+  const confirmedResults = new Set(['moved-to-recycle-bin', 'moved-to-local-quarantine', 'permanently-reclaimed']);
   receipt.resources_reclaimed = receipt.resources.filter(item => confirmedResults.has(item.result)).length;
   receipt.bytes_reclaimed = selected.filter((_, index) => confirmedResults.has(receipt.resources[index].result)).reduce((total, item) => total + Number(item.bytes || 0), 0);
   receipt.resources_uncertain = receipt.resources.filter(item => item.result === 'disposition-uncertain').length;

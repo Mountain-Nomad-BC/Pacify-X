@@ -766,6 +766,33 @@ test('only the exact owned fixture Marketplace 404 is non-blocking', () => {
   }
 });
 
+test('only exact external VS Code Windows integration diagnostics are non-blocking', () => {
+  const context = 'console:vscode-file://vscode-app/c:/owned-vscode/resources/app/out/vs/workbench/workbench.desktop.main.js';
+  const windowsApps = {
+    source: 'console', context,
+    message: "%c  ERR color: #f33 EPERM: operation not permitted, scandir 'C:\\Users\\Ben\\AppData\\Local\\Microsoft\\WindowsApps': Error: EPERM: operation not permitted, scandir 'C:\\Users\\Ben\\AppData\\Local\\Microsoft\\WindowsApps'"
+  };
+  const deviceId = {
+    source: 'console', context,
+    message: '[main 2026-09-07T14:15:35.613Z] Error: Unable to create or open registry key\n    at Object.setDeviceId (C:\\owned\\resources\\app\\node_modules.asar\\@vscode\\deviceid\\dist\\storage.js:100:25)'
+  };
+  const status = evaluateOperationalWalk({ ...completeReceipt(), host_errors: [windowsApps, deviceId] });
+  assert.equal(status.terminal_state, 'completed');
+  assert.deepEqual(new Set(status.issues.map(item => item.code)), new Set([
+    'external-vscode-windows-app-alias-scan-denied',
+    'external-vscode-device-id-registry-unavailable'
+  ]));
+  for (const changed of [{ ...windowsApps, source: 'pageerror' }, { ...deviceId, context: 'console:vscode-file://vscode-app/c:/owned-extension/extension.js' }]) {
+    assert.equal(evaluateOperationalWalk({ ...completeReceipt(), host_errors: [changed] }).terminal_state, 'failed');
+  }
+
+  const processIssues = normalizeProcessOutput({
+    stderr: "[main 2026-09-07T14:15:35.613Z] Error: Unable to create or open registry key\nEPERM: operation not permitted, scandir 'C:\\Users\\Ben\\AppData\\Local\\Microsoft\\WindowsApps': Error: EPERM: denied",
+    walkerExit: { code: 0, signal: null }, processTreeClosedVerified: true
+  });
+  assert.equal(processIssues.every(item => item.blocking === false), true);
+});
+
 test('extension-host unresponsive output remains blocking even after recovery', () => {
   const processIssues = normalizeProcessOutput({
     stdout: [

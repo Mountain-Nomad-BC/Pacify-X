@@ -107,16 +107,39 @@ function isExternalOwnedFixtureMarketplaceDiagnostic(raw) {
     && String(raw?.context || '').trim() === 'console:https://marketplace.visualstudio.com/_apis/public/gallery/vscode/px-owned/fixture/latest';
 }
 
+function isExternalVsCodeWindowsAppsDiagnostic(raw) {
+  if (String(raw?.source || '').toLowerCase() !== 'console') return false;
+  const context = String(raw?.context || '').replace(/\\/g, '/');
+  const message = String(raw?.message || '');
+  return /^console:vscode-file:\/\/vscode-app\/.+\/resources\/app\/out\/vs\/workbench\/workbench\.desktop\.main\.js$/i.test(context)
+    && /^%c\s+ERR\s+color:\s+#f33\s+EPERM: operation not permitted, scandir '[A-Za-z]:\\Users\\[^\\]+\\AppData\\Local\\Microsoft\\WindowsApps': Error: EPERM:/i.test(message);
+}
+
+function isExternalVsCodeDeviceIdDiagnostic(raw) {
+  if (String(raw?.source || '').toLowerCase() !== 'console') return false;
+  const context = String(raw?.context || '').replace(/\\/g, '/');
+  const message = String(raw?.message || '');
+  return /^console:vscode-file:\/\/vscode-app\/.+\/resources\/app\/out\/vs\/workbench\/workbench\.desktop\.main\.js$/i.test(context)
+    && /^\[main .+\] Error: Unable to create or open registry key(?:\r?\n|$)/.test(message)
+    && /@vscode[\\/]deviceid[\\/]dist[\\/]storage\.js/.test(message);
+}
+
 function normalizeHostErrors(hostErrors = []) {
   const normalized = [];
   for (const raw of Array.isArray(hostErrors) ? hostErrors : []) {
     const source = String(raw?.source || '').toLowerCase();
     const externalMermaidDiagnostic = isExternalVsCodeMermaidToolDiagnostic(raw);
     const externalOwnedFixtureDiagnostic = isExternalOwnedFixtureMarketplaceDiagnostic(raw);
+    const externalWindowsAppsDiagnostic = isExternalVsCodeWindowsAppsDiagnostic(raw);
+    const externalDeviceIdDiagnostic = isExternalVsCodeDeviceIdDiagnostic(raw);
     const mapping = externalMermaidDiagnostic
       ? { source: 'external_host', code: 'external-vscode-optional-tool-unavailable', severity: 'warning', blocking: false }
       : externalOwnedFixtureDiagnostic
         ? { source: 'external_host', code: 'external-vscode-owned-fixture-marketplace-miss', severity: 'warning', blocking: false }
+      : externalWindowsAppsDiagnostic
+        ? { source: 'external_host', code: 'external-vscode-windows-app-alias-scan-denied', severity: 'warning', blocking: false }
+      : externalDeviceIdDiagnostic
+        ? { source: 'external_host', code: 'external-vscode-device-id-registry-unavailable', severity: 'warning', blocking: false }
       : source === 'console'
       ? { source: 'console', code: 'console-error' }
       : source === 'pageerror'
@@ -180,7 +203,31 @@ function normalizeProcessOutput({ stdout = '', stderr = '', walkerExit = null, e
       occurrences: 2
     }));
   }
-  const alreadyClassified = new Set([...unresponsive, ...responsive, ...tokenWarnings, ...jumpListWarnings]);
+  const deviceIdWarnings = stderrLines.filter(line => /^\[main .+\] Error: Unable to create or open registry key$/.test(line.trim()));
+  if (deviceIdWarnings.length) {
+    normalized.push(issue({
+      source: 'external_host',
+      code: 'external-vscode-device-id-registry-unavailable',
+      severity: 'warning',
+      blocking: false,
+      message: 'VS Code could not persist its external machine device identifier in the Windows registry for the isolated host.',
+      context: 'captured-host-output',
+      occurrences: deviceIdWarnings.length
+    }));
+  }
+  const windowsAppsWarnings = stderrLines.filter(line => /^EPERM: operation not permitted, scandir '[A-Za-z]:\\Users\\[^\\]+\\AppData\\Local\\Microsoft\\WindowsApps': Error: EPERM:/i.test(line.trim()));
+  if (windowsAppsWarnings.length) {
+    normalized.push(issue({
+      source: 'external_host',
+      code: 'external-vscode-windows-app-alias-scan-denied',
+      severity: 'warning',
+      blocking: false,
+      message: 'VS Code could not enumerate the external Windows application-alias directory from the isolated host.',
+      context: 'captured-host-output',
+      occurrences: windowsAppsWarnings.length
+    }));
+  }
+  const alreadyClassified = new Set([...unresponsive, ...responsive, ...tokenWarnings, ...jumpListWarnings, ...deviceIdWarnings, ...windowsAppsWarnings]);
   for (const line of stderrLines) {
     if (alreadyClassified.has(line) || !/\b(?:error|failed|failure|exception|uncaught|fatal)\b/i.test(line)) continue;
     normalized.push(issue({
@@ -811,7 +858,9 @@ module.exports = {
   evaluateOperationalWalk,
   exitCodeForTerminalState,
   isExternalOwnedFixtureMarketplaceDiagnostic,
+  isExternalVsCodeDeviceIdDiagnostic,
   isExternalVsCodeMermaidToolDiagnostic,
+  isExternalVsCodeWindowsAppsDiagnostic,
   normalizeHostErrors,
   normalizeProcessOutput,
   validRecoveredAuthorityBoundary

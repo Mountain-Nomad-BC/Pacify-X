@@ -120,6 +120,16 @@ class OwnedWindowsNativeInputTests(unittest.TestCase):
         self.assertTrue(callable(native.windows))
         self.assertTrue(callable(native.activate))
 
+    def test_null_foreground_handle_is_normalized_for_owned_window_recovery(self):
+        class User32:
+            @staticmethod
+            def GetForegroundWindow():
+                return None
+
+        native = object.__new__(MODULE.WindowsInput)
+        native.user32 = User32()
+        self.assertEqual(native.foreground(), (0, 0))
+
     def test_request_requires_authentication_sequence_identity_action_and_time(self):
         request, now = self.request()
         config = {"secret": "a" * 64, "vscode_pid": 100}

@@ -2465,7 +2465,7 @@ test('read-only catalog pagination binds real offsets and restores the normal qu
   assert.match(source, /\(!focusedProfileOnly \|\| studioLifecycleOnly \|\| catalogPaginationOnly\)[\s\S]*new Set\(\['agents'\]\)/);
 });
 
-test('owned observation-state profile covers the fourteen bounded reversible state controls', () => {
+test('owned observation-state profile covers all conditional bounded reversible state controls', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   const profile = source.slice(source.indexOf('const INSTALLED_OBSERVATION_STATE_IDS'), source.indexOf('const INSTALLED_CODEX_HANDOFF_IDS'));
   for (const id of [
@@ -2475,8 +2475,14 @@ test('owned observation-state profile covers the fourteen bounded reversible sta
     'pxui.knowledge-graph.action.graphLoadMore', 'pxui.knowledge-graph.field.graphRelation',
     'pxui.memory.action.memoryNext', 'pxui.memory.action.memoryPrevious',
     'pxui.plugins.indicator.inlineInventoryError', 'pxui.projects.indicator.mapErrors',
+    'pxui.projects.action.inspectProjectMapRecord.risk',
+    'pxui.projects.action.inspectProjectMapRecord.unmapped-test',
     'pxui.sidebar.action.provider-next', 'pxui.sidebar.action.provider-previous'
   ]) assert.match(profile, new RegExp(id.replaceAll('.', '\\.')));
+  assert.match(profile, /risks: \[\{ summary: 'px-owned-risk'/);
+  assert.match(profile, /unmapped_tests: \[\{ summary: 'px-owned-unmapped-test'/);
+  assert.match(profile, /risks: 'pxui\.projects\.action\.inspectProjectMapRecord\.risk'/);
+  assert.match(profile, /unmapped_tests: 'pxui\.projects\.action\.inspectProjectMapRecord\.unmapped-test'/);
   assert.match(profile, /requestGraph\(\{ view: 'repository',[\s\S]*maxNodes: 1, maxEdges: 1/);
   assert.match(profile, /surface: 'knowledgeGraph'[\s\S]*selector: '\[data-action="graphLoadMore"\]:not\(\[disabled\]\)'[\s\S]*stableSamplesRequired: 2/);
   assert.match(profile, /type: 'memoryQuery'[\s\S]*offset: 0, limit: 1/);
@@ -2663,9 +2669,11 @@ test('Projects profile owns the current native workbench dialog and cannot stran
   assert.doesNotMatch(profile, /workbench\.locator\('\.monaco-dialog-box:visible'/);
 });
 
-test('owned cleanup profile accepts only successful non-permanent Recycle Bin receipts', () => {
+test('owned cleanup profile accepts verified recycle or governed local-quarantine receipts', () => {
   const valid = { receipt: { schema_version: '2.0', disposition: 'recycle', hard_delete: false, state: 'completed', resources_reclaimed: 1, resources_uncertain: 0, errors: [], resources: [{ result: 'moved-to-recycle-bin' }] } };
   assert.equal(validCleanupResult(valid), true);
+  assert.equal(validCleanupResult({ receipt: { ...valid.receipt, resources: [{ result: 'moved-to-local-quarantine', quarantine_relative_path: '.quarantine/run/cache', quarantine_tree_sha256: 'a'.repeat(64) }] } }), true);
+  assert.equal(validCleanupResult({ receipt: { ...valid.receipt, resources: [{ result: 'moved-to-local-quarantine', quarantine_relative_path: '../outside', quarantine_tree_sha256: 'a'.repeat(64) }] } }), false);
   assert.equal(validCleanupResult({ receipt: { ...valid.receipt, disposition: 'permanent', hard_delete: true } }), false);
   assert.equal(validCleanupResult({ receipt: { ...valid.receipt, resources_uncertain: 1 } }), false);
   assert.equal(validCleanupResult({ receipt: { ...valid.receipt, resources: [{ result: 'failed-restored' }] } }), false);
@@ -2762,6 +2770,8 @@ test('owned Knowledge Graph profile binds saved-view actions and authoritative g
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   const profile = source.slice(source.indexOf('async function runInstalledKnowledgeGraphProfile'), source.indexOf('function systemProjectionIdentity'));
   assert.match(profile, /restartInstalledDashboardWebview/);
+  assert.match(profile, /clickWhenKnowledgeControlReady\(frameHost, '\[data-action="graphSaveView"\]'/);
+  assert.match(profile, /selector: '#graph-view-name'[\s\S]*preserveModal: true/);
   assert.doesNotMatch(profile, /reloadInstalledDashboardWebview/);
 });
 
@@ -2771,8 +2781,19 @@ test('owned Knowledge Graph request waits retry once through the exact physical 
   assert.match(profile, /const waitForGraph = async \(offsets, retry\)/);
   assert.match(profile, /\.filter\(value => value\?\.type === 'graphQuery'[\s\S]*\.at\(-1\)/);
   assert.match(profile, /!identity && !retried && Date\.now\(\) >= retryAt/);
-  assert.match(profile, /knowledge-graph-retry-control-unavailable/);
+  assert.match(profile, /waitForGraph\(after, \(\) => clickWhenKnowledgeControlReady\(/);
+  assert.match(profile, /\[data-action="graphView"\]\[data-view="repository"\]/);
   assert.match(profile, /knowledge-graph-retry-saved-view-unavailable/);
+});
+
+test('full installed walk stages host-boundary fixtures only after real fresh-project completion', () => {
+  const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
+  const projects = source.indexOf("timedProfile('projects-map-restart'");
+  const deferred = source.indexOf("process.env.PX_OWNED_DEFER_HOST_BOUNDARY_FIXTURE === '1'");
+  const hostBoundary = source.indexOf("timedProfile('host-boundary'");
+  assert.ok(projects >= 0 && deferred > projects && hostBoundary > deferred);
+  assert.match(source.slice(deferred, hostBoundary), /projectsProfile\?\.observation\?\.completed !== true/);
+  assert.match(source.slice(deferred, hostBoundary), /stageOwnedHostBoundaryFixture\(ownedWorkspaceRoot, process\.env\.PX_OWNED_ENGINE_ROOT\)/);
 });
 
 test('system projection profile binds stable canonical snapshot identity across dashboard restart', () => {

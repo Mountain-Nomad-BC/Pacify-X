@@ -622,12 +622,15 @@ test('owned provider pagination fixture fails closed and changes only a disposab
   assert.throws(() => stageOwnedProviderPaginationFixture(engine), /fixture-already-present/);
 });
 
-test('full current-source walks stage the certified disposable host-boundary fixture before launch', () => {
+test('full current-source walks defer the host-boundary fixture until first-run initialization is proven', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-isolated-current-source-walk.js'), 'utf8');
   const prepare = source.slice(source.indexOf('function prepare('), source.indexOf('function reconcilePrelaunchFailure'));
   assert.match(prepare, /hostBoundaryFixtureRequired = hostBoundaryOnly \|\| \(!bootstrapOnly && !configurationOnly && !studioLifecycleOnly && !knowledgeLifecycleOnly && !coordinationMemoryOnly && !nativeDialogOnly && !knowledgeGraphOnly && !surfaceCaptureOnly && !pluginLifecycleOnly && !catalogPaginationOnly && !builderOnly && !workbenchCommandOnly\)/);
   assert.match(prepare, /'pacifyX\.workspaceRoot': hostBoundaryFixtureRequired \? config\.workspace : ''/);
-  assert.match(prepare, /config\.hostBoundaryFixture = hostBoundaryFixtureRequired \? stageOwnedHostBoundaryFixture/);
+  assert.match(prepare, /config\.hostBoundaryFixtureDeferred = fullOperationalWalk/);
+  assert.match(prepare, /hostBoundaryFixtureRequired && !fullOperationalWalk[\s\S]*stageOwnedHostBoundaryFixture/);
+  assert.match(source, /PX_OWNED_DEFER_HOST_BOUNDARY_FIXTURE: '1'/);
+  assert.match(source, /PX_OWNED_HOST_BOUNDARY_FIXTURE_RECEIPT: config\.hostBoundaryFixtureReceipt/);
   assert.match(prepare, /config\.gitAuthority = fullOperationalWalk \? stageOwnedGitAuthority\(config\.workspace\) : null/);
 });
 
@@ -763,4 +766,6 @@ test('ordinary full operational walks start the owned native input helper used b
   assert.match(prepareSource, /fullOperationalWalk/);
   assert.match(prepareSource, /nativeDialogOnly \|\| knowledgeGraphOnly \|\| pluginLifecycleOnly \|\| postAuditLongRunning \|\| fullOperationalWalk/);
   assert.match(prepareSource, /nativeInputSecret: nativeInputRequired \? crypto\.randomBytes\(32\)\.toString\('hex'\) : null/);
+  assert.match(prepareSource, /studioKeyRoot: path\.join\(temporaryRoot, 'authority-keys'\)/);
+  assert.match(source, /PX_STUDIO_KEY_ROOT: config\.studioKeyRoot/);
 });

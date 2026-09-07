@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.87
+
+- Isolate Studio authority keys in the owned host, defer certification fixtures until fresh-project onboarding is proven, and recover transient native-window and graph-control settlement races.
+- Preserve verified cleanup payloads in project-local `.quarantine` when the operating-system Recycle Bin is unavailable, without claiming hard deletion.
+- Classify only exact external VS Code host warnings as nonblocking and cover every conditional project-map record variant in the installed control denominator.
+
 ## 0.6.86
 
 - Treat a newly opened repository as onboarding rather than an attention condition: missing project-map, coordination, and optional canonical-memory setup no longer produce false issue alerts.

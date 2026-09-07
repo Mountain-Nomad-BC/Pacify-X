@@ -238,9 +238,13 @@ async function run() {
   const rename = new vscode.WorkspaceEdit();
   rename.renameFile(lifecycle, renamed, { overwrite: false });
   assert.equal(await vscode.workspace.applyEdit(rename), true);
-  const remove = new vscode.WorkspaceEdit();
-  remove.deleteFile(renamed, { ignoreIfNotExists: false, recursive: false });
-  assert.equal(await vscode.workspace.applyEdit(remove), true);
+  const quarantineDirectory = vscode.Uri.joinPath(folder.uri, '.quarantine', 'installed-smoke-filesystem-lifecycle');
+  await vscode.workspace.fs.createDirectory(quarantineDirectory);
+  const quarantined = vscode.Uri.joinPath(quarantineDirectory, 'lifecycle-renamed.txt');
+  const quarantine = new vscode.WorkspaceEdit();
+  quarantine.renameFile(renamed, quarantined, { overwrite: false });
+  assert.equal(await vscode.workspace.applyEdit(quarantine), true);
+  assert.equal(Buffer.from(await vscode.workspace.fs.readFile(quarantined)).length, 0);
   attempts.filesystem = 'exercised-live';
 
   const watchedDirectory = vscode.Uri.joinPath(folder.uri, 'tests');

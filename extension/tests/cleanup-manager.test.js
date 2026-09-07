@@ -139,7 +139,7 @@ test('multiply linked files make a cache non-actionable without touching the oth
   assert.equal(fs.readFileSync(authoritative, 'utf8'), 'shared authoritative bytes');
 });
 
-test('per-target adapter failures are isolated, restored when unchanged, and receipted', async t => {
+test('recycle adapter failures move an unchanged target to governed local quarantine', async t => {
   const root = fixture();
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   const inventory = await scanCleanupCandidates(root);
@@ -156,13 +156,16 @@ test('per-target adapter failures are isolated, restored when unchanged, and rec
   });
   const failed = result.receipt.resources.find(item => item.relative_path === 'pkg/__pycache__');
   const succeeded = result.receipt.resources.find(item => item.relative_path === '.pytest_cache');
-  assert.equal(failed.result, 'failed-restored');
-  assert.equal(failed.restored_to_original_path, true);
-  assert.match(failed.error, /^EPERM:/);
+  assert.equal(failed.result, 'moved-to-local-quarantine');
+  assert.match(failed.recycle_error, /^EPERM:/);
+  assert.match(failed.quarantine_relative_path, /^\.quarantine\//);
+  assert.match(failed.quarantine_tree_sha256, /^[a-f0-9]{64}$/);
   assert.equal(succeeded.result, 'moved-to-recycle-bin');
-  assert.equal(fs.existsSync(path.join(root, 'pkg', '__pycache__', 'module.pyc')), true);
+  assert.equal(fs.existsSync(path.join(root, 'pkg', '__pycache__', 'module.pyc')), false);
+  assert.equal(fs.existsSync(path.join(root, ...failed.quarantine_relative_path.split('/'), 'module.pyc')), true);
   assert.equal(fs.existsSync(path.join(root, '.pytest_cache')), false);
-  assert.equal(result.receipt.resources_reclaimed, 1);
+  assert.equal(result.receipt.resources_reclaimed, 2);
+  assert.equal(result.receipt.state, 'completed');
 });
 
 test('partial adapter deletion is retained at the staging path and never overstated', async t => {
@@ -223,7 +226,7 @@ test('a concurrently recreated cache at the original path is preserved', async t
   assert.equal(fs.readFileSync(path.join(selected.path, 'new.pyc'), 'utf8'), 'new concurrent cache');
 });
 
-test('cross-device style adapter errors fail one target closed with a durable receipt', async t => {
+test('cross-device style recycle errors retain exact bytes in local quarantine with a durable receipt', async t => {
   const root = fixture();
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   const inventory = await scanCleanupCandidates(root);
@@ -236,10 +239,22 @@ test('cross-device style adapter errors fail one target closed with a durable re
       throw error;
     }
   });
-  assert.equal(result.receipt.resources[0].result, 'failed-restored');
-  assert.match(result.receipt.resources[0].error, /^EXDEV:/);
-  assert.equal(fs.existsSync(path.join(selected.path, 'module.pyc')), true);
-  assert.equal(JSON.parse(fs.readFileSync(result.receiptPath, 'utf8')).resources[0].result, 'failed-restored');
+  const resource = result.receipt.resources[0];
+  assert.equal(resource.result, 'moved-to-local-quarantine');
+  assert.match(resource.recycle_error, /^EXDEV:/);
+  assert.equal(fs.existsSync(path.join(selected.path, 'module.pyc')), false);
+  assert.equal(fs.existsSync(path.join(root, ...resource.quarantine_relative_path.split('/'), 'module.pyc')), true);
+  assert.equal(JSON.parse(fs.readFileSync(result.receiptPath, 'utf8')).resources[0].result, 'moved-to-local-quarantine');
+});
+
+test('operator quarantine is excluded from later cleanup scans', async t => {
+  const root = fixture();
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const retained = path.join(root, '.quarantine', 'retained', '__pycache__');
+  fs.mkdirSync(retained, { recursive: true });
+  fs.writeFileSync(path.join(retained, 'keep.pyc'), 'retained');
+  const inventory = await scanCleanupCandidates(root);
+  assert.equal(inventory.candidates.some(item => item.relativePath.startsWith('.quarantine/')), false);
 });
 
 test('unicode and deep cache paths scan and clean without path truncation', async t => {

@@ -495,7 +495,7 @@ test('canonical snapshot normalization preserves complete catalog cardinalities'
 test('canonical snapshot normalization preserves first-run onboarding', () => {
   const normalized = normalizeSnapshot({
     schema_version: '2.0.0', generated_at: '2026-09-06T00:00:00Z', connected: true, mode: 'canonical-dashboard-api',
-    source: { root: 'C:/px', version: '0.6.86' }, project: { name: 'fresh', map: { available: false, valid: false } }, counts: {},
+    source: { root: 'C:/px', version: '0.6.87' }, project: { name: 'fresh', map: { available: false, valid: false } }, counts: {},
     attention: [], onboarding: { required: true, state: 'new-project', project_initialized: false, project_map_ready: false, actions: { initialize_project: true, create_project_map: true } }
   });
   assert.equal(normalized.attention.length, 0);

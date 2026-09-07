@@ -512,6 +512,7 @@ async function childMain(configPath) {
       env: electronHostEnvironment({
         PX_OWNED_VSCODE_HOST: '1',
         PX_OWNED_VSCODE_HOST_CONFIRM_REVERSIBLE_WRITES: '1',
+        PX_STUDIO_KEY_ROOT: config.studioKeyRoot,
         PX_ENGINE_ROOT: config.engineRoot,
         PX_OPERATIONAL_WALK_BOOTSTRAP_RECEIPT: config.bootstrapReceipt,
         PX_OPERATIONAL_WALK_BOOTSTRAP_SENTINEL: config.bootstrapSentinel,
@@ -584,6 +585,10 @@ async function childMain(configPath) {
           PX_OWNED_ENGINE_ROOT: config.engineRoot,
           PX_OWNED_VSCODE_WORKSPACE_ROOT: config.workspace,
           PX_OWNED_VSCODE_EXTENSIONS_ROOT: config.extensions,
+          ...(config.hostBoundaryFixtureDeferred ? {
+            PX_OWNED_DEFER_HOST_BOUNDARY_FIXTURE: '1',
+            PX_OWNED_HOST_BOUNDARY_FIXTURE_RECEIPT: config.hostBoundaryFixtureReceipt
+          } : {}),
           ...(config.knowledgeFixture ? {
             PX_OWNED_KNOWLEDGE_SOURCE_ID: config.knowledgeFixture.source_id,
             PX_OWNED_KNOWLEDGE_SOURCE_SHA256: config.knowledgeFixture.source_sha256
@@ -914,6 +919,8 @@ function prepare(temporaryRoot, walkOutput, vsixPath = null, bootstrapOnly = fal
     workbenchCommandOnly,
     nativeInputRequired,
     nativeInputRoot: path.join(temporaryRoot, 'native-input'),
+    studioKeyRoot: path.join(temporaryRoot, 'authority-keys'),
+    hostBoundaryFixtureReceipt: path.join(temporaryRoot, 'host-boundary-fixture.json'),
     nativeInputSecret: nativeInputRequired ? crypto.randomBytes(32).toString('hex') : null,
     postAuditLongRunning,
     // Operational walks must own a normal isolated host even when the product
@@ -928,7 +935,7 @@ function prepare(temporaryRoot, walkOutput, vsixPath = null, bootstrapOnly = fal
     fs.mkdirSync(directory, { recursive: true });
   }
   if (nativeInputRequired) {
-    for (const directory of [config.nativeInputRoot, path.join(config.nativeInputRoot, 'requests'), path.join(config.nativeInputRoot, 'results')]) {
+  for (const directory of [config.nativeInputRoot, path.join(config.nativeInputRoot, 'requests'), path.join(config.nativeInputRoot, 'results'), config.studioKeyRoot]) {
       fs.mkdirSync(directory, { recursive: true });
       if (!inside(temporaryRoot, directory) || fs.lstatSync(directory).isSymbolicLink()) throw new Error(`owned-native-input-directory-invalid:${directory}`);
     }
@@ -952,7 +959,13 @@ function prepare(temporaryRoot, walkOutput, vsixPath = null, bootstrapOnly = fal
   }, null, 2)}\n`, 'utf8');
   fs.writeFileSync(path.join(config.workspace, 'README.md'), '# PACIFY-X owned operational walk workspace\n', 'utf8');
   config.gitAuthority = fullOperationalWalk ? stageOwnedGitAuthority(config.workspace) : null;
-  config.hostBoundaryFixture = hostBoundaryFixtureRequired ? stageOwnedHostBoundaryFixture(config.workspace, config.engineRoot) : null;
+  // Preserve a genuinely fresh repository until the installed Initialize
+  // project action has been exercised. The full walker stages this fixture
+  // immediately after that proof; focused host-boundary runs stage eagerly.
+  config.hostBoundaryFixtureDeferred = fullOperationalWalk;
+  config.hostBoundaryFixture = hostBoundaryFixtureRequired && !fullOperationalWalk
+    ? stageOwnedHostBoundaryFixture(config.workspace, config.engineRoot)
+    : null;
   if (!bootstrapOnly && !configurationOnly && !knowledgeLifecycleOnly && !coordinationMemoryOnly && !hostBoundaryOnly && !nativeDialogOnly && !knowledgeGraphOnly && !surfaceCaptureOnly && !pluginLifecycleOnly && !codexHandoffOnly && !errorIndicatorsOnly && !catalogPaginationOnly && !builderOnly && !workbenchCommandOnly) {
     const promptRoot = path.join(config.engineRoot, '.px', 'owned-operational-prompts');
     const setupPrompt = path.join(promptRoot, 'setup-studio.marker');
@@ -1138,6 +1151,9 @@ async function main() {
   }
   let child = null;
   if (fs.existsSync(config.childResult)) child = JSON.parse(fs.readFileSync(config.childResult, 'utf8'));
+  if (!config.hostBoundaryFixture && fs.existsSync(config.hostBoundaryFixtureReceipt)) {
+    config.hostBoundaryFixture = JSON.parse(fs.readFileSync(config.hostBoundaryFixtureReceipt, 'utf8'));
+  }
   const statusTruth = evaluateLauncherTerminal({
     walkStatus: child?.operational_status || null,
     processTreeClosedVerified: lifecycle?.process_tree_closed_verified,

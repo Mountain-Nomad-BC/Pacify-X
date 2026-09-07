@@ -15,6 +15,7 @@ const { chromium } = require('playwright-core');
 const { captureJson, exactStudioVersionConflictError } = require('../src/pxBridge');
 const { beginOwnedEngineOutage } = require('./owned-engine-outage');
 const { requestOwnedNativeInput } = require('./owned-native-input-client');
+const { stageOwnedHostBoundaryFixture } = require('./run-isolated-current-source-walk');
 const {
   LIVE_WALK_AUTHORITY,
   applyAuthoritySkipContract,
@@ -25,7 +26,9 @@ const {
   evaluateOperationalWalk,
   exitCodeForTerminalState,
   isExternalOwnedFixtureMarketplaceDiagnostic,
-  isExternalVsCodeMermaidToolDiagnostic
+  isExternalVsCodeDeviceIdDiagnostic,
+  isExternalVsCodeMermaidToolDiagnostic,
+  isExternalVsCodeWindowsAppsDiagnostic
 } = require('./operational-walk-status');
 const {
   STAGES,
@@ -5570,9 +5573,11 @@ const INSTALLED_OBSERVATION_STATE_IDS = Object.freeze([
   'pxui.projects.action.inspectProjectMapRecord.entrypoint',
   'pxui.projects.action.inspectProjectMapRecord.history',
   'pxui.projects.action.inspectProjectMapRecord.package',
+  'pxui.projects.action.inspectProjectMapRecord.risk',
   'pxui.projects.action.inspectProjectMapRecord.route',
   'pxui.projects.action.inspectProjectMapRecord.service',
   'pxui.projects.action.inspectProjectMapRecord.test-link',
+  'pxui.projects.action.inspectProjectMapRecord.unmapped-test',
   'pxui.projects.action.inspectProjectMapRecord.untested-source',
   'pxui.projects.indicator.buildReuse',
   'pxui.sidebar.action.provider-next',
@@ -6014,26 +6019,28 @@ async function runInstalledObservationStateProfile(frameHost, sidebar, matrix, t
       seeded.project ||= {}; seeded.project.map ||= {}; seeded.project.map.available = true; seeded.project.map.valid = true;
       seeded.project.map.drilldown = {
         ...(seeded.project.map.drilldown || {}),
+        risks: [{ summary: 'px-owned-risk', id: 'px-owned-risk', severity: 'low' }],
         entrypoints: [{ summary: 'px-owned-entrypoint', source: 'owned/entry.js' }],
         history: [{ archive_id: 'px-owned-history', map_revision: '0'.repeat(64), counts: { files: 1 } }],
         packages: [{ name: 'px-owned-package', ecosystem: 'owned', scopes: ['test'] }],
         routes: [{ summary: 'px-owned-route', route: '/px-owned', source: 'owned/route.js' }],
         services: [{ summary: 'px-owned-service', name: 'px-owned-service', source: 'owned/service.js' }],
         test_links: [{ summary: 'px-owned-test-link', test: 'owned/test.js', source: 'owned/source.js', basis: 'owned' }],
+        unmapped_tests: [{ summary: 'px-owned-unmapped-test', test: 'owned/unmapped.test.js' }],
         untested_sources: [{ summary: 'px-owned-untested', source: 'owned/untested.js' }],
         build_stats: { ...((seeded.project.map.drilldown || {}).build_stats || {}), reused_file_facts: 7, rescanned_file_facts: 1 }
       };
       seeded.project.map.drilldown.service_route_map = { coverage: {}, limitations: [] };
       seeded.project.map.drilldown.test_link_map = { coverage: {}, limitations: [] };
       state.snapshot = seeded; render();
-      const kinds = ['entrypoints','history','packages','routes','services','test_links','untested_sources']; const opened = {};
+      const kinds = ['risks','entrypoints','history','packages','routes','services','test_links','unmapped_tests','untested_sources']; const opened = {};
       for (const kind of kinds) { const control = document.querySelector(`[data-action="inspectProjectMapRecord"][data-record-kind="${kind}"]`); control?.click(); opened[kind] = Boolean(control && document.querySelector('[data-action="closeModal"]')); document.querySelector('[data-action="closeModal"]')?.click(); }
       const buildReuse = /7 reused/.test(document.body?.innerText || '');
       state.snapshot = original; render();
-      return { opened, buildReuse, recovered: !/px-owned-(?:entrypoint|history|package|route|service|test-link|untested)/.test(document.body?.innerText || '') };
+      return { opened, buildReuse, recovered: !/px-owned-(?:risk|entrypoint|history|package|route|service|test-link|unmapped-test|untested)/.test(document.body?.innerText || '') };
     });
     const projectIds = {
-      entrypoints: 'pxui.projects.action.inspectProjectMapRecord.entrypoint', history: 'pxui.projects.action.inspectProjectMapRecord.history', packages: 'pxui.projects.action.inspectProjectMapRecord.package', routes: 'pxui.projects.action.inspectProjectMapRecord.route', services: 'pxui.projects.action.inspectProjectMapRecord.service', test_links: 'pxui.projects.action.inspectProjectMapRecord.test-link', untested_sources: 'pxui.projects.action.inspectProjectMapRecord.untested-source'
+      risks: 'pxui.projects.action.inspectProjectMapRecord.risk', entrypoints: 'pxui.projects.action.inspectProjectMapRecord.entrypoint', history: 'pxui.projects.action.inspectProjectMapRecord.history', packages: 'pxui.projects.action.inspectProjectMapRecord.package', routes: 'pxui.projects.action.inspectProjectMapRecord.route', services: 'pxui.projects.action.inspectProjectMapRecord.service', test_links: 'pxui.projects.action.inspectProjectMapRecord.test-link', unmapped_tests: 'pxui.projects.action.inspectProjectMapRecord.unmapped-test', untested_sources: 'pxui.projects.action.inspectProjectMapRecord.untested-source'
     };
     for (const [kind, id] of Object.entries(projectIds)) apply([id], { rendered: projectState.opened[kind], attempted: projectState.opened[kind], failure: projectState.opened[kind], recovered: projectState.recovered, completed: projectState.opened[kind] && projectState.recovered, failure_detail: `A bounded ${kind} record rendered the exact project-map row and information modal.`, recovery_detail: 'The modal closed and the exact predecessor snapshot was restored.' });
     apply(['pxui.projects.indicator.buildReuse'], { rendered: projectState.buildReuse, attempted: true, failure: projectState.buildReuse, recovered: projectState.recovered, completed: projectState.buildReuse && projectState.recovered, failure_detail: 'The bounded build projection rendered an exact nonzero reused-file-facts indicator.', recovery_detail: 'The exact predecessor snapshot replaced the owned build statistic.' });
@@ -8760,7 +8767,11 @@ function validCleanupResult(result) {
     && receipt.resources_reclaimed >= 1
     && receipt.resources_uncertain === 0
     && Array.isArray(receipt.errors) && receipt.errors.length === 0
-    && Array.isArray(receipt.resources) && receipt.resources.every(resource => resource.result === 'moved-to-recycle-bin');
+    && Array.isArray(receipt.resources)
+    && receipt.resources.every(resource => ['moved-to-recycle-bin', 'moved-to-local-quarantine'].includes(resource.result)
+      && (resource.result !== 'moved-to-local-quarantine'
+        || (/^\.quarantine\//.test(String(resource.quarantine_relative_path || ''))
+          && /^[a-f0-9]{64}$/.test(String(resource.quarantine_tree_sha256 || '')))));
 }
 
 function validPermanentCleanupResult(result) {
@@ -9166,12 +9177,18 @@ async function runInstalledKnowledgeGraphProfile(frameHost, matrix, timeoutMs = 
       requestGraph({ view: 'repository', mode: 'full', cluster: '', node: '', target: '', query: '', relation: '', direction: 'both', kind: '', status: '', offset: 0, edgeOffset: 0 });
       render();
     });
-    const baseline = await waitForGraph(after, () => frameHost.evaluate(frame => {
-      const control = frame.contentDocument?.querySelector('[data-action="graphView"][data-view="repository"]');
-      if (!control || control.disabled) throw new Error('knowledge-graph-retry-control-unavailable');
-      control.click();
-    }));
-    await frameHost.evaluate(frame => frame.contentDocument.querySelector('[data-action="graphSaveView"]').click());
+    const baseline = await waitForGraph(after, () => clickWhenKnowledgeControlReady(
+      frameHost,
+      '[data-action="graphView"][data-view="repository"]',
+      Math.min(timeoutMs, 20_000)
+    ));
+    await clickWhenKnowledgeControlReady(frameHost, '[data-action="graphSaveView"]', Math.min(timeoutMs, 20_000));
+    await settleInstalledSurfaceControl(frameHost, {
+      surface: 'knowledgeGraph',
+      selector: '#graph-view-name',
+      stableSamplesRequired: 2,
+      preserveModal: true
+    }, Math.min(timeoutMs, 20_000));
     const priorCount = await frameHost.evaluate(frame => frame.contentDocument.querySelectorAll('[data-action="graphApplySavedView"]').length);
     await frameHost.evaluate(frame => { const input = frame.contentDocument.querySelector('#graph-view-name'); input.value = ''; frame.contentDocument.querySelector('[data-action="submitGraphSavedView"]').click(); });
     observation.invalid_rejected = await frameHost.evaluate((frame, count) => frame.contentDocument.querySelectorAll('[data-action="graphApplySavedView"]').length === count && Boolean(frame.contentDocument.querySelector('#graph-view-name')), priorCount);
@@ -10893,6 +10910,8 @@ function partitionExpectedFaultDiagnostics(hostErrors, reversibleConfigurationPr
         || /(?:marketplace\.visualstudio\.com|vscode-unpkg\.net|main\.vscode-cdn\.net)/i.test(context));
     const expectedExternalHostWarning = isExternalVsCodeMermaidToolDiagnostic(diagnostic)
       || isExternalOwnedFixtureMarketplaceDiagnostic(diagnostic)
+      || isExternalVsCodeWindowsAppsDiagnostic(diagnostic)
+      || isExternalVsCodeDeviceIdDiagnostic(diagnostic)
       || isExternalVsCodeWillSaveTimeoutDiagnostic(diagnostic);
     const graphLoadAll = observationStateProfile?.observations?.['pxui.knowledge-graph.action.graphLoadAll'];
     const focusedProjectCancellations = Object.values(nativeProfiles?.projects?.observation?.cancelled_controls || {});
@@ -11547,6 +11566,19 @@ async function main() {
     const projectsProfile = ownedReversibleConfigurationAuthority && (!focusedProfileOnly || nativeDialogOnly || knowledgeGraphOnly)
       ? await timedProfile('projects-map-restart', () => runInstalledProjectsProfile(workbench, dashboard, proofMatrix))
       : { schema_version: 'px.installed-projects-profile/1.0', authority: 'Not admitted outside a full owned isolated host and disposable workspace.', observation: { attempted: false, completed: false, errors: [] }, control_probe: { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside a full owned isolated host and disposable workspace.', eligible_control_count: 0, records: [] } };
+    if (!focusedProfileOnly && process.env.PX_OWNED_DEFER_HOST_BOUNDARY_FIXTURE === '1') {
+      if (projectsProfile?.observation?.completed !== true || returnedProfileErrors(projectsProfile).length) {
+        throw new Error('deferred-host-boundary-fixture-requires-complete-fresh-project-profile');
+      }
+      const fixtureReceipt = path.resolve(String(process.env.PX_OWNED_HOST_BOUNDARY_FIXTURE_RECEIPT || ''));
+      if (!fixtureReceipt || !ownedWorkspaceRoot || !process.env.PX_OWNED_ENGINE_ROOT
+        || path.dirname(fixtureReceipt) !== path.dirname(ownedWorkspaceRoot)) {
+        throw new Error('deferred-host-boundary-fixture-boundary-invalid');
+      }
+      const fixture = stageOwnedHostBoundaryFixture(ownedWorkspaceRoot, process.env.PX_OWNED_ENGINE_ROOT);
+      fs.writeFileSync(fixtureReceipt, `${JSON.stringify(fixture, null, 2)}\n`, { encoding: 'utf8', flag: 'wx' });
+      await requestInstalledRefreshBound(dashboard, 30_000);
+    }
     const reversibleConfigurationProfile = ownedReversibleConfigurationAuthority && (!focusedProfileOnly || configurationOnly)
       ? await timedProfile('reversible-configuration', () => runInstalledReversibleConfigurationProfile(workbench, dashboard, proofMatrix))
       : { schema_version: 'px.installed-operational-control-probe/1.0', authority: 'Not admitted outside an owned isolated host.', eligible_control_count: 0, records: [] };

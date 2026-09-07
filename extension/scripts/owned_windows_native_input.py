@@ -178,9 +178,14 @@ class WindowsInput:
         self.kernel32.GetCurrentThreadId.restype = wintypes.DWORD
 
     def foreground(self) -> tuple[int, int]:
-        hwnd = int(self.user32.GetForegroundWindow())
+        # ctypes represents a null HWND as None.  A transient lack of a
+        # foreground window is normal while VS Code opens or closes a native
+        # modal; normalize it so the caller can recover an owned window.
+        hwnd = int(self.user32.GetForegroundWindow() or 0)
+        if not hwnd:
+            return 0, 0
         pid = c_ulong(0)
-        if not hwnd or not self.user32.GetWindowThreadProcessId(c_void_p(hwnd), byref(pid)):
+        if not self.user32.GetWindowThreadProcessId(c_void_p(hwnd), byref(pid)):
             raise OSError("foreground window unavailable")
         return hwnd, int(pid.value)
 

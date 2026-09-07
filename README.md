@@ -20,7 +20,7 @@ PACIFY-X is the project and framework. `engineering-bootstrap` is its Python pac
 
 **Requires:** Python 3.11–3.14, Git, OpenSSH Client (`ssh-keygen`), and an AI coding assistant
 
-The v0.7.0 implementation and focused repair work are complete, but the candidate is not yet a supported or published release. Final99 passed its governed source profile, validation, immutable-package audit, existing-install audit, and Windows/Ubuntu smoke checks, then stopped after the exhaustive installed-host walk exposed five direct profile failures. Repair12 resolved those five paths through focused exact-artifact host proofs with zero issues or host errors; a new ordered successor campaign must still execute exactly one complete release sequence and certify the exact resulting bytes. Real-host macOS proof has not been recorded for this candidate.
+The v0.7.0 implementation and known failure repairs are complete, but the candidate is not yet a supported or published release. Final132 passed its governed sections, full source profile, validation, immutable package, and local installation stages, then ended terminally when its installed-operational stage exposed the complete shared-owner failure set. Those failures were repaired together and are focused-green against the exact 0.6.87 VSIX; Final132 will not be replayed. Final133 is the single ordered successor permitted to reconcile one release identity, rerun the complete certification sequence once, and publish only those certified bytes. Real-host macOS proof has not been recorded for this candidate.
 
 ## What PACIFY-X does for you
 

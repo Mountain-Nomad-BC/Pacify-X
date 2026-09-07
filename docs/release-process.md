@@ -46,7 +46,7 @@ $work = Join-Path $env:TEMP "pacify-x-$tag-custody-work"
 $artifactDir = "<artifact_dir returned by release finalize>"
 $candidate = "<candidate_id from the installed-operational summary>"
 $summary = "<path to that candidate's installed-operational summary>"
-$vsix = "extension/dist/pacify-x-vscode-0.6.85.vsix"
+$vsix = "extension/dist/pacify-x-vscode-0.6.87.vsix"
 New-Item -ItemType Directory -Path $assets | Out-Null
 Copy-Item -LiteralPath $vsix -Destination $assets
 python -B scripts/package_release_evidence.py `
@@ -71,7 +71,7 @@ On an admitted network-capable operator host, create the draft and upload the ex
 $receiptPath = Join-Path $assets "pacify-x-v$release-complete-evidence-custody.json"
 $receipt = Get-Content -LiteralPath $receiptPath -Raw | ConvertFrom-Json
 gh release create $tag --draft --verify-tag --title "PACIFY-X $release"
-gh release upload $tag $receiptPath "${receiptPath}.sig" (Join-Path $assets "pacify-x-vscode-0.6.85.vsix")
+gh release upload $tag $receiptPath "${receiptPath}.sig" (Join-Path $assets "pacify-x-vscode-0.6.87.vsix")
 foreach ($chunk in $receipt.chunks) {
   gh release upload $tag (Join-Path $assets $chunk.filename)
 }
