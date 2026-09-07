@@ -18,6 +18,7 @@ from runtime.release_campaign import (
     clear_release_identity,
     finish_release_stage,
     rewind_failed_release_campaign_repair,
+    rewind_invalid_active_release_campaign_repair,
     rewind_invalid_release_identity_reconciliation,
     supersede_invalid_active_release_campaign,
     supersede_invalid_release_identity,
@@ -293,6 +294,41 @@ def test_failed_stage_rewinds_only_from_its_exact_repair_phase(
     assert rewind["failed_stage"] == "sections"
     assert rewind["prior_phase"] == "revision_reconciled"
     assert rewind["phase"] == "repair_frozen"
+
+
+def test_invalid_active_passed_prefix_rewinds_only_from_its_exact_repair_phase(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    root = _minimal_tree()
+    extension = root / "extension/package.json"
+    extension.parent.mkdir(parents=True)
+    extension.write_text('{"version":"1.2.3"}\n', encoding="utf-8")
+    monkeypatch.setattr(
+        "runtime.release_campaign.authoritative_version", lambda _root: "1.2.3"
+    )
+    _write_release_repair_state(root, "repair")
+    clear_release_identity(root, campaign_id="active-passed-prefix")
+    _write_release_repair_state(root, "revision_reconciled")
+    apply_release_identity(root)
+    sections = claim_release_stage(root, "sections")
+    finish_release_stage(
+        root, stage="sections", claim_id=sections["claim_id"], passed=True
+    )
+    _write_release_repair_state(root, "sections_current")
+    (root / "runtime/module.py").write_text("VALUE = 2\n", encoding="utf-8")
+
+    rewind = rewind_invalid_active_release_campaign_repair(root)
+
+    assert rewind["valid"] is True
+    assert rewind["last_passed_stage"] == "sections"
+    assert rewind["next_pending_stage"] == "full_profile"
+    assert rewind["prior_phase"] == "sections_current"
+    assert rewind["phase"] == "repair_frozen"
+    assert rewind["source_verification_errors"]
+
+    _write_release_repair_state(root, "validated")
+    with pytest.raises(ReleaseCampaignBlocked, match="exact repair phase"):
+        rewind_invalid_active_release_campaign_repair(root)
 
 
 def _write_release_repair_state(root: Path, phase: str) -> None:

@@ -6,11 +6,54 @@ from unittest.mock import patch
 
 from scripts.pre_candidate_hygiene import (
     _is_preserved_evidence_reparse,
+    _source_invalid_active_predecessor,
     _terminal_predecessor_intentionally_stale,
     cleanup_targets,
     quarantine,
     validate_quarantine,
 )
+
+
+def test_source_invalid_active_predecessor_requires_exact_retained_pass_prefix() -> None:
+    names = (
+        "sections",
+        "full_profile",
+        "validate",
+        "package",
+        "install",
+        "installed_operational",
+        "certify",
+    )
+    campaign_id = "candidate-final131"
+    release = {
+        "valid": True,
+        "campaign_id": campaign_id,
+        "state": "active",
+        "apply_count": 1,
+        "identity": {"release_identity_sha256": "a" * 64},
+        "active_claim": None,
+        "stages": {
+            name: {"status": "passed" if index < 4 else "pending"}
+            for index, name in enumerate(names)
+        },
+    }
+    invalid_source = {"valid": False, "errors": ["source identity changed"]}
+
+    assert _source_invalid_active_predecessor(
+        release, invalid_source, campaign_id
+    )
+    assert not _source_invalid_active_predecessor(
+        release, {"valid": True, "errors": []}, campaign_id
+    )
+    release["active_claim"] = {"claim_id": "live"}
+    assert not _source_invalid_active_predecessor(
+        release, invalid_source, campaign_id
+    )
+    release["active_claim"] = None
+    release["stages"]["validate"]["status"] = "failed"
+    assert not _source_invalid_active_predecessor(
+        release, invalid_source, campaign_id
+    )
 
 
 def test_preserved_evidence_reparse_is_explained_but_product_reparse_is_not(

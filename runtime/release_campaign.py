@@ -565,6 +565,61 @@ def rewind_failed_release_campaign_repair(root: Path) -> dict[str, Any]:
     }
 
 
+def rewind_invalid_active_release_campaign_repair(root: Path) -> dict[str, Any]:
+    """Return a source-invalid active campaign's passed prefix to repair freeze."""
+
+    root = root.resolve(strict=True)
+    repair = _repair_campaign(root)
+    value = _validate(
+        json.loads((root / STATE_PATH).read_text(encoding="utf-8"))
+    )
+    statuses = [value["stages"][stage]["status"] for stage in STAGES]
+    passed_count = next(
+        (index for index, status in enumerate(statuses) if status != "passed"),
+        len(statuses),
+    )
+    if (
+        value.get("state") != "active"
+        or value.get("apply_count") != 1
+        or not isinstance(value.get("identity"), dict)
+        or value.get("active_claim") is not None
+        or not 0 < passed_count < len(STAGES)
+        or statuses
+        != ["passed"] * passed_count + ["pending"] * (len(STAGES) - passed_count)
+    ):
+        raise ReleaseCampaignBlocked(
+            "invalid active campaign rewind requires one retained passed prefix"
+        )
+    verification = release_campaign_status(root, verify_source=True)
+    if verification["valid"] or not verification["errors"]:
+        raise ReleaseCampaignBlocked(
+            "a source-coherent active campaign cannot be rewound"
+        )
+    last_passed_stage = STAGES[passed_count - 1]
+    next_pending_stage = STAGES[passed_count]
+    expected_phase = STAGE_PHASES[next_pending_stage]
+    if (
+        repair.get("phase") != expected_phase
+        or repair.get("intake_open") is not False
+        or repair.get("unresolved") != []
+    ):
+        raise ReleaseCampaignBlocked(
+            "invalid active campaign rewind requires the passed prefix's exact repair phase"
+        )
+    repair["phase"] = "repair_frozen"
+    _write(root / REPAIR_CAMPAIGN_PATH, repair)
+    return {
+        "schema_version": "px.invalid-active-release-campaign-repair-rewind/1.0",
+        "campaign_id": value["campaign_id"],
+        "last_passed_stage": last_passed_stage,
+        "next_pending_stage": next_pending_stage,
+        "prior_phase": expected_phase,
+        "phase": "repair_frozen",
+        "source_verification_errors": list(verification["errors"]),
+        "valid": True,
+    }
+
+
 def supersede_failed_release_campaign(
     root: Path, *, campaign_id: str, reason: str
 ) -> dict[str, Any]:

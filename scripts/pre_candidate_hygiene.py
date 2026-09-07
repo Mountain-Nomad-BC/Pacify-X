@@ -176,6 +176,42 @@ def _terminal_predecessor_intentionally_stale(
     )
 
 
+def _source_invalid_active_predecessor(
+    release: dict[str, Any],
+    source_release: dict[str, Any],
+    predecessor_campaign_id: str,
+) -> bool:
+    """Mirror the archive owner's exact retained-pass predecessor boundary."""
+
+    from runtime.release_campaign import STAGES
+
+    if (
+        release.get("valid") is not True
+        or release.get("campaign_id") != predecessor_campaign_id
+        or release.get("state") != "active"
+        or release.get("apply_count") != 1
+        or not isinstance(release.get("identity"), dict)
+        or release.get("active_claim") is not None
+        or source_release.get("valid") is not False
+        or not source_release.get("errors")
+    ):
+        return False
+    stages = release.get("stages")
+    if not isinstance(stages, dict) or set(stages) != set(STAGES):
+        return False
+    statuses = [
+        stages[name].get("status") if isinstance(stages.get(name), dict) else None
+        for name in STAGES
+    ]
+    passed = next(
+        (index for index, status in enumerate(statuses) if status != "passed"),
+        len(statuses),
+    )
+    return 0 < passed < len(statuses) and statuses == (
+        ["passed"] * passed + ["pending"] * (len(statuses) - passed)
+    )
+
+
 def _entry_snapshot(root: Path) -> list[dict[str, Any]]:
     """Hash a tree without following links; retain empty directories."""
     if not _lexists(root):
@@ -583,17 +619,29 @@ def assess(
     groups = group_status(root)
     sections = section_status(root)
     release = release_campaign_status(root, verify_source=False)
+    source_release = release_campaign_status(root, verify_source=True)
     failed_stages = [
         name
         for name, record in release.get("stages", {}).items()
         if isinstance(record, dict) and record.get("status") == "failed"
     ]
-    lineage_valid = (
+    terminal_failed_lineage = (
         release.get("valid") is True
         and release.get("campaign_id") == predecessor_campaign_id
         and release.get("state") == "failed"
         and release.get("active_claim") is None
         and len(failed_stages) == 1
+    )
+    source_invalid_active_lineage = _source_invalid_active_predecessor(
+        release, source_release, predecessor_campaign_id
+    )
+    lineage_valid = terminal_failed_lineage or source_invalid_active_lineage
+    lineage_kind = (
+        "terminal_failed"
+        if terminal_failed_lineage
+        else "source_invalid_active_with_retained_passes"
+        if source_invalid_active_lineage
+        else None
     )
     artifact_valid = (
         artifact.is_file()
@@ -734,6 +782,7 @@ def assess(
         },
         "candidate_predecessor_lineage_result": {
             "valid": lineage_valid,
+            "kind": lineage_kind,
             "campaign_id": release.get("campaign_id"),
             "state": release.get("state"),
             "failed_stages": failed_stages,

@@ -474,12 +474,25 @@ def readiness(config: Config) -> dict[str, Any]:
                 )
             active_kind = _invalid_active_predecessor_kind(config, release)
             if release.get("state") == "active":
+                retained_passes = [
+                    name
+                    for name in RELEASE_STAGE_PHASES
+                    if isinstance(release.get("stages", {}).get(name), dict)
+                    and release["stages"][name].get("status") == "passed"
+                ]
                 predecessor_ready = (
                     active_kind == "unused_invalid_identity"
                     and repair_phase in {"repair_frozen", "revision_reconciled"}
                 ) or (
                     active_kind == "invalid_active_with_retained_passes"
-                    and repair_phase == "repair_frozen"
+                    and bool(retained_passes)
+                    and repair_phase
+                    in {
+                        "repair_frozen",
+                        RELEASE_STAGE_PHASES[
+                            tuple(RELEASE_STAGE_PHASES)[len(retained_passes)]
+                        ],
+                    }
                 )
             if not predecessor_ready or release.get("active_claim") is not None:
                 errors.append(

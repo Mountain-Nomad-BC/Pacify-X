@@ -318,7 +318,7 @@ def test_archive_check_allows_one_unused_invalid_identity_predecessor(
     assert check(config, "archive_clear")["valid"] is True
 
 
-def test_archive_check_allows_only_frozen_source_invalid_retained_prefix(
+def test_archive_check_allows_exact_phase_source_invalid_retained_prefix(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     config = fixture(tmp_path, "archive_clear")
@@ -358,6 +358,10 @@ def test_archive_check_allows_only_frozen_source_invalid_retained_prefix(
     assert check(config, "archive_clear")["valid"] is True
 
     repair_value["phase"] = "installed_operational"
+    repair.write_text(json.dumps(repair_value), encoding="utf-8")
+    assert check(config, "archive_clear")["valid"] is True
+
+    repair_value["phase"] = "installed"
     repair.write_text(json.dumps(repair_value), encoding="utf-8")
     assert check(config, "archive_clear")["valid"] is False
 
@@ -430,6 +434,10 @@ def test_archive_effect_routes_retained_passes_to_active_supersession(
 ) -> None:
     config = fixture(tmp_path, "archive_clear")
     state_dir = tmp_path / ".engineering-bootstrap/processing-order"
+    repair = state_dir / "repair-campaign.json"
+    repair_value = json.loads(repair.read_text(encoding="utf-8"))
+    repair_value["phase"] = "installed_operational"
+    repair.write_text(json.dumps(repair_value), encoding="utf-8")
     state = state_dir / "release-identity.json"
     value = json.loads(state.read_text(encoding="utf-8"))
     value.update(
@@ -449,6 +457,11 @@ def test_archive_effect_routes_retained_passes_to_active_supersession(
     )
     state.write_text(json.dumps(value), encoding="utf-8")
     calls: list[str] = []
+    rewinds: list[Path] = []
+    monkeypatch.setattr(
+        "runtime.release_campaign.rewind_invalid_active_release_campaign_repair",
+        lambda root: rewinds.append(root) or {"valid": True},
+    )
     monkeypatch.setattr(
         "runtime.release_campaign.supersede_invalid_active_release_campaign",
         lambda root, *, campaign_id, reason: calls.append(campaign_id)
@@ -466,6 +479,7 @@ def test_archive_effect_routes_retained_passes_to_active_supersession(
     receipt = ProductionEffects().execute("archive_clear", config)
     assert receipt["valid"] is True
     assert calls == [config.candidate_id]
+    assert rewinds == [config.root]
 
 
 def test_archive_check_allows_failed_stage_at_its_exact_repair_phase(
@@ -612,6 +626,45 @@ def test_command_timeout_closes_owned_process_tree(
         )
     assert cleanup_calls == [["taskkill", "/PID", "321", "/T", "/F"]]
     assert waits == 2
+
+
+def test_installed_extension_listing_isolates_host_vscode_environment(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    config = fixture(tmp_path, "install")
+    observed: dict[str, object] = {}
+    monkeypatch.setenv("VSCODE_IPC_HOOK", "host-instance")
+    monkeypatch.setenv("VSCODE_CWD", "host-workspace")
+
+    def fake_run(argv: list[str], **kwargs: object) -> subprocess.CompletedProcess[str]:
+        observed["argv"] = list(argv)
+        observed["environment"] = dict(kwargs["env"])  # type: ignore[arg-type]
+        user_data = Path(argv[argv.index("--user-data-dir") + 1])
+        observed["user_data"] = user_data
+        assert user_data.is_dir()
+        return subprocess.CompletedProcess(
+            argv,
+            0,
+            stdout="mountain-nomad-bc.pacify-x-vscode@0.6.85\n",
+            stderr="",
+        )
+
+    monkeypatch.setattr(
+        "scripts.run_release_stage_owner.subprocess.run", fake_run
+    )
+    result = ProductionEffects().list_installed_extensions(config)
+
+    argv = observed["argv"]
+    assert isinstance(argv, list)
+    assert argv[argv.index("--extensions-dir") + 1] == str(
+        config.installed_dir.parent
+    )
+    environment = observed["environment"]
+    assert isinstance(environment, dict)
+    assert not any(str(key).upper().startswith("VSCODE_") for key in environment)
+    assert not Path(observed["user_data"]).exists()  # type: ignore[arg-type]
+    assert result.returncode == 0
 
 
 def test_identity_uses_explicit_cached_set_and_one_annotated_retag(

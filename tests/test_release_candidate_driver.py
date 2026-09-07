@@ -392,6 +392,10 @@ def test_initial_readiness_allows_only_source_invalid_active_retained_prefix(
     repair = json.loads((control / "repair-campaign.json").read_text(encoding="utf-8"))
     repair["phase"] = "installed_operational"
     (control / "repair-campaign.json").write_text(json.dumps(repair), encoding="utf-8")
+    assert readiness(value)["valid"] is True
+
+    repair["phase"] = "installed"
+    (control / "repair-campaign.json").write_text(json.dumps(repair), encoding="utf-8")
     assert readiness(value)["valid"] is False
 
     repair["phase"] = "repair_frozen"

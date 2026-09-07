@@ -13,6 +13,7 @@ import signal
 import stat
 import subprocess
 import sys
+import tempfile
 from typing import Any, Mapping, Protocol
 from uuid import uuid4
 import zipfile
@@ -325,6 +326,13 @@ def check(config: Config, step: str) -> dict[str, Any]:
             active_kind = invalid_active_predecessor_kind(config, current_release)
             if active_kind == "unused_invalid_identity":
                 archive_recovery_phase = "revision_reconciled"
+            elif active_kind == "invalid_active_with_retained_passes":
+                passed_stages = [
+                    name
+                    for name in STAGES
+                    if current_release["stages"][name].get("status") == "passed"
+                ]
+                archive_recovery_phase = STAGE_PHASES[STAGES[len(passed_stages)]]
         repair_phase_valid = current_repair.get("phase") == PHASES.get(
             step, (None,)
         )[0] or current_repair.get("phase") == archive_recovery_phase
@@ -752,18 +760,42 @@ class ProductionEffects:
                 digest.update(part)
         return files, sorted(links), digest.hexdigest()
 
+    def list_installed_extensions(
+        self, config: Config
+    ) -> subprocess.CompletedProcess[str]:
+        """Query the exact extension root without inheriting an IDE host profile."""
+
+        environment = {
+            key: value
+            for key, value in os.environ.items()
+            if not key.upper().startswith("VSCODE_")
+        }
+        with tempfile.TemporaryDirectory(
+            prefix="pacify-x-vscode-cli-audit-"
+        ) as user_data_dir:
+            return subprocess.run(
+                [
+                    str(config.code_command),
+                    "--user-data-dir",
+                    user_data_dir,
+                    "--extensions-dir",
+                    str(config.installed_dir.parent),
+                    "--list-extensions",
+                    "--show-versions",
+                ],
+                cwd=config.root,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+                timeout=60,
+                check=False,
+                env=environment,
+            )
+
     def install_audit(self, config: Config, claim: Mapping[str, Any]) -> dict[str, Any]:
         before_files, before_links, before_digest = self.tree(config.installed_dir)
-        listed = subprocess.run(
-            [str(config.code_command), "--list-extensions", "--show-versions"],
-            cwd=config.root,
-            capture_output=True,
-            text=True,
-            encoding="utf-8",
-            errors="replace",
-            timeout=60,
-            check=False,
-        )
+        listed = self.list_installed_extensions(config)
         with zipfile.ZipFile(config.artifact) as archive:
             entries = {
                 row.filename.removeprefix("extension/"): row
@@ -861,6 +893,7 @@ class ProductionEffects:
             supersede_invalid_active_release_campaign,
             supersede_invalid_release_identity,
             rewind_failed_release_campaign_repair,
+            rewind_invalid_active_release_campaign_repair,
             rewind_invalid_release_identity_reconciliation,
         )
 
@@ -926,6 +959,8 @@ class ProductionEffects:
                     for name in STAGES
                 )
                 if retained_passes:
+                    if repair(config).get("phase") != "repair_frozen":
+                        rewind_invalid_active_release_campaign_repair(config.root)
                     status = supersede_invalid_active_release_campaign(
                         config.root,
                         campaign_id=config.candidate_id,
