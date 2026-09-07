@@ -1888,7 +1888,7 @@
       "validation_level": "full-suite-and-installed-integration"
     },
     {
-      "bytes": 163298,
+      "bytes": 163892,
       "evidence": [
         "tests/test_bytecode_guard.py",
         "tests/test_certification_readiness.py",
@@ -1903,7 +1903,7 @@
       "packaged": true,
       "path": "runtime/cli.py",
       "role": "installed-runtime",
-      "sha256": "3abe36648444d7fe6a4c9fdb49384f61a8d010d5015d7e8fc3ae71e11419aa7b",
+      "sha256": "28ce792256a0841a95a46fd89de4da44de57de14e1931265255b4f8e79247dd7",
       "syntax_valid": true,
       "validation_level": "evidence-association"
     },
@@ -6143,7 +6143,7 @@
       "validation_level": "evidence-association"
     },
     {
-      "bytes": 61940,
+      "bytes": 62143,
       "evidence": [
         "tests/test_structural_integrity.py"
       ],
@@ -6151,7 +6151,7 @@
       "packaged": false,
       "path": "scripts/run_release_candidate.py",
       "role": "source-build-control",
-      "sha256": "9a194547a36c41acf4789ac23a532482e600ad29128c403c45f827b630920cab",
+      "sha256": "8d6a1c7f2ec645e0d35e825d7df7af26da5f82cc36068c141ec192c158303039",
       "syntax_valid": true,
       "validation_level": "evidence-association"
     },
@@ -6827,7 +6827,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 45503,
+      "bytes": 47911,
       "evidence": [
         "tests/test_cli_commands.py"
       ],
@@ -6835,7 +6835,7 @@
       "packaged": true,
       "path": "tests/test_cli_commands.py",
       "role": "release-test",
-      "sha256": "1d600fc9c9c2f0acea27a7b11ec2fdce366fa46438e4797a45fa412a79e5e671",
+      "sha256": "5c8948d6a0e439a2e5f73c2fa62cb29c1363f0ed3fdfb51288151081edfd93c6",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },
@@ -8530,7 +8530,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 31822,
+      "bytes": 33181,
       "evidence": [
         "tests/test_release_candidate_driver.py"
       ],
@@ -8538,7 +8538,7 @@
       "packaged": true,
       "path": "tests/test_release_candidate_driver.py",
       "role": "release-test",
-      "sha256": "fe2b9d7eeca2bea40c240b0a6858e48f46a3a5c93a72485fec3276def3dbba8c",
+      "sha256": "be4bc08a9d17cc013ab63abd8db6291ffec8cc157cc33925e04a3e5a482948e9",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },

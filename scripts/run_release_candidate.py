@@ -897,7 +897,11 @@ class SubprocessOwners:
                     run_id=self.config.candidate_id,
                     lane_id=f"{step}-{index:02d}",
                     creator="scripts.run_release_candidate",
-                    environment=environment,
+                    environment={
+                        **environment,
+                        "PX_RELEASE_OWNER_RUN_ID": self.config.candidate_id,
+                        "PX_RELEASE_OWNER_LANE_ID": f"{step}-{index:02d}",
+                    },
                     stdout=stream,
                     stderr=subprocess.STDOUT,
                     text=True,

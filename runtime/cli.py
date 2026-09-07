@@ -269,6 +269,8 @@ def _refresh_stale_groups_for_full_profile(
         newly_unresolved = None
         if baseline_unresolved_ids is not None and isinstance(final_records, list):
             current_owner_pids = {os.getpid(), os.getppid()}
+            release_owner_run_id = os.environ.get("PX_RELEASE_OWNER_RUN_ID", "")
+            release_owner_lane_id = os.environ.get("PX_RELEASE_OWNER_LANE_ID", "")
             newly_unresolved = [
                 record
                 for record in final_records
@@ -278,7 +280,16 @@ def _refresh_stale_groups_for_full_profile(
                 and not (
                     record.resource_type == "process"
                     and record.active
-                    and record.pid in current_owner_pids
+                    and (
+                        record.pid in current_owner_pids
+                        or (
+                            release_owner_run_id
+                            and release_owner_lane_id
+                            and record.creator == "scripts.run_release_candidate"
+                            and record.run_id == release_owner_run_id
+                            and record.lane_id == release_owner_lane_id
+                        )
+                    )
                 )
             ]
         nested_resources_valid = (

@@ -5,6 +5,7 @@ import hashlib
 from pathlib import Path
 import subprocess
 from types import SimpleNamespace
+from unittest.mock import patch
 
 import pytest
 
@@ -153,6 +154,42 @@ def test_execute_all_records_admission_failure_before_any_owner_runs(tmp_path: P
     assert result["failure"] == "ValueError: admission rejected"
     assert owners.runs == []
     assert json.loads(report_path.read_text(encoding="utf-8")) == result
+
+
+def test_subprocess_owner_propagates_exact_release_owner_identity(tmp_path: Path) -> None:
+    value = config(tmp_path)
+    manager = SimpleNamespace()
+    process = SimpleNamespace(pid=1234, wait=lambda timeout: 0)
+    record = SimpleNamespace(resource_id="process-owner", pid=1234)
+    completed = SimpleNamespace(
+        status="reclaimed", run_state="completed", cleanup_result="exit_0"
+    )
+    captured: dict[str, object] = {}
+
+    def spawn(*args, **kwargs):
+        captured.update(kwargs)
+        return record, process
+
+    manager.spawn_owned_process = spawn
+    manager.complete_process = lambda resource_id: completed
+    owners = SubprocessOwners(value, manager=manager)
+    with (
+        patch.object(owners, "verify"),
+        patch(
+            "runtime.resource_lifecycle.resource_status",
+            return_value={
+                "valid": True,
+                "active_processes": 0,
+                "active_paths": 0,
+                "reclaimable_paths": 0,
+                "cleanup_failures": 0,
+            },
+        ),
+    ):
+        assert owners.run("archive_clear", (("owner", "archive_clear"),))["valid"]
+    environment = captured["environment"]
+    assert environment["PX_RELEASE_OWNER_RUN_ID"] == value.candidate_id
+    assert environment["PX_RELEASE_OWNER_LANE_ID"] == "archive_clear-01"
 
 
 def test_initial_readiness_allows_one_unused_cleared_predecessor(

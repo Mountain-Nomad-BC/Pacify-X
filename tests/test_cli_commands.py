@@ -410,6 +410,72 @@ class CliCommandTests(unittest.TestCase):
         self.assertTrue(result["valid"])
         self.assertEqual(result["failed_groups"], [])
 
+    def test_full_profile_group_refresh_allows_exact_redirected_release_owner(self) -> None:
+        stale = {
+            "valid": False,
+            "groups": [
+                {"group": "derived-integrity", "current": False, "fresh": False}
+            ],
+        }
+        fresh = {
+            "valid": True,
+            "groups": [
+                {
+                    "group": "derived-integrity",
+                    "current": True,
+                    "fresh": True,
+                    "passed": True,
+                }
+            ],
+        }
+        owner = SimpleNamespace(
+            resource_id="process-redirected-release-owner",
+            resource_type="process",
+            classification="ephemeral",
+            status="active",
+            active=True,
+            pid=987654,
+            creator="scripts.run_release_candidate",
+            run_id="PX-CANDIDATE",
+            lane_id="full_profile-01",
+        )
+        with (
+            patch("runtime.test_profiles.group_status", side_effect=[stale, fresh]),
+            patch(
+                "runtime.test_profiles.resolve_test_groups",
+                return_value=[{"group": "derived-integrity", "timeout_seconds": 30}],
+            ),
+            patch(
+                "runtime.test_runner.run_test_command",
+                return_value={
+                    "valid": True,
+                    "exit_code": 0,
+                    "timed_out": False,
+                    "supervision_status": "exited",
+                    "process_tree_terminated": True,
+                },
+            ),
+            patch("runtime.resource_lifecycle.ResourceManager") as manager_type,
+            patch.dict(
+                os.environ,
+                {
+                    "PX_RELEASE_OWNER_RUN_ID": "PX-CANDIDATE",
+                    "PX_RELEASE_OWNER_LANE_ID": "full_profile-01",
+                },
+            ),
+        ):
+            manager = manager_type.return_value
+            manager.ledger.load.side_effect = [[], [owner]]
+            manager.reconcile.return_value = {
+                "valid": False,
+                "owned_child_processes_active": 1,
+                "owned_ephemeral_unexplained": 1,
+                "cleanup_failures": 0,
+            }
+            result = _refresh_stale_groups_for_full_profile(ROOT)
+        self.assertTrue(result["valid"])
+        self.assertEqual(result["failed_groups"], [])
+
     def test_full_profile_reconciles_closed_tree_before_disk_budget_failure(self) -> None:
         stale = {
             "valid": False,
