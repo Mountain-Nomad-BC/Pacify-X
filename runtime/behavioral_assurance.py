@@ -9,6 +9,7 @@ import hashlib
 import re
 import time
 from typing import Any, Callable, Iterable, Mapping
+from .numeric_inputs import bounded_mapping, finite_number
 
 
 TOKEN = re.compile(r"[a-z0-9]+")
@@ -145,7 +146,12 @@ def attribute_failure(signals: FailureSignals) -> dict[str, Any]:
         (not signals.oracle_reliable, "oracle_ambiguous", 0.95, "oracle_not_reliable"),
         (signals.policy_denied, "policy_denial", 0.99, "policy_denied"),
         (signals.tool_failed, "tool_failure", 0.98, "tool_failed"),
-        (not signals.dependency_healthy, "dependency_degraded", 0.97, "dependency_unhealthy"),
+        (
+            not signals.dependency_healthy,
+            "dependency_degraded",
+            0.97,
+            "dependency_unhealthy",
+        ),
         (signals.contradiction_present, "contradiction", 0.90, "conflicting_evidence"),
         (signals.source_stale, "stale_knowledge", 0.88, "source_stale"),
     )
@@ -158,15 +164,21 @@ def attribute_failure(signals: FailureSignals) -> dict[str, Any]:
             contributors.append(("scope_refusal_failure", 0.96))
             reasons.append("out_of_scope_answered")
     elif signals.retrieved_count == 0:
-        cause = "ranking_failure" if signals.deep_search_has_support else "source_absent"
+        cause = (
+            "ranking_failure" if signals.deep_search_has_support else "source_absent"
+        )
         contributors.append((cause, 0.90 if signals.deep_search_has_support else 0.80))
         reasons.append("no_visible_retrieval")
     elif not signals.shown_context_has_support:
-        cause = "ranking_failure" if signals.deep_search_has_support else "retrieval_miss"
+        cause = (
+            "ranking_failure" if signals.deep_search_has_support else "retrieval_miss"
+        )
         contributors.append((cause, 0.88 if signals.deep_search_has_support else 0.72))
         reasons.append("retrieved_context_lacks_support")
     elif not signals.answer_has_required_support:
-        contributors.extend((("source_insufficient", 0.70), ("reasoning_failure", 0.60)))
+        contributors.extend(
+            (("source_insufficient", 0.70), ("reasoning_failure", 0.60))
+        )
         reasons.append("supported_context_did_not_reach_answer")
     if not contributors:
         contributors.append(("unknown", 0.35))
@@ -185,7 +197,9 @@ def attribute_failure(signals: FailureSignals) -> dict[str, Any]:
     }
 
 
-def validate_evaluation_lineage(lineage: Mapping[str, Any]) -> tuple[bool, tuple[str, ...]]:
+def validate_evaluation_lineage(
+    lineage: Mapping[str, Any],
+) -> tuple[bool, tuple[str, ...]]:
     reasons: list[str] = []
     case_class = str(lineage.get("case_class", ""))
     origin = str(lineage.get("origin", ""))
@@ -286,6 +300,11 @@ def assurance_score(
     *,
     minimum_axis: float = 0.70,
 ) -> dict[str, Any]:
+    minimum_axis = finite_number(minimum_axis, "minimum_axis", minimum=0, maximum=1)
+    axes = bounded_mapping(axes, "assurance axes", maximum=32)
+    axes = {
+        name: finite_number(value, "assurance axis") for name, value in axes.items()
+    }
     required = {
         "behavior",
         "evaluator_calibration",
@@ -296,8 +315,14 @@ def assurance_score(
     }
     missing = sorted(required - set(axes))
     invalid = sorted(name for name, value in axes.items() if not 0 <= float(value) <= 1)
-    below = sorted(name for name in required if name in axes and axes[name] < minimum_axis)
-    score = sum(float(axes[name]) for name in required if name in axes) / max(1, len(required))
+    below = sorted(
+        name for name in required if name in axes and axes[name] < minimum_axis
+    )
+    # Invalid axes contribute no credit and cannot overflow diagnostics.
+    invalid_set = set(invalid)
+    score = sum(
+        axes[name] for name in required if name in axes and name not in invalid_set
+    ) / len(required)
     return {
         "score": round(score, 6),
         "admissible": not missing and not invalid and not below,

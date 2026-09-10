@@ -19,6 +19,51 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class ContractRuntimeTests(unittest.TestCase):
+    def test_json_equality_separates_booleans_from_numbers_recursively(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for rule in ({"const": {"value": [1]}}, {"enum": [{"value": [1]}]}):
+                schema = self._write_schema(root, "equality.json", rule)
+                with self.assertRaises(ContractValidationError):
+                    validate_instance({"value": [True]}, schema)
+                validate_instance({"value": [1.0]}, schema)
+
+    def test_unique_items_uses_numeric_value_and_object_order(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            schema = self._write_schema(Path(directory), "unique.json", {"uniqueItems": True})
+            for values in ([1, 1.0], [0, -0.0], [{"a": 1, "b": [2]}, {"b": [2.0], "a": 1.0}]):
+                with self.subTest(values=values), self.assertRaises(ContractValidationError):
+                    validate_instance(values, schema)
+            validate_instance([True, 1, False, 0, "1", None], schema)
+            validate_instance([9007199254740993, 9007199254740992.0], schema)
+
+    def test_unruled_values_must_still_be_finite_json(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            schema = self._write_schema(Path(directory), "unruled.json", {})
+            for invalid in (float("nan"), float("inf"), b"bytes", {1: "numeric key"}, (1, 2), {1, 2}):
+                with self.subTest(kind=type(invalid).__name__), self.assertRaises(ContractValidationError):
+                    validate_instance({"unruled": [invalid]}, schema)
+            validate_instance({"unruled": [None, {}, [], 0.5, "value"]}, schema)
+
+    def test_cyclic_instance_is_rejected_as_a_contract_error(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            schema = self._write_schema(Path(directory), "cycle.json", {})
+            instance = []
+            instance.append(instance)
+            with self.assertRaises(ContractValidationError):
+                validate_instance(instance, schema)
+            shared = {"value": 1}
+            validate_instance([shared, shared], schema)
+
+    def test_schema_reader_rejects_duplicate_keys_and_overflow_numbers(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            schema = Path(directory) / "ambiguous.json"
+            header = '{"$schema": "' + SUPPORTED_DIALECT + '", "$id": "urn:test:ambiguous", '
+            for raw in (header + '"const": 1, "const": 2}', header + '"const": 1e999}'):
+                schema.write_text(raw, encoding="utf-8")
+                with self.subTest(raw=raw), self.assertRaisesRegex(ValueError, "duplicate JSON key|non-finite JSON number"):
+                    validate_instance(2, schema)
+
     def test_extension_declarations_are_source_only_in_the_python_wheel(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             installed_root = Path(directory)

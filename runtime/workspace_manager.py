@@ -2361,20 +2361,11 @@ def _materialize_workflow_payload(
         payload["evidence_references"] = TransferEvidenceReferences(
             **{name: str(references_raw[name]) for name in required_references}
         )
-        evidence_store_relative = Path(str(raw.get("evidence_store", "")))
-        evidence_store = (paths.root / evidence_store_relative).resolve()
-        if (
-            evidence_store_relative.is_absolute()
-            or ".." in evidence_store_relative.parts
-            or not _inside(evidence_store, paths.root)
-            or not evidence_store.is_dir()
-        ):
-            raise ValueError(
-                "cross-project transfer evidence_store must be an existing workspace-relative directory"
-            )
+        from .trusted_evidence import evidence_store_path
+
+        evidence_store = evidence_store_path(paths.root, raw.get("evidence_store"))
         payload["evidence_resolver"] = TrustedEvidenceResolver(
-            evidence_store,
-            source_root.resolve(strict=True) / "policies/effect-grant-trust.json",
+            evidence_store, source_root / "policies/effect-grant-trust.json",
         )
     else:
         for field in ("source", "destination"):

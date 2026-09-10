@@ -519,93 +519,80 @@ def _resolve_entrypoint(entrypoint: str) -> bool:
 
 
 def _workflow_errors(root: Path) -> list[str]:
-    errors = []
-    project_defs = {
-        path.stem
-        for path in (root / "orchestration/workflows/project_stream").glob("*.yaml")
-    }
-    registry = _json(root / "registry/project_stream_orchestrations.json")
-    handlers = _json(root / "registry/project_stream_handlers.json")
-    registry_ids = {
-        str(item["orchestration_id"]) for item in registry["orchestrations"]
-    }
-    handler_ids = {
-        str(item["orchestration_id"])
-        for item in handlers["workflows"]
-        if item.get("status") == "executable"
-    }
-    from .project_stream_orchestrator import BUILTIN_HANDLERS
-
-    if not (project_defs == registry_ids == handler_ids == set(BUILTIN_HANDLERS)):
-        errors.append(
-            f"project-stream reachability mismatch: definitions={len(project_defs)} registry={len(registry_ids)} handlers={len(handler_ids)} runtime={len(BUILTIN_HANDLERS)}"
-        )
-    bindings = _json(root / "registry/workflow_execution_bindings.json")
-    general_defs = {
-        path.relative_to(root).as_posix()
-        for path in (root / "orchestration/workflows").glob("*.yaml")
-    }
-    bound = {str(item["path"]): item for item in bindings["bindings"]}
-    if bindings.get("count") != len(
-        bindings.get("bindings", ())
-    ) or general_defs != set(bound):
-        errors.append("general orchestration definition/binding denominator mismatch")
-    for path, item in bound.items():
-        if not _resolve_entrypoint(str(item.get("entrypoint", ""))):
-            errors.append(f"unexecutable orchestration binding: {path}")
-    catalog = tomllib.loads(
-        (root / "registry/skill_catalog.toml").read_text(encoding="utf-8")
+    from .input_files import cooperative_deadline
+    from .numeric_inputs import bounded_text
+    from .workflow_inputs import (
+        active_skill_declarations, declaration_paths, ordered_steps,
+        read_declaration, require_declared_count, unique_declarations,
     )
-    skills = {
-        str(item["id"])
-        for item in catalog["skills"]
-        if item.get("status") in {"active", "admitted"}
-    }
-    orchestrations = _json(root / "registry/skill_orchestrations.json")
-    for workflow in orchestrations["workflows"]:
-        step_ids = {str(item["id"]) for item in workflow["steps"]}
-        edges = {
-            str(item["id"]): set(map(str, item.get("depends_on", ())))
-            for item in workflow["steps"]
-        }
-        for item in workflow["steps"]:
-            if item.get("skill") not in skills:
-                errors.append(
-                    f"{workflow['id']}: undiscoverable/non-active skill {item.get('skill')}"
-                )
-            unknown = set(map(str, item.get("depends_on", ()))) - step_ids
-            if unknown:
-                errors.append(
-                    f"{workflow['id']}: unknown step dependencies {sorted(unknown)}"
-                )
-        if _cycles(edges):
-            errors.append(f"{workflow['id']}: circular step dependency")
-    return errors
+
+    try:
+        deadline = cooperative_deadline()
+        project_defs = {Path(path).stem for path in declaration_paths(root, "orchestration/workflows/project_stream", deadline=deadline)}
+        registry = read_declaration(root, "registry/project_stream_orchestrations.json", deadline=deadline)
+        registry_rows = unique_declarations(registry.get("orchestrations"), "orchestration_id")
+        require_declared_count(registry, "count", len(registry_rows))
+        handlers = read_declaration(root, "registry/project_stream_handlers.json", deadline=deadline)
+        handler_rows = unique_declarations(handlers.get("workflows"), "orchestration_id")
+        if any(row.get("status") not in {"executable", "plan_only"} for row in handler_rows.values()):
+            raise ValueError("invalid project handler status")
+        handler_ids = {key for key, row in handler_rows.items() if row["status"] == "executable"}
+        require_declared_count(handlers, "executable_count", len(handler_ids))
+        require_declared_count(handlers, "plan_only_count", len(handler_rows)-len(handler_ids))
+        bindings = read_declaration(root, "registry/workflow_execution_bindings.json", deadline=deadline)
+        bound = unique_declarations(bindings.get("bindings"), "path", path_keys=True)
+        require_declared_count(bindings, "count", len(bound))
+        general_defs = declaration_paths(root, "orchestration/workflows", deadline=deadline)
+        for row in bound.values():
+            bounded_text(row.get("entrypoint"), "workflow entrypoint", maximum=256, strip=False)
+            if row.get("mode") not in {"executable_validator", "executable_runtime"}:
+                raise ValueError("unsupported workflow binding mode")
+        skills = active_skill_declarations(root, deadline=deadline)
+        orchestrations = read_declaration(root, "registry/skill_orchestrations.json", deadline=deadline)
+        workflows = unique_declarations(orchestrations.get("workflows"), "id", maximum=256)
+        require_declared_count(orchestrations, "count", len(workflows))
+        for workflow in workflows.values():
+            steps = ordered_steps(workflow.get("steps"))
+            if any(step["skill"] not in skills for step in steps):
+                raise ValueError("workflow contains an undiscoverable or non-active skill")
+        # All declaration identities and relations are checked before the existing
+        # callable lookup, which remains a separate import/effect boundary.
+        from .project_stream_orchestrator import BUILTIN_HANDLERS
+        errors = []
+        if not (project_defs == set(registry_rows) == handler_ids == set(BUILTIN_HANDLERS)):
+            errors.append("project-stream reachability mismatch")
+        if general_defs != set(bound):
+            errors.append("general orchestration definition/binding denominator mismatch")
+        for path, row in bound.items():
+            if not _resolve_entrypoint(row["entrypoint"]):
+                errors.append("unexecutable orchestration binding: " + path)
+        return errors
+    except (OSError, ValueError, TypeError):
+        return ["invalid bounded workflow declarations or dependency order"]
 
 
 def _skill_errors(root: Path) -> list[str]:
-    catalog = tomllib.loads(
-        (root / "registry/skill_catalog.toml").read_text(encoding="utf-8")
-    )
-    catalog_ids = {str(item["id"]) for item in catalog["skills"]}
-    directory_ids = {
-        path.name for path in (root / ".px/skills").iterdir() if path.is_dir()
-    }
-    semantic_ids = {
-        str(item["id"])
-        for item in _json(root / "registry/semantic_capability_index.json")["records"]
-        if item.get("kind") == "skill"
-    }
-    errors = []
-    if catalog_ids != directory_ids:
-        errors.append(
-            f"skill catalog/directory mismatch: catalog-only={sorted(catalog_ids - directory_ids)} directory-only={sorted(directory_ids - catalog_ids)}"
-        )
-    if catalog_ids != semantic_ids:
-        errors.append(
-            f"skill discovery mismatch: absent-from-index={sorted(catalog_ids - semantic_ids)} orphan-index={sorted(semantic_ids - catalog_ids)}"
-        )
-    return errors
+    from .input_files import cooperative_deadline
+    from .workflow_inputs import declaration_paths, read_declaration, unique_declarations
+
+    try:
+        deadline = cooperative_deadline()
+        catalog = read_declaration(root, "registry/skill_catalog.toml", deadline=deadline)
+        catalog_ids = set(unique_declarations(catalog.get("skills"), "id"))
+        directory_ids = declaration_paths(root, ".px/skills", deadline=deadline, directories=True)
+        index = read_declaration(root, "registry/semantic_capability_index.json", deadline=deadline)
+        records = index.get("records")
+        if type(records) is not list or len(records) > 4096 or any(type(row) is not dict for row in records):
+            raise ValueError("semantic declaration list is malformed")
+        semantic_ids = set(unique_declarations([row for row in records if row.get("kind") == "skill"], "id"))
+        errors = []
+        if catalog_ids != directory_ids:
+            errors.append("skill catalog/directory mismatch")
+        if catalog_ids != semantic_ids:
+            errors.append("skill discovery mismatch")
+        return errors
+    except (OSError, ValueError, TypeError):
+        return ["invalid bounded skill declarations or duplicate identities"]
 
 
 def _policy_errors(root: Path) -> list[str]:

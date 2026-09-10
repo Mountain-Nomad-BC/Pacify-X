@@ -4,10 +4,13 @@ from __future__ import annotations
 
 import hashlib
 import json
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 import re
 import shutil
 from typing import Iterable, Mapping
+
+from .bounded_walk import WalkLimits, bounded_walk
+from .json_io import decode_json_object, load_json_object, read_bounded_bytes
 
 
 INDEX_SCHEMA = "px.native-skill-index/1.0"
@@ -19,39 +22,36 @@ MAX_CANDIDATES = 3
 MAX_COMPARISON_FILES = 512
 MAX_COMPARISON_BYTES = 16 * 1024 * 1024
 MAX_COMPARISON_CHANGES = 100
+MAX_BODY_BYTES = 512_000
+MAX_CUSTODY_BYTES = 512 * 1024 * 1024
 _WORD = re.compile(r"[a-z0-9][a-z0-9._+-]*", re.I)
 _DESCRIPTION = re.compile(r"(?m)^description:\s*[\"']?(.*?)[\"']?\s*$")
 
 
 def _sha(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
-
-
-def _sha_text(path: Path) -> str:
-    digest = hashlib.sha256()
-    normalized = path.read_text(encoding="utf-8").replace("\r\n", "\n").replace("\r", "\n")
-    digest.update(normalized.encode("utf-8"))
-    return digest.hexdigest()
+    return hashlib.sha256(read_bounded_bytes(path, max_bytes=MAX_BODY_BYTES)).hexdigest()
 
 
 def _body_hash_matches(path: Path, expected: str) -> bool:
     if not expected:
         return False
-    return _sha(path) == expected or _sha_text(path) == expected
+    raw = read_bounded_bytes(path, max_bytes=MAX_BODY_BYTES)
+    normalized = raw.decode("utf-8").replace("\r\n", "\n").replace("\r", "\n")
+    return expected in {hashlib.sha256(raw).hexdigest(), hashlib.sha256(normalized.encode("utf-8")).hexdigest()}
 
 
 def _custody_bytes_candidate(
     path: Path, expected_size: object, expected_sha: object
 ) -> bytes | None:
     """Return the exact bytes bound by custody, including pre-Git CRLF bytes."""
-    expected = str(expected_sha or "")
+    if type(expected_size) is not int or not 0 <= expected_size <= MAX_CUSTODY_BYTES:
+        return None
+    if type(expected_sha) is not str or re.fullmatch(r"[0-9a-f]{64}", expected_sha) is None:
+        return None
+    expected = expected_sha
     try:
-        size = int(expected_size)
-        raw = path.read_bytes()
+        size = expected_size
+        raw = bytes(read_bounded_bytes(path, max_bytes=max(1, size)))
     except (OSError, TypeError, ValueError):
         return None
     candidates = [raw]
@@ -82,16 +82,30 @@ def _json_hash(value: object) -> str:
     return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
 
 
-def inventory_tree(root: Path) -> list[dict[str, object]]:
-    root = root.resolve()
+def inventory_tree(root: Path, *, limits: WalkLimits | None = None) -> list[dict[str, object]]:
     records: list[dict[str, object]] = []
     if not root.is_dir():
         return records
-    for path in sorted(root.rglob("*")):
-        if path.is_symlink():
-            raise ValueError(f"skill custody refuses symbolic link: {path}")
-        if path.is_file():
-            records.append({"path": path.relative_to(root).as_posix(), "size_bytes": path.stat().st_size, "sha256": _sha(path)})
+    walk = bounded_walk(root, limits=limits or WalkLimits(max_files=100_000, max_bytes=MAX_CUSTODY_BYTES))
+    for entry in walk.entries:
+        if entry.kind != "file":
+            continue
+        # Metadata limits are checked for the whole tree before any hash read.
+        # Growth between enumeration and reading fails within one probe byte.
+        digest = hashlib.sha256()
+        consumed = 0
+        with entry.path.open("rb") as stream:
+            while True:
+                data = stream.read(min(65_536, entry.size + 1 - consumed))
+                if not data:
+                    break
+                consumed += len(data)
+                if consumed > entry.size:
+                    raise ValueError("skill custody file grew during bounded acquisition")
+                digest.update(data)
+        if consumed != entry.size:
+            raise ValueError("skill custody file shrank during bounded acquisition")
+        records.append({"path": entry.relative, "size_bytes": consumed, "sha256": digest.hexdigest()})
     return records
 
 
@@ -202,20 +216,97 @@ def copy_verified(source: Path, target: Path) -> dict[str, object]:
     return {"source": str(source.resolve()), "backup": target.as_posix(), "file_count": len(source_records), "size_bytes": sum(int(row["size_bytes"]) for row in source_records), "tree_sha256": tree_hash(source_records), "files": source_records}
 
 
+def _snapshot_path(root: Path, value: object) -> Path:
+    if type(value) is not str or not value or len(value) > 4096 or "\\" in value:
+        raise ValueError("invalid custody relative path")
+    relative = PurePosixPath(value)
+    if relative.is_absolute() or any(part in {"..", "."} for part in relative.parts) or ":" in value:
+        raise ValueError("invalid custody relative path")
+    target = (root / value).resolve()
+    if target == root or not target.is_relative_to(root):
+        raise ValueError("custody path escapes snapshot root")
+    return target
+
+
 def verify_backup(snapshot_root: Path) -> dict[str, object]:
+    return _inspect_backup(snapshot_root)[0]
+
+
+def _inspect_backup(snapshot_root: Path) -> tuple[dict, dict, dict]:
+    """Validate the complete declared source set before reading source trees."""
     manifest_path = snapshot_root / "manifest.json"
-    payload = json.loads(manifest_path.read_text(encoding="utf-8"))
+    try:
+        root = snapshot_root.resolve(strict=True)
+        payload = load_json_object(_snapshot_path(root, "manifest.json"), max_bytes=2 * 1024 * 1024)
+        sources = payload.get("sources")
+        if payload.get("schema_version") != BACKUP_SCHEMA or type(sources) is not list or not 1 <= len(sources) <= 64:
+            raise ValueError("backup requires its exact schema and a nonempty bounded source set")
+        seen = set()
+        inventories = {}
+        for source in sources:
+            if type(source) is not dict:
+                raise ValueError("backup source must be an object")
+            identifier = source.get("id")
+            if type(identifier) is not str or not identifier.strip() or len(identifier) > 256 or identifier in seen:
+                raise ValueError("backup source IDs must be nonempty and unique")
+            seen.add(identifier)
+            backup = _snapshot_path(root, source.get("relative_backup"))
+            if not backup.is_dir():
+                raise ValueError("backup source directory is missing")
+            count = source.get("file_count")
+            if type(count) is not int or not 0 <= count <= 100_000:
+                raise ValueError("backup file count is invalid")
+            if type(source.get("tree_sha256")) is not str or re.fullmatch(r"[0-9a-f]{64}", source["tree_sha256"]) is None:
+                raise ValueError("backup tree hash is invalid")
+            if "inventory" in source:
+                inventory = _snapshot_path(root, source["inventory"])
+                raw = bytes(read_bounded_bytes(inventory, max_bytes=64 * 1024 * 1024))
+                rows = decode_json_object(raw)["files"]
+                if type(rows) is not list or len(rows) != count:
+                    raise ValueError("backup inventory denominator mismatch")
+                paths = set()
+                for row in rows:
+                    if type(row) is not dict:
+                        raise ValueError("backup inventory row must be an object")
+                    relative = row.get("path")
+                    _snapshot_path(backup, relative)
+                    if relative in paths:
+                        raise ValueError("duplicate backup inventory path")
+                    paths.add(relative)
+                    if type(row.get("size_bytes")) is not int or not 0 <= row["size_bytes"] <= MAX_CUSTODY_BYTES:
+                        raise ValueError("invalid backup inventory size")
+                    if type(row.get("sha256")) is not str or re.fullmatch(r"[0-9a-f]{64}", row["sha256"]) is None:
+                        raise ValueError("invalid backup inventory hash")
+                if type(source.get("inventory_sha256")) is not str or re.fullmatch(r"[0-9a-f]{64}", source["inventory_sha256"]) is None:
+                    raise ValueError("invalid inventory custody hash")
+                if "inventory_size_bytes" in source and (
+                    type(source["inventory_size_bytes"]) is not int
+                    or not 0 <= source["inventory_size_bytes"] <= 64 * 1024 * 1024
+                ):
+                    raise ValueError("invalid inventory custody size")
+                normalized = raw.decode("utf-8").replace("\r\n", "\n").replace("\r", "\n")
+                images = (raw, normalized.replace("\n", "\r\n").encode("utf-8"))
+                if not any(
+                    hashlib.sha256(image).hexdigest() == source["inventory_sha256"]
+                    and ("inventory_size_bytes" not in source or len(image) == source["inventory_size_bytes"])
+                    for image in images
+                ):
+                    raise ValueError(f"inventory-hash:{identifier}")
+                inventories[identifier] = rows
+        return _verify_backup_sources(root, payload, inventories), payload, inventories
+    except (OSError, ValueError, TypeError, KeyError) as exc:
+        return {"valid": False, "errors": [str(exc)], "manifest": manifest_path.as_posix(), "sources": 0}, {}, {}
+
+
+def _verify_backup_sources(snapshot_root: Path, payload: dict, inventories: dict) -> dict[str, object]:
+    manifest_path = snapshot_root / "manifest.json"
     errors: list[str] = []
     for source in payload.get("sources", ()):
         records = inventory_tree(snapshot_root / str(source["relative_backup"]))
-        inventory_path = snapshot_root / str(source.get("inventory", ""))
         expected_records = None
         inventory_matches = not source.get("inventory")
         if source.get("inventory"):
-            try:
-                expected_records = json.loads(inventory_path.read_text(encoding="utf-8"))["files"]
-            except (OSError, KeyError, json.JSONDecodeError):
-                expected_records = None
+            expected_records = inventories[source["id"]]
             expected_by_path = {
                 str(row.get("path", "")): row for row in expected_records or ()
             }
@@ -225,7 +316,7 @@ def verify_backup(snapshot_root: Path) -> dict[str, object]:
                 and actual_paths == set(expected_by_path)
                 and all(
                     _custody_bytes_match(
-                        snapshot_root / str(source["relative_backup"]) / relative,
+                        _snapshot_path(_snapshot_path(snapshot_root, source["relative_backup"]), relative),
                         row.get("size_bytes"),
                         row.get("sha256"),
                     )
@@ -234,22 +325,6 @@ def verify_backup(snapshot_root: Path) -> dict[str, object]:
             )
             if not inventory_matches:
                 errors.append(f"file-inventory:{source['id']}")
-            elif not _custody_bytes_match(
-                inventory_path,
-                source.get("inventory_size_bytes", inventory_path.stat().st_size),
-                source.get("inventory_sha256"),
-            ):
-                # Older manifests did not retain inventory byte size. In that
-                # schema, an exact raw or reconstructed digest remains binding.
-                raw = inventory_path.read_bytes()
-                normalized = raw.decode("utf-8").replace("\r\n", "\n").replace("\r", "\n")
-                candidates = (raw, normalized.replace("\n", "\r\n").encode("utf-8"))
-                if not any(
-                    hashlib.sha256(candidate).hexdigest()
-                    == source.get("inventory_sha256")
-                    for candidate in candidates
-                ):
-                    errors.append(f"inventory-hash:{source['id']}")
         if len(records) != int(source["file_count"]):
             errors.append(f"file-count:{source['id']}")
         custody_records = expected_records if source.get("inventory") else records
@@ -259,22 +334,20 @@ def verify_backup(snapshot_root: Path) -> dict[str, object]:
 
 
 def restore_backup(snapshot_root: Path, source_id: str, destination: Path) -> dict[str, object]:
-    payload = json.loads((snapshot_root / "manifest.json").read_text(encoding="utf-8"))
+    verification, payload, inventories = _inspect_backup(snapshot_root)
+    if not verification["valid"]:
+        raise RuntimeError(f"backup custody verification failed: {verification['errors']}")
     record = next((row for row in payload.get("sources", ()) if row.get("id") == source_id), None)
     if record is None:
         raise KeyError(f"unknown backup source: {source_id}")
     if destination.exists() and any(destination.iterdir()):
         raise FileExistsError("restore destination must be absent or empty")
-    source = snapshot_root / str(record["relative_backup"])
-    verification = verify_backup(snapshot_root)
-    if not verification["valid"]:
-        raise RuntimeError(f"backup custody verification failed: {verification['errors']}")
+    source = _snapshot_path(snapshot_root.resolve(), record["relative_backup"])
     receipt = copy_verified(source, destination)
-    inventory_path = snapshot_root / str(record.get("inventory", ""))
-    if inventory_path.is_file():
-        expected_records = json.loads(inventory_path.read_text(encoding="utf-8"))["files"]
+    if record.get("inventory"):
+        expected_records = inventories[source_id]
         for expected in expected_records:
-            restored = destination / str(expected["path"])
+            restored = _snapshot_path(destination.resolve(), expected["path"])
             custody_bytes = _custody_bytes_candidate(
                 restored, expected.get("size_bytes"), expected.get("sha256")
             )
@@ -282,7 +355,7 @@ def restore_backup(snapshot_root: Path, source_id: str, destination: Path) -> di
                 raise RuntimeError(
                     f"restored custody file does not match inventory: {expected['path']}"
                 )
-            if restored.read_bytes() != custody_bytes:
+            if bytes(read_bounded_bytes(restored, max_bytes=max(1, len(custody_bytes)))) != custody_bytes:
                 restored.write_bytes(custody_bytes)
         actual_records = inventory_tree(destination)
         actual_by_path = {str(row["path"]): row for row in actual_records}
@@ -305,7 +378,7 @@ def restore_backup(snapshot_root: Path, source_id: str, destination: Path) -> di
 
 
 def _description(body: Path) -> str:
-    text = body.read_text(encoding="utf-8")
+    text = read_bounded_bytes(body, max_bytes=MAX_BODY_BYTES).decode("utf-8")
     match = _DESCRIPTION.search(text)
     return match.group(1).strip() if match else ""
 
@@ -334,7 +407,7 @@ def _record_selectable(record: Mapping[str, object], grants: set[str]) -> bool:
 
 
 def load_index(root: Path) -> dict[str, object]:
-    payload = json.loads((root.resolve() / ".px" / "skill-index.json").read_text(encoding="utf-8"))
+    payload = load_json_object(root.resolve() / ".px" / "skill-index.json", max_bytes=8 * 1024 * 1024)
     validate_skill_index(payload, require_derived=True)
     return payload
 
@@ -379,7 +452,10 @@ def _preserved_records(root: Path, records: Iterable[Mapping[str, object]]) -> l
 
 
 def _comparison_tree(package: Path) -> tuple[list[dict[str, object]], str]:
-    records = inventory_tree(package)
+    records = inventory_tree(package, limits=WalkLimits(
+        max_files=MAX_COMPARISON_FILES, max_bytes=MAX_COMPARISON_BYTES,
+        max_depth=32, max_entries=4096, max_directories=2048,
+    ))
     size_bytes = sum(int(row["size_bytes"]) for row in records)
     if len(records) > MAX_COMPARISON_FILES or size_bytes > MAX_COMPARISON_BYTES:
         raise ValueError(
@@ -449,7 +525,7 @@ def compare_skill(root: Path, skill_id: str) -> dict[str, object]:
         )
 
     preserved_body = backup / "SKILL.md"
-    preserved_body_sha = _sha(preserved_body) if preserved_body.is_file() else None
+    preserved_body_sha = preserved_by_path.get("SKILL.md", {}).get("sha256")
     canonical_view = {
         "id": identifier,
         "domain": canonical.get("domain"),
@@ -579,9 +655,11 @@ def hydrate_skill(root: Path, skill_id: str, *, domains: Iterable[str] = DEFAULT
     body = (root.resolve() / str(record["body"])).resolve()
     if root.resolve() != body and root.resolve() not in body.parents:
         raise ValueError("skill body escapes PX root")
-    if not _body_hash_matches(body, str(record["body_sha256"] or "")):
+    raw = read_bounded_bytes(body, max_bytes=MAX_BODY_BYTES)
+    content = raw.decode("utf-8").replace("\r\n", "\n").replace("\r", "\n")
+    expected = record["body_sha256"]
+    if expected not in {hashlib.sha256(raw).hexdigest(), hashlib.sha256(content.encode("utf-8")).hexdigest()}:
         raise ValueError("skill body hash mismatch")
-    content = body.read_text(encoding="utf-8")
     return {"schema_version": "px.skill-hydration/1.0", "id": skill_id, "domain": record["domain"], "origin": record["origin"], "body": content, "body_sha256": record["body_sha256"], "hydrated_count": 1, "references_loaded": 0}
 
 

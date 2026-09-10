@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import json
+import hashlib
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -23,6 +25,108 @@ from runtime.contracts import validate_instance
 
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_constraints_are_consumed_once_for_discovery_and_routing(monkeypatch) -> None:
+    from runtime import agent_provider as provider
+    record = {"agent_id": "cardiology", "name": "Cardiology", "aliases": [],
+              "description": "unrelated", "division": "other", "capabilities": [],
+              "lifecycle_state": "active", "role_mode": "advisor", "risk_tier": "low"}
+    monkeypatch.setattr(provider, "load_registry", lambda _: {"agents": [record]})
+    constraints = ("cardiology",)
+    expected = discover_agents(ROOT, "write a note", constraints=constraints)
+    assert expected[1]
+    assert discover_agents(ROOT, "write a note", constraints=iter(constraints)) == expected
+    assert route_agents(ROOT, "write a note", constraints=iter(constraints)) == route_agents(
+        ROOT, "write a note", constraints=constraints
+    )
+
+
+def test_zero_requested_reviewers_stays_zero() -> None:
+    route = route_agents(ROOT, "review a Python API for security and correctness", max_reviewers=0)
+    assert route["reviewers"] == []
+
+
+def test_route_uses_one_metadata_snapshot(monkeypatch) -> None:
+    from runtime import agent_provider as provider
+    original = provider.load_registry
+    calls = []
+    def once(root):
+        calls.append(root)
+        assert len(calls) == 1, "routing reopened the registry after selection"
+        return original(root)
+    monkeypatch.setattr(provider, "load_registry", once)
+    result = route_agents(ROOT, "review a Python API for security and correctness")
+    assert result["primary_agent"]
+    assert calls == [ROOT]
+
+
+def test_exact_identity_route_is_stable_across_owned_hash_seed_processes() -> None:
+    from runtime.test_runner import run_test_command
+    program = '''
+import json
+from pathlib import Path
+from runtime import agent_provider as provider
+record = {"agent_id":"one","name":"Alpha Beta Gamma","aliases":[],
+          "description":"unrelated","division":"other","capabilities":[],
+          "lifecycle_state":"active","role_mode":"advisor","risk_tier":"low"}
+provider.load_registry = lambda _: {"agents":[record]}
+_, candidates = provider.discover_agents(Path.cwd(), "Alpha Beta Gamma")
+print(json.dumps([provider._candidate_payload(c) for c in candidates], sort_keys=True))
+'''
+    outputs = []
+    for seed in range(1, 9):
+        result = run_test_command(
+            [sys.executable, "-c", program], cwd=ROOT,
+            environment={**os.environ, "PYTHONHASHSEED": str(seed), "PYTHONDONTWRITEBYTECODE": "1"},
+            timeout_seconds=20, run_id=f"agent-identity-seed-{seed}", lane_id="provider-causal-check",
+        )
+        assert result["valid"], result
+        assert result["process_tree_terminated"]
+        outputs.append(json.loads(result["stdout"]))
+    assert all(value == outputs[0] for value in outputs)
+    assert [row["agent_id"] for row in outputs[0]] == ["one"]
+
+
+@pytest.mark.parametrize("parameter,value", [("limit", 0), ("limit", -1), ("limit", True),
+                                            ("limit", 1.5), ("limit", 21),
+                                            ("max_reviewers", True), ("max_reviewers", 1.5)])
+def test_route_rejects_invalid_bounds_before_metadata_access(monkeypatch, parameter, value) -> None:
+    from runtime import agent_provider as provider
+    def forbidden(_):
+        pytest.fail("metadata accessed before validating the request bounds")
+    monkeypatch.setattr(provider, "load_registry", forbidden)
+    with pytest.raises(ValueError):
+        route_agents(ROOT, "review an API", **{parameter: value})
+
+
+def test_hydration_budget_includes_trimmed_source_suffix(tmp_path: Path, monkeypatch) -> None:
+    from runtime import agent_provider as provider
+    body = b"# Agent\nsmall domain\n\n## PACIFY-X Operational Contract\n" + b"x" * 8192
+    manifest = b'{"agent_id":"one"}'
+    (tmp_path / "body.md").write_bytes(body)
+    (tmp_path / "manifest.json").write_bytes(manifest)
+    record = {"agent_id": "one", "lifecycle_state": "active", "path": "body.md",
+              "manifest_path": "manifest.json", "body_sha256": hashlib.sha256(body).hexdigest(),
+              "manifest_sha256": hashlib.sha256(manifest).hexdigest()}
+    monkeypatch.setattr(provider, "load_registry", lambda _: {"agents": [record]})
+    with pytest.raises(ValueError, match="byte budget"):
+        hydrate_agents(tmp_path, ["one"], project_id="project_alpha", max_total_bytes=128)
+
+
+def test_compilation_bounds_context_before_hydrating_bodies(monkeypatch) -> None:
+    from runtime import agent_provider as provider
+    route = route_agents(ROOT, "review a Python API for security and correctness")
+    task = {"task_id": route["task_id"], "objective": "x" * 200001,
+            "deliverable": "review", "scope": {"included": [], "excluded": []},
+            "authority": {"read": True, "write": False, "execute": False,
+                          "external_action": False, "destructive": False},
+            "acceptance_criteria": ["evidence"], "memory_namespace": "project:project_alpha"}
+    def forbidden(*args, **kwargs):
+        pytest.fail("agent body hydration preceded complete context budget validation")
+    monkeypatch.setattr(provider, "hydrate_agents", forbidden)
+    with pytest.raises(ValueError, match="byte budget"):
+        compile_agent_prompt(ROOT, task, route, project_id="project_alpha", max_total_bytes=200000)
 
 
 def test_provider_is_complete_hash_bound_and_lazy() -> None:
@@ -155,6 +259,20 @@ def test_compilation_preserves_authority_and_memory_boundaries() -> None:
     assert '"authority_granted_by_compilation": false' in result["compiled_prompt"]
     assert '"memory_scope": "project:project_alpha"' in result["compiled_prompt"]
     assert "This compilation is context, not authorization" in result["compiled_prompt"]
+    size = len(result["compiled_prompt"].encode("utf-8"))
+    bounded = compile_agent_prompt(
+        ROOT, task, route, project_id="project_alpha",
+        selected_skills=["verify-outcome"], permitted_tools=["read_local"],
+        max_total_bytes=size,
+    )
+    # The hydration receipt embeds its own limit, but is outside the prompt.
+    assert bounded["compiled_prompt"] == result["compiled_prompt"]
+    with pytest.raises(ValueError, match="byte budget"):
+        compile_agent_prompt(
+            ROOT, task, route, project_id="project_alpha",
+            selected_skills=["verify-outcome"], permitted_tools=["read_local"],
+            max_total_bytes=size - 1,
+        )
 
 
 @pytest.mark.parametrize(

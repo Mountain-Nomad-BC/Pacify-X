@@ -190,10 +190,9 @@ def authorize_with_policy_evidence(
         actor_id = str(request_data["actor_id"])
         session_id = str(request_data["session_id"])
         execution_id = str(request_data["execution_id"])
-        store_relative = Path(str(request_data["evidence_store"]))
-        store = (root.resolve() / store_relative).resolve()
-        if store_relative.is_absolute() or root.resolve() not in store.parents:
-            raise ValueError("evidence_store must be product-relative")
+        from .trusted_evidence import evidence_store_path
+
+        store = evidence_store_path(root, request_data["evidence_store"])
         resolver = TrustedEvidenceResolver(
             store, root / "policies/effect-grant-trust.json"
         )

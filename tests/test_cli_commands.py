@@ -39,6 +39,17 @@ def invoke(*arguments: str) -> tuple[int, dict]:
 
 
 class CliCommandTests(unittest.TestCase):
+    def test_registered_domain_section_is_reachable_through_actual_cli(self) -> None:
+        _, output = invoke("test-section", "show", "runtime-domain-contracts")
+        self.assertTrue(output["valid"], output)
+        self.assertEqual(output["section"], "runtime-domain-contracts")
+        self.assertIn("tests/test_json_io.py", output["command"])
+
+    def test_unknown_section_is_rejected_by_the_registry_owner(self) -> None:
+        _, output = invoke("test-section", "show", "unregistered-contract-section")
+        self.assertFalse(output["valid"], output)
+        self.assertIn("unknown test section", " ".join(output["errors"]))
+
     def test_claimed_full_profile_child_uses_structural_exact_claim(self) -> None:
         claim = {
             "stage": "full_profile",
@@ -627,28 +638,15 @@ class CliCommandTests(unittest.TestCase):
                     "duration_seconds": 0.02,
                     "stdout": chunk_id,
                     "stderr": "",
+                    "execution_started": True,
+                    "process_tree_terminated": True,
                 }
 
-            current = {
-                "schema_version": "px.test-section-chunk-receipt/1.1",
-                "section": "studio-memory-graph",
-                "chunk_id": "chunk-01",
-                "input_sha256": "1" * 64,
-                "member_count": 1,
-                "members": ["tests/test_1.py"],
-                "passed": True,
-                "exit_code": 0,
-                "timed_out": False,
-                "duration_seconds": 0.01,
-                "output_evidence": {
-                    "stdout_sha256": "0" * 64,
-                    "stdout_bytes": 0,
-                    "stderr_sha256": "0" * 64,
-                    "stderr_bytes": 0,
-                    "failure_nodes": [],
-                },
-                "receipt_sha256": "a" * 64,
-            }
+            from runtime.test_profiles import section_chunk_receipt
+            current = section_chunk_receipt(section, chunks[0], {
+                "valid": True, "exit_code": 0, "timed_out": False,
+                "duration_seconds": 0.01, "stdout": "", "stderr": "",
+            })
 
             def read_receipt(_root, _section, chunk_id):
                 return current if chunk_id == "chunk-01" else {}

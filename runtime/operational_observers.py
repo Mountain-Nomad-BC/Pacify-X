@@ -84,6 +84,67 @@ OBSERVER_SPECS = {
 }
 
 
+def _observer_text(value: object, name: str, *, maximum: int = 160) -> str:
+    from .numeric_inputs import bounded_text
+
+    try:
+        text = bounded_text(value, name, maximum=maximum, strip=False)
+    except UnicodeError as error:
+        raise ValueError(name + " must be valid UTF-8 text") from error
+    if not text.strip() or "" in text:
+        raise ValueError(name + " must be nonempty metadata text")
+    return text
+
+
+def _observer_scopes(value: object, *, observation: bool = False) -> tuple[str, ...]:
+    expected = list if observation else tuple
+    if type(value) is not expected or not 1 <= len(value) <= 16:
+        raise ValueError("observer requires exact opaque scope references")
+    seen = set()
+    for item in value:
+        text = _observer_text(item, "observer scope", maximum=200)
+        prefix, separator, suffix = text.partition(":")
+        if not separator or prefix + ":" not in ALLOWED_SCOPE_PREFIXES:
+            raise ValueError("observer requires exact opaque scope references")
+        if prefix == "process-id":
+            valid = re.fullmatch(r"[1-9][0-9]{0,9}", suffix) is not None and int(suffix) <= 4294967295
+        elif prefix == "project":
+            valid = re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,127}", suffix) is not None
+        else:
+            valid = HEX_SHA256.fullmatch(suffix) is not None
+        if not valid or text in seen:
+            raise ValueError("observer requires unique exact opaque scope references")
+        seen.add(text)
+    return tuple(value)
+
+
+def _observer_plan_inputs(observer_id: object, scope_refs: object, commands: object) -> None:
+    from .numeric_inputs import bounded_mapping, bounded_sequence
+
+    _observer_text(observer_id, "observer plan identity")
+    if observer_id not in OBSERVER_SPECS:
+        raise ValueError("observer plan identity is unknown")
+    _observer_scopes(scope_refs)
+    profiles = bounded_mapping(commands, "observer command profiles", maximum=3)
+    if set(profiles) != {"start", "stop", "uninstall"}:
+        raise ValueError("observer plan command profiles are incomplete")
+    used = 0
+    for args in profiles.values():
+        if type(args) is not tuple:
+            raise ValueError("observer command arguments must be a tuple")
+        bounded_sequence(args, "observer command arguments", minimum=1, maximum=32)
+        for arg in args:
+            text = _observer_text(arg, "observer command argument", maximum=4096)
+            used += len(text.encode("utf-8"))
+            if used > 16384:
+                raise ValueError("observer command profiles exceed byte budget")
+
+
+def _observer_consent(value: object) -> None:
+    if type(value) is not ObserverConsent:
+        raise ValueError("observer consent must be an actual ObserverConsent")
+
+
 def _now() -> str:
     return (
         datetime.now(timezone.utc)
@@ -93,8 +154,7 @@ def _now() -> str:
 
 
 def _parse_time(value: object) -> datetime:
-    if not isinstance(value, str) or len(value) > 64:
-        raise ValueError("observer time is invalid")
+    _observer_text(value, "observer time", maximum=64)
     try:
         parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
     except ValueError as error:
@@ -241,44 +301,38 @@ class ObserverConsent:
     def validate(
         self, *, now: datetime | None = None, require_fresh: bool = True
     ) -> None:
-        if not all(
-            isinstance(value, str) and value.strip() and len(value) <= 160
-            for value in (
-                self.consent_id,
-                self.observer_id,
-                self.project_id,
-                self.accountable_owner,
-            )
-        ):
-            raise ValueError("observer consent identities are required")
+        from .numeric_inputs import bounded_integer
+
+        for value in (self.consent_id, self.observer_id, self.project_id, self.accountable_owner):
+            _observer_text(value, "observer consent identity")
         if self.observer_id not in OBSERVER_SPECS:
             raise ValueError("observer consent names an unknown adapter")
+        if type(self.granted) is not bool:
+            raise ValueError("observer consent grant must be an actual boolean")
         if not self.granted:
             raise PermissionError("observer consent is not granted")
+        _observer_text(self.classification, "observer classification")
         if self.classification != "metadata_only":
             raise ValueError("OS observer capture is metadata-only")
-        if not 1 <= self.max_events <= MAX_CAPTURE_EVENTS:
-            raise ValueError("observer event bound is invalid")
-        if not 1 <= self.max_bytes <= MAX_CAPTURE_BYTES:
-            raise ValueError("observer byte bound is invalid")
-        if not 1 <= self.max_duration_seconds <= MAX_CAPTURE_SECONDS:
-            raise ValueError("observer duration bound is invalid")
+        bounded_integer(self.max_events, "observer event bound", maximum=MAX_CAPTURE_EVENTS)
+        bounded_integer(self.max_bytes, "observer byte bound", maximum=MAX_CAPTURE_BYTES)
+        bounded_integer(self.max_duration_seconds, "observer duration bound", maximum=MAX_CAPTURE_SECONDS)
+        if type(self.allowed_effects) is not tuple or not 1 <= len(self.allowed_effects) <= len(ALLOWED_EFFECTS):
+            raise ValueError("observer effects must be a bounded tuple")
+        for effect in self.allowed_effects:
+            _observer_text(effect, "observer effect", maximum=16)
         effects = set(self.allowed_effects)
-        if not effects or len(effects) != len(self.allowed_effects) or effects - ALLOWED_EFFECTS:
-            raise ValueError("observer effects are empty, duplicated, or unsupported")
-        if not self.scope_refs or len(self.scope_refs) > 16 or any(
-            not isinstance(item, str)
-            or len(item) > 200
-            or not item.startswith(ALLOWED_SCOPE_PREFIXES)
-            for item in self.scope_refs
-        ):
-            raise ValueError("observer consent requires exact opaque scope references")
-        if not isinstance(self.adapter_config_sha256, str) or not HEX_SHA256.fullmatch(
-            self.adapter_config_sha256
-        ):
+        if len(effects) != len(self.allowed_effects) or effects - ALLOWED_EFFECTS:
+            raise ValueError("observer effects are duplicated or unsupported")
+        _observer_scopes(self.scope_refs)
+        if type(self.adapter_config_sha256) is not str or len(self.adapter_config_sha256) != 64 or not HEX_SHA256.fullmatch(self.adapter_config_sha256):
             raise ValueError("observer consent requires an admitted configuration digest")
+        if type(require_fresh) is not bool:
+            raise ValueError("observer freshness switch must be an actual boolean")
+        if now is not None and (type(now) is not datetime or now.tzinfo is None or now.utcoffset() is None):
+            raise ValueError("observer current time must be an aware datetime")
         expiry = _parse_time(self.expires_at)
-        if require_fresh and expiry <= (now or datetime.now(timezone.utc)):
+        if require_fresh and expiry <= (now if now is not None else datetime.now(timezone.utc)):
             raise PermissionError("observer consent is expired")
 
 
@@ -325,22 +379,11 @@ class ObserverCommandPlan:
     configuration_sha256: str
 
     def __post_init__(self) -> None:
-        if self.observer_id not in OBSERVER_SPECS:
-            raise ValueError("observer plan identity is unknown")
+        _observer_plan_inputs(self.observer_id, self.scope_refs, self.commands)
+        _observer_text(self.platform, "observer plan platform", maximum=16)
         if self.platform != OBSERVER_SPECS[self.observer_id]["platform"]:
             raise ValueError("observer plan platform is invalid")
-        if set(self.commands) != {"start", "stop", "uninstall"}:
-            raise ValueError("observer plan command profiles are incomplete")
-        if any(not args or not all(isinstance(arg, str) and arg for arg in args) for args in self.commands.values()):
-            raise ValueError("observer plan arguments are invalid")
-        if not self.scope_refs or len(self.scope_refs) > 16 or any(
-            not isinstance(item, str)
-            or len(item) > 200
-            or not item.startswith(ALLOWED_SCOPE_PREFIXES)
-            for item in self.scope_refs
-        ):
-            raise ValueError("observer plan scope references are invalid")
-        if not HEX_SHA256.fullmatch(self.configuration_sha256):
+        if type(self.configuration_sha256) is not str or len(self.configuration_sha256) != 64 or not HEX_SHA256.fullmatch(self.configuration_sha256):
             raise ValueError("observer plan configuration digest is invalid")
 
 
@@ -349,6 +392,7 @@ def _plan_digest(
     scope_refs: tuple[str, ...],
     commands: Mapping[str, tuple[str, ...]],
 ) -> str:
+    _observer_plan_inputs(observer_id, scope_refs, commands)
     return _sha(
         {
             "schema_version": "px.os-observer-command-plan/1.0",
@@ -366,9 +410,13 @@ def build_windows_etw_plan(
     executable: str | None = None,
 ) -> ObserverCommandPlan:
     """Build the only admitted ETW profile; this does not execute or start it."""
+    _observer_scopes(scope_refs)
+    _observer_text(session_name, "observer profile identity", maximum=64)
+    if executable is not None:
+        _observer_text(executable, "observer executable", maximum=4096)
     if not SESSION_NAME.fullmatch(session_name):
         raise ValueError("ETW session name is outside the admitted profile")
-    command = executable or shutil.which("logman")
+    command = executable if executable is not None else shutil.which("logman")
     if not command:
         raise RuntimeError("ETW logman backend is unavailable")
     commands = {
@@ -398,12 +446,16 @@ def build_linux_audit_plan(
     executable: str | None = None,
 ) -> ObserverCommandPlan:
     """Build one exact Audit watch profile; eBPF programs are not admitted here."""
+    _observer_scopes(scope_refs)
+    _observer_text(rule_key, "observer profile identity", maximum=64)
+    if executable is not None:
+        _observer_text(executable, "observer executable", maximum=4096)
     if not AUDIT_KEY.fullmatch(rule_key):
         raise ValueError("Linux Audit key is outside the admitted profile")
     watched = watched_directory.resolve(strict=True)
     if not watched.is_dir():
         raise ValueError("Linux Audit scope must be an existing directory")
-    command = executable or shutil.which("auditctl")
+    command = executable if executable is not None else shutil.which("auditctl")
     if not command:
         raise RuntimeError("Linux Audit backend is unavailable")
     rule = ("-a", "always,exit", "-F", f"dir={watched}", "-F", "perm=wa", "-k", rule_key)
@@ -455,6 +507,7 @@ class ManagedCommandObserverBackend:
         }
 
     def start(self, consent: ObserverConsent) -> None:
+        _observer_consent(consent)
         consent.validate()
         if self.active:
             raise RuntimeError("observer backend is already active")
@@ -529,30 +582,23 @@ class UnsupportedEndpointSecurityBackend:
 def _validate_observation(
     value: Mapping[str, object], consent: ObserverConsent
 ) -> dict[str, object]:
+    from .numeric_inputs import bounded_mapping
+
+    _observer_consent(consent)
+    consent.validate(require_fresh=False)
+    record = bounded_mapping(value, "OS observation", maximum=5)
     expected = {"observation_id", "observed_at", "operation", "effect", "scope_refs"}
-    if set(value) != expected:
+    if set(record) != expected:
         raise ValueError("OS observation fields are not exact")
     for field in expected - {"scope_refs"}:
-        if not isinstance(value[field], str) or not str(value[field]).strip() or len(str(value[field])) > 160:
-            raise ValueError("OS observation scalar fields are invalid")
-    _parse_time(value["observed_at"])
-    if value["effect"] not in consent.allowed_effects:
+        _observer_text(record[field], "OS observation " + field)
+    _parse_time(record["observed_at"])
+    if record["effect"] not in consent.allowed_effects:
         raise PermissionError("OS observation effect exceeds consent")
-    scopes = value["scope_refs"]
-    if (
-        not isinstance(scopes, list)
-        or not scopes
-        or len(scopes) > 16
-        or any(
-            not isinstance(item, str)
-            or len(item) > 200
-            or not item.startswith(ALLOWED_SCOPE_PREFIXES)
-            or item not in consent.scope_refs
-            for item in scopes
-        )
-    ):
+    scopes = _observer_scopes(record["scope_refs"], observation=True)
+    if any(item not in consent.scope_refs for item in scopes):
         raise ValueError("OS observation scope exceeds exact consent")
-    return dict(value)
+    return {**record, "scope_refs": list(scopes)}
 
 
 EventEmitter = Callable[[Mapping[str, object]], object]
@@ -740,6 +786,7 @@ class OperationalObserverController:
         return probe
 
     def enable(self, consent: ObserverConsent) -> dict[str, object]:
+        _observer_consent(consent)
         consent.validate()
         if consent.observer_id == "macos-endpoint-security":
             raise RuntimeError("macOS EndpointSecurity backend is unsupported")
@@ -849,8 +896,9 @@ class OperationalObserverController:
         raise PermissionError("observer consent or capture duration has expired")
 
     def capture(self, consent: ObserverConsent, *, limit: int = 100) -> dict[str, object]:
+        _observer_consent(consent)
         consent.validate(require_fresh=False)
-        if not 1 <= limit <= 1_000:
+        if type(limit) is not int or not 1 <= limit <= 1_000:
             raise ValueError("observer read limit is invalid")
         backend = self.backends.get(consent.observer_id)
         if backend is None:

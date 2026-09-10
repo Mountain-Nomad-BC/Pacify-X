@@ -111,12 +111,14 @@ def export_foundry_candidate(
         raise ValueError("exactly one Foundry skill must match the requested identity")
     skill: CandidateSkill = matches[0]
     by_id = {str(source.get("source_id")): source for source in bundle.sources}
-    lineage = tuple(by_id[reference] for reference in skill.references if reference in by_id)
+    lineage = tuple(
+        by_id[reference] for reference in skill.references if reference in by_id
+    )
     formulas = tuple(
         {
             "calculation_id": item.calculation_id,
-            "expression": item.expression,
-            "normalized_dimension": dict(item.normalized_dimension),
+            "expression": item.equation,
+            "normalized_dimension": item.normalized_dimension,
             "formula_engine_revision": item.formula_engine_revision,
         }
         for item in bundle.calculations

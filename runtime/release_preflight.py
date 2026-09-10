@@ -222,142 +222,418 @@ def require_stable_source_binding(
     return boundary
 
 
-def feedback_audit(
-    root: Path,
-    write_targets: Iterable[str],
-) -> dict[str, Any]:
-    product_paths = {
-        str(record["path"]) for record in classify_tree(root).get("product_records", ())
-    }
-    illegal = []
-    classified = []
-    for target in write_targets:
-        normalized = str(target).replace("\\", "/")
-        concrete = normalized.replace("<release>", "release").replace("<run-id>", "run")
-        if concrete in product_paths:
-            kind = "generated_product"
-            illegal.append(normalized)
-        elif concrete.startswith("evidence/"):
-            kind = "release_transaction_evidence"
-        elif concrete.startswith(".engineering-bootstrap/runtime-core/"):
-            kind = "post_cert_runtime_state"
-        elif concrete.startswith(".engineering-bootstrap/"):
-            kind = "temporary_workspace"
-        else:
-            kind = "unknown"
-            illegal.append(normalized)
-        classified.append({"path": normalized, "classification": kind})
+def _preflight_product_records(root: Path, *, deadline: float) -> tuple[dict, ...]:
+    """Validate consumed classifier fields; classification remains its own owner."""
+    from .archive_io import member_identity
+    from .input_files import check_deadline, relative_source_path
+
+    check_deadline(deadline)
+    result = classify_tree(root)
+    check_deadline(deadline)
+    if (type(result) is not dict or len(result) > 64
+            or result.get("valid") is not True or result.get("product_valid") is not True
+            or type(result.get("errors")) is not list or result["errors"]):
+        raise ValueError("release product classification is invalid or incomplete")
+    rows = result.get("product_records")
+    if type(rows) is not list or len(rows) > 250000:
+        raise ValueError("release product record denominator is invalid or oversized")
+    prepared = []
+    aliases = set()
+    path_bytes = total_bytes = 0
+    for row in rows:
+        check_deadline(deadline)
+        if type(row) is not dict or len(row) > 8:
+            raise ValueError("release product record must be a bounded actual object")
+        relative = relative_source_path(row.get("path"))
+        identity = member_identity(relative, allow_directory=False)
+        if identity in aliases:
+            raise ValueError("release product path identity is ambiguous")
+        aliases.add(identity)
+        size = row.get("size")
+        digest = row.get("sha256")
+        if type(size) is not int or not 0 <= size <= 64 * 1024**3:
+            raise ValueError("release product bytes must be a bounded actual integer")
+        if type(digest) is not str or len(digest) != 64 or any(c not in "0123456789abcdef" for c in digest):
+            raise ValueError("release product digest is invalid")
+        path_bytes += len(relative.encode("utf-8"))
+        total_bytes += size
+        if path_bytes > 64 * 1024**2 or total_bytes > 64 * 1024**3:
+            raise ValueError("release product metadata exceeds its aggregate budget")
+        prepared.append({"path": relative, "size": size, "sha256": digest})
+    return tuple(prepared)
+
+
+def _preflight_feedback_targets(root: Path, targets: object, *, deadline: float) -> tuple[tuple[str, str, str], ...]:
+    """Admit original contained future paths without creating or authorizing them."""
+    import stat
+    from .archive_io import member_identity, reject_path_links
+    from .input_files import check_deadline, relative_source_path
+    from .numeric_inputs import bounded_text
+
+    if type(targets) not in (list, tuple) or len(targets) > 1024:
+        raise ValueError("feedback targets must be an actual bounded list or tuple")
+    targets = tuple(targets)
+    prepared = []
+    aliases = set()
+    placeholders = {"<release>": "release", "<run-id>": "run"}
+    for target in targets:
+        check_deadline(deadline)
+        normalized = bounded_text(target, "feedback target", maximum=4096, strip=False).replace("\\", "/")
+        concrete = "/".join(placeholders.get(part, part) for part in normalized.split("/"))
+        concrete = relative_source_path(concrete)
+        if len(concrete.split("/")) > 128:
+            raise ValueError("feedback target exceeds release path depth")
+        identity = member_identity(concrete, allow_directory=False)
+        if identity in aliases:
+            raise ValueError("feedback target identity is duplicated or ambiguous")
+        aliases.add(identity)
+        original = root / concrete
+        reject_path_links(original)
+        if not original.resolve(strict=False).is_relative_to(root):
+            raise ValueError("feedback target escapes the admitted project root")
+        cursor = original
+        while cursor != root:
+            check_deadline(deadline)
+            try:
+                info = cursor.lstat()
+            except FileNotFoundError:
+                cursor = cursor.parent
+                continue
+            if stat.S_ISLNK(info.st_mode) or getattr(info, "st_file_attributes", 0) & getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0x400):
+                raise ValueError("linked feedback path is not admitted")
+            if cursor == original:
+                if not (stat.S_ISREG(info.st_mode) or stat.S_ISDIR(info.st_mode)):
+                    raise ValueError("feedback target has unsupported filesystem type")
+                if stat.S_ISREG(info.st_mode) and info.st_nlink > 1:
+                    raise ValueError("feedback target aliases another file identity")
+            elif not stat.S_ISDIR(info.st_mode):
+                raise ValueError("feedback target parent is not a directory")
+            cursor = cursor.parent
+        prepared.append((normalized, concrete, identity))
+    return tuple(prepared)
+
+
+def _release_input_limits(policy):
+    from .numeric_inputs import bounded_integer, bounded_mapping, finite_number
+
+    policy = bounded_mapping(policy, "release input policy", maximum=64)
     return {
-        "schema_version": "px.release-feedback-audit/1.0",
-        "valid": not illegal,
-        "writes": classified,
-        "illegal_feedback_targets": illegal,
-        "failures": []
-        if not illegal
-        else [
-            PreflightFailure(
-                "RP-FBK-001",
-                "post-certification write feeds an immutable or unknown product input: "
-                + ", ".join(illegal),
-            ).as_dict()
-        ],
+        "total": bounded_integer(policy.get("max_total_release_evidence_bytes"), "total evidence bytes", maximum=1024**3),
+        "single": bounded_integer(policy.get("max_single_evidence_file_bytes"), "single evidence bytes", maximum=256 * 1024**2),
+        "amplification": finite_number(policy.get("max_context_amplification_ratio", 20.0), "context amplification", minimum=0, maximum=1000000),
     }
+
+
+def _bounded_release_evidence_inventory(root, *, deadline):
+    """One selected metadata inventory; version/config reads are separate inputs."""
+    import stat
+    import time
+    from .archive_io import member_identity, reject_path_links
+    from .bounded_walk import WalkLimits, bounded_walk
+    from .input_files import check_deadline, contained_file, directory_root
+    from .release_identity import authoritative_version
+
+    root = directory_root(root)
+    check_deadline(deadline)
+    original_project = root / "pyproject.toml"
+    reject_path_links(original_project)
+    try:
+        project_info = original_project.lstat()
+    except FileNotFoundError:
+        groups = [(root / "evidence", False)]
+    else:
+        if not stat.S_ISREG(project_info.st_mode):
+            raise ValueError("release version source must be a regular file")
+        groups = [(root / "evidence/releases" / authoritative_version(root), True)]
+    groups.append((root / "extension/evidence", False))
+    selected = []
+    aliases = set()
+    physical = set()
+    file_count = directory_count = entry_count = total_bytes = 0
+    custody = {"quarantine", ".quarantine", "_quarantine", "repo_quarantine"}
+    for original, recursive in groups:
+        check_deadline(deadline)
+        reject_path_links(original)
+        try:
+            group_info = original.lstat()
+        except FileNotFoundError:
+            continue
+        if not stat.S_ISDIR(group_info.st_mode):
+            raise ValueError("release evidence root must be a directory")
+        group = directory_root(original)
+        if not group.is_relative_to(root):
+            raise ValueError("release evidence root escapes the admitted project")
+
+        def excluded(relative):
+            if any(part.casefold() in custody for part in relative.split("/")):
+                return True
+            if recursive:
+                return False
+            # Shallow evidence does not descend into unrelated directories.
+            # Links/reparse points remain visible to the walker's refusal gate.
+            info = (group / relative).lstat()
+            return stat.S_ISDIR(info.st_mode) and not (
+                getattr(info, "st_file_attributes", 0) & getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0x400)
+            )
+
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            raise ValueError("release evidence metadata deadline expired")
+        walk = bounded_walk(group, limits=WalkLimits(
+            max_files=max(1, 10000 - file_count),
+            max_directories=max(1, 10000 - directory_count),
+            max_entries=max(1, 20000 - entry_count), max_depth=128,
+            max_bytes=max(1, 1024**3 - total_bytes), max_duration_seconds=remaining,
+        ), exclude=excluded)
+        file_count += walk.file_count
+        directory_count += walk.directory_count
+        entry_count += walk.scanned_entries
+        total_bytes += walk.total_bytes
+        if file_count > 10000 or directory_count > 10000 or entry_count > 20000 or total_bytes > 1024**3:
+            raise ValueError("release evidence metadata exceeds aggregate limits")
+        for entry in walk.files:
+            check_deadline(deadline)
+            relative = entry.path.relative_to(root).as_posix()
+            identity = member_identity(relative, allow_directory=False)
+            if identity in aliases:
+                raise ValueError("release evidence portable identity is ambiguous")
+            aliases.add(identity)
+            path, info = contained_file(root, relative)
+            if info.st_size != entry.size:
+                raise ValueError("release evidence changed during metadata admission")
+            file_id = (info.st_dev, info.st_ino)
+            if info.st_ino and file_id in physical:
+                raise ValueError("release evidence paths alias one file identity")
+            physical.add(file_id)
+            selected.append((relative, path, info))
+    check_deadline(deadline)
+    return {
+        "root": root,
+        "entries": tuple(sorted(selected, key=lambda row: (row[0].casefold(), row[0]))),
+        "total_bytes": total_bytes,
+        "file_count": file_count,
+        "directory_count": directory_count,
+        "scanned_entries": entry_count,
+        "deadline": deadline,
+    }
+
+
+def load_preflight_input_policy(root: Path, *, required: bool = True) -> dict:
+    from .input_files import cooperative_deadline, directory_root, contained_file, read_file_image
+    from .json_io import decode_json_object
+
+    if type(required) is not bool:
+        raise ValueError("policy required flag must be an actual boolean")
+    deadline = cooperative_deadline()
+    root = directory_root(root)
+    try:
+        path, info = contained_file(root, "policies/release-preflight.json")
+    except FileNotFoundError:
+        if required:
+            raise ValueError("release preflight policy is missing") from None
+        return {"schema_version": "px.release-preflight-policy/1.0",
+                "max_total_release_evidence_bytes": 250 * 1024**2,
+                "max_single_evidence_file_bytes": 100 * 1024**2,
+                "max_context_amplification_ratio": 20.0}
+    result = decode_json_object(read_file_image(path, info, limit=1024 * 1024, deadline=deadline), max_bytes=1024 * 1024, max_depth=32, max_nodes=100000)
+    if result.get("schema_version") != "px.release-preflight-policy/1.0":
+        raise ValueError("release preflight policy schema version is unsupported")
+    return result
+
+
+def _release_input_failure(kind: str) -> dict:
+    schemas = {"portability": "px.release-evidence-portability-preflight/1.0", "budget": "px.release-evidence-budget/1.0"}
+    result = {"schema_version": schemas[kind], "valid": False,
+              "failures": [PreflightFailure("RP-EVD-001" if kind == "portability" else "RP-EVD-002",
+                  "release evidence input is invalid, changed, oversized or incompletely evaluated").as_dict()]}
+    if kind == "portability":
+        result.update(finding_count=None, findings=[], scan_complete=False)
+    else:
+        result.update(total_bytes=None, file_count=None, source_bytes=None,
+                      context_amplification_ratio=None, amplification_evaluated=False,
+                      top_contributors=[], oversized_files=[])
+    return result
+
+
+class _ReleasePreflightInputs:
+    """One private request's consumed declarations and selected evidence metadata.
+
+    This creates no authority, persistent cache or cross-file snapshot. Construction
+    is pure; actual classification and evidence acquisition remain lazy.
+    """
+
+    def __init__(self, root: Path, policy=None):
+        self.original_root = root
+        self.policy_input = dict(policy) if type(policy) is dict and len(policy) <= 64 else policy
+        self.root = None
+        self.deadline = None
+        self.limits = None
+        self.inventory = None
+        self.product_records = None
+        self.product_failed = False
+
+    def start(self):
+        from .input_files import check_deadline, cooperative_deadline, directory_root
+
+        if self.deadline is None:
+            deadline = cooperative_deadline()
+            root = directory_root(self.original_root)
+            self.root, self.deadline = root, deadline
+        check_deadline(self.deadline)
+
+    def products(self):
+        self.start()
+        if self.product_failed:
+            raise ValueError("release product classification previously failed")
+        if self.product_records is None:
+            try:
+                self.product_records = _preflight_product_records(self.root, deadline=self.deadline)
+            except (OSError, ValueError, TypeError):
+                self.product_failed = True
+                raise
+        return self.product_records
+
+    def selected(self):
+        # Supplied byte policy is admitted before evidence metadata acquisition.
+        if self.limits is None:
+            policy = self.policy_input
+            if policy is None:
+                self.start()
+                policy = load_preflight_input_policy(self.root, required=False)
+            self.limits = _release_input_limits(policy)
+        self.start()
+        if self.inventory is None:
+            self.inventory = _bounded_release_evidence_inventory(self.root, deadline=self.deadline)
+        return self.inventory
+
+    def verify_selected_metadata(self):
+        from .input_files import check_deadline, contained_file
+
+        for relative, _, expected in self.selected()["entries"]:
+            check_deadline(self.deadline)
+            _, current = contained_file(self.root, relative)
+            if (current.st_dev, current.st_ino, current.st_size, current.st_mtime_ns) != (
+                expected.st_dev, expected.st_ino, expected.st_size, expected.st_mtime_ns
+            ):
+                raise ValueError("selected release evidence metadata changed")
+        check_deadline(self.deadline)
+
+    def sizing(self):
+        inventory = self.selected()
+        files = [{"path": relative, "bytes": info.st_size} for relative, _, info in inventory["entries"]]
+        files.sort(key=lambda row: (-row["bytes"], row["path"]))
+        oversized = [row for row in files if row["bytes"] > self.limits["single"]]
+        return {"total_bytes": inventory["total_bytes"], "file_count": len(files),
+                "maximum_total_bytes": self.limits["total"], "maximum_single_file_bytes": self.limits["single"],
+                "top_contributors": files[:20], "oversized_files": oversized[:256],
+                "oversized_file_count": len(oversized), "oversized_files_truncated": len(oversized) > 256}
+
+    def feedback(self, write_targets):
+        from .archive_io import member_identity
+        from .input_files import check_deadline
+
+        try:
+            self.start()
+            targets = _preflight_feedback_targets(self.root, write_targets, deadline=self.deadline)
+            products = {member_identity(row["path"], allow_directory=False) for row in self.products()}
+            check_deadline(self.deadline)
+        except (OSError, ValueError, TypeError):
+            return {"schema_version": "px.release-feedback-audit/1.0", "valid": False,
+                    "writes": [], "illegal_feedback_targets": [],
+                    "failures": [PreflightFailure("RP-FBK-002", "feedback input, physical path or product classification is invalid or incomplete").as_dict()]}
+        writes = []
+        illegal = []
+        for normalized, concrete, identity in targets:
+            if identity in products:
+                kind = "generated_product"
+            elif concrete.startswith("evidence/"):
+                kind = "release_transaction_evidence"
+            elif concrete.startswith(".engineering-bootstrap/runtime-core/"):
+                kind = "post_cert_runtime_state"
+            elif concrete.startswith(".engineering-bootstrap/"):
+                kind = "temporary_workspace"
+            else:
+                kind = "unknown"
+            if kind in {"generated_product", "unknown"}:
+                illegal.append(normalized)
+            writes.append({"path": normalized, "classification": kind})
+        return {"schema_version": "px.release-feedback-audit/1.0", "valid": not illegal,
+                "writes": writes, "illegal_feedback_targets": illegal,
+                "failures": [] if not illegal else [PreflightFailure("RP-FBK-001",
+                    "post-certification write feeds an immutable or unknown product input: " + ", ".join(illegal)).as_dict()]}
+
+    def portability(self):
+        from contextlib import closing
+        from .evidence_portability import stream_portability_findings
+        from .input_files import check_deadline, iter_file_image
+
+        try:
+            inventory = self.selected()
+            sizing = self.sizing()
+            if sizing["total_bytes"] > self.limits["total"] or sizing["oversized_file_count"]:
+                result = _release_input_failure("portability")
+                result["byte_budget"] = sizing
+                return result
+            findings = []
+            text_suffixes = {".json", ".jsonl", ".ndjson", ".xml", ".log", ".txt", ".md", ".svg", ".sig"}
+            for relative, path, info in inventory["entries"]:
+                check_deadline(self.deadline)
+                if path.suffix.casefold() not in text_suffixes and path.name != "SHA256SUMS":
+                    continue
+                with closing(iter_file_image(path, info, limit=self.limits["single"], deadline=self.deadline)) as chunks:
+                    values = stream_portability_findings(chunks, deadline=self.deadline)
+                if len(findings) + len(values) > 4096:
+                    raise ValueError("release portability findings exceed aggregate count")
+                findings.extend({"path": relative, "locator": value} for value in values)
+            self.verify_selected_metadata()
+            return {"schema_version": "px.release-evidence-portability-preflight/1.0", "valid": not findings,
+                    "finding_count": len(findings), "findings": findings, "scan_complete": True,
+                    "failures": [] if not findings else [PreflightFailure("RP-EVD-001", f"{len(findings)} machine-local evidence locator(s) found").as_dict()]}
+        except (OSError, ValueError, TypeError):
+            return _release_input_failure("portability")
+
+    def budget(self):
+        try:
+            sizing = self.sizing()
+            products = self.products()
+            source_bytes = sum(row["size"] for row in products)
+            self.verify_selected_metadata()
+            amplification = sizing["total_bytes"] / source_bytes if source_bytes > 0 else None
+            valid = (sizing["total_bytes"] <= self.limits["total"] and not sizing["oversized_file_count"]
+                     and amplification is not None and amplification <= self.limits["amplification"])
+            return {"schema_version": "px.release-evidence-budget/1.0", "valid": valid, **sizing,
+                    "source_bytes": source_bytes, "context_amplification_ratio": round(amplification, 6) if amplification is not None else None,
+                    "maximum_context_amplification_ratio": self.limits["amplification"], "amplification_evaluated": amplification is not None,
+                    "failures": [] if valid else [PreflightFailure("RP-EVD-002", "release evidence budget is exceeded or cannot be evaluated completely").as_dict()]}
+        except (OSError, ValueError, TypeError):
+            return _release_input_failure("budget")
+
+
+def _release_input_callbacks(root: Path, policy: dict):
+    """Construct callbacks without IO; one invocation owns their lazy input view."""
+    inputs = _ReleasePreflightInputs(root, policy)
+    targets = policy.get("post_certification_writes") if type(policy) is dict else None
+    if type(targets) in (list, tuple) and len(targets) <= 1024:
+        targets = tuple(targets)
+    return [("feedback_audit", lambda: inputs.feedback(targets)),
+            ("evidence_portability", inputs.portability), ("evidence_budget", inputs.budget)]
+
+
+def feedback_audit(root: Path, write_targets: Iterable[str]) -> dict[str, Any]:
+    return _ReleasePreflightInputs(root).feedback(write_targets)
 
 
 def _release_evidence_files(root: Path) -> list[Path]:
-    """Return only evidence that can enter the current release transaction."""
-    candidates: set[Path] = set()
-    if (root / "pyproject.toml").is_file():
-        release_root = root / "evidence/releases" / authoritative_version(root)
-        if release_root.is_dir():
-            candidates.update(
-                path for path in release_root.rglob("*") if path.is_file()
-            )
-    else:
-        evidence = root / "evidence"
-        if evidence.is_dir():
-            candidates.update(path for path in evidence.iterdir() if path.is_file())
-    installed = root / "extension/evidence"
-    if installed.is_dir():
-        candidates.update(path for path in installed.iterdir() if path.is_file())
-    return sorted(candidates, key=lambda item: item.as_posix().casefold())
+    """Return bounded metadata-selected current transaction evidence paths."""
+    return [path for _, path, _ in _ReleasePreflightInputs(root).selected()["entries"]]
 
 
 def evidence_portability(root: Path) -> dict[str, Any]:
-    findings: list[dict[str, object]] = []
-    for path in _release_evidence_files(root):
-        if path.suffix.casefold() not in {
-            ".json",
-            ".jsonl",
-            ".xml",
-            ".log",
-            ".txt",
-            ".md",
-        }:
-            continue
-        for value in portability_findings(
-            path.read_text(encoding="utf-8", errors="replace")
-        ):
-            findings.append(
-                {"path": path.relative_to(root).as_posix(), "locator": value}
-            )
-    return {
-        "schema_version": "px.release-evidence-portability-preflight/1.0",
-        "valid": not findings,
-        "finding_count": len(findings),
-        "findings": findings,
-        "failures": []
-        if not findings
-        else [
-            PreflightFailure(
-                "RP-EVD-001", f"{len(findings)} machine-local evidence locator(s) found"
-            ).as_dict()
-        ],
-    }
+    return _ReleasePreflightInputs(root).portability()
 
 
 def evidence_budget(root: Path, policy: Mapping[str, Any]) -> dict[str, Any]:
-    files = [
-        {"path": path.relative_to(root).as_posix(), "bytes": path.stat().st_size}
-        for path in _release_evidence_files(root)
-        if not path.is_symlink()
-    ]
-    files.sort(key=lambda item: (-int(item["bytes"]), str(item["path"])))
-    total = sum(int(item["bytes"]) for item in files)
-    maximum = int(policy["max_total_release_evidence_bytes"])
-    single = int(policy["max_single_evidence_file_bytes"])
-    oversized = [item for item in files if int(item["bytes"]) > single]
-    product = (
-        classify_tree(root)
-        if (root / "policies/release-artifact-policy.json").is_file()
-        else {"product_records": []}
-    )
-    source_bytes = sum(
-        int(item.get("size") or 0) for item in product.get("product_records", ())
-    )
-    amplification = total / source_bytes if source_bytes else 0.0
-    max_amplification = float(policy.get("max_context_amplification_ratio", 20.0))
-    valid = total <= maximum and not oversized and amplification <= max_amplification
-    return {
-        "schema_version": "px.release-evidence-budget/1.0",
-        "valid": valid,
-        "total_bytes": total,
-        "file_count": len(files),
-        "maximum_total_bytes": maximum,
-        "maximum_single_file_bytes": single,
-        "source_bytes": source_bytes,
-        "context_amplification_ratio": round(amplification, 6),
-        "maximum_context_amplification_ratio": max_amplification,
-        "top_contributors": files[:20],
-        "oversized_files": oversized,
-        "failures": []
-        if valid
-        else [
-            PreflightFailure(
-                "RP-EVD-002", "release evidence exceeds the configured bounded budget"
-            ).as_dict()
-        ],
-    }
+    return _ReleasePreflightInputs(root, policy).budget()
 
 
 def skip_policy_preflight(junit: Path | None = None) -> dict[str, Any]:
@@ -1011,9 +1287,10 @@ def run_preflight(
 ) -> dict[str, Any]:
     """Run cheap checks first, then clean-stage state transitions and fixed point."""
     from .test_profiles import require_processing_stage
+    from .input_files import directory_root
 
     started = time.monotonic()
-    root = root.resolve(strict=True)
+    root = directory_root(root)
     # A binding preflight includes exact installed-host equivalence.  It can
     # therefore run only after package, install, and installed operational
     # testing.  Discovery deliberately omits the release binding so repair can
@@ -1022,7 +1299,7 @@ def run_preflight(
         require_processing_stage(root, "certify")
     release = release or authoritative_version(root)
     artifact = artifact.resolve(strict=True) if artifact else None
-    policy = _json(root / PREFLIGHT_POLICY)
+    policy = load_preflight_input_policy(root)
     binding = _binding(root, release, artifact)
     checks: dict[str, dict[str, Any]] = {}
     timings: list[dict[str, object]] = []
@@ -1046,12 +1323,7 @@ def run_preflight(
             "generated_dependency_dag",
             lambda: generated_dependency_graph(policy["generated_authorities"]),
         ),
-        (
-            "feedback_audit",
-            lambda: feedback_audit(root, policy["post_certification_writes"]),
-        ),
-        ("evidence_portability", lambda: evidence_portability(root)),
-        ("evidence_budget", lambda: evidence_budget(root, policy)),
+        *_release_input_callbacks(root, policy),
         ("skip_policy", lambda: skip_policy_preflight()),
         (
             "release_gate_repository_context",

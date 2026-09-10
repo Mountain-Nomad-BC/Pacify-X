@@ -36,6 +36,9 @@ def _authority(root: Path) -> tuple[Path, Path, str, str]:
                         "publisher": publisher,
                         "fingerprint": public_key_fingerprint(key.with_suffix(".pub")),
                         "public_key": " ".join(public[:2]),
+                        "evidence_producers": {"trusted-test-producer": [
+                            "policy_decision", "postcondition", "provenance", "license", "tests", "security",
+                        ]},
                     }
                 ],
                 "revoked_fingerprints": [],

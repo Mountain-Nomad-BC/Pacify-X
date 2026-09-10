@@ -15,9 +15,16 @@ from datetime import datetime, timezone
 import hashlib
 import json
 import math
+import os
 from pathlib import Path
+import stat
+import time
 from typing import Mapping, Sequence
 
+from .archive_io import reject_path_links
+from .bounded_walk import WalkLimits, bounded_walk
+from .generated_dependency import strongly_connected_components
+from .json_io import decode_json_object, load_json_object, validate_json_value
 from .wal_transaction import JsonTransition
 
 
@@ -37,6 +44,17 @@ MAX_EVENT_BYTES = 32 * 1024 * 1024
 MAX_EVENTS = 5_000
 MAX_MEMORY_BYTES = 64 * 1024 * 1024
 MAX_MEMORY_RECORDS = 100_000
+MAX_STATE_BYTES = 8 * 1024 * 1024
+MAX_STATE_RECORDS = 10_000
+MAX_STATE_NODES = 200_000
+MAX_STATE_DEPTH = 32
+MAX_DEPENDENCY_EDGES = 20_000
+MAX_ACTIVE_TARGETS = 512
+MAX_TARGET_COMPARISONS = 1_048_576
+MAX_MEMORY_FILES = 1024
+MAX_RECORD_BYTES = 1024 * 1024
+MAX_STARTUP_SECONDS = 60.0
+MAX_SAFE_INTEGER = 2**53 - 1
 _HEX_DIGEST_LENGTH = 64
 _TASK_STATES = frozenset(
     {
@@ -114,6 +132,174 @@ class StateInvariantError(RuntimeError):
         super().__init__(f"coordination state invariants failed: {summary}")
 
 
+def _value_bounds(value: object) -> None:
+    """Bound structure and conservative encoded work before domain operations."""
+    validate_json_value(value, max_depth=MAX_STATE_DEPTH, max_nodes=MAX_STATE_NODES)
+    used = 0
+
+    def consume(item: object) -> None:
+        nonlocal used
+        used += 3  # container delimiters, quotes or separators
+        if type(item) is str:
+            if len(item) > MAX_STATE_BYTES - used:
+                raise ValueError("coordination text byte budget exceeded")
+            for start in range(0, len(item), 16384):
+                chunk = item[start : start + 16384]
+                used += len(chunk.encode("utf-8"))
+                # Bound JSON escaping before the encoder creates a token.
+                used += sum(
+                    1 if char in '\b\f\n\r\t"\\' else 5
+                    for char in chunk
+                    if ord(char) < 32 or char in '"\\'
+                )
+                if used > MAX_STATE_BYTES:
+                    raise ValueError("coordination text byte budget exceeded")
+        elif type(item) is int:
+            if not -MAX_SAFE_INTEGER <= item <= MAX_SAFE_INTEGER:
+                raise ValueError("coordination integer exceeds interoperable range")
+            used += 17
+        elif type(item) in (float, bool, type(None)):
+            used += 32
+        elif type(item) is dict:
+            for key, child in item.items():
+                consume(key)
+                consume(child)
+        elif type(item) is list:
+            for child in item:
+                consume(child)
+        if used > MAX_STATE_BYTES:
+            raise ValueError("coordination metadata byte budget exceeded")
+
+    consume(value)
+
+
+def _input_violations(
+    value: object, path: str, *, state: bool
+) -> list[InvariantViolation]:
+    try:
+        if type(value) is not dict:
+            raise ValueError("must be a JSON object")
+        _value_bounds(value)
+        if not state:
+            return []
+        edges = 0
+        active_targets = 0
+        for name in ("tasks", "plans", "claims", "sessions"):
+            rows = value.get(name)
+            if type(rows) is not list or len(rows) > MAX_STATE_RECORDS:
+                raise ValueError(f"{name} requires a bounded record array")
+            for row in rows:
+                if type(row) is not dict:
+                    raise ValueError(f"{name} requires object records")
+                if type(row.get("status")) is not str:
+                    raise ValueError(f"{name} status requires text")
+                for field in (
+                    "id",
+                    "actor_id",
+                    "session_id",
+                    "harness",
+                    "task_id",
+                    "mode",
+                ):
+                    if field in row and (
+                        type(row[field]) is not str
+                        or len(row[field].encode("utf-8")) > 256
+                    ):
+                        raise ValueError(f"{name}.{field} requires bounded text")
+                fields = (
+                    ("depends_on", "claim_targets")
+                    if name == "tasks"
+                    else ("task_ids",)
+                    if name == "plans"
+                    else ("targets",)
+                    if name == "claims"
+                    else ()
+                )
+                for field in fields:
+                    if (
+                        field not in row
+                        and name == "claims"
+                        and row["status"] != "active"
+                    ):
+                        continue
+                    items = row.get(field)
+                    if (
+                        type(items) is not list
+                        or len(items) > MAX_STATE_RECORDS
+                        or any(
+                            type(item) is not str or len(item.encode("utf-8")) > 4096
+                            for item in items
+                        )
+                    ):
+                        raise ValueError(f"{name}.{field} requires bounded text array")
+                    if field == "depends_on":
+                        edges += len(items)
+                    if field == "targets" and row["status"] == "active":
+                        if not items:
+                            raise ValueError("active claims require nonempty targets")
+                        active_targets += len(items)
+        if edges > MAX_DEPENDENCY_EDGES:
+            raise ValueError("coordination dependency edge budget exceeded")
+        if active_targets > MAX_ACTIVE_TARGETS:
+            raise ValueError("coordination active target comparison budget exceeded")
+        target_counts = {}
+        for task in value["tasks"]:
+            identifier = _identifier(task.get("id"))
+            target_counts[identifier] = max(
+                target_counts.get(identifier, 0), len(task["claim_targets"])
+            )
+        comparison_work = active_targets * active_targets
+        for claim in value["claims"]:
+            if claim["status"] == "active":
+                comparison_work += len(claim["targets"]) * target_counts.get(
+                    _identifier(claim.get("task_id")), 0
+                )
+        if comparison_work > MAX_TARGET_COMPARISONS:
+            raise ValueError("coordination target scope comparison budget exceeded")
+        return []
+    except (ValueError, UnicodeError, OverflowError) as error:
+        violations = [InvariantViolation("input_shape", path, str(error)[:512])]
+        # Preserve the existing causal diagnostic for invalid budget numbers.
+        tasks = value.get("tasks") if type(value) is dict else None
+        if type(tasks) is list and len(tasks) <= MAX_STATE_RECORDS:
+            for index, task in enumerate(tasks):
+                if type(task) is not dict:
+                    continue
+                for field, names in [
+                    ("usage", ("minutes", "tokens", "cost_usd")),
+                    ("budget", ("max_minutes", "max_tokens", "max_cost_usd")),
+                ]:
+                    table = task.get(field)
+                    if type(table) is dict and any(
+                        name in table
+                        and table[name] is not None
+                        and not _finite_nonnegative(table[name])
+                        for name in names
+                    ):
+                        violations.append(
+                            InvariantViolation(
+                                "budget_invalid",
+                                f"{path}.tasks[{index}].{field}",
+                                "must contain bounded finite nonnegative numbers",
+                            )
+                        )
+                        return violations
+        return violations
+
+
+def _input_report(
+    violations: list[InvariantViolation], phase: str
+) -> dict[str, object]:
+    return {
+        "schema_version": SCHEMA_VERSION,
+        "phase": phase,
+        "valid": False,
+        "state_revision": None,
+        "checks": [],
+        "violations": [item.as_dict() for item in violations],
+    }
+
+
 def _stable_hash(value: object) -> str:
     return hashlib.sha256(
         json.dumps(
@@ -166,12 +352,9 @@ def _object_index(
 
 
 def _finite_nonnegative(value: object) -> bool:
-    return (
-        isinstance(value, (int, float))
-        and not isinstance(value, bool)
-        and math.isfinite(float(value))
-        and float(value) >= 0
-    )
+    if type(value) is int:
+        return 0 <= value <= MAX_SAFE_INTEGER
+    return type(value) is float and math.isfinite(value) and value >= 0
 
 
 def _actor_identity(actor: object) -> tuple[str, str] | None:
@@ -229,6 +412,15 @@ def coordination_conformance_report(
 ) -> dict[str, object]:
     """Evaluate the cross-runtime coordination rules in stable ID order."""
 
+    try:
+        _value_bounds(state)
+    except (ValueError, UnicodeError, OverflowError):
+        return {
+            "schema_version": CONFORMANCE_SCHEMA,
+            "valid": False,
+            "violation_ids": ["PX-COORD-SCHEMA-VERSION"],
+        }
+
     found: set[str] = set()
     if not isinstance(state, Mapping):
         found.add("PX-COORD-SCHEMA-VERSION")
@@ -238,9 +430,10 @@ def coordination_conformance_report(
     if candidate.get("schema_version") != COORDINATION_STATE_SCHEMA:
         found.add("PX-COORD-SCHEMA-VERSION")
 
+    raw_tasks = candidate.get("tasks")
     tasks = {
         _identifier(item.get("id")): item
-        for item in candidate.get("tasks", ())
+        for item in (raw_tasks if isinstance(raw_tasks, list) else ())
         if isinstance(item, Mapping) and _identifier(item.get("id"))
     }
     plans = candidate.get("plans", ())
@@ -258,7 +451,7 @@ def coordination_conformance_report(
         not isinstance(item, Mapping)
         or _actor_identity(item) is None
         or not _identifier(item.get("harness"))
-        or item.get("status") not in {"active", "stale"}
+        or item.get("status") not in ("active", "stale")
         for item in sessions
     ):
         found.add("PX-COORD-SESSION-MALFORMED")
@@ -292,7 +485,7 @@ def coordination_conformance_report(
             if isinstance(dependencies, list) and any(
                 dependency not in tasks
                 or tasks[str(dependency)].get("status")
-                not in {"completed", "reconciled"}
+                not in ("completed", "reconciled")
                 for dependency in map(str, dependencies)
             ):
                 found.add("PX-COORD-DEPENDENCY-INCOMPLETE")
@@ -359,25 +552,19 @@ def _check_dependencies(
                         "dag_cycle", f"tasks.{task_id}.depends_on", "self dependency"
                     )
                 )
-    visiting: set[str] = set()
-    visited: set[str] = set()
-
-    def visit(task_id: str, ancestry: tuple[str, ...]) -> None:
-        if task_id in visiting:
-            cycle = " -> ".join((*ancestry, task_id))
-            violations.append(InvariantViolation("dag_cycle", "tasks", cycle))
-            return
-        if task_id in visited:
-            return
-        visiting.add(task_id)
-        for dependency in dependencies.get(task_id, ()):
-            if dependency in tasks:
-                visit(dependency, (*ancestry, task_id))
-        visiting.remove(task_id)
-        visited.add(task_id)
-
-    for task_id in sorted(tasks):
-        visit(task_id, ())
+    edges = [
+        (task_id, dependency)
+        for task_id, values in dependencies.items()
+        for dependency in values
+        if dependency in tasks
+    ]
+    for component in strongly_connected_components(sorted(tasks), edges):
+        if len(component) > 1:
+            detail = (
+                f"dependency cycle component ({len(component)} tasks): "
+                + ", ".join(component[:8])
+            )
+            violations.append(InvariantViolation("dag_cycle", "tasks", detail[:512]))
 
 
 def _check_budgets(
@@ -588,6 +775,30 @@ def validate_coordination_state(
     phase: str = "precommit",
 ) -> dict[str, object]:
     """Validate one retained state or one proposed append-only transition."""
+    admitted = _input_violations(state, "$", state=True)
+    if previous_state is not None:
+        admitted.extend(_input_violations(previous_state, "previous_state", state=True))
+    if event is not None:
+        admitted.extend(_input_violations(event, "event", state=False))
+    if observed_memory_counts is not None:
+        admitted.extend(
+            _input_violations(
+                observed_memory_counts, "observed_memory_counts", state=False
+            )
+        )
+    if now_utc is not None and (
+        not isinstance(now_utc, datetime) or now_utc.tzinfo is None
+    ):
+        admitted.append(
+            InvariantViolation("input_shape", "now_utc", "requires an aware datetime")
+        )
+    if type(phase) is not str or len(phase) > 128:
+        admitted.append(
+            InvariantViolation("input_shape", "phase", "requires bounded text")
+        )
+        phase = "invalid"
+    if admitted:
+        return _input_report(admitted, phase)
     violations: list[InvariantViolation] = []
     if not isinstance(state, Mapping):
         violations.append(InvariantViolation("shape", "$", "state must be an object"))
@@ -957,28 +1168,76 @@ def assert_coordination_state(
     return report
 
 
+def _check_deadline(deadline: float) -> None:
+    if time.monotonic() >= deadline:
+        raise ValueError("coordination cooperative startup duration budget exceeded")
+
+
 def _read_jsonl(
-    path: Path, *, maximum_bytes: int, maximum_records: int
+    path: Path,
+    *,
+    maximum_bytes: int,
+    maximum_records: int,
+    deadline: float | None = None,
 ) -> list[dict[str, object]]:
+    if type(maximum_bytes) is not int or not 0 <= maximum_bytes <= MAX_MEMORY_BYTES:
+        raise ValueError("invalid coordination JSONL byte budget")
+    if (
+        type(maximum_records) is not int
+        or not 0 <= maximum_records <= MAX_MEMORY_RECORDS
+    ):
+        raise ValueError("invalid coordination JSONL record budget")
+    deadline = (
+        deadline if deadline is not None else time.monotonic() + MAX_STARTUP_SECONDS
+    )
+    _check_deadline(deadline)
+    reject_path_links(path)
     if not path.exists():
         return []
-    if not path.is_file() or path.stat().st_size > maximum_bytes:
+    info = path.stat()
+    if not stat.S_ISREG(info.st_mode) or info.st_size > maximum_bytes:
         raise ValueError(f"bounded JSONL input rejected: {path}")
     records: list[dict[str, object]] = []
-    for line_number, line in enumerate(
-        path.read_text(encoding="utf-8").splitlines(), 1
+    used = 0
+    with path.open("rb") as stream:
+        opened = os.fstat(stream.fileno())
+        if (opened.st_dev, opened.st_ino, opened.st_size) != (
+            info.st_dev,
+            info.st_ino,
+            info.st_size,
+        ):
+            raise ValueError("coordination JSONL input changed before acquisition")
+        while True:
+            _check_deadline(deadline)
+            line = stream.readline(min(MAX_RECORD_BYTES + 1, info.st_size - used + 1))
+            if not line:
+                break
+            used += len(line)
+            if used > info.st_size or used > maximum_bytes:
+                raise ValueError(
+                    "coordination JSONL input changed or byte budget exceeded"
+                )
+            if len(line) > MAX_RECORD_BYTES:
+                raise ValueError("coordination JSONL record byte budget exceeded")
+            if not line.strip():
+                continue
+            if len(records) >= maximum_records:
+                raise ValueError("coordination JSONL record limit exceeded")
+            record = decode_json_object(
+                line,
+                max_bytes=MAX_RECORD_BYTES,
+                max_depth=MAX_STATE_DEPTH,
+                max_nodes=MAX_STATE_NODES,
+            )
+            _value_bounds(record)
+            records.append(record)
+        after = os.fstat(stream.fileno())
+    if used != info.st_size or (after.st_size, after.st_mtime_ns) != (
+        info.st_size,
+        info.st_mtime_ns,
     ):
-        if not line.strip():
-            continue
-        if len(records) >= maximum_records:
-            raise ValueError(f"JSONL record limit exceeded: {path}")
-        try:
-            record = json.loads(line)
-        except json.JSONDecodeError as error:
-            raise ValueError(f"malformed JSONL at {path}:{line_number}") from error
-        if not isinstance(record, dict):
-            raise ValueError(f"JSONL record is not an object at {path}:{line_number}")
-        records.append(record)
+        raise ValueError("coordination JSONL input changed during acquisition")
+    _check_deadline(deadline)
     return records
 
 
@@ -1048,22 +1307,50 @@ def _event_chain_violations(
 
 
 def _read_memory_records(
-    coordination_root: Path, project_id: str
+    coordination_root: Path,
+    project_id: str,
+    *,
+    deadline: float | None = None,
 ) -> tuple[dict[str, int], list[InvariantViolation]]:
+    deadline = (
+        deadline if deadline is not None else time.monotonic() + MAX_STARTUP_SECONDS
+    )
+    _check_deadline(deadline)
+    reject_path_links(coordination_root)
     memory_root = coordination_root / "memory"
+    reject_path_links(memory_root)
     specifications = [
         ("project", memory_root / "project.jsonl"),
         ("state", memory_root / "state.jsonl"),
         ("system_candidate", memory_root / "system-candidates.jsonl"),
     ]
     sessions = memory_root / "sessions"
+    reject_path_links(sessions)
     if sessions.is_dir():
-        specifications.extend(
-            ("session", path) for path in sorted(sessions.glob("*.jsonl"))
+        scan = bounded_walk(
+            sessions,
+            limits=WalkLimits(
+                max_files=MAX_MEMORY_FILES,
+                max_depth=1,
+                max_bytes=MAX_MEMORY_BYTES,
+                max_entries=4096,
+                max_directories=1,
+                max_duration_seconds=max(0.001, deadline - time.monotonic()),
+            ),
+            exclude=lambda relative: not relative.endswith(".jsonl"),
         )
-    total_bytes = sum(
-        path.stat().st_size for _, path in specifications if path.is_file()
-    )
+        specifications.extend(("session", row.path) for row in scan.files)
+    if len(specifications) > MAX_MEMORY_FILES:
+        raise ValueError("coordination memory file count budget exceeded")
+    total_bytes = 0
+    sizes = {}
+    for _, path in specifications:
+        _check_deadline(deadline)
+        reject_path_links(path)
+        if path.exists() and not path.is_file():
+            raise ValueError("coordination memory requires regular files")
+        sizes[path] = path.stat().st_size if path.exists() else 0
+        total_bytes += sizes[path]
     if total_bytes > MAX_MEMORY_BYTES:
         raise ValueError("coordination memory exceeds startup byte budget")
     counts = {layer: 0 for layer in _MEMORY_COUNTERS}
@@ -1072,9 +1359,13 @@ def _read_memory_records(
     for layer, path in specifications:
         for index, record in enumerate(
             _read_jsonl(
-                path, maximum_bytes=MAX_MEMORY_BYTES, maximum_records=MAX_MEMORY_RECORDS
+                path,
+                maximum_bytes=sizes[path],
+                maximum_records=MAX_MEMORY_RECORDS - sum(counts.values()),
+                deadline=deadline,
             )
         ):
+            _check_deadline(deadline)
             counts[layer] += 1
             locator = f"memory.{layer}[{index}]"
             if record.get("project_id") != project_id:
@@ -1116,6 +1407,7 @@ def _read_memory_records(
                     InvariantViolation("memory_digest", locator, "invalid record seal")
                 )
     for memory_id, observed in revisions.items():
+        _check_deadline(deadline)
         ordered = sorted(observed)
         if ordered != list(range(1, len(ordered) + 1)):
             violations.append(
@@ -1123,12 +1415,26 @@ def _read_memory_records(
                     "memory_revision_chain", f"memory.{memory_id}", repr(ordered)
                 )
             )
+    _check_deadline(deadline)
     return counts, violations
 
 
 def validate_coordination_startup(project_root: Path) -> dict[str, object]:
     """Audit retained coordination authority without repairing or rewriting it."""
-    project = project_root.resolve()
+    deadline = time.monotonic() + MAX_STARTUP_SECONDS
+    try:
+        reject_path_links(project_root)
+        project = project_root.resolve()
+        reject_path_links(
+            project / ".engineering-bootstrap" / "coordination" / "state.json"
+        )
+    except (OSError, ValueError) as error:
+        raise StateInvariantError(
+            _input_report(
+                [InvariantViolation("startup_input", "coordination", str(error)[:512])],
+                "startup",
+            )
+        ) from error
     coordination_root = project / ".engineering-bootstrap" / "coordination"
     state_path = coordination_root / "state.json"
     if not state_path.exists():
@@ -1141,7 +1447,7 @@ def validate_coordination_startup(project_root: Path) -> dict[str, object]:
             "checks": [],
             "violations": [],
         }
-    if not state_path.is_file() or state_path.stat().st_size > 8 * 1024 * 1024:
+    if not state_path.is_file() or state_path.stat().st_size > MAX_STATE_BYTES:
         raise StateInvariantError(
             {
                 "schema_version": SCHEMA_VERSION,
@@ -1155,23 +1461,34 @@ def validate_coordination_startup(project_root: Path) -> dict[str, object]:
             }
         )
     try:
-        state = json.loads(state_path.read_text(encoding="utf-8"))
-        if not isinstance(state, dict):
-            raise ValueError("state is not an object")
+        state = load_json_object(
+            state_path,
+            max_bytes=MAX_STATE_BYTES,
+            max_depth=MAX_STATE_DEPTH,
+            max_nodes=MAX_STATE_NODES,
+        )
+        admitted = _input_violations(state, "$", state=True)
+        if admitted:
+            raise StateInvariantError(_input_report(admitted, "startup"))
         state_project = state.get("project")
         if (
             not isinstance(state_project, Mapping)
-            or Path(str(state_project.get("root", ""))).resolve() != project
+            or type(state_project.get("root")) is not str
+            or type(state_project.get("id")) is not str
+            or Path(state_project["root"]).resolve() != project
         ):
             raise ValueError("coordination state project root mismatch")
         project_id = str(state.get("project", {}).get("id", ""))
         memory_counts, memory_violations = _read_memory_records(
-            coordination_root, project_id
+            coordination_root,
+            project_id,
+            deadline=deadline,
         )
         events = _read_jsonl(
             coordination_root / "events.jsonl",
             maximum_bytes=MAX_EVENT_BYTES,
             maximum_records=MAX_EVENTS,
+            deadline=deadline,
         )
     except (OSError, UnicodeError, json.JSONDecodeError, ValueError) as error:
         raise StateInvariantError(
@@ -1181,7 +1498,7 @@ def validate_coordination_startup(project_root: Path) -> dict[str, object]:
                 "valid": False,
                 "violations": [
                     InvariantViolation(
-                        "startup_input", "coordination", str(error)
+                        "startup_input", "coordination", str(error)[:512]
                     ).as_dict()
                 ],
             }
@@ -1207,6 +1524,15 @@ def validate_coordination_startup(project_root: Path) -> dict[str, object]:
     report["event_count"] = len(events)
     report["observed_memory_counts"] = memory_counts
     report["violations"] = [item.as_dict() for item in violations]
+    try:
+        _check_deadline(deadline)
+    except ValueError as error:
+        raise StateInvariantError(
+            _input_report(
+                [InvariantViolation("startup_input", "coordination", str(error))],
+                "startup",
+            )
+        ) from error
     return report
 
 

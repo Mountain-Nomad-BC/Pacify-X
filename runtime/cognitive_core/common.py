@@ -6,6 +6,7 @@ import math
 import re
 from collections.abc import Iterable, Mapping
 from typing import Any
+from ..numeric_inputs import finite_number
 
 TOKEN = re.compile(r"[a-z0-9]+")
 STOPWORDS = frozenset(
@@ -89,7 +90,7 @@ def entropy(probabilities: Iterable[float]) -> float:
 
 
 def ensure_probability(value: float, name: str) -> float:
-    number = float(value)
+    number = finite_number(value, name)
     if not 0.0 <= number <= 1.0:
         raise ValueError(f"{name} must be in [0, 1]")
     return number

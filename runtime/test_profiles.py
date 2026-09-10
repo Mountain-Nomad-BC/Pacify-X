@@ -5,8 +5,6 @@ from __future__ import annotations
 import json
 import fnmatch
 import hashlib
-import hmac
-import ast
 import os
 from pathlib import Path
 import sys
@@ -295,81 +293,22 @@ def resolve_test_profile(root: Path, name: str) -> dict[str, Any]:
 
 
 def _section_files(root: Path, patterns: list[str]) -> list[str]:
-    # Expand only the declared roots. A whole-repository walk here made compact
-    # section-status checks traverse retained project maps, environments, and
-    # custody trees even though none could match the section patterns.
-    matched: set[str] = set()
-    for pattern in patterns:
-        # Path.glob('directory/**') has different descendant semantics across
-        # supported CPython releases. Expand that recursive form explicitly so
-        # receipt identities remain runtime- and platform-stable.
-        normalized = pattern.replace("\\", "/")
-        if normalized.endswith("/**"):
-            base = root / normalized[:-3]
-            candidates = base.rglob("*") if base.is_dir() else ()
-        else:
-            candidates = root.glob(pattern)
-        for path in candidates:
-            if path.is_file():
-                matched.add(path.relative_to(root).as_posix())
-    return sorted(matched)
+    from .verification_inputs import CapturedInputs
+    capture = CapturedInputs(root)
+    result = capture.match(patterns)
+    capture.verify()
+    return result
 
 
 def _structural_scan_files(root: Path, max_bytes: int = 1_000_000) -> list[str]:
-    """Return the incompleteness scanner's exact governed source inventory."""
-
-    from .repository_scope import is_external_environment_relative
-
-    excluded = {
-        ".git",
-        ".venv",
-        ".vscode-test",
-        "python",
-        "node_modules",
-        "vendor",
-        "dist",
-        "build",
-        "quarantine",
-        "__pycache__",
-    }
-    suffixes = {".py", ".js", ".jsx", ".ts", ".tsx"}
-    paths: list[str] = []
-    for current, dirs, files in os.walk(root, topdown=True, followlinks=False):
-        relative_current = Path(current).relative_to(root)
-        if is_external_environment_relative(relative_current):
-            dirs[:] = []
-            continue
-        folded_parts = tuple(part.casefold() for part in relative_current.parts)
-        if len(folded_parts) >= 2 and folded_parts[:2] == (
-            ".px",
-            "preserved-skills",
-        ):
-            dirs[:] = []
-            continue
-        dirs[:] = sorted(
-            (
-                name
-                for name in dirs
-                if name.casefold() not in excluded
-                and not name.casefold().startswith(".venv")
-                and not is_external_environment_relative(relative_current / name)
-            ),
-            key=str.casefold,
-        )
-        for name in sorted(files, key=str.casefold):
-            path = Path(current, name)
-            try:
-                eligible = (
-                    path.suffix.casefold() in suffixes
-                    and not is_external_environment_relative(path.relative_to(root))
-                    and not path.is_symlink()
-                    and path.stat().st_size <= max_bytes
-                )
-            except OSError:
-                eligible = False
-            if eligible:
-                paths.append(path.relative_to(root).as_posix())
-    return sorted(paths)
+    from .verification_inputs import CapturedInputs
+    from .verification_status import structural_scan
+    if type(max_bytes) is not int or not 0 < max_bytes <= 8 * 1024**2:
+        raise ValueError("invalid structural scan file budget")
+    capture = CapturedInputs(root)
+    result = structural_scan(capture, max_bytes)
+    capture.verify()
+    return result
 
 
 def _fingerprint(root: Path, paths: list[str]) -> str:
@@ -383,173 +322,134 @@ def _fingerprint(root: Path, paths: list[str]) -> str:
 
 
 def resolve_test_section(root: Path, name: str) -> dict[str, Any]:
-    """Resolve one affected test section and its exact content identity."""
-    root = root.resolve()
-    config = json.loads(
-        (root / "registry/test_profiles.json").read_text(encoding="utf-8")
-    )
-    section = config.get("sections", {}).get(name)
-    if not isinstance(section, dict):
-        raise ValueError(f"unknown test section: {name}")
-    patterns = list(map(str, section.get("source_patterns", ())))
-    matched_inputs = _section_files(root, patterns)
-    if not matched_inputs:
-        raise ValueError(f"test section has no current inputs: {name}")
-    # The owner definition is executable governance, not metadata. Without it,
-    # changing commands, chunk topology, or timeouts could leave an older
-    # passing section receipt falsely current.
-    inputs = sorted({*matched_inputs, "registry/test_profiles.json"})
-    command = list(map(str, section.get("command", ())))
-    if not command:
-        raise ValueError(f"test section has no command: {name}")
-    cwd = (root / str(section.get("cwd", "."))).resolve()
-    if cwd != root and root not in cwd.parents:
-        raise ValueError("test section cwd escapes repository root")
-    timeout = validate_timeout(section.get("timeout_seconds"))
-    section_input_sha256 = _fingerprint(root, inputs)
-    chunks: list[dict[str, object]] = []
-    chunk_size = int(section.get("chunk_size", 0) or 0)
-    max_parallel_chunks = int(section.get("max_parallel_chunks", 1) or 1)
-    if chunk_size:
-        if not 1 <= chunk_size <= 20 or not 1 <= max_parallel_chunks <= 8:
-            raise ValueError("test section chunk bounds are invalid")
-        chunk_timeout = validate_timeout(section.get("chunk_timeout_seconds"))
-        members = [
-            value
-            for value in command
-            if not value.startswith("-") and (cwd / value).is_file()
-        ]
-        if len(members) < 2:
-            raise ValueError("chunked test section requires at least two file members")
-        member_set = set(members)
-        base_command = [value for value in command if value not in member_set]
-        member_inputs = {
-            (cwd / value).resolve().relative_to(root).as_posix(): value
-            for value in members
-        }
-        shared_inputs = sorted(set(inputs) - set(member_inputs))
-        for index in range(0, len(members), chunk_size):
-            selected = members[index : index + chunk_size]
-            chunk_id = f"chunk-{index // chunk_size + 1:02d}"
-            selected_inputs = sorted(
-                (cwd / value).resolve().relative_to(root).as_posix()
-                for value in selected
-            )
-            chunk_inputs = sorted({*shared_inputs, *selected_inputs})
-            identity = hashlib.sha256(
-                json.dumps(
-                    {
-                        "content_sha256": _fingerprint(root, chunk_inputs),
-                        "chunk_id": chunk_id,
-                        "command": [*base_command, *selected],
-                    },
-                    sort_keys=True,
-                    separators=(",", ":"),
-                ).encode("utf-8")
-            ).hexdigest()
-            chunks.append(
-                {
-                    "chunk_id": chunk_id,
-                    "members": selected,
-                    "member_count": len(selected),
-                    "inputs": chunk_inputs,
-                    "command": [*base_command, *selected],
-                    "input_sha256": identity,
-                    "timeout_seconds": chunk_timeout,
-                }
-            )
-    return {
-        "schema_version": "px.test-section/1.0",
-        "valid": True,
-        "section": name,
-        "description": str(section.get("description", "")),
-        "dependencies": sorted(set(map(str, section.get("dependencies", ())))),
-        "inputs": inputs,
-        "input_sha256": section_input_sha256,
-        "command": command,
-        "cwd": str(cwd),
-        "cwd_relative": cwd.relative_to(root).as_posix() or ".",
-        "timeout_seconds": timeout,
-        "chunks": chunks,
-        "max_parallel_chunks": max_parallel_chunks if chunks else 1,
-        "environment": {
-            **config.get("environment", {}),
-            **section.get("environment", {}),
-        },
-    }
+    from .verification_inputs import resolve_test_section as resolve
+    return resolve(root, name)
 
 
-def section_receipt(
-    section: dict[str, Any], execution: dict[str, Any]
-) -> dict[str, Any]:
-    exit_code = execution.get("exit_code", execution.get("returncode"))
-    body = {
-        "schema_version": "px.test-section-receipt/1.0",
-        "section": section["section"],
-        "input_sha256": section["input_sha256"],
-        "dependencies": section["dependencies"],
-        "command": section["command"],
-        "cwd": section.get("cwd_relative", "."),
-        "passed": (
-            exit_code == 0
-            and execution.get("timed_out") is not True
-            and execution.get("valid", True) is True
-        ),
-        "exit_code": exit_code,
-        "timed_out": bool(execution.get("timed_out")),
-        "duration_seconds": execution.get("duration_seconds"),
-        "chunks": list(execution.get("chunks", [])),
+def section_receipt(section: dict[str, Any], execution: dict[str, Any]) -> dict[str, Any]:
+    from .verification_receipts import make_receipt
+    return make_receipt('section', section, execution)
+
+
+_PUBLIC_OUTPUT_CHAR_LIMIT = 64 * 1024 * 1024
+_PUBLIC_OUTPUT_LINE_LIMIT = 100000
+_PUBLIC_OUTPUT_LINE_CHARS = 4096
+_PUBLIC_FAILURE_LIMIT = 50
+_PUBLIC_SUPERVISION_STATUSES = frozenset(
+    {
+        "cancelled",
+        "total_timeout",
+        "startup_timeout",
+        "idle_timeout",
+        "shutdown_failed",
+        "owner_lost",
+        "disk_budget_exceeded",
+        "spawn_failed",
     }
-    return {
-        **body,
-        "receipt_sha256": hashlib.sha256(
-            json.dumps(body, sort_keys=True, separators=(",", ":")).encode()
-        ).hexdigest(),
-    }
+)
+
+
+def _public_failure_node(node: str, reporter: str) -> str:
+    """Retain static pytest syntax, never parameter bodies or free-form titles."""
+    import re
+
+    if reporter != "pytest":
+        return reporter + ":details-redacted"
+    base, marker, _parameters = node.partition("[")
+    # This syntax is diagnostic attribution, not authenticated test membership.
+    pattern = r"tests/(?:[A-Za-z0-9_-]{1,128}/){0,8}test_[A-Za-z0-9_]{1,128}\.py(?:::[A-Za-z_][A-Za-z0-9_]{0,127}){1,8}"
+    if not re.fullmatch(pattern, base) or not base.rsplit("::", 1)[-1].startswith(
+        "test_"
+    ):
+        return "pytest:details-redacted"
+    result = base + ("[parameters-redacted]" if marker else "")
+    return result if len(result) <= 300 else "pytest:details-redacted"
 
 
 def _bounded_output_evidence(execution: Mapping[str, Any]) -> dict[str, object]:
-    """Retain attribution without persisting raw, potentially sensitive output."""
-    output_evidence: dict[str, object] = {}
-    failure_nodes: list[str] = []
+    """Retain bounded diagnostic attribution without reporter parameter payloads."""
+    import re
+    from .numeric_inputs import bounded_integer
+
+    if type(execution) is not dict or len(execution) > 128:
+        raise ValueError("test execution must be a bounded actual object")
+    streams = []
     for stream in ("stdout", "stderr"):
-        value = str(execution.get(stream) or "")
-        encoded = value.encode("utf-8")
-        output_evidence[f"{stream}_sha256"] = hashlib.sha256(encoded).hexdigest()
-        output_evidence[f"{stream}_bytes"] = len(encoded)
-        for line in value.splitlines():
-            stripped = line.strip()
+        value = execution.get(stream)
+        if value is None:
+            value = ""
+        if type(value) is not str or len(value) > _PUBLIC_OUTPUT_CHAR_LIMIT:
+            raise ValueError("test output must be bounded actual text")
+        streams.append((stream, value))
+    exit_code = execution.get("exit_code", execution.get("returncode"))
+    if exit_code is not None:
+        exit_code = bounded_integer(
+            exit_code, "process exit", minimum=-(2**31), maximum=2**32 - 1
+        )
+    status = execution.get("supervision_status")
+    if status is not None and (type(status) is not str or len(status) > 128):
+        raise ValueError("supervision status must be bounded actual text")
+    output_evidence = {}
+    failure_nodes = []
+    seen = set()
+    lines_seen = 0
+    attribution_complete = True
+    for stream, value in streams:
+        digest = hashlib.sha256()
+        byte_count = 0
+        # Hash the exact UTF-8 text supplied by the process owner without making
+        # another whole-output byte image. This is not the raw pipe-byte hash.
+        for offset in range(0, len(value), 65536):
+            encoded = value[offset : offset + 65536].encode("utf-8")
+            digest.update(encoded)
+            byte_count += len(encoded)
+        output_evidence[stream + "_sha256"] = digest.hexdigest()
+        output_evidence[stream + "_bytes"] = byte_count
+        if not attribution_complete:
+            continue
+        for match in re.finditer(r"[^\n\r\v\f\x1c-\x1e\x85\u2028\u2029]+", value):
+            lines_seen += 1
+            if lines_seen > _PUBLIC_OUTPUT_LINE_LIMIT:
+                attribution_complete = False
+                break
+            if match.end() - match.start() > _PUBLIC_OUTPUT_LINE_CHARS:
+                # A long line may contain a failure; do not publish its prefix.
+                attribution_complete = False
+                break
+            line = match.group().strip()
             node = ""
-            if stripped.startswith("FAILED "):
-                node = stripped[len("FAILED ") :].split(" - ", 1)[0].strip()
-            elif stripped.startswith("✖ "):
-                node = stripped[len("✖ ") :].strip()
-                name, separator, duration = node.rpartition(" (")
-                if separator and duration.endswith("ms)"):
-                    milliseconds = duration[:-3]
-                    if milliseconds.replace(".", "", 1).isdigit():
-                        node = name.strip()
-            elif stripped.startswith("not ok "):
-                _prefix, separator, title = stripped.partition(" - ")
-                if separator:
-                    node = title.strip()
-            if node.casefold().rstrip(":") == "failing tests":
-                node = ""
-            if node and node not in failure_nodes:
-                failure_nodes.append(node[:300])
-    exit_code = execution.get("exit_code")
-    if exit_code not in {0, None} and not failure_nodes:
-        supervision_status = str(execution.get("supervision_status") or "").strip()
-        if supervision_status and supervision_status != "exited":
-            failure_nodes.append(f"supervision:{supervision_status}"[:300])
+            if line.startswith("FAILED "):
+                node = _public_failure_node(
+                    line[7:].split(" - ", 1)[0].strip(), "pytest"
+                )
+            elif line.startswith("\u2716 "):
+                title = line[2:].strip()
+                if title.casefold().rstrip(":") != "failing tests":
+                    node = _public_failure_node(title, "node")
+            elif line.startswith("not ok ") and " - " in line:
+                node = _public_failure_node("", "tap")
+            if node and node not in seen:
+                if len(failure_nodes) >= _PUBLIC_FAILURE_LIMIT - 1:
+                    attribution_complete = False
+                    break
+                seen.add(node)
+                failure_nodes.append(node)
+    if not attribution_complete:
+        failure_nodes.append("diagnostics:attribution-truncated")
+    if not failure_nodes and (
+        exit_code not in {0, None} or status in _PUBLIC_SUPERVISION_STATUSES
+    ):
+        if status in _PUBLIC_SUPERVISION_STATUSES:
+            failure_nodes.append("supervision:" + status)
         else:
-            failure_nodes.append(f"unattributed-process-exit:{exit_code}"[:300])
-    output_evidence["failure_nodes"] = failure_nodes[:50]
+            failure_nodes.append("unattributed-process-exit:" + str(exit_code))
+    output_evidence["failure_nodes"] = failure_nodes
     return output_evidence
 
 
+
 def _valid_bounded_output_evidence(value: object) -> bool:
-    if not isinstance(value, dict) or set(value) != {
+    if type(value) is not dict or set(value) != {
         "stdout_sha256",
         "stdout_bytes",
         "stderr_sha256",
@@ -558,190 +458,79 @@ def _valid_bounded_output_evidence(value: object) -> bool:
     }:
         return False
     for stream in ("stdout", "stderr"):
-        sha256 = value[f"{stream}_sha256"]
-        byte_count = value[f"{stream}_bytes"]
+        digest = value[stream + "_sha256"]
+        count = value[stream + "_bytes"]
         if (
-            not isinstance(sha256, str)
-            or len(sha256) != 64
-            or any(character not in "0123456789abcdef" for character in sha256)
-            or not isinstance(byte_count, int)
-            or byte_count < 0
+            type(digest) is not str
+            or len(digest) != 64
+            or any(c not in "0123456789abcdef" for c in digest)
         ):
             return False
+        if type(count) is not int or not 0 <= count <= 4 * _PUBLIC_OUTPUT_CHAR_LIMIT:
+            return False
     nodes = value["failure_nodes"]
-    return (
-        isinstance(nodes, list)
-        and len(nodes) <= 50
-        and all(isinstance(node, str) and 0 < len(node) <= 300 for node in nodes)
-    )
+    if type(nodes) is not list or len(nodes) > _PUBLIC_FAILURE_LIMIT:
+        return False
+    seen = set()
+    for node in nodes:
+        if type(node) is not str or not 0 < len(node) <= 300 or node in seen:
+            return False
+        seen.add(node)
+        if node in {
+            "pytest:details-redacted",
+            "node:details-redacted",
+            "tap:details-redacted",
+            "diagnostics:attribution-truncated",
+        }:
+            continue
+        if (
+            node.startswith("supervision:")
+            and node[12:] in _PUBLIC_SUPERVISION_STATUSES
+        ):
+            continue
+        if node.startswith("unattributed-process-exit:"):
+            number = node[26:]
+            try:
+                parsed = int(number)
+            except ValueError:
+                return False
+            if str(parsed) == number and -(2**31) <= parsed <= 2**32 - 1:
+                continue
+            return False
+        if _public_failure_node(node, "pytest") != node:
+            return False
+    return True
 
 
-def section_chunk_receipt(
-    section: Mapping[str, Any], chunk: Mapping[str, Any], execution: Mapping[str, Any]
-) -> dict[str, Any]:
-    exit_code = execution.get("exit_code")
-    body = {
-        "schema_version": "px.test-section-chunk-receipt/1.1",
-        "section": section["section"],
-        "chunk_id": chunk["chunk_id"],
-        "input_sha256": chunk["input_sha256"],
-        "member_count": chunk["member_count"],
-        "members": list(map(str, chunk.get("members", ()))),
-        "passed": exit_code == 0
-        and execution.get("timed_out") is not True
-        and execution.get("valid") is True,
-        "exit_code": exit_code,
-        "timed_out": bool(execution.get("timed_out")),
-        "duration_seconds": execution.get("duration_seconds"),
-        "output_evidence": _bounded_output_evidence(execution),
-    }
-    return {
-        **body,
-        "receipt_sha256": hashlib.sha256(
-            json.dumps(body, sort_keys=True, separators=(",", ":")).encode()
-        ).hexdigest(),
-    }
+
+def section_chunk_receipt(section: Mapping[str, Any], chunk: Mapping[str, Any], execution: Mapping[str, Any]) -> dict[str, Any]:
+    from .verification_receipts import make_receipt
+    return make_receipt('chunk', chunk, execution, section=section)
 
 
 def section_chunk_receipt_path(root: Path, section: str, chunk_id: str) -> Path:
-    if any(
-        character not in "abcdefghijklmnopqrstuvwxyz0123456789-"
-        for character in f"{section}{chunk_id}"
-    ):
-        raise ValueError("section chunk receipt identity is invalid")
-    return root.resolve() / ".engineering-bootstrap/test-evidence/section-chunks" / section / f"{chunk_id}.json"
+    from .verification_receipts import receipt_path
+    return receipt_path(root, 'chunk', section, chunk_id)
 
 
 def read_section_chunk_receipt(root: Path, section: str, chunk_id: str) -> dict[str, Any]:
-    try:
-        value = json.loads(
-            section_chunk_receipt_path(root, section, chunk_id).read_text(
-                encoding="utf-8"
-            )
-        )
-    except (OSError, json.JSONDecodeError):
-        return {}
-    if not isinstance(value, dict):
-        return {}
-    expected_keys = {
-        "schema_version",
-        "section",
-        "chunk_id",
-        "input_sha256",
-        "member_count",
-        "members",
-        "passed",
-        "exit_code",
-        "timed_out",
-        "duration_seconds",
-        "output_evidence",
-        "receipt_sha256",
-    }
-    if (
-        set(value) != expected_keys
-        or value.get("schema_version") != "px.test-section-chunk-receipt/1.1"
-        or value.get("section") != section
-        or value.get("chunk_id") != chunk_id
-        or not isinstance(value.get("members"), list)
-        or len(value["members"]) != value.get("member_count")
-        or not _valid_bounded_output_evidence(value.get("output_evidence"))
-    ):
-        return {}
-    supplied = str(value.get("receipt_sha256") or "")
-    body = {key: value[key] for key in expected_keys - {"receipt_sha256"}}
-    expected = hashlib.sha256(
-        json.dumps(body, sort_keys=True, separators=(",", ":")).encode()
-    ).hexdigest()
-    return value if hmac.compare_digest(supplied, expected) else {}
+    from .verification_receipts import read
+    return read(root, 'chunk', section, chunk_id)
 
 
 def write_section_chunk_receipt(root: Path, receipt: Mapping[str, Any]) -> Path:
-    target = section_chunk_receipt_path(
-        root, str(receipt.get("section", "")), str(receipt.get("chunk_id", ""))
-    )
-    target.parent.mkdir(parents=True, exist_ok=True)
-    temporary = target.with_suffix(f".json.{os.getpid()}.tmp")
-    temporary.write_text(
-        json.dumps(dict(receipt), indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
-        newline="\n",
-    )
-    os.replace(temporary, target)
-    return target
+    from .verification_receipts import write
+    return write(root, 'chunk', receipt)
 
 
 def write_section_receipt(root: Path, receipt: Mapping[str, Any]) -> Path:
-    """Atomically retain the latest exact-input receipt for one section."""
-    root = root.resolve()
-    name = str(receipt.get("section", ""))
-    if not name or any(
-        character not in "abcdefghijklmnopqrstuvwxyz0123456789-" for character in name
-    ):
-        raise ValueError("section receipt name is invalid")
-    target = root / ".engineering-bootstrap/test-evidence/sections" / f"{name}.json"
-    target.parent.mkdir(parents=True, exist_ok=True)
-    temporary = target.with_suffix(f".json.{os.getpid()}.tmp")
-    temporary.write_text(
-        json.dumps(dict(receipt), indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
-        newline="\n",
-    )
-    os.replace(temporary, target)
-    return target
+    from .verification_receipts import write
+    return write(root, 'section', receipt)
 
 
 def section_status(root: Path) -> dict[str, Any]:
-    root = root.resolve()
-    config = json.loads(
-        (root / "registry/test_profiles.json").read_text(encoding="utf-8")
-    )
-    receipt_root = root / ".engineering-bootstrap/test-evidence/sections"
-    rows = []
-    for name in sorted(config.get("sections", {})):
-        current = resolve_test_section(root, name)
-        path = receipt_root / f"{name}.json"
-        try:
-            receipt = json.loads(path.read_text(encoding="utf-8"))
-        except (OSError, json.JSONDecodeError):
-            receipt = {}
-        passed = receipt.get("passed") is True
-        fresh = receipt.get("input_sha256") == current["input_sha256"]
-        rows.append(
-            {
-                "section": name,
-                "dependencies": current["dependencies"],
-                "passed": passed,
-                "fresh": fresh,
-                "dependencies_current": False,
-                "current": False,
-                "input_sha256": current["input_sha256"],
-                "receipt": path.as_posix(),
-            }
-        )
-    by_name = {row["section"]: row for row in rows}
-
-    def current(name: str, visiting: frozenset[str] = frozenset()) -> bool:
-        if name in visiting or name not in by_name:
-            return False
-        row = by_name[name]
-        dependencies_current = all(
-            current(dependency, visiting | {name}) for dependency in row["dependencies"]
-        )
-        row["dependencies_current"] = dependencies_current
-        row["current"] = row["passed"] and row["fresh"] and dependencies_current
-        return bool(row["current"])
-
-    for name in by_name:
-        current(name)
-    required = list(
-        map(str, config.get("certification", {}).get("required_sections", ()))
-    )
-    return {
-        "schema_version": "px.test-section-status/1.0",
-        "valid": all(by_name.get(name, {}).get("current") is True for name in required),
-        "required_sections": required,
-        "sections": rows,
-    }
+    from .verification_status import section_status as status
+    return status(root)
 
 
 def stale_section_execution_order(status: Mapping[str, Any]) -> list[str]:
@@ -811,41 +600,9 @@ def _local_module_paths(root: Path) -> dict[str, str]:
     return module_paths
 
 
-def _local_python_dependencies(
-    root: Path, members: list[str], module_paths: Mapping[str, str] | None = None
-) -> list[str]:
-    """Resolve deterministic local Python import closure for group freshness."""
-    module_paths = dict(module_paths or _local_module_paths(root))
-    selected = set(members)
-    pending = list(members)
-    while pending:
-        relative = pending.pop()
-        path = root / relative
-        if path.suffix != ".py":
-            continue
-        try:
-            tree = ast.parse(path.read_text(encoding="utf-8"), filename=relative)
-        except (OSError, UnicodeError, SyntaxError):
-            continue
-        candidates: set[str] = set()
-        for node in ast.walk(tree):
-            if isinstance(node, ast.Import):
-                candidates.update(alias.name for alias in node.names)
-            elif isinstance(node, ast.ImportFrom) and node.level == 0 and node.module:
-                candidates.add(node.module)
-        for candidate in candidates:
-            parts = candidate.split(".")
-            while parts:
-                module = ".".join(parts)
-                dependency = module_paths.get(module)
-                if dependency:
-                    if dependency not in selected:
-                        selected.add(dependency)
-                        pending.append(dependency)
-                    break
-                parts.pop()
-    selected.add("registry/test_profiles.json")
-    return sorted(selected)
+def _local_python_dependencies(root: Path, members: list[str], module_paths: Mapping[str, str] | None = None) -> list[str]:
+    from .verification_inputs import local_python_dependencies
+    return local_python_dependencies(root, members, module_paths)
 
 
 def _discover_test_groups(root: Path) -> list[dict[str, Any]]:
@@ -920,145 +677,8 @@ def _group_topology_sha256(config: Mapping[str, Any]) -> str:
 
 
 def _build_test_group_index_direct(root: Path) -> dict[str, Any]:
-    """Build or incrementally update the native certification-group manifest."""
-    root = root.resolve()
-    config = json.loads(
-        (root / "registry/test_profiles.json").read_text(encoding="utf-8")
-    )
-    target = root / "registry/test_group_index.json"
-    try:
-        previous = json.loads(target.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError):
-        previous = {}
-    prior_files = (
-        previous.get("files", {}) if isinstance(previous.get("files"), dict) else {}
-    )
-    paths = sorted(
-        {
-            *(
-                path.relative_to(root).as_posix()
-                for path in (root / "tests").glob("test_*.py")
-            ),
-            *(
-                path.relative_to(root).as_posix()
-                for top in ("runtime", "builders", "scripts")
-                for path in (root / top).rglob("*.py")
-            ),
-        }
-    )
-    records: dict[str, dict[str, Any]] = {}
-    for relative in paths:
-        payload = (root / relative).read_bytes()
-        sha256 = hashlib.sha256(payload).hexdigest()
-        prior = prior_files.get(relative, {})
-        if prior.get("sha256") == sha256 and isinstance(prior.get("imports"), list):
-            imports = list(map(str, prior["imports"]))
-        else:
-            tree = ast.parse(payload.decode("utf-8"), filename=relative)
-            imports = sorted(
-                {
-                    *(
-                        alias.name
-                        for node in ast.walk(tree)
-                        if isinstance(node, ast.Import)
-                        for alias in node.names
-                    ),
-                    *(
-                        node.module
-                        for node in ast.walk(tree)
-                        if isinstance(node, ast.ImportFrom)
-                        and node.level == 0
-                        and node.module
-                    ),
-                }
-            )
-        records[relative] = {
-            "sha256": sha256,
-            "imports": imports,
-            "index_state": "verified",
-        }
-    module_paths: dict[str, str] = {}
-    for relative in paths:
-        if not relative.startswith(("runtime/", "builders/", "scripts/")):
-            continue
-        parts = list(Path(relative).with_suffix("").parts)
-        if parts[-1] == "__init__":
-            parts.pop()
-        module_paths[".".join(parts)] = relative
-    all_tests = sorted(
-        relative for relative in paths if relative.startswith("tests/test_")
-    )
-    assigned: set[str] = set()
-    groups = []
-    for name, definition in config.get("groups", {}).items():
-        patterns = list(map(str, definition.get("include_patterns", ())))
-        members = [
-            path
-            for path in all_tests
-            if path not in assigned
-            and any(fnmatch.fnmatchcase(path, pattern) for pattern in patterns)
-        ]
-        if not members:
-            raise ValueError(f"test group has no exclusively assigned members: {name}")
-        assigned.update(members)
-        selected = set(members)
-        pending = list(members)
-        while pending:
-            relative = pending.pop()
-            for candidate in records.get(relative, {}).get("imports", ()):
-                parts = str(candidate).split(".")
-                while parts:
-                    dependency = module_paths.get(".".join(parts))
-                    if dependency:
-                        if dependency not in selected:
-                            selected.add(dependency)
-                            pending.append(dependency)
-                        break
-                    parts.pop()
-        declared_inputs: set[str] = set()
-        for pattern in map(str, definition.get("input_patterns", ())):
-            for path in root.glob(pattern):
-                if path.is_file():
-                    declared_inputs.add(path.relative_to(root).as_posix())
-        base_inputs = sorted(
-            {*selected, *declared_inputs, "registry/test_profiles.json"}
-        )
-        scan_inputs = (
-            _structural_scan_files(root)
-            if name == "structural-adversarial"
-            else []
-        )
-        inputs = sorted({*base_inputs, *scan_inputs})
-        disk_work_units = definition.get("disk_work_units", 1)
-        disk_limit = aggregate_test_disk_consumption_limit(disk_work_units)
-        groups.append(
-            {
-                "group": name,
-                "description": str(definition.get("description", "")),
-                "members": members,
-                "member_count": len(members),
-                "inputs": inputs,
-                "base_inputs": base_inputs,
-                "scan_inputs": scan_inputs,
-                "input_sha256": _fingerprint(root, inputs),
-                "parallel_safe": definition.get("parallel_safe") is True,
-                "timeout_seconds": validate_timeout(definition.get("timeout_seconds")),
-                "disk_work_units": disk_work_units,
-                "disk_consumption_limit_bytes": disk_limit,
-            }
-        )
-    missing = sorted(set(all_tests) - assigned)
-    if missing:
-        raise ValueError("test groups leave files unassigned: " + ", ".join(missing))
-    return {
-        "schema_version": "px.test-group-index/1.1",
-        "topology_sha256": _group_topology_sha256(config),
-        "test_file_count": len(all_tests),
-        "tracked_python_file_count": len(records),
-        "verified_file_count": len(records),
-        "files": records,
-        "groups": groups,
-    }
+    from .verification_status import build_index
+    return build_index(root)
 
 
 def build_test_group_index(root: Path) -> dict[str, Any]:
@@ -1086,79 +706,8 @@ def build_test_group_index(root: Path) -> dict[str, Any]:
 
 
 def resolve_test_groups(root: Path) -> list[dict[str, Any]]:
-    """Read compact native group metadata; never rediscover during status."""
-    root = root.resolve()
-    config = json.loads(
-        (root / "registry/test_profiles.json").read_text(encoding="utf-8")
-    )
-    path = root / "registry/test_group_index.json"
-    try:
-        index = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as error:
-        raise ValueError(
-            "test group index missing or corrupt; run python scripts/build_test_group_index.py"
-        ) from error
-    if index.get("topology_sha256") != _group_topology_sha256(config):
-        raise ValueError(
-            "test group topology is stale; run python scripts/build_test_group_index.py"
-        )
-    current_tests = sorted(
-        path.relative_to(root).as_posix() for path in (root / "tests").glob("test_*.py")
-    )
-    indexed_tests = sorted(
-        member
-        for group in index.get("groups", ())
-        for member in group.get("members", ())
-    )
-    if current_tests != indexed_tests:
-        raise ValueError(
-            "test group membership is stale; run python scripts/build_test_group_index.py"
-        )
-    environment = dict(config.get("environment", {}))
-    groups = []
-    for stored in index.get("groups", ()):
-        group_name = str(stored.get("group", ""))
-        stored_scan_inputs = list(map(str, stored.get("scan_inputs", ())))
-        base_inputs = list(
-            map(str, stored.get("base_inputs", stored.get("inputs", ())))
-        )
-        current_scan_inputs = (
-            _structural_scan_files(root)
-            if group_name == "structural-adversarial"
-            else []
-        )
-        inputs = sorted({*base_inputs, *current_scan_inputs})
-        try:
-            current_sha256 = _fingerprint(root, inputs)
-        except OSError:
-            current_sha256 = ""
-        inventory_current = current_scan_inputs == stored_scan_inputs
-        index_current = (
-            inventory_current and current_sha256 == stored.get("input_sha256")
-        )
-        groups.append(
-            {
-                "schema_version": "px.test-group/1.0",
-                "valid": index_current,
-                **stored,
-                "index_current": index_current,
-                "scan_inventory_current": inventory_current,
-                "input_sha256": current_sha256,
-                "indexed_input_sha256": stored.get("input_sha256"),
-                "environment": environment,
-                "command": [
-                    sys.executable,
-                    "-m",
-                    "pytest",
-                    "-q",
-                    "--durations=20",
-                    "-p",
-                    "no:cacheprovider",
-                    *stored["members"],
-                ],
-            }
-        )
-    return groups
+    from .verification_status import resolve_groups
+    return resolve_groups(root)
 
 
 def resolve_test_group(root: Path, name: str) -> dict[str, Any]:
@@ -1168,97 +717,18 @@ def resolve_test_group(root: Path, name: str) -> dict[str, Any]:
 
 
 def group_receipt(group: dict[str, Any], execution: dict[str, Any]) -> dict[str, Any]:
-    exit_code = execution.get("exit_code", execution.get("returncode"))
-    output_evidence = _bounded_output_evidence(execution)
-    body = {
-        "schema_version": "px.test-group-receipt/1.0",
-        "group": group["group"],
-        "input_sha256": group["input_sha256"],
-        "member_count": group["member_count"],
-        "passed": (
-            exit_code == 0
-            and execution.get("timed_out") is not True
-            and execution.get("valid", True) is True
-        ),
-        "exit_code": exit_code,
-        "timed_out": bool(execution.get("timed_out")),
-        "duration_seconds": execution.get("duration_seconds"),
-        # Retain enough bounded evidence to identify a failing chunk without
-        # persisting raw command output, environment values, or secret-bearing
-        # assertion payloads in the durable receipt.
-        "output_evidence": output_evidence,
-    }
-    return {
-        **body,
-        "receipt_sha256": hashlib.sha256(
-            json.dumps(body, sort_keys=True, separators=(",", ":")).encode()
-        ).hexdigest(),
-    }
+    from .verification_receipts import make_receipt
+    return make_receipt('group', group, execution)
 
 
 def write_group_receipt(root: Path, receipt: Mapping[str, Any]) -> Path:
-    name = str(receipt.get("group", ""))
-    if not name or any(
-        character not in "abcdefghijklmnopqrstuvwxyz0123456789-" for character in name
-    ):
-        raise ValueError("group receipt name is invalid")
-    target = (
-        root.resolve() / ".engineering-bootstrap/test-evidence/groups" / f"{name}.json"
-    )
-    target.parent.mkdir(parents=True, exist_ok=True)
-    temporary = target.with_suffix(f".json.{os.getpid()}.tmp")
-    temporary.write_text(
-        json.dumps(dict(receipt), indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
-        newline="\n",
-    )
-    os.replace(temporary, target)
-    return target
+    from .verification_receipts import write
+    return write(root, 'group', receipt)
 
 
 def group_status(root: Path) -> dict[str, Any]:
-    root = root.resolve()
-    config = json.loads(
-        (root / "registry/test_profiles.json").read_text(encoding="utf-8")
-    )
-    required = list(
-        map(str, config.get("certification", {}).get("required_groups", ()))
-    )
-    rows = []
-    for group in resolve_test_groups(root):
-        path = (
-            root
-            / ".engineering-bootstrap/test-evidence/groups"
-            / f"{group['group']}.json"
-        )
-        try:
-            receipt = json.loads(path.read_text(encoding="utf-8"))
-        except (OSError, json.JSONDecodeError):
-            receipt = {}
-        current = (
-            receipt.get("passed") is True
-            and receipt.get("input_sha256") == group["input_sha256"]
-        )
-        rows.append(
-            {
-                "group": group["group"],
-                "member_count": group["member_count"],
-                "parallel_safe": group["parallel_safe"],
-                "passed": receipt.get("passed") is True,
-                "fresh": receipt.get("input_sha256") == group["input_sha256"],
-                "current": current,
-                "input_sha256": group["input_sha256"],
-                "receipt": path.as_posix(),
-            }
-        )
-    by_name = {row["group"]: row for row in rows}
-    return {
-        "schema_version": "px.test-group-status/1.0",
-        "valid": all(by_name.get(name, {}).get("current") is True for name in required),
-        "required_groups": required,
-        "groups": rows,
-        "member_count": sum(row["member_count"] for row in rows),
-    }
+    from .verification_status import group_status as status
+    return status(root)
 
 
 def cross_group_certification(root: Path) -> dict[str, Any]:

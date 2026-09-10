@@ -1,7 +1,9 @@
 from pathlib import Path
 import json
+import math
 import subprocess
 import sys
+import pytest
 from runtime.contracts import validate_instance
 from runtime.project_intelligence import (
     build_project_map,
@@ -15,6 +17,114 @@ from runtime.project_impact import (
 )
 from runtime.project_map_retrieval import query_project_map
 from runtime import project_map_retrieval
+
+
+def _retrieval_fixture(tmp_path, mutate=None):
+    docs = [{"id": f"d{i}", "kind": "file", "title": "needle" if i == 0 else f"neighbor{i}",
+             "path": f"file{i}.py", "language": "python", "role": "source",
+             "line_start": 1, "line_end": 1, "summary": "metadata", "relations": []}
+            for i in range(4)]
+    docs[0]["relations"] = ["d1", "d2", "d3"]
+    index = {"schema_version": "1.1", "algorithm": "bm25_metadata_plus_relation_expansion",
+             "document_count": 4, "documents": docs, "document_lengths": [1, 0, 0, 0],
+             "average_document_length": 0.25, "postings": {"needle": [[0, 1]]},
+             "idf": {"needle": math.log(1 + 3.5 / 1.5)}}
+    if mutate:
+        mutate(index)
+    (tmp_path / "retrieval-index.json").write_text(json.dumps(index), encoding="utf-8")
+    (tmp_path / "project-manifest.json").write_text('{"map_revision":"fixture"}', encoding="utf-8")
+    return index
+
+
+@pytest.mark.parametrize("mutation", ["negative-index", "bool-index", "large-index", "duplicate-id",
+    "missing-length", "nonfinite-idf", "unknown-relation", "negative-frequency", "bool-count", "wrong-idf"])
+def test_retrieval_rejects_corrupt_index_denominators(tmp_path, mutation):
+    def corrupt(index):
+        if mutation == "negative-index": index["postings"]["needle"][0][0] = -1
+        elif mutation == "bool-index": index["postings"]["needle"][0][0] = True
+        elif mutation == "large-index": index["postings"]["needle"][0][0] = 4
+        elif mutation == "duplicate-id": index["documents"][1]["id"] = "d0"
+        elif mutation == "missing-length": index["document_lengths"].pop()
+        elif mutation == "nonfinite-idf": index["idf"]["needle"] = float("nan")
+        elif mutation == "unknown-relation": index["documents"][0]["relations"] = ["absent"]
+        elif mutation == "negative-frequency": index["postings"]["needle"][0][1] = -1
+        elif mutation == "bool-count": index["document_count"] = True
+        else: index["idf"]["needle"] = 5.0
+    _retrieval_fixture(tmp_path, corrupt)
+    with pytest.raises(ValueError):
+        query_project_map(tmp_path, "needle")
+
+
+@pytest.mark.parametrize("arguments", [{"top_k": True}, {"relation_depth": 1.5},
+    {"context_lines": -1}, {"context_lines": True}, {"max_hydration_files": -1},
+    {"max_hydration_files": 1.5}, {"kinds": "file"}, {"query": 42}])
+def test_retrieval_validates_request_before_loading_map(tmp_path, monkeypatch, arguments):
+    def forbidden(*args):
+        raise AssertionError("invalid requests must not acquire map files")
+    monkeypatch.setattr(project_map_retrieval, "_map_dir", forbidden)
+    with pytest.raises(ValueError):
+        query_project_map(tmp_path, **{"query": "needle", **arguments})
+
+
+def test_retrieval_frontier_reports_partial_expansion(tmp_path):
+    _retrieval_fixture(tmp_path)
+    result = query_project_map(tmp_path, "needle", top_k=1, relation_depth=3,
+                               max_relation_nodes=2, max_relation_edges=2)
+    assert result["hits"][0]["id"] == "d0"
+    assert result["relation_expansion"]["visited_nodes"] == 2
+    assert result["relation_expansion"]["examined_edges"] <= 2
+    assert result["relation_expansion"]["truncated"] is True
+
+
+def test_retrieval_hydration_limits_total_lines_including_whole_file_hits(tmp_path):
+    _retrieval_fixture(tmp_path, lambda index: index["documents"][0].update(line_end=10_000_000))
+    result = query_project_map(tmp_path, "needle", top_k=1, max_hydration_lines=25)
+    ranges = [r for item in result["hydration_plan"] for r in item["ranges"]]
+    assert sum(r["end_line"] - r["start_line"] + 1 for r in ranges) == 25
+    assert result["hydration_truncated"]
+
+
+def test_retrieval_result_budget_counts_complete_utf8_envelope(tmp_path):
+    _retrieval_fixture(tmp_path, lambda index: index["documents"][0].update(summary="🌍" * 1000))
+    with pytest.raises(ValueError):
+        query_project_map(tmp_path, "needle", max_result_bytes=1024)
+
+
+def test_retrieval_exact_result_budget_preserves_all_utf8_fields(tmp_path):
+    _retrieval_fixture(tmp_path, lambda index: index["documents"][0].update(summary="🌍" * 20))
+    expected = query_project_map(tmp_path, "needle", top_k=1)
+    size = len(json.dumps(expected, ensure_ascii=False, indent=2).encode("utf-8"))
+    assert query_project_map(tmp_path, "needle", top_k=1, max_result_bytes=size) == expected
+    with pytest.raises(ValueError):
+        query_project_map(tmp_path, "needle", top_k=1, max_result_bytes=size - 1)
+
+
+def test_retrieval_scoring_has_a_complete_posting_budget(tmp_path):
+    def two_postings(index):
+        index["postings"]["other"] = [[1, 1]]
+        index["idf"]["other"] = math.log(1 + 3.5 / 1.5)
+        index["document_lengths"][1] = 1
+        index["average_document_length"] = 0.5
+    _retrieval_fixture(tmp_path, two_postings)
+    with pytest.raises(ValueError, match="computation budget"):
+        query_project_map(tmp_path, "needle other", max_query_postings=1)
+    result = query_project_map(tmp_path, "needle other", max_query_postings=2)
+    assert result["valid"] and result["scored_postings"] == 2
+
+
+def test_retrieval_response_does_not_mutate_cached_relations(tmp_path):
+    _retrieval_fixture(tmp_path)
+    result = query_project_map(tmp_path, "needle", top_k=1)
+    result["hits"][0]["relations"].clear()
+    again = query_project_map(tmp_path, "needle", top_k=1)
+    assert again["hits"][0]["relations"] == ["d1", "d2", "d3"]
+
+
+def test_retrieval_rejects_oversized_map_before_decoding(tmp_path, monkeypatch):
+    _retrieval_fixture(tmp_path)
+    monkeypatch.setattr(project_map_retrieval, "MAX_INDEX_BYTES", 256, raising=False)
+    with pytest.raises(ValueError):
+        query_project_map(tmp_path, "needle")
 
 
 def test_build_validate_query_and_incremental(tmp_path: Path):

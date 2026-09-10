@@ -8,22 +8,38 @@ from collections.abc import Mapping, Sequence
 from typing import Any
 
 from .common import entropy, ensure_probability, stable_hash
+from ..numeric_inputs import (
+    analysis_payload,
+    bounded_integer,
+    bounded_mapping,
+    bounded_sequence,
+    bounded_text,
+    bounded_json_value,
+    finite_number,
+)
 
 _EPS = 1e-12
 
 
 def _normalize(values: Mapping[str, float]) -> dict[str, float]:
-    numeric = {str(key): float(value) for key, value in values.items()}
-    if any(not math.isfinite(value) or value < 0.0 for value in numeric.values()):
-        raise ValueError("probability mass must be finite and nonnegative")
-    total = sum(numeric.values())
-    if total <= 0:
+    values = bounded_mapping(values, "probability mass", maximum=256)
+    numeric = {
+        key: finite_number(value, "probability mass", minimum=0)
+        for key, value in values.items()
+    }
+    scale = max(numeric.values(), default=0)
+    if scale <= 0:
         raise ValueError("probability mass must be positive")
+    numeric = {key: value / scale for key, value in numeric.items()}
+    total = math.fsum(numeric.values())
     return {key: value / total for key, value in numeric.items()}
 
 
 def bayesian_portfolio(payload: Mapping[str, Any]) -> dict[str, Any]:
-    hypotheses = payload.get("hypotheses", ())
+    payload = analysis_payload(payload)
+    hypotheses = bounded_sequence(
+        payload.get("hypotheses", []), "hypotheses", maximum=256, minimum=1
+    )
     if (
         not isinstance(hypotheses, Sequence)
         or isinstance(hypotheses, (str, bytes))
@@ -34,12 +50,10 @@ def bayesian_portfolio(payload: Mapping[str, Any]) -> dict[str, Any]:
     for item in hypotheses:
         if not isinstance(item, Mapping):
             raise ValueError("each hypothesis must be an object")
-        identifier = str(item.get("id", "")).strip()
+        identifier = bounded_text(item.get("id"), "hypothesis identity")
         if not identifier:
             raise ValueError("hypothesis IDs must be non-empty")
-        parsed.append(
-            (identifier, ensure_probability(float(item.get("prior", 0.0)), "prior"))
-        )
+        parsed.append((identifier, ensure_probability(item.get("prior", 0.0), "prior")))
     identifiers = [identifier for identifier, _ in parsed]
     if len(identifiers) != len(set(identifiers)):
         raise ValueError("hypothesis IDs must be unique")
@@ -49,7 +63,9 @@ def bayesian_portfolio(payload: Mapping[str, Any]) -> dict[str, Any]:
         key: (-math.inf if value == 0.0 else math.log(value))
         for key, value in priors.items()
     }
-    evidence_rows = payload.get("evidence", ())
+    evidence_rows = bounded_sequence(
+        payload.get("evidence", []), "evidence", maximum=1024
+    )
     if not isinstance(evidence_rows, Sequence) or isinstance(
         evidence_rows, (str, bytes)
     ):
@@ -60,22 +76,35 @@ def bayesian_portfolio(payload: Mapping[str, Any]) -> dict[str, Any]:
     for index, evidence in enumerate(evidence_rows):
         if not isinstance(evidence, Mapping):
             raise ValueError("each evidence item must be an object")
-        evidence_id = str(evidence.get("id", f"evidence:{index}")).strip()
+        evidence_id = bounded_text(
+            evidence.get("id", f"evidence:{index}"), "evidence identity"
+        )
         if not evidence_id or evidence_id in seen_evidence_ids:
             raise ValueError("evidence IDs must be unique and non-empty")
         seen_evidence_ids.add(evidence_id)
-        group = str(evidence.get("dependence_group", evidence_id)).strip()
+        group = bounded_text(
+            evidence.get("dependence_group", evidence_id), "dependence group"
+        )
         if not group:
             raise ValueError(f"{evidence_id}: dependence_group must be non-empty")
         dependence_counts[group] += 1
         default_damping = 1.0 / math.sqrt(dependence_counts[group])
-        damping = float(evidence.get("dependence_weight", default_damping))
+        damping = finite_number(
+            evidence.get("dependence_weight", default_damping), "dependence weight"
+        )
         if not math.isfinite(damping) or not 0.0 < damping <= 1.0:
             raise ValueError("dependence_weight must be finite and in (0, 1]")
-        likelihoods_raw = evidence.get("likelihoods", {})
+        likelihoods_raw = bounded_mapping(
+            evidence.get("likelihoods", {}), "likelihoods", maximum=256
+        )
         if not isinstance(likelihoods_raw, Mapping):
             raise ValueError(f"{evidence_id}: likelihoods must be an object")
-        likelihoods = {str(key): value for key, value in likelihoods_raw.items()}
+        likelihoods = {}
+        for key, value in likelihoods_raw.items():
+            key = bounded_text(key, "likelihood identity")
+            if key in likelihoods:
+                raise ValueError("duplicate canonical likelihood identity")
+            likelihoods[key] = ensure_probability(value, f"{evidence_id} likelihood")
         missing = sorted(set(priors) - set(likelihoods))
         extra = sorted(set(likelihoods) - set(priors))
         if missing or extra:
@@ -84,7 +113,7 @@ def bayesian_portfolio(payload: Mapping[str, Any]) -> dict[str, Any]:
             )
         for hypothesis_id in priors:
             likelihood = ensure_probability(
-                float(likelihoods[hypothesis_id]), f"{evidence_id} likelihood"
+                likelihoods[hypothesis_id], f"{evidence_id} likelihood"
             )
             if log_scores[hypothesis_id] == -math.inf or likelihood == 0.0:
                 log_scores[hypothesis_id] = -math.inf
@@ -139,24 +168,32 @@ def bayesian_portfolio(payload: Mapping[str, Any]) -> dict[str, Any]:
         "dependence_policy": "caller-declared groups with default nth-item weight 1/sqrt(n)",
         "warning": "Likelihoods and dependence declarations must be defensible; damping is a conservative heuristic, not a learned joint likelihood model.",
     }
+    bounded_json_value(result)
     return {**result, "result_sha256": stable_hash(result)}
 
 
 def expected_value_of_information(payload: Mapping[str, Any]) -> dict[str, Any]:
     """Rank tests by expected decision improvement minus declared cost and risk."""
-    baseline = float(payload["baseline_expected_utility"])
+    payload = analysis_payload(payload)
+    baseline = finite_number(
+        payload["baseline_expected_utility"], "baseline_expected_utility"
+    )
     if not math.isfinite(baseline):
         raise ValueError("baseline_expected_utility must be finite")
     ranked = []
     seen: set[str] = set()
-    for test in payload.get("tests", ()):
+    for test in bounded_sequence(payload.get("tests", []), "tests", maximum=256):
         if not isinstance(test, Mapping):
             raise ValueError("each test must be an object")
-        identifier = str(test.get("id", "")).strip()
+        identifier = bounded_text(test.get("id"), "test identity")
         if not identifier or identifier in seen:
             raise ValueError("test IDs must be unique and non-empty")
         seen.add(identifier)
-        outcomes = test.get("outcomes", ())
+        outcomes = bounded_sequence(
+            test.get("outcomes", []), "outcomes", maximum=256, minimum=1
+        )
+        for item in outcomes:
+            bounded_mapping(item, "test outcome", maximum=16)
         if (
             not isinstance(outcomes, Sequence)
             or isinstance(outcomes, (str, bytes))
@@ -164,9 +201,7 @@ def expected_value_of_information(payload: Mapping[str, Any]) -> dict[str, Any]:
         ):
             raise ValueError(f"test {identifier}: outcomes must be a non-empty list")
         probabilities = [
-            ensure_probability(
-                float(item["probability"]), f"test {identifier} probability"
-            )
+            ensure_probability(item["probability"], f"test {identifier} probability")
             for item in outcomes
         ]
         probability_sum = sum(probabilities)
@@ -174,11 +209,16 @@ def expected_value_of_information(payload: Mapping[str, Any]) -> dict[str, Any]:
             raise ValueError(
                 f"test {identifier}: outcome probabilities must sum to one"
             )
-        utilities = [float(item["best_expected_utility"]) for item in outcomes]
+        utilities = [
+            finite_number(item["best_expected_utility"], "outcome utility")
+            for item in outcomes
+        ]
         if any(not math.isfinite(value) for value in utilities):
             raise ValueError(f"test {identifier}: utilities must be finite")
-        cost = float(test.get("cost", 0.0))
-        risk_cost = float(test.get("risk_cost", 0.0))
+        cost = finite_number(test.get("cost", 0.0), "test cost", minimum=0)
+        risk_cost = finite_number(
+            test.get("risk_cost", 0.0), "test risk cost", minimum=0
+        )
         if (
             not math.isfinite(cost)
             or not math.isfinite(risk_cost)
@@ -190,8 +230,9 @@ def expected_value_of_information(payload: Mapping[str, Any]) -> dict[str, Any]:
             probability * utility
             for probability, utility in zip(probabilities, utilities)
         )
-        raw_value = expected_after - baseline
-        net_value = raw_value - cost - risk_cost
+        expected_after = finite_number(expected_after, "expected utility after test")
+        raw_value = finite_number(expected_after - baseline, "information value")
+        net_value = finite_number(raw_value - cost - risk_cost, "net information value")
         ranked.append(
             {
                 "id": identifier,
@@ -210,37 +251,54 @@ def expected_value_of_information(payload: Mapping[str, Any]) -> dict[str, Any]:
         "tests": ranked,
         "selected": ranked[0]["id"] if ranked and ranked[0]["recommended"] else None,
     }
+    bounded_json_value(result)
     return {**result, "result_sha256": stable_hash(result)}
 
 
 def calibration_metrics(
     predictions: Sequence[float], outcomes: Sequence[int], *, bins: int = 10
 ) -> dict[str, float]:
-    if len(predictions) != len(outcomes) or not predictions:
+    predictions = bounded_sequence(
+        predictions, "predictions", maximum=100000, minimum=1
+    )
+    outcomes = bounded_sequence(outcomes, "outcomes", maximum=100000, minimum=1)
+    if len(predictions) != len(outcomes):
         raise ValueError("predictions and outcomes must be equal non-empty sequences")
-    if bins < 2:
-        raise ValueError("bins must be at least two")
-    ps = [ensure_probability(float(value), "prediction") for value in predictions]
-    ys = [int(value) for value in outcomes]
-    if any(value not in {0, 1} for value in ys):
-        raise ValueError("outcomes must be binary")
+    bins = bounded_integer(bins, "bins", minimum=2, maximum=1000)
+    if any(type(value) is not int or value not in (0, 1) for value in outcomes):
+        raise ValueError("outcomes must be actual binary integers")
+    ps = [ensure_probability(value, "prediction") for value in predictions]
+    ys = outcomes
     brier = sum((p - y) ** 2 for p, y in zip(ps, ys)) / len(ps)
     log_loss = -sum(
         y * math.log(max(p, _EPS)) + (1 - y) * math.log(max(1 - p, _EPS))
         for p, y in zip(ps, ys)
     ) / len(ps)
-    ece = 0.0
-    for bucket in range(bins):
-        low, high = bucket / bins, (bucket + 1) / bins
-        indexes = [
-            index
-            for index, value in enumerate(ps)
-            if low <= value < high or (bucket == bins - 1 and value == 1.0)
-        ]
-        if indexes:
-            confidence = sum(ps[index] for index in indexes) / len(indexes)
-            accuracy = sum(ys[index] for index in indexes) / len(indexes)
-            ece += len(indexes) / len(ps) * abs(confidence - accuracy)
+    counts = [0] * bins
+    confidence_sums = [0.0] * bins
+    corrections = [0.0] * bins
+    outcome_sums = [0] * bins
+    for prediction, outcome in zip(ps, ys):
+        bucket = min(bins - 1, int(prediction * bins))
+        # Correct a possible multiply-rounding error against the original
+        # division-defined interval boundaries (e.g. 0.58 with 100 bins).
+        if bucket and prediction < bucket / bins:
+            bucket -= 1
+        elif bucket < bins - 1 and prediction >= (bucket + 1) / bins:
+            bucket += 1
+        counts[bucket] += 1
+        adjusted = prediction - corrections[bucket]
+        combined = confidence_sums[bucket] + adjusted
+        corrections[bucket] = (combined - confidence_sums[bucket]) - adjusted
+        confidence_sums[bucket] = combined
+        outcome_sums[bucket] += outcome
+    ece = math.fsum(
+        count
+        / len(ps)
+        * abs(confidence_sums[index] / count - outcome_sums[index] / count)
+        for index, count in enumerate(counts)
+        if count
+    )
     return {
         "brier_score": brier,
         "log_loss": log_loss,

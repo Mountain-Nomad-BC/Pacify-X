@@ -7,15 +7,31 @@ from collections.abc import Mapping
 from typing import Any
 
 from .common import stable_hash
+from ..numeric_inputs import (
+    analysis_payload,
+    bounded_mapping,
+    bounded_sequence,
+    bounded_text,
+    bounded_json_value,
+    finite_number,
+)
 
 
 def _interval(value: object) -> tuple[float, float, float]:
     if isinstance(value, Mapping):
-        low = float(value.get("low", value.get("value")))
-        high = float(value.get("high", value.get("value")))
-        expected = float(value.get("expected", value.get("value", (low + high) / 2)))
+        value = bounded_mapping(value, "metric interval", maximum=4)
+        if set(value) - {"low", "high", "expected", "value"}:
+            raise ValueError("unsupported metric interval field")
+        low = finite_number(value.get("low", value.get("value")), "metric low")
+        high = finite_number(value.get("high", value.get("value")), "metric high")
+        total = low + high
+        midpoint = total / 2 if math.isfinite(total) else low / 2 + high / 2
+        expected = finite_number(
+            value.get("expected", value.get("value", midpoint)),
+            "expected metric",
+        )
     else:
-        low = high = expected = float(value)
+        low = high = expected = finite_number(value, "metric")
     if any(not math.isfinite(item) for item in (low, expected, high)):
         raise ValueError("metric intervals must be finite")
     if low > high or not low <= expected <= high:
@@ -24,12 +40,23 @@ def _interval(value: object) -> tuple[float, float, float]:
 
 
 def choose(payload: Mapping[str, Any]) -> dict[str, Any]:
-    objectives = tuple(
-        item for item in payload.get("objectives", ()) if isinstance(item, Mapping)
+    payload = analysis_payload(payload)
+    objectives = bounded_sequence(
+        payload.get("objectives", []), "objectives", maximum=32, minimum=1
     )
-    candidates = tuple(
-        item for item in payload.get("candidates", ()) if isinstance(item, Mapping)
+    candidates = bounded_sequence(
+        payload.get("candidates", []), "candidates", maximum=256, minimum=1
     )
+    objectives = [
+        dict(bounded_mapping(item, "objective", maximum=16)) for item in objectives
+    ]
+    candidates = [
+        dict(bounded_mapping(item, "candidate", maximum=16)) for item in candidates
+    ]
+    for item in objectives:
+        item["id"] = bounded_text(item.get("id"), "objective identity")
+    for item in candidates:
+        item["id"] = bounded_text(item.get("id"), "candidate identity")
     if not objectives or not candidates:
         raise ValueError("objectives and candidates are required")
     objective_ids = [str(item.get("id", "")) for item in objectives]
@@ -38,7 +65,10 @@ def choose(payload: Mapping[str, Any]) -> dict[str, Any]:
     ):
         raise ValueError("objective IDs must be unique and non-empty")
     directions = {
-        str(item["id"]): str(item.get("direction", "maximize")) for item in objectives
+        item["id"]: bounded_text(
+            item.get("direction", "maximize"), "objective direction"
+        )
+        for item in objectives
     }
     if any(value not in {"maximize", "minimize"} for value in directions.values()):
         raise ValueError("objective direction must be maximize or minimize")
@@ -48,25 +78,51 @@ def choose(payload: Mapping[str, Any]) -> dict[str, Any]:
     ):
         raise ValueError("candidate IDs must be unique and non-empty")
 
+    weights = {
+        item["id"]: finite_number(
+            item.get("weight", 1.0), "objective weight", minimum=0
+        )
+        for item in objectives
+    }
+    scale = max(weights.values())
+    if scale <= 0:
+        raise ValueError("at least one objective weight must be positive")
+    weights = {key: value / scale for key, value in weights.items()}
+    weight_sum = math.fsum(weights.values())
+    weights = {key: value / weight_sum for key, value in weights.items()}
+    posture = bounded_text(payload.get("risk_posture", "expected"), "risk posture")
+    if posture not in {"expected", "robust", "minimax_regret"}:
+        raise ValueError("risk_posture must be expected, robust, or minimax_regret")
+
     eligible: list[str] = []
     rejected: list[dict[str, Any]] = []
     parsed: dict[str, dict[str, tuple[float, float, float]]] = {}
     for candidate in candidates:
         identifier = str(candidate["id"])
-        violations = [str(item) for item in candidate.get("constraint_violations", ())]
-        metrics = candidate.get("metrics", {})
-        if not isinstance(metrics, Mapping):
-            violations.append("metrics must be an object")
-            metrics = {}
-        missing = sorted(set(objective_ids) - set(map(str, metrics)))
+        violations = [
+            bounded_text(item, "constraint violation", maximum=2048)
+            for item in bounded_sequence(
+                candidate.get("constraint_violations", []),
+                "constraint violations",
+                maximum=64,
+            )
+        ]
+        metrics = {}
+        for name, value in bounded_mapping(
+            candidate.get("metrics", {}), "candidate metrics", maximum=256
+        ).items():
+            name = bounded_text(name, "metric identity")
+            if name in metrics:
+                raise ValueError("duplicate canonical metric identity")
+            metrics[name] = _interval(value)
+        missing = sorted(set(objective_ids) - set(metrics))
         if violations or missing:
             rejected.append(
                 {"id": identifier, "violations": violations, "missing_metrics": missing}
             )
             continue
         parsed[identifier] = {
-            objective_id: _interval(metrics[objective_id])
-            for objective_id in objective_ids
+            objective_id: metrics[objective_id] for objective_id in objective_ids
         }
         eligible.append(identifier)
     if not eligible:
@@ -87,15 +143,6 @@ def choose(payload: Mapping[str, Any]) -> dict[str, Any]:
             for index in range(3)
         ]
         ranges[objective_id] = (min(values), max(values))
-    weights = {
-        str(item["id"]): max(0.0, float(item.get("weight", 1.0))) for item in objectives
-    }
-    if any(not math.isfinite(value) for value in weights.values()):
-        raise ValueError("objective weights must be finite")
-    weight_sum = sum(weights.values())
-    if weight_sum <= 0:
-        raise ValueError("at least one objective weight must be positive")
-    weights = {key: value / weight_sum for key, value in weights.items()}
 
     rows: list[dict[str, Any]] = []
     expected_vectors: dict[str, tuple[float, ...]] = {}
@@ -111,10 +158,12 @@ def choose(payload: Mapping[str, Any]) -> dict[str, Any]:
             objective_id = str(objective["id"])
             low, expected, high = parsed[candidate_id][objective_id]
             minimum, maximum = ranges[objective_id]
-            span = maximum - minimum
+            scale = max(abs(minimum), abs(maximum)) or 1.0
+            minimum_scaled = minimum / scale
+            span = maximum / scale - minimum_scaled
 
             def normalize(value: float) -> float:
-                base = 0.5 if span == 0 else (value - minimum) / span
+                base = 0.5 if span == 0 else (value / scale - minimum_scaled) / span
                 return base if directions[objective_id] == "maximize" else 1.0 - base
 
             normalized = (normalize(low), normalize(expected), normalize(high))
@@ -185,7 +234,6 @@ def choose(payload: Mapping[str, Any]) -> dict[str, Any]:
             for other in eligible
         )
 
-    posture = str(payload.get("risk_posture", "expected"))
     if posture == "robust":
         rows.sort(
             key=lambda item: (
@@ -222,6 +270,7 @@ def choose(payload: Mapping[str, Any]) -> dict[str, Any]:
         "rejected": rejected,
         "weights": weights,
         "regret_method": "independent interval upper bound: best competitor utility minus candidate worst utility",
-        "warning": "Utility and regret bounds depend on declared objectives, scales, intervals, constraints, and unmodeled correlation.",
+        "warning": "Utility and regret bounds depend on declared objectives, scales, intervals, constraints, and unmodeled correlation. Metrics are normalized against the supplied eligible population; feasibility is caller-declared.",
     }
+    bounded_json_value(result)
     return {**result, "result_sha256": stable_hash(result)}

@@ -18,7 +18,7 @@ from pathlib import Path
 import re
 from typing import Iterable, Mapping, Sequence
 
-from .json_io import load_json_object
+from .json_io import bounded_json_text, bounded_strings, load_json_object, read_bounded_bytes
 
 
 CATALOG_PATH = Path("registry/external_capability_catalog.json")
@@ -49,6 +49,74 @@ STOP = {
 SENSITIVE_KEYS = re.compile(
     r"(?i)(secret|token|password|credential|api[_-]?key|cookie|private[_-]?key)"
 )
+MAX_CATALOG_BYTES = 4 * 1024 * 1024
+MAX_METADATA_BYTES = 1024 * 1024
+RECORD_TEXT_FIELDS = frozenset({
+    "id", "kind", "title", "summary", "owner", "disposition", "license",
+    "category", "source", "source_path", "status",
+})
+RECORD_LIST_FIELDS = frozenset({"aliases", "dependencies", "keywords", "load_paths"})
+CANDIDATE_TEXT_FIELDS = frozenset({
+    "id", "title", "summary", "owner", "activation", "status", "bundle",
+    "category", "license", "source",
+})
+CANDIDATE_LIST_FIELDS = frozenset({
+    "aliases", "boundaries", "dependencies", "keywords", "mechanisms", "source_refs", "use_when",
+})
+BUNDLE_TEXT_FIELDS = frozenset({"id", "owner", "activation", "status", "body", "version"})
+BUNDLE_LIST_FIELDS = frozenset({"candidate_capabilities", "effects", "references", "source_licenses"})
+_CATALOG_KINDS = frozenset({"external_skill_reference", "external_rule_reference", "existing_pacify_skill", "external_command_reference", "external_agent_reference", "candidate_capability", "candidate_skill_bundle"})
+_CATALOG_DISPOSITIONS = frozenset({"merge_into_existing_owner", "deferred_domain_pack", "reference_rule_candidate", "existing", "mapped_deferred", "restricted_domain_pack"})
+
+
+def _string_list(value: object) -> tuple[str, ...]:
+    if type(value) is not list:
+        raise ValueError("metadata string collection must be an array")
+    return bounded_strings(value, max_items=256)
+
+
+def _metadata_fields(
+    row: object, texts: frozenset, arrays: frozenset, required: frozenset,
+    *, allow_empty: frozenset = frozenset(),
+) -> None:
+    if type(row) is not dict or set(row) - (texts | arrays) or not required <= set(row):
+        raise ValueError("metadata record has missing, unknown or malformed fields")
+    for key, value in row.items():
+        if key in texts:
+            bounded_strings((value,), max_item_bytes=32_768)
+            if key in required - allow_empty and not value.strip():
+                raise ValueError(f"metadata field must not be blank: {key}")
+        else:
+            _string_list(value)
+    bounded_json_text(row, max_bytes=65_536)
+
+
+def _catalog_rows(document: dict, key: str, count: str, maximum: int) -> list[dict]:
+    rows = document.get(key)
+    if type(rows) is not list or not 1 <= len(rows) <= maximum:
+        raise ValueError(f"invalid bounded catalog collection: {key}")
+    if type(document.get(count)) is not int or document[count] != len(rows):
+        raise ValueError(f"catalog count mismatch: {count}")
+    seen = set()
+    for row in rows:
+        if type(row) is not dict or type(row.get("id")) is not str:
+            raise ValueError("catalog IDs must be strings")
+        identifier = row["id"]
+        bounded_strings((identifier,), max_item_bytes=256)
+        if not identifier.strip() or identifier in seen:
+            raise ValueError("catalog IDs must be nonempty and unique")
+        seen.add(identifier)
+    return rows
+
+
+def _stage_path(project: Path, kind: str, plan_id: str) -> Path:
+    if type(plan_id) is not str or re.fullmatch(r"xcp_[0-9a-f]{24}", plan_id) is None:
+        raise ValueError("invalid selective stage plan ID")
+    directory = (project / ".engineering-bootstrap/external-capabilities" / kind).resolve()
+    target = (directory / f"{plan_id}.json").resolve()
+    if not _inside(directory, project) or not _inside(target, directory):
+        raise ValueError("selective stage path escapes project custody")
+    return target
 
 
 def _stable(value: object) -> str:
@@ -77,13 +145,60 @@ def _inside(path: Path, root: Path) -> bool:
 def load_external_catalog(root: Path) -> dict[str, object]:
     """Load and validate the non-canonical metadata catalog without hydration."""
     root = root.resolve(strict=True)
-    catalog = load_json_object(root / CATALOG_PATH)
-    candidates = load_json_object(root / CANDIDATE_PATH)
-    bundles = load_json_object(root / BUNDLE_PATH)
-    licenses = load_json_object(root / LICENSE_PATH)
-    records = catalog.get("records")
-    candidate_rows = candidates.get("capabilities")
-    bundle_rows = bundles.get("packages")
+    catalog = load_json_object(root / CATALOG_PATH, max_bytes=MAX_CATALOG_BYTES)
+    candidates = load_json_object(root / CANDIDATE_PATH, max_bytes=MAX_CATALOG_BYTES)
+    bundles = load_json_object(root / BUNDLE_PATH, max_bytes=MAX_CATALOG_BYTES)
+    licenses = load_json_object(root / LICENSE_PATH, max_bytes=65_536)
+    records = _catalog_rows(catalog, "records", "record_count", 4096)
+    candidate_rows = _catalog_rows(candidates, "capabilities", "capability_count", 1024)
+    bundle_rows = _catalog_rows(bundles, "packages", "package_count", 256)
+    if candidates.get("schema_version") != "1.0" or bundles.get("schema_version") != "1.0":
+        raise ValueError("unsupported external candidate or bundle schema")
+    for row in records:
+        _metadata_fields(row, RECORD_TEXT_FIELDS, RECORD_LIST_FIELDS,
+                         frozenset({"id", "kind", "title", "summary", "owner", "disposition", "license", "keywords"}),
+                         allow_empty=frozenset({"summary"}))
+        if row["kind"] not in _CATALOG_KINDS or row["disposition"] not in _CATALOG_DISPOSITIONS:
+            raise ValueError("unknown catalog kind or disposition")
+    for row in candidate_rows:
+        _metadata_fields(row, CANDIDATE_TEXT_FIELDS, CANDIDATE_LIST_FIELDS,
+                         (CANDIDATE_TEXT_FIELDS | CANDIDATE_LIST_FIELDS) - {"aliases"})
+    for row in bundle_rows:
+        _metadata_fields(row, BUNDLE_TEXT_FIELDS, BUNDLE_LIST_FIELDS,
+                         BUNDLE_TEXT_FIELDS | BUNDLE_LIST_FIELDS)
+        if re.fullmatch(r"[a-z0-9][a-z0-9_-]{0,127}", row["id"]) is None:
+            raise ValueError("invalid external bundle path identity")
+    all_ids = {row["id"] for row in records}
+    candidate_ids = {row["id"] for row in candidate_rows}
+    bundle_ids = {row["id"] for row in bundle_rows}
+    catalog_by_id = {row["id"]: row for row in records}
+    if not (candidate_ids | bundle_ids) <= all_ids:
+        raise ValueError("candidate or bundle missing from catalog")
+    if (any(catalog_by_id[identifier]["kind"] != "candidate_capability" for identifier in candidate_ids)
+            or any(catalog_by_id[identifier]["kind"] != "candidate_skill_bundle" for identifier in bundle_ids)):
+        raise ValueError("candidate or bundle catalog kind mismatch")
+    if any(set(row.get("dependencies", ())) - all_ids for row in [*records, *candidate_rows]):
+        raise ValueError("unknown external dependency reference")
+    if any(row["bundle"] not in bundle_ids for row in candidate_rows):
+        raise ValueError("unknown candidate bundle reference")
+    for row in bundle_rows:
+        members = row["candidate_capabilities"]
+        if len(set(members)) != len(members) or not set(members) <= candidate_ids:
+            raise ValueError("duplicate or unknown bundle capability reference")
+        expected = {c["id"] for c in candidate_rows if c["bundle"] == row["id"]}
+        if set(members) != expected:
+            raise ValueError("candidate/bundle reciprocal reference mismatch")
+    if licenses.get("schema_version") != "1.0" or type(licenses.get("sources")) is not list:
+        raise ValueError("unsupported license declaration schema")
+    sources = licenses["sources"]
+    if not 1 <= len(sources) <= 64:
+        raise ValueError("license declaration count is out of bounds")
+    source_ids = set()
+    for row in sources:
+        _metadata_fields(row, frozenset({"id", "license", "activation", "redistribution", "derivation"}), frozenset(), frozenset({"id", "license", "redistribution"}))
+        if row["id"] in source_ids:
+            raise ValueError("duplicate license source ID")
+        source_ids.add(row["id"])
     if catalog.get("schema_version") != "pacifyx.external-intake.v1" or not isinstance(
         records, list
     ):
@@ -115,6 +230,7 @@ def load_external_catalog(root: Path) -> dict[str, object]:
         "candidates": tuple(candidate_rows),
         "bundles": tuple(bundle_rows),
         "licenses": licenses,
+        "license_evidence_scope": "declarations_only; no legal or redistribution attestation",
         "record_count": len(records),
         "candidate_count": len(candidate_rows),
         "bundle_count": len(bundle_rows),
@@ -149,10 +265,11 @@ def search_external_candidates(
     limit: int = 8,
     kinds: Iterable[str] = (),
 ) -> dict[str, object]:
-    if not query.strip() or not 1 <= limit <= 100:
+    bounded_strings((query,), max_item_bytes=65_536)
+    selected_kinds = set(bounded_strings(kinds, max_item_bytes=256))
+    if not query.strip() or type(limit) is not int or not 1 <= limit <= 100:
         raise ValueError("nonblank query and limit between 1 and 100 are required")
     catalog = load_external_catalog(root)
-    selected_kinds = set(map(str, kinds))
     records = [
         item
         for item in catalog["records"]
@@ -241,34 +358,53 @@ def hydrate_external_metadata(
     max_bytes: int = 32768,
 ) -> dict[str, object]:
     """Hydrate bounded registry metadata only; never read imported source bodies."""
-    if max_records < 1 or max_bytes < 1:
-        raise ValueError("positive hydration bounds are required")
+    if type(max_records) is not int or not 1 <= max_records <= 20:
+        raise ValueError("max_records must be an integer from one through twenty")
+    if type(max_bytes) is not int or not 2 <= max_bytes <= MAX_METADATA_BYTES:
+        raise ValueError("metadata byte budget must be from two through 1048576")
+    requested = bounded_strings(candidate_ids, max_item_bytes=256)
     catalog = load_external_catalog(root)
     by_id = {str(item["id"]): item for item in catalog["records"]}
     selected = []
-    used = 0
+    used = 2  # The complete serialized metadata array, including its brackets.
     missing = []
-    for identifier in tuple(dict.fromkeys(map(str, candidate_ids)))[:max_records]:
+    outcomes = []
+    for identifier in requested:
         record = by_id.get(identifier)
         if record is None:
             missing.append(identifier)
+            outcomes.append({"id": identifier, "status": "missing"})
+            continue
+        if len(selected) >= max_records:
+            outcomes.append({"id": identifier, "status": "unexamined_record_limit"})
             continue
         sanitized = {
             key: value
             for key, value in record.items()
-            if key not in {"body", "content", "raw_source"}
+            if key in RECORD_TEXT_FIELDS | RECORD_LIST_FIELDS
         }
-        size = len(json.dumps(sanitized, ensure_ascii=False).encode("utf-8"))
-        if used + size > max_bytes:
-            break
+        _metadata_fields(sanitized, RECORD_TEXT_FIELDS, RECORD_LIST_FIELDS, frozenset({"id"}))
+        try:
+            rendered = bounded_json_text([*selected, sanitized], max_bytes=max_bytes)
+        except ValueError as exc:
+            if "budget" not in str(exc):
+                raise
+            outcomes.append({"id": identifier, "status": "oversized"})
+            continue
         selected.append(sanitized)
-        used += size
+        used = len(rendered.encode("utf-8"))
+        outcomes.append({"id": identifier, "status": "returned"})
+    complete = bool(selected) and all(row["status"] == "returned" for row in outcomes)
     return {
-        "valid": not missing,
+        "valid": complete,
         "records": selected,
         "missing": missing,
         "used_bytes": used,
         "max_bytes": max_bytes,
+        "outcomes": outcomes,
+        "complete": complete,
+        "truncated": any(row["status"] in {"oversized", "unexamined_record_limit"} for row in outcomes),
+        "byte_scope": "complete UTF-8 metadata records array, including JSON formatting",
         "metadata_only": True,
         "source_bodies_loaded": 0,
         "authority_granted": False,
@@ -288,6 +424,30 @@ class SelectiveStagePlan:
     apply_requires_review: bool = True
 
 
+def _stage_plan_payload(plan: SelectiveStagePlan) -> dict[str, object]:
+    """Project the typed plan's tuple fields into its explicit JSON contract."""
+    if (plan.active_registry_mutation is not False or plan.authority_granted is not False
+            or plan.apply_requires_review is not True):
+        raise ValueError("selective stage plan cannot grant authority or bypass review")
+    bounded_strings((plan.project_id,), max_item_bytes=256)
+    if not plan.project_id.strip():
+        raise ValueError("stage project ID must not be blank")
+    selected = bounded_strings(plan.bundle_ids, max_item_bytes=256)
+    collisions = bounded_strings(plan.collisions, max_item_bytes=256)
+    unresolved = bounded_strings(plan.unresolved_dependencies, max_item_bytes=256)
+    if type(plan.body_sha256) is not dict or set(plan.body_sha256) != set(selected):
+        raise ValueError("stage body hash denominator must match selected bundles")
+    if any(type(v) is not str or re.fullmatch(r"[0-9a-f]{64}", v) is None for v in plan.body_sha256.values()):
+        raise ValueError("invalid stage body hash")
+    return {
+        "plan_id": plan.plan_id, "project_id": plan.project_id,
+        "bundle_ids": list(selected), "body_sha256": dict(plan.body_sha256),
+        "collisions": list(collisions), "unresolved_dependencies": list(unresolved),
+        "active_registry_mutation": False, "authority_granted": False,
+        "apply_requires_review": True,
+    }
+
+
 def plan_selective_stage(
     root: Path, project: Path, *, project_id: str, bundle_ids: Iterable[str]
 ) -> SelectiveStagePlan:
@@ -297,7 +457,7 @@ def plan_selective_stage(
         raise ValueError("target project is not commissioned")
     catalog = load_external_catalog(root)
     bundles = {str(item["id"]): item for item in catalog["bundles"]}
-    selected_ids = tuple(sorted(set(map(str, bundle_ids))))
+    selected_ids = tuple(sorted(bounded_strings(bundle_ids, max_item_bytes=256)))
     if not selected_ids:
         raise ValueError("at least one external bundle is required")
     missing = sorted(set(selected_ids) - set(bundles))
@@ -317,7 +477,7 @@ def plan_selective_stage(
         body = root / str(bundle["body"])
         if not body.is_file() or not _inside(body, root):
             raise ValueError(f"external bundle body is unavailable: {identifier}")
-        hashes[identifier] = hashlib.sha256(body.read_bytes()).hexdigest()
+        hashes[identifier] = hashlib.sha256(read_bounded_bytes(body, max_bytes=512_000)).hexdigest()
         if (project / ".px/skills" / identifier).exists():
             collisions.append(identifier)
         for capability_id in bundle.get("candidate_capabilities", ()):
@@ -364,7 +524,9 @@ def apply_selective_stage(
 ) -> dict[str, object]:
     """Persist a project binding receipt; active registries and skill bodies remain untouched."""
     project = project.resolve(strict=True)
-    evidence = tuple(sorted(set(filter(None, map(str, approval_evidence)))))
+    target = _stage_path(project, "staged", plan.plan_id)
+    plan_payload = _stage_plan_payload(plan)
+    evidence = tuple(sorted(filter(None, bounded_strings(approval_evidence))))
     errors = []
     if plan.collisions:
         errors.append("project skill collision")
@@ -375,25 +537,23 @@ def apply_selective_stage(
     result = {
         "valid": not errors,
         "applied": False,
-        "plan": asdict(plan),
+        "plan": plan_payload,
         "errors": errors,
         "hard_delete": False,
         "active_registry_mutation": False,
     }
     if not apply or errors:
         return result
-    directory = project / ".engineering-bootstrap/external-capabilities/staged"
-    target = directory / f"{plan.plan_id}.json"
     receipt = {
         "schema_version": "1.0",
-        "plan": asdict(plan),
+        "plan": plan_payload,
         "approval_evidence": list(evidence),
         "state": "staged_candidate",
         "created_utc": datetime.now(timezone.utc).isoformat(),
         "active_registry_mutation": False,
         "authority_granted": False,
     }
-    rendered = json.dumps(receipt, indent=2, ensure_ascii=False) + "\n"
+    rendered = bounded_json_text(receipt, max_bytes=65_535) + "\n"
     target.parent.mkdir(parents=True, exist_ok=True)
     if target.exists() and target.read_text(encoding="utf-8") != rendered:
         existing = load_json_object(target)
@@ -419,19 +579,11 @@ def revoke_selective_stage(
     project: Path, plan_id: str, *, evidence: Iterable[str], apply: bool = False
 ) -> dict[str, object]:
     project = project.resolve(strict=True)
-    source = (
-        project
-        / ".engineering-bootstrap/external-capabilities/staged"
-        / f"{plan_id}.json"
-    )
-    evidence_ids = tuple(sorted(set(filter(None, map(str, evidence)))))
+    source = _stage_path(project, "staged", plan_id)
+    evidence_ids = tuple(sorted(filter(None, bounded_strings(evidence))))
     if not source.is_file() or not evidence_ids:
         raise ValueError("existing staged plan and revocation evidence are required")
-    target = (
-        project
-        / ".engineering-bootstrap/external-capabilities/revocations"
-        / f"{plan_id}.json"
-    )
+    target = _stage_path(project, "revocations", plan_id)
     result = {
         "valid": True,
         "applied": False,
@@ -516,11 +668,28 @@ def normalize_session_snapshot(
         "artifact_refs",
         "evidence_refs",
     )
+    if type(payload) is not dict:
+        raise ValueError("session snapshot must be an object")
+    allowed = set(required) | {"branch", "worktree", "checkpoint", "pending_actions"}
+    if any(type(key) is not str for key in payload):
+        raise ValueError("session snapshot keys must be strings")
+    if any(SENSITIVE_KEYS.search(key) for key in payload):
+        raise ValueError("session adapter payload contains prohibited sensitive fields")
+    if set(payload) - allowed:
+        raise ValueError("session snapshot contains unknown fields")
     missing = [field for field in required if field not in payload]
     if missing:
         raise ValueError("session snapshot is missing: " + ", ".join(missing))
-    if any(SENSITIVE_KEYS.search(str(key)) for key in payload):
-        raise ValueError("session adapter payload contains prohibited sensitive fields")
+    identities = bounded_strings((adapter_id, *(payload[key] for key in required[:4])), max_item_bytes=256)
+    if any(not value.strip() for value in identities):
+        raise ValueError("session identities must not be blank")
+    for field in ("branch", "worktree", "checkpoint"):
+        if payload.get(field) is not None:
+            bounded_strings((payload[field],))
+    references = {
+        key: sorted(_string_list(payload.get(key, [])))
+        for key in ("artifact_refs", "evidence_refs", "pending_actions")
+    }
     if payload.get("state") not in {
         "active",
         "paused",
@@ -532,19 +701,19 @@ def normalize_session_snapshot(
     snapshot = {
         "schema_version": "1.0",
         "adapter_id": adapter_id,
-        "project_id": str(payload["project_id"]),
-        "session_id": str(payload["session_id"]),
-        "agent_id": str(payload["agent_id"]),
-        "state": str(payload["state"]),
-        "branch": str(payload.get("branch", "")) or None,
-        "worktree": str(payload.get("worktree", "")) or None,
-        "checkpoint": str(payload.get("checkpoint", "")) or None,
-        "artifact_refs": sorted(set(map(str, payload.get("artifact_refs", ())))),
-        "evidence_refs": sorted(set(map(str, payload.get("evidence_refs", ())))),
-        "pending_actions": sorted(set(map(str, payload.get("pending_actions", ())))),
+        "project_id": payload["project_id"],
+        "session_id": payload["session_id"],
+        "agent_id": payload["agent_id"],
+        "state": payload["state"],
+        "branch": payload.get("branch") or None,
+        "worktree": payload.get("worktree") or None,
+        "checkpoint": payload.get("checkpoint") or None,
+        **references,
         "authority_granted": False,
     }
+    bounded_json_text({**snapshot, "snapshot_sha256": "0" * 64}, max_bytes=65_536)
     snapshot["snapshot_sha256"] = _stable(snapshot)
+    bounded_json_text(snapshot, max_bytes=65_536)
     return snapshot
 
 

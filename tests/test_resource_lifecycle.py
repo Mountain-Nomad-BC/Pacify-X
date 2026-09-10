@@ -653,9 +653,10 @@ class ResourceLifecycleTests(unittest.TestCase):
         child_pid_file = self.root / "child.pid"
         child_code = "import time; time.sleep(120)"
         parent_code = (
-            "import pathlib,subprocess,sys,time; "
+            "import os,pathlib,subprocess,sys,time; "
             f"p=subprocess.Popen([sys.executable,'-c',{child_code!r}]); "
-            f"pathlib.Path({str(child_pid_file)!r}).write_text(str(p.pid)); "
+            f"target=pathlib.Path({str(child_pid_file)!r}); "
+            "prepared=target.with_suffix('.prepared'); prepared.write_text(str(p.pid)); os.replace(prepared,target); "
             "time.sleep(120)"
         )
         record, process = self.manager.spawn_owned_process(

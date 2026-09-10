@@ -7,7 +7,7 @@ import hashlib
 from pathlib import Path
 import re
 
-from .json_io import load_json_object
+from .json_io import bounded_strings, load_json_object, read_bounded_bytes
 
 
 TOKEN = re.compile(r"[a-z0-9][a-z0-9_+.#/-]*", re.IGNORECASE)
@@ -73,7 +73,8 @@ def _boundary_denial(query: str) -> list[str]:
 def route_service_capabilities(
     root: Path, query: str, *, limit: int = 6
 ) -> dict[str, object]:
-    if not query.strip() or not 1 <= limit <= 20:
+    bounded_strings((query,), max_item_bytes=65_536)
+    if not query.strip() or type(limit) is not int or not 1 <= limit <= 20:
         raise ValueError("nonblank query and a limit from 1 through 20 are required")
     catalog = load_service_catalog(root)
     denials = _boundary_denial(query)
@@ -168,20 +169,35 @@ def hydrate_service_skills(
     max_records: int = 3,
     max_bytes: int = 65_536,
 ) -> dict[str, object]:
+    if type(max_records) is not int or not 1 <= max_records <= 3:
+        raise ValueError("max_records must be an integer from one through three")
+    if type(max_bytes) is not int or not 1 <= max_bytes <= 65_536:
+        raise ValueError("service hydration byte budget must be from one through 65536")
+    requested = bounded_strings(skill_ids, max_item_bytes=256)
+    if any(re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", identifier) is None for identifier in requested):
+        raise ValueError("invalid service skill identifier")
     catalog = load_service_catalog(root)
     by_id = {str(item["id"]): item for item in catalog["records"]}
+    for identifier in requested:
+        if identifier not in by_id:
+            raise KeyError(f"unknown service skill: {identifier}")
     selected = []
     used = 0
-    for identifier in tuple(dict.fromkeys(map(str, skill_ids)))[:max_records]:
+    skill_root = (root / ".px/skills").resolve()
+    if not skill_root.is_relative_to(root.resolve()):
+        raise ValueError("service skill root escapes project")
+    for identifier in requested[:max_records]:
         record = by_id.get(identifier)
         if record is None:
             raise KeyError(f"unknown service skill: {identifier}")
-        body = root / ".px/skills" / identifier / "SKILL.md"
-        data = body.read_bytes()
+        body = (skill_root / identifier / "SKILL.md").resolve()
+        if not body.is_relative_to(skill_root) or not body.is_file():
+            raise ValueError("service skill body escapes root or is not a file")
+        if used >= max_bytes:
+            raise ValueError("service hydration byte budget exceeded")
+        data = read_bounded_bytes(body, max_bytes=max_bytes - used)
         if hashlib.sha256(data).hexdigest() != record.get("body_sha256"):
             raise ValueError(f"service skill body hash drift: {identifier}")
-        if used + len(data) > max_bytes:
-            break
         selected.append(
             {"id": identifier, "body": data.decode("utf-8"), "bytes": len(data)}
         )
@@ -191,6 +207,9 @@ def hydrate_service_skills(
         "skills": selected,
         "bytes_loaded": used,
         "max_bytes": max_bytes,
+        "requested_ids": list(requested),
+        "not_loaded_ids": list(requested[len(selected):]),
+        "truncated": len(selected) < len(requested),
         "authority_granted": False,
     }
 

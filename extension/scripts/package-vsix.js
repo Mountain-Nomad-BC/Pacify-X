@@ -60,7 +60,7 @@ const manifest = `<?xml version="1.0" encoding="utf-8"?>
   <Assets>
     <Asset Type="Microsoft.VisualStudio.Code.Manifest" Path="extension/package.json" Addressable="true"/>
     <Asset Type="Microsoft.VisualStudio.Services.Content.Details" Path="extension/README.md" Addressable="true"/>
-    <Asset Type="Microsoft.VisualStudio.Services.Content.License" Path="extension/LICENSE" Addressable="true"/>
+    <Asset Type="Microsoft.VisualStudio.Services.Content.License" Path="extension/LICENSE.txt" Addressable="true"/>
     <Asset Type="Microsoft.VisualStudio.Services.Icons.Default" Path="extension/media/px-shield-128.png" Addressable="true"/>
   </Assets>
 </PackageManifest>
@@ -109,7 +109,8 @@ const mcpBundle = path.join(root, 'server', 'index.js');
 if (fs.existsSync(mcpBundle)) entries.push({ name: 'extension/server/index.js', data: fs.readFileSync(mcpBundle), modified: fs.statSync(mcpBundle).mtime });
 for (const file of ['README.md', 'CHANGELOG.md', 'LICENSE', 'NOTICE']) {
   const full = path.join(root, file);
-  if (fs.existsSync(full)) entries.push({ name: `extension/${file}`, data: fs.readFileSync(full), modified: fs.statSync(full).mtime });
+  const packagedName = file === 'LICENSE' ? 'LICENSE.txt' : file;
+  if (fs.existsSync(full)) entries.push({ name: `extension/${packagedName}`, data: fs.readFileSync(full), modified: fs.statSync(full).mtime });
 }
 
 const table = crcTable();

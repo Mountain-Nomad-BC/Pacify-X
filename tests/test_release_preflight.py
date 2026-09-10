@@ -427,7 +427,7 @@ def test_unbound_discovery_bypasses_certification_stage_admission(
     monkeypatch.setattr(
         "runtime.test_profiles.require_processing_stage", reject_stage
     )
-    monkeypatch.setattr(release_preflight, "_json", stop_after_admission)
+    monkeypatch.setattr(release_preflight, "load_preflight_input_policy", stop_after_admission)
 
     try:
         release_preflight.run_preflight(

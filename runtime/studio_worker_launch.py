@@ -249,6 +249,7 @@ def _launch_terminal_observer(
         run_id=observer_run_id,
         lane_id=f"studio-{kind}-terminal-observer",
         creator="px-studio-terminal-observer",
+        ownership="durable",
         environment=environment,
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
@@ -307,83 +308,113 @@ def launch_studio_worker(
         run_id=run_id,
         lane_id=f"studio-{kind}",
         creator="px-studio-durable-launcher",
+        ownership="durable",
         environment=environment,
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
         text=False,
     )
-    request_record = manager.register_path(
-        request_path,
-        allowed_cleanup_root=request_root,
-        project_id=project_root.name,
-        run_id=run_id,
-        lane_id=f"studio-{kind}",
-        creator="px-studio-durable-launcher",
-        parent_resource_id=record.resource_id,
-    )
-    request = authority.sign_receipt(
-        {
-            "schema_version": "px.studio-worker-request/1.0",
-            "kind": kind,
-            "run_id": run_id,
-            "resource_id": record.resource_id,
-            "request_resource_id": request_record.resource_id,
-            "expected_pid": process.pid,
-            "launch_nonce": launch_nonce,
-            "payload": dict(payload),
-            "payload_sha256": digest(payload),
-            "authority_state": "codex-host-retained",
-        }
-    )
-    write_json_atomic(request_path, request)
-    observer_resource_id, observer_pid, observer_run_id = _launch_terminal_observer(
-        project_root=project_root,
-        manager=manager,
-        kind=kind,
-        run_id=run_id,
-        environment=environment,
-    )
-    deadline = time.monotonic() + max(1.0, startup_timeout_seconds)
-    while time.monotonic() < deadline:
-        state = run_control.read(run_id)
-        current_record = manager.ledger.get(record.resource_id)
-        worker_pid = int(current_record.pid or process.pid)
-        if str(state["state"]) != launch_state:
-            return {
-                "schema_version": f"px.{kind}-session-start/1.1",
+    observer_resource_id = None
+    request_record = None
+    try:
+        request_record = manager.register_path(
+            request_path,
+            allowed_cleanup_root=request_root,
+            project_id=project_root.name,
+            run_id=run_id,
+            lane_id=f"studio-{kind}",
+            creator="px-studio-durable-launcher",
+            parent_resource_id=record.resource_id,
+        )
+        request = authority.sign_receipt(
+            {
+                "schema_version": "px.studio-worker-request/1.0",
+                "kind": kind,
                 "run_id": run_id,
-                "state": state["state"],
-                "accepted": True,
-                "live_worker_observed": True,
-                "worker_pid": worker_pid,
-                "worker_resource_id": record.resource_id,
-                "terminal_observer_resource_id": observer_resource_id,
-                "terminal_observer_pid": observer_pid,
-                "terminal_observer_run_id": observer_run_id,
+                "resource_id": record.resource_id,
+                "request_resource_id": request_record.resource_id,
+                "expected_pid": process.pid,
+                "launch_nonce": launch_nonce,
+                "payload": dict(payload),
+                "payload_sha256": digest(payload),
                 "authority_state": "codex-host-retained",
             }
-        return_code = process.poll()
-        if return_code is not None:
-            if current_record.active and worker_pid != process.pid:
-                time.sleep(0.01)
-                continue
-        time.sleep(0.02)
-    if request_path.exists():
-        manager.reclaim_ephemeral_path(
-            request_record.resource_id,
-            reason="studio-worker-start-timeout",
-            state=RunState.FAILED,
         )
-    manager.terminate_owned_process(record.resource_id, graceful_timeout_seconds=1.0)
-    current = run_control.read(run_id)
-    if current["state"] == "queued":
-        run_control.transition(
-            run_id,
-            "failed",
-            actor="px-studio-durable-launcher",
-            approved=True,
-            checkpoint=current["checkpoint"],
-            failure={"code": "worker_start_timeout"},
-            operation="worker.start.failed",
+        expected_request = (json.dumps(request, indent=2, sort_keys=True) + '\n').encode('utf-8')
+        try:
+            write_json_atomic(request_path, request)
+        except BaseException as original:
+            if os.path.lexists(request_path):
+                try:
+                    manager.bind_created_path(request_record.resource_id, expected_request)
+                except BaseException as secondary:
+                    try:
+                        original.add_note('request publication custody remains unresolved: ' + str(secondary))
+                    except BaseException:
+                        pass
+            raise
+        manager.bind_created_path(request_record.resource_id, expected_request)
+        observer_resource_id, observer_pid, observer_run_id = _launch_terminal_observer(
+            project_root=project_root,
+            manager=manager,
+            kind=kind,
+            run_id=run_id,
+            environment=environment,
         )
-    raise TimeoutError("Studio worker did not establish a live durable session")
+        deadline = time.monotonic() + max(1.0, startup_timeout_seconds)
+        while time.monotonic() < deadline:
+            state = run_control.read(run_id)
+            current_record = manager.ledger.get(record.resource_id)
+            worker_pid = int(current_record.pid or process.pid)
+            if str(state["state"]) != launch_state:
+                return {
+                    "schema_version": f"px.{kind}-session-start/1.1",
+                    "run_id": run_id,
+                    "state": state["state"],
+                    "accepted": True,
+                    "live_worker_observed": True,
+                    "worker_pid": worker_pid,
+                    "worker_resource_id": record.resource_id,
+                    "terminal_observer_resource_id": observer_resource_id,
+                    "terminal_observer_pid": observer_pid,
+                    "terminal_observer_run_id": observer_run_id,
+                    "authority_state": "codex-host-retained",
+                }
+            return_code = process.poll()
+            if return_code is not None:
+                if current_record.active and worker_pid != process.pid:
+                    time.sleep(0.01)
+                    continue
+            time.sleep(0.02)
+        manager.terminate_owned_process(record.resource_id, graceful_timeout_seconds=1.0)
+        current = run_control.read(run_id)
+        if current["state"] == "queued":
+            run_control.transition(
+                run_id,
+                "failed",
+                actor="px-studio-durable-launcher",
+                approved=True,
+                checkpoint=current["checkpoint"],
+                failure={"code": "worker_start_timeout"},
+                operation="worker.start.failed",
+            )
+        raise TimeoutError("Studio worker did not establish a live durable session")
+
+    except BaseException as error:
+        worker_settlement = manager.settle_failed_launch(record.resource_id, error)
+        if observer_resource_id is not None:
+            manager.settle_failed_launch(observer_resource_id, error)
+        if request_record is not None:
+            try:
+                if worker_settlement['custody_retained']:
+                    manager.update(request_record.resource_id,
+                                   retained_reason='worker cleanup remains unresolved')
+                else:
+                    manager.reclaim_ephemeral_path(request_record.resource_id,
+                        reason='studio-worker-launch-failed', state=RunState.FAILED)
+            except BaseException as cleanup_error:
+                try:
+                    error.request_cleanup_failure = type(cleanup_error).__name__
+                except BaseException:
+                    pass
+        raise

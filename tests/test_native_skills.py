@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+import pytest
 
 from runtime.native_skills import (
     BACKUP_SCHEMA,
@@ -18,6 +19,92 @@ from runtime.native_skills import (
     validate_skill_index,
     verify_backup,
 )
+
+
+@pytest.mark.parametrize("payload", [{}, {"schema_version": BACKUP_SCHEMA, "sources": []},
+                                   {"schema_version": "wrong", "sources": []},
+                                   {"schema_version": BACKUP_SCHEMA, "sources": "invalid"}])
+def test_backup_rejects_empty_or_malformed_denominator(tmp_path, payload) -> None:
+    (tmp_path / "manifest.json").write_text(json.dumps(payload), encoding="utf-8")
+    result = verify_backup(tmp_path)
+    assert result["valid"] is False
+    assert result["errors"]
+
+
+def test_backup_rejects_external_path_before_inventory(tmp_path, monkeypatch) -> None:
+    from runtime import native_skills as native
+    manifest = {"schema_version": BACKUP_SCHEMA, "sources": [{"id": "one",
+                "relative_backup": "../external", "file_count": 1, "tree_sha256": "0" * 64}]}
+    (tmp_path / "manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
+    monkeypatch.setattr(native, "inventory_tree", lambda *a, **k: pytest.fail("external tree enumerated before containment"))
+    result = verify_backup(tmp_path)
+    assert result["valid"] is False
+
+
+def test_comparison_checks_total_bytes_before_hashing(tmp_path, monkeypatch) -> None:
+    from runtime import native_skills as native
+    (tmp_path / "large").write_bytes(b"x" * 129)
+    monkeypatch.setattr(native, "MAX_COMPARISON_BYTES", 128)
+    original = Path.open
+    def no_body_read(path, *args, **kwargs):
+        if path == tmp_path / "large":
+            pytest.fail("body read before total byte budget")
+        return original(path, *args, **kwargs)
+    monkeypatch.setattr(Path, "open", no_body_read)
+    with pytest.raises(ValueError):
+        native._comparison_tree(tmp_path)
+
+
+def test_hydration_reads_and_hashes_one_bounded_image(tmp_path, monkeypatch) -> None:
+    from runtime import native_skills as native
+    content = b"# inert skill\n"
+    body = tmp_path / "SKILL.md"
+    body.write_bytes(content)
+    row = {"id": "one", "selection_eligible": True, "body_available": True,
+           "body": "SKILL.md", "body_sha256": hashlib.sha256(content).hexdigest(),
+           "domain": "px-standard", "origin": "test"}
+    monkeypatch.setattr(native, "query_skills", lambda *a, **k: {"candidates": [row]})
+    original = Path.open
+    opens = []
+    def once(path, *args, **kwargs):
+        if path == body:
+            opens.append(path)
+            assert len(opens) == 1, "body reopened after hash verification"
+        return original(path, *args, **kwargs)
+    monkeypatch.setattr(Path, "open", once)
+    result = hydrate_skill(tmp_path, "one")
+    assert result["body"] == content.decode("utf-8")
+    assert opens == [body]
+
+
+@pytest.mark.parametrize("operation", ["verify", "restore"])
+def test_backup_uses_one_inventory_image_through_verification_and_restore(tmp_path, monkeypatch, operation) -> None:
+    snapshot = tmp_path / "snapshot"
+    backup = snapshot / "one"
+    backup.mkdir(parents=True)
+    data = b"inert reference"
+    (backup / "SKILL.md").write_bytes(data)
+    files = [{"path": "SKILL.md", "size_bytes": len(data), "sha256": hashlib.sha256(data).hexdigest()}]
+    inventory = snapshot / "inventory.json"
+    raw = json.dumps({"files": files}).encode("utf-8")
+    inventory.write_bytes(raw)
+    manifest = {"schema_version": BACKUP_SCHEMA, "sources": [{"id": "one", "relative_backup": "one",
+                "file_count": 1, "tree_sha256": tree_hash(files), "inventory": "inventory.json",
+                "inventory_size_bytes": len(raw), "inventory_sha256": hashlib.sha256(raw).hexdigest()}]}
+    (snapshot / "manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
+    original = Path.open
+    acquired = []
+    def once(path, *args, **kwargs):
+        if path == inventory:
+            acquired.append(path)
+            assert len(acquired) == 1, "inventory reopened after shape/containment validation"
+        return original(path, *args, **kwargs)
+    monkeypatch.setattr(Path, "open", once)
+    if operation == "verify":
+        assert verify_backup(snapshot)["valid"]
+    else:
+        assert restore_backup(snapshot, "one", tmp_path / "restored")["restored"]
+    assert acquired == [inventory]
 
 
 class NativeSkillTests(unittest.TestCase):

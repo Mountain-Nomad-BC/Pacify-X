@@ -17,6 +17,7 @@ from .probability import bayesian_portfolio, expected_value_of_information
 from .strategy import select as select_strategy
 from .temporal import analyze as analyze_temporal
 from .common import stable_hash
+from ..numeric_inputs import analysis_payload
 
 _OPERATIONS: dict[str, Callable[[Mapping[str, Any]], dict[str, Any]]] = {
     "reason-logic": reason_logic,
@@ -38,7 +39,9 @@ _OPERATIONS: dict[str, Callable[[Mapping[str, Any]], dict[str, Any]]] = {
 def run_cognitive_operation(
     operation: str, payload: Mapping[str, Any]
 ) -> dict[str, Any]:
-    function = _OPERATIONS.get(str(operation))
+    if type(operation) is not str or not operation or len(operation) > 128:
+        return {"valid": False, "errors": ["operation must be bounded nonempty text"]}
+    function = _OPERATIONS.get(operation)
     if function is None:
         return {
             "valid": False,
@@ -47,6 +50,11 @@ def run_cognitive_operation(
         }
     if not isinstance(payload, Mapping):
         return {"valid": False, "errors": ["payload must be an object"]}
+    try:
+        payload = analysis_payload(payload)
+    except ValueError as error:
+        # Unadmitted input must not be serialized by the error-report hash.
+        return {"valid": False, "operation": operation, "errors": [str(error)]}
     try:
         result = function(payload)
     except (KeyError, TypeError, ValueError, OverflowError, ZeroDivisionError) as error:

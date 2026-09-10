@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from collections import defaultdict, deque
-import json
 from pathlib import Path
 from typing import Any, Iterable, Mapping
 
@@ -342,42 +341,35 @@ def analyze_project_impact(
 def validate_project_change_intelligence_orchestration(
     root: Path,
 ) -> dict[str, object]:
-    """Validate the native mapping/impact workflow and its executable owners."""
-    path = root.resolve() / "orchestration/workflows/project-change-intelligence.yaml"
-    try:
-        payload = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as error:
-        return {"valid": False, "errors": [str(error)]}
+    """Validate exact bounded mapping stages; this does not execute their owners."""
+    from .input_files import contained_file, cooperative_deadline, directory_root
+    from .numeric_inputs import bounded_text
+    from .workflow_inputs import active_skill_declarations, ordered_steps, read_declaration
+
     expected = (
         ("map", "map-project-intelligence", ()),
         ("retrieve", "query-project-map", ("map",)),
         ("impact", "query-project-map", ("map", "retrieve")),
         ("verify", "verify-outcome", ("impact",)),
     )
-    actual = tuple(
-        (
-            str(step.get("id", "")),
-            str(step.get("skill", "")),
-            tuple(map(str, step.get("depends_on", ()))),
-        )
-        for step in payload.get("steps", ())
-        if isinstance(step, Mapping)
-    )
-    errors: list[str] = []
-    if payload.get("id") != "project-change-intelligence":
-        errors.append("project change intelligence workflow id is invalid")
-    if actual != expected:
-        errors.append("project change intelligence steps are incomplete, duplicated, or out of order")
-    if not str(payload.get("failure_policy", "")).strip():
-        errors.append("project change intelligence failure policy is missing")
-    if not (root / "contracts/project-impact.schema.json").is_file():
-        errors.append("project impact receipt contract is missing")
-    return {
-        "valid": not errors,
-        "workflow_id": payload.get("id"),
-        "step_count": len(actual),
-        "errors": errors,
-    }
+    try:
+        root = directory_root(root)
+        deadline = cooperative_deadline()
+        payload = read_declaration(root, "orchestration/workflows/project-change-intelligence.yaml", deadline=deadline)
+        if payload.get("schema_version") != "1.0" or payload.get("id") != "project-change-intelligence":
+            raise ValueError("project change intelligence workflow identity mismatch")
+        steps = ordered_steps(payload.get("steps"))
+        actual = tuple((step["id"], step["skill"], tuple(step["depends_on"])) for step in steps)
+        if actual != expected:
+            raise ValueError("project change intelligence steps are incomplete, duplicated, or out of order")
+        bounded_text(payload.get("failure_policy"), "failure policy", maximum=4096)
+        active = active_skill_declarations(root, deadline=deadline)
+        if any(step["skill"] not in active for step in steps):
+            raise ValueError("project mapping skill is not declared active or admitted")
+        contained_file(root, "contracts/project-impact.schema.json")
+    except (OSError, ValueError, TypeError):
+        return {"valid": False, "errors": ["invalid bounded project change intelligence declarations"], "step_count": None, "authority_granted": False}
+    return {"valid": True, "workflow_id": "project-change-intelligence", "step_count": len(steps), "errors": [], "authority_granted": False, "evidence_level": "structural-declarations; executable owner outcomes require separate proof"}
 
 
 def as_invalidation_inputs(

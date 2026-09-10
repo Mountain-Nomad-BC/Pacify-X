@@ -27,6 +27,84 @@ from runtime.external_capability_provider import (
 ROOT = Path(__file__).parents[1]
 
 
+@pytest.mark.parametrize("parameter,value", [("max_records", True), ("max_records", 21),
+                                            ("max_records", 1.5), ("max_bytes", True),
+                                            ("max_bytes", float("inf"))])
+def test_hydration_limits_reject_before_catalog_access(monkeypatch, parameter, value) -> None:
+    from runtime import external_capability_provider as provider
+    monkeypatch.setattr(provider, "load_external_catalog", lambda _: pytest.fail("catalog accessed before bounds"))
+    with pytest.raises(ValueError):
+        hydrate_external_metadata(ROOT, ["one"], **{parameter: value})
+
+
+def test_hydration_accounts_for_all_requested_ids_after_oversized_record(monkeypatch) -> None:
+    from runtime import external_capability_provider as provider
+    rows = [{"id": "large", "summary": "x" * 4096}, {"id": "small", "summary": "small"}]
+    monkeypatch.setattr(provider, "load_external_catalog", lambda _: {"records": rows})
+    result = hydrate_external_metadata(ROOT, ["large", "missing", "small"], max_bytes=512)
+    assert result["valid"] is False
+    assert result["missing"] == ["missing"]
+    assert [r["id"] for r in result["records"]] == ["small"]
+    assert {r["id"]: r["status"] for r in result["outcomes"]} == {
+        "large": "oversized", "missing": "missing", "small": "returned"
+    }
+
+
+def test_metadata_projection_excludes_nested_unknown_payloads(monkeypatch) -> None:
+    from runtime import external_capability_provider as provider
+    row = {"id": "one", "summary": "metadata", "extra": {"body": "never return imported source"}}
+    monkeypatch.setattr(provider, "load_external_catalog", lambda _: {"records": [row]})
+    result = hydrate_external_metadata(ROOT, ["one"])
+    assert "never return imported source" not in json.dumps(result)
+
+
+@pytest.mark.parametrize("mutation", ["candidate_duplicate", "bundle_duplicate", "unknown_dependency", "record_count_boolean",
+                                     "unknown_kind", "unknown_disposition", "candidate_kind_mismatch"])
+def test_catalog_rejects_ambiguous_denominators_and_unknown_references(monkeypatch, mutation) -> None:
+    from runtime import external_capability_provider as provider
+    paths = [provider.CATALOG_PATH, provider.CANDIDATE_PATH, provider.BUNDLE_PATH, provider.LICENSE_PATH]
+    documents = {p: json.loads((ROOT / p).read_text(encoding="utf-8")) for p in paths}
+    if mutation == "candidate_duplicate":
+        d = documents[provider.CANDIDATE_PATH]
+        d["capabilities"].append(dict(d["capabilities"][0]))
+        d["capability_count"] += 1
+    elif mutation == "bundle_duplicate":
+        d = documents[provider.BUNDLE_PATH]
+        d["packages"].append(dict(d["packages"][0]))
+        d["package_count"] += 1
+    elif mutation == "unknown_dependency":
+        documents[provider.CATALOG_PATH]["records"][0]["dependencies"] = ["missing-contract-owner"]
+    elif mutation == "record_count_boolean":
+        documents[provider.CATALOG_PATH]["record_count"] = True
+    elif mutation == "unknown_kind":
+        documents[provider.CATALOG_PATH]["records"][0]["kind"] = "unknown"
+    elif mutation == "unknown_disposition":
+        documents[provider.CATALOG_PATH]["records"][0]["disposition"] = "active"
+    else:
+        documents[provider.CATALOG_PATH]["records"][0]["kind"] = "existing_pacify_skill"
+    monkeypatch.setattr(provider, "load_json_object", lambda path, **kwargs: documents[path.relative_to(ROOT.resolve())])
+    with pytest.raises(ValueError):
+        load_external_catalog(ROOT)
+
+
+@pytest.mark.parametrize("field,value", [("project_id", {"secret": "hidden"}),
+                                        ("artifact_refs", "not-an-array"),
+                                        ("branch", {"body": "hidden"}),
+                                        ("extra", {"password": "hidden"})])
+def test_session_snapshot_rejects_coercion_and_nested_payloads(field, value) -> None:
+    payload = {"project_id": "project", "session_id": "session", "agent_id": "agent",
+               "state": "active", "artifact_refs": [], "evidence_refs": []}
+    with pytest.raises(ValueError):
+        normalize_session_snapshot("adapter", {**payload, field: value})
+
+
+def test_stage_preview_rejects_forged_path_identifier(tmp_path) -> None:
+    from runtime.external_capability_provider import SelectiveStagePlan
+    plan = SelectiveStagePlan("../../outside", "project", (), {}, (), ())
+    with pytest.raises(ValueError, match="plan ID"):
+        apply_selective_stage(tmp_path, plan, approval_evidence=["review"])
+
+
 def commissioned_project(tmp_path: Path) -> Path:
     state = tmp_path / ".engineering-bootstrap/project-management/state.json"
     state.parent.mkdir(parents=True)

@@ -3,42 +3,133 @@
   "$id": "urn:engineering-loop-bootstrap:contract:trusted-evidence-record",
   "title": "Signed trusted evidence record",
   "type": "object",
-  "required": ["schema_version", "evidence_id", "evidence_type", "producer", "project_id", "subject_id", "created_at", "result", "signature", "content_sha256"],
+  "required": [
+    "schema_version",
+    "evidence_id",
+    "evidence_type",
+    "producer",
+    "project_id",
+    "subject_id",
+    "created_at",
+    "result",
+    "signature",
+    "content_sha256"
+  ],
   "additionalProperties": false,
   "properties": {
-    "schema_version": {"const": "1.0"},
-    "evidence_id": {"type": "string", "minLength": 1},
-    "evidence_type": {"enum": ["policy_decision", "postcondition", "provenance", "license", "tests", "security"]},
-    "producer": {"type": "string", "minLength": 1},
-    "project_id": {"type": "string", "minLength": 1},
-    "subject_id": {"type": "string", "minLength": 1},
-    "task_id": {"type": "string"},
-    "execution_id": {"type": "string"},
-    "actor_id": {"type": "string"},
-    "session_id": {"type": "string"},
-    "created_at": {"type": "string", "format": "date-time"},
-    "result": {"type": "object"},
+    "schema_version": {
+      "const": "1.0"
+    },
+    "evidence_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evidence_type": {
+      "enum": [
+        "policy_decision",
+        "postcondition",
+        "provenance",
+        "license",
+        "tests",
+        "security",
+        "transfer_sanitization",
+        "human_approval",
+        "destination_ownership",
+        "transfer_tests"
+      ]
+    },
+    "producer": {
+      "type": "string",
+      "minLength": 1
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "subject_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task_id": {
+      "type": "string"
+    },
+    "execution_id": {
+      "type": "string"
+    },
+    "actor_id": {
+      "type": "string"
+    },
+    "session_id": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "result": {
+      "type": "object"
+    },
     "artifact": {
       "type": "object",
-      "required": ["path", "sha256"],
+      "required": [
+        "path",
+        "sha256"
+      ],
       "additionalProperties": false,
       "properties": {
-        "path": {"type": "string", "minLength": 1},
-        "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
       }
     },
     "signature": {
       "type": "object",
-      "required": ["algorithm", "namespace", "identity", "publisher", "key_fingerprint"],
+      "required": [
+        "algorithm",
+        "namespace",
+        "identity",
+        "publisher",
+        "key_fingerprint"
+      ],
       "additionalProperties": false,
       "properties": {
-        "algorithm": {"const": "ssh-ed25519"},
-        "namespace": {"const": "pacify-x-trusted-evidence"},
-        "identity": {"type": "string", "minLength": 1},
-        "publisher": {"type": "string", "minLength": 1},
-        "key_fingerprint": {"type": "string", "minLength": 1}
+        "algorithm": {
+          "const": "ssh-ed25519"
+        },
+        "namespace": {
+          "const": "pacify-x-trusted-evidence"
+        },
+        "identity": {
+          "type": "string",
+          "minLength": 1
+        },
+        "publisher": {
+          "type": "string",
+          "minLength": 1
+        },
+        "key_fingerprint": {
+          "type": "string",
+          "minLength": 1
+        }
       }
     },
-    "content_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
-  }
+    "content_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "source_project_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "destination_project_id": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "description": "The shared runtime resolver additionally enforces byte/count limits, type-specific Boolean assessments, transfer project identities and signer producer/type grants."
 }

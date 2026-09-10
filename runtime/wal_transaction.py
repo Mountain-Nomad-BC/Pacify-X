@@ -21,6 +21,8 @@ from typing import Callable, Iterable, Mapping
 import uuid
 
 from .file_lock import FileLock
+from .json_io import bounded_canonical_json_bytes, decode_json_object, decode_json_value
+from .input_files import read_file_image
 
 
 SCHEMA_VERSION = "1.0"
@@ -31,12 +33,17 @@ MAX_TRANSACTION_BYTES = 64 * 1024 * 1024
 MAX_PENDING_TRANSACTIONS = 128
 MAX_INSPECTION_FILES = 4096
 MAX_INSPECTION_BYTES = 256 * 1024 * 1024
+MAX_MANIFEST_BYTES = 1024 * 1024
 _REPLACE_RETRY_DELAYS_SECONDS = (0.0, 0.01, 0.05, 0.15, 0.35, 0.75)
 _IDENTIFIER = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]{0,95}\Z")
 
 
 class WalIntegrityError(RuntimeError):
     """Raised when a journal or target cannot be reconciled without data loss."""
+
+
+class WalConflictError(WalIntegrityError):
+    """The exact source generation validated by the caller is no longer current."""
 
 
 @dataclass(frozen=True)
@@ -94,28 +101,95 @@ class JsonTransition:
 PreCommitValidator = Callable[[tuple[JsonTransition, ...]], None]
 
 
-def _canonical(value: object) -> bytes:
-    return (
-        json.dumps(
-            value,
-            sort_keys=True,
-            separators=(",", ":"),
-            ensure_ascii=False,
-            allow_nan=False,
-        ).encode("utf-8")
-        + b"\n"
-    )
+def _canonical(value: object, *, max_bytes=None) -> bytes:
+    return bounded_canonical_json_bytes(value, max_bytes=MAX_TRANSACTION_BYTES if max_bytes is None else max_bytes)
+
+
+def _bounded_text(value, limit):
+    if type(value) is not str or len(value) > limit:
+        raise ValueError('transaction text exceeds byte budget')
+    result = bytearray()
+    for start in range(0, len(value), 16384):
+        fragment = value[start:start + 16384].encode('utf-8')
+        if len(result) + len(fragment) > limit:
+            raise ValueError('transaction text exceeds byte budget')
+        result.extend(fragment)
+    return bytes(result)
+
+
+def _bounded_artifacts(artifacts):
+    items = []
+    for artifact in artifacts:
+        if len(items) >= MAX_ARTIFACTS:
+            raise ValueError(f'transaction must contain 1..{MAX_ARTIFACTS} artifacts')
+        if type(artifact) not in (JsonArtifact, JsonTextArtifact, TextArtifact, BytesArtifact):
+            raise TypeError('unsupported artifact type')
+        items.append(artifact)
+    if not items:
+        raise ValueError(f'transaction must contain 1..{MAX_ARTIFACTS} artifacts')
+    return tuple(items)
+
+
+def _bounded_image(path, *, limit=None):
+    """Bound allocation before acquisition, then recheck the opened file image."""
+    limit = MAX_TRANSACTION_BYTES if limit is None else limit
+    if type(limit) is not int or limit < 0:
+        raise WalIntegrityError('WAL aggregate byte budget exceeded')
+    limit = min(limit, MAX_TRANSACTION_BYTES)
+    before = path.lstat()
+    if not stat.S_ISREG(before.st_mode) or _is_symlink_or_reparse(path) or before.st_size > limit:
+        raise WalIntegrityError('WAL image is unsafe or exceeds byte budget')
+    if limit == 0:
+        raw = b''
+    else:
+        raw = bytes(read_file_image(path, before, limit=limit, deadline=time.monotonic() + 60))
+    after = path.lstat()
+    def signature(info):
+        return (info.st_dev, info.st_ino, info.st_size, info.st_mtime_ns, info.st_ctime_ns)
+    if signature(before) != signature(after) or len(raw) != after.st_size:
+        raise WalIntegrityError('WAL image changed during acquisition')
+    return raw
 
 
 def _strict_json_loads(value: str) -> object:
-    def reject_constant(token: str) -> object:
-        raise ValueError(f"non-standard JSON constant: {token}")
-
-    return json.loads(value, parse_constant=reject_constant)
+    return decode_json_value(_bounded_text(value, MAX_TRANSACTION_BYTES), max_bytes=MAX_TRANSACTION_BYTES)
 
 
 def _sha_bytes(value: bytes) -> str:
     return hashlib.sha256(value).hexdigest()
+
+
+def _attach_outcome(error, name, outcome):
+    """Best-effort diagnostics must never replace the causal exception."""
+    try:
+        setattr(error, name, dict(outcome))
+    except BaseException:
+        pass
+    try:
+        error.add_note(name + ': ' + json.dumps(outcome, sort_keys=True))
+    except BaseException:
+        pass
+
+
+class _wal_lock:
+    """Keep the causal failure if releasing its lock also fails."""
+
+    def __init__(self, path, timeout):
+        self.lock = FileLock(path, timeout_seconds=timeout)
+
+    def __enter__(self):
+        self.lock.__enter__()
+        return self
+
+    def __exit__(self, error_type, error, traceback):
+        try:
+            self.lock.__exit__(error_type, error, traceback)
+        except BaseException as release_error:
+            if error is None:
+                raise
+            _attach_outcome(error, 'wal_lock_release', {
+                'acknowledgement': 'failed', 'error_type': type(release_error).__name__})
+        return False
 
 
 def _fsync_directory(path: Path) -> None:
@@ -259,7 +333,8 @@ def _validate_manifest(value: object, transaction_id: str) -> dict[str, object]:
         role = record.get("role")
         path = record.get("path")
         if (
-            record.get("index") != index
+            type(record.get("index")) is not int
+            or record.get("index") != index
             or role not in ARTIFACT_ROLES
             or not isinstance(path, str)
             or not path
@@ -284,6 +359,11 @@ def _validate_manifest(value: object, transaction_id: str) -> dict[str, object]:
             before.get("sha256") is not None or before.get("stage") is not None
         ):
             raise WalIntegrityError(f"{transaction_id}: invalid absent before-image")
+        suffixes = ("json", "txt", "bin")
+        if after["stage"] not in {f"after/{index:04d}.{suffix}" for suffix in suffixes}:
+            raise WalIntegrityError(f"{transaction_id}: noncanonical staged after-image")
+        if before_exists and before["stage"] != after["stage"].replace("after/", "before/", 1):
+            raise WalIntegrityError(f"{transaction_id}: noncanonical staged before-image")
         intents.append(
             {"role": str(role), "path": path, "sha256": str(after["sha256"])}
         )
@@ -294,8 +374,8 @@ def _validate_manifest(value: object, transaction_id: str) -> dict[str, object]:
 
 def planned_write_boundaries(artifacts: Iterable[Artifact]) -> tuple[str, ...]:
     """Return every durable boundary a commit will expose to fault injection."""
-    items = tuple(artifacts)
-    boundaries: list[str] = []
+    items = _bounded_artifacts(artifacts)
+    boundaries: list[str] = ['intent:before_acceptance']
     for index, artifact in enumerate(items):
         if artifact.path.is_file():
             boundaries.append(f"journal:before:{index}")
@@ -359,7 +439,7 @@ class JsonWal:
     def _normalize(
         self, artifacts: Iterable[Artifact]
     ) -> tuple[tuple[Artifact, Path, bytes], ...]:
-        items = tuple(artifacts)
+        items = _bounded_artifacts(artifacts)
         if not 1 <= len(items) <= MAX_ARTIFACTS:
             raise ValueError(f"transaction must contain 1..{MAX_ARTIFACTS} artifacts")
         normalized: list[tuple[Artifact, Path, bytes]] = []
@@ -376,21 +456,25 @@ class JsonWal:
             targets.add(target)
             if isinstance(artifact, JsonArtifact):
                 try:
-                    rendered = _canonical(artifact.value)
+                    rendered = _canonical(artifact.value, max_bytes=MAX_TRANSACTION_BYTES - total)
                 except (TypeError, ValueError) as error:
                     raise ValueError(f"artifact is not strict JSON: {target}") from error
             elif isinstance(artifact, JsonTextArtifact):
                 if not isinstance(artifact.value, str):
                     raise ValueError(f"JSON text artifact is not a string: {target}")
+                if len(artifact.value) > MAX_TRANSACTION_BYTES - total:
+                    raise ValueError('transaction text exceeds byte budget')
+                rendered = _bounded_text(artifact.value, MAX_TRANSACTION_BYTES - total)
                 try:
-                    _strict_json_loads(artifact.value)
+                    decode_json_value(rendered, max_bytes=MAX_TRANSACTION_BYTES)
                 except ValueError as error:
                     raise ValueError(f"artifact is not strict JSON: {target}") from error
-                rendered = artifact.value.encode("utf-8")
             elif isinstance(artifact, TextArtifact):
                 if not isinstance(artifact.value, str):
                     raise ValueError(f"text artifact is not a string: {target}")
-                rendered = artifact.value.encode("utf-8")
+                if len(artifact.value) > MAX_TRANSACTION_BYTES - total:
+                    raise ValueError('transaction text exceeds byte budget')
+                rendered = _bounded_text(artifact.value, MAX_TRANSACTION_BYTES - total)
             elif isinstance(artifact, BytesArtifact):
                 if not isinstance(artifact.value, bytes):
                     raise ValueError(f"byte artifact is not bytes: {target}")
@@ -414,12 +498,24 @@ class JsonWal:
             raise ValueError(f"{label} escapes allowed root: {path}")
         return target
 
-    def _read_existing(self, artifact: Artifact, path: Path) -> bytes | None:
+    def read_source_image(self, path: Path, *, limit=MAX_TRANSACTION_BYTES) -> bytes | None:
+        """Capture one bounded raw input for parsing and exact commit expectations.
+
+        This creates no lock or journal and does not assert a multi-file snapshot.
+        Supply its digest (or None for absence) to commit for stale-intent refusal
+        under the cooperating WAL writer lock.
+        """
+        target = self._safe_target(path, label='source image')
+        if _inside(target, self.journal_root):
+            raise ValueError('source image cannot be inside the WAL journal')
+        return _bounded_image(target, limit=limit) if target.exists() else None
+
+    def _read_existing(self, artifact: Artifact, path: Path, *, limit=MAX_TRANSACTION_BYTES) -> bytes | None:
         if not path.exists():
             return None
         if not path.is_file() or path.is_symlink():
             raise WalIntegrityError(f"target is not a regular file: {path}")
-        raw = path.read_bytes()
+        raw = _bounded_image(path, limit=limit)
         if isinstance(artifact, (JsonArtifact, JsonTextArtifact)):
             try:
                 _strict_json_loads(raw.decode("utf-8"))
@@ -465,15 +561,19 @@ class JsonWal:
         if not path.is_file():
             return None
         try:
-            value = json.loads(path.read_text(encoding="utf-8"))
-        except (OSError, UnicodeError, json.JSONDecodeError) as error:
+            value = decode_json_object(_bounded_image(path, limit=MAX_MANIFEST_BYTES), max_bytes=MAX_MANIFEST_BYTES)
+        except (OSError, UnicodeError, ValueError) as error:
             raise WalIntegrityError(
                 f"{transaction.name}: manifest is unreadable"
             ) from error
         return _validate_manifest(value, transaction.name)
 
+    def _verify_retained_manifest(self, transaction, expected):
+        if self._load_manifest(transaction) != expected:
+            raise WalIntegrityError(f'{transaction.name}: retained manifest changed before acknowledgement')
+
     def _artifact_paths(
-        self, transaction: Path, record: Mapping[str, object]
+        self, transaction: Path, record: Mapping[str, object], *, image_reader=None
     ) -> tuple[Path, Path, Path | None, str, str | None]:
         try:
             relative = Path(str(record["path"]))
@@ -522,13 +622,48 @@ class JsonWal:
             raise WalIntegrityError(
                 f"{transaction.name}: artifact path escapes custody"
             )
-        if _sha_bytes(after.read_bytes()) != after_sha:
+        read = image_reader or _bounded_image
+        if _sha_bytes(read(after)) != after_sha:
             raise WalIntegrityError(f"{transaction.name}: staged after-image mismatch")
         if before is not None and (
-            not before.is_file() or _sha_bytes(before.read_bytes()) != before_sha
+            not before.is_file() or _sha_bytes(read(before)) != before_sha
         ):
             raise WalIntegrityError(f"{transaction.name}: staged before-image mismatch")
         return target, after, before, after_sha, before_sha
+
+    def _acquire_artifacts(self, transaction, manifest, *, require_after_images=False):
+        """Acquire and validate the complete bounded image set before target effects.
+
+        Immutable bytes are request-local. This is not a filesystem-wide snapshot
+        or a generation token; cooperative writers remain bound to the WAL lock.
+        """
+        manifest = _validate_manifest(manifest, transaction.name)
+        cache = {}
+        remaining = MAX_INSPECTION_BYTES
+        def read(path):
+            nonlocal remaining
+            if path not in cache:
+                image = _bounded_image(path, limit=remaining)
+                remaining -= len(image)
+                cache[path] = image
+            return cache[path]
+        acquired = []
+        seen = set()
+        for record in manifest['artifacts']:
+            target, after, _before, after_sha, before_sha = self._artifact_paths(
+                transaction, record, image_reader=read)
+            if target in seen:
+                raise WalIntegrityError(f"{transaction.name}: duplicate target")
+            seen.add(target)
+            if target.exists() and not target.is_file():
+                raise WalIntegrityError(f"{transaction.name}: target is not a regular file: {target}")
+            current = read(target) if target.exists() else None
+            current_sha = _sha_bytes(current) if current is not None else None
+            if current_sha != after_sha and (require_after_images or current_sha != before_sha):
+                label = 'committed target drift' if require_after_images else 'target changed outside transaction'
+                raise WalIntegrityError(f"{transaction.name}: {label}: {target}")
+            acquired.append((target, cache[after], after_sha, before_sha, current_sha))
+        return tuple(acquired)
 
     def _apply(
         self,
@@ -536,37 +671,20 @@ class JsonWal:
         manifest: Mapping[str, object],
         fault_injector: FaultInjector | None = None,
     ) -> None:
-        artifacts = manifest["artifacts"]
-        assert isinstance(artifacts, list)
-        seen: set[Path] = set()
-        for index, raw_record in enumerate(artifacts):
-            if not isinstance(raw_record, Mapping):
-                raise WalIntegrityError(
-                    f"{transaction.name}: artifact record is not an object"
-                )
-            target, after, _before, after_sha, before_sha = self._artifact_paths(
-                transaction, raw_record
-            )
-            if target in seen:
-                raise WalIntegrityError(f"{transaction.name}: duplicate target")
-            seen.add(target)
-            current = target.read_bytes() if target.is_file() else None
+        acquired = self._acquire_artifacts(transaction, manifest)
+        for index, (target, after, after_sha, before_sha, _observed) in enumerate(acquired):
+            # Recheck each target at its publication boundary. Staged bytes are
+            # never reopened after their verified acquisition.
+            current = _bounded_image(target) if target.exists() else None
             current_sha = _sha_bytes(current) if current is not None else None
             if current_sha == after_sha:
                 continue
             if current_sha != before_sha:
-                raise WalIntegrityError(
-                    f"{transaction.name}: target changed outside transaction: {target}"
-                )
-            _atomic_replace(
-                target,
-                after.read_bytes(),
-                label=f"target:{index}",
+                raise WalIntegrityError(f"{transaction.name}: target changed outside transaction: {target}")
+            _atomic_replace(target, after, label=f"target:{index}",
                 fault_injector=fault_injector,
-                prepared_path=target.with_name(
-                    f".{target.name}.wal-{transaction.name}-{index}.prepared"
-                ),
-            )
+                prepared_path=target.with_name(f".{target.name}.wal-{transaction.name}-{index}.prepared"))
+
 
     def _inspect_artifacts(
         self,
@@ -575,45 +693,13 @@ class JsonWal:
         *,
         require_after_images: bool,
     ) -> dict[str, int]:
-        """Validate staged images and targets without changing any path."""
-        artifacts = manifest["artifacts"]
-        assert isinstance(artifacts, list)
-        seen: set[Path] = set()
-        targets_before = 0
-        targets_after = 0
-        for raw_record in artifacts:
-            if not isinstance(raw_record, Mapping):
-                raise WalIntegrityError(
-                    f"{transaction.name}: artifact record is not an object"
-                )
-            target, _after, _before, after_sha, before_sha = self._artifact_paths(
-                transaction, raw_record
-            )
-            if target in seen:
-                raise WalIntegrityError(f"{transaction.name}: duplicate target")
-            seen.add(target)
-            if target.exists() and not target.is_file():
-                raise WalIntegrityError(
-                    f"{transaction.name}: target is not a regular file: {target}"
-                )
-            current = target.read_bytes() if target.is_file() else None
-            current_sha = _sha_bytes(current) if current is not None else None
-            if current_sha == after_sha:
-                targets_after += 1
-            elif current_sha == before_sha and not require_after_images:
-                targets_before += 1
-            else:
-                label = (
-                    "committed target drift"
-                    if require_after_images
-                    else "target changed outside transaction"
-                )
-                raise WalIntegrityError(f"{transaction.name}: {label}: {target}")
-        return {
-            "artifact_count": len(artifacts),
-            "targets_before": targets_before,
-            "targets_after": targets_after,
-        }
+        """Validate one acquired staged/target image set without changing paths."""
+        acquired = self._acquire_artifacts(transaction, manifest,
+            require_after_images=require_after_images)
+        targets_after = sum(current == after_sha for _, _, after_sha, _, current in acquired)
+        return {'artifact_count': len(acquired), 'targets_after': targets_after,
+                'targets_before': len(acquired) - targets_after}
+
 
     def _inspect_transaction(self, transaction: Path) -> dict[str, object]:
         manifest = self._load_manifest(transaction)
@@ -646,11 +732,13 @@ class JsonWal:
             return ()
         if not self._transactions_root.is_dir():
             raise WalIntegrityError("WAL transactions authority is not a directory")
-        transactions = tuple(
-            sorted(self._transactions_root.iterdir(), key=lambda path: path.name)
-        )
-        if len(transactions) > MAX_PENDING_TRANSACTIONS:
-            raise WalIntegrityError("pending WAL transaction bound exceeded")
+        transactions = []
+        with os.scandir(self._transactions_root) as entries:
+            for entry in entries:
+                if len(transactions) >= MAX_PENDING_TRANSACTIONS:
+                    raise WalIntegrityError('pending WAL transaction bound exceeded')
+                transactions.append(Path(entry.path))
+        transactions.sort(key=lambda path: path.name)
         for transaction in transactions:
             if (
                 not transaction.is_dir()
@@ -660,19 +748,32 @@ class JsonWal:
                 raise WalIntegrityError(
                     f"unexpected directory in WAL authority: {transaction.name}"
                 )
-        return transactions
+        if len(transactions) > 1:
+            raise WalIntegrityError('pending legacy WAL chronology is unknown; explicit recovery disposition required')
+        return tuple(transactions)
 
     def _inspection_fingerprint(self) -> str:
         if not self._transactions_root.exists():
             return "absent"
         records: list[dict[str, object]] = []
         total_bytes = 0
-        paths = sorted(
-            self._transactions_root.rglob("*"),
-            key=lambda path: path.relative_to(self._transactions_root).as_posix(),
-        )
-        if len(paths) > MAX_INSPECTION_FILES:
-            raise WalIntegrityError("WAL inspection file bound exceeded")
+        paths = []
+        pending = [self._transactions_root]
+        while pending:
+            parent = pending.pop()
+            if len(parent.relative_to(self._transactions_root).parts) > 128:
+                raise WalIntegrityError('WAL inspection depth bound exceeded')
+            with os.scandir(parent) as entries:
+                for entry in entries:
+                    if len(paths) >= MAX_INSPECTION_FILES:
+                        raise WalIntegrityError('WAL inspection file bound exceeded')
+                    path = Path(entry.path)
+                    if _is_symlink_or_reparse(path):
+                        raise WalIntegrityError('link in WAL authority')
+                    paths.append(path)
+                    if entry.is_dir(follow_symlinks=False):
+                        pending.append(path)
+        paths.sort(key=lambda path: path.relative_to(self._transactions_root).as_posix())
         for path in paths:
             relative = path.relative_to(self._transactions_root).as_posix()
             if path.is_symlink():
@@ -682,7 +783,7 @@ class JsonWal:
                 continue
             if not path.is_file():
                 raise WalIntegrityError(f"non-regular WAL entry: {relative}")
-            payload = path.read_bytes()
+            payload = _bounded_image(path, limit=MAX_INSPECTION_BYTES - total_bytes)
             total_bytes += len(payload)
             if total_bytes > MAX_INSPECTION_BYTES:
                 raise WalIntegrityError("WAL inspection byte bound exceeded")
@@ -694,6 +795,14 @@ class JsonWal:
                     "sha256": _sha_bytes(payload),
                 }
             )
+            if path.name == 'manifest.json' and len(path.relative_to(self._transactions_root).parts) == 2:
+                manifest = _validate_manifest(decode_json_object(payload, max_bytes=MAX_MANIFEST_BYTES), path.parent.name)
+                for artifact in manifest['artifacts']:
+                    target = self._safe_target(Path(artifact['path']), label='inspection target')
+                    raw = _bounded_image(target, limit=MAX_INSPECTION_BYTES - total_bytes) if target.exists() else None
+                    total_bytes += len(raw) if raw is not None else 0
+                    records.append({'path': artifact['path'], 'kind': 'target',
+                                    'sha256': _sha_bytes(raw) if raw is not None else None})
         return _sha_bytes(_canonical(records))
 
     def _archive_unprepared(self, transaction: Path) -> Path:
@@ -727,42 +836,66 @@ class JsonWal:
         return destination
 
     def _recover_locked(self) -> dict[str, object]:
-        self._transactions_root.mkdir(parents=True, exist_ok=True)
         completed: list[str] = []
         rolled_back: list[str] = []
-        for transaction in self._pending_transactions():
-            inspection = self._inspect_transaction(transaction)
-            manifest = self._load_manifest(transaction)
-            if manifest is None:
-                self._archive_unprepared(transaction)
-                rolled_back.append(transaction.name)
-                continue
-            if manifest["phase"] != "committed":
-                self._apply(transaction, manifest)
-                manifest = self._write_manifest(
-                    transaction, manifest, "committed", None
-                )
-                self._inspect_artifacts(
-                    transaction, manifest, require_after_images=True
-                )
-            elif inspection["required_action"] != "archive_committed":
-                raise WalIntegrityError(
-                    f"{transaction.name}: invalid committed recovery action"
-                )
-            self._archive_committed(transaction)
-            completed.append(transaction.name)
-        return {
+        outcome = {
             "schema_version": SCHEMA_VERSION,
             "completed": completed,
             "rolled_back": rolled_back,
-            "valid": True,
+            "valid": False,
+            "active_transaction": None,
+            "active_phase": "initializing",
+            "target_effects_may_have_occurred": False,
+            "journal_effects_may_have_occurred": True,
         }
+        try:
+            self._transactions_root.mkdir(parents=True, exist_ok=True)
+            outcome['active_phase'] = 'inventory'
+            for transaction in self._pending_transactions():
+                outcome.update(active_transaction=transaction.name, active_phase='inspecting',
+                               active_target_effects_may_have_occurred=False)
+                manifest = self._load_manifest(transaction)
+                if manifest is None:
+                    outcome['active_phase'] = 'archiving_unprepared'
+                    self._archive_unprepared(transaction)
+                    rolled_back.append(transaction.name)
+                    continue
+                if manifest["phase"] != "committed":
+                    outcome.update(active_phase='applying', target_effects_may_have_occurred=True,
+                                   active_target_effects_may_have_occurred=True)
+                    self._apply(transaction, manifest)
+                    outcome['active_phase'] = 'publishing_committed_manifest'
+                    manifest = self._write_manifest(transaction, manifest, "committed", None)
+                    self._inspect_artifacts(transaction, manifest, require_after_images=True)
+                else:
+                    self._inspect_artifacts(transaction, manifest, require_after_images=True)
+                outcome['active_phase'] = 'archiving_committed'
+                self._archive_committed(transaction)
+                completed.append(transaction.name)
+        except BaseException as error:
+            _attach_outcome(error, 'wal_recovery', outcome)
+            raise
+        outcome.update(valid=True, active_transaction=None, active_phase='settled',
+                       target_effects_may_have_occurred=bool(completed))
+        return outcome
 
     def recover(self) -> dict[str, object]:
         """Recover every retained transaction under the process-bound WAL lock."""
-        self.journal_root.mkdir(parents=True, exist_ok=True)
-        with FileLock(self._lock_path, timeout_seconds=self.lock_timeout_seconds):
-            return self._recover_locked()
+        outcome = {'state': 'not_started', 'acknowledgement': 'pending'}
+        try:
+            self.journal_root.mkdir(parents=True, exist_ok=True)
+            with _wal_lock(self._lock_path, self.lock_timeout_seconds):
+                outcome = self._recover_locked()
+                outcome['acknowledgement'] = 'pending'
+        except BaseException as error:
+            outcome = dict(getattr(error, 'wal_recovery', outcome))
+            outcome['acknowledgement'] = 'failed'
+            if hasattr(error, 'wal_lock_release'):
+                outcome['lock_release'] = error.wal_lock_release
+            _attach_outcome(error, 'wal_recovery', outcome)
+            raise
+        outcome['acknowledgement'] = 'acknowledged'
+        return outcome
 
     def inspect(self) -> dict[str, object]:
         """Inspect pending recovery without creating, locking, or changing paths."""
@@ -795,25 +928,94 @@ class JsonWal:
             "inspection_sha256": after,
         }
 
-    def commit(
+    def _expectations(self, value, *, targets=None):
+        if value is None:
+            return None
+        if type(value) is not dict or len(value) > MAX_INSPECTION_FILES:
+            raise ValueError('expected source images must be a bounded actual object')
+        normalized = {}
+        for name, digest in value.items():
+            if type(name) is not str or not name or len(name) > 4096:
+                raise ValueError('invalid expected image path')
+            path = self._safe_target(Path(name), label='expected input')
+            relative = path.relative_to(self.allowed_root).as_posix()
+            if relative in normalized or name != relative:
+                raise ValueError('expected image paths must be canonical and unique')
+            if digest is not None and (type(digest) is not str or re.fullmatch(r'[0-9a-f]{64}', digest) is None):
+                raise ValueError('expected image must be an exact digest or explicit absence')
+            normalized[relative] = digest
+        if targets is not None and set(normalized) != set(targets):
+            raise ValueError('expected before-images must cover the exact target set')
+        return normalized
+
+    def commit(self, artifacts: Iterable[Artifact], *, transaction_id=None,
+               fault_injector=None, expected_before=None, expected_inputs=None):
+        """Commit with explicit old-recovery and new-transaction effect outcomes.
+
+        Callers that computed an after-image earlier must supply exact raw
+        expected_before images. Legacy callers without them retain only WAL
+        crash recovery, not protection from stale read/modify/write intent.
+        """
+        outcome = {'recovery': {'state': 'not_requested'}, 'transaction_phase': 'not_admitted',
+                   'intent_accepted': False, 'publication': 'not_started', 'acknowledgement': 'pending'}
+        try:
+            result = self._commit(artifacts, transaction_id=transaction_id,
+                                  fault_injector=fault_injector, expected_before=expected_before,
+                                  expected_inputs=expected_inputs, outcome=outcome)
+        except BaseException as error:
+            outcome['acknowledgement'] = 'failed'
+            if hasattr(error, 'wal_lock_release'):
+                outcome['lock_release'] = error.wal_lock_release
+            _attach_outcome(error, 'wal_outcome', outcome)
+            raise
+        outcome['acknowledgement'] = 'acknowledged'
+        return {**result, 'outcome': outcome}
+
+    def _commit(
         self,
         artifacts: Iterable[Artifact],
         *,
         transaction_id: str | None = None,
         fault_injector: FaultInjector | None = None,
+        expected_before=None, expected_inputs=None, outcome=None,
     ) -> dict[str, object]:
         """Durably commit related JSON artifacts or leave a recoverable WAL."""
         items = self._normalize(artifacts)
         identifier = transaction_id or f"tx-{uuid.uuid4().hex}"
         if not _IDENTIFIER.fullmatch(identifier):
             raise ValueError("transaction_id must be a bounded identifier")
+        targets = [target.relative_to(self.allowed_root).as_posix() for _artifact, target, _after in items]
+        expected_before = self._expectations(expected_before, targets=targets)
+        expected_inputs = self._expectations(expected_inputs)
         self.journal_root.mkdir(parents=True, exist_ok=True)
-        with FileLock(self._lock_path, timeout_seconds=self.lock_timeout_seconds):
-            self._recover_locked()
-            before_images = [
-                self._read_existing(artifact, target)
-                for artifact, target, _ in items
-            ]
+        with _wal_lock(self._lock_path, self.lock_timeout_seconds):
+            outcome['recovery'] = {'state': 'started', 'effects_may_have_occurred': True}
+            try:
+                outcome['recovery'] = self._recover_locked()
+            except BaseException as error:
+                outcome['recovery'] = getattr(error, 'wal_recovery', outcome['recovery'])
+                raise
+            if fault_injector is not None:
+                fault_injector('intent:before_acceptance')
+            before_images = []
+            image_bytes = sum(len(after) for _artifact, _target, after in items)
+            for artifact, target, _after in items:
+                before = self._read_existing(artifact, target, limit=MAX_TRANSACTION_BYTES - image_bytes)
+                image_bytes += len(before) if before is not None else 0
+                before_images.append(before)
+            if expected_before is not None:
+                actual = {name: _sha_bytes(raw) if raw is not None else None
+                          for name, raw in zip(targets, before_images, strict=True)}
+                if actual != expected_before:
+                    raise WalConflictError('validated before-image generation changed')
+            if expected_inputs is not None:
+                input_bytes = 0
+                for name, expected in expected_inputs.items():
+                    target = self._safe_target(Path(name), label='expected input')
+                    raw = _bounded_image(target, limit=MAX_INSPECTION_BYTES - input_bytes) if target.exists() else None
+                    input_bytes += len(raw) if raw is not None else 0
+                    if (_sha_bytes(raw) if raw is not None else None) != expected:
+                        raise WalConflictError('validated read dependency changed: ' + name)
             if self.precommit_validator is not None:
                 transitions = tuple(
                     JsonTransition(
@@ -836,6 +1038,8 @@ class JsonWal:
                 or (self._committed_root / identifier).exists()
             ):
                 raise ValueError(f"transaction_id has already been used: {identifier}")
+            outcome.update(intent_accepted=True, transaction_phase='preparing',
+                           transaction_id=identifier, expected_before_supplied=expected_before is not None)
             transaction.mkdir(parents=False)
             _fsync_directory(self._transactions_root)
             records: list[dict[str, object]] = []
@@ -894,11 +1098,20 @@ class JsonWal:
             manifest = self._write_manifest(
                 transaction, manifest, "applying", fault_injector
             )
+            outcome.update(transaction_phase='applying', publication='may_have_occurred')
             self._apply(transaction, manifest, fault_injector)
+            outcome['publication'] = 'targets_published'
+            self._verify_retained_manifest(transaction, manifest)
             manifest = self._write_manifest(
                 transaction, manifest, "committed", fault_injector
             )
+            outcome['transaction_phase'] = 'committed'
+            self._verify_retained_manifest(transaction, manifest)
+            self._inspect_artifacts(transaction, manifest, require_after_images=True)
             committed = self._archive_committed(transaction, fault_injector)
+            outcome['journal'] = committed.as_posix()
+            self._verify_retained_manifest(committed, manifest)
+            self._inspect_artifacts(committed, manifest, require_after_images=True)
             return {
                 "schema_version": SCHEMA_VERSION,
                 "transaction_id": identifier,

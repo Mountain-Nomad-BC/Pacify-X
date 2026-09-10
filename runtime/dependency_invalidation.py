@@ -3,9 +3,19 @@
 from __future__ import annotations
 
 from collections import defaultdict, deque
-import json
 from pathlib import Path
 from typing import Any, Iterable, Mapping
+
+from .generated_dependency import (
+    GRAPH_SCHEMA as GENERATED_GRAPH_SCHEMA,
+    MAX_EDGES,
+    MAX_NODES,
+    dependency_identity,
+    generated_dependency_graph,
+    strongly_connected_components,
+)
+from .json_io import bounded_json_text, load_json_object
+from .archive_io import portable_member_name, reject_path_links
 
 
 SCHEMA_VERSION = "px.dependency-authority/1.0"
@@ -28,104 +38,172 @@ REQUIRED_KINDS = frozenset(
 
 
 def load_dependency_authority(root: Path) -> dict[str, Any]:
-    payload = json.loads(
-        (root.resolve() / "registry/dependency_authority.json").read_text(
-            encoding="utf-8"
-        )
-    )
-    if not isinstance(payload, dict):
-        raise ValueError("dependency authority must be an object")
-    return payload
+    reject_path_links(root)
+    path = root / "registry/dependency_authority.json"
+    reject_path_links(path)
+    return load_json_object(path, max_bytes=1024 * 1024)
+
+
+def _validate_policy_shape(payload: object) -> None:
+    bounded_json_text(payload, max_bytes=1024 * 1024)
+    if type(payload) is not dict or payload.get("schema_version") != SCHEMA_VERSION:
+        raise ValueError("unsupported dependency authority schema")
+    required = {
+        "schema_version",
+        "node_kind_count",
+        "cycle_policy",
+        "allowed_cycle_components",
+        "node_kinds",
+    }
+    if set(payload) != required:
+        raise ValueError("dependency authority fields are incomplete or unknown")
+    records = payload["node_kinds"]
+    if type(records) is not list or len(records) != len(REQUIRED_KINDS):
+        raise ValueError("dependency authority requires every registered node kind")
+    seen = set()
+    for record in records:
+        if type(record) is not dict:
+            raise ValueError("dependency kind record must be an object")
+        for field in ("kind", "canonical_owner", "invalidation_owner", "rebuild_gate"):
+            if field not in record:
+                raise ValueError("missing " + field)
+            dependency_identity(record[field])
+        if set(record) != {
+            "kind",
+            "canonical_owner",
+            "invalidation_owner",
+            "rebuild_gate",
+        }:
+            raise ValueError("unknown dependency kind record field")
+        kind = record["kind"]
+        if kind not in REQUIRED_KINDS or kind in seen:
+            raise ValueError("dependency kinds must be known and unique")
+        seen.add(kind)
+        for field in ("canonical_owner", "invalidation_owner"):
+            portable_member_name(record[field], allow_directory=False)
+    if type(payload["node_kind_count"]) is not int or payload["node_kind_count"] != len(
+        records
+    ):
+        raise ValueError("node_kind_count does not match node_kinds")
+    if type(payload["cycle_policy"]) is not str or payload["cycle_policy"] not in {
+        "reject",
+        "declared_components",
+    }:
+        raise ValueError("cycle_policy must be reject or declared_components")
+    allowed = payload["allowed_cycle_components"]
+    if type(allowed) is not list or len(allowed) > 1000:
+        raise ValueError("allowed cycle components require a bounded list")
+    components = set()
+    count = 0
+    for component in allowed:
+        if type(component) is not list or not 2 <= len(component) <= MAX_NODES:
+            raise ValueError("allowed cycle component must contain bounded node IDs")
+        values = tuple(sorted(dependency_identity(value) for value in component))
+        count += len(values)
+        if len(set(values)) != len(values) or values in components or count > MAX_NODES:
+            raise ValueError("allowed cycle identities must be bounded and unique")
+        components.add(values)
 
 
 def validate_dependency_authority(
     root: Path, authority: Mapping[str, object] | None = None
 ) -> dict[str, object]:
-    root = root.resolve()
     try:
-        payload = dict(authority) if authority is not None else load_dependency_authority(root)
-    except (OSError, ValueError, json.JSONDecodeError) as error:
-        return {"schema_version": SCHEMA_VERSION, "valid": False, "errors": [str(error)]}
-    errors: list[str] = []
-    if payload.get("schema_version") != SCHEMA_VERSION:
-        errors.append(f"schema_version must be {SCHEMA_VERSION}")
-    records = payload.get("node_kinds")
-    if not isinstance(records, list):
-        records = []
-        errors.append("node_kinds must be a list")
-    seen: set[str] = set()
-    for index, record in enumerate(records):
-        if not isinstance(record, Mapping):
-            errors.append(f"node_kinds[{index}] must be an object")
-            continue
-        kind = str(record.get("kind") or "")
-        if not kind or kind in seen:
-            errors.append(f"node_kinds[{index}] kind must be non-empty and unique")
-        seen.add(kind)
-        for field in ("canonical_owner", "invalidation_owner", "rebuild_gate"):
-            value = str(record.get(field) or "")
-            if not value:
-                errors.append(f"{kind or index} missing {field}")
-        for field in ("canonical_owner", "invalidation_owner"):
-            value = str(record.get(field) or "")
-            if value:
-                path = (root / value).resolve()
-                try:
-                    path.relative_to(root)
-                except ValueError:
-                    errors.append(f"{kind}.{field} escapes the repository")
-                else:
-                    if not path.is_file():
-                        errors.append(f"{kind}.{field} does not exist: {value}")
-    missing = sorted(REQUIRED_KINDS - seen)
-    unknown = sorted(seen - REQUIRED_KINDS)
-    if missing:
-        errors.append(f"missing dependency kinds: {missing}")
-    if unknown:
-        errors.append(f"unknown dependency kinds: {unknown}")
-    if payload.get("node_kind_count") != len(records):
-        errors.append("node_kind_count does not match node_kinds")
-    if payload.get("cycle_policy") not in {"reject", "declared_components"}:
-        errors.append("cycle_policy must be reject or declared_components")
-    allowed = payload.get("allowed_cycle_components", [])
-    if not isinstance(allowed, list) or any(
-        not isinstance(item, list) or len(item) < 2 for item in allowed
+        reject_path_links(root)
+        resolved = root.resolve(strict=True)
+        payload = (
+            authority if authority is not None else load_dependency_authority(root)
+        )
+        _validate_policy_shape(payload)
+        for record in payload["node_kinds"]:
+            for field in ("canonical_owner", "invalidation_owner"):
+                path = resolved / record[field]
+                reject_path_links(path)
+                if not path.resolve().is_relative_to(resolved) or not path.is_file():
+                    raise ValueError(
+                        f"{record['kind']}.{field} does not exist within repository"
+                    )
+        return {
+            "schema_version": SCHEMA_VERSION,
+            "valid": True,
+            "node_kind_count": len(payload["node_kinds"]),
+            "errors": [],
+        }
+    except (OSError, TypeError, ValueError) as error:
+        return {
+            "schema_version": SCHEMA_VERSION,
+            "valid": False,
+            "errors": [str(error)],
+        }
+
+
+def _graph_inputs(nodes, edges):
+    if isinstance(nodes, (str, bytes, Mapping)) or isinstance(
+        edges, (str, bytes, Mapping)
     ):
-        errors.append("allowed_cycle_components must contain node-ID lists")
-    return {
-        "schema_version": SCHEMA_VERSION,
-        "valid": not errors,
-        "node_kind_count": len(records),
-        "errors": errors,
-    }
+        raise ValueError("dependency nodes and edges require record iterables")
+    normalized = {}
+    normalized_edges = set()
+    input_bytes = 0
+    try:
+        node_iterator, edge_iterator = iter(nodes), iter(edges)
+    except TypeError as error:
+        raise ValueError("dependency nodes and edges must be iterable") from error
+
+    def identity(value):
+        nonlocal input_bytes
+        value = dependency_identity(value)
+        input_bytes += len(value.encode("utf-8"))
+        if input_bytes > 32 * 1024 * 1024:
+            raise ValueError("dependency graph identity byte budget exceeded")
+        return value
+
+    for count, item in enumerate(node_iterator, 1):
+        if count > MAX_NODES:
+            raise ValueError("dependency node budget exceeded")
+        if type(item) is not dict or set(item) != {"node_id", "kind", "revision"}:
+            raise ValueError("dependency node record is malformed")
+        node_id, revision = identity(item["node_id"]), identity(item["revision"])
+        kind = item["kind"]
+        if node_id in normalized:
+            raise ValueError("node ID must be non-empty and unique")
+        if type(kind) is not str or kind not in REQUIRED_KINDS:
+            raise ValueError("unknown dependency kind")
+        normalized[node_id] = {"node_id": node_id, "kind": kind, "revision": revision}
+    for count, item in enumerate(edge_iterator, 1):
+        if count > MAX_EDGES:
+            raise ValueError("dependency edge budget exceeded")
+        if type(item) is not dict or set(item) != {"dependency", "consumer"}:
+            raise ValueError("dependency edge record is malformed")
+        dependency, consumer = identity(item["dependency"]), identity(item["consumer"])
+        if dependency not in normalized or consumer not in normalized:
+            raise ValueError(f"unknown dependency edge: {dependency!r} -> {consumer!r}")
+        normalized_edges.add((dependency, consumer))
+    return normalized, normalized_edges
 
 
 def _cycles(nodes: set[str], edges: set[tuple[str, str]]) -> list[list[str]]:
-    adjacency: dict[str, list[str]] = defaultdict(list)
-    for dependency, consumer in edges:
-        adjacency[dependency].append(consumer)
-    active: list[str] = []
-    active_set: set[str] = set()
-    visited: set[str] = set()
-    found: set[tuple[str, ...]] = set()
+    if len(nodes) > MAX_NODES or len(edges) > MAX_EDGES:
+        raise ValueError("dependency graph cycle input budget exceeded")
+    components = strongly_connected_components(sorted(nodes), sorted(edges))
+    return sorted(
+        component
+        for component in components
+        if len(component) > 1 or (component[0], component[0]) in edges
+    )
 
-    def visit(node: str) -> None:
-        visited.add(node)
-        active.append(node)
-        active_set.add(node)
-        for consumer in sorted(adjacency.get(node, ())):
-            if consumer not in visited:
-                visit(consumer)
-            elif consumer in active_set:
-                start = active.index(consumer)
-                found.add(tuple(sorted(set(active[start:]))))
-        active.pop()
-        active_set.remove(node)
 
-    for node in sorted(nodes):
-        if node not in visited:
-            visit(node)
-    return [list(item) for item in sorted(found)]
+def _check_cycles(cycles, policy):
+    allowed = (
+        set()
+        if policy["cycle_policy"] == "reject"
+        else {
+            tuple(sorted(component)) for component in policy["allowed_cycle_components"]
+        }
+    )
+    undeclared = [cycle for cycle in cycles if tuple(cycle) not in allowed]
+    if undeclared:
+        raise ValueError(f"undeclared dependency cycles: {undeclared}")
 
 
 def build_dependency_graph(
@@ -135,53 +213,25 @@ def build_dependency_graph(
     *,
     authority: Mapping[str, object] | None = None,
 ) -> dict[str, object]:
-    """Build a validated graph whose edges point dependency -> consumer."""
-    root = root.resolve()
-    policy = dict(authority) if authority is not None else load_dependency_authority(root)
-    authority_report = validate_dependency_authority(root, policy)
-    if not authority_report["valid"]:
-        raise ValueError("invalid dependency authority: " + "; ".join(authority_report["errors"]))
-    errors: list[str] = []
-    normalized_nodes: dict[str, dict[str, str]] = {}
-    for item in nodes:
-        node_id = str(item.get("node_id") or "")
-        kind = str(item.get("kind") or "")
-        revision = str(item.get("revision") or "")
-        if not node_id or node_id in normalized_nodes:
-            errors.append(f"node ID must be non-empty and unique: {node_id!r}")
-            continue
-        if kind not in REQUIRED_KINDS:
-            errors.append(f"{node_id}: unknown dependency kind {kind!r}")
-        if not revision:
-            errors.append(f"{node_id}: revision is required")
-        normalized_nodes[node_id] = {"node_id": node_id, "kind": kind, "revision": revision}
-    normalized_edges: set[tuple[str, str]] = set()
-    for item in edges:
-        dependency = str(item.get("dependency") or "")
-        consumer = str(item.get("consumer") or "")
-        if dependency not in normalized_nodes or consumer not in normalized_nodes:
-            errors.append(f"unknown dependency edge: {dependency!r} -> {consumer!r}")
-            continue
-        normalized_edges.add((dependency, consumer))
-    cycles = _cycles(set(normalized_nodes), normalized_edges)
-    allowed = {
-        tuple(sorted(map(str, component)))
-        for component in policy.get("allowed_cycle_components", [])
-    }
-    undeclared = [cycle for cycle in cycles if tuple(cycle) not in allowed]
-    if undeclared:
-        errors.append(f"undeclared dependency cycles: {undeclared}")
-    if errors:
-        raise ValueError("; ".join(errors))
-    return {
+    """Build bounded typed graph inputs whose edges point dependency -> consumer."""
+    policy = authority if authority is not None else load_dependency_authority(root)
+    report = validate_dependency_authority(root, policy)
+    if not report["valid"]:
+        raise ValueError("invalid dependency authority: " + "; ".join(report["errors"]))
+    normalized, normalized_edges = _graph_inputs(nodes, edges)
+    cycles = _cycles(set(normalized), normalized_edges)
+    _check_cycles(cycles, policy)
+    result = {
         "schema_version": GRAPH_SCHEMA,
-        "nodes": [normalized_nodes[key] for key in sorted(normalized_nodes)],
+        "nodes": [normalized[key] for key in sorted(normalized)],
         "edges": [
             {"dependency": dependency, "consumer": consumer}
             for dependency, consumer in sorted(normalized_edges)
         ],
         "cycle_components": cycles,
     }
+    bounded_json_text(result, max_bytes=32 * 1024 * 1024)
+    return result
 
 
 def compute_invalidation_cone(
@@ -190,60 +240,87 @@ def compute_invalidation_cone(
     *,
     authority: Mapping[str, object],
 ) -> dict[str, object]:
-    """Propagate revision drift while retaining all historical node records."""
-    nodes = {
-        str(item["node_id"]): item
-        for item in graph.get("nodes", [])
-        if isinstance(item, Mapping) and item.get("node_id")
-    }
-    adjacency: dict[str, set[str]] = defaultdict(set)
-    for edge in graph.get("edges", []):
-        if isinstance(edge, Mapping):
-            adjacency[str(edge.get("dependency"))].add(str(edge.get("consumer")))
-    unknown = sorted(set(map(str, current_revisions)) - set(nodes))
-    if unknown:
-        raise ValueError(f"current revisions contain unknown dependency nodes: {unknown}")
+    """Propagate supplied revision drift; expose bindings not evaluated by this call."""
+    bounded_json_text(graph, max_bytes=32 * 1024 * 1024)
+    _validate_policy_shape(authority)
+    if (
+        type(graph) is not dict
+        or graph.get("schema_version") != GRAPH_SCHEMA
+        or set(graph) != {"schema_version", "nodes", "edges", "cycle_components"}
+        or type(graph["nodes"]) is not list
+        or type(graph["edges"]) is not list
+    ):
+        raise ValueError("unsupported or malformed dependency graph")
+    nodes, edges = _graph_inputs(graph["nodes"], graph["edges"])
+    cycles = _cycles(set(nodes), edges)
+    _check_cycles(cycles, authority)
+    if graph["cycle_components"] != cycles:
+        raise ValueError("dependency graph cycle metadata is inconsistent")
+    if not isinstance(current_revisions, Mapping) or len(current_revisions) > MAX_NODES:
+        raise ValueError("current revisions require a bounded mapping")
+    revisions = {}
+    revision_bytes = 0
+    for count, (node_id, revision) in enumerate(current_revisions.items(), 1):
+        if count > MAX_NODES:
+            raise ValueError("current revision count budget exceeded")
+        node_id, revision = dependency_identity(node_id), dependency_identity(revision)
+        revision_bytes += len(node_id.encode("utf-8")) + len(revision.encode("utf-8"))
+        if revision_bytes > 32 * 1024 * 1024:
+            raise ValueError("current revision byte budget exceeded")
+        if node_id not in nodes or node_id in revisions:
+            raise ValueError(
+                "current revisions contain unknown or duplicate dependency nodes"
+            )
+        revisions[node_id] = revision
     seeds = sorted(
         node_id
-        for node_id, revision in current_revisions.items()
-        if str(revision) != str(nodes[str(node_id)].get("revision"))
+        for node_id, revision in revisions.items()
+        if revision != nodes[node_id]["revision"]
     )
+    adjacency = defaultdict(list)
+    for dependency, consumer in sorted(edges):
+        adjacency[dependency].append(consumer)
     depths = {node_id: 0 for node_id in seeds}
     queue = deque(seeds)
     while queue:
         node_id = queue.popleft()
-        for consumer in sorted(adjacency.get(node_id, ())):
+        for consumer in adjacency[node_id]:
             if consumer not in depths:
                 depths[consumer] = depths[node_id] + 1
                 queue.append(consumer)
     gates = {
-        str(record["kind"]): str(record["rebuild_gate"])
-        for record in authority.get("node_kinds", [])
-        if isinstance(record, Mapping)
+        record["kind"]: record["rebuild_gate"] for record in authority["node_kinds"]
     }
     stale = [
         {
             "node_id": node_id,
-            "kind": str(nodes[node_id].get("kind")),
-            "recorded_revision": str(nodes[node_id].get("revision")),
-            "current_revision": (
-                str(current_revisions[node_id]) if node_id in current_revisions else None
-            ),
+            "kind": nodes[node_id]["kind"],
+            "recorded_revision": nodes[node_id]["revision"],
+            "current_revision": revisions.get(node_id),
             "depth": depths[node_id],
-            "reason": "revision_drift" if depths[node_id] == 0 else "dependency_invalidated",
-            "required_rebuild_gate": gates.get(str(nodes[node_id].get("kind"))),
+            "reason": "revision_drift"
+            if depths[node_id] == 0
+            else "dependency_invalidated",
+            "required_rebuild_gate": gates[nodes[node_id]["kind"]],
         }
         for node_id in sorted(depths, key=lambda value: (depths[value], value))
     ]
-    return {
+    result = {
         "schema_version": "px.invalidation-cone/1.0",
         "valid": True,
         "seed_nodes": seeds,
         "direct_consumers": [item["node_id"] for item in stale if item["depth"] == 1],
-        "transitive_consumers": [item["node_id"] for item in stale if item["depth"] > 1],
+        "transitive_consumers": [
+            item["node_id"] for item in stale if item["depth"] > 1
+        ],
         "stale_nodes": stale,
         "historical_records_retained": True,
+        "revision_scope": "provided-bindings-only",
+        "complete_revision_coverage": len(revisions) == len(nodes),
+        "unevaluated_nodes": sorted(set(nodes) - set(revisions)),
     }
+    bounded_json_text(result, max_bytes=32 * 1024 * 1024)
+    return result
 
 
 def adapt_generated_dependency_graph(
@@ -252,23 +329,63 @@ def adapt_generated_dependency_graph(
     revisions: Mapping[str, object],
     default_kind: str = "source",
 ) -> tuple[list[dict[str, str]], list[dict[str, str]]]:
-    """Adapt generated ``from``/``to`` edges into universal graph inputs."""
-    edges: list[dict[str, str]] = []
-    node_ids: set[str] = set()
-    for item in payload.get("edges", []):
-        if not isinstance(item, Mapping):
-            continue
-        dependency = str(item.get("from") or "")
-        consumer = str(item.get("to") or "")
-        if dependency and consumer:
-            node_ids.update((dependency, consumer))
-            edges.append({"dependency": dependency, "consumer": consumer})
-    nodes = [
-        {
-            "node_id": node_id,
-            "kind": default_kind,
-            "revision": str(revisions.get(node_id) or ""),
-        }
-        for node_id in sorted(node_ids)
+    """Adapt canonical source/target edges, or explicit legacy from/to input."""
+    bounded_json_text(payload, max_bytes=16 * 1024 * 1024)
+    if type(payload) is not dict or not isinstance(revisions, Mapping):
+        raise ValueError("generated graph and revision bindings must be mappings")
+    if type(default_kind) is not str or default_kind not in REQUIRED_KINDS:
+        raise ValueError("unknown generated graph dependency kind")
+    canonical = payload.get("schema_version") == GENERATED_GRAPH_SCHEMA
+    if "schema_version" in payload and not canonical:
+        raise ValueError("unsupported generated graph schema")
+    if canonical and payload.get("valid") is not True:
+        raise ValueError("generated graph is not valid")
+    raw_nodes, raw_edges = payload.get("nodes", []), payload.get("edges")
+    if (
+        type(raw_nodes) is not list
+        or len(raw_nodes) > MAX_NODES
+        or type(raw_edges) is not list
+        or len(raw_edges) > MAX_EDGES
+    ):
+        raise ValueError("generated graph nodes/edges require bounded lists")
+    node_ids = [dependency_identity(node) for node in raw_nodes]
+    if len(set(node_ids)) != len(node_ids):
+        raise ValueError("duplicate generated graph node identity")
+    declarations = {node: [] for node in node_ids}
+    expected_fields = {"source", "target", "kind"} if canonical else {"from", "to"}
+    for item in raw_edges:
+        if type(item) is not dict or set(item) != expected_fields:
+            raise ValueError("malformed or ambiguous generated graph edge")
+        if canonical and item["kind"] != "input":
+            raise ValueError("unsupported generated graph edge kind")
+        dependency = dependency_identity(item["source" if canonical else "from"])
+        consumer = dependency_identity(item["target" if canonical else "to"])
+        if canonical and (
+            dependency not in declarations or consumer not in declarations
+        ):
+            raise ValueError("generated edge references an undeclared node")
+        declarations.setdefault(dependency, [])
+        declarations.setdefault(consumer, []).append(dependency)
+    normalized = generated_dependency_graph(declarations)
+    if not normalized["valid"]:
+        raise ValueError("generated dependency cycle")
+    nodes = []
+    revision_bytes = 0
+    for node_id in normalized["nodes"]:
+        revision = dependency_identity(revisions.get(node_id))
+        revision_bytes += len(revision.encode("utf-8"))
+        if revision_bytes > 16 * 1024 * 1024:
+            raise ValueError("generated graph revision byte budget exceeded")
+        nodes.append(
+            {
+                "node_id": node_id,
+                "kind": default_kind,
+                "revision": revision,
+            }
+        )
+    edges = [
+        {"dependency": item["source"], "consumer": item["target"]}
+        for item in normalized["edges"]
     ]
+    bounded_json_text({"nodes": nodes, "edges": edges}, max_bytes=32 * 1024 * 1024)
     return nodes, edges

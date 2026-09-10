@@ -11,12 +11,14 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass
 import hashlib
 import json
+import math
 from pathlib import Path
 import re
 import time
 from typing import Iterable, Mapping, Sequence
 
 from .classifier import classify_task
+from .json_io import bounded_json_text, bounded_strings, load_json_object
 from .skill_navigator import CapabilitySummary, RISK_ORDER, navigate
 
 
@@ -408,24 +410,52 @@ def expand_graph(
     max_edges: int = 250,
     max_milliseconds: int = 100,
 ) -> dict[str, tuple[str, ...]]:
-    """Expand reviewed edges under explicit depth, node, edge, and time budgets."""
-    if not 0 <= max_depth <= 3 or min(max_nodes, max_edges, max_milliseconds) < 1:
-        raise ValueError("invalid graph-expansion budget")
+    """Return bounded path hints, not a claim that graph traversal is complete.
+
+    Seed acquisition includes duplicates in its budget. An adjacency that does
+    not fit the remaining edge budget is omitted as a whole, so a partial input
+    order cannot choose which neighbors survive. Timing is cooperative.
+    """
+    for value, low, high in (
+        (max_depth, 0, 3), (max_nodes, 1, 10_000),
+        (max_edges, 1, 20_000), (max_milliseconds, 1, 10_000),
+    ):
+        if type(value) is not int or not low <= value <= high:
+            raise ValueError("invalid graph-expansion budget")
     started = time.monotonic()
-    paths: dict[str, tuple[str, ...]] = {seed: (seed,) for seed in sorted(set(seeds))}
+    def timed(values):
+        for value in values:
+            if (time.monotonic() - started) * 1000 > max_milliseconds:
+                raise ValueError("graph seed acquisition time budget exceeded")
+            yield value
+
+    if isinstance(seeds, (str, bytes)):
+        raise ValueError("graph seeds must be an iterable of identifiers")
+    seed_ids = bounded_strings(timed(seeds), max_items=max_nodes,
+                               max_item_bytes=256, max_bytes=max_nodes * 256)
+    if any(not seed for seed in seed_ids):
+        raise ValueError("graph seed identifiers must be nonempty")
+    paths: dict[str, tuple[str, ...]] = {seed: (seed,) for seed in sorted(seed_ids)}
     frontier = list(paths)
     examined_edges = 0
     for _depth in range(max_depth):
         next_frontier = []
         for source in frontier:
-            for relation, target in sorted(
-                edges.get(source, ()), key=lambda item: (item[0], item[1])
-            ):
-                examined_edges += 1
-                if (
-                    examined_edges > max_edges
-                    or (time.monotonic() - started) * 1000 > max_milliseconds
-                ):
+            if examined_edges >= max_edges or len(paths) >= max_nodes:
+                return paths
+            adjacency = []
+            for edge in edges.get(source, ()):
+                if (len(adjacency) >= max_edges - examined_edges
+                        or (time.monotonic() - started) * 1000 > max_milliseconds):
+                    return paths
+                if (type(edge) not in (tuple, list) or len(edge) != 2
+                        or any(type(part) is not str or not part or len(part) > 256
+                               or len(part.encode("utf-8")) > 256 for part in edge)):
+                    raise ValueError("graph edges require bounded relation and target identifiers")
+                adjacency.append(tuple(edge))
+            examined_edges += len(adjacency)
+            for relation, target in sorted(adjacency):
+                if (time.monotonic() - started) * 1000 > max_milliseconds:
                     return paths
                 if target in paths:
                     continue
@@ -844,9 +874,7 @@ def route_task(
                 f"fresh project map required: {validation.get('errors', [])}"
             )
         project_map = query_project_map(project, request, top_k=10, relation_depth=2)
-        manifest = json.loads(
-            (_map_dir(project) / "project-manifest.json").read_text(encoding="utf-8")
-        )
+        manifest = load_json_object(_map_dir(project) / "project-manifest.json")
         project_map = {
             **project_map,
             "routing_features": project_routing_features(project, manifest, project_map),
@@ -972,24 +1000,48 @@ def certify_router(
     project_revision: str | None,
 ) -> dict[str, object]:
     """Run a fixed adversarial routing corpus with explicit ranking metrics."""
+    bounded_json_text(corpus, max_bytes=1024 * 1024)
     cases = corpus.get("cases")
-    if not isinstance(cases, list) or not cases:
-        raise ValueError("router certification corpus requires cases")
+    if type(cases) is not list or not 1 <= len(cases) <= 1000:
+        raise ValueError("router certification corpus requires 1..1000 cases")
+    thresholds = corpus.get("thresholds")
+    metric_names = {"precision_at_1", "precision_at_3", "precision_at_5"}
+    if (type(thresholds) is not dict or set(thresholds) != metric_names
+            or any(type(value) not in (int, float) or not math.isfinite(value)
+                   or not 0 <= value <= 1 for value in thresholds.values())):
+        raise ValueError("router thresholds require every precision metric in [0, 1]")
+    if not records or len(records) > 10_000:
+        raise ValueError("router certification requires 1..10000 indexed records")
+    if any(type(key) is not str or key != row.capability_id for key, row in records.items()):
+        raise ValueError("router record identity must match its index key")
+    revisions = bounded_strings([index_revision], max_items=1, max_item_bytes=256)
+    if not revisions[0].strip():
+        raise ValueError("router index revision must be nonempty")
+    if project_revision is not None:
+        bounded_strings([project_revision], max_items=1, max_item_bytes=256)
+        if not project_revision.strip():
+            raise ValueError("router project revision must be nonempty")
+    checked_cases = []
+    case_ids = set()
+    for case in cases:
+        if type(case) is not dict:
+            raise ValueError("router certification case must be an object")
+        case_id = bounded_strings([case.get("case_id")], max_items=1, max_item_bytes=256)[0]
+        query = bounded_strings([case.get("query")], max_items=1, max_item_bytes=65536)[0]
+        expected = set(bounded_strings(case.get("expected", ()), max_items=100, max_item_bytes=256))
+        forbidden = set(bounded_strings(case.get("must_not_return", ()), max_items=100, max_item_bytes=256))
+        if (not case_id.strip() or case_id in case_ids or not query.strip() or not expected
+                or expected & forbidden or not (expected | forbidden) <= records.keys()):
+            raise ValueError("router certification case has an invalid identity or expectation denominator")
+        case_ids.add(case_id)
+        checked_cases.append((case_id, query, expected, forbidden))
     outcomes = []
     numerators = {1: 0, 3: 0, 5: 0}
     denominators = {1: 0, 3: 0, 5: 0}
     must_not_failures = []
     deterministic = True
     source = tuple(records.values())
-    for case in cases:
-        if not isinstance(case, Mapping):
-            raise ValueError("router certification case must be an object")
-        case_id = str(case.get("case_id", ""))
-        query = str(case.get("query", ""))
-        expected = set(map(str, case.get("expected", ())))
-        forbidden = set(map(str, case.get("must_not_return", ())))
-        if not case_id or not query or not expected:
-            raise ValueError("router certification case is incomplete")
+    for case_id, query, expected, forbidden in checked_cases:
         first = route_task(query, {"adversarial": source}, canonical_records=records)
         second = route_task(query, {"adversarial": tuple(reversed(source))}, canonical_records=records)
         first_ids = tuple(item.canonical_id for item in first.ranked if item.disposition == "selectable")
@@ -1010,19 +1062,18 @@ def certify_router(
                 "must_not_return": tuple(sorted(forbidden)),
                 "forbidden_found": forbidden_found,
                 "top1_correct": bool(first_ids and first_ids[0] in expected),
+                "covered": bool(expected & set(first_ids[:5])),
             }
         )
     metrics = {
         f"precision_at_{k}": round(numerators[k] / denominators[k], 6)
         for k in (1, 3, 5)
     }
-    thresholds = {
-        str(key): float(value)
-        for key, value in dict(corpus.get("thresholds", {})).items()
-    }
     threshold_pass = all(
-        metrics[name] >= thresholds.get(name, 0.0) for name in metrics
+        metrics[name] >= thresholds[name] for name in metrics
     )
+    covered_count = sum(row["covered"] for row in outcomes)
+    coverage_pass = covered_count == len(checked_cases)
     corpus_sha256 = _stable(corpus)
     payload = {
         "schema_version": "px.router-certification/1.0",
@@ -1036,9 +1087,13 @@ def certify_router(
         "must_not_return_failures": must_not_failures,
         "deterministic_ties": deterministic,
         "threshold_pass": threshold_pass,
+        "case_count": len(checked_cases),
+        "covered_case_count": covered_count,
+        "coverage_pass": coverage_pass,
+        "metric_denominators": {f"precision_at_{k}": value for k, value in denominators.items()},
     }
     return {
         **payload,
-        "valid": not must_not_failures and deterministic and threshold_pass,
+        "valid": not must_not_failures and deterministic and threshold_pass and coverage_pass,
         "receipt_sha256": _stable(payload),
     }

@@ -32,6 +32,8 @@ test('MCP build dependencies are pinned and the shipped server is bundled', () =
   assert.match(packager, /external: \['vscode'\]/);
   assert.match(packager, /Refusing to overwrite issued extension version/);
   assert.match(packager, /release-artifacts.*vscode/);
+  assert.match(packager, /Content\.License" Path="extension\/LICENSE\.txt"/);
+  assert.match(packager, /file === 'LICENSE' \? 'LICENSE\.txt' : file/);
   const installedRunner = fs.readFileSync(path.join(root, 'scripts', 'run-installed-vsix-smoke.js'), 'utf8');
   assert.match(installedRunner, /--expected-sha256/);
   assert.match(installedRunner, /--receipt/);

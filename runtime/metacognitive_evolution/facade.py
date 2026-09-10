@@ -18,6 +18,7 @@ from .optimization.engine import evaluate
 from .semantic_contracts.linter import lint
 from .theory_induction.inducer import induce, validate_proposal
 from ..paths import framework_root
+from ..numeric_inputs import analysis_payload, bounded_text
 
 
 OPERATIONS: dict[str, Callable[[dict[str, Any]], dict[str, Any]]] = {
@@ -36,7 +37,7 @@ OPERATIONS: dict[str, Callable[[dict[str, Any]], dict[str, Any]]] = {
     "compare-alternatives": compare_alternatives,
     "route-agent": lambda value: route(value["request"], value["agents"]),
     "compose-team": lambda value: compose_team(
-        value["request"], value["agents"], int(value.get("max_agents", 3))
+        value["request"], value["agents"], value.get("max_agents", 3)
     ),
     "profile-engineering-practices": lambda value: profile(
         value.get("events", []), int(value.get("min_observations", 3))
@@ -96,6 +97,12 @@ def describe_capability(root: Path, capability_id: str) -> dict[str, Any]:
 
 
 def run_operation(operation: str, payload: dict[str, Any]) -> dict[str, Any]:
+    try:
+        operation = bounded_text(
+            operation, "operation identity", maximum=128, strip=False
+        )
+    except ValueError:
+        return {"valid": False, "errors": ["operation must be bounded nonempty text"]}
     function = OPERATIONS.get(operation)
     if function is None:
         return {
@@ -103,11 +110,13 @@ def run_operation(operation: str, payload: dict[str, Any]) -> dict[str, Any]:
             "errors": [f"unknown operation: {operation}"],
             "available": sorted(OPERATIONS),
         }
-    if not isinstance(payload, dict):
-        return {"valid": False, "errors": ["payload must be an object"]}
+    try:
+        payload = analysis_payload(payload)
+    except (TypeError, ValueError) as error:
+        return {"valid": False, "operation": operation, "errors": [str(error)]}
     try:
         result = function(payload)
-    except (KeyError, TypeError, ValueError) as error:
+    except (KeyError, TypeError, ValueError, OverflowError, ZeroDivisionError) as error:
         return {
             "valid": False,
             "operation": operation,

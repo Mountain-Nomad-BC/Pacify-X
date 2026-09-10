@@ -2,61 +2,416 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:engineering-loop-bootstrap:contract:cognitive:cognitive-index",
   "type": "object",
-  "required": ["schema_version", "loading_rule", "revision", "record_count", "edge_count", "kind_counts", "records", "edges"],
+  "required": [
+    "schema_version",
+    "loading_rule",
+    "revision",
+    "record_count",
+    "edge_count",
+    "kind_counts",
+    "records",
+    "edges"
+  ],
   "additionalProperties": false,
   "properties": {
-    "schema_version": {"const": "1.1"},
-    "loading_rule": {"const": "metadata_only_global_map_then_hydrate_selected_records"},
-    "revision": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
-    "record_count": {"type": "integer", "minimum": 1},
-    "edge_count": {"type": "integer", "minimum": 0},
-    "kind_counts": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
-    "records": {"type": "array", "items": {"$ref": "#/$defs/record"}},
-    "edges": {"type": "array", "items": {"$ref": "#/$defs/edge"}}
+    "schema_version": {
+      "const": "1.1"
+    },
+    "loading_rule": {
+      "const": "metadata_only_global_map_then_hydrate_selected_records"
+    },
+    "revision": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "record_count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "edge_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "kind_counts": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "records": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/record"
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/edge"
+      }
+    }
   },
   "$defs": {
-    "string_array": {"type": "array", "items": {"type": "string"}},
+    "string_array": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "record": {
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "key", "id", "kind", "title", "summary", "owner", "status", "domain",
-        "aliases", "triggers", "concepts", "inputs", "outputs", "dependencies",
-        "formula_refs", "relations", "path", "implementation_path", "source_sha256",
-        "risk", "loading_rule"
+        "key",
+        "id",
+        "kind",
+        "title",
+        "summary",
+        "owner",
+        "status",
+        "domain",
+        "aliases",
+        "triggers",
+        "concepts",
+        "inputs",
+        "outputs",
+        "dependencies",
+        "formula_refs",
+        "relations",
+        "path",
+        "implementation_path",
+        "source_sha256",
+        "risk",
+        "loading_rule"
       ],
       "properties": {
-        "key": {"type": "string", "minLength": 1},
-        "id": {"type": "string", "minLength": 1},
-        "kind": {"enum": ["skill", "capability", "script", "workflow", "formula", "knowledge", "agent"]},
-        "title": {"type": "string"},
-        "summary": {"type": "string"},
-        "owner": {"type": "string"},
-        "status": {"type": "string"},
-        "domain": {"type": "string"},
-        "path": {"type": "string"},
-        "implementation_path": {"type": "string"},
-        "source_sha256": {"type": "string"},
-        "risk": {"type": "string"},
-        "loading_rule": {"const": "metadata_only_until_selected"},
-        "aliases": {"$ref": "#/$defs/string_array"},
-        "triggers": {"$ref": "#/$defs/string_array"},
-        "concepts": {"$ref": "#/$defs/string_array"},
-        "inputs": {"$ref": "#/$defs/string_array"},
-        "outputs": {"$ref": "#/$defs/string_array"},
-        "dependencies": {"$ref": "#/$defs/string_array"},
-        "formula_refs": {"$ref": "#/$defs/string_array"},
-        "relations": {"$ref": "#/$defs/string_array"}
+        "key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "enum": [
+            "skill",
+            "capability",
+            "script",
+            "workflow",
+            "formula",
+            "knowledge",
+            "agent"
+          ]
+        },
+        "title": {
+          "type": "string"
+        },
+        "summary": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "domain": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "implementation_path": {
+          "type": "string"
+        },
+        "source_sha256": {
+          "type": "string"
+        },
+        "risk": {
+          "type": "string"
+        },
+        "loading_rule": {
+          "const": "metadata_only_until_selected"
+        },
+        "aliases": {
+          "$ref": "#/$defs/string_array"
+        },
+        "triggers": {
+          "$ref": "#/$defs/string_array"
+        },
+        "concepts": {
+          "$ref": "#/$defs/string_array"
+        },
+        "inputs": {
+          "$ref": "#/$defs/string_array"
+        },
+        "outputs": {
+          "$ref": "#/$defs/string_array"
+        },
+        "dependencies": {
+          "$ref": "#/$defs/string_array"
+        },
+        "formula_refs": {
+          "$ref": "#/$defs/string_array"
+        },
+        "relations": {
+          "$ref": "#/$defs/string_array"
+        },
+        "authority": {
+          "const": "not_evaluated"
+        },
+        "conflicts": {
+          "type": "array",
+          "maxItems": 7,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "owner",
+              "status",
+              "path",
+              "implementation_path",
+              "source_sha256",
+              "risk",
+              "declared_lineage_sha256"
+            ]
+          }
+        },
+        "scalar_declarations": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "title": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 256,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^[\\s\\S]{0,16384}$"
+              }
+            },
+            "summary": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 256,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^[\\s\\S]{0,16384}$"
+              }
+            },
+            "owner": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 256,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^[\\s\\S]{0,16384}$"
+              }
+            },
+            "status": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 256,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^[\\s\\S]{0,16384}$"
+              }
+            },
+            "domain": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 256,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^[\\s\\S]{0,16384}$"
+              }
+            },
+            "path": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 256,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^[\\s\\S]{0,16384}$"
+              }
+            },
+            "implementation_path": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 256,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^[\\s\\S]{0,16384}$"
+              }
+            },
+            "source_sha256": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 256,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^[\\s\\S]{0,16384}$"
+              }
+            },
+            "risk": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 256,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^[\\s\\S]{0,16384}$"
+              }
+            },
+            "declared_lineage_sha256": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 256,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^([0-9a-f]{64})?$"
+              }
+            }
+          }
+        },
+        "source_provenance": {
+          "type": "array",
+          "maxItems": 256,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "path",
+              "sha256"
+            ],
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^[\\s\\S]{0,4096}$"
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            }
+          }
+        },
+        "source_sha256_kind": {
+          "enum": [
+            "declared",
+            "measured",
+            "mixed"
+          ]
+        },
+        "alias_conflicts": {
+          "type": "array",
+          "maxItems": 256,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "alias",
+              "candidates"
+            ],
+            "properties": {
+              "alias": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^[\\s\\S]{0,16384}$"
+              },
+              "candidates": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 256,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "pattern": "^[\\s\\S]{0,1024}$"
+                }
+              }
+            }
+          }
+        },
+        "declared_lineage_sha256": {
+          "type": "string",
+          "pattern": "^([0-9a-f]{64})?$"
+        },
+        "lineage_verification": {
+          "enum": [
+            "not_evaluated",
+            "matching_named_source_declaration",
+            "conflicting_source_declarations"
+          ]
+        },
+        "prefix_provenance": {
+          "type": "array",
+          "maxItems": 256,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "path",
+              "sha256",
+              "bytes",
+              "truncated"
+            ],
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^[\\s\\S]{0,4096}$"
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "bytes": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 65536
+              },
+              "truncated": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
       }
     },
     "edge": {
       "type": "object",
-      "required": ["source", "target", "relation"],
+      "required": [
+        "source",
+        "target",
+        "relation"
+      ],
       "additionalProperties": false,
       "properties": {
-        "source": {"type": "string", "minLength": 1},
-        "target": {"type": "string", "minLength": 1},
-        "relation": {"type": "string", "minLength": 1}
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target": {
+          "type": "string",
+          "minLength": 1
+        },
+        "relation": {
+          "type": "string",
+          "minLength": 1
+        }
       }
     }
   }

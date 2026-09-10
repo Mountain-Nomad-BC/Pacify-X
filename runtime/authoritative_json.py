@@ -9,7 +9,17 @@ import os
 from pathlib import Path
 from typing import Any, Callable, Mapping
 
-from .paths import declared_file_available
+from .paths import resolve_declared_path
+import time
+from .input_files import (
+    contained_file,
+    read_file_image,
+    relative_source_path,
+    check_deadline,
+)
+from .archive_io import reject_path_links, member_identity
+from .numeric_inputs import bounded_text, bounded_sequence
+from .json_io import decode_json_object, validate_json_value
 
 
 class AuthoritativeStateError(RuntimeError):
@@ -44,23 +54,24 @@ def _has_link_boundary(path: Path, root: Path) -> bool:
 
 
 def _snapshot(path: Path) -> dict[str, object]:
-    with path.open("rb") as stream:
-        stat = os.fstat(stream.fileno())
-        data = stream.read()
+    bounded_text(str(path), "snapshot path", maximum=4096, strip=False)
+    candidate, info = contained_file(path.parent, path.name)
+    data = read_file_image(
+        candidate, info, limit=8 * 1024 * 1024, deadline=time.monotonic() + 60.0
+    )
     return {
         "size": len(data),
-        "mtime_ns": stat.st_mtime_ns,
-        "device": stat.st_dev,
-        "inode": stat.st_ino,
+        "mtime_ns": info.st_mtime_ns,
+        "device": info.st_dev,
+        "inode": info.st_ino,
         "sha256": hashlib.sha256(data).hexdigest(),
-        "bytes": data,
+        "bytes": bytes(data),
     }
 
 
 def _snapshot_metadata(snapshot: Mapping[str, object]) -> dict[str, object]:
     return {
-        key: snapshot[key]
-        for key in ("size", "mtime_ns", "device", "inode", "sha256")
+        key: snapshot[key] for key in ("size", "mtime_ns", "device", "inode", "sha256")
     }
 
 
@@ -74,31 +85,65 @@ def _write_record(path: Path, record: Mapping[str, object]) -> str:
 
 
 def load_state_classifications(root: Path) -> dict[str, dict[str, str]]:
-    """Load and strictly validate the state-artifact classification registry."""
-    path = root / "registry" / "state_artifact_classes.json"
-    payload = json.loads(path.read_text(encoding="utf-8"))
+    """Read one bounded strict classification image; metadata grants no authority."""
+    deadline = time.monotonic() + 60.0
+    root = _checked_root(root)
+    path, info = contained_file(root, "registry/state_artifact_classes.json")
+    raw = read_file_image(path, info, limit=1024 * 1024, deadline=deadline)
+    payload = decode_json_object(
+        raw, max_bytes=1024 * 1024, max_depth=32, max_nodes=100000
+    )
     if set(payload) != {"schema_version", "policy", "classes"}:
         raise ValueError("state classification registry fields are not exact")
-    if payload["schema_version"] != "1.0" or not isinstance(payload["classes"], list):
+    if payload["schema_version"] != "1.0":
         raise ValueError("state classification registry header is invalid")
-    result: dict[str, dict[str, str]] = {}
+    bounded_text(
+        payload["policy"], "state classification policy", maximum=4096, strip=False
+    )
+    rows = bounded_sequence(payload["classes"], "state classifications", maximum=10000)
+    result = {}
+    identities = set()
     required = {"artifact_kind", "classification", "owner", "corruption_disposition"}
-    for raw in payload["classes"]:
-        if not isinstance(raw, dict) or set(raw) != required:
+    for row in rows:
+        check_deadline(deadline)
+        if type(row) is not dict or set(row) != required:
             raise ValueError("state classification record fields are not exact")
-        record = {key: str(value) for key, value in raw.items()}
-        kind = record["artifact_kind"]
-        if not kind or kind in result:
-            raise ValueError(f"duplicate or empty artifact kind: {kind}")
+        kind = _artifact_kind(row["artifact_kind"])
+        identity = member_identity(kind, allow_directory=False)
+        if identity in identities:
+            raise ValueError("duplicate or ambiguous artifact kind")
+        identities.add(identity)
+        classification = bounded_text(
+            row["classification"], "classification", maximum=32, strip=False
+        )
+        disposition = bounded_text(
+            row["corruption_disposition"],
+            "corruption disposition",
+            maximum=64,
+            strip=False,
+        )
         expected = {
             "authoritative": "quarantine_fail_closed",
             "derived": "rebuild",
-        }.get(record["classification"])
-        if expected is None or record["corruption_disposition"] != expected:
-            raise ValueError(f"invalid classification/disposition for {kind}")
-        if not declared_file_available(root, record["owner"]):
-            raise ValueError(f"missing artifact owner for {kind}: {record['owner']}")
-        result[kind] = record
+        }.get(classification)
+        if expected is None or disposition != expected:
+            raise ValueError("invalid classification/disposition")
+        owner = relative_source_path(row["owner"])
+        # Source checkout and installed asset/package roots have distinct layouts.
+        # The existing resolver owns source-only availability semantics.
+        reject_path_links(root / owner)
+        resolved = resolve_declared_path(root, owner)
+        if resolved is not None:
+            reject_path_links(resolved)
+            if not resolved.is_file():
+                raise ValueError("missing artifact owner")
+        result[kind] = {
+            "artifact_kind": kind,
+            "classification": classification,
+            "owner": owner,
+            "corruption_disposition": disposition,
+        }
+    check_deadline(deadline)
     return result
 
 
@@ -112,12 +157,20 @@ def _quarantine_corrupt(
 ) -> Path:
     source = path.resolve(strict=True)
     allowed = allowed_root.resolve(strict=True)
-    quarantine = quarantine_root.resolve() if quarantine_root.exists() else quarantine_root.absolute()
+    quarantine = (
+        quarantine_root.resolve()
+        if quarantine_root.exists()
+        else quarantine_root.absolute()
+    )
     if not _inside(source, allowed) or not _inside(quarantine, allowed):
-        raise AuthoritativeStateError("source and quarantine must remain below allowed root")
+        raise AuthoritativeStateError(
+            "source and quarantine must remain below allowed root"
+        )
     if source == quarantine or _inside(quarantine, source):
         raise AuthoritativeStateError("quarantine boundary is invalid")
-    if _has_link_boundary(source, allowed) or _has_link_boundary(quarantine.parent, allowed):
+    if _has_link_boundary(source, allowed) or _has_link_boundary(
+        quarantine.parent, allowed
+    ):
         raise AuthoritativeStateError("link or junction boundary refused")
     first = _snapshot(source)
     second = _snapshot(source)
@@ -155,8 +208,10 @@ def _quarantine_corrupt(
         observed = _snapshot(destination)
         if any(immediate[key] != observed[key] for key in identity):
             raise RuntimeError("filesystem_identity_mismatch")
-    except (OSError, RuntimeError) as error:
-        failure = str(error) if isinstance(error, RuntimeError) else type(error).__name__
+    except (OSError, RuntimeError, ValueError) as error:
+        failure = (
+            str(error) if isinstance(error, RuntimeError) else type(error).__name__
+        )
         custody = destination if moved and destination.exists() else source
         recovery_record = {
             "schema_version": "1.0",
@@ -237,31 +292,53 @@ def load_classified_json(
     quarantine_root: Path,
     validator: Callable[[Mapping[str, object]], None] | None = None,
 ) -> dict[str, Any]:
-    """Load classified JSON; preserve corrupt authority and never invent fallback."""
+    """Separate bounded admission, demonstrated parse corruption and validation."""
+    deadline = time.monotonic() + 60.0
+    try:
+        path = _state_location(path, allowed_root)
+        artifact_kind = _artifact_kind(artifact_kind)
+        if validator is not None and not callable(validator):
+            raise ValueError("validator must be callable")
+    except (OSError, ValueError, TypeError) as error:
+        raise AuthoritativeStateError("state input boundary refused") from error
     classes = load_state_classifications(root)
     record = classes.get(artifact_kind)
     if record is None:
         raise AuthoritativeStateError(f"unclassified state refused: {artifact_kind}")
+
+    def rebuild(error: Exception) -> dict[str, Any]:
+        return {
+            "schema_version": "1.0",
+            "status": "rebuild_required",
+            "artifact_kind": artifact_kind,
+            "path": path.as_posix(),
+            "error_type": type(error).__name__,
+            "data": None,
+        }
+
     try:
-        value = json.loads(path.read_text(encoding="utf-8"))
-        if not isinstance(value, dict):
-            raise ValueError("state root must be an object")
-        if validator is not None:
-            validator(value)
-    except (OSError, UnicodeError, json.JSONDecodeError, TypeError, ValueError) as error:
+        check_deadline(deadline)
+        candidate, info = contained_file(path.parent, path.name)
+        raw = read_file_image(candidate, info, limit=8 * 1024 * 1024, deadline=deadline)
+    except FileNotFoundError as error:
         if record["classification"] == "derived":
-            return {
-                "schema_version": "1.0",
-                "status": "rebuild_required",
-                "artifact_kind": artifact_kind,
-                "path": path.resolve().as_posix(),
-                "error_type": type(error).__name__,
-                "data": None,
-            }
-        if not path.is_file():
-            raise AuthoritativeStateError(
-                f"authoritative state unavailable: {artifact_kind}"
-            ) from error
+            return rebuild(error)
+        raise AuthoritativeStateError(
+            f"authoritative state unavailable: {artifact_kind}"
+        ) from error
+    except (OSError, ValueError) as error:
+        raise AuthoritativeStateError(
+            "state acquisition refused without custody effects"
+        ) from error
+    try:
+        value = decode_json_object(
+            raw, max_bytes=8 * 1024 * 1024, max_depth=32, max_nodes=100000
+        )
+    except (UnicodeError, json.JSONDecodeError) as error:
+        if record["classification"] == "derived":
+            return rebuild(error)
+        # This preserves the existing custody owner. Binding this exact failed
+        # image to subsequent snapshots and the move remains a D/E obligation.
         receipt = _quarantine_corrupt(
             path,
             artifact_kind=artifact_kind,
@@ -272,10 +349,58 @@ def load_classified_json(
         raise AuthoritativeStateError(
             f"authoritative state quarantined: {artifact_kind}", receipt=receipt
         ) from error
+    except ValueError as error:
+        raise AuthoritativeStateError(
+            "state JSON contract or budget refused without custody effects"
+        ) from error
+    try:
+        check_deadline(deadline)
+        if validator is not None and validator(value) is not None:
+            raise ValueError("validator must return None")
+        if validator is not None:
+            validate_json_value(value, max_depth=32, max_nodes=100000)
+        check_deadline(deadline)
+    except Exception as error:
+        raise AuthoritativeStateError(
+            "state validator or deadline refused without custody effects"
+        ) from error
     return {
         "schema_version": "1.0",
         "status": "valid",
         "artifact_kind": artifact_kind,
-        "path": path.resolve().as_posix(),
+        "path": path.as_posix(),
         "data": value,
     }
+
+
+def _checked_root(value: Path) -> Path:
+    if not isinstance(value, Path):
+        raise ValueError("state root must be a Path")
+    bounded_text(str(value), "state root", maximum=4096, strip=False)
+    reject_path_links(value)
+    if not value.is_dir():
+        raise ValueError("state root must be an existing directory")
+    return value.absolute()
+
+
+def _artifact_kind(value: object) -> str:
+    result = relative_source_path(
+        bounded_text(value, "artifact kind", maximum=256, strip=False)
+    )
+    if "/" in result:
+        raise ValueError("artifact kind must be one portable component")
+    return result
+
+
+def _state_location(path: Path, allowed_root: Path) -> Path:
+    allowed = _checked_root(allowed_root)
+    if not isinstance(path, Path):
+        raise ValueError("state path must be a Path")
+    bounded_text(str(path), "state path", maximum=4096, strip=False)
+    original = path.absolute()
+    relative = relative_source_path(original.relative_to(allowed).as_posix())
+    candidate = allowed / relative
+    reject_path_links(candidate)
+    if not candidate.resolve(strict=False).is_relative_to(allowed.resolve(strict=True)):
+        raise ValueError("state path escapes allowed root")
+    return candidate

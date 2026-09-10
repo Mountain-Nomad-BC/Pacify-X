@@ -2,12 +2,60 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from types import SimpleNamespace
+
+import pytest
 
 from runtime.capability_routing import certify_router
 from runtime.skill_navigator import CapabilitySummary
 
 
 ROOT = Path(__file__).parents[1]
+
+
+def _one_case():
+    return {
+        "thresholds": {"precision_at_1": 0.0, "precision_at_3": 0.0, "precision_at_5": 0.0},
+        "cases": [{"case_id": "disk", "query": "disk capacity", "expected": ["disk-capacity-analyzer"], "must_not_return": []}],
+    }
+
+
+@pytest.mark.parametrize("thresholds", [None, {}, {"precision_at_1": 1.0},
+    {"precision_at_1": True, "precision_at_3": 0.0, "precision_at_5": 0.0},
+    {"precision_at_1": float("nan"), "precision_at_3": 0.0, "precision_at_5": 0.0},
+    {"precision_at_1": -1.0, "precision_at_3": 0.0, "precision_at_5": 0.0},
+])
+def test_router_receipt_requires_complete_finite_thresholds(thresholds):
+    corpus = _one_case()
+    corpus["thresholds"] = thresholds
+    with pytest.raises(ValueError):
+        certify_router(corpus, _records(), index_revision="test", project_revision=None)
+
+
+@pytest.mark.parametrize("mutation", ["duplicate-case", "unknown-expected", "string-expected", "overlap"])
+def test_router_receipt_rejects_ambiguous_case_denominator(mutation):
+    corpus = _one_case()
+    case = corpus["cases"][0]
+    if mutation == "duplicate-case":
+        corpus["cases"].append(dict(case))
+    elif mutation == "unknown-expected":
+        case["expected"] = ["unknown"]
+    elif mutation == "string-expected":
+        case["expected"] = "disk-capacity-analyzer"
+    else:
+        case["must_not_return"] = list(case["expected"])
+    with pytest.raises(ValueError):
+        certify_router(corpus, _records(), index_revision="test", project_revision=None)
+
+
+def test_zero_thresholds_cannot_certify_an_empty_returned_denominator(monkeypatch):
+    monkeypatch.setattr("runtime.capability_routing.route_task", lambda *a, **k: SimpleNamespace(ranked=()))
+    receipt = certify_router(_one_case(), _records(), index_revision="test", project_revision=None)
+    assert not receipt["valid"]
+    assert receipt["threshold_pass"]
+    assert not receipt["coverage_pass"]
+    assert receipt["covered_case_count"] == 0
+    assert receipt["case_count"] == 1
 
 
 def _records():

@@ -347,18 +347,27 @@ class LocalModelRuntime:
         record, process = self.manager.spawn_owned_process(
             plan.command, cwd=Path(plan.executable_path).parent, project_id=self.root.name,
             run_id=session_id, lane_id="local-model", creator="runtime.local_model_runtime",
+            ownership="durable",
             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, text=False,
         )
-        deadline = time.monotonic() + readiness_timeout_seconds
-        origin = f"http://127.0.0.1:{plan.port}"
-        while time.monotonic() < deadline and process.poll() is None:
-            if self.readiness_probe(origin, min(1.0, max(0.05, deadline - time.monotonic()))):
-                event = self._append("started", {"session_id": session_id, "resource_id": record.resource_id, "pid": process.pid, "plan": asdict(plan), "origin": origin})
-                return {"session_id": session_id, "state": "running", "resource_id": record.resource_id, "origin": origin, "event_sha256": event["event_sha256"]}
-            time.sleep(0.05)
-        cleanup = self.manager.terminate_owned_process(record.resource_id)
-        self._append("start_failed", {"session_id": session_id, "resource_id": record.resource_id, "cleanup_id": cleanup.cleanup_id, "tree_closed": cleanup.resources_reclaimed == 1})
-        raise RuntimeError("llama.cpp server did not become ready within the bounded startup window")
+        cleanup_completed = False
+        try:
+            deadline = time.monotonic() + readiness_timeout_seconds
+            origin = f"http://127.0.0.1:{plan.port}"
+            while time.monotonic() < deadline and process.poll() is None:
+                if self.readiness_probe(origin, min(1.0, max(0.05, deadline - time.monotonic()))):
+                    event = self._append("started", {"session_id": session_id, "resource_id": record.resource_id, "pid": process.pid, "plan": asdict(plan), "origin": origin})
+                    return {"session_id": session_id, "state": "running", "resource_id": record.resource_id, "origin": origin, "event_sha256": event["event_sha256"]}
+                time.sleep(0.05)
+            cleanup = self.manager.terminate_owned_process(record.resource_id)
+            cleanup_completed = cleanup.resources_reclaimed == 1
+            self._append("start_failed", {"session_id": session_id, "resource_id": record.resource_id, "cleanup_id": cleanup.cleanup_id, "tree_closed": cleanup.resources_reclaimed == 1})
+            raise RuntimeError("llama.cpp server did not become ready within the bounded startup window")
+
+        except BaseException as error:
+            if not cleanup_completed:
+                self.manager.settle_failed_launch(record.resource_id, error)
+            raise
 
     def _session_event(self, session_id: str) -> dict[str, object]:
         matches = [event for event in self._load_events() if event["payload"].get("session_id") == session_id]

@@ -15,7 +15,10 @@ import re
 from typing import Any, Iterable, Mapping, Sequence
 
 from .capability_routing import TaskEnvelope, normalize_task
-from .json_io import load_json_object
+from .json_io import (
+    bounded_json_text, bounded_strings, decode_json_object,
+    load_json_object, read_bounded_bytes,
+)
 
 
 REGISTRY_PATH = Path("registry/agency_agent_registry.json")
@@ -306,7 +309,17 @@ def discover_agents(
     include_reference_only: bool = False,
 ) -> tuple[TaskEnvelope, list[AgentCandidate]]:
     """Retrieve from metadata only; no agent body or manifest is opened."""
+    bounded_strings((request,), max_item_bytes=65_536)
+    constraints = bounded_strings(constraints)
     registry = load_registry(root)
+    return _discover_agents(registry, request, constraints, include_reference_only)
+
+
+def _discover_agents(
+    registry: Mapping[str, Any], request: str, constraints: tuple[str, ...],
+    include_reference_only: bool = False,
+) -> tuple[TaskEnvelope, list[AgentCandidate]]:
+    """Use the caller's single acquired metadata image throughout selection."""
     envelope = normalize_task(request, constraints=constraints)
     query_terms = _tokens(request, *constraints)
     requested = _requested_capabilities(query_terms, envelope)
@@ -330,7 +343,7 @@ def discover_agents(
             "division": (query_terms | set(envelope.domain)) & division,
         }
         channels = tuple(sorted(key for key, value in channel_terms.items() if value))
-        normalized_name = " ".join(_tokens(item.get("name")))
+        normalized_name = " ".join(sorted(_tokens(item.get("name"))))
         normalized_query = " ".join(sorted(query_terms))
         exact_identity = bool(normalized_name and normalized_name in normalized_query)
         # A lone generic keyword is insufficient. Require independent metadata
@@ -373,6 +386,8 @@ def _choose_reviewers(
     high_risk: bool,
     maximum: int,
 ) -> list[str]:
+    if maximum == 0:
+        return []
     rows: list[tuple[float, str]] = []
     primary_caps = set(primary.get("capabilities", []))
     explicit = set(primary.get("handoffs", []))
@@ -420,10 +435,14 @@ def route_agents(
     limit: int = 8,
     max_reviewers: int = 3,
 ) -> dict[str, Any]:
-    if not 0 <= max_reviewers <= 3:
+    if type(max_reviewers) is not int or not 0 <= max_reviewers <= 3:
         raise ValueError("max_reviewers must be between zero and three")
+    if type(limit) is not int or not 1 <= limit <= 20:
+        raise ValueError("limit must be an integer from one through twenty")
+    bounded_strings((request,), max_item_bytes=65_536)
+    constraints = bounded_strings(constraints)
     registry = load_registry(root)
-    envelope, candidates = discover_agents(root, request, constraints=constraints)
+    envelope, candidates = _discover_agents(registry, request, constraints)
     task_id = "agent-task-" + envelope.task_envelope_sha256[:16]
     if not candidates or candidates[0].score < 18.0:
         return {
@@ -490,11 +509,16 @@ def hydrate_agents(
     max_agents: int = 4,
     max_total_bytes: int = 512_000,
 ) -> dict[str, Any]:
+    if type(max_agents) is not int or not 1 <= max_agents <= 4:
+        raise ValueError("max_agents must be an integer from one through four")
+    if type(max_total_bytes) is not int or not 1 <= max_total_bytes <= 512_000:
+        raise ValueError("agent hydration byte budget must be from one through 512000")
+    bounded_strings((project_id,), max_item_bytes=256)
     if not project_id.strip() or any(
         value in project_id for value in ("/", "\\", "..")
     ):
         raise ValueError("project_id must be a non-empty namespace token")
-    unique_ids = tuple(dict.fromkeys(agent_ids))
+    unique_ids = bounded_strings(agent_ids, max_item_bytes=256)
     if not unique_ids or len(unique_ids) > max_agents or max_agents > 4:
         raise ValueError("hydration requires one to four unique selected agents")
     registry = load_registry(root)
@@ -511,15 +535,21 @@ def hydrate_agents(
             )
         body_path = _provider_path(root, item["path"])
         manifest_path = _provider_path(root, item["manifest_path"])
-        body_bytes = body_path.read_bytes()
-        manifest_bytes = manifest_path.read_bytes()
+        remaining = max_total_bytes - total_bytes
+        if remaining < 1:
+            raise ValueError("agent hydration byte budget exceeded")
+        body_bytes = read_bounded_bytes(body_path, max_bytes=remaining)
+        remaining -= len(body_bytes)
+        if remaining < 1:
+            raise ValueError("agent hydration byte budget exceeded")
+        manifest_bytes = read_bounded_bytes(manifest_path, max_bytes=remaining)
         if _sha256_bytes(body_bytes) != item["body_sha256"]:
             raise ValueError(f"body hash mismatch: {agent_id}")
         if _sha256_bytes(manifest_bytes) != item["manifest_sha256"]:
             raise ValueError(f"manifest hash mismatch: {agent_id}")
         domain = _domain_content(body_bytes.decode("utf-8"))
-        manifest = json.loads(manifest_bytes)
-        material_bytes = len(domain.encode("utf-8")) + len(manifest_bytes)
+        manifest = decode_json_object(manifest_bytes, max_bytes=remaining)
+        material_bytes = len(body_bytes) + len(manifest_bytes)
         if total_bytes + material_bytes > max_total_bytes:
             raise ValueError("agent hydration byte budget exceeded")
         total_bytes += material_bytes
@@ -558,6 +588,13 @@ def compile_agent_prompt(
 ) -> dict[str, Any]:
     from .contracts import validate_instance
 
+    if type(max_total_bytes) is not int or not 1 <= max_total_bytes <= 512_000:
+        raise ValueError("compiled prompt byte budget must be from one through 512000")
+    bounded_strings((project_id,), max_item_bytes=256)
+    selected_skills = bounded_strings(selected_skills)
+    permitted_tools = bounded_strings(permitted_tools)
+    # Reject oversized caller context before loading schemas, policy or bodies.
+    bounded_json_text({"task": dict(task), "route": dict(route)}, max_bytes=max_total_bytes)
     validate_instance(dict(task), root / TASK_SCHEMA, contract_root=root / "contracts")
     validate_instance(
         dict(route), root / ROUTE_SCHEMA, contract_root=root / "contracts"
@@ -572,9 +609,6 @@ def compile_agent_prompt(
     if len(reviewers) > 3 or primary in reviewers:
         raise ValueError("route violates the bounded distinct-reviewer contract")
     ids = (str(primary), *reviewers)
-    hydration = hydrate_agents(
-        root, ids, project_id=project_id, max_agents=4, max_total_bytes=max_total_bytes
-    )
     policy = load_json_object(_provider_path(root, POLICY_PATH.as_posix()))
     prompt_payload = {
         "precedence": policy["precedence"],
@@ -594,14 +628,20 @@ def compile_agent_prompt(
         },
         "evidence_requirements": policy["evidence"],
         "stop_conditions": policy["stop_conditions"],
-        "selected_agents": hydration["agents"],
+        "selected_agents": [],
         "authority_granted_by_compilation": False,
     }
-    rendered = (
-        "# PACIFY-X COMPILED SPECIALIST PANEL\n\n```json\n"
-        + json.dumps(prompt_payload, indent=2, ensure_ascii=False)
-        + "\n```\n"
+    header = "# PACIFY-X COMPILED SPECIALIST PANEL\n\n```json\n"
+    footer = "\n```\n"
+    payload_budget = max_total_bytes - len(header.encode("utf-8")) - len(footer.encode("utf-8"))
+    if payload_budget < 1:
+        raise ValueError("compiled prompt byte budget exceeded")
+    bounded_json_text(prompt_payload, max_bytes=payload_budget)
+    hydration = hydrate_agents(
+        root, ids, project_id=project_id, max_agents=4, max_total_bytes=max_total_bytes
     )
+    prompt_payload["selected_agents"] = hydration["agents"]
+    rendered = header + bounded_json_text(prompt_payload, max_bytes=payload_budget) + footer
     return {
         "valid": True,
         "compiled_prompt": rendered,

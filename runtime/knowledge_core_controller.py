@@ -10,6 +10,27 @@ import re
 from typing import Mapping, Sequence
 from uuid import uuid4
 
+from contextvars import ContextVar
+from functools import wraps
+import time
+from .input_files import (
+    contained_file,
+    read_file_image,
+    cooperative_deadline,
+    check_deadline,
+    relative_source_path,
+)
+from .archive_io import reject_path_links
+from .bounded_walk import bounded_walk, WalkLimits
+from .json_io import decode_json_object, bounded_json_text
+from .numeric_inputs import (
+    bounded_json_value,
+    bounded_sequence,
+    bounded_text,
+    bounded_mapping,
+    bounded_integer,
+)
+
 from .file_lock import FileLock
 from .dependency_invalidation import (
     build_dependency_graph,
@@ -77,9 +98,7 @@ LEARNING_TRANSITIONS = {
     "research-blocked": frozenset(
         {"research-blocked", "research-validated", "secondary-trialing"}
     ),
-    "secondary-trialing": frozenset(
-        {"secondary-trialing", "research-validated"}
-    ),
+    "secondary-trialing": frozenset({"secondary-trialing", "research-validated"}),
     "research-validated": frozenset({"validated", "validation-blocked"}),
     "validation-blocked": frozenset({"validated", "validation-blocked"}),
     "validated": frozenset({"admitted"}),
@@ -101,9 +120,50 @@ def _hash(value: object) -> str:
     return hashlib.sha256(canonical_bytes(value)).hexdigest()
 
 
+_ACTIVE_INPUTS = ContextVar("knowledge_input_budget", default=None)
+
+
+def _input_scope(method):
+    """Share bounded acquisition through one synchronous controller operation."""
+
+    @wraps(method)
+    def call(self, *args, **kwargs):
+        active = _ACTIVE_INPUTS.get()
+        if active is not None and active[0] is self:
+            check_deadline(active[1]["deadline"])
+            return method(self, *args, **kwargs)
+        budget = {
+            "deadline": cooperative_deadline(),
+            "bytes": 0,
+            "files": 0,
+            "entries": 0,
+        }
+        token = _ACTIVE_INPUTS.set((self, budget))
+        try:
+            return method(self, *args, **kwargs)
+        finally:
+            _ACTIVE_INPUTS.reset(token)
+
+    return call
+
+
+def _bounded_input(value, *, maximum=2 * 1024 * 1024):
+    bounded_json_value(value)
+    bounded_json_text(value, max_bytes=maximum)
+    # Keep canonical identity encoding unchanged; admission uses a conservative envelope.
+    if len(canonical_bytes(value)) > maximum:
+        raise ValueError("knowledge input exceeds its byte budget")
+    return value
+
+
+class _KnowledgeAcquisitionLimit(ValueError):
+    """An operation budget cannot be converted into a partial successful result."""
+
+
 class KnowledgeCoreController:
     """Project-local knowledge canon with explicit host approvals at every write."""
 
+    @_input_scope
     def __init__(
         self,
         project_root: Path,
@@ -111,6 +171,9 @@ class KnowledgeCoreController:
         policy_root: Path | None = None,
         read_only: bool = False,
     ) -> None:
+        if type(read_only) is not bool:
+            raise ValueError("knowledge read_only flag must be an actual boolean")
+        reject_path_links(project_root)
         self.project_root = project_root.resolve(strict=True)
         if self.project_root == Path(self.project_root.anchor):
             raise ValueError("knowledge project root must be bounded")
@@ -118,28 +181,21 @@ class KnowledgeCoreController:
             self.project_root / ".engineering-bootstrap" / "studios" / "knowledge"
         )
         verify_safe_ancestors(self.project_root, self.root / "placeholder")
-        if read_only:
-            if self.root.exists() and (not self.root.is_dir() or self.root.is_symlink()):
-                raise PermissionError("knowledge control root is not a safe directory")
-            self.authority = (
-                StudioAuthorityStore.open_existing(self.project_root)
-                if self.root.is_dir()
-                else None
-            )
-        else:
-            self.root.mkdir(parents=True, exist_ok=True)
-            verify_safe_ancestors(self.project_root, self.root / "placeholder")
-            self.authority = StudioAuthorityStore(self.project_root)
-        self.lock = self.root / ".knowledge-control.lock"
+        reject_path_links(policy_root or self.project_root)
         governance_root = (policy_root or self.project_root).resolve(strict=True)
-        policy_path = (
-            governance_root / "policies" / "learning-promotion.json"
-        ).resolve(strict=True)
+        policy_path = governance_root / "policies" / "learning-promotion.json"
         try:
             policy_path.relative_to(governance_root)
         except ValueError as error:
-            raise PermissionError("learning promotion policy escapes governance root") from error
-        policy = json.loads(policy_path.read_text(encoding="utf-8"))
+            raise PermissionError(
+                "learning promotion policy escapes governance root"
+            ) from error
+        policy = decode_json_object(
+            self._image(policy_path, maximum=65536, root=governance_root),
+            max_bytes=65536,
+            max_depth=16,
+            max_nodes=10000,
+        )
         if (
             not isinstance(policy, Mapping)
             or policy.get("schema_version") != "px.learning-promotion-policy/1.0"
@@ -151,16 +207,360 @@ class KnowledgeCoreController:
             or policy.get("maximum_retained_pipeline_history_bytes")
             != LEARNING_MAXIMUM_HISTORY_BYTES
         ):
-            raise PermissionError("learning promotion policy and controller bounds differ")
+            raise PermissionError(
+                "learning promotion policy and controller bounds differ"
+            )
+        for field in (
+            "minimum_trials_per_confidence_gate",
+            "maximum_trials_per_confidence_gate",
+            "maximum_retained_pipeline_history_bytes",
+        ):
+            if type(policy.get(field)) is not int:
+                raise ValueError("knowledge policy limits must be actual integers")
         self.learning_policy = dict(policy)
+        if read_only:
+            if self.root.exists() and (
+                not self.root.is_dir() or self.root.is_symlink()
+            ):
+                raise PermissionError("knowledge control root is not a safe directory")
+            self.authority = (
+                StudioAuthorityStore.open_existing(self.project_root)
+                if self.root.is_dir()
+                else None
+            )
+        else:
+            self.root.mkdir(parents=True, exist_ok=True)
+            verify_safe_ancestors(self.project_root, self.root / "placeholder")
+            self.authority = StudioAuthorityStore(self.project_root)
+        self.lock = self.root / ".knowledge-control.lock"
 
     @staticmethod
     def _identity(value: object, field: str) -> str:
-        text = str(value or "").strip().lower()
+        text = bounded_text(value, field, maximum=128).lower()
         if not IDENTITY.fullmatch(text):
             raise ValueError(f"invalid knowledge {field}")
         return text
 
+    @_input_scope
+    def _budget(self):
+        active = _ACTIVE_INPUTS.get()
+        if active is None or active[0] is not self:
+            raise RuntimeError("knowledge input budget is not active")
+        check_deadline(active[1]["deadline"])
+        return active[1]
+
+    @_input_scope
+    def _original_path(self, path: Path, *, root: Path | None = None) -> Path:
+        base = self.project_root if root is None else root
+        reject_path_links(base)
+        reject_path_links(path)
+        if not path.resolve().is_relative_to(base.resolve()):
+            raise ValueError("knowledge path escapes its admitted root")
+        relative = path.relative_to(base).as_posix()
+        if relative != ".":
+            relative_source_path(relative)
+        if any(
+            part.casefold() in {"quarantine", ".quarantine", "_quarantine"}
+            for part in path.relative_to(base).parts
+        ):
+            raise ValueError("quarantine is outside knowledge acquisition")
+        return path
+
+    @_input_scope
+    def _target(self, value: object) -> Path:
+        relative = relative_source_path(value)
+        return self._original_path(self.project_root / relative)
+
+    @_input_scope
+    def _reserve_images(self, admitted):
+        budget = self._budget()
+        files = len(admitted)
+        size = sum(info.st_size for _, info in admitted)
+        if (
+            budget["files"] + files > 10000
+            or budget["bytes"] + size > 256 * 1024 * 1024
+        ):
+            raise _KnowledgeAcquisitionLimit(
+                "knowledge operation exceeds its aggregate image budget"
+            )
+        budget["files"] += files
+        budget["bytes"] += size
+
+    @_input_scope
+    def _image(
+        self, path: Path, *, maximum: int = 4 * 1024 * 1024, root: Path | None = None
+    ):
+        base = self.project_root if root is None else root
+        path = self._original_path(path, root=base)
+        path, info = contained_file(base, path.relative_to(base).as_posix())
+        if info.st_size > maximum:
+            raise ValueError(
+                "knowledge image exceeds its byte budget before acquisition"
+            )
+        self._reserve_images([(path, info)])
+        return read_file_image(
+            path, info, limit=maximum, deadline=self._budget()["deadline"]
+        )
+
+    @_input_scope
+    def _walk(
+        self,
+        path: Path,
+        *,
+        maximum_bytes=256 * 1024 * 1024,
+        maximum_depth=32,
+        exclude=None,
+    ):
+        self._original_path(path)
+        budget = self._budget()
+        remaining = 20000 - budget["entries"]
+        if remaining <= 0:
+            raise _KnowledgeAcquisitionLimit(
+                "knowledge operation exceeds its traversal budget"
+            )
+
+        def excluded(relative):
+            if any(
+                part.casefold() in {"quarantine", ".quarantine", "_quarantine"}
+                for part in relative.split("/")
+            ):
+                raise ValueError("quarantine is outside knowledge acquisition")
+            return bool(exclude and exclude(relative))
+
+        budget["entries"] += remaining
+        result = bounded_walk(
+            path,
+            limits=WalkLimits(
+                max_files=10000,
+                max_depth=maximum_depth,
+                max_bytes=maximum_bytes,
+                max_entries=remaining,
+                max_directories=min(10000, remaining),
+                max_duration_seconds=max(
+                    0.000001, self._budget()["deadline"] - time.monotonic()
+                ),
+            ),
+            symlink_policy="reject",
+            exclude=excluded,
+        )
+        budget["entries"] -= remaining - result.scanned_entries
+        check_deadline(budget["deadline"])
+        return result
+
+    @_input_scope
+    def _preflight(
+        self, paths, *, file_limit=64 * 1024 * 1024, total_limit=256 * 1024 * 1024
+    ):
+        admitted = []
+        total = 0
+        for source in paths:
+            self._original_path(source)
+            path, info = contained_file(
+                self.project_root, source.relative_to(self.project_root).as_posix()
+            )
+            total += info.st_size
+            if info.st_size > file_limit:
+                raise ValueError(
+                    "knowledge file exceeds its byte budget before acquisition"
+                )
+            if len(admitted) >= 10000 or total > total_limit:
+                raise _KnowledgeAcquisitionLimit(
+                    "knowledge image inventory exceeds its byte or file budget before acquisition"
+                )
+            admitted.append((path, info))
+        return admitted
+
+    @_input_scope
+    def _snapshot_inventory(self, target: Path):
+        target = self._original_path(target)
+        if target.is_file():
+            paths = [target]
+            kind = "file"
+        else:
+            inventory = self._walk(target)
+            paths = sorted(
+                (entry.path for entry in inventory.files),
+                key=lambda path: path.relative_to(target).as_posix(),
+            )
+            kind = "tree"
+        if not paths:
+            raise ValueError("knowledge source file count is invalid")
+        return target, kind, self._preflight(paths)
+
+    @_input_scope
+    def _snapshot_image(self, inventory):
+        target, kind, admitted = inventory
+        records = []
+        for path, info in admitted:
+            raw = read_file_image(
+                path, info, limit=64 * 1024 * 1024, deadline=self._budget()["deadline"]
+            )
+            records.append(
+                {
+                    "path": path.name
+                    if kind == "file"
+                    else path.relative_to(target).as_posix(),
+                    "bytes": len(raw),
+                    "sha256": hashlib.sha256(raw).hexdigest(),
+                }
+            )
+        return {
+            "kind": kind,
+            "files": len(records),
+            "bytes": sum(row["bytes"] for row in records),
+            "content_sha256": _hash(records),
+        }
+
+    @_input_scope
+    def _history_inventory(self, root: Path):
+        directory = self._original_path(root / "events", root=self.root)
+        if not directory.exists():
+            return []
+        inventory = self._walk(
+            directory, maximum_bytes=LEARNING_MAXIMUM_HISTORY_BYTES, maximum_depth=1
+        )
+        paths = sorted(entry.path for entry in inventory.files)
+        if (
+            any(not re.fullmatch(r"[0-9]{8}\.json", path.name) for path in paths)
+            or inventory.directory_count
+        ):
+            raise ValueError("unclassified knowledge history entry")
+        return self._preflight(
+            paths,
+            file_limit=4 * 1024 * 1024,
+            total_limit=LEARNING_MAXIMUM_HISTORY_BYTES,
+        )
+
+    @_input_scope
+    def _history_paths(self, root: Path):
+        return [path for path, _ in self._history_inventory(root)]
+
+    @_input_scope
+    def _references(self, values, label):
+        supplied = bounded_sequence(values, label, maximum=10000)
+        result = [
+            bounded_text(value, label, maximum=4096, strip=False) for value in supplied
+        ]
+        if len(set(result)) != len(result):
+            raise ValueError("duplicate knowledge reference")
+        return result
+
+    @staticmethod
+    def _publication_input(state, actor, operation, previous):
+        bounded_text(actor, "knowledge publication actor", maximum=256, strip=False)
+        bounded_text(
+            operation, "knowledge publication operation", maximum=128, strip=False
+        )
+        _bounded_input(state)
+        if previous is not None:
+            _bounded_input(previous)
+
+    @staticmethod
+    def _persisted_record_size(value):
+        bounded_json_value(value)
+        size = 1  # The existing writer terminates its ASCII JSON with a newline.
+        for token in json.JSONEncoder(
+            indent=2, sort_keys=True, ensure_ascii=True, allow_nan=False
+        ).iterencode(value):
+            size += len(token)
+            if size > 4 * 1024 * 1024:
+                raise ValueError(
+                    "knowledge persisted record exceeds its exact byte budget"
+                )
+        return size
+
+    @_input_scope
+    def _publish_pair(self, event_path, event, head_path, head):
+        _bounded_input(event, maximum=4 * 1024 * 1024)
+        _bounded_input(head, maximum=4 * 1024 * 1024)
+        signed_event = self.authority.sign_receipt(event)
+        signed_head = self.authority.sign_receipt(head)
+        event_size = self._persisted_record_size(signed_event)
+        self._persisted_record_size(signed_head)
+        history = self._history_inventory(event_path.parent.parent)
+        if (
+            len(history) >= 10000
+            or sum(info.st_size for _, info in history) + event_size
+            > LEARNING_MAXIMUM_HISTORY_BYTES
+        ):
+            raise ValueError(
+                "knowledge publication exceeds its retained history budget"
+            )
+        write_json_atomic(event_path, signed_event)
+        write_json_atomic(head_path, signed_head)
+
+    @_input_scope
+    def _control_inventory(self, kind):
+        prefixes = {
+            "proposals": "proposal-",
+            "learning": "pipeline-",
+            "canonical": "record-",
+        }
+        prefix = prefixes[kind]
+        directory = self._original_path(self.root / kind, root=self.root)
+        if not directory.exists():
+            return [], []
+
+        def excluded(relative):
+            parts = relative.split("/")
+            if not re.fullmatch(re.escape(prefix) + r"[0-9a-f]{24}", parts[0]):
+                raise ValueError("unclassified knowledge collection entry")
+            if len(parts) == 1:
+                return False
+            if len(parts) == 2 and parts[1] in {"events", "revisions"}:
+                child = self._original_path(directory / relative)
+                if not child.is_dir():
+                    raise ValueError("knowledge history component is not a directory")
+                return True
+            if len(parts) == 2 and parts[1] == "head.json":
+                return False
+            raise ValueError("unclassified knowledge collection entry")
+
+        inventory = self._walk(directory, maximum_depth=2, exclude=excluded)
+        roots = sorted(
+            entry.path
+            for entry in inventory.entries
+            if entry.kind == "directory" and "/" not in entry.relative
+        )
+        heads = sorted(entry.path for entry in inventory.files)
+        if any(path.name != "head.json" or path.parent not in roots for path in heads):
+            raise ValueError(
+                "knowledge collection head is not contained in an admitted record"
+            )
+        self._preflight(heads, file_limit=4 * 1024 * 1024)
+        return roots, heads
+
+    @_input_scope
+    def _control_heads(self, kind):
+        return self._control_inventory(kind)[1]
+
+    @_input_scope
+    def _control_roots(self, kind):
+        return self._control_inventory(kind)[0]
+
+    @_input_scope
+    def _revision_paths(self, directory):
+        self._original_path(directory, root=self.root)
+        if not directory.exists():
+            return []
+        inventory = self._walk(directory, maximum_depth=1)
+        paths = sorted(entry.path for entry in inventory.files)
+        if inventory.directory_count or any(
+            not re.fullmatch(r"[0-9a-f]{64}\.json", path.name) for path in paths
+        ):
+            raise ValueError("unclassified knowledge revision entry")
+        self._preflight(paths, file_limit=4 * 1024 * 1024)
+        return paths
+
+    @staticmethod
+    def _browse_input(query, limit):
+        bounded_integer(limit, "knowledge browse limit", maximum=500)
+        if type(query) is not str:
+            raise ValueError("knowledge query must be bounded text")
+        if query:
+            bounded_text(query, "knowledge query", maximum=4096, strip=False)
+
+    @_input_scope
     def _proposal_root(self, proposal_id: str) -> Path:
         proposal_id = self._identity(proposal_id, "proposal identity")
         component = f"proposal-{hashlib.sha256(proposal_id.encode()).hexdigest()[:24]}"
@@ -168,6 +568,7 @@ class KnowledgeCoreController:
         verify_safe_ancestors(self.project_root, path / "head.json")
         return path
 
+    @_input_scope
     def _canonical_root(self, record_id: str) -> Path:
         record_id = self._identity(record_id, "record identity")
         component = f"record-{hashlib.sha256(record_id.encode()).hexdigest()[:24]}"
@@ -175,6 +576,7 @@ class KnowledgeCoreController:
         verify_safe_ancestors(self.project_root, path / "head.json")
         return path
 
+    @_input_scope
     def _learning_root(self, pipeline_id: str) -> Path:
         pipeline_id = self._identity(pipeline_id, "learning pipeline identity")
         component = f"pipeline-{hashlib.sha256(pipeline_id.encode()).hexdigest()[:24]}"
@@ -182,6 +584,7 @@ class KnowledgeCoreController:
         verify_safe_ancestors(self.project_root, path / "head.json")
         return path
 
+    @_input_scope
     def _read_learning(self, pipeline_id: str) -> dict[str, object]:
         root = self._learning_root(pipeline_id)
         head_path = root / "head.json"
@@ -197,7 +600,7 @@ class KnowledgeCoreController:
             or head.get("learning_direct_write_allowed") is not False
         ):
             raise PermissionError("learning pipeline head contract is invalid")
-        events = sorted((root / "events").glob("*.json"))
+        events = self._history_paths(root)
         if len(events) != int(head["sequence"]):
             raise PermissionError("learning pipeline history is incomplete")
         previous = None
@@ -205,7 +608,9 @@ class KnowledgeCoreController:
         projected_states: list[dict[str, object]] = []
         for index, path in enumerate(events, start=1):
             event = self._verify_signed(path)
-            unsigned = {key: value for key, value in event.items() if key != "event_sha256"}
+            unsigned = {
+                key: value for key, value in event.items() if key != "event_sha256"
+            }
             if (
                 event.get("schema_version") != "px.learning-pipeline-event/1.0"
                 or event.get("sequence") != index
@@ -224,10 +629,14 @@ class KnowledgeCoreController:
             previous = event["event_sha256"]
             latest = event
             projected_states.append(dict(event["state"]))
-        if latest is None or {
-            **dict(latest["state"]),
-            "last_event_sha256": latest["event_sha256"],
-        } != head:
+        if (
+            latest is None
+            or {
+                **dict(latest["state"]),
+                "last_event_sha256": latest["event_sha256"],
+            }
+            != head
+        ):
             raise PermissionError("learning pipeline head differs from history")
         revision_payload = {
             key: value
@@ -245,7 +654,9 @@ class KnowledgeCoreController:
         for index, state in enumerate(projected_states):
             if state.get("knowledge_proposal_id"):
                 if index == 0:
-                    raise PermissionError("learning candidate has no admission predecessor")
+                    raise PermissionError(
+                        "learning candidate has no admission predecessor"
+                    )
                 admission_revision = projected_states[index - 1].get(
                     "pipeline_revision_sha256"
                 )
@@ -253,6 +664,7 @@ class KnowledgeCoreController:
         self._validate_learning_candidate_link(head, admission_revision)
         return dict(head)
 
+    @_input_scope
     def _publish_learning(
         self,
         state: Mapping[str, object],
@@ -261,8 +673,10 @@ class KnowledgeCoreController:
         operation: str,
         previous: Mapping[str, object] | None,
     ) -> dict[str, object]:
+        self._publication_input(state, actor, operation, previous)
         if not actor.strip():
             raise ValueError("learning mutation requires an identified actor")
+        _bounded_input(state)
         projected = {
             key: value
             for key, value in state.items()
@@ -309,22 +723,14 @@ class KnowledgeCoreController:
         event_path = root / "events" / f"{int(projected['sequence']):08d}.json"
         if event_path.exists():
             raise FileExistsError("learning pipeline event already exists")
-        retained_bytes = sum(
-            path.stat().st_size for path in (root / "events").glob("*.json")
-        )
-        if (
-            retained_bytes + len(canonical_bytes(event)) + 16 * 1024
-            > LEARNING_MAXIMUM_HISTORY_BYTES
-        ):
-            raise ValueError("learning pipeline retained history exceeds the 32 MiB bound")
-        write_json_atomic(event_path, self.authority.sign_receipt(event))
-        write_json_atomic(root / "head.json", self.authority.sign_receipt(head))
+        self._publish_pair(event_path, event, root / "head.json", head)
         return head
 
     @staticmethod
     def _validate_learning_content(
         value: object, label: str, *, maximum_bytes: int = 256 * 1024
     ) -> object:
+        _bounded_input(value, maximum=maximum_bytes)
         if len(canonical_bytes(value)) > maximum_bytes:
             raise ValueError(f"{label} exceeds its bounded size")
         sanitized = sanitize_capture(json.dumps(value, ensure_ascii=False))
@@ -332,9 +738,10 @@ class KnowledgeCoreController:
             raise ValueError(f"{label} contains secret-like material")
         return value
 
+    @_input_scope
     def _recover_learning_projection(self, root: Path) -> bool:
         """Repair one signed event-ahead-of-head learning publication only."""
-        events = sorted((root / "events").glob("*.json"))
+        events = self._history_paths(root)
         if not events:
             raise PermissionError("learning pipeline recovery has no event history")
         projected: list[dict[str, object]] = []
@@ -381,18 +788,24 @@ class KnowledgeCoreController:
                 if state.get("state") != "evidence" or previous_hash is not None:
                     raise PermissionError("learning pipeline initial event is invalid")
                 if self._learning_root(str(state.get("pipeline_id") or "")) != root:
-                    raise PermissionError("learning pipeline directory identity is invalid")
+                    raise PermissionError(
+                        "learning pipeline directory identity is invalid"
+                    )
             else:
                 prior_state = str(projected[-1]["state"])
                 if state.get("state") not in LEARNING_TRANSITIONS[prior_state]:
-                    raise PermissionError("learning pipeline trailing transition is invalid")
+                    raise PermissionError(
+                        "learning pipeline trailing transition is invalid"
+                    )
             previous_hash = str(event["event_sha256"])
             projected.append({**dict(state), "last_event_sha256": previous_hash})
         admission_revision = None
         for index, state in enumerate(projected):
             if state.get("knowledge_proposal_id"):
                 if index == 0:
-                    raise PermissionError("learning candidate has no admission predecessor")
+                    raise PermissionError(
+                        "learning candidate has no admission predecessor"
+                    )
                 admission_revision = projected[index - 1].get(
                     "pipeline_revision_sha256"
                 )
@@ -413,6 +826,7 @@ class KnowledgeCoreController:
         write_json_atomic(head_path, self.authority.sign_receipt(projected[-1]))
         return True
 
+    @_input_scope
     def _validate_learning_candidate_link(
         self,
         state: Mapping[str, object],
@@ -428,9 +842,13 @@ class KnowledgeCoreController:
             raise PermissionError("learning knowledge candidate link is incomplete")
         proposal = self._read(str(proposal_id))
         candidate = proposal.get("candidate")
-        learning = candidate.get("_px_learning") if isinstance(candidate, Mapping) else None
+        learning = (
+            candidate.get("_px_learning") if isinstance(candidate, Mapping) else None
+        )
         if not isinstance(learning, Mapping):
-            raise PermissionError("learning knowledge candidate role binding is invalid")
+            raise PermissionError(
+                "learning knowledge candidate role binding is invalid"
+            )
         if admission_revision_sha256 is None:
             admission_revision_sha256 = learning.get("pipeline_revision_sha256")
         if not re.fullmatch(r"[0-9a-f]{64}", str(admission_revision_sha256 or "")):
@@ -455,16 +873,23 @@ class KnowledgeCoreController:
             proposal.get("candidate_sha256") != candidate_sha256
             or dict(learning) != expected
         ):
-            raise PermissionError("learning knowledge candidate role binding is invalid")
+            raise PermissionError(
+                "learning knowledge candidate role binding is invalid"
+            )
 
+    @_input_scope
     def _verify_signed(self, path: Path) -> dict[str, object]:
         if self.authority is None:
             raise PermissionError("knowledge authority has not been initialized")
-        raw = json.loads(path.read_text(encoding="utf-8"))
+        self._original_path(path, root=self.root)
+        raw = decode_json_object(
+            self._image(path), max_bytes=4 * 1024 * 1024, max_depth=32, max_nodes=100000
+        )
         if not isinstance(raw, Mapping):
             raise PermissionError("knowledge control record is not an object")
         return self.authority.verify_receipt(raw)
 
+    @_input_scope
     def _read(self, proposal_id: str) -> dict[str, object]:
         root = self._proposal_root(proposal_id)
         head_path = root / "head.json"
@@ -480,7 +905,7 @@ class KnowledgeCoreController:
             or head.get("authority_state") != "codex-host-retained"
         ):
             raise PermissionError("knowledge proposal head contract is invalid")
-        events = sorted((root / "events").glob("*.json"))
+        events = self._history_paths(root)
         if len(events) != int(head["sequence"]):
             raise PermissionError("knowledge proposal history is incomplete")
         previous = None
@@ -498,13 +923,18 @@ class KnowledgeCoreController:
                 raise PermissionError("knowledge proposal event ancestry is invalid")
             previous = event["event_sha256"]
             latest = event
-        if latest is None or {
-            **dict(latest["state"]),
-            "last_event_sha256": latest["event_sha256"],
-        } != head:
+        if (
+            latest is None
+            or {
+                **dict(latest["state"]),
+                "last_event_sha256": latest["event_sha256"],
+            }
+            != head
+        ):
             raise PermissionError("knowledge proposal head differs from history")
         return dict(head)
 
+    @_input_scope
     def _publish(
         self,
         state: Mapping[str, object],
@@ -513,9 +943,11 @@ class KnowledgeCoreController:
         operation: str,
         previous: Mapping[str, object] | None,
     ) -> dict[str, object]:
+        self._publication_input(state, actor, operation, previous)
         if not actor.strip():
             raise ValueError("knowledge mutation requires an identified actor")
         root = self._proposal_root(str(state["proposal_id"]))
+        _bounded_input(state)
         projected = {
             key: value for key, value in state.items() if key != "last_event_sha256"
         }
@@ -537,20 +969,22 @@ class KnowledgeCoreController:
         event_path = root / "events" / f"{int(state['sequence']):08d}.json"
         if event_path.exists():
             raise FileExistsError("knowledge proposal event already exists")
-        write_json_atomic(event_path, self.authority.sign_receipt(event))
-        write_json_atomic(root / "head.json", self.authority.sign_receipt(head))
+        self._publish_pair(event_path, event, root / "head.json", head)
         return head
 
+    @_input_scope
     def _recover_proposal_projection(self, root: Path) -> bool:
         """Repair exactly one authenticated event-ahead-of-head publication."""
-        events = sorted((root / "events").glob("*.json"))
+        events = self._history_paths(root)
         if not events:
             raise PermissionError("knowledge proposal recovery has no event history")
         projected: list[dict[str, object]] = []
         previous_hash: str | None = None
         for sequence, path in enumerate(events, start=1):
             event = self._verify_signed(path)
-            unsigned = {key: value for key, value in event.items() if key != "event_sha256"}
+            unsigned = {
+                key: value for key, value in event.items() if key != "event_sha256"
+            }
             state = event.get("state")
             if (
                 event.get("schema_version") != "px.knowledge-proposal-event/1.0"
@@ -567,7 +1001,9 @@ class KnowledgeCoreController:
                 if state.get("state") != "candidate" or previous_hash is not None:
                     raise PermissionError("knowledge proposal initial event is invalid")
             elif state.get("state") not in TRANSITIONS[str(projected[-1]["state"])]:
-                raise PermissionError("knowledge proposal trailing transition is invalid")
+                raise PermissionError(
+                    "knowledge proposal trailing transition is invalid"
+                )
             previous_hash = str(event["event_sha256"])
             projected.append({**dict(state), "last_event_sha256": previous_hash})
         head_path = root / "head.json"
@@ -576,7 +1012,9 @@ class KnowledgeCoreController:
             sequence = int(head.get("sequence", 0))
             if sequence == len(projected):
                 if head != projected[-1]:
-                    raise PermissionError("knowledge proposal head differs from history")
+                    raise PermissionError(
+                        "knowledge proposal head differs from history"
+                    )
                 return False
             if sequence != len(projected) - 1 or head != projected[-2]:
                 raise PermissionError("knowledge proposal divergence exceeds one event")
@@ -585,58 +1023,55 @@ class KnowledgeCoreController:
         write_json_atomic(head_path, self.authority.sign_receipt(projected[-1]))
         return True
 
+    @_input_scope
     def _sources(self) -> dict[str, Mapping[str, object]]:
-        path = self.project_root / "registry" / "knowledge_sources.json"
-        if not path.is_file():
+        path = self._target("registry/knowledge_sources.json")
+        if not path.exists():
             return {}
-        payload = json.loads(path.read_text(encoding="utf-8"))
-        rows = payload.get("knowledge_sources", []) if isinstance(payload, Mapping) else []
-        return {
-            str(row.get("id")): row
-            for row in rows
-            if isinstance(row, Mapping) and str(row.get("id", "")).strip()
-        }
+        payload = decode_json_object(
+            self._image(path, maximum=1024 * 1024),
+            max_bytes=1024 * 1024,
+            max_depth=32,
+            max_nodes=100000,
+        )
+        rows = bounded_sequence(
+            payload.get("knowledge_sources"), "knowledge sources", maximum=10000
+        )
+        result = {}
+        locations = set()
+        for row in rows:
+            bounded_mapping(row, "knowledge source", maximum=64)
+            identifier = bounded_text(
+                row.get("id"), "knowledge source identity", maximum=128, strip=False
+            )
+            location = relative_source_path(row.get("location"))
+            bounded_text(row.get("status"), "knowledge source status", maximum=128)
+            bounded_text(row.get("kind"), "knowledge source kind", maximum=128)
+            if identifier in result or location.casefold() in locations:
+                raise ValueError("duplicate knowledge source identity or locator")
+            result[identifier] = row
+            locations.add(location.casefold())
+        return result
 
+    @_input_scope
     def _source_errors(self, source_ids: Sequence[str]) -> list[str]:
         _, errors = self._source_snapshots(source_ids)
         return errors
 
+    @_input_scope
     def _path_snapshot(self, target: Path) -> dict[str, object]:
-        files = [target] if target.is_file() else sorted(
-            (item for item in target.rglob("*") if item.is_file()),
-            key=lambda item: item.relative_to(target).as_posix(),
-        )
-        if not files or len(files) > 10_000:
-            raise ValueError("knowledge source file count is invalid")
-        records = []
-        total = 0
-        for item in files:
-            if item.is_symlink():
-                raise PermissionError("knowledge source cannot contain links")
-            data = item.read_bytes()
-            total += len(data)
-            if total > 256 * 1024 * 1024:
-                raise ValueError("knowledge source exceeds the 256 MiB bound")
-            records.append(
-                {
-                    "path": item.name if target.is_file() else item.relative_to(target).as_posix(),
-                    "bytes": len(data),
-                    "sha256": hashlib.sha256(data).hexdigest(),
-                }
-            )
-        return {
-            "kind": "file" if target.is_file() else "tree",
-            "files": len(records),
-            "bytes": total,
-            "content_sha256": _hash(records),
-        }
+        inventory = self._snapshot_inventory(target)
+        self._reserve_images(inventory[2])
+        return self._snapshot_image(inventory)
 
+    @_input_scope
     def _source_snapshots(
         self, source_ids: Sequence[str]
     ) -> tuple[list[dict[str, object]], list[str]]:
+        source_ids = self._references(source_ids, "knowledge source identities")
         declared = self._sources()
-        errors: list[str] = []
-        snapshots: list[dict[str, object]] = []
+        plans = []
+        errors = []
         for source_id in source_ids:
             row = declared.get(source_id)
             if row is None:
@@ -645,100 +1080,143 @@ class KnowledgeCoreController:
             if row.get("status") != "active":
                 errors.append(f"source_not_eligible:{source_id}:{row.get('status')}")
                 continue
-            relative = Path(str(row.get("location") or ""))
-            if relative.is_absolute() or ".." in relative.parts:
-                errors.append(f"source_outside_project:{source_id}")
-                continue
             try:
-                target = (self.project_root / relative).resolve(strict=True)
-                target.relative_to(self.project_root)
-                identity = self._path_snapshot(target)
-            except (FileNotFoundError, OSError, ValueError):
+                target = self._target(row["location"])
+                inventory = self._snapshot_inventory(target)
+            except _KnowledgeAcquisitionLimit:
+                raise
+            except (OSError, ValueError):
                 errors.append(f"source_unavailable:{source_id}")
                 continue
-            except PermissionError:
-                errors.append(f"source_unsafe:{source_id}")
+            plans.append((source_id, row, inventory))
+        self._reserve_images(
+            [item for _, _, inventory in plans for item in inventory[2]]
+        )
+        snapshots = []
+        for source_id, row, inventory in plans:
+            try:
+                identity = self._snapshot_image(inventory)
+            except _KnowledgeAcquisitionLimit:
+                raise
+            except (OSError, ValueError):
+                errors.append(f"source_unavailable:{source_id}")
                 continue
             snapshots.append(
                 {
                     "source_id": source_id,
                     "status": row.get("status"),
                     "kind": row.get("kind"),
-                    "location": relative.as_posix(),
+                    "location": row["location"],
                     **identity,
                 }
             )
         return snapshots, errors
 
+    @_input_scope
     def _evidence_snapshots(
         self, evidence_refs: Sequence[str]
     ) -> tuple[list[dict[str, object]], list[str]]:
-        snapshots: list[dict[str, object]] = []
-        errors: list[str] = []
-        for reference in evidence_refs:
+        references = self._references(evidence_refs, "knowledge evidence references")
+        plans = []
+        errors = []
+        for reference in references:
             if re.fullmatch(r"sha256:[0-9a-f]{64}", reference):
-                snapshots.append(
-                    {"reference": reference, "kind": "content-hash", "sha256": reference[7:]}
-                )
+                plans.append((reference, None, None))
                 continue
             match = re.fullmatch(r"([^#]+)#sha256=([0-9a-f]{64})", reference)
             if not match:
                 errors.append(f"evidence_unresolved:{reference}")
                 continue
-            relative = Path(match.group(1))
-            if relative.is_absolute() or ".." in relative.parts:
-                errors.append(f"evidence_outside_project:{reference}")
-                continue
             try:
-                target = (self.project_root / relative).resolve(strict=True)
-                target.relative_to(self.project_root)
-                if not target.is_file() or target.is_symlink():
-                    raise ValueError
-                data = target.read_bytes()
-            except (FileNotFoundError, OSError, ValueError):
+                target = self._target(match.group(1))
+                admitted = self._preflight([target])
+            except _KnowledgeAcquisitionLimit:
+                raise
+            except (OSError, ValueError):
                 errors.append(f"evidence_unavailable:{reference}")
                 continue
-            actual = hashlib.sha256(data).hexdigest()
-            if actual != match.group(2):
+            plans.append((reference, admitted[0], match.group(2)))
+        self._reserve_images([image for _, image, _ in plans if image is not None])
+        snapshots = []
+        for reference, image, expected in plans:
+            if image is None:
+                snapshots.append(
+                    {
+                        "reference": reference,
+                        "kind": "content-hash",
+                        "sha256": reference[7:],
+                    }
+                )
+                continue
+            target, info = image
+            try:
+                raw = read_file_image(
+                    target,
+                    info,
+                    limit=64 * 1024 * 1024,
+                    deadline=self._budget()["deadline"],
+                )
+            except _KnowledgeAcquisitionLimit:
+                raise
+            except (OSError, ValueError):
+                errors.append(f"evidence_unavailable:{reference}")
+                continue
+            actual = hashlib.sha256(raw).hexdigest()
+            if actual != expected:
                 errors.append(f"evidence_hash_mismatch:{reference}")
                 continue
             snapshots.append(
                 {
                     "reference": reference,
                     "kind": "project-file",
-                    "path": relative.as_posix(),
-                    "bytes": len(data),
+                    "path": target.relative_to(self.project_root).as_posix(),
+                    "bytes": len(raw),
                     "sha256": actual,
                 }
             )
         return snapshots, errors
 
+    @_input_scope
     def _dependency_snapshot(
         self, expected: Mapping[str, str]
     ) -> tuple[dict[str, str], list[str]]:
-        current: dict[str, str] = {}
-        errors: list[str] = []
+        if type(expected) is not dict or len(expected) > 10000:
+            raise ValueError("knowledge dependencies must be a bounded mapping")
+        bounded_json_value(expected)
+        plans = []
+        errors = []
         for supplied_path, supplied_sha in sorted(expected.items()):
-            relative = Path(str(supplied_path))
-            if (
-                relative.is_absolute()
-                or ".." in relative.parts
-                or not re.fullmatch(r"[0-9a-f]{64}", str(supplied_sha))
-            ):
+            try:
+                target = self._target(supplied_path)
+                if type(supplied_sha) is not str or not re.fullmatch(
+                    r"[0-9a-f]{64}", supplied_sha
+                ):
+                    raise ValueError("invalid dependency digest")
+                inventory = self._snapshot_inventory(target)
+            except _KnowledgeAcquisitionLimit:
+                raise
+            except (OSError, ValueError):
                 errors.append(f"dependency_invalid:{supplied_path}")
                 continue
+            plans.append((supplied_path, supplied_sha, inventory))
+        self._reserve_images(
+            [item for _, _, inventory in plans for item in inventory[2]]
+        )
+        current = {}
+        for supplied_path, supplied_sha, inventory in plans:
             try:
-                target = (self.project_root / relative).resolve(strict=True)
-                target.relative_to(self.project_root)
-                identity = self._path_snapshot(target)
-            except (FileNotFoundError, OSError, ValueError, PermissionError):
-                errors.append(f"dependency_unavailable:{relative.as_posix()}")
+                identity = self._snapshot_image(inventory)
+            except _KnowledgeAcquisitionLimit:
+                raise
+            except (OSError, ValueError):
+                errors.append(f"dependency_unavailable:{supplied_path}")
                 continue
-            current[relative.as_posix()] = str(identity["content_sha256"])
-            if current[relative.as_posix()] != str(supplied_sha):
-                errors.append(f"dependency_hash_mismatch:{relative.as_posix()}")
+            current[supplied_path] = identity["content_sha256"]
+            if current[supplied_path] != supplied_sha:
+                errors.append(f"dependency_hash_mismatch:{supplied_path}")
         return current, errors
 
+    @_input_scope
     def _transition_learning(
         self,
         pipeline_id: str,
@@ -767,8 +1245,7 @@ class KnowledgeCoreController:
                 )
             if (
                 expected_revision_sha256
-                and current.get("pipeline_revision_sha256")
-                != expected_revision_sha256
+                and current.get("pipeline_revision_sha256") != expected_revision_sha256
             ):
                 raise PermissionError("learning pipeline changed during the operation")
             next_state = {
@@ -786,6 +1263,7 @@ class KnowledgeCoreController:
                 previous=current,
             )
 
+    @_input_scope
     def observe_experience(
         self,
         *,
@@ -803,10 +1281,19 @@ class KnowledgeCoreController:
     ) -> dict[str, object]:
         if not approved:
             raise PermissionError("experience capture requires explicit host approval")
-        sources = sorted(set(map(str, source_ids)))
-        references = sorted(set(filter(None, map(str, evidence_refs))))
+        sources = sorted(self._references(source_ids, "knowledge source identities"))
+        references = sorted(
+            self._references(evidence_refs, "knowledge evidence references")
+        )
         if not sources or not references:
-            raise ValueError("experience capture requires declared sources and evidence")
+            raise ValueError(
+                "experience capture requires declared sources and evidence"
+            )
+        bounded_mapping(measurements, "knowledge measurements", maximum=256)
+        _bounded_input(measurements, maximum=64 * 1024)
+        capability_ids = self._references(
+            capability_ids, "knowledge capability identities"
+        )
         self._validate_learning_content(
             {
                 "operation_id": operation_id,
@@ -835,11 +1322,17 @@ class KnowledgeCoreController:
             source_refs=references,
         )
         if pipeline_id:
-            current = self._read_learning(self._identity(pipeline_id, "learning pipeline identity"))
+            current = self._read_learning(
+                self._identity(pipeline_id, "learning pipeline identity")
+            )
             if current["state"] != "evidence":
-                raise ValueError("evidence may only be appended before pattern extraction")
+                raise ValueError(
+                    "evidence may only be appended before pattern extraction"
+                )
             if list(current.get("source_ids") or ()) != sources:
-                raise PermissionError("learning source scope cannot change after capture")
+                raise PermissionError(
+                    "learning source scope cannot change after capture"
+                )
             records = list(current.get("operation_evidence") or ())
             if any(
                 item.get("record_sha256") == evidence["record_sha256"]
@@ -891,6 +1384,7 @@ class KnowledgeCoreController:
             "authority_state": "codex-host-retained",
             "last_event_sha256": "0" * 64,
         }
+        self._publication_input(state, observed_by, "observe", None)
         with FileLock(self.lock, timeout_seconds=10):
             root = self._learning_root(pipeline_id)
             root.mkdir(parents=True, exist_ok=False)
@@ -899,6 +1393,7 @@ class KnowledgeCoreController:
                 state, actor=observed_by, operation="observe", previous=None
             )
 
+    @_input_scope
     def extract_learning_pattern(
         self,
         pipeline_id: str,
@@ -940,6 +1435,7 @@ class KnowledgeCoreController:
             expected_revision_sha256=str(current["pipeline_revision_sha256"]),
         )
 
+    @_input_scope
     def form_learning_hypothesis(
         self,
         pipeline_id: str,
@@ -967,8 +1463,12 @@ class KnowledgeCoreController:
         ):
             if not isinstance(artifact, Mapping):
                 raise ValueError(f"{label} artifact must be an object")
-            artifact_id = self._identity(artifact.get("id"), f"{label} artifact identity")
-            artifact_kind = self._identity(artifact.get("kind"), f"{label} artifact kind")
+            artifact_id = self._identity(
+                artifact.get("id"), f"{label} artifact identity"
+            )
+            artifact_kind = self._identity(
+                artifact.get("kind"), f"{label} artifact kind"
+            )
             if artifact_id != normalized_unit_id or artifact_kind != normalized_kind:
                 raise ValueError(
                     f"{label} artifact id and kind must match the frozen learning unit"
@@ -976,7 +1476,9 @@ class KnowledgeCoreController:
         pattern = current.get("pattern")
         aggregation = current.get("aggregation")
         if not isinstance(pattern, Mapping) or not isinstance(aggregation, Mapping):
-            raise PermissionError("a hashed pattern is required before hypothesis formation")
+            raise PermissionError(
+                "a hashed pattern is required before hypothesis formation"
+            )
         dependencies, dependency_errors = self._dependency_snapshot(dependency_sha256)
         if dependency_errors:
             raise PermissionError(
@@ -991,7 +1493,9 @@ class KnowledgeCoreController:
         incumbent = freeze_revision(
             unit_id=normalized_unit_id,
             kind=normalized_kind,
-            artifact=self._validate_learning_content(incumbent_artifact, "incumbent artifact"),
+            artifact=self._validate_learning_content(
+                incumbent_artifact, "incumbent artifact"
+            ),
             evidence_sha256=evidence_hashes,
             dependency_sha256=dependencies,
             tier=1,
@@ -999,7 +1503,9 @@ class KnowledgeCoreController:
         challenger = freeze_revision(
             unit_id=normalized_unit_id,
             kind=normalized_kind,
-            artifact=self._validate_learning_content(challenger_artifact, "challenger artifact"),
+            artifact=self._validate_learning_content(
+                challenger_artifact, "challenger artifact"
+            ),
             evidence_sha256=evidence_hashes,
             dependency_sha256=dependencies,
             parent_revision_sha256=str(incumbent["revision_sha256"]),
@@ -1028,6 +1534,7 @@ class KnowledgeCoreController:
             expected_revision_sha256=str(current["pipeline_revision_sha256"]),
         )
 
+    @_input_scope
     def record_learning_trial(
         self,
         pipeline_id: str,
@@ -1130,6 +1637,7 @@ class KnowledgeCoreController:
             expected_revision_sha256=str(current["pipeline_revision_sha256"]),
         )
 
+    @_input_scope
     def validate_learning_research(
         self,
         pipeline_id: str,
@@ -1179,7 +1687,9 @@ class KnowledgeCoreController:
         target = "research-blocked"
         if research["passed"] and better_alternative_found:
             if secondary_artifact is None:
-                raise ValueError("a discovered better alternative requires a tier-three artifact")
+                raise ValueError(
+                    "a discovered better alternative requires a tier-three artifact"
+                )
             selected = current.get("selected_revision")
             if not isinstance(selected, Mapping):
                 raise PermissionError("the confidence-selected revision is unavailable")
@@ -1191,7 +1701,9 @@ class KnowledgeCoreController:
             secondary = freeze_revision(
                 unit_id=str(selected.get("unit_id") or ""),
                 kind=str(selected.get("kind") or ""),
-                artifact=self._validate_learning_content(secondary_artifact, "tier-three artifact"),
+                artifact=self._validate_learning_content(
+                    secondary_artifact, "tier-three artifact"
+                ),
                 evidence_sha256=evidence_hashes,
                 dependency_sha256=dict(selected.get("dependency_sha256") or {}),
                 parent_revision_sha256=str(selected.get("revision_sha256") or ""),
@@ -1218,6 +1730,7 @@ class KnowledgeCoreController:
             expected_revision_sha256=str(current["pipeline_revision_sha256"]),
         )
 
+    @_input_scope
     def final_validate_learning(
         self,
         pipeline_id: str,
@@ -1229,10 +1742,7 @@ class KnowledgeCoreController:
     ) -> dict[str, object]:
         current = self._read_learning(pipeline_id)
         normalized_partial_units = sorted(
-            {
-                self._identity(item, "partial unit identity")
-                for item in partial_units
-            }
+            {self._identity(item, "partial unit identity") for item in partial_units}
         )
         self._validate_learning_content(
             {
@@ -1278,7 +1788,11 @@ class KnowledgeCoreController:
             current_dependencies=current_dependencies,
             partial_units=normalized_partial_units,
         )
-        target = "validated" if decision["passed"] and not dependency_errors else "validation-blocked"
+        target = (
+            "validated"
+            if decision["passed"] and not dependency_errors
+            else "validation-blocked"
+        )
         return self._transition_learning(
             pipeline_id,
             allowed_states=("research-validated", "validation-blocked"),
@@ -1290,15 +1804,20 @@ class KnowledgeCoreController:
                 "final_validation": final_validation,
                 "promotion_decision": decision,
                 "blocked_reasons": dependency_errors
-                + ([] if decision["passed"] else [
-                    f"gate_failed:{key}"
-                    for key, passed in decision["checks"].items()
-                    if not passed
-                ]),
+                + (
+                    []
+                    if decision["passed"]
+                    else [
+                        f"gate_failed:{key}"
+                        for key, passed in decision["checks"].items()
+                        if not passed
+                    ]
+                ),
             },
             expected_revision_sha256=str(current["pipeline_revision_sha256"]),
         )
 
+    @_input_scope
     def admit_learning_candidate(
         self,
         pipeline_id: str,
@@ -1310,7 +1829,9 @@ class KnowledgeCoreController:
             raise PermissionError("learning admission requires explicit host approval")
         current = self._read_learning(pipeline_id)
         if current["state"] != "validated":
-            raise PermissionError("only a fully validated learning pipeline may be admitted")
+            raise PermissionError(
+                "only a fully validated learning pipeline may be admitted"
+            )
         decision = current.get("promotion_decision")
         revision = current.get("selected_revision")
         if (
@@ -1330,7 +1851,7 @@ class KnowledgeCoreController:
             "direct_write_allowed": False,
         }
         existing_proposal = None
-        for path in sorted((self.root / "proposals").glob("*/head.json")):
+        for path in self._control_heads("proposals"):
             candidate = self._verify_signed(path)
             learning = (
                 candidate.get("candidate", {}).get("_px_learning", {})
@@ -1363,9 +1884,7 @@ class KnowledgeCoreController:
                 for item in current.get(field, [])
                 if isinstance(item, Mapping)
             }
-            | {
-                str(current.get("final_validation", {}).get("evidence_ref") or "")
-            }
+            | {str(current.get("final_validation", {}).get("evidence_ref") or "")}
         )
         evidence_refs = [item for item in evidence_refs if item]
         proposal = existing_proposal or self.propose(
@@ -1390,6 +1909,7 @@ class KnowledgeCoreController:
             expected_revision_sha256=str(current["pipeline_revision_sha256"]),
         )
 
+    @_input_scope
     def measure_learning_reuse(
         self,
         pipeline_id: str,
@@ -1405,8 +1925,14 @@ class KnowledgeCoreController:
         current = self._read_learning(pipeline_id)
         proposal_id = str(current.get("knowledge_proposal_id") or "")
         proposal = self._read(proposal_id) if proposal_id else None
-        if current["state"] not in {"admitted", "canonical"} or not proposal or proposal.get("state") != "promoted":
-            raise PermissionError("measured reuse requires a promoted canonical knowledge revision")
+        if (
+            current["state"] not in {"admitted", "canonical"}
+            or not proposal
+            or proposal.get("state") != "promoted"
+        ):
+            raise PermissionError(
+                "measured reuse requires a promoted canonical knowledge revision"
+            )
         decision = current.get("promotion_decision")
         if not isinstance(decision, Mapping):
             raise PermissionError("learning promotion decision is unavailable")
@@ -1426,7 +1952,9 @@ class KnowledgeCoreController:
             ):
                 raise ValueError("reuse measurements must be cumulative and monotonic")
         if len(measurements) >= 100:
-            raise ValueError("learning reuse measurement history bound has been reached")
+            raise ValueError(
+                "learning reuse measurement history bound has been reached"
+            )
         measurements.append(measurement)
         invalidation: Mapping[str, object] | None = None
         if decay["decay"]:
@@ -1451,19 +1979,25 @@ class KnowledgeCoreController:
                 if isinstance(item, Mapping)
             }
             if knowledge_node not in graph_nodes:
-                raise ValueError("decay dependency graph omits canonical knowledge node")
+                raise ValueError(
+                    "decay dependency graph omits canonical knowledge node"
+                )
             revisions = dict(dependency_current_revisions or {})
             revisions[knowledge_node] = f"decayed:{decay['record_sha256']}"
             invalidation = compute_invalidation_cone(
                 graph,
                 revisions,
-                authority=load_dependency_authority(Path(__file__).resolve().parents[1]),
+                authority=load_dependency_authority(
+                    Path(__file__).resolve().parents[1]
+                ),
             )
             canonical_root = self._canonical_root(record_id)
             head_path = canonical_root / "head.json"
             head = self._verify_signed(head_path)
             if head.get("candidate_sha256") != proposal.get("candidate_sha256"):
-                raise PermissionError("canonical knowledge changed before decay invalidation")
+                raise PermissionError(
+                    "canonical knowledge changed before decay invalidation"
+                )
             suspect_head = {
                 **head,
                 "updated_utc": _now(),
@@ -1492,6 +2026,7 @@ class KnowledgeCoreController:
             expected_revision_sha256=str(current["pipeline_revision_sha256"]),
         )
 
+    @_input_scope
     def revalidate_learning(
         self,
         pipeline_id: str,
@@ -1510,17 +2045,20 @@ class KnowledgeCoreController:
             or not str(evidence_ref).strip()
             or not re.fullmatch(r"[a-f0-9]{64}", str(evidence_sha256))
         ):
-            raise PermissionError("canonical revalidation requires fresh hash-bound evidence")
+            raise PermissionError(
+                "canonical revalidation requires fresh hash-bound evidence"
+            )
         proposal_id = str(current.get("knowledge_proposal_id") or "")
         proposal = self._read(proposal_id)
         record_id = str(proposal.get("record_id") or "")
         head_path = self._canonical_root(record_id) / "head.json"
         head = self._verify_signed(head_path)
-        if (
-            head.get("authority_status") != "suspect"
-            or head.get("candidate_sha256") != proposal.get("candidate_sha256")
-        ):
-            raise PermissionError("canonical suspect identity changed before revalidation")
+        if head.get("authority_status") != "suspect" or head.get(
+            "candidate_sha256"
+        ) != proposal.get("candidate_sha256"):
+            raise PermissionError(
+                "canonical suspect identity changed before revalidation"
+            )
         dependent_invalidation = current.get("dependent_invalidation")
         if not isinstance(dependent_invalidation, Mapping):
             dependent_invalidation = {}
@@ -1561,6 +2099,7 @@ class KnowledgeCoreController:
         write_json_atomic(head_path, self.authority.sign_receipt(current_head))
         return transitioned
 
+    @_input_scope
     def resolve_canonical(
         self, record_id: str, *, require_authoritative: bool = True
     ) -> dict[str, object]:
@@ -1571,15 +2110,19 @@ class KnowledgeCoreController:
             head.get("authority_status") == "suspect"
             or head.get("revalidation_required") is True
         ):
-            raise PermissionError("canonical knowledge is suspect and requires revalidation")
+            raise PermissionError(
+                "canonical knowledge is suspect and requires revalidation"
+            )
         revision = self._verify_signed(self.project_root / str(head["revision"]))
         return {"head": head, "canonical": revision, "historical": True}
 
+    @_input_scope
     def _browse_learning(self, *, query: str, limit: int) -> dict[str, object]:
+        self._browse_input(query, limit)
         needle = query.casefold().strip()
         pipelines = []
         invalid = []
-        for path in sorted((self.root / "learning").glob("pipeline-*/head.json")):
+        for path in self._control_heads("learning"):
             try:
                 supplied = self._verify_signed(path)
                 pipeline = self._read_learning(str(supplied.get("pipeline_id") or ""))
@@ -1595,14 +2138,27 @@ class KnowledgeCoreController:
                     **pipeline,
                     "effective_state": effective_state,
                     "knowledge_proposal_state": linked.get("state") if linked else None,
-                    "knowledge_candidate_sha256": linked.get("candidate_sha256") if linked else pipeline.get("knowledge_candidate_sha256"),
+                    "knowledge_candidate_sha256": linked.get("candidate_sha256")
+                    if linked
+                    else pipeline.get("knowledge_candidate_sha256"),
                 }
-                if needle and needle not in json.dumps(projected, sort_keys=True).casefold():
+                if (
+                    needle
+                    and needle not in json.dumps(projected, sort_keys=True).casefold()
+                ):
                     continue
                 pipelines.append(projected)
                 if len(pipelines) >= limit:
                     break
-            except (FileNotFoundError, OSError, ValueError, PermissionError, json.JSONDecodeError) as error:
+            except _KnowledgeAcquisitionLimit:
+                raise
+            except (
+                FileNotFoundError,
+                OSError,
+                ValueError,
+                PermissionError,
+                json.JSONDecodeError,
+            ) as error:
                 invalid.append(
                     {
                         "path": path.relative_to(self.project_root).as_posix(),
@@ -1654,6 +2210,7 @@ class KnowledgeCoreController:
             ],
         }
 
+    @_input_scope
     def propose(
         self,
         candidate: Mapping[str, object],
@@ -1664,17 +2221,25 @@ class KnowledgeCoreController:
         proposed_by: str,
     ) -> dict[str, object]:
         if not approved:
-            raise PermissionError("knowledge proposal write requires explicit host approval")
+            raise PermissionError(
+                "knowledge proposal write requires explicit host approval"
+            )
+        bounded_mapping(candidate, "knowledge candidate", maximum=256)
+        _bounded_input(candidate, maximum=256 * 1024)
         record_id = self._identity(candidate.get("id"), "record identity")
         kind = self._identity(candidate.get("kind"), "record kind")
         normalized_candidate = {**dict(candidate), "id": record_id, "kind": kind}
         if len(canonical_bytes(normalized_candidate)) > 256 * 1024:
             raise ValueError("knowledge candidate exceeds the 256 KiB bound")
-        sanitized = sanitize_capture(json.dumps(normalized_candidate, ensure_ascii=False))
+        sanitized = sanitize_capture(
+            json.dumps(normalized_candidate, ensure_ascii=False)
+        )
         if sanitized.secret_finding_codes:
             raise ValueError("knowledge candidate contains secret-like material")
-        sources = sorted(set(map(str, source_ids)))
-        evidence = sorted(set(filter(None, map(str, evidence_refs))))
+        sources = sorted(self._references(source_ids, "knowledge source identities"))
+        evidence = sorted(
+            self._references(evidence_refs, "knowledge evidence references")
+        )
         if not sources or not evidence:
             raise ValueError("knowledge proposal requires sources and evidence")
         candidate_sha = _hash(normalized_candidate)
@@ -1700,6 +2265,7 @@ class KnowledgeCoreController:
             "canonical_writes_performed": False,
             "last_event_sha256": "0" * 64,
         }
+        self._publication_input(state, proposed_by, "propose", None)
         with FileLock(self.lock, timeout_seconds=10):
             root = self._proposal_root(proposal_id)
             root.mkdir(parents=True, exist_ok=False)
@@ -1708,6 +2274,7 @@ class KnowledgeCoreController:
                 state, actor=proposed_by, operation="propose", previous=None
             )
 
+    @_input_scope
     def _transition(
         self,
         proposal_id: str,
@@ -1719,7 +2286,9 @@ class KnowledgeCoreController:
         operation: str,
     ) -> dict[str, object]:
         if not approved:
-            raise PermissionError("knowledge transition requires explicit host approval")
+            raise PermissionError(
+                "knowledge transition requires explicit host approval"
+            )
         with FileLock(self.lock, timeout_seconds=10):
             current = self._read(proposal_id)
             if target not in TRANSITIONS[str(current["state"])]:
@@ -1740,6 +2309,7 @@ class KnowledgeCoreController:
                 previous=current,
             )
 
+    @_input_scope
     def verify(
         self, proposal_id: str, *, approved: bool, verified_by: str
     ) -> dict[str, object]:
@@ -1786,6 +2356,7 @@ class KnowledgeCoreController:
             operation="verify" if not reasons else "block",
         )
 
+    @_input_scope
     def approve(
         self, proposal_id: str, *, approved: bool, approved_by: str
     ) -> dict[str, object]:
@@ -1814,6 +2385,7 @@ class KnowledgeCoreController:
             operation="approve",
         )
 
+    @_input_scope
     def promote(
         self, proposal_id: str, *, approved: bool, promoted_by: str
     ) -> dict[str, object]:
@@ -1842,7 +2414,9 @@ class KnowledgeCoreController:
                 canonical_head.get("candidate_sha256") if canonical_head else None
             )
             if observed_head != verification.get("canonical_head_sha256"):
-                raise PermissionError("canonical knowledge head changed after verification")
+                raise PermissionError(
+                    "canonical knowledge head changed after verification"
+                )
             sources, source_errors = self._source_snapshots(
                 list(map(str, current["source_ids"]))
             )
@@ -1855,25 +2429,31 @@ class KnowledgeCoreController:
                 or sources != verification.get("source_snapshots")
                 or evidence != verification.get("evidence_snapshots")
             ):
-                raise PermissionError("knowledge source or evidence identity changed after verification")
-            revision = canonical_root / "revisions" / f"{current['candidate_sha256']}.json"
+                raise PermissionError(
+                    "knowledge source or evidence identity changed after verification"
+                )
+            revision = (
+                canonical_root / "revisions" / f"{current['candidate_sha256']}.json"
+            )
             revision.parent.mkdir(parents=True, exist_ok=True)
             canonical_payload = {
-                    "schema_version": "px.knowledge-canonical-record/1.0",
-                    "record_id": current["record_id"],
-                    "candidate_sha256": current["candidate_sha256"],
-                    "candidate": current["candidate"],
-                    "source_ids": current["source_ids"],
-                    "evidence_refs": current["evidence_refs"],
-                    "proposal_id": proposal_id,
-                    "approval_id": approval["approval_id"],
-                    "verified_canonical_head_sha256": verification.get("canonical_head_sha256"),
-                    "source_snapshots": sources,
-                    "evidence_snapshots": evidence,
-                    "promoted_by": promoted_by,
-                    "promoted_utc": _now(),
-                    "authority_state": "codex-host-retained",
-                }
+                "schema_version": "px.knowledge-canonical-record/1.0",
+                "record_id": current["record_id"],
+                "candidate_sha256": current["candidate_sha256"],
+                "candidate": current["candidate"],
+                "source_ids": current["source_ids"],
+                "evidence_refs": current["evidence_refs"],
+                "proposal_id": proposal_id,
+                "approval_id": approval["approval_id"],
+                "verified_canonical_head_sha256": verification.get(
+                    "canonical_head_sha256"
+                ),
+                "source_snapshots": sources,
+                "evidence_snapshots": evidence,
+                "promoted_by": promoted_by,
+                "promoted_utc": _now(),
+                "authority_state": "codex-host-retained",
+            }
             canonical = self.authority.sign_receipt(canonical_payload)
             if revision.exists():
                 existing = self._verify_signed(revision)
@@ -1922,89 +2502,103 @@ class KnowledgeCoreController:
                 previous=current,
             )
 
+    @_input_scope
     def recover(self, *, approved: bool, recovered_by: str) -> dict[str, object]:
         """Reconcile only signed projections and provable commits; infer no authority."""
         if not approved:
             raise PermissionError("knowledge recovery requires explicit host approval")
-        checked = recovered = projections_repaired = learning_projections_repaired = conflicts = 0
+        checked = recovered = projections_repaired = learning_projections_repaired = (
+            conflicts
+        ) = 0
         with FileLock(self.lock, timeout_seconds=10):
-          for learning_root in sorted((self.root / "learning").glob("pipeline-*")):
-            if learning_root.is_dir():
-                learning_projections_repaired += int(
-                    self._recover_learning_projection(learning_root)
+            for learning_root in self._control_roots("learning"):
+                if learning_root.is_dir():
+                    learning_projections_repaired += int(
+                        self._recover_learning_projection(learning_root)
+                    )
+            for proposal_root in self._control_roots("proposals"):
+                if not proposal_root.is_dir():
+                    continue
+                repaired = self._recover_proposal_projection(proposal_root)
+                projections_repaired += int(repaired)
+                head_path = proposal_root / "head.json"
+                proposal_id = str(
+                    self._verify_signed(head_path).get("proposal_id") or ""
                 )
-          for proposal_root in sorted((self.root / "proposals").glob("proposal-*")):
-            if not proposal_root.is_dir():
-                continue
-            repaired = self._recover_proposal_projection(proposal_root)
-            projections_repaired += int(repaired)
-            head_path = proposal_root / "head.json"
-            proposal_id = str(self._verify_signed(head_path).get("proposal_id") or "")
-            state = self._read(proposal_id)
-            checked += 1
-            if state["state"] != "approved":
-                continue
-            revision = (
-                self._canonical_root(str(state["record_id"]))
-                / "revisions"
-                / f"{state['candidate_sha256']}.json"
-            )
-            if not revision.is_file():
-                continue
-            canonical = self._verify_signed(revision)
-            if (
-                canonical.get("proposal_id") != proposal_id
-                or canonical.get("candidate_sha256") != state["candidate_sha256"]
-                or canonical.get("approval_id")
-                != dict(state.get("approval") or {}).get("approval_id")
-            ):
-                raise PermissionError("partial knowledge promotion cannot be reconciled")
-            canonical_root = self._canonical_root(str(state["record_id"]))
-            verification = state.get("verification")
-            if not isinstance(verification, Mapping):
-                raise PermissionError("partial promotion lacks verification identity")
-            current_head = (
-                self._verify_signed(canonical_root / "head.json")
-                if (canonical_root / "head.json").is_file()
-                else None
-            )
-            current_sha = current_head.get("candidate_sha256") if current_head else None
-            if current_sha not in {
-                verification.get("canonical_head_sha256"),
-                state["candidate_sha256"],
-            }:
-                conflicts += 1
-                continue
-            if current_sha == state["candidate_sha256"] and current_head.get("proposal_id") != proposal_id:
-                conflicts += 1
-                continue
-            promotion = {
-                "schema_version": "px.knowledge-canonical-head/1.0",
-                "record_id": state["record_id"],
-                "candidate_sha256": state["candidate_sha256"],
-                "revision": revision.relative_to(self.project_root).as_posix(),
-                "proposal_id": proposal_id,
-                "updated_utc": _now(),
-                "authority_state": "codex-host-retained",
-            }
-            write_json_atomic(
-                canonical_root / "head.json", self.authority.sign_receipt(promotion)
-            )
-            promoted = {
-                **state,
-                "state": "promoted",
-                "sequence": int(state["sequence"]) + 1,
-                "updated_utc": _now(),
-                "promotion": promotion,
-                "canonical_writes_performed": True,
-            }
-            self._publish(
-                promoted,
-                actor=recovered_by,
-                previous=state,
-                operation="recover.promoted",
-            )
-            recovered += 1
+                state = self._read(proposal_id)
+                checked += 1
+                if state["state"] != "approved":
+                    continue
+                revision = (
+                    self._canonical_root(str(state["record_id"]))
+                    / "revisions"
+                    / f"{state['candidate_sha256']}.json"
+                )
+                if not revision.is_file():
+                    continue
+                canonical = self._verify_signed(revision)
+                if (
+                    canonical.get("proposal_id") != proposal_id
+                    or canonical.get("candidate_sha256") != state["candidate_sha256"]
+                    or canonical.get("approval_id")
+                    != dict(state.get("approval") or {}).get("approval_id")
+                ):
+                    raise PermissionError(
+                        "partial knowledge promotion cannot be reconciled"
+                    )
+                canonical_root = self._canonical_root(str(state["record_id"]))
+                verification = state.get("verification")
+                if not isinstance(verification, Mapping):
+                    raise PermissionError(
+                        "partial promotion lacks verification identity"
+                    )
+                current_head = (
+                    self._verify_signed(canonical_root / "head.json")
+                    if (canonical_root / "head.json").is_file()
+                    else None
+                )
+                current_sha = (
+                    current_head.get("candidate_sha256") if current_head else None
+                )
+                if current_sha not in {
+                    verification.get("canonical_head_sha256"),
+                    state["candidate_sha256"],
+                }:
+                    conflicts += 1
+                    continue
+                if (
+                    current_sha == state["candidate_sha256"]
+                    and current_head.get("proposal_id") != proposal_id
+                ):
+                    conflicts += 1
+                    continue
+                promotion = {
+                    "schema_version": "px.knowledge-canonical-head/1.0",
+                    "record_id": state["record_id"],
+                    "candidate_sha256": state["candidate_sha256"],
+                    "revision": revision.relative_to(self.project_root).as_posix(),
+                    "proposal_id": proposal_id,
+                    "updated_utc": _now(),
+                    "authority_state": "codex-host-retained",
+                }
+                write_json_atomic(
+                    canonical_root / "head.json", self.authority.sign_receipt(promotion)
+                )
+                promoted = {
+                    **state,
+                    "state": "promoted",
+                    "sequence": int(state["sequence"]) + 1,
+                    "updated_utc": _now(),
+                    "promotion": promotion,
+                    "canonical_writes_performed": True,
+                }
+                self._publish(
+                    promoted,
+                    actor=recovered_by,
+                    previous=state,
+                    operation="recover.promoted",
+                )
+                recovered += 1
         return {
             "schema_version": "px.knowledge-recovery/1.0",
             "checked": checked,
@@ -2016,6 +2610,7 @@ class KnowledgeCoreController:
             "authority_state": "codex-host-retained",
         }
 
+    @_input_scope
     def reject(
         self,
         proposal_id: str,
@@ -2035,6 +2630,7 @@ class KnowledgeCoreController:
             operation="reject",
         )
 
+    @_input_scope
     def rollback(
         self,
         record_id: str,
@@ -2047,7 +2643,9 @@ class KnowledgeCoreController:
     ) -> dict[str, object]:
         if not approved:
             raise PermissionError("knowledge rollback requires explicit host approval")
-        evidence = sorted(set(filter(None, map(str, evidence_refs))))
+        evidence = sorted(
+            self._references(evidence_refs, "knowledge evidence references")
+        )
         if not evidence:
             raise ValueError("knowledge rollback requires evidence")
         evidence_snapshots, evidence_errors = self._evidence_snapshots(evidence)
@@ -2056,8 +2654,13 @@ class KnowledgeCoreController:
         with FileLock(self.lock, timeout_seconds=10):
             root = self._canonical_root(record_id)
             current = self._verify_signed(root / "head.json")
-            if not expected_head_sha256 or current.get("candidate_sha256") != expected_head_sha256:
-                raise PermissionError("knowledge rollback canonical head compare-and-swap failed")
+            if (
+                not expected_head_sha256
+                or current.get("candidate_sha256") != expected_head_sha256
+            ):
+                raise PermissionError(
+                    "knowledge rollback canonical head compare-and-swap failed"
+                )
             target = root / "revisions" / f"{target_sha256}.json"
             revision = self._verify_signed(target)
             if revision.get("candidate_sha256") != target_sha256:
@@ -2092,12 +2695,12 @@ class KnowledgeCoreController:
             write_json_atomic(receipt_path, self.authority.sign_receipt(receipt))
             return receipt
 
+    @_input_scope
     def browse(self, *, query: str = "", limit: int = 100) -> dict[str, object]:
-        if not 1 <= limit <= 500:
-            raise ValueError("knowledge browse limit must be between 1 and 500")
+        self._browse_input(query, limit)
         needle = query.casefold().strip()
         proposals = []
-        for path in sorted((self.root / "proposals").glob("*/head.json")):
+        for path in self._control_heads("proposals"):
             proposal_id = str(self._verify_signed(path).get("proposal_id") or "")
             head = self._read(proposal_id)
             if needle and needle not in json.dumps(head, sort_keys=True).casefold():
@@ -2106,21 +2709,25 @@ class KnowledgeCoreController:
             if len(proposals) >= limit:
                 break
         canonical = []
-        for path in sorted((self.root / "canonical").glob("*/head.json")):
+        for path in self._control_heads("canonical"):
             head = self._verify_signed(path)
             if not needle or needle in json.dumps(head, sort_keys=True).casefold():
                 rollback_targets = []
                 revisions = path.parent / "revisions"
                 if revisions.is_dir():
-                    for revision_path in sorted(revisions.glob("*.json"))[:100]:
+                    for revision_path in self._revision_paths(revisions)[:100]:
                         revision = self._verify_signed(revision_path)
                         candidate_sha256 = str(revision.get("candidate_sha256") or "")
-                        if candidate_sha256 and candidate_sha256 != head.get("candidate_sha256"):
+                        if candidate_sha256 and candidate_sha256 != head.get(
+                            "candidate_sha256"
+                        ):
                             rollback_targets.append(
                                 {
                                     "candidate_sha256": candidate_sha256,
                                     "proposal_id": revision.get("proposal_id"),
-                                    "revision": revision_path.relative_to(self.project_root).as_posix(),
+                                    "revision": revision_path.relative_to(
+                                        self.project_root
+                                    ).as_posix(),
                                 }
                             )
                 canonical.append(
@@ -2128,7 +2735,9 @@ class KnowledgeCoreController:
                         **head,
                         "authority_status": head.get("authority_status", "current"),
                         "authoritative": head.get("authority_status") != "suspect",
-                        "revalidation_required": head.get("revalidation_required", False),
+                        "revalidation_required": head.get(
+                            "revalidation_required", False
+                        ),
                         "rollback_targets": rollback_targets,
                     }
                 )
@@ -2152,16 +2761,26 @@ class KnowledgeCoreController:
             "actions": {
                 "propose": {
                     "available": True,
-                    "requires": ["explicit host approval", "declared sources", "evidence"],
+                    "requires": [
+                        "explicit host approval",
+                        "declared sources",
+                        "evidence",
+                    ],
                     "route": "studio knowledge propose",
                 },
                 "promote": {
                     "available": True,
-                    "requires": ["eligible verification", "explicit approval", "current canonical head"],
+                    "requires": [
+                        "eligible verification",
+                        "explicit approval",
+                        "current canonical head",
+                    ],
                     "route": "studio knowledge promote",
                 },
                 "rollback": {
-                    "available": any(item.get("rollback_targets") for item in canonical),
+                    "available": any(
+                        item.get("rollback_targets") for item in canonical
+                    ),
                     "requires": [
                         "explicit host approval",
                         "evidence-bound rollback reason",

@@ -11,6 +11,7 @@ from typing import Mapping
 
 from .contracts import ContractValidationError, validate_instance
 from .file_lock import FileLock
+from .json_io import decode_json_object
 from .wal_transaction import JsonArtifact, JsonWal
 
 
@@ -134,11 +135,15 @@ class ProviderBudgetLedger:
         )
 
     def _state(self) -> dict[str, object]:
-        if not self.state_path.exists():
-            return self._empty_state()
+        return self._state_image()[0]
+
+    def _state_image(self):
+        raw = self.wal.read_source_image(self.state_path)
+        if raw is None:
+            return self._empty_state(), None
         try:
-            value = json.loads(self.state_path.read_text(encoding="utf-8"))
-        except (OSError, UnicodeError, json.JSONDecodeError) as error:
+            value = decode_json_object(raw, max_bytes=64 * 1024 * 1024)
+        except (OSError, UnicodeError, ValueError) as error:
             raise BudgetIntegrityError("provider budget ledger is unreadable") from error
         if not isinstance(value, dict) or value.get("schema_version") != STATE_SCHEMA_VERSION:
             raise BudgetIntegrityError("provider budget ledger schema is invalid")
@@ -150,13 +155,21 @@ class ProviderBudgetLedger:
             value["invocations"], dict
         ):
             raise BudgetIntegrityError("provider budget ledger structure is invalid")
-        return value
+        return value, hashlib.sha256(raw).hexdigest()
 
     def _receipt(self, invocation_id: str, phase: str) -> dict[str, object]:
+        return self._receipt_image(invocation_id, phase)[0]
+
+    def _receipt_image(self, invocation_id: str, phase: str):
+        if not _IDENTIFIER.fullmatch(invocation_id) or phase not in {'reserved', 'settled'}:
+            raise ValueError('invalid receipt identity')
         path = self.root / "receipts" / f"{invocation_id}.{phase}.json"
         try:
-            value = json.loads(path.read_text(encoding="utf-8"))
-        except (OSError, UnicodeError, json.JSONDecodeError) as error:
+            raw = self.wal.read_source_image(path)
+            if raw is None:
+                raise ValueError('provider budget receipt is absent')
+            value = decode_json_object(raw, max_bytes=64 * 1024 * 1024)
+        except (OSError, UnicodeError, ValueError) as error:
             raise BudgetIntegrityError("provider budget receipt is unreadable") from error
         if (
             not isinstance(value, dict)
@@ -165,7 +178,7 @@ class ProviderBudgetLedger:
             or _sealed(value, "receipt_sha256") != value
         ):
             raise BudgetIntegrityError("provider budget receipt integrity mismatch")
-        return value
+        return value, hashlib.sha256(raw).hexdigest()
 
     def _policy(
         self, budget_id: str, actor_id: str, provider_id: str
@@ -288,7 +301,7 @@ class ProviderBudgetLedger:
             "fallback_from": fallback_from,
         }
         identity_sha256 = _sha(identity)
-        state = self._state()
+        state, before_sha256 = self._state_image()
         invocations = dict(state["invocations"])
         if invocation_id in invocations:
             existing = invocations[invocation_id]
@@ -389,6 +402,10 @@ class ProviderBudgetLedger:
                 JsonArtifact("receipt", receipt_path, receipt),
             ),
             transaction_id=f"provider-reserve-{invocation_id}",
+            expected_before={
+                self.state_path.relative_to(self.allowed_root).as_posix(): before_sha256,
+                receipt_path.relative_to(self.allowed_root).as_posix(): None,
+            },
         )
         return {**receipt, "wal_transaction_id": result["transaction_id"]}
 
@@ -414,7 +431,7 @@ class ProviderBudgetLedger:
         """Settle once; failures and unknown billing burn the full reservation."""
         if outcome not in {"success", "failure"}:
             raise ValueError("provider settlement outcome is invalid")
-        state = self._state()
+        state, before_sha256 = self._state_image()
         invocations = dict(state["invocations"])
         raw = invocations.get(invocation_id)
         if not isinstance(raw, dict):
@@ -422,7 +439,7 @@ class ProviderBudgetLedger:
         record = dict(raw)
         if record.get("state") != "reserved":
             raise DuplicateInvocationError("provider invocation is already settled")
-        retained_receipt = self._receipt(invocation_id, "reserved")
+        retained_receipt, reserved_sha256 = self._receipt_image(invocation_id, "reserved")
         if (
             retained_receipt.get("phase") != "reserved"
             or retained_receipt.get("identity_sha256")
@@ -546,6 +563,13 @@ class ProviderBudgetLedger:
                 JsonArtifact("receipt", receipt_path, receipt),
             ),
             transaction_id=f"provider-settle-{invocation_id}",
+            expected_before={
+                self.state_path.relative_to(self.allowed_root).as_posix(): before_sha256,
+                receipt_path.relative_to(self.allowed_root).as_posix(): None,
+            },
+            expected_inputs={
+                (self.root / 'receipts' / f'{invocation_id}.reserved.json').relative_to(self.allowed_root).as_posix(): reserved_sha256,
+            },
         )
         return {**receipt, "wal_transaction_id": result["transaction_id"]}
 

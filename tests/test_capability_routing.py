@@ -24,6 +24,48 @@ from runtime.skill_navigator import CapabilitySummary
 ROOT = Path(__file__).parents[1]
 
 
+def test_graph_seed_acquisition_counts_duplicates_before_deduplication():
+    consumed = []
+
+    def seeds():
+        for number in range(100):
+            consumed.append(number)
+            yield "same"
+
+    with pytest.raises(ValueError):
+        expand_graph(seeds(), {}, max_nodes=3)
+    assert consumed == [0, 1, 2, 3]
+
+
+def test_graph_adjacency_is_bounded_before_sorting():
+    consumed = []
+
+    def neighbors():
+        for number in range(100):
+            consumed.append(number)
+            yield ("requires", str(number))
+
+    result = expand_graph(["seed"], {"seed": neighbors()}, max_edges=3)
+    assert consumed == [0, 1, 2, 3]
+    assert result == {"seed": ("seed",)}
+
+
+@pytest.mark.parametrize("budget", [
+    {"max_depth": True}, {"max_nodes": 2.5}, {"max_edges": True},
+    {"max_milliseconds": float("nan")}, {"max_nodes": 10001},
+])
+def test_graph_rejects_non_integer_or_excessive_budgets(budget):
+    with pytest.raises(ValueError):
+        expand_graph(["seed"], {}, **budget)
+
+
+def test_graph_requires_typed_identifiers_and_edges():
+    with pytest.raises(ValueError):
+        expand_graph("seed", {})
+    with pytest.raises(ValueError):
+        expand_graph(["seed"], {"seed": [(True, "target")]})
+
+
 def records():
     return (
         CapabilitySummary(

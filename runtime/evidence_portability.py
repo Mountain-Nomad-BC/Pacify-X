@@ -8,6 +8,8 @@ from pathlib import Path
 import re
 from collections.abc import Iterable
 from typing import Any
+import codecs
+from .input_files import check_deadline
 
 
 EXTERNAL = re.compile(
@@ -154,3 +156,62 @@ def validate_evidence_portability(root: Path) -> dict[str, Any]:
         "errors": errors,
         "records": product_records,
     }
+
+
+_UNC_PENDING = re.compile(r"\\\\[^\\\s]*(?:\\[^\\\s]*)?$")
+
+
+def stream_portability_findings(chunks, *, deadline):
+    decoder = codecs.getincrementaldecoder("utf-8")(errors="replace")
+    carry = ""
+    has_context = False
+    found = set()
+
+    def accept(value):
+        value = value.rstrip(".,")
+        if "://" in value and value.split(":", 1)[0].casefold() in ALLOWED_URI_SCHEMES:
+            return
+        if len(value) > 4096 or len(value.encode("utf-8")) > 4096:
+            raise ValueError("evidence locator exceeds its byte budget")
+        found.add(value)
+        if len(found) > 4096:
+            raise ValueError("evidence locator count exceeds its budget")
+
+    def scan(buffer, *, final, context):
+        check_deadline(deadline)
+        # Reserve enough literal-prefix context, and one predecessor character
+        # for the existing Windows drive-letter negative lookbehind.
+        cut = len(buffer) if final else max(0, len(buffer) - 64)
+        if not final:
+            pending = _UNC_PENDING.search(buffer)
+            if pending is not None:
+                if len(pending.group()) > 4096:
+                    raise ValueError("unfinished UNC locator exceeds its budget")
+                cut = min(cut, max(0, pending.start() - 1))
+        for index, match in enumerate(EXTERNAL.finditer(buffer)):
+            if index % 1024 == 0:
+                check_deadline(deadline)
+            if context and match.start() == 0:
+                continue
+            if not final and match.end() > cut:
+                if len(match.group()) > 4096:
+                    raise ValueError("pending evidence locator exceeds its budget")
+                cut = min(cut, max(0, match.start() - 1))
+            else:
+                accept(match.group())
+        if final:
+            return "", False
+        tail = buffer[cut:]
+        if len(tail) > 4161:
+            raise ValueError("evidence scanner pending context exceeds its budget")
+        return tail, bool(cut) or context
+
+    for chunk in chunks:
+        check_deadline(deadline)
+        if type(chunk) is not bytes or not 0 < len(chunk) <= 65536:
+            raise ValueError("evidence reader must produce bounded actual byte chunks")
+        carry, has_context = scan(carry + decoder.decode(chunk), final=False, context=has_context)
+    scan(carry + decoder.decode(b"", final=True), final=True, context=has_context)
+    check_deadline(deadline)
+    return tuple(sorted(found))
+

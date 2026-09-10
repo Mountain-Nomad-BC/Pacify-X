@@ -681,6 +681,21 @@ def test_certificate_verifier_binds_artifacts_to_recorded_frozen_manifest(
     (run_root / "artifact-manifest.json").write_text(
         json.dumps(artifact_manifest), encoding="utf-8"
     )
+    artifact_dir = tmp_path / "artifacts"
+    artifact_dir.mkdir()
+    artifact_bytes = b"owned artifact bytes for the isolated mocked format-binding seam"
+    (artifact_dir / "fixture-0.7.0-py3-none-any.whl").write_bytes(artifact_bytes)
+    records = [
+        {
+            "type": "wheel",
+            "filename": "fixture-0.7.0-py3-none-any.whl",
+            "sha256": hashlib.sha256(artifact_bytes).hexdigest(),
+            "size_bytes": len(artifact_bytes),
+        }
+    ]
+    (release_root / "certificate.json.sig").write_bytes(
+        b"mocked signature seam; not cryptographic evidence"
+    )
     certificate = {
         "release": release,
         "status": "self_certified",
@@ -696,34 +711,33 @@ def test_certificate_verifier_binds_artifacts_to_recorded_frozen_manifest(
         ).hexdigest(),
         "artifact_manifest": f"evidence/releases/{release}/run-frozen/artifact-manifest.json",
         "artifact_manifest_sha256": manifest_digest,
-        "artifacts": [],
+        "artifacts": records,
     }
     (release_root / "certificate.json").write_text(
         json.dumps(certificate), encoding="utf-8"
     )
-    artifact_dir = tmp_path / "artifacts"
-    artifact_dir.mkdir()
     observed: dict[str, object] = {}
 
     monkeypatch.setattr(
         "runtime.release_certification.validate_certification_platform",
-        lambda *_args, **_kwargs: {"errors": []},
+        lambda *_args, **_kwargs: {"valid": True, "errors": []},
     )
     monkeypatch.setattr(
         "runtime.release_certification.verify_certificate_signature",
-        lambda *_args, **_kwargs: {"errors": [], "identity": {}},
+        lambda *_args, **_kwargs: {"valid": True, "errors": [], "identity": {}},
     )
     monkeypatch.setattr(
         "runtime.release_certification.validate_version_surfaces",
-        lambda *_args, **_kwargs: {"errors": []},
+        lambda *_args, **_kwargs: {"valid": True, "errors": []},
     )
     monkeypatch.setattr(
         "runtime.release_certification.verify_recorded_git_identity",
-        lambda *_args, **_kwargs: {"errors": []},
+        lambda *_args, **_kwargs: {"valid": True, "errors": []},
     )
     monkeypatch.setattr(
         "runtime.release_certification.classify_tree",
         lambda *_args, **_kwargs: {
+            "valid": True,
             "errors": [],
             "product_digest": product_digest,
             "harness_digest": harness_digest,
@@ -731,11 +745,11 @@ def test_certificate_verifier_binds_artifacts_to_recorded_frozen_manifest(
     )
     monkeypatch.setattr(
         "runtime.release_certification._verify_coverage_binding",
-        lambda *_args, **_kwargs: {"errors": []},
+        lambda *_args, **_kwargs: {"valid": True, "errors": []},
     )
     monkeypatch.setattr(
         "runtime.release_certification.verify_evidence_manifest",
-        lambda *_args, **_kwargs: {"errors": []},
+        lambda *_args, **_kwargs: {"valid": True, "errors": []},
     )
     monkeypatch.setattr(
         "runtime.release_certification._certificate_ledger_errors", lambda *_args: []
@@ -743,7 +757,11 @@ def test_certificate_verifier_binds_artifacts_to_recorded_frozen_manifest(
 
     def bind(*_args, **kwargs):
         observed.update(kwargs)
-        return {"errors": [], "artifact_manifest_sha256": manifest_digest}
+        return {
+            "valid": True,
+            "errors": [],
+            "artifact_manifest_sha256": manifest_digest,
+        }
 
     monkeypatch.setattr("runtime.release_certification.bind_artifact_set", bind)
 

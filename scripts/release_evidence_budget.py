@@ -7,18 +7,20 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from runtime.release_preflight import evidence_budget
+from runtime.release_preflight import evidence_budget, load_preflight_input_policy
+from runtime.input_files import directory_root
 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=Path, default=Path.cwd())
     args = parser.parse_args()
-    root = args.root.resolve()
-    policy = json.loads(
-        (root / "policies/release-preflight.json").read_text(encoding="utf-8")
-    )
-    result = evidence_budget(root, policy)
+    try:
+        root = directory_root(args.root)
+        policy = load_preflight_input_policy(root)
+        result = evidence_budget(root, policy)
+    except (OSError, ValueError, TypeError):
+        result = {"valid": False, "failures": [{"code": "RP-INP-001", "message": "Invalid preflight policy or original project root."}]}
     print(json.dumps(result, indent=2))
     return 0 if result["valid"] else 2
 

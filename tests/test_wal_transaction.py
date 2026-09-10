@@ -4,7 +4,6 @@ import hashlib
 import json
 import os
 from pathlib import Path
-import subprocess
 import sys
 import textwrap
 
@@ -381,7 +380,7 @@ def test_real_process_kill_at_every_write_boundary_recovers_atomically(
     planning = tmp_path / "boundary-plan"
     _seed(planning)
     boundaries = planned_write_boundaries(_artifacts(planning, "after"))
-    assert len(boundaries) == 27
+    assert len(boundaries) == 28
     child = textwrap.dedent(
         """
         import os
@@ -407,18 +406,24 @@ def test_real_process_kill_at_every_write_boundary_recovers_atomically(
     for index, boundary in enumerate(boundaries):
         case = tmp_path / f"case-{index:02d}"
         _seed(case)
-        completed = subprocess.run(
+        from runtime.test_runner import run_test_command
+        from runtime.resource_lifecycle import ResourceManager
+        completed = run_test_command(
             [sys.executable, "-c", child, str(case), boundary],
-            cwd=Path(__file__).parents[1],
-            check=False,
-            capture_output=True,
-            text=True,
-            timeout=20,
+            cwd=Path(__file__).parents[1], environment=os.environ,
+            resource_manager=ResourceManager(tmp_path / 'boundary-ledger.json'),
+            run_id=f'wal-boundary-{index}', lane_id='wal-physical-boundary',
+            timeout_seconds=20, manage_process_temp=True,
         )
-        assert completed.returncode == 91, (boundary, completed.stderr)
+        assert completed['exit_code'] == 91, (boundary, completed['stderr'])
+        assert completed['execution_started'] and completed['process_tree_terminated']
+        assert completed['test_workspace']['reclaimed']
 
         recovery = JsonWal(case / "wal", case).recover()
-        if boundary == "journal:committed:published":
+        if boundary == 'intent:before_acceptance':
+            assert recovery['completed'] == [] and recovery['rolled_back'] == []
+            assert _values(case) == {'before'}
+        elif boundary == "journal:committed:published":
             assert recovery["completed"] == [], boundary
             assert _values(case) == {"after"}, boundary
         elif boundary.startswith("journal:") or boundary == "manifest:prepared:staged":

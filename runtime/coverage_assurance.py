@@ -3,18 +3,67 @@
 from __future__ import annotations
 
 import hashlib
-import json
 from pathlib import Path
 from typing import Any
 
 
 def validate_coverage_evidence(root: Path, coverage_json: Path) -> dict[str, Any]:
-    root = root.resolve()
-    coverage_json = coverage_json.resolve()
-    policy = json.loads(
-        (root / "policies/coverage-assurance.json").read_text(encoding="utf-8")
-    )
-    coverage = json.loads(coverage_json.read_text(encoding="utf-8"))
+    from .input_files import independent_file, cooperative_deadline, read_file_image
+    from .json_io import decode_json_object
+
+    try:
+        if type(root) is not type(Path()):
+            raise ValueError("coverage root must be an actual filesystem path")
+        deadline = cooperative_deadline()
+        # Preflight both declared inputs before either body acquisition.
+        policy_path, policy_info = independent_file(
+            root / "policies/coverage-assurance.json"
+        )
+        coverage_path, coverage_info = independent_file(coverage_json)
+        if (
+            policy_info.st_size > 1024 * 1024
+            or coverage_info.st_size > 64 * 1024 * 1024
+        ):
+            raise ValueError("coverage input byte budget exhausted before acquisition")
+        policy_image = read_file_image(
+            policy_path, policy_info, limit=1024 * 1024, deadline=deadline
+        )
+        policy_sha256 = hashlib.sha256(policy_image).hexdigest()
+        policy = decode_json_object(
+            policy_image, max_bytes=1024 * 1024, max_depth=64, max_nodes=100000
+        )
+        del policy_image
+        coverage_image = read_file_image(
+            coverage_path, coverage_info, limit=64 * 1024 * 1024, deadline=deadline
+        )
+        coverage_sha256 = hashlib.sha256(coverage_image).hexdigest()
+        coverage = decode_json_object(
+            coverage_image, max_bytes=64 * 1024 * 1024, max_depth=64, max_nodes=1000000
+        )
+        del coverage_image
+        return _evaluate_coverage_images(
+            policy, coverage, policy_sha256, coverage_sha256
+        )
+    except (
+        OSError,
+        ValueError,
+        TypeError,
+        AttributeError,
+        OverflowError,
+        RecursionError,
+    ):
+        return {
+            "schema_version": "1.0",
+            "valid": False,
+            "coverage_sha256": None,
+            "policy_sha256": None,
+            "classes": {},
+            "exemption_count": None,
+            "errors": ["coverage inputs are invalid or unavailable"],
+        }
+
+
+def _evaluate_coverage_images(policy, coverage, policy_sha256, coverage_sha256):
     errors: list[str] = []
     meta = coverage.get("meta", {})
     if (
@@ -111,10 +160,8 @@ def validate_coverage_evidence(root: Path, coverage_json: Path) -> dict[str, Any
     return {
         "schema_version": "1.0",
         "valid": not errors,
-        "coverage_sha256": hashlib.sha256(coverage_json.read_bytes()).hexdigest(),
-        "policy_sha256": hashlib.sha256(
-            (root / "policies/coverage-assurance.json").read_bytes()
-        ).hexdigest(),
+        "coverage_sha256": coverage_sha256,
+        "policy_sha256": policy_sha256,
         "classes": classes,
         "exemption_count": len(exemptions),
         "errors": errors,

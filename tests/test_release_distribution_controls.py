@@ -86,11 +86,11 @@ def _artifact_set(root: Path, version: str = "1.2.3") -> list[dict]:
         archive.writestr("engineering_bootstrap/__init__.py", "")
         archive.writestr(
             f"engineering_loop_bootstrap-{version}.dist-info/METADATA",
-            f"Metadata-Version: 2.4\nVersion: {version}\n",
+            f"Metadata-Version: 2.4\nName: engineering-loop-bootstrap\nVersion: {version}\n",
         )
     sdist = root / f"engineering_loop_bootstrap-{version}.tar.gz"
     with tarfile.open(sdist, "w:gz") as archive:
-        data = f"Metadata-Version: 2.4\nVersion: {version}\n".encode()
+        data = f"Metadata-Version: 2.4\nName: engineering-loop-bootstrap\nVersion: {version}\n".encode()
         info = tarfile.TarInfo(f"engineering_loop_bootstrap-{version}/PKG-INFO")
         info.size = len(data)
         archive.addfile(info, io.BytesIO(data))

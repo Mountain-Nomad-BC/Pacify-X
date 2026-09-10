@@ -128,88 +128,116 @@ def run_test_command(
     disk_consumption_paths: Sequence[Path] = (),
     disk_consumption_limit_bytes: int = TEST_DISK_CONSUMPTION_LIMIT_BYTES,
     manage_process_temp: bool = False,
+    deadline: float | None = None,
+    cancel_event: object | None = None,
 ) -> dict[str, object]:
+    from time import monotonic
+    from threading import Event
+    from .process_supervisor import ProcessAdmissionExpired
+
+    class SetupExpired(Exception):
+        pass
+
+    started = monotonic()
     timeout = validate_timeout(timeout_seconds)
-    effective_timeout = max(1.0, timeout)
-    if resource_manager is None:
-        resource_manager = ResourceManager(
-            cwd.resolve(strict=True)
-            / ".engineering-bootstrap"
-            / "resource-lifecycle"
-            / "ledger.json"
-        )
+    if deadline is not None and (type(deadline) not in (int, float) or not math.isfinite(deadline) or deadline <= 0):
+        raise ValueError("test deadline must be finite and positive")
+    if cancel_event is not None and not isinstance(cancel_event, Event):
+        raise ValueError("test cancellation must be a threading Event")
+    deadline = min(started + timeout, deadline if deadline is not None else started + timeout)
+    def exhausted():
+        return monotonic() >= deadline or cancel_event is not None and cancel_event.is_set()
+    def not_started():
+        return {"valid": False, "exit_code": 1, "timed_out": monotonic() >= deadline,
+                "duration_seconds": monotonic() - started, "stdout": "", "stderr": "",
+                "process_tree_terminated": True, "execution_started": False,
+                "supervision_status": "not_started", "errors": ["test budget exhausted before child admission"]}
+    if exhausted():
+        return not_started()
+    effective_timeout = timeout
     workspace_record = None
     workspace_path: Path | None = None
     workspace_kind: str | None = None
-    effective_command = list(command)
-    effective_environment = dict(environment)
-    accounting_paths = [Path(path).resolve(strict=False) for path in disk_consumption_paths]
-    owned_paths = [cwd.resolve(strict=True)]
-    pytest_workspace = _is_pytest_command(effective_command) and not _has_pytest_basetemp(
-        effective_command
-    )
-    if pytest_workspace or manage_process_temp:
-        temporary_root = Path(tempfile.gettempdir()).resolve(strict=True)
-        workspace_kind = (
-            "managed_pytest_basetemp"
-            if pytest_workspace
-            else "managed_process_temp"
-        )
-        workspace_record = resource_manager.create_workspace(
-            temporary_root,
-            project_id=project_id,
-            run_id=run_id,
-            lane_id=lane_id,
-            creator="runtime.test_runner.pytest",
-            prefix=("pacify-x-pytest-" if pytest_workspace else "pacify-x-process-"),
-        )
-        workspace_path = Path(workspace_record.path or "")
-        accounting_paths.append(workspace_path.resolve(strict=True))
-        owned_paths.append(workspace_path.resolve(strict=True))
-        process_temp_path = workspace_path / "process-temp"
-        process_temp_path.mkdir()
-        if pytest_workspace:
-            pytest_path = workspace_path / "pytest"
-            pytest_path.mkdir()
-            effective_command.append(f"--basetemp={pytest_path}")
-        # Test code frequently uses tempfile directly rather than pytest's
-        # tmp_path fixture. Bind every inherited temporary-directory spelling
-        # to the same registered workspace so failures and timeouts cannot
-        # strand framework clones or build/release fixtures in the user temp.
-        for variable in ("TMP", "TEMP", "TMPDIR"):
-            effective_environment[variable] = str(process_temp_path)
-        # The lifecycle guard uses this explicit ownership marker to reclaim
-        # only per-test children of the runner-owned temporary directory.  A
-        # full release profile otherwise retains direct ``tempfile.mkdtemp``
-        # trees from hundreds of tests until session end and can cross the
-        # fail-closed disk ceiling before pytest writes JUnit evidence.
-        if pytest_workspace:
-            effective_environment["PACIFY_X_PYTEST_PROCESS_TEMP_ROOT"] = str(
-                process_temp_path
-            )
-        # Governed test runs must never read, create, or mutate the operator's
-        # real host authority keys. Give every managed pytest subprocess its own
-        # authority root inside the exact registered/reclaimed workspace. An
-        # inherited outer-test root is not a valid child-run boundary.
-        effective_environment["PX_STUDIO_KEY_ROOT"] = str(
-            process_temp_path / "authority-keys"
-        )
-    for path in accounting_paths:
-        owner = path if path.is_dir() else path.parent
-        resolved_owner = owner.resolve(strict=True)
-        if resolved_owner not in owned_paths:
-            owned_paths.append(resolved_owner)
-    if _is_pytest_command(effective_command):
-        if not _has_pytest_rootdir(effective_command):
-            effective_command.append(f"--rootdir={cwd.resolve(strict=True)}")
-        if not _disables_pytest_cache(effective_command):
-            effective_command.extend(("-p", "no:cacheprovider"))
-        if not _loads_pytest_lifecycle_guards(effective_command):
-            # Explicit loading also covers governed tests whose files are
-            # outside the repository conftest discovery tree.
-            effective_command.extend(("-p", "tests.pytest_guards"))
     result: dict[str, object] = {}
+    failure = None
     try:
+        if resource_manager is None:
+            resource_manager = ResourceManager(
+                cwd.resolve(strict=True)
+                / ".engineering-bootstrap"
+                / "resource-lifecycle"
+                / "ledger.json"
+            )
+        effective_command = list(command)
+        effective_environment = dict(environment)
+        accounting_paths = [Path(path).resolve(strict=False) for path in disk_consumption_paths]
+        owned_paths = [cwd.resolve(strict=True)]
+        pytest_workspace = _is_pytest_command(effective_command) and not _has_pytest_basetemp(
+            effective_command
+        )
+        if pytest_workspace or manage_process_temp:
+            temporary_root = Path(tempfile.gettempdir()).resolve(strict=True)
+            workspace_kind = (
+                "managed_pytest_basetemp"
+                if pytest_workspace
+                else "managed_process_temp"
+            )
+            workspace_record = resource_manager.create_workspace(
+                temporary_root,
+                project_id=project_id,
+                run_id=run_id,
+                lane_id=lane_id,
+                creator="runtime.test_runner.pytest",
+                prefix=("pacify-x-pytest-" if pytest_workspace else "pacify-x-process-"),
+            )
+            workspace_path = Path(workspace_record.path or "")
+            accounting_paths.append(workspace_path.resolve(strict=True))
+            owned_paths.append(workspace_path.resolve(strict=True))
+            process_temp_path = workspace_path / "process-temp"
+            process_temp_path.mkdir()
+            if pytest_workspace:
+                pytest_path = workspace_path / "pytest"
+                pytest_path.mkdir()
+                effective_command.append(f"--basetemp={pytest_path}")
+            # Test code frequently uses tempfile directly rather than pytest's
+            # tmp_path fixture. Bind every inherited temporary-directory spelling
+            # to the same registered workspace so failures and timeouts cannot
+            # strand framework clones or build/release fixtures in the user temp.
+            for variable in ("TMP", "TEMP", "TMPDIR"):
+                effective_environment[variable] = str(process_temp_path)
+            # The lifecycle guard uses this explicit ownership marker to reclaim
+            # only per-test children of the runner-owned temporary directory.  A
+            # full release profile otherwise retains direct ``tempfile.mkdtemp``
+            # trees from hundreds of tests until session end and can cross the
+            # fail-closed disk ceiling before pytest writes JUnit evidence.
+            if pytest_workspace:
+                effective_environment["PACIFY_X_PYTEST_PROCESS_TEMP_ROOT"] = str(
+                    process_temp_path
+                )
+            # Governed test runs must never read, create, or mutate the operator's
+            # real host authority keys. Give every managed pytest subprocess its own
+            # authority root inside the exact registered/reclaimed workspace. An
+            # inherited outer-test root is not a valid child-run boundary.
+            effective_environment["PX_STUDIO_KEY_ROOT"] = str(
+                process_temp_path / "authority-keys"
+            )
+        for path in accounting_paths:
+            owner = path if path.is_dir() else path.parent
+            resolved_owner = owner.resolve(strict=True)
+            if resolved_owner not in owned_paths:
+                owned_paths.append(resolved_owner)
+        if _is_pytest_command(effective_command):
+            if not _has_pytest_rootdir(effective_command):
+                effective_command.append(f"--rootdir={cwd.resolve(strict=True)}")
+            if not _disables_pytest_cache(effective_command):
+                effective_command.extend(("-p", "no:cacheprovider"))
+            if not _loads_pytest_lifecycle_guards(effective_command):
+                # Explicit loading also covers governed tests whose files are
+                # outside the repository conftest discovery tree.
+                effective_command.extend(("-p", "tests.pytest_guards"))
+        if exhausted():
+            raise SetupExpired()
+        effective_timeout = min(timeout, deadline - monotonic())
         force_timeout = min(15.0, effective_timeout)
         budgets = ProcessBudgets(
             startup_timeout_seconds=effective_timeout,
@@ -252,7 +280,10 @@ def run_test_command(
             run_id=run_id,
             lane_id=lane_id,
             creator="runtime.test_runner",
+            parent_resource_id=workspace_record.resource_id if workspace_record is not None else None,
             environment=effective_environment,
+            cancel_event=cancel_event,
+            deadline=deadline,
         )
         timed_out = supervised.status in {
             "startup_timeout",
@@ -270,6 +301,7 @@ def run_test_command(
             "stdout": supervised.stdout.text,
             "stderr": supervised.stderr.text,
             "process_tree_terminated": supervised.tree_closed,
+            "execution_started": True,
             "termination": {
                 "method": supervised.shutdown_mode,
                 "errors": [] if supervised.tree_closed else ["process tree closure was not proven"],
@@ -293,57 +325,72 @@ def run_test_command(
                 "test process exceeded its "
                 f"{budgets.disk_consumption_limit_bytes} byte disk-consumption ceiling"
             ]
-    except BaseException:
-        if workspace_path is not None and workspace_record is not None:
-            resource_manager.update(
-                workspace_record.resource_id,
-                active=False,
-                run_state=RunState.FAILED.value,
-                status=ResourceStatus.RECLAIMABLE.value,
-            )
-            resource_manager.reclaim(
-                workspace_record.resource_id,
-                reason="managed_process_spawn_failed",
-                apply=True,
-            )
-        raise
+    except (SetupExpired, ProcessAdmissionExpired) as error:
+        result = not_started()
+        result["refusal_reason"] = str(error) or "deadline or cancellation during test setup"
+    except BaseException as error:
+        failure = error
     finally:
-        if workspace_path is not None:
-            cleanup_errors: list[str] = []
-            cleanup_id = None
-            reclaimed = False
-            if workspace_record is not None:
-                resource_manager.update(
-                    workspace_record.resource_id,
-                    active=False,
-                    run_state=(
-                        RunState.COMPLETED.value
-                        if result.get("exit_code") == 0
-                        else RunState.FAILED.value
+        try:
+            if workspace_path is not None:
+                cleanup_errors: list[str] = []
+                cleanup_id = None
+                reclaimed = False
+                if workspace_record is not None:
+                    resource_manager.update(
+                        workspace_record.resource_id,
+                        active=False,
+                        run_state=(
+                            RunState.COMPLETED.value
+                            if result.get("exit_code") == 0
+                            else RunState.FAILED.value
+                        ),
+                        status=ResourceStatus.RECLAIMABLE.value,
+                    )
+                    cleanup = resource_manager.reclaim(
+                        workspace_record.resource_id,
+                        reason="managed_process_temp_scope_closed",
+                        apply=True,
+                    )
+                    cleanup_id = cleanup.cleanup_id
+                    cleanup_errors.extend(cleanup.errors)
+                    reclaimed = cleanup.resources_reclaimed == 1
+                result["test_workspace"] = {
+                    "kind": workspace_kind,
+                    "path": str(workspace_path),
+                    "resource_id": (
+                        workspace_record.resource_id if workspace_record else None
                     ),
-                    status=ResourceStatus.RECLAIMABLE.value,
-                )
-                cleanup = resource_manager.reclaim(
-                    workspace_record.resource_id,
-                    reason="managed_process_temp_scope_closed",
-                    apply=True,
-                )
-                cleanup_id = cleanup.cleanup_id
-                cleanup_errors.extend(cleanup.errors)
-                reclaimed = cleanup.resources_reclaimed == 1
+                    "cleanup_id": cleanup_id,
+                    "reclaimed": reclaimed,
+                    "errors": cleanup_errors,
+                }
+                if not reclaimed:
+                    result["valid"] = False
+                    result.setdefault("errors", []).append(
+                        "managed pytest workspace was not reclaimed"
+                    )
+        except BaseException as cleanup_error:
+            result["valid"] = False
             result["test_workspace"] = {
-                "kind": workspace_kind,
-                "path": str(workspace_path),
-                "resource_id": (
-                    workspace_record.resource_id if workspace_record else None
-                ),
-                "cleanup_id": cleanup_id,
-                "reclaimed": reclaimed,
-                "errors": cleanup_errors,
+                "kind": workspace_kind, "path": str(workspace_path),
+                "resource_id": workspace_record.resource_id if workspace_record else None,
+                "reclaimed": False, "errors": [type(cleanup_error).__name__],
             }
-            if not reclaimed:
-                result["valid"] = False
-                result.setdefault("errors", []).append(
-                    "managed pytest workspace was not reclaimed"
-                )
+            if failure is not None:
+                try:
+                    failure.add_note("Owned workspace closure also failed: " + type(cleanup_error).__name__)
+                except BaseException:
+                    pass
+            else:
+                failure = cleanup_error
+    if failure is not None:
+        raise failure.with_traceback(failure.__traceback__)
+    result["duration_seconds"] = round(monotonic() - started, 6)
+    result["execution_started"] = bool(result.get("resource_id"))
+    if exhausted():
+        result.update(valid=False, timed_out=monotonic() >= deadline)
+        if not result.get("exit_code"):
+            result["exit_code"] = 1
+        result.setdefault("errors", []).append("test deadline or cancellation reached including observed closure")
     return result

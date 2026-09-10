@@ -927,6 +927,7 @@ class SubprocessOwners:
                     run_id=self.config.candidate_id,
                     lane_id=f"{step}-{index:02d}",
                     creator="scripts.run_release_candidate",
+                    ownership="supervised",
                     environment={
                         **environment,
                         "PX_RELEASE_OWNER_RUN_ID": self.config.candidate_id,
@@ -938,9 +939,11 @@ class SubprocessOwners:
                 )
                 remaining = max(0.0, deadline - time.monotonic())
                 cleanup: dict[str, Any] | None = None
+                owner_closed = False
                 try:
                     returncode = process.wait(timeout=remaining)
                     completed_record = self.manager.complete_process(record.resource_id)
+                    owner_closed = True
                     from runtime.resource_lifecycle import resource_status
 
                     post_resources = resource_status(
@@ -967,7 +970,13 @@ class SubprocessOwners:
                         "resource_status_after_exit": post_resources,
                     }
                 except subprocess.TimeoutExpired as exc:
-                    receipt = self.manager.terminate_owned_process(record.resource_id)
+                    try:
+                        receipt = self.manager.terminate_owned_process(record.resource_id)
+                    except BaseException:
+                        self.manager.settle_failed_launch(record.resource_id, exc)
+                        raise AutomationBlocked(
+                            f"owner exceeded its bounded deadline and cleanup remains unresolved: {step}; resource={record.resource_id}"
+                        ) from exc
                     cleanup = {
                         "cleanup_id": receipt.cleanup_id,
                         "resources_reclaimed": receipt.resources_reclaimed,
@@ -981,6 +990,10 @@ class SubprocessOwners:
                     raise AutomationBlocked(
                         f"owner exceeded its {timeout_seconds}s bounded deadline: {step}; resource={record.resource_id}; cleanup={receipt.cleanup_id}"
                     ) from exc
+                except BaseException as error:
+                    if not owner_closed:
+                        self.manager.settle_failed_launch(record.resource_id, error)
+                    raise
             evidence.append({
                 "exit_code": returncode,
                 "log": self.config.relative(log),

@@ -282,12 +282,12 @@ class MemoryIntelligenceTests(unittest.TestCase):
                 apply=True,
             )
             self.assertTrue(compacted[0]["_offloaded"])
-            self.assertEqual(restore_offload(root, pointers[0]), "x" * 3000)
+            self.assertEqual(restore_offload(root, pointers[0], project_id="prj"), "x" * 3000)
             (root / pointers[0].storage_locator).write_text(
                 "tampered", encoding="utf-8"
             )
             with self.assertRaisesRegex(ValueError, "hash mismatch"):
-                restore_offload(root, pointers[0])
+                restore_offload(root, pointers[0], project_id="prj")
 
     def test_pending_writes_survive_failure_and_retry_idempotently(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

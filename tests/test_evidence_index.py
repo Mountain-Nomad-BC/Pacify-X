@@ -56,32 +56,13 @@ def _fixture(root: Path) -> None:
     )
     section = resolve_test_section(root, "gate")
     group = resolve_test_group(root, "all")
-    section_path = root / ".engineering-bootstrap/test-evidence/sections/gate.json"
-    section_path.parent.mkdir(parents=True)
-    section_path.write_text(
-        json.dumps(
-            {
-                "schema_version": "px.test-section-receipt/1.0",
-                "section": "gate",
-                "input_sha256": section["input_sha256"],
-                "passed": True,
-            }
-        ),
-        encoding="utf-8",
+    from runtime.test_profiles import (
+        section_receipt, group_receipt, write_section_receipt, write_group_receipt,
     )
-    group_path = root / ".engineering-bootstrap/test-evidence/groups/all.json"
-    group_path.parent.mkdir(parents=True)
-    group_path.write_text(
-        json.dumps(
-            {
-                "schema_version": "px.test-group-receipt/1.0",
-                "group": "all",
-                "input_sha256": group["input_sha256"],
-                "passed": True,
-            }
-        ),
-        encoding="utf-8",
-    )
+    execution = {"valid": True, "exit_code": 0, "timed_out": False,
+                 "duration_seconds": 0.1, "stdout": "1 passed\n", "stderr": ""}
+    write_section_receipt(root, section_receipt(section, execution))
+    write_group_receipt(root, group_receipt(group, execution))
 
 
 def test_engine_identity_excludes_test_group_topology(tmp_path) -> None:

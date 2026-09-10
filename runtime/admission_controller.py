@@ -153,10 +153,9 @@ def review_authoritative(
     try:
         candidate_id = str(manifest["id"])
         project_id = str(request["project_id"])
-        store_relative = Path(str(request["evidence_store"]))
-        store = (root.resolve() / store_relative).resolve()
-        if store_relative.is_absolute() or root.resolve() not in store.parents:
-            raise ValueError("evidence_store must be product-relative")
+        from .trusted_evidence import evidence_store_path
+
+        store = evidence_store_path(root, request["evidence_store"])
         resolver = TrustedEvidenceResolver(
             store, root / "policies/effect-grant-trust.json"
         )
@@ -212,8 +211,15 @@ def review_authoritative(
         if not resolved.verified:
             failures.extend(resolved.reasons)
             continue
+        from .trusted_evidence import _validate_evidence_result
+
+        try:
+            assessment = _validate_evidence_result(resolved.record.get("result"), evidence_type)
+        except (AttributeError, TypeError, ValueError):
+            failures.append("evidence_assessment_invalid")
+            continue
         field, derive = mapping[evidence_type]
-        facts[field] = derive(resolved.record.get("result", {}))
+        facts[field] = derive(assessment)
         verified_ids.append(str(resolved.record.get("evidence_id")))
     if failures:
         return AdmissionDecision(

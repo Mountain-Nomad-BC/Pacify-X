@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from runtime.release_preflight import evidence_budget
+from tests.release_preflight_testkit import minimal_product
 
 
 def test_evidence_amplification_budget_fails_before_finalizer(tmp_path: Path) -> None:
@@ -19,6 +20,7 @@ def test_evidence_amplification_budget_fails_before_finalizer(tmp_path: Path) ->
 
 
 def test_bounded_evidence_passes(tmp_path: Path) -> None:
+    minimal_product(tmp_path)
     evidence = tmp_path / "evidence"
     evidence.mkdir()
     (evidence / "summary.json").write_text("{}")

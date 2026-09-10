@@ -210,33 +210,37 @@ def test_timeout_kills_process_tree() -> None:
             [sys.executable, "-c", parent_code],
             cwd=ROOT,
             environment=os.environ,
-            timeout_seconds=0.5,
+            # The total budget includes admission and registration. Keep this
+            # physical-tree test independent of the retained repository ledger;
+            # pre-spawn expiry is covered by separate custody tests.
+            timeout_seconds=2.0,
+            resource_manager=ResourceManager(Path(directory) / "ledger.json"),
         )
+        assert result["execution_started"] is True
+        assert "parent-ready" in result["stdout"]
         assert result["timed_out"] and result["process_tree_terminated"]
         child_pid = int(pid_file.read_text())
-        time.sleep(0.1)
-        try:
-            os.kill(child_pid, 0)
-        except OSError:
-            pass
-        else:
-            pytest.fail("timed-out test child process remains alive")
+        # Windows os.kill(pid, 0) can report a dead PID as present. Use the
+        # same native liveness query as the lifecycle owner.
+        assert not _process_exists(child_pid)
 
 
-def test_timeout_preserves_partial_output() -> None:
+def test_timeout_preserves_partial_output(tmp_path: Path) -> None:
     result = run_test_command(
         [
             sys.executable,
             "-c",
             "import sys,time; print('partial-out',flush=True); print('partial-err',file=sys.stderr,flush=True); time.sleep(60)",
         ],
-        cwd=ROOT,
+        cwd=tmp_path,
+        resource_manager=ResourceManager(tmp_path / "ledger.json"),
         environment=os.environ,
         # A fresh Windows interpreter can take longer than 250 ms to start on
         # a loaded certification host. The child still blocks for 60 seconds,
         # so this remains a bounded timeout/partial-output assertion.
         timeout_seconds=2.0,
     )
+    assert result["execution_started"] is True, (result["supervision_status"], result["duration_seconds"])
     assert result["timed_out"]
     assert "partial-out" in result["stdout"] and "partial-err" in result["stderr"]
 
@@ -374,7 +378,7 @@ def test_per_test_temp_cleanup_preserves_failure_and_junit_evidence(
     )
 
     assert result["valid"] is False
-    assert result["exit_code"] == 1
+    assert result["exit_code"] == 1, result
     assert "intentional failure remains visible" in result["stdout"]
     assert "1 failed, 1 passed" in result["stdout"]
     assert junit.is_file()

@@ -6,6 +6,7 @@ import ast
 from dataclasses import asdict, dataclass
 import hashlib
 import json
+import keyword
 import math
 from pathlib import Path
 import re
@@ -49,6 +50,15 @@ MAX_CALCULATION_AST_NODES = 64
 MAX_CALCULATION_DEPTH = 16
 MAX_CALCULATION_MAGNITUDE = 1e100
 MAX_CALCULATION_EXPONENT = 16
+MAX_CALCULATION_TEXT_BYTES = 4096
+MAX_CALCULATION_VARIABLES = 64
+CALCULATION_IDENTIFIER = re.compile(r"[A-Za-z_][A-Za-z0-9_]{0,63}\Z")
+JAVASCRIPT_BINDING_RESERVED = frozenset(
+    "break case catch class const continue debugger default delete do else export "
+    "extends finally for function if import in instanceof new return super switch "
+    "this throw try typeof var void while with yield enum implements interface let "
+    "package private protected public static await null true false eval arguments".split()
+)
 FORMULA_ENGINE_PATH = Path(__file__).parent / "cognitive_core" / "formula_engine.py"
 KNOWN_UNIT_DIMENSIONS = {
     "1": "1",
@@ -332,27 +342,75 @@ class CalculationPackage:
     failure_cases: tuple[str, ...]
 
 
-def compile_calculation(spec: CalculationSpec) -> CalculationPackage:
-    name = _slug(spec.name).replace("-", "_")
+def _calculation_text(value: object, *, max_bytes: int) -> str:
     if (
-        not name.isidentifier()
-        or not spec.variables
-        or set(spec.units) != set(spec.variables) | {"result"}
+        type(value) is not str
+        or not value.strip()
+        or len(value) > max_bytes
+        or len(value.encode("utf-8")) > max_bytes
+    ):
+        raise ValueError("calculation text must fit its bounded input budget")
+    return value
+
+
+def _calculation_identifier(value: object) -> str:
+    if (
+        type(value) is not str
+        or CALCULATION_IDENTIFIER.fullmatch(value) is None
+        or keyword.iskeyword(value)
+        or value in JAVASCRIPT_BINDING_RESERVED
+        or value == "pyMod"
+    ):
+        raise ValueError(
+            "calculation identifier is invalid or reserved in a target language"
+        )
+    return value
+
+
+def compile_calculation(spec: CalculationSpec) -> CalculationPackage:
+    if type(spec) is not CalculationSpec:
+        raise ValueError("calculation requires a typed specification")
+    name = _calculation_identifier(
+        _slug(_calculation_text(spec.name, max_bytes=256)).replace("-", "_")
+    )
+    equation = _calculation_text(spec.equation, max_bytes=MAX_CALCULATION_TEXT_BYTES)
+    if (
+        type(spec.variables) not in (tuple, list)
+        or not 1 <= len(spec.variables) <= MAX_CALCULATION_VARIABLES
+    ):
+        raise ValueError("calculation variables require a bounded identifier list")
+    variables = tuple(_calculation_identifier(value) for value in spec.variables)
+    if len(set(variables)) != len(variables):
+        raise ValueError("calculation variable identifiers must be unique")
+    if (
+        type(spec.units) is not dict
+        or len(spec.units) > MAX_CALCULATION_VARIABLES + 1
+        or set(spec.units) != set(variables) | {"result"}
     ):
         raise ValueError(
             "calculation requires a valid name and units for every variable plus result"
         )
-    tree = ast.parse(spec.equation, mode="eval")
-    _validate_calculation_tree(tree, spec.variables)
+    for unit in spec.units.values():
+        _calculation_text(unit, max_bytes=128)
+    if type(spec.dependencies) not in (tuple, list) or len(spec.dependencies) > 64:
+        raise ValueError("calculation dependencies require a bounded list")
+    dependencies = tuple(
+        _calculation_text(value, max_bytes=256) for value in spec.dependencies
+    )
+    try:
+        tree = ast.parse(equation, mode="eval")
+    except (SyntaxError, RecursionError) as error:
+        raise ValueError("calculation expression syntax is invalid") from error
+    _validate_calculation_tree(tree, variables)
     variable_dimensions = {
         variable: _unit_dimension(spec.units[variable]).render()
-        for variable in spec.variables
+        for variable in variables
     }
     expected_dimension = _unit_dimension(spec.units["result"]).render()
     dimension_receipt = validate_dimensions(
         spec.equation, variable_dimensions, expected_dimension
     )
-    arguments = ", ".join(spec.variables)
+    arguments = ", ".join(variables)
     python_source = f"def {name}({arguments}):\n    return {spec.equation}\n"
     javascript_expression = _render_javascript(tree)
     javascript_helper = (
@@ -374,9 +432,9 @@ def compile_calculation(spec: CalculationSpec) -> CalculationPackage:
     return CalculationPackage(
         name,
         spec.equation,
-        spec.variables,
+        variables,
         dict(spec.units),
-        spec.dependencies,
+        dependencies,
         python_source,
         javascript_source,
         schema,

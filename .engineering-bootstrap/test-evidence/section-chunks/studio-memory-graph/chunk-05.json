@@ -1,22 +1,24 @@
 {
   "chunk_id": "chunk-05",
-  "duration_seconds": 8.532404,
-  "exit_code": 0,
-  "input_sha256": "00877dca22c9f47d7f46dcb9cc73b073208e7c5e7c13176ab87e90b7b88f0653",
+  "duration_seconds": 29.386001,
+  "exit_code": 1,
+  "input_sha256": "bc0dc9d063430e106c207126fa5617a2714f6638d677b493d61a3597c5491555",
   "member_count": 2,
   "members": [
     "tests/test_studio_catalog_status.py",
     "tests/test_skill_packaging_projection.py"
   ],
   "output_evidence": {
-    "failure_nodes": [],
+    "failure_nodes": [
+      "tests/test_skill_packaging_projection.py::test_canonical_manifest_proves_exact_skill_source_projection"
+    ],
     "stderr_bytes": 0,
     "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "stdout_bytes": 100,
-    "stdout_sha256": "32f5d530bd2bbf0b5f0f9e4c0654751b86a676ae15ea96ba3d2518020f379e30"
+    "stdout_bytes": 934,
+    "stdout_sha256": "41227b92cac3b7ba109753a43d369b1fe8a4da7f350f8c4f4a338dbbd26deae1"
   },
-  "passed": true,
-  "receipt_sha256": "978f537e40e6558431eca9bdd998e43e44cf55ca842448f97453bcedf5815f69",
+  "passed": false,
+  "receipt_sha256": "073eaee5006d083c919003d9c70a8b76129444740a149af3f2cdc0499f6fb95b",
   "schema_version": "px.test-section-chunk-receipt/1.1",
   "section": "studio-memory-graph",
   "timed_out": false

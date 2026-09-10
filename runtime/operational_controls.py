@@ -150,22 +150,78 @@ def evaluate_memory(skill_id: str, payload: Mapping[str, object]) -> ControlResu
     )
 
 
+def _policy_payload(skill_id: str, payload: object) -> dict:
+    from .numeric_inputs import bounded_mapping, bounded_text
+
+    bounded_text(skill_id, "policy skill identity", maximum=128, strip=False)
+    return dict(bounded_mapping(payload, "policy payload", maximum=64))
+
+
+def _policy_texts(value: object, name: str, *, maximum: int = 256, unique: bool = True) -> tuple[str, ...]:
+    from .numeric_inputs import bounded_sequence, bounded_text
+
+    values = bounded_sequence(value, name, maximum=maximum)
+    result = tuple(bounded_text(item, name, maximum=256, strip=False) for item in values)
+    if unique and len(set(result)) != len(result):
+        raise ValueError(name + " identities must be unique")
+    return result
+
+
+def _policy_records(value: object, name: str, *, maximum: int = 1024) -> list[dict]:
+    from .numeric_inputs import bounded_mapping, bounded_sequence, bounded_text
+
+    values = bounded_sequence(value, name, maximum=maximum)
+    result = []
+    identities = set()
+    for item in values:
+        record = dict(bounded_mapping(item, name + " record", maximum=64))
+        identity = bounded_text(record.get("id"), name + " identity", maximum=128, strip=False)
+        if identity in identities:
+            raise ValueError(name + " identities must be unique")
+        identities.add(identity)
+        result.append(record)
+    return result
+
+
+def _policy_bool(value: object, name: str) -> bool:
+    if type(value) is not bool:
+        raise ValueError(name + " must be an actual boolean")
+    return value
+
+
+def _policy_number(value: object, name: str) -> float:
+    from .numeric_inputs import finite_number
+
+    return finite_number(value, name, minimum=0, maximum=1e12)
+
+
 def resolve_bundle(skill_id: str, payload: Mapping[str, object]) -> ControlResult:
-    requirements = set(map(str, payload.get("requirements", ())))
-    candidates = [dict(item) for item in payload.get("candidates", ())]
-    limit = max(1, min(int(payload.get("max_assets", 8)), 8))
+    from .numeric_inputs import bounded_integer
+
+    payload = _policy_payload(skill_id, payload)
+    requirements = set(_policy_texts(payload.get("requirements", ()), "bundle requirements"))
+    candidates = _policy_records(payload.get("candidates", ()), "bundle candidates")
+    for item in candidates:
+        item["provides"] = _policy_texts(item.get("provides", ()), "candidate provides")
+        item["conflicts"] = _policy_texts(item.get("conflicts", ()), "candidate conflicts")
+        if item["id"] in item["conflicts"]:
+            raise ValueError("bundle candidate cannot conflict with itself")
+        item["cost"] = _policy_number(item.get("cost", 1), "candidate cost")
+        item["risk"] = _policy_number(item.get("risk", 1), "candidate risk")
+    limit = bounded_integer(payload.get("max_assets", 8), "maximum bundle assets", maximum=8)
     selected: list[dict[str, object]] = []
     unresolved = set(requirements)
     conflicts: set[str] = set()
     while unresolved and len(selected) < limit:
         eligible = []
         selected_ids = {str(item["id"]) for item in selected}
+        selected_conflicts = {conflict for item in selected for conflict in item["conflicts"]}
         for item in candidates:
             item_id = str(item.get("id", ""))
             if not item_id or item_id in selected_ids:
                 continue
             item_conflicts = set(map(str, item.get("conflicts", ())))
-            if item_conflicts & selected_ids:
+            if item_conflicts & selected_ids or item_id in selected_conflicts:
                 conflicts.add(item_id)
                 continue
             coverage = unresolved & set(map(str, item.get("provides", ())))
@@ -240,22 +296,28 @@ def assess_supply_chain(skill_id: str, payload: Mapping[str, object]) -> Control
 
 
 def assess_loop(skill_id: str, payload: Mapping[str, object]) -> ControlResult:
-    states = tuple(map(str, payload.get("state_fingerprints", ())))
-    evidence_counts = tuple(int(value) for value in payload.get("evidence_counts", ()))
+    from .numeric_inputs import bounded_integer, bounded_sequence
+
+    payload = _policy_payload(skill_id, payload)
+    states = _policy_texts(payload.get("state_fingerprints", ()), "state fingerprints", maximum=4096, unique=False)
+    evidence_counts = tuple(bounded_integer(value, "evidence count", minimum=0, maximum=1000000000)
+                            for value in bounded_sequence(payload.get("evidence_counts", ()), "evidence counts", maximum=4096))
     repeated = len(states) != len(set(states))
     no_progress = len(evidence_counts) > 1 and evidence_counts[-1] <= evidence_counts[0]
-    failures = int(payload.get("failure_count", 0))
-    cost = float(payload.get("next_step_cost", 0.0))
-    gain = float(payload.get("expected_information_gain", 0.0))
-    risk = float(payload.get("trajectory_risk", 0.0))
+    failures = bounded_integer(payload.get("failure_count", 0), "failure count", minimum=0, maximum=1000000000)
+    failure_limit = bounded_integer(payload.get("failure_limit", 2), "failure limit", minimum=0, maximum=1000000000)
+    cost = _policy_number(payload.get("next_step_cost", 0.0), "next step cost")
+    gain = _policy_number(payload.get("expected_information_gain", 0.0), "expected information gain")
+    risk = _policy_number(payload.get("trajectory_risk", 0.0), "trajectory risk")
+    risk_limit = _policy_number(payload.get("risk_limit", 0.8), "risk limit")
     reasons = []
     if repeated:
         reasons.append("repeated_state")
     if no_progress:
         reasons.append("no_evidence_progress")
-    if failures >= int(payload.get("failure_limit", 2)):
+    if failures >= failure_limit:
         reasons.append("failure_budget_exhausted")
-    if risk >= float(payload.get("risk_limit", 0.8)):
+    if risk >= risk_limit:
         reasons.append("trajectory_risk_high")
     if gain <= cost:
         reasons.append("marginal_utility_nonpositive")
@@ -273,7 +335,7 @@ def assess_loop(skill_id: str, payload: Mapping[str, object]) -> ControlResult:
             "next_step_cost": cost,
             "trajectory_risk": risk,
             "remaining_failure_budget": max(
-                0, int(payload.get("failure_limit", 2)) - failures
+                0, failure_limit - failures
             ),
         },
     )
@@ -388,7 +450,21 @@ def process_research(skill_id: str, payload: Mapping[str, object]) -> ControlRes
 
 
 def track_progress(skill_id: str, payload: Mapping[str, object]) -> ControlResult:
-    milestones = [dict(item) for item in payload.get("milestones", ())]
+    from .numeric_inputs import bounded_text
+
+    payload = _policy_payload(skill_id, payload)
+    milestones = _policy_records(payload.get("milestones", ()), "milestones", maximum=4096)
+    for item in milestones:
+        item["postcondition"] = _policy_bool(item.get("postcondition", False), "milestone postcondition")
+        item["blocked"] = _policy_bool(item.get("blocked", False), "milestone blocked")
+        item["evidence"] = _policy_texts(item.get("evidence", ()), "milestone evidence")
+    goal = payload.get("goal", "")
+    if type(goal) is not str:
+        raise ValueError("handoff goal must be actual text")
+    if goal:
+        bounded_text(goal, "handoff goal", maximum=4096, strip=False)
+    for field in ("constraints", "decisions", "evidence", "next_actions"):
+        payload[field] = _policy_texts(payload.get(field, ()), "handoff " + field)
     states = []
     for item in milestones:
         if item.get("postcondition") is True and item.get("evidence"):
@@ -403,7 +479,7 @@ def track_progress(skill_id: str, payload: Mapping[str, object]) -> ControlResul
     missing_handoff = tuple(
         field for field in handoff_required if not payload.get(field)
     )
-    decision = "complete" if states and not unresolved else "resumable"
+    decision = "complete" if states and not unresolved and not missing_handoff else "resumable"
     return ControlResult(
         skill_id,
         decision,
@@ -417,7 +493,11 @@ def track_progress(skill_id: str, payload: Mapping[str, object]) -> ControlResul
 
 
 def compile_candidate(skill_id: str, payload: Mapping[str, object]) -> ControlResult:
-    records = [dict(item) for item in payload.get("records", ())]
+    payload = _policy_payload(skill_id, payload)
+    records = _policy_records(payload.get("records", ()), "compilation records", maximum=4096)
+    for item in records:
+        item["verified"] = _policy_bool(item.get("verified", False), "record verified")
+        item["evidence"] = _policy_texts(item.get("evidence", ()), "record evidence")
     accepted = tuple(
         sorted(
             str(item.get("id"))
@@ -446,9 +526,16 @@ def compile_candidate(skill_id: str, payload: Mapping[str, object]) -> ControlRe
 
 
 def select_topology(skill_id: str, payload: Mapping[str, object]) -> ControlResult:
-    approved = [dict(item) for item in payload.get("approved_templates", ())]
-    risk = float(payload.get("risk", 0))
-    complexity = float(payload.get("complexity", 0))
+    payload = _policy_payload(skill_id, payload)
+    approved = _policy_records(payload.get("approved_templates", ()), "approved templates")
+    risk = _policy_number(payload.get("risk", 0), "topology risk")
+    complexity = _policy_number(payload.get("complexity", 0), "topology complexity")
+    for item in approved:
+        item["max_risk"] = _policy_number(item.get("max_risk", 1), "template maximum risk")
+        item["max_complexity"] = _policy_number(item.get("max_complexity", 1), "template maximum complexity")
+        item["cost"] = _policy_number(item.get("cost", 0), "template cost")
+    if skill_id == "read-only-speculation-controller":
+        read_only = _policy_bool(payload.get("read_only", False), "read-only speculation")
     eligible = [
         item
         for item in approved
@@ -460,7 +547,6 @@ def select_topology(skill_id: str, payload: Mapping[str, object]) -> ControlResu
     )
     selected = str(eligible[0].get("id")) if eligible else None
     if skill_id == "read-only-speculation-controller":
-        read_only = bool(payload.get("read_only"))
         return ControlResult(
             skill_id,
             "proposal_only" if read_only else "denied",

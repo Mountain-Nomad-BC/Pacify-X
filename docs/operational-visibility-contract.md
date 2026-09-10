@@ -51,3 +51,44 @@ consent requirement, blind-spot state, retention class, and acceptance evidence.
 Certification fails if an advertised route is absent, a tier/mechanism pairing is
 invalid, or a Tier-D route remains in the release scope.
 
+## Observer input boundary
+
+Observer consent is an actual immutable `ObserverConsent` record. Grants are
+actual Booleans; count, byte and duration limits are actual positive integers,
+with ceilings of 10,000 events, 16 MiB and 3,600 seconds. Allowed effects are a
+unique tuple of one to four registered effect names. A syntactically valid
+consent record does not establish who authorized it.
+
+Consent and command plans carry a unique tuple of one to 16 opaque scope
+references. Observations carry the same references as an actual list and must
+remain within consent. Supported forms are:
+
+- `process-id:` followed by a canonical positive decimal PID up to 4,294,967,295;
+- `executable-sha256:`, `path-sha256:` or `endpoint-sha256:` followed by 64 lowercase
+  hexadecimal characters;
+- `project:` followed by one to 128 ASCII letters, digits, underscores, dots or
+  hyphens, starting with a letter or digit.
+
+These are reference grammars, not proofs of process identity, executable bytes,
+path ownership, endpoint identity or native collection filtering. Native plans
+still require their authoritative admission and identity checks.
+
+Observer scalar metadata is actual nonempty UTF-8 text bounded to 160 bytes;
+scope references are bounded to 200 bytes. Observation records have exactly five
+fields. The validator returns a detached scope list and refuses malformed or
+out-of-scope data before copying it. Operation names and observation identities
+remain supplied metadata; their shape does not attest content provenance.
+
+Plan input validation precedes hashing: exactly three command profiles, one to
+32 tuple arguments per profile, at most 4,096 UTF-8 bytes per argument and 16 KiB
+across arguments. These bounds do not authenticate command content or prevent
+later mapping mutation. Builders validate scope before executable discovery or
+watched-directory access. Existing canonical command hashes remain unchanged.
+
+Timestamp parsing requires bounded actual text and an explicit timezone.
+Optional comparison clocks must be aware datetimes; freshness switches are
+actual Booleans. Capture batch limits are actual integers from one to 1,000.
+This input boundary does not establish observation chronology within a consent
+window, autonomous lease expiry, restart recovery, bounded decoder execution or
+real operating-system collection. Those remain separate lifecycle and assurance
+obligations.

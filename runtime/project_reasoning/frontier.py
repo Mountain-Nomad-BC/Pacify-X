@@ -116,28 +116,27 @@ def decision_frontier(document: Mapping[str, object]) -> dict[str, object]:
 
 
 def validate_reasoning_orchestration(root: Path) -> dict[str, object]:
-    path = root / "orchestration/workflows/engineering-reasoning-loop.yaml"
-    if not path.is_file():
-        return {"valid": False, "errors": ["workflow missing"]}
-    text = path.read_text(encoding="utf-8")
-    required = (
-        "frontier-questioning",
-        "domain-language-maintenance",
-        "design-it-twice",
-        "deep-module-design",
-        "architecture-deepening-audit",
-        "decision-wayfinding",
-        "questionnaire-delegation",
-        "guided-procedure-wizard",
-        "tracer-bullet-planning",
-        "dual-axis-code-review",
-        "intent-preserving-merge-resolution",
-        "context-handoff-package",
-    )
-    missing = [identifier for identifier in required if f'"{identifier}"' not in text]
-    return {
-        "valid": not missing,
-        "errors": [f"missing skill: {item}" for item in missing],
-        "skill_count": len(required),
-        "effects": ["read_local", "write_workspace"],
-    }
+    """Validate exact structural stages; current admission and execution remain separate."""
+    from ..input_files import cooperative_deadline
+    from ..numeric_inputs import bounded_text
+    from ..workflow_inputs import active_skill_declarations, ordered_steps, read_declaration, unique_declarations
+
+    expected = (('question-frontier', 'frontier-questioning', ()), ('canonical-language', 'domain-language-maintenance', ('question-frontier',)), ('decision-map', 'decision-wayfinding', ('question-frontier',)), ('delegate-authority', 'questionnaire-delegation', ('decision-map',)), ('compare-designs', 'design-it-twice', ('canonical-language', 'decision-map')), ('design-module', 'deep-module-design', ('compare-designs',)), ('audit-depth', 'architecture-deepening-audit', ('design-module',)), ('plan-slices', 'tracer-bullet-planning', ('audit-depth', 'delegate-authority')), ('manual-transition', 'guided-procedure-wizard', ('plan-slices',)), ('review-two-axes', 'dual-axis-code-review', ('plan-slices',)), ('reconcile-intent', 'intent-preserving-merge-resolution', ('review-two-axes',)), ('handoff', 'context-handoff-package', ('manual-transition', 'reconcile-intent')))
+    try:
+        deadline = cooperative_deadline()
+        payload = read_declaration(root, "orchestration/workflows/engineering-reasoning-loop.yaml", deadline=deadline)
+        workflows = unique_declarations(payload.get("workflows"), "id", maximum=256)
+        if payload.get("schema_version") != "1.0" or payload.get("registry") != "registry/skill_orchestrations.json" or tuple(workflows) != ("engineering-reasoning-loop",):
+            raise ValueError("reasoning workflow envelope mismatch")
+        workflow = workflows["engineering-reasoning-loop"]
+        steps = ordered_steps(workflow.get("steps"))
+        actual = tuple((step["id"], step["skill"], tuple(step["depends_on"])) for step in steps)
+        if actual != expected:
+            raise ValueError("reasoning workflow steps, bindings or order mismatch")
+        bounded_text(workflow.get("failure_policy"), "failure policy", maximum=4096)
+        active = active_skill_declarations(root, deadline=deadline)
+        if any(step["skill"] not in active for step in steps):
+            raise ValueError("reasoning workflow skill is not declared active or admitted")
+    except (OSError, ValueError, TypeError):
+        return {"valid": False, "errors": ["invalid bounded reasoning workflow declarations"], "skill_count": None, "authority_granted": False}
+    return {"valid": True, "errors": [], "skill_count": len(expected), "effects": ["read_local", "write_workspace"], "authority_granted": False, "evidence_level": "structural-declarations; current package admission and execution require separate proof"}

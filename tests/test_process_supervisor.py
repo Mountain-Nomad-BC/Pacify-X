@@ -537,6 +537,7 @@ def test_declared_disk_accounting_is_sampled_instead_of_walked_every_poll(
     )
     action = _action(
         root,
+        startup_timeout_seconds=1.0,
         idle_timeout_seconds=1.0,
         total_timeout_seconds=2.0,
         poll_interval_seconds=0.01,
@@ -549,7 +550,7 @@ def test_declared_disk_accounting_is_sampled_instead_of_walked_every_poll(
         action=action,
     )
 
-    assert result.status == "exited"
+    assert result.status == "exited", result
     assert result.tree_closed
     # Initial accounting, the first safety poll, and the unconditional
     # terminal reconciliation are sufficient for a sub-second command.

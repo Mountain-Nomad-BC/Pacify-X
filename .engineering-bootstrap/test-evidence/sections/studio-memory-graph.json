@@ -2,8 +2,8 @@
   "chunks": [
     {
       "chunk_id": "chunk-01",
-      "duration_seconds": 2.71549,
-      "input_sha256": "bdafa1ce39900d7acfc224d711eb0a0c3f7071dbebfce5544fb585c54ebba4c6",
+      "duration_seconds": 9.117352,
+      "input_sha256": "be2357fc3b7d22b301d038a2dd008f8090829549194dc9a1f6ced5348036384b",
       "member_count": 2,
       "members": [
         "tests/test_agent_builder.py",
@@ -14,17 +14,17 @@
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "stdout_bytes": 101,
-        "stdout_sha256": "4f37f48e29b3f3ed579456fd07024be549d5f567dfb285e796bb18c486f64d27"
+        "stdout_sha256": "c8b80c38feff3d1a1e375c05d5e219700e08bc239d6a5278e99a436307e2e3d6"
       },
       "passed": true,
-      "receipt_sha256": "98f51be8ae1c8c80356d289cb4db79c971571319405fd9f26bacfe437dcf4c24",
+      "receipt_sha256": "99e0ab7ea1c1d248406a4faf99d2e4161256bb506aa854678cdaf8ec31d98177",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-02",
-      "duration_seconds": 13.977993,
-      "input_sha256": "a6bf6b84668eaba54e86625c8f90997044ae8e6bb99c46924e4bbe56c526ff87",
+      "duration_seconds": 22.140908,
+      "input_sha256": "0aca3fe99a6335236cda0083030013a2d418885782b9370aa2657e4cdf7ceb0e",
       "member_count": 2,
       "members": [
         "tests/test_studio_api.py",
@@ -35,17 +35,17 @@
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "stdout_bytes": 113,
-        "stdout_sha256": "fb0c565a22fbd451fb782e7e15b29ef0ffcea468a251efb37a317d357f65f0cd"
+        "stdout_sha256": "080f225bbc9fa9ea29e8d45bce3f2b9fa62926ae5fcd7e16a79e9db4a5daf02b"
       },
       "passed": true,
-      "receipt_sha256": "80893de5aef7ed1a1884c3781eac42d732cfaf291cb53f8612746363fa2d5bd7",
+      "receipt_sha256": "2ff2883e37fee6838d7ca220a174af047c5f1bddf4d9dc5042c023e19f67b09e",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-03",
-      "duration_seconds": 52.681207,
-      "input_sha256": "499a1af755a078c3782080c6035eeb91c49ff3a08d82563353f5ff5c88d5d074",
+      "duration_seconds": 68.990609,
+      "input_sha256": "125a1183b86daa30bd726b16132c4b3b65ab17d1ed77938f4dac5f2aa11a4432",
       "member_count": 2,
       "members": [
         "tests/test_process_supervisor.py",
@@ -55,18 +55,18 @@
         "failure_nodes": [],
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "stdout_bytes": 102,
-        "stdout_sha256": "c2f16cf5351bcb047a187809b3aa28193b38f8c754bd55c219917c3a1bcddb1c"
+        "stdout_bytes": 112,
+        "stdout_sha256": "275d7667c50495e2073052fbfa933e088555d4b790edcc22352778090111f900"
       },
       "passed": true,
-      "receipt_sha256": "f279b7f06427b746f08e7fb3301dd35dd0f51dcf90b0dbc7c3603faace484c95",
+      "receipt_sha256": "3479d07b14b80e211f63bafeaa3413090959362f4deb2e898a9c883cfa21fcf6",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-04",
-      "duration_seconds": 81.41152,
-      "input_sha256": "120dfe6818ec50ebd71e6f462140662df2a133a5c21a94a6592d5bedc3c4edf9",
+      "duration_seconds": 130.68022,
+      "input_sha256": "5fca0f7618125393f723da617e4481aa277012c95fc364f62586b3ad8bae5085",
       "member_count": 2,
       "members": [
         "tests/test_workflow_studio.py",
@@ -76,39 +76,41 @@
         "failure_nodes": [],
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "stdout_bytes": 204,
-        "stdout_sha256": "a26c9d751b0e6461a0d22df93a091f0ffd4db8b78a4bb0d08092f6a48135613d"
+        "stdout_bytes": 205,
+        "stdout_sha256": "f44a3b80c0ac692ad46067214b7f9f51ade3e8130f7b984bf8ee3f10ac4aa257"
       },
       "passed": true,
-      "receipt_sha256": "0486cb40441832795327e2fd642ab3ed02a97e9fbc2c4d56cb243a18aa261d57",
+      "receipt_sha256": "ddda0dbacdcb16b69fa40ef7f8a775b59b6bdf37f50b279836e3d05a00b8f9b2",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-05",
-      "duration_seconds": 8.532404,
-      "input_sha256": "00877dca22c9f47d7f46dcb9cc73b073208e7c5e7c13176ab87e90b7b88f0653",
+      "duration_seconds": 29.386001,
+      "input_sha256": "bc0dc9d063430e106c207126fa5617a2714f6638d677b493d61a3597c5491555",
       "member_count": 2,
       "members": [
         "tests/test_studio_catalog_status.py",
         "tests/test_skill_packaging_projection.py"
       ],
       "output_evidence": {
-        "failure_nodes": [],
+        "failure_nodes": [
+          "tests/test_skill_packaging_projection.py::test_canonical_manifest_proves_exact_skill_source_projection"
+        ],
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "stdout_bytes": 100,
-        "stdout_sha256": "32f5d530bd2bbf0b5f0f9e4c0654751b86a676ae15ea96ba3d2518020f379e30"
+        "stdout_bytes": 934,
+        "stdout_sha256": "41227b92cac3b7ba109753a43d369b1fe8a4da7f350f8c4f4a338dbbd26deae1"
       },
-      "passed": true,
-      "receipt_sha256": "978f537e40e6558431eca9bdd998e43e44cf55ca842448f97453bcedf5815f69",
+      "passed": false,
+      "receipt_sha256": "073eaee5006d083c919003d9c70a8b76129444740a149af3f2cdc0499f6fb95b",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-06",
-      "duration_seconds": 6.803486,
-      "input_sha256": "a58372445737849507f984db0e4eb6b1460304be8976cebb0f5ef44d58e1c2a6",
+      "duration_seconds": 18.916075,
+      "input_sha256": "a21eb59f8e2a2b74939538f945e7da58a3a396a62502281d95ae820bd408b202",
       "member_count": 2,
       "members": [
         "tests/test_knowledge_core_controller.py",
@@ -118,18 +120,18 @@
         "failure_nodes": [],
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "stdout_bytes": 101,
-        "stdout_sha256": "f9f8e9f0f5504105123d1a7284d255bd888404d630947dcc11cfbf456b3170c9"
+        "stdout_bytes": 102,
+        "stdout_sha256": "931530353283ada0c2b046c23ee0834ef02c92e43e66e8a707252803391f6182"
       },
       "passed": true,
-      "receipt_sha256": "3431b0772bae685336b25b701746a5537da3f57d9d4ceba071e9e7657af8a58e",
+      "receipt_sha256": "b52511f3554c7687152d6a517396ffb7101dbdfffb2fa147718f71b35916132e",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-07",
-      "duration_seconds": 5.608188,
-      "input_sha256": "0251029e31eb6feece24782445c6be91c61a8ef82d705fe059c0c2d5eb226723",
+      "duration_seconds": 11.139785,
+      "input_sha256": "a254eb1154f39f61b8da03479ee1a98f7cfecdd48ba38345c8b520134a00f9e4",
       "member_count": 2,
       "members": [
         "tests/test_memory_fabric.py",
@@ -140,17 +142,17 @@
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "stdout_bytes": 101,
-        "stdout_sha256": "6b0a2941fcbd9acdb04d53896df02263a96d792238286e38f289ece495bf7437"
+        "stdout_sha256": "ff676801db95db1f1c5314f1b657c63ce6ce36e82060fef561c9f9354f4daecd"
       },
       "passed": true,
-      "receipt_sha256": "d98f662183812d65ef7b8960a39f4e664ae14d3d0499cbb6f1004f9b5adae813",
+      "receipt_sha256": "f6c18a4c1728ecf28675deca156f19b70352a69d4ad630f315a433ea846aee0f",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-08",
-      "duration_seconds": 2.94902,
-      "input_sha256": "d53830273f2787c2fcfd1f1ef2a6361f1ded21e228f4c598d1b8e002a071a9e8",
+      "duration_seconds": 8.801855,
+      "input_sha256": "875d7120fbd8543086cb4ad25b7a1158006e2961fdd2b8094de5b1abcc51626c",
       "member_count": 2,
       "members": [
         "tests/test_memory_intelligence.py",
@@ -161,17 +163,17 @@
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "stdout_bytes": 101,
-        "stdout_sha256": "c3cd1eae68f95604671fbcf450e4e5e5ac16ba2751dfcab924907b9be98e9d17"
+        "stdout_sha256": "247491212b6e4d63dc3d14b8731d2fc8d0da71d455ed9a967f6bd0fa767b6ec6"
       },
       "passed": true,
-      "receipt_sha256": "0beb4b87d85f74dc2d7d0a2e531eee9bbc1d5bfbf1acd645543e03b82044cd3f",
+      "receipt_sha256": "19c594146394260114c481583c392443b3925909ee7993ccd4ea36b7f99797af",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-09",
-      "duration_seconds": 97.205605,
-      "input_sha256": "f3ad55ffe12b091e40291a661498dbdc4b39762a2e5d1e8ac616c9af9e51d11f",
+      "duration_seconds": 167.702934,
+      "input_sha256": "d662b50e1c06b147948aaa7b5a33f4d640d89ee058bff9eca051a8962ec400e1",
       "member_count": 2,
       "members": [
         "tests/test_project_stream_orchestrator.py",
@@ -181,31 +183,52 @@
         "failure_nodes": [],
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "stdout_bytes": 112,
-        "stdout_sha256": "763bacbcb31385114022ec29a0b32ade2947c29903025a2ab48721b52edea9c1"
+        "stdout_bytes": 113,
+        "stdout_sha256": "b67916162a2b45e40929e90dba23ade503b5d7344daad8019deef09f522a94f6"
       },
       "passed": true,
-      "receipt_sha256": "e4e84ac524c2a10773ddd35cfcb23740ef980d5acfeeb89f065e95b42270e0ab",
+      "receipt_sha256": "449732c6fbaf41692b7a4e284b1ae5664e157cf254319c4e5ba66e630073f9fe",
       "reused": false,
       "timed_out": false
     },
     {
       "chunk_id": "chunk-10",
-      "duration_seconds": 9.732913,
-      "input_sha256": "96ce898da4fda2d8f69d4331ecb67f66226c5e511e153c9f1368889e5996c3f1",
-      "member_count": 1,
+      "duration_seconds": 24.319319,
+      "input_sha256": "491f74cbb7bb0cdb8c723623ba2d7bed2192e057d65c39c515da5315fbc9fd26",
+      "member_count": 2,
       "members": [
-        "tests/test_dashboard_api.py"
+        "tests/test_dashboard_api.py",
+        "tests/test_agent_builder_inputs.py"
       ],
       "output_evidence": {
         "failure_nodes": [],
         "stderr_bytes": 0,
         "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "stdout_bytes": 101,
-        "stdout_sha256": "e7ffb66be0cc2bc55001c2b590dce2a5ebdbd28106f7d7104e242e3ed1866379"
+        "stdout_bytes": 183,
+        "stdout_sha256": "e9e0528361c85bc5dcf9b651087f7d14ab954006ad99c64d92618e5dc3b601f0"
       },
       "passed": true,
-      "receipt_sha256": "6f7f971f1cca812e4a7ee683bd9ef504527ecd0e0a563d77b4acaca5f6691cdd",
+      "receipt_sha256": "052524be3523e125fad7936d34fff2b99e72efd72a9d51e1f7cab560bb6155d8",
+      "reused": false,
+      "timed_out": false
+    },
+    {
+      "chunk_id": "chunk-11",
+      "duration_seconds": 24.769904,
+      "input_sha256": "1d48cd014332725cc9ba2df9506ed787fe6b4dac2036349b139d655a7fbe4308",
+      "member_count": 1,
+      "members": [
+        "tests/test_studio_api_inputs.py"
+      ],
+      "output_evidence": {
+        "failure_nodes": [],
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 102,
+        "stdout_sha256": "38c7f268707a1e3a75baca0c3d86370cc8f0cc6579a6124b1486d9a4a56ceef0"
+      },
+      "passed": true,
+      "receipt_sha256": "81a4af63528a6c2cba04e8291216956ea51df7471185a1b5089f6225db9f6640",
       "reused": false,
       "timed_out": false
     }
@@ -235,15 +258,17 @@
     "tests/test_memory_integrity_controls.py",
     "tests/test_project_stream_orchestrator.py",
     "tests/test_workspace_manager.py",
-    "tests/test_dashboard_api.py"
+    "tests/test_dashboard_api.py",
+    "tests/test_agent_builder_inputs.py",
+    "tests/test_studio_api_inputs.py"
   ],
   "cwd": ".",
   "dependencies": [],
-  "duration_seconds": 303.013896,
-  "exit_code": 0,
-  "input_sha256": "671d054c39f14337bbb6bb56c19e9dbe6184003c961585667309bd960a393d34",
-  "passed": true,
-  "receipt_sha256": "d9efeaaef56f3dc7db72274cd1daa287f9d37915a86bc1390209b866b563e9cd",
+  "duration_seconds": 582.745975,
+  "exit_code": 1,
+  "input_sha256": "5c7bb10fcf0543e23821f57da08b77f68264cafc45544c49b9317268125cfef6",
+  "passed": false,
+  "receipt_sha256": "47d5628006ec9c96dd2f8426c28a3a7814e4abb9dbe1e97a79bcf0112f685417",
   "schema_version": "px.test-section-receipt/1.0",
   "section": "studio-memory-graph",
   "timed_out": false

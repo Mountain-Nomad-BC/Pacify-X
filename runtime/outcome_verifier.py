@@ -109,10 +109,9 @@ def verify_authoritative(root: Path, request: Mapping[str, Any]) -> dict[str, An
         required_checks = tuple(map(str, contract["required_checks"]))
         if not required_checks:
             raise ValueError
-        store_relative = Path(str(request["evidence_store"]))
-        store = (root.resolve() / store_relative).resolve()
-        if store_relative.is_absolute() or root.resolve() not in store.parents:
-            raise ValueError("evidence_store must be product-relative")
+        from .trusted_evidence import evidence_store_path
+
+        store = evidence_store_path(root, request["evidence_store"])
         resolver = TrustedEvidenceResolver(
             store, root / "policies/effect-grant-trust.json"
         )

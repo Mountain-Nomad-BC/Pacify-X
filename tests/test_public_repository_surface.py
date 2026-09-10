@@ -145,8 +145,8 @@ def test_marketplace_publication_uses_oidc_and_the_exact_certified_vsix() -> Non
     assert "@vscode/vsce@3.9.2 publish --oidc --skip-duplicate --packagePath" in workflow
     for exact_artifact_value in (
         "PACIFY_X_VSIX_NAME: pacify-x-vscode-0.6.87.vsix",
-        "PACIFY_X_VSIX_SHA256: c412addf53aa9747caeff0fa1427b109794e9b1889777b3349f53ddaadd78511",
-        'PACIFY_X_VSIX_SIZE: "4269667"',
+        "PACIFY_X_VSIX_SHA256: 3142a0b37fdd8b1482698994af7c49b59e82e142a1886c432df58deac720c269",
+        'PACIFY_X_VSIX_SIZE: "4269678"',
     ):
         assert exact_artifact_value in workflow
     assert "Marketplace input differs from signed VSIX" in workflow

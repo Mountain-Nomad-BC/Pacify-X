@@ -20,6 +20,7 @@ from typing import Any, Iterable
 from urllib.parse import unquote, urlsplit
 
 from .paths import declared_file_available
+from .json_io import json_value_key, load_json_object, validate_json_value
 
 
 SUPPORTED_DIALECT = "https://json-schema.org/draft/2020-12/schema"
@@ -64,13 +65,7 @@ class ContractValidationError(ValueError):
 
 
 def _load(path: Path) -> dict[str, Any]:
-    def reject_constant(value: str) -> None:
-        raise ValueError(f"non-JSON numeric constant {value!r} in {path}")
-
-    data = json.loads(path.read_text(encoding="utf-8"), parse_constant=reject_constant)
-    if not isinstance(data, dict):
-        raise ValueError(f"schema must be an object: {path}")
-    return data
+    return load_json_object(path)
 
 
 def _contract_root_for(schema_path: Path, contract_root: Path | None) -> Path:
@@ -315,10 +310,12 @@ def _errors(
             return [f"{at}: schema type declaration is invalid"]
         if not any(_is_type(instance, item) for item in choices):
             return [f"{at}: expected {' or '.join(choices)}"]
-    if "const" in rule and instance != rule["const"]:
+    if "const" in rule and json_value_key(instance) != json_value_key(rule["const"]):
         errors.append(f"{at}: value does not equal required constant")
-    if "enum" in rule and instance not in rule["enum"]:
-        errors.append(f"{at}: value is outside the allowed enumeration")
+    if "enum" in rule:
+        instance_key = json_value_key(instance)
+        if not any(instance_key == json_value_key(value) for value in rule["enum"]):
+            errors.append(f"{at}: value is outside the allowed enumeration")
     if isinstance(instance, dict):
         required = rule.get("required", ())
         for key in required:
@@ -362,12 +359,13 @@ def _errors(
         if "maxItems" in rule and len(instance) > int(rule["maxItems"]):
             errors.append(f"{at}: too many items")
         if rule.get("uniqueItems") is True:
-            encoded = [
-                json.dumps(value, sort_keys=True, separators=(",", ":"))
-                for value in instance
-            ]
-            if len(encoded) != len(set(encoded)):
-                errors.append(f"{at}: items are not unique")
+            seen: set[tuple] = set()
+            for value in instance:
+                identity = json_value_key(value)
+                if identity in seen:
+                    errors.append(f"{at}: items are not unique")
+                    break
+                seen.add(identity)
         if isinstance(rule.get("items"), dict):
             for index, value in enumerate(instance):
                 errors.extend(
@@ -451,6 +449,10 @@ def _errors(
 def validate_instance(
     instance: Any, schema_path: Path, *, contract_root: Path | None = None
 ) -> None:
+    try:
+        validate_json_value(instance)
+    except ValueError as error:
+        raise ContractValidationError(str(error)) from error
     schema_path = schema_path.resolve(strict=True)
     resolved_contract_root = _contract_root_for(schema_path, contract_root)
     schema = _load(schema_path)

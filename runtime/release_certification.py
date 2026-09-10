@@ -102,29 +102,92 @@ def _resolve_release_gate_roots(
     }
 
 
+def _certificate_root(root: Path) -> Path:
+    from .input_files import directory_root
+
+    return directory_root(root)
+
+
+def _certificate_release(release: object) -> str:
+    from .numeric_inputs import bounded_text
+
+    value = bounded_text(release, "certificate release", maximum=128, strip=False)
+    if re.fullmatch(r"[0-9]+\.[0-9]+\.[0-9]+", value) is None:
+        raise ValueError("certificate release must be a stable version")
+    return value
+
+
+def _certificate_image(root: Path, relative: str, limit: int) -> bytes:
+    from .input_files import contained_file, cooperative_deadline, read_file_image
+
+    deadline = cooperative_deadline()
+    path, info = contained_file(root, relative)
+    return bytes(read_file_image(path, info, limit=limit, deadline=deadline))
+
+
+def _certificate_object(raw: bytes, limit: int) -> dict[str, Any]:
+    from .json_io import decode_json_object
+
+    return decode_json_object(raw, max_bytes=limit, max_depth=64, max_nodes=100000)
+
+
+def _certificate_digest(value: object) -> str:
+    if type(value) is not str or re.fullmatch(r"[0-9a-f]{64}", value) is None:
+        raise ValueError("certificate digest must be an exact SHA-256 value")
+    return value
+
+
+def _certificate_evidence_path(root: Path, release: str, relative: object) -> Path:
+    from .input_files import relative_source_path, contained_file
+
+    relative = relative_source_path(relative)
+    if not relative.startswith(f"evidence/releases/{release}/"):
+        raise ValueError("certificate evidence is outside its release root")
+    path, _ = contained_file(root, relative)
+    release_root = root / "evidence" / "releases" / release
+    if not path.resolve(strict=True).is_relative_to(release_root.resolve(strict=True)):
+        raise ValueError("certificate evidence is outside its release root")
+    return path
+
+
+def _certificate_check_errors(result: object, label: str) -> list[str]:
+    if type(result) is not dict:
+        return [f"{label} did not return an explicit valid result"]
+    errors = result.get("errors")
+    if (
+        type(errors) is not list
+        or len(errors) > 64
+        or any(type(e) is not str or len(e) > 4096 for e in errors)
+    ):
+        return [f"{label} returned malformed diagnostics"]
+    if result.get("valid") is not True and not errors:
+        return [f"{label} did not return an explicit valid result"]
+    return list(errors)
+
+
 def _verify_coverage_binding(
     root: Path, release: str, certificate: dict[str, Any]
 ) -> dict[str, Any]:
-    """Verify that a certificate names and hashes valid executed coverage evidence."""
-    errors: list[str] = []
-    relative = str(certificate.get("coverage_evidence", ""))
-    expected_prefix = f"evidence/releases/{release}/"
-    path = (root / relative).resolve(strict=False)
-    release_root = (root / "evidence" / "releases" / release).resolve()
+    """Compare the certificate digest with the exact image coverage evaluated."""
     try:
-        path.relative_to(release_root)
-    except ValueError:
-        errors.append("certificate coverage evidence is outside its release root")
-    if not relative.startswith(expected_prefix) or not path.is_file():
-        errors.append(
-            "certificate coverage evidence is missing or outside its release root"
-        )
-    elif _sha(path) != certificate.get("coverage_evidence_sha256"):
-        errors.append("certificate coverage-evidence file hash mismatch")
-    else:
+        root = _certificate_root(root)
+        release = _certificate_release(release)
+        if type(certificate) is not dict:
+            raise ValueError("certificate must be an actual object")
+        relative = certificate.get("coverage_evidence")
+        expected = _certificate_digest(certificate.get("coverage_evidence_sha256"))
+        path = _certificate_evidence_path(root, release, relative)
         coverage = validate_coverage_evidence(root, path)
-        errors.extend(coverage["errors"])
-    return {"valid": not errors, "path": relative, "errors": errors}
+        errors = _certificate_check_errors(coverage, "coverage validation")
+        if type(coverage) is not dict or coverage.get("coverage_sha256") != expected:
+            errors.append("certificate coverage-evidence file hash mismatch")
+        return {"valid": not errors, "path": relative, "errors": errors}
+    except (OSError, ValueError, TypeError, RecursionError):
+        return {
+            "valid": False,
+            "path": None,
+            "errors": ["certificate coverage evidence is invalid or unavailable"],
+        }
 
 
 def _write_supply_chain_evidence(
@@ -137,20 +200,71 @@ def _write_supply_chain_evidence(
     toolchain: dict[str, Any],
 ) -> dict[str, str]:
     """Write deterministic checksums, an SBOM, and provenance for exact built bytes."""
+    from .archive_io import member_identity, portable_member_name, reject_path_links
+    from .numeric_inputs import bounded_json_value, bounded_text
+    from .release_identity import (
+        EXPECTED_REPOSITORY,
+        _recorded_git_identity,
+        _root,
+        _version,
+    )
+
+    evidence_dir = _root(evidence_dir)
+    release = _version(release)
+    source_control = _recorded_git_identity(source_control)
+    if (
+        source_control.get("valid") is not True
+        or source_control["tag"] != f"v{release}"
+    ):
+        raise ValueError("provenance requires a valid matching source identity")
+    if source_control["repository"].casefold() != EXPECTED_REPOSITORY.casefold():
+        raise ValueError("provenance repository does not match the product repository")
+    if (
+        type(product_digest) is not str
+        or re.fullmatch(r"[0-9a-f]{64}", product_digest) is None
+    ):
+        raise ValueError("provenance requires an exact product SHA-256")
+    if type(artifacts) is not list or not 1 <= len(artifacts) <= 32:
+        raise ValueError("provenance requires a bounded nonempty artifact list")
+    if type(toolchain) is not dict or len(toolchain) > 128:
+        raise ValueError("provenance toolchain must be a bounded actual object")
+    for item in artifacts:
+        if type(item) is not dict or len(item) > 32:
+            raise ValueError("provenance artifact must be a bounded actual object")
+    bounded_json_value(artifacts)
+    bounded_json_value(toolchain)
+    artifacts = json.loads(json.dumps(artifacts))
+    toolchain = json.loads(json.dumps(toolchain))
+    aliases = set()
+    for item in artifacts:
+        filename = bounded_text(
+            item.get("filename"), "artifact filename", maximum=256, strip=False
+        )
+        portable = portable_member_name(filename, allow_directory=False)
+        if "/" in portable:
+            raise ValueError("provenance artifact filename must be a single component")
+        identity = member_identity(portable, allow_directory=False)
+        if identity in aliases:
+            raise ValueError("provenance artifact names alias one portable identity")
+        aliases.add(identity)
+        if (
+            type(item.get("sha256")) is not str
+            or re.fullmatch(r"[0-9a-f]{64}", item["sha256"]) is None
+        ):
+            raise ValueError("provenance artifact requires an exact SHA-256")
+        size = item.get("size_bytes")
+        if type(size) is not int or not 0 <= size <= 64 * 1024 * 1024 * 1024:
+            raise ValueError(
+                "provenance artifact size must be an actual bounded integer"
+            )
     subjects = [
         {
-            "name": str(item["filename"]),
-            "digest": {"sha256": str(item["sha256"])},
-            "size_bytes": int(item["size_bytes"]),
+            "name": item["filename"],
+            "digest": {"sha256": item["sha256"]},
+            "size_bytes": item["size_bytes"],
         }
-        for item in sorted(artifacts, key=lambda value: str(value["filename"]))
+        for item in sorted(artifacts, key=lambda value: value["filename"])
     ]
-    checksums = evidence_dir / "SHA256SUMS.txt"
-    checksums.write_text(
-        "".join(f"{item['digest']['sha256']}  {item['name']}\n" for item in subjects),
-        encoding="utf-8",
-        newline="\n",
-    )
     sbom = {
         "bomFormat": "CycloneDX",
         "specVersion": "1.6",
@@ -170,7 +284,6 @@ def _write_supply_chain_evidence(
             for item in subjects
         ],
     }
-    _dump(evidence_dir / "sbom.cdx.json", sbom)
     provenance = {
         "_type": "https://in-toto.io/Statement/v1",
         "subject": [
@@ -183,10 +296,10 @@ def _write_supply_chain_evidence(
                 "externalParameters": {"release": release},
                 "resolvedDependencies": [
                     {
-                        "uri": str(source_control.get("repository", "")),
+                        "uri": source_control["repository"],
                         "digest": {
-                            "gitCommit": str(source_control.get("commit", "")),
-                            "gitTree": str(source_control.get("tree", "")),
+                            "gitCommit": source_control["commit_sha"],
+                            "gitTree": source_control["tree_sha"],
                             "productSha256": product_digest,
                         },
                     }
@@ -194,12 +307,36 @@ def _write_supply_chain_evidence(
             },
             "runDetails": {
                 "builder": {"id": "engineering-bootstrap atomic release finalizer"},
-                "metadata": {"invocationId": str(source_control.get("tag", ""))},
+                "metadata": {"invocationId": source_control["tag"]},
                 "byproducts": [{"name": "release-toolchain", "content": toolchain}],
             },
         },
     }
-    _dump(evidence_dir / "provenance.intoto.json", provenance)
+    # Complete data and output serialization before creating any evidence file.
+    # This is artifact inventory plus source binding, not dependency SBOM closure.
+    bounded_json_value(sbom)
+    bounded_json_value(provenance)
+    prepared = {
+        "SHA256SUMS.txt": "".join(
+            f"{item['digest']['sha256']}  {item['name']}\n" for item in subjects
+        ).encode("utf-8"),
+        "sbom.cdx.json": (json.dumps(sbom, indent=2, sort_keys=True) + "\n").encode(
+            "utf-8"
+        ),
+        "provenance.intoto.json": (
+            json.dumps(provenance, indent=2, sort_keys=True) + "\n"
+        ).encode("utf-8"),
+    }
+    if sum(map(len, prepared.values())) > 16 * 1024 * 1024:
+        raise ValueError("provenance output exceeds its complete byte bound")
+    for name in prepared:
+        target = evidence_dir / name
+        reject_path_links(target)
+        if target.exists():
+            raise ValueError("provenance output already exists")
+    for name, raw in prepared.items():
+        with (evidence_dir / name).open("xb") as stream:
+            stream.write(raw)
     return {
         "checksums": "SHA256SUMS.txt",
         "sbom": "sbom.cdx.json",
@@ -1294,132 +1431,180 @@ def finalize_release(
 def verify_release_certificate(
     root: Path, *, release: str | None = None, artifact_dir: Path | None = None
 ) -> dict[str, Any]:
-    root = root.resolve()
-    release = release or authoritative_version(root)
-    errors: list[str] = []
-    revocation_path = root / f"evidence/release-revocation-{release}.json"
-    if revocation_path.is_file():
-        revocation = _json(revocation_path)
+    from .archive_io import portable_member_name
+    from .numeric_inputs import bounded_text
+
+    selected_release = None
+    try:
+        root = _certificate_root(root)
+        selected_release = _certificate_release(
+            authoritative_version(root) if release is None else release
+        )
+        release = selected_release
+
+        def refused(errors):
+            return {"valid": False, "release": release, "errors": errors}
+
+        try:
+            revocation = _certificate_object(
+                _certificate_image(
+                    root, f"evidence/release-revocation-{release}.json", 1024 * 1024
+                ),
+                1024 * 1024,
+            )
+        except FileNotFoundError:
+            revocation = {}
         if revocation.get("status") == "revoked":
-            return {
-                "valid": False,
-                "release": release,
-                "errors": [f"release {release} is explicitly revoked"],
-            }
-    certificate_path = root / "evidence" / "releases" / release / "certificate.json"
-    if not certificate_path.is_file():
+            return refused([f"release {release} is explicitly revoked"])
+        certificate_relative = f"evidence/releases/{release}/certificate.json"
+        try:
+            certificate = _certificate_object(
+                _certificate_image(root, certificate_relative, 8 * 1024 * 1024),
+                8 * 1024 * 1024,
+            )
+        except FileNotFoundError:
+            return refused(["signed release certificate is missing"])
+        if certificate.get("release") != release:
+            return refused(["certificate release mismatch"])
+        if certificate.get("status") != "self_certified":
+            return refused(["certificate status is not self_certified"])
+        signature_record = certificate.get("signature")
+        if type(signature_record) is not dict:
+            return refused(["release certificate is unsigned"])
+        signature_name = bounded_text(signature_record.get("path"), "signature filename", maximum=256, strip=False)
+        if (
+            type(signature_name) is not str
+            or len(signature_name) > 256
+            or "/" in portable_member_name(signature_name, allow_directory=False)
+        ):
+            raise ValueError("certificate signature must be a portable filename")
+        signature_relative = f"evidence/releases/{release}/{signature_name}"
+        signature_path = _certificate_evidence_path(root, release, signature_relative)
+        signature = verify_certificate_signature(
+            certificate,
+            signature_path=signature_path,
+            trust_policy_path=root / "policies/release-trust.json",
+        )
+        errors = _certificate_check_errors(signature, "signature verification")
+        if errors:
+            return refused(errors)
+        # Only authenticated certificate data may direct dependent operations.
+        product_digest = _certificate_digest(certificate.get("product_digest"))
+        harness_digest = _certificate_digest(certificate.get("harness_digest"))
+        evidence_expected = _certificate_digest(
+            certificate.get("evidence_manifest_sha256")
+        )
+        artifact_expected = _certificate_digest(
+            certificate.get("artifact_manifest_sha256")
+        )
+        evidence_path = _certificate_evidence_path(
+            root, release, certificate.get("evidence_manifest")
+        )
+        artifact_manifest_path = _certificate_evidence_path(
+            root, release, certificate.get("artifact_manifest")
+        )
+        platform_binding = certificate.get("certification_platform")
+        if (
+            type(platform_binding) is not dict
+            or type(certificate.get("source_control")) is not dict
+        ):
+            raise ValueError(
+                "certificate platform/source binding must be actual objects"
+            )
+        for label, result in [
+            (
+                "platform validation",
+                validate_certification_platform(root, platform_binding),
+            ),
+            ("version validation", validate_version_surfaces(root, asserted=release)),
+            (
+                "source validation",
+                verify_recorded_git_identity(root, certificate["source_control"]),
+            ),
+        ]:
+            errors.extend(_certificate_check_errors(result, label))
+        if errors:
+            return refused(errors)
+        current = classify_tree(root)
+        errors.extend(_certificate_check_errors(current, "product classification"))
+        if errors:
+            return refused(errors)
+        if current.get("product_digest") != product_digest:
+            errors.append("current product digest does not match certificate")
+        if current.get("harness_digest") != harness_digest:
+            errors.append("current harness digest does not match certificate")
+        errors.extend(
+            _certificate_check_errors(
+                _verify_coverage_binding(root, release, certificate), "coverage binding"
+            )
+        )
+        if errors:
+            return refused(errors)
+        evidence_raw = _certificate_image(
+            root, evidence_path.relative_to(root).as_posix(), 16 * 1024 * 1024
+        )
+        if hashlib.sha256(evidence_raw).hexdigest() != evidence_expected:
+            return refused(["certificate evidence-manifest file hash mismatch"])
+        manifest = _certificate_object(evidence_raw, 16 * 1024 * 1024)
+        del evidence_raw
+        errors.extend(
+            _certificate_check_errors(
+                verify_evidence_manifest(evidence_path.parent, manifest),
+                "evidence manifest validation",
+            )
+        )
+        artifact_raw = _certificate_image(
+            root, artifact_manifest_path.relative_to(root).as_posix(), 16 * 1024 * 1024
+        )
+        artifact_manifest = _certificate_object(artifact_raw, 16 * 1024 * 1024)
+        del artifact_raw
+        if artifact_manifest.get("manifest_sha256") != artifact_expected:
+            errors.append(
+                "recorded artifact manifest digest does not match certificate"
+            )
+        if errors:
+            return refused(errors)
+        records = certificate.get("artifacts")
+        if artifact_dir is None:
+            errors.append(
+                "artifact directory is required to verify exact release bytes"
+            )
+        else:
+            errors.extend(
+                _certificate_check_errors(
+                    verify_artifact_records(artifact_dir, records),
+                    "artifact verification",
+                )
+            )
+            if not errors:
+                artifact_binding = bind_artifact_set(
+                    artifact_dir,
+                    records,
+                    source_product_digest=product_digest,
+                    version=release,
+                    artifact_manifest=artifact_manifest,
+                )
+                errors.extend(
+                    _certificate_check_errors(artifact_binding, "artifact binding")
+                )
+                if (
+                    type(artifact_binding) is not dict
+                    or artifact_binding.get("artifact_manifest_sha256")
+                    != artifact_expected
+                ):
+                    errors.append("artifact manifest digest does not match certificate")
+        errors.extend(_certificate_ledger_errors(root))
+        return {
+            "valid": not errors,
+            "release": release,
+            "run_id": certificate.get("run_id"),
+            "product_digest": product_digest,
+            "signing_identity": signature.get("identity"),
+            "errors": errors,
+        }
+    except (OSError, ValueError, TypeError, KeyError, RecursionError):
         return {
             "valid": False,
-            "release": release,
-            "errors": ["signed release certificate is missing"],
+            "release": selected_release,
+            "errors": ["release certificate inputs are invalid or unavailable"],
         }
-    certificate = _json(certificate_path)
-    if certificate.get("release") != release:
-        errors.append("certificate release mismatch")
-    if certificate.get("status") != "self_certified":
-        errors.append("certificate status is not self_certified")
-    platform_binding = certificate.get("certification_platform", {})
-    if not isinstance(platform_binding, dict):
-        errors.append("certificate platform binding is malformed")
-    else:
-        errors.extend(validate_certification_platform(root, platform_binding)["errors"])
-    signature_name = (
-        str(certificate.get("signature", {}).get("path", ""))
-        if isinstance(certificate.get("signature"), dict)
-        else ""
-    )
-    signature = verify_certificate_signature(
-        certificate,
-        signature_path=certificate_path.parent / signature_name,
-        trust_policy_path=root / "policies/release-trust.json",
-    )
-    errors.extend(signature["errors"])
-    versions = validate_version_surfaces(root, asserted=release)
-    errors.extend(versions["errors"])
-    source = verify_recorded_git_identity(
-        root, dict(certificate.get("source_control", {}))
-    )
-    errors.extend(source["errors"])
-    current = classify_tree(root)
-    errors.extend(current["errors"])
-    if current["product_digest"] != certificate.get("product_digest"):
-        errors.append("current product digest does not match certificate")
-    if current["harness_digest"] != certificate.get("harness_digest"):
-        errors.append("current harness digest does not match certificate")
-    coverage_binding = _verify_coverage_binding(root, release, certificate)
-    errors.extend(coverage_binding["errors"])
-    evidence_relative = str(certificate.get("evidence_manifest", ""))
-    evidence_path = (root / evidence_relative).resolve(strict=False)
-    if (
-        not evidence_relative.startswith(f"evidence/releases/{release}/")
-        or not evidence_path.is_file()
-    ):
-        errors.append(
-            "certificate evidence manifest is missing or outside its release root"
-        )
-    else:
-        if _sha(evidence_path) != certificate.get("evidence_manifest_sha256"):
-            errors.append("certificate evidence-manifest file hash mismatch")
-        else:
-            manifest = _json(evidence_path)
-            evidence_check = verify_evidence_manifest(evidence_path.parent, manifest)
-            errors.extend(evidence_check["errors"])
-    artifact_manifest_relative = str(certificate.get("artifact_manifest", ""))
-    artifact_manifest_path = (root / artifact_manifest_relative).resolve(strict=False)
-    artifact_manifest: dict[str, Any] | None = None
-    if (
-        not artifact_manifest_relative.startswith(f"evidence/releases/{release}/")
-        or not artifact_manifest_path.is_file()
-    ):
-        errors.append(
-            "certificate artifact manifest is missing or outside its release root"
-        )
-    else:
-        try:
-            value = _json(artifact_manifest_path)
-        except (OSError, ValueError, json.JSONDecodeError) as error:
-            errors.append(
-                "recorded artifact manifest is unreadable: "
-                f"{type(error).__name__}: {error}"
-            )
-        else:
-            if not isinstance(value, dict):
-                errors.append("recorded artifact manifest is malformed")
-            else:
-                artifact_manifest = value
-                if artifact_manifest.get("manifest_sha256") != certificate.get(
-                    "artifact_manifest_sha256"
-                ):
-                    errors.append(
-                        "recorded artifact manifest digest does not match certificate"
-                    )
-    records = certificate.get("artifacts")
-    if artifact_dir is None:
-        errors.append("artifact directory is required to verify exact release bytes")
-    elif not isinstance(records, list):
-        errors.append("certificate artifact records are malformed")
-    else:
-        artifact_check = verify_artifact_records(artifact_dir, records)
-        errors.extend(artifact_check["errors"])
-        if artifact_manifest is not None:
-            artifact_binding = bind_artifact_set(
-                artifact_dir,
-                records,
-                source_product_digest=current["product_digest"],
-                version=release,
-                artifact_manifest=artifact_manifest,
-            )
-            errors.extend(artifact_binding["errors"])
-            if artifact_binding.get("artifact_manifest_sha256") != certificate.get(
-                "artifact_manifest_sha256"
-            ):
-                errors.append("artifact manifest digest does not match certificate")
-    errors.extend(_certificate_ledger_errors(root))
-    return {
-        "valid": not errors,
-        "release": release,
-        "run_id": certificate.get("run_id"),
-        "product_digest": current["product_digest"],
-        "signing_identity": signature.get("identity"),
-        "errors": errors,
-    }

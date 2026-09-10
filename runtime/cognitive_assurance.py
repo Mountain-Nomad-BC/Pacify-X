@@ -6,8 +6,10 @@ from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 import hashlib
 import json
+import math
 from pathlib import Path
 from typing import Callable, Iterable, Mapping, Sequence
+from .numeric_inputs import bounded_mapping, bounded_sequence, finite_number
 
 
 INJECTION_MARKERS = (
@@ -166,20 +168,45 @@ def detect_runtime_drift(
     *,
     threshold: float = 0.2,
 ) -> DriftReport:
-    if not 0 <= threshold <= 1:
-        raise ValueError("drift threshold must be between zero and one")
+    threshold = finite_number(threshold, "drift threshold", minimum=0, maximum=1)
     names = ("behavior", "knowledge", "reasoning", "prompt", "memory")
+    baseline = bounded_mapping(baseline, "baseline drift dimensions", maximum=5)
+    observed = bounded_mapping(observed, "observed drift dimensions", maximum=5)
+    if (set(baseline) | set(observed)) - set(names):
+        raise ValueError("unknown drift comparison dimension")
+    parsed = []
+    for source in (baseline, observed):
+        parsed.append(
+            {
+                name: tuple(
+                    finite_number(value, "drift measurement")
+                    for value in bounded_sequence(
+                        values, "drift measurements", maximum=10000
+                    )
+                )
+                for name, values in source.items()
+            }
+        )
     scores = {}
+    incomplete = set()
     for name in names:
-        left = tuple(map(float, baseline.get(name, ())))
-        right = tuple(map(float, observed.get(name, ())))
+        left = parsed[0].get(name, ())
+        right = parsed[1].get(name, ())
         if not left or len(left) != len(right):
             scores[name] = 1.0
+            incomplete.add(name)
             continue
-        scores[name] = round(
-            sum(abs(a - b) for a, b in zip(left, right)) / len(left), 6
+        scale = max(max(map(abs, left)), max(map(abs, right))) or 1.0
+        scores[name] = finite_number(
+            math.fsum(abs(a / scale - b / scale) for a, b in zip(left, right))
+            / len(left)
+            * scale,
+            "drift score",
+            minimum=0,
         )
-    drift = tuple(name for name in names if scores[name] > threshold)
+    drift = tuple(
+        name for name in names if name in incomplete or scores[name] > threshold
+    )
     return DriftReport(
         "within_threshold" if not drift else "drifted", drift, scores, threshold
     )
@@ -232,6 +259,11 @@ def run_golden_benchmarks(
 
 
 def cognitive_ekg(metrics: Mapping[str, float]) -> dict[str, object]:
+    metrics = bounded_mapping(metrics, "health metrics", maximum=64)
+    values = {
+        name: finite_number(value, "health measurement")
+        for name, value in metrics.items()
+    }
     thresholds = {
         "evidence_coverage": (0.8, "minimum"),
         "trusted_memory_ratio": (0.7, "minimum"),
@@ -242,7 +274,14 @@ def cognitive_ekg(metrics: Mapping[str, float]) -> dict[str, object]:
     }
     abnormalities = []
     for name, (limit, direction) in thresholds.items():
-        value = float(metrics.get(name, -1))
+        if name in values:
+            finite_number(
+                values[name],
+                name,
+                minimum=0,
+                maximum=None if name == "drift_score" else 1,
+            )
+        value = values.get(name, -1)
         if (
             value < 0
             or (direction == "minimum" and value < limit)

@@ -25,6 +25,22 @@ from .graph_registry import validate_graph_artifacts
 from .capability_assimilation import validate_capability_assimilation
 from .semantic_index import load_semantic_index, validate_semantic_index
 from .paths import declared_file_available, resolve_declared_path
+from .skill_inputs import (
+    MAX_DESCRIPTORS,
+    MAX_CATALOG_BYTES,
+    _text,
+    _sequence,
+    _file,
+    _image,
+    _relative,
+    _deadline,
+    bounded_deadline,
+    load_catalog_metadata,
+    load_metadata_object,
+)
+from .json_io import decode_json_object
+
+MAX_NAVIGATION_TOTAL_BYTES = 16 * 1024 * 1024
 
 CAPABILITY_ID = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 REQUIRED_CONTRACT_FIELDS = {
@@ -70,10 +86,10 @@ def load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def load_skill_catalog(root: Path) -> dict:
-    return tomllib.loads(
-        (root / "registry" / "skill_catalog.toml").read_text(encoding="utf-8")
-    )
+def load_skill_catalog(
+    root: Path, *, max_records: int = MAX_DESCRIPTORS, deadline: float | None = None
+) -> dict:
+    return load_catalog_metadata(root, max_records=max_records, deadline=deadline)
 
 
 def validate_registry(root: Path) -> dict:
@@ -445,11 +461,67 @@ def validate_registry(root: Path) -> dict:
     return {"valid": not errors, "active_count": len(seen), "errors": errors}
 
 
-def navigation_index(root: Path) -> list[CapabilitySummary]:
-    capability_map = load_json(root / "registry" / "capability_map.json")
+def navigation_index(
+    root: Path, *, max_records: int = MAX_DESCRIPTORS, deadline: float | None = None
+) -> list[CapabilitySummary]:
+    if type(max_records) is not int or not 1 <= max_records <= MAX_DESCRIPTORS:
+        raise ValueError("navigation record budget must be a bounded positive integer")
+    deadline = bounded_deadline(deadline)
+    capability_map = load_metadata_object(
+        root, "registry/capability_map.json", deadline=deadline
+    )
+    rows = capability_map.get("active_capabilities", [])
+    if type(rows) is not list or len(rows) > max_records:
+        raise ValueError("capability metadata exceeds startup record budget")
+    identities = set()
+    paths = []
+    for item in rows:
+        _deadline(deadline)
+        if type(item) is not dict:
+            raise ValueError("capability metadata row must be an object")
+        identity = _text(item.get("id"), "capability identity")
+        if identity in identities:
+            raise ValueError("duplicate capability identity")
+        identities.add(identity)
+        paths.append((identity, _relative(item.get("contract"))))
+    images = {}
+    total = 0
+    for _, relative in paths:
+        _deadline(deadline)
+        if relative in images:
+            continue
+        path, info = _file(root, relative)
+        total += info.st_size
+        if info.st_size > MAX_CATALOG_BYTES or total > MAX_NAVIGATION_TOTAL_BYTES:
+            raise ValueError("capability contract metadata byte budget exceeded")
+        images[relative] = (path, info)
+    contracts = {}
+    for relative, (path, info) in images.items():
+        contract = decode_json_object(
+            _image(path, info, limit=MAX_CATALOG_BYTES, deadline=deadline),
+            max_bytes=MAX_CATALOG_BYTES,
+            max_depth=16,
+            max_nodes=100000,
+        )
+        _text(contract.get("id"), "contract identity")
+        _text(contract.get("status"), "contract status", 64)
+        for field in ("provides", "consumes", "effects", "dependencies"):
+            _sequence(contract.get(field, []), field)
+        for field in ("cost", "latency", "evidence"):
+            value = contract.get(field, {})
+            if type(value) is not dict:
+                raise ValueError(f"contract {field} must be an object")
+            key = "status" if field == "evidence" else "class"
+            if key in value:
+                _text(value[key], f"{field}.{key}")
+        contracts[relative] = contract
+    for identity, relative in paths:
+        if contracts[relative]["id"] != identity:
+            raise ValueError("capability map and contract identity disagree")
     summaries: list[CapabilitySummary] = []
-    for item in capability_map.get("active_capabilities", []):
-        contract = load_json(root / item["contract"])
+    for _, relative in paths:
+        _deadline(deadline)
+        contract = contracts[relative]
         summaries.append(
             CapabilitySummary(
                 capability_id=contract["id"],
@@ -474,6 +546,7 @@ def navigation_index(root: Path) -> list[CapabilitySummary]:
                 ),
             )
         )
+    _deadline(deadline)
     return summaries
 
 

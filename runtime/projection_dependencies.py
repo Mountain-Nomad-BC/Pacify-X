@@ -11,29 +11,90 @@ import re
 from typing import Mapping
 from uuid import uuid4
 
+from .archive_io import portable_member_name, read_stream_bytes, reject_path_links
+from .bounded_walk import WalkLimits, bounded_walk
+
 
 SCHEMA_VERSION = "px.projection-dependencies/1.0"
 SHA256 = re.compile(r"^[a-f0-9]{64}$")
 GATES = frozenset({"rebuild_before_use", "block_until_rebuilt"})
 COSTS = frozenset({"cheap_synchronous", "expensive"})
+REVISION_LIMITS = WalkLimits()
+REVISION_MEMBER_BYTES = 64 * 1024 * 1024
 
 
-def revision_for_path(root: Path, relative: str) -> str:
-    target = (root.resolve() / relative).resolve()
+def revision_for_path(
+    root: Path, relative: str, *, limits: WalkLimits = REVISION_LIMITS
+) -> str:
+    """Hash one bounded source inventory; preserve existing tree byte framing."""
+    if type(limits) is not WalkLimits:
+        raise ValueError("revision limits must be validated WalkLimits")
+    for key, ceiling in (
+        ("max_files", 100_000),
+        ("max_bytes", 512 * 1024 * 1024),
+        ("max_depth", 128),
+        ("max_entries", 1_000_000),
+        ("max_directories", 100_000),
+        ("max_duration_seconds", 300),
+    ):
+        if getattr(limits, key) > ceiling:
+            raise ValueError("revision input limit exceeds supported ceiling: " + key)
+    if relative != ".":
+        portable_member_name(relative, allow_directory=False)
+    reject_path_links(root)
+    supplied = root / relative
+    reject_path_links(supplied)
+    if any("quarantine" in part.casefold() for part in supplied.parts):
+        raise ValueError("quarantine revision inputs are excluded")
+    resolved = root.resolve(strict=True)
+    target = supplied.resolve(strict=True)
     try:
-        target.relative_to(root.resolve())
+        target.relative_to(resolved)
     except ValueError as error:
         raise ValueError(f"projection path escapes repository: {relative}") from error
+
+    def acquire(path: Path, size: int, remaining: int) -> bytearray:
+        if size > min(REVISION_MEMBER_BYTES, remaining):
+            raise ValueError("projection revision byte budget exceeded")
+        reject_path_links(path)
+        if not path.resolve(strict=True).is_relative_to(resolved):
+            raise ValueError("projection revision source escapes repository")
+        with path.open("rb") as stream:
+            return read_stream_bytes(
+                stream,
+                max_bytes=min(REVISION_MEMBER_BYTES, remaining),
+                expected_size=size,
+            )
+
     if target.is_file():
-        return hashlib.sha256(target.read_bytes()).hexdigest()
+        return hashlib.sha256(
+            acquire(target, target.stat().st_size, limits.max_bytes)
+        ).hexdigest()
     if not target.is_dir():
         raise ValueError(f"projection dependency does not exist: {relative}")
+
+    def excluded(name: str) -> bool:
+        parts = name.casefold().split("/")
+        directories = parts if (target / name).is_dir() else parts[:-1]
+        return any(
+            part in {"__pycache__", ".pytest_cache", ".ruff_cache"}
+            or "quarantine" in part
+            for part in directories
+        )
+
+    tree = bounded_walk(target, limits=limits, exclude=excluded)
+    for entry in tree.files:
+        if entry.size > REVISION_MEMBER_BYTES:
+            raise ValueError("projection revision member byte budget exceeded")
+        portable_member_name(entry.relative, allow_directory=False)
+        reject_path_links(entry.path)
     digest = hashlib.sha256(b"px.projection-tree/1.0\0")
-    for path in sorted(item for item in target.rglob("*") if item.is_file()):
-        if {"__pycache__", ".pytest_cache", ".ruff_cache"} & set(path.parts):
-            continue
+    remaining = limits.max_bytes
+    for entry in sorted(tree.files, key=lambda entry: entry.path):
+        path = entry.path
         name = path.relative_to(target).as_posix().encode("utf-8")
-        data = path.read_bytes()
+        data = acquire(path, entry.size, remaining)
+        remaining -= len(data)
         digest.update(len(name).to_bytes(8, "big"))
         digest.update(name)
         digest.update(len(data).to_bytes(8, "big"))
@@ -160,7 +221,9 @@ def reconcile_projection_dependencies(root: Path) -> dict[str, object]:
     resolved = root.resolve(strict=True)
     path = resolved / "registry/projection_dependencies.json"
     payload = json.loads(path.read_text(encoding="utf-8"))
-    if not isinstance(payload, Mapping) or not isinstance(payload.get("projections"), list):
+    if not isinstance(payload, Mapping) or not isinstance(
+        payload.get("projections"), list
+    ):
         raise ValueError("projection dependency registry is invalid")
     projections = []
     for row in payload["projections"]:
@@ -177,7 +240,12 @@ def reconcile_projection_dependencies(root: Path) -> dict[str, object]:
                 **dict(row),
                 "output_revision": revision_for_path(resolved, output),
                 "dependencies": [
-                    {**dict(item), "revision": revision_for_path(resolved, str(item.get("path") or ""))}
+                    {
+                        **dict(item),
+                        "revision": revision_for_path(
+                            resolved, str(item.get("path") or "")
+                        ),
+                    }
                     for item in dependencies
                     if isinstance(item, Mapping)
                 ],
@@ -222,7 +290,11 @@ def invalidate_projections(
     root: Path, registry: Mapping[str, object] | None = None
 ) -> dict[str, object]:
     resolved = root.resolve()
-    payload = dict(registry) if registry is not None else load_projection_dependencies(resolved)
+    payload = (
+        dict(registry)
+        if registry is not None
+        else load_projection_dependencies(resolved)
+    )
     _validate(resolved, payload)
     rows = {str(row["output"]): row for row in payload["projections"]}
     stale: dict[str, dict[str, object]] = {}
@@ -233,7 +305,10 @@ def invalidate_projections(
             current = revision_for_path(resolved, path)
             if current != dependency["revision"]:
                 changed.append(path)
-        if not (resolved / output).is_file() or revision_for_path(resolved, output) != row["output_revision"]:
+        if (
+            not (resolved / output).is_file()
+            or revision_for_path(resolved, output) != row["output_revision"]
+        ):
             changed.append(output)
         if changed:
             stale[output] = {
@@ -340,14 +415,24 @@ def validate_graph_authority_manifest(
         builder = str(row.get("builder", ""))
         if not (resolved / builder).is_file():
             errors.append(f"{graph_id}: builder is missing")
-        if not row.get("consumers") or not row.get("invalidation_rule") or not row.get("rebuild_gate"):
-            errors.append(f"{graph_id}: consumer/invalidation/gate contract is incomplete")
+        if (
+            not row.get("consumers")
+            or not row.get("invalidation_rule")
+            or not row.get("rebuild_gate")
+        ):
+            errors.append(
+                f"{graph_id}: consumer/invalidation/gate contract is incomplete"
+            )
         revisions = row.get("source_revisions")
-        if not isinstance(revisions, list) or not revisions or any(
-            not isinstance(item, Mapping)
-            or not str(item.get("path", ""))
-            or not SHA256.fullmatch(str(item.get("revision", "")))
-            for item in revisions
+        if (
+            not isinstance(revisions, list)
+            or not revisions
+            or any(
+                not isinstance(item, Mapping)
+                or not str(item.get("path", ""))
+                or not SHA256.fullmatch(str(item.get("revision", "")))
+                for item in revisions
+            )
         ):
             errors.append(f"{graph_id}: source revisions are incomplete")
         expected = str(row.get("graph_revision", ""))
@@ -383,14 +468,23 @@ def reconcile_graph_authority_manifest(root: Path) -> dict[str, object]:
         raise ValueError("graph authority manifest is invalid")
     graphs = []
     for row in payload["graphs"]:
-        if not isinstance(row, Mapping) or not isinstance(row.get("source_revisions"), list):
+        if not isinstance(row, Mapping) or not isinstance(
+            row.get("source_revisions"), list
+        ):
             raise ValueError("graph authority row is invalid")
         graphs.append(
             {
                 **dict(row),
-                "graph_revision": revision_for_path(resolved, str(row.get("path") or "")),
+                "graph_revision": revision_for_path(
+                    resolved, str(row.get("path") or "")
+                ),
                 "source_revisions": [
-                    {**dict(item), "revision": revision_for_path(resolved, str(item.get("path") or ""))}
+                    {
+                        **dict(item),
+                        "revision": revision_for_path(
+                            resolved, str(item.get("path") or "")
+                        ),
+                    }
                     for item in row["source_revisions"]
                     if isinstance(item, Mapping)
                 ],
@@ -399,8 +493,12 @@ def reconcile_graph_authority_manifest(root: Path) -> dict[str, object]:
     current = {**dict(payload), "graphs": graphs}
     report = validate_graph_authority_manifest(resolved, current)
     if not report["valid"]:
-        raise ValueError("reconciled graph authority is invalid: " + "; ".join(report["errors"]))
+        raise ValueError(
+            "reconciled graph authority is invalid: " + "; ".join(report["errors"])
+        )
     prepared = path.with_name(f".{path.name}.{uuid4().hex}.prepared")
-    prepared.write_text(json.dumps(current, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    prepared.write_text(
+        json.dumps(current, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
     os.replace(prepared, path)
     return current

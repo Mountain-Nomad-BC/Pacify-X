@@ -7,6 +7,7 @@ import shutil
 
 import pytest
 import scripts.reconcile_cohesion_cards as reconciliation
+from runtime.wal_transaction import WalConflictError
 
 from scripts.reconcile_cohesion_cards import (
     ALL_CARD_IDS,
@@ -23,8 +24,108 @@ OBSERVED_HEAD = "a" * 40
 AUTOMATION_STATE = Path("evidence/release/final100-automation-state.json")
 
 
+@pytest.fixture(autouse=True)
+def isolated_external_evidence(tmp_path, monkeypatch):
+    external = tmp_path / 'external-orchestration.md'
+    external.write_text('\n'.join(sorted(SOURCE_CARD_IDS)) + '\n', encoding='utf-8')
+    monkeypatch.setattr(reconciliation, 'EXTERNAL_ORCHESTRATION', external)
+
+
 def _reconcile(root: Path, **kwargs: object) -> dict[str, object]:
     return reconcile(root, observed_head=OBSERVED_HEAD, **kwargs)
+
+
+@pytest.mark.parametrize('dependency', ['target', 'external', 'declared_absence'])
+def test_captured_generation_rejects_changes_before_acceptance(tmp_path, dependency):
+    root = _fixture(tmp_path)
+    missing = root / 'new-declared.py'
+    if dependency == 'declared_absence':
+        card_path = root / CARD_DIRECTORY / 'PX-CORE-001.json'
+        card = json.loads(card_path.read_bytes())
+        card['files'].append('new-declared.py')
+        _json(card_path, card)
+        _manifest(root / CARD_DIRECTORY)
+    target = root / '.engineering-bootstrap/project-management/state.json'
+    before = target.read_bytes()
+    def race(point):
+        if point != 'intent:before_acceptance':
+            return
+        if dependency == 'target':
+            target.write_bytes(before + b' ')
+        elif dependency == 'external':
+            external = reconciliation.EXTERNAL_ORCHESTRATION
+            external.write_bytes(external.read_bytes() + b'changed')
+        else:
+            missing.write_bytes(b'appeared')
+    with pytest.raises((ReconciliationError, WalConflictError)):
+        _reconcile(root, apply=True, at='2026-09-06T01:00:00Z', fault_injector=race)
+    assert target.read_bytes() == before + (b' ' if dependency == 'target' else b'')
+    assert reconciliation._INPUTS.get() is None
+
+
+def test_new_pending_transaction_invalidates_unchanged_plan(tmp_path, monkeypatch):
+    root = _fixture(tmp_path)
+    original = reconciliation._project_management_state
+    def pending(*args, **kwargs):
+        result = original(*args, **kwargs)
+        (root / reconciliation.RECOVERY_JOURNAL / 'transactions/new-pending').mkdir(parents=True)
+        return result
+    monkeypatch.setattr(reconciliation, '_project_management_state', pending)
+    with pytest.raises(ReconciliationError, match='WAL requires recovery after'):
+        _reconcile(root)
+    assert reconciliation._INPUTS.get() is None
+
+
+def test_postpublication_failure_preserves_committed_outcome(tmp_path, monkeypatch):
+    root = _fixture(tmp_path)
+    original = reconciliation._parse_checksums
+    calls = 0
+    cause = RuntimeError('readback failed')
+    def fail_readback(directory):
+        nonlocal calls
+        calls += 1
+        if calls == 2:
+            raise cause
+        return original(directory)
+    monkeypatch.setattr(reconciliation, '_parse_checksums', fail_readback)
+    with pytest.raises(RuntimeError) as caught:
+        _reconcile(root, apply=True, at='2026-09-06T01:00:00Z')
+    assert caught.value is cause
+    assert cause.reconciliation_outcome['transaction']['state'] == 'committed'
+    assert reconciliation._INPUTS.get() is None
+
+
+def test_implicit_head_change_invalidates_plan(tmp_path, monkeypatch):
+    root = _fixture(tmp_path)
+    heads = iter(['a' * 40, 'b' * 40])
+    monkeypatch.setattr(reconciliation, '_current_head', lambda root: next(heads))
+    with pytest.raises(ReconciliationError, match='Git HEAD changed'):
+        reconcile(root)
+    assert reconciliation._INPUTS.get() is None
+
+
+def test_closed_dry_run_is_byte_equal_and_ledger_presence_is_bound(tmp_path, monkeypatch):
+    root = _fixture(tmp_path)
+    _reconcile(root, apply=True, at='2026-09-06T01:00:00Z')
+    proof = _installed_proof(root)
+    def tree():
+        return {path.relative_to(root).as_posix(): path.read_bytes()
+                for path in root.rglob('*') if path.is_file()}
+    before = tree()
+    _reconcile(root, target='closed', installed_proof=proof, automation_state=AUTOMATION_STATE,
+               at='2026-09-06T02:00:00Z')
+    assert tree() == before
+    ledger = root / '.engineering-bootstrap/resource-lifecycle/ledger.json'
+    original = reconciliation._project_management_state
+    def appeared(*args, **kwargs):
+        result = original(*args, **kwargs)
+        _json(ledger, {'schema_version': '1.0', 'resources': []})
+        return result
+    monkeypatch.setattr(reconciliation, '_project_management_state', appeared)
+    with pytest.raises(ReconciliationError, match='input'):
+        _reconcile(root, target='closed', installed_proof=proof, automation_state=AUTOMATION_STATE,
+                   at='2026-09-06T02:00:00Z')
+    assert reconciliation._INPUTS.get() is None
 
 
 def _json(path: Path, value: object) -> None:
@@ -51,6 +152,11 @@ def _fixture(tmp_path: Path) -> Path:
         path = directory / f"{card_id}.json"
         card = json.loads(path.read_text(encoding="utf-8"))
         card["status"] = "planned"
+        card['live_evidence'] = [
+            str(reconciliation.EXTERNAL_ORCHESTRATION) + '#' + reference.partition('#')[2]
+            if Path(reference.partition('#')[0]).is_absolute() else reference
+            for reference in card['live_evidence']
+        ]
         card["completion_evidence"] = []
         card.pop("status_history", None)
         card.pop("closure_reconciliation", None)
@@ -589,29 +695,18 @@ def test_pending_wal_blocks_check_without_mutation_then_apply_recovers(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     root = _fixture(tmp_path)
-    original_recover = reconciliation.JsonWal.recover
-    recover_calls = 0
-
-    def fail_second_recovery(wal: reconciliation.JsonWal) -> dict[str, object]:
-        nonlocal recover_calls
-        recover_calls += 1
-        if recover_calls == 2:
-            raise OSError("simulated recovery interruption")
-        return original_recover(wal)
-
     def fail_mid_publish(boundary: str) -> None:
         if boundary == "target:5:published":
             raise OSError("simulated projection interruption")
 
-    monkeypatch.setattr(reconciliation.JsonWal, "recover", fail_second_recovery)
-    with pytest.raises(OSError, match="recovery interruption"):
+    with pytest.raises(OSError, match="projection interruption") as caught:
         _reconcile(
             root,
             apply=True,
             at="2026-09-06T01:00:00Z",
             fault_injector=fail_mid_publish,
         )
-    monkeypatch.setattr(reconciliation.JsonWal, "recover", original_recover)
+    assert caught.value.wal_outcome['publication'] == 'may_have_occurred'
     directory = root / CARD_DIRECTORY
     mixed_before_check = {
         path.name: path.read_bytes() for path in directory.iterdir() if path.is_file()

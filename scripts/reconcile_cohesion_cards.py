@@ -9,13 +9,16 @@ installed-operational summary.
 from __future__ import annotations
 
 import argparse
+from contextvars import ContextVar
 from datetime import datetime, timezone
+from functools import wraps
 import hashlib
 import json
 from pathlib import Path
 import re
 import subprocess
 import sys
+import time
 from typing import Any, Callable, Iterable, Mapping
 
 
@@ -29,6 +32,9 @@ from runtime.wal_transaction import (  # noqa: E402
     JsonWal,
     TextArtifact,
 )
+from runtime.archive_io import reject_path_links  # noqa: E402
+from runtime.input_files import read_file_image  # noqa: E402
+from runtime.json_io import decode_json_object  # noqa: E402
 
 CARD_DIRECTORY = Path(
     ".engineering-bootstrap/punch-cards/cohesion-closure-20260904"
@@ -160,10 +166,108 @@ class ReconciliationError(ValueError):
     """The card denominator or its evidence is not safe to reconcile."""
 
 
+_INPUTS = ContextVar('cohesion_inputs', default=None)
+MAX_INPUT_BYTES = 256 * 1024 * 1024
+MAX_IMAGE_BYTES = 64 * 1024 * 1024
+MAX_INPUT_FILES = 4096
+
+
+class _CapturedInputs:
+    """One raw image per parsed, hashed, sized or compared input."""
+
+    def __init__(self, root):
+        self.root = root.resolve(strict=True)
+        self.images = {}
+        self.total = 0
+        self.deadline = time.monotonic() + 60
+        self.recovery = None
+        self.transaction = None
+        self.frozen = False
+        self.head = None
+
+    def acquire(self, path, limit):
+        reject_path_links(path)
+        path = path.resolve(strict=False)
+        if not path.is_relative_to(self.root) and path != EXTERNAL_ORCHESTRATION.resolve():
+            raise ReconciliationError('input escapes project and external evidence allowlist')
+        try:
+            info = path.stat()
+        except FileNotFoundError:
+            return None
+        try:
+            raw = bytes(read_file_image(path, info, limit=min(limit, MAX_IMAGE_BYTES), deadline=self.deadline))
+        except (OSError, ValueError) as error:
+            raise ReconciliationError(f'input acquisition failed: {path}: {error}') from error
+        after = path.stat()
+        if (info.st_dev, info.st_ino, info.st_size, info.st_mtime_ns) != (
+                after.st_dev, after.st_ino, after.st_size, after.st_mtime_ns):
+            raise ReconciliationError(f'input changed during acquisition: {path}')
+        return raw
+
+    def read(self, path, *, optional=False):
+        reject_path_links(path)
+        path = path.resolve(strict=False)
+        if path not in self.images:
+            if self.frozen:
+                raise ReconciliationError('input denominator expanded after planning')
+            if len(self.images) >= MAX_INPUT_FILES:
+                raise ReconciliationError('input file count exceeded')
+            raw = self.acquire(path, MAX_INPUT_BYTES - self.total)
+            self.images[path] = raw
+            self.total += len(raw) if raw is not None else 0
+        raw = self.images[path]
+        if raw is None and not optional:
+            raise ReconciliationError(f'input is absent: {path}')
+        return raw
+
+    def revalidate(self):
+        self.frozen = True
+        for path, expected in self.images.items():
+            current = self.acquire(path, len(expected) if expected is not None else 0)
+            if current != expected:
+                raise ReconciliationError(f'validated input changed: {path}')
+        if self.head is not None and _current_head(self.root) != self.head:
+            raise ReconciliationError('Git HEAD changed after planning')
+
+    def expectations(self, paths):
+        return {path.relative_to(self.root).as_posix():
+                hashlib.sha256(self.images[path]).hexdigest() if self.images[path] is not None else None
+                for path in paths}
+
+
+def _capture_inputs(function):
+    @wraps(function)
+    def captured(root, *args, **kwargs):
+        inputs = _CapturedInputs(root)
+        token = _INPUTS.set(inputs)
+        try:
+            return function(root, *args, **kwargs)
+        except BaseException as error:
+            try:
+                error.reconciliation_outcome = {
+                    'recovery': inputs.recovery,
+                    'transaction': inputs.transaction or getattr(error, 'wal_outcome', None),
+                }
+            except BaseException:
+                pass
+            raise
+        finally:
+            _INPUTS.reset(token)
+    return captured
+
+
+def _bytes(path):
+    inputs = _INPUTS.get()
+    if inputs is not None:
+        return inputs.read(path)
+    # Standalone helpers retain the same bounded parser/hash acquisition.
+    return _CapturedInputs(path.parent).read(path)
+
+
 def _load_json(path: Path) -> dict[str, Any]:
     try:
-        value = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as error:
+        value = decode_json_object(_bytes(path), max_bytes=MAX_IMAGE_BYTES)
+    except (OSError, ValueError) as error:
         raise ReconciliationError(f"unreadable JSON: {path}: {error}") from error
     if not isinstance(value, dict):
         raise ReconciliationError(f"JSON root must be an object: {path}")
@@ -171,7 +275,7 @@ def _load_json(path: Path) -> dict[str, Any]:
 
 
 def _sha256(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    return hashlib.sha256(_bytes(path)).hexdigest()
 
 
 def _object_sha256(value: object) -> str:
@@ -191,12 +295,13 @@ def _hash_record(path: Path, *, display: str, **extra: object) -> dict[str, obje
     return {
         "path": display,
         "sha256": _sha256(path),
-        "size": path.stat().st_size,
+        "size": len(_bytes(path)),
         **extra,
     }
 
 
 def _inside(root: Path, relative: Path) -> Path:
+    reject_path_links(root / relative)
     target = (root / relative).resolve()
     try:
         target.relative_to(root)
@@ -216,7 +321,7 @@ def _nonempty_strings(value: object) -> bool:
 def _parse_checksums(directory: Path) -> dict[str, str]:
     path = directory / "SHA256SUMS"
     try:
-        lines = path.read_text(encoding="utf-8").splitlines()
+        lines = _bytes(path).decode("utf-8").splitlines()
     except OSError as error:
         raise ReconciliationError(f"unreadable checksum manifest: {error}") from error
     records: dict[str, str] = {}
@@ -584,7 +689,7 @@ def _validate_card_evidence(
             evidence_kind="card_live_evidence",
         )
         if path == EXTERNAL_ORCHESTRATION.resolve():
-            if anchor != card_id or card_id not in path.read_text(encoding="utf-8"):
+            if anchor != card_id or card_id not in _bytes(path).decode("utf-8"):
                 raise ReconciliationError(
                     f"{card_id}: external orchestration anchor is absent"
                 )
@@ -644,7 +749,9 @@ def _validate_card_evidence(
         if relative.is_absolute():
             raise ReconciliationError(f"{card_id}: declared file must be project-relative")
         path = _inside(root, relative)
-        if path.exists():
+        captured = _INPUTS.get()
+        exists = captured.read(path, optional=True) is not None if captured is not None else path.exists()
+        if exists:
             declared_records.append(
                 _hash_record(
                     path,
@@ -704,12 +811,12 @@ def _verified_artifact(
     path = _inside(root, Path(raw_path))
     if not path.is_file() or path.is_symlink() or _sha256(path) != expected_sha:
         raise ReconciliationError(f"{label} bytes do not match the retained hash")
-    if require_size and value.get("size") != path.stat().st_size:
+    if require_size and value.get("size") != len(_bytes(path)):
         raise ReconciliationError(f"{label}.size does not match the retained bytes")
     return {
         "path": Path(raw_path).as_posix(),
         "sha256": expected_sha,
-        "size": path.stat().st_size,
+        "size": len(_bytes(path)),
     }
 
 
@@ -810,7 +917,7 @@ def _validate_installed_proof(root: Path, relative: Path) -> dict[str, object]:
     return {
         "path": relative.as_posix(),
         "sha256": _sha256(path),
-        "size": path.stat().st_size,
+        "size": len(_bytes(path)),
         "schema_version": proof["schema_version"],
         "campaign_id": proof["campaign_id"],
         "claim_id": claim_id,
@@ -1095,9 +1202,9 @@ def _validate_close_control_plane(
 
 
 def _resource_status(ledger_path: Path) -> dict[str, object]:
-    from runtime.resource_lifecycle import resource_status
-
-    return resource_status(ledger_path)
+    from runtime.resource_lifecycle import resource_status_from_image
+    inputs = _INPUTS.get() or _CapturedInputs(ledger_path.parent)
+    return resource_status_from_image(inputs.read(ledger_path, optional=True))
 
 
 def _advance_card(
@@ -1357,6 +1464,7 @@ def _validate_transaction_set(
         raise ReconciliationError("WAL checksum projection does not bind the staged set")
 
 
+@_capture_inputs
 def reconcile(
     root: Path,
     *,
@@ -1374,12 +1482,14 @@ def reconcile(
     directory = _inside(root, CARD_DIRECTORY)
     if not directory.is_dir():
         raise ReconciliationError(f"card directory is absent: {CARD_DIRECTORY}")
+    inputs = _INPUTS.get()
+    def validate_transition(transitions):
+        _validate_transaction_set(root, transitions)
+        inputs.revalidate()
     wal = JsonWal(
         root / RECOVERY_JOURNAL,
         root,
-        precommit_validator=lambda transitions: _validate_transaction_set(
-            root, transitions
-        ),
+        precommit_validator=validate_transition,
     )
     if apply:
         wal_status = wal.recover()
@@ -1389,6 +1499,7 @@ def reconcile(
             raise ReconciliationError(
                 "cohesion WAL requires recovery; rerun with --apply to recover before reconciliation"
             )
+    inputs.recovery = wal_status
     _parse_checksums(directory)
     cards = {
         card_id: _load_json(directory / f"{card_id}.json")
@@ -1469,6 +1580,8 @@ def reconcile(
     state_path = root / ".engineering-bootstrap/project-management/state.json"
     state = _load_json(state_path)
     head = observed_head or _current_head(root)
+    if observed_head is None:
+        inputs.head = head
     if not re.fullmatch(r"[0-9a-f]{40}", head):
         raise ReconciliationError("observed HEAD must be a lowercase 40-character Git hash")
     projected_state = _project_management_state(
@@ -1485,10 +1598,10 @@ def reconcile(
     outputs["SHA256SUMS"] = _manifest_bytes(outputs)
     changed = sorted(
         name for name, content in outputs.items()
-        if (directory / name).read_bytes() != content
+        if _bytes(directory / name) != content
     )
     state_bytes = _json_bytes(projected_state)
-    state_changed = state_path.read_bytes() != state_bytes
+    state_changed = _bytes(state_path) != state_bytes
     changed_source_cards = sorted(
         card_id for card_id in SOURCE_CARD_IDS if f"{card_id}.json" in changed
     )
@@ -1511,6 +1624,10 @@ def reconcile(
         "applied": apply,
         "wal": wal_status,
     }
+    inputs.revalidate()
+    final_inspection = wal.inspect()
+    if final_inspection['requires_recovery']:
+        raise ReconciliationError('WAL requires recovery after reconciliation planning')
     if apply and (changed or state_changed):
         artifacts = (
             *(
@@ -1534,12 +1651,19 @@ def reconcile(
             ),
             JsonTextArtifact("state", state_path, state_bytes.decode("utf-8")),
         )
-        try:
-            transaction = wal.commit(artifacts, fault_injector=fault_injector)
-        except BaseException:
-            wal.recover()
-            raise
+        targets = {artifact.path.resolve() for artifact in artifacts}
+        dependencies = {path for path in inputs.images if path.is_relative_to(root)} - targets
+        transaction = wal.commit(artifacts, fault_injector=fault_injector,
+                                 expected_before=inputs.expectations(targets),
+                                 expected_inputs=inputs.expectations(dependencies))
+        inputs.transaction = transaction
         report["transaction"] = transaction
+        # Verify the published images using a new capture, never the before-image cache.
+        published = _CapturedInputs(root)
+        _INPUTS.set(published)
+        for artifact in artifacts:
+            if _bytes(artifact.path) != artifact.value.encode('utf-8'):
+                raise ReconciliationError('published projection differs from intended image')
         _parse_checksums(directory)
         applied_cards = {
             card_id: _load_json(directory / f"{card_id}.json")
@@ -1549,6 +1673,7 @@ def reconcile(
         applied_state = _load_json(state_path)
         if applied_state != projected_state:
             raise ReconciliationError("applied project-management state drifted")
+        published.revalidate()
     return report
 
 

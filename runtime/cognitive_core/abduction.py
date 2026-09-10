@@ -1,147 +1,183 @@
 """Bounded abductive portfolio generation for diagnostics and explanation search."""
 
 from __future__ import annotations
-
 from itertools import combinations
+from heapq import nsmallest
 import math
 from collections.abc import Mapping
 from typing import Any
-
 from .common import ensure_probability, stable_hash
+from ..numeric_inputs import (
+    analysis_payload,
+    bounded_integer,
+    bounded_mapping,
+    bounded_sequence,
+    bounded_text,
+    bounded_json_value,
+    finite_number,
+)
+
+MAX_FRONTIER = 50000
+MAX_FRONTIER_WORK = 5000000
+
+
+def _names(value, name, maximum=128):
+    values = tuple(
+        bounded_text(item, name)
+        for item in bounded_sequence(value, name, maximum=maximum)
+    )
+    if len(set(values)) != len(values):
+        raise ValueError(f"{name} must be unique")
+    return values
 
 
 def rank_explanations(payload: Mapping[str, Any]) -> dict[str, Any]:
-    observations = tuple(str(item).strip() for item in payload.get("observations", ()))
-    if not observations or any(not item for item in observations):
+    payload = analysis_payload(payload)
+    observations = _names(payload.get("observations", []), "observations")
+    if not observations:
         raise ValueError("observations are required and must be non-empty")
-    if len(observations) != len(set(observations)):
-        raise ValueError("observations must be unique")
     observation_set = set(observations)
-    hypotheses = tuple(
-        item for item in payload.get("hypotheses", ()) if isinstance(item, Mapping)
+    hypotheses = bounded_sequence(
+        payload.get("hypotheses", []), "hypotheses", maximum=24, minimum=1
     )
-    if not hypotheses:
-        raise ValueError("hypotheses are required")
-    if len(hypotheses) > 24:
-        raise ValueError("abductive enumeration is bounded to 24 hypotheses")
-    ids = [str(item.get("id", "")).strip() for item in hypotheses]
-    if any(not value for value in ids) or len(ids) != len(set(ids)):
-        raise ValueError("hypothesis IDs must be unique and non-empty")
-    weights_raw = payload.get("observation_weights", {})
-    if not isinstance(weights_raw, Mapping):
-        raise ValueError("observation_weights must be an object")
-    unknown_weights = sorted(set(map(str, weights_raw)) - observation_set)
-    if unknown_weights:
-        raise ValueError(f"weights reference unknown observations: {unknown_weights}")
-    weights = {
-        observation: float(weights_raw.get(observation, 1.0))
-        for observation in observations
-    }
-    if any(not math.isfinite(value) or value < 0 for value in weights.values()):
-        raise ValueError("observation weights must be finite and nonnegative")
-    hypothesis_penalty = float(payload.get("hypothesis_penalty", 0.08))
-    prediction_penalty_rate = float(payload.get("unobserved_prediction_penalty", 0.03))
-    cost_scale = float(payload.get("cost_scale", 1.0))
+    max_size = bounded_integer(
+        payload.get("max_combination_size", 4), "max_combination_size", maximum=24
+    )
+    max_size = min(max_size, len(hypotheses))
+    max_candidates = bounded_integer(
+        payload.get("max_candidates", 20), "max_candidates", maximum=200
+    )
+    frontier = sum(math.comb(len(hypotheses), size) for size in range(1, max_size + 1))
+    if frontier > MAX_FRONTIER:
+        raise ValueError("abductive enumeration exceeds its complete frontier budget")
+    weights_raw = bounded_mapping(
+        payload.get("observation_weights", {}), "observation_weights", maximum=128
+    )
+    weights = {}
+    for key, value in weights_raw.items():
+        key = bounded_text(key, "observation weight identity")
+        if key in weights or key not in observation_set:
+            raise ValueError("observation weights must have unique known identities")
+        weights[key] = finite_number(value, "observation weight", minimum=0)
+    weights = {name: weights.get(name, 1.0) for name in observations}
+    scale = max(weights.values()) or 1.0
+    weights = {name: value / scale for name, value in weights.items()}
+    total_weight = math.fsum(weights.values()) or 1.0
+    hypothesis_penalty = finite_number(
+        payload.get("hypothesis_penalty", 0.08), "hypothesis_penalty", minimum=0
+    )
+    prediction_penalty_rate = finite_number(
+        payload.get("unobserved_prediction_penalty", 0.03),
+        "unobserved_prediction_penalty",
+        minimum=0,
+    )
+    cost_scale = finite_number(payload.get("cost_scale", 1.0), "cost_scale", minimum=0)
+    if cost_scale == 0:
+        raise ValueError("cost_scale must be positive")
+    by_id = {}
+    for raw in hypotheses:
+        item = bounded_mapping(raw, "hypothesis", maximum=32)
+        identity = bounded_text(item.get("id"), "hypothesis identity")
+        if identity in by_id:
+            raise ValueError("hypothesis IDs must be unique and non-empty")
+        prior = ensure_probability(item.get("prior", 0.5), f"{identity} prior")
+        cost = finite_number(
+            item.get("complexity_cost", 0.0), "complexity cost", minimum=0
+        ) + finite_number(item.get("test_cost", 0.0), "test cost", minimum=0)
+        by_id[identity] = {
+            "requires": set(
+                _names(item.get("requires", []), "required hypotheses", 24)
+            ),
+            "conflicts": set(
+                _names(item.get("conflicts", []), "conflicting hypotheses", 24)
+            ),
+            "explains": set(_names(item.get("explains", []), "explained observations")),
+            "predicts": set(_names(item.get("predicts", []), "predicted observations")),
+            "log_prior": math.log(max(prior, 1e-12)),
+            "cost": finite_number(cost, "combined hypothesis cost", minimum=0),
+        }
+    ids = list(by_id)
+    for item in by_id.values():
+        if (item["requires"] | item["conflicts"]) - set(ids):
+            raise ValueError("hypothesis dependencies must reference known identities")
+    max_members = max(
+        sum(len(item[key]) for key in ("requires", "conflicts", "explains", "predicts"))
+        for item in by_id.values()
+    )
     if (
-        any(
-            not math.isfinite(value) or value < 0
-            for value in (hypothesis_penalty, prediction_penalty_rate)
-        )
-        or not math.isfinite(cost_scale)
-        or cost_scale <= 0
+        frontier * (1 + len(observations) + max_size * (1 + max_members))
+        > MAX_FRONTIER_WORK
     ):
-        raise ValueError(
-            "penalties must be finite and nonnegative; cost_scale must be positive"
-        )
-    max_size = max(1, min(int(payload.get("max_combination_size", 4)), len(hypotheses)))
-    max_candidates = max(1, min(int(payload.get("max_candidates", 20)), 200))
-    by_id = {str(item["id"]): item for item in hypotheses}
-    candidates: list[dict[str, Any]] = []
-    total_weight = sum(weights.values()) or 1.0
+        raise ValueError("abductive frontier exceeds its complete work budget")
+    valid_candidates = 0
 
-    for size in range(1, max_size + 1):
-        for selected_tuple in combinations(ids, size):
-            selected = set(selected_tuple)
-            invalid_reasons: list[str] = []
-            explained: set[str] = set()
-            predicted_unobserved: set[str] = set()
-            log_prior = 0.0
-            cost = 0.0
-            for hypothesis_id in selected_tuple:
-                item = by_id[hypothesis_id]
-                requires = set(map(str, item.get("requires", ())))
-                conflicts = set(map(str, item.get("conflicts", ())))
-                missing = requires - selected
-                conflict = conflicts & selected
-                if missing:
-                    invalid_reasons.append(
-                        f"{hypothesis_id} missing required hypotheses {sorted(missing)}"
-                    )
-                if conflict:
-                    invalid_reasons.append(
-                        f"{hypothesis_id} conflicts with {sorted(conflict)}"
-                    )
-                explains = set(map(str, item.get("explains", ())))
-                predicts = set(map(str, item.get("predicts", ())))
-                explained.update(explains & observation_set)
-                predicted_unobserved.update(predicts - observation_set)
-                prior = ensure_probability(
-                    float(item.get("prior", 0.5)), f"{hypothesis_id} prior"
-                )
-                log_prior += math.log(max(prior, 1e-12))
-                complexity_cost = float(item.get("complexity_cost", 0.0))
-                test_cost = float(item.get("test_cost", 0.0))
+    def candidates():
+        nonlocal valid_candidates
+        for size in range(1, max_size + 1):
+            for selected_tuple in combinations(ids, size):
+                selected = set(selected_tuple)
+                rows = [by_id[identity] for identity in selected_tuple]
                 if any(
-                    not math.isfinite(value) or value < 0
-                    for value in (complexity_cost, test_cost)
+                    item["requires"] - selected or item["conflicts"] & selected
+                    for item in rows
                 ):
-                    raise ValueError(
-                        f"{hypothesis_id}: costs must be finite and nonnegative"
-                    )
-                cost += complexity_cost + test_cost
-            if invalid_reasons:
-                continue
-            covered_weight = sum(weights[item] for item in explained)
-            coverage = covered_weight / total_weight
-            unexplained = sorted(observation_set - explained)
-            parsimony_penalty = hypothesis_penalty * max(0, size - 1)
-            prediction_penalty = prediction_penalty_rate * len(predicted_unobserved)
-            score = (
-                coverage
-                + 0.04 * log_prior
-                - parsimony_penalty
-                - prediction_penalty
-                - cost / cost_scale
-            )
-            candidates.append(
-                {
+                    continue
+                explained = (
+                    set().union(*(item["explains"] for item in rows)) & observation_set
+                )
+                predicted = (
+                    set().union(*(item["predicts"] for item in rows)) - observation_set
+                )
+                log_prior = sum(item["log_prior"] for item in rows)
+                cost = finite_number(
+                    sum(item["cost"] for item in rows),
+                    "combined explanation cost",
+                    minimum=0,
+                )
+                coverage = (
+                    math.fsum(weights[item] for item in sorted(explained))
+                    / total_weight
+                )
+                score = finite_number(
+                    coverage
+                    + 0.04 * log_prior
+                    - hypothesis_penalty * max(0, size - 1)
+                    - prediction_penalty_rate * len(predicted)
+                    - cost / cost_scale,
+                    "explanation score",
+                )
+                valid_candidates += 1
+                yield {
                     "hypotheses": list(selected_tuple),
                     "score": score,
                     "coverage": coverage,
                     "explained": sorted(explained),
-                    "unexplained": unexplained,
-                    "predicted_but_unobserved": sorted(predicted_unobserved),
+                    "unexplained": sorted(observation_set - explained),
+                    "predicted_but_unobserved": sorted(predicted),
                     "combined_log_prior": log_prior,
                     "cost": cost,
                 }
-            )
-    candidates.sort(
+
+    ranked = nsmallest(
+        max_candidates,
+        candidates(),
         key=lambda item: (
             -item["score"],
             -item["coverage"],
             len(item["hypotheses"]),
             item["hypotheses"],
-        )
+        ),
     )
-    candidates = candidates[:max_candidates]
     result = {
         "valid": True,
         "observations": list(observations),
-        "candidates": candidates,
-        "selected": candidates[0]["hypotheses"] if candidates else None,
-        "residual_unknowns": candidates[0]["unexplained"]
-        if candidates
-        else list(observations),
+        "candidates": ranked,
+        "selected": ranked[0]["hypotheses"] if ranked else None,
+        "residual_unknowns": ranked[0]["unexplained"] if ranked else list(observations),
+        "frontier_evaluated": frontier,
+        "valid_candidates": valid_candidates,
+        "truncated": valid_candidates > max_candidates,
         "warning": "Abduction ranks explanations from declared coverage, priors, and costs; it does not establish causal truth.",
     }
+    bounded_json_value(result)
     return {**result, "result_sha256": stable_hash(result)}

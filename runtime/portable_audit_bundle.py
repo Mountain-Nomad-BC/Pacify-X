@@ -9,10 +9,30 @@ from pathlib import Path, PurePosixPath
 import re
 from typing import Any, Mapping
 import zipfile
+import zlib
+
+from .archive_io import (
+    ArchiveLimits,
+    BoundedArchiveWriter,
+    DEFAULT_LIMITS,
+    member_identity,
+    portable_member_name,
+    read_archive_bytes,
+    read_stream_bytes,
+    reject_path_links,
+    validated_zip,
+)
+from .bounded_walk import WalkLimits, bounded_walk
+from .json_io import bounded_json_text, decode_json_object, read_bounded_bytes
 
 
 LABEL = re.compile(r"^[a-z0-9][a-z0-9_-]{0,63}$")
 ARCHIVE_TIME = (1980, 1, 1, 0, 0, 0)
+MAX_METADATA_BYTES = 4 * 1024 * 1024
+CONTENT_POLICY = (
+    "portable-path-exclusions-and-private-key-markers; not a complete secret scan"
+)
+PRIVATE_KEY = re.compile(rb"(?m)^[ \t]*-----BEGIN (?:[A-Z0-9 ]+ )?PRIVATE KEY-----\r?$")
 EXCLUDED_DIRECTORY_NAMES = frozenset(
     {
         ".git",
@@ -39,7 +59,10 @@ def _sha(data: bytes) -> str:
 
 
 def _json_bytes(value: object) -> bytes:
-    return (json.dumps(value, indent=2, sort_keys=True) + "\n").encode("utf-8")
+    bounded_json_text(value, max_bytes=MAX_METADATA_BYTES - 1)
+    return (
+        json.dumps(value, indent=2, sort_keys=True, ensure_ascii=False) + "\n"
+    ).encode("utf-8")
 
 
 def _member(name: str, data: bytes) -> tuple[zipfile.ZipInfo, bytes]:
@@ -60,59 +83,268 @@ def _inside(path: Path, root: Path) -> bool:
 def _exclusion_reason(relative: PurePosixPath) -> str | None:
     """Return a stable reason for content that must not enter a clean audit ZIP."""
     if any(
-        part in EXCLUDED_DIRECTORY_NAMES or part.startswith(".venv")
+        part.casefold() in {name.casefold() for name in EXCLUDED_DIRECTORY_NAMES}
+        or part.casefold().startswith(".venv")
         for part in relative.parts[:-1]
     ):
         return "generated-or-dependency-directory"
-    if relative.name == ".env" or relative.name.startswith(".env."):
+    if any("quarantine" in part.casefold() for part in relative.parts[:-1]):
+        return "quarantine-content-excluded"
+    name = relative.name.casefold()
+    if name == ".env" or name.startswith(".env."):
         return "secret-bearing-environment-file"
-    if any(relative.parts[: len(prefix)] == prefix for prefix in EXCLUDED_VOLATILE_PATHS):
+    if relative.suffix.casefold() in {".pem", ".key", ".p12", ".pfx"} or name in {
+        "credentials.json",
+        "secrets.json",
+    }:
+        return "secret-bearing-key-file"
+    parts = tuple(part.casefold() for part in relative.parts)
+    if any(parts[: len(prefix)] == prefix for prefix in EXCLUDED_VOLATILE_PATHS):
         return "volatile-runtime-state"
     if relative.suffix.lower() in {".pyc", ".pyo"}:
         return "generated-bytecode"
     return None
 
 
+def _validate_inputs(inputs: Mapping[str, Path]) -> None:
+    if not isinstance(inputs, Mapping) or not 1 <= len(inputs) <= 64:
+        raise ValueError("audit inputs require 1..64 labeled roots")
+    for label, supplied in inputs.items():
+        if (
+            type(label) is not str
+            or LABEL.fullmatch(label) is None
+            or not isinstance(supplied, Path)
+        ):
+            raise ValueError("invalid audit input label or path")
+
+
 def _inventory(
     inputs: Mapping[str, Path],
+    *,
+    limits: ArchiveLimits = DEFAULT_LIMITS,
+    metadata_bytes: int = 0,
+    attestation_included: bool = False,
 ) -> tuple[list[dict[str, Any]], list[tuple[str, bytes]], list[dict[str, str]]]:
     records: list[dict[str, Any]] = []
     payloads: list[tuple[str, bytes]] = []
     exclusions: list[dict[str, str]] = []
+    _validate_inputs(inputs)
+    planned = []
+    total_bytes = 0
+    examined_entries = 0
+    names = set()
     for label, supplied in sorted(inputs.items()):
-        if LABEL.fullmatch(label) is None:
-            raise ValueError(f"invalid audit input label: {label}")
+        reject_path_links(supplied)
+        if any("quarantine" in part.casefold() for part in supplied.parts):
+            raise ValueError("quarantine audit roots are excluded")
         root = supplied.resolve(strict=True)
-        paths = [root] if root.is_file() else sorted(
-            path for path in root.rglob("*") if path.is_file()
-        )
-        for path in paths:
-            if path.is_symlink() or (
-                hasattr(path, "is_junction") and path.is_junction()
-            ):
-                raise ValueError(f"linked audit input refused: {path}")
-            relative = path.name if root.is_file() else path.relative_to(root).as_posix()
-            relative_path = PurePosixPath(relative)
-            reason = _exclusion_reason(relative_path)
+
+        def excluded(relative):
+            is_dir = (root / relative).is_dir()
+            candidate = (
+                PurePosixPath(relative) / "__entry__"
+                if is_dir
+                else PurePosixPath(relative)
+            )
+            reason = _exclusion_reason(candidate)
             if reason is not None:
-                exclusions.append({"label": label, "path": relative, "reason": reason})
+                if len(exclusions) >= limits.max_members:
+                    raise ValueError("audit exclusion record budget exceeded")
+                exclusions.append(
+                    {
+                        "label": label,
+                        "path": relative + ("/" if is_dir else ""),
+                        "reason": reason,
+                    }
+                )
+            return reason is not None
+
+        if root.is_file():
+            if excluded(root.name):
                 continue
+            candidates = [(root, root.name, root.stat().st_size)]
+        else:
+            tree = bounded_walk(
+                root,
+                limits=WalkLimits(
+                    max_files=max(1, limits.max_members - len(planned)),
+                    max_depth=64,
+                    max_bytes=max(1, limits.max_expanded_bytes - total_bytes),
+                    max_entries=max(1, limits.max_members * 8 - examined_entries),
+                    max_directories=limits.max_members,
+                ),
+                exclude=excluded,
+            )
+            examined_entries += tree.scanned_entries
+            candidates = [
+                (entry.path, entry.relative, entry.size) for entry in tree.files
+            ]
+        for path, relative, size in candidates:
+            portable_member_name(relative, allow_directory=False)
             name = f"payload/{label}/{relative}"
-            data = path.read_bytes()
+            identity = member_identity(name)
+            if identity in names:
+                raise ValueError("audit inputs produce duplicate archive paths")
+            names.add(identity)
+            total_bytes += size
+            if (
+                size > limits.max_member_bytes
+                or total_bytes > limits.max_expanded_bytes
+                or len(planned) >= limits.max_members
+            ):
+                raise ValueError("audit source file or aggregate byte budget exceeded")
+            planned.append((label, path, relative, name, size, root))
             records.append(
                 {
                     "label": label,
                     "path": relative,
                     "archive_path": name,
-                    "bytes": len(data),
-                    "sha256": _sha(data),
+                    "bytes": size,
+                    "sha256": "0" * 64,
                 }
             )
-            payloads.append((name, data))
-    names = [name for name, _ in payloads]
-    if len(names) != len(set(names)):
-        raise ValueError("audit inputs produce duplicate archive paths")
+    if not planned:
+        raise ValueError("audit payload must contain at least one included file")
+    projected_manifest = _make_manifest(
+        records, exclusions, "0" * 64, "0" * 64 if attestation_included else None
+    )
+    manifest_bytes = len(_json_bytes(projected_manifest))
+    if (
+        len(records) + 2 + int(attestation_included) > limits.max_members
+        or total_bytes + metadata_bytes + manifest_bytes > limits.max_expanded_bytes
+    ):
+        raise ValueError(
+            "audit complete archive member or byte budget exceeded before payload acquisition"
+        )
+    remaining = limits.max_expanded_bytes - metadata_bytes - manifest_bytes
+    for record, (label, path, relative, name, size, root) in zip(records, planned):
+        reject_path_links(path)
+        if not path.resolve().is_relative_to(root if root.is_dir() else root.parent):
+            raise ValueError("audit source escaped its root")
+        with path.open("rb") as stream:
+            data = read_stream_bytes(
+                stream,
+                max_bytes=min(limits.max_member_bytes, remaining),
+                expected_size=size,
+            )
+        if len(data) != size or len(data) > remaining:
+            raise ValueError("audit input size changed during acquisition")
+        if PRIVATE_KEY.search(data):
+            raise ValueError(f"private-key content refused in audit input: {name}")
+        remaining -= len(data)
+        record["sha256"] = _sha(data)
+        payloads.append((name, data))
     return records, payloads, exclusions
+
+
+def _make_manifest(records, exclusions, prerequisite_hash, attestation_hash):
+    return {
+        "schema_version": "px.portable-audit-manifest/1.0",
+        "files": records,
+        "file_count": len(records),
+        "payload_bytes": sum(item["bytes"] for item in records),
+        "excluded": exclusions,
+        "excluded_count": len(exclusions),
+        "prerequisites_sha256": prerequisite_hash,
+        "attestation_sha256": attestation_hash,
+        "content_policy": CONTENT_POLICY,
+    }
+
+
+def _validate_manifest(manifest: dict[str, Any], limits: ArchiveLimits) -> None:
+    fields = {
+        "schema_version",
+        "files",
+        "file_count",
+        "payload_bytes",
+        "excluded",
+        "excluded_count",
+        "prerequisites_sha256",
+        "attestation_sha256",
+    }
+    if not fields <= manifest.keys() or manifest.keys() - fields - {"content_policy"}:
+        raise ValueError("audit manifest fields are incomplete or unknown")
+    if manifest["schema_version"] != "px.portable-audit-manifest/1.0":
+        raise ValueError("audit manifest schema is unsupported")
+    if "content_policy" in manifest and manifest["content_policy"] != CONTENT_POLICY:
+        raise ValueError("unsupported audit content policy")
+
+    def digest(value):
+        return type(value) is str and re.fullmatch(r"[a-f0-9]{64}", value) is not None
+
+    if (
+        not digest(manifest["prerequisites_sha256"])
+        or manifest["attestation_sha256"] is not None
+        and not digest(manifest["attestation_sha256"])
+    ):
+        raise ValueError("audit metadata digest is malformed")
+    files = manifest["files"]
+    if type(files) is not list or not 1 <= len(files) <= limits.max_members:
+        raise ValueError("audit manifest requires a bounded nonempty file denominator")
+    seen = set()
+    total = 0
+    for record in files:
+        if type(record) is not dict or set(record) != {
+            "label",
+            "path",
+            "archive_path",
+            "bytes",
+            "sha256",
+        }:
+            raise ValueError("audit file record is malformed")
+        if type(record["label"]) is not str or LABEL.fullmatch(record["label"]) is None:
+            raise ValueError("audit file label is malformed")
+        portable_member_name(record["path"], allow_directory=False)
+        name = f"payload/{record['label']}/{record['path']}"
+        if (
+            record["archive_path"] != name
+            or _exclusion_reason(PurePosixPath(record["path"])) is not None
+        ):
+            raise ValueError(
+                "audit manifest includes an excluded or misidentified path"
+            )
+        identity = member_identity(name)
+        if identity in seen:
+            raise ValueError("duplicate audit manifest file identity")
+        seen.add(identity)
+        if (
+            type(record["bytes"]) is not int
+            or not 0 <= record["bytes"] <= limits.max_member_bytes
+            or not digest(record["sha256"])
+        ):
+            raise ValueError("audit file size or digest is malformed")
+        total += record["bytes"]
+    if type(manifest["file_count"]) is not int or manifest["file_count"] != len(files):
+        raise ValueError("manifest file count mismatch")
+    if (
+        type(manifest["payload_bytes"]) is not int
+        or manifest["payload_bytes"] != total
+        or total > limits.max_expanded_bytes
+    ):
+        raise ValueError("manifest payload byte denominator mismatch")
+    excluded = manifest["excluded"]
+    if type(excluded) is not list or len(excluded) > limits.max_members:
+        raise ValueError("audit exclusions require a bounded list")
+    excluded_ids = set()
+    for record in excluded:
+        if type(record) is not dict or set(record) != {"label", "path", "reason"}:
+            raise ValueError("audit exclusion record is malformed")
+        if type(record["label"]) is not str or LABEL.fullmatch(record["label"]) is None:
+            raise ValueError("audit exclusion label is malformed")
+        portable_member_name(record["path"])
+        path = PurePosixPath(record["path"])
+        if record["path"].endswith("/"):
+            path = path / "__entry__"
+        if not record["reason"] or _exclusion_reason(path) != record["reason"]:
+            raise ValueError("audit exclusion reason does not match its path")
+        identity = member_identity(record["label"] + "/" + record["path"])
+        if identity in excluded_ids:
+            raise ValueError("duplicate audit exclusion record")
+        excluded_ids.add(identity)
+    if type(manifest["excluded_count"]) is not int or manifest["excluded_count"] != len(
+        excluded
+    ):
+        raise ValueError("manifest exclusion count mismatch")
 
 
 def build_portable_audit_bundle(
@@ -122,56 +354,101 @@ def build_portable_audit_bundle(
     checksum_path: Path,
     prerequisites: Path,
     attestation: Path | None = None,
+    limits: ArchiveLimits = DEFAULT_LIMITS,
 ) -> dict[str, Any]:
     """Build deterministic audit bytes from explicit roots; never infer host paths."""
-    if not inputs:
-        raise ValueError("at least one labeled audit input is required")
+    _validate_inputs(inputs)
+    if (
+        any(
+            not isinstance(path, Path)
+            for path in (output_zip, checksum_path, prerequisites)
+        )
+        or attestation is not None
+        and not isinstance(attestation, Path)
+    ):
+        raise ValueError("audit output and metadata paths must be Path values")
+    for path in [
+        *inputs.values(),
+        prerequisites,
+        *([attestation] if attestation is not None else []),
+    ]:
+        reject_path_links(path)
     resolved_inputs = [path.resolve(strict=True) for path in inputs.values()]
     destination = output_zip.resolve()
     checksum = checksum_path.resolve()
+    portable_member_name(destination.name, allow_directory=False)
+    portable_member_name(checksum.name, allow_directory=False)
     if destination == checksum:
         raise ValueError("ZIP and checksum paths must differ")
     for root in resolved_inputs:
         boundary = root if root.is_dir() else root.parent
         if _inside(destination, boundary) or _inside(checksum, boundary):
             raise ValueError("audit outputs must remain outside input roots")
-    prerequisite_data = prerequisites.resolve(strict=True).read_bytes()
-    prerequisite_json = json.loads(prerequisite_data)
-    if not isinstance(prerequisite_json, dict):
-        raise ValueError("prerequisite report must be a JSON object")
-    records, payloads, exclusions = _inventory(inputs)
-    manifest: dict[str, Any] = {
-        "schema_version": "px.portable-audit-manifest/1.0",
-        "files": records,
-        "file_count": len(records),
-        "payload_bytes": sum(int(item["bytes"]) for item in records),
-        "excluded": exclusions,
-        "excluded_count": len(exclusions),
-        "prerequisites_sha256": _sha(prerequisite_data),
-        "attestation_sha256": None,
-    }
-    extra = [("PREREQUISITES.json", prerequisite_data)]
-    if attestation is not None:
-        attestation_data = attestation.resolve(strict=True).read_bytes()
-        json.loads(attestation_data)
-        manifest["attestation_sha256"] = _sha(attestation_data)
-        extra.append(("ATTESTATION.json", attestation_data))
-    members = [("AUDIT_MANIFEST.json", _json_bytes(manifest)), *extra, *payloads]
-    destination.parent.mkdir(parents=True, exist_ok=True)
     prepared = destination.with_name(f".{destination.name}.prepared")
-    if prepared.exists():
-        raise ValueError("prepared audit bundle already exists")
-    with zipfile.ZipFile(
-        prepared, "x", compression=zipfile.ZIP_DEFLATED, compresslevel=9
-    ) as archive:
+    checksum_prepared = checksum.with_name(f".{checksum.name}.prepared")
+    outputs = [destination, checksum, prepared, checksum_prepared]
+    source_metadata = {
+        prerequisites.resolve(),
+        *([attestation.resolve()] if attestation is not None else []),
+    }
+    if len(set(outputs)) != 4 or source_metadata.intersection(outputs):
+        raise ValueError("audit output or prerequisite paths collide")
+    if prepared.exists() or checksum_prepared.exists():
+        raise ValueError("prepared audit output already exists")
+    prerequisite_data = read_bounded_bytes(
+        prerequisites, max_bytes=min(MAX_METADATA_BYTES, limits.max_expanded_bytes)
+    )
+    decode_json_object(prerequisite_data, max_bytes=MAX_METADATA_BYTES)
+    if PRIVATE_KEY.search(prerequisite_data):
+        raise ValueError("private-key content refused in prerequisite report")
+    extra = [("PREREQUISITES.json", prerequisite_data)]
+    attestation_hash = None
+    if attestation is not None:
+        remaining_metadata = limits.max_expanded_bytes - len(prerequisite_data)
+        if remaining_metadata < 1:
+            raise ValueError("audit metadata byte budget exhausted")
+        attestation_data = read_bounded_bytes(
+            attestation, max_bytes=min(MAX_METADATA_BYTES, remaining_metadata)
+        )
+        decode_json_object(attestation_data, max_bytes=MAX_METADATA_BYTES)
+        if PRIVATE_KEY.search(attestation_data):
+            raise ValueError("private-key content refused in attestation report")
+        attestation_hash = _sha(attestation_data)
+        extra.append(("ATTESTATION.json", attestation_data))
+    records, payloads, exclusions = _inventory(
+        inputs,
+        limits=limits,
+        metadata_bytes=sum(len(data) for _, data in extra),
+        attestation_included=attestation is not None,
+    )
+    manifest = _make_manifest(
+        records, exclusions, _sha(prerequisite_data), attestation_hash
+    )
+    _validate_manifest(manifest, limits)
+    members = [("AUDIT_MANIFEST.json", _json_bytes(manifest)), *extra, *payloads]
+    if (
+        len(members) > limits.max_members
+        or sum(len(data) for _, data in members) > limits.max_expanded_bytes
+    ):
+        raise ValueError("audit complete archive member or byte budget exceeded")
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    with (
+        prepared.open("xb") as stream,
+        zipfile.ZipFile(
+            BoundedArchiveWriter(stream, limits.max_archive_bytes),
+            "w",
+            compression=zipfile.ZIP_DEFLATED,
+            compresslevel=9,
+            allowZip64=False,
+        ) as archive,
+    ):
         for name, data in members:
             info, content = _member(name, data)
             archive.writestr(info, content)
+    bundle_sha256 = _sha(read_archive_bytes(prepared, limits))
     os.replace(prepared, destination)
-    bundle_sha256 = _sha(destination.read_bytes())
     checksum.parent.mkdir(parents=True, exist_ok=True)
-    checksum_prepared = checksum.with_name(f".{checksum.name}.prepared")
-    with checksum_prepared.open("x", encoding="ascii", newline="\n") as stream:
+    with checksum_prepared.open("x", encoding="utf-8", newline="\n") as stream:
         stream.write(f"{bundle_sha256}  {destination.name}\n")
         stream.flush()
         os.fsync(stream.fileno())
@@ -188,53 +465,95 @@ def build_portable_audit_bundle(
 
 
 def verify_portable_audit_bundle(
-    bundle: Path, checksum_path: Path
+    bundle: Path,
+    checksum_path: Path,
+    *,
+    limits: ArchiveLimits = DEFAULT_LIMITS,
 ) -> dict[str, Any]:
-    """Verify outer identity and every manifest-bound member without source roots."""
+    """Verify bounded internal identity and exact members; not authenticated origin."""
     errors: list[str] = []
-    bundle = bundle.resolve(strict=True)
-    checksum_text = checksum_path.resolve(strict=True).read_text(encoding="ascii").strip()
-    parts = checksum_text.split()
-    actual_outer = _sha(bundle.read_bytes())
-    if len(parts) != 2 or parts[1] != bundle.name or parts[0] != actual_outer:
-        errors.append("external bundle checksum mismatch")
+    actual_outer = None
+    manifest = {}
     try:
-        with zipfile.ZipFile(bundle) as archive:
-            names = archive.namelist()
-            if len(names) != len(set(names)):
-                errors.append("duplicate archive member")
-            for name in names:
-                path = PurePosixPath(name)
-                if path.is_absolute() or ".." in path.parts or "\\" in name:
-                    errors.append(f"unsafe archive member: {name}")
-            manifest = json.loads(archive.read("AUDIT_MANIFEST.json"))
+        reject_path_links(checksum_path)
+        checksum_text = read_bounded_bytes(checksum_path, max_bytes=8192).decode(
+            "utf-8"
+        )
+        raw = read_archive_bytes(bundle, limits)
+        actual_outer = _sha(raw)
+        expected_line = f"{actual_outer}  {bundle.name}"
+        if checksum_text not in (
+            expected_line,
+            expected_line + "\n",
+            expected_line + "\r\n",
+        ):
+            raise ValueError("external bundle checksum mismatch")
+        with validated_zip(raw, limits) as (archive, infos):
+            by_name = {info.filename: info for info in infos}
+
+            def member(name, limit):
+                info = by_name[name]
+                if info.is_dir() or info.file_size > limit:
+                    raise ValueError("audit member byte budget or file type violated")
+                with archive.open(info) as stream:
+                    data = read_stream_bytes(
+                        stream, max_bytes=limit, expected_size=info.file_size
+                    )
+                if PRIVATE_KEY.search(data):
+                    raise ValueError(
+                        "private-key content refused in audit member: " + name
+                    )
+                return data
+
+            manifest = decode_json_object(
+                member("AUDIT_MANIFEST.json", MAX_METADATA_BYTES),
+                max_bytes=MAX_METADATA_BYTES,
+            )
+            _validate_manifest(manifest, limits)
             expected_names = {"AUDIT_MANIFEST.json", "PREREQUISITES.json"}
-            if manifest.get("attestation_sha256") is not None:
+            expected_names.update(
+                record["archive_path"] for record in manifest["files"]
+            )
+            if manifest["attestation_sha256"] is not None:
                 expected_names.add("ATTESTATION.json")
-            for record in manifest.get("files", ()):
-                name = str(record.get("archive_path", ""))
-                expected_names.add(name)
-                data = archive.read(name)
-                if len(data) != record.get("bytes") or _sha(data) != record.get("sha256"):
-                    errors.append(f"payload member mismatch: {name}")
-            prerequisite_data = archive.read("PREREQUISITES.json")
-            if _sha(prerequisite_data) != manifest.get("prerequisites_sha256"):
-                errors.append("prerequisite report mismatch")
-            if manifest.get("attestation_sha256") is not None and _sha(
-                archive.read("ATTESTATION.json")
-            ) != manifest.get("attestation_sha256"):
-                errors.append("attestation mismatch")
-            if set(names) != expected_names:
-                errors.append("archive member set differs from manifest")
-            if manifest.get("file_count") != len(manifest.get("files", ())):
-                errors.append("manifest file count mismatch")
-    except (OSError, KeyError, ValueError, json.JSONDecodeError, zipfile.BadZipFile) as error:
-        errors.append(f"audit bundle unreadable: {type(error).__name__}: {error}")
-        manifest = {}
+            if set(by_name) != expected_names:
+                raise ValueError("archive member set differs from manifest")
+            prerequisite_data = member("PREREQUISITES.json", MAX_METADATA_BYTES)
+            decode_json_object(prerequisite_data, max_bytes=MAX_METADATA_BYTES)
+            if _sha(prerequisite_data) != manifest["prerequisites_sha256"]:
+                raise ValueError("prerequisite report mismatch")
+            if manifest["attestation_sha256"] is not None:
+                attestation_data = member("ATTESTATION.json", MAX_METADATA_BYTES)
+                decode_json_object(attestation_data, max_bytes=MAX_METADATA_BYTES)
+                if _sha(attestation_data) != manifest["attestation_sha256"]:
+                    raise ValueError("attestation mismatch")
+            for record in manifest["files"]:
+                info = by_name[record["archive_path"]]
+                if info.file_size != record["bytes"]:
+                    raise ValueError("payload member size differs from manifest")
+                data = member(record["archive_path"], record["bytes"])
+                if _sha(data) != record["sha256"]:
+                    raise ValueError(
+                        "payload member mismatch: " + record["archive_path"]
+                    )
+    except (
+        OSError,
+        KeyError,
+        TypeError,
+        ValueError,
+        RuntimeError,
+        EOFError,
+        zipfile.BadZipFile,
+        zlib.error,
+    ) as error:
+        if "duplicate archive member" in str(error):
+            errors.append("duplicate archive member")
+        errors.append(str(error))
     return {
         "schema_version": "px.portable-audit-verification/1.0",
         "valid": not errors,
         "bundle_sha256": actual_outer,
-        "file_count": manifest.get("file_count", 0),
+        "file_count": manifest.get("file_count", 0) if not errors else 0,
+        "verification_scope": "bounded internal checksums and declared members; origin not authenticated",
         "errors": errors,
     }

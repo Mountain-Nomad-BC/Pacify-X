@@ -762,14 +762,7 @@ def parser() -> argparse.ArgumentParser:
     test_section.add_argument(
         "name",
         nargs="?",
-        choices=(
-            "testing-governance",
-            "dashboard-extension",
-            "studio-memory-graph",
-            "learning-promotion",
-            "execution-placement",
-            "hardware-routing",
-        ),
+        help="Registered section name, validated by registry/test_profiles.json",
     )
     test_group = commands.add_parser("test-group")
     test_group.add_argument("action", choices=("show", "run", "status", "run-stale"))
@@ -1305,6 +1298,8 @@ def parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
+    from time import monotonic
+    section_started = monotonic()
     args = parser().parse_args(argv)
     orchestration_lock: object | None = None
     previous_orchestration_owner: str | None = None
@@ -2100,20 +2095,7 @@ def main(argv: list[str] | None = None) -> int:
 
             output = validate_profile_set(root / "bootstrap" / "profiles")
         elif args.command == "test-section":
-            from uuid import uuid4
-            import os
-
-            from .resource_lifecycle import ResourceManager
-            from .test_profiles import (
-                read_section_chunk_receipt,
-                resolve_test_section,
-                section_chunk_receipt,
-                section_receipt,
-                section_status,
-                write_section_chunk_receipt,
-                write_section_receipt,
-            )
-            from .test_runner import run_test_command
+            from .test_profiles import resolve_test_section, section_status
 
             if args.action == "status":
                 output = section_status(root)
@@ -2122,198 +2104,8 @@ def main(argv: list[str] | None = None) -> int:
                     raise ValueError("test section name is required for show or run")
                 output = resolve_test_section(root, args.name)
                 if args.action == "run":
-                    from .test_profiles import require_processing_stage
-
-                    require_processing_stage(root, "governed_section")
-                    status = section_status(root)
-                    status_by_name = {row["section"]: row for row in status["sections"]}
-                    stale_dependencies = [
-                        name
-                        for name in output["dependencies"]
-                        if status_by_name.get(name, {}).get("current") is not True
-                    ]
-                    if stale_dependencies:
-                        raise ValueError(
-                            "test section dependencies are not current: "
-                            + ", ".join(stale_dependencies)
-                        )
-                    # Fail closed before launching any child. If the CLI or its
-                    # caller is interrupted mid-section, an older passing
-                    # receipt must not remain authoritative for this run.
-                    in_progress_receipt = section_receipt(
-                        output,
-                        {
-                            "valid": False,
-                            "exit_code": 1,
-                            "timed_out": False,
-                            "duration_seconds": 0.0,
-                        },
-                    )
-                    write_section_receipt(root, in_progress_receipt)
-                    environment = dict(os.environ)
-                    environment.update(output["environment"])
-                    command = [
-                        sys.executable if value == "python" else value
-                        for value in output["command"]
-                    ]
-                    chunks = list(output.get("chunks", ()))
-                    if chunks:
-                        from concurrent.futures import ThreadPoolExecutor, as_completed
-                        from time import monotonic
-
-                        chunk_rows: dict[str, dict[str, object]] = {}
-                        pending: list[dict[str, object]] = []
-                        for chunk in chunks:
-                            chunk_id = str(chunk["chunk_id"])
-                            current = read_section_chunk_receipt(
-                                root, str(args.name), chunk_id
-                            )
-                            if (
-                                current.get("passed") is True
-                                and current.get("section") == args.name
-                                and current.get("chunk_id") == chunk_id
-                                and current.get("input_sha256")
-                                == chunk["input_sha256"]
-                            ):
-                                chunk_rows[chunk_id] = {
-                                    **current,
-                                    "reused": True,
-                                    "receipt_path": str(
-                                        root
-                                        / ".engineering-bootstrap/test-evidence/section-chunks"
-                                        / str(args.name)
-                                        / f"{chunk_id}.json"
-                                    ),
-                                }
-                            else:
-                                pending.append(chunk)
-
-                        scheduling_started = monotonic()
-
-                        def run_chunk(chunk: dict[str, object]) -> dict[str, object]:
-                            chunk_id = str(chunk["chunk_id"])
-                            chunk_command = [
-                                sys.executable if value == "python" else str(value)
-                                for value in chunk["command"]
-                            ]
-                            execution = run_test_command(
-                                chunk_command,
-                                cwd=Path(output["cwd"]),
-                                environment=environment,
-                                timeout_seconds=chunk["timeout_seconds"],
-                                resource_manager=ResourceManager(
-                                    root
-                                    / ".engineering-bootstrap/resource-lifecycle/ledger.json"
-                                ),
-                                run_id=f"test-section-{args.name}-{chunk_id}-{uuid4().hex}",
-                                lane_id=f"section:{args.name}:{chunk_id}",
-                                manage_process_temp=True,
-                            )
-                            receipt = section_chunk_receipt(output, chunk, execution)
-                            receipt_path = write_section_chunk_receipt(root, receipt)
-                            return {
-                                **receipt,
-                                "reused": False,
-                                "receipt_path": receipt_path.as_posix(),
-                                "stdout": str(execution.get("stdout") or "")[-8000:],
-                                "stderr": str(execution.get("stderr") or "")[-8000:],
-                            }
-
-                        if pending:
-                            with ThreadPoolExecutor(
-                                max_workers=min(
-                                    int(output["max_parallel_chunks"]), len(pending)
-                                ),
-                                thread_name_prefix=f"px-section-{args.name}",
-                            ) as executor:
-                                futures = {
-                                    executor.submit(run_chunk, chunk): chunk
-                                    for chunk in pending
-                                }
-                                for future in as_completed(futures):
-                                    chunk = futures[future]
-                                    chunk_id = str(chunk["chunk_id"])
-                                    try:
-                                        chunk_rows[chunk_id] = future.result()
-                                    except Exception as exc:
-                                        failure = section_chunk_receipt(
-                                            output,
-                                            chunk,
-                                            {
-                                                "valid": False,
-                                                "exit_code": 1,
-                                                "timed_out": False,
-                                                "duration_seconds": 0.0,
-                                            },
-                                        )
-                                        failure_path = write_section_chunk_receipt(
-                                            root, failure
-                                        )
-                                        chunk_rows[chunk_id] = {
-                                            **failure,
-                                            "reused": False,
-                                            "receipt_path": failure_path.as_posix(),
-                                            "stdout": "",
-                                            "stderr": (
-                                                "chunk worker failed before completion: "
-                                                f"{type(exc).__name__}"
-                                            ),
-                                        }
-                        ordered_chunks = [
-                            chunk_rows[str(chunk["chunk_id"])] for chunk in chunks
-                        ]
-                        passed = all(row.get("passed") is True for row in ordered_chunks)
-                        execution = {
-                            "valid": passed,
-                            "exit_code": 0 if passed else 1,
-                            "timed_out": any(
-                                row.get("timed_out") is True for row in ordered_chunks
-                            ),
-                            "duration_seconds": round(
-                                monotonic() - scheduling_started, 6
-                            ),
-                            "chunks": [
-                                {
-                                    key: row.get(key)
-                                    for key in (
-                                        "chunk_id",
-                                        "input_sha256",
-                                        "member_count",
-                                        "members",
-                                        "passed",
-                                        "timed_out",
-                                        "duration_seconds",
-                                        "output_evidence",
-                                        "receipt_sha256",
-                                        "reused",
-                                    )
-                                }
-                                for row in ordered_chunks
-                            ],
-                        }
-                    else:
-                        execution = run_test_command(
-                            command,
-                            cwd=Path(output["cwd"]),
-                            environment=environment,
-                            timeout_seconds=output["timeout_seconds"],
-                            resource_manager=ResourceManager(
-                                root
-                                / ".engineering-bootstrap/resource-lifecycle/ledger.json"
-                            ),
-                            run_id=f"test-section-{args.name}-{uuid4().hex}",
-                            lane_id=f"section:{args.name}",
-                            manage_process_temp=True,
-                        )
-                    receipt = section_receipt(output, execution)
-                    receipt_path = write_section_receipt(root, receipt)
-                    output = {
-                        **output,
-                        **execution,
-                        **({"chunk_results": ordered_chunks} if chunks else {}),
-                        "section_receipt": receipt,
-                        "receipt_path": receipt_path.as_posix(),
-                    }
+                    from runtime.section_scheduler import run_section
+                    output = run_section(root, output, args.name, section_started)
         elif args.command == "test-profile":
             from uuid import uuid4
 

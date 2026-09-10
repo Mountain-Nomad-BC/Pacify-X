@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import hashlib
 import json
 from pathlib import Path
 import tempfile
@@ -29,9 +28,10 @@ def test_release_supply_chain_outputs_bind_exact_artifacts_and_source() -> None:
             root,
             release="1.2.3",
             source_control={
-                "repository": "https://example.invalid/repo",
-                "commit": "c" * 40,
-                "tree": "d" * 40,
+                "valid": True,
+                "repository": "Mountain-Nomad-BC/Pacify-X",
+                "commit_sha": "c" * 40,
+                "tree_sha": "d" * 40,
                 "tag": "v1.2.3",
             },
             product_digest="e" * 64,
@@ -46,4 +46,11 @@ def test_release_supply_chain_outputs_bind_exact_artifacts_and_source() -> None:
         provenance_path = root / outputs["provenance"]
         provenance = json.loads(provenance_path.read_text(encoding="utf-8"))
         assert provenance["subject"][0]["digest"]["sha256"] == "b" * 64
-        assert hashlib.sha256(provenance_path.read_bytes()).hexdigest()
+        dependency = provenance["predicate"]["buildDefinition"]["resolvedDependencies"][
+            0
+        ]
+        assert dependency["digest"] == {
+            "gitCommit": "c" * 40,
+            "gitTree": "d" * 40,
+            "productSha256": "e" * 64,
+        }

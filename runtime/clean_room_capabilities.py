@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import json
 from pathlib import Path
 from typing import Callable, Mapping
 
@@ -51,45 +50,47 @@ def run_clean_room_operation(
 
 
 def validate_clean_room_capability_workflow(root: Path) -> dict[str, object]:
-    """Validate workflow reachability to every required operation and contract."""
-    path = root / "orchestration/workflows/clean-room-capability-controls.yaml"
-    errors: list[str] = []
+    """Validate exact operation/contract relationships without executing handlers."""
+    from .contracts import SUPPORTED_DIALECT, _admit_schema, _schema_children
+    from .input_files import cooperative_deadline, directory_root
+    from .numeric_inputs import bounded_text
+    from .workflow_inputs import active_skill_declarations, ordered_steps, read_declaration, unique_declarations
+
+    expected = (('panel', 'decision-wayfinding', 'independent-hypothesis-panel', 'contracts/reasoning/independent-hypothesis-panel.schema.json', ()), ('delta', 'skill-admission-controller', 'behavioral-delta-certification', 'contracts/cognitive/behavioral-delta-certificate.schema.json', ()), ('communication', 'context-compactor', 'communication-budget', 'contracts/reasoning/communication-budget.schema.json', ()), ('fleet', 'orchestrate-agent-fleets', 'fleet-readiness', 'contracts/agents/fleet-readiness.schema.json', ()), ('inbox', 'orchestrate-agent-fleets', 'bounded-inbox', 'contracts/agents/fleet-readiness.schema.json', ('fleet',)), ('memory', 'govern-memory-fabric', 'memory-graph-remediation', 'contracts/memory/memory-remediation-plan.schema.json', ()), ('goal', 'long-horizon-progress-ledger', 'durable-goal-transition', 'contracts/project_stream/durable-goal-state.schema.json', ()), ('terminal', 'manage-agent-session-fabric', 'terminal-session-plan', 'contracts/agents/terminal-session-adapter.schema.json', ('goal',)), ('backend-validate', 'dynamic-service-discovery', 'backend-capability-validation', 'contracts/external_capabilities/backend-service-capability.schema.json', ()), ('backend-select', 'dynamic-service-discovery', 'backend-capability-selection', 'contracts/external_capabilities/backend-service-capability.schema.json', ('backend-validate',)), ('shadow', 'engineer-verification-lab', 'shadow-behavior-comparison', 'contracts/cognitive/shadow-behavior-comparison.schema.json', ('delta',)), ('specification', 'tracer-bullet-planning', 'specification-lifecycle-closure', 'contracts/reasoning/specification-lifecycle.schema.json', ('panel', 'shadow')))
     try:
-        payload = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as exc:
-        return {
-            "valid": False,
-            "errors": [f"workflow unavailable: {type(exc).__name__}: {exc}"],
-        }
-    workflows = payload.get("workflows", ())
-    if (
-        len(workflows) != 1
-        or workflows[0].get("id") != "clean-room-capability-controls"
-    ):
-        errors.append("clean-room workflow identity mismatch")
-        steps = []
-    else:
-        steps = workflows[0].get("steps", ())
-    operation_ids = {str(step.get("operation")) for step in steps}
-    if operation_ids != set(OPERATIONS):
-        errors.append(
-            f"operation denominator mismatch: declared={len(operation_ids)} runtime={len(OPERATIONS)}"
-        )
-    step_ids = {str(step.get("id")) for step in steps}
-    if len(step_ids) != len(steps):
-        errors.append("workflow step IDs are not unique")
-    for step in steps:
-        contract = root / str(step.get("contract", ""))
-        if not contract.is_file():
-            errors.append(f"{step.get('id')}: contract missing")
-        if str(step.get("runtime_binding")) not in {
-            f"runtime.clean_room_capabilities:{operation}" for operation in OPERATIONS
-        }:
-            errors.append(f"{step.get('id')}: runtime binding is not canonical")
-    return {
-        "valid": not errors,
-        "workflow": "clean-room-capability-controls",
-        "operation_count": len(operation_ids),
-        "errors": errors,
-        "authority_granted": False,
-    }
+        root = directory_root(root)
+        deadline = cooperative_deadline()
+        payload = read_declaration(root, "orchestration/workflows/clean-room-capability-controls.yaml", deadline=deadline)
+        workflows = unique_declarations(payload.get("workflows"), "id", maximum=256)
+        if payload.get("schema_version") != "1.0" or payload.get("registry") != "registry/workflow_execution_bindings.json" or tuple(workflows) != ("clean-room-capability-controls",):
+            raise ValueError("clean-room workflow envelope mismatch")
+        workflow = workflows["clean-room-capability-controls"]
+        steps = ordered_steps(workflow.get("steps"))
+        actual = tuple((step["id"], step["skill"], step.get("operation"), step.get("contract"), tuple(step["depends_on"])) for step in steps)
+        if actual != expected or {step["operation"] for step in steps} != set(OPERATIONS):
+            raise ValueError("clean-room operation contract or order mismatch")
+        if any(step.get("runtime_binding") != "runtime.clean_room_capabilities:" + step["operation"] for step in steps):
+            raise ValueError("clean-room runtime binding does not match its operation")
+        if workflow.get("effects") != ["read_local"]:
+            raise ValueError("clean-room declared effects mismatch")
+        bounded_text(workflow.get("failure_policy"), "failure policy", maximum=4096)
+        active = active_skill_declarations(root, deadline=deadline)
+        if any(step["skill"] not in active for step in steps):
+            raise ValueError("clean-room skill is not declared active or admitted")
+        for relative in sorted({step["contract"] for step in steps}):
+            schema = read_declaration(root, relative, deadline=deadline)
+            identity = "urn:engineering-loop-bootstrap:contract:" + relative.removeprefix("contracts/").removesuffix(".schema.json").replace("/", ":")
+            if schema.get("$schema") != SUPPORTED_DIALECT or schema.get("$id") != identity:
+                raise ValueError("clean-room schema identity mismatch")
+            pending = [schema]
+            while pending:
+                rule = pending.pop()
+                if "$ref" in rule:
+                    raise ValueError("clean-room contract profile requires self-contained schemas")
+                if "pattern" in rule:
+                    bounded_text(rule["pattern"], "clean-room schema pattern", maximum=128, strip=False)
+                pending.extend(_schema_children(rule))
+            _admit_schema(schema, root / relative, root / "contracts")
+    except (OSError, ValueError, TypeError, OverflowError):
+        return {"valid": False, "workflow": "clean-room-capability-controls", "operation_count": None, "errors": ["invalid bounded clean-room workflow declarations"], "authority_granted": False}
+    return {"valid": True, "workflow": "clean-room-capability-controls", "operation_count": len(steps), "errors": [], "authority_granted": False, "evidence_level": "structural-declarations; handler behavior and current admission require separate proof"}

@@ -15,6 +15,13 @@ import json
 from typing import Iterable, Mapping, Sequence
 
 from pathlib import Path
+from .numeric_inputs import (
+    bounded_integer,
+    bounded_mapping,
+    bounded_sequence,
+    bounded_text,
+    finite_number,
+)
 
 
 PIPELINE_STAGES = (
@@ -225,6 +232,28 @@ def optimize_candidate_package(
     return {**payload, "package_sha256": stable_hash(payload)}
 
 
+def _resource_values(value, name, *, nonnegative=True, nonempty=False):
+    source = bounded_mapping(value, name, maximum=64)
+    if nonempty and not source:
+        raise ValueError(f"{name} must declare at least one resource dimension")
+    result = {}
+    for key, number in source.items():
+        key = bounded_text(key, "resource dimension")
+        if key in result:
+            raise ValueError("resource dimensions must be unique after normalization")
+        result[key] = finite_number(number, name, minimum=0 if nonnegative else None)
+    return result
+
+
+def _selection_names(value, name):
+    rows = [
+        bounded_text(item, name) for item in bounded_sequence(value, name, maximum=256)
+    ]
+    if len(rows) != len(set(rows)):
+        raise ValueError(f"{name} must have unique canonical identities")
+    return set(rows)
+
+
 def reserve_budget(
     *,
     project_id: str,
@@ -233,28 +262,67 @@ def reserve_budget(
     limits: Mapping[str, float],
     active_reservations: Sequence[Mapping[str, object]] = (),
 ) -> dict[str, object]:
-    """Reserve multiple resource dimensions atomically or deny all of them."""
-    if not project_id or not work_id:
-        raise ValueError("project_id and work_id are required")
-    used: dict[str, float] = defaultdict(float)
-    for reservation in active_reservations:
-        if (
-            reservation.get("project_id") != project_id
-            or reservation.get("state") != "active"
-        ):
+    """Compute an all-or-none budget proposal; durable acceptance is separate."""
+    project_id = bounded_text(project_id, "project identity")
+    work_id = bounded_text(work_id, "work identity")
+    requested = _resource_values(
+        requested, "requested resources", nonnegative=False, nonempty=True
+    )
+    limits = _resource_values(limits, "resource limits", nonempty=True)
+    records = bounded_sequence(
+        active_reservations, "active reservations", maximum=10000
+    )
+    parsed = []
+    identities = set()
+    dimensions = 0
+    for reservation in records:
+        reservation = bounded_mapping(reservation, "reservation", maximum=32)
+        owner = bounded_text(
+            reservation.get("project_id"), "reservation project identity"
+        )
+        work = bounded_text(reservation.get("work_id"), "reservation work identity")
+        identity = bounded_text(
+            reservation.get("reservation_id"), "reservation identity"
+        )
+        if identity in identities:
+            raise ValueError("reservation identities must be unique")
+        identities.add(identity)
+        state = bounded_text(reservation.get("state"), "reservation state")
+        if state not in {"active", "denied", "reconciled", "reconciled_with_overage"}:
+            raise ValueError("unknown reservation state")
+        raw = bounded_mapping(
+            reservation.get("reserved"), "reserved resources", maximum=64
+        )
+        dimensions += len(raw)
+        if dimensions > 100000:
+            raise ValueError(
+                "reservation resource dimensions exceed the aggregate budget"
+            )
+        reserved = _resource_values(raw, "reserved resources", nonempty=True)
+        parsed.append((owner, work, state, reserved))
+    used = defaultdict(float)
+    for owner, _work, state, reserved in parsed:
+        if owner != project_id or state != "active":
             continue
-        for name, value in dict(reservation.get("reserved", {})).items():
-            used[str(name)] += float(value)
+        for name, value in reserved.items():
+            used[name] = finite_number(
+                used[name] + value, "aggregate active resource usage", minimum=0
+            )
     blockers = []
     for name, value in sorted(requested.items()):
-        if float(value) < 0:
+        if value < 0:
             blockers.append(f"negative_request:{name}")
-        elif used[name] + float(value) > float(limits.get(name, 0.0)):
+        elif name not in limits:
+            blockers.append(f"missing_limit:{name}")
+        elif (
+            finite_number(used[name] + value, "proposed resource usage", minimum=0)
+            > limits[name]
+        ):
             blockers.append(f"limit_exceeded:{name}")
     payload = {
         "project_id": project_id,
         "work_id": work_id,
-        "reserved": {key: float(value) for key, value in sorted(requested.items())},
+        "reserved": dict(sorted(requested.items())),
         "state": "denied" if blockers else "active",
         "blockers": tuple(blockers),
     }
@@ -264,21 +332,35 @@ def reserve_budget(
 def reconcile_budget(
     reservation: Mapping[str, object], actual: Mapping[str, float]
 ) -> dict[str, object]:
+    """Reconcile a supplied proposal against complete measured dimensions."""
+    reservation = bounded_mapping(reservation, "reservation", maximum=32)
     if reservation.get("state") != "active":
         raise ValueError("only active reservations can be reconciled")
-    reserved = dict(reservation.get("reserved", {}))
+    identity = bounded_text(reservation.get("reservation_id"), "reservation identity")
+    project = bounded_text(
+        reservation.get("project_id"), "reservation project identity"
+    )
+    work = bounded_text(reservation.get("work_id"), "reservation work identity")
+    reserved = _resource_values(
+        reservation.get("reserved"), "reserved resources", nonempty=True
+    )
+    actual = _resource_values(actual, "actual resources", nonempty=True)
+    if set(reserved) - set(actual):
+        raise ValueError("actual measurements must cover every reserved dimension")
     overages = tuple(
         sorted(
             name
             for name, value in actual.items()
-            if float(value) > float(reserved.get(name, 0.0))
+            if name not in reserved or value > reserved[name]
         )
     )
     payload = {
-        "reservation_id": reservation.get("reservation_id"),
-        "actual": {key: float(value) for key, value in sorted(actual.items())},
+        "reservation_id": identity,
+        "project_id": project,
+        "work_id": work,
+        "actual": dict(sorted(actual.items())),
         "released": {
-            key: max(0.0, float(value) - float(actual.get(key, 0.0)))
+            key: max(0.0, value - actual[key])
             for key, value in sorted(reserved.items())
         },
         "state": "reconciled_with_overage" if overages else "reconciled",
@@ -320,38 +402,74 @@ def choose_runtime(
     minimum_trust: int,
     locality: str | None = None,
 ) -> dict[str, object]:
-    """Choose a runtime only after hard trust, health, scope, and quota filters."""
-    required = set(map(str, required_capabilities))
+    """Filter bounded supplied profiles; physical placement requires its owner."""
+    project_id = bounded_text(project_id, "project identity")
+    minimum_trust = bounded_integer(
+        minimum_trust, "minimum trust", minimum=0, maximum=1000000
+    )
+    required = _selection_names(required_capabilities, "required capabilities")
+    locality = (
+        bounded_text(locality, "required locality") if locality is not None else None
+    )
+    parsed = []
+    identities = set()
+    for profile in bounded_sequence(profiles, "runtime profiles", maximum=256):
+        profile = bounded_mapping(profile, "runtime profile", maximum=32)
+        identity = bounded_text(profile.get("id"), "runtime identity")
+        if identity in identities:
+            raise ValueError("runtime identities must be unique")
+        identities.add(identity)
+        healthy = profile.get("healthy", False)
+        if type(healthy) is not bool:
+            raise ValueError("runtime health must be an actual boolean")
+        parsed.append(
+            {
+                "id": identity,
+                "healthy": healthy,
+                "trust": bounded_integer(
+                    profile.get("trust", 0), "runtime trust", minimum=0, maximum=1000000
+                ),
+                "capabilities": _selection_names(
+                    profile.get("capabilities", ()), "runtime capabilities"
+                ),
+                "scopes": _selection_names(
+                    profile.get("project_scopes", ()), "runtime project scopes"
+                ),
+                "locality": bounded_text(profile["locality"], "runtime locality")
+                if "locality" in profile
+                else None,
+                "quota": finite_number(
+                    profile.get("available_quota", 0), "available quota", minimum=0
+                ),
+                "cost": finite_number(
+                    profile.get("cost", 0), "runtime cost", minimum=0
+                ),
+            }
+        )
     eligible = []
-    rejected: dict[str, tuple[str, ...]] = {}
-    for profile in profiles:
-        profile_id = str(profile.get("id", ""))
+    rejected = {}
+    for profile in parsed:
         reasons = []
-        if profile.get("healthy") is not True:
+        if not profile["healthy"]:
             reasons.append("unhealthy")
-        if int(profile.get("trust", 0)) < minimum_trust:
+        if profile["trust"] < minimum_trust:
             reasons.append("trust")
-        if not required <= set(map(str, profile.get("capabilities", ()))):
+        if not required <= profile["capabilities"]:
             reasons.append("capability")
-        scopes = set(map(str, profile.get("project_scopes", ())))
-        if scopes and project_id not in scopes:
+        if project_id not in profile["scopes"]:
             reasons.append("project_scope")
-        if locality and profile.get("locality") != locality:
+        if locality is not None and profile["locality"] != locality:
             reasons.append("locality")
-        if float(profile.get("available_quota", 0)) <= 0:
+        if profile["quota"] <= 0:
             reasons.append("quota")
         if reasons:
-            rejected[profile_id] = tuple(reasons)
+            rejected[profile["id"]] = tuple(reasons)
         else:
             eligible.append(profile)
-    selected = min(
-        eligible,
-        key=lambda row: (float(row.get("cost", 0)), str(row.get("id", ""))),
-        default=None,
-    )
+    selected = min(eligible, key=lambda row: (row["cost"], row["id"]), default=None)
     payload = {
         "project_id": project_id,
-        "selected_runtime": str(selected.get("id")) if selected else None,
+        "selected_runtime": selected["id"] if selected else None,
         "rejected": tuple(sorted(rejected.items())),
         "valid": selected is not None,
     }

@@ -13,8 +13,13 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from runtime.json_io import load_json_object  # noqa: E402
+from runtime.json_io import load_json_object, read_bounded_bytes  # noqa: E402
 from runtime.evidence_portability import rewrite_reference_literals  # noqa: E402
+from runtime.cybersecurity_provider import (  # noqa: E402
+    EXPECTED_SOURCE_CATALOG_SHA256, EXPECTED_PROJECTED_CATALOG_SHA256,
+    EXPECTED_GRAPH_SHA256, MAX_ARCHIVE_BYTES, decode_security_jsonl,
+    validate_security_metadata, validate_security_declarations, _preflight_archive,
+)
 
 
 EXPECTED_ARCHIVE = "460f2ed54dac3bc96a453d2fd30c098234df80d3840fda475ba95b1e3983a08f"
@@ -270,7 +275,7 @@ OPERATIONAL_CONTRACTS: dict[str, dict[str, object]] = {
 
 
 def _yaml(path: Path) -> dict[str, object]:
-    value = yaml.safe_load(path.read_text(encoding="utf-8"))
+    value = yaml.safe_load(read_bounded_bytes(path, max_bytes=1024 * 1024).decode("utf-8"))
     if not isinstance(value, dict):
         raise ValueError(f"expected YAML object: {path}")
     return value
@@ -281,7 +286,7 @@ def _render(value: object) -> str:
 
 
 def _sha(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    return hashlib.sha256(read_bounded_bytes(path, max_bytes=MAX_ARCHIVE_BYTES)).hexdigest()
 
 
 def _write_or_check(
@@ -309,27 +314,27 @@ def build(root: Path, source: Path, *, check: bool = False) -> dict[str, object]
     root = root.resolve(strict=True)
     source = source.resolve(strict=True)
     archive = source / "upstream/Anthropic-Cybersecurity-Skills-main.zip"
-    if _sha(archive) != EXPECTED_ARCHIVE:
+    archive_bytes = read_bounded_bytes(archive, max_bytes=MAX_ARCHIVE_BYTES)
+    if hashlib.sha256(archive_bytes).hexdigest() != EXPECTED_ARCHIVE:
         raise ValueError("cybersecurity source archive hash mismatch")
+    _preflight_archive(archive_bytes)
     catalog = source / "registries/cybersecurity_capabilities.jsonl"
     graph = source / "registries/security_capability_graph.jsonl"
-    if (
-        sum(1 for line in catalog.open(encoding="utf-8") if line.strip())
-        != EXPECTED_RECORDS
-    ):
-        raise ValueError("cybersecurity catalog count mismatch")
-    if (
-        sum(1 for line in graph.open(encoding="utf-8") if line.strip())
-        != EXPECTED_EDGES
-    ):
-        raise ValueError("cybersecurity graph count mismatch")
+    catalog_bytes = read_bounded_bytes(catalog, max_bytes=16 * 1024 * 1024)
+    graph_bytes = read_bounded_bytes(graph, max_bytes=16 * 1024 * 1024)
+    catalog_rows = decode_security_jsonl(catalog_bytes, expected_sha256=EXPECTED_SOURCE_CATALOG_SHA256)
+    graph_rows = decode_security_jsonl(graph_bytes, expected_sha256=EXPECTED_GRAPH_SHA256)
+    validate_security_metadata(catalog_rows, graph_rows)
+    domains = _yaml(source / "registries/security_domains.yaml")
+    risks = _yaml(source / "registries/security_risk_classes.yaml")
+    validate_security_declarations(catalog_rows, domains, risks)
     target = root / OUTPUT
     drift: list[str] = []
     catalog_projection = b"".join(
         (
             json.dumps(
                 rewrite_reference_literals(
-                    json.loads(line),
+                    row,
                     {"file://": "local file URI scheme "},
                 ),
                 sort_keys=True,
@@ -337,9 +342,10 @@ def build(root: Path, source: Path, *, check: bool = False) -> dict[str, object]
             )
             + "\n"
         ).encode("utf-8")
-        for line in catalog.read_text(encoding="utf-8").splitlines()
-        if line.strip()
+        for row in catalog_rows
     )
+    if hashlib.sha256(catalog_projection).hexdigest() != EXPECTED_PROJECTED_CATALOG_SHA256:
+        raise ValueError("cybersecurity catalog projection derivation mismatch")
     _write_or_check(
         target / "capabilities.jsonl",
         catalog_projection,
@@ -352,7 +358,7 @@ def build(root: Path, source: Path, *, check: bool = False) -> dict[str, object]
     ):
         _write_or_check(
             target / target_name,
-            (source / source_name).read_bytes(),
+            graph_bytes if target_name == "graph.jsonl" else read_bounded_bytes(source / source_name, max_bytes=1024 * 1024),
             check=check,
             drift=drift,
         )
@@ -363,7 +369,7 @@ def build(root: Path, source: Path, *, check: bool = False) -> dict[str, object]
     ):
         _write_or_check(
             target / target_name,
-            _render(_yaml(source / source_name)).encode(),
+            _render(domains if target_name == "domains.json" else risks if target_name == "risk_classes.json" else _yaml(source / source_name)).encode(),
             check=check,
             drift=drift,
         )
@@ -396,8 +402,8 @@ def build(root: Path, source: Path, *, check: bool = False) -> dict[str, object]
         "archive_sha256": archive_metadata["sha256"],
         "archive_entries": archive_metadata["entry_count"],
         "archive_size_bytes": archive_metadata["size_bytes"],
-        "catalog_sha256": _sha(catalog),
-        "graph_sha256": _sha(graph),
+        "catalog_sha256": hashlib.sha256(catalog_bytes).hexdigest(),
+        "graph_sha256": hashlib.sha256(graph_bytes).hexdigest(),
         "archive_bundled": False,
         "body_hydration": "explicit_verified_archive_only",
     }

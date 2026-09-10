@@ -44,8 +44,7 @@ def test_generated_skill_projection_is_complete_and_idempotent():
         if not facade.is_dir():
             continue
         facade_files = {
-            item.relative_to(ROOT).as_posix()
-            for item in generator._owned_files(facade)
+            item.relative_to(ROOT).as_posix() for item in generator._owned_files(facade)
         }
         assert facade_files <= declared
         assert any(
@@ -63,7 +62,10 @@ def test_generator_replaces_a_prior_generated_section_without_duplicate_keys():
     rendered = generator.render(duplicated)
     tomllib.loads(rendered)
     assert rendered.count(generator.START) == 1
-    assert rendered.count('"share/engineering-bootstrap/.px/skills/acquire-install-n8n" =') == 1
+    assert (
+        rendered.count('"share/engineering-bootstrap/.px/skills/acquire-install-n8n" =')
+        == 1
+    )
 
 
 def test_nested_non_markdown_skill_resources_are_projected():
@@ -83,7 +85,9 @@ def test_nested_non_markdown_skill_resources_are_projected():
 def test_future_skill_overlay_renders_canonical_paths_before_publication(tmp_path):
     generator = load_generator()
     (tmp_path / ".px/skills/existing").mkdir(parents=True)
-    (tmp_path / ".px/skills/existing/SKILL.md").write_text("# Existing\n", encoding="utf-8")
+    (tmp_path / ".px/skills/existing/SKILL.md").write_text(
+        "# Existing\n", encoding="utf-8"
+    )
     staged = tmp_path / ".engineering-bootstrap/staged/demo"
     staged.mkdir(parents=True)
     (staged / "SKILL.md").write_text("# Future\n", encoding="utf-8")
@@ -110,6 +114,7 @@ def test_future_skill_overlay_renders_canonical_paths_before_publication(tmp_pat
 
 def test_canonical_manifest_proves_exact_skill_source_projection():
     manifest = generate_artifact_manifest(ROOT)
+    assert manifest["valid"], manifest["errors"]
     result = verify_commissioned_skill_projection(
         ROOT,
         manifest,

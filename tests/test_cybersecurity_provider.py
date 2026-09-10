@@ -14,6 +14,112 @@ from runtime import cybersecurity_provider as provider
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def test_graph_seed_budget_applies_at_depth_zero() -> None:
+    result = provider.expand_security_graph(ROOT, ["one", "two", "three"], depth=0, max_nodes=1)
+    assert len(result["nodes"]) <= 1
+    assert result["truncated"] is True
+
+
+@pytest.mark.parametrize("parameter,value", [("depth", True), ("max_nodes", True),
+                                            ("max_nodes", 100001), ("max_edges", float("inf"))])
+def test_graph_bounds_reject_before_graph_read(monkeypatch, parameter, value) -> None:
+    monkeypatch.setattr(provider, "_jsonl", lambda *a, **k: pytest.fail("graph read before bounds"))
+    with pytest.raises(ValueError):
+        provider.expand_security_graph(ROOT, ["one"], **{parameter: value})
+
+
+def test_graph_loader_rejects_duplicate_edge_at_preserved_count(monkeypatch) -> None:
+    original = provider._jsonl
+    def duplicate(path, **kwargs):
+        rows = list(original(path, **kwargs))
+        if path.name == "graph.jsonl":
+            rows[-1] = rows[0]
+        return tuple(rows)
+    monkeypatch.setattr(provider, "_jsonl", duplicate)
+    with pytest.raises(ValueError):
+        provider.load_security_provider(ROOT, load_graph=True)
+
+
+def test_unloaded_graph_count_is_explicitly_expected() -> None:
+    state = provider.load_security_provider(ROOT)
+    assert state["edge_count"] is None
+    assert state["expected_edge_count"] == 14595
+    assert state["graph_loaded"] is False
+
+
+def test_archive_member_budget_precedes_decompression(tmp_path, monkeypatch) -> None:
+    body = b"x" * 8192
+    archive = tmp_path / "fixture.zip"
+    with zipfile.ZipFile(archive, "w", compression=zipfile.ZIP_DEFLATED) as target:
+        target.writestr("provider/skills/one/SKILL.md", body)
+    monkeypatch.setattr(provider, "EXPECTED_ARCHIVE_SHA256", hashlib.sha256(archive.read_bytes()).hexdigest())
+    monkeypatch.setattr(provider, "load_security_provider", lambda _: {"records": [{"id": "one", "source_path": "skills/one", "body_sha256": hashlib.sha256(body).hexdigest()}]})
+    monkeypatch.setattr(zipfile.ZipFile, "open", lambda *a, **k: pytest.fail("member decompressed before declared size budget"))
+    with pytest.raises(ValueError, match="byte"):
+        provider.hydrate_security_bodies(ROOT, archive, ["one"], max_bytes=128)
+
+
+def test_empty_security_hydration_rejects_before_archive_read(tmp_path, monkeypatch) -> None:
+    monkeypatch.setattr(Path, "read_bytes", lambda *a, **k: pytest.fail("archive read for empty selection"))
+    archive = tmp_path / "unused.zip"
+    archive.write_text("unused", encoding="utf-8")
+    with pytest.raises(ValueError, match="selection"):
+        provider.hydrate_security_bodies(ROOT, archive, [])
+
+
+def test_builder_rejects_duplicate_catalog_before_first_projection_write(tmp_path, monkeypatch) -> None:
+    from scripts import build_cybersecurity_provider_registry as builder
+    source = tmp_path / "source"
+    (source / "upstream").mkdir(parents=True)
+    (source / "registries").mkdir()
+    archive = source / "upstream/Anthropic-Cybersecurity-Skills-main.zip"
+    with zipfile.ZipFile(archive, "w") as target:
+        target.writestr("reference.txt", "inert")
+    monkeypatch.setattr(builder, "EXPECTED_ARCHIVE", hashlib.sha256(archive.read_bytes()).hexdigest())
+    raw = b'{"id":"duplicate"}\n' * 817
+    (source / "registries/cybersecurity_capabilities.jsonl").write_bytes(raw)
+    (source / "registries/security_capability_graph.jsonl").write_bytes((ROOT / provider.GRAPH_PATH).read_bytes())
+    monkeypatch.setattr(builder, "EXPECTED_SOURCE_CATALOG_SHA256", hashlib.sha256(raw).hexdigest(), raising=False)
+    monkeypatch.setattr(builder, "_write_or_check", lambda *a, **k: pytest.fail("projection publication preceded metadata validation"))
+    with pytest.raises(ValueError):
+        builder.build(tmp_path, source)
+
+
+def test_archive_directory_limit_precedes_zip_member_object_allocation(tmp_path, monkeypatch) -> None:
+    archive = tmp_path / "fixture.zip"
+    with zipfile.ZipFile(archive, "w") as target:
+        target.writestr("provider/skills/one/SKILL.md", "inert")
+        target.writestr("unselected.txt", "inert")
+    monkeypatch.setattr(provider, "EXPECTED_ARCHIVE_SHA256", hashlib.sha256(archive.read_bytes()).hexdigest())
+    monkeypatch.setattr(provider, "MAX_ARCHIVE_ENTRIES", 1)
+    monkeypatch.setattr(provider, "load_security_provider", lambda _: {"records": [{"id": "one"}]})
+    monkeypatch.setattr(zipfile, "ZipFile", lambda *a, **k: pytest.fail("ZIP directory parsed before entry budget"))
+    with pytest.raises(ValueError, match="directory budget"):
+        provider.hydrate_security_bodies(ROOT, archive, ["one"])
+
+
+@pytest.mark.parametrize("field,value", [("requires_human_approval", "true"),
+                                        ("execution_policy", "unknown"),
+                                        ("frameworks", {"unknown": []})])
+def test_shared_metadata_validator_rejects_typed_contract_drift(field, value) -> None:
+    records = list(provider._jsonl(ROOT / provider.CATALOG_PATH))
+    records[0] = {**records[0], field: value}
+    with pytest.raises(ValueError):
+        provider.validate_security_metadata(records)
+
+
+def test_metadata_only_validation_does_not_allocate_an_unrequested_graph() -> None:
+    import tracemalloc
+    records = provider._jsonl(ROOT / provider.CATALOG_PATH)
+    tracemalloc.start()
+    try:
+        provider.validate_security_metadata(records)
+        _, peak = tracemalloc.get_traced_memory()
+    finally:
+        tracemalloc.stop()
+    assert peak < 256_000, f"metadata-only validation allocated {peak} bytes"
+
+
 def engagement(
     *,
     mode: str = "read_only",
@@ -193,6 +299,7 @@ def test_graph_expansion_is_bounded() -> None:
     assert result["valid"] is True
     assert len(result["nodes"]) <= 20
     assert len(result["edges"]) <= 25
+    assert all(edge["from"] in result["nodes"] and edge["to"] in result["nodes"] for edge in result["edges"])
 
 
 def test_hydration_verifies_archive_and_body_hashes_without_extracting(

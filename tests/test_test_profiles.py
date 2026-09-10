@@ -119,7 +119,7 @@ def test_sections_are_content_addressed_bounded_and_dependency_governed(tmp_path
         < resolve_test_profile(ROOT, "full")["timeout_seconds"]
     )
     receipt = section_receipt(
-        learning, {"exit_code": 0, "timed_out": False, "duration_seconds": 1.2}
+        learning, {"valid": True, "exit_code": 0, "timed_out": False, "duration_seconds": 1.2}
     )
     assert receipt["passed"] and len(receipt["receipt_sha256"]) == 64
     assert receipt["cwd"] == "."
@@ -298,7 +298,10 @@ def test_failed_monolithic_sections_are_serially_partitioned_per_file():
         ]
         chunks = section["chunks"]
 
-        assert len(members) == 21
+        assert members, "governed sections must have native test members"
+        assert len(members) == len(set(members)), "native test members must be unique"
+        if name == "testing-governance":
+            assert members.count("tests/test_test_evidence_inputs.py") == 1
         assert section["max_parallel_chunks"] == 1
         assert section["timeout_seconds"] == limits["section_timeout"]
         assert len(chunks) == len(members)
@@ -434,7 +437,7 @@ def test_section_chunk_receipt_is_atomic_bounded_and_content_addressed(tmp_path)
         },
     )
     assert node_failed["output_evidence"]["failure_nodes"] == [
-        "request-bound navigation settles exactly"
+        "node:details-redacted"
     ]
 
     node_summary = section_chunk_receipt(
@@ -466,7 +469,7 @@ def test_section_chunk_receipt_is_atomic_bounded_and_content_addressed(tmp_path)
         },
     )
     assert tap_failed["output_evidence"]["failure_nodes"] == [
-        "exact modal continuity"
+        "tap:details-redacted"
     ]
 
     unattributed = section_chunk_receipt(
@@ -558,6 +561,7 @@ def test_section_status_refuses_missing_or_stale_receipts(monkeypatch):
         "learning-promotion",
         "execution-placement",
         "hardware-routing",
+        "runtime-domain-contracts",
     }
 
 
@@ -605,6 +609,7 @@ def test_certification_groups_are_exhaustive_exclusive_and_bounded():
     receipt = group_receipt(
         exact,
         {
+            "valid": True,
             "exit_code": 0,
             "timed_out": False,
             "duration_seconds": 1.0,

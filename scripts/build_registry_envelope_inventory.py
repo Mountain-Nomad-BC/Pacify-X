@@ -7,6 +7,9 @@ import json
 from pathlib import Path
 
 
+VERSIONLESS_ENVELOPE_SCHEMA = "shared registry-envelope invariant (versionless document)"
+
+
 def record(
     path: str,
     count_key: str,
@@ -117,7 +120,8 @@ def build_inventory() -> dict[str, object]:
             "registry/engineering_reasoning_expansion.json", "record_count", "records"
         ),
         record("registry/external_candidate_graph.json", "edge_count", "edges"),
-        record("registry/external_capability_benchmarks.json", "case_count", "cases"),
+        record("registry/external_capability_benchmarks.json", "case_count", "cases",
+               schema=VERSIONLESS_ENVELOPE_SCHEMA),
         record(
             "registry/external_capability_candidates.json",
             "capability_count",
@@ -300,11 +304,13 @@ def build_inventory() -> dict[str, object]:
             "registry/security_capabilities/domains.json",
             "canonical_domain_count",
             "canonical_counts",
+            schema=VERSIONLESS_ENVELOPE_SCHEMA,
         ),
         record(
             "registry/security_capabilities/domains.json",
             "source_raw_domain_count",
             "raw_counts",
+            schema=VERSIONLESS_ENVELOPE_SCHEMA,
         ),
         record(
             "registry/security_capabilities/native_skill_dispositions.json",

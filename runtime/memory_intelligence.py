@@ -18,8 +18,18 @@ import re
 import time
 from typing import Callable, Iterable, Mapping, Sequence, TypeVar
 
+from .archive_io import reject_path_links
+from .input_files import (
+    contained_file,
+    read_file_image,
+    cooperative_deadline,
+    check_deadline,
+)
+from .json_io import decode_json_object, bounded_json_text
+from .numeric_inputs import bounded_mapping, bounded_sequence, bounded_json_value
 from .memory_fabric import MemoryRecord
 from .semantic_memory import SemanticEnvelope, semantic_envelope_from_mapping
+from .numeric_inputs import bounded_integer, bounded_items, bounded_text, finite_number
 
 
 WORD = re.compile(r"[a-z0-9_./-]+")
@@ -656,8 +666,40 @@ def assemble_context(
     ranked: Iterable[RankedMemory], *, max_chars: int = 12000
 ) -> ContextPackage:
     """Assemble bounded L3/L2/L1 context and L0 pointers, never the whole vault."""
-    if max_chars < 100:
-        raise ValueError("context budget must be at least 100 characters")
+    max_chars = bounded_integer(
+        max_chars, "context character budget", minimum=100, maximum=1024 * 1024
+    )
+    admitted = []
+    identities = set()
+    input_bytes = 0
+    for hit in bounded_items(ranked, "context records", maximum=10000):
+        if type(hit) is not RankedMemory or type(hit.record) is not MemoryRecord:
+            raise ValueError("context requires typed ranked memory records")
+        record = hit.record
+        identity = bounded_text(record.memory_id, "memory identity")
+        if identity in identities:
+            raise ValueError("context memory identities must be unique")
+        identities.add(identity)
+        layer = record.layer
+        if type(layer) is not str or layer not in {"L0", "L1", "L2", "L3"}:
+            raise ValueError("unknown context memory layer")
+        kind = bounded_text(record.memory_type, "memory type")
+        score = finite_number(hit.score, "memory score")
+        if layer == "L0":
+            body = "evidence pointer: " + bounded_text(
+                record.evidence_locator, "evidence locator", maximum=4096
+            )
+        else:
+            if type(record.summary) is not str or len(record.summary) > 1024 * 1024:
+                raise ValueError("memory summary exceeds its text budget")
+            input_bytes += len(record.summary.encode("utf-8"))
+            body = record.summary[:400] if layer == "L2" else record.summary
+        input_bytes += len(identity.encode("utf-8")) + len(kind.encode("utf-8"))
+        if layer == "L0":
+            input_bytes += len(body.encode("utf-8"))
+        if input_bytes > 8 * 1024 * 1024:
+            raise ValueError("context inputs exceed their aggregate byte budget")
+        admitted.append((identity, layer, kind, score, body))
     quotas = {
         "L3": int(max_chars * 0.25),
         "L2": int(max_chars * 0.15),
@@ -669,27 +711,17 @@ def assemble_context(
     selected: list[str] = []
     dropped: list[str] = []
     total = 0
-    for hit in ranked:
-        record = hit.record
-        body = (
-            f"evidence pointer: {record.evidence_locator}"
-            if record.layer == "L0"
-            else (record.summary[:400] if record.layer == "L2" else record.summary)
-        )
-        block = f"[{record.layer}:{record.memory_type}:{record.memory_id}:score={hit.score:.4f}]\n{body}\n"
-        layer_cap = (
-            int(max_chars * 0.15) if record.layer == "L0" else quotas[record.layer]
-        )
-        if (
-            used[record.layer] + len(block) > layer_cap
-            or total + len(block) > max_chars
-        ):
-            dropped.append(record.memory_id)
+    for identity, layer, kind, score, body in admitted:
+        block = f"[{layer}:{kind}:{identity}:score={score:.4f}]\n{body}\n"
+        size = len(block) + bool(blocks)
+        layer_cap = int(max_chars * 0.15) if layer == "L0" else quotas[layer]
+        if used[layer] + size > layer_cap or total + size > max_chars:
+            dropped.append(identity)
             continue
         blocks.append(block)
-        selected.append(record.memory_id)
-        used[record.layer] += len(block)
-        total += len(block)
+        selected.append(identity)
+        used[layer] += size
+        total += size
     return ContextPackage(
         "\n".join(blocks), tuple(selected), tuple(dropped), total, max_chars
     )
@@ -734,6 +766,74 @@ class OffloadPointer:
     reversible: bool = True
 
 
+def _offload_root(root: Path) -> Path:
+    if not isinstance(root, Path):
+        raise ValueError("offload root must be an explicit filesystem path")
+    reject_path_links(root)
+    if root.exists() and not root.is_dir():
+        raise ValueError("offload root must be a directory")
+    return root.resolve()
+
+
+def _offload_identity(value, name):
+    value = bounded_text(value, name, maximum=256, strip=False)
+    if not value.strip():
+        raise ValueError(f"{name} must be nonempty")
+    return value
+
+
+def _offload_paths(root: Path, pointer: OffloadPointer, project_id: str):
+    if type(pointer) is not OffloadPointer or pointer.reversible is not True:
+        raise ValueError("preview or untyped offload pointer is not reversible")
+    project_id = _offload_identity(project_id, "expected project identity")
+    if _offload_identity(pointer.project_id, "pointer project identity") != project_id:
+        raise ValueError("offload pointer project mismatch")
+    source_id = _offload_identity(pointer.source_message_id, "source message identity")
+    _offload_identity(pointer.tool_call_id, "tool call identity")
+    digest = bounded_text(
+        pointer.content_hash, "offload content digest", maximum=64, strip=False
+    )
+    if not re.fullmatch("[0-9a-f]{64}", digest):
+        raise ValueError("offload content digest is malformed")
+    expected = (
+        "off_"
+        + hashlib.sha256(
+            f"{project_id}\0{source_id}\0{digest}".encode("utf-8")
+        ).hexdigest()[:24]
+    )
+    if type(pointer.pointer_id) is not str or pointer.pointer_id != expected:
+        raise ValueError("offload pointer identity mismatch")
+    relative = f".memory-control/offload/objects/{digest[:2]}/{digest}.txt"
+    if type(pointer.storage_locator) is not str or pointer.storage_locator != relative:
+        raise ValueError("offload object locator is not its canonical contained path")
+    if type(pointer.summary) is not str or len(pointer.summary) > 4096:
+        raise ValueError("offload summary must be bounded text")
+    pointer.summary.encode("utf-8")
+    receipt_relative = f".memory-control/offload/pointers/{expected}.json"
+    for name in (relative, receipt_relative):
+        path = root / name
+        reject_path_links(path)
+        if not path.resolve().is_relative_to(root):
+            raise ValueError("offload path escapes its root")
+    return relative, receipt_relative
+
+
+def _offload_image(root: Path, relative: str, *, limit: int, deadline: float):
+    try:
+        path, info = contained_file(root, relative)
+    except FileNotFoundError as error:
+        raise ValueError(
+            "persisted offload object or pointer receipt is missing"
+        ) from error
+    return read_file_image(path, info, limit=limit, deadline=deadline)
+
+
+def _check_pointer_receipt(raw, pointer: OffloadPointer):
+    data = decode_json_object(raw, max_bytes=65536, max_depth=8, max_nodes=1000)
+    if type(data.get("reversible")) is not bool or data != asdict(pointer):
+        raise ValueError("offload pointer receipt identity collision or drift")
+
+
 def compact_tool_results(
     root: Path,
     messages: Sequence[Mapping[str, object]],
@@ -744,88 +844,161 @@ def compact_tool_results(
     threshold: int = 2000,
     apply: bool = False,
 ) -> tuple[tuple[dict[str, object], ...], tuple[OffloadPointer, ...]]:
-    """Replace old large tool results with hash-verified project-local pointers."""
-    if not project_id or min(max_chars, threshold) < 1 or protected_tail < 0:
-        raise ValueError("valid project and compaction bounds are required")
-    output = [dict(item) for item in messages]
-    total = sum(len(str(item.get("content", ""))) for item in output)
+    """Plan bounded content compaction; publish only a complete fitting plan.
+
+    Character accounting covers content plus replacement markers. It is not a
+    token or full-message serialization budget. Preview pointers are not backed
+    by this call; apply verifies bounded objects and receipts before return.
+    """
+    if type(apply) is not bool:
+        raise ValueError("offload apply must be an actual boolean")
+    project_id = _offload_identity(project_id, "project identity")
+    max_chars = bounded_integer(
+        max_chars, "compaction character budget", maximum=8 * 1024 * 1024
+    )
+    threshold = bounded_integer(threshold, "offload threshold", maximum=8 * 1024 * 1024)
+    protected_tail = bounded_integer(
+        protected_tail, "protected tail", minimum=0, maximum=10000
+    )
+    messages = bounded_sequence(messages, "tool messages", maximum=10000)
+    bounded_json_value(list(messages))
+    output = []
+    identities = set()
+    total = 0
+    metadata = []
+    for index, item in enumerate(messages):
+        item = bounded_mapping(item, "tool message", maximum=64)
+        content = item.get("content", "")
+        if type(content) is not str:
+            raise ValueError("message content must be actual text")
+        source_id = _offload_identity(item.get("id", str(index)), "message identity")
+        if source_id in identities:
+            raise ValueError("message identities must be unique")
+        identities.add(source_id)
+        for name in ("role", "type"):
+            if name in item:
+                bounded_text(item[name], "message kind", maximum=64, strip=False)
+        tool_result = item.get("role") == "tool" or item.get("type") == "tool_result"
+        call_id = (
+            _offload_identity(item.get("tool_call_id"), "tool call identity")
+            if tool_result
+            else ""
+        )
+        metadata.append((source_id, call_id, tool_result))
+        output.append(dict(item))
+        total += len(content)
+    root = _offload_root(root)
     if total <= max_chars:
         return tuple(output), ()
     pointers = []
-    stop = max(0, len(output) - protected_tail)
-    for index in range(stop):
+    planned = []
+    for index in range(max(0, len(output) - protected_tail)):
+        source_id, call_id, tool_result = metadata[index]
         message = output[index]
-        if message.get("role") != "tool" and message.get("type") != "tool_result":
-            continue
-        content = str(message.get("content", ""))
-        if len(content) <= threshold:
-            continue
-        source_id = str(message.get("id", index))
-        tool_call_id = str(message.get("tool_call_id", ""))
-        if not tool_call_id:
+        content = message.get("content", "")
+        if not tool_result or len(content) <= threshold:
             continue
         digest = hashlib.sha256(content.encode("utf-8")).hexdigest()
         pointer_id = (
             "off_"
             + hashlib.sha256(
-                f"{project_id}\0{source_id}\0{digest}".encode()
+                f"{project_id}\0{source_id}\0{digest}".encode("utf-8")
             ).hexdigest()[:24]
         )
-        relative = (
-            Path(".memory-control")
-            / "offload"
-            / "objects"
-            / digest[:2]
-            / f"{digest}.txt"
-        )
-        target = root.resolve() / relative
+        relative = f".memory-control/offload/objects/{digest[:2]}/{digest}.txt"
         summary = content[:600] + (
             f"\n...[offloaded {len(content) - 600} chars]" if len(content) > 600 else ""
         )
+        replacement = summary + f"\n[pointer:{pointer_id} sha256:{digest}]"
+        if len(replacement) >= len(content):
+            continue
         pointer = OffloadPointer(
             pointer_id,
             project_id,
             source_id,
-            tool_call_id,
+            call_id,
             digest,
             summary,
-            relative.as_posix(),
+            relative,
+            reversible=apply,
         )
-        if apply:
-            if (
-                target.exists()
-                and hashlib.sha256(target.read_bytes()).hexdigest() != digest
-            ):
-                raise ValueError("offload object hash mismatch")
-            if not target.exists():
-                _write_new(target, content)
-            receipt = (
-                root.resolve()
-                / ".memory-control"
-                / "offload"
-                / "pointers"
-                / f"{pointer_id}.json"
-            )
-            rendered = json.dumps(asdict(pointer), indent=2) + "\n"
-            if receipt.exists() and receipt.read_text(encoding="utf-8") != rendered:
-                raise ValueError("offload pointer identity collision or drift")
-            if not receipt.exists():
-                _write_new(receipt, rendered)
-        message["content"] = summary + f"\n[pointer:{pointer_id} sha256:{digest}]"
-        message["_offloaded"] = True
+        message["content"] = replacement
+        message["_offloaded"] = apply
+        if not apply:
+            message["_offload_preview"] = True
+        else:
+            message.pop("_offload_preview", None)
         pointers.append(pointer)
-        total = sum(len(str(item.get("content", ""))) for item in output)
+        planned.append((pointer, content))
+        total += len(replacement) - len(content)
         if total <= max_chars:
             break
+    if total > max_chars:
+        raise ValueError(
+            "protected or ineligible content cannot fit the compaction budget"
+        )
+    if not apply:
+        return tuple(output), tuple(pointers)
+    deadline = cooperative_deadline()
+    objects = {}
+    receipts = {}
+    for pointer, content in planned:
+        relative, receipt_relative = _offload_paths(root, pointer, project_id)
+        if relative not in objects:
+            path = root / relative
+            exists = path.exists()
+            if exists:
+                raw = _offload_image(
+                    root, relative, limit=8 * 1024 * 1024, deadline=deadline
+                )
+                if hashlib.sha256(raw).hexdigest() != pointer.content_hash:
+                    raise ValueError("offload object hash mismatch")
+            objects[relative] = (content, pointer.content_hash, exists)
+        rendered = bounded_json_text(asdict(pointer), max_bytes=65536)
+        if receipt_relative in receipts and receipts[receipt_relative][0] != rendered:
+            raise ValueError("planned offload pointer identity collision")
+        exists = (root / receipt_relative).exists()
+        if exists:
+            _check_pointer_receipt(
+                _offload_image(root, receipt_relative, limit=65536, deadline=deadline),
+                pointer,
+            )
+        receipts[receipt_relative] = (rendered, pointer, exists)
+    # Every existing target is checked before the first new object or receipt.
+    for relative, (content, digest, exists) in objects.items():
+        if not exists:
+            check_deadline(deadline)
+            reject_path_links(root / relative)
+            _write_new(root / relative, content)
+            raw = _offload_image(
+                root, relative, limit=8 * 1024 * 1024, deadline=deadline
+            )
+            if hashlib.sha256(raw).hexdigest() != digest:
+                raise ValueError("offload object hash mismatch after publication")
+    for relative, (rendered, pointer, exists) in receipts.items():
+        if not exists:
+            check_deadline(deadline)
+            reject_path_links(root / relative)
+            _write_new(root / relative, rendered)
+            _check_pointer_receipt(
+                _offload_image(root, relative, limit=65536, deadline=deadline), pointer
+            )
+    check_deadline(deadline)
     return tuple(output), tuple(pointers)
 
 
-def restore_offload(root: Path, pointer: OffloadPointer) -> str:
-    path = root.resolve() / pointer.storage_locator
-    content = path.read_text(encoding="utf-8")
-    if hashlib.sha256(content.encode("utf-8")).hexdigest() != pointer.content_hash:
+def restore_offload(root: Path, pointer: OffloadPointer, *, project_id: str) -> str:
+    """Restore a persisted pointer for the caller's explicit expected project."""
+    root = _offload_root(root)
+    relative, receipt_relative = _offload_paths(root, pointer, project_id)
+    deadline = cooperative_deadline()
+    _check_pointer_receipt(
+        _offload_image(root, receipt_relative, limit=65536, deadline=deadline), pointer
+    )
+    raw = _offload_image(root, relative, limit=8 * 1024 * 1024, deadline=deadline)
+    if hashlib.sha256(raw).hexdigest() != pointer.content_hash:
         raise ValueError("offload restore hash mismatch")
-    return content
+    return raw.decode("utf-8")
 
 
 @dataclass(frozen=True, slots=True)
