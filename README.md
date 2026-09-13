@@ -8,7 +8,7 @@
 
 > Make AI build software like an engineering team, not an overconfident intern.
 
-Engineering Loop & Bootstrap turns a general-purpose AI assistant into a governed, evidence-driven engineering system. It gives the AI the skills, rules, project memory, safety checks, and repeatable workflows it needs to manage software work responsibly.
+Engineering Loop utilization & Harnessing turns a general-purpose AI assistant into a governed, evidence-driven engineering system. It gives the AI the skills, rules, project memory, safety checks, and repeatable workflows it needs to manage software work responsibly.
 
 PACIFY-X is the project and framework. `engineering-bootstrap` is its Python package and command-line control plane.
 
@@ -32,6 +32,10 @@ You describe the project and the outcome you want. PACIFY-X helps the AI:
 - make a plan, track the work, and ask before risky actions;
 - test its work and collect evidence before claiming success;
 - recover or quarantine material instead of silently deleting it.
+- Engineering Genomics and it will help turn knowledge into operational code
+- Logs and monitors usage and flags candidates for learning, processes, workflows, orchestrations, and skill creation and refinement.
+- Take multiple potential candidates, test and refine them until they combine and validate and canonical knowledge
+- Multi layer persistent memmory
 
 You do not need to learn the internal orchestration system or memorize a large command set. That is the AI’s job. The human-facing setup is intentionally short.
 
