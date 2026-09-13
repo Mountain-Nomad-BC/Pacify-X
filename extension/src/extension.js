@@ -737,15 +737,20 @@ function activateImplementation(context, transaction) {
   async function governedHostContext(force = false) {
     const root = workspaceRoot();
     const ttlMs = 5 * 60_000;
-    if (!force && hostContextCache && Date.now() - hostContextCache.createdAt < ttlMs) return hostContextCache.value;
-    return bridge().governor.run('host-context', async signal => {
+    if (!force && hostContextCache && hostContextCache.workspaceRoot === root
+      && Date.now() >= hostContextCache.createdAt
+      && Date.now() - hostContextCache.createdAt < ttlMs) return hostContextCache.value;
+    return bridge().governor.run(`host-context:${root || '<no-workspace>'}`, async signal => {
       if (signal.aborted) throw Object.assign(new Error('Host context cancelled.'), { name: 'AbortError' });
       const coordinationData = root ? coordination() : null;
       const provider = await providerStatus(root);
       if (signal.aborted) throw Object.assign(new Error('Host context cancelled.'), { name: 'AbortError' });
       const envelope = await liveContextEnvelope('', coordinationData, provider);
+      if (signal.aborted || workspaceRoot() !== root) {
+        throw Object.assign(new Error('Host context superseded by workspace change.'), { name: 'AbortError' });
+      }
       const value = { coordinationData, provider, envelope };
-      hostContextCache = { createdAt: Date.now(), value };
+      hostContextCache = { createdAt: Date.now(), workspaceRoot: root, value };
       return value;
     }, {
       pool: 'providerIo', priority: force ? 1 : 3,

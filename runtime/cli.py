@@ -1820,7 +1820,7 @@ def main(argv: list[str] | None = None) -> int:
                     "valid": True,
                     "deferred": True,
                     "reason": "project inventory is excluded from bounded startup",
-                    "command": "python -m runtime.cli tooling --project <path>",
+                    "command": "python -m runtime.cli tooling assess --project <path>",
                     "read_only": True,
                     "executed_changes": False,
                 },
@@ -2512,7 +2512,7 @@ def main(argv: list[str] | None = None) -> int:
         elif args.command == "review-candidate":
             from .admission_controller import review_authoritative
             from .exit_codes import decision_exit_code
-            from .registry import load_json
+            from .trusted_evidence import load_evidence_request_file as load_json
 
             decision = review_authoritative(
                 root, load_json(args.manifest), load_json(args.evidence)
@@ -2602,7 +2602,7 @@ def main(argv: list[str] | None = None) -> int:
         elif args.command == "verify-outcome":
             from .exit_codes import decision_exit_code
             from .outcome_verifier import verify_authoritative
-            from .registry import load_json
+            from .trusted_evidence import load_evidence_request_file as load_json
 
             request = load_json(args.request)
             output = verify_authoritative(root, request)

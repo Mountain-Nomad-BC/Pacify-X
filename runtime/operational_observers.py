@@ -712,6 +712,8 @@ class OperationalObserverController:
         action: str,
         *,
         observed_effects: Sequence[str] = (),
+        expected_generation=None,
+        expected_inputs=None,
     ) -> dict[str, object]:
         event = self._operation_event(observer_id, state, action, observed_effects)
         event_sha256 = _sha(event)
@@ -740,6 +742,8 @@ class OperationalObserverController:
                 ),
             ),
             transaction_id=f"observer-{observer_id}-{int(state['revision']):08d}-{action}",
+            expected_generation=expected_generation,
+            expected_inputs=expected_inputs,
         )
         delivery: dict[str, object] = {"status": "outbox_only", "error_type": None}
         if self.event_emitter is not None:
@@ -785,6 +789,18 @@ class OperationalObserverController:
             raise ValueError("observer backend health is invalid")
         return probe
 
+    def _capture_state(self, observer_id):
+        self.wal.recover()
+        generation = self.wal.capture_generation()
+        path = self._state_path(observer_id)
+        raw = self.wal.read_source_image(path)
+        if self.wal.capture_generation() != generation:
+            from .wal_transaction import WalConflictError
+            raise WalConflictError("observer generation changed during acquisition")
+        inputs = {path.relative_to(self.wal.allowed_root).as_posix():
+                  None if raw is None else hashlib.sha256(raw).hexdigest()}
+        return raw, dict(expected_generation=generation, expected_inputs=inputs)
+
     def enable(self, consent: ObserverConsent) -> dict[str, object]:
         _observer_consent(consent)
         consent.validate()
@@ -796,8 +812,8 @@ class OperationalObserverController:
         probe = self._probe_backend(backend, consent)
         self.root.mkdir(parents=True, exist_ok=True)
         with FileLock(self.root / ".observer.lock", timeout_seconds=10):
-            self.wal.recover()
-            if self._state_path(consent.observer_id).exists():
+            raw, preconditions = self._capture_state(consent.observer_id)
+            if raw is not None:
                 raise ValueError("observer already has retained state")
             try:
                 backend.start(consent)
@@ -833,6 +849,7 @@ class OperationalObserverController:
                     state,
                     "enable",
                     observed_effects=("process",),
+                    **preconditions,
                 )
             except BaseException as error:
                 # A native session must never outlive failure to retain its owner
@@ -850,9 +867,11 @@ class OperationalObserverController:
                     f"observer enable commit failed ({type(error).__name__})"
                 ) from None
 
-    def _load_active_state(self, consent: ObserverConsent) -> dict[str, object]:
+    def _load_active_state(self, consent: ObserverConsent, *, raw) -> dict[str, object]:
         try:
-            state = json.loads(self._state_path(consent.observer_id).read_text(encoding="utf-8"))
+            if raw is None:
+                raise ValueError("observer state is missing")
+            state = json.loads(raw.decode("utf-8"))
         except (OSError, UnicodeError, json.JSONDecodeError) as error:
             raise ValueError("observer state is unreadable") from error
         if state.get("status") != "active" or state.get("consent_sha256") != _sha(asdict(consent)):
@@ -864,6 +883,7 @@ class OperationalObserverController:
         backend: ObserverBackend,
         consent: ObserverConsent,
         state: dict[str, object],
+        *, preconditions,
     ) -> None:
         now = datetime.now(timezone.utc)
         elapsed = (now - _parse_time(state["started_at"])).total_seconds()
@@ -888,7 +908,7 @@ class OperationalObserverController:
                 "last_error_type": error_type,
             }
         )
-        self._commit(consent.observer_id, state, "expire")
+        self._commit(consent.observer_id, state, "expire", **preconditions)
         if error_type is not None:
             raise RuntimeError(
                 f"expired observer shutdown failed ({error_type})"
@@ -904,9 +924,9 @@ class OperationalObserverController:
         if backend is None:
             raise RuntimeError("observer backend is not installed")
         with FileLock(self.root / ".observer.lock", timeout_seconds=10):
-            self.wal.recover()
-            state = self._load_active_state(consent)
-            self._expire_if_needed(backend, consent, state)
+            raw, preconditions = self._capture_state(consent.observer_id)
+            state = self._load_active_state(consent, raw=raw)
+            self._expire_if_needed(backend, consent, state, preconditions=preconditions)
             try:
                 raw_records = backend.read(limit)
             except BaseException as error:
@@ -917,7 +937,7 @@ class OperationalObserverController:
                         "last_error_type": type(error).__name__,
                     }
                 )
-                self._commit(consent.observer_id, state, "capture_failed")
+                self._commit(consent.observer_id, state, "capture_failed", **preconditions)
                 raise RuntimeError(f"observer backend read failed ({type(error).__name__})") from None
             records: list[dict[str, object]] = []
             dropped = 0
@@ -968,6 +988,7 @@ class OperationalObserverController:
                 state,
                 "capture",
                 observed_effects=observed_effects,
+                **preconditions,
             )
             return {**receipt, "observations": records, "dropped_in_batch": dropped}
 
@@ -979,11 +1000,11 @@ class OperationalObserverController:
         if backend is None:
             raise RuntimeError("observer backend is not installed")
         with FileLock(self.root / ".observer.lock", timeout_seconds=10):
-            self.wal.recover()
+            raw, preconditions = self._capture_state(observer_id)
             try:
-                state = json.loads(
-                    self._state_path(observer_id).read_text(encoding="utf-8")
-                )
+                if raw is None:
+                    raise ValueError("observer state is missing")
+                state = json.loads(raw.decode("utf-8"))
             except (OSError, UnicodeError, json.JSONDecodeError) as error:
                 raise ValueError("observer state is unreadable") from error
             try:
@@ -1002,6 +1023,9 @@ class OperationalObserverController:
                 backend_health = "unknown"
                 backend_drops = None
                 error_type = type(error).__name__
+            if self.wal.capture_generation() != preconditions["expected_generation"]:
+                from .wal_transaction import WalConflictError
+                raise WalConflictError("observer health generation changed during probe")
             return {
                 "schema_version": "px.os-observer-health/1.0",
                 "observer_id": observer_id,
@@ -1021,9 +1045,11 @@ class OperationalObserverController:
         if backend is None:
             raise RuntimeError("observer backend is not installed")
         with FileLock(self.root / ".observer.lock", timeout_seconds=10):
-            self.wal.recover()
+            raw, preconditions = self._capture_state(observer_id)
             try:
-                state = json.loads(self._state_path(observer_id).read_text(encoding="utf-8"))
+                if raw is None:
+                    raise ValueError("observer state is missing")
+                state = json.loads(raw.decode("utf-8"))
             except (OSError, UnicodeError, json.JSONDecodeError) as error:
                 raise ValueError("observer state is unreadable") from error
             if state.get("status") != "active":
@@ -1041,7 +1067,7 @@ class OperationalObserverController:
                         "last_error_type": type(error).__name__,
                     }
                 )
-                self._commit(observer_id, state, "uninstall_failed" if uninstall else "disable_failed")
+                self._commit(observer_id, state, "uninstall_failed" if uninstall else "disable_failed", **preconditions)
                 raise RuntimeError(f"observer shutdown failed ({type(error).__name__})") from None
             state.update(
                 {
@@ -1056,4 +1082,5 @@ class OperationalObserverController:
                 state,
                 "uninstall" if uninstall else "disable",
                 observed_effects=("process",),
+                **preconditions,
             )

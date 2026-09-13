@@ -12,6 +12,37 @@ from runtime.commissioning import commission, project_check
 ROOT = Path(__file__).parents[1]
 
 
+def test_project_brief_uses_shared_wal_and_preserves_all_before_images(tmp_path):
+    from runtime.project_management import project_management_files
+    from runtime.commissioning import apply_project_brief
+    from runtime.wal_transaction import JsonWal
+    from runtime.wal_ownership import WalOwnership
+    for relative, raw in project_management_files(tmp_path, 'new').items():
+        path = tmp_path / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(raw)
+    state_path = tmp_path / '.engineering-bootstrap/project-management/state.json'
+    before = state_path.read_bytes()
+    answers = {'schema_version': '1.0', 'mode': 'new',
+        'answers': {key: 'confirmed' for key in ('goal', 'users', 'scope', 'data', 'accessibility', 'security', 'integrations', 'operations', 'cost_timeline', 'acceptance')},
+        'facts': [], 'preferences': [], 'assumptions': [], 'unknowns': [], 'contradictions': [], 'decisions_requiring_approval': [],
+        'human_acceptance': {key: True for key in ('scope', 'architecture', 'security_governance', 'accessibility', 'data_integrations', 'cost', 'execution_waves', 'acceptance_criteria')}}
+    answer = tmp_path / 'answers.json'
+    answer.write_text(json.dumps(answers))
+    journal = '.engineering-bootstrap/wal/cohesion-card-reconciliation'
+    WalOwnership.activate(tmp_path, [dict(journal=journal, domains=[
+        dict(path='.engineering-bootstrap/project-management', kind='subtree'),
+        dict(path='PROJECT_MANAGEMENT.md', kind='exact')])])
+    wal = JsonWal(tmp_path / journal, tmp_path)
+    wal.activate_generation(tmp_path)
+    initial = wal.capture_generation()
+    result = apply_project_brief(tmp_path, answer, source_root=ROOT, apply=True)
+    assert result['applied'] is True
+    assert result['transaction']['generation_token'] == wal.capture_generation() != initial
+    assert json.loads(state_path.read_bytes())['work']['objective'] == 'confirmed'
+    assert before in [p.read_bytes() for p in (state_path.parent / 'history').iterdir()]
+
+
 class CommissioningApplyTests(unittest.TestCase):
     def test_new_project_proposal_has_no_write_effect(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

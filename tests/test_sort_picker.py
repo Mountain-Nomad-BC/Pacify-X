@@ -16,6 +16,24 @@ SPEC.loader.exec_module(sort_picker)
 
 
 class SortPickerTests(unittest.TestCase):
+    def test_direct_benchmark_rejects_invalid_repeat_denominators(self) -> None:
+        items = [(1, 0, {"id": 1})]
+        for repeats in (0, -1, 26, True, 1.0):
+            with self.subTest(repeats=repeats), self.assertRaisesRegex(
+                ValueError, "between 1 and 25"
+            ):
+                sort_picker.benchmark(
+                    "identity", lambda values: values, items, items, repeats
+                )
+
+    def test_output_validation_binds_complete_record_content(self) -> None:
+        reference = [(1, 0, {"id": 1, "payload": "expected"})]
+        changed = [(1, 0, {"id": 1, "payload": "changed"})]
+        self.assertEqual(
+            sort_picker.validate_output(changed, reference),
+            (False, False, "record-content-mismatch"),
+        )
+
     def test_large_integer_jsonl_uses_deterministic_sample_and_three_finalists(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             source = Path(directory) / "data.jsonl"

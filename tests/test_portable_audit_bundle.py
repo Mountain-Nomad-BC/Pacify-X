@@ -174,13 +174,16 @@ def test_audit_original_root_link_is_rejected_before_resolution(tmp_path, monkey
     (source / "safe.txt").write_text("safe", encoding="utf-8")
     prerequisites = tmp_path / "ready.json"
     prerequisites.write_text("{}", encoding="utf-8")
-    original = Path.is_symlink
-    monkeypatch.setattr(
-        Path, "is_symlink", lambda path: path == source or original(path)
-    )
+    linked_source = tmp_path / "linked-root"
+    if __import__("os").name == "nt":
+        import _winapi
+
+        _winapi.CreateJunction(str(source), str(linked_source))
+    else:
+        linked_source.symlink_to(source, target_is_directory=True)
     with pytest.raises(ValueError, match="link"):
         build_portable_audit_bundle(
-            {"source": source},
+            {"source": linked_source},
             output_zip=tmp_path / "out/a.zip",
             checksum_path=tmp_path / "out/a.sha256",
             prerequisites=prerequisites,

@@ -9,10 +9,9 @@ import hashlib
 import json
 from pathlib import Path
 import re
-import shutil
 from typing import Callable, Iterable, Mapping, Sequence
 
-from .wal_transaction import JsonArtifact, JsonWal
+from .wal_transaction import BytesArtifact, JsonArtifact, JsonTextArtifact, JsonWal
 
 
 CURRENT_STATE_SCHEMA_VERSION = "2.0"
@@ -194,9 +193,15 @@ def _migration_root(path: Path) -> Path:
 
 def persist_state(state: DurableState, path: Path) -> None:
     """Persist current state, refusing implicit migration or downgrade."""
+    path = path.absolute()
     path.parent.mkdir(parents=True, exist_ok=True)
     payload = _state_payload(state)
     content = json.dumps(payload, indent=2, ensure_ascii=False) + "\n"
+    wal = JsonWal(_migration_root(path) / 'wal', path.parent).producer_for_target(path)
+    wal.recover()
+    generation = wal.capture_generation()
+    artifacts = [JsonTextArtifact('state', path, content)]
+    expected = {path.relative_to(path.parent).as_posix(): None}
     if path.exists():
         if not path.is_file():
             raise ValueError("durable state target is not a file")
@@ -208,16 +213,17 @@ def persist_state(state: DurableState, path: Path) -> None:
         digest = _sha256(raw)
         stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S.%fZ")
         history = path.parent / ".history" / path.name / f"{stamp}-{digest}.json"
-        history.parent.mkdir(parents=True, exist_ok=True)
-        shutil.move(str(path), str(history))
-    with path.open("x", encoding="utf-8", newline="\n") as stream:
-        stream.write(content)
+        artifacts.append(BytesArtifact('state', history, raw))
+        expected[path.relative_to(path.parent).as_posix()] = digest
+        expected[history.relative_to(path.parent).as_posix()] = None
+    wal.commit(artifacts, expected_before=expected, expected_generation=generation)
 
 
 def migrate_state(
     path: Path, *, target_version: str = CURRENT_STATE_SCHEMA_VERSION
 ) -> dict[str, object]:
     """Migrate one authoritative state via a backup/state/receipt WAL commit."""
+    path = path.absolute()
     target = _parse_version(target_version, label="target")
     current = _parse_version(CURRENT_STATE_SCHEMA_VERSION, label="current")
     if target_version not in SUPPORTED_STATE_SCHEMA_VERSIONS:
@@ -225,8 +231,9 @@ def migrate_state(
             f"unsupported migration target schema_version: {target_version}"
         )
     migration_root = _migration_root(path)
-    wal = JsonWal(migration_root / "wal", path.parent)
+    wal = JsonWal(migration_root / "wal", path.parent).producer_for_target(path)
     wal.recover()
+    generation = wal.capture_generation()
     payload, raw, source_version, historical = _decode(path)
     source = _parse_version(source_version, label="source")
     if target < source:
@@ -286,6 +293,8 @@ def migrate_state(
             JsonArtifact("receipt", receipt_path, receipt),
         ),
         transaction_id=migration_id,
+        expected_inputs={path.relative_to(path.parent).as_posix(): source_sha256},
+        expected_generation=generation,
     )
     return receipt
 

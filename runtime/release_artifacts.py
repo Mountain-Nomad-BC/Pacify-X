@@ -5,7 +5,8 @@ from __future__ import annotations
 import hashlib
 import json
 from pathlib import Path, PurePosixPath
-import shutil
+import os
+import stat
 import tomllib
 from typing import Any, Iterable
 
@@ -13,10 +14,44 @@ from .bounded_walk import FilesystemWalkError, WalkLimits, bounded_walk
 from .repository_scope import is_external_environment_relative
 
 
+POLICY_PATH = "policies/release-artifact-policy.json"
+
+
+def decode_release_policy(raw: bytes | bytearray) -> dict[str, Any]:
+    from .archive_io import portable_member_name
+    from .json_io import decode_json_object
+
+    policy = decode_json_object(raw, max_bytes=1024 * 1024, max_depth=32, max_nodes=100000)
+    for field in ("control_output_paths", "control_output_prefixes"):
+        values = policy.get(field, [])
+        if type(values) is not list or len(values) > 10000:
+            raise ValueError("mutable-output policy requires bounded path arrays")
+        for value in values:
+            if type(value) is not str or not value or len(value.encode("utf-8")) > 4096:
+                raise ValueError("mutable-output path must be bounded text")
+            if field.endswith("prefixes"):
+                if not value.endswith("/"):
+                    raise ValueError("mutable-output prefix must end at a directory boundary")
+                value = value[:-1]
+            portable_member_name(value, allow_directory=False)
+    return policy
+
+
+def release_policy_image(root: Path, *, optional: bool = False):
+    from .input_files import contained_file, cooperative_deadline, read_file_image
+
+    try:
+        path, info = contained_file(root, POLICY_PATH)
+    except FileNotFoundError:
+        if optional:
+            return {}, None
+        raise
+    raw = read_file_image(path, info, limit=1024 * 1024, deadline=cooperative_deadline())
+    return decode_release_policy(raw), raw
+
+
 def _load_policy(root: Path) -> dict[str, Any]:
-    return json.loads(
-        (root / "policies/release-artifact-policy.json").read_text(encoding="utf-8")
-    )
+    return release_policy_image(root)[0]
 
 
 def _canonical_digest(records: list[dict[str, Any]]) -> str:
@@ -41,9 +76,31 @@ def _is_release_walk_excluded(relative: str | Path) -> bool:
     return is_external_environment_relative(path)
 
 
+def _source_file_in_checked_root(root: Path, relative: str):
+    """Acquire metadata below an already canonical, checked root.
+
+    The relative-path contract forbids escapes. Inspect all original components
+    before stat; read_file_image independently checks components and the opened
+    generation before reading. Re-resolving the same root adds no pinned-handle
+    guarantee and is unnecessary for each member of a bounded inventory.
+    """
+    from .archive_io import reject_path_links
+    from .input_files import relative_source_path
+
+    path = root / relative_source_path(relative)
+    reject_path_links(path)
+    info = path.stat()
+    if not stat.S_ISREG(info.st_mode):
+        raise ValueError("source input must be a regular file")
+    return path, info
+
+
 def classify_tree(root: Path) -> dict[str, Any]:
-    root = root.resolve()
-    policy = _load_policy(root)
+    from .input_files import directory_root, cooperative_deadline, read_file_image
+    root = directory_root(root)
+    deadline = cooperative_deadline()
+    policy, policy_raw = release_policy_image(root)
+    policy_sha256 = hashlib.sha256(policy_raw).hexdigest()
     product_roots = {item.casefold() for item in policy["product_roots"]}
     product_files = {item.casefold() for item in policy["product_root_files"]}
     evidence_roots = {item.casefold() for item in policy["evidence_roots"]}
@@ -88,9 +145,7 @@ def classify_tree(root: Path) -> dict[str, Any]:
             "valid": False,
             "product_valid": False,
             "policy_version": policy["policy_version"],
-            "policy_sha256": hashlib.sha256(
-                (root / "policies/release-artifact-policy.json").read_bytes()
-            ).hexdigest(),
+            "policy_sha256": policy_sha256,
             "file_count": 0,
             "counts": {},
             "product_digest": _canonical_digest([]),
@@ -156,8 +211,16 @@ def classify_tree(root: Path) -> dict[str, Any]:
                     content_sha256 = None
                 else:
                     try:
-                        content_sha256 = hashlib.sha256(path.read_bytes()).hexdigest()
-                    except OSError as error:
+                        acquired_path, info = _source_file_in_checked_root(root, relative)
+                        if info.st_size != entry.size:
+                            raise ValueError("release artifact changed after inventory")
+                        raw = policy_raw if relative == POLICY_PATH else read_file_image(
+                            acquired_path, info, limit=64 * 1024 * 1024, deadline=deadline
+                        )
+                        if len(raw) != entry.size:
+                            raise ValueError("release artifact image differs from inventory")
+                        content_sha256 = hashlib.sha256(raw).hexdigest()
+                    except (OSError, ValueError) as error:
                         content_sha256 = None
                         unreadable = (
                             f"unreadable release artifact: {relative}: "
@@ -205,9 +268,7 @@ def classify_tree(root: Path) -> dict[str, Any]:
         "valid": not errors,
         "product_valid": not product_errors,
         "policy_version": policy["policy_version"],
-        "policy_sha256": hashlib.sha256(
-            (root / "policies/release-artifact-policy.json").read_bytes()
-        ).hexdigest(),
+        "policy_sha256": policy_sha256,
         "file_count": len(records),
         "counts": dict(sorted(counts.items())),
         "product_digest": _canonical_digest(product_records),
@@ -267,7 +328,11 @@ def materialize_release_source(
 ) -> dict[str, object]:
     """Materialize product inputs and declared packaged evidence for release tests."""
 
-    root = source_root.resolve(strict=True)
+    from .input_files import directory_root
+    from .archive_io import reject_path_links
+
+    root = directory_root(source_root)
+    reject_path_links(destination)
     target = destination.resolve(strict=False)
     if target.exists():
         raise FileExistsError(f"release fixture destination already exists: {target}")
@@ -287,25 +352,74 @@ def materialize_release_source(
     extras = {_safe_fixture_relative(str(path)).as_posix() for path in extra_paths}
     selected = sorted(product_paths | declared_evidence | extras)
 
+    from .input_files import cooperative_deadline, read_file_image, check_deadline
+    expected = {record["path"]: record for record in classification["product_records"]}
+
+    def identity(value):
+        return value.st_dev, value.st_ino, value.st_size, value.st_mtime_ns
     copied_bytes = 0
-    for relative in selected:
-        source = (root / Path(relative)).resolve(strict=True)
-        try:
-            source.relative_to(root)
-        except ValueError as error:
-            raise ValueError(f"release fixture path escapes source root: {relative}") from error
-        if not source.is_file():
-            raise ValueError(f"release fixture input is not a file: {relative}")
-        output = target / Path(relative)
-        output.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(source, output)
-        copied_bytes += source.stat().st_size
+    copied_records = []
+    created_paths = []
+    directory_creation_attempted = False
+    deadline = cooperative_deadline()
+    reject_path_links(destination)
+    try:
+        for relative in selected:
+            source, info = _source_file_in_checked_root(root, relative)
+            if copied_bytes + info.st_size > 64 * 1024**3:
+                raise ValueError("release fixture aggregate source byte budget exceeded")
+            raw = read_file_image(source, info, limit=64 * 1024 * 1024, deadline=deadline)
+            digest = hashlib.sha256(raw).hexdigest()
+            if relative in expected and (digest != expected[relative]["sha256"] or len(raw) != expected[relative]["size"]):
+                raise ValueError("release fixture source changed after classification: " + relative)
+            output = target / Path(relative)
+            reject_path_links(output)
+            directory_creation_attempted = True
+            output.parent.mkdir(parents=True, exist_ok=True)
+            with output.open("x+b") as stream:
+                created_paths.append(relative)
+                if stream.write(raw) != len(raw):
+                    raise OSError("short release materialization write")
+                stream.flush()
+                written = os.fstat(stream.fileno())
+                os.chmod(output, stat.S_IMODE(info.st_mode))
+                check_deadline(deadline)
+                stream.seek(0)
+                actual = stream.read(len(raw) + 1)
+                checked = os.fstat(stream.fileno())
+                # Verify the exclusive creation handle and its still-current
+                # pathname. Reopening every ancestor and file adds no snapshot
+                # guarantee; neither path supplies pinned ancestor handles.
+                reject_path_links(output)
+                named = output.stat()
+                if (
+                    not stat.S_ISREG(checked.st_mode)
+                    or identity(written) != identity(checked)
+                    or identity(checked) != identity(named)
+                    or len(actual) != len(raw)
+                    or hashlib.sha256(actual).hexdigest() != digest
+                ):
+                    raise ValueError("release materialization destination differs from acquired source: " + relative)
+                check_deadline(deadline)
+            copied_bytes += len(raw)
+            copied_records.append(dict(path=relative, sha256=digest, size=len(raw),
+                scope="product_input" if relative in expected else "declared_evidence_or_extra"))
+
+    except BaseException as error:
+        error.materialization_receipt = {
+            "valid": False, "publication_state": "partial" if created_paths or directory_creation_attempted else "not_started",
+            "created_paths": created_paths, "copied_records": copied_records,
+            "copied_bytes": copied_bytes, "expected_file_count": len(selected),
+            "directory_creation_attempted": directory_creation_attempted,
+        }
+        raise
 
     return {
         "schema_version": "px.test-release-source-fixture/1.0",
         "valid": True,
         "file_count": len(selected),
         "copied_bytes": copied_bytes,
+        "copied_records": copied_records,
         "product_file_count": len(product_paths),
         "declared_evidence_file_count": len(declared_evidence),
         "extra_file_count": len(extras),

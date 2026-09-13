@@ -561,8 +561,17 @@ def test_child_resource_postcondition_allows_only_exact_supervised_self(
     ledger.write_text(
         json.dumps(
             {
+                "schema_version": "1.0",
                 "resources": [
                     {
+                        "resource_id": "self-process",
+                        "project_id": "fixture",
+                        "lane_id": "fixture",
+                        "classification": "ephemeral",
+                        "created_at": "2026-09-12T00:00:00+00:00",
+                        "last_activity_at": "2026-09-12T00:00:00+00:00",
+                        "expected_cleanup_event": "exit",
+                        "retention_required": False,
                         "active": True,
                         "resource_type": "process",
                         "pid": 123,
@@ -575,22 +584,12 @@ def test_child_resource_postcondition_allows_only_exact_supervised_self(
         encoding="utf-8",
     )
     monkeypatch.setattr("scripts.run_release_stage_owner.os.getpid", lambda: 123)
-    observed_status = {
-        "valid": True,
-        "active_processes": 1,
-        "active_paths": 0,
-        "reclaimable_paths": 0,
-        "cleanup_failures": 0,
-    }
-    monkeypatch.setattr(
-        "runtime.resource_lifecycle.resource_status",
-        lambda _path: observed_status,
-    )
     assert resource_postcondition(config)["valid"] is True
-    observed_status["active_paths"] = 1
-    assert resource_postcondition(config)["valid"] is False
-    observed_status["active_paths"] = 0
     value = json.loads(ledger.read_text(encoding="utf-8"))
+    value['resources'].append({**value['resources'][0], 'resource_id': 'active-path', 'resource_type': 'path', 'pid': None})
+    ledger.write_text(json.dumps(value), encoding='utf-8')
+    assert resource_postcondition(config)["valid"] is False
+    value['resources'].pop()
     value["resources"][0]["pid"] = 456
     ledger.write_text(json.dumps(value), encoding="utf-8")
     assert resource_postcondition(config)["valid"] is False

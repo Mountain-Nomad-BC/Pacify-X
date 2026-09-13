@@ -27,12 +27,17 @@ def reconcile(report_path: Path, mappings_path: Path) -> dict[str, Any]:
     counts: Counter[str] = Counter()
     for source in report.get("records", []):
         mechanisms = tuple(map(str, source.get("mechanisms", [])))
-        missing = sorted(set(mechanisms) - set(mappings))
+        missing = sorted({
+            mechanism for mechanism in mechanisms
+            if not isinstance(mappings.get(mechanism), list)
+            or not mappings[mechanism]
+            or not all(isinstance(target, str) and target.strip() for target in mappings[mechanism])
+        })
         targets = sorted(
             {
                 target
                 for mechanism in mechanisms
-                for target in mappings.get(mechanism, [])
+                for target in (mappings.get(mechanism, []) if mechanism not in missing else [])
             }
         )
         if missing:

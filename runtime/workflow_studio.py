@@ -16,7 +16,7 @@ from typing import Mapping, Sequence
 from uuid import uuid4
 
 from .file_lock import FileLock
-from .process_supervisor import ProcessSupervisor
+from .process_supervisor import ProcessAdmissionExpired, ProcessSupervisor
 from .resource_lifecycle import ResourceManager, RunState
 from .studio_filesystem import (
     assert_exact_tree,
@@ -1004,17 +1004,16 @@ class WorkflowStudio:
         task_root = self.state_root / "node-tasks"
         task_root.mkdir(parents=True, exist_ok=True)
         run_component = hashlib.sha256(run_id.encode("utf-8")).hexdigest()[:16]
-        request_dir = task_root / f"{run_component}-{node_component}-{attempt}"
-        request_path = request_dir / "request.json"
-        request_resource = self.manager.register_path(
-            request_dir,
-            allowed_cleanup_root=task_root,
+        request_resource = self.manager.create_workspace(
+            task_root,
             project_id=definition.workflow_id,
             run_id=run_id,
             lane_id=node.node_id,
             creator=definition.owner,
-            expected_cleanup_event="node_attempt_end",
+            prefix=f"{run_component}-{node_component}-{attempt}-",
         )
+        request_dir = Path(request_resource.path)
+        request_path = request_dir / "request.json"
         timeout = float(node.timeout_seconds)
         budget = {
             "startup_timeout_seconds": min(2.0, timeout),
@@ -1092,12 +1091,26 @@ class WorkflowStudio:
                 )
             ) from task_error
         if task_error is not None:
+            settlement = getattr(task_error, "supervision_outcome", {})
+            settled = (
+                settlement.get("tree_closed") is True
+                and settlement.get("custody_retained") is False
+                and settlement.get("cleanup_errors") == []
+            )
+            admission_expired = isinstance(task_error, ProcessAdmissionExpired)
+            if admission_expired and settled and control_signal.requested_state in {
+                "pause_requested", "cancel_requested"
+            }:
+                raise _WorkflowLifecycleSignal(control_signal.requested_state)
             raise RuntimeError(
                 json.dumps(
                     {
-                        "status": "failed",
+                        "status": "total_timeout" if admission_expired and settled else "failed",
                         "failure_type": type(task_error).__name__,
                         "failure_message": str(task_error)[:500],
+                        "tree_closed": settlement.get("tree_closed"),
+                        "supervision_outcome": settlement,
+                        "execution_started": False if admission_expired else None,
                         "task_content_retained": False,
                         "task_cleanup_receipt": task_cleanup.cleanup_id,
                     },

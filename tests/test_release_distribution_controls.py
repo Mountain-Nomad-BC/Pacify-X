@@ -419,3 +419,197 @@ def test_certificate_version_matches_artifact_version() -> None:
     assert not bind_artifact_set(
         root, records, source_product_digest="a" * 64, version="1.2.4"
     )["valid"]
+
+
+def _control_projection_fixture(root):
+    (root / 'pkg').mkdir()
+    (root / 'pkg/__init__.py').write_text('VALUE = 1\n')
+    (root / 'registry/deltas').mkdir(parents=True)
+    (root / 'registry/product.json').write_text('{}')
+    (root / 'registry/current.json').write_text('{}')
+    (root / 'policies').mkdir()
+    (root / 'policies/release-artifact-policy.json').write_text(json.dumps(dict(
+        control_output_paths=['registry/current.json'], control_output_prefixes=['registry/deltas/'])))
+    (root / 'pyproject.toml').write_text('[build-system]\nrequires=["setuptools", "wheel"]\nbuild-backend="setuptools.build_meta"\n'
+        '[project]\nname="capture-fixture"\nversion="1.0.0"\nlicense-files=[]\n'
+        '[tool.setuptools]\npackages=["pkg"]\ninclude-package-data=false\n'
+        '[tool.setuptools.package-dir]\n""="."\n'
+        '[tool.setuptools.data-files]\n"share/fixture"=["registry/product.json"]\n')
+    (root / 'MANIFEST.in').write_text('recursive-include pkg *.py\nrecursive-include registry *.json\n'
+        'include policies/release-artifact-policy.json\nexclude registry/current.json\nprune registry/deltas\n')
+
+
+def test_control_subtree_is_pruned_before_projection_budget(tmp_path, monkeypatch):
+    import runtime.release_distribution as owner
+    import os
+    _control_projection_fixture(tmp_path)
+    (tmp_path / 'registry/deltas/oversized.json').write_bytes(b'x' * 1024)
+    scandir = os.scandir
+    def bounded(path):
+        if Path(path) == tmp_path / 'registry/deltas':
+            raise AssertionError('control subtree was enumerated')
+        return scandir(path)
+    monkeypatch.setattr(os, 'scandir', bounded)
+    result = owner.generate_artifact_manifest(tmp_path)
+    assert result['valid'], result['errors']
+    paths = {r['source_path'] for r in result['records']}
+    assert 'registry/product.json' in paths
+    assert not any(p.startswith('registry/deltas/') or p == 'registry/current.json' for p in paths)
+
+
+@pytest.mark.parametrize('pattern', ['registry/*.json', 'registry/deltas/*.json', 'registry/**/*.json'])
+def test_required_wheel_control_overlap_refuses_before_traversal(tmp_path, monkeypatch, pattern):
+    import runtime.release_distribution as owner
+    _control_projection_fixture(tmp_path)
+    path = tmp_path / 'pyproject.toml'
+    path.write_text(path.read_text().replace('registry/product.json', pattern))
+    def refuse(*args, **kwargs):
+        raise AssertionError('traversal before declaration refusal')
+    monkeypatch.setattr(owner, 'bounded_walk', refuse)
+    result = owner.generate_artifact_manifest(tmp_path)
+    assert not result['valid'] and any('wheel declaration intersects' in error for error in result['errors'])
+
+
+def test_manifest_reinclude_is_ordered_and_control_reinclude_refuses(tmp_path):
+    import runtime.release_distribution as owner
+    _control_projection_fixture(tmp_path)
+    path = tmp_path / 'MANIFEST.in'
+    path.write_text(path.read_text() + 'exclude registry/product.json\ninclude registry/product.json\n')
+    assert owner.generate_artifact_manifest(tmp_path)['valid']
+    path.write_text(path.read_text() + 'recursive-include registry/deltas *.json\n')
+    result = owner.generate_artifact_manifest(tmp_path)
+    assert not result['valid'] and any('complete mutable control subtree' in error for error in result['errors'])
+
+
+def test_alternate_manifest_helper_uses_ordered_rules(tmp_path):
+    from runtime.release_distribution import _manifest_sources
+    _control_projection_fixture(tmp_path)
+    sources = _manifest_sources(tmp_path, tmp_path / 'MANIFEST.in')
+    assert tmp_path / 'registry/product.json' in sources
+    assert tmp_path / 'registry/current.json' not in sources
+
+
+def test_explicit_sdist_exclusion_of_required_wheel_source_refuses(tmp_path):
+    _control_projection_fixture(tmp_path)
+    path = tmp_path / 'MANIFEST.in'
+    path.write_text(path.read_text() + 'exclude registry/product.json\n')
+    result = generate_artifact_manifest(tmp_path)
+    assert not result['valid'] and any('excludes a required wheel source' in e for e in result['errors'])
+
+
+def test_synthetic_backend_direct_and_sdist_wheel_match_projection(tmp_path):
+    import os
+    from runtime.test_runner import run_test_command
+    source = tmp_path / 'source'
+    source.mkdir()
+    _control_projection_fixture(source)
+    (source / 'registry/deltas/preserve.json').write_text('{"control":true}')
+    manifest = generate_artifact_manifest(source)
+    assert manifest['valid'], manifest['errors']
+    output = tmp_path / 'artifacts'
+    output.mkdir()
+    environment = {k:v for k,v in os.environ.items() if k != 'PYTHONPATH' and not k.startswith('PX_LIFECYCLE_')}
+    environment.update(PYTHONDONTWRITEBYTECODE='1', PYTHONIOENCODING='utf-8')
+    result = run_test_command([sys.executable, '-m', 'build', '--no-isolation', '--wheel', '--sdist', '--outdir', str(output)],
+        cwd=source, environment=environment, timeout_seconds=90, run_id='synthetic-distribution-direct', lane_id='distribution-fixture', manage_process_temp=True)
+    assert result['valid'], result.get('stdout', '') + result.get('stderr', '')
+    wheel = next(output.glob('*.whl'))
+    sdist = next(output.glob('*.tar.gz'))
+    for artifact, target in [(wheel, 'wheel'), (sdist, 'sdist')]:
+        checked = verify_built_artifact(artifact, manifest, package_target=target)
+        assert checked['valid'], checked['errors']
+    restored = tmp_path / 'restored'
+    restored.mkdir()
+    with tarfile.open(sdist) as archive:
+        archive.extractall(restored, filter='data')
+    unpacked = next(restored.iterdir())
+    rebuilt = tmp_path / 'rebuilt'
+    rebuilt.mkdir()
+    result = run_test_command([sys.executable, '-m', 'build', '--no-isolation', '--wheel', '--outdir', str(rebuilt)],
+        cwd=unpacked, environment=environment, timeout_seconds=90, run_id='synthetic-distribution-from-sdist', lane_id='distribution-fixture', manage_process_temp=True)
+    assert result['valid'], result.get('stdout', '') + result.get('stderr', '')
+    checked = verify_built_artifact(next(rebuilt.glob('*.whl')), manifest, package_target='wheel')
+    assert checked['valid'], checked['errors']
+    assert (source / 'registry/deltas/preserve.json').read_text() == '{"control":true}'
+
+
+"""Unexecuted cases to integrate into test_release_distribution_controls."""
+
+
+def test_operational_ledger_producer_files_are_declared_control_outputs():
+    import json
+    import tomllib
+    from pathlib import Path
+    from runtime.operational_gap_ledger import LEDGER_RELATIVE, SNAPSHOT_RELATIVE
+    from runtime.release_distribution import _manifest_rules, _manifest_selected
+
+    root = Path(__file__).resolve().parents[1]
+    policy = json.loads((root / 'policies/release-artifact-policy.json').read_bytes())
+    expected = {LEDGER_RELATIVE.as_posix(), SNAPSHOT_RELATIVE.as_posix()}
+    assert expected <= set(policy['control_output_paths'])
+    rules = _manifest_rules((root / 'MANIFEST.in').read_text(encoding='utf-8'))
+    assert all(not _manifest_selected(name, rules) for name in expected)
+    packaging = tomllib.loads((root / 'pyproject.toml').read_text(encoding='utf-8'))
+    data = packaging['tool']['setuptools']['data-files']
+    assert not expected.intersection(name for files in data.values() for name in files)
+
+
+def test_exact_ledger_control_exclusions_preserve_neighboring_product(tmp_path):
+    import json
+    from runtime.release_distribution import generate_artifact_manifest
+    # Integrate beside the existing synthetic projection fixture.
+    _control_projection_fixture(tmp_path)
+    policy_path = tmp_path / 'policies/release-artifact-policy.json'
+    policy = json.loads(policy_path.read_bytes())
+    controls = ['registry/operational_gap_ledger.jsonl', 'registry/operational_gap_ledger.snapshot.json']
+    policy['control_output_paths'].extend(controls)
+    policy_path.write_text(json.dumps(policy), encoding='utf-8')
+    manifest = tmp_path / 'MANIFEST.in'
+    manifest.write_text(manifest.read_text() + '\nrecursive-include registry *.jsonl\n' +
+                        ''.join('exclude ' + name + '\n' for name in controls) + 'prune registry/deltas\n')
+    for name in controls:
+        (tmp_path / name).write_text('retained operational data', encoding='utf-8')
+    neighbor = 'registry/operational_gap_ledger.snapshot-extra.json'
+    (tmp_path / neighbor).write_text('{}', encoding='utf-8')
+    result = generate_artifact_manifest(tmp_path)
+    assert result['valid'], result['errors']
+    selected = {row['source_path'] for row in result['records']}
+    assert not selected.intersection(controls)
+    assert neighbor in selected
+    assert all((tmp_path / name).read_text() == 'retained operational data' for name in controls)
+
+
+@pytest.mark.parametrize('skill', ['quarantine-external-tools', 'quarantine-review', 'prequarantine-check'])
+def test_authored_quarantine_named_skill_is_projected(tmp_path, skill):
+    import runtime.release_distribution as owner
+    _control_projection_fixture(tmp_path)
+    relative = f'.px/skills/{skill}/capability.json'
+    source = tmp_path / relative
+    source.parent.mkdir(parents=True)
+    source.write_text('{}')
+    project = tmp_path / 'pyproject.toml'
+    project.write_text(project.read_text() + f'"share/engineering-bootstrap/.px/skills/{skill}"=["{relative}"]\n')
+    manifest = tmp_path / 'MANIFEST.in'
+    manifest.write_text(manifest.read_text() + f'include {relative}\n')
+    result = owner.generate_artifact_manifest(tmp_path)
+    assert result['valid'], result['errors']
+    assert relative in {row['source_path'] for row in result['records']}
+
+
+@pytest.mark.parametrize('custody', ['quarantine', '.quarantine', '_quarantine', 'repo_quarantine', 'Quarantine'])
+def test_actual_quarantine_directory_is_pruned_without_enumeration(tmp_path, monkeypatch, custody):
+    import os
+    import runtime.release_distribution as owner
+    _control_projection_fixture(tmp_path)
+    hidden = tmp_path / 'registry' / custody
+    hidden.mkdir()
+    (hidden / 'retained.json').write_text('{}')
+    scandir = os.scandir
+    def refuse_custody(path):
+        if Path(path) == hidden:
+            raise AssertionError('quarantine contents were enumerated')
+        return scandir(path)
+    monkeypatch.setattr(os, 'scandir', refuse_custody)
+    result = owner.generate_artifact_manifest(tmp_path)
+    assert result['valid'], result['errors']
+    assert not any(f'/{custody}/' in row['source_path'] for row in result['records'])

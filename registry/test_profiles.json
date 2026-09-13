@@ -673,7 +673,10 @@
         "tests/test_process_lifecycle_wal_recovery_images.py",
         "tests/test_process_lifecycle_wal_publication_custody.py",
         "tests/test_process_lifecycle_windows_creation.py",
-        "tests/test_resource_storage.py"
+        "tests/test_resource_storage.py",
+        "tests/test_wal_generation.py",
+        "tests/test_wal_migration.py",
+        "tests/test_wal_ownership.py"
       ],
       "command": [
         "python",
@@ -721,7 +724,10 @@
         "tests/test_process_lifecycle_wal_recovery_images.py",
         "tests/test_process_lifecycle_wal_publication_custody.py",
         "tests/test_process_lifecycle_windows_creation.py",
-        "tests/test_resource_storage.py"
+        "tests/test_resource_storage.py",
+        "tests/test_wal_generation.py",
+        "tests/test_wal_migration.py",
+        "tests/test_wal_ownership.py"
       ],
       "chunk_size": 1,
       "max_parallel_chunks": 1,
@@ -731,6 +737,8 @@
     "dashboard-extension": {
       "description": "Dashboard renderer, message boundary, host bridge, and layout interaction gate.",
       "source_patterns": [
+        "runtime/cli.py",
+        "runtime/studio_api.py",
         "extension/media/**",
         "extension/src/extension.js",
         "extension/src/pxBridge.js",
@@ -2273,6 +2281,9 @@
         "tests/test_resource_lifecycle.py",
         "tests/test_test_runner_controls.py",
         "tests/test_wal_transaction.py",
+        "tests/test_wal_generation.py",
+        "tests/test_wal_migration.py",
+        "tests/test_wal_ownership.py",
         "tests/test_workspace*.py"
       ],
       "parallel_safe": false,

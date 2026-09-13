@@ -4,6 +4,10 @@ import hashlib
 import json
 from pathlib import Path
 import tempfile
+import pytest
+
+from runtime.coverage_assurance import _evaluate_coverage_images
+from runtime.release_skip_policy import junit_skip_policy_gate
 
 from runtime.coverage_assurance import validate_coverage_evidence
 from runtime.release_certification import _verify_coverage_binding
@@ -98,3 +102,77 @@ def test_coverage_exemption_requires_owner_and_reason() -> None:
         assert "requires module, owner, reason, and branches" in "\n".join(
             result["errors"]
         )
+
+
+
+
+@pytest.mark.parametrize('document', [
+    '<testsuites/>',
+    '<testsuites xmlns="urn:junit"><testsuite tests="1" skipped="1"><testcase classname="tests.unknown" name="test_case"><skipped message="unreviewed"/></testcase></testsuite></testsuites>',
+    '<testsuite tests="2"><testcase classname="tests.fixture" name="test_case"/></testsuite>',
+    '<testsuite tests="2"><testcase classname="tests.fixture" name="test_case"/><testcase classname="tests.fixture" name="test_case"/></testsuite>',
+], ids=['empty', 'namespaced-unknown-skip', 'invented-count', 'duplicate-case'])
+def test_skip_gate_requires_complete_case_inventory(tmp_path, document):
+    path = tmp_path / 'result.xml'
+    path.write_text(document, encoding='utf-8')
+    assert junit_skip_policy_gate(path)['valid'] is False
+
+
+def _coverage(total=10, missing=0, contexts=None):
+    return {
+        'meta': {'branch_coverage': True, 'show_contexts': True},
+        'files': {'runtime/example.py': {
+            'summary': {'num_branches': total, 'missing_branches': missing},
+            'contexts': {'1': ['test_example']} if contexts is None else contexts,
+        }},
+    }
+
+
+def _policy():
+    return {'schema_version': '1.0', 'branch_required': True,
+            'dynamic_context_required': True, 'exemptions': [],
+            'classes': {'critical': {'minimum_branch_percent': 80,
+                                     'modules': ['runtime/example.py']}}}
+
+
+@pytest.mark.parametrize('total,missing', [(-1, 0), (10, -1), (10, 11), (True, 0), (10, False)],
+                         ids=['negative-total', 'negative-missing', 'missing-over-total', 'bool-total', 'bool-missing'])
+def test_coverage_counts_are_actual_consistent_nonnegative_integers(total, missing):
+    result = _evaluate_coverage_images(_policy(), _coverage(total, missing), 'a' * 64, 'b' * 64)
+    assert result['valid'] is False
+    assert result['classes']['critical']['valid'] is False
+
+
+@pytest.mark.parametrize('mutation', ['empty-classes', 'empty-modules', 'duplicate-module'])
+def test_coverage_requires_nonempty_unique_expected_denominator(mutation):
+    policy = _policy()
+    if mutation == 'empty-classes':
+        policy['classes'] = {}
+    elif mutation == 'empty-modules':
+        policy['classes']['critical']['modules'] = []
+    else:
+        policy['classes']['critical']['modules'] *= 2
+    assert _evaluate_coverage_images(policy, _coverage(), 'a' * 64, 'b' * 64)['valid'] is False
+
+
+def test_context_failure_invalidates_owning_coverage_class():
+    result = _evaluate_coverage_images(_policy(), _coverage(contexts={}), 'a' * 64, 'b' * 64)
+    assert result['valid'] is False
+    assert result['classes']['critical']['valid'] is False
+
+
+def test_real_zero_branch_module_with_context_remains_supported():
+    result = _evaluate_coverage_images(_policy(), _coverage(total=0), 'a' * 64, 'b' * 64)
+    assert result['valid'] is True
+
+
+def test_coverage_threshold_does_not_round_a_failure_into_a_pass():
+    result = _evaluate_coverage_images(_policy(), _coverage(100000, 20001), 'a' * 64, 'b' * 64)
+    assert result['classes']['critical']['branch_percent'] == 80.0
+    assert not result['valid']
+
+
+def test_coverage_huge_threshold_returns_invalid_without_overflow():
+    policy = _policy()
+    policy['classes']['critical']['minimum_branch_percent'] = 10 ** 1000
+    assert not _evaluate_coverage_images(policy, _coverage(), 'a' * 64, 'b' * 64)['valid']

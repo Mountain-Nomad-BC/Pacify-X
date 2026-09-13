@@ -27,6 +27,10 @@ from runtime.release_campaign import (
 
 
 ROOT = Path(__file__).parents[1]
+RETAINED_REJECTED_VSIX = (
+    "evidence/release/rejected-marketplace-upload/"
+    "pacify-x-vscode-0.6.87-c412addf-rejected-license-path.vsix"
+)
 DECLARED_PACKAGED_EVIDENCE = (
     "evidence/archive-catalog.json",
     "evidence/bundles/archive-custody-20260803/manifest.json",
@@ -424,12 +428,19 @@ def test_current_product_tree_identity_apply_is_a_fixed_point(tmp_path: Path) ->
     _write_release_repair_state(root, "repair")
     clear_release_identity(root, campaign_id="exact-current-product")
     cleared = classify_tree(root)
+    assert cleared['valid'] and cleared['product_valid'], cleared['errors']
     _write_release_repair_state(root, "revision_reconciled")
     applied = apply_release_identity(root)
     active = classify_tree(root)
+    assert active['valid'] and active['product_valid'], active['errors']
     assert applied["valid"] is True
     assert applied["apply_count"] == 1
-    assert applied["identity"]["source_product_digest"] == cleared["product_digest"]
+    before_records = {row['path']: row for row in cleared['product_records']}
+    after_records = {row['path']: row for row in active['product_records']}
+    changed_records = {path: (before_records.get(path), after_records.get(path))
+                       for path in before_records.keys() | after_records.keys()
+                       if before_records.get(path) != after_records.get(path)}
+    assert applied["identity"]["source_product_digest"] == cleared["product_digest"], changed_records
     assert active["product_digest"] == cleared["product_digest"]
     assert active["harness_digest"] == cleared["harness_digest"]
 
@@ -592,3 +603,221 @@ def test_materialized_release_source_rejects_path_traversal() -> None:
                 Path(directory) / "source",
                 extra_paths=("../outside",),
             )
+
+
+def test_materialization_rejects_post_classification_byte_change(tmp_path, monkeypatch):
+    import runtime.release_artifacts as owner
+    root = _minimal_tree()
+    (root / 'pyproject.toml').write_text('[tool.setuptools]\ndata-files = {}\n')
+    classify = owner.classify_tree
+    def changed(path):
+        result = classify(path)
+        (path / 'runtime/module.py').write_text('VALUE = 2\n')
+        return result
+    monkeypatch.setattr(owner, 'classify_tree', changed)
+    output = tmp_path / 'copy'
+    with pytest.raises(ValueError, match='changed after classification'):
+        owner.materialize_release_source(root, output)
+    assert not (output / 'runtime/module.py').exists()
+
+
+def test_classification_policy_hash_uses_the_decoded_image(monkeypatch):
+    import hashlib
+    import runtime.input_files as inputs
+    root = _minimal_tree()
+    policy = root / 'policies/release-artifact-policy.json'
+    original = policy.read_bytes()
+    reader = inputs.read_file_image
+    calls = []
+    def counted(path, info, **kwargs):
+        raw = reader(path, info, **kwargs)
+        if path == policy:
+            calls.append(path)
+        return raw
+    monkeypatch.setattr(inputs, 'read_file_image', counted)
+    result = classify_tree(root)
+    assert result['valid'] and result['policy_sha256'] == hashlib.sha256(original).hexdigest()
+    assert len(calls) == 1
+
+
+@pytest.mark.parametrize('raw', [b'{"control_output_paths": ["../escape"]}',
+    b'{"control_output_prefixes": ["registry/deltas"]}',
+    b'{"control_output_paths": [], "control_output_paths": ["x"]}', b'{"control_output_paths": true}'])
+def test_shared_policy_decoder_refuses_ambiguous_controls(raw):
+    from runtime.release_artifacts import decode_release_policy
+    with pytest.raises(ValueError):
+        decode_release_policy(raw)
+
+
+def test_materialization_reports_acquired_product_and_extra_bytes(tmp_path):
+    import hashlib
+    import stat
+    root = _minimal_tree()
+    (root / 'pyproject.toml').write_text('[tool.setuptools]\ndata-files = {}\n')
+    (root / 'evidence').mkdir()
+    (root / 'evidence/extra.json').write_text('{"evidence":true}')
+    destination = tmp_path / 'copy'
+    result = materialize_release_source(root, destination, extra_paths=['evidence/extra.json'])
+    assert result['valid']
+    records = {row['path']: row for row in result['copied_records']}
+    for relative, row in records.items():
+        raw = (destination / relative).read_bytes()
+        assert row['sha256'] == hashlib.sha256(raw).hexdigest() and row['size'] == len(raw)
+        assert raw == (root / relative).read_bytes()
+    assert records['runtime/module.py']['scope'] == 'product_input'
+    assert records['evidence/extra.json']['scope'] == 'declared_evidence_or_extra'
+    assert stat.S_IMODE((destination / 'runtime/module.py').stat().st_mode) == stat.S_IMODE((root / 'runtime/module.py').stat().st_mode)
+
+
+def test_materialization_rejects_original_linked_source_root(tmp_path):
+    import os
+    root = _minimal_tree()
+    (root / 'pyproject.toml').write_text('[tool.setuptools]\ndata-files = {}\n')
+    linked = tmp_path / 'linked'
+    if os.name == 'nt':
+        import _winapi
+        _winapi.CreateJunction(str(root), str(linked))
+    else:
+        linked.symlink_to(root, target_is_directory=True)
+    with pytest.raises(ValueError):
+        materialize_release_source(linked, tmp_path / 'copy')
+
+
+def test_materialization_verifies_destination_and_retains_partial_receipt(tmp_path, monkeypatch):
+    import os
+    root = _minimal_tree()
+    (root / 'pyproject.toml').write_text('[tool.setuptools]\ndata-files = {}\n')
+    destination = tmp_path / 'copy'
+    original = os.chmod
+
+    def corrupt(path, mode, *args, **kwargs):
+        result = original(path, mode, *args, **kwargs)
+        if Path(path) == destination / 'runtime/module.py':
+            Path(path).write_bytes(b'corrupt')
+        return result
+
+    monkeypatch.setattr(os, 'chmod', corrupt)
+    with pytest.raises(ValueError, match='destination') as caught:
+        materialize_release_source(root, destination)
+    receipt = caught.value.materialization_receipt
+    assert receipt['publication_state'] == 'partial'
+    assert 'runtime/module.py' in receipt['created_paths']
+    assert not any(row['path'] == 'runtime/module.py' for row in receipt['copied_records'])
+
+
+def test_retained_rejected_artifact_is_exact_control_and_not_exported(tmp_path):
+    root = _minimal_tree()
+    artifact = root / RETAINED_REJECTED_VSIX
+    artifact.parent.mkdir(parents=True)
+    artifact.write_bytes(b'retained synthetic failed upload')
+    (root / 'pyproject.toml').write_text('[tool.setuptools]\ndata-files = {}\n')
+    result = classify_tree(root)
+    assert result['valid'], result['errors']
+    record = next(row for row in result['records'] if row['path'] == RETAINED_REJECTED_VSIX)
+    assert record['classification'] == 'control_output'
+    destination = tmp_path / 'export'
+    copied = materialize_release_source(root, destination)
+    assert copied['valid']
+    assert not (destination / RETAINED_REJECTED_VSIX).exists()
+    assert artifact.read_bytes() == b'retained synthetic failed upload'
+
+
+@pytest.mark.parametrize('name', ['neighbor.vsix', 'pacify-x-vscode-0.6.87-c412addf-rejected-license-path-extra.vsix'])
+def test_retained_artifact_disposition_does_not_admit_neighboring_binary(name):
+    root = _minimal_tree()
+    artifact = root / Path(RETAINED_REJECTED_VSIX).parent / name
+    artifact.parent.mkdir(parents=True)
+    artifact.write_bytes(b'unapproved')
+    result = classify_tree(root)
+    assert not result['valid']
+    assert any('unapproved evidence payload' in error for error in result['errors'])
+
+
+
+def test_materialization_cost_fixture(tmp_path):
+    import cProfile
+    import io
+    import pstats
+    root = _minimal_tree()
+    (root / 'pyproject.toml').write_text('[tool.setuptools]\ndata-files = {}\n')
+    for number in range(500):
+        path = root / 'runtime' / f'group-{number // 20}' / 'nested' / f'file-{number}.py'
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text('VALUE = 1\n')
+    profile = cProfile.Profile()
+    profile.enable()
+    result = materialize_release_source(root, tmp_path / 'copy')
+    profile.disable()
+    assert result['valid'] and result['file_count'] == 503
+    output = io.StringIO()
+    pstats.Stats(profile, stream=output).strip_dirs().sort_stats('cumulative').print_stats(25)
+    print(output.getvalue())
+
+
+def test_materialization_rejects_same_bytes_on_different_named_file(tmp_path, monkeypatch):
+    import os
+    root = _minimal_tree()
+    (root / 'pyproject.toml').write_text('[tool.setuptools]\ndata-files = {}\n')
+    target = tmp_path / 'copy'
+    output = target / 'runtime/module.py'
+    detached = target / 'runtime/detached-fixture.py'
+    original_open = Path.open
+    original_chmod = os.chmod
+
+    def opened(path, mode='r', *args, **kwargs):
+        if path == output and mode == 'x+b':
+            # Fault injection provides a real different handle, as would a
+            # pathname replacement. Both files hold identical bytes at check.
+            return original_open(detached, mode, *args, **kwargs)
+        return original_open(path, mode, *args, **kwargs)
+
+    def named_copy(path, mode, *args, **kwargs):
+        if Path(path) == output:
+            output.write_bytes(detached.read_bytes())
+        return original_chmod(path, mode, *args, **kwargs)
+
+    monkeypatch.setattr(Path, 'open', opened)
+    monkeypatch.setattr(os, 'chmod', named_copy)
+    with pytest.raises(ValueError, match='destination') as caught:
+        materialize_release_source(root, target)
+    assert output.read_bytes() == detached.read_bytes()
+    receipt = caught.value.materialization_receipt
+    assert 'runtime/module.py' in receipt['created_paths']
+    assert not any(row['path'] == 'runtime/module.py' for row in receipt['copied_records'])
+
+
+@pytest.mark.parametrize('failure', ['short_write', 'close'])
+def test_materialization_write_failure_retains_uncommitted_path(tmp_path, monkeypatch, failure):
+    root = _minimal_tree()
+    (root / 'pyproject.toml').write_text('[tool.setuptools]\ndata-files = {}\n')
+    target = tmp_path / 'copy'
+    output = target / 'runtime/module.py'
+    original_open = Path.open
+
+    class FaultStream:
+        def __init__(self, stream):
+            self.stream = stream
+        def __enter__(self):
+            self.stream.__enter__()
+            return self
+        def __exit__(self, *args):
+            result = self.stream.__exit__(*args)
+            if failure == 'close' and args[0] is None:
+                raise OSError('injected close failure')
+            return result
+        def __getattr__(self, name):
+            return getattr(self.stream, name)
+        def write(self, raw):
+            return self.stream.write(raw[:-1] if failure == 'short_write' else raw)
+
+    def opened(path, mode='r', *args, **kwargs):
+        stream = original_open(path, mode, *args, **kwargs)
+        return FaultStream(stream) if path == output and mode == 'x+b' else stream
+
+    monkeypatch.setattr(Path, 'open', opened)
+    with pytest.raises(OSError, match='write|close') as caught:
+        materialize_release_source(root, target)
+    receipt = caught.value.materialization_receipt
+    assert receipt['publication_state'] == 'partial'
+    assert 'runtime/module.py' in receipt['created_paths']
+    assert not any(row['path'] == 'runtime/module.py' for row in receipt['copied_records'])

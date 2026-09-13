@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
+import json
 from pathlib import Path
 from typing import Any, Mapping
 
@@ -42,6 +43,7 @@ class AdmissionDecision:
     allowed_environment: str
     promotion_state: str
     verified_evidence_ids: tuple[str, ...] = ()
+    evaluation_binding: Mapping[str, object] | None = None
 
 
 def _classify(
@@ -149,21 +151,50 @@ review = evaluate_claims
 def review_authoritative(
     root: Path, manifest: Mapping[str, object], request: Mapping[str, Any]
 ) -> AdmissionDecision:
-    """Resolve signed admission receipts and derive the admission facts."""
+    """Assess the acquired candidate manifest; later use must rebind its bytes."""
     try:
-        candidate_id = str(manifest["id"])
-        project_id = str(request["project_id"])
-        from .trusted_evidence import evidence_store_path
+        from .numeric_inputs import bounded_mapping, bounded_json_value, bounded_integer
+        from .trusted_evidence import evidence_store_path, acquire_evaluation_binding, _evidence_text
+
+        request = bounded_mapping(request, 'admission request', maximum=12)
+        bounded_json_value(request)
+        request = json.loads(json.dumps(request, allow_nan=False))
+        required = {'schema_version', 'project_id', 'evidence_store', 'accepted_producers',
+                    'evidence_refs', 'subject_source', 'assessment_contract'}
+        if required - request.keys() or request.keys() - required - {'max_age_seconds'}:
+            raise ValueError('admission request fields mismatch')
+        if request['schema_version'] != '2.0':
+            raise ValueError('bound admission requires request version 2.0')
+        project_id = _evidence_text(request['project_id'], 'project_id')
+        evaluation, contract, acquired_manifest = acquire_evaluation_binding(root,
+            subject_source=request['subject_source'], assessment_contract=request['assessment_contract'],
+            interpretation='candidate-assessments/1')
+        supplied_manifest = _admission_manifest(manifest)
+        manifest = _admission_manifest(acquired_manifest)
+        if json.dumps(supplied_manifest, sort_keys=True, allow_nan=False) != json.dumps(manifest, sort_keys=True, allow_nan=False):
+            raise ValueError('supplied candidate differs from acquired manifest')
+        candidate_id = manifest['id']
+        if set(contract) - {'required_evidence', 'id', 'version'}:
+            raise ValueError('unsupported assessment contract field')
+        declared = contract.get('required_evidence')
+        if type(declared) is not list or len(declared) != len(REQUIRED_EVIDENCE) or any(type(v) is not str for v in declared) or set(declared) != set(REQUIRED_EVIDENCE):
+            raise ValueError('assessment contract must require all four distinct evidence types')
 
         store = evidence_store_path(root, request["evidence_store"])
         resolver = TrustedEvidenceResolver(
             store, root / "policies/effect-grant-trust.json"
         )
         refs = request["evidence_refs"]
-        accepted = set(map(str, request["accepted_producers"]))
-        max_age = int(request.get("max_age_seconds", 86400))
-        if not isinstance(refs, dict):
-            raise ValueError("evidence_refs must be an object")
+        producers = request['accepted_producers']
+        if type(producers) is not list or not 1 <= len(producers) <= 64:
+            raise ValueError('accepted producers must be a bounded nonempty list')
+        producers = [_evidence_text(value, 'accepted producer') for value in producers]
+        if len(set(producers)) != len(producers):
+            raise ValueError('accepted producers must be unique')
+        accepted = set(producers)
+        max_age = bounded_integer(request.get('max_age_seconds', 86400), 'evidence age', minimum=1, maximum=31536000)
+        if type(refs) is not dict or set(refs) != set(REQUIRED_EVIDENCE):
+            raise ValueError('evidence references must cover all four evidence types')
     except (KeyError, OSError, TypeError, ValueError) as error:
         return AdmissionDecision(
             False,
@@ -207,6 +238,7 @@ def review_authoritative(
             accepted_producers=accepted,
             max_age_seconds=max_age,
             required_type=evidence_type,
+            expected_evaluation=evaluation,
         )
         if not resolved.verified:
             failures.extend(resolved.reasons)
@@ -234,6 +266,26 @@ def review_authoritative(
             "candidate",
             tuple(sorted(verified_ids)),
         )
-    return _classify(
+    return replace(_classify(
         manifest, facts, authoritative=True, evidence_ids=tuple(sorted(verified_ids))
-    )
+    ), evaluation_binding=evaluation)
+
+
+def _admission_manifest(value):
+    """Typed core of the candidate-manifest assessment interpretation."""
+    from .numeric_inputs import bounded_mapping, bounded_json_value
+    from .trusted_evidence import _evidence_text
+    value = bounded_mapping(value, 'candidate manifest', maximum=128)
+    bounded_json_value(value)
+    value = json.loads(json.dumps(value, allow_nan=False))
+    for field in ('id', 'version', 'owner'):
+        _evidence_text(value.get(field), 'candidate ' + field)
+    for field in ('provides', 'consumes', 'effects', 'dependencies'):
+        items = value.get(field)
+        if type(items) is not list or len(items) > 256:
+            raise ValueError('candidate ' + field + ' must be a bounded list')
+        for item in items:
+            _evidence_text(item, 'candidate ' + field + ' item')
+        if len(set(items)) != len(items):
+            raise ValueError('candidate ' + field + ' must be unique')
+    return value

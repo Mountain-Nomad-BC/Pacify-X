@@ -14,6 +14,11 @@ from typing import Any, Mapping
 from .release_signing import canonical_bytes, public_key_fingerprint
 from .external_toolchain import require_openssh_authority
 
+from .input_files import contained_file, directory_root, cooperative_deadline, read_file_image
+from .json_io import decode_json_object
+from .numeric_inputs import bounded_text
+from .archive_io import portable_member_name
+
 NAMESPACE = "pacify-x-trusted-evidence"
 REFERENCE = re.compile(r"^evidence:([A-Za-z0-9._-]+)$")
 
@@ -123,11 +128,15 @@ def _validate_evidence_record(record: object) -> dict:
     record = bounded_mapping(record, "trusted evidence record", maximum=20)
     bounded_json_value(record)
     required = {"schema_version", "evidence_id", "evidence_type", "producer", "project_id", "subject_id", "created_at", "result", "signature", "content_sha256"}
-    optional = {"task_id", "execution_id", "actor_id", "session_id", "source_project_id", "destination_project_id", "artifact"}
+    optional = {"task_id", "execution_id", "actor_id", "session_id", "source_project_id", "destination_project_id", "artifact", "evaluation"}
     if required - record.keys() or record.keys() - required - optional:
         raise ValueError("trusted evidence record fields mismatch")
-    if record["schema_version"] != "1.0":
+    if type(record["schema_version"]) is not str or record["schema_version"] not in {"1.0", "2.0"}:
         raise ValueError("unsupported trusted evidence schema")
+    if record["schema_version"] == "2.0":
+        validate_evaluation_binding(record.get("evaluation"))
+    elif "evaluation" in record:
+        raise ValueError("legacy evidence cannot carry a versioned evaluation binding")
     identity = _evidence_text(record["evidence_id"], "evidence identity", maximum=128)
     if re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,127}", identity) is None:
         raise ValueError("invalid evidence identity")
@@ -311,7 +320,9 @@ class TrustedEvidenceResolver:
 
         self.store = directory_root(store)
         self.trust_policy, _ = independent_file(trust_policy)
-        self.now = now or datetime.now(timezone.utc)
+        if now is not None and (not isinstance(now, datetime) or now.tzinfo is None or now.utcoffset() is None):
+            raise ValueError("evidence evaluation clock must be aware")
+        self.now = now
 
     def resolve(
         self,
@@ -322,6 +333,7 @@ class TrustedEvidenceResolver:
         max_age_seconds: int | None = None,
         expected_sha256: str | None = None,
         required_type: str | None = None,
+        expected_evaluation: dict | None = None,
     ) -> ResolvedEvidence:
         from time import monotonic
         from .input_files import contained_file, read_file_image
@@ -333,6 +345,8 @@ class TrustedEvidenceResolver:
         if match is None or re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,127}", match.group(1)) is None:
             return _evidence_failure(reference, "invalid_evidence_reference")
         try:
+            if expected_evaluation is not None:
+                expected_evaluation = validate_evaluation_binding(expected_evaluation)
             if not isinstance(scope, EvidenceScope):
                 raise ValueError("invalid scope")
             for field in ("project_id", "subject_id", "task_id", "execution_id", "actor_id", "session_id"):
@@ -389,10 +403,15 @@ class TrustedEvidenceResolver:
         if required_type is not None and record["evidence_type"] != required_type:
             scope_valid = False
             reasons.append("evidence_type_mismatch")
+        if expected_evaluation is not None and (record["schema_version"] != "2.0" or record.get("evaluation") != expected_evaluation):
+            scope_valid = False
+            reasons.append("evidence_evaluation_mismatch")
         fresh = True
         try:
             created = datetime.fromisoformat(record["created_at"])
-            if max_age_seconds is not None and (self.now - created).total_seconds() > max_age_seconds:
+            current = self.now if self.now is not None else datetime.now(timezone.utc)
+            age = (current - created).total_seconds()
+            if age < 0 or max_age_seconds is not None and age > max_age_seconds:
                 fresh = False
         except (TypeError, ValueError):
             fresh = False
@@ -414,3 +433,77 @@ class TrustedEvidenceResolver:
             reasons.append("evidence_integrity_failure")
         return ResolvedEvidence(reference, record, True, integrity_valid, signature_valid,
                                 fresh, scope_valid, producer_accepted, tuple(sorted(set(reasons))))
+
+
+
+
+INTERPRETATIONS = {
+    'outcome-postconditions/1': 'artifact-file',
+    'candidate-assessments/1': 'candidate-manifest',
+}
+
+
+def load_evidence_request_file(path):
+    """Acquire an explicitly supplied CLI input without granting subject authority."""
+    from .input_files import independent_file
+    source, info = independent_file(path)
+    raw = read_file_image(source, info, limit=1024 * 1024, deadline=cooperative_deadline())
+    return decode_json_object(raw, max_bytes=1024 * 1024, max_depth=32, max_nodes=100000)
+
+
+def _locator(value):
+    value = bounded_text(value, 'evaluation locator', maximum=4096, strip=False)
+    normalized = portable_member_name(value, allow_directory=False)
+    if normalized != value:
+        raise ValueError('evaluation locator must use canonical relative spelling')
+    return value
+
+
+def validate_evaluation_binding(value):
+    if type(value) is not dict or set(value) != {'contract', 'subject'}:
+        raise ValueError('evaluation binding must contain contract and subject')
+    contract, subject = value['contract'], value['subject']
+    if type(contract) is not dict or set(contract) != {'path', 'sha256', 'size_bytes', 'interpretation'}:
+        raise ValueError('evaluation contract binding is invalid')
+    if type(subject) is not dict or set(subject) != {'path', 'kind', 'sha256', 'size_bytes'}:
+        raise ValueError('evaluation subject binding is invalid')
+    interpretation = contract['interpretation']
+    if type(interpretation) is not str or interpretation not in INTERPRETATIONS:
+        raise ValueError('evaluation interpretation is unsupported')
+    if type(subject['kind']) is not str or subject['kind'] != INTERPRETATIONS[interpretation]:
+        raise ValueError('evaluation subject kind disagrees with interpretation')
+    for record, limit in ((contract, 1024 * 1024), (subject, 64 * 1024 * 1024)):
+        _locator(record['path'])
+        digest = record['sha256']
+        if type(digest) is not str or len(digest) != 64 or any(c not in '0123456789abcdef' for c in digest):
+            raise ValueError('evaluation image digest is invalid')
+        size = record['size_bytes']
+        if type(size) is not int or not 0 <= size <= limit:
+            raise ValueError('evaluation image size is invalid')
+    return {'contract': dict(contract), 'subject': dict(subject)}
+
+
+def acquire_evaluation_binding(root, *, subject_source, assessment_contract, interpretation):
+    if type(interpretation) is not str or interpretation not in INTERPRETATIONS:
+        raise ValueError('evaluation interpretation is unsupported')
+    root = directory_root(root)
+    subject_name, contract_name = _locator(subject_source), _locator(assessment_contract)
+    deadline = cooperative_deadline()
+    subject_path, subject_info = contained_file(root, subject_name)
+    contract_path, contract_info = contained_file(root, contract_name)
+    subject_limit = 1024 * 1024 if interpretation == 'candidate-assessments/1' else 64 * 1024 * 1024
+    if subject_info.st_size > subject_limit or contract_info.st_size > 1024 * 1024:
+        raise ValueError('evaluation input image budget exhausted')
+    subject_raw = read_file_image(subject_path, subject_info, limit=subject_limit, deadline=deadline)
+    contract_raw = read_file_image(contract_path, contract_info, limit=1024 * 1024, deadline=deadline)
+    binding = validate_evaluation_binding({
+        'subject': {'path': subject_name, 'kind': INTERPRETATIONS[interpretation],
+                    'sha256': hashlib.sha256(subject_raw).hexdigest(), 'size_bytes': len(subject_raw)},
+        'contract': {'path': contract_name, 'interpretation': interpretation,
+                     'sha256': hashlib.sha256(contract_raw).hexdigest(), 'size_bytes': len(contract_raw)},
+    })
+    contract = decode_json_object(contract_raw, max_bytes=1024 * 1024, max_depth=32, max_nodes=100000)
+    subject = None
+    if interpretation == 'candidate-assessments/1':
+        subject = decode_json_object(subject_raw, max_bytes=1024 * 1024, max_depth=32, max_nodes=100000)
+    return binding, contract, subject

@@ -27,6 +27,24 @@ const runtimeBridge = fs.readFileSync(path.join(root, 'src', 'runtimeBridge.js')
 const pxBridge = fs.readFileSync(path.join(root, 'src', 'pxBridge.js'), 'utf8');
 const extensionLifecycleHost = fs.readFileSync(path.join(root, 'src', 'extensionLifecycleHost.js'), 'utf8');
 const extensionConflictAnalyzer = fs.readFileSync(path.join(root, 'src', 'extensionConflictAnalyzer.js'), 'utf8');
+const controlOwnerCheck = fs.readFileSync(path.join(root, 'scripts', 'check-operational-control-owners.js'), 'utf8');
+
+test('host context cache and in-flight work are bound to the workspace root', () => {
+  const hostContext = extension.slice(
+    extension.indexOf('async function governedHostContext'),
+    extension.indexOf('async function hostSnapshot')
+  );
+  assert.match(hostContext, /hostContextCache\.workspaceRoot === root/);
+  assert.match(hostContext, /host-context:\$\{root \|\| '<no-workspace>'\}/);
+  assert.match(hostContext, /workspaceRoot\(\) !== root/);
+  assert.match(hostContext, /hostContextCache = \{ createdAt: Date\.now\(\), workspaceRoot: root, value \}/);
+});
+
+test('operational owner accounting separates missing from duplicate ownership', () => {
+  assert.match(controlOwnerCheck, /missing = denominator\.filter\(control => !owned\.has\(control\.control_id\)\)/);
+  assert.match(controlOwnerCheck, /duplicate = denominator\.filter\(control => \(owned\.get\(control\.control_id\) \|\| \[\]\)\.length > 1\)/);
+  assert.doesNotMatch(controlOwnerCheck, /\.length !== 1/);
+});
 
 test('dashboard publication treats only exact post-disposal delivery as terminal cancellation', () => {
   assert.match(extension, /function isDisposedWebviewError[\s\S]*=== 'Webview is disposed'/);

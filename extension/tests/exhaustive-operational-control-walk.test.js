@@ -202,6 +202,19 @@ test('a form credits failure and recovery only from directly observed invalidati
   const probe = { loaded: true, visible: true, attempted: true, validationObserved: true, acknowledged: true, failureObserved: true, recoveryObserved: true, details: {} };
   for (const stage of ['authorization', 'backend_dispatch', 'runtime_effect']) {
     const result = stageResult(requirement, probe, stage, 'receipt:form');
+    assert.equal(result.state, 'missing');
+  }
+  const locallyContained = {
+    ...requirement,
+    stage_policy: Object.fromEntries(STAGES.map(stage => [
+      stage,
+      ['authorization', 'backend_dispatch', 'runtime_effect'].includes(stage)
+        ? 'not_applicable_with_evidence'
+        : 'required'
+    ]))
+  };
+  for (const stage of ['authorization', 'backend_dispatch', 'runtime_effect']) {
+    const result = stageResult(locallyContained, probe, stage, 'receipt:form');
     assert.equal(result.state, 'not_applicable');
     assert.match(result.detail, /did not submit the form, and dispatched no host or durable effect/);
   }
@@ -209,6 +222,17 @@ test('a form credits failure and recovery only from directly observed invalidati
   assert.equal(stageResult(requirement, probe, 'recovery_rollback', 'receipt:form').state, 'present');
   assert.equal(stageResult(requirement, { ...probe, failureObserved: false }, 'failure_handling', 'receipt:form').state, 'missing');
   assert.equal(stageResult(requirement, { ...probe, recoveryObserved: false }, 'recovery_rollback', 'receipt:form').state, 'missing');
+});
+
+test('stage policy and numeric field bounds fail closed when absent or unknown', () => {
+  const probe = { loaded: true, visible: true, attempted: true, validationObserved: true, acknowledged: true, details: {} };
+  for (const stagePolicy of [{}, { display: 'optional' }]) {
+    const requirement = { kind: 'field', stage_policy: stagePolicy };
+    assert.equal(stageResult(requirement, probe, 'display', 'receipt:field').state, 'missing');
+  }
+  const source = fs.readFileSync(path.join(__dirname, '../scripts/run-exhaustive-operational-control-walk.js'), 'utf8');
+  assert.match(source, /minRaw == null \|\| minRaw\.trim\(\) === '' \? Number\.NaN : Number\(minRaw\)/);
+  assert.match(source, /maxRaw == null \|\| maxRaw\.trim\(\) === '' \? Number\.NaN : Number\(maxRaw\)/);
 });
 
 test('contained form scenario sets, proves, clears, and exactly restores custom validity without submission', () => {

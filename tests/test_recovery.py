@@ -23,6 +23,25 @@ from runtime.recovery import (
 FIXTURES = Path(__file__).parent / "fixtures" / "durable_state"
 
 
+def test_persist_and_migrate_share_explicit_generation_owner(tmp_path):
+    from runtime.wal_ownership import WalOwnership
+    from runtime.wal_transaction import JsonWal
+    journal = tmp_path / '.migrations/state.json/wal'
+    WalOwnership.activate(tmp_path, [dict(journal=journal.relative_to(tmp_path).as_posix(), domains=[
+        dict(path='state.json', kind='exact'), dict(path='.history/state.json', kind='subtree'),
+        dict(path='.migrations/state.json/backups', kind='subtree'),
+        dict(path='.migrations/state.json/receipts', kind='subtree')])])
+    wal = JsonWal(journal, tmp_path)
+    wal.activate_generation(tmp_path)
+    path = tmp_path / 'state.json'
+    persist_state(_state(), path)
+    first = wal.capture_generation()
+    persist_state(_state(interrupted=('execute',)), path)
+    assert wal.capture_generation() != first
+    assert migrate_state(path)['migrated'] is False
+    assert load_state(next((tmp_path / '.history/state.json').glob('*.json'))) == _state()
+
+
 def _state(*, interrupted: tuple[str, ...] = ()) -> DurableState:
     return DurableState(
         package_id="pkg-1",

@@ -1,19 +1,131 @@
 {
   "schema_version": "1.0",
-  "policy_version": "1.0.2",
-  "product_roots": [".agents", ".ai", ".codex", ".cursor", ".engineering-bootstrap", ".github", ".px", ".vscode", ".windsurf", "LICENSES", "bootstrap", "builders", "contracts", "docs", "examples", "extension", "models", "orchestration", "policies", "providers", "registry", "runtime", "scripts", "templates", "tests"],
-  "product_root_files": [".coveragerc", ".gitattributes", ".gitignore", "AGENTS.md", "AI_ASSISTANT.md", "ARCHITECTURE_GOVERNANCE_AND_RISK.md", "CHANGELOG.md", "CLAUDE.md", "CONTRIBUTING.md", "EXECUTION_PLAN_PUNCH_CARDS_AND_ACCEPTANCE.md", "GEMINI.md", "LICENSE", "MANIFEST.in", "NOTICE", "PROJECT_BLUEPRINT.md", "PROJECT_MANAGEMENT.md", "README.md", "SECURITY.md", "START_HERE_FOR_AI.md", "conftest.py", "engineering-workspace.toml", "pyproject.toml", "requirements-release.txt", "sitecustomize.py"],
-  "evidence_roots": ["evidence"],
-  "audit_roots": ["AUDIT_ARTIFACTS"],
-  "audit_root_files": ["AUDIT_EXPORT_MANIFEST.json", "AUDIT_BUNDLE_README.md", "AUDIT_REPLAY_CONTRACT.json"],
-  "audit_allowed_suffixes": [".json", ".md", ".txt", ".vsix"],
-  "intermediate_names": [".git", "__pycache__", ".pytest_cache", ".ruff_cache", "build", "dist"],
-  "intermediate_name_suffixes": [".egg-info"],
-  "intermediate_suffixes": [".pyc", ".pyo", ".tmp"],
-  "control_output_paths": [".engineering-bootstrap/release.lock", ".engineering-bootstrap/release-transaction.json", ".engineering-bootstrap/processing-order/repair-campaign.json", ".engineering-bootstrap/processing-order/release-identity.json", ".engineering-bootstrap/test-evidence/.test-orchestration.lock", ".px/mcp-runtime-probe.json", "extension/SHA256SUMS.txt", "registry/.operational-gap-ledger.lock", "registry/completion_status.json", "registry/operational_gap_ledger.head.json", "registry/px_world_state.json"],
-  "control_output_prefixes": [".engineering-bootstrap/admission-payloads/", ".engineering-bootstrap/test-evidence/", ".engineering-bootstrap/resource-lifecycle/", ".engineering-bootstrap/wal/", "registry/.lock-recovery-receipts/", "registry/operational_gap_ledger.deltas/"],
-  "evidence_allowed_suffixes": [".json", ".jsonl", ".ndjson", ".md", ".txt", ".log", ".xml", ".png", ".svg", ".sig"],
-  "evidence_allowed_names": ["SHA256SUMS"],
+  "policy_version": "1.0.4",
+  "product_roots": [
+    ".agents",
+    ".ai",
+    ".codex",
+    ".cursor",
+    ".engineering-bootstrap",
+    ".github",
+    ".px",
+    ".vscode",
+    ".windsurf",
+    "LICENSES",
+    "bootstrap",
+    "builders",
+    "contracts",
+    "docs",
+    "examples",
+    "extension",
+    "models",
+    "orchestration",
+    "policies",
+    "providers",
+    "registry",
+    "runtime",
+    "scripts",
+    "templates",
+    "tests"
+  ],
+  "product_root_files": [
+    ".coveragerc",
+    ".gitattributes",
+    ".gitignore",
+    "AGENTS.md",
+    "AI_ASSISTANT.md",
+    "ARCHITECTURE_GOVERNANCE_AND_RISK.md",
+    "CHANGELOG.md",
+    "CLAUDE.md",
+    "CONTRIBUTING.md",
+    "EXECUTION_PLAN_PUNCH_CARDS_AND_ACCEPTANCE.md",
+    "GEMINI.md",
+    "LICENSE",
+    "MANIFEST.in",
+    "NOTICE",
+    "PROJECT_BLUEPRINT.md",
+    "PROJECT_MANAGEMENT.md",
+    "README.md",
+    "SECURITY.md",
+    "START_HERE_FOR_AI.md",
+    "conftest.py",
+    "engineering-workspace.toml",
+    "pyproject.toml",
+    "requirements-release.txt",
+    "sitecustomize.py"
+  ],
+  "evidence_roots": [
+    "evidence"
+  ],
+  "audit_roots": [
+    "AUDIT_ARTIFACTS"
+  ],
+  "audit_root_files": [
+    "AUDIT_EXPORT_MANIFEST.json",
+    "AUDIT_BUNDLE_README.md",
+    "AUDIT_REPLAY_CONTRACT.json"
+  ],
+  "audit_allowed_suffixes": [
+    ".json",
+    ".md",
+    ".txt",
+    ".vsix"
+  ],
+  "intermediate_names": [
+    ".git",
+    "__pycache__",
+    ".pytest_cache",
+    ".ruff_cache",
+    "build",
+    "dist"
+  ],
+  "intermediate_name_suffixes": [
+    ".egg-info"
+  ],
+  "intermediate_suffixes": [
+    ".pyc",
+    ".pyo",
+    ".tmp"
+  ],
+  "control_output_paths": [
+    ".engineering-bootstrap/processing-order/release-identity.json",
+    ".engineering-bootstrap/processing-order/repair-campaign.json",
+    ".engineering-bootstrap/release-transaction.json",
+    ".engineering-bootstrap/release.lock",
+    ".engineering-bootstrap/test-evidence/.test-orchestration.lock",
+    ".px/mcp-runtime-probe.json",
+    "extension/SHA256SUMS.txt",
+    "evidence/release/rejected-marketplace-upload/pacify-x-vscode-0.6.87-c412addf-rejected-license-path.vsix",
+    "registry/.operational-gap-ledger.lock",
+    "registry/completion_status.json",
+    "registry/operational_gap_ledger.head.json",
+    "registry/operational_gap_ledger.jsonl",
+    "registry/operational_gap_ledger.snapshot.json",
+    "registry/px_world_state.json"
+  ],
+  "control_output_prefixes": [
+    ".engineering-bootstrap/admission-payloads/",
+    ".engineering-bootstrap/test-evidence/",
+    ".engineering-bootstrap/resource-lifecycle/",
+    ".engineering-bootstrap/wal/",
+    "registry/.lock-recovery-receipts/",
+    "registry/operational_gap_ledger.deltas/"
+  ],
+  "evidence_allowed_suffixes": [
+    ".json",
+    ".jsonl",
+    ".ndjson",
+    ".md",
+    ".txt",
+    ".log",
+    ".xml",
+    ".png",
+    ".svg",
+    ".sig"
+  ],
+  "evidence_allowed_names": [
+    "SHA256SUMS"
+  ],
   "skill_source_only": [],
   "product_digest_algorithm": "sha256-over-canonical-jsonl-path-size-sha256",
   "unclassified_policy": "fail_closed"

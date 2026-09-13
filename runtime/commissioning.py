@@ -18,6 +18,7 @@ from .event_ledger import append_chained_event, validate_event_ledger
 from .paths import framework_root
 from .project_management import project_management_files, validate_project_management
 from .release_identity import authoritative_version
+from .wal_transaction import BytesArtifact, JsonWal
 
 
 AGENTS = """# Repository engineering contract
@@ -587,11 +588,16 @@ def apply_project_brief(
     """Validate and version a questionnaire into an already commissioned project."""
     resolved = project.resolve()
     source = (source_root or framework_root()).resolve()
+    state_path = resolved / ".engineering-bootstrap/project-management/state.json"
+    wal = JsonWal(resolved / '.engineering-bootstrap/wal/cohesion-card-reconciliation', resolved).producer_for_target(state_path)
+    if apply:
+        wal.recover()
     errors = validate_project_management(resolved)
     if errors:
         raise ValueError(f"project management is invalid: {errors}")
-    state_path = resolved / ".engineering-bootstrap/project-management/state.json"
-    state = json.loads(state_path.read_text(encoding="utf-8"))
+    generation = wal.capture_generation()
+    state_raw = wal.read_source_image(state_path)
+    state = json.loads(state_raw)
     answers = json.loads(questionnaire.read_text(encoding="utf-8"))
     validate_instance(
         answers, source / "contracts/commissioning-questionnaire.schema.json"
@@ -642,23 +648,25 @@ def apply_project_brief(
     if not apply:
         return {**result, "approval_required": True}
     history = state_path.parent / "history"
-    history.mkdir(parents=True, exist_ok=True)
+    artifacts = []
+    expected = {}
+    images = {}
     for current in (state_path, target, resolved / "PROJECT_MANAGEMENT.md"):
-        if current.is_file():
+        raw = state_raw if current == state_path else wal.read_source_image(current)
+        images[current] = raw
+        expected[current.relative_to(resolved).as_posix()] = _sha256(raw) if raw is not None else None
+        if raw is not None:
             preserved = (
                 history
-                / f"{current.stem}-{_sha256(current.read_bytes())[:16]}{current.suffix}"
+                / f"{current.stem}-{_sha256(raw)[:16]}{current.suffix}"
             )
-            if not preserved.exists():
-                preserved.write_bytes(current.read_bytes())
-    target_next = target.with_suffix(".json.next")
-    target_next.write_text(json.dumps(answers, indent=2) + "\n", encoding="utf-8")
-    os.replace(target_next, target)
-    state_next = state_path.with_suffix(".json.next")
-    state_next.write_text(json.dumps(updated, indent=2) + "\n", encoding="utf-8")
-    os.replace(state_next, state_path)
+            retained = wal.read_source_image(preserved)
+            if retained is not None and retained != raw:
+                raise ValueError('commissioning history identity collision')
+            artifacts.append(BytesArtifact('state', preserved, raw))
+            expected[preserved.relative_to(resolved).as_posix()] = _sha256(retained) if retained is not None else None
     dashboard = resolved / "PROJECT_MANAGEMENT.md"
-    text = dashboard.read_text(encoding="utf-8")
+    text = images[dashboard].decode('utf-8')
     summary = f"## Current state\n\nMode: `{answers['mode']}`  \nPhase: `{updated['lifecycle']['phase']}`  \nStatus: `{updated['lifecycle']['status']}`  \nNext: {next_action}\n\n"
     text = re.sub(
         r"## Current state\s+.*?(?=\n## )",
@@ -667,13 +675,17 @@ def apply_project_brief(
         count=1,
         flags=re.DOTALL,
     )
-    dashboard_next = dashboard.with_suffix(".md.next")
-    dashboard_next.write_text(text, encoding="utf-8")
-    os.replace(dashboard_next, dashboard)
+    artifacts.extend([
+        BytesArtifact('state', target, (json.dumps(answers, indent=2) + '\n').encode('utf-8')),
+        BytesArtifact('state', state_path, (json.dumps(updated, indent=2) + '\n').encode('utf-8')),
+        BytesArtifact('projection', dashboard, text.encode('utf-8')),
+    ])
+    transaction = wal.commit(artifacts, expected_before=expected, expected_generation=generation)
     return {
         **result,
         "applied": True,
         "state_revision": updated["checkpoint"]["revision"],
+        "transaction": transaction,
     }
 
 

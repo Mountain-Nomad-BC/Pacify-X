@@ -85,6 +85,10 @@ def validate_operational(root: Path) -> tuple[dict[tuple[str, str], dict], list[
                 valid = (
                     valid
                     and first.get("valid") is True
+                    and second.get("valid") is True
+                    and isinstance(first.get("result_sha256"), str)
+                    and len(first["result_sha256"]) == 64
+                    and all(char in "0123456789abcdef" for char in first["result_sha256"])
                     and first.get("result_sha256") == second.get("result_sha256")
                 )
                 evidence["script_result_sha256"] = first.get("result_sha256")

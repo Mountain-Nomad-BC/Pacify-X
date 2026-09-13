@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -20,6 +21,30 @@ def load_script(relative: str):
 
 
 class SkillSupportScriptTests(unittest.TestCase):
+    def test_declared_suite_certifier_requires_both_current_script_results(self) -> None:
+        module = load_script(
+            ".px/skills/audit-source-capabilities/scripts/certify_declared_suite_reconstruction.py"
+        )
+        records = {"records": [{"kind": "script", "source_id": "demo"}]}
+        def plans(_root, _kind, _source, request):
+            return {"valid": bool(request.get("constraints"))}
+        with (
+            patch.object(module, "validate_declared_suite", return_value={"errors": []}),
+            patch.object(module, "list_outcomes", return_value=records),
+            patch.object(module, "plan_outcome", side_effect=plans),
+            patch.object(
+                module,
+                "run_script_outcome",
+                side_effect=[
+                    {"valid": True, "result_sha256": "a" * 64},
+                    {"valid": False, "result_sha256": "a" * 64},
+                ],
+            ),
+        ):
+            outcomes, errors = module.validate_operational(ROOT)
+        self.assertFalse(outcomes[("script", "demo")]["valid"])
+        self.assertEqual(errors, ["operational validation failed: ('script', 'demo')"])
+
     def test_build_manifest_recovery_ledger_executes_with_bounded_inputs(self) -> None:
         module = load_script(
             ".px/skills/audit-source-capabilities/scripts/build_manifest_recovery_ledger.py"

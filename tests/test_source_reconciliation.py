@@ -48,6 +48,17 @@ class SourceReconciliationTests(unittest.TestCase):
                 json.dumps({"mappings": {"new": ["owner"]}}), encoding="utf-8"
             )
             self.assertTrue(module.reconcile(report, mappings)["summary"]["complete"])
+            for invalid in ([], "", ["", "owner"], [42]):
+                with self.subTest(invalid=invalid):
+                    mappings.write_text(
+                        json.dumps({"mappings": {"new": invalid}}), encoding="utf-8"
+                    )
+                    result = module.reconcile(report, mappings)
+                    self.assertFalse(result["summary"]["complete"])
+                    self.assertEqual(
+                        result["records"][0]["missing_mechanisms"], ["new"]
+                    )
+                    self.assertEqual(result["records"][0]["targets"], [])
 
 
 if __name__ == "__main__":

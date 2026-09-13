@@ -255,7 +255,7 @@ class Orchestrator:
                 attachment.record.evidence_id
                 for claim in package.claims
                 for attachment in claim.attachments
-                if attachment.usable_for_support
+                if claim.supported and attachment.usable_for_support
             )
             mark("evidence_assembly", evidence_ids=evidence_ids)
             verification = verify(

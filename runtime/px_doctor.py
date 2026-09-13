@@ -21,7 +21,8 @@ from .provider_budget import load_budget_policy
 from .provider_gateway import load_provider_registry, scan_direct_provider_routes
 from .recovery import RecoveryConfiguration, RecoveryCoordinator
 from .source_coverage import validate_source_coverage
-from .wal_transaction import JsonArtifact, JsonWal
+from .wal_transaction import JsonTextArtifact, JsonWal
+from .json_io import bounded_canonical_json_bytes
 
 
 SCHEMA_VERSION = "px.doctor-report/1.0"
@@ -628,13 +629,22 @@ def retain_doctor_receipt(
     receipt["receipt_sha256"] = _sha(receipt)
     target = directory / "receipts" / f"{report_hash}.json"
     wal = JsonWal(directory / "wal", root)
+    wal.recover()
+    generation = wal.capture_generation()
+    payload = bounded_canonical_json_bytes(receipt, max_bytes=64 * 1024 * 1024)
+    before = wal.read_source_image(target)
+    if before is not None and before != payload:
+        raise ValueError("immutable doctor receipt already contains another image")
     transaction = wal.commit(
-        (JsonArtifact("receipt", target, receipt),),
+        (JsonTextArtifact("receipt", target, payload.decode("utf-8")),),
         transaction_id=f"px-doctor-{report_hash[:24]}",
+        expected_generation=generation,
+        expected_before={target.relative_to(root).as_posix():
+                         None if before is None else hashlib.sha256(before).hexdigest()},
     )
     return {
         "path": target.relative_to(root).as_posix(),
-        "sha256": hashlib.sha256(target.read_bytes()).hexdigest(),
+        "sha256": hashlib.sha256(payload).hexdigest(),
         "report_sha256": report_hash,
         "wal_transaction_id": transaction["transaction_id"],
     }

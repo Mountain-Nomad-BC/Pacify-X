@@ -18,7 +18,10 @@
   "additionalProperties": false,
   "properties": {
     "schema_version": {
-      "const": "1.0"
+      "enum": [
+        "1.0",
+        "2.0"
+      ]
     },
     "evidence_id": {
       "type": "string",
@@ -129,7 +132,161 @@
     "destination_project_id": {
       "type": "string",
       "minLength": 1
+    },
+    "evaluation": {
+      "type": "object",
+      "required": [
+        "contract",
+        "subject"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "contract": {
+          "type": "object",
+          "required": [
+            "path",
+            "sha256",
+            "size_bytes",
+            "interpretation"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "size_bytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1048576
+            },
+            "interpretation": {
+              "enum": [
+                "outcome-postconditions/1",
+                "candidate-assessments/1"
+              ]
+            }
+          }
+        },
+        "subject": {
+          "type": "object",
+          "required": [
+            "path",
+            "sha256",
+            "size_bytes",
+            "kind"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "size_bytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 67108864
+            },
+            "kind": {
+              "enum": [
+                "artifact-file",
+                "candidate-manifest"
+              ]
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "contract": {
+                "properties": {
+                  "interpretation": {
+                    "const": "outcome-postconditions/1"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "subject": {
+                "properties": {
+                  "kind": {
+                    "const": "artifact-file"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "contract": {
+                "properties": {
+                  "interpretation": {
+                    "const": "candidate-assessments/1"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "subject": {
+                "properties": {
+                  "kind": {
+                    "const": "candidate-manifest"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
     }
   },
-  "description": "The shared runtime resolver additionally enforces byte/count limits, type-specific Boolean assessments, transfer project identities and signer producer/type grants."
+  "description": "The shared runtime resolver additionally enforces byte/count limits, type-specific Boolean assessments, transfer project identities and signer producer/type grants.",
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "schema_version": {
+            "const": "2.0"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "evaluation"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "schema_version": {
+            "const": "1.0"
+          }
+        }
+      },
+      "then": {
+        "not": {
+          "required": [
+            "evaluation"
+          ]
+        }
+      }
+    }
+  ]
 }

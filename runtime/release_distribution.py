@@ -35,7 +35,6 @@ from .bounded_walk import WalkLimits, bounded_walk
 from .json_io import (
     bounded_json_text,
     bounded_strings,
-    decode_json_object,
     read_bounded_bytes,
 )
 from .release_environment import scrub_release_environment
@@ -93,9 +92,8 @@ def _glob_match(path: str, pattern: str, *, directory: bool = False) -> bool:
     return matches(0, 0)
 
 
-def _manifest_patterns(text: str) -> tuple[list[str], list[str]]:
-    included = ["pyproject.toml", "MANIFEST.in"]
-    excluded = []
+def _manifest_rules(text: str) -> list[tuple[bool, str]]:
+    rules = [(True, "pyproject.toml"), (True, "MANIFEST.in")]
     for raw_line in text.splitlines():
         line = raw_line.strip()
         if not line or line.startswith("#"):
@@ -104,22 +102,67 @@ def _manifest_patterns(text: str) -> tuple[list[str], list[str]]:
         command, arguments = parts[0], parts[1:]
         if command in ("include", "exclude") and arguments:
             values = [_safe_pattern(value) for value in arguments]
-        elif (
-            command in ("recursive-include", "recursive-exclude")
-            and len(arguments) >= 2
-        ):
+        elif command in ("recursive-include", "recursive-exclude") and len(arguments) >= 2:
             base = _safe_pattern(arguments[0])
-            values = [
-                _safe_pattern(base + "/**/" + pattern) for pattern in arguments[1:]
-            ]
+            values = [_safe_pattern(base + "/**/" + pattern) for pattern in arguments[1:]]
+        elif command == "prune" and len(arguments) == 1:
+            values = [_safe_pattern(arguments[0]) + "/**"]
         else:
             raise ValueError("unsupported or malformed MANIFEST.in directive")
-        (included if command in ("include", "recursive-include") else excluded).extend(
-            values
-        )
-        if len(included) + len(excluded) > 4096:
+        rules.extend((command in ("include", "recursive-include"), value) for value in values)
+        if len(rules) > 4096:
             raise ValueError("source manifest pattern budget exceeded")
-    return included, excluded
+    return rules
+
+
+def _manifest_patterns(text: str) -> tuple[list[str], list[str]]:
+    rules = _manifest_rules(text)
+    return ([pattern for include, pattern in rules if include],
+            [pattern for include, pattern in rules if not include])
+
+
+def _manifest_selected(path, rules):
+    selected = False
+    for include, pattern in rules:
+        if _glob_match(path, pattern):
+            selected = include
+    return selected
+
+
+def _pattern_intersects_subtree(pattern, prefix):
+    literal = re.split(r"[*?\[]", pattern, maxsplit=1)[0].casefold()
+    return literal.startswith(prefix.casefold()) or _glob_match(
+        prefix.rstrip("/"), pattern, directory=True
+    )
+
+
+def _validate_control_projection(policy, rules, requests):
+    paths = tuple(policy.get("control_output_paths", []))
+    prefixes = tuple(policy.get("control_output_prefixes", []))
+    for path in paths:
+        if _manifest_selected(path, rules):
+            raise ValueError("sdist declares a mutable control output: " + path)
+    for prefix in prefixes:
+        # Exact whole-subtree exclusions permit safe pre-traversal pruning.
+        exclusions = [i for i, (include, pattern) in enumerate(rules)
+                      if not include and pattern.casefold() == prefix.casefold() + "**"]
+        relevant = any(include and _pattern_intersects_subtree(pattern, prefix)
+                       for include, pattern in rules)
+        if relevant and (not exclusions or any(
+            include and _pattern_intersects_subtree(pattern, prefix)
+            for include, pattern in rules[exclusions[-1] + 1:]
+        )):
+            raise ValueError("sdist must exclude the complete mutable control subtree: " + prefix)
+    for pattern, _target, _base, _kind in requests:
+        if any(_glob_match(path, pattern) for path in paths) or any(
+            _pattern_intersects_subtree(pattern, prefix) for prefix in prefixes
+        ):
+            raise ValueError("required wheel declaration intersects mutable control output: " + pattern)
+    if any(path.casefold().startswith('.px/skills/') for path in paths) or any(
+        _pattern_intersects_subtree('.px/skills/**', prefix) for prefix in prefixes
+    ):
+        raise ValueError("control policy intersects commissioned skill inputs")
+    return frozenset(path.casefold() for path in paths), tuple(prefix.casefold() for prefix in prefixes)
 
 
 class _ProjectionInputs:
@@ -131,6 +174,7 @@ class _ProjectionInputs:
         patterns: list[str],
         controls: dict[str, bytearray],
         limits: ArchiveLimits,
+        *, control_paths=frozenset(), control_prefixes=(),
     ):
         self.root = root
         self.limits = limits
@@ -144,14 +188,26 @@ class _ProjectionInputs:
             ".pytest_cache",
             ".ruff_cache",
             ".venv",
+            "quarantine",
+            ".quarantine",
+            "_quarantine",
+            "repo_quarantine",
         }
 
         def exclude(relative):
+            folded = relative.casefold()
+            if folded in control_paths or any(
+                folded == prefix.rstrip('/') or folded.startswith(prefix)
+                for prefix in control_prefixes
+            ):
+                return True
             path = root / relative
             directory = path.is_dir()
             parts = relative.casefold().split("/")
             directories = parts if directory else parts[:-1]
-            if any(part in ignored or "quarantine" in part for part in directories):
+            # Custody directories are exact identities. Authored capabilities
+            # such as quarantine-external-tools remain ordinary source inputs.
+            if any(part in ignored for part in directories):
                 return True
             if (
                 parts[:2] == [".px", "skills"]
@@ -397,13 +453,17 @@ def _manifest_sources(root: Path, manifest_path: Path) -> set[Path]:
     if not manifest_path.resolve().is_relative_to(root):
         raise ValueError("source manifest escapes root")
     data = read_bounded_bytes(manifest_path, max_bytes=1024 * 1024)
-    included, excluded = _manifest_patterns(data.decode("utf-8"))
-    inputs = _ProjectionInputs(root, included, {}, DEFAULT_LIMITS)
+    manifest_rules = _manifest_rules(data.decode("utf-8"))
+    included = [pattern for include, pattern in manifest_rules if include]
+    pruned = tuple(pattern[:-2].casefold() for index, (include, pattern) in enumerate(manifest_rules)
+        if not include and pattern.endswith('/**') and not re.search(r"[*?\[]", pattern[:-3])
+        and not any(later_include and _pattern_intersects_subtree(later_pattern, pattern[:-2])
+                    for later_include, later_pattern in manifest_rules[index + 1:]))
+    inputs = _ProjectionInputs(root, included, {}, DEFAULT_LIMITS, control_prefixes=pruned)
     return {
         root / path
         for path in inputs.files
-        if any(_glob_match(path, pattern) for pattern in included)
-        and not any(_glob_match(path, pattern) for pattern in excluded)
+        if _manifest_selected(path, manifest_rules)
     }
 
 
@@ -561,7 +621,8 @@ def _generate_artifact_manifest(root: Path, limits: ArchiveLimits) -> dict[str, 
     ):
         raise ValueError("project name/version must be bounded canonical text")
     distribution = _distribution_name(name)
-    included, excluded = _manifest_patterns(controls["MANIFEST.in"].decode("utf-8"))
+    manifest_rules = _manifest_rules(controls["MANIFEST.in"].decode("utf-8"))
+    included = [pattern for include, pattern in manifest_rules if include]
     patterns = [*included, ".px/skills/**", "policies/release-artifact-policy.json"]
     packages = _declaration_strings(setuptools.get("packages", []), max_item_bytes=256)
     directories = setuptools.get("package-dir", {})
@@ -640,6 +701,7 @@ def _generate_artifact_manifest(root: Path, limits: ArchiveLimits) -> dict[str, 
             (pattern, f"{distribution}-{version}.dist-info/licenses", "", "license")
         )
     source_only = ()
+    policy_value = {}
     policy = "policies/release-artifact-policy.json"
     if (root / policy).exists():
         reject_path_links(root / policy)
@@ -648,13 +710,12 @@ def _generate_artifact_manifest(root: Path, limits: ArchiveLimits) -> dict[str, 
         controls[policy] = read_bounded_bytes(
             root / policy, max_bytes=min(1024 * 1024, remaining_controls)
         )
-        source_only = _declaration_strings(
-            decode_json_object(controls[policy], max_bytes=1024 * 1024).get(
-                "skill_source_only", []
-            ),
-            max_items=4096,
-        )
-    inputs = _ProjectionInputs(root, patterns, controls, limits)
+        from .release_artifacts import decode_release_policy
+        policy_value = decode_release_policy(controls[policy])
+        source_only = _declaration_strings(policy_value.get("skill_source_only", []), max_items=4096)
+    control_paths, control_prefixes = _validate_control_projection(policy_value, manifest_rules, requests)
+    inputs = _ProjectionInputs(root, patterns, controls, limits,
+                               control_paths=control_paths, control_prefixes=control_prefixes)
     planned = []
     projected = set()
     wheel_sources = set()
@@ -707,11 +768,14 @@ def _generate_artifact_manifest(root: Path, limits: ArchiveLimits) -> dict[str, 
             )
             add(source, installed, "wheel")
             wheel_sources.add(source)
+    for source in wheel_sources:
+        decisions = [include for include, pattern in manifest_rules if _glob_match(source, pattern)]
+        if decisions and decisions[-1] is False:
+            raise ValueError("sdist excludes a required wheel source: " + source)
     sdist_sources = {
         path
         for path in inputs.files
-        if any(_glob_match(path, pattern) for pattern in included)
-        and not any(_glob_match(path, pattern) for pattern in excluded)
+        if _manifest_selected(path, manifest_rules)
     } | wheel_sources
     if not {"pyproject.toml", "MANIFEST.in"} <= sdist_sources:
         raise ValueError("sdist projection omitted required source controls")

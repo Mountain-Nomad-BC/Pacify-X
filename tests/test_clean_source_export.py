@@ -306,3 +306,37 @@ def test_candidate_commands_disable_bytecode_and_user_site(
     assert environment["PYTHONNOUSERSITE"] == "1"
     assert environment["PYTHONPATH"] == str(tmp_path)
     assert captured["timeout"] == 17
+
+
+@pytest.mark.parametrize("failure", ["errors", "scope", "gate"])
+def test_sanitation_preserves_upstream_failure(tmp_path, failure):
+    from tests.test_sanitation_assurance import _fixture, _identifier_audit
+
+    _fixture(tmp_path)
+    audit = _identifier_audit()
+    if failure == "errors":
+        audit["errors"] = ["identifier traversal incomplete"]
+    elif failure == "scope":
+        audit["scoped_valid"] = False
+    else:
+        audit["gates"]["secret_scanning"] = {"status": "failed"}
+    result = runtime.sanitation_assurance.build_sanitation_summary(
+        tmp_path, audit, {"valid": True, "errors": []}
+    )
+    assert not result["valid"]
+    assert result["errors"]
+    assert result["identifier_audit"]["gates"] == audit["gates"]
+
+
+def test_sanitation_completes_not_run_controls(tmp_path):
+    from tests.test_sanitation_assurance import _fixture, _identifier_audit
+
+    _fixture(tmp_path)
+    audit = _identifier_audit()
+    audit.update(valid=False, scoped_valid=True, errors=[])
+    audit["gates"]["secret_scanning"] = {"status": "not_run"}
+    result = runtime.sanitation_assurance.build_sanitation_summary(
+        tmp_path, audit, {"valid": True, "errors": []}
+    )
+    assert result["valid"], result["errors"]
+    assert result["gates"]["secret_scanning"]["status"] == "passed"

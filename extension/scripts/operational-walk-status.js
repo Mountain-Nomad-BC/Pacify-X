@@ -74,12 +74,23 @@ function issueKey(item) {
 function dedupeIssues(items) {
   const byKey = new Map();
   for (const raw of items || []) {
-    if (!raw || typeof raw !== 'object') continue;
-    const normalized = issue(raw);
+    const malformed = !raw || typeof raw !== 'object' || Array.isArray(raw);
+    const normalized = issue(malformed ? {
+      source: 'evidence', code: 'malformed-additional-issue', severity: 'error', blocking: true,
+      message: typeof raw === 'string' ? raw : 'A non-object issue was supplied; diagnostic coverage is incomplete.'
+    } : raw);
     const key = issueKey(normalized);
     const existing = byKey.get(key);
     if (existing) {
       existing.occurrences += normalized.occurrences;
+      existing.blocking = existing.blocking || normalized.blocking;
+      const severityRank = { debug: 0, info: 1, warning: 2, error: 3, critical: 4, fatal: 5 };
+      if ((severityRank[normalized.severity] ?? 3) > (severityRank[existing.severity] ?? 3)) {
+        existing.severity = normalized.severity;
+      }
+      if (existing.blocking && !['warning', 'error', 'critical', 'fatal'].includes(existing.severity)) {
+        existing.severity = 'error';
+      }
       existing.recovered = existing.recovered === false || normalized.recovered === false
         ? false
         : existing.recovered === true || normalized.recovered === true
@@ -786,6 +797,13 @@ function evaluateLauncherTerminal({ walkStatus = null, processTreeClosedVerified
   if (!walkStatus || typeof walkStatus !== 'object') {
     issues.push(issue({ source: 'process', code: 'walk-status-missing', message: 'The child did not retain a typed walk status.' }));
   }
+  if (walkStatus && typeof walkStatus === 'object' && (
+    walkStatus.schema_version !== 'px.operational-ui-walk-status/1.0'
+    || walkStatus.terminal_state !== WALK_TERMINAL_STATES.COMPLETED
+    || walkStatus.scope_complete !== true
+  )) {
+    issues.push(issue({ source: 'process', code: 'child-walk-not-complete', message: 'The child did not prove a recognized, complete evaluated scope.' }));
+  }
   if (processTreeClosedVerified !== true) {
     issues.push(issue({ source: 'process', code: 'owner-process-tree-closure-unverified', message: 'The owner did not verify closure of the complete child process tree.' }));
   }
@@ -803,7 +821,8 @@ function evaluateLauncherTerminal({ walkStatus = null, processTreeClosedVerified
   return {
     schema_version: 'px.operational-ui-launcher-status/1.0',
     terminal_state: terminalState,
-    operationally_complete: terminalState === WALK_TERMINAL_STATES.COMPLETED,
+    operationally_complete: terminalState === WALK_TERMINAL_STATES.COMPLETED && walkStatus?.operationally_complete === true,
+    scope_complete: terminalState === WALK_TERMINAL_STATES.COMPLETED && walkStatus?.scope_complete === true,
     walk_terminal_state: walkStatus?.terminal_state || null,
     summary: summarizeIssues(normalizedIssues),
     issues: normalizedIssues

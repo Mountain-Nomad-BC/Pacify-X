@@ -129,6 +129,138 @@ def test_workflow_revision_runnable_dry_run_and_real_run_are_distinct(tmp_path):
     assert len(approval_result["approval_id_sha256"]) == 64
 
 
+@pytest.mark.parametrize('indexed', [False, True], ids=['legacy', 'indexed'])
+def test_workflow_task_workspace_has_creation_identity_and_closes(tmp_path, monkeypatch, indexed):
+    import hashlib
+    from scripts.migrate_resource_ledger import migrate
+
+    definition, bindings, grants = fixture()
+    definition = replace(definition, nodes=definition.nodes[:1], edges=())
+    studio = WorkflowStudio(tmp_path)
+    studio.save_revision(definition)
+    studio.register_authority(bindings[:1], grants, {bindings[0].binding_id: 'increment'})
+    assert studio.validate_and_admit(definition)['runnable_state'] == 'runnable'
+    if indexed:
+        studio.manager.ledger.write(())
+        path = studio.manager.ledger.path
+        migrate(path, expected_legacy_sha256=hashlib.sha256(path.read_bytes()).hexdigest())
+    observed = []
+    original = studio.manager.reclaim_ephemeral_path
+
+    def capture(resource_id, **kwargs):
+        record = studio.manager.ledger.get(resource_id)
+        result = original(resource_id, **kwargs)
+        observed.append(dict(path=record.path, identity=record.path_identity,
+                             errors=result.errors, reclaimed=result.resources_reclaimed))
+        return result
+
+    monkeypatch.setattr(studio.manager, 'reclaim_ephemeral_path', capture)
+    error = None
+    try:
+        receipt = studio.execute(definition, {'node:one.value': 2}, approval=True)
+    except RuntimeError as failure:
+        error = failure
+    assert observed and all(row['identity'] is not None for row in observed), observed
+    assert all(not row['errors'] and row['reclaimed'] == 1 for row in observed), observed
+    if error is not None:
+        raise error
+    assert receipt['run_state'] == 'succeeded'
+    assert all(not Path(row['path']).exists() for row in observed)
+
+
+@pytest.mark.parametrize('failure_stage', ['request', 'worker', 'deadline'])
+def test_workflow_attempt_failure_closes_workspace_and_preserves_cause(tmp_path, monkeypatch, failure_stage):
+    import runtime.workflow_studio as workflow_owner
+    import runtime.process_supervisor as process_owner
+
+    definition, bindings, grants = fixture()
+    definition = replace(definition, nodes=definition.nodes[:1], edges=())
+    studio = WorkflowStudio(tmp_path)
+    studio.save_revision(definition)
+    studio.register_authority(bindings[:1], grants, {bindings[0].binding_id: 'increment'})
+    studio.validate_and_admit(definition)
+    if failure_stage == 'request':
+        write = workflow_owner.write_json_atomic
+        def refuse_write(path, *args, **kwargs):
+            if path.name == 'request.json':
+                raise OSError('injected request publication failure')
+            return write(path, *args, **kwargs)
+        monkeypatch.setattr(workflow_owner, 'write_json_atomic', refuse_write)
+    elif failure_stage == 'worker':
+        def refuse_worker(*args, **kwargs):
+            raise OSError('injected worker failure')
+        monkeypatch.setattr(studio.supervisor, 'run', refuse_worker)
+    else:
+        clock = [100.0]
+        authorize = studio.supervisor._authorize
+        def expire_after_authorization(*args, **kwargs):
+            result = authorize(*args, **kwargs)
+            clock[0] += 11.0
+            return result
+        monkeypatch.setattr(process_owner, 'time', SimpleNamespace(monotonic=lambda: clock[0]))
+        monkeypatch.setattr(studio.supervisor, '_authorize', expire_after_authorization)
+        def forbid_spawn(*args, **kwargs):
+            pytest.fail('expired workflow attempt must not spawn')
+        monkeypatch.setattr(studio.manager, 'spawn_owned_process', forbid_spawn)
+    with pytest.raises(RuntimeError, match='node failed'):
+        studio.execute(definition, {'node:one.value': 2}, approval=True)
+    receipt_path = next((studio.state_root / 'runs').glob('run-*.json'))
+    receipt = json.loads(receipt_path.read_bytes())
+    attempt = receipt['node_receipts'][0]['attempts'][0]
+    assert attempt['task_content_retained'] is False
+    assert attempt['task_cleanup_receipt']
+    if failure_stage == 'deadline':
+        assert attempt['status'] == 'total_timeout', attempt
+        assert attempt['failure_type'] == 'ProcessAdmissionExpired'
+        assert attempt['tree_closed'] is True and attempt['execution_started'] is False
+        assert attempt['supervision_outcome']['custody_retained'] is False
+    else:
+        assert attempt['status'] == 'failed' and attempt['failure_type'] == 'OSError', attempt
+        assert 'injected' in attempt['failure_message']
+    paths = [row for row in studio.manager.ledger.load() if row.resource_type == 'path']
+    assert len(paths) == 1
+    assert paths[0].path_identity is not None and paths[0].active is False
+    assert paths[0].status == 'reclaimed' and not Path(paths[0].path).exists()
+
+
+@pytest.mark.parametrize('control_action', ['pause', 'cancel', 'uncertain'])
+def test_workflow_pre_spawn_control_preserves_settlement(tmp_path, monkeypatch, control_action):
+    from runtime.process_supervisor import ProcessAdmissionExpired
+
+    definition, bindings, grants = fixture()
+    definition = replace(definition, nodes=definition.nodes[:1], edges=())
+    studio = WorkflowStudio(tmp_path)
+    studio.save_revision(definition)
+    studio.register_authority(bindings[:1], grants, {bindings[0].binding_id: 'increment'})
+    studio.validate_and_admit(definition)
+    run = studio.supervisor.run
+    def intervene(*args, **kwargs):
+        if control_action == 'uncertain':
+            error = ProcessAdmissionExpired('injected unsettled admission')
+            error.supervision_outcome = {'tree_closed': False, 'custody_retained': True,
+                                         'cleanup_errors': ['injected unresolved custody']}
+            raise error
+        studio.request_lifecycle(kwargs['run_id'], control_action, approved=True, approved_by='human:owner')
+        return run(*args, **kwargs)
+    def forbid_spawn(*args, **kwargs):
+        pytest.fail('pre-spawn control request must not spawn')
+    monkeypatch.setattr(studio.supervisor, 'run', intervene)
+    monkeypatch.setattr(studio.manager, 'spawn_owned_process', forbid_spawn)
+    if control_action == 'uncertain':
+        with pytest.raises(RuntimeError, match='node failed'):
+            studio.execute(definition, {'node:one.value': 2}, approval=True)
+        receipt = json.loads(next((studio.state_root / 'runs').glob('run-*.json')).read_bytes())
+        attempt = receipt['node_receipts'][0]['attempts'][0]
+        assert attempt['status'] == 'failed' and attempt['tree_closed'] is False
+        assert attempt['supervision_outcome']['custody_retained'] is True
+    else:
+        receipt = studio.execute(definition, {'node:one.value': 2}, approval=True)
+        assert receipt['run_state'] == {'pause': 'paused', 'cancel': 'cancelled'}[control_action]
+    paths = [row for row in studio.manager.ledger.load() if row.resource_type == 'path']
+    assert len(paths) == 1 and paths[0].status == 'reclaimed'
+    assert not Path(paths[0].path).exists()
+
+
 def test_workflow_multiple_approval_nodes_progress_independently_and_runs_are_durable(tmp_path):
     definition, bindings, grants = fixture()
     second = definition.nodes[1]
@@ -498,7 +630,7 @@ def test_workflow_timeout_and_retry_controls_are_enforced(tmp_path):
     assert all(
         row["status"] in {"startup_timeout", "idle_timeout", "total_timeout"}
         for row in receipt["node_receipts"][0]["attempts"]
-    )
+    ), receipt["node_receipts"][0]["attempts"]
 
 
 def _wait_for_workflow_state(studio, run_id: str, expected: set[str]) -> dict:

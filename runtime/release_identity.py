@@ -14,7 +14,6 @@ from typing import Any
 
 
 from .input_files import contained_file, cooperative_deadline, read_file_image
-from .json_io import decode_json_object
 from .numeric_inputs import bounded_json_value, bounded_text
 
 # The complete packaging manifest includes generated setuptools data-file tables.
@@ -80,28 +79,9 @@ def _git_paths(root: Path, *arguments: str) -> set[str]:
 
 
 def _mutable_policy(root: Path) -> tuple[dict, str | None]:
-    try:
-        raw = _image(root, "policies/release-artifact-policy.json", 1024 * 1024)
-    except FileNotFoundError:
-        return {}, None
-    policy = decode_json_object(
-        raw, max_bytes=1024 * 1024, max_depth=32, max_nodes=100000
-    )
-    for field in ("control_output_paths", "control_output_prefixes"):
-        values = policy.get(field, [])
-        if type(values) is not list or len(values) > 10000:
-            raise ValueError("mutable-output policy requires bounded path arrays")
-        for value in values:
-            bounded_text(value, "mutable-output path", maximum=4096, strip=False)
-            if field.endswith("prefixes"):
-                if not value.endswith("/"):
-                    raise ValueError(
-                        "mutable-output prefix must end at a directory boundary"
-                    )
-                _git_path(value[:-1])
-            else:
-                _git_path(value)
-    return policy, hashlib.sha256(raw).hexdigest()
+    from .release_artifacts import release_policy_image
+    policy, raw = release_policy_image(root, optional=True)
+    return policy, hashlib.sha256(raw).hexdigest() if raw is not None else None
 
 
 def _mutable_rules(policy: dict) -> tuple[frozenset[str], tuple[str, ...]]:

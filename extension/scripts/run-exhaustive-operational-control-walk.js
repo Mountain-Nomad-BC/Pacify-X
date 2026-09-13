@@ -433,10 +433,14 @@ function selectorForKind(kind) {
   return '';
 }
 function stageResult(requirement, probe, stage, evidenceRef) {
-  const required = requirement.stage_policy[stage] === 'required';
+  const policy = requirement?.stage_policy?.[stage];
+  if (!['required', 'not_applicable_with_evidence'].includes(policy)) {
+    return { state: 'missing', detail: `Invalid or missing proof policy for ${stage}.`, evidence: [evidenceRef] };
+  }
+  const required = policy === 'required';
   const containedFormHostStage = requirement.evidence_mode === 'contained_ui_form'
     && ['authorization', 'backend_dispatch', 'runtime_effect'].includes(stage);
-  if (containedFormHostStage) {
+  if (containedFormHostStage && !required) {
     return {
       state: 'not_applicable',
       detail: `The contained form probe changed and restored only local draft input, did not submit the form, and dispatched no host or durable effect; ${stage} is therefore not applicable to this exact interaction.`,
@@ -1302,7 +1306,9 @@ async function exercise(page, control) {
           const original = await item.isChecked(); await item.setChecked(!original, { force: true }); await item.setChecked(original, { force: true }); result.attempted = true;
         } else if (type === 'number') {
           const original = await item.inputValue(); const number = Number(original || 0);
-          const min = Number(await item.getAttribute('min')); const max = Number(await item.getAttribute('max'));
+          const minRaw = await item.getAttribute('min'); const maxRaw = await item.getAttribute('max');
+          const min = minRaw == null || minRaw.trim() === '' ? Number.NaN : Number(minRaw);
+          const max = maxRaw == null || maxRaw.trim() === '' ? Number.NaN : Number(maxRaw);
           const up = number + 1; const alternate = Number.isFinite(max) && up > max ? number - 1 : up;
           if ((!Number.isFinite(min) || alternate >= min) && (!Number.isFinite(max) || alternate <= max)) {
             await item.fill(String(alternate)); await item.fill(original); result.attempted = true;

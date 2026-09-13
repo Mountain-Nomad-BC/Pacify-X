@@ -5,6 +5,7 @@ import hashlib
 from pathlib import Path
 import zipfile
 
+import runtime.evidence_index as evidence_index
 from runtime.evidence_index import build_index, publish_index
 from runtime.engine_identity import build_engine_identity, write_engine_identity
 from runtime.test_profiles import (
@@ -215,6 +216,19 @@ def test_stale_receipt_and_wrong_artifact_version_fail_closed(tmp_path) -> None:
     assert result["valid"] is False
     assert any("not current" in value for value in result["blocking_reasons"])
     assert any("version mismatch" in value for value in result["blocking_reasons"])
+
+
+def test_invalid_current_index_is_returned_without_publication(
+    tmp_path, monkeypatch
+) -> None:
+    invalid = {"namespace": "invalid-fixture", "valid": False}
+    monkeypatch.setattr(evidence_index, "build_index", lambda *_args, **_kwargs: invalid)
+    registry, namespace, value = publish_index(tmp_path)
+    assert value is invalid
+    assert registry == tmp_path / "registry/current_evidence_index.json"
+    assert namespace == tmp_path / "evidence/releases/invalid-fixture/EVIDENCE_INDEX.json"
+    assert not registry.exists()
+    assert not namespace.exists()
 
 
 def test_engine_or_cross_platform_semantic_mismatch_fails_closed(tmp_path) -> None:

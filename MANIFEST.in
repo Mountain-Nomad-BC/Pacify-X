@@ -28,3 +28,25 @@ recursive-include .cursor *
 recursive-include .github *
 recursive-include .vscode *
 recursive-include .windsurf *
+
+# Mutable control outputs are never release source inputs.
+exclude .engineering-bootstrap/release.lock
+exclude .engineering-bootstrap/release-transaction.json
+exclude .engineering-bootstrap/processing-order/repair-campaign.json
+exclude .engineering-bootstrap/processing-order/release-identity.json
+exclude .engineering-bootstrap/test-evidence/.test-orchestration.lock
+exclude .px/mcp-runtime-probe.json
+exclude extension/SHA256SUMS.txt
+exclude evidence/release/rejected-marketplace-upload/pacify-x-vscode-0.6.87-c412addf-rejected-license-path.vsix
+exclude registry/.operational-gap-ledger.lock
+exclude registry/completion_status.json
+exclude registry/operational_gap_ledger.head.json
+exclude registry/px_world_state.json
+prune .engineering-bootstrap/admission-payloads
+prune .engineering-bootstrap/test-evidence
+prune .engineering-bootstrap/resource-lifecycle
+prune .engineering-bootstrap/wal
+prune registry/.lock-recovery-receipts
+prune registry/operational_gap_ledger.deltas
+exclude registry/operational_gap_ledger.jsonl
+exclude registry/operational_gap_ledger.snapshot.json

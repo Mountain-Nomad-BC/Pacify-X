@@ -73,6 +73,7 @@ def test_release_test_owner_refreshes_projection_before_process(
     assert events[0] == ("prepare", tmp_path)
     assert events[1][0] == "run"
     assert events[1][2]["disk_consumption_paths"] == (output,)
+    assert events[1][2]["manage_process_temp"] is True
 
 
 def test_release_test_owner_does_not_start_when_projection_refresh_fails(
@@ -332,8 +333,12 @@ def test_junit_totals_aggregate_testsuites_root() -> None:
     with tempfile.TemporaryDirectory() as directory:
         report = Path(directory) / "report.xml"
         report.write_text(
-            '<testsuites><testsuite tests="3" failures="0" errors="0" skipped="0" />'
-            '<testsuite tests="2" failures="0" errors="0" skipped="0" /></testsuites>',
+            '<testsuites><testsuite tests="3" failures="0" errors="0" skipped="0">'
+            '<testcase classname="a" name="one"/><testcase classname="a" name="two"/>'
+            '<testcase classname="a" name="three"/></testsuite>'
+            '<testsuite tests="2" failures="0" errors="0" skipped="0">'
+            '<testcase classname="b" name="one"/><testcase classname="b" name="two"/>'
+            '</testsuite></testsuites>',
             encoding="utf-8",
         )
         assert _junit_totals(report) == {
@@ -455,7 +460,7 @@ def test_junit_publication_evidence_redacts_machine_local_failure_paths() -> Non
     with tempfile.TemporaryDirectory() as directory:
         report = Path(directory) / "report.xml"
         report.write_text(
-            '<testsuites><testsuite hostname="runner"><testcase name="test_failure">'
+            '<testsuites><testsuite hostname="runner"><testcase classname="tests.test_example" name="test_failure">'
             "<failure>C:" + "\\Users\\runneradmin\\work\\project\\tests\\test_example.py:10 "
             "/" + "home/runner/work/project/tests/test_example.py:10</failure>"
             "</testcase></testsuite></testsuites>",
@@ -474,7 +479,7 @@ def test_junit_publication_evidence_redacts_parent_traversing_traceback_paths() 
     with tempfile.TemporaryDirectory() as directory:
         report = Path(directory) / "report.xml"
         report.write_text(
-            '<testsuites><testsuite><testcase name="test_failure">'
+            '<testsuites><testsuite><testcase classname="tests.test_example" name="test_failure">'
             "<failure>..\\..\\..\\pytest\\test_nested.py:14 ../pytest/test_nested.py:9</failure>"
             "</testcase></testsuite></testsuites>",
             encoding="utf-8",
@@ -772,3 +777,181 @@ def test_certificate_verifier_binds_artifacts_to_recorded_frozen_manifest(
     assert result["valid"], result["errors"]
     assert observed["artifact_manifest"] == artifact_manifest
     assert "source_root" not in observed
+
+
+def test_junit_totals_refuse_invented_case_denominator(tmp_path):
+    report = tmp_path / "report.xml"
+    report.write_text('<testsuite tests="5"/>', encoding="utf-8")
+    with pytest.raises(ValueError):
+        _junit_totals(report)
+
+
+def test_junit_named_surface_handles_namespaced_failure(tmp_path):
+    report = tmp_path / "report.xml"
+    report.write_text('<testsuite xmlns="urn:junit"><testcase classname="tests.target" name="ok"/>'
+                      '<testcase classname="tests.target" name="bad"><failure/></testcase></testsuite>', encoding="utf-8")
+    result = _junit_case_gate(report, "tests.target")
+    assert not result["valid"]
+    assert result["tests"] == 2 and result["failures"] == 1
+
+
+def test_release_evidence_commit_reports_partial_effects(tmp_path, monkeypatch):
+    source, destination = tmp_path / "source", tmp_path / "destination"
+    source.mkdir()
+    (source / "a.json").write_bytes(b"first")
+    (source / "b.json").write_bytes(b"second")
+    original = Path.open
+
+    def fail_second(path, mode="r", *args, **kwargs):
+        if path == destination / "b.json" and mode == "xb":
+            raise OSError("injected second publication failure")
+        return original(path, mode, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "open", fail_second)
+    result = _commit_release_evidence(source, destination)
+    assert not result["valid"]
+    assert (destination / "a.json").read_bytes() == b"first"
+    assert result["copied_file_count"] == 1
+    assert result["copied_records"][0]["path"] == "a.json"
+    assert result["publication_state"] == "partial"
+
+
+def test_release_evidence_commit_requires_nonempty_source(tmp_path):
+    source = tmp_path / "source"
+    source.mkdir()
+    destination = tmp_path / "destination"
+    result = _commit_release_evidence(source, destination)
+    assert not result["valid"]
+    assert not destination.exists()
+
+
+def test_release_evidence_commit_rejects_destination_source_overlap(tmp_path):
+    (tmp_path / "proof.json").write_bytes(b"proof")
+    result = _commit_release_evidence(tmp_path, tmp_path / "nested")
+    assert not result["valid"]
+    assert not (tmp_path / "nested").exists()
+
+
+def _complete_gate_summary_for_contract_test():
+    from runtime.release_certification import REQUIRED_RELEASE_GATES
+
+    gates = {name: {"valid": True, "errors": []} for name in REQUIRED_RELEASE_GATES}
+    gates["full_tests"].update(tests=1, failures=0, errors=0, skipped=0, exit_code=0,
+                              timed_out=False, runner_valid=True, process_tree_terminated=True,
+                              workspace_reclaimed=True)
+    gates["full_test_skip_policy"].update(allowed_count=0, unexpected_count=0, allowed=[], unexpected=[])
+    gates["exact_tools"].update(denominator=1, passed=1)
+    return {"schema_version": "1.0", "valid": True, "gate_count": len(gates), "gates": gates}
+
+
+@pytest.mark.parametrize("mutation", ["empty", "missing", "false-count", "error", "no-cases", "no-tools", "live-child", "workspace", "exit-bool"])
+def test_release_summary_refuses_incomplete_or_contradictory_proof(mutation):
+    from runtime.release_certification import _release_gate_summary_errors
+
+    value = _complete_gate_summary_for_contract_test()
+    assert not _release_gate_summary_errors(value)
+    if mutation == "empty":
+        value["gates"] = {}
+        value["gate_count"] = 0
+    elif mutation == "missing":
+        value["gates"].pop("contracts")
+        value["gate_count"] -= 1
+    elif mutation == "false-count":
+        value["gate_count"] += 1
+    elif mutation == "error":
+        value["gates"]["contracts"]["errors"] = ["contract failed"]
+    elif mutation == "no-cases":
+        value["gates"]["full_tests"]["tests"] = 0
+    elif mutation == "no-tools":
+        value["gates"]["exact_tools"].update(denominator=0, passed=0)
+    elif mutation == "live-child":
+        value["gates"]["full_tests"]["process_tree_terminated"] = False
+    elif mutation == "workspace":
+        value["gates"]["full_tests"]["workspace_reclaimed"] = False
+    else:
+        value["gates"]["full_tests"]["exit_code"] = False
+    assert _release_gate_summary_errors(value)
+
+
+@pytest.mark.parametrize("mutation", ["none", "missing-role", "changed-report", "resealed-false-count", "unknown-skip"])
+def test_release_gate_report_binding_checks_actual_image_and_denominator(tmp_path, mutation):
+    from runtime.release_certification import REQUIRED_RELEASE_EVIDENCE, _verify_release_gate_binding
+    from runtime.release_evidence import build_evidence_manifest
+
+    evidence = tmp_path / "evidence/releases/0.7.0/run-test"
+    evidence.mkdir(parents=True)
+    for name in REQUIRED_RELEASE_EVIDENCE:
+        (evidence / name).write_bytes(b"{}")
+    summary = _complete_gate_summary_for_contract_test()
+    if mutation == "resealed-false-count":
+        summary["gates"]["full_tests"]["tests"] = 2
+    if mutation == "unknown-skip":
+        summary["gates"]["full_tests"].update(tests=2, skipped=1)
+    (evidence / "gate-summary.json").write_text(json.dumps(summary), encoding="utf-8")
+    (evidence / "full-tests.junit.xml").write_text(
+        '<testsuite tests="1"><testcase classname="tests.example" name="actual_case"/></testsuite>', encoding="utf-8")
+    if mutation == "unknown-skip":
+        (evidence / "full-tests.junit.xml").write_text(
+            '<testsuite tests="2" skipped="1"><testcase classname="tests.example" name="executed"/><testcase classname="tests.example" name="actual_case"><skipped message="unknown reason"/></testcase></testsuite>', encoding="utf-8")
+    roles = {name: {"required": True} for name in REQUIRED_RELEASE_EVIDENCE}
+    if mutation == "missing-role":
+        roles.pop("installed-wheel.json")
+    manifest = build_evidence_manifest(evidence, roles=roles)
+    assert manifest["valid"], manifest["errors"]
+    (evidence / "evidence-manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
+    certificate = {
+        "evidence_manifest": "evidence/releases/0.7.0/run-test/evidence-manifest.json",
+        "gate_summary": "evidence/releases/0.7.0/run-test/gate-summary.json",
+        "gate_summary_sha256": hashlib.sha256((evidence / "gate-summary.json").read_bytes()).hexdigest(),
+    }
+    if mutation == "changed-report":
+        (evidence / "full-tests.junit.xml").write_bytes(b"<testsuite/>")
+    errors = _verify_release_gate_binding(tmp_path, "0.7.0", certificate, manifest)
+    assert bool(errors) == (mutation != "none"), errors
+
+
+def test_junit_refuses_hidden_failure_structure(tmp_path):
+    report = tmp_path / "report.xml"
+    report.write_text('<testsuite><testcase classname="a" name="b"><wrapper><failure/></wrapper></testcase></testsuite>', encoding="utf-8")
+    with pytest.raises(ValueError):
+        _junit_totals(report)
+
+
+def test_junit_sanitizer_refuses_doctype_before_rewriting(tmp_path):
+    report = tmp_path / "report.xml"
+    raw = b'<!DOCTYPE testsuite [<!ENTITY name "expanded">]><testsuite><testcase classname="a" name="&name;"/></testsuite>'
+    report.write_bytes(raw)
+    with pytest.raises(ValueError):
+        _sanitize_junit_metadata(report)
+    assert report.read_bytes() == raw
+
+
+def test_release_publication_reports_directory_effect_before_file_open(tmp_path, monkeypatch):
+    source, destination = tmp_path / "source", tmp_path / "destination"
+    source.mkdir()
+    (source / "a.json").write_bytes(b"first")
+    original = Path.open
+
+    def fail_open(path, mode="r", *args, **kwargs):
+        if path == destination / "a.json" and mode == "xb":
+            raise OSError("injected first publication failure")
+        return original(path, mode, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "open", fail_open)
+    result = _commit_release_evidence(source, destination)
+    assert not result["valid"] and destination.is_dir()
+    assert result["publication_state"] != "not_started"
+
+
+def test_junit_named_surface_does_not_accept_lookalike_identity(tmp_path):
+    report = tmp_path / "report.xml"
+    report.write_text('<testsuite><testcase classname="tests.not_test_installed_wheel_e2e" name="fake_test_installed_wheel_e2e_pass"/></testsuite>', encoding="utf-8")
+    assert not _junit_case_gate(report, "test_installed_wheel_e2e")["valid"]
+
+
+def test_release_summary_requires_executed_non_skipped_cases():
+    from runtime.release_certification import _release_gate_summary_errors
+
+    summary = _complete_gate_summary_for_contract_test()
+    summary["gates"]["full_tests"]["skipped"] = summary["gates"]["full_tests"]["tests"]
+    assert _release_gate_summary_errors(summary)

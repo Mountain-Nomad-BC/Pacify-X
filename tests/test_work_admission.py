@@ -7,7 +7,7 @@ import time
 
 import pytest
 
-from runtime.work_admission import RuntimeWorkPlane
+from runtime.work_admission import RuntimeWorkPlane, content_hash
 
 
 def test_runtime_work_plane_coalesces_and_publishes_causal_delta(tmp_path: Path) -> None:
@@ -107,6 +107,53 @@ def test_corrupt_cache_is_rejected_and_rebuilt(tmp_path: Path) -> None:
 
     assert result["admission"]["decision"] == "ran"
     assert result["result"] == {"cpu": 3}
+
+
+def test_tampered_cache_result_and_invalid_creation_times_are_rebuilt(
+    tmp_path: Path,
+) -> None:
+    plane = RuntimeWorkPlane(tmp_path)
+    calls = 0
+
+    def producer() -> dict[str, int]:
+        nonlocal calls
+        calls += 1
+        return {"cpu": calls}
+
+    first = plane.execute(
+        "sensor",
+        producer,
+        reason="visible runtime panel",
+        input_fingerprint="hardware-v1",
+        domains=("hardware",),
+        cache_seconds=60,
+    )
+    assert first["result"] == {"cpu": 1}
+    key = __import__("hashlib").sha256(b"sensor").hexdigest()[:24]
+    cache_path = tmp_path / ".engineering-bootstrap/runtime-core/cache" / f"{key}.json"
+    cached = __import__("json").loads(cache_path.read_text(encoding="utf-8"))
+    cached["result"] = {"cpu": 999}
+    cache_path.write_text(__import__("json").dumps(cached), encoding="utf-8")
+    second = plane.execute(
+        "sensor",
+        producer,
+        reason="visible runtime panel",
+        input_fingerprint="hardware-v1",
+        domains=("hardware",),
+        cache_seconds=60,
+    )
+    assert second["result"] == {"cpu": 2}
+    assert second["admission"]["decision"] == "ran"
+
+    for invalid in (True, "1", 0, -1, float("inf"), float("nan")):
+        payload = {
+            **cached,
+            "created_epoch": invalid,
+            "result": {"cpu": 2},
+            "result_sha256": content_hash({"cpu": 2}),
+        }
+        cache_path.write_text(__import__("json").dumps(payload), encoding="utf-8")
+        assert plane._read_cache(cache_path) is None
 
 
 def test_owned_vscode_host_can_isolate_its_runtime_work_plane(

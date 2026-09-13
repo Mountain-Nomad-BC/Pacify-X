@@ -122,8 +122,15 @@ class RuntimeWorkPlane:
         if not isinstance(cached, dict) or "result" not in cached:
             return None
         try:
-            float(cached.get("created_epoch", 0))
-        except (TypeError, ValueError):
+            created = cached.get("created_epoch")
+            if type(created) not in (int, float) or not 0 < created < float("inf"):
+                return None
+            expected = cached.get("result_sha256")
+            if not isinstance(expected, str) or len(expected) != 64:
+                return None
+            if content_hash(cached["result"]) != expected:
+                return None
+        except (TypeError, ValueError, OverflowError, RecursionError, UnicodeError):
             return None
         return cached
 

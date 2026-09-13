@@ -157,14 +157,14 @@ def solve(payload: Mapping[str, Any]) -> dict[str, Any]:
         nonlocal nodes, exhausted
         if exhausted or len(found) >= search_limit:
             return
-        if nodes >= max_nodes:
-            exhausted = True
-            return
         if depth == len(order):
             if all(
                 _check(constraint, assignment) is True for constraint in constraints
             ):
                 found.append(dict(sorted(assignment.items())))
+            return
+        if nodes >= max_nodes:
+            exhausted = True
             return
         name = order[depth]
         for value in domains[name]:

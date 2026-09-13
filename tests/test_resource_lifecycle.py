@@ -82,14 +82,14 @@ class ResourceLifecycleTests(unittest.TestCase):
         reader = ResourceManager(writer.path).ledger
         write_entered = threading.Event()
         release_write = threading.Event()
-        original_write = writer._write_unlocked
+        original_write = writer._write_legacy_unlocked
 
         def delayed_write(records):
             write_entered.set()
             self.assertTrue(release_write.wait(timeout=5.0))
             original_write(records)
 
-        with mock.patch.object(writer, "_write_unlocked", side_effect=delayed_write):
+        with mock.patch.object(writer, "_write_legacy_unlocked", side_effect=delayed_write):
             with ThreadPoolExecutor(max_workers=2) as pool:
                 write_future = pool.submit(self._workspace, "locked-write")
                 self.assertTrue(write_entered.wait(timeout=5.0))
@@ -265,7 +265,8 @@ class ResourceLifecycleTests(unittest.TestCase):
     def test_ledger_read_retries_transient_permission_errors(self) -> None:
         record = self._workspace("read-retry")
         ledger = self.manager.ledger.path
-        original_read_text = Path.read_text
+        from runtime.resource_lifecycle import _bounded_image
+        original_read_text = _bounded_image
         attempts = 0
 
         def transient_read(path, *args, **kwargs):
@@ -275,7 +276,7 @@ class ResourceLifecycleTests(unittest.TestCase):
                 raise PermissionError("transient scanner read denial")
             return original_read_text(path, *args, **kwargs)
 
-        with mock.patch.object(Path, "read_text", new=transient_read):
+        with mock.patch("runtime.resource_lifecycle._bounded_image", new=transient_read):
             stored = self.manager.ledger.load()
 
         self.assertEqual(attempts, 2)
@@ -303,7 +304,8 @@ class ResourceLifecycleTests(unittest.TestCase):
     def test_ledger_permission_retry_exhaustion_fails_closed(self) -> None:
         self._workspace("persistent-denial")
         ledger = self.manager.ledger.path
-        original_read_text = Path.read_text
+        from runtime.resource_lifecycle import _bounded_image
+        original_read_text = _bounded_image
 
         def denied_read(path, *args, **kwargs):
             if path == ledger:
@@ -311,7 +313,7 @@ class ResourceLifecycleTests(unittest.TestCase):
             return original_read_text(path, *args, **kwargs)
 
         with (
-            mock.patch.object(Path, "read_text", new=denied_read),
+            mock.patch("runtime.resource_lifecycle._bounded_image", new=denied_read),
             mock.patch("runtime.resource_lifecycle.time.sleep") as sleep,
             self.assertRaisesRegex(PermissionError, "persistent ledger denial"),
         ):

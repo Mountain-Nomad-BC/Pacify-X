@@ -337,6 +337,8 @@ def validate_output(
         return False, False, "record-count-mismatch"
     if [item[1] for item in output] != [item[1] for item in reference]:
         return False, False, "reference-order-mismatch"
+    if output != reference:
+        return False, False, "record-content-mismatch"
     stable = all(
         output[index - 1][0] != output[index][0]
         or output[index - 1][1] < output[index][1]
@@ -352,6 +354,8 @@ def benchmark(
     reference: list[Item],
     repeats: int,
 ) -> dict[str, Any]:
+    if type(repeats) is not int or not 1 <= repeats <= 25:
+        raise ValueError("repeats must be an integer between 1 and 25")
     timings: list[int] = []
     correct = stable = True
     error: str | None = None

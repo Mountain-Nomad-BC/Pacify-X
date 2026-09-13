@@ -4,6 +4,8 @@ import importlib.util
 from pathlib import Path
 import tomllib
 
+import pytest
+
 from runtime.release_distribution import (
     generate_artifact_manifest,
     verify_commissioned_skill_projection,
@@ -54,18 +56,13 @@ def test_generated_skill_projection_is_complete_and_idempotent():
         )
 
 
-def test_generator_replaces_a_prior_generated_section_without_duplicate_keys():
+def test_generator_refuses_a_duplicate_generated_section():
     generator = load_generator()
     current = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
     generated = "\n".join(generator._generated_lines())
     duplicated = current.replace(generator.START, generated + "\n" + generator.START, 1)
-    rendered = generator.render(duplicated)
-    tomllib.loads(rendered)
-    assert rendered.count(generator.START) == 1
-    assert (
-        rendered.count('"share/engineering-bootstrap/.px/skills/acquire-install-n8n" =')
-        == 1
-    )
+    with pytest.raises(ValueError, match="markers are missing or duplicated"):
+        generator.render(duplicated)
 
 
 def test_nested_non_markdown_skill_resources_are_projected():
@@ -110,6 +107,28 @@ def test_future_skill_overlay_renders_canonical_paths_before_publication(tmp_pat
     assert ".px/skills/demo/SKILL.md" in values
     assert ".px/skills/demo/resources/data.json" in values
     assert not any(".engineering-bootstrap/staged" in item for item in values)
+
+
+def test_generator_preserves_suffix_and_refuses_malformed_markers():
+    generator = load_generator()
+    base = '[tool.setuptools.data-files]\nplaceholder = ["README.md"]\n'
+    current = (
+        base
+        + generator.START
+        + "\nold = [\"old\"]\n"
+        + generator.END
+        + "\n[tool.example]\nvalue = true\n"
+    )
+    rendered = generator.render(current)
+    assert rendered.endswith("\n[tool.example]\nvalue = true\n")
+    assert tomllib.loads(rendered)["tool"]["example"]["value"] is True
+    for malformed in (
+        base + generator.START + "\n",
+        base + generator.END + "\n",
+        base + generator.START + generator.START + generator.END,
+    ):
+        with pytest.raises(ValueError, match="markers"):
+            generator.render(malformed)
 
 
 def test_canonical_manifest_proves_exact_skill_source_projection():

@@ -25,6 +25,27 @@ from runtime.provider_gateway import (
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def test_reservation_rejects_equal_byte_intervening_owner_generation(tmp_path, monkeypatch):
+    from runtime.wal_ownership import WalOwnership
+    from runtime.wal_transaction import JsonArtifact, WalConflictError
+    ledger = _ledger(tmp_path, _policy_row())
+    root = ledger.allowed_root
+    WalOwnership.activate(root, [dict(journal='provider-budget/wal', domains=[
+        dict(path=ledger.state_path.relative_to(root).as_posix(), kind='exact'),
+        dict(path='provider-budget/receipts', kind='subtree')])])
+    ledger.wal.activate_generation(root)
+    _reserve(ledger)
+    read = ledger._state_image
+    def intervene():
+        state, digest = read()
+        ledger.wal.commit([JsonArtifact('state', ledger.state_path, state)])
+        return state, digest
+    monkeypatch.setattr(ledger, '_state_image', intervene)
+    with pytest.raises(WalConflictError, match='generation changed'):
+        _reserve(ledger, 'invocation-2')
+    assert 'invocation-2' not in read()[0]['invocations']
+
+
 def _policy_row(**overrides: object) -> dict[str, object]:
     row: dict[str, object] = {
         "budget_id": "budget-1",

@@ -297,7 +297,7 @@ def _validate_manifest(value: object, transaction_id: str) -> dict[str, object]:
     expected = manifest.get("manifest_sha256")
     if not isinstance(expected, str) or _sealed_manifest(manifest) != manifest:
         raise WalIntegrityError(f"{transaction_id}: manifest digest mismatch")
-    if manifest.get("schema_version") != SCHEMA_VERSION:
+    if manifest.get("schema_version") not in {SCHEMA_VERSION, "2.0"}:
         raise WalIntegrityError(f"{transaction_id}: unsupported manifest schema")
     if manifest.get("transaction_id") != transaction_id:
         raise WalIntegrityError(f"{transaction_id}: manifest identity mismatch")
@@ -305,7 +305,7 @@ def _validate_manifest(value: object, transaction_id: str) -> dict[str, object]:
         raise WalIntegrityError(f"{transaction_id}: unsupported recovery policy")
     if manifest.get("phase") not in {"prepared", "applying", "committed"}:
         raise WalIntegrityError(f"{transaction_id}: invalid transaction phase")
-    if set(manifest) != {
+    expected_fields = {
         "schema_version",
         "transaction_id",
         "recovery_policy",
@@ -313,7 +313,19 @@ def _validate_manifest(value: object, transaction_id: str) -> dict[str, object]:
         "phase",
         "artifacts",
         "manifest_sha256",
-    }:
+    }
+    if manifest["schema_version"] == "2.0":
+        expected_fields.add("generation")
+        generation = manifest.get("generation")
+        if (type(generation) is not dict or set(generation) != {"epoch", "sequence", "previous_token"}
+                or type(generation["epoch"]) is not str
+                or re.fullmatch(r"[0-9a-f]{32}", generation["epoch"]) is None
+                or type(generation["sequence"]) is not int
+                or not 1 <= generation["sequence"] < 2**63
+                or type(generation["previous_token"]) is not str
+                or re.fullmatch(r"[0-9a-f]{64}", generation["previous_token"]) is None):
+            raise WalIntegrityError(f"{transaction_id}: invalid manifest generation")
+    if set(manifest) != expected_fields:
         raise WalIntegrityError(f"{transaction_id}: manifest fields are not exact")
     artifacts = manifest.get("artifacts")
     if not isinstance(artifacts, list) or not 1 <= len(artifacts) <= MAX_ARTIFACTS:
@@ -436,6 +448,109 @@ class JsonWal:
     def _committed_root(self) -> Path:
         return self.journal_root / "committed"
 
+    def _ownership_catalog(self):
+        from .wal_ownership import RELATIVE, WalOwnership
+        for root in self.journal_root.parents:
+            candidate = root / RELATIVE
+            if candidate.exists() or candidate.is_symlink():
+                catalog = WalOwnership.read(root)
+                catalog.require_owner(self.journal_root)
+                return catalog
+        return None
+
+    def _generation_protocol(self):
+        from .wal_generation import WalGeneration
+        catalog = self._ownership_catalog()
+        generation = WalGeneration(self.journal_root)
+        if catalog is None:
+            if generation.root.exists() or generation.root.is_symlink():
+                raise WalIntegrityError('activated journal lost its ownership catalog')
+            return None
+        head = generation.read()
+        if head['ownership_sha256'] != catalog.sha256:
+            raise WalIntegrityError('journal ownership binding changed')
+        return catalog, generation, head
+
+    def _require_target_authority(self, target):
+        """A legacy journal outside a catalog cannot write into its domains."""
+        from .wal_ownership import RELATIVE, WalOwnership
+        for root in target.parents:
+            candidate = root / RELATIVE
+            if candidate.exists() or candidate.is_symlink():
+                catalog = WalOwnership.read(root)
+                catalog.require_target(self.journal_root, target)
+                return
+
+    def producer_for_target(self, target):
+        """Resolve maintenance to the existing producer, without creating one."""
+        from .wal_ownership import RELATIVE, WalOwnership
+        target = self._safe_target(Path(target), label='producer target')
+        for root in target.parents:
+            candidate = root / RELATIVE
+            if candidate.exists() or candidate.is_symlink():
+                catalog = WalOwnership.read(root)
+                journal = catalog.owner_for_target(target)
+                return self if journal == self.journal_root else JsonWal(journal, self.allowed_root,
+                    lock_timeout_seconds=self.lock_timeout_seconds)
+        return self
+
+    def capture_generation(self):
+        """Return a settled CAS token, or None for explicitly legacy semantics."""
+        from .wal_generation import SETTLED
+        protocol = self._generation_protocol()
+        if protocol is None:
+            return None
+        _catalog, _generation, head = protocol
+        if head['phase'] not in SETTLED or self._pending_transactions():
+            raise WalIntegrityError('read requires recovery of the active generation')
+        return head['sha256']
+
+    def activate_generation(self, ownership_root: Path, *, fault_injector=None):
+        """Explicit activation for a fresh journal and pre-admitted catalog.
+
+        Legacy migration and proof of writer quiescence remain separate actions.
+        Ordinary commit/recovery never initialize missing generation authority.
+        """
+        from .wal_generation import WalGeneration
+        catalog = self._ownership_catalog()
+        if catalog is None or catalog.root != ownership_root.resolve(strict=True):
+            raise WalIntegrityError('activation must use the declared ownership authority')
+        self.journal_root.mkdir(parents=True, exist_ok=True)
+        with _wal_lock(self._lock_path, self.lock_timeout_seconds):
+            catalog.revalidate()
+            return WalGeneration(self.journal_root).initialize(catalog.sha256, fault_injector=fault_injector)
+
+    def read_consistent_images(self, paths, *, fault_injector=None):
+        """Read one settled owner generation without creating a lock or path."""
+        from .wal_generation import SETTLED
+        protocol = self._generation_protocol()
+        if protocol is None:
+            raise WalIntegrityError('legacy journal has no consistent-generation authority')
+        catalog, generation, before = protocol
+        if before['phase'] not in SETTLED or self._pending_transactions():
+            raise WalIntegrityError('consistent read requires a settled journal')
+        images = {}
+        total = 0
+        for path in paths:
+            if len(images) >= MAX_ARTIFACTS:
+                raise ValueError('consistent image count exceeded')
+            target = self._safe_target(Path(path), label='consistent image')
+            catalog.require_target(self.journal_root, target)
+            name = target.relative_to(self.allowed_root).as_posix()
+            if name in images:
+                raise ValueError('duplicate consistent image')
+            raw = self.read_source_image(target, limit=MAX_TRANSACTION_BYTES - total)
+            total += len(raw) if raw is not None else 0
+            images[name] = raw
+            if fault_injector:
+                fault_injector('reader:image:' + name)
+        if not images:
+            raise ValueError('consistent image set must not be empty')
+        if self._pending_transactions() or generation.read() != before:
+            raise WalConflictError('WAL generation changed during consistent read')
+        catalog.revalidate()
+        return {'generation_token': before['sha256'], 'generation': before, 'images': images}
+
     def _normalize(
         self, artifacts: Iterable[Artifact]
     ) -> tuple[tuple[Artifact, Path, bytes], ...]:
@@ -445,10 +560,14 @@ class JsonWal:
         normalized: list[tuple[Artifact, Path, bytes]] = []
         targets: set[Path] = set()
         total = 0
+        protocol = self._generation_protocol()
         for artifact in items:
             if artifact.role not in ARTIFACT_ROLES:
                 raise ValueError(f"unsupported JSON artifact role: {artifact.role}")
             target = self._safe_target(artifact.path, label="artifact")
+            self._require_target_authority(target)
+            if protocol is not None:
+                protocol[0].require_target(self.journal_root, target)
             if _inside(target, self.journal_root):
                 raise ValueError("transaction targets cannot be inside the WAL journal")
             if target in targets:
@@ -579,7 +698,12 @@ class JsonWal:
             relative = Path(str(record["path"]))
             if relative.is_absolute():
                 raise ValueError
-            target = self._safe_target(relative, label="recovery target")
+            protocol = self._generation_protocol()
+            nominal = protocol[0].root / relative if protocol is not None else relative
+            target = self._safe_target(nominal, label="recovery target")
+            self._require_target_authority(target)
+            if protocol is not None:
+                protocol[0].require_target(self.journal_root, target)
             after_record = record["after"]
             before_record = record["before"]
             if not isinstance(after_record, Mapping) or not isinstance(
@@ -798,7 +922,10 @@ class JsonWal:
             if path.name == 'manifest.json' and len(path.relative_to(self._transactions_root).parts) == 2:
                 manifest = _validate_manifest(decode_json_object(payload, max_bytes=MAX_MANIFEST_BYTES), path.parent.name)
                 for artifact in manifest['artifacts']:
-                    target = self._safe_target(Path(artifact['path']), label='inspection target')
+                    protocol = self._generation_protocol()
+                    nominal = (protocol[0].root / artifact['path']) if protocol is not None else Path(artifact['path'])
+                    target = self._safe_target(nominal, label='inspection target')
+                    self._require_target_authority(target)
                     raw = _bounded_image(target, limit=MAX_INSPECTION_BYTES - total_bytes) if target.exists() else None
                     total_bytes += len(raw) if raw is not None else 0
                     records.append({'path': artifact['path'], 'kind': 'target',
@@ -836,6 +963,9 @@ class JsonWal:
         return destination
 
     def _recover_locked(self) -> dict[str, object]:
+        protocol = self._generation_protocol()
+        if protocol is not None:
+            return self._recover_generation_locked(protocol)
         completed: list[str] = []
         rolled_back: list[str] = []
         outcome = {
@@ -860,6 +990,8 @@ class JsonWal:
                     self._archive_unprepared(transaction)
                     rolled_back.append(transaction.name)
                     continue
+                if manifest['schema_version'] != SCHEMA_VERSION:
+                    raise WalIntegrityError('generation manifest has no current generation authority')
                 if manifest["phase"] != "committed":
                     outcome.update(active_phase='applying', target_effects_may_have_occurred=True,
                                    active_target_effects_may_have_occurred=True)
@@ -878,6 +1010,77 @@ class JsonWal:
         outcome.update(valid=True, active_transaction=None, active_phase='settled',
                        target_effects_may_have_occurred=bool(completed))
         return outcome
+
+    def _classify_generation(self, protocol):
+        """One read-only authority classification shared by inspect/recovery."""
+        from .wal_generation import SETTLED
+        catalog, generation, head = protocol
+        pending = self._pending_transactions()
+        transaction = self._transactions_root / (head['transaction_id'] or 'initial')
+        committed = self._committed_root / (head['transaction_id'] or 'initial')
+        retained = None
+        manifest = None
+        action = 'none'
+        if head['phase'] in SETTLED:
+            if pending:
+                raise WalIntegrityError('settled generation has unexpected pending transactions')
+        else:
+            if any(p.name != head['transaction_id'] for p in pending):
+                raise WalIntegrityError('pending inventory differs from allocated generation')
+            if transaction.exists() and committed.exists():
+                raise WalIntegrityError('generation has duplicate pending and committed authority')
+            retained = transaction if transaction.exists() else committed
+            manifest = self._load_manifest(retained) if retained.exists() else None
+            if manifest is None:
+                if head['phase'] != 'allocated' or committed.exists():
+                    raise WalIntegrityError('effects-possible generation lost its prepared authority')
+                action = 'abort_allocation'
+            else:
+                generation.bind(manifest)
+                if retained == committed and manifest['phase'] != 'committed':
+                    raise WalIntegrityError('archived generation is not committed')
+                if head['phase'] == 'allocated' and retained == committed:
+                    raise WalIntegrityError('allocated generation cannot already be archived')
+                if head['phase'] == 'allocated' and manifest['phase'] == 'committed':
+                    raise WalIntegrityError('allocated generation cannot contain committed effects')
+                action = 'settle_committed' if retained == committed else 'roll_forward'
+        return dict(head=head, pending=pending, transaction=transaction, committed=committed,
+                    retained=retained, manifest=manifest, action=action)
+
+    def _recover_generation_locked(self, protocol):
+        catalog, generation, head = protocol
+        outcome = dict(schema_version='2.0', completed=[], rolled_back=[], valid=False,
+                       active_transaction=head['transaction_id'], active_phase=head['phase'],
+                       target_effects_may_have_occurred=head['phase'] == 'prepared_effects_possible',
+                       journal_effects_may_have_occurred=False)
+        try:
+            classification = self._classify_generation(protocol)
+            transaction, retained, manifest = (classification[k] for k in ('transaction', 'retained', 'manifest'))
+            if classification['action'] != 'none':
+                if classification['action'] == 'abort_allocation':
+                    if transaction.exists():
+                        self._archive_unprepared(transaction)
+                    generation.settle_aborted()
+                    outcome['rolled_back'].append(head['transaction_id'])
+                else:
+                    catalog.revalidate()
+                    generation.prepare_effects(manifest)
+                    outcome['target_effects_may_have_occurred'] = True
+                    if manifest['phase'] != 'committed':
+                        self._apply(transaction, manifest)
+                        manifest = self._write_manifest(transaction, manifest, 'committed', None)
+                    self._inspect_artifacts(retained, manifest, require_after_images=True)
+                    if retained == transaction:
+                        retained = self._archive_committed(transaction)
+                    self._verify_retained_manifest(retained, manifest)
+                    generation.settle_committed(manifest)
+                    outcome['completed'].append(head['transaction_id'])
+            self._transactions_root.mkdir(parents=True, exist_ok=True)
+            outcome.update(valid=True, active_transaction=None, active_phase='settled')
+            return outcome
+        except BaseException as error:
+            _attach_outcome(error, 'wal_recovery', outcome)
+            raise
 
     def recover(self) -> dict[str, object]:
         """Recover every retained transaction under the process-bound WAL lock."""
@@ -899,6 +1102,9 @@ class JsonWal:
 
     def inspect(self) -> dict[str, object]:
         """Inspect pending recovery without creating, locking, or changing paths."""
+        protocol = self._generation_protocol()
+        if protocol is not None:
+            return self._inspect_generation(protocol)
         before = self._inspection_fingerprint()
         transactions = [
             self._inspect_transaction(transaction)
@@ -928,6 +1134,32 @@ class JsonWal:
             "inspection_sha256": after,
         }
 
+    def _inspect_generation(self, protocol):
+        catalog, generation, head = protocol
+        before = self._inspection_fingerprint()
+        state = self._classify_generation(protocol)
+        transactions = []
+        if state['action'] != 'none':
+            detail = dict(transaction_id=head['transaction_id'], phase=head['phase'],
+                          required_action=state['action'], artifact_count=0)
+            if state['manifest'] is not None:
+                detail.update(self._inspect_artifacts(state['retained'], state['manifest'],
+                              require_after_images=state['manifest']['phase'] == 'committed'))
+            transactions.append(detail)
+        after = self._inspection_fingerprint()
+        if before != after or generation.read() != head:
+            raise WalConflictError('generation changed during read-only inspection')
+        # Archive-before-settlement authority is outside the pending tree.
+        again = self._classify_generation((catalog, generation, head))
+        if state != again:
+            raise WalConflictError('retained generation authority changed during inspection')
+        catalog.revalidate()
+        return dict(schema_version='2.0', mode='inspect', valid=True,
+                    requires_recovery=state['action'] != 'none', transactions=transactions,
+                    would_complete=[head['transaction_id']] if state['action'] in {'roll_forward', 'settle_committed'} else [],
+                    would_roll_back=[head['transaction_id']] if state['action'] == 'abort_allocation' else [],
+                    generation=head, inspection_sha256=_sha_bytes(_canonical(dict(head=head, pending=after))))
+
     def _expectations(self, value, *, targets=None):
         if value is None:
             return None
@@ -949,7 +1181,7 @@ class JsonWal:
         return normalized
 
     def commit(self, artifacts: Iterable[Artifact], *, transaction_id=None,
-               fault_injector=None, expected_before=None, expected_inputs=None):
+               fault_injector=None, expected_before=None, expected_inputs=None, expected_generation=None):
         """Commit with explicit old-recovery and new-transaction effect outcomes.
 
         Callers that computed an after-image earlier must supply exact raw
@@ -961,7 +1193,7 @@ class JsonWal:
         try:
             result = self._commit(artifacts, transaction_id=transaction_id,
                                   fault_injector=fault_injector, expected_before=expected_before,
-                                  expected_inputs=expected_inputs, outcome=outcome)
+                                  expected_inputs=expected_inputs, expected_generation=expected_generation, outcome=outcome)
         except BaseException as error:
             outcome['acknowledgement'] = 'failed'
             if hasattr(error, 'wal_lock_release'):
@@ -977,7 +1209,7 @@ class JsonWal:
         *,
         transaction_id: str | None = None,
         fault_injector: FaultInjector | None = None,
-        expected_before=None, expected_inputs=None, outcome=None,
+        expected_before=None, expected_inputs=None, expected_generation=None, outcome=None,
     ) -> dict[str, object]:
         """Durably commit related JSON artifacts or leave a recoverable WAL."""
         items = self._normalize(artifacts)
@@ -995,6 +1227,11 @@ class JsonWal:
             except BaseException as error:
                 outcome['recovery'] = getattr(error, 'wal_recovery', outcome['recovery'])
                 raise
+            protocol = self._generation_protocol()
+            if expected_generation is not None:
+                if protocol is None:
+                    raise WalConflictError('legacy journal cannot validate a generation precondition')
+                protocol[1].check_expected(expected_generation)
             if fault_injector is not None:
                 fault_injector('intent:before_acceptance')
             before_images = []
@@ -1040,8 +1277,6 @@ class JsonWal:
                 raise ValueError(f"transaction_id has already been used: {identifier}")
             outcome.update(intent_accepted=True, transaction_phase='preparing',
                            transaction_id=identifier, expected_before_supplied=expected_before is not None)
-            transaction.mkdir(parents=False)
-            _fsync_directory(self._transactions_root)
             records: list[dict[str, object]] = []
             intents: list[dict[str, str]] = []
             for index, ((artifact, target, after), before) in enumerate(
@@ -1056,14 +1291,7 @@ class JsonWal:
                 )
                 before_stage = f"before/{index:04d}{suffix}"
                 after_stage = f"after/{index:04d}{suffix}"
-                if before is not None:
-                    _write_new(transaction / before_stage, before)
-                    if fault_injector is not None:
-                        fault_injector(f"journal:before:{index}")
-                _write_new(transaction / after_stage, after)
-                if fault_injector is not None:
-                    fault_injector(f"journal:after:{index}")
-                relative = target.relative_to(self.allowed_root).as_posix()
+                relative = target.relative_to(protocol[0].root if protocol is not None else self.allowed_root).as_posix()
                 after_sha = _sha_bytes(after)
                 records.append(
                     {
@@ -1083,21 +1311,41 @@ class JsonWal:
                 intents.append(
                     {"role": artifact.role, "path": relative, "sha256": after_sha}
                 )
-            manifest = self._write_manifest(
-                transaction,
-                {
-                    "schema_version": SCHEMA_VERSION,
+            prepared_manifest = {
+                    "schema_version": "2.0" if protocol is not None else SCHEMA_VERSION,
                     "transaction_id": identifier,
                     "recovery_policy": RECOVERY_POLICY,
                     "intent_sha256": _sha_bytes(_canonical(intents)),
                     "artifacts": records,
-                },
+                }
+            if protocol is not None:
+                catalog, generation, head = protocol
+                catalog.revalidate()
+                prepared_manifest['generation'] = dict(epoch=head['epoch'], sequence=head['sequence'] + 1,
+                                                       previous_token=head['sha256'])
+                generation.allocate(prepared_manifest, expected_token=expected_generation, fault_injector=fault_injector)
+            transaction.mkdir(parents=False)
+            _fsync_directory(self._transactions_root)
+            if fault_injector is not None:
+                fault_injector('journal:transaction:created')
+            for index, (record, (_artifact, _target, after), before) in enumerate(zip(records, items, before_images, strict=True)):
+                if before is not None:
+                    _write_new(transaction / record['before']['stage'], before)
+                    if fault_injector is not None:
+                        fault_injector(f'journal:before:{index}')
+                _write_new(transaction / record['after']['stage'], after)
+                if fault_injector is not None:
+                    fault_injector(f'journal:after:{index}')
+            manifest = self._write_manifest(
+                transaction, prepared_manifest,
                 "prepared",
                 fault_injector,
             )
             manifest = self._write_manifest(
                 transaction, manifest, "applying", fault_injector
             )
+            if protocol is not None:
+                generation.prepare_effects(manifest, fault_injector=fault_injector)
             outcome.update(transaction_phase='applying', publication='may_have_occurred')
             self._apply(transaction, manifest, fault_injector)
             outcome['publication'] = 'targets_published'
@@ -1112,6 +1360,9 @@ class JsonWal:
             outcome['journal'] = committed.as_posix()
             self._verify_retained_manifest(committed, manifest)
             self._inspect_artifacts(committed, manifest, require_after_images=True)
+            generation_token = None
+            if protocol is not None:
+                generation_token = generation.settle_committed(manifest, fault_injector=fault_injector)['sha256']
             return {
                 "schema_version": SCHEMA_VERSION,
                 "transaction_id": identifier,
@@ -1119,4 +1370,5 @@ class JsonWal:
                 "artifact_count": len(records),
                 "intent_sha256": manifest["intent_sha256"],
                 "journal": committed.as_posix(),
+                "generation_token": generation_token,
             }

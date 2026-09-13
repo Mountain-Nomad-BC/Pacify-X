@@ -190,11 +190,14 @@ def validate_effect_grant(
     try:
         issued = datetime.fromisoformat(str(grant["issued_utc"]))
         expiry = datetime.fromisoformat(str(grant["expires_utc"]))
-        current = now or datetime.now(timezone.utc)
+        current = now if now is not None else datetime.now(timezone.utc)
+        if not isinstance(current, datetime) or current.tzinfo is None or current.utcoffset() is None:
+            raise ValueError("effect grant clock must be aware")
         if (
             issued.tzinfo is None
             or expiry.tzinfo is None
             or expiry <= issued
+            or current < issued
             or current >= expiry
         ):
             errors.append("effect grant is expired or has invalid time bounds")

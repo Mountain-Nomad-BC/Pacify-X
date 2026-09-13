@@ -247,7 +247,7 @@ class StorageBudget:
 
 
 class ResourceLedger:
-    """Small atomic JSON ledger; large tree accounting stays incremental."""
+    """Resource owner with legacy JSON and explicitly selected indexed storage."""
 
     def __init__(self, path: Path) -> None:
         self.path = path.resolve()
@@ -255,17 +255,19 @@ class ResourceLedger:
         self._lock = threading.RLock()
 
     def _load_unlocked(self) -> tuple[ResourceRecord, ...]:
-        if not self.path.is_file():
-            return ()
-        encoded = _retry_transient_permission_error(
-            lambda: self.path.read_text(encoding="utf-8")
-        )
-        if not isinstance(encoded, str):
-            raise TypeError("resource ledger read did not return text")
-        payload = json.loads(encoded)
-        if payload.get("schema_version") != "1.0":
-            raise ValueError("unsupported resource ledger schema")
+        storage, payload = self._backend_unlocked()
+        if storage is not None:
+            return storage.load()
         return tuple(ResourceRecord(**item) for item in payload.get("resources", ()))
+
+    def _backend_unlocked(self):
+        from .resource_storage import selected_storage
+        reject_path_links(self.path)
+        if not os.path.lexists(self.path):
+            return None, {'schema_version': '1.0', 'resources': []}
+        raw = _retry_transient_permission_error(lambda: _bounded_image(self.path, limit=64 * 1024 * 1024))
+        payload = decode_json_object(raw, max_bytes=64 * 1024 * 1024)
+        return selected_storage(self.path, payload, ResourceRecord), payload
 
     def load(self) -> tuple[ResourceRecord, ...]:
         # Readers participate in the same cross-process exclusion boundary as
@@ -287,9 +289,24 @@ class ResourceLedger:
                     return None
                 return _bounded_image(self.path, limit=64 * 1024 * 1024)
             raw = _retry_transient_permission_error(acquire)
+            if raw is not None:
+                from .resource_storage import selected_storage
+                storage = selected_storage(self.path, decode_json_object(raw, max_bytes=64 * 1024 * 1024), ResourceRecord)
+                if storage is not None:
+                    records = storage.load()
+                    if acquire() != raw:
+                        raise ValueError('resource selector changed during observation')
+                    return records
             return _resource_records_from_image(raw)
 
     def _write_unlocked(self, records: Sequence[ResourceRecord]) -> None:
+        storage, _ = self._backend_unlocked()
+        if storage is not None:
+            storage.write(records)
+            return
+        self._write_legacy_unlocked(records)
+
+    def _write_legacy_unlocked(self, records: Sequence[ResourceRecord]) -> None:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         payload = {
             "schema_version": "1.0",
@@ -321,19 +338,29 @@ class ResourceLedger:
         # The re-entrant lock covers threads in this process; FileLock covers
         # independent CLI/worker processes sharing the same ledger.
         with self._lock, FileLock(self.lock_path, timeout_seconds=30.0):
-            records = {item.resource_id: item for item in self._load_unlocked()}
-            records[record.resource_id] = record
-            self._write_unlocked(tuple(records[key] for key in sorted(records)))
+            self._upsert_unlocked(record)
+
+    def _upsert_unlocked(self, record: ResourceRecord) -> None:
+        storage, payload = self._backend_unlocked()
+        if storage is not None:
+            storage.upsert(record)
+            return
+        records = {item['resource_id']: ResourceRecord(**item) for item in payload.get('resources', ())}
+        records[record.resource_id] = record
+        self._write_legacy_unlocked(tuple(records[key] for key in sorted(records)))
 
     def update(self, resource_id: str, **changes: object) -> ResourceRecord:
         """Atomically update one record without a cross-process read/write gap."""
         with self._lock, FileLock(self.lock_path, timeout_seconds=30.0):
-            records = {item.resource_id: item for item in self._load_unlocked()}
+            storage, payload = self._backend_unlocked()
+            if storage is not None:
+                return storage.update(resource_id, **changes)
+            records = {item['resource_id']: ResourceRecord(**item) for item in payload.get('resources', ())}
             if resource_id not in records:
                 raise KeyError(resource_id)
             updated = replace(records[resource_id], **changes)
             records[resource_id] = updated
-            self._write_unlocked(tuple(records[key] for key in sorted(records)))
+            self._write_legacy_unlocked(tuple(records[key] for key in sorted(records)))
             return updated
 
     def rebind_active_process(
@@ -385,15 +412,19 @@ class ResourceLedger:
                 process_identity=identity,
                 last_activity_at=_utc_now(),
             )
-            records[resource_id] = updated
-            self._write_unlocked(tuple(records[key] for key in sorted(records)))
+            self._upsert_unlocked(updated)
             return updated
 
     def get(self, resource_id: str) -> ResourceRecord:
-        for record in self.load():
-            if record.resource_id == resource_id:
-                return record
-        raise KeyError(resource_id)
+        with self._lock, FileLock(self.lock_path, timeout_seconds=30.0):
+            storage, payload = self._backend_unlocked()
+            if storage is not None:
+                return storage.get(resource_id)
+            for row in payload.get('resources', ()):
+                record = ResourceRecord(**row)
+                if record.resource_id == resource_id:
+                    return record
+            raise KeyError(resource_id)
 
 
 class ResourceManager:
@@ -505,8 +536,7 @@ class ResourceManager:
             if record.path_identity is not None and tuple(record.path_identity) != identity:
                 raise ValueError('created path registration is already bound to another generation')
             updated = replace(record, path_identity=identity, last_activity_at=_utc_now())
-            records[resource_id] = updated
-            self.ledger._write_unlocked(tuple(records[key] for key in sorted(records)))
+            self.ledger._upsert_unlocked(updated)
             return updated
 
     def update(self, resource_id: str, **changes: object) -> ResourceRecord:
@@ -892,7 +922,7 @@ class ResourceManager:
             current = records[resource_id]
             def publish(updated):
                 records[resource_id] = updated
-                self.ledger._write_unlocked(tuple(records[key] for key in sorted(records)))
+                self.ledger._upsert_unlocked(updated)
                 return updated
             allowed, blockers = self.reclamation_gate(current, records=tuple(records.values()))
             errors = list(blockers)
@@ -2056,7 +2086,9 @@ class RetentionManager:
         """Retain a bounded suffix with an immutable ancestry anchor and receipt."""
         if type(max_records) is not int or max_records < 1 or max_records > 100_000:
             raise ValueError("max_records must be between 1 and 100000")
-        raw = self.wal.read_source_image(history_path)
+        wal = self.wal.producer_for_target(history_path)
+        generation = wal.capture_generation()
+        raw = wal.read_source_image(history_path)
         path = history_path.resolve(strict=True)
         if (
             not path.is_file()
@@ -2125,13 +2157,14 @@ class RetentionManager:
         }
         if not apply:
             return receipt
-        transaction = self.wal.commit(
+        transaction = wal.commit(
             (
                 JsonArtifact("state", path, next_history),
                 JsonArtifact("receipt", anchor_path, anchor),
                 JsonArtifact("receipt", receipt_path, receipt),
             ),
             transaction_id=receipt_id,
+            expected_generation=generation,
             expected_before={
                 path.relative_to(self.allowed_root).as_posix(): before_sha256,
                 anchor_path.relative_to(self.allowed_root).as_posix(): None,

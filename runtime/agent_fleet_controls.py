@@ -324,7 +324,31 @@ class AgentSessionCoordinator:
         self.bus = bus
         self.heartbeat_max_age_seconds = int(heartbeat_max_age_seconds)
         self.total_cost_cap = float(total_cost_cap)
-        self.wal = JsonWal(self.root / ".wal", self.allowed_root)
+        self._legacy_wal = JsonWal(self.root / ".wal", self.allowed_root)
+        self.wal = bus.wal
+        if not _inside(self.root, self.wal.allowed_root):
+            raise ValueError("fleet projections must stay below the event producer root")
+
+    def _recover_publication(self):
+        # An existing catalog is authority: changing this caller cannot silently
+        # transfer domains or discard a pending legacy journal.
+        if self.wal.producer_for_target(self._registry_path).journal_root != self.wal.journal_root:
+            raise ValueError("fleet WAL ownership requires explicit producer adoption")
+        if self._legacy_wal.journal_root.exists():
+            if self._legacy_wal.inspect()["requires_recovery"]:
+                raise ValueError("pending legacy fleet WAL requires explicit recovery before adoption")
+        self.wal.recover()
+        return self.wal.capture_generation()
+
+    def _read_image(self, path, inputs=None):
+        raw = self.wal.read_source_image(path)
+        if inputs is not None:
+            name = path.relative_to(self.wal.allowed_root).as_posix()
+            digest = None if raw is None else hashlib.sha256(raw).hexdigest()
+            if name in inputs and inputs[name] != digest:
+                raise ValueError("fleet input changed during acquisition")
+            inputs[name] = digest
+        return raw
 
     @property
     def _registry_path(self) -> Path:
@@ -350,13 +374,14 @@ class AgentSessionCoordinator:
             "registry_sha256",
         )
 
-    def _read_registry(self) -> dict[str, object]:
-        if not self._registry_path.exists():
+    def _read_registry(self, *, inputs=None) -> dict[str, object]:
+        raw = self._read_image(self._registry_path, inputs)
+        if raw is None:
             return self._empty_registry()
         if not self._registry_path.is_file() or self._registry_path.is_symlink():
             raise ValueError("agent session registry is not a regular file")
         try:
-            value = json.loads(self._registry_path.read_text(encoding="utf-8"))
+            value = json.loads(raw.decode("utf-8"))
         except (OSError, UnicodeError, json.JSONDecodeError) as error:
             raise ValueError("agent session registry is unreadable") from error
         if not isinstance(value, dict) or set(value) != self._REGISTRY_FIELDS:
@@ -431,12 +456,15 @@ class AgentSessionCoordinator:
             raise ValueError("agent session counters or authority fields are invalid")
         return dict(value)
 
-    def _read_state(self, project_id: str, agent_id: str, session_id: str) -> dict[str, object]:
+    def _read_state(self, project_id: str, agent_id: str, session_id: str, *, inputs=None) -> dict[str, object]:
         path = self._state_path(project_id, agent_id, session_id)
         if not path.is_file() or path.is_symlink():
             raise ValueError("agent session state is missing or not a regular file")
         try:
-            value = json.loads(path.read_text(encoding="utf-8"))
+            raw = self._read_image(path, inputs)
+            if raw is None:
+                raise ValueError("agent session state disappeared")
+            value = json.loads(raw.decode("utf-8"))
         except (OSError, UnicodeError, json.JSONDecodeError) as error:
             raise ValueError("agent session state is unreadable") from error
         state = self._validate_state(value)
@@ -599,6 +627,8 @@ class AgentSessionCoordinator:
         state: Mapping[str, object],
         *,
         registry: Mapping[str, object] | None = None,
+        expected_generation=None,
+        expected_inputs=None,
     ) -> dict[str, object]:
         artifacts = [
             JsonArtifact(
@@ -614,6 +644,8 @@ class AgentSessionCoordinator:
         return self.wal.commit(
             artifacts,
             transaction_id=f"agent-session-{uuid.uuid4().hex}",
+            expected_generation=expected_generation,
+            expected_inputs=expected_inputs,
         )
 
     def _event_for_state(
@@ -717,6 +749,8 @@ class AgentSessionCoordinator:
         observed_at: str,
         previous_state: Mapping[str, object] | None,
         registry: Mapping[str, object] | None = None,
+        expected_generation=None,
+        expected_inputs=None,
     ) -> dict[str, object]:
         head = self.bus.head()
         if not head["valid"]:
@@ -733,18 +767,31 @@ class AgentSessionCoordinator:
                 else None
             ),
         )
-        receipt = self.bus.publish(event)
-        committed_state = _seal(
-            {
-                **dict(state),
-                "last_event_id": event["event_id"],
-                "last_event_sha256": receipt["event_sha256"],
-                "last_bus_revision": receipt["revision"],
-            },
-            "record_sha256",
+        committed_state = None
+
+        def projections(receipt):
+            nonlocal committed_state
+            committed_state = _seal(
+                {
+                    **dict(state),
+                    "last_event_id": event["event_id"],
+                    "last_event_sha256": receipt["event_sha256"],
+                    "last_bus_revision": receipt["revision"],
+                },
+                "record_sha256",
+            )
+            self._validate_state(committed_state)
+            artifacts = [JsonArtifact("state", self._state_path(
+                str(state["project_id"]), str(state["agent_id"]), str(state["session_id"])
+            ), committed_state)]
+            if registry is not None:
+                artifacts.append(JsonArtifact("state", self._registry_path, dict(registry)))
+            return artifacts
+
+        self.bus._publish_with_projection(
+            event, projection_builder=projections,
+            expected_generation=expected_generation, expected_inputs=expected_inputs,
         )
-        self._validate_state(committed_state)
-        self._persist_state(committed_state, registry=registry)
         return committed_state
 
     def register_session(
@@ -793,13 +840,14 @@ class AgentSessionCoordinator:
             raise ValueError("agent readiness rejected: " + "; ".join(readiness["agents"][0]["errors"]))
         self.root.mkdir(parents=True, exist_ok=True)
         with FileLock(self._lock_path, timeout_seconds=10):
-            self.wal.recover()
-            registry = self._read_registry()
+            generation = self._recover_publication()
+            inputs = {}
+            registry = self._read_registry(inputs=inputs)
             agents = dict(registry["agents"])
             if agent_id in agents:
                 raise ValueError("duplicate stable agent identity")
             path = self._state_path(project_id, agent_id, session_id)
-            if path.exists():
+            if self._read_image(path, inputs) is not None:
                 raise ValueError("duplicate agent session identity")
             observed_time = _parse_timestamp(observed, "observed_at")
             fleet = [readiness_participant]
@@ -807,7 +855,7 @@ class AgentSessionCoordinator:
                 if identity["project_id"] != project_id:
                     continue
                 existing = self._read_state(
-                    project_id, str(existing_agent_id), str(identity["session_id"])
+                    project_id, str(existing_agent_id), str(identity["session_id"]), inputs=inputs
                 )
                 heartbeat_age = max(
                     0,
@@ -878,6 +926,8 @@ class AgentSessionCoordinator:
                 observed_at=observed,
                 previous_state=None,
                 registry=next_registry,
+                expected_generation=generation,
+                expected_inputs=inputs,
             )
 
     def reconstruct_session(
@@ -889,14 +939,15 @@ class AgentSessionCoordinator:
         session_id = _required_text(session_id, "session_id")
         self.root.mkdir(parents=True, exist_ok=True)
         with FileLock(self._lock_path, timeout_seconds=10):
-            self.wal.recover()
-            registry = self._read_registry()
+            generation = self._recover_publication()
+            inputs = {}
+            registry = self._read_registry(inputs=inputs)
             identity = registry["agents"].get(agent_id)
             if not isinstance(identity, Mapping):
                 raise ValueError("agent identity is not registered")
             if identity.get("project_id") != project_id or identity.get("session_id") != session_id:
                 raise ValueError("cross-project or mismatched agent session rejected")
-            state = self._read_state(project_id, agent_id, session_id)
+            state = self._read_state(project_id, agent_id, session_id, inputs=inputs)
             events = self._session_events(project_id, agent_id, session_id)
             if not events:
                 raise ValueError("agent session has no canonical operational event")
@@ -915,7 +966,7 @@ class AgentSessionCoordinator:
             if int(latest["last_bus_revision"]) < int(state["last_bus_revision"]):
                 raise ValueError("canonical event ancestry is behind agent state")
             if int(latest["last_bus_revision"]) > int(state["last_bus_revision"]):
-                self._persist_state(latest)
+                self._persist_state(latest, expected_generation=generation, expected_inputs=inputs)
                 state = latest
             return deepcopy(state)
 
@@ -954,6 +1005,8 @@ class AgentSessionCoordinator:
         heartbeat_only: bool = False,
     ) -> dict[str, object]:
         observed = _timestamp(observed_at, "observed_at")
+        with FileLock(self._lock_path, timeout_seconds=10):
+            decision_generation = self._recover_publication()
         state = self.reconstruct_session(project_id, agent_id, session_id)
         age = max(
             0.0,
@@ -989,7 +1042,11 @@ class AgentSessionCoordinator:
         with FileLock(self._lock_path, timeout_seconds=10):
             # Re-read under the mutation lock so concurrent state transitions
             # cannot be overwritten by an older projection.
-            current_state = self._read_state(project_id, agent_id, session_id)
+            generation = self._recover_publication()
+            if generation != decision_generation:
+                raise ValueError("agent decision generation changed during transition")
+            inputs = {}
+            current_state = self._read_state(project_id, agent_id, session_id, inputs=inputs)
             if current_state["record_sha256"] != state["record_sha256"]:
                 raise ValueError("agent session changed during transition")
             return self._publish_and_persist(
@@ -997,6 +1054,8 @@ class AgentSessionCoordinator:
                 operation_name=operation_name,
                 observed_at=observed,
                 previous_state=state,
+                expected_generation=generation,
+                expected_inputs=inputs,
             )
 
     def heartbeat_session(

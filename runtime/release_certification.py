@@ -8,7 +8,6 @@ import json
 import os
 from pathlib import Path
 import re
-import shutil
 import subprocess
 import tempfile
 import time
@@ -344,49 +343,160 @@ def _write_supply_chain_evidence(
     }
 
 
+REQUIRED_RELEASE_GATES = frozenset({
+    "authenticated_repository_context", "release_toolchain", "release_test_completion_projection",
+    "full_tests", "full_test_skip_policy", "full_test_log_portability",
+    "installed_wheel_evidence_portability", "exact_artifact_install", "artifact_binding",
+    "executed_branch_coverage", "installed_wheel", "junit_metadata_portability", "exact_tools",
+    "release_audit", "structural_integrity", "generated_artifacts", "dependency_ownership",
+    "registry_envelopes", "external_evidence", "contracts", "graphs", "integrations", "registry",
+    "corrective_release", "effect_surfaces", "evidence_portability", "release_environment", "licensing",
+    "sanitation_summary", "publishable_evidence_portability",
+    *{"sanitation_" + name for name in (
+        "brand_identifier_sanitation", "legacy_placeholder_detection", "host_home_path_sanitation",
+        "archive_detection", "secret_scanning", "credential_scanning", "pii_review",
+        "binary_review", "license_provenance_review")},
+})
+REQUIRED_RELEASE_EVIDENCE = frozenset({
+    "gate-summary.json", "full-tests.junit.xml", "full-tests.log", "coverage.json",
+    "exact-tools.json", "installed-wheel.json", "artifact-inspection.json", "sanitation-controls.json",
+    "wheelhouse-manifest.json", "toolchain.json", "artifact-manifest.json", "product-manifest.json",
+    "publication-plan.json", "SHA256SUMS.txt", "sbom.cdx.json", "provenance.intoto.json",
+})
+
+
+def _release_gate_summary_errors(value: object) -> list[str]:
+    """Validate the fixed proof denominator; flags alone are not runtime evidence."""
+    from .numeric_inputs import bounded_json_value
+
+    try:
+        bounded_json_value(value)
+        if type(value) is not dict or value.get("valid") is not True or value.get("errors"):
+            raise ValueError("release gate summary is not explicitly valid")
+        gates = value.get("gates")
+        if type(gates) is not dict or not REQUIRED_RELEASE_GATES.issubset(gates) or len(gates) > 128:
+            raise ValueError("release gate summary lacks the required gate denominator")
+        if type(value.get("gate_count")) is not int or value["gate_count"] != len(gates):
+            raise ValueError("release gate count disagrees with named gates")
+        errors = []
+        for name, gate in gates.items():
+            if type(gate) is not dict or gate.get("valid") is not True or gate.get("errors"):
+                errors.append(str(name) + ": invalid or contradictory gate")
+        tests = gates["full_tests"]
+        for name in ("tests", "failures", "errors", "skipped"):
+            if type(tests.get(name)) is not int or not 0 <= tests[name] <= 1000000:
+                errors.append("full_tests: invalid case counts")
+                break
+        else:
+            if not tests["tests"] or tests["failures"] or tests["errors"] or tests["skipped"] >= tests["tests"]:
+                errors.append("full_tests: incomplete passing denominator")
+        if (type(tests.get("exit_code")) is not int or tests["exit_code"] != 0
+                or tests.get("timed_out") is not False
+                or tests.get("runner_valid") is not True
+                or tests.get("process_tree_terminated") is not True
+                or tests.get("workspace_reclaimed") is not True):
+            errors.append("full_tests: physical runner completion is unproved")
+        exact = gates["exact_tools"]
+        if (type(exact.get("denominator")) is not int or not 0 < exact["denominator"] <= 1000000
+                or type(exact.get("passed")) is not int or exact["passed"] != exact["denominator"]):
+            errors.append("exact_tools: complete nonempty denominator is unproved")
+        return errors
+    except (ValueError, TypeError, KeyError, RecursionError):
+        return ["release gate summary has an invalid or incomplete proof denominator"]
+
+
+def _release_report_binding_errors(evidence_root: Path, expected_summary: str, manifest: dict) -> list[str]:
+    """Bind required reports to the signed manifest and actual JUnit image."""
+    from .release_skip_policy import _junit_image_inventory, _junit_skip_inventory_gate
+
+    try:
+        records = manifest.get("evidence")
+        if type(records) is not list or len(records) > 10000:
+            raise ValueError("invalid release evidence records")
+        indexed = {record["path"]: record for record in records}
+        if len(indexed) != len(records) or not REQUIRED_RELEASE_EVIDENCE.issubset(indexed):
+            raise ValueError("missing or duplicate required release evidence")
+        for name in REQUIRED_RELEASE_EVIDENCE:
+            record = indexed[name]
+            if record.get("required") is not True or record.get("status") != "present":
+                raise ValueError("required release evidence is not present")
+        def image(name):
+            limit = 8 * 1024 * 1024 if name == "gate-summary.json" else 64 * 1024 * 1024
+            raw = _certificate_image(evidence_root, name, limit)
+            record = indexed[name]
+            if type(record.get("size_bytes")) is not int or len(raw) != record["size_bytes"] or hashlib.sha256(raw).hexdigest() != record.get("sha256"):
+                raise ValueError("required report image differs from manifest: " + name)
+            return raw
+
+        raw = image("gate-summary.json")
+        if hashlib.sha256(raw).hexdigest() != _certificate_digest(expected_summary):
+            raise ValueError("certificate gate summary digest mismatch")
+        summary = _certificate_object(raw, 8 * 1024 * 1024)
+        errors = _release_gate_summary_errors(summary)
+        if errors:
+            return errors
+        inventory = _junit_image_inventory(image("full-tests.junit.xml"))
+        skip_gate = _junit_skip_inventory_gate(inventory)
+        stated_skip = summary["gates"]["full_test_skip_policy"]
+        if not skip_gate["valid"] or any(stated_skip.get(key) != skip_gate[key] for key in ("allowed_count", "unexpected_count", "allowed", "unexpected")):
+            errors.append("release summary skip policy disagrees with actual JUnit cases")
+        tests = summary["gates"]["full_tests"]
+        if any(tests[name] != count for name, count in inventory["totals"].items()):
+            errors.append("release summary counts disagree with actual JUnit cases")
+        return errors
+    except (OSError, ValueError, TypeError, KeyError, RecursionError, ET.ParseError):
+        return ["signed release proof reports are missing, inconsistent or invalid"]
+
+
+def _verify_release_gate_binding(root: Path, release: str, certificate: dict, manifest: dict) -> list[str]:
+    try:
+        manifest_path = _certificate_evidence_path(root, release, certificate.get("evidence_manifest"))
+        summary_path = _certificate_evidence_path(root, release, certificate.get("gate_summary"))
+        if summary_path != manifest_path.parent / "gate-summary.json":
+            raise ValueError("gate summary belongs to a different evidence run")
+        return _release_report_binding_errors(manifest_path.parent, certificate.get("gate_summary_sha256"), manifest)
+    except (OSError, ValueError, TypeError, KeyError):
+        return ["release gate summary binding is invalid"]
+
+
+
 def _junit_totals(path: Path) -> dict[str, int]:
-    root = ET.parse(path).getroot()
-    tag = root.tag.rsplit("}", 1)[-1]
-    if tag == "testsuite":
-        suites = [root]
-    else:
-        suites = [
-            item for item in list(root) if item.tag.rsplit("}", 1)[-1] == "testsuite"
-        ]
-    return {
-        name: sum(int(suite.attrib.get(name, 0)) for suite in suites)
-        for name in ("tests", "failures", "errors", "skipped")
-    }
+    from .release_skip_policy import junit_case_inventory
+
+    return junit_case_inventory(path)["totals"]
 
 
 def _junit_case_gate(path: Path, marker: str) -> dict[str, Any]:
-    """Require a named test surface to be present and entirely green."""
-    root = ET.parse(path).getroot()
-    cases = [
-        case
-        for case in root.iter("testcase")
-        if marker in str(case.attrib.get("classname", ""))
-        or marker in str(case.attrib.get("name", ""))
-    ]
-    failures = sum(1 for case in cases if case.find("failure") is not None)
-    errors = sum(1 for case in cases if case.find("error") is not None)
-    skipped = sum(1 for case in cases if case.find("skipped") is not None)
-    return {
-        "valid": bool(cases) and failures == errors == skipped == 0,
-        "tests": len(cases),
-        "failures": failures,
-        "errors": errors,
-        "skipped": skipped,
-        "marker": marker,
-    }
+    """Require actual unique cases from a valid report, including namespaces."""
+    from .release_skip_policy import junit_case_inventory
+
+    try:
+        inventory = junit_case_inventory(path)
+    except (OSError, ValueError, TypeError, ET.ParseError) as error:
+        return {"valid": False, "tests": 0, "failures": 0, "errors": 1,
+                "skipped": 0, "marker": marker, "reason": str(error)}
+    cases = [case for case in inventory["cases"]
+             if case["classname"] == marker or case["classname"].startswith(marker + ".")
+             or marker in case["classname"].split(".") or case["name"] == marker]
+    failures = sum(case["outcome"] == "failure" for case in cases)
+    errors = sum(case["outcome"] == "error" for case in cases)
+    skipped = sum(case["outcome"] == "skipped" for case in cases)
+    return {"valid": bool(cases) and failures == errors == skipped == 0,
+            "tests": len(cases), "failures": failures, "errors": errors,
+            "skipped": skipped, "marker": marker}
 
 
 def _sanitize_junit_metadata(path: Path) -> None:
     """Remove host identity and machine-local paths from public test evidence."""
-    tree = ET.parse(path)
-    root = tree.getroot()
-    for suite in root.iter("testsuite"):
-        suite.attrib.pop("hostname", None)
+    from .input_files import independent_file, read_file_image, cooperative_deadline
+    from .release_skip_policy import _validated_junit_image
+
+    checked, info = independent_file(path)
+    raw = read_file_image(checked, info, limit=64 * 1024 * 1024, deadline=cooperative_deadline())
+    root, _ = _validated_junit_image(raw)
+    for suite in root.iter():
+        if suite.tag.rsplit("}", 1)[-1] == "testsuite":
+            suite.attrib.pop("hostname", None)
     for element in root.iter():
         for key, value in tuple(element.attrib.items()):
             element.set(key, _redact_junit_text(value))
@@ -394,7 +504,9 @@ def _sanitize_junit_metadata(path: Path) -> None:
             element.text = _redact_junit_text(element.text)
         if element.tail:
             element.tail = _redact_junit_text(element.tail)
-    tree.write(path, encoding="utf-8", xml_declaration=True)
+    rendered = ET.tostring(root, encoding="utf-8", xml_declaration=True)
+    _validated_junit_image(rendered)
+    path.write_bytes(rendered)
 
 
 def _redact_junit_text(value: str) -> str:
@@ -415,12 +527,18 @@ def _redact_machine_local_value(value: object) -> object:
 
 
 def _junit_metadata_gate(path: Path) -> dict[str, Any]:
-    root = ET.parse(path).getroot()
-    hostnames = [
-        suite.attrib["hostname"]
-        for suite in root.iter("testsuite")
-        if "hostname" in suite.attrib
-    ]
+    from .input_files import independent_file, read_file_image, cooperative_deadline
+    from .release_skip_policy import _validated_junit_image
+
+    try:
+        checked, info = independent_file(path)
+        raw = read_file_image(checked, info, limit=64 * 1024 * 1024, deadline=cooperative_deadline())
+        root, _ = _validated_junit_image(raw)
+    except (OSError, ValueError, ET.ParseError) as error:
+        return {"valid": False, "hostname_count": 0, "nonportable_path_count": 0,
+                "errors": ["JUnit metadata input is invalid: " + str(error)]}
+    hostnames = [suite.attrib["hostname"] for suite in root.iter()
+                 if suite.tag.rsplit("}", 1)[-1] == "testsuite" and "hostname" in suite.attrib]
     paths = _portable_payload_gate(ET.tostring(root, encoding="unicode"))
     errors = [
         *("JUnit evidence contains host identity" for _ in hostnames),
@@ -554,46 +672,74 @@ def _seal(value: dict[str, Any]) -> dict[str, Any]:
 
 
 def _commit_release_evidence(release_root: Path, destination: Path) -> dict[str, Any]:
-    """Add signed evidence without overwriting existing pre-release records."""
-    source_files: list[tuple[Path, Path]] = []
-    errors: list[str] = []
-    for source in sorted(
-        release_root.rglob("*"), key=lambda item: item.as_posix().casefold()
-    ):
-        relative = source.relative_to(release_root)
-        if source.is_symlink() or (
-            hasattr(source, "is_junction") and source.is_junction()
-        ):
-            errors.append(f"release evidence contains a link: {relative.as_posix()}")
-        elif source.is_file():
-            source_files.append((source, relative))
-    collisions = [
-        relative.as_posix()
-        for _, relative in source_files
-        if (destination / relative).exists()
-    ]
-    if collisions:
-        errors.extend(
-            f"release evidence collision: {relative}" for relative in collisions
-        )
-    if errors:
-        return {"valid": False, "copied_file_count": 0, "errors": errors}
+    """Publish bounded checked images exclusively; retain every partial effect."""
+    from .archive_io import reject_path_links
+    from .bounded_walk import WalkLimits, bounded_walk
+    from .input_files import contained_file, cooperative_deadline, directory_root, read_file_image
+
+    copied = []
+    created = []
+    directory_creation_attempted = False
+    expected = []
+    errors = []
+    deadline = cooperative_deadline()
+
+    def result(valid):
+        return {"valid": valid, "copied_file_count": len(copied),
+                "copied_records": copied, "created_paths": created,
+                "expected_file_count": len(expected),
+                "publication_state": "complete" if valid else "partial" if created or directory_creation_attempted else "not_started",
+                "directory_creation_attempted": directory_creation_attempted,
+                "errors": errors}
+
     try:
-        destination.mkdir(parents=True, exist_ok=True)
-        for source, relative in source_files:
-            target = destination / relative
+        root = directory_root(release_root)
+        reject_path_links(destination)
+        target_root = destination.resolve(strict=False)
+        if root.is_relative_to(target_root) or target_root.is_relative_to(root):
+            raise ValueError("release evidence source and destination overlap")
+        walked = bounded_walk(root, limits=WalkLimits(max_files=10000, max_depth=64,
+            max_bytes=256 * 1024 * 1024, max_entries=20000, max_directories=10000,
+            max_duration_seconds=60), symlink_policy="reject")
+        if not walked.files:
+            raise ValueError("release evidence source is empty")
+        # Validate all source images and all destination collisions before effects.
+        for entry in sorted(walked.files, key=lambda item: item.relative):
+            source, info = contained_file(root, entry.relative)
+            raw = read_file_image(source, info, limit=64 * 1024 * 1024, deadline=deadline)
+            expected.append({"path": entry.relative, "sha256": hashlib.sha256(raw).hexdigest(),
+                             "size_bytes": len(raw)})
+            target = target_root / entry.relative
+            reject_path_links(target)
+            if target.exists():
+                errors.append("release evidence collision: " + entry.relative)
+        if errors:
+            return result(False)
+        for record in expected:
+            source, info = contained_file(root, record["path"])
+            raw = read_file_image(source, info, limit=64 * 1024 * 1024, deadline=deadline)
+            if len(raw) != record["size_bytes"] or hashlib.sha256(raw).hexdigest() != record["sha256"]:
+                raise ValueError("release evidence source changed after preflight: " + record["path"])
+            target = target_root / record["path"]
+            reject_path_links(target)
+            directory_creation_attempted = True
             target.parent.mkdir(parents=True, exist_ok=True)
-            with source.open("rb") as reader, target.open("xb") as writer:
-                shutil.copyfileobj(reader, writer)
-    except OSError as error:
-        return {
-            "valid": False,
-            "copied_file_count": 0,
-            "errors": [
-                f"release evidence commit failed: {type(error).__name__}: {error}"
-            ],
-        }
-    return {"valid": True, "copied_file_count": len(source_files), "errors": []}
+            reject_path_links(target)
+            with target.open("xb") as writer:
+                created.append(record["path"])
+                if writer.write(raw) != len(raw):
+                    raise OSError("short release evidence write")
+                writer.flush()
+                os.fsync(writer.fileno())
+            checked, info = contained_file(target_root, record["path"])
+            actual = read_file_image(checked, info, limit=64 * 1024 * 1024, deadline=deadline)
+            if len(actual) != record["size_bytes"] or hashlib.sha256(actual).hexdigest() != record["sha256"]:
+                raise ValueError("release evidence destination mismatch: " + record["path"])
+            copied.append(dict(record))
+    except (OSError, ValueError) as error:
+        errors.append(f"release evidence commit failed: {type(error).__name__}: {error}")
+        return result(False)
+    return result(True)
 
 
 def _portable_payload_gate(value: object) -> dict[str, Any]:
@@ -692,6 +838,7 @@ def _run_release_test_process(
         environment=environment,
         timeout_seconds=timeout_seconds,
         disk_consumption_paths=disk_consumption_paths,
+        manage_process_temp=True,
     )
 
 
@@ -878,11 +1025,18 @@ def run_release_gates(
         "release_toolchain": toolchain_gate,
         "release_test_completion_projection": completion_projection_gate,
         "full_tests": {
-            "valid": test_exit == 0
+            "valid": test_process.get("valid") is True
+            and test_process.get("process_tree_terminated") is True
+            and test_process.get("test_workspace", {}).get("reclaimed") is True
+            and not test_process.get("test_workspace", {}).get("errors")
+            and type(test_exit) is int and test_exit == 0
             and not test_timed_out
-            and totals["tests"] > 0
+            and totals["tests"] > totals["skipped"]
             and totals["failures"] == totals["errors"] == 0
             and skip_policy_gate["valid"],
+            "runner_valid": test_process.get("valid") is True,
+            "process_tree_terminated": test_process.get("process_tree_terminated") is True,
+            "workspace_reclaimed": test_process.get("test_workspace", {}).get("reclaimed") is True,
             "exit_code": test_exit,
             "timed_out": test_timed_out,
             "duration_seconds": round(time.monotonic() - tests_started, 6),
@@ -1028,6 +1182,9 @@ def run_release_gates(
         "gates": gates,
         "duration_seconds": round(time.monotonic() - started, 6),
     }
+    summary_errors = _release_gate_summary_errors(result)
+    result["valid"] = result["valid"] and not summary_errors
+    result["errors"] = summary_errors
     _dump(evidence_dir / "gate-summary.json", result)
     return result
 
@@ -1264,6 +1421,9 @@ def finalize_release(
                 "gates": {},
             }
             _dump(evidence_dir / "gate-summary.json", gates)
+        summary_errors = _release_gate_summary_errors(gates)
+        if summary_errors:
+            gates = {**gates, "valid": False, "errors": summary_errors}
         if mutation_hook:
             mutation_hook()
         unchanged = verify_frozen_product(root, initial)
@@ -1309,7 +1469,11 @@ def finalize_release(
                 "gates": gates,
                 "preflight_coverage_gap": coverage_gap.relative_to(root).as_posix(),
             }
-        roles: dict[str, dict[str, object]] = {}
+        roles: dict[str, dict[str, object]] = {
+            name: {"type": Path(name).suffix.lstrip(".") or "evidence", "required": True,
+                   "generation_gate": Path(name).stem, "producer": f"PACIFY-X {release}"}
+            for name in REQUIRED_RELEASE_EVIDENCE
+        }
         for path in sorted(
             evidence_dir.rglob("*"), key=lambda item: item.as_posix().casefold()
         ):
@@ -1322,7 +1486,15 @@ def finalize_release(
                     "producer": f"PACIFY-X {release}",
                 }
         evidence_manifest = build_evidence_manifest(evidence_dir, roles=roles)
+        if evidence_manifest.get("valid") is not True:
+            return {"valid": False, "certified": False, "published": False, "run_id": run_id,
+                    "errors": evidence_manifest.get("errors", ["required release evidence is missing"])}
         _dump(evidence_dir / "evidence-manifest.json", evidence_manifest)
+        summary_digest = next(record["sha256"] for record in evidence_manifest["evidence"] if record["path"] == "gate-summary.json")
+        report_errors = _release_report_binding_errors(evidence_dir, summary_digest, evidence_manifest)
+        if report_errors:
+            return {"valid": False, "certified": False, "published": False,
+                    "run_id": run_id, "errors": report_errors}
         certificate_relative = f"evidence/releases/{release}/certificate.json"
         signature_relative = f"evidence/releases/{release}/certificate.json.sig"
         certificate = {
@@ -1340,6 +1512,7 @@ def finalize_release(
             "evidence_manifest": f"evidence/releases/{release}/{run_id}/evidence-manifest.json",
             "evidence_manifest_sha256": _sha(evidence_dir / "evidence-manifest.json"),
             "gate_summary": f"evidence/releases/{release}/{run_id}/gate-summary.json",
+            "gate_summary_sha256": summary_digest,
             "coverage_evidence": f"evidence/releases/{release}/{run_id}/coverage.json",
             "coverage_evidence_sha256": _sha(evidence_dir / "coverage.json"),
             "toolchain": toolchain,
@@ -1380,8 +1553,13 @@ def finalize_release(
         _dump(journal_path, journal)
         destination = root / "evidence" / "releases" / release
         evidence_commit = _commit_release_evidence(release_root, destination)
+        journal["evidence_commit"] = evidence_commit
         if not evidence_commit["valid"]:
+            journal["status"] = "publication_pending"
+            _dump(journal_path, journal)
             return {
+                "publication_state": evidence_commit["publication_state"],
+                "evidence_commit": evidence_commit,
                 "valid": False,
                 "certified": False,
                 "published": False,
@@ -1553,6 +1731,9 @@ def verify_release_certificate(
                 "evidence manifest validation",
             )
         )
+        errors.extend(_verify_release_gate_binding(root, release, certificate, manifest))
+        if errors:
+            return refused(errors)
         artifact_raw = _certificate_image(
             root, artifact_manifest_path.relative_to(root).as_posix(), 16 * 1024 * 1024
         )

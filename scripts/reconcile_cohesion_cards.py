@@ -9,6 +9,7 @@ installed-operational summary.
 from __future__ import annotations
 
 import argparse
+from contextlib import ExitStack
 from contextvars import ContextVar
 from datetime import datetime, timezone
 from functools import wraps
@@ -184,6 +185,8 @@ class _CapturedInputs:
         self.transaction = None
         self.frozen = False
         self.head = None
+        self.resource_snapshots = {}
+        self.resource_locks = ExitStack()
 
     def acquire(self, path, limit):
         reject_path_links(path)
@@ -252,7 +255,10 @@ def _capture_inputs(function):
                 pass
             raise
         finally:
-            _INPUTS.reset(token)
+            try:
+                inputs.resource_locks.close()
+            finally:
+                _INPUTS.reset(token)
     return captured
 
 
@@ -1202,9 +1208,27 @@ def _validate_close_control_plane(
 
 
 def _resource_status(ledger_path: Path) -> dict[str, object]:
-    from runtime.resource_lifecycle import resource_status_from_image
-    inputs = _INPUTS.get() or _CapturedInputs(ledger_path.parent)
-    return resource_status_from_image(inputs.read(ledger_path, optional=True))
+    from runtime.resource_lifecycle import ResourceRecord, resource_status_from_image, _resource_status_records
+    from runtime.resource_storage import selected_storage
+    current = _INPUTS.get()
+    inputs = current or _CapturedInputs(ledger_path.parent)
+    raw = inputs.read(ledger_path, optional=True)
+    if raw is None:
+        return resource_status_from_image(raw)
+    storage = selected_storage(ledger_path, decode_json_object(raw, max_bytes=64 * 1024 * 1024), ResourceRecord)
+    if storage is None:
+        return resource_status_from_image(raw)
+    if current is None:
+        with storage.locked_snapshot() as (records, _):
+            inputs.revalidate()
+            return _resource_status_records(records)
+    key = ledger_path.resolve()
+    if key not in inputs.resource_snapshots:
+        # Hold the SQLite read generation through final input CAS/publication.
+        # The selector is separately retained in the normal input denominator.
+        inputs.resource_snapshots[key] = inputs.resource_locks.enter_context(storage.locked_snapshot())
+    records, _ = inputs.resource_snapshots[key]
+    return _resource_status_records(records)
 
 
 def _advance_card(
@@ -1500,6 +1524,7 @@ def reconcile(
                 "cohesion WAL requires recovery; rerun with --apply to recover before reconciliation"
             )
     inputs.recovery = wal_status
+    generation = wal.capture_generation()
     _parse_checksums(directory)
     cards = {
         card_id: _load_json(directory / f"{card_id}.json")
@@ -1655,7 +1680,8 @@ def reconcile(
         dependencies = {path for path in inputs.images if path.is_relative_to(root)} - targets
         transaction = wal.commit(artifacts, fault_injector=fault_injector,
                                  expected_before=inputs.expectations(targets),
-                                 expected_inputs=inputs.expectations(dependencies))
+                                 expected_inputs=inputs.expectations(dependencies),
+                                 expected_generation=generation)
         inputs.transaction = transaction
         report["transaction"] = transaction
         # Verify the published images using a new capture, never the before-image cache.

@@ -76,155 +76,111 @@ verify = evaluate_claims
 
 
 def verify_authoritative(root: Path, request: Mapping[str, Any]) -> dict[str, Any]:
-    """Derive an outcome verdict exclusively from signed records in an approved store."""
-    reasons: list[str] = []
-    required = {
-        "outcome_id",
-        "project_id",
-        "task_id",
-        "execution_id",
-        "postcondition_contract",
-        "policy_decision_ref",
-        "evidence_refs",
-        "evidence_store",
-        "accepted_producers",
-    }
-    missing = sorted(required - set(request))
-    if missing:
-        return _result(
-            "invalid_request", reasons=["missing request fields: " + ", ".join(missing)]
-        )
-    contract_relative = Path(str(request["postcondition_contract"]))
-    contract_path = (root.resolve() / contract_relative).resolve()
-    if (
-        contract_relative.is_absolute()
-        or root.resolve() not in contract_path.parents
-        or not contract_path.is_file()
-    ):
-        return _result(
-            "invalid_request", reasons=["postcondition_contract_not_resolved"]
-        )
-    try:
-        contract = json.loads(contract_path.read_text(encoding="utf-8"))
-        required_checks = tuple(map(str, contract["required_checks"]))
-        if not required_checks:
-            raise ValueError
-        from .trusted_evidence import evidence_store_path
-
-        store = evidence_store_path(root, request["evidence_store"])
-        resolver = TrustedEvidenceResolver(
-            store, root / "policies/effect-grant-trust.json"
-        )
-        scope = EvidenceScope(
-            str(request["project_id"]),
-            str(request["outcome_id"]),
-            str(request["task_id"]),
-            str(request["execution_id"]),
-            session_id=str(request.get("session_id", "")),
-        )
-        accepted = set(map(str, request["accepted_producers"]))
-        max_age = int(request.get("max_age_seconds", 86400))
-    except (OSError, KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
-        return _result(
-            "invalid_request",
-            reasons=[f"request_resolution_failed:{type(error).__name__}"],
-        )
-
-    policy = resolver.resolve(
-        str(request["policy_decision_ref"]),
-        scope=scope,
-        accepted_producers=accepted,
-        max_age_seconds=max_age,
-        required_type="policy_decision",
+    """Assess exact acquired artifact bytes using bound signed assessments."""
+    from .numeric_inputs import bounded_mapping, bounded_json_value, bounded_integer
+    from .trusted_evidence import (
+        _evidence_text, evidence_store_path, acquire_evaluation_binding,
     )
-    if not policy.verified:
-        reasons.extend(policy.reasons)
-    elif policy.record.get("result", {}).get("allowed") is not True:
-        reasons.append("policy_denied")
 
-    refs = request.get("evidence_refs")
-    if not isinstance(refs, list) or not refs:
-        reasons.append("evidence_missing")
-        refs = []
+    try:
+        request = bounded_mapping(request, 'outcome request', maximum=16)
+        bounded_json_value(request)
+        request = json.loads(json.dumps(request, allow_nan=False))
+        required = {'schema_version', 'outcome_id', 'project_id', 'task_id',
+                    'execution_id', 'subject_source', 'postcondition_contract',
+                    'policy_decision_ref', 'evidence_refs', 'evidence_store',
+                    'accepted_producers'}
+        if required - request.keys() or request.keys() - required - {'session_id', 'max_age_seconds'}:
+            raise ValueError('outcome request fields mismatch')
+        if request['schema_version'] != '2.0':
+            raise ValueError('authoritative artifact assessment requires request version 2.0')
+        scope = EvidenceScope(*[_evidence_text(request[field], field) for field in
+            ('project_id', 'outcome_id', 'task_id', 'execution_id')],
+            session_id=_evidence_text(request.get('session_id', ''), 'session_id', optional=True))
+        accepted = request['accepted_producers']
+        if type(accepted) is not list or not 1 <= len(accepted) <= 64:
+            raise ValueError('accepted producers must be a nonempty bounded list')
+        accepted = [_evidence_text(value, 'accepted producer') for value in accepted]
+        if len(set(accepted)) != len(accepted):
+            raise ValueError('accepted producers must be unique')
+        max_age = bounded_integer(request.get('max_age_seconds', 86400),
+                                  'evidence age', minimum=1, maximum=31536000)
+        refs = request['evidence_refs']
+        if type(refs) is not list or not 1 <= len(refs) <= 256:
+            raise ValueError('evidence references must be a nonempty bounded list')
+        seen = set()
+        for item in refs:
+            if type(item) is not dict or set(item) - {'ref', 'sha256'} or 'ref' not in item:
+                raise ValueError('evidence reference fields mismatch')
+            ref = _evidence_text(item['ref'], 'evidence reference', maximum=137)
+            if ref in seen:
+                raise ValueError('evidence references must be unique')
+            seen.add(ref)
+        policy_ref = _evidence_text(request['policy_decision_ref'], 'policy reference', maximum=137)
+        evaluation, contract, _ = acquire_evaluation_binding(root,
+            subject_source=request['subject_source'],
+            assessment_contract=request['postcondition_contract'],
+            interpretation='outcome-postconditions/1')
+        if set(contract) - {'required_checks', 'id', 'version', 'risk', 'evidence'}:
+            raise ValueError('unsupported postcondition contract field')
+        checks = contract.get('required_checks')
+        if type(checks) is not list or not 1 <= len(checks) <= 256:
+            raise ValueError('required checks must be a nonempty bounded list')
+        required_checks = tuple(_evidence_text(value, 'required check') for value in checks)
+        if len(set(required_checks)) != len(required_checks):
+            raise ValueError('required checks must be unique')
+        store = evidence_store_path(root, request['evidence_store'])
+        resolver = TrustedEvidenceResolver(store, root / 'policies/effect-grant-trust.json')
+    except (OSError, KeyError, TypeError, ValueError, OverflowError):
+        return _result('invalid_request', reasons=['outcome_request_or_subject_resolution_failed'])
+
+    options = dict(scope=scope, accepted_producers=set(accepted),
+                   max_age_seconds=max_age, expected_evaluation=evaluation)
+    policy = resolver.resolve(policy_ref, required_type='policy_decision', **options)
+    reasons = list(policy.reasons)
+    if not policy.verified:
+        reasons.append('policy_evidence_not_verified')
+    elif policy.record['result'].get('allowed') is not True:
+        reasons.append('policy_denied')
     resolved = []
-    observed_checks: dict[str, bool] = {}
+    observations = {name: set() for name in required_checks}
     for item in refs:
-        if not isinstance(item, dict) or "ref" not in item:
-            reasons.append("invalid_evidence_reference")
-            continue
-        value = resolver.resolve(
-            str(item["ref"]),
-            scope=scope,
-            accepted_producers=accepted,
-            max_age_seconds=max_age,
-            expected_sha256=item.get("sha256"),
-            required_type="postcondition",
-        )
+        value = resolver.resolve(item['ref'], required_type='postcondition',
+            expected_sha256=item.get('sha256'), **options)
         resolved.append(value)
         reasons.extend(value.reasons)
-        if value.verified:
-            checks = value.record.get("result", {}).get("postconditions", {})
-            if isinstance(checks, dict):
-                for name, passed in checks.items():
-                    observed_checks[str(name)] = passed is True
-    failed = sorted(
-        name for name in required_checks if observed_checks.get(name) is not True
-    )
-    if failed:
-        reasons.extend(f"postcondition_failed:{name}" for name in failed)
-    integrity_failure = any(
-        "integrity" in reason or "hash_mismatch" in reason for reason in reasons
-    )
-    decision = (
-        "evidence_integrity_failure"
-        if integrity_failure
-        else "insufficient_trusted_evidence"
-        if reasons
-        and any(
-            reason
-            in {
-                "evidence_missing",
-                "evidence_stale",
-                "evidence_scope_mismatch",
-                "evidence_producer_unapproved",
-                "evidence_signature_missing",
-                "evidence_signer_untrusted",
-            }
-            for reason in reasons
-        )
-        else "verification_failed"
-        if reasons
-        else "verified"
-    )
-    return _result(
-        decision,
-        reasons=reasons,
-        policy={
-            "resolved": policy.resolved,
-            "authentic": policy.signature_valid,
-            "applicable": policy.scope_valid
-            and policy.record is not None
-            and policy.record.get("result", {}).get("allowed") is True,
-        },
-        evidence={
-            "requested": len(refs),
-            "resolved": sum(item.resolved for item in resolved),
-            "integrity_valid": sum(item.integrity_valid for item in resolved),
-            "fresh": sum(item.fresh for item in resolved),
-            "scope_valid": sum(item.scope_valid for item in resolved),
-            "verified_ids": [
-                str(item.record.get("evidence_id"))
-                for item in resolved
-                if item.verified
-            ],
-        },
-        postconditions={
-            "contract_resolved": True,
-            "required": list(required_checks),
-            "observed": observed_checks,
-            "passed": not failed,
-        },
-    )
+        if not value.verified:
+            reasons.append('postcondition_evidence_not_verified')
+            continue
+        checks = value.record['result']['postconditions']
+        for name, passed in checks.items():
+            if name not in observations:
+                reasons.append('unexpected_postcondition:' + name)
+            else:
+                observations[name].add(passed)
+    observed = {name: values == {True} for name, values in observations.items() if values}
+    failed = sorted(name for name in required_checks if observations[name] != {True})
+    reasons.extend('postcondition_failed:' + name for name in failed)
+    reasons.extend('postcondition_contradicted:' + name for name, values in observations.items() if len(values) > 1)
+    reasons = sorted(set(reasons))
+    decision = ('evidence_integrity_failure' if any('integrity' in reason or 'hash_mismatch' in reason for reason in reasons)
+                else 'insufficient_trusted_evidence' if any(reason in {
+                    'evidence_missing', 'evidence_stale', 'evidence_scope_mismatch',
+                    'evidence_evaluation_mismatch', 'evidence_producer_unapproved',
+                    'evidence_signature_missing', 'evidence_signer_untrusted'} for reason in reasons)
+                else 'verification_failed' if reasons else 'verified')
+    output = _result(decision, reasons=reasons,
+        policy={'resolved': policy.resolved, 'authentic': policy.signature_valid,
+                'applicable': policy.verified and policy.record['result'].get('allowed') is True},
+        evidence={'requested':len(refs), 'resolved':sum(v.resolved for v in resolved),
+            'integrity_valid':sum(v.integrity_valid for v in resolved),
+            'fresh':sum(v.fresh for v in resolved), 'scope_valid':sum(v.scope_valid for v in resolved),
+            'verified_ids':sorted({v.record['evidence_id'] for v in resolved if v.verified})},
+        postconditions={'contract_resolved':True, 'required':list(required_checks),
+                        'observed':observed, 'passed':not failed})
+    output['evaluation_binding'] = evaluation
+    output['evidence_level'] = 'signed-artifact-assessment'
+    return output
 
 
 def _result(

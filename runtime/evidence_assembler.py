@@ -201,6 +201,7 @@ def assemble_evidence(
         attachments: list[EvidenceAttachment] = []
         claim_warnings: list[EvidenceWarning] = []
         supported = False
+        contradicted = False
 
         for link in links_by_claim.get(claim_id, []):
             record = evidence_index.get(link.evidence_id)
@@ -259,10 +260,11 @@ def assemble_evidence(
                     )
                 )
 
-            attachments.append(EvidenceAttachment(record, link.relation, usable))
+            attachments.append(EvidenceAttachment(record, link.relation, usable and link.relation is EvidenceRelation.SUPPORTS))
             if link.relation is EvidenceRelation.SUPPORTS and usable:
                 supported = True
             elif link.relation is EvidenceRelation.CONTRADICTS and usable:
+                contradicted = True
                 claim_warnings.append(
                     EvidenceWarning(
                         "contradictory_evidence",
@@ -276,6 +278,7 @@ def assemble_evidence(
             key=lambda item: (item.record.evidence_id, item.relation.value)
         )
         claim_warnings.sort(key=_warning_key)
+        supported = supported and not contradicted
         if not supported:
             unsupported.append(claim_id)
             claim_warnings.append(

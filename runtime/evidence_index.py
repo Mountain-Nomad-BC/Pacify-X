@@ -276,6 +276,8 @@ def publish_index(
         root / "registry/current_evidence_index.json",
         root / "evidence/releases" / str(value["namespace"]) / "EVIDENCE_INDEX.json",
     ]
+    if value.get("valid") is not True:
+        return targets[0], targets[1], value
     serialized = json.dumps(value, indent=2, sort_keys=True) + "\n"
     for target in targets:
         target.parent.mkdir(parents=True, exist_ok=True)

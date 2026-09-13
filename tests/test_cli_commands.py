@@ -998,6 +998,10 @@ class CliCommandTests(unittest.TestCase):
         self.assertLessEqual(startup["capability_metadata_count"], 250)
         self.assertTrue(startup["tooling_assessment"]["deferred"])
         self.assertNotIn("inventory", startup["tooling_assessment"])
+        self.assertEqual(
+            startup["tooling_assessment"]["command"],
+            "python -m runtime.cli tooling assess --project <path>",
+        )
         status, classification = invoke(
             "classify", "--task", "validate a retrieval workflow"
         )

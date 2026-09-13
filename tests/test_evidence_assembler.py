@@ -18,6 +18,22 @@ from runtime.evidence_assembler import (
 NOW = datetime(2026, 8, 1, 20, 0, tzinfo=timezone.utc)
 
 
+def test_current_contradiction_blocks_otherwise_supported_claim():
+    package = assemble_evidence('task-1', [Claim('claim-1', 'result')],
+        [record('positive'), record('negative')],
+        [EvidenceLink('claim-1', 'positive', EvidenceRelation.SUPPORTS),
+         EvidenceLink('claim-1', 'negative', EvidenceRelation.CONTRADICTS)], as_of=NOW)
+    assert package.claims[0].supported is False
+    assert package.unsupported_claims == ('claim-1',)
+    assert not next(a for a in package.claims[0].attachments if a.record.evidence_id == 'negative').usable_for_support
+
+
+def test_context_attachment_is_not_positive_support():
+    package = assemble_evidence('task-1', [Claim('claim-1', 'result')],
+        [record('context')], [EvidenceLink('claim-1', 'context', EvidenceRelation.CONTEXT)], as_of=NOW)
+    assert package.claims[0].attachments[0].usable_for_support is False
+
+
 def record(
     evidence_id: str,
     *,
@@ -137,7 +153,7 @@ class EvidenceAssemblerTests(unittest.TestCase):
         self.assertEqual(len(package.claims[0].attachments), 1)
         self.assertFalse(package.claims[0].attachments[0].usable_for_support)
 
-    def test_current_contradiction_is_surfaced_without_erasing_support(self) -> None:
+    def test_current_contradiction_retains_evidence_but_blocks_claim(self) -> None:
         package = assemble_evidence(
             "task-1",
             [Claim("claim-1", "A claim")],
@@ -151,7 +167,9 @@ class EvidenceAssemblerTests(unittest.TestCase):
             as_of=NOW,
         )
 
-        self.assertTrue(package.claims[0].supported)
+        self.assertFalse(package.claims[0].supported)
+        self.assertEqual(len(package.claims[0].attachments), 2)
+        self.assertTrue(package.claims[0].attachments[0].usable_for_support)
         self.assertIn(
             "contradictory_evidence", [warning.code for warning in package.warnings]
         )

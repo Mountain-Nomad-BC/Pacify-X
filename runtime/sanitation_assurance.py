@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 from pathlib import Path
 import re
 from typing import Any
@@ -144,13 +145,18 @@ def _supplied_metadata(identifier_audit, licensing):
         licensing.get("errors", []), "license errors", maximum=256
     ):
         bounded_text(error, "license error", maximum=4096, strip=False)
-    return dict(gates)
+    for error in bounded_sequence(
+        identifier_audit.get("errors", []), "identifier errors", maximum=256
+    ):
+        bounded_text(error, "identifier error", maximum=4096, strip=False)
+    return json.loads(bounded_json_text(identifier_audit, max_bytes=MAX_OUTPUT_BYTES))
 
 
 def build_sanitation_summary(
     root: Path, identifier_audit: dict[str, Any], licensing: dict[str, Any]
 ) -> dict[str, Any]:
-    base_gates = _supplied_metadata(identifier_audit, licensing)
+    identifier_snapshot = _supplied_metadata(identifier_audit, licensing)
+    base_gates = dict(identifier_snapshot["gates"])
     excluded = [
         SCAN_EXCLUSIONS,
         "tests/test_sanitation_assurance.py (negative email fixtures only)",
@@ -310,6 +316,12 @@ def build_sanitation_summary(
         for name, gate in base_gates.items()
         if gate["status"] != "passed"
     ]
+    errors.extend("identifier_audit: " + error for error in identifier_snapshot.get("errors", []))
+    if identifier_snapshot.get("scoped_valid") is False:
+        errors.append("identifier_audit: scoped_valid=false")
+    for name, gate in identifier_snapshot["gates"].items():
+        if gate["status"] == "failed":
+            errors.append(name + ": supplied status=failed")
     if not complete:
         errors.append("local_source_scan: incomplete")
     result = {
@@ -319,6 +331,7 @@ def build_sanitation_summary(
         "corpus_sha256": corpus_sha,
         "file_count": secret_scan["file_count"],
         "gates": base_gates,
+        "identifier_audit": identifier_snapshot,
         "errors": errors,
         "scan_errors": scanner_errors,
         "review_registry_sha256": secret_scan["review_registry_sha256"],

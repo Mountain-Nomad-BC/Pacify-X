@@ -211,6 +211,26 @@ def test_operational_pruning_retains_anchor_and_receipt(tmp_path: Path) -> None:
     assert applied["ancestry_preserved"] is True
 
 
+def test_retention_advances_the_history_producer_generation(tmp_path):
+    from runtime.wal_ownership import WalOwnership
+    from runtime.wal_transaction import JsonArtifact, JsonWal
+    history_path = tmp_path / 'operations.json'
+    WalOwnership.activate(tmp_path, [dict(journal='producer-wal', domains=[
+        dict(path='operations.json', kind='exact'), dict(path='retention-evidence', kind='subtree')])])
+    producer = JsonWal(tmp_path / 'producer-wal', tmp_path)
+    producer.activate_generation(tmp_path)
+    producer.commit([JsonArtifact('state', history_path, _history(5))])
+    before = producer.capture_generation()
+    manager = ResourceManager(tmp_path / 'resources.json')
+    retention = RetentionManager(manager, allowed_root=tmp_path, wal_root=tmp_path / 'wrong-retention-wal',
+                                 receipt_dir=tmp_path / 'retention-evidence')
+    result = retention.prune_operational_history(history_path, max_records=2, apply=True)
+    assert result['transaction']['generation_token'] == producer.capture_generation()
+    assert producer.capture_generation() != before
+    assert not (tmp_path / 'wrong-retention-wal').exists()
+    assert len(json.loads(history_path.read_bytes())['records']) == 2
+
+
 def test_doctor_reports_healthy_degraded_and_blocked(tmp_path: Path) -> None:
     healthy = RecoveryCoordinator(RecoveryConfiguration(tmp_path)).reconcile()
     assert healthy["status"] == "healthy"

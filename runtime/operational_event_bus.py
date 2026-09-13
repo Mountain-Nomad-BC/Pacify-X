@@ -95,7 +95,22 @@ class OperationalEventBus:
             return self._route_tiers[route_id]
         raise ValueError(f"operation route is not admitted: {route_id}")
 
+    def _read_publication(self, reader, **kwargs):
+        self.root.mkdir(parents=True, exist_ok=True)
+        with FileLock(self.root / ".publish.lock", timeout_seconds=10):
+            self.wal.recover()
+            generation = self.wal.capture_generation()
+            result = reader(**kwargs)
+            if self.wal.capture_generation() != generation:
+                from .wal_transaction import WalConflictError
+                raise WalConflictError("event read generation changed during acquisition")
+            return result
+
     def head(self) -> dict[str, Any]:
+        """Read the anchored current head under one settled publication generation."""
+        return self._read_publication(self._head_locked)
+
+    def _head_locked(self) -> dict[str, Any]:
         """Return the current anchored event without replaying full ancestry.
 
         This is the operational synchronization primitive.  It validates the
@@ -103,79 +118,76 @@ class OperationalEventBus:
         immediately preceding link.  Full forensic ancestry remains owned by
         :meth:`replay` and is never replaced by this bounded check.
         """
-        self.root.mkdir(parents=True, exist_ok=True)
         errors: list[str] = []
         envelope: dict[str, object] | None = None
-        with FileLock(self.root / ".publish.lock", timeout_seconds=10):
-            self.wal.recover()
-            state = self._state()
-            revision = int(state["revision"])
-            if revision == 0:
-                if self._head_path.exists():
-                    errors.append("protected head exists for an empty event bus")
-                return {
-                    "schema_version": "px.operation-head-read/1.0",
-                    "valid": not errors,
-                    "revision": 0,
-                    "event_sha256": None,
-                    "event": None,
-                    "verification_scope": "anchored-current-head",
-                    "errors": errors,
-                }
-            try:
-                envelope_path = self.root / "events" / f"{revision:08d}.json"
-                envelope = json.loads(envelope_path.read_text(encoding="utf-8"))
-                event = envelope["event"]
-                event_sha256 = str(envelope["event_sha256"])
-                expected_head = {
-                    "schema_version": "px.operation-bus-head/1.0",
-                    "revision": revision,
-                    "event_sha256": event_sha256,
-                }
-                anchor = (
-                    self.root
-                    / ".authority"
-                    / "anchors"
-                    / f"{revision:08d}-{event_sha256}.json"
-                )
+        state = self._state()
+        revision = int(state["revision"])
+        if revision == 0:
+            if self._head_path.exists():
+                errors.append("protected head exists for an empty event bus")
+            return {
+                "schema_version": "px.operation-head-read/1.0",
+                "valid": not errors,
+                "revision": 0,
+                "event_sha256": None,
+                "event": None,
+                "verification_scope": "anchored-current-head",
+                "errors": errors,
+            }
+        try:
+            envelope_path = self.root / "events" / f"{revision:08d}.json"
+            envelope = json.loads(envelope_path.read_text(encoding="utf-8"))
+            event = envelope["event"]
+            event_sha256 = str(envelope["event_sha256"])
+            expected_head = {
+                "schema_version": "px.operation-bus-head/1.0",
+                "revision": revision,
+                "event_sha256": event_sha256,
+            }
+            anchor = (
+                self.root
+                / ".authority"
+                / "anchors"
+                / f"{revision:08d}-{event_sha256}.json"
+            )
+            if (
+                set(envelope)
+                != {"schema_version", "revision", "event_sha256", "event"}
+                or envelope["schema_version"] != "px.operation-envelope/1.0"
+                or envelope["revision"] != revision
+                or event_sha256 != _sha(event)
+                or state["head_sha256"] != event_sha256
+                or json.loads(self._head_path.read_text(encoding="utf-8"))
+                != expected_head
+                or json.loads(anchor.read_text(encoding="utf-8")) != expected_head
+            ):
+                raise ValueError("current event, state, head, or anchor mismatch")
+            validation = validate_operation_event(self.engine_root, event)
+            if not validation["valid"]:
+                raise ValueError("current event contract invalid")
+            previous_sha = event["integrity"]["previous_event_sha256"]
+            if revision == 1:
+                if previous_sha is not None:
+                    raise ValueError("first event has unexpected ancestry")
+            else:
+                previous_path = self.root / "events" / f"{revision - 1:08d}.json"
+                previous = json.loads(previous_path.read_text(encoding="utf-8"))
                 if (
-                    set(envelope)
-                    != {"schema_version", "revision", "event_sha256", "event"}
-                    or envelope["schema_version"] != "px.operation-envelope/1.0"
-                    or envelope["revision"] != revision
-                    or event_sha256 != _sha(event)
-                    or state["head_sha256"] != event_sha256
-                    or json.loads(self._head_path.read_text(encoding="utf-8"))
-                    != expected_head
-                    or json.loads(anchor.read_text(encoding="utf-8")) != expected_head
+                    previous.get("schema_version") != "px.operation-envelope/1.0"
+                    or previous.get("revision") != revision - 1
+                    or previous.get("event_sha256") != _sha(previous.get("event"))
+                    or previous_sha != previous.get("event_sha256")
                 ):
-                    raise ValueError("current event, state, head, or anchor mismatch")
-                validation = validate_operation_event(self.engine_root, event)
-                if not validation["valid"]:
-                    raise ValueError("current event contract invalid")
-                previous_sha = event["integrity"]["previous_event_sha256"]
-                if revision == 1:
-                    if previous_sha is not None:
-                        raise ValueError("first event has unexpected ancestry")
-                else:
-                    previous_path = self.root / "events" / f"{revision - 1:08d}.json"
-                    previous = json.loads(previous_path.read_text(encoding="utf-8"))
-                    if (
-                        previous.get("schema_version") != "px.operation-envelope/1.0"
-                        or previous.get("revision") != revision - 1
-                        or previous.get("event_sha256") != _sha(previous.get("event"))
-                        or previous_sha != previous.get("event_sha256")
-                    ):
-                        raise ValueError("current event previous link mismatch")
-            except (
-                OSError,
-                UnicodeError,
-                json.JSONDecodeError,
-                KeyError,
-                TypeError,
-                ValueError,
-            ) as error:
-                errors.append(str(error))
+                    raise ValueError("current event previous link mismatch")
+        except (
+            OSError,
+            UnicodeError,
+            json.JSONDecodeError,
+            KeyError,
+            TypeError,
+            ValueError,
+        ) as error:
+            errors.append(str(error))
         return {
             "schema_version": "px.operation-head-read/1.0",
             "valid": not errors,
@@ -190,9 +202,24 @@ class OperationalEventBus:
         self, event: Mapping[str, object], *, link_current_head: bool = False
     ) -> dict[str, object]:
         """Validate and atomically publish one event plus all canonical projections."""
+        return self._publish_with_projection(event, link_current_head=link_current_head)
+
+    def _publish_with_projection(
+        self, event, *, link_current_head=False, projection_builder=None,
+        expected_generation=None, expected_inputs=None,
+    ):
+        """Commit trusted local consumer projections with their canonical event.
+
+        The builder runs before effects under the publication lock and must be
+        pure: it must not acquire fleet/publication locks or publish anything.
+        """
         self.root.mkdir(parents=True, exist_ok=True)
         with FileLock(self.root / ".publish.lock", timeout_seconds=10):
             recovery = self.wal.recover()
+            generation = self.wal.capture_generation()
+            if projection_builder is not None and generation != expected_generation:
+                from .wal_transaction import WalConflictError
+                raise WalConflictError("consumer generation changed before event publication")
             state = self._state()
             operation = deepcopy(dict(event))
             source = operation.get("source")
@@ -257,7 +284,12 @@ class OperationalEventBus:
                 JsonArtifact("state", self.root / ".authority" / "anchors" / f"{revision:08d}-{event_sha256}.json", head),
                 JsonArtifact("projection", self.root / "projections" / "revision.json", projection),
             )
-            transaction = self.wal.commit(artifacts, transaction_id=transaction_id)
+            if projection_builder is not None:
+                artifacts += tuple(projection_builder(deepcopy(receipt)))
+            transaction = self.wal.commit(
+                artifacts, transaction_id=transaction_id,
+                expected_generation=generation, expected_inputs=expected_inputs,
+            )
         with self._condition:
             self._condition.notify_all()
         return {**receipt, "transaction": transaction}
@@ -276,8 +308,9 @@ class OperationalEventBus:
         """Replay a bounded verified suffix while preserving degraded ancestry."""
         if after_revision < 0 or not 0 <= limit <= 10_000:
             raise ValueError("invalid replay boundary")
-        self.root.mkdir(parents=True, exist_ok=True)
-        self.wal.recover()
+        return self._read_publication(self._replay_locked, after_revision=after_revision, limit=limit)
+
+    def _replay_locked(self, *, after_revision, limit):
         records: list[dict[str, object]] = []
         errors: list[str] = []
         previous = ZERO_SHA256
@@ -306,6 +339,8 @@ class OperationalEventBus:
             previous = str(envelope["event_sha256"])
             records.append(envelope)
         state = self._state()
+        if not records and (state["revision"] != 0 or self._head_path.exists()):
+            errors.append("event ancestry is missing for retained bus state")
         if not errors and records:
             expected_head = {
                 "schema_version": "px.operation-bus-head/1.0",

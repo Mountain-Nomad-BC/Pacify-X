@@ -266,22 +266,18 @@ def invalid_active_predecessor_kind(
 def resource_postcondition(config: Config) -> dict[str, Any]:
     """Allow only this supervised child while it is proving its own effects."""
 
-    from runtime.resource_lifecycle import resource_status
+    from runtime.resource_lifecycle import ResourceLedger, _resource_status_records
 
     ledger_path = config.root / ".engineering-bootstrap/resource-lifecycle/ledger.json"
-    status = resource_status(ledger_path)
-    ledger = load_object(ledger_path)
-    active = [
-        row
-        for row in ledger.get("resources", ())
-        if isinstance(row, dict) and row.get("active") is True
-    ]
+    records = ResourceLedger(ledger_path).observe()
+    status = _resource_status_records(records)
+    active = [row for row in records if row.active is True]
     exact_self = (
         len(active) == 1
-        and active[0].get("resource_type") == "process"
-        and active[0].get("pid") == os.getpid()
-        and active[0].get("run_id") == config.candidate_id
-        and active[0].get("creator") == "scripts.run_release_candidate"
+        and active[0].resource_type == "process"
+        and active[0].pid == os.getpid()
+        and active[0].run_id == config.candidate_id
+        and active[0].creator == "scripts.run_release_candidate"
     )
     valid = (
         status.get("valid") is True

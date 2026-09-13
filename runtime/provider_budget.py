@@ -301,6 +301,7 @@ class ProviderBudgetLedger:
             "fallback_from": fallback_from,
         }
         identity_sha256 = _sha(identity)
+        generation = self.wal.capture_generation()
         state, before_sha256 = self._state_image()
         invocations = dict(state["invocations"])
         if invocation_id in invocations:
@@ -402,6 +403,7 @@ class ProviderBudgetLedger:
                 JsonArtifact("receipt", receipt_path, receipt),
             ),
             transaction_id=f"provider-reserve-{invocation_id}",
+            expected_generation=generation,
             expected_before={
                 self.state_path.relative_to(self.allowed_root).as_posix(): before_sha256,
                 receipt_path.relative_to(self.allowed_root).as_posix(): None,
@@ -431,6 +433,7 @@ class ProviderBudgetLedger:
         """Settle once; failures and unknown billing burn the full reservation."""
         if outcome not in {"success", "failure"}:
             raise ValueError("provider settlement outcome is invalid")
+        generation = self.wal.capture_generation()
         state, before_sha256 = self._state_image()
         invocations = dict(state["invocations"])
         raw = invocations.get(invocation_id)
@@ -563,6 +566,7 @@ class ProviderBudgetLedger:
                 JsonArtifact("receipt", receipt_path, receipt),
             ),
             transaction_id=f"provider-settle-{invocation_id}",
+            expected_generation=generation,
             expected_before={
                 self.state_path.relative_to(self.allowed_root).as_posix(): before_sha256,
                 receipt_path.relative_to(self.allowed_root).as_posix(): None,

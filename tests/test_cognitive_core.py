@@ -168,6 +168,22 @@ def test_constraint_solver_finds_only_valid_assignments() -> None:
     assert result["solutions"] == [{"elements": 6, "stage": 2, "voltage": 240}]
 
 
+def test_constraint_solver_accepts_solution_completed_at_exact_node_budget() -> None:
+    result = solve_constraints(
+        {
+            "variables": {"value": [1]},
+            "constraints": [
+                {"type": "eq", "left": {"var": "value"}, "right": {"value": 1}}
+            ],
+            "max_nodes": 1,
+        }
+    )
+    assert result["satisfiable"] is True
+    assert result["solutions"] == [{"value": 1}]
+    assert result["search_nodes"] == 1
+    assert result["node_budget_exhausted"] is False
+
+
 def test_formula_engine_dimensions_sensitivity_and_uncertainty() -> None:
     formula = FormulaDefinition.from_mapping(
         admitted_formula(

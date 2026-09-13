@@ -107,7 +107,16 @@ def render(
     skill_overlays: Mapping[str, Path] | None = None,
 ) -> str:
     """Return a complete idempotent projection without mutating the source."""
-    raw_prefix = current.split(START, 1)[0] if START in current else current
+    if current.count(START) != current.count(END) or current.count(START) > 1:
+        raise ValueError("generated packaging block markers are missing or duplicated")
+    suffix = "\n"
+    if START in current:
+        raw_prefix, _, remainder = current.partition(START)
+        _, marker, suffix = remainder.partition(END)
+        if not marker or END in raw_prefix:
+            raise ValueError("generated packaging block markers are out of order")
+    else:
+        raw_prefix = current
     prefix = "\n".join(
         line for line in raw_prefix.rstrip().splitlines()
         if not line.startswith('"share/engineering-bootstrap/.px/skills/')
@@ -116,7 +125,7 @@ def render(
     ).rstrip()
     return prefix + "\n" + "\n".join(
         _generated_lines(root, skill_overlays=skill_overlays)
-    ) + "\n"
+    ) + (suffix or "\n")
 
 
 def main() -> None:

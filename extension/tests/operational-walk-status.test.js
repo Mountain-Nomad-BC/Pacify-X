@@ -4,6 +4,7 @@ const assert = require('node:assert/strict');
 const test = require('node:test');
 const {
   evaluateBootstrapActivation,
+  dedupeIssues,
   evaluateLauncherTerminal,
   evaluateOperationalWalk,
   exitCodeForTerminalState,
@@ -850,6 +851,38 @@ test('launcher requires both semantic completion and verified process closure', 
   });
   assert.equal(cleanupFailed.terminal_state, 'failed');
   assert.ok(cleanupFailed.issues.some(item => item.code === 'owned-ephemeral-cleanup-unreclaimed'));
+});
+
+test('issue deduplication retains malformed inputs and the strongest blocking verdict', () => {
+  const issues = dedupeIssues([
+    null,
+    'malformed detail',
+    { source: 'test', code: 'same', severity: 'info', blocking: false, message: 'same message' },
+    { source: 'test', code: 'same', severity: 'critical', blocking: true, message: 'same message' }
+  ]);
+  assert.ok(issues.some(item => item.code === 'malformed-additional-issue' && item.blocking === true));
+  const strongest = issues.find(item => item.code === 'same');
+  assert.equal(strongest.blocking, true);
+  assert.equal(strongest.severity, 'critical');
+  assert.equal(strongest.occurrences, 2);
+});
+
+test('launcher cannot promote a failed or focused child scope to operational completion', () => {
+  const cases = [
+    [{ schema_version: 'px.operational-ui-walk-status/1.0', terminal_state: 'failed', scope_complete: true, operationally_complete: false, issues: [] }, false],
+    [{ schema_version: 'px.operational-ui-walk-status/1.0', terminal_state: 'completed', scope_complete: true, operationally_complete: false, issues: [] }, true],
+    [{ schema_version: 'px.operational-ui-walk-status/1.0', terminal_state: 'completed', scope_complete: false, operationally_complete: true, issues: [] }, false]
+  ];
+  for (const [walkStatus, mayCompleteScope] of cases) {
+    const result = evaluateLauncherTerminal({
+      walkStatus,
+      processTreeClosedVerified: true,
+      workerExitVerified: true
+    });
+    assert.equal(result.terminal_state === 'completed', mayCompleteScope);
+    assert.equal(result.operationally_complete, false);
+    assert.equal(result.issues.some(item => item.code === 'child-walk-not-complete'), !mayCompleteScope);
+  }
 });
 
 test('verified owned timeout remains blocking without inventing an unverified worker exit', () => {
