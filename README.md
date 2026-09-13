@@ -35,7 +35,7 @@ You describe the project and the outcome you want. PACIFY-X helps the AI:
 - Engineering Genomics and it will help turn knowledge into operational code
 - Logs and monitors usage and flags candidates for learning, processes, workflows, orchestrations, and skill creation and refinement.
 - Take multiple potential candidates, test and refine them until they combine and validate and canonical knowledge
-- Multi layer persistent memmory
+- Multi layer persistent memory
 
 You do not need to learn the internal orchestration system or memorize a large command set. That is the AI’s job. The human-facing setup is intentionally short.
 
