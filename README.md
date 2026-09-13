@@ -2,7 +2,7 @@
 
 ![PACIFY-X - AI and Engineering Framework](docs/assets/pacify-x.png)
 
-## Engineering Loop & Bootstrap Framework
+## Engineering & Agent OS with learning and governance
 
 ### **P**roject and **A**I **C**apabilities **I**ntelligence **F**ramework for **Y**ou
 
