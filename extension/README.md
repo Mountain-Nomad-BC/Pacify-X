@@ -1,6 +1,6 @@
 # Pacify-X Control Plane for VS Code
 
-Pacify-X 0.6.87 is a local-first control, coordination, and activity-observability plane for VS Code-compatible IDEs. It consumes the versioned `runtime.dashboard_api` supplied by Pacify-X, exposes complete paged catalogs, and keeps project-owned coordination, activity, and resume state in the repository so another IDE or agent can continue without relying on private editor storage.
+Pacify-X 0.6.88 is a local-first control, coordination, and activity-observability plane for VS Code-compatible IDEs. It consumes the versioned `runtime.dashboard_api` supplied by Pacify-X, exposes complete paged catalogs, and keeps project-owned coordination, activity, and resume state in the repository so another IDE or agent can continue without relying on private editor storage.
 
 No billable provider API is configured. A loud, default-off policy switch can permit separately configured providers to be evaluated, but it never creates credentials, connects, or spends money. Every proposed billable execution must still pass task/session/day cost caps, token and hardware ceilings, local-first routing, provider allowlisting, confidence, cache/reuse, and explicit-approval gates. Codex handoff uses an existing ChatGPT-authenticated Codex CLI and strips common API-key variables from bridge-owned children. Ollama support is optional, loopback-only, disabled by default, and never installed or started by the extension.
 
@@ -29,11 +29,11 @@ From this directory, install lockfile-exact dependencies, test, package, verify,
 npm ci --ignore-scripts
 npm test
 npm run package
-Get-FileHash .\dist\pacify-x-vscode-0.6.87.vsix -Algorithm SHA256
+Get-FileHash .\dist\pacify-x-vscode-0.6.88.vsix -Algorithm SHA256
 .\Install-PacifyX.ps1
 ```
 
-Or choose **Extensions: Install from VSIX...** and select `dist/pacify-x-vscode-0.6.87.vsix`. Compare its SHA-256 with `SHA256SUMS.txt` first. Reload the VS Code window after installation.
+Or choose **Extensions: Install from VSIX...** and select `dist/pacify-x-vscode-0.6.88.vsix`. Compare its SHA-256 with `SHA256SUMS.txt` first. Reload the VS Code window after installation.
 
 Open a Pacify-X workspace, or set `pacifyX.engineRoot` and `pacifyX.workspaceRoot` to bounded absolute paths. Run `python -m runtime.cli --root <engine-root> doctor --require operable`, then **Pacify-X: Open Control Plane**. If the command is unavailable after installation, run **Developer: Reload Window** and inspect **Output → Pacify-X**. The engine root must contain `runtime/dashboard_api.py`.
 
@@ -54,3 +54,9 @@ Git remains authoritative for repository state. The extension reads Git status a
 Cleanup is restricted to generated Python/test cache directories below the admitted engine root. Evidence, quarantine, links/reparse points, unknown data, protected roots, path escapes, stale inventories, and changed trees fail closed. Permanent deletion requires an explicit VS Code confirmation.
 
 See [Architecture](docs/ARCHITECTURE.md), [Ownership](docs/OWNERSHIP_MAP.md), [Completion punch card](docs/COMPLETION_PUNCH_CARD.md), [MS+Enterprise second-pass punch card](docs/MS_ENTERPRISE_SECOND_PASS_PUNCH_CARD.md), [MS+Enterprise operator guide](docs/MS_ENTERPRISE_OPERATOR_GUIDE.md), [Environment capability map](docs/ENVIRONMENT_CAPABILITY_MAP.md), [Repair patch](docs/REPAIR_PATCH.md), and [Limitations](docs/LIMITATIONS.md).
+
+## AI auditor and source repository
+
+The canonical public source is [Mountain-Nomad-BC/Pacify-X](https://github.com/Mountain-Nomad-BC/Pacify-X). AI auditors should begin with the repository's [`START_HERE_FOR_AI.md`](../START_HERE_FOR_AI.md) and [architecture atlas](../docs/architecture/README.md), then follow canonical evidence IDs back to the current source and receipts.
+
+Keep four states distinct in findings and reports: repository source, built VSIX, installed extension, and certified installed system. A source-supported relationship does not prove installed behavior. A matching package hash proves byte identity only at the stated boundary. Marketplace publisher verification identifies the publisher and does not certify the product's behavior.

@@ -290,7 +290,7 @@ function assertEventAncestry(events, expectedStateHash, expectedProjectId = null
 }
 
 function assertCoordinationTransition({ previous, next, operation, previousEvents = [], event }) {
-  assertCoordinationState(previous, { requireSeal: false });
+  assertCoordinationState(previous, { requireSeal: false, nowUtc: previous.updated_utc });
   assertEventAncestry(previousEvents, previous.state_hash, previous.project.id);
   assertCoordinationState(next);
   if (next.revision !== previous.revision + 1) fail('revision-transition', `${previous.revision}:${next.revision}`);

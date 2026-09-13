@@ -1480,7 +1480,7 @@ def test_bounded_repair_session_survives_same_gap_checkpoint_and_closes_explicit
     assert guarded["valid"] is True
     assert guarded["session_id"] == "repair-session:px-gap-0001"
     assert guarded["checkpoint_event_id"] == later["event_id"]
-    with pytest.raises(ValueError, match="higher-risk"):
+    with pytest.raises(ValueError, match="does not match"):
         guard_work_admission(snapshot, gap_id="PX-GAP-0001", effect="network", scope=["runtime/owner.py"], admission_event_id=admission["event_id"])
     with pytest.raises(ValueError, match="expired"):
         guard_work_admission(snapshot, gap_id="PX-GAP-0001", effect="read", scope=["runtime/owner.py"], admission_event_id=admission["event_id"], now=datetime(2100, 1, 1, tzinfo=timezone.utc))
@@ -1493,7 +1493,51 @@ def test_bounded_repair_session_survives_same_gap_checkpoint_and_closes_explicit
         guard_work_admission(read_snapshot(tmp_path), gap_id="PX-GAP-0001", effect="read", scope=["runtime/owner.py"], admission_event_id=admission["event_id"])
 
 
-def test_bounded_repair_session_rejects_high_risk_effects_and_gap_switch_reuse(tmp_path: Path) -> None:
+@pytest.mark.parametrize("effect", ["network", "install", "service", "destructive"])
+def test_high_risk_effect_requires_and_guards_its_own_single_effect_session(
+    tmp_path: Path, effect: str
+) -> None:
+    initialize(tmp_path)
+    append_event(tmp_path, "card_discovered", card("PX-GAP-0001"), actor="test")
+    checkpoint = append_event(tmp_path, "work_checkpoint", {
+        "active_gap_id": "PX-GAP-0001", "learned": "High-risk effect is isolated.",
+        "next_action": "Implement a hash-bound editor sidecar.",
+        "unresolved_branch_gap_ids": [], "newly_discovered_gap_ids": [],
+        "evidence": evidence(),
+    }, actor="test")
+    base = {
+        "gap_id": "PX-GAP-0001", "checkpoint_event_id": checkpoint["event_id"],
+        "session_id": f"high-risk-session:{effect}",
+        "expires_utc": "2099-01-01T00:00:00Z",
+        "authority": "Explicit host authority for one high-risk effect.",
+        "expected_effect": f"Execute exactly one {effect} effect.",
+        "rollback": "Retain evidence and apply the effect-specific recovery contract.",
+        "evidence": evidence(),
+    }
+    scope = [f"exact/{effect}/scope"]
+    with pytest.raises(ValueError, match="own single-effect"):
+        append_event(tmp_path, "work_admitted", {
+            **base,
+            "session_id": f"high-risk-session:{effect}:mixed",
+            "effect_scopes": [
+                {"effect": effect, "scope": scope},
+                {"effect": "read", "scope": ["runtime/owner.py"]},
+            ],
+        }, actor="test")
+    admission = append_event(tmp_path, "work_admitted", {
+        **base, "effect_scopes": [{"effect": effect, "scope": scope}],
+    }, actor="test")
+    result = guard_work_admission(
+        read_snapshot(tmp_path), gap_id="PX-GAP-0001", effect=effect,
+        scope=scope, admission_event_id=admission["event_id"],
+        now=datetime(2028, 1, 1, tzinfo=timezone.utc),
+    )
+    assert result["valid"] is True
+    assert result["effect"] == effect
+    assert result["session_id"] == f"high-risk-session:{effect}"
+
+
+def test_bounded_repair_session_rejects_gap_switch_reuse(tmp_path: Path) -> None:
     initialize(tmp_path)
     append_event(tmp_path, "card_discovered", card("PX-GAP-0001"), actor="test")
     append_event(tmp_path, "card_discovered", card("PX-GAP-0002"), actor="test")
@@ -1509,8 +1553,6 @@ def test_bounded_repair_session_rejects_high_risk_effects_and_gap_switch_reuse(t
         "authority": "Codex host authority.", "expected_effect": "Bounded repair.",
         "rollback": "Revert bounded files.", "evidence": evidence(),
     }
-    with pytest.raises(ValueError, match="reversible"):
-        append_event(tmp_path, "work_admitted", {**base, "effect_scopes": [{"effect": "network", "scope": ["example.com"]}]}, actor="test")
     admission = append_event(tmp_path, "work_admitted", {**base, "effect_scopes": [{"effect": "read", "scope": ["runtime/owner.py"]}]}, actor="test")
     outgoing = append_event(tmp_path, "work_checkpoint", {
         "active_gap_id": "PX-GAP-0001", "learned": "Switch required.",

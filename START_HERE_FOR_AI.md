@@ -86,6 +86,14 @@ The startup response includes a read-only tooling assessment. Treat detected too
 
 ## Mapping and pre-edit impact
 
+### Architecture and audit entrypoint
+
+For repository architecture, change impact, flows, findings, or audit work, begin with [`docs/architecture/README.md`](docs/architecture/README.md). Its canonical graph drives the Obsidian vault and offline 3D companion, so use canonical node, edge, flow, finding, view, and evidence IDs rather than reconstructing relationships from filenames.
+
+Treat evidence levels literally. Declared and source-supported relationships may guide inspection, but they do not prove execution. Runtime-observed and certified views must remain empty or limited unless current scoped receipts support them. Bind conclusions to the current repository source inventory and report stale or missing evidence instead of promoting it.
+
+The canonical public source is <https://github.com/Mountain-Nomad-BC/Pacify-X>. Distinguish repository source, a built artifact, an installed extension, and a certified installed system in every audit claim. Marketplace publisher verification identifies the publisher; it is not product certification.
+
 Use the built-in project map as the default repository-intelligence owner. Before editing a file, function, class, or method:
 
 ```powershell

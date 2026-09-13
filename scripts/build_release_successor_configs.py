@@ -35,7 +35,9 @@ def main() -> int:
     parser.add_argument("--old-prefix", required=True)
     parser.add_argument("--new-prefix", required=True)
     parser.add_argument("--candidate-id", required=True)
+    parser.add_argument("--candidate-date", required=True)
     parser.add_argument("--predecessor-id", required=True)
+    parser.add_argument("--repair-campaign-id", required=True)
     parser.add_argument("--artifact", required=True)
     parser.add_argument("--artifact-sha256", required=True)
     parser.add_argument("--artifact-size", type=int, required=True)
@@ -52,19 +54,23 @@ def main() -> int:
     stage_base = json.loads(args.stage_base.read_text(encoding="utf-8"))
     replacements = [
         (str(automation_base["candidate_id"]), args.candidate_id),
+        (str(automation_base["candidate_date"]), args.candidate_date),
+        (str(automation_base["repair_campaign_id"]), args.repair_campaign_id),
         (args.old_prefix, args.new_prefix),
         (str(automation_base["artifact_sha256"]), args.artifact_sha256),
         (str(automation_base["artifact"]), args.artifact),
         (str(automation_base["artifact_size"]), str(args.artifact_size)),
         (str(automation_base["artifact_mtime_ns"]), str(args.artifact_mtime_ns)),
         (str(stage_base["install"]["tree_digest"]), args.installed_tree_digest),
-        ("0.6.85", args.installed_version),
+        (str(stage_base["install"]["version"]), args.installed_version),
     ]
     automation = replace_tree(automation_base, replacements)
     stage = replace_tree(stage_base, replacements)
     automation.update(
         candidate_id=args.candidate_id,
+        candidate_date=args.candidate_date,
         predecessor_campaign_id=args.predecessor_id,
+        repair_campaign_id=args.repair_campaign_id,
         evidence_prefix=args.new_prefix,
         artifact=args.artifact,
         artifact_sha256=args.artifact_sha256,

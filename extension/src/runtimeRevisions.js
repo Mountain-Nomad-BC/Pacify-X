@@ -61,6 +61,9 @@ class MetadataCache {
   constructor({ store = null, namespace = 'pacifyX.metadata-cache/1.0', now = Date.now, maximumEntries = 64 } = {}) {
     this.store = store; this.namespace = namespace; this.now = now; this.maximumEntries = maximumEntries;
     this.memory = new Map();
+    this.generations = new Map();
+    this.invalidated = new Set();
+    this.pendingWrites = new Map();
     this.metrics = { hits: 0, misses: 0, staleHits: 0, writes: 0, invalidations: 0, persistentRestores: 0, corruptions: 0 };
   }
 
@@ -68,9 +71,14 @@ class MetadataCache {
 
   async get(key, { fingerprint, allowStale = false, maxAgeMs = Infinity } = {}) {
     const storageKey = this._key(key);
+    const generation = this.generations.get(storageKey) || 0;
+    if (this.invalidated.has(storageKey)) { this.metrics.misses += 1; return null; }
     let record = this.memory.get(storageKey);
     if (!record && this.store?.get) {
       try { record = await this.store.get(storageKey); } catch { record = null; }
+      if ((this.generations.get(storageKey) || 0) !== generation || this.invalidated.has(storageKey)) {
+        this.metrics.misses += 1; return null;
+      }
       if (record) { this.memory.set(storageKey, record); this.metrics.persistentRestores += 1; }
     }
     if (!record || record.schema_version !== 'px.metadata-cache-record/1.0' || typeof record.value !== 'object') {
@@ -86,6 +94,9 @@ class MetadataCache {
 
   async set(key, value, { fingerprint, dependencyFingerprints = {}, freshnessClass = 'stable', invalidationReason = 'refresh' } = {}) {
     const storageKey = this._key(key);
+    const generation = (this.generations.get(storageKey) || 0) + 1;
+    this.generations.set(storageKey, generation);
+    this.invalidated.delete(storageKey);
     const record = {
       schema_version: 'px.metadata-cache-record/1.0', producer_version: require('../package.json').version,
       source_fingerprint: fingerprint || null, dependency_fingerprints: dependencyFingerprints,
@@ -94,11 +105,38 @@ class MetadataCache {
     };
     this.memory.set(storageKey, record);
     while (this.memory.size > this.maximumEntries) this.memory.delete(this.memory.keys().next().value);
-    if (this.store?.update) await this.store.update(storageKey, record);
+    try { await this._persist(storageKey, record); }
+    catch (error) {
+      if (this.generations.get(storageKey) === generation) {
+        this.memory.delete(storageKey); this.invalidated.add(storageKey);
+      }
+      throw error;
+    }
     this.metrics.writes += 1; return record;
   }
 
-  invalidate(key) { this.memory.delete(this._key(key)); this.metrics.invalidations += 1; }
+  _persist(storageKey, value) {
+    const previous = this.pendingWrites.get(storageKey) || Promise.resolve();
+    const pending = previous.catch(() => {}).then(() => this.store?.update?.(storageKey, value));
+    this.pendingWrites.set(storageKey, pending);
+    // Attach failure observation even when a legacy caller ignores invalidate's promise.
+    pending.then(() => {
+      if (this.pendingWrites.get(storageKey) === pending) this.pendingWrites.delete(storageKey);
+    }, () => {
+      this.metrics.persistenceErrors = (this.metrics.persistenceErrors || 0) + 1;
+      if (this.pendingWrites.get(storageKey) === pending) this.pendingWrites.delete(storageKey);
+    });
+    return pending;
+  }
+
+  invalidate(key) {
+    const storageKey = this._key(key);
+    this.generations.set(storageKey, (this.generations.get(storageKey) || 0) + 1);
+    this.invalidated.add(storageKey);
+    this.memory.delete(storageKey);
+    this.metrics.invalidations += 1;
+    return this._persist(storageKey, undefined);
+  }
   snapshot() { return { schema_version: 'px.metadata-cache/1.0', entries: this.memory.size, maximum_entries: this.maximumEntries, metrics: { ...this.metrics } }; }
 }
 

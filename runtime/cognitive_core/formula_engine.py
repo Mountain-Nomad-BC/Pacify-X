@@ -15,6 +15,54 @@ from typing import Any, Callable
 from .common import stable_hash
 
 
+
+def _validate_covariance_psd(uncertainties: Mapping[str, float], terms: Sequence[Mapping[str, Any]]) -> float:
+    """Check the full normalized covariance matrix with pivoted PSD elimination.
+
+    Normalizing removes physical-unit scale from the floating-point tolerance.
+    This is a numerical PSD check, not a proof about measured input provenance.
+    """
+    names = list(uncertainties)
+    index = {name: i for i, name in enumerate(names)}
+    n = len(names)
+    matrix = [[0.0 for _ in names] for _ in names]
+    for name, i in index.items():
+        matrix[i][i] = 1.0 if uncertainties[name] > 0.0 else 0.0
+    tolerance = 64.0 * max(1, n) * math.ulp(1.0)
+    for term in terms:
+        left, right = str(term["pair"]).split(",")
+        covariance = float(term["covariance"])
+        u, v = uncertainties[left], uncertainties[right]
+        if u == 0.0 or v == 0.0:
+            if covariance != 0.0:
+                raise ValueError("nonzero covariance with zero standard uncertainty")
+            correlation = 0.0
+        else:
+            correlation = (covariance / u) / v
+            if not math.isfinite(correlation) or abs(correlation) > 1.0 + tolerance:
+                raise ValueError("covariance exceeds normalized pairwise bound")
+        i, j = index[left], index[right]
+        matrix[i][j] = matrix[j][i] = correlation
+    for k in range(n):
+        pivot = max(range(k, n), key=lambda i: matrix[i][i])
+        if pivot != k:
+            matrix[k], matrix[pivot] = matrix[pivot], matrix[k]
+            for row in matrix:
+                row[k], row[pivot] = row[pivot], row[k]
+        diagonal = matrix[k][k]
+        if diagonal < -tolerance:
+            raise ValueError("covariance matrix is not positive semidefinite")
+        if diagonal <= tolerance:
+            if any(abs(matrix[i][j]) > tolerance for i in range(k, n) for j in range(k, n)):
+                raise ValueError("covariance matrix is not positive semidefinite")
+            break
+        for i in range(k + 1, n):
+            for j in range(i, n):
+                value = matrix[i][j] - matrix[i][k] * matrix[j][k] / diagonal
+                matrix[i][j] = matrix[j][i] = value
+    return tolerance
+
+
 @dataclass(frozen=True, slots=True)
 class Dimension:
     powers: tuple[tuple[str, float], ...] = ()
@@ -432,20 +480,29 @@ class FormulaEngine:
         for name, value in numeric.items():
             variable = formula.variables[name]
             step = max(abs(value) * 1e-6, 1e-8)
-            can_minus = variable.minimum is None or value - step >= variable.minimum
-            can_plus = variable.maximum is None or value + step <= variable.maximum
+            minus_room = step if variable.minimum is None else min(step, value - variable.minimum)
+            plus_room = step if variable.maximum is None else min(step, variable.maximum - value)
+            if minus_room > 0 and plus_room > 0:
+                minus_room = plus_room = min(minus_room, plus_room)
+            left, right = value - minus_room, value + plus_room
+            if left == value and minus_room > 0:
+                left = math.nextafter(value, -math.inf)
+            if right == value and plus_room > 0:
+                right = math.nextafter(value, math.inf)
+            can_minus = math.isfinite(left) and left < value and (variable.minimum is None or left >= variable.minimum)
+            can_plus = math.isfinite(right) and right > value and (variable.maximum is None or right <= variable.maximum)
             plus, minus = dict(numeric), dict(numeric)
-            plus[name], minus[name] = value + step, value - step
+            plus[name], minus[name] = right, left
             if can_minus and can_plus:
-                derivative = (_evaluate(tree, plus) - _evaluate(tree, minus)) / (
-                    2 * step
-                )
+                derivative = (_evaluate(tree, plus) - _evaluate(tree, minus)) / (right - left)
             elif can_plus:
-                derivative = (_evaluate(tree, plus) - result) / step
+                derivative = (_evaluate(tree, plus) - result) / (right - value)
             elif can_minus:
-                derivative = (result - _evaluate(tree, minus)) / step
+                derivative = (result - _evaluate(tree, minus)) / (value - left)
             else:
-                derivative = 0.0
+                raise ValueError(f"cannot establish sensitivity for {name} within its representable domain")
+            if not math.isfinite(derivative):
+                raise ValueError(f"non-finite sensitivity for {name}")
             sensitivities[name] = derivative
             uncertainty = float(uncertainties.get(name, 0.0))
             if uncertainty < 0 or not math.isfinite(uncertainty):
@@ -494,6 +551,9 @@ class FormulaEngine:
                     "variance_term": term,
                 }
             )
+        covariance_psd_tolerance = _validate_covariance_psd(uncertainty_values, covariance_terms)
+        if not math.isfinite(variance):
+            raise ValueError("non-finite propagated variance")
         if variance < -1e-12:
             raise ValueError("covariance matrix produces negative propagated variance")
         variance = max(0.0, variance)
@@ -505,6 +565,8 @@ class FormulaEngine:
             "sensitivities": sensitivities,
             "combined_standard_uncertainty": math.sqrt(variance),
             "covariance_terms": covariance_terms,
+            "covariance_validity": "positive-semidefinite-within-floating-point-tolerance",
+            "normalized_psd_tolerance": covariance_psd_tolerance,
             "assumptions": list(formula.assumptions),
             "warning": "Uncertainty propagation is first-order local linearization around the supplied operating point.",
         }

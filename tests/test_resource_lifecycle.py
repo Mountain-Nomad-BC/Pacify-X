@@ -229,6 +229,41 @@ class ResourceLifecycleTests(unittest.TestCase):
         self.assertFalse(closed.active)
         self.assertEqual(closed.cleanup_result, "process_absence_verified")
 
+    def test_prior_boot_process_is_absent_without_signalling_reused_pid(self) -> None:
+        now = "2026-09-13T00:00:00+00:00"
+        record = ResourceRecord(
+            resource_id="process-prior-boot",
+            resource_type="process",
+            project_id="project",
+            run_id="run-prior-boot",
+            lane_id="studio-workflow",
+            creator="px-studio-durable-launcher",
+            classification=ResourceClassification.EPHEMERAL.value,
+            created_at=now,
+            last_activity_at=now,
+            expected_cleanup_event="process_exit_or_cancel",
+            retention_required=False,
+            pid=4242,
+            process_identity="process-start:old-start",
+            host_boot_generation="windows:host:10",
+        )
+        self.manager.ledger.upsert(record)
+        with mock.patch(
+            "runtime.resource_lifecycle._host_boot_generation",
+            return_value="windows:host:11",
+        ), mock.patch(
+            "runtime.resource_lifecycle._process_exists"
+        ) as process_exists, mock.patch(
+            "runtime.resource_lifecycle._process_start_fingerprint"
+        ) as fingerprint:
+            self.assertTrue(
+                self.manager.persisted_process_has_exited(
+                    record.resource_id, expected_pid=4242
+                )
+            )
+        process_exists.assert_not_called()
+        fingerprint.assert_not_called()
+
     def test_separate_process_registrations_do_not_lose_ledger_records(self) -> None:
         ledger = self.root / "process-state" / "ledger.json"
         code = (

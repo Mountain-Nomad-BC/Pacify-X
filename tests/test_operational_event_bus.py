@@ -153,3 +153,28 @@ def test_cli_publishes_bounded_external_batch(tmp_path: Path, monkeypatch, capsy
     assert output["valid"] is True
     assert output["published"] == 1
     assert OperationalEventBus(ROOT, bus_root, bus_root.parent).replay()["valid"] is True
+def test_replay_pages_forward_from_cursor_and_exposes_epoch(tmp_path: Path) -> None:
+    bus = OperationalEventBus(ROOT, tmp_path / "bus", tmp_path)
+    previous = None
+    for index in range(1, 6):
+        receipt = bus.publish(_event(f"evt-page-{index}", previous))
+        previous = str(receipt["event_sha256"])
+    first = bus.replay(limit=2)
+    second = bus.replay(after_revision=first["next_revision"], limit=2)
+    third = bus.replay(after_revision=second["next_revision"], limit=2)
+    assert [
+        [item["revision"] for item in page["events"]]
+        for page in (first, second, third)
+    ] == [[1, 2], [3, 4], [5]]
+    assert first["has_more"] and second["has_more"] and not third["has_more"]
+    assert first["epoch"] == second["epoch"] == third["epoch"]
+    assert all(page["gap"] is False for page in (first, second, third))
+
+
+def test_replay_rejects_cursor_ahead_of_head(tmp_path: Path) -> None:
+    bus = OperationalEventBus(ROOT, tmp_path / "bus", tmp_path)
+    bus.publish(_event("evt-one", None))
+    result = bus.replay(after_revision=2)
+    assert result["valid"] is False
+    assert result["gap"] is True
+    assert "ahead" in result["errors"][0]

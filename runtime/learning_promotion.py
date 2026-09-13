@@ -87,6 +87,7 @@ def aggregate_operations(
     values = []
     task_classes = set()
     for row in rows:
+        _typed_record(row, "operation_evidence", "aggregation evidence")
         digest = row.get("record_sha256")
         if row.get("record_type") != "operation_evidence" or not _valid_hash(digest):
             raise ValueError("aggregation accepts only hashed operation evidence")
@@ -258,14 +259,18 @@ def freeze_revision(
 def compare_revisions(
     *, incumbent: Mapping[str, Any], challenger: Mapping[str, Any], trials: Sequence[Mapping[str, Any]], minimum_trials: int = 6
 ) -> dict[str, Any]:
-    for revision in (incumbent, challenger):
-        if revision.get("record_type") != "frozen_revision" or not _valid_hash(revision.get("revision_sha256")):
-            raise ValueError("A/B comparison requires frozen revisions")
+    _frozen_revision(incumbent, "A/B incumbent")
+    _frozen_revision(challenger, "A/B challenger")
     wins = losses = ties = 0
     evidence = []
+    seen_evidence: set[str] = set()
     for trial in trials:
         if not _valid_hash(trial.get("evidence_sha256")):
             raise ValueError("every A/B trial requires hashed evidence")
+        trial_hash = str(trial["evidence_sha256"])
+        if trial_hash in seen_evidence:
+            raise ValueError("duplicate A/B trial evidence is not independent")
+        seen_evidence.add(trial_hash)
         winner = str(trial.get("winner"))
         if winner == "challenger":
             wins += 1
@@ -326,8 +331,15 @@ def promote_revision(
     partial_units: Sequence[str] = (),
 ) -> dict[str, Any]:
     """Emit a canonical corpus identity only after all four gates pass."""
+    _frozen_revision(revision, "promotion revision")
+    _typed_record(confidence, "confidence_gate", "promotion confidence")
+    _typed_record(comparison, "ab_comparison", "promotion comparison")
+    _typed_record(research, "research_validation", "promotion research")
+    comparison_gate = _typed_record(comparison.get("gate"), "confidence_gate", "comparison confidence")
     invalidation = dependency_invalidation(revision, current_dependencies)
     checks = {
+        "compared_revision": comparison.get("challenger_revision_sha256") == revision.get("revision_sha256"),
+        "comparison_confidence_binding": dict(confidence) == dict(comparison_gate),
         "frozen_revision": revision.get("record_type") == "frozen_revision" and revision.get("immutable") is True,
         "confidence_gate": confidence.get("record_type") == "confidence_gate" and confidence.get("passed") is True,
         "ab_gate": comparison.get("record_type") == "ab_comparison" and comparison.get("passed") is True,

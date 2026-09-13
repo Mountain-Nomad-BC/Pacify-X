@@ -54,6 +54,7 @@
         "tests/test_effect_surface.py",
         "tests/test_clean_source_export.py",
         "tests/test_operational_gap_ledger.py",
+        "tests/test_build_release_successor_configs.py",
         "tests/test_reconcile_unverified_operational_controls.py",
         "tests/test_operational_control_proof_matrix.py",
         "tests/test_assemble_operational_control_evidence.py",
@@ -676,7 +677,30 @@
         "tests/test_resource_storage.py",
         "tests/test_wal_generation.py",
         "tests/test_wal_migration.py",
-        "tests/test_wal_ownership.py"
+        "tests/test_wal_ownership.py",
+        "tests/test_architecture_atlas.py",
+        "tests/test_architecture_atlas_reconciliation.py",
+        "docs/architecture/reference/graph_baseline_architecture.json",
+        "docs/architecture/data/node_shards_manifest.json",
+        "docs/architecture/data/node_shards/*.jsonl",
+        "docs/architecture/data/edges.jsonl",
+        "docs/architecture/data/source_inventory.json",
+        "docs/architecture/data/canonical_systems.json",
+        "docs/architecture/data/canonical_relationships.json",
+        "docs/architecture/data/canonical_flows.json",
+        "docs/architecture/data/canonical_findings.json",
+        "docs/architecture/data/metrics.json",
+        "docs/architecture/data/views.json",
+        "docs/architecture/data/cameras.json",
+        "docs/architecture/data/journeys.json",
+        "docs/architecture/vault/**/*.md",
+        "docs/architecture/index.html",
+        "docs/architecture/viewer.js",
+        "docs/architecture/viewer.css",
+        "docs/architecture/tools/build_atlas.py",
+        "docs/architecture/tools/verify_atlas_browser.py",
+        "docs/architecture/tools/viewer_template/*",
+        "docs/architecture/schema.json"
       ],
       "command": [
         "python",
@@ -699,6 +723,7 @@
         "tests/test_effect_surface.py",
         "tests/test_clean_source_export.py",
         "tests/test_operational_gap_ledger.py",
+        "tests/test_build_release_successor_configs.py",
         "tests/test_reconcile_unverified_operational_controls.py",
         "tests/test_operational_control_proof_matrix.py",
         "tests/test_assemble_operational_control_evidence.py",
@@ -727,11 +752,13 @@
         "tests/test_resource_storage.py",
         "tests/test_wal_generation.py",
         "tests/test_wal_migration.py",
-        "tests/test_wal_ownership.py"
+        "tests/test_wal_ownership.py",
+        "tests/test_architecture_atlas.py",
+        "tests/test_architecture_atlas_reconciliation.py"
       ],
-      "chunk_size": 1,
+      "chunk_size": 8,
       "max_parallel_chunks": 1,
-      "chunk_timeout_seconds": 300,
+      "chunk_timeout_seconds": 600,
       "timeout_seconds": 1800
     },
     "dashboard-extension": {
@@ -2227,7 +2254,7 @@
         "tests/test_release_evidence_budget.py",
         "tests/test_release_evidence_portability.py"
       ],
-      "chunk_size": 1,
+      "chunk_size": 8,
       "max_parallel_chunks": 1,
       "chunk_timeout_seconds": 300,
       "timeout_seconds": 600

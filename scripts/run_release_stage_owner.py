@@ -336,8 +336,12 @@ def check(config: Config, step: str) -> dict[str, Any]:
             step, (None,)
         )[0] or current_repair.get("phase") == archive_recovery_phase
         if (
-            current_repair.get("campaign_id")
-            != "pacify-x-cohesion-closure-repair12-20260905"
+            not str(current_repair.get("campaign_id") or "").strip()
+            or (
+                step != "archive_clear"
+                and current_release.get("repair_campaign_id")
+                != current_repair.get("campaign_id")
+            )
             or not repair_phase_valid
             or current_repair.get("intake_open") is not False
             or current_repair.get("unresolved") != []

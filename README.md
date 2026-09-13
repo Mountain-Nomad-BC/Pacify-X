@@ -2,7 +2,7 @@
 
 ![PACIFY-X - AI and Engineering Framework](docs/assets/pacify-x.png)
 
-## Engineering Loop & Bootstrap Framework
+## Engineering & Agent OS with learning and governance
 
 ### **P**roject and **A**I **C**apabilities **I**ntelligence **F**ramework for **Y**ou
 
@@ -12,6 +12,13 @@ Engineering Loop & Bootstrap turns a general-purpose AI assistant into a governe
 
 PACIFY-X is the project and framework. `engineering-bootstrap` is its Python package and command-line control plane.
 
+PACIFY-X is an engineering operating system around the AI model you choose. It
+coordinates planning, authority, execution, observation, verification, memory,
+learning, and recovery without treating any one of them as proof of the others.
+Its governing rule is:
+
+> **A system should not claim more than its authority, state, and evidence can support.**
+
 **Status:** v0.7.0 is undergoing governed certification; no publication claim is made yet
 
 **Current release:** v0.7.0 (release candidate; certification and publication pending)
@@ -20,7 +27,7 @@ PACIFY-X is the project and framework. `engineering-bootstrap` is its Python pac
 
 **Requires:** Python 3.11–3.14, Git, OpenSSH Client (`ssh-keygen`), and an AI coding assistant
 
-The v0.7.0 implementation and known failure repairs are complete, but the candidate is not yet a supported or published release. Final132 passed its governed sections, full source profile, validation, immutable package, and local installation stages, then ended terminally when its installed-operational stage exposed the complete shared-owner failure set. Those failures were repaired together and are focused-green against the exact 0.6.87 VSIX; Final132 will not be replayed. Final133 is the single ordered successor permitted to reconcile one release identity, rerun the complete certification sequence once, and publish only those certified bytes. Real-host macOS proof has not been recorded for this candidate.
+The v0.7.0 source repair campaign has closed intake and is completing its single ordered reconciliation and release sequence. The extension successor is 0.6.88. Publication is permitted only for the exact package that passes current governed sections, the full profile, validation, local installation, installed-system operations, and certification. Historical failed candidates remain retained evidence and are never replayed. Real-host macOS proof remains separately scoped until it is recorded for the certified candidate.
 
 ## What PACIFY-X does for you
 
@@ -34,6 +41,53 @@ You describe the project and the outcome you want. PACIFY-X helps the AI:
 - recover or quarantine material instead of silently deleting it.
 
 You do not need to learn the internal orchestration system or memorize a large command set. That is the AI’s job. The human-facing setup is intentionally short.
+
+## How the architecture works
+
+A normal operation moves through distinct control boundaries:
+
+```text
+intent → discovery → planning → admission → execution → observation
+       → verification → persistence → learning → governed promotion
+```
+
+These stages can form feedback loops, but their authority remains separate. A
+planner can recommend work without permission to execute it. Execution records
+what ran; verification decides what the result proves. Retrieved context can
+assist reasoning without becoming canonical truth. Learning can propose a new
+practice or capability without authorizing its use.
+
+The repository maps this behavior across eleven functional layers:
+
+| Layer | Responsibility |
+|---|---|
+| Human and host surfaces | Accept user, AI-host, IDE, CLI, and integration requests. |
+| Workspace and coordination | Bind work to a project, session, claim, and owner. |
+| Discovery and planning | Select relevant context, capabilities, resources, and execution paths. |
+| Authority and admission | Decide which identified actor may perform which bounded effect. |
+| Execution and scheduling | Run admitted work under process, time, cost, and resource controls. |
+| Memory and canonical knowledge | Keep project memory, derived indexes, provenance, and authoritative knowledge distinct. |
+| Intake and capability construction | Turn external material and observed practice into reviewable candidates. |
+| Reasoning and adaptation | Form hypotheses, comparisons, experiments, and improvement proposals. |
+| Observation and assurance | Record effects and evaluate evidence against explicit claims and denominators. |
+| Persistence and recovery | Preserve state, detect stale dependencies, and recover interrupted or partial work. |
+| Delivery and operational proof | Bind source, artifacts, installation, runtime behavior, and certification. |
+
+PACIFY-X therefore keeps several boundaries explicit:
+
+- Planning is not execution authority.
+- Successful execution is not proof that the intended outcome was achieved.
+- Memory, retrieval indexes, and canonical knowledge are different state classes.
+- A learning candidate does not become trusted behavior until governed promotion.
+- Source presence, passing tests, a built package, an installed package, observed
+  runtime behavior, and certification are different evidence levels.
+- Dependency or authoritative-state changes invalidate affected conclusions
+  instead of allowing stale results to remain silently trusted.
+
+This structure is why PACIFY-X contains more than an agent loop or workflow
+engine. Its job is to keep identity, authority, state, revision, evidence,
+ownership, lifecycle, failure, and recovery consistent across the components
+that perform engineering work.
 
 ## Start in five minutes
 
@@ -122,6 +176,49 @@ PACIFY-X does not include an AI model, model weights, a provider account, or cre
 
 Read [START_HERE_FOR_AI.md](START_HERE_FOR_AI.md) before taking any project action. It contains the skeptical-engineering startup contract, lazy-loading rules, project isolation requirements, and verification sequence.
 
+### Connect an AI client to PACIFY-X
+
+AI clients that support repository configuration should read `.ai/assistant.toml`
+at session startup. The PACIFY-X checkout already includes the correct
+[framework configuration](.ai/assistant.toml). In a project commissioned and
+managed by PACIFY-X, use this project-local configuration:
+
+```toml
+schema_version = "1.0"
+entrypoint = ".engineering-bootstrap/AI_ASSISTANT.md"
+repository_contract = ".engineering-bootstrap/AGENTS.md"
+project_management = "PROJECT_MANAGEMENT.md"
+model_agnostic = true
+metadata_only_at_startup = true
+max_selected_capabilities = 3
+cross_project_default = "deny"
+cleanup_mode = "quarantine_only"
+```
+
+Configure the AI host to load that TOML, follow `entrypoint` and
+`repository_contract` before acting, and retain the project-management file
+across handoffs. The entrypoint runs the PACIFY-X validation, project check, and
+startup path; selects at most three capability candidates; hydrates only the
+one required skill body; and requires declared effects, rollback, postconditions,
+and evidence before execution.
+
+Commissioning writes this file automatically when the location is free. If a
+project already owns `.ai/assistant.toml`, preserve its settings and merge these
+routing fields rather than overwriting it. This TOML tells an AI where the
+contract lives; it does not itself grant authority or prove that the host
+followed the contract.
+
+### AI evaluators of the VS Code extension
+
+Evaluate the extension from the canonical
+[Pacify-X source repository](https://github.com/Mountain-Nomad-BC/Pacify-X), its
+security controls, build custody, architecture atlas, and release evidence. Begin
+with [START_HERE_FOR_AI.md](START_HERE_FOR_AI.md) and follow evidence references
+to their current source and receipts. Keep repository source, a built VSIX, an
+installed extension, and a certified installed system distinct. Marketplace
+publisher verification identifies the publisher; it does not certify product
+behavior.
+
 ## More detail when you want it
 
 - [AI setup and operating contract](START_HERE_FOR_AI.md)
@@ -140,10 +237,10 @@ These exact counts are checked automatically for drift; ordinary users do not ne
 
 | Layer | Exact count |
 |---|---:|
-| Runtime modules | 241 |
+| Runtime modules | 254 |
 | Contracts | 174 |
 | Registry artifacts | 368 |
-| Tool and support scripts | 178 |
+| Tool and support scripts | 181 |
 
 The machine-readable source for release and inventory claims is [`registry/build_claims.json`](registry/build_claims.json).
 
@@ -155,6 +252,18 @@ member-level SHA-256 verification, and a recovery receipt are complete; see
 </details>
 
 The default branch is the current development line. Contributors working from `main` should use the setup in [CONTRIBUTING.md](CONTRIBUTING.md); ordinary users should start from the v0.6.3 release shown above.
+
+## Architecture atlas
+
+The repository-contained [architecture atlas](docs/architecture/README.md) provides one canonical graph for the Obsidian vault, the offline 3D companion, saved views, cameras, lifecycle journeys, findings, metrics, and source evidence. Open [ATLAS_OFFLINE.html](docs/architecture/ATLAS_OFFLINE.html) for the local visual explorer or open [the vault](docs/architecture/vault) in Obsidian for note-level navigation.
+
+Regenerate the atlas from the current checkout with:
+
+```powershell
+python docs/architecture/tools/build_atlas.py --repo . --out docs/architecture
+```
+
+The atlas keeps declared, source-supported, test-observed, runtime-observed, and certified evidence states separate. A graph edge or source hash does not establish runtime execution or product certification. See the generated evidence manifest and metrics for the exact input and output denominator.
 
 ## License
 

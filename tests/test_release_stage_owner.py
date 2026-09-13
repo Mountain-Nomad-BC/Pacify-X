@@ -103,6 +103,7 @@ def fixture(tmp_path: Path, step: str) -> Config:
             "active_claim": None,
             "stages": stages,
         }
+    release["repair_campaign_id"] = "pacify-x-cohesion-closure-repair12-20260905"
     (state_dir / "release-identity.json").write_text(
         json.dumps(release), encoding="utf-8"
     )
@@ -193,6 +194,25 @@ def test_archive_check_allows_one_unused_cleared_predecessor(tmp_path: Path) -> 
     repair_value["phase"] = "revision_reconciled"
     repair.write_text(json.dumps(repair_value), encoding="utf-8")
     assert check(config, "archive_clear")["valid"] is True
+
+
+def test_owner_binds_non_archive_steps_to_current_repair_campaign(
+    tmp_path: Path,
+) -> None:
+    config = fixture(tmp_path, "reconcile")
+    state_dir = tmp_path / ".engineering-bootstrap/processing-order"
+    repair_path = state_dir / "repair-campaign.json"
+    release_path = state_dir / "release-identity.json"
+    repair = json.loads(repair_path.read_text(encoding="utf-8"))
+    release = json.loads(release_path.read_text(encoding="utf-8"))
+    repair["campaign_id"] = "current-repair-campaign"
+    release["repair_campaign_id"] = "current-repair-campaign"
+    repair_path.write_text(json.dumps(repair), encoding="utf-8")
+    release_path.write_text(json.dumps(release), encoding="utf-8")
+    assert check(config, "reconcile")["valid"] is True
+    release["repair_campaign_id"] = "obsolete-repair-campaign"
+    release_path.write_text(json.dumps(release), encoding="utf-8")
+    assert check(config, "reconcile")["valid"] is False
 
 
 def test_archive_check_rejects_unmarked_chained_preidentity_predecessor(

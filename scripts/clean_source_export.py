@@ -293,6 +293,27 @@ def _write_json(path: Path, value: object, *, sort_keys: bool = True) -> None:
     )
 
 
+def _rebuild_repository_atlas(root: Path) -> None:
+    """Rebuild the canonical Obsidian/3D atlas from the final source image.
+
+    The atlas excludes its own output and mutable control/evidence roots, so it
+    can be generated last without a self-reference cycle.  Keeping this inside
+    the canonical reconciliation owner prevents release hashes and the
+    human/AI architecture map from describing different source generations.
+    """
+    from docs.architecture.tools.build_atlas import build
+
+    atlas = root / "docs/architecture"
+    build(
+        root,
+        atlas,
+        atlas / "reference",
+        max_files=100_000,
+        max_bytes=2 * 1024**3,
+        allow_repo_output=True,
+    )
+
+
 def _rebuild_candidate_projections_unlocked(root: Path) -> None:
     """Rebuild hash-bound projections from the exact final candidate bytes.
 
@@ -440,6 +461,9 @@ def _rebuild_candidate_projections_unlocked(root: Path) -> None:
     if not classification["valid"] or not classification["product_valid"]:
         raise ValueError("candidate source classification failed before world-state bind")
     write_world_state(root, source_revision=str(classification["product_digest"]))
+    # This must remain last: the atlas inventories every stable source and
+    # generated projection while excluding itself and mutable evidence roots.
+    _rebuild_repository_atlas(root)
 
 
 def _rebuild_candidate_projections(root: Path) -> None:

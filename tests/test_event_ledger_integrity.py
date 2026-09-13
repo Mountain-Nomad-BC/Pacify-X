@@ -119,3 +119,31 @@ def test_event_tail_is_bounded_and_checks_protected_head() -> None:
         degraded = read_event_tail(ledger, limit=2)
         assert degraded["health"]["status"] == "degraded"
         assert degraded["health"]["failed_file"] == "head.json"
+def test_next_append_recovers_a_durable_event_with_missing_head(
+    tmp_path: Path, monkeypatch
+) -> None:
+    from runtime import event_ledger
+
+    ledger = tmp_path / "events"
+    append_chained_event(ledger, "first", {"step": 1})
+    original = event_ledger._publish_head
+
+    def fail_head(*_args):
+        raise OSError("injected-head-failure")
+
+    monkeypatch.setattr(event_ledger, "_publish_head", fail_head)
+    try:
+        append_chained_event(ledger, "second", {"step": 2})
+    except OSError as error:
+        assert "injected-head-failure" in str(error)
+    else:
+        raise AssertionError("injected head publication unexpectedly succeeded")
+    monkeypatch.setattr(event_ledger, "_publish_head", original)
+    append_chained_event(ledger, "third", {"step": 3})
+    result = validate_event_ledger(ledger)
+    assert result["valid"] is True
+    assert [event["kind"] for event in result["events"]] == [
+        "first",
+        "second",
+        "third",
+    ]

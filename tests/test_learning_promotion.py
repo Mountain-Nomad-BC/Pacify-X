@@ -80,8 +80,12 @@ def test_full_candidate_ab_research_validation_and_promotion_chain():
         parent_revision_sha256=incumbent["revision_sha256"],
         tier=2,
     )
-    trials = [{"winner": "challenger", "evidence_sha256": H} for _ in range(18)] + [
-        {"winner": "incumbent", "evidence_sha256": H} for _ in range(2)
+    trials = [
+        {"winner": "challenger", "evidence_sha256": content_hash({"trial": index})}
+        for index in range(18)
+    ] + [
+        {"winner": "incumbent", "evidence_sha256": content_hash({"trial": index})}
+        for index in range(18, 20)
     ]
     comparison = compare_revisions(
         incumbent=incumbent, challenger=challenger, trials=trials
@@ -158,7 +162,10 @@ def test_typed_parser_rejects_swapped_revision_and_corpus_hash_roles():
         parent_revision_sha256=incumbent["revision_sha256"],
         tier=2,
     )
-    trials = [{"winner": "challenger", "evidence_sha256": H} for _ in range(20)]
+    trials = [
+        {"winner": "challenger", "evidence_sha256": content_hash({"trial": index})}
+        for index in range(20)
+    ]
     comparison = compare_revisions(
         incumbent=incumbent, challenger=challenger, trials=trials
     )
@@ -232,7 +239,13 @@ def test_dependency_drift_and_any_failed_gate_block_canonical_promotion():
         evidence_sha256=[H],
         dependency_sha256={"repo": H},
     )
-    failed = confidence_gate(wins=3, losses=3)
+    incumbent = freeze_revision(unit_id="memory.repo-fact", kind="memory", artifact={"fact": "old"}, evidence_sha256=[H])
+    comparison = compare_revisions(incumbent=incumbent, challenger=revision, trials=[
+        {"winner": "challenger" if index < 3 else "incumbent",
+         "evidence_sha256": content_hash({"failed-trial": index})}
+        for index in range(6)
+    ])
+    failed = comparison["gate"]
     research = research_validation(
         question="valid?",
         references=[{"uri": "evidence:r", "evidence_sha256": H}],
@@ -242,7 +255,7 @@ def test_dependency_drift_and_any_failed_gate_block_canonical_promotion():
     result = promote_revision(
         revision=revision,
         confidence=failed,
-        comparison={"record_type": "ab_comparison", "passed": False},
+        comparison=comparison,
         research=research,
         final_validation_sha256=H,
         current_dependencies={"repo": "b" * 64},
@@ -270,3 +283,18 @@ def test_hierarchical_hashes_are_order_stable_and_reject_unknown_dependencies():
         assert "unknown" in str(error)
     else:
         raise AssertionError("unknown dependency was accepted")
+
+
+def test_duplicate_trial_evidence_is_rejected_not_counted_as_independent():
+    incumbent = freeze_revision(unit_id="duplicate-proof", kind="memory", artifact={"v": 1}, evidence_sha256=[H])
+    challenger = freeze_revision(unit_id="duplicate-proof", kind="memory", artifact={"v": 2}, evidence_sha256=[H])
+    with pytest.raises(ValueError, match="duplicate A/B trial"):
+        compare_revisions(incumbent=incumbent, challenger=challenger,
+                          trials=[{"winner": "challenger", "evidence_sha256": H}] * 20)
+
+
+def test_tampered_operation_record_is_rejected_before_aggregation():
+    record = evidence(1)
+    record["measurements"]["quality"] = 999
+    with pytest.raises(ValueError, match="record identity"):
+        aggregate_operations([record], metric="quality")

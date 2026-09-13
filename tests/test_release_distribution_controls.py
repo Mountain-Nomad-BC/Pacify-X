@@ -266,11 +266,13 @@ def test_frozen_artifact_manifest_remains_authoritative_after_live_state_changes
         version="0.7.0",
         source_root=source,
     )
-    mutable = source / "registry/completion_status.json"
-    mutable.parent.mkdir(parents=True, exist_ok=True)
-    mutable.write_text('{"complete":true}\n', encoding="utf-8")
-
-    live_manifest = generate_artifact_manifest(source)
+    mutable = source / "runtime/studio_operations.json"
+    original = mutable.read_bytes()
+    mutable.write_bytes(original + b"\n")
+    try:
+        live_manifest = generate_artifact_manifest(source)
+    finally:
+        mutable.write_bytes(original)
     result = bind_artifact_set(
         wheel.parent,
         records,

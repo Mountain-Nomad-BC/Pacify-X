@@ -13,6 +13,7 @@ from enum import Enum
 import hashlib
 import json
 import os
+import platform
 from pathlib import Path
 import re
 import shutil
@@ -142,6 +143,31 @@ def _utc_now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
+def _host_boot_generation() -> str | None:
+    """Return a stable local boot identity when the platform exposes one."""
+    host = platform.node().casefold()
+    if os.name == "nt":
+        try:
+            import winreg
+
+            with winreg.OpenKey(
+                winreg.HKEY_LOCAL_MACHINE,
+                r"SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management\PrefetchParameters",
+            ) as key:
+                boot_id, _kind = winreg.QueryValueEx(key, "BootId")
+            if type(boot_id) is int and boot_id >= 0:
+                return f"windows:{host}:{boot_id}"
+        except (OSError, ImportError):
+            return None
+    try:
+        boot_id = Path("/proc/sys/kernel/random/boot_id").read_text(encoding="ascii").strip()
+        if re.fullmatch(r"[a-f0-9-]{36}", boot_id):
+            return f"linux:{host}:{boot_id}"
+    except (OSError, UnicodeError):
+        pass
+    return None
+
+
 def _path_is_link_or_reparse(path: Path) -> bool:
     try:
         if path.is_symlink():
@@ -205,6 +231,7 @@ class ResourceRecord:
     path_identity: tuple[int, ...] | None = None
     cleanup_intent: dict[str, object] | None = None
     cleanup_receipt_id: str | None = None
+    host_boot_generation: str | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -1082,6 +1109,7 @@ class ResourceManager:
             process_identity=f"creation-intent:{intent}",
             cleanup_result="creation_pending",
             parent_resource_id=parent_resource_id,
+            host_boot_generation=_host_boot_generation(),
         )
         # No native creation occurs until the recoverable intent exists.
         self.ledger.upsert(record)
@@ -1369,6 +1397,14 @@ class ResourceManager:
         record: ResourceRecord, *, expected_pid: int
     ) -> bool:
         """Reject PID reuse when durable custody has a kernel start binding."""
+        current_boot = _host_boot_generation()
+        if record.host_boot_generation is not None:
+            if current_boot is None:
+                return True
+            if current_boot != record.host_boot_generation:
+                # A PID from a prior boot cannot still identify the recorded
+                # process. A reused current PID is never signalled here.
+                return False
         if not _process_exists(expected_pid):
             return False
         prefix = "process-start:"

@@ -1025,7 +1025,7 @@ var require_stateInvariants = __commonJS({
       return true;
     }
     function assertCoordinationTransition({ previous, next, operation, previousEvents = [], event }) {
-      assertCoordinationState(previous, { requireSeal: false });
+      assertCoordinationState(previous, { requireSeal: false, nowUtc: previous.updated_utc });
       assertEventAncestry(previousEvents, previous.state_hash, previous.project.id);
       assertCoordinationState(next);
       if (next.revision !== previous.revision + 1) fail("revision-transition", `${previous.revision}:${next.revision}`);
@@ -1082,11 +1082,14 @@ var require_coordinationManager = __commonJS({
     var fs2 = require("fs");
     var os = require("os");
     var path2 = require("path");
-    var { assertCoordinationState, assertCoordinationTransition } = require_stateInvariants();
+    var { assertCoordinationState, assertCoordinationTransition, assertEventAncestry } = require_stateInvariants();
     var SCHEMA_VERSION = "1.2";
     var MAX_TASKS = 250;
     var MAX_EVENTS = 5e3;
     var MAX_TEXT = 12e3;
+    var MAX_EVENT_BYTES = 32 * 1024 * 1024;
+    var MAX_MEMORY_FILE_BYTES = 16 * 1024 * 1024;
+    var MAX_MEMORY_TOTAL_BYTES = 64 * 1024 * 1024;
     var CLAIM_TTL_MINUTES = 120;
     function now() {
       return (/* @__PURE__ */ new Date()).toISOString();
@@ -1115,6 +1118,7 @@ var require_coordinationManager = __commonJS({
         events: path2.join(root, "events.jsonl"),
         lock: path2.join(root, ".coordination.lock"),
         receipts: path2.join(root, "receipts"),
+        publication: path2.join(root, ".publication-pending.json"),
         quarantine: path2.join(root, "quarantine"),
         handoffJson: path2.join(root, "handoff.json"),
         handoffMarkdown: path2.join(root, "HANDOFF.md"),
@@ -1243,16 +1247,125 @@ var require_coordinationManager = __commonJS({
       return hash2(copy);
     }
     function atomicWrite(file2, value) {
+      atomicWriteText(file2, `${JSON.stringify(value, null, 2)}
+`);
+    }
+    function atomicWriteText(file2, value) {
       const temporary = `${file2}.${process.pid}.${crypto2.randomUUID()}.tmp`;
       fs2.mkdirSync(path2.dirname(file2), { recursive: true });
-      fs2.writeFileSync(temporary, `${JSON.stringify(value, null, 2)}
-`, { encoding: "utf8", flag: "wx" });
+      const descriptor = fs2.openSync(temporary, "wx");
+      try {
+        fs2.writeFileSync(descriptor, value, "utf8");
+        fs2.fsyncSync(descriptor);
+      } finally {
+        fs2.closeSync(descriptor);
+      }
       fs2.renameSync(temporary, file2);
     }
-    function appendJsonl(file2, value) {
+    function currentText(file2) {
+      try {
+        return fs2.readFileSync(file2, "utf8");
+      } catch (error51) {
+        if (error51.code === "ENOENT") return null;
+        throw error51;
+      }
+    }
+    function exactFileSlice(file2, position, length) {
+      if (length <= 0) return Buffer.alloc(0);
+      const descriptor = fs2.openSync(file2, "r");
+      try {
+        const buffer = Buffer.alloc(length);
+        let offset = 0;
+        while (offset < length) {
+          const count = fs2.readSync(descriptor, buffer, offset, length - offset, position + offset);
+          if (!count) break;
+          offset += count;
+        }
+        return buffer.subarray(0, offset);
+      } finally {
+        fs2.closeSync(descriptor);
+      }
+    }
+    function appendAndSync(file2, text) {
       fs2.mkdirSync(path2.dirname(file2), { recursive: true });
-      fs2.appendFileSync(file2, `${JSON.stringify(value)}
-`, "utf8");
+      const descriptor = fs2.openSync(file2, "a");
+      try {
+        fs2.writeFileSync(descriptor, text, "utf8");
+        fs2.fsyncSync(descriptor);
+      } finally {
+        fs2.closeSync(descriptor);
+      }
+    }
+    function recoverPublication(paths) {
+      const raw = currentText(paths.publication);
+      if (raw === null) return { recovered: false, artifacts: 0 };
+      let journal;
+      try {
+        journal = JSON.parse(raw);
+      } catch {
+        throw new Error("coordination-publication-journal-invalid");
+      }
+      if (journal?.schema_version !== "px.coordination-publication/1.0" || !Array.isArray(journal.artifacts) || !journal.artifacts.length) throw new Error("coordination-publication-journal-invalid");
+      for (const artifact of journal.artifacts) {
+        const target = path2.resolve(paths.root, artifact.relative_path || "");
+        if (target === paths.root || !target.startsWith(`${paths.root}${path2.sep}`)) throw new Error("coordination-publication-target-outside-root");
+        if (artifact.operation === "append") {
+          if (!Number.isSafeInteger(artifact.before_size) || artifact.before_size < 0 || typeof artifact.append_text !== "string" || hash2(artifact.append_text) !== artifact.append_sha256) throw new Error(`coordination-publication-append-invalid:${artifact.relative_path}`);
+          const appendBytes = Buffer.from(artifact.append_text, "utf8");
+          let presentSize;
+          try {
+            presentSize = fs2.statSync(target).size;
+          } catch (error51) {
+            if (error51.code !== "ENOENT") throw error51;
+            presentSize = 0;
+          }
+          const finalSize = artifact.before_size + appendBytes.length;
+          if (presentSize > finalSize || presentSize < artifact.before_size) throw new Error(`coordination-publication-ambiguous:${artifact.relative_path}`);
+          const beforeTailLength = Math.min(4096, artifact.before_size);
+          if (beforeTailLength > 0) {
+            const beforeTail = exactFileSlice(target, artifact.before_size - beforeTailLength, beforeTailLength);
+            if (hash2(beforeTail) !== artifact.before_tail_sha256) throw new Error(`coordination-publication-before-image-mismatch:${artifact.relative_path}`);
+          }
+          if (presentSize === finalSize) {
+            const presentAppend = exactFileSlice(target, artifact.before_size, appendBytes.length);
+            if (!presentAppend.equals(appendBytes)) throw new Error(`coordination-publication-ambiguous:${artifact.relative_path}`);
+            continue;
+          }
+          if (presentSize > artifact.before_size) fs2.truncateSync(target, artifact.before_size);
+          appendAndSync(target, artifact.append_text);
+          continue;
+        }
+        const present = currentText(target);
+        const presentHash = present === null ? null : hash2(present);
+        if (presentHash === artifact.after_sha256) continue;
+        if (presentHash !== artifact.before_sha256) throw new Error(`coordination-publication-ambiguous:${artifact.relative_path}`);
+        if (typeof artifact.after_text !== "string" || hash2(artifact.after_text) !== artifact.after_sha256) throw new Error(`coordination-publication-after-image-invalid:${artifact.relative_path}`);
+        atomicWriteText(target, artifact.after_text);
+      }
+      fs2.unlinkSync(paths.publication);
+      return { recovered: true, artifacts: journal.artifacts.length };
+    }
+    function publishTransaction(paths, operation, artifacts) {
+      const normalized = artifacts.map(({ file: file2, afterText, appendText }) => {
+        const target = path2.resolve(file2);
+        if (target === paths.root || !target.startsWith(`${paths.root}${path2.sep}`)) throw new Error("coordination-publication-target-outside-root");
+        if (appendText !== void 0) {
+          let beforeSize;
+          try {
+            beforeSize = fs2.statSync(target).size;
+          } catch (error51) {
+            if (error51.code !== "ENOENT") throw error51;
+            beforeSize = 0;
+          }
+          const tailLength = Math.min(4096, beforeSize);
+          const beforeTail = tailLength ? exactFileSlice(target, beforeSize - tailLength, tailLength) : Buffer.alloc(0);
+          return { operation: "append", relative_path: path2.relative(paths.root, target).replaceAll("\\", "/"), before_size: beforeSize, before_tail_sha256: hash2(beforeTail), append_sha256: hash2(appendText), append_text: appendText };
+        }
+        const before = currentText(target);
+        return { operation: "replace", relative_path: path2.relative(paths.root, target).replaceAll("\\", "/"), before_sha256: before === null ? null : hash2(before), after_sha256: hash2(afterText), after_text: afterText };
+      });
+      atomicWrite(paths.publication, { schema_version: "px.coordination-publication/1.0", transaction_id: id("coord-tx"), operation, prepared_utc: now(), artifacts: normalized });
+      return recoverPublication(paths);
     }
     function acquireLock(paths, timeoutMs = 4e3) {
       ensureStore(paths);
@@ -1320,9 +1433,10 @@ var require_coordinationManager = __commonJS({
       const paths = coordinationPaths(workspaceRoot2);
       const release = acquireLock(paths);
       try {
+        recoverPublication(paths);
         const state = readAuthoritativeState(paths);
         const previous = JSON.parse(JSON.stringify(state));
-        assertCoordinationState(previous, { requireSeal: false });
+        assertCoordinationState(previous, { requireSeal: false, nowUtc: previous.updated_utc });
         expireClaims(state);
         expireSessions(state);
         const beforeHash = previous.state_hash || stateHash(previous);
@@ -1350,11 +1464,18 @@ var require_coordinationManager = __commonJS({
         };
         event.event_sha256 = hash2(event);
         assertCoordinationTransition({ previous, next: state, operation, previousEvents: priorEvents.records, event });
-        for (const publish of deferredPublications) publish();
-        atomicWrite(paths.state, state);
-        appendJsonl(paths.events, event);
-        writeReceipt(paths, event);
-        writeHandoff(paths, state, event);
+        const artifacts = deferredPublications.map((publication) => ({ file: publication.file, appendText: `${JSON.stringify(publication.record)}
+` }));
+        artifacts.push(
+          { file: paths.state, afterText: `${JSON.stringify(state, null, 2)}
+` },
+          { file: paths.events, appendText: `${JSON.stringify(event)}
+` },
+          { file: path2.join(paths.receipts, `${event.event_id}.json`), afterText: `${JSON.stringify(event, null, 2)}
+` },
+          ...handoffArtifacts(paths, state, event)
+        );
+        publishTransaction(paths, operation, artifacts);
         return { state: publicState(state), event, result };
       } finally {
         release();
@@ -1504,12 +1625,37 @@ var require_coordinationManager = __commonJS({
     function ownedBy(task, principal) {
       return task.owner?.actor_id === principal.actor_id && task.owner?.session_id === principal.session_id;
     }
+    function exactClaimProof(state, claim, input) {
+      const claimId = cleanText(input.claimId || input.claim_id, 200);
+      if (!claimId || claimId !== claim.id) throw new Error("claim-proof-id-missing-or-mismatched");
+      const supplied = input.fencingTokens || input.fencing_tokens;
+      if (!supplied || typeof supplied !== "object" || Array.isArray(supplied)) throw new Error("claim-proof-fencing-tokens-required");
+      const targets = [...claim.targets].map(normalizeTarget).sort();
+      const normalizedSupplied = Object.fromEntries(Object.entries(supplied).map(([target, token]) => [normalizeTarget(target), token]));
+      const keys = Object.keys(normalizedSupplied).sort();
+      if (keys.length !== targets.length || keys.some((target, index) => target !== targets[index])) throw new Error("claim-proof-fencing-denominator-mismatch");
+      for (const target of targets) assertFencingToken(state, claim, target, normalizedSupplied[target]);
+      return true;
+    }
+    function verifiedTeamAuthority(state, task, principal, targets, supplied) {
+      const hub = state.team_fabric?.hub || {};
+      if (!hub.configured || !hub.connected || !hub.authoritative) throw new Error("team-authority-hub-is-not-authoritative");
+      if (!supplied || typeof supplied !== "object" || Array.isArray(supplied)) throw new Error("team-authority-grant-required");
+      const grant = { ...supplied };
+      const seal = cleanText(grant.grant_sha256, 128).toLowerCase();
+      delete grant.grant_sha256;
+      const expectedTargets = [...targets].sort();
+      if (grant.schema_version !== "px.coordination-authority-grant/1.0" || grant.project_id !== state.project.id || grant.task_id !== task.id || grant.actor_id !== principal.actor_id || grant.session_id !== principal.session_id || !Array.isArray(grant.targets) || JSON.stringify([...grant.targets].map(normalizeTarget).sort()) !== JSON.stringify(expectedTargets) || !Number.isFinite(Date.parse(grant.expires_utc)) || Date.parse(grant.expires_utc) <= Date.now() || grant.revoked !== false || !/^[a-f0-9]{64}$/.test(seal) || seal !== hash2(grant)) {
+        throw new Error("team-authority-grant-invalid");
+      }
+      return { ...grant, grant_sha256: seal };
+    }
     function claimTask2(workspaceRoot2, actor2, input) {
       return withState(workspaceRoot2, actor2, "task-claimed", (state) => {
         const task = taskById(state, input.taskId || input.task_id);
         const principal = normalizeActor(actor2);
         const existingOwnedClaim = state.claims.find((item) => item.status === "active" && item.task_id === task.id && item.actor.actor_id === principal.actor_id && item.actor.session_id === principal.session_id);
-        if (existingOwnedClaim) return { receipt: { claim_id: existingOwnedClaim.id, task_id: task.id, targets: existingOwnedClaim.targets, expires_utc: existingOwnedClaim.expires_utc, idempotent: true } };
+        if (existingOwnedClaim) return { receipt: { claim_id: existingOwnedClaim.id, task_id: task.id, targets: existingOwnedClaim.targets, fencing_tokens: existingOwnedClaim.fencing_tokens, expires_utc: existingOwnedClaim.expires_utc, idempotent: true } };
         const existingTaskClaim = state.claims.find((item) => item.status === "active" && item.task_id === task.id);
         if (existingTaskClaim) throw new Error(`task-lease-active:${existingTaskClaim.actor.actor_id}:${existingTaskClaim.actor.session_id}`);
         const incomplete = task.depends_on.filter((dependency) => !["completed", "reconciled"].includes(taskById(state, dependency).status));
@@ -1521,7 +1667,7 @@ var require_coordinationManager = __commonJS({
         if (!["exclusive", "shared", "informational"].includes(mode)) throw new Error("unsupported-claim-mode");
         const requestedAuthority = cleanText(input.authority || "local", 40);
         if (!["local", "speculative", "team_authoritative"].includes(requestedAuthority)) throw new Error("unsupported-claim-authority");
-        if (requestedAuthority === "team_authoritative" && !cleanText(input.authorityReceipt || input.authority_receipt, 1e3)) throw new Error("team-authoritative-claim-requires-hub-receipt");
+        const authorityGrant = requestedAuthority === "team_authoritative" ? verifiedTeamAuthority(state, task, principal, targets, input.authorityGrant || input.authority_grant) : null;
         const conflicts = [];
         for (const existing of state.claims.filter((item) => item.status === "active" && item.task_id !== task.id)) {
           if (mode === "informational" || existing.mode === "informational") continue;
@@ -1544,7 +1690,7 @@ var require_coordinationManager = __commonJS({
           targets,
           mode,
           authority: requestedAuthority,
-          authority_receipt: cleanText(input.authorityReceipt || input.authority_receipt, 1e3) || null,
+          authority_receipt: authorityGrant,
           fencing_tokens: fencingTokens,
           acquired_utc: now(),
           heartbeat_utc: now(),
@@ -1565,9 +1711,7 @@ var require_coordinationManager = __commonJS({
         const claim = state.claims.find((item) => item.id === cleanText(input.claimId || input.claim_id, 200) && item.status === "active");
         if (!claim) throw new Error("active-claim-not-found");
         if (claim.actor.actor_id !== principal.actor_id || claim.actor.session_id !== principal.session_id) throw new Error("claim-renewal-requires-owning-session");
-        for (const [target, token] of Object.entries(input.fencingTokens || input.fencing_tokens || {})) {
-          if (Number(claim.fencing_tokens?.[normalizeTarget(target)]) !== Number(token)) throw new Error(`stale-fencing-token:${target}`);
-        }
+        exactClaimProof(state, claim, input);
         const ttl = Math.min(1440, Math.max(5, Number(input.ttlMinutes || input.ttl_minutes || CLAIM_TTL_MINUTES)));
         claim.heartbeat_utc = now();
         claim.expires_utc = new Date(Date.now() + ttl * 6e4).toISOString();
@@ -1591,7 +1735,7 @@ var require_coordinationManager = __commonJS({
         const claim = state.claims.find((item) => item.task_id === task.id && item.status === "active");
         if (!claim) throw new Error("task-progress-requires-active-claim");
         if (claim.actor.actor_id !== principal.actor_id || claim.actor.session_id !== principal.session_id) throw new Error("task-progress-claim-owner-mismatch");
-        for (const [target, token] of Object.entries(input.fencingTokens || input.fencing_tokens || {})) assertFencingToken(state, claim, target, token);
+        exactClaimProof(state, claim, input);
         const usageInput = input.usage || {};
         task.usage ||= { minutes: 0, tokens: 0, cost_usd: 0, status: "healthy" };
         task.usage.minutes += Math.max(0, Number(usageInput.minutes || 0));
@@ -1630,6 +1774,7 @@ var require_coordinationManager = __commonJS({
         if (task.status !== "completed") throw new Error("task-must-be-completed-before-reconciliation");
         const activeClaim = state.claims.find((item) => item.task_id === task.id && item.status === "active");
         if (!activeClaim || activeClaim.actor.actor_id !== principal.actor_id || activeClaim.actor.session_id !== principal.session_id) throw new Error("task-reconciliation-requires-owning-claim");
+        exactClaimProof(state, activeClaim, input);
         const receipt = {
           id: id("reconcile"),
           task_id: task.id,
@@ -1658,9 +1803,10 @@ var require_coordinationManager = __commonJS({
         const task = taskById(state, input.taskId || input.task_id);
         const principal = normalizeActor(actor2);
         if (!ownedBy(task, principal)) throw new Error("task-release-requires-owning-actor-or-session");
-        const activeClaim = state.claims.find((item) => item.task_id === task.id && item.status === "active");
+        const activeClaim = state.claims.find((item) => item.task_id === task.id && ["active", "expired"].includes(item.status));
         if (!activeClaim || activeClaim.actor.actor_id !== principal.actor_id || activeClaim.actor.session_id !== principal.session_id) throw new Error("task-release-requires-owning-claim");
-        for (const claim of state.claims) if (claim.task_id === task.id && claim.status === "active") claim.status = "released";
+        exactClaimProof(state, activeClaim, input);
+        for (const claim of state.claims) if (claim.task_id === task.id && ["active", "expired"].includes(claim.status)) claim.status = "released";
         task.status = "released";
         task.owner = null;
         task.updated_utc = now();
@@ -1727,7 +1873,7 @@ var require_coordinationManager = __commonJS({
           promoted_from: input.promotedFrom || input.promoted_from || null
         };
         record2.record_sha256 = hash2(record2);
-        deferredPublications.push(() => appendJsonl(memoryFile(paths, layer, principal.session_id), record2));
+        deferredPublications.push({ file: memoryFile(paths, layer, principal.session_id), record: record2 });
         if (layer === "session") state.memory.session_records += 1;
         if (layer === "project") state.memory.project_records += 1;
         if (layer === "state") state.memory.state_records += 1;
@@ -1762,6 +1908,9 @@ var require_coordinationManager = __commonJS({
         if (!fs2.existsSync(specification.file)) continue;
         try {
           const stat = fs2.statSync(specification.file);
+          if (!stat.isFile()) throw new Error("memory-history-not-regular-file");
+          if (stat.size > MAX_MEMORY_FILE_BYTES) throw new Error("memory-history-file-byte-budget-exceeded");
+          if (bytes + stat.size > MAX_MEMORY_TOTAL_BYTES) throw new Error("memory-history-total-byte-budget-exceeded");
           bytes += stat.size;
           const lines = fs2.readFileSync(specification.file, "utf8").split(/\r?\n/).filter(Boolean);
           lines.forEach((line, index) => {
@@ -1867,16 +2016,58 @@ var require_coordinationManager = __commonJS({
       const state = readAuthoritativeState(paths);
       expireClaims(state);
       expireSessions(state);
-      const eventTail = tailJsonlDetailed(paths.events, Math.min(Number(options.eventLimit || 40), 200));
-      return { state: publicState(state), events: eventTail.records, event_log_health: eventTail.health, paths: publicPaths(paths), memory: memoryRecords(paths, state, { limit: options.memoryLimit || 12, includeContent: false }), instrumented: true };
+      const eventTail = tailJsonlDetailed(paths.events, MAX_EVENTS);
+      if (eventTail.health.status === "healthy") {
+        try {
+          if (!eventTail.records.length && state.revision > 0) throw new Error("coordination-event-history-missing");
+          assertEventAncestry(eventTail.records, state.state_hash, state.project.id);
+          eventTail.health.integrity_verified = true;
+          eventTail.health.integrity_scope = "retained-event-suffix-and-current-state-head";
+          eventTail.health.verified_records = eventTail.records.length;
+        } catch (error51) {
+          eventTail.health = {
+            ...eventTail.health,
+            status: "degraded",
+            integrity_verified: false,
+            reason: "event-integrity-failure",
+            detail: cleanText(error51.message, 500)
+          };
+        }
+      } else {
+        eventTail.health.integrity_verified = false;
+      }
+      const eventLimit = Math.max(0, Math.min(Number(options.eventLimit ?? 40) || 0, 200));
+      const visibleEvents = eventLimit ? eventTail.records.slice(-eventLimit) : [];
+      return { state: publicState(state), events: visibleEvents, event_log_health: eventTail.health, paths: publicPaths(paths), memory: memoryRecords(paths, state, { limit: options.memoryLimit || 12, includeContent: false }), instrumented: true };
     }
     function tailJsonl(file2, limit) {
       return tailJsonlDetailed(file2, limit).records;
     }
     function tailJsonlDetailed(file2, limit) {
       let raw;
+      let truncatedBeforeBytes = 0;
       try {
-        raw = fs2.readFileSync(file2, "utf8");
+        const stat = fs2.statSync(file2);
+        if (!stat.isFile()) throw new Error("event-history-not-regular-file");
+        const retainedBytes = Math.min(stat.size, MAX_EVENT_BYTES);
+        truncatedBeforeBytes = stat.size - retainedBytes;
+        const handle = fs2.openSync(file2, "r");
+        try {
+          const buffer = Buffer.alloc(retainedBytes);
+          let offset = 0;
+          while (offset < retainedBytes) {
+            const count = fs2.readSync(handle, buffer, offset, retainedBytes - offset, truncatedBeforeBytes + offset);
+            if (!count) break;
+            offset += count;
+          }
+          raw = buffer.subarray(0, offset).toString("utf8");
+        } finally {
+          fs2.closeSync(handle);
+        }
+        if (truncatedBeforeBytes > 0) {
+          const newline = raw.indexOf("\n");
+          raw = newline < 0 ? "" : raw.slice(newline + 1);
+        }
       } catch (error51) {
         if (error51.code === "ENOENT") return { records: [], health: { status: "missing", valid_records: 0, failed_line: null, ignored_suffix_lines: 0 } };
         return { records: [], health: { status: "degraded", valid_records: 0, failed_line: 0, ignored_suffix_lines: 0, reason: `unreadable:${error51.code || error51.message}` } };
@@ -1897,7 +2088,7 @@ var require_coordinationManager = __commonJS({
       const boundedLimit = Math.max(0, Math.min(MAX_EVENTS, Number(limit) || 0));
       return {
         records: boundedLimit ? records.slice(-boundedLimit) : [],
-        health: failure ? { status: "degraded", valid_records: records.length, failed_line: failure.line, ignored_suffix_lines: lines.slice(failure.line).filter((line) => line.trim()).length, reason: failure.reason, detail: failure.error } : { status: "healthy", valid_records: records.length, failed_line: null, ignored_suffix_lines: 0 }
+        health: failure ? { status: "degraded", valid_records: records.length, failed_line: failure.line, ignored_suffix_lines: lines.slice(failure.line).filter((line) => line.trim()).length, reason: failure.reason, detail: failure.error, truncated_before_bytes: truncatedBeforeBytes, verification_scope: "bounded-retained-suffix" } : { status: "healthy", valid_records: records.length, failed_line: null, ignored_suffix_lines: 0, truncated_before_bytes: truncatedBeforeBytes, verification_scope: "bounded-retained-suffix" }
       };
     }
     function publicPaths(paths) {
@@ -1909,13 +2100,7 @@ var require_coordinationManager = __commonJS({
       copy.claims = copy.claims.filter((claim) => claim.status === "active");
       return copy;
     }
-    function writeReceipt(paths, event) {
-      atomicWrite(path2.join(paths.receipts, `${event.event_id}.json`), event);
-      const files = fs2.readdirSync(paths.receipts).filter((name) => name.endsWith(".json")).sort();
-      if (files.length > MAX_EVENTS) {
-      }
-    }
-    function writeHandoff(paths, state, event) {
+    function handoffArtifacts(paths, state, event) {
       const tasks = state.tasks.filter((task) => state.plans.find((plan) => plan.id === state.active_plan)?.task_ids.includes(task.id));
       const next = tasks.find((task) => ["planned", "ready", "released"].includes(task.status) && task.depends_on.every((dep) => ["completed", "reconciled"].includes(taskById(state, dep).status)));
       const packet = {
@@ -1935,7 +2120,6 @@ var require_coordinationManager = __commonJS({
         hazards: ["Respect active claims before writing files.", "System-memory candidates are not canonical until separately reviewed and promoted."]
       };
       packet.sha256 = hash2(packet);
-      atomicWrite(paths.handoffJson, packet);
       const lines = [
         "# Pacify-X Cross-IDE Handoff",
         "",
@@ -1967,8 +2151,12 @@ var require_coordinationManager = __commonJS({
         "- Never treat system-memory candidates as canonical facts.",
         ""
       ];
-      fs2.writeFileSync(paths.handoffMarkdown, `${lines.join("\n")}
-`, "utf8");
+      return [
+        { file: paths.handoffJson, afterText: `${JSON.stringify(packet, null, 2)}
+` },
+        { file: paths.handoffMarkdown, afterText: `${lines.join("\n")}
+` }
+      ];
     }
     function taskHandoff2(workspaceRoot2, taskId) {
       const snapshot = readCoordination2(workspaceRoot2);
@@ -33125,7 +33313,7 @@ function readJsonFile(file2, fallback) {
     return fallback;
   }
 }
-var MCP_VERSION = "0.6.87";
+var MCP_VERSION = "0.6.88";
 function contextEnvelope() {
   const value = readJsonFile(process.env.PX_CONTEXT_PATH, {});
   return value?.envelope || value;

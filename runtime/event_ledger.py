@@ -204,25 +204,37 @@ def _publish_head(ledger: Path, sequence: int, event_sha256: str) -> None:
     anchors.mkdir(parents=True, exist_ok=True)
     head = {"schema_version": "1.0", "sequence": sequence, "event_sha256": event_sha256}
     anchor = anchors / f"{sequence:08d}-{event_sha256}.json"
-    with anchor.open("x", encoding="utf-8", newline="\n") as stream:
-        json.dump(head, stream, indent=2)
-        stream.write("\n")
-        stream.flush()
-        os.fsync(stream.fileno())
+    encoded = json.dumps(head, indent=2) + "\n"
+    try:
+        with anchor.open("x", encoding="utf-8", newline="\n") as stream:
+            stream.write(encoded)
+            stream.flush()
+            os.fsync(stream.fileno())
+    except FileExistsError:
+        if anchor.read_text(encoding="utf-8") != encoded:
+            raise ValueError("existing event-ledger anchor differs from pending head")
     head_path.parent.mkdir(parents=True, exist_ok=True)
     if head_path.is_file():
         history = head_path.parent / "history" / f"{sequence - 1:08d}.json"
         history.parent.mkdir(parents=True, exist_ok=True)
-        with history.open("x", encoding="utf-8", newline="\n") as stream:
-            stream.write(head_path.read_text(encoding="utf-8"))
+        previous = head_path.read_text(encoding="utf-8")
+        try:
+            with history.open("x", encoding="utf-8", newline="\n") as stream:
+                stream.write(previous)
+                stream.flush()
+                os.fsync(stream.fileno())
+        except FileExistsError:
+            if history.read_text(encoding="utf-8") != previous:
+                raise ValueError("existing event-ledger head history differs")
+    temporary = head_path.with_name(f".{head_path.name}.{sequence:08d}.prepared")
+    if temporary.exists():
+        if temporary.read_text(encoding="utf-8") != encoded:
+            raise ValueError("existing prepared event-ledger head differs")
+    else:
+        with temporary.open("x", encoding="utf-8", newline="\n") as stream:
+            stream.write(encoded)
             stream.flush()
             os.fsync(stream.fileno())
-    temporary = head_path.with_name(f".{head_path.name}.{sequence:08d}.prepared")
-    with temporary.open("x", encoding="utf-8", newline="\n") as stream:
-        json.dump(head, stream, indent=2)
-        stream.write("\n")
-        stream.flush()
-        os.fsync(stream.fileno())
     os.replace(temporary, head_path)
 
 
@@ -236,6 +248,7 @@ def append_chained_event(
         raise ValueError("event kind must be a bounded identifier")
     ledger.mkdir(parents=True, exist_ok=True)
     with FileLock(ledger / ".event-ledger.lock"):
+        recover_event_ledger(ledger)
         current = validate_event_ledger(ledger, require_head=any(ledger.glob("*.json")))
         if not current["valid"]:
             raise ValueError(
@@ -263,3 +276,21 @@ def append_chained_event(
         os.replace(prepared, target)
         _publish_head(ledger, sequence, str(record["event_sha256"]))
         return target
+
+
+def recover_event_ledger(ledger: Path) -> dict[str, object]:
+    """Finish a pending head publication without duplicating its durable event."""
+    ledger = ledger.resolve()
+    current = validate_event_ledger(ledger, require_head=False)
+    if not current["valid"] or not current["event_count"]:
+        return {"recovered": False, "event_count": current["event_count"], "errors": current["errors"]}
+    complete = validate_event_ledger(ledger, require_head=True)
+    if complete["valid"]:
+        return {"recovered": False, "event_count": complete["event_count"], "errors": []}
+    # The event files form a complete chain. Re-publishing their exact last head
+    # is an idempotent recovery; it never appends or repeats the operation.
+    _publish_head(ledger, int(current["event_count"]), str(current["head_sha256"]))
+    verified = validate_event_ledger(ledger, require_head=True)
+    if not verified["valid"]:
+        raise ValueError("event ledger head recovery failed: " + "; ".join(verified["errors"]))
+    return {"recovered": True, "event_count": verified["event_count"], "errors": []}

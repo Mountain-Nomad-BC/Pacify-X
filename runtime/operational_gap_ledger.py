@@ -1674,20 +1674,30 @@ def project_events(
                 if payload.get("effect") is not None or payload.get("scope") is not None:
                     raise ValueError("work session cannot mix legacy effect/scope fields")
                 if not isinstance(effect_scopes, list) or not effect_scopes or len(effect_scopes) > 3:
-                    raise ValueError("work session requires one to three exact reversible effect scopes")
+                    raise ValueError("work session requires one to three exact effect scopes")
                 normalized_effect_scopes: list[dict[str, Any]] = []
                 seen_effects: set[str] = set()
+                reversible_effects = {"read", "write", "execute"}
+                high_risk_effects = {"network", "install", "service", "destructive"}
                 for item in effect_scopes:
                     if not isinstance(item, Mapping):
                         raise ValueError("work session effect scope must be an object")
                     effect = str(item.get("effect") or "")
                     scope = item.get("scope")
-                    if effect not in {"read", "write", "execute"} or effect in seen_effects:
-                        raise ValueError("work session effects must be unique reversible read/write/execute values")
+                    if effect not in reversible_effects | high_risk_effects or effect in seen_effects:
+                        raise ValueError("work session effects must be unique supported values")
                     if not isinstance(scope, list) or not scope or any(not isinstance(value, str) or not value.strip() for value in scope):
                         raise ValueError("work session requires a non-empty exact scope for every effect")
                     seen_effects.add(effect)
                     normalized_effect_scopes.append({"effect": effect, "scope": list(scope)})
+                if seen_effects & high_risk_effects and (
+                    len(normalized_effect_scopes) != 1
+                    or seen_effects - high_risk_effects
+                ):
+                    raise ValueError(
+                        "network, install, service, and destructive effects require "
+                        "their own single-effect work session"
+                    )
                 if _iso_utc(expires_utc, "expires_utc") <= _iso_utc(event["timestamp"], "timestamp"):
                     raise ValueError("work session expiration must be after admission")
                 normalized_payload["session_id"] = session_id
@@ -2621,8 +2631,11 @@ def guard_work_admission(
         admitted_scope = admission.get("scope")
         session_id = None
     else:
-        if effect not in {"read", "write", "execute"}:
-            raise ValueError("work session cannot authorize a higher-risk effect")
+        supported_effects = {
+            "read", "write", "execute", "network", "install", "service", "destructive"
+        }
+        if effect not in supported_effects:
+            raise ValueError("work guard effect is unsupported")
         admission_sequence = int(admission.get("sequence") or 0)
         if not admission_sequence or any(
             int(item.get("sequence") or 0) > admission_sequence

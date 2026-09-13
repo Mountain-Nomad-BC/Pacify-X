@@ -402,7 +402,13 @@ def test_abrupt_outer_owner_death_kills_tree_and_reconciles_workspace(
         "from pathlib import Path\n"
         "import time\n\n"
         "def test_waits_for_abrupt_owner_death():\n"
-        "    Path(os.environ['PX_ABRUPT_CHILD_PID']).write_text(str(os.getpid()))\n"
+        "    target = Path(os.environ['PX_ABRUPT_CHILD_PID'])\n"
+        "    prepared = target.with_name(target.name + '.prepared')\n"
+        "    with prepared.open('x', encoding='utf-8') as stream:\n"
+        "        stream.write(str(os.getpid()))\n"
+        "        stream.flush()\n"
+        "        os.fsync(stream.fileno())\n"
+        "    os.replace(prepared, target)\n"
         "    print('abrupt-child-ready', flush=True)\n"
         "    time.sleep(120)\n",
         encoding="utf-8",

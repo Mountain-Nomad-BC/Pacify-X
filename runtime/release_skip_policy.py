@@ -59,7 +59,7 @@ class _BoundedJUnitTree(ET.TreeBuilder):
 
 def junit_case_inventory(path: Path):
     """Acquire one bounded image and derive counts from actual unique cases."""
-    from runtime.input_files import independent_file, read_file_image, cooperative_deadline
+    from .input_files import independent_file, read_file_image, cooperative_deadline
 
     source, info = independent_file(path)
     raw = read_file_image(source, info, limit=64 * 1024 * 1024,

@@ -142,38 +142,55 @@ class WorkGovernor {
       this.queueWaits.push(Math.max(0, entry.startedAt - entry.queuedAt));
       if (this.queueWaits.length > 256) this.queueWaits.shift();
       this.metrics.starts += 1;
+      let callerSettled = false;
       const timeout = setTimeout(() => {
         if (entry.state === 'active') {
           entry.timedOut = true;
           entry.controller.abort('work-deadline-exceeded');
         }
       }, entry.timeoutMs);
-      const aborted = new Promise((_, reject) => entry.controller.signal.addEventListener('abort', () => reject(abortError(String(entry.controller.signal.reason || 'work-cancelled'))), { once: true }));
+      const settleFailure = error => {
+        if (callerSettled) return;
+        callerSettled = true;
+        const cancelled = entry.controller.signal.aborted || error?.name === 'AbortError';
+        entry.state = cancelled ? 'cancelling' : 'failed';
+        this.metrics[cancelled ? 'cancelled' : 'failed'] += 1;
+        if (entry.timedOut) this.metrics.timedOut = (this.metrics.timedOut || 0) + 1;
+        if (!cancelled) this._recordCircuit(entry, false, false);
+        entry.reject(entry.controller.signal.aborted
+          ? abortError(String(entry.controller.signal.reason || 'work-cancelled'))
+          : error);
+      };
+      const onAbort = () => {
+        clearTimeout(timeout);
+        // Release the caller promptly, NOT the producer's physical capacity.
+        settleFailure(abortError(String(entry.controller.signal.reason || 'work-cancelled')));
+      };
+      entry.controller.signal.addEventListener('abort', onAbort, { once: true });
       Promise.resolve()
-        .then(() => Promise.race([entry.producer(entry.controller.signal), aborted]))
+        .then(() => {
+          if (entry.controller.signal.aborted) throw abortError(String(entry.controller.signal.reason || 'work-cancelled'));
+          return entry.producer(entry.controller.signal);
+        })
         .then(value => {
           if (entry.controller.signal.aborted) throw abortError(String(entry.controller.signal.reason || 'work-cancelled'));
-          entry.state = 'completed';
-          this.metrics.completed += 1;
-          this._recordCircuit(entry, true);
-          entry.resolve(value);
-        })
-        .catch(error => {
-          const cancelled = entry.controller.signal.aborted || error?.name === 'AbortError';
-          entry.state = cancelled ? 'cancelled' : 'failed';
-          this.metrics[cancelled ? 'cancelled' : 'failed'] += 1;
-          if (entry.timedOut) this.metrics.timedOut = (this.metrics.timedOut || 0) + 1;
-          this._recordCircuit(entry, false, cancelled);
-          // The producer can observe AbortSignal first and reject with a
-          // transport-local AbortError. Preserve the governor's authoritative
-          // cancellation reason whenever this entry owns the abort; callers
-          // must be able to distinguish supersession from deadline/disposal.
-          entry.reject(entry.controller.signal.aborted
-            ? abortError(String(entry.controller.signal.reason || 'work-cancelled'))
-            : error);
-        })
+          if (!callerSettled) {
+            callerSettled = true;
+            entry.state = 'completed';
+            this.metrics.completed += 1;
+            this._recordCircuit(entry, true);
+            entry.resolve(value);
+          }
+        }, settleFailure)
+        .catch(settleFailure)
         .finally(() => {
+          // This finally belongs to the producer promise, never to a cancellation race.
           clearTimeout(timeout);
+          entry.controller.signal.removeEventListener('abort', onAbort);
+          if (entry.controller.signal.aborted || entry.state === 'cancelling') {
+            entry.state = 'cancelled';
+            this._recordCircuit(entry, false, true);
+          }
           this.durations.push(Math.max(0, this.now() - entry.startedAt));
           if (this.durations.length > 256) this.durations.shift();
           pool.active -= 1;
@@ -213,7 +230,12 @@ class WorkGovernor {
   }
 
   _recordCircuit(entry, success, cancelled = false) {
-    if (!entry.circuitKey || cancelled) return;
+    if (!entry.circuitKey) return;
+    if (cancelled) {
+      const pending = this.circuits.get(entry.circuitKey);
+      if (pending) pending.halfOpenActive = false;
+      return;
+    }
     const circuit = this.circuits.get(entry.circuitKey) || { state: 'closed', failures: 0, openUntil: 0, halfOpenActive: false, cooldownMs: entry.circuitCooldownMs };
     if (success) {
       Object.assign(circuit, { state: 'closed', failures: 0, openUntil: 0, halfOpenActive: false });

@@ -91,9 +91,20 @@ class CanonicalEventPublisher {
       const finish = (result, errorCode = null) => {
         if (settled) return; settled = true; clearTimeout(timer);
         if (this.activeChild === child) this.activeChild = null;
-        if (result) this.onHealth({ connected: true, published: Number(result.published || events.length) });
-        else this.onHealth({ connected: false, status: 'degraded', dropped: events.length, error_code: errorCode || 'canonical-bus-publish-failed' });
-        resolve(result);
+        const acknowledged = result && result.valid === true && Number.isSafeInteger(result.published)
+          && result.published >= 0 && result.published <= events.length;
+        if (acknowledged) {
+          const complete = result.published === events.length;
+          if (complete) this.onHealth({ connected: true, published: result.published });
+          else this.onHealth({ connected: false, status: 'degraded',
+            published: result.published, unacknowledged: events.length - result.published,
+            delivery_state: 'partial-or-unacknowledged', error_code: 'canonical-bus-partial-ack' });
+          resolve(complete ? result : { ...result, valid: false, error_code: 'canonical-bus-partial-ack' });
+        } else {
+          this.onHealth({ connected: false, status: 'degraded', published: 0,
+            unacknowledged: events.length, error_code: errorCode || 'canonical-bus-invalid-ack' });
+          resolve(null);
+        }
       };
       const capture = (current, chunk) => {
         const next = current + chunk.toString('utf8');
@@ -105,7 +116,7 @@ class CanonicalEventPublisher {
       child.on('error', error => finish(null, error.code || 'canonical-bus-process-error'));
       child.on('close', code => {
         if (code !== 0) { finish(null, `canonical-bus-exit-${code}`); return; }
-        try { const result = JSON.parse(stdout); finish(result?.valid ? result : null, result?.valid ? null : 'canonical-bus-invalid-result'); }
+        try { const result = JSON.parse(stdout); finish(result?.valid === true ? result : null, result?.valid === true ? null : 'canonical-bus-invalid-result'); }
         catch { finish(null, 'canonical-bus-invalid-json'); }
       });
       const timer = setTimeout(() => {

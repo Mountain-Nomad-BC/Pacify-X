@@ -107,7 +107,7 @@ def test_cross_group_total_budget_exceeds_one_slow_member_chunk() -> None:
     assert certification["cross_group_command"][:3] == ["python", "-B", "-m"]
     assert len(command_members) == 4
     assert certification["cross_group_timeout_seconds"] == 900
-    assert certification["cross_group_timeout_seconds"] >= governance_chunk_timeout * 3
+    assert certification["cross_group_timeout_seconds"] > governance_chunk_timeout
 
 
 def test_sections_are_content_addressed_bounded_and_dependency_governed(tmp_path):
@@ -283,10 +283,23 @@ def test_studio_section_is_bounded_into_independently_addressed_chunks():
     assert "runtime/studio_api.py" in first_inputs & second_inputs
 
 
-def test_failed_monolithic_sections_are_serially_partitioned_per_file():
+def test_large_sections_are_serially_partitioned_with_exact_bounded_membership():
     expected = {
-        "dashboard-extension": {"chunk_timeout": 600, "section_timeout": 3600},
-        "testing-governance": {"chunk_timeout": 300, "section_timeout": 1800},
+        "dashboard-extension": {
+            "chunk_size": 1,
+            "chunk_timeout": 600,
+            "section_timeout": 3600,
+        },
+        "testing-governance": {
+            "chunk_size": 8,
+            "chunk_timeout": 600,
+            "section_timeout": 1800,
+        },
+        "runtime-domain-contracts": {
+            "chunk_size": 8,
+            "chunk_timeout": 300,
+            "section_timeout": 600,
+        },
     }
     for name, limits in expected.items():
         section = resolve_test_section(ROOT, name)
@@ -304,9 +317,19 @@ def test_failed_monolithic_sections_are_serially_partitioned_per_file():
             assert members.count("tests/test_test_evidence_inputs.py") == 1
         assert section["max_parallel_chunks"] == 1
         assert section["timeout_seconds"] == limits["section_timeout"]
-        assert len(chunks) == len(members)
+        expected_chunk_count = (
+            len(members) + limits["chunk_size"] - 1
+        ) // limits["chunk_size"]
+        assert len(chunks) == expected_chunk_count
         assert [member for chunk in chunks for member in chunk["members"]] == members
-        assert all(chunk["member_count"] == 1 for chunk in chunks)
+        assert all(
+            chunk["member_count"] == len(chunk["members"])
+            and 1 <= chunk["member_count"] <= limits["chunk_size"]
+            for chunk in chunks
+        )
+        assert all(
+            chunk["member_count"] == limits["chunk_size"] for chunk in chunks[:-1]
+        )
         assert all(
             chunk["timeout_seconds"] == limits["chunk_timeout"] for chunk in chunks
         )

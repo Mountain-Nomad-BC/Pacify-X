@@ -305,7 +305,7 @@ class OperationalEventBus:
         ]
 
     def replay(self, *, after_revision: int = 0, limit: int = 1000) -> dict[str, Any]:
-        """Replay a bounded verified suffix while preserving degraded ancestry."""
+        """Replay the next bounded page from an anchored cursor."""
         if after_revision < 0 or not 0 <= limit <= 10_000:
             raise ValueError("invalid replay boundary")
         return self._read_publication(self._replay_locked, after_revision=after_revision, limit=limit)
@@ -313,9 +313,35 @@ class OperationalEventBus:
     def _replay_locked(self, *, after_revision, limit):
         records: list[dict[str, object]] = []
         errors: list[str] = []
-        previous = ZERO_SHA256
-        paths = sorted((self.root / "events").glob("*.json")) if (self.root / "events").is_dir() else []
-        for expected, path in enumerate(paths, start=1):
+        state = self._state()
+        head_revision = int(state["revision"])
+        epoch = None
+        previous: str | None = None
+        if head_revision:
+            try:
+                first = json.loads((self.root / "events" / "00000001.json").read_text(encoding="utf-8"))
+                epoch = str(first["event_sha256"])
+            except (OSError, UnicodeError, json.JSONDecodeError, KeyError, TypeError):
+                errors.append("event epoch anchor is missing or invalid")
+        if after_revision > head_revision:
+            errors.append("replay cursor is ahead of the current revision")
+        if after_revision > 0 and not errors:
+            try:
+                cursor_path = self.root / "events" / f"{after_revision:08d}.json"
+                cursor = json.loads(cursor_path.read_text(encoding="utf-8"))
+                previous = str(cursor["event_sha256"])
+                cursor_head = {"schema_version": "px.operation-bus-head/1.0", "revision": after_revision, "event_sha256": previous}
+                anchor = self.root / ".authority" / "anchors" / f"{after_revision:08d}-{previous}.json"
+                if (cursor.get("schema_version") != "px.operation-envelope/1.0"
+                    or cursor.get("revision") != after_revision
+                    or previous != _sha(cursor.get("event"))
+                    or json.loads(anchor.read_text(encoding="utf-8")) != cursor_head):
+                    raise ValueError("cursor event or anchor mismatch")
+            except (OSError, UnicodeError, json.JSONDecodeError, KeyError, TypeError, ValueError) as error:
+                errors.append(f"cursor {after_revision}: {error}")
+        stop = min(head_revision, after_revision + limit + 1)
+        for expected in range(after_revision + 1, stop + 1):
+            path = self.root / "events" / f"{expected:08d}.json"
             try:
                 envelope = json.loads(path.read_text(encoding="utf-8"))
                 if set(envelope) != {"schema_version", "revision", "event_sha256", "event"}:
@@ -338,34 +364,35 @@ class OperationalEventBus:
                 break
             previous = str(envelope["event_sha256"])
             records.append(envelope)
-        state = self._state()
-        if not records and (state["revision"] != 0 or self._head_path.exists()):
-            errors.append("event ancestry is missing for retained bus state")
-        if not errors and records:
+        has_more = len(records) > limit
+        selected = records[:limit] if limit else []
+        page_revision = int(selected[-1]["revision"]) if selected else after_revision
+        if not errors and not has_more and page_revision == head_revision and head_revision:
             expected_head = {
                 "schema_version": "px.operation-bus-head/1.0",
-                "revision": len(records),
+                "revision": head_revision,
                 "event_sha256": previous,
             }
             try:
                 head = json.loads(self._head_path.read_text(encoding="utf-8"))
-                anchor = self.root / ".authority" / "anchors" / f"{len(records):08d}-{previous}.json"
+                anchor = self.root / ".authority" / "anchors" / f"{head_revision:08d}-{previous}.json"
                 if head != expected_head or json.loads(anchor.read_text(encoding="utf-8")) != expected_head:
                     raise ValueError("protected head or anchor mismatch")
-                if state["revision"] != len(records) or state["head_sha256"] != previous:
+                if state["head_sha256"] != previous:
                     raise ValueError("bus state differs from event ancestry")
             except (OSError, UnicodeError, json.JSONDecodeError, ValueError) as error:
                 errors.append(str(error))
-        selected = [record for record in records if int(record["revision"]) > after_revision]
-        if limit:
-            selected = selected[-limit:]
-        else:
-            selected = []
         return {
-            "schema_version": "px.operation-replay/1.0",
+            "schema_version": "px.operation-replay/2.0",
             "valid": not errors,
             "revision": state["revision"],
-            "valid_prefix_count": len(records),
+            "epoch": epoch,
+            "after_revision": after_revision,
+            "next_revision": page_revision,
+            "has_more": has_more,
+            "gap": bool(errors),
+            "verification_scope": "anchored-cursor-forward-page",
+            "valid_prefix_count": page_revision,
             "events": selected,
             "errors": errors,
         }

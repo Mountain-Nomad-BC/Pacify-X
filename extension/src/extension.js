@@ -1101,20 +1101,20 @@ function activateImplementation(context, transaction) {
   async function coordinationAction(message, targetWebview = panel?.webview) {
     const root = workspaceRoot(); if (!root) throw new Error('Open a workspace before using coordination.');
     const actor = actorIdentity(sessionId);
+    const claimProof = input => {
+      const snapshot = coordination();
+      const claim = snapshot?.state?.claims?.find(item => input.claimId
+        ? item.id === input.claimId
+        : item.task_id === input.taskId && item.actor?.actor_id === actor.actorId && item.actor?.session_id === actor.sessionId);
+      return { claimId: input.claimId || claim?.id || null, fencingTokens: claim?.fencing_tokens || {} };
+    };
     let result;
     if (message.type === 'createParallelPlan') result = createParallelPlan(root, actor, message.plan || {});
-    else if (message.type === 'claimCoordinationTask') result = claimTask(root, actor, { taskId: message.taskId, claimTargets: message.claimTargets, ttlMinutes: message.ttlMinutes, mode: message.mode, authority: message.authority });
-    else if (message.type === 'renewCoordinationClaim') {
-      const snapshot = coordination(); const claim = snapshot?.state?.claims?.find(item => item.id === message.claimId);
-      result = renewClaim(root, actor, { claimId: message.claimId, fencingTokens: claim?.fencing_tokens || {}, ttlMinutes: message.ttlMinutes });
-    }
-    else if (message.type === 'recordTaskProgress') {
-      const snapshot = coordination();
-      const claim = snapshot?.state?.claims?.find(item => item.task_id === message.taskId && item.actor?.actor_id === actor.actorId && item.actor?.session_id === actor.sessionId);
-      result = recordProgress(root, actor, { ...message, fencingTokens: claim?.fencing_tokens || {} });
-    }
-    else if (message.type === 'reconcileCoordinationTask') result = reconcileTask(root, actor, message);
-    else if (message.type === 'releaseCoordinationTask') result = releaseTask(root, actor, message);
+    else if (message.type === 'claimCoordinationTask') result = claimTask(root, actor, { taskId: message.taskId, claimTargets: message.claimTargets, ttlMinutes: message.ttlMinutes, mode: message.mode, authority: message.authority, authorityGrant: message.authorityGrant });
+    else if (message.type === 'renewCoordinationClaim') result = renewClaim(root, actor, { ...message, ...claimProof(message) });
+    else if (message.type === 'recordTaskProgress') result = recordProgress(root, actor, { ...message, ...claimProof(message) });
+    else if (message.type === 'reconcileCoordinationTask') result = reconcileTask(root, actor, { ...message, ...claimProof(message) });
+    else if (message.type === 'releaseCoordinationTask') result = releaseTask(root, actor, { ...message, ...claimProof(message) });
     else if (message.type === 'captureCoordinationMemory') result = captureMemory(root, actor, message);
     else throw new Error('Unsupported coordination action.');
     const authorization = message.type === 'releaseCoordinationTask' ? { boundary: message.acknowledgement?.boundary, confirmed: message.acknowledgement?.confirmed === true, taskId: message.taskId, reasonSha256: crypto.createHash('sha256').update(String(message.reason || ''), 'utf8').digest('hex'), observedAt: new Date().toISOString() } : undefined;

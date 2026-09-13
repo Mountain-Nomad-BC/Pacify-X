@@ -2104,7 +2104,7 @@ def main(argv: list[str] | None = None) -> int:
                     raise ValueError("test section name is required for show or run")
                 output = resolve_test_section(root, args.name)
                 if args.action == "run":
-                    from runtime.section_scheduler import run_section
+                    from .section_scheduler import run_section
                     output = run_section(root, output, args.name, section_started)
         elif args.command == "test-profile":
             from uuid import uuid4

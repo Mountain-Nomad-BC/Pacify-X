@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.88
+
+- Integrates the completed architecture, authority, lifecycle, evidence, and bounded-input repair campaign.
+- Adds source-linked AI auditor guidance and the canonical repository architecture atlas.
+- Strengthens coordination generation fencing, state restoration, and release ownership for the current repair campaign.
+
 ## 0.6.87
 
 - Isolate Studio authority keys in the owned host, defer certification fixtures until fresh-project onboarding is proven, and recover transient native-window and graph-control settlement races.

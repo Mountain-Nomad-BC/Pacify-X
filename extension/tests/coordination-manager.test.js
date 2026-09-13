@@ -18,6 +18,7 @@ function fixture(t) {
 }
 const actorA = { actorId: 'actor-a', sessionId: 'session-a', harness: 'VS Code', accountableOwner: 'tester' };
 const actorB = { actorId: 'actor-b', sessionId: 'session-b', harness: 'Antigravity', accountableOwner: 'tester' };
+function claimProof(receipt) { return { claimId: receipt.claim_id, fencingTokens: receipt.fencing_tokens }; }
 
 test('coordination inspection does not initialize or write an absent store', t => {
   const root = fixture(t); const before = fs.readdirSync(root).sort();
@@ -64,9 +65,9 @@ test('dependency ordering permits overlap but blocks checkout until dependency c
     { id: 'review', title: 'Review', claims: ['src/feature'], dependsOn: ['build'] }
   ] });
   assert.throws(() => claimTask(root, actorB, { taskId: 'review' }), /task-dependencies-incomplete/);
-  claimTask(root, actorA, { taskId: 'build' });
-  recordProgress(root, actorA, { taskId: 'build', status: 'completed', summary: 'built' });
-  reconcileTask(root, actorA, { taskId: 'build', summary: 'verified', conflictsResolved: true });
+  const buildClaim = claimTask(root, actorA, { taskId: 'build' }).result.receipt;
+  recordProgress(root, actorA, { taskId: 'build', status: 'completed', summary: 'built', ...claimProof(buildClaim) });
+  reconcileTask(root, actorA, { taskId: 'build', summary: 'verified', conflictsResolved: true, ...claimProof(buildClaim) });
   const claimed = claimTask(root, actorB, { taskId: 'review' });
   assert.equal(claimed.result.receipt.task_id, 'review');
 });
@@ -83,10 +84,10 @@ test('active file claims deny a second IDE and owner checks protect progress', t
 test('completion requires explicit reconciliation and releases the task claim', t => {
   const root = fixture(t);
   createParallelPlan(root, actorA, { objective: 'finish', tasks: [{ id: 'task', title: 'Task', claims: ['src/task.js'] }] });
-  claimTask(root, actorA, { taskId: 'task' });
-  assert.throws(() => reconcileTask(root, actorA, { taskId: 'task', summary: 'early', conflictsResolved: true }), /must-be-completed/);
-  recordProgress(root, actorA, { taskId: 'task', status: 'completed', summary: 'tests passed', evidence: ['test:ok'] });
-  reconcileTask(root, actorA, { taskId: 'task', summary: 'merged', conflictsResolved: true });
+  const claim = claimTask(root, actorA, { taskId: 'task' }).result.receipt;
+  assert.throws(() => reconcileTask(root, actorA, { taskId: 'task', summary: 'early', conflictsResolved: true, ...claimProof(claim) }), /must-be-completed/);
+  recordProgress(root, actorA, { taskId: 'task', status: 'completed', summary: 'tests passed', evidence: ['test:ok'], ...claimProof(claim) });
+  reconcileTask(root, actorA, { taskId: 'task', summary: 'merged', conflictsResolved: true, ...claimProof(claim) });
   const state = readCoordination(root).state;
   assert.equal(state.tasks.find(item => item.id === 'task').status, 'reconciled');
   assert.equal(state.claims.length, 0);
@@ -142,11 +143,46 @@ test('portable memory validates confidence, provenance hashes, seals, and counte
   assert.equal(readMemoryTelemetry(root).integrity.counter_drift.length, 1);
 });
 
+test('event and memory histories reject unbounded full-file acquisition', t => {
+  const root = fixture(t); const manager = require('../src/coordinationManager');
+  const paths = manager.coordinationPaths(root);
+  createParallelPlan(root, actorA, { objective: 'bounded histories', tasks: [{ id: 'task', title: 'Task', claims: ['src/a'] }] });
+
+  const boundedEvent = path.join(root, 'large-events.jsonl');
+  const handle = fs.openSync(boundedEvent, 'w');
+  try { fs.ftruncateSync(handle, (32 * 1024 * 1024) + 1024); } finally { fs.closeSync(handle); }
+  fs.appendFileSync(boundedEvent, `\n${JSON.stringify({ event_id: 'retained' })}\n`, 'utf8');
+  const originalReadFile = fs.readFileSync;
+  fs.readFileSync = function(file, ...args) {
+    if (path.resolve(file) === path.resolve(boundedEvent)) throw new Error('unbounded-event-read');
+    return originalReadFile.call(this, file, ...args);
+  };
+  try {
+    const tail = manager.tailJsonlDetailed(boundedEvent, 1);
+    assert.deepEqual(tail.records, [{ event_id: 'retained' }]);
+    assert.ok(tail.health.truncated_before_bytes > 0);
+    assert.equal(tail.health.verification_scope, 'bounded-retained-suffix');
+  } finally { fs.readFileSync = originalReadFile; }
+
+  fs.mkdirSync(paths.memory.root, { recursive: true });
+  const oversizedMemory = paths.memory.project;
+  const memoryHandle = fs.openSync(oversizedMemory, 'w');
+  try { fs.ftruncateSync(memoryHandle, (16 * 1024 * 1024) + 1); } finally { fs.closeSync(memoryHandle); }
+  fs.readFileSync = function(file, ...args) {
+    if (path.resolve(file) === path.resolve(oversizedMemory)) throw new Error('unbounded-memory-read');
+    return originalReadFile.call(this, file, ...args);
+  };
+  try {
+    const telemetry = readMemoryTelemetry(root);
+    assert.equal(telemetry.errors.some(error => error.code === 'memory-history-file-byte-budget-exceeded'), true);
+  } finally { fs.readFileSync = originalReadFile; }
+});
+
 test('explicit task release preserves history while removing ownership', t => {
   const root = fixture(t);
   createParallelPlan(root, actorA, { objective: 'release', tasks: [{ id: 'task', title: 'Task', claims: ['src/'] }] });
-  claimTask(root, actorA, { taskId: 'task' });
-  releaseTask(root, actorA, { taskId: 'task', reason: 'handoff' });
+  const claim = claimTask(root, actorA, { taskId: 'task' }).result.receipt;
+  releaseTask(root, actorA, { taskId: 'task', reason: 'handoff', ...claimProof(claim) });
   const snapshot = readCoordination(root);
   assert.equal(snapshot.state.tasks.find(item => item.id === 'task').owner, null);
   assert.equal(snapshot.state.tasks.find(item => item.id === 'task').status, 'released');
@@ -157,12 +193,12 @@ test('fencing tokens increase and stale replay is rejected after release and rec
   const root = fixture(t);
   createParallelPlan(root, actorA, { objective: 'fence', tasks: [{ id: 'task', title: 'Task', claims: ['src/fenced.js'] }] });
   const first = claimTask(root, actorA, { taskId: 'task' }).result.receipt;
-  renewClaim(root, actorA, { claimId: first.claim_id, fencingTokens: first.fencing_tokens, ttlMinutes: 30 });
-  releaseTask(root, actorA, { taskId: 'task', reason: 'handoff' });
+  renewClaim(root, actorA, { ...claimProof(first), ttlMinutes: 30 });
+  releaseTask(root, actorA, { taskId: 'task', reason: 'handoff', ...claimProof(first) });
   const second = claimTask(root, actorB, { taskId: 'task' }).result.receipt;
   assert.ok(second.fencing_tokens['src/fenced.js'] > first.fencing_tokens['src/fenced.js']);
-  assert.throws(() => recordProgress(root, actorB, { taskId: 'task', status: 'in_progress', summary: 'stale', fencingTokens: first.fencing_tokens }), /stale-fencing-token/);
-  recordProgress(root, actorB, { taskId: 'task', status: 'in_progress', summary: 'current', fencingTokens: second.fencing_tokens });
+  assert.throws(() => recordProgress(root, actorB, { taskId: 'task', status: 'in_progress', summary: 'stale', ...claimProof(first) }), /claim-proof|stale-fencing-token/);
+  recordProgress(root, actorB, { taskId: 'task', status: 'in_progress', summary: 'current', ...claimProof(second) });
 });
 
 test('shared and informational modes coexist while exclusive overlap blocks', t => {
@@ -170,8 +206,8 @@ test('shared and informational modes coexist while exclusive overlap blocks', t 
   createParallelPlan(root, actorA, { objective: 'modes one', tasks: [{ id: 'one', title: 'One', claims: ['docs/shared'] }] });
   claimTask(root, actorA, { taskId: 'one', claimTargets: ['docs/shared'], mode: 'shared' });
   createParallelPlan(root, actorB, { objective: 'modes two', tasks: [{ id: 'two', title: 'Two', claims: ['docs/shared/file.md'] }] });
-  claimTask(root, actorB, { taskId: 'two', claimTargets: ['docs/shared/file.md'], mode: 'shared' });
-  releaseTask(root, actorB, { taskId: 'two' });
+  const shared = claimTask(root, actorB, { taskId: 'two', claimTargets: ['docs/shared/file.md'], mode: 'shared' }).result.receipt;
+  releaseTask(root, actorB, { taskId: 'two', ...claimProof(shared) });
   claimTask(root, actorB, { taskId: 'two', claimTargets: ['docs/shared/file.md'], mode: 'informational' });
   createParallelPlan(root, actorB, { objective: 'modes three', tasks: [{ id: 'three', title: 'Three', claims: ['docs/shared'] }] });
   assert.throws(() => claimTask(root, { ...actorB, sessionId: 'session-c' }, { taskId: 'three', claimTargets: ['docs/shared'], mode: 'exclusive' }), /active-claim-conflict/);
@@ -186,10 +222,72 @@ test('budget hard stop and resume envelope are durable and diagnosable', t => {
     acceptance: ['receipt retained']
   }] });
   const claimed = claimTask(root, actorA, { taskId: 'bounded-task' }).result.receipt;
-  recordProgress(root, actorA, { taskId: 'bounded-task', status: 'in_progress', summary: 'over budget', usage: { tokens: 101 }, fencingTokens: claimed.fencing_tokens });
+  recordProgress(root, actorA, { taskId: 'bounded-task', status: 'in_progress', summary: 'over budget', usage: { tokens: 101 }, ...claimProof(claimed) });
   const handoff = taskHandoff(root, 'bounded-task');
   assert.equal(handoff.resume_envelope.usage.status, 'hard_stop');
   assert.deepEqual(handoff.resume_envelope.goal_context, ['mission: reliable local coordination']);
   assert.equal(diagnoseWorkStop(root, 'bounded-task').reasons.some(reason => reason.code === 'budget'), true);
   assert.equal(workRoom(root, 'bounded-task').derived, true);
+});
+
+test('mutation requires exact complete claim proof and expiry remains recoverable', t => {
+  const root = fixture(t);
+  createParallelPlan(root, actorA, { objective: 'proof', tasks: [{ id: 'task', title: 'Task', claims: ['src/a', 'src/b'] }] });
+  const claim = claimTask(root, actorA, { taskId: 'task' }).result.receipt;
+  assert.throws(() => recordProgress(root, actorA, { taskId: 'task', summary: 'missing' }), /claim-proof-id/);
+  assert.throws(() => recordProgress(root, actorA, { taskId: 'task', summary: 'partial', claimId: claim.claim_id, fencingTokens: { 'src/a': claim.fencing_tokens['src/a'] } }), /denominator/);
+  const original = Date.now; Date.now = () => original() + 24 * 60 * 60 * 1000;
+  try {
+    releaseTask(root, actorA, { taskId: 'task', reason: 'expired recovery', ...claimProof(claim) });
+  } finally { Date.now = original; }
+  assert.equal(readCoordination(root).state.tasks.find(item => item.id === 'task').status, 'released');
+});
+
+test('team authority requires an exact current sealed hub grant', t => {
+  const root = fixture(t);
+  createParallelPlan(root, actorA, { objective: 'authority', tasks: [{ id: 'task', title: 'Task', claims: ['src/a'] }] });
+  assert.throws(() => claimTask(root, actorA, { taskId: 'task', authority: 'team_authoritative', authorityGrant: {} }), /hub-is-not-authoritative/);
+  const manager = require('../src/coordinationManager');
+  const paths = manager.coordinationPaths(root); const state = JSON.parse(fs.readFileSync(paths.state, 'utf8'));
+  state.team_fabric.hub = { configured: true, connected: true, authoritative: true };
+  state.state_hash = manager.hash({ ...state, state_hash: null });
+  fs.writeFileSync(paths.state, `${JSON.stringify(state, null, 2)}\n`, 'utf8');
+  const invariants = require('../src/stateInvariants');
+  const events = fs.readFileSync(paths.events, 'utf8').trim().split('\n').map(JSON.parse);
+  events[events.length - 1].after_hash = state.state_hash;
+  events[events.length - 1].event_sha256 = invariants.eventHash(events[events.length - 1]);
+  fs.writeFileSync(paths.events, `${events.map(JSON.stringify).join('\n')}\n`, 'utf8');
+  const grant = { schema_version: 'px.coordination-authority-grant/1.0', project_id: state.project.id, task_id: 'task', actor_id: 'actor-a', session_id: 'session-a', targets: ['src/a'], expires_utc: new Date(Date.now() + 60000).toISOString(), revoked: false };
+  grant.grant_sha256 = manager.hash(grant);
+  const claimed = claimTask(root, actorA, { taskId: 'task', authority: 'team_authoritative', authorityGrant: grant });
+  assert.equal(claimed.state.tasks.find(item => item.id === 'task').authority_state, 'team_authoritative');
+  assert.equal(claimed.result.receipt.authority, 'team_authoritative');
+});
+
+test('pending multi-artifact publication recovers without duplicating the operation', t => {
+  const root = fixture(t); const manager = require('../src/coordinationManager');
+  createParallelPlan(root, actorA, { objective: 'transaction', tasks: [{ id: 'task', title: 'Task', claims: ['src/a'] }] });
+  const paths = manager.coordinationPaths(root); const originalOpen = fs.openSync; const originalWriteFile = fs.writeFileSync; let eventDescriptor = null; let injected = false;
+  fs.openSync = function(file, flags, ...args) {
+    const descriptor = originalOpen.call(this, file, flags, ...args);
+    if (!injected && path.resolve(file) === path.resolve(paths.events) && flags === 'a') eventDescriptor = descriptor;
+    return descriptor;
+  };
+  fs.writeFileSync = function(file, value, ...args) {
+    if (!injected && file === eventDescriptor) {
+      injected = true;
+      originalWriteFile.call(this, file, String(value).slice(0, Math.max(1, Math.floor(String(value).length / 2))), ...args);
+      throw new Error('injected-event-publication-failure');
+    }
+    return originalWriteFile.call(this, file, value, ...args);
+  };
+  try {
+    assert.throws(() => registerSession(root, actorA), /injected-event-publication-failure/);
+  } finally { fs.openSync = originalOpen; fs.writeFileSync = originalWriteFile; }
+  assert.equal(fs.existsSync(paths.publication), true);
+  registerSession(root, actorB);
+  const snapshot = readCoordination(root, { eventLimit: 100 });
+  assert.equal(snapshot.event_log_health.status, 'healthy');
+  assert.equal(snapshot.events.filter(event => event.operation === 'session-heartbeat').length, 2);
+  assert.equal(fs.existsSync(paths.publication), false);
 });

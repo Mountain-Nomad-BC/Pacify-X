@@ -20,9 +20,9 @@ from typing import Callable, Iterable, Mapping, Sequence
 from urllib.request import ProxyHandler, Request, build_opener
 from uuid import uuid4
 
-from runtime.file_lock import FileLock
-from runtime.process_supervisor import ProcessSupervisor
-from runtime.resource_lifecycle import ResourceManager, RunState
+from .file_lock import FileLock
+from .process_supervisor import ProcessSupervisor
+from .resource_lifecycle import ResourceManager, RunState
 
 
 MAX_GGUF_METADATA_BYTES = 1_048_576
