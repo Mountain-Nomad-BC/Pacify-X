@@ -2,17 +2,17 @@
 
 ![PACIFY-X - AI and Engineering Framework](docs/assets/pacify-x.png)
 
-## Engineering & Agent OS with learning and governance
+## Engineering & Agent OS with Learning and Governance
 
 ### **P**roject and **A**I **C**apabilities **I**ntelligence **F**ramework for **Y**ou
 
 > Make AI build software like an engineering team, not an overconfident intern.
 
-Engineering Loop utilization & Harnessing turns a general-purpose AI assistant into a governed, evidence-driven engineering system. It gives the AI the skills, rules, project memory, safety checks, and repeatable workflows it needs to manage software work responsibly.
+Engineering Loop Utilization & Harnessing turns a general-purpose AI assistant into a governed, evidence-driven engineering system. It gives the AI the skills, rules, project memory, safety checks, and repeatable workflows it needs to manage software work responsibly.
 
 PACIFY-X is the project and framework. `engineering-bootstrap` is its Python package and command-line control plane.
 
-**Status:** v0.7.0 is undergoing governed certification; no publication claim is made yet
+**Status:** v0.7.0 is undergoing governed certification; no publication claim is made yet.
 
 **Current release:** v0.7.0 (release candidate; certification and publication pending)
 
@@ -31,11 +31,11 @@ You describe the project and the outcome you want. PACIFY-X helps the AI:
 - choose only the skills needed for the current task;
 - make a plan, track the work, and ask before risky actions;
 - test its work and collect evidence before claiming success;
-- recover or quarantine material instead of silently deleting it.
-- Engineering Genomics and it will help turn knowledge into operational code
-- Logs and monitors usage and flags candidates for learning, processes, workflows, orchestrations, and skill creation and refinement.
-- Take multiple potential candidates, test and refine them until they combine and validate and canonical knowledge
-- Multi layer persistent memory
+- recover or quarantine material instead of silently deleting it;
+- use Engineering Genomics to help turn knowledge into operational code;
+- log and monitor usage, identifying candidates for learning, processes, workflows, orchestrations, and skill creation or refinement;
+- evaluate multiple potential candidates, test and refine them, and combine validated results into canonical knowledge;
+- maintain multilayer persistent memory.
 
 You do not need to learn the internal orchestration system or memorize a large command set. That is the AI’s job. The human-facing setup is intentionally short.
 
