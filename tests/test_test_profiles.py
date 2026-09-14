@@ -665,7 +665,7 @@ def test_certification_groups_are_exhaustive_exclusive_and_bounded():
     )
     assert "registry/incomplete_finding_reviews.json" in structural["inputs"]
     receipt = group_receipt(
-        exact,
+        {**exact, "valid": True},
         {
             "valid": True,
             "exit_code": 0,
@@ -676,7 +676,9 @@ def test_certification_groups_are_exhaustive_exclusive_and_bounded():
         },
     )
     assert receipt["passed"] and len(receipt["receipt_sha256"]) == 64
-    assert receipt["output_evidence"]["stdout_bytes"] == len("21 passed\n")
+    assert receipt["output_evidence"]["stdout_bytes"] == len(
+        f"{len(exact['members'])} passed\n"
+    )
     assert receipt["output_evidence"]["failure_nodes"] == []
 
     failed = group_receipt(
