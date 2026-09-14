@@ -631,6 +631,11 @@ def test_workflow_timeout_and_retry_controls_are_enforced(tmp_path):
         row["status"] in {"startup_timeout", "idle_timeout", "total_timeout"}
         for row in receipt["node_receipts"][0]["attempts"]
     ), receipt["node_receipts"][0]["attempts"]
+    assert all(
+        row.get("tree_closed") is True
+        and row.get("supervision_outcome", {}).get("custody_retained") is False
+        for row in receipt["node_receipts"][0]["attempts"]
+    ), receipt["node_receipts"][0]["attempts"]
 
 
 def _wait_for_workflow_state(studio, run_id: str, expected: set[str]) -> dict:

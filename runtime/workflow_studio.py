@@ -1020,7 +1020,11 @@ class WorkflowStudio:
             "idle_timeout_seconds": timeout,
             "total_timeout_seconds": timeout,
             "graceful_shutdown_seconds": min(1.0, timeout),
-            "force_shutdown_seconds": min(2.0, max(timeout, 0.1)),
+            # The node timeout bounds execution. Physical process/output-pipe
+            # settlement needs its own bounded allowance: tying it to a tiny
+            # execution timeout makes a correctly timed-out node look like an
+            # unrelated drain failure when the host is briefly descheduled.
+            "force_shutdown_seconds": min(2.0, max(timeout, 1.0)),
             "stdout_limit_bytes": 65536,
             "stderr_limit_bytes": 65536,
         }
