@@ -104,6 +104,56 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _git_tag_target(root: Path, tag: str) -> str:
+    if re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._/-]{0,127}", tag) is None:
+        raise AutomationBlocked("release tag identity is invalid")
+    result = subprocess.run(
+        ["git", "-C", str(root), "rev-list", "-n", "1", tag],
+        capture_output=True,
+        text=True,
+        timeout=30,
+        check=False,
+        env={**os.environ, "GIT_OPTIONAL_LOCKS": "0"},
+    )
+    target = result.stdout.strip()
+    if result.returncode != 0 or re.fullmatch(r"[a-f0-9]{40}", target) is None:
+        raise AutomationBlocked("annotated release tag target is unavailable")
+    return target
+
+
+def _validate_prior_tag_target(config: Config) -> None:
+    command = config.owners["identity"][0]
+    positions = [index for index, token in enumerate(command) if token == "--config"]
+    if len(positions) != 1 or positions[0] + 1 >= len(command):
+        raise AutomationBlocked("identity owner has no unique stage configuration")
+    stage_path = _inside(config.root, command[positions[0] + 1], "identity stage config")
+    stage = _object(stage_path)
+    identity = stage.get("identity")
+    if not isinstance(identity, dict):
+        raise AutomationBlocked("identity stage configuration is missing")
+    tag = _required(identity, "release_tag")
+    expected = _required(identity, "prior_tag_target")
+    if _git_tag_target(config.root, tag) != expected:
+        raise AutomationBlocked("configured prior tag target is stale")
+
+
+def _validate_empty_git_index(config: Config) -> None:
+    """Require identity staging custody before consuming reconciliation."""
+    result = subprocess.run(
+        ["git", "-C", str(config.root), "diff", "--cached", "--quiet", "--exit-code"],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.PIPE,
+        text=True,
+        timeout=30,
+        check=False,
+        env={**os.environ, "GIT_OPTIONAL_LOCKS": "0"},
+    )
+    if result.returncode == 1:
+        raise AutomationBlocked("Git index is not empty before identity staging")
+    if result.returncode != 0:
+        raise AutomationBlocked("Git index state is unavailable")
+
+
 def _atomic_json(path: Path, value: object) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     if path.parent.is_symlink():
@@ -432,6 +482,14 @@ def readiness(config: Config) -> dict[str, Any]:
             _validate_pre_candidate_hygiene(config)
         except (OSError, ValueError, json.JSONDecodeError, RuntimeError) as exc:
             errors.append(f"pre-candidate hygiene gate failed: {exc}")
+        try:
+            _validate_prior_tag_target(config)
+        except (OSError, ValueError, json.JSONDecodeError, RuntimeError) as exc:
+            errors.append(f"prior tag target gate failed: {exc}")
+        try:
+            _validate_empty_git_index(config)
+        except (OSError, ValueError, json.JSONDecodeError, RuntimeError) as exc:
+            errors.append(f"Git index gate failed: {exc}")
         try:
             repair = _repair(config)
             repair_phase = str(repair.get("phase") or "")

@@ -27,7 +27,11 @@ from scripts.run_release_candidate import (
 @pytest.fixture(autouse=True)
 def current_pre_candidate_hygiene_gate():
     """Most driver tests isolate release-state logic from the hygiene module."""
-    with patch("scripts.run_release_candidate._validate_pre_candidate_hygiene"):
+    with patch("scripts.run_release_candidate._validate_pre_candidate_hygiene"), patch(
+        "scripts.run_release_candidate._validate_prior_tag_target"
+    ), patch(
+        "scripts.run_release_candidate._validate_empty_git_index"
+    ):
         yield
 
 
@@ -253,6 +257,38 @@ def test_initial_readiness_fails_closed_when_pre_candidate_hygiene_is_not_curren
         result = readiness(value)
     assert result["valid"] is False
     assert "pre-candidate hygiene gate failed: transient custody remains" in result["errors"]
+
+
+def test_initial_readiness_fails_closed_when_prior_tag_target_is_stale(
+    tmp_path: Path,
+) -> None:
+    value = config(tmp_path)
+    with patch(
+        "scripts.run_release_candidate._validate_prior_tag_target",
+        side_effect=AutomationBlocked("configured prior tag target is stale"),
+    ):
+        result = readiness(value)
+    assert result["valid"] is False
+    assert (
+        "prior tag target gate failed: configured prior tag target is stale"
+        in result["errors"]
+    )
+
+
+def test_initial_readiness_fails_closed_when_git_index_is_not_empty(
+    tmp_path: Path,
+) -> None:
+    value = config(tmp_path)
+    with patch(
+        "scripts.run_release_candidate._validate_empty_git_index",
+        side_effect=AutomationBlocked("Git index is not empty before identity staging"),
+    ):
+        result = readiness(value)
+    assert result["valid"] is False
+    assert (
+        "Git index gate failed: Git index is not empty before identity staging"
+        in result["errors"]
+    )
 
 
 def test_initial_readiness_requires_marker_for_chained_preidentity_predecessor(

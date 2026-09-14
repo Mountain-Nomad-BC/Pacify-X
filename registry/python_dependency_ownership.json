@@ -1247,7 +1247,7 @@
       ]
     },
     {
-      "classification": "unclassified",
+      "classification": "local_product",
       "distribution": null,
       "module": "docs",
       "paths": [
@@ -2179,8 +2179,8 @@
       ]
     },
     {
-      "classification": "unclassified",
-      "distribution": null,
+      "classification": "test_only",
+      "distribution": "jsonschema",
       "module": "jsonschema",
       "paths": [
         "tests/test_cognitive_index_inputs.py"

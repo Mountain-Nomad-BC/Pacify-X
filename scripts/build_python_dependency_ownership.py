@@ -11,8 +11,8 @@ import sys
 import tokenize
 
 
-LOCAL = {"runtime", "builders", "scripts", "engineering_bootstrap", "tests"}
-TEST_ONLY = {"pytest": "pytest", "yaml": "PyYAML"}
+LOCAL = {"runtime", "builders", "scripts", "engineering_bootstrap", "tests", "docs"}
+TEST_ONLY = {"pytest": "pytest", "yaml": "PyYAML", "jsonschema": "jsonschema"}
 DECLARED_REQUIRED = {"yaml": "PyYAML"}
 MAX_SOURCE_FILES = 10_000
 MAX_SOURCE_BYTES = 64 * 1024 * 1024

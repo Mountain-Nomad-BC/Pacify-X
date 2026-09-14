@@ -17,6 +17,9 @@ from runtime.verification_receipts import read
 INDEX = 'registry/test_group_index.json'
 INDEX_SCHEMA = 'px.test-group-index/1.2'
 PARSER_VERSION = 'px.static-local-import-closure/2'
+STRUCTURAL_CONTROL_OUTPUTS = frozenset({
+    '.engineering-bootstrap/test-evidence/.test-orchestration.lock',
+})
 
 
 def required(config, kind, definitions):
@@ -98,7 +101,8 @@ def structural_scan(capture, max_bytes=1_000_000):
         for name in capture.listing(parent):
             relative = '/'.join(filter(None, [parent, name]))
             path = Path(relative)
-            if (name.casefold() in excluded or name.casefold().startswith('.venv')
+            if (relative.casefold() in STRUCTURAL_CONTROL_OUTPUTS
+                    or name.casefold() in excluded or name.casefold().startswith('.venv')
                     or is_external_environment_relative(path)
                     or tuple(p.casefold() for p in path.parts[:2]) == ('.px', 'preserved-skills')):
                 continue

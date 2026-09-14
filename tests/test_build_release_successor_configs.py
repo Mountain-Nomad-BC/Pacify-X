@@ -10,6 +10,7 @@ from scripts import build_release_successor_configs as owner
 def test_successor_binds_current_campaign_date_version_and_artifact(
     tmp_path: Path, monkeypatch,
 ) -> None:
+    monkeypatch.setattr(owner, "_git_tag_target", lambda root, tag: "f" * 40)
     automation_base = {
         "candidate_id": "candidate-old",
         "candidate_date": "20260101",

@@ -691,6 +691,12 @@ def test_structural_group_identity_rejects_new_scannable_file(tmp_path):
         json.dumps(index), encoding="utf-8"
     )
     assert resolve_test_groups(root)[0]["index_current"] is True
+    lock = root / ".engineering-bootstrap/test-evidence/.test-orchestration.lock"
+    lock.parent.mkdir(parents=True, exist_ok=True)
+    lock.write_text("first owner\n", encoding="utf-8")
+    assert resolve_test_groups(root)[0]["index_current"] is True
+    lock.write_text("second owner with changed metadata\n", encoding="utf-8")
+    assert resolve_test_groups(root)[0]["index_current"] is True
     (root / "runtime/new_surface.py").write_text("VALUE = 1\n", encoding="utf-8")
     assert "runtime/new_surface.py" in _structural_scan_files(root)
     changed = resolve_test_groups(root)[0]

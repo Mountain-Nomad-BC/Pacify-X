@@ -157397,7 +157397,7 @@
   },
   {
     "source": "runtime/verification_status.py",
-    "line": 157,
+    "line": 161,
     "import": "time",
     "type": "external-or-unresolved"
   },
@@ -159521,6 +159521,12 @@
   {
     "source": "scripts/build_release_successor_configs.py",
     "line": 8,
+    "import": "sys",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/build_release_successor_configs.py",
+    "line": 9,
     "import": "typing",
     "type": "external-or-unresolved"
   },
@@ -165595,13 +165601,13 @@
   },
   {
     "source": "tests/test_dependency_contracts.py",
-    "line": 534,
+    "line": 539,
     "import": "_winapi",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_dependency_contracts.py",
-    "line": 533,
+    "line": 538,
     "import": "os",
     "type": "external-or-unresolved"
   },

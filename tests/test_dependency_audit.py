@@ -33,3 +33,14 @@ def test_dependency_inventory_is_deterministic_and_gates_runtime_yaml():
     yaml_record = next(item for item in first["records"] if item["module"] == "yaml")
     assert yaml_record["classification"] == "declared_required"
     assert "runtime/project_intelligence.py" in yaml_record["paths"]
+    docs_record = next(item for item in first["records"] if item["module"] == "docs")
+    assert docs_record["classification"] == "local_product"
+    jsonschema_record = next(
+        item for item in first["records"] if item["module"] == "jsonschema"
+    )
+    assert jsonschema_record == {
+        "module": "jsonschema",
+        "distribution": "jsonschema",
+        "classification": "test_only",
+        "paths": ["tests/test_cognitive_index_inputs.py"],
+    }

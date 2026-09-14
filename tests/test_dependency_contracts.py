@@ -385,7 +385,6 @@ def test_dependency_audit_missing_metadata_returns_invalid_result(tmp_path):
 def test_dependency_audit_accepts_current_control_images_in_owned_fixture(tmp_path):
     source = Path(__file__).resolve().parents[1]
     for name in [
-        "registry/python_dependency_ownership.json",
         "pyproject.toml",
         "requirements-release.txt",
         "policies/platform-support.json",
@@ -396,6 +395,12 @@ def test_dependency_audit_accepts_current_control_images_in_owned_fixture(tmp_pa
         destination = tmp_path / name
         destination.parent.mkdir(parents=True, exist_ok=True)
         destination.write_bytes((source / name).read_bytes())
+    inventory = tmp_path / "registry/python_dependency_ownership.json"
+    inventory.parent.mkdir(parents=True, exist_ok=True)
+    inventory.write_text(
+        json.dumps(build_imports(source), indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
     result = validate_dependency_closure(tmp_path)
     assert result["valid"], result["errors"]
     assert result["module_count"] > 0

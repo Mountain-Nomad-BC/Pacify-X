@@ -22,8 +22,11 @@ evidence/releases/*/rel-*/* binary
 /tmp_* export-ignore
 /.VSCodeCounter export-ignore
 /.px/global-skill-isolation export-ignore
+/.px/global-skill-isolation/** export-ignore
 /.px/preserved-extension-installations export-ignore
+/.px/preserved-extension-installations/** export-ignore
 /.px/preserved-skills export-ignore
+/.px/preserved-skills/** export-ignore
 /.engineering-bootstrap/** export-ignore
 /.engineering-bootstrap/project-management -export-ignore
 /.engineering-bootstrap/project-management/state.json -export-ignore
@@ -37,4 +40,8 @@ evidence/releases/*/rel-*/* binary
 /.engineering-bootstrap/.ledger-authority/commissioning-events -export-ignore
 /.engineering-bootstrap/.ledger-authority/commissioning-events/** -export-ignore
 /registry/.operational-gap-ledger.lock export-ignore
+/registry/operational_gap_ledger.snapshot.json export-ignore
 /evidence export-ignore
+/evidence/** export-ignore
+/docs/architecture/reference/graph_baseline_architecture.json export-ignore
+/docs/architecture/reference/graph_baseline_evidence-map.json export-ignore

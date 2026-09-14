@@ -5,7 +5,14 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
+import sys
 from typing import Any
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from scripts.run_release_candidate import _git_tag_target  # noqa: E402
 
 
 def replace_tree(value: Any, replacements: list[tuple[str, str]]) -> Any:
@@ -52,6 +59,13 @@ def main() -> int:
 
     automation_base = json.loads(args.automation_base.read_text(encoding="utf-8"))
     stage_base = json.loads(args.stage_base.read_text(encoding="utf-8"))
+    identity = stage_base.get("identity")
+    if not isinstance(identity, dict):
+        raise ValueError("stage base identity is missing")
+    release_tag = str(identity.get("release_tag") or "")
+    observed_tag_target = _git_tag_target(args.stage_base.parent, release_tag)
+    if args.prior_tag_target != observed_tag_target:
+        raise ValueError("supplied prior tag target is stale")
     replacements = [
         (str(automation_base["candidate_id"]), args.candidate_id),
         (str(automation_base["candidate_date"]), args.candidate_date),
