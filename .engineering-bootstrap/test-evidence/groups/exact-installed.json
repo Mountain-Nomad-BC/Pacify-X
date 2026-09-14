@@ -1,18 +1,1 @@
-{
-  "duration_seconds": 192.422239,
-  "exit_code": 0,
-  "group": "exact-installed",
-  "input_sha256": "d58cda548c299a0c153fee4fb7b2c69bcdeab57b51550ffaef55171976d51ff4",
-  "member_count": 4,
-  "output_evidence": {
-    "failure_nodes": [],
-    "stderr_bytes": 0,
-    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "stdout_bytes": 2174,
-    "stdout_sha256": "613b2b5d67b2bcdf7c02f20c6d632a8b67f0bda793e84c3939fb5563a43c7b23"
-  },
-  "passed": true,
-  "receipt_sha256": "d5e72f82ff47bd2fdcf994f42148451ec100cf9ea3d994da6920abd4aef242b4",
-  "schema_version": "px.test-group-receipt/1.0",
-  "timed_out": false
-}
+{"duration_seconds":497.297337,"execution_valid":false,"exit_code":1,"group":"exact-installed","input_sha256":"0468fb717a9c8444c8d1ec460aa05bd77959959a213179eb34904f0569664944","member_count":4,"output_evidence":{"failure_nodes":["tests/test_exact_tool_certification.py::ExactToolCertificationTests::test_every_python_file_is_owned_classified_and_validation_bound"],"stderr_bytes":0,"stderr_sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","stdout_bytes":3108,"stdout_sha256":"f56a1ec5e18d19534f08a29ddddbe0ac3e1c78cdea5bb8282f389e49bceceddc"},"passed":false,"receipt_sha256":"983ce9d56804275746b7cb0144295d59f786cd8cc6c3590f607891808493b350","schema_version":"px.test-group-receipt/1.1","timed_out":false}

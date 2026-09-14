@@ -1,18 +1,1 @@
-{
-  "duration_seconds": 256.060617,
-  "exit_code": 0,
-  "group": "release-build",
-  "input_sha256": "599eb25036ae99a51109f880e9db5759d590015138188a31f1987e221ee896d7",
-  "member_count": 11,
-  "output_evidence": {
-    "failure_nodes": [],
-    "stderr_bytes": 0,
-    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "stdout_bytes": 2957,
-    "stdout_sha256": "82660f74f85aa40b1d24f53842975c7de025e7e717ddf94c20064598d3d04d47"
-  },
-  "passed": true,
-  "receipt_sha256": "352f60f0cc5f6aed359b5c4faf824d2f90daba3d84c2cfdf617b44240ec9a964",
-  "schema_version": "px.test-group-receipt/1.0",
-  "timed_out": false
-}
+{"duration_seconds":600.504292,"execution_valid":false,"exit_code":1,"group":"release-build","input_sha256":"e20548c9475893cc865d636a1645711ceda4bf9a3ddf260ea37cc805a0bce5dd","member_count":11,"output_evidence":{"failure_nodes":["tests/test_release_certification.py::test_certificate_verifier_binds_artifacts_to_recorded_frozen_manifest"],"stderr_bytes":0,"stderr_sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","stdout_bytes":8412,"stdout_sha256":"2e76719a7d813b5305f083109671ad62a7d3a1abb5ab8e9d3b9d314907d62602"},"passed":false,"receipt_sha256":"6ea95452c47dbbb6e947c027b3358f72750ad6c8f63f82adc090563fa9aa4973","schema_version":"px.test-group-receipt/1.1","timed_out":false}

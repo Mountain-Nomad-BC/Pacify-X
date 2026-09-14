@@ -1,18 +1,1 @@
-{
-  "duration_seconds": 67.865668,
-  "exit_code": 0,
-  "group": "release-audit",
-  "input_sha256": "aa210f2353ba4e849b3433fd361d56a3cfca832e457a7c67e26e670f34ad36e3",
-  "member_count": 1,
-  "output_evidence": {
-    "failure_nodes": [],
-    "stderr_bytes": 0,
-    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "stdout_bytes": 498,
-    "stdout_sha256": "e7f883ce95d1df2f0fd3d112b8f4a99c25846ffb936c03e8b7de3f2cea500c82"
-  },
-  "passed": true,
-  "receipt_sha256": "e5d02378803cc44911e622ce33a4aa347e8bbcfbe0df3f496b94978bd196ea5c",
-  "schema_version": "px.test-group-receipt/1.0",
-  "timed_out": false
-}
+{"duration_seconds":120.082852,"execution_valid":false,"exit_code":1,"group":"release-audit","input_sha256":"959d3eea9f264822e12c62e5832c0f80a8e242dbc1ea4653aec123771e62f42b","member_count":1,"output_evidence":{"failure_nodes":["tests/test_release_audit.py::ReleaseAuditTests::test_live_composed_audit_passes_without_fixed_component_counts"],"stderr_bytes":0,"stderr_sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","stdout_bytes":1696,"stdout_sha256":"145891cc60e205ab672af0b49bbf167546540c33ad1099301ae8276fff154967"},"passed":false,"receipt_sha256":"6c2f0c45da807bd9f14d858ecdf15b887926001b8407ad5522749187d557d5f5","schema_version":"px.test-group-receipt/1.1","timed_out":false}

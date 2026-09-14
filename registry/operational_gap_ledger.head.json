@@ -1,7 +1,7 @@
 {
-  "checkpoint_sha256": "1fb68bc7e4ef28f68421a82a93bdff58e859b0be905df76687f755ba5da7abfd",
+  "checkpoint_sha256": "56353162845fc2264ad00ac16498d3e40141adc8f222ffa84480fd8f7ebb67f8",
   "created_utc": "2026-08-16T17:14:48.634100Z",
-  "current_projection_sha256": "df85bfffd8110e3093679074b1cb423b5a2da3bac56275ad30c00dd350b1639e",
+  "current_projection_sha256": "8bdb4efcfac0470b00bcea31f661d132100e79ce4b562e78dd8b160f1e46196c",
   "dashboard": {
     "cards": [
       {
@@ -1714,22 +1714,22 @@
   },
   "delta_projection": {
     "authoritative": false,
-    "event_count": 832,
-    "path": "registry/operational_gap_ledger.deltas/0ff5fbd6d5b0d74f4483a055f9568c5a8d41f9670b1c8926bc0d017c4e301da8.jsonl",
-    "sha256": "0ff5fbd6d5b0d74f4483a055f9568c5a8d41f9670b1c8926bc0d017c4e301da8",
-    "size_bytes": 1697069
+    "event_count": 1126,
+    "path": "registry/operational_gap_ledger.deltas/86ab2411c8bdbd4cbe013e3fb9d7e3d0becccd06bf97ef0c9f15b278bb4a93dc.jsonl",
+    "sha256": "86ab2411c8bdbd4cbe013e3fb9d7e3d0becccd06bf97ef0c9f15b278bb4a93dc",
+    "size_bytes": 2188404
   },
-  "event_count": 35154,
-  "generated_utc": "2026-09-13T19:58:20.230337Z",
-  "head_event_sha256": "581bdbe9b18b9c62abbef582ec417497f6c416077315d7ec8f01c18fcfc6132e",
+  "event_count": 35448,
+  "generated_utc": "2026-09-14T12:27:45.748858Z",
+  "head_event_sha256": "74786c6aba4f46f9d06e48b6f5ac4ff749412471d367c59a8be112b18f45e2fe",
   "ledger_fingerprint": {
-    "sha256": "f3786af86f62b27b2400449ebbfaaf57cf9b5eb9b65e20dad7a483175b5c28cd",
-    "size_bytes": 104596062
+    "sha256": "e498e9150448a67ecdce12e0d291f173868f72753493d10f578952261c24e829",
+    "size_bytes": 105087397
   },
   "ledger_id": "PX-OPERATIONAL-GAPS-20260816",
   "maximum_gap_ordinal": 1075,
-  "predecessor_event_sha256": "a71649be793665506d60cdfab68a3061a0a84d296861dc5020f4df14e5417287",
-  "previous_checkpoint_sha256": "dd6b0f17884e6c42475a34fff6879fcc98d7b24a20f7f2a45baa5e5313c131a7",
+  "predecessor_event_sha256": "6d4f8f3bcdebd51d29da83241e4d0c51ed64d289a4e30c5bd615317107f8959c",
+  "previous_checkpoint_sha256": "abf202dfaa58584ce6049fa987dffc1cece0ffe25ca6f4cebaf0401de3895a49",
   "schema_version": "px.operational-gap-ledger-head/1.0",
   "snapshot_event_count": 34322,
   "snapshot_head_event_sha256": "9d2048091d91bb41727f8613aad3b26bb78212bb47501237c23206cb3e765bd4",
