@@ -42,8 +42,22 @@ from runtime.test_profiles import (
     section_receipt,
     section_status,
     stale_section_execution_order,
+    governed_section_timeout_envelope,
     write_section_chunk_receipt,
 )
+
+
+def test_governed_section_stage_envelope_composes_every_child_and_cleanup():
+    config = json.loads((ROOT / "registry/test_profiles.json").read_text(encoding="utf-8"))
+    envelope = governed_section_timeout_envelope(ROOT)
+    assert envelope["__sequential_stage__"] == sum(
+        definition["timeout_seconds"] + 120
+        for definition in config["sections"].values()
+    )
+    assert all(
+        envelope[name] > definition["timeout_seconds"]
+        for name, definition in config["sections"].items()
+    )
 
 
 ROOT = Path(__file__).resolve().parents[1]

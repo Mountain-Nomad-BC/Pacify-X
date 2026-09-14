@@ -48,10 +48,32 @@ CLOSURE_STAGES = frozenset({
     "revision_reconciliation", "full_profile", "validate", "package", "install",
     "installed_operational_test", "certify",
 })
+SECTION_OWNER_CLOSURE_ALLOWANCE_SECONDS = 120
 
 
 class ProcessingOrderBlocked(ValueError):
     """Raised when downstream closure is attempted before repair freeze."""
+
+
+def governed_section_timeout_envelope(root: Path) -> dict[str, int]:
+    """Return child and sequential-stage clocks from one section policy image."""
+
+    value = json.loads(
+        (root.resolve() / "registry/test_profiles.json").read_text(encoding="utf-8")
+    )
+    sections = value.get("sections")
+    if not isinstance(sections, dict) or not 1 <= len(sections) <= 64:
+        raise ValueError("governed sections require a bounded nonempty object")
+    child: dict[str, int] = {}
+    for name, definition in sections.items():
+        if not isinstance(name, str) or not isinstance(definition, dict):
+            raise ValueError("governed section definition is malformed")
+        timeout = validate_timeout(definition.get("timeout_seconds"))
+        child[name] = int(timeout + SECTION_OWNER_CLOSURE_ALLOWANCE_SECONDS)
+    return {
+        **child,
+        "__sequential_stage__": sum(child.values()),
+    }
 
 
 def _repair_campaign_path(root: Path) -> tuple[Path, bool]:

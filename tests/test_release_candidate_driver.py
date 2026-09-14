@@ -31,6 +31,9 @@ def current_pre_candidate_hygiene_gate():
         "scripts.run_release_candidate._validate_prior_tag_target"
     ), patch(
         "scripts.run_release_candidate._validate_empty_git_index"
+    ), patch(
+        "runtime.test_profiles.governed_section_timeout_envelope",
+        return_value={"__sequential_stage__": 60},
     ):
         yield
 
@@ -257,6 +260,19 @@ def test_initial_readiness_fails_closed_when_pre_candidate_hygiene_is_not_curren
         result = readiness(value)
     assert result["valid"] is False
     assert "pre-candidate hygiene gate failed: transient custody remains" in result["errors"]
+
+
+def test_readiness_rejects_sections_timeout_below_composed_child_envelope(
+    tmp_path: Path,
+) -> None:
+    value = config(tmp_path)
+    with patch(
+        "runtime.test_profiles.governed_section_timeout_envelope",
+        return_value={"__sequential_stage__": 61},
+    ):
+        result = readiness(value)
+    assert result["valid"] is False
+    assert any("sections owner timeout is smaller" in error for error in result["errors"])
 
 
 def test_initial_readiness_fails_closed_when_prior_tag_target_is_stale(

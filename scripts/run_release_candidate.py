@@ -309,8 +309,8 @@ class Config:
         if not isinstance(timeout_values, dict) or set(timeout_values) != set(STEP_ORDER):
             raise AutomationBlocked("timeouts_seconds must bind every canonical step")
         timeouts_seconds = {step: int(timeout_values[step]) for step in STEP_ORDER}
-        if any(value <= 0 or value > 7200 for value in timeouts_seconds.values()):
-            raise AutomationBlocked("step timeouts must be between 1 and 7200 seconds")
+        if any(value <= 0 or value > 14400 for value in timeouts_seconds.values()):
+            raise AutomationBlocked("step timeouts must be between 1 and 14400 seconds")
         identity_manifest = raw.get("identity_manifest")
         if not isinstance(identity_manifest, dict):
             raise AutomationBlocked("identity_manifest must be an object")
@@ -457,11 +457,21 @@ def _validate_pre_candidate_hygiene(config: Config) -> None:
 
 def readiness(config: Config) -> dict[str, Any]:
     from runtime.release_campaign import cleared_campaign_can_be_superseded
+    from runtime.test_profiles import governed_section_timeout_envelope
 
     errors: list[str] = []
     initial = not config.automation_state.exists()
     if not config.root.is_dir():
         errors.append("repository root is missing")
+    try:
+        minimum = governed_section_timeout_envelope(config.root)["__sequential_stage__"]
+        if config.timeouts_seconds["sections"] < minimum:
+            errors.append(
+                "sections owner timeout is smaller than its sequential child envelope: "
+                f"{config.timeouts_seconds['sections']} < {minimum}"
+            )
+    except (OSError, ValueError, KeyError, json.JSONDecodeError) as exc:
+        errors.append(f"section timeout envelope is unavailable: {type(exc).__name__}")
     if not config.artifact.is_file() or config.artifact.is_symlink():
         errors.append("immutable artifact is not an exact non-symlink file")
     else:

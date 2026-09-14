@@ -1115,11 +1115,15 @@ class ProductionEffects:
         if step == "identity":
             return self.identity(config)
         if step == "sections":
-            from runtime.test_profiles import section_status
+            from runtime.test_profiles import (
+                governed_section_timeout_envelope,
+                section_status,
+            )
 
             claim = claim_release_stage(config.root, "sections")
             finished = False
             try:
+                timeout_envelope = governed_section_timeout_envelope(config.root)
                 logs = [
                     self.command(
                         config,
@@ -1133,7 +1137,7 @@ class ProductionEffects:
                             "run",
                             name,
                         ],
-                        timeout_seconds=900,
+                        timeout_seconds=timeout_envelope[name],
                     )
                     for name in stale
                 ]
