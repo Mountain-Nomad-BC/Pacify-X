@@ -457,7 +457,10 @@ def _validate_pre_candidate_hygiene(config: Config) -> None:
 
 def readiness(config: Config) -> dict[str, Any]:
     from runtime.release_campaign import cleared_campaign_can_be_superseded
-    from runtime.test_profiles import governed_section_timeout_envelope
+    from runtime.test_profiles import (
+        governed_full_profile_timeout_envelope,
+        governed_section_timeout_envelope,
+    )
 
     errors: list[str] = []
     initial = not config.automation_state.exists()
@@ -472,6 +475,19 @@ def readiness(config: Config) -> dict[str, Any]:
             )
     except (OSError, ValueError, KeyError, json.JSONDecodeError) as exc:
         errors.append(f"section timeout envelope is unavailable: {type(exc).__name__}")
+    try:
+        minimum = governed_full_profile_timeout_envelope(config.root)[
+            "__sequential_stage__"
+        ]
+        if config.timeouts_seconds["full_profile"] < minimum:
+            errors.append(
+                "full-profile owner timeout is smaller than its sequential child "
+                f"envelope: {config.timeouts_seconds['full_profile']} < {minimum}"
+            )
+    except (OSError, ValueError, KeyError, json.JSONDecodeError) as exc:
+        errors.append(
+            f"full-profile timeout envelope is unavailable: {type(exc).__name__}"
+        )
     if not config.artifact.is_file() or config.artifact.is_symlink():
         errors.append("immutable artifact is not an exact non-symlink file")
     else:

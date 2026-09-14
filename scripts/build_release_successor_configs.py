@@ -13,7 +13,10 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from scripts.run_release_candidate import _git_tag_target  # noqa: E402
-from runtime.test_profiles import governed_section_timeout_envelope  # noqa: E402
+from runtime.test_profiles import (  # noqa: E402
+    governed_full_profile_timeout_envelope,
+    governed_section_timeout_envelope,
+)
 
 
 def replace_tree(value: Any, replacements: list[tuple[str, str]]) -> Any:
@@ -95,6 +98,9 @@ def main() -> int:
     automation.setdefault("timeouts_seconds", {})[
         "sections"
     ] = governed_section_timeout_envelope(ROOT)["__sequential_stage__"]
+    automation["timeouts_seconds"][
+        "full_profile"
+    ] = governed_full_profile_timeout_envelope(ROOT)["__sequential_stage__"]
     stage.update(candidate_id=args.candidate_id, predecessor_id=args.predecessor_id)
     stage["artifact"].update(
         path=args.artifact,

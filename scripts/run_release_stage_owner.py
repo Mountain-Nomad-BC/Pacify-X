@@ -1178,6 +1178,8 @@ class ProductionEffects:
                 },
             )
         if step in {"full_profile", "validate"}:
+            from runtime.test_profiles import governed_full_profile_timeout_envelope
+
             action = (
                 ["test-profile", "run", "full"]
                 if step == "full_profile"
@@ -1187,7 +1189,13 @@ class ProductionEffects:
                 config,
                 step,
                 [sys.executable, "-B", "-m", "runtime.cli", *action],
-                timeout_seconds=3000 if step == "full_profile" else 900,
+                timeout_seconds=(
+                    governed_full_profile_timeout_envelope(config.root)[
+                        "__profile_owner__"
+                    ]
+                    if step == "full_profile"
+                    else 900
+                ),
             )
             current = release(config)
             kernel = current.get("identity", {})

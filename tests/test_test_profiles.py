@@ -42,6 +42,7 @@ from runtime.test_profiles import (
     section_receipt,
     section_status,
     stale_section_execution_order,
+    governed_full_profile_timeout_envelope,
     governed_section_timeout_envelope,
     write_section_chunk_receipt,
 )
@@ -58,6 +59,26 @@ def test_governed_section_stage_envelope_composes_every_child_and_cleanup():
         envelope[name] > definition["timeout_seconds"]
         for name, definition in config["sections"].items()
     )
+
+
+def test_governed_full_profile_envelope_composes_refresh_certification_and_owners():
+    config = json.loads((ROOT / "registry/test_profiles.json").read_text(encoding="utf-8"))
+    envelope = governed_full_profile_timeout_envelope(ROOT)
+    refresh = max(
+        config["profiles"]["full"]["timeout_seconds"],
+        sum(item["timeout_seconds"] for item in config["groups"].values())
+        + max(60, 15 * len(config["groups"])),
+    )
+    assert envelope == {
+        "__group_refresh__": refresh,
+        "__cross_group__": config["certification"]["cross_group_timeout_seconds"],
+        "__profile_owner__": refresh
+        + config["certification"]["cross_group_timeout_seconds"]
+        + 120,
+        "__sequential_stage__": refresh
+        + config["certification"]["cross_group_timeout_seconds"]
+        + 240,
+    }
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -650,7 +671,7 @@ def test_certification_groups_are_exhaustive_exclusive_and_bounded():
             "exit_code": 0,
             "timed_out": False,
             "duration_seconds": 1.0,
-            "stdout": "21 passed\n",
+            "stdout": f"{len(exact['members'])} passed\n",
             "stderr": "",
         },
     )

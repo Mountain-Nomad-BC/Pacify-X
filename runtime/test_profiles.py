@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import fnmatch
 import hashlib
+import math
 import os
 from pathlib import Path
 import sys
@@ -49,6 +50,8 @@ CLOSURE_STAGES = frozenset({
     "installed_operational_test", "certify",
 })
 SECTION_OWNER_CLOSURE_ALLOWANCE_SECONDS = 120
+FULL_PROFILE_OWNER_CLOSURE_ALLOWANCE_SECONDS = 120
+FULL_PROFILE_STAGE_CLOSURE_ALLOWANCE_SECONDS = 120
 
 
 class ProcessingOrderBlocked(ValueError):
@@ -73,6 +76,55 @@ def governed_section_timeout_envelope(root: Path) -> dict[str, int]:
     return {
         **child,
         "__sequential_stage__": sum(child.values()),
+    }
+
+
+def governed_full_profile_timeout_envelope(root: Path) -> dict[str, int]:
+    """Return nested full-profile clocks from one test-profile policy image.
+
+    A certification full profile can first refresh every stale test group and
+    then run the cross-group certification command.  The inner stage owner and
+    outer candidate owner therefore need distinct sequential clocks; neither
+    may use the ordinary full-profile command timeout as the aggregate bound.
+    """
+
+    value = json.loads(
+        (root.resolve() / "registry/test_profiles.json").read_text(encoding="utf-8")
+    )
+    groups = value.get("groups")
+    profiles = value.get("profiles")
+    certification = value.get("certification")
+    if not isinstance(groups, dict) or not 1 <= len(groups) <= 64:
+        raise ValueError("test groups require a bounded nonempty object")
+    if not isinstance(profiles, dict) or not isinstance(profiles.get("full"), dict):
+        raise ValueError("full test profile definition is missing")
+    if not isinstance(certification, dict):
+        raise ValueError("cross-group certification definition is missing")
+    group_budget = 0.0
+    for name, definition in groups.items():
+        if not isinstance(name, str) or not isinstance(definition, dict):
+            raise ValueError("test group definition is malformed")
+        group_budget += validate_timeout(definition.get("timeout_seconds"))
+    custody_allowance = max(60.0, 15.0 * len(groups))
+    group_refresh = max(
+        validate_timeout(profiles["full"].get("timeout_seconds")),
+        group_budget + custody_allowance,
+    )
+    cross_group = validate_timeout(
+        certification.get("cross_group_timeout_seconds")
+    )
+    profile_owner = math.ceil(
+        group_refresh
+        + cross_group
+        + FULL_PROFILE_OWNER_CLOSURE_ALLOWANCE_SECONDS
+    )
+    return {
+        "__group_refresh__": math.ceil(group_refresh),
+        "__cross_group__": math.ceil(cross_group),
+        "__profile_owner__": profile_owner,
+        "__sequential_stage__": (
+            profile_owner + FULL_PROFILE_STAGE_CLOSURE_ALLOWANCE_SECONDS
+        ),
     }
 
 

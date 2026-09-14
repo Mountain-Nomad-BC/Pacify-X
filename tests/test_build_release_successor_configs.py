@@ -87,6 +87,7 @@ def test_successor_binds_current_campaign_date_version_and_artifact(
     stage = json.loads(stage_output.read_text(encoding="utf-8"))
     assert automation["candidate_date"] == "20260913"
     assert automation["timeouts_seconds"]["sections"] > 1800
+    assert automation["timeouts_seconds"]["full_profile"] > 7200
     assert automation["repair_campaign_id"] == "repair-current"
     assert automation["candidate_id"] == stage["candidate_id"] == "candidate-new"
     assert stage["install"] == {

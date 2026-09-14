@@ -34,6 +34,9 @@ def current_pre_candidate_hygiene_gate():
     ), patch(
         "runtime.test_profiles.governed_section_timeout_envelope",
         return_value={"__sequential_stage__": 60},
+    ), patch(
+        "runtime.test_profiles.governed_full_profile_timeout_envelope",
+        return_value={"__sequential_stage__": 60},
     ):
         yield
 
@@ -273,6 +276,19 @@ def test_readiness_rejects_sections_timeout_below_composed_child_envelope(
         result = readiness(value)
     assert result["valid"] is False
     assert any("sections owner timeout is smaller" in error for error in result["errors"])
+
+
+def test_readiness_rejects_full_profile_timeout_below_composed_child_envelope(
+    tmp_path: Path,
+) -> None:
+    value = config(tmp_path)
+    with patch(
+        "runtime.test_profiles.governed_full_profile_timeout_envelope",
+        return_value={"__sequential_stage__": 61},
+    ):
+        result = readiness(value)
+    assert result["valid"] is False
+    assert any("full-profile owner timeout is smaller" in error for error in result["errors"])
 
 
 def test_initial_readiness_fails_closed_when_prior_tag_target_is_stale(
