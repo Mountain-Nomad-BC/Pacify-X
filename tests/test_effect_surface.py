@@ -72,6 +72,42 @@ def test_release_effects_have_explicit_bounded_or_recovery_ownership() -> None:
                 assert record["timeout"] is not None
 
 
+def test_explicit_specialized_effect_owners_retain_their_real_bounds() -> None:
+    records = discover_effect_surfaces(ROOT)
+    obsidian_processes = [
+        record
+        for record in records
+        if record["path"] == "docs/architecture/tools/verify_obsidian_native.py"
+        and record["effect"] == "process"
+    ]
+    gate_deletions = [
+        record
+        for record in records
+        if record["path"] == "runtime/gate_runner.py" and record["destructive"]
+    ]
+
+    assert len(obsidian_processes) == 3
+    assert all(record["timeout"] is not None for record in obsidian_processes)
+    popen_records = [
+        record for record in obsidian_processes if record["call"] == "subprocess.Popen"
+    ]
+    assert len(popen_records) == 1
+    assert (
+        popen_records[0]["timeout"]
+        == "bounded_finally_termination_and_wait_with_platform_tree_kill"
+    )
+    assert all(
+        record["policy"] == "policies/contained-execution.json"
+        for record in obsidian_processes
+    )
+    assert len(gate_deletions) == 1
+    assert gate_deletions[0]["call"] == "temporary.unlink"
+    assert (
+        gate_deletions[0]["policy"]
+        == "policies/operational-evidence-retention.json"
+    )
+
+
 def test_discovery_prunes_external_custody_before_parsing() -> None:
     root = _copy_effect_fixture(Path(tempfile.mkdtemp()))
     hostile = (

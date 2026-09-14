@@ -5,7 +5,7 @@
     "docs/architecture/tools/verify_atlas_browser.py: unknown Python surface",
     "docs/architecture/tools/verify_obsidian_native.py: unknown Python surface"
   ],
-  "evidence_association_count": 125,
+  "evidence_association_count": 127,
   "map_current": true,
   "packaged_file_count": 661,
   "python_file_count": 780,
@@ -1429,14 +1429,16 @@
     },
     {
       "bytes": 14340,
-      "evidence": [],
+      "evidence": [
+        "tests/test_effect_surface.py"
+      ],
       "owner": "unowned",
       "packaged": false,
       "path": "docs/architecture/tools/verify_obsidian_native.py",
       "role": "unknown",
       "sha256": "a2f981c3c4c95b44255ad17c971647b4ced561d5d995d5d7b1b1c8c93f83087d",
       "syntax_valid": true,
-      "validation_level": "unvalidated"
+      "validation_level": "evidence-association"
     },
     {
       "bytes": 3670,
@@ -2401,7 +2403,7 @@
       "validation_level": "full-suite-and-installed-integration"
     },
     {
-      "bytes": 9034,
+      "bytes": 9484,
       "evidence": [
         "tests/test_test_profiles.py"
       ],
@@ -2409,7 +2411,7 @@
       "packaged": true,
       "path": "runtime/effect_surface.py",
       "role": "installed-runtime",
-      "sha256": "53ceabfa4d4cd81e1fc119da6129d9a1bb6a959f02d675a55cdf0504459a1e9e",
+      "sha256": "d5c55dbbe6c9d32a4a5b8548efd7d191a805dec0ce53fa6ae630f49ca1103a44",
       "syntax_valid": true,
       "validation_level": "evidence-association"
     },
@@ -2708,8 +2710,7 @@
     {
       "bytes": 16252,
       "evidence": [
-        "tests",
-        "tests/test_installed_wheel_e2e.py"
+        "tests/test_effect_surface.py"
       ],
       "owner": "engineering_bootstrap",
       "packaged": true,
@@ -2717,7 +2718,7 @@
       "role": "installed-runtime",
       "sha256": "7a09cfc150c4e8e0ea05fded4f97036bd375d21bf2c4c564a457ed552c29970f",
       "syntax_valid": true,
-      "validation_level": "full-suite-and-installed-integration"
+      "validation_level": "evidence-association"
     },
     {
       "bytes": 6768,
@@ -7725,7 +7726,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 5741,
+      "bytes": 6958,
       "evidence": [
         "tests/test_effect_surface.py"
       ],
@@ -7733,7 +7734,7 @@
       "packaged": true,
       "path": "tests/test_effect_surface.py",
       "role": "release-test",
-      "sha256": "558703b21d4b8d35893cfaaf7cee4eb62a228d39cd204e056b5d8ddd9e66127d",
+      "sha256": "01b5a9432a41d3f9f5775dd2bcc42b1efa96936696fbe650af028193b59f717c",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },
@@ -10617,10 +10618,10 @@
   "valid": false,
   "validation_counts": {
     "direct-isolated-behavior": 63,
-    "evidence-association": 125,
+    "evidence-association": 127,
     "executable-test": 307,
-    "full-suite-and-installed-integration": 195,
+    "full-suite-and-installed-integration": 194,
     "source-only-structural": 86,
-    "unvalidated": 4
+    "unvalidated": 3
   }
 }

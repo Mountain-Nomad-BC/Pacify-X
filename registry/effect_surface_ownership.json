@@ -2295,7 +2295,7 @@
       "path": "docs/architecture/tools/verify_obsidian_native.py",
       "policy": "policies/contained-execution.json",
       "shell": null,
-      "timeout": null
+      "timeout": "bounded_finally_termination_and_wait_with_platform_tree_kill"
     },
     {
       "approval": "required_for_material_or_external_effects",
@@ -5247,7 +5247,7 @@
       "line": 383,
       "owner": "runtime",
       "path": "runtime/gate_runner.py",
-      "policy": "policies/artifact-preservation.json",
+      "policy": "policies/operational-evidence-retention.json",
       "shell": null,
       "timeout": null
     },
@@ -5261,7 +5261,7 @@
       "line": 303,
       "owner": "runtime",
       "path": "runtime/gate_runner.py",
-      "policy": "policies/artifact-preservation.json",
+      "policy": "policies/operational-evidence-retention.json",
       "shell": null,
       "timeout": null
     },
@@ -5275,7 +5275,7 @@
       "line": 443,
       "owner": "runtime",
       "path": "runtime/gate_runner.py",
-      "policy": "policies/artifact-preservation.json",
+      "policy": "policies/operational-evidence-retention.json",
       "shell": null,
       "timeout": null
     },
@@ -5289,7 +5289,7 @@
       "line": 323,
       "owner": "runtime",
       "path": "runtime/gate_runner.py",
-      "policy": "policies/artifact-preservation.json",
+      "policy": "policies/operational-evidence-retention.json",
       "shell": null,
       "timeout": null
     },

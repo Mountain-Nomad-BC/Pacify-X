@@ -47,6 +47,10 @@ RECOVERABLE_RECLAMATION_OWNERS = {
     "scripts/run_release_stage_owner.py": "policies/operational-evidence-retention.json",
     "scripts/verify_release_publication.py": "policies/operational-evidence-retention.json",
     "runtime/global_skill_isolation.py": "policies/operational-evidence-retention.json",
+    # The gate authority publisher creates one random, exclusive prepared file
+    # beside the authority key, hard-links the complete image into place, and
+    # removes only that exact unpublished prepared path in its finally block.
+    "runtime/gate_runner.py": "policies/operational-evidence-retention.json",
     "runtime/operational_gap_ledger.py": "policies/operational-evidence-retention.json",
     "runtime/skill_studio.py": "policies/operational-evidence-retention.json",
     "runtime/studio_authority.py": "policies/operational-evidence-retention.json",
@@ -54,6 +58,9 @@ RECOVERABLE_RECLAMATION_OWNERS = {
     "runtime/work_admission.py": "policies/operational-evidence-retention.json",
 }
 OWNED_PROCESS_SUPERVISORS = {
+    "docs/architecture/tools/verify_obsidian_native.py": (
+        "bounded_finally_termination_and_wait_with_platform_tree_kill"
+    ),
     "scripts/run_installed_operational_owner.py": (
         "owned_member_wait_timeout_and_process_tree_closure"
     ),
