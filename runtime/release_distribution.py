@@ -181,6 +181,50 @@ class _ProjectionInputs:
         self.controls = controls
         if len(patterns) > 8192:
             raise ValueError("source projection pattern budget exceeded")
+        # A generated packaging declaration contains thousands of literal
+        # paths.  Testing every walked entry against every declaration made a
+        # canonical manifest an O(tree entries * declarations) operation.
+        # Compile literal members and their ancestor directories once, and
+        # reserve glob matching for the small candidate bucket that shares the
+        # entry's first component.
+        unique_patterns = tuple(dict.fromkeys(patterns))
+        literal_paths: set[str] = set()
+        literal_parents: set[str] = set()
+        wildcard_by_root: dict[str, list[str]] = {}
+        wildcard_global: list[str] = []
+        for pattern in unique_patterns:
+            folded = pattern.casefold()
+            if re.search(r"[*?\[]", folded) is None:
+                literal_paths.add(folded)
+                parts = folded.split("/")
+                literal_parents.update("/".join(parts[:index]) for index in range(1, len(parts)))
+                continue
+            first = folded.split("/", 1)[0]
+            if re.search(r"[*?\[]", first):
+                wildcard_global.append(pattern)
+            else:
+                wildcard_by_root.setdefault(first, []).append(pattern)
+
+        def pattern_candidates(relative: str) -> tuple[str, ...]:
+            first = relative.casefold().split("/", 1)[0]
+            return (*wildcard_by_root.get(first, ()), *wildcard_global)
+
+        def selected_file(relative: str) -> bool:
+            folded = relative.casefold()
+            return folded in literal_paths or any(
+                _glob_match(relative, pattern) for pattern in pattern_candidates(relative)
+            )
+
+        def selected_or_ancestor(relative: str) -> bool:
+            folded = relative.casefold()
+            if folded in literal_paths or folded in literal_parents:
+                return True
+            return any(
+                _glob_match(relative, pattern)
+                or _glob_match(relative, pattern, directory=True)
+                for pattern in pattern_candidates(relative)
+            )
+
         ignored = {
             ".git",
             "node_modules",
@@ -201,23 +245,17 @@ class _ProjectionInputs:
                 for prefix in control_prefixes
             ):
                 return True
-            path = root / relative
-            directory = path.is_dir()
             parts = relative.casefold().split("/")
-            directories = parts if directory else parts[:-1]
             # Custody directories are exact identities. Authored capabilities
             # such as quarantine-external-tools remain ordinary source inputs.
-            if any(part in ignored for part in directories):
+            if any(part in ignored for part in parts):
                 return True
             if (
                 parts[:2] == [".px", "skills"]
-                and path.suffix.casefold() in SKILL_EXCLUDED_SUFFIXES
+                and Path(relative).suffix.casefold() in SKILL_EXCLUDED_SUFFIXES
             ):
                 return True
-            return not any(
-                _glob_match(relative, pattern, directory=directory)
-                for pattern in patterns
-            )
+            return not selected_or_ancestor(relative)
 
         tree = bounded_walk(
             root,
@@ -230,7 +268,14 @@ class _ProjectionInputs:
             ),
             exclude=exclude,
         )
-        self.files = {entry.relative: entry for entry in tree.files}
+        # Ancestor candidates are retained only to permit traversal. A regular
+        # file enters the authoritative source universe only when it satisfies
+        # an exact declaration or a complete glob match.
+        self.files = {
+            entry.relative: entry
+            for entry in tree.files
+            if not unique_patterns or selected_file(entry.relative)
+        }
         self.facts = {}
         self.remaining = limits.max_expanded_bytes
         seen = set()
