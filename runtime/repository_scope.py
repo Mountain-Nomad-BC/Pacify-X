@@ -6,7 +6,7 @@ from pathlib import Path
 
 
 EXTERNAL_ENVIRONMENT_ROOTS = frozenset(
-    {"Python", "PortableGit", "node_modules", ".tmp", ".pacify-x"}
+    {"Python", "PortableGit", "node_modules", ".tmp", ".pacify-x", ".quarantine"}
 )
 CANONICAL_WORKSPACE_CUSTODY_ROOTS = frozenset(
     {"projects", "projects_tracking", "repo_quarantine", "shared_capabilities"}

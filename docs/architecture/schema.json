@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PX source-bound explanatory atlas",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "metadata",
+    "layers",
+    "nodes",
+    "edges",
+    "flows",
+    "findings",
+    "views",
+    "cameras",
+    "journeys",
+    "metrics"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "px.closure-atlas/1"
+    },
+    "metadata": {
+      "type": "object",
+      "required": [
+        "source_inventory_sha256",
+        "scope",
+        "runtime_observed",
+        "certified"
+      ]
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "title",
+          "layer",
+          "position",
+          "evidence_level",
+          "currentness"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "enum": [
+              "system",
+              "file"
+            ]
+          },
+          "position": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": {
+              "type": "number"
+            }
+          },
+          "runtime_observed": {
+            "const": false
+          },
+          "certified": {
+            "const": false
+          }
+        }
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "source",
+          "target",
+          "kind",
+          "evidence_level"
+        ]
+      }
+    },
+    "views": {
+      "type": "array",
+      "minItems": 11,
+      "maxItems": 11
+    },
+    "cameras": {
+      "type": "array",
+      "minItems": 11,
+      "maxItems": 11
+    },
+    "journeys": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5
+    }
+  }
+}

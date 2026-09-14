@@ -361,12 +361,19 @@ def _rebuild_candidate_projections_unlocked(root: Path) -> None:
     from scripts.reconcile_active_capability_hashes import (
         reconcile as reconcile_active_capability_hashes,
     )
+    from scripts.reconcile_nested_skill_source_hashes import (
+        reconcile as reconcile_nested_skill_source_hashes,
+    )
 
     reconcile_wrappers(root, check=False)
     reconcile_templates(root, check=False)
     reconcile_profiles(root, check=False)
     reconcile_skills(root, check=False)
     reconcile_active_capability_hashes(root, check=False)
+    # Active skill bodies can evolve independently from their compact nested
+    # descriptor indexes. Rebind every byte-identity field before the cognitive
+    # compiler consumes the descriptor/source pair as one exact generation.
+    reconcile_nested_skill_source_hashes(root, check=False)
     for relative, payload in declared_tool_outputs(root).items():
         target = root / relative
         target.parent.mkdir(parents=True, exist_ok=True)

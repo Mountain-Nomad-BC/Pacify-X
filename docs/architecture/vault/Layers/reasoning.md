@@ -1,0 +1,101 @@
+# 08 · Reasoning and adaptation
+
+Deterministic reasoning, metacognitive proposals and a governed learning state machine support change without automatic self-authorization.
+
+- [[Systems/cognitive]] — Deterministic cognitive reasoning
+- [[Systems/analogy]] — Structural analogy and transfer candidates
+- [[Systems/metacognition]] — Metacognitive analysis facade
+- [[Systems/theory]] — Theory and pattern proposal induction
+- [[Systems/learning]] — Experience and learning state machine
+- [[Systems/comparison]] — A-B comparison and confidence gates
+- [[Systems/learninggate]] — Research and final learning validation
+- [[Systems/reuse]] — Measured reuse, decay and revalidation
+- [[Systems/improvement]] — Continuous-improvement backlog
+- [[Systems/engineering]] — Engineering analysis and decision frontier
+- [[Systems/logic]] — Logic, causal and epistemic kernels
+- [[Systems/formula]] — Formula, dimension and uncertainty engine
+- [[Systems/belief]] — Scoped belief revision
+- [[Systems/strategy]] — Reasoning strategy selection
+- [[Systems/abduction]] — Abductive explanation search
+- [[Systems/decision]] — Tradeoff and robust decision analysis
+- [[Systems/voi]] — Experiment value of information
+- [[Systems/constraints]] — Bounded constraint search
+- [[Systems/temporal]] — Temporal consistency analysis
+- [[Systems/genome]] — Capability dependency and mutation analysis
+- [[Systems/introspection]] — Observable trace reconstruction
+- [[Systems/practice]] — Engineering practice learning
+- [[Systems/optimizer]] — Constrained optimization proposals
+- [[Systems/dynamics]] — Knowledge dynamics simulation
+- [[Systems/epistemic]] — Epistemic state and contradiction analysis
+- [[Systems/contractlint]] — Semantic effect contract linting
+- [[Systems/measuredroute]] — Measured agent profile selection
+- [[Systems/panel]] — Independent hypothesis artifact panel
+- [[Systems/cleanroom]] — Clean-room control dispatch
+- [[Systems/revalidation]] — Canonical authority restoration
+- [[Systems/rootdiagnosis]] — Failure grouping and discriminating test plans
+- [[Systems/offlinecandidate]] — Offline skill improvement comparison
+- [[Systems/schedulesimulation]] — Observe-only capability scheduler
+- [[Systems/frontierselect]] — Decision blocker frontier and priority proposal
+- [[Systems/classifyheuristic]] — Task substring classifier
+- [[Systems/frozenrequirements]] — Requirement package identity and loading
+- [[Systems/recoverychoice]] — Recovery policy proposal ordering
+- [[Systems/affectedproofmeta]] — Affected repair proof plan and list completion
+- [[Systems/learningtrials]] — Submitted trials and secondary alternative selection
+- [[Systems/cleanupmining]] — Cleanup receipt learning compiler
+- [[Systems/remediationorder]] — Memory defect priority and dependency order
+- [[Systems/refinerymetrics]] — Refinery retrieval and calibration metrics
+- [[Systems/foundrycalculation]] — Calculation AST and dimensional compiler
+- [[Systems/formulauncertainty]] — Formula evaluation and local uncertainty
+- [[Systems/logicforward]] — Ground literal forward chaining
+- [[Systems/abductiveportfolio]] — Abductive subset enumeration
+- [[Systems/bayesianupdates]] — Bayesian declared-likelihood updates
+- [[Systems/informationvalue]] — Information-value and calibration helpers
+- [[Systems/constraintsearch]] — Finite-domain backtracking search
+- [[Systems/causalgraph]] — Causal DAG separation and path analysis
+- [[Systems/temporalanalysis]] — Interval relations and event state projection
+- [[Systems/decisionintervals]] — Multi-objective interval and regret ranking
+- [[Systems/beliefprojection]] — Scoped belief influence projection
+- [[Systems/analogysignature]] — Structural analogy signature ranking
+- [[Systems/strategymodes]] — Reasoning mode dependency plan
+- [[Systems/metagenome]] — Capability genome and mutation proposals
+- [[Systems/metarouting]] — Metacognitive agent ranking and team proposals
+- [[Systems/metatrace]] — Supplied trace reconstruction
+- [[Systems/metapractices]] — Engineering practice pattern summaries
+- [[Systems/metaknowledgephysics]] — Knowledge dynamics score simulation
+- [[Systems/metaoptimization]] — Optimization recommendation arithmetic
+- [[Systems/metaepistemic]] — Metacognitive probability and contradiction heuristics
+- [[Systems/failureattribution]] — Failure signal attribution and priorities
+- [[Systems/foundationshift]] — Numerical shift and dimensional declarations
+- [[Systems/goaltransitionmetadata]] — Durable goal transition metadata
+- [[Systems/workflowproposalorder]] — Workflow proposal order and effect subset
+- [[Systems/declaredplan]] — Declared outcome plan and contract lookup
+- [[Systems/declaredformulas]] — Declared suite arithmetic and formula set
+- [[Systems/repairrootgroups]] — Exact-signature root-cause candidates
+- [[Systems/discriminatingplan]] — Diagnostic counterfactual test plan
+- [[Systems/panelartifactvote]] — Hypothesis artifact weighted vote
+- [[Systems/communicationgroups]] — Mandatory messages and repeat-key compaction
+- [[Systems/agencyrequestcompile]] — Agency selection to Studio request compilation
+- [[Systems/agencyranking]] — Specialist multi-signal ranking
+- [[Systems/agencyreviewers]] — Specialist reviewer panel selection
+- [[Systems/agencyprompt]] — Specialist panel prompt compilation
+- [[Systems/engineeringdispatch]] — Operational policy and descriptor dispatch
+- [[Systems/engineeringanalysis]] — Engineering graph and contract analysis
+- [[Systems/engineeringcandidates]] — Engineering hypotheses and evolution proposals
+- [[Systems/engineeringtwin]] — Repository merged graph projection
+- [[Systems/candidatephasetrace]] — Candidate stage membership validator
+- [[Systems/candidatepackageclosure]] — Greedy candidate package and dependencies
+- [[Systems/completionresourceplans]] — Calculated budget lease and placement
+- [[Systems/completionfactplans]] — Temporal evidence and candidate checks
+- [[Systems/sidebarprojectcalc]] — Sidebar plan waves and progress calculations
+- [[Systems/workfloweditnormalize]] — Workflow editor normalization and input derivation
+- [[Systems/agenteditgraph]] — Agent editor closed topology and working edits
+- [[Systems/extensionconflictsignals]] — Manifest contribution and dependency signals
+- [[Systems/ollamaconversion]] — Local provider message and token conversion
+- [[Systems/transcriptontology]] — Queue ontology and declared workflow checks
+- [[Systems/externalroutes]] — External declared quality cost latency routing
+- [[Systems/securitypackage]] — Ranked security candidate package
+- [[Systems/declaredreconstructionplan]] — Declared absent suite reconstruction planner
+- [[Systems/modelconfigestimate]] — Static model architecture estimates
+- [[Systems/deploymentmatrix]] — Declared local model feasibility matrix
+- [[Systems/behaviormetadataplan]] — External skill metadata admission planning
+- [[Systems/iwlearning]] — Installed Learning fixture lifecycle

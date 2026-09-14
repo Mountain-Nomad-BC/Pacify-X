@@ -1,0 +1,52 @@
+# 11 · Delivery and operational proof
+
+Ordered repair and release campaigns bind source, tests, package bytes, installed behavior and signed certification.
+
+- [[Systems/repair]] — Repair and release processing order
+- [[Systems/tests]] — Governed section and profile gates
+- [[Systems/package]] — Exact package and installed identity
+- [[Systems/operational]] — Installed-system interaction proof
+- [[Systems/certificate]] — Signed release certification
+- [[Systems/identity]] — Exact engine and product identity
+- [[Systems/custody]] — Portable release evidence custody
+- [[Systems/gatecache]] — Dependency-bound assurance gate receipts
+- [[Systems/installedindex]] — Installed evidence binding index
+- [[Systems/artifactclasses]] — Release tree artifact classification
+- [[Systems/releaseautomation]] — Release candidate journal and owner driver
+- [[Systems/installedowner]] — Installed operational aggregate owner
+- [[Systems/cijobs]] — CI job dependencies and retained artifacts
+- [[Systems/assetpaths]] — Source and installed asset resolution
+- [[Systems/mcpbundle]] — Generated MCP deployment bundle
+- [[Systems/nativereleasetools]] — Native release comparison helpers
+- [[Systems/frameworkrebind]] — Framework receipt identity rebinding
+- [[Systems/releasegitcapture]] — Git version tag and dirty-input capture
+- [[Systems/releaseclassify]] — Bounded release classification and digests
+- [[Systems/releasefilteredcopy]] — Filtered clean-product copy
+- [[Systems/releasefixturecopy]] — Classified release-test source materialization
+- [[Systems/preflightstatic]] — Ordered preflight static gates
+- [[Systems/preflightdiagnostics]] — Dry-run discovery and named probe wrappers
+- [[Systems/certificationfreeze]] — Certification frozen candidate and toolchain
+- [[Systems/licensingconsistency]] — Publication identity and licensing consistency
+- [[Systems/nativepackaging]] — Native and facade setuptools projection
+- [[Systems/releasecampaignidentity]] — Release campaign source identity
+- [[Systems/releasecampaignclaim]] — Ordered release stage claims
+- [[Systems/releasecampaignfinish]] — Release stage outcome consumption
+- [[Systems/releasecampaignsupersession]] — Release archives and phase rewind
+- [[Systems/releasestageowner]] — Parameterized release stage owner
+- [[Systems/releasegittransition]] — Source commit and annotated retag
+- [[Systems/releasepackageaudit]] — Existing VSIX artifact audit
+- [[Systems/releaseinstallaudit]] — Existing extension installation audit
+- [[Systems/candidatedriver]] — Twelve-stage release candidate driver
+- [[Systems/hygienereadiness]] — Live pre-candidate hygiene assessment
+- [[Systems/releasewheelhashes]] — Wheelhouse byte hash and offline command plan
+- [[Systems/releaseenvidentity]] — Release environment scrub and toolchain declaration checks
+- [[Systems/certreadinessversions]] — Certification prerequisite version probes
+- [[Systems/certreadinesslock]] — Installed direct package label parity
+- [[Systems/distributionprojection]] — Source-to-wheel and source-to-sdist projection
+- [[Systems/exportrebuild]] — Candidate projection rebuild
+- [[Systems/installedownerpreflight]] — Installed owner preflight and command checks
+- [[Systems/installedownerpublication]] — Installed owner summary and phase publication
+- [[Systems/cohesionclosegate]] — Cohesion installed proof and timeline gate
+- [[Systems/clireleaseclaimfinalizer]] — CLI release claim and terminal publication
+- [[Systems/manualextensioninstall]] — PowerShell extension install and uninstall
+- [[Systems/auditbundlewrapper]] — PowerShell clean audit export wrapper

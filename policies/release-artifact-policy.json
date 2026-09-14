@@ -90,6 +90,8 @@
   "control_output_paths": [
     ".engineering-bootstrap/processing-order/release-identity.json",
     ".engineering-bootstrap/processing-order/repair-campaign.json",
+    ".engineering-bootstrap/export-resources.json",
+    ".engineering-bootstrap/export-resources.json.lock",
     ".engineering-bootstrap/release-transaction.json",
     ".engineering-bootstrap/release.lock",
     ".engineering-bootstrap/test-evidence/.test-orchestration.lock",
@@ -105,6 +107,8 @@
   ],
   "control_output_prefixes": [
     ".engineering-bootstrap/admission-payloads/",
+    ".engineering-bootstrap/cleanup-receipts/",
+    ".engineering-bootstrap/processing-order/",
     ".engineering-bootstrap/test-evidence/",
     ".engineering-bootstrap/resource-lifecycle/",
     ".engineering-bootstrap/wal/",

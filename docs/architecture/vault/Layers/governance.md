@@ -1,0 +1,134 @@
+# 04 · Authority and admission
+
+Independent gates bind effects, policy, identity, evidence and lifecycle. A plan, observed action and approved effect are different objects.
+
+- [[Systems/admission]] — Capability admission and maturity
+- [[Systems/effects]] — Effect contracts and signed grants
+- [[Systems/studioauth]] — Studio authority and version identity
+- [[Systems/gapledger]] — Operational gap and work admission ledger
+- [[Systems/security]] — Security and external tool governance
+- [[Systems/controlpolicies]] — Operational policy evaluators
+- [[Systems/primitives]] — Primitive and effect authority topology
+- [[Systems/hostsigning]] — Host approval signing and consumption
+- [[Systems/schemaengine]] — Owned schema and reference closure
+- [[Systems/enterprisecontrol]] — Enterprise configuration and billable decisions
+- [[Systems/startupconfig]] — Validated startup configuration
+- [[Systems/nativekerneltools]] — Native kernel helper tools
+- [[Systems/nativesecuritytools]] — Native policy and supply-chain helpers
+- [[Systems/coordinvariants]] — JavaScript coordination invariants
+- [[Systems/revisionguard]] — Host revision tree and edit selection
+- [[Systems/providerpolicy]] — Optional Python immutable provider policy wrapper
+- [[Systems/agentpreflight]] — Agent structural preflight and signed admission
+- [[Systems/studioauthority]] — Canonical Studio authority records
+- [[Systems/hostproof]] — Host operation and workflow approval consumption
+- [[Systems/assuranceinputs]] — Deterministic assurance metadata controls
+- [[Systems/versionallocation]] — Physical version allocation and revalidation
+- [[Systems/studiorecord]] — Studio model and single-record publication
+- [[Systems/operationcompose]] — Operation owner authority composition
+- [[Systems/executionenvelope]] — Policy evidence and execution envelope
+- [[Systems/signedresolver]] — Signed evidence resolution dimensions
+- [[Systems/granttargets]] — Signed effect grant and concrete target coverage
+- [[Systems/outcomereducer]] — Authenticated postcondition reduction
+- [[Systems/admissionfacts]] — Authenticated admission fact derivation
+- [[Systems/claimassembly]] — Claim evidence usability and contradiction warnings
+- [[Systems/workflowpublish]] — Workflow revision publication and admission
+- [[Systems/featureclaims]] — Feature acceptance metadata compatibility
+- [[Systems/externalmanifest]] — External manifest and inventory verification
+- [[Systems/portableprojection]] — Portability text projection and exclusions
+- [[Systems/currentindex]] — Current evidence index and filtered engine identity
+- [[Systems/planidentity]] — Task plan self-consistency and optional currentness
+- [[Systems/placementtiers]] — Placement scoring and promotion metadata
+- [[Systems/attachmentidentity]] — Model attachment construction and validation
+- [[Systems/ggufadmission]] — GGUF metadata and artifact admission
+- [[Systems/localserverplan]] — Local server plan and startup acceptance
+- [[Systems/dagvalidation]] — Declarative orchestration shape and effects
+- [[Systems/countenvelopes]] — Registry count ownership and derivation
+- [[Systems/reasoningworkflow]] — Reasoning workflow name-presence validator
+- [[Systems/mapintegrity]] — Project map full quick and freshness checks
+- [[Systems/coreadmission]] — Core registry cross-validation fanout
+- [[Systems/schemainstance]] — Owned schema admission and instance evaluation
+- [[Systems/transferbinding]] — Transfer receipt and imported content binding
+- [[Systems/projectintegrity]] — Commissioned project integrity checks
+- [[Systems/profiledecl]] — Portable resource and routing profile declarations
+- [[Systems/worldfresh]] — World-state loading and authority status
+- [[Systems/pycoordstate]] — Python coordination state and transition checks
+- [[Systems/pycoordwalguard]] — Optional Python coordination WAL guard
+- [[Systems/topologydecl]] — Declared effect gates and rollback owners
+- [[Systems/primitivedecl]] — Canonical primitive owner registry
+- [[Systems/skilltreeidentity]] — Portable bounded skill tree attestation
+- [[Systems/skilladmitreceipt]] — Signed skill admission from validation
+- [[Systems/learningadmission]] — Learning-to-knowledge candidate linkage
+- [[Systems/foundrylineage]] — Foundry candidate lineage digest
+- [[Systems/metalint]] — Semantic effect declaration lint
+- [[Systems/changeproofclass]] — Path-based change proof classification
+- [[Systems/toolmanifestinventory]] — Tool manifest inventory and policy decision
+- [[Systems/testorchestrationlease]] — Test orchestration physical and inherited lease
+- [[Systems/certificationsign]] — Detached certificate signature and trust policy
+- [[Systems/testphaseadmission]] — Exact repair phase and release identity admission
+- [[Systems/studioapprovaldispatch]] — Host proof consumption before Studio mutation
+- [[Systems/studioverifierlocator]] — Verifier description and authority initialization
+- [[Systems/nativestatesync]] — Declared specialty and commissioned projection sync
+- [[Systems/effectsyntaxinventory]] — Python effect syntax inventory
+- [[Systems/effectsyntaxvalidation]] — Effect registry consistency checks
+- [[Systems/candidateadmissions]] — Candidate per-stage ledger sessions
+- [[Systems/correctivecardledger]] — Historical corrective release card ledger
+- [[Systems/fleetreadiness]] — Fleet participant readiness calculation
+- [[Systems/observerconsent]] — Observer consent and command plan
+- [[Systems/extensionhandoff]] — Extension Codex host context decision
+- [[Systems/extensionproviderpolicy]] — JavaScript provider policy comparison
+- [[Systems/sidebarprotocol]] — Strict sidebar message contract
+- [[Systems/studiotrustregistry]] — Origin and request bound Studio trust registry
+- [[Systems/workfloweditvalidate]] — Workflow editor structural validation
+- [[Systems/agenteditvalidate]] — Agent editor route and declaration checks
+- [[Systems/extensionpreviewtokens]] — Lifecycle previews and exact target checks
+- [[Systems/webviewvalueguard]] — Webview JSON shape and operation field guard
+- [[Systems/uiactiondeclarations]] — UI action effect and outcome declarations
+- [[Systems/transcriptadapterplan]] — Transcript profile and nonexecuting adapter plan
+- [[Systems/transcriptrecords]] — Canonical transcript record write boundary
+- [[Systems/releasepinparser]] — Exact release dependency lock parser
+- [[Systems/externalhookgate]] — External hook reentry and declared policy gate
+- [[Systems/securityauthority]] — Security engagement declaration decision
+- [[Systems/certreadinessengine]] — Managed campaign versus unmanaged engine readiness
+- [[Systems/structuraldeclarations]] — Skill policy workflow and documentation consistency
+- [[Systems/doctorproviderreadiness]] — Doctor provider and budget readiness labels
+- [[Systems/contractownerbuilder]] — Contract ownership declaration producer
+- [[Systems/countinventorybuilder]] — Count invariant declaration producer
+- [[Systems/proofmatrixbuilder]] — Operational proof requirement producer
+- [[Systems/declaredownerreconcile]] — Declared owner hash and label reconciliation
+- [[Systems/securitycontractprojection]] — Security operational contract projection
+- [[Systems/typedgaplinkwriter]] — Pinned typed-control gap-link updater
+- [[Systems/ledgerappendplanner]] — Ledger append admission and branch selection
+- [[Systems/ledgerworkguard]] — Exact work admission guard
+- [[Systems/reviewedcardbindings]] — Reviewed card ownership reconciliation
+- [[Systems/aggregatesplitplanner]] — Historical aggregate decomposition planner
+- [[Systems/streamclaimreconciliation]] — Project-stream composite claim reconciliation
+- [[Systems/controlobservationplanner]] — Control observation revision planning
+- [[Systems/controlcardadvancement]] — Control-bound card advancement
+- [[Systems/cohesiondenominator]] — Cohesion card and DAG denominator
+- [[Systems/cohesionprojection]] — Cohesion lifecycle and management projection
+- [[Systems/corpusreviewclusters]] — Corpus decision cluster construction
+- [[Systems/legacyincompletereviews]] — Incomplete finding review matching
+- [[Systems/legacyincompletehistory]] — Historical incomplete finding disposition
+- [[Systems/historicalsourcejoin]] — Historical hash and current owner reconciliation
+- [[Systems/historicalskillidentity]] — Skill identity and alias disposition
+- [[Systems/historicalassetdisposition]] — Classified asset and retained error disposition
+- [[Systems/historicalmechanismmap]] — Mechanism-to-owner mapping accounting
+- [[Systems/historicalstagedpolicy]] — Typed staged candidate policy resolution
+- [[Systems/externalrequirementowners]] — Fixed external requirement owner mapping
+- [[Systems/miningadmissionwriter]] — Historical mining catalog and package admission writer
+- [[Systems/miningworkflowprojection]] — Historical mining workflow projection
+- [[Systems/contractidrewrite]] — Contract URI normalization writer
+- [[Systems/cliorchestrationlease]] — CLI test and release single-flight lease
+- [[Systems/clihardwarefingerprint]] — CLI hardware work request fingerprint
+- [[Systems/hosttoolinputpolicy]] — Host tool input scope and declared effect policy
+- [[Systems/extensionapprovalroutes]] — Host approval and owned-harness route selection
+- [[Systems/dashboardproofresponses]] — Browser proof response and detached save handling
+- [[Systems/dashboardapprovalresponse]] — Workflow approval response assignment
+- [[Systems/dashboardlifecycleforms]] — Native extension and environment effect forms
+- [[Systems/walkauthorityskip]] — Recovered authority refusal coverage
+- [[Systems/walkownedcleanup]] — Owned walk root reclamation
+- [[Systems/iwadmission]] — Installed walk effect and profile admission
+- [[Systems/iwpluginconfirm]] — Exact plugin preview and click binding
+- [[Systems/iwvalidation]] — Installed validation authority and order
+- [[Systems/bundleera]] — MCP protocol era and connection negotiation
+- [[Systems/bundletools]] — SDK tool input result and error boundary

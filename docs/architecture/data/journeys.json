@@ -1,0 +1,281 @@
+[
+  {
+    "name": "Normal Work",
+    "flow_id": "F01",
+    "steps": [
+      "host",
+      "startup",
+      "catalog",
+      "orchestrator",
+      "effects",
+      "evidence",
+      "verify",
+      "recovery"
+    ],
+    "description": "The bounded single-capability path validates registry and inputs, checks authority, activates one handler, assembles support and evaluates postconditions. Each stage records a checkpoint.",
+    "limit": "This path is currently constrained for non-read effects because its enforce call omits signed grant bindings; its verify call is the compatibility evaluator.",
+    "segments": [
+      {
+        "source": "host",
+        "target": "startup",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      },
+      {
+        "source": "startup",
+        "target": "catalog",
+        "relationship_present": true,
+        "evidence": "modeled-relationship"
+      },
+      {
+        "source": "catalog",
+        "target": "orchestrator",
+        "relationship_present": true,
+        "evidence": "modeled-relationship"
+      },
+      {
+        "source": "orchestrator",
+        "target": "effects",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      },
+      {
+        "source": "effects",
+        "target": "evidence",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      },
+      {
+        "source": "evidence",
+        "target": "verify",
+        "relationship_present": true,
+        "evidence": "modeled-relationship"
+      },
+      {
+        "source": "verify",
+        "target": "recovery",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      }
+    ]
+  },
+  {
+    "name": "Learning",
+    "flow_id": "F07",
+    "steps": [
+      "telemetry",
+      "learning",
+      "comparison",
+      "learninggate",
+      "knowledge",
+      "reuse",
+      "invalidation"
+    ],
+    "description": "Explicit observations form a signed learning pipeline. Frozen candidates pass statistical comparison, research and final validation, then a separate knowledge proposal verification/approval/promotion. Measured reuse can make a canonical head suspect and invalidate declared dependents.",
+    "limit": "Metrics and trials are submitted by callers. There is no established automatic bus-to-learning trigger or autonomous experiment execution. This is a real governed state-change loop.",
+    "segments": [
+      {
+        "source": "telemetry",
+        "target": "learning",
+        "relationship_present": true,
+        "evidence": "modeled-relationship"
+      },
+      {
+        "source": "learning",
+        "target": "comparison",
+        "relationship_present": true,
+        "evidence": "modeled-relationship"
+      },
+      {
+        "source": "comparison",
+        "target": "learninggate",
+        "relationship_present": true,
+        "evidence": "modeled-relationship"
+      },
+      {
+        "source": "learninggate",
+        "target": "knowledge",
+        "relationship_present": true,
+        "evidence": "modeled-relationship"
+      },
+      {
+        "source": "knowledge",
+        "target": "reuse",
+        "relationship_present": true,
+        "evidence": "modeled-relationship"
+      },
+      {
+        "source": "reuse",
+        "target": "invalidation",
+        "relationship_present": true,
+        "evidence": "modeled-relationship"
+      }
+    ]
+  },
+  {
+    "name": "Failure/Recovery",
+    "flow_id": "F03",
+    "steps": [
+      "ui",
+      "bridge",
+      "cli",
+      "workflow",
+      "studioauth",
+      "scheduler",
+      "supervisor",
+      "resources",
+      "recovery",
+      "dashboard"
+    ],
+    "description": "A workflow revision is saved, validated/admitted and dry-run. Ready nodes run in bounded conflict-free batches; typed outputs enable branches. Approval, timeout, retry and lifecycle controls produce durable run state.",
+    "limit": "Diagram is a narrative order, not a claim of one linear function chain. Adapter branches and resource cleanup are parallel responsibilities.",
+    "segments": [
+      {
+        "source": "ui",
+        "target": "bridge",
+        "relationship_present": true,
+        "evidence": "modeled-relationship"
+      },
+      {
+        "source": "bridge",
+        "target": "cli",
+        "relationship_present": true,
+        "evidence": "modeled-relationship"
+      },
+      {
+        "source": "cli",
+        "target": "workflow",
+        "relationship_present": true,
+        "evidence": "modeled-relationship"
+      },
+      {
+        "source": "workflow",
+        "target": "studioauth",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      },
+      {
+        "source": "studioauth",
+        "target": "scheduler",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      },
+      {
+        "source": "scheduler",
+        "target": "supervisor",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      },
+      {
+        "source": "supervisor",
+        "target": "resources",
+        "relationship_present": true,
+        "evidence": "modeled-relationship"
+      },
+      {
+        "source": "resources",
+        "target": "recovery",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      },
+      {
+        "source": "recovery",
+        "target": "dashboard",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      }
+    ]
+  },
+  {
+    "name": "Knowledge Change",
+    "flow_id": "F09",
+    "steps": [
+      "projectmap",
+      "invalidation",
+      "graphs",
+      "router",
+      "plan",
+      "tests"
+    ],
+    "description": "Source impact and declared dependency currentness identify stale maps/projections/proof. Freshness gates prevent reuse until the appropriate owned rebuild or test stage completes.",
+    "limit": "Propagation coverage depends on the registered graph. This report computes no product revision refresh and runs no release gates.",
+    "segments": [
+      {
+        "source": "projectmap",
+        "target": "invalidation",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      },
+      {
+        "source": "invalidation",
+        "target": "graphs",
+        "relationship_present": true,
+        "evidence": "modeled-relationship"
+      },
+      {
+        "source": "graphs",
+        "target": "router",
+        "relationship_present": true,
+        "evidence": "modeled-relationship"
+      },
+      {
+        "source": "router",
+        "target": "plan",
+        "relationship_present": true,
+        "evidence": "modeled-relationship"
+      },
+      {
+        "source": "plan",
+        "target": "tests",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      }
+    ]
+  },
+  {
+    "name": "Release Proof",
+    "flow_id": "F10",
+    "steps": [
+      "gapledger",
+      "repair",
+      "tests",
+      "package",
+      "operational",
+      "certificate"
+    ],
+    "description": "Repair intake closes, one reconciliation establishes identity, current sections precede one full profile and validation, then package/install/installed-system testing/certification advance in order.",
+    "limit": "The user confirmed Marketplace publication and verification. Local README still carries older pending-release language; neither is treated as a fresh independent Marketplace audit here.",
+    "segments": [
+      {
+        "source": "gapledger",
+        "target": "repair",
+        "relationship_present": true,
+        "evidence": "modeled-relationship"
+      },
+      {
+        "source": "repair",
+        "target": "tests",
+        "relationship_present": true,
+        "evidence": "modeled-relationship"
+      },
+      {
+        "source": "tests",
+        "target": "package",
+        "relationship_present": true,
+        "evidence": "modeled-relationship"
+      },
+      {
+        "source": "package",
+        "target": "operational",
+        "relationship_present": true,
+        "evidence": "modeled-relationship"
+      },
+      {
+        "source": "operational",
+        "target": "certificate",
+        "relationship_present": true,
+        "evidence": "modeled-relationship"
+      }
+    ]
+  }
+]

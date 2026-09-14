@@ -1,0 +1,156 @@
+# 10 · Persistence and recovery
+
+Locks, write-ahead transactions, lifecycle reconciliation and dependency invalidation preserve authoritative state and reject stale projections.
+
+- [[Systems/wal]] — Write-ahead transactions and invariants
+- [[Systems/invalidation]] — Dependency invalidation and projection freshness
+- [[Systems/recovery]] — Durable checkpoint recovery
+- [[Systems/resources]] — Resource lifecycle and safe reclamation
+- [[Systems/intake]] — Stable intake and quarantine
+- [[Systems/stateclass]] — Classified authoritative-state loading
+- [[Systems/coordpublish]] — Coordination state publication sequence
+- [[Systems/chainledger]] — Protected project event ledger
+- [[Systems/revisionpublish]] — Immutable Studio directory publication
+- [[Systems/generatedtopology]] — Generated authority cycle analysis
+- [[Systems/projectionplan]] — Projection drift and rebuild planning
+- [[Systems/generatedadapter]] — Generated graph invalidation adapter
+- [[Systems/recoverypass]] — Configured authority reconciliation pass
+- [[Systems/oslock]] — Process-bound filesystem lock
+- [[Systems/evidencecache]] — Revision-keyed evidence cache
+- [[Systems/semanticidentity]] — Byte and syntax-normalized identity
+- [[Systems/cleanupstaging]] — Host cleanup staging and recovery
+- [[Systems/activityledger]] — Host activity ledger and recovery
+- [[Systems/walklimits]] — Bounded filesystem traversal
+- [[Systems/coordread]] — Coordination read and corruption evidence
+- [[Systems/envstore]] — Environment shard publication
+- [[Systems/vaultpublish]] — Memory append and lifecycle publication
+- [[Systems/memorywritequeue]] — Persistent memory write intents and retries
+- [[Systems/terminalobserver]] — Independent worker exit and terminal observer
+- [[Systems/durablepublisher]] — Authenticated run event and head publication
+- [[Systems/runviews]] — Run snapshots and cancellation signal
+- [[Systems/resourcecustody]] — Path and process custody ledger
+- [[Systems/resourcereclaim]] — Cleanup gate effect and receipt sequence
+- [[Systems/historyretention]] — Operational history suffix and ancestry retention
+- [[Systems/walcommit]] — WAL before-image capture and sequential publication
+- [[Systems/walinspect]] — Read-only WAL inspection and recovery choice
+- [[Systems/archivecustody]] — WAL and project-map ZIP archive paths
+- [[Systems/filelease]] — OS lock and retained process lease
+- [[Systems/studiophys]] — Bounded physical Studio filesystem helpers
+- [[Systems/sshproof]] — SSH signing verification and feature probe
+- [[Systems/workflowcheckpoint]] — Workflow checkpoint resume and terminal publication
+- [[Systems/custodychunks]] — Custody ZIP chunking and reconstruction
+- [[Systems/publicationrestore]] — Signed publication verification and restoration
+- [[Systems/custodypackage]] — Installed-proof custody packaging and signing
+- [[Systems/capacityleases]] — Logical model capacity reservation ledger
+- [[Systems/placementpublish]] — Placement artifact publication through work plane
+- [[Systems/impactinvalidation]] — Impact to invalidation star projection
+- [[Systems/mappromotion]] — Project map staging archive and publication
+- [[Systems/streamcheckpoint]] — Stream checkpoint and resume comparison
+- [[Systems/quarantinetxn]] — Quarantine inventory move and compensation
+- [[Systems/recoverytxn]] — Recovery replacement and preservation transaction
+- [[Systems/workspaceevents]] — Project event chain and adjacent head authority
+- [[Systems/workspacerebuild]] — Workspace projection reconstruction and compensation
+- [[Systems/durablestore]] — Durable state persistence and resume metadata
+- [[Systems/durablemigration]] — Version migration through WAL
+- [[Systems/skilllifecyclejournal]] — Signed skill lifecycle prepare and roll-forward
+- [[Systems/skillrollbackbinding]] — Skill rollback backup and projection restoration
+- [[Systems/dependencycone]] — Universal dependency declarations and revision cone
+- [[Systems/projectionfreshness]] — Projection hashing invalidation and rebuild categories
+- [[Systems/learningjournal]] — Signed learning event and head publication
+- [[Systems/knowledgepublication]] — Canonical knowledge revision and head commit
+- [[Systems/decaypublication]] — Canonical suspect status before learning transition
+- [[Systems/revalidationpublication]] — Revalidation transition before canonical restoration
+- [[Systems/refinerystaging]] — Refinery staged plan publication
+- [[Systems/foundrymaterialize]] — Foundry multi-file candidate materialization
+- [[Systems/cognitiveblackbox]] — Hash-only cognitive event files
+- [[Systems/eventbuspublication]] — Operational bus WAL publication
+- [[Systems/classifiedload]] — Classified JSON parse and validation
+- [[Systems/corruptstatecustody]] — Corrupt authoritative state custody
+- [[Systems/intakeclosureledger]] — Intake open snapshot and close ledger
+- [[Systems/closedintakemove]] — Closed intake move and final manifest
+- [[Systems/pathquarantinewrapper]] — Explicit path quarantine wrapper
+- [[Systems/cachekeypublication]] — Evidence cache key blob and manifest
+- [[Systems/proposalpublication]] — Candidate proposal file publication
+- [[Systems/toolintakepublish]] — Intake record and project-state publication
+- [[Systems/syntaxcanonicalidentity]] — JSON YAML and AST canonical identity
+- [[Systems/buildclaimpublication]] — Build-claim and README publication
+- [[Systems/preflightcache]] — Preflight dependency-selected cache
+- [[Systems/preflightworkspace]] — Owned disposable preflight workspace
+- [[Systems/testprocesscustody]] — Managed test process workspace and validity
+- [[Systems/certificationcommit]] — Exclusive per-file evidence publication
+- [[Systems/studioreadconstruction]] — Read-labelled Studio controller construction
+- [[Systems/nativebackupcustody]] — Skill inventory backup and exact-byte restore
+- [[Systems/nativepublication]] — Eligibility publication after-image recovery
+- [[Systems/globalisolation]] — Global skill relocation and recovery
+- [[Systems/globalreappearance]] — Reappeared global skill generations
+- [[Systems/globalmanifestcustody]] — Installer manifest custody
+- [[Systems/globalrestore]] — Original global skill restoration
+- [[Systems/hygienetargets]] — Named hygiene target classification
+- [[Systems/hygienequarantine]] — Pre-candidate quarantine journal
+- [[Systems/fleetsessionstate]] — Persistent fleet session projection
+- [[Systems/fleetsessionreplay]] — Fleet canonical event reconstruction
+- [[Systems/observeroutbox]] — Observer state receipt and event outbox
+- [[Systems/sidebarprefs]] — Sidebar workspace preference persistence
+- [[Systems/starterversionrecovery]] — Starter immutable version conflict recovery
+- [[Systems/studioeditorinput]] — Portable text package normalization and framing
+- [[Systems/studiomaterializedtree]] — Studio editor input tree and lifecycle custody
+- [[Systems/extensionrollbackcustody]] — Retained uninstall history and rollback source
+- [[Systems/environmentmetadatacustody]] — Environment metadata move and restore boundary
+- [[Systems/activityappendstate]] — Local activity append then state publication
+- [[Systems/activityrecovery]] — Activity stale cancellation and explicit chain repair
+- [[Systems/webviewdraftstate]] — Encoded working draft restoration boundary
+- [[Systems/transcriptcustody]] — Transcript source planning and copied run custody
+- [[Systems/portableauditarchive]] — Portable audit archive and checksum publication
+- [[Systems/externalstagereceipt]] — External candidate receipt publication
+- [[Systems/externalrevoke]] — External candidate revocation marker
+- [[Systems/exacttoolcache]] — Exact helper result cache identity and seal
+- [[Systems/pythonsurfacewriter]] — Python ownership projection publication
+- [[Systems/sourcefateverify]] — Disposition report check and paired publication
+- [[Systems/doctorwal]] — Doctor selected WAL recovery inspection
+- [[Systems/doctorreceipt]] — Doctor report WAL retention and digest boundary
+- [[Systems/distributionintermediates]] — Build intermediate custody dependency
+- [[Systems/exportpublish]] — Audit archive and sidecar publication
+- [[Systems/sourcearchiveclosure]] — Git archive workspace closure
+- [[Systems/profilebyteprojection]] — Profile byte projection
+- [[Systems/templatebyteprojection]] — Domain wrapper and pack byte projection
+- [[Systems/activehashreconcile]] — Active implementation hash reconciliation
+- [[Systems/declaredtoolreconcile]] — Tool target reference and lazy-index hash chain
+- [[Systems/healthsnapshotpublication]] — Health snapshot and optional output publication
+- [[Systems/stageevidencepublication]] — Exclusive stage-evidence output publication
+- [[Systems/historicalattestationwriter]] — Historical evidence attestation append
+- [[Systems/ledgerstatereducer]] — Ledger replay and state reduction
+- [[Systems/ledgerhistorycompactor]] — Ledger compact history and retained indexes
+- [[Systems/ledgerappendio]] — Authoritative ledger append and fsync
+- [[Systems/ledgercheckpointpublisher]] — Ledger snapshot delta and head publication
+- [[Systems/ledgertailrecovery]] — Ledger torn-tail recovery and replay
+- [[Systems/ledgersegmentarchive]] — Ledger segmentation and legacy equivalence
+- [[Systems/studiobyteprojection]] — Studio operation byte projection reconciliation
+- [[Systems/cohesionwalpublication]] — Cohesion WAL publication and recovery
+- [[Systems/corpusjsonio]] — Corpus JSONL serialization and fingerprints
+- [[Systems/corpuspartitionmerge]] — Corpus partition stream merge
+- [[Systems/corpusrehash]] — Corpus map digest refresh
+- [[Systems/legacysourceprogress]] — Source audit progress publication
+- [[Systems/historicalcertifierpublication]] — Historical reconstruction status publication
+- [[Systems/pytestreclaim]] — Per-test temporary child reclamation boundary
+- [[Systems/cachemovepublication]] — Python cache move and post-effect receipt
+- [[Systems/sanitizerpreflight]] — Sanitizer preservation selection and receipt
+- [[Systems/legacytestdeletion]] — Historical PowerShell test-data deletion tools
+- [[Systems/extensioncleanupexecution]] — Extension selected-object staging and disposal
+- [[Systems/extensioncleanupfallback]] — Extension recycle fallback and conditional restoration
+- [[Systems/hostgloballease]] — Global VS Code host lease
+- [[Systems/hostworkspacecustody]] — Host temporary workspace marker
+- [[Systems/engineoutageowner]] — Disposable engine outage and restoration
+- [[Systems/hostcompletionroute]] — Prepared model run and signed completion handoff
+- [[Systems/extensionlifecyclepublication]] — Extension and environment lifecycle result publication
+- [[Systems/walkchildreevaluation]] — Child walk status reconstruction
+- [[Systems/walkenginecopy]] — Disposable engine copy and partial identity check
+- [[Systems/walkchildfinalize]] — Child finalization and receipt ordering
+- [[Systems/exhaustiveresume]] — Exhaustive walk predecessor reuse
+- [[Systems/exhaustivepublish]] — Parallel walk aggregation and publication
+- [[Systems/dashboardvisualmanifest]] — Dashboard screenshot manifest custody
+- [[Systems/iwpublish]] — Installed walk receipt and diagnostics publication
+- [[Systems/iwhostprep]] — Host boundary fixture and restoration
+- [[Systems/iwcleanup]] — Installed cleanup fixture and result boundary
+- [[Systems/iwenvironment]] — Installed environment quarantine round trip
+- [[Systems/iwconfig]] — Reversible configuration and canonical memory restoration
+- [[Systems/bundlesubscriptions]] — MCP subscription and graceful result ownership

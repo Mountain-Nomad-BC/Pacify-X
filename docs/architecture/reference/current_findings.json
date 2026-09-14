@@ -1,0 +1,990 @@
+{
+  "schema_version": "px.closure-findings/1",
+  "counts_are_not_additive": true,
+  "all_issues_known": false,
+  "findings": [
+    {
+      "id": "PX-AUD-001",
+      "title": "The uploaded snapshot omits 12 imported runtime owner modules",
+      "severity": "P0",
+      "evidence_mode": "snapshot-static + import reproduction",
+      "starter_items": [
+        3,
+        4,
+        12,
+        15,
+        17,
+        20,
+        21,
+        24
+      ],
+      "sources": [
+        {
+          "path": "runtime/test_profiles.py",
+          "start_line": 295,
+          "end_line": 331
+        },
+        {
+          "path": "runtime/resource_lifecycle.py",
+          "start_line": 263,
+          "end_line": 300
+        }
+      ],
+      "evidence": [
+        "missing_local_imports.json",
+        "collection_probe.log",
+        "focused_python_available.log"
+      ],
+      "observed": "227 import sites across 77 files reference 12 local modules that do not exist in this ZIP. The missing owners include bounded input acquisition, numeric validation, archive handling, verification identity/receipts/status, WAL generation/ownership, resource storage, and section scheduling. Focused pytest collection reaches ModuleNotFoundError for runtime.input_files.",
+      "impact": "The exported tree is not self-contained. The exact new identity, WAL, storage, and scheduler implementations cannot be audited or exercised, and large parts of the runtime cannot import. This also prevents validating several otherwise visible refactors.",
+      "repair": "Recover the actual owner modules from the working checkout or authoritative commit; do not invent replacement implementations to make imports green. Check tracked/untracked/ignored membership and source-export rules, then produce a manifest-bound source handoff including the corresponding tests.",
+      "acceptance": "Every static local import resolves; selected dynamic imports resolve; fresh checkout and isolated installed namespace smoke tests load the owners. Compare exported file hashes against the working checkout manifest.",
+      "qualification": "This finding is about the supplied ZIP, not proof that the modules are absent on your machine. The omission pattern is consistent with an incomplete refactor export, but the archive does not establish why files were omitted.",
+      "historical_audit_status": "open",
+      "recipe_ids": [],
+      "current_disposition": "local-source-access-needed; user verified owners exist locally; not a live-repo absence claim"
+    },
+    {
+      "id": "PX-AUD-002",
+      "title": "57 configured governed-section test files are absent",
+      "severity": "P0",
+      "evidence_mode": "snapshot-static",
+      "starter_items": [
+        1,
+        2,
+        3,
+        4,
+        20,
+        26,
+        36
+      ],
+      "sources": [
+        {
+          "path": "registry/test_profiles.json",
+          "start_line": 1,
+          "end_line": 18
+        }
+      ],
+      "evidence": [
+        "section_membership_inventory.json"
+      ],
+      "observed": "With command working directories resolved correctly, Testing Governance is missing 22 of 43 file members; Studio/Memory/Graph is missing 2 of 21; Runtime Domain Contracts is missing 33 of 85. These are 57 distinct missing paths. Dashboard has all 21 declared files.",
+      "impact": "A configured test denominator cannot be executed from this export. File absence is not a passed test, a permitted skip, or a reason to silently shrink the denominator.",
+      "repair": "Restore the exact tests from the same revision as their owners. Verify membership against an immutable source inventory without publishing canonical projection changes while intake remains open.",
+      "acceptance": "Collection-only checks find every declared file in its declared cwd; membership, fixture/plugin closure, and executed test identities are bound to the same source image. No missing member is converted into an implicit skip.",
+      "qualification": "57 missing test files are not 57 observed test assertion failures. No fresh 900-second or 614-second gate failure is attributed to these omissions without its own logs.",
+      "historical_audit_status": "open",
+      "recipe_ids": [],
+      "current_disposition": "supplement-restored; no remaining missing-test defect"
+    },
+    {
+      "id": "PX-AUD-003",
+      "title": "Packaging declares source data that is absent from the export",
+      "severity": "P1",
+      "evidence_mode": "snapshot-static",
+      "starter_items": [
+        6,
+        34,
+        36
+      ],
+      "sources": [
+        {
+          "path": "pyproject.toml",
+          "start_line": 1,
+          "end_line": 28
+        }
+      ],
+      "evidence": [
+        "missing_declared_package_files.json"
+      ],
+      "observed": "The setuptools data-files configuration has 10 literal evidence JSON paths that are absent and two archive-custody glob declarations with no matches. They are separate from the two VSIX test fixtures that are present.",
+      "impact": "The declared distribution input set and the supplied source set disagree. A clean packaging handoff cannot be certified from this ZIP.",
+      "repair": "Resolve the distribution policy: preserve external evidence in reviewed custody and ship approved portable references, or include required packaged evidence explicitly. Change producer, manifest, consumer, and policy together; do not copy arbitrary stale receipts into source merely to satisfy a path.",
+      "acceptance": "Every literal package input is present with approved provenance; empty globs have explicit allowed semantics or are corrected. The single post-freeze package consumes the approved input manifest.",
+      "qualification": "No wheel/VSIX build was performed in this audit. This is a manifest/input mismatch, not a claimed observed packaging run failure.",
+      "historical_audit_status": "open",
+      "recipe_ids": [],
+      "current_disposition": "open-or-current-local-implementation-review-required"
+    },
+    {
+      "id": "PX-AUD-004",
+      "title": "Installed Python namespace breaks on checkout-only absolute imports",
+      "severity": "P1",
+      "evidence_mode": "isolated namespace reproduction",
+      "starter_items": [
+        27,
+        34,
+        36
+      ],
+      "sources": [
+        {
+          "path": "runtime/local_model_runtime.py",
+          "start_line": 18,
+          "end_line": 25
+        },
+        {
+          "path": "runtime/release_skip_policy.py",
+          "start_line": 60,
+          "end_line": 67
+        },
+        {
+          "path": "runtime/cli.py",
+          "start_line": 2097,
+          "end_line": 2108
+        }
+      ],
+      "evidence": [
+        "absolute_runtime_imports.json",
+        "installed_namespace_probe.log"
+      ],
+      "observed": "The wheel namespace is engineering_bootstrap, but local_model_runtime, release_skip_policy, and the section runner branch import runtime.* absolutely. Five such import sites were found. Loading engineering_bootstrap.local_model_runtime in an isolated namespace fails immediately with No module named runtime.",
+      "impact": "Checkout execution can hide an installed-distribution failure. Restoring the missing section_scheduler or input_files modules alone will not repair their installed namespace references.",
+      "repair": "Use package-relative imports inside runtime owners, with any intentional source-checkout compatibility kept at explicit external entrypoints. Add an isolated namespace test that excludes the repository directory from sys.path.",
+      "acceptance": "The installed namespace imports local model lifecycle, JUnit evidence inventory, and section scheduling without a runtime alias or accidental checkout PYTHONPATH.",
+      "qualification": "The namespace layout was exercised without building or installing a release artifact. This is not a claim of full installed-wheel coverage.",
+      "historical_audit_status": "open",
+      "recipe_ids": [
+        "R101",
+        "R102",
+        "R103"
+      ],
+      "current_disposition": "guarded-candidate-ready; narrow validation supplied; not live-applied or whole-family closure"
+    },
+    {
+      "id": "PX-AUD-005",
+      "title": "Missing campaign state and project marker cause the stage guard to classify this tree as unmanaged",
+      "severity": "P0",
+      "evidence_mode": "isolated unchanged-source guard reproduction",
+      "starter_items": [
+        35,
+        36
+      ],
+      "sources": [
+        {
+          "path": "runtime/test_profiles.py",
+          "start_line": 57,
+          "end_line": 63
+        },
+        {
+          "path": "runtime/test_profiles.py",
+          "start_line": 128,
+          "end_line": 142
+        },
+        {
+          "path": "runtime/test_profiles.py",
+          "start_line": 169,
+          "end_line": 173
+        }
+      ],
+      "evidence": [
+        "repros/python/python_adversarial_results.json"
+      ],
+      "observed": "Neither registry/repair_campaign.json nor the managed-project marker is in the ZIP. The actual require_processing_stage(root, \"certify\") guard, evaluated with its unchanged source, returns managed=false, phase=unmanaged, intake_open=false, and no blocked stages.",
+      "impact": "At this boundary, loss of campaign custody erases the open-intake restriction rather than preserving uncertainty. A source handoff can silently lose the fact that closure is prohibited.",
+      "repair": "Bind managed/campaign-required identity to a durable source or release manifest, not only presence of removable local state. Missing required state must produce an explicit blocked/unknown status. Keep genuinely unmanaged roots an explicit mode rather than an inference from lost files.",
+      "acceptance": "Remove, deny access to, and corrupt campaign state in a managed source handoff: every closure guard remains blocked. Test archive/export/reimport and restart paths.",
+      "qualification": "No certification was executed. This proves one guard falls through; it does not prove every later release/preflight control can be bypassed. The isolated AST load excluded the unavailable test_runner import, not the guard implementation.",
+      "historical_audit_status": "open",
+      "recipe_ids": [],
+      "current_disposition": "open-or-current-local-implementation-review-required"
+    },
+    {
+      "id": "PX-AUD-006",
+      "title": "Independent gate identity omits a real imported dependency",
+      "severity": "P0",
+      "evidence_mode": "actual owner reproduction",
+      "starter_items": [
+        3,
+        12,
+        20,
+        26
+      ],
+      "sources": [
+        {
+          "path": "runtime/gate_runner.py",
+          "start_line": 90,
+          "end_line": 101
+        },
+        {
+          "path": "runtime/gate_runner.py",
+          "start_line": 208,
+          "end_line": 235
+        },
+        {
+          "path": "runtime/gate_runner.py",
+          "start_line": 278,
+          "end_line": 299
+        }
+      ],
+      "evidence": [
+        "repros/python/python_adversarial_results.json"
+      ],
+      "observed": "Changing runtime/json_io.py in the disposable copy leaves the contracts gate input SHA-256 unchanged. runtime/contracts.py imports that helper, but the gate fingerprints only the listed contract files, runtime/contracts.py, and the ownership registry.",
+      "impact": "A cached pass can stay current after its effective validator implementation changes. The missing verification_inputs owner is not the only PG-001 surface: this separate available gate runner has its own incomplete closure.",
+      "repair": "Make the independent gate runner consume the shared bounded immutable dependency inventory too. Include transitive local imports, dynamic declarations, resources, validator/runner code, policy, and toolchain identity. Preserve unresolved dependency uncertainty instead of treating it as an empty set.",
+      "acceptance": "Mutation tests against every acquired dependency change the gate identity; one-shot sources are acquired once; before/after identities detect mutation during execution; independent gate and section identity use the same closure policy.",
+      "qualification": "",
+      "historical_audit_status": "open",
+      "recipe_ids": [],
+      "current_disposition": "open-or-current-local-implementation-review-required"
+    },
+    {
+      "id": "PX-AUD-007",
+      "title": "A fabricated self-sealed pass is accepted as reusable gate evidence",
+      "severity": "P0",
+      "evidence_mode": "actual owner reproduction",
+      "starter_items": [
+        25,
+        26
+      ],
+      "sources": [
+        {
+          "path": "runtime/gate_runner.py",
+          "start_line": 238,
+          "end_line": 254
+        },
+        {
+          "path": "runtime/gate_runner.py",
+          "start_line": 283,
+          "end_line": 294
+        },
+        {
+          "path": "runtime/gate_runner.py",
+          "start_line": 344,
+          "end_line": 377
+        }
+      ],
+      "evidence": [
+        "repros/python/python_adversarial_results.json"
+      ],
+      "observed": "A synthetic cache receipt containing passed=true and the current input digest, sealed only with the module\u2019s ordinary SHA-256 routine, is accepted as reused_current_pass. No real contracts execution or producer-authority proof was needed.",
+      "impact": "Self-consistency of a JSON hash is being used as a substitute for provenance and semantic execution evidence at this cache boundary.",
+      "repair": "Require trusted producer/run authority, exact request and source identity, nonempty executed membership, semantic result evidence, and protected receipt custody. Validate receipt contents and their provenance, not just a caller-recomputable checksum and passed flag.",
+      "acceptance": "Reject fabricated self-sealed receipts, a pass with an empty or different denominator, receipts from a revoked/untrusted producer, and same-input receipts for another request. A trusted legitimate pass still reuses without rerunning.",
+      "qualification": "This is an assurance defect within a writable receipt cache, not a demonstrated remote privilege escalation. Synthetic receipts in this audit bundle must never be imported as project certification evidence.",
+      "historical_audit_status": "open",
+      "recipe_ids": [],
+      "current_disposition": "open-or-current-local-implementation-review-required"
+    },
+    {
+      "id": "PX-AUD-008",
+      "title": "WorkGovernor releases capacity before cancelled work physically stops",
+      "severity": "P1",
+      "evidence_mode": "actual owner reproduction",
+      "starter_items": [
+        22,
+        23
+      ],
+      "sources": [
+        {
+          "path": "extension/src/workGovernor.js",
+          "start_line": 135,
+          "end_line": 183
+        }
+      ],
+      "evidence": [
+        "repros/node_adversarial_results.json"
+      ],
+      "observed": "With concurrency=1, an abort-ignoring producer and a queued producer overlap: measured physical concurrency reaches 2. Promise.race rejects on cancellation and the finally block decrements pool.active before the producer settles.",
+      "impact": "Logical cancellation bypasses physical concurrency/resource limits. Follow-on work can race the still-running owner or consume capacity that the governor claims is free.",
+      "repair": "Separate caller completion from producer/child ownership. Hold the capacity lease and supersession ownership until physical settlement or verified closure; retain quarantined custody when shutdown cannot be proved.",
+      "acceptance": "Abort-resistant, delayed-close, superseded, timed-out, and disposed producers never exceed configured physical concurrency. Counters, in-flight keys, and cleanup receipts agree with observed completion.",
+      "qualification": "",
+      "historical_audit_status": "open",
+      "recipe_ids": [
+        "R104"
+      ],
+      "current_disposition": "guarded-candidate-ready; narrow validation supplied; not live-applied or whole-family closure"
+    },
+    {
+      "id": "PX-AUD-009",
+      "title": "Omitting fencing tokens bypasses stale same-session claim protection",
+      "severity": "P0",
+      "evidence_mode": "actual owner reproduction",
+      "starter_items": [
+        25,
+        28
+      ],
+      "sources": [
+        {
+          "path": "extension/src/coordinationManager.js",
+          "start_line": 404,
+          "end_line": 457
+        },
+        {
+          "path": "extension/src/coordinationManager.js",
+          "start_line": 460,
+          "end_line": 490
+        }
+      ],
+      "evidence": [
+        "repros/node_adversarial_results.json"
+      ],
+      "observed": "Claim token 1 is released and reacquired as token 2 by the same session. Explicit token 1 is rejected, but an old request with fencingTokens omitted is accepted and updates the current task. The implementation checks only entries supplied by the caller.",
+      "impact": "An A-B-A claim transition can accept delayed work against a newer claim. Current server ownership is substituted for the client\u2019s consumed claim generation.",
+      "repair": "Require exact claim_id, expected state revision, and the complete target fencing-token denominator at progress, reconciliation, release, and other mutation boundaries. Verify under the same lock/CAS as publication.",
+      "acceptance": "Omitted, partial, stale, extra-target, and wrong-session tokens deny with zero effects. Reclaiming the same task by the same session never authorizes an older request.",
+      "qualification": "",
+      "historical_audit_status": "open",
+      "recipe_ids": [],
+      "current_disposition": "open-or-current-local-implementation-review-required"
+    },
+    {
+      "id": "PX-AUD-010",
+      "title": "An expired claim blocks the recovery transition itself",
+      "severity": "P0",
+      "evidence_mode": "actual owner reproduction",
+      "starter_items": [
+        28
+      ],
+      "sources": [
+        {
+          "path": "extension/src/coordinationManager.js",
+          "start_line": 197,
+          "end_line": 228
+        },
+        {
+          "path": "extension/src/stateInvariants.js",
+          "start_line": 90,
+          "end_line": 105
+        },
+        {
+          "path": "extension/src/stateInvariants.js",
+          "start_line": 292,
+          "end_line": 305
+        }
+      ],
+      "evidence": [
+        "repros/node_adversarial_results.json"
+      ],
+      "observed": "After advancing time past an active claim\u2019s TTL, a release/recovery mutation throws coordination-invariant:PX-COORD-CLAIM-EXPIRED. withState validates the prior state before expireClaims; transition validation also revalidates the expired prior state.",
+      "impact": "Normal expiry can lock out recovery and later coordination writes. A validity check designed to detect an expired owner prevents the state machine from retiring it.",
+      "repair": "Distinguish structurally valid historical state from currently live authority. Define a fenced expired-to-recovery transition, validate the prior state at its anchored time, and preserve physical custody independently of lease authority.",
+      "acceptance": "Advance across the lease boundary and exercise heartbeat, release, stale takeover, restart, and concurrent renewal. Expiry never grants old authority or prevents a valid recovery transition.",
+      "qualification": "",
+      "historical_audit_status": "open",
+      "recipe_ids": [],
+      "current_disposition": "open-or-current-local-implementation-review-required"
+    },
+    {
+      "id": "PX-AUD-011",
+      "title": "An arbitrary string can label a local claim team-authoritative",
+      "severity": "P0",
+      "evidence_mode": "actual owner reproduction",
+      "starter_items": [
+        25,
+        28
+      ],
+      "sources": [
+        {
+          "path": "extension/src/coordinationManager.js",
+          "start_line": 374,
+          "end_line": 399
+        }
+      ],
+      "evidence": [
+        "repros/node_adversarial_results.json"
+      ],
+      "observed": "A claim with authorityReceipt=\"not-a-verified-grant\" is assigned authority_state=team_authoritative even while the hub is configured=false, connected=false, authoritative=false.",
+      "impact": "The coordination state asserts an authority level that was not established. Any consumer trusting that field inherits a false authority signal.",
+      "repair": "Verify the trusted hub grant, project/session/task scope, claim generation, expiration, and current revocation state before promotion. Absence of a configured authoritative hub must remain local/unverified.",
+      "acceptance": "Forged, empty, expired, revoked, wrong-project, wrong-claim, and replayed receipts cannot produce team-authoritative state. Positive authority requires an independently validated exact grant.",
+      "qualification": "The probe proves false authority assignment. It does not demonstrate that every downstream external-effect consumer accepts this state.",
+      "historical_audit_status": "open",
+      "recipe_ids": [],
+      "current_disposition": "open-or-current-local-implementation-review-required"
+    },
+    {
+      "id": "PX-AUD-012",
+      "title": "Coordination state, events, memory, receipts, and handoff are not one recoverable publication",
+      "severity": "P0",
+      "evidence_mode": "actual owner fault-injection reproduction",
+      "starter_items": [
+        24,
+        28,
+        29,
+        31
+      ],
+      "sources": [
+        {
+          "path": "extension/src/coordinationManager.js",
+          "start_line": 137,
+          "end_line": 142
+        },
+        {
+          "path": "extension/src/coordinationManager.js",
+          "start_line": 197,
+          "end_line": 228
+        },
+        {
+          "path": "extension/src/coordinationManager.js",
+          "start_line": 529,
+          "end_line": 541
+        }
+      ],
+      "evidence": [
+        "repros/node_adversarial_results.json"
+      ],
+      "observed": "Injecting an event append failure after state replacement advances durable state from revision 1 to 2 while the operation throws. The next write fails event-state-head validation. Deferred memory files can be written before state publication as well.",
+      "impact": "A crash or I/O failure splits the authoritative state across files and can strand the workspace. Atomic rename of one file is not a multi-artifact transaction.",
+      "repair": "Introduce a fenced publication journal with exact before/after images for state, events, memory, receipt, and handoff. Define prepared, publication-pending, committed, and recovery states; preserve custody and use one recovery owner.",
+      "acceptance": "Fault at every write/flush/rename/append boundary and restart from a fresh process. Recovery yields one old or new generation, never a mixed head, orphaned memory commit, duplicate event, or false success.",
+      "qualification": "",
+      "historical_audit_status": "open",
+      "recipe_ids": [],
+      "current_disposition": "open-or-current-local-implementation-review-required"
+    },
+    {
+      "id": "PX-AUD-013",
+      "title": "Coordination read health reports tampered events as healthy",
+      "severity": "P1",
+      "evidence_mode": "actual owner reproduction",
+      "starter_items": [
+        26,
+        29,
+        30
+      ],
+      "sources": [
+        {
+          "path": "extension/src/coordinationManager.js",
+          "start_line": 620,
+          "end_line": 658
+        }
+      ],
+      "evidence": [
+        "repros/node_adversarial_results.json"
+      ],
+      "observed": "Replacing an event seal with 64 zeroes still yields readCoordination event health=healthy and returns the false seal. The read-side tail checks JSON syntax, not the event digest, chain, or state/event head correspondence.",
+      "impact": "The UI or a handoff reader can receive an apparently healthy projection of corrupt or partially published evidence even when later mutation validation rejects it.",
+      "repair": "Use a shared replay/integrity verifier on reads, including event seals, contiguous sequence, epoch, and protected state head. Return a verified prefix and explicit uncertainty; do not silently upgrade parseable records to healthy.",
+      "acceptance": "Tamper a seal, remove/reorder an event, insert a gap, or retain a split publication. Readers report degraded/unknown and never present unverified suffix records as authoritative.",
+      "qualification": "",
+      "historical_audit_status": "open",
+      "recipe_ids": [
+        "R107"
+      ],
+      "current_disposition": "guarded-candidate-ready; narrow validation supplied; not live-applied or whole-family closure"
+    },
+    {
+      "id": "PX-AUD-014",
+      "title": "Event ledger head publication failure permanently blocks subsequent append",
+      "severity": "P0",
+      "evidence_mode": "actual owner fault-injection reproduction",
+      "starter_items": [
+        24,
+        29
+      ],
+      "sources": [
+        {
+          "path": "runtime/event_ledger.py",
+          "start_line": 202,
+          "end_line": 226
+        },
+        {
+          "path": "runtime/event_ledger.py",
+          "start_line": 229,
+          "end_line": 265
+        }
+      ],
+      "evidence": [
+        "repros/python/python_adversarial_results.json"
+      ],
+      "observed": "The event file is replaced into the ledger before its protected head/anchor publication. Injecting a head publication failure leaves a valid event prefix with a stale protected head. A subsequent append refuses the ledger; no append-level recovery completes or rolls back this pending publication.",
+      "impact": "A recoverable interruption becomes a durable integrity lockout. Fail-closed detection exists, but progress recovery is missing at this cut point.",
+      "repair": "Journal the exact event/head/anchor/history transition with a generation fence and recover publication-pending state idempotently before normal append. Do not repair by deleting the new event or blindly blessing the observed head.",
+      "acceptance": "Crash or inject failure before/after event replacement, anchor creation, history creation, and head replacement; restart and recover once with preserved evidence, exact ancestry, and no duplicate sequence.",
+      "qualification": "",
+      "historical_audit_status": "open",
+      "recipe_ids": [],
+      "current_disposition": "open-or-current-local-implementation-review-required"
+    },
+    {
+      "id": "PX-AUD-015",
+      "title": "Operational replay returns the newest suffix rather than the next cursor page, without a truncation flag",
+      "severity": "P1",
+      "evidence_mode": "source-confirmed interface gap",
+      "starter_items": [
+        29
+      ],
+      "sources": [
+        {
+          "path": "runtime/operational_event_bus.py",
+          "start_line": 307,
+          "end_line": 384
+        }
+      ],
+      "evidence": [],
+      "observed": "After filtering revisions newer than after_revision, _replay_locked uses selected[-limit:]. For an after=0 cursor and more records than limit, the earliest unseen records are omitted. The response exposes the current revision and valid prefix count, but no explicit next-page cursor or truncation/gap flag.",
+      "impact": "A caller using this response as a replay delta can advance to the current head while skipping unseen events. A bounded tail and a resumable contiguous replay page are different contracts.",
+      "repair": "Separate tail/status queries from cursor replay. Return the earliest bounded contiguous page after the cursor, an epoch-bound next cursor, has_more, and explicit missing-range/gap semantics. Require delivery acknowledgement before durable consumer advancement.",
+      "acceptance": "Publish more than one page, replay from zero, and reconstruct every event exactly once in order across restarts. Test old epochs, pruned history, damaged suffixes, zero limits, and concurrent publication.",
+      "qualification": "The source explicitly calls this a bounded suffix; the finding is the mismatch with reliable replay/delta semantics and missing truncation signalling, not a claim that a live installed consumer was observed losing data.",
+      "historical_audit_status": "open",
+      "recipe_ids": [],
+      "current_disposition": "open-or-current-local-implementation-review-required"
+    },
+    {
+      "id": "PX-AUD-016",
+      "title": "Several bounded-result APIs still acquire the full history before truncation",
+      "severity": "P1",
+      "evidence_mode": "source-confirmed scaling gap",
+      "starter_items": [
+        21,
+        29,
+        31
+      ],
+      "sources": [
+        {
+          "path": "runtime/event_ledger.py",
+          "start_line": 108,
+          "end_line": 199
+        },
+        {
+          "path": "runtime/operational_event_bus.py",
+          "start_line": 313,
+          "end_line": 371
+        },
+        {
+          "path": "extension/src/coordinationManager.js",
+          "start_line": 545,
+          "end_line": 600
+        }
+      ],
+      "evidence": [],
+      "observed": "read_event_tail retains all validated records before slicing; operational replay builds a full list of event paths and envelopes; coordination memory reads and sorts the complete JSONL history before applying its result limit.",
+      "impact": "Output limits do not bound acquisition memory, parse work, directory enumeration, or total elapsed time. Growing history can dominate UI/replay work independently of the new ResourceLedger storage backend.",
+      "repair": "Use bounded indexed/checkpointed acquisition with validated prefix custody, per-image and aggregate byte/entry/time budgets, and cursor-based pages. Preserve old history and transaction/compaction tails rather than deleting it to meet a budget.",
+      "acceptance": "Scale history well beyond one result page and measure peak memory, bytes read, latency, and cancellation. Incremental reads remain bounded while replay/compaction preserves complete lineage.",
+      "qualification": "This is a source scaling defect, not a measured cause of the reported 900-second timeout. ResourceLedger\u2019s indexed backend itself is absent and cannot be benchmarked from this ZIP.",
+      "historical_audit_status": "open",
+      "recipe_ids": [],
+      "current_disposition": "open-or-current-local-implementation-review-required"
+    },
+    {
+      "id": "PX-AUD-017",
+      "title": "Metadata cache invalidation immediately resurrects the persistent value",
+      "severity": "P2",
+      "evidence_mode": "actual exported owner reproduction",
+      "starter_items": [
+        29,
+        30
+      ],
+      "sources": [
+        {
+          "path": "extension/src/runtimeRevisions.js",
+          "start_line": 69,
+          "end_line": 85
+        },
+        {
+          "path": "extension/src/runtimeRevisions.js",
+          "start_line": 87,
+          "end_line": 102
+        }
+      ],
+      "evidence": [
+        "repros/node_additional_results.json"
+      ],
+      "observed": "set(key, value), invalidate(key), then get(key) with the same fingerprint reloads the old persistent record and reports stale=false. invalidate removes only the in-memory entry.",
+      "impact": "The exported invalidation operation does not invalidate the backing store, so a cache consumer can reuse a value it explicitly invalidated.",
+      "repair": "Invalidate or tombstone persistent storage under a revision/epoch fence as well as memory. Handle in-flight get/set races and persist invalidation semantics across restarts.",
+      "acceptance": "After invalidation, get and a newly constructed cache instance cannot return the invalidated generation as current. A new validated set remains retrievable.",
+      "qualification": "The defect is reproduced in the exported cache class. This audit did not establish that a current UI path calls this exact invalidate method; bridge invalidation has additional mechanisms.",
+      "historical_audit_status": "open",
+      "recipe_ids": [
+        "R106"
+      ],
+      "current_disposition": "guarded-candidate-ready; narrow validation supplied; not live-applied or whole-family closure"
+    },
+    {
+      "id": "PX-AUD-018",
+      "title": "A zero-event publication acknowledgement is reported as a full successful batch",
+      "severity": "P1",
+      "evidence_mode": "actual owner with injected child response",
+      "starter_items": [
+        26,
+        29,
+        30
+      ],
+      "sources": [
+        {
+          "path": "extension/src/canonicalEventPublisher.js",
+          "start_line": 63,
+          "end_line": 115
+        }
+      ],
+      "evidence": [
+        "repros/node_additional_results.json"
+      ],
+      "observed": "A child response {valid:true,published:0} for a one-event batch is reported as connected=true,published=1 because Number(result.published || events.length) substitutes the requested count for zero.",
+      "impact": "The publication health channel can report evidence delivery that the backend did not acknowledge. The response is not bound to the exact acknowledged event denominator.",
+      "repair": "Require a typed acknowledgement containing exact accepted event identities or a batch receipt bound to them. Preserve numeric zero; reject count/membership mismatches and keep uncertain delivery pending for idempotent reconciliation.",
+      "acceptance": "Zero, partial, duplicate, missing, wrong-batch, and malformed acknowledgements never report full success. Retry/reconnect behavior does not duplicate already acknowledged effects.",
+      "qualification": "The publisher implementation was real; the child response was a deliberate unit fault injection, not an observed production backend response.",
+      "historical_audit_status": "open",
+      "recipe_ids": [
+        "R105"
+      ],
+      "current_disposition": "guarded-candidate-ready; narrow validation supplied; not live-applied or whole-family closure"
+    },
+    {
+      "id": "PX-AUD-019",
+      "title": "Learning aggregation accepts a modified record under its old hash",
+      "severity": "P1",
+      "evidence_mode": "actual owner reproduction",
+      "starter_items": [
+        26,
+        31
+      ],
+      "sources": [
+        {
+          "path": "runtime/learning_promotion.py",
+          "start_line": 79,
+          "end_line": 115
+        }
+      ],
+      "evidence": [
+        "repros/learning_adversarial_results.json"
+      ],
+      "observed": "An operation evidence record is created legitimately, its measurement is then changed from 1 to 999 without updating its record hash, and aggregate_operations accepts 999 while retaining the old evidence hash.",
+      "impact": "Aggregated statistics can claim provenance to bytes that were not actually used. Checking that a hash looks like SHA-256 does not validate its binding to the record body.",
+      "repair": "Recompute and verify the canonical record seal, validate trusted producer/source lineage, and freeze the admitted image before aggregation. Apply the same verified-record boundary to pattern, hypothesis, comparison, research, reuse, and decay consumers.",
+      "acceptance": "Mutation of any protected field, wrong type/version, forged source producer, and a stale body/seal pair are rejected before contributing a measurement. Valid immutable records retain exact provenance.",
+      "qualification": "",
+      "historical_audit_status": "open",
+      "recipe_ids": [
+        "R108",
+        "R109"
+      ],
+      "current_disposition": "guarded-candidate-ready; narrow validation supplied; not live-applied or whole-family closure"
+    },
+    {
+      "id": "PX-AUD-020",
+      "title": "Duplicate learning evidence is counted as independent A/B trials",
+      "severity": "P1",
+      "evidence_mode": "actual owner reproduction",
+      "starter_items": [
+        26,
+        31,
+        32
+      ],
+      "sources": [
+        {
+          "path": "runtime/learning_promotion.py",
+          "start_line": 258,
+          "end_line": 293
+        }
+      ],
+      "evidence": [
+        "repros/learning_adversarial_results.json"
+      ],
+      "observed": "The identical trial evidence hash is supplied 20 times. compare_revisions counts 20 challenger wins, reports a Wilson lower bound about 0.839, and passes the minimum-trial confidence gate.",
+      "impact": "Repeating one observation manufactures statistical confidence. Trial independence and exact executed comparison membership are not enforced.",
+      "repair": "Bind each trial to a unique admitted execution/observation identity, exact incumbent/challenger pair, environment, metric, and outcome. Reject duplicates and conflicting duplicate identities; document dependence assumptions rather than assuming list entries are independent.",
+      "acceptance": "Twenty copies of one trial count once or are rejected. Distinct trials with the wrong revision pair, conflicting results, or repeated producer receipts cannot increase confidence.",
+      "qualification": "",
+      "historical_audit_status": "open",
+      "recipe_ids": [
+        "R108",
+        "R109"
+      ],
+      "current_disposition": "guarded-candidate-ready; narrow validation supplied; not live-applied or whole-family closure"
+    },
+    {
+      "id": "PX-AUD-021",
+      "title": "A comparison of revisions A/B can promote unrelated revision C to canonical",
+      "severity": "P0",
+      "evidence_mode": "actual owner reproduction",
+      "starter_items": [
+        25,
+        26,
+        31
+      ],
+      "sources": [
+        {
+          "path": "runtime/learning_promotion.py",
+          "start_line": 316,
+          "end_line": 362
+        }
+      ],
+      "evidence": [
+        "repros/learning_adversarial_results.json"
+      ],
+      "observed": "A genuine comparison object for A/B, using 20 distinct trial-evidence identities, and its confidence object are passed to promote_revision for C. The owner emits passed=true, state=canonical, and a canonical identity for C, although the compared challenger hash is B. Gate checks are shallow type/boolean tests; final validation is only required to look like a hash.",
+      "impact": "Canonical promotion is not bound to the artifact that earned its evidence. This invalidates the core learning-to-authority boundary.",
+      "repair": "Validate immutable seals and trusted producers for all gates; require comparison.challenger, confidence trial set, research scope, final semantic validation, dependency closure, and promoted artifact to agree on the exact revision. Bind any consumed promotion authority and current revocation status.",
+      "acceptance": "A/B evidence cannot promote C. Tampered or recomputed untrusted gates, unrelated final-validation hashes, stale dependencies, and contradictory gate results yield no canonical decision.",
+      "qualification": "This proves a false canonical decision from the pure owner. It does not prove that every persistence/dispatch consumer grants live authority from that decision; learning_direct_write_allowed remains false in the returned record.",
+      "historical_audit_status": "open",
+      "recipe_ids": [
+        "R108"
+      ],
+      "current_disposition": "guarded-candidate-ready; narrow validation supplied; not live-applied or whole-family closure"
+    },
+    {
+      "id": "PX-AUD-022",
+      "title": "Formula engine accepts a covariance matrix that is not positive semidefinite",
+      "severity": "P1",
+      "evidence_mode": "isolated unchanged-source algorithm reproduction",
+      "starter_items": [
+        32
+      ],
+      "sources": [
+        {
+          "path": "runtime/cognitive_core/formula_engine.py",
+          "start_line": 456,
+          "end_line": 511
+        }
+      ],
+      "evidence": [
+        "repros/python/python_adversarial_results.json"
+      ],
+      "observed": "For f=x+y+z with standard uncertainties 1, covariance values xy=0.9, xz=0.9, yz=-0.9 pass pairwise bounds and yield valid=true. The full matrix has eigenvalues -0.8, 1.9, 1.9, so it cannot represent a valid covariance model.",
+      "impact": "Pairwise covariance bounds and nonnegative variance along one gradient do not establish a valid joint uncertainty model. Invalid inputs can produce a plausible-looking uncertainty result.",
+      "repair": "Construct and validate the full symmetric covariance matrix, including finite nonnegative diagonal terms and a scale-aware PSD tolerance. Distinguish singular-but-valid matrices from truly indefinite matrices.",
+      "acceptance": "Reject the supplied indefinite matrix; accept independent, valid correlated, singular, and near-tolerance reference cases. Cross-language implementations agree on validation and propagated uncertainty.",
+      "qualification": "The exact formula source and its actual stable_hash helper were loaded via AST because numeric_inputs.py is missing. This is an algorithm reproduction, not integrated package execution.",
+      "historical_audit_status": "open",
+      "recipe_ids": [
+        "R110"
+      ],
+      "current_disposition": "guarded-candidate-ready; narrow validation supplied; not live-applied or whole-family closure"
+    },
+    {
+      "id": "PX-AUD-023",
+      "title": "Narrow domains cause a nonconstant formula to report zero sensitivity and uncertainty",
+      "severity": "P1",
+      "evidence_mode": "isolated unchanged-source algorithm reproduction",
+      "starter_items": [
+        32
+      ],
+      "sources": [
+        {
+          "path": "runtime/cognitive_core/formula_engine.py",
+          "start_line": 432,
+          "end_line": 459
+        }
+      ],
+      "evidence": [
+        "repros/python/python_adversarial_results.json"
+      ],
+      "observed": "For f=x, domain [0,1e-10], x=5e-11, and standard uncertainty 1e-11, the fixed minimum finite-difference step is larger than both available directions. The engine sets derivative=0 and combined uncertainty=0 instead of derivative=1 and uncertainty=1e-11.",
+      "impact": "A numerical differentiation failure is silently translated into false certainty. Engineering decisions can be made on a zero-uncertainty result that is mathematically wrong.",
+      "repair": "Use analytical/automatic differentiation for supported expressions or a scale/domain-adaptive finite-difference method with conditioning checks. When no trustworthy derivative can be obtained, return unknown/invalid sensitivity, not zero.",
+      "acceptance": "Identity and linear analytical cases remain correct in tiny, large, boundary, and unit-rescaled domains. Nonsmooth and ill-conditioned points carry explicit uncertainty/invalidity rather than fabricated precision.",
+      "qualification": "Same source-isolation limitation as PX-AUD-022. The two defects have independent counterexamples and require separate regression cases.",
+      "historical_audit_status": "open",
+      "recipe_ids": [
+        "R110"
+      ],
+      "current_disposition": "guarded-candidate-ready; narrow validation supplied; not live-applied or whole-family closure"
+    },
+    {
+      "id": "PX-AUD-024",
+      "title": "Persisted process identity lacks explicit host boot-generation binding",
+      "severity": "P1",
+      "evidence_mode": "source-confirmed identity gap",
+      "starter_items": [
+        11,
+        23
+      ],
+      "sources": [
+        {
+          "path": "runtime/file_lock.py",
+          "start_line": 33,
+          "end_line": 104
+        },
+        {
+          "path": "runtime/resource_lifecycle.py",
+          "start_line": 175,
+          "end_line": 207
+        },
+        {
+          "path": "runtime/resource_lifecycle.py",
+          "start_line": 1752,
+          "end_line": 1796
+        }
+      ],
+      "evidence": [],
+      "observed": "Linux process fingerprints use start ticks within a boot; ResourceRecord has PID/process identity but no explicit host/boot-generation field. Inaccessible persisted PIDs are conservatively retained, so safe restart resolution can remain blocked.",
+      "impact": "PID reuse and reboot identity need a durable host-generation discriminator. Blindly killing or clearing an inaccessible PID would trade a recovery block for an ownership violation.",
+      "repair": "Bind process custody to host identity, boot generation, process start identity, parent/job ownership, and resource generation. Define unavailable/denied identity as unknown and retain custody until safe positive resolution.",
+      "acceptance": "Exercise host reboot, PID reuse, inaccessible process metadata, parent death, and old-generation records. Never signal an unrelated reused PID; legitimate old custody can be retired only with adequate proof.",
+      "qualification": "Access denied is not currently treated as proof of death, which is a positive. Windows creation FILETIME is stronger than Linux boot-relative ticks; no cross-reboot Windows failure was executed here.",
+      "historical_audit_status": "open",
+      "recipe_ids": [],
+      "current_disposition": "open-or-current-local-implementation-review-required"
+    },
+    {
+      "id": "PX-AUD-025",
+      "title": "A remaining Windows lifecycle proof treats file existence as complete PID publication",
+      "severity": "P2",
+      "evidence_mode": "source-confirmed test race",
+      "starter_items": [
+        13,
+        23
+      ],
+      "sources": [
+        {
+          "path": "tests/test_test_runner_controls.py",
+          "start_line": 393,
+          "end_line": 459
+        },
+        {
+          "path": "tests/test_resource_lifecycle.py",
+          "start_line": 654,
+          "end_line": 680
+        }
+      ],
+      "evidence": [],
+      "observed": "The abrupt outer-owner-death test writes the child PID directly with Path.write_text, waits only for .exists(), then reads/int-parses it. Creation becomes observable before the complete payload is guaranteed. In contrast, the resource_lifecycle cancellation test already uses a prepared-file atomic replace.",
+      "impact": "The test can confuse a partially published marker with readiness, producing flaky empty/read-sharing failures and weakening the ordering of its process-lifecycle proof.",
+      "repair": "Use a complete atomic readiness record or explicit IPC acknowledgement after all required child/job/workspace state is ready. Validate record identity and content under the owner deadline; file existence alone is insufficient.",
+      "acceptance": "Deliberately delay after file creation and before payload completion, then repeat Windows owner-death drills. The parent never proceeds on an incomplete marker or mistakes a PID marker for broader readiness.",
+      "qualification": "The Windows race was identified from source; it was not reproduced on a Windows host. The sibling test\u2019s already-applied atomic publication repair should be retained.",
+      "historical_audit_status": "open",
+      "recipe_ids": [
+        "R111"
+      ],
+      "current_disposition": "guarded-candidate-ready; narrow validation supplied; not live-applied or whole-family closure"
+    },
+    {
+      "id": "PX-AUD-026",
+      "title": "Effect-surface ownership projection has 265 exact call/line mismatches",
+      "severity": "P1",
+      "evidence_mode": "snapshot-static AST comparison",
+      "starter_items": [
+        5
+      ],
+      "sources": [
+        {
+          "path": "registry/effect_surface_ownership.json",
+          "start_line": 1,
+          "end_line": 24
+        }
+      ],
+      "evidence": [
+        "projection_exact_hashes.json"
+      ],
+      "observed": "Comparing each Python effect record with actual ast.Call nodes at its declared line finds 265 records whose declared call leaf no longer exists at that line. The registry has 1,061 total records. This is an exact AST location check, not the earlier looser substring candidate count.",
+      "impact": "Ownership and approval evidence points to stale source locations. The projection cannot be treated as a current effect-surface denominator.",
+      "repair": "Finish owner repairs and the effect scanner\u2019s semantics first; use a non-authoritative audit delta during intake. Rebuild this projection in the single ordered post-freeze reconciliation and validate semantic effect identity, not only shifted line numbers.",
+      "acceptance": "Every generated effect binds a current source image, qualified owner/symbol, effect class, authorization boundary, and actual call location; new/removed effects are accounted for. No stale generated authority is blessed during open repair.",
+      "qualification": "265 stale records are not 265 independent runtime bugs and do not by themselves prove 265 unauthorized effects.",
+      "historical_audit_status": "open",
+      "recipe_ids": [],
+      "current_disposition": "post-freeze-projection-reconciliation; do not rewrite now"
+    },
+    {
+      "id": "PX-AUD-027",
+      "title": "Provider-route scan marks 107 changed files verified under stale hashes",
+      "severity": "P1",
+      "evidence_mode": "snapshot-static hash comparison",
+      "starter_items": [
+        10
+      ],
+      "sources": [
+        {
+          "path": "registry/provider_route_scan.json",
+          "start_line": 1,
+          "end_line": 20
+        }
+      ],
+      "evidence": [
+        "projection_integrity.json"
+      ],
+      "observed": "Of 346 provider-route source records, 107 stored SHA-256 values differ from current file bytes; all referenced files are present.",
+      "impact": "A verified label in the retained index does not prove the current provider routing implementation was scanned.",
+      "repair": "Keep authoritative projection reconciliation frozen, but create a bounded source-qualified repair-time delta/scan for changed owners. Rebuild and verify the canonical route index once after repair freeze.",
+      "acceptance": "The final index covers the exact current source image and routes; its scanner policy/toolchain and explicit no-billable/denied-route cases are bound to the receipt.",
+      "qualification": "Stale hashes are not evidence that all 107 files contain routing violations.",
+      "historical_audit_status": "open",
+      "recipe_ids": [],
+      "current_disposition": "post-freeze-projection-reconciliation; do not rewrite now"
+    },
+    {
+      "id": "PX-AUD-028",
+      "title": "Cognitive source-byte drift extends beyond the hybrid-retrieval descriptor",
+      "severity": "P1",
+      "evidence_mode": "snapshot-static hash comparison",
+      "starter_items": [
+        14,
+        15,
+        27,
+        32
+      ],
+      "sources": [
+        {
+          "path": "runtime/cognitive_core/index_builder.py",
+          "start_line": 635,
+          "end_line": 665
+        }
+      ],
+      "evidence": [
+        "projection_exact_hashes.json"
+      ],
+      "observed": "The retained cognitive index contains 985 records. Twenty stored source_sha256 values differ from the bytes at their path fields, across 14 unique files. The hybrid-retrieval capability descriptor is one; changed cognitive algorithms and the scheduling workflow are also represented.",
+      "impact": "Fixing only the three reported hybrid-retrieval caller failures will not by itself make this retained index byte-current.",
+      "repair": "Repair descriptor/compiler/consumer semantics, including declared-versus-measured lineage, before freeze. Then reconcile the entire cognitive projection against one acquired source image, not individual opportunistic hash patches.",
+      "acceptance": "All measured source identities agree with acquired bytes, declared lineage is explicitly distinguished, missing dependencies block, and focused retrieval/caller tests use the current descriptor and index contract.",
+      "qualification": "The count is a literal stored-hash versus referenced-byte comparison. Current compiler code has richer source_sha256_kind handling; this audit does not conflate a declared lineage hash with a measured-byte proof.",
+      "historical_audit_status": "open",
+      "recipe_ids": [],
+      "current_disposition": "post-freeze-projection-reconciliation; do not rewrite now"
+    },
+    {
+      "id": "PX-AUD-029",
+      "title": "Three retained envelope entries require schema_version from two versionless documents",
+      "severity": "P1",
+      "evidence_mode": "snapshot-static contract/data comparison",
+      "starter_items": [
+        7
+      ],
+      "sources": [
+        {
+          "path": "runtime/registry_envelope.py",
+          "start_line": 276,
+          "end_line": 305
+        }
+      ],
+      "evidence": [
+        "projection_integrity.json"
+      ],
+      "observed": "Two documents\u2014external_capability_benchmarks.json and security_capabilities/domains.json\u2014are versionless while three retained inventory records label them root-schema-version envelopes. The domains document appears twice for different count fields.",
+      "impact": "The retained registry envelope contract disagrees with its current inputs.",
+      "repair": "Preserve the already-added explicit versionless envelope support in the owner and builder. Confirm it is the intended policy, then regenerate the inventory during the single post-freeze reconciliation rather than inventing versions in source data.",
+      "acceptance": "Versioned and explicitly versionless records pass their own exact contracts; wrong envelope class, missing required version, unexpected added version, and stale count denominators fail.",
+      "qualification": "The implementation already recognizes versionless envelopes. This is not a claim that versionless support still needs to be written.",
+      "historical_audit_status": "open",
+      "recipe_ids": [],
+      "current_disposition": "post-freeze-projection-reconciliation; do not rewrite now"
+    },
+    {
+      "id": "PX-AUD-030",
+      "title": "Root README says implementation and known failure repairs are complete while this snapshot remains defective",
+      "severity": "P1",
+      "evidence_mode": "source/document contradiction",
+      "starter_items": [
+        34,
+        35,
+        36,
+        37
+      ],
+      "sources": [
+        {
+          "path": "README.md",
+          "start_line": 15,
+          "end_line": 25
+        }
+      ],
+      "evidence": [],
+      "observed": "The root README correctly calls the candidate unpublished, but also states that implementation and known failure repairs are complete and describes a successor release narrative. This snapshot has unresolved source omissions and reproduced owner defects; the user reports intake and all 16 architectural cards still open.",
+      "impact": "Readers can infer an implementation-complete state not supported by the supplied code and current blocker status.",
+      "repair": "Update status from the authoritative campaign and current evidence only. Separate source implementation, focused regression results, governed section currentness, installed operational proof, and certification. Audit extension/store/packaged text and graph entrypoints against the same versioned facts.",
+      "acceptance": "No complete/certified/ready wording outruns its evidence; a source-only or focused pass is not an installed operational certification. Historical release facts are clearly historical and independently retained.",
+      "qualification": "This is an audit of wording within the supplied document, not an online verification of historical public release claims.",
+      "historical_audit_status": "open",
+      "recipe_ids": [],
+      "current_disposition": "open-or-current-local-implementation-review-required"
+    }
+  ]
+}

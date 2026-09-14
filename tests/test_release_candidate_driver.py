@@ -479,7 +479,7 @@ def test_initial_readiness_allows_failed_stage_at_exact_repair_phase(
     assert readiness(value)["valid"] is True
 
 
-def test_identity_manifest_is_written_before_owner_and_contains_only_dirty_sets(
+def test_identity_manifest_is_written_before_owner_and_includes_itself(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     value = config(tmp_path)
@@ -505,7 +505,10 @@ def test_identity_manifest_is_written_before_owner_and_contains_only_dirty_sets(
                 value.identity_path_manifest.read_text(encoding="utf-8")
             )
             assert manifest["paths"] == ["source.py"]
-            assert manifest["mutable_paths"] == ["evidence/base.json"]
+            assert manifest["mutable_paths"] == [
+                "evidence/base.json",
+                "identity-manifest.json",
+            ]
             return SimpleNamespace(resource_id="process-one", pid=123), Process()
 
         def complete_process(self, resource_id: str):

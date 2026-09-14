@@ -170,6 +170,23 @@ def test_project_local_focused_test_custody_is_excluded_from_release() -> None:
     }
 
 
+def test_project_quarantine_is_retained_custody_outside_release_source() -> None:
+    root = _minimal_tree()
+    quarantined = root / ".quarantine/run/workspace/runtime/__pycache__/owner.pyc"
+    quarantined.parent.mkdir(parents=True)
+    quarantined.write_bytes(b"retained transient bytes")
+    nested_control = root / ".quarantine/run/external-temp/job/state.json"
+    nested_control.parent.mkdir(parents=True)
+    nested_control.write_text('{"retained":true}\n', encoding="utf-8")
+
+    result = classify_tree(root)
+    record_paths = {item["path"] for item in result["records"]}
+
+    assert result["valid"], result["errors"]
+    assert quarantined.relative_to(root).as_posix() not in record_paths
+    assert nested_control.relative_to(root).as_posix() not in record_paths
+
+
 def test_native_atlas_profile_is_pruned_but_its_reviewed_evidence_remains() -> None:
     root = _minimal_tree()
     run = root / "docs/architecture/evidence/obsidian-native-live-3"
@@ -199,6 +216,10 @@ def test_governance_and_receipt_progress_cannot_mutate_frozen_product_identity()
     root = _minimal_tree()
     controls = {
         ".engineering-bootstrap/admission-payloads/release-stage.json": '{"effect":"execute"}\n',
+        ".engineering-bootstrap/cleanup-receipts/cleanup.json": '{"status":"closed"}\n',
+        ".engineering-bootstrap/export-resources.json": '{"active":0}\n',
+        ".engineering-bootstrap/export-resources.json.lock": '{"owner":"none"}\n',
+        ".engineering-bootstrap/processing-order/final-stage.json": '{"state":"pending"}\n',
         ".engineering-bootstrap/processing-order/repair-campaign.json": '{"phase":"repair_frozen"}\n',
         ".engineering-bootstrap/processing-order/release-identity.json": '{"state":"cleared"}\n',
         ".engineering-bootstrap/test-evidence/sections/testing-governance.json": '{"passed":true}\n',
@@ -223,6 +244,10 @@ def test_governance_and_receipt_progress_cannot_mutate_frozen_product_identity()
     records = {item["path"]: item for item in current["records"]}
     for relative in (
         ".engineering-bootstrap/admission-payloads/release-stage.json",
+        ".engineering-bootstrap/cleanup-receipts/cleanup.json",
+        ".engineering-bootstrap/export-resources.json",
+        ".engineering-bootstrap/export-resources.json.lock",
+        ".engineering-bootstrap/processing-order/final-stage.json",
         ".engineering-bootstrap/processing-order/repair-campaign.json",
         ".engineering-bootstrap/processing-order/release-identity.json",
         ".engineering-bootstrap/test-evidence/sections/testing-governance.json",

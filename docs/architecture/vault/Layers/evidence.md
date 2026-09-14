@@ -1,0 +1,255 @@
+# 09 · Observation and assurance
+
+Operation streams, evidence assembly, trusted verification and explicit control denominators support claims at different strengths.
+
+- [[Systems/telemetry]] — Instrumentation and operational event bus
+- [[Systems/observers]] — OS observers and coverage tiers
+- [[Systems/evidence]] — Evidence assembly and claim support
+- [[Systems/trusted]] — Trusted evidence resolution
+- [[Systems/verify]] — Outcome verification
+- [[Systems/assurance]] — Behavioral assurance and fault attribution
+- [[Systems/dashboard]] — Operational dashboard projections
+- [[Systems/health]] — Evidence-derived surface health
+- [[Systems/lifecycleevents]] — Callback lifecycle instrumentation
+- [[Systems/assurancepolicies]] — Skeptical assurance policy checks
+- [[Systems/cogassurance]] — Cognitive trust and behavioral probes
+- [[Systems/affectedproof]] — Dependency-scoped proof planning
+- [[Systems/retrievalproof]] — Retrieval and foundation readiness checks
+- [[Systems/effectinventory]] — Static Python effect-surface inventory
+- [[Systems/coveragedeclarations]] — Source requirement ownership checks
+- [[Systems/lifecyclestatus]] — Engineering lifecycle metadata status
+- [[Systems/doctor]] — Composed PX Doctor diagnostics
+- [[Systems/routeclass]] — Operation route tier and capture contract
+- [[Systems/catalogproof]] — Authenticated Studio catalog status projection
+- [[Systems/providerprobe]] — Optional memory provider isolation harness
+- [[Systems/mcpobservation]] — MCP invocation-based observed status
+- [[Systems/listenerhealth]] — Listener registration and observation coverage
+- [[Systems/exactharness]] — Exact tool certification harness
+- [[Systems/pythonsurface]] — Python surface evidence classification
+- [[Systems/exactutilities]] — Repository trace helper and generic wrapper
+- [[Systems/mcpprobe]] — MCP context invocation probe
+- [[Systems/dashboardhealth]] — Dashboard health projections
+- [[Systems/completionprojection]] — Stored completion projection and freshness
+- [[Systems/nativeevidencetools]] — Native ingestion trace and replay helpers
+- [[Systems/nativeverificationtools]] — Native verification example runners
+- [[Systems/secretshapes]] — Canonical credential-shape scanner
+- [[Systems/sanitationcontrols]] — Sanitation gate composition
+- [[Systems/snapshotcounts]] — Dashboard stored state and runnable totals
+- [[Systems/pyreadiness]] — Nine structural readiness dimensions
+- [[Systems/providerscan]] — Fixed-pattern Python provider-route index
+- [[Systems/memorymonitor]] — Workspace-wide memory health projection
+- [[Systems/glossarycheck]] — Project terminology alias inspection
+- [[Systems/depthproxy]] — Public interface AST depth proxy
+- [[Systems/schemacorpus]] — Contract fixture ownership and digest audit
+- [[Systems/sourcecoverage]] — Source-pack operational label coverage
+- [[Systems/controlscore]] — Project health resilience and dispatch metadata
+- [[Systems/workspacestatus]] — Workspace status and composed health
+- [[Systems/commissionreceipt]] — Commissioning receipt and event binding
+- [[Systems/worldprojection]] — Stored world-state composition
+- [[Systems/pycoordstartup]] — Python retained coordination audit
+- [[Systems/coordvectors]] — Shared seven-rule conformance vectors
+- [[Systems/archflagaggregate]] — Architecture invariant predicate aggregation
+- [[Systems/duplicatelint]] — Exact-name primitive duplicate lint
+- [[Systems/maturityladder]] — Contiguous capability maturity evidence labels
+- [[Systems/queryvectors]] — Golden capability selection regression
+- [[Systems/skilldeclarative]] — Skill declarative validation and effect hints
+- [[Systems/graphsourcebinding]] — Graph authority and revision reconciliation
+- [[Systems/generatedscc]] — Generated-authority SCC graph
+- [[Systems/generatedcomparison]] — Generated projection comparison gate
+- [[Systems/dependencypackaudit]] — Python dependency and hash-lock declaration audit
+- [[Systems/learningtyped]] — Typed learning identity reconstruction
+- [[Systems/refineryproof]] — Refinery component and workflow declaration checks
+- [[Systems/foundrybundleidentity]] — Foundry bundle identity and candidate certification
+- [[Systems/formulaadmission]] — Formula definition registration and example checks
+- [[Systems/cognitivetrustflags]] — Cognitive memory trust flags
+- [[Systems/cognitiveidentitydrift]] — Identity personality and drift comparisons
+- [[Systems/cognitivepassport]] — Cognitive health and passport metadata
+- [[Systems/realitymembership]] — Claim evidence-ID membership
+- [[Systems/evaluationlineage]] — Evaluation lineage and demand grouping
+- [[Systems/assuranceaxes]] — Six-axis assurance gate
+- [[Systems/behavioraldelta]] — Behavioral delta metadata certificate
+- [[Systems/shadowcomparison]] — Supplied shadow-result comparison
+- [[Systems/coveragecounts]] — Executed coverage report policy check
+- [[Systems/foundationshapes]] — Foundation contract and surface plans
+- [[Systems/datasetmetadata]] — Training dataset metadata gate
+- [[Systems/operationsdk]] — Operation event construction and context SDK
+- [[Systems/routedeclarations]] — Route tier declaration validation
+- [[Systems/eventbushead]] — Anchored current-head read
+- [[Systems/eventbusreplay]] — Full ancestry scan and suffix selection
+- [[Systems/livecoverageproof]] — Operational coverage evidence reconciliation
+- [[Systems/hoststartupmarkers]] — External host startup marker attribution
+- [[Systems/benchmarkfreeze]] — Benchmark treatment hash and lane controls
+- [[Systems/benchmarksummary]] — Matched trial summary arithmetic
+- [[Systems/benchmarkcustody]] — Benchmark artifact hash and claim labels
+- [[Systems/intakefilesnapshot]] — Intake file snapshot identity
+- [[Systems/specificationclosure]] — Specification dependency and acceptance labels
+- [[Systems/testflagproposal]] — Test evidence from supplied flags
+- [[Systems/domainstatusprojection]] — Generated active and validation labels
+- [[Systems/packstatusprojection]] — Pack certification and provisional projections
+- [[Systems/assimilationdispositions]] — Post-build source disposition labels
+- [[Systems/miningreceiptcoverage]] — Mining receipt and maximum scan denominator
+- [[Systems/lifecycleflagprojection]] — Engineering stage completion from flags
+- [[Systems/fullrepairlabels]] — Fixed repair-card status and receipt lists
+- [[Systems/buildcountfacts]] — Source-tree and registry count claims
+- [[Systems/releasecontextpresence]] — Repository-context presence gate
+- [[Systems/releasegithistory]] — Historical recorded Git identity verification
+- [[Systems/releaseboundaryaudit]] — Clean/source identity and byte comparison
+- [[Systems/releasemanifestbytes]] — Evidence manifest byte integrity
+- [[Systems/releaseskiplist]] — JUnit skip identity and reason allowlist
+- [[Systems/releasefixedsubset]] — Selected projection fixed-point comparison
+- [[Systems/preflightbinding]] — Preflight source artifact and host binding
+- [[Systems/preflightmutation]] — Net mutation and selected rebuild comparison
+- [[Systems/preflightconcurrency]] — Threaded atomic publication and lock stress
+- [[Systems/preflightinstalled]] — Installed evidence projection check
+- [[Systems/preflightreceipt]] — Preflight readiness receipt and revalidation
+- [[Systems/certificationgates]] — Release source and candidate gate owners
+- [[Systems/certificationjunit]] — JUnit totals markers and coverage projection
+- [[Systems/certificationsupplychain]] — Artifact checksums SBOM and provenance fields
+- [[Systems/certificationverify]] — Post-commit certificate and completion verification
+- [[Systems/testsectionpartition]] — Declared section inputs and chunk partition
+- [[Systems/testgroupindex]] — Test group import index and stored input closure
+- [[Systems/testreceiptstatus]] — Section group and chunk receipt consumers
+- [[Systems/independentgates]] — Independent gate dependency execution and cache
+- [[Systems/independentfinalize]] — Independent gate receipt finalization
+- [[Systems/nativecomparetrees]] — Native and preserved package comparison
+- [[Systems/candidateaggregate]] — Candidate aggregate report publication
+- [[Systems/installedsummaryconsumer]] — Installed operational evidence consumer
+- [[Systems/hygienevalidation]] — Quarantine validation and asserted authority
+- [[Systems/composedaudit]] — Composed release source audit
+- [[Systems/generatedhygiene]] — Generated artifact and Python map checks
+- [[Systems/pythonsurfaceproof]] — Python source evidence classification
+- [[Systems/pythoninstalledrecord]] — Installed Python RECORD and syntax comparison
+- [[Systems/agentgraphreceipt]] — Agent graph layout and compiler receipt
+- [[Systems/engineeringbenchmark]] — Engineering benchmark descriptive summary
+- [[Systems/observercapture]] — Observer bounded metadata capture
+- [[Systems/healthclaimderive]] — Canonical health claim derivation
+- [[Systems/healthreportverify]] — Canonical health report verification
+- [[Systems/healthextensionexport]] — Canonical health extension export
+- [[Systems/extensioneventbuilder]] — Extension operation event builder
+- [[Systems/sidebarack]] — Sidebar revision acknowledgement evidence
+- [[Systems/studioexternalreauth]] — External skill source lineage reauthentication
+- [[Systems/studiohostreceipt]] — Host create receipt classification
+- [[Systems/editorhistory]] — Local Studio history projection
+- [[Systems/activityreadintegrity]] — Activity tail integrity and derived status
+- [[Systems/listenerlifecycle]] — Terminal task debug and test observation
+- [[Systems/activityattestation]] — Local metadata versus canonical activity attestation
+- [[Systems/workflowtracehelper]] — Tested workflow trace helper
+- [[Systems/workflowtracebrowser]] — Browser workflow trace identity and receipt projection
+- [[Systems/uicontrolmanifest]] — Current source control manifest
+- [[Systems/uicontrolchains]] — Per-control observation and completion projection
+- [[Systems/containeduiwalk]] — Synthetic action-class browser walk
+- [[Systems/installedhostsmoke]] — Installed host listener and Studio smoke driver
+- [[Systems/transcriptruncheck]] — Transcript run integrity validation
+- [[Systems/transcriptsummary]] — Selected transcript CSV and outcome labels
+- [[Systems/portableauditverify]] — Portable audit member consistency verification
+- [[Systems/securityfinding]] — Security finding structural evidence check
+- [[Systems/exacttoolfixtures]] — Exact helper fixture and negative-case table
+- [[Systems/exacttoolrepeat]] — Normalized helper repeat comparison
+- [[Systems/exacttoolaggregate]] — Exact helper aggregate and wrapper publication
+- [[Systems/sourcefateinventory]] — Incoming source inventory and disposition digest
+- [[Systems/structuralduplicates]] — Exact bytes and normalized AST duplicate review
+- [[Systems/structuralaggregate]] — Structural categories and audit-item aggregation
+- [[Systems/doctorhandofffreshness]] — Doctor environment and handoff freshness
+- [[Systems/doctorintegrity]] — Doctor current control-plane integrity checks
+- [[Systems/doctorcompose]] — Doctor precedence and readiness composition
+- [[Systems/distributionskillclosure]] — Commissioned skill distribution coverage
+- [[Systems/distributionmanifestcheck]] — Frozen artifact manifest intrinsic check
+- [[Systems/distributionbind]] — Artifact record and source manifest binding
+- [[Systems/installedwheelbehavior]] — Installed wheel sequential product behavior test
+- [[Systems/exportpreflight]] — Candidate export preflight
+- [[Systems/exportfreeze]] — Staged candidate byte records
+- [[Systems/sourcearchivemembers]] — Git archive member and budget checks
+- [[Systems/proofmatrixconsumer]] — Installed walk stage-policy consumer
+- [[Systems/securitypackfate]] — Security pack disposition and admission publication
+- [[Systems/routehealthsnapshot]] — Four-route health snapshot producer
+- [[Systems/installedhealthprojection]] — Installed receipt to canonical health facts
+- [[Systems/controlsourcebinding]] — Current control-source evidence binding
+- [[Systems/directstageassembly]] — Direct control-stage receipt assembly
+- [[Systems/installedsmokeadapter]] — Installed VSIX smoke stage adapter
+- [[Systems/ownedprobeadapter]] — Owned host profile stage adapter
+- [[Systems/ledgercheckpointreader]] — Optimistic ledger checkpoint reader
+- [[Systems/ledgerdashboardcounts]] — Ledger ownership proof and dashboard counters
+- [[Systems/ledgerbenchmark]] — Disposable ledger performance benchmark
+- [[Systems/cardqualityannotation]] — Card metadata and evidence-reference repair
+- [[Systems/punchhashrefresh]] — Accepted punch-card hash refresh
+- [[Systems/controlreceiptclassifier]] — Live control receipt classification
+- [[Systems/controlcompletenesscheck]] — Control and card completion denominator
+- [[Systems/cohesionevidence]] — Cohesion historical and per-card evidence
+- [[Systems/corpuspartitionreport]] — Corpus partition accounting report
+- [[Systems/legacysecurityaggregate]] — Scanner envelope aggregation
+- [[Systems/legacyretrievalgate]] — Declared retrieval readiness evaluator
+- [[Systems/legacyhelperfixtures]] — Legacy helper focused fixtures
+- [[Systems/historicalplanningcoverage]] — Planning card owner and test path coverage
+- [[Systems/historicalcertifierchecks]] — Historical reconstruction operational checks
+- [[Systems/historicalcertifiersupport]] — Historical reconstruction support and final flags
+- [[Systems/historicalreconciliationfixtures]] — Historical reconciliation focused fixtures
+- [[Systems/sortbenchmark]] — Sort pilot and correctness benchmark
+- [[Systems/sortreceiptauthority]] — Sort finalist selection and input receipt
+- [[Systems/planninghelperfixtures]] — Sort and model helper fixtures
+- [[Systems/miningevidenceprojection]] — Historical mining scan and admission evidence projection
+- [[Systems/behaviormigrationfixtures]] — External behavior intake fixtures
+- [[Systems/clidispatchfixtures]] — CLI orchestration and result fixtures
+- [[Systems/quickstartreceipt]] — Quickstart retained demonstration receipt
+- [[Systems/metadatatestcontracts]] — Contract and graph metadata test boundaries
+- [[Systems/historicaltestauthority]] — Historical source and candidate evidence tests
+- [[Systems/releasetestauthority]] — Release and platform fixture authority
+- [[Systems/completiontestauthority]] — Completion projection and routing fixture limits
+- [[Systems/memoryruntimetests]] — Memory admission retrieval and persistence fixtures
+- [[Systems/agentlifecycletests]] — Agent immutable revision and owned lifecycle fixtures
+- [[Systems/dashboardprojectiontests]] — Dashboard projection freshness and display fixtures
+- [[Systems/schedulersimulationtests]] — Observe-only scheduler policy fixtures
+- [[Systems/sanitationauditgates]] — Identifier-only versus comprehensive sanitation gates
+- [[Systems/cleanupreceiptredactor]] — Historical cleanup receipt locator redaction
+- [[Systems/maintenancefixtures]] — Maintenance source fixtures and coverage gaps
+- [[Systems/installedsmokeparent]] — Installed VSIX parent identity and receipts
+- [[Systems/extensiontestprofiles]] — Extension test partition and browser matrix
+- [[Systems/pluginfixturebuilder]] — Inert lifecycle fixture package builder
+- [[Systems/extensionfixturecontracts]] — Extension package and host fixture assertions
+- [[Systems/publicationfixtureauthority]] — Publication and workflow fixture authority
+- [[Systems/operationalwalkprobes]] — Installed operational walk typed probe library
+- [[Systems/exhaustivewalklocators]] — Current-source exhaustive walk preparation and locators
+- [[Systems/cssselectoraudit]] — CSS selector and contrast audit
+- [[Systems/efficiencymeasurement]] — Fixture scan and single-flight measurement
+- [[Systems/controlownercount]] — Declared operational control owner counting
+- [[Systems/faultwalkowner]] — Snapshot-loss browser fault walk
+- [[Systems/faultwalkheuristics]] — Fault containment and recovery interpretation
+- [[Systems/operationalfixtureauthority]] — Operational helper fixture authority
+- [[Systems/studiolateworker]] — Installed Studio late-card fixture worker
+- [[Systems/studiocrashworker]] — Installed Studio projection crash worker
+- [[Systems/hosttoolinterface]] — Live host tool interface and invocation receipts
+- [[Systems/extensionidentity]] — Host source asset identity comparison
+- [[Systems/extensionhostreceipt]] — Host action observation and latest result memory
+- [[Systems/extensionstartupclaims]] — Activation registration lifecycle and startup counters
+- [[Systems/dashboardrunresponse]] — Studio run and lifecycle result projection
+- [[Systems/dashboardgraphack]] — Graph rendered observation and fallback
+- [[Systems/dashboardgraphhostobservation]] — Host graph render observation memory
+- [[Systems/walkissuemerge]] — Operational issue normalization and deduplication
+- [[Systems/walkaggregateaccept]] — Full operational receipt acceptance
+- [[Systems/walkfocusedaccept]] — Focused operational profile contracts
+- [[Systems/walklauncheraccept]] — Launcher terminal status recomputation
+- [[Systems/walkbootstrapaccept]] — Bootstrap activation predicate
+- [[Systems/walkstorageobserve]] — Shared storage and CDP observation
+- [[Systems/walkprogressretain]] — Bounded host and profile progress retention
+- [[Systems/walkstatustests]] — Operational status synthetic fixtures
+- [[Systems/walklaunchertests]] — Isolated owner fixture and source-text checks
+- [[Systems/exhaustivemanifest]] — Exhaustive walk source manifest
+- [[Systems/exhaustiveform]] — Temporary form validity probe
+- [[Systems/exhaustivestages]] — Contained stage interpretation
+- [[Systems/exhaustivetests]] — Exhaustive walk predicate test boundaries
+- [[Systems/dashboarde2e]] — Dashboard preview interaction tests
+- [[Systems/dashboarde2ecorrelation]] — Preview request and draft adversarial scenarios
+- [[Systems/iwsource]] — Installed walk raw source identity
+- [[Systems/iwmerge]] — Installed stage evidence merger
+- [[Systems/iwbuilder]] — Builder draft observation attribution
+- [[Systems/iwinline]] — Inline command owner inheritance
+- [[Systems/iwtests]] — Installed walker declared test coverage
+- [[Systems/iwhostreceipt]] — Host action request and receipt observation
+- [[Systems/iwrevision]] — Installed revision predecessor and reopen proof
+- [[Systems/iwlate]] — Late-card worker and controller evidence assembly
+- [[Systems/iwsynthetic]] — Installed conditional observation fixtures
+- [[Systems/iwprojects]] — Project initialization and graph build observations
+- [[Systems/iwgraphidentity]] — Graph content and saved-view identity
+- [[Systems/iwsnapshot]] — System snapshot selection and reconstruction
+- [[Systems/iwsidebar]] — Sidebar preference replay and conditional reconstruction
+- [[Systems/iwfaults]] — Outage and diagnostic disposition
+- [[Systems/bundleorigins]] — Generated MCP origin accounting

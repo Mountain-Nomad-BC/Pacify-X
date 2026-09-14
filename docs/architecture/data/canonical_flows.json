@@ -1,0 +1,3837 @@
+[
+  {
+    "id": "F01",
+    "title": "Work from request to verified outcome",
+    "steps": [
+      "host",
+      "startup",
+      "catalog",
+      "orchestrator",
+      "effects",
+      "evidence",
+      "verify",
+      "recovery"
+    ],
+    "description": "The bounded single-capability path validates registry and inputs, checks authority, activates one handler, assembles support and evaluates postconditions. Each stage records a checkpoint.",
+    "limit": "This path is currently constrained for non-read effects because its enforce call omits signed grant bindings; its verify call is the compatibility evaluator."
+  },
+  {
+    "id": "F02",
+    "title": "Agent planning and actual execution",
+    "steps": [
+      "ui",
+      "bridge",
+      "cli",
+      "router",
+      "projectmap",
+      "models",
+      "plan",
+      "agent",
+      "recall",
+      "hostmodel",
+      "supervisor",
+      "telemetry"
+    ],
+    "description": "Routing and repository/model context form a plan. Agent admission and preview validate tool/context/authority bindings. Host runs and owned harnesses complete through their respective receipt paths.",
+    "limit": "Planning and execution have explicit handoffs. Host model, owned deterministic harness and Python provider gateway are different routes; a node being on this map does not prove it is always invoked."
+  },
+  {
+    "id": "F03",
+    "title": "Typed workflow execution and recovery",
+    "steps": [
+      "ui",
+      "bridge",
+      "cli",
+      "workflow",
+      "studioauth",
+      "scheduler",
+      "supervisor",
+      "resources",
+      "recovery",
+      "dashboard"
+    ],
+    "description": "A workflow revision is saved, validated/admitted and dry-run. Ready nodes run in bounded conflict-free batches; typed outputs enable branches. Approval, timeout, retry and lifecycle controls produce durable run state.",
+    "limit": "Diagram is a narrative order, not a claim of one linear function chain. Adapter branches and resource cleanup are parallel responsibilities."
+  },
+  {
+    "id": "F04",
+    "title": "Project memory from capture to future context",
+    "steps": [
+      "workspace",
+      "capture",
+      "semantics",
+      "vault",
+      "memoryindex",
+      "recall",
+      "agent"
+    ],
+    "description": "A project-bound capture becomes a candidate record. Lifecycle admission and source/ACL checks determine retrieval eligibility. Structured keys and bounded ranking/materialization select later context.",
+    "limit": "Index generation and canonical record admission are distinct. The materialization broker consumes supplied records; it does not require an ANN backend."
+  },
+  {
+    "id": "F05",
+    "title": "Verified work becomes a process candidate",
+    "steps": [
+      "evidence",
+      "verify",
+      "process",
+      "skillstudio",
+      "catalog",
+      "router"
+    ],
+    "description": "A caller writes an engineering-process record with verified outcomes and recoveries. The process compiler emits inert procedure/decision/tool/execution artifacts, which need separate skill construction/admission before future selection.",
+    "limit": "The process-record capture/mining and process-candidate-to-Studio adapter are explicit handoff gaps, not proven automatic steps."
+  },
+  {
+    "id": "F06",
+    "title": "External knowledge becomes a reusable skill",
+    "steps": [
+      "external",
+      "research",
+      "crosswalk",
+      "refinery",
+      "foundry",
+      "foundrybridge",
+      "skillstudio",
+      "catalog"
+    ],
+    "description": "Research and refinery stages offer candidate inputs. Foundry can emit candidate files and export a selected skill to a typed Studio draft object. Physical package conversion, source admission and normal stage_draft remain a separate caller handoff before testing/admission/promotion.",
+    "limit": "No automatic research-to-refinery-to-Studio pipeline is established. Intake returns an object without saving a draft; calculation-containing export has a producer/consumer field mismatch."
+  },
+  {
+    "id": "F07",
+    "title": "Learning changes canonical authority",
+    "steps": [
+      "telemetry",
+      "learning",
+      "comparison",
+      "learninggate",
+      "knowledge",
+      "reuse",
+      "invalidation"
+    ],
+    "description": "Explicit observations form a signed learning pipeline. Frozen candidates pass statistical comparison, research and final validation, then a separate knowledge proposal verification/approval/promotion. Measured reuse can make a canonical head suspect and invalidate declared dependents.",
+    "limit": "Metrics and trials are submitted by callers. There is no established automatic bus-to-learning trigger or autonomous experiment execution. This is a real governed state-change loop."
+  },
+  {
+    "id": "F08",
+    "title": "Cross-domain principle transfer",
+    "steps": [
+      "external",
+      "research",
+      "cognitive",
+      "analogy",
+      "metacognition",
+      "theory",
+      "learninggate"
+    ],
+    "description": "Mechanisms expose inputs, outputs, invariants, assumptions and limitations. Structural analogy and signature-based theory induction propose transferable patterns; target-domain held-out and boundary evidence must justify reuse.",
+    "limit": "Proposal construction exists. A fully automated new-algorithm implementation and deployment pipeline is not proven. Multiple research sources do not establish causal validity by themselves."
+  },
+  {
+    "id": "F09",
+    "title": "Change propagates into invalidated proof",
+    "steps": [
+      "projectmap",
+      "invalidation",
+      "graphs",
+      "router",
+      "plan",
+      "tests"
+    ],
+    "description": "Source impact and declared dependency currentness identify stale maps/projections/proof. Freshness gates prevent reuse until the appropriate owned rebuild or test stage completes.",
+    "limit": "Propagation coverage depends on the registered graph. This report computes no product revision refresh and runs no release gates."
+  },
+  {
+    "id": "F10",
+    "title": "Release bytes become an operational claim",
+    "steps": [
+      "gapledger",
+      "repair",
+      "tests",
+      "package",
+      "operational",
+      "certificate"
+    ],
+    "description": "Repair intake closes, one reconciliation establishes identity, current sections precede one full profile and validation, then package/install/installed-system testing/certification advance in order.",
+    "limit": "The user confirmed Marketplace publication and verification. Local README still carries older pending-release language; neither is treated as a fresh independent Marketplace audit here."
+  },
+  {
+    "id": "F11",
+    "title": "Choose what to reason about and test",
+    "steps": [
+      "cognitive",
+      "strategy",
+      "abduction",
+      "logic",
+      "constraints",
+      "decision",
+      "voi",
+      "comparison"
+    ],
+    "description": "An explicit caller selects reasoning modes, builds competing explanations, checks supplied models and constraints, then ranks decisions and useful experiments. Trials enter the separately governed comparison path.",
+    "limit": "Strategy output does not execute the kernels; value-of-information output does not launch trials. These are composable operations with caller-owned sequencing."
+  },
+  {
+    "id": "F12",
+    "title": "Observe engineering patterns and propose evolution",
+    "steps": [
+      "telemetry",
+      "introspection",
+      "practice",
+      "genome",
+      "theory",
+      "optimizer",
+      "learninggate"
+    ],
+    "description": "Public observations can support practice profiles, capability-gap analysis, transfer hypotheses and optimization proposals. Canonical change requires independent promotion owners.",
+    "limit": "The observed-event-to-pattern and proposal-to-controller adapters remain unproven. Several functions model evolution without persisting it."
+  },
+  {
+    "id": "F13",
+    "title": "Persist memory while a derived graph fails",
+    "steps": [
+      "capture",
+      "graphisolation",
+      "vault",
+      "memrepair",
+      "invalidation",
+      "memoryindex"
+    ],
+    "description": "The isolation helper commits a canonical record before attempting an optional graph callback. Failure returns reconciliation_required. An owner can inspect defects, plan repairs and rebuild a derived generation.",
+    "limit": "This is an available helper path; its automatic production caller was not located. Timeout response does not prove callback termination, and a repair plan does not apply itself."
+  },
+  {
+    "id": "F14",
+    "title": "From registered health to a visible status",
+    "steps": [
+      "observers",
+      "telemetry",
+      "health",
+      "dashboard",
+      "world",
+      "startup"
+    ],
+    "description": "Observations and lifecycle facts can support registered health evaluation; dashboard and bounded startup projections expose different views for different consumers.",
+    "limit": "The compact world-state algorithm and canonical health evaluator are not interchangeable. Source revision and freshness affect what the reader can conclude."
+  },
+  {
+    "id": "F15",
+    "title": "An approved Studio request survives its CLI parent",
+    "steps": [
+      "ui",
+      "bridge",
+      "hostsigning",
+      "studioauth",
+      "agentcompiler",
+      "agent",
+      "detachedworker",
+      "resources",
+      "supervisor",
+      "telemetry"
+    ],
+    "description": "The host binds an operation to approved payload bytes. Runtime validates the saved graph/spec and starts an owned durable worker. Finalization waits for exact worker exit and reconciles resource state before exposing a terminal run.",
+    "limit": "A one-shot command returning a run ID means work was launched. It is not a completed outcome or proof that all child resources have closed."
+  },
+  {
+    "id": "F16",
+    "title": "Source change selects proof and invalidates consumers",
+    "steps": [
+      "projectmap",
+      "invalidation",
+      "affectedproof",
+      "tests",
+      "repair",
+      "identity",
+      "package",
+      "certificate",
+      "custody"
+    ],
+    "description": "A known change expands through declared dependencies and test ownership. Focused proofs and negative cases establish affected behavior. The ordered campaign later binds exact product bytes, installed operations, certification and retained evidence.",
+    "limit": "This is a cross-owner lifecycle, not a single automatic function. Repair sequencing prevents speculative broad tests, packaging and certification."
+  },
+  {
+    "id": "F17",
+    "title": "Discover and reversibly manage environment resources",
+    "steps": [
+      "ui",
+      "environment",
+      "envlifecycle",
+      "telemetry"
+    ],
+    "description": "Governed discovery inventories admitted roots and tool metadata. An explicit selected resource can enter a preview, matching-snapshot check, exact-target approval, same-device quarantine and receipt-based restoration.",
+    "limit": "System tools and active resources are excluded by the preview. Discovery does not authorize disposition, and metadata snapshots are not semantic verification of every contained file."
+  },
+  {
+    "id": "F18",
+    "title": "Decay, revoke and explicitly restore learned knowledge",
+    "steps": [
+      "learninggate",
+      "knowledge",
+      "reuse",
+      "invalidation",
+      "revalidation",
+      "knowledge"
+    ],
+    "description": "Promoted knowledge receives cumulative reuse measurements. Decay makes its signed head suspect and computes a supplied dependency cone. Explicit restoration can reauthorize the same canonical identity and retain consumer rebuild obligations.",
+    "limit": "The standard Studio measure-reuse dispatch does not forward the dependency graph. Direct-controller tests supply one. Restoration checks reference/hash metadata rather than reading fresh evidence bytes and has no located Studio operation."
+  },
+  {
+    "id": "F19",
+    "title": "Host procedure turns research into a reviewed candidate",
+    "steps": [
+      "host",
+      "catalog",
+      "skillstatus",
+      "procedures",
+      "research",
+      "foundry",
+      "foundrybridge",
+      "skillstudio",
+      "admission"
+    ],
+    "description": "A selected active body tells the host how to extract source records, run bounded compilation and inspect candidate evidence. Foundry-to-Studio is a concrete adapter; separate admission controls activation.",
+    "limit": "The procedure is not an automatic end-to-end daemon. Source proves prescribed handoffs and implemented kernels, not that every host action or gate was exercised."
+  },
+  {
+    "id": "F20",
+    "title": "MCP plan through owned task reconciliation",
+    "steps": [
+      "mcp",
+      "mcproutes",
+      "taskdag",
+      "tasklease",
+      "taskreconcile",
+      "coordination"
+    ],
+    "description": "MCP authenticates operations, validates a nonconflicting task DAG and records owner leases. Explicit progress leads to completed state; reconciliation releases claims and can complete the plan.",
+    "limit": "Actual task execution occurs through a separately selected owner. Usage and conflict/evidence fields are supplied; coordinated completion is not an independent product acceptance proof."
+  },
+  {
+    "id": "F21",
+    "title": "Discovery into an eligible host procedure",
+    "steps": [
+      "semanticprojection",
+      "catalog",
+      "router",
+      "lexicalnav",
+      "skillstatus",
+      "procedures",
+      "host"
+    ],
+    "description": "Build-time metadata captures source identities. Discovery can expose candidates; selection and exact hydration apply separate eligibility checks. The returned procedure then guides the host.",
+    "limit": "Native exact-query scoring and broad capability routing are separate APIs. This flow explains their boundaries, not a mandatory single call stack."
+  },
+  {
+    "id": "F22",
+    "title": "Studio save through immutable publication and delivery",
+    "steps": [
+      "ui",
+      "draftcommit",
+      "bridge",
+      "studioauth",
+      "skillstudio",
+      "revisionpublish",
+      "draftcommit",
+      "ui"
+    ],
+    "description": "The host binds version/source/approval, the backend stages and publishes an immutable revision, and the host classifies its receipt before notifying the webview.",
+    "limit": "Duplicate nodes intentionally show returning control. Commit-outcome-unverified and committed-with-delivery-warning are distinct outcomes; source inspection does not reproduce either."
+  },
+  {
+    "id": "F23",
+    "title": "Project event through protected head validation",
+    "steps": [
+      "projectplane",
+      "chainledger",
+      "projectplane"
+    ],
+    "description": "Project control-plane events bind workspace identity, validate the predecessor chain under lock, publish event bytes and then publish the protected head and anchor. Later reads/appends validate consistency.",
+    "limit": "An interruption between event and head is a detectable mismatch. This function does not establish automatic repair or a transaction across unrelated coordination and Studio stores."
+  },
+  {
+    "id": "F24",
+    "title": "Verified trace procedure into project process evidence",
+    "steps": [
+      "procedures",
+      "traceprocedure",
+      "cli",
+      "processreceipt",
+      "process",
+      "lifecyclestatus"
+    ],
+    "description": "The active procedure assigns normalization to the host. CLI compiles a supplied record, optional apply retains the result and updates project-management evidence, and lifecycle status can see the evidence path.",
+    "limit": "Submitted flags are not independent verification, the execution graph is linear, and the final output remains inert until separately constructed/admitted."
+  },
+  {
+    "id": "F25",
+    "title": "Promotion obligation through mismatched staleness readers",
+    "steps": [
+      "skillstudio",
+      "semanticprojection",
+      "projectionplan",
+      "world",
+      "graphread"
+    ],
+    "description": "Promotion changes cheap discovery metadata and records heavy projection rebuild obligations. The next consumers must understand those records and enforce freshness.",
+    "limit": "This is a boundary challenge, not a successful call chain: Studio stale_blocked differs from world-state projections[].stale, and the dashboard graph reader does not consult that marker."
+  },
+  {
+    "id": "F26",
+    "title": "Diagnostics through configured recovery and retained evidence",
+    "steps": [
+      "cli",
+      "doctor",
+      "routeclass",
+      "observers",
+      "recoverypass",
+      "wal",
+      "doctor"
+    ],
+    "description": "Explicit diagnostics gather coverage and integrity plus bounded recovery inspection, combine severity and optionally retain a report through WAL.",
+    "limit": "The conceptual tour contains separate probe branches, not a mandatory linear call stack. Dry-run recovery does not repair; diagnostic certification_ready does not certify a release."
+  },
+  {
+    "id": "F27",
+    "title": "Studio promotion evidence becomes a current catalog badge",
+    "steps": [
+      "skillstudio",
+      "catalogproof",
+      "studioauth",
+      "bridge",
+      "ui"
+    ],
+    "description": "Catalog projection verifies revision, receipt, canonical tree and current projection bytes. The bridge passes authenticated results into the UI catalog.",
+    "limit": "Current projection drift can remove promoted status while admission remains authenticated. Historical promotion bytes are retained; no new product run was performed here."
+  },
+  {
+    "id": "F28",
+    "title": "Host-directed candidate and knowledge evaluation",
+    "steps": [
+      "host",
+      "procedures",
+      "candidatepipeline",
+      "facttime",
+      "offlinecandidate"
+    ],
+    "description": "A host can use distinct candidate, temporal and offline evaluation procedures with independently supplied inputs.",
+    "limit": "A tour of related evaluators, not a single automatic pipeline; no persistent connection among the three is asserted."
+  },
+  {
+    "id": "F29",
+    "title": "Coordination progress reaches a rendered sidebar",
+    "steps": [
+      "coordination",
+      "sidebarstate",
+      "ui",
+      "sidebarstate"
+    ],
+    "description": "Task statuses are projected into weighted reconciled progress, posted under the sidebar protocol and acknowledged by exact revision.",
+    "limit": "Reconciled progress and successful rendering have different evidence meanings; the view does not independently verify task outcome bytes."
+  },
+  {
+    "id": "F30",
+    "title": "Host snapshot cache invalidation and reuse",
+    "steps": [
+      "bridge",
+      "hostcache",
+      "bridge",
+      "ui"
+    ],
+    "description": "Bridge configuration/invalidation changes revision counters and request caches; source/age-qualified metadata can populate the view.",
+    "limit": "Stored dependency metadata does not itself enforce a complete dependency closure."
+  },
+  {
+    "id": "F31",
+    "title": "Extension removal and exact-version restoration",
+    "steps": [
+      "ui",
+      "extensioncustody",
+      "host",
+      "extensioncustody"
+    ],
+    "description": "Host previews exact identity and effects, retains prior-version custody, delegates native operations and observes the result before reconciling.",
+    "limit": "Native security/source availability remains with VS Code. Enablement opens a native-manager handoff; pending reload is not a successful mutation claim."
+  },
+  {
+    "id": "F32",
+    "title": "Staged cache disposal with retained failure outcomes",
+    "steps": [
+      "ui",
+      "cleanupstaging",
+      "host",
+      "cleanupstaging"
+    ],
+    "description": "Repeated tree/identity gates precede staging and disposal; the result records deletion, recycling, quarantine, partial retention or uncertainty.",
+    "limit": "Reclaimed receipt counters include local quarantine and are not free-space measurements."
+  },
+  {
+    "id": "F33",
+    "title": "Activity observation and repair",
+    "steps": [
+      "ui",
+      "listenerhealth",
+      "activityledger",
+      "telemetry",
+      "installedindex"
+    ],
+    "description": "Trace host event attribution, separate project and canonical publication, listener status and installed evidence interpretation.",
+    "limit": "A narrated tour across owners; repaired event consistency and listener registration do not prove original action truth or complete host observation."
+  },
+  {
+    "id": "F34",
+    "title": "Studio input custody and starter execution",
+    "steps": [
+      "ui",
+      "draftcommit",
+      "studiopackage",
+      "bridge",
+      "studiostarter",
+      "agent",
+      "workflow"
+    ],
+    "description": "Follow editor input materialization and the separate starter fixture sequence through exact Studio operations.",
+    "limit": "Materialization, immutable revision creation, starter execution and safe reclamation are distinct phases. This report performed none of their product effects."
+  },
+  {
+    "id": "F35",
+    "title": "Proof strength and artifact identity",
+    "steps": [
+      "artifactclasses",
+      "identity",
+      "exactharness",
+      "pythonsurface",
+      "tests",
+      "installedindex",
+      "certificate"
+    ],
+    "description": "Read the evidence chain from classified source to exact tools, surface evidence labels, governed receipts and installed identity.",
+    "limit": "Ordering is explanatory, not a claim that these modules directly call each other or that new certification was run."
+  },
+  {
+    "id": "F36",
+    "title": "Proposal construction to admission",
+    "steps": [
+      "host",
+      "proposalbuilders",
+      "admission",
+      "skillstudio",
+      "semanticprojection"
+    ],
+    "description": "Supplied requirements and contracts become bounded candidates; independent verification and admission precede promotion and later discovery.",
+    "limit": "The construction/admission boundary is an explicit handoff, not an automatic pipeline. Supplied evidence flags do not independently prove tests passed."
+  },
+  {
+    "id": "F37",
+    "title": "Ordered release and installed member settlement",
+    "steps": [
+      "releaseautomation",
+      "repair",
+      "identity",
+      "tests",
+      "package",
+      "installedowner",
+      "operational",
+      "certificate"
+    ],
+    "description": "Read the 12-stage driver order and its configured owners, then the nested installed smoke and exhaustive ordering.",
+    "limit": "archive_clear precedes reconcile; later identity, sections, full_profile, validate, package, install, installed_operational, card_reconcile, preflight and finalize remain distinct stages. This report ran none."
+  },
+  {
+    "id": "F38",
+    "title": "External service construction boundaries",
+    "steps": [
+      "host",
+      "services",
+      "n8nprocedures",
+      "supabaseprocedures",
+      "serviceblueprints",
+      "supabasetemplate"
+    ],
+    "description": "Follow host procedures into concrete queue, schema and function scaffolds and identify deployment-specific missing work.",
+    "limit": "These are local examples and declared instructions. Cross-service authentication, policies, health, secrets and idempotency must be supplied by actual deployment owners."
+  },
+  {
+    "id": "F41",
+    "title": "Completion production and dashboard freshness",
+    "steps": [
+      "certificate",
+      "completionprojection",
+      "bridge",
+      "ui",
+      "dashboardcontroller",
+      "dashboardhealth"
+    ],
+    "description": "Follow exact release verification into separately derived completion fields, stored-source freshness checks, host snapshot and rendered labels.",
+    "limit": "Interactive reading does not rebuild gates or certify the product. Historical completion, operational completeness and certified/fresh are distinct producer conditions."
+  },
+  {
+    "id": "F39",
+    "title": "MCP build, launch, effects and observed status",
+    "steps": [
+      "mcproutes",
+      "mcpbundle",
+      "mcplaunch",
+      "mcp",
+      "enterprisecontrol",
+      "mcpobservation"
+    ],
+    "description": "Follow separate raw source, generated artifact, host definition, annotation-based authorization, real initializer effects and derived invocation status.",
+    "limit": "First-use enterprise persistence is source-derived. A succeeded wrapper event and a passing context probe do not prove a useful context result or read-only effect behavior."
+  },
+  {
+    "id": "F40",
+    "title": "Dashboard load, state, request and rendered status",
+    "steps": [
+      "ui",
+      "webviewmodules",
+      "dashboardcontroller",
+      "bridge",
+      "dashboardhealth"
+    ],
+    "description": "Follow actual script order, retained view state, controller-owned messaging, host validation and supplied health projections.",
+    "limit": "Loaded module definitions do not guarantee consumption. The Python bridge is a backend adapter; it is distinct from the unused browser bridge helper."
+  },
+  {
+    "id": "F42",
+    "title": "Coordination mutation validation and publication",
+    "steps": [
+      "mcproutes",
+      "tasklease",
+      "coordpublish",
+      "coordinvariants",
+      "coordresume"
+    ],
+    "description": "Trace authority-wrapped task operation through prior-state validation, transition checking and separate handoff publication.",
+    "limit": "Expired active prior claims fail before expiry cleanup. Successful validation precedes memory/state/event/receipt/handoff writes, which still have separate commit points. See the detailed failure-branch diagram."
+  },
+  {
+    "id": "F43",
+    "title": "Environment observation to stored MCP graph",
+    "steps": [
+      "ui",
+      "envworker",
+      "envcollect",
+      "envstore",
+      "envread",
+      "mcproutes"
+    ],
+    "description": "Follow host scheduling, subprocess probes, worker scan, graph construction, optional shard publication and stored MCP reads.",
+    "limit": "Memory-only collection and retained reader state are distinct. Graph links include declared/lexical relationships, not observed execution. See the detailed environment branches note."
+  },
+  {
+    "id": "F44",
+    "title": "Host snapshot scheduling and cache return",
+    "steps": [
+      "ui",
+      "canonicallease",
+      "bridge",
+      "hostfingerprint",
+      "hostcache",
+      "hostgovernor",
+      "hostcapture"
+    ],
+    "description": "Trace visible refresh through canonical lease maintenance and fingerprint/cache decisions; misses run a governed dashboard subprocess.",
+    "limit": "This is a branch-aware trace: persistent or short-TTL hits bypass subprocess work, stale hits start background refresh, and lease methods use separate direct capture. See host scheduling and cache branches."
+  },
+  {
+    "id": "F45",
+    "title": "Authenticated catalog projection to physical edit selection",
+    "steps": [
+      "bridge",
+      "catalogproof",
+      "catalogmerge",
+      "revisionguard",
+      "draftcommit"
+    ],
+    "description": "Trace Python status authentication, JS physical artifact validation and selected revision identity into a later edit flow.",
+    "limit": "Catalog display status and mutation authorization are separate. A path-keyed projection can age before JS reads; downstream mutation must validate its own exact predecessor and approval."
+  },
+  {
+    "id": "F46",
+    "title": "Python snapshot and nested work publication",
+    "steps": [
+      "mcproutes",
+      "pysnapshot",
+      "pythonworkplane",
+      "pyhardwarecache",
+      "snapshotcounts",
+      "pyreadiness"
+    ],
+    "description": "Follow composed snapshot admission, derived sensor work, retained state observations and advisory readiness return.",
+    "limit": "Logical dependencies include branches: counts are collected before sensors; readiness consumes both. Work-plane result cache precedes finish-state publication; detailed note shows exact ordering."
+  },
+  {
+    "id": "F47",
+    "title": "Provider policy accounting and terminal branches",
+    "steps": [
+      "providerpolicy",
+      "providerattempt",
+      "budget",
+      "provideradapters",
+      "telemetry",
+      "providerfallback"
+    ],
+    "description": "Trace optional wrapper, reservation, model call, usage settlement, terminal event and separately budgeted fallback.",
+    "limit": "Node order illustrates participating owners; detailed note distinguishes reserve before start, settle before terminal, and branches. Policy wrapper is optional; gateway is not the host model path."
+  },
+  {
+    "id": "F48",
+    "title": "Memory capture lifecycle and retrieval alternatives",
+    "steps": [
+      "capture",
+      "vaultpublish",
+      "vault",
+      "memoryindex",
+      "memoryactivation",
+      "workspacerecall",
+      "memorycontext"
+    ],
+    "description": "Follow explicit candidate construction, canonical append, lifecycle changes, optional index publication and caller-scoped retrieval/context.",
+    "limit": "Index publication is a side branch; neither direct vault search nor workspace rank_memories requires activated index. Detailed note separates each algorithm and authority."
+  },
+  {
+    "id": "F49",
+    "title": "Memory monitor and integration health fan-out",
+    "steps": [
+      "pysnapshot",
+      "memorymonitor",
+      "vault",
+      "memoryactivation",
+      "memorywritequeue",
+      "integrations",
+      "schedulesimulation",
+      "retrievalcore",
+      "metacognition"
+    ],
+    "description": "Shows the work behind composed memory and integration health.",
+    "limit": "These are parallel logical dependencies executed sequentially by source, not an orchestration that executes the registered production handlers. Health checks use local simulation, one retrieval fixture and metadata denominators."
+  },
+  {
+    "id": "F50",
+    "title": "Agent admission and three execution branches",
+    "steps": [
+      "agent",
+      "agentpreflight",
+      "agenthostcompletion",
+      "hostmodel",
+      "agentworkerpublication",
+      "supervisor",
+      "agentcallback",
+      "hardware"
+    ],
+    "description": "Compare host model handoff, supervised deterministic worker and governed CPU/GPU callback families.",
+    "limit": "This trace lists alternative branches, not one serial pipeline. Detailed note describes gates, cleanup and separate terminal commit points."
+  },
+  {
+    "id": "F51",
+    "title": "Memory plan materialization and execution receipt binding",
+    "steps": [
+      "semantics",
+      "vault",
+      "recall",
+      "memorybroker",
+      "agentcallback"
+    ],
+    "description": "Separate canonical memory, supplied plan materialization and the receipt hash bound to a governed run.",
+    "limit": "Vault-to-broker acquisition remains caller-driven; no automatic lookup or prompt injection is inferred. Callback route preserves receipt hash without forwarding the materialized items."
+  },
+  {
+    "id": "F52",
+    "title": "Detached Studio worker and terminal closure",
+    "steps": [
+      "agentworkerpublication",
+      "studiolaunch",
+      "studiosession",
+      "localagenttools",
+      "terminalobserver",
+      "resources"
+    ],
+    "description": "Trace outer detached worker, inner task worker, request cleanup binding, finalizing state and independent process-exit observation.",
+    "limit": "Detailed note separates concurrent worker/observer timelines and failure branches. Terminal state and Agent revision receipt are not the same artifact."
+  },
+  {
+    "id": "F53",
+    "title": "Durable state and independent process closure",
+    "steps": [
+      "studioauthority",
+      "durablepublisher",
+      "runviews",
+      "supervisor",
+      "resourcecustody",
+      "terminalobserver",
+      "durablepublisher"
+    ],
+    "description": "Separate signed event/head publication, cooperative cancellation, actual process identity and terminal publication.",
+    "limit": "The same run state is consumed through APIs with different history, locking and cancellation guarantees."
+  },
+  {
+    "id": "F54",
+    "title": "Owned cleanup and retained history evidence",
+    "steps": [
+      "resourcecustody",
+      "resourcereclaim",
+      "resourcecustody",
+      "historyretention",
+      "wal"
+    ],
+    "description": "Trace custody, current cleanup gates, filesystem effect, ledger disposition, separate receipt and WAL-retained history.",
+    "limit": "This is a relationship tour, not a single automatic cleanup pipeline; operational history pruning and path reclamation are separate calls."
+  },
+  {
+    "id": "F55",
+    "title": "Supervised process budget and closure branches",
+    "steps": [
+      "assuranceinputs",
+      "supervisebudget",
+      "resourcecustody",
+      "supervisionclose",
+      "resourcecustody"
+    ],
+    "description": "Follow metadata admission, real child creation, control polling, containment observation and ledger/receipt publication.",
+    "limit": "Loop timeout excludes setup. Callback exceptions and registration failure have different terminal evidence."
+  },
+  {
+    "id": "F56",
+    "title": "WAL publication and recoverable failure order",
+    "steps": [
+      "historyretention",
+      "walcommit",
+      "walinspect",
+      "walcommit",
+      "archivecustody"
+    ],
+    "description": "Follow caller intent, commit-time before capture, prior recovery, sequential target writes and optional later archive custody.",
+    "limit": "Final archive is an explicit separate invocation; current reader isolation and earlier caller-read invariants need additional coordination."
+  },
+  {
+    "id": "F57",
+    "title": "Studio version observation and physical publication",
+    "steps": [
+      "studioauth",
+      "versionallocation",
+      "studiophys",
+      "studiorecord",
+      "filelease"
+    ],
+    "description": "Compare source/occupancy observation, physical read guarantees and generic record publication under lock.",
+    "limit": "These are related owners, not one automatic call chain: allocation reserves nothing, and full Studio publishers add their own locking/tree checks."
+  },
+  {
+    "id": "F58",
+    "title": "Policy proof and operation-owner composition",
+    "steps": [
+      "effects",
+      "executionenvelope",
+      "operationcompose",
+      "orchestrator"
+    ],
+    "description": "Follow distinct signed-policy, owner-composition and manifest/effect decisions.",
+    "limit": "Orchestrator uses direct policy enforcement; the authoritative evidence wrapper is a separate entry point. Exact effect spelling controls which signed-grant checks run."
+  },
+  {
+    "id": "F59",
+    "title": "Signed proof resolution and semantic consumers",
+    "steps": [
+      "sshproof",
+      "signedresolver",
+      "executionenvelope",
+      "granttargets",
+      "admissionfacts",
+      "outcomereducer"
+    ],
+    "description": "Tour signature mechanics, resolver dimensions and the three separate policy, grant, admission and outcome consumers.",
+    "limit": "Branching consumers, not a linear automatic pipeline. Authenticity, time, artifact binding and target coverage are independent requirements."
+  },
+  {
+    "id": "F60",
+    "title": "Handler completion and evidence warning propagation",
+    "steps": [
+      "orchestrator",
+      "compatcompletion",
+      "claimassembly",
+      "verify"
+    ],
+    "description": "Trace injected handler result through pure assembly and compatibility verification into completed/incomplete status.",
+    "limit": "This path does not invoke verify_authoritative. Contradictions remain warnings; deadlines and unload metadata do not constitute supervised termination."
+  },
+  {
+    "id": "F61",
+    "title": "Workflow admission scheduling and supervised node execution",
+    "steps": [
+      "workflowpublish",
+      "workflowbatch",
+      "workflowattempt",
+      "supervisebudget",
+      "workflowadapter",
+      "resourcereclaim",
+      "workflowcheckpoint"
+    ],
+    "description": "Trace immutable definition, current admission, cached scheduling claims, fresh node tasks, process execution and checkpoint settlement.",
+    "limit": "Batch claims and per-attempt authority have different observation times. Adapter set is closed; grants do not cause arbitrary business effects."
+  },
+  {
+    "id": "F62",
+    "title": "Workflow pause resume and terminal branches",
+    "steps": [
+      "workflow",
+      "studiolaunch",
+      "workflowbatch",
+      "workflowcheckpoint",
+      "durablepublisher",
+      "terminalobserver"
+    ],
+    "description": "Trace queued detached start, node cancellation, completed-node checkpoint, pause/resume and observer-owned finalization.",
+    "limit": "Direct resume runs synchronously. Finalizing cancel/stop takes a separate direct terminal shortcut without waiting for observer closure."
+  },
+  {
+    "id": "F63",
+    "title": "Release custody signing reconstruction and restoration",
+    "steps": [
+      "custodypackage",
+      "custodychunks",
+      "sshproof",
+      "publicationrestore",
+      "custody"
+    ],
+    "description": "Trace evidence packaging, outer trust, reconstructed critical subject checks and repository restoration.",
+    "limit": "Signature verification is supplied by wrapper, not chunk helper. Repeated reads and postcommit cleanup have separate failure windows; no release execution performed for this report."
+  },
+  {
+    "id": "F64",
+    "title": "Evidence class inventory and currentness scopes",
+    "steps": [
+      "evidence",
+      "featureclaims",
+      "externalmanifest",
+      "portableprojection",
+      "currentindex"
+    ],
+    "description": "Compare what metadata compatibility, manifest verification, portability scanning and current index each establish.",
+    "limit": "These are parallel evidence consumers, not one automatic pipeline. Their valid/verified labels have different denominators and authority."
+  },
+  {
+    "id": "F65",
+    "title": "Task normalization fusion package and plan binding",
+    "steps": [
+      "routingnormalize",
+      "routingfusion",
+      "routingpackage",
+      "planidentity",
+      "executionenvelope"
+    ],
+    "description": "Trace lexical request normalization through metadata package into descriptive plan and separate execution envelope.",
+    "limit": "Missing inputs, raw constraints, dependency eligibility and requested-term coverage have different handling across stages. Plan integrity is not authority."
+  },
+  {
+    "id": "F66",
+    "title": "Placement recommendation capacity and publication",
+    "steps": [
+      "planidentity",
+      "hardware",
+      "capacityleases",
+      "agent",
+      "placementtiers",
+      "placementpublish",
+      "pythonworkplane"
+    ],
+    "description": "Compare hardware recommendation, explicit capacity leases, callback release and separately published promotion artifacts.",
+    "limit": "Promotion metadata and capacity state are different branches. No automatic migration follows recommendation or reusable-pattern label."
+  },
+  {
+    "id": "F67",
+    "title": "Model inventory attachment and hardware recommendation",
+    "steps": [
+      "modelselection",
+      "attachmentidentity",
+      "planidentity",
+      "hardware",
+      "hardwareprobe",
+      "benchmarkroute"
+    ],
+    "description": "Trace metadata rank, exact attachment, plan binding, current observations and device policy.",
+    "limit": "Constructor validation, decoded validation and runtime availability observations are different checks; no model execution follows automatically."
+  },
+  {
+    "id": "F68",
+    "title": "Benchmark and callback fallback behavior",
+    "steps": [
+      "benchmarkroute",
+      "capacityleases",
+      "agent",
+      "callbackfallback"
+    ],
+    "description": "Follow device decision into explicit logical reservation and caller callback execution.",
+    "limit": "Automatic benchmark gate differs from explicit CUDA. Fallback repeats callbacks without rollback or hardware measurement; normal lease release is a separate finally owner."
+  },
+  {
+    "id": "F69",
+    "title": "Local model inspection server startup and stop",
+    "steps": [
+      "ggufadmission",
+      "localserverplan",
+      "resourcecustody",
+      "localreadiness",
+      "localclosure",
+      "supervisionclose"
+    ],
+    "description": "Trace model admission, command planning, owned startup, normal readiness and explicit closure.",
+    "limit": "Builder checks are stronger than start acceptance. Probe/publication exceptions are different branches from a normal health timeout; root absence and tree closure are separate evidence."
+  },
+  {
+    "id": "F70",
+    "title": "Local server to inference handoff remains explicit",
+    "steps": [
+      "localreadiness",
+      "localinference",
+      "provideradapters",
+      "provider"
+    ],
+    "description": "Compare server lifecycle outputs with HTTP adapter inputs and optional provider gateway use.",
+    "limit": "This is a boundary tour, not an automatically wired pipeline. No production constructor caller was found for the runtime or llama.cpp adapter in the searched authored source."
+  },
+  {
+    "id": "F71",
+    "title": "Graph declarations count checks and path semantics",
+    "steps": [
+      "graphs",
+      "graphprojection",
+      "typepaths",
+      "dagvalidation",
+      "countenvelopes"
+    ],
+    "description": "Inspect projection bytes, type-path compatibility, declarative DAG checks and count ownership as different validation layers.",
+    "limit": "This is a comparison tour of utilities; it is not a universal ordered execution or admission pipeline."
+  },
+  {
+    "id": "F72",
+    "title": "Service selection and project context retrieval",
+    "steps": [
+      "services",
+      "serviceroute",
+      "servicehydrate",
+      "cli",
+      "mapquerycache",
+      "router"
+    ],
+    "description": "Compare explicit service-body selection with metadata-only project source-range planning and the task router caller.",
+    "limit": "Body hydration and project range planning do not execute instructions. Only task-routing caller shown here requires fresh project-map validation."
+  },
+  {
+    "id": "F73",
+    "title": "Static project impact and invalidation handoff",
+    "steps": [
+      "projectmap",
+      "impacttrace",
+      "impactinvalidation",
+      "invalidation"
+    ],
+    "description": "Follow map validation, target disambiguation, bounded individual graph walks and optional invalidation projection.",
+    "limit": "Fresh-map validation precedes separate reads; depth truncation and aggregate caps differ. Adapter inputs are not an authenticated complete change proof."
+  },
+  {
+    "id": "F74",
+    "title": "Engineering reasoning tools and evidence strength",
+    "steps": [
+      "engineering",
+      "frontierselect",
+      "reasoningworkflow",
+      "glossarycheck",
+      "depthproxy"
+    ],
+    "description": "Tour explicit question selection, workflow-name coverage, terminology inspection and AST metrics.",
+    "limit": "Independent helper APIs with CLI dispatch. No automatic loop, claim acquisition or architectural action follows from valid/proxy output."
+  },
+  {
+    "id": "F75",
+    "title": "Project source to map inference and retrieval",
+    "steps": [
+      "projectmap",
+      "mapcorpus",
+      "mapfacts",
+      "mapinference",
+      "mapindexbuild",
+      "mapquerycache",
+      "router"
+    ],
+    "description": "Trace corpus selection, incremental facts, inferred relationships, metadata index and routing features.",
+    "limit": "Every stage retains a different limitation: selected corpus, parser coverage, lexical resolution, entity relation projection and separate cached reads."
+  },
+  {
+    "id": "F76",
+    "title": "Project map staging validation promotion and history",
+    "steps": [
+      "pythonworkplane",
+      "mappromotion",
+      "mapintegrity",
+      "archivecustody",
+      "impacttrace"
+    ],
+    "description": "Tour admission, prepared-map checks, publication, retained history and downstream validation.",
+    "limit": "Prior-map rename, new-map rename and final receipt write are separate effects. Archive helper is an explicit later consumer, not automatically invoked."
+  },
+  {
+    "id": "F77",
+    "title": "Core registry admission and schema assurance layers",
+    "steps": [
+      "orchestrator",
+      "coreadmission",
+      "startupconfig",
+      "declaredpaths",
+      "schemacorpus",
+      "schemainstance",
+      "sourcecoverage"
+    ],
+    "description": "Trace core validator fanout and distinguish configuration, file availability, schema rules, generated fixtures and operational labels.",
+    "limit": "Tour of branches rather than one universal ordered test chain. Artifact checks do not establish live execution."
+  },
+  {
+    "id": "F78",
+    "title": "Metadata adapters into convergence scoring",
+    "steps": [
+      "navsources",
+      "navscores",
+      "routingfusion",
+      "routingpackage"
+    ],
+    "description": "Trace four adapters into source-based candidate fusion and package scoring.",
+    "limit": "Skill and semantic adapters share underlying semantic data. Risk and quality scores are metadata transformations, not independent receipts."
+  },
+  {
+    "id": "F79",
+    "title": "Project stream gates and three meanings of completion",
+    "steps": [
+      "workspace",
+      "streamdispatch",
+      "streamcheckpoint",
+      "controlcopies",
+      "streamdispatch"
+    ],
+    "description": "Workspace context -> preflight checkpoint -> handler -> elapsed lease checks -> named output reduction.",
+    "limit": "Repeated dispatcher denotes return. Operation acceptance, stream key completeness and durable evidence are different states."
+  },
+  {
+    "id": "F80",
+    "title": "Recovery and quarantine publication boundaries",
+    "steps": [
+      "streams",
+      "streamdispatch",
+      "quarantinetxn",
+      "recoverytxn",
+      "streamcheckpoint"
+    ],
+    "description": "Compare the two journaled mutation branches and their later outer checkpoints.",
+    "limit": "Quarantine and recovery are alternative handlers, not one mandatory sequence. Both have publication beyond their compensation blocks."
+  },
+  {
+    "id": "F81",
+    "title": "Project scope and transfer evidence layers",
+    "steps": [
+      "workspace",
+      "scopechecks",
+      "signedresolver",
+      "transferbinding",
+      "streamdispatch"
+    ],
+    "description": "Compare descriptor checks, signed project-scoped references, copied bytes and outer completion.",
+    "limit": "This is an evidence-layer tour. It does not claim context/lease checks automatically run in the transfer handler."
+  },
+  {
+    "id": "F82",
+    "title": "Workspace lifecycle events and mutable projections",
+    "steps": [
+      "workspace",
+      "intakeinventory",
+      "workspacelifecycle",
+      "workspaceevents",
+      "workspaceprojection",
+      "workspacestatus"
+    ],
+    "description": "Discovery and commissioning precede activation; lifecycle events drive projections consumed by status and memory.",
+    "limit": "Initialization/admission also publish registry before event; there is no universal shared transaction across branches."
+  },
+  {
+    "id": "F83",
+    "title": "Workspace request routing and default recovery mismatch",
+    "steps": [
+      "workspacepayload",
+      "workspaceprojection",
+      "streamdispatch",
+      "recoverytxn",
+      "streamdispatch",
+      "workspacepayload"
+    ],
+    "description": "Current lease -> materialized payload -> handler -> nested escalated result -> named output completion -> request receipt.",
+    "limit": "Recovery and quarantine default transaction roots conflict with primitive parent boundary. This trace is source-derived, not a product execution."
+  },
+  {
+    "id": "F84",
+    "title": "Workspace rebuild and memory ownership branches",
+    "steps": [
+      "workspaceevents",
+      "workspacerebuild",
+      "workspaceprojection",
+      "workspacememory",
+      "workspacestatus"
+    ],
+    "description": "Event reconstruction restores control projections; active leases govern access to distinct vaults.",
+    "limit": "Rebuild does not itself certify memory or physically clear host context."
+  },
+  {
+    "id": "F85",
+    "title": "Commissioning scaffold identity and project admission",
+    "steps": [
+      "workspace",
+      "commissioning",
+      "projecttemplates",
+      "commissionreceipt",
+      "workspaceevents",
+      "projectintegrity",
+      "workspacelifecycle"
+    ],
+    "description": "Build and classify scaffold -> publish files/map -> bind receipt/event -> project integrity check -> workspace activation.",
+    "limit": "Map and receipt are separate writes. Repair campaign is initialized by workspace admission, not this receipt generator."
+  },
+  {
+    "id": "F86",
+    "title": "Brief acceptance and release identity update branches",
+    "steps": [
+      "briefstate",
+      "projecttemplates",
+      "projectintegrity",
+      "frameworkrebind",
+      "commissionreceipt"
+    ],
+    "description": "Compare mutable human brief updates with framework metadata rebinding on protected commissioning artifacts.",
+    "limit": "Alternative update branches, not mandatory sequential approval chain. Neither proves product certification."
+  },
+  {
+    "id": "F87",
+    "title": "World state through startup and CLI projection",
+    "steps": [
+      "worldprojection",
+      "worldfresh",
+      "startupreads",
+      "startupprobes",
+      "cli"
+    ],
+    "description": "Stored summary -> optional-revision validation -> configured metadata checks/probes -> CLI subset.",
+    "limit": "Loader wrapper authority is discarded by startup snapshot; CLI omits world-state result rather than establishing health."
+  },
+  {
+    "id": "F88",
+    "title": "Dormant catalog to lazy dependency commit",
+    "steps": [
+      "startupreads",
+      "startup",
+      "lazytransaction",
+      "declaredpaths",
+      "lazytransaction"
+    ],
+    "description": "Dormant catalog selection -> recursive prepare -> contained full reads -> retained count/byte check -> active commit.",
+    "limit": "Catalog adapter drops dependency declarations; custom descriptors can supply dependencies. Diagram return is conceptual prepare/commit."
+  },
+  {
+    "id": "F89",
+    "title": "Task hints through descriptive plan and temporary admission",
+    "steps": [
+      "classifyheuristic",
+      "router",
+      "frozenrequirements",
+      "workpackage",
+      "streamdispatch",
+      "schedulerfacts"
+    ],
+    "description": "Classifier routing hints, standalone frozen requirements and fresh dispatch scheduler are distinct ownership surfaces.",
+    "limit": "Dotted handoffs describe conceptual adjacency; no end-to-end automatic wiring from frozen package to execution is claimed."
+  },
+  {
+    "id": "F90",
+    "title": "Durable load migration and configured recovery",
+    "steps": [
+      "recoverypass",
+      "durablestore",
+      "durablemigration",
+      "walcommit",
+      "recoverypass"
+    ],
+    "description": "Configured coordinator loads current state or explicitly migrates legacy state through WAL; resume metadata remains a separate check.",
+    "limit": "No global owner lock, process closure, pending-approval reconciliation or evidence-authenticity proof follows from healthy component labels."
+  },
+  {
+    "id": "F91",
+    "title": "Recovery proposal precedence",
+    "steps": [
+      "recovery",
+      "recoverychoice"
+    ],
+    "description": "Policy denial/irreversibility stop -> circuit escalation -> eligible rollback -> fallback -> idempotent retry -> integrity escalation -> stop.",
+    "limit": "Decision is metadata, not work admission; no authored runtime execution consumer found."
+  },
+  {
+    "id": "F92",
+    "title": "Python retained coordination startup audit",
+    "steps": [
+      "startupreads",
+      "pycoordstartup",
+      "coordmemoryseal",
+      "pycoordstate",
+      "recoverypass"
+    ],
+    "description": "Read retained state -> memory/event files -> state invariants -> chain/count union; startup and recovery are separate consumers.",
+    "limit": "Reads do not share a store lock; absent state reports unconfigured rather than authority established."
+  },
+  {
+    "id": "F93",
+    "title": "Coordination writer and optional guard are distinct paths",
+    "steps": [
+      "coordpublish",
+      "coordinvariants",
+      "coordvectors",
+      "pycoordwalguard",
+      "pycoordstate"
+    ],
+    "description": "Production JavaScript writer validates its own transition; vectors compare a reduced subset; optional Python WAL guard is wired in a test.",
+    "limit": "Conceptual comparison does not imply JavaScript calls the Python guard or full parity."
+  },
+  {
+    "id": "F94",
+    "title": "Declared owners through static authority checks",
+    "steps": [
+      "archflagaggregate",
+      "topologydecl",
+      "primitivedecl",
+      "duplicatelint"
+    ],
+    "description": "Architecture metadata checks and optional duplicate lint inspect declarations/syntax.",
+    "limit": "No universal executing resolver or dynamic bypass interception follows from registry validity."
+  },
+  {
+    "id": "F95",
+    "title": "Catalog source through semantic query projection",
+    "steps": [
+      "skillstudio",
+      "semanticbuildio",
+      "semanticprofilebuild",
+      "semanticbuildio",
+      "navscores",
+      "queryvectors"
+    ],
+    "description": "Catalog/contract/body assembly -> normalized profiles -> hashed compact index -> navigation -> golden query expectations.",
+    "limit": "Build reads complete bodies; loader and query do not imply fresh rebuild or capability execution."
+  },
+  {
+    "id": "F96",
+    "title": "Skill promotion maturity evidence boundary",
+    "steps": [
+      "skillstudio",
+      "maturityladder",
+      "admission"
+    ],
+    "description": "Promotion computes tree identity, generates base evidence rows and evaluates caller higher-level rows; signed admission is checked separately.",
+    "limit": "Package admission authenticity does not automatically authenticate higher-level maturity evidence rows."
+  },
+  {
+    "id": "F97",
+    "title": "Skill source to canonical promotion",
+    "steps": [
+      "skilltreeidentity",
+      "skilldraftpublish",
+      "skilldeclarative",
+      "skilladmitreceipt",
+      "skillstudio",
+      "skillprojectionafter",
+      "skilllifecyclejournal"
+    ],
+    "description": "Source digest/token -> immutable revision -> declarative checks -> signed admission -> current identity/approval -> projections -> recoverable publication.",
+    "limit": "The handoffs are explicit API stages; declarative validation and maturity labels are not arbitrary skill execution."
+  },
+  {
+    "id": "F98",
+    "title": "Lifecycle interruption and restart",
+    "steps": [
+      "skilllifecyclejournal",
+      "skilltreeidentity",
+      "skilllifecyclejournal",
+      "skillprojectionafter"
+    ],
+    "description": "Prepare signed images -> mark applying -> displace/publish canonical -> validate/apply artifacts -> mark committed. Constructor resumes applying transactions.",
+    "limit": "Failures can expose canonical with old projections; recovery requires intact images and no conflicting external changes."
+  },
+  {
+    "id": "F99",
+    "title": "Rollback reconstruction and drift boundaries",
+    "steps": [
+      "skillrollbackbinding",
+      "skilltreeidentity",
+      "skilllifecyclejournal",
+      "skillprojectionafter"
+    ],
+    "description": "Verify signed promotion/current target -> read backup and original projection images -> build new rollback transaction -> apply and receipt.",
+    "limit": "Backup must additionally be bound to original before-tree to prove exact original restoration; current projection changes are not checked against original promotion after-images."
+  },
+  {
+    "id": "F100",
+    "title": "Dependency drift to affected proof metadata",
+    "steps": [
+      "reuse",
+      "dependencycone",
+      "affectedproofmeta"
+    ],
+    "description": "Changed revision seeds -> declared downstream BFS -> card/test/group/section requirements -> supplied completion names.",
+    "limit": "No universal automatic graph construction or signed completion proof; optional graph omission narrows closure."
+  },
+  {
+    "id": "F101",
+    "title": "Projection source freshness and reconciliation",
+    "steps": [
+      "projectionfreshness",
+      "graphsourcebinding",
+      "generatedcomparison",
+      "generatedscc"
+    ],
+    "description": "Revision comparison and transitive stale discovery are distinct from authority manifest hashing and exact generated-output comparison.",
+    "limit": "Rebuild categories do not execute or topologically schedule builders; matching an output is not always semantic validity."
+  },
+  {
+    "id": "F102",
+    "title": "Python source imports to release dependency audit",
+    "steps": [
+      "pythonimportowner",
+      "generatedcomparison",
+      "dependencypackaudit"
+    ],
+    "description": "Packaged-surface AST inventory -> exact projection comparison -> declaration/lock/workflow checks.",
+    "limit": "Stored classification vocabulary mismatch and hash marker counts constrain assurance strength."
+  },
+  {
+    "id": "F103",
+    "title": "Learning evidence through signed candidate admission",
+    "steps": [
+      "learningrouteboundary",
+      "learningevidence",
+      "learningtrials",
+      "learningtyped",
+      "learningjournal",
+      "learningadmission",
+      "knowledgepublication"
+    ],
+    "description": "Explicit observations lead to pattern/hypothesis, primary comparison, independent-labelled research and optional secondary comparison, final validation, candidate linkage, ordinary verification, approval and promotion.",
+    "limit": "Hashes prove submitted identity; trial winner and research independence remain caller claims. No autonomous experiment loop."
+  },
+  {
+    "id": "F104",
+    "title": "Decay and revalidation publication order",
+    "steps": [
+      "knowledgepublication",
+      "decaypublication",
+      "dependencycone",
+      "learningjournal",
+      "revalidationpublication",
+      "knowledgepublication"
+    ],
+    "description": "Decay publishes suspect canonical head before its pipeline transition. Revalidation publishes canonical pipeline state before restoring the canonical head.",
+    "limit": "These are separate multi-file commits, with different failure windows. Revalidation has no authored runtime call site; downstream rebuilding is a flag."
+  },
+  {
+    "id": "F105",
+    "title": "Canonical knowledge promotion recovery and rollback",
+    "steps": [
+      "learningevidence",
+      "knowledgepublication",
+      "knowledge"
+    ],
+    "description": "Promotion checks source and evidence snapshots plus canonical-base identity, writes retained revision, then canonical head, then proposal history. Recovery can roll forward the retained signed revision. Rollback replaces head then writes a rollback receipt.",
+    "limit": "Readers do not share publication lock; no joint transaction spans these writes, and rollback replaces authority-status metadata."
+  },
+  {
+    "id": "F106",
+    "title": "Cleanup observations compiled into learning report",
+    "steps": [
+      "cleanupmining",
+      "comparison",
+      "learninggate"
+    ],
+    "description": "Compiler selects failed and successful lane receipts, freezes declared strategies, calls every successful receipt a challenger win and emits a learned-process report.",
+    "limit": "No paired trial/revision evidence, producer authentication or content validation of the final test-section receipt; no canonical controller publication."
+  },
+  {
+    "id": "F107",
+    "title": "Memory summary and derived callback boundaries",
+    "steps": [
+      "summarycursor",
+      "summary",
+      "capture",
+      "vault",
+      "graphisolation",
+      "memoryguard",
+      "memoryclusters",
+      "remediationorder"
+    ],
+    "description": "Session summaries retain initial distinct sentences and consume the full pending range. Separate memory capture may publish canonical records before a guarded graph callback; graph defects can be planned for repair.",
+    "limit": "No automatic summary-to-vault or cluster-to-remediation adapter established. Callback timeout does not stop execution and remediation applies nothing."
+  },
+  {
+    "id": "F108",
+    "title": "Process record into catalog-dependent inert candidate",
+    "steps": [
+      "cli",
+      "processreceipt",
+      "processcompileidentity",
+      "skillstudio"
+    ],
+    "description": "CLI reads supplied record; compiler checks schema/verification flags, ranks catalog ID/tag overlap and builds a sequential execution chain. Apply writes receipt then updates project evidence paths.",
+    "limit": "No receipt authentication for verification claims, no recovered trace order, no automatic Studio package construction."
+  },
+  {
+    "id": "F109",
+    "title": "Research candidates and refinery stages",
+    "steps": [
+      "researchconvergence",
+      "refinerynovelty",
+      "refinerymetrics",
+      "refineryproof",
+      "refinerystaging",
+      "projectplane"
+    ],
+    "description": "Mechanism candidates can be converted into novelty inputs, merge plans, retrieval/calibration reports and an inert staged proposal.",
+    "limit": "Stages are separately called. Component PASS is a decision over supplied reports; staging does not enforce that certification occurred."
+  },
+  {
+    "id": "F110",
+    "title": "Refinery retrieval validity versus calibration acceptance",
+    "steps": [
+      "cli",
+      "refinerymetrics",
+      "refineryproof"
+    ],
+    "description": "Rankings become MRR/NDCG and forbidden-hit counts; train/holdout objective comparison may permit a manual proposal. Final summary checks component flags and count parity.",
+    "limit": "No-results correctness, duplicate-ranking validity, nonempty test denominators and identity disjointness are not fully established."
+  },
+  {
+    "id": "F111",
+    "title": "Foundry sources into candidate files",
+    "steps": [
+      "foundry",
+      "foundryextract",
+      "foundrycalculation",
+      "foundrybundleidentity",
+      "foundrymaterialize"
+    ],
+    "description": "Source lines become knowledge objects and fixed templates. Optional calculation specs become raw generated functions. Candidate certification checks structure and Python syntax before sequential file publication.",
+    "limit": "Bundle identity does not commit every emitted output; no test runner or crash recovery wraps materialization."
+  },
+  {
+    "id": "F112",
+    "title": "Foundry candidate to Studio object handoff",
+    "steps": [
+      "foundrybundleidentity",
+      "foundrylineage",
+      "foundrydraftobject",
+      "skillstudio"
+    ],
+    "description": "Selected skill export builds source lineage and an unkeyed domain digest, then explicit intake returns a draft/rejected object.",
+    "limit": "Calculation-containing exports have a producer/consumer field mismatch. Physical package construction and normal staging remain a separate handoff."
+  },
+  {
+    "id": "F113",
+    "title": "Formula admission evaluation and uncertainty",
+    "steps": [
+      "cognitive",
+      "formula",
+      "formulaadmission",
+      "formulauncertainty"
+    ],
+    "description": "Caller definitions are registered with AST/dimension/example checks; requested values are evaluated, sensitivities estimated and uncertainty propagated.",
+    "limit": "Authority/property evidence is supplied metadata. Numerical local uncertainty and finite case equivalence do not prove universal formula validity."
+  },
+  {
+    "id": "F114",
+    "title": "Calculation source versus bounded interpreter",
+    "steps": [
+      "foundrycalculation",
+      "formulaadmission",
+      "foundrymaterialize"
+    ],
+    "description": "Compiler invokes standalone dimensional validation, emits raw Python/JavaScript and records formula engine revision. evaluate_calculation separately checks inputs, AST and bounded arithmetic.",
+    "limit": "Generated functions do not call the interpreter or inherit its runtime limits. Dimension-only units do not convert scales or offsets."
+  },
+  {
+    "id": "F115",
+    "title": "Explicit cognitive dispatch and result interpretation",
+    "steps": [
+      "cli",
+      "cognitive",
+      "strategymodes",
+      "abductiveportfolio",
+      "constraintsearch",
+      "decisionintervals"
+    ],
+    "description": "CLI dispatches one operation over supplied JSON. Strategy can suggest modes; callers may separately run explanation search, constraints and utility ranking.",
+    "limit": "These steps are analytical handoffs, not an autonomous scheduled reasoning loop. Observe each handler convergence/budget/result fields."
+  },
+  {
+    "id": "F116",
+    "title": "Evidence assumptions into logical probabilistic and belief results",
+    "steps": [
+      "cognitive",
+      "logicforward",
+      "bayesianupdates",
+      "beliefprojection",
+      "knowledge"
+    ],
+    "description": "Ground supports, declared likelihoods and heuristic belief links produce different kinds of result. Canonical knowledge requires a separate proposal lifecycle.",
+    "limit": "No shared calibrated truth or automatic persistence connects these kernels; input provenance is caller responsibility."
+  },
+  {
+    "id": "F117",
+    "title": "Causal temporal and analogical reasoning boundaries",
+    "steps": [
+      "cognitive",
+      "causalgraph",
+      "temporalanalysis",
+      "analogysignature",
+      "informationvalue"
+    ],
+    "description": "Explicit graph/timeline/mechanism inputs can support separation checks, event projection, transfer candidate ranking and proposed information-gathering tests.",
+    "limit": "Temporal order does not establish causal structure; structural signatures do not prove transferable mechanism identity."
+  },
+  {
+    "id": "F118",
+    "title": "Cognitive index discovery hydration and execution handoff",
+    "steps": [
+      "cognitiveindexowner",
+      "cognitivenavigation",
+      "cli",
+      "cognitive"
+    ],
+    "description": "Registry declarations form a global index; navigator ranks metadata and emits paths. Separate run input selects a reasoning operation.",
+    "limit": "Query/hydration do not authenticate current file bytes or confer authority; selectable status includes references."
+  },
+  {
+    "id": "F119",
+    "title": "Cognitive assurance inputs callback and passport",
+    "steps": [
+      "cogassurance",
+      "cognitivetrustflags",
+      "cognitiveidentitydrift",
+      "goldencallback",
+      "cognitivepassport"
+    ],
+    "description": "A caller composes supplied trust checks, measured vectors and callback results into passport metadata.",
+    "limit": "Only golden callback executes supplied work. This is not a production release certification chain; caller orchestration is demonstrated in test source."
+  },
+  {
+    "id": "F120",
+    "title": "Cognitive recorder and reality evidence boundary",
+    "steps": [
+      "cogassurance",
+      "cognitiveblackbox",
+      "realitymembership"
+    ],
+    "description": "Recorder retains payload hash and evidence IDs; a separate claim checker compares supplied current IDs.",
+    "limit": "No direct recorder-to-checker call or evidence authentication exists; sequence files are not an authenticated ledger."
+  },
+  {
+    "id": "F121",
+    "title": "Metacognitive discovery analysis and mutation handoff",
+    "steps": [
+      "cli",
+      "metacognition",
+      "metagenome",
+      "metarouting",
+      "metaoptimization",
+      "learning"
+    ],
+    "description": "Explicit operation dispatch can analyze dependency metadata, rank agent profiles or recommend metric improvements before a separate learning proposal.",
+    "limit": "Analytical tour, not automatic orchestration. Team membership, mutation and promote labels confer no execution authority."
+  },
+  {
+    "id": "F122",
+    "title": "Trace practice knowledge and theory interpretation",
+    "steps": [
+      "metacognition",
+      "metatrace",
+      "metapractices",
+      "metaepistemic",
+      "metaknowledgephysics",
+      "theory"
+    ],
+    "description": "Supplied traces, practice events, claims and mechanism signatures support separate summaries and candidate theories.",
+    "limit": "No automatic shared state or authenticated observation joins these handlers. Theory validation counts supplied pass flags."
+  },
+  {
+    "id": "F123",
+    "title": "Behavioral controls diagnosis and assurance interpretation",
+    "steps": [
+      "cli",
+      "failureattribution",
+      "evaluationlineage",
+      "behavioralprobe",
+      "assuranceaxes"
+    ],
+    "description": "CLI diagnoses supplied flags or scores supplied axes. A separate caller can validate lineage and execute positive/discriminating controls.",
+    "limit": "No automatic diagnostic probe loop or shared authenticated evidence; suite validity and callback completion are distinct."
+  },
+  {
+    "id": "F124",
+    "title": "Behavioral certificate shadow and provider execution boundaries",
+    "steps": [
+      "assurance",
+      "behavioraldelta",
+      "shadowcomparison",
+      "providerisolationsuite",
+      "memorypolicy"
+    ],
+    "description": "Metadata decision certificates and shadow comparisons sit alongside a separate provider suite that really calls provider methods.",
+    "limit": "A map across evidence strengths, not one automatically wired pipeline. No product probes were executed during report creation."
+  },
+  {
+    "id": "F125",
+    "title": "Release coverage and foundation evidence scope",
+    "steps": [
+      "certificate",
+      "coveragecounts",
+      "foundationshapes",
+      "datasetmetadata",
+      "foundationshift"
+    ],
+    "description": "Release coverage checks reported executed branches; foundation helpers compare independent supplied contracts, dataset records and numerical declarations.",
+    "limit": "Only release coverage has the shown generation owner. Foundation metadata decisions do not authorize training, activation or publication."
+  },
+  {
+    "id": "F126",
+    "title": "Operational event construction publication and consumer checks",
+    "steps": [
+      "runtimehooks",
+      "operationsdk",
+      "routedeclarations",
+      "eventbuspublication",
+      "wal",
+      "eventbushead",
+      "eventbusreplay"
+    ],
+    "description": "A runtime caller constructs schema-valid events, checks route metadata and commits ordered artifacts. Head and replay consumers verify different history scopes.",
+    "limit": "Event metadata is not independently observed behavior; WAL order does not enforce complete lifecycle closure."
+  },
+  {
+    "id": "F127",
+    "title": "External event ingress waiting and coverage reconciliation",
+    "steps": [
+      "cli",
+      "eventbuspublication",
+      "eventbuswait",
+      "eventbusreplay",
+      "routedeclarations",
+      "livecoverageproof"
+    ],
+    "description": "CLI links a bounded batch one event at a time; subscribers wait locally and replay. Separate coverage checks combine route claims, artifact hashes and supplied health.",
+    "limit": "Batch is not atomic; cross-instance notification and semantic receipt validation are separate missing guarantees."
+  },
+  {
+    "id": "F128",
+    "title": "Host observation and benchmark evidence interpretation",
+    "steps": [
+      "dashboard",
+      "hoststartupmarkers",
+      "hostskillvisibility",
+      "benchmarkfreeze",
+      "benchmarksummary",
+      "benchmarkcustody"
+    ],
+    "description": "Dashboard observes external startup markers and skill visibility. Independent benchmark helpers freeze declarations, summarize supplied trials and hash artifacts.",
+    "limit": "Host timings are not causal benchmark evidence and these branches are not an automatic shared pipeline."
+  },
+  {
+    "id": "F129",
+    "title": "Classified state load and corrupt-byte custody",
+    "steps": [
+      "stateclass",
+      "classifiedload",
+      "corruptstatecustody"
+    ],
+    "description": "Declared artifact kind selects valid object return, derived rebuild marker or authoritative custody movement with intent and recovery evidence.",
+    "limit": "Read-shaped API can move state. No live call or quarantine was performed for this report."
+  },
+  {
+    "id": "F130",
+    "title": "Intake snapshots closure and two quarantine owners",
+    "steps": [
+      "cli",
+      "intakeclosureledger",
+      "intakefilesnapshot",
+      "closedintakemove",
+      "pathquarantinewrapper",
+      "quarantinetxn"
+    ],
+    "description": "Intake close verifies matching file snapshots; dedicated closed-tree move and explicit-path journaled wrapper are different mutation routes.",
+    "limit": "The wrappers are not one shared transaction or automatic sequence. User closure and effect authorization remain separate from caller strings."
+  },
+  {
+    "id": "F131",
+    "title": "Derived cache goal metadata and artifact reachability",
+    "steps": [
+      "evidencecache",
+      "cachekeypublication",
+      "goals",
+      "goaltransitionmetadata",
+      "specificationclosure",
+      "reachabilitydeclarations"
+    ],
+    "description": "Compare derived cache identity, returned goal/specification state and generated ownership labels.",
+    "limit": "These are separate declaration/projection surfaces rather than canonical proof or a unified persistence layer."
+  },
+  {
+    "id": "F132",
+    "title": "Candidate metadata construction and optional publication",
+    "steps": [
+      "proposalbuilders",
+      "skillgapmetadata",
+      "workflowproposalorder",
+      "adapterrequiredoutput",
+      "repairvariantproposal",
+      "testflagproposal",
+      "proposalidentity",
+      "proposalpublication"
+    ],
+    "description": "Separate request types construct candidates; common sanitizer/envelope precedes an optional explicit writer call.",
+    "limit": "These branches are alternatives, not a pipeline executing each builder; promotion and runtime execution remain separate."
+  },
+  {
+    "id": "F133",
+    "title": "Declared-suite reconstruction and status projection",
+    "steps": [
+      "domaingenerator",
+      "domainstatusprojection",
+      "declared",
+      "supportgenerator",
+      "packstatusprojection"
+    ],
+    "description": "Domain generator writes bodies and routing projections; separately invoked support generator consumes owner map and publishes support artifacts/status records.",
+    "limit": "No all-or-nothing transaction, test execution or certification occurs in these generator bodies."
+  },
+  {
+    "id": "F134",
+    "title": "Assimilation copy wiring projection and disposition order",
+    "steps": [
+      "domaingenerator",
+      "assimilationcopy",
+      "assimilationwiring",
+      "assimilationdispositions"
+    ],
+    "description": "Preexisting domain outputs are enriched; meta source/scheduler metadata are integrated; product routing and derived indexes publish before final source inventory and pending receipt.",
+    "limit": "No automatic invocation from original generator, all-or-nothing transaction or per-file applied-effect reconciliation."
+  },
+  {
+    "id": "F135",
+    "title": "Declared plan and actual generic helper execution",
+    "steps": [
+      "cli",
+      "declared",
+      "declaredplan",
+      "declaredworddispatch",
+      "declaredinventory"
+    ],
+    "description": "Declared CLI resolves metadata and plan, then script ID vocabulary selects generic implementation.",
+    "limit": "Assimilated source body and formula registry are not executed by this dispatch path; returned valid does not mean domain outcome verified."
+  },
+  {
+    "id": "F136",
+    "title": "Project tooling recommendation scan and record boundaries",
+    "steps": [
+      "cli",
+      "toolsignalassessment",
+      "toolintakepublish",
+      "toolmanifestinventory",
+      "scannerprocess",
+      "lifecycleflagprojection"
+    ],
+    "description": "CLI assessment and intake are separate actions; intake scans before optional persistence, and lifecycle later consumes recorded reference.",
+    "limit": "Scanner execution from CLI is blocked by omitted explicit network policy; no scanner, install or project mutation was run for this report."
+  },
+  {
+    "id": "F137",
+    "title": "Mining and backend declaration proof scopes",
+    "steps": [
+      "assimilationaudit",
+      "miningreceiptcoverage",
+      "backendcatalog",
+      "backendleastmetadata"
+    ],
+    "description": "Compare metadata receipt/count validation with least-effect backend candidate selection.",
+    "limit": "Separate utilities, not an execution chain or authority grant; metadata closure does not establish runtime availability."
+  },
+  {
+    "id": "F138",
+    "title": "Repair status diagnostic grouping and artifact reasoning",
+    "steps": [
+      "certificate",
+      "fullrepairlabels",
+      "repair",
+      "repairrootgroups",
+      "discriminatingplan",
+      "panelartifactvote",
+      "communicationgroups"
+    ],
+    "description": "Compare repair status assertions with diagnostic grouping, counterfactual plans and observable-artifact reasoning utilities.",
+    "limit": "Several independent surfaces, not an automatic repair/agent execution chain; every edge preserves its actual caller or handoff scope."
+  },
+  {
+    "id": "F139",
+    "title": "Byte identity normalized syntax and build-count projection",
+    "steps": [
+      "semanticidentity",
+      "syntaxcanonicalidentity",
+      "buildcountfacts",
+      "buildclaimpublication"
+    ],
+    "description": "Distinguish immutable byte identity, normalized syntax identity and count/README projections.",
+    "limit": "These digests and counts have different denominators; none alone establish equivalent runtime behavior or complete certification."
+  },
+  {
+    "id": "F140",
+    "title": "Release source identity and two copy boundaries",
+    "steps": [
+      "releasegitcapture",
+      "releaseclassify",
+      "releasefilteredcopy",
+      "releasefixturecopy",
+      "releaseboundaryaudit"
+    ],
+    "description": "Git identity and classification establish different source facts; filtered clean copy and selected release-test fixture are alternative materialization routes.",
+    "limit": "Only explicit caller links form execution order. Returned fixture hashes refer to initial classification, not a verified postcopy snapshot."
+  },
+  {
+    "id": "F141",
+    "title": "Release evidence context references manifests and skip proof",
+    "steps": [
+      "certificate",
+      "releasecontextpresence",
+      "releasegithistory",
+      "releasemanifestbytes",
+      "releaseskiplist",
+      "releasefixedsubset"
+    ],
+    "description": "Certification composes presence, historical Git references, manifest integrity, skip policy and projection checks from separate owners.",
+    "limit": "These checks are not individually certification; complete finalizer order and receipt admission remain separately reviewed."
+  },
+  {
+    "id": "F142",
+    "title": "Preflight admission static checks cache and disposable work",
+    "steps": [
+      "cli",
+      "preflightbinding",
+      "preflightstatic",
+      "preflightcache",
+      "preflightworkspace",
+      "releaseboundaryaudit",
+      "preflightmutation",
+      "preflightinstalled",
+      "preflightconcurrency",
+      "releasefixedsubset",
+      "preflightreceipt"
+    ],
+    "description": "Bound preflight requires certify stage, captures identity, stops at first failed static gate, then reuses or executes expensive checks and records readiness.",
+    "limit": "Cached checks may bypass fresh observations; all product execution described here was inspected, not performed."
+  },
+  {
+    "id": "F143",
+    "title": "Diagnostic mode effects and finalizer receipt proof",
+    "steps": [
+      "preflightdiagnostics",
+      "preflightstatic",
+      "completionprojection",
+      "preflightcache",
+      "preflightworkspace",
+      "preflightreceipt",
+      "certificate"
+    ],
+    "description": "Diagnostic flags suppress signing and main receipt publication, while projection/cache/workspace effects can still occur. Finalizer independently rebinds a stored receipt.",
+    "limit": "Readiness, simulated transitions and cryptographic certification remain separate."
+  },
+  {
+    "id": "F144",
+    "title": "Frozen build gates signed evidence and post-commit completion",
+    "steps": [
+      "certificate",
+      "certificationfreeze",
+      "releasefixturecopy",
+      "certificationsupplychain",
+      "certificationgates",
+      "certificationsign",
+      "certificationcommit",
+      "certificationverify",
+      "completionprojection"
+    ],
+    "description": "Finalizer checks inputs, builds once, runs source/candidate gates, rechecks frozen product, signs and commits evidence, then verifies and updates completion.",
+    "limit": "Evidence can exist before final valid; published is always false here and does not represent marketplace release."
+  },
+  {
+    "id": "F145",
+    "title": "Test custody result and release gate information loss",
+    "steps": [
+      "tests",
+      "testorchestrationlease",
+      "testprocesscustody",
+      "supervisor",
+      "resources",
+      "certificationgates",
+      "certificationjunit"
+    ],
+    "description": "Governed test runner combines process and cleanup results. Release full-tests summary consumes only exit/timeout and JUnit while coverage consumes valid.",
+    "limit": "Do not infer release test acceptance proves every runner closure condition."
+  },
+  {
+    "id": "F146",
+    "title": "Fault dimension declaration command execution and receipt",
+    "steps": [
+      "tests",
+      "faultcampaignrunner"
+    ],
+    "description": "Runner checks declared union, runs lanes serially, hashes captured output and selected test files afterward, then writes summary.",
+    "limit": "Timeout prevents partial receipt; no code-level proof ties declared dimensions to executed assertions."
+  },
+  {
+    "id": "F147",
+    "title": "Declared test owners current receipts and full profile execution",
+    "steps": [
+      "tests",
+      "testphaseadmission",
+      "testsectionpartition",
+      "testgroupindex",
+      "testreceiptstatus",
+      "testfullowner",
+      "testprocesscustody"
+    ],
+    "description": "Source/config inputs produce section/group identities. Current receipts admit full CLI owner, which refreshes stale groups and runs cross-group coexistence.",
+    "limit": "Section/group status trusts pass/hash fields; relative-import and stored-index gaps affect the proof."
+  },
+  {
+    "id": "F148",
+    "title": "Independent assurance callback cache and current-receipt finalizer",
+    "steps": [
+      "cli",
+      "independentgates",
+      "licensingconsistency",
+      "independentfinalize"
+    ],
+    "description": "Independent gate runner recursively executes dependencies, reuses matching self-hashed passing receipts and later checks all registered receipts.",
+    "limit": "Separate from governed test ownership; configured input coverage determines cache correctness."
+  },
+  {
+    "id": "F149",
+    "title": "Studio transport host approval and exact controller dispatch",
+    "steps": [
+      "bridge",
+      "studioverifierlocator",
+      "studioauthority",
+      "studioprotocol",
+      "studiotransport",
+      "studioapprovaldispatch",
+      "studiodraftdispatch",
+      "agent",
+      "workflowpublish",
+      "skillstudio"
+    ],
+    "description": "Bridge obtains verifier metadata; adapter validates vocabulary and consumes exact proof for mutations before dispatching typed controller operations.",
+    "limit": "Agent/workflow/skill steps are alternative destinations, not sequential executions; constructor writes and task execution differ."
+  },
+  {
+    "id": "F150",
+    "title": "Agency selection metadata request and queued run handoff",
+    "steps": [
+      "agencyrequestcompile",
+      "agencyrequestsubmit",
+      "durablepublisher"
+    ],
+    "description": "Compiler builds bounded request from supplied metadata; explicit submission invokes create with queued identity and checkpoint.",
+    "limit": "No launch, no automatic production compilation path found, and request integrity/capability fields are not rechecked at submission."
+  },
+  {
+    "id": "F151",
+    "title": "Native metadata query exact selection and body hydration",
+    "steps": [
+      "catalog",
+      "nativeindexidentity",
+      "nativequeryselection",
+      "nativebodyhydrate"
+    ],
+    "description": "Index validates derived counts, query filters/scorers return bounded candidates and hydration reselects one body.",
+    "limit": "No reference execution, admission authentication or atomic hash/read snapshot established by hydration alone."
+  },
+  {
+    "id": "F152",
+    "title": "First skill migration original custody and projection publication",
+    "steps": [
+      "nativemigration",
+      "nativebackupcustody",
+      "nativeindexidentity",
+      "nativepackaging"
+    ],
+    "description": "Two matching workspace snapshots and verified copies precede package preparation, immediate pre-move comparison, relocation and index/projection publication.",
+    "limit": "Crash recovery depends on journal timing and retained preparation; copy/count proof is not package behavior."
+  },
+  {
+    "id": "F153",
+    "title": "Eligibility and declared-state projection maintenance",
+    "steps": [
+      "nativestatesync",
+      "nativepublication",
+      "nativeindexidentity",
+      "nativepackaging"
+    ],
+    "description": "Separate maintenance routes synchronize status labels or eligibility/manifests/index/packaging.",
+    "limit": "These are distinct entrypoints, not an automatic chain. Some writes are direct and others use roll-forward after-images."
+  },
+  {
+    "id": "F154",
+    "title": "Global skill relocation reappearance and restoration",
+    "steps": [
+      "cli",
+      "globalisolation",
+      "nativebackupcustody",
+      "globalmanifestcustody",
+      "globalreappearance",
+      "globalrestore"
+    ],
+    "description": "Isolation preserves matching snapshots, relocates original and neutralizes discovery. Later generations reconcile separately; explicit restore returns original.",
+    "limit": "Alternative lifecycle branches; no generation merge and interrupted effects can precede journal records."
+  },
+  {
+    "id": "F155",
+    "title": "Release identity claims outcomes and successor recovery",
+    "steps": [
+      "releasecampaignidentity",
+      "releasecampaignclaim",
+      "releasecampaignfinish",
+      "releasecampaignsupersession"
+    ],
+    "description": "Applied identity enables ordered claims; owner outcomes consume stages; eligible predecessors archive after repair rewind.",
+    "limit": "State order and source hashes do not authenticate receipts, process closure or signed certification."
+  },
+  {
+    "id": "F156",
+    "title": "Release owner concrete effects and existing artifact audits",
+    "steps": [
+      "releasestageowner",
+      "releasegittransition",
+      "releasecampaignidentity",
+      "releaseownerprocess",
+      "releasepackageaudit",
+      "releaseinstallaudit",
+      "releasecampaignfinish"
+    ],
+    "description": "Selected branches commit/tag, run governed tests, or audit already-existing package/install bytes; results feed campaign and separate phase receipts.",
+    "limit": "Branch overview, not an unconditional chain. Package/install audits are not build/install execution; final receipt can fail after stage mutation."
+  },
+  {
+    "id": "F157",
+    "title": "Effect syntax discovery registry consistency and runtime proof boundary",
+    "steps": [
+      "effectsyntaxinventory",
+      "effectsyntaxvalidation",
+      "releaseownerprocess"
+    ],
+    "description": "Bounded Python scan derives call-locator rows; validation checks selected syntax and ownership declarations. Runtime owner independently executes/logs/checks resources.",
+    "limit": "Static labels do not prove actual approval, path containment, retention or all child-process closure."
+  },
+  {
+    "id": "F158",
+    "title": "Candidate admission process journal and aggregate publication",
+    "steps": [
+      "candidateaggregate",
+      "candidateadmissions",
+      "candidatedriver",
+      "candidateprocess",
+      "releasestageowner",
+      "installedsummaryconsumer"
+    ],
+    "description": "Aggregate admits a stage, journals running, launches configured owner, verifies selected state/proof, journals terminal result, settles session and publishes report.",
+    "limit": "Publication and settlement are separate; source helpers do not validate admission scope and resume report excludes earlier invocation rows."
+  },
+  {
+    "id": "F159",
+    "title": "Installed summary and historical corrective evidence consumption",
+    "steps": [
+      "installedsummaryconsumer",
+      "releasepackageaudit",
+      "releaseinstallaudit",
+      "certificate",
+      "correctivecardledger"
+    ],
+    "description": "Installed consumer cross-checks retained receipt identity and selected nested proof; certification separately checks historical corrective blockers.",
+    "limit": "These are distinct gates, not an automatic chain. Neither receipt existence nor summary labels imply all physical operations were independently observed."
+  },
+  {
+    "id": "F160",
+    "title": "Pre-candidate classification quarantine recovery and readiness",
+    "steps": [
+      "hygienetargets",
+      "hygienequarantine",
+      "hygienevalidation",
+      "hygienereadiness",
+      "candidatedriver"
+    ],
+    "description": "Named targets can be quarantined and validated; separate live assessment gates initial candidate readiness.",
+    "limit": "Separate routes, not automatic deletion. Quarantine evidence and claimed disposal authority have distinct proof boundaries."
+  },
+  {
+    "id": "F161",
+    "title": "Composed audit and Python evidence classification",
+    "steps": [
+      "composedaudit",
+      "generatedhygiene",
+      "effectsyntaxvalidation",
+      "pythonsurfaceproof",
+      "pythoninstalledrecord"
+    ],
+    "description": "Composed checks consume specialized validators and source map bytes; Python classifier labels source evidence or compares installed RECORD/syntax.",
+    "limit": "Architecture overview across separate callers. Topology, syntax, hash identity and operational behavior are different assurance levels."
+  },
+  {
+    "id": "F162",
+    "title": "Specialist discovery reviewer routing and prompt context",
+    "steps": [
+      "agencycatalog",
+      "agencyranking",
+      "agencyreviewers",
+      "agencyprompt",
+      "agencyhydration"
+    ],
+    "description": "Metadata retrieval scores candidates, route selects primary/reviewers, explicit compilation validates shapes and hydrates selected context.",
+    "limit": "Context pipeline only. Independent execution owner must bind task, authority, budgets and actual result verification."
+  },
+  {
+    "id": "F163",
+    "title": "Agent Studio specification graph and artifact roundtrip",
+    "steps": [
+      "agent",
+      "agenttypedgraph",
+      "agentspeccompile",
+      "agentgraphreceipt",
+      "agent"
+    ],
+    "description": "Agent runtime projects spec to fixed graph, checks compile equality, writes artifacts through its owner and verifies them on reopen.",
+    "limit": "Graph/compiler receipt is not a permission grant, test execution or model launch."
+  },
+  {
+    "id": "F164",
+    "title": "Fleet session registration advancement and recovery",
+    "steps": [
+      "fleetsessionstate",
+      "fleetreadiness",
+      "fleetsessionadvance",
+      "eventbuspublication",
+      "walcommit",
+      "fleetsessionreplay",
+      "fleetsessionstate"
+    ],
+    "description": "Coordinator API validates participants, emits event then commits state. Reopening locates current projection anchor and rolls later events forward.",
+    "limit": "Constructor invocation found only in tests. Flow represents available persistence API, not an automatic branch of every agent run."
+  },
+  {
+    "id": "F165",
+    "title": "Operational descriptors and engineering proposal handoffs",
+    "steps": [
+      "controlpolicies",
+      "engineeringdispatch",
+      "engineeringanalysis",
+      "engineeringcandidates",
+      "engineeringbenchmark"
+    ],
+    "description": "Operational request may return delegated module descriptor. A separate caller supplies data and explicitly invokes analyses, proposals or descriptive benchmark summaries.",
+    "limit": "No automatic delegate import, repository measurement, experiment execution or candidate activation."
+  },
+  {
+    "id": "F166",
+    "title": "Observer native lifecycle and metadata outbox",
+    "steps": [
+      "observerconsent",
+      "observernative",
+      "observercapture",
+      "observershutdown",
+      "observeroutbox",
+      "telemetry"
+    ],
+    "description": "Explicit enable starts backend, metadata capture checks consent/time and budgets, local WAL retains event then optional emitter receives it.",
+    "limit": "Available API instantiated in tests in repository search. Decoder/emitter supplied externally; no automatic collector-to-bus wiring proved."
+  },
+  {
+    "id": "F167",
+    "title": "Canonical health derivation and exported display input",
+    "steps": [
+      "cli",
+      "healthclaimderive",
+      "healthreportverify",
+      "healthextensionexport",
+      "dashboardhealth"
+    ],
+    "description": "Claims from caller are checked against canonical registry, aggregated and re-derived before extension export. Dashboard has its own health projection contract.",
+    "limit": "Final connection is an integration handoff. Report validation proves internal consistency at embedded time, not live measurement or JavaScript adoption."
+  },
+  {
+    "id": "F168",
+    "title": "Candidate phase checks and effect-owner handoffs",
+    "steps": [
+      "candidatepipeline",
+      "candidatephasetrace",
+      "candidatepackageclosure",
+      "completionresourceplans",
+      "completionfactplans"
+    ],
+    "description": "Available pure APIs validate supplied trace, choose candidate package and calculate resource/evidence decisions.",
+    "limit": "No automatic pipeline execution or atomic persistent reservation established by these functions."
+  },
+  {
+    "id": "F169",
+    "title": "Actual extension activity publication into canonical bus",
+    "steps": [
+      "activation",
+      "extensionactivationown",
+      "extensioneventbuilder",
+      "extensioneventpublisher",
+      "cli",
+      "eventbuspublication",
+      "listenerhealth"
+    ],
+    "description": "Activation owns publisher; recorded activity supplies SDK event; queue drains via Python visibility ingress; response updates listener bus health.",
+    "limit": "Queue holds mutable in-memory references and drops failed batches. Canonical receipt validation is a separate Python owner."
+  },
+  {
+    "id": "F170",
+    "title": "Workspace selection and existing host execution handoff",
+    "steps": [
+      "activation",
+      "extensionworkspacechoose",
+      "extensionhandoff"
+    ],
+    "description": "Extension selects configured project workspace and checks Git/claim metadata before sending context to existing Codex host.",
+    "limit": "Path selection and handoff decision do not authenticate general effect authority or start a nested executor."
+  },
+  {
+    "id": "F171",
+    "title": "Dashboard snapshot to eighteen surface routes",
+    "steps": [
+      "dashboard",
+      "dashboardcontroller",
+      "surfacecore",
+      "surfacecatalog",
+      "surfaceoperational",
+      "surfacesystem",
+      "surfaceobservability",
+      "surfaceadvanced",
+      "surfacegraph"
+    ],
+    "description": "Controller selects one of seven renderer families; these listed families are alternatives, not a sequential execution chain.",
+    "limit": "HTML controls require independent controller handlers and host authorization."
+  },
+  {
+    "id": "F172",
+    "title": "Operational display and action return boundary",
+    "steps": [
+      "dashboardhealth",
+      "surfacesystem",
+      "dashboardcontroller",
+      "surfaceadvanced",
+      "dashboardcontroller"
+    ],
+    "description": "Health/ledger flags shape diagnostics; learning/runtime flags shape advanced actions; renderer output returns to shared controller.",
+    "limit": "A visible Admit, Repair or configuration action does not prove the effect is admitted or executed."
+  },
+  {
+    "id": "F173",
+    "title": "Progressive graph projection and interaction",
+    "steps": [
+      "graphread",
+      "dashboardcontroller",
+      "surfacegraph",
+      "dashboardcontroller"
+    ],
+    "description": "Loaded projection enters SVG/inspector construction; selection, focus and fetch-more actions return to controller.",
+    "limit": "Loaded records and backend pagination flags are distinct from full canonical graph coverage."
+  },
+  {
+    "id": "F174",
+    "title": "Sidebar canonical snapshot to progress and rendering",
+    "steps": [
+      "activation",
+      "sidebarhost",
+      "sidebarprojectcalc",
+      "sidebarproviders",
+      "sidebarhost",
+      "sidebarprotocol",
+      "sidebarrender"
+    ],
+    "description": "Extension pushes snapshot; host calculates progress/provider projection, validates envelope and delivers to webview.",
+    "limit": "Plan, wave and punch use distinct calculations; visible progress is not independent execution evidence."
+  },
+  {
+    "id": "F175",
+    "title": "Sidebar preference storage and entity navigation",
+    "steps": [
+      "sidebarrender",
+      "sidebarhost",
+      "sidebarprefs",
+      "sidebarprojectcalc",
+      "sidebarhost",
+      "sidebarrender"
+    ],
+    "description": "Browser toggles locally then host validates ID, stores preference and republishes calculated snapshot. Entity navigation is a separate host callback.",
+    "limit": "Host awaits storage but browser is optimistic; simultaneous writes have no queue or compare-and-swap."
+  },
+  {
+    "id": "F176",
+    "title": "Sidebar rendered evidence and revision binding",
+    "steps": [
+      "sidebarhost",
+      "sidebarrender",
+      "sidebarack",
+      "sidebarhost"
+    ],
+    "description": "Negotiated browser acknowledgement reports revision/counts; host accepts equal revision and exposes inspection.",
+    "limit": "Neither content hash nor exact expected counts/view generation are bound; matching revision alone is weaker than exact render proof."
+  },
+  {
+    "id": "F177",
+    "title": "Studio operational starter setup and version recovery",
+    "steps": [
+      "activation",
+      "startersequence",
+      "starterversionrecovery",
+      "versionallocation",
+      "startersequence",
+      "studioapprovaldispatch"
+    ],
+    "description": "Agent create/test/register/admit/run followed by workflow create/register/validate/dry-run/run; create conflicts enter bounded allocation recovery.",
+    "limit": "Ten ordered operations are not an all-or-nothing transaction; setup readiness is narrower than all Studio capability readiness."
+  },
+  {
+    "id": "F178",
+    "title": "Host immutable create and source lineage",
+    "steps": [
+      "dashboardcontroller",
+      "studiohostcreate",
+      "studiotrustregistry",
+      "versionallocation",
+      "studioexternalreauth",
+      "studiopackageread",
+      "studiohostcreate",
+      "studiomaterializedtree",
+      "studioeditorinput",
+      "studioapprovaldispatch",
+      "studiohostreceipt"
+    ],
+    "description": "Allocation/absence and confirmation precede proof consumption; skill lineage and materialized input are bound before backend create and receipt classification.",
+    "limit": "Skill-specific stages conditional; backend owns actual atomic immutable publication."
+  },
+  {
+    "id": "F179",
+    "title": "Studio commit outcome and delivery recovery",
+    "steps": [
+      "studiohostcreate",
+      "studiohostreceipt",
+      "studiopostcommit",
+      "studiomaterializedtree"
+    ],
+    "description": "Valid created/recovered result can be followed by reclamation and delivery/refresh warnings; malformed result takes an unverified notification/catalog recovery branch.",
+    "limit": "Unverified outcome is not rollback or proven commit; no automatic re-create from notification failure."
+  },
+  {
+    "id": "F180",
+    "title": "Workflow editor transformation and validation",
+    "steps": [
+      "catalogmerge",
+      "dashboardcontroller",
+      "workfloweditnormalize",
+      "dashboardcontroller",
+      "workfloweditvalidate",
+      "studiohostcreate"
+    ],
+    "description": "Catalog or seed data normalized into editable nodes/edges/layout and derived inputs, then browser validation and host creation.",
+    "limit": "Normalization is not lossless import; host/backend checks remain independent."
+  },
+  {
+    "id": "F181",
+    "title": "Agent graph working edits and canonical backend handoff",
+    "steps": [
+      "catalogmerge",
+      "dashboardcontroller",
+      "agenteditvalidate",
+      "agenteditgraph",
+      "studiohostcreate",
+      "agenttypedgraph"
+    ],
+    "description": "Spec declarations and working graph checked separately before host submission to Python compiler.",
+    "limit": "Synchronization preserves omissions; explicit optional node edit reconstructs canonical edges. Structural validity is not runtime admission."
+  },
+  {
+    "id": "F182",
+    "title": "Skill editor files and history evidence",
+    "steps": [
+      "dashboardcontroller",
+      "skilleditfiles",
+      "studioeditorinput",
+      "studiohostcreate",
+      "studiohostreceipt",
+      "dashboardcontroller",
+      "editorhistory"
+    ],
+    "description": "Native files synthesized/synchronized, bounded by host materializer, saved through host coordinator and summarized in local history.",
+    "limit": "Local history may label result recorded when run-specific outcome fields are present but not recognized."
+  },
+  {
+    "id": "F183",
+    "title": "Physical inventory to native extension reconciliation",
+    "steps": [
+      "activation",
+      "physicalextensioninventory",
+      "extensionpreviewtokens",
+      "extensionnativeeffect",
+      "physicalextensioninventory"
+    ],
+    "description": "Physical manifests establish current target, preview binds request, native host performs effect and immediate rescan supplies receipt.",
+    "limit": "Loaded state, disk state, native manager action and latest marketplace version are separate facts."
+  },
+  {
+    "id": "F184",
+    "title": "Retained uninstall and rollback custody",
+    "steps": [
+      "physicalextensioninventory",
+      "extensionpreviewtokens",
+      "extensionrollbackcustody",
+      "extensionnativeeffect",
+      "physicalextensioninventory"
+    ],
+    "description": "Preview consumers and exact target, persist retained uninstall record, invoke native command; later absent target can restore retained version/source.",
+    "limit": "No atomic transaction across storage/native effects, refreshed consumers or guaranteed retained package bytes."
+  },
+  {
+    "id": "F185",
+    "title": "Conflict signal to another lifecycle preview",
+    "steps": [
+      "physicalextensioninventory",
+      "extensionconflictsignals",
+      "extensionconflictroute",
+      "dashboardcontroller",
+      "extensionpreviewtokens",
+      "extensionnativeeffect"
+    ],
+    "description": "Manifest overlaps generate signal; current resolution route returns to controller and starts a distinct preview before native effect.",
+    "limit": "Signal is declarative and route is not completed resolution."
+  },
+  {
+    "id": "F186",
+    "title": "Listener to local and canonical publication",
+    "steps": [
+      "activation",
+      "listenerregistration",
+      "listeneraggregation",
+      "activityattestation",
+      "activityappendstate",
+      "extensioneventpublisher"
+    ],
+    "description": "Registered callbacks produce metadata, extension builds canonical attestation, local ledger appends/state commits, then publisher queues canonical event.",
+    "limit": "Registration, recorded local state and canonical publication have separate evidence."
+  },
+  {
+    "id": "F187",
+    "title": "Host lifecycle observation and activity display",
+    "steps": [
+      "listenerregistration",
+      "listenerlifecycle",
+      "activityattestation",
+      "activityappendstate",
+      "activityreadintegrity",
+      "dashboardcontroller"
+    ],
+    "description": "Host events are translated into local operation states and derived activity displayed after delayed read.",
+    "limit": "Process result uncertainty and stale heartbeat interpretation are not supervised closure."
+  },
+  {
+    "id": "F188",
+    "title": "Local activity recovery and consistency evidence",
+    "steps": [
+      "activityreadintegrity",
+      "activityrecovery",
+      "activityappendstate",
+      "activityreadintegrity"
+    ],
+    "description": "Stale rows may receive cancellation observations; explicit integrity repair retains backups and rewrites internal chain consistency.",
+    "limit": "Mapping only: no recovery or cleanup executed; repaired hashes are not historical authenticity."
+  },
+  {
+    "id": "F189",
+    "title": "Workflow checkpoint to browser trace",
+    "steps": [
+      "workflowcheckpoint",
+      "dashboardcontroller",
+      "workflowtracebrowser",
+      "dashboardcontroller"
+    ],
+    "description": "Host result is projected by controller-owned functions using selected/current identity and node receipt fields.",
+    "limit": "Standalone helper is tested separately; projection does not authenticate receipts or require revision hash."
+  },
+  {
+    "id": "F190",
+    "title": "Registered local model and text stream",
+    "steps": [
+      "activation",
+      "ollamacatalog",
+      "ollamastream",
+      "ollamaconversion",
+      "ollamastream"
+    ],
+    "description": "VS Code registers optional provider, asks catalogue and invokes chat; adapter converts text/options and processes bounded stream with deadlines.",
+    "limit": "Fixed metadata is not measured model capacity; explicit completion and cleanup branches differ."
+  },
+  {
+    "id": "F191",
+    "title": "Webview envelope to independent host authority",
+    "steps": [
+      "dashboardcontroller",
+      "webviewvalueguard",
+      "studiohostcreate"
+    ],
+    "description": "Incoming message passes JSON/operation checks before host owner validates payload and obtains required authority.",
+    "limit": "Field allowlists and protocol membership do not establish authorized or completed effect."
+  },
+  {
+    "id": "F192",
+    "title": "Declared actions to current source control denominator",
+    "steps": [
+      "uiactiondeclarations",
+      "uiactionlexical",
+      "uicontrolmanifest",
+      "uicontrolchains",
+      "operational"
+    ],
+    "description": "Literal source actions reconcile to metadata; control manifest binds inventory and referenced bytes; observations populate per-control chains.",
+    "limit": "Source agreement and inferred stage labels need independent runtime evidence."
+  },
+  {
+    "id": "F193",
+    "title": "Contained action fixture evidence",
+    "steps": [
+      "uicontrolmanifest",
+      "containeduiwalk",
+      "operational"
+    ],
+    "description": "Action-only denominator selects first matching element on fresh synthetic preview and records narrow UI hashes.",
+    "limit": "Explicitly non-certifying; no all-instance, persistence or host-effect claim."
+  },
+  {
+    "id": "F194",
+    "title": "Installed smoke host and direct module evidence",
+    "steps": [
+      "installedhostsmoke",
+      "studiohostcreate",
+      "installedhostsmoke",
+      "listenerhealth",
+      "activityreadintegrity"
+    ],
+    "description": "Installed driver observes views, calls installed modules and exercises selected host events before composing receipt.",
+    "limit": "Direct module path differs from editor UI, and optional observations/closure remain limited."
+  },
+  {
+    "id": "F195",
+    "title": "Transcript copied source to canonical record export",
+    "steps": [
+      "transcripts",
+      "transcriptcustody",
+      "transcriptrecords",
+      "transcriptruncheck",
+      "transcriptsummary"
+    ],
+    "description": "Ingest copies/hash-checks sources, separate writer binds supplied records, later integrity validation precedes selected CSV export.",
+    "limit": "No automatic extraction or authenticated source-text verification; writes/reads are separate transactions."
+  },
+  {
+    "id": "F196",
+    "title": "Transcript profile and ontology declaration boundaries",
+    "steps": [
+      "transcripts",
+      "transcriptadapterplan",
+      "transcriptontology",
+      "transcriptrecords"
+    ],
+    "description": "Profile and queue ontology support independently invoked planning/normalization around canonical record production.",
+    "limit": "Adapter plan does not execute and writer does not automatically normalize or authenticate ontology transfers."
+  },
+  {
+    "id": "F197",
+    "title": "Portable audit package and member verification",
+    "steps": [
+      "operational",
+      "portableauditarchive",
+      "portableauditverify"
+    ],
+    "description": "Selected evidence roots and supplied prerequisites are packaged with digests, then output archive/checksum verified independently of sources.",
+    "limit": "Consistency is not authenticity or readiness; archive/checksum publish separately."
+  },
+  {
+    "id": "F198",
+    "title": "Release lock and environment evidence",
+    "steps": [
+      "releasepinparser",
+      "releasewheelhashes",
+      "releaseenvidentity",
+      "certificationfreeze"
+    ],
+    "description": "Exact pin syntax and hash allowlists support wheelhouse checks, offline argv and toolchain/platform metadata.",
+    "limit": "Helper outputs do not establish real installation, network isolation or all-platform execution."
+  },
+  {
+    "id": "F199",
+    "title": "External metadata to deferred candidate receipt",
+    "steps": [
+      "cli",
+      "externalmetadata",
+      "externalstageplan",
+      "externalstagereceipt",
+      "externalrevoke"
+    ],
+    "description": "CLI may freshly plan selected external bundle then write a candidate receipt; revocation writes a separate marker.",
+    "limit": "No body install, active skill admission or execution authority. Direct plan and path boundaries differ from CLI fresh planning."
+  },
+  {
+    "id": "F200",
+    "title": "External hook session and route decisions",
+    "steps": [
+      "cli",
+      "externalhookgate",
+      "externalsession",
+      "externalroutes"
+    ],
+    "description": "Independent commands evaluate hooks, portable sessions and declared route quality.",
+    "limit": "These are parallel callable surfaces, not an automatic hook-to-session-to-provider pipeline."
+  },
+  {
+    "id": "F201",
+    "title": "Security discovery and engagement-filtered package",
+    "steps": [
+      "cli",
+      "securitymetadata",
+      "securityauthority",
+      "securitypackage"
+    ],
+    "description": "Package loads metadata, ranks top 100, then applies risk and declared engagement checks.",
+    "limit": "Ranking precedes authority filtering despite authority-first docstring; returned package grants no execution authority."
+  },
+  {
+    "id": "F202",
+    "title": "Security graph reference and finding surfaces",
+    "steps": [
+      "securitymetadata",
+      "securitygraphslice",
+      "securityreference",
+      "securityfinding"
+    ],
+    "description": "Catalog discovery supports independently callable graph slices, pinned reference reads and finding checks.",
+    "limit": "No automatic graph-to-hydration-to-verified-finding execution chain is implemented."
+  },
+  {
+    "id": "F203",
+    "title": "Certification prerequisite readiness branches",
+    "steps": [
+      "cli",
+      "certreadinessversions",
+      "certreadinesslock",
+      "certreadinessengine",
+      "testphaseadmission"
+    ],
+    "description": "Version probes, lock parity and managed campaign declaration or unmanaged validation result contribute eight required statuses.",
+    "limit": "Readiness is prerequisite classification, not exact artifact or installed-system certification."
+  },
+  {
+    "id": "F204",
+    "title": "Exact helper fixtures cache execution and repeat",
+    "steps": [
+      "exacttoolaggregate",
+      "exacttoolfixtures",
+      "exacttoolcache",
+      "exacttoolrunner",
+      "exacttoolrepeat"
+    ],
+    "description": "Each admitted helper is hashed, optionally reuses cached cases, otherwise runs four fixture cases and compares normalized repeat; wrappers follow.",
+    "limit": "Cache is optional, fixtures are synthetic, isolation is cwd/env convention, and inferred class labels are broader than independent tests."
+  },
+  {
+    "id": "F205",
+    "title": "Exact helper evidence to Python ownership projection",
+    "steps": [
+      "cli",
+      "exacttoolaggregate",
+      "pythonsurface",
+      "pythonsurfacewriter"
+    ],
+    "description": "CLI combines helper/surface validity; a separate map-building script writes the generated classification with map_current true.",
+    "limit": "Script publication occurs before combined validity exit; direct behavior classification consumes positive results only."
+  },
+  {
+    "id": "F206",
+    "title": "Incoming file to planned owner and disposition report",
+    "steps": [
+      "canonicalownerindex",
+      "sourcefaterules",
+      "sourcefateinventory",
+      "sourcefateverify"
+    ],
+    "description": "Standalone script builds independent owner index and source-fate inventory, checks disposition self-consistency and writes both.",
+    "limit": "No semantic merge, admission, cleanup or expected-tree equality check is performed."
+  },
+  {
+    "id": "F207",
+    "title": "Structural source and duplicate classifications",
+    "steps": [
+      "structuralaggregate",
+      "structuralscope",
+      "structuralduplicates"
+    ],
+    "description": "Selected bounded source inventory feeds byte duplicate and normalized Python AST grouping with declared exception classes.",
+    "limit": "Excluded paths, short functions and other languages fall outside these checks; declared parity is not executed parity."
+  },
+  {
+    "id": "F208",
+    "title": "Structural declarations imports and release consumption",
+    "steps": [
+      "cli",
+      "independentgates",
+      "structuralaggregate",
+      "structuralimports",
+      "structuraldeclarations",
+      "certificationgates"
+    ],
+    "description": "CLI, governed gate and release callers independently invoke structural aggregation over declarations and selected source relationships.",
+    "limit": "Shown callers are alternatives, not sequential prerequisites. Dynamic import resolution uses current process and aggregate valid depends on error lists."
+  },
+  {
+    "id": "F209",
+    "title": "PX Doctor collection and report precedence",
+    "steps": [
+      "doctor",
+      "doctorintegrity",
+      "doctorgit",
+      "doctorhandofffreshness",
+      "doctorproviderreadiness",
+      "doctorwal",
+      "doctorcompose"
+    ],
+    "description": "Independent diagnostics feed eight section states; blocked outranks degraded, which outranks healthy.",
+    "limit": "Collection is serial and reads mutable evidence at different moments; no all-stack atomic snapshot or certification execution."
+  },
+  {
+    "id": "F210",
+    "title": "PX Doctor base report and retained receipt",
+    "steps": [
+      "doctorcompose",
+      "doctorreceipt",
+      "doctorclicontract"
+    ],
+    "description": "Base report is hashed, optional WAL receipt retains it, then runtime/CLI attach receipt and contract fields.",
+    "limit": "To verify base digest, consumers must use original hashed field set, not entire extended returned object."
+  },
+  {
+    "id": "F211",
+    "title": "PX Doctor evidence strength and CLI exit",
+    "steps": [
+      "livecoverageproof",
+      "healthreportverify",
+      "doctorcompose",
+      "doctorclicontract"
+    ],
+    "description": "Coverage and first extension claim affect section health; CLI chooses requested predicate and exit status.",
+    "limit": "Default operable may accept degraded report; syntax accepts well-formed blocked report. Certification-ready is diagnostic summary, not certificate."
+  },
+  {
+    "id": "F212",
+    "title": "Build declarations to archive projection checks",
+    "steps": [
+      "certificationgates",
+      "distributionbuild",
+      "distributionprojection",
+      "distributionskillclosure",
+      "distributionarchive"
+    ],
+    "description": "Release caller stages source and toolchain, invokes backend once, then verifies declared source resources in wheel/sdist.",
+    "limit": "Helper call count is not global exactly-once evidence; source/archives are read at separate moments."
+  },
+  {
+    "id": "F213",
+    "title": "Frozen manifest and artifact-set verification",
+    "steps": [
+      "certificationgates",
+      "distributionbind",
+      "distributionmanifestcheck",
+      "distributionarchive"
+    ],
+    "description": "Certification verification supplies recorded manifest, checks its intrinsic digest and archive member equality plus authoritative version.",
+    "limit": "Direct binding helper also permits a weaker manifest-free mode; unkeyed metadata is authenticated by higher certificate owner, not this helper."
+  },
+  {
+    "id": "F214",
+    "title": "Exact wheel installation and installed scenario evidence",
+    "steps": [
+      "certificationgates",
+      "distributioninstall",
+      "installedwheelbehavior",
+      "exactharness",
+      "doctorclicontract"
+    ],
+    "description": "Release helper installs hash-checked wheel; separate installed test reuses certified wheel or builds one, then exercises selected CLI operations.",
+    "limit": "These are distinct install owners and tests, not one automatic chain. Doctor syntax and fixture labels do not certify every runtime operation."
+  },
+  {
+    "id": "F215",
+    "title": "Working source to staged audit candidate",
+    "steps": [
+      "exportselection",
+      "exportfreeze",
+      "exportrebuild",
+      "exportcertify",
+      "exportpreflight"
+    ],
+    "description": "Select and copy source, optionally rebuild/check candidate, then require package preflight.",
+    "limit": "Candidate operations are source mutations and executions if invoked; this audit only inspected them."
+  },
+  {
+    "id": "F216",
+    "title": "Frozen candidate through replay and publication",
+    "steps": [
+      "exportfreeze",
+      "exportpreflight",
+      "exportreplay",
+      "exportpublish"
+    ],
+    "description": "Compare selected file records, write ZIP, check extracted candidate, publish archive then sidecar and attempt reclamation.",
+    "limit": "Manifest is outside equality records; pair publication is not atomic and cleanup failure may be hidden."
+  },
+  {
+    "id": "F217",
+    "title": "Git revision archive ownership and membership",
+    "steps": [
+      "sourcearchiveprocess",
+      "sourcearchivemembers",
+      "sourcearchiveclosure"
+    ],
+    "description": "Supervise Git archive, enforce child closure, inspect regular members and reconcile workspace.",
+    "limit": "Member checks do not prove all working-tree bytes, content semantics or a resolved commit hash."
+  },
+  {
+    "id": "F218",
+    "title": "Ownership and count declarations to distinct audits",
+    "steps": [
+      "contractownerbuilder",
+      "schemacorpus",
+      "generatedcomparison",
+      "countinventorybuilder",
+      "countenvelopes"
+    ],
+    "description": "Contract builder supplies schema ownership; count builder supplies invariants. Separate consumers check corpus structure, regeneration and discovered count fields.",
+    "limit": "Parallel validation families, not one automatic sequential pipeline; metadata truth is not independent ownership proof."
+  },
+  {
+    "id": "F219",
+    "title": "Operational test requirements to installed evidence interpretation",
+    "steps": [
+      "proofmatrixbuilder",
+      "proofmatrixconsumer"
+    ],
+    "description": "Inventory-derived matrix identifies required stages; installed walk populates observed or inferred stage results.",
+    "limit": "A plan digest proves plan identity, not execution; selected acknowledgement branch alone does not independently observe authorization/dispatch/effect."
+  },
+  {
+    "id": "F220",
+    "title": "Authoritative bytes to dependent discovery projections",
+    "steps": [
+      "exportrebuild",
+      "templatebyteprojection",
+      "profilebyteprojection",
+      "activehashreconcile",
+      "declaredtoolreconcile",
+      "generatedcomparison"
+    ],
+    "description": "Rebuild copies fixed owners, rehashes active/tools, then builds discovery metadata before later graph/ownership checks.",
+    "limit": "Writes can partially complete; pre-write stale flags and apply validity differ between helpers."
+  },
+  {
+    "id": "F221",
+    "title": "Projection publication entrypoint contracts",
+    "steps": [
+      "evidenceindexwriter",
+      "currentindex",
+      "projectionentrypoints",
+      "graphprojection",
+      "testgroupindex"
+    ],
+    "description": "CLI writers call core producers and emit publication/count summaries; downstream validators and test owners establish separate evidence.",
+    "limit": "These are sibling entrypoints, not one runtime invocation sequence. Source-index or write success is not behavioral certification."
+  },
+  {
+    "id": "F222",
+    "title": "Candidate source metadata to declared catalog state",
+    "steps": [
+      "candidatequeuebuilder",
+      "specialtymapbuilder",
+      "externalregistrybuilder",
+      "coreadmission"
+    ],
+    "description": "Queue/specialty CLIs project source metadata; separate external reconciler writes packages/ledger/catalog, then registry consistency checks apply.",
+    "limit": "Sibling declaration pipelines; fixed validation labels and catalog membership do not perform candidate admission or behavior verification."
+  },
+  {
+    "id": "F223",
+    "title": "Security source pack to discovery contracts and fate records",
+    "steps": [
+      "securitypackprojection",
+      "securitycontractprojection",
+      "schemacorpus",
+      "securitypackfate",
+      "securitymetadata",
+      "securityreference"
+    ],
+    "description": "Archive pin precedes companion projection; local contract definitions and dispositions publish metadata consumed by runtime discovery and explicit archive hydration.",
+    "limit": "Companion files are not authenticated by archive pin; source fate and passed counters are declarations."
+  },
+  {
+    "id": "F224",
+    "title": "Receipt claims to route and canonical health outputs",
+    "steps": [
+      "routehealthsnapshot",
+      "healthsnapshotpublication",
+      "installedhealthprojection",
+      "livecoverageproof"
+    ],
+    "description": "Derive fixed route states, write snapshot, optionally project installed lifecycle claims and reconcile operation coverage.",
+    "limit": "Receipts are read at separate times; snapshot validity, canonical readiness and coverage certification are different predicates."
+  },
+  {
+    "id": "F225",
+    "title": "Source-bound direct receipts to assembled control chains",
+    "steps": [
+      "controlsourcebinding",
+      "installedsmokeadapter",
+      "ownedprobeadapter",
+      "directstageassembly",
+      "stageevidencepublication"
+    ],
+    "description": "Adapters create compatible stage records; assembler verifies selected current source identity and combines per-control stages before exclusive publication.",
+    "limit": "Sibling adapters are alternatives/inputs, not a sequential probe run. Receipt kind and stage detail still require trusted producer evidence."
+  },
+  {
+    "id": "F226",
+    "title": "Historical claim to current content attestation",
+    "steps": [
+      "historicalevidenceresolver",
+      "historicalattestationwriter",
+      "gapledger"
+    ],
+    "description": "Resolve current file, alias, exact event or same-card correlated evidence, then append a target-bound attestation without rewriting old events.",
+    "limit": "Content binding reduces unbound denominator; it does not retroactively establish original behavior, authorization or exact historical bytes."
+  },
+  {
+    "id": "F227",
+    "title": "Reviewed typed proposal to preserved gap revisions",
+    "steps": [
+      "typedgaplinkwriter",
+      "gapledger"
+    ],
+    "description": "Verify fixed proposal hash, preserve/union existing gaps, bind disposition predecessor and append bounded chunks.",
+    "limit": "Check-only total assertion and per-chunk commits differ from one fully atomic proposal application."
+  },
+  {
+    "id": "F228",
+    "title": "Authoritative ledger append projection and read order",
+    "steps": [
+      "ledgeroperatorcli",
+      "ledgerappendplanner",
+      "ledgerstatereducer",
+      "ledgerappendio",
+      "ledgercheckpointpublisher",
+      "ledgercheckpointreader",
+      "dashboard"
+    ],
+    "description": "Bounded batch selection and validation precede authoritative append; sealed snapshot/delta and compact head publish afterward; consumers use optimistic hash checks.",
+    "limit": "Committed JSONL may outlive failed publication; replay and compact consistency are not producer authentication."
+  },
+  {
+    "id": "F229",
+    "title": "Work admission history compaction and guard decisions",
+    "steps": [
+      "ledgerappendplanner",
+      "ledgerstatereducer",
+      "ledgerhistorycompactor",
+      "ledgerworkguard"
+    ],
+    "description": "Append-time owner exclusivity, session lifecycle state and retained historical indexes feed a separate exact-scope guard.",
+    "limit": "Pure in-memory examples demonstrate switch and closure invalidation loss after compaction plus existing-session acceptance on closed card."
+  },
+  {
+    "id": "F230",
+    "title": "Ledger recovery and immutable segmentation",
+    "steps": [
+      "ledgerappendplanner",
+      "ledgertailrecovery",
+      "ledgerstatereducer",
+      "ledgercheckpointpublisher",
+      "ledgersegmentarchive"
+    ],
+    "description": "Checkpoint fallback validates history and classifies unterminated suffix before recovery; explicit rebuild publishes full snapshot; segmentation retains legacy stream.",
+    "limit": "Recovery is an effect and was not invoked. Segmentation is a point-in-time archive and uses separately sampled legacy identity."
+  },
+  {
+    "id": "F231",
+    "title": "Control ownership evidence and dashboard completion counts",
+    "steps": [
+      "ledgerstatereducer",
+      "ledgerdashboardcounts",
+      "ledgercheckpointpublisher",
+      "ledgercheckpointreader",
+      "dashboard"
+    ],
+    "description": "Control binding, typed observation, feature acceptance and card lifecycle generate different counts consumed through compact head or snapshot.",
+    "limit": "Dashboard API recomputes status-only open_count; a successful report/ownership mapping must not be treated as feature proof."
+  },
+  {
+    "id": "F232",
+    "title": "Historical reports and stable card ownership",
+    "steps": [
+      "historicalreviewregistration",
+      "reviewedcardbindings",
+      "aggregatesplitplanner",
+      "ledgerappendplanner",
+      "ledgerdashboardcounts"
+    ],
+    "description": "Historical report registration, reviewed bindings and decomposition are separate operator tools that feed the same ledger owner and ownership denominators.",
+    "limit": "They are not one automatic pipeline; current manifest admission can reject legacy report formats and ownership resolution is not closure."
+  },
+  {
+    "id": "F233",
+    "title": "Card reference repair and accepted artifact refresh",
+    "steps": [
+      "cardqualityannotation",
+      "ledgerappendplanner",
+      "ledgerdashboardcounts",
+      "punchhashrefresh",
+      "livecoverageproof"
+    ],
+    "description": "One path fills card references without changing chain states; a separate path rehashes current accepted artifacts before coverage checks.",
+    "limit": "Reference completion and digest equality do not re-establish original operational behavior. These parallel mechanisms are not direct calls to each other."
+  },
+  {
+    "id": "F234",
+    "title": "Declarative reconciliation and runtime consumers",
+    "steps": [
+      "streamclaimreconciliation",
+      "streamdispatch",
+      "studiobyteprojection",
+      "studioprotocol",
+      "referenceclaimreconciliation"
+    ],
+    "description": "Project-stream activation labels, Studio byte projections and partial candidate mappings reconcile different declarative layers.",
+    "limit": "These are separate tools. Runtime activation and protocol parsing have their own checks; reconciliation writers do not execute capability tests or certification."
+  },
+  {
+    "id": "F235",
+    "title": "Typed control inventory observation and card reconciliation",
+    "steps": [
+      "controlinventoryreconcile",
+      "ledgerappendplanner",
+      "controlreceiptclassifier",
+      "controlobservationplanner",
+      "controlcardadvancement",
+      "controlcompletenesscheck"
+    ],
+    "description": "Separate inventory, discovery, initial binding, observation revision and optional card phases use a shared ledger.",
+    "limit": "Each phase can commit before later failure; check simulates raw values rather than the full live reducer."
+  },
+  {
+    "id": "F236",
+    "title": "Installed owner preflight members and terminal publication",
+    "steps": [
+      "installedowner",
+      "installedownerpreflight",
+      "installedownermembers",
+      "installedownerpublication",
+      "installedsummaryconsumer"
+    ],
+    "description": "Two cross-platform smokes launch before their waits, then the exhaustive Windows member runs and the owner publishes stage outcome.",
+    "limit": "Ordinary smoke failure still runs exhaustive; final artifact failure can preserve passed=true. No live run occurred during this review."
+  },
+  {
+    "id": "F237",
+    "title": "Historical and current typed control denominator",
+    "steps": [
+      "dashboardcontroller",
+      "typedinventorybuilder",
+      "controlinventoryreconcile",
+      "controlreceiptclassifier",
+      "controlcompletenesscheck"
+    ],
+    "description": "Historical overlay plus current action and navigation sources construct the typed baseline consumed by reconciliation and operational status.",
+    "limit": "Separate producer invocations; declared controls and accepted boundaries are not automatic proof of execution."
+  },
+  {
+    "id": "F238",
+    "title": "Cohesion proof ordering and recoverable projection",
+    "steps": [
+      "candidatedriver",
+      "cohesiondenominator",
+      "cohesionevidence",
+      "cohesionclosegate",
+      "cohesionprojection",
+      "cohesionwalpublication",
+      "walcommit"
+    ],
+    "description": "The finite cohesion owner validates evidence and ordered release state, then publishes card and project projections through WAL.",
+    "limit": "Control-ledger apply and cohesion WAL are separate owners. Close remains certification-pending, and precommit does not revalidate the earlier evidence snapshot."
+  },
+  {
+    "id": "F239",
+    "title": "Corpus inventory duplicate classification and review handoffs",
+    "steps": [
+      "corpusfileinventory",
+      "corpusexactduplicates",
+      "corpusassetclassify",
+      "corpusreviewclusters"
+    ],
+    "description": "Operator-selected artifacts connect physical inventory metadata to exact duplicates, lexical classes and decision clusters.",
+    "limit": "No semantic admission follows automatically. Catalog summaries, classified labels and review accounting have different denominators."
+  },
+  {
+    "id": "F240",
+    "title": "Corpus structure and approximate duplicate branches",
+    "steps": [
+      "corpusfileinventory",
+      "corpusstructureprojection",
+      "corpusnearduplicates",
+      "corpusjsonio"
+    ],
+    "description": "Text structure feeds a separate projection and approximate similarity review branch.",
+    "limit": "These are parallel consumers, not a call chain. Prefix bucketing and text-size limits bound coverage."
+  },
+  {
+    "id": "F241",
+    "title": "Corpus partition merge accounting and rehash",
+    "steps": [
+      "corpusfileinventory",
+      "corpuspartitionmerge",
+      "corpuspartitionreport",
+      "corpusrehash"
+    ],
+    "description": "Partition records can be merged; partition summaries can separately be accounted and their map digests refreshed.",
+    "limit": "Accounting does not verify source completeness or all bytes. Refresh and merge are independent commands with partial-write boundaries."
+  },
+  {
+    "id": "F242",
+    "title": "Legacy wrapper handoffs to runtime owners",
+    "steps": [
+      "legacymapwrappers",
+      "mapcorpus",
+      "mapintegrity",
+      "mapquery",
+      "legacyroutewrapper",
+      "legacytranscriptwrapper",
+      "legacyauditwrapper"
+    ],
+    "description": "Separate CLI wrappers delegate map, routing, transcript and audit operations to reviewed runtime owners.",
+    "limit": "These are parallel entry points, not a single pipeline. Flags, exit contracts and runtime authority differ."
+  },
+  {
+    "id": "F243",
+    "title": "Source mechanism discovery and excluded custody",
+    "steps": [
+      "legacysourcescan",
+      "legacysourceboundary",
+      "legacysourceprogress",
+      "legacyhelperfixtures"
+    ],
+    "description": "Source audit hashes included files, accounts excluded boundaries with explicit modes and emits candidate/progress records.",
+    "limit": "Candidate review remains separate; progress completion does not equal final audit validity or full semantic reading."
+  },
+  {
+    "id": "F244",
+    "title": "Incomplete detection review and historical disposition",
+    "steps": [
+      "legacyincompleteids",
+      "legacyincompletereviews",
+      "legacyincompletehistory",
+      "legacyhelperfixtures"
+    ],
+    "description": "Detected signals are deduplicated and matched to retained reviews; historical reports can separately receive path-based dispositions.",
+    "limit": "Same-file pass identities can collapse, and classified historical findings need not represent executed fixes."
+  },
+  {
+    "id": "F245",
+    "title": "Source inventory identity disposition and mechanism ownership",
+    "steps": [
+      "corpusfileinventory",
+      "historicalsourcejoin",
+      "historicalskillidentity",
+      "historicalassetdisposition",
+      "historicalmechanismmap"
+    ],
+    "description": "Separate helper handoffs assign historical/current dispositions, skill aliases, asset policies and scanner mechanism owners.",
+    "limit": "Completion is local accounting; no automatic end-to-end admission or semantic equivalence is established."
+  },
+  {
+    "id": "F246",
+    "title": "Manifest absence to unverified reconstruction cards",
+    "steps": [
+      "missingmanifestledger",
+      "declaredreconstructionplan",
+      "historicalstagedpolicy",
+      "historicalplanningcoverage"
+    ],
+    "description": "Missing declarations become inferred reconstruction cards; parallel policy and planning coverage helpers evaluate different metadata contracts.",
+    "limit": "Eight waves are declared ordering, not an executable scheduler; fixed denominators and policy labels do not prove recovered behavior."
+  },
+  {
+    "id": "F247",
+    "title": "Historical reconstruction checks and partial publication",
+    "steps": [
+      "historicalcertifiersupport",
+      "historicalcertifierchecks",
+      "declaredplan",
+      "declaredworddispatch",
+      "historicalcertifierpublication",
+      "declared"
+    ],
+    "description": "Main runs fixed generic checks, evaluates support/final fields, computes card results, then writes statuses when apply is enabled.",
+    "limit": "Confirmed in-memory: final flags can publish certified owners with failed checks and open cards; sequential writes have no joint rollback."
+  },
+  {
+    "id": "F248",
+    "title": "Sort stream to sampled benchmark recommendation",
+    "steps": [
+      "sortstreamreader",
+      "sortreservoir",
+      "sortalgorithms",
+      "sortbenchmark",
+      "sortreceiptauthority"
+    ],
+    "description": "Parse and type-check full stream; retain reservoir; benchmark pilot and top three finalists; hash input and return a selected algorithm.",
+    "limit": "No full-data write; parser, ordinal-only correctness, mutable input and benchmark scope boundaries remain explicit."
+  },
+  {
+    "id": "F249",
+    "title": "Static model estimates and deployment planning boundaries",
+    "steps": [
+      "modelconfigestimate",
+      "deploymentmatrix",
+      "planninghelperfixtures"
+    ],
+    "description": "Independent metadata helpers estimate architecture quantities and rank caller-supplied memory strategies.",
+    "limit": "No automatic output conversion between byte estimates and GiB planner inputs, no live hardware probing and no model deployment."
+  },
+  {
+    "id": "F250",
+    "title": "External metadata to heuristic owner dispositions",
+    "steps": [
+      "behaviormetadataextract",
+      "behaviormetadataplan",
+      "externalrequirementowners",
+      "catalog"
+    ],
+    "description": "Extraction emits index artifacts; separate planners consume metadata and catalog names to label candidate ownership.",
+    "limit": "No actual source implementation or validation is established by exact-name or integrated labels."
+  },
+  {
+    "id": "F251",
+    "title": "Historical mining admission and downstream declaration checks",
+    "steps": [
+      "miningadmissionwriter",
+      "catalog",
+      "miningevidenceprojection",
+      "miningworkflowprojection",
+      "assimilationaudit"
+    ],
+    "description": "Fixed migration writes catalog/packages/admission, scan claims, workflows, coverage and lifecycle metadata, then refreshes all package body hashes.",
+    "limit": "Writes are partial on failure; downstream declaration checks do not replay historical scans or execute workflow skills."
+  },
+  {
+    "id": "F252",
+    "title": "CLI command contract to owner and response",
+    "steps": [
+      "clicontractindex",
+      "cliorchestrationlease",
+      "clilocalloader",
+      "cliexitcontracts",
+      "clicognitiveboundary"
+    ],
+    "description": "CLI parses explicit command, resolves framework root, claims selected ownership, dispatches one branch, then releases ownership and renders status.",
+    "limit": "Branches have distinct contracts; four input-loader branches fail before owner execution, and result valid is not a universal completion predicate."
+  },
+  {
+    "id": "F253",
+    "title": "CLI section chunks and grouped full-profile execution",
+    "steps": [
+      "clisectionexecution",
+      "testsectionpartition",
+      "testreceiptstatus",
+      "testfullowner",
+      "cligrouprefresh",
+      "cligroupexecution",
+      "testprocesscustody"
+    ],
+    "description": "Section runs require dependencies and invalidate old section receipt; full profile requires sections, refreshes stale groups and runs coexistence checks.",
+    "limit": "Section chunks and group queues are separate schedules. Scoped custody excludes prior unresolved records; failed groups remain explicit even when child containment succeeds."
+  },
+  {
+    "id": "F254",
+    "title": "CLI release stage claims and output ordering",
+    "steps": [
+      "cliorchestrationlease",
+      "repair",
+      "clireleaseclaimfinalizer",
+      "cliexitcontracts"
+    ],
+    "description": "Validate/full profile/certify use stage claims; preflight retains successful certify claim for finalization; other results finish from exact valid true.",
+    "limit": "Framework lock scope can differ from processing project root; selected failures finish failed, while uncaught exceptions can retain claims. Output serialization follows finish and lock release."
+  },
+  {
+    "id": "F255",
+    "title": "Governed pytest lifecycle and teardown",
+    "steps": [
+      "testprocesscustody",
+      "pytestentry",
+      "pytestreclaim",
+      "pytestshutdown"
+    ],
+    "description": "Runner establishes managed temporary scope and loads hooks; each test snapshots/reclaims new child names; session finish observes newly live non-daemon threads.",
+    "limit": "Root-marker custody and thread observation have different boundaries; no test or cleanup executed."
+  },
+  {
+    "id": "F256",
+    "title": "Quickstart commissioning and retained result",
+    "steps": [
+      "quickstartlifecycle",
+      "cli",
+      "commission",
+      "quickstartreceipt"
+    ],
+    "description": "Eight sequential CLI calls produce a demo project and terminal receipt after status, preview/apply, classification, selection, hydration and integrity steps.",
+    "limit": "A failed step leaves partial output and skips final receipt; timeout is per subprocess."
+  },
+  {
+    "id": "F257",
+    "title": "Python cache discovery move and late receipt",
+    "steps": [
+      "cli",
+      "cachewalkcustody",
+      "cachemovepublication"
+    ],
+    "description": "CLI hygiene selects bounded cache targets, hashes inventory, optionally moves targets, then verifies recorded destinations before publishing receipt.",
+    "limit": "No cleanup executed; nested directory placement and partial failure can precede receipt."
+  },
+  {
+    "id": "F258",
+    "title": "Preservation then sanitizer rewrite and rename",
+    "steps": [
+      "sanitizerpreflight",
+      "sanitizerrewrite"
+    ],
+    "description": "Collect deepest-first paths, copy affected sources outside root, write preservation receipt, then rewrite text and rename components.",
+    "limit": "No sanitization executed; source identity can change between copy/hash/rewrite and resolved symlink rename can escape root."
+  },
+  {
+    "id": "F259",
+    "title": "Extension cleanup stage disposal and fallback",
+    "steps": [
+      "cleanupstaging",
+      "extensioncacheinventory",
+      "extensioncleanupexecution",
+      "extensioncleanupfallback"
+    ],
+    "description": "Host scan and modal selection precede repeated inventory gates, random sibling staging, adapter disposition and conditional unchanged-stage recovery.",
+    "limit": "Fallback runs only on eligible failures; partial/uncertain results remain separate. No cleanup or quarantine performed."
+  },
+  {
+    "id": "F260",
+    "title": "Installed VSIX host identity and closure",
+    "steps": [
+      "installedsmokeparent",
+      "hostworkspacecustody",
+      "hostworkerclosure",
+      "hostgloballease",
+      "installedsmokechild",
+      "hostcachecustody",
+      "installedhostsmoke",
+      "installedsmokeparent"
+    ],
+    "description": "Parent prepares fixture/config, acquires worker lease, child resolves cached host and verifies VSIX around installation, host suite emits receipt, parent publishes evidence and conditionally cleans workspace.",
+    "limit": "Preparation precedes lease/try; successful receipt can precede cleanup; hashes supplied by child and runtime marker are not full independent tree verification."
+  },
+  {
+    "id": "F261",
+    "title": "Development host cache and lifecycle",
+    "steps": [
+      "developmenthostsmoke",
+      "hostworkspacecustody",
+      "hostworkerclosure",
+      "hostgloballease",
+      "hostcachecustody",
+      "developmenthostsmoke"
+    ],
+    "description": "Development runner prepares fixture, starts child under global lease, ensures cache and runs source extension, then retains receipt/lifecycle and conditionally removes workspace.",
+    "limit": "Download may occur in product execution; no host or download was run here. Timeout/lease gaps and cleanup publication ordering are mapped."
+  },
+  {
+    "id": "F262",
+    "title": "Fixture packages and extension test evidence",
+    "steps": [
+      "pluginfixturebuilder",
+      "extensionfixturecontracts",
+      "extensiontestprofiles",
+      "tests"
+    ],
+    "description": "Inert fixed-version sources are packaged twice by determinism tests, package/host source contracts enter unit partition and governed consumers collect test evidence.",
+    "limit": "Fixture generation is executable and mutates generated paths when run; this audit only reads it. Text assertions, mocked outcomes and physical host behavior have distinct authority."
+  },
+  {
+    "id": "F263",
+    "title": "Native input request to observed key events",
+    "steps": [
+      "nativeinputclient",
+      "nativeinputserver",
+      "nativeforeground",
+      "nativeinputserver",
+      "nativeinputclient"
+    ],
+    "description": "Client writes secret/sequence/correlation, server validates lifetime and PID birth, recovers owned foreground, sends allowed key events and publishes result, client correlates result.",
+    "limit": "Directory custody and in-memory replay state are trusted; input proof is not intended modal action completion."
+  },
+  {
+    "id": "F264",
+    "title": "Browser snapshot loss and recovery credit",
+    "steps": [
+      "faultwalkowner",
+      "faultwalkheuristics",
+      "faultwalkowner"
+    ],
+    "description": "Select prior rendered controls, prepare baseline, inject null snapshot, inspect fallback, restore test snapshot, optionally prepare again and emit required-stage evidence.",
+    "limit": "Any collected alert can credit failure; recovered visibility can follow page reconstruction; missing stages do not fail exit by themselves."
+  },
+  {
+    "id": "F265",
+    "title": "Installed Studio fixture crash and recovery",
+    "steps": [
+      "studiolateworker",
+      "versionallocation",
+      "skillprojectionafter",
+      "studiocrashworker",
+      "skillprojectionafter"
+    ],
+    "description": "Separate fixture owners exercise allocation/provenance/projection rollback and force a child exit at one projection boundary before a later recovery invocation.",
+    "limit": "These are distinct explicit harness routes; no automatic sequence or live execution is claimed by this map."
+  },
+  {
+    "id": "F266",
+    "title": "Admitted host model and tool completion",
+    "steps": [
+      "extensionapprovalroutes",
+      "hostcompletionroute",
+      "hostmodelbudget",
+      "hosttoolinterface",
+      "hosttoolinputpolicy",
+      "hostcompletionroute",
+      "agenthostcompletion"
+    ],
+    "description": "Approve and prepare durable run, execute exact host model, validate declared tool inputs, gather receipts and sign backend completion.",
+    "limit": "Cooperative cancellation and in-memory tool receipts; input depth bypass confirmed; backend owns output contract acceptance."
+  },
+  {
+    "id": "F267",
+    "title": "Dashboard snapshot identity and delivery",
+    "steps": [
+      "extensionpanelreadiness",
+      "extensionsnapshot",
+      "extensioncontextcache",
+      "extensionidentity",
+      "sidebarhost",
+      "extensionsnapshot"
+    ],
+    "description": "Ready triggers shared snapshot composition, cached context/environment enrichment, selected asset comparison, sidebar then per-target dashboard delivery.",
+    "limit": "Ready is not render proof; cache identity and partial composition failures remain explicit."
+  },
+  {
+    "id": "F268",
+    "title": "Host lifecycle effect and visible result",
+    "steps": [
+      "extensionapprovalroutes",
+      "extensionlifecyclepublication",
+      "environment",
+      "extensionhostreceipt"
+    ],
+    "description": "Exact preview/approval enters manager effect, then environment refresh and live result delivery. Selected host actions additionally retain latest in-memory receipt.",
+    "limit": "These routes have different response types; not every lifecycle result enters latest host-action fields, and refresh error does not imply rollback."
+  },
+  {
+    "id": "F269",
+    "title": "Working draft through exact editor and detached commit",
+    "steps": [
+      "dashboarddraftrecovery",
+      "dashboardproofresponses",
+      "dashboardstudiocompile",
+      "dashboardmodalstate",
+      "dashboardproofresponses"
+    ],
+    "description": "Local overlay captures edits; exact host predecessor/allocation is re-read; editor validates immutable candidate; close detaches authorized save; matching result updates catalog/history.",
+    "limit": "Opaque host proofs authorize trust; local state and DOM presentation do not."
+  },
+  {
+    "id": "F270",
+    "title": "Paged graph through geometry and render observation",
+    "steps": [
+      "dashboardgraphpaging",
+      "dashboardgraphgeometry",
+      "dashboardcssrules",
+      "dashboardgraphack",
+      "dashboardgraphhostobservation"
+    ],
+    "description": "Request a bounded page, merge full-mode data, build DOM and numeric geometry, process viewport chunks and publish observation.",
+    "limit": "No aggregate load-all bound; fallback and forced selected visibility weaken paint/visibility interpretation."
+  },
+  {
+    "id": "F271",
+    "title": "Studio workflow approval and transient session assignment",
+    "steps": [
+      "dashboardstudiocompile",
+      "dashboardrunresponse",
+      "dashboardapprovalresponse",
+      "dashboardrunresponse"
+    ],
+    "description": "Exact node/request approval response is matched then attached to current workflow session and rendered as a lifecycle result.",
+    "limit": "Current workflow ID/version is not compared to captured pending identity; backend must reject misplaced approval use."
+  },
+  {
+    "id": "F272",
+    "title": "Operational walk evidence through repeated status evaluation",
+    "steps": [
+      "operationalwalkprobes",
+      "walkaggregateaccept",
+      "walkfocusedaccept",
+      "walkissuemerge",
+      "walkchildreevaluation",
+      "walkaggregateaccept",
+      "walklauncheraccept"
+    ],
+    "description": "Walker computes receipt with profile issues; isolated child compares process exit and recomputes; outer launcher derives final status from issue list and closure.",
+    "limit": "Profile errors can be lost, string helper failures discarded, and scoped completion promoted in nested launcher flag; top-level focused flag separately remains false."
+  },
+  {
+    "id": "F273",
+    "title": "Owned host startup and partial finalization",
+    "steps": [
+      "walkisolatedowner",
+      "hostgloballease",
+      "walkenginecopy",
+      "walkfixtureprep",
+      "walkchildlaunch",
+      "walkstorageobserve",
+      "walkchildfinalize",
+      "walkchildreevaluation",
+      "walkownedcleanup"
+    ],
+    "description": "Acquire lease, stage current source/fixtures, start isolated host and optional native helper/walker, reconcile handles, evaluate receipt, remove owned root and publish final report.",
+    "limit": "Path and snapshot intervals, sequential finalizer errors and cleanup-before-publication remain explicit; this audit does not execute these effects."
+  },
+  {
+    "id": "F274",
+    "title": "Focused refusal and full coverage accounting",
+    "steps": [
+      "walkaggregateaccept",
+      "walkfocusedaccept",
+      "walkauthorityskip",
+      "walkissuemerge",
+      "walklauncheraccept"
+    ],
+    "description": "Select full or focused predicates, account accepted refusal boundaries separately, normalize issues then calculate terminal status.",
+    "limit": "Some contracts accept flag-only or empty-chain evidence; an accepted refusal is not execution of the withheld effect."
+  },
+  {
+    "id": "F275",
+    "title": "Contained exhaustive control evidence",
+    "steps": [
+      "exhaustivewalklocators",
+      "exhaustivemanifest",
+      "exhaustiveresume",
+      "exhaustivepublish",
+      "exhaustivefixtures",
+      "exhaustiveselectors",
+      "exhaustiveinteraction",
+      "exhaustivestages",
+      "exhaustivepublish"
+    ],
+    "description": "Sample sources, reuse/select records, prepare fixtures, locate and exercise, interpret stages, aggregate and exclusively publish.",
+    "limit": "Preview scope, weak resume identity, local validation proxies and missing final source equality limit operational claims."
+  },
+  {
+    "id": "F276",
+    "title": "Contained form failure and restoration",
+    "steps": [
+      "exhaustivefixtures",
+      "exhaustiveselectors",
+      "exhaustiveinteraction",
+      "exhaustiveform",
+      "exhaustivestages"
+    ],
+    "description": "Find first editable field, change/restore, inject and clear custom validity, classify local stages.",
+    "limit": "DOM field restoration and injected browser validity do not prove product validation or model rollback."
+  },
+  {
+    "id": "F277",
+    "title": "Dashboard preview test and screenshot custody",
+    "steps": [
+      "dashboarde2e",
+      "dashboarde2ecorrelation",
+      "dashboarddraftrecovery",
+      "dashboarde2e",
+      "dashboardvisualmanifest"
+    ],
+    "description": "Exercise synthetic request/draft boundaries and selected layouts before publishing hashes of screenshot directory.",
+    "limit": "This is declared test behavior, not a test run; manifest may retain older images and has no source binding."
+  },
+  {
+    "id": "F278",
+    "title": "Installed walk admission and profile order",
+    "steps": [
+      "walkchildlaunch",
+      "iwadmission",
+      "iwsource",
+      "iwscheduler",
+      "iwtimeout",
+      "iwpublish"
+    ],
+    "description": "Launch child, sample identity, run selected dependent profiles and publish results.",
+    "limit": "Source verification is not a universal effect gate; timeout is not cancellation; output precedes closure."
+  },
+  {
+    "id": "F279",
+    "title": "Installed evidence composition and parent status",
+    "steps": [
+      "iwscheduler",
+      "iwbuilder",
+      "iwmerge",
+      "iwpublish",
+      "walkchildreevaluation"
+    ],
+    "description": "Builder and profile observations merge into stage records, then child and parent classify status.",
+    "limit": "Cross-scenario stage union and lost errors can strengthen claims beyond any successful scenario."
+  },
+  {
+    "id": "F280",
+    "title": "Native action request and host observation",
+    "steps": [
+      "iwhostprep",
+      "iwhostreceipt",
+      "iwnative",
+      "nativeinputclient"
+    ],
+    "description": "Prepare scenario, observe request, locate or fall back to native input, then await result.",
+    "limit": "Request type fallback, physical focus and exact effect outcome require distinct proofs."
+  },
+  {
+    "id": "F281",
+    "title": "Studio candidate revision and lifecycle evidence",
+    "steps": [
+      "iwsetup",
+      "iwrevision",
+      "iwlifecycle",
+      "iwlate",
+      "iwmerge"
+    ],
+    "description": "Create candidates, edit predecessor-bound revisions, execute lifecycle, combine late-card checks.",
+    "limit": "Partial content comparison, operation-only result matching and historical closure denominator limit certification."
+  },
+  {
+    "id": "F282",
+    "title": "Learning fixture to canonical knowledge",
+    "steps": [
+      "iwscheduler",
+      "iwlearning",
+      "iwknowledge",
+      "iwmerge"
+    ],
+    "description": "Submit declared trials and research reference, admit learning, promote Knowledge proposal and attribute controls.",
+    "limit": "This demonstrates state transitions, not independently measured learning improvement."
+  },
+  {
+    "id": "F283",
+    "title": "Graph and sidebar reconstruction evidence",
+    "steps": [
+      "iwprojects",
+      "iwgraphidentity",
+      "iwsnapshot",
+      "iwsidebar",
+      "iwfaults",
+      "iwpublish"
+    ],
+    "description": "Compare map and selected graph metadata, reconstruct snapshots/preferences and classify faults.",
+    "limit": "Weighted graph content and latest-state identity are not fully represented by these equality predicates."
+  },
+  {
+    "id": "F284",
+    "title": "Owned plugin mutation and recovery boundary",
+    "steps": [
+      "iwscheduler",
+      "iwplugin",
+      "iwpluginconfirm",
+      "iwnative",
+      "nativeinputclient",
+      "iwframe"
+    ],
+    "description": "Confirm exact preview then use native lifecycle and workbench reconstruction before recovery.",
+    "limit": "Pending result/version equality does not prove terminal custody; failure cleanup lacks created-this-run ownership."
+  },
+  {
+    "id": "F285",
+    "title": "Fixture reclamation and certification order",
+    "steps": [
+      "iwscheduler",
+      "iwvalidation",
+      "iwcleanup",
+      "iwnative",
+      "iwpublish"
+    ],
+    "description": "Validation/refusal and cleanup profiles contribute evidence before final publication.",
+    "limit": "Fixture ownership and exact campaign sequence must be enforced; graph audit performed no such effects."
+  },
+  {
+    "id": "F286",
+    "title": "Generated MCP transport to PX effect",
+    "steps": [
+      "mcplaunch",
+      "bundlestdio",
+      "bundleera",
+      "bundledispatch",
+      "bundletools",
+      "bundlepxcontext",
+      "mcproutes"
+    ],
+    "description": "Launch bundle, frame messages, negotiate protocol, validate input, supply context and invoke authorized PX handler.",
+    "limit": "Context is lost at wrapper; wire cancellation and schema validity do not imply effect cancellation or domain result correctness."
+  },
+  {
+    "id": "F287",
+    "title": "Generated dependency and asset identity",
+    "steps": [
+      "mcpbundle",
+      "bundleorigins",
+      "bundleruntime",
+      "bundleworkerpaths"
+    ],
+    "description": "Inventory artifact origins, compare copied source syntax, interpret generated runtime and relative assets.",
+    "limit": "No rebuild or installed-byte certification; preserved syntax can still change __dirname behavior."
+  },
+  {
+    "id": "F288",
+    "title": "MCP connection and subscription closure",
+    "steps": [
+      "bundleera",
+      "bundlesubscriptions",
+      "bundlestdio"
+    ],
+    "description": "Close subscription records, application instance and wire through the serving handle.",
+    "limit": "PX does not retain that handle; output drain and cooperative abort do not prove product work reconciliation."
+  }
+]

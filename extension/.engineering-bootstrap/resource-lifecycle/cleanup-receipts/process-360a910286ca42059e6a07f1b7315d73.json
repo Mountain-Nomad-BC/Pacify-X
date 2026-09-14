@@ -1,0 +1,29 @@
+{
+  "action_id": "test-runner:pc01b25-python-js-child",
+  "audit_record_hash": "c33921da1ee37102fba479d78fbab51b88dac85389e9200800c348a0a394411f",
+  "duration_seconds": 0.21131429999513784,
+  "ended_at": "2026-09-09T16:53:36.949Z",
+  "exit_code": 0,
+  "failure_type": null,
+  "receipt_id": "process-360a910286ca42059e6a07f1b7315d73",
+  "resource_id": "process-db377f49ba904f27a58671e35e328349",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-09-09T16:53:36.738Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 341,
+    "total_bytes": 341,
+    "truncated": false
+  },
+  "tree_closed": true
+}

@@ -213,7 +213,7 @@
       "count_key": "case_count",
       "path": "registry/external_capability_benchmarks.json",
       "rule": "length",
-      "schema": "root schema_version plus shared registry-envelope invariant"
+      "schema": "shared registry-envelope invariant (versionless document)"
     },
     {
       "builder": "builders/last_round_assimilation_builder.py",
@@ -640,7 +640,7 @@
       "count_key": "canonical_domain_count",
       "path": "registry/security_capabilities/domains.json",
       "rule": "length",
-      "schema": "root schema_version plus shared registry-envelope invariant"
+      "schema": "shared registry-envelope invariant (versionless document)"
     },
     {
       "builder": "builders/last_round_assimilation_builder.py",
@@ -649,7 +649,7 @@
       "count_key": "source_raw_domain_count",
       "path": "registry/security_capabilities/domains.json",
       "rule": "length",
-      "schema": "root schema_version plus shared registry-envelope invariant"
+      "schema": "shared registry-envelope invariant (versionless document)"
     },
     {
       "builder": "scripts/build_cybersecurity_provider_registry.py",

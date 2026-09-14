@@ -13,6 +13,8 @@ from scripts.pre_candidate_hygiene import (
     quarantine,
     validate_quarantine,
 )
+from scripts.pre_candidate_hygiene import HygieneError
+import pytest
 
 
 def test_cleared_preidentity_predecessor_requires_exact_supersedable_state() -> None:
@@ -137,6 +139,52 @@ def test_cleanup_denominator_preserves_durable_tmp_evidence_and_release_custody(
     assert ".tmp/audit_walks_plans" not in displays
     assert ".tmp/ledger-payloads" not in displays
     assert any("release-wheelhouse" in item["path"] for item in preserved)
+
+
+def test_cleanup_discovers_nested_generated_roots_and_preserves_extension_dist(
+    tmp_path: Path, monkeypatch,
+) -> None:
+    root = tmp_path / "repo"
+    temp = tmp_path / "system-temp"
+    nested_cache = root / "docs/architecture/tools/__pycache__"
+    nested_cache.mkdir(parents=True)
+    (nested_cache / "build_atlas.pyc").write_bytes(b"generated")
+    (root / ".ruff_cache/0.16.3").mkdir(parents=True)
+    (root / "extension/dist").mkdir(parents=True)
+    (root / "extension/dist/package.vsix").write_bytes(b"release")
+    temp.mkdir()
+    monkeypatch.setenv("TEMP", str(temp))
+
+    targets, _ = cleanup_targets(root)
+    displays = {item["display_path"] for item in targets}
+
+    assert "docs/architecture/tools/__pycache__" in displays
+    assert ".ruff_cache" in displays
+    assert "extension/dist" not in displays
+
+
+def test_quarantine_rejects_target_drift_from_assessed_denominator(
+    tmp_path: Path, monkeypatch,
+) -> None:
+    root = tmp_path / "repo"
+    temp = tmp_path / "system-temp"
+    temp.mkdir()
+    monkeypatch.setenv("TEMP", str(temp))
+    cache = root / ".ruff_cache"
+    cache.mkdir(parents=True)
+    expected, _ = cleanup_targets(root)
+    (root / "nested/__pycache__").mkdir(parents=True)
+
+    with pytest.raises(HygieneError, match="denominator changed"):
+        quarantine(
+            root,
+            Path("evidence/release/quarantine.json"),
+            run_id="drift",
+            expected_target_paths=[item["path"] for item in expected],
+        )
+
+    assert cache.is_dir()
+    assert not (root / ".quarantine/drift").exists()
 
 
 def test_quarantine_is_recoverable_hash_bound_and_validated_before_delete(

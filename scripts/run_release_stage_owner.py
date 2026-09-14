@@ -221,6 +221,51 @@ def repair(config: Config) -> dict[str, Any]:
     )
 
 
+def identity_manifest(config: Config) -> tuple[list[str], list[str]]:
+    """Validate the exact pre-identity Git source and mutable-control sets."""
+
+    from runtime.release_identity import _release_dirty_state
+
+    if not config.path_manifest.is_file() or config.path_manifest.is_symlink():
+        raise OwnerBlocked("identity path manifest is not a regular file")
+    manifest = load_object(config.path_manifest)
+    paths = manifest.get("paths")
+    mutable_paths = manifest.get("mutable_paths", [])
+    if (
+        manifest.get("schema_version")
+        != "px.release-identity-path-manifest/1.0"
+        or manifest.get("candidate_id") != config.candidate_id
+        or not isinstance(paths, list)
+        or not paths
+        or paths != sorted(set(paths), key=str.casefold)
+        or not isinstance(mutable_paths, list)
+        or mutable_paths != sorted(set(mutable_paths), key=str.casefold)
+        or set(paths) & set(mutable_paths)
+        or any(
+            not isinstance(path, str) or not path or ".." in Path(path).parts
+            for path in [*paths, *mutable_paths]
+        )
+    ):
+        raise OwnerBlocked(
+            "identity manifest must bind the candidate and contain sorted, "
+            "disjoint, safe source/mutable paths"
+        )
+    dirty = _release_dirty_state(config.root)
+    if dirty.get("classifier_errors"):
+        raise OwnerBlocked("release source classification is invalid")
+    if set(dirty.get("blocking_paths", ())) != set(paths):
+        raise OwnerBlocked(
+            "blocking source changes differ from the explicit identity manifest"
+        )
+    expected_mutable_paths = set(dirty.get("mutable_control_paths", ()))
+    expected_mutable_paths.add(config.relative(config.path_manifest))
+    if expected_mutable_paths != set(mutable_paths):
+        raise OwnerBlocked(
+            "mutable control changes differ from the explicit identity manifest"
+        )
+    return paths, mutable_paths
+
+
 def invalid_active_predecessor_kind(
     config: Config, current_release: Mapping[str, Any]
 ) -> str | None:
@@ -305,6 +350,11 @@ def check(config: Config, step: str) -> dict[str, Any]:
             config.artifact_mtime_ns,
         ):
             errors.append("artifact identity differs from config")
+    if step == "identity":
+        try:
+            identity_manifest(config)
+        except (OwnerBlocked, OSError, ValueError, json.JSONDecodeError) as exc:
+            errors.append(f"identity manifest is not ready: {type(exc).__name__}: {exc}")
     try:
         current_repair = repair(config)
         current_release = release(config)
@@ -554,40 +604,72 @@ class ProductionEffects:
             )
         return result.stdout.strip()
 
+    def git_add_paths(self, config: Config, paths: tuple[str, ...]) -> None:
+        payload = b"\0".join(path.encode("utf-8") for path in paths) + b"\0"
+        baseline = subprocess.run(
+            ["git", "diff", "--cached", "--quiet", "--exit-code"],
+            cwd=config.root,
+            capture_output=True,
+            timeout=60,
+            check=False,
+        )
+        if baseline.returncode:
+            raise OwnerBlocked("identity requires an empty Git index before staging")
+        ignored = subprocess.run(
+            ["git", "check-ignore", "--stdin", "-z"],
+            cwd=config.root,
+            input=payload,
+            capture_output=True,
+            timeout=60,
+            check=False,
+        )
+        if ignored.returncode not in {0, 1}:
+            detail = (ignored.stderr or ignored.stdout).decode(
+                "utf-8", errors="replace"
+            ).strip()
+            raise OwnerBlocked(f"git check-ignore path preflight failed: {detail}")
+        if ignored.returncode == 0:
+            ignored_paths = [
+                item.decode("utf-8", errors="replace")
+                for item in ignored.stdout.split(b"\0")
+                if item
+            ]
+            raise OwnerBlocked(
+                "identity source manifest contains ignored paths: "
+                + ", ".join(ignored_paths[:16])
+            )
+        result = subprocess.run(
+            ["git", "add", "--pathspec-from-file=-", "--pathspec-file-nul"],
+            cwd=config.root,
+            input=payload,
+            capture_output=True,
+            timeout=60,
+            check=False,
+        )
+        if result.returncode:
+            rollback = subprocess.run(
+                ["git", "reset", "--mixed", "HEAD"],
+                cwd=config.root,
+                capture_output=True,
+                timeout=60,
+                check=False,
+            )
+            detail = (result.stderr or result.stdout).decode(
+                "utf-8", errors="replace"
+            ).strip()
+            if rollback.returncode:
+                rollback_detail = (rollback.stderr or rollback.stdout).decode(
+                    "utf-8", errors="replace"
+                ).strip()
+                detail += f"; index rollback failed: {rollback_detail}"
+            raise OwnerBlocked(f"git add --pathspec-from-file failed: {detail}")
+
     def identity(self, config: Config) -> Mapping[str, Any]:
         from runtime.release_campaign import apply_release_identity
         from runtime.release_identity import _release_dirty_state, authoritative_version
 
-        manifest = load_object(config.path_manifest)
-        paths = manifest.get("paths")
-        mutable_paths = manifest.get("mutable_paths", [])
-        if (
-            not isinstance(paths, list)
-            or not paths
-            or paths != sorted(set(paths), key=str.casefold)
-            or not isinstance(mutable_paths, list)
-            or mutable_paths != sorted(set(mutable_paths), key=str.casefold)
-            or set(paths) & set(mutable_paths)
-            or any(
-                not isinstance(path, str) or not path or ".." in Path(path).parts
-                for path in [*paths, *mutable_paths]
-            )
-        ):
-            raise OwnerBlocked(
-                "identity manifest source/mutable paths must be sorted, disjoint, and safe"
-            )
-        dirty = _release_dirty_state(config.root)
-        if dirty.get("classifier_errors"):
-            raise OwnerBlocked("release source classification is invalid")
-        if set(dirty.get("blocking_paths", ())) != set(paths):
-            raise OwnerBlocked(
-                "blocking source changes differ from the explicit identity manifest"
-            )
-        if set(dirty.get("mutable_control_paths", ())) != set(mutable_paths):
-            raise OwnerBlocked(
-                "mutable control changes differ from the explicit identity manifest"
-            )
-        self.git(config, "add", "--", *paths)
+        paths, mutable_paths = identity_manifest(config)
+        self.git_add_paths(config, paths)
         cached = {
             path
             for path in self.git(
@@ -902,10 +984,8 @@ class ProductionEffects:
         )
 
         stale: list[str] = []
-        if step == "identity" and (
-            not config.path_manifest.is_file() or config.path_manifest.is_symlink()
-        ):
-            raise OwnerBlocked("identity path manifest is not a regular file")
+        if step == "identity":
+            identity_manifest(config)
         if step == "sections":
             from runtime.test_profiles import (
                 section_status,

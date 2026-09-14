@@ -38,7 +38,14 @@ def fixture(tmp_path: Path, step: str) -> Config:
     artifact.write_bytes(b"artifact")
     manifest = tmp_path / "manifest.json"
     manifest.write_text(
-        json.dumps({"paths": ["one.txt", "two.txt"], "mutable_paths": []}),
+        json.dumps(
+            {
+                "schema_version": "px.release-identity-path-manifest/1.0",
+                "candidate_id": "pacify-x-certification-20260905-final100-single",
+                "paths": ["one.txt", "two.txt"],
+                "mutable_paths": ["manifest.json"],
+            }
+        ),
         encoding="utf-8",
     )
     state_dir = tmp_path / ".engineering-bootstrap/processing-order"
@@ -132,8 +139,19 @@ def fixture(tmp_path: Path, step: str) -> Config:
 
 
 @pytest.mark.parametrize("step", STEPS)
-def test_each_invocation_admits_only_selected_step(tmp_path: Path, step: str) -> None:
+def test_each_invocation_admits_only_selected_step(
+    tmp_path: Path, step: str, monkeypatch: pytest.MonkeyPatch
+) -> None:
     config = fixture(tmp_path, step)
+    if step == "identity":
+        monkeypatch.setattr(
+            "runtime.release_identity._release_dirty_state",
+            lambda root: {
+                "blocking_paths": ["one.txt", "two.txt"],
+                "mutable_control_paths": [],
+                "classifier_errors": [],
+            },
+        )
     effects = FakeEffects()
     result = run(config, step, effects)
     assert result["step"] == step
@@ -157,6 +175,35 @@ def test_plan_is_effect_free_and_check_rejects_wrong_phase(tmp_path: Path) -> No
     value["phase"] = "installed"
     repair.write_text(json.dumps(value), encoding="utf-8")
     assert check(config, "package")["valid"] is False
+
+
+def test_identity_check_rejects_missing_manifest_before_execution(tmp_path: Path) -> None:
+    config = fixture(tmp_path, "identity")
+    config.path_manifest.unlink()
+
+    result = check(config, "identity")
+
+    assert result["valid"] is False
+    assert any("identity manifest is not ready" in error for error in result["errors"])
+
+
+def test_identity_check_rejects_wrong_candidate_manifest(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    config = fixture(tmp_path, "identity")
+    manifest = json.loads(config.path_manifest.read_text(encoding="utf-8"))
+    manifest["candidate_id"] = "another-candidate"
+    config.path_manifest.write_text(json.dumps(manifest), encoding="utf-8")
+    monkeypatch.setattr(
+        "runtime.release_identity._release_dirty_state",
+        lambda root: {
+            "blocking_paths": ["one.txt", "two.txt"],
+            "mutable_control_paths": [],
+            "classifier_errors": [],
+        },
+    )
+
+    assert check(config, "identity")["valid"] is False
 
 
 def test_archive_check_allows_one_unused_cleared_predecessor(tmp_path: Path) -> None:
@@ -703,6 +750,9 @@ def test_identity_uses_explicit_cached_set_and_one_annotated_retag(
     calls: list[tuple[str, ...]] = []
 
     class GitEffects(ProductionEffects):
+        def git_add_paths(self, config: Config, paths: tuple[str, ...]) -> None:
+            calls.append(("add-pathspec", *paths))
+
         def git(self, config: Config, *args: str) -> str:
             calls.append(args)
             if args[:2] in {("diff", "--name-only"), ("ls-files", "--others")}:
@@ -752,10 +802,81 @@ def test_identity_uses_explicit_cached_set_and_one_annotated_retag(
     )
     result = GitEffects().identity(config)
     assert result["valid"] is True
-    assert ("add", "--", "one.txt", "two.txt") in calls
+    assert ("add-pathspec", "one.txt", "two.txt") in calls
     tag_call = next(call for call in calls if call[:4] == ("tag", "-f", "-a", "v0.7.0"))
     assert tag_call[4:6] == ("-m", f"v0.7.0 {config.candidate_id}")
     assert sum(call[:2] == ("commit", "-m") for call in calls) == 1
+
+
+def test_git_add_paths_streams_large_nul_delimited_pathspec(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    config = fixture(tmp_path, "identity")
+    paths = tuple(f"bulk/path-{index:05d}.txt" for index in range(4_000))
+    observed: dict[str, object] = {}
+    calls: list[list[str]] = []
+
+    def fake_run(argv: list[str], **kwargs: object) -> subprocess.CompletedProcess[bytes]:
+        calls.append(argv)
+        if argv[:2] == ["git", "check-ignore"]:
+            return subprocess.CompletedProcess(argv, 1, b"", b"")
+        if argv[:2] == ["git", "add"]:
+            observed["argv"] = argv
+            observed["input"] = kwargs.get("input")
+        return subprocess.CompletedProcess(argv, 0, b"", b"")
+
+    monkeypatch.setattr(subprocess, "run", fake_run)
+    ProductionEffects().git_add_paths(config, paths)
+    assert observed["argv"] == [
+        "git", "add", "--pathspec-from-file=-", "--pathspec-file-nul"
+    ]
+    payload = observed["input"]
+    assert isinstance(payload, bytes)
+    assert payload.count(b"\0") == len(paths)
+    assert payload.startswith(paths[0].encode() + b"\0")
+    assert payload.endswith(paths[-1].encode() + b"\0")
+    assert calls[0] == ["git", "diff", "--cached", "--quiet", "--exit-code"]
+
+
+def test_git_add_paths_rejects_ignored_source_before_staging(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    config = fixture(tmp_path, "identity")
+    calls: list[list[str]] = []
+
+    def fake_run(argv: list[str], **kwargs: object) -> subprocess.CompletedProcess[bytes]:
+        calls.append(argv)
+        if argv[:2] == ["git", "check-ignore"]:
+            return subprocess.CompletedProcess(argv, 0, b"ignored.txt\0", b"")
+        return subprocess.CompletedProcess(argv, 0, b"", b"")
+
+    monkeypatch.setattr(subprocess, "run", fake_run)
+    with pytest.raises(OwnerBlocked, match="contains ignored paths"):
+        ProductionEffects().git_add_paths(config, ("ignored.txt",))
+    assert not any(call[:2] == ["git", "add"] for call in calls)
+
+
+def test_git_add_failure_restores_the_initially_empty_index(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    config = fixture(tmp_path, "identity")
+    calls: list[list[str]] = []
+
+    def fake_run(argv: list[str], **kwargs: object) -> subprocess.CompletedProcess[bytes]:
+        calls.append(argv)
+        if argv[:2] == ["git", "check-ignore"]:
+            return subprocess.CompletedProcess(argv, 1, b"", b"")
+        if argv[:2] == ["git", "add"]:
+            return subprocess.CompletedProcess(argv, 1, b"", b"staging failed")
+        return subprocess.CompletedProcess(argv, 0, b"", b"")
+
+    monkeypatch.setattr(subprocess, "run", fake_run)
+    with pytest.raises(OwnerBlocked, match="staging failed"):
+        ProductionEffects().git_add_paths(config, ("source.txt",))
+    assert ["git", "reset", "--mixed", "HEAD"] in calls
 
 
 def test_identity_requires_exact_mutable_control_manifest(
@@ -766,6 +887,8 @@ def test_identity_requires_exact_mutable_control_manifest(
     config.path_manifest.write_text(
         json.dumps(
             {
+                "schema_version": "px.release-identity-path-manifest/1.0",
+                "candidate_id": config.candidate_id,
                 "paths": ["one.txt", "two.txt"],
                 "mutable_paths": ["registry/operational_gap_ledger.jsonl"],
             }

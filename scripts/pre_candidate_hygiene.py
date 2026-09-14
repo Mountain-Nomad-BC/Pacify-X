@@ -347,6 +347,64 @@ def _temp_root() -> Path:
     return root
 
 
+def _repository_generated_targets(root: Path) -> list[dict[str, str]]:
+    """Discover active generated roots with the same bounded source boundary as audit."""
+    from runtime.bounded_walk import WalkLimits, bounded_walk
+    from runtime.repository_scope import is_external_environment_relative
+
+    generated_names = {"__pycache__", ".pytest_cache", ".ruff_cache", "build", "dist"}
+
+    def exclude(relative: str) -> bool:
+        parts = Path(relative).parts
+        if parts and parts[0] == ".quarantine":
+            return True
+        if any(part in generated_names or part.endswith(".egg-info") for part in parts):
+            return False
+        return is_external_environment_relative(relative)
+
+    walk = bounded_walk(
+        root,
+        limits=WalkLimits(
+            max_files=250_000,
+            max_directories=100_000,
+            max_entries=400_000,
+            max_depth=128,
+            max_bytes=64 * 1024**3,
+            max_duration_seconds=300,
+        ),
+        symlink_policy="skip",
+        exclude=exclude,
+    )
+    candidates: list[Path] = []
+    for entry in walk.entries:
+        relative = Path(entry.relative)
+        if entry.kind == "directory" and (
+            relative.name in generated_names or relative.name.endswith(".egg-info")
+        ):
+            if relative.parts[:2] == ("extension", "dist"):
+                continue
+            candidates.append(relative)
+        elif entry.kind == "file" and relative.suffix.casefold() in {".pyc", ".pyo"}:
+            candidates.append(relative)
+
+    roots: list[Path] = []
+    for candidate in sorted(candidates, key=lambda item: (len(item.parts), item.as_posix().casefold())):
+        if any(candidate == parent or parent in candidate.parents for parent in roots):
+            continue
+        roots.append(candidate)
+    return [
+        {
+            "path": str((root / relative).resolve(strict=False)),
+            "display_path": relative.as_posix(),
+            "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+            "owner": "generated-artifact-hygiene-owner",
+            "reason": "Bounded repository discovery found an active generated cache or build root rejected by certification hygiene.",
+            "workspace": str(root),
+        }
+        for relative in roots
+    ]
+
+
 def cleanup_targets(root: Path) -> tuple[list[dict[str, str]], list[dict[str, str]]]:
     """Return exact disposable targets plus deliberately preserved custody."""
     root = root.resolve()
@@ -362,6 +420,13 @@ def cleanup_targets(root: Path) -> tuple[list[dict[str, str]], list[dict[str, st
         for relative, classification, owner, reason in STATIC_TRANSIENTS
         if _lexists(root / relative)
     ]
+    known = {Path(item["path"]) for item in targets}
+    for item in _repository_generated_targets(root):
+        candidate = Path(item["path"])
+        if any(candidate == current or current in candidate.parents for current in known):
+            continue
+        targets.append(item)
+        known.add(candidate)
 
     tmp = root / ".tmp"
     if tmp.is_dir():
@@ -431,7 +496,12 @@ def cleanup_targets(root: Path) -> tuple[list[dict[str, str]], list[dict[str, st
 
 
 def quarantine(
-    root: Path, manifest_path: Path, *, run_id: str, resume: bool = False
+    root: Path,
+    manifest_path: Path,
+    *,
+    run_id: str,
+    resume: bool = False,
+    expected_target_paths: Iterable[str] | None = None,
 ) -> dict[str, Any]:
     root = root.resolve()
     manifest_path = (root / manifest_path).resolve() if not manifest_path.is_absolute() else manifest_path.resolve()
@@ -439,6 +509,14 @@ def quarantine(
     if not _inside(quarantine_root, root / QUARANTINE_ROOT):
         raise HygieneError("quarantine destination escaped root .quarantine")
     targets, preserved = cleanup_targets(root)
+    if not resume and expected_target_paths is not None:
+        actual = {str(Path(item["path"]).resolve(strict=False)) for item in targets}
+        expected = {str(Path(item).resolve(strict=False)) for item in expected_target_paths}
+        if actual != expected:
+            raise HygieneError(
+                "cleanup target denominator changed after assessment: "
+                f"added={sorted(actual - expected)}, removed={sorted(expected - actual)}"
+            )
     if resume:
         if not quarantine_root.is_dir() or not manifest_path.is_file():
             raise HygieneError("resume requires the exact existing quarantine and manifest")
@@ -902,6 +980,7 @@ def main() -> int:
     quarantine_parser.add_argument("--manifest", type=Path, required=True)
     quarantine_parser.add_argument("--run-id", required=True)
     quarantine_parser.add_argument("--resume", action="store_true")
+    quarantine_parser.add_argument("--expected-report", type=Path)
     validate_parser = commands.add_parser("validate-quarantine")
     validate_parser.add_argument("--manifest", type=Path, required=True)
     assess_parser = commands.add_parser("assess")
@@ -913,7 +992,25 @@ def main() -> int:
     args = parser.parse_args()
     root = args.root.resolve()
     if args.command == "quarantine":
-        result = quarantine(root, args.manifest, run_id=args.run_id, resume=args.resume)
+        expected_paths = None
+        if args.expected_report is not None:
+            report_path = root / args.expected_report
+            if report_path.stat().st_size > 16 * 1024 * 1024:
+                raise HygieneError("expected cleanup report exceeds 16 MiB")
+            report = json.loads(report_path.read_text(encoding="utf-8"))
+            rows = report.get("classified_cleanup_targets")
+            if type(rows) is not list or any(type(row) is not dict for row in rows):
+                raise HygieneError("expected cleanup report has invalid target rows")
+            expected_paths = [row.get("path") for row in rows]
+            if any(type(path) is not str or not path for path in expected_paths):
+                raise HygieneError("expected cleanup report has invalid target paths")
+        result = quarantine(
+            root,
+            args.manifest,
+            run_id=args.run_id,
+            resume=args.resume,
+            expected_target_paths=expected_paths,
+        )
     elif args.command == "validate-quarantine":
         result = validate_quarantine(root, args.manifest)
         _atomic_json(root / QUARANTINE_VALIDATION_JSON, result)

@@ -1,0 +1,28 @@
+{
+  "cleanup_id": "cleanup-5857d0fd6c2f4322bb7f9b18e953e1da",
+  "project_id": "pacify-x",
+  "run_id": "pc01b25-python-js",
+  "lane_id": "agent-artifact-callers",
+  "start_time": "2026-09-09T16:53:37.229432+00:00",
+  "end_time": "2026-09-09T16:53:37.296576+00:00",
+  "reason": "managed_process_temp_scope_closed",
+  "validated_roots": [
+    "C:\\Users\\Ben\\AppData\\Local\\Temp"
+  ],
+  "workers": 1,
+  "priority_mode": "conservative_sequential",
+  "resources_considered": 1,
+  "resources_reclaimed": 1,
+  "resources_skipped": 0,
+  "resources_failed": 0,
+  "files_removed": 6,
+  "directories_removed": 9,
+  "bytes_reclaimed": 10088,
+  "retained_artifacts": [],
+  "promoted_artifacts": [],
+  "links_encountered": 0,
+  "orphan_processes_reaped": 0,
+  "errors": [],
+  "remaining_owned_ephemeral_resources": 0,
+  "dry_run": false
+}

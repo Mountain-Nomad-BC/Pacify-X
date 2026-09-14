@@ -873,9 +873,13 @@ def _prepare_identity_manifest(config: Config) -> dict[str, Any]:
     if dirty.get("classifier_errors"):
         raise AutomationBlocked("release source classification is invalid")
     source_paths = sorted(set(dirty.get("blocking_paths", ())), key=str.casefold)
+    manifest_path = config.relative(config.identity_path_manifest)
     mutable_paths = sorted(
         set(dirty.get("mutable_control_paths", ())), key=str.casefold
     )
+    if manifest_path not in mutable_paths:
+        mutable_paths.append(manifest_path)
+        mutable_paths.sort(key=str.casefold)
     if set(source_paths) & set(mutable_paths):
         raise AutomationBlocked("identity source and mutable path sets overlap")
     value = {

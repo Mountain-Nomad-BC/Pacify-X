@@ -1844,8 +1844,22 @@ class ResourceManager:
                             "reason": "; ".join(receipt.errors) or "dry run",
                         }
                     )
-        if apply and abandoned_owners:
+        if apply:
             current = self.ledger.load()
+            # A prior reconciliation may have durably retired the process and
+            # then stopped before transitioning its paired workspace. Rebuild
+            # the same owner set from that exact terminal record so a fresh
+            # manager can resume without treating unrelated completed owners
+            # as abandoned.
+            abandoned_owners.update(
+                (item.project_id, item.run_id, item.lane_id)
+                for item in current
+                if item.resource_type == "process"
+                and not item.active
+                and item.run_state == RunState.ABANDONED.value
+                and item.status == ResourceStatus.RECLAIMED.value
+                and item.cleanup_result == "persisted_process_proven_absent"
+            )
             live_process_owners = {
                 (item.project_id, item.run_id, item.lane_id)
                 for item in current

@@ -1,0 +1,68 @@
+# 01 · Human and host surfaces
+
+Requests enter through an AI host, VS Code, CLI or MCP. The host owns execution authority; dashboards project operational state.
+
+- [[Systems/host]] — AI host and human authority
+- [[Systems/ui]] — VS Code dashboard and Studios
+- [[Systems/bridge]] — Python bridge and bounded host work
+- [[Systems/cli]] — CLI and Studio dispatch
+- [[Systems/mcp]] — MCP host adapter
+- [[Systems/hostmodel]] — VS Code model execution
+- [[Systems/activation]] — Host activation resource transaction
+- [[Systems/environment]] — Environment discovery and inventory generations
+- [[Systems/envlifecycle]] — Environment quarantine and restoration
+- [[Systems/mcproutes]] — Concrete MCP operation dispatch
+- [[Systems/draftcommit]] — Studio draft save and result delivery
+- [[Systems/graphread]] — Dashboard graph projection reader
+- [[Systems/knowledgebrowse]] — Knowledge catalog and history projection
+- [[Systems/hostcache]] — Host dependency revisions and metadata cache
+- [[Systems/sidebarstate]] — Sidebar progress and render protocol
+- [[Systems/workflowtrace]] — Workflow trace identity projection
+- [[Systems/extensioncustody]] — Extension lifecycle and rollback custody
+- [[Systems/mcplaunch]] — VS Code MCP launch definition
+- [[Systems/webviewmodules]] — Dashboard module registration and UI state
+- [[Systems/dashboardcontroller]] — Dashboard controller and request matching
+- [[Systems/hostcapture]] — Host JSON subprocess capture
+- [[Systems/hostfingerprint]] — Host source fingerprint worker
+- [[Systems/contextobserve]] — Portable Git and provider context
+- [[Systems/pysnapshot]] — Python composed dashboard snapshot
+- [[Systems/studiotransport]] — Studio base64 and stdin transport
+- [[Systems/extensionactivationown]] — Extension subscription rollback transaction
+- [[Systems/surfacecore]] — Dashboard and project map presentation
+- [[Systems/surfacecatalog]] — Agent and capability catalog presentation
+- [[Systems/surfaceoperational]] — Workflow Studio lifecycle and plugin presentation
+- [[Systems/surfacesystem]] — Diagnostics assurance and settings presentation
+- [[Systems/surfaceobservability]] — Memory and activity presentation
+- [[Systems/surfaceadvanced]] — Learning and runtime presentation
+- [[Systems/surfacegraph]] — Progressive knowledge graph presentation
+- [[Systems/sidebarhost]] — Sidebar VS Code view and snapshot owner
+- [[Systems/sidebarrender]] — Sidebar incremental DOM renderer
+- [[Systems/sidebarproviders]] — Sidebar provider telemetry projection and display
+- [[Systems/sidebartreelegacy]] — Legacy flat control center tree
+- [[Systems/studiopostcommit]] — Studio success delivery and catalog recovery
+- [[Systems/extensionconflictroute]] — Conflict resolution to fresh lifecycle preview
+- [[Systems/listenerregistration]] — Listener registration and disposable ownership
+- [[Systems/doctorclicontract]] — Doctor CLI requested readiness contract
+- [[Systems/legacymapwrappers]] — Legacy project map command wrappers
+- [[Systems/legacyroutewrapper]] — Legacy specialist routing wrapper
+- [[Systems/legacytranscriptwrapper]] — Legacy transcript export wrapper
+- [[Systems/legacyauditwrapper]] — Legacy framework audit reporter
+- [[Systems/clicontractindex]] — CLI parser and complete dispatch index
+- [[Systems/clilocalloader]] — CLI branch-local loader failures
+- [[Systems/cliexitcontracts]] — CLI validity and exit-code contracts
+- [[Systems/cliinputpublication]] — CLI input size and projection effects
+- [[Systems/bytecodestartup]] — Python startup bytecode suppression
+- [[Systems/nativeforeground]] — Owned foreground recovery and SendInput
+- [[Systems/chatparticipant]] — VS Code chat participant and deterministic views
+- [[Systems/extensionpanelreadiness]] — Dashboard panel readiness disposal and origin custody
+- [[Systems/extensionmcpdefinition]] — MCP server definition and host launch authority
+- [[Systems/dashboardmodalstate]] — Modal ownership and deferred rendering
+- [[Systems/dashboardgraphgeometry]] — Graph geometry and frame visibility
+- [[Systems/dashboardcssrules]] — Numeric browser layout stylesheet owner
+- [[Systems/walkisolatedowner]] — Isolated current source walk owner
+- [[Systems/walknetworkenv]] — Owned launch environment and interpreter selection
+- [[Systems/iwframe]] — Workbench and webview identity resolution
+- [[Systems/iwpalette]] — Workbench palette command dispatch
+- [[Systems/iwnative]] — Native dialog lookup and fallback
+- [[Systems/bundlestdio]] — MCP stdio framing and output backpressure
+- [[Systems/bundleworkerpaths]] — Bundled worker relative-path contract
