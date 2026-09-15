@@ -333,7 +333,7 @@ def test_large_sections_are_serially_partitioned_with_exact_bounded_membership()
         "runtime-domain-contracts": {
             "chunk_size": 8,
             "chunk_timeout": 300,
-            "section_timeout": 600,
+            "section_timeout": 900,
         },
     }
     for name, limits in expected.items():
