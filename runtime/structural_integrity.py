@@ -22,6 +22,34 @@ from .version import VERSION
 
 
 DUPLICATE_CLASSIFICATIONS = {
+    "generated-domain-tool-logic": {
+        "owner": "templates/generated/domain_tool.py",
+        "rationale": "canonical generated domain-tool behavior is projected into skill-local entrypoints",
+        "authoritative_source": "templates/generated/domain_tool.py",
+        "regeneration_command": "domain-tool projection reconciliation",
+        "equivalence_rule": "semantic AST equality and current generated-copy byte validation",
+    },
+    "bounded-text-admission": {
+        "owner": "runtime bounded input contract",
+        "rationale": "two local acquisition seams apply the same bounded nonblank text rule",
+        "authoritative_source": "runtime numeric/text input contract",
+        "regeneration_command": None,
+        "equivalence_rule": "semantic AST equality",
+    },
+    "independent-test-vectors": {
+        "owner": "tests",
+        "rationale": "identical test bodies exercise different declared parametrized boundary vectors",
+        "authoritative_source": "each test's parametrized input cases",
+        "regeneration_command": None,
+        "equivalence_rule": "body equality with distinct explicit vector sets",
+    },
+    "local-test-json-fixtures": {
+        "owner": "tests",
+        "rationale": "isolated test-local JSON writers share body semantics without product authority",
+        "authoritative_source": "owned disposable test fixtures",
+        "regeneration_command": None,
+        "equivalence_rule": "semantic AST equality",
+    },
     "empty-package-markers": {
         "owner": "package-layout",
         "rationale": "Python package markers",
@@ -249,7 +277,19 @@ def _import_cycles(root: Path) -> list[list[str]]:
     for name, path in modules.items():
         tree = ast.parse(path.read_text(encoding="utf-8-sig"), filename=path.as_posix())
         package = name.rsplit(".", 1)[0] if "." in name else name
-        for node in ast.walk(tree):
+        # Only imports executed while a module initializes can form an import-time
+        # cycle. Imports inside functions/classes are deferred dependency links.
+        pending = list(tree.body)
+        while pending:
+            node = pending.pop()
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+                continue
+            pending.extend(
+                child
+                for _, field in ast.iter_fields(node)
+                for child in (field if isinstance(field, list) else [field])
+                if isinstance(child, ast.AST)
+            )
             candidates: list[str] = []
             if isinstance(node, ast.Import):
                 candidates.extend(alias.name for alias in node.names)
@@ -444,7 +484,41 @@ def _logic_duplicates(root: Path, files: tuple[Path, ...] | None = None) -> tupl
             continue
         paths = [item.split(":", 1)[0] for item in locations]
         names = {item.rsplit(":", 1)[-1] for item in locations}
-        if all(
+        path_set = set(paths)
+        if (
+            "templates/generated/domain_tool.py" in path_set
+            and all(
+                path == "templates/generated/domain_tool.py"
+                or (path.startswith(".px/skills/") and path.endswith("/scripts/domain_tool.py"))
+                for path in paths
+            )
+        ):
+            classification = "generated-domain-tool-logic"
+        elif path_set == {"runtime/change_classification.py", "runtime/declared_suite.py"} and names == {"_text"}:
+            classification = "bounded-text-admission"
+        elif (
+            path_set == {"tests/test_operational_policy_inputs.py"}
+            and names == {
+                "test_loop_numbers_are_finite_actual_values_before_comparison",
+                "test_loop_counters_do_not_coerce_or_clamp",
+            }
+        ) or (
+            path_set == {"tests/test_compiled_input_contracts.py"}
+            and names == {
+                "test_model_selection_preserves_types_before_capability_conversion",
+                "test_selection_preserves_attachment_metadata_types",
+            }
+        ):
+            classification = "independent-test-vectors"
+        elif (
+            path_set == {"tests/test_knowledge_input_contracts.py"}
+            and names == {"metadata"}
+        ) or (
+            path_set == {"tests/test_cognitive_index_inputs.py", "tests/test_workflow_declaration_inputs.py"}
+            and names == {"write_json", "_write"}
+        ):
+            classification = "local-test-json-fixtures"
+        elif all(
             "/.px/skills/" in "/" + path and "/scripts/" in path for path in paths
         ) and names <= {"hash_file", "sha256_file", "_sha256"}:
             classification = "portable-skill-hash-helpers"

@@ -959,6 +959,15 @@ def build(
         + "\n".join("- [[Layers/" + layer["id"] + "]]" for layer in raw["layers"])
         + "\n",
     )
+    note(
+        "Pacify-X architecture vault.md",
+        "# Pacify-X architecture vault\n\n"
+        "This note is the vault navigation hub. Open [[README]] for scope and source rules, "
+        "then follow [[Views/Full_Architecture]] for the complete map, "
+        "[[Views/Authority]] for effect gates, [[Views/Resources_Budgets]] for resource flow, "
+        "and [[Views/Recovery]] for failure paths. Layer maps lead to canonical system notes.\n\n"
+        "Graph position and edge weight are layout aids; linked evidence defines what is known.\n",
+    )
     write_json(
         vault / ".obsidian/app.json",
         {"showLineNumber": True, "readableLineLength": True},

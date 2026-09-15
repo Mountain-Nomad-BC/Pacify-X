@@ -7,7 +7,11 @@ import json
 from pathlib import Path
 from typing import Iterable, Mapping
 
-from .dependency_invalidation import compute_invalidation_cone
+from .dependency_invalidation import (
+    GRAPH_SCHEMA,
+    compute_invalidation_cone,
+    load_dependency_authority,
+)
 
 
 SCHEMA_VERSION = "px.affected-proof-plan/1.0"
@@ -43,6 +47,7 @@ def build_affected_proof_plan(
     if not seeds or unknown:
         raise ValueError(f"changed cards must be known and non-empty: {unknown}")
     graph = {
+        "schema_version": GRAPH_SCHEMA,
         "nodes": [
             {"node_id": card_id, "kind": "source", "revision": "recorded"}
             for card_id in sorted(nodes)
@@ -52,11 +57,12 @@ def build_affected_proof_plan(
             for card_id, row in nodes.items()
             for dependency in row.get("dependencies", ())
         ],
+        "cycle_components": [],
     }
     cone = compute_invalidation_cone(
         graph,
         {card_id: "changed" for card_id in seeds},
-        authority={"node_kinds": [{"kind": "source", "rebuild_gate": "affected_proof"}]},
+        authority=load_dependency_authority(resolved),
     )
     affected_cards = tuple(item["node_id"] for item in cone["stale_nodes"])
     cards = {card_id: _load(directory / str(nodes[card_id]["path"])) for card_id in affected_cards}

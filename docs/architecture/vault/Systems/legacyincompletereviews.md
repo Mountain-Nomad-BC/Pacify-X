@@ -2,7 +2,7 @@
 canonical_id: "legacyincompletereviews"
 kind: system
 layer: governance
-currentness: same-file-bytes
+currentness: changed-file
 runtime_observed: false
 certified: false
 ---
@@ -30,7 +30,7 @@ No autonomous adaptation established; changes require its declared caller or own
 
 Historical source model; file hashes refreshed. Byte agreement does not prove current behavior. This note is not a repair-closure receipt.
 
-- [[Evidence/S014]] — same-file-bytes
+- [[Evidence/S014]] — changed-file
 
 ## Directed relationships
 

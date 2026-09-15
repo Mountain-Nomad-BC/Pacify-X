@@ -2485,7 +2485,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `.px/skills/audit-incomplete-implementations/capability.json` — `7692598b1930a9e5c283e03b4144fdfc40408bdb0510ce47b98dcc76171a4748`
 - `.px/skills/audit-incomplete-implementations/contracts/manifest.json` — `509531f64c5f6b09342668819c20ea7e1d781841f8d108a9b039f4538b91dbbf`
 - `.px/skills/audit-incomplete-implementations/resources/index.json` — `fbd2185c5449d62a8aa7c2e55a2c21158116c76881f0e2377b1ed6496bb25833`
-- `.px/skills/audit-incomplete-implementations/scripts/audit_incomplete.py` — `2c0a9604bf60e8ea0c5332a4b1bc3b0b0469c50945004725dd87b9199dd8cf9b`
+- `.px/skills/audit-incomplete-implementations/scripts/audit_incomplete.py` — `2e68152cfa22ec368b542b5ab249594b9f78cd559ce114fba8bd286cef9b7d0c`
 - `.px/skills/audit-incomplete-implementations/scripts/reconcile_incomplete_findings.py` — `c3e7f40cea1461e0e2a85a61f12ebcc51dce03045d3e0b3e51831ef4aaf295e9`
 - `.px/skills/audit-incomplete-implementations/skill.yaml` — `7692598b1930a9e5c283e03b4144fdfc40408bdb0510ce47b98dcc76171a4748`
 - `.px/skills/audit-incomplete-implementations/tests/validation.json` — `966e5733b96e79850aaf0304ee5bcfe39701d3760ee51904e176f09e522a3d03`
@@ -9648,7 +9648,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `projects_tracking/.ledger-authority/events/history/00000323.json` — `b839df4dbad8955e9be90b86c260f56c90839ea720ff5a23c1ea35d04249c4eb`
 - `projects_tracking/.ledger-authority/events/history/00000324.json` — `63211f13cf3cd31b2e4ab1746350a17774b1822b236db0f2f868db61ec06f9c9`
 - `projects_tracking/.ledger-authority/events/history/00000325.json` — `5d18c59914e2b4d73cca882e18b40926c427f978b114a87558451d9ee7449398`
-- `projects_tracking/.workspace-control.lock` — `cda4783ba2c3869df857c2965ef2e71293892cbe2e6ff5e16cbf7efc7b4bee53`
+- `projects_tracking/.workspace-control.lock` — `3cfbefd847701b0fe2abff60385c91f2ef8d0c190deae273b8c63d4193b5d01d`
 - `projects_tracking/PROJECT_MANAGEMENT.md` — `a5ad86f71259a9a9d35d19673e47b7bc6768a01bc9d7fcc2b353280a26e51e52`
 - `projects_tracking/checkpoints/corr_64837e3e65928c01/000001-preflight.json` — `bcf0e56d66b584b10b7dfcc47d7f00ba3974f325e87fe16c6222a51c8412e818`
 - `projects_tracking/checkpoints/corr_64837e3e65928c01/000002-verification.json` — `812977d8f7f3648a91cc31e268f9c4e078a75f1ec86f591fef6ca5f2563da92c`
@@ -11601,7 +11601,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `providers/agency_agents/manifests/testing/testing-tool-evaluator.json` — `31890dfa4b4226f94fe1603aff32725e3fbd7abfc14f88f3edb861d766c6bdae`
 - `providers/agency_agents/manifests/testing/testing-workflow-optimizer.json` — `265888ea58e65f9c123e9ce641bcc3f7d023e6d2a768411f2fa552fbce6d9e1a`
 - `pyproject.toml` — `e1bc5f155ce6b987c43adab76428cd2f912b80ef91508d3e3e3782e2cbab98fa`
-- `registry/.operational-gap-ledger.lock` — `c102076c80a8de4573e0621a29860fc7ac98f8c2d3cf2d2c754df92b5300abf9`
+- `registry/.operational-gap-ledger.lock` — `eb916d5838884c09cf4a2a334a0ad559756728770a7b3c7322526c3ddfc88810`
 - `registry/_work_admit_payload.json` — `74eedf1ec6500953d447879970ddc8811b2e8e08077dbe816d7131eb96d00569`
 - `registry/admission_ledger.json` — `e01d29886ae5db274f9a7759eec401e407cd623f4a31b6ae8196126af98cca83`
 - `registry/admission_queue.json` — `e82e14739bd539be5b1dded83c0cea6e2b27a86359b2be03f53e7ce0037364f6`
@@ -11612,7 +11612,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `registry/agency_agent_graph.json` — `ea2643fd20c95d482b5d02a69c96109310319b6c4daddca85199bc514703702a`
 - `registry/agency_agent_registry.json` — `258d34007098b8dc4229fe26017081118248601fec017a9b85747badca5fb9c7`
 - `registry/agent_builder_reference_audit_20260814.json` — `a583c29c1fb1e479a3ecf2515a69989535eff2f5148d9e0ffbe060e8aa80fd36`
-- `registry/artifact_reachability.json` — `edbb87afb3d5987e2a8f7ded139d3bc0c23b70b857d07fcf69b6cfe1a6e01ead`
+- `registry/artifact_reachability.json` — `88861a33ce64a0ab8cab50f5e557fc2163c69c1fe417790f38f229c81ae4ff9f`
 - `registry/assurance_capabilities.json` — `3d9fbacff3f1816b9ed498f4306dbb6674860f8b2f74a61f1e104c6952a8795f`
 - `registry/authority_topology.json` — `9f366f6469bb5397a46e31d694620de95254fdb5d52077f3dcfb180f529f5ed0`
 - `registry/brain_capabilities.json` — `0c3026a78cd46576cc1320501b7a5a71f6889335b8e89d60c65440c24eb222c7`
@@ -11625,7 +11625,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `registry/capability_mining_admission.json` — `b6b0027edb851bd89e74aa0fdec96411a8092522deeb3fd971332b41d0ff53fd`
 - `registry/cognitive_dependency_resolutions.json` — `1597e90eacecad67dd2c3d4929bc907c46bd70241bcb254c87c269887b494fec`
 - `registry/cognitive_map_index.json` — `37a45491d7c81fe4329591ed9efb69027794c07e9d918b7f29ff4418b6d9e454`
-- `registry/completion_status.json` — `763111ad0c8bcbd672f297d7c9bf6f1a1e09d626d83b1cff6e59a48cd405d5d4`
+- `registry/completion_status.json` — `e3674a503f0570dfb3d5fdfa582f33929ce14c5c62ec998767b4757405ac522e`
 - `registry/contract_ownership.json` — `d29b01ea819198338ed4004b22b1821dab2621f2f0cf008cce5a3106de6eb285`
 - `registry/corrective_release_ledger.json` — `490322b4aecfdbd8cd810dbc12db74626abf11524a7d797fb03384d79583a2b4`
 - `registry/current_evidence_index.json` — `c91794dcc8bdecfbd9e6ca17e2765e8efcd9f2d879898955590772da86a6aa61`
@@ -11641,8 +11641,8 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `registry/declared_suite_reconstruction.json` — `a166977a7629808806d3a8c83d9fc29a9022e99d03fa67b2d2f428138a1dd39a`
 - `registry/declared_suite_schema_contracts.json` — `4373109fcb373d968bbc417f1eb252068fdcd868287085c5fd401a3ad5c4c51a`
 - `registry/dependency_authority.json` — `2c9c32a46abcbb3c891d46465e993601c5355d95c3769339c9186c319f8e0eec`
-- `registry/effect_surface_ownership.json` — `b813cb6524406b4bf59dfd66c41fc674c753af51af5b6549c62b07199317fcf9`
-- `registry/engine_identity.json` — `b5d7d744cd37ef1fb5bab9078395e0b181072065be68630b2d0db92978606b9b`
+- `registry/effect_surface_ownership.json` — `5e94aaf6278a7ab2d82f37e028a1f985b7a6b398f3fe10aaa7f309a5409ced24`
+- `registry/engine_identity.json` — `6098cd4b128a64622ad85f6d8925179d8c53ffcbd712762bd4ca9979fe77d4f8`
 - `registry/engineering_lifecycle.json` — `3611efe1083a211827f15e7aad820a3f15005010cfd715e7c975e798e5c78b19`
 - `registry/engineering_reasoning_expansion.json` — `876dcea64e4afbe3ffb59bf24e502c06cacd9e617c1c1010d1b30cb726501277`
 - `registry/evidence_type_policy.json` — `bee133ae5f2126e81bcf51ddbe6293c6d76c5af74fe6494ee7a7811b79916d56`
@@ -11672,7 +11672,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `registry/imported_research_ops/initialization_sequence.yaml` — `6d8e82fa72662ee8279c089983d0eb55a77ff118c0bc762b1f68749a191a3e7b`
 - `registry/imported_research_ops/operational_opportunities.yaml` — `f0500fadc17461c03387f1f6c2df5e4ee74d49cd930407dd2de2a593cc1e680d`
 - `registry/imported_research_ops/skills_registry_patch.yaml` — `6148b1cd9ae5ca62415325a11702157baec3536b552a6e34790d2be73148e1b8`
-- `registry/incomplete_finding_reviews.json` — `7d3e9d88fcaf50e13b7914b26e5d3cd6dd7b602dcd15598a35fcfe991d306254`
+- `registry/incomplete_finding_reviews.json` — `5254edda83fb83c40b43eb86020bb31766ad44a0656ac7047dae458e44b2f5e9`
 - `registry/independent_operational_audit_r1_20260815.json` — `69a162f8f0622528181c983c03b90f324cfbf1d4a301f6425a5d2e0290b91f41`
 - `registry/initial_tool_recommendations.json` — `08cb9ca16e82f1524d08c6e2fc9bb704582a41e3fc06250e6d95d35e9a6a01fd`
 - `registry/instruction_reconciliation_audit_20260816.json` — `37b7d9c08e9257bba85fed5b58ce1cdce2e628da9ff9125e26f1f1a045abee89`
@@ -11690,8 +11690,8 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `registry/operation_route_registry.json` — `d659d220e286f37d4d0959c90b5931497f09dbc56e5129b4ab4b24d8aff0aba1`
 - `registry/operational_capabilities.json` — `cbaa40028857112622214853f35ca7cdfbb9eb309e742512cf406d8c916f3b49`
 - `registry/operational_control_proof_matrix.json` — `21555e59d5bf3729d4610dbbca74d799f126af6bb543ff6da229b5a01d14244b`
-- `registry/operational_gap_ledger.head.json` — `9734f3d80ad18af59370ff358d96c900acd84e5e450f38ba46371b9f0e017888`
-- `registry/operational_gap_ledger.jsonl` — `cb53cfd30fd2eb2fd7cd088f4cbac5642464ff3d719545d53807166ec0801095`
+- `registry/operational_gap_ledger.head.json` — `274598996da1a0f238463932d8e6306638445aecf80f78f6f0dcc11b13782679`
+- `registry/operational_gap_ledger.jsonl` — `0612864c4874c19d38806c42ab24e33d2624f66570d5d6e505e52f60ded4a748`
 - `registry/operational_gap_ledger.snapshot.json` — `f86d17540afb056368b7f1454eb2fe8c5ac178f96c86f4c7a67fb0556e852a93`
 - `registry/operational_surface_aliases.json` — `7d383f9c399af8fbbf241c665440c33ef19ca17c797ec0836c5028adf8a1dcd1`
 - `registry/operational_surface_audit_20260816.json` — `e21205107d5782bf8b66015baedb3cc765df3c871338382f200d81ccd11bf011`
@@ -11704,14 +11704,14 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `registry/project_stream_capabilities.json` — `b11e9bf764539a0ac166f21a4e6ef30ff634b9926a05c923cca642d96f94dc3e`
 - `registry/project_stream_handlers.json` — `1f0cf5cab4869d714cfda23cb67c732fb02ec0215dacc942af16c82e25cc00ab`
 - `registry/project_stream_orchestrations.json` — `9b694168797af84df820e143ffa6603922c7bb80569d56ba078e6b45982a61a7`
-- `registry/projection_dependencies.json` — `6e559ca3e104e4a1d20f4b915248771d6b7700734662b43f0ec5bbc4adb89e99`
+- `registry/projection_dependencies.json` — `3fc6d6c917a4245bdd8df9b7ad96405f0fe68976a08702d62cba2507ca192541`
 - `registry/projection_staleness.json` — `5c1707f6ce7bb3dcfd9193f2871823ac4ffa2fee2d79efbe1b895b434eb698a0`
 - `registry/provider_adapters.json` — `9cbb226f2e4265095a77f7dd8de2711ee39f009fd52e66163b7fc03737e37eef`
 - `registry/provider_budget_policy.json` — `64b7d60184a6c4907006903df7ee01464ec26c4b21114eb4392eaeda4c95c10b`
-- `registry/provider_route_scan.json` — `f8f50deca77b6c614a993f1ec1dcfe551b98811b971e1d9cb3fea89e657625a7`
-- `registry/px_world_state.json` — `6c046bb92ed27badf37baa950d668db2a78b0ec1237ce7af9d0d90fea4c5871c`
+- `registry/provider_route_scan.json` — `e644518c99b3aea063c9422c04747c216649ad42eb9df1a1c97bd58156c02a71`
+- `registry/px_world_state.json` — `eddc48fdb57fa43843481cf6422050c6bbfdfaae0421c2e2dfc5a8a2ad5997fe`
 - `registry/python_dependency_ownership.json` — `a02e7decced218b83204437970541ec3bddc18017c9ad424614802d0b3c97e00`
-- `registry/python_surface_ownership.json` — `84a25dd9fed6d04c7ed4d71f3877de05c0ea4be8583e2730310d3462351bab2c`
+- `registry/python_surface_ownership.json` — `48a62698c1390409cdada66723d97b3bd1780413fc7bcbe52a0eb01e17bd539c`
 - `registry/reference_candidate_admission.json` — `39ef5749428a9c1eca265571e6771c1ed9b731ca0f68aa516f8206bcffa68fdb`
 - `registry/registry_envelope_inventory.json` — `d4c21dae28849258a210750916fa4099ff4444cd4c909e2e8f0c2c3dddcfa2c4`
 - `registry/release_fault_campaign.json` — `b22762e0c6b4c571a159ae93eb5dfbfb27533ec02b2f6b04317764924e3417f0`
@@ -11970,7 +11970,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `registry/state_artifact_classes.json` — `cbbb78181936304ad59168ee41356753603a8934fb3148434868175e02f5a4a6`
 - `registry/structural_integrity_policy.json` — `1aabdb815eb31cb1129e180c85d861c609551c5994ddf2b5a74cf9110a0b15f6`
 - `registry/studio_operations.json` — `7483f5aa94fa1ea9e1877bbae480686e4bd08ad3637e15f4f5f5624f05f4009e`
-- `registry/test_group_index.json` — `ce31ead936a03aa3ab131ad28f96ede2c73a2b856ad2f9704fc34fa77e11c877`
+- `registry/test_group_index.json` — `f0a9de4a76eaa00bda875828434dde67ba6f5f3c4aba847e61c14031e506332c`
 - `registry/test_profiles.json` — `76c4b65bf004d1437ba139095404518ce1d4cbcdd571f2281738f27558e4d555`
 - `registry/tools.json` — `daccec7bc0ce5bb9f4b8200dde4da393f45087816f6912b893fd79090d9580fe`
 - `registry/workflow_execution_bindings.json` — `3c8bbd41aabb460b0c17910bf6830fa8c2016c1f4b70e8975e5e285416eef454`
@@ -11983,7 +11983,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `runtime/__init__.py` — `7c830018fba1b10803f05ecc8a4b5ce7afefff228e4b618b42b618b03afffa2c`
 - `runtime/__main__.py` — `935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d`
 - `runtime/admission_controller.py` — `8d8a874f9a07267282e8ca68d185707183dcf3ed30a2f59dec542ed7d4c1ae5c`
-- `runtime/affected_proof.py` — `d2588965b83b53d35bfafe55211668473c70c36cc281de2ba3babf33e5a48cbe`
+- `runtime/affected_proof.py` — `986a342a79671fc90820195c6a41eb3cfe763880ce3272920bc053830a3f0df4`
 - `runtime/agency_studio_adapter.py` — `88e50223294d98e74d9cd5b97afa98f9bfa6e19322b54955b1ca6667a0693c2e`
 - `runtime/agent_builder.py` — `75f7c4f53a7b7baa2bc01ee1083e5bc1c013fd2e6932df23debc4b3561a26dd1`
 - `runtime/agent_fleet_controls.py` — `a7a360e84200bf19179ebed193cbe23219264d2ee260d7710b68a90941f129a8`
@@ -12140,7 +12140,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `runtime/primitive_authority.py` — `38f8756b10bbf2cf770ef886db2aad3f45546211dd5e05a0ffab1c6a2a8e7849`
 - `runtime/primitive_lint.py` — `9a9316b20f30e6b314c0495e09f7a85fc59b7282114f0e74d526a4f86fac9ff2`
 - `runtime/process_memory.py` — `0387613096c58a4bcb3d7af2d9eee7983061cec76948b2ec85557448b532b6c8`
-- `runtime/process_supervisor.py` — `64faa20b666d19cd3723033c5c4b54cdc6f16082be91d23569f4dbb7a1d977c3`
+- `runtime/process_supervisor.py` — `49e599058d1b8200a2083ccbc2bc8c078d49c5556372a04a07ae04df8c64b94f`
 - `runtime/profiles.py` — `09a0d36639b8c47292200851830e22af7bfe96f468bbcd57daaa90881171d984`
 - `runtime/project_control_plane.py` — `59c2a5722b3e7554f0c305bfd72631c99d311f8648442b198a27762823da22de`
 - `runtime/project_impact.py` — `fff696ab1f24a6adac09874437750c8ce0b0fef51dabb7316ea5c6db95d874e8`
@@ -12158,7 +12158,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `runtime/provider_certification.py` — `c9b964e4752e01299ba2aa5ad74fd07bbe4853b0c9fa5a87072419ff3bb71b56`
 - `runtime/provider_gateway.py` — `231f9479f587103fb599d9d7953a369c65f85619c0663a782254dd2898551d68`
 - `runtime/px_doctor.py` — `f978a3714fa061694bd4dd80ff3d4155d8aa704bf9d66b058d6a8d7301cacad0`
-- `runtime/python_surface_certification.py` — `bad3e51fded23a6146c56bb9040cf3b72a8c5d750222c08922c79f393792d6c3`
+- `runtime/python_surface_certification.py` — `650a673b56f630e6e75ad32bac5ba78a6131734f79e23b14a99d3a1848548bd5`
 - `runtime/query_certification.py` — `e37ed30394b9bc7ed4056f24df75da0aef9e506ba70c07e1988772cc1ae1e880`
 - `runtime/reasoning_controls.py` — `519b56787d315d668cc84d085de689d0ef7a0a4dc398e9515913e5a7c29eb248`
 - `runtime/recovery.py` — `665b1f2cd8925f7b86e94aa12c169b7f1022dc5c487261539b0d23bb89ca2013`
@@ -12178,7 +12178,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `runtime/release_signing.py` — `247e3f5b1bf0ad1544a3a693d509009bd53bd13034e5021c37b3641d88aeee3a`
 - `runtime/release_skip_policy.py` — `53009b4afc494d3dd8fe285ddcecdd4dd46de01a79f50567b6c18283ec75ec7c`
 - `runtime/repair_root_analysis.py` — `994293d6ea9a47ab8ee9924a370cfb5404743b98b2b0118362df643e8801662e`
-- `runtime/repository_scope.py` — `9a643fadc4d424f078e2e1dfdff6e99f5fa11222a121042296dee0e7f1568df4`
+- `runtime/repository_scope.py` — `31c63ee7913f9debed05e2c188c2121bf44bf5be66746b012a8d14bd2298ba2f`
 - `runtime/research_assimilation.py` — `44c0e83da9435e85e25ef708bdbeadef7fd75094e4dbfb23ed30613b8f647ce4`
 - `runtime/resource_lifecycle.py` — `80edee94e55ecdc79766eaf92d1418bc4f580d06483f00f36518e56a4deecdca`
 - `runtime/resource_storage.py` — `4f8ef22aea6f1b4b8d91bff24249a55ae2f0c1bad1a8775edb4d656aa7ce6427`
@@ -12198,7 +12198,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `runtime/source_coverage.py` — `fb008f450b4df3ae99897b1b81f7fd5aeffa9e97c34dae4b1630be3ef0bc29f9`
 - `runtime/startup.py` — `8971ff11d4868d71e03c341d5c20f60659e87241a4fd10ed16b159996f63967a`
 - `runtime/state_invariants.py` — `f76355af6330f05b284795e5b59b1dda1ad6a48d36fff88d8756152627a36e79`
-- `runtime/structural_integrity.py` — `c1829bb0e222767e09cb3a0086c9805077e09d9a3274a36fb7943032dd122f76`
+- `runtime/structural_integrity.py` — `a9ac260934fca07bceee3d08bf96e76d53bb97e5ab997a9ce0cc4932bf0c8dff`
 - `runtime/studio_api.py` — `5cc600bd3bcefaaa059920c7c3f17e9758e5a9171933eb9062a1bb3348d9aa27`
 - `runtime/studio_approval.py` — `64a4151d879737b9ff20b4d8f1df79fe046bc60939ba32ca3af87e4e39abc79f`
 - `runtime/studio_authority.py` — `b359d5eafdfc24a4d4da3e7feb6ec8d0153a16e860b320bbf55b21ec085592f1`
@@ -12417,7 +12417,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `tests/repository_copy.py` — `5a2387968a2e1abec840554dbfce9dc2b813b2cd38494e9d848ea96fecc4ff6b`
 - `tests/studio_approval_testkit.py` — `2d6b17ff25359b81be88fa0b39c4107fc10961efed46055b360dedf398447289`
 - `tests/test_admission_controller.py` — `11466fcd9450d8a5d5a8f5da5bf4950582c4261dcd7c8d0d6ba904499f092073`
-- `tests/test_affected_proof.py` — `2bb7a41a405268fdc301b856b58912e4995bf4feff9c6f58c2713def29660f4c`
+- `tests/test_affected_proof.py` — `862bd8617c5f556f8270c3124f2be60703cece738722bb1d6d42a28e502105d7`
 - `tests/test_agency_studio_adapter.py` — `3123527fc1a4e9c0b438419552e875a271d784a0eb0f20c76544499182d14588`
 - `tests/test_agent_builder.py` — `022542931d4d41a615faec1a9717e9cbf6ebe68731306f7e6ee086b29ac884b3`
 - `tests/test_agent_builder_inputs.py` — `913b118ccbd7cbe836f34e7bb21fd620f9a0bc5d719a6833340ec48072519af6`
@@ -12590,7 +12590,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `tests/test_process_lifecycle_wal_recovery_images.py` — `c9b9682881441d180bc046f991c62a88901a5e95f6f147014a6954ffcff27417`
 - `tests/test_process_lifecycle_windows_creation.py` — `c6b1828d891d29678ab035797c531eb1c131de4da064c98cd880a5c1a1bbe33e`
 - `tests/test_process_memory.py` — `eac40af538679c2209936804dab27134ac17ea609853d82d4d8725c18749e68e`
-- `tests/test_process_supervisor.py` — `862addf774536dd09169b839e94ad893d581f1d6df2261a92d0cbe97db74b518`
+- `tests/test_process_supervisor.py` — `a2ca4e37970d83dce1b8be3d3ad52120c51e9c89f3dea6d12e9b6d2e7e30091e`
 - `tests/test_project_brief.py` — `1c10f07bdb354d44890cceb7f729ecd8f40ee7773aa0a755af403ff59679f16c`
 - `tests/test_project_control_plane.py` — `9460701b66433067274ef098ab4b67160c5e9ab63fac13a4c50173c5af129bb7`
 - `tests/test_project_map_history_archive.py` — `a221afbec23f546ac23c4cea310545900e708c6e4898f9d2698e402642d85ae1`
@@ -12606,7 +12606,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `tests/test_public_repository_surface.py` — `fb5c550280eb6e9f6e254d43ebcb26a09bccf576019689813daf7bef69334026`
 - `tests/test_punch_card_reconciliation.py` — `550e622d01cdeee5c6ccb8a439cc43dbe71aa9dcbc9df1746bd9da0876252e3d`
 - `tests/test_px_doctor.py` — `ffcfa4030c96754a18440e5a6fcde3b8ea72056ccf1f9fce9130677e7f9399fb`
-- `tests/test_python_surface_boundaries.py` — `308aef9dcd6620944e623107b0be6fa0e097889f65844be9a50fd5ecbbb58b52`
+- `tests/test_python_surface_boundaries.py` — `c37370f7ad770628c93eceb031bc8cd6e3d1a5bfdebc085792ad461a4144589b`
 - `tests/test_quarantine_paths.py` — `4a8bef05a21075f7d1260e287ea75bdd64d0e24e5e437387f20964c058182fe5`
 - `tests/test_quickstart_demo.py` — `ea276215524b83d1191192a3686949358eee1e2c03fa6114a451e085fc70a17f`
 - `tests/test_reasoning_input_contracts.py` — `d2c98dcac676f42b04ebd9b2d6f312a6c55f33ffc2369da811dcdbd159c01a64`
@@ -12624,7 +12624,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `tests/test_release_audit.py` — `6959b52b3eba61850a1080342a132e638b42b9c614970352da0137fd334d0761`
 - `tests/test_release_boundary_diff.py` — `190bac4c610b574adaab3d16f1b6773d08f2fd468c9c3d5c48f533fb03330d73`
 - `tests/test_release_candidate_driver.py` — `6b23e0b16251a5272343fcf53e78052ae75ac5e8b9676b0c8033970e0be6df27`
-- `tests/test_release_certification.py` — `9480bbe9678eeefd66c52374f5d9f5bb5c5a41b2cf6dc90a9382a2f87da6402f`
+- `tests/test_release_certification.py` — `fd1f13e274632db49991cd1342e3f9b5e3a5736fa90362ca33414c2de2051c14`
 - `tests/test_release_concurrency_stress.py` — `c6b1626dbdad81d3ce0f683428b1c0d6ef4e0b3b65ed4e43eafccd7e7da59722`
 - `tests/test_release_distribution_controls.py` — `0dc43be751eca168e9c1cfe0c41c8add373c446f65b39579d06e016e6c207b79`
 - `tests/test_release_environment.py` — `fa19d81f0612cca9186f6fc1f6ad596ea6f9dfd3a8816020ba996fb62915a024`
@@ -12644,7 +12644,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `tests/test_release_streaming_inputs.py` — `7625c3df557401d1700b37529049b2e7e0124a5acb6e672d9b214ca5610f514d`
 - `tests/test_release_supply_chain_evidence.py` — `c931a5afc0864bac4de9f3de4aece0801257ff3b8a0a2b7ce0e74b3712b3d970`
 - `tests/test_repair_root_analysis.py` — `c0b82728e36f4528136924bcb965b9dddad70e98c08b6ec4dbaef33bbc53df34`
-- `tests/test_repository_scope.py` — `f1f447fd541b4d96fefadd2ef2fb69542a61e1f6b3fd55453f9962a8c3efda10`
+- `tests/test_repository_scope.py` — `03f93902104a22d5d36b4d60d209a87f558db111fdf221e92a2c0e4dc20e0ed0`
 - `tests/test_research_contract_admission.py` — `3d789053e543688870aebd8358688b6cf345e18fbe986d833eac3a561ac843cd`
 - `tests/test_resource_lifecycle.py` — `13c4a792df2087436b17553cbd60878340bdca7441a8826366d0730aea58e0f8`
 - `tests/test_resource_storage.py` — `ccef059933407f26d795982a28d66002d3a8ae8708a4b41771aabf267433a02d`
@@ -12689,7 +12689,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `tests/test_task_execution_plan.py` — `45a54adf2fe6afaf1c831cfe557b1cd95bd7ee516684042b70c78c3af6a96348`
 - `tests/test_temp2_completeness.py` — `5fcad3a290c8ce0bd93edfb79cc283e92ff4db880b8ee5bbb6de150d6f88fce2`
 - `tests/test_test_evidence_inputs.py` — `abd06f0bdfe6e9289a6cbc385e721f466fbbbb698733679db82364d4f498ecea`
-- `tests/test_test_profiles.py` — `ee7d00b4cd92dfb6d94d5e9abbbe2e14abc08c1084e39bb5967171512ab8c22a`
+- `tests/test_test_profiles.py` — `49c0b48fe1f918b68ad01f12375329f7e558ac2a73b32c12978b5a66a3252745`
 - `tests/test_test_runner_controls.py` — `4ab8fb05376bf6c717ad4c3008fc98b9cb8632f8fd2d9b2173bda679a98d0e24`
 - `tests/test_tool_intake.py` — `50fed318d4142ee6053551d15051a3cb92941f59052ea9bab59f88cf7c4638e4`
 - `tests/test_tool_recommendations.py` — `3f8753f326f96b0cb2cb135863d0f615b5011de46940a11f1da9a3b7d7280e52`
@@ -12712,7 +12712,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `tests/test_wave5_builders.py` — `eb254b84d2bfffe667bf5453aeba07babed7a2b5b3bfd219307a6363c61c8d67`
 - `tests/test_work_admission.py` — `7fc0266e8a3cc23adafa30a85b0b194455c2df377246b3f43b1a45e9418f4bad`
 - `tests/test_workflow_declaration_inputs.py` — `69062cbc9f0845b27b0669ab02a6a6739a32c6658583bc525dbb434161d99531`
-- `tests/test_workflow_studio.py` — `f43961b0924b9f53420f0d2687c5c6d485573ada70771344e6a008ce17d37125`
+- `tests/test_workflow_studio.py` — `0a8b2a63299c51498bdb98b2daf155116360689ba756673402a60987818819b2`
 - `tests/test_workspace_cli.py` — `473874ba95469145e754808f13663018946b2d6a16880233a1acbf62f2538dd7`
 - `tests/test_workspace_manager.py` — `5c965e7c04d5e6f085df2575005c990f57476d371c922d7f7de1b1b22a09cec8`
 - `tests/test_world_state.py` — `31268414b18e8ef3bce8045fa1d8355b49a06fcb7351257f35a78d02c642caba`

@@ -13,6 +13,7 @@ from pathlib import Path
 
 EXCLUDES = {
     ".git",
+    ".tmp",
     ".venv",
     ".vscode-test",
     "Python",

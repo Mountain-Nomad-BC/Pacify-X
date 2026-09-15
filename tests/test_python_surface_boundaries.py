@@ -16,6 +16,10 @@ def test_repository_local_interpreters_are_dependencies_not_owned_source(tmp_pat
     (tmp_path / ".venv-certify" / "Lib" / "site-packages" / "foreign.py").write_text("VALUE = 2\n", encoding="utf-8")
     (tmp_path / "Python" / "Lib").mkdir(parents=True)
     (tmp_path / "Python" / "Lib" / "foreign.py").write_text("VALUE = 3\n", encoding="utf-8")
+    atlas_tools = tmp_path / "docs" / "architecture" / "tools"
+    atlas_tools.mkdir(parents=True)
+    for name in ("build_atlas.py", "verify_atlas_browser.py", "verify_obsidian_native.py"):
+        (atlas_tools / name).write_text("VALUE = 4\n", encoding="utf-8")
 
     result = certify_python_surfaces(
         tmp_path,
@@ -24,9 +28,21 @@ def test_repository_local_interpreters_are_dependencies_not_owned_source(tmp_pat
     )
 
     paths = {record["path"] for record in result["records"]}
-    assert paths == {"conftest.py", "runtime/owned.py", "tests/test_owned.py"}
+    assert paths == {
+        "conftest.py", "runtime/owned.py", "tests/test_owned.py",
+        "docs/architecture/tools/build_atlas.py",
+        "docs/architecture/tools/verify_atlas_browser.py",
+        "docs/architecture/tools/verify_obsidian_native.py",
+    }
     assert result["role_counts"].get("unknown", 0) == 0
     harness = next(record for record in result["records"] if record["path"] == "conftest.py")
     assert harness["role"] == "release-test-harness"
     assert harness["validation_level"] == "executable-test"
     assert harness["packaged"] is False
+    atlas = {
+        record["path"]: record
+        for record in result["records"]
+        if record["path"].startswith("docs/architecture/tools/")
+    }
+    assert atlas["docs/architecture/tools/build_atlas.py"]["role"] == "source-build-control"
+    assert all(record["packaged"] is False for record in atlas.values())

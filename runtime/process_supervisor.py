@@ -53,14 +53,26 @@ def _inside(path: Path, root: Path) -> bool:
         return False
 
 
-def _path_consumption_bytes(path: Path) -> int:
-    """Return bounded-path logical bytes without following directory symlinks."""
+def _path_consumption_bytes(
+    path: Path, seen_files: set[tuple[int, int]] | None = None
+) -> int:
+    """Count unique owned file identities without following directory symlinks."""
+
+    seen_files = seen_files if seen_files is not None else set()
+
+    def admitted_size(info: os.stat_result) -> int:
+        identity = (info.st_dev, info.st_ino)
+        if info.st_ino and identity in seen_files:
+            return 0
+        if info.st_ino:
+            seen_files.add(identity)
+        return info.st_size
 
     try:
         if path.is_symlink():
             return 0
         if path.is_file():
-            return path.stat().st_size
+            return admitted_size(path.stat())
         if not path.is_dir():
             return 0
     except OSError:
@@ -78,7 +90,12 @@ def _path_consumption_bytes(path: Path) -> int:
                         if entry.is_dir(follow_symlinks=False):
                             pending.append(Path(entry.path))
                         elif entry.is_file(follow_symlinks=False):
-                            total += entry.stat(follow_symlinks=False).st_size
+                            info = entry.stat(follow_symlinks=False)
+                            # Windows DirEntry.stat may omit file IDs even on NTFS;
+                            # os.stat supplies the stable identity for hardlinks.
+                            if not info.st_ino:
+                                info = os.stat(entry.path, follow_symlinks=False)
+                            total += admitted_size(info)
                     except OSError:
                         continue
         except OSError:
@@ -96,7 +113,8 @@ def _disk_consumption_bytes(paths: Sequence[Path]) -> int:
     ):
         if not any(_inside(candidate, root) for root in roots):
             roots.append(candidate)
-    return sum(_path_consumption_bytes(path) for path in roots)
+    seen_files: set[tuple[int, int]] = set()
+    return sum(_path_consumption_bytes(path, seen_files) for path in roots)
 
 
 @dataclass(frozen=True, slots=True)

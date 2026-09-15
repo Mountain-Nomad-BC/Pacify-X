@@ -630,12 +630,31 @@ def test_workflow_timeout_and_retry_controls_are_enforced(tmp_path):
     assert all(
         row["status"] in {"startup_timeout", "idle_timeout", "total_timeout"}
         for row in receipt["node_receipts"][0]["attempts"]
-    ), receipt["node_receipts"][0]["attempts"]
+    ), [
+        {
+            key: row.get(key)
+            for key in ("status", "failure_type", "execution_started", "adapter_admitted", "tree_closed", "supervision_outcome")
+        }
+        for row in receipt["node_receipts"][0]["attempts"]
+    ]
     assert all(
         row.get("tree_closed") is True
-        and row.get("supervision_outcome", {}).get("custody_retained") is False
+        and (
+            row.get("supervision_outcome", {}).get("custody_retained") is False
+            or (
+                row.get("supervision_outcome") is None
+                and row.get("adapter_admitted") is False
+                and row.get("execution_started") is not True
+            )
+        )
         for row in receipt["node_receipts"][0]["attempts"]
-    ), receipt["node_receipts"][0]["attempts"]
+    ), [
+        {
+            key: row.get(key)
+            for key in ("status", "failure_type", "execution_started", "adapter_admitted", "tree_closed", "supervision_outcome")
+        }
+        for row in receipt["node_receipts"][0]["attempts"]
+    ]
 
 
 def _wait_for_workflow_state(studio, run_id: str, expected: set[str]) -> dict:

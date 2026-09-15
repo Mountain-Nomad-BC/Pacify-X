@@ -757,6 +757,10 @@ def test_certificate_verifier_binds_artifacts_to_recorded_frozen_manifest(
         lambda *_args, **_kwargs: {"valid": True, "errors": []},
     )
     monkeypatch.setattr(
+        "runtime.release_certification._verify_release_gate_binding",
+        lambda *_args, **_kwargs: [],
+    )
+    monkeypatch.setattr(
         "runtime.release_certification._certificate_ledger_errors", lambda *_args: []
     )
 

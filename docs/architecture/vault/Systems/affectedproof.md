@@ -30,8 +30,8 @@ No autonomous adaptation established; changes require its declared caller or own
 
 Historical source model; file hashes refreshed. Byte agreement does not prove current behavior. This note is not a repair-closure receipt.
 
-- [[Evidence/S1508]] — same-file-bytes
-- [[Evidence/S1509]] — same-file-bytes
+- [[Evidence/S1508]] — changed-file
+- [[Evidence/S1509]] — changed-file
 - [[Evidence/S1698]] — changed-file
 
 ## Directed relationships

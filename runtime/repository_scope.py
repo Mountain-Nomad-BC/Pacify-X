@@ -83,6 +83,8 @@ def is_external_environment_relative(relative: str | Path) -> bool:
             (".px", "preserved-skills"),
             (".px", "preserved-extension-installations"),
         }
+        or parts[:3]
+        == (".engineering-bootstrap", "processing-order", "architecture-repair-wal")
         or (
             len(parts) >= 2
             and parts[0] == ".engineering-bootstrap"

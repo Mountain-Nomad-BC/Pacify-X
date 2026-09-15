@@ -53,6 +53,11 @@ def _role(relative: str) -> tuple[str, str, bool]:
         return "source-build-control", "project-release-control", False
     if relative == "conftest.py":
         return "release-test-harness", "release-verification", False
+    if parts[:3] == ["docs", "architecture", "tools"]:
+        if parts[-1] == "build_atlas.py":
+            return "source-build-control", "architecture-atlas", False
+        if parts[-1] in {"verify_atlas_browser.py", "verify_obsidian_native.py"}:
+            return "release-test-harness", "architecture-atlas-verification", False
     if parts[:2] == ["extension", "tests"]:
         return "extension-release-test", "vscode-extension-verification", False
     if parts[:2] == ["extension", "scripts"]:

@@ -2,7 +2,7 @@
 canonical_id: "fixturecopyboundary"
 kind: system
 layer: scope
-currentness: same-file-bytes
+currentness: changed-file
 runtime_observed: false
 certified: false
 ---
@@ -31,7 +31,7 @@ No autonomous adaptation established; changes require its declared caller or own
 Historical source model; file hashes refreshed. Byte agreement does not prove current behavior. This note is not a repair-closure receipt.
 
 - [[Evidence/S4070]] — same-file-bytes
-- [[Evidence/S4362]] — same-file-bytes
+- [[Evidence/S4362]] — changed-file
 
 ## Directed relationships
 

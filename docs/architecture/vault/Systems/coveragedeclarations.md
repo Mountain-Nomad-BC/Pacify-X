@@ -33,7 +33,7 @@ Historical source model; file hashes refreshed. Byte agreement does not prove cu
 - [[Evidence/S3053]] — same-file-bytes
 - [[Evidence/S1653]] — same-file-bytes
 - [[Evidence/S2802]] — changed-file
-- [[Evidence/S2778]] — same-file-bytes
+- [[Evidence/S2778]] — changed-file
 
 ## Directed relationships
 

@@ -601,15 +601,15 @@ def test_trailing_recursive_section_pattern_includes_nested_files(tmp_path):
 
 
 def test_section_status_refuses_missing_or_stale_receipts(monkeypatch):
-    from runtime import test_profiles
+    from runtime import verification_status
 
-    original = test_profiles.resolve_test_section
+    original = verification_status.resolve_test_section
 
-    def stale(root, name):
-        value = original(root, name)
+    def stale(root, name, *, capture=None):
+        value = original(root, name, capture=capture)
         return {**value, "input_sha256": "0" * 64}
 
-    monkeypatch.setattr(test_profiles, "resolve_test_section", stale)
+    monkeypatch.setattr(verification_status, "resolve_test_section", stale)
     status = section_status(ROOT)
     assert not status["valid"]
     assert set(status["required_sections"]) == {

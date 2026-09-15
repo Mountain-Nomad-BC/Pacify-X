@@ -5394,8 +5394,7 @@
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 2,
-      "changed-file": 1
+      "changed-file": 3
     },
     "runtime_observed": false,
     "certified": false,
@@ -6514,8 +6513,8 @@
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 3,
-      "changed-file": 1
+      "same-file-bytes": 2,
+      "changed-file": 2
     },
     "runtime_observed": false,
     "certified": false,
@@ -8285,11 +8284,11 @@
     "note": "vault/Systems/pythonsurface.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 1
+      "changed-file": 1
     },
     "runtime_observed": false,
     "certified": false,
@@ -17295,11 +17294,11 @@
     "note": "vault/Systems/affectedproofmeta.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 1
+      "changed-file": 1
     },
     "runtime_observed": false,
     "certified": false,
@@ -26060,11 +26059,11 @@
     "note": "vault/Systems/pythonsurfaceproof.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 1
+      "changed-file": 1
     },
     "runtime_observed": false,
     "certified": false,
@@ -26101,11 +26100,11 @@
     "note": "vault/Systems/pythoninstalledrecord.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 2
+      "changed-file": 2
     },
     "runtime_observed": false,
     "certified": false,
@@ -36516,11 +36515,11 @@
     "note": "vault/Systems/legacyincompleteids.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 1
+      "changed-file": 1
     },
     "runtime_observed": false,
     "certified": false,
@@ -36556,11 +36555,11 @@
     "note": "vault/Systems/legacyincompletereviews.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 1
+      "changed-file": 1
     },
     "runtime_observed": false,
     "certified": false,
@@ -38690,11 +38689,12 @@
     "note": "vault/Systems/fixturecopyboundary.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 2
+      "same-file-bytes": 1,
+      "changed-file": 1
     },
     "runtime_observed": false,
     "certified": false,

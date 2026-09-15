@@ -45,6 +45,14 @@ def fixture(tmp_path: Path):
             ]
         },
     )
+    _write(
+        tmp_path / "registry/dependency_authority.json",
+        json.loads(
+            (Path(__file__).parents[1] / "registry/dependency_authority.json").read_text(
+                encoding="utf-8"
+            )
+        ),
+    )
     return cards
 
 

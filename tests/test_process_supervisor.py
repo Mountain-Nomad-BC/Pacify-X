@@ -18,6 +18,20 @@ from runtime.process_supervisor import ProcessSupervisor, _BoundedCapture
 from runtime.resource_lifecycle import ResourceManager, ResourceStatus
 
 
+def test_owned_disk_accounting_counts_hardlinks_once_and_distinct_copies_twice(
+    tmp_path: Path,
+) -> None:
+    source = tmp_path / "source.bin"
+    source.write_bytes(b"x" * 4096)
+    try:
+        os.link(source, tmp_path / "linked.bin")
+    except OSError as error:
+        pytest.skip(f"owned fixture filesystem does not support hardlinks: {error}")
+    assert process_supervisor_module._disk_consumption_bytes((tmp_path,)) == 4096
+    (tmp_path / "copied.bin").write_bytes(source.read_bytes())
+    assert process_supervisor_module._disk_consumption_bytes((tmp_path,)) == 8192
+
+
 def _calibrated_python_startup_timeout() -> float:
     """Give semantic tests a measured interpreter-start margin on this host."""
     samples: list[float] = []
