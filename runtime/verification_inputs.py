@@ -74,9 +74,16 @@ class CapturedInputs:
             type(deadline) not in (int, float) or not math.isfinite(deadline)
         ):
             raise ValueError("deadline must be a finite number")
-        self.deadline = min(
-            deadline if deadline is not None else started + 60, started + 60
-        )
+        # The owned full-profile command has its own supervised stage clock.
+        # Its final currentness pass must not inherit this short metadata clock
+        # after a long queue of group tests. All acquisition size and membership
+        # limits, including the complete second content pass, still apply.
+        if os.environ.get("PX_FULL_PROFILE_SOURCE_NO_TIMER") == "1":
+            self.deadline = float(deadline) if deadline is not None else 1e99
+        else:
+            self.deadline = min(
+                deadline if deadline is not None else started + 60, started + 60
+            )
         check_deadline(self.deadline)
         self.root = directory_root(root)
         check_deadline(self.deadline)

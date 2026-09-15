@@ -180,7 +180,7 @@ def build_index(root):
     return {**body, 'index_sha256': hashlib.sha256(json.dumps(body, sort_keys=True, separators=(',', ':')).encode()).hexdigest()}
 
 
-def resolve_groups(root, *, capture=None):
+def resolve_groups(root, *, capture=None, historical_index=False):
     from runtime.input_files import contained_file, read_file_image
     from runtime.json_io import decode_json_object
 
@@ -202,14 +202,17 @@ def resolve_groups(root, *, capture=None):
     supplied = index['index_sha256']
     body = {k: v for k, v in index.items() if k != 'index_sha256'}
     digest = hashlib.sha256(json.dumps(body, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
-    if type(supplied) is not str or supplied != digest or index['dependency_parser'] != _parser_identity():
+    parser_current = index['dependency_parser'] == _parser_identity()
+    if type(supplied) is not str or supplied != digest or (not parser_current and not historical_index):
         raise ValueError('test group index content or parser identity is invalid')
-    if index['topology_sha256'] != _topology(capture.config):
+    topology_current = index['topology_sha256'] == _topology(capture.config)
+    if not topology_current and not historical_index:
         raise ValueError('test group topology is stale; explicit reconciliation required')
     if type(index['groups']) is not list or len(index['groups']) != len(definitions):
         raise ValueError('test group index denominator is invalid')
     groups, tests = _group_rows(capture)
-    if type(index['test_file_count']) is not int or index['test_file_count'] != len(tests):
+    membership_current = type(index['test_file_count']) is int and index['test_file_count'] == len(tests)
+    if type(index['test_file_count']) is not int or (not membership_current and not historical_index):
         raise ValueError('test group membership is stale; explicit reconciliation required')
     if type(index['files']) is not dict or len(index['files']) > 20000:
         raise ValueError('test group index file records are invalid')
@@ -235,9 +238,9 @@ def resolve_groups(root, *, capture=None):
     for current, stored in zip(groups, index['groups'], strict=True):
         if type(stored) is not dict or set(stored) != set(current):
             raise ValueError('test group index contains missing or reserved fields')
-        if stored['group'] != current['group'] or stored['members'] != current['members']:
+        if stored['group'] != current['group'] or (stored['members'] != current['members'] and not historical_index):
             raise ValueError('test group membership is stale; explicit reconciliation required')
-        fresh = stored == current and file_metadata_current
+        fresh = stored == current and file_metadata_current and parser_current and topology_current and membership_current
         # Build execution metadata solely from the freshly resolved definition.
         result.append({**current, 'schema_version': 'px.test-group/1.0', 'valid': fresh,
                        'index_current': fresh, 'scan_inventory_current': stored['scan_inputs'] == current['scan_inputs'],
@@ -249,9 +252,9 @@ def resolve_groups(root, *, capture=None):
     return result
 
 
-def group_status(root):
+def group_status(root, *, historical_index=False):
     capture = CapturedInputs(root)
-    groups = resolve_groups(root, capture=capture)
+    groups = resolve_groups(root, capture=capture, historical_index=historical_index)
     names = required(capture.config, 'groups', capture.config['groups'])
     rows = []
     for group in groups:

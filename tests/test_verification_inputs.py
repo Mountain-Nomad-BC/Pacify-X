@@ -8,9 +8,19 @@ import pytest
 
 from runtime import test_profiles as owner
 from runtime.verification_inputs import CapturedInputs, resolve_test_section
-
-
 from tests.verification_fixtures import fixture
+
+
+def test_full_profile_capture_disables_only_the_short_metadata_timer(tmp_path, monkeypatch):
+    fixture(tmp_path)
+    monkeypatch.setenv("PX_FULL_PROFILE_SOURCE_NO_TIMER", "1")
+    capture = CapturedInputs(tmp_path)
+    assert capture.deadline == 1e99
+    capture.capture("registry/test_profiles.json")
+    capture.verify()
+    monkeypatch.delenv("PX_FULL_PROFILE_SOURCE_NO_TIMER")
+    ordinary = CapturedInputs(tmp_path)
+    assert ordinary.deadline < 1e99
 
 
 def test_multifile_chunks_preserve_the_exact_ordered_member_denominator(tmp_path):

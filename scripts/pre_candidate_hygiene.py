@@ -709,15 +709,20 @@ def assess(
     from runtime.release_audit import audit_generated_artifact_hygiene
     from runtime.release_campaign import release_campaign_status
     from runtime.resource_lifecycle import resource_status
-    from runtime.test_profiles import group_status, section_status
+    from runtime.test_profiles import section_status
+    from runtime.verification_status import group_status
 
     classification = classify_tree(root)
     generated = audit_generated_artifact_hygiene(root)
     resources = resource_status(root / ".engineering-bootstrap/resource-lifecycle/ledger.json")
-    groups = group_status(root)
-    sections = section_status(root)
     release = release_campaign_status(root, verify_source=False)
     source_release = release_campaign_status(root, verify_source=True)
+    historical_index = (
+        release.get("campaign_id") == predecessor_campaign_id
+        and release.get("state") in {"failed", "active", "cleared"}
+    )
+    groups = group_status(root, historical_index=historical_index)
+    sections = section_status(root)
     failed_stages = [
         name
         for name, record in release.get("stages", {}).items()

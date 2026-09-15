@@ -4,6 +4,7 @@ import json
 import hashlib
 from pathlib import Path
 import zipfile
+import pytest
 
 import runtime.evidence_index as evidence_index
 from runtime.evidence_index import build_index, publish_index
@@ -13,6 +14,7 @@ from runtime.test_profiles import (
     resolve_test_group,
     resolve_test_section,
 )
+from runtime.verification_status import group_status as verification_group_status
 
 
 def _fixture(root: Path) -> None:
@@ -55,6 +57,8 @@ def _fixture(root: Path) -> None:
     (registry / "test_group_index.json").write_text(
         json.dumps(build_test_group_index(root)), encoding="utf-8"
     )
+
+
     section = resolve_test_section(root, "gate")
     group = resolve_test_group(root, "all")
     from runtime.test_profiles import (
@@ -64,6 +68,30 @@ def _fixture(root: Path) -> None:
                  "duration_seconds": 0.1, "stdout": "1 passed\n", "stderr": ""}
     write_section_receipt(root, section_receipt(section, execution))
     write_group_receipt(root, group_receipt(group, execution))
+
+
+def test_historical_group_index_is_stale_and_never_current_authority(tmp_path):
+    _fixture(tmp_path)
+    path = tmp_path / "registry/test_group_index.json"
+    index = json.loads(path.read_text(encoding="utf-8"))
+    index["dependency_parser"]["source_sha256"] = "0" * 64
+    body = {key: value for key, value in index.items() if key != "index_sha256"}
+    index["index_sha256"] = hashlib.sha256(
+        json.dumps(body, sort_keys=True, separators=(",", ":")).encode()
+    ).hexdigest()
+    path.write_text(json.dumps(index), encoding="utf-8")
+
+    with pytest.raises(ValueError, match="parser identity"):
+        resolve_test_group(tmp_path, "all")
+    historical = verification_group_status(tmp_path, historical_index=True)
+    assert historical["valid"] is False
+    assert [row["group"] for row in historical["groups"]] == ["all"]
+    assert historical["groups"][0]["current"] is False
+
+    index["index_sha256"] = "0" * 64
+    path.write_text(json.dumps(index), encoding="utf-8")
+    with pytest.raises(ValueError, match="index content"):
+        verification_group_status(tmp_path, historical_index=True)
 
 
 def test_engine_identity_excludes_test_group_topology(tmp_path) -> None:
