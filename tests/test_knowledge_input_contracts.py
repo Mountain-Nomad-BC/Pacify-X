@@ -355,8 +355,14 @@ def test_expired_nested_acquisition_does_not_open_another_image(tmp_path, monkey
         owner._image(target)
         owner._image(target)
 
-    with pytest.raises(ValueError, match="duration budget"):
-        nested(c)
+    token = module._ACTIVE_INPUTS.set(
+        (c, {"deadline": 160.0, "bytes": 0, "files": 0, "entries": 0})
+    )
+    try:
+        with pytest.raises(ValueError, match="duration budget"):
+            nested(c)
+    finally:
+        module._ACTIVE_INPUTS.reset(token)
     assert reads == [target]
     assert c._image(target) == b"fixture"
 

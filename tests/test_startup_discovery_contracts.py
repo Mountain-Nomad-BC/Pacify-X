@@ -384,7 +384,7 @@ def test_name_iterator_exhaustion_is_checked_against_deadline(monkeypatch):
         now[0] += 61.0
 
     with pytest.raises(ValueError, match="cooperative duration"):
-        tooling.bounded_tool_names(names())
+        tooling.bounded_tool_names(names(), deadline=160.0)
 
 
 def test_discovery_preserves_spaces_plus_and_shared_family_aliases(tmp_path):
