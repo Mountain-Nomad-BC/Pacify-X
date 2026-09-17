@@ -13,10 +13,10 @@ import os
 import time
 from uuid import uuid4
 
-from runtime.archive_io import reject_path_links
-from runtime.file_lock import FileLock
-from runtime.input_files import contained_file, directory_root, read_file_image, relative_source_path
-from runtime.json_io import decode_json_object
+from .archive_io import reject_path_links
+from .file_lock import FileLock
+from .input_files import contained_file, directory_root, read_file_image, relative_source_path
+from .json_io import decode_json_object
 
 LIMIT = 1024 * 1024
 SCHEMAS = {
@@ -130,7 +130,7 @@ def execution_fields(execution):
 
 
 def _valid_chunk_summary(row):
-    from runtime.test_profiles import _valid_bounded_output_evidence
+    from .test_profiles import _valid_bounded_output_evidence
 
     if type(row) is not dict or set(row) != CHUNK_SUMMARY:
         return False
@@ -171,7 +171,7 @@ def _failure_indicators(evidence):
 
 
 def make_receipt(kind, subject, execution, *, section=None):
-    from runtime.test_profiles import _bounded_output_evidence
+    from .test_profiles import _bounded_output_evidence
 
     body = {'schema_version': SCHEMAS[kind], 'input_sha256': subject['input_sha256'],
             **execution_fields(execution)}
@@ -199,7 +199,7 @@ def make_receipt(kind, subject, execution, *, section=None):
 
 
 def validate(value, kind, *, name=None, chunk_id=None):
-    from runtime.test_profiles import _valid_bounded_output_evidence
+    from .test_profiles import _valid_bounded_output_evidence
 
     try:
         if type(value) is not dict or set(value) != COMMON | EXTRA[kind] or value['schema_version'] != SCHEMAS[kind]:
@@ -291,7 +291,7 @@ def read(root, kind, name, chunk_id=None):
 
 
 def write(root, kind, receipt):
-    from runtime.resource_lifecycle import ResourceManager, RunState
+    from .resource_lifecycle import ResourceManager, RunState
 
     if not validate(receipt, kind):
         raise ValueError('refusing malformed verification receipt')

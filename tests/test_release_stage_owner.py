@@ -650,7 +650,7 @@ def test_child_resource_postcondition_allows_only_exact_supervised_self(
         ),
         encoding="utf-8",
     )
-    monkeypatch.setattr("scripts.run_release_stage_owner.os.getpid", lambda: 123)
+    monkeypatch.setenv("PX_RELEASE_OWNER_RUN_ID", config.candidate_id)
     assert resource_postcondition(config)["valid"] is True
     value = json.loads(ledger.read_text(encoding="utf-8"))
     value['resources'].append({**value['resources'][0], 'resource_id': 'active-path', 'resource_type': 'path', 'pid': None})
@@ -659,6 +659,8 @@ def test_child_resource_postcondition_allows_only_exact_supervised_self(
     value['resources'].pop()
     value["resources"][0]["pid"] = 456
     ledger.write_text(json.dumps(value), encoding="utf-8")
+    assert resource_postcondition(config)["valid"] is True
+    monkeypatch.setenv("PX_RELEASE_OWNER_RUN_ID", "other-candidate")
     assert resource_postcondition(config)["valid"] is False
 
 

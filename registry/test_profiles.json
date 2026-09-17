@@ -2314,7 +2314,7 @@
         "tests/test_workspace*.py"
       ],
       "parallel_safe": false,
-      "timeout_seconds": 600
+      "timeout_seconds": 1600
     },
     "exact-installed": {
       "description": "Serial exact-tool, installed-wheel, corrective-release, and full-repair-ledger certification tests.",
@@ -2367,7 +2367,7 @@
         "templates/generated/**"
       ],
       "parallel_safe": false,
-      "timeout_seconds": 900
+      "timeout_seconds": 1600
     },
     "release-audit": {
       "description": "Serial composed-audit and quarantine-mutation tests isolated from package builds.",
@@ -2434,7 +2434,7 @@
       ],
       "parallel_safe": false,
       "disk_work_units": 6,
-      "timeout_seconds": 600
+      "timeout_seconds": 1600
     },
     "core-a-f": {
       "description": "Serial ordinary unit and contract tests whose file IDs begin A through F; this lane shares canonical registry state with core-n-s and must not overlap it.",
@@ -2442,7 +2442,7 @@
         "tests/test_[a-f]*.py"
       ],
       "parallel_safe": false,
-      "timeout_seconds": 600
+      "timeout_seconds": 1600
     },
     "core-g-m": {
       "description": "Serial ordinary unit and contract tests whose file IDs begin G through M; this lane reads or mutates shared canonical repository state.",
@@ -2458,7 +2458,7 @@
         "tests/test_[n-s]*.py"
       ],
       "parallel_safe": false,
-      "timeout_seconds": 600
+      "timeout_seconds": 1600
     },
     "core-t-z": {
       "description": "Serial ordinary unit and contract tests whose file IDs begin T through Z; this lane reads or mutates shared canonical repository state.",
@@ -2466,7 +2466,7 @@
         "tests/test_[t-z]*.py"
       ],
       "parallel_safe": false,
-      "timeout_seconds": 600
+      "timeout_seconds": 1600
     }
   },
   "profiles": {

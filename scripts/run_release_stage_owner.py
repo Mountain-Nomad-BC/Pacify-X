@@ -320,9 +320,9 @@ def resource_postcondition(config: Config) -> dict[str, Any]:
     exact_self = (
         len(active) == 1
         and active[0].resource_type == "process"
-        and active[0].pid == os.getpid()
         and active[0].run_id == config.candidate_id
         and active[0].creator == "scripts.run_release_candidate"
+        and os.environ.get("PX_RELEASE_OWNER_RUN_ID") == config.candidate_id
     )
     valid = (
         status.get("valid") is True
@@ -1342,7 +1342,17 @@ class ProductionEffects:
             or receipt_path.is_symlink()
             or not receipt_valid
         ):
-            raise OwnerBlocked(f"{step} postcondition is not exact")
+            details = {
+                "state_valid": valid,
+                "resource_valid": clean,
+                "receipt_exists": receipt_path.is_file(),
+                "receipt_is_link": receipt_path.is_symlink(),
+                "receipt_valid": receipt_valid,
+            }
+            raise OwnerBlocked(
+                f"{step} postcondition is not exact: "
+                + json.dumps(details, sort_keys=True, separators=(",", ":"))
+            )
 
 
 def run(config: Config, step: str, effects: Effects) -> dict[str, Any]:

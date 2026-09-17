@@ -14,17 +14,16 @@ import math
 import os
 from pathlib import Path
 import stat
-import time
 
-from runtime.archive_io import reject_path_links
-from runtime.input_files import (
+from .archive_io import reject_path_links
+from .input_files import (
     check_deadline,
     directory_root,
     read_file_image,
     relative_source_path,
 )
-from runtime.json_io import decode_json_object
-from runtime.test_runner import validate_timeout
+from .json_io import decode_json_object
+from .test_runner import validate_timeout
 
 POLICY = "registry/test_profiles.json"
 MAX_FILES = 20000
@@ -69,21 +68,15 @@ class CapturedInputs:
     """Request-local bytes/digests and negative probes, never an authority cache."""
 
     def __init__(self, root, *, deadline=None):
-        started = time.monotonic()
         if deadline is not None and (
             type(deadline) not in (int, float) or not math.isfinite(deadline)
         ):
             raise ValueError("deadline must be a finite number")
-        # The owned full-profile command has its own supervised stage clock.
-        # Its final currentness pass must not inherit this short metadata clock
-        # after a long queue of group tests. All acquisition size and membership
-        # limits, including the complete second content pass, still apply.
-        if os.environ.get("PX_FULL_PROFILE_SOURCE_NO_TIMER") == "1":
-            self.deadline = float(deadline) if deadline is not None else 1e99
-        else:
-            self.deadline = min(
-                deadline if deadline is not None else started + 60, started + 60
-            )
+        # Verification owners already carry supervised stage clocks. A capture
+        # without an explicit deadline must not add a shorter hidden timer;
+        # byte, file, entry, AST and membership bounds remain mandatory. Callers
+        # that need a local clock supply it explicitly and it is preserved.
+        self.deadline = float(deadline) if deadline is not None else 1e99
         check_deadline(self.deadline)
         self.root = directory_root(root)
         check_deadline(self.deadline)

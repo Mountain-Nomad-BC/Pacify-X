@@ -2128,10 +2128,6 @@ def main(argv: list[str] | None = None) -> int:
 
                     require_processing_stage(root, "full_profile")
                     release_stage_claim = claim_release_stage(root, "full_profile")
-                    # The supervised full-profile owner supplies the physical
-                    # stage deadline. Source identity keeps complete byte and
-                    # membership checks without a separate 60-second cap.
-                    os.environ["PX_FULL_PROFILE_SOURCE_NO_TIMER"] = "1"
                     gate = section_status(root)
                     if not gate["valid"]:
                         stale = [

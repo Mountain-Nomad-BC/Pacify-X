@@ -36,16 +36,18 @@ def check_deadline(deadline: float) -> None:
 
 
 def cooperative_deadline(deadline: float | None = None) -> float:
-    now = time.monotonic()
     if deadline is None:
-        return now + 60.0
+        # The operation owner supplies the physical clock. A bounded reader
+        # without an explicit local deadline must not invent a shorter hidden
+        # timeout that can turn a complete large scan into partial evidence.
+        return 1e99
     if (
         type(deadline) not in (int, float)
         or not 0 < deadline < 1e100
         or not math.isfinite(deadline)
     ):
         raise ValueError("metadata deadline must be finite and positive")
-    return min(float(deadline), now + 60.0)
+    return float(deadline)
 
 
 def contained_file(root: Path, relative: str):

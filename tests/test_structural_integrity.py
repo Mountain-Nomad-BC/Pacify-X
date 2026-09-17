@@ -302,7 +302,6 @@ def test_release_owner_digest_and_json_helpers_are_reviewed() -> None:
     result = _root_audit()
     groups = result["duplicate_logic_groups"]
     digest_paths = {
-        "runtime/native_skills.py",
         "runtime/project_control_plane.py",
         "runtime/project_intelligence.py",
         "runtime/workspace_manager.py",

@@ -1,7 +1,7 @@
 {
   "dependency_parser": {
     "python": "3.14.5",
-    "source_sha256": "4b439b7416307ed50e6011f9ba7b144dd702a7c60e7614d898995d824ea1c1fa",
+    "source_sha256": "30cc652b7ee79be5ab405b2058247bea8ec1a41d4260fa26156612ca1b581fb5",
     "version": "px.static-local-import-closure/2"
   },
   "files": {
@@ -1244,7 +1244,7 @@
         "scripts/cleanup_python_caches.py"
       ],
       "index_state": "verified",
-      "sha256": "c3d36f9dc640cf307ce2331a9f3f7d0cfa2761e275abc10d4da5fe7b1d22a92a"
+      "sha256": "869a83c2bc3715b0525ae9a8061c11f1f8258119c7d96cffbfd656bb9da06bf7"
     },
     "runtime/cognitive_assurance.py": {
       "dependencies": [
@@ -1899,7 +1899,7 @@
         "runtime/numeric_inputs.py"
       ],
       "index_state": "verified",
-      "sha256": "365ca79753387af62efedab6e357d8eacdfa002ca08067dbf74c6d38a5dd0c87"
+      "sha256": "195be373e33e2117a7405da4b1995a19f60264d262e12154b82cb2c5f014de3d"
     },
     "runtime/instrumentation_sdk.py": {
       "dependencies": [
@@ -3173,7 +3173,7 @@
         "runtime/test_runner.py"
       ],
       "index_state": "verified",
-      "sha256": "b828e6e7bfea5c400bb860cf49e54a617bb164f27368e478cae78d5ecd4c1812"
+      "sha256": "f7bc320c094128cd0bf69e672e943bd842722b60d4680e42bd12f5398776b444"
     },
     "runtime/semantic_index.py": {
       "dependencies": [
@@ -3551,7 +3551,7 @@
         "runtime/test_runner.py"
       ],
       "index_state": "verified",
-      "sha256": "4b439b7416307ed50e6011f9ba7b144dd702a7c60e7614d898995d824ea1c1fa"
+      "sha256": "30cc652b7ee79be5ab405b2058247bea8ec1a41d4260fa26156612ca1b581fb5"
     },
     "runtime/verification_receipts.py": {
       "dependencies": [
@@ -3565,7 +3565,7 @@
         "runtime/test_profiles.py"
       ],
       "index_state": "verified",
-      "sha256": "5462401d55dc4b47aababd27498c0c6cf82b4dbfb6cd6ca4150a604efbf06f9d"
+      "sha256": "22e534806d2089c2548716ecf10559d146d9acb1ae3e3f14e0499b65eda0d5eb"
     },
     "runtime/verification_status.py": {
       "dependencies": [
@@ -3579,7 +3579,7 @@
         "runtime/verification_receipts.py"
       ],
       "index_state": "verified",
-      "sha256": "e18597126195cf4d4b933a9a982231ca3237d1cc86fab1286f5fed4da46b23b6"
+      "sha256": "7a66d72b2445af60d9b5c43deb07e5d331c52a650dbfe807b5b0d9aeefc827eb"
     },
     "runtime/version.py": {
       "dependencies": [
@@ -4687,7 +4687,7 @@
         "scripts/clean_source_export.py"
       ],
       "index_state": "verified",
-      "sha256": "1580d5a8b1a84dee8254e90554c2ea1f8fac689dbbfa6d25fef3b225245311fd"
+      "sha256": "66c698ae3fc638ab30dfb658e1a07492ff916ddb536ec990ee66c2b4544199bd"
     },
     "scripts/sanitize_host_bound_cleanup_evidence.py": {
       "dependencies": [
@@ -7294,7 +7294,7 @@
         "tests/__init__.py"
       ],
       "index_state": "verified",
-      "sha256": "9c36bdc7d3b86ad1821e4c82971b83f76cc56bed95ab08fe7470407c04572ddc"
+      "sha256": "eedd2861951220ac048334a80acc6fe38ef822c92aae335265256adbd386233a"
     },
     "tests/test_release_streaming_inputs.py": {
       "dependencies": [
@@ -7706,7 +7706,7 @@
         "tests/__init__.py"
       ],
       "index_state": "verified",
-      "sha256": "12398f1f5a45d2bdf723a3c1d9bbb6cfe48d6adab54815dc310b1270000ae52c"
+      "sha256": "aacd26f160d798038f5d0bc47f37ad48b862204c55e1b5ceb48ea3d067aa2322"
     },
     "tests/test_studio_api.py": {
       "dependencies": [
@@ -7963,13 +7963,14 @@
       "dependencies": [
         "conftest.py",
         "runtime/__init__.py",
+        "runtime/input_files.py",
         "runtime/test_profiles.py",
         "runtime/verification_inputs.py",
         "tests/__init__.py",
         "tests/verification_fixtures.py"
       ],
       "index_state": "verified",
-      "sha256": "c066e6ff901e734fd6fe147fc3b6eae6b565c44f2839cec89a184c2230edafb6"
+      "sha256": "881d266f6710e914b1d76f762fc48218a7f1bda263c569b7067ebb9831a1b4c8"
     },
     "tests/test_verification_receipts.py": {
       "dependencies": [
@@ -8366,7 +8367,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "process-recovery",
-      "input_sha256": "d0c91ad310953c41227c42ced2bc980853529d7b3fec8697d6de687380f2ade3",
+      "input_sha256": "5adb197192095fb8630df82337e95f0332e5af376c6a5216893f571f01cfb839",
       "inputs": [
         "conftest.py",
         "docs/architecture/tools/build_atlas.py",
@@ -8593,7 +8594,7 @@
       ],
       "parallel_safe": false,
       "scan_inputs": [],
-      "timeout_seconds": 600.0
+      "timeout_seconds": 1600.0
     },
     {
       "base_inputs": [
@@ -8834,7 +8835,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "exact-installed",
-      "input_sha256": "ae2e9a70971a8aa0841a4ad3e2e0ab9c2b7a63a0be043b0523c5eb259181d381",
+      "input_sha256": "fefdcf9338b3ff8c317d9b12e40c3b1c970e694664237656637e9090ea3339f2",
       "inputs": [
         "README.md",
         "conftest.py",
@@ -9256,7 +9257,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "release-build",
-      "input_sha256": "95189f8b40cb9e58cc135c2bd20471d4dae22e129e8dfcbe2601fd8c29dd33ac",
+      "input_sha256": "24aa7d2cbbe31e1a5a4c4f91ecad8e164b30451cd83c56563ed857cc0662b4ed",
       "inputs": [
         ".github/workflows/release.yml",
         "README.md",
@@ -9444,7 +9445,7 @@
       ],
       "parallel_safe": false,
       "scan_inputs": [],
-      "timeout_seconds": 900.0
+      "timeout_seconds": 1600.0
     },
     {
       "base_inputs": [
@@ -9572,7 +9573,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "release-audit",
-      "input_sha256": "5e5d8318f47bf75c95a06b465215f87ef6cc928b113553d14ac4ff5a87e4c6c7",
+      "input_sha256": "ca2e5123932cb110b14d031b98ffd3308d1c885e3e14c779c970134e31ba99ef",
       "inputs": [
         "README.md",
         "conftest.py",
@@ -9826,7 +9827,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "structural-adversarial",
-      "input_sha256": "26263c5c3464d00e2233c338d176cc27eb5edd3618fda79e3b3f935896364e91",
+      "input_sha256": "f1d17c7cb5fb6252ab4ed1bd49d891e7f60196a7db5d74b96db1587dcee20ded",
       "inputs": [
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_agents_md_generator.py",
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_change_impact.py",
@@ -11889,7 +11890,7 @@
       "disk_consumption_limit_bytes": 51539607552,
       "disk_work_units": 6,
       "group": "derived-integrity",
-      "input_sha256": "7f1af40150ab55210fb39edad94a5dd5210d0b04b863e49eb8b7b1e4fd0d95a8",
+      "input_sha256": "64f337752ad3f1f1071c3675ac62af45b800b39f0a28381e2766385679dc945c",
       "inputs": [
         "README.md",
         "conftest.py",
@@ -12062,7 +12063,7 @@
       ],
       "parallel_safe": false,
       "scan_inputs": [],
-      "timeout_seconds": 600.0
+      "timeout_seconds": 1600.0
     },
     {
       "base_inputs": [
@@ -12450,7 +12451,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "core-a-f",
-      "input_sha256": "4fcb317de72deb2e2e1a23211d67d34de3c291c87bff78fc93888c917d471fe7",
+      "input_sha256": "82ac9e557e37208f3d1f49ede8d5a269e3f6334a557a2e743beee2a7f5b8a5b7",
       "inputs": [
         "builders/__init__.py",
         "builders/common.py",
@@ -12933,7 +12934,7 @@
       ],
       "parallel_safe": false,
       "scan_inputs": [],
-      "timeout_seconds": 600.0
+      "timeout_seconds": 1600.0
     },
     {
       "base_inputs": [
@@ -13222,7 +13223,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "core-g-m",
-      "input_sha256": "1c8700f3b59ed78bebc1cc9d2564f97ae32b5645dab4b95050352777871c947a",
+      "input_sha256": "82d59a81187a70da5b97f51d65b2162cd40e143dbb5dac6a8f72bf43ad4ac755",
       "inputs": [
         "builders/__init__.py",
         "builders/common.py",
@@ -13929,7 +13930,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "core-n-s",
-      "input_sha256": "86ca5f22395a293ee0ad4824560c937a28be95dc8d4427937ede36b33af89b5e",
+      "input_sha256": "db13cb4eef0b35a9b6d7ef984756f29c5229eda2b3cfd9990a2f91c6725e8599",
       "inputs": [
         "conftest.py",
         "docs/architecture/tools/build_atlas.py",
@@ -14412,7 +14413,7 @@
       ],
       "parallel_safe": false,
       "scan_inputs": [],
-      "timeout_seconds": 600.0
+      "timeout_seconds": 1600.0
     },
     {
       "base_inputs": [
@@ -14683,7 +14684,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "core-t-z",
-      "input_sha256": "d82d8f320c47d645cff85f6203151da2167bed25a1f25344399c75a0aae1ea12",
+      "input_sha256": "38ae94fc34f1a357ce6709026221009e5ccc22d3f93f02b114ece20be0318b78",
       "inputs": [
         "builders/__init__.py",
         "builders/adapter_builder.py",
@@ -14975,13 +14976,13 @@
       ],
       "parallel_safe": false,
       "scan_inputs": [],
-      "timeout_seconds": 600.0
+      "timeout_seconds": 1600.0
     }
   ],
-  "index_sha256": "03670de3d519ceffd5f32c70ee8fd10fe10ead216a3f7c541f5cebff1b7ca313",
+  "index_sha256": "efb5fef5349cd6a6d780869cc09bea5e0a8cd56b97c82a154af9978a36c23ecd",
   "schema_version": "px.test-group-index/1.2",
   "test_file_count": 300,
-  "topology_sha256": "4aa318e637c8be2a1dbe76268b92987d96941696eff82b19ec879f9b060bc191",
+  "topology_sha256": "b7acfcbeb33b312d298f48d3f42a92160dc57eea6c2180b06e0cbbdaa76fdd0a",
   "tracked_python_file_count": 780,
   "verified_file_count": 780
 }

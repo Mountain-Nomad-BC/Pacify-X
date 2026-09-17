@@ -11,12 +11,12 @@ from uuid import uuid4
 
 
 def run_section(root, section, name, started):
-    from runtime.resource_lifecycle import ResourceManager
-    from runtime.test_profiles import (
+    from .resource_lifecycle import ResourceManager
+    from .test_profiles import (
         read_section_chunk_receipt, require_processing_stage, section_chunk_receipt,
         section_receipt, section_status, write_section_chunk_receipt, write_section_receipt,
     )
-    from runtime.test_runner import run_test_command, validate_timeout
+    from .test_runner import run_test_command, validate_timeout
 
     deadline = started + validate_timeout(section['timeout_seconds'])
     cancel = Event()

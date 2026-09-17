@@ -7,12 +7,12 @@ from pathlib import Path
 import stat
 import sys
 
-from runtime.verification_inputs import (
+from .verification_inputs import (
     CapturedInputs, POLICY, dependencies, description, environment, identity,
     resolve_test_section, strings,
 )
-from runtime.test_runner import aggregate_test_disk_consumption_limit, validate_timeout
-from runtime.verification_receipts import read
+from .test_runner import aggregate_test_disk_consumption_limit, validate_timeout
+from .verification_receipts import read
 
 INDEX = 'registry/test_group_index.json'
 INDEX_SCHEMA = 'px.test-group-index/1.2'
@@ -89,7 +89,7 @@ def section_status(root):
 
 
 def structural_scan(capture, max_bytes=1_000_000):
-    from runtime.repository_scope import is_external_environment_relative
+    from .repository_scope import is_external_environment_relative
 
     excluded = {'.git', '.venv', '.vscode-test', 'python', 'node_modules', 'vendor',
                 'dist', 'build', 'quarantine', '__pycache__'}
@@ -156,8 +156,8 @@ def _topology(config):
 
 def _parser_identity():
     # Parser implementation and Python AST version are identity-bearing inputs.
-    import runtime.verification_inputs as source
-    from runtime.input_files import contained_file, read_file_image
+    from . import verification_inputs as source
+    from .input_files import contained_file, read_file_image
     import time
     path = Path(source.__file__)
     path, info = contained_file(path.parent, path.name)
@@ -181,8 +181,8 @@ def build_index(root):
 
 
 def resolve_groups(root, *, capture=None, historical_index=False):
-    from runtime.input_files import contained_file, read_file_image
-    from runtime.json_io import decode_json_object
+    from .input_files import contained_file, read_file_image
+    from .json_io import decode_json_object
 
     owned = capture is None
     capture = capture if capture is not None else CapturedInputs(root)
@@ -223,7 +223,7 @@ def resolve_groups(root, *, capture=None, historical_index=False):
                                 'dependencies': sorted(capture.edges[relative]), 'index_state': 'verified'}
                      for relative in capture.digests if relative.endswith('.py')}
     for relative, record in index['files'].items():
-        from runtime.input_files import relative_source_path
+        from .input_files import relative_source_path
         relative_source_path(relative)
         if type(record) is not dict or set(record) != {'sha256', 'dependencies', 'index_state'}:
             raise ValueError('test group index file record is malformed')
