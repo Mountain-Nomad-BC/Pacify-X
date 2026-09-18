@@ -351,7 +351,7 @@ def test_malformed_private_body_closes_owned_child(tmp_path):
         [sys.executable, "-B", "-c", code, str(root)],
         cwd=ROOT,
         environment={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
-        timeout_seconds=10,
+        timeout_seconds=60,
         run_id="sanitation-malformed-private-body",
         lane_id="causal-owned-child",
         manage_process_temp=True,

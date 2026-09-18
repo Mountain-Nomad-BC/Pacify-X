@@ -38,7 +38,11 @@ def test_generated_portability_registry_is_not_self_ingested() -> None:
         ROOT,
         root,
         ignore=shutil.ignore_patterns(
-            ".git", ".engineering-bootstrap", "__pycache__", ".pytest_cache"
+            ".git",
+            ".engineering-bootstrap",
+            ".quarantine",
+            "__pycache__",
+            ".pytest_cache",
         ),
     )
     registry = root / "registry/historical_external_references.json"
