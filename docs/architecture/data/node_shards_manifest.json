@@ -1,7 +1,7 @@
 {
   "schema_version": "px.atlas-node-shards/1",
   "partition": "first lowercase hexadecimal digit of SHA-256(canonical node ID)",
-  "records": 13798,
+  "records": 13800,
   "shards": [
     {
       "path": "data/node_shards/nodes-00.jsonl",
@@ -22,14 +22,14 @@
       "partition": "2",
       "records": 922,
       "bytes": 690750,
-      "sha256": "7baf3a4f09e6c1804224e3290d98d0e9f79f5dfb966be5ae2ac0662206cfdd90"
+      "sha256": "43406a69a9d98cce0896d954d0e035eb82e071b6094814d572ef38b1314b7203"
     },
     {
       "path": "data/node_shards/nodes-03.jsonl",
       "partition": "3",
       "records": 834,
       "bytes": 606566,
-      "sha256": "19f0837a9cf079f77af9b5a057a9efbae08c9d83694b90974c2c1df36fc1103f"
+      "sha256": "43aba20909e42f50fd2172d94b5b15f23bb5bab013d668b488410429ee2da7fd"
     },
     {
       "path": "data/node_shards/nodes-04.jsonl",
@@ -41,9 +41,9 @@
     {
       "path": "data/node_shards/nodes-05.jsonl",
       "partition": "5",
-      "records": 896,
-      "bytes": 657802,
-      "sha256": "4fd86754582fa5786acf9d3db610ed6d7189beb504ebe94fb6716d21657400eb"
+      "records": 897,
+      "bytes": 658605,
+      "sha256": "63992dcca0fe77fe408a65611fc019f9dc9f7efbee4e766434a4874c32bbd57f"
     },
     {
       "path": "data/node_shards/nodes-06.jsonl",
@@ -64,7 +64,7 @@
       "partition": "8",
       "records": 764,
       "bytes": 568405,
-      "sha256": "e7dc852b0c75001647ffef4a2994f14cf2190289160b7d2780e17bd3a54514a5"
+      "sha256": "7f3e7ca8b7fd45f6a831cec77be373677790640a847a2a8914387aae5d8e924f"
     },
     {
       "path": "data/node_shards/nodes-09.jsonl",
@@ -83,16 +83,16 @@
     {
       "path": "data/node_shards/nodes-0b.jsonl",
       "partition": "b",
-      "records": 881,
-      "bytes": 651169,
-      "sha256": "be53c174705d48e5750530f176de387a49a75818a8ac5a8f1cdfac0f460afc6a"
+      "records": 882,
+      "bytes": 652048,
+      "sha256": "d5902518da43a71ab64eade8f494e01f55f579d94909252336bca76170ad87b7"
     },
     {
       "path": "data/node_shards/nodes-0c.jsonl",
       "partition": "c",
       "records": 900,
       "bytes": 672663,
-      "sha256": "9de8413542756086a50cbedd717b8f89a94d6a817bcf9d4bf838c1d424a97161"
+      "sha256": "546ee4ac7cf090b317ccbcce473a9f6aa03b1817dc45d42d30880b8da03087ff"
     },
     {
       "path": "data/node_shards/nodes-0d.jsonl",
@@ -113,7 +113,7 @@
       "partition": "f",
       "records": 806,
       "bytes": 600711,
-      "sha256": "0a565bfc6d5a9d5739d9375b7f4880e4362638df148090ccf98cfca7ca7d3f5b"
+      "sha256": "9734220fc1801b718f10d9fc77e8d1a1e602684d13b82dc7db57a4d3299ea72f"
     }
   ]
 }
