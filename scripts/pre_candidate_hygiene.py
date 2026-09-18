@@ -107,6 +107,7 @@ PRESERVED_EXTERNAL_PREFIXES = (
 )
 
 PRESERVED_REPARSE_ROOTS = (
+    QUARANTINE_ROOT,
     Path(".engineering-bootstrap/coordination/activity/quarantine"),
     Path(".engineering-bootstrap/diagnostics"),
     Path(".engineering-bootstrap/quarantine"),
@@ -155,7 +156,14 @@ def _inside(path: Path, parent: Path) -> bool:
 
 def _is_preserved_evidence_reparse(root: Path, path: Path) -> bool:
     """Return true only for reparse points confined to declared evidence custody."""
-    return any(_inside(path, root / relative) for relative in PRESERVED_REPARSE_ROOTS)
+    lexical = Path(os.path.abspath(path))
+    for relative in PRESERVED_REPARSE_ROOTS:
+        try:
+            lexical.relative_to(Path(os.path.abspath(root / relative)))
+            return True
+        except ValueError:
+            continue
+    return False
 
 
 def _terminal_predecessor_intentionally_stale(

@@ -6119,7 +6119,7 @@
       "validation_level": "source-only-structural"
     },
     {
-      "bytes": 42824,
+      "bytes": 43019,
       "evidence": [
         "tests/test_structural_integrity.py"
       ],
@@ -6127,7 +6127,7 @@
       "packaged": false,
       "path": "scripts/pre_candidate_hygiene.py",
       "role": "source-build-control",
-      "sha256": "63fbcb5f05eccd7b6bb34b65ae0dba72bfb9ff9d908f3bdb338aaf0627555889",
+      "sha256": "ce3779ddb0032022c3cba25fd17c9b80436baf939bca07fe6555818d2351ccab",
       "syntax_valid": true,
       "validation_level": "evidence-association"
     },
@@ -8727,7 +8727,7 @@
       "validation_level": "executable-test"
     },
     {
-      "bytes": 8839,
+      "bytes": 9686,
       "evidence": [
         "tests/test_pre_candidate_hygiene.py"
       ],
@@ -8735,7 +8735,7 @@
       "packaged": true,
       "path": "tests/test_pre_candidate_hygiene.py",
       "role": "release-test",
-      "sha256": "413f6bdae001e57f47f004325be2054683e327c2ba51110a18381c5ca575910c",
+      "sha256": "07c2fecb013385b0acd003aac929ffe9bcc331327a01b867f1900a81cc05302a",
       "syntax_valid": true,
       "validation_level": "executable-test"
     },

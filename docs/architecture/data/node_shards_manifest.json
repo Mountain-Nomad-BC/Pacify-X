@@ -1,7 +1,7 @@
 {
   "schema_version": "px.atlas-node-shards/1",
   "partition": "first lowercase hexadecimal digit of SHA-256(canonical node ID)",
-  "records": 13792,
+  "records": 13798,
   "shards": [
     {
       "path": "data/node_shards/nodes-00.jsonl",
@@ -22,35 +22,35 @@
       "partition": "2",
       "records": 922,
       "bytes": 690750,
-      "sha256": "ed2133896ca1e31d75b03f5df7ce351ec4a4bca6355b3d2ca9ff8eb0b377f80a"
+      "sha256": "7baf3a4f09e6c1804224e3290d98d0e9f79f5dfb966be5ae2ac0662206cfdd90"
     },
     {
       "path": "data/node_shards/nodes-03.jsonl",
       "partition": "3",
-      "records": 832,
-      "bytes": 604895,
-      "sha256": "a75edc08b1b0511a4698564395e0cd168b4444c61e46310d69af6bd743d3361f"
+      "records": 834,
+      "bytes": 606566,
+      "sha256": "19f0837a9cf079f77af9b5a057a9efbae08c9d83694b90974c2c1df36fc1103f"
     },
     {
       "path": "data/node_shards/nodes-04.jsonl",
       "partition": "4",
-      "records": 874,
-      "bytes": 633665,
-      "sha256": "478f0bf1748ffd645feeb1d47feb0dba831a00c93e3082ecc21772fed1cce63c"
+      "records": 875,
+      "bytes": 634508,
+      "sha256": "b63693a421b10c44093d2b3057b352ae3a70d0959c509f559ef84a85740f4000"
     },
     {
       "path": "data/node_shards/nodes-05.jsonl",
       "partition": "5",
       "records": 896,
       "bytes": 657802,
-      "sha256": "023ce8735eaf24a4b9e352da3970c8442e5602088520eee132d7ee7899ae610e"
+      "sha256": "4fd86754582fa5786acf9d3db610ed6d7189beb504ebe94fb6716d21657400eb"
     },
     {
       "path": "data/node_shards/nodes-06.jsonl",
       "partition": "6",
       "records": 870,
       "bytes": 639942,
-      "sha256": "2f9bea82238fb516d48b96dcd7d439b36dc9a048e4b952bf7448224adebef38d"
+      "sha256": "c4d8d1e700501c40f5a61247c22a58ef70c98023a0b65f01d13f900933704e19"
     },
     {
       "path": "data/node_shards/nodes-07.jsonl",
@@ -64,7 +64,7 @@
       "partition": "8",
       "records": 764,
       "bytes": 568405,
-      "sha256": "aee24a06ea48f2240e73036479b4040ee67d13f7c2346282200bf3ebde8a7f57"
+      "sha256": "e7dc852b0c75001647ffef4a2994f14cf2190289160b7d2780e17bd3a54514a5"
     },
     {
       "path": "data/node_shards/nodes-09.jsonl",
@@ -77,43 +77,43 @@
       "path": "data/node_shards/nodes-0a.jsonl",
       "partition": "a",
       "records": 884,
-      "bytes": 656848,
-      "sha256": "7a905228cd701cfbf65531eb470015c594cc45a48fcaed2ea3137cd4b4f07d8c"
+      "bytes": 656836,
+      "sha256": "fa8cf4a0a2614d96bac04bf0845f75a1752ce31dafbbc69458be1f99e82b5414"
     },
     {
       "path": "data/node_shards/nodes-0b.jsonl",
       "partition": "b",
-      "records": 880,
-      "bytes": 650335,
-      "sha256": "311fcbebc22ade56479af6db41936b689ac5b071b20ff38b4c6e66a2c3fc9a90"
+      "records": 881,
+      "bytes": 651169,
+      "sha256": "be53c174705d48e5750530f176de387a49a75818a8ac5a8f1cdfac0f460afc6a"
     },
     {
       "path": "data/node_shards/nodes-0c.jsonl",
       "partition": "c",
-      "records": 899,
-      "bytes": 672041,
-      "sha256": "f996576f91aaec26356895a2a2896aaa9865813aa066c068ef4281ac41a447dd"
+      "records": 900,
+      "bytes": 672663,
+      "sha256": "9de8413542756086a50cbedd717b8f89a94d6a817bcf9d4bf838c1d424a97161"
     },
     {
       "path": "data/node_shards/nodes-0d.jsonl",
       "partition": "d",
-      "records": 865,
-      "bytes": 648246,
-      "sha256": "9137d37bba40489c20c15ee73bc1fed8e807915fe7eadda6a84744e418131277"
+      "records": 866,
+      "bytes": 649078,
+      "sha256": "2d819befcdccc51a3045952a455d1430799b2742696f9f3c57f6be491abb3350"
     },
     {
       "path": "data/node_shards/nodes-0e.jsonl",
       "partition": "e",
       "records": 836,
-      "bytes": 624035,
-      "sha256": "fdce08b83ff55be52c1344f1123fd36aa9c28abcfa0cec4c535e858fe9e6d479"
+      "bytes": 624049,
+      "sha256": "44b02602e9c5c03d8c9c1843f5fade54921b47af5112ee6014e9daa7276c731b"
     },
     {
       "path": "data/node_shards/nodes-0f.jsonl",
       "partition": "f",
       "records": 806,
       "bytes": 600711,
-      "sha256": "71fa0311634f02d6bf5bba137da341b4b60e9b893adc46be496b3a54d7185eae"
+      "sha256": "0a565bfc6d5a9d5739d9375b7f4880e4362638df148090ccf98cfca7ca7d3f5b"
     }
   ]
 }

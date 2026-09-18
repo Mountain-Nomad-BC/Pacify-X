@@ -17,6 +17,23 @@ from scripts.pre_candidate_hygiene import HygieneError
 import pytest
 
 
+def test_recoverable_quarantine_reparse_points_remain_preserved_evidence(tmp_path: Path) -> None:
+    root = tmp_path / "repo"
+    retained = root / ".quarantine/run/external-temp/pytest-of-user/pytest-current"
+    outside = root / "runtime/current"
+    assert _is_preserved_evidence_reparse(root, retained)
+    assert not _is_preserved_evidence_reparse(root, outside)
+
+
+def test_quarantine_reparse_classification_uses_link_location_not_target(tmp_path: Path) -> None:
+    root = tmp_path / "repo"
+    retained = root / ".quarantine/run/pytest-current"
+    escaped_target = tmp_path / "former-temp/pytest-0"
+    with patch("scripts.pre_candidate_hygiene.os.path.abspath", side_effect=lambda value: str(value)):
+        assert _is_preserved_evidence_reparse(root, retained)
+        assert not _is_preserved_evidence_reparse(root, escaped_target)
+
+
 def test_cleared_preidentity_predecessor_requires_exact_supersedable_state() -> None:
     from runtime.release_campaign import STAGES
 

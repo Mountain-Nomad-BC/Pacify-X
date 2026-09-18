@@ -2,7 +2,7 @@
 canonical_id: "extensionfixturecontracts"
 kind: system
 layer: evidence
-currentness: same-file-bytes
+currentness: changed-file
 runtime_observed: false
 certified: false
 ---
@@ -30,7 +30,7 @@ No autonomous adaptation established; changes require its declared caller or own
 
 Historical source model; file hashes refreshed. Byte agreement does not prove current behavior. This note is not a repair-closure receipt.
 
-- [[Evidence/S1447]] — same-file-bytes
+- [[Evidence/S1447]] — changed-file
 - [[Evidence/S1448]] — same-file-bytes
 - [[Evidence/S1445]] — same-file-bytes
 - [[Evidence/S1419]] — same-file-bytes

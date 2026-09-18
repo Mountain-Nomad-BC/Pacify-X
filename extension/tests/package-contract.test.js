@@ -49,6 +49,9 @@ test('MCP build dependencies are pinned and the shipped server is bundled', () =
   const cacheOwner = fs.readFileSync(path.join(root, 'scripts', 'owned-vscode-test-cache.js'), 'utf8');
   assert.match(cacheOwner, /px\.owned-vscode-test-cache\/1\.0/);
   assert.match(cacheOwner, /retained_versions/);
+  const cachePreflight = fs.readFileSync(path.join(root, 'scripts', 'prepare-owned-vscode-test-cache.js'), 'utf8');
+  assert.match(cachePreflight, /downloadAndUnzipVSCode/);
+  assert.match(cachePreflight, /resolveOwnedCachedVSCode/);
 });
 
 test('owned operational host isolates unrelated AI and GitHub services', () => {

@@ -126,6 +126,61 @@ function runIsolatedCacheOwner(t, body) {
   return JSON.parse(child.stdout);
 }
 
+test('cache owner adopts only one exact complete pre-existing pinned layout', t => {
+  const value = runIsolatedCacheOwner(t, `
+    const directory = path.join(api.CACHE_ROOT, 'vscode-win32-x64-archive-1.132.1');
+    fs.mkdirSync(directory, { recursive: true });
+    fs.writeFileSync(path.join(directory, 'is-complete'), '');
+    fs.writeFileSync(path.join(directory, 'Code.exe'), 'fixture');
+    const adopted = api.adoptOwnedVscodeTestCache('1.132.1');
+    process.stdout.write(JSON.stringify({ adopted, marker: JSON.parse(fs.readFileSync(adopted.markerPath, 'utf8')) }));
+  `);
+  assert.equal(value.marker.adopted_existing_complete_layout, true);
+  assert.deepEqual(value.marker.retained_versions, ['1.132.1']);
+  assert.match(value.adopted.executable, /Code\.exe$/);
+});
+
+test('cache owner refuses adoption when any unrelated root member exists', t => {
+  const value = runIsolatedCacheOwner(t, `
+    const directory = path.join(api.CACHE_ROOT, 'vscode-win32-x64-archive-1.132.1');
+    fs.mkdirSync(directory, { recursive: true });
+    fs.writeFileSync(path.join(directory, 'is-complete'), '');
+    fs.writeFileSync(path.join(directory, 'Code.exe'), 'fixture');
+    fs.writeFileSync(path.join(api.CACHE_ROOT, 'unrelated.txt'), 'preserve');
+    let error = null;
+    try { api.adoptOwnedVscodeTestCache('1.132.1'); } catch (caught) { error = caught.message; }
+    process.stdout.write(JSON.stringify({ error, markerExists: fs.existsSync(path.join(api.CACHE_ROOT, '.pacify-x-owned-cache.json')) }));
+  `);
+  assert.match(value.error, /unclassified-vscode-test-cache/);
+  assert.equal(value.markerExists, false);
+});
+
+test('cache preflight fails cold in check mode and populates exactly once', async t => {
+  const modulePath = path.join(__dirname, '..', 'scripts', 'prepare-owned-vscode-test-cache.js');
+  const { prepareOwnedVscodeTestCache } = require(modulePath);
+  let downloads = 0;
+  const temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'px-cache-preflight-'));
+  t.after(() => fs.rmSync(temporaryRoot, { recursive: true, force: true }));
+  const executable = path.join(temporaryRoot, 'Code.exe');
+  let ready = false;
+  const dependencies = {
+    resolve: () => {
+      if (!ready) throw new Error('vscode-test-cache-file-missing:.pacify-x-owned-cache.json');
+      return { version: '1.132.1', platform: 'win32', arch: 'x64', root: temporaryRoot, executable };
+    },
+    ensure: () => ({ root: temporaryRoot }),
+    download: async () => { downloads += 1; fs.writeFileSync(executable, 'fixture'); ready = true; }
+  };
+  const options = { dependencies };
+  await assert.rejects(prepareOwnedVscodeTestCache('1.132.1', { ...options, checkOnly: true }), /cache-file-missing/);
+  const populated = await prepareOwnedVscodeTestCache('1.132.1', options);
+  const reused = await prepareOwnedVscodeTestCache('1.132.1', options);
+  assert.equal(populated.populated, true);
+  assert.equal(reused.populated, false);
+  assert.equal(downloads, 1);
+  assert.equal(reused.executable_sha256, populated.executable_sha256);
+});
+
 test('owned cache validation fails before effects for malformed versions', t => {
   const result = runIsolatedCacheOwner(t, `
     fs.mkdirSync(api.CACHE_ROOT, { recursive: true });

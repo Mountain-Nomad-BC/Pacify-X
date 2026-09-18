@@ -39824,11 +39824,11 @@
     "note": "vault/Systems/hostcachecustody.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 1
+      "changed-file": 1
     },
     "runtime_observed": false,
     "certified": false,
@@ -39864,11 +39864,11 @@
     "note": "vault/Systems/hostworkspacecustody.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 1
+      "changed-file": 1
     },
     "runtime_observed": false,
     "certified": false,
@@ -40160,11 +40160,12 @@
     "note": "vault/Systems/extensionfixturecontracts.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 4
+      "changed-file": 1,
+      "same-file-bytes": 3
     },
     "runtime_observed": false,
     "certified": false,
@@ -42926,11 +42927,11 @@
     "note": "vault/Systems/walklaunchertests.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 1
+      "changed-file": 1
     },
     "runtime_observed": false,
     "certified": false,

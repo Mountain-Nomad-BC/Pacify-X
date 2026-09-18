@@ -83,6 +83,33 @@ function ensureOwnedVscodeTestCache(version, options = {}) {
   return Object.freeze({ root, markerPath, retainedVersion, pruned: Object.freeze([]) });
 }
 
+function adoptOwnedVscodeTestCache(version, options = {}) {
+  const retainedVersion = normalizedVersion(version);
+  const root = ownedCacheRoot(options);
+  if (!fs.existsSync(root)) throw new Error(`vscode-test-cache-directory-missing:${path.basename(root)}`);
+  const rootStatus = fs.lstatSync(root);
+  if (rootStatus.isSymbolicLink() || !rootStatus.isDirectory()) {
+    throw new Error(`vscode-test-cache-directory-invalid:${path.basename(root)}`);
+  }
+  const layout = cachedVSCodeLayout(root, retainedVersion, options);
+  const entries = fs.readdirSync(root).sort();
+  if (entries.length !== 1 || path.join(root, entries[0]) !== layout.directory) {
+    throw new Error(`unclassified-vscode-test-cache:${root}`);
+  }
+  const markerPath = path.join(root, MARKER_NAME);
+  const prepared = `${markerPath}.${process.pid}.new`;
+  fs.writeFileSync(prepared, `${JSON.stringify({
+    schema_version: CACHE_SCHEMA,
+    owner: 'PACIFY-X',
+    classification: 'reusable_test_cache',
+    retained_versions: [retainedVersion],
+    adopted_existing_complete_layout: true,
+    updated_utc: new Date().toISOString()
+  }, null, 2)}\n`, { encoding: 'utf8', flag: 'wx' });
+  fs.renameSync(prepared, markerPath);
+  return resolveOwnedCachedVSCode(retainedVersion, options);
+}
+
 function cachedVSCodeLayout(cacheRoot, version, options = {}) {
   const root = path.resolve(cacheRoot);
   const platform = options.platform || process.platform;
@@ -129,6 +156,7 @@ function markOwnedHostWorkspace(root, kind) {
 
 module.exports = {
   CACHE_ROOT,
+  adoptOwnedVscodeTestCache,
   cachedVSCodeLayout,
   defaultOwnedCacheRoot,
   ensureOwnedVscodeTestCache,

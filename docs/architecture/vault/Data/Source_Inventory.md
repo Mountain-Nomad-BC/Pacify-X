@@ -4099,6 +4099,11 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `.px/skills/verify-outcome/skill.yaml` — `db82182483bd58327a0f9ef3b81eac59da44865409f4036c2429df0491006a71`
 - `.px/skills/verify-outcome/tests/validation.json` — `966e5733b96e79850aaf0304ee5bcfe39701d3760ee51904e176f09e522a3d03`
 - `.quarantine/final144-docs-temp-20260914/docs/tmp_test_ps.md` — `41d966b5f3b5f0ac3313e3bf68cfb528a4f180b3e60e21f789677d0bb64f7712`
+- `.quarantine/final164-pre-candidate-20260918/external-temp/pytest-of-Ben/pytest-0/test_dependency_fingerprint_ch0/unrelated.py` — `3ea5df6212bad665646a135bed19b59c50e34a522069ca8da92154af1d1c58bc`
+- `.quarantine/final164-pre-candidate-20260918/external-temp/pytest-of-Ben/pytest-0/test_dependency_fingerprint_ch0/watched.py` — `3ea5df6212bad665646a135bed19b59c50e34a522069ca8da92154af1d1c58bc`
+- `.quarantine/final164-pre-candidate-20260918/external-temp/pytest-of-Ben/pytest-0/test_dossier_rejects_changed_e0/dossier.json` — `09cb6bd9430a3e02f4732be4b3796bc4783eedc320982ca089bc24bcb73f0c58`
+- `.quarantine/final164-pre-candidate-20260918/external-temp/pytest-of-Ben/pytest-0/test_dossier_rejects_changed_e0/one.json` — `c490595b3eacb7256f98f2ee40f45e3c3ce8c82b37804bc45a771ee38aa56898`
+- `.quarantine/final164-pre-candidate-20260918/external-temp/pytest-of-Ben/pytest-0/test_dossier_rejects_incomplet0/dossier.json` — `8fc7c7ef0f164d7a6b54998e7848f40d1788e0f978c5ecea8d06b3055ff90f6c`
 - `.venv-certify/.gitignore` — `330ea7fdc1b08e3c3f112f4c21c13a061bd8c2f05ba9a71636d3dfe1574129c1`
 - `.venv-certify/Lib/site-packages/_distutils_hack/__init__.py` — `ced72e54431ecf2d8d7dbd8a1e27724f1b171af3ca1503c304bf11c59a7fe861`
 - `.venv-certify/Lib/site-packages/_distutils_hack/override.py` — `12efecf8d17a5486780aa774b5b6c0e70b56932d8864f35df1eb7a18bb759b3a`
@@ -8768,9 +8773,10 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `extension/scripts/owned-engine-outage.js` — `d8e531f8fffca21b57d663a195bde80e17890e8bd0f18f542e85f6c6588381bc`
 - `extension/scripts/owned-host-runner.js` — `dcb719e21a55d80760d28a2e7dbe82af25f6cdc865459e502e58887e6c197674`
 - `extension/scripts/owned-native-input-client.js` — `7b59469034ed07805e9fcac6b858205e5ee9786360d1b13759687a59e6e68074`
-- `extension/scripts/owned-vscode-test-cache.js` — `2373942d831cfac4789bb858c1dbb5ae53bb00d93a5421ea8dfc1615abab4312`
+- `extension/scripts/owned-vscode-test-cache.js` — `c06266ec91c1a43da6c81a0f1d1e9e9cf14fa39060702284e435e64969aa8e90`
 - `extension/scripts/owned_windows_native_input.py` — `89c7f530764dc0b92f0ffe637e90f787e412358c7d692c560fa409ceb445efef`
 - `extension/scripts/package-vsix.js` — `5a359309590c506421ec6e56cb163a8f962a6289280ae8ed1c979ffc7aa35a2d`
+- `extension/scripts/prepare-owned-vscode-test-cache.js` — `2cf7e2fcc399563e640325544c4a4448354b672d798590b0c206bf69e3222472`
 - `extension/scripts/probe-mcp-runtime.js` — `5693b776d8aa3d3e85e585e61e85a5da9ee86ba0dd836d32438cafeee07a7c4a`
 - `extension/scripts/refresh-environment-inventory.js` — `81152c49dc336562729337512150f459068c5110c9ec407efb2cb7f605f95457`
 - `extension/scripts/run-contained-ui-action-walk.js` — `9ebe4d2dd133dc2230a61d4af9184b969a28160157951dd3979878264fd304b0`
@@ -8866,7 +8872,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `extension/tests/installed-harness/studio_late_card_worker.py` — `1c2fbd69555767476b55fda1fe0a2ba74f0a1ca3a5aa1654637494bc30f24f8e`
 - `extension/tests/installed-harness/studio_lifecycle_crash_worker.py` — `a4ab7e0234e94b6bad87ce8cd05088bb2466bad27b3cf421b92aca9ba84db11d`
 - `extension/tests/instrumentation-sdk.test.js` — `b206502d1282c603bccce337deab69604ddf0f04147eac67e37d2779e7996fa8`
-- `extension/tests/isolated-current-source-walk.test.js` — `cfff65be7b669e2fa7da860c424e7419b3395de1008a3e1eb5532def2969c7c1`
+- `extension/tests/isolated-current-source-walk.test.js` — `782e1c67e7d69418c70b87fd97949c79dad04bf09b8116acc13f44f613a35d5d`
 - `extension/tests/latest-discovery.test.js` — `8ec84ae78f73a7c312904bea7e5802e6308b3365df3c52173c04f584759b3b8d`
 - `extension/tests/mcp-activity-integration.test.js` — `6d1016e3bb89ae881d0c8e792664f71900d5d1ca38b0e14b7e0c3326237dbd81`
 - `extension/tests/mcp-mutation-authority.test.js` — `743bbe3b6bb1d48aeaa6696c14bf130f49697b29c175d724d404c8e61f5f8ee8`
@@ -8881,7 +8887,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `extension/tests/owned-engine-outage.test.js` — `1c948194184f2d505c2d5efd95474adfd0450d001609c3e0ad19d4be58bb8c77`
 - `extension/tests/owned-host-runner.test.js` — `d9546daab08b4b363afb434d29b53f8d2dad8fb96c412056daa4fbf5255cd79c`
 - `extension/tests/owned-native-input-client.test.js` — `af54b6be2d47ddf7dd679ff3a35818cd22cbd4dbcd2b4dfb1d1a7ebce8e5bb12`
-- `extension/tests/package-contract.test.js` — `d9e2ee78d5039c4bbdf1fa4bdf01e190ca53e6d831d0fdc6665b320d263a83f0`
+- `extension/tests/package-contract.test.js` — `293debef71f78e6a9668cec3d833c81b8c1344c4ddf7e9bbde910cc1a9005d74`
 - `extension/tests/plugin-lifecycle-fixtures.test.js` — `11ebeba2b5d07497c911e205f78b43c333e0783362f041d9ec50c35750676b9e`
 - `extension/tests/preview.html` — `590972a9dcaccce9bb13438b9685ede1315b6b326b463af05c5bca751b8e340b`
 - `extension/tests/provider-execution-policy.test.js` — `c90372537c14ebb28d92e7fb7d3fe31d300bd70a04b00e0a0f3927fac67b0317`
@@ -9648,7 +9654,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `projects_tracking/.ledger-authority/events/history/00000323.json` — `b839df4dbad8955e9be90b86c260f56c90839ea720ff5a23c1ea35d04249c4eb`
 - `projects_tracking/.ledger-authority/events/history/00000324.json` — `63211f13cf3cd31b2e4ab1746350a17774b1822b236db0f2f868db61ec06f9c9`
 - `projects_tracking/.ledger-authority/events/history/00000325.json` — `5d18c59914e2b4d73cca882e18b40926c427f978b114a87558451d9ee7449398`
-- `projects_tracking/.workspace-control.lock` — `fb999376789a2e4b2c8a7bec07f1377ad51949aabc9b27058459d9a53be85b7b`
+- `projects_tracking/.workspace-control.lock` — `2341f0ba2c278816af319aecdb03e04e60c4427e29c70c73f146257680f57cb5`
 - `projects_tracking/PROJECT_MANAGEMENT.md` — `a5ad86f71259a9a9d35d19673e47b7bc6768a01bc9d7fcc2b353280a26e51e52`
 - `projects_tracking/checkpoints/corr_64837e3e65928c01/000001-preflight.json` — `bcf0e56d66b584b10b7dfcc47d7f00ba3974f325e87fe16c6222a51c8412e818`
 - `projects_tracking/checkpoints/corr_64837e3e65928c01/000002-verification.json` — `812977d8f7f3648a91cc31e268f9c4e078a75f1ec86f591fef6ca5f2563da92c`
@@ -11601,7 +11607,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `providers/agency_agents/manifests/testing/testing-tool-evaluator.json` — `31890dfa4b4226f94fe1603aff32725e3fbd7abfc14f88f3edb861d766c6bdae`
 - `providers/agency_agents/manifests/testing/testing-workflow-optimizer.json` — `265888ea58e65f9c123e9ce641bcc3f7d023e6d2a768411f2fa552fbce6d9e1a`
 - `pyproject.toml` — `e1bc5f155ce6b987c43adab76428cd2f912b80ef91508d3e3e3782e2cbab98fa`
-- `registry/.operational-gap-ledger.lock` — `a613ccc7e76ad52981a71eed2e2a8efbfec7fd0a22b62e47d6d2df86fab1a284`
+- `registry/.operational-gap-ledger.lock` — `a0d210b530d823b0c071674196901f5db8175a7423ac64398c0a7f3f45005494`
 - `registry/_work_admit_payload.json` — `74eedf1ec6500953d447879970ddc8811b2e8e08077dbe816d7131eb96d00569`
 - `registry/admission_ledger.json` — `e01d29886ae5db274f9a7759eec401e407cd623f4a31b6ae8196126af98cca83`
 - `registry/admission_queue.json` — `e82e14739bd539be5b1dded83c0cea6e2b27a86359b2be03f53e7ce0037364f6`
@@ -11612,7 +11618,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `registry/agency_agent_graph.json` — `ea2643fd20c95d482b5d02a69c96109310319b6c4daddca85199bc514703702a`
 - `registry/agency_agent_registry.json` — `258d34007098b8dc4229fe26017081118248601fec017a9b85747badca5fb9c7`
 - `registry/agent_builder_reference_audit_20260814.json` — `a583c29c1fb1e479a3ecf2515a69989535eff2f5148d9e0ffbe060e8aa80fd36`
-- `registry/artifact_reachability.json` — `9ac33de0d58dd97010053401e05c78c827f7258d499a57728732f20c230d6726`
+- `registry/artifact_reachability.json` — `cd927fd00ee4cdceff538dd1b24a3f2188bb5ea579ef8ec9988c6aa59e452c00`
 - `registry/assurance_capabilities.json` — `3d9fbacff3f1816b9ed498f4306dbb6674860f8b2f74a61f1e104c6952a8795f`
 - `registry/authority_topology.json` — `9f366f6469bb5397a46e31d694620de95254fdb5d52077f3dcfb180f529f5ed0`
 - `registry/brain_capabilities.json` — `0c3026a78cd46576cc1320501b7a5a71f6889335b8e89d60c65440c24eb222c7`
@@ -11641,8 +11647,8 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `registry/declared_suite_reconstruction.json` — `a166977a7629808806d3a8c83d9fc29a9022e99d03fa67b2d2f428138a1dd39a`
 - `registry/declared_suite_schema_contracts.json` — `4373109fcb373d968bbc417f1eb252068fdcd868287085c5fd401a3ad5c4c51a`
 - `registry/dependency_authority.json` — `2c9c32a46abcbb3c891d46465e993601c5355d95c3769339c9186c319f8e0eec`
-- `registry/effect_surface_ownership.json` — `64dc9687518f70f0f37d88bb244c6c4048437ddd209b5647522474a0f3be6fb1`
-- `registry/engine_identity.json` — `c8fbcab392120af3abb495e471daea00775bbb5f405a3c2c86255ba14318b05c`
+- `registry/effect_surface_ownership.json` — `99e10f48c9a3106ec25f03860520a51f2e2400236d12834f0dbe94d7ffacb393`
+- `registry/engine_identity.json` — `49df40e95b4cd6b054bf08ce964c167cbcafe4a251986b4c3cb70518a1701c36`
 - `registry/engineering_lifecycle.json` — `3611efe1083a211827f15e7aad820a3f15005010cfd715e7c975e798e5c78b19`
 - `registry/engineering_reasoning_expansion.json` — `876dcea64e4afbe3ffb59bf24e502c06cacd9e617c1c1010d1b30cb726501277`
 - `registry/evidence_type_policy.json` — `bee133ae5f2126e81bcf51ddbe6293c6d76c5af74fe6494ee7a7811b79916d56`
@@ -11690,8 +11696,8 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `registry/operation_route_registry.json` — `d659d220e286f37d4d0959c90b5931497f09dbc56e5129b4ab4b24d8aff0aba1`
 - `registry/operational_capabilities.json` — `cbaa40028857112622214853f35ca7cdfbb9eb309e742512cf406d8c916f3b49`
 - `registry/operational_control_proof_matrix.json` — `21555e59d5bf3729d4610dbbca74d799f126af6bb543ff6da229b5a01d14244b`
-- `registry/operational_gap_ledger.head.json` — `a51f4111ab04a4fe38dee48a96269b71e44f2e44877152ac053e13e7c99d433d`
-- `registry/operational_gap_ledger.jsonl` — `1ee8157962415f867a1177ab0a7f199797eecbbd33664876c37066bef4ab59ce`
+- `registry/operational_gap_ledger.head.json` — `7f2eeeab0641fc2b662fb94fcad55f135bb6b5301da487c4ff58770246dfc357`
+- `registry/operational_gap_ledger.jsonl` — `78cbe05e93b3178c3a8dbb95051453e6cf227017d3f2e53479d3784ba487a568`
 - `registry/operational_gap_ledger.snapshot.json` — `f86d17540afb056368b7f1454eb2fe8c5ac178f96c86f4c7a67fb0556e852a93`
 - `registry/operational_surface_aliases.json` — `7d383f9c399af8fbbf241c665440c33ef19ca17c797ec0836c5028adf8a1dcd1`
 - `registry/operational_surface_audit_20260816.json` — `e21205107d5782bf8b66015baedb3cc765df3c871338382f200d81ccd11bf011`
@@ -11708,10 +11714,10 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `registry/projection_staleness.json` — `5c1707f6ce7bb3dcfd9193f2871823ac4ffa2fee2d79efbe1b895b434eb698a0`
 - `registry/provider_adapters.json` — `9cbb226f2e4265095a77f7dd8de2711ee39f009fd52e66163b7fc03737e37eef`
 - `registry/provider_budget_policy.json` — `64b7d60184a6c4907006903df7ee01464ec26c4b21114eb4392eaeda4c95c10b`
-- `registry/provider_route_scan.json` — `4d626d8bcaf3ce9519a7639a73fa9e4fa598b83a5211ae1042cdc3427abbe05f`
-- `registry/px_world_state.json` — `b3e360204de2c5a0d798557b20c4fbd1c2c5186942b5e994520cd24835cca1f3`
+- `registry/provider_route_scan.json` — `1f8d21a07b46eb1d3edd13b28d868c1ab0cba6fda0bb045278e2ef4ca8ce3f1f`
+- `registry/px_world_state.json` — `941a98ec1b6738237996551b305fc2df624ea1877626805326e29fda49fb6639`
 - `registry/python_dependency_ownership.json` — `a6128b467e7d9208c9ae226c6129ec2aa96f615f237d83bd76ef480d1dae49a6`
-- `registry/python_surface_ownership.json` — `6aac292b0f4440b4f14e05fd1aee6803f8ee4d3d2ea0d647b7b60d8bffb0ac0b`
+- `registry/python_surface_ownership.json` — `860089bd72aa1f209be507cce72a8c837c4df3e0de0db5270debbdab64ae0c7b`
 - `registry/reference_candidate_admission.json` — `39ef5749428a9c1eca265571e6771c1ed9b731ca0f68aa516f8206bcffa68fdb`
 - `registry/registry_envelope_inventory.json` — `d4c21dae28849258a210750916fa4099ff4444cd4c909e2e8f0c2c3dddcfa2c4`
 - `registry/release_fault_campaign.json` — `b22762e0c6b4c571a159ae93eb5dfbfb27533ec02b2f6b04317764924e3417f0`
@@ -11970,7 +11976,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `registry/state_artifact_classes.json` — `cbbb78181936304ad59168ee41356753603a8934fb3148434868175e02f5a4a6`
 - `registry/structural_integrity_policy.json` — `1aabdb815eb31cb1129e180c85d861c609551c5994ddf2b5a74cf9110a0b15f6`
 - `registry/studio_operations.json` — `7483f5aa94fa1ea9e1877bbae480686e4bd08ad3637e15f4f5f5624f05f4009e`
-- `registry/test_group_index.json` — `33794de383fad1453000a5bc835ae8ba5c38e5e44772485909e81bf51e8c2791`
+- `registry/test_group_index.json` — `ecc741b440d568e88eb94484400ac04a0665483708321cddc37b33bc2318484f`
 - `registry/test_profiles.json` — `0141260c294634c6a47c3fe34a6278706363b2aad1f2cb027e60e2e943305e55`
 - `registry/tools.json` — `daccec7bc0ce5bb9f4b8200dde4da393f45087816f6912b893fd79090d9580fe`
 - `registry/workflow_execution_bindings.json` — `3c8bbd41aabb460b0c17910bf6830fa8c2016c1f4b70e8975e5e285416eef454`
@@ -12313,7 +12319,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `scripts/package_release_evidence.py` — `3daea63b86fc3b40281eb3b963eca0ff708ac20d4b3e73f87c4d55bd43323207`
 - `scripts/pipeline_common.py` — `f18392f09841ffa9ece34c892e63f8724035d839c52ad6af65c03b8970d1159b`
 - `scripts/portable_audit_bundle.py` — `58869f8d2bbdbcab520af8b2f71e3699dccb6332eaf880b8b1117e9725b3dda6`
-- `scripts/pre_candidate_hygiene.py` — `63fbcb5f05eccd7b6bb34b65ae0dba72bfb9ff9d908f3bdb338aaf0627555889`
+- `scripts/pre_candidate_hygiene.py` — `ce3779ddb0032022c3cba25fd17c9b80436baf939bca07fe6555818d2351ccab`
 - `scripts/quarantine_paths.py` — `8ba532f28786e98191d92814eab1cb5fdb4ea7dfb3df368e166a4aed47bd6d31`
 - `scripts/reconcile_active_capability_hashes.py` — `9d2341ca2f93b2165a77c12d8c1df6f93a3b2a84afad6f636a1d1af80349de57`
 - `scripts/reconcile_cohesion_cards.py` — `a86dd9b0823b69feb13908683d9f34ce5a9350a348a7cd3db5d0c3dd6cf5936b`
@@ -12573,7 +12579,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `tests/test_outcome_verifier.py` — `840b90a70918e2ab88f30173c71b321f167353b3faddcab7b073e9f1eeaf67f7`
 - `tests/test_platform_support.py` — `bc5757a17869810ad174b690eb34e974ad4e3b5a5ed54e6b04b23982f08bde46`
 - `tests/test_portable_audit_bundle.py` — `3105a352031ff9dde559be29ca0f4db5f81fe2a0b86d084eeccbd0f9d4551f12`
-- `tests/test_pre_candidate_hygiene.py` — `413f6bdae001e57f47f004325be2054683e327c2ba51110a18381c5ca575910c`
+- `tests/test_pre_candidate_hygiene.py` — `07c2fecb013385b0acd003aac929ffe9bcc331327a01b867f1900a81cc05302a`
 - `tests/test_primitive_authority.py` — `4aafc0565d7e81b41b85bf7f8209fc2203b86af1f3f74adc1666b6afd1f1aa5b`
 - `tests/test_primitive_lint.py` — `ecb603684a34f715074fdd5a836637c6a32d05fc421607cee3b117186717a769`
 - `tests/test_process_input_contracts.py` — `9d57232e3bdcda991e791c98483ac350045753ba36ee103eedd06b84848df9d5`
