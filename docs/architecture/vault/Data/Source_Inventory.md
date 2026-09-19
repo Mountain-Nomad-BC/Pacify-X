@@ -4098,14 +4098,6 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `.px/skills/verify-outcome/resources/index.json` — `3ab5099c3012f477dae56282bdd5a6288446da468f804bc2176dc2feebd90c26`
 - `.px/skills/verify-outcome/skill.yaml` — `db82182483bd58327a0f9ef3b81eac59da44865409f4036c2429df0491006a71`
 - `.px/skills/verify-outcome/tests/validation.json` — `966e5733b96e79850aaf0304ee5bcfe39701d3760ee51904e176f09e522a3d03`
-- `.quarantine/final144-docs-temp-20260914/docs/tmp_test_ps.md` — `41d966b5f3b5f0ac3313e3bf68cfb528a4f180b3e60e21f789677d0bb64f7712`
-- `.quarantine/final164-pre-candidate-20260918/external-temp/pytest-of-Ben/pytest-0/test_dependency_fingerprint_ch0/unrelated.py` — `3ea5df6212bad665646a135bed19b59c50e34a522069ca8da92154af1d1c58bc`
-- `.quarantine/final164-pre-candidate-20260918/external-temp/pytest-of-Ben/pytest-0/test_dependency_fingerprint_ch0/watched.py` — `3ea5df6212bad665646a135bed19b59c50e34a522069ca8da92154af1d1c58bc`
-- `.quarantine/final164-pre-candidate-20260918/external-temp/pytest-of-Ben/pytest-0/test_dossier_rejects_changed_e0/dossier.json` — `09cb6bd9430a3e02f4732be4b3796bc4783eedc320982ca089bc24bcb73f0c58`
-- `.quarantine/final164-pre-candidate-20260918/external-temp/pytest-of-Ben/pytest-0/test_dossier_rejects_changed_e0/one.json` — `c490595b3eacb7256f98f2ee40f45e3c3ce8c82b37804bc45a771ee38aa56898`
-- `.quarantine/final164-pre-candidate-20260918/external-temp/pytest-of-Ben/pytest-0/test_dossier_rejects_incomplet0/dossier.json` — `8fc7c7ef0f164d7a6b54998e7848f40d1788e0f978c5ecea8d06b3055ff90f6c`
-- `.quarantine/final165-predecessor-runtime-plane-20260918/external-temp/pacify-x-final164-runtime-plane/cache/60983056331b3fd33f8cdec3.json` — `06a5af211b089dc8d23e5dd99823934bc522b7e593bf4220de31782710ac60a7`
-- `.quarantine/final165-predecessor-runtime-plane-20260918/external-temp/pacify-x-final164-runtime-plane/state.json` — `0d9e04a0160324b06a45a5616017c99ca6834d5110aedafdc2f7ee435c40fa76`
 - `.venv-certify/.gitignore` — `330ea7fdc1b08e3c3f112f4c21c13a061bd8c2f05ba9a71636d3dfe1574129c1`
 - `.venv-certify/Lib/site-packages/_distutils_hack/__init__.py` — `ced72e54431ecf2d8d7dbd8a1e27724f1b171af3ca1503c304bf11c59a7fe861`
 - `.venv-certify/Lib/site-packages/_distutils_hack/override.py` — `12efecf8d17a5486780aa774b5b6c0e70b56932d8864f35df1eb7a18bb759b3a`
@@ -8596,7 +8588,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `docs/PX_UNIVERSAL_VISIBILITY_PUNCH_CARDS.md` — `a996bc379c5975176487012cd2c806f94583c4900082c1c1df3da9dccd354106`
 - `docs/R01_CERTIFICATION_BOOTSTRAP.md` — `ddf5dd3e7c131c12e5389cc0ef83a2be38d86e452c71039d497edf999fb0f4a1`
 - `docs/R10_PORTABLE_AUDIT_BUNDLE.md` — `90411b32bdd466d3333e24c530a19bed36e34fdceb00e78a37c149618d3834c6`
-- `docs/artifact-reachability-contract.md` — `52d7c85dc1ae1afb3105f4391a8b42c76579e599007681a3901955a8c71dd133`
+- `docs/artifact-reachability-contract.md` — `b9ed9bf8f5231b0631cfc68cd9b82276ececbfb41d151b0776aa797b5f232bee`
 - `docs/assets/pacify-x.png` — `a969dca5e2f5a909788d50a51f3413d68b316315cf4d60b957819e7dbcb0a814`
 - `docs/benchmark-operational-assurance.md` — `c529a54c8649d08b11ecc17882366a624b7fe735fe894f5c768265c7e96ea9cf`
 - `docs/cli-exit-codes.md` — `a53fce6bc5764962b1373dab2bb7ccd0e202c78f6f880c4670e4aede604ea253`
@@ -8606,7 +8598,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `docs/operational_surface_unresolved_card_decisions.md` — `15426c9648a92f2a1f5a1ee6deba135314972bdb076f6a579ba96875f9f9c26c`
 - `docs/operational_surface_unresolved_card_decisions_governance.md` — `3f65d9b27f93a3126c6712d7bd08aedeb6f543a416378fcd3c84915c4e6f6a98`
 - `docs/pacify-x-adds-integration-disposition.md` — `7a17bb6c25e73a4da65c3ae2363ab354e42b70ae3019c5c602d1ab049b9e26b7`
-- `docs/release-preflight-input-contract.md` — `e96e538cde5186ba116c7238e3ca5ceb00f7becf6f710675a887f51aadc11286`
+- `docs/release-preflight-input-contract.md` — `af7c9f1ab0b94df860acee4f576eeded9f6f55a6edab8e6b4f68148afd1fd25d`
 - `docs/release-process.md` — `f26ac741bccf0f71ebbf82d4d7cac0f2cb8153895d60b8a7f00d479fc5b26248`
 - `docs/trust-boundary-migration.md` — `c780950490a52b4a441b996b169e8e8f38c4ba0bb796f3d116c9f25262a7dbec`
 - `docs/trust-boundary.md` — `0080eb330146011d05cb6da0482be190bfdfd9ece424cd4a3d7f19c64b04c4c0`
@@ -8771,7 +8763,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `extension/scripts/deduplicate-legacy-css.js` — `bc00e3facf873f8f84353362a848c6d8139247d5c68585ed1ee04b34758049be`
 - `extension/scripts/measure-runtime-efficiency.js` — `7ca5ef622c3031307efe8ba62510eced811dc430a65549945617f1ebd78b31bb`
 - `extension/scripts/operational-ui-control-records.js` — `675d63a5a86c7a9e925cd37f11a51b38dba1e4fbef3a740fffd34e8e0da4fec6`
-- `extension/scripts/operational-walk-status.js` — `6b2007aad7594b361bcc496837f69a980aab4464c2c7a5a82ef2c723eb3a23c2`
+- `extension/scripts/operational-walk-status.js` — `d631a1a6f610a043994c61de1b19d0812d7d9771ea0af554b6d3453d4cb4f57f`
 - `extension/scripts/owned-engine-outage.js` — `d8e531f8fffca21b57d663a195bde80e17890e8bd0f18f542e85f6c6588381bc`
 - `extension/scripts/owned-host-runner.js` — `dcb719e21a55d80760d28a2e7dbe82af25f6cdc865459e502e58887e6c197674`
 - `extension/scripts/owned-native-input-client.js` — `7b59469034ed07805e9fcac6b858205e5ee9786360d1b13759687a59e6e68074`
@@ -8784,9 +8776,9 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `extension/scripts/run-contained-ui-action-walk.js` — `9ebe4d2dd133dc2230a61d4af9184b969a28160157951dd3979878264fd304b0`
 - `extension/scripts/run-exhaustive-operational-control-walk.js` — `34af2e0a918b3b79c328b1885385fe6d7ae169078cb5d3d9c29129290abf7367`
 - `extension/scripts/run-installed-vsix-smoke.js` — `12da96d6733562d1a467d5b6170578c13e61face857e9e30298b4820395bf06b`
-- `extension/scripts/run-isolated-current-source-walk.js` — `94d630858c84d722109f61cfd254c952b472d0a7b99ef20fc1bc0782990f5717`
+- `extension/scripts/run-isolated-current-source-walk.js` — `32dcccac9585655e34433d635baeb50ec3b0af8fc1256c203ce82be998b87291`
 - `extension/scripts/run-operational-fault-recovery-walk.js` — `e8706ca8a7228770d2abb719260e4222bb86cb310a17a46d9e2547b987ccb001`
-- `extension/scripts/run-operational-ui-walk.js` — `d57001f7232765e43b90e278c88624acc334f366d13463ab7c3cb74689e1a776`
+- `extension/scripts/run-operational-ui-walk.js` — `b09633fb2d4b17f753717f4d96bfefe4ccb2c479345176610ddaff85b2f319b6`
 - `extension/scripts/run-state-invariant-vectors.js` — `ed3e9b894b04b24b91eaa028a95fef862f6fb47c795bdd78a7e9ad46f99cbdd1`
 - `extension/scripts/run-test-profile.js` — `d76f92312025a29d56f13faf2a87479fa41d7cdc7b80bc0fcaa61ead7ab01bb8`
 - `extension/scripts/run-vscode-host-smoke.js` — `360d7cc9660240b2973bc6ed6919d5d8945fc2c423e7d4d7a2260c02fd14bd0f`
@@ -8874,7 +8866,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `extension/tests/installed-harness/studio_late_card_worker.py` — `1c2fbd69555767476b55fda1fe0a2ba74f0a1ca3a5aa1654637494bc30f24f8e`
 - `extension/tests/installed-harness/studio_lifecycle_crash_worker.py` — `a4ab7e0234e94b6bad87ce8cd05088bb2466bad27b3cf421b92aca9ba84db11d`
 - `extension/tests/instrumentation-sdk.test.js` — `b206502d1282c603bccce337deab69604ddf0f04147eac67e37d2779e7996fa8`
-- `extension/tests/isolated-current-source-walk.test.js` — `782e1c67e7d69418c70b87fd97949c79dad04bf09b8116acc13f44f613a35d5d`
+- `extension/tests/isolated-current-source-walk.test.js` — `6115a7d88a2ba1c6587bd9b1e42d3b55c9b4037ca9a34f474b695aad5bf8af98`
 - `extension/tests/latest-discovery.test.js` — `8ec84ae78f73a7c312904bea7e5802e6308b3365df3c52173c04f584759b3b8d`
 - `extension/tests/mcp-activity-integration.test.js` — `6d1016e3bb89ae881d0c8e792664f71900d5d1ca38b0e14b7e0c3326237dbd81`
 - `extension/tests/mcp-mutation-authority.test.js` — `743bbe3b6bb1d48aeaa6696c14bf130f49697b29c175d724d404c8e61f5f8ee8`
@@ -8885,7 +8877,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `extension/tests/operational-fault-recovery-walk.test.js` — `7c24509c45613d5f7e41f6c964953e2ffba9ebe7cdcfd49de630339c9c9d4e2f`
 - `extension/tests/operational-ui-walk-installed-probe.test.js` — `544089738665f99429b1bd05ee87592a99f8b7aa262c1fe244fdcea82bb17785`
 - `extension/tests/operational-walk-bootstrap/index.js` — `043b274add9b0072155a4091cf3dc1941a860d249f7ad84368b46cd092cd772b`
-- `extension/tests/operational-walk-status.test.js` — `a571ad00463b91e11e14f67309f66639e3c42d4ae84d6ccb5308d182a66dd54e`
+- `extension/tests/operational-walk-status.test.js` — `3817d6aaff6924daa81cd0d5b7c8448b1329f650ef4b53a1abbc450cc49b6746`
 - `extension/tests/owned-engine-outage.test.js` — `1c948194184f2d505c2d5efd95474adfd0450d001609c3e0ad19d4be58bb8c77`
 - `extension/tests/owned-host-runner.test.js` — `d9546daab08b4b363afb434d29b53f8d2dad8fb96c412056daa4fbf5255cd79c`
 - `extension/tests/owned-native-input-client.test.js` — `af54b6be2d47ddf7dd679ff3a35818cd22cbd4dbcd2b4dfb1d1a7ebce8e5bb12`
@@ -9656,7 +9648,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `projects_tracking/.ledger-authority/events/history/00000323.json` — `b839df4dbad8955e9be90b86c260f56c90839ea720ff5a23c1ea35d04249c4eb`
 - `projects_tracking/.ledger-authority/events/history/00000324.json` — `63211f13cf3cd31b2e4ab1746350a17774b1822b236db0f2f868db61ec06f9c9`
 - `projects_tracking/.ledger-authority/events/history/00000325.json` — `5d18c59914e2b4d73cca882e18b40926c427f978b114a87558451d9ee7449398`
-- `projects_tracking/.workspace-control.lock` — `3adfd45818828e5b91619a6e4d921b1a24f7c508c67265ea50f36adc2734f3c1`
+- `projects_tracking/.workspace-control.lock` — `c62b7af8835e36d06660276f2db1c8297500cbc25f8bb91884932fa071522be3`
 - `projects_tracking/PROJECT_MANAGEMENT.md` — `a5ad86f71259a9a9d35d19673e47b7bc6768a01bc9d7fcc2b353280a26e51e52`
 - `projects_tracking/checkpoints/corr_64837e3e65928c01/000001-preflight.json` — `bcf0e56d66b584b10b7dfcc47d7f00ba3974f325e87fe16c6222a51c8412e818`
 - `projects_tracking/checkpoints/corr_64837e3e65928c01/000002-verification.json` — `812977d8f7f3648a91cc31e268f9c4e078a75f1ec86f591fef6ca5f2563da92c`
@@ -11609,7 +11601,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `providers/agency_agents/manifests/testing/testing-tool-evaluator.json` — `31890dfa4b4226f94fe1603aff32725e3fbd7abfc14f88f3edb861d766c6bdae`
 - `providers/agency_agents/manifests/testing/testing-workflow-optimizer.json` — `265888ea58e65f9c123e9ce641bcc3f7d023e6d2a768411f2fa552fbce6d9e1a`
 - `pyproject.toml` — `e1bc5f155ce6b987c43adab76428cd2f912b80ef91508d3e3e3782e2cbab98fa`
-- `registry/.operational-gap-ledger.lock` — `d598297099b80d5eeaf999808aef61f09b03831ce7c4b8479073d9c9d68ae2e8`
+- `registry/.operational-gap-ledger.lock` — `c12d2be76c5c580554273022ceb0d96ce0a3367f198d027db528686e85a3105d`
 - `registry/_work_admit_payload.json` — `74eedf1ec6500953d447879970ddc8811b2e8e08077dbe816d7131eb96d00569`
 - `registry/admission_ledger.json` — `e01d29886ae5db274f9a7759eec401e407cd623f4a31b6ae8196126af98cca83`
 - `registry/admission_queue.json` — `e82e14739bd539be5b1dded83c0cea6e2b27a86359b2be03f53e7ce0037364f6`
@@ -11620,12 +11612,12 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `registry/agency_agent_graph.json` — `ea2643fd20c95d482b5d02a69c96109310319b6c4daddca85199bc514703702a`
 - `registry/agency_agent_registry.json` — `258d34007098b8dc4229fe26017081118248601fec017a9b85747badca5fb9c7`
 - `registry/agent_builder_reference_audit_20260814.json` — `a583c29c1fb1e479a3ecf2515a69989535eff2f5148d9e0ffbe060e8aa80fd36`
-- `registry/artifact_reachability.json` — `36f60dd70bad6d8285fbaec83abaf09609e1a6321fc6ef6fa90a7219c93c4af8`
+- `registry/artifact_reachability.json` — `7ef250714d03fdd0defdf3fb3ee0f52da804718bed50ccd87ab69243e4a4b332`
 - `registry/assurance_capabilities.json` — `3d9fbacff3f1816b9ed498f4306dbb6674860f8b2f74a61f1e104c6952a8795f`
 - `registry/authority_topology.json` — `9f366f6469bb5397a46e31d694620de95254fdb5d52077f3dcfb180f529f5ed0`
 - `registry/brain_capabilities.json` — `0c3026a78cd46576cc1320501b7a5a71f6889335b8e89d60c65440c24eb222c7`
 - `registry/brain_formulas.json` — `e4b2c446350b233a7ef8c170608ef50b9155f6bf1388f3e0be268dbe62efd517`
-- `registry/build_claims.json` — `61dd7aca6b863c230448fd4ba0f0d2dd03bf25ac91defb70419f836b8947deac`
+- `registry/build_claims.json` — `ac509a08cdd54eddfa483ec6f32e5ed35800a59046d52280631875517453ecd1`
 - `registry/builders.json` — `546a4a204ee0ddc8957934f70884021cbf53f648263cb4fe98c8ae4b7220e228`
 - `registry/capability_aliases.json` — `70b9e44c4f35cb9bfd642b5820c51f73ad97bd2653aa1443bc32a772b8cec421`
 - `registry/capability_map.json` — `4c742892820e384d857f29990e646584936799ac13b8ee5b793e97ac55c2f22f`
@@ -11633,7 +11625,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `registry/capability_mining_admission.json` — `b6b0027edb851bd89e74aa0fdec96411a8092522deeb3fd971332b41d0ff53fd`
 - `registry/cognitive_dependency_resolutions.json` — `1597e90eacecad67dd2c3d4929bc907c46bd70241bcb254c87c269887b494fec`
 - `registry/cognitive_map_index.json` — `37a45491d7c81fe4329591ed9efb69027794c07e9d918b7f29ff4418b6d9e454`
-- `registry/completion_status.json` — `0fbd1134035ee2b87dc29099db89fb393fedc10ed737355b10ce58b9e22d0bce`
+- `registry/completion_status.json` — `95e816bfb2c585a631f3929c6961a4c56afb343cedbd98bafc0ec10f81b4ad33`
 - `registry/contract_ownership.json` — `d29b01ea819198338ed4004b22b1821dab2621f2f0cf008cce5a3106de6eb285`
 - `registry/corrective_release_ledger.json` — `490322b4aecfdbd8cd810dbc12db74626abf11524a7d797fb03384d79583a2b4`
 - `registry/current_evidence_index.json` — `c91794dcc8bdecfbd9e6ca17e2765e8efcd9f2d879898955590772da86a6aa61`
@@ -11649,8 +11641,8 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `registry/declared_suite_reconstruction.json` — `a166977a7629808806d3a8c83d9fc29a9022e99d03fa67b2d2f428138a1dd39a`
 - `registry/declared_suite_schema_contracts.json` — `4373109fcb373d968bbc417f1eb252068fdcd868287085c5fd401a3ad5c4c51a`
 - `registry/dependency_authority.json` — `2c9c32a46abcbb3c891d46465e993601c5355d95c3769339c9186c319f8e0eec`
-- `registry/effect_surface_ownership.json` — `99e10f48c9a3106ec25f03860520a51f2e2400236d12834f0dbe94d7ffacb393`
-- `registry/engine_identity.json` — `a847b182766e0758a9541888949c0c8dfa6e6249fc7002f9a1fddfc2c1f16931`
+- `registry/effect_surface_ownership.json` — `3d424138728324cdbd7a785d7415317ee08f612f97c30c66b012b35f180b5628`
+- `registry/engine_identity.json` — `ba46d94150dbb42276ff7e48ec42779ded02c7ec04cf77d6e4be54d0ae26ba1b`
 - `registry/engineering_lifecycle.json` — `3611efe1083a211827f15e7aad820a3f15005010cfd715e7c975e798e5c78b19`
 - `registry/engineering_reasoning_expansion.json` — `876dcea64e4afbe3ffb59bf24e502c06cacd9e617c1c1010d1b30cb726501277`
 - `registry/evidence_type_policy.json` — `bee133ae5f2126e81bcf51ddbe6293c6d76c5af74fe6494ee7a7811b79916d56`
@@ -11698,8 +11690,8 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `registry/operation_route_registry.json` — `d659d220e286f37d4d0959c90b5931497f09dbc56e5129b4ab4b24d8aff0aba1`
 - `registry/operational_capabilities.json` — `cbaa40028857112622214853f35ca7cdfbb9eb309e742512cf406d8c916f3b49`
 - `registry/operational_control_proof_matrix.json` — `21555e59d5bf3729d4610dbbca74d799f126af6bb543ff6da229b5a01d14244b`
-- `registry/operational_gap_ledger.head.json` — `9f945687347753d9e890ca18706dead6c4020008c59b290fca861073f3cd392c`
-- `registry/operational_gap_ledger.jsonl` — `e50b45862b691c1ccddad24e669a9b942ea1c4fddc377eb8871791c1c72d1e1b`
+- `registry/operational_gap_ledger.head.json` — `1ce3b41849cfb762678270bd50392703b3a7815d2864530ab16b76f713410be3`
+- `registry/operational_gap_ledger.jsonl` — `94b03924d8798b702fc1bca219fa4dcc308acc555daa4952748091f2379105a0`
 - `registry/operational_gap_ledger.snapshot.json` — `f86d17540afb056368b7f1454eb2fe8c5ac178f96c86f4c7a67fb0556e852a93`
 - `registry/operational_surface_aliases.json` — `7d383f9c399af8fbbf241c665440c33ef19ca17c797ec0836c5028adf8a1dcd1`
 - `registry/operational_surface_audit_20260816.json` — `e21205107d5782bf8b66015baedb3cc765df3c871338382f200d81ccd11bf011`
@@ -11716,10 +11708,10 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `registry/projection_staleness.json` — `5c1707f6ce7bb3dcfd9193f2871823ac4ffa2fee2d79efbe1b895b434eb698a0`
 - `registry/provider_adapters.json` — `9cbb226f2e4265095a77f7dd8de2711ee39f009fd52e66163b7fc03737e37eef`
 - `registry/provider_budget_policy.json` — `64b7d60184a6c4907006903df7ee01464ec26c4b21114eb4392eaeda4c95c10b`
-- `registry/provider_route_scan.json` — `1f8d21a07b46eb1d3edd13b28d868c1ab0cba6fda0bb045278e2ef4ca8ce3f1f`
-- `registry/px_world_state.json` — `bf214f83d46ad7f3de0e116df6fb69e155d4d6b69e2db7aba11509a0cbe635c1`
-- `registry/python_dependency_ownership.json` — `a6128b467e7d9208c9ae226c6129ec2aa96f615f237d83bd76ef480d1dae49a6`
-- `registry/python_surface_ownership.json` — `1a9cc6fc6b47c37e8a02209baf04335ce24ffd8335de40564a9bf94e141c42cb`
+- `registry/provider_route_scan.json` — `35eb4e41c2ffdb78c44571cca4d1ed6ffff5731e8adb5b7c3e5ffbb6fedcc9bb`
+- `registry/px_world_state.json` — `b03601ad6f890b8410ca7b349ee7900013299326b24f55b185febb8797962fa0`
+- `registry/python_dependency_ownership.json` — `80b78c90763c214b975e65793e842b4a98877cdeaec9e5d31faa61ab62fb5b95`
+- `registry/python_surface_ownership.json` — `b2f7eb3ec9d5563bd1f65dd4e3de6c32eca29d83d5683c4abd55fa7c337388bc`
 - `registry/reference_candidate_admission.json` — `39ef5749428a9c1eca265571e6771c1ed9b731ca0f68aa516f8206bcffa68fdb`
 - `registry/registry_envelope_inventory.json` — `d4c21dae28849258a210750916fa4099ff4444cd4c909e2e8f0c2c3dddcfa2c4`
 - `registry/release_fault_campaign.json` — `b22762e0c6b4c571a159ae93eb5dfbfb27533ec02b2f6b04317764924e3417f0`
@@ -11978,8 +11970,8 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `registry/state_artifact_classes.json` — `cbbb78181936304ad59168ee41356753603a8934fb3148434868175e02f5a4a6`
 - `registry/structural_integrity_policy.json` — `1aabdb815eb31cb1129e180c85d861c609551c5994ddf2b5a74cf9110a0b15f6`
 - `registry/studio_operations.json` — `7483f5aa94fa1ea9e1877bbae480686e4bd08ad3637e15f4f5f5624f05f4009e`
-- `registry/test_group_index.json` — `30aa3a356a7a22fceea7487f2c24c20df7b32fa7c9b0275dd3e5864221cb1370`
-- `registry/test_profiles.json` — `0141260c294634c6a47c3fe34a6278706363b2aad1f2cb027e60e2e943305e55`
+- `registry/test_group_index.json` — `fb26eee20310f2ac3d15d291c19667eb7e2b161e888d0a08b6ae87365ee62f9b`
+- `registry/test_profiles.json` — `7e6144cca3ae2bd97b9731ecd583eac9443bcdf9d1b3a299930cc625ffab0517`
 - `registry/tools.json` — `daccec7bc0ce5bb9f4b8200dde4da393f45087816f6912b893fd79090d9580fe`
 - `registry/workflow_execution_bindings.json` — `3c8bbd41aabb460b0c17910bf6830fa8c2016c1f4b70e8975e5e285416eef454`
 - `repo_quarantine/memory/prj_pacify-x/orphans-f1784d3161012225/000001/entries.json` — `ec7594e53cc7fa4b5caed24fc22ec7eb3e68efbdf097d0a49dbe8605e3a6bdd8`
@@ -12010,7 +12002,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `runtime/behavioral_certification.py` — `ab17f105a0666f7314c5b0784b2ec6dd31fef83209f67fba80417ff2acd970e4`
 - `runtime/benchmark_operations.py` — `6c8bd5d92204c7e4b633b853cd04350d26219634d3bcbd25c3ceb469e61dde31`
 - `runtime/bounded_walk.py` — `fea8afc12aaac4dda6ff6210b24a33b352b3679b23abbddca751db0175f54863`
-- `runtime/build_claims.py` — `21731a7e04b3e5642e2d87ed13436e9590b359863573c263846bf91df09b09f8`
+- `runtime/build_claims.py` — `2ed92159a71a4c15c2a0581c6b975f37c7bbd19103ff000a58b9901273cadad2`
 - `runtime/capability_assimilation.py` — `555a764289b45de5309a4105012e745592ace1f0f0098d5497eb4034d1de92f6`
 - `runtime/capability_maturity.py` — `7e8f9d4c14d3c71c940a70d5dcfc2b9f1d3bb0e9b27343ea37964c3a7e95e44a`
 - `runtime/capability_routing.py` — `162582a116a38fb16fa8aafce3dc380ccf7f0f6c155ffac5c10839399c0ccc29`
@@ -12053,7 +12045,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `runtime/durable_state.py` — `a8dfdf65357050358a9204a82cf5af58347a2fbfa1f18ee3401ea3db67998baf`
 - `runtime/effect_grants.py` — `b3c1cbccb6385f50a9510fa5d35551ef79a66ee2fb156fc3416931e4f0ebf5bc`
 - `runtime/effect_surface.py` — `d5c55dbbe6c9d32a4a5b8548efd7d191a805dec0ce53fa6ae630f49ca1103a44`
-- `runtime/engine_identity.py` — `95af8039862c835084168eafa4095f9435ac0653b8191d6003cedcf473a3b328`
+- `runtime/engine_identity.py` — `08edb654666d7ec15c9f95abf507b17e034c833d98752e82a4370821665bee4a`
 - `runtime/engineering_intelligence.py` — `96e8ac2498a1f597ca13b67960e569583b9fd2e0c3d3ee0c4cad70e23635f7bd`
 - `runtime/engineering_lifecycle.py` — `d9f8461c166112915ce487585a70d6e3f9970a5b138699b931f69c81af6bb9ea`
 - `runtime/event_ledger.py` — `c195cdf30ac087b5bae2698da26e0a4ad312dd24a078f4b5e9880f9eb14bc71c`
@@ -12090,7 +12082,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `runtime/integration_disposition.py` — `41ddb4e4668d4b8191624683f94a51b53af6a816572da74b52b1edbd7734b4c9`
 - `runtime/integration_registry.py` — `45a759a3dc029ff7d8219b3e173b5bfa68265efe8dffb845b08718e1594e379f`
 - `runtime/json_io.py` — `99e293f70e8624e3878d4c5017e5322eaf850a4904a4b76c57a8e264e95e8091`
-- `runtime/knowledge_core_controller.py` — `4b39f07e8089a48e3445c34f30d80227991ef8bc4d9802e0fb05e2fd99693c2a`
+- `runtime/knowledge_core_controller.py` — `582bc26c86d28799203209a1cadd8fc0a6c3b702dde7c330dc1347d309ba9bdb`
 - `runtime/knowledge_foundry.py` — `0d26bcf96c81066e78c5db5d3c508e7202a3586afd07bf9bbaea6d397a9a4f77`
 - `runtime/knowledge_refinery.py` — `844e1a63258bb81d43724510a9e89855cbc28f495863343921377552712d3b28`
 - `runtime/lazy_loader.py` — `663ea611d74277e65026fe20535208f6e786105fa79d4240404c3a31474b021b`
@@ -12148,7 +12140,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `runtime/primitive_authority.py` — `38f8756b10bbf2cf770ef886db2aad3f45546211dd5e05a0ffab1c6a2a8e7849`
 - `runtime/primitive_lint.py` — `9a9316b20f30e6b314c0495e09f7a85fc59b7282114f0e74d526a4f86fac9ff2`
 - `runtime/process_memory.py` — `0387613096c58a4bcb3d7af2d9eee7983061cec76948b2ec85557448b532b6c8`
-- `runtime/process_supervisor.py` — `49e599058d1b8200a2083ccbc2bc8c078d49c5556372a04a07ae04df8c64b94f`
+- `runtime/process_supervisor.py` — `7f992f4a603224c06320ddc825a3e05a8717ee75986de7062eb8555fe3b21eb9`
 - `runtime/profiles.py` — `09a0d36639b8c47292200851830e22af7bfe96f468bbcd57daaa90881171d984`
 - `runtime/project_control_plane.py` — `59c2a5722b3e7554f0c305bfd72631c99d311f8648442b198a27762823da22de`
 - `runtime/project_impact.py` — `fff696ab1f24a6adac09874437750c8ce0b0fef51dabb7316ea5c6db95d874e8`
@@ -12174,7 +12166,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `runtime/registry_envelope.py` — `cf4abc4553a3f5eff83976c8073aa39a43228a6ab1427e98ef80f2cc0dbf3375`
 - `runtime/release_artifacts.py` — `ab0f682ede323e34bf2c6bf28e41b8f6cae6c509da82928c011f5f4473c3d6df`
 - `runtime/release_audit.py` — `3a0274b9cc961f8dc7877112f22e6f083a06e7c357d196e56678e1079c89a721`
-- `runtime/release_boundary.py` — `18406145b9a25ff4874a866fba8b9d8bc6c13f8e90851be6522a2f06fdfcb2df`
+- `runtime/release_boundary.py` — `45a619e208d4826fd9c7db3fbf43f41d82405e5f6f92ef40c9881f3f505f83cf`
 - `runtime/release_campaign.py` — `71496a4bbc63652686f138c44ec610f4a5c711f7470b0a4759e7be78da41a04a`
 - `runtime/release_certification.py` — `ea2a9b1d284606c823890edf350da230b8fedd22fc43dbe7532a2fe6bd858ee6`
 - `runtime/release_distribution.py` — `56a5f5aabed5972ffd29c7946707eba3244a1bf5ec59fd42a60a4119793918ef`
@@ -12195,7 +12187,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `runtime/sanitation_assurance.py` — `396f419b366b2f62a216343e6f953ecd62bb922869417140af0de0b41ff701fd`
 - `runtime/scheduler.py` — `46c679c876d0c56af4b5fb3fe078ef1b875e23cdf652287b8c17d4f4565d6091`
 - `runtime/secret_scanning.py` — `6d55b464a91d14f737b6861a48f5b395b36e630cf598e6aad189f06780bf534e`
-- `runtime/section_scheduler.py` — `f7bc320c094128cd0bf69e672e943bd842722b60d4680e42bd12f5398776b444`
+- `runtime/section_scheduler.py` — `110d519a248e4e30b44126dbce7cb6d0fb7d39f2874b4b1f34bff7566e428342`
 - `runtime/semantic_index.py` — `ec2e2063c974d358aae88cd30a8427ed4400936277399584633cf66541c4ae64`
 - `runtime/semantic_memory.py` — `515b3064c578888e17e15b114f547054fec6ecec291145361c558a2ec8452ec3`
 - `runtime/semantic_revision.py` — `26c10b0b629eb773e3b32973ea0ecef31d00590e786b262b57bab69a397e82fb`
@@ -12230,7 +12222,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `runtime/transcript_analysis.py` — `5eb7a16579048f8ee5ca5a29662521c6c4647bbce5e52a13d3c22ea727e1e910`
 - `runtime/trusted_evidence.py` — `c76a163e3ce753553dbd01e11a60f93598fe3acf2f91c73ab5daa8f5f2c27558`
 - `runtime/verification_inputs.py` — `30cc652b7ee79be5ab405b2058247bea8ec1a41d4260fa26156612ca1b581fb5`
-- `runtime/verification_receipts.py` — `22e534806d2089c2548716ecf10559d146d9acb1ae3e3f14e0499b65eda0d5eb`
+- `runtime/verification_receipts.py` — `5a0a2bb80e1e9f2c181b44d49d3fb3497e052cdef0e80d0c2b2589c12d603b47`
 - `runtime/verification_status.py` — `7a66d72b2445af60d9b5c43deb07e5d331c52a650dbfe807b5b0d9aeefc827eb`
 - `runtime/version.py` — `3960d9fcdd62ea13f90033fbc1c70d8ca8f796d29e7eec7c93a16cf61fe91b40`
 - `runtime/wal_generation.py` — `4fa8a32fa0bbe02eaf3ec0abed0e227d3ed6217b8802d31724c32d2c641e9952`
@@ -12350,7 +12342,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `scripts/run_installed_operational_owner.py` — `89fa3b8b83d8c2ec1239b229f65c7c2e68fa8f9f17b1772f7f705cf05f3833f7`
 - `scripts/run_release_candidate.py` — `f185d970d041e30cdace74fe17f98763213bec8b15dfc2145889a6d8273a98ca`
 - `scripts/run_release_fault_campaign.py` — `26d042b0a1c51f8404323993115ed2f0bc4ed3afb3701852fed8378c9744218d`
-- `scripts/run_release_stage_owner.py` — `66c698ae3fc638ab30dfb658e1a07492ff916ddb536ec990ee66c2b4544199bd`
+- `scripts/run_release_stage_owner.py` — `afc09ba30a66dba5562f21b4c3560328f9626faf59639bc50415d17209398954`
 - `scripts/sanitize_host_bound_cleanup_evidence.py` — `4935de8930a9c980ed79fe36e248cfafdb7b3583cf8eb29e5c16063797ccf2bf`
 - `scripts/sanitize_tree.py` — `e9777baa1797d7e687620b51d51e7368f57e5f896354339e408b5d32659eb7c2`
 - `scripts/split_operational_aggregate_cards.py` — `7167a2e3dbfe6798416049db4a31c2e37a80c4278feeaea62c2742f4e709fa4b`
@@ -12440,7 +12432,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `tests/test_archive_catalog_v2.py` — `53febd61103c6aa8ad9e5303b0cc2c735922ce2bd41cc7f04a639e3d36f99fdd`
 - `tests/test_archive_inventory.py` — `0beebfc3aec96cf81166da6e93402b7e4f57b3b2ec76711cdaaa4b5308e6644c`
 - `tests/test_archive_io.py` — `6334765a18d38ee58d89362e465fc67f3273269ad307fc16ac56daeb7a9d85c3`
-- `tests/test_artifact_reachability_inputs.py` — `1e2d3fb8b2c45dbde28858b44e7b3fe9de4cb97641b6ea342086fe1e210409cd`
+- `tests/test_artifact_reachability_inputs.py` — `ed6099c6fbc83695cf5b6d09d646fb7736efafcb1f14a361a043d43258e6966f`
 - `tests/test_assemble_operational_control_evidence.py` — `36fab255a5d4d9ac1780cdc0fde93c4d79b9aad8b40bb70a2bd3d883782abae9`
 - `tests/test_assurance_controls.py` — `409217e732bef6a720ab9eccc76e2ca054e75afcaf5468e7f8b0a38919d4fb7e`
 - `tests/test_authoritative_json.py` — `8b63efaa864be2d3daf6b7571ab8d3fbf97d7421f5865fc86fd8e4f8cf0cea80`
@@ -12465,7 +12457,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `tests/test_capability_routing_adversarial.py` — `c481f0965035c3b556ffa42dcba9c2a9c1f533e429d9a7bf04acac1a151d1c84`
 - `tests/test_capability_scheduler.py` — `6f2e17d9ef7637486f7a5f5b1c7b56e73d67f22724d29c240672e8f561ec6020`
 - `tests/test_capability_semantics.py` — `00a65d79d94aee739bc6dcf4296dd9ed86dc9d75af541940cc09c2033b1e2ad4`
-- `tests/test_certificate_input_contracts.py` — `13f61348d4de5493c7d98d98fe245606634de0e149b587649d0deb1802f339a7`
+- `tests/test_certificate_input_contracts.py` — `536821a42fbf474b6d6eb5827176107ffa6ea9942a9d70598356073adb0ed0a9`
 - `tests/test_certification_readiness.py` — `7a1159206e1e04f64174eca3652d05c5ac3d0c7ebb7c072a1fc435c621b719c8`
 - `tests/test_change_classification.py` — `c33d0cbd60e08a4c851c4f200ae6486e446496f48e6641a016b5b09388d13302`
 - `tests/test_change_classification_inputs.py` — `665ee9c721c85310ad8156b385d36a77e6aba3f6f925f4d5a2b87710898c5526`
@@ -12596,7 +12588,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `tests/test_process_lifecycle_wal_callers.py` — `8fde20c6a469dd273a43dfeca35fafe3d88b6a4c13a758fb33b885ff73b19bc4`
 - `tests/test_process_lifecycle_wal_publication_custody.py` — `685c52f8e3d28e88f1e415761726c5c2847c8aea86b85983022f6572d69b624e`
 - `tests/test_process_lifecycle_wal_recovery_images.py` — `c9b9682881441d180bc046f991c62a88901a5e95f6f147014a6954ffcff27417`
-- `tests/test_process_lifecycle_windows_creation.py` — `c6b1828d891d29678ab035797c531eb1c131de4da064c98cd880a5c1a1bbe33e`
+- `tests/test_process_lifecycle_windows_creation.py` — `02abd76c9f5b59438c1c094e5070779d583bb1a817463c00c0392cc9cb06486c`
 - `tests/test_process_memory.py` — `eac40af538679c2209936804dab27134ac17ea609853d82d4d8725c18749e68e`
 - `tests/test_process_supervisor.py` — `a2ca4e37970d83dce1b8be3d3ad52120c51e9c89f3dea6d12e9b6d2e7e30091e`
 - `tests/test_project_brief.py` — `1c10f07bdb354d44890cceb7f729ecd8f40ee7773aa0a755af403ff59679f16c`
@@ -12632,7 +12624,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `tests/test_release_audit.py` — `6959b52b3eba61850a1080342a132e638b42b9c614970352da0137fd334d0761`
 - `tests/test_release_boundary_diff.py` — `190bac4c610b574adaab3d16f1b6773d08f2fd468c9c3d5c48f533fb03330d73`
 - `tests/test_release_candidate_driver.py` — `6b23e0b16251a5272343fcf53e78052ae75ac5e8b9676b0c8033970e0be6df27`
-- `tests/test_release_certification.py` — `fd1f13e274632db49991cd1342e3f9b5e3a5736fa90362ca33414c2de2051c14`
+- `tests/test_release_certification.py` — `61c3a508df7caed3e02e8342c8dfedbd3e000de7678a4c04a27ec1c14c810907`
 - `tests/test_release_concurrency_stress.py` — `c6b1626dbdad81d3ce0f683428b1c0d6ef4e0b3b65ed4e43eafccd7e7da59722`
 - `tests/test_release_distribution_controls.py` — `0dc43be751eca168e9c1cfe0c41c8add373c446f65b39579d06e016e6c207b79`
 - `tests/test_release_environment.py` — `fa19d81f0612cca9186f6fc1f6ad596ea6f9dfd3a8816020ba996fb62915a024`
@@ -12647,7 +12639,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `tests/test_release_mutation_probe.py` — `4c124521e778a989d1fa705b60f84b932b3664e77013ec9835bf85b41fae4c1d`
 - `tests/test_release_preflight.py` — `a9168861d8fce0305364232fd3ab16a10ffbbea0173f93bc81921220e9341af2`
 - `tests/test_release_preflight_inputs.py` — `25dd2b47caaaab92ad78acaed821505943dd3d7b75a87f0551f12e43d4d86368`
-- `tests/test_release_preflight_integration.py` — `0863193177e24a07c68fbeae5e3471e2dee289c7451c829e93b4a939a26a1398`
+- `tests/test_release_preflight_integration.py` — `ab0455be9703e652a23ace7bc12e036f1eece3528a6d32768c15470fe2e40f03`
 - `tests/test_release_stage_owner.py` — `eedd2861951220ac048334a80acc6fe38ef822c92aae335265256adbd386233a`
 - `tests/test_release_streaming_inputs.py` — `7625c3df557401d1700b37529049b2e7e0124a5acb6e672d9b214ca5610f514d`
 - `tests/test_release_supply_chain_evidence.py` — `c931a5afc0864bac4de9f3de4aece0801257ff3b8a0a2b7ce0e74b3712b3d970`
@@ -12719,7 +12711,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `tests/test_wal_transaction.py` — `cae9c22331b416ffce218e3d1aade4152e09b75c06d3d43840bf5aa9635b2a80`
 - `tests/test_wave5_builders.py` — `eb254b84d2bfffe667bf5453aeba07babed7a2b5b3bfd219307a6363c61c8d67`
 - `tests/test_work_admission.py` — `7fc0266e8a3cc23adafa30a85b0b194455c2df377246b3f43b1a45e9418f4bad`
-- `tests/test_workflow_declaration_inputs.py` — `69062cbc9f0845b27b0669ab02a6a6739a32c6658583bc525dbb434161d99531`
+- `tests/test_workflow_declaration_inputs.py` — `73ef3c2bd1bf25dd3f8365662cbf470771fe8fc559f40fd5e26cb5a8c20462fe`
 - `tests/test_workflow_studio.py` — `0a8b2a63299c51498bdb98b2daf155116360689ba756673402a60987818819b2`
 - `tests/test_workspace_cli.py` — `473874ba95469145e754808f13663018946b2d6a16880233a1acbf62f2538dd7`
 - `tests/test_workspace_manager.py` — `5c965e7c04d5e6f085df2575005c990f57476d371c922d7f7de1b1b22a09cec8`

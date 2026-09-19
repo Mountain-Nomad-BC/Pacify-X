@@ -2,7 +2,7 @@
 canonical_id: "iwconfig"
 kind: system
 layer: durability
-currentness: same-file-bytes
+currentness: changed-file
 runtime_observed: false
 certified: false
 ---
@@ -30,10 +30,10 @@ No autonomous adaptation established; changes require its declared caller or own
 
 Historical source model; file hashes refreshed. Byte agreement does not prove current behavior. This note is not a repair-closure receipt.
 
-- [[Evidence/S723]] — same-file-bytes
-- [[Evidence/S658]] — same-file-bytes
-- [[Evidence/S659]] — same-file-bytes
-- [[Evidence/S661]] — same-file-bytes
+- [[Evidence/S723]] — changed-file
+- [[Evidence/S658]] — changed-file
+- [[Evidence/S659]] — changed-file
+- [[Evidence/S661]] — changed-file
 
 ## Directed relationships
 

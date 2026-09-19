@@ -154170,19 +154170,25 @@
   },
   {
     "source": "runtime/release_boundary.py",
-    "line": 3,
+    "line": 12,
     "import": "__future__",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/release_boundary.py",
-    "line": 5,
+    "line": 14,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/release_boundary.py",
+    "line": 15,
     "import": "pathlib",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/release_boundary.py",
-    "line": 6,
+    "line": 16,
     "import": "shutil",
     "type": "external-or-unresolved"
   },

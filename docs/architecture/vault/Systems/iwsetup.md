@@ -2,7 +2,7 @@
 canonical_id: "iwsetup"
 kind: system
 layer: execution
-currentness: same-file-bytes
+currentness: changed-file
 runtime_observed: false
 certified: false
 ---
@@ -30,8 +30,8 @@ No autonomous adaptation established; changes require its declared caller or own
 
 Historical source model; file hashes refreshed. Byte agreement does not prove current behavior. This note is not a repair-closure receipt.
 
-- [[Evidence/S744]] — same-file-bytes
-- [[Evidence/S754]] — same-file-bytes
+- [[Evidence/S744]] — changed-file
+- [[Evidence/S754]] — changed-file
 
 ## Directed relationships
 

@@ -31,7 +31,7 @@ No autonomous adaptation established; changes require its declared caller or own
 Historical source model; file hashes refreshed. Byte agreement does not prove current behavior. This note is not a repair-closure receipt.
 
 - [[Evidence/S3053]] — same-file-bytes
-- [[Evidence/S1653]] — same-file-bytes
+- [[Evidence/S1653]] — changed-file
 - [[Evidence/S2802]] — changed-file
 - [[Evidence/S2778]] — changed-file
 

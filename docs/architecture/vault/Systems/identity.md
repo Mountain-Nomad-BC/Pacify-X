@@ -30,9 +30,9 @@ No autonomous adaptation established; changes require its declared caller or own
 
 Historical source model; file hashes refreshed. Byte agreement does not prove current behavior. This note is not a repair-closure receipt.
 
-- [[Evidence/S2054]] — same-file-bytes
-- [[Evidence/S2053]] — same-file-bytes
-- [[Evidence/S2816]] — same-file-bytes
+- [[Evidence/S2054]] — changed-file
+- [[Evidence/S2053]] — changed-file
+- [[Evidence/S2816]] — changed-file
 - [[Evidence/S2958]] — changed-file
 - [[Evidence/S2925]] — changed-file
 - [[Evidence/S2807]] — changed-file

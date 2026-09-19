@@ -1194,7 +1194,7 @@ class ProductionEffects:
                         "__profile_owner__"
                     ]
                     if step == "full_profile"
-                    else 900
+                    else 1800
                 ),
             )
             current = release(config)

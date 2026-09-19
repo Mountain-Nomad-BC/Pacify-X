@@ -2,7 +2,7 @@
 canonical_id: "iwfaults"
 kind: system
 layer: evidence
-currentness: same-file-bytes
+currentness: changed-file
 runtime_observed: false
 certified: false
 ---
@@ -30,9 +30,9 @@ No autonomous adaptation established; changes require its declared caller or own
 
 Historical source model; file hashes refreshed. Byte agreement does not prove current behavior. This note is not a repair-closure receipt.
 
-- [[Evidence/S660]] — same-file-bytes
-- [[Evidence/S664]] — same-file-bytes
-- [[Evidence/S667]] — same-file-bytes
+- [[Evidence/S660]] — changed-file
+- [[Evidence/S664]] — changed-file
+- [[Evidence/S667]] — changed-file
 
 ## Directed relationships
 

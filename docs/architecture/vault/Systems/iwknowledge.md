@@ -2,7 +2,7 @@
 canonical_id: "iwknowledge"
 kind: system
 layer: memory
-currentness: same-file-bytes
+currentness: changed-file
 runtime_observed: false
 certified: false
 ---
@@ -30,8 +30,8 @@ No autonomous adaptation established; changes require its declared caller or own
 
 Historical source model; file hashes refreshed. Byte agreement does not prove current behavior. This note is not a repair-closure receipt.
 
-- [[Evidence/S766]] — same-file-bytes
-- [[Evidence/S657]] — same-file-bytes
+- [[Evidence/S766]] — changed-file
+- [[Evidence/S657]] — changed-file
 
 ## Directed relationships
 

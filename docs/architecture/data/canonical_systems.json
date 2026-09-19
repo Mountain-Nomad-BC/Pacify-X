@@ -5440,8 +5440,8 @@
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 4,
-      "changed-file": 3
+      "changed-file": 6,
+      "same-file-bytes": 1
     },
     "runtime_observed": false,
     "certified": false,
@@ -6513,8 +6513,8 @@
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 2,
-      "changed-file": 2
+      "same-file-bytes": 1,
+      "changed-file": 3
     },
     "runtime_observed": false,
     "certified": false,
@@ -13069,8 +13069,7 @@
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "changed-file": 1,
-      "same-file-bytes": 1
+      "changed-file": 2
     },
     "runtime_observed": false,
     "certified": false,
@@ -22570,11 +22569,11 @@
     "note": "vault/Systems/buildcountfacts.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 2
+      "changed-file": 2
     },
     "runtime_observed": false,
     "certified": false,
@@ -22611,11 +22610,12 @@
     "note": "vault/Systems/buildclaimpublication.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 2
+      "same-file-bytes": 1,
+      "changed-file": 1
     },
     "runtime_observed": false,
     "certified": false,
@@ -22812,11 +22812,11 @@
     "note": "vault/Systems/releasefilteredcopy.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 1
+      "changed-file": 1
     },
     "runtime_observed": false,
     "certified": false,
@@ -32963,11 +32963,11 @@
     "note": "vault/Systems/proofmatrixconsumer.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 2
+      "changed-file": 2
     },
     "runtime_observed": false,
     "certified": false,
@@ -40244,11 +40244,11 @@
     "note": "vault/Systems/operationalwalkprobes.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 1
+      "changed-file": 1
     },
     "runtime_observed": false,
     "certified": false,
@@ -42476,11 +42476,11 @@
     "note": "vault/Systems/walkchildreevaluation.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 1
+      "changed-file": 1
     },
     "runtime_observed": false,
     "certified": false,
@@ -42516,11 +42516,11 @@
     "note": "vault/Systems/walkisolatedowner.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 1
+      "changed-file": 1
     },
     "runtime_observed": false,
     "certified": false,
@@ -42559,11 +42559,11 @@
     "note": "vault/Systems/walkenginecopy.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 1
+      "changed-file": 1
     },
     "runtime_observed": false,
     "certified": false,
@@ -42599,11 +42599,11 @@
     "note": "vault/Systems/walkstorageobserve.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 1
+      "changed-file": 1
     },
     "runtime_observed": false,
     "certified": false,
@@ -42641,11 +42641,11 @@
     "note": "vault/Systems/walkchildlaunch.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 1
+      "changed-file": 1
     },
     "runtime_observed": false,
     "certified": false,
@@ -42684,11 +42684,11 @@
     "note": "vault/Systems/walkchildfinalize.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 1
+      "changed-file": 1
     },
     "runtime_observed": false,
     "certified": false,
@@ -42724,11 +42724,11 @@
     "note": "vault/Systems/walkownedcleanup.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 1
+      "changed-file": 1
     },
     "runtime_observed": false,
     "certified": false,
@@ -42766,11 +42766,11 @@
     "note": "vault/Systems/walkfixtureprep.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 1
+      "changed-file": 1
     },
     "runtime_observed": false,
     "certified": false,
@@ -42806,11 +42806,11 @@
     "note": "vault/Systems/walkprogressretain.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 1
+      "changed-file": 1
     },
     "runtime_observed": false,
     "certified": false,
@@ -42847,11 +42847,11 @@
     "note": "vault/Systems/walknetworkenv.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 2
+      "changed-file": 2
     },
     "runtime_observed": false,
     "certified": false,
@@ -43460,11 +43460,11 @@
     "note": "vault/Systems/iwsource.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 1
+      "changed-file": 1
     },
     "runtime_observed": false,
     "certified": false,
@@ -43501,11 +43501,11 @@
     "note": "vault/Systems/iwadmission.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 2
+      "changed-file": 2
     },
     "runtime_observed": false,
     "certified": false,
@@ -43544,11 +43544,11 @@
     "note": "vault/Systems/iwscheduler.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 2
+      "changed-file": 2
     },
     "runtime_observed": false,
     "certified": false,
@@ -43585,11 +43585,11 @@
     "note": "vault/Systems/iwtimeout.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 2
+      "changed-file": 2
     },
     "runtime_observed": false,
     "certified": false,
@@ -43627,11 +43627,11 @@
     "note": "vault/Systems/iwpublish.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 1
+      "changed-file": 1
     },
     "runtime_observed": false,
     "certified": false,
@@ -43668,11 +43668,11 @@
     "note": "vault/Systems/iwmerge.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 2
+      "changed-file": 2
     },
     "runtime_observed": false,
     "certified": false,
@@ -43708,11 +43708,11 @@
     "note": "vault/Systems/iwbuilder.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 1
+      "changed-file": 1
     },
     "runtime_observed": false,
     "certified": false,
@@ -43749,11 +43749,11 @@
     "note": "vault/Systems/iwgeneral.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 2
+      "changed-file": 2
     },
     "runtime_observed": false,
     "certified": false,
@@ -43789,11 +43789,11 @@
     "note": "vault/Systems/iwinline.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 1
+      "changed-file": 1
     },
     "runtime_observed": false,
     "certified": false,
@@ -43873,11 +43873,11 @@
     "note": "vault/Systems/iwframe.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 3
+      "changed-file": 3
     },
     "runtime_observed": false,
     "certified": false,
@@ -43914,11 +43914,11 @@
     "note": "vault/Systems/iwpalette.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 2
+      "changed-file": 2
     },
     "runtime_observed": false,
     "certified": false,
@@ -43957,11 +43957,11 @@
     "note": "vault/Systems/iwnative.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 2
+      "changed-file": 2
     },
     "runtime_observed": false,
     "certified": false,
@@ -43998,11 +43998,11 @@
     "note": "vault/Systems/iwhostreceipt.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 2
+      "changed-file": 2
     },
     "runtime_observed": false,
     "certified": false,
@@ -44041,11 +44041,11 @@
     "note": "vault/Systems/iwhostprep.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 2
+      "changed-file": 2
     },
     "runtime_observed": false,
     "certified": false,
@@ -44082,11 +44082,11 @@
     "note": "vault/Systems/iwsetup.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 2
+      "changed-file": 2
     },
     "runtime_observed": false,
     "certified": false,
@@ -44122,11 +44122,11 @@
     "note": "vault/Systems/iwrevision.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 1
+      "changed-file": 1
     },
     "runtime_observed": false,
     "certified": false,
@@ -44162,11 +44162,11 @@
     "note": "vault/Systems/iwlifecycle.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 1
+      "changed-file": 1
     },
     "runtime_observed": false,
     "certified": false,
@@ -44203,11 +44203,11 @@
     "note": "vault/Systems/iwlate.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 2
+      "changed-file": 2
     },
     "runtime_observed": false,
     "certified": false,
@@ -44246,11 +44246,11 @@
     "note": "vault/Systems/iwknowledge.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 2
+      "changed-file": 2
     },
     "runtime_observed": false,
     "certified": false,
@@ -44286,11 +44286,11 @@
     "note": "vault/Systems/iwlearning.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 1
+      "changed-file": 1
     },
     "runtime_observed": false,
     "certified": false,
@@ -44327,11 +44327,11 @@
     "note": "vault/Systems/iwcoord.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 2
+      "changed-file": 2
     },
     "runtime_observed": false,
     "certified": false,
@@ -44367,11 +44367,11 @@
     "note": "vault/Systems/iwquery.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 1
+      "changed-file": 1
     },
     "runtime_observed": false,
     "certified": false,
@@ -44407,11 +44407,11 @@
     "note": "vault/Systems/iwsynthetic.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 1
+      "changed-file": 1
     },
     "runtime_observed": false,
     "certified": false,
@@ -44447,11 +44447,11 @@
     "note": "vault/Systems/iwprojects.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 1
+      "changed-file": 1
     },
     "runtime_observed": false,
     "certified": false,
@@ -44487,11 +44487,11 @@
     "note": "vault/Systems/iwgraphidentity.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 1
+      "changed-file": 1
     },
     "runtime_observed": false,
     "certified": false,
@@ -44528,11 +44528,11 @@
     "note": "vault/Systems/iwsnapshot.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 2
+      "changed-file": 2
     },
     "runtime_observed": false,
     "certified": false,
@@ -44568,11 +44568,11 @@
     "note": "vault/Systems/iwsidebar.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 1
+      "changed-file": 1
     },
     "runtime_observed": false,
     "certified": false,
@@ -44609,11 +44609,11 @@
     "note": "vault/Systems/iwcleanup.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 2
+      "changed-file": 2
     },
     "runtime_observed": false,
     "certified": false,
@@ -44649,11 +44649,11 @@
     "note": "vault/Systems/iwenvironment.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 1
+      "changed-file": 1
     },
     "runtime_observed": false,
     "certified": false,
@@ -44689,11 +44689,11 @@
     "note": "vault/Systems/iwenterprise.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 1
+      "changed-file": 1
     },
     "runtime_observed": false,
     "certified": false,
@@ -44729,11 +44729,11 @@
     "note": "vault/Systems/iwplugin.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 1
+      "changed-file": 1
     },
     "runtime_observed": false,
     "certified": false,
@@ -44770,11 +44770,11 @@
     "note": "vault/Systems/iwpluginconfirm.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 2
+      "changed-file": 2
     },
     "runtime_observed": false,
     "certified": false,
@@ -44815,11 +44815,11 @@
     "note": "vault/Systems/iwconfig.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 4
+      "changed-file": 4
     },
     "runtime_observed": false,
     "certified": false,
@@ -44856,11 +44856,11 @@
     "note": "vault/Systems/iwvalidation.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 2
+      "changed-file": 2
     },
     "runtime_observed": false,
     "certified": false,
@@ -44898,11 +44898,11 @@
     "note": "vault/Systems/iwfaults.md",
     "kind": "system",
     "historical_status": "implemented",
-    "currentness": "same-file-bytes",
+    "currentness": "changed-file",
     "evidence_level": "source-supported",
     "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
     "source_currentness_counts": {
-      "same-file-bytes": 3
+      "changed-file": 3
     },
     "runtime_observed": false,
     "certified": false,

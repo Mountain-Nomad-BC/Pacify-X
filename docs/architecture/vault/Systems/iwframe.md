@@ -2,7 +2,7 @@
 canonical_id: "iwframe"
 kind: system
 layer: host
-currentness: same-file-bytes
+currentness: changed-file
 runtime_observed: false
 certified: false
 ---
@@ -30,9 +30,9 @@ No autonomous adaptation established; changes require its declared caller or own
 
 Historical source model; file hashes refreshed. Byte agreement does not prove current behavior. This note is not a repair-closure receipt.
 
-- [[Evidence/S781]] — same-file-bytes
-- [[Evidence/S711]] — same-file-bytes
-- [[Evidence/S717]] — same-file-bytes
+- [[Evidence/S781]] — changed-file
+- [[Evidence/S711]] — changed-file
+- [[Evidence/S717]] — changed-file
 
 ## Directed relationships
 
