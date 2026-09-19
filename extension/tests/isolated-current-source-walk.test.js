@@ -535,7 +535,7 @@ test('launcher exposes an exact Knowledge-only mode without claiming full comple
   assert.match(source, /PX_OWNED_KNOWLEDGE_SOURCE_ID: config\.knowledgeFixture\.source_id/);
   assert.match(source, /PX_OWNED_KNOWLEDGE_SOURCE_SHA256: config\.knowledgeFixture\.source_sha256/);
   assert.match(source, /focused-\$\{focusedProfile\}-walk/);
-  assert.match(source, /full_operational_completion_claimed: focusedProfile \? false/);
+  assert.match(source, /full_operational_completion_claimed: bootstrapOnly \|\| focusedProfile \? false/);
   assert.match(source, /focused-launcher-modes-are-mutually-exclusive/);
 });
 
@@ -545,7 +545,7 @@ test('launcher exposes an exact coordination-memory-only mode without unrelated 
   assert.match(source, /PX_OPERATIONAL_COORDINATION_MEMORY_ONLY: '1'/);
   assert.match(source, /coordinationMemoryOnly \? 'coordination-memory'/);
   assert.match(source, /!config\.coordinationMemoryOnly[\s\S]*PX_OPERATIONAL_EXERCISE_STUDIO_APPROVAL/);
-  assert.match(source, /full_operational_completion_claimed: focusedProfile \? false/);
+  assert.match(source, /full_operational_completion_claimed: bootstrapOnly \|\| focusedProfile \? false/);
 });
 
 test('launcher exposes an exact host-boundary-only mode without Studio setup or a full completion claim', () => {
@@ -554,7 +554,7 @@ test('launcher exposes an exact host-boundary-only mode without Studio setup or 
   assert.match(source, /PX_OPERATIONAL_HOST_BOUNDARY_ONLY: '1'/);
   assert.match(source, /coordinationMemoryOnly \? 'coordination-memory' : hostBoundaryOnly \? 'host-boundary' : nativeDialogOnly \? 'native-dialog-boundary'/);
   assert.match(source, /!config\.knowledgeLifecycleOnly && !config\.coordinationMemoryOnly && !config\.hostBoundaryOnly && !config\.nativeDialogOnly[\s\S]*PX_OPERATIONAL_EXERCISE_STUDIO_APPROVAL/);
-  assert.match(source, /full_operational_completion_claimed: focusedProfile \? false/);
+  assert.match(source, /full_operational_completion_claimed: bootstrapOnly \|\| focusedProfile \? false/);
   assert.match(source, /--host-boundary-only/);
 });
 
@@ -572,7 +572,7 @@ test('launcher exposes an exact native-dialog-only mode without unrelated fixtur
   assert.match(source, /!config\.hostBoundaryOnly && !config\.nativeDialogOnly && !config\.knowledgeGraphOnly && !config\.surfaceCaptureOnly[\s\S]*PX_OPERATIONAL_EXERCISE_STUDIO_APPROVAL/);
   assert.match(source, /studioLifecycleOnly \|\| nativeDialogOnly \|\| knowledgeGraphOnly \|\| surfaceCaptureOnly \|\| pluginLifecycleOnly \|\| codexHandoffOnly \|\| catalogPaginationOnly \|\| builderOnly \|\| workbenchCommandOnly \? null : stageOwnedKnowledgeFixture/);
   assert.match(source, /prepare\(temporaryRoot, walkOutput, vsixPath, bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly, coordinationMemoryOnly, hostBoundaryOnly, nativeDialogOnly, knowledgeGraphOnly, surfaceCaptureOnly, pluginLifecycleOnly, codexHandoffOnly, errorIndicatorsOnly, lateCardRepairOnly, catalogPaginationOnly, builderOnly, workbenchCommandOnly, postAuditLongRunning\)/);
-  assert.match(source, /full_operational_completion_claimed: focusedProfile \? false/);
+  assert.match(source, /full_operational_completion_claimed: bootstrapOnly \|\| focusedProfile \? false/);
   assert.match(source, /timeoutMs: postAuditLongRunning \? 3_600_000 : 1_800_000/);
 });
 
@@ -584,7 +584,7 @@ test('launcher exposes a Knowledge-Graph-only focused mode with isolated native 
   assert.match(source, /nativeInputRequired = studioLifecycleOnly \|\| nativeDialogOnly \|\| knowledgeGraphOnly/);
   assert.match(source, /nativeDialogOnly, knowledgeGraphOnly, surfaceCaptureOnly, pluginLifecycleOnly/);
   assert.match(source, /--knowledge-graph-only/);
-  assert.match(source, /full_operational_completion_claimed: focusedProfile \? false/);
+  assert.match(source, /full_operational_completion_claimed: bootstrapOnly \|\| focusedProfile \? false/);
 });
 
 test('launcher exposes an exact surface-capture-only mode without mutation fixtures', () => {
@@ -596,7 +596,7 @@ test('launcher exposes an exact surface-capture-only mode without mutation fixtu
   assert.match(source, /!knowledgeGraphOnly && !surfaceCaptureOnly && !pluginLifecycleOnly/);
   assert.match(source, /knowledgeGraphOnly \|\| surfaceCaptureOnly \|\| pluginLifecycleOnly[\s\S]*\? null : stageOwnedKnowledgeFixture/);
   assert.match(source, /--surface-capture-only/);
-  assert.match(source, /full_operational_completion_claimed: focusedProfile \? false/);
+  assert.match(source, /full_operational_completion_claimed: bootstrapOnly \|\| focusedProfile \? false/);
 });
 
 test('launcher exposes an exact plugin-lifecycle-only repair proof', () => {
@@ -605,7 +605,7 @@ test('launcher exposes an exact plugin-lifecycle-only repair proof', () => {
   assert.match(source, /PX_OPERATIONAL_PLUGIN_LIFECYCLE_ONLY: '1'/);
   assert.match(source, /pluginLifecycleOnly \? 'plugin-lifecycle'/);
   assert.match(source, /studioLifecycleOnly \|\| nativeDialogOnly \|\| knowledgeGraphOnly \|\| pluginLifecycleOnly \|\| postAuditLongRunning \|\| fullOperationalWalk/);
-  assert.match(source, /full_operational_completion_claimed: focusedProfile \? false/);
+  assert.match(source, /full_operational_completion_claimed: bootstrapOnly \|\| focusedProfile \? false/);
 });
 
 test('launcher exposes an exact Codex-handoff-only mode without unrelated fixtures or a full completion claim', () => {
@@ -619,7 +619,7 @@ test('launcher exposes an exact Codex-handoff-only mode without unrelated fixtur
   assert.match(source, /studioLifecycleOnly \|\| nativeDialogOnly \|\| knowledgeGraphOnly \|\| surfaceCaptureOnly \|\| pluginLifecycleOnly \|\| codexHandoffOnly \|\| catalogPaginationOnly \|\| builderOnly \|\| workbenchCommandOnly \? null : stageOwnedKnowledgeFixture/);
   assert.match(source, /prepare\(temporaryRoot, walkOutput, vsixPath, bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly, coordinationMemoryOnly, hostBoundaryOnly, nativeDialogOnly, knowledgeGraphOnly, surfaceCaptureOnly, pluginLifecycleOnly, codexHandoffOnly, errorIndicatorsOnly, lateCardRepairOnly, catalogPaginationOnly, builderOnly, workbenchCommandOnly, postAuditLongRunning\)/);
   assert.match(source, /--codex-handoff-only/);
-  assert.match(source, /full_operational_completion_claimed: focusedProfile \? false/);
+  assert.match(source, /full_operational_completion_claimed: bootstrapOnly \|\| focusedProfile \? false/);
 });
 
 test('launcher exposes an exact error-indicators-only mode without unrelated stateful fixtures or a full completion claim', () => {
@@ -632,7 +632,7 @@ test('launcher exposes an exact error-indicators-only mode without unrelated sta
   assert.match(source, /!config\.codexHandoffOnly && !config\.errorIndicatorsOnly[\s\S]*PX_OPERATIONAL_EXERCISE_STUDIO_APPROVAL/);
   assert.match(source, /prepare\(temporaryRoot, walkOutput, vsixPath, bootstrapOnly, configurationOnly, studioLifecycleOnly, knowledgeLifecycleOnly, coordinationMemoryOnly, hostBoundaryOnly, nativeDialogOnly, knowledgeGraphOnly, surfaceCaptureOnly, pluginLifecycleOnly, codexHandoffOnly, errorIndicatorsOnly, lateCardRepairOnly, catalogPaginationOnly, builderOnly, workbenchCommandOnly, postAuditLongRunning\)/);
   assert.match(source, /--error-indicators-only/);
-  assert.match(source, /full_operational_completion_claimed: focusedProfile \? false/);
+  assert.match(source, /full_operational_completion_claimed: bootstrapOnly \|\| focusedProfile \? false/);
 });
 
 test('host-boundary fixture owns one real handoff task and one certified canonical source lifecycle', t => {
@@ -737,7 +737,7 @@ test('launcher exposes an exact Studio-only mode without claiming full completio
   assert.match(source, /PX_OPERATIONAL_EXERCISE_STUDIO_APPROVAL: '1'/);
   assert.match(source, /focusedProfile = configurationOnly \? 'reversible-configuration' : studioLifecycleOnly \? 'studio-lifecycle'/);
   assert.match(source, /focused-\$\{focusedProfile\}-walk/);
-  assert.match(source, /full_operational_completion_claimed: focusedProfile \? false/);
+  assert.match(source, /full_operational_completion_claimed: bootstrapOnly \|\| focusedProfile \? false/);
   assert.match(source, /regularOperationalHost: !bootstrapOnly/);
   assert.match(source, /!regularOperationalHost \? \[`--extensionTestsPath=\$\{bootstrapPath\}`\] : \[\]/);
   assert.match(source, /status: 'deferred-to-operational-walker'/);
@@ -786,7 +786,7 @@ test('launcher exposes an exact reversible-configuration-only mode with bounded 
   assert.match(source, /process\.argv\.includes\('--configuration-only'\)/);
   assert.match(source, /PX_OPERATIONAL_CONFIGURATION_ONLY: '1'/);
   assert.match(source, /focusedProfile = configurationOnly \? 'reversible-configuration'/);
-  assert.match(source, /full_operational_completion_claimed: focusedProfile \? false/);
+  assert.match(source, /full_operational_completion_claimed: bootstrapOnly \|\| focusedProfile \? false/);
 });
 
 test('launcher exposes a bounded late-card repair mode without full-walk or native-input authority', () => {
@@ -796,7 +796,7 @@ test('launcher exposes a bounded late-card repair mode without full-walk or nati
   assert.match(source, /lateCardRepairOnly \? 'late-card-repair'/);
   assert.match(source, /fullOperationalWalk =[\s\S]*!lateCardRepairOnly/);
   assert.match(source, /nativeInputRequired = studioLifecycleOnly \|\| nativeDialogOnly \|\| knowledgeGraphOnly \|\| pluginLifecycleOnly \|\| postAuditLongRunning \|\| fullOperationalWalk/);
-  assert.match(source, /full_operational_completion_claimed: focusedProfile \? false/);
+  assert.match(source, /full_operational_completion_claimed: bootstrapOnly \|\| focusedProfile \? false/);
 });
 
 test('launcher exposes a focused catalog-pagination mode without Studio mutation authority', () => {
@@ -806,7 +806,7 @@ test('launcher exposes a focused catalog-pagination mode without Studio mutation
   assert.match(source, /catalogPaginationOnly \? 'catalog-pagination'/);
   assert.match(source, /!config\.catalogPaginationOnly[\s\S]*PX_OPERATIONAL_EXERCISE_STUDIO_APPROVAL: '1'/);
   assert.match(source, /fullOperationalWalk =[\s\S]*!catalogPaginationOnly/);
-  assert.match(source, /full_operational_completion_claimed: focusedProfile \? false/);
+  assert.match(source, /full_operational_completion_claimed: bootstrapOnly \|\| focusedProfile \? false/);
 });
 
 test('launcher exposes a bounded builder-only mode without mutation fixtures or full completion', () => {
@@ -817,7 +817,7 @@ test('launcher exposes a bounded builder-only mode without mutation fixtures or 
   assert.match(source, /fullOperationalWalk =[^\n]*!builderOnly && !workbenchCommandOnly/);
   assert.match(source, /!config\.errorIndicatorsOnly && !config\.catalogPaginationOnly && !config\.builderOnly && !config\.workbenchCommandOnly[\s\S]*PX_OPERATIONAL_EXERCISE_STUDIO_APPROVAL/);
   assert.match(source, /codexHandoffOnly \|\| catalogPaginationOnly \|\| builderOnly \|\| workbenchCommandOnly \? null : stageOwnedKnowledgeFixture/);
-  assert.match(source, /full_operational_completion_claimed: focusedProfile \? false/);
+  assert.match(source, /full_operational_completion_claimed: bootstrapOnly \|\| focusedProfile \? false/);
 });
 
 test('launcher requires explicit full-profile authority for post-audit long-running owners', () => {

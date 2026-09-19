@@ -794,6 +794,93 @@ test('only exact external VS Code Windows integration diagnostics are non-blocki
   assert.equal(processIssues.every(item => item.blocking === false), true);
 });
 
+test('owned VS Code Marketplace denial is nonblocking only with the explicit sentinel and complete external stack context', () => {
+  const stderr = [
+    'Error while getting the latest version for the extension mountain-nomad-bc.pacify-x-vscode from https://marketplace.visualstudio.com/_apis/public/gallery/vscode/{publisher}/{name}/latest. Trying the fallback https://www.vscode-unpkg.net/_gallery/{publisher}/{name}/latest Failed',
+    'Failed to fetch',
+    'Error while getting the latest version for the extension mountain-nomad-bc.pacify-x-vscode. TypeError: Failed to fetch',
+    'Failed to fetch: Failed: Failed to fetch',
+    '    at iut.queryRawGalleryExtensions (vscode-file://vscode-app/c:/owned-vscode/resources/app/out/vs/workbench/workbench.desktop.main.js:2060:51137)'
+  ].join('\n');
+
+  const classified = normalizeProcessOutput({
+    stderr,
+    walkerExit: { code: 0, signal: null },
+    processTreeClosedVerified: true,
+    ownedExternalNetworkDenied: true
+  });
+
+  assert.equal(classified.length, 1);
+  assert.equal(classified[0].code, 'expected-owned-external-network-denial');
+  assert.equal(classified[0].blocking, false);
+
+  const withoutSentinel = normalizeProcessOutput({
+    stderr,
+    walkerExit: { code: 0, signal: null },
+    processTreeClosedVerified: true,
+    ownedExternalNetworkDenied: false
+  });
+  assert.ok(withoutSentinel.some(item => item.code === 'stderr-error' && item.blocking === true));
+
+  const productFailure = normalizeProcessOutput({
+    stderr: 'Pacify-X dashboard request Failed to fetch',
+    walkerExit: { code: 0, signal: null },
+    processTreeClosedVerified: true,
+    ownedExternalNetworkDenied: true
+  });
+  assert.ok(productFailure.some(item => item.code === 'stderr-error' && item.blocking === true));
+});
+test('exact VS Code LM chat-control fetch denial is nonblocking only inside the owned external-network-denied host', () => {
+  const exact = '[LM] Failed to request chat control data Failed to fetch';
+
+  const owned = normalizeProcessOutput({
+    stderr: exact,
+    walkerExit: { code: 0, signal: null },
+    processTreeClosedVerified: true,
+    ownedExternalNetworkDenied: true
+  });
+
+  assert.equal(owned.length, 1);
+  assert.equal(owned[0].code, 'expected-owned-lm-external-network-denial');
+  assert.equal(owned[0].blocking, false);
+
+  const unowned = normalizeProcessOutput({
+    stderr: exact,
+    walkerExit: { code: 0, signal: null },
+    processTreeClosedVerified: true,
+    ownedExternalNetworkDenied: false
+  });
+
+  assert.ok(unowned.some(item =>
+    item.code === 'stderr-error'
+    && item.blocking === true
+    && item.message === exact
+  ));
+
+  const altered = normalizeProcessOutput({
+    stderr: '[LM] Failed to request some other control data Failed to fetch',
+    walkerExit: { code: 0, signal: null },
+    processTreeClosedVerified: true,
+    ownedExternalNetworkDenied: true
+  });
+
+  assert.ok(altered.some(item =>
+    item.code === 'stderr-error'
+    && item.blocking === true
+  ));
+
+  const product = normalizeProcessOutput({
+    stderr: 'Pacify-X dashboard Failed to fetch',
+    walkerExit: { code: 0, signal: null },
+    processTreeClosedVerified: true,
+    ownedExternalNetworkDenied: true
+  });
+
+  assert.ok(product.some(item =>
+    item.code === 'stderr-error'
+    && item.blocking === true
+  ));
+});
 test('extension-host unresponsive output remains blocking even after recovery', () => {
   const processIssues = normalizeProcessOutput({
     stdout: [

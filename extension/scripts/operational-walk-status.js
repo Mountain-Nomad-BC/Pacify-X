@@ -171,7 +171,7 @@ function exitCodeForTerminalState(terminalState) {
   return WALK_EXIT_CODES[terminalState] ?? WALK_EXIT_CODES[WALK_TERMINAL_STATES.FAILED];
 }
 
-function normalizeProcessOutput({ stdout = '', stderr = '', walkerExit = null, expectedWalkerExitCode = 0, processError = null, processTreeClosedVerified = null } = {}) {
+function normalizeProcessOutput({ stdout = '', stderr = '', walkerExit = null, expectedWalkerExitCode = 0, processError = null, processTreeClosedVerified = null, ownedExternalNetworkDenied = false } = {}) {
   const stdoutLines = String(stdout || '').split(/\r?\n/).filter(Boolean);
   const stderrLines = String(stderr || '').split(/\r?\n/).filter(Boolean);
   const allLines = [...stdoutLines, ...stderrLines];
@@ -238,7 +238,46 @@ function normalizeProcessOutput({ stdout = '', stderr = '', walkerExit = null, e
       occurrences: windowsAppsWarnings.length
     }));
   }
-  const alreadyClassified = new Set([...unresponsive, ...responsive, ...tokenWarnings, ...jumpListWarnings, ...deviceIdWarnings, ...windowsAppsWarnings]);
+  const marketplaceFallbackStart = stderrLines.findIndex(line =>
+    /Error while getting the latest version for the extension [A-Za-z0-9._-]+ from https:\/\/marketplace\.visualstudio\.com\//i.test(line)
+    && /Trying the fallback https:\/\/(?:www\.)?vscode-unpkg\.net\//i.test(line)
+    && /Failed\s*$/i.test(line.trim())
+  );
+  const marketplaceFallbackEnd = marketplaceFallbackStart >= 0
+    ? stderrLines.findIndex((line, index) =>
+        index >= marketplaceFallbackStart
+        && /workbench\.desktop\.main\.js/i.test(line)
+        && /queryRawGalleryExtensions/i.test(line))
+    : -1;
+  const externalNetworkWarnings = ownedExternalNetworkDenied && marketplaceFallbackStart >= 0 && marketplaceFallbackEnd >= marketplaceFallbackStart
+    ? stderrLines.slice(marketplaceFallbackStart, marketplaceFallbackEnd + 1)
+    : [];
+  if (externalNetworkWarnings.length) {
+    normalized.push(issue({
+      source: 'external_host',
+      code: 'expected-owned-external-network-denial',
+      severity: 'warning',
+      blocking: false,
+      message: 'VS Code Marketplace access failed inside the owned external-network-denied certification host.',
+      context: 'captured-host-output',
+      occurrences: externalNetworkWarnings.length
+    }));
+  }
+  const ownedLmNetworkWarnings = ownedExternalNetworkDenied
+    ? stderrLines.filter(line => line.trim() === '[LM] Failed to request chat control data Failed to fetch')
+    : [];
+  if (ownedLmNetworkWarnings.length) {
+    normalized.push(issue({
+      source: 'external_host',
+      code: 'expected-owned-lm-external-network-denial',
+      severity: 'warning',
+      blocking: false,
+      message: 'VS Code LM chat-control request failed inside the owned external-network-denied certification host.',
+      context: 'captured-host-output',
+      occurrences: ownedLmNetworkWarnings.length
+    }));
+  }
+  const alreadyClassified = new Set([...unresponsive, ...responsive, ...tokenWarnings, ...jumpListWarnings, ...deviceIdWarnings, ...windowsAppsWarnings, ...externalNetworkWarnings, ...ownedLmNetworkWarnings]);
   for (const line of stderrLines) {
     if (alreadyClassified.has(line) || !/\b(?:error|failed|failure|exception|uncaught|fatal)\b/i.test(line)) continue;
     normalized.push(issue({
@@ -792,17 +831,38 @@ function evaluateOperationalWalk(receipt, { additionalIssues = [] } = {}) {
   };
 }
 
-function evaluateLauncherTerminal({ walkStatus = null, processTreeClosedVerified = null, workerExitVerified = null, cleanupReclaimed = null, error = null } = {}) {
+function evaluateLauncherTerminal({ walkStatus = null, expectedScope = 'walk', processTreeClosedVerified = null, workerExitVerified = null, cleanupReclaimed = null, error = null } = {}) {
   const issues = Array.isArray(walkStatus?.issues) ? [...walkStatus.issues] : [];
+  const bootstrapScope = expectedScope === 'bootstrap';
+  const expectedSchema = bootstrapScope
+    ? 'px.operational-host-bootstrap-status/1.0'
+    : 'px.operational-ui-walk-status/1.0';
+  const scopeComplete = bootstrapScope
+    ? walkStatus?.operationally_complete === true
+    : walkStatus?.scope_complete === true;
+
   if (!walkStatus || typeof walkStatus !== 'object') {
-    issues.push(issue({ source: 'process', code: 'walk-status-missing', message: 'The child did not retain a typed walk status.' }));
+    issues.push(issue({
+      source: 'process',
+      code: bootstrapScope ? 'bootstrap-status-missing' : 'walk-status-missing',
+      message: bootstrapScope
+        ? 'The child did not retain a typed bootstrap status.'
+        : 'The child did not retain a typed walk status.'
+    }));
   }
+
   if (walkStatus && typeof walkStatus === 'object' && (
-    walkStatus.schema_version !== 'px.operational-ui-walk-status/1.0'
+    walkStatus.schema_version !== expectedSchema
     || walkStatus.terminal_state !== WALK_TERMINAL_STATES.COMPLETED
-    || walkStatus.scope_complete !== true
+    || scopeComplete !== true
   )) {
-    issues.push(issue({ source: 'process', code: 'child-walk-not-complete', message: 'The child did not prove a recognized, complete evaluated scope.' }));
+    issues.push(issue({
+      source: 'process',
+      code: bootstrapScope ? 'child-bootstrap-not-complete' : 'child-walk-not-complete',
+      message: bootstrapScope
+        ? 'The child did not prove a recognized, complete bootstrap scope.'
+        : 'The child did not prove a recognized, complete evaluated scope.'
+    }));
   }
   if (processTreeClosedVerified !== true) {
     issues.push(issue({ source: 'process', code: 'owner-process-tree-closure-unverified', message: 'The owner did not verify closure of the complete child process tree.' }));
@@ -884,3 +944,4 @@ module.exports = {
   normalizeProcessOutput,
   validRecoveredAuthorityBoundary
 };
+

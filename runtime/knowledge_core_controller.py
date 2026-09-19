@@ -507,7 +507,10 @@ class KnowledgeCoreController:
                 raise ValueError("unclassified knowledge collection entry")
             if len(parts) == 1:
                 return False
-            if len(parts) == 2 and parts[1] in {"events", "revisions"}:
+            if len(parts) == 2 and (
+                parts[1] in {"events", "revisions"}
+                or (kind == "canonical" and parts[1] == "rollbacks")
+            ):
                 child = self._original_path(directory / relative)
                 if not child.is_dir():
                     raise ValueError("knowledge history component is not a directory")

@@ -22,6 +22,25 @@ MUTABLE_REGISTRY_PROJECTIONS = frozenset(
     }
 )
 MUTABLE_REGISTRY_PREFIXES = ("operational_gap_ledger.deltas/",)
+
+# ARCHITECTURAL FIX: Operational ledger deltas are mutable for build claims
+# (correctly excluded from immutable source identity) BUT they are required
+# runtime dependencies of the operational checkpoint.
+#
+# A retained operational_gap_ledger.head.json that contains delta_projection
+# MUST preserve its exact referenced delta across all repository operations
+# that retain that head (sanitation, reconstruction, certification, archive).
+#
+# Deltas are therefore NOT safe to delete merely because they are marked
+# mutable for build identity. This distinction MUST be respected by:
+# - sanitation policies
+# - current-source reconstruction
+# - archive/package operations
+# - any lifecycle that retains the head
+DELTA_PERSISTENCE_INVARIANT = (
+    "operational_gap_ledger.deltas files are runtime checkpoint dependencies "
+    "and MUST be preserved wherever the ledger head is retained"
+)
 README_COUNT_LABELS = {
     "Runtime modules": "runtime_modules",
     "Contracts": "contracts",
@@ -53,11 +72,28 @@ def _registry_artifact_count(root: Path) -> int:
 
 
 def _is_mutable_registry_projection(relative: str) -> bool:
-    """Identify live ledger projections that cannot change build claims."""
+    """Identify live ledger projections that cannot change build claims.
+    
+    These files are mutable runtime state and do NOT participate in
+    immutable source/build identity. However, mutable-for-claims does NOT
+    imply safe-to-delete-during-sanitation.
+    
+    Operational ledger deltas in particular must persist wherever the head
+    is retained—they are required runtime checkpoint dependencies.
+    """
 
     return relative in MUTABLE_REGISTRY_PROJECTIONS or relative.startswith(
         MUTABLE_REGISTRY_PREFIXES
     )
+
+
+def is_operational_delta_dependency(relative: str) -> bool:
+    """Check if a path is a delta required by the retained operational head.
+    
+    These deltas MUST survive sanitation, reconstruction, and other
+    repository operations that preserve the ledger head.
+    """
+    return relative.startswith(MUTABLE_REGISTRY_PREFIXES)
 
 
 def expected_build_claims(root: Path) -> dict[str, Any]:

@@ -2,14 +2,14 @@
   "schema_version": "px.completion-status/1.4",
   "authority": "generated projection; current operational and instruction ledgers supersede historical audit acceptance as completion authority",
   "projection_metadata": {
-    "generated_at": "2026-09-14T09:03:05.152938Z",
-    "source_revision": "4ac73258ab44e5c32e87dc9a5d3c18631d60cc5b241a30e1d256f0f05ea199af",
+    "generated_at": "2026-09-18T20:45:35.273767Z",
+    "source_revision": "2fde5214756ada6594c4761a8f15d4faa081a1e78766530d921bded60cdce5e4",
     "authority_level": "non-certifying-current-state-projection",
     "marker": "current_at_generation",
     "engine_identity": {
-      "marker_file_sha256": "62dcdbbb9c49438721441336f6e51a77a2088806b37ea6743bb953f4b8104171",
-      "tree_sha256": "20bfb358c626d23f67057f92603361f5f45a2f6c5c58a0afccb08fc947b7b817",
-      "file_total": 9012
+      "marker_file_sha256": "a847b182766e0758a9541888949c0c8dfa6e6249fc7002f9a1fddfc2c1f16931",
+      "tree_sha256": "0403a2680e24f2fa3557c6c2d248d309b51ab2a64f288b750be034a0a5f401b1",
+      "file_total": 9306
     },
     "invalidation_conditions": [
       "any source-byte change",
@@ -57,7 +57,7 @@
     },
     {
       "path": "registry/operational_gap_ledger.head.json",
-      "sha256": "46567d7b707f005a6219edef0207b884d6bca591b41ea0be331faebfbc3e598f"
+      "sha256": "1ae233e7ed6c45612a072890526edfda85d6cf52a709134995b3a7bfe6461a87"
     },
     {
       "path": "registry/current_evidence_index.json",
@@ -99,8 +99,8 @@
   "current_operational_gap_ledger": {
     "valid": true,
     "ledger_id": "PX-OPERATIONAL-GAPS-20260816",
-    "event_count": 35402,
-    "head_event_sha256": "4ac73258ab44e5c32e87dc9a5d3c18631d60cc5b241a30e1d256f0f05ea199af",
+    "event_count": 35695,
+    "head_event_sha256": "2fde5214756ada6594c4761a8f15d4faa081a1e78766530d921bded60cdce5e4",
     "critical_high_blocker_count": 16,
     "critical_high_blocker_ids": [
       "PX-OS-087",
@@ -343,43 +343,17 @@
     ]
   },
   "current_gates": {
-    "valid": false,
-    "blocking_ids": [
-      "group:exact-installed",
-      "group:release-build",
-      "group:release-audit",
-      "group:structural-adversarial",
-      "group:derived-integrity",
-      "group:core-a-f",
-      "group:core-g-m",
-      "group:core-n-s",
-      "group:core-t-z"
-    ]
+    "valid": true,
+    "blocking_ids": []
   },
   "certification_freshness": {
     "fresh": false,
-    "receipt_current": false,
+    "receipt_current": true,
     "evidence_identity_current": false,
     "evidence_identity_evaluated": false,
     "evidence_receipts_current": false,
-    "failed_receipt_ids": [
-      "group:exact-installed",
-      "group:release-build",
-      "group:release-audit",
-      "group:structural-adversarial",
-      "group:derived-integrity",
-      "group:core-a-f",
-      "group:core-g-m",
-      "group:core-n-s",
-      "group:core-t-z"
-    ],
-    "stale_receipt_ids": [
-      "group:derived-integrity",
-      "group:core-a-f",
-      "group:core-g-m",
-      "group:core-n-s",
-      "group:core-t-z"
-    ],
+    "failed_receipt_ids": [],
+    "stale_receipt_ids": [],
     "dependency_stale_receipt_ids": []
   },
   "release_certificate": {
@@ -390,7 +364,6 @@
   },
   "blocking_reasons": [
     "the current operational gap ledger has 16 unresolved critical/high findings",
-    "9 required section/group receipts are stale or failed",
     "final exact-artifact certification has not been admitted"
   ]
 }

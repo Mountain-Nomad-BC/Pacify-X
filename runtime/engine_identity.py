@@ -13,6 +13,7 @@ from .repository_scope import is_external_environment_relative
 
 EXCLUDED_DIRECTORIES = {
     ".git",
+    ".quarantine",  # Boundary protection: retained historical evidence with preserved junctions
     ".engineering-bootstrap",
     ".mypy_cache",
     ".pytest_cache",

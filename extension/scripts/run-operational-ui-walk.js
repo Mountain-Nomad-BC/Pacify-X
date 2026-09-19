@@ -6648,6 +6648,11 @@ async function navigateInstalledSurface(frameHost, surface, timeoutMs = 20_000) 
   const deadline = Date.now() + timeoutMs;
   await settleInstalledModalBoundary(frameHost, Math.max(1_000, Math.min(5_000, timeoutMs)));
   if (['knowledgeCore', 'runtimeCore'].includes(surface)) {
+    await frameHost.evaluateContent(() => {
+      state.settings.showAdvancedSurfaces = true;
+      state.advancedOpen = true;
+      render();
+    });
     await waitForAdvancedNavigationExpanded(frameHost, surface, Math.max(1_000, Math.min(5_000, timeoutMs)));
   }
   do {
@@ -8294,15 +8299,69 @@ async function waitForKnowledgeControl(frameHost, selector, timeoutMs = 20_000) 
     if (available) return true;
     await wait(150);
   } while (Date.now() < deadline);
-  const diagnostic = await frameHost.evaluate(frame => {
+  const diagnostic = await frameHost.evaluate((frame, query) => {
     const document = frame.contentDocument;
     const visible = element => Boolean(element && (element.offsetWidth || element.offsetHeight || element.getClientRects().length));
+    const target = document?.querySelector(query);
+    const content = document?.querySelector('.content');
+    const allActions = [...(document?.querySelectorAll('[data-action]') || [])];
+    const knowledgeActions = allActions.filter(element => /knowledge/i.test(element.dataset.action || ''));
+    const propose = document?.querySelector('[data-action="knowledgePropose"]');
+    const refresh = document?.querySelector('[data-action="knowledgeRefresh"]');
+    const recover = document?.querySelector('[data-action="knowledgeRecover"]');
+
     return {
-      heading: String(document?.querySelector('h1,h2')?.textContent || '').trim().slice(0, 160),
-      surfaces: [...(document?.querySelectorAll('[data-surface]') || [])].slice(0, 40).map(element => ({ surface: element.dataset.surface || '', visible: visible(element), disabled: Boolean(element.disabled) })),
-      knowledge_actions: [...(document?.querySelectorAll('[data-action]') || [])].filter(element => /knowledge/i.test(element.dataset.action || '')).slice(0, 40).map(element => ({ action: element.dataset.action || '', visible: visible(element), disabled: Boolean(element.disabled) }))
+      requested_selector: query,
+      frame_src: String(frame?.src || ''),
+      document_ready_state: String(document?.readyState || ''),
+      heading: String(document?.querySelector('main h1')?.textContent || document?.querySelector('h1,h2')?.textContent || '').trim().slice(0, 160),
+      content_class: String(content?.className || ''),
+      content_text: String(content?.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 500),
+      advanced_toggle: (() => {
+        const element = document?.querySelector('[data-action="toggleAdvanced"]');
+        return {
+          present: Boolean(element),
+          active: Boolean(element?.classList?.contains('active')),
+          expanded: String(element?.getAttribute('aria-expanded') || ''),
+          text: String(element?.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 120)
+        };
+      })(),
+      target: {
+        present: Boolean(target),
+        visible: visible(target),
+        disabled: Boolean(target?.disabled),
+        action: String(target?.dataset?.action || '')
+      },
+      knowledge_propose: {
+        present: Boolean(propose),
+        visible: visible(propose),
+        disabled: Boolean(propose?.disabled)
+      },
+      knowledge_refresh: {
+        present: Boolean(refresh),
+        visible: visible(refresh),
+        disabled: Boolean(refresh?.disabled)
+      },
+      knowledge_recover: {
+        present: Boolean(recover),
+        visible: visible(recover),
+        disabled: Boolean(recover?.disabled)
+      },
+      surfaces: [...(document?.querySelectorAll('[data-surface]') || [])].slice(0, 40).map(element => ({
+        surface: element.dataset.surface || '',
+        current: String(element.getAttribute('aria-current') || ''),
+        visible: visible(element),
+        disabled: Boolean(element.disabled)
+      })),
+      knowledge_actions: knowledgeActions.slice(0, 40).map(element => ({
+        action: element.dataset.action || '',
+        visible: visible(element),
+        disabled: Boolean(element.disabled)
+      })),
+      all_actions: allActions.slice(0, 80).map(element => String(element.dataset.action || '')),
+      knowledge_core_text_present: /KNOWLEDGE CONTROL PLANE/i.test(String(content?.textContent || ''))
     };
-  });
+  }, selector);
   throw new Error(`knowledge-control-unavailable:${selector}:${JSON.stringify(diagnostic)}`);
 }
 
@@ -8356,6 +8415,7 @@ async function settleKnowledgeMutation(frameHost, before, operation, expected = 
   const browse = await waitForStudioOperationResult(frameHost, before, 'knowledge', 'browse', timeoutMs);
   if (!validKnowledgeLifecycleResult('browse', browse)) throw new Error(`knowledge-${operation}-refresh-invalid:${JSON.stringify(browse)}`);
   await frameHost.evaluate(frame => frame.contentDocument?.querySelector('[data-action="closeModal"]')?.click());
+  await navigateInstalledSurface(frameHost, 'knowledgeCore', Math.min(timeoutMs, 20_000));
   return { operation, result, browse };
 }
 
@@ -10575,6 +10635,7 @@ async function runInstalledKnowledgeLifecycleProfile(frameHost, matrix, timeoutM
     await frameHost.evaluate(frame => frame.contentDocument.querySelector('[data-action="knowledgeRefresh"]').click());
     const initialBrowse = await waitForStudioOperationResult(frameHost, initialBefore, 'knowledge', 'browse', timeoutMs);
     if (!validKnowledgeLifecycleResult('browse', initialBrowse)) throw new Error(`knowledge-initial-browse-invalid:${JSON.stringify(initialBrowse)}`);
+    await navigateInstalledSurface(frameHost, 'knowledgeCore', Math.min(timeoutMs, 20_000));
     await waitForKnowledgeControl(frameHost, '[data-action="knowledgePropose"]');
     observation.rendered = true;
     observation.attempted = true;

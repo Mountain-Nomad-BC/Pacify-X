@@ -38,7 +38,7 @@ const installedHarnessPath = path.join(extensionRoot, 'tests', 'installed-harnes
 const MAX_CAPTURE = 2 * 1024 * 1024;
 const MAX_PROFILE_PROGRESS = 2 * 1024 * 1024;
 const HOST_PROGRESS_STAGES = new Set(['child-started', 'cache-ready', 'executable-ready', 'port-reserved', 'vscode-spawned', 'cdp-ready', 'storage-ready', 'native-helper-spawned', 'native-helper-ready', 'walker-spawned', 'walker-closed', 'native-helper-stop-requested', 'native-helper-closed', 'vscode-termination-started', 'vscode-closed', 'child-result-written']);
-const ENGINE_COPY_EXCLUDED_ROOTS = new Set(['.git', '.tmp', '.vscode', '.pytest_cache', '.mypy_cache', '.ruff_cache', '.venv', '.venv-certify', 'venv', 'node_modules', 'Python', 'evidence']);
+const ENGINE_COPY_EXCLUDED_ROOTS = new Set(['.git', '.tmp', '.vscode', '.pytest_cache', '.mypy_cache', '.ruff_cache', '.venv', '.venv-certify', 'venv', 'node_modules', 'Python', 'evidence', '.quarantine']);
 const ENGINE_COPY_EXCLUDED_PATHS = new Set([
   'extension/node_modules', 'extension/dist',
   '.engineering-bootstrap/diagnostics', '.engineering-bootstrap/test-evidence',
@@ -705,7 +705,8 @@ async function childMain(configPath) {
         ? exitCodeForTerminalState(walkReceipt.status_truth.terminal_state)
         : 0,
       processError: childError || walkReceiptError,
-      processTreeClosedVerified: lifecycle.vscode_termination_verified === true && lifecycle.walker_termination_verified === true
+      processTreeClosedVerified: lifecycle.vscode_termination_verified === true && lifecycle.walker_termination_verified === true,
+      ownedExternalNetworkDenied: ownedExternalNetworkDeniedEnvironment()
     });
     if (nativeInputRequired && lifecycle.native_input_helper_termination_verified !== true) processIssues.push('owned-native-input-helper-termination-unverified');
     if (nativeInputRequired && lifecycle.native_input_helper_exit_error) processIssues.push(`owned-native-input-helper-${lifecycle.native_input_helper_exit_error}`);
@@ -1173,6 +1174,7 @@ async function main() {
   }
   const statusTruth = evaluateLauncherTerminal({
     walkStatus: child?.operational_status || null,
+    expectedScope: bootstrapOnly ? 'bootstrap' : 'walk',
     processTreeClosedVerified: lifecycle?.process_tree_closed_verified,
     workerExitVerified: run?.receipt?.worker_exit_verified ?? lifecycle?.worker_exit_verified,
     error
@@ -1221,7 +1223,7 @@ async function main() {
     operation: bootstrapOnly ? 'installed-extension-bootstrap-activation' : focusedProfile ? `focused-${focusedProfile}-walk` : 'operational-ui-walk',
     focused_profile: focusedProfile,
     post_audit_long_running_authority: postAuditLongRunning,
-    full_operational_completion_claimed: focusedProfile ? false : child?.operational_status?.operationally_complete === true,
+    full_operational_completion_claimed: bootstrapOnly || focusedProfile ? false : child?.operational_status?.operationally_complete === true,
     partial_profile_progress: child?.walk_receipt ? null : retainedProfileProgress(walkOutput),
     partial_host_progress: child?.walk_receipt ? null : retainedHostProgress(walkOutput),
     bootstrap: bootstrapOnly ? child?.bootstrap || null : null,
@@ -1236,6 +1238,7 @@ async function main() {
     report.recovery = { retained_temporary_root: temporaryRoot, reason: cleanup.reason };
     const cleanupStatus = evaluateLauncherTerminal({
       walkStatus: child?.operational_status || null,
+      expectedScope: bootstrapOnly ? 'bootstrap' : 'walk',
       processTreeClosedVerified: lifecycle?.process_tree_closed_verified,
       workerExitVerified: run?.receipt?.worker_exit_verified ?? lifecycle?.worker_exit_verified,
       cleanupReclaimed: false,
@@ -1268,3 +1271,4 @@ if (require.main === module) {
 }
 
 module.exports = { acquireWalkOwnership, appendHostProgress, boundedDelay, classifySharedStoragePath, excludedEnginePath, ownedExternalNetworkDeniedEnvironment, ownedExternalNetworkDeniedLaunchEnvironment, parallelProofHostLock, reconcileOwnedPrelaunchFailure, reconcilePrelaunchFailure, reserveLoopbackPort, resolveOwnedPython, retainedHostProgress, retainedProfileProgress, settleOwnedEphemeralCleanup, stageDisposableEngine, stageOwnedGitAuthority, stageOwnedHostBoundaryFixture, stageOwnedKnowledgeFixture, stageOwnedProviderPaginationFixture, waitForIsolatedStorageBoundary };
+
