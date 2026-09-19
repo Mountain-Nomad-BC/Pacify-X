@@ -1,8 +1,7 @@
 {
-  "checkpoint_id": null,
-  "checkpoint_sha256": "1a6c5ea43d59de0de2402568a2c4064debf51dadc9c992be38bddfa9aae31d55",
+  "checkpoint_sha256": "4d4545b76017f1138c43ec049ce91e30865676ac5226dcf5e6a5a7a9fdc3e463",
   "created_utc": "2026-08-16T17:14:48.634100Z",
-  "current_projection_sha256": "e2cf6e48e3cbff109cc5ef572edc906033b0302021227fa42b625132aa9d4e2d",
+  "current_projection_sha256": "2a27ace247f59cb04e3100886c696396f7be24bee89695576cf4ff52482b9363",
   "dashboard": {
     "cards": [
       {
@@ -1713,8 +1712,30 @@
     },
     "truncated": true
   },
-  "previous_checkpoint_sha256": "ff471859c9d295d828c0e13a7e743c364f9c621721b1b06de0be36a5ea2dc31a",
+  "delta_projection": {
+    "authoritative": false,
+    "event_count": 845,
+    "path": "registry/operational_gap_ledger.deltas/db7a9340ddfbf4018648f323bba4ab4a4d3f22c21ad25827cfaf0c35ed0826c6.jsonl",
+    "sha256": "db7a9340ddfbf4018648f323bba4ab4a4d3f22c21ad25827cfaf0c35ed0826c6",
+    "size_bytes": 1714382
+  },
+  "event_count": 35167,
+  "generated_utc": "2026-09-19T07:50:58.485116Z",
+  "head_event_sha256": "e1f8a9d60dd950f622ed091d9c8a923a11876f00faecaf519e8d4e0459b551a2",
+  "ledger_fingerprint": {
+    "sha256": "43834d07f7ee833ae9c30f37c22a4230afc32b5f742e0393ca558237ea0b7ca2",
+    "size_bytes": 104613375
+  },
+  "ledger_id": "PX-OPERATIONAL-GAPS-20260816",
+  "maximum_gap_ordinal": 1075,
+  "predecessor_event_sha256": "2e85252173c6427a23d7f48e5141b83d495b17a57b3ed8b4ee3f4a94da6290c6",
+  "previous_checkpoint_sha256": "c2e78adc9dc9ef334f6ac9fb904caf2348a3a16adfc6f640151c985dd1807b16",
   "schema_version": "px.operational-gap-ledger-head/1.0",
+  "snapshot_event_count": 34322,
+  "snapshot_head_event_sha256": "9d2048091d91bb41727f8613aad3b26bb78212bb47501237c23206cb3e765bd4",
+  "snapshot_ledger_size_bytes": 102898993,
+  "snapshot_sha256": "f86d17540afb056368b7f1454eb2fe8c5ac178f96c86f4c7a67fb0556e852a93",
+  "snapshot_size_bytes": 39263869,
   "verification_basis": {
     "full_replay_anchor_event_count": 34322,
     "full_replay_anchor_event_sha256": "9d2048091d91bb41727f8613aad3b26bb78212bb47501237c23206cb3e765bd4",
