@@ -20,6 +20,7 @@ from uuid import uuid4
 import yaml
 
 from .file_lock import FileLock
+from .wal_transaction import _replace_with_bounded_permission_retry
 from .capability_maturity import evaluate_capability_maturity, load_maturity_policy
 from .studio_filesystem import assert_exact_tree, publish_directory_no_replace
 from .resource_lifecycle import ResourceManager, RunState
@@ -1673,7 +1674,7 @@ class SkillStudio:
             "created_utc": _now(),
         }
         self._write_lifecycle_manifest(preparing, manifest)
-        os.replace(preparing, transaction)
+        _replace_with_bounded_permission_retry(preparing, transaction)
         _fsync_directory(journal_root)
         return transaction, manifest, signed_receipt
 

@@ -2,7 +2,7 @@
 canonical_id: "skillstudio"
 kind: system
 layer: acquisition
-currentness: same-file-bytes
+currentness: changed-file
 runtime_observed: false
 certified: false
 ---
@@ -30,8 +30,8 @@ Promotion changes canonical skill bytes and discoverable projections; rollback r
 
 Historical source model; file hashes refreshed. Byte agreement does not prove current behavior. This note is not a repair-closure receipt.
 
-- [[Evidence/S3041]] — same-file-bytes
-- [[Evidence/S3033]] — same-file-bytes
+- [[Evidence/S3041]] — changed-file
+- [[Evidence/S3033]] — changed-file
 
 ## Directed relationships
 

@@ -2,7 +2,7 @@
 canonical_id: "skilldeclarative"
 kind: system
 layer: evidence
-currentness: same-file-bytes
+currentness: changed-file
 runtime_observed: false
 certified: false
 ---
@@ -30,9 +30,9 @@ No autonomous adaptation established; changes require its declared caller or own
 
 Historical source model; file hashes refreshed. Byte agreement does not prove current behavior. This note is not a repair-closure receipt.
 
-- [[Evidence/S3044]] — same-file-bytes
-- [[Evidence/S3050]] — same-file-bytes
-- [[Evidence/S3048]] — same-file-bytes
+- [[Evidence/S3044]] — changed-file
+- [[Evidence/S3050]] — changed-file
+- [[Evidence/S3048]] — changed-file
 
 ## Directed relationships
 

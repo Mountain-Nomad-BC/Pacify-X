@@ -9648,7 +9648,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `projects_tracking/.ledger-authority/events/history/00000323.json` — `b839df4dbad8955e9be90b86c260f56c90839ea720ff5a23c1ea35d04249c4eb`
 - `projects_tracking/.ledger-authority/events/history/00000324.json` — `63211f13cf3cd31b2e4ab1746350a17774b1822b236db0f2f868db61ec06f9c9`
 - `projects_tracking/.ledger-authority/events/history/00000325.json` — `5d18c59914e2b4d73cca882e18b40926c427f978b114a87558451d9ee7449398`
-- `projects_tracking/.workspace-control.lock` — `c62b7af8835e36d06660276f2db1c8297500cbc25f8bb91884932fa071522be3`
+- `projects_tracking/.workspace-control.lock` — `341868a464db331c90fea0da1a8eca343d827adb3fd458c5fef604f740c4f84c`
 - `projects_tracking/PROJECT_MANAGEMENT.md` — `a5ad86f71259a9a9d35d19673e47b7bc6768a01bc9d7fcc2b353280a26e51e52`
 - `projects_tracking/checkpoints/corr_64837e3e65928c01/000001-preflight.json` — `bcf0e56d66b584b10b7dfcc47d7f00ba3974f325e87fe16c6222a51c8412e818`
 - `projects_tracking/checkpoints/corr_64837e3e65928c01/000002-verification.json` — `812977d8f7f3648a91cc31e268f9c4e078a75f1ec86f591fef6ca5f2563da92c`
@@ -11601,7 +11601,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `providers/agency_agents/manifests/testing/testing-tool-evaluator.json` — `31890dfa4b4226f94fe1603aff32725e3fbd7abfc14f88f3edb861d766c6bdae`
 - `providers/agency_agents/manifests/testing/testing-workflow-optimizer.json` — `265888ea58e65f9c123e9ce641bcc3f7d023e6d2a768411f2fa552fbce6d9e1a`
 - `pyproject.toml` — `e1bc5f155ce6b987c43adab76428cd2f912b80ef91508d3e3e3782e2cbab98fa`
-- `registry/.operational-gap-ledger.lock` — `c12d2be76c5c580554273022ceb0d96ce0a3367f198d027db528686e85a3105d`
+- `registry/.operational-gap-ledger.lock` — `e4b2809dfc8fc7a48942f0965bdb74ee362daacc4e3af6df4b3d801b918d99ed`
 - `registry/_work_admit_payload.json` — `74eedf1ec6500953d447879970ddc8811b2e8e08077dbe816d7131eb96d00569`
 - `registry/admission_ledger.json` — `e01d29886ae5db274f9a7759eec401e407cd623f4a31b6ae8196126af98cca83`
 - `registry/admission_queue.json` — `e82e14739bd539be5b1dded83c0cea6e2b27a86359b2be03f53e7ce0037364f6`
@@ -11612,12 +11612,12 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `registry/agency_agent_graph.json` — `ea2643fd20c95d482b5d02a69c96109310319b6c4daddca85199bc514703702a`
 - `registry/agency_agent_registry.json` — `258d34007098b8dc4229fe26017081118248601fec017a9b85747badca5fb9c7`
 - `registry/agent_builder_reference_audit_20260814.json` — `a583c29c1fb1e479a3ecf2515a69989535eff2f5148d9e0ffbe060e8aa80fd36`
-- `registry/artifact_reachability.json` — `7ef250714d03fdd0defdf3fb3ee0f52da804718bed50ccd87ab69243e4a4b332`
+- `registry/artifact_reachability.json` — `6c6213f03206cdeacad5cba2ea0c9fe350411372a8b93240a07c90e503d62669`
 - `registry/assurance_capabilities.json` — `3d9fbacff3f1816b9ed498f4306dbb6674860f8b2f74a61f1e104c6952a8795f`
 - `registry/authority_topology.json` — `9f366f6469bb5397a46e31d694620de95254fdb5d52077f3dcfb180f529f5ed0`
 - `registry/brain_capabilities.json` — `0c3026a78cd46576cc1320501b7a5a71f6889335b8e89d60c65440c24eb222c7`
 - `registry/brain_formulas.json` — `e4b2c446350b233a7ef8c170608ef50b9155f6bf1388f3e0be268dbe62efd517`
-- `registry/build_claims.json` — `ac509a08cdd54eddfa483ec6f32e5ed35800a59046d52280631875517453ecd1`
+- `registry/build_claims.json` — `61dd7aca6b863c230448fd4ba0f0d2dd03bf25ac91defb70419f836b8947deac`
 - `registry/builders.json` — `546a4a204ee0ddc8957934f70884021cbf53f648263cb4fe98c8ae4b7220e228`
 - `registry/capability_aliases.json` — `70b9e44c4f35cb9bfd642b5820c51f73ad97bd2653aa1443bc32a772b8cec421`
 - `registry/capability_map.json` — `4c742892820e384d857f29990e646584936799ac13b8ee5b793e97ac55c2f22f`
@@ -11641,8 +11641,8 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `registry/declared_suite_reconstruction.json` — `a166977a7629808806d3a8c83d9fc29a9022e99d03fa67b2d2f428138a1dd39a`
 - `registry/declared_suite_schema_contracts.json` — `4373109fcb373d968bbc417f1eb252068fdcd868287085c5fd401a3ad5c4c51a`
 - `registry/dependency_authority.json` — `2c9c32a46abcbb3c891d46465e993601c5355d95c3769339c9186c319f8e0eec`
-- `registry/effect_surface_ownership.json` — `3d424138728324cdbd7a785d7415317ee08f612f97c30c66b012b35f180b5628`
-- `registry/engine_identity.json` — `ba46d94150dbb42276ff7e48ec42779ded02c7ec04cf77d6e4be54d0ae26ba1b`
+- `registry/effect_surface_ownership.json` — `e682728b3b3e0af0e0ad33ea9228432fbd429e0c5403d3ac3d7694dba02681df`
+- `registry/engine_identity.json` — `661f10ade8bd73cb48a0ee722cbad28126ef6bee02f221120f3e5d1979fa8871`
 - `registry/engineering_lifecycle.json` — `3611efe1083a211827f15e7aad820a3f15005010cfd715e7c975e798e5c78b19`
 - `registry/engineering_reasoning_expansion.json` — `876dcea64e4afbe3ffb59bf24e502c06cacd9e617c1c1010d1b30cb726501277`
 - `registry/evidence_type_policy.json` — `bee133ae5f2126e81bcf51ddbe6293c6d76c5af74fe6494ee7a7811b79916d56`
@@ -11690,8 +11690,8 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `registry/operation_route_registry.json` — `d659d220e286f37d4d0959c90b5931497f09dbc56e5129b4ab4b24d8aff0aba1`
 - `registry/operational_capabilities.json` — `cbaa40028857112622214853f35ca7cdfbb9eb309e742512cf406d8c916f3b49`
 - `registry/operational_control_proof_matrix.json` — `21555e59d5bf3729d4610dbbca74d799f126af6bb543ff6da229b5a01d14244b`
-- `registry/operational_gap_ledger.head.json` — `1ce3b41849cfb762678270bd50392703b3a7815d2864530ab16b76f713410be3`
-- `registry/operational_gap_ledger.jsonl` — `94b03924d8798b702fc1bca219fa4dcc308acc555daa4952748091f2379105a0`
+- `registry/operational_gap_ledger.head.json` — `3c7598685fa5c403862ce146917e45fa93ec42ca423904060b787daf618e54d3`
+- `registry/operational_gap_ledger.jsonl` — `43834d07f7ee833ae9c30f37c22a4230afc32b5f742e0393ca558237ea0b7ca2`
 - `registry/operational_gap_ledger.snapshot.json` — `f86d17540afb056368b7f1454eb2fe8c5ac178f96c86f4c7a67fb0556e852a93`
 - `registry/operational_surface_aliases.json` — `7d383f9c399af8fbbf241c665440c33ef19ca17c797ec0836c5028adf8a1dcd1`
 - `registry/operational_surface_audit_20260816.json` — `e21205107d5782bf8b66015baedb3cc765df3c871338382f200d81ccd11bf011`
@@ -11708,10 +11708,10 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `registry/projection_staleness.json` — `5c1707f6ce7bb3dcfd9193f2871823ac4ffa2fee2d79efbe1b895b434eb698a0`
 - `registry/provider_adapters.json` — `9cbb226f2e4265095a77f7dd8de2711ee39f009fd52e66163b7fc03737e37eef`
 - `registry/provider_budget_policy.json` — `64b7d60184a6c4907006903df7ee01464ec26c4b21114eb4392eaeda4c95c10b`
-- `registry/provider_route_scan.json` — `35eb4e41c2ffdb78c44571cca4d1ed6ffff5731e8adb5b7c3e5ffbb6fedcc9bb`
-- `registry/px_world_state.json` — `b03601ad6f890b8410ca7b349ee7900013299326b24f55b185febb8797962fa0`
+- `registry/provider_route_scan.json` — `c4cc57f08710e7990c60fb8b000edc20acb86bf1f9dbb8c8067960aaabe28268`
+- `registry/px_world_state.json` — `3c78235b9260d3d5e1095434a2e8cb15d5c3cfda822abb35bc590fa89b84e455`
 - `registry/python_dependency_ownership.json` — `80b78c90763c214b975e65793e842b4a98877cdeaec9e5d31faa61ab62fb5b95`
-- `registry/python_surface_ownership.json` — `b2f7eb3ec9d5563bd1f65dd4e3de6c32eca29d83d5683c4abd55fa7c337388bc`
+- `registry/python_surface_ownership.json` — `20f96fb4cae08f65089ef103d61fc46bd3857a16fef672005aa2d54adc15c342`
 - `registry/reference_candidate_admission.json` — `39ef5749428a9c1eca265571e6771c1ed9b731ca0f68aa516f8206bcffa68fdb`
 - `registry/registry_envelope_inventory.json` — `d4c21dae28849258a210750916fa4099ff4444cd4c909e2e8f0c2c3dddcfa2c4`
 - `registry/release_fault_campaign.json` — `b22762e0c6b4c571a159ae93eb5dfbfb27533ec02b2f6b04317764924e3417f0`
@@ -11970,7 +11970,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `registry/state_artifact_classes.json` — `cbbb78181936304ad59168ee41356753603a8934fb3148434868175e02f5a4a6`
 - `registry/structural_integrity_policy.json` — `1aabdb815eb31cb1129e180c85d861c609551c5994ddf2b5a74cf9110a0b15f6`
 - `registry/studio_operations.json` — `7483f5aa94fa1ea9e1877bbae480686e4bd08ad3637e15f4f5f5624f05f4009e`
-- `registry/test_group_index.json` — `fb26eee20310f2ac3d15d291c19667eb7e2b161e888d0a08b6ae87365ee62f9b`
+- `registry/test_group_index.json` — `26684979210947817912f49717c533065b10d5133588519307d0ebb2e7e04cf4`
 - `registry/test_profiles.json` — `7e6144cca3ae2bd97b9731ecd583eac9443bcdf9d1b3a299930cc625ffab0517`
 - `registry/tools.json` — `daccec7bc0ce5bb9f4b8200dde4da393f45087816f6912b893fd79090d9580fe`
 - `registry/workflow_execution_bindings.json` — `3c8bbd41aabb460b0c17910bf6830fa8c2016c1f4b70e8975e5e285416eef454`
@@ -12194,7 +12194,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `runtime/service_capability_provider.py` — `27f66dfaf639da86ae0874ef3123480cd518ae5a3cf4818671b01aa86c7fd3db`
 - `runtime/skill_inputs.py` — `40981bfb06098e5c608eabbf06c81aea43632899dfbd5b75fbcca749790c8d63`
 - `runtime/skill_navigator.py` — `a4be18571bfe1008451e2cb2b1fb9849e47b8dd04c187bfd3347e020e66e5db1`
-- `runtime/skill_studio.py` — `4a6bf11f3a0d659283a2836e3a6a5372ad4aa39c243323ee4208552bfb30b033`
+- `runtime/skill_studio.py` — `f70d14d964600a367a13bec73bce917564af6d264db8732525adcd3cb163a7e7`
 - `runtime/source_coverage.py` — `fb008f450b4df3ae99897b1b81f7fd5aeffa9e97c34dae4b1630be3ef0bc29f9`
 - `runtime/startup.py` — `8971ff11d4868d71e03c341d5c20f60659e87241a4fd10ed16b159996f63967a`
 - `runtime/state_invariants.py` — `f76355af6330f05b284795e5b59b1dda1ad6a48d36fff88d8756152627a36e79`

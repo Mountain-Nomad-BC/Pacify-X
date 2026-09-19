@@ -2,7 +2,7 @@
 canonical_id: "skilllifecyclejournal"
 kind: system
 layer: durability
-currentness: same-file-bytes
+currentness: changed-file
 runtime_observed: false
 certified: false
 ---
@@ -30,9 +30,9 @@ No autonomous adaptation established; changes require its declared caller or own
 
 Historical source model; file hashes refreshed. Byte agreement does not prove current behavior. This note is not a repair-closure receipt.
 
-- [[Evidence/S3032]] — same-file-bytes
-- [[Evidence/S3036]] — same-file-bytes
-- [[Evidence/S3034]] — same-file-bytes
+- [[Evidence/S3032]] — changed-file
+- [[Evidence/S3036]] — changed-file
+- [[Evidence/S3034]] — changed-file
 
 ## Directed relationships
 

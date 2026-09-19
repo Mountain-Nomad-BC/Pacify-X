@@ -2,7 +2,7 @@
 canonical_id: "skilltreeidentity"
 kind: system
 layer: governance
-currentness: same-file-bytes
+currentness: changed-file
 runtime_observed: false
 certified: false
 ---
@@ -30,8 +30,8 @@ No autonomous adaptation established; changes require its declared caller or own
 
 Historical source model; file hashes refreshed. Byte agreement does not prove current behavior. This note is not a repair-closure receipt.
 
-- [[Evidence/S3051]] — same-file-bytes
-- [[Evidence/S3047]] — same-file-bytes
+- [[Evidence/S3051]] — changed-file
+- [[Evidence/S3047]] — changed-file
 
 ## Directed relationships
 
