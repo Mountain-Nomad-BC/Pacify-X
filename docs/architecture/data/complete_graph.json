@@ -2,7 +2,7 @@
   "schema_version": "px.closure-atlas/1",
   "metadata": {
     "basis": "supplied snapshot + preserved historical semantic IDs",
-    "source_inventory_sha256": "1297903d2596d41d2c8ec3db49949e1f1e0726e711cd5330f6509be3fedf76bb",
+    "source_inventory_sha256": "9131eebcd2c481790cd760dd1ab64ffa81a7e8aefdeaca091295609a2e92a83e",
     "baseline_graph_sha256": "84f6ce6fd8dfbacf8c0ea70992454892a295b12b7df0f3504ed7c432792fc6ee",
     "layout_version": "px-lifecycle-seeded-attraction/1",
     "scope": "Refresh of file bytes/static imports and presentation, not a completed semantic re-audit of every claim or the live repository.",
@@ -257771,7 +257771,7 @@
       "path": "projects_tracking/.workspace-control.lock",
       "layer": "durability",
       "kind": "file",
-      "sha256": "341868a464db331c90fea0da1a8eca343d827adb3fd458c5fef604f740c4f84c",
+      "sha256": "077fee0bedc92bb991cc0a3bfb9242e3aca054ae939746453903161176a486e9",
       "bytes": 492,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
@@ -300986,7 +300986,7 @@
       "path": "registry/artifact_reachability.json",
       "layer": "host",
       "kind": "file",
-      "sha256": "6c6213f03206cdeacad5cba2ea0c9fe350411372a8b93240a07c90e503d62669",
+      "sha256": "7f8b539a55ac8667cf5f62104786314eaf949b2e9dd252db92a791776111726b",
       "bytes": 398944,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
@@ -301624,7 +301624,7 @@
       "path": "registry/effect_surface_ownership.json",
       "layer": "host",
       "kind": "file",
-      "sha256": "e682728b3b3e0af0e0ad33ea9228432fbd429e0c5403d3ac3d7694dba02681df",
+      "sha256": "993b38fc1c6913689fed1c4e59dc10ed231935d6fd32a34897a68d8a767f8b40",
       "bytes": 522860,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
@@ -301653,7 +301653,7 @@
       "path": "registry/engine_identity.json",
       "layer": "host",
       "kind": "file",
-      "sha256": "661f10ade8bd73cb48a0ee722cbad28126ef6bee02f221120f3e5d1979fa8871",
+      "sha256": "42f4e8b338779a59becd6e6b7a60d189e612e250f17139b82827cb5d15f51319",
       "bytes": 1345148,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
@@ -303105,7 +303105,7 @@
       "path": "registry/provider_route_scan.json",
       "layer": "discovery",
       "kind": "file",
-      "sha256": "c4cc57f08710e7990c60fb8b000edc20acb86bf1f9dbb8c8067960aaabe28268",
+      "sha256": "c00a11450cc40e058ed7701dbf9f44121981495cc98a5edb414ce9691f9009c0",
       "bytes": 81878,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
@@ -303134,7 +303134,7 @@
       "path": "registry/px_world_state.json",
       "layer": "host",
       "kind": "file",
-      "sha256": "3c78235b9260d3d5e1095434a2e8cb15d5c3cfda822abb35bc590fa89b84e455",
+      "sha256": "67decb010eea04570355eee761a3245789e958c53aefb2e5dafa7caa7418ec59",
       "bytes": 2708,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
@@ -303178,7 +303178,7 @@
       "path": "registry/python_surface_ownership.json",
       "layer": "host",
       "kind": "file",
-      "sha256": "20f96fb4cae08f65089ef103d61fc46bd3857a16fef672005aa2d54adc15c342",
+      "sha256": "bf308214e354c21bddb62e66b4930c1606485fc25c0fd9176043c6fbba50c22f",
       "bytes": 349348,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
@@ -308876,7 +308876,7 @@
       "path": "registry/test_group_index.json",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "26684979210947817912f49717c533065b10d5133588519307d0ebb2e7e04cf4",
+      "sha256": "4a4f1915ed2c4de9dff02b88af1b41c7526a7a5da80707390aa5b7c1bf2cce1b",
       "bytes": 586456,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
@@ -309807,8 +309807,8 @@
       "path": "runtime/cli.py",
       "layer": "host",
       "kind": "file",
-      "sha256": "869a83c2bc3715b0525ae9a8061c11f1f8258119c7d96cffbfd656bb9da06bf7",
-      "bytes": 154787,
+      "sha256": "66469c0d2bb63063110acee9f6127a663628e9f0349e60818937684b48984f74",
+      "bytes": 154803,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -415565,7 +415565,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1309
+        "line": 1308
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -415584,7 +415584,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1368
+        "line": 1367
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -415603,7 +415603,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1384
+        "line": 1383
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -415622,7 +415622,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1420
+        "line": 1419
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -415641,7 +415641,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1467
+        "line": 1466
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -415660,7 +415660,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1424
+        "line": 1423
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -415679,7 +415679,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1436
+        "line": 1435
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -415698,7 +415698,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1492
+        "line": 1491
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -415717,7 +415717,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1531
+        "line": 1530
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -415736,7 +415736,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1559
+        "line": 1558
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -415755,7 +415755,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1588
+        "line": 1587
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -415774,7 +415774,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1596
+        "line": 1595
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -415793,7 +415793,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1660
+        "line": 1659
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -415812,7 +415812,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1682
+        "line": 1681
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -415831,7 +415831,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1719
+        "line": 1718
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -415850,7 +415850,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1736
+        "line": 1735
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -415869,7 +415869,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1752
+        "line": 1751
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -415888,7 +415888,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1756
+        "line": 1755
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -415907,7 +415907,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1764
+        "line": 1763
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -415926,7 +415926,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1785
+        "line": 1784
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -415945,7 +415945,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1768
+        "line": 1767
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -415964,7 +415964,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1776
+        "line": 1775
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -415983,7 +415983,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1794
+        "line": 1793
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -416002,7 +416002,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1801
+        "line": 1800
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -416021,7 +416021,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1806
+        "line": 1805
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -416040,7 +416040,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1829
+        "line": 1828
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -416059,7 +416059,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1833
+        "line": 1832
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -416078,7 +416078,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1838
+        "line": 1837
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -416097,7 +416097,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1869
+        "line": 1868
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -416116,7 +416116,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1885
+        "line": 1884
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -416135,7 +416135,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1904
+        "line": 1903
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -416154,7 +416154,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1947
+        "line": 1946
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -416173,7 +416173,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1964
+        "line": 1963
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -416192,7 +416192,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1975
+        "line": 1974
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -416211,7 +416211,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1979
+        "line": 1978
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -416230,7 +416230,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 2047
+        "line": 2046
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -416249,7 +416249,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 2053
+        "line": 2052
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -416268,7 +416268,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 2094
+        "line": 2093
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -416287,7 +416287,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 2107
+        "line": 2106
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -416306,7 +416306,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 2081
+        "line": 2080
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -494142,7 +494142,7 @@
       "same-file-bytes": 2417,
       "changed-file": 2015
     },
-    "source_bytes": 766882822,
+    "source_bytes": 766882838,
     "source_exclusions": 206,
     "source_parse_errors": 0,
     "unresolved_import_records": 28836,

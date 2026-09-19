@@ -1299,7 +1299,6 @@ def parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     from time import monotonic
-    section_started = monotonic()
     args = parser().parse_args(argv)
     orchestration_lock: object | None = None
     previous_orchestration_owner: str | None = None
@@ -2105,6 +2104,7 @@ def main(argv: list[str] | None = None) -> int:
                 output = resolve_test_section(root, args.name)
                 if args.action == "run":
                     from .section_scheduler import run_section
+                    section_started = monotonic()
                     output = run_section(root, output, args.name, section_started)
         elif args.command == "test-profile":
             from uuid import uuid4

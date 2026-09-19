@@ -9648,7 +9648,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `projects_tracking/.ledger-authority/events/history/00000323.json` — `b839df4dbad8955e9be90b86c260f56c90839ea720ff5a23c1ea35d04249c4eb`
 - `projects_tracking/.ledger-authority/events/history/00000324.json` — `63211f13cf3cd31b2e4ab1746350a17774b1822b236db0f2f868db61ec06f9c9`
 - `projects_tracking/.ledger-authority/events/history/00000325.json` — `5d18c59914e2b4d73cca882e18b40926c427f978b114a87558451d9ee7449398`
-- `projects_tracking/.workspace-control.lock` — `341868a464db331c90fea0da1a8eca343d827adb3fd458c5fef604f740c4f84c`
+- `projects_tracking/.workspace-control.lock` — `077fee0bedc92bb991cc0a3bfb9242e3aca054ae939746453903161176a486e9`
 - `projects_tracking/PROJECT_MANAGEMENT.md` — `a5ad86f71259a9a9d35d19673e47b7bc6768a01bc9d7fcc2b353280a26e51e52`
 - `projects_tracking/checkpoints/corr_64837e3e65928c01/000001-preflight.json` — `bcf0e56d66b584b10b7dfcc47d7f00ba3974f325e87fe16c6222a51c8412e818`
 - `projects_tracking/checkpoints/corr_64837e3e65928c01/000002-verification.json` — `812977d8f7f3648a91cc31e268f9c4e078a75f1ec86f591fef6ca5f2563da92c`
@@ -11612,7 +11612,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `registry/agency_agent_graph.json` — `ea2643fd20c95d482b5d02a69c96109310319b6c4daddca85199bc514703702a`
 - `registry/agency_agent_registry.json` — `258d34007098b8dc4229fe26017081118248601fec017a9b85747badca5fb9c7`
 - `registry/agent_builder_reference_audit_20260814.json` — `a583c29c1fb1e479a3ecf2515a69989535eff2f5148d9e0ffbe060e8aa80fd36`
-- `registry/artifact_reachability.json` — `6c6213f03206cdeacad5cba2ea0c9fe350411372a8b93240a07c90e503d62669`
+- `registry/artifact_reachability.json` — `7f8b539a55ac8667cf5f62104786314eaf949b2e9dd252db92a791776111726b`
 - `registry/assurance_capabilities.json` — `3d9fbacff3f1816b9ed498f4306dbb6674860f8b2f74a61f1e104c6952a8795f`
 - `registry/authority_topology.json` — `9f366f6469bb5397a46e31d694620de95254fdb5d52077f3dcfb180f529f5ed0`
 - `registry/brain_capabilities.json` — `0c3026a78cd46576cc1320501b7a5a71f6889335b8e89d60c65440c24eb222c7`
@@ -11641,8 +11641,8 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `registry/declared_suite_reconstruction.json` — `a166977a7629808806d3a8c83d9fc29a9022e99d03fa67b2d2f428138a1dd39a`
 - `registry/declared_suite_schema_contracts.json` — `4373109fcb373d968bbc417f1eb252068fdcd868287085c5fd401a3ad5c4c51a`
 - `registry/dependency_authority.json` — `2c9c32a46abcbb3c891d46465e993601c5355d95c3769339c9186c319f8e0eec`
-- `registry/effect_surface_ownership.json` — `e682728b3b3e0af0e0ad33ea9228432fbd429e0c5403d3ac3d7694dba02681df`
-- `registry/engine_identity.json` — `661f10ade8bd73cb48a0ee722cbad28126ef6bee02f221120f3e5d1979fa8871`
+- `registry/effect_surface_ownership.json` — `993b38fc1c6913689fed1c4e59dc10ed231935d6fd32a34897a68d8a767f8b40`
+- `registry/engine_identity.json` — `42f4e8b338779a59becd6e6b7a60d189e612e250f17139b82827cb5d15f51319`
 - `registry/engineering_lifecycle.json` — `3611efe1083a211827f15e7aad820a3f15005010cfd715e7c975e798e5c78b19`
 - `registry/engineering_reasoning_expansion.json` — `876dcea64e4afbe3ffb59bf24e502c06cacd9e617c1c1010d1b30cb726501277`
 - `registry/evidence_type_policy.json` — `bee133ae5f2126e81bcf51ddbe6293c6d76c5af74fe6494ee7a7811b79916d56`
@@ -11708,10 +11708,10 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `registry/projection_staleness.json` — `5c1707f6ce7bb3dcfd9193f2871823ac4ffa2fee2d79efbe1b895b434eb698a0`
 - `registry/provider_adapters.json` — `9cbb226f2e4265095a77f7dd8de2711ee39f009fd52e66163b7fc03737e37eef`
 - `registry/provider_budget_policy.json` — `64b7d60184a6c4907006903df7ee01464ec26c4b21114eb4392eaeda4c95c10b`
-- `registry/provider_route_scan.json` — `c4cc57f08710e7990c60fb8b000edc20acb86bf1f9dbb8c8067960aaabe28268`
-- `registry/px_world_state.json` — `3c78235b9260d3d5e1095434a2e8cb15d5c3cfda822abb35bc590fa89b84e455`
+- `registry/provider_route_scan.json` — `c00a11450cc40e058ed7701dbf9f44121981495cc98a5edb414ce9691f9009c0`
+- `registry/px_world_state.json` — `67decb010eea04570355eee761a3245789e958c53aefb2e5dafa7caa7418ec59`
 - `registry/python_dependency_ownership.json` — `80b78c90763c214b975e65793e842b4a98877cdeaec9e5d31faa61ab62fb5b95`
-- `registry/python_surface_ownership.json` — `20f96fb4cae08f65089ef103d61fc46bd3857a16fef672005aa2d54adc15c342`
+- `registry/python_surface_ownership.json` — `bf308214e354c21bddb62e66b4930c1606485fc25c0fd9176043c6fbba50c22f`
 - `registry/reference_candidate_admission.json` — `39ef5749428a9c1eca265571e6771c1ed9b731ca0f68aa516f8206bcffa68fdb`
 - `registry/registry_envelope_inventory.json` — `d4c21dae28849258a210750916fa4099ff4444cd4c909e2e8f0c2c3dddcfa2c4`
 - `registry/release_fault_campaign.json` — `b22762e0c6b4c571a159ae93eb5dfbfb27533ec02b2f6b04317764924e3417f0`
@@ -11970,7 +11970,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `registry/state_artifact_classes.json` — `cbbb78181936304ad59168ee41356753603a8934fb3148434868175e02f5a4a6`
 - `registry/structural_integrity_policy.json` — `1aabdb815eb31cb1129e180c85d861c609551c5994ddf2b5a74cf9110a0b15f6`
 - `registry/studio_operations.json` — `7483f5aa94fa1ea9e1877bbae480686e4bd08ad3637e15f4f5f5624f05f4009e`
-- `registry/test_group_index.json` — `26684979210947817912f49717c533065b10d5133588519307d0ebb2e7e04cf4`
+- `registry/test_group_index.json` — `4a4f1915ed2c4de9dff02b88af1b41c7526a7a5da80707390aa5b7c1bf2cce1b`
 - `registry/test_profiles.json` — `7e6144cca3ae2bd97b9731ecd583eac9443bcdf9d1b3a299930cc625ffab0517`
 - `registry/tools.json` — `daccec7bc0ce5bb9f4b8200dde4da393f45087816f6912b893fd79090d9580fe`
 - `registry/workflow_execution_bindings.json` — `3c8bbd41aabb460b0c17910bf6830fa8c2016c1f4b70e8975e5e285416eef454`
@@ -12012,7 +12012,7 @@ Scope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/so
 - `runtime/change_classification.py` — `84ef96f7b4b13ff144b2db4b4a965d6a6cb28104f7287a3dd3263bdeae9b1d46`
 - `runtime/classifier.py` — `2a1a6260ee9305bdaba3af72bd68271cf68ce90168afad955ea1b3abb241d806`
 - `runtime/clean_room_capabilities.py` — `2f59ec5ac6e771c6fe94b4c406e4de46b4365e86be9a65b81f68ed6702418774`
-- `runtime/cli.py` — `869a83c2bc3715b0525ae9a8061c11f1f8258119c7d96cffbfd656bb9da06bf7`
+- `runtime/cli.py` — `66469c0d2bb63063110acee9f6127a663628e9f0349e60818937684b48984f74`
 - `runtime/cognitive_assurance.py` — `cc15d2acd6f57b8359dc2902bddb4053bb347e33d8567fd6502a6b029c089e1e`
 - `runtime/cognitive_core/__init__.py` — `3628c1ab81d08c5b2f42481238286ef0339deeea12868b8479f138fc5551cf72`
 - `runtime/cognitive_core/abduction.py` — `754025f90a5a5dd508e17fd486e3fbd440e1de0be7dc8180d36f17c925b70b63`
