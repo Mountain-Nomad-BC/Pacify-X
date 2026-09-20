@@ -1,0 +1,66 @@
+{
+  "schema_version": "px.ms-enterprise.doctor/1.0",
+  "generated_utc": "2026-09-20T03:04:50.201Z",
+  "valid": true,
+  "local_control_plane_ready": true,
+  "cloud_connectors_ready": false,
+  "checks": [
+    {
+      "id": "separate-schema",
+      "passed": true,
+      "detail": "px.ms-enterprise.state/1.0"
+    },
+    {
+      "id": "separate-state-root",
+      "passed": true,
+      "detail": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-XHkyuY\\.engineering-bootstrap\\enterprise"
+    },
+    {
+      "id": "offline-startup",
+      "passed": true,
+      "detail": "enterprise services are not startup dependencies"
+    },
+    {
+      "id": "billable-default",
+      "passed": true,
+      "detail": "disabled"
+    },
+    {
+      "id": "egress-default",
+      "passed": true,
+      "detail": "deny"
+    },
+    {
+      "id": "mutation-default",
+      "passed": true,
+      "detail": "deny"
+    },
+    {
+      "id": "credential-load",
+      "passed": true,
+      "detail": "no credential reads on load"
+    },
+    {
+      "id": "guardrail-policy",
+      "passed": true,
+      "detail": "master off; approval required"
+    },
+    {
+      "id": "connector-defaults",
+      "passed": true,
+      "detail": "1 connectors disabled or absent"
+    },
+    {
+      "id": "identity-separation",
+      "passed": true,
+      "detail": "authentication and billing namespaces explicit"
+    },
+    {
+      "id": "memory-boundary",
+      "passed": true,
+      "detail": "explicit-reviewed-promotion-only"
+    }
+  ],
+  "state_hash": "3ac8fdf15ef5454ee1d610b23274a1427ba154bf7616779ad8a0265dfb1016d0",
+  "receipt_sha256": "a326816e1ac99638a6c71d1de0366a68d3e0809448ee1435e1a8d54d55179df7"
+}

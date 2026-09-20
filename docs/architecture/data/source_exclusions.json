@@ -16,7 +16,7 @@
     "reason": "excluded directory or link"
   },
   {
-    "path": ".pytest_cache",
+    "path": ".quarantine",
     "reason": "excluded directory or link"
   },
   {
@@ -25,10 +25,6 @@
   },
   {
     "path": "Python",
-    "reason": "excluded directory or link"
-  },
-  {
-    "path": "__pycache__",
     "reason": "excluded directory or link"
   },
   {
@@ -88,14 +84,6 @@
     "reason": "mutable release control output"
   },
   {
-    "path": "px/py_cert/runtime/__pycache__",
-    "reason": "excluded directory or link"
-  },
-  {
-    "path": "px/py_cert/scripts/__pycache__",
-    "reason": "excluded directory or link"
-  },
-  {
     "path": "registry/.lock-recovery-receipts",
     "reason": "excluded directory or link"
   },
@@ -126,17 +114,5 @@
   {
     "path": "registry/px_world_state.json",
     "reason": "mutable release control output"
-  },
-  {
-    "path": "runtime/__pycache__",
-    "reason": "excluded directory or link"
-  },
-  {
-    "path": "scripts/__pycache__",
-    "reason": "excluded directory or link"
-  },
-  {
-    "path": "tests/__pycache__",
-    "reason": "excluded directory or link"
   }
 ]

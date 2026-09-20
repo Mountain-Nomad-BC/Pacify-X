@@ -1,0 +1,46 @@
+{
+  "schema_version": "px.ms-enterprise.state/1.0",
+  "authority": "Pacify-X local enterprise boundary",
+  "revision": 1,
+  "defaults": {
+    "network_egress": "deny",
+    "mutation": "deny",
+    "billable_services": "disabled",
+    "credential_reads": "deny"
+  },
+  "execution_policy": {
+    "master_enabled": true,
+    "max_cost_per_task_usd": 1,
+    "max_cost_per_session_usd": 2,
+    "max_cost_per_day_usd": 3,
+    "token_budget": 1000,
+    "local_first": true,
+    "provider_allowlist": [
+      "provider.test"
+    ],
+    "gpu_memory_ceiling_mb": 1024,
+    "cpu_core_ceiling": 4,
+    "ram_ceiling_mb": 2048,
+    "escalation_confidence_threshold": 0.9,
+    "cache_reuse_aggressiveness": "aggressive",
+    "require_approval_before_billable_execution": true
+  },
+  "pack_states": {
+    "ms-enterprise/governance": {
+      "enabled": true,
+      "mode": "offline-metadata-only",
+      "updated_utc": null
+    },
+    "ms-enterprise/azure-foundry": {
+      "enabled": false,
+      "mode": "offline-metadata-only",
+      "updated_utc": null
+    }
+  },
+  "targets": [],
+  "connector_states": {},
+  "last_doctor": null,
+  "created_utc": "2026-09-20T03:04:50.205Z",
+  "updated_utc": "2026-09-20T03:04:50.207Z",
+  "state_hash": "58bfb89dafca3789d8ef779f541cdb18dd2bbb8d28e64f5e1560181b6e0553ea"
+}

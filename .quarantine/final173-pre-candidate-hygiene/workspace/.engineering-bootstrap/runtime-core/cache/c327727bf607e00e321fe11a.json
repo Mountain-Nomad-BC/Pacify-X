@@ -1,0 +1,202 @@
+{
+  "created_at": "2026-09-19T07:49:29.341510+00:00",
+  "created_epoch": 1789804169.3415067,
+  "input_sha256": "ad0bd8d47df98429a70ab701eb380545e190bda1d0ce8a8aecf2be9cf6b4c11c",
+  "operation": "dashboard.host-startup",
+  "operation_id": "c327727bf607e00e321fe11a-c71557f6eedd4661aec5ef637ae4f940",
+  "result": {
+    "available": true,
+    "cycle": "session-first-extension-host",
+    "cycle_comparison": [
+      {
+        "codex_activation_to_existing_thread_resume_ms": null,
+        "cycle": "session-first-extension-host",
+        "extension_host_started_local": "2026-09-18T18:44:12.600",
+        "extension_host_to_codex_routes_ms": null,
+        "extension_host_to_eager_extensions_ms": 94075,
+        "extension_host_to_existing_thread_resume_ms": null
+      }
+    ],
+    "durations_ms": {
+      "codex_activation_to_existing_thread_resume": null,
+      "codex_activation_to_routes": null,
+      "extension_host_to_codex_routes": null,
+      "extension_host_to_eager_extensions": 94075,
+      "extension_host_to_existing_thread_resume": null
+    },
+    "limitations": [
+      "Markers are host observations, not causal proof or a benchmark.",
+      "The host log does not emit a complete skill-discovery duration.",
+      "The host log does not expose readiness for every configured MCP server.",
+      "Existing-thread resume is not proof of first successful tool execution."
+    ],
+    "log_tail_truncated": false,
+    "mcp": {
+      "codex_app_server_initialize_observed": true,
+      "configured_server_readiness_observable": false,
+      "vscode_gateway_initialized": true,
+      "vscode_gateway_offset_from_launch_ms": 11
+    },
+    "milestones": [
+      {
+        "delta_from_previous_observed_ms": 0,
+        "evidence_marker": "Extension host with pid \\d+ started",
+        "id": "vscode.extension-host",
+        "observed": true,
+        "offset_from_extension_host_ms": 0,
+        "owner": "vscode-host",
+        "status": "observed-start",
+        "timestamp_local": "2026-09-18T18:44:12.600"
+      },
+      {
+        "delta_from_previous_observed_ms": 2850,
+        "evidence_marker": "Activating Codex extension",
+        "id": "openai.codex.activation",
+        "observed": true,
+        "offset_from_extension_host_ms": 91813,
+        "owner": "codex-host",
+        "status": "observed-start",
+        "timestamp_local": "2026-09-18T18:45:44.413"
+      },
+      {
+        "delta_from_previous_observed_ms": 1,
+        "evidence_marker": "Initialize received id=",
+        "id": "openai.codex.app-server-initialize",
+        "observed": true,
+        "offset_from_extension_host_ms": 91814,
+        "owner": "codex-host",
+        "status": "initialize-received",
+        "timestamp_local": "2026-09-18T18:45:44.414"
+      },
+      {
+        "delta_from_previous_observed_ms": 8253,
+        "evidence_marker": "_doActivateExtension GitHub\\.copilot-chat",
+        "id": "github.copilot.activation-request",
+        "observed": true,
+        "offset_from_extension_host_ms": 27239,
+        "owner": "github-copilot-host",
+        "status": "activation-requested",
+        "timestamp_local": "2026-09-18T18:44:39.839"
+      },
+      {
+        "delta_from_previous_observed_ms": 18986,
+        "evidence_marker": "_doActivateExtension ms-python\\.python",
+        "id": "python.extension.activation-request",
+        "observed": true,
+        "offset_from_extension_host_ms": 18986,
+        "owner": "python-extension-host",
+        "status": "activation-requested",
+        "timestamp_local": "2026-09-18T18:44:31.586"
+      },
+      {
+        "delta_from_previous_observed_ms": 61724,
+        "evidence_marker": "_doActivateExtension mountain-nomad-bc\\.pacify-x-vscode",
+        "id": "pacify-x.extension.activation-request",
+        "observed": true,
+        "offset_from_extension_host_ms": 88963,
+        "owner": "pacify-x-extension",
+        "status": "activation-requested",
+        "timestamp_local": "2026-09-18T18:45:41.563"
+      },
+      {
+        "delta_from_previous_observed_ms": 2261,
+        "evidence_marker": "Eager extensions activated",
+        "id": "vscode.eager-extensions",
+        "observed": true,
+        "offset_from_extension_host_ms": 94075,
+        "owner": "vscode-host",
+        "status": "observed-ready",
+        "timestamp_local": "2026-09-18T18:45:46.675"
+      },
+      {
+        "evidence_marker": "chatgpt-account-lookup.*completed",
+        "id": "openai.codex.account-lookup",
+        "observed": false,
+        "offset_from_extension_host_ms": null,
+        "owner": "codex-host",
+        "status": "not-observed",
+        "timestamp_local": null
+      },
+      {
+        "evidence_marker": "\\[startup\\]\\[renderer\\] app routes mounted",
+        "id": "openai.codex.renderer-routes",
+        "observed": false,
+        "offset_from_extension_host_ms": null,
+        "owner": "codex-host",
+        "status": "not-observed",
+        "timestamp_local": null
+      },
+      {
+        "evidence_marker": "codex_core_skills::loader",
+        "id": "openai.codex.skill-loader-activity",
+        "observed": false,
+        "offset_from_extension_host_ms": null,
+        "owner": "codex-host",
+        "status": "not-observed",
+        "timestamp_local": null
+      },
+      {
+        "evidence_marker": "codex_core_plugins::loader",
+        "id": "openai.codex.plugin-loader-activity",
+        "observed": false,
+        "offset_from_extension_host_ms": null,
+        "owner": "codex-host",
+        "status": "not-observed",
+        "timestamp_local": null
+      },
+      {
+        "evidence_marker": "maybe_resume_success",
+        "id": "openai.codex.thread-resume",
+        "observed": false,
+        "offset_from_extension_host_ms": null,
+        "owner": "codex-host",
+        "status": "not-observed",
+        "timestamp_local": null
+      },
+      {
+        "evidence_marker": null,
+        "id": "openai.codex.skill-discovery-complete",
+        "observed": false,
+        "offset_from_extension_host_ms": null,
+        "owner": "codex-host",
+        "status": "host-marker-not-emitted",
+        "timestamp_local": null
+      },
+      {
+        "evidence_marker": null,
+        "id": "openai.codex.configured-mcp-readiness",
+        "observed": false,
+        "offset_from_extension_host_ms": null,
+        "owner": "codex-host",
+        "status": "host-marker-not-emitted",
+        "timestamp_local": null
+      },
+      {
+        "evidence_marker": null,
+        "id": "openai.codex.first-usable-tool",
+        "observed": false,
+        "offset_from_extension_host_ms": null,
+        "owner": "codex-host",
+        "status": "host-marker-not-emitted",
+        "timestamp_local": null
+      }
+    ],
+    "ownership": "VS Code, Codex, Copilot, Python, and PX remain separate owners",
+    "px_attribution": {
+      "activation_request_offset_ms": 88963,
+      "causal_contribution_to_codex_readiness": "not-established-by-host-logs",
+      "must_not_attribute_vscode_or_codex_host_costs_to_px": true
+    },
+    "schema_version": "px.host-startup-attribution/1.0",
+    "source_session": "20260918T184403",
+    "timestamp_basis": "host-local-log-time-without-offset",
+    "vscode_launch": {
+      "launch_to_first_extension_host_ms": 8650,
+      "marker": "first timestamp emitted in main.log; process creation may predate it",
+      "observed": true,
+      "timestamp_local": "2026-09-18T18:44:03.950"
+    }
+  },
+  "result_sha256": "e2da92df9fa3eb05c2215334c4460801c1808bc73c6ea3f30779d551a17995c2",
+  "schema_version": "px.runtime-work-result/1.0"
+}

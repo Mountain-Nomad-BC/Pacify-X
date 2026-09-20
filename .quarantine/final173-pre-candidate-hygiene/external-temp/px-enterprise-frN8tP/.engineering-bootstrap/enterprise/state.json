@@ -1,0 +1,59 @@
+{
+  "schema_version": "px.ms-enterprise.state/1.0",
+  "authority": "Pacify-X local enterprise boundary",
+  "revision": 1,
+  "defaults": {
+    "network_egress": "deny",
+    "mutation": "deny",
+    "billable_services": "disabled",
+    "credential_reads": "deny"
+  },
+  "execution_policy": {
+    "master_enabled": false,
+    "max_cost_per_task_usd": 0,
+    "max_cost_per_session_usd": 0,
+    "max_cost_per_day_usd": 0,
+    "token_budget": 12000,
+    "local_first": true,
+    "provider_allowlist": [],
+    "gpu_memory_ceiling_mb": 0,
+    "cpu_core_ceiling": 4,
+    "ram_ceiling_mb": 8192,
+    "escalation_confidence_threshold": 0.85,
+    "cache_reuse_aggressiveness": "balanced",
+    "require_approval_before_billable_execution": true
+  },
+  "pack_states": {
+    "ms-enterprise/governance": {
+      "enabled": true,
+      "mode": "offline-metadata-only",
+      "updated_utc": null
+    },
+    "ms-enterprise/azure-foundry": {
+      "enabled": false,
+      "mode": "offline-metadata-only",
+      "updated_utc": null
+    }
+  },
+  "targets": [
+    {
+      "id": "azure-dev",
+      "pack_id": "ms-enterprise/azure-foundry",
+      "target_alias": "Azure development",
+      "tenant_alias": "tenant-dev",
+      "environment_alias": "subscription-sandbox",
+      "auth_namespace": "external-secret-store",
+      "billing_namespace": "explicit-enterprise-account",
+      "network_egress": "deny",
+      "mutation": "deny",
+      "credential_material_stored": false,
+      "status": "configured-offline",
+      "updated_utc": "2026-09-20T03:04:50.197Z"
+    }
+  ],
+  "connector_states": {},
+  "last_doctor": null,
+  "created_utc": "2026-09-20T03:04:50.198Z",
+  "updated_utc": "2026-09-20T03:04:50.199Z",
+  "state_hash": "28122d199cfe636988b1f9046d7e894774f0acf074c44fe879493daadd7e8f17"
+}

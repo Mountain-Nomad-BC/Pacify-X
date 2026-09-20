@@ -1135,9 +1135,7 @@ class ProductionEffects:
         if step == "reconcile":
             from runtime.generated_artifacts import validate_generated_artifacts
             from runtime.release_artifacts import classify_tree
-            from scripts.clean_source_export import _rebuild_candidate_projections
 
-            _rebuild_candidate_projections(config.root)
             generated = validate_generated_artifacts(config.root)
             classification = classify_tree(config.root)
             if (

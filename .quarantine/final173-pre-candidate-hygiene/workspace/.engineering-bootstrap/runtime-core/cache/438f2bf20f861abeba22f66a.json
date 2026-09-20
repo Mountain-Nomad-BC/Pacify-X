@@ -1,0 +1,111 @@
+{
+  "created_at": "2026-09-19T07:49:29.232273+00:00",
+  "created_epoch": 1789804169.2322688,
+  "input_sha256": "59db4b3f763f5eb2038d469495e64105df52413bc9d60d78e8ae80ff6396813c",
+  "operation": "dashboard.hardware",
+  "operation_id": "438f2bf20f861abeba22f66a-baf80306454b4baa8ab07b8e1193b851",
+  "result": {
+    "cache": {
+      "age_seconds": 0.0,
+      "authority": "informational-derived-only",
+      "fresh": true,
+      "fresh_until": "2026-09-19T07:54:26.814535+00:00",
+      "read_error": null,
+      "refresh_trigger": "expired-or-absent",
+      "sampled_at": "2026-09-19T07:49:26.814535+00:00",
+      "status": "miss",
+      "ttl_seconds": 300.0
+    },
+    "core_scan_device": "cpu",
+    "external_data_transmission": false,
+    "gpu_optional": true,
+    "hardware": {
+      "available_execution_backends": [],
+      "cpu_logical_cores": 28,
+      "cpu_physical_cores": null,
+      "cuda_available": false,
+      "cuda_device_count": 0,
+      "cuda_executor_available": false,
+      "cuda_runtime": null,
+      "driver_version": null,
+      "environment": "windows",
+      "free_vram_bytes": 0,
+      "gpu_name": null,
+      "gpu_parallelism_reason": "GPU hardware may be visible, but no compatible CUDA executor is active",
+      "gpu_process_parallelism": 0,
+      "onnx_providers": [],
+      "optional_accelerators": [],
+      "probe_duration_seconds": 2.315992,
+      "probe_errors": [
+        "nvidia-smi probe failed: Command '['nvidia-smi', '--query-gpu=index,name,driver_version,memory.total,memory.free,temperature.gpu,utilization.gpu,power.draw,fan.speed', '--format=csv,noheader,nounits']' timed out after 2.0 seconds"
+      ],
+      "selected_cuda_device_index": null,
+      "system_ram_bytes": 68233236480,
+      "torch_cuda_available": false,
+      "total_vram_bytes": 0
+    },
+    "hardware_fingerprint": "8c3fef81267c057f0d9f92093b5688335e1b7ee7c4c9c645b8cfce1e3d37ea26",
+    "probe_duration_seconds": 2.410924,
+    "probe_process_policy": {
+      "discovery_parallelism": "independent read-only probes only",
+      "gpu_execution_processes": 0,
+      "maximum_concurrent_children": 3,
+      "per_child_timeout_seconds": 2.0,
+      "shell": false,
+      "timeout_terminates_and_waits_for_child": true,
+      "visible_window": false
+    },
+    "routing_capabilities": {
+      "automatic_gpu_requires_current_benchmark": true,
+      "conditional_gpu_workloads": [
+        "compression",
+        "dataframe",
+        "hashing",
+        "sorting",
+        "text_analysis"
+      ],
+      "cpu_authoritative_workloads": [
+        "database",
+        "filesystem_io",
+        "serialization"
+      ],
+      "cuda_device_visible": false,
+      "cuda_executor_ready": false,
+      "deterministic_cpu_fallback": true,
+      "directml_discovered": false,
+      "directml_routing": "unsupported until an admitted DirectML executor passes compatibility and benchmark gates; Intel/integrated GPU is never selected implicitly",
+      "gpu_eligible_workloads": [
+        "embedding",
+        "image_inference",
+        "model_inference",
+        "numerical",
+        "vector_search"
+      ],
+      "parallelism_reason": "GPU hardware may be visible, but no compatible CUDA executor is active",
+      "process_parallelism": 0
+    },
+    "telemetry": {
+      "available_count": 0,
+      "external_data_transmission": false,
+      "providers": [
+        {
+          "available": false,
+          "error": "temperature API unavailable on this host",
+          "id": "psutil"
+        },
+        {
+          "available": false,
+          "error": "nvidia-smi probe failed: Command '['nvidia-smi', '--query-gpu=index,name,driver_version,memory.total,memory.free,temperature.gpu,utilization.gpu,power.draw,fan.speed', '--format=csv,noheader,nounits']' timed out after 2.0 seconds",
+          "id": "nvidia-smi"
+        }
+      ],
+      "sampled_at": "2026-09-19T07:49:29.131490+00:00",
+      "schema_version": "1.0",
+      "sensors": [],
+      "temperature_count": 0
+    },
+    "valid": true
+  },
+  "result_sha256": "3bbc98d63738cabc2ccecd39343e805192d1d6dabf1addd7517a295b1f464293",
+  "schema_version": "px.runtime-work-result/1.0"
+}
