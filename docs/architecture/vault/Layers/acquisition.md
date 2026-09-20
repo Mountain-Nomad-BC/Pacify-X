@@ -2,43 +2,43 @@
 
 External metadata, research mechanisms, verified process records and source documents become bounded candidate artifacts.
 
-- [[Systems/external]] — External sources and candidate catalog
-- [[Systems/research]] — Research mechanism assimilation
-- [[Systems/crosswalk]] — Mechanism novelty and ownership crosswalk
-- [[Systems/refinery]] — Knowledge novelty and merge planning
-- [[Systems/foundry]] — Knowledge foundry and calculation compiler
-- [[Systems/foundrybridge]] — Foundry-to-Studio candidate bridge
-- [[Systems/process]] — Verified process compiler
-- [[Systems/skillstudio]] — Skill Studio promotion and rollback
-- [[Systems/services]] — Service capability routing
-- [[Systems/transcripts]] — Transcript extraction and ontology records
-- [[Systems/assimilationaudit]] — Assimilation disposition accounting
-- [[Systems/teampack]] — Team package candidate staging
-- [[Systems/n8nprocedures]] — n8n integration and operation procedures
-- [[Systems/supabaseprocedures]] — Supabase data and operation procedures
-- [[Systems/studiopackage]] — Studio editor package materialization
-- [[Systems/proposalbuilders]] — Candidate proposal builders
-- [[Systems/supabasetemplate]] — Supabase Edge Function scaffold
-- [[Systems/serviceblueprints]] — SQL and queue deployment blueprints
-- [[Systems/servicehydrate]] — Service skill hash and hydration budget
-- [[Systems/skilldraftpublish]] — Immutable skill draft publication and closure
-- [[Systems/processcompileidentity]] — Process verification flags and catalog-dependent compilation
-- [[Systems/researchconvergence]] — Citation-string research convergence
-- [[Systems/refinerynovelty]] — Refinery weighted novelty and merge plan
-- [[Systems/foundryextract]] — Foundry line extraction and template generation
-- [[Systems/foundrydraftobject]] — Studio intake draft object
-- [[Systems/proposalidentity]] — Sanitized proposal identity
-- [[Systems/skillgapmetadata]] — Caller-relative skill gap
-- [[Systems/repairvariantproposal]] — Repair snippet proposal filtering
-- [[Systems/domaingenerator]] — Declared domain multi-file generator
-- [[Systems/supportgenerator]] — Declared support artifact generator
-- [[Systems/assimilationcopy]] — Assimilation copies and source rewriting
-- [[Systems/studiodraftdispatch]] — Typed draft graph layout and authority handoff
-- [[Systems/nativemigration]] — First native skill custody migration
-- [[Systems/skilleditfiles]] — Skill editor native file synthesis and identity synchronization
-- [[Systems/externalstageplan]] — External candidate source and stage plan
-- [[Systems/securityreference]] — Pinned security archive reference hydration
-- [[Systems/sourcefaterules]] — Incoming source disposition rules
-- [[Systems/externalregistrybuilder]] — External candidate registry reconciliation
-- [[Systems/securitypackprojection]] — Pinned archive companion metadata projection
-- [[Systems/dashboardknowledgeforms]] — Knowledge and learning evidence forms
+- External sources and candidate catalog (external)
+- Research mechanism assimilation (research)
+- Mechanism novelty and ownership crosswalk (crosswalk)
+- Knowledge novelty and merge planning (refinery)
+- Knowledge foundry and calculation compiler (foundry)
+- Foundry-to-Studio candidate bridge (foundrybridge)
+- Verified process compiler (process)
+- Skill Studio promotion and rollback (skillstudio)
+- Service capability routing (services)
+- Transcript extraction and ontology records (transcripts)
+- Assimilation disposition accounting (assimilationaudit)
+- Team package candidate staging (teampack)
+- n8n integration and operation procedures (n8nprocedures)
+- Supabase data and operation procedures (supabaseprocedures)
+- Studio editor package materialization (studiopackage)
+- Candidate proposal builders (proposalbuilders)
+- Supabase Edge Function scaffold (supabasetemplate)
+- SQL and queue deployment blueprints (serviceblueprints)
+- Service skill hash and hydration budget (servicehydrate)
+- Immutable skill draft publication and closure (skilldraftpublish)
+- Process verification flags and catalog-dependent compilation (processcompileidentity)
+- Citation-string research convergence (researchconvergence)
+- Refinery weighted novelty and merge plan (refinerynovelty)
+- Foundry line extraction and template generation (foundryextract)
+- Studio intake draft object (foundrydraftobject)
+- Sanitized proposal identity (proposalidentity)
+- Caller-relative skill gap (skillgapmetadata)
+- Repair snippet proposal filtering (repairvariantproposal)
+- Declared domain multi-file generator (domaingenerator)
+- Declared support artifact generator (supportgenerator)
+- Assimilation copies and source rewriting (assimilationcopy)
+- Typed draft graph layout and authority handoff (studiodraftdispatch)
+- First native skill custody migration (nativemigration)
+- Skill editor native file synthesis and identity synchronization (skilleditfiles)
+- External candidate source and stage plan (externalstageplan)
+- Pinned security archive reference hydration (securityreference)
+- Incoming source disposition rules (sourcefaterules)
+- External candidate registry reconciliation (externalregistrybuilder)
+- Pinned archive companion metadata projection (securitypackprojection)
+- Knowledge and learning evidence forms (dashboardknowledgeforms)

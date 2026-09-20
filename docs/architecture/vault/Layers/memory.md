@@ -2,30 +2,30 @@
 
 Project memory, structured semantics and canonical knowledge have distinct persistence and promotion paths. Derived indexes do not become truth.
 
-- [[Systems/vault]] — Canonical project memory vault
-- [[Systems/semantics]] — Structured semantic memory
-- [[Systems/memoryindex]] — Derived memory index generations
-- [[Systems/recall]] — Memory ranking and bounded context
-- [[Systems/capture]] — Memory capture and correction
-- [[Systems/knowledge]] — Canonical knowledge controller
-- [[Systems/summary]] — Incremental session summaries
-- [[Systems/graphisolation]] — Canonical-first graph write isolation
-- [[Systems/memrepair]] — Memory graph remediation planning
-- [[Systems/memorypolicy]] — Typed memory admission and locality policy
-- [[Systems/processreceipt]] — Process candidate receipt persistence
-- [[Systems/facttime]] — Bitemporal fact selection
-- [[Systems/nativememorytools]] — Native memory and retrieval helper tools
-- [[Systems/memoryactivation]] — Memory index activation history
-- [[Systems/workspacerecall]] — Workspace recall and caller-scoped rank fusion
-- [[Systems/memorycontext]] — Layer quotas and reversible tool offload
-- [[Systems/memorybroker]] — Plan-bound supplied memory materialization
-- [[Systems/workspacememory]] — Workspace canonical memory access and orphan moves
-- [[Systems/coordmemoryseal]] — Retained coordination memory counts and revision chains
-- [[Systems/learningevidence]] — Learning evidence references and source snapshots
-- [[Systems/summarycursor]] — Session summary cursor and namespace
-- [[Systems/memoryclusters]] — Memory graph BFS clusters
-- [[Systems/externalsession]] — Portable external session and parity projection
-- [[Systems/extensioncontextcache]] — Host context cache and workspace state
-- [[Systems/dashboarddraftrecovery]] — Browser working draft and exact predecessor recovery
-- [[Systems/dashboardqueryresponses]] — Dashboard query and snapshot freshness
-- [[Systems/iwknowledge]] — Installed Knowledge canonical lifecycle
+- Canonical project memory vault (vault)
+- Structured semantic memory (semantics)
+- Derived memory index generations (memoryindex)
+- Memory ranking and bounded context (recall)
+- Memory capture and correction (capture)
+- Canonical knowledge controller (knowledge)
+- Incremental session summaries (summary)
+- Canonical-first graph write isolation (graphisolation)
+- Memory graph remediation planning (memrepair)
+- Typed memory admission and locality policy (memorypolicy)
+- Process candidate receipt persistence (processreceipt)
+- Bitemporal fact selection (facttime)
+- Native memory and retrieval helper tools (nativememorytools)
+- Memory index activation history (memoryactivation)
+- Workspace recall and caller-scoped rank fusion (workspacerecall)
+- Layer quotas and reversible tool offload (memorycontext)
+- Plan-bound supplied memory materialization (memorybroker)
+- Workspace canonical memory access and orphan moves (workspacememory)
+- Retained coordination memory counts and revision chains (coordmemoryseal)
+- Learning evidence references and source snapshots (learningevidence)
+- Session summary cursor and namespace (summarycursor)
+- Memory graph BFS clusters (memoryclusters)
+- Portable external session and parity projection (externalsession)
+- Host context cache and workspace state (extensioncontextcache)
+- Browser working draft and exact predecessor recovery (dashboarddraftrecovery)
+- Dashboard query and snapshot freshness (dashboardqueryresponses)
+- Installed Knowledge canonical lifecycle (iwknowledge)

@@ -41,7 +41,18 @@ EXCLUDED_PATHS = {
 }
 EXCLUDED_PATH_PREFIXES = {
     "registry/.lock-recovery-receipts/",
+    # Atlas projections are derived from repository source and must not
+    # feed back into the CPU-authoritative source-engine identity.
+    "docs/architecture/data/",
+    "docs/architecture/vault/",
 }
+
+EXCLUDED_PATHS.update(
+    {
+        "docs/architecture/ATLAS_OFFLINE.html",
+        "docs/architecture/graph_data.js",
+    }
+)
 EXCLUDED_SUFFIXES = {".pyc", ".pyo", ".tmp", ".vsix"}
 
 

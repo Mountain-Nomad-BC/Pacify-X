@@ -2,128 +2,128 @@
 
 Separate runtimes execute admitted handlers, agent sessions and typed workflow DAGs. Scheduling and resource controls constrain concurrency.
 
-- [[Systems/orchestrator]] — Bounded single-capability orchestrator
-- [[Systems/agent]] — Agent Studio runtime
-- [[Systems/workflow]] — Workflow Studio DAG runtime
-- [[Systems/streams]] — Project stream orchestrator
-- [[Systems/scheduler]] — Scheduling and work admission pools
-- [[Systems/provider]] — Provider invocation gateway
-- [[Systems/budget]] — Provider budgets and invocation identity
-- [[Systems/hardware]] — Hardware routing and placement
-- [[Systems/supervisor]] — Process supervision and run control
-- [[Systems/localmodel]] — Local model admission and server lifecycle
-- [[Systems/declared]] — Declared outcome suite dispatch
-- [[Systems/agentcompiler]] — Agent graph and specification compiler
-- [[Systems/detachedworker]] — Durable Studio worker and terminal observer
-- [[Systems/workflowadapters]] — Closed workflow node adapters
-- [[Systems/localworker]] — Closed deterministic agent harness
-- [[Systems/procedures]] — Host-interpreted native procedures
-- [[Systems/traceprocedure]] — Active trace-to-skill capture procedure
-- [[Systems/studiostarter]] — Studio starter operational sequence
-- [[Systems/teaminventoryworker]] — Team inventory worker and synchronous route
-- [[Systems/envworker]] — Discovery promise and worker ownership
-- [[Systems/hostgovernor]] — Host work queues and circuit recovery
-- [[Systems/pythonworkplane]] — Persistent Python work admission and state bus
-- [[Systems/pyhardwarecache]] — Python informational sensor cache
-- [[Systems/providerattempt]] — Provider attempt and terminal publication
-- [[Systems/providerfallback]] — Single same-provider fallback attempt
-- [[Systems/provideradapters]] — Local HTTP provider adapters
-- [[Systems/agenthostcompletion]] — Host model preparation and terminal receipt
-- [[Systems/agentworkerpublication]] — Deterministic worker task and cleanup publication
-- [[Systems/agentcallback]] — Governed plan and supplied CPU or GPU callbacks
-- [[Systems/studiolaunch]] — Detached Studio request and observer launch
-- [[Systems/studiosession]] — Detached Studio session worker
-- [[Systems/localagenttools]] — Closed deterministic Agent tool worker
-- [[Systems/supervisebudget]] — Process capture time and disk controls
-- [[Systems/supervisionclose]] — OS containment and supervisor closure
-- [[Systems/compatcompletion]] — Compatibility orchestration completion and unload
-- [[Systems/workflowbatch]] — Dependency-ready workflow batch selection
-- [[Systems/workflowattempt]] — Workflow supervised attempt and retry boundary
-- [[Systems/workflowadapter]] — Closed workflow adapter and validation worker
-- [[Systems/benchmarkroute]] — Automatic versus explicit device routing
-- [[Systems/callbackfallback]] — Callback execution retry and CPU fallback
-- [[Systems/localreadiness]] — Local server health and lifecycle publication
-- [[Systems/localinference]] — Caller-bound llama.cpp HTTP inference
-- [[Systems/localclosure]] — Local model stop and absent-process recovery
-- [[Systems/streamdispatch]] — Composite stream handler and completion reducer
-- [[Systems/controlcopies]] — Staged change and shared promotion copies
-- [[Systems/workspacepayload]] — Workspace JSON payload and idempotency owner
-- [[Systems/schedulerfacts]] — In-memory lane and worker ownership
-- [[Systems/learningrouteboundary]] — Studio learning route and consumer boundary
-- [[Systems/memoryguard]] — Memory callback wait and circuit breaker
-- [[Systems/goldencallback]] — Golden callback benchmarks
-- [[Systems/behavioralprobe]] — Behavioral control callback execution
-- [[Systems/providerisolationsuite]] — Optional memory provider isolation probes
-- [[Systems/eventbuswait]] — In-process revision subscription
-- [[Systems/runtimehooks]] — Runtime tool lifecycle event wrapper
-- [[Systems/adapterrequiredoutput]] — Adapter mapping and required output
-- [[Systems/declaredworddispatch]] — Outcome-word generic helper dispatch
-- [[Systems/declaredinventory]] — Generic inventory and literal scan bounds
-- [[Systems/scannerprocess]] — Scanner identity version and execution
-- [[Systems/faultcampaignrunner]] — Declared release fault lane runner
-- [[Systems/testfullowner]] — CLI full profile grouped execution owner
-- [[Systems/agencyrequestsubmit]] — Agency request to durable create callback
-- [[Systems/releaseownerprocess]] — Stage owner subprocess and resource checks
-- [[Systems/candidateprocess]] — Candidate owned process execution
-- [[Systems/agenttypedgraph]] — Closed typed Agent Studio topology
-- [[Systems/agentspeccompile]] — Agent graph to specification compiler
-- [[Systems/fleetinbox]] — Bounded supplied inbox admission
-- [[Systems/fleetterminal]] — Terminal action permission plan
-- [[Systems/fleetsessionadvance]] — Fleet heartbeat transition and restart
-- [[Systems/observernative]] — Native observer lifecycle backend
-- [[Systems/observershutdown]] — Observer expiry disable and failure closure
-- [[Systems/extensioneventpublisher]] — Extension canonical event queue and child
-- [[Systems/startersequence]] — Starter creation admission and operational runs
-- [[Systems/studiohostcreate]] — Host immutable draft creation coordinator
-- [[Systems/extensionnativeeffect]] — Native extension command and immediate observation
-- [[Systems/ollamastream]] — Ollama text stream and deadline handling
-- [[Systems/exacttoolrunner]] — Exact helper subprocess and local effect observations
-- [[Systems/distributionbuild]] — One-call wheel and sdist build helper
-- [[Systems/distributioninstall]] — Exact wheel install helper
-- [[Systems/exportcertify]] — Candidate governed certification checks
-- [[Systems/exportreplay]] — Archive write and extracted replay
-- [[Systems/sourcearchiveprocess]] — Owned Git archive process
-- [[Systems/evidenceindexwriter]] — Current evidence index CLI publication
-- [[Systems/projectionentrypoints]] — Graph effect route identity and test-index writers
-- [[Systems/agencygraphwriter]] — Agency graph output/check wrapper
-- [[Systems/historicalreferencewriter]] — Historical locator disposition writer
-- [[Systems/ledgeroperatorcli]] — Operational ledger operator CLI
-- [[Systems/installedownermembers]] — Installed member ordering and receipt aggregation
-- [[Systems/legacytextrepair]] — Exact text and JSON value repair
-- [[Systems/sortalgorithms]] — Sort candidate algorithms and compatibility
-- [[Systems/clisectionexecution]] — CLI section chunk execution and reuse
-- [[Systems/cligrouprefresh]] — CLI owned stale-group refresh and custody
-- [[Systems/cligroupexecution]] — CLI parallel and serial group scheduler
-- [[Systems/pytestentry]] — Pytest plugin admission and shared-root guard
-- [[Systems/pytestshutdown]] — Pytest non-daemon thread shutdown observation
-- [[Systems/quickstartlifecycle]] — Quickstart commissioning demonstration
-- [[Systems/domaintemplatebridge]] — Projected declared-domain command wrapper
-- [[Systems/sanitizerrewrite]] — Sanitizer rewrite rename and failed temporary retention
-- [[Systems/hostworkerclosure]] — Host worker timeout and process closure
-- [[Systems/installedsmokechild]] — Installed VSIX child install and host test
-- [[Systems/developmenthostsmoke]] — Development-source host smoke owner
-- [[Systems/cssdeduprewrite]] — Legacy CSS selector branch rewrite
-- [[Systems/nativeinputclient]] — Native input request and result client
-- [[Systems/nativeinputserver]] — Windows native input request server
-- [[Systems/operationalbootstrap]] — Installed operational dashboard bootstrap
-- [[Systems/hostmodelbudget]] — Host model token and cancellation budget
-- [[Systems/extensionsnapshot]] — Composed dashboard snapshot and publication
-- [[Systems/extensionmemoryconnect]] — Canonical memory setup and detachment sequence
-- [[Systems/dashboardstudiocompile]] — Browser AgentSpec and typed workflow editing
-- [[Systems/dashboardcoordinationforms]] — Coordination plan lease progress and memory forms
-- [[Systems/walkchildlaunch]] — Isolated VS Code and walker startup
-- [[Systems/walkfixtureprep]] — Owned source memory and provider fixtures
-- [[Systems/exhaustivefixtures]] — Contained preview preparation and reveal
-- [[Systems/exhaustiveinteraction]] — Contained action field editor and gesture probes
-- [[Systems/iwscheduler]] — Installed profile dependency schedule
-- [[Systems/iwtimeout]] — Owned UI timeout and reacquisition
-- [[Systems/iwgeneral]] — Installed generic control resolution and exercise
-- [[Systems/iwsetup]] — Installed Studio setup and candidate save
-- [[Systems/iwlifecycle]] — Installed Studio lifecycle sequencing
-- [[Systems/iwcoord]] — Coordination memory and Codex handoff scenario
-- [[Systems/iwenterprise]] — Enterprise pack and team candidate round trip
-- [[Systems/iwplugin]] — Installed plugin mutation and recovery chain
-- [[Systems/bundleruntime]] — Generated CommonJS and ESM runtime
-- [[Systems/bundledispatch]] — SDK request context cancellation and dispatch
-- [[Systems/bundleajv]] — Embedded JSON Schema validator engines
-- [[Systems/bundlepxcontext]] — SDK context lost at PX instrumentation wrapper
+- Bounded single-capability orchestrator (orchestrator)
+- Agent Studio runtime (agent)
+- Workflow Studio DAG runtime (workflow)
+- Project stream orchestrator (streams)
+- Scheduling and work admission pools (scheduler)
+- Provider invocation gateway (provider)
+- Provider budgets and invocation identity (budget)
+- Hardware routing and placement (hardware)
+- Process supervision and run control (supervisor)
+- Local model admission and server lifecycle (localmodel)
+- Declared outcome suite dispatch (declared)
+- Agent graph and specification compiler (agentcompiler)
+- Durable Studio worker and terminal observer (detachedworker)
+- Closed workflow node adapters (workflowadapters)
+- Closed deterministic agent harness (localworker)
+- Host-interpreted native procedures (procedures)
+- Active trace-to-skill capture procedure (traceprocedure)
+- Studio starter operational sequence (studiostarter)
+- Team inventory worker and synchronous route (teaminventoryworker)
+- Discovery promise and worker ownership (envworker)
+- Host work queues and circuit recovery (hostgovernor)
+- Persistent Python work admission and state bus (pythonworkplane)
+- Python informational sensor cache (pyhardwarecache)
+- Provider attempt and terminal publication (providerattempt)
+- Single same-provider fallback attempt (providerfallback)
+- Local HTTP provider adapters (provideradapters)
+- Host model preparation and terminal receipt (agenthostcompletion)
+- Deterministic worker task and cleanup publication (agentworkerpublication)
+- Governed plan and supplied CPU or GPU callbacks (agentcallback)
+- Detached Studio request and observer launch (studiolaunch)
+- Detached Studio session worker (studiosession)
+- Closed deterministic Agent tool worker (localagenttools)
+- Process capture time and disk controls (supervisebudget)
+- OS containment and supervisor closure (supervisionclose)
+- Compatibility orchestration completion and unload (compatcompletion)
+- Dependency-ready workflow batch selection (workflowbatch)
+- Workflow supervised attempt and retry boundary (workflowattempt)
+- Closed workflow adapter and validation worker (workflowadapter)
+- Automatic versus explicit device routing (benchmarkroute)
+- Callback execution retry and CPU fallback (callbackfallback)
+- Local server health and lifecycle publication (localreadiness)
+- Caller-bound llama.cpp HTTP inference (localinference)
+- Local model stop and absent-process recovery (localclosure)
+- Composite stream handler and completion reducer (streamdispatch)
+- Staged change and shared promotion copies (controlcopies)
+- Workspace JSON payload and idempotency owner (workspacepayload)
+- In-memory lane and worker ownership (schedulerfacts)
+- Studio learning route and consumer boundary (learningrouteboundary)
+- Memory callback wait and circuit breaker (memoryguard)
+- Golden callback benchmarks (goldencallback)
+- Behavioral control callback execution (behavioralprobe)
+- Optional memory provider isolation probes (providerisolationsuite)
+- In-process revision subscription (eventbuswait)
+- Runtime tool lifecycle event wrapper (runtimehooks)
+- Adapter mapping and required output (adapterrequiredoutput)
+- Outcome-word generic helper dispatch (declaredworddispatch)
+- Generic inventory and literal scan bounds (declaredinventory)
+- Scanner identity version and execution (scannerprocess)
+- Declared release fault lane runner (faultcampaignrunner)
+- CLI full profile grouped execution owner (testfullowner)
+- Agency request to durable create callback (agencyrequestsubmit)
+- Stage owner subprocess and resource checks (releaseownerprocess)
+- Candidate owned process execution (candidateprocess)
+- Closed typed Agent Studio topology (agenttypedgraph)
+- Agent graph to specification compiler (agentspeccompile)
+- Bounded supplied inbox admission (fleetinbox)
+- Terminal action permission plan (fleetterminal)
+- Fleet heartbeat transition and restart (fleetsessionadvance)
+- Native observer lifecycle backend (observernative)
+- Observer expiry disable and failure closure (observershutdown)
+- Extension canonical event queue and child (extensioneventpublisher)
+- Starter creation admission and operational runs (startersequence)
+- Host immutable draft creation coordinator (studiohostcreate)
+- Native extension command and immediate observation (extensionnativeeffect)
+- Ollama text stream and deadline handling (ollamastream)
+- Exact helper subprocess and local effect observations (exacttoolrunner)
+- One-call wheel and sdist build helper (distributionbuild)
+- Exact wheel install helper (distributioninstall)
+- Candidate governed certification checks (exportcertify)
+- Archive write and extracted replay (exportreplay)
+- Owned Git archive process (sourcearchiveprocess)
+- Current evidence index CLI publication (evidenceindexwriter)
+- Graph effect route identity and test-index writers (projectionentrypoints)
+- Agency graph output/check wrapper (agencygraphwriter)
+- Historical locator disposition writer (historicalreferencewriter)
+- Operational ledger operator CLI (ledgeroperatorcli)
+- Installed member ordering and receipt aggregation (installedownermembers)
+- Exact text and JSON value repair (legacytextrepair)
+- Sort candidate algorithms and compatibility (sortalgorithms)
+- CLI section chunk execution and reuse (clisectionexecution)
+- CLI owned stale-group refresh and custody (cligrouprefresh)
+- CLI parallel and serial group scheduler (cligroupexecution)
+- Pytest plugin admission and shared-root guard (pytestentry)
+- Pytest non-daemon thread shutdown observation (pytestshutdown)
+- Quickstart commissioning demonstration (quickstartlifecycle)
+- Projected declared-domain command wrapper (domaintemplatebridge)
+- Sanitizer rewrite rename and failed temporary retention (sanitizerrewrite)
+- Host worker timeout and process closure (hostworkerclosure)
+- Installed VSIX child install and host test (installedsmokechild)
+- Development-source host smoke owner (developmenthostsmoke)
+- Legacy CSS selector branch rewrite (cssdeduprewrite)
+- Native input request and result client (nativeinputclient)
+- Windows native input request server (nativeinputserver)
+- Installed operational dashboard bootstrap (operationalbootstrap)
+- Host model token and cancellation budget (hostmodelbudget)
+- Composed dashboard snapshot and publication (extensionsnapshot)
+- Canonical memory setup and detachment sequence (extensionmemoryconnect)
+- Browser AgentSpec and typed workflow editing (dashboardstudiocompile)
+- Coordination plan lease progress and memory forms (dashboardcoordinationforms)
+- Isolated VS Code and walker startup (walkchildlaunch)
+- Owned source memory and provider fixtures (walkfixtureprep)
+- Contained preview preparation and reveal (exhaustivefixtures)
+- Contained action field editor and gesture probes (exhaustiveinteraction)
+- Installed profile dependency schedule (iwscheduler)
+- Owned UI timeout and reacquisition (iwtimeout)
+- Installed generic control resolution and exercise (iwgeneral)
+- Installed Studio setup and candidate save (iwsetup)
+- Installed Studio lifecycle sequencing (iwlifecycle)
+- Coordination memory and Codex handoff scenario (iwcoord)
+- Enterprise pack and team candidate round trip (iwenterprise)
+- Installed plugin mutation and recovery chain (iwplugin)
+- Generated CommonJS and ESM runtime (bundleruntime)
+- SDK request context cancellation and dispatch (bundledispatch)
+- Embedded JSON Schema validator engines (bundleajv)
+- SDK context lost at PX instrumentation wrapper (bundlepxcontext)

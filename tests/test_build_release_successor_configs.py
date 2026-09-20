@@ -1,101 +1,154 @@
 from __future__ import annotations
 
 import json
-import sys
+import zipfile
 from pathlib import Path
 
 from scripts import build_release_successor_configs as owner
 
 
+def _make_vsix(path: Path) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with zipfile.ZipFile(path, "w") as archive:
+        archive.writestr("extension.vsixmanifest", "<PackageManifest />")
+        archive.writestr(
+            "extension/package.json",
+            json.dumps({"name": "product", "version": "1.0.1"}),
+        )
+        archive.writestr("extension/extension.js", "module.exports = {};\n")
+
+
 def test_successor_binds_current_campaign_date_version_and_artifact(
     tmp_path: Path, monkeypatch,
 ) -> None:
-    monkeypatch.setattr(owner, "_git_tag_target", lambda root, tag: "f" * 40)
-    automation_base = {
-        "candidate_id": "candidate-old",
-        "candidate_date": "20260101",
-        "predecessor_campaign_id": "candidate-before-old",
-        "repair_campaign_id": "repair-old",
-        "evidence_prefix": "final-old",
-        "artifact": "extension/dist/product-1.0.0.vsix",
-        "artifact_sha256": "a" * 64,
-        "artifact_size": 10,
-        "artifact_mtime_ns": 20,
-        "identity_manifest": {"path": "state/final-old-source-manifest.json"},
-        "owners": {
-            "installed": {
-                "command": "audit extension/dist/product-1.0.0.vsix for final-old"
-            }
-        },
-    }
-    stage_base = {
-        "candidate_id": "candidate-old",
-        "predecessor_id": "candidate-before-old",
-        "artifact": {
-            "path": "extension/dist/product-1.0.0.vsix",
-            "sha256": "a" * 64,
-            "size": 10,
-            "mtime_ns": 20,
-            "entry_count": 3,
-        },
-        "evidence_dir": "evidence/final-old",
-        "identity": {
-            "path_manifest": "state/final-old-source-manifest.json",
-            "commit_message": "Freeze final-old reconciled release state",
-            "release_tag": "v1",
-            "prior_tag_target": "b" * 40,
-        },
-        "install": {
-            "directory": "installed/product-1.0.0",
-            "tree_digest": "c" * 64,
-            "version": "1.0.0",
-            "entry_count": 2,
-        },
-    }
-    automation_input = tmp_path / "automation.json"
-    stage_input = tmp_path / "stage.json"
-    automation_output = tmp_path / "successor-automation.json"
-    stage_output = tmp_path / "successor-stage.json"
-    automation_input.write_text(json.dumps(automation_base), encoding="utf-8")
-    stage_input.write_text(json.dumps(stage_base), encoding="utf-8")
-    monkeypatch.setattr(sys, "argv", [
-        "build_release_successor_configs.py",
-        "--automation-base", str(automation_input),
-        "--stage-base", str(stage_input),
-        "--automation-output", str(automation_output),
-        "--stage-output", str(stage_output),
-        "--old-prefix", "final-old",
-        "--new-prefix", "final-new",
-        "--candidate-id", "candidate-new",
-        "--candidate-date", "20260913",
-        "--predecessor-id", "candidate-old",
-        "--repair-campaign-id", "repair-current",
-        "--artifact", "extension/dist/product-1.0.1.vsix",
-        "--artifact-sha256", "d" * 64,
-        "--artifact-size", "11",
-        "--artifact-mtime-ns", "21",
-        "--artifact-entry-count", "4",
-        "--installed-directory", "installed/product-1.0.1",
-        "--installed-tree-digest", "e" * 64,
-        "--installed-version", "1.0.1",
-        "--installed-entry-count", "3",
-        "--prior-tag-target", "f" * 40,
-    ])
+    root = tmp_path / "repo"
+    root.mkdir()
 
-    assert owner.main() == 0
-    automation = json.loads(automation_output.read_text(encoding="utf-8"))
-    stage = json.loads(stage_output.read_text(encoding="utf-8"))
-    assert automation["candidate_date"] == "20260913"
-    assert automation["timeouts_seconds"]["sections"] > 1800
-    assert automation["timeouts_seconds"]["full_profile"] > 7200
-    assert automation["repair_campaign_id"] == "repair-current"
-    assert automation["candidate_id"] == stage["candidate_id"] == "candidate-new"
-    assert stage["install"] == {
-        "directory": "installed/product-1.0.1",
-        "tree_digest": "e" * 64,
-        "version": "1.0.1",
-        "entry_count": 3,
+    artifact = root / "extension" / "dist" / "product-1.0.1.vsix"
+    _make_vsix(artifact)
+
+    installed = root / "installed" / "product-1.0.1"
+    installed.mkdir(parents=True)
+    (installed / "package.json").write_text(
+        json.dumps({"name": "product", "version": "1.0.1"}),
+        encoding="utf-8",
+    )
+    (installed / "extension.js").write_text(
+        "module.exports = {};\n",
+        encoding="utf-8",
+    )
+    (installed / ".vsixmanifest").write_text(
+        "<PackageManifest />",
+        encoding="utf-8",
+    )
+
+    code_command = root / "code.cmd"
+    code_command.write_text("@echo off\n", encoding="utf-8")
+
+    cohesion_dag = root / "cohesion-dag.json"
+    cohesion_dag.write_text("{}\n", encoding="utf-8")
+
+    wheelhouse = root / "wheelhouse"
+    wheelhouse.mkdir()
+
+    artifact_dir = root / "release-artifacts"
+    artifact_dir.mkdir()
+
+    signing_key = root / "signing.key"
+    signing_key.write_text("test-key\n", encoding="utf-8")
+
+    spec = {
+        "schema_version": owner.SPEC_SCHEMA,
+        "root": str(root),
+        "candidate_id": "candidate-20260919-new",
+        "candidate_date": "20260919",
+        "predecessor_campaign_id": "candidate-old",
+        "repair_campaign_id": "repair-current",
+        "evidence_prefix": "final-new",
+        "release_version": "1.0.1",
+        "artifact": "extension/dist/product-1.0.1.vsix",
+        "install": {
+            "directory": str(installed),
+            "code_command": str(code_command),
+        },
+        "cohesion_dag": str(cohesion_dag),
+        "finalize": {
+            "wheelhouse": str(wheelhouse),
+            "artifact_dir": str(artifact_dir),
+            "signing_key": str(signing_key),
+        },
     }
-    combined = automation_output.read_text(encoding="utf-8") + stage_output.read_text(encoding="utf-8")
-    for stale in ("20260101", "repair-old", "final-old", "product-1.0.0.vsix"):
+
+    spec_path = root / "spec.json"
+    automation_output = root / "state" / "successor-automation.json"
+    stage_output = root / "state" / "successor-stage.json"
+    spec_path.write_text(json.dumps(spec), encoding="utf-8")
+
+    monkeypatch.setattr(
+        owner,
+        "_validate_frozen_source",
+        lambda candidate_root: ("a" * 40, "origin/main", "a" * 40),
+    )
+    monkeypatch.setattr(
+        owner,
+        "_release_version",
+        lambda candidate_root, expected: "1.0.1",
+    )
+    monkeypatch.setattr(
+        owner,
+        "_git",
+        lambda candidate_root, *args: (
+            "f" * 40
+            if args == ("rev-list", "-n", "1", "v1.0.1")
+            else (_ for _ in ()).throw(
+                AssertionError(f"unexpected git call: {args!r}")
+            )
+        ),
+    )
+    monkeypatch.setattr(
+        owner,
+        "_timeout_map",
+        lambda candidate_root, overrides: {
+            step: owner.DEFAULT_TIMEOUTS[step]
+            for step in owner.STEP_ORDER
+        },
+    )
+
+    result = owner.build(
+        spec_path,
+        automation_output,
+        stage_output,
+    )
+
+    assert result["valid"] is True
+
+    automation = json.loads(
+        automation_output.read_text(encoding="utf-8")
+    )
+    stage = json.loads(
+        stage_output.read_text(encoding="utf-8")
+    )
+
+    assert automation["candidate_date"] == "20260919"
+    assert automation["repair_campaign_id"] == "repair-current"
+    assert automation["candidate_id"] == stage["candidate_id"] == (
+        "candidate-20260919-new"
+    )
+    assert automation["predecessor_campaign_id"] == "candidate-old"
+
+    assert stage["artifact"]["path"] == (
+        "extension/dist/product-1.0.1.vsix"
+    )
+    assert stage["install"]["directory"] == str(installed.resolve())
+    assert stage["install"]["version"] == "1.0.1"
+
+    combined = (
+        automation_output.read_text(encoding="utf-8")
+        + stage_output.read_text(encoding="utf-8")
+    )
+    for stale in (
+        "final-old",
+        "product-1.0.0.vsix",
+        "repair-old",
+    ):
         assert stale not in combined

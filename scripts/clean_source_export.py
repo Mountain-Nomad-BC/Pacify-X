@@ -464,13 +464,16 @@ def _rebuild_candidate_projections_unlocked(root: Path) -> None:
     # must bind these exact engine bytes; later test receipts, evidence, and
     # completion publications are deliberately excluded to avoid a hash cycle.
     write_engine_identity(root)
+
+    # Atlas is product-bearing derived state, so it must be complete before
+    # release classification binds the final product digest. Mutable release
+    # control outputs are excluded from Atlas inventory and product identity.
+    _rebuild_repository_atlas(root)
+
     classification = classify_tree(root)
     if not classification["valid"] or not classification["product_valid"]:
         raise ValueError("candidate source classification failed before world-state bind")
     write_world_state(root, source_revision=str(classification["product_digest"]))
-    # This must remain last: the atlas inventories every stable source and
-    # generated projection while excluding itself and mutable evidence roots.
-    _rebuild_repository_atlas(root)
 
 
 def _rebuild_candidate_projections(root: Path) -> None:

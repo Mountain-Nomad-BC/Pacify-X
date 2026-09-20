@@ -67,10 +67,10 @@ def test_no_dangling_edges() -> None:
     )
 
 
-def test_one_system_note_per_node() -> None:
+def test_system_nodes_use_structured_canonical_data() -> None:
     systems = [node for node in NODES if node["kind"] == "system"]
-    assert len(systems) == len(list((ATLAS / "vault/Systems").glob("*.md")))
-    assert all((ATLAS / node["note"]).is_file() for node in systems)
+    assert systems
+    assert all(node.get("note") is None for node in systems)
 
 
 def test_source_file_denominator_is_exact_and_nonrecursive() -> None:

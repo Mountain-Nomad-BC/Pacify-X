@@ -2,117 +2,117 @@
 
 Metadata discovery, repository context, capability routing and model selection create bounded plans before activation.
 
-- [[Systems/startup]] — Bounded startup and lazy skill loading
-- [[Systems/catalog]] — Capability and native skill catalogs
-- [[Systems/projectmap]] — Repository intelligence and impact
-- [[Systems/router]] — Capability discovery and routing
-- [[Systems/plan]] — Immutable task execution plan
-- [[Systems/models]] — Model ranking and attachments
-- [[Systems/graphs]] — Owned graph projections
-- [[Systems/specialists]] — Specialist agent routing
-- [[Systems/cognav]] — Unified cognitive navigation
-- [[Systems/retrievalcore]] — Hybrid retrieval policy kernel
-- [[Systems/world]] — Bounded operating-state projection
-- [[Systems/integrations]] — Integration contract and handler registry
-- [[Systems/hybridadapter]] — Portable hybrid retrieval adapter
-- [[Systems/mapquery]] — Repository map ranking and hydration
-- [[Systems/backendcatalog]] — Neutral backend capability selection
-- [[Systems/skillstatus]] — Native package lifecycle and eligibility
-- [[Systems/lexicalnav]] — Weighted metadata navigation and working sets
-- [[Systems/semanticprojection]] — Cheap semantic catalog projection
-- [[Systems/candidatepipeline]] — Candidate filtering and package utility
-- [[Systems/iopaths]] — Typed capability path ranking
-- [[Systems/workpackage]] — Frozen requirement work packages
-- [[Systems/indexentrypoints]] — Semantic projection build entry points
-- [[Systems/nativeprotocoltools]] — Native protocol and deployment helpers
-- [[Systems/nativerepotools]] — Native repository inspection helpers
-- [[Systems/envcollect]] — Environment collection and lexical relationships
-- [[Systems/envread]] — Environment stored readers and freshness
-- [[Systems/catalogmerge]] — Studio physical catalog and lifecycle merge
-- [[Systems/routingnormalize]] — Lexical task normalization and classification
-- [[Systems/routingfusion]] — Independent source discovery and candidate fusion
-- [[Systems/routingpackage]] — Greedy capability package and dependency closure
-- [[Systems/modelselection]] — Trait-ranked model inventory selection
-- [[Systems/hardwareprobe]] — Hardware library and sensor observation
-- [[Systems/graphprojection]] — Registry graph construction and byte comparison
-- [[Systems/typepaths]] — Single-type path discovery and ranking
-- [[Systems/serviceroute]] — Service metadata ranking and refusal hints
-- [[Systems/mapquerycache]] — Project-map cache and caller validation
-- [[Systems/impacttrace]] — Project call and import impact traversal
-- [[Systems/mapcorpus]] — Project source corpus and bounded traversal
-- [[Systems/mapfacts]] — Project fact cache and language scanners
-- [[Systems/mapinference]] — Project dependency call and traceability inference
-- [[Systems/mapindexbuild]] — Project retrieval document projection
-- [[Systems/navscores]] — Navigation metadata and score adaptation
-- [[Systems/navsources]] — Shared metadata across discovery sources
-- [[Systems/startupreads]] — Startup metadata and retained state reads
-- [[Systems/startupprobes]] — Startup and selected-family executable probes
-- [[Systems/lazytransaction]] — Lazy skill prepare and retained-context commit
-- [[Systems/semanticprofilebuild]] — Declared semantic profile normalization
-- [[Systems/semanticbuildio]] — Semantic index source and overlay assembly
-- [[Systems/skillprojectionafter]] — Skill promotion projection after-images
-- [[Systems/pythonimportowner]] — Packaged Python import ownership inventory
-- [[Systems/cognitiveindexowner]] — Cognitive registry merge and dependency resolution
-- [[Systems/cognitivenavigation]] — Cognitive scoring and hydration plan
-- [[Systems/hostskillvisibility]] — Host skill visibility and projection agreement
-- [[Systems/reachabilitydeclarations]] — Artifact ownership and reachability labels
-- [[Systems/assimilationwiring]] — Assimilation registry and status wiring
-- [[Systems/backendleastmetadata]] — Least-effect backend metadata selection
-- [[Systems/toolsignalassessment]] — Project signal and optional tool recommendations
-- [[Systems/toolsearchfallback]] — Optional rg and Python search corpus
-- [[Systems/studioprotocol]] — Import-time Studio operation vocabulary
-- [[Systems/nativeindexidentity]] — Native skill index derived identity
-- [[Systems/nativequeryselection]] — Native token ranking and domain grants
-- [[Systems/nativebodyhydrate]] — One-body native hydration
-- [[Systems/agencycatalog]] — Agency specialist registry and declared graph
-- [[Systems/agencyhydration]] — Selected specialist context hydration
-- [[Systems/studiopackageread]] — Scoped Studio package editor reader
-- [[Systems/physicalextensioninventory]] — Physical extension inventory and loaded state
-- [[Systems/listeneraggregation]] — Editor watcher and SCM event aggregation
-- [[Systems/ollamacatalog]] — Local Ollama model catalog adapter
-- [[Systems/uiactionlexical]] — Literal UI action source inventory generator
-- [[Systems/externalmetadata]] — External catalog ranking and metadata hydration
-- [[Systems/securitymetadata]] — Deferred security catalog and lexical discovery
-- [[Systems/securitygraphslice]] — Outgoing security graph expansion
-- [[Systems/canonicalownerindex]] — Canonical owner metadata inventory
-- [[Systems/structuralscope]] — Structural audit bounded source scope
-- [[Systems/structuralimports]] — Static import cycles and dynamic callable resolution
-- [[Systems/doctorgit]] — Doctor Git metadata observations
-- [[Systems/distributionarchive]] — Wheel and sdist member inspection
-- [[Systems/exportselection]] — Clean export source selection
-- [[Systems/candidatequeuebuilder]] — CSV and manifest candidate queue
-- [[Systems/specialtymapbuilder]] — Specialty activation metadata projection
-- [[Systems/historicalevidenceresolver]] — Historical reference resolution and correlation
-- [[Systems/ledgerbootstrap]] — Historical operational ledger bootstrap
-- [[Systems/historicalreviewregistration]] — Pinned card review report registration
-- [[Systems/externalreauditimport]] — External Markdown remediation import
-- [[Systems/historicalwalkmapping]] — Historical live-walk report mapping
-- [[Systems/referenceclaimreconciliation]] — Reference candidate semantic claim reconciliation
-- [[Systems/controlinventoryreconcile]] — Typed control inventory reconciliation
-- [[Systems/typedinventorybuilder]] — Typed operational inventory construction
-- [[Systems/corpusfileinventory]] — Hash-backed corpus file inventory
-- [[Systems/corpussummarycatalog]] — Heuristic corpus summary catalog
-- [[Systems/corpusstructureprojection]] — Corpus text structure projection
-- [[Systems/corpusexactduplicates]] — Corpus exact duplicate grouping
-- [[Systems/corpusnearduplicates]] — Corpus normalized and SimHash clustering
-- [[Systems/corpusassetclassify]] — Corpus lexical asset classification
-- [[Systems/corpusfreezesnapshot]] — Corpus one-pass freeze manifest
-- [[Systems/corpussourcediff]] — Corpus source-set content comparison
-- [[Systems/corpusarchivehazards]] — ZIP metadata hazard inventory
-- [[Systems/corpusarchivecatalog]] — Deduplicated ZIP occurrence catalog
-- [[Systems/legacyserviceheuristic]] — Static service address heuristic
-- [[Systems/legacyimportheuristic]] — Static import and mirror heuristic
-- [[Systems/legacyincompleteids]] — Incomplete signal detection and identity
-- [[Systems/legacysourceboundary]] — Source audit excluded custody boundaries
-- [[Systems/legacysourcescan]] — Source audit mechanism and candidate scan
-- [[Systems/missingmanifestledger]] — Missing manifest recovery backlog producer
-- [[Systems/sortstreamreader]] — Sort input streaming and key parsing
-- [[Systems/sortreservoir]] — Sort reservoir sampling and type policy
-- [[Systems/behaviormetadataextract]] — External behavior metadata extraction
-- [[Systems/clicognitiveboundary]] — CLI cognitive index validation boundary
-- [[Systems/sanitationauditreader]] — Identifier audit traversal and content classification
-- [[Systems/environmentrefreshcommand]] — Physical extension metadata refresh command
-- [[Systems/dashboardgraphpaging]] — Browser graph request and page accumulation
-- [[Systems/exhaustiveselectors]] — Control locator and semantic matching
-- [[Systems/iwquery]] — Installed skill query and catalog pagination
-- [[Systems/bundlezod]] — Bundled Zod schemas and locale data
+- Bounded startup and lazy skill loading (startup)
+- Capability and native skill catalogs (catalog)
+- Repository intelligence and impact (projectmap)
+- Capability discovery and routing (router)
+- Immutable task execution plan (plan)
+- Model ranking and attachments (models)
+- Owned graph projections (graphs)
+- Specialist agent routing (specialists)
+- Unified cognitive navigation (cognav)
+- Hybrid retrieval policy kernel (retrievalcore)
+- Bounded operating-state projection (world)
+- Integration contract and handler registry (integrations)
+- Portable hybrid retrieval adapter (hybridadapter)
+- Repository map ranking and hydration (mapquery)
+- Neutral backend capability selection (backendcatalog)
+- Native package lifecycle and eligibility (skillstatus)
+- Weighted metadata navigation and working sets (lexicalnav)
+- Cheap semantic catalog projection (semanticprojection)
+- Candidate filtering and package utility (candidatepipeline)
+- Typed capability path ranking (iopaths)
+- Frozen requirement work packages (workpackage)
+- Semantic projection build entry points (indexentrypoints)
+- Native protocol and deployment helpers (nativeprotocoltools)
+- Native repository inspection helpers (nativerepotools)
+- Environment collection and lexical relationships (envcollect)
+- Environment stored readers and freshness (envread)
+- Studio physical catalog and lifecycle merge (catalogmerge)
+- Lexical task normalization and classification (routingnormalize)
+- Independent source discovery and candidate fusion (routingfusion)
+- Greedy capability package and dependency closure (routingpackage)
+- Trait-ranked model inventory selection (modelselection)
+- Hardware library and sensor observation (hardwareprobe)
+- Registry graph construction and byte comparison (graphprojection)
+- Single-type path discovery and ranking (typepaths)
+- Service metadata ranking and refusal hints (serviceroute)
+- Project-map cache and caller validation (mapquerycache)
+- Project call and import impact traversal (impacttrace)
+- Project source corpus and bounded traversal (mapcorpus)
+- Project fact cache and language scanners (mapfacts)
+- Project dependency call and traceability inference (mapinference)
+- Project retrieval document projection (mapindexbuild)
+- Navigation metadata and score adaptation (navscores)
+- Shared metadata across discovery sources (navsources)
+- Startup metadata and retained state reads (startupreads)
+- Startup and selected-family executable probes (startupprobes)
+- Lazy skill prepare and retained-context commit (lazytransaction)
+- Declared semantic profile normalization (semanticprofilebuild)
+- Semantic index source and overlay assembly (semanticbuildio)
+- Skill promotion projection after-images (skillprojectionafter)
+- Packaged Python import ownership inventory (pythonimportowner)
+- Cognitive registry merge and dependency resolution (cognitiveindexowner)
+- Cognitive scoring and hydration plan (cognitivenavigation)
+- Host skill visibility and projection agreement (hostskillvisibility)
+- Artifact ownership and reachability labels (reachabilitydeclarations)
+- Assimilation registry and status wiring (assimilationwiring)
+- Least-effect backend metadata selection (backendleastmetadata)
+- Project signal and optional tool recommendations (toolsignalassessment)
+- Optional rg and Python search corpus (toolsearchfallback)
+- Import-time Studio operation vocabulary (studioprotocol)
+- Native skill index derived identity (nativeindexidentity)
+- Native token ranking and domain grants (nativequeryselection)
+- One-body native hydration (nativebodyhydrate)
+- Agency specialist registry and declared graph (agencycatalog)
+- Selected specialist context hydration (agencyhydration)
+- Scoped Studio package editor reader (studiopackageread)
+- Physical extension inventory and loaded state (physicalextensioninventory)
+- Editor watcher and SCM event aggregation (listeneraggregation)
+- Local Ollama model catalog adapter (ollamacatalog)
+- Literal UI action source inventory generator (uiactionlexical)
+- External catalog ranking and metadata hydration (externalmetadata)
+- Deferred security catalog and lexical discovery (securitymetadata)
+- Outgoing security graph expansion (securitygraphslice)
+- Canonical owner metadata inventory (canonicalownerindex)
+- Structural audit bounded source scope (structuralscope)
+- Static import cycles and dynamic callable resolution (structuralimports)
+- Doctor Git metadata observations (doctorgit)
+- Wheel and sdist member inspection (distributionarchive)
+- Clean export source selection (exportselection)
+- CSV and manifest candidate queue (candidatequeuebuilder)
+- Specialty activation metadata projection (specialtymapbuilder)
+- Historical reference resolution and correlation (historicalevidenceresolver)
+- Historical operational ledger bootstrap (ledgerbootstrap)
+- Pinned card review report registration (historicalreviewregistration)
+- External Markdown remediation import (externalreauditimport)
+- Historical live-walk report mapping (historicalwalkmapping)
+- Reference candidate semantic claim reconciliation (referenceclaimreconciliation)
+- Typed control inventory reconciliation (controlinventoryreconcile)
+- Typed operational inventory construction (typedinventorybuilder)
+- Hash-backed corpus file inventory (corpusfileinventory)
+- Heuristic corpus summary catalog (corpussummarycatalog)
+- Corpus text structure projection (corpusstructureprojection)
+- Corpus exact duplicate grouping (corpusexactduplicates)
+- Corpus normalized and SimHash clustering (corpusnearduplicates)
+- Corpus lexical asset classification (corpusassetclassify)
+- Corpus one-pass freeze manifest (corpusfreezesnapshot)
+- Corpus source-set content comparison (corpussourcediff)
+- ZIP metadata hazard inventory (corpusarchivehazards)
+- Deduplicated ZIP occurrence catalog (corpusarchivecatalog)
+- Static service address heuristic (legacyserviceheuristic)
+- Static import and mirror heuristic (legacyimportheuristic)
+- Incomplete signal detection and identity (legacyincompleteids)
+- Source audit excluded custody boundaries (legacysourceboundary)
+- Source audit mechanism and candidate scan (legacysourcescan)
+- Missing manifest recovery backlog producer (missingmanifestledger)
+- Sort input streaming and key parsing (sortstreamreader)
+- Sort reservoir sampling and type policy (sortreservoir)
+- External behavior metadata extraction (behaviormetadataextract)
+- CLI cognitive index validation boundary (clicognitiveboundary)
+- Identifier audit traversal and content classification (sanitationauditreader)
+- Physical extension metadata refresh command (environmentrefreshcommand)
+- Browser graph request and page accumulation (dashboardgraphpaging)
+- Control locator and semantic matching (exhaustiveselectors)
+- Installed skill query and catalog pagination (iwquery)
+- Bundled Zod schemas and locale data (bundlezod)

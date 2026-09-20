@@ -104,6 +104,73 @@ def test_engine_identity_excludes_test_group_topology(tmp_path) -> None:
     assert before == after
 
 
+def test_engine_identity_excludes_generated_atlas_projections_but_tracks_atlas_builder_source(
+    tmp_path,
+) -> None:
+    tools = tmp_path / "docs" / "architecture" / "tools"
+    tools.mkdir(parents=True)
+    builder = tools / "build_atlas.py"
+    builder.write_text("BUILD_VERSION = 1\n", encoding="utf-8")
+
+    data = tmp_path / "docs" / "architecture" / "data"
+    data.mkdir(parents=True)
+    (data / "complete_graph.json").write_text(
+        '{"revision":1}\n', encoding="utf-8"
+    )
+    (data / "source_inventory.json").write_text(
+        '{"revision":1}\n', encoding="utf-8"
+    )
+
+    shards = data / "node_shards"
+    shards.mkdir()
+    (shards / "nodes-00.jsonl").write_text(
+        '{"revision":1}\n', encoding="utf-8"
+    )
+
+    vault = tmp_path / "docs" / "architecture" / "vault" / "Data"
+    vault.mkdir(parents=True)
+    (vault / "Source_Inventory.md").write_text(
+        "# revision 1\n", encoding="utf-8"
+    )
+
+    architecture = tmp_path / "docs" / "architecture"
+    (architecture / "graph_data.js").write_text(
+        "const revision = 1;\n", encoding="utf-8"
+    )
+    (architecture / "ATLAS_OFFLINE.html").write_text(
+        "<html>revision 1</html>\n", encoding="utf-8"
+    )
+
+    before = build_engine_identity(tmp_path)
+
+    (data / "complete_graph.json").write_text(
+        '{"revision":2}\n', encoding="utf-8"
+    )
+    (data / "source_inventory.json").write_text(
+        '{"revision":2}\n', encoding="utf-8"
+    )
+    (shards / "nodes-00.jsonl").write_text(
+        '{"revision":2}\n', encoding="utf-8"
+    )
+    (vault / "Source_Inventory.md").write_text(
+        "# revision 2\n", encoding="utf-8"
+    )
+    (architecture / "graph_data.js").write_text(
+        "const revision = 2;\n", encoding="utf-8"
+    )
+    (architecture / "ATLAS_OFFLINE.html").write_text(
+        "<html>revision 2</html>\n", encoding="utf-8"
+    )
+
+    after_projection = build_engine_identity(tmp_path)
+
+    builder.write_text("BUILD_VERSION = 2\n", encoding="utf-8")
+    after_builder_source = build_engine_identity(tmp_path)
+
+    assert before == after_projection
+    assert before != after_builder_source
+
+
 def test_engine_identity_excludes_generated_world_state_projection(tmp_path) -> None:
     (tmp_path / "runtime").mkdir()
     (tmp_path / "runtime/engine.py").write_text("value = 1\n", encoding="utf-8")

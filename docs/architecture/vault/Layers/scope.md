@@ -2,32 +2,32 @@
 
 Project identity, activation leases, task claims and handoffs establish who may act on which project.
 
-- [[Systems/workspace]] — Workspace and project lifecycle
-- [[Systems/coordination]] — Coordination and repository claims
-- [[Systems/handoff]] — Agent handoff and context isolation
-- [[Systems/transfer]] — Cross-project transfer boundary
-- [[Systems/fleet]] — Fleet session coordination
-- [[Systems/goals]] — Durable goal transition semantics
-- [[Systems/projectplane]] — Project control and staged mutation
-- [[Systems/commission]] — Project commissioning and scaffold admission
-- [[Systems/memorylease]] — Canonical workspace lease renewal
-- [[Systems/taskdag]] — Coordination task DAG and scope ordering
-- [[Systems/tasklease]] — Coordination claims and progress leases
-- [[Systems/taskreconcile]] — Coordination completion and reconciliation
-- [[Systems/resourceadmission]] — Workstream resource admission policy
-- [[Systems/workdecision]] — Work reservation and job decision functions
-- [[Systems/coordresume]] — Coordination handoff publication and reads
-- [[Systems/canonicallease]] — Host canonical workspace lease maintenance
-- [[Systems/declaredpaths]] — Source and installed declaration resolution
-- [[Systems/projecttemplates]] — Project management state and document templates
-- [[Systems/scopechecks]] — Context lease and switch descriptor checks
-- [[Systems/workspaceprojection]] — Workspace seals and lifecycle projections
-- [[Systems/workspacelifecycle]] — Workspace project activation switch and release
-- [[Systems/intakeinventory]] — Existing-project inventory and candidate discovery
-- [[Systems/commissioning]] — Scaffold proposal and project adoption
-- [[Systems/briefstate]] — Questionnaire acceptance and management update
-- [[Systems/extensionworkspacechoose]] — Extension canonical workspace selection
-- [[Systems/fixturecopyboundary]] — Canonical repository fixture-copy boundary
-- [[Systems/cachewalkcustody]] — Python cache discovery and custody exclusions
-- [[Systems/extensioncacheinventory]] — Extension cache inventory and eligibility
-- [[Systems/hostcachecustody]] — Retained VS Code cache identity
+- Workspace and project lifecycle (workspace)
+- Coordination and repository claims (coordination)
+- Agent handoff and context isolation (handoff)
+- Cross-project transfer boundary (transfer)
+- Fleet session coordination (fleet)
+- Durable goal transition semantics (goals)
+- Project control and staged mutation (projectplane)
+- Project commissioning and scaffold admission (commission)
+- Canonical workspace lease renewal (memorylease)
+- Coordination task DAG and scope ordering (taskdag)
+- Coordination claims and progress leases (tasklease)
+- Coordination completion and reconciliation (taskreconcile)
+- Workstream resource admission policy (resourceadmission)
+- Work reservation and job decision functions (workdecision)
+- Coordination handoff publication and reads (coordresume)
+- Host canonical workspace lease maintenance (canonicallease)
+- Source and installed declaration resolution (declaredpaths)
+- Project management state and document templates (projecttemplates)
+- Context lease and switch descriptor checks (scopechecks)
+- Workspace seals and lifecycle projections (workspaceprojection)
+- Workspace project activation switch and release (workspacelifecycle)
+- Existing-project inventory and candidate discovery (intakeinventory)
+- Scaffold proposal and project adoption (commissioning)
+- Questionnaire acceptance and management update (briefstate)
+- Extension canonical workspace selection (extensionworkspacechoose)
+- Canonical repository fixture-copy boundary (fixturecopyboundary)
+- Python cache discovery and custody exclusions (cachewalkcustody)
+- Extension cache inventory and eligibility (extensioncacheinventory)
+- Retained VS Code cache identity (hostcachecustody)

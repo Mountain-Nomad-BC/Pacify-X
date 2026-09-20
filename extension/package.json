@@ -2,7 +2,7 @@
   "name": "pacify-x-vscode",
   "displayName": "Pacify-X Control Plane",
   "description": "Governed VS Code control plane for Pacify-X with source-linked architecture and audit evidence.",
-  "version": "0.6.88",
+  "version": "0.7.0",
   "publisher": "mountain-nomad-bc",
   "license": "Apache-2.0",
   "repository": {
@@ -49,9 +49,18 @@
         "description": "Query governed Pacify-X workspace context without transferring host authority.",
         "isSticky": true,
         "commands": [
-          { "name": "status", "description": "Show current PX runtime, memory, coordination, and source identity" },
-          { "name": "context", "description": "Show the exact bounded context PX can provide to this chat" },
-          { "name": "skills", "description": "Show the separated PX, preserved, vendor, and enterprise skill domains" }
+          {
+            "name": "status",
+            "description": "Show current PX runtime, memory, coordination, and source identity"
+          },
+          {
+            "name": "context",
+            "description": "Show the exact bounded context PX can provide to this chat"
+          },
+          {
+            "name": "skills",
+            "description": "Show the separated PX, preserved, vendor, and enterprise skill domains"
+          }
         ]
       }
     ],

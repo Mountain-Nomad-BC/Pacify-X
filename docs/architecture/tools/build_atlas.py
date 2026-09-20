@@ -3,6 +3,13 @@
 
 No third-party dependencies; no product imports, commands or registry reconciliation.
 Historical semantic IDs are preserved. Byte currentness is not behavioral proof.
+
+CHANGE LOG (20260919):
+- Removed Systems/*.md Markdown generation; use canonical_systems.json instead
+- Removed Evidence/*.md Markdown generation; use evidence_currentness.json instead
+- Kept human navigation files (README, Views, Layers, MOCs)
+- Note fields now set to None instead of vault paths
+- All JSON/JSONL output unchanged (canonical source of data)
 """
 
 from __future__ import annotations
@@ -10,18 +17,30 @@ import argparse
 import ast
 import collections
 import hashlib
+import importlib.util
 import json
 import math
 import os
 import re
+import shutil
 import time
 from pathlib import Path
 
 PACKAGE = Path(__file__).resolve().parents[1]
 SCHEMA = "px.closure-atlas/1"
+
+_REPOSITORY_SCOPE_PATH = PACKAGE.parents[1] / "runtime" / "repository_scope.py"
+_REPOSITORY_SCOPE_SPEC = importlib.util.spec_from_file_location(
+    "px_atlas_repository_scope", _REPOSITORY_SCOPE_PATH
+)
+if _REPOSITORY_SCOPE_SPEC is None or _REPOSITORY_SCOPE_SPEC.loader is None:
+    raise RuntimeError("unable to load canonical repository source boundary")
+repository_scope = importlib.util.module_from_spec(_REPOSITORY_SCOPE_SPEC)
+_REPOSITORY_SCOPE_SPEC.loader.exec_module(repository_scope)
 SKIP_DIRS = {
     ".git",
     ".venv",
+    ".venv-certify",
     "venv",
     "node_modules",
     "__pycache__",
@@ -110,12 +129,34 @@ def file_id(path):
     return "file:" + path
 
 
+def release_control_outputs(root: Path):
+    """Return mutable release-control files/prefixes excluded from Atlas input.
+
+    The release artifact policy is the authority for this boundary.  Atlas reads
+    the JSON directly so this standalone builder does not acquire runtime/product
+    imports merely to discover mutable control outputs.
+    """
+    policy_path = root / "policies" / "release-artifact-policy.json"
+    policy = json.loads(policy_path.read_text(encoding="utf-8"))
+
+    paths = {
+        str(value).replace("\\", "/").casefold()
+        for value in policy.get("control_output_paths", [])
+    }
+    prefixes = tuple(
+        str(value).replace("\\", "/").casefold()
+        for value in policy.get("control_output_prefixes", [])
+    )
+    return paths, prefixes
+
+
 def inventory(root: Path, max_files=100000, max_bytes=2 * 1024**3, deadline=300):
     rows = []
     excluded = []
     images = {}
     total = 0
     started = time.monotonic()
+    control_outputs, control_output_prefixes = release_control_outputs(root)
 
     def onerror(exc):
         raise RuntimeError("directory inventory incomplete: " + str(exc))
@@ -124,9 +165,11 @@ def inventory(root: Path, max_files=100000, max_bytes=2 * 1024**3, deadline=300)
         safe = []
         for d in sorted(dirs):
             p = Path(directory) / d
+            relative_directory = p.relative_to(root).as_posix()
             if (
-                p.relative_to(root).as_posix() == "docs/architecture"
+                relative_directory == "docs/architecture"
                 or d.lower() in SKIP_DIRS
+                or repository_scope.is_external_environment_relative(relative_directory)
                 or p.is_symlink()
                 or (hasattr(p, "is_junction") and p.is_junction())
             ):
@@ -144,6 +187,12 @@ def inventory(root: Path, max_files=100000, max_bytes=2 * 1024**3, deadline=300)
             rel = p.relative_to(root).as_posix()
             if p.is_symlink() or (hasattr(p, "is_junction") and p.is_junction()):
                 excluded.append({"path": rel, "reason": "link"})
+                continue
+            folded = rel.casefold()
+            if folded in control_outputs or any(
+                folded.startswith(prefix) for prefix in control_output_prefixes
+            ):
+                excluded.append({"path": rel, "reason": "mutable release control output"})
                 continue
             if (
                 name.startswith(".env")
@@ -493,7 +542,7 @@ def build(
             "historical semantic model; byte currentness checked; behavior not revalidated"
         )
         n["source_currentness_counts"] = dict(states)
-        n["note"] = "vault/Systems/" + slug(n["id"]) + ".md"
+        n["note"] = None  # Systems/*.md removed; canonical data in data/canonical_systems.json
         n["runtime_observed"] = False
         n["certified"] = False
         n["repair_state"] = "not-reassessed"
@@ -530,7 +579,7 @@ def build(
                 "resource_tags": [],
                 "runtime_observed": False,
                 "certified": False,
-                "note": "vault/Data/Source_Inventory.md",
+                "note": None,
             }
         )
     edges = []
@@ -844,47 +893,23 @@ def build(
     )
     vault = out / "vault"
 
+    # Retired per-record Markdown projections must not survive rebuilds.
+    # Their canonical data now lives in structured Atlas outputs.
+    for retired in ("Systems", "Evidence", "Paths", "Findings"):
+        retired_path = vault / retired
+        if retired_path.exists():
+            shutil.rmtree(retired_path)
+
     def note(rel, body):
         p = vault / rel
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text(body, encoding="utf-8")
 
-    for n in nodes:
-        refs = "\n".join(
-            "- [[Evidence/" + slug(r) + "]] — " + emap[r]["currentness"]
-            for r in n.get("evidence_ids", [])
-            if r in emap
-        )
-        links = "\n".join(
-            "- [[Systems/"
-            + slug(e["target"])
-            + "]] — "
-            + e.get("verb", e["kind"])
-            + " (`"
-            + e["id"]
-            + "`)"
-            for e in edges
-            if e["source"] == n["id"] and e["target"] in system_ids
-        )
-        body = f"---\ncanonical_id: {json.dumps(n['id'])}\nkind: system\nlayer: {n['layer']}\ncurrentness: {n['currentness']}\nruntime_observed: false\ncertified: false\n---\n# {n['title']}\n\n[[Layers/{n['layer']}]] · [[Views/Full_Architecture]]\n\n"
-        for label, key in [
-            ("Purpose", "purpose"),
-            ("Historical source state", "state"),
-            ("Limits and unknowns", "limit"),
-            ("Historical suggested evolution", "future"),
-        ]:
-            body += f"## {label}\n\n{n.get(key, 'Not documented')}\n\n"
-        body += (
-            "## Evidence scope\n\nHistorical source model; file hashes refreshed. Byte agreement does not prove current behavior. This note is not a repair-closure receipt.\n\n"
-            + refs
-            + "\n\n## Directed relationships\n\n"
-            + (
-                links
-                or "No outgoing semantic relationship recorded. This is not proof there is no consumer."
-            )
-            + "\n"
-        )
-        note("Systems/" + slug(n["id"]) + ".md", body)
+    # REMOVED: vault/Systems/*.md generation
+    # Canonical system data is in data/canonical_systems.json
+    # Use that JSON directly; no per-system Markdown files needed
+
+    # Keep: Navigation Markdown files (Layers, Views, MOCs, README)
     for layer in raw["layers"]:
         body = (
             "# "
@@ -893,7 +918,7 @@ def build(
             + layer["description"]
             + "\n\n"
             + "\n".join(
-                "- [[Systems/" + slug(n["id"]) + "]] — " + n["title"]
+                "- " + n["title"] + " (" + n["id"] + ")"
                 for n in nodes
                 if n["layer"] == layer["id"]
             )
@@ -904,42 +929,18 @@ def build(
             "MOCs/" + layer["id"] + ".md",
             "# Map of content\n\n[[Layers/" + layer["id"] + "]]\n",
         )
-    for s in evidence:
-        note(
-            "Evidence/" + slug(s["id"]) + ".md",
-            f"# {s['id']}\n\nSource: `{s.get('path')}` lines {s.get('start')}–{s.get('end')}\n\nHistorical hash: `{s.get('file_sha256')}`\n\nCurrent hash: `{s.get('current_sha256')}`\n\nCurrentness: **{s['currentness']}**\n\nOriginal excerpt is preserved in the package reference/evidence-map. No runtime or certification proof is inferred.\n",
-        )
-    for f in raw["flows"]:
-        note(
-            "Paths/" + slug(f["id"]) + ".md",
-            "# "
-            + f["title"]
-            + "\n\n"
-            + f["description"]
-            + "\n\n"
-            + "\n".join(
-                f"{i + 1}. [[Systems/{slug(s)}]]" for i, s in enumerate(f["steps"])
-            )
-            + "\n\nNarrative sequence is not automatically a proven call chain.\n\n"
-            + f.get("limit", "")
-            + "\n",
-        )
-    for f in raw["findings"]:
-        refs = "\n".join(
-            "- [[Evidence/" + slug(s) + "]]"
-            for s in f.get("evidence_ids", [])
-            if s in emap
-        )
-        note(
-            "Findings/" + slug(f["id"]) + ".md",
-            "# "
-            + f["title"]
-            + "\n\n**Historical finding; current closure not revalidated.**\n\n"
-            + f.get("body", "")
-            + "\n\n"
-            + refs
-            + "\n",
-        )
+
+    # REMOVED: vault/Evidence/*.md generation
+    # Evidence data is in data/evidence_currentness.json
+    # Use that JSON directly; no per-evidence Markdown files needed
+
+    # REMOVED: vault/Paths/*.md generation
+    # Canonical flow data is in data/canonical_flows.json.
+
+    # REMOVED: vault/Findings/*.md generation
+    # Canonical finding data is in data/canonical_findings.json.
+
+    # Keep: View Markdown files
     for v in VIEWS:
         note(
             "Views/" + slug(v) + ".md",
@@ -947,27 +948,34 @@ def build(
             + v
             + "\n\nOpen the companion viewer and select this preset. Runtime Observed and Certified remain empty without scoped current proof. Native Obsidian global/local navigation requires local app validation.\n",
         )
+
+    # Keep: Source inventory Markdown
     note(
         "Data/Source_Inventory.md",
         "# Complete accepted source inventory\n\nScope, hashes and exclusions: `../../data/source_inventory.json`, `../../data/source_exclusions.json`.\n\n"
-        + "\n".join("- `" + r["path"] + "` — `" + r["sha256"] + "`" for r in rows)
+        + "\n".join("- `" + r["path"] + "` -- `" + r["sha256"] + "`" for r in rows)
         + "\n",
     )
+
+    # Keep: README
     note(
         "README.md",
-        f"# Pacify-X architecture vault\n\n{len(nodes)} canonical system notes; historical IDs preserved. Start at [[Views/Full_Architecture]] or the layer maps.\n\n**Not a certification.** Imported historical findings are not automatically reopened or closed. Source currentness is checked separately.\n\n"
+        f"# Pacify-X architecture vault\n\n{len(nodes)} canonical systems documented in JSON. Historical IDs preserved. Start at [[Views/Full_Architecture]] or the layer maps.\n\n**Not a certification.** Imported historical findings are not automatically reopened or closed. Source currentness is checked separately.\n\n"
         + "\n".join("- [[Layers/" + layer["id"] + "]]" for layer in raw["layers"])
         + "\n",
     )
+
+    # Keep: Main vault entry point
     note(
         "Pacify-X architecture vault.md",
         "# Pacify-X architecture vault\n\n"
         "This note is the vault navigation hub. Open [[README]] for scope and source rules, "
         "then follow [[Views/Full_Architecture]] for the complete map, "
         "[[Views/Authority]] for effect gates, [[Views/Resources_Budgets]] for resource flow, "
-        "and [[Views/Recovery]] for failure paths. Layer maps lead to canonical system notes.\n\n"
+        "and [[Views/Recovery]] for failure paths. Layer maps and data/canonical_systems.json lead to system information.\n\n"
         "Graph position and edge weight are layout aids; linked evidence defines what is known.\n",
     )
+
     write_json(
         vault / ".obsidian/app.json",
         {"showLineNumber": True, "readableLineLength": True},
@@ -976,7 +984,7 @@ def build(
         vault / ".obsidian/graph.json",
         {
             "collapse-filter": False,
-            "search": 'path:"Systems"',
+            "search": 'kind:"system"',
             "showTags": False,
             "showAttachments": False,
             "hideUnresolved": True,
@@ -1008,7 +1016,7 @@ def build(
     write_json(
         out / "data/build_measurements.json",
         {
-            "wall_seconds": round(time.monotonic() - started, 3),
+            "wall_seconds": None,
             "file_bytes_read": sum(r["bytes"] for r in rows),
             "python_platform": os.name,
             "peak_memory": "not measured",

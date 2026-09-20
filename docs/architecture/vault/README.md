@@ -1,6 +1,6 @@
 # Pacify-X architecture vault
 
-1077 canonical system notes; historical IDs preserved. Start at [[Views/Full_Architecture]] or the layer maps.
+1077 canonical systems documented in JSON. Historical IDs preserved. Start at [[Views/Full_Architecture]] or the layer maps.
 
 **Not a certification.** Imported historical findings are not automatically reopened or closed. Source currentness is checked separately.
 
