@@ -4,7 +4,7 @@
 
 ## Engineering & Agent OS with Learning and Governance
 
-### **P**roject and **A**I **C**apabilities **I**ntelligence **F**ramework for **Y**ou
+### **P**roject and **A**I **C**apabilities **I**ntelligence **F**ramework for **Y**ou - e**X**perimental
 
 > Make AI build software like an engineering team, not an overconfident intern.
 
