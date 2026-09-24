@@ -1,0 +1,26 @@
+{
+  "schema_version": "px.usage-memory/1.0",
+  "subject_kind": "workflow",
+  "subject_id": "local-model-lane-orchestration",
+  "record_count": 0,
+  "outcomes": {
+    "success": 0,
+    "partial": 0,
+    "failure": 0,
+    "refused": 0,
+    "skipped": 0
+  },
+  "success_rate": null,
+  "success_rate_basis": "successes / (success + partial + failure)",
+  "criteria_met_count": 0,
+  "total_tokens": null,
+  "duration_samples": 0,
+  "duration_best_ms": null,
+  "duration_p50_ms": null,
+  "dispositions": {},
+  "gap_count": 0,
+  "gaps": [],
+  "last_observed_at": null,
+  "note": "Derived rollup. Rebuildable from memory/usage.jsonl, which is the append-only record. Contains outcome metadata only: no prompts, model output, secrets, or memory content.",
+  "stats_sha256": "47a75904f93ff5f86f2bb56622c6b8f9fe3cf344d0566075ffa9e5a512bb35af"
+}

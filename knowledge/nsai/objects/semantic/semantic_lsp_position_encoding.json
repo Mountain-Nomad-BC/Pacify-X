@@ -1,0 +1,150 @@
+{
+  "applicability": {
+    "conditions": [
+      "Use the negotiated server encoding."
+    ],
+    "exclusions": [
+      "mixing encodings in one range"
+    ],
+    "targets": [
+      "LSP ranges"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "px_lsp_encoding",
+          "px_lsp_initialize"
+        ],
+        "statement": "LSP positions are encoding-dependent and cannot be treated as raw Python/string indexes."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_lsp_encoding",
+          "px_lsp_initialize"
+        ],
+        "statement": "Offset-to-position and position-to-offset conversions must round-trip under the negotiated encoding."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_lsp_encoding",
+          "px_lsp_initialize"
+        ],
+        "statement": "Invalid lines/characters or split code points must fail rather than silently shifting an edit or diagnostic."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "negotiate/record the server position encoding",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "convert offsets and ranges through explicit encoding functions",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "validate round trips and bounds before using returned locations",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "PX normalizes LSP positions across UTF-8, UTF-16, and UTF-32 code-unit conventions so semantic ranges map deterministically to source byte/string offsets without corrupting non-ASCII text."
+  },
+  "namespace": "semantic",
+  "object_id": "nsai:semantic:lsp_position_encoding:semantic_lsp_position_encoding",
+  "object_type": "lsp_position_encoding",
+  "ontology": {
+    "classes": [
+      "protocol_normalization",
+      "text_coordinates"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "semantic"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "kind": "source_file",
+        "path": "runtime/semantic_lsp_encoding.py",
+        "sha256": "8bc1612516fa086809e9fd7975b088c419fa27e4b3c226908599eddb3e14e6fe",
+        "source_id": "px_lsp_encoding"
+      },
+      {
+        "kind": "source_file",
+        "path": "runtime/semantic_lsp_initialize.py",
+        "sha256": "f8d50bc4b158044e1c891e9aba272eff1e574097089cfce14523fe9b765a1de9",
+        "source_id": "px_lsp_initialize"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:semantic:lsp_lifecycle:semantic_lsp_lifecycle"
+    }
+  ],
+  "retrieval": {
+    "priority": 87,
+    "tags": [
+      "LSP position",
+      "UTF-16",
+      "UTF-32",
+      "UTF-8",
+      "offset"
+    ],
+    "terms": [
+      "LSP coordinate conversion",
+      "LSP position",
+      "UTF-16",
+      "UTF-32",
+      "UTF-8",
+      "offset",
+      "position encoding"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "PX normalizes LSP positions across UTF-8, UTF-16, and UTF-32 code-unit conventions so semantic ranges map deterministically to source byte/string offsets without corrupting non-ASCII text.",
+    "exclusions": [
+      "raw index assumption"
+    ],
+    "intents": [
+      "convert lsp position",
+      "normalize semantic range"
+    ],
+    "keywords": [
+      "LSP position",
+      "UTF-16",
+      "UTF-32",
+      "UTF-8",
+      "offset"
+    ],
+    "retrieval_text": "LSP Position Encoding Normalization. PX normalizes LSP positions across UTF-8, UTF-16, and UTF-32 code-unit conventions so semantic ranges map deterministically to source byte/string offsets without corrupting non-ASCII text. LSP positions are encoding-dependent and cannot be treated as raw Python/string indexes. Offset-to-position and position-to-offset conversions must round-trip under the negotiated encoding. Invalid lines/characters or split code points must fail rather than silently shifting an edit or diagnostic.",
+    "short_description": "PX normalizes LSP positions across UTF-8, UTF-16, and UTF-32 code-unit conventions so semantic ranges map deterministically to source byte/string offsets without corrupting non-ASCII text.",
+    "synonyms": [
+      "LSP coordinate conversion",
+      "position encoding"
+    ]
+  },
+  "status": "validated",
+  "title": "LSP Position Encoding Normalization"
+}

@@ -1,0 +1,138 @@
+{
+  "applicability": {
+    "conditions": [
+      "Expected and actual distributions must be comparable."
+    ],
+    "exclusions": [
+      "interpreting divergence without domain context"
+    ],
+    "targets": [
+      "routing/retrieval/operational distributions"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "px_distribution_drift"
+        ],
+        "statement": "Drift metrics compare normalized expected and actual distributions."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_distribution_drift"
+        ],
+        "statement": "A drift metric is evidence of change, not by itself proof that the new distribution is harmful."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_distribution_drift"
+        ],
+        "statement": "Threshold interpretation should be scoped to the monitored domain and evaluation contract."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "normalize comparable distributions",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "compute PSI/JSD-style divergence",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "emit a drift finding with thresholds/context for downstream review",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "PX can quantify distribution change using measures such as PSI and Jensen-Shannon divergence, emitting bounded drift findings as evidence for review rather than automatically changing runtime policy."
+  },
+  "namespace": "operations",
+  "object_id": "nsai:operations:distribution_drift:rie_distribution_drift",
+  "object_type": "distribution_drift",
+  "ontology": {
+    "classes": [
+      "drift_metric",
+      "operational_evidence"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "operations"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "kind": "source_file",
+        "path": "runtime/distribution_drift.py",
+        "sha256": "6fea8a245f9bd9da78153f1bc11fb4049d2ed6e65925530b440466f27fe622e3",
+        "source_id": "px_distribution_drift"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:moe:adaptation_drift:moe_adaptation_drift"
+    }
+  ],
+  "retrieval": {
+    "priority": 80,
+    "tags": [
+      "Jensen-Shannon",
+      "PSI",
+      "distribution drift",
+      "monitoring"
+    ],
+    "terms": [
+      "Jensen-Shannon",
+      "PSI",
+      "distribution drift",
+      "distribution shift",
+      "drift evidence",
+      "monitoring"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "PX can quantify distribution change using measures such as PSI and Jensen-Shannon divergence, emitting bounded drift findings as evidence for review rather than automatically changing runtime policy.",
+    "exclusions": [
+      "automatic policy mutation"
+    ],
+    "intents": [
+      "detect operational drift",
+      "measure distribution drift"
+    ],
+    "keywords": [
+      "Jensen-Shannon",
+      "PSI",
+      "distribution drift",
+      "monitoring"
+    ],
+    "retrieval_text": "RIE Distribution Drift Evidence. PX can quantify distribution change using measures such as PSI and Jensen-Shannon divergence, emitting bounded drift findings as evidence for review rather than automatically changing runtime policy. Drift metrics compare normalized expected and actual distributions. A drift metric is evidence of change, not by itself proof that the new distribution is harmful. Threshold interpretation should be scoped to the monitored domain and evaluation contract.",
+    "short_description": "PX can quantify distribution change using measures such as PSI and Jensen-Shannon divergence, emitting bounded drift findings as evidence for review rather than automatically changing runtime policy.",
+    "synonyms": [
+      "distribution shift",
+      "drift evidence"
+    ]
+  },
+  "status": "validated",
+  "title": "RIE Distribution Drift Evidence"
+}

@@ -13,6 +13,11 @@ import re
 from typing import Iterable, Mapping
 
 from .cognitive_core.formula_engine import Dimension, validate_dimensions
+from .nsai_knowledge import (
+    expected_object_relative_path,
+    foundry_knowledge_payload,
+    pretty_json_bytes as nsai_pretty_json_bytes,
+)
 
 
 WORD = re.compile(r"[a-z0-9]+")
@@ -256,7 +261,7 @@ class SourceArtifact:
         return cls(
             _slug(path.stem),
             source_kind,
-            path.as_posix(),
+            path.as_posix() if not path.is_absolute() else path.name,
             hashlib.sha256(data).hexdigest(),
             text,
             license,
@@ -690,34 +695,92 @@ def materialize_candidate_bundle(
         )
     root = destination.resolve() / bundle.bundle_id
     root.mkdir(parents=True, exist_ok=False)
-    files = {}
-    files[Path("bundle.json")] = (
-        json.dumps(asdict(bundle), indent=2, default=str) + "\n"
+
+    source_records = {str(row["source_id"]): row for row in bundle.sources}
+    knowledge_files: list[tuple[Path, dict[str, object]]] = []
+    for item in bundle.knowledge:
+        payload = foundry_knowledge_payload(
+            object_slug=item.object_id,
+            object_type=item.kind,
+            statement=item.statement,
+            evidence_refs=item.evidence_refs,
+            relationships=item.relationships,
+            confidence=item.confidence,
+            source_records=source_records,
+        )
+        relative = Path("knowledge") / expected_object_relative_path(payload)
+        knowledge_files.append((relative, payload))
+
+    knowledge_index_records = []
+    files: dict[Path, str] = {}
+    for relative, payload in sorted(
+        knowledge_files, key=lambda item: str(item[1]["object_id"])
+    ):
+        raw = nsai_pretty_json_bytes(payload)
+        files[relative] = raw.decode("utf-8")
+        knowledge_index_records.append(
+            {
+                "object_id": payload["object_id"],
+                "path": relative.relative_to("knowledge").as_posix(),
+                "sha256": hashlib.sha256(raw).hexdigest(),
+                "status": payload["status"],
+                "object_type": payload["object_type"],
+            }
+        )
+
+    derived_bundle = {
+        "bundle_id": bundle.bundle_id,
+        "state": bundle.state,
+        "sources": bundle.sources,
+        "knowledge": knowledge_index_records,
+        "graph_edges": bundle.graph_edges,
+        "skills": [skill.skill_id for skill in bundle.skills],
+        "calculations": [package.calculation_id for package in bundle.calculations],
+        "benchmark_count": len(bundle.benchmark_prompts),
+        "fitness": bundle.fitness,
+        "certification_errors": bundle.certification_errors,
+        "knowledge_authority": "individual_json_objects",
+    }
+    files[Path("bundle.json")] = json.dumps(
+        derived_bundle, indent=2, default=str, sort_keys=True
+    ) + "\n"
+    files[Path("certification.json")] = (
+        json.dumps(certification, indent=2, sort_keys=True) + "\n"
     )
-    files[Path("certification.json")] = json.dumps(certification, indent=2) + "\n"
-    files[Path("knowledge.json")] = (
-        json.dumps([asdict(item) for item in bundle.knowledge], indent=2) + "\n"
+    files[Path("knowledge") / "index.json"] = (
+        json.dumps(
+            {
+                "schema_version": "px.foundry-knowledge-index/1.0",
+                "authority": "derived_navigation_only",
+                "source_of_truth": "individual_object_files",
+                "records": knowledge_index_records,
+            },
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n"
     )
     files[Path("graph.json")] = (
-        json.dumps({"edges": bundle.graph_edges}, indent=2) + "\n"
+        json.dumps({"edges": bundle.graph_edges}, indent=2, sort_keys=True) + "\n"
     )
     files[Path("benchmarks.json")] = (
-        json.dumps({"prompts": bundle.benchmark_prompts}, indent=2) + "\n"
+        json.dumps({"prompts": bundle.benchmark_prompts}, indent=2, sort_keys=True)
+        + "\n"
     )
     for index, skill in enumerate(bundle.skills):
         files[Path("skills") / skill.skill_id / "SKILL.md"] = skill.skill_markdown()
         files[Path("skills") / skill.skill_id / "manifest.json"] = (
-            json.dumps(asdict(skill), indent=2) + "\n"
+            json.dumps(asdict(skill), indent=2, sort_keys=True) + "\n"
         )
         files[Path("schemas") / f"{skill.skill_id}.schema.json"] = (
-            json.dumps(bundle.schemas[index], indent=2) + "\n"
+            json.dumps(bundle.schemas[index], indent=2, sort_keys=True) + "\n"
         )
     for package in bundle.calculations:
         base = Path("calculations") / package.calculation_id
         files[base / "calculation.py"] = package.python_source
         files[base / "calculation.js"] = package.javascript_source
         files[base / "input.schema.json"] = (
-            json.dumps(package.input_schema, indent=2) + "\n"
+            json.dumps(package.input_schema, indent=2, sort_keys=True) + "\n"
         )
     records = []
     for relative, content in sorted(files.items(), key=lambda item: item[0].as_posix()):
@@ -728,17 +791,19 @@ def materialize_candidate_bundle(
         records.append(
             {
                 "path": relative.as_posix(),
-                "sha256": hashlib.sha256(content.encode()).hexdigest(),
+                "sha256": hashlib.sha256(content.encode("utf-8")).hexdigest(),
             }
         )
     receipt = {
         "bundle_id": bundle.bundle_id,
         "state": "candidate",
         "files": records,
+        "knowledge_object_count": len(knowledge_index_records),
+        "knowledge_storage": "one_json_object_per_file",
         "hard_delete": False,
     }
     with (root / "receipt.json").open("x", encoding="utf-8", newline="\n") as stream:
-        json.dump(receipt, stream, indent=2)
+        json.dump(receipt, stream, indent=2, sort_keys=True)
         stream.write("\n")
     return receipt
 

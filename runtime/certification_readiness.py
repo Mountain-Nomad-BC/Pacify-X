@@ -715,6 +715,11 @@ def assess_certification_readiness(
         ),
         _engine_result(engine_root, python_executable),
     ]
+    # Governed compliance prerequisites. Only appended when the verifiers exist in this tree, so a
+    # synthetic fixture does not false-fail; a real candidate always carries them.
+    compliance_prerequisite = _compliance_result(engine_root)
+    if compliance_prerequisite["status"] != "skipped-unavailable":
+        prerequisites.append(compliance_prerequisite)
     unready = [item for item in prerequisites if item["status"] != "ready"]
     errors = [f"{item['id']}: {item['diagnostic']}" for item in unready]
     return {
@@ -742,6 +747,105 @@ def assess_certification_readiness(
             "unready": len(unready),
         },
         "errors": errors,
+    }
+
+
+def _compliance_result(engine_root: Path) -> dict[str, Any]:
+    """Classify the governed release-compliance prerequisites for this candidate.
+
+    Runs the read-only compliance gates before certification, so a missing required policy
+    document, a forbidden compliance claim, an inconsistent version source, or a violated release
+    invariant is reported here rather than discovered after the candidate was frozen.
+
+    This is a *read-only* classification: it performs no generation and writes nothing. The
+    compliance artifacts themselves must already have been produced before the freeze.
+    """
+
+    import importlib
+    import importlib.util
+
+    def _load(module_name: str, relative: str):
+        try:
+            return importlib.import_module(module_name)
+        except Exception:  # noqa: BLE001 - fall back to a direct file load
+            path = engine_root / relative
+            if not path.is_file():
+                return None
+            spec = importlib.util.spec_from_file_location(module_name, path)
+            if spec is None or spec.loader is None:
+                return None
+            module = importlib.util.module_from_spec(spec)
+            try:
+                spec.loader.exec_module(module)
+            except Exception:  # noqa: BLE001
+                return None
+            return module
+
+    diagnostics: list[str] = []
+    missing_verifiers: list[str] = []
+    invariants = _load("px_release_invariants", "scripts/verify_release_invariants.py")
+    if invariants is None:
+        # A fixture or a partial checkout legitimately has no verifier. Distinguish an absent
+        # verifier (environment/fixture condition) from a present verifier that reports failure
+        # (a real candidate defect), so the gate does not false-fail on synthetic trees.
+        missing_verifiers.append("release-invariant")
+    else:
+        try:
+            outcome = invariants.verify(engine_root)
+            if not outcome.get("valid"):
+                failed = [r["id"] for r in outcome.get("results", []) if not r.get("passed")]
+                diagnostics.append("release invariants failed: " + ", ".join(failed))
+        except Exception as error:  # noqa: BLE001
+            diagnostics.append(f"release invariant verification failed: {type(error).__name__}")
+
+    compliance = _load("px_release_compliance", "scripts/verify_release_compliance.py")
+    if compliance is None:
+        missing_verifiers.append("release-compliance")
+    else:
+        try:
+            outcome = compliance.verify(engine_root)
+            if not outcome.get("valid"):
+                failed = [r["id"] for r in outcome.get("results", []) if not r.get("passed")]
+                diagnostics.append("release compliance failed: " + ", ".join(failed))
+        except Exception as error:  # noqa: BLE001
+            diagnostics.append(f"release compliance verification failed: {type(error).__name__}")
+
+    encoding = _load("px_encoding_integrity", "scripts/verify_encoding_integrity.py")
+    if encoding is None:
+        missing_verifiers.append("encoding-integrity")
+    else:
+        try:
+            outcome = encoding.verify(engine_root)
+            if not outcome.get("valid"):
+                count = outcome.get("finding_count")
+                diagnostics.append(f"encoding integrity failed: {count} finding(s)")
+        except Exception as error:  # noqa: BLE001
+            diagnostics.append(f"encoding integrity verification failed: {type(error).__name__}")
+
+    if diagnostics:
+        return {
+            "id": "release-compliance",
+            "status": "unready",
+            "diagnostic": "; ".join(diagnostics),
+            "read_only": True,
+            "mutates_candidate": False,
+        }
+    if missing_verifiers:
+        return {
+            "id": "release-compliance",
+            "status": "skipped-unavailable",
+            "diagnostic": "compliance verifiers not present in this tree: " + ", ".join(missing_verifiers),
+            "read_only": True,
+            "mutates_candidate": False,
+        }
+    return {
+        "id": "release-compliance",
+        "status": "ready",
+        "diagnostic": (
+            "governed release invariants, compliance documents, and text-encoding integrity verified"
+        ),
+        "read_only": True,
+        "mutates_candidate": False,
     }
 
 

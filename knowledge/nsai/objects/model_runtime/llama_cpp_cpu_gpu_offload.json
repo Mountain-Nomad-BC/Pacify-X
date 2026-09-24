@@ -1,0 +1,173 @@
+{
+  "applicability": {
+    "conditions": [
+      "Use only with an admitted PX model/runtime identity.",
+      "Treat measured machine-specific profile evidence as stronger than generic defaults."
+    ],
+    "exclusions": [
+      "assume maximum GPU layers is always optimal"
+    ],
+    "targets": [
+      "llama.cpp",
+      "CUDA",
+      "CPU"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.95,
+        "evidence_refs": [
+          "llama_arg_cpp",
+          "llama_cuda_api",
+          "llama_cpu_api",
+          "px_llama_tuning"
+        ],
+        "statement": "GPU offload can reduce generation latency but consumes VRAM needed by KV cache, batching, and other services."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "llama_arg_cpp",
+          "llama_cuda_api",
+          "llama_cpu_api",
+          "px_llama_tuning"
+        ],
+        "statement": "Offload settings belong to a certified profile and must include system-level contention measurements."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "Model/tensor placement selects backend buffers and compute paths.",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "PX resource leases prevent overlapping placements from exceeding hardware budgets.",
+        "name": "mechanism_2"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, or policy authority."
+    ],
+    "summary": "llama.cpp can partition work/model tensors between CPU and accelerator backends. PX treats offload settings as machine-specific placement parameters that must fit VRAM/RAM headroom and coexist with deterministic/retrieval workloads."
+  },
+  "namespace": "model_runtime",
+  "object_id": "nsai:model_runtime:placement:llama_cpp_cpu_gpu_offload",
+  "object_type": "placement",
+  "ontology": {
+    "classes": [
+      "hardware_placement",
+      "resource_tuning"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "model_runtime",
+      "runtime_scope": [
+        "llama.cpp",
+        "CUDA",
+        "CPU"
+      ]
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "manual source-backed synthesis with schema validation and exact SHA provenance",
+      "source_pass": "Wave 14"
+    },
+    "sources": [
+      {
+        "archive": "models and harnesses for them.zip",
+        "kind": "source_file",
+        "path": "llama.cpp-master/llama.cpp-master/common/arg.cpp",
+        "sha256": "6e71ad4f63c79fee81fe218ab6755ed97813ba84d179e38ae02924be1556d46e",
+        "source_id": "llama_arg_cpp"
+      },
+      {
+        "archive": "models and harnesses for them.zip",
+        "kind": "source_file",
+        "path": "llama.cpp-master/llama.cpp-master/ggml/include/ggml-cuda.h",
+        "sha256": "9cbfcea49f6da4d07f41dc22fa8dbf870825faaa2a68e34e65fe30ea6c41e042",
+        "source_id": "llama_cuda_api"
+      },
+      {
+        "archive": "models and harnesses for them.zip",
+        "kind": "source_file",
+        "path": "llama.cpp-master/llama.cpp-master/ggml/include/ggml-cpu.h",
+        "sha256": "316279e004cdeb8e6ef78599acb602bf79a8abdf897fed9fd1914808c1518c6e",
+        "source_id": "llama_cpu_api"
+      },
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_Model_Fabric_Junction_Hardening_Pass3_2026-09-20/05_LLAMA_CPP_CPU_GPU_MOE_TUNING_MATRIX.md",
+        "sha256": "9a703632e734c69fe538483406e44a46c09d840f451d6832957b8150d33e9cb4",
+        "source_id": "px_llama_tuning"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:resource_interlock:model_resource_interlocks"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:model_lane:deep_hybrid_moe_lane"
+    }
+  ],
+  "retrieval": {
+    "priority": 85,
+    "tags": [
+      "placement",
+      "vram",
+      "ram",
+      "layers"
+    ],
+    "terms": [
+      "GPU offload",
+      "cpu",
+      "gpu",
+      "hybrid",
+      "layer offload",
+      "layers",
+      "n-gpu-layers",
+      "offload",
+      "placement",
+      "ram",
+      "vram"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "llama.cpp can partition work/model tensors between CPU and accelerator backends. PX treats offload settings as machine-specific placement parameters that must fit VRAM/RAM headroom and coexist with deterministic/retrieval workloads.",
+    "exclusions": [
+      "assume maximum GPU layers is always optimal"
+    ],
+    "intents": [
+      "tune gpu layers",
+      "hybrid cpu gpu"
+    ],
+    "keywords": [
+      "cpu",
+      "gpu",
+      "offload",
+      "n-gpu-layers",
+      "hybrid"
+    ],
+    "retrieval_text": "llama.cpp CPU/GPU Hybrid Offload. llama.cpp can partition work/model tensors between CPU and accelerator backends. PX treats offload settings as machine-specific placement parameters that must fit VRAM/RAM headroom and coexist with deterministic/retrieval workloads. GPU offload can reduce generation latency but consumes VRAM needed by KV cache, batching, and other services. Offload settings belong to a certified profile and must include system-level contention measurements.",
+    "short_description": "llama.",
+    "synonyms": [
+      "GPU offload",
+      "layer offload"
+    ]
+  },
+  "status": "validated",
+  "title": "llama.cpp CPU/GPU Hybrid Offload"
+}

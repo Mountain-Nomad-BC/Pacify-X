@@ -11359,10 +11359,19 @@ function currentSourceExtensionAssetIdentity(extensionRoot = path.resolve(__dirn
     for (const name of fs.readdirSync(dashboardRoot).filter(name => name.endsWith('.js'))) files.push(path.join(dashboardRoot, name));
   }
   const hostSourceRoot = path.join(root, 'src');
-  if (fs.existsSync(hostSourceRoot)) {
-    for (const name of fs.readdirSync(hostSourceRoot).filter(name => name.endsWith('.js') && name !== 'extension.bundle.js')) files.push(path.join(hostSourceRoot, name));
-  }
-  for (const relative of [path.join('media', 'dashboard.css'), path.join('media', 'sidebar.css'), path.join('media', 'sidebar.js'), path.join('resources', 'ui', 'action-inventory.json')]) {
+  const collectJs = directory => {
+    const found = [];
+    if (!fs.existsSync(directory)) return found;
+    for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+      const full = path.join(directory, entry.name);
+      if (entry.isSymbolicLink()) continue;
+      if (entry.isDirectory()) found.push(...collectJs(full));
+      else if (entry.isFile() && entry.name.endsWith('.js') && entry.name !== 'extension.bundle.js') found.push(full);
+    }
+    return found;
+  };
+  files.push(...collectJs(hostSourceRoot));
+  for (const relative of [path.join('media', 'dashboard.css'), path.join('media', 'sidebar.css'), path.join('media', 'sidebar.js'), path.join('media', 'agent-console.css'), path.join('media', 'agent-console.js'), path.join('resources', 'ui', 'action-inventory.json')]) {
     const target = path.join(root, relative);
     if (fs.existsSync(target)) files.push(target);
   }

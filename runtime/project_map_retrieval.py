@@ -227,8 +227,20 @@ def query_project_map(
     max_query_postings: int = 100_000,
     max_hydration_lines: int = 2000,
     max_result_bytes: int = 262_144,
+    retrieval_generation_id: str | None = None,
+    evidence_generation_ids: Iterable[str] = (),
 ) -> dict[str, object]:
     _text(query, "query", 65536)
+    if retrieval_generation_id is not None:
+        if type(retrieval_generation_id) is not str or len(retrieval_generation_id) != 64 or any(c not in "0123456789abcdef" for c in retrieval_generation_id):
+            raise ValueError("retrieval_generation_id must be a lowercase SHA-256")
+    evidence_generations = tuple(evidence_generation_ids)
+    if any(type(value) is not str or len(value) != 64 or any(c not in "0123456789abcdef" for c in value) for value in evidence_generations):
+        raise ValueError("evidence generation IDs must be lowercase SHA-256 values")
+    if retrieval_generation_id is not None and any(value != retrieval_generation_id for value in evidence_generations):
+        raise ValueError("project-map evidence crosses retrieval generations")
+    if len(set(evidence_generations)) > 1:
+        raise ValueError("project-map evidence crosses retrieval generations")
     if not query.strip():
         raise ValueError("query must be nonempty")
     for value, name, low, high in (
@@ -455,6 +467,7 @@ def query_project_map(
         "tokens": query_tokens,
         "map_dir": map_dir.as_posix(),
         "map_revision": manifest.get("map_revision"),
+        "retrieval_generation_id": retrieval_generation_id,
         "index_document_count": len(docs),
         "hits": hits,
         "hydration_plan": hydration_plan,

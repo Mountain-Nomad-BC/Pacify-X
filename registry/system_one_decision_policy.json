@@ -1,0 +1,57 @@
+{
+  "schema_version": "px.decision-policy/1.0",
+  "authority": "Pacify-X decision governor. Thresholds are policy, never inline constants.",
+  "confidence_grants_no_authority": true,
+  "decisions": [
+    {
+      "decision_id": "routing.model_tier",
+      "version": 1,
+      "min_top_probability": 0.72,
+      "min_margin": 0.18,
+      "ambiguity_action": "escalate",
+      "max_state_age_ms": 2000,
+      "notes": "Recommends a tier (deterministic|nano|active_librarian|heavy_local|remote). PX resource/authority owners still admit the run."
+    },
+    {
+      "decision_id": "intent.operation_class",
+      "version": 1,
+      "min_top_probability": 0.70,
+      "min_margin": 0.15,
+      "ambiguity_action": "clarify",
+      "notes": "Classifies ask|inspect|modify|validate|test|navigate|research|monitor|explain|unknown. Deterministic command/path/ID parsing runs first."
+    },
+    {
+      "decision_id": "entity.candidate_class",
+      "version": 1,
+      "min_top_probability": 0.65,
+      "min_margin": 0.12,
+      "ambiguity_action": "clarify",
+      "notes": "Narrows an unresolved mention to a candidate entity class. Laya never fabricates canonical IDs; PX registries resolve the entity."
+    },
+    {
+      "decision_id": "memory.write_candidate",
+      "version": 1,
+      "min_top_probability": 0.80,
+      "min_margin": 0.25,
+      "ambiguity_action": "queue_review",
+      "notes": "Advises whether a turn is a durable memory candidate. Promotion still passes the memory fabric owner."
+    },
+    {
+      "decision_id": "learning.candidate_worth",
+      "version": 1,
+      "min_top_probability": 0.75,
+      "min_margin": 0.20,
+      "ambiguity_action": "queue_review",
+      "notes": "Advises whether a repeated trace is worth an inert learning candidate. Promotion remains governed."
+    },
+    {
+      "decision_id": "destructive_action_risk",
+      "version": 1,
+      "min_top_probability": 0.99,
+      "min_margin": 0.50,
+      "ambiguity_action": "reject",
+      "advisory_only": true,
+      "notes": "Risk framing only. Advisory by contract: no destructive authority can ever be granted by a decision score."
+    }
+  ]
+}

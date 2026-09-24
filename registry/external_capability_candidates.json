@@ -1412,8 +1412,211 @@
         "reward systems or behavior labels are used",
         "adaptive logic may influence people"
       ]
+    },
+    {
+      "activation": "candidate_only",
+      "aliases": [
+        "maintain external persistent memory"
+      ],
+      "boundaries": [
+        "deferred until write effect grant exists",
+        "external repository must remain outside PX source"
+      ],
+      "bundle": "govern-persistent-memory",
+      "category": "memory-external",
+      "dependencies": [
+        "govern-memory-fabric"
+      ],
+      "id": "maintain-external-persistent-memory",
+      "keywords": [
+        "persistent repository",
+        "immutable records",
+        "event ledger"
+      ],
+      "license": "Project-authored source adaptation",
+      "mechanisms": [
+        "immutable record snapshots",
+        "hash-chained lifecycle events",
+        "rebuildable projections"
+      ],
+      "owner": "govern-memory-fabric",
+      "source": "pacify-x-persistent-memory",
+      "source_refs": [
+        "Pacify-X-Persistent-Memory-Plugin/src/pacifyx_memory",
+        "Pacify-X-Persistent-Memory-Plugin/docs/25_VALIDATION_INVARIANTS.md"
+      ],
+      "status": "mapped_deferred",
+      "summary": "Operate immutable external memory records and append-only lifecycle events under future explicit write admission.",
+      "title": "Maintain External Persistent Memory Repository",
+      "use_when": [
+        "future governed maintenance of the external private memory repository"
+      ]
+    },
+    {
+      "activation": "candidate_only",
+      "aliases": [
+        "observe external persistent memory"
+      ],
+      "boundaries": [
+        "external records never become PX truth",
+        "read/advisory only in Wave 10",
+        "provider failure is explicit"
+      ],
+      "bundle": "govern-persistent-memory",
+      "category": "memory-external",
+      "dependencies": [
+        "govern-memory-fabric",
+        "memory-injection-firewall"
+      ],
+      "id": "observe-external-persistent-memory",
+      "keywords": [
+        "persistent memory",
+        "external memory",
+        "review preview",
+        "graph preview"
+      ],
+      "license": "Project-authored source adaptation",
+      "mechanisms": [
+        "exact package revision",
+        "repository boundary validation",
+        "advisory review",
+        "derived graph preview"
+      ],
+      "owner": "govern-memory-fabric",
+      "source": "pacify-x-persistent-memory",
+      "source_refs": [
+        "Pacify-X-Persistent-Memory-Plugin/src/pacifyx_memory",
+        "Pacify-X-Persistent-Memory-Plugin/docs/25_VALIDATION_INVARIANTS.md"
+      ],
+      "status": "mapped_deferred",
+      "summary": "Read, validate, review, and graph an external persistent-memory repository as noncanonical evidence.",
+      "title": "External Persistent Memory Observation",
+      "use_when": [
+        "inspect external persistent memory without importing it into canonical PX memory"
+      ]
+    },
+    {
+      "activation": "candidate_only",
+      "aliases": [
+        "prepare external memory contribution"
+      ],
+      "boundaries": [
+        "proposal only",
+        "private to public is never automatic"
+      ],
+      "bundle": "govern-persistent-memory",
+      "category": "memory-publication",
+      "dependencies": [
+        "govern-memory-fabric",
+        "candidate-memory-promoter"
+      ],
+      "id": "prepare-external-memory-contribution",
+      "keywords": [
+        "memory contribution",
+        "lineage",
+        "publication proposal"
+      ],
+      "license": "Project-authored source adaptation",
+      "mechanisms": [
+        "explicit record selection",
+        "source digest binding",
+        "immutable original bundle"
+      ],
+      "owner": "govern-memory-fabric",
+      "source": "pacify-x-persistent-memory",
+      "source_refs": [
+        "Pacify-X-Persistent-Memory-Plugin/src/pacifyx_memory",
+        "Pacify-X-Persistent-Memory-Plugin/docs/25_VALIDATION_INVARIANTS.md"
+      ],
+      "status": "mapped_deferred",
+      "summary": "Select exact external records into an immutable contribution bundle without publishing it.",
+      "title": "Prepare External Memory Contribution",
+      "use_when": [
+        "prepare selected external memory for human review"
+      ]
+    },
+    {
+      "activation": "candidate_only",
+      "aliases": [
+        "publish external memory projection"
+      ],
+      "boundaries": [
+        "deferred until write/network admission",
+        "external publication is not PX canonical memory",
+        "remote push must be explicit"
+      ],
+      "bundle": "govern-persistent-memory",
+      "category": "memory-publication",
+      "dependencies": [
+        "review-external-memory-contribution",
+        "candidate-memory-promoter"
+      ],
+      "id": "publish-external-memory-projection",
+      "keywords": [
+        "public memory",
+        "promotion receipt",
+        "public projection"
+      ],
+      "license": "Project-authored source adaptation",
+      "mechanisms": [
+        "review-required publication",
+        "content-addressed public lineage",
+        "digest-verified public cache"
+      ],
+      "owner": "govern-memory-fabric",
+      "source": "pacify-x-persistent-memory",
+      "source_refs": [
+        "Pacify-X-Persistent-Memory-Plugin/src/pacifyx_memory",
+        "Pacify-X-Persistent-Memory-Plugin/docs/25_VALIDATION_INVARIANTS.md"
+      ],
+      "status": "mapped_deferred",
+      "summary": "Promote reviewed content only into the external public-memory projection; never into canonical PX memory.",
+      "title": "Publish External Memory Projection",
+      "use_when": [
+        "future explicit publication of reviewed external memory"
+      ]
+    },
+    {
+      "activation": "candidate_only",
+      "aliases": [
+        "review external memory contribution"
+      ],
+      "boundaries": [
+        "review is evidence, not PX authority",
+        "no hidden source replacement"
+      ],
+      "bundle": "govern-persistent-memory",
+      "category": "memory-publication",
+      "dependencies": [
+        "prepare-external-memory-contribution",
+        "run-evidence-campaigns"
+      ],
+      "id": "review-external-memory-contribution",
+      "keywords": [
+        "memory review",
+        "contribution review",
+        "lineage"
+      ],
+      "license": "Project-authored source adaptation",
+      "mechanisms": [
+        "immutable original retention",
+        "review digest",
+        "bounded enhancements"
+      ],
+      "owner": "govern-memory-fabric",
+      "source": "pacify-x-persistent-memory",
+      "source_refs": [
+        "Pacify-X-Persistent-Memory-Plugin/src/pacifyx_memory",
+        "Pacify-X-Persistent-Memory-Plugin/docs/25_VALIDATION_INVARIANTS.md"
+      ],
+      "status": "mapped_deferred",
+      "summary": "Review and optionally enhance an external contribution while retaining the immutable original and exact lineage.",
+      "title": "Review External Memory Contribution",
+      "use_when": [
+        "human review of an explicitly selected external-memory contribution"
+      ]
     }
   ],
-  "capability_count": 30,
+  "capability_count": 35,
   "schema_version": "1.0"
 }

@@ -1,0 +1,148 @@
+{
+  "applicability": {
+    "conditions": [
+      "Compare under the same evaluation contract and resource budget."
+    ],
+    "exclusions": [
+      "unmatched benchmark conditions"
+    ],
+    "targets": [
+      "routing enhancements"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "px_learning_promotion",
+          "moe_complexity_doc"
+        ],
+        "statement": "A more complex router should be compared against a simple deterministic baseline."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_learning_promotion",
+          "moe_complexity_doc"
+        ],
+        "statement": "Quality gains that disappear after latency/resource overhead are not evidence of net improvement."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_learning_promotion",
+          "moe_complexity_doc"
+        ],
+        "statement": "Complexity-gate evidence should be retained even when the proposed routing enhancement is rejected."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "freeze a baseline evaluation contract",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "run the candidate router against the same cases and budgets",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "retain differential results and reject complexity that does not clear the configured value floor",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "Additional routing complexity is justified only when it produces measurable value over a simpler baseline after accounting for latency, resource cost, failure surface, and maintenance burden."
+  },
+  "namespace": "moe",
+  "object_id": "nsai:moe:complexity_gate:moe_complexity_tax_baseline",
+  "object_type": "complexity_gate",
+  "ontology": {
+    "classes": [
+      "evaluation_gate",
+      "routing_governance"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "moe"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "kind": "source_file",
+        "path": "runtime/learning_promotion.py",
+        "sha256": "be3f59e5509786fbf19c65449953a3e136a81fdbce72068c81d188181c8f85fd",
+        "source_id": "px_learning_promotion"
+      },
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_MoE_Mining_Pass_v3/23_COMPLEXITY_TAX_AND_BASELINE_GATE.md",
+        "sha256": "4f74c612e43e4ef606f478dac095f8dca18a6c835051171aa7eb41863305b398",
+        "source_id": "moe_complexity_doc"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:moe:evaluation:moe_evaluation_fanout_domain_floors"
+    }
+  ],
+  "retrieval": {
+    "priority": 82,
+    "tags": [
+      "baseline",
+      "complexity tax",
+      "overhead",
+      "routing value"
+    ],
+    "terms": [
+      "baseline",
+      "baseline gate",
+      "complexity gate",
+      "complexity tax",
+      "overhead",
+      "routing value"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "Additional routing complexity is justified only when it produces measurable value over a simpler baseline after accounting for latency, resource cost, failure surface, and maintenance burden.",
+    "exclusions": [
+      "complexity for its own sake"
+    ],
+    "intents": [
+      "compare routing baseline",
+      "evaluate routing complexity"
+    ],
+    "keywords": [
+      "baseline",
+      "complexity tax",
+      "overhead",
+      "routing value"
+    ],
+    "retrieval_text": "Routing Complexity Tax and Baseline Gate. Additional routing complexity is justified only when it produces measurable value over a simpler baseline after accounting for latency, resource cost, failure surface, and maintenance burden. A more complex router should be compared against a simple deterministic baseline. Quality gains that disappear after latency/resource overhead are not evidence of net improvement. Complexity-gate evidence should be retained even when the proposed routing enhancement is rejected.",
+    "short_description": "Additional routing complexity is justified only when it produces measurable value over a simpler baseline after accounting for latency, resource cost, failure surface, and maintenance burden.",
+    "synonyms": [
+      "baseline gate",
+      "complexity gate"
+    ]
+  },
+  "status": "validated",
+  "title": "Routing Complexity Tax and Baseline Gate"
+}

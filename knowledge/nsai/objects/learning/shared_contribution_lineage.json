@@ -1,0 +1,147 @@
+{
+  "applicability": {
+    "conditions": [
+      "Source and verification identities must be retained."
+    ],
+    "exclusions": [
+      "dropping failed verification branches"
+    ],
+    "targets": [
+      "shared learning"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "px_memory_fabric",
+          "px_learning_promotion"
+        ],
+        "statement": "A shared contribution should link back to the exact memory/knowledge evidence that motivated it."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_memory_fabric",
+          "px_learning_promotion"
+        ],
+        "statement": "Independent verification and failed attempts remain part of contribution lineage."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_memory_fabric",
+          "px_learning_promotion"
+        ],
+        "statement": "Contribution lineage alone does not grant promotion or execution authority."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "create a contribution node with exact source/evidence IDs",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "attach verification and negative-result links",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "promote only through the normal knowledge/learning gate",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "Shared learning contributions retain explicit source, contributor/change, verification, failure, and promotion lineage so useful knowledge can move between contexts without losing how it was produced or challenged."
+  },
+  "namespace": "learning",
+  "object_id": "nsai:learning:contribution_lineage:shared_contribution_lineage",
+  "object_type": "contribution_lineage",
+  "ontology": {
+    "classes": [
+      "knowledge_contribution",
+      "learning_lineage"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "learning"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "kind": "source_file",
+        "path": "runtime/memory_fabric.py",
+        "sha256": "9ad048336d6009de42a45de5a012d3dabcb4e7ba6c771b25ffb0df7a67024141",
+        "source_id": "px_memory_fabric"
+      },
+      {
+        "kind": "source_file",
+        "path": "runtime/learning_promotion.py",
+        "sha256": "be3f59e5509786fbf19c65449953a3e136a81fdbce72068c81d188181c8f85fd",
+        "source_id": "px_learning_promotion"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:learning:negative_result:negative_result_retention"
+    }
+  ],
+  "retrieval": {
+    "priority": 88,
+    "tags": [
+      "contribution lineage",
+      "promotion",
+      "shared learning",
+      "verification"
+    ],
+    "terms": [
+      "contribution lineage",
+      "knowledge contribution lineage",
+      "promotion",
+      "shared evidence lineage",
+      "shared learning",
+      "verification"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "Shared learning contributions retain explicit source, contributor/change, verification, failure, and promotion lineage so useful knowledge can move between contexts without losing how it was produced or challenged.",
+    "exclusions": [
+      "lineage as authority"
+    ],
+    "intents": [
+      "promote learned contribution",
+      "trace shared contribution"
+    ],
+    "keywords": [
+      "contribution lineage",
+      "promotion",
+      "shared learning",
+      "verification"
+    ],
+    "retrieval_text": "Shared Contribution Lineage. Shared learning contributions retain explicit source, contributor/change, verification, failure, and promotion lineage so useful knowledge can move between contexts without losing how it was produced or challenged. A shared contribution should link back to the exact memory/knowledge evidence that motivated it. Independent verification and failed attempts remain part of contribution lineage. Contribution lineage alone does not grant promotion or execution authority.",
+    "short_description": "Shared learning contributions retain explicit source, contributor/change, verification, failure, and promotion lineage so useful knowledge can move between contexts without losing how it was produced or challenged.",
+    "synonyms": [
+      "knowledge contribution lineage",
+      "shared evidence lineage"
+    ]
+  },
+  "status": "validated",
+  "title": "Shared Contribution Lineage"
+}

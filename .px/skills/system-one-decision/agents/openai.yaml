@@ -1,0 +1,4 @@
+interface:
+  display_name: "System-1 Decision Layer"
+  short_description: "Score bounded decisions from a compiled state"
+  default_prompt: "Use $system-one-decision to score this bounded decision against a compiled state and return a typed recommendation."

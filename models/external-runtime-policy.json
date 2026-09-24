@@ -1,0 +1,37 @@
+{
+  "schema_version": "px.external-runtime-policy/1.0",
+  "authority": {
+    "globally_enabled": false,
+    "normal_requests_may_download": false,
+    "normal_requests_may_prepare": false,
+    "runtime_does_not_route": true,
+    "model_output_grants_no_authority": true
+  },
+  "docker": {
+    "enabled": false,
+    "loopback_origin": "http://127.0.0.1:12434",
+    "start_timeout_seconds": 300.0,
+    "unload_timeout_seconds": 120.0,
+    "pull_timeout_seconds": 3600.0,
+    "approved_engines": ["llama.cpp"],
+    "auto_pull": false,
+    "use_docker_gateway_for_routing": false
+  },
+  "airllm": {
+    "enabled": false,
+    "concurrency": 1,
+    "start_timeout_seconds": 900.0,
+    "cancel_timeout_seconds": 30.0,
+    "approved_compression": ["none", "4bit", "8bit"],
+    "allow_prefetch": true,
+    "allow_prepare": false,
+    "in_process_import": false
+  },
+  "interlock": {
+    "cpu_heavy_slots": 1,
+    "max_ram_commit_bytes": 51539607552,
+    "max_vram_commit_bytes": 7516192768,
+    "gpu_exclusive": true,
+    "release_requires_cleanup_proof": true
+  }
+}

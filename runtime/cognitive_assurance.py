@@ -7,6 +7,7 @@ from datetime import datetime, timezone
 import hashlib
 import json
 import math
+import re
 from pathlib import Path
 from typing import Callable, Iterable, Mapping, Sequence
 from .numeric_inputs import bounded_mapping, bounded_sequence, finite_number
@@ -399,3 +400,43 @@ def verify_reality(
         "contradicted_claims": tuple(sorted(contradicted)),
         "anti_bs_internal_control": True,
     }
+
+
+def operational_assurance_evidence(
+    *,
+    drift_findings: Iterable[object] = (),
+    component_health: Mapping[str, str] | None = None,
+    retrieval_generation: str | None = None,
+    model_generation: str | None = None,
+) -> dict[str, object]:
+    """Reduce operational drift/health into bounded assurance evidence."""
+    from .distribution_drift import DriftFinding
+
+    findings = tuple(drift_findings)
+    if len(findings) > 256 or any(type(item) is not DriftFinding for item in findings):
+        raise ValueError("drift_findings must be a bounded DriftFinding sequence")
+    health = dict(component_health or {})
+    if len(health) > 256 or any(type(k) is not str or type(v) is not str for k, v in health.items()):
+        raise ValueError("component_health must be a bounded text mapping")
+    allowed_health = {"healthy", "degraded", "unavailable", "failed", "cold"}
+    if set(health.values()) - allowed_health:
+        raise ValueError("component_health contains an unknown state")
+    for label, value in (("retrieval_generation", retrieval_generation), ("model_generation", model_generation)):
+        if value is not None and (type(value) is not str or not re.fullmatch(r"[0-9a-f]{64}", value)):
+            raise ValueError(f"{label} must be a lowercase SHA-256")
+    high = sorted(item.metric for item in findings if item.severity == "high")
+    degraded = sorted(name for name, state in health.items() if state != "healthy")
+    payload = {
+        "drift_evidence": [
+            {"metric": item.metric, "psi": item.psi, "jsd": item.jsd, "severity": item.severity, "evidence_sha256": item.evidence_sha256}
+            for item in sorted(findings, key=lambda row: row.metric)
+        ],
+        "component_health": dict(sorted(health.items())),
+        "retrieval_generation": retrieval_generation,
+        "model_generation": model_generation,
+        "high_drift_metrics": high,
+        "degraded_components": degraded,
+        "decision": "review" if high or degraded else "within_threshold",
+        "authority_granted": False,
+    }
+    return {**payload, "evidence_sha256": _stable(payload)}

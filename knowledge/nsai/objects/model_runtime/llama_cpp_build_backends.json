@@ -1,0 +1,158 @@
+{
+  "applicability": {
+    "conditions": [
+      "Use only with an admitted PX model/runtime identity.",
+      "Treat measured machine-specific profile evidence as stronger than generic defaults."
+    ],
+    "exclusions": [
+      "assume binary builds are interchangeable"
+    ],
+    "targets": [
+      "llama.cpp builds",
+      "ggml"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.95,
+        "evidence_refs": [
+          "llama_build_doc",
+          "llama_cuda_api",
+          "llama_cpu_api"
+        ],
+        "statement": "Build options determine compiled backend support and can materially change performance/feature compatibility."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "llama_build_doc",
+          "llama_cuda_api",
+          "llama_cpu_api"
+        ],
+        "statement": "PX certification binds runtime/binary identity so profile evidence is not silently reused after backend changes."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "CMake/backend selection compiles available compute implementations.",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "Runtime selects backend devices/buffers/kernels permitted by the build and placement configuration.",
+        "name": "mechanism_2"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, or policy authority."
+    ],
+    "summary": "llama.cpp/ggml supports multiple CPU and accelerator backends selected at build/runtime. Backend availability and supported kernels/features are part of runtime identity; a profile certified on one build/backend cannot be assumed equivalent on another."
+  },
+  "namespace": "model_runtime",
+  "object_id": "nsai:model_runtime:build_backends:llama_cpp_build_backends",
+  "object_type": "build_backends",
+  "ontology": {
+    "classes": [
+      "build_system",
+      "hardware_backend"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "model_runtime",
+      "runtime_scope": [
+        "llama.cpp builds",
+        "ggml"
+      ]
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "manual source-backed synthesis with schema validation and exact SHA provenance",
+      "source_pass": "Wave 14"
+    },
+    "sources": [
+      {
+        "archive": "models and harnesses for them.zip",
+        "kind": "source_file",
+        "path": "llama.cpp-master/llama.cpp-master/docs/build.md",
+        "sha256": "1410862ad38bcf3e8c3133cca1c2283e00a2f2af7cfa55286374f118b79767dc",
+        "source_id": "llama_build_doc"
+      },
+      {
+        "archive": "models and harnesses for them.zip",
+        "kind": "source_file",
+        "path": "llama.cpp-master/llama.cpp-master/ggml/include/ggml-cuda.h",
+        "sha256": "9cbfcea49f6da4d07f41dc22fa8dbf870825faaa2a68e34e65fe30ea6c41e042",
+        "source_id": "llama_cuda_api"
+      },
+      {
+        "archive": "models and harnesses for them.zip",
+        "kind": "source_file",
+        "path": "llama.cpp-master/llama.cpp-master/ggml/include/ggml-cpu.h",
+        "sha256": "316279e004cdeb8e6ef78599acb602bf79a8abdf897fed9fd1914808c1518c6e",
+        "source_id": "llama_cpu_api"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:certification:model_profile_certification"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:generation_identity:model_fabric_generation_identity"
+    }
+  ],
+  "retrieval": {
+    "priority": 85,
+    "tags": [
+      "build",
+      "backend",
+      "cuda",
+      "cpu"
+    ],
+    "terms": [
+      "backend",
+      "build",
+      "cmake",
+      "cpu",
+      "cuda",
+      "ggml backend",
+      "runtime backend"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "llama.cpp/ggml supports multiple CPU and accelerator backends selected at build/runtime. Backend availability and supported kernels/features are part of runtime identity; a profile certified on one build/backend cannot be assumed equivalent on another.",
+    "exclusions": [
+      "assume binary builds are interchangeable"
+    ],
+    "intents": [
+      "build llama cpp",
+      "select backend"
+    ],
+    "keywords": [
+      "build",
+      "backend",
+      "cuda",
+      "cpu",
+      "cmake"
+    ],
+    "retrieval_text": "llama.cpp Build and Backend Compatibility. llama.cpp/ggml supports multiple CPU and accelerator backends selected at build/runtime. Backend availability and supported kernels/features are part of runtime identity; a profile certified on one build/backend cannot be assumed equivalent on another. Build options determine compiled backend support and can materially change performance/feature compatibility. PX certification binds runtime/binary identity so profile evidence is not silently reused after backend changes.",
+    "short_description": "llama.",
+    "synonyms": [
+      "ggml backend",
+      "runtime backend"
+    ]
+  },
+  "status": "validated",
+  "title": "llama.cpp Build and Backend Compatibility"
+}

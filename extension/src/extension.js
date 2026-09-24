@@ -10,10 +10,13 @@ const { PxBridge, disconnected, exactStudioVersionConflictError } = require('./p
 const { createSecretStorageApprovalKeyProvider } = require('./studioApprovalHost');
 const { createLaunchAuthority } = require('./mcpMutationAuthority');
 const { SidebarViewProvider } = require('./sidebarView');
+const { registerAgentConsole } = require('./agentHarness/registerAgentConsole');
 const { MESSAGE_SCHEMA_VERSION, SIDEBAR_ASSET_PROTOCOL } = require('./sidebarMessages');
 const { buildContextEnvelope, providerStatus, gitConflictDecision } = require('./contextBridge');
 const { codexHostHandoffDecision } = require('./operationAuthority');
 const { OllamaChatProvider } = require('./ollamaProvider');
+const { PxLanguageModelProvider } = require('./pxLanguageModelProvider');
+const { McpModelFabricBridge } = require('./mcpModelFabricBridge');
 const { validateWebviewMessage } = require('./webviewMessages');
 const { createHealthState, healthLabel } = require('./healthState');
 const { observeMcpRuntime } = require('./mcpRuntimeObservation');
@@ -252,8 +255,19 @@ function extensionAssetIdentity(extensionRoot) {
   const dashboardRoot = path.join(extensionRoot, 'media', 'dashboard');
   if (fs.existsSync(dashboardRoot)) for (const name of fs.readdirSync(dashboardRoot).filter(name => name.endsWith('.js'))) files.push(path.join(dashboardRoot, name));
   const hostSourceRoot = path.join(extensionRoot, 'src');
-  if (fs.existsSync(hostSourceRoot)) for (const name of fs.readdirSync(hostSourceRoot).filter(name => name.endsWith('.js') && name !== 'extension.bundle.js')) files.push(path.join(hostSourceRoot, name));
-  for (const relative of [path.join('media', 'dashboard' + '.css'), path.join('media', 'sidebar.css'), path.join('media', 'sidebar.js'), path.join('resources', 'ui', 'action-inventory.json')]) { const target = path.join(extensionRoot, relative); if (fs.existsSync(target)) files.push(target); }
+  const collectJs = directory => {
+    const found = [];
+    if (!fs.existsSync(directory)) return found;
+    for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+      const full = path.join(directory, entry.name);
+      if (entry.isSymbolicLink()) continue;
+      if (entry.isDirectory()) found.push(...collectJs(full));
+      else if (entry.isFile() && entry.name.endsWith('.js') && entry.name !== 'extension.bundle.js') found.push(full);
+    }
+    return found;
+  };
+  files.push(...collectJs(hostSourceRoot));
+  for (const relative of [path.join('media', 'dashboard' + '.css'), path.join('media', 'sidebar.css'), path.join('media', 'sidebar.js'), path.join('media', 'agent-console.css'), path.join('media', 'agent-console.js'), path.join('resources', 'ui', 'action-inventory.json')]) { const target = path.join(extensionRoot, relative); if (fs.existsSync(target)) files.push(target); }
   files.sort((left, right) => Buffer.compare(Buffer.from(path.relative(extensionRoot, left).replaceAll('\\', '/'), 'utf8'), Buffer.from(path.relative(extensionRoot, right).replaceAll('\\', '/'), 'utf8')));
   const digest = crypto.createHash('sha256');
   for (const file of files) { digest.update(path.relative(extensionRoot, file).replaceAll('\\', '/')); digest.update('\0'); digest.update(fs.readFileSync(file)); digest.update('\0'); }
@@ -353,6 +367,43 @@ const OWNED_OPERATIONAL_CONFIGURATION_FAULTS = new Set([
   'disconnectCanonicalMemory',
   'validate'
 ]);
+
+// Workers the Agent Console may route to. Every entry executes through PX's canonical
+// provider gateway via runtime.vscode_model_bridge; the console holds no provider authority.
+const PX_AGENT_GATEWAY_WORKERS = [
+  {
+    workerId: 'px-gateway-control-qwen35-4b',
+    adapterId: 'px-provider-gateway',
+    providerId: 'px-governed',
+    modelId: 'qwen35-4b-operator',
+    profileId: 'control-qwen35-4b-cpu-q6',
+    displayName: 'Qwen3.5-4B \u00b7 PX librarian (governed)',
+    costClass: 'local',
+    contextLimit: 8192,
+    locality: 'local',
+    capabilities: { coding: 0.4, planning: 0.5, review: 0.4, classification: 0.7, toolUse: false, vision: false, structuredOutput: true },
+    supportedEffectClass: 'READ_ONLY',
+    enabled: true,
+    reliability: 0.6,
+    latencyClass: 'bounded'
+  },
+  {
+    workerId: 'px-gateway-deep-qwen3-30b-a3b',
+    adapterId: 'px-provider-gateway',
+    providerId: 'px-governed',
+    modelId: 'qwen3-30b-a3b-deep',
+    profileId: 'deep-qwen3-30b-a3b-hybrid',
+    displayName: 'Qwen3-30B-A3B \u00b7 PX deep worker (governed)',
+    costClass: 'local',
+    contextLimit: 8192,
+    locality: 'local',
+    capabilities: { coding: 0.8, planning: 0.8, review: 0.7, classification: 0.6, toolUse: false, vision: false, structuredOutput: true },
+    supportedEffectClass: 'READ_ONLY',
+    enabled: true,
+    reliability: 0.5,
+    latencyClass: 'bounded'
+  }
+];
 
 const OWNED_OPERATIONAL_HOST_ACTION_FAULTS = new Set([
   'reconcileStaleActivity', 'copyText', 'exportRecordJson', 'openSettings', 'openFile',
@@ -532,6 +583,7 @@ function activateImplementation(context, transaction) {
   const environmentDiscovery = createLatestDiscoveryCoordinator();
   let activityPublishTimer;
   let sidebarRevisionTimer;
+  let extensionInventoryRefreshTimer;
   let hostContextCache = null;
   let mcpRegistrationState = { status: 'unsupported', registered: false, runtime_verified: false, detail: 'VS Code MCP provider API unavailable.' };
   const approvalKeyProvider = createSecretStorageApprovalKeyProvider(context.secrets);
@@ -559,6 +611,30 @@ function activateImplementation(context, transaction) {
     openEntity: (type, id) => openDashboard(entityRoute(type, id), { type, id, record: sidebar.entityRecord(type, id) })
   });
   transaction.own(vscode.window.registerWebviewViewProvider('pacifyX.controlCenter', sidebar, { webviewOptions: { retainContextWhenHidden: false } }), sidebar, codexOutput, { dispose: () => canonicalPublisher.dispose() });
+
+  // Canonical governed model client, created before the agent harness so the console's
+  // workers execute through PX's provider gateway rather than any direct provider call.
+  const modelFabricClient = new McpModelFabricBridge({
+    pythonPath: () => settings().pythonPath,
+    engineRoot: () => engineRoot(),
+    projectRoot: () => workspaceRoot() || engineRoot()
+  });
+  const { buildPxProviderGatewayInvoker } = require('./agentHarness/pxProviderInvoker');
+  const agentConsole = registerAgentConsole(vscode, context, {
+    settingsProvider: settings,
+    workspaceRootProvider: workspaceRoot,
+    activityObserver: observeActivity,
+    openControlPlane: () => openDashboard('/control-plane'),
+    onDiagnostic: detail => codexOutput.appendLine(`[agent-console] ${detail}`),
+    gatewayWorkers: PX_AGENT_GATEWAY_WORKERS.map(worker => ({ ...worker })),
+    providerGatewayInvoker: buildPxProviderGatewayInvoker({
+      bridge: modelFabricClient,
+      profileIdForWorker: worker => worker?.profileId || worker?.modelId || null
+    }),
+    providerGatewayHealth: worker => ({ status: worker?.enabled ? 'unknown' : 'unhealthy', detail: 'PX provider gateway readiness is resolved at first invocation' })
+  });
+  transaction.own(agentConsole);
+
 
   const status = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 35);
   status.command = 'pacifyX.openDashboard'; status.text = '$(shield) PX · idle'; status.tooltip = 'Open Pacify-X Control Plane'; status.show();
@@ -679,6 +755,7 @@ function activateImplementation(context, transaction) {
     activeRuntime.disposed = true;
     clearTimeout(activityPublishTimer); activityPublishTimer = undefined;
     clearTimeout(sidebarRevisionTimer); sidebarRevisionTimer = undefined;
+    clearTimeout(extensionInventoryRefreshTimer); extensionInventoryRefreshTimer = undefined;
     clearInterval(refreshTimer); refreshTimer = undefined;
     activityListenerGate.dispose(); activeRuntime.bridge?.dispose?.();
     canonicalPublisher.dispose();
@@ -1370,8 +1447,11 @@ function activateImplementation(context, transaction) {
               if (!selectedProject?.projectId) { await acknowledgeHostAction('cancelled', { stage: 'project-selection' }); break; }
               await bridge().activateWorkspaceProject(target, selectedProject.projectId);
               await vscode.workspace.getConfiguration('pacifyX').update('workspaceRoot', target, vscode.ConfigurationTarget.Workspace);
-              bridge().update({ workspaceRoot: target }); await bridge().memory({ query: '', limit: 1 }); await publishSnapshot(true, dashboardPanel.webview);
-              await acknowledgeHostAction('completed', { projectId: selectedProject.projectId, workspaceRoot: target, previousWorkspaceRoot }); break;
+              bridge().update({ workspaceRoot: target });
+              await bridge().memory({ query: '', limit: 1 });
+              await refreshEnvironment('workspace-commissioning', false, 'approved', dashboardPanel.webview);
+              await publishSnapshot(true, dashboardPanel.webview);
+              await acknowledgeHostAction('completed', { projectId: selectedProject.projectId, workspaceRoot: target, previousWorkspaceRoot, environmentCommissioned: true }); break;
             }
             case 'disconnectCanonicalMemory': {
               assertNoOwnedOperationalConfigurationFault('disconnectCanonicalMemory');
@@ -1985,9 +2065,17 @@ function activateImplementation(context, transaction) {
     observeActivity({ listenerId: 'extensions', category: 'environment', operation: 'vscode.extensions.changed', status: 'observed', source: 'vscode-extension-service', effect: 'observe', metadata: { observed_effect: 'extension-inventory-change' } });
     const observation = pendingExtensionEnablementObservation?.expiresAt > Date.now() ? pendingExtensionEnablementObservation : null;
     pendingExtensionEnablementObservation = null;
-    if (panel?.visible || sidebar.hasVisibleView()) void refreshEnvironment('vscode-extension-change', false, observation ? 'approved' : false, panel?.webview)
+    const root = workspaceRoot();
+    const commissioned = root ? Boolean(readEnvironmentInventory(root).inventory) : false;
+    const runRefresh = persistence => refreshEnvironment('vscode-extension-change', false, persistence, panel?.webview)
       .then(result => observation && panel?.webview.postMessage({ type: 'extensionEnablementObserved', requestId: observation.requestId, result: { schema_version: 'px.extension-enablement-observation/1.0', extension_id: observation.extensionId, desired_action: observation.desiredAction, scope: observation.scope, status: 'extension-host-change-observed', correlation: 'temporal-pending-handoff-only', enablement_observed: null, activation_is_not_enablement: true, snapshot_hash: result?.inventory?.snapshot_hash || null } }))
       .catch(() => {});
+    clearTimeout(extensionInventoryRefreshTimer); extensionInventoryRefreshTimer = undefined;
+    if (root && commissioned) {
+      extensionInventoryRefreshTimer = setTimeout(() => { extensionInventoryRefreshTimer = undefined; void runRefresh('approved'); }, 750);
+    } else if (root && (panel?.visible || sidebar.hasVisibleView())) {
+      void runRefresh(observation ? 'approved' : false);
+    }
   }));
 
   if (vscode.lm?.registerMcpServerDefinitionProvider && vscode.McpStdioServerDefinition) {
@@ -2023,7 +2111,14 @@ function activateImplementation(context, transaction) {
     const ollama = new OllamaChatProvider(vscode, () => settings().ollamaEnabled ? settings().ollamaBaseUrl : '');
     transaction.own(ollama, vscode.lm.registerLanguageModelChatProvider('pacify-local', ollama));
     transaction.own(vscode.commands.registerCommand('pacifyX.refreshOllama', () => ollama.refresh()));
-  } else transaction.own(vscode.commands.registerCommand('pacifyX.refreshOllama', () => vscode.window.showInformationMessage('Pacify-X local model provider is unavailable in this host.')));
+
+    const pxModels = new PxLanguageModelProvider(vscode, modelFabricClient);
+    transaction.own(pxModels, vscode.lm.registerLanguageModelChatProvider('pacify-x', pxModels));
+    transaction.own(vscode.commands.registerCommand('pacifyX.refreshModelFabric', () => pxModels.refresh()));
+  } else {
+    transaction.own(vscode.commands.registerCommand('pacifyX.refreshOllama', () => vscode.window.showInformationMessage('Pacify-X local model provider is unavailable in this host.')));
+    transaction.own(vscode.commands.registerCommand('pacifyX.refreshModelFabric', () => vscode.window.showInformationMessage('Pacify-X governed model fabric is unavailable in this host.')));
+  }
 
   activeRuntime.startup = {
     schema_version: 'px.extension-startup/1.0',

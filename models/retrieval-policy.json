@@ -1,0 +1,46 @@
+{
+  "schema_version": "px.retrieval-policy/1.0",
+  "authority_invariants": [
+    "retrieval.py_is_canonical_owner",
+    "model_service_has_no_promotion_authority",
+    "cross_generation_dense_fusion_denied",
+    "turbovec_is_candidate_provider_only",
+    "retrieval_generation_activation_requires_explicit_authority"
+  ],
+  "embedding": {
+    "model_id": "qwen3-embedding-0.6b",
+    "revision_policy": "exact_sha256_at_admission",
+    "normalization": "l2",
+    "dimensions": 1024,
+    "residency": "normally_hot_cpu_service"
+  },
+  "reranker": {
+    "enabled": true,
+    "model_id": "qwen3-reranker-0.6b",
+    "revision_policy": "exact_sha256_at_admission",
+    "residency": "warm_or_hot_when_profile_requires"
+  },
+  "limits": {
+    "embedding_batch": 32,
+    "input_bytes": 262144,
+    "rerank_candidates": 8,
+    "timeout_seconds": 15.0
+  },
+  "generation": {
+    "normalization": "l2",
+    "require_calibration": true,
+    "forbid_cross_generation_dense_fusion": true,
+    "forbid_active_in_place_rebuild": true,
+    "retain_rollback_generations": 1
+  },
+  "activation_gates": {
+    "golden_recall_min": 0.95,
+    "exact_identifier_pass_rate_min": 1.0,
+    "p95_latency_ms_max": 175.0,
+    "high_severity_findings_max": 0
+  },
+  "degraded_modes": {
+    "lexical_only_allowed": true,
+    "degraded_mode_must_be_explicit": true
+  }
+}

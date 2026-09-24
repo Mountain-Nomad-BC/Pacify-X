@@ -16,7 +16,15 @@
     "reason": "excluded directory or link"
   },
   {
+    "path": ".pytest_cache",
+    "reason": "excluded directory or link"
+  },
+  {
     "path": ".quarantine",
+    "reason": "excluded directory or link"
+  },
+  {
+    "path": ".tmp",
     "reason": "excluded directory or link"
   },
   {
@@ -25,6 +33,10 @@
   },
   {
     "path": "Python",
+    "reason": "excluded directory or link"
+  },
+  {
+    "path": "__pycache__",
     "reason": "excluded directory or link"
   },
   {
@@ -60,6 +72,34 @@
     "reason": "mutable release control output"
   },
   {
+    "path": ".px/skills/audit-incomplete-implementations/scripts/__pycache__",
+    "reason": "excluded directory or link"
+  },
+  {
+    "path": ".px/skills/audit-source-capabilities/scripts/__pycache__",
+    "reason": "excluded directory or link"
+  },
+  {
+    "path": ".px/skills/dynamic-service-discovery/scripts/__pycache__",
+    "reason": "excluded directory or link"
+  },
+  {
+    "path": ".px/skills/enforce-source-import-boundaries/scripts/__pycache__",
+    "reason": "excluded directory or link"
+  },
+  {
+    "path": ".px/skills/orchestrate-security-validation/scripts/__pycache__",
+    "reason": "excluded directory or link"
+  },
+  {
+    "path": ".px/skills/repair-corrupted-text/scripts/__pycache__",
+    "reason": "excluded directory or link"
+  },
+  {
+    "path": "builders/__pycache__",
+    "reason": "excluded directory or link"
+  },
+  {
     "path": "docs/architecture",
     "reason": "excluded directory or link"
   },
@@ -82,6 +122,14 @@
   {
     "path": "extension/SHA256SUMS.txt",
     "reason": "mutable release control output"
+  },
+  {
+    "path": "px/py_cert/runtime/__pycache__",
+    "reason": "excluded directory or link"
+  },
+  {
+    "path": "px/py_cert/scripts/__pycache__",
+    "reason": "excluded directory or link"
   },
   {
     "path": "registry/.lock-recovery-receipts",
@@ -114,5 +162,73 @@
   {
     "path": "registry/px_world_state.json",
     "reason": "mutable release control output"
+  },
+  {
+    "path": "runtime/__pycache__",
+    "reason": "excluded directory or link"
+  },
+  {
+    "path": "runtime/cognitive_core/__pycache__",
+    "reason": "excluded directory or link"
+  },
+  {
+    "path": "runtime/metacognitive_evolution/__pycache__",
+    "reason": "excluded directory or link"
+  },
+  {
+    "path": "runtime/metacognitive_evolution/agent_profiles/__pycache__",
+    "reason": "excluded directory or link"
+  },
+  {
+    "path": "runtime/metacognitive_evolution/capability_genome/__pycache__",
+    "reason": "excluded directory or link"
+  },
+  {
+    "path": "runtime/metacognitive_evolution/common/__pycache__",
+    "reason": "excluded directory or link"
+  },
+  {
+    "path": "runtime/metacognitive_evolution/engineering_dna/__pycache__",
+    "reason": "excluded directory or link"
+  },
+  {
+    "path": "runtime/metacognitive_evolution/introspection/__pycache__",
+    "reason": "excluded directory or link"
+  },
+  {
+    "path": "runtime/metacognitive_evolution/knowledge_physics/__pycache__",
+    "reason": "excluded directory or link"
+  },
+  {
+    "path": "runtime/metacognitive_evolution/metacognition/__pycache__",
+    "reason": "excluded directory or link"
+  },
+  {
+    "path": "runtime/metacognitive_evolution/optimization/__pycache__",
+    "reason": "excluded directory or link"
+  },
+  {
+    "path": "runtime/metacognitive_evolution/semantic_contracts/__pycache__",
+    "reason": "excluded directory or link"
+  },
+  {
+    "path": "runtime/metacognitive_evolution/theory_induction/__pycache__",
+    "reason": "excluded directory or link"
+  },
+  {
+    "path": "runtime/project_reasoning/__pycache__",
+    "reason": "excluded directory or link"
+  },
+  {
+    "path": "scripts/__pycache__",
+    "reason": "excluded directory or link"
+  },
+  {
+    "path": "tests/__pycache__",
+    "reason": "excluded directory or link"
+  },
+  {
+    "path": "tests/fixtures/semantic_lsp/__pycache__",
+    "reason": "excluded directory or link"
   }
 ]

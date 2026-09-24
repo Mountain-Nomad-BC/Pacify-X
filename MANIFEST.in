@@ -12,6 +12,7 @@ recursive-include providers *.json *.md *.txt
 recursive-include docs *.png
 recursive-include examples *.md *.py
 recursive-include models *.json
+recursive-include knowledge/nsai *.json *.md
 recursive-include orchestration *.yaml
 recursive-include policies *.json
 recursive-include registry *.json *.jsonl *.toml *.yaml

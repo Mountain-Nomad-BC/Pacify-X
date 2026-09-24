@@ -1,11 +1,45 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "canonical_model_registry": "registry/models.json",
   "loading_rule": "Load model routing, adapter, or benchmark configuration only when a selected workflow requires a model route.",
   "documents": [
-    {"id": "routing-policy", "path": "models/routing-policy.json"},
-    {"id": "provider-adapters", "path": "models/provider-adapters.json"},
-    {"id": "benchmark-policy", "path": "models/benchmark-policy.json"}
+    {
+      "id": "benchmark-policy",
+      "path": "models/benchmark-policy.json"
+    },
+    {
+      "id": "external-runtime-policy",
+      "path": "models/external-runtime-policy.json"
+    },
+    {
+      "id": "model-portfolio",
+      "path": "models/model-portfolio.json"
+    },
+    {
+      "id": "provider-adapters",
+      "path": "models/provider-adapters.json"
+    },
+    {
+      "id": "provider-protocols",
+      "path": "models/provider-protocols.json"
+    },
+    {
+      "id": "resource-policy",
+      "path": "models/resource-policy.json"
+    },
+    {
+      "id": "retrieval-policy",
+      "path": "models/retrieval-policy.json"
+    },
+    {
+      "id": "routing-policy",
+      "path": "models/routing-policy.json"
+    },
+    {
+      "id": "runtime-profiles",
+      "path": "models/runtime-profiles.json"
+    }
   ],
-  "bundled_model_weights": false
+  "bundled_model_weights": false,
+  "weights_rule": "Model weights remain outside PX source; exact local artifact SHA-256 is admitted at runtime and bound into the model-fabric generation."
 }

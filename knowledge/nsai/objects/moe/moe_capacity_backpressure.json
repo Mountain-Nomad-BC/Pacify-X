@@ -1,0 +1,157 @@
+{
+  "applicability": {
+    "conditions": [
+      "Capacity evidence must be current enough for the dispatch decision."
+    ],
+    "exclusions": [
+      "using stale pressure as permanent route policy"
+    ],
+    "targets": [
+      "model pool",
+      "route scheduler"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "px_model_capacity",
+          "moe_capacity_doc"
+        ],
+        "statement": "Capacity decisions are content-addressed evidence derived from a measured snapshot and explicit need."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_model_capacity",
+          "moe_capacity_doc"
+        ],
+        "statement": "Pressure is represented separately from route affinity/quality."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_model_capacity",
+          "moe_capacity_doc"
+        ],
+        "statement": "When capacity cannot safely satisfy a request, routing can wait or require fallback instead of dispatching anyway."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "measure a model-capacity snapshot",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "compare request need against available concurrency and resource headroom",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "propagate capacity state into the route decision and queue behavior",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "Model routing must account for bounded capacity, queue pressure, memory/resource headroom, and admission state so overload produces wait/fallback/backpressure rather than silent overcommit or dropped work."
+  },
+  "namespace": "moe",
+  "object_id": "nsai:moe:capacity:moe_capacity_backpressure",
+  "object_type": "capacity",
+  "ontology": {
+    "classes": [
+      "capacity_control",
+      "routing_policy"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "moe"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "kind": "source_file",
+        "path": "runtime/model_capacity.py",
+        "sha256": "4650f0bc9a1f8d2f4ec37201ea4e29bee991e55a71da785e43146dee8479bb8a",
+        "source_id": "px_model_capacity"
+      },
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_MoE_Mining_Pass_v3/05_CAPACITY_BACKPRESSURE_AND_DROPLESS.md",
+        "sha256": "977296b857d31db78f4864df49cf1aefee545a8872ec4374b678f6440c542974",
+        "source_id": "moe_capacity_doc"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:resource_interlock:model_resource_interlocks"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:moe:routing:moe_hierarchical_routing"
+    }
+  ],
+  "retrieval": {
+    "priority": 92,
+    "tags": [
+      "admission",
+      "backpressure",
+      "capacity",
+      "dropless",
+      "queue"
+    ],
+    "terms": [
+      "admission",
+      "backpressure",
+      "capacity",
+      "capacity broker",
+      "dropless",
+      "queue",
+      "route pressure"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "Model routing must account for bounded capacity, queue pressure, memory/resource headroom, and admission state so overload produces wait/fallback/backpressure rather than silent overcommit or dropped work.",
+    "exclusions": [
+      "silent overcommit"
+    ],
+    "intents": [
+      "apply model backpressure",
+      "route under capacity pressure"
+    ],
+    "keywords": [
+      "admission",
+      "backpressure",
+      "capacity",
+      "dropless",
+      "queue"
+    ],
+    "retrieval_text": "MoE Capacity and Backpressure. Model routing must account for bounded capacity, queue pressure, memory/resource headroom, and admission state so overload produces wait/fallback/backpressure rather than silent overcommit or dropped work. Capacity decisions are content-addressed evidence derived from a measured snapshot and explicit need. Pressure is represented separately from route affinity/quality. When capacity cannot safely satisfy a request, routing can wait or require fallback instead of dispatching anyway.",
+    "short_description": "Model routing must account for bounded capacity, queue pressure, memory/resource headroom, and admission state so overload produces wait/fallback/backpressure rather than silent overcommit or dropped work.",
+    "synonyms": [
+      "capacity broker",
+      "route pressure"
+    ]
+  },
+  "status": "validated",
+  "title": "MoE Capacity and Backpressure"
+}

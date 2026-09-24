@@ -46,6 +46,22 @@ RECOVERABLE_RECLAMATION_OWNERS = {
     "scripts/run_installed_operational_owner.py": "policies/operational-evidence-retention.json",
     "scripts/run_release_stage_owner.py": "policies/operational-evidence-retention.json",
     "scripts/verify_release_publication.py": "policies/operational-evidence-retention.json",
+    # Atomic-write owners remove only the ephemeral temp/probe/stage path they created
+    # in the same scope (os.replace publishes it, or the write is rolled back).
+    "runtime/semantic_code_transaction.py": "policies/artifact-preservation.json",
+    "runtime/semantic_lsp_transaction.py": "policies/artifact-preservation.json",
+    "scripts/benchmark_local_models.py": "policies/artifact-preservation.json",
+    "scripts/benchmark_model_routes.py": "policies/artifact-preservation.json",
+    "scripts/certify_local_model_profiles.py": "policies/artifact-preservation.json",
+    "scripts/build_release_successor_configs.py": "policies/artifact-preservation.json",
+    # docs architecture: retired generated per-record projections are removed on rebuild;
+    # their canonical data now lives in structured Atlas outputs.
+    "docs/architecture/tools/build_atlas.py": "policies/artifact-preservation.json",
+    # Certification control-plane dual-surface counterparts (px/py_cert mirrors the same
+    # owned-ephemeral behaviour as their scripts/ originals above).
+    "px/py_cert/scripts/build_release_successor_configs.py": "policies/artifact-preservation.json",
+    "px/py_cert/scripts/run_installed_operational_owner.py": "policies/operational-evidence-retention.json",
+    "px/py_cert/scripts/run_release_stage_owner.py": "policies/operational-evidence-retention.json",
     "runtime/global_skill_isolation.py": "policies/operational-evidence-retention.json",
     # The gate authority publisher creates one random, exclusive prepared file
     # beside the authority key, hard-links the complete image into place, and
@@ -62,6 +78,12 @@ OWNED_PROCESS_SUPERVISORS = {
         "bounded_finally_termination_and_wait_with_platform_tree_kill"
     ),
     "scripts/run_installed_operational_owner.py": (
+        "owned_member_wait_timeout_and_process_tree_closure"
+    ),
+    # Semantic LSP session and the px/py_cert installed-operational counterpart reap their
+    # Popen handles with a bounded wait; the timeout is enforced by the session owner.
+    "runtime/semantic_lsp_process.py": ("bounded_session_wait_with_process_tree_closure"),
+    "px/py_cert/scripts/run_installed_operational_owner.py": (
         "owned_member_wait_timeout_and_process_tree_closure"
     ),
 }

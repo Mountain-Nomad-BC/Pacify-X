@@ -1,0 +1,156 @@
+{
+  "applicability": {
+    "conditions": [
+      "Canonical memory ID must remain stable across relocation."
+    ],
+    "exclusions": [
+      "approximate resolution of a missing exact reference"
+    ],
+    "targets": [
+      "semantic memory"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "px_semantic_memory_refs",
+          "px_semantic_memory_integrity",
+          "px_semantic_memory_relocation"
+        ],
+        "statement": "A memory reference is an identity locator, not a raw filesystem path."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_semantic_memory_refs",
+          "px_semantic_memory_integrity",
+          "px_semantic_memory_relocation"
+        ],
+        "statement": "Relocation updates mappings/projections while preserving stable semantic identity."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_semantic_memory_refs",
+          "px_semantic_memory_integrity",
+          "px_semantic_memory_relocation"
+        ],
+        "statement": "Broken references should surface integrity findings and repair options instead of resolving to the nearest semantic match."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "parse and validate stable memory reference URIs",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "resolve through current memory identity/location mappings",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "detect stale references and repair mappings under explicit authority",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "Semantic memory references use stable `pxmem`-style identities and validation/relocation logic so references survive storage movement while stale, malformed, or unresolved references are detectable rather than silently redirected."
+  },
+  "namespace": "semantic",
+  "object_id": "nsai:semantic:memory_reference:semantic_memory_reference_integrity",
+  "object_type": "memory_reference",
+  "ontology": {
+    "classes": [
+      "memory_semantics",
+      "reference_integrity"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "semantic"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "kind": "source_file",
+        "path": "runtime/semantic_memory_refs.py",
+        "sha256": "ef33bd52f3bef41327b3ae87bf0567d981c3b7a033f94749036eb25c6587d121",
+        "source_id": "px_semantic_memory_refs"
+      },
+      {
+        "kind": "source_file",
+        "path": "runtime/semantic_memory_integrity.py",
+        "sha256": "362261b107e77de0094ac14469e449849ada6fdd4c96113d980b9800544e116a",
+        "source_id": "px_semantic_memory_integrity"
+      },
+      {
+        "kind": "source_file",
+        "path": "runtime/semantic_memory_relocation.py",
+        "sha256": "efcaeb1c63b3d5a58f05278117ed840b9749ed4bf4bf3d747870fa2d5c92090a",
+        "source_id": "px_semantic_memory_relocation"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:memory:bitemporal_lineage:persistent_memory_bitemporal_lineage"
+    }
+  ],
+  "retrieval": {
+    "priority": 93,
+    "tags": [
+      "integrity",
+      "memory reference",
+      "pxmem",
+      "relocation"
+    ],
+    "terms": [
+      "integrity",
+      "memory reference",
+      "pxmem",
+      "relocation",
+      "semantic memory pointer",
+      "stable memory URI"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "Semantic memory references use stable `pxmem`-style identities and validation/relocation logic so references survive storage movement while stale, malformed, or unresolved references are detectable rather than silently redirected.",
+    "exclusions": [
+      "path-as-identity"
+    ],
+    "intents": [
+      "repair stale memory ref",
+      "resolve memory reference"
+    ],
+    "keywords": [
+      "integrity",
+      "memory reference",
+      "pxmem",
+      "relocation"
+    ],
+    "retrieval_text": "Semantic Memory Reference Integrity. Semantic memory references use stable `pxmem`-style identities and validation/relocation logic so references survive storage movement while stale, malformed, or unresolved references are detectable rather than silently redirected. A memory reference is an identity locator, not a raw filesystem path. Relocation updates mappings/projections while preserving stable semantic identity. Broken references should surface integrity findings and repair options instead of resolving to the nearest semantic match.",
+    "short_description": "Semantic memory references use stable `pxmem`-style identities and validation/relocation logic so references survive storage movement while stale, malformed, or unresolved references are detectable rather than silently redirected.",
+    "synonyms": [
+      "semantic memory pointer",
+      "stable memory URI"
+    ]
+  },
+  "status": "validated",
+  "title": "Semantic Memory Reference Integrity"
+}

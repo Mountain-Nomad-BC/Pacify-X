@@ -180,6 +180,11 @@ def _fixture(tmp_path: Path) -> Path:
         state_path,
     )
 
+    repair_campaign_source = REPOSITORY_ROOT / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    repair_campaign_target = root / repair_campaign_source.relative_to(REPOSITORY_ROOT)
+    repair_campaign_target.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(repair_campaign_source, repair_campaign_target)
+
     for name in ("finding-dispositions.json", "current-owners-and-gaps.json", "live-state.json"):
         source_path = (
             REPOSITORY_ROOT
@@ -550,6 +555,19 @@ def _installed_proof(
             },
         },
     )
+
+    fixture_repair_campaign = root / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    _json(
+        fixture_repair_campaign,
+        {
+            "schema_version": "px.repair-campaign/1.0",
+            "campaign_id": kernel["repair_campaign_id"],
+            "phase": "installed_operational",
+            "intake_open": False,
+            "unresolved": [],
+        },
+    )
+
     automation_windows = {
         "archive_clear": ("2026-09-06T00:00:00Z", "2026-09-06T00:01:00Z"),
         "reconcile": ("2026-09-06T00:02:00Z", "2026-09-06T00:03:00Z"),
@@ -832,7 +850,7 @@ def test_closed_rejects_duplicate_member_and_identity_digest_drift(
         )
 
 
-def test_closed_rejects_self_consistent_unrelated_repair_predecessor(
+def test_closed_rejects_release_identity_bound_to_different_current_repair_campaign(
     tmp_path: Path,
 ) -> None:
     root = _fixture(tmp_path)
@@ -852,6 +870,8 @@ def test_closed_rejects_self_consistent_unrelated_repair_predecessor(
     ).hexdigest()
     identity["identity"]["release_identity_sha256"] = replacement_sha
     _json(identity_path, identity)
+
+
     proof = json.loads((root / proof_path).read_text(encoding="utf-8"))
     proof["release_identity_sha256"] = replacement_sha
     for field in ("package_receipt", "install_receipt"):
@@ -863,7 +883,7 @@ def test_closed_rejects_self_consistent_unrelated_repair_predecessor(
         proof[field]["size"] = receipt_path.stat().st_size
     _json(root / proof_path, proof)
 
-    with pytest.raises(ReconciliationError, match="kernel does not match"):
+    with pytest.raises(ReconciliationError, match="current repair campaign is not the installed-operational campaign bound to the release identity"):
         _reconcile(
             root,
             target="closed",

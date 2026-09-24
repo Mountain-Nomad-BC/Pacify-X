@@ -1,0 +1,147 @@
+{
+  "applicability": {
+    "conditions": [
+      "Every project scope must be explicitly authorized."
+    ],
+    "exclusions": [
+      "dropping project provenance after merge"
+    ],
+    "targets": [
+      "multiple PX projects"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "px_semantic_cross_project",
+          "px_semantic_project_catalog"
+        ],
+        "statement": "Cross-project access is not implied by a workspace-global semantic index."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_semantic_cross_project",
+          "px_semantic_project_catalog"
+        ],
+        "statement": "Each queried project must be authorized and bounded independently."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_semantic_cross_project",
+          "px_semantic_project_catalog"
+        ],
+        "statement": "Cross-project semantic reads do not grant cross-project write/edit authority."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "resolve explicit project identities and authorization",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "query each project under bounded limits",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "merge read-only semantic results with project provenance intact",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "Cross-project semantic queries are explicit read-scoped operations over separately authorized project catalogs; project identity, limits, and privacy boundaries are applied before results are fused or returned."
+  },
+  "namespace": "semantic",
+  "object_id": "nsai:semantic:cross_project:semantic_cross_project_boundaries",
+  "object_type": "cross_project",
+  "ontology": {
+    "classes": [
+      "authorization_boundary",
+      "semantic_query"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "semantic"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "kind": "source_file",
+        "path": "runtime/semantic_cross_project.py",
+        "sha256": "626ba801fcc6262d4b9eb48e8220b68dc84596f4101d41d540345063105416c4",
+        "source_id": "px_semantic_cross_project"
+      },
+      {
+        "kind": "source_file",
+        "path": "runtime/semantic_project_catalog.py",
+        "sha256": "fbf660473f8d99aa7d08a6bf03c325ae635d1fc04d195dc13b5ab96b89c54c25",
+        "source_id": "px_semantic_project_catalog"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:semantic:index:semantic_code_index"
+    }
+  ],
+  "retrieval": {
+    "priority": 94,
+    "tags": [
+      "cross project",
+      "project boundary",
+      "read only",
+      "semantic query"
+    ],
+    "terms": [
+      "cross project",
+      "multi-project semantic query",
+      "project boundary",
+      "project-scoped code intelligence",
+      "read only",
+      "semantic query"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "Cross-project semantic queries are explicit read-scoped operations over separately authorized project catalogs; project identity, limits, and privacy boundaries are applied before results are fused or returned.",
+    "exclusions": [
+      "implicit cross-project write"
+    ],
+    "intents": [
+      "cross-project semantic search",
+      "query multiple projects"
+    ],
+    "keywords": [
+      "cross project",
+      "project boundary",
+      "read only",
+      "semantic query"
+    ],
+    "retrieval_text": "Semantic Cross-Project Boundaries. Cross-project semantic queries are explicit read-scoped operations over separately authorized project catalogs; project identity, limits, and privacy boundaries are applied before results are fused or returned. Cross-project access is not implied by a workspace-global semantic index. Each queried project must be authorized and bounded independently. Cross-project semantic reads do not grant cross-project write/edit authority.",
+    "short_description": "Cross-project semantic queries are explicit read-scoped operations over separately authorized project catalogs; project identity, limits, and privacy boundaries are applied before results are fused or returned.",
+    "synonyms": [
+      "multi-project semantic query",
+      "project-scoped code intelligence"
+    ]
+  },
+  "status": "validated",
+  "title": "Semantic Cross-Project Boundaries"
+}

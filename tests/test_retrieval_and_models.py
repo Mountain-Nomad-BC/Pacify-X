@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import unittest
 from pathlib import Path
 
@@ -18,7 +19,21 @@ class RetrievalAndModelTests(unittest.TestCase):
         root = Path(__file__).parents[1]
         result = validate_integrations(root, smoke=True)
         self.assertTrue(result["valid"], result["errors"])
-        self.assertEqual(result["active_count"], 3)
+        # Derived from the authored registry rather than pinned to a historical
+        # literal, so admitting a governed integration does not falsify a count.
+        registry = json.loads(
+            (root / "registry" / "integrations.json").read_text(encoding="utf-8")
+        )
+        active = [
+            item
+            for item in registry["integrations"]
+            if item.get("status") == "active"
+        ]
+        self.assertEqual(result["active_count"], len(active))
+        self.assertGreater(result["active_count"], 0)
+        for item in active:
+            self.assertEqual(item.get("effects"), ["read_local"], item.get("id"))
+            self.assertTrue(item.get("healthcheck"), item.get("id"))
         self.assertTrue(result["smoke_tested"])
 
     def test_model_routing_policy_is_lazy_loadable_and_fail_closed(self) -> None:

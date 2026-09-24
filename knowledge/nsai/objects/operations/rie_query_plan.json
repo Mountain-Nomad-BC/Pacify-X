@@ -1,0 +1,138 @@
+{
+  "applicability": {
+    "conditions": [
+      "Use the current lexicon revision."
+    ],
+    "exclusions": [
+      "treating expansion as evidence"
+    ],
+    "targets": [
+      "retrieval/query systems"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "px_query_planner"
+        ],
+        "statement": "Query planning is separate from retrieval and from authorization."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_query_planner"
+        ],
+        "statement": "Exact IDs and aliases should be recognized before broad semantic expansion."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_query_planner"
+        ],
+        "statement": "The plan carries a stable hash/revision so caches and receipts can detect planner changes."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "normalize query text",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "resolve lexicon entries/exact aliases",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "emit a structured plan and retrieval metadata for downstream owners",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "A canonical query plan decomposes a user/system query into exact identifiers, normalized aliases, lexical expansions, and facets with a stable lexicon revision so downstream retrieval can be deterministic and auditable."
+  },
+  "namespace": "operations",
+  "object_id": "nsai:operations:query_plan:rie_query_plan",
+  "object_type": "query_plan",
+  "ontology": {
+    "classes": [
+      "operational_projection",
+      "query_planning"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "operations"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "kind": "source_file",
+        "path": "runtime/query_planner.py",
+        "sha256": "00f1bd1fcff7a0bf8c9d9f4e2096862debed57466c84c11ee96744a3b10e6a28",
+        "source_id": "px_query_planner"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:cognitive:bounded_query:bounded_cognitive_query"
+    }
+  ],
+  "retrieval": {
+    "priority": 88,
+    "tags": [
+      "alias",
+      "facet",
+      "lexicon",
+      "query plan"
+    ],
+    "terms": [
+      "alias",
+      "canonical query plan",
+      "facet",
+      "lexicon",
+      "query decomposition",
+      "query plan"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "A canonical query plan decomposes a user/system query into exact identifiers, normalized aliases, lexical expansions, and facets with a stable lexicon revision so downstream retrieval can be deterministic and auditable.",
+    "exclusions": [
+      "direct effect execution"
+    ],
+    "intents": [
+      "normalize query",
+      "plan retrieval query"
+    ],
+    "keywords": [
+      "alias",
+      "facet",
+      "lexicon",
+      "query plan"
+    ],
+    "retrieval_text": "RIE Canonical Query Plan. A canonical query plan decomposes a user/system query into exact identifiers, normalized aliases, lexical expansions, and facets with a stable lexicon revision so downstream retrieval can be deterministic and auditable. Query planning is separate from retrieval and from authorization. Exact IDs and aliases should be recognized before broad semantic expansion. The plan carries a stable hash/revision so caches and receipts can detect planner changes.",
+    "short_description": "A canonical query plan decomposes a user/system query into exact identifiers, normalized aliases, lexical expansions, and facets with a stable lexicon revision so downstream retrieval can be deterministic and auditable.",
+    "synonyms": [
+      "canonical query plan",
+      "query decomposition"
+    ]
+  },
+  "status": "validated",
+  "title": "RIE Canonical Query Plan"
+}

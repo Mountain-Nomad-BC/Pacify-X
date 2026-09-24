@@ -1,0 +1,101 @@
+schema_version: "1.0"
+id: local-model-lane-orchestration
+name: Local Model Lane Orchestration
+summary: >-
+  Deterministic routing between the resident semi-autonomous librarian lane and the
+  on-demand usage lane, owned by PX rather than by either model.
+authority: runtime/local_model_lane_orchestration.py
+
+lanes:
+  - lane: control
+    role: resident_semi_autonomous_librarian
+    model_id: qwen35-4b-operator
+    profile_id: control-qwen35-4b-cpu-q6
+    residency: resident
+    responsibilities:
+      - retrieval
+      - knowledge_navigation
+      - skill_and_action_selection
+      - context_assembly
+      - px_self_maintenance
+      - scheduled_upkeep
+    never_owns:
+      - resource_allocation
+      - policy
+      - permissions
+      - admission
+      - destructive_actions
+      - model_promotion
+      - runtime_ownership
+
+  - lane: deep
+    role: on_demand_usage_worker
+    model_id: qwen3-30b-a3b-deep
+    profile_id: deep-qwen3-30b-a3b-hybrid
+    residency: cold
+    exclusive_heavy: true
+    responsibilities:
+      - deep_reasoning
+      - difficult_coding
+      - architecture
+      - long_synthesis
+    never_owns:
+      - autonomous_residency
+      - self_promotion
+      - context_of_its_own_authority
+
+triggers:
+  - id: project-map-stale
+    lane: control
+  - id: nsai-index-stale
+    lane: control
+  - id: knowledge-index-stale
+    lane: control
+  - id: memory-review-due
+    lane: control
+  - id: evidence-reconciliation-due
+    lane: control
+  - id: capability-index-stale
+    lane: control
+  - id: session-context-refresh
+    lane: control
+
+rules:
+  - id: no-autoload
+    statement: The usage lane is never autoloaded; PX holds an exclusive lease before load.
+  - id: no-silent-downgrade
+    statement: An explicit deep request reports its blocker instead of downgrading quietly.
+  - id: resident-never-held
+    statement: The resident librarian lane is never blocked by a deep-lane lease.
+  - id: deterministic-first
+    statement: Lane selection is a deterministic function of task traits, trigger, and resource state.
+
+workflows:
+  - id: local-model-lane-orchestration
+    steps:
+      - id: resolve_lane_models
+        action: model.profile.resolve
+        depends_on: []
+      - id: plan_lane
+        action: runtime.plan_lane_decision
+        depends_on: [resolve_lane_models]
+      - id: admit_residency
+        action: model.admission.evaluate
+        depends_on: [plan_lane]
+      - id: lease_if_usage
+        action: resources.reserve
+        depends_on: [admit_residency]
+      - id: execute_owned_task
+        action: inference.generate
+        depends_on: [lease_if_usage]
+      - id: release_and_reconcile
+        action: resources.release
+        depends_on: [execute_owned_task]
+      - id: record_evidence
+        action: telemetry.record
+        depends_on: [release_and_reconcile]
+
+validation:
+  entrypoint: runtime.local_model_lane_orchestration:validate_lane_orchestration
+  librarian_map_entrypoint: runtime.librarian_semantic_map:load_semantic_map
+  librarian_answer_entrypoint: runtime.librarian_answer:compose_briefing

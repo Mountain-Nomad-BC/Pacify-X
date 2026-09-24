@@ -176,6 +176,41 @@ DUPLICATE_CLASSIFICATIONS = {
         "regeneration_command": None,
         "equivalence_rule": "independent immutable evidence",
     },
+    "expanded-release-digest-adapters": {
+        "owner": "release-control-and-runtime-integrity",
+        "rationale": "stable-AST-equivalent SHA-256 file digest helpers are independently located across release-control, project-control, runtime, and certification projection surfaces.",
+        "authoritative_source": None,
+        "regeneration_command": None,
+        "equivalence_rule": "stable AST equivalent digest adapter",
+    },
+    "model-route-json-normalizers": {
+        "owner": "local-model-routing",
+        "rationale": "model capacity and route state use the same bounded JSON-normalization helper semantics.",
+        "authoritative_source": None,
+        "regeneration_command": None,
+        "equivalence_rule": "stable AST equivalent bounded JSON normalizer",
+    },
+    "local-model-atomic-json-writers": {
+        "owner": "local-model-certification",
+        "rationale": "local model benchmark and certification scripts intentionally share the same atomic JSON writer semantics.",
+        "authoritative_source": None,
+        "regeneration_command": None,
+        "equivalence_rule": "stable AST equivalent atomic JSON writer",
+    },
+    "runtime-identity-payload-adapters": {
+        "owner": "local-model-runtime",
+        "rationale": "AirLLM and Docker model runtimes expose the same identity payload adapter contract.",
+        "authoritative_source": None,
+        "regeneration_command": None,
+        "equivalence_rule": "stable AST equivalent runtime identity payload",
+    },
+    "certification-control-projections": {
+        "owner": "px/py_cert",
+        "rationale": "certification-local release-control projections intentionally mirror canonical repository-root controls byte-for-byte while certification-local pre-cert implementations remain independently owned.",
+        "authoritative_source": "canonical repository-root controls",
+        "regeneration_command": None,
+        "equivalence_rule": "byte-for-byte",
+    },
 }
 
 
@@ -402,6 +437,15 @@ def _classify_exact_group(paths: list[str]) -> str | None:
         "_atomic_json",
     }:
         return "json-atomic-write"
+    if len(paths) == 2:
+        first, second = sorted(paths)
+        for cert_path, root_path in ((first, second), (second, first)):
+            if cert_path.startswith("px/py_cert/runtime/") and root_path.startswith("runtime/"):
+                if cert_path.removeprefix("px/py_cert/runtime/") == root_path.removeprefix("runtime/"):
+                    return "certification-control-projections"
+            if cert_path.startswith("px/py_cert/scripts/") and root_path.startswith("scripts/"):
+                if cert_path.removeprefix("px/py_cert/scripts/") == root_path.removeprefix("scripts/"):
+                    return "certification-control-projections"
     return None
 
 
@@ -454,6 +498,19 @@ def _stable_ast(value: object, *, function_root: bool = False) -> object:
     return value
 
 
+
+def _certification_control_logic_projection(paths: list[str]) -> bool:
+    """Admit only one root function and its matching px/py_cert counterpart."""
+    if len(paths) != 2:
+        return False
+    first, second = paths
+    for cert_path, root_path in ((first, second), (second, first)):
+        if cert_path.startswith("px/py_cert/runtime/") and root_path.startswith("runtime/"):
+            return cert_path.removeprefix("px/py_cert/runtime/") == root_path.removeprefix("runtime/")
+        if cert_path.startswith("px/py_cert/scripts/") and root_path.startswith("scripts/"):
+            return cert_path.removeprefix("px/py_cert/scripts/") == root_path.removeprefix("scripts/")
+    return False
+
 def _logic_duplicates(root: Path, files: tuple[Path, ...] | None = None) -> tuple[list[dict[str, Any]], list[list[str]]]:
     groups: dict[str, list[str]] = {}
     for path in files if files is not None else _structural_files(root):
@@ -485,7 +542,64 @@ def _logic_duplicates(root: Path, files: tuple[Path, ...] | None = None) -> tupl
         paths = [item.split(":", 1)[0] for item in locations]
         names = {item.rsplit(":", 1)[-1] for item in locations}
         path_set = set(paths)
+        normalized_paths = {
+            path.removeprefix("px/py_cert/")
+            if path.startswith("px/py_cert/")
+            else path
+            for path in paths
+        }
+
         if (
+            names <= {"_sha256", "sha256", "_file_sha", "_sha", "_sha_file"}
+            and normalized_paths
+            == {
+                "runtime/airllm_runtime.py",
+                "runtime/project_control_plane.py",
+                "runtime/project_intelligence.py",
+                "runtime/workspace_manager.py",
+                "scripts/archive_project_map_history.py",
+                "scripts/build_release_successor_configs.py",
+                "scripts/migration/extract_behavior_contracts.py",
+                "scripts/pre_candidate_hygiene.py",
+                "scripts/run_installed_operational_owner.py",
+                "scripts/run_release_candidate.py",
+                "scripts/run_release_stage_owner.py",
+                "scripts/validate_certification_pipeline.py",
+                "scripts/verify_release_publication.py",
+            }
+        ):
+            classification = "expanded-release-digest-adapters"
+        elif (
+            names == {"_jsonable"}
+            and set(paths)
+            == {
+                "runtime/model_capacity.py",
+                "runtime/model_route_state.py",
+            }
+        ):
+            classification = "model-route-json-normalizers"
+        elif (
+            names == {"_write_json_atomic"}
+            and set(paths)
+            == {
+                "scripts/benchmark_local_models.py",
+                "scripts/certify_local_model_profiles.py",
+            }
+        ):
+            classification = "local-model-atomic-json-writers"
+        elif (
+            names == {"identity_payload"}
+            and set(paths)
+            == {
+                "runtime/airllm_runtime.py",
+                "runtime/docker_model_runtime.py",
+            }
+        ):
+            classification = "runtime-identity-payload-adapters"
+        elif _certification_control_logic_projection(paths):
+
+            classification = "certification-control-projection-logic"
+        elif (
             "templates/generated/domain_tool.py" in path_set
             and all(
                 path == "templates/generated/domain_tool.py"
@@ -537,10 +651,25 @@ def _logic_duplicates(root: Path, files: tuple[Path, ...] | None = None) -> tupl
             }
         ) or (
             names == {"_object", "load_object"}
-            and set(paths) == {
+            and {
+                path.removeprefix("px/py_cert/")
+                if path.startswith("px/py_cert/")
+                else path
+                for path in paths
+            }
+            == {
                 "scripts/run_installed_operational_owner.py",
                 "scripts/run_release_stage_owner.py",
             }
+            and all(
+                path in {
+                    "scripts/run_installed_operational_owner.py",
+                    "scripts/run_release_stage_owner.py",
+                    "px/py_cert/scripts/run_installed_operational_owner.py",
+                    "px/py_cert/scripts/run_release_stage_owner.py",
+                }
+                for path in paths
+            )
         ):
             classification = "bounded-json-loaders"
         elif names == {"_bounded_operational_progress", "_bounded_progress"} and all(

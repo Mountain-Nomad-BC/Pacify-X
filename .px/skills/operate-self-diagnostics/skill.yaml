@@ -1,0 +1,40 @@
+{
+  "admission_record": "operate-self-diagnostics",
+  "body_sha256": "47a2e542857b12b0728c04577d9f66da6389353024046c3e1b0ccb997d8044d0",
+  "contract": {
+    "available": true,
+    "sha256": "99cc5970139377dbeff9b2450cf0cad72dcaa543a8896332babd6c4269c2133b",
+    "source": "registry/skill_packages/operate-self-diagnostics.json"
+  },
+  "description": "Classifies a reported condition into one disposition and delegates to the canonical owner.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "operate-self-diagnostics",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "authored-in-repo",
+  "provenance": {
+    "adapted": false,
+    "source": "authored-in-repo"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "self-operations",
+    "diagnostics",
+    "diagnosis",
+    "classification",
+    "delegation",
+    "composed"
+  ],
+  "version": "1.0.0"
+}

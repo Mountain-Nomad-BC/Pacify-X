@@ -136,3 +136,40 @@ def authority_roles() -> dict[str, dict[str, object]]:
             "presentation_and_observation_only": True,
         },
     }
+
+
+def decide_projected_action(
+    request: AuthorityRequest,
+    action_resolution: object,
+    *,
+    capability_id: str,
+) -> AuthorityDecision:
+    """Revalidate projected action identity before normal authority evaluation.
+
+    Action-surface metadata can narrow which admitted capability the user meant;
+    it can never satisfy approval, policy, claim, effect, or delegation gates.
+    """
+    from .action_surface import ActionResolution
+
+    reasons: list[str] = []
+    if type(action_resolution) is not ActionResolution:
+        reasons.append("action projection has invalid type")
+    else:
+        if action_resolution.status != "candidate":
+            reasons.append("action projection is not a resolved candidate")
+        if action_resolution.authority_granted:
+            reasons.append("action projection must not claim authority")
+        if action_resolution.capability_id != capability_id:
+            reasons.append("action projection capability mismatch")
+        if not action_resolution.descriptor_sha256 or len(action_resolution.descriptor_sha256) != 64:
+            reasons.append("action projection descriptor identity is missing")
+    base = decide(request)
+    reasons.extend(base.reasons)
+    unique = tuple(dict.fromkeys(reasons))
+    return AuthorityDecision(
+        allowed=not unique,
+        executor_owner=request.executor if not unique else None,
+        reasons=unique,
+        requires_user_approval=base.requires_user_approval,
+        requires_claim=base.requires_claim,
+    )

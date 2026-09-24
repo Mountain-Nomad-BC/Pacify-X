@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:learning:observation-pack",
+  "title": "PX Evidence-Preserving Observation Pack",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "mode",
+    "stable_handle",
+    "source_locator",
+    "content_sha256",
+    "original_chars",
+    "projected_text",
+    "reducer_receipt_sha256",
+    "reversible",
+    "authority_granted",
+    "pack_sha256"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "px.observation-pack/1.0"
+    },
+    "mode": {
+      "enum": [
+        "full",
+        "handle",
+        "verified_receipt"
+      ]
+    },
+    "stable_handle": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_locator": {
+      "type": "string",
+      "minLength": 1
+    },
+    "content_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "original_chars": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "projected_text": {
+      "type": "string"
+    },
+    "reducer_receipt_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "reversible": {
+      "const": true
+    },
+    "authority_granted": {
+      "const": false
+    },
+    "pack_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "additionalProperties": false
+}

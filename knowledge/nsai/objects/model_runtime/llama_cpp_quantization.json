@@ -1,0 +1,161 @@
+{
+  "applicability": {
+    "conditions": [
+      "Use only with an admitted PX model/runtime identity.",
+      "Treat measured machine-specific profile evidence as stronger than generic defaults."
+    ],
+    "exclusions": [
+      "assume smaller quant is always better"
+    ],
+    "targets": [
+      "GGUF models",
+      "llama.cpp"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.95,
+        "evidence_refs": [
+          "llama_quantize_readme",
+          "llama_model_cpp",
+          "px_llama_profiles"
+        ],
+        "statement": "Lower-bit weight formats usually reduce footprint/bandwidth but can change output quality and backend behavior."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "llama_quantize_readme",
+          "llama_model_cpp",
+          "px_llama_profiles"
+        ],
+        "statement": "Quant selection must be benchmarked on the target model/task rather than copied from generic advice."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "Quantization transforms weight representation into supported GGUF quant types.",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "Runtime kernels/backend support determine whether a format produces the intended speed/memory benefit.",
+        "name": "mechanism_2"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, or policy authority."
+    ],
+    "summary": "GGUF quantization reduces model storage and runtime memory/bandwidth at a quality and compatibility cost that depends on model, quantizer, backend, and workload. Quant choice is part of a certified model profile, not a universal ranking."
+  },
+  "namespace": "model_runtime",
+  "object_id": "nsai:model_runtime:quantization:llama_cpp_quantization",
+  "object_type": "quantization",
+  "ontology": {
+    "classes": [
+      "model_storage",
+      "precision_tradeoff"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "model_runtime",
+      "runtime_scope": [
+        "GGUF models",
+        "llama.cpp"
+      ]
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "manual source-backed synthesis with schema validation and exact SHA provenance",
+      "source_pass": "Wave 14"
+    },
+    "sources": [
+      {
+        "archive": "models and harnesses for them.zip",
+        "kind": "source_file",
+        "path": "llama.cpp-master/llama.cpp-master/tools/quantize/README.md",
+        "sha256": "4dcc340a48ea558bb824aeb075d556eb4a1bc4c76f86953be80cb9dd16e976e1",
+        "source_id": "llama_quantize_readme"
+      },
+      {
+        "archive": "models and harnesses for them.zip",
+        "kind": "source_file",
+        "path": "llama.cpp-master/llama.cpp-master/src/llama-model.cpp",
+        "sha256": "530dff0cd544382346cc18520cbdb7d7a6f6743c35f7af52aae0bec11d18992a",
+        "source_id": "llama_model_cpp"
+      },
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_Model_Fabric_Junction_Hardening_Pass3_2026-09-20/03_LLAMA_CPP_CERTIFIED_RUNTIME_PROFILES.md",
+        "sha256": "c49c37da15288829814048b52a91a352d86a723e676e2756eeb578346d299a1c",
+        "source_id": "px_llama_profiles"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:certification:model_profile_certification"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:placement:llama_cpp_cpu_gpu_offload"
+    }
+  ],
+  "retrieval": {
+    "priority": 85,
+    "tags": [
+      "weights",
+      "memory",
+      "quality",
+      "backend"
+    ],
+    "terms": [
+      "GGUF quant",
+      "backend",
+      "gguf",
+      "memory",
+      "q4",
+      "q8",
+      "quality",
+      "quantization",
+      "quantized weights",
+      "weights"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "GGUF quantization reduces model storage and runtime memory/bandwidth at a quality and compatibility cost that depends on model, quantizer, backend, and workload. Quant choice is part of a certified model profile, not a universal ranking.",
+    "exclusions": [
+      "assume smaller quant is always better"
+    ],
+    "intents": [
+      "choose quantization",
+      "reduce model memory"
+    ],
+    "keywords": [
+      "gguf",
+      "quantization",
+      "q4",
+      "q8",
+      "memory"
+    ],
+    "retrieval_text": "llama.cpp GGUF Quantization. GGUF quantization reduces model storage and runtime memory/bandwidth at a quality and compatibility cost that depends on model, quantizer, backend, and workload. Quant choice is part of a certified model profile, not a universal ranking. Lower-bit weight formats usually reduce footprint/bandwidth but can change output quality and backend behavior. Quant selection must be benchmarked on the target model/task rather than copied from generic advice.",
+    "short_description": "GGUF quantization reduces model storage and runtime memory/bandwidth at a quality and compatibility cost that depends on model, quantizer, backend, and workload.",
+    "synonyms": [
+      "GGUF quant",
+      "quantized weights"
+    ]
+  },
+  "status": "validated",
+  "title": "llama.cpp GGUF Quantization"
+}

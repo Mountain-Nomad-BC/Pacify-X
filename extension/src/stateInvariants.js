@@ -20,6 +20,9 @@ const SESSION_STATUSES = new Set(['active', 'stale']);
 const CLAIM_MODES = new Set(['exclusive', 'shared', 'informational']);
 const CLAIM_AUTHORITIES = new Set(['local', 'speculative', 'team_authoritative', 'stale']);
 const MEMORY_COUNTERS = ['session_records', 'project_records', 'state_records', 'system_candidates'];
+const WAIT_STATUSES = new Set(['waiting', 'satisfied', 'expired', 'cancelled']);
+const WAKE_STATUSES = new Set(['resume_pending', 'acknowledged']);
+const WAIT_CONDITIONS = new Set(['task', 'message', 'resource', 'approval', 'timer', 'model_result']);
 
 function sha(value) {
   return crypto.createHash('sha256').update(typeof value === 'string' ? value : JSON.stringify(value)).digest('hex');
@@ -259,6 +262,46 @@ function assertCoordinationState(state, options = {}) {
   }
   const memory = requireRecord(state.memory, 'memory-counters-shape');
   for (const counter of MEMORY_COUNTERS) requireNonNegativeFinite(memory[counter], `memory-counter:${counter}`, true);
+
+  const waits = requireArray(state.waits, 'waits-shape');
+  const wakes = requireArray(state.wakes, 'wakes-shape');
+  const mailboxes = requireRecord(state.mailboxes, 'mailboxes-shape');
+  requireUnique(waits, wait => requireText(wait?.wait_id, 'wait-id'), 'wait-id-duplicate');
+  requireUnique(wakes, wake => requireText(wake?.wake_id, 'wake-id'), 'wake-id-duplicate');
+  for (const wait of waits) {
+    if (!taskIds.has(requireText(wait.task_id, `wait-task:${wait.wait_id}`))) fail('wait-task-missing', wait.wait_id);
+    assertActor(wait.actor, `wait-actor:${wait.wait_id}`);
+    requireEnum(wait.status, WAIT_STATUSES, `wait-status:${wait.wait_id}`);
+    requireEnum(wait.condition_type, WAIT_CONDITIONS, `wait-condition:${wait.wait_id}`);
+    requireText(wait.checkpoint_id, `wait-checkpoint:${wait.wait_id}`);
+    const dependencies = requireArray(wait.dependency_ids, `wait-dependencies:${wait.wait_id}`);
+    if (!dependencies.length) fail('wait-dependencies-empty', wait.wait_id);
+    requireUnique(dependencies, value => requireText(value, `wait-dependency:${wait.wait_id}`), `wait-dependency-duplicate:${wait.wait_id}`);
+    requireArray(wait.satisfied_ids, `wait-satisfied:${wait.wait_id}`);
+    if (!Number.isFinite(Date.parse(wait.created_utc)) || !Number.isFinite(Date.parse(wait.expires_utc))) fail('wait-time', wait.wait_id);
+  }
+  for (const wake of wakes) {
+    requireEnum(wake.status, WAKE_STATUSES, `wake-status:${wake.wake_id}`);
+    if (!waits.some(wait => wait.wait_id === wake.wait_id)) fail('wake-wait-missing', wake.wake_id);
+    if (!taskIds.has(requireText(wake.task_id, `wake-task:${wake.wake_id}`))) fail('wake-task-missing', wake.wake_id);
+    requireText(wake.checkpoint_id, `wake-checkpoint:${wake.wake_id}`);
+    if (!Number.isFinite(Date.parse(wake.created_utc))) fail('wake-time', wake.wake_id);
+  }
+  const messageIds = new Set();
+  let messageCount = 0;
+  for (const [recipient, messages] of Object.entries(mailboxes)) {
+    requireText(recipient, 'mailbox-recipient');
+    for (const message of requireArray(messages, `mailbox-shape:${recipient}`)) {
+      const messageId = requireText(message?.message_id, `message-id:${recipient}`);
+      if (messageIds.has(messageId)) fail('message-id-duplicate', messageId);
+      messageIds.add(messageId); messageCount += 1;
+      if (!['unread', 'consumed'].includes(message.status)) fail('message-status', messageId);
+      requireText(message.payload_sha256, `message-payload-sha:${messageId}`);
+      if (!/^[a-f0-9]{64}$/.test(message.payload_sha256)) fail('message-payload-sha', messageId);
+      if (!['public', 'project', 'private'].includes(message.privacy_class)) fail('message-privacy', messageId);
+    }
+  }
+  if (messageCount > 2000) fail('message-capacity', messageCount);
 
   if (options.requireSeal !== false) {
     if (!/^[a-f0-9]{64}$/.test(String(state.state_hash || ''))) fail('state-seal-format');

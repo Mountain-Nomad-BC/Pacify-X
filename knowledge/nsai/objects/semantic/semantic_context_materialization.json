@@ -1,0 +1,152 @@
+{
+  "applicability": {
+    "conditions": [
+      "Selected source identities must be current enough for the task."
+    ],
+    "exclusions": [
+      "losing source IDs during compaction"
+    ],
+    "targets": [
+      "local/remote model requests"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "px_semantic_model_context",
+          "px_semantic_context_profiles"
+        ],
+        "statement": "Context assembly is a projection for model consumption, not a new source of truth."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_semantic_model_context",
+          "px_semantic_context_profiles"
+        ],
+        "statement": "Materialization computes exact serialized size and enforces configured bounds."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_semantic_model_context",
+          "px_semantic_context_profiles"
+        ],
+        "statement": "Every included semantic item should remain traceable to source identity/revision so model output can cite or be checked against evidence."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "select bounded semantic evidence",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "serialize context with identity/provenance fields",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "record exact size and any omissions/truncation before provider invocation",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "Model context is materialized from selected semantic evidence under explicit byte/token budgets while preserving exact source IDs, revisions, citations, and truncation/degradation metadata."
+  },
+  "namespace": "semantic",
+  "object_id": "nsai:semantic:context_materialization:semantic_context_materialization",
+  "object_type": "context_materialization",
+  "ontology": {
+    "classes": [
+      "context_projection",
+      "model_input"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "semantic"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "kind": "source_file",
+        "path": "runtime/semantic_model_context.py",
+        "sha256": "dbc290780124e0381d2d4d548aa9d65d4e6823dd8674caaaab35e8fef7babdda",
+        "source_id": "px_semantic_model_context"
+      },
+      {
+        "kind": "source_file",
+        "path": "runtime/semantic_context_profiles.py",
+        "sha256": "c306cc7cd8794617b7664a18087eda0395171e379e3d7081822460cba5efda12",
+        "source_id": "px_semantic_context_profiles"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:cognitive:bounded_query:bounded_cognitive_query"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:operations:context_checkpoint:context_pressure_checkpointing"
+    }
+  ],
+  "retrieval": {
+    "priority": 94,
+    "tags": [
+      "citation",
+      "context materialization",
+      "model context",
+      "token budget"
+    ],
+    "terms": [
+      "bounded context assembly",
+      "citation",
+      "context materialization",
+      "model context",
+      "semantic context pack",
+      "token budget"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "Model context is materialized from selected semantic evidence under explicit byte/token budgets while preserving exact source IDs, revisions, citations, and truncation/degradation metadata.",
+    "exclusions": [
+      "unbounded hydration"
+    ],
+    "intents": [
+      "build model context",
+      "hydrate semantic evidence"
+    ],
+    "keywords": [
+      "citation",
+      "context materialization",
+      "model context",
+      "token budget"
+    ],
+    "retrieval_text": "Bounded Semantic Context Materialization. Model context is materialized from selected semantic evidence under explicit byte/token budgets while preserving exact source IDs, revisions, citations, and truncation/degradation metadata. Context assembly is a projection for model consumption, not a new source of truth. Materialization computes exact serialized size and enforces configured bounds. Every included semantic item should remain traceable to source identity/revision so model output can cite or be checked against evidence.",
+    "short_description": "Model context is materialized from selected semantic evidence under explicit byte/token budgets while preserving exact source IDs, revisions, citations, and truncation/degradation metadata.",
+    "synonyms": [
+      "bounded context assembly",
+      "semantic context pack"
+    ]
+  },
+  "status": "validated",
+  "title": "Bounded Semantic Context Materialization"
+}

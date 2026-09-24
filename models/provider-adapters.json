@@ -4,7 +4,11 @@
     {
       "id": "local-runtime",
       "state": "discoverable_unconfigured",
-      "discovery_commands": ["ollama", "llama-server", "lmstudio"],
+      "discovery_commands": [
+        "ollama",
+        "llama-server",
+        "lmstudio"
+      ],
       "credential_mode": "none_or_runtime_managed",
       "auto_start": false,
       "auto_download": false
@@ -15,6 +19,81 @@
       "credential_mode": "approved_secret_store_only",
       "network": "explicit_approval",
       "auto_connect": false
+    },
+    {
+      "id": "docker-model-runner",
+      "state": "implemented_unadmitted",
+      "discovery_commands": [
+        "docker model status --json",
+        "docker model inspect"
+      ],
+      "credential_mode": "none_or_runtime_managed",
+      "network": "literal_loopback_only",
+      "auto_start": false,
+      "auto_download": false,
+      "routing_authority": false,
+      "lifecycle_owner": "runtime/docker_model_runtime.py"
+    },
+    {
+      "id": "airllm-worker",
+      "state": "implemented_unadmitted",
+      "discovery_commands": [],
+      "credential_mode": "none",
+      "network": "literal_loopback_only",
+      "auto_start": false,
+      "auto_download": false,
+      "routing_authority": false,
+      "lifecycle_owner": "runtime/airllm_runtime.py"
+    }
+  ],
+  "exact_adapters": [
+    {
+      "adapter_id": "ollama-http",
+      "provider_id": "ollama",
+      "surface": "terminal",
+      "state": "ready_by_registry_only"
+    },
+    {
+      "adapter_id": "llama-cpp-http",
+      "provider_id": "llama.cpp",
+      "surface": "terminal",
+      "state": "ready_by_registry_only"
+    },
+    {
+      "adapter_id": "llama-cpp-stream",
+      "provider_id": "llama.cpp",
+      "surface": "openai_chat",
+      "state": "implemented_unadmitted"
+    },
+    {
+      "adapter_id": "llama-cpp-responses",
+      "provider_id": "llama.cpp",
+      "surface": "openai_responses",
+      "state": "implemented_unadmitted"
+    },
+    {
+      "adapter_id": "llama-cpp-anthropic",
+      "provider_id": "llama.cpp",
+      "surface": "anthropic_messages",
+      "state": "implemented_unadmitted"
+    },
+    {
+      "adapter_id": "openai-responses",
+      "provider_id": "openai",
+      "surface": "openai_responses",
+      "state": "unconfigured"
+    },
+    {
+      "adapter_id": "docker-model-runner-http",
+      "provider_id": "docker-model-runner",
+      "surface": "openai_chat",
+      "state": "implemented_unadmitted"
+    },
+    {
+      "adapter_id": "airllm-http",
+      "provider_id": "airllm",
+      "surface": "openai_chat",
+      "state": "implemented_unadmitted"
     }
   ]
 }

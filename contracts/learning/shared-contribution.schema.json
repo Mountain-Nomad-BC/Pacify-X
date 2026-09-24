@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:learning:shared-contribution",
+  "title": "PX Shared Contribution",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "project_id",
+    "publisher_id",
+    "contribution_type",
+    "contribution_class",
+    "description",
+    "parent_sha256",
+    "memory_refs",
+    "evidence_sha256",
+    "tags",
+    "visibility",
+    "publication_state",
+    "metadata",
+    "created_at",
+    "authority_granted",
+    "record_sha256"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "px.shared-contribution/1.0"
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "publisher_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "contribution_type": {
+      "enum": [
+        "setup",
+        "result",
+        "insight",
+        "hypothesis",
+        "report",
+        "negative_result",
+        "correction",
+        "wip"
+      ]
+    },
+    "contribution_class": {
+      "enum": [
+        "light",
+        "heavy"
+      ]
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "parent_sha256": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[0-9a-f]{64}$"
+      }
+    },
+    "memory_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "evidence_sha256": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[0-9a-f]{64}$"
+      }
+    },
+    "tags": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "visibility": {
+      "enum": [
+        "private",
+        "project",
+        "team",
+        "public-candidate"
+      ]
+    },
+    "publication_state": {
+      "enum": [
+        "unpublished",
+        "review-candidate",
+        "approved",
+        "published",
+        "rejected",
+        "revoked"
+      ]
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "authority_granted": {
+      "const": false
+    },
+    "record_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "additionalProperties": false
+}

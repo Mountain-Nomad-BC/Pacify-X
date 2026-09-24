@@ -5,6 +5,7 @@ from __future__ import annotations
 from collections import Counter
 import hashlib
 import json
+import math
 from typing import Iterable, Mapping, Sequence
 
 
@@ -203,3 +204,38 @@ def compact_communication(
         "compression_sha256": _stable(selected),
         "authority_granted": False,
     }
+
+
+def decide_context_compaction(
+    *, current_context_tokens: int, context_window_tokens: int,
+    observed_growth_tokens_per_request: float, observed_requests_per_completed_step: float,
+    unfinished_steps: int, cache_rewrite_ratio: float = 1.0,
+    retained_fraction_after_compaction: float = 0.55, previous_compactions: int = 0,
+    emergency_fraction: float = 0.90, at_plan_step_boundary: bool = True,
+) -> dict[str, object]:
+    """Cost-gated context compaction; routine compaction waits for a plan boundary."""
+    if type(at_plan_step_boundary) is not bool:
+        raise ValueError("plan-step boundary flag must be boolean")
+    numeric = [observed_growth_tokens_per_request, observed_requests_per_completed_step, cache_rewrite_ratio, retained_fraction_after_compaction, emergency_fraction]
+    if any(isinstance(v, bool) or not isinstance(v, (int, float)) or not math.isfinite(float(v)) for v in numeric):
+        raise ValueError("context compaction inputs must be finite numbers")
+    if type(current_context_tokens) is not int or isinstance(current_context_tokens, bool) or current_context_tokens < 0 or type(context_window_tokens) is not int or isinstance(context_window_tokens, bool) or context_window_tokens <= 0 or current_context_tokens > context_window_tokens:
+        raise ValueError("context sizes are invalid")
+    if type(unfinished_steps) is not int or isinstance(unfinished_steps, bool) or unfinished_steps < 0 or type(previous_compactions) is not int or isinstance(previous_compactions, bool) or previous_compactions < 0:
+        raise ValueError("context compaction counts are invalid")
+    if not 0 < retained_fraction_after_compaction < 1 or not 0 < emergency_fraction <= 1 or cache_rewrite_ratio < 0:
+        raise ValueError("context compaction policy is invalid")
+    emergency = current_context_tokens >= context_window_tokens * emergency_fraction
+    estimated_requests = max(0.0, float(observed_requests_per_completed_step)) * unfinished_steps
+    growth = float(observed_growth_tokens_per_request)
+    if growth > 0:
+        estimated_requests = min(estimated_requests, max(0.0, (context_window_tokens - current_context_tokens) / growth))
+    removable = current_context_tokens * (1.0 - retained_fraction_after_compaction)
+    projected_savings = removable * estimated_requests
+    rewrite_cost = current_context_tokens * max(0.0, float(cache_rewrite_ratio))
+    margin = 1.10 + min(previous_compactions, 5) * 0.20
+    economic = projected_savings > rewrite_cost * margin and removable > 0
+    compact = emergency or (at_plan_step_boundary is True and economic)
+    reason = "near_context_limit" if emergency else "projected_savings_clear_gate" if compact else "not_plan_boundary" if economic and at_plan_step_boundary is not True else "rewrite_cost_not_recovered"
+    body = {"schema_version":"px.context-compaction-decision/1.0", "compact":compact, "reason":reason, "at_plan_step_boundary":at_plan_step_boundary is True, "estimated_remaining_requests":round(estimated_requests,6), "projected_repeated_input_tokens":round(projected_savings,6), "estimated_rewrite_cost_tokens":round(rewrite_cost,6), "savings_margin":round(margin,6), "emergency":emergency, "authority_granted":False}
+    return {**body, "decision_sha256": _stable(body)}

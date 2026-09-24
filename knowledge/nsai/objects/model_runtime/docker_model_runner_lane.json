@@ -1,0 +1,150 @@
+{
+  "applicability": {
+    "conditions": [
+      "Use only with an admitted PX model/runtime identity.",
+      "Treat measured machine-specific profile evidence as stronger than generic defaults."
+    ],
+    "exclusions": [
+      "direct editor to DMR as normal route"
+    ],
+    "targets": [
+      "challenger/alternate models",
+      "local Docker runtime"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.95,
+        "evidence_refs": [
+          "px_docker_interlock",
+          "hello_genai_models"
+        ],
+        "statement": "PX must coordinate DMR GPU residency with native llama.cpp lanes before admitting GPU-heavy work."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_docker_interlock",
+          "hello_genai_models"
+        ],
+        "statement": "Prewarm is lease-aware and model identity remains anchored in PX attachments/certification."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "PX inspects/unloads conflicting DMR state before acquiring native leases and reverses the transition when needed.",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "Provider adapter normalizes DMR output to canonical PX events.",
+        "name": "mechanism_2"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, or policy authority."
+    ],
+    "summary": "Docker Model Runner is an optional isolated model runtime/package lane. PX uses it as a lifecycle/endpoint adapter with exact model identity and shared resource interlocks; DMR routing/fallback never replaces PX routing authority."
+  },
+  "namespace": "model_runtime",
+  "object_id": "nsai:model_runtime:cold_runtime:docker_model_runner_lane",
+  "object_type": "cold_runtime",
+  "ontology": {
+    "classes": [
+      "runtime_lane",
+      "isolation"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "model_runtime",
+      "runtime_scope": [
+        "challenger/alternate models",
+        "local Docker runtime"
+      ]
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "manual source-backed synthesis with schema validation and exact SHA provenance",
+      "source_pass": "Wave 14"
+    },
+    "sources": [
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_Model_Fabric_Junction_Hardening_Pass3_2026-09-20/10_DOCKER_MODEL_RUNNER_RESOURCE_INTERLOCK.md",
+        "sha256": "0c55ed3a5e4056514b84f0cd1ce6308c774ec83af92121f8df3f7665aa85fbc2",
+        "source_id": "px_docker_interlock"
+      },
+      {
+        "archive": "models and harnesses for them.zip",
+        "kind": "source_file",
+        "path": "hello-genai-main/models.yml",
+        "sha256": "fede41bccd0eb1827f59a726a9ed86a697a5dfa4450a45d603fd5041e0c3c067",
+        "source_id": "hello_genai_models"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:resource_interlock:model_resource_interlocks"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:protocol_normalization:provider_protocol_normalization"
+    }
+  ],
+  "retrieval": {
+    "priority": 85,
+    "tags": [
+      "docker",
+      "runtime",
+      "interlock",
+      "prewarm"
+    ],
+    "terms": [
+      "DMR",
+      "cold lane",
+      "container",
+      "docker",
+      "docker model runner",
+      "docker runtime lane",
+      "interlock",
+      "prewarm",
+      "runtime"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "Docker Model Runner is an optional isolated model runtime/package lane. PX uses it as a lifecycle/endpoint adapter with exact model identity and shared resource interlocks; DMR routing/fallback never replaces PX routing authority.",
+    "exclusions": [
+      "direct editor to DMR as normal route"
+    ],
+    "intents": [
+      "run docker model",
+      "prewarm model container"
+    ],
+    "keywords": [
+      "docker model runner",
+      "docker",
+      "cold lane",
+      "container"
+    ],
+    "retrieval_text": "Docker Model Runner Lane. Docker Model Runner is an optional isolated model runtime/package lane. PX uses it as a lifecycle/endpoint adapter with exact model identity and shared resource interlocks; DMR routing/fallback never replaces PX routing authority. PX must coordinate DMR GPU residency with native llama.cpp lanes before admitting GPU-heavy work. Prewarm is lease-aware and model identity remains anchored in PX attachments/certification.",
+    "short_description": "Docker Model Runner is an optional isolated model runtime/package lane.",
+    "synonyms": [
+      "DMR",
+      "docker runtime lane"
+    ]
+  },
+  "status": "validated",
+  "title": "Docker Model Runner Lane"
+}

@@ -6,6 +6,11 @@
       "path": "orchestration/workflows/agency-specialist-routing.yaml"
     },
     {
+      "entrypoint": "runtime.benchmark_operations:evaluate_preflight",
+      "mode": "executable_runtime",
+      "path": "orchestration/workflows/benchmark-operational-assurance.yaml"
+    },
+    {
       "entrypoint": "runtime.capability_assimilation:validate_capability_assimilation",
       "mode": "executable_validator",
       "path": "orchestration/workflows/capability-assimilation.yaml"
@@ -16,6 +21,16 @@
       "path": "orchestration/workflows/capability-scheduling.yaml"
     },
     {
+      "entrypoint": "runtime.clean_room_capabilities:validate_clean_room_capability_workflow",
+      "mode": "executable_validator",
+      "path": "orchestration/workflows/clean-room-capability-controls.yaml"
+    },
+    {
+      "entrypoint": "runtime.completion_controls:validate_completion_control_workflow",
+      "mode": "executable_validator",
+      "path": "orchestration/workflows/completion-controls.yaml"
+    },
+    {
       "entrypoint": "runtime.orchestrator:Orchestrator.run",
       "mode": "executable_runtime",
       "path": "orchestration/workflows/control-plane.yaml"
@@ -24,11 +39,6 @@
       "entrypoint": "runtime.cybersecurity_provider:validate_security_orchestration",
       "mode": "executable_validator",
       "path": "orchestration/workflows/cybersecurity-capability-operations.yaml"
-    },
-    {
-      "entrypoint": "runtime.clean_room_capabilities:validate_clean_room_capability_workflow",
-      "mode": "executable_validator",
-      "path": "orchestration/workflows/clean-room-capability-controls.yaml"
     },
     {
       "entrypoint": "runtime.declared_suite:validate_declared_suite",
@@ -46,6 +56,11 @@
       "path": "orchestration/workflows/external-capability-intake.yaml"
     },
     {
+      "entrypoint": "runtime.hardware_routing:route_workload",
+      "mode": "executable_runtime",
+      "path": "orchestration/workflows/hardware-aware-execution-routing.yaml"
+    },
+    {
       "entrypoint": "runtime.knowledge_refinery:validate_refinery_orchestration",
       "mode": "executable_validator",
       "path": "orchestration/workflows/knowledge-refinery.yaml"
@@ -61,14 +76,29 @@
       "path": "orchestration/workflows/local-model-planning.yaml"
     },
     {
+      "entrypoint": "runtime.local_model_lane_orchestration:validate_lane_orchestration",
+      "mode": "executable_validator",
+      "path": "orchestration/workflows/local-model-lane-orchestration.yaml"
+    },
+    {
       "entrypoint": "runtime.metacognitive_evolution.facade:validate_layer",
       "mode": "executable_validator",
       "path": "orchestration/workflows/metacognitive-evolution.yaml"
     },
     {
+      "entrypoint": "runtime.admitted_fabric_integrations:validate_persistent_memory_review",
+      "mode": "executable_validator",
+      "path": "orchestration/workflows/persistent-memory-review.yaml"
+    },
+    {
       "entrypoint": "runtime.project_impact:validate_project_change_intelligence_orchestration",
       "mode": "executable_validator",
       "path": "orchestration/workflows/project-change-intelligence.yaml"
+    },
+    {
+      "entrypoint": "runtime.resource_lifecycle:resource_status",
+      "mode": "executable_runtime",
+      "path": "orchestration/workflows/resource-lifecycle-reconciliation.yaml"
     },
     {
       "entrypoint": "runtime.query_certification:certify_queries",
@@ -84,28 +114,8 @@
       "entrypoint": "runtime.transcript_analysis:validate_transcript_orchestration",
       "mode": "executable_validator",
       "path": "orchestration/workflows/transcript-evidence-extraction.yaml"
-    },
-    {
-      "entrypoint": "runtime.completion_controls:validate_completion_control_workflow",
-      "mode": "executable_validator",
-      "path": "orchestration/workflows/completion-controls.yaml"
-    },
-    {
-      "entrypoint": "runtime.hardware_routing:route_workload",
-      "mode": "executable_runtime",
-      "path": "orchestration/workflows/hardware-aware-execution-routing.yaml"
-    },
-    {
-      "entrypoint": "runtime.benchmark_operations:evaluate_preflight",
-      "mode": "executable_runtime",
-      "path": "orchestration/workflows/benchmark-operational-assurance.yaml"
-    },
-    {
-      "entrypoint": "runtime.resource_lifecycle:resource_status",
-      "mode": "executable_runtime",
-      "path": "orchestration/workflows/resource-lifecycle-reconciliation.yaml"
     }
   ],
-  "count": 21,
+  "count": 23,
   "schema_version": "1.0"
 }

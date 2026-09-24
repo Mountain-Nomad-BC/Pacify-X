@@ -182,3 +182,42 @@ def validate_semantic_index(root: Path) -> dict[str, object]:
         "revision": expected["revision"],
         "errors": errors,
     }
+
+
+def build_retrieval_generation_binding(
+    semantic_index: dict[str, object],
+    *,
+    retrieval_generation_id: str,
+    embedding_revision: str,
+) -> dict[str, str]:
+    """Bind semantic-index identity to a retrieval generation without mutating index bytes."""
+    for value, name in ((retrieval_generation_id, "retrieval_generation_id"), (embedding_revision, "embedding_revision")):
+        if type(value) is not str or len(value) != 64 or any(c not in "0123456789abcdef" for c in value):
+            raise ValueError(f"{name} must be a lowercase SHA-256")
+    revision = semantic_index.get("revision")
+    if type(revision) is not str or len(revision) != 64:
+        raise ValueError("semantic index revision is invalid")
+    payload = {
+        "schema_version": "px.semantic-index-retrieval-binding/1.0",
+        "semantic_index_revision": revision,
+        "retrieval_generation_id": retrieval_generation_id,
+        "embedding_revision": embedding_revision,
+    }
+    return {**payload, "binding_sha256": hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()).hexdigest()}
+
+
+def validate_retrieval_generation_binding(
+    semantic_index: dict[str, object], binding: dict[str, object], *, expected_generation_id: str
+) -> dict[str, object]:
+    try:
+        expected = build_retrieval_generation_binding(
+            semantic_index,
+            retrieval_generation_id=expected_generation_id,
+            embedding_revision=str(binding.get("embedding_revision", "")),
+        )
+    except (TypeError, ValueError) as error:
+        return {"valid": False, "errors": [str(error)]}
+    errors=[]
+    if binding != expected:
+        errors.append("semantic retrieval binding is stale, incompatible, or mutated")
+    return {"valid": not errors, "errors": errors, "binding_sha256": expected["binding_sha256"]}

@@ -1,23 +1,76 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.2",
   "mode": "capability_and_availability",
   "eligibility": {
     "unavailable_is_ineligible": true,
     "required_traits_must_all_match": true,
     "minimum_context_must_match": true,
-    "sensitive_privacy": ["local", "isolated"]
+    "sensitive_privacy": [
+      "local",
+      "isolated"
+    ]
   },
   "scoring": {
     "trait_weight": 10.0,
-    "privacy_weights": {"local": 3.0, "isolated": 2.0, "policy_gated": 0.0},
-    "cost_weights": {"free": 0.0, "low": 1.0, "medium": 2.0, "high": 4.0},
-    "latency_weights": {"low": 0.0, "medium": 1.0, "high": 3.0},
+    "privacy_weights": {
+      "local": 3.0,
+      "isolated": 2.0,
+      "policy_gated": 0.0
+    },
+    "cost_weights": {
+      "free": 0.0,
+      "low": 1.0,
+      "medium": 2.0,
+      "high": 4.0
+    },
+    "latency_weights": {
+      "low": 0.0,
+      "medium": 1.0,
+      "high": 3.0
+    },
     "cold_cost_weight": 1.0
+  },
+  "residency": {
+    "resident_bonus": 2.0,
+    "warm_bonus": 1.0,
+    "cold_penalty": 1.0,
+    "queue_penalty": 0.25
+  },
+  "control_lane": {
+    "deterministic_first": true,
+    "requires_certified_profile": true,
+    "max_queue_depth": 8
   },
   "fallback": {
     "when_no_eligible_model": "return_explicit_fallback_required",
     "silent_privacy_downgrade": false,
     "silent_context_downgrade": false,
     "auto_download": false
+  },
+  "adaptive_routing": {
+    "phase": "freeze",
+    "max_candidate_projection": 3,
+    "affinity_weight": 1.5,
+    "quality_weight": 2.0,
+    "availability_weight": 0.5,
+    "pressure_penalty": 1.0,
+    "requires_stable_evidence": true
+  },
+  "challenger": {
+    "discovery_mode": "sample",
+    "calibration_mode": "always",
+    "anneal_mode": "threshold",
+    "freeze_mode": "none",
+    "certify_mode": "always",
+    "publish_mode": "none",
+    "score_margin": 0.5,
+    "sample_rate": 0.05,
+    "max_challengers": 1
+  },
+  "capacity": {
+    "dropless": true,
+    "fallback_requires_explicit_request": true,
+    "exclusive_heavy_models": true,
+    "max_route_queue_depth": 64
   }
 }

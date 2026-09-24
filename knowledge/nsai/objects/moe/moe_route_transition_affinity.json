@@ -1,0 +1,157 @@
+{
+  "applicability": {
+    "conditions": [
+      "Affinity must be derived from evaluated outcomes."
+    ],
+    "exclusions": [
+      "promoting affinity from a single event"
+    ],
+    "targets": [
+      "model routes"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "px_route_state",
+          "px_route_observability",
+          "moe_affinity_doc"
+        ],
+        "statement": "Route transitions require distinct before/after decision identities and hashed evidence."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_route_state",
+          "px_route_observability",
+          "moe_affinity_doc"
+        ],
+        "statement": "Feature affinity is computed from observed outcomes rather than granted by model self-description."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_route_state",
+          "px_route_observability",
+          "moe_affinity_doc"
+        ],
+        "statement": "Affinity evidence can mature only through repeated, independently evaluated behavior."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "record content-addressed route transitions",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "aggregate outcomes by feature/domain and route",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "feed mature affinity evidence through governed learning/promotion",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "Route transitions and feature/domain affinity are recorded as evidence explaining when model selection changes and which task features correlate with successful routes."
+  },
+  "namespace": "moe",
+  "object_id": "nsai:moe:route_affinity:moe_route_transition_affinity",
+  "object_type": "route_affinity",
+  "ontology": {
+    "classes": [
+      "affinity_evidence",
+      "routing_observability"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "moe"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "kind": "source_file",
+        "path": "runtime/model_route_state.py",
+        "sha256": "7110ce744a74d16a884042d0a7fb30990aa7d8ca57457ce89614c4bd24139dec",
+        "source_id": "px_route_state"
+      },
+      {
+        "kind": "source_file",
+        "path": "runtime/model_routing_observability.py",
+        "sha256": "d122b0c8e63d13a6c7664162ec38b908212cb01ebebd135bb37d3c0dc8252558",
+        "source_id": "px_route_observability"
+      },
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_MoE_Mining_Pass_v3/16_ROUTE_TRANSITIONS_AND_FEATURE_AFFINITY.md",
+        "sha256": "06fdf4f4e8877e4fa6e7d101943a3a6cc1855ebb3127de80992def355fe84286",
+        "source_id": "moe_affinity_doc"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:moe:adaptation_drift:moe_adaptation_drift"
+    }
+  ],
+  "retrieval": {
+    "priority": 84,
+    "tags": [
+      "domain affinity",
+      "feature affinity",
+      "route evidence",
+      "route transition"
+    ],
+    "terms": [
+      "domain affinity",
+      "feature affinity",
+      "feature-to-model affinity",
+      "route affinity",
+      "route evidence",
+      "route transition"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "Route transitions and feature/domain affinity are recorded as evidence explaining when model selection changes and which task features correlate with successful routes.",
+    "exclusions": [
+      "self-declared expertise"
+    ],
+    "intents": [
+      "analyze route transitions",
+      "measure model affinity"
+    ],
+    "keywords": [
+      "domain affinity",
+      "feature affinity",
+      "route evidence",
+      "route transition"
+    ],
+    "retrieval_text": "Route Transitions and Feature Affinity. Route transitions and feature/domain affinity are recorded as evidence explaining when model selection changes and which task features correlate with successful routes. Route transitions require distinct before/after decision identities and hashed evidence. Feature affinity is computed from observed outcomes rather than granted by model self-description. Affinity evidence can mature only through repeated, independently evaluated behavior.",
+    "short_description": "Route transitions and feature/domain affinity are recorded as evidence explaining when model selection changes and which task features correlate with successful routes.",
+    "synonyms": [
+      "feature-to-model affinity",
+      "route affinity"
+    ]
+  },
+  "status": "validated",
+  "title": "Route Transitions and Feature Affinity"
+}

@@ -1,0 +1,158 @@
+{
+  "applicability": {
+    "conditions": [
+      "Promotion requires review evidence."
+    ],
+    "exclusions": [
+      "overwriting historical source records"
+    ],
+    "targets": [
+      "memory candidates"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "memory_review_doc",
+          "memory_consolidation_doc",
+          "px_memory_fabric"
+        ],
+        "statement": "Review is distinct from canonical storage and from public publication."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "memory_review_doc",
+          "memory_consolidation_doc",
+          "px_memory_fabric"
+        ],
+        "statement": "Promotion must identify the exact candidate/source revision and record the decision."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "memory_review_doc",
+          "memory_consolidation_doc",
+          "px_memory_fabric"
+        ],
+        "statement": "Consolidation may produce a new canonical summary/revision but cannot silently destroy contradictory or superseded evidence."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "place candidate material in a review queue",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "evaluate conflicts, duplication, provenance, and confidence",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "write a promotion receipt and derive promoted/current projections",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "Memory consolidation and promotion are governed lifecycle transitions: candidates are reviewed, compared with existing history, and promoted by receipt while immutable source records remain intact."
+  },
+  "namespace": "memory",
+  "object_id": "nsai:memory:review_promotion:persistent_memory_review_promotion",
+  "object_type": "review_promotion",
+  "ontology": {
+    "classes": [
+      "memory_lifecycle",
+      "promotion_gate"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "memory"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "archive": "models and harnesses for them.zip",
+        "kind": "source_file",
+        "path": "Pacify-X-Persistent-Memory-Plugin/docs/05_REVIEW_AND_PROMOTION.md",
+        "sha256": "ae229bc1bc14eeda535423a7380b7a8b1f47429f2288b3b5b1bfc59967514e07",
+        "source_id": "memory_review_doc"
+      },
+      {
+        "archive": "models and harnesses for them.zip",
+        "kind": "source_file",
+        "path": "Pacify-X-Persistent-Memory-Plugin/docs/06_SCHEDULED_CONSOLIDATION.md",
+        "sha256": "c1bd7e2cd6ce8e0b5698249ac9c0428e050f287d8541432cd0132619f514448f",
+        "source_id": "memory_consolidation_doc"
+      },
+      {
+        "kind": "source_file",
+        "path": "runtime/memory_fabric.py",
+        "sha256": "9ad048336d6009de42a45de5a012d3dabcb4e7ba6c771b25ffb0df7a67024141",
+        "source_id": "px_memory_fabric"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:memory:bitemporal_lineage:persistent_memory_bitemporal_lineage"
+    }
+  ],
+  "retrieval": {
+    "priority": 90,
+    "tags": [
+      "consolidation",
+      "memory review",
+      "promotion",
+      "receipt"
+    ],
+    "terms": [
+      "consolidation",
+      "consolidation review",
+      "memory promotion gate",
+      "memory review",
+      "promotion",
+      "receipt"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "Memory consolidation and promotion are governed lifecycle transitions: candidates are reviewed, compared with existing history, and promoted by receipt while immutable source records remain intact.",
+    "exclusions": [
+      "automatic self-promotion"
+    ],
+    "intents": [
+      "promote memory",
+      "review persistent memory"
+    ],
+    "keywords": [
+      "consolidation",
+      "memory review",
+      "promotion",
+      "receipt"
+    ],
+    "retrieval_text": "Persistent Memory Review and Promotion. Memory consolidation and promotion are governed lifecycle transitions: candidates are reviewed, compared with existing history, and promoted by receipt while immutable source records remain intact. Review is distinct from canonical storage and from public publication. Promotion must identify the exact candidate/source revision and record the decision. Consolidation may produce a new canonical summary/revision but cannot silently destroy contradictory or superseded evidence.",
+    "short_description": "Memory consolidation and promotion are governed lifecycle transitions: candidates are reviewed, compared with existing history, and promoted by receipt while immutable source records remain intact.",
+    "synonyms": [
+      "consolidation review",
+      "memory promotion gate"
+    ]
+  },
+  "status": "validated",
+  "title": "Persistent Memory Review and Promotion"
+}

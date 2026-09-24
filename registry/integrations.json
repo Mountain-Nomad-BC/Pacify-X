@@ -39,6 +39,34 @@
         "required": false
       },
       "consumes": [
+        "repository_root",
+        "query",
+        "project_scope"
+      ],
+      "effects": [
+        "read_local"
+      ],
+      "handler": "runtime.admitted_fabric_integrations:cognitive_query_read",
+      "healthcheck": "runtime.admitted_fabric_integrations:cognitive_query_healthcheck",
+      "id": "cognitive-query-runtime",
+      "owner": "runtime/admitted_fabric_integrations.py",
+      "provides": [
+        "bounded_cross_domain_cognitive_query"
+      ],
+      "rollback": {
+        "strategy": "disable integration record; cognitive index remains a rebuildable projection"
+      },
+      "status": "active",
+      "uses": [
+        "skill-navigator"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "approval": {
+        "required": false
+      },
+      "consumes": [
         "query",
         "identity_scope",
         "source_metadata"
@@ -95,6 +123,195 @@
         "manage-revocable-certification"
       ],
       "version": "1.0.0"
+    },
+    {
+      "approval": {
+        "required": false
+      },
+      "consumes": [
+        "repository_root"
+      ],
+      "effects": [
+        "read_local"
+      ],
+      "handler": "runtime.admitted_fabric_integrations:model_fabric_inventory",
+      "healthcheck": "runtime.admitted_fabric_integrations:model_fabric_healthcheck",
+      "id": "model-fabric-runtime",
+      "owner": "runtime/admitted_fabric_integrations.py",
+      "provides": [
+        "admitted_model_profile_inventory",
+        "model_lane_identity"
+      ],
+      "rollback": {
+        "strategy": "disable integration record; canonical model runtime/profile owners remain unchanged"
+      },
+      "status": "active",
+      "uses": [
+        "govern-model-fabric"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "approval": {
+        "required": false
+      },
+      "consumes": [
+        "repository_root"
+      ],
+      "effects": [
+        "read_local"
+      ],
+      "handler": "runtime.admitted_fabric_integrations:nsai_library_status",
+      "healthcheck": "runtime.admitted_fabric_integrations:nsai_library_healthcheck",
+      "id": "nsai-knowledge-library",
+      "owner": "runtime/admitted_fabric_integrations.py",
+      "provides": [
+        "nsai_library_audit",
+        "deterministic_index_status"
+      ],
+      "rollback": {
+        "strategy": "disable integration record; canonical NSAI object files remain unchanged"
+      },
+      "status": "active",
+      "uses": [
+        "govern-knowledge-refinery"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "approval": {
+        "required": false
+      },
+      "consumes": [
+        "provider_registry"
+      ],
+      "effects": [
+        "read_local"
+      ],
+      "handler": "runtime.admitted_fabric_integrations:persistent_memory_metadata",
+      "healthcheck": "runtime.admitted_fabric_integrations:persistent_memory_healthcheck",
+      "id": "persistent-memory-provider",
+      "owner": "runtime/admitted_fabric_integrations.py",
+      "provides": [
+        "external_memory_provider_metadata"
+      ],
+      "rollback": {
+        "strategy": "disable integration record; external provider remains disabled by default and canonical PX memory is unchanged"
+      },
+      "status": "active",
+      "uses": [
+        "govern-persistent-memory",
+        "govern-memory-fabric"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "approval": {
+        "required": false
+      },
+      "consumes": [
+        "retrieval_state_root"
+      ],
+      "effects": [
+        "read_local"
+      ],
+      "handler": "runtime.admitted_fabric_integrations:retrieval_generation_status",
+      "healthcheck": "runtime.admitted_fabric_integrations:retrieval_generation_healthcheck",
+      "id": "retrieval-generation-runtime",
+      "owner": "runtime/admitted_fabric_integrations.py",
+      "provides": [
+        "active_retrieval_generation_status"
+      ],
+      "rollback": {
+        "strategy": "disable integration record; retrieval activation/rollback remains with retrieval-generation authority"
+      },
+      "status": "active",
+      "uses": [
+        "govern-retrieval-generations"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "approval": {
+        "required": false
+      },
+      "consumes": [
+        "project_scope"
+      ],
+      "effects": [
+        "read_local"
+      ],
+      "handler": "runtime.admitted_fabric_integrations:semantic_code_inventory",
+      "healthcheck": "runtime.admitted_fabric_integrations:semantic_code_healthcheck",
+      "id": "semantic-code-intelligence-runtime",
+      "owner": "runtime/admitted_fabric_integrations.py",
+      "provides": [
+        "semantic_code_operation_inventory"
+      ],
+      "rollback": {
+        "strategy": "disable integration record; semantic owners and indexes remain unchanged"
+      },
+      "status": "active",
+      "uses": [
+        "operate-semantic-code-intelligence"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "id": "vscode-model-client",
+      "version": "1.0.0",
+      "owner": "extension/src/pxLanguageModelProvider.js",
+      "status": "candidate",
+      "handler": "runtime.admitted_fabric_integrations:vscode_model_client_status",
+      "healthcheck": "runtime.admitted_fabric_integrations:vscode_model_client_healthcheck",
+      "provides": [
+        "vscode_governed_language_model_client"
+      ],
+      "consumes": [
+        "certified_model_profiles",
+        "running_model_router",
+        "provider_gateway"
+      ],
+      "effects": [
+        "model"
+      ],
+      "uses": [
+        "govern-model-fabric"
+      ],
+      "approval": {
+        "required": false
+      },
+      "rollback": {
+        "strategy": "disable client integration record; provider gateway and model fabric remain unchanged"
+      }
+    },
+    {
+      "id": "mcp-model-fabric-bridge",
+      "version": "1.0.0",
+      "owner": "extension/src/mcpModelFabricBridge.js",
+      "status": "candidate",
+      "handler": "runtime.admitted_fabric_integrations:vscode_model_client_status",
+      "healthcheck": "runtime.admitted_fabric_integrations:mcp_model_fabric_bridge_healthcheck",
+      "provides": [
+        "extension_host_model_fabric_bridge"
+      ],
+      "consumes": [
+        "vscode_governed_language_model_client",
+        "provider_gateway"
+      ],
+      "effects": [
+        "read_local",
+        "model"
+      ],
+      "uses": [
+        "govern-model-fabric"
+      ],
+      "approval": {
+        "required": false
+      },
+      "rollback": {
+        "strategy": "disable bridge integration record; canonical MCP and provider authorities remain unchanged"
+      }
     }
   ],
   "loading_rule": "metadata_at_startup_handler_after_explicit_selection",

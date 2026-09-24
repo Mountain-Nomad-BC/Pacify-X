@@ -15,10 +15,31 @@
       "violations": []
     },
     {
+      "bytes": 5207,
+      "path": "runtime/action_fusion.py",
+      "scan_state": "verified",
+      "sha256": "2059375feb57285fe3f6ff1ac1a2de4ccf14e1925f8d270edb91a12a7e0cf4fd",
+      "violations": []
+    },
+    {
+      "bytes": 15609,
+      "path": "runtime/action_surface.py",
+      "scan_state": "verified",
+      "sha256": "ab880ecf207cd6453ec42be4b6b2bed981739cb5e50624293d503e29d1f1f822",
+      "violations": []
+    },
+    {
       "bytes": 10801,
       "path": "runtime/admission_controller.py",
       "scan_state": "verified",
       "sha256": "8d8a874f9a07267282e8ca68d185707183dcf3ed30a2f59dec542ed7d4c1ae5c",
+      "violations": []
+    },
+    {
+      "bytes": 5310,
+      "path": "runtime/admitted_fabric_integrations.py",
+      "scan_state": "verified",
+      "sha256": "ecd325c3af20ae1cb7a459d1de7c5982e736aa2d792b9ead78fe4971c5383a72",
       "violations": []
     },
     {
@@ -57,10 +78,10 @@
       "violations": []
     },
     {
-      "bytes": 5124,
+      "bytes": 6326,
       "path": "runtime/agent_harness_worker.py",
       "scan_state": "verified",
-      "sha256": "bb0d2ad1547c93b5861c7793acb1d5af97d5d54c271adf6427516f58eeefe406",
+      "sha256": "d34c89b12fd10cdf9a826635f1ca59c7179aa65a2c68c2e6cd61b9b64e09d3dc",
       "violations": []
     },
     {
@@ -75,6 +96,13 @@
       "path": "runtime/agent_runtime.py",
       "scan_state": "verified",
       "sha256": "c5dcad86997bca78bfd8c3b82e265e15625245478ef2c96ef8d466248100dc1e",
+      "violations": []
+    },
+    {
+      "bytes": 15449,
+      "path": "runtime/airllm_runtime.py",
+      "scan_state": "verified",
+      "sha256": "04738de4c75b663c10f903a8c724e41ec9b53a08819ec03141ba73dd5490fb20",
       "violations": []
     },
     {
@@ -183,10 +211,10 @@
       "violations": []
     },
     {
-      "bytes": 15133,
+      "bytes": 17974,
       "path": "runtime/capability_scheduler.py",
       "scan_state": "verified",
-      "sha256": "af33d5337cb93d01b1059cc9ddb1fa2ba7e2c21d4c7f005e082e5367b0f0cb4d",
+      "sha256": "9f54fec47dc6b85b1c18ab0c9e03222c30241d32812ed9bfd3e364b81e374889",
       "violations": []
     },
     {
@@ -204,10 +232,10 @@
       "violations": []
     },
     {
-      "bytes": 26839,
+      "bytes": 31532,
       "path": "runtime/certification_readiness.py",
       "scan_state": "verified",
-      "sha256": "0d33243debdcb67c32de91da6b61438d9ec0fe3f33b8d2e3f8a9a4ceba3b8887",
+      "sha256": "bba88a320ac5285ef82a85be0d80df428b61be1566f57ea04e077cd265956443",
       "violations": []
     },
     {
@@ -239,10 +267,10 @@
       "violations": []
     },
     {
-      "bytes": 12562,
+      "bytes": 14695,
       "path": "runtime/cognitive_assurance.py",
       "scan_state": "verified",
-      "sha256": "cc15d2acd6f57b8359dc2902bddb4053bb347e33d8567fd6502a6b029c089e1e",
+      "sha256": "1c5f3c4097e4b4520e769bfc3943ad0c276c6b5ba763fb8b88a65abf1b10988b",
       "violations": []
     },
     {
@@ -309,10 +337,10 @@
       "violations": []
     },
     {
-      "bytes": 53058,
+      "bytes": 59127,
       "path": "runtime/cognitive_core/index_builder.py",
       "scan_state": "verified",
-      "sha256": "f92d9dedf392531a2f3b9f9312451831b828f885aef10b1503af48b8af8b5490",
+      "sha256": "76bf24c87aa7892a54fce97ee4a2a60ced62be85fa6ed528bbf6708d0e05b15a",
       "violations": []
     },
     {
@@ -358,6 +386,13 @@
       "violations": []
     },
     {
+      "bytes": 12852,
+      "path": "runtime/cognitive_query.py",
+      "scan_state": "verified",
+      "sha256": "b765468ed2784e9db74dd2fbe1401897d9bd65562eb7164e6e3f65f8878e07a2",
+      "violations": []
+    },
+    {
       "bytes": 41609,
       "path": "runtime/commissioning.py",
       "scan_state": "verified",
@@ -365,10 +400,10 @@
       "violations": []
     },
     {
-      "bytes": 28592,
+      "bytes": 29954,
       "path": "runtime/completion_controls.py",
       "scan_state": "verified",
-      "sha256": "6055bcc83245155d4677ee3742e8e139e10fa1cb7ec27bf5b0c5def86e375ab5",
+      "sha256": "fe6336e0f6981269abbac65fd196b475350b93ad90dd950dcebacc92c9b2528c",
       "violations": []
     },
     {
@@ -379,10 +414,17 @@
       "violations": []
     },
     {
-      "bytes": 38070,
+      "bytes": 6849,
+      "path": "runtime/context_checkpoint.py",
+      "scan_state": "verified",
+      "sha256": "68e0364ae6e485cfe335ae0ca2bc3526a249e858929aaf1d328e178a70073920",
+      "violations": []
+    },
+    {
+      "bytes": 38215,
       "path": "runtime/contracts.py",
       "scan_state": "verified",
-      "sha256": "5e864798cb330a216c84f619ff7724a3e3ac28b629331efe44fe6d4861a8d64f",
+      "sha256": "71dce33cb6dd899fc0ee1033ce36f1f8afb2bfdfe007ae3f9862504cd0649770",
       "violations": []
     },
     {
@@ -407,10 +449,10 @@
       "violations": []
     },
     {
-      "bytes": 151958,
+      "bytes": 152876,
       "path": "runtime/dashboard_api.py",
       "scan_state": "verified",
-      "sha256": "dc1b52e0efe6e720274dd680ac0c940d4151dd0c173bbd92885532d05d316790",
+      "sha256": "6127ce9aaa7ab3e581cf1fafe3293b11259566a2bea8aab8c9b8523c4fe17ac1",
       "violations": []
     },
     {
@@ -428,10 +470,10 @@
       "violations": []
     },
     {
-      "bytes": 11011,
+      "bytes": 11047,
       "path": "runtime/dependency_audit.py",
       "scan_state": "verified",
-      "sha256": "59fdfa4125e82b3167f6736faa063e91db969ce4c3d2f6a564a61184af1c6aaa",
+      "sha256": "40b85570219ca06f2350b71fec845618d042baa548a3e5db896818e58d5decab",
       "violations": []
     },
     {
@@ -439,6 +481,20 @@
       "path": "runtime/dependency_invalidation.py",
       "scan_state": "verified",
       "sha256": "9eda4329c175795226f480d7b6b697c9cc0750c93563daffa09204ac0aa05cbc",
+      "violations": []
+    },
+    {
+      "bytes": 3814,
+      "path": "runtime/distribution_drift.py",
+      "scan_state": "verified",
+      "sha256": "4281b7ae1c217a41218a92bfc459a1cc345fae756dfe5e47ee1e2e98c22a6076",
+      "violations": []
+    },
+    {
+      "bytes": 12236,
+      "path": "runtime/docker_model_runtime.py",
+      "scan_state": "verified",
+      "sha256": "9e815aaf194173d9158c9e1b7b073b48a3ceca3d4fb85dc14c5e439ff5f727b9",
       "violations": []
     },
     {
@@ -456,10 +512,10 @@
       "violations": []
     },
     {
-      "bytes": 9484,
+      "bytes": 11259,
       "path": "runtime/effect_surface.py",
       "scan_state": "verified",
-      "sha256": "d5c55dbbe6c9d32a4a5b8548efd7d191a805dec0ce53fa6ae630f49ca1103a44",
+      "sha256": "2bc48913d75c73af94a62897ed37a29d933d551d0f516a0f4f33a98cd8464fb5",
       "violations": []
     },
     {
@@ -484,10 +540,10 @@
       "violations": []
     },
     {
-      "bytes": 12037,
+      "bytes": 13567,
       "path": "runtime/event_ledger.py",
       "scan_state": "verified",
-      "sha256": "c195cdf30ac087b5bae2698da26e0a4ad312dd24a078f4b5e9880f9eb14bc71c",
+      "sha256": "4d12769976e23b69a53f46badc6d1f3768a2f4e2e0788130055c61e6515787b2",
       "violations": []
     },
     {
@@ -533,6 +589,13 @@
       "violations": []
     },
     {
+      "bytes": 6894,
+      "path": "runtime/evidence_reducer.py",
+      "scan_state": "verified",
+      "sha256": "4e27a1b9ce389b36c8d2c05b6c1c3a2b02f6cf8591106ebc37a49b3b3a5c8170",
+      "violations": []
+    },
+    {
       "bytes": 43196,
       "path": "runtime/exact_tool_certification.py",
       "scan_state": "verified",
@@ -540,10 +603,10 @@
       "violations": []
     },
     {
-      "bytes": 12022,
+      "bytes": 13101,
       "path": "runtime/execution_contract.py",
       "scan_state": "verified",
-      "sha256": "d78807c8e1c561004bc02698cf0745a49c66059f33879106205c17ea15e228d2",
+      "sha256": "785712f85bba23b9684c4cda96438b47f956ee7298229465fb21ca80e9d2e106",
       "violations": []
     },
     {
@@ -561,10 +624,10 @@
       "violations": []
     },
     {
-      "bytes": 33019,
+      "bytes": 36720,
       "path": "runtime/external_capability_provider.py",
       "scan_state": "verified",
-      "sha256": "4072c9d78c72bc7b6b369400aba311daaa500473fca6fe70b7497944de0e2669",
+      "sha256": "c1abcc40233641f6c6a13e0c1ab1d82848b931f8da67aec49326eac34bc28f05",
       "violations": []
     },
     {
@@ -652,10 +715,10 @@
       "violations": []
     },
     {
-      "bytes": 38693,
+      "bytes": 43614,
       "path": "runtime/hardware_routing.py",
       "scan_state": "verified",
-      "sha256": "0e38c15e922ee165be145ec999d956d055b68d90377acb7367876772f78e35b8",
+      "sha256": "791ecc2ced6e8dfb90237ea5495c870c190e40bb7c6fcf23a98910e6c5c9ad6e",
       "violations": []
     },
     {
@@ -715,6 +778,13 @@
       "violations": []
     },
     {
+      "bytes": 7269,
+      "path": "runtime/job_receipt.py",
+      "scan_state": "verified",
+      "sha256": "ba0dca99fc5ce32b99bef6abfbacd0bc372ae86eb90a071f76b8469948f40ca4",
+      "violations": []
+    },
+    {
       "bytes": 12578,
       "path": "runtime/json_io.py",
       "scan_state": "verified",
@@ -722,24 +792,31 @@
       "violations": []
     },
     {
-      "bytes": 114546,
+      "bytes": 114964,
       "path": "runtime/knowledge_core_controller.py",
       "scan_state": "verified",
-      "sha256": "582bc26c86d28799203209a1cadd8fc0a6c3b702dde7c330dc1347d309ba9bdb",
+      "sha256": "eac378a8606267465f0c306289ee7182c7ff488bdfc4c962a360177b3fb22fd0",
       "violations": []
     },
     {
-      "bytes": 29625,
+      "bytes": 32226,
       "path": "runtime/knowledge_foundry.py",
       "scan_state": "verified",
-      "sha256": "0d26bcf96c81066e78c5db5d3c508e7202a3586afd07bf9bbaea6d397a9a4f77",
+      "sha256": "f53b7b29393ddc3e9b8aa16a5f875f3c004fb919aca215fab60e0b9a06f524b7",
       "violations": []
     },
     {
-      "bytes": 20236,
+      "bytes": 20942,
       "path": "runtime/knowledge_refinery.py",
       "scan_state": "verified",
-      "sha256": "844e1a63258bb81d43724510a9e89855cbc28f495863343921377552712d3b28",
+      "sha256": "32542aafbaaf0c5ff7928db20213ee0cf6269681ea90ac010e50ed3cbe83d749",
+      "violations": []
+    },
+    {
+      "bytes": 4748,
+      "path": "runtime/latency_budget.py",
+      "scan_state": "verified",
+      "sha256": "1be4d08579c6a09b3d29b4186f0433d0030da8303579f67aa204fbbb7156f066",
       "violations": []
     },
     {
@@ -750,10 +827,24 @@
       "violations": []
     },
     {
-      "bytes": 33681,
+      "bytes": 45220,
       "path": "runtime/learning_promotion.py",
       "scan_state": "verified",
-      "sha256": "09e47b563f5792ad928f6b7dec8014c729e6081ee2cbf2bcb151c699171582c2",
+      "sha256": "be3f59e5509786fbf19c65449953a3e136a81fdbce72068c81d188181c8f85fd",
+      "violations": []
+    },
+    {
+      "bytes": 18221,
+      "path": "runtime/librarian_answer.py",
+      "scan_state": "verified",
+      "sha256": "9960f7ed477768602a213ecdcbcabaf835198606aa2a99134c28ba0c93fc74c3",
+      "violations": []
+    },
+    {
+      "bytes": 18584,
+      "path": "runtime/librarian_semantic_map.py",
+      "scan_state": "verified",
+      "sha256": "21b5f3d969d5dfd10824b2c7b775b0109b2f819e32b0bbf91c4ad1b51dcae8a4",
       "violations": []
     },
     {
@@ -771,31 +862,45 @@
       "violations": []
     },
     {
-      "bytes": 19281,
+      "bytes": 18703,
+      "path": "runtime/llama_cpp_capabilities.py",
+      "scan_state": "verified",
+      "sha256": "61d0da5bdf94b379abd184f0e87d1f247083e868dce1991f42e042b4d5470967",
+      "violations": []
+    },
+    {
+      "bytes": 12287,
+      "path": "runtime/local_model_lane_orchestration.py",
+      "scan_state": "verified",
+      "sha256": "9837d69afb4d5630c08567353cab363c93478a7c555c24acf0529a79bba2f717",
+      "violations": []
+    },
+    {
+      "bytes": 44443,
       "path": "runtime/local_model_runtime.py",
       "scan_state": "verified",
-      "sha256": "85ebb52f653570b6f64cea8f1964bec64d9da4e511b8f89b81018c5a20207c74",
+      "sha256": "fe04197b63e9415e7a968b0190ffed1c63e7de3e7e6cb1058716fd82fbb31224",
       "violations": []
     },
     {
-      "bytes": 10639,
+      "bytes": 12894,
       "path": "runtime/memory_broker.py",
       "scan_state": "verified",
-      "sha256": "de6f8ddfa794842ce36bf5cffe7f5b5b0150d6236639d00e436e0231f86fcb0c",
+      "sha256": "a1ece7b05b9aeb7de382ef62511d4ba7de844fbf03b01f493002774a520b43c6",
       "violations": []
     },
     {
-      "bytes": 17699,
+      "bytes": 19706,
       "path": "runtime/memory_fabric.py",
       "scan_state": "verified",
-      "sha256": "62a0568d0419cf760d7c8162bd4254a66eac07d9ef3812f4168f3b0def7d013a",
+      "sha256": "9ad048336d6009de42a45de5a012d3dabcb4e7ba6c771b25ffb0df7a67024141",
       "violations": []
     },
     {
-      "bytes": 43570,
+      "bytes": 44369,
       "path": "runtime/memory_intelligence.py",
       "scan_state": "verified",
-      "sha256": "0bb2c84b21861eea66fbddae5fadb1ab8f9698300721ffcb4f6abd705ec90566",
+      "sha256": "a87990344ec398c02584324ae21510b565dfc4007b25758a90df7bfd432827a8",
       "violations": []
     },
     {
@@ -988,17 +1093,87 @@
       "violations": []
     },
     {
-      "bytes": 28454,
+      "bytes": 34834,
       "path": "runtime/model_attachment.py",
       "scan_state": "verified",
-      "sha256": "f7cc7b67f3adaeac582f7271500c0a307637452f44f25a3cc739639fa790f86b",
+      "sha256": "6725ef45e5fcbf8859a02bb183389ec3c7dc324b6b44746ea6eaea4ea4c4fe3e",
       "violations": []
     },
     {
-      "bytes": 10711,
+      "bytes": 10464,
+      "path": "runtime/model_capacity.py",
+      "scan_state": "verified",
+      "sha256": "4650f0bc9a1f8d2f4ec37201ea4e29bee991e55a71da785e43146dee8479bb8a",
+      "violations": []
+    },
+    {
+      "bytes": 6329,
+      "path": "runtime/model_fabric_generation.py",
+      "scan_state": "verified",
+      "sha256": "5c221f48e2334991408996bb6bcb65b9391e281fa8072068504590a846111969",
+      "violations": []
+    },
+    {
+      "bytes": 6113,
+      "path": "runtime/model_health.py",
+      "scan_state": "verified",
+      "sha256": "83bf420f14a3729a13b718ab1845e7d6449b8b5abbb844e000f70d273822fadf",
+      "violations": []
+    },
+    {
+      "bytes": 23551,
+      "path": "runtime/model_pool.py",
+      "scan_state": "verified",
+      "sha256": "ac8148465bcede9904367cbdd0aca479548b5ed4f32170950e7111f226068c03",
+      "violations": []
+    },
+    {
+      "bytes": 9519,
+      "path": "runtime/model_profile.py",
+      "scan_state": "verified",
+      "sha256": "4d0febb33f2cdb20878b00eeee0c518c7eb33449a96f80ec0bcbd4eee181acb4",
+      "violations": []
+    },
+    {
+      "bytes": 22559,
+      "path": "runtime/model_protocol.py",
+      "scan_state": "verified",
+      "sha256": "53dd5f9ac14896515255dbefd505f3b86b374419aad5c522e4c9a97e07e95af5",
+      "violations": []
+    },
+    {
+      "bytes": 30925,
+      "path": "runtime/model_protocol_translate.py",
+      "scan_state": "verified",
+      "sha256": "75e33dee100d9ca47005c4460b955af5dac3e00dfe9518eda59627deef8d1c46",
+      "violations": []
+    },
+    {
+      "bytes": 14519,
+      "path": "runtime/model_resource_interlock.py",
+      "scan_state": "verified",
+      "sha256": "8f4420f721ac9961e94145691d66e938355f4a8e138f8ae734f13fc21e5d34f3",
+      "violations": []
+    },
+    {
+      "bytes": 12712,
+      "path": "runtime/model_route_state.py",
+      "scan_state": "verified",
+      "sha256": "7110ce744a74d16a884042d0a7fb30990aa7d8ca57457ce89614c4bd24139dec",
+      "violations": []
+    },
+    {
+      "bytes": 17895,
+      "path": "runtime/model_routing_observability.py",
+      "scan_state": "verified",
+      "sha256": "d122b0c8e63d13a6c7664162ec38b908212cb01ebebd135bb37d3c0dc8252558",
+      "violations": []
+    },
+    {
+      "bytes": 37128,
       "path": "runtime/models.py",
       "scan_state": "verified",
-      "sha256": "2b4d1e6ddeafc78bfc2d2fcfcbc929e0ef0c88a77578462107fa7e1de6b1e4ab",
+      "sha256": "be04bfda016a3312ac01606bf9cc828f6b40ca90c5b18fe0fc148a4a602affcd",
       "violations": []
     },
     {
@@ -1009,6 +1184,13 @@
       "violations": []
     },
     {
+      "bytes": 19996,
+      "path": "runtime/nsai_knowledge.py",
+      "scan_state": "verified",
+      "sha256": "5c8453a73dfab036e9b77ac6df79fb32a9f6ef2fb1d6fd43684c32072f90e274",
+      "violations": []
+    },
+    {
       "bytes": 5756,
       "path": "runtime/numeric_inputs.py",
       "scan_state": "verified",
@@ -1016,10 +1198,17 @@
       "violations": []
     },
     {
-      "bytes": 4835,
+      "bytes": 3292,
+      "path": "runtime/observation_projection.py",
+      "scan_state": "verified",
+      "sha256": "103cac2b354e899c0b2ea42e68510d99c52a85acc6d85407fe838ec66248b80a",
+      "violations": []
+    },
+    {
+      "bytes": 6356,
       "path": "runtime/operation_authority.py",
       "scan_state": "verified",
-      "sha256": "dc2123b1095fdbb29ba400b7ba5b29c502febfa4109cd9760e825f1111a6637e",
+      "sha256": "39ac8674543ae473fb48c0f0a664b40c1aa1ba78712575bbce34565de2306873",
       "violations": []
     },
     {
@@ -1058,6 +1247,13 @@
       "violations": []
     },
     {
+      "bytes": 7511,
+      "path": "runtime/operational_projection.py",
+      "scan_state": "verified",
+      "sha256": "62884df9765d542551d6ef7763facf01809f19ccfe63c154f2f647bc6285be39",
+      "violations": []
+    },
+    {
       "bytes": 3453,
       "path": "runtime/operational_visibility.py",
       "scan_state": "verified",
@@ -1079,10 +1275,24 @@
       "violations": []
     },
     {
+      "bytes": 3919,
+      "path": "runtime/parity_lint.py",
+      "scan_state": "verified",
+      "sha256": "a86f1519d26a8f96881c5c0c110e674fda9f6769effaef7b4d98860fb151ccd4",
+      "violations": []
+    },
+    {
       "bytes": 2308,
       "path": "runtime/paths.py",
       "scan_state": "verified",
       "sha256": "8ead4a177204458ab9dedc4968ae6265c72cf126a57570515aa73a7262c2d6bf",
+      "violations": []
+    },
+    {
+      "bytes": 8494,
+      "path": "runtime/persistent_memory_provider.py",
+      "scan_state": "verified",
+      "sha256": "d4639dc07f761a616932edeec028c27d2b299979499481abd101adb917e774c8",
       "violations": []
     },
     {
@@ -1121,10 +1331,10 @@
       "violations": []
     },
     {
-      "bytes": 5428,
+      "bytes": 6992,
       "path": "runtime/process_memory.py",
       "scan_state": "verified",
-      "sha256": "0387613096c58a4bcb3d7af2d9eee7983061cec76948b2ec85557448b532b6c8",
+      "sha256": "5c752090be92e972428edb0cc9cd82792a13baad01b775d8738413e8c19100fe",
       "violations": []
     },
     {
@@ -1170,10 +1380,10 @@
       "violations": []
     },
     {
-      "bytes": 19234,
+      "bytes": 20284,
       "path": "runtime/project_map_retrieval.py",
       "scan_state": "verified",
-      "sha256": "ab0f1271512885889b6347e69f88453569cf4512302ea58c6127d674c087884b",
+      "sha256": "0168a062ee6ac2f7260de8d5c23e9d9b7c9a6da7f425110c5e03cdfed8bb7192",
       "violations": []
     },
     {
@@ -1240,10 +1450,10 @@
       "violations": []
     },
     {
-      "bytes": 39471,
+      "bytes": 81819,
       "path": "runtime/provider_gateway.py",
       "scan_state": "verified",
-      "sha256": "231f9479f587103fb599d9d7953a369c65f85619c0663a782254dd2898551d68",
+      "sha256": "75052ee228f68416ae67aacd936a70082af17066397bfcd2e47a4bc9bd59b661",
       "violations": []
     },
     {
@@ -1254,10 +1464,10 @@
       "violations": []
     },
     {
-      "bytes": 14767,
+      "bytes": 15039,
       "path": "runtime/python_surface_certification.py",
       "scan_state": "verified",
-      "sha256": "650a673b56f630e6e75ad32bac5ba78a6131734f79e23b14a99d3a1848548bd5",
+      "sha256": "152baac9112e639f98e78d2c5c2b266429e43e88e09411e5bc9c55412107414b",
       "violations": []
     },
     {
@@ -1268,10 +1478,17 @@
       "violations": []
     },
     {
-      "bytes": 7769,
+      "bytes": 7956,
+      "path": "runtime/query_planner.py",
+      "scan_state": "verified",
+      "sha256": "ec56f35b8514fc3efed72d45e09447eabd967dd4034fb4783dbc4ba171e5ed81",
+      "violations": []
+    },
+    {
+      "bytes": 11058,
       "path": "runtime/reasoning_controls.py",
       "scan_state": "verified",
-      "sha256": "519b56787d315d668cc84d085de689d0ef7a0a4dc398e9515913e5a7c29eb248",
+      "sha256": "fcedb39b12a2630c182b78b655c1c03b209e0ec3036e08c8a85401a88225e747",
       "violations": []
     },
     {
@@ -1408,10 +1625,10 @@
       "violations": []
     },
     {
-      "bytes": 100374,
+      "bytes": 103968,
       "path": "runtime/resource_lifecycle.py",
       "scan_state": "verified",
-      "sha256": "80edee94e55ecdc79766eaf92d1418bc4f580d06483f00f36518e56a4deecdca",
+      "sha256": "363bbe2b458ffbe0966a62df912b822770cde0895124cf80d943fe8c68090b53",
       "violations": []
     },
     {
@@ -1422,10 +1639,24 @@
       "violations": []
     },
     {
-      "bytes": 7646,
+      "bytes": 11811,
       "path": "runtime/retrieval.py",
       "scan_state": "verified",
-      "sha256": "ad059d32dea4cc48e0fddbb1137d4fb9dfbfe234c4d852836118f01102ea8623",
+      "sha256": "61e2ccf1f2ea4c4b065e082e15504720cfbad62d75f41a50bb838698637a01bf",
+      "violations": []
+    },
+    {
+      "bytes": 13938,
+      "path": "runtime/retrieval_generation.py",
+      "scan_state": "verified",
+      "sha256": "992db8b631380d16d782b71499ba3a0de0b4b6e75c6c68234cb19f96d6aa7680",
+      "violations": []
+    },
+    {
+      "bytes": 8145,
+      "path": "runtime/retrieval_model_service.py",
+      "scan_state": "verified",
+      "sha256": "a49529c32c60f0e0ad4ae1264168c3697b6bc878f5997801267f1fe994dfaa5a",
       "violations": []
     },
     {
@@ -1464,10 +1695,416 @@
       "violations": []
     },
     {
-      "bytes": 7488,
+      "bytes": 15406,
+      "path": "runtime/self_diagnostics.py",
+      "scan_state": "verified",
+      "sha256": "302c9bcef5df43413cebf7b3b2489ef5198d5bf7a512f02e29a175d0af239e9f",
+      "violations": []
+    },
+    {
+      "bytes": 1017,
+      "path": "runtime/semantic_authority_bridge.py",
+      "scan_state": "verified",
+      "sha256": "cded498f88882eaad5c6354c0de426d7ba3d2984a0f5397f6e37950ad4f4e3d2",
+      "violations": []
+    },
+    {
+      "bytes": 1721,
+      "path": "runtime/semantic_authorization.py",
+      "scan_state": "verified",
+      "sha256": "91d3ff644c3e28b446b85eb253c1356c0970b26afc051f16a83f7b2c26aa4667",
+      "violations": []
+    },
+    {
+      "bytes": 6918,
+      "path": "runtime/semantic_capability_projection.py",
+      "scan_state": "verified",
+      "sha256": "5f728cde4af8936841a984c28c49592efcb99318c021544a675e136418ad785f",
+      "violations": []
+    },
+    {
+      "bytes": 2339,
+      "path": "runtime/semantic_code_backend.py",
+      "scan_state": "verified",
+      "sha256": "3180476fb8782d9680ff008d6a24a1b758fd3d3cdae271ca51c59a29cd6bca4d",
+      "violations": []
+    },
+    {
+      "bytes": 2936,
+      "path": "runtime/semantic_code_cache.py",
+      "scan_state": "verified",
+      "sha256": "a680e99a78e90266dc7bef70ed45cde49be9fbb458ff35b7b7065f14295ec7bd",
+      "violations": []
+    },
+    {
+      "bytes": 1390,
+      "path": "runtime/semantic_code_capabilities.py",
+      "scan_state": "verified",
+      "sha256": "02ec0bc80f968a1c1c920f27dce3495c70c78b5da61c85d645438d480dc43266",
+      "violations": []
+    },
+    {
+      "bytes": 2429,
+      "path": "runtime/semantic_code_concurrency.py",
+      "scan_state": "verified",
+      "sha256": "b9f70c81547c556ee77d27f2a66e1da254812237089724034c23c1c1b4e123d9",
+      "violations": []
+    },
+    {
+      "bytes": 2191,
+      "path": "runtime/semantic_code_diagnostics.py",
+      "scan_state": "verified",
+      "sha256": "b7e590dd13c74b03796353c4d77937c36b902e2ecf6d0180bdda7e100baa295d",
+      "violations": []
+    },
+    {
+      "bytes": 3932,
+      "path": "runtime/semantic_code_document.py",
+      "scan_state": "verified",
+      "sha256": "4bdeee6d09650ac7fd05b0b5b2a85208c8f9a3dd5533afaf7cc14bd7b55d7aa0",
+      "violations": []
+    },
+    {
+      "bytes": 5404,
+      "path": "runtime/semantic_code_edits.py",
+      "scan_state": "verified",
+      "sha256": "69b0d6e55bd81d942a05ceda3639b0a34f26a4d2f2d8e71aafb9de47a520966a",
+      "violations": []
+    },
+    {
+      "bytes": 1111,
+      "path": "runtime/semantic_code_export.py",
+      "scan_state": "verified",
+      "sha256": "7ca34afddbb5cc0de71f4c0e57d4fb1a2d4c493a120b82b793df51b1c3b0a13f",
+      "violations": []
+    },
+    {
+      "bytes": 3207,
+      "path": "runtime/semantic_code_graph.py",
+      "scan_state": "verified",
+      "sha256": "2cae40e8c6920f09f6dc054c857e022a4fa0190f58872339a4480e5be5c238bf",
+      "violations": []
+    },
+    {
+      "bytes": 8713,
+      "path": "runtime/semantic_code_index.py",
+      "scan_state": "verified",
+      "sha256": "0a4e36e3c405f534cbd97cede7d1df71ea80ab9cf764552f9162f17807e37a74",
+      "violations": []
+    },
+    {
+      "bytes": 2823,
+      "path": "runtime/semantic_code_lifecycle.py",
+      "scan_state": "verified",
+      "sha256": "6346ad5e58ceb005b1e4ab9c22b2256ce477b45286076a774bbd5e4ba6adee19",
+      "violations": []
+    },
+    {
+      "bytes": 2608,
+      "path": "runtime/semantic_code_limits.py",
+      "scan_state": "verified",
+      "sha256": "492140978cc48f8494b686e23c074431e99406e3802ca566b5e3cd4cc1666aa6",
+      "violations": []
+    },
+    {
+      "bytes": 1997,
+      "path": "runtime/semantic_code_paths.py",
+      "scan_state": "verified",
+      "sha256": "f1b28df45dea240006cf3997b8a4203b921d9888bd582da799732ad331ea5e24",
+      "violations": []
+    },
+    {
+      "bytes": 3984,
+      "path": "runtime/semantic_code_project.py",
+      "scan_state": "verified",
+      "sha256": "357df39f03bdea3bbae1a90e5943023ca2b015323495bc8907c5dd8b37173d53",
+      "violations": []
+    },
+    {
+      "bytes": 14484,
+      "path": "runtime/semantic_code_python.py",
+      "scan_state": "verified",
+      "sha256": "eaf2dac090f1d506952b5c8e47cda4116ecdbccdfc1ca9e7bdc1746ba0c1e433",
+      "violations": []
+    },
+    {
+      "bytes": 4786,
+      "path": "runtime/semantic_code_query.py",
+      "scan_state": "verified",
+      "sha256": "48b024ca1dcf95e2983c9e2dae937105472f217375dd4e4f8f23f031c95dfc88",
+      "violations": []
+    },
+    {
+      "bytes": 832,
+      "path": "runtime/semantic_code_receipts.py",
+      "scan_state": "verified",
+      "sha256": "594d54cb1c7f1d741500684075024888119e831bc9071178b33426af03b326e5",
+      "violations": []
+    },
+    {
+      "bytes": 3712,
+      "path": "runtime/semantic_code_registry.py",
+      "scan_state": "verified",
+      "sha256": "e8fc8f1810d333d715ee70f7197a231ee914fd78a91523a748fe72532e615edf",
+      "violations": []
+    },
+    {
+      "bytes": 6628,
+      "path": "runtime/semantic_code_service.py",
+      "scan_state": "verified",
+      "sha256": "94d8745dbb226a96e35c4ddc47f2d8b932de6caddef51906b5011650ae1a848f",
+      "violations": []
+    },
+    {
+      "bytes": 5740,
+      "path": "runtime/semantic_code_transaction.py",
+      "scan_state": "verified",
+      "sha256": "751adab455a892fed2b12d22420e0d86a30391e150076c90b3974eb8047cb486",
+      "violations": []
+    },
+    {
+      "bytes": 4686,
+      "path": "runtime/semantic_code_types.py",
+      "scan_state": "verified",
+      "sha256": "7f5d6431889c2d6ab2431bf852c13b77e86449f11c8c2ab2542f9fcfebca5a51",
+      "violations": []
+    },
+    {
+      "bytes": 1781,
+      "path": "runtime/semantic_context_profiles.py",
+      "scan_state": "verified",
+      "sha256": "c306cc7cd8794617b7664a18087eda0395171e379e3d7081822460cba5efda12",
+      "violations": []
+    },
+    {
+      "bytes": 6592,
+      "path": "runtime/semantic_cross_project.py",
+      "scan_state": "verified",
+      "sha256": "626ba801fcc6262d4b9eb48e8220b68dc84596f4101d41d540345063105416c4",
+      "violations": []
+    },
+    {
+      "bytes": 2108,
+      "path": "runtime/semantic_evidence_bridge.py",
+      "scan_state": "verified",
+      "sha256": "4c037dac4bfd1b582c670d693c75879ee5361d2254d32d7469496f65475d381c",
+      "violations": []
+    },
+    {
+      "bytes": 9333,
       "path": "runtime/semantic_index.py",
       "scan_state": "verified",
-      "sha256": "ec2e2063c974d358aae88cd30a8427ed4400936277399584633cf66541c4ae64",
+      "sha256": "b8545ae3ba6024c7218165defe2875dc9c264340d25b005e5d2ac88a4e4ace90",
+      "violations": []
+    },
+    {
+      "bytes": 1025,
+      "path": "runtime/semantic_integration_limits.py",
+      "scan_state": "verified",
+      "sha256": "849ee56fb264f9dc06443fc9bcfcb9d33b991e81c2cd9862ef69c81eaee91e59",
+      "violations": []
+    },
+    {
+      "bytes": 1253,
+      "path": "runtime/semantic_integration_registry.py",
+      "scan_state": "verified",
+      "sha256": "751ea53a7370a7041a3f1f396c22c3f9b2e188e8b021bb49d94fc72c2dd6a2d7",
+      "violations": []
+    },
+    {
+      "bytes": 4986,
+      "path": "runtime/semantic_integration_service.py",
+      "scan_state": "verified",
+      "sha256": "1605c91b4e58fe72df294efd1e3b0d22979aa55f42294796bdad8e9793b2e4d5",
+      "violations": []
+    },
+    {
+      "bytes": 12043,
+      "path": "runtime/semantic_integration_types.py",
+      "scan_state": "verified",
+      "sha256": "0966a3d56c19efa0d9408ebafa5f87d9a7387dd6457910c9728916f470184827",
+      "violations": []
+    },
+    {
+      "bytes": 2081,
+      "path": "runtime/semantic_knowledge_bridge.py",
+      "scan_state": "verified",
+      "sha256": "6643a8a670cb37518da93052a59bd2522c4cefb81247ebecd259894d2ca36885",
+      "violations": []
+    },
+    {
+      "bytes": 1323,
+      "path": "runtime/semantic_local_model_bridge.py",
+      "scan_state": "verified",
+      "sha256": "1ae828a7aaa326cb34381c2853f5974bffb442a4af227cd040811533e4e68428",
+      "violations": []
+    },
+    {
+      "bytes": 2399,
+      "path": "runtime/semantic_local_rerank.py",
+      "scan_state": "verified",
+      "sha256": "77de28024c202626271f0fd5d94f123dd61202fb697d1bb6783542cdae59d67c",
+      "violations": []
+    },
+    {
+      "bytes": 4547,
+      "path": "runtime/semantic_lsp_adapters.py",
+      "scan_state": "verified",
+      "sha256": "193052d0f7e56f6dd6d5a880ee112163bf1da9cc6c51e4757c7165a7118f2819",
+      "violations": []
+    },
+    {
+      "bytes": 2977,
+      "path": "runtime/semantic_lsp_backend.py",
+      "scan_state": "verified",
+      "sha256": "f6274bfc4fa01151b8ca2c5c3226aed5c5cb42c5446db1213070908bc1316959",
+      "violations": []
+    },
+    {
+      "bytes": 2635,
+      "path": "runtime/semantic_lsp_capabilities.py",
+      "scan_state": "verified",
+      "sha256": "75408f1d0f2c49b08e9b3f9dd74050e33fdfc2ea7dd409372de582a43003e38a",
+      "violations": []
+    },
+    {
+      "bytes": 9461,
+      "path": "runtime/semantic_lsp_client.py",
+      "scan_state": "verified",
+      "sha256": "056ea636a748ee60ad149f1103dfbb4138de9cba43e7a75fa4e4d9bbc0dfee83",
+      "violations": []
+    },
+    {
+      "bytes": 5251,
+      "path": "runtime/semantic_lsp_diagnostics.py",
+      "scan_state": "verified",
+      "sha256": "aed30b95a440f175c7f359c3ed4b5e46ab3a57c0f18974b9db607deb8c26d8a0",
+      "violations": []
+    },
+    {
+      "bytes": 1687,
+      "path": "runtime/semantic_lsp_discovery.py",
+      "scan_state": "verified",
+      "sha256": "0b980863d84d584b27512bbc0877811df7a43b56257810d18a695c89158b301b",
+      "violations": []
+    },
+    {
+      "bytes": 7096,
+      "path": "runtime/semantic_lsp_documents.py",
+      "scan_state": "verified",
+      "sha256": "a2eb494f72f1db2dc25c7a6333c2cdd721a93b718b17aba306d9f3b15a5f671d",
+      "violations": []
+    },
+    {
+      "bytes": 3371,
+      "path": "runtime/semantic_lsp_encoding.py",
+      "scan_state": "verified",
+      "sha256": "8bc1612516fa086809e9fd7975b088c419fa27e4b3c226908599eddb3e14e6fe",
+      "violations": []
+    },
+    {
+      "bytes": 2943,
+      "path": "runtime/semantic_lsp_framing.py",
+      "scan_state": "verified",
+      "sha256": "94dc9e30d5c31f99f4a2679d0003e5edde22b984c23fa0cbcb503f27870469fd",
+      "violations": []
+    },
+    {
+      "bytes": 3993,
+      "path": "runtime/semantic_lsp_health.py",
+      "scan_state": "verified",
+      "sha256": "8f49c6919d13be496900ab194e1cb777d8ed18275f89d638916fefc5bc2e68d3",
+      "violations": []
+    },
+    {
+      "bytes": 3004,
+      "path": "runtime/semantic_lsp_initialize.py",
+      "scan_state": "verified",
+      "sha256": "f8d50bc4b158044e1c891e9aba272eff1e574097089cfce14523fe9b765a1de9",
+      "violations": []
+    },
+    {
+      "bytes": 5929,
+      "path": "runtime/semantic_lsp_manager.py",
+      "scan_state": "verified",
+      "sha256": "725f7f1feb862911d2da5e6a3a1a48bc71b39410a04056683d7f0ba3368db736",
+      "violations": []
+    },
+    {
+      "bytes": 6948,
+      "path": "runtime/semantic_lsp_normalize.py",
+      "scan_state": "verified",
+      "sha256": "6b7b184a61ea793d079a360b93725d80d03122bccf6d5cddf4cd17a3851d854b",
+      "violations": []
+    },
+    {
+      "bytes": 7672,
+      "path": "runtime/semantic_lsp_process.py",
+      "scan_state": "verified",
+      "sha256": "2586af7261cabfd2c66bbbd2d426a6e4cb291567861d2765cf0d1cf3309f552b",
+      "violations": []
+    },
+    {
+      "bytes": 3584,
+      "path": "runtime/semantic_lsp_protocol.py",
+      "scan_state": "verified",
+      "sha256": "b07cc26e2ed7d5b28fb1cf26204d1d9c1bb328a05ba206cedcc7ad8c362de951",
+      "violations": []
+    },
+    {
+      "bytes": 7290,
+      "path": "runtime/semantic_lsp_queries.py",
+      "scan_state": "verified",
+      "sha256": "0c7d3039c9c2434591ed1bbed71a17dd0c627b11c47bcf2140de694bdafa5724",
+      "violations": []
+    },
+    {
+      "bytes": 2595,
+      "path": "runtime/semantic_lsp_registry.py",
+      "scan_state": "verified",
+      "sha256": "34b0ce26660492fb6633f686febbfee4c7bf02ace885b9eab5d596a40c91efcb",
+      "violations": []
+    },
+    {
+      "bytes": 5784,
+      "path": "runtime/semantic_lsp_service.py",
+      "scan_state": "verified",
+      "sha256": "de4dfd3f256b04c946b75b13c89afc9f1afe271ab083cdb65655f2d634c9546c",
+      "violations": []
+    },
+    {
+      "bytes": 7837,
+      "path": "runtime/semantic_lsp_transaction.py",
+      "scan_state": "verified",
+      "sha256": "f5702e536d14000750af4d0e9ade13011d04843dbec9c51d661fc76b939c98b8",
+      "violations": []
+    },
+    {
+      "bytes": 12900,
+      "path": "runtime/semantic_lsp_transport.py",
+      "scan_state": "verified",
+      "sha256": "c94b3ba97f75ca8625e0a41885fe5643a716abc6766c539064bc6c2fd72938f9",
+      "violations": []
+    },
+    {
+      "bytes": 7887,
+      "path": "runtime/semantic_lsp_types.py",
+      "scan_state": "verified",
+      "sha256": "1d7b552a8b28e9c781d3ae79496cd5326769f245b1816b77fc2df09d4960a8fd",
+      "violations": []
+    },
+    {
+      "bytes": 1763,
+      "path": "runtime/semantic_lsp_uri.py",
+      "scan_state": "verified",
+      "sha256": "3b0e22fba5a162360c5cbb98c7e2cac7369e0edea694579d61c633b60951bf83",
+      "violations": []
+    },
+    {
+      "bytes": 6220,
+      "path": "runtime/semantic_lsp_workspace.py",
+      "scan_state": "verified",
+      "sha256": "f794823c39cf232d1d85c550a8f6648eebfc3105be79906afcd9b48da2010dcd",
       "violations": []
     },
     {
@@ -1478,10 +2115,108 @@
       "violations": []
     },
     {
+      "bytes": 3569,
+      "path": "runtime/semantic_memory_aliases.py",
+      "scan_state": "verified",
+      "sha256": "b1394164b51b4dfebedfd83d83a799a8a57eb96f3a2b4d22f5419d52707ab194",
+      "violations": []
+    },
+    {
+      "bytes": 4287,
+      "path": "runtime/semantic_memory_integrity.py",
+      "scan_state": "verified",
+      "sha256": "362261b107e77de0094ac14469e449849ada6fdd4c96113d980b9800544e116a",
+      "violations": []
+    },
+    {
+      "bytes": 3361,
+      "path": "runtime/semantic_memory_refs.py",
+      "scan_state": "verified",
+      "sha256": "ef33bd52f3bef41327b3ae87bf0567d981c3b7a033f94749036eb25c6587d121",
+      "violations": []
+    },
+    {
+      "bytes": 6766,
+      "path": "runtime/semantic_memory_relocation.py",
+      "scan_state": "verified",
+      "sha256": "efcaeb1c63b3d5a58f05278117ed840b9749ed4bf4bf3d747870fa2d5c92090a",
+      "violations": []
+    },
+    {
+      "bytes": 7333,
+      "path": "runtime/semantic_memory_repair.py",
+      "scan_state": "verified",
+      "sha256": "1642da41ce9c27cea472234bb164a420e919a2d0e0df9fcd951e0f0499681e10",
+      "violations": []
+    },
+    {
+      "bytes": 2113,
+      "path": "runtime/semantic_mode_profiles.py",
+      "scan_state": "verified",
+      "sha256": "3ac743300ba61e3760fa7978b7095a14031a2837c7cd0cf8ea0bbec713a09b89",
+      "violations": []
+    },
+    {
+      "bytes": 4257,
+      "path": "runtime/semantic_model_context.py",
+      "scan_state": "verified",
+      "sha256": "dbc290780124e0381d2d4d548aa9d65d4e6823dd8674caaaab35e8fef7babdda",
+      "violations": []
+    },
+    {
+      "bytes": 6923,
+      "path": "runtime/semantic_orchestration.py",
+      "scan_state": "verified",
+      "sha256": "01a87e773e22907f6f819568b185a42f7de1a25cdad09af5f2f61c9b32006009",
+      "violations": []
+    },
+    {
+      "bytes": 3695,
+      "path": "runtime/semantic_project_catalog.py",
+      "scan_state": "verified",
+      "sha256": "fbf660473f8d99aa7d08a6bf03c325ae635d1fc04d195dc13b5ab96b89c54c25",
+      "violations": []
+    },
+    {
+      "bytes": 3577,
+      "path": "runtime/semantic_project_map_bridge.py",
+      "scan_state": "verified",
+      "sha256": "7c19b843f74be60bd7026982550fb55759b52e185be3892982a4d055fa92add6",
+      "violations": []
+    },
+    {
+      "bytes": 671,
+      "path": "runtime/semantic_provenance.py",
+      "scan_state": "verified",
+      "sha256": "1161f90eacb796e012d88193b428e9b8275baeeb6f1516dfb57f1ca12214cfd7",
+      "violations": []
+    },
+    {
+      "bytes": 2649,
+      "path": "runtime/semantic_query_receipts.py",
+      "scan_state": "verified",
+      "sha256": "73506cda902401501468d7b0a6b9876dc2507b76e4bcdc5fa24d6d65dacd7038",
+      "violations": []
+    },
+    {
+      "bytes": 3866,
+      "path": "runtime/semantic_retrieval_fusion.py",
+      "scan_state": "verified",
+      "sha256": "64adcc8c8609beb0b89eabd7b0e910557ef670188f08701eaf9c45bd0b91bea2",
+      "violations": []
+    },
+    {
       "bytes": 2783,
       "path": "runtime/semantic_revision.py",
       "scan_state": "verified",
       "sha256": "26c10b0b629eb773e3b32973ea0ecef31d00590e786b262b57bab69a397e82fb",
+      "violations": []
+    },
+    {
+      "bytes": 725,
+      "path": "runtime/semantic_tool_projection.py",
+      "scan_state": "verified",
+      "sha256": "59d4d3fbf04cd6c806d0e2874edb90b2a351c5c19bd9b4d5bb75ca2f8a96e444",
       "violations": []
     },
     {
@@ -1492,6 +2227,20 @@
       "violations": []
     },
     {
+      "bytes": 4723,
+      "path": "runtime/session_context_guard.py",
+      "scan_state": "verified",
+      "sha256": "da4c361266b7dd3ceafb822215000f29ac1c765db5ef92c745eb267fb1d48017",
+      "violations": []
+    },
+    {
+      "bytes": 12193,
+      "path": "runtime/shared_contributions.py",
+      "scan_state": "verified",
+      "sha256": "5c3aedd0e5fd59588101b666ebc28aa537edf9961a012b4273b2601ee5dce798",
+      "violations": []
+    },
+    {
       "bytes": 5026,
       "path": "runtime/skill_inputs.py",
       "scan_state": "verified",
@@ -1499,10 +2248,10 @@
       "violations": []
     },
     {
-      "bytes": 13323,
+      "bytes": 14613,
       "path": "runtime/skill_navigator.py",
       "scan_state": "verified",
-      "sha256": "a4be18571bfe1008451e2cb2b1fb9849e47b8dd04c187bfd3347e020e66e5db1",
+      "sha256": "c936437fd06e8d1e1c68cba74c59b630f4e234c25725b31a3c7fe16afd19a889",
       "violations": []
     },
     {
@@ -1534,10 +2283,10 @@
       "violations": []
     },
     {
-      "bytes": 42342,
+      "bytes": 49504,
       "path": "runtime/structural_integrity.py",
       "scan_state": "verified",
-      "sha256": "a9ac260934fca07bceee3d08bf96e76d53bb97e5ab997a9ce0cc4932bf0c8dff",
+      "sha256": "aea124e04c8ff71d63e7e5077d8a5af787d026ac1963e6511778fc59b01cd5f1",
       "violations": []
     },
     {
@@ -1625,6 +2374,13 @@
       "violations": []
     },
     {
+      "bytes": 24735,
+      "path": "runtime/system_one_decision.py",
+      "scan_state": "verified",
+      "sha256": "406202d95a5978cf3e2055026633c4bfa9ca89cf7483ae2679d76f4b3775dad4",
+      "violations": []
+    },
+    {
       "bytes": 11215,
       "path": "runtime/task_execution_plan.py",
       "scan_state": "verified",
@@ -1650,6 +2406,13 @@
       "path": "runtime/test_runner.py",
       "scan_state": "verified",
       "sha256": "74302978c870875fb296ad01897d5e37b4e0e229e950242c91c507551e676f6f",
+      "violations": []
+    },
+    {
+      "bytes": 10463,
+      "path": "runtime/tiny_model_operator.py",
+      "scan_state": "verified",
+      "sha256": "110245100885321fc4f2cc03df7ca266ed734f599203eab9e6bae96d137dd364",
       "violations": []
     },
     {
@@ -1688,10 +2451,24 @@
       "violations": []
     },
     {
-      "bytes": 39106,
+      "bytes": 8498,
+      "path": "runtime/turbovec_adapter.py",
+      "scan_state": "verified",
+      "sha256": "e234ba8225de0250ea9e1b5922911b12ef925c8db96b83afbd811d647f27d980",
+      "violations": []
+    },
+    {
+      "bytes": 14794,
+      "path": "runtime/usage_memory.py",
+      "scan_state": "verified",
+      "sha256": "0b3f754f56c3ce048de8c1b1a8c19308204f1aeae39323521d31bb4ab66eb509",
+      "violations": []
+    },
+    {
+      "bytes": 39461,
       "path": "runtime/verification_inputs.py",
       "scan_state": "verified",
-      "sha256": "30cc652b7ee79be5ab405b2058247bea8ec1a41d4260fa26156612ca1b581fb5",
+      "sha256": "eef8978418164a46d725f7c9fd9de7c40e29fef21078b86460d8fb5a80fd76a0",
       "violations": []
     },
     {
@@ -1713,6 +2490,13 @@
       "path": "runtime/version.py",
       "scan_state": "verified",
       "sha256": "3960d9fcdd62ea13f90033fbc1c70d8ca8f796d29e7eec7c93a16cf61fe91b40",
+      "violations": []
+    },
+    {
+      "bytes": 13728,
+      "path": "runtime/vscode_model_bridge.py",
+      "scan_state": "verified",
+      "sha256": "b8c1a98994159e2bdac59ccf8b96679d8b09843bde2f1d6cb06a4d8f15a15bb8",
       "violations": []
     },
     {
@@ -1758,17 +2542,17 @@
       "violations": []
     },
     {
-      "bytes": 76697,
+      "bytes": 78422,
       "path": "runtime/workflow_studio.py",
       "scan_state": "verified",
-      "sha256": "e6e28cf88970360c7956b0c4ec5e9d203faf1ad7efba876bfe3ded9482e0f121",
+      "sha256": "c3edd4119b4ad99c165e6953dd66a8bc740e57560c7633fe24ea28c247e7c1f8",
       "violations": []
     },
     {
-      "bytes": 7844,
+      "bytes": 9102,
       "path": "runtime/workflow_worker.py",
       "scan_state": "verified",
-      "sha256": "b6ba967913fd05d8524237103c7f181faead1709c4850904ccbecede6e23fc73",
+      "sha256": "7b238ea1c88b624fb1853642c961c9b389c79772ec0b7726d4e1a67c6af3d142",
       "violations": []
     },
     {
@@ -1821,6 +2605,13 @@
       "violations": []
     },
     {
+      "bytes": 7429,
+      "path": "scripts/audit_local_paths.py",
+      "scan_state": "verified",
+      "sha256": "e18d4d56796fbf564678de4e30c77638f06959df23bbbdaaa14584197d801bf1",
+      "violations": []
+    },
+    {
       "bytes": 13371,
       "path": "scripts/audit_sanitization.py",
       "scan_state": "verified",
@@ -1835,10 +2626,38 @@
       "violations": []
     },
     {
+      "bytes": 4640,
+      "path": "scripts/benchmark_airllm_modes.py",
+      "scan_state": "verified",
+      "sha256": "82650ef3de4cab4b0fe63b763bd1cd36272ee9d8401bb6b530d5e739f65bf15e",
+      "violations": []
+    },
+    {
+      "bytes": 14416,
+      "path": "scripts/benchmark_local_models.py",
+      "scan_state": "verified",
+      "sha256": "11c749542bab0d206aa8553b6b465af69ed2de3a5da3c2f7c9c9b3b9b101c228",
+      "violations": []
+    },
+    {
+      "bytes": 5960,
+      "path": "scripts/benchmark_model_routes.py",
+      "scan_state": "verified",
+      "sha256": "768bacf8e896f8447f02ad59975f8178a1064fb7854742611d636d01fc4976e2",
+      "violations": []
+    },
+    {
       "bytes": 11783,
       "path": "scripts/benchmark_operational_gap_ledger.py",
       "scan_state": "verified",
       "sha256": "270963bf98ddfc9b6f25f499587c4d83ae4f7b9bf9a727f97750bed0b4d2fd73",
+      "violations": []
+    },
+    {
+      "bytes": 4433,
+      "path": "scripts/benchmark_retrieval_pipeline.py",
+      "scan_state": "verified",
+      "sha256": "db08b909cea30b03102c024d8a53107179ebf9d5ff61ef8f81276b48039f5c76",
       "violations": []
     },
     {
@@ -1853,6 +2672,13 @@
       "path": "scripts/bootstrap_operational_gap_ledger.py",
       "scan_state": "verified",
       "sha256": "8a54e6e46d60d3701deab87c4a1a7da6b679e73375e10bf8d0ae8398f170e102",
+      "violations": []
+    },
+    {
+      "bytes": 5551,
+      "path": "scripts/bootstrap_usage_memory.py",
+      "scan_state": "verified",
+      "sha256": "d0777b52237d277396de375c1eeec3fc8739c1fd9868f77414724a4d4b276955",
       "violations": []
     },
     {
@@ -1898,10 +2724,10 @@
       "violations": []
     },
     {
-      "bytes": 22444,
+      "bytes": 24825,
       "path": "scripts/build_contract_ownership_registry.py",
       "scan_state": "verified",
-      "sha256": "07ab81a10e6b36b1c140c63c29ea55d63fc2efacc4850aebf211e8b88276618f",
+      "sha256": "20b7a556b93aa022ec8f890a3dbba13b1f5db4b4076e359f9d8a910db766dad7",
       "violations": []
     },
     {
@@ -1982,6 +2808,13 @@
       "violations": []
     },
     {
+      "bytes": 1656,
+      "path": "scripts/build_nsai_index.py",
+      "scan_state": "verified",
+      "sha256": "3b4926faba3904357000d0e25a7ae8bd168ea9df1422344ec83ab5328c59a1ae",
+      "violations": []
+    },
+    {
       "bytes": 11968,
       "path": "scripts/build_operation_health_snapshot.py",
       "scan_state": "verified",
@@ -2010,10 +2843,10 @@
       "violations": []
     },
     {
-      "bytes": 7221,
+      "bytes": 8063,
       "path": "scripts/build_python_dependency_ownership.py",
       "scan_state": "verified",
-      "sha256": "c15655836f8071f900fa2b2bea2cfe515332172c63366ed219a1bbcadb820b7c",
+      "sha256": "0085eccd0a8b4a019ed4c00a7bb5b4483ddd876ce965c64f4d9e71457359f568",
       "violations": []
     },
     {
@@ -2042,6 +2875,13 @@
       "path": "scripts/build_registry_graphs.py",
       "scan_state": "verified",
       "sha256": "316cff0ae9105f9d0906a1ca76113411fb1796e07bd0e93e85bdd93715d32d38",
+      "violations": []
+    },
+    {
+      "bytes": 13932,
+      "path": "scripts/build_release_artifacts.py",
+      "scan_state": "verified",
+      "sha256": "b603f28e9075170cbf65b859f613fab602fa419cb6c3b7f78761e78c0bde92df",
       "violations": []
     },
     {
@@ -2091,6 +2931,20 @@
       "path": "scripts/certify_capability_queries.py",
       "scan_state": "verified",
       "sha256": "de1088840f2b8aa3799949e858fbc22bb56927c9e0a60e380398c7de1dfba469",
+      "violations": []
+    },
+    {
+      "bytes": 10715,
+      "path": "scripts/certify_local_model_profiles.py",
+      "scan_state": "verified",
+      "sha256": "fb1f12a215a7efcf1fc0cca2f645b0412541fb37e025ea0f5d6f897d6bee4eaf",
+      "violations": []
+    },
+    {
+      "bytes": 3291,
+      "path": "scripts/certify_turbovec_generation.py",
+      "scan_state": "verified",
+      "sha256": "7d694cc82ac61647e347fab2874dec9811e031ec03be2717891e5c327098f9b2",
       "violations": []
     },
     {
@@ -2318,6 +3172,13 @@
       "violations": []
     },
     {
+      "bytes": 18663,
+      "path": "scripts/px_install.py",
+      "scan_state": "verified",
+      "sha256": "9c5cd1b3619c1a4612d643d337ee356e33b65aa3d8d9aa082cc69be6b4b6003a",
+      "violations": []
+    },
+    {
       "bytes": 5877,
       "path": "scripts/quarantine_paths.py",
       "scan_state": "verified",
@@ -2332,10 +3193,17 @@
       "violations": []
     },
     {
-      "bytes": 72759,
+      "bytes": 15186,
+      "path": "scripts/reconcile_capability_map.py",
+      "scan_state": "verified",
+      "sha256": "36a7abe155de4b516ce9879ed6022a25317c0a185fd36b568cb337a4305658fb",
+      "violations": []
+    },
+    {
+      "bytes": 73183,
       "path": "scripts/reconcile_cohesion_cards.py",
       "scan_state": "verified",
-      "sha256": "0fdc53d1a45af0e39154d86b615cc454fc797c82f0ee2d14e55fdfeaf2f2c56b",
+      "sha256": "7b3fc81db19c188e4a9760da2afcd7bb6224c744382aad5cca6d14cecf1c1ee3",
       "violations": []
     },
     {
@@ -2406,6 +3274,13 @@
       "path": "scripts/reconcile_reference_candidate_admission.py",
       "scan_state": "verified",
       "sha256": "378649286aed210b9aafcb489a0980c0e03045fb3e7afe6414f0710f9cb739e5",
+      "violations": []
+    },
+    {
+      "bytes": 6724,
+      "path": "scripts/reconcile_skill_contract_links.py",
+      "scan_state": "verified",
+      "sha256": "0a1a4df3ee31e9b04911a40f087a4f029ff0d4100afb9815b7d7e7983bc3e73d",
       "violations": []
     },
     {
@@ -2556,6 +3431,41 @@
       "violations": []
     },
     {
+      "bytes": 950,
+      "path": "scripts/validate_nsai_knowledge.py",
+      "scan_state": "verified",
+      "sha256": "05657091a13e020cdbd145f03d458d444dc15967e136009b561c3452774a49ed",
+      "violations": []
+    },
+    {
+      "bytes": 8189,
+      "path": "scripts/verify_encoding_integrity.py",
+      "scan_state": "verified",
+      "sha256": "34fd3b8486c667ff57940765d73b2034391a347fc4cae10448c757c8f5cedd80",
+      "violations": []
+    },
+    {
+      "bytes": 4018,
+      "path": "scripts/verify_license_inventory.py",
+      "scan_state": "verified",
+      "sha256": "b0a8c5a16aa837135f3f20f2e06a36e7ca1877c6a98744fcdbab09c03483e182",
+      "violations": []
+    },
+    {
+      "bytes": 13023,
+      "path": "scripts/verify_release_compliance.py",
+      "scan_state": "verified",
+      "sha256": "81f54d7682f659ad12ffd22e1dea3b5510de6e0956bb15b53ec3123edcb03e9b",
+      "violations": []
+    },
+    {
+      "bytes": 14844,
+      "path": "scripts/verify_release_invariants.py",
+      "scan_state": "verified",
+      "sha256": "b6fa928ed1d082f8dae4e69da63bcf3e1e36bc280c664199d3f89674726868ae",
+      "violations": []
+    },
+    {
       "bytes": 15673,
       "path": "scripts/verify_release_publication.py",
       "scan_state": "verified",
@@ -2575,5 +3485,5 @@
     "violations": []
   },
   "schema_version": "px.provider-route-index/1.3",
-  "verified_file_count": 366
+  "verified_file_count": 496
 }

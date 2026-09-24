@@ -1,0 +1,151 @@
+{
+  "applicability": {
+    "conditions": [
+      "Freeze before certification evidence is finalized."
+    ],
+    "exclusions": [
+      "randomized production drift after freeze"
+    ],
+    "targets": [
+      "routing policy"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "px_route_state",
+          "moe_freeze_doc"
+        ],
+        "statement": "Exploration and stable production routing are different lifecycle phases."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_route_state",
+          "moe_freeze_doc"
+        ],
+        "statement": "A certified route generation requires frozen policy identity and reproducible evaluation evidence."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_route_state",
+          "moe_freeze_doc"
+        ],
+        "statement": "Exploration rate should decline or stop when sufficient evidence exists, rather than remain perpetual hidden nondeterminism."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "sample challengers deterministically during exploratory phases",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "anneal exploration according to evidence maturity",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "freeze an exact route policy/generation for certification",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "Exploration is a bounded evidence-gathering phase that should anneal as confidence matures and freeze for certified production generations; certification must not depend on continuously changing route probabilities."
+  },
+  "namespace": "moe",
+  "object_id": "nsai:moe:exploration_policy:moe_exploration_annealing_freeze",
+  "object_type": "exploration_policy",
+  "ontology": {
+    "classes": [
+      "certification",
+      "routing_lifecycle"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "moe"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "kind": "source_file",
+        "path": "runtime/model_route_state.py",
+        "sha256": "7110ce744a74d16a884042d0a7fb30990aa7d8ca57457ce89614c4bd24139dec",
+        "source_id": "px_route_state"
+      },
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_MoE_Mining_Pass_v3/28_ROUTE_ANNEALING_FREEZE_AND_CERTIFICATION.md",
+        "sha256": "8e0af0572477bdb50e00d75730b1f99a652fcb416d5be3abdebcf0c25497d9cf",
+        "source_id": "moe_freeze_doc"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:moe:evaluation:moe_evaluation_fanout_domain_floors"
+    }
+  ],
+  "retrieval": {
+    "priority": 89,
+    "tags": [
+      "annealing",
+      "certification",
+      "challenger",
+      "exploration",
+      "freeze"
+    ],
+    "terms": [
+      "annealing",
+      "certification",
+      "challenger",
+      "exploration",
+      "freeze",
+      "policy freeze",
+      "route exploration"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "Exploration is a bounded evidence-gathering phase that should anneal as confidence matures and freeze for certified production generations; certification must not depend on continuously changing route probabilities.",
+    "exclusions": [
+      "unbounded exploration in certified runtime"
+    ],
+    "intents": [
+      "anneal exploration",
+      "freeze model routing"
+    ],
+    "keywords": [
+      "annealing",
+      "certification",
+      "challenger",
+      "exploration",
+      "freeze"
+    ],
+    "retrieval_text": "Exploration, Annealing, Freeze, and Certification. Exploration is a bounded evidence-gathering phase that should anneal as confidence matures and freeze for certified production generations; certification must not depend on continuously changing route probabilities. Exploration and stable production routing are different lifecycle phases. A certified route generation requires frozen policy identity and reproducible evaluation evidence. Exploration rate should decline or stop when sufficient evidence exists, rather than remain perpetual hidden nondeterminism.",
+    "short_description": "Exploration is a bounded evidence-gathering phase that should anneal as confidence matures and freeze for certified production generations; certification must not depend on continuously changing route probabilities.",
+    "synonyms": [
+      "policy freeze",
+      "route exploration"
+    ]
+  },
+  "status": "validated",
+  "title": "Exploration, Annealing, Freeze, and Certification"
+}

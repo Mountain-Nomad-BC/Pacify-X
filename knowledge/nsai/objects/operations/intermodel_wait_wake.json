@@ -1,0 +1,154 @@
+{
+  "applicability": {
+    "conditions": [
+      "Task must hold current coordination identity/fencing where required."
+    ],
+    "exclusions": [
+      "resurrecting cancelled or released tasks"
+    ],
+    "targets": [
+      "model/agent tasks"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "wave15c_coordination",
+          "wave15c_wait_tests"
+        ],
+        "statement": "Wait registration is cycle-checked and tied to current task/project identity."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "wave15c_coordination",
+          "wave15c_wait_tests"
+        ],
+        "statement": "Released, cancelled, expired, or stale-fence tasks cannot be resurrected by later dependency completion."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "wave15c_coordination",
+          "wave15c_wait_tests"
+        ],
+        "statement": "Wake acknowledgement records consumption but leaves mutation authority with the normal claim/fencing path."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "register a durable wait with dependency/message condition and deadline",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "publish idempotent wake events when conditions are satisfied",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "resume only after normal claim/fencing checks and acknowledge the wake",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "Model/agent tasks use the existing PX coordination DAG, claims, leases, and fencing to register durable waits and wake messages; wake events are idempotent continuation evidence and never grant a fresh mutation claim by themselves."
+  },
+  "namespace": "operations",
+  "object_id": "nsai:operations:wait_wake:intermodel_wait_wake",
+  "object_type": "wait_wake",
+  "ontology": {
+    "classes": [
+      "coordination",
+      "durable_continuation"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "operations"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "archive": "PX_IMPLEMENTATION_WAVE15C_COGNITIVE_QUERY_COORDINATION_CONTEXT_COMMISSIONING_2026-09-20.zip",
+        "kind": "source_file",
+        "path": "extension/src/coordinationManager.js",
+        "sha256": "91d0a642d1438a95ca03089349d2986b7bc01ddf8ce6f80fe22f0a7b9b50aba4",
+        "source_id": "wave15c_coordination"
+      },
+      {
+        "archive": "PX_IMPLEMENTATION_WAVE15C_COGNITIVE_QUERY_COORDINATION_CONTEXT_COMMISSIONING_2026-09-20.zip",
+        "kind": "source_file",
+        "path": "extension/tests/coordination-wait-wake.test.js",
+        "sha256": "8bcf448ac181466b595fce0bbc2fdf389a56978a199d4c4b8db4884bd4a68768",
+        "source_id": "wave15c_wait_tests"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:operations:job_receipt:rie_durable_job_receipt"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:operations:session_guard:rie_session_context_guard"
+    }
+  ],
+  "retrieval": {
+    "priority": 98,
+    "tags": [
+      "durable coordination",
+      "fencing",
+      "task dependency",
+      "wait wake"
+    ],
+    "terms": [
+      "durable coordination",
+      "durable wait registration",
+      "fencing",
+      "inter-model wake",
+      "task dependency",
+      "wait wake"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "Model/agent tasks use the existing PX coordination DAG, claims, leases, and fencing to register durable waits and wake messages; wake events are idempotent continuation evidence and never grant a fresh mutation claim by themselves.",
+    "exclusions": [
+      "wake grants claim"
+    ],
+    "intents": [
+      "wait for model task",
+      "wake blocked task"
+    ],
+    "keywords": [
+      "durable coordination",
+      "fencing",
+      "task dependency",
+      "wait wake"
+    ],
+    "retrieval_text": "Durable Inter-Model Wait/Wake Coordination. Model/agent tasks use the existing PX coordination DAG, claims, leases, and fencing to register durable waits and wake messages; wake events are idempotent continuation evidence and never grant a fresh mutation claim by themselves. Wait registration is cycle-checked and tied to current task/project identity. Released, cancelled, expired, or stale-fence tasks cannot be resurrected by later dependency completion. Wake acknowledgement records consumption but leaves mutation authority with the normal claim/fencing path.",
+    "short_description": "Model/agent tasks use the existing PX coordination DAG, claims, leases, and fencing to register durable waits and wake messages; wake events are idempotent continuation evidence and never grant a fresh mutation claim by themselves.",
+    "synonyms": [
+      "durable wait registration",
+      "inter-model wake"
+    ]
+  },
+  "status": "validated",
+  "title": "Durable Inter-Model Wait/Wake Coordination"
+}

@@ -1,0 +1,164 @@
+{
+  "applicability": {
+    "conditions": [
+      "Deterministic candidate generation must occur first."
+    ],
+    "exclusions": [
+      "direct effects from model output"
+    ],
+    "targets": [
+      "PX operator",
+      "Qwen3.5-0.8B candidate"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "wave15c_tiny_operator",
+          "wave15c_tiny_operator_tests"
+        ],
+        "statement": "The model is a selector/planner over an admitted closed world, not an authority for creating object or action identity."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "wave15c_tiny_operator",
+          "wave15c_tiny_operator_tests"
+        ],
+        "statement": "Any returned ID outside the candidate allow-list is invalid."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "wave15c_tiny_operator",
+          "wave15c_tiny_operator_tests"
+        ],
+        "statement": "A provider timeout is operational failure/cancellation territory and must not trigger a semantic JSON-repair retry."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "build an operator request with candidate IDs and bounded evidence",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "validate structured output against the allow-list",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "return an authority-free decision/proposal receipt or unresolved result",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "The resident tiny model receives an explicit bounded candidate set and may select/rerank only those IDs; invented IDs are rejected, unresolved ambiguity is allowed, malformed structured output gets at most one repair attempt, and provider timeout/cancellation is not retried as a formatting error."
+  },
+  "namespace": "cognitive",
+  "object_id": "nsai:cognitive:closed_world_selection:tiny_operator_closed_world_selection",
+  "object_type": "closed_world_selection",
+  "ontology": {
+    "classes": [
+      "closed_world_reasoning",
+      "model_control"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "cognitive"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "archive": "PX_IMPLEMENTATION_WAVE15C_COGNITIVE_QUERY_COORDINATION_CONTEXT_COMMISSIONING_2026-09-20.zip",
+        "kind": "source_file",
+        "path": "runtime/tiny_model_operator.py",
+        "sha256": "110245100885321fc4f2cc03df7ca266ed734f599203eab9e6bae96d137dd364",
+        "source_id": "wave15c_tiny_operator"
+      },
+      {
+        "archive": "PX_IMPLEMENTATION_WAVE15C_COGNITIVE_QUERY_COORDINATION_CONTEXT_COMMISSIONING_2026-09-20.zip",
+        "kind": "source_file",
+        "path": "tests/test_tiny_model_operator.py",
+        "sha256": "c90b69847fe715bc9e0d71ae807665f095f0aa08529507b9e3c6533f7d193363",
+        "source_id": "wave15c_tiny_operator_tests"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:cognitive:bounded_query:bounded_cognitive_query"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:control_lane:tiny_cpu_control_lane"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:protocol_normalization:provider_protocol_normalization"
+    }
+  ],
+  "retrieval": {
+    "priority": 100,
+    "tags": [
+      "candidate allowlist",
+      "closed world",
+      "invented id",
+      "repair retry",
+      "tiny model"
+    ],
+    "terms": [
+      "bounded librarian selection",
+      "candidate allowlist",
+      "candidate-only operator",
+      "closed world",
+      "invented id",
+      "repair retry",
+      "tiny model"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "The resident tiny model receives an explicit bounded candidate set and may select/rerank only those IDs; invented IDs are rejected, unresolved ambiguity is allowed, malformed structured output gets at most one repair attempt, and provider timeout/cancellation is not retried as a formatting error.",
+    "exclusions": [
+      "invented IDs",
+      "model-minted authority"
+    ],
+    "intents": [
+      "rerank cognitive candidates",
+      "use librarian model"
+    ],
+    "keywords": [
+      "candidate allowlist",
+      "closed world",
+      "invented id",
+      "repair retry",
+      "tiny model"
+    ],
+    "retrieval_text": "Tiny Operator Closed-World Selection. The resident tiny model receives an explicit bounded candidate set and may select/rerank only those IDs; invented IDs are rejected, unresolved ambiguity is allowed, malformed structured output gets at most one repair attempt, and provider timeout/cancellation is not retried as a formatting error. The model is a selector/planner over an admitted closed world, not an authority for creating object or action identity. Any returned ID outside the candidate allow-list is invalid. A provider timeout is operational failure/cancellation territory and must not trigger a semantic JSON-repair retry.",
+    "short_description": "The resident tiny model receives an explicit bounded candidate set and may select/rerank only those IDs; invented IDs are rejected, unresolved ambiguity is allowed, malformed structured output gets at most one repair attempt, and provider timeout/cancellation is not retried as a formatting error.",
+    "synonyms": [
+      "bounded librarian selection",
+      "candidate-only operator"
+    ]
+  },
+  "status": "validated",
+  "title": "Tiny Operator Closed-World Selection"
+}

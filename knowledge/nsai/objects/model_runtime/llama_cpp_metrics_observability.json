@@ -1,0 +1,148 @@
+{
+  "applicability": {
+    "conditions": [
+      "Use only with an admitted PX model/runtime identity.",
+      "Treat measured machine-specific profile evidence as stronger than generic defaults."
+    ],
+    "exclusions": [
+      "metrics grant lifecycle authority"
+    ],
+    "targets": [
+      "llama-server",
+      "PX health evidence"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.95,
+        "evidence_refs": [
+          "llama_server_readme",
+          "px_llama_api_contract"
+        ],
+        "statement": "Metrics/slot state can reveal active work, queue/slot pressure, and runtime behavior."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "llama_server_readme",
+          "px_llama_api_contract"
+        ],
+        "statement": "Resource release must be proven by PX reconciliation rather than inferred from one metric disappearing."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "PX samples backend observation surfaces into bounded health evidence.",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "Health/capacity decisions combine telemetry with lifecycle identity and resource ownership.",
+        "name": "mechanism_2"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, or policy authority."
+    ],
+    "summary": "llama-server exposes runtime/slot metrics useful for PX health and capacity evidence. Observability informs decisions but does not itself mutate routing, unload models, or release resource leases."
+  },
+  "namespace": "model_runtime",
+  "object_id": "nsai:model_runtime:observability:llama_cpp_metrics_observability",
+  "object_type": "observability",
+  "ontology": {
+    "classes": [
+      "observability",
+      "health"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "model_runtime",
+      "runtime_scope": [
+        "llama-server",
+        "PX health evidence"
+      ]
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "manual source-backed synthesis with schema validation and exact SHA provenance",
+      "source_pass": "Wave 14"
+    },
+    "sources": [
+      {
+        "archive": "models and harnesses for them.zip",
+        "kind": "source_file",
+        "path": "llama.cpp-master/llama.cpp-master/tools/server/README.md",
+        "sha256": "57e27013809e4976e71a76fe83a5930779634401d6dbdf2d941fd5432889eb9e",
+        "source_id": "llama_server_readme"
+      },
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_Model_Fabric_Junction_Hardening_Pass3_2026-09-20/04_LLAMA_CPP_API_TOOL_STREAMING_CONTRACT.md",
+        "sha256": "9a2022cf3d1e72763395929ea98beccd30e7b94733a57bbdc2c47604e2f25040",
+        "source_id": "px_llama_api_contract"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:lifecycle:local_model_lifecycle"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:resource_interlock:model_resource_interlocks"
+    }
+  ],
+  "retrieval": {
+    "priority": 85,
+    "tags": [
+      "metrics",
+      "slots",
+      "health",
+      "receipts"
+    ],
+    "terms": [
+      "health",
+      "metrics",
+      "observability",
+      "receipts",
+      "runtime telemetry",
+      "slot metrics",
+      "slots"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "llama-server exposes runtime/slot metrics useful for PX health and capacity evidence. Observability informs decisions but does not itself mutate routing, unload models, or release resource leases.",
+    "exclusions": [
+      "metrics grant lifecycle authority"
+    ],
+    "intents": [
+      "monitor llama server",
+      "inspect model health"
+    ],
+    "keywords": [
+      "metrics",
+      "slots",
+      "health",
+      "observability"
+    ],
+    "retrieval_text": "llama.cpp Runtime Metrics and Slot Observability. llama-server exposes runtime/slot metrics useful for PX health and capacity evidence. Observability informs decisions but does not itself mutate routing, unload models, or release resource leases. Metrics/slot state can reveal active work, queue/slot pressure, and runtime behavior. Resource release must be proven by PX reconciliation rather than inferred from one metric disappearing.",
+    "short_description": "llama-server exposes runtime/slot metrics useful for PX health and capacity evidence.",
+    "synonyms": [
+      "runtime telemetry",
+      "slot metrics"
+    ]
+  },
+  "status": "validated",
+  "title": "llama.cpp Runtime Metrics and Slot Observability"
+}

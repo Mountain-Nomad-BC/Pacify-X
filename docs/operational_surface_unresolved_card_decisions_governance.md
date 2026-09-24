@@ -1,4 +1,4 @@
-﻿## Operational unresolved card decisions (current governance classification)
+## Operational unresolved card decisions (current governance classification)
 
 Policy: exact_typed_controls for surfaced controls; non_visible_path for runtime-only authority paths; aggregate_parent for split umbrellas.
 

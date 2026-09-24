@@ -51,6 +51,21 @@ Python/
 .engineering-bootstrap/test-evidence/adversarial-repair-gates/
 .engineering-bootstrap/test-evidence/github-reconciliation-gates/
 
+# Derived local custody: live runtime state, budget/WAL ledgers, and resource
+# custody are retained and audited OUTSIDE source control. They are local
+# execution state, not authored product source, and must never enter the
+# product source revision.
+.engineering-bootstrap/local-model-runtime/
+.engineering-bootstrap/model-client-gateway/
+.engineering-bootstrap/resources/ledger.json
+.engineering-bootstrap/resources/ledger.json.lock
+
+# Per-skill usage memory is derived local runtime custody, not authored source.
+# No skill's memory/ is tracked anywhere in this repository; stats.json is a
+# rebuildable rollup over the append-only memory/usage.jsonl. Admitting it would
+# put local outcome counters into the product source revision.
+.px/skills/*/memory/
+
 # IDE and operating-system residue not owned by this framework
 .idea/
 .DS_Store
@@ -77,3 +92,8 @@ tmp_*.json
 docs/tmp_*.md
 quarantine/
 repo_quarantine/
+.quarantine/
+.px-quarantine/
+
+.tmp/
+

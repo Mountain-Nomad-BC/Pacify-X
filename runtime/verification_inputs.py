@@ -343,6 +343,12 @@ class CapturedInputs:
         try:
             tree = ast.parse(bytes(raw), filename=relative)
         except (SyntaxError, UnicodeError, RecursionError) as error:
+            # Python-shaped files under tests/fixtures may intentionally be
+            # malformed parser/LSP inputs. They participate as captured test
+            # data, not executable/import-bearing Python. Keep all ordinary
+            # Python sources fail-closed.
+            if relative.startswith("tests/fixtures/"):
+                return set()
             raise ValueError(
                 "cannot establish Python dependency closure: " + relative
             ) from error

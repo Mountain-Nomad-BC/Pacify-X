@@ -521,6 +521,49 @@ def build(root: Path) -> dict[str, object]:
                 "tests/test_memory_intelligence.py",
                 "tests/test_clean_room_capabilities.py",
             ]
+        elif path.parent.name == "learning":
+            if name == "shared-contribution.schema.json":
+                owner, enforcement = ("runtime/shared_contributions.py", "shared_learning_lineage_runtime_boundary")
+                producers = ["runtime/shared_contributions.py", "runtime/learning_promotion.py", "runtime/process_memory.py"]
+                tests = ["tests/test_shared_contributions.py"]
+            elif name == "verification-record.schema.json":
+                owner, enforcement = ("runtime/shared_contributions.py", "shared_learning_verification_runtime_boundary")
+                producers = ["runtime/shared_contributions.py", "runtime/learning_promotion.py"]
+                tests = ["tests/test_shared_contributions.py"]
+            elif name == "observation-pack.schema.json":
+                owner, enforcement = ("runtime/observation_projection.py", "evidence_projection_runtime_boundary")
+                producers = ["runtime/observation_projection.py", "runtime/evidence_reducer.py", "runtime/memory_intelligence.py"]
+                tests = ["tests/test_observation_projection.py", "tests/test_evidence_reducer.py"]
+            else:
+                raise ValueError(f"learning contract has no ownership rule: {relative}")
+        elif path.parent.name == "nsai":
+            owner, enforcement = (
+                "runtime/nsai_knowledge.py",
+                "nsai_single_object_knowledge_boundary",
+            )
+            producers = [
+                "runtime/nsai_knowledge.py",
+                "runtime/knowledge_foundry.py",
+                "runtime/knowledge_refinery.py",
+                "runtime/cognitive_core/index_builder.py",
+            ]
+            tests = [
+                "tests/test_nsai_knowledge.py",
+                "tests/test_nsai_knowledge_foundry_materialization.py",
+            ]
+        elif path.parent.name == "persistent_memory":
+            owner, enforcement = (
+                "runtime/persistent_memory_provider.py",
+                "external_persistent_memory_read_boundary",
+            )
+            producers = [
+                "runtime/persistent_memory_provider.py",
+                "runtime/external_capability_provider.py",
+            ]
+            tests = [
+                "tests/test_persistent_memory_provider.py",
+                "tests/test_persistent_memory_workflow.py",
+            ]
         elif path.parent.name == "transcripts":
             owner, enforcement = (
                 "runtime/transcript_analysis.py",

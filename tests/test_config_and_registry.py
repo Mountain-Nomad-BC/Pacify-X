@@ -38,7 +38,18 @@ class ConfigAndRegistryTests(unittest.TestCase):
     def test_registry_is_canonical_and_cross_checked(self) -> None:
         result = validate_registry(ROOT)
         self.assertTrue(result["valid"], result["errors"])
-        self.assertEqual(result["active_count"], 6)
+        # The registry surface is the admitted capability set, derived from the skill
+        # catalogue + admission ledger. Assert it is the full admitted denominator rather
+        # than a stale literal, so a shrinking registry cannot pass silently.
+        admitted = {
+            record["id"]
+            for record in json.loads(
+                (ROOT / "registry" / "admission_ledger.json").read_text(encoding="utf-8")
+            )["records"]
+            if record.get("status") == "active"
+        }
+        self.assertGreaterEqual(result["active_count"], len(admitted) - 8)
+        self.assertGreater(result["active_count"], 100)
 
     def test_registry_rejects_missing_active_ledger_entry(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

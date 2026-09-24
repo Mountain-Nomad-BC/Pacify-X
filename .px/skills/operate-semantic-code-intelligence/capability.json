@@ -1,0 +1,41 @@
+{
+  "admission_record": "operate-semantic-code-intelligence",
+  "body_sha256": "14f3fcf5504796a83025f8385f86431a8bd8fa306c9b0d5406812e6a6ba19b04",
+  "contract": {
+    "available": true,
+    "sha256": "e6b654e1716c28eb835ad09e3bf1994dc40622e2ae4d249c0089fba25b7d0a28",
+    "source": "registry/skill_packages/operate-semantic-code-intelligence.json"
+  },
+  "description": "Operate admitted semantic AST/LSP/project/query/context capabilities with explicit project authorization, revision-bound reads/edits, bounded hydration and source evidence.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "operate-semantic-code-intelligence",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/operate-semantic-code-intelligence"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "semantic",
+    "code",
+    "lsp",
+    "ast",
+    "retrieval",
+    "revision",
+    "context"
+  ],
+  "version": "1.0.0"
+}

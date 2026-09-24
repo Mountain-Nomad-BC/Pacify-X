@@ -130,7 +130,7 @@ def test_catalog_is_metadata_only_and_all_candidates_are_deferred() -> None:
         catalog["record_count"],
         catalog["candidate_count"],
         catalog["bundle_count"],
-    ) == (486, 30, 12)
+    ) == (492, 35, 13)
     assert status["metadata_only"] is True
     assert status["canonical"] is False
     assert status["authority"] == "none"
@@ -348,7 +348,7 @@ def test_external_capability_cli_exposes_metadata_without_hydrating_bodies(
 ) -> None:
     assert main(["--root", str(ROOT), "external-capability", "status"]) == 0
     status = json.loads(capsys.readouterr().out)
-    assert status["record_count"] == 486
+    assert status["record_count"] == 492
     assert status["active_registry_mutation"] is False
     assert (
         main(

@@ -410,3 +410,88 @@ def validate_scheduling_layer(root: Path) -> dict[str, Any]:
         "observe_only": True,
         "errors": errors,
     }
+
+
+def model_route_capacity_snapshot(
+    scheduler: Scheduler,
+    *,
+    queue_depth: int,
+    max_queue_depth: int,
+    concurrent_slots_total: int,
+    concurrent_slots_available: int,
+    exclusive_model_id: str | None = None,
+):
+    """Project scheduler-owned resource pressure into the model routing plane.
+
+    The returned snapshot is observational.  It does not reserve resources or
+    create a lease; model execution still goes through the owning scheduler and
+    model-runtime authorities.
+    """
+    from .model_capacity import ModelCapacitySnapshot
+
+    if type(scheduler) is not Scheduler:
+        raise ValueError("typed Scheduler is required")
+    total = scheduler.total
+    available = scheduler.available
+    return ModelCapacitySnapshot(
+        cpu_cores_total=float(total.cpu_cores),
+        cpu_cores_available=float(available.cpu_cores),
+        ram_gb_total=float(total.ram_gb),
+        ram_gb_available=float(available.ram_gb),
+        vram_gb_total=float(total.vram_gb),
+        vram_gb_available=float(available.vram_gb),
+        concurrent_slots_total=concurrent_slots_total,
+        concurrent_slots_available=concurrent_slots_available,
+        queue_depth=queue_depth,
+        max_queue_depth=max_queue_depth,
+        exclusive_model_id=exclusive_model_id,
+        source_sha256=_hash({
+            "scheduler_total": total.record(),
+            "scheduler_available": available.record(),
+            "policy": scheduler.policy,
+        }),
+    )
+
+
+def durable_job_receipt(
+    task: Task,
+    *,
+    permission_snapshot: Mapping[str, Any],
+    authority_revision: str,
+    fabric_generation: str | None = None,
+    retrieval_generation: str | None = None,
+    dry_run: bool = False,
+    max_retries: int = 0,
+):
+    """Freeze scheduler admission context into the standard immutable job receipt.
+
+    The receipt is evidence only.  It does not enqueue or authorize the task.
+    """
+    from .job_receipt import JobReceipt
+
+    if type(task) is not Task:
+        raise ValueError("typed Task required")
+    request = {
+        "id": task.id,
+        "capability": task.capability,
+        "priority": task.priority,
+        "dependencies": sorted(task.dependencies),
+        "resources": task.resources.record(),
+        "acceptance": task.acceptance,
+        "deadline": task.deadline,
+        "risk": task.risk,
+        "idempotency_key": task.idempotency_key,
+        "budget": task.budget,
+        "privacy": task.privacy,
+    }
+    return JobReceipt.create(
+        job_id=task.id,
+        operation_id=task.capability,
+        request=request,
+        permission_snapshot=permission_snapshot,
+        authority_revision=authority_revision,
+        fabric_generation=fabric_generation,
+        retrieval_generation=retrieval_generation,
+        dry_run=dry_run,
+        max_retries=max_retries,
+    )

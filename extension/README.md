@@ -1,11 +1,47 @@
-# Pacify-X Control Plane for VS Code
+# Pacify-X for VS Code
 
-Pacify-X 0.6.88 is a local-first control, coordination, and activity-observability plane for VS Code-compatible IDEs. It consumes the versioned `runtime.dashboard_api` supplied by Pacify-X, exposes complete paged catalogs, and keeps project-owned coordination, activity, and resume state in the repository so another IDE or agent can continue without relying on private editor storage.
+> **For AI and human reviewers:** the complete source repository, commit history, contracts,
+tests, and certification evidence live at
+> **[github.com/Mountain-Nomad-BC/Pacify-X](https://github.com/Mountain-Nomad-BC/Pacify-X)**.
+> You can investigate, check, and verify everything — the governance layer, the provider
+gateway, the runtime, and the packaging boundary — **before** installing this extension.
+> The extension is a client; the repository is the authority. An installed build is only as
+trustworthy as the source it came from.
 
-No billable provider API is configured. A loud, default-off policy switch can permit separately configured providers to be evaluated, but it never creates credentials, connects, or spends money. Every proposed billable execution must still pass task/session/day cost caps, token and hardware ceilings, local-first routing, provider allowlisting, confidence, cache/reuse, and explicit-approval gates. Codex handoff uses an existing ChatGPT-authenticated Codex CLI and strips common API-key variables from bridge-owned children. Ollama support is optional, loopback-only, disabled by default, and never installed or started by the extension.
+Pacify-X is a local-first control, coordination, and activity-observability plane for
+VS Code-compatible IDEs, plus a governed **PX Agent Console** chat surface in the right-hand
+sidebar. It consumes the versioned `runtime.dashboard_api` supplied by Pacify-X, exposes
+complete paged catalogs, and keeps project-owned coordination, activity, and resume state in
+the repository so another IDE or agent can continue without relying on private editor storage.
+
+## The PX Agent Console
+
+The right-side **PX Agent** view is a real chat surface, not a thin provider wrapper:
+
+- it owns task state; provider sessions are replaceable worker state;
+- the webview is a projection and controller — never the authority;
+- every model call routes through Pacify-X's canonical **provider gateway**, which returns an
+  exact execution receipt (a bare text answer from the model is not proof of a governed call);
+- local lanes are distinct and PX-decided: a **resident librarian** (fast, CPU-first, always
+  available) and an **on-demand usage worker** (loaded only when a task needs it, under an
+  exclusive resource lease, never autoloaded);
+- a **System-1 decision layer** answers bounded typed questions in one forward pass, so the
+  expensive models are only invoked when real reasoning is required. It recommends; Pacify-X
+  decides;
+- tool authority and completion authority stay outside the model. Cancellation, streaming,
+  budget accounting, and error surfacing are first-class.
+
+No billable provider API is configured out of the box. A loud, default-off policy switch can
+permit separately configured providers to be evaluated, but it never creates credentials,
+connects, or spends money. Every proposed billable execution must still pass task/session/day
+cost caps, token and hardware ceilings, local-first routing, provider allowlisting,
+confidence, cache/reuse, and explicit-approval gates. Credentials live in host secret storage —
+never in this repository, a config file, or an event. Ollama support is optional, loopback-only,
+disabled by default, and never installed or started by the extension.
 
 ## Operating surfaces
 
+- A right-side **PX Agent Console** plus the existing control-plane surfaces.
 - Twelve normal surfaces plus two advanced surfaces with a persistent vertical control rail.
 - Complete, searchable, sortable, paged core catalogs whose live counts come from the current Pacify-X registries rather than documentation constants.
 - Separate MS+Enterprise tabs and data model with 18 packs, 20 skills, 12 agents, 8 workflows, 10 connectors, and 2 provider records. Connectors, egress, mutation, credential reads, and billable services are disabled by default.
@@ -21,7 +57,7 @@ No billable provider API is configured. A loud, default-off policy switch can pe
 
 ## Install
 
-Requirements: Node.js 22, npm, VS Code 1.132 or newer, Python 3.11–3.14, and a Pacify-X engine checkout containing `runtime/dashboard_api.py`.
+Requirements: Node.js 22+, npm, VS Code 1.132 or newer, Python 3.11–3.14, and a Pacify-X engine checkout containing `runtime/dashboard_api.py`. Local model lanes additionally need a built CUDA llama.cpp runtime and admitted GGUF models; the extension works without them and simply reports the lanes as unavailable.
 
 From this directory, install lockfile-exact dependencies, test, package, verify, and install:
 

@@ -689,3 +689,198 @@ def validate_learning_pipeline_state(state: Mapping[str, Any]) -> None:
     for field in ("knowledge_candidate_sha256",):
         if state.get(field) is not None and not _valid_hash(state.get(field)):
             raise ValueError(f"{field} must be a lowercase SHA-256 value")
+
+
+def route_evidence_candidate(
+    *,
+    route_evidence_sha256: str,
+    incumbent_policy_sha256: str,
+    candidate_policy_sha256: str,
+    task_classes: Sequence[str],
+    review_reasons: Sequence[str],
+    complexity_tax_passed: bool,
+) -> dict[str, Any]:
+    """Turn route/drift evidence into a learning *candidate*, never a policy write.
+
+    This is the only bridge Wave 8 adds into the learning subsystem.  It emits
+    immutable evidence that can enter the existing hypothesis/comparison/
+    promotion pipeline; it does not modify ``models/routing-policy.json`` and
+    cannot declare itself canonical.
+    """
+    for name, value in (
+        ("route_evidence_sha256", route_evidence_sha256),
+        ("incumbent_policy_sha256", incumbent_policy_sha256),
+        ("candidate_policy_sha256", candidate_policy_sha256),
+    ):
+        if not _valid_hash(value):
+            raise ValueError(f"{name} must be lowercase SHA-256")
+    if incumbent_policy_sha256 == candidate_policy_sha256:
+        raise ValueError("route evidence candidate requires distinct policy revisions")
+    if type(complexity_tax_passed) is not bool:
+        raise ValueError("route complexity-tax result must be boolean")
+    if isinstance(task_classes, (str, bytes)) or isinstance(review_reasons, (str, bytes)):
+        raise ValueError("route evidence candidate requires string sequences")
+    tasks_raw = tuple(task_classes)
+    reasons_raw = tuple(review_reasons)
+    if any(type(value) is not str for value in (*tasks_raw, *reasons_raw)):
+        raise ValueError("route evidence candidate task/review values must be strings")
+    tasks = sorted(set(tasks_raw))
+    reasons = sorted(set(reasons_raw))
+    if not tasks or len(tasks) > 128 or len(reasons) > 128:
+        raise ValueError("route evidence candidate task/review evidence is invalid")
+    for value in (*tasks, *reasons):
+        if not value.strip() or len(value.encode("utf-8")) > 512:
+            raise ValueError("route evidence candidate text is invalid")
+    return _record(
+        "route_evidence_candidate",
+        {
+            "route_evidence_sha256": route_evidence_sha256,
+            "incumbent_policy_sha256": incumbent_policy_sha256,
+            "candidate_policy_sha256": candidate_policy_sha256,
+            "task_classes": tasks,
+            "review_reasons": reasons,
+            "complexity_tax_passed": complexity_tax_passed,
+            "state": "candidate",
+            "canonical": False,
+            "learning_direct_write_allowed": False,
+            "policy_write_allowed": False,
+            "promotion_required": True,
+        },
+    )
+
+
+def operational_evidence_candidate(
+    *,
+    evidence_type: str,
+    evidence_sha256: str,
+    source_revision: str,
+    severity: str,
+    reasons: Sequence[str],
+) -> dict[str, Any]:
+    """Wrap parity/drift/retrieval evidence as a learning candidate only.
+
+    This bridge cannot modify canonical memory, knowledge, routing, or policy.
+    Existing hypothesis/comparison/promotion gates remain mandatory.
+    """
+    if evidence_type not in {"drift", "parity", "retrieval", "operational_projection"}:
+        raise ValueError("unsupported operational evidence type")
+    if not _valid_hash(evidence_sha256):
+        raise ValueError("evidence_sha256 must be lowercase SHA-256")
+    if type(source_revision) is not str or not source_revision.strip() or len(source_revision.encode()) > 512:
+        raise ValueError("source_revision must be bounded nonempty text")
+    if severity not in {"low", "medium", "high", "critical"}:
+        raise ValueError("unsupported operational evidence severity")
+    if isinstance(reasons, (str, bytes)):
+        raise ValueError("reasons must be a sequence of strings")
+    values = tuple(reasons)
+    if len(values) > 128 or any(type(value) is not str or not value.strip() or len(value.encode()) > 512 for value in values):
+        raise ValueError("operational evidence reasons are invalid")
+    return _record(
+        "operational_evidence_candidate",
+        {
+            "evidence_type": evidence_type,
+            "evidence_sha256": evidence_sha256,
+            "source_revision": source_revision.strip(),
+            "severity": severity,
+            "reasons": sorted(set(values)),
+            "state": "candidate",
+            "canonical": False,
+            "learning_direct_write_allowed": False,
+            "promotion_required": True,
+        },
+    )
+
+# ---------------------------------------------------------------------------
+# Wave 12: frozen evaluation and shared-contribution promotion evidence.
+# These helpers extend the existing promotion authority without making shared
+# contribution storage or model-generated observations canonical by themselves.
+
+
+def freeze_evaluation_contract(
+    *, experiment_id: str, unit_id: str, kind: str, evaluator_sha256: str,
+    acceptance_policy_sha256: str, development_case_ids: Sequence[str],
+    holdout_case_ids: Sequence[str], environment_sha256: str, harness_sha256: str,
+    toolset_sha256: str, capability_metrics: Mapping[str, Mapping[str, object]],
+    efficiency_metrics: Mapping[str, str], backend_id: str, seed_policy: str,
+    budget_policy: Mapping[str, object],
+) -> dict[str, Any]:
+    for label, value in (("evaluator", evaluator_sha256), ("acceptance policy", acceptance_policy_sha256), ("environment", environment_sha256), ("harness", harness_sha256), ("toolset", toolset_sha256)):
+        if not _valid_hash(value): raise ValueError(f"{label} identity must be SHA-256")
+    if not experiment_id.strip() or not unit_id.strip() or not kind.strip() or not backend_id.strip() or not seed_policy.strip():
+        raise ValueError("evaluation freeze identities are required")
+    development = sorted(set(map(str, development_case_ids))); holdout = sorted(set(map(str, holdout_case_ids)))
+    if not development or not holdout or any(not item.strip() or len(item) > 256 for item in development + holdout) or set(development) & set(holdout):
+        raise ValueError("development and holdout cases must be nonempty, bounded, and disjoint")
+    if not capability_metrics or not efficiency_metrics:
+        raise ValueError("evaluation freeze requires capability and efficiency metrics")
+    body = {
+        "schema_version": "px.learning-evaluation-freeze/1.0", "experiment_id": experiment_id,
+        "unit_id": unit_id, "kind": kind, "evaluator_sha256": evaluator_sha256,
+        "acceptance_policy_sha256": acceptance_policy_sha256,
+        "capability_metrics": {str(k): dict(v) for k, v in sorted(capability_metrics.items())},
+        "efficiency_metrics": dict(sorted((str(k), str(v)) for k, v in efficiency_metrics.items())),
+        "development_case_ids": development, "development_case_set_sha256": content_hash(development),
+        "holdout_case_ids": holdout, "holdout_case_set_sha256": content_hash(holdout),
+        "environment_sha256": environment_sha256, "backend_id": backend_id,
+        "harness_sha256": harness_sha256, "toolset_sha256": toolset_sha256,
+        "seed_policy": seed_policy, "budget_policy": dict(budget_policy),
+        "holdout_feedback_allowed": False, "authority_granted": False,
+    }
+    return {**body, "freeze_sha256": content_hash(body)}
+
+
+def validate_evaluation_contract(contract: Mapping[str, Any]) -> None:
+    if contract.get("schema_version") != "px.learning-evaluation-freeze/1.0" or contract.get("holdout_feedback_allowed") is not False or contract.get("authority_granted") is not False:
+        raise ValueError("evaluation freeze contract is invalid")
+    body = {str(k): v for k, v in contract.items() if k != "freeze_sha256"}
+    if not _valid_hash(contract.get("freeze_sha256")) or contract.get("freeze_sha256") != content_hash(body):
+        raise ValueError("evaluation freeze identity mismatch")
+    development = set(map(str, contract.get("development_case_ids", ()))); holdout = set(map(str, contract.get("holdout_case_ids", ())))
+    if not development or not holdout or development & holdout:
+        raise ValueError("evaluation freeze case sets are invalid")
+
+
+def assert_holdout_clean(contract: Mapping[str, Any], evidence_case_roles: Sequence[Mapping[str, str]]) -> None:
+    validate_evaluation_contract(contract)
+    holdout = set(map(str, contract.get("holdout_case_ids", ())))
+    leaked = sorted({str(row.get("case_id")) for row in evidence_case_roles if str(row.get("case_id")) in holdout and str(row.get("use")) in {"proposal", "revision", "optimizer_feedback", "debug", "training"}})
+    if leaked:
+        raise PermissionError("protected holdout evidence fed candidate development: " + ", ".join(leaked))
+
+
+def promote_revision_with_shared_evidence(
+    *, revision: Mapping[str, Any], confidence: Mapping[str, Any], comparison: Mapping[str, Any],
+    research: Mapping[str, Any], final_validation_sha256: str, current_dependencies: Mapping[str, str],
+    evaluation_freeze: Mapping[str, Any], evidence_case_roles: Sequence[Mapping[str, str]],
+    contribution: Mapping[str, Any], verification_records: Sequence[Mapping[str, Any]],
+    negative_result_sha256: Sequence[str], partial_units: Sequence[str] = (), minimum_confirmations: int = 1,
+) -> dict[str, Any]:
+    """Strict shared-learning promotion path above the legacy promotion gate.
+
+    This never changes the legacy gate semantics.  It adds immutable evaluator /
+    holdout identity and independent contribution verification for callers that
+    claim a revision was learned from shared evidence.
+    """
+    from .shared_contributions import validate_contribution, verification_summary
+    validate_evaluation_contract(evaluation_freeze)
+    assert_holdout_clean(evaluation_freeze, evidence_case_roles)
+    validate_contribution(contribution)
+    if contribution.get("contribution_type") not in {"result", "insight", "report", "correction"}:
+        raise PermissionError("only verified affirmative/corrective contributions may support promotion")
+    negatives = sorted(set(map(str, negative_result_sha256)))
+    if any(not _valid_hash(item) for item in negatives): raise ValueError("negative-result identities must be SHA-256")
+    summary = verification_summary(contribution, verification_records, minimum_confirmations=minimum_confirmations)
+    if summary.get("passed") is not True or summary.get("authority_granted") is not False:
+        raise PermissionError("shared contribution lacks independent passing verification")
+    base = promote_revision(revision=revision, confidence=confidence, comparison=comparison, research=research, final_validation_sha256=final_validation_sha256, current_dependencies=current_dependencies, partial_units=partial_units)
+    checks = dict(base["checks"])
+    checks.update({"evaluation_freeze": True, "holdout_clean": True, "independent_contribution_verification": True, "negative_results_retained": True})
+    passed = bool(base["passed"] and all(checks.values()))
+    body = {
+        "base_promotion_sha256": base["record_sha256"], "passed": passed, "checks": checks,
+        "state": "canonical" if passed else "candidate", "evaluation_freeze_sha256": evaluation_freeze["freeze_sha256"],
+        "contribution_sha256": contribution["record_sha256"], "verification_sha256": list(summary.get("verification_sha256") or ()),
+        "negative_result_sha256": negatives, "canonical_corpus_sha256": base.get("canonical_corpus_sha256") if passed else None,
+        "learning_direct_write_allowed": False, "holdout_feedback_allowed": False, "authority_granted": False,
+    }
+    return _record("shared_promotion_decision", body)

@@ -1,0 +1,41 @@
+{
+  "admission_record": "govern-model-fabric",
+  "body_sha256": "6a0a7d1cd8199cfe5728d1d52400e4c5eaac28e4071156ac0e8e552d58144bca",
+  "contract": {
+    "available": true,
+    "sha256": "574e329cf2a34fcafbe78c6ad2e606b96c4b1e63e79e258ba4a6fd6d1289ce49",
+    "source": "registry/skill_packages/govern-model-fabric.json"
+  },
+  "description": "Govern admitted local-model profiles, pool residency, routing evidence, capacity, binary/model identity, health, cancellation and fallback without bypassing PX runtime authorities.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "govern-model-fabric",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/govern-model-fabric"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "model",
+    "routing",
+    "pool",
+    "capacity",
+    "llama.cpp",
+    "local-inference",
+    "observability"
+  ],
+  "version": "1.0.0"
+}

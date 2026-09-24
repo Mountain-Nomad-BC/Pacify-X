@@ -21,6 +21,8 @@ import time
 import tomllib
 from typing import Any, Iterable, Mapping, Sequence
 
+from .cognitive_query import query_repository_index
+
 SCHEMA_VERSION = "2.0.0"
 MAX_PAGE_SIZE = 100
 HARDWARE_CACHE_TTL_SECONDS = 300.0
@@ -605,7 +607,7 @@ def _extension_source_identity(root: Path) -> dict[str, Any]:
     asset_paths.extend(
         sorted(
             path
-            for path in (extension_root / "src").glob("*.js")
+            for path in (extension_root / "src").rglob("*.js")
             if path.name != "extension.bundle.js"
         )
     )
@@ -615,6 +617,8 @@ def _extension_source_identity(root: Path) -> dict[str, Any]:
             extension_root / "media" / "dashboard.css",
             extension_root / "media" / "sidebar.css",
             extension_root / "media" / "sidebar.js",
+            extension_root / "media" / "agent-console.css",
+            extension_root / "media" / "agent-console.js",
             extension_root / "resources" / "ui" / "action-inventory.json",
         )
         if path.is_file()
@@ -3600,6 +3604,13 @@ def _parser() -> argparse.ArgumentParser:
     graph.add_argument("--max-nodes", type=int, default=24)
     graph.add_argument("--max-edges", type=int, default=48)
     graph.add_argument("--pretty", action="store_true")
+    cognitive = commands.add_parser("cognitive-query")
+    cognitive.add_argument("--source-root", type=Path, required=True)
+    cognitive.add_argument("--query", required=True)
+    cognitive.add_argument("--project-id", default="")
+    cognitive.add_argument("--generation-id", default="")
+    cognitive.add_argument("--top-per-category", type=int, choices=(1, 2, 3), default=3)
+    cognitive.add_argument("--pretty", action="store_true")
     memory = commands.add_parser("memory")
     memory.add_argument("--source-root", type=Path, required=True)
     memory.add_argument("--workspace-root", type=Path, required=True)
@@ -3675,6 +3686,14 @@ def main(argv: Iterable[str] | None = None) -> int:
             max_nodes=args.max_nodes,
             max_edges=args.max_edges,
         )
+    elif args.command == "cognitive-query":
+        result = query_repository_index(
+            args.source_root,
+            args.query,
+            project_id=args.project_id,
+            generation_id=args.generation_id or None,
+            top_per_category=args.top_per_category,
+        ).as_dict()
     elif args.command == "memory":
         result = query_canonical_memory(
             args.workspace_root,

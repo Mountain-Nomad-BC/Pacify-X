@@ -1,0 +1,147 @@
+{
+  "applicability": {
+    "conditions": [
+      "Exact evidence identity must be available."
+    ],
+    "exclusions": [
+      "dropping exact evidence due to lower semantic score"
+    ],
+    "targets": [
+      "retrieval evidence"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "px_semantic_fusion",
+          "px_semantic_evidence"
+        ],
+        "statement": "Stable source IDs and exact references retain priority as evidentiary anchors."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_semantic_fusion",
+          "px_semantic_evidence"
+        ],
+        "statement": "Approximate similarity is not equivalent to identity or provenance."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_semantic_fusion",
+          "px_semantic_evidence"
+        ],
+        "statement": "A degraded semantic provider must be bypassable while exact evidence remains usable."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "carry exact identity and provenance through fusion",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "keep exact candidate rows even when semantic scores are lower",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "use semantic providers as bounded augmentation rather than source-of-truth replacement",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "Exact IDs, explicit source references, and revision-bound evidence are protected from displacement by approximate semantic similarity; semantic retrieval can augment or rerank candidates but cannot erase exact evidentiary matches."
+  },
+  "namespace": "retrieval",
+  "object_id": "nsai:retrieval:evidence_protection:exact_evidence_protection",
+  "object_type": "evidence_protection",
+  "ontology": {
+    "classes": [
+      "evidence_integrity",
+      "retrieval_governance"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "retrieval"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "kind": "source_file",
+        "path": "runtime/semantic_retrieval_fusion.py",
+        "sha256": "64adcc8c8609beb0b89eabd7b0e910557ef670188f08701eaf9c45bd0b91bea2",
+        "source_id": "px_semantic_fusion"
+      },
+      {
+        "kind": "source_file",
+        "path": "runtime/semantic_evidence_bridge.py",
+        "sha256": "4c037dac4bfd1b582c670d693c75879ee5361d2254d32d7469496f65475d381c",
+        "source_id": "px_semantic_evidence"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:retrieval:fusion:hybrid_retrieval_fusion"
+    }
+  ],
+  "retrieval": {
+    "priority": 96,
+    "tags": [
+      "exact evidence",
+      "provenance",
+      "semantic displacement",
+      "source id"
+    ],
+    "terms": [
+      "evidence anchor",
+      "exact evidence",
+      "exact-match protection",
+      "provenance",
+      "semantic displacement",
+      "source id"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "Exact IDs, explicit source references, and revision-bound evidence are protected from displacement by approximate semantic similarity; semantic retrieval can augment or rerank candidates but cannot erase exact evidentiary matches.",
+    "exclusions": [
+      "semantic-only provenance"
+    ],
+    "intents": [
+      "preserve citations",
+      "protect exact evidence"
+    ],
+    "keywords": [
+      "exact evidence",
+      "provenance",
+      "semantic displacement",
+      "source id"
+    ],
+    "retrieval_text": "Exact Evidence Protection. Exact IDs, explicit source references, and revision-bound evidence are protected from displacement by approximate semantic similarity; semantic retrieval can augment or rerank candidates but cannot erase exact evidentiary matches. Stable source IDs and exact references retain priority as evidentiary anchors. Approximate similarity is not equivalent to identity or provenance. A degraded semantic provider must be bypassable while exact evidence remains usable.",
+    "short_description": "Exact IDs, explicit source references, and revision-bound evidence are protected from displacement by approximate semantic similarity; semantic retrieval can augment or rerank candidates but cannot erase exact evidentiary matches.",
+    "synonyms": [
+      "evidence anchor",
+      "exact-match protection"
+    ]
+  },
+  "status": "validated",
+  "title": "Exact Evidence Protection"
+}

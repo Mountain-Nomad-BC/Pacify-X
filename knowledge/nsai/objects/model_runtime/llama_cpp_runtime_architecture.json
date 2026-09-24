@@ -1,0 +1,176 @@
+{
+  "applicability": {
+    "conditions": [
+      "Use only with an admitted PX model/runtime identity.",
+      "Treat measured machine-specific profile evidence as stronger than generic defaults."
+    ],
+    "exclusions": [
+      "PX authority is not delegated to llama.cpp"
+    ],
+    "targets": [
+      "llama.cpp",
+      "PX local model runtime"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.95,
+        "evidence_refs": [
+          "llama_model_cpp",
+          "llama_context_cpp",
+          "llama_server_readme",
+          "px_llama_profiles"
+        ],
+        "statement": "Model identity, process identity, context state, and backend placement are distinct state that must be reconciled rather than inferred from one another."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "llama_model_cpp",
+          "llama_context_cpp",
+          "llama_server_readme",
+          "px_llama_profiles"
+        ],
+        "statement": "llama.cpp process/server features are capabilities, not PX execution authority."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "Model load creates runtime state from GGUF metadata and chosen backend placement.",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "Context objects own inference-time state such as KV cache and scheduling.",
+        "name": "mechanism_2"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, or policy authority."
+    ],
+    "summary": "llama.cpp is a GGUF-oriented inference runtime whose model loading, context execution, server process, and hardware backends are separable operational layers. PX treats it as an execution substrate under PX lifecycle and authority custody."
+  },
+  "namespace": "model_runtime",
+  "object_id": "nsai:model_runtime:runtime_architecture:llama_cpp_runtime_architecture",
+  "object_type": "runtime_architecture",
+  "ontology": {
+    "classes": [
+      "local_llm",
+      "runtime_backend"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "model_runtime",
+      "runtime_scope": [
+        "llama.cpp",
+        "PX local model runtime"
+      ]
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "manual source-backed synthesis with schema validation and exact SHA provenance",
+      "source_pass": "Wave 14"
+    },
+    "sources": [
+      {
+        "archive": "models and harnesses for them.zip",
+        "kind": "source_file",
+        "path": "llama.cpp-master/llama.cpp-master/src/llama-model.cpp",
+        "sha256": "530dff0cd544382346cc18520cbdb7d7a6f6743c35f7af52aae0bec11d18992a",
+        "source_id": "llama_model_cpp"
+      },
+      {
+        "archive": "models and harnesses for them.zip",
+        "kind": "source_file",
+        "path": "llama.cpp-master/llama.cpp-master/src/llama-context.cpp",
+        "sha256": "9f246c4f7268d1438c3e6f4a544cd497feffe777095eeaa1606a24a3d2f07008",
+        "source_id": "llama_context_cpp"
+      },
+      {
+        "archive": "models and harnesses for them.zip",
+        "kind": "source_file",
+        "path": "llama.cpp-master/llama.cpp-master/tools/server/README.md",
+        "sha256": "57e27013809e4976e71a76fe83a5930779634401d6dbdf2d941fd5432889eb9e",
+        "source_id": "llama_server_readme"
+      },
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_Model_Fabric_Junction_Hardening_Pass3_2026-09-20/03_LLAMA_CPP_CERTIFIED_RUNTIME_PROFILES.md",
+        "sha256": "c49c37da15288829814048b52a91a352d86a723e676e2756eeb578346d299a1c",
+        "source_id": "px_llama_profiles"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:server_api:llama_cpp_server_api"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:build_backends:llama_cpp_build_backends"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:lifecycle:local_model_lifecycle"
+    }
+  ],
+  "retrieval": {
+    "priority": 85,
+    "tags": [
+      "model",
+      "context",
+      "server",
+      "backend"
+    ],
+    "terms": [
+      "GGUF runtime",
+      "backend",
+      "context",
+      "ggml",
+      "gguf",
+      "inference",
+      "llama.cpp",
+      "llama.cpp runtime",
+      "model",
+      "runtime",
+      "server"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "llama.cpp is a GGUF-oriented inference runtime whose model loading, context execution, server process, and hardware backends are separable operational layers. PX treats it as an execution substrate under PX lifecycle and authority custody.",
+    "exclusions": [
+      "PX authority is not delegated to llama.cpp"
+    ],
+    "intents": [
+      "understand runtime architecture",
+      "route local inference"
+    ],
+    "keywords": [
+      "llama.cpp",
+      "gguf",
+      "runtime",
+      "ggml",
+      "inference"
+    ],
+    "retrieval_text": "llama.cpp Runtime Architecture. llama.cpp is a GGUF-oriented inference runtime whose model loading, context execution, server process, and hardware backends are separable operational layers. PX treats it as an execution substrate under PX lifecycle and authority custody. Model identity, process identity, context state, and backend placement are distinct state that must be reconciled rather than inferred from one another. llama.cpp process/server features are capabilities, not PX execution authority.",
+    "short_description": "llama.",
+    "synonyms": [
+      "llama.cpp runtime",
+      "GGUF runtime"
+    ]
+  },
+  "status": "validated",
+  "title": "llama.cpp Runtime Architecture"
+}

@@ -1,0 +1,162 @@
+{
+  "applicability": {
+    "conditions": [
+      "Every artifact must validate before the pointer switch."
+    ],
+    "exclusions": [
+      "updating graph/vector/FTS current pointers separately"
+    ],
+    "targets": [
+      "cognitive projections"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "wave15b_generation",
+          "wave15b_generation_tests"
+        ],
+        "statement": "All projection artifacts in a published cognitive generation share one manifest/generation identity."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "wave15b_generation",
+          "wave15b_generation_tests"
+        ],
+        "statement": "Failure before pointer publication leaves the previous current generation active."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "wave15b_generation",
+          "wave15b_generation_tests"
+        ],
+        "statement": "If publication succeeds but receipt creation is interrupted, retry can reconstruct the missing receipt from the published generation."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "stage all derived artifacts under a new generation",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "validate referential integrity and content hashes",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "atomically switch CURRENT only after the generation is complete, then record/recover the publication receipt",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "Graph, subject index, relation index, location map, vector-ID map, FTS manifest, and cognitive metadata are staged and validated as one derived generation, then exposed through a single atomic current-generation pointer so readers cannot observe split generations."
+  },
+  "namespace": "cognitive",
+  "object_id": "nsai:cognitive:generation_publication:atomic_cognitive_generation_publication",
+  "object_type": "generation_publication",
+  "ontology": {
+    "classes": [
+      "atomic_publication",
+      "derived_generation"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "cognitive"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "archive": "PX_IMPLEMENTATION_WAVE15B_COGNITIVE_STORAGE_ATOMIC_GENERATION_2026-09-20.zip",
+        "kind": "source_file",
+        "path": "EXTERNAL/pacifyx_memory/cognitive_generation.py",
+        "sha256": "98b6b12a4d2894eb2adb118f7d0aa86bba6373ef314d4a2ca9c0541527b2e334",
+        "source_id": "wave15b_generation"
+      },
+      {
+        "archive": "PX_IMPLEMENTATION_WAVE15B_COGNITIVE_STORAGE_ATOMIC_GENERATION_2026-09-20.zip",
+        "kind": "source_file",
+        "path": "tests/test_cognitive_generation.py",
+        "sha256": "6bec4267c8ecc3cae8e8e0d5ffdc31fff584477096fecb09f11fde49bdb41b87",
+        "source_id": "wave15b_generation_tests"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:memory:graph_projection:persistent_memory_graph_projection"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:retrieval:generation_coherence:retrieval_generation_coherence"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:cognitive:bounded_query:bounded_cognitive_query"
+    }
+  ],
+  "retrieval": {
+    "priority": 99,
+    "tags": [
+      "CURRENT.json",
+      "FTS",
+      "atomic generation",
+      "graph",
+      "vector map"
+    ],
+    "terms": [
+      "CURRENT.json",
+      "FTS",
+      "atomic generation",
+      "atomic projection publication",
+      "cognitive fixed generation",
+      "graph",
+      "vector map"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "Graph, subject index, relation index, location map, vector-ID map, FTS manifest, and cognitive metadata are staged and validated as one derived generation, then exposed through a single atomic current-generation pointer so readers cannot observe split generations.",
+    "exclusions": [
+      "mixed-generation reads"
+    ],
+    "intents": [
+      "publish cognitive generation",
+      "rebuild cognitive map"
+    ],
+    "keywords": [
+      "CURRENT.json",
+      "FTS",
+      "atomic generation",
+      "graph",
+      "vector map"
+    ],
+    "retrieval_text": "Atomic Cognitive Generation Publication. Graph, subject index, relation index, location map, vector-ID map, FTS manifest, and cognitive metadata are staged and validated as one derived generation, then exposed through a single atomic current-generation pointer so readers cannot observe split generations. All projection artifacts in a published cognitive generation share one manifest/generation identity. Failure before pointer publication leaves the previous current generation active. If publication succeeds but receipt creation is interrupted, retry can reconstruct the missing receipt from the published generation.",
+    "short_description": "Graph, subject index, relation index, location map, vector-ID map, FTS manifest, and cognitive metadata are staged and validated as one derived generation, then exposed through a single atomic current-generation pointer so readers cannot observe split generations.",
+    "synonyms": [
+      "atomic projection publication",
+      "cognitive fixed generation"
+    ]
+  },
+  "status": "validated",
+  "title": "Atomic Cognitive Generation Publication"
+}

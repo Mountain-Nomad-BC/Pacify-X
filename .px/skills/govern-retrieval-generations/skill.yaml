@@ -1,0 +1,41 @@
+{
+  "admission_record": "govern-retrieval-generations",
+  "body_sha256": "4e8acdba659fd23589bdac8233d6eeff1d087789e0e954b95f78416ca1fded9c",
+  "contract": {
+    "available": true,
+    "sha256": "328646d6819061238696662502a1719be29315edc3c6a07b049b4b714536d2db",
+    "source": "registry/skill_packages/govern-retrieval-generations.json"
+  },
+  "description": "Build, validate, activate, inspect and roll back coherent retrieval generations while preserving exact canonical IDs, embedding identity, calibration evidence and authorization boundaries.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "govern-retrieval-generations",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/govern-retrieval-generations"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "retrieval",
+    "generation",
+    "turbovec",
+    "embedding",
+    "reranking",
+    "rollback",
+    "governance"
+  ],
+  "version": "1.0.0"
+}

@@ -264,3 +264,71 @@ test('environment consumer discovery returns explicit partial state at its own t
   assert.equal(tree.completeness, 'partial');
   assert.equal(tree.failures.some(item => item.code === 'environment-consumer-scan-time-budget-exceeded'), true);
 });
+
+test('extension commissioning inventory captures declared capability metadata without activation or setting values', async t => {
+  const root = fixture(); t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const rich = [{
+    id: 'rich.publisher', isActive: false,
+    packageJSON: {
+      name: 'rich', displayName: 'Rich Extension', version: '2.0.0', publisher: 'rich', activationEvents: ['onCommand:rich.run'],
+      extensionDependencies: ['dep.one'], extensionPack: ['pack.one'],
+      contributes: {
+        commands: [{ command: 'rich.run', title: 'Run Rich', category: 'Rich', enablement: 'resourceLangId == python' }],
+        keybindings: [{ command: 'rich.run', key: 'ctrl+r', when: 'editorTextFocus', args: { userSecret: 'do-not-persist' } }],
+        menus: { 'editor/context': [{ command: 'rich.run', when: 'editorLangId == python', group: 'navigation' }] },
+        configuration: { properties: {
+          'rich.mode': { type: 'string', scope: 'resource', description: 'Execution mode', default: 'safe', enum: ['safe', 'fast'] },
+          'rich.apiKey': { type: 'string', description: 'Provider credential', default: 'secret-default-must-not-persist' }
+        } },
+        languageModelTools: [{ name: 'rich_lookup', toolReferenceName: 'lookup', modelDescription: 'Read declared metadata', canBeReferencedInPrompt: true, inputSchema: { type: 'object', properties: { query: { type: 'string' } } } }],
+        chatParticipants: [{ id: 'rich.chat', name: 'Rich', fullName: 'Rich Chat', description: 'Declared participant' }],
+        viewsContainers: { activitybar: [{ id: 'rich.container', title: 'Rich' }] },
+        views: { 'rich.container': [{ id: 'rich.view', name: 'Rich View', when: 'workspaceFolderCount > 0' }] },
+        viewsWelcome: [{ view: 'rich.view', when: '!rich.ready' }],
+        taskDefinitions: [{ type: 'richTask', required: ['target'], properties: { target: { type: 'string' } } }],
+        debuggers: [{ type: 'rich-debug', label: 'Rich Debug', languages: ['python'] }],
+        customEditors: [{ viewType: 'rich.editor', displayName: 'Rich Editor', selector: [{ filenamePattern: '*.rich' }], priority: 'default' }],
+        authentication: [{ id: 'rich.auth', label: 'Rich Auth' }],
+        languages: [{ id: 'richlang', extensions: ['.rich'], aliases: ['Rich'] }],
+        notebooks: [{ type: 'rich-notebook', displayName: 'Rich Notebook', selector: [{ filenamePattern: '*.richnb' }] }],
+        terminal: { profiles: [{ id: 'rich-shell', title: 'Rich Shell' }] }
+      }
+    }
+  }];
+  const result = await discoverEnvironment({ extensions: rich, projectRoot: root, pythonPath: 'python', run: fakeRun, reason: 'workspace-commissioning' });
+  const detail = readEnvironmentExtension(root, 'rich.publisher').extension;
+  assert.equal(detail.api_contract.activation_attempted, false);
+  assert.equal(detail.active, false);
+  assert.equal(detail.keybindings[0].args_declared, true);
+  assert.equal(detail.menus[0].location, 'editor/context');
+  assert.equal(detail.settings.find(item => item.key === 'rich.mode').default_value_persisted, false);
+  assert.equal(detail.settings.find(item => item.key === 'rich.apiKey').secret_like, true);
+  assert.equal(detail.language_model_tools[0].name, 'rich_lookup');
+  assert.equal(detail.chat_participants[0].id, 'rich.chat');
+  assert.equal(detail.task_definitions[0].type, 'richTask');
+  assert.equal(detail.debuggers[0].type, 'rich-debug');
+  assert.equal(detail.custom_editors[0].view_type, 'rich.editor');
+  assert.equal(detail.authentication[0].id, 'rich.auth');
+  assert.equal(detail.notebooks[0].type, 'rich-notebook');
+  assert.equal(detail.terminal_profiles[0].id, 'rich-shell');
+  assert.deepEqual(detail.extension_pack, ['pack.one']);
+  const serialized = JSON.stringify(detail);
+  assert.doesNotMatch(serialized, /do-not-persist|secret-default-must-not-persist/);
+  const graph = readEnvironmentSubject(root, 'graph');
+  assert.ok(graph.nodes.some(item => item.id.startsWith('vscode-keybinding:')));
+  assert.ok(graph.nodes.some(item => item.id === 'vscode-setting-schema:rich.apiKey'));
+  assert.ok(graph.nodes.some(item => item.id === 'vscode-language-model-tool:rich_lookup'));
+  assert.ok(graph.edges.some(item => item.predicate === 'packs-extension'));
+  assert.equal(result.inventory.boundaries.arbitrary_extension_activation, false);
+});
+
+test('extension manifest changes deterministically invalidate the persisted snapshot hash', async t => {
+  const root = fixture(); t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const first = [{ id: 'change.publisher', isActive: false, packageJSON: { name: 'change', version: '1.0.0', contributes: { commands: [{ command: 'change.run' }] } } }];
+  const second = [{ id: 'change.publisher', isActive: false, packageJSON: { name: 'change', version: '1.0.1', contributes: { commands: [{ command: 'change.run' }, { command: 'change.new' }] } } }];
+  const a = await discoverEnvironment({ extensions: first, projectRoot: root, pythonPath: 'python', run: fakeRun, reason: 'workspace-commissioning' });
+  const b = await discoverEnvironment({ extensions: second, projectRoot: root, pythonPath: 'python', run: fakeRun, reason: 'vscode-extension-change' });
+  assert.notEqual(a.inventory.snapshot_hash, b.inventory.snapshot_hash);
+  assert.equal(b.event.generation, 2);
+  assert.ok(b.event.added_node_ids.includes('vscode-command:change.new'));
+});

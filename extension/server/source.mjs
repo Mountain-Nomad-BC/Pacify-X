@@ -15,7 +15,8 @@ import { z } from 'zod';
 const MAX_FILE_BYTES = 4 * 1024 * 1024;
 const {
   readCoordination, createParallelPlan, claimTask, recordProgress, reconcileTask,
-  releaseTask, captureMemory, readMemoryTelemetry, taskHandoff, renewClaim, diagnoseWorkStop, workRoom
+  releaseTask, captureMemory, readMemoryTelemetry, taskHandoff, renewClaim, diagnoseWorkStop, workRoom,
+  registerWait, waitStatus, acknowledgeWake, sendMessage, readMessages, consumeMessage
 } = coordination;
 const { inventoryTeamPack, stageTeamPack, workerAdapters } = teamFabric;
 const { initializeEnterprise, setPackEnabled, configureTarget, evaluateBillableExecution, enterpriseDoctor } = enterprise;
@@ -129,7 +130,10 @@ function buildServer() {
       { id: 'activity-observability', tool: 'pacify_activity_observability', emit_tool: 'pacify_activity_emit', effects: ['local-metadata-trace'], source: 'project-owned activity ledger' },
       { id: 'mcp-instrumentation-health', tool: 'pacify_mcp_instrumentation_status', effects: ['read'], source: 'src/mcpActivityIntegration.js' },
       { id: 'portable-memory-observability', tool: 'pacify_memory_observability', effects: ['read'], source: 'project-owned coordination ledger' },
-      { id: 'parallel-planning', tool: 'pacify_parallel_plan_create', effects: ['project-coordination-write'], source: 'project-owned coordination ledger' }
+      { id: 'parallel-planning', tool: 'pacify_parallel_plan_create', effects: ['project-coordination-write'], source: 'project-owned coordination ledger' },
+      { id: 'cognitive-query', tool: 'pacify_cognitive_query', effects: ['read'], source: 'registry/cognitive_map_index.json via runtime.cognitive_query' },
+      { id: 'coordination-mailbox', tool: 'pacify_message_send', read_tool: 'pacify_message_read', effects: ['project-coordination-write', 'read'], source: 'project-owned coordination ledger' },
+      { id: 'coordination-wait-wake', tool: 'pacify_wait_register', status_tool: 'pacify_wait_status', ack_tool: 'pacify_wake_ack', effects: ['project-coordination-write', 'read'], source: 'project-owned coordination ledger' }
     ],
     invariants: ['tool availability does not grant authority', 'unknown stays unknown', 'Git mutation is denied', 'billable execution requires separate approval']
   }));
@@ -181,6 +185,56 @@ function buildServer() {
       sort: z.enum(['id', 'label', 'status', 'kind']).optional()
     }).strict(), annotations: readOnly
   }, async input => textResult(runApi(['catalog', '--kind', input.kind, '--query', input.query || '', '--status', input.status || '', '--offset', String(input.offset || 0), '--limit', String(input.limit || 50), '--sort', input.sort || 'label'])));
+
+  registerTool('pacify_cognitive_query', {
+    title: 'Pacify-X Cognitive Query',
+    description: 'Return bounded metadata-first candidates from the PX cognitive map. Results are non-authoritative, limited to 1-3 per category, and do not invoke a model or hydrate bodies.',
+    inputSchema: z.object({ query: z.string().min(1).max(16384), project_id: z.string().max(240).optional(), generation_id: z.string().max(256).optional(), top_per_category: z.number().int().min(1).max(3).optional() }).strict(), annotations: readOnly
+  }, async input => {
+    const args = ['cognitive-query', '--query', input.query, '--project-id', input.project_id || '', '--top-per-category', String(input.top_per_category || 3)];
+    if (input.generation_id) args.push('--generation-id', input.generation_id);
+    return textResult(runApi(args));
+  });
+
+  registerTool('pacify_message_send', {
+    title: 'Send Pacify-X Coordination Message',
+    description: 'Append one bounded durable project mailbox message. Private remote/browser delivery requires explicit egress approval.',
+    inputSchema: z.object({ ...actorFields, recipient_id: z.string().min(1).max(160), recipient_transport: z.enum(['local', 'remote', 'browser']).optional(), privacy_class: z.enum(['public', 'project', 'private']).optional(), payload: z.string().min(1).max(8192), evidence_refs: z.array(z.string().max(1000)).max(32).optional(), message_id: z.string().max(200).optional(), egress_approved: z.boolean().optional() }).strict(), annotations: write
+  }, async input => textResult(sendMessage(workspaceRoot(), actor(input), input)));
+
+  registerTool('pacify_message_read', {
+    title: 'Read Pacify-X Coordination Messages',
+    description: 'Read bounded unconsumed mailbox messages without changing their state.',
+    inputSchema: z.object({ ...actorFields, recipient_id: z.string().max(160).optional(), limit: z.number().int().min(1).max(100).optional() }).strict(), annotations: readOnly
+  }, async input => textResult(readMessages(workspaceRoot(), actor(input), input)));
+
+  registerTool('pacify_message_consume', {
+    title: 'Consume Pacify-X Coordination Message',
+    description: 'Mark one durable mailbox message consumed. This never changes task ownership or grants a claim.',
+    inputSchema: z.object({ ...actorFields, recipient_id: z.string().max(160).optional(), message_id: z.string().min(1).max(200) }).strict(), annotations: write
+  }, async input => textResult(consumeMessage(workspaceRoot(), actor(input), input)));
+
+  registerTool('pacify_wait_register', {
+    title: 'Register Pacify-X Durable Wait',
+    description: 'Put an owned claimed task into a durable waiting state bound to a checkpoint and current fencing proof. Cyclic task waits are rejected.',
+    inputSchema: z.object({
+      ...actorFields, task_id: z.string().min(1).max(160), claim_id: z.string().min(1).max(200), fencing_tokens: z.record(z.string(), z.number().int().positive()),
+      condition_type: z.enum(['task', 'message', 'resource', 'approval', 'timer', 'model_result']), dependency_ids: z.array(z.string().min(1).max(240)).min(1).max(64),
+      checkpoint_id: z.string().min(1).max(240), mode: z.enum(['all', 'any']).optional(), ttl_minutes: z.number().int().min(1).max(1440).optional(),
+      exact_next_action: z.string().max(2000).optional(), cognitive_generation_id: z.string().max(256).optional()
+    }).strict(), annotations: write
+  }, async input => textResult(registerWait(workspaceRoot(), actor(input), input)));
+
+  registerTool('pacify_wait_status', {
+    title: 'Read Pacify-X Wait Status', description: 'Read one durable wait and its bounded resume packet. The packet never grants execution authority.',
+    inputSchema: z.object({ wait_id: z.string().min(1).max(200) }).strict(), annotations: readOnly
+  }, async input => textResult(waitStatus(workspaceRoot(), input.wait_id)));
+
+  registerTool('pacify_wake_ack', {
+    title: 'Acknowledge Pacify-X Wake',
+    description: 'Acknowledge receipt of one wake as the original waiting actor/session. Acknowledgement does not mint or renew a task claim.',
+    inputSchema: z.object({ ...actorFields, wake_id: z.string().min(1).max(200) }).strict(), annotations: write
+  }, async input => textResult(acknowledgeWake(workspaceRoot(), actor(input), input)));
 
   registerTool('pacify_enterprise_status', {
     title: 'Pacify-X MS+Enterprise Status', description: 'Read the separate project enterprise state, offline defaults, pack states, targets, and last readiness receipt.', inputSchema: empty, annotations: readOnly

@@ -95,8 +95,24 @@ def enforce(
     writable_targets: tuple[Path, ...] = (),
     network_hosts: tuple[str, ...] = (),
     secret_refs: tuple[str, ...] = (),
+    action_resolution: object | None = None,
 ) -> ContractDecision:
     reasons: list[str] = []
+    if action_resolution is not None:
+        from .action_surface import ActionResolution
+        if type(action_resolution) is not ActionResolution:
+            reasons.append("action projection has invalid type")
+        else:
+            if action_resolution.status != "candidate":
+                reasons.append("action projection did not resolve to a candidate")
+            if action_resolution.authority_granted:
+                reasons.append("action projection must not claim authority")
+            if action_resolution.capability_id != request.capability_id:
+                reasons.append("action projection capability mismatch")
+            if (set(request.effects) & NON_READ_EFFECTS) and not bool(action_resolution.preflight.get("mutating", False)):
+                reasons.append("action projection mutation metadata mismatch")
+            if not action_resolution.descriptor_sha256 or len(action_resolution.descriptor_sha256) != 64:
+                reasons.append("action projection descriptor identity is missing")
     if manifest.get("id") != request.capability_id:
         reasons.append("manifest capability mismatch")
     if manifest.get("status") not in {"admitted", "active"}:

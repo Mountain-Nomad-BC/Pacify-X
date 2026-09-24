@@ -1,0 +1,148 @@
+{
+  "applicability": {
+    "conditions": [
+      "Expected revision must match the admitted retrieval-model policy."
+    ],
+    "exclusions": [
+      "mixing embeddings from different revisions"
+    ],
+    "targets": [
+      "embedding service",
+      "vector index"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "px_retrieval_models",
+          "px_turbovec_adapter"
+        ],
+        "statement": "The embedding service requires callers to supply the expected model revision."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_retrieval_models",
+          "px_turbovec_adapter"
+        ],
+        "statement": "TurboVec manifests bind embedding model ID, revision, dimensions, and generation identity."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_retrieval_models",
+          "px_turbovec_adapter"
+        ],
+        "statement": "Reusing vector bytes after an embedding-model change creates an invalid semantic coordinate system."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "bind embedding revision into model-service requests",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "record model/revision/dimensions in vector manifests",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "rebuild and promote a new retrieval generation after embedding identity changes",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "Embedding vectors are valid only under the exact admitted embedding model/revision and dimensionality contract that produced them; changing the embedding revision requires a new retrieval generation rather than reusing stale vectors."
+  },
+  "namespace": "retrieval",
+  "object_id": "nsai:retrieval:embedding_identity:embedding_revision_identity",
+  "object_type": "embedding_identity",
+  "ontology": {
+    "classes": [
+      "model_identity",
+      "retrieval_generation"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "retrieval"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "kind": "source_file",
+        "path": "runtime/retrieval_model_service.py",
+        "sha256": "a49529c32c60f0e0ad4ae1264168c3697b6bc878f5997801267f1fe994dfaa5a",
+        "source_id": "px_retrieval_models"
+      },
+      {
+        "kind": "source_file",
+        "path": "runtime/turbovec_adapter.py",
+        "sha256": "e234ba8225de0250ea9e1b5922911b12ef925c8db96b83afbd811d647f27d980",
+        "source_id": "px_turbovec_adapter"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:retrieval:generation_coherence:retrieval_generation_coherence"
+    }
+  ],
+  "retrieval": {
+    "priority": 91,
+    "tags": [
+      "dimensions",
+      "embedding revision",
+      "model revision",
+      "vector identity"
+    ],
+    "terms": [
+      "dimensions",
+      "embedding generation",
+      "embedding revision",
+      "model revision",
+      "vector identity",
+      "vector-model identity"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "Embedding vectors are valid only under the exact admitted embedding model/revision and dimensionality contract that produced them; changing the embedding revision requires a new retrieval generation rather than reusing stale vectors.",
+    "exclusions": [
+      "stale vector reuse"
+    ],
+    "intents": [
+      "rebuild embeddings",
+      "validate embedding identity"
+    ],
+    "keywords": [
+      "dimensions",
+      "embedding revision",
+      "model revision",
+      "vector identity"
+    ],
+    "retrieval_text": "Embedding Revision Identity. Embedding vectors are valid only under the exact admitted embedding model/revision and dimensionality contract that produced them; changing the embedding revision requires a new retrieval generation rather than reusing stale vectors. The embedding service requires callers to supply the expected model revision. TurboVec manifests bind embedding model ID, revision, dimensions, and generation identity. Reusing vector bytes after an embedding-model change creates an invalid semantic coordinate system.",
+    "short_description": "Embedding vectors are valid only under the exact admitted embedding model/revision and dimensionality contract that produced them; changing the embedding revision requires a new retrieval generation rather than reusing stale vectors.",
+    "synonyms": [
+      "embedding generation",
+      "vector-model identity"
+    ]
+  },
+  "status": "validated",
+  "title": "Embedding Revision Identity"
+}

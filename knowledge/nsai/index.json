@@ -1,0 +1,2716 @@
+{
+  "authority": "derived_navigation_only",
+  "formula_count": 0,
+  "library_sha256": "d015bc0c73c1e1b636b58aca4400f67271ea215616042a892522c135b87eec17",
+  "object_count": 74,
+  "records": [
+    {
+      "classes": [
+        "bounded_query",
+        "cognitive_retrieval"
+      ],
+      "namespace": "cognitive",
+      "object_id": "nsai:cognitive:bounded_query:bounded_cognitive_query",
+      "object_type": "bounded_query",
+      "path": "objects/cognitive/bounded_cognitive_query.json",
+      "relationship_targets": [
+        "nsai:model_runtime:control_lane:tiny_cpu_control_lane",
+        "nsai:operations:query_plan:rie_query_plan"
+      ],
+      "sha256": "a774aa922f7589cfb7af2ba072cba2324c068de372a0c2e086aec5ad9cfb40a1",
+      "source_ids": [
+        "wave15c_cognitive_query",
+        "wave15c_cognitive_query_tests"
+      ],
+      "status": "validated",
+      "tags": [
+        "cognitive query",
+        "hydration",
+        "metadata first",
+        "stable id",
+        "top 3"
+      ],
+      "terms": [
+        "cognitive query",
+        "cognitive top-k",
+        "cross-domain librarian query",
+        "hydration",
+        "metadata first",
+        "stable id",
+        "top 3"
+      ],
+      "title": "Bounded Cross-Domain Cognitive Query"
+    },
+    {
+      "classes": [
+        "closed_world_reasoning",
+        "model_control"
+      ],
+      "namespace": "cognitive",
+      "object_id": "nsai:cognitive:closed_world_selection:tiny_operator_closed_world_selection",
+      "object_type": "closed_world_selection",
+      "path": "objects/cognitive/tiny_operator_closed_world_selection.json",
+      "relationship_targets": [
+        "nsai:cognitive:bounded_query:bounded_cognitive_query",
+        "nsai:model_runtime:control_lane:tiny_cpu_control_lane",
+        "nsai:model_runtime:protocol_normalization:provider_protocol_normalization"
+      ],
+      "sha256": "238395b13373ecdc26e405658b4d432f156de696e015c4137a45e886e7f1ee1e",
+      "source_ids": [
+        "wave15c_tiny_operator",
+        "wave15c_tiny_operator_tests"
+      ],
+      "status": "validated",
+      "tags": [
+        "candidate allowlist",
+        "closed world",
+        "invented id",
+        "repair retry",
+        "tiny model"
+      ],
+      "terms": [
+        "bounded librarian selection",
+        "candidate allowlist",
+        "candidate-only operator",
+        "closed world",
+        "invented id",
+        "repair retry",
+        "tiny model"
+      ],
+      "title": "Tiny Operator Closed-World Selection"
+    },
+    {
+      "classes": [
+        "atomic_publication",
+        "derived_generation"
+      ],
+      "namespace": "cognitive",
+      "object_id": "nsai:cognitive:generation_publication:atomic_cognitive_generation_publication",
+      "object_type": "generation_publication",
+      "path": "objects/cognitive/atomic_cognitive_generation_publication.json",
+      "relationship_targets": [
+        "nsai:cognitive:bounded_query:bounded_cognitive_query",
+        "nsai:memory:graph_projection:persistent_memory_graph_projection",
+        "nsai:retrieval:generation_coherence:retrieval_generation_coherence"
+      ],
+      "sha256": "a1e3b588e6b2618074de790d5e070d0624ee4565cb32000f5fe95a54e6f4d9bd",
+      "source_ids": [
+        "wave15b_generation",
+        "wave15b_generation_tests"
+      ],
+      "status": "validated",
+      "tags": [
+        "CURRENT.json",
+        "FTS",
+        "atomic generation",
+        "graph",
+        "vector map"
+      ],
+      "terms": [
+        "CURRENT.json",
+        "FTS",
+        "atomic generation",
+        "atomic projection publication",
+        "cognitive fixed generation",
+        "graph",
+        "vector map"
+      ],
+      "title": "Atomic Cognitive Generation Publication"
+    },
+    {
+      "classes": [
+        "commissioning",
+        "environment_inventory"
+      ],
+      "namespace": "environment",
+      "object_id": "nsai:environment:capability_commissioning:vscode_capability_commissioning",
+      "object_type": "capability_commissioning",
+      "path": "objects/environment/vscode_capability_commissioning.json",
+      "relationship_targets": [
+        "nsai:operations:projection_parity:rie_operational_projection_parity"
+      ],
+      "sha256": "fbccf8f036fdcca7bb451b608228b0420480d93865ed9cd37f728e946e42224e",
+      "source_ids": [
+        "wave15c_discovery",
+        "wave15c_discovery_tests"
+      ],
+      "status": "validated",
+      "tags": [
+        "VS Code",
+        "commands",
+        "commissioning",
+        "extension inventory",
+        "keybindings",
+        "when clause"
+      ],
+      "terms": [
+        "VS Code",
+        "commands",
+        "commissioning",
+        "environment commissioning",
+        "extension capability inventory",
+        "extension inventory",
+        "keybindings",
+        "when clause"
+      ],
+      "title": "VS Code Capability Commissioning Inventory"
+    },
+    {
+      "classes": [
+        "external_custody",
+        "knowledge_lifecycle"
+      ],
+      "namespace": "knowledge",
+      "object_id": "nsai:knowledge:private_revision_lifecycle:private_knowledge_revision_lifecycle",
+      "object_type": "private_revision_lifecycle",
+      "path": "objects/knowledge/private_knowledge_revision_lifecycle.json",
+      "relationship_targets": [
+        "nsai:cognitive:generation_publication:atomic_cognitive_generation_publication",
+        "nsai:memory:review_promotion:persistent_memory_review_promotion"
+      ],
+      "sha256": "98b131504674d0f4fb6a8b65053b9104eab6833a936ca6c57f428f71aa7de3a9",
+      "source_ids": [
+        "wave15b_private_tests",
+        "wave15b_storage"
+      ],
+      "status": "validated",
+      "tags": [
+        "learned knowledge",
+        "private knowledge",
+        "promotion",
+        "revision"
+      ],
+      "terms": [
+        "learned knowledge",
+        "learned knowledge revision",
+        "mutable private knowledge",
+        "private knowledge",
+        "promotion",
+        "revision"
+      ],
+      "title": "Private Learned Knowledge Revision Lifecycle"
+    },
+    {
+      "classes": [
+        "knowledge_contribution",
+        "learning_lineage"
+      ],
+      "namespace": "learning",
+      "object_id": "nsai:learning:contribution_lineage:shared_contribution_lineage",
+      "object_type": "contribution_lineage",
+      "path": "objects/learning/shared_contribution_lineage.json",
+      "relationship_targets": [
+        "nsai:learning:negative_result:negative_result_retention"
+      ],
+      "sha256": "4a216cceff2b6caf6235720fd799df3eec5096cb6e27bde53fc57f03fa1ba73c",
+      "source_ids": [
+        "px_learning_promotion",
+        "px_memory_fabric"
+      ],
+      "status": "validated",
+      "tags": [
+        "contribution lineage",
+        "promotion",
+        "shared learning",
+        "verification"
+      ],
+      "terms": [
+        "contribution lineage",
+        "knowledge contribution lineage",
+        "promotion",
+        "shared evidence lineage",
+        "shared learning",
+        "verification"
+      ],
+      "title": "Shared Contribution Lineage"
+    },
+    {
+      "classes": [
+        "learning_memory",
+        "negative_evidence"
+      ],
+      "namespace": "learning",
+      "object_id": "nsai:learning:negative_result:negative_result_retention",
+      "object_type": "negative_result",
+      "path": "objects/learning/negative_result_retention.json",
+      "relationship_targets": [
+        "nsai:learning:observation_reduction:evidence_preserving_observation_reduction"
+      ],
+      "sha256": "aa3348d6e6d1f2ff54f3e023f81b1848cb6be04128b251ba0aef1aca0dfb8cf6",
+      "source_ids": [
+        "px_evidence_reducer",
+        "px_learning_promotion"
+      ],
+      "status": "validated",
+      "tags": [
+        "failure evidence",
+        "learning",
+        "negative result",
+        "rejected branch"
+      ],
+      "terms": [
+        "failed branch memory",
+        "failure evidence",
+        "learning",
+        "negative evidence",
+        "negative result",
+        "rejected branch"
+      ],
+      "title": "Negative Result Retention"
+    },
+    {
+      "classes": [
+        "evidence_reduction",
+        "learning_projection"
+      ],
+      "namespace": "learning",
+      "object_id": "nsai:learning:observation_reduction:evidence_preserving_observation_reduction",
+      "object_type": "observation_reduction",
+      "path": "objects/learning/evidence_preserving_observation_reduction.json",
+      "relationship_targets": [
+        "nsai:learning:contribution_lineage:shared_contribution_lineage"
+      ],
+      "sha256": "cd6112e169fc1d59efa71ecf1cea8b06ec10e133d46f2718b46d94aad1a4fdd2",
+      "source_ids": [
+        "px_evidence_reducer",
+        "px_observation_projection"
+      ],
+      "status": "validated",
+      "tags": [
+        "compaction",
+        "evidence preservation",
+        "observation reduction",
+        "receipt"
+      ],
+      "terms": [
+        "compaction",
+        "evidence preservation",
+        "evidence-preserving compaction",
+        "observation projection",
+        "observation reduction",
+        "receipt"
+      ],
+      "title": "Evidence-Preserving Observation Reduction"
+    },
+    {
+      "classes": [
+        "memory_lineage",
+        "temporal_record"
+      ],
+      "namespace": "memory",
+      "object_id": "nsai:memory:bitemporal_lineage:persistent_memory_bitemporal_lineage",
+      "object_type": "bitemporal_lineage",
+      "path": "objects/memory/persistent_memory_bitemporal_lineage.json",
+      "relationship_targets": [
+        "nsai:memory:review_promotion:persistent_memory_review_promotion"
+      ],
+      "sha256": "f0d09a3f73f3c4add11c22fdd16ec20bf56e4d5f6c1008ee58c87c05177f3b5d",
+      "source_ids": [
+        "memory_bitemporal_doc",
+        "px_memory_fabric"
+      ],
+      "status": "validated",
+      "tags": [
+        "bitemporal",
+        "correction",
+        "immutable history",
+        "memory lineage"
+      ],
+      "terms": [
+        "bitemporal",
+        "correction",
+        "immutable history",
+        "immutable memory revisions",
+        "memory lineage",
+        "temporal memory lineage"
+      ],
+      "title": "Persistent Memory Bitemporal Lineage"
+    },
+    {
+      "classes": [
+        "memory_governance",
+        "privacy_boundary"
+      ],
+      "namespace": "memory",
+      "object_id": "nsai:memory:boundary:persistent_memory_private_public_boundary",
+      "object_type": "boundary",
+      "path": "objects/memory/persistent_memory_private_public_boundary.json",
+      "relationship_targets": [
+        "nsai:memory:review_promotion:persistent_memory_review_promotion"
+      ],
+      "sha256": "18b9e8a9c0602384c91721ac042993fffe4d09e3ebdd6c4f590cac7d3ed5719e",
+      "source_ids": [
+        "memory_privacy_doc",
+        "memory_private_layout",
+        "memory_public_lifecycle"
+      ],
+      "status": "validated",
+      "tags": [
+        "declassification",
+        "private memory",
+        "public memory",
+        "publication"
+      ],
+      "terms": [
+        "declassification",
+        "memory publication bridge",
+        "private memory",
+        "private/public boundary",
+        "public memory",
+        "publication"
+      ],
+      "title": "Persistent Memory Private/Public Boundary"
+    },
+    {
+      "classes": [
+        "derived_projection",
+        "memory_graph"
+      ],
+      "namespace": "memory",
+      "object_id": "nsai:memory:graph_projection:persistent_memory_graph_projection",
+      "object_type": "graph_projection",
+      "path": "objects/memory/persistent_memory_graph_projection.json",
+      "relationship_targets": [
+        "nsai:cognitive:generation_publication:atomic_cognitive_generation_publication"
+      ],
+      "sha256": "37b42dfb286e445787298e5a73fb00e5ad34154eacfbbe0e062b92e4740328ab",
+      "source_ids": [
+        "memory_graph_doc",
+        "px_cognitive_generation"
+      ],
+      "status": "validated",
+      "tags": [
+        "memory graph",
+        "projection",
+        "relation index",
+        "subject index"
+      ],
+      "terms": [
+        "cognitive graph projection",
+        "memory graph",
+        "memory mapping",
+        "projection",
+        "relation index",
+        "subject index"
+      ],
+      "title": "Persistent Memory Graph Projection"
+    },
+    {
+      "classes": [
+        "memory_lifecycle",
+        "promotion_gate"
+      ],
+      "namespace": "memory",
+      "object_id": "nsai:memory:review_promotion:persistent_memory_review_promotion",
+      "object_type": "review_promotion",
+      "path": "objects/memory/persistent_memory_review_promotion.json",
+      "relationship_targets": [
+        "nsai:memory:bitemporal_lineage:persistent_memory_bitemporal_lineage"
+      ],
+      "sha256": "9f9d409405acfa6b4e24e667ac818ec91bc18900d985e0cf08e8586e4cba2979",
+      "source_ids": [
+        "memory_consolidation_doc",
+        "memory_review_doc",
+        "px_memory_fabric"
+      ],
+      "status": "validated",
+      "tags": [
+        "consolidation",
+        "memory review",
+        "promotion",
+        "receipt"
+      ],
+      "terms": [
+        "consolidation",
+        "consolidation review",
+        "memory promotion gate",
+        "memory review",
+        "promotion",
+        "receipt"
+      ],
+      "title": "Persistent Memory Review and Promotion"
+    },
+    {
+      "classes": [
+        "memory_lifecycle",
+        "storage_projection"
+      ],
+      "namespace": "memory",
+      "object_id": "nsai:memory:temperature_lifecycle:memory_temperature_lifecycle",
+      "object_type": "temperature_lifecycle",
+      "path": "objects/memory/memory_temperature_lifecycle.json",
+      "relationship_targets": [
+        "nsai:cognitive:generation_publication:atomic_cognitive_generation_publication",
+        "nsai:memory:graph_projection:persistent_memory_graph_projection"
+      ],
+      "sha256": "aa89fe1b53d27b513747c3f1174b91ab2977f3da97bc1037c12af4a91e96242d",
+      "source_ids": [
+        "wave15b_storage",
+        "wave15b_tiering"
+      ],
+      "status": "validated",
+      "tags": [
+        "cold memory",
+        "daily capsule",
+        "hot memory",
+        "project capsule",
+        "warm memory"
+      ],
+      "terms": [
+        "cold memory",
+        "daily capsule",
+        "hot memory",
+        "hot warm cold memory",
+        "memory temperature",
+        "project capsule",
+        "warm memory"
+      ],
+      "title": "Memory Temperature Lifecycle"
+    },
+    {
+      "classes": [
+        "build_system",
+        "hardware_backend"
+      ],
+      "namespace": "model_runtime",
+      "object_id": "nsai:model_runtime:build_backends:llama_cpp_build_backends",
+      "object_type": "build_backends",
+      "path": "objects/model_runtime/llama_cpp_build_backends.json",
+      "relationship_targets": [
+        "nsai:model_runtime:certification:model_profile_certification",
+        "nsai:model_runtime:generation_identity:model_fabric_generation_identity"
+      ],
+      "sha256": "e2fc96b996e5e087af3cc271158e340f119daa0d4e03ebb17ab57c7c6cdd9a22",
+      "source_ids": [
+        "llama_build_doc",
+        "llama_cpu_api",
+        "llama_cuda_api"
+      ],
+      "status": "validated",
+      "tags": [
+        "backend",
+        "build",
+        "cpu",
+        "cuda"
+      ],
+      "terms": [
+        "backend",
+        "build",
+        "cmake",
+        "cpu",
+        "cuda",
+        "ggml backend",
+        "runtime backend"
+      ],
+      "title": "llama.cpp Build and Backend Compatibility"
+    },
+    {
+      "classes": [
+        "capability_fingerprint",
+        "runtime_identity"
+      ],
+      "namespace": "model_runtime",
+      "object_id": "nsai:model_runtime:capability_fingerprint:llama_cpp_executable_capability_fingerprint",
+      "object_type": "capability_fingerprint",
+      "path": "objects/model_runtime/llama_cpp_executable_capability_fingerprint.json",
+      "relationship_targets": [
+        "nsai:model_runtime:build_backends:llama_cpp_build_backends",
+        "nsai:model_runtime:certification:model_profile_certification",
+        "nsai:model_runtime:moe_placement:llama_cpp_moe_placement"
+      ],
+      "sha256": "098ad9db45da195cb19a55fbd0736aa8d8307677f7e116adb1f362d6f1d3a80d",
+      "source_ids": [
+        "wave15a_capabilities",
+        "wave15a_local_runtime"
+      ],
+      "status": "validated",
+      "tags": [
+        "binary fingerprint",
+        "capability probe",
+        "cpu moe",
+        "llama.cpp",
+        "qwen35"
+      ],
+      "terms": [
+        "binary fingerprint",
+        "capability probe",
+        "cpu moe",
+        "llama executable fingerprint",
+        "llama.cpp",
+        "qwen35",
+        "runtime capability fingerprint"
+      ],
+      "title": "llama.cpp Executable Capability Fingerprint"
+    },
+    {
+      "classes": [
+        "benchmark",
+        "governance"
+      ],
+      "namespace": "model_runtime",
+      "object_id": "nsai:model_runtime:certification:model_profile_certification",
+      "object_type": "certification",
+      "path": "objects/model_runtime/model_profile_certification.json",
+      "relationship_targets": [
+        "nsai:model_runtime:control_lane:tiny_cpu_control_lane",
+        "nsai:model_runtime:model_lane:balanced_gpu_lane",
+        "nsai:model_runtime:model_lane:deep_hybrid_moe_lane",
+        "nsai:model_runtime:model_lane:gpu_fast_lane"
+      ],
+      "sha256": "fe684263c9156fd518610ec501dc715ba968fab262c66e017d15fa3a2c2cfcf9",
+      "source_ids": [
+        "llama_bench_readme",
+        "px_llama_profiles",
+        "px_llama_tuning"
+      ],
+      "status": "validated",
+      "tags": [
+        "benchmark",
+        "cancel",
+        "latency",
+        "memory",
+        "profile"
+      ],
+      "terms": [
+        "benchmark",
+        "cancel",
+        "certification",
+        "latency",
+        "memory",
+        "model profile",
+        "placement profile",
+        "profile",
+        "promotion",
+        "runtime profile"
+      ],
+      "title": "Machine-Specific Model Profile Certification"
+    },
+    {
+      "classes": [
+        "offload",
+        "runtime_lane"
+      ],
+      "namespace": "model_runtime",
+      "object_id": "nsai:model_runtime:cold_runtime:airllm_layerwise_offload",
+      "object_type": "cold_runtime",
+      "path": "objects/model_runtime/airllm_layerwise_offload.json",
+      "relationship_targets": [
+        "nsai:model_runtime:recovery:model_cancellation_recovery",
+        "nsai:model_runtime:resource_interlock:model_resource_interlocks"
+      ],
+      "sha256": "6ce7cb66e8d89540741a9a0a0f7f280b15ea331809a15f9fcc43381439ef7288",
+      "source_ids": [
+        "airllm_readme",
+        "px_airllm_benchmark",
+        "px_airllm_cold_lane"
+      ],
+      "status": "validated",
+      "tags": [
+        "airllm",
+        "compression",
+        "disk io",
+        "shards"
+      ],
+      "terms": [
+        "airllm",
+        "cold giant-model lane",
+        "cold model",
+        "compression",
+        "disk io",
+        "layer streaming",
+        "layerwise",
+        "offload",
+        "shards",
+        "streaming weights"
+      ],
+      "title": "AirLLM Layerwise Offload Lane"
+    },
+    {
+      "classes": [
+        "isolation",
+        "runtime_lane"
+      ],
+      "namespace": "model_runtime",
+      "object_id": "nsai:model_runtime:cold_runtime:docker_model_runner_lane",
+      "object_type": "cold_runtime",
+      "path": "objects/model_runtime/docker_model_runner_lane.json",
+      "relationship_targets": [
+        "nsai:model_runtime:protocol_normalization:provider_protocol_normalization",
+        "nsai:model_runtime:resource_interlock:model_resource_interlocks"
+      ],
+      "sha256": "6028ab48f58a4a5125061982c2cc113e4448322d519c9ad7437ba62fc6ba9c91",
+      "source_ids": [
+        "hello_genai_models",
+        "px_docker_interlock"
+      ],
+      "status": "validated",
+      "tags": [
+        "docker",
+        "interlock",
+        "prewarm",
+        "runtime"
+      ],
+      "terms": [
+        "DMR",
+        "cold lane",
+        "container",
+        "docker",
+        "docker model runner",
+        "docker runtime lane",
+        "interlock",
+        "prewarm",
+        "runtime"
+      ],
+      "title": "Docker Model Runner Lane"
+    },
+    {
+      "classes": [
+        "control_plane",
+        "model_lane"
+      ],
+      "namespace": "model_runtime",
+      "object_id": "nsai:model_runtime:control_lane:tiny_cpu_control_lane",
+      "object_type": "control_lane",
+      "path": "objects/model_runtime/tiny_cpu_control_lane.json",
+      "relationship_targets": [
+        "nsai:model_runtime:protocol_normalization:provider_protocol_normalization",
+        "nsai:model_runtime:resource_interlock:model_resource_interlocks"
+      ],
+      "sha256": "90e66f47508491a28701c6b3864e138348090be946083654511571678a61af0d",
+      "source_ids": [
+        "px_llama_profiles",
+        "px_llama_tuning"
+      ],
+      "status": "validated",
+      "tags": [
+        "cpu",
+        "orchestration",
+        "resident",
+        "structured output"
+      ],
+      "terms": [
+        "CPU control plane",
+        "concierge",
+        "cpu",
+        "librarian",
+        "librarian model",
+        "operator",
+        "orchestration",
+        "resident",
+        "structured output",
+        "tiny model"
+      ],
+      "title": "Tiny CPU Control Lane"
+    },
+    {
+      "classes": [
+        "coherence",
+        "identity"
+      ],
+      "namespace": "model_runtime",
+      "object_id": "nsai:model_runtime:generation_identity:model_fabric_generation_identity",
+      "object_type": "generation_identity",
+      "path": "objects/model_runtime/model_fabric_generation_identity.json",
+      "relationship_targets": [
+        "nsai:model_runtime:certification:model_profile_certification",
+        "nsai:model_runtime:protocol_normalization:provider_protocol_normalization"
+      ],
+      "sha256": "df44d56cfd5adcc7d507adbf287722316d01f94ab976df2d4c6fe67f6ed3fa7c",
+      "source_ids": [
+        "px_llama_profiles",
+        "px_llama_tuning"
+      ],
+      "status": "validated",
+      "tags": [
+        "cache",
+        "generation",
+        "hash",
+        "identity"
+      ],
+      "terms": [
+        "cache",
+        "cache coherence",
+        "fabric generation",
+        "generation",
+        "generation identity",
+        "hash",
+        "identity",
+        "model fabric",
+        "runtime generation",
+        "trace"
+      ],
+      "title": "Model Fabric Generation Identity"
+    },
+    {
+      "classes": [
+        "inference_state",
+        "memory"
+      ],
+      "namespace": "model_runtime",
+      "object_id": "nsai:model_runtime:kv_cache:llama_cpp_kv_cache",
+      "object_type": "kv_cache",
+      "path": "objects/model_runtime/llama_cpp_kv_cache.json",
+      "relationship_targets": [
+        "nsai:model_runtime:certification:model_profile_certification",
+        "nsai:model_runtime:parallelism:llama_cpp_parallel_slots"
+      ],
+      "sha256": "56a6a23bc201138023ddb1fcad9ba7b41c3a3cf00041964e44e575acfc5b4eb5",
+      "source_ids": [
+        "llama_arg_cpp",
+        "llama_context_cpp",
+        "px_llama_profiles"
+      ],
+      "status": "validated",
+      "tags": [
+        "context",
+        "kv",
+        "slots",
+        "vram"
+      ],
+      "terms": [
+        "KV memory",
+        "attention",
+        "attention cache",
+        "cache type",
+        "context",
+        "kv",
+        "kv cache",
+        "memory",
+        "slots",
+        "vram"
+      ],
+      "title": "llama.cpp KV Cache"
+    },
+    {
+      "classes": [
+        "lifecycle",
+        "px_runtime"
+      ],
+      "namespace": "model_runtime",
+      "object_id": "nsai:model_runtime:lifecycle:local_model_lifecycle",
+      "object_type": "lifecycle",
+      "path": "objects/model_runtime/local_model_lifecycle.json",
+      "relationship_targets": [
+        "nsai:model_runtime:generation_identity:model_fabric_generation_identity",
+        "nsai:model_runtime:recovery:model_cancellation_recovery",
+        "nsai:model_runtime:resource_interlock:model_resource_interlocks"
+      ],
+      "sha256": "91432a9901e4e2695699bdc742bd13a3106eb53bc892dfbb90dca9c55739acd5",
+      "source_ids": [
+        "llama_model_cpp",
+        "llama_server_readme",
+        "px_llama_profiles"
+      ],
+      "status": "validated",
+      "tags": [
+        "admission",
+        "drain",
+        "health",
+        "launch",
+        "reconcile"
+      ],
+      "terms": [
+        "admission",
+        "drain",
+        "health",
+        "launch",
+        "load",
+        "model custody",
+        "model lifecycle",
+        "reconcile",
+        "runtime lifecycle",
+        "unload"
+      ],
+      "title": "PX Local Model Lifecycle"
+    },
+    {
+      "classes": [
+        "gpu",
+        "model_lane"
+      ],
+      "namespace": "model_runtime",
+      "object_id": "nsai:model_runtime:model_lane:balanced_gpu_lane",
+      "object_type": "model_lane",
+      "path": "objects/model_runtime/balanced_gpu_lane.json",
+      "relationship_targets": [
+        "nsai:model_runtime:model_lane:deep_hybrid_moe_lane",
+        "nsai:model_runtime:model_lane:gpu_fast_lane",
+        "nsai:model_runtime:resource_interlock:model_resource_interlocks"
+      ],
+      "sha256": "ce7efaa4d627979a3324aa2a5edacc9789b181a6efaa50aabd1851473554dfe2",
+      "source_ids": [
+        "px_llama_profiles",
+        "px_llama_tuning"
+      ],
+      "status": "validated",
+      "tags": [
+        "exclusive",
+        "gpu",
+        "swap",
+        "warm"
+      ],
+      "terms": [
+        "balanced lane",
+        "exclusive",
+        "exclusive gpu",
+        "gpu",
+        "mid model lane",
+        "mid-size",
+        "swap",
+        "warm"
+      ],
+      "title": "Balanced Exclusive GPU Lane"
+    },
+    {
+      "classes": [
+        "model_lane",
+        "moe"
+      ],
+      "namespace": "model_runtime",
+      "object_id": "nsai:model_runtime:model_lane:deep_hybrid_moe_lane",
+      "object_type": "model_lane",
+      "path": "objects/model_runtime/deep_hybrid_moe_lane.json",
+      "relationship_targets": [
+        "nsai:model_runtime:moe_placement:llama_cpp_moe_placement",
+        "nsai:model_runtime:resource_interlock:model_resource_interlocks"
+      ],
+      "sha256": "65ee320c2de9cc851f5bb7dc6d67a6c3e269a4ec0fda0a47025985b02346222b",
+      "source_ids": [
+        "llama_cuda_topk_moe",
+        "px_llama_profiles",
+        "px_llama_tuning"
+      ],
+      "status": "validated",
+      "tags": [
+        "deep",
+        "exclusive",
+        "hybrid",
+        "moe"
+      ],
+      "terms": [
+        "30b-a3b",
+        "deep",
+        "deep hybrid model",
+        "deep lane",
+        "exclusive",
+        "hybrid",
+        "moe",
+        "reasoning",
+        "sparse MoE lane"
+      ],
+      "title": "Deep Hybrid Sparse-MoE Lane"
+    },
+    {
+      "classes": [
+        "gpu",
+        "model_lane"
+      ],
+      "namespace": "model_runtime",
+      "object_id": "nsai:model_runtime:model_lane:gpu_fast_lane",
+      "object_type": "model_lane",
+      "path": "objects/model_runtime/gpu_fast_lane.json",
+      "relationship_targets": [
+        "nsai:model_runtime:model_lane:balanced_gpu_lane",
+        "nsai:model_runtime:resource_interlock:model_resource_interlocks"
+      ],
+      "sha256": "b6bb731eaf4ce433255b1e35a53118babb6a01419f5b71eca7e9d9755305c530",
+      "source_ids": [
+        "px_llama_profiles",
+        "px_llama_tuning"
+      ],
+      "status": "validated",
+      "tags": [
+        "coding",
+        "gpu",
+        "hot",
+        "latency"
+      ],
+      "terms": [
+        "4b",
+        "coding",
+        "fast lane",
+        "gpu",
+        "hot",
+        "hot GPU model",
+        "latency",
+        "small generation lane"
+      ],
+      "title": "Fast GPU Model Lane"
+    },
+    {
+      "classes": [
+        "hardware_placement",
+        "moe"
+      ],
+      "namespace": "model_runtime",
+      "object_id": "nsai:model_runtime:moe_placement:llama_cpp_moe_placement",
+      "object_type": "moe_placement",
+      "path": "objects/model_runtime/llama_cpp_moe_placement.json",
+      "relationship_targets": [
+        "nsai:model_runtime:model_lane:deep_hybrid_moe_lane",
+        "nsai:model_runtime:resource_interlock:model_resource_interlocks"
+      ],
+      "sha256": "6b06f9775e6eca4fe3ff8300f0d9b43746aca476991fa9e8f3d3cdb2bc486cdf",
+      "source_ids": [
+        "llama_cuda_topk_moe",
+        "llama_model_cpp",
+        "px_llama_tuning"
+      ],
+      "status": "validated",
+      "tags": [
+        "cpu",
+        "experts",
+        "gpu",
+        "sparse"
+      ],
+      "terms": [
+        "cpu",
+        "cpu moe",
+        "expert offload",
+        "experts",
+        "gpu",
+        "gpu layers",
+        "moe",
+        "sparse",
+        "sparse model placement"
+      ],
+      "title": "llama.cpp MoE Placement"
+    },
+    {
+      "classes": [
+        "health",
+        "observability"
+      ],
+      "namespace": "model_runtime",
+      "object_id": "nsai:model_runtime:observability:llama_cpp_metrics_observability",
+      "object_type": "observability",
+      "path": "objects/model_runtime/llama_cpp_metrics_observability.json",
+      "relationship_targets": [
+        "nsai:model_runtime:lifecycle:local_model_lifecycle",
+        "nsai:model_runtime:resource_interlock:model_resource_interlocks"
+      ],
+      "sha256": "a0ed2fb343051c622ebeff2b76c3339802c208d317ea039e693724986ad195b8",
+      "source_ids": [
+        "llama_server_readme",
+        "px_llama_api_contract"
+      ],
+      "status": "validated",
+      "tags": [
+        "health",
+        "metrics",
+        "receipts",
+        "slots"
+      ],
+      "terms": [
+        "health",
+        "metrics",
+        "observability",
+        "receipts",
+        "runtime telemetry",
+        "slot metrics",
+        "slots"
+      ],
+      "title": "llama.cpp Runtime Metrics and Slot Observability"
+    },
+    {
+      "classes": [
+        "scheduler",
+        "throughput_latency"
+      ],
+      "namespace": "model_runtime",
+      "object_id": "nsai:model_runtime:parallelism:llama_cpp_parallel_slots",
+      "object_type": "parallelism",
+      "path": "objects/model_runtime/llama_cpp_parallel_slots.json",
+      "relationship_targets": [
+        "nsai:model_runtime:certification:model_profile_certification",
+        "nsai:model_runtime:kv_cache:llama_cpp_kv_cache"
+      ],
+      "sha256": "ee05b1ebd98793947d2f357a7737b2e9b451ffd5edfe93ab33f11e60d9dcfca3",
+      "source_ids": [
+        "llama_server_cpp",
+        "llama_server_readme",
+        "px_llama_profiles"
+      ],
+      "status": "validated",
+      "tags": [
+        "batching",
+        "latency",
+        "memory",
+        "slots"
+      ],
+      "terms": [
+        "batch",
+        "batching",
+        "concurrency slots",
+        "continuous batching",
+        "latency",
+        "memory",
+        "parallel slots",
+        "slots",
+        "throughput",
+        "ubatch"
+      ],
+      "title": "llama.cpp Parallel Slots and Batching"
+    },
+    {
+      "classes": [
+        "hardware_placement",
+        "resource_tuning"
+      ],
+      "namespace": "model_runtime",
+      "object_id": "nsai:model_runtime:placement:llama_cpp_cpu_gpu_offload",
+      "object_type": "placement",
+      "path": "objects/model_runtime/llama_cpp_cpu_gpu_offload.json",
+      "relationship_targets": [
+        "nsai:model_runtime:model_lane:deep_hybrid_moe_lane",
+        "nsai:model_runtime:resource_interlock:model_resource_interlocks"
+      ],
+      "sha256": "183d5c32eac172216bd9690986f35942c7eaa02667874b5e0eef3407e06d6a68",
+      "source_ids": [
+        "llama_arg_cpp",
+        "llama_cpu_api",
+        "llama_cuda_api",
+        "px_llama_tuning"
+      ],
+      "status": "validated",
+      "tags": [
+        "layers",
+        "placement",
+        "ram",
+        "vram"
+      ],
+      "terms": [
+        "GPU offload",
+        "cpu",
+        "gpu",
+        "hybrid",
+        "layer offload",
+        "layers",
+        "n-gpu-layers",
+        "offload",
+        "placement",
+        "ram",
+        "vram"
+      ],
+      "title": "llama.cpp CPU/GPU Hybrid Offload"
+    },
+    {
+      "classes": [
+        "performance_cache",
+        "prefill"
+      ],
+      "namespace": "model_runtime",
+      "object_id": "nsai:model_runtime:prompt_cache:llama_cpp_prompt_cache",
+      "object_type": "prompt_cache",
+      "path": "objects/model_runtime/llama_cpp_prompt_cache.json",
+      "relationship_targets": [
+        "nsai:model_runtime:certification:model_profile_certification",
+        "nsai:model_runtime:generation_identity:model_fabric_generation_identity"
+      ],
+      "sha256": "3a1f3e140934862a14cd32d96e6b3c1d9d96a75b53032f5415017cd3dcd6e2ab",
+      "source_ids": [
+        "llama_arg_cpp",
+        "llama_server_readme",
+        "px_llama_profiles"
+      ],
+      "status": "validated",
+      "tags": [
+        "cache",
+        "identity",
+        "prefill",
+        "prefix"
+      ],
+      "terms": [
+        "cache",
+        "cache reuse",
+        "identity",
+        "prefill",
+        "prefix",
+        "prefix cache",
+        "prefix reuse",
+        "prompt cache",
+        "prompt caching"
+      ],
+      "title": "llama.cpp Prompt/Prefix Cache Reuse"
+    },
+    {
+      "classes": [
+        "protocol",
+        "provider"
+      ],
+      "namespace": "model_runtime",
+      "object_id": "nsai:model_runtime:protocol_normalization:provider_protocol_normalization",
+      "object_type": "protocol_normalization",
+      "path": "objects/model_runtime/provider_protocol_normalization.json",
+      "relationship_targets": [
+        "nsai:model_runtime:recovery:model_cancellation_recovery",
+        "nsai:model_runtime:tool_protocol:llama_cpp_tool_calling"
+      ],
+      "sha256": "caab93b8b5464ef2080b65e6208e44b47852ee6869b17fed121dc99c1e5ebbfd",
+      "source_ids": [
+        "llama_server_readme",
+        "px_llama_api_contract"
+      ],
+      "status": "validated",
+      "tags": [
+        "protocol",
+        "streaming",
+        "tools",
+        "usage"
+      ],
+      "terms": [
+        "anthropic",
+        "chat completions",
+        "protocol",
+        "provider adapter",
+        "provider protocol",
+        "responses",
+        "sse",
+        "streaming",
+        "tools",
+        "usage",
+        "wire normalization"
+      ],
+      "title": "Provider Protocol Normalization"
+    },
+    {
+      "classes": [
+        "model_storage",
+        "precision_tradeoff"
+      ],
+      "namespace": "model_runtime",
+      "object_id": "nsai:model_runtime:quantization:llama_cpp_quantization",
+      "object_type": "quantization",
+      "path": "objects/model_runtime/llama_cpp_quantization.json",
+      "relationship_targets": [
+        "nsai:model_runtime:certification:model_profile_certification",
+        "nsai:model_runtime:placement:llama_cpp_cpu_gpu_offload"
+      ],
+      "sha256": "d30244602c7d0e0a67737d379de969040db5d238c5d01e1bc187e45cbda5bfdd",
+      "source_ids": [
+        "llama_model_cpp",
+        "llama_quantize_readme",
+        "px_llama_profiles"
+      ],
+      "status": "validated",
+      "tags": [
+        "backend",
+        "memory",
+        "quality",
+        "weights"
+      ],
+      "terms": [
+        "GGUF quant",
+        "backend",
+        "gguf",
+        "memory",
+        "q4",
+        "q8",
+        "quality",
+        "quantization",
+        "quantized weights",
+        "weights"
+      ],
+      "title": "llama.cpp GGUF Quantization"
+    },
+    {
+      "classes": [
+        "lifecycle",
+        "reliability"
+      ],
+      "namespace": "model_runtime",
+      "object_id": "nsai:model_runtime:recovery:model_cancellation_recovery",
+      "object_type": "recovery",
+      "path": "objects/model_runtime/model_cancellation_recovery.json",
+      "relationship_targets": [
+        "nsai:model_runtime:lifecycle:local_model_lifecycle",
+        "nsai:model_runtime:protocol_normalization:provider_protocol_normalization"
+      ],
+      "sha256": "8f3cc703b59d3f793a24c402359e6251df5789fdb7eaf0193f4f01cb91e40339",
+      "source_ids": [
+        "px_airllm_cold_lane",
+        "px_cancel_stream_tools",
+        "px_llama_api_contract"
+      ],
+      "status": "validated",
+      "tags": [
+        "cancel",
+        "drain",
+        "receipt",
+        "reconcile",
+        "stream"
+      ],
+      "terms": [
+        "abort inference",
+        "cancel",
+        "cancellation",
+        "drain",
+        "draining",
+        "forced stop",
+        "receipt",
+        "reconcile",
+        "recovery",
+        "stream",
+        "stream cancellation"
+      ],
+      "title": "Model Cancellation and Recovery"
+    },
+    {
+      "classes": [
+        "resource_governance",
+        "scheduling"
+      ],
+      "namespace": "model_runtime",
+      "object_id": "nsai:model_runtime:resource_interlock:model_resource_interlocks",
+      "object_type": "resource_interlock",
+      "path": "objects/model_runtime/model_resource_interlocks.json",
+      "relationship_targets": [
+        "nsai:model_runtime:lifecycle:local_model_lifecycle",
+        "nsai:model_runtime:recovery:model_cancellation_recovery"
+      ],
+      "sha256": "bb24142a12020fce7d2b9b3c79fc7ae842a5112395c64bfeeebb8f3f3f9be891",
+      "source_ids": [
+        "px_airllm_cold_lane",
+        "px_docker_interlock",
+        "px_llama_profiles"
+      ],
+      "status": "validated",
+      "tags": [
+        "capacity",
+        "disk",
+        "lease",
+        "ram",
+        "vram"
+      ],
+      "terms": [
+        "GPU lease",
+        "capacity",
+        "disk",
+        "gpu interlock",
+        "lease",
+        "ram",
+        "resource governor",
+        "resource lease",
+        "vram"
+      ],
+      "title": "Cross-Runtime Model Resource Interlocks"
+    },
+    {
+      "classes": [
+        "local_llm",
+        "runtime_backend"
+      ],
+      "namespace": "model_runtime",
+      "object_id": "nsai:model_runtime:runtime_architecture:llama_cpp_runtime_architecture",
+      "object_type": "runtime_architecture",
+      "path": "objects/model_runtime/llama_cpp_runtime_architecture.json",
+      "relationship_targets": [
+        "nsai:model_runtime:build_backends:llama_cpp_build_backends",
+        "nsai:model_runtime:lifecycle:local_model_lifecycle",
+        "nsai:model_runtime:server_api:llama_cpp_server_api"
+      ],
+      "sha256": "9209cfdd3a5ec5d36297a03dff7c8e8502bb5829e2cb5fe9c03c71630b60facf",
+      "source_ids": [
+        "llama_context_cpp",
+        "llama_model_cpp",
+        "llama_server_readme",
+        "px_llama_profiles"
+      ],
+      "status": "validated",
+      "tags": [
+        "backend",
+        "context",
+        "model",
+        "server"
+      ],
+      "terms": [
+        "GGUF runtime",
+        "backend",
+        "context",
+        "ggml",
+        "gguf",
+        "inference",
+        "llama.cpp",
+        "llama.cpp runtime",
+        "model",
+        "runtime",
+        "server"
+      ],
+      "title": "llama.cpp Runtime Architecture"
+    },
+    {
+      "classes": [
+        "provider_protocol",
+        "runtime_api"
+      ],
+      "namespace": "model_runtime",
+      "object_id": "nsai:model_runtime:server_api:llama_cpp_server_api",
+      "object_type": "server_api",
+      "path": "objects/model_runtime/llama_cpp_server_api.json",
+      "relationship_targets": [
+        "nsai:model_runtime:observability:llama_cpp_metrics_observability",
+        "nsai:model_runtime:protocol_normalization:provider_protocol_normalization",
+        "nsai:model_runtime:tool_protocol:llama_cpp_tool_calling"
+      ],
+      "sha256": "feadc1d077497fdde7d6f26cfb799aef6b983f76387deb1c523c0ad5c1078b1d",
+      "source_ids": [
+        "llama_server_cpp",
+        "llama_server_readme",
+        "px_llama_api_contract"
+      ],
+      "status": "validated",
+      "tags": [
+        "api",
+        "metrics",
+        "slots",
+        "streaming"
+      ],
+      "terms": [
+        "api",
+        "llama server API",
+        "llama-server",
+        "local OpenAI API",
+        "metrics",
+        "openai compatible",
+        "slots",
+        "sse",
+        "streaming"
+      ],
+      "title": "llama.cpp Server API"
+    },
+    {
+      "classes": [
+        "benchmark",
+        "decoding_optimization"
+      ],
+      "namespace": "model_runtime",
+      "object_id": "nsai:model_runtime:speculative_decoding:llama_cpp_speculative_decoding",
+      "object_type": "speculative_decoding",
+      "path": "objects/model_runtime/llama_cpp_speculative_decoding.json",
+      "relationship_targets": [
+        "nsai:model_runtime:certification:model_profile_certification",
+        "nsai:model_runtime:model_lane:gpu_fast_lane"
+      ],
+      "sha256": "316655374e4193b61ac8c1357af5becda8dc67d92bf3d585d9d2e88348cc6675",
+      "source_ids": [
+        "llama_speculative_doc",
+        "px_llama_tuning"
+      ],
+      "status": "validated",
+      "tags": [
+        "acceptance",
+        "draft",
+        "latency",
+        "target"
+      ],
+      "terms": [
+        "acceptance",
+        "draft",
+        "draft decoding",
+        "draft model",
+        "latency",
+        "spec decode",
+        "speculative decoding",
+        "target"
+      ],
+      "title": "llama.cpp Speculative Decoding"
+    },
+    {
+      "classes": [
+        "authority_boundary",
+        "protocol"
+      ],
+      "namespace": "model_runtime",
+      "object_id": "nsai:model_runtime:tool_protocol:llama_cpp_tool_calling",
+      "object_type": "tool_protocol",
+      "path": "objects/model_runtime/llama_cpp_tool_calling.json",
+      "relationship_targets": [
+        "nsai:model_runtime:protocol_normalization:provider_protocol_normalization",
+        "nsai:model_runtime:recovery:model_cancellation_recovery"
+      ],
+      "sha256": "0ac05869f721790731fbf53c21392c2a0c6681aaeeb75921c09c3df8bba41bb4",
+      "source_ids": [
+        "llama_server_readme",
+        "px_llama_api_contract"
+      ],
+      "status": "validated",
+      "tags": [
+        "effects",
+        "schema",
+        "template",
+        "tools"
+      ],
+      "terms": [
+        "authority",
+        "effects",
+        "function calling",
+        "jinja",
+        "schema",
+        "template",
+        "tool calling",
+        "tool loop",
+        "tool schema",
+        "tools"
+      ],
+      "title": "llama.cpp Tool Calling Boundary"
+    },
+    {
+      "classes": [
+        "adaptive_routing",
+        "learning_evidence"
+      ],
+      "namespace": "moe",
+      "object_id": "nsai:moe:adaptation_drift:moe_adaptation_drift",
+      "object_type": "adaptation_drift",
+      "path": "objects/moe/moe_adaptation_drift.json",
+      "relationship_targets": [
+        "nsai:moe:exploration_policy:moe_exploration_annealing_freeze"
+      ],
+      "sha256": "880a8e97a45fa5f9168bc1c3fc30107da87ec4bfed765962e97ea8befa7d7e47",
+      "source_ids": [
+        "moe_adapt_doc",
+        "px_learning_promotion",
+        "px_route_state"
+      ],
+      "status": "validated",
+      "tags": [
+        "adaptation drift",
+        "evidence",
+        "learned route",
+        "routing maturity"
+      ],
+      "terms": [
+        "adaptation drift",
+        "affinity maturity",
+        "evidence",
+        "learned route",
+        "route adaptation drift",
+        "routing maturity"
+      ],
+      "title": "Routing Adaptation Drift"
+    },
+    {
+      "classes": [
+        "capacity_control",
+        "routing_policy"
+      ],
+      "namespace": "moe",
+      "object_id": "nsai:moe:capacity:moe_capacity_backpressure",
+      "object_type": "capacity",
+      "path": "objects/moe/moe_capacity_backpressure.json",
+      "relationship_targets": [
+        "nsai:model_runtime:resource_interlock:model_resource_interlocks",
+        "nsai:moe:routing:moe_hierarchical_routing"
+      ],
+      "sha256": "210cc95787acabce70f70257bf390963d3766377c9bc971ed3f0bfd93028962b",
+      "source_ids": [
+        "moe_capacity_doc",
+        "px_model_capacity"
+      ],
+      "status": "validated",
+      "tags": [
+        "admission",
+        "backpressure",
+        "capacity",
+        "dropless",
+        "queue"
+      ],
+      "terms": [
+        "admission",
+        "backpressure",
+        "capacity",
+        "capacity broker",
+        "dropless",
+        "queue",
+        "route pressure"
+      ],
+      "title": "MoE Capacity and Backpressure"
+    },
+    {
+      "classes": [
+        "evaluation_gate",
+        "routing_governance"
+      ],
+      "namespace": "moe",
+      "object_id": "nsai:moe:complexity_gate:moe_complexity_tax_baseline",
+      "object_type": "complexity_gate",
+      "path": "objects/moe/moe_complexity_tax_baseline.json",
+      "relationship_targets": [
+        "nsai:moe:evaluation:moe_evaluation_fanout_domain_floors"
+      ],
+      "sha256": "8efc2f08cdbacf068e37e42251ef778e0b7cbbc6e777c993ae182542d7f85384",
+      "source_ids": [
+        "moe_complexity_doc",
+        "px_learning_promotion"
+      ],
+      "status": "validated",
+      "tags": [
+        "baseline",
+        "complexity tax",
+        "overhead",
+        "routing value"
+      ],
+      "terms": [
+        "baseline",
+        "baseline gate",
+        "complexity gate",
+        "complexity tax",
+        "overhead",
+        "routing value"
+      ],
+      "title": "Routing Complexity Tax and Baseline Gate"
+    },
+    {
+      "classes": [
+        "ranking_evidence",
+        "routing_observability"
+      ],
+      "namespace": "moe",
+      "object_id": "nsai:moe:coselection:moe_coselection_rank_adjacency",
+      "object_type": "coselection",
+      "path": "objects/moe/moe_coselection_rank_adjacency.json",
+      "relationship_targets": [
+        "nsai:moe:route_affinity:moe_route_transition_affinity"
+      ],
+      "sha256": "66eda018ba3ad665497fc84b11e1375b4039ca91fd980eb9a174c5485e86e17e",
+      "source_ids": [
+        "moe_coselect_doc",
+        "px_route_observability"
+      ],
+      "status": "validated",
+      "tags": [
+        "co-selection",
+        "model cohort",
+        "rank adjacency",
+        "route ranking"
+      ],
+      "terms": [
+        "co-selection",
+        "co-selection matrix",
+        "model cohort",
+        "rank adjacency",
+        "rank-neighbor evidence",
+        "route ranking"
+      ],
+      "title": "Co-selection vs Rank Adjacency Evidence"
+    },
+    {
+      "classes": [
+        "evaluation_contract",
+        "promotion_gate"
+      ],
+      "namespace": "moe",
+      "object_id": "nsai:moe:evaluation:moe_evaluation_fanout_domain_floors",
+      "object_type": "evaluation",
+      "path": "objects/moe/moe_evaluation_fanout_domain_floors.json",
+      "relationship_targets": [
+        "nsai:moe:complexity_gate:moe_complexity_tax_baseline"
+      ],
+      "sha256": "d0e5ee2525b5d48d46cc6f237efe10136d124e133d367908dcf1b15d4326ee6d",
+      "source_ids": [
+        "moe_eval_doc",
+        "px_learning_promotion"
+      ],
+      "status": "validated",
+      "tags": [
+        "domain floor",
+        "evaluation fanout",
+        "holdout",
+        "promotion"
+      ],
+      "terms": [
+        "domain floor",
+        "domain performance floor",
+        "evaluation fanout",
+        "evaluation matrix",
+        "holdout",
+        "promotion"
+      ],
+      "title": "Evaluation Fanout and Domain Floors"
+    },
+    {
+      "classes": [
+        "certification",
+        "routing_lifecycle"
+      ],
+      "namespace": "moe",
+      "object_id": "nsai:moe:exploration_policy:moe_exploration_annealing_freeze",
+      "object_type": "exploration_policy",
+      "path": "objects/moe/moe_exploration_annealing_freeze.json",
+      "relationship_targets": [
+        "nsai:moe:evaluation:moe_evaluation_fanout_domain_floors"
+      ],
+      "sha256": "a062d58dcc4c336360ed85fc27d4452dd488279a9125b71e2d49e87b46a403b0",
+      "source_ids": [
+        "moe_freeze_doc",
+        "px_route_state"
+      ],
+      "status": "validated",
+      "tags": [
+        "annealing",
+        "certification",
+        "challenger",
+        "exploration",
+        "freeze"
+      ],
+      "terms": [
+        "annealing",
+        "certification",
+        "challenger",
+        "exploration",
+        "freeze",
+        "policy freeze",
+        "route exploration"
+      ],
+      "title": "Exploration, Annealing, Freeze, and Certification"
+    },
+    {
+      "classes": [
+        "affinity_evidence",
+        "routing_observability"
+      ],
+      "namespace": "moe",
+      "object_id": "nsai:moe:route_affinity:moe_route_transition_affinity",
+      "object_type": "route_affinity",
+      "path": "objects/moe/moe_route_transition_affinity.json",
+      "relationship_targets": [
+        "nsai:moe:adaptation_drift:moe_adaptation_drift"
+      ],
+      "sha256": "4f8acd85bba6f22155fdc7f2fbacb1b20cc8b1bcd412e7a71a81d5b2120d2dac",
+      "source_ids": [
+        "moe_affinity_doc",
+        "px_route_observability",
+        "px_route_state"
+      ],
+      "status": "validated",
+      "tags": [
+        "domain affinity",
+        "feature affinity",
+        "route evidence",
+        "route transition"
+      ],
+      "terms": [
+        "domain affinity",
+        "feature affinity",
+        "feature-to-model affinity",
+        "route affinity",
+        "route evidence",
+        "route transition"
+      ],
+      "title": "Route Transitions and Feature Affinity"
+    },
+    {
+      "classes": [
+        "drift_evidence",
+        "routing_observability"
+      ],
+      "namespace": "moe",
+      "object_id": "nsai:moe:route_confidence:moe_route_confidence_collapse",
+      "object_type": "route_confidence",
+      "path": "objects/moe/moe_route_confidence_collapse.json",
+      "relationship_targets": [
+        "nsai:moe:adaptation_drift:moe_adaptation_drift"
+      ],
+      "sha256": "49c065075eee9ee6cc2d235c513681d88b9fe6d8a2574a7edcc30ea7a6a03ed5",
+      "source_ids": [
+        "moe_collapse_doc",
+        "px_route_observability"
+      ],
+      "status": "validated",
+      "tags": [
+        "collapse",
+        "concentration",
+        "entropy",
+        "route confidence"
+      ],
+      "terms": [
+        "collapse",
+        "concentration",
+        "entropy",
+        "route concentration",
+        "route confidence",
+        "router collapse"
+      ],
+      "title": "Route Confidence and Collapse Detection"
+    },
+    {
+      "classes": [
+        "external_moe",
+        "routing_policy"
+      ],
+      "namespace": "moe",
+      "object_id": "nsai:moe:routing:moe_hierarchical_routing",
+      "object_type": "routing",
+      "path": "objects/moe/moe_hierarchical_routing.json",
+      "relationship_targets": [
+        "nsai:model_runtime:model_lane:deep_hybrid_moe_lane",
+        "nsai:moe:capacity:moe_capacity_backpressure",
+        "nsai:moe:route_confidence:moe_route_confidence_collapse"
+      ],
+      "sha256": "90faaee8388e4ada2a58d8e6da3a63c4c89fdff035afa35f3f519de0468bfb7d",
+      "source_ids": [
+        "moe_hierarchical",
+        "px_route_state"
+      ],
+      "status": "validated",
+      "tags": [
+        "challenger",
+        "external moe",
+        "hierarchical routing",
+        "primary"
+      ],
+      "terms": [
+        "challenger",
+        "external MoE",
+        "external moe",
+        "hierarchical routing",
+        "primary",
+        "primary challenger routing"
+      ],
+      "title": "Hierarchical Primary/Challenger Routing"
+    },
+    {
+      "classes": [
+        "learning_governance",
+        "state_lineage"
+      ],
+      "namespace": "moe",
+      "object_id": "nsai:moe:state_lineage:moe_state_lineage_reset",
+      "object_type": "state_lineage",
+      "path": "objects/moe/moe_state_lineage_reset.json",
+      "relationship_targets": [
+        "nsai:moe:adaptation_drift:moe_adaptation_drift"
+      ],
+      "sha256": "ca95874ea30547dd31de6e26372c782aef779adcacd6593e94330d0a821ed602",
+      "source_ids": [
+        "moe_lineage_doc",
+        "px_learning_promotion"
+      ],
+      "status": "validated",
+      "tags": [
+        "reset",
+        "router state",
+        "state lineage",
+        "upcycling"
+      ],
+      "terms": [
+        "adaptive state reset",
+        "reset",
+        "router state",
+        "routing state lineage",
+        "state lineage",
+        "upcycling"
+      ],
+      "title": "MoE State Lineage, Upcycling, and Reset"
+    },
+    {
+      "classes": [
+        "distributed_execution",
+        "optional_topology"
+      ],
+      "namespace": "moe",
+      "object_id": "nsai:moe:worker_cohorts:moe_distributed_worker_cohorts",
+      "object_type": "worker_cohorts",
+      "path": "objects/moe/moe_distributed_worker_cohorts.json",
+      "relationship_targets": [
+        "nsai:moe:capacity:moe_capacity_backpressure"
+      ],
+      "sha256": "2dedf58795115d4e76ecb182e7864813b2c0d1bf1a2ef51f30f0843e821a3b56",
+      "source_ids": [
+        "moe_worker_doc",
+        "px_capability_scheduler"
+      ],
+      "status": "validated",
+      "tags": [
+        "distributed evaluation",
+        "rendezvous",
+        "sharding",
+        "worker cohort"
+      ],
+      "terms": [
+        "distributed evaluation",
+        "distributed model cohort",
+        "rendezvous",
+        "sharding",
+        "worker cohort",
+        "worker rendezvous"
+      ],
+      "title": "Distributed Worker Cohorts and Rendezvous"
+    },
+    {
+      "classes": [
+        "intent_resolution",
+        "operational_projection"
+      ],
+      "namespace": "operations",
+      "object_id": "nsai:operations:action_surface:rie_action_surface",
+      "object_type": "action_surface",
+      "path": "objects/operations/rie_action_surface.json",
+      "relationship_targets": [
+        "nsai:cognitive:closed_world_selection:tiny_operator_closed_world_selection",
+        "nsai:operations:query_plan:rie_query_plan"
+      ],
+      "sha256": "91edd6f0c1ca0c8bbd5dc01d208ee5d2421a59f98cadaddedb63447347f42a92",
+      "source_ids": [
+        "px_action_surface"
+      ],
+      "status": "validated",
+      "tags": [
+        "action descriptor",
+        "action surface",
+        "alias resolution",
+        "operation"
+      ],
+      "terms": [
+        "action catalog",
+        "action descriptor",
+        "action surface",
+        "alias resolution",
+        "operation",
+        "operation surface"
+      ],
+      "title": "RIE Action Surface"
+    },
+    {
+      "classes": [
+        "context_lifecycle",
+        "durable_checkpoint"
+      ],
+      "namespace": "operations",
+      "object_id": "nsai:operations:context_checkpoint:context_pressure_checkpointing",
+      "object_type": "context_checkpoint",
+      "path": "objects/operations/context_pressure_checkpointing.json",
+      "relationship_targets": [
+        "nsai:semantic:context_materialization:semantic_context_materialization"
+      ],
+      "sha256": "b37ea1348273ed3350a99430b2991a82ecacee811dc5bf91dfc1eadd03b0d1c4",
+      "source_ids": [
+        "wave15c_checkpoint",
+        "wave15c_checkpoint_tests"
+      ],
+      "status": "validated",
+      "tags": [
+        "70 82 90",
+        "checkpoint",
+        "compaction",
+        "context pressure",
+        "hydration"
+      ],
+      "terms": [
+        "70 82 90",
+        "checkpoint",
+        "compaction",
+        "context pressure",
+        "context pressure gate",
+        "durable context checkpoint",
+        "hydration"
+      ],
+      "title": "Context-Pressure Checkpointing"
+    },
+    {
+      "classes": [
+        "drift_metric",
+        "operational_evidence"
+      ],
+      "namespace": "operations",
+      "object_id": "nsai:operations:distribution_drift:rie_distribution_drift",
+      "object_type": "distribution_drift",
+      "path": "objects/operations/rie_distribution_drift.json",
+      "relationship_targets": [
+        "nsai:moe:adaptation_drift:moe_adaptation_drift"
+      ],
+      "sha256": "0f5dcfaea1687c94349716388fff6f454f06e3087db56e3e2a10dbf0a2495faa",
+      "source_ids": [
+        "px_distribution_drift"
+      ],
+      "status": "validated",
+      "tags": [
+        "Jensen-Shannon",
+        "PSI",
+        "distribution drift",
+        "monitoring"
+      ],
+      "terms": [
+        "Jensen-Shannon",
+        "PSI",
+        "distribution drift",
+        "distribution shift",
+        "drift evidence",
+        "monitoring"
+      ],
+      "title": "RIE Distribution Drift Evidence"
+    },
+    {
+      "classes": [
+        "evidence_receipt",
+        "job_state"
+      ],
+      "namespace": "operations",
+      "object_id": "nsai:operations:job_receipt:rie_durable_job_receipt",
+      "object_type": "job_receipt",
+      "path": "objects/operations/rie_durable_job_receipt.json",
+      "relationship_targets": [
+        "nsai:operations:wait_wake:intermodel_wait_wake"
+      ],
+      "sha256": "ed1d50ffa29733bdb5ab2edfaeced1364d770aec4b10bf5d79a2425d1ec7fea1",
+      "source_ids": [
+        "px_job_receipt"
+      ],
+      "status": "validated",
+      "tags": [
+        "cancel",
+        "durable job",
+        "job receipt",
+        "progress",
+        "retry"
+      ],
+      "terms": [
+        "asynchronous receipt",
+        "cancel",
+        "durable job",
+        "job ledger record",
+        "job receipt",
+        "progress",
+        "retry"
+      ],
+      "title": "RIE Durable Job Receipt"
+    },
+    {
+      "classes": [
+        "degradation_policy",
+        "latency_control"
+      ],
+      "namespace": "operations",
+      "object_id": "nsai:operations:latency_budget:rie_latency_budget_stage_shedding",
+      "object_type": "latency_budget",
+      "path": "objects/operations/rie_latency_budget_stage_shedding.json",
+      "relationship_targets": [
+        "nsai:retrieval:reranking:reranker_bounded_topn"
+      ],
+      "sha256": "513014b332c12ed82d5a9c79b1f5554678c46daa647044ff88d048ab4059cc97",
+      "source_ids": [
+        "px_latency_budget"
+      ],
+      "status": "validated",
+      "tags": [
+        "deadline",
+        "latency budget",
+        "optional stage",
+        "stage shedding"
+      ],
+      "terms": [
+        "deadline",
+        "latency budget",
+        "latency-aware pipeline",
+        "optional stage",
+        "request budget",
+        "stage shedding"
+      ],
+      "title": "RIE Latency Budget and Stage Shedding"
+    },
+    {
+      "classes": [
+        "derived_projection",
+        "parity_check"
+      ],
+      "namespace": "operations",
+      "object_id": "nsai:operations:projection_parity:rie_operational_projection_parity",
+      "object_type": "projection_parity",
+      "path": "objects/operations/rie_operational_projection_parity.json",
+      "relationship_targets": [
+        "nsai:operations:action_surface:rie_action_surface"
+      ],
+      "sha256": "13e4df93a5da2fc4d5004affa379ac636da3f3f02faa9a035b2657e91468a49a",
+      "source_ids": [
+        "px_operational_projection",
+        "px_parity_lint"
+      ],
+      "status": "validated",
+      "tags": [
+        "authority revision",
+        "dead reference",
+        "operational projection",
+        "parity lint"
+      ],
+      "terms": [
+        "authority revision",
+        "dead reference",
+        "operational parity",
+        "operational projection",
+        "parity lint",
+        "projection consistency"
+      ],
+      "title": "RIE Operational Projection Parity"
+    },
+    {
+      "classes": [
+        "operational_projection",
+        "query_planning"
+      ],
+      "namespace": "operations",
+      "object_id": "nsai:operations:query_plan:rie_query_plan",
+      "object_type": "query_plan",
+      "path": "objects/operations/rie_query_plan.json",
+      "relationship_targets": [
+        "nsai:cognitive:bounded_query:bounded_cognitive_query"
+      ],
+      "sha256": "070f52e522582295729a7a18ddeb6c15bcae63d006466e793f1770fa7d91476e",
+      "source_ids": [
+        "px_query_planner"
+      ],
+      "status": "validated",
+      "tags": [
+        "alias",
+        "facet",
+        "lexicon",
+        "query plan"
+      ],
+      "terms": [
+        "alias",
+        "canonical query plan",
+        "facet",
+        "lexicon",
+        "query decomposition",
+        "query plan"
+      ],
+      "title": "RIE Canonical Query Plan"
+    },
+    {
+      "classes": [
+        "concurrency_guard",
+        "session_state"
+      ],
+      "namespace": "operations",
+      "object_id": "nsai:operations:session_guard:rie_session_context_guard",
+      "object_type": "session_guard",
+      "path": "objects/operations/rie_session_context_guard.json",
+      "relationship_targets": [
+        "nsai:operations:wait_wake:intermodel_wait_wake"
+      ],
+      "sha256": "f45fffc7c11cb9ad218030ac7b13e30c4a26c2766727117c086243e698f4ac5d",
+      "source_ids": [
+        "px_session_guard"
+      ],
+      "status": "validated",
+      "tags": [
+        "commit token",
+        "optimistic concurrency",
+        "session context",
+        "stale async"
+      ],
+      "terms": [
+        "commit token",
+        "optimistic concurrency",
+        "optimistic context token",
+        "session context",
+        "session version guard",
+        "stale async"
+      ],
+      "title": "RIE Session Context Guard"
+    },
+    {
+      "classes": [
+        "coordination",
+        "durable_continuation"
+      ],
+      "namespace": "operations",
+      "object_id": "nsai:operations:wait_wake:intermodel_wait_wake",
+      "object_type": "wait_wake",
+      "path": "objects/operations/intermodel_wait_wake.json",
+      "relationship_targets": [
+        "nsai:operations:job_receipt:rie_durable_job_receipt",
+        "nsai:operations:session_guard:rie_session_context_guard"
+      ],
+      "sha256": "3d1f02c1801632061e5c24cdea59932343f9c58dbda3dbf578a42f1e6cc7590c",
+      "source_ids": [
+        "wave15c_coordination",
+        "wave15c_wait_tests"
+      ],
+      "status": "validated",
+      "tags": [
+        "durable coordination",
+        "fencing",
+        "task dependency",
+        "wait wake"
+      ],
+      "terms": [
+        "durable coordination",
+        "durable wait registration",
+        "fencing",
+        "inter-model wake",
+        "task dependency",
+        "wait wake"
+      ],
+      "title": "Durable Inter-Model Wait/Wake Coordination"
+    },
+    {
+      "classes": [
+        "concurrency_contract",
+        "retrieval_index"
+      ],
+      "namespace": "retrieval",
+      "object_id": "nsai:retrieval:concurrency:turbovec_concurrency_interruptibility",
+      "object_type": "concurrency",
+      "path": "objects/retrieval/turbovec_concurrency_interruptibility.json",
+      "relationship_targets": [
+        "nsai:retrieval:generation_coherence:retrieval_generation_coherence",
+        "nsai:retrieval:index_lifecycle:turbovec_index_lifecycle"
+      ],
+      "sha256": "1032a5b8580ce9b010c50f921ef93847fc81eea63718b138c1254e235e607a44",
+      "source_ids": [
+        "px_retrieval_generation",
+        "px_turbovec_adapter",
+        "tv_runbook"
+      ],
+      "status": "validated",
+      "tags": [
+        "concurrency",
+        "interrupt",
+        "single writer",
+        "thread safety",
+        "turbovec"
+      ],
+      "terms": [
+        "concurrency",
+        "interrupt",
+        "interruptible indexing",
+        "single writer",
+        "thread safety",
+        "turbovec",
+        "vector-index concurrency"
+      ],
+      "title": "TurboVec Concurrency and Interruptibility"
+    },
+    {
+      "classes": [
+        "model_identity",
+        "retrieval_generation"
+      ],
+      "namespace": "retrieval",
+      "object_id": "nsai:retrieval:embedding_identity:embedding_revision_identity",
+      "object_type": "embedding_identity",
+      "path": "objects/retrieval/embedding_revision_identity.json",
+      "relationship_targets": [
+        "nsai:retrieval:generation_coherence:retrieval_generation_coherence"
+      ],
+      "sha256": "8ead843ce54a9aebbeaef5013da915fe02aae3e654b46ba6c2c26bb06abfcd4d",
+      "source_ids": [
+        "px_retrieval_models",
+        "px_turbovec_adapter"
+      ],
+      "status": "validated",
+      "tags": [
+        "dimensions",
+        "embedding revision",
+        "model revision",
+        "vector identity"
+      ],
+      "terms": [
+        "dimensions",
+        "embedding generation",
+        "embedding revision",
+        "model revision",
+        "vector identity",
+        "vector-model identity"
+      ],
+      "title": "Embedding Revision Identity"
+    },
+    {
+      "classes": [
+        "evidence_integrity",
+        "retrieval_governance"
+      ],
+      "namespace": "retrieval",
+      "object_id": "nsai:retrieval:evidence_protection:exact_evidence_protection",
+      "object_type": "evidence_protection",
+      "path": "objects/retrieval/exact_evidence_protection.json",
+      "relationship_targets": [
+        "nsai:retrieval:fusion:hybrid_retrieval_fusion"
+      ],
+      "sha256": "7a1593f4cd274d3fd463bc34fa883a72f71de26531f612d6c189ddcfb60b19d6",
+      "source_ids": [
+        "px_semantic_evidence",
+        "px_semantic_fusion"
+      ],
+      "status": "validated",
+      "tags": [
+        "exact evidence",
+        "provenance",
+        "semantic displacement",
+        "source id"
+      ],
+      "terms": [
+        "evidence anchor",
+        "exact evidence",
+        "exact-match protection",
+        "provenance",
+        "semantic displacement",
+        "source id"
+      ],
+      "title": "Exact Evidence Protection"
+    },
+    {
+      "classes": [
+        "evidence_pipeline",
+        "retrieval_fusion"
+      ],
+      "namespace": "retrieval",
+      "object_id": "nsai:retrieval:fusion:hybrid_retrieval_fusion",
+      "object_type": "fusion",
+      "path": "objects/retrieval/hybrid_retrieval_fusion.json",
+      "relationship_targets": [
+        "nsai:retrieval:evidence_protection:exact_evidence_protection",
+        "nsai:retrieval:reranking:reranker_bounded_topn"
+      ],
+      "sha256": "f1d3c5ee6494b176e3a0f3af22dbb015a335ebf1773ff61b5438ba7434a6f698",
+      "source_ids": [
+        "px_retrieval_models",
+        "px_semantic_fusion"
+      ],
+      "status": "validated",
+      "tags": [
+        "fusion",
+        "hybrid retrieval",
+        "lexical",
+        "reranker",
+        "vector"
+      ],
+      "terms": [
+        "fusion",
+        "hybrid retrieval",
+        "hybrid search fusion",
+        "lexical",
+        "lexical vector fusion",
+        "reranker",
+        "vector"
+      ],
+      "title": "Hybrid Retrieval Fusion"
+    },
+    {
+      "classes": [
+        "generation_identity",
+        "retrieval_governance"
+      ],
+      "namespace": "retrieval",
+      "object_id": "nsai:retrieval:generation_coherence:retrieval_generation_coherence",
+      "object_type": "generation_coherence",
+      "path": "objects/retrieval/retrieval_generation_coherence.json",
+      "relationship_targets": [
+        "nsai:model_runtime:generation_identity:model_fabric_generation_identity",
+        "nsai:retrieval:fusion:hybrid_retrieval_fusion"
+      ],
+      "sha256": "934d1818914c1d310e6294e3c382d92500244484976b59a9932e990a8c77aa69",
+      "source_ids": [
+        "px_retrieval_generation",
+        "px_semantic_fusion"
+      ],
+      "status": "validated",
+      "tags": [
+        "coherence",
+        "fusion",
+        "immutable generation",
+        "retrieval generation"
+      ],
+      "terms": [
+        "coherence",
+        "fusion",
+        "generation coherence",
+        "immutable generation",
+        "retrieval generation",
+        "retrieval snapshot"
+      ],
+      "title": "Retrieval Generation Coherence"
+    },
+    {
+      "classes": [
+        "generation_artifact",
+        "retrieval_index"
+      ],
+      "namespace": "retrieval",
+      "object_id": "nsai:retrieval:index_lifecycle:turbovec_index_lifecycle",
+      "object_type": "index_lifecycle",
+      "path": "objects/retrieval/turbovec_index_lifecycle.json",
+      "relationship_targets": [
+        "nsai:retrieval:embedding_identity:embedding_revision_identity",
+        "nsai:retrieval:generation_coherence:retrieval_generation_coherence"
+      ],
+      "sha256": "58740a14e3ae2cf0d847dd67a6b9ec7d33b4dc374c3f9fdcf14deef2c0837958",
+      "source_ids": [
+        "px_retrieval_generation",
+        "px_turbovec_adapter",
+        "tv_prod_contract"
+      ],
+      "status": "validated",
+      "tags": [
+        "calibration",
+        "generation",
+        "index",
+        "persistence",
+        "turbovec"
+      ],
+      "terms": [
+        "TurboVec lifecycle",
+        "calibration",
+        "generation",
+        "index",
+        "persistence",
+        "turbovec",
+        "vector index lifecycle"
+      ],
+      "title": "TurboVec Index Lifecycle"
+    },
+    {
+      "classes": [
+        "retrieval_optimization",
+        "vector_representation"
+      ],
+      "namespace": "retrieval",
+      "object_id": "nsai:retrieval:quantized_vectors:turbovec_quantized_vectors",
+      "object_type": "quantized_vectors",
+      "path": "objects/retrieval/turbovec_quantized_vectors.json",
+      "relationship_targets": [
+        "nsai:retrieval:evidence_protection:exact_evidence_protection",
+        "nsai:retrieval:index_lifecycle:turbovec_index_lifecycle"
+      ],
+      "sha256": "ed6300b353321906be6f6a69080c841981937a25bba1a6e0069cb22f9e6a9914",
+      "source_ids": [
+        "px_turbovec_adapter",
+        "tv_prod_contract"
+      ],
+      "status": "validated",
+      "tags": [
+        "2-bit",
+        "4-bit",
+        "recall",
+        "turbovec",
+        "vector quantization"
+      ],
+      "terms": [
+        "2-bit",
+        "4-bit",
+        "compressed vectors",
+        "low-bit embeddings",
+        "recall",
+        "turbovec",
+        "vector quantization"
+      ],
+      "title": "TurboVec Quantized Vectors"
+    },
+    {
+      "classes": [
+        "bounded_provider",
+        "reranking"
+      ],
+      "namespace": "retrieval",
+      "object_id": "nsai:retrieval:reranking:reranker_bounded_topn",
+      "object_type": "reranking",
+      "path": "objects/retrieval/reranker_bounded_topn.json",
+      "relationship_targets": [
+        "nsai:retrieval:embedding_identity:embedding_revision_identity",
+        "nsai:retrieval:fusion:hybrid_retrieval_fusion"
+      ],
+      "sha256": "88bdf69080de00aae8e1b5713be4bdbc5d770d0d0efcc4f5b05c65b7180b9b9d",
+      "source_ids": [
+        "px_retrieval_models",
+        "px_semantic_rerank"
+      ],
+      "status": "validated",
+      "tags": [
+        "bounded rerank",
+        "candidate set",
+        "reranker",
+        "top n"
+      ],
+      "terms": [
+        "bounded cross-encoder",
+        "bounded rerank",
+        "candidate set",
+        "reranker",
+        "top n",
+        "top-N reranking"
+      ],
+      "title": "Bounded Reranking and Top-N"
+    },
+    {
+      "classes": [
+        "context_projection",
+        "model_input"
+      ],
+      "namespace": "semantic",
+      "object_id": "nsai:semantic:context_materialization:semantic_context_materialization",
+      "object_type": "context_materialization",
+      "path": "objects/semantic/semantic_context_materialization.json",
+      "relationship_targets": [
+        "nsai:cognitive:bounded_query:bounded_cognitive_query",
+        "nsai:operations:context_checkpoint:context_pressure_checkpointing"
+      ],
+      "sha256": "bd32efbb266dfe47343ed9b61eced7de2cb18dadb31d48b1cda58fa69c69c478",
+      "source_ids": [
+        "px_semantic_context_profiles",
+        "px_semantic_model_context"
+      ],
+      "status": "validated",
+      "tags": [
+        "citation",
+        "context materialization",
+        "model context",
+        "token budget"
+      ],
+      "terms": [
+        "bounded context assembly",
+        "citation",
+        "context materialization",
+        "model context",
+        "semantic context pack",
+        "token budget"
+      ],
+      "title": "Bounded Semantic Context Materialization"
+    },
+    {
+      "classes": [
+        "authorization_boundary",
+        "semantic_query"
+      ],
+      "namespace": "semantic",
+      "object_id": "nsai:semantic:cross_project:semantic_cross_project_boundaries",
+      "object_type": "cross_project",
+      "path": "objects/semantic/semantic_cross_project_boundaries.json",
+      "relationship_targets": [
+        "nsai:semantic:index:semantic_code_index"
+      ],
+      "sha256": "b707863f6f4d634ca113254bb5c4625ce10f622996fc557ae37967a3037041b8",
+      "source_ids": [
+        "px_semantic_cross_project",
+        "px_semantic_project_catalog"
+      ],
+      "status": "validated",
+      "tags": [
+        "cross project",
+        "project boundary",
+        "read only",
+        "semantic query"
+      ],
+      "terms": [
+        "cross project",
+        "multi-project semantic query",
+        "project boundary",
+        "project-scoped code intelligence",
+        "read only",
+        "semantic query"
+      ],
+      "title": "Semantic Cross-Project Boundaries"
+    },
+    {
+      "classes": [
+        "code_intelligence",
+        "semantic_index"
+      ],
+      "namespace": "semantic",
+      "object_id": "nsai:semantic:index:semantic_code_index",
+      "object_type": "index",
+      "path": "objects/semantic/semantic_code_index.json",
+      "relationship_targets": [
+        "nsai:semantic:revision_edits:semantic_code_revision_bound_edits"
+      ],
+      "sha256": "43cb7cbe88d999f35efd80027e30596d17c8b27f765e5aa5ad54923fd34c1520",
+      "source_ids": [
+        "px_semantic_code_index",
+        "px_semantic_code_service"
+      ],
+      "status": "validated",
+      "tags": [
+        "imports",
+        "references",
+        "semantic code index",
+        "symbol index"
+      ],
+      "terms": [
+        "code intelligence index",
+        "imports",
+        "references",
+        "semantic code index",
+        "semantic project index",
+        "symbol index"
+      ],
+      "title": "Semantic Code Index"
+    },
+    {
+      "classes": [
+        "lsp_runtime",
+        "provider_lifecycle"
+      ],
+      "namespace": "semantic",
+      "object_id": "nsai:semantic:lsp_lifecycle:semantic_lsp_lifecycle",
+      "object_type": "lsp_lifecycle",
+      "path": "objects/semantic/semantic_lsp_lifecycle.json",
+      "relationship_targets": [
+        "nsai:semantic:lsp_position_encoding:semantic_lsp_position_encoding"
+      ],
+      "sha256": "f5b6f49b2b10cb6c9b84ac7c3fbdbd21e63a5073dccd687d1011230e56bd656f",
+      "source_ids": [
+        "px_lsp_manager",
+        "px_lsp_process",
+        "px_lsp_protocol"
+      ],
+      "status": "validated",
+      "tags": [
+        "LSP",
+        "language server",
+        "lifecycle",
+        "process custody"
+      ],
+      "terms": [
+        "LSP",
+        "LSP runtime",
+        "language server",
+        "language server lifecycle",
+        "lifecycle",
+        "process custody"
+      ],
+      "title": "Semantic LSP Lifecycle"
+    },
+    {
+      "classes": [
+        "protocol_normalization",
+        "text_coordinates"
+      ],
+      "namespace": "semantic",
+      "object_id": "nsai:semantic:lsp_position_encoding:semantic_lsp_position_encoding",
+      "object_type": "lsp_position_encoding",
+      "path": "objects/semantic/semantic_lsp_position_encoding.json",
+      "relationship_targets": [
+        "nsai:semantic:lsp_lifecycle:semantic_lsp_lifecycle"
+      ],
+      "sha256": "65ebf1883be7d8f7bf2b43bc5e2009da74ee384f996eeea2e61dbdcaabe0d5e1",
+      "source_ids": [
+        "px_lsp_encoding",
+        "px_lsp_initialize"
+      ],
+      "status": "validated",
+      "tags": [
+        "LSP position",
+        "UTF-16",
+        "UTF-32",
+        "UTF-8",
+        "offset"
+      ],
+      "terms": [
+        "LSP coordinate conversion",
+        "LSP position",
+        "UTF-16",
+        "UTF-32",
+        "UTF-8",
+        "offset",
+        "position encoding"
+      ],
+      "title": "LSP Position Encoding Normalization"
+    },
+    {
+      "classes": [
+        "memory_semantics",
+        "reference_integrity"
+      ],
+      "namespace": "semantic",
+      "object_id": "nsai:semantic:memory_reference:semantic_memory_reference_integrity",
+      "object_type": "memory_reference",
+      "path": "objects/semantic/semantic_memory_reference_integrity.json",
+      "relationship_targets": [
+        "nsai:memory:bitemporal_lineage:persistent_memory_bitemporal_lineage"
+      ],
+      "sha256": "55d0f981986bd34a9e7d92ed54181445aae55a9fe11074953e4a1263cf0a4297",
+      "source_ids": [
+        "px_semantic_memory_integrity",
+        "px_semantic_memory_refs",
+        "px_semantic_memory_relocation"
+      ],
+      "status": "validated",
+      "tags": [
+        "integrity",
+        "memory reference",
+        "pxmem",
+        "relocation"
+      ],
+      "terms": [
+        "integrity",
+        "memory reference",
+        "pxmem",
+        "relocation",
+        "semantic memory pointer",
+        "stable memory URI"
+      ],
+      "title": "Semantic Memory Reference Integrity"
+    },
+    {
+      "classes": [
+        "semantic_edit",
+        "transaction"
+      ],
+      "namespace": "semantic",
+      "object_id": "nsai:semantic:revision_edits:semantic_code_revision_bound_edits",
+      "object_type": "revision_edits",
+      "path": "objects/semantic/semantic_code_revision_bound_edits.json",
+      "relationship_targets": [
+        "nsai:semantic:index:semantic_code_index"
+      ],
+      "sha256": "0bc1dde1d4ed53f4e9946c29bbb44dcd4b3974177a54f79ec93d06c4d8e4a55c",
+      "source_ids": [
+        "px_semantic_edits",
+        "px_semantic_revision",
+        "px_semantic_transaction"
+      ],
+      "status": "validated",
+      "tags": [
+        "preview",
+        "revision bound",
+        "semantic edit",
+        "transaction"
+      ],
+      "terms": [
+        "preview",
+        "revision bound",
+        "revision-checked edit",
+        "semantic edit",
+        "semantic patch plan",
+        "transaction"
+      ],
+      "title": "Revision-Bound Semantic Edits"
+    },
+    {
+      "classes": [
+        "admission_gate",
+        "skill_lifecycle"
+      ],
+      "namespace": "skills",
+      "object_id": "nsai:skills:private_skill_admission:private_skill_candidate_admission",
+      "object_type": "private_skill_admission",
+      "path": "objects/skills/private_skill_candidate_admission.json",
+      "relationship_targets": [
+        "nsai:cognitive:generation_publication:atomic_cognitive_generation_publication",
+        "nsai:operations:action_surface:rie_action_surface"
+      ],
+      "sha256": "2f745f837b9c2701498693a3c5a29af186d4581c5797c66baa67cab23de895f3",
+      "source_ids": [
+        "wave15b_private_tests",
+        "wave15b_storage"
+      ],
+      "status": "validated",
+      "tags": [
+        "admission",
+        "package hash",
+        "private skill",
+        "skill candidate"
+      ],
+      "terms": [
+        "admission",
+        "external skill candidate",
+        "learned skill admission",
+        "package hash",
+        "private skill",
+        "skill candidate"
+      ],
+      "title": "Private Skill Candidate Admission"
+    }
+  ],
+  "schema_version": "px.nsai-index/1.0",
+  "source_of_truth": "individual_object_files"
+}

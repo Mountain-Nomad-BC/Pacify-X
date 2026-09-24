@@ -1415,6 +1415,70 @@ class ResourceManager:
         # An unavailable fingerprint proves neither exit nor reuse.
         return current is None or current == identity[len(prefix) :]
 
+
+    def reconcile_cold_worker(
+        self,
+        resource_id: str,
+        *,
+        expected_pid: int,
+        apply: bool = False,
+    ) -> dict[str, object]:
+        """Reconcile one cold-model worker without guessing process-tree closure.
+
+        For a live Popen held by this manager, normal ``complete_process`` is
+        used and therefore retains Windows Job/process-group closure semantics.
+        After a controller restart, POSIX additionally checks the session's
+        process group before declaring the worker absent.  Ambiguity retains
+        custody and therefore also prevents an external resource lease from
+        being released by the caller.
+        """
+        if type(expected_pid) is not int or expected_pid <= 0:
+            raise ValueError("cold worker expected PID must be positive")
+        if type(apply) is not bool:
+            raise ValueError("cold worker reconciliation apply flag must be boolean")
+        record = self.ledger.get(resource_id)
+        if record.resource_type != "process" or record.pid != expected_pid:
+            raise PermissionError("cold worker process identity does not match")
+        if not record.active:
+            return {
+                "resource_id": resource_id, "pid": expected_pid, "state": "closed",
+                "tree_absent": record.status == ResourceStatus.RECLAIMED.value,
+                "applied": False,
+            }
+        process = self._processes.get(resource_id)
+        if process is not None:
+            if process.pid != expected_pid:
+                raise PermissionError("cold worker live handle identity mismatch")
+            if process.poll() is None:
+                return {"resource_id": resource_id, "pid": expected_pid, "state": "running", "tree_absent": False, "applied": False}
+            if not apply:
+                return {"resource_id": resource_id, "pid": expected_pid, "state": "exited_pending_close", "tree_absent": True, "applied": False}
+            result = self.complete_process(resource_id)
+            return {"resource_id": resource_id, "pid": expected_pid, "state": "closed", "tree_absent": True, "applied": True, "run_state": result.run_state}
+
+        if not self.persisted_process_has_exited(resource_id, expected_pid=expected_pid):
+            return {"resource_id": resource_id, "pid": expected_pid, "state": "running_or_ambiguous", "tree_absent": False, "applied": False}
+
+        # On POSIX, start_new_session makes the worker PID the process-group ID.
+        # A dead root does not prove its descendants are gone; retain custody if
+        # any process still answers for that group.
+        if os.name != "nt":
+            try:
+                os.killpg(expected_pid, 0)
+            except ProcessLookupError:
+                pass
+            except PermissionError:
+                return {"resource_id": resource_id, "pid": expected_pid, "state": "tree_ambiguous", "tree_absent": False, "applied": False}
+            else:
+                return {"resource_id": resource_id, "pid": expected_pid, "state": "descendants_remain", "tree_absent": False, "applied": False}
+
+        if not apply:
+            return {"resource_id": resource_id, "pid": expected_pid, "state": "absent_pending_close", "tree_absent": True, "applied": False}
+        result = self.complete_persisted_process_after_exit(
+            resource_id, expected_pid=expected_pid, run_state=RunState.FAILED,
+        )
+        return {"resource_id": resource_id, "pid": expected_pid, "state": "closed_after_absence", "tree_absent": True, "applied": True, "run_state": result.run_state}
+
     def terminate_owned_process(
         self, resource_id: str, *, graceful_timeout_seconds: float = 3.0
     ) -> CleanupReceipt:

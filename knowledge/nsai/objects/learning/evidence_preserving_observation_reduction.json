@@ -1,0 +1,148 @@
+{
+  "applicability": {
+    "conditions": [
+      "Stable source evidence remains recoverable."
+    ],
+    "exclusions": [
+      "destructive reduction before verification"
+    ],
+    "targets": [
+      "learning evidence",
+      "observations"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "px_observation_projection",
+          "px_evidence_reducer"
+        ],
+        "statement": "Observation projection keeps a stable handle and source locator to the unreduced evidence."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_observation_projection",
+          "px_evidence_reducer"
+        ],
+        "statement": "Large observations may use excerpts or summaries for runtime efficiency while preserving the route back to full evidence."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_observation_projection",
+          "px_evidence_reducer"
+        ],
+        "statement": "Reduction without a verifiable receipt or stable source can create irrecoverable pseudo-memory."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "create an observation pack with source locator and stable handle",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "retain excerpt/full selection according to bounded thresholds",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "bind destructive reduction to a reducer receipt when policy requires it",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "Large observations may be compacted into bounded projections only after the reduced form is tied to stable source locators and, when required, a reducer/verification receipt so compaction does not destroy evidentiary recoverability."
+  },
+  "namespace": "learning",
+  "object_id": "nsai:learning:observation_reduction:evidence_preserving_observation_reduction",
+  "object_type": "observation_reduction",
+  "ontology": {
+    "classes": [
+      "evidence_reduction",
+      "learning_projection"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "learning"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "kind": "source_file",
+        "path": "runtime/observation_projection.py",
+        "sha256": "103cac2b354e899c0b2ea42e68510d99c52a85acc6d85407fe838ec66248b80a",
+        "source_id": "px_observation_projection"
+      },
+      {
+        "kind": "source_file",
+        "path": "runtime/evidence_reducer.py",
+        "sha256": "4e27a1b9ce389b36c8d2c05b6c1c3a2b02f6cf8591106ebc37a49b3b3a5c8170",
+        "source_id": "px_evidence_reducer"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:learning:contribution_lineage:shared_contribution_lineage"
+    }
+  ],
+  "retrieval": {
+    "priority": 93,
+    "tags": [
+      "compaction",
+      "evidence preservation",
+      "observation reduction",
+      "receipt"
+    ],
+    "terms": [
+      "compaction",
+      "evidence preservation",
+      "evidence-preserving compaction",
+      "observation projection",
+      "observation reduction",
+      "receipt"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "Large observations may be compacted into bounded projections only after the reduced form is tied to stable source locators and, when required, a reducer/verification receipt so compaction does not destroy evidentiary recoverability.",
+    "exclusions": [
+      "unrecoverable summary-only storage"
+    ],
+    "intents": [
+      "compact observation safely",
+      "reduce evidence"
+    ],
+    "keywords": [
+      "compaction",
+      "evidence preservation",
+      "observation reduction",
+      "receipt"
+    ],
+    "retrieval_text": "Evidence-Preserving Observation Reduction. Large observations may be compacted into bounded projections only after the reduced form is tied to stable source locators and, when required, a reducer/verification receipt so compaction does not destroy evidentiary recoverability. Observation projection keeps a stable handle and source locator to the unreduced evidence. Large observations may use excerpts or summaries for runtime efficiency while preserving the route back to full evidence. Reduction without a verifiable receipt or stable source can create irrecoverable pseudo-memory.",
+    "short_description": "Large observations may be compacted into bounded projections only after the reduced form is tied to stable source locators and, when required, a reducer/verification receipt so compaction does not destroy evidentiary recoverability.",
+    "synonyms": [
+      "evidence-preserving compaction",
+      "observation projection"
+    ]
+  },
+  "status": "validated",
+  "title": "Evidence-Preserving Observation Reduction"
+}

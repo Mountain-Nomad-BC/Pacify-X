@@ -1,0 +1,157 @@
+{
+  "applicability": {
+    "conditions": [
+      "Quality must be measured on representative retrieval cases."
+    ],
+    "exclusions": [
+      "using compression to bypass exact evidence"
+    ],
+    "targets": [
+      "TurboVec index"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "px_turbovec_adapter",
+          "tv_prod_contract"
+        ],
+        "statement": "The TurboVec manifest treats bit width as identity-bearing configuration and accepts only bounded integer widths."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_turbovec_adapter",
+          "tv_prod_contract"
+        ],
+        "statement": "Low-bit vector compression is a retrieval optimization, not permission to weaken exact evidence or generation checks."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_turbovec_adapter",
+          "tv_prod_contract"
+        ],
+        "statement": "Quantization choices require calibration and measured retrieval quality because smaller representations can alter candidate recall and ranking."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "bind bit_width into the persisted manifest",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "calibrate using representative vectors",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "compare candidate retrieval quality against a non-degraded baseline before activation",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "TurboVec may compress normalized embedding vectors to bounded low-bit representations, trading memory and throughput against recall; PX must record bit width in the index manifest and measure quality before promotion."
+  },
+  "namespace": "retrieval",
+  "object_id": "nsai:retrieval:quantized_vectors:turbovec_quantized_vectors",
+  "object_type": "quantized_vectors",
+  "ontology": {
+    "classes": [
+      "retrieval_optimization",
+      "vector_representation"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "retrieval"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "kind": "source_file",
+        "path": "runtime/turbovec_adapter.py",
+        "sha256": "e234ba8225de0250ea9e1b5922911b12ef925c8db96b83afbd811d647f27d980",
+        "source_id": "px_turbovec_adapter"
+      },
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_Model_Fabric_Junction_Hardening_Pass3_2026-09-20/06_TURBOVEC_PRODUCTION_INDEX_CONTRACT.md",
+        "sha256": "b872106e0ca8f9a4a8cbf919a6d3295ca1063c23ec4c0d7937c55e6da609f82b",
+        "source_id": "tv_prod_contract"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:retrieval:index_lifecycle:turbovec_index_lifecycle"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:retrieval:evidence_protection:exact_evidence_protection"
+    }
+  ],
+  "retrieval": {
+    "priority": 78,
+    "tags": [
+      "2-bit",
+      "4-bit",
+      "recall",
+      "turbovec",
+      "vector quantization"
+    ],
+    "terms": [
+      "2-bit",
+      "4-bit",
+      "compressed vectors",
+      "low-bit embeddings",
+      "recall",
+      "turbovec",
+      "vector quantization"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "TurboVec may compress normalized embedding vectors to bounded low-bit representations, trading memory and throughput against recall; PX must record bit width in the index manifest and measure quality before promotion.",
+    "exclusions": [
+      "semantic authority",
+      "unmeasured quality downgrade"
+    ],
+    "intents": [
+      "choose vector bit width",
+      "quantize retrieval vectors"
+    ],
+    "keywords": [
+      "2-bit",
+      "4-bit",
+      "recall",
+      "turbovec",
+      "vector quantization"
+    ],
+    "retrieval_text": "TurboVec Quantized Vectors. TurboVec may compress normalized embedding vectors to bounded low-bit representations, trading memory and throughput against recall; PX must record bit width in the index manifest and measure quality before promotion. The TurboVec manifest treats bit width as identity-bearing configuration and accepts only bounded integer widths. Low-bit vector compression is a retrieval optimization, not permission to weaken exact evidence or generation checks. Quantization choices require calibration and measured retrieval quality because smaller representations can alter candidate recall and ranking.",
+    "short_description": "TurboVec may compress normalized embedding vectors to bounded low-bit representations, trading memory and throughput against recall; PX must record bit width in the index manifest and measure quality before promotion.",
+    "synonyms": [
+      "compressed vectors",
+      "low-bit embeddings"
+    ]
+  },
+  "status": "validated",
+  "title": "TurboVec Quantized Vectors"
+}

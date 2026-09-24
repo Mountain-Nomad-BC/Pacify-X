@@ -1,0 +1,153 @@
+{
+  "applicability": {
+    "conditions": [
+      "Use only with an admitted PX model/runtime identity.",
+      "Treat measured machine-specific profile evidence as stronger than generic defaults."
+    ],
+    "exclusions": [
+      "keep every model hot simultaneously"
+    ],
+    "targets": [
+      "mid-size local model candidates"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.95,
+        "evidence_refs": [
+          "px_llama_profiles",
+          "px_llama_tuning"
+        ],
+        "statement": "Swap-in cost and displacement of the fast lane are part of route cost."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_llama_profiles",
+          "px_llama_tuning"
+        ],
+        "statement": "Residency transitions require explicit leases and must not race with other GPU-heavy runtimes."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "Scheduler chooses the lane only when expected task benefit exceeds transition/resource cost.",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "Model pool performs governed drain/unload/load/reconciliation.",
+        "name": "mechanism_2"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, or policy authority."
+    ],
+    "summary": "The balanced lane hosts a mid-size model that may require exclusive or swap-in GPU residency. It is used when the fast lane is insufficient but the deep sparse/cold lanes are unnecessary."
+  },
+  "namespace": "model_runtime",
+  "object_id": "nsai:model_runtime:model_lane:balanced_gpu_lane",
+  "object_type": "model_lane",
+  "ontology": {
+    "classes": [
+      "model_lane",
+      "gpu"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "model_runtime",
+      "runtime_scope": [
+        "mid-size local model candidates"
+      ]
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "manual source-backed synthesis with schema validation and exact SHA provenance",
+      "source_pass": "Wave 14"
+    },
+    "sources": [
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_Model_Fabric_Junction_Hardening_Pass3_2026-09-20/03_LLAMA_CPP_CERTIFIED_RUNTIME_PROFILES.md",
+        "sha256": "c49c37da15288829814048b52a91a352d86a723e676e2756eeb578346d299a1c",
+        "source_id": "px_llama_profiles"
+      },
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_Model_Fabric_Junction_Hardening_Pass3_2026-09-20/05_LLAMA_CPP_CPU_GPU_MOE_TUNING_MATRIX.md",
+        "sha256": "9a703632e734c69fe538483406e44a46c09d840f451d6832957b8150d33e9cb4",
+        "source_id": "px_llama_tuning"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:model_lane:gpu_fast_lane"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:model_lane:deep_hybrid_moe_lane"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:resource_interlock:model_resource_interlocks"
+    }
+  ],
+  "retrieval": {
+    "priority": 85,
+    "tags": [
+      "gpu",
+      "warm",
+      "exclusive",
+      "swap"
+    ],
+    "terms": [
+      "balanced lane",
+      "exclusive",
+      "exclusive gpu",
+      "gpu",
+      "mid model lane",
+      "mid-size",
+      "swap",
+      "warm"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "The balanced lane hosts a mid-size model that may require exclusive or swap-in GPU residency. It is used when the fast lane is insufficient but the deep sparse/cold lanes are unnecessary.",
+    "exclusions": [
+      "keep every model hot simultaneously"
+    ],
+    "intents": [
+      "route medium model",
+      "swap gpu model"
+    ],
+    "keywords": [
+      "balanced lane",
+      "gpu",
+      "swap",
+      "exclusive",
+      "mid-size"
+    ],
+    "retrieval_text": "Balanced Exclusive GPU Lane. The balanced lane hosts a mid-size model that may require exclusive or swap-in GPU residency. It is used when the fast lane is insufficient but the deep sparse/cold lanes are unnecessary. Swap-in cost and displacement of the fast lane are part of route cost. Residency transitions require explicit leases and must not race with other GPU-heavy runtimes.",
+    "short_description": "The balanced lane hosts a mid-size model that may require exclusive or swap-in GPU residency.",
+    "synonyms": [
+      "mid model lane",
+      "exclusive gpu"
+    ]
+  },
+  "status": "validated",
+  "title": "Balanced Exclusive GPU Lane"
+}

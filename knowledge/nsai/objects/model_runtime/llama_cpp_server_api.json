@@ -1,0 +1,168 @@
+{
+  "applicability": {
+    "conditions": [
+      "Use only with an admitted PX model/runtime identity.",
+      "Treat measured machine-specific profile evidence as stronger than generic defaults."
+    ],
+    "exclusions": [
+      "raw backend SSE passthrough",
+      "backend-owned tool execution"
+    ],
+    "targets": [
+      "llama-server",
+      "provider gateway"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.95,
+        "evidence_refs": [
+          "llama_server_readme",
+          "llama_server_cpp",
+          "px_llama_api_contract"
+        ],
+        "statement": "Backend streaming shapes, usage timing, finish reasons, and tool deltas must be normalized before client delivery."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "llama_server_readme",
+          "llama_server_cpp",
+          "px_llama_api_contract"
+        ],
+        "statement": "Model-management endpoints are invoked only through PX resource/lifecycle authority."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "Server endpoints expose inference plus health/monitoring/model-management surfaces.",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "PX maps backend events into canonical request/event receipts.",
+        "name": "mechanism_2"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, or policy authority."
+    ],
+    "summary": "llama-server exposes inference and operational HTTP surfaces, including streaming generation and observation/management endpoints. PX normalizes supported wire behavior into its provider contract and retains lifecycle/tool authority."
+  },
+  "namespace": "model_runtime",
+  "object_id": "nsai:model_runtime:server_api:llama_cpp_server_api",
+  "object_type": "server_api",
+  "ontology": {
+    "classes": [
+      "provider_protocol",
+      "runtime_api"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "model_runtime",
+      "runtime_scope": [
+        "llama-server",
+        "provider gateway"
+      ]
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "manual source-backed synthesis with schema validation and exact SHA provenance",
+      "source_pass": "Wave 14"
+    },
+    "sources": [
+      {
+        "archive": "models and harnesses for them.zip",
+        "kind": "source_file",
+        "path": "llama.cpp-master/llama.cpp-master/tools/server/README.md",
+        "sha256": "57e27013809e4976e71a76fe83a5930779634401d6dbdf2d941fd5432889eb9e",
+        "source_id": "llama_server_readme"
+      },
+      {
+        "archive": "models and harnesses for them.zip",
+        "kind": "source_file",
+        "path": "llama.cpp-master/llama.cpp-master/tools/server/server.cpp",
+        "sha256": "26bb1e20b5316ecbd23a02d729ded4d0299b96c6e9b3a0ee55a6cf97e8d644cc",
+        "source_id": "llama_server_cpp"
+      },
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_Model_Fabric_Junction_Hardening_Pass3_2026-09-20/04_LLAMA_CPP_API_TOOL_STREAMING_CONTRACT.md",
+        "sha256": "9a2022cf3d1e72763395929ea98beccd30e7b94733a57bbdc2c47604e2f25040",
+        "source_id": "px_llama_api_contract"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:protocol_normalization:provider_protocol_normalization"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:tool_protocol:llama_cpp_tool_calling"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:observability:llama_cpp_metrics_observability"
+    }
+  ],
+  "retrieval": {
+    "priority": 85,
+    "tags": [
+      "api",
+      "streaming",
+      "slots",
+      "metrics"
+    ],
+    "terms": [
+      "api",
+      "llama server API",
+      "llama-server",
+      "local OpenAI API",
+      "metrics",
+      "openai compatible",
+      "slots",
+      "sse",
+      "streaming"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "llama-server exposes inference and operational HTTP surfaces, including streaming generation and observation/management endpoints. PX normalizes supported wire behavior into its provider contract and retains lifecycle/tool authority.",
+    "exclusions": [
+      "raw backend SSE passthrough",
+      "backend-owned tool execution"
+    ],
+    "intents": [
+      "call llama server",
+      "inspect slots",
+      "stream local model"
+    ],
+    "keywords": [
+      "llama-server",
+      "openai compatible",
+      "sse",
+      "slots",
+      "metrics"
+    ],
+    "retrieval_text": "llama.cpp Server API. llama-server exposes inference and operational HTTP surfaces, including streaming generation and observation/management endpoints. PX normalizes supported wire behavior into its provider contract and retains lifecycle/tool authority. Backend streaming shapes, usage timing, finish reasons, and tool deltas must be normalized before client delivery. Model-management endpoints are invoked only through PX resource/lifecycle authority.",
+    "short_description": "llama-server exposes inference and operational HTTP surfaces, including streaming generation and observation/management endpoints.",
+    "synonyms": [
+      "llama server API",
+      "local OpenAI API"
+    ]
+  },
+  "status": "validated",
+  "title": "llama.cpp Server API"
+}

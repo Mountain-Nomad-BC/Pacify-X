@@ -2,14 +2,14 @@
   "counts": {
     "enterprise-restricted": 20,
     "microsoft-vendor": 6,
-    "px-standard": 178,
+    "px-standard": 182,
     "user-preserved": 0
   },
   "default_domains": [
     "px-standard"
   ],
   "loading_rule": "metadata-only; maximum three candidates; exactly one body after explicit selection",
-  "record_count": 204,
+  "record_count": 208,
   "records": [
     {
       "adapted": false,
@@ -1525,9 +1525,9 @@
       "version": "0.1.0"
     },
     {
-      "adapted": true,
+      "adapted": false,
       "admission": "active",
-      "backup": ".px/skills/execution-placement-decision/resources/source-provenance.json",
+      "backup": ".px/preserved-skills/initial/workspace-original/execution-placement-decision",
       "body": ".px/skills/execution-placement-decision/SKILL.md",
       "body_available": true,
       "body_sha256": "db11b84c5df0a5ae8bd306a80efdbc4e450793c9c27ce5a80791ed01db4908e6",
@@ -1536,7 +1536,7 @@
       "domain": "px-standard",
       "id": "execution-placement-decision",
       "native": true,
-      "origin": "user-supplied-addon-adapted",
+      "origin": "workspace-agents-original",
       "package_root": ".px/skills/execution-placement-decision",
       "status": "active",
       "tags": [
@@ -1850,7 +1850,7 @@
       "backup": ".px/preserved-skills/initial/workspace-original/govern-knowledge-refinery",
       "body": ".px/skills/govern-knowledge-refinery/SKILL.md",
       "body_available": true,
-      "body_sha256": "0ec8432bc2dc73a44254aac390f6ce24f91410dad0a457b0f2b402f00b806e3c",
+      "body_sha256": "c0cb8e28beecb5c87731fefcd7056bdd5787b35e911747e6f18d9e7162cf8e08",
       "default_eligible": true,
       "description": "Inventory and admit untrusted knowledge sources, classify semantic novelty, plan non-destructive merges, audit graph coherence, simulate retrieval, and stage approval-bound proposals without writing canon. Use when adding or reconciling knowledge, skills, workflows, formulas, registries, or research corpora.",
       "domain": "px-standard",
@@ -1867,7 +1867,7 @@
         "ranking",
         "retrieval"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "adapted": false,
@@ -1926,6 +1926,32 @@
     {
       "adapted": false,
       "admission": "active",
+      "backup": ".px/preserved-skills/initial/workspace-original/govern-model-fabric",
+      "body": ".px/skills/govern-model-fabric/SKILL.md",
+      "body_available": true,
+      "body_sha256": "6a0a7d1cd8199cfe5728d1d52400e4c5eaac28e4071156ac0e8e552d58144bca",
+      "default_eligible": true,
+      "description": "Govern admitted local-model profiles, pool residency, routing evidence, capacity, binary/model identity, health, cancellation and fallback without bypassing PX runtime authorities.",
+      "domain": "px-standard",
+      "id": "govern-model-fabric",
+      "native": true,
+      "origin": "workspace-agents-original",
+      "package_root": ".px/skills/govern-model-fabric",
+      "status": "active",
+      "tags": [
+        "model",
+        "routing",
+        "pool",
+        "capacity",
+        "llama.cpp",
+        "local-inference",
+        "observability"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "adapted": false,
+      "admission": "active",
       "backup": ".px/preserved-skills/initial/workspace-original/govern-n8n-community-nodes",
       "body": ".px/skills/govern-n8n-community-nodes/SKILL.md",
       "body_available": true,
@@ -1969,6 +1995,58 @@
         "declared-suite"
       ],
       "version": "0.1.0"
+    },
+    {
+      "adapted": false,
+      "admission": "mapped_deferred",
+      "backup": ".px/preserved-skills/initial/workspace-original/govern-persistent-memory",
+      "body": ".px/skills/govern-persistent-memory/SKILL.md",
+      "body_available": true,
+      "body_sha256": "4da2430bbe8ba0ba7ef1ea8f7753854c57a5e7a52e79ba28b227bc4d8401f0cb",
+      "default_eligible": false,
+      "description": "Govern an optional external persistent-memory repository as noncanonical evidence. Use for exact-revision validation, bounded listing, advisory review, graph preview, contribution/publication planning, and provider health checks without allowing external memory to become Pacify-X truth or authority.",
+      "domain": "px-standard",
+      "id": "govern-persistent-memory",
+      "native": true,
+      "origin": "workspace-agents-original",
+      "package_root": ".px/skills/govern-persistent-memory",
+      "status": "mapped_deferred",
+      "tags": [
+        "memory",
+        "external-provider",
+        "persistent-memory",
+        "review",
+        "graph",
+        "provenance",
+        "isolation"
+      ],
+      "version": "0.2.0"
+    },
+    {
+      "adapted": false,
+      "admission": "active",
+      "backup": ".px/preserved-skills/initial/workspace-original/govern-retrieval-generations",
+      "body": ".px/skills/govern-retrieval-generations/SKILL.md",
+      "body_available": true,
+      "body_sha256": "4e8acdba659fd23589bdac8233d6eeff1d087789e0e954b95f78416ca1fded9c",
+      "default_eligible": true,
+      "description": "Build, validate, activate, inspect and roll back coherent retrieval generations while preserving exact canonical IDs, embedding identity, calibration evidence and authorization boundaries.",
+      "domain": "px-standard",
+      "id": "govern-retrieval-generations",
+      "native": true,
+      "origin": "workspace-agents-original",
+      "package_root": ".px/skills/govern-retrieval-generations",
+      "status": "active",
+      "tags": [
+        "retrieval",
+        "generation",
+        "turbovec",
+        "embedding",
+        "reranking",
+        "rollback",
+        "governance"
+      ],
+      "version": "1.0.0"
     },
     {
       "adapted": false,
@@ -3252,6 +3330,32 @@
     {
       "adapted": false,
       "admission": "active",
+      "backup": ".px/preserved-skills/initial/workspace-original/operate-semantic-code-intelligence",
+      "body": ".px/skills/operate-semantic-code-intelligence/SKILL.md",
+      "body_available": true,
+      "body_sha256": "14f3fcf5504796a83025f8385f86431a8bd8fa306c9b0d5406812e6a6ba19b04",
+      "default_eligible": true,
+      "description": "Operate admitted semantic AST/LSP/project/query/context capabilities with explicit project authorization, revision-bound reads/edits, bounded hydration and source evidence.",
+      "domain": "px-standard",
+      "id": "operate-semantic-code-intelligence",
+      "native": true,
+      "origin": "workspace-agents-original",
+      "package_root": ".px/skills/operate-semantic-code-intelligence",
+      "status": "active",
+      "tags": [
+        "semantic",
+        "code",
+        "lsp",
+        "ast",
+        "retrieval",
+        "revision",
+        "context"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "adapted": false,
+      "admission": "active",
       "backup": ".px/preserved-skills/initial/workspace-original/operate-supabase-vector-search",
       "body": ".px/skills/operate-supabase-vector-search/SKILL.md",
       "body_available": true,
@@ -3414,18 +3518,18 @@
       "version": "0.1.0"
     },
     {
-      "adapted": true,
-      "admission": "admitted",
-      "backup": null,
+      "adapted": false,
+      "admission": "active",
+      "backup": ".px/preserved-skills/initial/workspace-original/pacify-x-studio-operator",
       "body": ".px/skills/pacify-x-studio-operator/SKILL.md",
       "body_available": true,
       "body_sha256": "26c890b06a5582f6b6a8c1ad56130b67aee6fa915fbe53f93bb14ee90c113479",
       "default_eligible": true,
-      "description": "",
+      "description": "Inspect Pacify-X Studio revision, authority, admission, and durable-run state without changing it.",
       "domain": "px-standard",
       "id": "pacify-x-studio-operator",
       "native": true,
-      "origin": "skill-studio",
+      "origin": "workspace-agents-original",
       "package_root": ".px/skills/pacify-x-studio-operator",
       "status": "active",
       "tags": [
@@ -4740,6 +4844,6 @@
       "version": "0.1.0"
     }
   ],
-  "revision": "1ba36f8367662c2146b3081b33cb09c693dd32c763552a0edd473e7ec14b0f35",
+  "revision": "b2fb0ecc88820bae5c7b01004a095583954a8e5340d39c2608fe5e360cb29eef",
   "schema_version": "px.native-skill-index/1.0"
 }

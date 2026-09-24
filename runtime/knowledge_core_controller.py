@@ -51,6 +51,7 @@ from .learning_promotion import (
     validate_learning_pipeline_state,
 )
 from .memory_intelligence import sanitize_capture
+from .nsai_knowledge import audit_nsai_library
 from .studio_authority import StudioAuthorityStore
 from .studio_models import canonical_bytes, verify_safe_ancestors, write_json_atomic
 
@@ -1085,6 +1086,14 @@ class KnowledgeCoreController:
                 continue
             try:
                 target = self._target(row["location"])
+                if row.get("kind") == "nsai_object_library":
+                    audit = audit_nsai_library(
+                        target,
+                        require_index_match=True,
+                    )
+                    if not audit["valid"]:
+                        errors.append(f"source_invalid:{source_id}:nsai_library")
+                        continue
                 inventory = self._snapshot_inventory(target)
             except _KnowledgeAcquisitionLimit:
                 raise

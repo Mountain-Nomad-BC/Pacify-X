@@ -1,0 +1,41 @@
+{
+  "admission_record": "govern-persistent-memory",
+  "body_sha256": "4da2430bbe8ba0ba7ef1ea8f7753854c57a5e7a52e79ba28b227bc4d8401f0cb",
+  "contract": {
+    "available": true,
+    "sha256": "ab70bcfc7cbbb3dbbbff0ce448171b7d593a4e1fbe3eb8562795382d1d614cdc",
+    "source": "registry/skill_packages/govern-persistent-memory.json"
+  },
+  "description": "Govern an optional external persistent-memory repository as noncanonical evidence. Use for exact-revision validation, bounded listing, advisory review, graph preview, contribution/publication planning, and provider health checks without allowing external memory to become Pacify-X truth or authority.",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "govern-persistent-memory",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": false
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/govern-persistent-memory"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "mapped_deferred",
+  "tags": [
+    "memory",
+    "external-provider",
+    "persistent-memory",
+    "review",
+    "graph",
+    "provenance",
+    "isolation"
+  ],
+  "version": "0.2.0"
+}

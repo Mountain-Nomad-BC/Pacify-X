@@ -17,19 +17,19 @@
     },
     {
       "path": "registry/capability_map.json",
-      "sha256": "4c742892820e384d857f29990e646584936799ac13b8ee5b793e97ac55c2f22f"
+      "sha256": "654b2ac7aea7cae5538f452d05d8fa691b48490349c527b7dd25ea3f048ea800"
     },
     {
       "path": "registry/integrations.json",
-      "sha256": "ac14a36624b0bc9fc99aea0ac1d3b6a42bcf5d729c78befcd2020fd3c0556abc"
+      "sha256": "f742b4ff54965ae86d9e229414e07ee1dd2b8b81095dce76dc361a45d5561269"
     },
     {
       "path": "registry/knowledge_sources.json",
-      "sha256": "ef17d0af7c458c4833aee81a5a20a5b58e8df349af564506775727c2d635ec60"
+      "sha256": "4f7ed3445c893315086f5dae3f259c9588a9e0c90025e8240637de2fa5559281"
     },
     {
       "path": "registry/models.json",
-      "sha256": "b0bb185b24b611db87809cb44e6c213390e1e2fc22ea528452447368ff10e38f"
+      "sha256": "da07763196f48e71a75d9cb093e05444af2ae451e33817a3e0be5981756714e7"
     },
     {
       "path": "registry/project_stream_orchestrations.json",
@@ -37,31 +37,583 @@
     },
     {
       "path": "registry/skill_catalog.toml",
-      "sha256": "d0f006a76eac089fb63b116bc1a262b6a7b3fdd6ac4f480a46033a0f2c011817"
+      "sha256": "3da14b73799f0affed45c6c69b2b4d95168c01751c24e5279b2842b98735a96d"
+    },
+    {
+      "path": "registry/skills/acquire-install-n8n.json",
+      "sha256": "ed41354dd0c1f89a6ed35122a0970eced1da606e1ae1a04f09d6731a8899261f"
+    },
+    {
+      "path": "registry/skills/acquire-install-supabase.json",
+      "sha256": "c8708ad61357e7a76fc3e2a8e671fecf34b1dcba902b4c961d5c40443c5164f1"
+    },
+    {
+      "path": "registry/skills/analyze-engineering-intelligence.json",
+      "sha256": "1155672c3cc77aec771d7bdfada7b5f66682b68278439d3888c64359163f868e"
+    },
+    {
+      "path": "registry/skills/analyze-repository-intelligence.json",
+      "sha256": "c609af61fb303c1bf2457ca37eb3f3936d4a4a43be6008d777fe05a6922835d5"
+    },
+    {
+      "path": "registry/skills/architecture-deepening-audit.json",
+      "sha256": "470ee2773bbeba396899e56465d480fc2ce5739067cce59a12da6dd322208269"
+    },
+    {
+      "path": "registry/skills/audit-ai-runtime-assurance.json",
+      "sha256": "3daad81bc23ad43d5c01f71daa71fc48b009db3bb913057dc9d9c5bec42e4555"
+    },
+    {
+      "path": "registry/skills/audit-incomplete-implementations.json",
+      "sha256": "ce2ccdebffbdf616a8c4a89032327805c72923be5740e9ecf39ec60c02c67280"
+    },
+    {
+      "path": "registry/skills/audit-source-capabilities.json",
+      "sha256": "0465bd3d4ea10aa4a3de12bccf8852c122c10db18380659ab5f3cf584680d865"
+    },
+    {
+      "path": "registry/skills/automate-supabase-with-n8n.json",
+      "sha256": "9239b406b4f2c30fa1477737f89d1387c31fb1d8cefa562a4e54f2eb1a4cfde9"
+    },
+    {
+      "path": "registry/skills/backup-deploy-recover-supabase.json",
+      "sha256": "bb231eae8287dfa3a62ba7c7c57842089fdc21de4d3858fd376d05e684ca720b"
+    },
+    {
+      "path": "registry/skills/backup-upgrade-restore-n8n.json",
+      "sha256": "195bc2d90c636468ab3db777fded906a3cb3342fd42300fded10db081d6407f6"
+    },
+    {
+      "path": "registry/skills/build-n8n-ai-workflows.json",
+      "sha256": "56fd5b0200be429e4c0355a41424654cab139c8019d1da252ce4edacd2787a11"
+    },
+    {
+      "path": "registry/skills/build-n8n-custom-nodes.json",
+      "sha256": "89f77b50bc3e06031031bcfc3a1e7bd6694444b99f14bf5bf1293263ab99a75b"
+    },
+    {
+      "path": "registry/skills/build-n8n-supabase-rag.json",
+      "sha256": "57fd608db4713d3ace0a4332fb5651e8cafe48317c28903861323eaa57a65738"
+    },
+    {
+      "path": "registry/skills/build-supabase-edge-functions.json",
+      "sha256": "66c2c780d0826327ed993834061742d098c8afa726a9029280935d1dbc799900"
+    },
+    {
+      "path": "registry/skills/certify-reversible-validation.json",
+      "sha256": "2f6117ccb374363db05c156e2d03e909e2434a3cca601bb494caa71e1ee2f201"
+    },
+    {
+      "path": "registry/skills/certify-skeptical-engineering.json",
+      "sha256": "5930641a392a80c596477693b44bc6a13d0541d47f7b375d5fd2f772254ffcde"
+    },
+    {
+      "path": "registry/skills/commission-evidence-first-project.json",
+      "sha256": "15667aea2dd3070bb00ed1a23abd9e8d11478b570b9b13f97487bd71c29aa37a"
+    },
+    {
+      "path": "registry/skills/configure-n8n.json",
+      "sha256": "62dd507b79122177de470a104af82a258b95534825b0b505eccabfedb0d1eb21"
+    },
+    {
+      "path": "registry/skills/connect-n8n-to-supabase.json",
+      "sha256": "8f94a8c5c97a5b7325ee9b1b1b3cfa49337ff074bc1f569ef79d921c35e06557"
+    },
+    {
+      "path": "registry/skills/context-compactor.json",
+      "sha256": "a1f333d7c74e5a4bb2e96eb734880f6d22bf47938f2e42664ce8dd90a810e7e7"
+    },
+    {
+      "path": "registry/skills/context-handoff-package.json",
+      "sha256": "c4cb7df3ea8d3ee008e896cafb996a9cba6c6274a83b979020974087f19d7ab3"
+    },
+    {
+      "path": "registry/skills/data-sort-dry-run-picker.json",
+      "sha256": "ca6db910b36f1081da09e51bf58a579d08b7e95de143ac3f9a977b790a6f3710"
+    },
+    {
+      "path": "registry/skills/decision-wayfinding.json",
+      "sha256": "7f6ad808de2852eb9700f24eb4390f25991c93c1d19925bed49594cefb6f697f"
+    },
+    {
+      "path": "registry/skills/deep-module-design.json",
+      "sha256": "23b43be55592f8c72c99f07e1a6c10dc44f4cb62c6ba76f81b6747cb2c77783f"
+    },
+    {
+      "path": "registry/skills/deploy-isolated-model-worker.json",
+      "sha256": "9d7f4e82fb8a037f18a916cc5eaa277405291e592f91d8445ddde9793e5bb8a6"
+    },
+    {
+      "path": "registry/skills/deploy-n8n-docker.json",
+      "sha256": "d76fc0bf2872585bea183e449fdb31c3dde0213e283d7ab9faf67a24dce23a22"
+    },
+    {
+      "path": "registry/skills/design-build-n8n-workflows.json",
+      "sha256": "2a870581b82262898271b7df56260a7f301180620dda0bd2724da5f5f156482d"
+    },
+    {
+      "path": "registry/skills/design-it-twice.json",
+      "sha256": "8b7f882755912fcad7631e0a84244eff2dd857ca6099aa009c4c8fde04827de6"
+    },
+    {
+      "path": "registry/skills/design-n8n-supabase-reliability.json",
+      "sha256": "e908ab15eb0550a1ab6b55b6e3ceb93c970854bf2c3f08b66cf93e966a7f0578"
+    },
+    {
+      "path": "registry/skills/design-n8n-supabase-security-boundaries.json",
+      "sha256": "5fbb43c9231f2b8c822ad7b2370ae42b2d5d6aee7ebffc689be2b2e2eb6a0844"
+    },
+    {
+      "path": "registry/skills/design-supabase-postgres.json",
+      "sha256": "a075c185472227fe5167a2c0ba5b21118d194d8c272a657fbdc070d0a151691f"
+    },
+    {
+      "path": "registry/skills/develop-n8n-monorepo.json",
+      "sha256": "0072ff02c2352ae565a957d1c6f6f1eba850621eae63404fbfb0554dc2ff33b5"
+    },
+    {
+      "path": "registry/skills/develop-supabase-locally.json",
+      "sha256": "f121f08364e30dc06dc37975e0fccf121c3036d6566076702d31f7c5fbc2f0e2"
+    },
+    {
+      "path": "registry/skills/diagnose-python-repair.json",
+      "sha256": "23354d32832009592f5102a4ee2744f78d0cea2dcbe6755d43571c4bca63402d"
+    },
+    {
+      "path": "registry/skills/discover-environment-safely.json",
+      "sha256": "3b7e81ef8001261144ed35406a6e9843d38e7bb7dd20c459626cc1c6b34bf388"
+    },
+    {
+      "path": "registry/skills/domain-language-maintenance.json",
+      "sha256": "29ab2f77c6a11b5cebf750378e30623c82a583474e72ac4a39e3104d8121bd0a"
+    },
+    {
+      "path": "registry/skills/dual-axis-code-review.json",
+      "sha256": "16dd2d68d28a93d289e683c94563b2aef5dd87603feb0d08a84c6594cab5e3d4"
+    },
+    {
+      "path": "registry/skills/dynamic-service-discovery.json",
+      "sha256": "67441b4085530cdb05f01c160d4dcb9df3d27aac1d68943d337e499a148f831b"
+    },
+    {
+      "path": "registry/skills/enforce-governance-controls.json",
+      "sha256": "d3829d0149c7b2e41bbe52b090e089eadc35891bab1a4091af9ae9587a53db64"
+    },
+    {
+      "path": "registry/skills/enforce-source-import-boundaries.json",
+      "sha256": "f3d04146d32fc3df6185789848d42fcab08d5df504642692845ad275efea5e33"
+    },
+    {
+      "path": "registry/skills/engineer-hybrid-retrieval.json",
+      "sha256": "ceaac79a9ca4a3bb943e69ed493aa5dc8d5320daff6cf41149e47b5cf837dfb4"
+    },
+    {
+      "path": "registry/skills/engineer-verification-lab.json",
+      "sha256": "a7891443e09b0ffec60f19b07e06ff95c8265a0aff6108814e105876b76667e3"
+    },
+    {
+      "path": "registry/skills/evaluate-n8n-fit.json",
+      "sha256": "cc75f4b680d5ccde635ed63582881eceeb397d1d941c1b2ca799b5c516ab6445"
+    },
+    {
+      "path": "registry/skills/evaluate-retrieval-readiness.json",
+      "sha256": "525b347b5fa98254b86f7526192adf4dc5bd322af9332a5235e629c530b81e68"
+    },
+    {
+      "path": "registry/skills/evaluate-supabase-fit.json",
+      "sha256": "6624ff261761067c52705a90617b4ccce92abb72b9cf606f0537e54706345ec4"
     },
     {
       "path": "registry/skills/evidence-assembler.json",
-      "sha256": "8e11d2a891ba6802d5805b1d0fadf058466892fc15100ed929b091c548b84dc4"
+      "sha256": "38106ecd3df5ececefe9c3cba0cd7fa888e220c40ce5a56e3da22ade2ef4c94f"
     },
     {
       "path": "registry/skills/execution-contract-enforcer.json",
-      "sha256": "edd176a44113fdfc02aff7ca247b1c53ae9183af3e1ef854363d2affda514e57"
+      "sha256": "a43ec5c7ac35f792bceb7da1f0cad8cb8f0eb4d8013cfcf534c27fa7c3cb5fa2"
+    },
+    {
+      "path": "registry/skills/execution-placement-decision.json",
+      "sha256": "e1814f335eeced503ca4c3c1d566f12f9fe438558da1d0678cf0b0604a4d591e"
+    },
+    {
+      "path": "registry/skills/forge-skills-from-knowledge.json",
+      "sha256": "1a311e8787378919803629ed29d3c4aad577cdcdeea29182cf20220c9bd9dacb"
+    },
+    {
+      "path": "registry/skills/frontier-questioning.json",
+      "sha256": "a83f1daee6e6a7376a7134d2ac677fa508c30e24ac9b52127f729685d1d5830b"
+    },
+    {
+      "path": "registry/skills/gate-model-data-lifecycle.json",
+      "sha256": "c6d8ac9295cec8a8bcf4ce7fbd7a1564f3dcc011b8726e6366bdd7634da75a3a"
+    },
+    {
+      "path": "registry/skills/govern-candidate-resolution-pipeline.json",
+      "sha256": "70d5fc8b33d33d61e21273e3038a2630522eb35de1195b4c2f8504c6ce1d8391"
+    },
+    {
+      "path": "registry/skills/govern-cybersecurity-capabilities.json",
+      "sha256": "48ca6a210d01a6a0152da0dc4e31f1142256f26cca29c73c5a3f054a46372c5b"
+    },
+    {
+      "path": "registry/skills/govern-deployment-safety.json",
+      "sha256": "437b5c4a3391fe0d324c777a1de83d37720cd8f8851bd35f8486d1585a782172"
+    },
+    {
+      "path": "registry/skills/govern-distributed-work-runtime.json",
+      "sha256": "28cce3f343f4651a5d118a105f887d114118176ba62e61c539e0b0c9d75d0cc7"
+    },
+    {
+      "path": "registry/skills/govern-epistemic-skill-evolution.json",
+      "sha256": "b9f12c7726ad0dbd0ef7f88a1fe8034ad2e592926bdafa291396be0f27942857"
+    },
+    {
+      "path": "registry/skills/govern-external-capability-intake.json",
+      "sha256": "357ec7ca35ef5a78031f9f95cf7e1f523085be5ea75b0f0250d998e245a6b1b3"
+    },
+    {
+      "path": "registry/skills/govern-knowledge-refinery.json",
+      "sha256": "d61018b47c23e125b4e11b993797a324a41bb6fb54b1149247c33301e42ff3ee"
+    },
+    {
+      "path": "registry/skills/govern-memory-fabric.json",
+      "sha256": "9ee1699696665b2461d83115503bf6bc1b710e5947bca04871b450acec084dbc"
+    },
+    {
+      "path": "registry/skills/govern-metacognitive-evolution.json",
+      "sha256": "9ffccbb5faa82919943c24d337e15d5f7d6f785b898e5d22cc8aebee1885e69f"
+    },
+    {
+      "path": "registry/skills/govern-model-fabric.json",
+      "sha256": "2ffd9dc75813627ac6a2c9bcaf7777d065b59d2104050174db64ca31d685053d"
+    },
+    {
+      "path": "registry/skills/govern-n8n-community-nodes.json",
+      "sha256": "6bffa7f53b8de9b70e94b2b11932b396a2b8b5217878f9bd8fdaecf56f307f26"
+    },
+    {
+      "path": "registry/skills/govern-operating-kernel.json",
+      "sha256": "b3aa013ba08610ca3aaec7c7a53562bb7bb253594ce3d934d75654e566176f2a"
+    },
+    {
+      "path": "registry/skills/govern-retrieval-generations.json",
+      "sha256": "f097faaf417768c7e8faf1642e1e19d5504e44edbb3d26fe1dfae11616eec88f"
+    },
+    {
+      "path": "registry/skills/govern-runtime-protocol-deployment.json",
+      "sha256": "b4e7e550617575380190879b98259e56b3bbbf678da312eb1d3a2ea5453b741b"
+    },
+    {
+      "path": "registry/skills/govern-visual-runtime-accessibility.json",
+      "sha256": "e6f2b6d08bcf114653816b88c815245ae61ccc58189817b56e79747b6b290326"
+    },
+    {
+      "path": "registry/skills/guided-procedure-wizard.json",
+      "sha256": "a9b823d039bb8dcb5057a5eff5cd28645dd5bdf779662d435fee3fea62eed814"
+    },
+    {
+      "path": "registry/skills/handle-debug-n8n-executions.json",
+      "sha256": "a360a815f349f64674321146862122a638cd770d4ff82a1e46b48e8df3aebabe"
+    },
+    {
+      "path": "registry/skills/harden-container-boundaries.json",
+      "sha256": "d51a9a4cdf45d501730cba8e847b354111fe289e05b525bc1fbb9a60b6b7611d"
+    },
+    {
+      "path": "registry/skills/hardware-aware-execution-routing.json",
+      "sha256": "2e2fb69ebbbe2f9fbb8f3dbd073f8567562447ba59ee026317f0652cb1c2b67c"
+    },
+    {
+      "path": "registry/skills/implement-supabase-auth.json",
+      "sha256": "f61dd776cb5cb5e406eb880e035bc8ceddad19b193152a342ed92968cdb75798"
+    },
+    {
+      "path": "registry/skills/inspect-live-contracts.json",
+      "sha256": "cca65e24de5ce885ff360d77d94f51993b4d7d6b56d339ea99db9b3aadefb5cc"
+    },
+    {
+      "path": "registry/skills/inspect-llm-architecture.json",
+      "sha256": "b7cd33db22dad4307d1152373987c089cbf56cc877edc1703c0e384eb7c83186"
+    },
+    {
+      "path": "registry/skills/integrate-n8n-webhooks-and-apis.json",
+      "sha256": "fbfcc4ae6238f140b513fc733d9a1b10cf7f74d585c90c7808e041806e1eb7d3"
+    },
+    {
+      "path": "registry/skills/integrate-supabase-data-api-and-clients.json",
+      "sha256": "7736ab940266a23216f2e73278c7f00d22b9a9e212be7b063e7bfea99212c54f"
+    },
+    {
+      "path": "registry/skills/intent-preserving-merge-resolution.json",
+      "sha256": "80be3da57247d4b49fd41b56bd2afa24d67292551a85804f97a4f8e81ea8a4dc"
+    },
+    {
+      "path": "registry/skills/isolate-project-streams.json",
+      "sha256": "9b9e2f0049a7523c26d7dd1219df39b11b5589ef2631bea2ce56bf5567d9b0ee"
+    },
+    {
+      "path": "registry/skills/long-horizon-progress-ledger.json",
+      "sha256": "c3dde85198f88ec853ca694ba3ecbe6428e79b51c1f099ced7fcf682d995a4a8"
+    },
+    {
+      "path": "registry/skills/manage-agent-session-fabric.json",
+      "sha256": "c3062fb023ee4a134e6af9c0e85e3abc61f8aa0446f7b073470b4641d195c75e"
+    },
+    {
+      "path": "registry/skills/manage-mcp-lifecycle.json",
+      "sha256": "2bba2624658eae267f76ab32cced5908907d81a543a830d0afe93ac03a31af83"
+    },
+    {
+      "path": "registry/skills/manage-n8n-credentials.json",
+      "sha256": "ee46ae057d379f1b51732b915c39dab45b545aac662b20a71e3e5b6b102e81ea"
+    },
+    {
+      "path": "registry/skills/manage-resource-lifecycle.json",
+      "sha256": "1c557d89c592c678d05735f9d5ce6c03fab7bd2df55b40bc79a035859faf42c0"
+    },
+    {
+      "path": "registry/skills/manage-revocable-certification.json",
+      "sha256": "280b4566a920ed3c87a5331b2a2d907054fc7c85d0c91a3f2483d2cfddcbfb9b"
+    },
+    {
+      "path": "registry/skills/manage-supabase-environments.json",
+      "sha256": "a3f9e8695cdf6a0c0da2b6dc734bff7161481fd9ed2c26166b3984a87fa44529"
+    },
+    {
+      "path": "registry/skills/manage-supabase-migrations.json",
+      "sha256": "eda32bcf56b0ba5b1e424088d2a2aa0a7002886a18728e42530a1b14226011e6"
+    },
+    {
+      "path": "registry/skills/map-project-intelligence.json",
+      "sha256": "a7ef4ead20eeb072c8eb693ac1cc0f23808088e69ab786ee89e70a7e95e5a4b4"
+    },
+    {
+      "path": "registry/skills/observe-debug-supabase.json",
+      "sha256": "5916e090d5dd4ffae04774f08aef56761ee5314bdd33a71bb43de3d09d83598f"
+    },
+    {
+      "path": "registry/skills/observe-operate-n8n.json",
+      "sha256": "b134689e6cce0c1da7b9a4ed1d7ef7cf5047f37d5a93dcc116afed188e7cec1b"
+    },
+    {
+      "path": "registry/skills/operate-engineering-research-engine.json",
+      "sha256": "5c21dd46ebd5575daf52c8fc3a93ce94af9f2ee82920fe9478926e0f328e6ff8"
+    },
+    {
+      "path": "registry/skills/operate-memory-retrieval-observability.json",
+      "sha256": "0bdd748b43ad79dad443125c82354fa5851f646f9f9a9ffd85e369ba5b535f3a"
+    },
+    {
+      "path": "registry/skills/operate-n8n-supabase-production.json",
+      "sha256": "0675d3411e43cead9da8eb4c600623b7c61f36e32583c76a18e8b35cb4861c27"
+    },
+    {
+      "path": "registry/skills/operate-self-diagnostics.json",
+      "sha256": "80da17a3924a6e8dadd73e78c45c11411899ad57b025517896b8336d94ad229c"
+    },
+    {
+      "path": "registry/skills/operate-semantic-code-intelligence.json",
+      "sha256": "48ee7aa9f4bcee927b92146a0061dfa185daced7897a8f1a83c814199fd21d37"
+    },
+    {
+      "path": "registry/skills/operate-supabase-vector-search.json",
+      "sha256": "1891084ac6d59c7fc59e3beb17e92980d998ef1d2121c91ceb3b5b69eb7cbc7f"
+    },
+    {
+      "path": "registry/skills/orchestrate-agent-fleets.json",
+      "sha256": "5d5eed4027e07c41dfebbb513ac96063578b1c5ba7ec5005aee05e74e229b386"
+    },
+    {
+      "path": "registry/skills/orchestrate-capability-scheduling.json",
+      "sha256": "2661e402e2c708a521239d3e8cbb62ca6d334a8da43b82a3e73a15d03e448aca"
+    },
+    {
+      "path": "registry/skills/orchestrate-security-validation.json",
+      "sha256": "f98633355db7aaebeef579ca5cd93d73a04709d561eb74520648c73100da996b"
     },
     {
       "path": "registry/skills/outcome-verifier.json",
-      "sha256": "6f48a89220d472f123c47253f964c4e624d48bd6a24b8933c3d61a3a01214910"
+      "sha256": "3d44fd536c3b6f03d05557ee370bac4ea1602e7667981c3dd0651efa55482311"
+    },
+    {
+      "path": "registry/skills/pacify-x-studio-operator.json",
+      "sha256": "46c4a8248749e937b49e3bdba7670e986d953490f188b96c013895a4e4a5194c"
+    },
+    {
+      "path": "registry/skills/parallel-planning-coordination.json",
+      "sha256": "67d08715357788ef9f4d08f5fbe094c82f763aa90e6b5bc84e8928e8c36f4bef"
+    },
+    {
+      "path": "registry/skills/plan-local-model-deployment.json",
+      "sha256": "a165e21ef5a25a007d5fef5fc09eeea8d734c4b47a14dd87c2c3cc3583804fdd"
+    },
+    {
+      "path": "registry/skills/propose-change-intelligence.json",
+      "sha256": "fc39076ee601df6b37b46e81d55d339d5b892cad630925b50843e70a2ea1b56a"
+    },
+    {
+      "path": "registry/skills/px-lean-engineering.json",
+      "sha256": "d80f0d8017e7d12d1ab904dcfadf9db01f1a7ab60a723f9d9808647c53c9e832"
+    },
+    {
+      "path": "registry/skills/px-work-stop-diagnostics.json",
+      "sha256": "8e6471c068a7de14fd4da0203bcf5e514e26533d675763e4c9008e54575fdedc"
+    },
+    {
+      "path": "registry/skills/quarantine-external-tools.json",
+      "sha256": "15a85c64ba65b920ac35f9baf16fe752cde9b812a816d76bbd4371f71c3111f3"
+    },
+    {
+      "path": "registry/skills/query-project-map.json",
+      "sha256": "cc855e24b9697382a291137a35657766defcf49c5079fa7c3357d0594a556226"
+    },
+    {
+      "path": "registry/skills/questionnaire-delegation.json",
+      "sha256": "aba3b49c403293ab6a63e7b394fd18cc273765362c6b3d1d6fb8e7dfd33b787e"
+    },
+    {
+      "path": "registry/skills/repair-corrupted-text.json",
+      "sha256": "21458c1ab05101e1f72ab019147626d3ff7653307894c81d1e4ac7e2523c76b1"
+    },
+    {
+      "path": "registry/skills/research-to-capability.json",
+      "sha256": "c4ab373dacba2ec2eb905b24d66de7c9db3c4a38b47a8e9b8eec835a4ae27806"
+    },
+    {
+      "path": "registry/skills/route-n8n-capabilities.json",
+      "sha256": "2faa196c51205ab4436b2109502e194fc32027ceac7330dab24c25ec8b92460f"
+    },
+    {
+      "path": "registry/skills/route-n8n-supabase-stack.json",
+      "sha256": "656a48e966f2abf92fafbda0e2e68bdc82592e68637ed32a082b9cb32b8cfff3"
+    },
+    {
+      "path": "registry/skills/route-specialist-agents.json",
+      "sha256": "56eea2a34c7ecb9cba03a7976ca19b142c017cde137913042486a51fe41734e2"
+    },
+    {
+      "path": "registry/skills/route-supabase-capabilities.json",
+      "sha256": "951ac903ee9d1b7ab37f572d9972414a1888fa68efe739c169d0b9f92ac60d99"
+    },
+    {
+      "path": "registry/skills/run-evidence-campaigns.json",
+      "sha256": "ab55c7cba971e099517c86dd9da46a5461689ad35399d1d6b61ecf1d5766499b"
+    },
+    {
+      "path": "registry/skills/run-resilience-drills.json",
+      "sha256": "6b6d1bac16ecfa0e44ea7c57d57ca126a4b79a3d5150fd2265e76ce173bc8a21"
+    },
+    {
+      "path": "registry/skills/scale-n8n-queue-mode.json",
+      "sha256": "9f2f0c71dce70769720b5f1a9b4ae40ec7f2baef6d1939758a774501998040ce"
+    },
+    {
+      "path": "registry/skills/secure-agent-supply-chain.json",
+      "sha256": "a25c8d56297817a55502b76232bdfe8879e10a0891f0d6cbac6d52578cada4ea"
+    },
+    {
+      "path": "registry/skills/secure-n8n.json",
+      "sha256": "4d3acd3a44b61612d1bd7701869b35a8685c65450e29a56a0a3a6698dd6aed1b"
+    },
+    {
+      "path": "registry/skills/secure-supabase-rls.json",
+      "sha256": "a999be3bdc3733157bf6b6ecd4dfa13569ff3bcf93b74b30f378cd347083293c"
+    },
+    {
+      "path": "registry/skills/self-host-supabase.json",
+      "sha256": "9b428b00f9f9482c4b9d62c76c82333ee7b3795447c87edf1e3f8b01d11682d8"
     },
     {
       "path": "registry/skills/skill-admission-controller.json",
-      "sha256": "431ddeecf8e90a84e055b55d376e7421cd1c1ce42bbe66b131ddeef0938479f7"
+      "sha256": "b38142d15e08ffaeabf70d3f7b00f25bf66ea9ef2e1991cb096ea80c9094c39b"
+    },
+    {
+      "path": "registry/skills/skill-bundle-resolver.json",
+      "sha256": "d3319ca659880710348004a42e1eb3b4543f03f1a18820815153fd0f4e810b2a"
     },
     {
       "path": "registry/skills/skill-navigator.json",
-      "sha256": "3b055a86724842cfb67d8cc945c827de125d94f262474a7819f9af3f7ac2a165"
+      "sha256": "619bbba1b4d809b989ac30c8518e1304d75042f387a462e1458d733ef7a792ff"
+    },
+    {
+      "path": "registry/skills/supervise-contained-execution.json",
+      "sha256": "8a49032b36291ff82c370050aa71666c06185a8f467242ab6ea6ebcba7702cf9"
+    },
+    {
+      "path": "registry/skills/synchronize-derived-architecture.json",
+      "sha256": "8e8bc6e38262cf76b07919bd4ab55310ddf408b3239b25c421b3bb11be2e2069"
+    },
+    {
+      "path": "registry/skills/system-one-decision.json",
+      "sha256": "9d7b19d379260257744074036d638a0c4eb9364e262dec65c10b34aa1281958f"
+    },
+    {
+      "path": "registry/skills/test-n8n-supabase-integrations.json",
+      "sha256": "96a1eb96b91b59498324f3cd6f433267e1a617fbbe8c4f065f6f073bd6144d25"
+    },
+    {
+      "path": "registry/skills/test-validate-n8n-workflows.json",
+      "sha256": "d6b9d43701dc6d59420ef0155840da9a7097291f8980399d2bb1f5b05159a3bc"
+    },
+    {
+      "path": "registry/skills/trace-to-skill-compiler.json",
+      "sha256": "e086bc58791e58c69f2b6ba74a547eaa311cebe1676eca13bdc74157230dd073"
+    },
+    {
+      "path": "registry/skills/tracer-bullet-planning.json",
+      "sha256": "9829e3eb47542120f2386463cda26f07109929b87e7baa1d8cd416fda9951db9"
+    },
+    {
+      "path": "registry/skills/transcript-analysis.json",
+      "sha256": "f44e09187566b028e6fe1a30baf16285f70732b024674a2144bc8457c20f84ac"
+    },
+    {
+      "path": "registry/skills/triage-cross-surface-failures.json",
+      "sha256": "74e411d48672f398a56becbb852b924fb6904024e84d65e15b10f74b3f6fe607"
+    },
+    {
+      "path": "registry/skills/use-n8n-expressions-and-data.json",
+      "sha256": "b352209e2ac165eca25b6e706b0d5840c653e0f77e9a3a4f750363a14ef6ee46"
+    },
+    {
+      "path": "registry/skills/use-n8n-mcp.json",
+      "sha256": "7b4248a1cc50317c53e66371a62c5ebca17ffabf7d0b7b324fe404e50a4cd78f"
+    },
+    {
+      "path": "registry/skills/use-supabase-mcp-and-agent-skills.json",
+      "sha256": "0a2baa1b2cd3d16c30675607836e1285228ef49c18346ac6cb71d186bf3a9f94"
+    },
+    {
+      "path": "registry/skills/use-supabase-realtime.json",
+      "sha256": "eb0b6fa687ae687e0e4f5b6ad89d9383414a827ff303b08e66f5c332f70f91a0"
+    },
+    {
+      "path": "registry/skills/use-supabase-storage.json",
+      "sha256": "cbb45652e944f230f2c7bb4dab5334f2665e5923a30a74a79dcb6b6b1b534f76"
+    },
+    {
+      "path": "registry/skills/validate-contract-boundaries.json",
+      "sha256": "8ca0db1f0642ab9cbd50d36433b87ceae0462a2b679cf64214c1e5a77a7d3da0"
+    },
+    {
+      "path": "registry/skills/validate-engineering-outcomes.json",
+      "sha256": "88f0b37c26058628e101900c0513aa92d6ac160fda96e702f27bf81f291216a7"
+    },
+    {
+      "path": "registry/skills/validate-knowledge-relationships.json",
+      "sha256": "5302af24f321f56bc0cf22b0b95f5e19bead04cb38f3fddac3c4d34f176e1e9a"
+    },
+    {
+      "path": "registry/skills/validate-physical-media-deliverables.json",
+      "sha256": "2cfca0009c62639630120ca6dc2a7fc35b956db52af0c07fcc09325cdfdf0297"
+    },
+    {
+      "path": "registry/skills/validate-production-containers.json",
+      "sha256": "9fcc748293c72c8160e431b09d3e7a6ec650673e91fd06ff1668be63f5dda7ce"
     },
     {
       "path": "registry/skills/workflow-orchestrator.json",
-      "sha256": "95a6037363642e52be1fa5f8b51c7ae30e985bc48dff2e888cb1cdd224e25f0b"
+      "sha256": "42ae2ce92e62a86c770388910572bb059b37169e6981b78598ec4556d4258dd7"
     },
     {
       "path": "registry/tools.json",
@@ -71,15 +623,15 @@
   "outputs": [
     {
       "path": "registry/graphs/capability_graph.json",
-      "sha256": "84ffc4bbca0e29cb813a94220cc0270f6dac91c3af334d33bd430d67c481e1be"
+      "sha256": "ffe1e0fab7109dbd7e3295c4b05cbb3603b25f59f90e4b029ab89888078476f7"
     },
     {
       "path": "registry/graphs/dependency_effect_graph.json",
-      "sha256": "638f34a9fcc56e13eff376d7a5d09ca3298855b7ab071b4f37d028b67a3cd407"
+      "sha256": "647b4e3b3130e7f41e34a9352df912a637482529aeb0a9e8de1880f98db1eaa8"
     },
     {
       "path": "registry/graphs/io_graph.json",
-      "sha256": "63bc8e6e4baab55c236f6cd0003ecfc58dbca3a92d2e8e78d20a6c170ec6a806"
+      "sha256": "78a4dfddf79802f5c3a6606a301745631674a058579fe4ab61eef6d38298f816"
     },
     {
       "path": "registry/graphs/project_stream_dependency_graph.json",
@@ -87,7 +639,7 @@
     },
     {
       "path": "registry/graphs/system_asset_graph.json",
-      "sha256": "1d08b6cc8c0fed96c02192c1a7dffe990d0c386f2f7329f13d74ca1eb655f624"
+      "sha256": "04f41bcab0b4fb9ebf2cadea2cd1d90abbc8bc41fa0015bcde959336a9f6f6a1"
     }
   ]
 }

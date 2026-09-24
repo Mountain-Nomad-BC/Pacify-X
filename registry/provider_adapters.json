@@ -28,6 +28,33 @@
       "admitted": false,
       "status": "unconfigured",
       "billing_state": "actual"
+    },
+    {
+      "adapter_id": "llama-cpp-stream",
+      "provider_id": "llama.cpp",
+      "mode": "local",
+      "implementation": "runtime/provider_gateway.py",
+      "admitted": true,
+      "status": "ready",
+      "billing_state": "local_non_billable"
+    },
+    {
+      "adapter_id": "llama-cpp-responses",
+      "provider_id": "llama.cpp",
+      "mode": "local",
+      "implementation": "runtime/provider_gateway.py",
+      "admitted": false,
+      "status": "unconfigured",
+      "billing_state": "local_non_billable"
+    },
+    {
+      "adapter_id": "llama-cpp-anthropic",
+      "provider_id": "llama.cpp",
+      "mode": "local",
+      "implementation": "runtime/provider_gateway.py",
+      "admitted": false,
+      "status": "unconfigured",
+      "billing_state": "local_non_billable"
     }
   ]
 }

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Govern Persistent Memory"
+  short_description: "Inspect optional external memory without granting it PX authority"
+  default_prompt: "Use $govern-persistent-memory to inspect external persistent-memory evidence through the governed read/advisory boundary."

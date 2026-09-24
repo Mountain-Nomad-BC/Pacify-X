@@ -1,0 +1,148 @@
+{
+  "applicability": {
+    "conditions": [
+      "Domain labels and holdout roles must be frozen before evaluation."
+    ],
+    "exclusions": [
+      "changing domain composition after seeing results"
+    ],
+    "targets": [
+      "routing/model candidates"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "px_learning_promotion",
+          "moe_eval_doc"
+        ],
+        "statement": "Aggregate win rate alone is insufficient for route promotion."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_learning_promotion",
+          "moe_eval_doc"
+        ],
+        "statement": "Domain-level floors make regressions visible even when a large domain dominates the mean."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_learning_promotion",
+          "moe_eval_doc"
+        ],
+        "statement": "Evaluation fanout must remain bound to one frozen contract/holdout identity for valid comparison."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "partition evaluation cases by declared domain",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "compute aggregate and per-domain outcomes",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "reject candidates that miss required domain floors even if aggregate score improves",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "Route/model evaluation should fan out across representative domains while enforcing minimum per-domain floors so aggregate averages cannot hide catastrophic regressions in a smaller domain."
+  },
+  "namespace": "moe",
+  "object_id": "nsai:moe:evaluation:moe_evaluation_fanout_domain_floors",
+  "object_type": "evaluation",
+  "ontology": {
+    "classes": [
+      "evaluation_contract",
+      "promotion_gate"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "moe"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "kind": "source_file",
+        "path": "runtime/learning_promotion.py",
+        "sha256": "be3f59e5509786fbf19c65449953a3e136a81fdbce72068c81d188181c8f85fd",
+        "source_id": "px_learning_promotion"
+      },
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_MoE_Mining_Pass_v3/26_EVALUATION_FANOUT_AND_DOMAIN_FLOORS.md",
+        "sha256": "a56fc4fbef130535eb409f525f665046b4f3d2afe09fcaec642f4c622a95a793",
+        "source_id": "moe_eval_doc"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:moe:complexity_gate:moe_complexity_tax_baseline"
+    }
+  ],
+  "retrieval": {
+    "priority": 88,
+    "tags": [
+      "domain floor",
+      "evaluation fanout",
+      "holdout",
+      "promotion"
+    ],
+    "terms": [
+      "domain floor",
+      "domain performance floor",
+      "evaluation fanout",
+      "evaluation matrix",
+      "holdout",
+      "promotion"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "Route/model evaluation should fan out across representative domains while enforcing minimum per-domain floors so aggregate averages cannot hide catastrophic regressions in a smaller domain.",
+    "exclusions": [
+      "aggregate-only promotion"
+    ],
+    "intents": [
+      "enforce domain floor",
+      "evaluate route by domain"
+    ],
+    "keywords": [
+      "domain floor",
+      "evaluation fanout",
+      "holdout",
+      "promotion"
+    ],
+    "retrieval_text": "Evaluation Fanout and Domain Floors. Route/model evaluation should fan out across representative domains while enforcing minimum per-domain floors so aggregate averages cannot hide catastrophic regressions in a smaller domain. Aggregate win rate alone is insufficient for route promotion. Domain-level floors make regressions visible even when a large domain dominates the mean. Evaluation fanout must remain bound to one frozen contract/holdout identity for valid comparison.",
+    "short_description": "Route/model evaluation should fan out across representative domains while enforcing minimum per-domain floors so aggregate averages cannot hide catastrophic regressions in a smaller domain.",
+    "synonyms": [
+      "domain performance floor",
+      "evaluation matrix"
+    ]
+  },
+  "status": "validated",
+  "title": "Evaluation Fanout and Domain Floors"
+}

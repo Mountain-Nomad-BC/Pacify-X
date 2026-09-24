@@ -824,3 +824,93 @@ def validate_external_capability_orchestration(root: Path) -> dict[str, object]:
         "catalog": status,
         "effects": ["read_local", "write_project_staging"],
     }
+
+
+@dataclass(frozen=True, slots=True)
+class ExternalInvocationPlan:
+    """Metadata-bound external-provider call plan; never an authority grant."""
+
+    schema_version: str
+    provider_id: str
+    candidate_id: str
+    bundle_id: str
+    capability: str
+    required_effects: tuple[str, ...]
+    approved_effects: tuple[str, ...]
+    payload_sha256: str
+    candidate_sha256: str
+    bundle_sha256: str
+    plan_sha256: str
+    authority_granted: bool = False
+
+    def as_dict(self) -> dict[str, object]:
+        return asdict(self)
+
+
+def plan_external_invocation(
+    root: Path,
+    *,
+    provider_id: str,
+    candidate_id: str,
+    capability: str,
+    required_effects: Sequence[str],
+    approved_effects: Sequence[str],
+    payload: Mapping[str, object],
+) -> ExternalInvocationPlan:
+    """Bind one external call to deferred catalog metadata and caller-approved effects.
+
+    This function deliberately does not execute source, activate a candidate, or
+    create authority.  It is a custody/identity seam for a separately admitted
+    provider bridge.
+    """
+    bounded_strings((provider_id, candidate_id, capability), max_item_bytes=1024)
+    if not provider_id.strip() or not candidate_id.strip() or not capability.strip():
+        raise ValueError("external invocation identity must not be blank")
+    if any(type(item) is not str for item in required_effects) or any(type(item) is not str for item in approved_effects):
+        raise ValueError("external invocation effects must be strings")
+    required = tuple(sorted(set(required_effects)))
+    approved = tuple(sorted(set(approved_effects)))
+    bounded_strings(required, max_items=32, max_item_bytes=256)
+    bounded_strings(approved, max_items=32, max_item_bytes=256)
+    if not set(required) <= set(approved):
+        raise PermissionError("external invocation exceeds caller-approved effects")
+    bounded_json_text(payload, max_bytes=MAX_METADATA_BYTES)
+    catalog = load_external_catalog(root)
+    candidates = {str(row["id"]): row for row in catalog["candidates"]}
+    candidate = candidates.get(candidate_id)
+    if candidate is None:
+        raise KeyError(f"external candidate is not cataloged: {candidate_id}")
+    bundle_id = str(candidate["bundle"])
+    bundles = {str(row["id"]): row for row in catalog["bundles"]}
+    bundle = bundles.get(bundle_id)
+    if bundle is None or candidate_id not in set(map(str, bundle["candidate_capabilities"])):
+        raise ValueError("external candidate/bundle metadata is inconsistent")
+    if candidate.get("activation") != "candidate_only" or bundle.get("activation") != "requires_admission":
+        raise ValueError("external provider candidate has unexpected activation state")
+    core = {
+        "schema_version": "px.external-invocation-plan/1.0",
+        "provider_id": provider_id,
+        "candidate_id": candidate_id,
+        "bundle_id": bundle_id,
+        "capability": capability,
+        "required_effects": list(required),
+        "approved_effects": list(approved),
+        "payload_sha256": _stable(payload),
+        "candidate_sha256": _stable(candidate),
+        "bundle_sha256": _stable(bundle),
+        "authority_granted": False,
+    }
+    return ExternalInvocationPlan(
+        schema_version=str(core["schema_version"]),
+        provider_id=provider_id,
+        candidate_id=candidate_id,
+        bundle_id=bundle_id,
+        capability=capability,
+        required_effects=required,
+        approved_effects=approved,
+        payload_sha256=str(core["payload_sha256"]),
+        candidate_sha256=str(core["candidate_sha256"]),
+        bundle_sha256=str(core["bundle_sha256"]),
+        plan_sha256=_stable(core),
+        authority_granted=False,
+    )

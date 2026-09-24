@@ -444,7 +444,7 @@ class DashboardApiTests(unittest.TestCase):
         self.assertEqual(
             snapshot["counts"]["workflow_definitions"], len(project) + len(skills)
         )
-        self.assertEqual(snapshot["counts"]["workflow_validator_bindings"], 15)
+        self.assertEqual(snapshot["counts"]["workflow_validator_bindings"], 16)
         self.assertEqual(snapshot["counts"]["workflow_runtime_bindings"], 6)
         effects = json.loads(
             (ROOT / "registry" / "effect_surface_ownership.json").read_text(
@@ -945,7 +945,7 @@ class DashboardApiTests(unittest.TestCase):
 
     def test_provider_activity_projects_the_enabled_non_billable_local_budget(self) -> None:
         activity = _provider_activity(ROOT)
-        self.assertEqual(len(activity), 1)
+        self.assertEqual(len(activity), 2)
         self.assertEqual(activity[0]["providerName"], "ollama")
         self.assertEqual(activity[0]["providerClass"], "local")
         self.assertFalse(activity[0]["billingEnabled"])

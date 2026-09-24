@@ -1,0 +1,138 @@
+{
+  "applicability": {
+    "conditions": [
+      "Commit path must compare the expected and current token."
+    ],
+    "exclusions": [
+      "forcing stale output into current context"
+    ],
+    "targets": [
+      "async model/retrieval results"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "px_session_guard"
+        ],
+        "statement": "A session-context token is derived from the current bounded context version."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_session_guard"
+        ],
+        "statement": "Async results must present the expected token before commit."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_session_guard"
+        ],
+        "statement": "Stale results can be discarded or replanned without treating latency as authority."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "create a versioned context token before async work",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "advance the token when relevant session state changes",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "require token equality before committing async output",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "Session context commits use an optimistic version token so asynchronous model/retrieval work computed against an older context cannot overwrite newer session state after the user or another task has advanced it."
+  },
+  "namespace": "operations",
+  "object_id": "nsai:operations:session_guard:rie_session_context_guard",
+  "object_type": "session_guard",
+  "ontology": {
+    "classes": [
+      "concurrency_guard",
+      "session_state"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "operations"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "kind": "source_file",
+        "path": "runtime/session_context_guard.py",
+        "sha256": "1b701805918246a1c5bdde83c5295ef1652c9fe557372e35fde32d1a36c473fa",
+        "source_id": "px_session_guard"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:operations:wait_wake:intermodel_wait_wake"
+    }
+  ],
+  "retrieval": {
+    "priority": 91,
+    "tags": [
+      "commit token",
+      "optimistic concurrency",
+      "session context",
+      "stale async"
+    ],
+    "terms": [
+      "commit token",
+      "optimistic concurrency",
+      "optimistic context token",
+      "session context",
+      "session version guard",
+      "stale async"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "Session context commits use an optimistic version token so asynchronous model/retrieval work computed against an older context cannot overwrite newer session state after the user or another task has advanced it.",
+    "exclusions": [
+      "last-writer-wins stale commit"
+    ],
+    "intents": [
+      "detect stale result",
+      "guard async session update"
+    ],
+    "keywords": [
+      "commit token",
+      "optimistic concurrency",
+      "session context",
+      "stale async"
+    ],
+    "retrieval_text": "RIE Session Context Guard. Session context commits use an optimistic version token so asynchronous model/retrieval work computed against an older context cannot overwrite newer session state after the user or another task has advanced it. A session-context token is derived from the current bounded context version. Async results must present the expected token before commit. Stale results can be discarded or replanned without treating latency as authority.",
+    "short_description": "Session context commits use an optimistic version token so asynchronous model/retrieval work computed against an older context cannot overwrite newer session state after the user or another task has advanced it.",
+    "synonyms": [
+      "optimistic context token",
+      "session version guard"
+    ]
+  },
+  "status": "validated",
+  "title": "RIE Session Context Guard"
+}

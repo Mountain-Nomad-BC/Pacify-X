@@ -1,0 +1,156 @@
+{
+  "applicability": {
+    "conditions": [
+      "Use declared metadata only and preserve generation/hash identity."
+    ],
+    "exclusions": [
+      "inferring tool safety from command existence"
+    ],
+    "targets": [
+      "VS Code workspace/project"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "wave15c_discovery",
+          "wave15c_discovery_tests"
+        ],
+        "statement": "Capability discovery is based on declared extension metadata, not runtime activation side effects."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "wave15c_discovery",
+          "wave15c_discovery_tests"
+        ],
+        "statement": "User configuration values and credentials are excluded from the commissioned inventory."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "wave15c_discovery",
+          "wave15c_discovery_tests"
+        ],
+        "statement": "Once a project has been commissioned, extension-manifest changes invalidate freshness and schedule a bounded refresh rather than silently reusing stale capabilities."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "read installed extension manifests/contribution metadata without activation",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "normalize and hash the declared capability inventory",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "bind one commissioning generation to the project/workspace and refresh on manifest-set change",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "PX inventories declared VS Code extension capabilities as metadata—commands, default keybindings, menus/when clauses, setting schemas, LM tools/providers, chat participants, tasks, debug providers, views, editors, auth/languages/notebooks/terminal contributions—and commissions a hash-addressed project inventory without activating third-party extensions or recording user secret values."
+  },
+  "namespace": "environment",
+  "object_id": "nsai:environment:capability_commissioning:vscode_capability_commissioning",
+  "object_type": "capability_commissioning",
+  "ontology": {
+    "classes": [
+      "commissioning",
+      "environment_inventory"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "environment"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "archive": "PX_IMPLEMENTATION_WAVE15C_COGNITIVE_QUERY_COORDINATION_CONTEXT_COMMISSIONING_2026-09-20.zip",
+        "kind": "source_file",
+        "path": "extension/src/discoveryManager.js",
+        "sha256": "c75ae34a7b95ce07618122c8867649dda158d851df6b78fb58c54dd62eeaaeb4",
+        "source_id": "wave15c_discovery"
+      },
+      {
+        "archive": "PX_IMPLEMENTATION_WAVE15C_COGNITIVE_QUERY_COORDINATION_CONTEXT_COMMISSIONING_2026-09-20.zip",
+        "kind": "source_file",
+        "path": "extension/tests/discovery-manager.test.js",
+        "sha256": "c62b5a0098c5cc5cdb73e9614ce58f460c0280a7d01eaf6f58d46200b7cad863",
+        "source_id": "wave15c_discovery_tests"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:operations:projection_parity:rie_operational_projection_parity"
+    }
+  ],
+  "retrieval": {
+    "priority": 96,
+    "tags": [
+      "VS Code",
+      "commands",
+      "commissioning",
+      "extension inventory",
+      "keybindings",
+      "when clause"
+    ],
+    "terms": [
+      "VS Code",
+      "commands",
+      "commissioning",
+      "environment commissioning",
+      "extension capability inventory",
+      "extension inventory",
+      "keybindings",
+      "when clause"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "PX inventories declared VS Code extension capabilities as metadata—commands, default keybindings, menus/when clauses, setting schemas, LM tools/providers, chat participants, tasks, debug providers, views, editors, auth/languages/notebooks/terminal contributions—and commissions a hash-addressed project inventory without activating third-party extensions or recording user secret values.",
+    "exclusions": [
+      "extension activation",
+      "user secret values"
+    ],
+    "intents": [
+      "commission workspace tools",
+      "inventory vscode capabilities"
+    ],
+    "keywords": [
+      "VS Code",
+      "commands",
+      "commissioning",
+      "extension inventory",
+      "keybindings",
+      "when clause"
+    ],
+    "retrieval_text": "VS Code Capability Commissioning Inventory. PX inventories declared VS Code extension capabilities as metadata—commands, default keybindings, menus/when clauses, setting schemas, LM tools/providers, chat participants, tasks, debug providers, views, editors, auth/languages/notebooks/terminal contributions—and commissions a hash-addressed project inventory without activating third-party extensions or recording user secret values. Capability discovery is based on declared extension metadata, not runtime activation side effects. User configuration values and credentials are excluded from the commissioned inventory. Once a project has been commissioned, extension-manifest changes invalidate freshness and schedule a bounded refresh rather than silently reusing stale capabilities.",
+    "short_description": "PX inventories declared VS Code extension capabilities as metadata—commands, default keybindings, menus/when clauses, setting schemas, LM tools/providers, chat participants, tasks, debug providers, views, editors, auth/languages/notebooks/terminal contributions—and commissions a hash-addressed project inventory without activating third-party extensions or recording user secret values.",
+    "synonyms": [
+      "environment commissioning",
+      "extension capability inventory"
+    ]
+  },
+  "status": "validated",
+  "title": "VS Code Capability Commissioning Inventory"
+}

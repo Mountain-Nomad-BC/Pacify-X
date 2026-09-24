@@ -1,0 +1,80 @@
+{
+  "schema_version": "px.semantic-integration-candidates/1.1",
+  "authoritative": false,
+  "admission_required": true,
+  "wave": 4,
+  "operator_model_contract": {
+    "role": "resident-internal-operator",
+    "working_description": "librarian-concierge-grunt",
+    "candidate_model": "Qwen3.5-0.8B",
+    "deep_escalation_candidate": "Qwen3-30B-A3B",
+    "context_grants_authority": false,
+    "authority_source": "separate-px-contracts-and-effect-grants",
+    "intended_uses": [
+      "query admitted skills and knowledge",
+      "assemble bounded context for larger models",
+      "follow scripted queues and orchestration instructions",
+      "evaluate conditions that may request governed learning workflows",
+      "request admitted graph/map/memory maintenance workflows"
+    ],
+    "explicit_non_authorities": [
+      "permission creation",
+      "direct filesystem mutation",
+      "memory or knowledge promotion",
+      "graph or map mutation without an admitted operation",
+      "learning promotion without an admitted workflow"
+    ]
+  },
+  "candidate_skills": [
+    {"id": "semantic-code-query", "effects": ["read_local"], "source": "waves-1-3"},
+    {"id": "cross-project-semantic-query", "effects": ["read_local"], "source": "wave3"},
+    {"id": "semantic-context-fusion", "effects": ["read_local"], "source": "wave4"},
+    {"id": "local-context-rerank-signal", "effects": ["read_local", "process_local"], "source": "wave4"},
+    {"id": "memory-reference-integrity", "effects": ["read_local"], "source": "wave4"},
+    {"id": "memory-relocation-plan", "effects": ["read_local", "plan"], "source": "wave4"},
+    {"id": "legacy-memory-reference-repair-plan", "effects": ["read_local", "plan"], "source": "wave4"}
+  ],
+  "candidate_orchestrations": [
+    {
+      "id": "semantic-read-fusion",
+      "steps": [
+        "authorize-all-required-read-scopes",
+        "semantic-symbol-query",
+        "optional-project-map-query",
+        "canonical-retrieval",
+        "bounded-model-context",
+        "deterministic-receipt"
+      ]
+    },
+    {
+      "id": "memory-reference-maintenance",
+      "steps": [
+        "reference-scan",
+        "project-and-revision-integrity-check",
+        "exact-alias-repair-plan",
+        "fuzzy-suggestions-only",
+        "operator-review",
+        "separate-canonical-write-contract"
+      ]
+    },
+    {
+      "id": "tiny-operator-context-handoff",
+      "steps": [
+        "canonical-retrieval-first",
+        "optional-bounded-rerank-signal",
+        "bounded-context-materialization",
+        "handoff-with-no-context-derived-authority"
+      ]
+    }
+  ],
+  "deferred_operator_contracts": [
+    {"id": "learning-trigger-request", "planned_wave": 12, "status": "not-admitted"},
+    {"id": "graph-map-maintenance-request", "planned_wave": 12, "status": "not-admitted"},
+    {"id": "local-model-lifecycle-and-queue-custody", "planned_wave": 6, "status": "not-admitted"}
+  ],
+  "notes": [
+    "Do not insert this file into authoritative registries without current live-repo reconciliation.",
+    "Model context is evidence only; mutation/execution authority remains outside capability projection.",
+    "The resident tiny operator may request later admitted workflows, but may not self-grant their effects."
+  ]
+}

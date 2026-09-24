@@ -705,3 +705,162 @@ def select_model_attachment(
         "selected_attachment_sha256": attachment.attachment_sha256,
     }
     return attachment, {**receipt_payload, "receipt_sha256": _hash(receipt_payload)}
+
+
+@dataclass(frozen=True, slots=True)
+class ModelProtocolBinding:
+    """Versioned capability binding layered on an immutable model attachment.
+
+    The binding does not mutate the attachment contract and grants no provider,
+    network, model-load, or tool-execution authority.  It only records which
+    protocol capabilities were certified for one exact attachment + adapter pair.
+    """
+
+    schema_version: str
+    attachment_sha256: str
+    adapter_id: str
+    provider_protocols_sha256: str
+    surfaces: tuple[str, ...]
+    streaming: bool
+    tools: bool
+    structured_output: bool
+    exact_token_count: bool
+    cancellation: bool
+    binding_sha256: str
+
+    def as_dict(self) -> dict[str, object]:
+        return {
+            "schema_version": self.schema_version,
+            "attachment_sha256": self.attachment_sha256,
+            "adapter_id": self.adapter_id,
+            "provider_protocols_sha256": self.provider_protocols_sha256,
+            "surfaces": list(self.surfaces),
+            "streaming": self.streaming,
+            "tools": self.tools,
+            "structured_output": self.structured_output,
+            "exact_token_count": self.exact_token_count,
+            "cancellation": self.cancellation,
+            "binding_sha256": self.binding_sha256,
+        }
+
+
+_PROTOCOL_BINDING_SCHEMA = "px.model-protocol-binding/1.0"
+_PROTOCOL_SURFACES = frozenset(
+    {"terminal", "openai_chat", "openai_responses", "anthropic_messages"}
+)
+
+
+def build_model_protocol_binding(
+    attachment: ModelAttachment,
+    *,
+    adapter_id: str,
+    provider_protocols_sha256: str,
+    surfaces: Sequence[str],
+    streaming: bool,
+    tools: bool,
+    structured_output: bool,
+    exact_token_count: bool,
+    cancellation: bool,
+) -> ModelProtocolBinding:
+    """Seal exact protocol metadata without changing the attachment authority."""
+    report = validate_model_attachment(attachment)
+    if not report["valid"]:
+        raise ValueError("cannot bind protocol metadata to an invalid model attachment")
+    adapter_id = _text(adapter_id, "protocol adapter_id", 128)
+    if type(provider_protocols_sha256) is not str or _SHA.fullmatch(provider_protocols_sha256) is None:
+        raise ValueError("provider_protocols_sha256 must be a lowercase sha256")
+    if type(surfaces) not in (tuple, list) or not surfaces:
+        raise ValueError("protocol binding requires at least one surface")
+    if any(type(surface) is not str for surface in surfaces):
+        raise ValueError("protocol surfaces must be exact strings")
+    normalized = tuple(sorted(set(surfaces)))
+    if len(normalized) != len(surfaces) or any(surface not in _PROTOCOL_SURFACES for surface in normalized):
+        raise ValueError("protocol surfaces must be unique, supported, and canonical")
+    for field_name, value in (
+        ("streaming", streaming),
+        ("tools", tools),
+        ("structured_output", structured_output),
+        ("exact_token_count", exact_token_count),
+        ("cancellation", cancellation),
+    ):
+        if type(value) is not bool:
+            raise ValueError(f"protocol capability {field_name} must be boolean")
+    if tools and not attachment.supports_tools:
+        raise ValueError("protocol binding cannot add tool support absent from the attachment")
+    if streaming is False and cancellation is True:
+        raise ValueError("stream cancellation requires streaming support")
+    base: dict[str, object] = {
+        "schema_version": _PROTOCOL_BINDING_SCHEMA,
+        "attachment_sha256": attachment.attachment_sha256,
+        "adapter_id": adapter_id,
+        "provider_protocols_sha256": provider_protocols_sha256,
+        "surfaces": list(normalized),
+        "streaming": streaming,
+        "tools": tools,
+        "structured_output": structured_output,
+        "exact_token_count": exact_token_count,
+        "cancellation": cancellation,
+    }
+    binding = ModelProtocolBinding(
+        _PROTOCOL_BINDING_SCHEMA,
+        attachment.attachment_sha256,
+        adapter_id,
+        provider_protocols_sha256,
+        normalized,
+        streaming,
+        tools,
+        structured_output,
+        exact_token_count,
+        cancellation,
+        _hash(base),
+    )
+    if not validate_model_protocol_binding(binding, attachment=attachment)["valid"]:
+        raise ValueError("constructed model protocol binding failed validation")
+    return binding
+
+
+def validate_model_protocol_binding(
+    binding: ModelProtocolBinding,
+    *,
+    attachment: ModelAttachment,
+) -> dict[str, object]:
+    """Validate exact attachment/capability binding and return bounded errors."""
+    errors: list[str] = []
+    if binding.schema_version != _PROTOCOL_BINDING_SCHEMA:
+        errors.append("unsupported protocol binding schema_version")
+    if binding.attachment_sha256 != attachment.attachment_sha256:
+        errors.append("protocol binding belongs to a different model attachment")
+    try:
+        _text(binding.adapter_id, "protocol adapter_id", 128)
+    except ValueError as error:
+        errors.append(str(error))
+    if _SHA.fullmatch(binding.provider_protocols_sha256 or "") is None:
+        errors.append("provider_protocols_sha256 is invalid")
+    if tuple(sorted(set(binding.surfaces))) != binding.surfaces or not binding.surfaces:
+        errors.append("protocol surfaces are not canonical")
+    elif any(surface not in _PROTOCOL_SURFACES for surface in binding.surfaces):
+        errors.append("protocol surface is unsupported")
+    if any(
+        type(value) is not bool
+        for value in (
+            binding.streaming,
+            binding.tools,
+            binding.structured_output,
+            binding.exact_token_count,
+            binding.cancellation,
+        )
+    ):
+        errors.append("protocol capabilities must be boolean")
+    if binding.tools and not attachment.supports_tools:
+        errors.append("protocol binding weakens attachment tool capability")
+    if not binding.streaming and binding.cancellation:
+        errors.append("protocol cancellation requires streaming")
+    unsigned = binding.as_dict()
+    unsigned.pop("binding_sha256", None)
+    if _hash(unsigned) != binding.binding_sha256:
+        errors.append("protocol binding digest differs from its content")
+    return {
+        "schema_version": "px.model-protocol-binding-validation/1.0",
+        "valid": not errors,
+        "errors": errors,
+    }

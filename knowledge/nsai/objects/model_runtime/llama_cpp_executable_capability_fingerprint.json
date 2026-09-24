@@ -1,0 +1,162 @@
+{
+  "applicability": {
+    "conditions": [
+      "Probe and launch must refer to the same executable SHA."
+    ],
+    "exclusions": [
+      "reusing a fingerprint after binary replacement"
+    ],
+    "targets": [
+      "llama-server"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "wave15a_capabilities",
+          "wave15a_local_runtime"
+        ],
+        "statement": "Binary SHA-256 is part of the capability fingerprint, so replacing the executable invalidates a cached capability plan."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "wave15a_capabilities",
+          "wave15a_local_runtime"
+        ],
+        "statement": "Supported launch flags are derived from bounded read-only probes instead of assuming all llama.cpp versions expose the same options."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "wave15a_capabilities",
+          "wave15a_local_runtime"
+        ],
+        "statement": "The typed launch policy can express modern GPU-layer and CPU-MoE placement only when those options are certified for the exact executable."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "hash the pinned executable",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "capture normalized version/help/device capability evidence",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "render only typed options present in the fingerprint and reject stale/unsupported requests",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "PX binds typed llama.cpp launch policy to the exact `llama-server` executable by hashing the binary and recording bounded version/help/device probes; requested launch options fail closed when the pinned executable does not advertise the required capability."
+  },
+  "namespace": "model_runtime",
+  "object_id": "nsai:model_runtime:capability_fingerprint:llama_cpp_executable_capability_fingerprint",
+  "object_type": "capability_fingerprint",
+  "ontology": {
+    "classes": [
+      "capability_fingerprint",
+      "runtime_identity"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "model_runtime"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis preserved from Wave 15D; provenance rebound to the reconstructed unified Wave 15A closure sources",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "archive": "PX_MODELS_HARNESSES_UNIFIED_FINAL_2026-09-21.zip",
+        "kind": "source_file",
+        "path": "PX_OVERLAY/runtime/llama_cpp_capabilities.py",
+        "sha256": "263b152d39773e7983672876cc7e73c7d9f952aa9659088bcaaa1d0a0206926b",
+        "source_id": "wave15a_capabilities"
+      },
+      {
+        "archive": "PX_MODELS_HARNESSES_UNIFIED_FINAL_2026-09-21.zip",
+        "kind": "source_file",
+        "path": "PX_OVERLAY/runtime/local_model_runtime.py",
+        "sha256": "3e8f1e2eddef6bbdbbc52068a9e98bbbbe8dfcbc9771c7e4e5d1fef7d8e5ca64",
+        "source_id": "wave15a_local_runtime"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:build_backends:llama_cpp_build_backends"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:moe_placement:llama_cpp_moe_placement"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:certification:model_profile_certification"
+    }
+  ],
+  "retrieval": {
+    "priority": 97,
+    "tags": [
+      "binary fingerprint",
+      "capability probe",
+      "cpu moe",
+      "llama.cpp",
+      "qwen35"
+    ],
+    "terms": [
+      "binary fingerprint",
+      "capability probe",
+      "cpu moe",
+      "llama executable fingerprint",
+      "llama.cpp",
+      "qwen35",
+      "runtime capability fingerprint"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "PX binds typed llama.cpp launch policy to the exact `llama-server` executable by hashing the binary and recording bounded version/help/device probes; requested launch options fail closed when the pinned executable does not advertise the required capability.",
+    "exclusions": [
+      "free-form unvalidated args"
+    ],
+    "intents": [
+      "certify llama-server capabilities",
+      "plan llama launch"
+    ],
+    "keywords": [
+      "binary fingerprint",
+      "capability probe",
+      "cpu moe",
+      "llama.cpp",
+      "qwen35"
+    ],
+    "retrieval_text": "llama.cpp Executable Capability Fingerprint. PX binds typed llama.cpp launch policy to the exact `llama-server` executable by hashing the binary and recording bounded version/help/device probes; requested launch options fail closed when the pinned executable does not advertise the required capability. Binary SHA-256 is part of the capability fingerprint, so replacing the executable invalidates a cached capability plan. Supported launch flags are derived from bounded read-only probes instead of assuming all llama.cpp versions expose the same options. The typed launch policy can express modern GPU-layer and CPU-MoE placement only when those options are certified for the exact executable.",
+    "short_description": "PX binds typed llama.cpp launch policy to the exact `llama-server` executable by hashing the binary and recording bounded version/help/device probes; requested launch options fail closed when the pinned executable does not advertise the required capability.",
+    "synonyms": [
+      "llama executable fingerprint",
+      "runtime capability fingerprint"
+    ]
+  },
+  "status": "validated",
+  "title": "llama.cpp Executable Capability Fingerprint"
+}

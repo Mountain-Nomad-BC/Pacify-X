@@ -719,3 +719,23 @@ def validate_completion_control_workflow(root: Path) -> dict[str, object]:
                     f"{workflow.get('id')}:{step.get('id')}: unknown dependencies"
                 )
     return {"valid": not errors, "workflow_count": len(ids), "errors": errors}
+
+
+def verify_recursive_terminal_evidence(
+    *, final_evidence_sha256: str, evaluator_sha256: str, acceptance_policy_sha256: str,
+    holdout_case_set_sha256: str, verification_record_sha256: Sequence[str],
+) -> dict[str, object]:
+    """Require independently checkable terminal evidence before improvement closes."""
+    values = {
+        "final_evidence_sha256": final_evidence_sha256,
+        "evaluator_sha256": evaluator_sha256,
+        "acceptance_policy_sha256": acceptance_policy_sha256,
+        "holdout_case_set_sha256": holdout_case_set_sha256,
+    }
+    invalid = sorted(name for name, value in values.items() if not isinstance(value, str) or len(value) != 64 or any(c not in "0123456789abcdef" for c in value))
+    verifications = sorted(set(map(str, verification_record_sha256)))
+    if not verifications or any(len(v) != 64 or any(c not in "0123456789abcdef" for c in v) for v in verifications):
+        invalid.append("verification_record_sha256")
+    body = {"schema_version":"px.recursive-terminal-evidence/1.0", **values, "verification_record_sha256":verifications, "independently_checkable":not invalid, "invalid_fields":invalid, "authority_granted":False}
+    rendered = json.dumps(body, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+    return {**body, "receipt_sha256": hashlib.sha256(rendered.encode("utf-8")).hexdigest()}

@@ -1,0 +1,160 @@
+{
+  "applicability": {
+    "conditions": [
+      "Publication must be explicitly authorized."
+    ],
+    "exclusions": [
+      "semantic retrieval before privacy filtering"
+    ],
+    "targets": [
+      "private memory",
+      "public contribution"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "memory_private_layout",
+          "memory_public_lifecycle",
+          "memory_privacy_doc"
+        ],
+        "statement": "Private material does not become public merely because it is useful or high-confidence."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "memory_private_layout",
+          "memory_public_lifecycle",
+          "memory_privacy_doc"
+        ],
+        "statement": "Public contribution requires an explicit boundary transition and reviewable provenance."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "memory_private_layout",
+          "memory_public_lifecycle",
+          "memory_privacy_doc"
+        ],
+        "statement": "Retrieval must respect the domain/ACL boundary before semantic ranking or model context assembly."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "store private and public records in separate namespaces/repos",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "run explicit publication/declassification review",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "bind public projections to the exact approved private/source revision without leaking excluded content",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "Private and public memory domains are separate custody zones; publication/declassification is an explicit governed transition with provenance, privacy review, and a publication receipt rather than automatic synchronization."
+  },
+  "namespace": "memory",
+  "object_id": "nsai:memory:boundary:persistent_memory_private_public_boundary",
+  "object_type": "boundary",
+  "ontology": {
+    "classes": [
+      "memory_governance",
+      "privacy_boundary"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "memory"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "archive": "models and harnesses for them.zip",
+        "kind": "source_file",
+        "path": "Pacify-X-Persistent-Memory-Plugin/docs/03_PRIVATE_REPO_LAYOUT.md",
+        "sha256": "91e19946b356f288f1babafef28c68036394dc86c27bffbe5b764c0c51e98a54",
+        "source_id": "memory_private_layout"
+      },
+      {
+        "archive": "models and harnesses for them.zip",
+        "kind": "source_file",
+        "path": "Pacify-X-Persistent-Memory-Plugin/docs/04_PUBLIC_CONTRIBUTION_LIFECYCLE.md",
+        "sha256": "7f8e3d9347f6e7236a81470f1f24b4149a40dc53b5db85218b31c9b5104aa0ba",
+        "source_id": "memory_public_lifecycle"
+      },
+      {
+        "archive": "models and harnesses for them.zip",
+        "kind": "source_file",
+        "path": "Pacify-X-Persistent-Memory-Plugin/docs/08_SECURITY_PRIVACY_SAFETY.md",
+        "sha256": "f8643b10b0bff2513feb2b469b8544349ec38c66911b7e34106e1d1fe06f69ff",
+        "source_id": "memory_privacy_doc"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:memory:review_promotion:persistent_memory_review_promotion"
+    }
+  ],
+  "retrieval": {
+    "priority": 96,
+    "tags": [
+      "declassification",
+      "private memory",
+      "public memory",
+      "publication"
+    ],
+    "terms": [
+      "declassification",
+      "memory publication bridge",
+      "private memory",
+      "private/public boundary",
+      "public memory",
+      "publication"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "Private and public memory domains are separate custody zones; publication/declassification is an explicit governed transition with provenance, privacy review, and a publication receipt rather than automatic synchronization.",
+    "exclusions": [
+      "automatic public sync"
+    ],
+    "intents": [
+      "enforce memory privacy",
+      "publish memory safely"
+    ],
+    "keywords": [
+      "declassification",
+      "private memory",
+      "public memory",
+      "publication"
+    ],
+    "retrieval_text": "Persistent Memory Private/Public Boundary. Private and public memory domains are separate custody zones; publication/declassification is an explicit governed transition with provenance, privacy review, and a publication receipt rather than automatic synchronization. Private material does not become public merely because it is useful or high-confidence. Public contribution requires an explicit boundary transition and reviewable provenance. Retrieval must respect the domain/ACL boundary before semantic ranking or model context assembly.",
+    "short_description": "Private and public memory domains are separate custody zones; publication/declassification is an explicit governed transition with provenance, privacy review, and a publication receipt rather than automatic synchronization.",
+    "synonyms": [
+      "memory publication bridge",
+      "private/public boundary"
+    ]
+  },
+  "status": "validated",
+  "title": "Persistent Memory Private/Public Boundary"
+}

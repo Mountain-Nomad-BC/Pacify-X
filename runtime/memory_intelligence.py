@@ -1199,3 +1199,18 @@ def validate_memory_orchestration(root: Path) -> dict[str, object]:
         "errors": [f"missing step: {item}" for item in missing],
         "effects": ["read_local", "write_project_memory"],
     }
+
+
+def build_bounded_observation_pack(
+    *, text: str, source_locator: str, stable_handle: str, provider_requests_since_observed: int,
+    reducer_receipt: Mapping[str, object] | None = None, threshold_chars: int = 10240,
+    full_request_count: int = 2, excerpt_chars: int = 1024,
+) -> dict[str, object]:
+    """Project a large observation while preserving exact reversible source identity."""
+    from .observation_projection import build_observation_pack
+    return build_observation_pack(
+        text, source_locator=source_locator, stable_handle=stable_handle,
+        provider_requests_since_observed=provider_requests_since_observed,
+        threshold_chars=threshold_chars, full_request_count=full_request_count,
+        excerpt_chars=excerpt_chars, reducer_receipt=reducer_receipt,
+    )

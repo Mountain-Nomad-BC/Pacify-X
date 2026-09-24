@@ -1,7 +1,7 @@
 {
   "schema_version": "2.0",
   "policy": "Every shipped schema has one explicit owner and an honest enforcement classification.",
-  "contract_count": 174,
+  "contract_count": 180,
   "records": [
     {
       "path": "contracts/agent_handoff_packet.schema.json",
@@ -1210,6 +1210,69 @@
       ]
     },
     {
+      "path": "contracts/learning/observation-pack.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:learning:observation-pack",
+      "contract_version": "1.0.0",
+      "title": "PX Evidence-Preserving Observation Pack",
+      "owner": "runtime/observation_projection.py",
+      "producers": [
+        "runtime/observation_projection.py",
+        "runtime/evidence_reducer.py",
+        "runtime/memory_intelligence.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "evidence_projection_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_observation_projection.py",
+        "tests/test_evidence_reducer.py"
+      ]
+    },
+    {
+      "path": "contracts/learning/shared-contribution.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:learning:shared-contribution",
+      "contract_version": "1.0.0",
+      "title": "PX Shared Contribution",
+      "owner": "runtime/shared_contributions.py",
+      "producers": [
+        "runtime/shared_contributions.py",
+        "runtime/learning_promotion.py",
+        "runtime/process_memory.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "shared_learning_lineage_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_shared_contributions.py"
+      ]
+    },
+    {
+      "path": "contracts/learning/verification-record.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:learning:verification-record",
+      "contract_version": "1.0.0",
+      "title": "PX Shared Contribution Verification Record",
+      "owner": "runtime/shared_contributions.py",
+      "producers": [
+        "runtime/shared_contributions.py",
+        "runtime/learning_promotion.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "shared_learning_verification_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_shared_contributions.py"
+      ]
+    },
+    {
       "path": "contracts/memory/memory-evaluation-fixture.schema.json",
       "contract_id": "urn:engineering-loop-bootstrap:contract:memory:memory-evaluation-fixture",
       "contract_version": "1.0.0",
@@ -1721,6 +1784,52 @@
       ]
     },
     {
+      "path": "contracts/nsai/formula-object.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:nsai:formula-object",
+      "contract_version": "1.0.0",
+      "title": "PX NSAI Canonical Formula Object",
+      "owner": "runtime/nsai_knowledge.py",
+      "producers": [
+        "runtime/nsai_knowledge.py",
+        "runtime/knowledge_foundry.py",
+        "runtime/knowledge_refinery.py",
+        "runtime/cognitive_core/index_builder.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "nsai_single_object_knowledge_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_nsai_knowledge.py",
+        "tests/test_nsai_knowledge_foundry_materialization.py"
+      ]
+    },
+    {
+      "path": "contracts/nsai/knowledge-object.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:nsai:knowledge-object",
+      "contract_version": "1.0.0",
+      "title": "PX NSAI Canonical Knowledge Object",
+      "owner": "runtime/nsai_knowledge.py",
+      "producers": [
+        "runtime/nsai_knowledge.py",
+        "runtime/knowledge_foundry.py",
+        "runtime/knowledge_refinery.py",
+        "runtime/cognitive_core/index_builder.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "nsai_single_object_knowledge_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_nsai_knowledge.py",
+        "tests/test_nsai_knowledge_foundry_materialization.py"
+      ]
+    },
+    {
       "path": "contracts/operations/health-model-registry.schema.json",
       "contract_id": "urn:engineering-loop-bootstrap:contract:operations:health-model-registry",
       "contract_version": "1.0.0",
@@ -1908,6 +2017,27 @@
       "tests": [
         "tests/test_contract_runtime.py",
         "tests/test_trust_boundaries.py"
+      ]
+    },
+    {
+      "path": "contracts/persistent_memory/memory-provider.contract.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:persistent_memory:memory-provider.contract.json",
+      "contract_version": "1.0.0",
+      "title": "Pacify-X External Persistent Memory Provider Boundary",
+      "owner": "runtime/persistent_memory_provider.py",
+      "producers": [
+        "runtime/persistent_memory_provider.py",
+        "runtime/external_capability_provider.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "external_persistent_memory_read_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_persistent_memory_provider.py",
+        "tests/test_persistent_memory_workflow.py"
       ]
     },
     {

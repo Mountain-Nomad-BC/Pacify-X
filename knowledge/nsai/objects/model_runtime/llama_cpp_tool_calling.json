@@ -1,0 +1,151 @@
+{
+  "applicability": {
+    "conditions": [
+      "Use only with an admitted PX model/runtime identity.",
+      "Treat measured machine-specific profile evidence as stronger than generic defaults."
+    ],
+    "exclusions": [
+      "backend executes PX tools directly"
+    ],
+    "targets": [
+      "tool-capable chat models",
+      "PX provider gateway"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.95,
+        "evidence_refs": [
+          "llama_server_readme",
+          "px_llama_api_contract"
+        ],
+        "statement": "Tool-call syntax support is a wire/model capability, not an authorization grant."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "llama_server_readme",
+          "px_llama_api_contract"
+        ],
+        "statement": "Fragmented streamed arguments must be assembled and schema-validated before execution."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "Chat templates map canonical tools/messages into model-specific prompt syntax.",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "PX provider normalization converts returned call structures into canonical tool-call events.",
+        "name": "mechanism_2"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, or policy authority."
+    ],
+    "summary": "llama.cpp can template, parse, and stream model tool-call structures, but PX remains the authority that validates tool identity/arguments/effects and executes tools. Built-in server tools stay disabled in governed mode."
+  },
+  "namespace": "model_runtime",
+  "object_id": "nsai:model_runtime:tool_protocol:llama_cpp_tool_calling",
+  "object_type": "tool_protocol",
+  "ontology": {
+    "classes": [
+      "protocol",
+      "authority_boundary"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "model_runtime",
+      "runtime_scope": [
+        "tool-capable chat models",
+        "PX provider gateway"
+      ]
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "manual source-backed synthesis with schema validation and exact SHA provenance",
+      "source_pass": "Wave 14"
+    },
+    "sources": [
+      {
+        "archive": "models and harnesses for them.zip",
+        "kind": "source_file",
+        "path": "llama.cpp-master/llama.cpp-master/tools/server/README.md",
+        "sha256": "57e27013809e4976e71a76fe83a5930779634401d6dbdf2d941fd5432889eb9e",
+        "source_id": "llama_server_readme"
+      },
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_Model_Fabric_Junction_Hardening_Pass3_2026-09-20/04_LLAMA_CPP_API_TOOL_STREAMING_CONTRACT.md",
+        "sha256": "9a2022cf3d1e72763395929ea98beccd30e7b94733a57bbdc2c47604e2f25040",
+        "source_id": "px_llama_api_contract"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:protocol_normalization:provider_protocol_normalization"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:recovery:model_cancellation_recovery"
+    }
+  ],
+  "retrieval": {
+    "priority": 85,
+    "tags": [
+      "tools",
+      "template",
+      "schema",
+      "effects"
+    ],
+    "terms": [
+      "authority",
+      "effects",
+      "function calling",
+      "jinja",
+      "schema",
+      "template",
+      "tool calling",
+      "tool loop",
+      "tool schema",
+      "tools"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "llama.cpp can template, parse, and stream model tool-call structures, but PX remains the authority that validates tool identity/arguments/effects and executes tools. Built-in server tools stay disabled in governed mode.",
+    "exclusions": [
+      "backend executes PX tools directly"
+    ],
+    "intents": [
+      "use model tools",
+      "parse tool calls"
+    ],
+    "keywords": [
+      "tool calling",
+      "jinja",
+      "tool schema",
+      "authority"
+    ],
+    "retrieval_text": "llama.cpp Tool Calling Boundary. llama.cpp can template, parse, and stream model tool-call structures, but PX remains the authority that validates tool identity/arguments/effects and executes tools. Built-in server tools stay disabled in governed mode. Tool-call syntax support is a wire/model capability, not an authorization grant. Fragmented streamed arguments must be assembled and schema-validated before execution.",
+    "short_description": "llama.",
+    "synonyms": [
+      "function calling",
+      "tool loop"
+    ]
+  },
+  "status": "validated",
+  "title": "llama.cpp Tool Calling Boundary"
+}

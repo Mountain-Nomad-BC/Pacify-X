@@ -1,6 +1,6 @@
 {
   "loading_rule": "metadata_first_then_minimal_hydration",
-  "record_count": 486,
+  "record_count": 492,
   "records": [
     {
       "aliases": [
@@ -19741,6 +19741,164 @@
       "source_path": "target:.px/skills/verify-outcome/SKILL.md",
       "summary": "Independently verify completion claims against declared postconditions and current, valid, task-scoped evidence. Use after implementation, repair, migration, deployment preparation, or any task where an executor claims success and the result must be proven rather than assumed.",
       "title": "Verify Outcome"
+    },
+    {
+      "category": "memory-external",
+      "dependencies": [
+        "govern-memory-fabric"
+      ],
+      "disposition": "mapped_deferred",
+      "id": "govern-persistent-memory",
+      "keywords": [
+        "persistent memory",
+        "external provider",
+        "memory review",
+        "memory graph"
+      ],
+      "kind": "candidate_skill_bundle",
+      "license": "Project-authored source adaptation",
+      "load_paths": [
+        ".px/skills/govern-persistent-memory/SKILL.md"
+      ],
+      "owner": "govern-memory-fabric",
+      "source": "pacify-x-persistent-memory",
+      "summary": "Govern the optional persistent-memory package as bounded noncanonical external state under Pacify-X memory authority.",
+      "title": "Govern Persistent Memory"
+    },
+    {
+      "aliases": [
+        "maintain external persistent memory"
+      ],
+      "category": "memory-external",
+      "dependencies": [
+        "govern-memory-fabric"
+      ],
+      "disposition": "mapped_deferred",
+      "id": "maintain-external-persistent-memory",
+      "keywords": [
+        "persistent repository",
+        "immutable records",
+        "event ledger"
+      ],
+      "kind": "candidate_capability",
+      "license": "Project-authored source adaptation",
+      "load_paths": [
+        ".px/skills/govern-persistent-memory/SKILL.md",
+        "contracts/persistent_memory/memory-provider.contract.json"
+      ],
+      "owner": "govern-memory-fabric",
+      "source": "pacify-x-persistent-memory",
+      "summary": "Operate immutable external memory records and append-only lifecycle events under future explicit write admission.",
+      "title": "Maintain External Persistent Memory Repository"
+    },
+    {
+      "aliases": [
+        "observe external persistent memory"
+      ],
+      "category": "memory-external",
+      "dependencies": [
+        "govern-memory-fabric",
+        "memory-injection-firewall"
+      ],
+      "disposition": "mapped_deferred",
+      "id": "observe-external-persistent-memory",
+      "keywords": [
+        "persistent memory",
+        "external memory",
+        "review preview",
+        "graph preview"
+      ],
+      "kind": "candidate_capability",
+      "license": "Project-authored source adaptation",
+      "load_paths": [
+        ".px/skills/govern-persistent-memory/SKILL.md",
+        "contracts/persistent_memory/memory-provider.contract.json"
+      ],
+      "owner": "govern-memory-fabric",
+      "source": "pacify-x-persistent-memory",
+      "summary": "Read, validate, review, and graph an external persistent-memory repository as noncanonical evidence.",
+      "title": "External Persistent Memory Observation"
+    },
+    {
+      "aliases": [
+        "prepare external memory contribution"
+      ],
+      "category": "memory-publication",
+      "dependencies": [
+        "govern-memory-fabric",
+        "candidate-memory-promoter"
+      ],
+      "disposition": "mapped_deferred",
+      "id": "prepare-external-memory-contribution",
+      "keywords": [
+        "memory contribution",
+        "lineage",
+        "publication proposal"
+      ],
+      "kind": "candidate_capability",
+      "license": "Project-authored source adaptation",
+      "load_paths": [
+        ".px/skills/govern-persistent-memory/SKILL.md",
+        "contracts/persistent_memory/memory-provider.contract.json"
+      ],
+      "owner": "govern-memory-fabric",
+      "source": "pacify-x-persistent-memory",
+      "summary": "Select exact external records into an immutable contribution bundle without publishing it.",
+      "title": "Prepare External Memory Contribution"
+    },
+    {
+      "aliases": [
+        "publish external memory projection"
+      ],
+      "category": "memory-publication",
+      "dependencies": [
+        "review-external-memory-contribution",
+        "candidate-memory-promoter"
+      ],
+      "disposition": "mapped_deferred",
+      "id": "publish-external-memory-projection",
+      "keywords": [
+        "public memory",
+        "promotion receipt",
+        "public projection"
+      ],
+      "kind": "candidate_capability",
+      "license": "Project-authored source adaptation",
+      "load_paths": [
+        ".px/skills/govern-persistent-memory/SKILL.md",
+        "contracts/persistent_memory/memory-provider.contract.json"
+      ],
+      "owner": "govern-memory-fabric",
+      "source": "pacify-x-persistent-memory",
+      "summary": "Promote reviewed content only into the external public-memory projection; never into canonical PX memory.",
+      "title": "Publish External Memory Projection"
+    },
+    {
+      "aliases": [
+        "review external memory contribution"
+      ],
+      "category": "memory-publication",
+      "dependencies": [
+        "prepare-external-memory-contribution",
+        "run-evidence-campaigns"
+      ],
+      "disposition": "mapped_deferred",
+      "id": "review-external-memory-contribution",
+      "keywords": [
+        "memory review",
+        "contribution review",
+        "lineage"
+      ],
+      "kind": "candidate_capability",
+      "license": "Project-authored source adaptation",
+      "load_paths": [
+        ".px/skills/govern-persistent-memory/SKILL.md",
+        "contracts/persistent_memory/memory-provider.contract.json"
+      ],
+      "owner": "govern-memory-fabric",
+      "source": "pacify-x-persistent-memory",
+      "summary": "Review and optionally enhance an external contribution while retaining the immutable original and exact lineage.",
+      "title": "Review External Memory Contribution"
     }
   ],
   "schema_version": "pacifyx.external-intake.v1"

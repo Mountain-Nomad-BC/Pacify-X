@@ -102,7 +102,7 @@
         "runtime.registry"
       ],
       "graph_id": "capability",
-      "graph_revision": "84ffc4bbca0e29cb813a94220cc0270f6dac91c3af334d33bd430d67c481e1be",
+      "graph_revision": "c9e76cd438e543750b35e7043ba6e7c7049594a885b1f42a6b13318925704009",
       "invalidation_rule": "graph manifest source drift",
       "path": "registry/graphs/capability_graph.json",
       "purpose": "canonical capability membership relationships",
@@ -121,7 +121,7 @@
         "runtime.graphs"
       ],
       "graph_id": "dependency-effect",
-      "graph_revision": "638f34a9fcc56e13eff376d7a5d09ca3298855b7ab071b4f37d028b67a3cd407",
+      "graph_revision": "d06d42ff7336cb1c003b793d4eab67726f14482d8a4bed2dc27bec6ba0b4cb2d",
       "invalidation_rule": "graph manifest source drift",
       "path": "registry/graphs/dependency_effect_graph.json",
       "purpose": "capability dependency and effect relationships",
@@ -140,7 +140,7 @@
         "runtime.graphs"
       ],
       "graph_id": "io",
-      "graph_revision": "63bc8e6e4baab55c236f6cd0003ecfc58dbca3a92d2e8e78d20a6c170ec6a806",
+      "graph_revision": "c58653b3ffb6c58535b97951d4035cda40d24ecb4a7e646cbeffc5991510fc93",
       "invalidation_rule": "graph manifest source drift",
       "path": "registry/graphs/io_graph.json",
       "purpose": "capability input and output compatibility relationships",
@@ -178,7 +178,7 @@
         "runtime.system_graph"
       ],
       "graph_id": "system-asset",
-      "graph_revision": "1d08b6cc8c0fed96c02192c1a7dffe990d0c386f2f7329f13d74ca1eb655f624",
+      "graph_revision": "70e0b480896c16861264169c5412a59031453fa1e7e6531fce05bfa3331e732f",
       "invalidation_rule": "graph manifest source drift",
       "path": "registry/graphs/system_asset_graph.json",
       "purpose": "system asset ownership and integration topology",

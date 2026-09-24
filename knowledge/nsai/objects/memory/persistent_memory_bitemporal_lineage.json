@@ -1,0 +1,148 @@
+{
+  "applicability": {
+    "conditions": [
+      "Canonical record IDs must remain stable."
+    ],
+    "exclusions": [
+      "deleting superseded evidence merely because it is no longer current"
+    ],
+    "targets": [
+      "persistent memory"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "memory_bitemporal_doc",
+          "px_memory_fabric"
+        ],
+        "statement": "Memory identity and lineage should remain stable across revisions and storage movement."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "memory_bitemporal_doc",
+          "px_memory_fabric"
+        ],
+        "statement": "Corrections append new evidence/revisions rather than rewriting historical records in place."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "memory_bitemporal_doc",
+          "px_memory_fabric"
+        ],
+        "statement": "Bitemporal lineage supports answering both what was believed at a time and what was later learned to be valid."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "append immutable memory records/events",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "link supersession/correction relationships",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "derive current views without deleting prior lineage",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "Persistent memory keeps immutable record/revision history with event time and knowledge/validity lineage so later corrections supersede prior statements without erasing what the system previously knew."
+  },
+  "namespace": "memory",
+  "object_id": "nsai:memory:bitemporal_lineage:persistent_memory_bitemporal_lineage",
+  "object_type": "bitemporal_lineage",
+  "ontology": {
+    "classes": [
+      "memory_lineage",
+      "temporal_record"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "memory"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "archive": "models and harnesses for them.zip",
+        "kind": "source_file",
+        "path": "Pacify-X-Persistent-Memory-Plugin/docs/02_BITEMPORAL_AND_LINEAGE.md",
+        "sha256": "137c298a1e5dbdf45075c531223af455609d5e52540ec702548b2209efaf3e01",
+        "source_id": "memory_bitemporal_doc"
+      },
+      {
+        "kind": "source_file",
+        "path": "runtime/memory_fabric.py",
+        "sha256": "9ad048336d6009de42a45de5a012d3dabcb4e7ba6c771b25ffb0df7a67024141",
+        "source_id": "px_memory_fabric"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:memory:review_promotion:persistent_memory_review_promotion"
+    }
+  ],
+  "retrieval": {
+    "priority": 91,
+    "tags": [
+      "bitemporal",
+      "correction",
+      "immutable history",
+      "memory lineage"
+    ],
+    "terms": [
+      "bitemporal",
+      "correction",
+      "immutable history",
+      "immutable memory revisions",
+      "memory lineage",
+      "temporal memory lineage"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "Persistent memory keeps immutable record/revision history with event time and knowledge/validity lineage so later corrections supersede prior statements without erasing what the system previously knew.",
+    "exclusions": [
+      "in-place history rewrite"
+    ],
+    "intents": [
+      "correct persistent memory",
+      "trace memory history"
+    ],
+    "keywords": [
+      "bitemporal",
+      "correction",
+      "immutable history",
+      "memory lineage"
+    ],
+    "retrieval_text": "Persistent Memory Bitemporal Lineage. Persistent memory keeps immutable record/revision history with event time and knowledge/validity lineage so later corrections supersede prior statements without erasing what the system previously knew. Memory identity and lineage should remain stable across revisions and storage movement. Corrections append new evidence/revisions rather than rewriting historical records in place. Bitemporal lineage supports answering both what was believed at a time and what was later learned to be valid.",
+    "short_description": "Persistent memory keeps immutable record/revision history with event time and knowledge/validity lineage so later corrections supersede prior statements without erasing what the system previously knew.",
+    "synonyms": [
+      "immutable memory revisions",
+      "temporal memory lineage"
+    ]
+  },
+  "status": "validated",
+  "title": "Persistent Memory Bitemporal Lineage"
+}

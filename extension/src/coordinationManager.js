@@ -14,6 +14,10 @@ const MAX_EVENT_BYTES = 32 * 1024 * 1024;
 const MAX_MEMORY_FILE_BYTES = 16 * 1024 * 1024;
 const MAX_MEMORY_TOTAL_BYTES = 64 * 1024 * 1024;
 const CLAIM_TTL_MINUTES = 120;
+const MAX_WAITS = 1000;
+const MAX_WAKES = 2000;
+const MAX_MAILBOX_MESSAGES = 2000;
+const MAX_MESSAGE_BYTES = 8 * 1024;
 
 function now() { return new Date().toISOString(); }
 function id(prefix) { return `${prefix}-${crypto.randomUUID()}`; }
@@ -51,6 +55,7 @@ function defaultState(workspaceRoot) {
   return {
     schema_version: SCHEMA_VERSION, project: { id: safeId(path.basename(workspaceRoot), 'project'), root: path.resolve(workspaceRoot) },
     revision: 0, updated_utc: now(), state_hash: null, active_plan: null, plans: [], tasks: [], claims: [], sessions: [],
+    waits: [], wakes: [], mailboxes: {},
     memory: { session_records: 0, project_records: 0, state_records: 0, system_candidates: 0 },
     team_fabric: {
       enabled: true, mode: 'local-first', hub: { configured: false, connected: false, authoritative: false },
@@ -63,6 +68,7 @@ function defaultState(workspaceRoot) {
 function migrateState(state) {
   state.schema_version = SCHEMA_VERSION;
   state.plans ||= []; state.tasks ||= []; state.claims ||= []; state.sessions ||= [];
+  state.waits ||= []; state.wakes ||= []; state.mailboxes ||= {};
   state.memory ||= { session_records: 0, project_records: 0, state_records: 0, system_candidates: 0 };
   state.team_fabric ||= {};
   state.team_fabric.enabled = true;
@@ -296,7 +302,7 @@ function withState(workspaceRoot, actor, operation, mutator) {
     // applied as the first fenced transition step instead of making recovery
     // impossible merely because wall time advanced.
     assertCoordinationState(previous, { requireSeal: false, nowUtc: previous.updated_utc });
-    expireClaims(state); expireSessions(state);
+    expireClaims(state); expireSessions(state); expireWaits(state);
     const beforeHash = previous.state_hash || stateHash(previous);
     const priorEvents = tailJsonlDetailed(paths.events, MAX_EVENTS);
     if (priorEvents.health.status === 'degraded') throw new Error(`coordination-event-log-degraded:line-${priorEvents.health.failed_line}`);
@@ -446,6 +452,207 @@ function expireSessions(state) {
   }
 }
 
+
+function expireWaits(state) {
+  const stamp = Date.now();
+  state.waits ||= [];
+  state.wakes ||= [];
+  for (const wait of state.waits) {
+    if (wait.status !== 'waiting') continue;
+    if (!Number.isFinite(Date.parse(wait.expires_utc)) || Date.parse(wait.expires_utc) <= stamp) wait.status = 'expired';
+    const task = state.tasks.find(item => item.id === wait.task_id);
+    if (!task || ['completed', 'reconciled', 'released'].includes(task.status)) wait.status = 'cancelled';
+  }
+}
+
+function waitById(state, waitId) {
+  const value = cleanText(waitId, 200);
+  const wait = state.waits.find(item => item.wait_id === value);
+  if (!wait) throw new Error('coordination-wait-not-found');
+  return wait;
+}
+
+function dependencyGraph(state) {
+  return Object.fromEntries(state.tasks.map(task => [task.id, [...task.depends_on]]));
+}
+
+function wouldWaitCreateCycle(state, taskId, dependencies) {
+  const graph = dependencyGraph(state);
+  graph[taskId] = [...new Set([...(graph[taskId] || []), ...dependencies])];
+  const visiting = new Set(); const visited = new Set();
+  const visit = node => {
+    if (visiting.has(node)) return true;
+    if (visited.has(node)) return false;
+    visiting.add(node);
+    for (const child of graph[node] || []) if (visit(child)) return true;
+    visiting.delete(node); visited.add(node); return false;
+  };
+  return visit(taskId);
+}
+
+function activeClaimForTask(state, task, principal) {
+  const claim = state.claims.find(item => item.task_id === task.id && item.status === 'active');
+  if (!claim) throw new Error('coordination-wait-requires-active-claim');
+  if (claim.actor.actor_id !== principal.actor_id || claim.actor.session_id !== principal.session_id) throw new Error('coordination-wait-claim-owner-mismatch');
+  return claim;
+}
+
+function wakeIdentity(wait) {
+  return `wake-${hash({ wait_id: wait.wait_id, satisfied_ids: [...wait.satisfied_ids].sort(), checkpoint_id: wait.checkpoint_id }).slice(0, 32)}`;
+}
+
+function satisfyWaits(state, triggerType, triggerId, triggerEvidence = []) {
+  const produced = [];
+  expireWaits(state);
+  for (const wait of state.waits) {
+    if (wait.status !== 'waiting' || wait.condition_type !== triggerType || !wait.dependency_ids.includes(triggerId)) continue;
+    const task = state.tasks.find(item => item.id === wait.task_id);
+    if (!task || ['completed', 'reconciled', 'released'].includes(task.status)) { wait.status = 'cancelled'; continue; }
+    if (!wait.satisfied_ids.includes(triggerId)) wait.satisfied_ids.push(triggerId);
+    const complete = wait.mode === 'any' ? wait.satisfied_ids.length > 0 : wait.dependency_ids.every(item => wait.satisfied_ids.includes(item));
+    if (!complete) continue;
+    wait.status = 'satisfied'; wait.satisfied_utc = now();
+    const wakeId = wakeIdentity(wait);
+    let wake = state.wakes.find(item => item.wake_id === wakeId);
+    if (!wake) {
+      if (state.wakes.length >= MAX_WAKES) throw new Error('coordination-wake-capacity-exceeded');
+      wake = {
+        wake_id: wakeId, wait_id: wait.wait_id, task_id: wait.task_id, checkpoint_id: wait.checkpoint_id,
+        trigger_type: triggerType, trigger_ids: [...wait.satisfied_ids], trigger_evidence: triggerEvidence.map(value => cleanText(value, 1000)).filter(Boolean).slice(0, 32),
+        created_utc: now(), status: 'resume_pending', required_actor: wait.actor,
+        exact_next_action: wait.exact_next_action || null, cognitive_generation_id: wait.cognitive_generation_id || null,
+        fresh_claim_required: !state.claims.some(item => item.task_id === wait.task_id && item.status === 'active')
+      };
+      state.wakes.push(wake);
+    }
+    produced.push(wake);
+  }
+  return produced;
+}
+
+function registerWait(workspaceRoot, actor, input) {
+  return withState(workspaceRoot, actor, 'wait-registered', state => {
+    expireWaits(state);
+    const principal = normalizeActor(actor);
+    const task = taskById(state, input.taskId || input.task_id);
+    if (!ownedBy(task, principal)) throw new Error('coordination-wait-requires-owning-actor-or-session');
+    if (['completed', 'reconciled', 'released'].includes(task.status)) throw new Error('coordination-wait-task-terminal');
+    const claim = activeClaimForTask(state, task, principal);
+    exactClaimProof(state, claim, input);
+    const checkpointId = cleanText(input.checkpointId || input.checkpoint_id, 240);
+    if (!checkpointId) throw new Error('coordination-wait-checkpoint-required');
+    const conditionType = cleanText(input.conditionType || input.condition_type, 40);
+    if (!['task', 'message', 'resource', 'approval', 'timer', 'model_result'].includes(conditionType)) throw new Error('coordination-wait-condition-unsupported');
+    const dependencies = [...new Set((input.dependencyIds || input.dependency_ids || []).map(value => cleanText(value, 240)).filter(Boolean))];
+    if (!dependencies.length || dependencies.length > 64) throw new Error('coordination-wait-dependencies-required');
+    if (conditionType === 'task') {
+      for (const dependency of dependencies) taskById(state, dependency);
+      if (wouldWaitCreateCycle(state, task.id, dependencies)) throw new Error('coordination-wait-cycle');
+    }
+    const mode = cleanText(input.mode || 'all', 20);
+    if (!['all', 'any'].includes(mode)) throw new Error('coordination-wait-mode-unsupported');
+    const ttl = Math.min(1440, Math.max(1, Number(input.ttlMinutes || input.ttl_minutes || 60)));
+    const duplicate = state.waits.find(item => item.status === 'waiting' && item.task_id === task.id && item.condition_type === conditionType
+      && item.checkpoint_id === checkpointId && JSON.stringify([...item.dependency_ids].sort()) === JSON.stringify([...dependencies].sort()));
+    if (duplicate) return { receipt: { ...duplicate, idempotent: true } };
+    if (state.waits.length >= MAX_WAITS) throw new Error('coordination-wait-capacity-exceeded');
+    const wait = {
+      wait_id: id('wait'), task_id: task.id, actor: principal, claim_id: claim.id, fencing_tokens: { ...claim.fencing_tokens },
+      condition_type: conditionType, dependency_ids: dependencies, satisfied_ids: [], mode, checkpoint_id: checkpointId,
+      exact_next_action: cleanText(input.exactNextAction || input.exact_next_action, 2000) || null,
+      cognitive_generation_id: cleanText(input.cognitiveGenerationId || input.cognitive_generation_id, 256) || null,
+      created_utc: now(), expires_utc: new Date(Date.now() + ttl * 60000).toISOString(), status: 'waiting'
+    };
+    state.waits.push(wait); task.status = 'waiting'; task.updated_utc = now();
+    return { authority: claim.authority, receipt: wait };
+  });
+}
+
+function waitStatus(workspaceRoot, waitId) {
+  const snapshot = readCoordination(workspaceRoot, { eventLimit: 20 });
+  const wait = waitById(snapshot.state, waitId);
+  const wakes = (snapshot.state.wakes || []).filter(item => item.wait_id === wait.wait_id);
+  const activeClaim = snapshot.state.claims.find(item => item.task_id === wait.task_id && item.status === 'active') || null;
+  return {
+    schema_version: SCHEMA_VERSION, wait, wakes,
+    resume_packet: wakes.at(-1) ? {
+      wait_id: wait.wait_id, wake_id: wakes.at(-1).wake_id, task_id: wait.task_id, checkpoint_id: wait.checkpoint_id,
+      trigger_result_ids: wakes.at(-1).trigger_ids, trigger_evidence_ids: wakes.at(-1).trigger_evidence,
+      exact_next_action: wakes.at(-1).exact_next_action, fresh_claim_required: !activeClaim,
+      active_claim_id: activeClaim?.id || null, cognitive_generation_id: wakes.at(-1).cognitive_generation_id || wait.cognitive_generation_id || null
+    } : null,
+    authority_granted: false
+  };
+}
+
+function acknowledgeWake(workspaceRoot, actor, input) {
+  return withState(workspaceRoot, actor, 'wake-acknowledged', state => {
+    expireWaits(state);
+    const principal = normalizeActor(actor);
+    const wake = state.wakes.find(item => item.wake_id === cleanText(input.wakeId || input.wake_id, 200));
+    if (!wake) throw new Error('coordination-wake-not-found');
+    if (wake.status === 'acknowledged') return { receipt: { ...wake, idempotent: true } };
+    const wait = waitById(state, wake.wait_id);
+    if (wait.actor.actor_id !== principal.actor_id || wait.actor.session_id !== principal.session_id) throw new Error('coordination-wake-ack-actor-mismatch');
+    const task = taskById(state, wake.task_id);
+    if (['completed', 'reconciled', 'released'].includes(task.status)) throw new Error('coordination-wake-task-terminal');
+    wake.status = 'acknowledged'; wake.acknowledged_utc = now(); wake.acknowledged_by = principal;
+    return { receipt: { wake_id: wake.wake_id, wait_id: wake.wait_id, task_id: wake.task_id, checkpoint_id: wake.checkpoint_id, fresh_claim_required: !state.claims.some(item => item.task_id === task.id && item.status === 'active') } };
+  });
+}
+
+function sendMessage(workspaceRoot, actor, input) {
+  return withState(workspaceRoot, actor, 'message-sent', state => {
+    const principal = normalizeActor(actor);
+    const recipient = safeId(input.recipientId || input.recipient_id, 'recipient');
+    const payload = cleanText(input.payload, MAX_MESSAGE_BYTES);
+    if (!payload) throw new Error('coordination-message-payload-required');
+    const privacy = cleanText(input.privacyClass || input.privacy_class || 'project', 40);
+    if (!['public', 'project', 'private'].includes(privacy)) throw new Error('coordination-message-privacy-unsupported');
+    const transport = cleanText(input.recipientTransport || input.recipient_transport || 'local', 40);
+    if (!['local', 'remote', 'browser'].includes(transport)) throw new Error('coordination-message-transport-unsupported');
+    if (privacy === 'private' && transport !== 'local' && input.egressApproved !== true && input.egress_approved !== true) throw new Error('coordination-private-message-egress-denied');
+    const total = Object.values(state.mailboxes).reduce((sum, rows) => sum + (Array.isArray(rows) ? rows.length : 0), 0);
+    if (total >= MAX_MAILBOX_MESSAGES) throw new Error('coordination-mailbox-capacity-exceeded');
+    state.mailboxes[recipient] ||= [];
+    const suppliedId = cleanText(input.messageId || input.message_id, 200);
+    if (suppliedId) {
+      const existing = state.mailboxes[recipient].find(item => item.message_id === suppliedId);
+      if (existing) return { receipt: { ...existing, idempotent: true } };
+    }
+    const message = {
+      message_id: suppliedId || id('msg'), sender: principal, recipient_id: recipient, recipient_transport: transport,
+      privacy_class: privacy, payload, payload_sha256: hash(payload), created_utc: now(), status: 'unread',
+      evidence_refs: (input.evidence || input.evidence_refs || []).map(value => cleanText(value, 1000)).filter(Boolean).slice(0, 32)
+    };
+    state.mailboxes[recipient].push(message);
+    const wakes = satisfyWaits(state, 'message', message.message_id, message.evidence_refs);
+    return { receipt: { message_id: message.message_id, recipient_id: recipient, privacy_class: privacy, payload_sha256: message.payload_sha256, wake_ids: wakes.map(item => item.wake_id) } };
+  });
+}
+
+function readMessages(workspaceRoot, actor, input = {}) {
+  const snapshot = readCoordination(workspaceRoot, { eventLimit: 20 });
+  const principal = normalizeActor(actor);
+  const recipient = safeId(input.recipientId || input.recipient_id || principal.actor_id, 'recipient');
+  const rows = Array.isArray(snapshot.state.mailboxes?.[recipient]) ? snapshot.state.mailboxes[recipient] : [];
+  const limit = Math.max(1, Math.min(100, Number(input.limit || 24)));
+  return { schema_version: SCHEMA_VERSION, recipient_id: recipient, messages: rows.filter(item => item.status !== 'consumed').slice(-limit), authority_granted: false };
+}
+
+function consumeMessage(workspaceRoot, actor, input) {
+  return withState(workspaceRoot, actor, 'message-consumed', state => {
+    const principal = normalizeActor(actor);
+    const recipient = safeId(input.recipientId || input.recipient_id || principal.actor_id, 'recipient');
+    const rows = Array.isArray(state.mailboxes?.[recipient]) ? state.mailboxes[recipient] : [];
+    const message = rows.find(item => item.message_id === cleanText(input.messageId || input.message_id, 200));
+    if (!message) throw new Error('coordination-message-not-found');
+    if (message.status === 'consumed') return { receipt: { message_id: message.message_id, idempotent: true } };
+    message.status = 'consumed'; message.consumed_utc = now(); message.consumed_by = principal;
+    return { receipt: { message_id: message.message_id, recipient_id: recipient, consumed: true } };
+  });
+}
+
 function taskById(state, taskId) {
   const task = state.tasks.find(item => item.id === safeId(taskId, 'task'));
   if (!task) throw new Error('unknown-coordination-task');
@@ -581,7 +788,8 @@ function recordProgress(workspaceRoot, actor, input) {
       authority: claim.authority, fencing_tokens: claim.fencing_tokens, usage: { ...task.usage }
     };
     task.progress.push(receipt); task.status = exceeded && task.budget?.hard_stop ? 'blocked' : status; task.updated_utc = receipt.timestamp;
-    return { receipt };
+    const wakes = task.status === 'completed' ? satisfyWaits(state, 'task', task.id, receipt.evidence) : [];
+    return { receipt: { ...receipt, wake_ids: wakes.map(item => item.wake_id) } };
   });
 }
 
@@ -600,6 +808,8 @@ function reconcileTask(workspaceRoot, actor, input) {
       conflicts_resolved: Boolean(input.conflictsResolved ?? input.conflicts_resolved), merge_owner: cleanText(input.mergeOwner || input.merge_owner, 200) || principal.actor_id
     };
     task.status = 'reconciled'; task.outputs.push(receipt); task.updated_utc = receipt.timestamp;
+    const wakes = satisfyWaits(state, 'task', task.id, receipt.evidence);
+    receipt.wake_ids = wakes.map(item => item.wake_id);
     for (const claim of state.claims) if (claim.task_id === task.id && claim.status === 'active') claim.status = 'released';
     const plan = state.plans.find(item => item.id === state.active_plan);
     if (plan && plan.task_ids.every(taskId => taskById(state, taskId).status === 'reconciled')) { plan.status = 'completed'; plan.completed_utc = now(); state.active_plan = null; }
@@ -615,6 +825,7 @@ function releaseTask(workspaceRoot, actor, input) {
     if (!activeClaim || activeClaim.actor.actor_id !== principal.actor_id || activeClaim.actor.session_id !== principal.session_id) throw new Error('task-release-requires-owning-claim');
     exactClaimProof(state, activeClaim, input);
     for (const claim of state.claims) if (claim.task_id === task.id && ['active', 'expired'].includes(claim.status)) claim.status = 'released';
+    for (const wait of state.waits || []) if (wait.task_id === task.id && wait.status === 'waiting') { wait.status = 'cancelled'; wait.cancelled_utc = now(); }
     task.status = 'released'; task.owner = null; task.updated_utc = now();
     return { receipt: { task_id: task.id, released: true, reason: cleanText(input.reason, 1000) || 'explicit-release' } };
   });
@@ -762,7 +973,7 @@ function readCoordination(workspaceRoot, options = {}) {
       instrumented: false, persistence: 'not-initialized-read-only'
     };
   }
-  const state = readAuthoritativeState(paths); expireClaims(state); expireSessions(state);
+  const state = readAuthoritativeState(paths); expireClaims(state); expireSessions(state); expireWaits(state);
   const eventTail = tailJsonlDetailed(paths.events, MAX_EVENTS);
   if (eventTail.health.status === 'healthy') {
     try {
@@ -834,7 +1045,7 @@ function publicPaths(paths) {
 
 function publicState(state) {
   const copy = JSON.parse(JSON.stringify(state));
-  expireClaims(copy);
+  expireClaims(copy); expireWaits(copy);
   copy.claims = copy.claims.filter(claim => claim.status === 'active');
   return copy;
 }
@@ -921,6 +1132,7 @@ function workRoom(workspaceRoot, taskId) {
 module.exports = {
   SCHEMA_VERSION, coordinationPaths, normalizeActor, normalizeTarget, overlap, validateTaskGraph, createParallelPlan,
   claimTask, renewClaim, assertFencingToken, recordProgress, reconcileTask, releaseTask, captureMemory, registerSession,
+  registerWait, waitStatus, acknowledgeWake, sendMessage, readMessages, consumeMessage, satisfyWaits,
   readCoordination, readMemoryTelemetry, taskHandoff, diagnoseWorkStop, workRoom, hash,
   readAuthoritativeState, tailJsonl, tailJsonlDetailed, acquireLock, localProcessAlive, retireProvablyStaleLock
 };

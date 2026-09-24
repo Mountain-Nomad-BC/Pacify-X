@@ -1,5 +1,5 @@
 {
-  "package_count": 12,
+  "package_count": 13,
   "packages": [
     {
       "activation": "requires_admission",
@@ -276,6 +276,31 @@
       ],
       "status": "mapped_deferred",
       "version": "0.1.0"
+    },
+    {
+      "activation": "requires_admission",
+      "body": ".px/skills/govern-persistent-memory/SKILL.md",
+      "candidate_capabilities": [
+        "observe-external-persistent-memory",
+        "maintain-external-persistent-memory",
+        "prepare-external-memory-contribution",
+        "review-external-memory-contribution",
+        "publish-external-memory-projection"
+      ],
+      "effects": [
+        "read_local"
+      ],
+      "id": "govern-persistent-memory",
+      "owner": "govern-memory-fabric",
+      "references": [
+        "contracts/persistent_memory/memory-provider.contract.json",
+        "orchestration/workflows/persistent-memory-review.yaml"
+      ],
+      "source_licenses": [
+        "pacify-x-persistent-memory"
+      ],
+      "status": "mapped_deferred",
+      "version": "0.2.0"
     }
   ],
   "schema_version": "1.0"

@@ -1,0 +1,148 @@
+{
+  "applicability": {
+    "conditions": [
+      "Reset decisions require explicit compatibility evidence."
+    ],
+    "exclusions": [
+      "silently carrying incompatible state forward"
+    ],
+    "targets": [
+      "learned router state"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "px_learning_promotion",
+          "moe_lineage_doc"
+        ],
+        "statement": "State lineage prevents a learned router from appearing independent of the data/policy generation that produced it."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_learning_promotion",
+          "moe_lineage_doc"
+        ],
+        "statement": "A reset can be required after incompatible model, feature, or evaluation changes."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_learning_promotion",
+          "moe_lineage_doc"
+        ],
+        "statement": "Resetting learned state does not erase historical evidence; lineage remains available for audit and negative-result learning."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "content-address each learned-state generation and its parents",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "record migration/upcycling lineage",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "create a new clean state generation when compatibility gates fail",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "Learned routing state must retain explicit lineage across training/upcycling generations and support governed reset when source assumptions, model generations, or evaluation contracts change."
+  },
+  "namespace": "moe",
+  "object_id": "nsai:moe:state_lineage:moe_state_lineage_reset",
+  "object_type": "state_lineage",
+  "ontology": {
+    "classes": [
+      "learning_governance",
+      "state_lineage"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "moe"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "kind": "source_file",
+        "path": "runtime/learning_promotion.py",
+        "sha256": "be3f59e5509786fbf19c65449953a3e136a81fdbce72068c81d188181c8f85fd",
+        "source_id": "px_learning_promotion"
+      },
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_MoE_Mining_Pass_v3/24_STATE_LINEAGE_UPCYCLING_AND_RESET.md",
+        "sha256": "e5c5708d58c0ef83d3b0faf9eafdd2a9def9905be11f57f1d8a4132224bb60ec",
+        "source_id": "moe_lineage_doc"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:moe:adaptation_drift:moe_adaptation_drift"
+    }
+  ],
+  "retrieval": {
+    "priority": 84,
+    "tags": [
+      "reset",
+      "router state",
+      "state lineage",
+      "upcycling"
+    ],
+    "terms": [
+      "adaptive state reset",
+      "reset",
+      "router state",
+      "routing state lineage",
+      "state lineage",
+      "upcycling"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "Learned routing state must retain explicit lineage across training/upcycling generations and support governed reset when source assumptions, model generations, or evaluation contracts change.",
+    "exclusions": [
+      "history deletion"
+    ],
+    "intents": [
+      "reset routing state",
+      "trace learned state"
+    ],
+    "keywords": [
+      "reset",
+      "router state",
+      "state lineage",
+      "upcycling"
+    ],
+    "retrieval_text": "MoE State Lineage, Upcycling, and Reset. Learned routing state must retain explicit lineage across training/upcycling generations and support governed reset when source assumptions, model generations, or evaluation contracts change. State lineage prevents a learned router from appearing independent of the data/policy generation that produced it. A reset can be required after incompatible model, feature, or evaluation changes. Resetting learned state does not erase historical evidence; lineage remains available for audit and negative-result learning.",
+    "short_description": "Learned routing state must retain explicit lineage across training/upcycling generations and support governed reset when source assumptions, model generations, or evaluation contracts change.",
+    "synonyms": [
+      "adaptive state reset",
+      "routing state lineage"
+    ]
+  },
+  "status": "validated",
+  "title": "MoE State Lineage, Upcycling, and Reset"
+}

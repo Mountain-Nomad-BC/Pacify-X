@@ -6,7 +6,7 @@
       "dependencies": [
         {
           "path": ".px/skills",
-          "revision": "b239656382c64e29777407c567c122b376b494ca9e94dcd92e104d12d6247493"
+          "revision": "f61127c7f8ad1599ee4616593cc5db47e35edd67da8d8beb0336059fb68c2565"
         },
         {
           "path": "builders/last_round_assimilation_builder.py",
@@ -15,7 +15,7 @@
       ],
       "invalidation_rule": "any_dependency_revision_change",
       "output": "registry/skill_catalog.toml",
-      "output_revision": "d0f006a76eac089fb63b116bc1a262b6a7b3fdd6ac4f480a46033a0f2c011817",
+      "output_revision": "3da14b73799f0affed45c6c69b2b4d95168c01751c24e5279b2842b98735a96d",
       "owner": "builders.last_round_assimilation_builder",
       "projection_id": "skill-package-catalog",
       "rebuild_gate": "block_until_rebuilt"
@@ -26,11 +26,11 @@
       "dependencies": [
         {
           "path": "registry/skill_catalog.toml",
-          "revision": "d0f006a76eac089fb63b116bc1a262b6a7b3fdd6ac4f480a46033a0f2c011817"
+          "revision": "3da14b73799f0affed45c6c69b2b4d95168c01751c24e5279b2842b98735a96d"
         },
         {
           "path": "registry/skill_orchestrations.json",
-          "revision": "f414cfac2de6fed178df4c3a599bb3ff8aa859d3441cebd9722e55acd8854115"
+          "revision": "44cad879acb6179df36bf0dc65d74984ccda8b775f4e00f50eb260daeeaecbda"
         },
         {
           "path": "registry/capability_aliases.json",
@@ -38,7 +38,7 @@
         },
         {
           "path": "runtime/semantic_index.py",
-          "revision": "ec2e2063c974d358aae88cd30a8427ed4400936277399584633cf66541c4ae64"
+          "revision": "b8545ae3ba6024c7218165defe2875dc9c264340d25b005e5d2ac88a4e4ace90"
         },
         {
           "path": "builders/semantic_index_builder.py",
@@ -47,7 +47,7 @@
       ],
       "invalidation_rule": "any_dependency_revision_change",
       "output": "registry/semantic_capability_index.json",
-      "output_revision": "b56b021060dd53ee94ec6ab0e2a00669825c271ad463c9f54f71c7eb0cb328c4",
+      "output_revision": "f873f4950b4fd133c14be9e1a15b02385395738dfdab422015f06d52ff78686c",
       "owner": "runtime.semantic_index",
       "projection_id": "semantic-capability-index",
       "rebuild_gate": "rebuild_before_use"
@@ -58,15 +58,15 @@
       "dependencies": [
         {
           "path": "registry/skill_catalog.toml",
-          "revision": "d0f006a76eac089fb63b116bc1a262b6a7b3fdd6ac4f480a46033a0f2c011817"
+          "revision": "3da14b73799f0affed45c6c69b2b4d95168c01751c24e5279b2842b98735a96d"
         },
         {
           "path": "registry/skill_orchestrations.json",
-          "revision": "f414cfac2de6fed178df4c3a599bb3ff8aa859d3441cebd9722e55acd8854115"
+          "revision": "44cad879acb6179df36bf0dc65d74984ccda8b775f4e00f50eb260daeeaecbda"
         },
         {
           "path": "runtime/cognitive_core/index_builder.py",
-          "revision": "f92d9dedf392531a2f3b9f9312451831b828f885aef10b1503af48b8af8b5490"
+          "revision": "76bf24c87aa7892a54fce97ee4a2a60ced62be85fa6ed528bbf6708d0e05b15a"
         },
         {
           "path": "scripts/build_cognitive_index.py",
@@ -75,7 +75,7 @@
       ],
       "invalidation_rule": "any_dependency_revision_change",
       "output": "registry/cognitive_map_index.json",
-      "output_revision": "37a45491d7c81fe4329591ed9efb69027794c07e9d918b7f29ff4418b6d9e454",
+      "output_revision": "138c08f65ad1c7249be4ea5fc4457bd0dde6dc554cf1da45cc1e7b3e54df7abc",
       "owner": "runtime.cognitive_core.index_builder",
       "projection_id": "cognitive-map-index",
       "rebuild_gate": "block_until_rebuilt"
@@ -110,11 +110,11 @@
       "dependencies": [
         {
           "path": "registry/semantic_capability_index.json",
-          "revision": "b56b021060dd53ee94ec6ab0e2a00669825c271ad463c9f54f71c7eb0cb328c4"
+          "revision": "f873f4950b4fd133c14be9e1a15b02385395738dfdab422015f06d52ff78686c"
         },
         {
           "path": "registry/cognitive_map_index.json",
-          "revision": "37a45491d7c81fe4329591ed9efb69027794c07e9d918b7f29ff4418b6d9e454"
+          "revision": "138c08f65ad1c7249be4ea5fc4457bd0dde6dc554cf1da45cc1e7b3e54df7abc"
         },
         {
           "path": "registry/agency_agent_graph.json",

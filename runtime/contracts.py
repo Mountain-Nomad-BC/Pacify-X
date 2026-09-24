@@ -463,6 +463,8 @@ def validate_instance(
 
 
 def _pattern_example(pattern: str) -> str:
+    if pattern.startswith("^nsai:"):
+        return "nsai:example:formula:example" if ":formula:" in pattern else "nsai:example:concept:example"
     if pattern == "^evidence:[A-Za-z0-9._-]+$":
         return "evidence:example"
     if pattern == "^sha256:[a-f0-9]{64}$":

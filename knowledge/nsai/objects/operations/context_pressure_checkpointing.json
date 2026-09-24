@@ -1,0 +1,153 @@
+{
+  "applicability": {
+    "conditions": [
+      "Checkpoint receipt must exist before destructive compaction at required pressure."
+    ],
+    "exclusions": [
+      "continuing bulk hydration past block threshold without checkpoint"
+    ],
+    "targets": [
+      "cognitive hydration",
+      "long model sessions"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "wave15c_checkpoint",
+          "wave15c_checkpoint_tests"
+        ],
+        "statement": "Pressure thresholds are policy values that can be calibrated, not immutable model facts."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "wave15c_checkpoint",
+          "wave15c_checkpoint_tests"
+        ],
+        "statement": "A checkpoint preserves decisions, facts, constraints, goals, open work, evidence references, uncertainties, and exact next action."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "wave15c_checkpoint",
+          "wave15c_checkpoint_tests"
+        ],
+        "statement": "Model KV/prompt cache is not a durable project checkpoint."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "compute pressure action from used/context tokens",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "build a bounded structured checkpoint",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "persist/publish the checkpoint before blocking/destructive compaction and require the receipt for continued large hydration",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "Context pressure is governed by configurable soft/checkpoint/block thresholds (initially about 70/82/90%): before further bulk hydration or destructive compaction at high pressure, PX requires a durable structured checkpoint and publication receipt."
+  },
+  "namespace": "operations",
+  "object_id": "nsai:operations:context_checkpoint:context_pressure_checkpointing",
+  "object_type": "context_checkpoint",
+  "ontology": {
+    "classes": [
+      "context_lifecycle",
+      "durable_checkpoint"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "operations"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "archive": "PX_IMPLEMENTATION_WAVE15C_COGNITIVE_QUERY_COORDINATION_CONTEXT_COMMISSIONING_2026-09-20.zip",
+        "kind": "source_file",
+        "path": "runtime/context_checkpoint.py",
+        "sha256": "68e0364ae6e485cfe335ae0ca2bc3526a249e858929aaf1d328e178a70073920",
+        "source_id": "wave15c_checkpoint"
+      },
+      {
+        "archive": "PX_IMPLEMENTATION_WAVE15C_COGNITIVE_QUERY_COORDINATION_CONTEXT_COMMISSIONING_2026-09-20.zip",
+        "kind": "source_file",
+        "path": "tests/test_context_checkpoint.py",
+        "sha256": "c78a38b84440bbf26d6d6ddb1d74ba5189b5732c37c72bd70a16e450481fbe79",
+        "source_id": "wave15c_checkpoint_tests"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:semantic:context_materialization:semantic_context_materialization"
+    }
+  ],
+  "retrieval": {
+    "priority": 99,
+    "tags": [
+      "70 82 90",
+      "checkpoint",
+      "compaction",
+      "context pressure",
+      "hydration"
+    ],
+    "terms": [
+      "70 82 90",
+      "checkpoint",
+      "compaction",
+      "context pressure",
+      "context pressure gate",
+      "durable context checkpoint",
+      "hydration"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "Context pressure is governed by configurable soft/checkpoint/block thresholds (initially about 70/82/90%): before further bulk hydration or destructive compaction at high pressure, PX requires a durable structured checkpoint and publication receipt.",
+    "exclusions": [
+      "KV cache as durable memory"
+    ],
+    "intents": [
+      "checkpoint context",
+      "handle context pressure"
+    ],
+    "keywords": [
+      "70 82 90",
+      "checkpoint",
+      "compaction",
+      "context pressure",
+      "hydration"
+    ],
+    "retrieval_text": "Context-Pressure Checkpointing. Context pressure is governed by configurable soft/checkpoint/block thresholds (initially about 70/82/90%): before further bulk hydration or destructive compaction at high pressure, PX requires a durable structured checkpoint and publication receipt. Pressure thresholds are policy values that can be calibrated, not immutable model facts. A checkpoint preserves decisions, facts, constraints, goals, open work, evidence references, uncertainties, and exact next action. Model KV/prompt cache is not a durable project checkpoint.",
+    "short_description": "Context pressure is governed by configurable soft/checkpoint/block thresholds (initially about 70/82/90%): before further bulk hydration or destructive compaction at high pressure, PX requires a durable structured checkpoint and publication receipt.",
+    "synonyms": [
+      "context pressure gate",
+      "durable context checkpoint"
+    ]
+  },
+  "status": "validated",
+  "title": "Context-Pressure Checkpointing"
+}

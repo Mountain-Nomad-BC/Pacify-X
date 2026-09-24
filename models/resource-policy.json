@@ -1,0 +1,45 @@
+{
+  "schema_version": "px.model-resource-policy/1.0",
+  "router": {
+    "models_max": 2,
+    "autoload": false,
+    "loopback_only": true,
+    "metrics_required": true,
+    "slots_required": true,
+    "ui_enabled": false
+  },
+  "cpu": {
+    "reserved_logical_cores_min": 2,
+    "control_max_concurrency": 1,
+    "embedding_max_concurrency": 1,
+    "reranker_max_concurrency": 1,
+    "benchmark_before_parallelism_increase": true,
+    "operator_must_not_starve_retrieval_or_extension_host": true
+  },
+  "memory": {
+    "system_ram_reserve_bytes": 4294967296,
+    "vram_reserve_bytes": 1073741824,
+    "measured_peak_required_for_certification": true,
+    "file_size_is_not_runtime_ram": true
+  },
+  "residency": {
+    "startup_required_lanes": ["control"],
+    "preferred_resident_model": "qwen35-4b-operator",
+    "resident_never_idle_evict": true,
+    "warm_requires_idle_timeout": true,
+    "cold_requires_deadline_preflight": true,
+    "failed_swap_must_reconcile": true
+  },
+  "heavy": {
+    "exclusive_concurrency": 1,
+    "drain_before_unload": true,
+    "prove_release_before_lease_release": true,
+    "preferred_deep_candidate": "qwen3-30b-a3b-deep"
+  },
+  "authority": {
+    "model_request_does_not_grant_load": true,
+    "load_unload_requires_effect_authority": true,
+    "models_do_not_own_resource_policy": true,
+    "models_do_not_self_promote": true
+  }
+}

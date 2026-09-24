@@ -17,6 +17,22 @@
       "unknown_billing": "deny",
       "unknown_charge_microunits": 0,
       "fallback_adapter_ids": []
+    },
+    {
+      "budget_id": "local-vscode-models",
+      "actor_id": "pacify-x-vscode",
+      "provider_id": "llama.cpp",
+      "currency": "USD",
+      "enabled": true,
+      "hard_limit_microunits": 0,
+      "warning_threshold_microunits": 0,
+      "max_requests": 10000,
+      "max_input_tokens": 67108864,
+      "max_output_tokens": 16777216,
+      "max_charge_per_request_microunits": 0,
+      "unknown_billing": "deny",
+      "unknown_charge_microunits": 0,
+      "fallback_adapter_ids": []
     }
   ]
 }

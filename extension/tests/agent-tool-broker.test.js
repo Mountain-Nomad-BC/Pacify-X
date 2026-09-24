@@ -1,0 +1,5 @@
+'use strict';
+const test=require('node:test');const assert=require('node:assert/strict');
+const {TaskStore}=require('../src/agentHarness/taskStore');const {ToolBroker}=require('../src/agentHarness/toolBroker');
+const {newId,nowIso}=require('../src/agentHarness/ids');
+test('mutating tool is blocked without approval and read-only executes',async()=>{const store=new TaskStore();const task=store.createTask({goal:'x',mode:'DIAGNOSE',maxEffectClass:'MUTATING',contextBudgetTokens:1000,taskCostCeilingUsd:null,localFirst:true,requireApprovalBeforeBillable:true,completionContract:[]});const broker=new ToolBroker({approvalProvider:async()=>false});broker.register({toolId:'write.fixture',effectClass:'MUTATING',execute:async()=>({summary:'wrote'})});const req={requestId:newId('req'),taskId:task.taskId,runId:newId('run'),workerId:'worker-1',toolId:'write.fixture',effectClass:'MUTATING',arguments:{},scopeRefs:[],requestedAt:nowIso()};assert.equal((await broker.execute(req,task)).status,'blocked');});

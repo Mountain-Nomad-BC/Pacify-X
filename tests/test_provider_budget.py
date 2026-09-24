@@ -420,14 +420,17 @@ def test_gateway_budget_exhaustion_and_duplicate_stop_before_adapter(
     assert duplicate.calls == 0
 
 
-def test_shipped_policy_admits_only_the_zero_cost_local_provider() -> None:
+def test_shipped_policy_admits_only_explicit_zero_cost_local_provider_budgets() -> None:
     budgets = load_budget_policy(ROOT)["budgets"]
-    assert len(budgets) == 1
-    assert budgets[0]["provider_id"] == "ollama"
-    assert budgets[0]["enabled"] is True
-    assert budgets[0]["hard_limit_microunits"] == 0
-    assert budgets[0]["max_charge_per_request_microunits"] == 0
-    assert budgets[0]["unknown_billing"] == "deny"
+    assert {(row["budget_id"], row["actor_id"], row["provider_id"]) for row in budgets} == {
+        ("local-development", "pacify-x-local", "ollama"),
+        ("local-vscode-models", "pacify-x-vscode", "llama.cpp"),
+    }
+    for row in budgets:
+        assert row["enabled"] is True
+        assert row["hard_limit_microunits"] == 0
+        assert row["max_charge_per_request_microunits"] == 0
+        assert row["unknown_billing"] == "deny"
     adapters = json.loads(
         (ROOT / "registry/provider_adapters.json").read_text(encoding="utf-8")
     )["adapters"]

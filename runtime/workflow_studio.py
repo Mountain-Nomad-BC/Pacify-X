@@ -1787,3 +1787,46 @@ class WorkflowStudio:
             approved=approved,
             stale_after_seconds=stale_after_seconds,
         )
+
+
+def workflow_operational_projection(
+    definition: WorkflowDefinition,
+    *,
+    revision_sha256: str,
+) -> dict[str, object]:
+    """Create a read-only searchable projection for an admitted workflow revision.
+
+    The projection is never used as workflow authority and does not mutate studio
+    state.  Callers may index the returned artifacts only after separately proving
+    that ``revision_sha256`` is the admitted revision.
+    """
+    if type(revision_sha256) is not str or not re.fullmatch(r"[0-9a-f]{64}", revision_sha256):
+        raise ValueError("revision_sha256 must be a lowercase SHA-256")
+    from .operational_projection import project_workflow_contract, projection_manifest
+
+    body = asdict(definition)
+    body.setdefault("workflow_id", definition.workflow_id)
+    body.setdefault("title", definition.workflow_id)
+    body["steps"] = [
+        {
+            "step_id": str(node.get("node_id") or f"step_{index}"),
+            "name": str(node.get("node_id") or f"step_{index}"),
+            "description": " ".join(
+                value for value in (
+                    str(node.get("kind") or ""),
+                    str(node.get("executor_binding_id") or ""),
+                ) if value
+            ),
+        }
+        for index, node in enumerate(body.get("nodes", ()), 1)
+        if isinstance(node, Mapping)
+    ]
+    artifacts = project_workflow_contract(body, revision=revision_sha256)
+    return {
+        "schema_version": "px.workflow-operational-projection/1.0",
+        "workflow_id": definition.workflow_id,
+        "revision_sha256": revision_sha256,
+        "projection": projection_manifest(artifacts),
+        "artifacts": artifacts,
+        "authority_granted": False,
+    }

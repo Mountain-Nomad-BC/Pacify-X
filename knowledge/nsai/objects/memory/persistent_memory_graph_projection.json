@@ -1,0 +1,150 @@
+{
+  "applicability": {
+    "conditions": [
+      "Graph references must resolve to canonical stable IDs."
+    ],
+    "exclusions": [
+      "treating graph files as canonical memory"
+    ],
+    "targets": [
+      "cognitive index",
+      "memory graph"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "memory_graph_doc",
+          "px_cognitive_generation"
+        ],
+        "statement": "Graph nodes and edges are navigation/projection artifacts, not independent memory truth."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "memory_graph_doc",
+          "px_cognitive_generation"
+        ],
+        "statement": "Stable IDs allow graph/index rebuilds after storage relocation without changing semantic identity."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "memory_graph_doc",
+          "px_cognitive_generation"
+        ],
+        "statement": "A stale or broken projection should be rebuilt from canonical records instead of manually repaired as authority."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "derive graph/index records from canonical stable IDs",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "validate every relationship endpoint",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "publish a coherent projection generation and retain canonical records as source of truth",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "Memory graphs, maps, subject indexes, and relation indexes are derived projections over stable canonical IDs; they can be rebuilt or replaced without changing canonical memory authority."
+  },
+  "namespace": "memory",
+  "object_id": "nsai:memory:graph_projection:persistent_memory_graph_projection",
+  "object_type": "graph_projection",
+  "ontology": {
+    "classes": [
+      "derived_projection",
+      "memory_graph"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "memory"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "archive": "models and harnesses for them.zip",
+        "kind": "source_file",
+        "path": "Pacify-X-Persistent-Memory-Plugin/docs/07_GRAPH_AND_MAPPING.md",
+        "sha256": "7763e645f0cee335f435c4f749529291f6c90fd62a96e2d6f192043183455294",
+        "source_id": "memory_graph_doc"
+      },
+      {
+        "archive": "PX_IMPLEMENTATION_WAVE15B_COGNITIVE_STORAGE_ATOMIC_GENERATION_2026-09-20.zip",
+        "kind": "source_file",
+        "path": "EXTERNAL/pacifyx_memory/cognitive_generation.py",
+        "sha256": "98b6b12a4d2894eb2adb118f7d0aa86bba6373ef314d4a2ca9c0541527b2e334",
+        "source_id": "px_cognitive_generation"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:cognitive:generation_publication:atomic_cognitive_generation_publication"
+    }
+  ],
+  "retrieval": {
+    "priority": 92,
+    "tags": [
+      "memory graph",
+      "projection",
+      "relation index",
+      "subject index"
+    ],
+    "terms": [
+      "cognitive graph projection",
+      "memory graph",
+      "memory mapping",
+      "projection",
+      "relation index",
+      "subject index"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "Memory graphs, maps, subject indexes, and relation indexes are derived projections over stable canonical IDs; they can be rebuilt or replaced without changing canonical memory authority.",
+    "exclusions": [
+      "graph authority"
+    ],
+    "intents": [
+      "query memory map",
+      "rebuild memory graph"
+    ],
+    "keywords": [
+      "memory graph",
+      "projection",
+      "relation index",
+      "subject index"
+    ],
+    "retrieval_text": "Persistent Memory Graph Projection. Memory graphs, maps, subject indexes, and relation indexes are derived projections over stable canonical IDs; they can be rebuilt or replaced without changing canonical memory authority. Graph nodes and edges are navigation/projection artifacts, not independent memory truth. Stable IDs allow graph/index rebuilds after storage relocation without changing semantic identity. A stale or broken projection should be rebuilt from canonical records instead of manually repaired as authority.",
+    "short_description": "Memory graphs, maps, subject indexes, and relation indexes are derived projections over stable canonical IDs; they can be rebuilt or replaced without changing canonical memory authority.",
+    "synonyms": [
+      "cognitive graph projection",
+      "memory mapping"
+    ]
+  },
+  "status": "validated",
+  "title": "Persistent Memory Graph Projection"
+}

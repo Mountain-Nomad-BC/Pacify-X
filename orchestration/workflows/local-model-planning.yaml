@@ -1,4 +1,4 @@
-schema_version: "1.0"
+schema_version: "1.1"
 id: local-model-planning
 loading_rule: Inspect configuration as hostile data; never import a model or remote model code during planning.
 steps:
@@ -10,6 +10,10 @@ steps:
     skill: plan-local-model-deployment
     depends_on: [inspect]
     evidence: ranked feasibility matrix, blockers, transformation budget, rollback
+  - id: fabric-gate
+    skill: govern-model-fabric
+    depends_on: [plan]
+    evidence: exact model/profile/runtime identities, executable capability fingerprint, lane and resource-interlock evidence
   - id: data-gate
     skill: gate-model-data-lifecycle
     depends_on: [plan]
@@ -20,6 +24,6 @@ steps:
     evidence: exact-reference quality, forbidden exposure, latency, memory, and calibration results
   - id: validate
     skill: validate-engineering-outcomes
-    depends_on: [data-gate, retrieval-gate]
+    depends_on: [fabric-gate, data-gate, retrieval-gate]
     evidence: discriminating tests, operational checks, residual risks
-failure_policy: Missing hardware facts, privacy violations, failed calibration, or absent rollback keep the plan conditional and block deployment claims.
+failure_policy: Missing hardware facts, model/profile/runtime identity, capability fingerprints, privacy violations, failed calibration, resource conflicts, or absent rollback keep the plan conditional and block deployment claims.

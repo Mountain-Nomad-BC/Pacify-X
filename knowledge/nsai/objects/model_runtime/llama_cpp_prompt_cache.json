@@ -1,0 +1,159 @@
+{
+  "applicability": {
+    "conditions": [
+      "Use only with an admitted PX model/runtime identity.",
+      "Treat measured machine-specific profile evidence as stronger than generic defaults."
+    ],
+    "exclusions": [
+      "cross-model cache reuse"
+    ],
+    "targets": [
+      "repeated prompts",
+      "coding system prefixes"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.95,
+        "evidence_refs": [
+          "llama_server_readme",
+          "llama_arg_cpp",
+          "px_llama_profiles"
+        ],
+        "statement": "Cache reuse is beneficial only when the reusable token prefix is actually identical under the selected model/template."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "llama_server_readme",
+          "llama_arg_cpp",
+          "px_llama_profiles"
+        ],
+        "statement": "Cache identity and invalidation must be conservative across model/profile/template changes."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "Reusable prompt state reduces repeated prefill computation.",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "PX generation/model identity provides the boundary for safe cache association.",
+        "name": "mechanism_2"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, or policy authority."
+    ],
+    "summary": "Prompt/prefix cache reuse can avoid repeated prefill work for identical reusable prefixes, but cache identity must include the model/runtime/template/tokenization context so stale state is not reused across incompatible requests."
+  },
+  "namespace": "model_runtime",
+  "object_id": "nsai:model_runtime:prompt_cache:llama_cpp_prompt_cache",
+  "object_type": "prompt_cache",
+  "ontology": {
+    "classes": [
+      "performance_cache",
+      "prefill"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "model_runtime",
+      "runtime_scope": [
+        "repeated prompts",
+        "coding system prefixes"
+      ]
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "manual source-backed synthesis with schema validation and exact SHA provenance",
+      "source_pass": "Wave 14"
+    },
+    "sources": [
+      {
+        "archive": "models and harnesses for them.zip",
+        "kind": "source_file",
+        "path": "llama.cpp-master/llama.cpp-master/tools/server/README.md",
+        "sha256": "57e27013809e4976e71a76fe83a5930779634401d6dbdf2d941fd5432889eb9e",
+        "source_id": "llama_server_readme"
+      },
+      {
+        "archive": "models and harnesses for them.zip",
+        "kind": "source_file",
+        "path": "llama.cpp-master/llama.cpp-master/common/arg.cpp",
+        "sha256": "6e71ad4f63c79fee81fe218ab6755ed97813ba84d179e38ae02924be1556d46e",
+        "source_id": "llama_arg_cpp"
+      },
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_Model_Fabric_Junction_Hardening_Pass3_2026-09-20/03_LLAMA_CPP_CERTIFIED_RUNTIME_PROFILES.md",
+        "sha256": "c49c37da15288829814048b52a91a352d86a723e676e2756eeb578346d299a1c",
+        "source_id": "px_llama_profiles"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:generation_identity:model_fabric_generation_identity"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:certification:model_profile_certification"
+    }
+  ],
+  "retrieval": {
+    "priority": 85,
+    "tags": [
+      "cache",
+      "prefix",
+      "prefill",
+      "identity"
+    ],
+    "terms": [
+      "cache",
+      "cache reuse",
+      "identity",
+      "prefill",
+      "prefix",
+      "prefix cache",
+      "prefix reuse",
+      "prompt cache",
+      "prompt caching"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "Prompt/prefix cache reuse can avoid repeated prefill work for identical reusable prefixes, but cache identity must include the model/runtime/template/tokenization context so stale state is not reused across incompatible requests.",
+    "exclusions": [
+      "cross-model cache reuse"
+    ],
+    "intents": [
+      "reuse system prompt",
+      "reduce prefill latency"
+    ],
+    "keywords": [
+      "prompt cache",
+      "prefix cache",
+      "cache reuse",
+      "prefill"
+    ],
+    "retrieval_text": "llama.cpp Prompt/Prefix Cache Reuse. Prompt/prefix cache reuse can avoid repeated prefill work for identical reusable prefixes, but cache identity must include the model/runtime/template/tokenization context so stale state is not reused across incompatible requests. Cache reuse is beneficial only when the reusable token prefix is actually identical under the selected model/template. Cache identity and invalidation must be conservative across model/profile/template changes.",
+    "short_description": "Prompt/prefix cache reuse can avoid repeated prefill work for identical reusable prefixes, but cache identity must include the model/runtime/template/tokenization context so stale state is not reused across incompatible requests.",
+    "synonyms": [
+      "prefix reuse",
+      "prompt caching"
+    ]
+  },
+  "status": "validated",
+  "title": "llama.cpp Prompt/Prefix Cache Reuse"
+}

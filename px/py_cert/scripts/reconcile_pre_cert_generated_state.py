@@ -48,9 +48,17 @@ def git_paths(root: Path) -> list[str]:
     return [p.decode("utf-8", "surrogateescape") for p in cp.stdout.split(b"\0") if p]
 
 
+VOLATILE_SNAPSHOT_PATHS = {
+    ".engineering-bootstrap/test-evidence/.test-orchestration.lock",
+}
+
+
 def snapshot(root: Path) -> dict[str, str]:
     result: dict[str, str] = {}
     for rel in sorted(git_paths(root), key=str.casefold):
+        normalized = rel.replace("\\", "/")
+        if normalized in VOLATILE_SNAPSHOT_PATHS:
+            continue
         p = root / rel
         if not os.path.lexists(p):
             continue

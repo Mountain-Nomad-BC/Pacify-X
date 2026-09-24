@@ -1,0 +1,147 @@
+{
+  "applicability": {
+    "conditions": [
+      "Failure applicability and evaluation identity must be known."
+    ],
+    "exclusions": [
+      "deleting failures after a successful alternative is found"
+    ],
+    "targets": [
+      "learning pipeline"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "px_learning_promotion",
+          "px_evidence_reducer"
+        ],
+        "statement": "Rejected or failed branches can reduce future search cost and prevent repeated unsafe attempts."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_learning_promotion",
+          "px_evidence_reducer"
+        ],
+        "statement": "Negative results need the same generation/evaluation identity discipline as positive evidence."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_learning_promotion",
+          "px_evidence_reducer"
+        ],
+        "statement": "Retention of a failure does not mean the failure is globally universal; applicability scope must remain explicit."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "record failed evaluation/result identities",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "link failures to the hypothesis/candidate they tested",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "retrieve scoped negative evidence during future candidate generation and review",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "Failed hypotheses, routes, repairs, and experiments are first-class learning evidence; they should remain linked to the attempted hypothesis and evaluation contract so PX does not repeatedly relearn known failures."
+  },
+  "namespace": "learning",
+  "object_id": "nsai:learning:negative_result:negative_result_retention",
+  "object_type": "negative_result",
+  "ontology": {
+    "classes": [
+      "learning_memory",
+      "negative_evidence"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "learning"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "kind": "source_file",
+        "path": "runtime/learning_promotion.py",
+        "sha256": "be3f59e5509786fbf19c65449953a3e136a81fdbce72068c81d188181c8f85fd",
+        "source_id": "px_learning_promotion"
+      },
+      {
+        "kind": "source_file",
+        "path": "runtime/evidence_reducer.py",
+        "sha256": "4e27a1b9ce389b36c8d2c05b6c1c3a2b02f6cf8591106ebc37a49b3b3a5c8170",
+        "source_id": "px_evidence_reducer"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:learning:observation_reduction:evidence_preserving_observation_reduction"
+    }
+  ],
+  "retrieval": {
+    "priority": 90,
+    "tags": [
+      "failure evidence",
+      "learning",
+      "negative result",
+      "rejected branch"
+    ],
+    "terms": [
+      "failed branch memory",
+      "failure evidence",
+      "learning",
+      "negative evidence",
+      "negative result",
+      "rejected branch"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "Failed hypotheses, routes, repairs, and experiments are first-class learning evidence; they should remain linked to the attempted hypothesis and evaluation contract so PX does not repeatedly relearn known failures.",
+    "exclusions": [
+      "globalizing a scoped failure"
+    ],
+    "intents": [
+      "avoid repeated failure",
+      "retain failed experiment"
+    ],
+    "keywords": [
+      "failure evidence",
+      "learning",
+      "negative result",
+      "rejected branch"
+    ],
+    "retrieval_text": "Negative Result Retention. Failed hypotheses, routes, repairs, and experiments are first-class learning evidence; they should remain linked to the attempted hypothesis and evaluation contract so PX does not repeatedly relearn known failures. Rejected or failed branches can reduce future search cost and prevent repeated unsafe attempts. Negative results need the same generation/evaluation identity discipline as positive evidence. Retention of a failure does not mean the failure is globally universal; applicability scope must remain explicit.",
+    "short_description": "Failed hypotheses, routes, repairs, and experiments are first-class learning evidence; they should remain linked to the attempted hypothesis and evaluation contract so PX does not repeatedly relearn known failures.",
+    "synonyms": [
+      "failed branch memory",
+      "negative evidence"
+    ]
+  },
+  "status": "validated",
+  "title": "Negative Result Retention"
+}

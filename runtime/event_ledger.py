@@ -294,3 +294,39 @@ def recover_event_ledger(ledger: Path) -> dict[str, object]:
     if not verified["valid"]:
         raise ValueError("event ledger head recovery failed: " + "; ".join(verified["errors"]))
     return {"recovered": True, "event_count": verified["event_count"], "errors": []}
+
+
+def append_operational_lifecycle_event(
+    ledger: Path,
+    *,
+    lifecycle: str,
+    subject_id: str,
+    subject_revision: str,
+    evidence_sha256: str,
+    metadata: Mapping[str, object] | None = None,
+) -> Path:
+    """Append a bounded projection/generation/parity/drift lifecycle event."""
+    allowed = {"generation", "projection", "parity", "drift"}
+    if lifecycle not in allowed:
+        raise ValueError("unsupported operational lifecycle event")
+    if type(subject_id) is not str or not subject_id.strip() or len(subject_id.encode()) > 512:
+        raise ValueError("subject_id must be bounded nonempty text")
+    if type(subject_revision) is not str or not subject_revision.strip() or len(subject_revision.encode()) > 512:
+        raise ValueError("subject_revision must be bounded nonempty text")
+    if type(evidence_sha256) is not str or len(evidence_sha256) != 64 or any(ch not in "0123456789abcdef" for ch in evidence_sha256):
+        raise ValueError("evidence_sha256 must be lowercase SHA-256")
+    extra = dict(metadata or {})
+    encoded = _canonical(extra)
+    if len(encoded) > 64 * 1024:
+        raise ValueError("operational event metadata exceeds byte budget")
+    return append_chained_event(
+        ledger,
+        f"operational-{lifecycle}",
+        {
+            "subject_id": subject_id.strip(),
+            "subject_revision": subject_revision.strip(),
+            "evidence_sha256": evidence_sha256,
+            "metadata": extra,
+            "authority_granted": False,
+        },
+    )

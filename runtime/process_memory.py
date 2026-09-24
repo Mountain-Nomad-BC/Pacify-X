@@ -147,3 +147,29 @@ def record_process_candidate(
         json.dumps(state, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
     )
     return {**result, "receipt": path_text}
+
+
+def process_outcome_contribution_evidence(
+    root: Path, record: Mapping[str, Any], *, project_id: str, publisher_id: str,
+    outcome: str, outcome_evidence_sha256: str, failed_branch: str | None = None,
+) -> dict[str, Any]:
+    """Expose process outcome as contribution candidate; never auto-publish or promote."""
+    if not re.fullmatch(r"[0-9a-f]{64}", outcome_evidence_sha256):
+        raise ValueError("process outcome evidence must be SHA-256")
+    compiled = compile_process_candidate(root, dict(record))
+    if not compiled.get("valid"):
+        raise ValueError("invalid process cannot become contribution evidence")
+    from .shared_contributions import make_contribution
+    negative = outcome != "success"
+    description = f"process outcome: {outcome}"
+    if failed_branch:
+        description += f"; failed_branch={failed_branch}"
+    contribution = make_contribution(
+        project_id=project_id, publisher_id=publisher_id,
+        contribution_type="negative_result" if negative else "result",
+        description=description, contribution_class="heavy",
+        evidence_sha256=[outcome_evidence_sha256, compiled["candidate"]["source_process_sha256"]],
+        tags=["process-memory", "negative-result" if negative else "verified-outcome"],
+        metadata={"process_candidate": compiled["candidate"], "outcome": outcome, "failed_branch": failed_branch},
+    )
+    return {"schema_version":"px.process-contribution-evidence/1.0", "compilation":compiled, "contribution":contribution, "promotion_allowed":False, "authority_granted":False}

@@ -1,0 +1,158 @@
+{
+  "applicability": {
+    "conditions": [
+      "Candidate routes must already be admitted."
+    ],
+    "exclusions": [
+      "treating internal model experts as PX routes"
+    ],
+    "targets": [
+      "PX model fabric"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "px_route_state",
+          "moe_hierarchical"
+        ],
+        "statement": "Primary and challenger identities must both come from the admitted candidate set."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_route_state",
+          "moe_hierarchical"
+        ],
+        "statement": "Challenger selection is deterministic/sampleable and remains evidence-only."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_route_state",
+          "moe_hierarchical"
+        ],
+        "statement": "Internal sparse experts inside a model and PX external model routing are separate control layers."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "construct bounded scored route candidates",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "select a primary route under deterministic policy",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "sample a distinct challenger for shadow evidence without granting it authority",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "PX external-MoE routing is hierarchical: deterministic policy forms a bounded candidate set, selects a primary route, and may shadow a distinct challenger without confusing model choice with execution authority."
+  },
+  "namespace": "moe",
+  "object_id": "nsai:moe:routing:moe_hierarchical_routing",
+  "object_type": "routing",
+  "ontology": {
+    "classes": [
+      "external_moe",
+      "routing_policy"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "moe"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "kind": "source_file",
+        "path": "runtime/model_route_state.py",
+        "sha256": "7110ce744a74d16a884042d0a7fb30990aa7d8ca57457ce89614c4bd24139dec",
+        "source_id": "px_route_state"
+      },
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_MoE_Mining_Pass_v3/04_HIERARCHICAL_PRIMARY_CHALLENGER_ROUTING.md",
+        "sha256": "a20841885d152806ed6427cc9f1fc52d1347b56af01b6a9aa2de11a4957287cf",
+        "source_id": "moe_hierarchical"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:model_lane:deep_hybrid_moe_lane"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:moe:capacity:moe_capacity_backpressure"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:moe:route_confidence:moe_route_confidence_collapse"
+    }
+  ],
+  "retrieval": {
+    "priority": 91,
+    "tags": [
+      "challenger",
+      "external moe",
+      "hierarchical routing",
+      "primary"
+    ],
+    "terms": [
+      "challenger",
+      "external MoE",
+      "external moe",
+      "hierarchical routing",
+      "primary",
+      "primary challenger routing"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "PX external-MoE routing is hierarchical: deterministic policy forms a bounded candidate set, selects a primary route, and may shadow a distinct challenger without confusing model choice with execution authority.",
+    "exclusions": [
+      "model self-routing authority"
+    ],
+    "intents": [
+      "route model primary challenger",
+      "shadow challenger"
+    ],
+    "keywords": [
+      "challenger",
+      "external moe",
+      "hierarchical routing",
+      "primary"
+    ],
+    "retrieval_text": "Hierarchical Primary/Challenger Routing. PX external-MoE routing is hierarchical: deterministic policy forms a bounded candidate set, selects a primary route, and may shadow a distinct challenger without confusing model choice with execution authority. Primary and challenger identities must both come from the admitted candidate set. Challenger selection is deterministic/sampleable and remains evidence-only. Internal sparse experts inside a model and PX external model routing are separate control layers.",
+    "short_description": "PX external-MoE routing is hierarchical: deterministic policy forms a bounded candidate set, selects a primary route, and may shadow a distinct challenger without confusing model choice with execution authority.",
+    "synonyms": [
+      "external MoE",
+      "primary challenger routing"
+    ]
+  },
+  "status": "validated",
+  "title": "Hierarchical Primary/Challenger Routing"
+}

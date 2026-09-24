@@ -1,0 +1,160 @@
+{
+  "applicability": {
+    "conditions": [
+      "Use only with an admitted PX model/runtime identity.",
+      "Treat measured machine-specific profile evidence as stronger than generic defaults."
+    ],
+    "exclusions": [
+      "active parameter count equals memory footprint"
+    ],
+    "targets": [
+      "sparse MoE GGUF",
+      "deep hybrid lane"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.95,
+        "evidence_refs": [
+          "llama_cuda_topk_moe",
+          "px_llama_tuning",
+          "llama_model_cpp"
+        ],
+        "statement": "Sparse activation reduces per-token compute relative to dense total parameters but does not eliminate weight residency/transfer costs."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "llama_cuda_topk_moe",
+          "px_llama_tuning",
+          "llama_model_cpp"
+        ],
+        "statement": "MoE CPU/GPU placement must be calibrated with context, KV cache, RAM, VRAM, page faults, and simultaneous PX workload."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "Router/top-k expert selection chooses active experts per token.",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "Backend placement determines where selected expert operations and other layers execute.",
+        "name": "mechanism_2"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, or policy authority."
+    ],
+    "summary": "Sparse MoE models activate only a subset of experts per token, but expert weights still create storage/memory-transfer pressure. Hybrid placement can keep selected computation on GPU while placing expert/FFN work on CPU when supported and benchmarked."
+  },
+  "namespace": "model_runtime",
+  "object_id": "nsai:model_runtime:moe_placement:llama_cpp_moe_placement",
+  "object_type": "moe_placement",
+  "ontology": {
+    "classes": [
+      "moe",
+      "hardware_placement"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "model_runtime",
+      "runtime_scope": [
+        "sparse MoE GGUF",
+        "deep hybrid lane"
+      ]
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "manual source-backed synthesis with schema validation and exact SHA provenance",
+      "source_pass": "Wave 14"
+    },
+    "sources": [
+      {
+        "archive": "models and harnesses for them.zip",
+        "kind": "source_file",
+        "path": "llama.cpp-master/llama.cpp-master/ggml/src/ggml-cuda/topk-moe.cu",
+        "sha256": "fdf688136cbf728b825c6a62534855a53e64cb73acb7f3dd3a3ab1b161456199",
+        "source_id": "llama_cuda_topk_moe"
+      },
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_Model_Fabric_Junction_Hardening_Pass3_2026-09-20/05_LLAMA_CPP_CPU_GPU_MOE_TUNING_MATRIX.md",
+        "sha256": "9a703632e734c69fe538483406e44a46c09d840f451d6832957b8150d33e9cb4",
+        "source_id": "px_llama_tuning"
+      },
+      {
+        "archive": "models and harnesses for them.zip",
+        "kind": "source_file",
+        "path": "llama.cpp-master/llama.cpp-master/src/llama-model.cpp",
+        "sha256": "530dff0cd544382346cc18520cbdb7d7a6f6743c35f7af52aae0bec11d18992a",
+        "source_id": "llama_model_cpp"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:model_lane:deep_hybrid_moe_lane"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:resource_interlock:model_resource_interlocks"
+    }
+  ],
+  "retrieval": {
+    "priority": 85,
+    "tags": [
+      "experts",
+      "sparse",
+      "cpu",
+      "gpu"
+    ],
+    "terms": [
+      "cpu",
+      "cpu moe",
+      "expert offload",
+      "experts",
+      "gpu",
+      "gpu layers",
+      "moe",
+      "sparse",
+      "sparse model placement"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "Sparse MoE models activate only a subset of experts per token, but expert weights still create storage/memory-transfer pressure. Hybrid placement can keep selected computation on GPU while placing expert/FFN work on CPU when supported and benchmarked.",
+    "exclusions": [
+      "active parameter count equals memory footprint"
+    ],
+    "intents": [
+      "place moe experts",
+      "run 30b a3b hybrid"
+    ],
+    "keywords": [
+      "moe",
+      "experts",
+      "cpu moe",
+      "gpu layers",
+      "sparse"
+    ],
+    "retrieval_text": "llama.cpp MoE Placement. Sparse MoE models activate only a subset of experts per token, but expert weights still create storage/memory-transfer pressure. Hybrid placement can keep selected computation on GPU while placing expert/FFN work on CPU when supported and benchmarked. Sparse activation reduces per-token compute relative to dense total parameters but does not eliminate weight residency/transfer costs. MoE CPU/GPU placement must be calibrated with context, KV cache, RAM, VRAM, page faults, and simultaneous PX workload.",
+    "short_description": "Sparse MoE models activate only a subset of experts per token, but expert weights still create storage/memory-transfer pressure.",
+    "synonyms": [
+      "expert offload",
+      "sparse model placement"
+    ]
+  },
+  "status": "validated",
+  "title": "llama.cpp MoE Placement"
+}

@@ -1,0 +1,166 @@
+{
+  "applicability": {
+    "conditions": [
+      "Use only with exact embedding and retrieval-generation identity."
+    ],
+    "exclusions": [
+      "uncalibrated index activation"
+    ],
+    "targets": [
+      "PX retrieval generation",
+      "TurboVec"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "px_turbovec_adapter",
+          "px_retrieval_generation",
+          "tv_prod_contract"
+        ],
+        "statement": "A TurboVec index must be tied to one retrieval generation, embedding model/revision, vector dimensionality, normalization contract, bit width, and calibration identity."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_turbovec_adapter",
+          "px_retrieval_generation",
+          "tv_prod_contract"
+        ],
+        "statement": "Persistence is valid only after calibration and must verify that the persisted row count agrees with the manifest."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_turbovec_adapter",
+          "px_retrieval_generation",
+          "tv_prod_contract"
+        ],
+        "statement": "Building or persisting a TurboVec index does not make that index the active retrieval authority; activation belongs to the retrieval-generation owner."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "calibrate representative normalized vectors before persistence",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "persist index bytes and a manifest that carries exact generation and embedding identity",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "validate candidate artifacts and activate them only through the retrieval-generation store",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "TurboVec indexes are generation-bound acceleration artifacts that require calibrated construction, explicit persistence, row-count and embedding identity checks, and promotion through PX retrieval-generation authority rather than direct activation."
+  },
+  "namespace": "retrieval",
+  "object_id": "nsai:retrieval:index_lifecycle:turbovec_index_lifecycle",
+  "object_type": "index_lifecycle",
+  "ontology": {
+    "classes": [
+      "generation_artifact",
+      "retrieval_index"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "retrieval"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "kind": "source_file",
+        "path": "runtime/turbovec_adapter.py",
+        "sha256": "e234ba8225de0250ea9e1b5922911b12ef925c8db96b83afbd811d647f27d980",
+        "source_id": "px_turbovec_adapter"
+      },
+      {
+        "kind": "source_file",
+        "path": "runtime/retrieval_generation.py",
+        "sha256": "992db8b631380d16d782b71499ba3a0de0b4b6e75c6c68234cb19f96d6aa7680",
+        "source_id": "px_retrieval_generation"
+      },
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_Model_Fabric_Junction_Hardening_Pass3_2026-09-20/06_TURBOVEC_PRODUCTION_INDEX_CONTRACT.md",
+        "sha256": "b872106e0ca8f9a4a8cbf919a6d3295ca1063c23ec4c0d7937c55e6da609f82b",
+        "source_id": "tv_prod_contract"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:retrieval:generation_coherence:retrieval_generation_coherence"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:retrieval:embedding_identity:embedding_revision_identity"
+    }
+  ],
+  "retrieval": {
+    "priority": 88,
+    "tags": [
+      "calibration",
+      "generation",
+      "index",
+      "persistence",
+      "turbovec"
+    ],
+    "terms": [
+      "TurboVec lifecycle",
+      "calibration",
+      "generation",
+      "index",
+      "persistence",
+      "turbovec",
+      "vector index lifecycle"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "TurboVec indexes are generation-bound acceleration artifacts that require calibrated construction, explicit persistence, row-count and embedding identity checks, and promotion through PX retrieval-generation authority rather than direct activation.",
+    "exclusions": [
+      "direct active-generation mutation"
+    ],
+    "intents": [
+      "build turbovec index",
+      "promote retrieval index"
+    ],
+    "keywords": [
+      "calibration",
+      "generation",
+      "index",
+      "persistence",
+      "turbovec"
+    ],
+    "retrieval_text": "TurboVec Index Lifecycle. TurboVec indexes are generation-bound acceleration artifacts that require calibrated construction, explicit persistence, row-count and embedding identity checks, and promotion through PX retrieval-generation authority rather than direct activation. A TurboVec index must be tied to one retrieval generation, embedding model/revision, vector dimensionality, normalization contract, bit width, and calibration identity. Persistence is valid only after calibration and must verify that the persisted row count agrees with the manifest. Building or persisting a TurboVec index does not make that index the active retrieval authority; activation belongs to the retrieval-generation owner.",
+    "short_description": "TurboVec indexes are generation-bound acceleration artifacts that require calibrated construction, explicit persistence, row-count and embedding identity checks, and promotion through PX retrieval-generation authority rather than direct activation.",
+    "synonyms": [
+      "TurboVec lifecycle",
+      "vector index lifecycle"
+    ]
+  },
+  "status": "validated",
+  "title": "TurboVec Index Lifecycle"
+}

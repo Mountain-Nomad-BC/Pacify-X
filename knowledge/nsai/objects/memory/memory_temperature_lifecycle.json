@@ -1,0 +1,157 @@
+{
+  "applicability": {
+    "conditions": [
+      "Retention holds and stable IDs must be honored."
+    ],
+    "exclusions": [
+      "changing canonical ID during tier movement"
+    ],
+    "targets": [
+      "external cognitive memory"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "wave15b_tiering",
+          "wave15b_storage"
+        ],
+        "statement": "Stable record IDs are independent of current storage tier/path."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "wave15b_tiering",
+          "wave15b_storage"
+        ],
+        "statement": "Tiering produces derived capsules/shards and respects retention/lease holds before cold movement."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "wave15b_tiering",
+          "wave15b_storage"
+        ],
+        "statement": "The librarian queries stable identities/projections rather than crawling arbitrary filesystem paths."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "assign records to daily/week/project projection capsules",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "age eligible records into cold subject/relation shards",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "rebuild location/projection mappings while preserving canonical IDs",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "PX external cognitive storage keeps canonical records stable while projecting current material into daily hot, weekly warm, project, and cold subject/relation structures; aging or relocation changes locators/projections, not semantic identity."
+  },
+  "namespace": "memory",
+  "object_id": "nsai:memory:temperature_lifecycle:memory_temperature_lifecycle",
+  "object_type": "temperature_lifecycle",
+  "ontology": {
+    "classes": [
+      "memory_lifecycle",
+      "storage_projection"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "memory"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "archive": "PX_IMPLEMENTATION_WAVE15B_COGNITIVE_STORAGE_ATOMIC_GENERATION_2026-09-20.zip",
+        "kind": "source_file",
+        "path": "EXTERNAL/pacifyx_memory/tiering.py",
+        "sha256": "516ae8558f61e8af3f38ea562877adf98b553c22a999703ff1f6f10f902f4ddb",
+        "source_id": "wave15b_tiering"
+      },
+      {
+        "archive": "PX_IMPLEMENTATION_WAVE15B_COGNITIVE_STORAGE_ATOMIC_GENERATION_2026-09-20.zip",
+        "kind": "source_file",
+        "path": "EXTERNAL/pacifyx_memory/cognitive_storage.py",
+        "sha256": "e9b1b2576fcfefdda6e8b49e23cc495f9387cd6987fa4d9dd0f34f7dca2e26cc",
+        "source_id": "wave15b_storage"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:memory:graph_projection:persistent_memory_graph_projection"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:cognitive:generation_publication:atomic_cognitive_generation_publication"
+    }
+  ],
+  "retrieval": {
+    "priority": 95,
+    "tags": [
+      "cold memory",
+      "daily capsule",
+      "hot memory",
+      "project capsule",
+      "warm memory"
+    ],
+    "terms": [
+      "cold memory",
+      "daily capsule",
+      "hot memory",
+      "hot warm cold memory",
+      "memory temperature",
+      "project capsule",
+      "warm memory"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "PX external cognitive storage keeps canonical records stable while projecting current material into daily hot, weekly warm, project, and cold subject/relation structures; aging or relocation changes locators/projections, not semantic identity.",
+    "exclusions": [
+      "path-as-identity"
+    ],
+    "intents": [
+      "move memory cold",
+      "tier memory"
+    ],
+    "keywords": [
+      "cold memory",
+      "daily capsule",
+      "hot memory",
+      "project capsule",
+      "warm memory"
+    ],
+    "retrieval_text": "Memory Temperature Lifecycle. PX external cognitive storage keeps canonical records stable while projecting current material into daily hot, weekly warm, project, and cold subject/relation structures; aging or relocation changes locators/projections, not semantic identity. Stable record IDs are independent of current storage tier/path. Tiering produces derived capsules/shards and respects retention/lease holds before cold movement. The librarian queries stable identities/projections rather than crawling arbitrary filesystem paths.",
+    "short_description": "PX external cognitive storage keeps canonical records stable while projecting current material into daily hot, weekly warm, project, and cold subject/relation structures; aging or relocation changes locators/projections, not semantic identity.",
+    "synonyms": [
+      "hot warm cold memory",
+      "memory temperature"
+    ]
+  },
+  "status": "validated",
+  "title": "Memory Temperature Lifecycle"
+}

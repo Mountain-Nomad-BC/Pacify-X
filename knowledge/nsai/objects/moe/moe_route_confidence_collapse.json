@@ -1,0 +1,148 @@
+{
+  "applicability": {
+    "conditions": [
+      "Use bounded representative route outcomes."
+    ],
+    "exclusions": [
+      "equating one popular route with proof of optimality"
+    ],
+    "targets": [
+      "model routing"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "px_route_observability",
+          "moe_collapse_doc"
+        ],
+        "statement": "Normalized entropy and effective route count quantify concentration across route outcomes."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_route_observability",
+          "moe_collapse_doc"
+        ],
+        "statement": "Confidence/collapse findings are evidence only and require learning/promotion gates before policy change."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_route_observability",
+          "moe_collapse_doc"
+        ],
+        "statement": "A router that always selects one route can be operationally unhealthy even if individual requests succeed."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "aggregate route outcomes into a distribution",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "compute concentration/collapse indicators and score margins",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "emit evidence for review, benchmarking, or promotion gates",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "PX observes route-score confidence and distribution concentration to detect routing collapse, over-concentration, or unstable low-margin choices without letting observability directly rewrite policy."
+  },
+  "namespace": "moe",
+  "object_id": "nsai:moe:route_confidence:moe_route_confidence_collapse",
+  "object_type": "route_confidence",
+  "ontology": {
+    "classes": [
+      "drift_evidence",
+      "routing_observability"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "moe"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "kind": "source_file",
+        "path": "runtime/model_routing_observability.py",
+        "sha256": "d122b0c8e63d13a6c7664162ec38b908212cb01ebebd135bb37d3c0dc8252558",
+        "source_id": "px_route_observability"
+      },
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_MoE_Mining_Pass_v3/15_ROUTE_SCORE_CONFIDENCE_AND_COLLAPSE.md",
+        "sha256": "65de07649982ca915d122f89a18dcc577ef6cbce7d3de567ec2cd21787b54e0b",
+        "source_id": "moe_collapse_doc"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:moe:adaptation_drift:moe_adaptation_drift"
+    }
+  ],
+  "retrieval": {
+    "priority": 86,
+    "tags": [
+      "collapse",
+      "concentration",
+      "entropy",
+      "route confidence"
+    ],
+    "terms": [
+      "collapse",
+      "concentration",
+      "entropy",
+      "route concentration",
+      "route confidence",
+      "router collapse"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "PX observes route-score confidence and distribution concentration to detect routing collapse, over-concentration, or unstable low-margin choices without letting observability directly rewrite policy.",
+    "exclusions": [
+      "automatic policy rewrite"
+    ],
+    "intents": [
+      "detect routing collapse",
+      "measure route confidence"
+    ],
+    "keywords": [
+      "collapse",
+      "concentration",
+      "entropy",
+      "route confidence"
+    ],
+    "retrieval_text": "Route Confidence and Collapse Detection. PX observes route-score confidence and distribution concentration to detect routing collapse, over-concentration, or unstable low-margin choices without letting observability directly rewrite policy. Normalized entropy and effective route count quantify concentration across route outcomes. Confidence/collapse findings are evidence only and require learning/promotion gates before policy change. A router that always selects one route can be operationally unhealthy even if individual requests succeed.",
+    "short_description": "PX observes route-score confidence and distribution concentration to detect routing collapse, over-concentration, or unstable low-margin choices without letting observability directly rewrite policy.",
+    "synonyms": [
+      "route concentration",
+      "router collapse"
+    ]
+  },
+  "status": "validated",
+  "title": "Route Confidence and Collapse Detection"
+}

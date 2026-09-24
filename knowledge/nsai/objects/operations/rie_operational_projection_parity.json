@@ -1,0 +1,149 @@
+{
+  "applicability": {
+    "conditions": [
+      "Canonical authority revisions must be available."
+    ],
+    "exclusions": [
+      "editing projection as source of truth"
+    ],
+    "targets": [
+      "actions",
+      "capabilities",
+      "workflows"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "px_operational_projection",
+          "px_parity_lint"
+        ],
+        "statement": "Projected actions/capabilities carry the authority revision they were derived from."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_operational_projection",
+          "px_parity_lint"
+        ],
+        "statement": "Dead references and identifier-set mismatches are parity failures."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_operational_projection",
+          "px_parity_lint"
+        ],
+        "statement": "A projection mismatch should trigger rebuild/reconciliation, not manual promotion of the projection to authority."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "project canonical authorities into read-only operational artifacts",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "build a projection manifest with exact revision hashes",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "lint identifiers/references/revisions against current authorities",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "Operational descriptors and workflow/capability views are read-only projections of canonical authorities; parity lint compares identifier sets, references, and authority revisions so stale projections are detected rather than becoming a second control plane."
+  },
+  "namespace": "operations",
+  "object_id": "nsai:operations:projection_parity:rie_operational_projection_parity",
+  "object_type": "projection_parity",
+  "ontology": {
+    "classes": [
+      "derived_projection",
+      "parity_check"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "operations"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "kind": "source_file",
+        "path": "runtime/operational_projection.py",
+        "sha256": "fc39ddc1499592006cc6c9f322485914e8a68f2033022182605f122eda806647",
+        "source_id": "px_operational_projection"
+      },
+      {
+        "kind": "source_file",
+        "path": "runtime/parity_lint.py",
+        "sha256": "7fb4646470abef58af80c4dabd950418d5e806d13aad28908aeb8671d08a54a1",
+        "source_id": "px_parity_lint"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:operations:action_surface:rie_action_surface"
+    }
+  ],
+  "retrieval": {
+    "priority": 93,
+    "tags": [
+      "authority revision",
+      "dead reference",
+      "operational projection",
+      "parity lint"
+    ],
+    "terms": [
+      "authority revision",
+      "dead reference",
+      "operational parity",
+      "operational projection",
+      "parity lint",
+      "projection consistency"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "Operational descriptors and workflow/capability views are read-only projections of canonical authorities; parity lint compares identifier sets, references, and authority revisions so stale projections are detected rather than becoming a second control plane.",
+    "exclusions": [
+      "projection authority"
+    ],
+    "intents": [
+      "rebuild operational view",
+      "validate projection parity"
+    ],
+    "keywords": [
+      "authority revision",
+      "dead reference",
+      "operational projection",
+      "parity lint"
+    ],
+    "retrieval_text": "RIE Operational Projection Parity. Operational descriptors and workflow/capability views are read-only projections of canonical authorities; parity lint compares identifier sets, references, and authority revisions so stale projections are detected rather than becoming a second control plane. Projected actions/capabilities carry the authority revision they were derived from. Dead references and identifier-set mismatches are parity failures. A projection mismatch should trigger rebuild/reconciliation, not manual promotion of the projection to authority.",
+    "short_description": "Operational descriptors and workflow/capability views are read-only projections of canonical authorities; parity lint compares identifier sets, references, and authority revisions so stale projections are detected rather than becoming a second control plane.",
+    "synonyms": [
+      "operational parity",
+      "projection consistency"
+    ]
+  },
+  "status": "validated",
+  "title": "RIE Operational Projection Parity"
+}

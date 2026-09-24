@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:learning:verification-record",
+  "title": "PX Shared Contribution Verification Record",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "target_sha256",
+    "verifier_id",
+    "evaluator_sha256",
+    "reproduction_sha256",
+    "verdict",
+    "evidence_sha256",
+    "verified_at",
+    "authority_granted",
+    "record_sha256"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "px.verification-record/1.0"
+    },
+    "target_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "verifier_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evaluator_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "reproduction_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "verdict": {
+      "enum": [
+        "confirmed",
+        "partial",
+        "failed",
+        "inconclusive"
+      ]
+    },
+    "evidence_sha256": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[0-9a-f]{64}$"
+      }
+    },
+    "verified_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "authority_granted": {
+      "const": false
+    },
+    "record_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "additionalProperties": false
+}

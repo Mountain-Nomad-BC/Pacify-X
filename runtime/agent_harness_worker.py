@@ -65,6 +65,29 @@ def main() -> int:
         raise ValueError("agent task tool calls exceed the closed bound")
     if tool_calls and "capability:local-worker" not in capabilities:
         raise PermissionError("agent task lacks the admitted local-worker capability")
+    evidence_context = payload["task"].get("evidence_context", {})
+    if evidence_context is None:
+        evidence_context = {}
+    if not isinstance(evidence_context, dict):
+        raise ValueError("agent evidence_context must be an object")
+    observation_packs = evidence_context.get("observation_pack_sha256", [])
+    if not isinstance(observation_packs, list) or len(observation_packs) > 32 or any(
+        not isinstance(item, str) or len(item) != 64 or any(c not in "0123456789abcdef" for c in item)
+        for item in observation_packs
+    ):
+        raise ValueError("agent observation pack identities are invalid")
+    evaluator_sha256 = evidence_context.get("evaluator_sha256")
+    if evaluator_sha256 is not None and (
+        not isinstance(evaluator_sha256, str)
+        or len(evaluator_sha256) != 64
+        or any(c not in "0123456789abcdef" for c in evaluator_sha256)
+    ):
+        raise ValueError("agent evaluator identity is invalid")
+    evidence_projection = {
+        "observation_pack_sha256": sorted(set(observation_packs)),
+        "evaluator_sha256": evaluator_sha256,
+        "authority_granted": False,
+    }
     tool_receipts = []
     for index, call in enumerate(tool_calls):
         if not isinstance(call, dict) or set(call) != {"tool", "input"}:
@@ -125,6 +148,7 @@ def main() -> int:
                 "worker_invoked": True,
                 "model_invoked": False,
                 "tools_dispatched": tool_receipts,
+                "evidence_context": evidence_projection,
                 "content_retained": False,
             },
             sort_keys=True,

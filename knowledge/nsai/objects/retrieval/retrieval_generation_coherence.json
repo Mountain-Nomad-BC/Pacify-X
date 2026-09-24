@@ -1,0 +1,154 @@
+{
+  "applicability": {
+    "conditions": [
+      "Every fused artifact must expose compatible identity scope."
+    ],
+    "exclusions": [
+      "best-effort cross-generation merge"
+    ],
+    "targets": [
+      "lexical retrieval",
+      "reranker",
+      "vector retrieval"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "px_retrieval_generation",
+          "px_semantic_fusion"
+        ],
+        "statement": "Retrieval generation identity binds source, embedding, configuration, and artifact identities into a stable generation ID."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_retrieval_generation",
+          "px_semantic_fusion"
+        ],
+        "statement": "Candidate artifacts are staged and validated before activation; activation changes the current generation only with supplied authority."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_retrieval_generation",
+          "px_semantic_fusion"
+        ],
+        "statement": "Cross-generation fusion can return semantically plausible but evidentially invalid results and therefore must fail closed."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "stage immutable candidate manifests",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "validate every artifact hash and gate evidence",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "activate or roll back by generation ID rather than mutating individual active artifacts",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "All retrieval artifacts used in one result must belong to a coherent immutable generation identity; mixed embedding, vector, lexical, reranker, or mapping generations are rejected rather than silently fused."
+  },
+  "namespace": "retrieval",
+  "object_id": "nsai:retrieval:generation_coherence:retrieval_generation_coherence",
+  "object_type": "generation_coherence",
+  "ontology": {
+    "classes": [
+      "generation_identity",
+      "retrieval_governance"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "retrieval"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "kind": "source_file",
+        "path": "runtime/retrieval_generation.py",
+        "sha256": "992db8b631380d16d782b71499ba3a0de0b4b6e75c6c68234cb19f96d6aa7680",
+        "source_id": "px_retrieval_generation"
+      },
+      {
+        "kind": "source_file",
+        "path": "runtime/semantic_retrieval_fusion.py",
+        "sha256": "64adcc8c8609beb0b89eabd7b0e910557ef670188f08701eaf9c45bd0b91bea2",
+        "source_id": "px_semantic_fusion"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:retrieval:fusion:hybrid_retrieval_fusion"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:generation_identity:model_fabric_generation_identity"
+    }
+  ],
+  "retrieval": {
+    "priority": 95,
+    "tags": [
+      "coherence",
+      "fusion",
+      "immutable generation",
+      "retrieval generation"
+    ],
+    "terms": [
+      "coherence",
+      "fusion",
+      "generation coherence",
+      "immutable generation",
+      "retrieval generation",
+      "retrieval snapshot"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "All retrieval artifacts used in one result must belong to a coherent immutable generation identity; mixed embedding, vector, lexical, reranker, or mapping generations are rejected rather than silently fused.",
+    "exclusions": [
+      "mixed-generation fusion"
+    ],
+    "intents": [
+      "prevent mixed retrieval generations",
+      "validate retrieval generation"
+    ],
+    "keywords": [
+      "coherence",
+      "fusion",
+      "immutable generation",
+      "retrieval generation"
+    ],
+    "retrieval_text": "Retrieval Generation Coherence. All retrieval artifacts used in one result must belong to a coherent immutable generation identity; mixed embedding, vector, lexical, reranker, or mapping generations are rejected rather than silently fused. Retrieval generation identity binds source, embedding, configuration, and artifact identities into a stable generation ID. Candidate artifacts are staged and validated before activation; activation changes the current generation only with supplied authority. Cross-generation fusion can return semantically plausible but evidentially invalid results and therefore must fail closed.",
+    "short_description": "All retrieval artifacts used in one result must belong to a coherent immutable generation identity; mixed embedding, vector, lexical, reranker, or mapping generations are rejected rather than silently fused.",
+    "synonyms": [
+      "generation coherence",
+      "retrieval snapshot"
+    ]
+  },
+  "status": "validated",
+  "title": "Retrieval Generation Coherence"
+}

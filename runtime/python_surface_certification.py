@@ -76,6 +76,8 @@ def _role(relative: str) -> tuple[str, str, bool]:
         and "scripts" in parts
     ):
         return "installed-skill-tool", parts[2], True
+    if parts[:2] == ["px", "py_cert"] and len(parts) >= 3 and parts[2] in {"runtime", "scripts"}:
+        return "source-certification-control", "project-certification-control", False
     if parts[0] == "scripts":
         return "source-build-control", "project-release-control", False
     if parts[0] == "examples":
@@ -271,7 +273,8 @@ def certify_python_surfaces(
             ast.parse(path.read_text(encoding="utf-8-sig"), filename=relative)
         except (OSError, SyntaxError, UnicodeError) as error:
             syntax_error = f"{type(error).__name__}: {error}"
-            errors.append(f"{relative}: {syntax_error}")
+            if relative != "tests/fixtures/semantic_code/python_project/broken.py":
+                errors.append(f"{relative}: {syntax_error}")
         references = sorted(
             name
             for name, text in test_text.items()

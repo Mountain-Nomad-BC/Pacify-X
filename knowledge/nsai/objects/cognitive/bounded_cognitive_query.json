@@ -1,0 +1,164 @@
+{
+  "applicability": {
+    "conditions": [
+      "Only admitted index records may become candidates."
+    ],
+    "exclusions": [
+      "returning more than three per category"
+    ],
+    "targets": [
+      "actions",
+      "goals",
+      "knowledge",
+      "operations",
+      "orchestrations",
+      "skills",
+      "subjects",
+      "workflows"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "wave15c_cognitive_query",
+          "wave15c_cognitive_query_tests"
+        ],
+        "statement": "Category fanout is explicitly bounded to at most three rows per category."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "wave15c_cognitive_query",
+          "wave15c_cognitive_query_tests"
+        ],
+        "statement": "Deterministic exact/graph/index evidence is assembled before optional tiny-model ambiguity resolution."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "wave15c_cognitive_query",
+          "wave15c_cognitive_query_tests"
+        ],
+        "statement": "Hydration occurs only for selected admitted IDs, reducing context and preventing arbitrary path crawling."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "project current cognitive index records into typed candidates",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "apply category, lifecycle/project/privacy filters and bounded top-k",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "optionally rerank ambiguous candidates, then hydrate only selected IDs",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "The cognitive query surface searches admitted stable IDs across subjects, knowledge, goals, actions, skills, operations, workflows, and orchestrations, enforcing top-1–3 per category and metadata-first results before selected-ID hydration."
+  },
+  "namespace": "cognitive",
+  "object_id": "nsai:cognitive:bounded_query:bounded_cognitive_query",
+  "object_type": "bounded_query",
+  "ontology": {
+    "classes": [
+      "bounded_query",
+      "cognitive_retrieval"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "cognitive"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "archive": "PX_IMPLEMENTATION_WAVE15C_COGNITIVE_QUERY_COORDINATION_CONTEXT_COMMISSIONING_2026-09-20.zip",
+        "kind": "source_file",
+        "path": "runtime/cognitive_query.py",
+        "sha256": "b765468ed2784e9db74dd2fbe1401897d9bd65562eb7164e6e3f65f8878e07a2",
+        "source_id": "wave15c_cognitive_query"
+      },
+      {
+        "archive": "PX_IMPLEMENTATION_WAVE15C_COGNITIVE_QUERY_COORDINATION_CONTEXT_COMMISSIONING_2026-09-20.zip",
+        "kind": "source_file",
+        "path": "tests/test_cognitive_query.py",
+        "sha256": "d053fc3234df8ea7230a2a54db74a07669c16237723064dcced6cf946643902b",
+        "source_id": "wave15c_cognitive_query_tests"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:operations:query_plan:rie_query_plan"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:control_lane:tiny_cpu_control_lane"
+    }
+  ],
+  "retrieval": {
+    "priority": 99,
+    "tags": [
+      "cognitive query",
+      "hydration",
+      "metadata first",
+      "stable id",
+      "top 3"
+    ],
+    "terms": [
+      "cognitive query",
+      "cognitive top-k",
+      "cross-domain librarian query",
+      "hydration",
+      "metadata first",
+      "stable id",
+      "top 3"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "The cognitive query surface searches admitted stable IDs across subjects, knowledge, goals, actions, skills, operations, workflows, and orchestrations, enforcing top-1–3 per category and metadata-first results before selected-ID hydration.",
+    "exclusions": [
+      "unbounded filesystem crawl"
+    ],
+    "intents": [
+      "find relevant skills knowledge",
+      "query PX cognition"
+    ],
+    "keywords": [
+      "cognitive query",
+      "hydration",
+      "metadata first",
+      "stable id",
+      "top 3"
+    ],
+    "retrieval_text": "Bounded Cross-Domain Cognitive Query. The cognitive query surface searches admitted stable IDs across subjects, knowledge, goals, actions, skills, operations, workflows, and orchestrations, enforcing top-1–3 per category and metadata-first results before selected-ID hydration. Category fanout is explicitly bounded to at most three rows per category. Deterministic exact/graph/index evidence is assembled before optional tiny-model ambiguity resolution. Hydration occurs only for selected admitted IDs, reducing context and preventing arbitrary path crawling.",
+    "short_description": "The cognitive query surface searches admitted stable IDs across subjects, knowledge, goals, actions, skills, operations, workflows, and orchestrations, enforcing top-1–3 per category and metadata-first results before selected-ID hydration.",
+    "synonyms": [
+      "cognitive top-k",
+      "cross-domain librarian query"
+    ]
+  },
+  "status": "validated",
+  "title": "Bounded Cross-Domain Cognitive Query"
+}

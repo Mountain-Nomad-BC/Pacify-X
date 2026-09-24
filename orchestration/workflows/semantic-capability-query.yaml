@@ -1,17 +1,25 @@
-schema_version: "1.0"
+schema_version: "1.1"
 id: semantic-capability-query-certification
-loading_rule: Load the semantic metadata index first; hydrate only explicitly selected skill bodies.
+loading_rule: Load semantic/capability metadata first; hydrate only explicitly selected records and skill bodies.
 steps:
   - id: select
     skill: skill-navigator
     depends_on: []
     evidence: ranked candidates, exclusion reasons, index revision
+  - id: semantic-read
+    skill: operate-semantic-code-intelligence
+    depends_on: [select]
+    evidence: authorized project scope, semantic operation/query plan, semantic/index revision, exact source IDs
+  - id: retrieval-coherence
+    skill: govern-retrieval-generations
+    depends_on: [semantic-read]
+    evidence: active retrieval generation and exact embedding/vector identity or explicit no-retrieval path
   - id: resolve
     skill: skill-bundle-resolver
-    depends_on: [select]
+    depends_on: [select, semantic-read]
     evidence: bounded dependency closure, cycle and depth checks
   - id: certify
     skill: run-evidence-campaigns
-    depends_on: [resolve]
-    evidence: golden-query results and deterministic rerun hash
-failure_policy: Any unresolved dependency, policy exclusion violation, eager body load, or unstable result order fails certification.
+    depends_on: [resolve, retrieval-coherence]
+    evidence: golden-query results, citations and deterministic rerun hash
+failure_policy: Any unresolved dependency, policy exclusion violation, eager body load, stale semantic/retrieval generation, missing authorization/citations, or unstable result order fails certification.

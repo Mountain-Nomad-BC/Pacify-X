@@ -1,0 +1,152 @@
+{
+  "applicability": {
+    "conditions": [
+      "Reranking must operate only on admitted candidates."
+    ],
+    "exclusions": [
+      "unbounded document reranking"
+    ],
+    "targets": [
+      "retrieval candidate set"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "px_retrieval_models",
+          "px_semantic_rerank"
+        ],
+        "statement": "The reranker accepts bounded document batches and an exact expected model revision."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_retrieval_models",
+          "px_semantic_rerank"
+        ],
+        "statement": "Reranker output is interpreted as ordering evidence over candidate indexes, not as new canonical objects."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_retrieval_models",
+          "px_semantic_rerank"
+        ],
+        "statement": "Callers can bypass the reranker when it is unavailable, mismatched, or over budget."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "cap documents and output limit before provider invocation",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "validate returned candidate indexes and scores",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "fall back to pre-rerank candidate ordering on controlled degradation",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "Reranking is an optional bounded stage over an already admitted candidate set; it cannot invent new IDs, exceed configured candidate limits, or prevent retrieval from degrading cleanly when the reranker is unavailable."
+  },
+  "namespace": "retrieval",
+  "object_id": "nsai:retrieval:reranking:reranker_bounded_topn",
+  "object_type": "reranking",
+  "ontology": {
+    "classes": [
+      "bounded_provider",
+      "reranking"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "retrieval"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "kind": "source_file",
+        "path": "runtime/retrieval_model_service.py",
+        "sha256": "a49529c32c60f0e0ad4ae1264168c3697b6bc878f5997801267f1fe994dfaa5a",
+        "source_id": "px_retrieval_models"
+      },
+      {
+        "kind": "source_file",
+        "path": "runtime/semantic_local_rerank.py",
+        "sha256": "77de28024c202626271f0fd5d94f123dd61202fb697d1bb6783542cdae59d67c",
+        "source_id": "px_semantic_rerank"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:retrieval:fusion:hybrid_retrieval_fusion"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:retrieval:embedding_identity:embedding_revision_identity"
+    }
+  ],
+  "retrieval": {
+    "priority": 87,
+    "tags": [
+      "bounded rerank",
+      "candidate set",
+      "reranker",
+      "top n"
+    ],
+    "terms": [
+      "bounded cross-encoder",
+      "bounded rerank",
+      "candidate set",
+      "reranker",
+      "top n",
+      "top-N reranking"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "Reranking is an optional bounded stage over an already admitted candidate set; it cannot invent new IDs, exceed configured candidate limits, or prevent retrieval from degrading cleanly when the reranker is unavailable.",
+    "exclusions": [
+      "candidate invention"
+    ],
+    "intents": [
+      "limit reranker",
+      "rerank candidates"
+    ],
+    "keywords": [
+      "bounded rerank",
+      "candidate set",
+      "reranker",
+      "top n"
+    ],
+    "retrieval_text": "Bounded Reranking and Top-N. Reranking is an optional bounded stage over an already admitted candidate set; it cannot invent new IDs, exceed configured candidate limits, or prevent retrieval from degrading cleanly when the reranker is unavailable. The reranker accepts bounded document batches and an exact expected model revision. Reranker output is interpreted as ordering evidence over candidate indexes, not as new canonical objects. Callers can bypass the reranker when it is unavailable, mismatched, or over budget.",
+    "short_description": "Reranking is an optional bounded stage over an already admitted candidate set; it cannot invent new IDs, exceed configured candidate limits, or prevent retrieval from degrading cleanly when the reranker is unavailable.",
+    "synonyms": [
+      "bounded cross-encoder",
+      "top-N reranking"
+    ]
+  },
+  "status": "validated",
+  "title": "Bounded Reranking and Top-N"
+}

@@ -136,6 +136,28 @@ class HardwareProfile:
 
 
 @dataclass(frozen=True, slots=True)
+class ModelResourceHeadroom:
+    hardware_fingerprint: str
+    free_system_ram_bytes: int | None
+    free_vram_bytes: int
+    cpu_logical_cores: int | None
+    reserved_cpu_cores: int
+    safe_model_threads: int | None
+    ram_reserve_bytes: int
+    vram_reserve_bytes: int
+    available_model_ram_bytes: int | None
+    available_model_vram_bytes: int
+
+    @property
+    def cpu_capacity_known(self) -> bool:
+        return self.safe_model_threads is not None
+
+    @property
+    def ram_capacity_known(self) -> bool:
+        return self.available_model_ram_bytes is not None
+
+
+@dataclass(frozen=True, slots=True)
 class BenchmarkEvidence:
     operation_id: str
     hardware_fingerprint: str
@@ -707,6 +729,47 @@ def discover_hardware(
     return profile
 
 
+def model_resource_headroom(
+    hardware: HardwareProfile,
+    *,
+    free_system_ram_bytes: int | None,
+    reserved_cpu_cores: int = 2,
+    ram_reserve_bytes: int = 4 * 1024**3,
+    vram_reserve_bytes: int = 1024**3,
+) -> ModelResourceHeadroom:
+    """Expose measured headroom for model admission without performing admission itself."""
+    if type(hardware) is not HardwareProfile:
+        raise ValueError("typed hardware profile is required")
+    for name, value in (("reserved_cpu_cores", reserved_cpu_cores), ("ram_reserve_bytes", ram_reserve_bytes), ("vram_reserve_bytes", vram_reserve_bytes)):
+        if type(value) is not int or value < 0 or value > 2**63 - 1:
+            raise ValueError(f"{name} must be a bounded nonnegative integer")
+    if free_system_ram_bytes is not None and (
+        type(free_system_ram_bytes) is not int
+        or not 0 <= free_system_ram_bytes <= max(hardware.system_ram_bytes, free_system_ram_bytes)
+    ):
+        raise ValueError("free system RAM must be a bounded nonnegative integer or null")
+    if free_system_ram_bytes is not None and hardware.system_ram_bytes and free_system_ram_bytes > hardware.system_ram_bytes:
+        raise ValueError("free system RAM cannot exceed total system RAM")
+    cores = hardware.cpu_logical_cores
+    if cores is not None and (type(cores) is not int or cores < 1):
+        raise ValueError("hardware logical-core count is invalid")
+    safe_threads = None if cores is None else max(1, cores - min(cores - 1, reserved_cpu_cores))
+    available_ram = None if free_system_ram_bytes is None else max(0, free_system_ram_bytes - ram_reserve_bytes)
+    available_vram = max(0, hardware.free_vram_bytes - vram_reserve_bytes)
+    return ModelResourceHeadroom(
+        hardware_fingerprint=hardware.fingerprint,
+        free_system_ram_bytes=free_system_ram_bytes,
+        free_vram_bytes=hardware.free_vram_bytes,
+        cpu_logical_cores=cores,
+        reserved_cpu_cores=reserved_cpu_cores,
+        safe_model_threads=safe_threads,
+        ram_reserve_bytes=ram_reserve_bytes,
+        vram_reserve_bytes=vram_reserve_bytes,
+        available_model_ram_bytes=available_ram,
+        available_model_vram_bytes=available_vram,
+    )
+
+
 def route_workload(
     workload: WorkloadProfile,
     hardware: HardwareProfile,
@@ -994,3 +1057,45 @@ def hardware_report(
         },
         "external_data_transmission": False,
     }
+
+
+def model_capacity_snapshot_from_headroom(
+    hardware: HardwareProfile,
+    headroom: ModelResourceHeadroom,
+    *,
+    queue_depth: int,
+    max_queue_depth: int,
+    concurrent_slots_total: int,
+    concurrent_slots_available: int,
+    exclusive_model_id: str | None = None,
+):
+    """Convert measured hardware headroom into routing capacity evidence only."""
+    from .model_capacity import ModelCapacitySnapshot
+
+    if type(hardware) is not HardwareProfile or type(headroom) is not ModelResourceHeadroom:
+        raise ValueError("typed hardware/headroom records are required")
+    if headroom.hardware_fingerprint != hardware.fingerprint:
+        raise ValueError("hardware headroom fingerprint does not match hardware profile")
+    if headroom.safe_model_threads is None or headroom.available_model_ram_bytes is None:
+        raise ValueError("model routing capacity requires known CPU and system-RAM headroom")
+    safe_cpu_total = max(
+        1, hardware.cpu_logical_cores - min(hardware.cpu_logical_cores - 1, headroom.reserved_cpu_cores)
+    )
+    available_cpu = headroom.safe_model_threads
+    safe_ram_total = max(0, hardware.system_ram_bytes - headroom.ram_reserve_bytes)
+    safe_vram_total = max(0, hardware.total_vram_bytes - headroom.vram_reserve_bytes)
+    available_ram = 0 if headroom.available_model_ram_bytes is None else headroom.available_model_ram_bytes
+    return ModelCapacitySnapshot(
+        cpu_cores_total=float(safe_cpu_total),
+        cpu_cores_available=float(min(safe_cpu_total, available_cpu)),
+        ram_gb_total=safe_ram_total / 1024**3,
+        ram_gb_available=min(safe_ram_total, available_ram) / 1024**3,
+        vram_gb_total=safe_vram_total / 1024**3,
+        vram_gb_available=min(safe_vram_total, headroom.available_model_vram_bytes) / 1024**3,
+        concurrent_slots_total=concurrent_slots_total,
+        concurrent_slots_available=concurrent_slots_available,
+        queue_depth=queue_depth,
+        max_queue_depth=max_queue_depth,
+        exclusive_model_id=exclusive_model_id,
+        source_sha256=headroom.hardware_fingerprint,
+    )

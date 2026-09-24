@@ -130,6 +130,29 @@ def main() -> int:
         if authority_hashes.get(f"grant:{grant_id}") != grant_sha256:
             raise PermissionError("workflow task grant admission changed")
     inputs = dict(task["inputs"])
+    evidence_context = task.get("evidence_context", inputs.get("_evidence_context", {}))
+    if evidence_context is None:
+        evidence_context = {}
+    if not isinstance(evidence_context, dict):
+        raise ValueError("workflow evidence context must be an object")
+    contribution_sha256 = evidence_context.get("contribution_sha256")
+    verification_sha256 = evidence_context.get("verification_sha256", [])
+    if contribution_sha256 is not None and (
+        not isinstance(contribution_sha256, str)
+        or len(contribution_sha256) != 64
+        or any(c not in "0123456789abcdef" for c in contribution_sha256)
+    ):
+        raise ValueError("workflow contribution identity is invalid")
+    if not isinstance(verification_sha256, list) or len(verification_sha256) > 64 or any(
+        not isinstance(item, str) or len(item) != 64 or any(c not in "0123456789abcdef" for c in item)
+        for item in verification_sha256
+    ):
+        raise ValueError("workflow verification identities are invalid")
+    evidence_projection = {
+        "contribution_sha256": contribution_sha256,
+        "verification_sha256": sorted(set(verification_sha256)),
+        "authority_granted": False,
+    }
     print(
         json.dumps(
             {
@@ -182,6 +205,7 @@ def main() -> int:
                 "adapter_admitted": True,
                 "validation": validation,
                 "approval_execution": approval_execution,
+                "evidence_context": evidence_projection,
                 "declared_effect_grants": task["effect_grant_ids"],
                 "attempted_effects": [],
                 "completed_effects": [],

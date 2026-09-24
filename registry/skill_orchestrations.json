@@ -1,27 +1,8 @@
 {
-  "count": 34,
+  "count": 38,
   "loading_rule": "Load workflow and skill metadata first; hydrate one selected skill body at a time.",
   "schema_version": "1.0",
   "workflows": [
-    {
-      "failure_policy": "Fail closed on missing evidence, authority expansion, cross-project scope, budget exhaustion, uncontained effects, orphan work, or incomplete acceptance.",
-      "id": "clean-room-capability-controls",
-      "purpose": "Run independently authored reference-requirement controls through canonical lazy skills and deterministic runtime bindings.",
-      "steps": [
-        {"depends_on": [], "id": "panel", "skill": "decision-wayfinding"},
-        {"depends_on": [], "id": "delta", "skill": "skill-admission-controller"},
-        {"depends_on": [], "id": "communication", "skill": "context-compactor"},
-        {"depends_on": [], "id": "fleet", "skill": "orchestrate-agent-fleets"},
-        {"depends_on": ["fleet"], "id": "inbox", "skill": "orchestrate-agent-fleets"},
-        {"depends_on": [], "id": "memory", "skill": "govern-memory-fabric"},
-        {"depends_on": [], "id": "goal", "skill": "long-horizon-progress-ledger"},
-        {"depends_on": ["goal"], "id": "terminal", "skill": "manage-agent-session-fabric"},
-        {"depends_on": [], "id": "backend-validate", "skill": "dynamic-service-discovery"},
-        {"depends_on": ["backend-validate"], "id": "backend-select", "skill": "dynamic-service-discovery"},
-        {"depends_on": ["delta"], "id": "shadow", "skill": "engineer-verification-lab"},
-        {"depends_on": ["panel", "shadow"], "id": "specification", "skill": "tracer-bullet-planning"}
-      ]
-    },
     {
       "bounds": {
         "max_hydrated_agents": 4,
@@ -120,6 +101,117 @@
       ]
     },
     {
+      "failure_policy": "Block on source admission failure, stage invariant violation, batch instability, missing dependency, missing required kind, or unreasoned exclusion.",
+      "id": "candidate-pipeline",
+      "purpose": "Compile and resolve candidates through explicit membership and evidence boundaries.",
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "inventory",
+          "skill": "audit-source-capabilities"
+        },
+        {
+          "depends_on": [
+            "inventory"
+          ],
+          "id": "compile",
+          "skill": "govern-candidate-resolution-pipeline"
+        },
+        {
+          "depends_on": [
+            "compile"
+          ],
+          "id": "resolve",
+          "skill": "govern-candidate-resolution-pipeline"
+        },
+        {
+          "depends_on": [
+            "resolve"
+          ],
+          "id": "verify",
+          "skill": "engineer-verification-lab"
+        }
+      ]
+    },
+    {
+      "failure_policy": "Fail closed on missing evidence, authority expansion, cross-project scope, budget exhaustion, uncontained effects, orphan work, or incomplete acceptance.",
+      "id": "clean-room-capability-controls",
+      "purpose": "Run independently authored reference-requirement controls through canonical lazy skills and deterministic runtime bindings.",
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "panel",
+          "skill": "decision-wayfinding"
+        },
+        {
+          "depends_on": [],
+          "id": "delta",
+          "skill": "skill-admission-controller"
+        },
+        {
+          "depends_on": [],
+          "id": "communication",
+          "skill": "context-compactor"
+        },
+        {
+          "depends_on": [],
+          "id": "fleet",
+          "skill": "orchestrate-agent-fleets"
+        },
+        {
+          "depends_on": [
+            "fleet"
+          ],
+          "id": "inbox",
+          "skill": "orchestrate-agent-fleets"
+        },
+        {
+          "depends_on": [],
+          "id": "memory",
+          "skill": "govern-memory-fabric"
+        },
+        {
+          "depends_on": [],
+          "id": "goal",
+          "skill": "long-horizon-progress-ledger"
+        },
+        {
+          "depends_on": [
+            "goal"
+          ],
+          "id": "terminal",
+          "skill": "manage-agent-session-fabric"
+        },
+        {
+          "depends_on": [],
+          "id": "backend-validate",
+          "skill": "dynamic-service-discovery"
+        },
+        {
+          "depends_on": [
+            "backend-validate"
+          ],
+          "id": "backend-select",
+          "skill": "dynamic-service-discovery"
+        },
+        {
+          "depends_on": [
+            "delta"
+          ],
+          "id": "shadow",
+          "skill": "engineer-verification-lab"
+        },
+        {
+          "depends_on": [
+            "panel",
+            "shadow"
+          ],
+          "id": "specification",
+          "skill": "tracer-bullet-planning"
+        }
+      ]
+    },
+    {
       "failure_policy": "Fail closed on unknown ownership, missing authorization, target scope drift, production-active testing, unadmitted tools, source/body hash drift, evidence gaps, cleanup failure, or external outcome failure.",
       "id": "cybersecurity-capability-operations",
       "outputs": [
@@ -186,6 +278,126 @@
           ],
           "id": "record-learning",
           "skill": "govern-metacognitive-evolution"
+        }
+      ]
+    },
+    {
+      "failure_policy": "Fail closed on unreadable input, missing or mixed keys, unbounded samples, non-deterministic sampling, correctness or stability disagreement, missing fingerprints, memory-fit ambiguity, or no passing candidate.",
+      "id": "data-sort-dry-run-selection",
+      "purpose": "Measure a bulk dataset, choose a bounded representative dry-run section, pilot compatible sorts, benchmark the three fastest correct candidates, and retain a selection receipt before any full-data write.",
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "classify-size",
+          "skill": "data-sort-dry-run-picker"
+        },
+        {
+          "depends_on": [
+            "classify-size"
+          ],
+          "id": "sample",
+          "skill": "data-sort-dry-run-picker"
+        },
+        {
+          "depends_on": [
+            "sample"
+          ],
+          "id": "pilot",
+          "skill": "data-sort-dry-run-picker"
+        },
+        {
+          "depends_on": [
+            "pilot"
+          ],
+          "id": "benchmark-top-three",
+          "skill": "data-sort-dry-run-picker"
+        },
+        {
+          "depends_on": [
+            "benchmark-top-three"
+          ],
+          "id": "verify-select",
+          "skill": "validate-engineering-outcomes"
+        },
+        {
+          "depends_on": [
+            "verify-select"
+          ],
+          "id": "retain-receipt",
+          "skill": "evidence-assembler"
+        }
+      ]
+    },
+    {
+      "failure_policy": "Block on mismatch, unknown required property, missing independent physical check, or provider downgrade.",
+      "id": "deliverable-validation",
+      "purpose": "Prove physical and media deliverables against explicit promises and independent checks.",
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "declare",
+          "skill": "validate-physical-media-deliverables"
+        },
+        {
+          "depends_on": [
+            "declare"
+          ],
+          "id": "inspect",
+          "skill": "validate-physical-media-deliverables"
+        },
+        {
+          "depends_on": [
+            "inspect"
+          ],
+          "id": "verify",
+          "skill": "verify-outcome"
+        }
+      ]
+    },
+    {
+      "failure_policy": "Fail closed on scope bleed, lease collision, quota, trust, missing user presence, missing evidence, or unreconciled resources.",
+      "id": "distributed-runtime",
+      "purpose": "Reserve, place, execute, reconcile, and hand off project-scoped distributed work.",
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "scope",
+          "skill": "govern-distributed-work-runtime"
+        },
+        {
+          "depends_on": [
+            "scope"
+          ],
+          "id": "reserve",
+          "skill": "orchestrate-capability-scheduling"
+        },
+        {
+          "depends_on": [
+            "reserve"
+          ],
+          "id": "place",
+          "skill": "govern-distributed-work-runtime"
+        },
+        {
+          "depends_on": [
+            "place"
+          ],
+          "id": "execute",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "execute"
+          ],
+          "id": "verify",
+          "skill": "verify-outcome"
+        },
+        {
+          "depends_on": [
+            "verify"
+          ],
+          "id": "reconcile",
+          "skill": "govern-distributed-work-runtime"
         }
       ]
     },
@@ -286,6 +498,39 @@
           ],
           "id": "handoff",
           "skill": "context-handoff-package"
+        }
+      ]
+    },
+    {
+      "failure_policy": "Keep candidates quarantined on temporal ambiguity, missing lineage, correlated actor and judge, held-out regression, or absent independent promotion.",
+      "id": "epistemic-evolution",
+      "purpose": "Maintain temporal claims and evaluate quarantined skill improvements without live self-editing.",
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "capture",
+          "skill": "govern-memory-fabric"
+        },
+        {
+          "depends_on": [
+            "capture"
+          ],
+          "id": "invalidate",
+          "skill": "govern-epistemic-skill-evolution"
+        },
+        {
+          "depends_on": [
+            "invalidate"
+          ],
+          "id": "experiment",
+          "skill": "govern-epistemic-skill-evolution"
+        },
+        {
+          "depends_on": [
+            "experiment"
+          ],
+          "id": "verify",
+          "skill": "skill-admission-controller"
         }
       ]
     },
@@ -406,16 +651,64 @@
       ]
     },
     {
-      "failure_policy": "Fail closed on admission blockers, count mismatch, ambiguous novelty, graph errors, forbidden retrieval hits, holdout degradation, stale fingerprints, unapproved weights, or canonical writes.",
+      "failure_policy": "Use CPU or skip optional enrichment when accelerator/model-fabric evidence is absent or fails; fail closed on required correctness disagreement.",
+      "id": "hardware-aware-execution-routing",
+      "purpose": "Select CPU or accelerator from workload, compatibility, resource, model-fabric and benchmark evidence.",
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "classify",
+          "skill": "hardware-aware-execution-routing"
+        },
+        {
+          "depends_on": [
+            "classify"
+          ],
+          "id": "discover",
+          "skill": "hardware-aware-execution-routing"
+        },
+        {
+          "depends_on": [
+            "discover"
+          ],
+          "id": "route",
+          "skill": "hardware-aware-execution-routing"
+        },
+        {
+          "depends_on": [
+            "route"
+          ],
+          "id": "model-fabric-check",
+          "skill": "govern-model-fabric"
+        },
+        {
+          "depends_on": [
+            "model-fabric-check"
+          ],
+          "id": "execute",
+          "skill": "govern-runtime-protocol-deployment"
+        },
+        {
+          "depends_on": [
+            "execute"
+          ],
+          "id": "validate",
+          "skill": "validate-engineering-outcomes"
+        }
+      ]
+    },
+    {
+      "failure_policy": "Fail closed on source admission, NSAI schema/provenance/relationship, novelty, graph, retrieval, calibration, fingerprint or canonical-write violations.",
       "id": "knowledge-refinery",
       "outputs": [
         "portable inventory",
+        "validated object records",
         "novelty report",
         "merge plan",
         "graph audit",
         "staged proposal receipt"
       ],
-      "purpose": "Convert untrusted sources into reviewed, graph-coherent, retrieval-tested, non-destructive knowledge change proposals.",
+      "purpose": "Convert untrusted sources, including single-object NSAI JSON, into reviewed graph/retrieval-tested non-destructive knowledge proposals.",
       "steps": [
         {
           "depends_on": [],
@@ -439,6 +732,13 @@
         {
           "depends_on": [
             "extract"
+          ],
+          "id": "nsai-object-validation",
+          "skill": "govern-knowledge-refinery"
+        },
+        {
+          "depends_on": [
+            "nsai-object-validation"
           ],
           "id": "classify",
           "skill": "govern-knowledge-refinery"
@@ -494,9 +794,9 @@
         "max_loadout_assets": 40,
         "whole_vault_injection": false
       },
-      "failure_policy": "Fail closed on capture poisoning, secret findings, unsupported promotion, unresolved conflict, scope or ACL mismatch, stale or forbidden retrieval, budget overflow, offload hash failure, cross-project leakage, or evaluation regression.",
+      "failure_policy": "Fail closed on poisoning, secret findings, unsupported promotion, scope/ACL mismatch, generation publication failure, stale/forbidden retrieval, missing required checkpoint, budget overflow, cross-project leakage or evaluation regression.",
       "id": "layered-memory-lifecycle",
-      "purpose": "Capture, distill, govern, retrieve, assemble, compact, and evaluate project-scoped memory without creating a parallel store or automatic canon.",
+      "purpose": "Capture, distill, govern, tier, retrieve, assemble, checkpoint, compact and evaluate project-scoped memory without a parallel authority.",
       "steps": [
         {
           "depends_on": [],
@@ -535,6 +835,13 @@
           "depends_on": [
             "promote"
           ],
+          "id": "tier-and-publish",
+          "skill": "govern-memory-fabric"
+        },
+        {
+          "depends_on": [
+            "tier-and-publish"
+          ],
           "id": "build-scenes",
           "skill": "govern-memory-fabric"
         },
@@ -563,6 +870,13 @@
           "depends_on": [
             "assemble"
           ],
+          "id": "checkpoint",
+          "skill": "govern-memory-fabric"
+        },
+        {
+          "depends_on": [
+            "checkpoint"
+          ],
           "id": "compact",
           "skill": "govern-memory-fabric"
         },
@@ -584,8 +898,9 @@
       ]
     },
     {
+      "failure_policy": "Fail closed on missing hardware/model/profile/runtime identity, stale capability evidence, privacy/retrieval failures, resource conflicts or absent rollback.",
       "id": "local-model-planning",
-      "purpose": "Inspect a model without importing it, rank feasible execution strategies, enforce data and retrieval gates, and validate the chosen plan.",
+      "purpose": "Inspect a model without importing it, rank feasible execution strategies, bind admitted model-fabric identities/resources, enforce data/retrieval gates, and validate the plan.",
       "steps": [
         {
           "depends_on": [],
@@ -603,6 +918,13 @@
           "depends_on": [
             "plan"
           ],
+          "id": "fabric-gate",
+          "skill": "govern-model-fabric"
+        },
+        {
+          "depends_on": [
+            "plan"
+          ],
           "id": "data-gate",
           "skill": "gate-model-data-lifecycle"
         },
@@ -615,10 +937,44 @@
         },
         {
           "depends_on": [
+            "fabric-gate",
             "data-gate",
             "retrieval-gate"
           ],
           "id": "validate",
+          "skill": "validate-engineering-outcomes"
+        }
+      ]
+    },
+    {
+      "failure_policy": "Fail closed on stale model/profile/runtime identity, resource/capacity denial, missing custody, unbounded fallback or absent rollback.",
+      "id": "model-fabric-operations",
+      "purpose": "Inspect and govern admitted local-model lanes without creating a second runtime authority.",
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "inspect",
+          "skill": "govern-model-fabric"
+        },
+        {
+          "depends_on": [
+            "inspect"
+          ],
+          "id": "route",
+          "skill": "hardware-aware-execution-routing"
+        },
+        {
+          "depends_on": [
+            "route"
+          ],
+          "id": "govern",
+          "skill": "govern-model-fabric"
+        },
+        {
+          "depends_on": [
+            "govern"
+          ],
+          "id": "verify",
           "skill": "validate-engineering-outcomes"
         }
       ]
@@ -828,6 +1184,259 @@
       ]
     },
     {
+      "failure_policy": "Fail closed on schema/path/provenance/cross-reference errors, duplicate identities or nondeterministic derived index bytes.",
+      "id": "nsai-knowledge-library",
+      "purpose": "Validate canonical single-object NSAI JSON files and rebuild the derived library index deterministically.",
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "audit",
+          "skill": "govern-knowledge-refinery"
+        },
+        {
+          "depends_on": [
+            "audit"
+          ],
+          "id": "relationships",
+          "skill": "validate-knowledge-relationships"
+        },
+        {
+          "depends_on": [
+            "relationships"
+          ],
+          "id": "index",
+          "skill": "govern-knowledge-refinery"
+        },
+        {
+          "depends_on": [
+            "index"
+          ],
+          "id": "verify",
+          "skill": "run-evidence-campaigns"
+        }
+      ]
+    },
+    {
+      "failure_policy": "Fail closed on a missing or stale map, sensitive-source admission, ambiguous target, traversal truncation without warning, invalid impact receipt, or missing affected-test plan.",
+      "id": "project-change-intelligence",
+      "purpose": "Build or validate a sensitive-source-safe project map, retrieve bounded evidence, trace change impact, and verify the pre-edit receipt.",
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "map",
+          "skill": "map-project-intelligence"
+        },
+        {
+          "depends_on": [
+            "map"
+          ],
+          "id": "retrieve",
+          "skill": "query-project-map"
+        },
+        {
+          "depends_on": [
+            "map",
+            "retrieve"
+          ],
+          "id": "impact",
+          "skill": "query-project-map"
+        },
+        {
+          "depends_on": [
+            "impact"
+          ],
+          "id": "verify",
+          "skill": "verify-outcome"
+        }
+      ]
+    },
+    {
+      "failure_policy": "Block new owners, dependencies, or abstractions when current ownership has not been queried, necessity is unproven, safety would be weakened, or runnable evidence is absent.",
+      "id": "px-lean-engineering-gate",
+      "purpose": "Trace current owners, minimize a correct change, preserve safety boundaries, and retain measured delta and verification evidence.",
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "map-current-flow",
+          "skill": "map-project-intelligence"
+        },
+        {
+          "depends_on": [
+            "map-current-flow"
+          ],
+          "id": "query-owners",
+          "skill": "query-project-map"
+        },
+        {
+          "depends_on": [
+            "query-owners"
+          ],
+          "id": "lean-gate",
+          "skill": "px-lean-engineering"
+        },
+        {
+          "depends_on": [
+            "lean-gate"
+          ],
+          "id": "trace-impact",
+          "skill": "validate-contract-boundaries"
+        },
+        {
+          "depends_on": [
+            "trace-impact"
+          ],
+          "id": "verify",
+          "skill": "validate-engineering-outcomes"
+        }
+      ]
+    },
+    {
+      "failure_policy": "Keep work stopped on stale fencing, ambiguous authority, dirty or unpushed work, unresolved dependencies, hard budget stop, invalid resume state, missing evidence, or unknown unblock ownership.",
+      "id": "px-team-fabric-recovery",
+      "purpose": "Classify stopped cross-IDE work, reconcile task/worker/lease/fencing/budget/workspace boundaries, and resume without blind retry or duplicate authority.",
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "inspect-session",
+          "skill": "manage-agent-session-fabric"
+        },
+        {
+          "depends_on": [
+            "inspect-session"
+          ],
+          "id": "diagnose-stop",
+          "skill": "px-work-stop-diagnostics"
+        },
+        {
+          "depends_on": [
+            "diagnose-stop"
+          ],
+          "id": "coordinate-recovery",
+          "skill": "govern-distributed-work-runtime"
+        },
+        {
+          "depends_on": [
+            "coordinate-recovery"
+          ],
+          "id": "reconcile-work",
+          "skill": "govern-distributed-work-runtime"
+        },
+        {
+          "depends_on": [
+            "reconcile-work"
+          ],
+          "id": "verify-resume",
+          "skill": "validate-engineering-outcomes"
+        }
+      ]
+    },
+    {
+      "failure_policy": "Retain evidence and abstain on license ambiguity, missing provenance, weak mechanism evidence, semantic conflict, or attempted direct promotion.",
+      "id": "research-engine",
+      "purpose": "Discover, fingerprint, compare, and admit engineering mechanisms without repository-level copying.",
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "discover",
+          "skill": "operate-engineering-research-engine"
+        },
+        {
+          "depends_on": [
+            "discover"
+          ],
+          "id": "fingerprint",
+          "skill": "operate-engineering-research-engine"
+        },
+        {
+          "depends_on": [
+            "fingerprint"
+          ],
+          "id": "synthesize",
+          "skill": "operate-engineering-research-engine"
+        },
+        {
+          "depends_on": [
+            "synthesize"
+          ],
+          "id": "admit",
+          "skill": "govern-knowledge-refinery"
+        },
+        {
+          "depends_on": [
+            "admit"
+          ],
+          "id": "verify",
+          "skill": "run-evidence-campaigns"
+        }
+      ]
+    },
+    {
+      "failure_policy": "Retain and fail resource certification on unknown ownership, unresolved retention, recovery need, active references, evidence gaps, root or link ambiguity, process identity uncertainty, cleanup failure, or residue.",
+      "id": "resource-lifecycle-reconciliation",
+      "purpose": "Classify, promote, reclaim, and reconcile PACIFY-X-owned resources without unsafe deletion or orphan processes.",
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "classify-register",
+          "skill": "manage-resource-lifecycle"
+        },
+        {
+          "depends_on": [
+            "classify-register"
+          ],
+          "id": "promote-validate",
+          "skill": "manage-resource-lifecycle"
+        },
+        {
+          "depends_on": [
+            "promote-validate"
+          ],
+          "id": "reconcile",
+          "skill": "manage-resource-lifecycle"
+        },
+        {
+          "depends_on": [
+            "reconcile"
+          ],
+          "id": "certify",
+          "skill": "validate-engineering-outcomes"
+        }
+      ]
+    },
+    {
+      "failure_policy": "Fail closed on artifact/hash mismatch, stale embedding identity, failed quality/forbidden-source gates or missing explicit activation authority.",
+      "id": "retrieval-generation-governance",
+      "purpose": "Stage, validate, activate or roll back immutable retrieval generations through existing PX owners.",
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "stage",
+          "skill": "govern-retrieval-generations"
+        },
+        {
+          "depends_on": [
+            "stage"
+          ],
+          "id": "evaluate",
+          "skill": "evaluate-retrieval-readiness"
+        },
+        {
+          "depends_on": [
+            "evaluate"
+          ],
+          "id": "govern",
+          "skill": "govern-retrieval-generations"
+        },
+        {
+          "depends_on": [
+            "govern"
+          ],
+          "id": "evidence",
+          "skill": "run-evidence-campaigns"
+        }
+      ]
+    },
+    {
       "id": "retrieval-readiness",
       "purpose": "Repair and validate source knowledge before constructing and evaluating governed retrieval.",
       "steps": [
@@ -920,8 +1529,9 @@
       ]
     },
     {
+      "failure_policy": "Fail closed on missing project authorization, stale semantic/retrieval identity, eager hydration, unresolved dependency or unstable/citation-free results.",
       "id": "semantic-capability-query-certification",
-      "purpose": "Select capabilities from metadata, resolve a bounded dependency bundle, and certify deterministic golden-query behavior without eager skill-body loading.",
+      "purpose": "Select capabilities, run authorized semantic reads, bind retrieval-generation identity, resolve bounded dependencies and certify deterministic query behavior.",
       "steps": [
         {
           "depends_on": [],
@@ -932,15 +1542,58 @@
           "depends_on": [
             "select"
           ],
+          "id": "semantic-read",
+          "skill": "operate-semantic-code-intelligence"
+        },
+        {
+          "depends_on": [
+            "semantic-read"
+          ],
+          "id": "retrieval-coherence",
+          "skill": "govern-retrieval-generations"
+        },
+        {
+          "depends_on": [
+            "select",
+            "semantic-read"
+          ],
           "id": "resolve",
           "skill": "skill-bundle-resolver"
         },
         {
           "depends_on": [
-            "resolve"
+            "resolve",
+            "retrieval-coherence"
           ],
           "id": "certify",
           "skill": "run-evidence-campaigns"
+        }
+      ]
+    },
+    {
+      "failure_policy": "Fail closed on project authorization, stale revision, backend failure, eager hydration or missing source evidence.",
+      "id": "semantic-code-intelligence",
+      "purpose": "Perform authorized semantic-code/LSP query and bounded context operations with revision/source evidence.",
+      "steps": [
+        {
+          "depends_on": [],
+          "id": "query",
+          "skill": "operate-semantic-code-intelligence"
+        },
+        {
+          "depends_on": [
+            "query"
+          ],
+          "id": "retrieval",
+          "skill": "govern-retrieval-generations"
+        },
+        {
+          "depends_on": [
+            "query",
+            "retrieval"
+          ],
+          "id": "verify",
+          "skill": "validate-engineering-outcomes"
         }
       ]
     },
@@ -1154,134 +1807,6 @@
           "id": "export",
           "skill": "transcript-analysis"
         }
-      ]
-    },
-    {
-      "id": "candidate-pipeline",
-      "purpose": "Compile and resolve candidates through explicit membership and evidence boundaries.",
-      "failure_policy": "Block on source admission failure, stage invariant violation, batch instability, missing dependency, missing required kind, or unreasoned exclusion.",
-      "steps": [
-        {"id": "inventory", "skill": "audit-source-capabilities", "depends_on": []},
-        {"id": "compile", "skill": "govern-candidate-resolution-pipeline", "depends_on": ["inventory"]},
-        {"id": "resolve", "skill": "govern-candidate-resolution-pipeline", "depends_on": ["compile"]},
-        {"id": "verify", "skill": "engineer-verification-lab", "depends_on": ["resolve"]}
-      ]
-    },
-    {
-      "id": "distributed-runtime",
-      "purpose": "Reserve, place, execute, reconcile, and hand off project-scoped distributed work.",
-      "failure_policy": "Fail closed on scope bleed, lease collision, quota, trust, missing user presence, missing evidence, or unreconciled resources.",
-      "steps": [
-        {"id": "scope", "skill": "govern-distributed-work-runtime", "depends_on": []},
-        {"id": "reserve", "skill": "orchestrate-capability-scheduling", "depends_on": ["scope"]},
-        {"id": "place", "skill": "govern-distributed-work-runtime", "depends_on": ["reserve"]},
-        {"id": "execute", "skill": "govern-runtime-protocol-deployment", "depends_on": ["place"]},
-        {"id": "verify", "skill": "verify-outcome", "depends_on": ["execute"]},
-        {"id": "reconcile", "skill": "govern-distributed-work-runtime", "depends_on": ["verify"]}
-      ]
-    },
-    {
-      "id": "epistemic-evolution",
-      "purpose": "Maintain temporal claims and evaluate quarantined skill improvements without live self-editing.",
-      "failure_policy": "Keep candidates quarantined on temporal ambiguity, missing lineage, correlated actor and judge, held-out regression, or absent independent promotion.",
-      "steps": [
-        {"id": "capture", "skill": "govern-memory-fabric", "depends_on": []},
-        {"id": "invalidate", "skill": "govern-epistemic-skill-evolution", "depends_on": ["capture"]},
-        {"id": "experiment", "skill": "govern-epistemic-skill-evolution", "depends_on": ["invalidate"]},
-        {"id": "verify", "skill": "skill-admission-controller", "depends_on": ["experiment"]}
-      ]
-    },
-    {
-      "id": "deliverable-validation",
-      "purpose": "Prove physical and media deliverables against explicit promises and independent checks.",
-      "failure_policy": "Block on mismatch, unknown required property, missing independent physical check, or provider downgrade.",
-      "steps": [
-        {"id": "declare", "skill": "validate-physical-media-deliverables", "depends_on": []},
-        {"id": "inspect", "skill": "validate-physical-media-deliverables", "depends_on": ["declare"]},
-        {"id": "verify", "skill": "verify-outcome", "depends_on": ["inspect"]}
-      ]
-    },
-    {
-      "id": "project-change-intelligence",
-      "purpose": "Build or validate a sensitive-source-safe project map, retrieve bounded evidence, trace change impact, and verify the pre-edit receipt.",
-      "failure_policy": "Fail closed on a missing or stale map, sensitive-source admission, ambiguous target, traversal truncation without warning, invalid impact receipt, or missing affected-test plan.",
-      "steps": [
-        {"id": "map", "skill": "map-project-intelligence", "depends_on": []},
-        {"id": "retrieve", "skill": "query-project-map", "depends_on": ["map"]},
-        {"id": "impact", "skill": "query-project-map", "depends_on": ["map", "retrieve"]},
-        {"id": "verify", "skill": "verify-outcome", "depends_on": ["impact"]}
-      ]
-    },
-    {
-      "id": "research-engine",
-      "purpose": "Discover, fingerprint, compare, and admit engineering mechanisms without repository-level copying.",
-      "failure_policy": "Retain evidence and abstain on license ambiguity, missing provenance, weak mechanism evidence, semantic conflict, or attempted direct promotion.",
-      "steps": [
-        {"id": "discover", "skill": "operate-engineering-research-engine", "depends_on": []},
-        {"id": "fingerprint", "skill": "operate-engineering-research-engine", "depends_on": ["discover"]},
-        {"id": "synthesize", "skill": "operate-engineering-research-engine", "depends_on": ["fingerprint"]},
-        {"id": "admit", "skill": "govern-knowledge-refinery", "depends_on": ["synthesize"]},
-        {"id": "verify", "skill": "run-evidence-campaigns", "depends_on": ["admit"]}
-      ]
-    },
-    {
-      "id": "resource-lifecycle-reconciliation",
-      "purpose": "Classify, promote, reclaim, and reconcile PACIFY-X-owned resources without unsafe deletion or orphan processes.",
-      "failure_policy": "Retain and fail resource certification on unknown ownership, unresolved retention, recovery need, active references, evidence gaps, root or link ambiguity, process identity uncertainty, cleanup failure, or residue.",
-      "steps": [
-        {"id": "classify-register", "skill": "manage-resource-lifecycle", "depends_on": []},
-        {"id": "promote-validate", "skill": "manage-resource-lifecycle", "depends_on": ["classify-register"]},
-        {"id": "reconcile", "skill": "manage-resource-lifecycle", "depends_on": ["promote-validate"]},
-        {"id": "certify", "skill": "validate-engineering-outcomes", "depends_on": ["reconcile"]}
-      ]
-    },
-    {
-      "id": "hardware-aware-execution-routing",
-      "purpose": "Select CPU or CUDA from workload, compatibility, resource, correctness, benchmark, and fallback evidence.",
-      "failure_policy": "Use CPU or skip optional enrichment when CUDA evidence is absent or fails; fail closed on required correctness disagreement.",
-      "steps": [
-        {"id": "classify", "skill": "hardware-aware-execution-routing", "depends_on": []},
-        {"id": "discover", "skill": "hardware-aware-execution-routing", "depends_on": ["classify"]},
-        {"id": "route", "skill": "hardware-aware-execution-routing", "depends_on": ["discover"]},
-        {"id": "execute", "skill": "govern-runtime-protocol-deployment", "depends_on": ["route"]},
-        {"id": "validate", "skill": "validate-engineering-outcomes", "depends_on": ["execute"]}
-      ]
-    },
-    {
-      "id": "data-sort-dry-run-selection",
-      "purpose": "Measure a bulk dataset, choose a bounded representative dry-run section, pilot compatible sorts, benchmark the three fastest correct candidates, and retain a selection receipt before any full-data write.",
-      "failure_policy": "Fail closed on unreadable input, missing or mixed keys, unbounded samples, non-deterministic sampling, correctness or stability disagreement, missing fingerprints, memory-fit ambiguity, or no passing candidate.",
-      "steps": [
-        {"id": "classify-size", "skill": "data-sort-dry-run-picker", "depends_on": []},
-        {"id": "sample", "skill": "data-sort-dry-run-picker", "depends_on": ["classify-size"]},
-        {"id": "pilot", "skill": "data-sort-dry-run-picker", "depends_on": ["sample"]},
-        {"id": "benchmark-top-three", "skill": "data-sort-dry-run-picker", "depends_on": ["pilot"]},
-        {"id": "verify-select", "skill": "validate-engineering-outcomes", "depends_on": ["benchmark-top-three"]},
-        {"id": "retain-receipt", "skill": "evidence-assembler", "depends_on": ["verify-select"]}
-      ]
-    },
-    {
-      "id": "px-lean-engineering-gate",
-      "purpose": "Trace current owners, minimize a correct change, preserve safety boundaries, and retain measured delta and verification evidence.",
-      "failure_policy": "Block new owners, dependencies, or abstractions when current ownership has not been queried, necessity is unproven, safety would be weakened, or runnable evidence is absent.",
-      "steps": [
-        {"id": "map-current-flow", "skill": "map-project-intelligence", "depends_on": []},
-        {"id": "query-owners", "skill": "query-project-map", "depends_on": ["map-current-flow"]},
-        {"id": "lean-gate", "skill": "px-lean-engineering", "depends_on": ["query-owners"]},
-        {"id": "trace-impact", "skill": "validate-contract-boundaries", "depends_on": ["lean-gate"]},
-        {"id": "verify", "skill": "validate-engineering-outcomes", "depends_on": ["trace-impact"]}
-      ]
-    },
-    {
-      "id": "px-team-fabric-recovery",
-      "purpose": "Classify stopped cross-IDE work, reconcile task/worker/lease/fencing/budget/workspace boundaries, and resume without blind retry or duplicate authority.",
-      "failure_policy": "Keep work stopped on stale fencing, ambiguous authority, dirty or unpushed work, unresolved dependencies, hard budget stop, invalid resume state, missing evidence, or unknown unblock ownership.",
-      "steps": [
-        {"id": "inspect-session", "skill": "manage-agent-session-fabric", "depends_on": []},
-        {"id": "diagnose-stop", "skill": "px-work-stop-diagnostics", "depends_on": ["inspect-session"]},
-        {"id": "coordinate-recovery", "skill": "govern-distributed-work-runtime", "depends_on": ["diagnose-stop"]},
-        {"id": "reconcile-work", "skill": "govern-distributed-work-runtime", "depends_on": ["coordinate-recovery"]},
-        {"id": "verify-resume", "skill": "validate-engineering-outcomes", "depends_on": ["reconcile-work"]}
       ]
     }
   ]

@@ -1,0 +1,149 @@
+{
+  "applicability": {
+    "conditions": [
+      "Use only when parallelism benefit exceeds coordination overhead."
+    ],
+    "exclusions": [
+      "treating transport membership as task authority"
+    ],
+    "targets": [
+      "evaluation workers",
+      "model workers"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "moe_worker_doc",
+          "px_capability_scheduler"
+        ],
+        "statement": "Worker-cohort concepts are useful for evaluation or parallel inference but are not automatically appropriate for one-workstation PX operation."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "moe_worker_doc",
+          "px_capability_scheduler"
+        ],
+        "statement": "Cohort membership and rendezvous need exact identities so partial/stale workers cannot be confused with current work."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "moe_worker_doc",
+          "px_capability_scheduler"
+        ],
+        "statement": "PX task/lease/fencing coordination remains the authority even if workers use a cohort transport underneath."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "define explicit cohort and rendezvous identities",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "assign bounded shards/tasks to workers",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "reconcile results through PX task/evidence authority",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "Distributed worker cohorts are an optional execution topology for parallel model/evaluation work; cohort membership, rendezvous identity, shard assignment, and failure behavior must be explicit and must not create a second PX coordination authority."
+  },
+  "namespace": "moe",
+  "object_id": "nsai:moe:worker_cohorts:moe_distributed_worker_cohorts",
+  "object_type": "worker_cohorts",
+  "ontology": {
+    "classes": [
+      "distributed_execution",
+      "optional_topology"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "moe"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_MoE_Mining_Pass_v3/25_DISTRIBUTED_WORKER_COHORTS_AND_RENDEZVOUS.md",
+        "sha256": "7a13f3fd674c7e67f834f6738b14765c3f7d45414cac0b9f7b3d6c901e2aaad1",
+        "source_id": "moe_worker_doc"
+      },
+      {
+        "kind": "source_file",
+        "path": "runtime/capability_scheduler.py",
+        "sha256": "2f6145789346703d54177eba52889a34321d623b0046814aa1b0d1433d5512a4",
+        "source_id": "px_capability_scheduler"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:moe:capacity:moe_capacity_backpressure"
+    }
+  ],
+  "retrieval": {
+    "priority": 70,
+    "tags": [
+      "distributed evaluation",
+      "rendezvous",
+      "sharding",
+      "worker cohort"
+    ],
+    "terms": [
+      "distributed evaluation",
+      "distributed model cohort",
+      "rendezvous",
+      "sharding",
+      "worker cohort",
+      "worker rendezvous"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "Distributed worker cohorts are an optional execution topology for parallel model/evaluation work; cohort membership, rendezvous identity, shard assignment, and failure behavior must be explicit and must not create a second PX coordination authority.",
+    "exclusions": [
+      "new coordination authority"
+    ],
+    "intents": [
+      "coordinate model workers",
+      "evaluate distributed cohort"
+    ],
+    "keywords": [
+      "distributed evaluation",
+      "rendezvous",
+      "sharding",
+      "worker cohort"
+    ],
+    "retrieval_text": "Distributed Worker Cohorts and Rendezvous. Distributed worker cohorts are an optional execution topology for parallel model/evaluation work; cohort membership, rendezvous identity, shard assignment, and failure behavior must be explicit and must not create a second PX coordination authority. Worker-cohort concepts are useful for evaluation or parallel inference but are not automatically appropriate for one-workstation PX operation. Cohort membership and rendezvous need exact identities so partial/stale workers cannot be confused with current work. PX task/lease/fencing coordination remains the authority even if workers use a cohort transport underneath.",
+    "short_description": "Distributed worker cohorts are an optional execution topology for parallel model/evaluation work; cohort membership, rendezvous identity, shard assignment, and failure behavior must be explicit and must not create a second PX coordination authority.",
+    "synonyms": [
+      "distributed model cohort",
+      "worker rendezvous"
+    ]
+  },
+  "status": "validated",
+  "title": "Distributed Worker Cohorts and Rendezvous"
+}

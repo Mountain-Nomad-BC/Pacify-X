@@ -167,6 +167,43 @@ def test_ledger_anchor_and_retained_history_are_reviewed_custody() -> None:
     assert _classify_exact_group(paths) == "ledger-authority-anchor-history"
 
 
+def test_exact_root_and_pycert_pair_classifies_as_certification_control_projections() -> None:
+    runtime_paths = [
+        "px/py_cert/runtime/certification_contract.py",
+        "runtime/certification_contract.py",
+    ]
+    assert (
+        _classify_exact_group(runtime_paths)
+        == "certification-control-projections"
+    )
+
+    scripts_paths = [
+        "px/py_cert/scripts/build_release_successor_configs.py",
+        "scripts/build_release_successor_configs.py",
+    ]
+    assert (
+        _classify_exact_group(scripts_paths)
+        == "certification-control-projections"
+    )
+
+
+def test_divergent_or_mismatched_paths_do_not_receive_certification_control_projections() -> None:
+    # A non-pair (e.g. 3 paths) or asymmetric names must not classify
+    mismatched_names = [
+        "px/py_cert/runtime/certification_contract.py",
+        "runtime/other_contract.py",
+    ]
+    assert _classify_exact_group(mismatched_names) is None
+
+    # Certification-local implementation with no root counterpart
+    cert_local = [
+        "px/py_cert/runtime/pre_cert_contract.py",
+        "runtime/pre_cert_contract.py",
+    ]
+    # Note: runtime/pre_cert_contract.py does not exist on disk, but even if tested:
+    assert _classify_exact_group(["px/py_cert/runtime/pre_cert_contract.py"]) is None
+
+
 def test_structural_audit_never_writes_dynamic_loader_bytecode(tmp_path) -> None:
     root = _clone(tmp_path)
     cache = root / ".px/skills/audit-incomplete-implementations/scripts/__pycache__"

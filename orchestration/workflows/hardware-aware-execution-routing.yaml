@@ -1,4 +1,4 @@
-schema_version: "1.0"
+schema_version: "1.1"
 id: hardware-aware-execution-routing
 loading_rule: Load workload and compact hardware metadata before any optional accelerator library or implementation.
 steps:
@@ -14,12 +14,16 @@ steps:
     skill: hardware-aware-execution-routing
     depends_on: [discover]
     evidence: compatibility, resource, correctness, and benchmark-backed decision
+  - id: model-fabric-check
+    skill: govern-model-fabric
+    depends_on: [route]
+    evidence: for model workloads, profile/capacity/resource-interlock and admitted-runtime evidence; otherwise explicit not-applicable receipt
   - id: execute
     skill: govern-runtime-protocol-deployment
-    depends_on: [route]
+    depends_on: [model-fabric-check]
     evidence: bounded execution telemetry and fallback events
   - id: validate
     skill: validate-engineering-outcomes
     depends_on: [execute]
     evidence: CPU/GPU equivalence, determinism, resource limits, and end-to-end timing
-failure_policy: Use CPU or skip optional enrichment on missing CUDA, incompatible providers, insufficient VRAM, stale benchmarks, failed correctness, bounded OOM exhaustion, or environment mismatch; fail closed only when required correctness validation disagrees.
+failure_policy: Use CPU or skip optional enrichment on missing CUDA, incompatible providers, insufficient VRAM, stale benchmarks, failed correctness, bounded OOM exhaustion, environment mismatch, or model-fabric interlock denial; fail closed on required correctness disagreement.

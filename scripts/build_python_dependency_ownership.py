@@ -14,6 +14,12 @@ import tokenize
 LOCAL = {"runtime", "builders", "scripts", "engineering_bootstrap", "tests", "docs"}
 TEST_ONLY = {"pytest": "pytest", "yaml": "PyYAML", "jsonschema": "jsonschema"}
 DECLARED_REQUIRED = {"yaml": "PyYAML"}
+OPTIONAL_GATED = {
+    "laya": "laya",
+    "numpy": "numpy",
+    "pacifyx_memory": "pacifyx_memory",
+    "turbovec": "turbovec",
+}
 MAX_SOURCE_FILES = 10_000
 MAX_SOURCE_BYTES = 64 * 1024 * 1024
 MAX_SOURCE_FILE_BYTES = 4 * 1024 * 1024
@@ -57,6 +63,15 @@ def build(root: Path) -> dict[str, object]:
             raise ValueError("duplicate Python surface path or portable alias")
         seen.add(identity)
         if not record["packaged"]:
+            continue
+        # Intentionally malformed Python fixtures are packaged test data, not
+        # executable/import-bearing Python surfaces. Exclude only records
+        # whose canonical surface map proves all three properties below.
+        if (
+            relative.startswith("tests/fixtures/")
+            and record.get("role") == "release-test"
+            and record.get("syntax_valid") is False
+        ):
             continue
         if any("quarantine" in part.casefold() for part in relative.split("/")[:-1]):
             raise ValueError("quarantine source inputs are excluded")
@@ -132,6 +147,14 @@ def build(root: Path) -> dict[str, object]:
             path.startswith("runtime/") for path in paths
         ):
             classification, distribution = "declared_required", DECLARED_REQUIRED[name]
+        elif (
+            name in OPTIONAL_GATED
+            and all(
+                path.startswith("runtime/") or path.startswith("tests/")
+                for path in paths
+            )
+        ):
+            classification, distribution = "optional_gated", OPTIONAL_GATED[name]
         elif name in TEST_ONLY and all(path.startswith("tests/") for path in paths):
             classification, distribution = "test_only", TEST_ONLY[name]
         else:

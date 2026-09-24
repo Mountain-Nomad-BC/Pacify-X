@@ -1,0 +1,143 @@
+{
+  "applicability": {
+    "conditions": [
+      "Descriptors must be derived from current admitted authorities."
+    ],
+    "exclusions": [
+      "inventing executable actions"
+    ],
+    "targets": [
+      "PX operations"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "px_action_surface"
+        ],
+        "statement": "Action descriptors carry stable IDs and hashes."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_action_surface"
+        ],
+        "statement": "Resolution can use exact IDs and normalized aliases before any model assistance."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_action_surface"
+        ],
+        "statement": "Selecting an action descriptor is not equivalent to authorizing or executing the action."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "project admitted operations into bounded action descriptors",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "resolve exact/alias candidates deterministically",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "pass the selected existing action ID into PX execution authorization",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "The action surface is a deterministic read-only projection of known actions/operations and their aliases, schemas, mutation class, and authority requirements; it helps resolve intent before authorization but never grants permission itself."
+  },
+  "namespace": "operations",
+  "object_id": "nsai:operations:action_surface:rie_action_surface",
+  "object_type": "action_surface",
+  "ontology": {
+    "classes": [
+      "intent_resolution",
+      "operational_projection"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "operations"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "kind": "source_file",
+        "path": "runtime/action_surface.py",
+        "sha256": "40060f8fab983bd99dae92a4d3a8ad100f7379439a0a47542efdba2c8fa10603",
+        "source_id": "px_action_surface"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:operations:query_plan:rie_query_plan"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:cognitive:closed_world_selection:tiny_operator_closed_world_selection"
+    }
+  ],
+  "retrieval": {
+    "priority": 95,
+    "tags": [
+      "action descriptor",
+      "action surface",
+      "alias resolution",
+      "operation"
+    ],
+    "terms": [
+      "action catalog",
+      "action descriptor",
+      "action surface",
+      "alias resolution",
+      "operation",
+      "operation surface"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "The action surface is a deterministic read-only projection of known actions/operations and their aliases, schemas, mutation class, and authority requirements; it helps resolve intent before authorization but never grants permission itself.",
+    "exclusions": [
+      "authorization"
+    ],
+    "intents": [
+      "find action",
+      "resolve operation"
+    ],
+    "keywords": [
+      "action descriptor",
+      "action surface",
+      "alias resolution",
+      "operation"
+    ],
+    "retrieval_text": "RIE Action Surface. The action surface is a deterministic read-only projection of known actions/operations and their aliases, schemas, mutation class, and authority requirements; it helps resolve intent before authorization but never grants permission itself. Action descriptors carry stable IDs and hashes. Resolution can use exact IDs and normalized aliases before any model assistance. Selecting an action descriptor is not equivalent to authorizing or executing the action.",
+    "short_description": "The action surface is a deterministic read-only projection of known actions/operations and their aliases, schemas, mutation class, and authority requirements; it helps resolve intent before authorization but never grants permission itself.",
+    "synonyms": [
+      "action catalog",
+      "operation surface"
+    ]
+  },
+  "status": "validated",
+  "title": "RIE Action Surface"
+}

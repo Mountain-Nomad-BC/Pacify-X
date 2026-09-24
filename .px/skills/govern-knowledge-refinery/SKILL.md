@@ -18,3 +18,14 @@ description: Inventory and admit untrusted knowledge sources, classify semantic 
 11. Preserve all source, plan, review, graph-diff, test, and rollback evidence. Never hard-delete.
 
 Read [runtime contract](references/runtime-contract.md) before admitting, classifying, calibrating, or staging knowledge.
+
+
+## NSAI single-object library mode
+
+When the source is the governed NSAI library:
+
+1. Treat each canonical JSON file as one object and validate its schema, semantic invariants, expected path and source provenance before indexing.
+2. Validate all object relationships against the complete library; reject dangling or duplicate object identities.
+3. Keep `knowledge/nsai/index.json` derived-only. Rebuild it from canonical object files and require a second identical build before accepting deterministic closure.
+4. Do not convert runtime/private learned knowledge directly into source-tree NSAI canon. It must pass the normal candidate/review/promotion and release path first.
+5. Preserve `authority_granted: false` semantics for knowledge objects; knowledge describes mechanisms and evidence, it does not grant runtime effects.

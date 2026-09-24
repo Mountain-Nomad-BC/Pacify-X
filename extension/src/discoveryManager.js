@@ -61,45 +61,110 @@ function parseJson(result, fallback) {
   if (!result || result.status !== 0) return fallback;
   try { return JSON.parse(result.stdout); } catch { return fallback; }
 }
+function boundedArray(value, maximum = 512) { return (Array.isArray(value) ? value : []).slice(0, maximum); }
+function secretLikeSetting(key = '') { return /(secret|token|password|credential|api[_-]?key|private[_-]?key|access[_-]?key)/i.test(String(key)); }
+function normalizeConfiguration(contributes = {}) {
+  const configurations = Array.isArray(contributes.configuration) ? contributes.configuration : contributes.configuration ? [contributes.configuration] : [];
+  const records = [];
+  for (const block of configurations.slice(0, 128)) {
+    const properties = block?.properties && typeof block.properties === 'object' ? block.properties : {};
+    for (const [key, spec] of Object.entries(properties).slice(0, 2048)) {
+      records.push({
+        key: cleanText(key, 300), type: Array.isArray(spec?.type) ? spec.type.map(item => cleanText(item, 80)) : cleanText(spec?.type, 80) || null,
+        scope: cleanText(spec?.scope, 80) || null, description: cleanText(spec?.markdownDescription || spec?.description, 800) || null,
+        enum: boundedArray(spec?.enum, 64).map(item => cleanText(item, 200)), has_default: Object.hasOwn(spec || {}, 'default'),
+        default_value_persisted: false, secret_like: secretLikeSetting(key), deprecation_message: cleanText(spec?.deprecationMessage, 500) || null
+      });
+    }
+  }
+  records.sort((a, b) => a.key.localeCompare(b.key));
+  return records;
+}
+function normalizeMenus(contributes = {}) {
+  const menus = contributes.menus && typeof contributes.menus === 'object' ? contributes.menus : {};
+  const out = [];
+  for (const [location, items] of Object.entries(menus).slice(0, 256)) {
+    for (const item of boundedArray(items, 512)) {
+      const command = cleanText(item?.command, 240); const submenu = cleanText(item?.submenu, 240);
+      if (!command && !submenu) continue;
+      out.push({ location: cleanText(location, 240), command: command || null, submenu: submenu || null, alt: cleanText(item?.alt, 240) || null, when: cleanText(item?.when, 800) || null, group: cleanText(item?.group, 240) || null });
+    }
+  }
+  return out.sort((a, b) => `${a.location}\0${a.command || a.submenu}`.localeCompare(`${b.location}\0${b.command || b.submenu}`));
+}
+function normalizeViews(contributes = {}) {
+  const out = [];
+  const views = contributes.views && typeof contributes.views === 'object' ? contributes.views : {};
+  for (const [container, records] of Object.entries(views).slice(0, 128)) {
+    for (const item of boundedArray(records, 256)) {
+      const id = cleanText(item?.id, 240); if (!id) continue;
+      out.push({ id, container: cleanText(container, 240), name: cleanText(item?.name, 240) || id, when: cleanText(item?.when, 800) || null, type: cleanText(item?.type, 80) || null });
+    }
+  }
+  return out.sort((a, b) => a.id.localeCompare(b.id));
+}
 function normalizeExtensions(extensions = []) {
-  const records = extensions.map(extension => {
+  const records = boundedArray(extensions, 10000).map(extension => {
     const manifest = extension.packageJSON || {};
     const contributes = manifest.contributes && typeof manifest.contributes === 'object' ? manifest.contributes : {};
-    const commands = (Array.isArray(contributes.commands) ? contributes.commands : []).map(item => ({
+    const commands = boundedArray(contributes.commands, 2048).map(item => ({
       id: cleanText(item?.command, 240), invocation: `vscode.commands.executeCommand('${cleanText(item?.command, 240)}', ...args)`,
-      title: cleanText(item?.title, 240), expected_inputs: 'Arguments are not declared by the extension manifest; inspect provider documentation before invocation.',
+      title: cleanText(item?.title, 240), category: cleanText(item?.category, 160) || null,
+      icon_declared: Boolean(item?.icon), expected_inputs: 'Arguments are not declared by the extension manifest; inspect provider documentation before invocation.',
       expected_outputs: 'Return contract is not declared by the extension manifest.', enablement: cleanText(item?.enablement, 500) || null
     })).filter(item => item.id).sort((a, b) => a.id.localeCompare(b.id));
+    const keybindings = boundedArray(contributes.keybindings, 2048).map(item => ({
+      command: cleanText(item?.command, 240), key: cleanText(item?.key, 160) || null, mac: cleanText(item?.mac, 160) || null,
+      linux: cleanText(item?.linux, 160) || null, win: cleanText(item?.win, 160) || null, when: cleanText(item?.when, 800) || null,
+      args_declared: Object.hasOwn(item || {}, 'args')
+    })).filter(item => item.command).sort((a, b) => `${a.command}\0${a.key || ''}`.localeCompare(`${b.command}\0${b.key || ''}`));
+    const menus = normalizeMenus(contributes);
+    const settings = normalizeConfiguration(contributes);
+    const languageModelTools = boundedArray(contributes.languageModelTools, 512).map(item => ({
+      name: cleanText(item?.name, 240), display_name: cleanText(item?.displayName, 240) || null, tool_reference_name: cleanText(item?.toolReferenceName, 240) || null,
+      model_description: cleanText(item?.modelDescription, 800) || null, user_description: cleanText(item?.userDescription, 800) || null,
+      can_be_referenced_in_prompt: Boolean(item?.canBeReferencedInPrompt), input_schema_declared: Boolean(item?.inputSchema), input_schema_properties: Object.keys(item?.inputSchema?.properties || {}).slice(0, 128).sort()
+    })).filter(item => item.name).sort((a, b) => a.name.localeCompare(b.name));
+    const chatParticipants = boundedArray(contributes.chatParticipants, 512).map(item => ({
+      id: cleanText(item?.id, 240), name: cleanText(item?.name, 240) || null, full_name: cleanText(item?.fullName, 240) || null,
+      description: cleanText(item?.description, 800) || null, is_sticky: Boolean(item?.isSticky)
+    })).filter(item => item.id).sort((a, b) => a.id.localeCompare(b.id));
+    const views = normalizeViews(contributes);
+    const taskDefinitions = boundedArray(contributes.taskDefinitions, 512).map(item => ({ type: cleanText(item?.type, 240), required: boundedArray(item?.required, 128).map(value => cleanText(value, 200)), properties: Object.keys(item?.properties || {}).slice(0, 256).sort() })).filter(item => item.type).sort((a, b) => a.type.localeCompare(b.type));
+    const debuggers = boundedArray(contributes.debuggers, 512).map(item => ({ type: cleanText(item?.type, 240), label: cleanText(item?.label, 240) || null, languages: boundedArray(item?.languages, 128).map(value => cleanText(value, 160)) })).filter(item => item.type).sort((a, b) => a.type.localeCompare(b.type));
+    const customEditors = boundedArray(contributes.customEditors, 512).map(item => ({ view_type: cleanText(item?.viewType, 240), display_name: cleanText(item?.displayName, 240) || null, priority: cleanText(item?.priority, 80) || null, selector_count: boundedArray(item?.selector, 128).length })).filter(item => item.view_type).sort((a, b) => a.view_type.localeCompare(b.view_type));
+    const authentication = boundedArray(contributes.authentication, 128).map(item => ({ id: cleanText(item?.id, 240), label: cleanText(item?.label, 240) || null })).filter(item => item.id).sort((a, b) => a.id.localeCompare(b.id));
+    const languages = boundedArray(contributes.languages, 1024).map(item => ({ id: cleanText(item?.id, 160), extensions: boundedArray(item?.extensions, 128).map(value => cleanText(value, 120)), aliases: boundedArray(item?.aliases, 64).map(value => cleanText(value, 160)) })).filter(item => item.id).sort((a, b) => a.id.localeCompare(b.id));
+    const notebooks = boundedArray(contributes.notebooks, 256).map(item => ({ type: cleanText(item?.type, 240), display_name: cleanText(item?.displayName, 240) || null, selector_count: boundedArray(item?.selector, 128).length })).filter(item => item.type).sort((a, b) => a.type.localeCompare(b.type));
+    const terminalProfiles = boundedArray(contributes.terminal?.profiles, 256).map(item => ({ id: cleanText(item?.id, 240), title: cleanText(item?.title, 240) || null })).filter(item => item.id).sort((a, b) => a.id.localeCompare(b.id));
+    const viewContainers = ['activitybar', 'panel'].flatMap(location => boundedArray(contributes.viewsContainers?.[location], 256).map(item => ({ location, id: cleanText(item?.id, 240), title: cleanText(item?.title, 240) || null }))).filter(item => item.id).sort((a, b) => a.id.localeCompare(b.id));
+    const viewWelcome = boundedArray(contributes.viewsWelcome, 512).map(item => ({ view: cleanText(item?.view, 240), when: cleanText(item?.when, 800) || null, group: cleanText(item?.group, 160) || null })).filter(item => item.view).sort((a, b) => a.view.localeCompare(b.view));
     const capabilityFlags = manifest.capabilities && typeof manifest.capabilities === 'object' ? manifest.capabilities : {};
     return {
       id: cleanText(extension.id || manifest.name, 200), name: cleanText(manifest.displayName || manifest.name || extension.id, 240),
       version: cleanText(manifest.version, 80), publisher: cleanText(manifest.publisher, 160), active: Boolean(extension.isActive),
-      builtin: Boolean(manifest.isBuiltin), extension_kind: Array.isArray(manifest.extensionKind) ? manifest.extensionKind.map(String) : [],
-      contribution_points: Object.keys(contributes).sort(),
-      capabilities: Object.keys(contributes).sort().map(point => ({ id: `contribution:${point}`, kind: point, provider: cleanText(extension.id || manifest.name, 200), invocation: point === 'commands' ? 'See commands[]' : 'VS Code contribution-point contract', expected_inputs: 'Defined by the VS Code contribution point and provider manifest.', expected_outputs: 'Defined by the VS Code host contract; provider-specific output is not inferred.' })),
-      commands,
+      builtin: Boolean(manifest.isBuiltin), extension_kind: boundedArray(manifest.extensionKind, 16).map(String),
+      contribution_points: Object.keys(contributes).slice(0, 1024).sort(),
+      capabilities: Object.keys(contributes).slice(0, 1024).sort().map(point => ({ id: `contribution:${point}`, kind: point, provider: cleanText(extension.id || manifest.name, 200), invocation: point === 'commands' ? 'See commands[]' : 'VS Code contribution-point contract', expected_inputs: 'Defined by the VS Code contribution point and provider manifest.', expected_outputs: 'Defined by the VS Code host contract; provider-specific output is not inferred.' })),
+      commands, keybindings, menus, settings, language_model_tools: languageModelTools, chat_participants: chatParticipants, views, view_containers: viewContainers, views_welcome: viewWelcome,
+      task_definitions: taskDefinitions, debuggers, custom_editors: customEditors, authentication, languages, notebooks, terminal_profiles: terminalProfiles,
       api_contract: { exported_api_detected: false, activation_attempted: false, invocation: 'vscode.extensions.getExtension(id)?.exports only after separately approved activation', expected_inputs: 'Provider-defined; not inferred', expected_outputs: 'Provider-defined; not inferred' },
-      dependencies: (Array.isArray(manifest.extensionDependencies) ? manifest.extensionDependencies : []).map(item => cleanText(item, 200)).filter(Boolean).sort(),
-      activation_events: (Array.isArray(manifest.activationEvents) ? manifest.activationEvents : []).map(item => cleanText(item, 300)).filter(Boolean).sort(),
+      dependencies: boundedArray(manifest.extensionDependencies, 512).map(item => cleanText(item, 200)).filter(Boolean).sort(),
+      extension_pack: boundedArray(manifest.extensionPack, 512).map(item => cleanText(item, 200)).filter(Boolean).sort(),
+      activation_events: boundedArray(manifest.activationEvents, 1024).map(item => cleanText(item, 300)).filter(Boolean).sort(),
       permissions_resources: {
-        extension_kind: Array.isArray(manifest.extensionKind) ? manifest.extensionKind.map(String) : [],
+        extension_kind: boundedArray(manifest.extensionKind, 16).map(String),
         workspace_trust: capabilityFlags.untrustedWorkspaces || { supported: 'not-declared' },
         virtual_workspaces: capabilityFlags.virtualWorkspaces || { supported: 'not-declared' },
         resource_roots: ['VS Code extension host', 'declared contribution points'], credential_access_inferred: false
       },
-      constraints: ['Metadata detection does not activate the extension.', 'Command arguments and return types are unknown unless the provider declares them.'],
-      known_conflicts: [],
-      integration_status: 'detected-metadata-only'
+      constraints: ['Metadata detection does not activate the extension.', 'Command arguments and return types are unknown unless the provider declares them.', 'User setting values and credential material are not persisted.'],
+      known_conflicts: [], integration_status: 'detected-metadata-only'
     };
   }).filter(item => item.id).sort((a, b) => a.id.localeCompare(b.id));
   const owners = new Map();
-  for (const record of records) for (const command of record.commands) {
-    if (!owners.has(command.id)) owners.set(command.id, []); owners.get(command.id).push(record.id);
-  }
-  for (const record of records) for (const command of record.commands) {
-    const commandOwners = owners.get(command.id) || [];
-    if (commandOwners.length > 1) record.known_conflicts.push({ kind: 'duplicate-command-provider', resource: command.id, providers: commandOwners });
-  }
+  for (const record of records) for (const command of record.commands) { if (!owners.has(command.id)) owners.set(command.id, []); owners.get(command.id).push(record.id); }
+  for (const record of records) for (const command of record.commands) { const commandOwners = owners.get(command.id) || []; if (commandOwners.length > 1) record.known_conflicts.push({ kind: 'duplicate-command-provider', resource: command.id, providers: commandOwners }); }
   return records;
 }
 async function toolInventory(run = runBounded, pythonPath = 'python') {
@@ -501,7 +566,15 @@ function semanticGraph(subjects) {
     addEdge(extensionId, 'available-to', 'px:orchestration-plane');
     for (const point of extension.contribution_points) { const pointId = `vscode-contribution:${point}`; addNode(pointId, 'vscode-contribution-point', point); addEdge(extensionId, 'contributes', pointId); }
     for (const command of extension.commands) { const commandId = `vscode-command:${command.id}`; addNode(commandId, 'vscode-command', command.id, { invocation: command.invocation, expected_inputs: command.expected_inputs, expected_outputs: command.expected_outputs }); addEdge(extensionId, 'contributes-command', commandId); addEdge(commandId, 'available-to', 'px:orchestration-plane'); }
-    for (const dependency of extension.dependencies) { const dependencyId = `vscode-extension:${dependency}`; addNode(dependencyId, 'vscode-extension-reference', dependency); addEdge(extensionId, 'depends-on', dependencyId); }
+    for (const binding of extension.keybindings || []) { const id = `vscode-keybinding:${sha(`${extension.id}\0${binding.command}\0${binding.key || ''}\0${binding.when || ''}`).slice(0, 20)}`; addNode(id, 'vscode-keybinding', binding.command, { key: binding.key, when: binding.when, args_declared: binding.args_declared }); addEdge(extensionId, 'contributes-keybinding', id); addEdge(id, 'binds-command', `vscode-command:${binding.command}`); }
+    for (const menu of extension.menus || []) { const target = menu.command || menu.submenu; const id = `vscode-menu-item:${sha(`${extension.id}\0${menu.location}\0${target}\0${menu.when || ''}`).slice(0, 20)}`; addNode(id, 'vscode-menu-item', target, { location: menu.location, when: menu.when, group: menu.group }); addEdge(extensionId, 'contributes-menu-item', id); if (menu.command) addEdge(id, 'references-command', `vscode-command:${menu.command}`); }
+    for (const setting of extension.settings || []) { const id = `vscode-setting-schema:${setting.key}`; addNode(id, 'vscode-setting-schema', setting.key, { type: setting.type, scope: setting.scope, secret_like: setting.secret_like, default_value_persisted: false }); addEdge(extensionId, 'contributes-setting-schema', id); }
+    for (const tool of extension.language_model_tools || []) { const id = `vscode-language-model-tool:${tool.name}`; addNode(id, 'vscode-language-model-tool', tool.name, { tool_reference_name: tool.tool_reference_name, can_be_referenced_in_prompt: tool.can_be_referenced_in_prompt }); addEdge(extensionId, 'contributes-language-model-tool', id); addEdge(id, 'available-to', 'px:orchestration-plane'); }
+    for (const participant of extension.chat_participants || []) { const id = `vscode-chat-participant:${participant.id}`; addNode(id, 'vscode-chat-participant', participant.id, { name: participant.name }); addEdge(extensionId, 'contributes-chat-participant', id); }
+    for (const view of extension.views || []) { const id = `vscode-view:${view.id}`; addNode(id, 'vscode-view', view.id, { container: view.container, when: view.when }); addEdge(extensionId, 'contributes-view', id); }
+    for (const task of extension.task_definitions || []) { const id = `vscode-task-definition:${task.type}`; addNode(id, 'vscode-task-definition', task.type, { required: task.required }); addEdge(extensionId, 'contributes-task-definition', id); }
+    for (const debuggerItem of extension.debuggers || []) { const id = `vscode-debugger:${debuggerItem.type}`; addNode(id, 'vscode-debugger', debuggerItem.type, { languages: debuggerItem.languages }); addEdge(extensionId, 'contributes-debugger', id); }
+    for (const dependency of [...(extension.dependencies || []), ...(extension.extension_pack || [])]) { const dependencyId = `vscode-extension:${dependency}`; addNode(dependencyId, 'vscode-extension-reference', dependency); addEdge(extensionId, extension.extension_pack?.includes(dependency) ? 'packs-extension' : 'depends-on', dependencyId); }
     addContract(extensionId, extension.resource_contract);
   }
   for (const tool of subjects.system_tools) {
@@ -558,8 +631,8 @@ function buildInventory({ extensions = [], tools = [], packages = {}, virtualEnv
     boundaries: { arbitrary_extension_activation: false, credential_values_persisted: false, weak_secret_fingerprints: false, network_installs: false, billable_calls: false, mutation: false, admitted_roots_only: true },
     ontology: {
       canonical_chain: ['resource', 'capabilities', 'interface', 'requirements', 'effects', 'conflicts', 'policy', 'state'],
-      node_types: ['orchestration-plane', 'admitted-root', 'consumer-file', 'vscode-extension', 'vscode-extension-reference', 'vscode-contribution-point', 'vscode-command', 'system-tool', 'installed-package', 'virtual-environment', 'environment-file', 'environment-variable-schema', 'capability', 'interface', 'requirement', 'effect', 'conflict', 'policy', 'resource-state'],
-      predicates: ['has-capability', 'has-interface', 'requires', 'may-effect', 'conflicts-with', 'governed-by', 'has-state', 'available-to', 'contributes', 'contributes-command', 'depends-on', 'installed-by', 'owned-by-root', 'uses-tool', 'declares-variable', 'consumes-variable']
+      node_types: ['orchestration-plane', 'admitted-root', 'consumer-file', 'vscode-extension', 'vscode-extension-reference', 'vscode-contribution-point', 'vscode-command', 'vscode-keybinding', 'vscode-menu-item', 'vscode-setting-schema', 'vscode-language-model-tool', 'vscode-chat-participant', 'vscode-view', 'vscode-task-definition', 'vscode-debugger', 'system-tool', 'installed-package', 'virtual-environment', 'environment-file', 'environment-variable-schema', 'capability', 'interface', 'requirement', 'effect', 'conflict', 'policy', 'resource-state'],
+      predicates: ['has-capability', 'has-interface', 'requires', 'may-effect', 'conflicts-with', 'governed-by', 'has-state', 'available-to', 'contributes', 'contributes-command', 'contributes-keybinding', 'binds-command', 'contributes-menu-item', 'references-command', 'contributes-setting-schema', 'contributes-language-model-tool', 'contributes-chat-participant', 'contributes-view', 'contributes-task-definition', 'contributes-debugger', 'depends-on', 'packs-extension', 'installed-by', 'owned-by-root', 'uses-tool', 'declares-variable', 'consumes-variable']
     }, subjects, graph,
     discovery: {
       completeness: scan.completeness || (scan.capped ? 'partial' : 'complete'), scanned_entries: (scan.entries || []).length,

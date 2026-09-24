@@ -1,4 +1,4 @@
-﻿## Unresolved operational card decision log
+## Unresolved operational card decision log
 
 This file is derived from `operational_surface_unresolved_card_decisions_current.md` and keeps only unresolved cards (open or fixed_pending_live_verification). It preserves decision-classification and evidence links for each item.
 

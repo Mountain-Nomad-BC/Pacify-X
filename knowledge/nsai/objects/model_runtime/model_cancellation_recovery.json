@@ -1,0 +1,165 @@
+{
+  "applicability": {
+    "conditions": [
+      "Use only with an admitted PX model/runtime identity.",
+      "Treat measured machine-specific profile evidence as stronger than generic defaults."
+    ],
+    "exclusions": [
+      "release lease immediately on socket close"
+    ],
+    "targets": [
+      "streaming inference",
+      "cold runtimes",
+      "local models"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.95,
+        "evidence_refs": [
+          "px_cancel_stream_tools",
+          "px_llama_api_contract",
+          "px_airllm_cold_lane"
+        ],
+        "statement": "Client disconnect does not prove backend computation or GPU allocation stopped."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_cancel_stream_tools",
+          "px_llama_api_contract",
+          "px_airllm_cold_lane"
+        ],
+        "statement": "Unreceipted mutations are not automatically retried after stream failure."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "Cancel token closes/interrupts backend work and moves invocation into draining.",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "Timeout can escalate to forced stop; reconciliation proves process/resource terminal state before lease release.",
+        "name": "mechanism_2"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, or policy authority."
+    ],
+    "summary": "PX cancellation is a state machine that propagates request cancellation, drains streams, escalates to backend stop/unload or process termination when needed, reconciles resources, and only then releases leases or emits terminal receipts."
+  },
+  "namespace": "model_runtime",
+  "object_id": "nsai:model_runtime:recovery:model_cancellation_recovery",
+  "object_type": "recovery",
+  "ontology": {
+    "classes": [
+      "reliability",
+      "lifecycle"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "model_runtime",
+      "runtime_scope": [
+        "streaming inference",
+        "cold runtimes",
+        "local models"
+      ]
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "manual source-backed synthesis with schema validation and exact SHA provenance",
+      "source_pass": "Wave 14"
+    },
+    "sources": [
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_Model_Fabric_Junction_Hardening_Pass3_2026-09-20/17_CANCELLATION_STREAMING_TOOL_CALLS.md",
+        "sha256": "ef50398725abb20ee53780485395c9e42223f2ed7fe6ab5df4368b0b56e550e3",
+        "source_id": "px_cancel_stream_tools"
+      },
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_Model_Fabric_Junction_Hardening_Pass3_2026-09-20/04_LLAMA_CPP_API_TOOL_STREAMING_CONTRACT.md",
+        "sha256": "9a2022cf3d1e72763395929ea98beccd30e7b94733a57bbdc2c47604e2f25040",
+        "source_id": "px_llama_api_contract"
+      },
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_Model_Fabric_Junction_Hardening_Pass3_2026-09-20/08_AIRLLM_PRODUCTION_COLD_LANE.md",
+        "sha256": "74b6af31cc257b356da7da73fed6c5945d16f9564569e084bc1e345a7e549c0c",
+        "source_id": "px_airllm_cold_lane"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:lifecycle:local_model_lifecycle"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:protocol_normalization:provider_protocol_normalization"
+    }
+  ],
+  "retrieval": {
+    "priority": 85,
+    "tags": [
+      "cancel",
+      "stream",
+      "drain",
+      "reconcile",
+      "receipt"
+    ],
+    "terms": [
+      "abort inference",
+      "cancel",
+      "cancellation",
+      "drain",
+      "draining",
+      "forced stop",
+      "receipt",
+      "reconcile",
+      "recovery",
+      "stream",
+      "stream cancellation"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "PX cancellation is a state machine that propagates request cancellation, drains streams, escalates to backend stop/unload or process termination when needed, reconciles resources, and only then releases leases or emits terminal receipts.",
+    "exclusions": [
+      "release lease immediately on socket close"
+    ],
+    "intents": [
+      "cancel generation",
+      "recover model process"
+    ],
+    "keywords": [
+      "cancellation",
+      "draining",
+      "forced stop",
+      "recovery",
+      "receipt"
+    ],
+    "retrieval_text": "Model Cancellation and Recovery. PX cancellation is a state machine that propagates request cancellation, drains streams, escalates to backend stop/unload or process termination when needed, reconciles resources, and only then releases leases or emits terminal receipts. Client disconnect does not prove backend computation or GPU allocation stopped. Unreceipted mutations are not automatically retried after stream failure.",
+    "short_description": "PX cancellation is a state machine that propagates request cancellation, drains streams, escalates to backend stop/unload or process termination when needed, reconciles resources, and only then releases leases or emits terminal receipts.",
+    "synonyms": [
+      "abort inference",
+      "stream cancellation"
+    ]
+  },
+  "status": "validated",
+  "title": "Model Cancellation and Recovery"
+}

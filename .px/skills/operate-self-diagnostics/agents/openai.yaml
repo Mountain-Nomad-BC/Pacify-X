@@ -1,0 +1,4 @@
+interface:
+  display_name: "Operate Self Diagnostics"
+  short_description: "Classify a condition and delegate to its owner"
+  default_prompt: "Use $operate-self-diagnostics to classify this reported condition and name the canonical specialist owner that should handle it."

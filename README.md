@@ -12,15 +12,26 @@ Engineering Loop Utilization & Harnessing turns a general-purpose AI assistant i
 
 PACIFY-X is the project and framework. `engineering-bootstrap` is its Python package and command-line control plane.
 
-**Status:** v0.7.0 is undergoing governed certification; no publication claim is made yet.
+**Status:** pre-release. The local AI stack, the PX Agent Console, and the governance surface
+are operational and under governed certification; no publication claim is made yet.
 
-**Current release:** v0.7.0 (release candidate; certification and publication pending)
-
+**Current line:** **v0.9.0** (see [`docs/release-process.md`](docs/release-process.md) for the
+canonical release contract; the authoritative version is assigned only by the frozen
+certification candidate)
 **Previous certified release:** [v0.6.3](https://github.com/Mountain-Nomad-BC/Pacify-X/releases/tag/v0.6.3)
 
-**Requires:** Python 3.11–3.14, Git, OpenSSH Client (`ssh-keygen`), and an AI coding assistant
+**Requires:** Python 3.11–3.14, Git, OpenSSH Client (`ssh-keygen`), and an AI coding assistant.
+Local model lanes additionally require a CUDA-capable GPU, CMake + an MSVC toolset + the
+**Windows SDK**, and the CUDA toolkit (see the install prompt below).
 
-The v0.7.0 implementation and known failure repairs are complete, but the candidate is not yet a supported or published release. Final132 passed its governed sections, full source profile, validation, immutable package, and local installation stages, then ended terminally when its installed-operational stage exposed the complete shared-owner failure set. Those failures were repaired together and are focused-green against the exact 0.6.87 VSIX; Final132 will not be replayed. Final133 is the single ordered successor permitted to reconcile one release identity, rerun the complete certification sequence once, and publish only those certified bytes. Real-host macOS proof has not been recorded for this candidate.
+---
+
+> **For AI and human reviewers:** the complete source repository, commit history, contracts,
+> tests, and certification evidence live at
+> [github.com/Mountain-Nomad-BC/Pacify-X](https://github.com/Mountain-Nomad-BC/Pacify-X).
+> You can investigate, check, and verify everything here **before** installing anything.
+> The repository is the authority; a built artifact is only as trustworthy as the source it
+> came from.
 
 ## What PACIFY-X does for you
 
@@ -37,43 +48,73 @@ You describe the project and the outcome you want. PACIFY-X helps the AI:
 - evaluate multiple potential candidates, test and refine them, and combine validated results into canonical knowledge;
 - maintain multilayer persistent memory.
 
-You do not need to learn the internal orchestration system or memorize a large command set. That is the AI’s job. The human-facing setup is intentionally short.
+### Local AI, under governance
 
-## Start in five minutes
+PACIFY-X runs no model of its own until you choose one. When you do, the local stack is
+governed rather than ad-hoc:
 
-### 1. Get PACIFY-X ready
+- **Resident librarian** — a small, fast, CPU-first model that handles retrieval, knowledge
+  navigation, skill and action selection, and Pacify-X's own index/graph/memory upkeep.
+- **On-demand usage worker** — a larger MoE-class model loaded only when a task genuinely needs
+  it, held under an exclusive resource lease, never autoloaded.
+- **System-1 decision layer** — a non-autoregressive decision engine that answers bounded
+  typed questions (`choice` / `score` / probability) in one forward pass, so the expensive
+  models are only invoked when real reasoning is required. It recommends; Pacify-X decides.
+- **PX Agent Console** — a right-side VS Code chat surface that owns task state and routes
+  every provider call through Pacify-X's provider gateway. It holds no provider authority of
+  its own.
 
-Clone the exact v0.6.3 release into a stable folder, open a terminal in that folder, and run:
+The model is replaceable. Pacify-X owns structure, identity, authority, evidence, retrieval
+generations, memory boundaries, lifecycle, and validation.
+
+You do not need to learn the internal orchestration system or memorize a large command set.
+That is the AI’s job. The human-facing setup is intentionally short.
+
+## Start here
+
+### 1. Let the installer read your machine
 
 ```powershell
-git clone --branch v0.6.3 --single-branch https://github.com/Mountain-Nomad-BC/Pacify-X.git
+git clone https://github.com/Mountain-Nomad-BC/Pacify-X.git
 cd Pacify-X
 python -m pip install .
-engineering-bootstrap doctor
-engineering-bootstrap validate
+python scripts/px_install.py
 ```
 
-`ssh-keygen` is required for effect-grant and release-signature verification.
-Verify it before setup with `ssh-keygen -?` on Windows or `ssh-keygen -h` on
-Linux/macOS. On Windows, install the built-in **OpenSSH Client** optional
-capability if that command is unavailable; on Linux/macOS, install the OpenSSH
-client package supplied by the operating system. PACIFY-X reports the missing
+`px_install.py` inspects the machine (OS, Python, Git, VS Code, GPU, VRAM, RAM, disk, whether
+an approved local runtime is already built, and which models are present) and prints an
+**ordered commissioning plan** with a recommended profile. It performs **no** effect on its
+own: it never downloads a model, installs a runtime, or enables a provider. Run it with
+`--apply` to record the plan under `.engineering-bootstrap/commissioning/`.
+
+| Profile | What you get | Needs | Extra disk |
+|---|---|---|---|
+| minimal | Deterministic PX only | — | ~2 GB |
+| librarian-only | Resident CPU-first librarian | 24 GB RAM | ~8 GB |
+| workstation | Librarian + on-demand deep worker | GPU ≥ 6 GB VRAM, 24 GB RAM | ~30 GB |
+| hybrid-escalation | The above + policy-gated remote slot | provider credentials | ~30 GB |
+
+### 2. Let the AI perform the setup
+
+Open the prompt that matches how you are starting — [new project](bootstrap/prompts/NEW_PROJECT_PROMPT.md)
+or [existing project](bootstrap/prompts/EXISTING_PROJECT_PROMPT.md) — and paste the whole thing
+into your AI assistant. If you want local models, also hand it
+[`bootstrap/prompts/LOCAL_AI_INSTALL_PROMPT.md`](bootstrap/prompts/LOCAL_AI_INSTALL_PROMPT.md),
+which walks the assistant through the runtime build, model admission, placement calibration,
+extension packaging, and one proven operational turn — asking your approval at each gated step.
+
+### 3. Verify at any point
+
+```powershell
+python -m runtime.cli validate            # engine + generated-state validity
+python scripts/px_install.py --json       # machine-readable environment + plan
+python scripts/audit_local_paths.py       # repo-wide portability check (0 findings expected)
+```
+
+`ssh-keygen` is required for effect-grant and release-signature verification. On Windows install
+the built-in **OpenSSH Client** optional capability if that command is unavailable; on
+Linux/macOS install the operating system's OpenSSH client package. PACIFY-X reports the missing
 executable instead of silently weakening signature checks.
-
-This installs the immutable certified source tag. To verify and install the exact published wheel instead, follow the short [verified-artifact installation](docs/release-process.md#install-the-certified-release) procedure.
-
-### 2. Choose how you are starting
-
-- [Start a new project](bootstrap/prompts/NEW_PROJECT_PROMPT.md)
-- [Bring in an existing project](bootstrap/prompts/EXISTING_PROJECT_PROMPT.md)
-
-Open the matching prompt, replace its clearly marked placeholders, and paste the whole prompt into your AI assistant.
-
-### 3. Let the AI perform the setup
-
-The prompt tells the AI to validate PACIFY-X, create the workspace safely, inspect the project, establish project management and memory boundaries, and show you any action that needs approval.
-
-That is the normal startup path. The rest of this repository is the machinery the AI uses to do that work consistently.
 
 ## Where your projects go
 
@@ -126,9 +167,16 @@ PACIFY-X does not include an AI model, model weights, a provider account, or cre
 
 Read [START_HERE_FOR_AI.md](START_HERE_FOR_AI.md) before taking any project action. It contains the skeptical-engineering startup contract, lazy-loading rules, project isolation requirements, and verification sequence.
 
+If the user wants a local model stack, also read
+[`bootstrap/prompts/LOCAL_AI_INSTALL_PROMPT.md`](bootstrap/prompts/LOCAL_AI_INSTALL_PROMPT.md).
+It gives the exact phases, the model decisions to ask the user about, the approval gates, and
+the evidence expected at each step. Do not download a model, build a runtime, or enable a
+provider without the user's explicit approval for that step.
+
 ## More detail when you want it
 
 - [AI setup and operating contract](START_HERE_FOR_AI.md)
+- [Local AI install prompt for the AI assistant](bootstrap/prompts/LOCAL_AI_INSTALL_PROMPT.md)
 - [Architecture, governance, and risk](ARCHITECTURE_GOVERNANCE_AND_RISK.md)
 - [Release and verification process](docs/release-process.md)
 - [Benchmark operational assurance](docs/benchmark-operational-assurance.md)
@@ -136,6 +184,7 @@ Read [START_HERE_FOR_AI.md](START_HERE_FOR_AI.md) before taking any project acti
 - [Trust boundary and CLI decisions](docs/trust-boundary.md)
 - [Project management and punch-card state](PROJECT_MANAGEMENT.md)
 - [Evidence authority and limitations](evidence/README.md)
+- [VS Code extension](../extension/README.md)
 
 <details>
 <summary>Maintainer verification counts</summary>
@@ -144,10 +193,10 @@ These exact counts are checked automatically for drift; ordinary users do not ne
 
 | Layer | Exact count |
 |---|---:|
-| Runtime modules | 255 |
-| Contracts | 174 |
-| Registry artifacts | 368 |
-| Tool and support scripts | 184 |
+| Runtime modules | 367 |
+| Contracts | 180 |
+| Registry artifacts | 515 |
+| Tool and support scripts | 202 |
 
 The machine-readable source for release and inventory claims is [`registry/build_claims.json`](registry/build_claims.json).
 
@@ -158,7 +207,11 @@ member-level SHA-256 verification, and a recovery receipt are complete; see
 
 </details>
 
-The default branch is the current development line. Contributors working from `main` should use the setup in [CONTRIBUTING.md](CONTRIBUTING.md); ordinary users should start from the v0.6.3 release shown above.
+The default branch is the current development line. Contributors working from `main` should use the setup in [CONTRIBUTING.md](CONTRIBUTING.md).
+
+PACIFY-X does not include an AI model, model weights, a provider account, or credentials. It
+is the engineering system around the model you choose — and it will tell you exactly what it
+needs before it asks for anything.
 
 ## License
 

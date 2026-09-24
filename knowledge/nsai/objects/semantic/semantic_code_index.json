@@ -1,0 +1,147 @@
+{
+  "applicability": {
+    "conditions": [
+      "Index must be bound to current project/revision identity."
+    ],
+    "exclusions": [
+      "writing source from stale index state"
+    ],
+    "targets": [
+      "source repositories"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "px_semantic_code_index",
+          "px_semantic_code_service"
+        ],
+        "statement": "The index is built from bounded project files into typed document/symbol/reference records."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_semantic_code_index",
+          "px_semantic_code_service"
+        ],
+        "statement": "Queries should return stable semantic identities plus source revisions so callers can detect staleness."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_semantic_code_index",
+          "px_semantic_code_service"
+        ],
+        "statement": "Source files remain authoritative; the semantic index can be discarded and rebuilt."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "walk admitted source files and build document/symbol records",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "resolve references/imports within the project index",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "serve typed queries with revision/provenance information",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "The semantic code index is an immutable/rebuildable project projection of documents, symbols, references, imports, and diagnostics with stable revision-scoped identities; it supports navigation and reasoning but is not source-code authority."
+  },
+  "namespace": "semantic",
+  "object_id": "nsai:semantic:index:semantic_code_index",
+  "object_type": "index",
+  "ontology": {
+    "classes": [
+      "code_intelligence",
+      "semantic_index"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "semantic"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "kind": "source_file",
+        "path": "runtime/semantic_code_index.py",
+        "sha256": "0a4e36e3c405f534cbd97cede7d1df71ea80ab9cf764552f9162f17807e37a74",
+        "source_id": "px_semantic_code_index"
+      },
+      {
+        "kind": "source_file",
+        "path": "runtime/semantic_code_service.py",
+        "sha256": "94d8745dbb226a96e35c4ddc47f2d8b932de6caddef51906b5011650ae1a848f",
+        "source_id": "px_semantic_code_service"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:semantic:revision_edits:semantic_code_revision_bound_edits"
+    }
+  ],
+  "retrieval": {
+    "priority": 91,
+    "tags": [
+      "imports",
+      "references",
+      "semantic code index",
+      "symbol index"
+    ],
+    "terms": [
+      "code intelligence index",
+      "imports",
+      "references",
+      "semantic code index",
+      "semantic project index",
+      "symbol index"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "The semantic code index is an immutable/rebuildable project projection of documents, symbols, references, imports, and diagnostics with stable revision-scoped identities; it supports navigation and reasoning but is not source-code authority.",
+    "exclusions": [
+      "source-code authority"
+    ],
+    "intents": [
+      "index code semantically",
+      "query symbols"
+    ],
+    "keywords": [
+      "imports",
+      "references",
+      "semantic code index",
+      "symbol index"
+    ],
+    "retrieval_text": "Semantic Code Index. The semantic code index is an immutable/rebuildable project projection of documents, symbols, references, imports, and diagnostics with stable revision-scoped identities; it supports navigation and reasoning but is not source-code authority. The index is built from bounded project files into typed document/symbol/reference records. Queries should return stable semantic identities plus source revisions so callers can detect staleness. Source files remain authoritative; the semantic index can be discarded and rebuilt.",
+    "short_description": "The semantic code index is an immutable/rebuildable project projection of documents, symbols, references, imports, and diagnostics with stable revision-scoped identities; it supports navigation and reasoning but is not source-code authority.",
+    "synonyms": [
+      "code intelligence index",
+      "semantic project index"
+    ]
+  },
+  "status": "validated",
+  "title": "Semantic Code Index"
+}

@@ -1,6 +1,6 @@
 orchestration_id: continuous_improvement
 title: Find measured opportunities and govern new skill creation
-version: 0.1.0
+version: 0.2.0
 status: design-ready
 trigger: explicit-or-policy-scheduled
 project_binding: required unless workspace bootstrap
@@ -22,7 +22,23 @@ preflight:
 - lease_valid
 - scope_resolved
 - side_effect_budget_set
+- evaluator_identity_frozen
+- acceptance_policy_frozen
+- development_holdout_split_frozen
+learning_boundaries:
+  holdout_feedback_allowed: false
+  independent_verification_required: true
+  negative_results_retained: true
+  shared_contribution_is_authority: false
+  direct_learning_write_allowed: false
+terminal_evidence:
+- final_evidence_sha256
+- evaluator_sha256
+- acceptance_policy_sha256
+- holdout_case_set_sha256
+- verification_record_sha256
 outcomes:
 - improvement_backlog
+- verified_contribution_candidate
 failure_policy: checkpoint-and-fail-closed-on-boundary-or-integrity-violation
 audit: true

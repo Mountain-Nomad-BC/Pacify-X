@@ -15,6 +15,7 @@ from datetime import datetime, timezone
 from functools import wraps
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
 import subprocess
@@ -131,8 +132,14 @@ DEFAULT_EVIDENCE = (
         "final99-route-projection-settlement-complete-focused-repair-20260905.json"
     ),
 )
+# Optional external commencement-orchestration reference. Never a machine-specific
+# literal: supply PX_COMMENCEMENT_ORCHESTRATION to point at a local checkout when the
+# cross-project reconciliation audit is being run intentionally. The default is a
+# non-existent repo-relative path so the allowlist is inert on any other machine.
+_orchestration_env = os.environ.get("PX_COMMENCEMENT_ORCHESTRATION", "")
 EXTERNAL_ORCHESTRATION = Path(
-    "C:/Users/Ben/Downloads/px looks/PX_COMMENCEMENT_ORCHESTRATION_2026-09-04.md"
+    _orchestration_env
+    or ".px-external/pacify-x-commencement-orchestration-unset.md"
 )
 KNOWN_AFFECTED_SECTIONS = {
     "dashboard-extension",

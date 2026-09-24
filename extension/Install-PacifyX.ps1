@@ -18,7 +18,18 @@ if ($actualSha256 -ne $expectedSha256) {
   throw "VSIX integrity check failed. Expected $expectedSha256, received $actualSha256."
 }
 
-$code = Get-Command code -ErrorAction Stop
+$code = Get-Command code -ErrorAction SilentlyContinue
+if (-not $code) {
+  # VS Code is frequently installed without its bin directory on PATH.
+  $fallbacks = @(
+    (Join-Path $env:LOCALAPPDATA 'Programs\Microsoft VS Code\bin\code.cmd'),
+    (Join-Path $env:ProgramFiles 'Microsoft VS Code\bin\code.cmd'),
+    (Join-Path ${env:ProgramFiles(x86)} 'Microsoft VS Code\bin\code.cmd')
+  )
+  $found = $fallbacks | Where-Object { $_ -and (Test-Path $_) } | Select-Object -First 1
+  if (-not $found) { throw 'VS Code CLI not found. Install VS Code or add ''code'' to PATH, then retry.' }
+  $code = [pscustomobject]@{ Source = $found }
+}
 $extensionId = "$($package.publisher).$($package.name)"
 $installedBefore = & $code.Source --list-extensions --show-versions
 if ($installedBefore -contains "$extensionId@$($package.version)") {

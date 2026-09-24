@@ -1,13 +1,35 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.2",
   "promotion_required": true,
-  "required_evidence": ["model_identity", "version", "task_dataset", "quality", "latency", "safety", "privacy", "tool_behavior", "failure_modes", "frozen_treatment", "retry_budget", "preflight", "evaluation_lineage", "evidence_custody", "hardware_route"],
+  "required_evidence": [
+    "model_identity",
+    "version",
+    "task_dataset",
+    "quality",
+    "latency",
+    "safety",
+    "privacy",
+    "tool_behavior",
+    "failure_modes",
+    "frozen_treatment",
+    "retry_budget",
+    "preflight",
+    "evaluation_lineage",
+    "evidence_custody",
+    "hardware_route"
+  ],
   "missing_evidence_state": "uncertified",
   "drift_requires_recheck": true,
   "cold_lane": {
     "preflight_required": true,
-    "oracle_visibility": ["hidden", "post_run_only"],
-    "treatment_visibility": ["hidden", "metadata_only"],
+    "oracle_visibility": [
+      "hidden",
+      "post_run_only"
+    ],
+    "treatment_visibility": [
+      "hidden",
+      "metadata_only"
+    ],
     "benchmark_informed_changes_allowed": false,
     "seal_before_analysis": true
   },
@@ -21,7 +43,92 @@
     "admission_required": true,
     "generated_evaluators_self_certify": false,
     "production_demand_is_oracle": false,
-    "required_assurance_axes": ["behavior", "evaluator_calibration", "evidence_integrity", "coverage", "regression", "operations"]
+    "required_assurance_axes": [
+      "behavior",
+      "evaluator_calibration",
+      "evidence_integrity",
+      "coverage",
+      "regression",
+      "operations"
+    ]
   },
-  "registered_benchmarks": []
+  "local_model_profiles": {
+    "candidate_state": "benchmark_required",
+    "certified_state": "certified",
+    "required_receipt_fields": [
+      "model_sha256",
+      "runtime_sha256",
+      "profile_sha256",
+      "machine_fingerprint",
+      "fixture_revision",
+      "quality_passed",
+      "structured_output_validity",
+      "p50_latency_ms",
+      "p95_latency_ms",
+      "peak_rss_bytes",
+      "peak_vram_bytes",
+      "cold_load_ms",
+      "warm_load_ms",
+      "cancellation_recovery_passed",
+      "fallback_passed"
+    ],
+    "control_lane": {
+      "route_correctness_is_primary": true,
+      "structured_output_required": true,
+      "reasoning_disabled": true,
+      "cpu_only": true,
+      "deterministic_sampling": true
+    },
+    "promotion": {
+      "requires_incumbent_or_declared_baseline": true,
+      "requires_explicit_thresholds": true,
+      "no_implicit_quality_tradeoff": true,
+      "no_auto_promotion": true
+    }
+  },
+  "registered_benchmarks": [],
+  "model_routing": {
+    "matched_fixture_identity_required": true,
+    "simple_baselines_required": [
+      "deterministic_px_only_where_applicable",
+      "best_admitted_single_local_model",
+      "best_admitted_single_remote_model_where_policy_permits",
+      "current_routed_px_fabric"
+    ],
+    "route_stability": {
+      "max_jensen_shannon_bits_before_review": 0.2,
+      "minimum_top1_agreement_before_review": 0.8,
+      "minimum_top3_overlap_before_review": 0.7,
+      "drift_is_review_signal_not_quality_verdict": true
+    },
+    "domain_floors": {
+      "required": true,
+      "source": "registered_benchmark_manifest",
+      "missing_required_domain": "fail",
+      "aggregate_cannot_mask_required_domain_regression": true
+    },
+    "complexity_tax": {
+      "required": true,
+      "acceptable_gain_dimensions": [
+        "verified_task_success",
+        "latency_at_equal_quality",
+        "local_resource_use_at_equal_quality",
+        "remote_cost",
+        "privacy_local_completion",
+        "availability_resilience",
+        "long_context",
+        "task_coverage"
+      ],
+      "no_material_gain": "reject_candidate",
+      "auto_promotion": false,
+      "materiality_source": "registered_benchmark_manifest"
+    },
+    "evaluation": {
+      "hermetic_scratch_required": true,
+      "single_writer_fixture_materialization": true,
+      "bounded_domain_fanout": true,
+      "policy_frozen_during_certification": true,
+      "live_route_events_may_not_mutate_policy_under_test": true
+    }
+  }
 }

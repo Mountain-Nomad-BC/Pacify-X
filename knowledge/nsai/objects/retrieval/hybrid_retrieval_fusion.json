@@ -1,0 +1,155 @@
+{
+  "applicability": {
+    "conditions": [
+      "All candidate providers must expose compatible revision/generation identity."
+    ],
+    "exclusions": [
+      "discarding exact IDs for semantic similarity"
+    ],
+    "targets": [
+      "PX retrieval"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "px_semantic_fusion",
+          "px_retrieval_models"
+        ],
+        "statement": "Fusion validates identity scope before combining evidence."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_semantic_fusion",
+          "px_retrieval_models"
+        ],
+        "statement": "Vector and reranker providers supply candidate evidence; they do not replace the canonical retrieval owner."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_semantic_fusion",
+          "px_retrieval_models"
+        ],
+        "statement": "Optional semantic stages may be bypassed when unavailable or over budget without losing exact lexical/source evidence."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "retrieve exact/lexical candidates first",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "add generation-compatible vector candidates",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "apply bounded reranking only to admitted candidate rows and preserve source identity",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "PX hybrid retrieval combines lexical, vector, and optional reranker evidence under one canonical owner while preserving stable source IDs, identity scope, bounded candidate sets, and degraded bypass behavior."
+  },
+  "namespace": "retrieval",
+  "object_id": "nsai:retrieval:fusion:hybrid_retrieval_fusion",
+  "object_type": "fusion",
+  "ontology": {
+    "classes": [
+      "evidence_pipeline",
+      "retrieval_fusion"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "retrieval"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "kind": "source_file",
+        "path": "runtime/semantic_retrieval_fusion.py",
+        "sha256": "64adcc8c8609beb0b89eabd7b0e910557ef670188f08701eaf9c45bd0b91bea2",
+        "source_id": "px_semantic_fusion"
+      },
+      {
+        "kind": "source_file",
+        "path": "runtime/retrieval_model_service.py",
+        "sha256": "a49529c32c60f0e0ad4ae1264168c3697b6bc878f5997801267f1fe994dfaa5a",
+        "source_id": "px_retrieval_models"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:retrieval:evidence_protection:exact_evidence_protection"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:retrieval:reranking:reranker_bounded_topn"
+    }
+  ],
+  "retrieval": {
+    "priority": 92,
+    "tags": [
+      "fusion",
+      "hybrid retrieval",
+      "lexical",
+      "reranker",
+      "vector"
+    ],
+    "terms": [
+      "fusion",
+      "hybrid retrieval",
+      "hybrid search fusion",
+      "lexical",
+      "lexical vector fusion",
+      "reranker",
+      "vector"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "PX hybrid retrieval combines lexical, vector, and optional reranker evidence under one canonical owner while preserving stable source IDs, identity scope, bounded candidate sets, and degraded bypass behavior.",
+    "exclusions": [
+      "provider-owned authority"
+    ],
+    "intents": [
+      "fuse retrieval evidence",
+      "hybrid search"
+    ],
+    "keywords": [
+      "fusion",
+      "hybrid retrieval",
+      "lexical",
+      "reranker",
+      "vector"
+    ],
+    "retrieval_text": "Hybrid Retrieval Fusion. PX hybrid retrieval combines lexical, vector, and optional reranker evidence under one canonical owner while preserving stable source IDs, identity scope, bounded candidate sets, and degraded bypass behavior. Fusion validates identity scope before combining evidence. Vector and reranker providers supply candidate evidence; they do not replace the canonical retrieval owner. Optional semantic stages may be bypassed when unavailable or over budget without losing exact lexical/source evidence.",
+    "short_description": "PX hybrid retrieval combines lexical, vector, and optional reranker evidence under one canonical owner while preserving stable source IDs, identity scope, bounded candidate sets, and degraded bypass behavior.",
+    "synonyms": [
+      "hybrid search fusion",
+      "lexical vector fusion"
+    ]
+  },
+  "status": "validated",
+  "title": "Hybrid Retrieval Fusion"
+}

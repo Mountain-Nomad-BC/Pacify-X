@@ -5,7 +5,9 @@
       "id": "repair-pattern-library",
       "status": "active",
       "kind": "lazy_skill_references",
-      "visibility": ["local"],
+      "visibility": [
+        "local"
+      ],
       "location": ".px/skills/diagnose-python-repair/references",
       "uses": []
     },
@@ -13,7 +15,9 @@
       "id": "corpus-intake-receipt",
       "status": "active",
       "kind": "aggregate_provenance_receipt",
-      "visibility": ["maintainer"],
+      "visibility": [
+        "maintainer"
+      ],
       "location": "evidence/corpus-intake-receipt.json",
       "uses": []
     },
@@ -21,7 +25,9 @@
       "id": "restricted-lineage",
       "status": "reference_only",
       "kind": "lineage_manifest",
-      "visibility": ["maintainer"],
+      "visibility": [
+        "maintainer"
+      ],
       "location": "evidence/source-migration-receipt.json",
       "uses": []
     },
@@ -29,9 +35,25 @@
       "id": "source-requirement-coverage",
       "status": "active",
       "kind": "operational_coverage_registry",
-      "visibility": ["maintainer"],
+      "visibility": [
+        "maintainer"
+      ],
       "location": "registry/source_requirement_coverage.json",
-      "uses": ["skill-admission-controller", "workflow-orchestrator"]
+      "uses": [
+        "skill-admission-controller",
+        "workflow-orchestrator"
+      ]
+    },
+    {
+      "id": "nsai-canonical-library",
+      "status": "active",
+      "kind": "nsai_object_library",
+      "visibility": [
+        "local",
+        "maintainer"
+      ],
+      "location": "knowledge/nsai",
+      "uses": []
     }
   ]
 }

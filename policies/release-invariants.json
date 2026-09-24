@@ -1,0 +1,160 @@
+{
+  "schema_version": "px.release-invariants/1.0",
+  "release_line": "0.9.x",
+  "recorded_at": "2026-09-23",
+  "authority": "Owner decision 2026-09-23. These are governed release-policy assertions, not a rigid code freeze: each carries an explicit reclassification trigger so a future legitimate feature is possible through a deliberate policy/version change rather than accidental drift.",
+  "maintainer_intent": {
+    "core_distribution": "free_open_source_apache_2_0",
+    "core_is_paid_product": false,
+    "future_commercial_services_possible": true,
+    "future_services_must_not_silently_reclassify_core": true,
+    "note": "The 0.9.x core release is free/open source. Possible future monetization is not part of this release's operating behaviour and must not be inferred by consumers of this manifest."
+  },
+  "invariants": [
+    {
+      "id": "no-px-operated-remote-endpoints",
+      "statement": "PX must not contact a PX-operated remote endpoint from core code.",
+      "status": "enforced",
+      "applies_to": ["runtime/", "scripts/", "extension/src/"],
+      "evidence_surface": "static host scan + live network trace",
+      "verification": "scripts/verify_release_invariants.py::check_network_hosts",
+      "reclassification_trigger": "introducing a PX-operated production endpoint requires a privacy/data-flow/compliance reclassification recorded in the applicability matrix before release",
+      "false_positive_allowlist": ["json-schema.org", "schemas.microsoft.com", "schemas.openxmlformats.org", "www.w3.org", "in-toto.io", "slsa.dev", "example.invalid", "example.com", "example.org", "example.net"]
+    },
+    {
+      "id": "no-production-remote-telemetry",
+      "statement": "Production PX and the extension must not emit remote telemetry.",
+      "status": "enforced",
+      "applies_to": ["runtime/", "extension/src/"],
+      "evidence_surface": "telemetry emitter scan; VS Code telemetry API usage",
+      "verification": "scripts/verify_release_invariants.py::check_telemetry",
+      "reclassification_trigger": "introducing any production telemetry emitter requires a privacy/telemetry reclassification, an updated TELEMETRY.md, a telemetry manifest, and VS Code isTelemetryEnabled gating",
+      "clarification": "Local operational logs, traces, certification evidence, and diagnostics that remain on the user's machine are NOT remote telemetry."
+    },
+    {
+      "id": "no-unapproved-model-download",
+      "statement": "PX must not download model weights without explicit user approval.",
+      "status": "enforced",
+      "applies_to": ["runtime/", "scripts/"],
+      "evidence_surface": "download-call scan against the external-runtime policy",
+      "verification": "scripts/verify_release_invariants.py::check_model_download",
+      "policy_source": "models/external-runtime-policy.json",
+      "permitted_behaviours": [
+        "discover models already present",
+        "recommend models",
+        "explain where and how to obtain them",
+        "prepare an installation plan",
+        "perform an explicitly approval-gated download step that first records model identity, source, license, revision, expected size, expected hash, destination and usage restrictions"
+      ],
+      "reclassification_trigger": "adding an automatic download path requires the approval gate above plus a model-license manifest entry"
+    },
+    {
+      "id": "no-shipped-secrets",
+      "statement": "No credential literal may ship in authored source.",
+      "status": "enforced",
+      "applies_to": ["runtime/", "scripts/", "extension/src/", "extension/scripts/", "bootstrap/", "models/", "policies/", "contracts/"],
+      "evidence_surface": "credential-shape scan (length + entropy + PEM + provider prefixes)",
+      "verification": "scripts/verify_release_invariants.py::check_secrets",
+      "reclassification_trigger": "none - this invariant is not relaxable; a real credential in the tree is a defect",
+      "false_positive_allowlist_terms": ["example", "placeholder", "redacted", "fixture", "preview-", "test-", "dummy", "xxxx"]
+    },
+    {
+      "id": "no-machine-specific-paths-or-pii",
+      "statement": "Shipped source must contain no developer/user-specific absolute path or personal identifier.",
+      "status": "enforced",
+      "applies_to": ["runtime/", "scripts/", "extension/src/", "extension/scripts/", "docs/", "bootstrap/"],
+      "evidence_surface": "repo-wide portability audit + PII scan",
+      "verification": "scripts/audit_local_paths.py; scripts/verify_release_invariants.py::check_pii",
+      "reclassification_trigger": "none - portability is required for any installation on another machine",
+      "false_positive_allowlist_terms": ["git@github.com", "noreply@", "example.com", "example.org", "example.invalid"],
+      "project_contact_allowlist": ["bjc274@gmail.com"],
+      "contact_allowlist_reason": "The project's own published security contact must appear in SECURITY.md and the security/compliance documents that tell a reporter where to send a vulnerability. This is the project's own contact address, not a third party's personal identifier."
+    },
+    {
+      "id": "no-hidden-cloud-fallback",
+      "statement": "Local failure must never silently grant permission to use a remote provider.",
+      "status": "enforced",
+      "applies_to": ["runtime/"],
+      "evidence_surface": "routing/fallback policy and provider gateway admission",
+      "verification": "runtime routing tests + provider adapter registry admission",
+      "reclassification_trigger": "none - silent fallback to a remote provider is prohibited; explicit policy is required"
+    },
+    {
+      "id": "explicit-provider-use-only",
+      "statement": "An external provider may be used only when the user has explicitly configured and authorized it.",
+      "status": "enforced",
+      "applies_to": ["runtime/", "registry/provider_adapters.json"],
+      "evidence_surface": "provider adapter registry admission state",
+      "verification": "runtime.provider_gateway admission check",
+      "reclassification_trigger": "none - unconfigured providers remain denied by contract"
+    },
+    {
+      "id": "hosted-service-requires-reclassification",
+      "statement": "Introducing a PX-operated hosted service requires a compliance reclassification before it may become part of a release.",
+      "status": "policy",
+      "applies_to": ["docs/compliance/"],
+      "evidence_surface": "applicability matrix entry + recorded decision",
+      "verification": "docs/compliance/REGULATORY_APPLICABILITY_MATRIX.md review",
+      "reclassification_trigger": "this invariant IS the trigger; it fires on hosted-service introduction"
+    },
+    {
+      "id": "telemetry-requires-reclassification",
+      "statement": "Introducing production telemetry requires a privacy/telemetry reclassification before it may become part of a release.",
+      "status": "policy",
+      "applies_to": ["docs/privacy/", "docs/compliance/"],
+      "evidence_surface": "applicability matrix entry + updated TELEMETRY.md + telemetry manifest",
+      "verification": "docs/compliance/REGULATORY_APPLICABILITY_MATRIX.md review",
+      "reclassification_trigger": "this invariant IS the trigger"
+    },
+    {
+      "id": "commercial-feature-requires-applicability-review",
+      "statement": "Introducing a commercial or hosted feature requires a CRA/GDPR/state-law applicability review before it may become part of a release.",
+      "status": "policy",
+      "applies_to": ["docs/compliance/"],
+      "evidence_surface": "applicability matrix entry + recorded review",
+      "verification": "docs/compliance/REGULATORY_APPLICABILITY_MATRIX.md review",
+      "reclassification_trigger": "this invariant IS the trigger"
+    }
+  ],
+  "owner_decisions": [
+    {
+      "id": "Q8-workspace-credential-migration",
+      "decided_at": "2026-09-23",
+      "decision": "One-time explicit migration of a workspace / .vscode key-like value into VS Code SecretStorage; runtime access is exclusively through SecretStorage.",
+      "rules": [
+        "treat the workspace value as a migration source only, never an operational credential source",
+        "do not silently consume a discovered credential during normal runtime",
+        "offer a bounded, user-initiated 'credential detected -> import?' action",
+        "verify retrieval from SecretStorage after storing",
+        "advise removal of the plaintext value; offer to scrub only if PX has authority over that exact config",
+        "never write the secret into logs, evidence, diagnostics, telemetry, exception text, state snapshots, or generated artifacts",
+        "store only non-secret status (configured=true, provider name, last validation timestamp)",
+        "if both SecretStorage and plaintext exist, SecretStorage wins and the plaintext copy raises a warning rather than acting as a fallback"
+      ],
+      "rejected_alternative": "automatic migration without user interaction - that would mean PX reads and persists a credential based merely on discovery"
+    },
+    {
+      "id": "Q9-assistant-integration-boundary",
+      "decided_at": "2026-09-23",
+      "decision": "PX exposes its own model/chat capability through the host-native LanguageModelChatProvider; PX retains routing authority, provider policy, task envelopes, budgets, retries/fallbacks, context construction, memory, evidence, approvals, orchestration, and result verification.",
+      "rules": [
+        "consumers reach PX through the host provider interface",
+        "PX routes onward to local model / configured API model / explicit external adapters",
+        "external vendor agents only through explicit governed adapters, never arbitrary CLI worker assimilation"
+      ],
+      "rejected_alternative": "commandeering vendor CLIs (Codex/Claude/Copilot) as obedient subprocess workers, which would import their authority and terms into PX"
+    }
+  ],
+  "not_claimed": [
+    "EU AI Act compliant",
+    "CRA compliant",
+    "GDPR compliant",
+    "SOC 2 compliant",
+    "ISO 27001 certified",
+    "HIPAA compliant",
+    "FedRAMP compliant",
+    "FIPS compliant",
+    "NIST certified"
+  ],
+  "permitted_positioning": "PX includes controls designed to support governed, auditable operation. Applicability and compliance depend on deployment context, enabled providers, data flows, and intended use."
+}

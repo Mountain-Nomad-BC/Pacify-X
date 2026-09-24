@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:persistent_memory:memory-provider.contract.json",
+  "title": "Pacify-X External Persistent Memory Provider Boundary",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "provider_id",
+    "provider_version",
+    "request_id",
+    "package_sha256",
+    "invocation_plan_sha256",
+    "external_receipt_sha256",
+    "capability",
+    "result",
+    "canonical_memory_authority",
+    "authority_granted",
+    "receipt_sha256"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "px.persistent-memory-bridge-result/1.0"
+    },
+    "provider_id": {
+      "const": "persistent-memory"
+    },
+    "provider_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "request_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "package_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "invocation_plan_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "external_receipt_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "capability": {
+      "enum": [
+        "memory.repo.validate",
+        "memory.record.list",
+        "memory.review.preview",
+        "memory.graph.preview"
+      ]
+    },
+    "result": {
+      "type": "object"
+    },
+    "canonical_memory_authority": {
+      "const": false
+    },
+    "authority_granted": {
+      "const": false
+    },
+    "receipt_sha256": {
+      "$ref": "#/$defs/sha256"
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "description": "Read/advisory result envelope for the optional external persistent-memory provider. External records and derived outputs remain noncanonical and grant no Pacify-X authority."
+}

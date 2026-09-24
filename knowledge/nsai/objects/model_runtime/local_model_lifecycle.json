@@ -1,0 +1,165 @@
+{
+  "applicability": {
+    "conditions": [
+      "Use only with an admitted PX model/runtime identity.",
+      "Treat measured machine-specific profile evidence as stronger than generic defaults."
+    ],
+    "exclusions": [
+      "request path performs first-time preparation"
+    ],
+    "targets": [
+      "all local runtime lanes"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.95,
+        "evidence_refs": [
+          "px_llama_profiles",
+          "llama_model_cpp",
+          "llama_server_readme"
+        ],
+        "statement": "Load/unload authority is separate from ordinary inference authority."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_llama_profiles",
+          "llama_model_cpp",
+          "llama_server_readme"
+        ],
+        "statement": "Failed or unknown states conservatively retain resource capacity until reconciliation proves release."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "Admission freezes executable/model/profile identities before launch.",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "PX supervises process/runtime state and binds invocations to generation/lifecycle receipts.",
+        "name": "mechanism_2"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, or policy authority."
+    ],
+    "summary": "PX model lifecycle separates admission, exact artifact/profile identity, launch planning, process custody, health, draining, unload, and reconciliation. Model presence is never inferred solely from a configured path or endpoint."
+  },
+  "namespace": "model_runtime",
+  "object_id": "nsai:model_runtime:lifecycle:local_model_lifecycle",
+  "object_type": "lifecycle",
+  "ontology": {
+    "classes": [
+      "px_runtime",
+      "lifecycle"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "model_runtime",
+      "runtime_scope": [
+        "all local runtime lanes"
+      ]
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "manual source-backed synthesis with schema validation and exact SHA provenance",
+      "source_pass": "Wave 14"
+    },
+    "sources": [
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_Model_Fabric_Junction_Hardening_Pass3_2026-09-20/03_LLAMA_CPP_CERTIFIED_RUNTIME_PROFILES.md",
+        "sha256": "c49c37da15288829814048b52a91a352d86a723e676e2756eeb578346d299a1c",
+        "source_id": "px_llama_profiles"
+      },
+      {
+        "archive": "models and harnesses for them.zip",
+        "kind": "source_file",
+        "path": "llama.cpp-master/llama.cpp-master/src/llama-model.cpp",
+        "sha256": "530dff0cd544382346cc18520cbdb7d7a6f6743c35f7af52aae0bec11d18992a",
+        "source_id": "llama_model_cpp"
+      },
+      {
+        "archive": "models and harnesses for them.zip",
+        "kind": "source_file",
+        "path": "llama.cpp-master/llama.cpp-master/tools/server/README.md",
+        "sha256": "57e27013809e4976e71a76fe83a5930779634401d6dbdf2d941fd5432889eb9e",
+        "source_id": "llama_server_readme"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:generation_identity:model_fabric_generation_identity"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:resource_interlock:model_resource_interlocks"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:recovery:model_cancellation_recovery"
+    }
+  ],
+  "retrieval": {
+    "priority": 85,
+    "tags": [
+      "admission",
+      "launch",
+      "health",
+      "drain",
+      "reconcile"
+    ],
+    "terms": [
+      "admission",
+      "drain",
+      "health",
+      "launch",
+      "load",
+      "model custody",
+      "model lifecycle",
+      "reconcile",
+      "runtime lifecycle",
+      "unload"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "PX model lifecycle separates admission, exact artifact/profile identity, launch planning, process custody, health, draining, unload, and reconciliation. Model presence is never inferred solely from a configured path or endpoint.",
+    "exclusions": [
+      "request path performs first-time preparation"
+    ],
+    "intents": [
+      "manage local model",
+      "load model safely"
+    ],
+    "keywords": [
+      "model lifecycle",
+      "load",
+      "unload",
+      "health",
+      "reconcile"
+    ],
+    "retrieval_text": "PX Local Model Lifecycle. PX model lifecycle separates admission, exact artifact/profile identity, launch planning, process custody, health, draining, unload, and reconciliation. Model presence is never inferred solely from a configured path or endpoint. Load/unload authority is separate from ordinary inference authority. Failed or unknown states conservatively retain resource capacity until reconciliation proves release.",
+    "short_description": "PX model lifecycle separates admission, exact artifact/profile identity, launch planning, process custody, health, draining, unload, and reconciliation.",
+    "synonyms": [
+      "model custody",
+      "runtime lifecycle"
+    ]
+  },
+  "status": "validated",
+  "title": "PX Local Model Lifecycle"
+}

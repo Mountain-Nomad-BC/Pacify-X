@@ -2,18 +2,32 @@
   "schema_version": "1.0",
   "models": [
     {
-      "model_id": "local-coding-small",
-      "runtime": "local-runtime",
+      "model_id": "qwen35-4b-operator",
+      "runtime": "llama_cpp_router",
       "available": true,
       "context_tokens": 8192,
-      "traits": ["coding", "reasoning"],
+      "traits": ["librarian", "retrieval", "classification", "structure", "summarization"],
       "supports_tools": false,
       "privacy": "local",
       "cost_class": "free",
       "latency_class": "low",
-      "warm_cost": 1.0,
-      "cold_cost": 4.0,
-      "failure_modes": ["runtime_absent", "insufficient_context"]
+      "warm_cost": 0.0,
+      "cold_cost": 1.0,
+      "failure_modes": ["runtime_absent", "model_sha_mismatch"]
+    },
+    {
+      "model_id": "qwen3-30b-a3b-deep",
+      "runtime": "llama_cpp_router",
+      "available": true,
+      "context_tokens": 8192,
+      "traits": ["coding", "reasoning", "architecture", "long_synthesis", "moe"],
+      "supports_tools": false,
+      "privacy": "local",
+      "cost_class": "free",
+      "latency_class": "medium",
+      "warm_cost": 4.0,
+      "cold_cost": 20.0,
+      "failure_modes": ["runtime_absent", "model_sha_mismatch", "resource_denied", "context_overflow"]
     },
     {
       "model_id": "remote-general-reasoning",

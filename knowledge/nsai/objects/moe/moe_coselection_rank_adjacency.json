@@ -1,0 +1,148 @@
+{
+  "applicability": {
+    "conditions": [
+      "Use sufficiently representative route samples."
+    ],
+    "exclusions": [
+      "promoting correlated routes without outcome evidence"
+    ],
+    "targets": [
+      "route outcome corpus"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "px_route_observability",
+          "moe_coselect_doc"
+        ],
+        "statement": "Co-selection counts reveal models that appear together in candidate/dispatch sets."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_route_observability",
+          "moe_coselect_doc"
+        ],
+        "statement": "Rank adjacency measures local ordering similarity and should not be conflated with co-selection."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_route_observability",
+          "moe_coselect_doc"
+        ],
+        "statement": "Either signal is observational evidence and requires outcome validation before influencing routing policy."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "collect bounded route-ranking observations",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "compute co-selection and adjacency statistics separately",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "validate any routing hypothesis against downstream quality/cost outcomes",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "Co-selection frequency and rank adjacency answer different questions: models often selected together may form complementary cohorts, while models frequently adjacent in rank may be near-substitutes; PX should keep those signals distinct."
+  },
+  "namespace": "moe",
+  "object_id": "nsai:moe:coselection:moe_coselection_rank_adjacency",
+  "object_type": "coselection",
+  "ontology": {
+    "classes": [
+      "ranking_evidence",
+      "routing_observability"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "moe"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "kind": "source_file",
+        "path": "runtime/model_routing_observability.py",
+        "sha256": "d122b0c8e63d13a6c7664162ec38b908212cb01ebebd135bb37d3c0dc8252558",
+        "source_id": "px_route_observability"
+      },
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_MoE_Mining_Pass_v3/27_COSELECTION_VS_RANK_ADJACENCY.md",
+        "sha256": "09f34379a5b3c89e8b952565dbd7c4c78cac68d59bb96440aedac58838a1d284",
+        "source_id": "moe_coselect_doc"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:moe:route_affinity:moe_route_transition_affinity"
+    }
+  ],
+  "retrieval": {
+    "priority": 74,
+    "tags": [
+      "co-selection",
+      "model cohort",
+      "rank adjacency",
+      "route ranking"
+    ],
+    "terms": [
+      "co-selection",
+      "co-selection matrix",
+      "model cohort",
+      "rank adjacency",
+      "rank-neighbor evidence",
+      "route ranking"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "Co-selection frequency and rank adjacency answer different questions: models often selected together may form complementary cohorts, while models frequently adjacent in rank may be near-substitutes; PX should keep those signals distinct.",
+    "exclusions": [
+      "causal inference from correlation alone"
+    ],
+    "intents": [
+      "analyze route co-selection",
+      "compare rank adjacency"
+    ],
+    "keywords": [
+      "co-selection",
+      "model cohort",
+      "rank adjacency",
+      "route ranking"
+    ],
+    "retrieval_text": "Co-selection vs Rank Adjacency Evidence. Co-selection frequency and rank adjacency answer different questions: models often selected together may form complementary cohorts, while models frequently adjacent in rank may be near-substitutes; PX should keep those signals distinct. Co-selection counts reveal models that appear together in candidate/dispatch sets. Rank adjacency measures local ordering similarity and should not be conflated with co-selection. Either signal is observational evidence and requires outcome validation before influencing routing policy.",
+    "short_description": "Co-selection frequency and rank adjacency answer different questions: models often selected together may form complementary cohorts, while models frequently adjacent in rank may be near-substitutes; PX should keep those signals distinct.",
+    "synonyms": [
+      "co-selection matrix",
+      "rank-neighbor evidence"
+    ]
+  },
+  "status": "validated",
+  "title": "Co-selection vs Rank Adjacency Evidence"
+}

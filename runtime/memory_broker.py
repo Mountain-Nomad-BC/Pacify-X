@@ -277,3 +277,36 @@ def materialize_memory_context(
         "writeback_policy": plan.writeback_policy,
     }
     return {**body, "receipt_sha256": _hash(body)}
+
+
+def materialize_shared_contribution_context(
+    contributions: Iterable[Mapping[str, object]], verifications: Iterable[Mapping[str, object]],
+    *, project_id: str, max_items: int = 8, max_bytes: int = 16384,
+) -> dict[str, object]:
+    """Materialize independently verified contribution context through project bounds."""
+    from .shared_contributions import validate_contribution, validate_verification, verification_summary
+    if type(max_items) is not int or isinstance(max_items, bool) or not 1 <= max_items <= 256:
+        raise ValueError("shared contribution item budget is invalid")
+    if type(max_bytes) is not int or isinstance(max_bytes, bool) or not 256 <= max_bytes <= 8 * 1024 * 1024:
+        raise ValueError("shared contribution byte budget is invalid")
+    verification_rows = []
+    for row in verifications:
+        validate_verification(row)
+        verification_rows.append(row)
+    contribution_rows = []
+    for raw in contributions:
+        validate_contribution(raw)
+        contribution_rows.append(raw)
+    selected = []; used = 0
+    for raw in sorted(contribution_rows, key=lambda row: str(row["record_sha256"])):
+        if raw.get("project_id") != project_id: continue
+        digest = str(raw["record_sha256"])
+        summary = verification_summary(raw, verification_rows)
+        if summary.get("passed") is not True: continue
+        row = {"record_sha256":digest, "contribution_type":raw["contribution_type"], "description":raw["description"], "memory_refs":list(raw["memory_refs"]), "evidence_sha256":list(raw["evidence_sha256"]), "verification_sha256":list(summary.get("verification_sha256") or ()), "negative_result":raw["contribution_type"] == "negative_result"}
+        size = len(json.dumps(row, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode())
+        if size > max_bytes: continue
+        if used + size > max_bytes or len(selected) >= max_items: break
+        selected.append(row); used += size
+    body = {"schema_version":"px.shared-contribution-context/1.0", "project_id":project_id, "items":selected, "item_count":len(selected), "serialized_bytes":used, "max_items":max_items, "max_bytes":max_bytes, "authority_granted":False}
+    return {**body, "context_sha256": _hash(body)}

@@ -29,6 +29,7 @@ from ..input_files import (
 from ..json_io import decode_json_object, bounded_json_text
 from ..skill_inputs import parse_catalog_metadata
 from ..numeric_inputs import bounded_mapping, bounded_sequence, bounded_json_value
+from ..nsai_knowledge import expected_object_relative_path, validate_nsai_object_payload, parse_object_id
 
 _DESCRIPTION = re.compile(r"(?m)^description:\s*[\"']?(.*?)[\"']?\s*$")
 _INDEX_KIND = {
@@ -80,6 +81,7 @@ class _CompilationInputs:
         self.record_bytes = 0
         self.total_bytes = 0
         self.indices = []
+        self.nsai_objects = []
         for name in _FIXED:
             self.reserve(self.root / "registry" / name, optional=True)
         references = self.root / ".px/skills"
@@ -117,6 +119,27 @@ class _CompilationInputs:
             )
             for path in self.indices:
                 self.reserve(path)
+        nsai_root = self.root / "knowledge" / "nsai" / "objects"
+        if nsai_root.exists():
+            reject_path_links(nsai_root)
+            walked = bounded_walk(
+                nsai_root,
+                limits=WalkLimits(
+                    max_files=10000,
+                    max_depth=8,
+                    max_bytes=64 * _MIB,
+                    max_entries=40000,
+                    max_directories=10000,
+                    max_duration_seconds=max(0.001, self.deadline - time.monotonic()),
+                ),
+                symlink_policy="reject",
+            )
+            for entry in walked.files:
+                if entry.path.suffix.casefold() != ".json":
+                    raise ValueError("NSAI cognitive source tree contains a non-JSON file")
+                self.reserve(entry.path)
+                self.nsai_objects.append(entry.path)
+            self.nsai_objects.sort(key=lambda path: path.relative_to(self.root).as_posix())
         # Descriptor images establish the second-stage inventory. No referenced
         # body is acquired until all declared body sizes fit the shared budget.
         for path in self.indices:
@@ -796,6 +819,90 @@ def _index_nested_assets(
     return normalized_leaf
 
 
+
+def _index_nsai_assets(
+    root: Path,
+    records: dict[str, dict[str, Any]],
+    edges: set[tuple[str, str, str]],
+) -> None:
+    if not _inputs().nsai_objects:
+        return
+    rows = []
+    seen_ids = set()
+    for path in _inputs().nsai_objects:
+        payload = _json(path)
+        validate_nsai_object_payload(payload)
+        identifier = _required_identity(payload, "object_id")
+        if identifier in seen_ids:
+            raise ValueError("duplicate NSAI object identity in cognitive source tree")
+        seen_ids.add(identifier)
+        expected = (Path("knowledge/nsai") / expected_object_relative_path(payload)).as_posix()
+        actual = path.relative_to(root).as_posix()
+        if actual != expected:
+            raise ValueError("NSAI cognitive object path disagrees with semantic identity")
+        rows.append((path, payload))
+
+    by_id = {str(payload["object_id"]): payload for _, payload in rows}
+    for path, payload in rows:
+        identifier = str(payload["object_id"])
+        object_type = str(payload["object_type"])
+        record_kind = "formula" if object_type == "formula" else "knowledge"
+        semantics = payload["semantics"]
+        content = payload["content"]
+        ontology = payload["ontology"]
+        retrieval = payload["retrieval"]
+        relationships = payload["relationships"]
+        formula = payload.get("formula", {})
+        relative = path.relative_to(root).as_posix()
+        _inputs().current_sources = [relative]
+        _inputs().current_prefixes = []
+        _add(
+            records,
+            {
+                "id": identifier,
+                "kind": record_kind,
+                "title": payload["title"],
+                "summary": content["summary"],
+                "owner": "knowledge/nsai",
+                "status": payload["status"],
+                "domain": payload["namespace"],
+                "aliases": [*semantics["synonyms"], payload["title"]],
+                "triggers": semantics["intents"],
+                "concepts": [
+                    *ontology["classes"],
+                    *semantics["keywords"],
+                    *retrieval["tags"],
+                    *retrieval["terms"],
+                ],
+                "inputs": formula.get("inputs", ()),
+                "outputs": formula.get("outputs", ()),
+                "formula_refs": content.get("formula_refs", ()),
+                "relations": [row["target_id"] for row in relationships],
+                "path": relative,
+                "source_sha256_kind": "measured",
+                "source_sha256": _inputs().digest(path),
+                "risk": "R1",
+            },
+        )
+        source_key = _record_key(record_kind, identifier)
+        for relation in relationships:
+            target_id = relation["target_id"]
+            _, target_type, _ = parse_object_id(target_id)
+            target_kind = "formula" if target_type == "formula" else "knowledge"
+            if relation["scope"] == "library" and target_id not in by_id:
+                raise ValueError("unresolved internal NSAI relationship")
+            target_key = (
+                _record_key(target_kind, target_id)
+                if target_id in by_id
+                else f"unresolved:{target_id}"
+            )
+            edges.add((source_key, target_key, relation["predicate"]))
+        for formula_id in content.get("formula_refs", ()):
+            target = by_id.get(formula_id)
+            if target is None or target.get("object_type") != "formula":
+                raise ValueError("unresolved NSAI formula reference")
+            edges.add((source_key, _record_key("formula", formula_id), "uses_formula"))
+
 def build_cognitive_index(root: Path) -> dict[str, Any]:
     inputs = _CompilationInputs(root)
     token = _INPUTS.set(inputs)
@@ -915,6 +1022,7 @@ def _build_cognitive_index(root: Path) -> dict[str, Any]:
     alias_path = root / "registry" / "capability_aliases.json"
     aliases = _json(alias_path).get("records", ()) if alias_path.is_file() else ()
     nested_by_normalized_id = _index_nested_assets(root, records, edges, catalog_by_id)
+    _index_nsai_assets(root, records, edges)
 
     brain_capability_path = root / "registry" / "brain_capabilities.json"
     if brain_capability_path.is_file():
@@ -1329,3 +1437,35 @@ def validate_cognitive_index(
         "revision": expected["revision"],
         "errors": errors,
     }
+
+
+def operational_artifacts_to_cognitive_records(artifacts):
+    """Convert read-only operational artifacts into cognitive-index record rows.
+
+    This does not write the cognitive index or mutate any source authority.
+    """
+    from ..operational_projection import OperationalArtifact
+
+    rows = tuple(artifacts)
+    if len(rows) > 100000 or any(type(item) is not OperationalArtifact for item in rows):
+        raise ValueError("operational artifacts must be a bounded typed sequence")
+    result = []
+    seen = set()
+    for artifact in sorted(rows, key=lambda item: item.artifact_id):
+        key = f"operational:{artifact.artifact_id}"
+        if key in seen:
+            raise ValueError("duplicate operational artifact key")
+        seen.add(key)
+        result.append({
+            "key": key,
+            "kind": "operational_projection",
+            "id": artifact.artifact_id,
+            "title": artifact.title,
+            "description": artifact.text,
+            "aliases": list(artifact.aliases),
+            "owner": artifact.authority_id,
+            "source_revision": artifact.authority_revision,
+            "projection_sha256": artifact.artifact_sha256,
+            "authority_granted": False,
+        })
+    return tuple(result)

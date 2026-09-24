@@ -1,0 +1,138 @@
+{
+  "applicability": {
+    "conditions": [
+      "Stage requirements and expected costs must be declared."
+    ],
+    "exclusions": [
+      "continuing optional work past a hard deadline"
+    ],
+    "targets": [
+      "multi-stage model/retrieval jobs"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "px_latency_budget"
+        ],
+        "statement": "Latency budgeting distinguishes required stages from optional quality enhancements."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_latency_budget"
+        ],
+        "statement": "Optional reranking, expansion, or enrichment may be skipped when insufficient time remains."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_latency_budget"
+        ],
+        "statement": "Shedding an optional stage must be explicit in evidence so degraded output is not mistaken for the full pipeline."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "track elapsed and remaining request time",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "admit stages against declared cost/requiredness",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "select a maximal safe optional-stage subset and record shed stages",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "A request carries a bounded latency budget; required stages must fit or fail, while optional stages are admitted only when enough budget remains and can be shed without compromising correctness."
+  },
+  "namespace": "operations",
+  "object_id": "nsai:operations:latency_budget:rie_latency_budget_stage_shedding",
+  "object_type": "latency_budget",
+  "ontology": {
+    "classes": [
+      "degradation_policy",
+      "latency_control"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "operations"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "kind": "source_file",
+        "path": "runtime/latency_budget.py",
+        "sha256": "433eb90cdb97f2a5551ae89768e1c04cc362f492b46f6315aac504bfde3df38d",
+        "source_id": "px_latency_budget"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:retrieval:reranking:reranker_bounded_topn"
+    }
+  ],
+  "retrieval": {
+    "priority": 87,
+    "tags": [
+      "deadline",
+      "latency budget",
+      "optional stage",
+      "stage shedding"
+    ],
+    "terms": [
+      "deadline",
+      "latency budget",
+      "latency-aware pipeline",
+      "optional stage",
+      "request budget",
+      "stage shedding"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "A request carries a bounded latency budget; required stages must fit or fail, while optional stages are admitted only when enough budget remains and can be shed without compromising correctness.",
+    "exclusions": [
+      "shedding correctness-critical stage silently"
+    ],
+    "intents": [
+      "fit request deadline",
+      "shed optional stage"
+    ],
+    "keywords": [
+      "deadline",
+      "latency budget",
+      "optional stage",
+      "stage shedding"
+    ],
+    "retrieval_text": "RIE Latency Budget and Stage Shedding. A request carries a bounded latency budget; required stages must fit or fail, while optional stages are admitted only when enough budget remains and can be shed without compromising correctness. Latency budgeting distinguishes required stages from optional quality enhancements. Optional reranking, expansion, or enrichment may be skipped when insufficient time remains. Shedding an optional stage must be explicit in evidence so degraded output is not mistaken for the full pipeline.",
+    "short_description": "A request carries a bounded latency budget; required stages must fit or fail, while optional stages are admitted only when enough budget remains and can be shed without compromising correctness.",
+    "synonyms": [
+      "latency-aware pipeline",
+      "request budget"
+    ]
+  },
+  "status": "validated",
+  "title": "RIE Latency Budget and Stage Shedding"
+}

@@ -1,0 +1,26 @@
+{
+  "schema_version": "px.usage-memory/1.0",
+  "subject_kind": "agent",
+  "subject_id": "agency.support.support-responder",
+  "record_count": 0,
+  "outcomes": {
+    "success": 0,
+    "partial": 0,
+    "failure": 0,
+    "refused": 0,
+    "skipped": 0
+  },
+  "success_rate": null,
+  "success_rate_basis": "successes / (success + partial + failure)",
+  "criteria_met_count": 0,
+  "total_tokens": null,
+  "duration_samples": 0,
+  "duration_best_ms": null,
+  "duration_p50_ms": null,
+  "dispositions": {},
+  "gap_count": 0,
+  "gaps": [],
+  "last_observed_at": null,
+  "note": "Derived rollup. Rebuildable from memory/usage.jsonl, which is the append-only record. Contains outcome metadata only: no prompts, model output, secrets, or memory content.",
+  "stats_sha256": "28e6c827275228cb51f4a4473fc7878b294c9d16fb23ada0cd36189a4dc1923b"
+}

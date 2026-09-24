@@ -1,4 +1,4 @@
-﻿'use strict';
+'use strict';
 
 // Single browser controller: state composition, interaction dispatch, and host bridge ownership.
 

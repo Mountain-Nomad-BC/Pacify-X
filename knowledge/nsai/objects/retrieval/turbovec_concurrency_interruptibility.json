@@ -1,0 +1,165 @@
+{
+  "applicability": {
+    "conditions": [
+      "Exact backend behavior must be certified on the target runtime."
+    ],
+    "exclusions": [
+      "assuming GIL equals native thread safety"
+    ],
+    "targets": [
+      "TurboVec jobs"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "px_turbovec_adapter",
+          "px_retrieval_generation",
+          "tv_runbook"
+        ],
+        "statement": "Optional native vector backends must remain subordinate to PX job and cancellation custody."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_turbovec_adapter",
+          "px_retrieval_generation",
+          "tv_runbook"
+        ],
+        "statement": "Concurrency behavior must be established for the exact backend build rather than inferred from Python-level locking or the GIL."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_turbovec_adapter",
+          "px_retrieval_generation",
+          "tv_runbook"
+        ],
+        "statement": "Index mutation and persistence require a single-writer boundary so concurrent readers cannot observe partially published state."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "perform index mutation in a bounded job or single-writer path",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "publish completed generations atomically rather than mutating an active index in place",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "treat backend-specific thread/fork behavior as certification evidence",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "TurboVec integration must treat native index operations as bounded provider work with explicit thread/process safety assumptions, interruptible job custody, and no reliance on unsafe fork or hidden background mutation."
+  },
+  "namespace": "retrieval",
+  "object_id": "nsai:retrieval:concurrency:turbovec_concurrency_interruptibility",
+  "object_type": "concurrency",
+  "ontology": {
+    "classes": [
+      "concurrency_contract",
+      "retrieval_index"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "retrieval"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "kind": "source_file",
+        "path": "runtime/turbovec_adapter.py",
+        "sha256": "e234ba8225de0250ea9e1b5922911b12ef925c8db96b83afbd811d647f27d980",
+        "source_id": "px_turbovec_adapter"
+      },
+      {
+        "kind": "source_file",
+        "path": "runtime/retrieval_generation.py",
+        "sha256": "992db8b631380d16d782b71499ba3a0de0b4b6e75c6c68234cb19f96d6aa7680",
+        "source_id": "px_retrieval_generation"
+      },
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_Model_Fabric_Junction_Hardening_Pass3_2026-09-20/07_TURBOVEC_CALIBRATION_SYNC_PROMOTION_RUNBOOK.md",
+        "sha256": "f5a83b12ffde9709dee03653b0c3857f2a7b9699f4a47099b03aa7ccc8b92624",
+        "source_id": "tv_runbook"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:retrieval:index_lifecycle:turbovec_index_lifecycle"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:retrieval:generation_coherence:retrieval_generation_coherence"
+    }
+  ],
+  "retrieval": {
+    "priority": 80,
+    "tags": [
+      "concurrency",
+      "interrupt",
+      "single writer",
+      "thread safety",
+      "turbovec"
+    ],
+    "terms": [
+      "concurrency",
+      "interrupt",
+      "interruptible indexing",
+      "single writer",
+      "thread safety",
+      "turbovec",
+      "vector-index concurrency"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "TurboVec integration must treat native index operations as bounded provider work with explicit thread/process safety assumptions, interruptible job custody, and no reliance on unsafe fork or hidden background mutation.",
+    "exclusions": [
+      "in-place active-index mutation"
+    ],
+    "intents": [
+      "cancel vector indexing",
+      "run turbovec safely"
+    ],
+    "keywords": [
+      "concurrency",
+      "interrupt",
+      "single writer",
+      "thread safety",
+      "turbovec"
+    ],
+    "retrieval_text": "TurboVec Concurrency and Interruptibility. TurboVec integration must treat native index operations as bounded provider work with explicit thread/process safety assumptions, interruptible job custody, and no reliance on unsafe fork or hidden background mutation. Optional native vector backends must remain subordinate to PX job and cancellation custody. Concurrency behavior must be established for the exact backend build rather than inferred from Python-level locking or the GIL. Index mutation and persistence require a single-writer boundary so concurrent readers cannot observe partially published state.",
+    "short_description": "TurboVec integration must treat native index operations as bounded provider work with explicit thread/process safety assumptions, interruptible job custody, and no reliance on unsafe fork or hidden background mutation.",
+    "synonyms": [
+      "interruptible indexing",
+      "vector-index concurrency"
+    ]
+  },
+  "status": "validated",
+  "title": "TurboVec Concurrency and Interruptibility"
+}

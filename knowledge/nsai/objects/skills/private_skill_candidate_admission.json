@@ -1,0 +1,154 @@
+{
+  "applicability": {
+    "conditions": [
+      "Exact package identity and PX admission receipt are required."
+    ],
+    "exclusions": [
+      "executing an unadmitted external skill"
+    ],
+    "targets": [
+      "private skill packages"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "wave15b_storage",
+          "wave15b_private_tests"
+        ],
+        "statement": "External skill-file presence never grants tool/effect authority."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "wave15b_storage",
+          "wave15b_private_tests"
+        ],
+        "statement": "Admission binds to an exact immutable package identity so later file changes invalidate the admitted package."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "wave15b_storage",
+          "wave15b_private_tests"
+        ],
+        "statement": "Private skill custody can remain outside the certifiable PX source tree while execution authority stays inside PX."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "store a content-addressed external skill candidate package",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "run required contracts/tests under quarantine/admission policy",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "bind PX admission receipt to the exact package hash before any orchestration may invoke it",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "Learned/private skill packages may be stored externally with exact package hashes and tests, but they have zero executable authority until the existing PX skill-admission path accepts the exact package identity and records an admission receipt."
+  },
+  "namespace": "skills",
+  "object_id": "nsai:skills:private_skill_admission:private_skill_candidate_admission",
+  "object_type": "private_skill_admission",
+  "ontology": {
+    "classes": [
+      "admission_gate",
+      "skill_lifecycle"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "skills"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "archive": "PX_IMPLEMENTATION_WAVE15B_COGNITIVE_STORAGE_ATOMIC_GENERATION_2026-09-20.zip",
+        "kind": "source_file",
+        "path": "EXTERNAL/pacifyx_memory/cognitive_storage.py",
+        "sha256": "e9b1b2576fcfefdda6e8b49e23cc495f9387cd6987fa4d9dd0f34f7dca2e26cc",
+        "source_id": "wave15b_storage"
+      },
+      {
+        "archive": "PX_IMPLEMENTATION_WAVE15B_COGNITIVE_STORAGE_ATOMIC_GENERATION_2026-09-20.zip",
+        "kind": "source_file",
+        "path": "tests/test_private_cognitive_storage.py",
+        "sha256": "01ca21c99b02a176acc141b98473cb700b16044d23ddf325530c68d450a30620",
+        "source_id": "wave15b_private_tests"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:cognitive:generation_publication:atomic_cognitive_generation_publication"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:operations:action_surface:rie_action_surface"
+    }
+  ],
+  "retrieval": {
+    "priority": 98,
+    "tags": [
+      "admission",
+      "package hash",
+      "private skill",
+      "skill candidate"
+    ],
+    "terms": [
+      "admission",
+      "external skill candidate",
+      "learned skill admission",
+      "package hash",
+      "private skill",
+      "skill candidate"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "Learned/private skill packages may be stored externally with exact package hashes and tests, but they have zero executable authority until the existing PX skill-admission path accepts the exact package identity and records an admission receipt.",
+    "exclusions": [
+      "file-exists authority"
+    ],
+    "intents": [
+      "admit learned skill",
+      "store private skill"
+    ],
+    "keywords": [
+      "admission",
+      "package hash",
+      "private skill",
+      "skill candidate"
+    ],
+    "retrieval_text": "Private Skill Candidate Admission. Learned/private skill packages may be stored externally with exact package hashes and tests, but they have zero executable authority until the existing PX skill-admission path accepts the exact package identity and records an admission receipt. External skill-file presence never grants tool/effect authority. Admission binds to an exact immutable package identity so later file changes invalidate the admitted package. Private skill custody can remain outside the certifiable PX source tree while execution authority stays inside PX.",
+    "short_description": "Learned/private skill packages may be stored externally with exact package hashes and tests, but they have zero executable authority until the existing PX skill-admission path accepts the exact package identity and records an admission receipt.",
+    "synonyms": [
+      "external skill candidate",
+      "learned skill admission"
+    ]
+  },
+  "status": "validated",
+  "title": "Private Skill Candidate Admission"
+}

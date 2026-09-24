@@ -1,0 +1,107 @@
+{
+  "schema_version": "px.provider-protocols/1.0",
+  "policy": "Protocol capability metadata is descriptive and adapter-exact. It grants no provider, egress, credential, process, model-load, tool-execution, or spending authority. runtime/provider_gateway.py still requires exact registry admission before use.",
+  "canonical_events": [
+    "text_delta",
+    "reasoning_delta",
+    "tool_call_start",
+    "tool_call_delta",
+    "tool_call_end",
+    "usage",
+    "finish",
+    "error"
+  ],
+  "adapters": [
+    {
+      "adapter_id": "ollama-http",
+      "surfaces": ["terminal"],
+      "implemented": true,
+      "streaming": false,
+      "tools": false,
+      "structured_output": false,
+      "images": false,
+      "embeddings": false,
+      "rerank": false,
+      "exact_token_count": false,
+      "cancellation": false,
+      "load_unload_status": false
+    },
+    {
+      "adapter_id": "llama-cpp-http",
+      "surfaces": ["terminal"],
+      "implemented": true,
+      "streaming": false,
+      "tools": false,
+      "structured_output": false,
+      "images": false,
+      "embeddings": false,
+      "rerank": false,
+      "exact_token_count": false,
+      "cancellation": false,
+      "load_unload_status": false
+    },
+    {
+      "adapter_id": "llama-cpp-stream",
+      "surfaces": ["openai_chat"],
+      "implemented": true,
+      "streaming": true,
+      "tools": true,
+      "structured_output": true,
+      "images": false,
+      "embeddings": false,
+      "rerank": false,
+      "exact_token_count": true,
+      "cancellation": true,
+      "load_unload_status": false
+    },
+    {
+      "adapter_id": "llama-cpp-responses",
+      "surfaces": ["openai_responses"],
+      "implemented": true,
+      "streaming": true,
+      "tools": true,
+      "structured_output": true,
+      "images": false,
+      "embeddings": false,
+      "rerank": false,
+      "exact_token_count": true,
+      "cancellation": true,
+      "load_unload_status": false
+    },
+    {
+      "adapter_id": "llama-cpp-anthropic",
+      "surfaces": ["anthropic_messages"],
+      "implemented": true,
+      "streaming": true,
+      "tools": true,
+      "structured_output": false,
+      "images": false,
+      "embeddings": false,
+      "rerank": false,
+      "exact_token_count": true,
+      "cancellation": true,
+      "load_unload_status": false
+    },
+    {
+      "adapter_id": "openai-responses",
+      "surfaces": ["openai_responses"],
+      "implemented": false,
+      "streaming": true,
+      "tools": true,
+      "structured_output": true,
+      "images": true,
+      "embeddings": false,
+      "rerank": false,
+      "exact_token_count": false,
+      "cancellation": true,
+      "load_unload_status": false
+    }
+  ],
+  "rules": {
+    "raw_backend_stream_passthrough": false,
+    "tool_syntax_grants_authority": false,
+    "retry_mutations_without_receipt": false,
+    "successful_stream_requires_exact_usage": true,
+    "output_receipt_hash_uses_normalized_content_not_backend_chunk_boundaries": true
+  }
+}

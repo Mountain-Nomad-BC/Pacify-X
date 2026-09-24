@@ -1,0 +1,151 @@
+{
+  "applicability": {
+    "conditions": [
+      "Use only with an admitted PX model/runtime identity.",
+      "Treat measured machine-specific profile evidence as stronger than generic defaults."
+    ],
+    "exclusions": [
+      "raw provider protocol as internal authority model"
+    ],
+    "targets": [
+      "local and external model providers"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.95,
+        "evidence_refs": [
+          "px_llama_api_contract",
+          "llama_server_readme"
+        ],
+        "statement": "Wire compatibility does not imply semantic equivalence; tool deltas, usage, finish states, and errors require explicit normalization."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_llama_api_contract",
+          "llama_server_readme"
+        ],
+        "statement": "Canonical events let PX apply one authority/accounting/cancellation model across providers."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "Adapters parse backend-specific request/stream shapes.",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "Provider gateway emits bounded canonical events and terminal receipts.",
+        "name": "mechanism_2"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, or policy authority."
+    ],
+    "summary": "PX converts OpenAI Chat, Responses, Anthropic-style, llama.cpp, and other admitted backend wire shapes into canonical request/content/tool/stream events so authority, cancellation, usage, and receipts have one internal meaning."
+  },
+  "namespace": "model_runtime",
+  "object_id": "nsai:model_runtime:protocol_normalization:provider_protocol_normalization",
+  "object_type": "protocol_normalization",
+  "ontology": {
+    "classes": [
+      "provider",
+      "protocol"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "model_runtime",
+      "runtime_scope": [
+        "local and external model providers"
+      ]
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "manual source-backed synthesis with schema validation and exact SHA provenance",
+      "source_pass": "Wave 14"
+    },
+    "sources": [
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_Model_Fabric_Junction_Hardening_Pass3_2026-09-20/04_LLAMA_CPP_API_TOOL_STREAMING_CONTRACT.md",
+        "sha256": "9a2022cf3d1e72763395929ea98beccd30e7b94733a57bbdc2c47604e2f25040",
+        "source_id": "px_llama_api_contract"
+      },
+      {
+        "archive": "models and harnesses for them.zip",
+        "kind": "source_file",
+        "path": "llama.cpp-master/llama.cpp-master/tools/server/README.md",
+        "sha256": "57e27013809e4976e71a76fe83a5930779634401d6dbdf2d941fd5432889eb9e",
+        "source_id": "llama_server_readme"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:recovery:model_cancellation_recovery"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:tool_protocol:llama_cpp_tool_calling"
+    }
+  ],
+  "retrieval": {
+    "priority": 85,
+    "tags": [
+      "protocol",
+      "streaming",
+      "tools",
+      "usage"
+    ],
+    "terms": [
+      "anthropic",
+      "chat completions",
+      "protocol",
+      "provider adapter",
+      "provider protocol",
+      "responses",
+      "sse",
+      "streaming",
+      "tools",
+      "usage",
+      "wire normalization"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "PX converts OpenAI Chat, Responses, Anthropic-style, llama.cpp, and other admitted backend wire shapes into canonical request/content/tool/stream events so authority, cancellation, usage, and receipts have one internal meaning.",
+    "exclusions": [
+      "raw provider protocol as internal authority model"
+    ],
+    "intents": [
+      "normalize provider",
+      "stream canonical events"
+    ],
+    "keywords": [
+      "provider protocol",
+      "responses",
+      "chat completions",
+      "anthropic",
+      "sse"
+    ],
+    "retrieval_text": "Provider Protocol Normalization. PX converts OpenAI Chat, Responses, Anthropic-style, llama.cpp, and other admitted backend wire shapes into canonical request/content/tool/stream events so authority, cancellation, usage, and receipts have one internal meaning. Wire compatibility does not imply semantic equivalence; tool deltas, usage, finish states, and errors require explicit normalization. Canonical events let PX apply one authority/accounting/cancellation model across providers.",
+    "short_description": "PX converts OpenAI Chat, Responses, Anthropic-style, llama.",
+    "synonyms": [
+      "wire normalization",
+      "provider adapter"
+    ]
+  },
+  "status": "validated",
+  "title": "Provider Protocol Normalization"
+}

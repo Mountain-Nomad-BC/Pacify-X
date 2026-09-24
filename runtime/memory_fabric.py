@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 import hashlib
+import json
 import math
 from pathlib import Path
 import re
@@ -512,3 +513,35 @@ def plan_self_healing(findings: Iterable[Mapping[str, object]]) -> MaintenancePl
                 }
             )
     return MaintenancePlan(tuple(actions), dry_run=True, human_approval_required=True)
+
+
+def link_shared_contribution(
+    memory: MemoryRecord,
+    *, contribution: Mapping[str, object], verification_sha256: Sequence[str],
+    contribution_visibility: str, publication_state: str,
+) -> dict[str, object]:
+    """Link an immutable contribution to atomic memory without changing memory authority."""
+    from .shared_contributions import validate_contribution
+    if memory.validation_errors():
+        raise ValueError("shared contribution cannot link to invalid memory")
+    validate_contribution(contribution)
+    if contribution.get("project_id") != memory.project_id:
+        raise ValueError("shared contribution project does not match memory project")
+    contribution_sha256 = str(contribution["record_sha256"])
+    verified = sorted(set(map(str, verification_sha256)))
+    if any(not re.fullmatch(r"[0-9a-f]{64}", item) for item in verified):
+        raise ValueError("verification identities must be SHA-256")
+    if contribution_visibility not in {"private", "project", "team", "public-candidate"}:
+        raise ValueError("contribution visibility is invalid")
+    if publication_state not in {"unpublished", "review-candidate", "approved", "published", "rejected", "revoked"}:
+        raise ValueError("publication state is invalid")
+    body = {
+        "schema_version":"px.memory-contribution-link/1.0", "memory_id":memory.memory_id,
+        "project_id":memory.project_id, "memory_source_sha256":memory.source_sha256,
+        "contribution_sha256":contribution_sha256, "verification_sha256":verified,
+        "contribution_visibility":contribution_visibility, "publication_state":publication_state,
+        "memory_visibility":memory.visibility, "memory_certification_status":memory.certification_status,
+        "publication_changes_memory_visibility":False, "authority_granted":False,
+    }
+    rendered = json.dumps(body, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+    return {**body, "link_sha256": hashlib.sha256(rendered.encode()).hexdigest()}

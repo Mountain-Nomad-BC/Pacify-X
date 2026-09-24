@@ -68,7 +68,7 @@ def _validate_import_records(registry: dict[str, Any]) -> None:
         "standard_library",
         "local_product",
         "required",
-        "declared_required",
+        "declared_required", "optional_gated",
         "test_only",
         "unclassified",
     }
@@ -96,7 +96,7 @@ def _validate_import_records(registry: dict[str, Any]) -> None:
         modules.add(module)
         if type(classification) is not str or classification not in classes:
             raise ValueError("unknown dependency classification")
-        if classification in {"required", "declared_required", "test_only"}:
+        if classification in {"required", "declared_required", "optional_gated", "test_only"}:
             if (
                 type(distribution) is not str
                 or re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,127}", distribution)

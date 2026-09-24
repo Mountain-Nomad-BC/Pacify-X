@@ -1,0 +1,154 @@
+{
+  "applicability": {
+    "conditions": [
+      "Use only with an admitted PX model/runtime identity.",
+      "Treat measured machine-specific profile evidence as stronger than generic defaults."
+    ],
+    "exclusions": [
+      "exact-ID retrieval replacement",
+      "self-granted writes"
+    ],
+    "targets": [
+      "Qwen3.5-0.8B candidate",
+      "PX operator"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.95,
+        "evidence_refs": [
+          "px_llama_profiles",
+          "px_llama_tuning"
+        ],
+        "statement": "The lane should remain cheap/resident and use short deterministic structured outputs where possible."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_llama_profiles",
+          "px_llama_tuning"
+        ],
+        "statement": "It may request admitted workflows but cannot mint effects, promote knowledge, or override exact deterministic results."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "PX sends bounded tasks with explicit schemas/contracts.",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "The operator queries skills/knowledge/context and escalates heavy reasoning to larger lanes.",
+        "name": "mechanism_2"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, or policy authority."
+    ],
+    "summary": "The tiny CPU lane is the resident PX librarian/concierge/grunt model: it performs bounded classification, extraction, ambiguity resolution, query preparation, context assembly, and governed work-queue assistance while deterministic PX logic remains authoritative."
+  },
+  "namespace": "model_runtime",
+  "object_id": "nsai:model_runtime:control_lane:tiny_cpu_control_lane",
+  "object_type": "control_lane",
+  "ontology": {
+    "classes": [
+      "model_lane",
+      "control_plane"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "model_runtime",
+      "runtime_scope": [
+        "Qwen3.5-0.8B candidate",
+        "PX operator"
+      ]
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "manual source-backed synthesis with schema validation and exact SHA provenance",
+      "source_pass": "Wave 14"
+    },
+    "sources": [
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_Model_Fabric_Junction_Hardening_Pass3_2026-09-20/03_LLAMA_CPP_CERTIFIED_RUNTIME_PROFILES.md",
+        "sha256": "c49c37da15288829814048b52a91a352d86a723e676e2756eeb578346d299a1c",
+        "source_id": "px_llama_profiles"
+      },
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_Model_Fabric_Junction_Hardening_Pass3_2026-09-20/05_LLAMA_CPP_CPU_GPU_MOE_TUNING_MATRIX.md",
+        "sha256": "9a703632e734c69fe538483406e44a46c09d840f451d6832957b8150d33e9cb4",
+        "source_id": "px_llama_tuning"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:protocol_normalization:provider_protocol_normalization"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:resource_interlock:model_resource_interlocks"
+    }
+  ],
+  "retrieval": {
+    "priority": 85,
+    "tags": [
+      "cpu",
+      "resident",
+      "structured output",
+      "orchestration"
+    ],
+    "terms": [
+      "CPU control plane",
+      "concierge",
+      "cpu",
+      "librarian",
+      "librarian model",
+      "operator",
+      "orchestration",
+      "resident",
+      "structured output",
+      "tiny model"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "The tiny CPU lane is the resident PX librarian/concierge/grunt model: it performs bounded classification, extraction, ambiguity resolution, query preparation, context assembly, and governed work-queue assistance while deterministic PX logic remains authoritative.",
+    "exclusions": [
+      "exact-ID retrieval replacement",
+      "self-granted writes"
+    ],
+    "intents": [
+      "route tiny model",
+      "resident control model"
+    ],
+    "keywords": [
+      "tiny model",
+      "cpu",
+      "librarian",
+      "concierge",
+      "operator"
+    ],
+    "retrieval_text": "Tiny CPU Control Lane. The tiny CPU lane is the resident PX librarian/concierge/grunt model: it performs bounded classification, extraction, ambiguity resolution, query preparation, context assembly, and governed work-queue assistance while deterministic PX logic remains authoritative. The lane should remain cheap/resident and use short deterministic structured outputs where possible. It may request admitted workflows but cannot mint effects, promote knowledge, or override exact deterministic results.",
+    "short_description": "The tiny CPU lane is the resident PX librarian/concierge/grunt model: it performs bounded classification, extraction, ambiguity resolution, query preparation, context assembly, and governed work-queue assistance while deterministic PX logic remains authoritative.",
+    "synonyms": [
+      "CPU control plane",
+      "librarian model"
+    ]
+  },
+  "status": "validated",
+  "title": "Tiny CPU Control Lane"
+}

@@ -1,0 +1,156 @@
+{
+  "applicability": {
+    "conditions": [
+      "Server binary/spec must be admitted and bounded."
+    ],
+    "exclusions": [
+      "treating LSP diagnostics as execution authority"
+    ],
+    "targets": [
+      "language servers"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "px_lsp_process",
+          "px_lsp_manager",
+          "px_lsp_protocol"
+        ],
+        "statement": "The process owner can start, observe, wait for, terminate, and force-kill a language-server tree."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_lsp_process",
+          "px_lsp_manager",
+          "px_lsp_protocol"
+        ],
+        "statement": "Protocol/client layers enforce framed bounded messages and initialization state."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_lsp_process",
+          "px_lsp_manager",
+          "px_lsp_protocol"
+        ],
+        "statement": "LSP failure should degrade semantic capability without leaving orphaned processes or silently granting write authority."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "launch an admitted server spec under process custody",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "initialize and query through the bounded LSP protocol",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "terminate the full process tree and close streams on cancellation/failure",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "Language servers are managed as bounded subprocesses with explicit startup, protocol initialization, health, timeout, termination-tree, and stream cleanup behavior; an LSP server is a semantic provider, not PX authority."
+  },
+  "namespace": "semantic",
+  "object_id": "nsai:semantic:lsp_lifecycle:semantic_lsp_lifecycle",
+  "object_type": "lsp_lifecycle",
+  "ontology": {
+    "classes": [
+      "lsp_runtime",
+      "provider_lifecycle"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "semantic"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "kind": "source_file",
+        "path": "runtime/semantic_lsp_process.py",
+        "sha256": "2586af7261cabfd2c66bbbd2d426a6e4cb291567861d2765cf0d1cf3309f552b",
+        "source_id": "px_lsp_process"
+      },
+      {
+        "kind": "source_file",
+        "path": "runtime/semantic_lsp_manager.py",
+        "sha256": "725f7f1feb862911d2da5e6a3a1a48bc71b39410a04056683d7f0ba3368db736",
+        "source_id": "px_lsp_manager"
+      },
+      {
+        "kind": "source_file",
+        "path": "runtime/semantic_lsp_protocol.py",
+        "sha256": "b07cc26e2ed7d5b28fb1cf26204d1d9c1bb328a05ba206cedcc7ad8c362de951",
+        "source_id": "px_lsp_protocol"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:semantic:lsp_position_encoding:semantic_lsp_position_encoding"
+    }
+  ],
+  "retrieval": {
+    "priority": 89,
+    "tags": [
+      "LSP",
+      "language server",
+      "lifecycle",
+      "process custody"
+    ],
+    "terms": [
+      "LSP",
+      "LSP runtime",
+      "language server",
+      "language server lifecycle",
+      "lifecycle",
+      "process custody"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "Language servers are managed as bounded subprocesses with explicit startup, protocol initialization, health, timeout, termination-tree, and stream cleanup behavior; an LSP server is a semantic provider, not PX authority.",
+    "exclusions": [
+      "unmanaged background server"
+    ],
+    "intents": [
+      "start language server",
+      "stop language server"
+    ],
+    "keywords": [
+      "LSP",
+      "language server",
+      "lifecycle",
+      "process custody"
+    ],
+    "retrieval_text": "Semantic LSP Lifecycle. Language servers are managed as bounded subprocesses with explicit startup, protocol initialization, health, timeout, termination-tree, and stream cleanup behavior; an LSP server is a semantic provider, not PX authority. The process owner can start, observe, wait for, terminate, and force-kill a language-server tree. Protocol/client layers enforce framed bounded messages and initialization state. LSP failure should degrade semantic capability without leaving orphaned processes or silently granting write authority.",
+    "short_description": "Language servers are managed as bounded subprocesses with explicit startup, protocol initialization, health, timeout, termination-tree, and stream cleanup behavior; an LSP server is a semantic provider, not PX authority.",
+    "synonyms": [
+      "LSP runtime",
+      "language server lifecycle"
+    ]
+  },
+  "status": "validated",
+  "title": "Semantic LSP Lifecycle"
+}

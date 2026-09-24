@@ -1,0 +1,141 @@
+{
+  "applicability": {
+    "conditions": [
+      "Receipt identity must remain stable across retries/stages."
+    ],
+    "exclusions": [
+      "creating a new unrelated identity for every retry"
+    ],
+    "targets": [
+      "long-running jobs"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "px_job_receipt"
+        ],
+        "statement": "A job receipt makes asynchronous work inspectable without treating in-memory worker state as durable truth."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_job_receipt"
+        ],
+        "statement": "Cancellation and retry are explicit receipt state transitions."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_job_receipt"
+        ],
+        "statement": "Terminal results/errors are tied to the same job identity and lineage."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "create a content-addressed job receipt at admission",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "advance stage/progress and cancellation/retry lineage",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "finish with a terminal status and result/error evidence",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "Long-running or retryable work carries an immutable/evolving job receipt that binds request identity, permission/generation context, stage/progress, cancellation, retries, terminal result, and a stable receipt hash."
+  },
+  "namespace": "operations",
+  "object_id": "nsai:operations:job_receipt:rie_durable_job_receipt",
+  "object_type": "job_receipt",
+  "ontology": {
+    "classes": [
+      "evidence_receipt",
+      "job_state"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "operations"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "kind": "source_file",
+        "path": "runtime/job_receipt.py",
+        "sha256": "d4ae44da56e64b828ef3b9dac9429d749f55a3b7a0a2d91af5e983f0ed9932ac",
+        "source_id": "px_job_receipt"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:operations:wait_wake:intermodel_wait_wake"
+    }
+  ],
+  "retrieval": {
+    "priority": 90,
+    "tags": [
+      "cancel",
+      "durable job",
+      "job receipt",
+      "progress",
+      "retry"
+    ],
+    "terms": [
+      "asynchronous receipt",
+      "cancel",
+      "durable job",
+      "job ledger record",
+      "job receipt",
+      "progress",
+      "retry"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "Long-running or retryable work carries an immutable/evolving job receipt that binds request identity, permission/generation context, stage/progress, cancellation, retries, terminal result, and a stable receipt hash.",
+    "exclusions": [
+      "ephemeral-only job state"
+    ],
+    "intents": [
+      "resume job evidence",
+      "track long job"
+    ],
+    "keywords": [
+      "cancel",
+      "durable job",
+      "job receipt",
+      "progress",
+      "retry"
+    ],
+    "retrieval_text": "RIE Durable Job Receipt. Long-running or retryable work carries an immutable/evolving job receipt that binds request identity, permission/generation context, stage/progress, cancellation, retries, terminal result, and a stable receipt hash. A job receipt makes asynchronous work inspectable without treating in-memory worker state as durable truth. Cancellation and retry are explicit receipt state transitions. Terminal results/errors are tied to the same job identity and lineage.",
+    "short_description": "Long-running or retryable work carries an immutable/evolving job receipt that binds request identity, permission/generation context, stage/progress, cancellation, retries, terminal result, and a stable receipt hash.",
+    "synonyms": [
+      "asynchronous receipt",
+      "job ledger record"
+    ]
+  },
+  "status": "validated",
+  "title": "RIE Durable Job Receipt"
+}

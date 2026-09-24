@@ -1,10 +1,35 @@
 {
-  "schema_version": "px.native-skill-package/1.0",
-  "id": "pacify-x-studio-operator",
-  "version": "1.0.2",
+  "admission_record": "pacify-x-studio-operator",
+  "body_sha256": "26c890b06a5582f6b6a8c1ad56130b67aee6fa915fbe53f93bb14ee90c113479",
+  "contract": {
+    "available": true,
+    "sha256": "62641ba1660a02c0eb15461ec1815170d5b5ef99481c130825e159f090838913",
+    "source": "registry/skill_packages/pacify-x-studio-operator.json"
+  },
+  "description": "Inspect Pacify-X Studio revision, authority, admission, and durable-run state without changing it.",
   "domain": "px-standard",
-  "effects": ["read_local"],
-  "permissions": ["read_local"],
-  "triggers": ["explicit Pacify-X Studio inspection"],
-  "non_triggers": ["mutation", "deployment", "credentialed operation"]
+  "entrypoint": "SKILL.md",
+  "id": "pacify-x-studio-operator",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/pacify-x-studio-operator"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
+  "tags": [
+    "explicit Pacify-X Studio inspection"
+  ],
+  "version": "1.0.2"
 }

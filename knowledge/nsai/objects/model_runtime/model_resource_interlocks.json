@@ -1,0 +1,159 @@
+{
+  "applicability": {
+    "conditions": [
+      "Use only with an admitted PX model/runtime identity.",
+      "Treat measured machine-specific profile evidence as stronger than generic defaults."
+    ],
+    "exclusions": [
+      "runtime self-reports free resources as authority"
+    ],
+    "targets": [
+      "all PX local model runtimes"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.95,
+        "evidence_refs": [
+          "px_docker_interlock",
+          "px_llama_profiles",
+          "px_airllm_cold_lane"
+        ],
+        "statement": "Resource ownership is global across runtime implementations; each backend cannot independently assume the GPU is available."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_docker_interlock",
+          "px_llama_profiles",
+          "px_airllm_cold_lane"
+        ],
+        "statement": "Failed/unknown runtime states conservatively consume capacity until reconciliation proves release."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "Admission compares declared resource need to a coherent resource snapshot and existing leases.",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "Lifecycle transitions hold/release leases only after observed/reconciled state supports the transition.",
+        "name": "mechanism_2"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, or policy authority."
+    ],
+    "summary": "PX owns shared CPU/RAM/VRAM/disk-capacity leases across llama.cpp, Docker, AirLLM, embedding/reranker and other local lanes. Ambiguous cleanup never immediately frees capacity."
+  },
+  "namespace": "model_runtime",
+  "object_id": "nsai:model_runtime:resource_interlock:model_resource_interlocks",
+  "object_type": "resource_interlock",
+  "ontology": {
+    "classes": [
+      "resource_governance",
+      "scheduling"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "model_runtime",
+      "runtime_scope": [
+        "all PX local model runtimes"
+      ]
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "manual source-backed synthesis with schema validation and exact SHA provenance",
+      "source_pass": "Wave 14"
+    },
+    "sources": [
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_Model_Fabric_Junction_Hardening_Pass3_2026-09-20/10_DOCKER_MODEL_RUNNER_RESOURCE_INTERLOCK.md",
+        "sha256": "0c55ed3a5e4056514b84f0cd1ce6308c774ec83af92121f8df3f7665aa85fbc2",
+        "source_id": "px_docker_interlock"
+      },
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_Model_Fabric_Junction_Hardening_Pass3_2026-09-20/03_LLAMA_CPP_CERTIFIED_RUNTIME_PROFILES.md",
+        "sha256": "c49c37da15288829814048b52a91a352d86a723e676e2756eeb578346d299a1c",
+        "source_id": "px_llama_profiles"
+      },
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_Model_Fabric_Junction_Hardening_Pass3_2026-09-20/08_AIRLLM_PRODUCTION_COLD_LANE.md",
+        "sha256": "74b6af31cc257b356da7da73fed6c5945d16f9564569e084bc1e345a7e549c0c",
+        "source_id": "px_airllm_cold_lane"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:lifecycle:local_model_lifecycle"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:recovery:model_cancellation_recovery"
+    }
+  ],
+  "retrieval": {
+    "priority": 85,
+    "tags": [
+      "lease",
+      "capacity",
+      "vram",
+      "ram",
+      "disk"
+    ],
+    "terms": [
+      "GPU lease",
+      "capacity",
+      "disk",
+      "gpu interlock",
+      "lease",
+      "ram",
+      "resource governor",
+      "resource lease",
+      "vram"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "PX owns shared CPU/RAM/VRAM/disk-capacity leases across llama.cpp, Docker, AirLLM, embedding/reranker and other local lanes. Ambiguous cleanup never immediately frees capacity.",
+    "exclusions": [
+      "runtime self-reports free resources as authority"
+    ],
+    "intents": [
+      "coordinate runtimes",
+      "avoid gpu oversubscription"
+    ],
+    "keywords": [
+      "resource lease",
+      "vram",
+      "ram",
+      "gpu interlock",
+      "capacity"
+    ],
+    "retrieval_text": "Cross-Runtime Model Resource Interlocks. PX owns shared CPU/RAM/VRAM/disk-capacity leases across llama.cpp, Docker, AirLLM, embedding/reranker and other local lanes. Ambiguous cleanup never immediately frees capacity. Resource ownership is global across runtime implementations; each backend cannot independently assume the GPU is available. Failed/unknown runtime states conservatively consume capacity until reconciliation proves release.",
+    "short_description": "PX owns shared CPU/RAM/VRAM/disk-capacity leases across llama.",
+    "synonyms": [
+      "resource governor",
+      "GPU lease"
+    ]
+  },
+  "status": "validated",
+  "title": "Cross-Runtime Model Resource Interlocks"
+}

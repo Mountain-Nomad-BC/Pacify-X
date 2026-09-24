@@ -93,6 +93,8 @@ class NavigationResult:
     reason: str
     excluded: tuple[tuple[str, str], ...] = ()
     index_revision: str = ""
+    navigation_id: str = ""
+    action_surface_sha256: str = ""
 
 
 @dataclass(frozen=True)
@@ -153,6 +155,7 @@ def navigate(
     allowed_statuses: Sequence[str] = ("admitted", "active"),
     constraints: Mapping[str, object] | None = None,
     include_kinds: Sequence[str] = (),
+    action_surface: object | None = None,
 ) -> NavigationResult:
     if not goal.strip():
         raise ValueError("goal must not be empty")
@@ -162,6 +165,16 @@ def navigate(
     summaries = tuple(sorted(capability_index, key=lambda item: item.capability_id))
     supplied = set((available_inputs or {}).keys())
     policy = constraints or {}
+    projected_action_capability: str | None = None
+    projected_action_sha256 = ""
+    if action_surface is not None:
+        from .action_surface import ActionSurface
+        if type(action_surface) is not ActionSurface:
+            raise ValueError("action_surface must be a typed ActionSurface")
+        resolution = action_surface.resolve(goal)
+        projected_action_sha256 = action_surface.surface_sha256
+        if resolution.status == "candidate":
+            projected_action_capability = resolution.capability_id
     available_tools = (
         {str(value) for value in policy.get("available_tools", ())}
         if isinstance(policy.get("available_tools", ()), (list, tuple, set))
@@ -264,6 +277,9 @@ def navigate(
         if goal_phrase in exact_phrases:
             score += 100.0
             reasons.append("exact governed alias")
+        if projected_action_capability == summary.capability_id:
+            score += 150.0
+            reasons.append("projected action candidate")
         if normalized_goal and normalized_goal in " ".join(sorted(_tokens(searchable))):
             score += 1.0
             reasons.append("normalized phrase coverage")
@@ -283,6 +299,15 @@ def navigate(
         key=lambda item: (-item.score, len(item.missing_inputs), item.capability_id)
     )
     selected = tuple(ranked[:max_candidates])
+    index_revision = capability_index_revision(summaries)
+    navigation_material = {
+        "goal": goal,
+        "index_revision": index_revision,
+        "candidates": [asdict(item) for item in selected],
+        "excluded": sorted(excluded),
+        "action_surface_sha256": projected_action_sha256,
+    }
+    navigation_id = hashlib.sha256(json.dumps(navigation_material, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
     return NavigationResult(
         candidates=selected,
         examined=len(summaries),
@@ -291,7 +316,9 @@ def navigate(
         if selected
         else "no admitted capability matched",
         excluded=tuple(sorted(excluded)),
-        index_revision=capability_index_revision(summaries),
+        index_revision=index_revision,
+        navigation_id=navigation_id,
+        action_surface_sha256=projected_action_sha256,
     )
 
 

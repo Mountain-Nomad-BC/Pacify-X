@@ -1,0 +1,157 @@
+{
+  "applicability": {
+    "conditions": [
+      "Compare exact before/after generations."
+    ],
+    "exclusions": [
+      "unreviewed online policy mutation"
+    ],
+    "targets": [
+      "routing candidates"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "px_route_state",
+          "px_learning_promotion",
+          "moe_adapt_doc"
+        ],
+        "statement": "Adaptive route signals explicitly declare themselves evidence-only."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_route_state",
+          "px_learning_promotion",
+          "moe_adapt_doc"
+        ],
+        "statement": "Mature route signals require exact model-generation and evidence hashes."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_route_state",
+          "px_learning_promotion",
+          "moe_adapt_doc"
+        ],
+        "statement": "Drift after an adaptation can invalidate or roll back a candidate even when aggregate performance initially improved."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "bind adaptation evidence to exact generation identities",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "compare pre/post route and outcome distributions",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "require existing learning/promotion gates before stable policy changes",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "Adaptive route signals and learned routing changes must be evaluated for distribution and quality drift across generations; adaptation evidence does not self-promote into stable routing policy."
+  },
+  "namespace": "moe",
+  "object_id": "nsai:moe:adaptation_drift:moe_adaptation_drift",
+  "object_type": "adaptation_drift",
+  "ontology": {
+    "classes": [
+      "adaptive_routing",
+      "learning_evidence"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "moe"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "kind": "source_file",
+        "path": "runtime/model_route_state.py",
+        "sha256": "7110ce744a74d16a884042d0a7fb30990aa7d8ca57457ce89614c4bd24139dec",
+        "source_id": "px_route_state"
+      },
+      {
+        "kind": "source_file",
+        "path": "runtime/learning_promotion.py",
+        "sha256": "be3f59e5509786fbf19c65449953a3e136a81fdbce72068c81d188181c8f85fd",
+        "source_id": "px_learning_promotion"
+      },
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_MoE_Mining_Pass_v3/18_ADAPTATION_DRIFT_AND_AFFINITY_MATURITY.md",
+        "sha256": "f6cfa807089552c0d92918979532db94fb283c96e727b9a8c98ee60598ab5a3b",
+        "source_id": "moe_adapt_doc"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:moe:exploration_policy:moe_exploration_annealing_freeze"
+    }
+  ],
+  "retrieval": {
+    "priority": 87,
+    "tags": [
+      "adaptation drift",
+      "evidence",
+      "learned route",
+      "routing maturity"
+    ],
+    "terms": [
+      "adaptation drift",
+      "affinity maturity",
+      "evidence",
+      "learned route",
+      "route adaptation drift",
+      "routing maturity"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "Adaptive route signals and learned routing changes must be evaluated for distribution and quality drift across generations; adaptation evidence does not self-promote into stable routing policy.",
+    "exclusions": [
+      "self-promotion"
+    ],
+    "intents": [
+      "detect route drift",
+      "evaluate adaptive routing"
+    ],
+    "keywords": [
+      "adaptation drift",
+      "evidence",
+      "learned route",
+      "routing maturity"
+    ],
+    "retrieval_text": "Routing Adaptation Drift. Adaptive route signals and learned routing changes must be evaluated for distribution and quality drift across generations; adaptation evidence does not self-promote into stable routing policy. Adaptive route signals explicitly declare themselves evidence-only. Mature route signals require exact model-generation and evidence hashes. Drift after an adaptation can invalidate or roll back a candidate even when aggregate performance initially improved.",
+    "short_description": "Adaptive route signals and learned routing changes must be evaluated for distribution and quality drift across generations; adaptation evidence does not self-promote into stable routing policy.",
+    "synonyms": [
+      "affinity maturity",
+      "route adaptation drift"
+    ]
+  },
+  "status": "validated",
+  "title": "Routing Adaptation Drift"
+}

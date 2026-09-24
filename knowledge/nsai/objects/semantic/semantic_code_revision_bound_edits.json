@@ -1,0 +1,156 @@
+{
+  "applicability": {
+    "conditions": [
+      "Expected source revision must still match."
+    ],
+    "exclusions": [
+      "committing preview output without write authority"
+    ],
+    "targets": [
+      "source code"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "px_semantic_edits",
+          "px_semantic_revision",
+          "px_semantic_transaction"
+        ],
+        "statement": "Edit planning and write execution are separate phases."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_semantic_edits",
+          "px_semantic_revision",
+          "px_semantic_transaction"
+        ],
+        "statement": "Editable symbols must satisfy explicit editability checks."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_semantic_edits",
+          "px_semantic_revision",
+          "px_semantic_transaction"
+        ],
+        "statement": "A revision mismatch invalidates a semantic edit plan and requires replanning."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "build a typed edit plan from current symbol/document identity",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "render/preview the resulting bytes",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "commit only through revision-checked transaction authority",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "Semantic edits are planned against an exact document/symbol revision, previewed as a deterministic text edit, and committed only if the expected revision remains current; stale plans fail instead of applying approximately."
+  },
+  "namespace": "semantic",
+  "object_id": "nsai:semantic:revision_edits:semantic_code_revision_bound_edits",
+  "object_type": "revision_edits",
+  "ontology": {
+    "classes": [
+      "semantic_edit",
+      "transaction"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "semantic"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "kind": "source_file",
+        "path": "runtime/semantic_code_edits.py",
+        "sha256": "69b0d6e55bd81d942a05ceda3639b0a34f26a4d2f2d8e71aafb9de47a520966a",
+        "source_id": "px_semantic_edits"
+      },
+      {
+        "kind": "source_file",
+        "path": "runtime/semantic_revision.py",
+        "sha256": "26c10b0b629eb773e3b32973ea0ecef31d00590e786b262b57bab69a397e82fb",
+        "source_id": "px_semantic_revision"
+      },
+      {
+        "kind": "source_file",
+        "path": "runtime/semantic_code_transaction.py",
+        "sha256": "751adab455a892fed2b12d22420e0d86a30391e150076c90b3974eb8047cb486",
+        "source_id": "px_semantic_transaction"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:semantic:index:semantic_code_index"
+    }
+  ],
+  "retrieval": {
+    "priority": 95,
+    "tags": [
+      "preview",
+      "revision bound",
+      "semantic edit",
+      "transaction"
+    ],
+    "terms": [
+      "preview",
+      "revision bound",
+      "revision-checked edit",
+      "semantic edit",
+      "semantic patch plan",
+      "transaction"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "Semantic edits are planned against an exact document/symbol revision, previewed as a deterministic text edit, and committed only if the expected revision remains current; stale plans fail instead of applying approximately.",
+    "exclusions": [
+      "stale approximate edit"
+    ],
+    "intents": [
+      "apply semantic refactor",
+      "edit symbol safely"
+    ],
+    "keywords": [
+      "preview",
+      "revision bound",
+      "semantic edit",
+      "transaction"
+    ],
+    "retrieval_text": "Revision-Bound Semantic Edits. Semantic edits are planned against an exact document/symbol revision, previewed as a deterministic text edit, and committed only if the expected revision remains current; stale plans fail instead of applying approximately. Edit planning and write execution are separate phases. Editable symbols must satisfy explicit editability checks. A revision mismatch invalidates a semantic edit plan and requires replanning.",
+    "short_description": "Semantic edits are planned against an exact document/symbol revision, previewed as a deterministic text edit, and committed only if the expected revision remains current; stale plans fail instead of applying approximately.",
+    "synonyms": [
+      "revision-checked edit",
+      "semantic patch plan"
+    ]
+  },
+  "status": "validated",
+  "title": "Revision-Bound Semantic Edits"
+}

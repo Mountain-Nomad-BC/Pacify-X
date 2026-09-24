@@ -2,15 +2,1011 @@
   "schema_version": "1.0",
   "generator": "engineering_bootstrap.graph_registry/1.0.0",
   "nodes": [
+    "acquire-install-n8n",
+    "acquire-install-supabase",
+    "analyze-engineering-intelligence",
+    "analyze-repository-intelligence",
+    "architecture-deepening-audit",
+    "audit-ai-runtime-assurance",
+    "audit-incomplete-implementations",
+    "audit-source-capabilities",
+    "automate-supabase-with-n8n",
+    "backup-deploy-recover-supabase",
+    "backup-upgrade-restore-n8n",
+    "build-n8n-ai-workflows",
+    "build-n8n-custom-nodes",
+    "build-n8n-supabase-rag",
+    "build-supabase-edge-functions",
+    "certify-reversible-validation",
+    "certify-skeptical-engineering",
+    "commission-evidence-first-project",
+    "configure-n8n",
+    "connect-n8n-to-supabase",
+    "context-compactor",
+    "context-handoff-package",
+    "data-sort-dry-run-picker",
+    "decision-wayfinding",
+    "deep-module-design",
+    "deploy-isolated-model-worker",
+    "deploy-n8n-docker",
+    "design-build-n8n-workflows",
+    "design-it-twice",
+    "design-n8n-supabase-reliability",
+    "design-n8n-supabase-security-boundaries",
+    "design-supabase-postgres",
+    "develop-n8n-monorepo",
+    "develop-supabase-locally",
+    "diagnose-python-repair",
+    "discover-environment-safely",
+    "domain-language-maintenance",
+    "dual-axis-code-review",
+    "dynamic-service-discovery",
+    "enforce-governance-controls",
+    "enforce-source-import-boundaries",
+    "engineer-hybrid-retrieval",
+    "engineer-verification-lab",
+    "evaluate-n8n-fit",
+    "evaluate-retrieval-readiness",
+    "evaluate-supabase-fit",
     "evidence-assembler",
     "execution-contract-enforcer",
+    "execution-placement-decision",
+    "forge-skills-from-knowledge",
+    "frontier-questioning",
+    "gate-model-data-lifecycle",
+    "govern-candidate-resolution-pipeline",
+    "govern-cybersecurity-capabilities",
+    "govern-deployment-safety",
+    "govern-distributed-work-runtime",
+    "govern-epistemic-skill-evolution",
+    "govern-external-capability-intake",
+    "govern-knowledge-refinery",
+    "govern-memory-fabric",
+    "govern-metacognitive-evolution",
+    "govern-model-fabric",
+    "govern-n8n-community-nodes",
+    "govern-operating-kernel",
+    "govern-retrieval-generations",
+    "govern-runtime-protocol-deployment",
+    "govern-visual-runtime-accessibility",
+    "guided-procedure-wizard",
+    "handle-debug-n8n-executions",
+    "harden-container-boundaries",
+    "hardware-aware-execution-routing",
+    "implement-supabase-auth",
+    "inspect-live-contracts",
+    "inspect-llm-architecture",
+    "integrate-n8n-webhooks-and-apis",
+    "integrate-supabase-data-api-and-clients",
+    "intent-preserving-merge-resolution",
+    "isolate-project-streams",
+    "long-horizon-progress-ledger",
+    "manage-agent-session-fabric",
+    "manage-mcp-lifecycle",
+    "manage-n8n-credentials",
+    "manage-resource-lifecycle",
+    "manage-revocable-certification",
+    "manage-supabase-environments",
+    "manage-supabase-migrations",
+    "map-project-intelligence",
+    "observe-debug-supabase",
+    "observe-operate-n8n",
+    "operate-engineering-research-engine",
+    "operate-memory-retrieval-observability",
+    "operate-n8n-supabase-production",
+    "operate-self-diagnostics",
+    "operate-semantic-code-intelligence",
+    "operate-supabase-vector-search",
+    "orchestrate-agent-fleets",
+    "orchestrate-capability-scheduling",
+    "orchestrate-security-validation",
     "outcome-verifier",
+    "pacify-x-studio-operator",
+    "parallel-planning-coordination",
+    "plan-local-model-deployment",
+    "propose-change-intelligence",
+    "px-lean-engineering",
+    "px-work-stop-diagnostics",
+    "quarantine-external-tools",
+    "query-project-map",
+    "questionnaire-delegation",
+    "repair-corrupted-text",
+    "research-to-capability",
+    "route-n8n-capabilities",
+    "route-n8n-supabase-stack",
+    "route-specialist-agents",
+    "route-supabase-capabilities",
+    "run-evidence-campaigns",
+    "run-resilience-drills",
+    "scale-n8n-queue-mode",
+    "secure-agent-supply-chain",
+    "secure-n8n",
+    "secure-supabase-rls",
+    "self-host-supabase",
     "skill-admission-controller",
+    "skill-bundle-resolver",
     "skill-navigator",
+    "supervise-contained-execution",
+    "synchronize-derived-architecture",
+    "system-one-decision",
+    "test-n8n-supabase-integrations",
+    "test-validate-n8n-workflows",
+    "trace-to-skill-compiler",
+    "tracer-bullet-planning",
+    "transcript-analysis",
+    "triage-cross-surface-failures",
+    "use-n8n-expressions-and-data",
+    "use-n8n-mcp",
+    "use-supabase-mcp-and-agent-skills",
+    "use-supabase-realtime",
+    "use-supabase-storage",
+    "validate-contract-boundaries",
+    "validate-engineering-outcomes",
+    "validate-knowledge-relationships",
+    "validate-physical-media-deliverables",
+    "validate-production-containers",
     "workflow-orchestrator"
   ],
   "edges": [
     {
+      "source": "acquire-install-n8n",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "acquire-install-n8n",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "acquire-install-n8n",
+      "target": "network",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "acquire-install-n8n",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "acquire-install-supabase",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "acquire-install-supabase",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "acquire-install-supabase",
+      "target": "network",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "acquire-install-supabase",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "analyze-engineering-intelligence",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "analyze-engineering-intelligence",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "analyze-engineering-intelligence",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "analyze-repository-intelligence",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "analyze-repository-intelligence",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "analyze-repository-intelligence",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "architecture-deepening-audit",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "architecture-deepening-audit",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "architecture-deepening-audit",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "audit-ai-runtime-assurance",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "audit-ai-runtime-assurance",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "audit-ai-runtime-assurance",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "audit-incomplete-implementations",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "audit-incomplete-implementations",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "audit-incomplete-implementations",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "audit-source-capabilities",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "audit-source-capabilities",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "audit-source-capabilities",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "automate-supabase-with-n8n",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "automate-supabase-with-n8n",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "automate-supabase-with-n8n",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "backup-deploy-recover-supabase",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "backup-deploy-recover-supabase",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "backup-deploy-recover-supabase",
+      "target": "network",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "backup-deploy-recover-supabase",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "backup-upgrade-restore-n8n",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "backup-upgrade-restore-n8n",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "backup-upgrade-restore-n8n",
+      "target": "network",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "backup-upgrade-restore-n8n",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "build-n8n-ai-workflows",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "build-n8n-ai-workflows",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "build-n8n-ai-workflows",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "build-n8n-custom-nodes",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "build-n8n-custom-nodes",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "build-n8n-custom-nodes",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "build-n8n-supabase-rag",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "build-n8n-supabase-rag",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "build-n8n-supabase-rag",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "build-supabase-edge-functions",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "build-supabase-edge-functions",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "build-supabase-edge-functions",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "certify-reversible-validation",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "certify-reversible-validation",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "certify-reversible-validation",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "certify-skeptical-engineering",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "certify-skeptical-engineering",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "certify-skeptical-engineering",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "commission-evidence-first-project",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "commission-evidence-first-project",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "commission-evidence-first-project",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "configure-n8n",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "configure-n8n",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "configure-n8n",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "connect-n8n-to-supabase",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "connect-n8n-to-supabase",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "connect-n8n-to-supabase",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "context-compactor",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "context-compactor",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "context-compactor",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "context-handoff-package",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "context-handoff-package",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "context-handoff-package",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "data-sort-dry-run-picker",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "data-sort-dry-run-picker",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "data-sort-dry-run-picker",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "decision-wayfinding",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "decision-wayfinding",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "decision-wayfinding",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "deep-module-design",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "deep-module-design",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "deep-module-design",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "deploy-isolated-model-worker",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "deploy-isolated-model-worker",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "deploy-isolated-model-worker",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "deploy-n8n-docker",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "deploy-n8n-docker",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "deploy-n8n-docker",
+      "target": "network",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "deploy-n8n-docker",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "design-build-n8n-workflows",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "design-build-n8n-workflows",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "design-build-n8n-workflows",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "design-it-twice",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "design-it-twice",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "design-it-twice",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "design-n8n-supabase-reliability",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "design-n8n-supabase-reliability",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "design-n8n-supabase-reliability",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "design-n8n-supabase-security-boundaries",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "design-n8n-supabase-security-boundaries",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "design-n8n-supabase-security-boundaries",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "design-supabase-postgres",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "design-supabase-postgres",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "design-supabase-postgres",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "develop-n8n-monorepo",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "develop-n8n-monorepo",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "develop-n8n-monorepo",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "develop-supabase-locally",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "develop-supabase-locally",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "develop-supabase-locally",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "diagnose-python-repair",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "diagnose-python-repair",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "diagnose-python-repair",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "discover-environment-safely",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "discover-environment-safely",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "discover-environment-safely",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "domain-language-maintenance",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "domain-language-maintenance",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "domain-language-maintenance",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "dual-axis-code-review",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "dual-axis-code-review",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "dual-axis-code-review",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "dynamic-service-discovery",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "dynamic-service-discovery",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "dynamic-service-discovery",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "enforce-governance-controls",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "enforce-governance-controls",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "enforce-governance-controls",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "enforce-source-import-boundaries",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "enforce-source-import-boundaries",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "enforce-source-import-boundaries",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "engineer-hybrid-retrieval",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "engineer-hybrid-retrieval",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "engineer-hybrid-retrieval",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "engineer-verification-lab",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "engineer-verification-lab",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "engineer-verification-lab",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "evaluate-n8n-fit",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "evaluate-n8n-fit",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "evaluate-n8n-fit",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "evaluate-retrieval-readiness",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "evaluate-retrieval-readiness",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "evaluate-retrieval-readiness",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "evaluate-supabase-fit",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "evaluate-supabase-fit",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "evaluate-supabase-fit",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
       "source": "evidence-assembler",
       "target": "approval",
       "relation": "requires",
@@ -47,6 +1043,924 @@
       "detail": ""
     },
     {
+      "source": "execution-placement-decision",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "execution-placement-decision",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "execution-placement-decision",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "forge-skills-from-knowledge",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "forge-skills-from-knowledge",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "forge-skills-from-knowledge",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "frontier-questioning",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "frontier-questioning",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "frontier-questioning",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "gate-model-data-lifecycle",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "gate-model-data-lifecycle",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "gate-model-data-lifecycle",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "govern-candidate-resolution-pipeline",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "govern-candidate-resolution-pipeline",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "govern-candidate-resolution-pipeline",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "govern-cybersecurity-capabilities",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "govern-cybersecurity-capabilities",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "govern-cybersecurity-capabilities",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "govern-deployment-safety",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "govern-deployment-safety",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "govern-deployment-safety",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "govern-distributed-work-runtime",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "govern-distributed-work-runtime",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "govern-distributed-work-runtime",
+      "target": "network",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "govern-distributed-work-runtime",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "govern-epistemic-skill-evolution",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "govern-epistemic-skill-evolution",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "govern-epistemic-skill-evolution",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "govern-external-capability-intake",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "govern-external-capability-intake",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "govern-external-capability-intake",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "govern-knowledge-refinery",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "govern-knowledge-refinery",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "govern-knowledge-refinery",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "govern-memory-fabric",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "govern-memory-fabric",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "govern-memory-fabric",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "govern-metacognitive-evolution",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "govern-metacognitive-evolution",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "govern-metacognitive-evolution",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "govern-model-fabric",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "govern-model-fabric",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "govern-model-fabric",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "govern-n8n-community-nodes",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "govern-n8n-community-nodes",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "govern-n8n-community-nodes",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "govern-operating-kernel",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "govern-operating-kernel",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "govern-operating-kernel",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "govern-retrieval-generations",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "govern-retrieval-generations",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "govern-retrieval-generations",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "govern-runtime-protocol-deployment",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "govern-runtime-protocol-deployment",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "govern-runtime-protocol-deployment",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "govern-visual-runtime-accessibility",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "govern-visual-runtime-accessibility",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "govern-visual-runtime-accessibility",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "guided-procedure-wizard",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "guided-procedure-wizard",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "guided-procedure-wizard",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "handle-debug-n8n-executions",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "handle-debug-n8n-executions",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "handle-debug-n8n-executions",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "harden-container-boundaries",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "harden-container-boundaries",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "harden-container-boundaries",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "hardware-aware-execution-routing",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "hardware-aware-execution-routing",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "hardware-aware-execution-routing",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "implement-supabase-auth",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "implement-supabase-auth",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "implement-supabase-auth",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "inspect-live-contracts",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "inspect-live-contracts",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "inspect-live-contracts",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "inspect-llm-architecture",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "inspect-llm-architecture",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "inspect-llm-architecture",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "integrate-n8n-webhooks-and-apis",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "integrate-n8n-webhooks-and-apis",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "integrate-n8n-webhooks-and-apis",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "integrate-supabase-data-api-and-clients",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "integrate-supabase-data-api-and-clients",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "integrate-supabase-data-api-and-clients",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "intent-preserving-merge-resolution",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "intent-preserving-merge-resolution",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "intent-preserving-merge-resolution",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "isolate-project-streams",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "isolate-project-streams",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "isolate-project-streams",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "long-horizon-progress-ledger",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "long-horizon-progress-ledger",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "long-horizon-progress-ledger",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "manage-agent-session-fabric",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "manage-agent-session-fabric",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "manage-agent-session-fabric",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "manage-mcp-lifecycle",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "manage-mcp-lifecycle",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "manage-mcp-lifecycle",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "manage-n8n-credentials",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "manage-n8n-credentials",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "manage-n8n-credentials",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "manage-resource-lifecycle",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "manage-resource-lifecycle",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "manage-resource-lifecycle",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "manage-revocable-certification",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "manage-revocable-certification",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "manage-revocable-certification",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "manage-supabase-environments",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "manage-supabase-environments",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "manage-supabase-environments",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "manage-supabase-migrations",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "manage-supabase-migrations",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "manage-supabase-migrations",
+      "target": "network",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "manage-supabase-migrations",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "map-project-intelligence",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "map-project-intelligence",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "map-project-intelligence",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "observe-debug-supabase",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "observe-debug-supabase",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "observe-debug-supabase",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "observe-operate-n8n",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "observe-operate-n8n",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "observe-operate-n8n",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "operate-engineering-research-engine",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "operate-engineering-research-engine",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "operate-engineering-research-engine",
+      "target": "network",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "operate-engineering-research-engine",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "operate-memory-retrieval-observability",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "operate-memory-retrieval-observability",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "operate-memory-retrieval-observability",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "operate-n8n-supabase-production",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "operate-n8n-supabase-production",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "operate-n8n-supabase-production",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "operate-self-diagnostics",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "operate-self-diagnostics",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "operate-self-diagnostics",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "operate-semantic-code-intelligence",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "operate-semantic-code-intelligence",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "operate-semantic-code-intelligence",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "operate-supabase-vector-search",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "operate-supabase-vector-search",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "operate-supabase-vector-search",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "orchestrate-agent-fleets",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "orchestrate-agent-fleets",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "orchestrate-agent-fleets",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "orchestrate-capability-scheduling",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "orchestrate-capability-scheduling",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "orchestrate-capability-scheduling",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "orchestrate-security-validation",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "orchestrate-security-validation",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "orchestrate-security-validation",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
       "source": "outcome-verifier",
       "target": "approval",
       "relation": "requires",
@@ -60,6 +1974,408 @@
     },
     {
       "source": "outcome-verifier",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "pacify-x-studio-operator",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "pacify-x-studio-operator",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "pacify-x-studio-operator",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "parallel-planning-coordination",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "parallel-planning-coordination",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "parallel-planning-coordination",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "plan-local-model-deployment",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "plan-local-model-deployment",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "plan-local-model-deployment",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "propose-change-intelligence",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "propose-change-intelligence",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "propose-change-intelligence",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "px-lean-engineering",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "px-lean-engineering",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "px-lean-engineering",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "px-work-stop-diagnostics",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "px-work-stop-diagnostics",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "px-work-stop-diagnostics",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "quarantine-external-tools",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "quarantine-external-tools",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "quarantine-external-tools",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "query-project-map",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "query-project-map",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "query-project-map",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "questionnaire-delegation",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "questionnaire-delegation",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "questionnaire-delegation",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "repair-corrupted-text",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "repair-corrupted-text",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "repair-corrupted-text",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "research-to-capability",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "research-to-capability",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "research-to-capability",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "route-n8n-capabilities",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "route-n8n-capabilities",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "route-n8n-capabilities",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "route-n8n-supabase-stack",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "route-n8n-supabase-stack",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "route-n8n-supabase-stack",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "route-specialist-agents",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "route-specialist-agents",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "route-specialist-agents",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "route-supabase-capabilities",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "route-supabase-capabilities",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "route-supabase-capabilities",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "run-evidence-campaigns",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "run-evidence-campaigns",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "run-evidence-campaigns",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "run-resilience-drills",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "run-resilience-drills",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "run-resilience-drills",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "scale-n8n-queue-mode",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "scale-n8n-queue-mode",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "scale-n8n-queue-mode",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "secure-agent-supply-chain",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "secure-agent-supply-chain",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "secure-agent-supply-chain",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "secure-n8n",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "secure-n8n",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "secure-n8n",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "secure-supabase-rls",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "secure-supabase-rls",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "secure-supabase-rls",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "self-host-supabase",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "self-host-supabase",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "self-host-supabase",
+      "target": "network",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "self-host-supabase",
       "target": "read_local",
       "relation": "declares_effect",
       "detail": ""
@@ -83,6 +2399,24 @@
       "detail": ""
     },
     {
+      "source": "skill-bundle-resolver",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "skill-bundle-resolver",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "skill-bundle-resolver",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
       "source": "skill-navigator",
       "target": "approval",
       "relation": "requires",
@@ -101,6 +2435,348 @@
       "detail": ""
     },
     {
+      "source": "supervise-contained-execution",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "supervise-contained-execution",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "supervise-contained-execution",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "synchronize-derived-architecture",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "synchronize-derived-architecture",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "synchronize-derived-architecture",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "system-one-decision",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "system-one-decision",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "system-one-decision",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "test-n8n-supabase-integrations",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "test-n8n-supabase-integrations",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "test-n8n-supabase-integrations",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "test-validate-n8n-workflows",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "test-validate-n8n-workflows",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "test-validate-n8n-workflows",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "trace-to-skill-compiler",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "trace-to-skill-compiler",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "trace-to-skill-compiler",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "tracer-bullet-planning",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "tracer-bullet-planning",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "tracer-bullet-planning",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "transcript-analysis",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "transcript-analysis",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "transcript-analysis",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "triage-cross-surface-failures",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "triage-cross-surface-failures",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "triage-cross-surface-failures",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "use-n8n-expressions-and-data",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "use-n8n-expressions-and-data",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "use-n8n-expressions-and-data",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "use-n8n-mcp",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "use-n8n-mcp",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "use-n8n-mcp",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "use-supabase-mcp-and-agent-skills",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "use-supabase-mcp-and-agent-skills",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "use-supabase-mcp-and-agent-skills",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "use-supabase-realtime",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "use-supabase-realtime",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "use-supabase-realtime",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "use-supabase-storage",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "use-supabase-storage",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "use-supabase-storage",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "validate-contract-boundaries",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "validate-contract-boundaries",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "validate-contract-boundaries",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "validate-engineering-outcomes",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "validate-engineering-outcomes",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "validate-engineering-outcomes",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "validate-knowledge-relationships",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "validate-knowledge-relationships",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "validate-knowledge-relationships",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "validate-physical-media-deliverables",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "validate-physical-media-deliverables",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "validate-physical-media-deliverables",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
+      "source": "validate-production-containers",
+      "target": "approval",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "validate-production-containers",
+      "target": "evidence",
+      "relation": "requires",
+      "detail": ""
+    },
+    {
+      "source": "validate-production-containers",
+      "target": "read_local",
+      "relation": "declares_effect",
+      "detail": ""
+    },
+    {
       "source": "workflow-orchestrator",
       "target": "approval",
       "relation": "requires",
@@ -110,18 +2786,6 @@
       "source": "workflow-orchestrator",
       "target": "evidence",
       "relation": "requires",
-      "detail": ""
-    },
-    {
-      "source": "workflow-orchestrator",
-      "target": "evidence-assembler",
-      "relation": "hard_dependency",
-      "detail": ""
-    },
-    {
-      "source": "workflow-orchestrator",
-      "target": "execution-contract-enforcer",
-      "relation": "hard_dependency",
       "detail": ""
     },
     {
@@ -138,7 +2802,7 @@
     },
     {
       "source": "workflow-orchestrator",
-      "target": "skill-navigator",
+      "target": "skill-admission-controller",
       "relation": "hard_dependency",
       "detail": ""
     }

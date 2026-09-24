@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0",
+  "registry": "registry/skill_orchestrations.json",
+  "workflows": [
+    {
+      "id": "persistent-memory-review",
+      "purpose": "Read and review an external persistent-memory repository as noncanonical evidence without mutating Pacify-X memory, the external repository, or any public projection.",
+      "steps": [
+        {"id": "validate-boundary", "skill": "govern-persistent-memory", "depends_on": []},
+        {"id": "list-memory", "skill": "govern-persistent-memory", "depends_on": ["validate-boundary"]},
+        {"id": "review-preview", "skill": "govern-persistent-memory", "depends_on": ["list-memory"]},
+        {"id": "graph-preview", "skill": "govern-persistent-memory", "depends_on": ["list-memory"]},
+        {"id": "emit-advisory-evidence", "skill": "govern-persistent-memory", "depends_on": ["review-preview", "graph-preview"]}
+      ],
+      "effects": ["read_local"],
+      "failure_policy": "Fail closed on package-revision mismatch, repository overlap with Pacify-X, missing provider package, malformed records/events, external authority claims, or any request for mutation/publication.",
+      "bounds": {
+        "package_revision_exact": true,
+        "external_repo_outside_px": true,
+        "canonical_memory_mutation": false,
+        "external_repo_mutation": false,
+        "public_projection_mutation": false,
+        "network": false,
+        "authority_granted": false
+      }
+    }
+  ]
+}

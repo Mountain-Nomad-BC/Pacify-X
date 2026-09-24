@@ -1,0 +1,161 @@
+{
+  "applicability": {
+    "conditions": [
+      "Use only with an admitted PX model/runtime identity.",
+      "Treat measured machine-specific profile evidence as stronger than generic defaults."
+    ],
+    "exclusions": [
+      "first request downloads/prepares model"
+    ],
+    "targets": [
+      "oversized models",
+      "cold batch/deep work"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.95,
+        "evidence_refs": [
+          "px_airllm_cold_lane",
+          "px_airllm_benchmark",
+          "airllm_readme"
+        ],
+        "statement": "Prepared shards, exact source revision, runtime versions, dtype, compression and prefetch choices are part of runtime identity."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_airllm_cold_lane",
+          "px_airllm_benchmark",
+          "airllm_readme"
+        ],
+        "statement": "Compression and prefetch combinations must follow actual AirLLM compatibility and benchmark evidence."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "Model preparation creates verified shard artifacts outside the request path.",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "During generation, layers/experts are streamed through limited accelerator memory under an exclusive resource lease.",
+        "name": "mechanism_2"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, or policy authority."
+    ],
+    "summary": "AirLLM is a cold oversized-model escape hatch that trades resident VRAM for storage-to-device layer streaming. It is suited to capability unavailable from native lanes, not interactive low-latency operation."
+  },
+  "namespace": "model_runtime",
+  "object_id": "nsai:model_runtime:cold_runtime:airllm_layerwise_offload",
+  "object_type": "cold_runtime",
+  "ontology": {
+    "classes": [
+      "runtime_lane",
+      "offload"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "model_runtime",
+      "runtime_scope": [
+        "oversized models",
+        "cold batch/deep work"
+      ]
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "manual source-backed synthesis with schema validation and exact SHA provenance",
+      "source_pass": "Wave 14"
+    },
+    "sources": [
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_Model_Fabric_Junction_Hardening_Pass3_2026-09-20/08_AIRLLM_PRODUCTION_COLD_LANE.md",
+        "sha256": "74b6af31cc257b356da7da73fed6c5945d16f9564569e084bc1e345a7e549c0c",
+        "source_id": "px_airllm_cold_lane"
+      },
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_Model_Fabric_Junction_Hardening_Pass3_2026-09-20/09_AIRLLM_PREP_COMPRESSION_PREFETCH_BENCHMARK.md",
+        "sha256": "36ccab67dd685515cdc8910950ed5870fc9d50c99c88b2e38f81c73f263f6c73",
+        "source_id": "px_airllm_benchmark"
+      },
+      {
+        "archive": "models and harnesses for them.zip",
+        "kind": "source_file",
+        "path": "airllm-main/README.md",
+        "sha256": "746f35e0bee6598643666792c050c8833b5d441d36e0a60dd0846ae0d34ece73",
+        "source_id": "airllm_readme"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:resource_interlock:model_resource_interlocks"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:recovery:model_cancellation_recovery"
+    }
+  ],
+  "retrieval": {
+    "priority": 85,
+    "tags": [
+      "airllm",
+      "disk io",
+      "shards",
+      "compression"
+    ],
+    "terms": [
+      "airllm",
+      "cold giant-model lane",
+      "cold model",
+      "compression",
+      "disk io",
+      "layer streaming",
+      "layerwise",
+      "offload",
+      "shards",
+      "streaming weights"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "AirLLM is a cold oversized-model escape hatch that trades resident VRAM for storage-to-device layer streaming. It is suited to capability unavailable from native lanes, not interactive low-latency operation.",
+    "exclusions": [
+      "first request downloads/prepares model"
+    ],
+    "intents": [
+      "run oversized model",
+      "offload layers"
+    ],
+    "keywords": [
+      "airllm",
+      "layerwise",
+      "offload",
+      "cold model",
+      "streaming weights"
+    ],
+    "retrieval_text": "AirLLM Layerwise Offload Lane. AirLLM is a cold oversized-model escape hatch that trades resident VRAM for storage-to-device layer streaming. It is suited to capability unavailable from native lanes, not interactive low-latency operation. Prepared shards, exact source revision, runtime versions, dtype, compression and prefetch choices are part of runtime identity. Compression and prefetch combinations must follow actual AirLLM compatibility and benchmark evidence.",
+    "short_description": "AirLLM is a cold oversized-model escape hatch that trades resident VRAM for storage-to-device layer streaming.",
+    "synonyms": [
+      "cold giant-model lane",
+      "layer streaming"
+    ]
+  },
+  "status": "validated",
+  "title": "AirLLM Layerwise Offload Lane"
+}

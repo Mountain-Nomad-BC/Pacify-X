@@ -1,0 +1,160 @@
+{
+  "applicability": {
+    "conditions": [
+      "Use only with an admitted PX model/runtime identity.",
+      "Treat measured machine-specific profile evidence as stronger than generic defaults."
+    ],
+    "exclusions": [
+      "use for routine retrieval/classification"
+    ],
+    "targets": [
+      "Qwen3-30B-A3B candidate",
+      "difficult coding/reasoning"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.95,
+        "evidence_refs": [
+          "px_llama_profiles",
+          "px_llama_tuning",
+          "llama_cuda_topk_moe"
+        ],
+        "statement": "Active experts reduce compute relative to a dense model of equal total size, but large weights and hybrid transfer still create substantial resource pressure."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "px_llama_profiles",
+          "px_llama_tuning",
+          "llama_cuda_topk_moe"
+        ],
+        "statement": "Promotion requires deep-task quality plus system-level latency/memory/page-fault/cancellation evidence."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "PX routes only tasks whose expected benefit justifies exclusive deep-lane cost.",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "llama.cpp placement combines GPU layers with CPU expert/FFN execution where certified.",
+        "name": "mechanism_2"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, or policy authority."
+    ],
+    "summary": "The deep lane uses a large sparse MoE model for difficult local reasoning/coding, with calibrated CPU/GPU placement and an exclusive GPU-heavy lease. It is an escalation lane rather than the default route."
+  },
+  "namespace": "model_runtime",
+  "object_id": "nsai:model_runtime:model_lane:deep_hybrid_moe_lane",
+  "object_type": "model_lane",
+  "ontology": {
+    "classes": [
+      "model_lane",
+      "moe"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "model_runtime",
+      "runtime_scope": [
+        "Qwen3-30B-A3B candidate",
+        "difficult coding/reasoning"
+      ]
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "manual source-backed synthesis with schema validation and exact SHA provenance",
+      "source_pass": "Wave 14"
+    },
+    "sources": [
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_Model_Fabric_Junction_Hardening_Pass3_2026-09-20/03_LLAMA_CPP_CERTIFIED_RUNTIME_PROFILES.md",
+        "sha256": "c49c37da15288829814048b52a91a352d86a723e676e2756eeb578346d299a1c",
+        "source_id": "px_llama_profiles"
+      },
+      {
+        "archive": "models and current pass 2.zip",
+        "kind": "source_file",
+        "path": "PX_Model_Fabric_Junction_Hardening_Pass3_2026-09-20/05_LLAMA_CPP_CPU_GPU_MOE_TUNING_MATRIX.md",
+        "sha256": "9a703632e734c69fe538483406e44a46c09d840f451d6832957b8150d33e9cb4",
+        "source_id": "px_llama_tuning"
+      },
+      {
+        "archive": "models and harnesses for them.zip",
+        "kind": "source_file",
+        "path": "llama.cpp-master/llama.cpp-master/ggml/src/ggml-cuda/topk-moe.cu",
+        "sha256": "fdf688136cbf728b825c6a62534855a53e64cb73acb7f3dd3a3ab1b161456199",
+        "source_id": "llama_cuda_topk_moe"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:moe_placement:llama_cpp_moe_placement"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:model_runtime:resource_interlock:model_resource_interlocks"
+    }
+  ],
+  "retrieval": {
+    "priority": 85,
+    "tags": [
+      "moe",
+      "deep",
+      "hybrid",
+      "exclusive"
+    ],
+    "terms": [
+      "30b-a3b",
+      "deep",
+      "deep hybrid model",
+      "deep lane",
+      "exclusive",
+      "hybrid",
+      "moe",
+      "reasoning",
+      "sparse MoE lane"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "The deep lane uses a large sparse MoE model for difficult local reasoning/coding, with calibrated CPU/GPU placement and an exclusive GPU-heavy lease. It is an escalation lane rather than the default route.",
+    "exclusions": [
+      "use for routine retrieval/classification"
+    ],
+    "intents": [
+      "route hard task",
+      "deep local model"
+    ],
+    "keywords": [
+      "deep lane",
+      "moe",
+      "30b-a3b",
+      "hybrid",
+      "reasoning"
+    ],
+    "retrieval_text": "Deep Hybrid Sparse-MoE Lane. The deep lane uses a large sparse MoE model for difficult local reasoning/coding, with calibrated CPU/GPU placement and an exclusive GPU-heavy lease. It is an escalation lane rather than the default route. Active experts reduce compute relative to a dense model of equal total size, but large weights and hybrid transfer still create substantial resource pressure. Promotion requires deep-task quality plus system-level latency/memory/page-fault/cancellation evidence.",
+    "short_description": "The deep lane uses a large sparse MoE model for difficult local reasoning/coding, with calibrated CPU/GPU placement and an exclusive GPU-heavy lease.",
+    "synonyms": [
+      "deep hybrid model",
+      "sparse MoE lane"
+    ]
+  },
+  "status": "validated",
+  "title": "Deep Hybrid Sparse-MoE Lane"
+}

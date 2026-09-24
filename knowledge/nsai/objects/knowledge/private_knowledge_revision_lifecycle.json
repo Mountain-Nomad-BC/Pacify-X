@@ -1,0 +1,154 @@
+{
+  "applicability": {
+    "conditions": [
+      "PX remains the knowledge-promotion authority."
+    ],
+    "exclusions": [
+      "treating stored candidate as validated knowledge"
+    ],
+    "targets": [
+      "learned/private knowledge"
+    ]
+  },
+  "authority_granted": false,
+  "content": {
+    "claims": [
+      {
+        "claim_id": "claim_1",
+        "confidence": 0.94,
+        "evidence_refs": [
+          "wave15b_storage",
+          "wave15b_private_tests"
+        ],
+        "statement": "Writing a private knowledge candidate does not make it canonical PX knowledge."
+      },
+      {
+        "claim_id": "claim_2",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "wave15b_storage",
+          "wave15b_private_tests"
+        ],
+        "statement": "Promoted revisions retain exact source/candidate lineage and remain separate from static shipped NSAI objects."
+      },
+      {
+        "claim_id": "claim_3",
+        "confidence": 0.9,
+        "evidence_refs": [
+          "wave15b_storage",
+          "wave15b_private_tests"
+        ],
+        "statement": "External mutable knowledge prevents normal learning from dirtying the source/release tree."
+      }
+    ],
+    "formula_refs": [],
+    "mechanisms": [
+      {
+        "description": "store immutable candidate/revision records in the external cognitive root",
+        "name": "mechanism_1"
+      },
+      {
+        "description": "attach provenance/evidence/conflict/supersession metadata",
+        "name": "mechanism_2"
+      },
+      {
+        "description": "accept a PX promotion receipt before marking a revision as promoted/current in derived views",
+        "name": "mechanism_3"
+      }
+    ],
+    "notes": [
+      "This object is retrieval knowledge only and grants no runtime, tool, routing, memory-write, learning-promotion, execution, or policy authority."
+    ],
+    "summary": "Runtime-learned/private knowledge is stored outside the certifiable PX source tree as immutable candidates/revisions with provenance and evidence; PX knowledge authority decides promotion, while external storage only preserves custody and projections."
+  },
+  "namespace": "knowledge",
+  "object_id": "nsai:knowledge:private_revision_lifecycle:private_knowledge_revision_lifecycle",
+  "object_type": "private_revision_lifecycle",
+  "ontology": {
+    "classes": [
+      "external_custody",
+      "knowledge_lifecycle"
+    ],
+    "facets": {
+      "authority": "knowledge_only",
+      "domain": "knowledge"
+    }
+  },
+  "provenance": {
+    "extraction": {
+      "generated_by": "GPT-5.6 Sol",
+      "method": "source-backed synthesis against implemented Wave 01-15C owners with exact SHA provenance",
+      "source_pass": "Wave 15D"
+    },
+    "sources": [
+      {
+        "archive": "PX_IMPLEMENTATION_WAVE15B_COGNITIVE_STORAGE_ATOMIC_GENERATION_2026-09-20.zip",
+        "kind": "source_file",
+        "path": "EXTERNAL/pacifyx_memory/cognitive_storage.py",
+        "sha256": "e9b1b2576fcfefdda6e8b49e23cc495f9387cd6987fa4d9dd0f34f7dca2e26cc",
+        "source_id": "wave15b_storage"
+      },
+      {
+        "archive": "PX_IMPLEMENTATION_WAVE15B_COGNITIVE_STORAGE_ATOMIC_GENERATION_2026-09-20.zip",
+        "kind": "source_file",
+        "path": "tests/test_private_cognitive_storage.py",
+        "sha256": "01ca21c99b02a176acc141b98473cb700b16044d23ddf325530c68d450a30620",
+        "source_id": "wave15b_private_tests"
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:cognitive:generation_publication:atomic_cognitive_generation_publication"
+    },
+    {
+      "predicate": "related_to",
+      "scope": "library",
+      "target_id": "nsai:memory:review_promotion:persistent_memory_review_promotion"
+    }
+  ],
+  "retrieval": {
+    "priority": 95,
+    "tags": [
+      "learned knowledge",
+      "private knowledge",
+      "promotion",
+      "revision"
+    ],
+    "terms": [
+      "learned knowledge",
+      "learned knowledge revision",
+      "mutable private knowledge",
+      "private knowledge",
+      "promotion",
+      "revision"
+    ]
+  },
+  "schema_version": "px.nsai-knowledge/1.0",
+  "semantics": {
+    "definition": "Runtime-learned/private knowledge is stored outside the certifiable PX source tree as immutable candidates/revisions with provenance and evidence; PX knowledge authority decides promotion, while external storage only preserves custody and projections.",
+    "exclusions": [
+      "source-tree self-mutation"
+    ],
+    "intents": [
+      "promote private knowledge",
+      "store learned knowledge"
+    ],
+    "keywords": [
+      "learned knowledge",
+      "private knowledge",
+      "promotion",
+      "revision"
+    ],
+    "retrieval_text": "Private Learned Knowledge Revision Lifecycle. Runtime-learned/private knowledge is stored outside the certifiable PX source tree as immutable candidates/revisions with provenance and evidence; PX knowledge authority decides promotion, while external storage only preserves custody and projections. Writing a private knowledge candidate does not make it canonical PX knowledge. Promoted revisions retain exact source/candidate lineage and remain separate from static shipped NSAI objects. External mutable knowledge prevents normal learning from dirtying the source/release tree.",
+    "short_description": "Runtime-learned/private knowledge is stored outside the certifiable PX source tree as immutable candidates/revisions with provenance and evidence; PX knowledge authority decides promotion, while external storage only preserves custody and projections.",
+    "synonyms": [
+      "learned knowledge revision",
+      "mutable private knowledge"
+    ]
+  },
+  "status": "validated",
+  "title": "Private Learned Knowledge Revision Lifecycle"
+}

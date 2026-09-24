@@ -16,6 +16,7 @@ import re
 
 from .bounded_walk import WalkLimits, bounded_walk
 from .memory_intelligence import sanitize_capture
+from .nsai_knowledge import nsai_to_refinery_record, read_nsai_library
 
 
 TOKEN = re.compile(r"[a-z0-9][a-z0-9_+.#/-]*", re.IGNORECASE)
@@ -115,6 +116,21 @@ def portable_inventory(
         "secret_values_recorded": False,
         "canonical_writes_performed": False,
     }
+
+
+def nsai_candidate_records(
+    library_root: Path, *, contract_root: Path | None = None
+) -> tuple[dict[str, object], ...]:
+    """Load validated NSAI object files as refinery candidates.
+
+    This is a read/projection boundary only: object status and provenance are
+    retained, and no canonical knowledge write or promotion occurs here.
+    """
+    objects = read_nsai_library(library_root, contract_root=contract_root)
+    rows = tuple(nsai_to_refinery_record(item) for item in objects)
+    if len({row["id"] for row in rows}) != len(rows):
+        raise ValueError("duplicate NSAI refinery candidate identity")
+    return rows
 
 
 def similarity(

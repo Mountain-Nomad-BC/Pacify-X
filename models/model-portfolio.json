@@ -1,0 +1,239 @@
+{
+  "schema_version": "px.model-portfolio/1.0",
+  "weights_bundled": false,
+  "auto_download": false,
+  "selection_rule": "candidate_until_exact_artifact_and_profile_are_benchmark_certified",
+  "models": [
+    {
+      "model_id": "qwen35-4b-operator",
+      "display_name": "Qwen3.5-4B",
+      "source_repo": "Qwen/Qwen3.5-4B",
+      "runtime": "llama_cpp_router",
+      "lane": "control",
+      "role": "resident_px_operator_preferred_candidate",
+      "state": "candidate",
+      "privacy": "local",
+      "traits": [
+        "px_internal_operator",
+        "skill_query",
+        "knowledge_query",
+        "memory_query",
+        "context_assembly",
+        "workflow_dispatch_planning",
+        "learning_trigger_planning",
+        "graph_map_update_planning",
+        "bounded_transformation",
+        "code_intent"
+      ],
+      "authority": {
+        "direct_tool_execution": false,
+        "canonical_memory_write": false,
+        "canonical_knowledge_write": false,
+        "policy_write": false,
+        "graph_map_persistence": false,
+        "learning_promotion": false,
+        "effect_grant_required": true
+      },
+      "artifact_sha256": "5a5bc7a3f9375b395e9f81fb69109038cf160c84606b8192f13cbb8355ca59f2",
+      "default_profile_id": "control-qwen35-4b-cpu-q6"
+    },
+    {
+      "model_id": "qwen25-05b-control-reference",
+      "display_name": "Qwen2.5-0.5B-Instruct",
+      "source_repo": "Qwen/Qwen2.5-0.5B-Instruct",
+      "runtime": "llama_cpp_router",
+      "lane": "control",
+      "role": "tiny_control_latency_reference",
+      "state": "candidate",
+      "privacy": "local",
+      "traits": ["px_internal_operator", "classification", "extraction", "query_rewrite"],
+      "authority": {
+        "direct_tool_execution": false,
+        "canonical_memory_write": false,
+        "canonical_knowledge_write": false,
+        "policy_write": false,
+        "graph_map_persistence": false,
+        "learning_promotion": false,
+        "effect_grant_required": true
+      },
+      "artifact_sha256": null,
+      "default_profile_id": "control-qwen25-05b-cpu-q8"
+    },
+    {
+      "model_id": "qwen3-06b-control-fallback",
+      "display_name": "Qwen3-0.6B",
+      "source_repo": "Qwen/Qwen3-0.6B",
+      "runtime": "llama_cpp_router",
+      "lane": "control",
+      "role": "tiny_control_compatibility_fallback",
+      "state": "candidate",
+      "privacy": "local",
+      "traits": ["px_internal_operator", "classification", "extraction", "query_rewrite"],
+      "authority": {
+        "direct_tool_execution": false,
+        "canonical_memory_write": false,
+        "canonical_knowledge_write": false,
+        "policy_write": false,
+        "graph_map_persistence": false,
+        "learning_promotion": false,
+        "effect_grant_required": true
+      },
+      "artifact_sha256": null,
+      "default_profile_id": "control-qwen3-06b-cpu"
+    },
+    {
+      "model_id": "qwen25-coder-05b-specialist",
+      "display_name": "Qwen2.5-Coder-0.5B-Instruct",
+      "source_repo": "Qwen/Qwen2.5-Coder-0.5B-Instruct",
+      "runtime": "llama_cpp_router",
+      "lane": "specialist",
+      "role": "optional_tiny_code_control_challenger",
+      "state": "candidate",
+      "privacy": "local",
+      "traits": ["code_intent", "symbol_classification", "bounded_code_transform"],
+      "authority": {
+        "direct_tool_execution": false,
+        "canonical_memory_write": false,
+        "canonical_knowledge_write": false,
+        "policy_write": false,
+        "graph_map_persistence": false,
+        "learning_promotion": false,
+        "effect_grant_required": true
+      },
+      "artifact_sha256": null,
+      "default_profile_id": "specialist-qwen25-coder-05b-cpu"
+    },
+    {
+      "model_id": "qwen3-embedding-06b",
+      "display_name": "Qwen3-Embedding-0.6B",
+      "source_repo": "Qwen/Qwen3-Embedding-0.6B",
+      "runtime": "llama_cpp_router",
+      "lane": "embedding",
+      "role": "retrieval_embedding_candidate",
+      "state": "candidate",
+      "privacy": "local",
+      "traits": ["embedding"],
+      "authority": {
+        "direct_tool_execution": false,
+        "canonical_memory_write": false,
+        "canonical_knowledge_write": false,
+        "policy_write": false,
+        "graph_map_persistence": false,
+        "learning_promotion": false,
+        "effect_grant_required": true
+      },
+      "artifact_sha256": null,
+      "default_profile_id": "embedding-qwen3-06b-cpu"
+    },
+    {
+      "model_id": "qwen3-reranker-06b",
+      "display_name": "Qwen3-Reranker-0.6B",
+      "source_repo": "Qwen/Qwen3-Reranker-0.6B",
+      "runtime": "llama_cpp_router",
+      "lane": "reranker",
+      "role": "bounded_reranker_candidate",
+      "state": "candidate",
+      "privacy": "local",
+      "traits": ["reranking"],
+      "authority": {
+        "direct_tool_execution": false,
+        "canonical_memory_write": false,
+        "canonical_knowledge_write": false,
+        "policy_write": false,
+        "graph_map_persistence": false,
+        "learning_promotion": false,
+        "effect_grant_required": true
+      },
+      "artifact_sha256": null,
+      "default_profile_id": "reranker-qwen3-06b-cpu"
+    },
+    {
+      "model_id": "qwen35-4b-fast",
+      "display_name": "Qwen3.5-4B",
+      "source_repo": "Qwen/Qwen3.5-4B",
+      "runtime": "llama_cpp_router",
+      "lane": "fast",
+      "role": "fast_local_generation_candidate",
+      "state": "candidate",
+      "privacy": "local",
+      "traits": ["coding", "reasoning", "summarization", "tool_planning"],
+      "authority": {
+        "direct_tool_execution": false,
+        "canonical_memory_write": false,
+        "canonical_knowledge_write": false,
+        "policy_write": false,
+        "graph_map_persistence": false,
+        "learning_promotion": false,
+        "effect_grant_required": true
+      },
+      "artifact_sha256": null,
+      "default_profile_id": "fast-qwen35-4b-gpu"
+    },
+    {
+      "model_id": "qwen35-9b-balanced",
+      "display_name": "Qwen3.5-9B",
+      "source_repo": "Qwen/Qwen3.5-9B",
+      "runtime": "llama_cpp_router",
+      "lane": "balanced",
+      "role": "balanced_local_generation_candidate",
+      "state": "candidate",
+      "privacy": "local",
+      "traits": ["coding", "reasoning", "longer_synthesis"],
+      "authority": {
+        "direct_tool_execution": false,
+        "canonical_memory_write": false,
+        "canonical_knowledge_write": false,
+        "policy_write": false,
+        "graph_map_persistence": false,
+        "learning_promotion": false,
+        "effect_grant_required": true
+      },
+      "artifact_sha256": null,
+      "default_profile_id": "balanced-qwen35-9b-exclusive"
+    },
+    {
+      "model_id": "qwen3-30b-a3b-deep",
+      "display_name": "Qwen3-30B-A3B",
+      "source_repo": "Qwen/Qwen3-30B-A3B",
+      "runtime": "llama_cpp_router",
+      "lane": "deep",
+      "role": "preferred_deep_hybrid_candidate",
+      "state": "candidate",
+      "privacy": "local",
+      "traits": ["deep_reasoning", "architecture", "difficult_coding", "long_synthesis"],
+      "authority": {
+        "direct_tool_execution": false,
+        "canonical_memory_write": false,
+        "canonical_knowledge_write": false,
+        "policy_write": false,
+        "graph_map_persistence": false,
+        "learning_promotion": false,
+        "effect_grant_required": true
+      },
+      "artifact_sha256": "e6db7da56bdb19ba30541c73628f15e8f1f45be1b1f96df4383e03fec375e43a",
+      "default_profile_id": "deep-qwen3-30b-a3b-hybrid"
+    },
+    {
+      "model_id": "qwen35-35b-a3b-deep-challenger",
+      "display_name": "Qwen3.5-35B-A3B",
+      "source_repo": "Qwen/Qwen3.5-35B-A3B",
+      "runtime": "llama_cpp_router",
+      "lane": "deep",
+      "role": "deep_hybrid_challenger",
+      "state": "candidate",
+      "privacy": "local",
+      "traits": ["deep_reasoning", "architecture", "difficult_coding", "long_synthesis"],
+      "authority": {
+        "direct_tool_execution": false,
+        "canonical_memory_write": false,
+        "canonical_knowledge_write": false,
+        "policy_write": false,
+        "graph_map_persistence": false,
+        "learning_promotion": false,
+        "effect_grant_required": true
+      },
+      "artifact_sha256": null,
+      "default_profile_id": "deep-qwen35-35b-a3b-hybrid"
+    }
+  ]
+}
