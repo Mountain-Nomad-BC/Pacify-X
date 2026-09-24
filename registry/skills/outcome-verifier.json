@@ -1,19 +1,25 @@
 {
   "id": "outcome-verifier",
   "version": "0.1.0",
-  "owner": "independent-bootstrap-runtime",
+  "owner": "pacify-x-skill-catalogue",
   "status": "active",
   "provenance": {
-    "type": "clean_room",
+    "type": "catalogue_projection",
     "basis": [
-      "reviewed assurance patterns",
-      "local requirements"
-    ]
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/outcome-verifier.json",
+      ".px/skills/outcome-verifier/SKILL.md"
+    ],
+    "admission_record": "outcome-verifier"
   },
-  "hash": "335cbc84b6e4ee58385e5db159a6057a9bfe321f40fc8392396e077cfc0d622a",
+  "hash": "e41270c390c25e38dd63cdc4dbfafc6b0cc06da514aeb3cb39a621d002707f3f",
   "license": "Apache-2.0",
   "provides": [
-    "independent verification decision"
+    "assurance",
+    "outcome",
+    "verifier",
+    "verify-outcome"
   ],
   "consumes": [
     "postconditions",
@@ -31,27 +37,34 @@
   "conflicts": [],
   "cost": {
     "class": "bounded",
-    "max_tool_calls": 0
+    "max_tool_calls": 0,
+    "currency": "local"
   },
   "latency": {
     "class": "local",
-    "max_seconds": 1
+    "max_seconds": 30,
+    "basis": "bounded"
   },
   "risk": "R1",
   "validation": {
-    "suite": "tests/test_outcome_verifier.py",
-    "passed": 5,
-    "failed": 0
-  },
-  "approval": {
-    "deployment": "required",
-    "runtime": "not required for verification-only operation"
+    "suite": "tests/test_operational_controls.py",
+    "status": "declared",
+    "covers": [
+      "assurance",
+      "outcome",
+      "verifier"
+    ]
   },
   "evidence": {
-    "suite": "tests/test_outcome_verifier.py",
-    "status": "current"
+    "anchor": "registry/skill_packages/outcome-verifier.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
   },
   "rollback": {
-    "strategy": "remove from active capability map"
+    "required": false,
+    "basis": "catalogue_reprojection"
   }
 }

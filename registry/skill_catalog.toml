@@ -1063,7 +1063,7 @@ tags = ["bullet", "engineering-reasoning", "planning", "tracer"]
 
 [[skills]]
 id = "govern-knowledge-refinery"
-version = "1.0.0"
+version = "1.1.0"
 status = "active"
 body = ".px/skills/govern-knowledge-refinery/SKILL.md"
 contract = "registry/skill_packages/govern-knowledge-refinery.json"
@@ -1600,3 +1600,65 @@ body = ".px/skills/pacify-x-studio-operator/SKILL.md"
 contract = "registry/skill_packages/pacify-x-studio-operator.json"
 admission_record = "pacify-x-studio-operator"
 tags = ["explicit Pacify-X Studio inspection"]
+
+[[skills]]
+id = "govern-model-fabric"
+version = "1.0.0"
+status = "active"
+body = ".px/skills/govern-model-fabric/SKILL.md"
+contract = "registry/skill_packages/govern-model-fabric.json"
+admission_record = "govern-model-fabric"
+tags = ["model", "routing", "pool", "capacity", "llama.cpp", "local-inference", "observability"]
+
+[[skills]]
+id = "operate-semantic-code-intelligence"
+version = "1.0.0"
+status = "active"
+body = ".px/skills/operate-semantic-code-intelligence/SKILL.md"
+contract = "registry/skill_packages/operate-semantic-code-intelligence.json"
+admission_record = "operate-semantic-code-intelligence"
+tags = ["semantic", "code", "lsp", "ast", "retrieval", "revision", "context"]
+
+[[skills]]
+id = "govern-retrieval-generations"
+version = "1.0.0"
+status = "active"
+body = ".px/skills/govern-retrieval-generations/SKILL.md"
+contract = "registry/skill_packages/govern-retrieval-generations.json"
+admission_record = "govern-retrieval-generations"
+tags = ["retrieval", "generation", "turbovec", "embedding", "reranking", "rollback", "governance"]
+
+[[skills]]
+id = "govern-persistent-memory"
+version = "0.2.0"
+status = "mapped_deferred"
+body = ".px/skills/govern-persistent-memory/SKILL.md"
+contract = "registry/skill_packages/govern-persistent-memory.json"
+admission_record = "govern-persistent-memory"
+tags = ["memory", "external-provider", "persistent-memory", "review", "graph", "provenance", "isolation"]
+[[skills]]
+id = "system-one-decision"
+version = "1.0.0"
+status = "active"
+body = ".px/skills/system-one-decision/SKILL.md"
+contract = "registry/skill_packages/system-one-decision.json"
+admission_record = "system-one-decision"
+tags = ["decision", "system-one", "classification", "routing", "probabilistic", "advisory", "laya"]
+
+[[skills]]
+id = "operate-self-diagnostics"
+version = "1.0.0"
+status = "active"
+body = ".px/skills/operate-self-diagnostics/SKILL.md"
+contract = "registry/skill_packages/operate-self-diagnostics.json"
+admission_record = "operate-self-diagnostics"
+tags = ["self-operations", "diagnostics", "diagnosis", "classification", "delegation", "composed"]
+
+[[skills]]
+id = "parallel-planning-coordination"
+version = "1.0.0"
+status = "active"
+body = ".px/skills/parallel-planning-coordination/SKILL.md"
+contract = "registry/skill_packages/parallel-planning-coordination.json"
+admission_record = "parallel-planning-coordination"
+tags = ["planning", "coordination", "orchestration"]

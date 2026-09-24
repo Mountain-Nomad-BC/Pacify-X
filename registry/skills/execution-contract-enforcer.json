@@ -1,19 +1,25 @@
 {
   "id": "execution-contract-enforcer",
   "version": "0.1.0",
-  "owner": "independent-bootstrap-runtime",
+  "owner": "pacify-x-skill-catalogue",
   "status": "active",
   "provenance": {
-    "type": "clean_room",
+    "type": "catalogue_projection",
     "basis": [
-      "reviewed governance patterns",
-      "local requirements"
-    ]
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/execution-contract-enforcer.json",
+      ".px/skills/execution-contract-enforcer/SKILL.md"
+    ],
+    "admission_record": "execution-contract-enforcer"
   },
-  "hash": "d78807c8e1c561004bc02698cf0745a49c66059f33879106205c17ea15e228d2",
+  "hash": "7e3e524fed9fa3b6f9f25e8080fcef456521a184f8f97aff8f94c25d8087cdcf",
   "license": "Apache-2.0",
   "provides": [
-    "fail-closed contract decision"
+    "contract",
+    "enforcer",
+    "execution",
+    "orchestration"
   ],
   "consumes": [
     "execution request",
@@ -30,27 +36,35 @@
   "conflicts": [],
   "cost": {
     "class": "bounded",
-    "max_tool_calls": 0
+    "max_tool_calls": 0,
+    "currency": "local"
   },
   "latency": {
     "class": "local",
-    "max_seconds": 1
+    "max_seconds": 30,
+    "basis": "bounded"
   },
   "risk": "R1",
   "validation": {
-    "suite": "tests/test_execution_contract.py",
-    "passed": 5,
-    "failed": 0
-  },
-  "approval": {
-    "deployment": "required",
-    "runtime": "follows requested effects"
+    "suite": "tests/test_operational_controls.py",
+    "status": "declared",
+    "covers": [
+      "contract",
+      "enforcer",
+      "execution",
+      "orchestration"
+    ]
   },
   "evidence": {
-    "suite": "tests/test_execution_contract.py",
-    "status": "current"
+    "anchor": "registry/skill_packages/execution-contract-enforcer.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
   },
   "rollback": {
-    "strategy": "remove from active capability map"
+    "required": false,
+    "basis": "catalogue_reprojection"
   }
 }

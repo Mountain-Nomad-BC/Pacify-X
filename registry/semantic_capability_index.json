@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
   "loading_rule": "metadata_only",
-  "revision": "23171845bf0c505991a2fdfcf186c68e31786a0bccba916547e0f4c2a1912ab5",
-  "record_count": 178,
+  "revision": "770653d9e7e9e95d7bb14eaa570283ee6c37d582fd6e239da10fab5f6afd2a12",
+  "record_count": 185,
   "records": [
     {
       "id": "acquire-install-n8n",
@@ -334,8 +334,9 @@
         "governance"
       ],
       "intents": [
+        "admission",
         "admit capability",
-        "admit restrict quarantine reject decision"
+        "governance"
       ],
       "negative_intents": [],
       "concepts": [
@@ -354,10 +355,11 @@
       "semantic_profile": {
         "schema_version": "px.capability-semantic-profile/1.0",
         "capability_id": "admit-capability",
-        "canonical_owner": "independent-bootstrap-runtime",
+        "canonical_owner": "pacify-x-skill-catalogue",
         "positive_intents": [
+          "admission",
           "admit capability",
-          "admit restrict quarantine reject decision"
+          "governance"
         ],
         "negative_intents": [],
         "domains": [
@@ -370,7 +372,9 @@
           "review evidence"
         ],
         "outputs": [
-          "admit restrict quarantine reject decision"
+          "admission",
+          "admit capability",
+          "governance"
         ],
         "effects": [
           "read local"
@@ -391,8 +395,8 @@
           "registry/skills/skill-admission-controller.json"
         ]
       },
-      "profile_revision": "7b9dc1fb22cca49f4605b31d5edf78c486bc2c297c1bfe334e0479acbc19537e",
-      "contract_revision": "431ddeecf8e90a84e055b55d376e7421cd1c1ce42bbe66b131ddeef0938479f7",
+      "profile_revision": "38e140ab005dee83a1ad488e8acdbf500aca61760cfb23de2f19dcb6626b2161",
+      "contract_revision": "b38142d15e08ffaeabf70d3f7b00f25bf66ea9ef2e1991cb096ea80c9094c39b",
       "body_sha256": "12d9f91601589f440f246a0a5d003f341cd16b3845a99cbe8fe54d957baf3a7f"
     },
     {
@@ -2085,10 +2089,10 @@
         "onboarding"
       ],
       "intents": [
-        "bounded task lifecycle",
-        "checkpointed verified result",
+        "bootstrap",
         "commission project",
-        "lazy capability activation"
+        "onboarding",
+        "orchestrate engineering loop"
       ],
       "negative_intents": [],
       "concepts": [
@@ -2105,12 +2109,12 @@
       "semantic_profile": {
         "schema_version": "px.capability-semantic-profile/1.0",
         "capability_id": "commission-project",
-        "canonical_owner": "independent-bootstrap-runtime",
+        "canonical_owner": "pacify-x-skill-catalogue",
         "positive_intents": [
-          "bounded task lifecycle",
-          "checkpointed verified result",
+          "bootstrap",
           "commission project",
-          "lazy capability activation"
+          "onboarding",
+          "orchestrate engineering loop"
         ],
         "negative_intents": [],
         "domains": [
@@ -2124,9 +2128,10 @@
           "task request"
         ],
         "outputs": [
-          "bounded task lifecycle",
-          "checkpointed verified result",
-          "lazy capability activation"
+          "bootstrap",
+          "commission project",
+          "onboarding",
+          "orchestrate engineering loop"
         ],
         "effects": [
           "read local"
@@ -2147,8 +2152,8 @@
           "registry/skills/workflow-orchestrator.json"
         ]
       },
-      "profile_revision": "e196708c68a248c11df7adc481ae4b8226a7658fb3b1cd0ae3c9a8f844041ab6",
-      "contract_revision": "95a6037363642e52be1fa5f8b51c7ae30e985bc48dff2e888cb1cdd224e25f0b",
+      "profile_revision": "f0d77a04e951f68e274a3708f9ae8331bd1201f2099cae5ede521410198c6abd",
+      "contract_revision": "42ae2ce92e62a86c770388910572bb059b37169e6981b78598ec4556d4258dd7",
       "body_sha256": "26cc3a21835c8e5fd52610ad3b85cf50467588ef0fc8cc4789972b38b79b1b53"
     },
     {
@@ -4442,6 +4447,7 @@
         "layered-memory-lifecycle",
         "local-model-planning",
         "n8n-supabase-rag-release",
+        "retrieval-generation-governance",
         "retrieval-readiness"
       ],
       "semantic_profile": {
@@ -5848,6 +5854,7 @@
       "tools": [],
       "relations": [
         "knowledge-refinery",
+        "nsai-knowledge-library",
         "research-engine"
       ],
       "semantic_profile": {
@@ -5890,8 +5897,8 @@
         ]
       },
       "profile_revision": "7f0a178133a8456a47df8fdd711493bf7e62c207672ab275ae9ecf805940635b",
-      "contract_revision": "53db0f3fc8505ce9889865a2f38cc22413a76c4b0dcba5b480123d0cbc30d767",
-      "body_sha256": "0ec8432bc2dc73a44254aac390f6ce24f91410dad0a457b0f2b402f00b806e3c"
+      "contract_revision": "d3494c56e489f06d2a4b106c70f4291b7a315ec761154ebddf83c23a1ed1d820",
+      "body_sha256": "c0cb8e28beecb5c87731fefcd7056bdd5787b35e911747e6f18d9e7162cf8e08"
     },
     {
       "id": "govern-memory-fabric",
@@ -6166,6 +6173,94 @@
       "body_sha256": "fbf555b37234ecf0f84bbdf60982e08a4584ef5ecbc5de949c23dccc43af845d"
     },
     {
+      "id": "govern-model-fabric",
+      "kind": "skill",
+      "status": "active",
+      "description": "Govern admitted local-model profiles, pool residency, routing evidence, capacity, binary/model identity, health, cancellation and fallback without bypassing PX runtime authorities.",
+      "domains": [
+        "capacity",
+        "llama cpp",
+        "local inference",
+        "model",
+        "observability",
+        "pool",
+        "routing"
+      ],
+      "intents": [
+        "govern model fabric"
+      ],
+      "negative_intents": [],
+      "concepts": [
+        "capacity",
+        "fabric",
+        "govern",
+        "llama cpp",
+        "llama.cpp",
+        "local inference",
+        "local-inference",
+        "model",
+        "observability",
+        "pool",
+        "routing"
+      ],
+      "synonyms": [
+        "govern model fabric"
+      ],
+      "tools": [],
+      "relations": [
+        "hardware-aware-execution-routing",
+        "local-model-planning",
+        "model-fabric-operations"
+      ],
+      "semantic_profile": {
+        "schema_version": "px.capability-semantic-profile/1.0",
+        "capability_id": "govern-model-fabric",
+        "canonical_owner": "pacify-x-skill-catalogue",
+        "positive_intents": [
+          "govern model fabric"
+        ],
+        "negative_intents": [],
+        "domains": [
+          "capacity",
+          "llama cpp",
+          "local inference",
+          "model",
+          "observability",
+          "pool",
+          "routing"
+        ],
+        "mechanisms": [],
+        "inputs": [
+          "registry state",
+          "task context"
+        ],
+        "outputs": [
+          "govern model fabric"
+        ],
+        "effects": [
+          "read local"
+        ],
+        "exclusions": [],
+        "synonyms": [
+          "govern model fabric"
+        ],
+        "ambiguous_synonyms": [],
+        "ambiguity_guards": [],
+        "failure_modes": [
+          "effect not authorized",
+          "missing required input"
+        ],
+        "maturity": null,
+        "evidence_sources": [
+          ".px/skills/govern-model-fabric/SKILL.md",
+          "registry/skill_packages/govern-model-fabric.json"
+        ]
+      },
+      "profile_revision": "77d99ef171c2574efd7e9aaed93c65359b11005cc3a3e7168e333cbb94f5c775",
+      "contract_revision": "991e3f41685f978199b076932b6ee5a2c1e9e5f85c66b90610f0fdf19f238583",
+      "body_sha256": "6a0a7d1cd8199cfe5728d1d52400e4c5eaac28e4071156ac0e8e552d58144bca"
+    },
+    {
       "id": "govern-n8n-community-nodes",
       "kind": "skill",
       "status": "active",
@@ -6368,6 +6463,171 @@
       "profile_revision": "a19cf85c13d188a17ab4e05b8db2023e1e9bc07dbe269e07b58a326c98d87510",
       "contract_revision": "da09d35ccaf9642e01a9b061d6388d3224c8e4da10521236abfe266aa8432edf",
       "body_sha256": "ad1bf0a4f9807a40e43a6226a2aff663fc04987418805d37815f1904b70a7eb6"
+    },
+    {
+      "id": "govern-persistent-memory",
+      "kind": "skill",
+      "status": "mapped_deferred",
+      "description": "Govern an optional external persistent-memory repository as noncanonical evidence. Use for exact-revision validation, bounded listing, advisory review, graph preview, contribution/publication planning, and provider health checks without allowing external memory to become Pacify-X truth or authority.",
+      "domains": [
+        "external provider",
+        "graph",
+        "isolation",
+        "memory",
+        "persistent memory",
+        "provenance",
+        "review"
+      ],
+      "intents": [
+        "govern persistent memory"
+      ],
+      "negative_intents": [],
+      "concepts": [
+        "external provider",
+        "external-provider",
+        "govern",
+        "graph",
+        "isolation",
+        "memory",
+        "persistent",
+        "persistent memory",
+        "persistent-memory",
+        "provenance",
+        "review"
+      ],
+      "synonyms": [
+        "govern persistent memory"
+      ],
+      "tools": [],
+      "relations": [],
+      "semantic_profile": {
+        "schema_version": "px.capability-semantic-profile/1.0",
+        "capability_id": "govern-persistent-memory",
+        "canonical_owner": "govern-persistent-memory",
+        "positive_intents": [
+          "govern persistent memory"
+        ],
+        "negative_intents": [],
+        "domains": [
+          "external provider",
+          "graph",
+          "isolation",
+          "memory",
+          "persistent memory",
+          "provenance",
+          "review"
+        ],
+        "mechanisms": [],
+        "inputs": [],
+        "outputs": [],
+        "effects": [
+          "read local"
+        ],
+        "exclusions": [],
+        "synonyms": [
+          "govern persistent memory"
+        ],
+        "ambiguous_synonyms": [],
+        "ambiguity_guards": [],
+        "failure_modes": [
+          "effect not authorized",
+          "missing required input"
+        ],
+        "maturity": null,
+        "evidence_sources": [
+          ".px/skills/govern-persistent-memory/SKILL.md",
+          "registry/skill_packages/govern-persistent-memory.json"
+        ]
+      },
+      "profile_revision": "591433262a4b05af0e1f02836404a92f2091777f9e1bbd04ccf09396d80b17ec",
+      "contract_revision": "ab70bcfc7cbbb3dbbbff0ce448171b7d593a4e1fbe3eb8562795382d1d614cdc",
+      "body_sha256": "4da2430bbe8ba0ba7ef1ea8f7753854c57a5e7a52e79ba28b227bc4d8401f0cb"
+    },
+    {
+      "id": "govern-retrieval-generations",
+      "kind": "skill",
+      "status": "active",
+      "description": "Build, validate, activate, inspect and roll back coherent retrieval generations while preserving exact canonical IDs, embedding identity, calibration evidence and authorization boundaries.",
+      "domains": [
+        "embedding",
+        "generation",
+        "governance",
+        "reranking",
+        "retrieval",
+        "rollback",
+        "turbovec"
+      ],
+      "intents": [
+        "govern retrieval generations"
+      ],
+      "negative_intents": [],
+      "concepts": [
+        "embedding",
+        "generation",
+        "generations",
+        "govern",
+        "governance",
+        "reranking",
+        "retrieval",
+        "rollback",
+        "turbovec"
+      ],
+      "synonyms": [
+        "govern retrieval generations"
+      ],
+      "tools": [],
+      "relations": [
+        "retrieval-generation-governance",
+        "semantic-capability-query-certification",
+        "semantic-code-intelligence"
+      ],
+      "semantic_profile": {
+        "schema_version": "px.capability-semantic-profile/1.0",
+        "capability_id": "govern-retrieval-generations",
+        "canonical_owner": "pacify-x-skill-catalogue",
+        "positive_intents": [
+          "govern retrieval generations"
+        ],
+        "negative_intents": [],
+        "domains": [
+          "embedding",
+          "generation",
+          "governance",
+          "reranking",
+          "retrieval",
+          "rollback",
+          "turbovec"
+        ],
+        "mechanisms": [],
+        "inputs": [
+          "registry state",
+          "task context"
+        ],
+        "outputs": [
+          "govern retrieval generations"
+        ],
+        "effects": [
+          "read local"
+        ],
+        "exclusions": [],
+        "synonyms": [
+          "govern retrieval generations"
+        ],
+        "ambiguous_synonyms": [],
+        "ambiguity_guards": [],
+        "failure_modes": [
+          "effect not authorized",
+          "missing required input"
+        ],
+        "maturity": null,
+        "evidence_sources": [
+          ".px/skills/govern-retrieval-generations/SKILL.md",
+          "registry/skill_packages/govern-retrieval-generations.json"
+        ]
+      },
+      "profile_revision": "36a6542eb2678e9714941a45f4dc1dfd56696b660a001d2e0e1d0060a7626e82",
+      "contract_revision": "1a3fc695c0b76db9823b3f14e66a8cf3c5d56dca87e3ea240dee9fde9af78570",
+      "body_sha256": "4e8acdba659fd23589bdac8233d6eeff1d087789e0e954b95f78416ca1fded9c"
     },
     {
       "id": "govern-runtime-protocol-deployment",
@@ -6838,7 +7098,8 @@
       ],
       "tools": [],
       "relations": [
-        "hardware-aware-execution-routing"
+        "hardware-aware-execution-routing",
+        "model-fabric-operations"
       ],
       "semantic_profile": {
         "schema_version": "px.capability-semantic-profile/1.0",
@@ -8962,6 +9223,179 @@
       "body_sha256": "668d58661f13269d37df5465da7ef91c5c8a55b17cf1f633bb11a1d709e7764e"
     },
     {
+      "id": "operate-self-diagnostics",
+      "kind": "skill",
+      "status": "active",
+      "description": "Compose existing canonical owners into one bounded diagnosis over a reported condition, classify it into a terminal disposition, and delegate to the specialist that owns it. Use when a failure, anomaly, or degraded reading needs a governed disposition and an owning specialist rather than an improvised repair.",
+      "domains": [
+        "classification",
+        "composed",
+        "delegation",
+        "diagnosis",
+        "diagnostics",
+        "self operations"
+      ],
+      "intents": [
+        "diagnosis classify condition",
+        "diagnosis select specialist",
+        "operate self diagnostics",
+        "self operations diagnostics"
+      ],
+      "negative_intents": [],
+      "concepts": [
+        "classification",
+        "composed",
+        "delegation",
+        "diagnosis",
+        "diagnostics",
+        "operate",
+        "self",
+        "self operations",
+        "self-operations"
+      ],
+      "synonyms": [
+        "operate self diagnostics"
+      ],
+      "tools": [],
+      "relations": [],
+      "semantic_profile": {
+        "schema_version": "px.capability-semantic-profile/1.0",
+        "capability_id": "operate-self-diagnostics",
+        "canonical_owner": "runtime/self_diagnostics.py",
+        "positive_intents": [
+          "diagnosis classify condition",
+          "diagnosis select specialist",
+          "operate self diagnostics",
+          "self operations diagnostics"
+        ],
+        "negative_intents": [],
+        "domains": [
+          "classification",
+          "composed",
+          "delegation",
+          "diagnosis",
+          "diagnostics",
+          "self operations"
+        ],
+        "mechanisms": [],
+        "inputs": [
+          "registry state",
+          "task context"
+        ],
+        "outputs": [
+          "diagnosis classify condition",
+          "diagnosis select specialist",
+          "self operations diagnostics"
+        ],
+        "effects": [
+          "read local"
+        ],
+        "exclusions": [],
+        "synonyms": [
+          "operate self diagnostics"
+        ],
+        "ambiguous_synonyms": [],
+        "ambiguity_guards": [],
+        "failure_modes": [
+          "effect not authorized",
+          "missing required input"
+        ],
+        "maturity": null,
+        "evidence_sources": [
+          ".px/skills/operate-self-diagnostics/SKILL.md",
+          "registry/skill_packages/operate-self-diagnostics.json"
+        ]
+      },
+      "profile_revision": "1712617d05d43397588be10cbbea4a4bc054451d420c9a951ccb524fa2085ff2",
+      "contract_revision": "8b1665faa4f4c8e5ce26684934eef09d4582eaa6e10243245faec9a8ef5ed5d1",
+      "body_sha256": "47a2e542857b12b0728c04577d9f66da6389353024046c3e1b0ccb997d8044d0"
+    },
+    {
+      "id": "operate-semantic-code-intelligence",
+      "kind": "skill",
+      "status": "active",
+      "description": "Operate admitted semantic AST/LSP/project/query/context capabilities with explicit project authorization, revision-bound reads/edits, bounded hydration and source evidence.",
+      "domains": [
+        "ast",
+        "code",
+        "context",
+        "lsp",
+        "retrieval",
+        "revision",
+        "semantic"
+      ],
+      "intents": [
+        "operate semantic code intelligence"
+      ],
+      "negative_intents": [],
+      "concepts": [
+        "ast",
+        "code",
+        "context",
+        "intelligence",
+        "lsp",
+        "operate",
+        "retrieval",
+        "revision",
+        "semantic"
+      ],
+      "synonyms": [
+        "operate semantic code intelligence"
+      ],
+      "tools": [],
+      "relations": [
+        "semantic-capability-query-certification",
+        "semantic-code-intelligence"
+      ],
+      "semantic_profile": {
+        "schema_version": "px.capability-semantic-profile/1.0",
+        "capability_id": "operate-semantic-code-intelligence",
+        "canonical_owner": "pacify-x-skill-catalogue",
+        "positive_intents": [
+          "operate semantic code intelligence"
+        ],
+        "negative_intents": [],
+        "domains": [
+          "ast",
+          "code",
+          "context",
+          "lsp",
+          "retrieval",
+          "revision",
+          "semantic"
+        ],
+        "mechanisms": [],
+        "inputs": [
+          "registry state",
+          "task context"
+        ],
+        "outputs": [
+          "operate semantic code intelligence"
+        ],
+        "effects": [
+          "read local"
+        ],
+        "exclusions": [],
+        "synonyms": [
+          "operate semantic code intelligence"
+        ],
+        "ambiguous_synonyms": [],
+        "ambiguity_guards": [],
+        "failure_modes": [
+          "effect not authorized",
+          "missing required input"
+        ],
+        "maturity": null,
+        "evidence_sources": [
+          ".px/skills/operate-semantic-code-intelligence/SKILL.md",
+          "registry/skill_packages/operate-semantic-code-intelligence.json"
+        ]
+      },
+      "profile_revision": "0553ee507851057b236819dcce7752de1104015b69a5f01bcf9fcbc095b53733",
+      "contract_revision": "796d18fb7991f678a91c49bf8cad3f104d6deb8acd7ced5ab9896a043aa8ffde",
+      "body_sha256": "14f3fcf5504796a83025f8385f86431a8bd8fa306c9b0d5406812e6a6ba19b04"
+    },
+    {
       "id": "operate-supabase-vector-search",
       "kind": "skill",
       "status": "active",
@@ -9335,9 +9769,9 @@
         "workflow"
       ],
       "intents": [
-        "bounded task lifecycle",
-        "checkpointed verified result",
-        "lazy capability activation",
+        "bootstrap",
+        "commission project",
+        "onboarding",
         "orchestrate engineering loop"
       ],
       "negative_intents": [],
@@ -9356,11 +9790,11 @@
       "semantic_profile": {
         "schema_version": "px.capability-semantic-profile/1.0",
         "capability_id": "orchestrate-engineering-loop",
-        "canonical_owner": "independent-bootstrap-runtime",
+        "canonical_owner": "pacify-x-skill-catalogue",
         "positive_intents": [
-          "bounded task lifecycle",
-          "checkpointed verified result",
-          "lazy capability activation",
+          "bootstrap",
+          "commission project",
+          "onboarding",
           "orchestrate engineering loop"
         ],
         "negative_intents": [],
@@ -9375,9 +9809,10 @@
           "task request"
         ],
         "outputs": [
-          "bounded task lifecycle",
-          "checkpointed verified result",
-          "lazy capability activation"
+          "bootstrap",
+          "commission project",
+          "onboarding",
+          "orchestrate engineering loop"
         ],
         "effects": [
           "read local"
@@ -9398,8 +9833,8 @@
           "registry/skills/workflow-orchestrator.json"
         ]
       },
-      "profile_revision": "ec2b24bdc84f0aba354d260e40284f8b9ae32439bc8e791d04a424518d7d32b6",
-      "contract_revision": "95a6037363642e52be1fa5f8b51c7ae30e985bc48dff2e888cb1cdd224e25f0b",
+      "profile_revision": "3861a3cf919afb088d125e3276037d6afe59aaa80f96ed4d13a900ca279c845a",
+      "contract_revision": "42ae2ce92e62a86c770388910572bb059b37169e6981b78598ec4556d4258dd7",
       "body_sha256": "677b5d3a75054b902e701bb212c1b769a81f5a8425983eaf45ca8309e0b39003"
     },
     {
@@ -9667,6 +10102,75 @@
       "profile_revision": "f9dc434cfb1b0967fa82d8fe76b55f1ae5cbab1207c282f1b03ddc87cfdf6b26",
       "contract_revision": "bd79d2df85bfc743e3c314f1e0cc8baf50d5c014657f0d632e416f8da7df97ef",
       "body_sha256": "ac4463c1adf019ef167469f9ec90403011339d4be5791e597a2e9b25f577dc8e"
+    },
+    {
+      "id": "parallel-planning-coordination",
+      "kind": "skill",
+      "status": "active",
+      "description": "Coordinate dependency-safe work across IDEs and agents through durable task graphs, bounded claims, leases, receipts, reconciliation, and layered memory.",
+      "domains": [
+        "coordination",
+        "orchestration",
+        "planning"
+      ],
+      "intents": [
+        "parallel planning coordination"
+      ],
+      "negative_intents": [],
+      "concepts": [
+        "coordination",
+        "orchestration",
+        "parallel",
+        "planning"
+      ],
+      "synonyms": [
+        "parallel planning coordination"
+      ],
+      "tools": [],
+      "relations": [],
+      "semantic_profile": {
+        "schema_version": "px.capability-semantic-profile/1.0",
+        "capability_id": "parallel-planning-coordination",
+        "canonical_owner": ".px/skills/parallel-planning-coordination/SKILL.md",
+        "positive_intents": [
+          "parallel planning coordination"
+        ],
+        "negative_intents": [],
+        "domains": [
+          "coordination",
+          "orchestration",
+          "planning"
+        ],
+        "mechanisms": [],
+        "inputs": [
+          "registry state",
+          "task context"
+        ],
+        "outputs": [
+          "parallel planning coordination"
+        ],
+        "effects": [
+          "read local"
+        ],
+        "exclusions": [],
+        "synonyms": [
+          "parallel planning coordination"
+        ],
+        "ambiguous_synonyms": [],
+        "ambiguity_guards": [],
+        "failure_modes": [
+          "effect not authorized",
+          "missing required input"
+        ],
+        "maturity": null,
+        "evidence_sources": [
+          ".px/skills/parallel-planning-coordination/SKILL.md",
+          "registry/skill_packages/parallel-planning-coordination.json"
+        ]
+      },
+      "profile_revision": "3e7c97c188584e00f66f0c22d678da265c4ff161dfef7e6e3c5bd9980bcaf8f8",
+      "contract_revision": "4bbff4940106239e243fd90128f254642c6e2a94437d7427d6bd32b78959922a",
+      "body_sha256": "8c645ffb6c4e388c2cec1261fb892ee0ca5f786abec6e3ef46d427b5b178565d"
     },
     {
       "id": "permission-diff-auditor",
@@ -11236,7 +11740,9 @@
       "relations": [
         "external-capability-intake",
         "knowledge-refinery",
+        "nsai-knowledge-library",
         "research-engine",
+        "retrieval-generation-governance",
         "retrieval-readiness",
         "secure-service-release",
         "semantic-capability-query-certification",
@@ -12293,6 +12799,107 @@
       "profile_revision": "3599d5c43b6fb3a61661a5c02c9cd63c14d80822d97e657f1ef253aa6e1ddd91",
       "contract_revision": "d13f703c53e901e0a428f23ec6d0fa15315b702bb3dc0aaab5fc7e9810c5157f",
       "body_sha256": "fef2e5475c6a8f2d0c434ecd5891b8fe2c2d20b99ba17496de9535a70a8f2a3d"
+    },
+    {
+      "id": "system-one-decision",
+      "kind": "skill",
+      "status": "active",
+      "description": "Use the governed System-1 decision engine for bounded, typed decisions expressed as a finite question over a small compiled state. Advisory only - it recommends, classifies, and scores, while Pacify-X decides what is permitted.",
+      "domains": [
+        "advisory",
+        "classification",
+        "decision",
+        "laya",
+        "probabilistic",
+        "routing",
+        "system one"
+      ],
+      "intents": [
+        "decision system one",
+        "entity candidate class",
+        "intent operation class",
+        "learning candidate worth",
+        "memory write candidate",
+        "routing model tier",
+        "system one decision"
+      ],
+      "negative_intents": [],
+      "concepts": [
+        "advisory",
+        "classification",
+        "decision",
+        "laya",
+        "one",
+        "probabilistic",
+        "routing",
+        "system",
+        "system one",
+        "system-one"
+      ],
+      "synonyms": [
+        "system one decision"
+      ],
+      "tools": [],
+      "relations": [],
+      "semantic_profile": {
+        "schema_version": "px.capability-semantic-profile/1.0",
+        "capability_id": "system-one-decision",
+        "canonical_owner": "runtime/system_one_decision.py",
+        "positive_intents": [
+          "decision system one",
+          "entity candidate class",
+          "intent operation class",
+          "learning candidate worth",
+          "memory write candidate",
+          "routing model tier",
+          "system one decision"
+        ],
+        "negative_intents": [],
+        "domains": [
+          "advisory",
+          "classification",
+          "decision",
+          "laya",
+          "probabilistic",
+          "routing",
+          "system one"
+        ],
+        "mechanisms": [],
+        "inputs": [
+          "compiled decision state",
+          "typed question envelope",
+          "versioned threshold policy"
+        ],
+        "outputs": [
+          "decision system one",
+          "entity candidate class",
+          "intent operation class",
+          "learning candidate worth",
+          "memory write candidate",
+          "routing model tier"
+        ],
+        "effects": [
+          "read local"
+        ],
+        "exclusions": [],
+        "synonyms": [
+          "system one decision"
+        ],
+        "ambiguous_synonyms": [],
+        "ambiguity_guards": [],
+        "failure_modes": [
+          "effect not authorized",
+          "missing required input"
+        ],
+        "maturity": null,
+        "evidence_sources": [
+          ".px/skills/system-one-decision/SKILL.md",
+          "registry/skill_packages/system-one-decision.json"
+        ]
+      },
+      "profile_revision": "8c1d127b5333e129462a6ba680badcfc982b370dc5a0f91aba7af7f10a7cd731",
+      "contract_revision": "b81825c38b854f34ffaab2d0287eba61187742af0d755529a2f912b1b9313698",
+      "body_sha256": "1c728cfd30f2c8d4f6645ddd94c14599b0c32af1fb1085a4d3b69fb8e3bf6a7d"
     },
     {
       "id": "test-n8n-supabase-integrations",
@@ -13355,9 +13962,11 @@
         "data-sort-dry-run-selection",
         "hardware-aware-execution-routing",
         "local-model-planning",
+        "model-fabric-operations",
         "px-lean-engineering-gate",
         "px-team-fabric-recovery",
         "resource-lifecycle-reconciliation",
+        "semantic-code-intelligence",
         "transcript-evidence-extraction"
       ],
       "semantic_profile": {
@@ -13430,6 +14039,7 @@
       "tools": [],
       "relations": [
         "knowledge-refinery",
+        "nsai-knowledge-library",
         "retrieval-readiness",
         "source-capability-assimilation"
       ],
@@ -13629,7 +14239,9 @@
         "validation"
       ],
       "intents": [
-        "independent verification decision",
+        "assurance",
+        "outcome",
+        "verifier",
         "verify outcome"
       ],
       "negative_intents": [],
@@ -13652,9 +14264,11 @@
       "semantic_profile": {
         "schema_version": "px.capability-semantic-profile/1.0",
         "capability_id": "verify-outcome",
-        "canonical_owner": "independent-bootstrap-runtime",
+        "canonical_owner": "pacify-x-skill-catalogue",
         "positive_intents": [
-          "independent verification decision",
+          "assurance",
+          "outcome",
+          "verifier",
           "verify outcome"
         ],
         "negative_intents": [],
@@ -13670,7 +14284,10 @@
           "postconditions"
         ],
         "outputs": [
-          "independent verification decision"
+          "assurance",
+          "outcome",
+          "verifier",
+          "verify outcome"
         ],
         "effects": [
           "read local"
@@ -13691,8 +14308,8 @@
           "registry/skills/outcome-verifier.json"
         ]
       },
-      "profile_revision": "38d2212f0375e179ff4d30f079a11601e55470c2c68081bac34cf23ff0678213",
-      "contract_revision": "6f48a89220d472f123c47253f964c4e624d48bd6a24b8933c3d61a3a01214910",
+      "profile_revision": "2f1958f47e3a3812bce02538dcfdc905585684e528a4b4927cddf306c2c28697",
+      "contract_revision": "3d44fd536c3b6f03d05557ee370bac4ea1602e7667981c3dd0651efa55482311",
       "body_sha256": "59041723adc187c93ace1d9e5ec412bea3963b0fd94b6801c733af6a89f22538"
     }
   ]
