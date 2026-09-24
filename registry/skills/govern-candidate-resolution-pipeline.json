@@ -1,0 +1,71 @@
+{
+  "id": "govern-candidate-resolution-pipeline",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/govern-candidate-resolution-pipeline.json",
+      ".px/skills/govern-candidate-resolution-pipeline/SKILL.md"
+    ],
+    "admission_record": "govern-candidate-resolution-pipeline"
+  },
+  "hash": "7bbcaed5bd6c971fe9bf00b440792c43f0fbda1cee339d73c3c85c17831bf854",
+  "license": "Apache-2.0",
+  "provides": [
+    "candidate-compiler",
+    "resolver",
+    "ranking",
+    "package-optimization",
+    "fold-in"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_completion_controls.py",
+    "status": "declared",
+    "covers": [
+      "candidate-compiler",
+      "resolver",
+      "ranking",
+      "package-optimization",
+      "fold-in"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/govern-candidate-resolution-pipeline.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

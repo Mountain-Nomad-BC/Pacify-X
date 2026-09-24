@@ -1,0 +1,73 @@
+{
+  "id": "implement-supabase-auth",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/implement-supabase-auth.json",
+      ".px/skills/implement-supabase-auth/SKILL.md"
+    ],
+    "admission_record": "implement-supabase-auth"
+  },
+  "hash": "b8edd8039fe00b11ff6691917143477d811b35a3752ab6ec928333869643b778",
+  "license": "Apache-2.0",
+  "provides": [
+    "authentication",
+    "jwt",
+    "oauth",
+    "redirects",
+    "ssr",
+    "supabase"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_service_capability_provider.py",
+    "status": "declared",
+    "covers": [
+      "authentication",
+      "jwt",
+      "oauth",
+      "redirects",
+      "ssr",
+      "supabase"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/implement-supabase-auth.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "id": "intent-preserving-merge-resolution",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/intent-preserving-merge-resolution.json",
+      ".px/skills/intent-preserving-merge-resolution/SKILL.md"
+    ],
+    "admission_record": "intent-preserving-merge-resolution"
+  },
+  "hash": "61419cf1d115149288afa796a221f8c841a55abfee98990b75dc92920d70e7fe",
+  "license": "Apache-2.0",
+  "provides": [
+    "engineering-reasoning",
+    "intent",
+    "merge",
+    "preserving",
+    "resolution"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_project_reasoning.py",
+    "status": "declared",
+    "covers": [
+      "engineering-reasoning",
+      "intent",
+      "merge",
+      "preserving",
+      "resolution"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/intent-preserving-merge-resolution.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

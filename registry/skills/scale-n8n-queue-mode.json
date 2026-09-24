@@ -1,0 +1,71 @@
+{
+  "id": "scale-n8n-queue-mode",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/scale-n8n-queue-mode.json",
+      ".px/skills/scale-n8n-queue-mode/SKILL.md"
+    ],
+    "admission_record": "scale-n8n-queue-mode"
+  },
+  "hash": "c09df07bcb9fbde1ca15e639d7fd5402df425962f197919de5fe58699d398e62",
+  "license": "Apache-2.0",
+  "provides": [
+    "n8n",
+    "queue-mode",
+    "redis",
+    "task-runners",
+    "workers"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_service_capability_provider.py",
+    "status": "declared",
+    "covers": [
+      "n8n",
+      "queue-mode",
+      "redis",
+      "task-runners",
+      "workers"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/scale-n8n-queue-mode.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

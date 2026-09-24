@@ -1,0 +1,75 @@
+{
+  "id": "forge-skills-from-knowledge",
+  "version": "0.1.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/forge-skills-from-knowledge.json",
+      ".px/skills/forge-skills-from-knowledge/SKILL.md"
+    ],
+    "admission_record": "forge-skills-from-knowledge"
+  },
+  "hash": "117475e257211ba8be64403f3d5b959a5f71e96a457870d8380395b492ca2e11",
+  "license": "Apache-2.0",
+  "provides": [
+    "knowledge",
+    "compiler",
+    "skill",
+    "foundry",
+    "research",
+    "calculation",
+    "certification"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_knowledge_foundry.py",
+    "status": "declared",
+    "covers": [
+      "knowledge",
+      "compiler",
+      "skill",
+      "foundry",
+      "research",
+      "calculation",
+      "certification"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/forge-skills-from-knowledge.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

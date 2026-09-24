@@ -1,0 +1,69 @@
+{
+  "id": "commission-evidence-first-project",
+  "version": "0.1.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/commission-evidence-first-project.json",
+      ".px/skills/commission-evidence-first-project/SKILL.md"
+    ],
+    "admission_record": "commission-evidence-first-project"
+  },
+  "hash": "79ac984c15c248cb369264fabc97c90c19c7fcd2acc18b424729b23f86295540",
+  "license": "Apache-2.0",
+  "provides": [
+    "commissioning",
+    "assumptions",
+    "accessibility",
+    "risk"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_assurance_controls.py",
+    "status": "declared",
+    "covers": [
+      "commissioning",
+      "assumptions",
+      "accessibility",
+      "risk"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/commission-evidence-first-project.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

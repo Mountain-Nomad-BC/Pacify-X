@@ -1,0 +1,69 @@
+{
+  "id": "govern-model-fabric",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/govern-model-fabric.json",
+      ".px/skills/govern-model-fabric/SKILL.md"
+    ],
+    "admission_record": "govern-model-fabric"
+  },
+  "hash": "6561e2d40ec96d5f5f2b11f58a50db318626317d54e3db48e89675797c4be5cb",
+  "license": "Apache-2.0",
+  "provides": [
+    "govern-model-fabric"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_skill_catalog_contracts.py",
+    "status": "declared",
+    "covers": [
+      "govern-model-fabric"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/govern-model-fabric.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  },
+  "body_sha256": "6a0a7d1cd8199cfe5728d1d52400e4c5eaac28e4071156ac0e8e552d58144bca",
+  "body": ".px/skills/govern-model-fabric/SKILL.md",
+  "references": [],
+  "clean_room": false,
+  "validation_freshness": "pending",
+  "context_budget_bytes": 24576
+}

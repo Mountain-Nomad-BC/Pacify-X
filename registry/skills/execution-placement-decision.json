@@ -1,0 +1,77 @@
+{
+  "id": "execution-placement-decision",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/execution-placement-decision.json",
+      ".px/skills/execution-placement-decision/SKILL.md"
+    ],
+    "admission_record": "execution-placement-decision"
+  },
+  "hash": "885db98bb1209fc712601e5382e08b03709de865201e96d47cb770a0e66cb24b",
+  "license": "Apache-2.0",
+  "provides": [
+    "a-b",
+    "baseline",
+    "database",
+    "deployment",
+    "placement",
+    "promotion",
+    "rollback",
+    "runtime"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_execution_placement.py",
+    "status": "declared",
+    "covers": [
+      "a-b",
+      "baseline",
+      "database",
+      "deployment",
+      "placement",
+      "promotion",
+      "rollback",
+      "runtime"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/execution-placement-decision.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "id": "integrate-supabase-data-api-and-clients",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/integrate-supabase-data-api-and-clients.json",
+      ".px/skills/integrate-supabase-data-api-and-clients/SKILL.md"
+    ],
+    "admission_record": "integrate-supabase-data-api-and-clients"
+  },
+  "hash": "8b7940b3c99998904c1394beaa5c4c32f18e56650383f6e97225ddcc0eb3c4b7",
+  "license": "Apache-2.0",
+  "provides": [
+    "connection-modes",
+    "data-api",
+    "pagination",
+    "rpc",
+    "supabase",
+    "supabase-js"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_service_capability_provider.py",
+    "status": "declared",
+    "covers": [
+      "connection-modes",
+      "data-api",
+      "pagination",
+      "rpc",
+      "supabase",
+      "supabase-js"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/integrate-supabase-data-api-and-clients.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "id": "orchestrate-agent-fleets",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/orchestrate-agent-fleets.json",
+      ".px/skills/orchestrate-agent-fleets/SKILL.md"
+    ],
+    "admission_record": "orchestrate-agent-fleets"
+  },
+  "hash": "8a6a88a0a8913cef7bda94f981b9b4ebf3c49c03873799482bd39ef4be7502fe",
+  "license": "Apache-2.0",
+  "provides": [
+    "agent",
+    "bounded-inbox",
+    "fleet-readiness",
+    "isolation",
+    "orchestration"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_clean_room_capabilities.py",
+    "status": "declared",
+    "covers": [
+      "agent",
+      "bounded-inbox",
+      "fleet-readiness",
+      "isolation",
+      "orchestration"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/orchestrate-agent-fleets.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

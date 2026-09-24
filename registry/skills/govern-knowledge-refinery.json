@@ -1,0 +1,73 @@
+{
+  "id": "govern-knowledge-refinery",
+  "version": "1.1.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/govern-knowledge-refinery.json",
+      ".px/skills/govern-knowledge-refinery/SKILL.md"
+    ],
+    "admission_record": "govern-knowledge-refinery"
+  },
+  "hash": "d3494c56e489f06d2a4b106c70f4291b7a315ec761154ebddf83c23a1ed1d820",
+  "license": "Apache-2.0",
+  "provides": [
+    "admission",
+    "graph-coherence",
+    "knowledge",
+    "novelty",
+    "ranking",
+    "retrieval"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_knowledge_refinery.py",
+    "status": "declared",
+    "covers": [
+      "admission",
+      "graph-coherence",
+      "knowledge",
+      "novelty",
+      "ranking",
+      "retrieval"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/govern-knowledge-refinery.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

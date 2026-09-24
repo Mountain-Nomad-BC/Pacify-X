@@ -1,0 +1,69 @@
+{
+  "id": "px-work-stop-diagnostics",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/px-work-stop-diagnostics.json",
+      ".px/skills/px-work-stop-diagnostics/SKILL.md"
+    ],
+    "admission_record": "px-work-stop-diagnostics"
+  },
+  "hash": "ab7a1dbbec74bb2031001311dbfd1e5d04af572a570af26bf9329c6500ac8759",
+  "license": "Apache-2.0",
+  "provides": [
+    "coordination",
+    "diagnostics",
+    "leases",
+    "recovery"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/coordination-manager.test.js",
+    "status": "declared",
+    "covers": [
+      "coordination",
+      "diagnostics",
+      "leases",
+      "recovery"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/px-work-stop-diagnostics.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

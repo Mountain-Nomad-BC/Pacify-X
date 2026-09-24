@@ -1,0 +1,73 @@
+{
+  "id": "evaluate-retrieval-readiness",
+  "version": "0.1.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/evaluate-retrieval-readiness.json",
+      ".px/skills/evaluate-retrieval-readiness/SKILL.md"
+    ],
+    "admission_record": "evaluate-retrieval-readiness"
+  },
+  "hash": "b08c02c596c2346006c3b90d88c14e68a454f1e099e60a7c0bf5f7ece01e049b",
+  "license": "Apache-2.0",
+  "provides": [
+    "retrieval",
+    "quality",
+    "recall",
+    "ranking",
+    "privacy",
+    "activation"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_foundation_assurance.py; tests/test_retrieval_strategy.py",
+    "status": "declared",
+    "covers": [
+      "retrieval",
+      "quality",
+      "recall",
+      "ranking",
+      "privacy",
+      "activation"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/evaluate-retrieval-readiness.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

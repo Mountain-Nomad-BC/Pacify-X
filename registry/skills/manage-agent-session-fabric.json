@@ -1,0 +1,69 @@
+{
+  "id": "manage-agent-session-fabric",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/manage-agent-session-fabric.json",
+      ".px/skills/manage-agent-session-fabric/SKILL.md"
+    ],
+    "admission_record": "manage-agent-session-fabric"
+  },
+  "hash": "152188a0caf113d6a84be31571a5bab17887c367ad854f645ea33756fc654a86",
+  "license": "Apache-2.0",
+  "provides": [
+    "agent",
+    "manage",
+    "session",
+    "terminal-adapter"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_clean_room_capabilities.py",
+    "status": "declared",
+    "covers": [
+      "agent",
+      "manage",
+      "session",
+      "terminal-adapter"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/manage-agent-session-fabric.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

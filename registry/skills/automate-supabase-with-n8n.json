@@ -1,0 +1,71 @@
+{
+  "id": "automate-supabase-with-n8n",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/automate-supabase-with-n8n.json",
+      ".px/skills/automate-supabase-with-n8n/SKILL.md"
+    ],
+    "admission_record": "automate-supabase-with-n8n"
+  },
+  "hash": "3c201936d786aa1164c304fded600c6da427bb9986ce1a324de20401f8175e20",
+  "license": "Apache-2.0",
+  "provides": [
+    "cross",
+    "database-webhooks",
+    "idempotency",
+    "outbox",
+    "reconciliation"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_service_capability_provider.py",
+    "status": "declared",
+    "covers": [
+      "cross",
+      "database-webhooks",
+      "idempotency",
+      "outbox",
+      "reconciliation"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/automate-supabase-with-n8n.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

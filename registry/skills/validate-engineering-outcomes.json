@@ -1,0 +1,75 @@
+{
+  "id": "validate-engineering-outcomes",
+  "version": "0.1.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/validate-engineering-outcomes.json",
+      ".px/skills/validate-engineering-outcomes/SKILL.md"
+    ],
+    "admission_record": "validate-engineering-outcomes"
+  },
+  "hash": "b4193112b06c1f923fab1baf6528e417c9bf7148f71b34996272468903da2ae1",
+  "license": "Apache-2.0",
+  "provides": [
+    "repository",
+    "architecture",
+    "testing",
+    "deployment",
+    "evidence",
+    "runtime",
+    "calculation"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_skill_library.py; tests/test_foundation_assurance.py",
+    "status": "declared",
+    "covers": [
+      "repository",
+      "architecture",
+      "testing",
+      "deployment",
+      "evidence",
+      "runtime",
+      "calculation"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/validate-engineering-outcomes.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

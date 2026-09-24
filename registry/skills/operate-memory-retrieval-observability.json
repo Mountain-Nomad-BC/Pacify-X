@@ -1,0 +1,73 @@
+{
+  "id": "operate-memory-retrieval-observability",
+  "version": "0.1.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/operate-memory-retrieval-observability.json",
+      ".px/skills/operate-memory-retrieval-observability/SKILL.md"
+    ],
+    "admission_record": "operate-memory-retrieval-observability"
+  },
+  "hash": "1e9d2b0781a315b5ff13a3850ef93a40f2c97773d35b39cff865c3f928420d06",
+  "license": "Apache-2.0",
+  "provides": [
+    "authoritative",
+    "declared-suite",
+    "memory",
+    "observability",
+    "operate",
+    "retrieval"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_rel008_assimilation.py",
+    "status": "declared",
+    "covers": [
+      "authoritative",
+      "declared-suite",
+      "memory",
+      "observability",
+      "operate",
+      "retrieval"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/operate-memory-retrieval-observability.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

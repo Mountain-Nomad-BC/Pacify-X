@@ -1,0 +1,63 @@
+{
+  "id": "system-one-decision",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/system-one-decision.json",
+      ".px/skills/system-one-decision/SKILL.md"
+    ],
+    "admission_record": "system-one-decision"
+  },
+  "hash": "b81825c38b854f34ffaab2d0287eba61187742af0d755529a2f912b1b9313698",
+  "license": "Apache-2.0",
+  "provides": [
+    "system-one-decision"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_skill_catalog_contracts.py",
+    "status": "declared",
+    "covers": [
+      "system-one-decision"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/system-one-decision.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

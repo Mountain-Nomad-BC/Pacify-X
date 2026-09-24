@@ -1,0 +1,69 @@
+{
+  "id": "validate-production-containers",
+  "version": "0.1.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/validate-production-containers.json",
+      ".px/skills/validate-production-containers/SKILL.md"
+    ],
+    "admission_record": "validate-production-containers"
+  },
+  "hash": "fc67df051a1aadc2552b54949e380c752c3d48a723b32a95a95a1fd40b859036",
+  "license": "Apache-2.0",
+  "provides": [
+    "container",
+    "production",
+    "validation",
+    "isolation"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_capability_mining_skills.py; tests/test_capability_assimilation.py",
+    "status": "declared",
+    "covers": [
+      "container",
+      "production",
+      "validation",
+      "isolation"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/validate-production-containers.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

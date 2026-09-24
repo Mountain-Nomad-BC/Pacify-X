@@ -1,0 +1,73 @@
+{
+  "id": "govern-external-capability-intake",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/govern-external-capability-intake.json",
+      ".px/skills/govern-external-capability-intake/SKILL.md"
+    ],
+    "admission_record": "govern-external-capability-intake"
+  },
+  "hash": "6b8331fbe534be42456617e86eee1200c23b2738b00e15ec3f34394060acbd37",
+  "license": "Apache-2.0",
+  "provides": [
+    "admission",
+    "external-candidates",
+    "hooks",
+    "routing",
+    "session-fabric",
+    "staging"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_external_capability_provider.py",
+    "status": "declared",
+    "covers": [
+      "admission",
+      "external-candidates",
+      "hooks",
+      "routing",
+      "session-fabric",
+      "staging"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/govern-external-capability-intake.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

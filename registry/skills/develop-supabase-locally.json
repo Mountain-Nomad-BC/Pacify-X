@@ -1,0 +1,71 @@
+{
+  "id": "develop-supabase-locally",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/develop-supabase-locally.json",
+      ".px/skills/develop-supabase-locally/SKILL.md"
+    ],
+    "admission_record": "develop-supabase-locally"
+  },
+  "hash": "fd527c5875d1f9be7f122a33169b766daffd0879d918a6cfa3f36c62d04fe61c",
+  "license": "Apache-2.0",
+  "provides": [
+    "docker",
+    "local-development",
+    "migrations",
+    "seed",
+    "supabase"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_service_capability_provider.py",
+    "status": "declared",
+    "covers": [
+      "docker",
+      "local-development",
+      "migrations",
+      "seed",
+      "supabase"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/develop-supabase-locally.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "id": "operate-engineering-research-engine",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/operate-engineering-research-engine.json",
+      ".px/skills/operate-engineering-research-engine/SKILL.md"
+    ],
+    "admission_record": "operate-engineering-research-engine"
+  },
+  "hash": "15bc54e3c9aaf71bbf86f7055e3abe851b8d93f626a2c2ba4e477fd15c3a3652",
+  "license": "Apache-2.0",
+  "provides": [
+    "research",
+    "repository-fingerprint",
+    "mechanism-graph",
+    "version-drift",
+    "capability-delta"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local",
+    "network"
+  ],
+  "permissions": [
+    "network",
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_completion_controls.py",
+    "status": "declared",
+    "covers": [
+      "research",
+      "repository-fingerprint",
+      "mechanism-graph",
+      "version-drift",
+      "capability-delta"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/operate-engineering-research-engine.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

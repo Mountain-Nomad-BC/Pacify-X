@@ -1,0 +1,71 @@
+{
+  "id": "govern-operating-kernel",
+  "version": "0.1.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/govern-operating-kernel.json",
+      ".px/skills/govern-operating-kernel/SKILL.md"
+    ],
+    "admission_record": "govern-operating-kernel"
+  },
+  "hash": "da09d35ccaf9642e01a9b061d6388d3224c8e4da10521236abfe266aa8432edf",
+  "license": "Apache-2.0",
+  "provides": [
+    "authoritative",
+    "declared-suite",
+    "govern",
+    "kernel",
+    "operating"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_rel008_assimilation.py",
+    "status": "declared",
+    "covers": [
+      "authoritative",
+      "declared-suite",
+      "govern",
+      "kernel",
+      "operating"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/govern-operating-kernel.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

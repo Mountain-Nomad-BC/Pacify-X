@@ -1,0 +1,69 @@
+{
+  "id": "orchestrate-security-validation",
+  "version": "0.1.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/orchestrate-security-validation.json",
+      ".px/skills/orchestrate-security-validation/SKILL.md"
+    ],
+    "admission_record": "orchestrate-security-validation"
+  },
+  "hash": "b0dccfaea467fea90b181767775fa296ef54668db9617b52cabe682d0466dd7b",
+  "license": "Apache-2.0",
+  "provides": [
+    "security",
+    "validation",
+    "aggregation",
+    "pipeline"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_capability_mining_skills.py; tests/test_capability_assimilation.py",
+    "status": "declared",
+    "covers": [
+      "security",
+      "validation",
+      "aggregation",
+      "pipeline"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/orchestrate-security-validation.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

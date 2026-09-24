@@ -1,0 +1,78 @@
+{
+  "id": "system-one-decision",
+  "version": "1.0.0",
+  "owner": "runtime/system_one_decision.py",
+  "status": "active",
+  "provenance": {
+    "type": "authored_skill",
+    "basis": [
+      ".px/skills/system-one-decision/SKILL.md",
+      "registry/system_one_decision_policy.json"
+    ],
+    "admission_record": "system-one-decision"
+  },
+  "hash": "0000000000000000000000000000",
+  "license": "Apache-2.0",
+  "provides": [
+    "decision.system_one",
+    "intent.operation_class",
+    "routing.model_tier",
+    "entity.candidate_class",
+    "memory.write_candidate",
+    "learning.candidate_worth"
+  ],
+  "consumes": [
+    "compiled decision state",
+    "typed question envelope",
+    "versioned threshold policy"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "negligible",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "single_forward_pass",
+    "max_seconds": 1,
+    "basis": "non-autoregressive decision engine"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_system_one_decision.py",
+    "status": "declared",
+    "covers": [
+      "policy_registry_shape",
+      "explicit_unknown_compilation",
+      "threshold_and_margin_gating",
+      "ambiguity_action_routing",
+      "unavailable_engine_fallback",
+      "typed_protocol_failure"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/system-one-decision.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "advisory_only_no_canonical_writes"
+  },
+  "body_sha256": "1c728cfd30f2c8d4f6645ddd94c14599b0c32af1fb1085a4d3b69fb8e3bf6a7d",
+  "body": ".px/skills/system-one-decision/SKILL.md",
+  "references": [],
+  "clean_room": false,
+  "validation_freshness": "pending",
+  "context_budget_bytes": 24576
+}

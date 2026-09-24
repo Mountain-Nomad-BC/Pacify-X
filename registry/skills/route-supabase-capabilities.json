@@ -1,0 +1,69 @@
+{
+  "id": "route-supabase-capabilities",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/route-supabase-capabilities.json",
+      ".px/skills/route-supabase-capabilities/SKILL.md"
+    ],
+    "admission_record": "route-supabase-capabilities"
+  },
+  "hash": "cf8fe558bb267e10cbcdc7cb4a1aa77c4d27caf6f0c4d3c46a904b17a94c74d1",
+  "license": "Apache-2.0",
+  "provides": [
+    "capability-selection",
+    "postgres-platform",
+    "routing",
+    "supabase"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_service_capability_provider.py",
+    "status": "declared",
+    "covers": [
+      "capability-selection",
+      "postgres-platform",
+      "routing",
+      "supabase"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/route-supabase-capabilities.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

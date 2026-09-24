@@ -1,0 +1,71 @@
+{
+  "id": "engineer-verification-lab",
+  "version": "0.2.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/engineer-verification-lab.json",
+      ".px/skills/engineer-verification-lab/SKILL.md"
+    ],
+    "admission_record": "engineer-verification-lab"
+  },
+  "hash": "a66593aaad3a5b812219b37836750e65e86de49f133b7d22a55f0f601d6a7a5a",
+  "license": "Apache-2.0",
+  "provides": [
+    "authoritative",
+    "declared-suite",
+    "engineer",
+    "lab",
+    "verification"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_exact_tool_certification.py; tests/test_clean_room_capabilities.py",
+    "status": "declared",
+    "covers": [
+      "authoritative",
+      "declared-suite",
+      "engineer",
+      "lab",
+      "verification"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/engineer-verification-lab.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

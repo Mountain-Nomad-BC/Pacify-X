@@ -1,0 +1,73 @@
+{
+  "id": "observe-operate-n8n",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/observe-operate-n8n.json",
+      ".px/skills/observe-operate-n8n/SKILL.md"
+    ],
+    "admission_record": "observe-operate-n8n"
+  },
+  "hash": "319c5e089a3949bdc804ce45f12a18dacbadf57567ccc62b55dd5be7109c84b9",
+  "license": "Apache-2.0",
+  "provides": [
+    "capacity",
+    "logs",
+    "metrics",
+    "n8n",
+    "observability",
+    "slo"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_service_capability_provider.py",
+    "status": "declared",
+    "covers": [
+      "capacity",
+      "logs",
+      "metrics",
+      "n8n",
+      "observability",
+      "slo"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/observe-operate-n8n.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

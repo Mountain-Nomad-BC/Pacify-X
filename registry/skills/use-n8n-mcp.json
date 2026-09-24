@@ -1,0 +1,71 @@
+{
+  "id": "use-n8n-mcp",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/use-n8n-mcp.json",
+      ".px/skills/use-n8n-mcp/SKILL.md"
+    ],
+    "admission_record": "use-n8n-mcp"
+  },
+  "hash": "6fd25901321c7ddb87fa9d2f193d219f3733763bed1d61e2d97a3831e728e7e5",
+  "license": "Apache-2.0",
+  "provides": [
+    "approval",
+    "mcp",
+    "n8n",
+    "prompt-injection",
+    "tool-schemas"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_service_capability_provider.py",
+    "status": "declared",
+    "covers": [
+      "approval",
+      "mcp",
+      "n8n",
+      "prompt-injection",
+      "tool-schemas"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/use-n8n-mcp.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

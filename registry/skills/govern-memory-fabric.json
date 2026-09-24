@@ -1,0 +1,80 @@
+{
+  "id": "govern-memory-fabric",
+  "version": "0.2.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/govern-memory-fabric.json",
+      ".px/skills/govern-memory-fabric/SKILL.md"
+    ],
+    "admission_record": "govern-memory-fabric"
+  },
+  "hash": "ed3b733ecbcbe6d6a8be1b38ec390ae6806599a5cd928c31d6b582c7072e2bf4",
+  "license": "Apache-2.0",
+  "provides": [
+    "memory",
+    "provenance",
+    "isolation",
+    "sharding",
+    "repair",
+    "capture",
+    "layered-memory",
+    "loadout",
+    "context-assembly",
+    "offload",
+    "evaluation"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_memory_intelligence.py; tests/test_clean_room_capabilities.py",
+    "status": "declared",
+    "covers": [
+      "memory",
+      "provenance",
+      "isolation",
+      "sharding",
+      "repair",
+      "capture",
+      "layered-memory",
+      "loadout"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/govern-memory-fabric.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

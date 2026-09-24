@@ -1,0 +1,69 @@
+{
+  "id": "govern-retrieval-generations",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/govern-retrieval-generations.json",
+      ".px/skills/govern-retrieval-generations/SKILL.md"
+    ],
+    "admission_record": "govern-retrieval-generations"
+  },
+  "hash": "98a1bafba3d54620824ecc701460639f7c9d7fa138111ceb47ba90851d246a85",
+  "license": "Apache-2.0",
+  "provides": [
+    "govern-retrieval-generations"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_skill_catalog_contracts.py",
+    "status": "declared",
+    "covers": [
+      "govern-retrieval-generations"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/govern-retrieval-generations.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  },
+  "body_sha256": "4e8acdba659fd23589bdac8233d6eeff1d087789e0e954b95f78416ca1fded9c",
+  "body": ".px/skills/govern-retrieval-generations/SKILL.md",
+  "references": [],
+  "clean_room": false,
+  "validation_freshness": "pending",
+  "context_budget_bytes": 24576
+}

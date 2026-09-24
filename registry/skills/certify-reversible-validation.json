@@ -1,0 +1,69 @@
+{
+  "id": "certify-reversible-validation",
+  "version": "0.1.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/certify-reversible-validation.json",
+      ".px/skills/certify-reversible-validation/SKILL.md"
+    ],
+    "admission_record": "certify-reversible-validation"
+  },
+  "hash": "ab1de909ba1b68fec471a4f2e522986fd307c865a0efffaec7d11e0f24672a73",
+  "license": "Apache-2.0",
+  "provides": [
+    "validation",
+    "recovery",
+    "ui",
+    "reversible"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_capability_mining_skills.py; tests/test_capability_assimilation.py",
+    "status": "declared",
+    "covers": [
+      "validation",
+      "recovery",
+      "ui",
+      "reversible"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/certify-reversible-validation.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

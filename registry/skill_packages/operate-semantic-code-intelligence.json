@@ -1,0 +1,69 @@
+{
+  "id": "operate-semantic-code-intelligence",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/operate-semantic-code-intelligence.json",
+      ".px/skills/operate-semantic-code-intelligence/SKILL.md"
+    ],
+    "admission_record": "operate-semantic-code-intelligence"
+  },
+  "hash": "0fe4f753c2d5216aaad312addfde3fde8fd64cf00dcceff363d86918f3a3c194",
+  "license": "Apache-2.0",
+  "provides": [
+    "operate-semantic-code-intelligence"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_skill_catalog_contracts.py",
+    "status": "declared",
+    "covers": [
+      "operate-semantic-code-intelligence"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/operate-semantic-code-intelligence.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  },
+  "body_sha256": "14f3fcf5504796a83025f8385f86431a8bd8fa306c9b0d5406812e6a6ba19b04",
+  "body": ".px/skills/operate-semantic-code-intelligence/SKILL.md",
+  "references": [],
+  "clean_room": false,
+  "validation_freshness": "pending",
+  "context_budget_bytes": 24576
+}

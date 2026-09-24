@@ -1,0 +1,73 @@
+{
+  "id": "design-supabase-postgres",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/design-supabase-postgres.json",
+      ".px/skills/design-supabase-postgres/SKILL.md"
+    ],
+    "admission_record": "design-supabase-postgres"
+  },
+  "hash": "c930c283cf5e322ee40a3abf2f2905b386b1647bc48d0263eeb519b407cb5a18",
+  "license": "Apache-2.0",
+  "provides": [
+    "constraints",
+    "indexes",
+    "pooler",
+    "postgres",
+    "schema",
+    "supabase"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_service_capability_provider.py",
+    "status": "declared",
+    "covers": [
+      "constraints",
+      "indexes",
+      "pooler",
+      "postgres",
+      "schema",
+      "supabase"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/design-supabase-postgres.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "id": "develop-n8n-monorepo",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/develop-n8n-monorepo.json",
+      ".px/skills/develop-n8n-monorepo/SKILL.md"
+    ],
+    "admission_record": "develop-n8n-monorepo"
+  },
+  "hash": "0cb548e1487d573464851d1ad7cc34bc83db6729c6c1f3fd11a77da2d37439e9",
+  "license": "Apache-2.0",
+  "provides": [
+    "agents.md",
+    "monorepo",
+    "n8n",
+    "package-gates",
+    "pnpm"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_service_capability_provider.py",
+    "status": "declared",
+    "covers": [
+      "agents.md",
+      "monorepo",
+      "n8n",
+      "package-gates",
+      "pnpm"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/develop-n8n-monorepo.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "id": "frontier-questioning",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/frontier-questioning.json",
+      ".px/skills/frontier-questioning/SKILL.md"
+    ],
+    "admission_record": "frontier-questioning"
+  },
+  "hash": "bd438fe605ef4c5fc13f4c57fb5aa86a23d2c581b8beac31b6205c542e7ec40d",
+  "license": "Apache-2.0",
+  "provides": [
+    "engineering-reasoning",
+    "frontier",
+    "questioning"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_project_reasoning.py",
+    "status": "declared",
+    "covers": [
+      "engineering-reasoning",
+      "frontier",
+      "questioning"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/frontier-questioning.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

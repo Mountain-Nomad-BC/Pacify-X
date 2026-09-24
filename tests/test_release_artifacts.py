@@ -8,6 +8,7 @@ import pytest
 
 from runtime.release_artifacts import (
     classify_tree,
+    derived_custody_match,
     materialize_release_source,
     verify_frozen_product,
 )
@@ -541,6 +542,117 @@ def test_retained_wal_transaction_custody_is_control_output() -> None:
     assert second["valid"], second["errors"]
     assert record["classification"] == "control_output"
     assert first["product_digest"] == second["product_digest"]
+
+
+def test_declared_custody_namespace_is_non_product_and_unhashed() -> None:
+    """A declared custody namespace is dispositioned, not hashed, and stays visible."""
+
+    root = _minimal_tree()
+    custody = root / ".px/skills/example-skill/memory/stats.json"
+    custody.parent.mkdir(parents=True)
+    custody.write_text('{"record_count":0}\n', encoding="utf-8")
+    first = classify_tree(root)
+    record = next(
+        item
+        for item in first["records"]
+        if item["path"] == ".px/skills/example-skill/memory/stats.json"
+    )
+    assert first["valid"], first["errors"]
+    # Explicit disposition, still present in the inventory...
+    assert record["classification"] == "derived_custody"
+    assert record["sha256"] is None
+    # ...and it cannot move the governed product digest.
+    custody.write_text('{"record_count":99}\n', encoding="utf-8")
+    second = classify_tree(root)
+    assert second["valid"], second["errors"]
+    assert first["product_digest"] == second["product_digest"]
+
+
+def test_custody_namespace_matches_each_declared_shape() -> None:
+    """Positive matches for every declared custody namespace."""
+
+    root = _minimal_tree()
+    for relative in (
+        ".px/skills/example-skill/memory/usage.jsonl",
+        "orchestration/workflows/build-minimum-package/memory/stats.json",
+        "providers/agency_agents/agents/reviewer/memory/stats.json",
+    ):
+        target = root / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text("{}\n", encoding="utf-8")
+    result = classify_tree(root)
+    assert result["valid"], result["errors"]
+    by_path = {item["path"]: item for item in result["records"]}
+    for relative in (
+        ".px/skills/example-skill/memory/usage.jsonl",
+        "orchestration/workflows/build-minimum-package/memory/stats.json",
+        "providers/agency_agents/agents/reviewer/memory/stats.json",
+    ):
+        assert by_path[relative]["classification"] == "derived_custody"
+
+
+def test_custody_namespace_is_shape_anchored_not_component_matched() -> None:
+    """A directory merely named `memory` outside the declared shape is never caught."""
+
+    root = _minimal_tree()
+    # Same trailing name, different depth and ancestry: must stay product source.
+    for relative in (
+        "contracts/memory/usage-record.schema.json",
+        "runtime/memory/client.py",
+        ".px/skills/memory/body.md",
+        ".px/memory/aggregate.json",
+    ):
+        target = root / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text("{}\n", encoding="utf-8")
+    result = classify_tree(root)
+    assert result["valid"], result["errors"]
+    by_path = {item["path"]: item for item in result["records"]}
+    for relative in (
+        "contracts/memory/usage-record.schema.json",
+        "runtime/memory/client.py",
+        ".px/skills/memory/body.md",
+        ".px/memory/aggregate.json",
+    ):
+        assert by_path[relative]["classification"] == "product_input", relative
+
+
+def test_custody_namespace_requires_the_custody_directory_itself() -> None:
+    """Sibling content of a custody directory remains governed product source."""
+
+    root = _minimal_tree()
+    body = root / ".px/skills/example-skill/SKILL.md"
+    body.parent.mkdir(parents=True)
+    body.write_text("---\nname: example-skill\n---\n# Body\n", encoding="utf-8")
+    result = classify_tree(root)
+    record = next(
+        item
+        for item in result["records"]
+        if item["path"] == ".px/skills/example-skill/SKILL.md"
+    )
+    assert record["classification"] == "product_input"
+    assert record["sha256"] is not None
+
+
+def test_a_custody_file_inside_a_custody_directory_is_matched_at_depth() -> None:
+    """Matching is depth-anchored: the file must live inside the custody directory."""
+
+    namespaces = ((".px", "skills", "*", "memory"),)
+    assert derived_custody_match(".px/skills/one/memory/stats.json", namespaces)
+    assert derived_custody_match(".px/skills/one/memory/deep/nested.json", namespaces)
+    # The custody directory itself and anything shallower must not match.
+    assert not derived_custody_match(".px/skills/one/memory", namespaces)
+    assert not derived_custody_match(".px/skills/memory/stats.json", namespaces)
+    assert not derived_custody_match(".px/skills/one/other/stats.json", namespaces)
+    assert not derived_custody_match("memory/stats.json", namespaces)
+    # An unrelated same-named directory is never matched.
+    assert not derived_custody_match("contracts/memory/usage.schema.json", namespaces)
+
+
+def test_an_empty_custody_denominator_matches_nothing() -> None:
+    """No declared namespaces means strict prefix behaviour, not a wildcard."""
+
+    assert not derived_custody_match(".px/skills/one/memory/stats.json", ())
 
 
 def test_nested_evidence_is_not_a_product_input() -> None:

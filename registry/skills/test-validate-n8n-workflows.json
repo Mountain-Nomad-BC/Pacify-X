@@ -1,0 +1,71 @@
+{
+  "id": "test-validate-n8n-workflows",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/test-validate-n8n-workflows.json",
+      ".px/skills/test-validate-n8n-workflows/SKILL.md"
+    ],
+    "admission_record": "test-validate-n8n-workflows"
+  },
+  "hash": "ce95c2b306be1beaccb6bb4b80e649d8c913b9247c490eb95448bf1be03459a3",
+  "license": "Apache-2.0",
+  "provides": [
+    "contracts",
+    "failure-injection",
+    "fixtures",
+    "n8n",
+    "outcome-verification"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_service_capability_provider.py",
+    "status": "declared",
+    "covers": [
+      "contracts",
+      "failure-injection",
+      "fixtures",
+      "n8n",
+      "outcome-verification"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/test-validate-n8n-workflows.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

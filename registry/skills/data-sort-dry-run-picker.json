@@ -1,0 +1,71 @@
+{
+  "id": "data-sort-dry-run-picker",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/data-sort-dry-run-picker.json",
+      ".px/skills/data-sort-dry-run-picker/SKILL.md"
+    ],
+    "admission_record": "data-sort-dry-run-picker"
+  },
+  "hash": "8b82d7b3729c401a1fe8ea7d2f7ca910d5ff4ff0118c1cb17d7456ffc18c962e",
+  "license": "Apache-2.0",
+  "provides": [
+    "benchmark",
+    "bulk-data",
+    "correctness-trace",
+    "dry-run",
+    "sorting"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_sort_picker.py",
+    "status": "declared",
+    "covers": [
+      "benchmark",
+      "bulk-data",
+      "correctness-trace",
+      "dry-run",
+      "sorting"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/data-sort-dry-run-picker.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

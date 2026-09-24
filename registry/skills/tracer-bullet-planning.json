@@ -1,0 +1,69 @@
+{
+  "id": "tracer-bullet-planning",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/tracer-bullet-planning.json",
+      ".px/skills/tracer-bullet-planning/SKILL.md"
+    ],
+    "admission_record": "tracer-bullet-planning"
+  },
+  "hash": "d387f32bf97c886bf96cc17f2b1c4d9b4bb1670484ab5a2bf6e7717835a2821d",
+  "license": "Apache-2.0",
+  "provides": [
+    "bullet",
+    "engineering-reasoning",
+    "planning",
+    "tracer"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_project_reasoning.py; tests/test_clean_room_capabilities.py",
+    "status": "declared",
+    "covers": [
+      "bullet",
+      "engineering-reasoning",
+      "planning",
+      "tracer"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/tracer-bullet-planning.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

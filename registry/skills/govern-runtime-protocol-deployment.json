@@ -1,0 +1,73 @@
+{
+  "id": "govern-runtime-protocol-deployment",
+  "version": "0.1.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/govern-runtime-protocol-deployment.json",
+      ".px/skills/govern-runtime-protocol-deployment/SKILL.md"
+    ],
+    "admission_record": "govern-runtime-protocol-deployment"
+  },
+  "hash": "f7fe321a01891e6993e847d2d6d7409c62c04b690ca7e2b7eac7e7b8610850ce",
+  "license": "Apache-2.0",
+  "provides": [
+    "authoritative",
+    "declared-suite",
+    "deployment",
+    "govern",
+    "protocol",
+    "runtime"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_rel008_assimilation.py",
+    "status": "declared",
+    "covers": [
+      "authoritative",
+      "declared-suite",
+      "deployment",
+      "govern",
+      "protocol",
+      "runtime"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/govern-runtime-protocol-deployment.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "id": "questionnaire-delegation",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/questionnaire-delegation.json",
+      ".px/skills/questionnaire-delegation/SKILL.md"
+    ],
+    "admission_record": "questionnaire-delegation"
+  },
+  "hash": "b6379454c97326fe8fd48906339adcd11a6da39958d8b85a8527d1c8ff0216cf",
+  "license": "Apache-2.0",
+  "provides": [
+    "delegation",
+    "engineering-reasoning",
+    "questionnaire"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_project_reasoning.py",
+    "status": "declared",
+    "covers": [
+      "delegation",
+      "engineering-reasoning",
+      "questionnaire"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/questionnaire-delegation.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

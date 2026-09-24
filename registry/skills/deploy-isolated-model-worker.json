@@ -1,0 +1,71 @@
+{
+  "id": "deploy-isolated-model-worker",
+  "version": "0.1.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/deploy-isolated-model-worker.json",
+      ".px/skills/deploy-isolated-model-worker/SKILL.md"
+    ],
+    "admission_record": "deploy-isolated-model-worker"
+  },
+  "hash": "17dbf2955a77ca0d10787b55ea2010bf23627a8c04d706ba79511aea0f4893e7",
+  "license": "Apache-2.0",
+  "provides": [
+    "model",
+    "worker",
+    "gpu",
+    "container",
+    "isolation"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_capability_mining_skills.py; tests/test_capability_assimilation.py",
+    "status": "declared",
+    "covers": [
+      "model",
+      "worker",
+      "gpu",
+      "container",
+      "isolation"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/deploy-isolated-model-worker.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

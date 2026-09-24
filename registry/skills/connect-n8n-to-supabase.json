@@ -1,0 +1,73 @@
+{
+  "id": "connect-n8n-to-supabase",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/connect-n8n-to-supabase.json",
+      ".px/skills/connect-n8n-to-supabase/SKILL.md"
+    ],
+    "admission_record": "connect-n8n-to-supabase"
+  },
+  "hash": "0075e30eae2258a443e2805bc009a55fd8a03db585ae8ba20c9ca0c1a31fba36",
+  "license": "Apache-2.0",
+  "provides": [
+    "cross",
+    "custom-schema",
+    "data-api",
+    "rpc",
+    "service-role",
+    "supabase-node"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_service_capability_provider.py",
+    "status": "declared",
+    "covers": [
+      "cross",
+      "custom-schema",
+      "data-api",
+      "rpc",
+      "service-role",
+      "supabase-node"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/connect-n8n-to-supabase.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

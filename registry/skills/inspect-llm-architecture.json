@@ -1,0 +1,71 @@
+{
+  "id": "inspect-llm-architecture",
+  "version": "0.1.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/inspect-llm-architecture.json",
+      ".px/skills/inspect-llm-architecture/SKILL.md"
+    ],
+    "admission_record": "inspect-llm-architecture"
+  },
+  "hash": "dc7d255faf89dccb2a4d2f459c953dc67e658a35028c9d1450a7e68b65fd9778",
+  "license": "Apache-2.0",
+  "provides": [
+    "model",
+    "architecture",
+    "memory",
+    "inspection",
+    "local-inference"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_local_model_capabilities.py",
+    "status": "declared",
+    "covers": [
+      "model",
+      "architecture",
+      "memory",
+      "inspection",
+      "local-inference"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/inspect-llm-architecture.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

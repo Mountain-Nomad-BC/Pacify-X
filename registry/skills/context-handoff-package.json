@@ -1,0 +1,69 @@
+{
+  "id": "context-handoff-package",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/context-handoff-package.json",
+      ".px/skills/context-handoff-package/SKILL.md"
+    ],
+    "admission_record": "context-handoff-package"
+  },
+  "hash": "982ca875d90166faab7379d255e4a9e2b61b7bb618ee1aca5cebe234c0f99510",
+  "license": "Apache-2.0",
+  "provides": [
+    "context",
+    "engineering-reasoning",
+    "handoff",
+    "package"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_project_reasoning.py",
+    "status": "declared",
+    "covers": [
+      "context",
+      "engineering-reasoning",
+      "handoff",
+      "package"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/context-handoff-package.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

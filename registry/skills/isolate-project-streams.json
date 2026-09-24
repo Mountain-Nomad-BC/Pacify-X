@@ -1,0 +1,71 @@
+{
+  "id": "isolate-project-streams",
+  "version": "0.1.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/isolate-project-streams.json",
+      ".px/skills/isolate-project-streams/SKILL.md"
+    ],
+    "admission_record": "isolate-project-streams"
+  },
+  "hash": "345e8b192dad3eb9c9dca11422eb90957cb540334e06470aee92f7c156280474",
+  "license": "Apache-2.0",
+  "provides": [
+    "project",
+    "session",
+    "lease",
+    "transfer",
+    "isolation"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_workspace_manager.py",
+    "status": "declared",
+    "covers": [
+      "project",
+      "session",
+      "lease",
+      "transfer",
+      "isolation"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/isolate-project-streams.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

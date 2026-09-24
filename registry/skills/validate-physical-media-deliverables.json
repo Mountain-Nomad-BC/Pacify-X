@@ -1,0 +1,71 @@
+{
+  "id": "validate-physical-media-deliverables",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/validate-physical-media-deliverables.json",
+      ".px/skills/validate-physical-media-deliverables/SKILL.md"
+    ],
+    "admission_record": "validate-physical-media-deliverables"
+  },
+  "hash": "9a78e93abc1db36a2f3ac39ff6f86a259ae8b6ff686fba7d5c96ca895fdf3d0d",
+  "license": "Apache-2.0",
+  "provides": [
+    "cad",
+    "manufacturing",
+    "robotics",
+    "media",
+    "validation"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_completion_controls.py",
+    "status": "declared",
+    "covers": [
+      "cad",
+      "manufacturing",
+      "robotics",
+      "media",
+      "validation"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/validate-physical-media-deliverables.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

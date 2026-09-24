@@ -1,0 +1,63 @@
+{
+  "id": "pacify-x-studio-operator",
+  "version": "1.0.2",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/pacify-x-studio-operator.json",
+      ".px/skills/pacify-x-studio-operator/SKILL.md"
+    ],
+    "admission_record": "pacify-x-studio-operator"
+  },
+  "hash": "62641ba1660a02c0eb15461ec1815170d5b5ef99481c130825e159f090838913",
+  "license": "Apache-2.0",
+  "provides": [
+    "explicit Pacify-X Studio inspection"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": ".px/skills/pacify-x-studio-operator/tests/validation.json",
+    "status": "declared",
+    "covers": [
+      "explicit Pacify-X Studio inspection"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/pacify-x-studio-operator.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

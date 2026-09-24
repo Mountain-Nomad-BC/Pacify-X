@@ -1,0 +1,73 @@
+{
+  "id": "backup-deploy-recover-supabase",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/backup-deploy-recover-supabase.json",
+      ".px/skills/backup-deploy-recover-supabase/SKILL.md"
+    ],
+    "admission_record": "backup-deploy-recover-supabase"
+  },
+  "hash": "00a2fb4c4121fb94a641de8bd23bb3dfa5d17dd2e187cfdf8b286775c78a3dac",
+  "license": "Apache-2.0",
+  "provides": [
+    "backup",
+    "deployment",
+    "pitr",
+    "recovery",
+    "supabase"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "network",
+    "read_local"
+  ],
+  "permissions": [
+    "network",
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_service_capability_provider.py",
+    "status": "declared",
+    "covers": [
+      "backup",
+      "deployment",
+      "pitr",
+      "recovery",
+      "supabase"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/backup-deploy-recover-supabase.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

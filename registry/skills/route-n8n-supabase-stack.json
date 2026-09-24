@@ -1,0 +1,69 @@
+{
+  "id": "route-n8n-supabase-stack",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/route-n8n-supabase-stack.json",
+      ".px/skills/route-n8n-supabase-stack/SKILL.md"
+    ],
+    "admission_record": "route-n8n-supabase-stack"
+  },
+  "hash": "48707f4847b9bd8cfb0f5f7d9560c6e262326658a38a14c52a08554ea88186ec",
+  "license": "Apache-2.0",
+  "provides": [
+    "combined-stack",
+    "cross",
+    "routing",
+    "trust-boundaries"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_service_capability_provider.py",
+    "status": "declared",
+    "covers": [
+      "combined-stack",
+      "cross",
+      "routing",
+      "trust-boundaries"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/route-n8n-supabase-stack.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

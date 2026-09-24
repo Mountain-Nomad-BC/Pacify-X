@@ -1,0 +1,71 @@
+{
+  "id": "use-n8n-expressions-and-data",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/use-n8n-expressions-and-data.json",
+      ".px/skills/use-n8n-expressions-and-data/SKILL.md"
+    ],
+    "admission_record": "use-n8n-expressions-and-data"
+  },
+  "hash": "acbeafe2102a5cf8bb46a238a4a5980469ae42d50aeeb06bfb7953e33a12b402",
+  "license": "Apache-2.0",
+  "provides": [
+    "binary-data",
+    "expressions",
+    "items",
+    "mapping",
+    "n8n"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_service_capability_provider.py",
+    "status": "declared",
+    "covers": [
+      "binary-data",
+      "expressions",
+      "items",
+      "mapping",
+      "n8n"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/use-n8n-expressions-and-data.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

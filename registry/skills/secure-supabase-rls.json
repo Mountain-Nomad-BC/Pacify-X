@@ -1,0 +1,71 @@
+{
+  "id": "secure-supabase-rls",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/secure-supabase-rls.json",
+      ".px/skills/secure-supabase-rls/SKILL.md"
+    ],
+    "admission_record": "secure-supabase-rls"
+  },
+  "hash": "e0b36736804d4420202e0f66a51ca956edd63141de088bac01b479fe1b40b349",
+  "license": "Apache-2.0",
+  "provides": [
+    "auth.uid",
+    "policies",
+    "rls",
+    "supabase",
+    "tenant-isolation"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_service_capability_provider.py",
+    "status": "declared",
+    "covers": [
+      "auth.uid",
+      "policies",
+      "rls",
+      "supabase",
+      "tenant-isolation"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/secure-supabase-rls.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

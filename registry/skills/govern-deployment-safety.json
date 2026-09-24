@@ -1,0 +1,69 @@
+{
+  "id": "govern-deployment-safety",
+  "version": "0.1.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/govern-deployment-safety.json",
+      ".px/skills/govern-deployment-safety/SKILL.md"
+    ],
+    "admission_record": "govern-deployment-safety"
+  },
+  "hash": "9438f763c0ac5d057d62cf6f5f6ec345c0a978991f818070b4ccd679a601406b",
+  "license": "Apache-2.0",
+  "provides": [
+    "deployment",
+    "migration",
+    "release",
+    "rollback"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_capability_mining_skills.py; tests/test_capability_assimilation.py",
+    "status": "declared",
+    "covers": [
+      "deployment",
+      "migration",
+      "release",
+      "rollback"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/govern-deployment-safety.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

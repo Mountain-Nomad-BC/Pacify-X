@@ -1,0 +1,63 @@
+{
+  "id": "diagnostic-coordinator",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/diagnostic-coordinator.json",
+      ".px/skills/diagnostic-coordinator/SKILL.md"
+    ],
+    "admission_record": "diagnostic-coordinator"
+  },
+  "hash": "a236d29e34a1b9d609c6e42b25a58805689c83606de51be7573aa879e7fc429e",
+  "license": "Apache-2.0",
+  "provides": [
+    "diagnostic-coordinator"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_skill_catalog_contracts.py",
+    "status": "declared",
+    "covers": [
+      "diagnostic-coordinator"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/diagnostic-coordinator.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

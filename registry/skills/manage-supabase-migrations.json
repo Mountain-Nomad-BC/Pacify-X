@@ -1,0 +1,73 @@
+{
+  "id": "manage-supabase-migrations",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/manage-supabase-migrations.json",
+      ".px/skills/manage-supabase-migrations/SKILL.md"
+    ],
+    "admission_record": "manage-supabase-migrations"
+  },
+  "hash": "51c8ba16ab9bbef7a4e1fa9df833f0b8b158e701a82dc6a31c2639ec2a7e2423",
+  "license": "Apache-2.0",
+  "provides": [
+    "backfill",
+    "expand-contract",
+    "migrations",
+    "schema-drift",
+    "supabase"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "network",
+    "read_local"
+  ],
+  "permissions": [
+    "network",
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_service_capability_provider.py",
+    "status": "declared",
+    "covers": [
+      "backfill",
+      "expand-contract",
+      "migrations",
+      "schema-drift",
+      "supabase"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/manage-supabase-migrations.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

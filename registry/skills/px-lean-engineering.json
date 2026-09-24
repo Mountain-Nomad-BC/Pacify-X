@@ -1,0 +1,69 @@
+{
+  "id": "px-lean-engineering",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/px-lean-engineering.json",
+      ".px/skills/px-lean-engineering/SKILL.md"
+    ],
+    "admission_record": "px-lean-engineering"
+  },
+  "hash": "31eb78c5e006af7633753fb48aa71ef1d161d913eb688bb36045214942c02f40",
+  "license": "Apache-2.0",
+  "provides": [
+    "lean-engineering",
+    "repository-intelligence",
+    "reuse",
+    "verification"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_dashboard_api.py",
+    "status": "declared",
+    "covers": [
+      "lean-engineering",
+      "repository-intelligence",
+      "reuse",
+      "verification"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/px-lean-engineering.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

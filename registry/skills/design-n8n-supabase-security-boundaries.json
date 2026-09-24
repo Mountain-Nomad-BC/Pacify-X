@@ -1,0 +1,73 @@
+{
+  "id": "design-n8n-supabase-security-boundaries",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/design-n8n-supabase-security-boundaries.json",
+      ".px/skills/design-n8n-supabase-security-boundaries/SKILL.md"
+    ],
+    "admission_record": "design-n8n-supabase-security-boundaries"
+  },
+  "hash": "51f455280d4dc7ef7186550fefec90d97b5ae0b6bfa5458c726a40b8333cd887",
+  "license": "Apache-2.0",
+  "provides": [
+    "ai-boundaries",
+    "cross",
+    "rbac",
+    "rls",
+    "service-role",
+    "webhook-security"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_service_capability_provider.py",
+    "status": "declared",
+    "covers": [
+      "ai-boundaries",
+      "cross",
+      "rbac",
+      "rls",
+      "service-role",
+      "webhook-security"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/design-n8n-supabase-security-boundaries.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

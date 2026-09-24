@@ -302,6 +302,7 @@ def _release_dirty_state(root: Path) -> dict[str, Any]:
         if classifications.get(relative) in {
             "control_output",
             "evidence_output",
+            "derived_custody",
         } or _mutable_match(relative, rules):
             allowed.append(relative)
         else:

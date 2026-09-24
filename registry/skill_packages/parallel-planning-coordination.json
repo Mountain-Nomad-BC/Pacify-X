@@ -1,0 +1,67 @@
+{
+  "id": "parallel-planning-coordination",
+  "version": "1.0.0",
+  "owner": ".px/skills/parallel-planning-coordination/SKILL.md",
+  "status": "active",
+  "provenance": {
+    "type": "authored_skill",
+    "basis": [
+      ".px/skills/parallel-planning-coordination/SKILL.md",
+      "extension/resources/skills/parallel-planning-coordination/SKILL.md"
+    ],
+    "admission_record": "parallel-planning-coordination"
+  },
+  "hash": "0000000000000000000000000000000000000000000000000000000000000000",
+  "license": "Apache-2.0",
+  "provides": [
+    "parallel-planning-coordination"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 60,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_skill_library.py",
+    "status": "declared",
+    "covers": [
+      "parallel-planning-coordination"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/parallel-planning-coordination.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  },
+  "body": ".px/skills/parallel-planning-coordination/SKILL.md",
+  "body_sha256": "8c645ffb6c4e388c2cec1261fb892ee0ca5f786abec6e3ef46d427b5b178565d",
+  "references": [],
+  "clean_room": false,
+  "validation_freshness": "pending",
+  "context_budget_bytes": 24576
+}

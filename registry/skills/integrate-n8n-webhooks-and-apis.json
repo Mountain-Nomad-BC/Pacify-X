@@ -1,0 +1,73 @@
+{
+  "id": "integrate-n8n-webhooks-and-apis",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/integrate-n8n-webhooks-and-apis.json",
+      ".px/skills/integrate-n8n-webhooks-and-apis/SKILL.md"
+    ],
+    "admission_record": "integrate-n8n-webhooks-and-apis"
+  },
+  "hash": "156890a1c2d02a560a7c534ac9d309e49ab5f6a12cc7976c0b2f2afa45261317",
+  "license": "Apache-2.0",
+  "provides": [
+    "http",
+    "n8n",
+    "pagination",
+    "rate-limits",
+    "signatures",
+    "webhooks"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_service_capability_provider.py",
+    "status": "declared",
+    "covers": [
+      "http",
+      "n8n",
+      "pagination",
+      "rate-limits",
+      "signatures",
+      "webhooks"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/integrate-n8n-webhooks-and-apis.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

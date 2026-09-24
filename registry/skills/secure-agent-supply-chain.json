@@ -1,0 +1,73 @@
+{
+  "id": "secure-agent-supply-chain",
+  "version": "0.1.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/secure-agent-supply-chain.json",
+      ".px/skills/secure-agent-supply-chain/SKILL.md"
+    ],
+    "admission_record": "secure-agent-supply-chain"
+  },
+  "hash": "a119d1ab9bd08b53fd724ca5ee384d6466a921955136327c2338b09acf356706",
+  "license": "Apache-2.0",
+  "provides": [
+    "agent",
+    "authoritative",
+    "chain",
+    "declared-suite",
+    "secure",
+    "supply"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_rel008_assimilation.py",
+    "status": "declared",
+    "covers": [
+      "agent",
+      "authoritative",
+      "chain",
+      "declared-suite",
+      "secure",
+      "supply"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/secure-agent-supply-chain.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

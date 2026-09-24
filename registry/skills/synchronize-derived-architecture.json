@@ -1,0 +1,69 @@
+{
+  "id": "synchronize-derived-architecture",
+  "version": "0.1.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/synchronize-derived-architecture.json",
+      ".px/skills/synchronize-derived-architecture/SKILL.md"
+    ],
+    "admission_record": "synchronize-derived-architecture"
+  },
+  "hash": "d13f703c53e901e0a428f23ec6d0fa15315b702bb3dc0aaab5fc7e9810c5157f",
+  "license": "Apache-2.0",
+  "provides": [
+    "architecture",
+    "documents",
+    "graph",
+    "synchronization"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_capability_mining_skills.py; tests/test_capability_assimilation.py",
+    "status": "declared",
+    "covers": [
+      "architecture",
+      "documents",
+      "graph",
+      "synchronization"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/synchronize-derived-architecture.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

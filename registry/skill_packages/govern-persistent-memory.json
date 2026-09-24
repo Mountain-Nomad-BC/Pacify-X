@@ -1,0 +1,37 @@
+{
+  "id": "govern-persistent-memory",
+  "version": "0.2.0",
+  "status": "mapped_deferred",
+  "body": ".px/skills/govern-persistent-memory/SKILL.md",
+  "body_sha256": "4da2430bbe8ba0ba7ef1ea8f7753854c57a5e7a52e79ba28b227bc4d8401f0cb",
+  "references": [
+    "contracts/persistent_memory/memory-provider.contract.json",
+    "orchestration/workflows/persistent-memory-review.yaml"
+  ],
+  "capability_tags": [
+    "memory",
+    "external-provider",
+    "persistent-memory",
+    "review",
+    "graph",
+    "provenance",
+    "isolation"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "type": "project_authored_source_adaptation",
+    "basis": [
+      "Pacify-X-Persistent-Memory-Plugin",
+      "runtime/external_capability_provider.py",
+      "runtime/memory_fabric.py",
+      "runtime/memory_broker.py"
+    ]
+  },
+  "clean_room": false,
+  "tests": "tests/test_persistent_memory_provider.py; tests/test_persistent_memory_workflow.py",
+  "evidence": "tests/test_persistent_memory_provider.py",
+  "validation_freshness": "current",
+  "context_budget_bytes": 16384
+}

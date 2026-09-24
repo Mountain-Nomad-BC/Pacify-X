@@ -1,0 +1,71 @@
+{
+  "id": "audit-ai-runtime-assurance",
+  "version": "0.1.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/audit-ai-runtime-assurance.json",
+      ".px/skills/audit-ai-runtime-assurance/SKILL.md"
+    ],
+    "admission_record": "audit-ai-runtime-assurance"
+  },
+  "hash": "db7b50dba21da1c6f431bb61262f68d45c4d161067fad57ccac02aca08429f44",
+  "license": "Apache-2.0",
+  "provides": [
+    "ai",
+    "assurance",
+    "drift",
+    "privacy",
+    "benchmark"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_assurance_controls.py; tests/test_cognitive_assurance.py",
+    "status": "declared",
+    "covers": [
+      "ai",
+      "assurance",
+      "drift",
+      "privacy",
+      "benchmark"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/audit-ai-runtime-assurance.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "id": "context-compactor",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/context-compactor.json",
+      ".px/skills/context-compactor/SKILL.md"
+    ],
+    "admission_record": "context-compactor"
+  },
+  "hash": "01bba9a1a6ae323283b8d211d1576c2c3ab5fdad421afbf8a3ea40c6cb2c7511",
+  "license": "Apache-2.0",
+  "provides": [
+    "communication-budget",
+    "context",
+    "evidence-preservation",
+    "orchestration"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_clean_room_capabilities.py",
+    "status": "declared",
+    "covers": [
+      "communication-budget",
+      "context",
+      "evidence-preservation",
+      "orchestration"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/context-compactor.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

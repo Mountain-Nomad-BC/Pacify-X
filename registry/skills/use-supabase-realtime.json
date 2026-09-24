@@ -1,0 +1,71 @@
+{
+  "id": "use-supabase-realtime",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/use-supabase-realtime.json",
+      ".px/skills/use-supabase-realtime/SKILL.md"
+    ],
+    "admission_record": "use-supabase-realtime"
+  },
+  "hash": "886e0d842532c93efe816990efdcbc7d83bc39c8324548b76064c369026b0cfd",
+  "license": "Apache-2.0",
+  "provides": [
+    "broadcast",
+    "presence",
+    "realtime",
+    "supabase",
+    "websockets"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_service_capability_provider.py",
+    "status": "declared",
+    "covers": [
+      "broadcast",
+      "presence",
+      "realtime",
+      "supabase",
+      "websockets"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/use-supabase-realtime.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

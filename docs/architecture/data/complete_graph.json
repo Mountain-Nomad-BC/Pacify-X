@@ -2,7 +2,7 @@
   "schema_version": "px.closure-atlas/1",
   "metadata": {
     "basis": "supplied snapshot + preserved historical semantic IDs",
-    "source_inventory_sha256": "58d115e9bdd94ccd5b5a7d570706bfa70c5a1c14f7dc8d6bc14e2365bcb9c2df",
+    "source_inventory_sha256": "1854a92bd8d62a52385b50ee1131382216ee41235b299cfd94e9e25f6a1eb2a6",
     "baseline_graph_sha256": "84f6ce6fd8dfbacf8c0ea70992454892a295b12b7df0f3504ed7c432792fc6ee",
     "layout_version": "px-lifecycle-seeded-attraction/1",
     "scope": "Refresh of file bytes/static imports and presentation, not a completed semantic re-audit of every claim or the live repository.",
@@ -46520,8 +46520,8 @@
       "path": ".gitignore",
       "layer": "host",
       "kind": "file",
-      "sha256": "dfd43185bcf63652d6a5aaecd36548b4ba15b19d70b6055f5044a681c309426b",
-      "bytes": 2074,
+      "sha256": "d3d407b20e1e979c9befa258abb170032136fa6b21c58bb833326f129e8e9055",
+      "bytes": 2863,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -111170,8 +111170,8 @@
       "path": "policies/release-artifact-policy.json",
       "layer": "release",
       "kind": "file",
-      "sha256": "03e14bce0ba3a42bc5c2504050ac9c60f64d3199629d3e05171f6ab0043e7178",
-      "bytes": 3766,
+      "sha256": "55a03cbbeb165e3d9230f9c3d471d26e5d90ea950424810ed31db54f3fd80153",
+      "bytes": 4021,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -124421,7 +124421,7 @@
       "path": "registry/artifact_reachability.json",
       "layer": "host",
       "kind": "file",
-      "sha256": "c196b67b49e2bcc6e0ddebdf613e643bdbb39aa76e9dc59245b4120bd0b7f73d",
+      "sha256": "80275686d2b9976dfadf8c37a4d8dce81f81549ac254e2a36bd485070a4602c9",
       "bytes": 452364,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
@@ -125037,7 +125037,7 @@
       "path": "registry/effect_surface_ownership.json",
       "layer": "host",
       "kind": "file",
-      "sha256": "7716542eabdb3c6040a90200f1c8aa53d44543d961987282f85f2a4532eb8cbe",
+      "sha256": "d675a503a5f81daf274f99c9acc1aa2c2170a8bd8b2129ef8210ed76077d0a1e",
       "bytes": 606042,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
@@ -125066,7 +125066,7 @@
       "path": "registry/engine_identity.json",
       "layer": "host",
       "kind": "file",
-      "sha256": "132250bba3246832c547a6175a8692940437f927fc32d5cbd8b3c97a9652274a",
+      "sha256": "552e4824e898211ecdb1621fe65f2f3bab470f9c7160bef4606c05759b584caf",
       "bytes": 971222,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
@@ -126452,7 +126452,7 @@
       "path": "registry/provider_route_scan.json",
       "layer": "discovery",
       "kind": "file",
-      "sha256": "1f589b471dee9b0213f50b13ee3adfc897ec40537d72f2d37122e66234d64df8",
+      "sha256": "1d18b2697fe450042eddb95e6548e82bfb3e04d358751cbc665fc73c4afeb22d",
       "bytes": 111594,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
@@ -126503,7 +126503,7 @@
       "path": "registry/python_surface_ownership.json",
       "layer": "host",
       "kind": "file",
-      "sha256": "521b12a555853588eef7cb2d9196d613807f1abb5a1f6edb9e59552749671c30",
+      "sha256": "b0f31be3965ce8c333ca31e5c01a326d84023df9f1a1995c1dba36b0020eb5ef",
       "bytes": 472387,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
@@ -135435,7 +135435,7 @@
       "path": "registry/test_group_index.json",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "55d0af0faa5ed2399f1bcb94780495dd80075b8a6a6fb8d9706e89e8b0472a40",
+      "sha256": "5678e34bbc79ee38ba63a1e68a3841a808b45456a5acff69536fd46ff2aba45f",
       "bytes": 758320,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
@@ -140430,8 +140430,8 @@
       "path": "runtime/release_artifacts.py",
       "layer": "release",
       "kind": "file",
-      "sha256": "ab0f682ede323e34bf2c6bf28e41b8f6cae6c509da82928c011f5f4473c3d6df",
-      "bytes": 29212,
+      "sha256": "01b367ab2cc7b24507a6836eb8311238d3b9136a98c1b38af1804d7e57b4ab67",
+      "bytes": 33011,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -140606,8 +140606,8 @@
       "path": "runtime/release_identity.py",
       "layer": "release",
       "kind": "file",
-      "sha256": "689261aa194d8a9532362f0a4ab71878487211950b60527fba56747d38dff1f4",
-      "bytes": 18068,
+      "sha256": "ac41f1049b05c1d50c86ab0f8d0f13dff5ffb46c4877dcf2113e5e4db998606b",
+      "bytes": 18099,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -153865,8 +153865,8 @@
       "path": "tests/test_release_artifacts.py",
       "layer": "release",
       "kind": "file",
-      "sha256": "8bed0a9358cd5215555c0998b6996415237b90f0e8c69b8f9ebf5eb777d44997",
-      "bytes": 38223,
+      "sha256": "c014325c485128d935e522983471066524958cc07bc47e8e38d78552b0f6a3a6",
+      "bytes": 43139,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -213922,7 +213922,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/release_artifacts.py",
-        "line": 21
+        "line": 64
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -213941,7 +213941,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/release_artifacts.py",
-        "line": 22
+        "line": 65
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -213960,7 +213960,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/release_artifacts.py",
-        "line": 45
+        "line": 114
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -238280,7 +238280,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "tests/test_release_artifacts.py",
-        "line": 14
+        "line": 15
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -238299,7 +238299,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "tests/test_release_artifacts.py",
-        "line": 701
+        "line": 813
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -295254,8 +295254,8 @@
       "same-file-bytes": 2068,
       "changed-file": 2364
     },
-    "source_bytes": 57688163,
-    "source_exclusions": 58,
+    "source_bytes": 57697953,
+    "source_exclusions": 33,
     "source_parse_errors": 1,
     "unresolved_import_records": 6726,
     "system_isolates": [

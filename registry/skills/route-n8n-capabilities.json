@@ -1,0 +1,69 @@
+{
+  "id": "route-n8n-capabilities",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/route-n8n-capabilities.json",
+      ".px/skills/route-n8n-capabilities/SKILL.md"
+    ],
+    "admission_record": "route-n8n-capabilities"
+  },
+  "hash": "3f6a825e0550f2290b88deeaea66669798688fdc4e08baf2a9008dabbb729b87",
+  "license": "Apache-2.0",
+  "provides": [
+    "capability-selection",
+    "n8n",
+    "routing",
+    "workflow-automation"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_service_capability_provider.py",
+    "status": "declared",
+    "covers": [
+      "capability-selection",
+      "n8n",
+      "routing",
+      "workflow-automation"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/route-n8n-capabilities.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

@@ -130,8 +130,15 @@
     ".engineering-bootstrap/test-evidence/",
     ".engineering-bootstrap/resource-lifecycle/",
     ".engineering-bootstrap/wal/",
+    ".engineering-bootstrap/local-model-runtime/",
+    ".engineering-bootstrap/model-client-gateway/",
     "registry/.lock-recovery-receipts/",
     "registry/operational_gap_ledger.deltas/"
+  ],
+  "derived_custody_namespaces": [
+    ".px/skills/*/memory",
+    "orchestration/workflows/*/memory",
+    "providers/agency_agents/agents/*/memory"
   ],
   "evidence_allowed_suffixes": [
     ".json",

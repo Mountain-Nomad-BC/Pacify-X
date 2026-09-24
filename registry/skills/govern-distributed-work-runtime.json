@@ -1,0 +1,75 @@
+{
+  "id": "govern-distributed-work-runtime",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/govern-distributed-work-runtime.json",
+      ".px/skills/govern-distributed-work-runtime/SKILL.md"
+    ],
+    "admission_record": "govern-distributed-work-runtime"
+  },
+  "hash": "efff1902be108d76c6b655144f943cf1b91e185dca879511db959dc8db3c546c",
+  "license": "Apache-2.0",
+  "provides": [
+    "budget",
+    "lease",
+    "runtime-placement",
+    "multi-project",
+    "a2a",
+    "mcp"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local",
+    "network"
+  ],
+  "permissions": [
+    "network",
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_completion_controls.py",
+    "status": "declared",
+    "covers": [
+      "budget",
+      "lease",
+      "runtime-placement",
+      "multi-project",
+      "a2a",
+      "mcp"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/govern-distributed-work-runtime.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "id": "acquire-install-supabase",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/acquire-install-supabase.json",
+      ".px/skills/acquire-install-supabase/SKILL.md"
+    ],
+    "admission_record": "acquire-install-supabase"
+  },
+  "hash": "b41dc49fdca80b0a0a6dfd0674e915a6341c3f30b504c67842b07ba104a07a6d",
+  "license": "Apache-2.0",
+  "provides": [
+    "agent-skills",
+    "local-stack",
+    "project-dependency",
+    "supabase",
+    "supabase-cli"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "network",
+    "read_local"
+  ],
+  "permissions": [
+    "network",
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_service_capability_provider.py",
+    "status": "declared",
+    "covers": [
+      "agent-skills",
+      "local-stack",
+      "project-dependency",
+      "supabase",
+      "supabase-cli"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/acquire-install-supabase.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

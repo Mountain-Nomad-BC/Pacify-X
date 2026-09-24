@@ -1,0 +1,71 @@
+{
+  "id": "secure-n8n",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/secure-n8n.json",
+      ".px/skills/secure-n8n/SKILL.md"
+    ],
+    "admission_record": "secure-n8n"
+  },
+  "hash": "864d175358d70db9bff7704750401ea660472900a31c083c873e970c4d5aa9b3",
+  "license": "Apache-2.0",
+  "provides": [
+    "execution-isolation",
+    "least-privilege",
+    "n8n",
+    "retention",
+    "webhook-security"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_service_capability_provider.py",
+    "status": "declared",
+    "covers": [
+      "execution-isolation",
+      "least-privilege",
+      "n8n",
+      "retention",
+      "webhook-security"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/secure-n8n.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

@@ -16,6 +16,49 @@ from .repository_scope import is_external_environment_relative
 
 POLICY_PATH = "policies/release-artifact-policy.json"
 
+# Classifications whose bytes are inventoried and dispositioned but deliberately not
+# hashed: their content is mutable local state, not governed product source. Kept in one
+# place so the classification branch and the hashing branch can never disagree.
+UNHASHED_CLASSIFICATIONS = frozenset(
+    {"control_output", "evidence_output", "derived_custody"}
+)
+
+
+def derived_custody_match(
+    relative: str, namespaces: tuple[tuple[str, ...], ...]
+) -> bool:
+    """Report whether ``relative`` is inside a declared derived-custody namespace.
+
+    A namespace is a directory path whose final segment names the custody directory and
+    whose earlier segments are matched level by level. ``*`` matches exactly one
+    directory level, so a namespace describes a *path shape* rather than a bare
+    component name:
+
+        .px/skills/*/memory    ->  .px/skills/<skill>/memory/<file>      MATCH
+        .px/skills/memory/...  ->  no interior level                   NO MATCH
+        contracts/memory/x.schema.json -> different shape              NO MATCH
+
+    Matching is segment-wise and anchored at the repository root, which prevents an
+    unrelated directory that merely happens to be named ``memory`` from being treated as
+    custody. The matched path stays visible to classification; it receives an explicit
+    disposition instead of disappearing from the inventory.
+    """
+
+    if not namespaces:
+        return False
+    parts = relative.split("/")
+    for namespace in namespaces:
+        # The file lives *inside* the custody directory, so consume one trailing level.
+        depth = len(namespace)
+        if len(parts) <= depth:
+            continue
+        if all(
+            expected == "*" or expected == parts[index]
+            for index, expected in enumerate(namespace)
+        ):
+            return True
+    return False
+
 
 def decode_release_policy(raw: bytes | bytearray) -> dict[str, Any]:
     from .archive_io import portable_member_name
@@ -24,13 +67,39 @@ def decode_release_policy(raw: bytes | bytearray) -> dict[str, Any]:
     policy = decode_json_object(
         raw, max_bytes=1024 * 1024, max_depth=32, max_nodes=100000
     )
-    for field in ("control_output_paths", "control_output_prefixes"):
+    for field in (
+        "control_output_paths",
+        "control_output_prefixes",
+        "derived_custody_namespaces",
+    ):
         values = policy.get(field, [])
         if type(values) is not list or len(values) > 10000:
             raise ValueError("mutable-output policy requires bounded path arrays")
         for value in values:
             if type(value) is not str or not value or len(value.encode("utf-8")) > 4096:
                 raise ValueError("mutable-output path must be bounded text")
+            if field == "derived_custody_namespaces":
+                # A custody namespace is a relative directory path whose final segment
+                # names the custody directory, e.g. ``.px/skills/*/memory``. Each level is
+                # either the single-level placeholder ``*`` or a portable path segment, so
+                # a namespace describes a *path shape* and can never match one bare
+                # component out of context.
+                parts = value.split("/")
+                if (
+                    value.startswith("/")
+                    or value.endswith("/")
+                    or len(parts) < 2
+                    or len(parts) > 64
+                ):
+                    raise ValueError(
+                        "derived custody namespace must be a relative directory path "
+                        "of at least two levels"
+                    )
+                for part in parts:
+                    if part == "*":
+                        continue
+                    portable_member_name(part, allow_directory=False, max_bytes=255)
+                continue
             if field.endswith("prefixes"):
                 if not value.endswith("/"):
                     raise ValueError(
@@ -346,6 +415,13 @@ def classify_tree(root: Path) -> dict[str, Any]:
     control_output_prefixes = tuple(
         item.casefold() for item in policy.get("control_output_prefixes", [])
     )
+    # Declarative derived-custody namespaces: matched by path shape, not bare component
+    # name, so an unrelated directory called ``memory`` is never caught.
+    derived_custody_namespaces = tuple(
+        tuple(part.casefold() for part in str(namespace).split("/"))
+        for namespace in policy.get("derived_custody_namespaces", [])
+        if str(namespace).strip()
+    )
     evidence_suffixes = {
         item.casefold() for item in policy["evidence_allowed_suffixes"]
     }
@@ -415,6 +491,12 @@ def classify_tree(root: Path) -> dict[str, Any]:
             ):
                 classification = "control_output"
                 reason = "mutable release transaction, governance, or receipt control"
+            elif derived_custody_match(folded, derived_custody_namespaces):
+                # Derived local custody inside a declared product root: intentionally
+                # present, but never governed product source. It stays in the inventory
+                # with an explicit disposition and its content is not hashed.
+                classification = "derived_custody"
+                reason = "declared derived-custody namespace"
             elif any(part in evidence_roots for part in folded_parts):
                 classification = "evidence_output"
                 reason = "non-executable evidence namespace"
@@ -442,7 +524,7 @@ def classify_tree(root: Path) -> dict[str, Any]:
                 reason = "no release policy rule"
                 errors.append(f"unclassified release artifact: {relative}")
             if path.is_file():
-                if classification in {"control_output", "evidence_output"}:
+                if classification in UNHASHED_CLASSIFICATIONS:
                     content_sha256 = None
                 elif relative == POLICY_PATH:
                     if len(policy_raw) != entry.size:
@@ -467,7 +549,7 @@ def classify_tree(root: Path) -> dict[str, Any]:
                     }
                 )
                 if (
-                    classification not in {"control_output", "evidence_output"}
+                    classification not in UNHASHED_CLASSIFICATIONS
                     and relative != POLICY_PATH
                 ):
                     pending_images.append(

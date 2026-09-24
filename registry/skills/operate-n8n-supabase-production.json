@@ -1,0 +1,75 @@
+{
+  "id": "operate-n8n-supabase-production",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/operate-n8n-supabase-production.json",
+      ".px/skills/operate-n8n-supabase-production/SKILL.md"
+    ],
+    "admission_record": "operate-n8n-supabase-production"
+  },
+  "hash": "f8cc67cb8f6f45bfe47224a8be0d966783c8f46b5bcd22e65c6c4cae04f60a2e",
+  "license": "Apache-2.0",
+  "provides": [
+    "capacity",
+    "cost",
+    "cross",
+    "incident",
+    "production-operations",
+    "recovery",
+    "slo"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_service_capability_provider.py",
+    "status": "declared",
+    "covers": [
+      "capacity",
+      "cost",
+      "cross",
+      "incident",
+      "production-operations",
+      "recovery",
+      "slo"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/operate-n8n-supabase-production.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

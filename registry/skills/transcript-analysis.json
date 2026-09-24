@@ -1,0 +1,71 @@
+{
+  "id": "transcript-analysis",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/transcript-analysis.json",
+      ".px/skills/transcript-analysis/SKILL.md"
+    ],
+    "admission_record": "transcript-analysis"
+  },
+  "hash": "999f95344c2a538dec12424b56549c1d357b0f204ed3af1f1c1aaf6a2d21bbe7",
+  "license": "Apache-2.0",
+  "provides": [
+    "evidence",
+    "nlp",
+    "provenance",
+    "transcripts",
+    "validation"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_transcript_analysis.py",
+    "status": "declared",
+    "covers": [
+      "evidence",
+      "nlp",
+      "provenance",
+      "transcripts",
+      "validation"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/transcript-analysis.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

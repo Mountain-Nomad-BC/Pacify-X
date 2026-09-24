@@ -1,0 +1,71 @@
+{
+  "id": "design-build-n8n-workflows",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/design-build-n8n-workflows.json",
+      ".px/skills/design-build-n8n-workflows/SKILL.md"
+    ],
+    "admission_record": "design-build-n8n-workflows"
+  },
+  "hash": "92f324c02174d086698780b491d78bad0d30292b63741df1dadef822da6c815e",
+  "license": "Apache-2.0",
+  "provides": [
+    "error-paths",
+    "idempotency",
+    "n8n",
+    "sub-workflows",
+    "workflow-design"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_service_capability_provider.py",
+    "status": "declared",
+    "covers": [
+      "error-paths",
+      "idempotency",
+      "n8n",
+      "sub-workflows",
+      "workflow-design"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/design-build-n8n-workflows.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

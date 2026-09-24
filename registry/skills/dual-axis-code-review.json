@@ -1,0 +1,71 @@
+{
+  "id": "dual-axis-code-review",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/dual-axis-code-review.json",
+      ".px/skills/dual-axis-code-review/SKILL.md"
+    ],
+    "admission_record": "dual-axis-code-review"
+  },
+  "hash": "38818d8a9506df4b60b20f19890a0a0bf50aa88e0c2500371155cb9d9e214e63",
+  "license": "Apache-2.0",
+  "provides": [
+    "axis",
+    "code",
+    "dual",
+    "engineering-reasoning",
+    "review"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_project_reasoning.py",
+    "status": "declared",
+    "covers": [
+      "axis",
+      "code",
+      "dual",
+      "engineering-reasoning",
+      "review"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/dual-axis-code-review.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

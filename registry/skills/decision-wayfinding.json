@@ -1,0 +1,67 @@
+{
+  "id": "decision-wayfinding",
+  "version": "1.0.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/decision-wayfinding.json",
+      ".px/skills/decision-wayfinding/SKILL.md"
+    ],
+    "admission_record": "decision-wayfinding"
+  },
+  "hash": "36dc26278d3ef287a41956864a4df8a193bfba3c62b4e9f705560c4872c6858b",
+  "license": "Apache-2.0",
+  "provides": [
+    "decision",
+    "engineering-reasoning",
+    "wayfinding"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_project_reasoning.py; tests/test_clean_room_capabilities.py",
+    "status": "declared",
+    "covers": [
+      "decision",
+      "engineering-reasoning",
+      "wayfinding"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/decision-wayfinding.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

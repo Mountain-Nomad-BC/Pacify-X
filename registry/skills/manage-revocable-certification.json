@@ -1,0 +1,71 @@
+{
+  "id": "manage-revocable-certification",
+  "version": "0.1.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/manage-revocable-certification.json",
+      ".px/skills/manage-revocable-certification/SKILL.md"
+    ],
+    "admission_record": "manage-revocable-certification"
+  },
+  "hash": "f5fa63213035f7427734bcab9a4f68fab1adb392e66e78d7c8d7888cfc5a4076",
+  "license": "Apache-2.0",
+  "provides": [
+    "authoritative",
+    "certification",
+    "declared-suite",
+    "manage",
+    "revocable"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_rel008_assimilation.py",
+    "status": "declared",
+    "covers": [
+      "authoritative",
+      "certification",
+      "declared-suite",
+      "manage",
+      "revocable"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/manage-revocable-certification.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

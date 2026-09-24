@@ -1,0 +1,73 @@
+{
+  "id": "validate-contract-boundaries",
+  "version": "0.1.0",
+  "owner": "pacify-x-skill-catalogue",
+  "status": "active",
+  "provenance": {
+    "type": "catalogue_projection",
+    "basis": [
+      "registry/skill_catalog.toml",
+      "registry/admission_ledger.json",
+      "registry/skill_packages/validate-contract-boundaries.json",
+      ".px/skills/validate-contract-boundaries/SKILL.md"
+    ],
+    "admission_record": "validate-contract-boundaries"
+  },
+  "hash": "aa84239296cba67bbee39cc19362b019095b2d1b18b60109727702d5221f2bca",
+  "license": "Apache-2.0",
+  "provides": [
+    "contract",
+    "api",
+    "schema",
+    "event",
+    "permission",
+    "integration"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "bounded",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "local",
+    "max_seconds": 30,
+    "basis": "bounded"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_foundation_assurance.py",
+    "status": "declared",
+    "covers": [
+      "contract",
+      "api",
+      "schema",
+      "event",
+      "permission",
+      "integration"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/validate-contract-boundaries.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "catalogue_reprojection"
+  }
+}

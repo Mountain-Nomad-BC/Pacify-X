@@ -1,0 +1,74 @@
+{
+  "id": "operate-self-diagnostics",
+  "version": "1.0.0",
+  "owner": "runtime/self_diagnostics.py",
+  "status": "active",
+  "provenance": {
+    "type": "authored_skill",
+    "basis": [
+      ".px/skills/operate-self-diagnostics/SKILL.md",
+      "runtime/self_diagnostics.py"
+    ],
+    "admission_record": "operate-self-diagnostics"
+  },
+  "hash": "0000000000000000000000000000000000000000000000000000000000000000",
+  "license": "Apache-2.0",
+  "provides": [
+    "self-operations.diagnostics",
+    "diagnosis.classify-condition",
+    "diagnosis.select-specialist"
+  ],
+  "consumes": [
+    "task context",
+    "registry state"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "permissions": [
+    "read_local"
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "cost": {
+    "class": "negligible",
+    "max_tool_calls": 0,
+    "currency": "local"
+  },
+  "latency": {
+    "class": "in_process",
+    "max_seconds": 1,
+    "basis": "pure classification"
+  },
+  "risk": "R1",
+  "validation": {
+    "suite": "tests/test_operate_self_diagnostics.py",
+    "status": "declared",
+    "covers": [
+      "no_product_defect_reachable",
+      "probe_defect_reachable",
+      "stale_evidence_not_a_defect",
+      "environment_not_a_product_defect",
+      "no_mutation_path",
+      "owner_binding_or_explicit_miss"
+    ]
+  },
+  "evidence": {
+    "anchor": "registry/skill_packages/operate-self-diagnostics.json",
+    "kind": "skill_package"
+  },
+  "approval": {
+    "required": false,
+    "authority": "skill-admission-controller"
+  },
+  "rollback": {
+    "required": false,
+    "basis": "read_only_no_effects"
+  },
+  "body_sha256": "47a2e542857b12b0728c04577d9f66da6389353024046c3e1b0ccb997d8044d0",
+  "body": ".px/skills/operate-self-diagnostics/SKILL.md",
+  "references": [],
+  "clean_room": false,
+  "validation_freshness": "pending",
+  "context_budget_bytes": 24576
+}
