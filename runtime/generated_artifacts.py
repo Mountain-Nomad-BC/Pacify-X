@@ -84,8 +84,13 @@ def validate_generated_artifacts(root: Path) -> dict[str, Any]:
         reconcile as commissioned_skills,
     )
     from scripts.reconcile_declared_tool_hashes import expected as declared_tool_outputs
+    from scripts.migration.sync_skill_packaging import render as render_skill_packaging
     from scripts.build_contract_ownership_registry import build as contract_ownership
     from scripts.build_python_dependency_ownership import build as dependency_ownership
+    from .native_skills import validate_native_packages
+    from .provider_gateway import scan_direct_provider_routes
+    from .semantic_index import validate_semantic_index
+    from .test_profiles import build_test_group_index
 
     checks = {
         "domain_wrappers": wrappers(root, check=True),
@@ -94,6 +99,19 @@ def validate_generated_artifacts(root: Path) -> dict[str, Any]:
         "commissioned_skill_registry": commissioned_skills(root, check=True),
         "build_claims": validate_build_claims(root),
         "studio_operation_projections": studio_projection_check,
+        "native_skill_packages": validate_native_packages(root),
+        "provider_route_index": scan_direct_provider_routes(root),
+        "semantic_capability_index": validate_semantic_index(root),
+    }
+    project_text = (root / "pyproject.toml").read_text(encoding="utf-8")
+    checks["skill_packaging_projection"] = {
+        "valid": render_skill_packaging(project_text, root) == project_text,
+    }
+    group_index = root / "registry/test_group_index.json"
+    checks["test_group_index"] = {
+        "valid": group_index.is_file()
+        and json.loads(group_index.read_text(encoding="utf-8"))
+        == build_test_group_index(root),
     }
     inventory = root / "registry/registry_envelope_inventory.json"
     expected = json.dumps(build_inventory(), indent=2, sort_keys=True) + "\n"

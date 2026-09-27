@@ -391,15 +391,28 @@ function safeOwnedEphemeralCleanup(temporaryRoot, processTreeClosedVerified) {
   if (marker.owner !== 'PACIFY-X' || marker.classification !== 'ephemeral') {
     return { reclaimed: false, reason: 'ownership-marker-invalid' };
   }
-  try {
-    // Windows can retain a just-closed SQLite or renderer handle briefly after
-    // the verified process-tree boundary. Node's recursive retry policy is
-    // bounded and applies specifically to EPERM/EBUSY-style cleanup races.
-    fs.rmSync(resolved, { recursive: true, force: true, maxRetries: 8, retryDelay: 250 });
-  } catch (error) {
-    return { reclaimed: false, reason: `owned-ephemeral-cleanup-failed:${String(error?.code || 'unknown')}` };
+  try { return quarantineOwnedEphemeral(resolved); }
+  catch (error) { return { reclaimed: false, reason: `owned-ephemeral-cleanup-failed:${String(error?.code || 'unknown')}` }; }
+}
+
+function quarantineOwnedEphemeral(resolved) {
+  const quarantineRoot = path.join(os.tmpdir(), 'pacify-x-quarantine');
+  const quarantineMarker = path.join(quarantineRoot, '.pacify-x-quarantine-root.json');
+  if (!fs.existsSync(quarantineRoot)) {
+    fs.mkdirSync(quarantineRoot);
+    fs.writeFileSync(quarantineMarker, `${JSON.stringify({ owner: 'PACIFY-X', classification: 'quarantine', created_utc: new Date().toISOString() })}\n`, { flag: 'wx' });
   }
-  return { reclaimed: !fs.existsSync(resolved), reason: 'verified-process-tree-closure' };
+  const quarantineStat = fs.lstatSync(quarantineRoot);
+  if (!quarantineStat.isDirectory() || quarantineStat.isSymbolicLink() || !fs.existsSync(quarantineMarker)
+      || fs.lstatSync(quarantineMarker).isSymbolicLink()) {
+    throw new Error('quarantine-root-ownership-invalid');
+  }
+  const quarantineOwner = JSON.parse(fs.readFileSync(quarantineMarker, 'utf8'));
+  if (quarantineOwner.owner !== 'PACIFY-X' || quarantineOwner.classification !== 'quarantine') throw new Error('quarantine-root-ownership-invalid');
+  const target = path.join(quarantineRoot, path.basename(resolved));
+  if (fs.existsSync(target)) throw new Error('quarantine-target-already-exists');
+  fs.renameSync(resolved, target);
+  return { reclaimed: !fs.existsSync(resolved) && fs.existsSync(target), reason: 'verified-quarantine-move', quarantined_root: target };
 }
 
 async function settleOwnedEphemeralCleanup(temporaryRoot, processTreeClosedVerified, options = {}) {
@@ -417,17 +430,18 @@ async function settleOwnedEphemeralCleanup(temporaryRoot, processTreeClosedVerif
   if (marker.owner !== 'PACIFY-X' || marker.classification !== 'ephemeral') {
     return { reclaimed: false, reason: 'ownership-marker-invalid' };
   }
-  const attempts = Number(options.attempts || 20);
-  const retryDelayMs = Number(options.retryDelayMs || 250);
+  // A closed VS Code extension host can leave its log handle pending on Windows.
+  // Keep the owned root intact while waiting, then move it atomically.
+  const attempts = Number(options.attempts || 600);
+  const retryDelayMs = Number(options.retryDelayMs || 500);
+  const quarantine = options.quarantine || quarantineOwnedEphemeral;
   let lastCode = 'unknown';
   for (let attempt = 1; attempt <= attempts; attempt += 1) {
     try {
-      fs.rmSync(resolved, { recursive: true, force: true, maxRetries: 2, retryDelay: retryDelayMs });
-      if (!fs.existsSync(resolved)) return { reclaimed: true, reason: 'verified-process-tree-closure' };
-      lastCode = 'retained-root';
+      return quarantine(resolved);
     } catch (error) {
       lastCode = String(error?.code || 'unknown');
-      if (!['EPERM', 'EBUSY', 'ENOTEMPTY'].includes(lastCode)) break;
+      if (!['EPERM', 'EBUSY', 'EACCES'].includes(lastCode)) break;
     }
     if (attempt < attempts) await new Promise(resolve => setTimeout(resolve, retryDelayMs));
   }
@@ -1056,9 +1070,7 @@ function acquireWalkOwnership(options = {}) {
     markOwnedHostWorkspace(temporaryRoot, options.ownershipLabel || 'current-source-operational-ui-walk');
     return { lease, temporaryRoot };
   } catch (error) {
-    if (temporaryRoot) {
-      try { fs.rmSync(temporaryRoot, { recursive: true, force: true }); } catch {}
-    }
+    // An unmarked or partially staged root is retained for explicit quarantine review.
     lease.release();
     throw error;
   }
@@ -1271,4 +1283,3 @@ if (require.main === module) {
 }
 
 module.exports = { acquireWalkOwnership, appendHostProgress, boundedDelay, classifySharedStoragePath, excludedEnginePath, ownedExternalNetworkDeniedEnvironment, ownedExternalNetworkDeniedLaunchEnvironment, parallelProofHostLock, reconcileOwnedPrelaunchFailure, reconcilePrelaunchFailure, reserveLoopbackPort, resolveOwnedPython, retainedHostProgress, retainedProfileProgress, settleOwnedEphemeralCleanup, stageDisposableEngine, stageOwnedGitAuthority, stageOwnedHostBoundaryFixture, stageOwnedKnowledgeFixture, stageOwnedProviderPaginationFixture, waitForIsolatedStorageBoundary };
-

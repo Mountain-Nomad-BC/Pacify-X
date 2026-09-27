@@ -26,6 +26,11 @@ def test_all_generated_projections_match_one_canonical_owner():
     assert result["checks"]["commissioned_skill_registry"]["skill_count"] == len(
         commissioned["skills"]
     )
+    assert result["checks"]["native_skill_packages"]["valid"]
+    assert result["checks"]["provider_route_index"]["index_current"]
+    assert result["checks"]["semantic_capability_index"]["valid"]
+    assert result["checks"]["skill_packaging_projection"]["valid"]
+    assert result["checks"]["test_group_index"]["valid"]
 
 
 def test_artifact_reachability_excludes_live_receipt_projection_cycle():

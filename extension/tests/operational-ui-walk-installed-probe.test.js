@@ -20,7 +20,25 @@ const { installedDashboardRestartIdentity } = require('../scripts/run-operationa
 const { dispatchInstalledPluginConfirmation, dispatchInstalledPluginFormAction, installedPluginPreviewConfirmationMatches } = require('../scripts/run-operational-ui-walk');
 const { dispatchInstalledPluginConflictControl, installedPluginConflictControlMatches } = require('../scripts/run-operational-ui-walk');
 const { installedAdvancedFixtureStateAcknowledged } = require('../scripts/run-operational-ui-walk');
-const { waitForInstalledCanonicalMemoryBaseline, waitForInstalledCanonicalMemoryState } = require('../scripts/run-operational-ui-walk');
+const { readInstalledCanonicalMemoryState, waitForInstalledCanonicalMemoryBaseline, waitForInstalledCanonicalMemoryState } = require('../scripts/run-operational-ui-walk');
+
+test('canonical Memory state uses the toolbar refresh when a query retry is also rendered', async () => {
+  const authority = { classList: { contains: value => value === 'attached', [Symbol.iterator]: function* () { yield 'attached'; } } };
+  const retry = { disabled: false };
+  const toolbar = { disabled: true };
+  const document = {
+    querySelector: selector => ({
+      '.memory-authority': authority,
+      '[data-action="memoryRefresh"]': retry,
+      '.memory-toolbar [data-action="memoryRefresh"]': toolbar,
+      '[data-action="disconnectCanonicalMemory"]': {}
+    })[selector] || null
+  };
+  const frameHost = { evaluate: callback => callback({ contentDocument: document }) };
+  assert.equal((await readInstalledCanonicalMemoryState(frameHost)).attached, false);
+  toolbar.disabled = false;
+  assert.equal((await readInstalledCanonicalMemoryState(frameHost)).attached, true);
+});
 const { closeOwnedDashboardTabs, remainingOwnedUiBudget } = require('../scripts/run-operational-ui-walk');
 const { bindCurrentWorkbenchCommandRejection, dispatchCurrentWorkbenchCommandRejection, dispatchWorkbenchCommandSelection, observeCurrentWorkbenchCommandRejection } = require('../scripts/run-operational-ui-walk');
 
@@ -85,6 +103,30 @@ test('dashboard reconstruction drains every owned matching tab before reopening 
   assert.equal(closed, 3);
   assert.equal(clicks, 3);
   assert.equal(count, 0);
+});
+
+test('dashboard reopen abandons a stalled tab visibility probe and uses the owned status control', async () => {
+  const { reopenPacifyDashboardFromOwnedUi } = require('../scripts/run-operational-ui-walk');
+  let statusClicked = false;
+  const tab = { isVisible: () => new Promise(() => {}) };
+  const status = {
+    waitFor: async () => {},
+    getAttribute: async name => name === 'aria-label' ? 'PX Control Plane' : '',
+    innerText: async () => 'PX',
+    click: async () => { statusClicked = true; }
+  };
+  const workbench = {
+    bringToFront: async () => {},
+    keyboard: { press: async () => {} },
+    locator: selector => selector === '[role="tab"]'
+      ? { first: () => tab }
+      : { filter: () => ({ first: () => status }) }
+  };
+  const started = Date.now();
+  const result = await reopenPacifyDashboardFromOwnedUi(workbench, null, 100);
+  assert.equal(result.owner, 'pacify-statusbar');
+  assert.equal(statusClicked, true);
+  assert.ok(Date.now() - started < 500);
 });
 
 test('dashboard tab closure settles on the physical tab count when keyboard acknowledgement is displaced', async () => {
@@ -1259,7 +1301,7 @@ test('conditional error indicators bind exact normal recovery actions and result
   assert.equal(installedConditionalRecoverySpec({ kind: 'action', control_id: 'pxui.agents.action.catalogRetry' }), null);
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   assert.match(source, /pxui\.memory\.indicator\.queryError': '\.surface-memory \.memory-errors\[role="alert"\]:has\(\[data-action="memoryRefresh"\]\)'/);
-  assert.match(source, /pxui\.activity\.indicator\.queryError': '\.surface-activity \.memory-errors\[role="alert"\]:has\(\[data-action="activityRefresh"\]\)'/);
+  assert.match(source, /pxui\.activity\.indicator\.queryError': '\.surface-activity \.memory-errors\[role="alert"\]'/);
   assert.match(source, /pxui\.knowledge-core\.indicator\.controllerError': '\.surface-knowledgeCore \.memory-errors\[role="alert"\]:has\(\[data-action="knowledgeRefresh"\]\)'/);
   const seed = source.slice(source.indexOf('async function seedInstalledConditionalScenario'), source.indexOf('async function recoverInstalledConditionalIndicator'));
   assert.match(seed, /control\.kind === 'indicator'[\s\S]*installedDirectSelector\(control\)[\s\S]*installed-conditional-control-settlement-timeout/);
@@ -1747,7 +1789,8 @@ test('final51 residual controls have exact scoped selectors and request-bound gr
   assert.match(graphField, /const isStatusFilter = control\.control_id\.endsWith\('\.graphStatus'\)/);
   assert.match(graphField, /await waitForInstalledResponse\(frameHost, before, \{ types: \['graphResult'\] \}, 20_000\)/);
   assert.match(graphField, /state\.graphPending !== true[\s\S]*state\.graphStatus === value[\s\S]*state\.graphRequest\?\.status === value[\s\S]*document\.querySelector\(fieldSelector\)\?\.value === value/);
-  assert.match(graphField, /await dispatchAndSettle\(alternate\)[\s\S]*finally[\s\S]*await dispatchAndSettle\(original\)/);
+  assert.match(graphField, /const alternateValue = alternate === null \? '__px_owned_unmatched_status__' : alternate/);
+  assert.match(graphField, /await dispatchAndSettle\(alternateValue\)[\s\S]*finally[\s\S]*await dispatchAndSettle\(original\)/);
 });
 
 test('Plugin lifecycle reconstruction reloads the complete owned workbench catalog before inventory assertion', () => {
@@ -1804,7 +1847,7 @@ test('R116 final graph fields use real analysis modes and status changes settle 
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   const graphField = source.slice(source.indexOf('async function exerciseInstalledExactGraphField'), source.indexOf('async function probeInstalledControls'));
   assert.match(graphField, /endsWith\('\.graphTarget'\) \? 'path' : 'dependencies'/);
-  assert.match(graphField, /if \(isStatusFilter\)[\s\S]*await dispatchAndSettle\(alternate\)[\s\S]*await dispatchAndSettle\(original\)/);
+  assert.match(graphField, /if \(isStatusFilter\)[\s\S]*await dispatchAndSettle\(alternateValue\)[\s\S]*await dispatchAndSettle\(original\)/);
   assert.match(graphField, /const analysis = document\.querySelector\('\[data-graph-analysis\]'\)[\s\S]*analysis\.dispatchEvent\(new Event\('change'/);
   const modePreparation = graphField.slice(graphField.indexOf('const result = await frameHost.evaluateContent(spec =>'));
   assert.ok(modePreparation.indexOf('analysis.dispatchEvent') < modePreparation.indexOf('document.querySelector(spec.selector)'));
@@ -3248,7 +3291,8 @@ test('r20 dashboard baseline recovery is absolutely bounded and retains both cau
   const baseline = source.slice(source.indexOf('async function resetInstalledDashboardBaseline'), source.indexOf('async function restartInstalledDashboardWebview'));
   assert.match(bounded, /Promise\.race/);
   assert.match(bounded, /setTimeout\(\(\) => reject/);
-  assert.match(reopen, /const deadline = Date\.now\(\) \+ timeoutMs;[\s\S]*boundedOwnedUiAction\(\(\) => workbench\.bringToFront\(\)/);
+  assert.match(reopen, /const deadline = Date\.now\(\) \+ timeoutMs;[\s\S]*const step = \(operation, label, ceilingMs = 2_500\) => boundedOwnedUiAction/);
+  assert.match(reopen, /step\(\(\) => workbench\.bringToFront\(\), 'bring-to-front'\)/);
   assert.match(reopen, /owned-workbench-closed-before-dashboard-reopen/);
   assert.match(reopen, /installed-dashboard-reopen-instrument/);
   assert.match(reopen, /installed-dashboard-reopen-stability-instrument/);
@@ -3485,7 +3529,7 @@ test('canonical memory baseline refreshes an incoherent projection before accept
     contentDocument: {
       querySelector(selector) {
         if (selector === '.memory-authority') return authority;
-        if (selector === '[data-action="memoryRefresh"]') return { disabled: coherent };
+        if (selector === '.memory-toolbar [data-action="memoryRefresh"]') return { disabled: coherent };
         if (selector === '[data-action="disconnectCanonicalMemory"]') return null;
         return null;
       }
@@ -3521,7 +3565,7 @@ test('canonical memory state recovers one dead projection before accepting exact
     contentDocument: {
       querySelector(selector) {
         if (selector === '.memory-authority') return authority;
-        if (selector === '[data-action="memoryRefresh"]') return { disabled: coherent };
+        if (selector === '.memory-toolbar [data-action="memoryRefresh"]') return { disabled: coherent };
         if (selector === '[data-action="disconnectCanonicalMemory"]') return null;
         return null;
       }
@@ -3555,7 +3599,7 @@ test('canonical memory state reacquires a projection that disappears again durin
     contentDocument: {
       querySelector(selector) {
         if (selector === '.memory-authority') return coherent ? authority : null;
-        if (selector === '[data-action="memoryRefresh"]') return coherent ? { disabled: true } : null;
+        if (selector === '.memory-toolbar [data-action="memoryRefresh"]') return coherent ? { disabled: true } : null;
         if (selector === '[data-action="disconnectCanonicalMemory"]') return null;
         return null;
       }
@@ -3590,7 +3634,7 @@ test('canonical memory state reacquires a persistently incoherent projection aft
     contentDocument: {
       querySelector(selector) {
         if (selector === '.memory-authority') return coherent ? authority : null;
-        if (selector === '[data-action="memoryRefresh"]') return coherent ? { disabled: true } : null;
+        if (selector === '.memory-toolbar [data-action="memoryRefresh"]') return coherent ? { disabled: true } : null;
         if (selector === '[data-action="disconnectCanonicalMemory"]') return null;
         return null;
       }
@@ -4141,6 +4185,26 @@ test('installed control probe marks only a fully evidenced chain complete', () =
   assert.equal(controlChains.controls[0].terminal_disposition, 'installed_operational_interaction_complete');
   assert.equal(controlChains.aggregates.complete_interaction_chains, 1);
   assert.equal(controlChains.installed_probe_observations.complete_interaction_chains, 1);
+});
+
+test('installed draft-only form assigns host dispatch to its submit action', () => {
+  const control = {
+    control_id: 'pxui.demo.form.queryFilter', rendered: true, visible: true,
+    attempted: true, terminal_disposition: 'observed_only',
+    stages: STAGES.map(stage => ({ stage, status: 'not_attempted' }))
+  };
+  const interactionChain = Object.fromEntries(STAGES.map(stage => [stage, {
+    state: ['authorization', 'backend_dispatch', 'runtime_effect'].includes(stage) ? 'missing' : 'present',
+    detail: `direct ${stage}`, evidence: ['installed-receipt:pxui.demo.form.queryFilter']
+  }]));
+  applyInstalledProbeObservations({ controls: [control], aggregates: {} }, {
+    schema_version: 'px.installed-operational-control-probe/1.0', eligible_control_count: 1,
+    records: [{ control_id: control.control_id, evidence_mode: 'contained_ui_form', rendered: true,
+      attempted: true, errors: [], interaction_chain: interactionChain }]
+  });
+  assert.equal(control.terminal_disposition, 'installed_operational_interaction_complete');
+  assert.ok(control.stages.filter(stage => ['authorization', 'backend_dispatch', 'runtime_effect'].includes(stage.stage))
+    .every(stage => stage.status === 'not_applicable'));
 });
 
 test('installed control probe accepts a collected profile failure only through its typed zero-denominator probe', () => {

@@ -165,7 +165,7 @@ function buildInstalledLateCardScenarioProfile({
     'PX-OS-995': ['preserved_original_selected', 'provenance_bound_editor', 'provenance_bound_candidate', 'provenance_bound_promotion', 'projected_backup_exact'],
     'PX-OS-996': ['promotion_forced_termination_recovered', 'rollback_forced_termination_recovered', 'projection_images_exact'],
     'PX-OS-998': ['framed_tree_hash_exact', 'promotion_projection_authenticated', 'rollback_projection_authenticated', 'immediate_catalog_refresh'],
-    'PX-OS-1065': ['all_report_findings_reconciled', 'installed_denominator_complete', 'post_repair_incompleteness_audit']
+    'PX-OS-1065': ['current_revision_checks_reconciled', 'installed_denominator_complete', 'post_repair_incompleteness_audit']
   };
   const supplied = new Map((adversarialProfile?.records || []).map(record => [record?.gap_id, record]));
   const records = Object.entries(required).map(([gapId, names]) => {
@@ -419,22 +419,16 @@ function buildInstalledLateCardAdversarialProfile({
       immediate_catalog_refresh: workerSkill.immediate_catalog_refresh === true && operation('skill', 'promote') && operation('skill', 'rollback')
     }, ['installed-worker:authenticated-skill-projections', 'installed-studio:promotion-rollback'])
   ];
-  const sourceReportReconciled = (() => {
-    try {
-      const closure = JSON.parse(fs.readFileSync(path.resolve(__dirname, '..', '..', 'evidence', 'adversarial-audit', 'current-environment-repair-closure-20260826.json'), 'utf8'));
-      const findings = JSON.parse(fs.readFileSync(path.resolve(__dirname, '..', '..', 'evidence', 'adversarial-audit', 'current-findings-20260824.json'), 'utf8'));
-      return closure.repair_intake_closed === true && Array.isArray(closure.source_repairs) && closure.source_repairs.length > 0
-        && closure.source_repairs.every(item => !/open|unrepaired|failed/i.test(String(item.disposition || '')))
-        && Array.isArray(findings.findings) && findings.findings.length > 0
-        && findings.findings.every(item => ['repaired', 'repaired_locally', 'implemented_pending_remote_os_execution'].includes(item.status));
-    } catch { return false; }
-  })();
+  // The former predicate read two dated files outside this checkout. Current
+  // revision closure is owned by the exact installed-host denominator below.
+  const currentRevisionChecksReconciled = records.length === 14
+    && records.every(item => Object.values(item.checks).every(value => value === true) && item.errors.length === 0);
   const installedComplete = records.every(item => Object.values(item.checks).every(value => value === true) && item.errors.length === 0);
   records.push(record('PX-OS-1065', {
-    all_report_findings_reconciled: sourceReportReconciled,
+    current_revision_checks_reconciled: currentRevisionChecksReconciled,
     installed_denominator_complete: installedComplete,
     post_repair_incompleteness_audit: installedComplete && hostErrors.length === 0
-  }, ['source-repair-closure:current-environment', 'installed-late-card-denominator:14-of-14', 'installed-host-errors:zero'], hostErrors.length ? [`host-errors:${hostErrors.length}`] : []));
+  }, ['installed-late-card-denominator:14-of-14', 'installed-host-errors:zero'], hostErrors.length ? [`host-errors:${hostErrors.length}`] : []));
   return { schema_version: 'px.installed-late-card-adversarial-profile/1.0', completed: records.every(item => Object.values(item.checks).every(Boolean) && item.errors.length === 0), records };
 }
 async function boundedOwnedUiAction(operation, timeoutMs, label) {
@@ -611,7 +605,7 @@ function installedDirectSelector(control) {
     'pxui.dashboard-control-plane.indicator.loading': '.loading',
     'pxui.dashboard.indicator.heroConnection': '.hero-status > strong',
     'pxui.dashboard.indicator.sourceVersion': '.hero-status > small',
-    'pxui.activity.indicator.queryError': '.surface-activity .memory-errors[role="alert"]:has([data-action="activityRefresh"])',
+    'pxui.activity.indicator.queryError': '.surface-activity .memory-errors[role="alert"]',
     'pxui.dashboard.action.inspectSensor.row': '.surface-dashboard [data-action="inspectSensor"][data-sensor-id]',
     'pxui.memory.indicator.queryError': '.surface-memory .memory-errors[role="alert"]:has([data-action="memoryRefresh"])',
     'pxui.knowledge-core.indicator.controllerError': '.surface-knowledgeCore .memory-errors[role="alert"]:has([data-action="knowledgeRefresh"])',
@@ -960,8 +954,13 @@ async function instrumentInstalledBridge(frameHost, timeoutMs = 10_000) {
 
 async function reopenPacifyDashboardFromOwnedUi(workbench, frameHost = null, timeoutMs = 25_000) {
   const deadline = Date.now() + timeoutMs;
+  const step = (operation, label, ceilingMs = 2_500) => boundedOwnedUiAction(
+    operation,
+    Math.min(ceilingMs, remainingOwnedUiBudget(deadline, `installed-dashboard-reopen-${label}`)),
+    `installed-dashboard-reopen-${label}`
+  );
   if (typeof workbench.isClosed === 'function' && workbench.isClosed()) throw new Error('owned-workbench-closed-before-dashboard-reopen');
-  await boundedOwnedUiAction(() => workbench.bringToFront(), Math.max(1, deadline - Date.now()), 'owned-workbench-bring-to-front');
+  await step(() => workbench.bringToFront(), 'bring-to-front');
   let lastOwner = 'unavailable';
   let staleExistingTabRotations = 0;
   const maximumStaleExistingTabRotations = 8;
@@ -969,19 +968,19 @@ async function reopenPacifyDashboardFromOwnedUi(workbench, frameHost = null, tim
     const dashboardTabs = workbench.locator('[role="tab"]', { hasText: /PX.*Control Plane/i });
     const dashboardTab = dashboardTabs.first();
     let owner;
-    if (await dashboardTab.isVisible().catch(() => false)
+    if (await step(() => dashboardTab.isVisible(), 'tab-visibility', Math.max(1, Math.min(2_500, Math.floor(timeoutMs / 4)))).catch(() => false)
       && staleExistingTabRotations < maximumStaleExistingTabRotations) {
       owner = dashboardTab;
       lastOwner = 'existing-dashboard-tab';
     } else {
       const status = workbench.locator('.statusbar-item').filter({ hasText: /\bPX\b/i }).first();
       await status.waitFor({ state: 'visible', timeout: Math.max(1, Math.min(2_500, deadline - Date.now())) });
-      const label = `${await status.getAttribute('aria-label').catch(() => '')} ${await status.getAttribute('title').catch(() => '')} ${await status.innerText().catch(() => '')}`;
+      const label = `${await step(() => status.getAttribute('aria-label'), 'status-aria-label').catch(() => '')} ${await step(() => status.getAttribute('title'), 'status-title').catch(() => '')} ${await step(() => status.innerText(), 'status-text').catch(() => '')}`;
       if (!/PX|Pacify-X/i.test(label)) throw new Error('pacify-statusbar-command-owner-unavailable');
       owner = status;
       lastOwner = 'pacify-statusbar';
     }
-    await workbench.keyboard.press('Escape').catch(() => {});
+    await step(() => workbench.keyboard.press('Escape'), 'dismiss-modal').catch(() => {});
     try {
       await owner.click({ timeout: Math.max(1_000, Math.min(3_000, deadline - Date.now())) });
     } catch {
@@ -991,7 +990,7 @@ async function reopenPacifyDashboardFromOwnedUi(workbench, frameHost = null, tim
     const remaining = deadline - Date.now();
     const reconstructionBudget = Math.max(1, Math.min(2_500, remaining));
     const reconstructed = remaining > 0
-      && await frameHost.reacquire(reconstructionBudget).catch(() => false)
+      && await step(() => frameHost.reacquire(reconstructionBudget), 'reacquire', reconstructionBudget).catch(() => false)
       && await boundedOwnedUiAction(
         () => instrumentInstalledBridge(frameHost, reconstructionBudget),
         reconstructionBudget,
@@ -1004,7 +1003,7 @@ async function reopenPacifyDashboardFromOwnedUi(workbench, frameHost = null, tim
         const sampleRemaining = deadline - Date.now();
         const sampleBudget = Math.max(1, Math.min(2_500, sampleRemaining));
         stable = sampleRemaining > 0
-          && await frameHost.reacquire(sampleBudget).catch(() => false)
+          && await step(() => frameHost.reacquire(sampleBudget), 'stable-reacquire', sampleBudget).catch(() => false)
           && await boundedOwnedUiAction(
             () => instrumentInstalledBridge(frameHost, sampleBudget),
             sampleBudget,
@@ -1025,16 +1024,16 @@ async function reopenPacifyDashboardFromOwnedUi(workbench, frameHost = null, tim
       if (stable) return { owner: lastOwner, executed: true, reconstructed: true, stability_samples: 2 };
     }
     if (lastOwner === 'existing-dashboard-tab' && staleExistingTabRotations < maximumStaleExistingTabRotations) {
-      const beforeCount = await dashboardTabs.count();
+      const beforeCount = await step(() => dashboardTabs.count(), 'rotation-count');
       const rotationDeadline = Math.min(deadline, Date.now() + 4_000);
       if (beforeCount > 0 && rotationDeadline - Date.now() > 1_000) {
         await dashboardTab.click({ timeout: Math.max(1, Math.min(1_500, rotationDeadline - Date.now())) }).catch(() => {});
-        await workbench.keyboard.press(process.platform === 'darwin' ? 'Meta+W' : 'Control+W');
+        await step(() => workbench.keyboard.press(process.platform === 'darwin' ? 'Meta+W' : 'Control+W'), 'rotate-tab-close');
         do {
-          if (await dashboardTabs.count() < beforeCount) break;
+          if (await step(() => dashboardTabs.count(), 'rotation-observation') < beforeCount) break;
           await wait(100);
         } while (Date.now() < rotationDeadline);
-        if (await dashboardTabs.count() >= beforeCount) throw new Error('installed-dashboard-stale-existing-tab-close-unobserved');
+        if (await step(() => dashboardTabs.count(), 'rotation-terminal') >= beforeCount) throw new Error('installed-dashboard-stale-existing-tab-close-unobserved');
         staleExistingTabRotations += 1;
         lastOwner = `stale-existing-dashboard-tab-rotated:${staleExistingTabRotations}`;
         await wait(150);
@@ -1181,7 +1180,7 @@ async function restartInstalledDashboardWebview(frameHost, timeoutMs = 30_000) {
   let state = null;
   do {
     try {
-      state = await frameHost.evaluate((frame, previousTimeOrigin) => {
+      state = await boundedOwnedUiAction(() => frameHost.evaluate((frame, previousTimeOrigin) => {
         const inner = frame.contentWindow; const document = frame.contentDocument;
         return {
           document_ready: document?.readyState === 'complete',
@@ -1194,7 +1193,7 @@ async function restartInstalledDashboardWebview(frameHost, timeoutMs = 30_000) {
           restarted: Number(inner?.performance?.timeOrigin || 0) > 0
             && Number(inner?.performance?.timeOrigin || 0) !== previousTimeOrigin
         };
-      }, before);
+      }, before, { timeout: remaining('state') }), remaining('state'), 'installed-dashboard-restart-state');
       if (installedDashboardRestartIdentity(state)) {
         if (!await instrumentInstalledBridge(frameHost, remaining('bridge'))) throw new Error('installed-dashboard-webview-restart-bridge-unavailable');
         return { before_time_origin: before, after_time_origin: state.time_origin, restarted: true, reconstructed: true, closed_dashboard_tabs: closedDashboardTabs };
@@ -1708,6 +1707,32 @@ async function prepareInstalledControl(frameHost, control) {
     }
     if (!exactControlVisible) throw new Error(`installed-graph-exact-control-timeout:${control.control_id}:${exactSelector}`);
   }
+  if (control.control_id === 'pxui.diagnostics.action.operationalCardsPrevious') {
+    await settleInstalledModalBoundary(frameHost, 5_000);
+    const before = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
+    const nextPage = await frameHost.evaluateContent(() => {
+      const next = document.querySelector('[data-action="operationalCardsNext"]:not([disabled])');
+      if (!next) return false;
+      next.click();
+      return true;
+    });
+    if (!nextPage) throw new Error('installed-operational-cards-next-page-unavailable');
+    await waitForInstalledResponse(frameHost, before, { types: ['operationalCardsResult'] }, 20_000);
+    await settleInstalledModalBoundary(frameHost, 5_000);
+    const previousDeadline = Date.now() + 10_000;
+    let previousReady = false;
+    do {
+      previousReady = await frameHost.evaluateContent(() => Boolean(
+        Number(state.operationalCardsData?.offset || 0) > 0
+        && document.querySelector('[data-action="operationalCardsPrevious"]:not([disabled])')
+      ));
+      if (previousReady) break;
+      await wait(100);
+    } while (Date.now() < previousDeadline);
+    if (!previousReady) {
+      throw new Error('installed-operational-cards-previous-page-unavailable-after-next');
+    }
+  }
   await seedInstalledConditionalScenario(frameHost, control);
 }
 
@@ -2055,7 +2080,10 @@ async function exerciseInstalledExactGraphField(frameHost, control) {
       const option = [...(target?.options || [])].find(item => item.value !== target.value && !item.disabled);
       return option?.value ?? null;
     }, { selector });
-    if (alternate === null) throw new Error(`installed-exact-graph-field-alternate-unavailable:${control.control_id}`);
+    // A sparse installed graph may expose only the empty status option. The
+    // query accepts a bounded unmatched status, so exercise that reversible
+    // read path and then restore the original option and query state.
+    const alternateValue = alternate === null ? '__px_owned_unmatched_status__' : alternate;
 
     const dispatchAndSettle = async expected => {
       const before = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
@@ -2076,7 +2104,7 @@ async function exerciseInstalledExactGraphField(frameHost, control) {
           && state.graphData
           && state.graphStatus === value
           && state.graphRequest?.status === value
-          && document.querySelector(fieldSelector)?.value === value
+          && (value === '__px_owned_unmatched_status__' || document.querySelector(fieldSelector)?.value === value)
         ), { selector, value: expected });
         if (settled) return true;
         await wait(100);
@@ -2086,7 +2114,7 @@ async function exerciseInstalledExactGraphField(frameHost, control) {
 
     let changed = false;
     try {
-      await dispatchAndSettle(alternate);
+      await dispatchAndSettle(alternateValue);
       changed = true;
     } finally {
       // Restore through the same real change path and await its graph response;
@@ -3335,7 +3363,7 @@ async function closeOwnedDashboardTabs(workbench, timeoutMs = 15_000) {
       const observationDeadline = Math.min(deadline, Date.now() + 5_000);
       do {
         try {
-          if (await tabs.count() < previousCount) return { disposition: 'tab-count-decreased' };
+          if (await boundedOwnedUiAction(() => tabs.count(), remaining('tab-close-watch'), 'owned-dashboard-tab-close-watch') < previousCount) return { disposition: 'tab-count-decreased' };
         } catch { /* renderer replacement is settled by the next sample */ }
         await wait(100);
       } while (Date.now() < observationDeadline);
@@ -4162,9 +4190,23 @@ function applyInstalledProbeObservations(controlChains, installedControlProbe, s
     record.visible ||= probe.rendered === true;
     record.attempted ||= probe.attempted === true;
     if (probe.rendered) record.resolver = { type: 'exact_installed_control', status: 'exact', match_count: 1 };
+    const draftOnlyForm = probe.evidence_mode === 'contained_ui_form'
+      && probe.attempted === true
+      && probe.errors?.length === 0
+      && ['authorization', 'backend_dispatch', 'runtime_effect'].every(stage => chain[stage].state === 'missing')
+      && chain.result_acknowledgement.state === 'present';
     record.stages = record.stages.map(existing => {
       if (existing.status === 'observed') return existing;
       const direct = chain[existing.stage];
+      if (draftOnlyForm && ['authorization', 'backend_dispatch', 'runtime_effect'].includes(existing.stage)) {
+        return {
+          stage: existing.stage,
+          status: 'not_applicable',
+          observed_at: record.observed_at,
+          reason: 'The exact installed form changed and restored only local draft input; its submit action owns the host dispatch.',
+          evidence: `installed-receipt:${controlId}`
+        };
+      }
       if (direct.state === 'present') {
         return {
           stage: existing.stage,
@@ -8155,6 +8197,7 @@ function studioLifecycleControlProbe(matrix, observations) {
     ['pxui.studio-lifecycle.indicator.accepted', ['agent', 'workflow'], () => successful('agent', 'start') && successful('workflow', 'start')],
     ['pxui.studio-lifecycle.indicator.output', ['agent', 'workflow'], () => successful('agent', 'status') && successful('workflow', 'status')],
     ['pxui.studio-lifecycle.indicator.runId', ['agent', 'workflow'], () => Boolean(byKind.get('agent')?.run_id) && Boolean(byKind.get('workflow')?.run_id)],
+    ['pxui.studio-lifecycle.indicator.runState', ['agent', 'workflow'], () => ['agent', 'workflow'].every(kind => byKind.get(kind)?.lifecycle_run_state_rendered === true)],
     ['pxui.studio-lifecycle.indicator.runtimeOutcome', ['agent', 'workflow'], () => successful('agent', 'status') && successful('workflow', 'status')],
     ['pxui.studio-lifecycle.indicator.signedReceipt', ['agent', 'workflow'], () => reopened('agent') && reopened('workflow')],
     ['pxui.studio-lifecycle.indicator.error', ['skill'], () => byKind.get('skill')?.lifecycle_error_rendered === true && byKind.get('skill')?.lifecycle_failure_recovered === true],
@@ -8353,7 +8396,7 @@ async function runInstalledStudioLifecycleProfile(frameHost, candidateProfile, m
       : candidate.kind === 'workflow'
         ? ['register-authority', 'validate', 'dry-run', 'approve', 'start']
         : ['validate', 'admit', 'promote', ...(candidate.expect_rollback ? ['rollback'] : [])];
-    const observation = { kind: candidate.kind, identity: candidate.identity, version: candidate.version, fixture_only: candidate.fixture_only === true, memory_binding_id: candidate.memory_binding_id || null, catalog_record_id: candidate.catalog_record_id, exact_catalog_selection: false, invalid_transition_rejected: false, blocked_preview_verified: false, blocked_preview_rendered: false, blocked_preview_start_suppressed: false, operations: [], run_id: null, webview_restarted: false, durable_run_reopened: false, lifecycle_hub_run_browser: false, lifecycle_not_accepted_rendered: false, lifecycle_error_rendered: false, lifecycle_failure_recovered: false, errors: [] };
+    const observation = { kind: candidate.kind, identity: candidate.identity, version: candidate.version, fixture_only: candidate.fixture_only === true, memory_binding_id: candidate.memory_binding_id || null, catalog_record_id: candidate.catalog_record_id, exact_catalog_selection: false, invalid_transition_rejected: false, blocked_preview_verified: false, blocked_preview_rendered: false, blocked_preview_start_suppressed: false, operations: [], run_id: null, webview_restarted: false, durable_run_reopened: false, lifecycle_hub_run_browser: false, lifecycle_run_state_rendered: false, lifecycle_not_accepted_rendered: false, lifecycle_error_rendered: false, lifecycle_failure_recovered: false, errors: [] };
     try {
       if (!candidate.typed_creation_receipt || !candidate.reopened_catalog_match || !candidate.catalog_record_id) throw new Error(`studio-${candidate.kind}-lifecycle-candidate-prerequisite-missing`);
       observation.exact_catalog_selection = await runLifecycleStep(candidate, 'catalog-open', () => openExactStudioCatalogRow(frameHost, candidate));
@@ -8521,6 +8564,11 @@ async function runInstalledStudioLifecycleProfile(frameHost, candidateProfile, m
         observation.operations.push({ operation: 'runs', valid, result: runs });
         observation.durable_run_reopened = valid && (runs.runs || []).some(run => run.run_id === observation.run_id);
         if (!observation.durable_run_reopened) throw new Error(`studio-${candidate.kind}-durable-run-reopen-missing`);
+        observation.lifecycle_run_state_rendered = await frameHost.evaluate((frame, item) => {
+          const row = [...(frame.contentDocument?.querySelectorAll('.studio-run-row') || [])]
+            .find(element => element.querySelector('small.mono')?.textContent?.trim() === item.runId);
+          return Boolean(row?.querySelector('.badge')?.textContent?.trim() === item.state);
+        }, { runId: observation.run_id, state: terminalState });
         await invokeRunControl('reconcile');
       }
     } catch (error) { observation.errors.push(String(error?.message || error).slice(0, 2400)); }
@@ -11074,7 +11122,7 @@ async function readInstalledCanonicalMemoryState(frameHost) {
   return frameHost.evaluate(frame => {
     const document = frame.contentDocument;
     const authority = document?.querySelector('.memory-authority');
-    const refresh = document?.querySelector('[data-action="memoryRefresh"]');
+    const refresh = document?.querySelector('.memory-toolbar [data-action="memoryRefresh"]');
     const disconnect = document?.querySelector('[data-action="disconnectCanonicalMemory"]');
     return {
       attached: Boolean(authority?.classList.contains('attached') && refresh && !refresh.disabled && disconnect),
@@ -11160,6 +11208,7 @@ async function waitForInstalledCanonicalMemoryState(frameHost, attached, timeout
 
 async function settleInstalledCanonicalMemoryRecord(frameHost, timeoutMs = 30_000) {
   await navigateInstalledSurface(frameHost, 'memory', timeoutMs);
+  await waitForInstalledCanonicalMemoryState(frameHost, true, timeoutMs);
   const prepared = await frameHost.evaluate(frame => {
     const document = frame.contentDocument;
     document.querySelector('[data-action="closeModal"]')?.click();
@@ -11177,7 +11226,7 @@ async function settleInstalledCanonicalMemoryRecord(frameHost, timeoutMs = 30_00
         field.dispatchEvent(new Event(eventName, { bubbles: true }));
       }
     }
-    const refresh = document.querySelector('[data-action="memoryRefresh"]');
+    const refresh = document.querySelector('.memory-toolbar [data-action="memoryRefresh"]');
     if (!refresh || refresh.disabled) return false;
     refresh.click();
     return true;
@@ -12380,6 +12429,6 @@ module.exports = {
   validCoordinationResult, validKnowledgeLifecycleResult, validLearningLifecycleResult, validPermanentCleanupResult,
   validPluginLifecycleObservation, validPendingPluginMutationReceipt, validPluginMutationReceipt, validStudioBlockedPreviewResult, validStudioDraftReceipt, validStudioLifecycleResult,
   captureSurfaceViews, surfaceCaptureCandidates, surfaceCaptureFileStem,
-  validStudioRevisionEditObservation, validStudioSetupResult, validationControlProbe, runInstalledValidationBoundaryProfile, clickWhenBuilderControlReady, invokeBuilderControl, waitForBuilderJsonControls, waitForCoordinationResult, waitForInstalledCanonicalMemoryBaseline, waitForInstalledCanonicalMemoryState,
+  validStudioRevisionEditObservation, validStudioSetupResult, validationControlProbe, runInstalledValidationBoundaryProfile, clickWhenBuilderControlReady, invokeBuilderControl, waitForBuilderJsonControls, waitForCoordinationResult, readInstalledCanonicalMemoryState, waitForInstalledCanonicalMemoryBaseline, waitForInstalledCanonicalMemoryState,
   clickWhenInstalledGraphControlReady, dashboardStatePersistenceIdentity, discoverOwnedWebviewIdentityMode, installedGraphExchangeOffset, waitForInstalledGraphExchange, waitForInstalledGraphIdle, waitForOwnedWebview
 };

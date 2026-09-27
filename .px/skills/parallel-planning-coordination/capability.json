@@ -1,15 +1,15 @@
 {
-  "admission_record": "operate-self-diagnostics",
-  "body_sha256": "3b72a74d7b580f8ed0c91d5c95c5fc49a9447875aee2fdd9fb72565985d9b30c",
+  "admission_record": "parallel-planning-coordination",
+  "body_sha256": "8c645ffb6c4e388c2cec1261fb892ee0ca5f786abec6e3ef46d427b5b178565d",
   "contract": {
     "available": true,
-    "sha256": "a3b12abcad5d57f5b946c12bbb632b311fad452c2c5c46155d339f0121a59824",
-    "source": "registry/skill_packages/operate-self-diagnostics.json"
+    "sha256": "4bbff4940106239e243fd90128f254642c6e2a94437d7427d6bd32b78959922a",
+    "source": "registry/skill_packages/parallel-planning-coordination.json"
   },
-  "description": "Classifies a reported condition into one disposition and delegates to the canonical owner.",
+  "description": "Coordinate dependency-safe work across IDEs and agents through durable task graphs, bounded claims, leases, receipts, reconciliation, and layered memory.",
   "domain": "px-standard",
   "entrypoint": "SKILL.md",
-  "id": "operate-self-diagnostics",
+  "id": "parallel-planning-coordination",
   "isolation": {
     "cross_domain_requires_explicit_intent_and_policy": true,
     "default_eligible": true
@@ -29,12 +29,9 @@
   },
   "status": "active",
   "tags": [
-    "self-operations",
-    "diagnostics",
-    "diagnosis",
-    "classification",
-    "delegation",
-    "composed"
+    "planning",
+    "coordination",
+    "orchestration"
   ],
   "version": "1.0.0"
 }

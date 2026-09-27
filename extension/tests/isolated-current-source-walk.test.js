@@ -7,7 +7,7 @@ const crypto = require('node:crypto');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const { acquireWalkOwnership, appendHostProgress, boundedDelay, excludedEnginePath, ownedExternalNetworkDeniedEnvironment, ownedExternalNetworkDeniedLaunchEnvironment, parallelProofHostLock, reconcileOwnedPrelaunchFailure, reconcilePrelaunchFailure, reserveLoopbackPort, resolveOwnedPython, retainedHostProgress, retainedProfileProgress, stageDisposableEngine, stageOwnedGitAuthority, stageOwnedHostBoundaryFixture, stageOwnedKnowledgeFixture, stageOwnedProviderPaginationFixture, waitForIsolatedStorageBoundary } = require('../scripts/run-isolated-current-source-walk');
+const { acquireWalkOwnership, appendHostProgress, boundedDelay, excludedEnginePath, ownedExternalNetworkDeniedEnvironment, ownedExternalNetworkDeniedLaunchEnvironment, parallelProofHostLock, reconcileOwnedPrelaunchFailure, reconcilePrelaunchFailure, reserveLoopbackPort, resolveOwnedPython, retainedHostProgress, retainedProfileProgress, settleOwnedEphemeralCleanup, stageDisposableEngine, stageOwnedGitAuthority, stageOwnedHostBoundaryFixture, stageOwnedKnowledgeFixture, stageOwnedProviderPaginationFixture, waitForIsolatedStorageBoundary } = require('../scripts/run-isolated-current-source-walk');
 const { acquireHostLease } = require('../scripts/owned-host-runner');
 const { cachedVSCodeLayout, defaultOwnedCacheRoot, markOwnedHostWorkspace } = require('../scripts/owned-vscode-test-cache');
 const { gitSnapshot } = require('../src/contextBridge');
@@ -462,7 +462,7 @@ test('owned Knowledge fixture refuses to overwrite any pre-existing target', t =
   assert.equal(fs.existsSync(path.join(workspace, 'registry')), false);
 });
 
-test('prelaunch staging failure is evidenced and its exact marked root is reclaimed', t => {
+test('prelaunch staging failure is evidenced and its exact marked root is quarantined', t => {
   const container = fs.mkdtempSync(path.join(os.tmpdir(), 'px-prelaunch-reconcile-'));
   const ownedRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'pacify-x-current-source-walk-'));
   t.after(() => fs.rmSync(container, { recursive: true, force: true }));
@@ -475,10 +475,33 @@ test('prelaunch staging failure is evidenced and its exact marked root is reclai
   assert.equal(report.owner_lifecycle.host_started, false);
   assert.equal(report.cleanup.reclaimed, true);
   assert.equal(fs.existsSync(ownedRoot), false);
+  assert.equal(report.cleanup.reason, 'verified-quarantine-move');
+  assert.equal(fs.existsSync(report.cleanup.quarantined_root), true);
+  assert.equal(fs.existsSync(path.join(report.cleanup.quarantined_root, '.pacify-x-owned-ephemeral.json')), true);
   assert.equal(JSON.parse(fs.readFileSync(reportPath, 'utf8')).error.includes('bounded-stage-failure'), true);
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-isolated-current-source-walk.js'), 'utf8');
-  assert.match(source, /rmSync\(resolved, \{ recursive: true, force: true, maxRetries: 8, retryDelay: 250 \}\)/);
+  assert.match(source, /fs\.renameSync\(resolved, target\)/);
   assert.match(source, /owned-ephemeral-cleanup-failed:/);
+});
+
+test('owned host cleanup waits through a temporary Windows file lock before quarantine', async t => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'pacify-x-current-source-walk-'));
+  t.after(() => { if (fs.existsSync(root)) fs.rmSync(root, { recursive: true, force: true }); });
+  markOwnedHostWorkspace(root, 'test-delayed-quarantine');
+  let attempts = 0;
+  const result = await settleOwnedEphemeralCleanup(root, true, {
+    attempts: 3,
+    retryDelayMs: 1,
+    quarantine: target => {
+      assert.equal(target, root);
+      attempts += 1;
+      if (attempts < 3) throw Object.assign(new Error('log handle retained'), { code: 'EPERM' });
+      return { reclaimed: true, reason: 'verified-quarantine-move', quarantined_root: 'owned-test-quarantine' };
+    }
+  });
+  assert.equal(attempts, 3);
+  assert.equal(result.reclaimed, true);
+  assert.equal(result.reason, 'verified-quarantine-move');
 });
 
 test('rejected duplicate acquires no temporary or evidence namespace', t => {

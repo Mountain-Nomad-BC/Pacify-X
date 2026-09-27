@@ -94,7 +94,7 @@
         "conftest.py"
       ],
       "index_state": "verified",
-      "sha256": "cb9cdb7b60f441f962cdf28ef0258171545f9e854774c26a984f113621ee8ec9"
+      "sha256": "c01f9e2c1fe2a3b6359c27c99a210e5549504bd34467cd42b961829de6841538"
     },
     ".px/skills/audit-source-capabilities/scripts/build_manifest_recovery_ledger.py": {
       "dependencies": [
@@ -111,7 +111,7 @@
         "runtime/declared_suite.py"
       ],
       "index_state": "verified",
-      "sha256": "77e9ce364173fc5c6468031d5b5c2e5e54efc93bb47fd39f2fc1266eae429d6b"
+      "sha256": "cb5860b061f1796229479f7ea16692317cb2ecf6d5adbb4f5926eb33a9c7769d"
     },
     ".px/skills/audit-source-capabilities/scripts/reconcile_classified_assets.py": {
       "dependencies": [
@@ -845,7 +845,7 @@
         "px/py_cert/runtime/certification_contract.py"
       ],
       "index_state": "verified",
-      "sha256": "a1175e0a3489dbf0e4f647dc6ba1c24d819a8e4169e9f4f8e12d01192ce424a9"
+      "sha256": "ea2b4c4e3cdb267a88fec7a98137f891903ddc238e775ffdd8d776d4f20c66a6"
     },
     "px/py_cert/scripts/build_pre_cert_hash_manifest.py": {
       "dependencies": [
@@ -1467,7 +1467,7 @@
         "scripts/cleanup_python_caches.py"
       ],
       "index_state": "verified",
-      "sha256": "66469c0d2bb63063110acee9f6127a663628e9f0349e60818937684b48984f74"
+      "sha256": "d7e066109918881bc63af2638f881d08dd17ae3b3f159a2330b868b24bba8bd3"
     },
     "runtime/cognitive_assurance.py": {
       "dependencies": [
@@ -1736,7 +1736,7 @@
         "runtime/__init__.py"
       ],
       "index_state": "verified",
-      "sha256": "386be7b1eb8f8f2e9500b2c57e892ca4960a8e5badd35cd8a26ed23693bb6732"
+      "sha256": "671fc7ad387d2fefa4451d094950374533eee4bc3e83309154eacba71534f5d5"
     },
     "runtime/coverage_assurance.py": {
       "dependencies": [
@@ -1774,7 +1774,7 @@
         "runtime/workspace_manager.py"
       ],
       "index_state": "verified",
-      "sha256": "6127ce9aaa7ab3e581cf1fafe3293b11259566a2bea8aab8c9b8523c4fe17ac1"
+      "sha256": "0a3e1b7194e752245dd4dcdc8d4db1b91442564ea01bd3b2760c9048bd7b149e"
     },
     "runtime/declared_suite.py": {
       "dependencies": [
@@ -2088,17 +2088,22 @@
         "runtime/evidence_portability.py",
         "runtime/generated_dependency.py",
         "runtime/graph_registry.py",
+        "runtime/native_skills.py",
+        "runtime/provider_gateway.py",
+        "runtime/semantic_index.py",
+        "runtime/test_profiles.py",
         "scripts/build_contract_ownership_registry.py",
         "scripts/build_declared_suite_template_projections.py",
         "scripts/build_domain_tool_projections.py",
         "scripts/build_profile_projections.py",
         "scripts/build_python_dependency_ownership.py",
         "scripts/build_registry_envelope_inventory.py",
+        "scripts/migration/sync_skill_packaging.py",
         "scripts/reconcile_commissioned_skill_registry.py",
         "scripts/reconcile_declared_tool_hashes.py"
       ],
       "index_state": "verified",
-      "sha256": "6aedad4049bb9249676898b072c82fc9b2fd873061662af697f8e5396b8459c5"
+      "sha256": "6b3941b408dac65981c963d2cb372969b0f8a79b2cf0b8481f58ced8dcd7c735"
     },
     "runtime/generated_dependency.py": {
       "dependencies": [
@@ -3107,7 +3112,7 @@
         "runtime/work_admission.py"
       ],
       "index_state": "verified",
-      "sha256": "1f9b5a1d8eba49b8399372050a0ab0a2491c5a598c30128e045cb735f47327e0"
+      "sha256": "f12854c511c2584583f63ed90827fc28e8b6fa6d3f9d8eeab6bb53a2da6dc516"
     },
     "runtime/project_management.py": {
       "dependencies": [
@@ -3404,7 +3409,7 @@
         "runtime/release_identity.py"
       ],
       "index_state": "verified",
-      "sha256": "a1175e0a3489dbf0e4f647dc6ba1c24d819a8e4169e9f4f8e12d01192ce424a9"
+      "sha256": "ea2b4c4e3cdb267a88fec7a98137f891903ddc238e775ffdd8d776d4f20c66a6"
     },
     "runtime/release_certification.py": {
       "dependencies": [
@@ -3463,7 +3468,7 @@
         "runtime/release_environment.py"
       ],
       "index_state": "verified",
-      "sha256": "56a5f5aabed5972ffd29c7946707eba3244a1bf5ec59fd42a60a4119793918ef"
+      "sha256": "dc2e2eb31d19ffbf85ac2bf21f4071fd206f3ea7da4f3d7074411b55090365fe"
     },
     "runtime/release_environment.py": {
       "dependencies": [
@@ -3688,7 +3693,7 @@
         "runtime/__init__.py"
       ],
       "index_state": "verified",
-      "sha256": "302c9bcef5df43413cebf7b3b2489ef5198d5bf7a512f02e29a175d0af239e9f"
+      "sha256": "c87c8288947b6048e3f9a80acb0106c808513d0c32e247fce960a304f9477a62"
     },
     "runtime/semantic_authority_bridge.py": {
       "dependencies": [
@@ -4627,7 +4632,7 @@
         "runtime/workflow_inputs.py"
       ],
       "index_state": "verified",
-      "sha256": "aea124e04c8ff71d63e7e5077d8a5af787d026ac1963e6511778fc59b01cd5f1"
+      "sha256": "bf33b15d4f3cd280c578f618691b23b37666789587f7e8ba3be64852e24bd16c"
     },
     "runtime/studio_api.py": {
       "dependencies": [
@@ -4796,6 +4801,7 @@
         "conftest.py",
         "runtime/__init__.py",
         "runtime/numeric_inputs.py",
+        "runtime/operational_gap_ledger.py",
         "runtime/release_campaign.py",
         "runtime/test_runner.py",
         "runtime/verification_inputs.py",
@@ -4804,7 +4810,7 @@
         "runtime/work_admission.py"
       ],
       "index_state": "verified",
-      "sha256": "8cc17880613175c8b325e498abae332a99ea8c5aabb67e6c59ece6ad6cf2aa58"
+      "sha256": "44f4e118b8dbe85eb12d3b4b4647d1e5657d82727d1ee9a819c6affae3ed033c"
     },
     "runtime/test_runner.py": {
       "dependencies": [
@@ -4942,7 +4948,7 @@
         "runtime/__init__.py"
       ],
       "index_state": "verified",
-      "sha256": "3960d9fcdd62ea13f90033fbc1c70d8ca8f796d29e7eec7c93a16cf61fe91b40"
+      "sha256": "bbe2ce1fc9210938066f8c427f7174aaa1b60f09019491b968c1ddc8c6a1312d"
     },
     "runtime/vscode_model_bridge.py": {
       "dependencies": [
@@ -5160,7 +5166,14 @@
         "runtime/resource_lifecycle.py"
       ],
       "index_state": "verified",
-      "sha256": "79e98a17413fbe78445880660312af9d19ecef5d0b3f36109731329030b1531e"
+      "sha256": "50252fc2efad44de6ca9d37b25b2829fcc9f888f1898444c7b1cdb9e771b334f"
+    },
+    "scripts/audit_validations_tree.py": {
+      "dependencies": [
+        "conftest.py"
+      ],
+      "index_state": "verified",
+      "sha256": "97cc394ce4afe230892145d7d4a6eeb355e5a59506f5a12ac00b86b5d388f104"
     },
     "scripts/benchmark_airllm_modes.py": {
       "dependencies": [
@@ -5815,7 +5828,7 @@
         "conftest.py"
       ],
       "index_state": "verified",
-      "sha256": "c771c8f265ed9b172beb41526a02ec7456eb861e66caa621afa61bfef41c3891"
+      "sha256": "2696b88a19575b44e69f454d076194716c952b06f5ff9da3dbac826b8ef113ea"
     },
     "scripts/normalize_contract_ids.py": {
       "dependencies": [
@@ -6248,7 +6261,7 @@
         "conftest.py"
       ],
       "index_state": "verified",
-      "sha256": "81f54d7682f659ad12ffd22e1dea3b5510de6e0956bb15b53ec3123edcb03e9b"
+      "sha256": "0738967b7845c41d58079b0f95fd8f69ae90ab38a407ae0b555c9d2f51430c61"
     },
     "scripts/verify_release_invariants.py": {
       "dependencies": [
@@ -6266,6 +6279,17 @@
       ],
       "index_state": "verified",
       "sha256": "0e0e12f80391ce8b749a54c77cfc55fc184f888a12e8cdfe87df3ea1d9a348b5"
+    },
+    "scripts/verify_repair_operations.py": {
+      "dependencies": [
+        "conftest.py",
+        "runtime/__init__.py",
+        "runtime/cli.py",
+        "runtime/test_profiles.py",
+        "runtime/version.py"
+      ],
+      "index_state": "verified",
+      "sha256": "cc51f549d44e5f110dd00180e0d3d44a81425183674c39fa07b5838c9f846883"
     },
     "sitecustomize.py": {
       "dependencies": [
@@ -6755,7 +6779,7 @@
         "tests/__init__.py"
       ],
       "index_state": "verified",
-      "sha256": "9608fc0834e5fd1dc5f2a98ec4e8079a8330c9a895d4f5dc33136418d7b4865b"
+      "sha256": "34e4649b7122d6b1187451d107a321c14a41999b4813cd997f9227ee601dd939"
     },
     "tests/test_build_installed_host_control_evidence.py": {
       "dependencies": [
@@ -6981,7 +7005,7 @@
         "tests/test_sanitation_assurance.py"
       ],
       "index_state": "verified",
-      "sha256": "73023d990fdd5513dc1f2b832dee272a33987d8f82a9898fc1552f6d2656376f"
+      "sha256": "7217fc50dd4460c1935ec770024e5f8745bbb1ef3693bc8172da66a59c952451"
     },
     "tests/test_cli_commands.py": {
       "dependencies": [
@@ -6996,7 +7020,7 @@
         "tests/__init__.py"
       ],
       "index_state": "verified",
-      "sha256": "7b9f2efad41b2c890a33fdf468170c2df92760c15c70331fd44185a567fc313a"
+      "sha256": "85a168d537d74548016022693a4cd08087dae0328a82f1a4376728f8e1a1a26c"
     },
     "tests/test_cli_lazy_loading.py": {
       "dependencies": [
@@ -7250,7 +7274,7 @@
         "tests/repository_copy.py"
       ],
       "index_state": "verified",
-      "sha256": "91feaa1e9622284a5121e55350057a377ae3e186fd3f0eb30ee397c4a6a9efc7"
+      "sha256": "1314611d67adc88204c9c85736d33dd10b982da2f4bbf7e4869a0b11bf722650"
     },
     "tests/test_coverage_assurance.py": {
       "dependencies": [
@@ -7284,7 +7308,7 @@
         "tests/__init__.py"
       ],
       "index_state": "verified",
-      "sha256": "2ebefbd3b2292cb78c68cc6d4d207cdcae172c5ac3ab7255399b3538ddf9f595"
+      "sha256": "71b50925ad03ec067bd5b082608675246a44431e4b5dd51b94dac9438e6a5d08"
     },
     "tests/test_dashboard_cognitive_query.py": {
       "dependencies": [
@@ -7334,7 +7358,7 @@
         "tests/__init__.py"
       ],
       "index_state": "verified",
-      "sha256": "7b2d3d150d2b48153e4c681c7cb9914781d656868260e38ba29e797541945369"
+      "sha256": "9582789a589184ed8fca5e3e851a7b8245d98021c3e38d45580d0f085099d127"
     },
     "tests/test_declared_suite_support.py": {
       "dependencies": [
@@ -7346,7 +7370,7 @@
         "tests/__init__.py"
       ],
       "index_state": "verified",
-      "sha256": "ba2e92cf758f6a5ab5ab0ceb65765d13142ad1c0d486d62ab97e2f9c9592d837"
+      "sha256": "3f7b0a4f2b189d4ea7d876b6c6c91fd2fe580233ef5343dcb03ae506451b6e53"
     },
     "tests/test_declared_wrapper_inputs.py": {
       "dependencies": [
@@ -7734,7 +7758,7 @@
         "tests/__init__.py"
       ],
       "index_state": "verified",
-      "sha256": "1314a01ff039f376f3a375e7165c497a26520213878fbd71c9bba2f50fd13a79"
+      "sha256": "e5e28576bfacd5510d6bfb70353dca24fd1f1d64444e94eb2bd2bc8b1426d986"
     },
     "tests/test_generated_dependency_graph.py": {
       "dependencies": [
@@ -8028,6 +8052,14 @@
       ],
       "index_state": "verified",
       "sha256": "ebf555e0b2d6cb50f349b4113f97a96159e6d83490ca2bfc483bdf8e5d89079b"
+    },
+    "tests/test_llama_cuda_build_script.py": {
+      "dependencies": [
+        "conftest.py",
+        "tests/__init__.py"
+      ],
+      "index_state": "verified",
+      "sha256": "16209cb533f1fe3de2f1b4dd7e8e57f330357085f4ab9cafae4dc87b04a65f7a"
     },
     "tests/test_local_model_capabilities.py": {
       "dependencies": [
@@ -8370,7 +8402,7 @@
         "tests/__init__.py"
       ],
       "index_state": "verified",
-      "sha256": "0a8e0eaa9e9c2d2970633dd2860e16c371499f5639bbb5fba87fd0cc35544709"
+      "sha256": "f68e5068467085f8fa11dbe17a18639f671b74e5bc9c31d98f583b870f632b20"
     },
     "tests/test_operation_authority.py": {
       "dependencies": [
@@ -8841,7 +8873,7 @@
         "tests/__init__.py"
       ],
       "index_state": "verified",
-      "sha256": "a258958790b82293d7d9881dd33ca1bef9d1cdb7c0802479620ddcd5d52bbcc3"
+      "sha256": "555e29c9a656a580f455c0a5f1d5fbfb5be9e3bea138a97dc64794d2d7a1e0ec"
     },
     "tests/test_project_onboarding.py": {
       "dependencies": [
@@ -9143,7 +9175,7 @@
         "tests/__init__.py"
       ],
       "index_state": "verified",
-      "sha256": "c014325c485128d935e522983471066524958cc07bc47e8e38d78552b0f6a3a6"
+      "sha256": "670b2a1fc446950b4b547e71aa0c43f44a7111e2194c85057a3ad1ce7ea32cd5"
     },
     "tests/test_release_audit.py": {
       "dependencies": [
@@ -9202,7 +9234,7 @@
         "tests/__init__.py"
       ],
       "index_state": "verified",
-      "sha256": "597e348ebfca82af46885774a11ff736f762d05aca7a19f4094fb5791ca31a34"
+      "sha256": "40e33591483cdb0525d5d2257ade3dfb75236f1e6bd3bbfcb750cca96e34db5b"
     },
     "tests/test_release_compliance_artifacts.py": {
       "dependencies": [
@@ -9420,6 +9452,17 @@
       ],
       "index_state": "verified",
       "sha256": "c931a5afc0864bac4de9f3de4aece0801257ff3b8a0a2b7ce0e74b3712b3d970"
+    },
+    "tests/test_repair_operational_verification.py": {
+      "dependencies": [
+        "conftest.py",
+        "runtime/__init__.py",
+        "runtime/test_profiles.py",
+        "scripts/verify_repair_operations.py",
+        "tests/__init__.py"
+      ],
+      "index_state": "verified",
+      "sha256": "2236b4dd559189f053911eed55780953f93068c1f2176cdd1447e107c5407b43"
     },
     "tests/test_repair_root_analysis.py": {
       "dependencies": [
@@ -10535,7 +10578,7 @@
         "tests/__init__.py"
       ],
       "index_state": "verified",
-      "sha256": "1869b4fcfe3a4c4c9b1e7185c84d654ab6a68e5de1482475bb648561334a9034"
+      "sha256": "67e13197c3241248a49bcc793b356b747007d015df28789707871c5b4df815b0"
     },
     "tests/test_skill_studio.py": {
       "dependencies": [
@@ -10678,7 +10721,7 @@
         "tests/__init__.py"
       ],
       "index_state": "verified",
-      "sha256": "32397607f959009fc7c76fac0401d85d38bcb0c2423a2d768f786ee4f8c1ffe3"
+      "sha256": "0067fc397b647745c82002e123338cb47e347ab3758c87a625855b8e5fd9f041"
     },
     "tests/test_studio_api.py": {
       "dependencies": [
@@ -10809,7 +10852,7 @@
         "tests/__init__.py"
       ],
       "index_state": "verified",
-      "sha256": "49c0b48fe1f918b68ad01f12375329f7e558ac2a73b32c12978b5a66a3252745"
+      "sha256": "42908e39f75c3fa2e3cc2372d093dc589a7ac99476927e5315641382de6dfc0d"
     },
     "tests/test_test_runner_controls.py": {
       "dependencies": [
@@ -11254,6 +11297,7 @@
         "runtime/memory_vault.py",
         "runtime/model_protocol.py",
         "runtime/model_protocol_translate.py",
+        "runtime/native_skills.py",
         "runtime/nsai_knowledge.py",
         "runtime/numeric_inputs.py",
         "runtime/observation_projection.py",
@@ -11323,6 +11367,7 @@
         "scripts/build_registry_envelope_inventory.py",
         "scripts/migrate_resource_ledger.py",
         "scripts/migrate_wal_generation.py",
+        "scripts/migration/sync_skill_packaging.py",
         "scripts/pre_candidate_hygiene.py",
         "scripts/reconcile_commissioned_skill_registry.py",
         "scripts/reconcile_declared_tool_hashes.py",
@@ -11367,7 +11412,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "process-recovery",
-      "input_sha256": "8becab0bf5ddee2cd9ceda3a8d35ff91e1506e6cc0f905c8fa66abb97cef56fb",
+      "input_sha256": "0ee0a00fc4ef18af0652b5a204110039447840d2d2801e498fa7d507ddf94128",
       "inputs": [
         "conftest.py",
         "registry/test_profiles.json",
@@ -11430,6 +11475,7 @@
         "runtime/memory_vault.py",
         "runtime/model_protocol.py",
         "runtime/model_protocol_translate.py",
+        "runtime/native_skills.py",
         "runtime/nsai_knowledge.py",
         "runtime/numeric_inputs.py",
         "runtime/observation_projection.py",
@@ -11499,6 +11545,7 @@
         "scripts/build_registry_envelope_inventory.py",
         "scripts/migrate_resource_ledger.py",
         "scripts/migrate_wal_generation.py",
+        "scripts/migration/sync_skill_packaging.py",
         "scripts/pre_candidate_hygiene.py",
         "scripts/reconcile_commissioned_skill_registry.py",
         "scripts/reconcile_declared_tool_hashes.py",
@@ -11806,6 +11853,7 @@
         "scripts/build_registry_envelope_inventory.py",
         "scripts/clean_source_export.py",
         "scripts/cleanup_python_caches.py",
+        "scripts/migration/sync_skill_packaging.py",
         "scripts/reconcile_active_capability_hashes.py",
         "scripts/reconcile_commissioned_skill_registry.py",
         "scripts/reconcile_declared_tool_hashes.py",
@@ -11823,7 +11871,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "exact-installed",
-      "input_sha256": "cb8ba6d849cad1118f479d2cc679024a5c3d67d88e67d9da9d3e9ae8ce568d65",
+      "input_sha256": "569b0581717dc02a11d3ad43445529505bd14d18624cae68d82e46007e5c324b",
       "inputs": [
         "README.md",
         "conftest.py",
@@ -12057,6 +12105,7 @@
         "scripts/build_registry_envelope_inventory.py",
         "scripts/clean_source_export.py",
         "scripts/cleanup_python_caches.py",
+        "scripts/migration/sync_skill_packaging.py",
         "scripts/reconcile_active_capability_hashes.py",
         "scripts/reconcile_commissioned_skill_registry.py",
         "scripts/reconcile_declared_tool_hashes.py",
@@ -12165,6 +12214,7 @@
         "runtime/model_protocol_translate.py",
         "runtime/model_route_state.py",
         "runtime/models.py",
+        "runtime/native_skills.py",
         "runtime/nsai_knowledge.py",
         "runtime/numeric_inputs.py",
         "runtime/observation_projection.py",
@@ -12241,6 +12291,7 @@
         "scripts/build_python_dependency_ownership.py",
         "scripts/build_registry_envelope_inventory.py",
         "scripts/clean_source_export.py",
+        "scripts/migration/sync_skill_packaging.py",
         "scripts/package_release_evidence.py",
         "scripts/reconcile_active_capability_hashes.py",
         "scripts/reconcile_cohesion_cards.py",
@@ -12268,7 +12319,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "release-build",
-      "input_sha256": "0dff3b2920cb669e065b0f028a3a71176f562b6aba83112144fe81c60395fb9e",
+      "input_sha256": "f9feb4807f4fc520ef135db53b3a21fc5f65dab56733db3281a37acaa945f5e9",
       "inputs": [
         ".github/workflows/release.yml",
         "README.md",
@@ -12352,6 +12403,7 @@
         "runtime/model_protocol_translate.py",
         "runtime/model_route_state.py",
         "runtime/models.py",
+        "runtime/native_skills.py",
         "runtime/nsai_knowledge.py",
         "runtime/numeric_inputs.py",
         "runtime/observation_projection.py",
@@ -12428,6 +12480,7 @@
         "scripts/build_python_dependency_ownership.py",
         "scripts/build_registry_envelope_inventory.py",
         "scripts/clean_source_export.py",
+        "scripts/migration/sync_skill_packaging.py",
         "scripts/package_release_evidence.py",
         "scripts/reconcile_active_capability_hashes.py",
         "scripts/reconcile_cohesion_cards.py",
@@ -12517,6 +12570,7 @@
         "runtime/dependency_audit.py",
         "runtime/effect_surface.py",
         "runtime/event_ledger.py",
+        "runtime/evidence_claims.py",
         "runtime/evidence_portability.py",
         "runtime/evidence_reducer.py",
         "runtime/external_evidence.py",
@@ -12538,10 +12592,12 @@
         "runtime/memory_vault.py",
         "runtime/model_protocol.py",
         "runtime/model_protocol_translate.py",
+        "runtime/native_skills.py",
         "runtime/nsai_knowledge.py",
         "runtime/numeric_inputs.py",
         "runtime/observation_projection.py",
         "runtime/operational_event_bus.py",
+        "runtime/operational_gap_ledger.py",
         "runtime/operational_observers.py",
         "runtime/operational_projection.py",
         "runtime/operational_visibility.py",
@@ -12593,6 +12649,7 @@
         "scripts/build_profile_projections.py",
         "scripts/build_python_dependency_ownership.py",
         "scripts/build_registry_envelope_inventory.py",
+        "scripts/migration/sync_skill_packaging.py",
         "scripts/reconcile_commissioned_skill_registry.py",
         "scripts/reconcile_declared_tool_hashes.py",
         "templates/generated/domain_tool.py",
@@ -12604,7 +12661,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "release-audit",
-      "input_sha256": "a14c6122bad341015ec92605a78d1835584ccbf8afac9ee5c92fdada49357d39",
+      "input_sha256": "deeafd56de4b823a74f4349c790a0c0c9e51d4d1157858c82d735167f30886b0",
       "inputs": [
         "README.md",
         "conftest.py",
@@ -12652,6 +12709,7 @@
         "runtime/dependency_audit.py",
         "runtime/effect_surface.py",
         "runtime/event_ledger.py",
+        "runtime/evidence_claims.py",
         "runtime/evidence_portability.py",
         "runtime/evidence_reducer.py",
         "runtime/external_evidence.py",
@@ -12673,10 +12731,12 @@
         "runtime/memory_vault.py",
         "runtime/model_protocol.py",
         "runtime/model_protocol_translate.py",
+        "runtime/native_skills.py",
         "runtime/nsai_knowledge.py",
         "runtime/numeric_inputs.py",
         "runtime/observation_projection.py",
         "runtime/operational_event_bus.py",
+        "runtime/operational_gap_ledger.py",
         "runtime/operational_observers.py",
         "runtime/operational_projection.py",
         "runtime/operational_visibility.py",
@@ -12728,6 +12788,7 @@
         "scripts/build_profile_projections.py",
         "scripts/build_python_dependency_ownership.py",
         "scripts/build_registry_envelope_inventory.py",
+        "scripts/migration/sync_skill_packaging.py",
         "scripts/reconcile_commissioned_skill_registry.py",
         "scripts/reconcile_declared_tool_hashes.py",
         "templates/generated/domain_tool.py",
@@ -12793,6 +12854,7 @@
         "runtime/dependency_audit.py",
         "runtime/effect_surface.py",
         "runtime/event_ledger.py",
+        "runtime/evidence_claims.py",
         "runtime/evidence_portability.py",
         "runtime/evidence_reducer.py",
         "runtime/external_toolchain.py",
@@ -12812,10 +12874,12 @@
         "runtime/memory_vault.py",
         "runtime/model_protocol.py",
         "runtime/model_protocol_translate.py",
+        "runtime/native_skills.py",
         "runtime/nsai_knowledge.py",
         "runtime/numeric_inputs.py",
         "runtime/observation_projection.py",
         "runtime/operational_event_bus.py",
+        "runtime/operational_gap_ledger.py",
         "runtime/operational_observers.py",
         "runtime/operational_projection.py",
         "runtime/operational_visibility.py",
@@ -12865,6 +12929,7 @@
         "scripts/build_profile_projections.py",
         "scripts/build_python_dependency_ownership.py",
         "scripts/build_registry_envelope_inventory.py",
+        "scripts/migration/sync_skill_packaging.py",
         "scripts/reconcile_commissioned_skill_registry.py",
         "scripts/reconcile_declared_tool_hashes.py",
         "templates/generated/domain_tool.py",
@@ -12876,7 +12941,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "structural-adversarial",
-      "input_sha256": "9f2c4a9969aa4395e8b3073e08759535a4b7732ff929f6d6f96944b72070e0a1",
+      "input_sha256": "6d14ea16cd7b84a3f444f1a135ac100e33afc6672eef43b9b549ba2d8d9fce38",
       "inputs": [
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_agents_md_generator.py",
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_change_impact.py",
@@ -13585,6 +13650,7 @@
         "scripts/audit_local_paths.py",
         "scripts/audit_sanitization.py",
         "scripts/audit_source_archive.py",
+        "scripts/audit_validations_tree.py",
         "scripts/benchmark_airllm_modes.py",
         "scripts/benchmark_local_models.py",
         "scripts/benchmark_model_routes.py",
@@ -13706,6 +13772,7 @@
         "scripts/verify_release_compliance.py",
         "scripts/verify_release_invariants.py",
         "scripts/verify_release_publication.py",
+        "scripts/verify_repair_operations.py",
         "sitecustomize.py",
         "templates/generated/domain_tool.py",
         "templates/service_capabilities/supabase/functions/example/index.ts",
@@ -13868,6 +13935,7 @@
         "tests/test_licensing.py",
         "tests/test_licensing_input_contracts.py",
         "tests/test_llama_cpp_capabilities.py",
+        "tests/test_llama_cuda_build_script.py",
         "tests/test_local_model_capabilities.py",
         "tests/test_local_model_runtime.py",
         "tests/test_memory_broker.py",
@@ -13994,6 +14062,7 @@
         "tests/test_release_stage_owner.py",
         "tests/test_release_streaming_inputs.py",
         "tests/test_release_supply_chain_evidence.py",
+        "tests/test_repair_operational_verification.py",
         "tests/test_repair_root_analysis.py",
         "tests/test_repository_scope.py",
         "tests/test_research_contract_admission.py",
@@ -14852,6 +14921,7 @@
         "scripts/audit_local_paths.py",
         "scripts/audit_sanitization.py",
         "scripts/audit_source_archive.py",
+        "scripts/audit_validations_tree.py",
         "scripts/benchmark_airllm_modes.py",
         "scripts/benchmark_local_models.py",
         "scripts/benchmark_model_routes.py",
@@ -14973,6 +15043,7 @@
         "scripts/verify_release_compliance.py",
         "scripts/verify_release_invariants.py",
         "scripts/verify_release_publication.py",
+        "scripts/verify_repair_operations.py",
         "sitecustomize.py",
         "templates/generated/domain_tool.py",
         "templates/service_capabilities/supabase/functions/example/index.ts",
@@ -15135,6 +15206,7 @@
         "tests/test_licensing.py",
         "tests/test_licensing_input_contracts.py",
         "tests/test_llama_cpp_capabilities.py",
+        "tests/test_llama_cuda_build_script.py",
         "tests/test_local_model_capabilities.py",
         "tests/test_local_model_runtime.py",
         "tests/test_memory_broker.py",
@@ -15261,6 +15333,7 @@
         "tests/test_release_stage_owner.py",
         "tests/test_release_streaming_inputs.py",
         "tests/test_release_supply_chain_evidence.py",
+        "tests/test_repair_operational_verification.py",
         "tests/test_repair_root_analysis.py",
         "tests/test_repository_scope.py",
         "tests/test_research_contract_admission.py",
@@ -15501,6 +15574,7 @@
         "runtime/model_protocol_translate.py",
         "runtime/model_route_state.py",
         "runtime/models.py",
+        "runtime/native_skills.py",
         "runtime/nsai_knowledge.py",
         "runtime/numeric_inputs.py",
         "runtime/observation_projection.py",
@@ -15577,6 +15651,7 @@
         "scripts/build_python_dependency_ownership.py",
         "scripts/build_registry_envelope_inventory.py",
         "scripts/clean_source_export.py",
+        "scripts/migration/sync_skill_packaging.py",
         "scripts/reconcile_active_capability_hashes.py",
         "scripts/reconcile_commissioned_skill_registry.py",
         "scripts/reconcile_declared_tool_hashes.py",
@@ -15596,7 +15671,7 @@
       "disk_consumption_limit_bytes": 51539607552,
       "disk_work_units": 6,
       "group": "derived-integrity",
-      "input_sha256": "c4427259facc209ea15c71bdca1a39c8a9812b730ce40fc973f5b895d68f422d",
+      "input_sha256": "2d5d608fb54825424d372c47a7d5baba9a3decac1ed03bad73de6b29b81f943d",
       "inputs": [
         "README.md",
         "conftest.py",
@@ -15678,6 +15753,7 @@
         "runtime/model_protocol_translate.py",
         "runtime/model_route_state.py",
         "runtime/models.py",
+        "runtime/native_skills.py",
         "runtime/nsai_knowledge.py",
         "runtime/numeric_inputs.py",
         "runtime/observation_projection.py",
@@ -15754,6 +15830,7 @@
         "scripts/build_python_dependency_ownership.py",
         "scripts/build_registry_envelope_inventory.py",
         "scripts/clean_source_export.py",
+        "scripts/migration/sync_skill_packaging.py",
         "scripts/reconcile_active_capability_hashes.py",
         "scripts/reconcile_commissioned_skill_registry.py",
         "scripts/reconcile_declared_tool_hashes.py",
@@ -16203,7 +16280,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "core-a-f",
-      "input_sha256": "6256ac5b1362decca5dfc2f11f49a4c671fd644e53688ca51431c77d8d659839",
+      "input_sha256": "8d4fd95bc9add009b69ccab6998296ecfd640f32f1967f25c712bdb882c85c44",
       "inputs": [
         "builders/__init__.py",
         "builders/common.py",
@@ -17049,6 +17126,7 @@
         "tests/test_licensing.py",
         "tests/test_licensing_input_contracts.py",
         "tests/test_llama_cpp_capabilities.py",
+        "tests/test_llama_cuda_build_script.py",
         "tests/test_local_model_capabilities.py",
         "tests/test_local_model_runtime.py",
         "tests/test_memory_broker.py",
@@ -17077,7 +17155,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "core-g-m",
-      "input_sha256": "d39db1246eaf882be2b2087ed01e9588c28a22cef28efe2c624949110edbf462",
+      "input_sha256": "628db4db4d91d59c5519af95b4c7e273fba520b49731e78605426648104be26e",
       "inputs": [
         "builders/__init__.py",
         "builders/common.py",
@@ -17390,6 +17468,7 @@
         "tests/test_licensing.py",
         "tests/test_licensing_input_contracts.py",
         "tests/test_llama_cpp_capabilities.py",
+        "tests/test_llama_cuda_build_script.py",
         "tests/test_local_model_capabilities.py",
         "tests/test_local_model_runtime.py",
         "tests/test_memory_broker.py",
@@ -17414,7 +17493,7 @@
         "tests/test_model_route_state.py",
         "tests/test_model_routing_observability.py"
       ],
-      "member_count": 49,
+      "member_count": 50,
       "members": [
         "tests/test_generated_dependency_graph.py",
         "tests/test_global_skill_isolation.py",
@@ -17442,6 +17521,7 @@
         "tests/test_licensing.py",
         "tests/test_licensing_input_contracts.py",
         "tests/test_llama_cpp_capabilities.py",
+        "tests/test_llama_cuda_build_script.py",
         "tests/test_local_model_capabilities.py",
         "tests/test_local_model_runtime.py",
         "tests/test_memory_broker.py",
@@ -17854,6 +17934,7 @@
         "scripts/verify_license_inventory.py",
         "scripts/verify_release_compliance.py",
         "scripts/verify_release_invariants.py",
+        "scripts/verify_repair_operations.py",
         "tests/__init__.py",
         "tests/pytest_guards.py",
         "tests/release_preflight_testkit.py",
@@ -17936,6 +18017,7 @@
         "tests/test_release_preflight_integration.py",
         "tests/test_release_stage_owner.py",
         "tests/test_release_streaming_inputs.py",
+        "tests/test_repair_operational_verification.py",
         "tests/test_repair_root_analysis.py",
         "tests/test_repository_scope.py",
         "tests/test_research_contract_admission.py",
@@ -18059,7 +18141,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "core-n-s",
-      "input_sha256": "33495b939675c4f57eef7254bf52f08bcbd0d52e798181350bdcf700dca6cdf5",
+      "input_sha256": "3eeaabe3e743a2ef9d2ad995017951d24f91ce80435919751c5919df84937cda",
       "inputs": [
         "conftest.py",
         "docs/architecture/tools/build_atlas.py",
@@ -18443,6 +18525,7 @@
         "scripts/verify_license_inventory.py",
         "scripts/verify_release_compliance.py",
         "scripts/verify_release_invariants.py",
+        "scripts/verify_repair_operations.py",
         "tests/__init__.py",
         "tests/pytest_guards.py",
         "tests/release_preflight_testkit.py",
@@ -18525,6 +18608,7 @@
         "tests/test_release_preflight_integration.py",
         "tests/test_release_stage_owner.py",
         "tests/test_release_streaming_inputs.py",
+        "tests/test_repair_operational_verification.py",
         "tests/test_repair_root_analysis.py",
         "tests/test_repository_scope.py",
         "tests/test_research_contract_admission.py",
@@ -18644,7 +18728,7 @@
         "tests/test_system_graph.py",
         "tests/test_system_one_decision.py"
       ],
-      "member_count": 192,
+      "member_count": 193,
       "members": [
         "tests/test_native_skills.py",
         "tests/test_nsai_knowledge.py",
@@ -18720,6 +18804,7 @@
         "tests/test_release_preflight_integration.py",
         "tests/test_release_stage_owner.py",
         "tests/test_release_streaming_inputs.py",
+        "tests/test_repair_operational_verification.py",
         "tests/test_repair_root_analysis.py",
         "tests/test_repository_scope.py",
         "tests/test_research_contract_admission.py",
@@ -19105,6 +19190,7 @@
         "scripts/clean_source_export.py",
         "scripts/cleanup_python_caches.py",
         "scripts/migrate_resource_ledger.py",
+        "scripts/migration/sync_skill_packaging.py",
         "scripts/reconcile_active_capability_hashes.py",
         "scripts/reconcile_commissioned_skill_registry.py",
         "scripts/reconcile_declared_tool_hashes.py",
@@ -19144,7 +19230,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "core-t-z",
-      "input_sha256": "e42f640c0a2ce026edc695c5789983423943b302c57308a3a40a74354ee6a2a5",
+      "input_sha256": "fea47e42d81e93aba78765a508cc1e7c4f7b561c160bf38eed41e22b3d17dc1b",
       "inputs": [
         "builders/__init__.py",
         "builders/adapter_builder.py",
@@ -19406,6 +19492,7 @@
         "scripts/clean_source_export.py",
         "scripts/cleanup_python_caches.py",
         "scripts/migrate_resource_ledger.py",
+        "scripts/migration/sync_skill_packaging.py",
         "scripts/reconcile_active_capability_hashes.py",
         "scripts/reconcile_commissioned_skill_registry.py",
         "scripts/reconcile_declared_tool_hashes.py",
@@ -19475,10 +19562,10 @@
       "timeout_seconds": 1600.0
     }
   ],
-  "index_sha256": "8274af57ee8f8a25653ff87cc008e8bc03e28d2488c93e9be509bc7434a0b155",
+  "index_sha256": "37c3f35f1cca861e6c1d17810776e448970609d065f0b99f7d674c05f4c1d223",
   "schema_version": "px.test-group-index/1.2",
-  "test_file_count": 425,
+  "test_file_count": 427,
   "topology_sha256": "b7acfcbeb33b312d298f48d3f42a92160dc57eea6c2180b06e0cbbdaa76fdd0a",
-  "tracked_python_file_count": 1063,
-  "verified_file_count": 1063
+  "tracked_python_file_count": 1067,
+  "verified_file_count": 1067
 }

@@ -47,6 +47,21 @@ test('authoritative workspace identity accepts only Windows drive-letter case eq
   assert.equal(fs.existsSync(path.join(root, '.engineering-bootstrap', 'coordination', 'quarantine')), true);
 });
 
+test('authoritative workspace identity accepts an alias of the same directory', t => {
+  const parent = fs.mkdtempSync(path.join(os.tmpdir(), 'px-coordination-alias-test-'));
+  t.after(() => fs.rmSync(parent, { recursive: true, force: true }));
+  const root = path.join(parent, 'actual');
+  const alias = path.join(parent, 'alias');
+  fs.mkdirSync(root);
+  fs.symlinkSync(root, alias, process.platform === 'win32' ? 'junction' : 'dir');
+  createParallelPlan(alias, actorA, {
+    objective: 'same physical workspace',
+    tasks: [{ id: 'identity', title: 'Identity', claims: ['src/identity'] }]
+  });
+  assert.equal(readCoordination(root).state.tasks.find(item => item.id === 'identity').title, 'Identity');
+  assert.equal(fs.existsSync(path.join(root, '.engineering-bootstrap', 'coordination', 'quarantine')), false);
+});
+
 test('read-only coordination and memory inspections never quarantine a corrupt authoritative state', t => {
   const root = fixture(t);
   createParallelPlan(root, actorA, { objective: 'corruption', tasks: [{ id: 'one', title: 'One', claims: ['one/'] }] });

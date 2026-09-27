@@ -48,7 +48,13 @@ function coordinationPaths(workspaceRoot) {
 
 function workspacePathIdentity(value) {
   const resolved = path.resolve(value || '');
-  return process.platform === 'win32' ? resolved.toLowerCase() : resolved;
+  let canonical = resolved;
+  try {
+    canonical = fs.realpathSync.native(resolved);
+  } catch (error) {
+    if (error.code !== 'ENOENT') throw error;
+  }
+  return process.platform === 'win32' ? canonical.toLowerCase() : canonical;
 }
 
 function defaultState(workspaceRoot) {
