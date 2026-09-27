@@ -8,14 +8,9 @@ from pathlib import Path
 import tomllib
 
 
-def main() -> int:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--queue", type=Path, required=True)
-    parser.add_argument("--skill-catalog", type=Path, required=True)
-    parser.add_argument("--out", type=Path, required=True)
-    args = parser.parse_args()
-    queue = json.loads(args.queue.read_text(encoding="utf-8"))
-    catalog = tomllib.loads(args.skill_catalog.read_text(encoding="utf-8"))
+def build(queue_path: Path, catalog_path: Path) -> dict[str, object]:
+    queue = json.loads(queue_path.read_text(encoding="utf-8"))
+    catalog = tomllib.loads(catalog_path.read_text(encoding="utf-8"))
     active = {
         item["id"]
         for item in catalog["skills"]
@@ -54,6 +49,16 @@ def main() -> int:
             for category, items in sorted(categories.items())
         ],
     }
+    return output
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--queue", type=Path, required=True)
+    parser.add_argument("--skill-catalog", type=Path, required=True)
+    parser.add_argument("--out", type=Path, required=True)
+    args = parser.parse_args()
+    output = build(args.queue, args.skill_catalog)
     args.out.write_text(
         json.dumps(output, indent=2) + "\n",
         encoding="utf-8",

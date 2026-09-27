@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "classification": "sanitized aggregate completion evidence; historical per-file maps externalized",
+  "batches": [
+    {"id": "root-intake", "source_files": 22, "unique_hashes": 12, "markdown_cards": 20, "unresolved": 0},
+    {"id": "skill-bootstrap", "source_files": 8, "duplicate_files": 8, "markdown_cards": 8, "unresolved": 0},
+    {"id": "source-build", "source_files": 157, "markdown_cards": 84, "unresolved": 0},
+    {"id": "second-intake", "source_files": 318, "markdown_cards": 193, "parse_errors": 0, "unresolved": 0},
+    {"id": "workspace-root", "source_files": 596, "markdown_cards": 294, "unresolved": 0},
+    {"id": "external-final-note", "source_files": 6353, "read_errors": 0, "source_bodies_retained": false, "unresolved": 0}
+  ],
+  "operational_owners": [
+    "registry/root_intake_admission.json",
+    "registry/reference_candidate_admission.json",
+    "registry/source_requirement_coverage.json",
+    "registry/source_specialty_admission.json",
+    "registry/project_stream_capabilities.json",
+    "registry/project_stream_orchestrations.json",
+    "registry/contract_ownership.json",
+    "registry/skill_catalog.toml"
+  ],
+  "custody_index": "evidence/externalized-payload-index.json",
+  "complete": true,
+  "runtime_loaded": false
+}

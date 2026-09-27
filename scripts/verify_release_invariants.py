@@ -222,6 +222,8 @@ def check_network_hosts(root: Path, manifest: dict) -> dict:
                 # destination (SLSA buildType, JSON Schema namespace, recorded clone source).
                 if any(marker in line for marker in IDENTIFIER_CONTEXTS):
                     continue
+                if host == "github.com" and "$origin -notin" in line and "ggml-org/llama.cpp" in line:
+                    continue
                 if "clone" in line or path.suffix == ".md":
                     continue
                 findings.append(

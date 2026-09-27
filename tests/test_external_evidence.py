@@ -26,6 +26,17 @@ def test_strict_external_evidence_is_portable_inside_product():
     result = validate_external_evidence(ROOT, strict=True)
     assert result["valid"], result["errors"]
     assert result["verified"] == result["references"] == 1
+    assert result["superseded_references"] == 7
+
+
+def test_historical_custody_cannot_be_misclassified_as_current(tmp_path):
+    product = tmp_path / "product"
+    copy_external_evidence_fixture(product)
+    index_path = product / "evidence/externalized-payload-index.json"
+    index = json.loads(index_path.read_text(encoding="utf-8"))
+    index["records"][1]["required_for"] = ["current_release"]
+    index_path.write_text(json.dumps(index), encoding="utf-8")
+    assert not validate_external_evidence(product, strict=True)["valid"]
 
 
 def test_traversal_and_wrong_bundle_hash_fail_closed(tmp_path):

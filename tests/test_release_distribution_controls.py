@@ -13,6 +13,7 @@ import zipfile
 import pytest
 
 from runtime.release_artifacts import materialize_release_source
+from runtime.version import VERSION
 
 from runtime.release_distribution import (
     bind_artifact_set,
@@ -112,7 +113,7 @@ def test_artifact_manifest_projects_declared_package_data() -> None:
         ("wheel", "engineering_bootstrap/studio_operations.json"),
         (
             "sdist",
-            "engineering_loop_bootstrap-0.7.0/runtime/studio_operations.json",
+            f"engineering_loop_bootstrap-{VERSION}/runtime/studio_operations.json",
         ),
     }
 
@@ -263,7 +264,7 @@ def test_frozen_artifact_manifest_remains_authoritative_after_live_state_changes
         wheel.parent,
         records,
         source_product_digest="a" * 64,
-        version="0.7.0",
+        version=VERSION,
         source_root=source,
     )
     mutable = source / "runtime/studio_operations.json"
@@ -277,7 +278,7 @@ def test_frozen_artifact_manifest_remains_authoritative_after_live_state_changes
         wheel.parent,
         records,
         source_product_digest="a" * 64,
-        version="0.7.0",
+        version=VERSION,
         artifact_manifest=manifest,
     )
 
@@ -300,7 +301,7 @@ def test_tampered_frozen_artifact_manifest_fails_intrinsic_digest_check(
         wheel.parent,
         records,
         source_product_digest="a" * 64,
-        version="0.7.0",
+        version=VERSION,
         artifact_manifest=changed,
     )
 
@@ -319,7 +320,7 @@ def test_artifact_manifest_authority_must_not_be_ambiguous(
         wheel.parent,
         records,
         source_product_digest="a" * 64,
-        version="0.7.0",
+        version=VERSION,
         source_root=source,
         artifact_manifest=manifest,
     )

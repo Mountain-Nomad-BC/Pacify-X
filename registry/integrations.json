@@ -46,8 +46,8 @@
       "effects": [
         "read_local"
       ],
-      "handler": "runtime.admitted_fabric_integrations:cognitive_query_read",
-      "healthcheck": "runtime.admitted_fabric_integrations:cognitive_query_healthcheck",
+      "handler": "engineering_bootstrap.admitted_fabric_integrations:cognitive_query_read",
+      "healthcheck": "engineering_bootstrap.admitted_fabric_integrations:cognitive_query_healthcheck",
       "id": "cognitive-query-runtime",
       "owner": "runtime/admitted_fabric_integrations.py",
       "provides": [
@@ -134,8 +134,8 @@
       "effects": [
         "read_local"
       ],
-      "handler": "runtime.admitted_fabric_integrations:model_fabric_inventory",
-      "healthcheck": "runtime.admitted_fabric_integrations:model_fabric_healthcheck",
+      "handler": "engineering_bootstrap.admitted_fabric_integrations:model_fabric_inventory",
+      "healthcheck": "engineering_bootstrap.admitted_fabric_integrations:model_fabric_healthcheck",
       "id": "model-fabric-runtime",
       "owner": "runtime/admitted_fabric_integrations.py",
       "provides": [
@@ -161,8 +161,8 @@
       "effects": [
         "read_local"
       ],
-      "handler": "runtime.admitted_fabric_integrations:nsai_library_status",
-      "healthcheck": "runtime.admitted_fabric_integrations:nsai_library_healthcheck",
+      "handler": "engineering_bootstrap.admitted_fabric_integrations:nsai_library_status",
+      "healthcheck": "engineering_bootstrap.admitted_fabric_integrations:nsai_library_healthcheck",
       "id": "nsai-knowledge-library",
       "owner": "runtime/admitted_fabric_integrations.py",
       "provides": [
@@ -188,8 +188,8 @@
       "effects": [
         "read_local"
       ],
-      "handler": "runtime.admitted_fabric_integrations:persistent_memory_metadata",
-      "healthcheck": "runtime.admitted_fabric_integrations:persistent_memory_healthcheck",
+      "handler": "engineering_bootstrap.admitted_fabric_integrations:persistent_memory_metadata",
+      "healthcheck": "engineering_bootstrap.admitted_fabric_integrations:persistent_memory_healthcheck",
       "id": "persistent-memory-provider",
       "owner": "runtime/admitted_fabric_integrations.py",
       "provides": [
@@ -215,8 +215,8 @@
       "effects": [
         "read_local"
       ],
-      "handler": "runtime.admitted_fabric_integrations:retrieval_generation_status",
-      "healthcheck": "runtime.admitted_fabric_integrations:retrieval_generation_healthcheck",
+      "handler": "engineering_bootstrap.admitted_fabric_integrations:retrieval_generation_status",
+      "healthcheck": "engineering_bootstrap.admitted_fabric_integrations:retrieval_generation_healthcheck",
       "id": "retrieval-generation-runtime",
       "owner": "runtime/admitted_fabric_integrations.py",
       "provides": [
@@ -241,8 +241,8 @@
       "effects": [
         "read_local"
       ],
-      "handler": "runtime.admitted_fabric_integrations:semantic_code_inventory",
-      "healthcheck": "runtime.admitted_fabric_integrations:semantic_code_healthcheck",
+      "handler": "engineering_bootstrap.admitted_fabric_integrations:semantic_code_inventory",
+      "healthcheck": "engineering_bootstrap.admitted_fabric_integrations:semantic_code_healthcheck",
       "id": "semantic-code-intelligence-runtime",
       "owner": "runtime/admitted_fabric_integrations.py",
       "provides": [
@@ -262,8 +262,8 @@
       "version": "1.0.0",
       "owner": "extension/src/pxLanguageModelProvider.js",
       "status": "candidate",
-      "handler": "runtime.admitted_fabric_integrations:vscode_model_client_status",
-      "healthcheck": "runtime.admitted_fabric_integrations:vscode_model_client_healthcheck",
+      "handler": "engineering_bootstrap.admitted_fabric_integrations:vscode_model_client_status",
+      "healthcheck": "engineering_bootstrap.admitted_fabric_integrations:vscode_model_client_healthcheck",
       "provides": [
         "vscode_governed_language_model_client"
       ],
@@ -290,8 +290,8 @@
       "version": "1.0.0",
       "owner": "extension/src/mcpModelFabricBridge.js",
       "status": "candidate",
-      "handler": "runtime.admitted_fabric_integrations:vscode_model_client_status",
-      "healthcheck": "runtime.admitted_fabric_integrations:mcp_model_fabric_bridge_healthcheck",
+      "handler": "engineering_bootstrap.admitted_fabric_integrations:vscode_model_client_status",
+      "healthcheck": "engineering_bootstrap.admitted_fabric_integrations:mcp_model_fabric_bridge_healthcheck",
       "provides": [
         "extension_host_model_fabric_bridge"
       ],

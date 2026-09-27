@@ -289,14 +289,7 @@ engineering_bootstrap = ["studio_operations.json"]
 "share/engineering-bootstrap/registry/graphs" = ["registry/graphs/*.json"]
 "share/engineering-bootstrap/registry/security_capabilities" = ["registry/security_capabilities/*.json", "registry/security_capabilities/*.jsonl"]
 "share/engineering-bootstrap/registry/skill_packages" = ["registry/skill_packages/*.json"]
-"share/engineering-bootstrap/registry/skills" = [
-  "registry/skills/evidence-assembler.json",
-  "registry/skills/execution-contract-enforcer.json",
-  "registry/skills/outcome-verifier.json",
-  "registry/skills/skill-admission-controller.json",
-  "registry/skills/skill-navigator.json",
-  "registry/skills/workflow-orchestrator.json",
-]
+"share/engineering-bootstrap/registry/skills" = ["registry/skills/*.json"]
 # BEGIN GENERATED PXU NSAI DATA FILES
 "share/engineering-bootstrap/knowledge/nsai" = ["knowledge/nsai/README.md", "knowledge/nsai/index.json"]
 "share/engineering-bootstrap/knowledge/nsai/objects/cognitive" = ["knowledge/nsai/objects/cognitive/atomic_cognitive_generation_publication.json", "knowledge/nsai/objects/cognitive/bounded_cognitive_query.json", "knowledge/nsai/objects/cognitive/tiny_operator_closed_world_selection.json"]

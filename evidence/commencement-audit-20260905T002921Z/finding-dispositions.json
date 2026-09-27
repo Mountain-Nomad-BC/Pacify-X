@@ -1,0 +1,278 @@
+{
+  "schema_version": "px.forensic-live-dispositions/1.0",
+  "source_head": "19761e2a769885d6df25dc448c673e339eaf9c8c",
+  "product_digest": "e15375c38ce6700bbf76e3f0f9d453a669098f6a92af9439ca91de6fc61865eb",
+  "broad_tests_run": false,
+  "findings": [
+    {
+      "id": "PX-AUD-001",
+      "disposition": "PRESENT_LIVE",
+      "severity": "P0/P1",
+      "repair_required": true,
+      "live_owner": [
+        "runtime/operational_gap_ledger.py:_validate_transition_admission",
+        "scripts/reconcile_unverified_operational_controls.py:plan_operational_card_reconciliations",
+        "scripts/build_completion_status.py:build"
+      ],
+      "falsification": {
+        "green_control_selected_parent": true,
+        "missing_runtime_feature": true,
+        "emitted_state": "operationally_verified",
+        "transition_admission_accepted": true
+      },
+      "conclusion": "Control interaction evidence can still advance a feature while an explicitly required runtime feature is missing."
+    },
+    {
+      "id": "PX-AUD-002",
+      "disposition": "PRESENT_LIVE",
+      "severity": "P1",
+      "repair_required": true,
+      "live_owner": [
+        "runtime/semantic_index.py:build_semantic_index",
+        "runtime/capability_routing.py:rank_candidates"
+      ],
+      "measurement": {
+        "semantic_records": 178,
+        "records_with_nonempty_intents": 4,
+        "intent_values": 8,
+        "sole_intent_source": "contract.provides"
+      },
+      "conclusion": "The intent desert and polysemy exposure remain current."
+    },
+    {
+      "id": "PX-AUD-003",
+      "disposition": "PRESENT_LIVE",
+      "severity": "P1",
+      "repair_required": true,
+      "live_owner": [
+        "runtime/state_invariants.py:validate_coordination_state",
+        "extension/src/stateInvariants.js:assertCoordinationState"
+      ],
+      "equivalent_vector_results": {
+        "all_parity": false,
+        "mismatches": [
+          "invalid schema version: Python accepts; Node rejects schema-version",
+          "expired active claim: Python rejects claim_expired; Node accepts",
+          "multiple active plans: Python accepts; Node rejects multiple-active-plans",
+          "malformed session: Python accepts; Node rejects session shape",
+          "incomplete dependency: both reject with different violation IDs",
+          "task/claim mismatch: both reject with different first/complete violation semantics"
+        ]
+      },
+      "conclusion": "The two authoritative runtimes do not share validation semantics or stable violation IDs."
+    },
+    {
+      "id": "PX-AUD-004",
+      "disposition": "PRESENT_LIVE",
+      "severity": "P1",
+      "repair_required": true,
+      "live_owner": [
+        "runtime/learning_promotion.py:decay_decision",
+        "runtime/knowledge_core_controller.py:measure_learning_reuse",
+        "runtime/knowledge_core_controller.py:browse"
+      ],
+      "disposable_probe": {
+        "pipeline_state_after_decay": "decayed",
+        "effective_state_after_decay": "decayed",
+        "canonical_head_changed": false,
+        "canonical_still_browsable": true,
+        "canonical_suspect_marker_present": false,
+        "dependent_invalidation_present": false,
+        "route_eligibility_present": false,
+        "revalidation_state_present": false
+      },
+      "conclusion": "Decay does not force a canonical suspect state or downstream invalidation."
+    },
+    {
+      "id": "PX-AUD-005",
+      "disposition": "PRESENT_LIVE",
+      "severity": "P1",
+      "repair_required": true,
+      "live_owner": [
+        ".px/skills/operate-memory-retrieval-observability/references/capabilities/hybrid-retrieval.json",
+        ".px/skills/operate-memory-retrieval-observability/scripts/authoritative_hybrid_retrieval.py"
+      ],
+      "signal_probe": {
+        "lexical_changes_score": true,
+        "dense_changes_score": false,
+        "structured_changes_score": false,
+        "graph_changes_score": false,
+        "freshness_or_trust_changes_score": false
+      },
+      "conclusion": "The advertised hybrid contract materially exceeds the attached implementation."
+    },
+    {
+      "id": "PX-AUD-006",
+      "disposition": "PRESENT_LIVE",
+      "severity": "P1/High",
+      "repair_required": true,
+      "live_owner": [
+        "runtime/capability_routing.py",
+        "runtime/models.py",
+        "runtime/local_model_runtime.py",
+        "runtime/hardware_routing.py",
+        "runtime/execution_placement.py",
+        "runtime/provider_gateway.py",
+        "runtime/agent_runtime.py"
+      ],
+      "production_trace": {
+        "normalized_task": true,
+        "semantic_retrieval": true,
+        "capability_package": true,
+        "model_ranking_primitive": true,
+        "rank_models_production_callers": [],
+        "exact_gguf_runtime_primitive": true,
+        "hardware_placement_primitive": true,
+        "single_bound_attachment_across_studio_provider_receipt": false
+      },
+      "conclusion": "The pieces exist, but no production caller closes the task-to-exact-model-artifact chain."
+    },
+    {
+      "id": "PX-AUD-007",
+      "disposition": "PRESENT_LIVE",
+      "severity": "High",
+      "repair_required": true,
+      "live_owner": [
+        "runtime/agent_runtime.py:_resolved_preview",
+        "runtime/studio_run_control.py"
+      ],
+      "source_observation": {
+        "memory_binding_behavior": "memory_bindings_not_runtime_resolved blocker",
+        "handoff_behavior": "handoff_agents_not_runtime_resolved blocker",
+        "agency_to_studio_adapter": false
+      },
+      "conclusion": "Catalog presence is not connected to one governed Agency/Studio/memory/handoff execution spine."
+    },
+    {
+      "id": "PX-AUD-008",
+      "disposition": "PRESENT_LIVE",
+      "severity": "High",
+      "repair_required": true,
+      "live_owner": [
+        "runtime/skill_studio.py:promote",
+        "runtime/skill_studio.py:_projection_updates"
+      ],
+      "disposable_promotion_probe": {
+        "validation_passed": true,
+        "admission": "admitted",
+        "updated_projections": [
+          ".px/skill-index.json",
+          "registry/admission_ledger.json",
+          "registry/skill_catalog.toml",
+          "registry/skill_packages/demo.json"
+        ],
+        "semantic_index_changed": false,
+        "cognitive_index_changed": false
+      },
+      "conclusion": "The existing transaction is strong but omits semantic and cognitive dependent projections."
+    },
+    {
+      "id": "PX-AUD-009",
+      "disposition": "PRESENT_LIVE",
+      "severity": "High",
+      "repair_required": true,
+      "live_owner": [
+        "runtime/knowledge_foundry.py:materialize_candidate_bundle",
+        "runtime/skill_studio.py:stage_draft"
+      ],
+      "source_observation": {
+        "candidate_files_materialized": true,
+        "typed_skill_studio_handoff": false,
+        "lineage_signed_for_studio_intake": false,
+        "approval_and_reject_paths": false
+      },
+      "conclusion": "No governed typed Foundry-to-Skill-Studio handoff exists."
+    },
+    {
+      "id": "PX-AUD-010",
+      "disposition": "PRESENT_LIVE",
+      "severity": "High",
+      "repair_required": true,
+      "live_owner": [
+        "runtime/knowledge_foundry.py:compile_calculation",
+        "runtime/cognitive_core/formula_engine.py"
+      ],
+      "falsification": {
+        "equation": "distance + duration",
+        "units": {
+          "distance": "m",
+          "duration": "s",
+          "result": "m"
+        },
+        "syntactically_valid": true,
+        "dimensionally_valid": false,
+        "compile_accepted": true,
+        "evaluated_result": 5.0
+      },
+      "conclusion": "Unit labels are retained but dimensional consistency is not proved."
+    },
+    {
+      "id": "PX-AUD-011",
+      "disposition": "PRESENT_LIVE",
+      "severity": "High",
+      "repair_required": true,
+      "live_owner": [
+        "runtime/capability_routing.py:route_task",
+        "runtime/capability_routing.py:rank_candidates"
+      ],
+      "falsification": {
+        "project_map_a_revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "project_map_b_revision": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "ranking_equal": true,
+        "selection_equal": true,
+        "package_receipt_equal": true
+      },
+      "conclusion": "The project map is retrieved and receipted but does not influence ranking or package construction."
+    },
+    {
+      "id": "PX-AUD-012",
+      "disposition": "PRESENT_LIVE",
+      "severity": "High",
+      "repair_required": true,
+      "live_owner": [
+        "runtime/cli.py",
+        "runtime/capability_routing.py",
+        "runtime/agent_runtime.py",
+        "runtime/workflow_studio.py",
+        "runtime/provider_gateway.py",
+        "extension/src/extension.js"
+      ],
+      "source_observation": {
+        "task_execution_plan_module_present": false,
+        "canonical_task_plan_schema_present": false,
+        "all_front_doors_compile_to_one_plan": false
+      },
+      "conclusion": "Execution entry points remain semantically separate."
+    },
+    {
+      "id": "PX-AUD-013",
+      "disposition": "PRESENT_LIVE",
+      "severity": "High",
+      "repair_required": true,
+      "live_owner": [
+        "runtime/operational_gap_ledger.py",
+        "registry/operational_gap_ledger.jsonl",
+        "registry/operational_gap_ledger.snapshot.json"
+      ],
+      "measurement": {
+        "event_count": 33635,
+        "ledger_bytes": 101826238,
+        "snapshot_bytes": 39231705,
+        "clean_process_validate_wall_seconds": 7.442699,
+        "tracemalloc_validate_wall_seconds": 46.453367,
+        "tracemalloc_peak_bytes": 478523691,
+        "process_rss_before_bytes": 25661440,
+        "process_rss_after_bytes": 77373440,
+        "current_append_behavior": "incremental event projection but full materialized snapshot serialization/publication per append"
+      },
+      "conclusion": "The live denominator is large enough to require the mandated benchmark card and a measured scaling repair; custody semantics must remain unchanged."
+    }
+  ],
+  "summary": {
+    "PRESENT_LIVE": 13,
+    "ALREADY_FIXED_LIVE": 0,
+    "CHANGED_LIVE": 0,
+    "ARCHIVE_ONLY": 0,
+    "NOT_REPRODUCIBLE": 0
+  }
+}

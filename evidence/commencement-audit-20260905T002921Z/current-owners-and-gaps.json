@@ -1,0 +1,195 @@
+{
+  "schema_version": "px.commencement-current-owners-and-gaps/1.0",
+  "source_head": "19761e2a769885d6df25dc448c673e339eaf9c8c",
+  "product_digest": "e15375c38ce6700bbf76e3f0f9d453a669098f6a92af9439ca91de6fc61865eb",
+  "areas": [
+    {
+      "area": "feature-acceptance-and-completion",
+      "current_owners": [
+        "runtime/operational_gap_ledger.py",
+        "runtime/evidence_claims.py",
+        "runtime/trusted_evidence.py",
+        "runtime/evidence_custody.py",
+        "scripts/reconcile_unverified_operational_controls.py",
+        "scripts/build_completion_status.py"
+      ],
+      "confirmed_gaps": [
+        "A green child control can still satisfy a parent feature while an explicitly required runtime feature is missing.",
+        "Current feature acceptance is not uniformly typed by evidence class and revision freshness.",
+        "Ledger inventory and historical binding warnings require typed reconciliation rather than aggregate inference."
+      ],
+      "cards": ["PX-ASSURE-001", "PX-CORE-003", "PX-AUTH-001"]
+    },
+    {
+      "area": "coordination-state-conformance",
+      "current_owners": [
+        "runtime/state_invariants.py",
+        "extension/src/stateInvariants.js"
+      ],
+      "confirmed_gaps": [
+        "Python and Node disagree on validity and stable violation identifiers for authoritative state vectors."
+      ],
+      "cards": ["PX-ASSURE-002"]
+    },
+    {
+      "area": "knowledge-decay-and-invalidation",
+      "current_owners": [
+        "runtime/knowledge_core_controller.py",
+        "runtime/learning_promotion.py",
+        "runtime/project_impact.py"
+      ],
+      "confirmed_gaps": [
+        "Decay changes pipeline state without making canonical knowledge suspect or requiring revalidation.",
+        "Dependent evidence and capabilities are not transitively invalidated."
+      ],
+      "cards": ["PX-ASSURE-003", "PX-CORE-004"]
+    },
+    {
+      "area": "task-routing-and-retrieval",
+      "current_owners": [
+        "runtime/capability_routing.py",
+        "runtime/semantic_index.py",
+        "runtime/project_intelligence.py",
+        ".px/skills/operate-memory-retrieval-observability/scripts/authoritative_hybrid_retrieval.py"
+      ],
+      "confirmed_gaps": [
+        "No canonical immutable TaskExecutionPlan joins the execution front doors.",
+        "Only four of 178 semantic records carry nonempty intent data.",
+        "The advertised hybrid retriever only scores lexical/token-cosine input.",
+        "Project-map facts do not affect routing or package construction."
+      ],
+      "cards": [
+        "PX-CORE-001",
+        "PX-ROUTE-001",
+        "PX-ROUTE-002",
+        "PX-ROUTE-003",
+        "PX-ROUTE-004",
+        "PX-ROUTE-005"
+      ]
+    },
+    {
+      "area": "model-selection-and-hardware-placement",
+      "current_owners": [
+        "runtime/models.py",
+        "runtime/local_model_runtime.py",
+        "runtime/hardware_routing.py",
+        "runtime/execution_placement.py",
+        "runtime/provider_gateway.py"
+      ],
+      "confirmed_gaps": [
+        "No production caller binds the routed task/package to one exact model artifact and carries it through placement and execution evidence."
+      ],
+      "cards": ["PX-MODEL-001", "PX-MODEL-002", "PX-MODEL-003", "PX-PROVIDER-001"]
+    },
+    {
+      "area": "agency-studio-memory-and-handoff",
+      "current_owners": [
+        "runtime/agent_runtime.py",
+        "runtime/studio_run_control.py",
+        "runtime/workflow_studio.py",
+        "runtime/provider_gateway.py"
+      ],
+      "confirmed_gaps": [
+        "Agency selection is not adapted into the governed Studio executor.",
+        "Memory bindings and handoff agents remain unresolved blockers instead of broker-backed runtime inputs."
+      ],
+      "cards": ["PX-AGENT-001", "PX-MEM-001", "PX-AGENT-002", "PX-AGENT-003"]
+    },
+    {
+      "area": "foundry-formulas-and-skill-promotion",
+      "current_owners": [
+        "runtime/knowledge_foundry.py",
+        "runtime/cognitive_core/formula_engine.py",
+        "runtime/skill_studio.py"
+      ],
+      "confirmed_gaps": [
+        "Foundry accepts dimensionally invalid equations when unit labels are present.",
+        "Foundry candidate output has no typed lineage-preserving Skill Studio handoff.",
+        "Skill promotion omits semantic, cognitive, and graph projection invalidation/rebuild."
+      ],
+      "cards": [
+        "PX-FOUNDRY-001",
+        "PX-FOUNDRY-002",
+        "PX-SKILL-001",
+        "PX-SKILL-002",
+        "PX-SKILL-003",
+        "PX-GRAPH-001"
+      ]
+    },
+    {
+      "area": "architecture-authority-and-efficient-proof",
+      "current_owners": [
+        "registry/dependency_ownership.json",
+        "registry/effect_surface_ownership.json",
+        "runtime/project_impact.py",
+        "runtime/release_campaign.py",
+        "runtime/project_stream_controls.py"
+      ],
+      "confirmed_gaps": [
+        "Primitive authority, dependency invalidation, change classification, semantic revision, affected proof, world state, duplicate primitive lint, and repair-root grouping are not unified under the required cohesion architecture.",
+        "Project transfer still accepts caller-trusted booleans as primary authority."
+      ],
+      "cards": [
+        "PX-CORE-002",
+        "PX-CORE-004",
+        "PX-EFF-001",
+        "PX-EFF-002",
+        "PX-EFF-003",
+        "PX-SYS-001",
+        "PX-SYS-002",
+        "PX-SYS-003",
+        "PX-REPAIR-001",
+        "PX-AUTH-001",
+        "PX-AUTH-002"
+      ]
+    },
+    {
+      "area": "operational-ledger-scaling",
+      "current_owners": [
+        "runtime/operational_gap_ledger.py",
+        "registry/operational_gap_ledger.jsonl",
+        "registry/operational_gap_ledger.snapshot.json"
+      ],
+      "confirmed_gaps": [
+        "The hot ledger is 101826238 bytes and the materialized snapshot is 39231705 bytes.",
+        "Validation took 7.442699 seconds in a clean process and peaked at 478523691 traced bytes in the measurement run.",
+        "Append projection is incremental but republishes the full materialized snapshot."
+      ],
+      "cards": ["PX-LEDGER-001", "PX-LEDGER-002"]
+    },
+    {
+      "area": "release-and-installed-host-proof",
+      "current_owners": [
+        "runtime/release_campaign.py",
+        "runtime/release_certification.py",
+        "extension/scripts/run-installed-vsix-smoke.mjs",
+        "registry/operational_gap_ledger.jsonl"
+      ],
+      "confirmed_gaps": [
+        "The final85 campaign is terminal and cannot be resumed.",
+        "The 16 named non-final operational cards have strong historical installed evidence but no current-source/successor-release binding.",
+        "Windows and Linux exact-artifact smoke exists; macOS execution remains external-authority-required."
+      ],
+      "cards": [
+        "PX-COMM-001",
+        "PX-COMM-002",
+        "PX-COMM-004",
+        "PX-COMM-006"
+      ]
+    },
+    {
+      "area": "project-management-and-processing-order",
+      "current_owners": [
+        "PROJECT_MANAGEMENT.md",
+        ".engineering-bootstrap/project-management/state.json",
+        ".engineering-bootstrap/processing-order/repair-campaign.json",
+        ".engineering-bootstrap/processing-order/release-identity.json"
+      ],
+      "confirmed_gaps": [
+        "PROJECT_MANAGEMENT.md still names the older U02/U05/U03 wave instead of the commencement denominator.",
+        "Repository-local validate fails closed at sections_current after final85 interruption; no release gate may be represented as current until the repair freeze and successor campaign."
+      ],
+      "cards": ["PX-COMM-001", "PX-COMM-006"]
+    }
+  ]
+}

@@ -91,7 +91,7 @@ def section_status(root):
 def structural_scan(capture, max_bytes=1_000_000):
     from .repository_scope import is_external_environment_relative
 
-    excluded = {'.git', '.venv', '.vscode-test', 'python', 'node_modules', 'vendor',
+    excluded = {'.git', '.venv', '.vscode-test', '.audit-visible', 'python', 'node_modules', 'vendor',
                 'dist', 'build', 'quarantine', '__pycache__'}
     pending, found = [''], []
     while pending:

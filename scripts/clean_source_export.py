@@ -337,6 +337,7 @@ def _rebuild_candidate_projections_unlocked(root: Path) -> None:
     from runtime.provider_gateway import build_provider_route_index
     from runtime.projection_dependencies import (
         build_projection_staleness,
+        reconcile_graph_authority_manifest,
         reconcile_projection_dependencies,
     )
     from runtime.release_artifacts import classify_tree
@@ -352,6 +353,7 @@ def _rebuild_candidate_projections_unlocked(root: Path) -> None:
     )
     from scripts.build_python_dependency_ownership import build as build_dependencies
     from scripts.build_registry_envelope_inventory import build_inventory
+    from scripts.build_specialty_map import build as build_specialty_map
     from runtime.generated_dependency import generated_dependency_graph
     from runtime.test_profiles import build_test_group_index
     from scripts.reconcile_commissioned_skill_registry import (
@@ -374,6 +376,14 @@ def _rebuild_candidate_projections_unlocked(root: Path) -> None:
     # descriptor indexes. Rebind every byte-identity field before the cognitive
     # compiler consumes the descriptor/source pair as one exact generation.
     reconcile_nested_skill_source_hashes(root, check=False)
+    _write_json(
+        root / "registry/specialty_map.json",
+        build_specialty_map(
+            root / "registry/admission_queue.json",
+            root / "registry/skill_catalog.toml",
+        ),
+        sort_keys=False,
+    )
     for relative, payload in declared_tool_outputs(root).items():
         target = root / relative
         target.parent.mkdir(parents=True, exist_ok=True)
@@ -438,6 +448,7 @@ def _rebuild_candidate_projections_unlocked(root: Path) -> None:
         root / "registry/generated_dependency_graph.json",
         generated_dependency_graph(preflight_policy["generated_authorities"]),
     )
+    reconcile_graph_authority_manifest(root)
     _write_json(
         root / "registry/operational_control_proof_matrix.json",
         build_operational_control_proof_matrix(root),

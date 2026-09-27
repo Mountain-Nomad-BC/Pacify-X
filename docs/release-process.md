@@ -6,20 +6,20 @@ Release authority is created only from a clean tagged commit. The authoritative 
 
 ## Install the certified release
 
-The simplest certified path is the immutable source tag shown in the README. To install the exact wheel that passed release certification instead:
+After the v0.9.0 certificate and assets are published, install the exact wheel that passed release certification:
 
 ```powershell
-git clone --branch v0.6.3 --single-branch https://github.com/Mountain-Nomad-BC/Pacify-X.git
+git clone --branch v0.9.0 --single-branch https://github.com/Mountain-Nomad-BC/Pacify-X.git
 cd Pacify-X
 New-Item -ItemType Directory release-assets | Out-Null
-gh release download v0.6.3 --repo Mountain-Nomad-BC/Pacify-X --dir release-assets
-python -m runtime.cli --root . release verify --release 0.6.3 --artifact-dir release-assets
-python -m pip install .\release-assets\engineering_loop_bootstrap-0.6.3-py3-none-any.whl
+gh release download v0.9.0 --repo Mountain-Nomad-BC/Pacify-X --dir release-assets
+python -m runtime.cli --root . release verify --release 0.9.0 --artifact-dir release-assets
+python -m pip install .\release-assets\engineering_loop_bootstrap-0.9.0-py3-none-any.whl
 engineering-bootstrap --version
 engineering-bootstrap doctor
 ```
 
-The verification command fails before installation if the certificate, signature, artifact hashes, source identity, or release authority do not agree. A checkout of `main` is a development installation and is not the immutable v0.6.3 release.
+The verification command fails before installation if the certificate, signature, artifact hashes, source identity, or release authority do not agree. A checkout of `main` is a development installation and is not the immutable v0.9.0 release.
 
 ## Controlled sequence
 
@@ -36,17 +36,17 @@ The verification command fails before installation if the certificate, signature
 11. Push the admitted evidence commit and annotated tag, create a draft GitHub Release, and upload only the signed receipt, detached receipt signature, receipt-listed chunks, and the standalone byte-identical VSIX. Do not rebuild, re-certify, or place a private key in CI.
 12. Manually dispatch `.github/workflows/release.yml` for that tag. It authenticates and reconstructs custody, independently verifies the certificate and Python artifacts, exercises the exact VSIX, publishes that VSIX to Marketplace with OIDC, and only then makes the existing GitHub draft public. Its duplicate-safe Marketplace step and draft-state check make a partial rerun idempotent.
 
-For v0.7.0, prepare the local custody handoff only after the successful successor candidate certificate exists. Bind the package to the candidate and installed-operational summary that produced that certificate:
+For v0.9.0, prepare the local custody handoff only after the successful successor candidate certificate exists. Bind the package to the candidate and installed-operational summary that produced that certificate:
 
 ```powershell
-$release = "0.7.0"
+$release = "0.9.0"
 $tag = "v$release"
 $assets = Join-Path $env:TEMP "pacify-x-$tag-draft-assets"
 $work = Join-Path $env:TEMP "pacify-x-$tag-custody-work"
 $artifactDir = "<artifact_dir returned by release finalize>"
 $candidate = "<candidate_id from the installed-operational summary>"
 $summary = "<path to that candidate's installed-operational summary>"
-$vsix = "extension/dist/pacify-x-vscode-0.6.88.vsix"
+$vsix = "extension/dist/pacify-x-vscode-$release.vsix"
 New-Item -ItemType Directory -Path $assets | Out-Null
 Copy-Item -LiteralPath $vsix -Destination $assets
 python -B scripts/package_release_evidence.py `
@@ -71,7 +71,7 @@ On an admitted network-capable operator host, create the draft and upload the ex
 $receiptPath = Join-Path $assets "pacify-x-v$release-complete-evidence-custody.json"
 $receipt = Get-Content -LiteralPath $receiptPath -Raw | ConvertFrom-Json
 gh release create $tag --draft --verify-tag --title "PACIFY-X $release"
-gh release upload $tag $receiptPath "${receiptPath}.sig" (Join-Path $assets "pacify-x-vscode-0.6.88.vsix")
+gh release upload $tag $receiptPath "${receiptPath}.sig" (Join-Path $assets (Split-Path $vsix -Leaf))
 foreach ($chunk in $receipt.chunks) {
   gh release upload $tag (Join-Path $assets $chunk.filename)
 }

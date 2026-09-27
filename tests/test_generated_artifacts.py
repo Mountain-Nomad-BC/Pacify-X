@@ -1,7 +1,8 @@
 from pathlib import Path
+import hashlib
 import json
 
-from runtime.generated_artifacts import validate_generated_artifacts
+from runtime.generated_artifacts import _validate_python_surface_map, validate_generated_artifacts
 from scripts.build_declared_suite_template_projections import (
     reconcile as template_reconcile,
 )
@@ -10,6 +11,27 @@ from scripts.build_profile_projections import reconcile as profile_reconcile
 
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_python_surface_projection_detects_changed_and_new_source(tmp_path):
+    source = tmp_path / "runtime/stable.py"
+    source.parent.mkdir()
+    source.write_bytes(b"value = 1\n")
+    registry = tmp_path / "registry"
+    registry.mkdir()
+    ownership = registry / "python_surface_ownership.json"
+    ownership.write_text(json.dumps({
+        "map_current": True,
+        "records": [{"path": "runtime/stable.py", "bytes": len(source.read_bytes()),
+                     "sha256": hashlib.sha256(source.read_bytes()).hexdigest()}],
+    }), encoding="utf-8")
+    assert _validate_python_surface_map(tmp_path)["valid"]
+
+    source.write_bytes(b"value = 2\n")
+    assert not _validate_python_surface_map(tmp_path)["valid"]
+    source.write_bytes(b"value = 1\n")
+    (source.parent / "new.py").write_bytes(b"pass\n")
+    assert not _validate_python_surface_map(tmp_path)["valid"]
 
 
 def test_all_generated_projections_match_one_canonical_owner():

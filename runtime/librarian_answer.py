@@ -31,16 +31,15 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
 
-from runtime.capability_routing import (
+from .capability_routing import (
     RankedCandidate,
     RouteResult,
     route_task,
 )
-from runtime.librarian_semantic_map import (
-    load_semantic_map,
+from .librarian_semantic_map import (
     resolve_entity,
 )
-from runtime.registry import skill_discovery_sources, skill_navigation_index
+from .registry import skill_discovery_sources
 
 BRIEFING_SCHEMA = "px.librarian-briefing/1.0"
 MAX_BRIEFING_ITEMS = 8
@@ -241,7 +240,7 @@ def _cached_skill_index(root: Path):
     #
     # The cache key is the catalogue mtime, so a stale index can never be served.
 
-    from runtime.registry import skill_navigation_index
+    from .registry import skill_navigation_index
 
     key_source = root / "registry" / "skill_catalog.toml"
     key = str(key_source.stat().st_mtime_ns) if key_source.is_file() else None
@@ -286,7 +285,7 @@ def compose_briefing(
     # registry/contracts/knowledge roots. A librarian briefing carries both.
     semantic_hits: tuple[dict[str, object], ...] = ()
     try:
-        from runtime.librarian_semantic_map import load_semantic_map, resolve_entity as _resolve
+        from .librarian_semantic_map import load_semantic_map
 
         semantic_map = load_semantic_map(root)
         semantic_hits = tuple(

@@ -26,21 +26,18 @@ def test_product_naming_is_explicit_and_consistent() -> None:
 def test_status_language_does_not_claim_independent_certification() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     assert "**Status:** Certified deployment-ready" not in readme
-    assert (
-        "**Status:** v0.7.0 is undergoing governed certification; no publication claim is made yet"
-        in readme
-    )
+    assert "**Current line:** **v0.9.0**" in readme
+    assert "**Release status:** See [GitHub Releases]" in readme
     assert "independent certification" in (ROOT / "evidence/README.md").read_text(
         encoding="utf-8"
     )
 
 
-def test_readme_defaults_to_063_without_a_revocation_warning() -> None:
+def test_readme_points_to_current_release_without_a_revocation_warning() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     assert "[!WARNING]" not in readme
     assert "0.6.2" not in readme
-    assert "git clone --branch v0.6.3 --single-branch" in readme
-    assert "immutable certified source tag" in readme
+    assert "GitHub Releases" in readme
 
 
 def test_public_release_receipt_matches_canonical_certificate_and_signature() -> None:
@@ -80,7 +77,7 @@ def test_public_release_receipt_matches_canonical_certificate_and_signature() ->
 def test_evidence_authority_index_identifies_revocation_and_limitations() -> None:
     index = (ROOT / "evidence/README.md").read_text(encoding="utf-8")
     for required in (
-        "Current authority",
+        "Release authority",
         "Revoked certificates",
         "Signing trust policy",
         "Verification command",

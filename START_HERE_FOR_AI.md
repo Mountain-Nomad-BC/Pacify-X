@@ -2,7 +2,8 @@
 
 This is the required orientation document for any AI assistant entering the Engineering Loop & Bootstrap Framework.
 
-Version 0.6.3 is the current signed release and the default for installation and commissioning.
+Version 0.9.0 is the current package line. Confirm signed release assets and their
+verification evidence on GitHub Releases before installing a release tag.
 
 Your job is not to load the repository into context. Your job is to establish one bounded project scope, discover only the capabilities needed for the current task, operate through governed interfaces, and prove outcomes with current evidence.
 
@@ -224,7 +225,7 @@ python -m runtime.cli --root . audit licensing
 python -m runtime.cli --root . audit structure
 python -m runtime.cli --root . test-profile run fast
 python -m runtime.cli --root . test-profile run full
-python -m runtime.cli --root . release verify --release 0.6.3 --artifact-dir <EXACT_ARTIFACT_DIR>
+python -m runtime.cli --root . release verify --release 0.9.0 --artifact-dir <EXACT_ARTIFACT_DIR>
 ```
 
 Also verify:

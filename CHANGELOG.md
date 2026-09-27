@@ -2,9 +2,13 @@
 
 All notable changes to PACIFY-X are recorded here. The project follows semantic versioning.
 
-## Unreleased
+## 0.9.0 - 2026-09-27
 
-- Prepared the v0.7.0 candidate without claiming certification or publication; v0.6.3 remains the current supported signed release.
+- Unified the Python package and VS Code extension on version 0.9.0.
+- Completed the installed wheel skill-contract inventory and portable integration targets.
+- Scoped current release evidence separately from retained historical external custody.
+
+- Prepared an earlier v0.7.0 candidate without claiming certification or publication.
 - Completed the cohesion implementation and focused repair work while leaving canonical card lifecycle projection to the evidence-bound DAG reconciler.
 - Retained final99 as a terminal failed campaign after its source profile, validation, package audit, existing-install audit, and Windows/Ubuntu smoke checks passed but its exhaustive installed-host walk exposed five direct profile failures.
 - Repaired those Studio, coordination-memory, Projects, Knowledge Graph, and plugin lifecycle paths in repair12; exact-artifact focused host proofs completed with zero issues and host errors, while successor exhaustive installed-host testing and certification remain pending.

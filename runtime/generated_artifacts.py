@@ -6,6 +6,46 @@ from pathlib import Path
 from typing import Any
 
 
+def _validate_python_surface_map(root: Path) -> dict[str, bool]:
+    """Check source identity without rerunning behavioral tool certification."""
+    import hashlib
+    import json
+
+    from .python_surface_certification import _source_python_candidate
+
+    map_path = root / "registry/python_surface_ownership.json"
+    if not map_path.is_file():
+        return {"valid": False}
+    try:
+        stored = json.loads(map_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {"valid": False}
+    records = stored.get("records") if isinstance(stored, dict) else None
+    if not isinstance(records, list) or stored.get("map_current") is not True:
+        return {"valid": False}
+    mapped: dict[str, dict[str, Any]] = {}
+    for record in records:
+        if not isinstance(record, dict) or not isinstance(record.get("path"), str):
+            return {"valid": False}
+        relative = record["path"]
+        if relative in mapped:
+            return {"valid": False}
+        mapped[relative] = record
+    actual = {
+        path.relative_to(root).as_posix(): path
+        for path in root.rglob("*.py")
+        if _source_python_candidate(path, root)
+    }
+    if set(mapped) != set(actual):
+        return {"valid": False}
+    for relative, path in actual.items():
+        payload = path.read_bytes()
+        if (mapped[relative].get("bytes") != len(payload)
+                or mapped[relative].get("sha256") != hashlib.sha256(payload).hexdigest()):
+            return {"valid": False}
+    return {"valid": True}
+
+
 def validate_generated_artifacts(root: Path) -> dict[str, Any]:
     from .artifact_reachability import build_artifact_reachability
     from .effect_surface import discover_effect_surfaces
@@ -102,6 +142,7 @@ def validate_generated_artifacts(root: Path) -> dict[str, Any]:
         "native_skill_packages": validate_native_packages(root),
         "provider_route_index": scan_direct_provider_routes(root),
         "semantic_capability_index": validate_semantic_index(root),
+        "python_surface_ownership": _validate_python_surface_map(root),
     }
     project_text = (root / "pyproject.toml").read_text(encoding="utf-8")
     checks["skill_packaging_projection"] = {

@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "policy": "Only contracts with an implementation owner, enforcement classification, package path, positive fixture, negative fixture, and tests ship.",
+  "externalized": [
+    {
+      "contract": "contracts/project_stream/session_lease.schema.json",
+      "reason": "design-only schema conflicted with the canonical active-session identifier and workspace lease implementation",
+      "canonical_replacements": ["contracts/project_stream/active-session.schema.json", "contracts/project_stream/project-scope-envelope.schema.json", "runtime/workspace_manager.py", "runtime/project_stream_controls.py"]
+    },
+    {
+      "contract": "contracts/project_stream/evidence_receipt.schema.json",
+      "reason": "design-only schema had no runtime producer or consumer",
+      "canonical_replacements": ["contracts/evidence-record.schema.json", "runtime/evidence_assembler.py", "runtime/project_control_plane.py"]
+    }
+  ],
+  "custody_index": "evidence/externalized-payload-index.json",
+  "hard_delete": false
+}

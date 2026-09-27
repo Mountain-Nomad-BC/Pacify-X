@@ -271,6 +271,8 @@ def _exclude_structural_path(relative: str) -> bool:
         return True
     if _is_committed_wal(parts):
         return True
+    if parts[:3] == (".engineering-bootstrap", "processing-order", "operational-verification"):
+        return True
     return len(parts) >= 2 and parts[0] == ".engineering-bootstrap" and parts[1] in {
         "environment", "diagnostics", "project-map", "project-map-history",
         "project-map-lock-history", "quarantine",
@@ -719,6 +721,7 @@ def _logic_duplicates(root: Path, files: tuple[Path, ...] | None = None) -> tupl
             "hash_file",
             "_file_sha256",
             "_sha256",
+            "_sha256_file",
             "sha256",
             "sha256_file",
         }:

@@ -7,12 +7,12 @@ from runtime.vscode_model_bridge import list_models
 ROOT = Path(__file__).parents[1]
 
 
-def test_model_client_is_fail_closed_until_target_profiles_and_stream_adapter_are_certified():
+def test_model_client_is_fail_closed_without_an_admitted_project_router(tmp_path: Path):
     status = vscode_model_client_status(ROOT)
     assert status["authority_granted"] is False
-    assert status["certified_profile_count"] == 0
-    assert status["stream_adapter_admitted"] is False
-    assert list_models(ROOT, ROOT) == {
+    assert status["certified_profile_count"] == 1
+    assert status["stream_adapter_admitted"] is True
+    assert list_models(ROOT, tmp_path) == {
         "schema_version": "px.vscode-model-list/1.0",
         "models": [],
         "authority_granted": False,

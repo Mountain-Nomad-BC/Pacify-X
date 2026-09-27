@@ -6,7 +6,7 @@
       "dependencies": [
         {
           "path": ".px/skills",
-          "revision": "f61127c7f8ad1599ee4616593cc5db47e35edd67da8d8beb0336059fb68c2565"
+          "revision": "2766d980d47fac73329f7d0de839e27e34af7217415ea2be1c8da5eb1b9d3396"
         },
         {
           "path": "builders/last_round_assimilation_builder.py",
@@ -47,7 +47,7 @@
       ],
       "invalidation_rule": "any_dependency_revision_change",
       "output": "registry/semantic_capability_index.json",
-      "output_revision": "f873f4950b4fd133c14be9e1a15b02385395738dfdab422015f06d52ff78686c",
+      "output_revision": "18e5bc480c6ec0832a3a0ffa884ea19d44b979e71ea259712cd11a49e8bad0f0",
       "owner": "runtime.semantic_index",
       "projection_id": "semantic-capability-index",
       "rebuild_gate": "rebuild_before_use"
@@ -75,7 +75,7 @@
       ],
       "invalidation_rule": "any_dependency_revision_change",
       "output": "registry/cognitive_map_index.json",
-      "output_revision": "138c08f65ad1c7249be4ea5fc4457bd0dde6dc554cf1da45cc1e7b3e54df7abc",
+      "output_revision": "c3ce697778b98a756e9188d664c37bc36735d937ee9bafb8cbb2d851eef9a6d9",
       "owner": "runtime.cognitive_core.index_builder",
       "projection_id": "cognitive-map-index",
       "rebuild_gate": "block_until_rebuilt"
@@ -110,11 +110,11 @@
       "dependencies": [
         {
           "path": "registry/semantic_capability_index.json",
-          "revision": "f873f4950b4fd133c14be9e1a15b02385395738dfdab422015f06d52ff78686c"
+          "revision": "18e5bc480c6ec0832a3a0ffa884ea19d44b979e71ea259712cd11a49e8bad0f0"
         },
         {
           "path": "registry/cognitive_map_index.json",
-          "revision": "138c08f65ad1c7249be4ea5fc4457bd0dde6dc554cf1da45cc1e7b3e54df7abc"
+          "revision": "c3ce697778b98a756e9188d664c37bc36735d937ee9bafb8cbb2d851eef9a6d9"
         },
         {
           "path": "registry/agency_agent_graph.json",

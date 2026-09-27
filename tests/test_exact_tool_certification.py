@@ -113,7 +113,18 @@ class ExactToolCertificationTests(unittest.TestCase):
     def test_every_python_file_is_owned_classified_and_validation_bound(self) -> None:
         result = self.python_surfaces
         self.assertTrue(result["valid"], result["errors"])
-        self.assertEqual(result["python_file_count"], result["syntax_valid_count"])
+        invalid = {
+            record["path"]
+            for record in result["records"]
+            if not record["syntax_valid"]
+        }
+        self.assertEqual(
+            invalid,
+            {"tests/fixtures/semantic_code/python_project/broken.py"},
+        )
+        self.assertEqual(
+            result["syntax_valid_count"], result["python_file_count"] - len(invalid)
+        )
         self.assertEqual(result["role_counts"].get("unknown", 0), 0)
         roles = {record["path"]: record["role"] for record in result["records"]}
         self.assertEqual(

@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "bundle_id": "sha256:859a8b70a81558054f8bdc4c38fa01b7bda288c654e7ebb70677447b14194ebc",
+  "kind": "historical_external_archive_custody",
+  "file_count": 9681,
+  "byte_count": 47818159,
+  "error_count": 0,
+  "exclusions": [],
+  "inventory": "complete_file_inventory.jsonl",
+  "inventory_sha256": "859a8b70a81558054f8bdc4c38fa01b7bda288c654e7ebb70677447b14194ebc",
+  "source_manifest_sha256": "39ca68517361f2939813d1c34857c607b3f268f5545bc2840271d4e3e7915ba8",
+  "hard_delete": false,
+  "availability": "The original payload remains in recoverable external quarantine; this release bundles the complete hash inventory required to verify its historical disposition without relying on a sibling directory."
+}

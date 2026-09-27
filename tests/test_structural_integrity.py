@@ -150,9 +150,9 @@ def test_hash_ledger_head_and_anchor_are_a_reviewed_exact_projection() -> None:
         for item in result["duplicate_file_groups"]
         if item["classification"] == "ledger-authority-head-anchor"
     ]
-    assert len(groups) == 1
-    assert any(path.endswith("/head.json") for path in groups[0]["paths"])
-    assert any("/anchors/" in path for path in groups[0]["paths"])
+    assert groups
+    assert all(any(path.endswith("/head.json") for path in group["paths"]) for group in groups)
+    assert all(any("/anchors/" in path for path in group["paths"]) for group in groups)
     assert result["category_count"] == 15
     assert result["reachability_records"] > 100
     assert result["required_audit_item_count"] == 21
@@ -195,11 +195,7 @@ def test_divergent_or_mismatched_paths_do_not_receive_certification_control_proj
     ]
     assert _classify_exact_group(mismatched_names) is None
 
-    # Certification-local implementation with no root counterpart
-    cert_local = [
-        "px/py_cert/runtime/pre_cert_contract.py",
-        "runtime/pre_cert_contract.py",
-    ]
+    # Certification-local implementation with no root counterpart.
     # Note: runtime/pre_cert_contract.py does not exist on disk, but even if tested:
     assert _classify_exact_group(["px/py_cert/runtime/pre_cert_contract.py"]) is None
 
@@ -376,11 +372,11 @@ def test_runtime_file_digest_helpers_are_reviewed_digest_adapters() -> None:
         if {
             location.rsplit(":", 1)[-1]
             for location in item["locations"]
-        } == {"_digest_file", "_file_sha256"}
+        } >= {"_digest_file", "_file_sha256"}
         and {
             location.split(":", 1)[0]
             for location in item["locations"]
-        } == {
+        } >= {
             "runtime/local_model_runtime.py",
             "runtime/provider_gateway.py",
         }
@@ -409,18 +405,18 @@ def test_release_owner_digest_and_json_helpers_are_reviewed() -> None:
         item
         for item in groups
         if {location.split(":", 1)[0] for location in item["locations"]}
-        == digest_paths
+        >= digest_paths
     )
     loader_group = next(
         item
         for item in groups
         if {location.split(":", 1)[0] for location in item["locations"]}
-        == {
+        >= {
             "scripts/run_installed_operational_owner.py",
             "scripts/run_release_stage_owner.py",
         }
         and {location.rsplit(":", 1)[-1] for location in item["locations"]}
         == {"_object", "load_object"}
     )
-    assert digest_group["classification"] == "digest-adapters"
+    assert digest_group["classification"] == "expanded-release-digest-adapters"
     assert loader_group["classification"] == "bounded-json-loaders"

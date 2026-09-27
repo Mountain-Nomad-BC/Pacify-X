@@ -30,7 +30,7 @@ def current_pre_candidate_hygiene_gate():
     with patch("scripts.run_release_candidate._validate_pre_candidate_hygiene"), patch(
         "scripts.run_release_candidate._validate_prior_tag_target"
     ), patch(
-        "scripts.run_release_candidate._validate_empty_git_index"
+        "scripts.run_release_candidate._validate_git_convergence"
     ), patch(
         "runtime.test_profiles.governed_section_timeout_envelope",
         return_value={"__sequential_stage__": 60},
@@ -312,13 +312,13 @@ def test_initial_readiness_fails_closed_when_git_index_is_not_empty(
 ) -> None:
     value = config(tmp_path)
     with patch(
-        "scripts.run_release_candidate._validate_empty_git_index",
+        "scripts.run_release_candidate._validate_git_convergence",
         side_effect=AutomationBlocked("Git index is not empty before identity staging"),
     ):
         result = readiness(value)
     assert result["valid"] is False
     assert (
-        "Git index gate failed: Git index is not empty before identity staging"
+        "Git convergence gate failed: Git index is not empty before identity staging"
         in result["errors"]
     )
 
@@ -593,19 +593,10 @@ def test_identity_manifest_is_written_before_owner_and_includes_itself(
 
 def test_final100_identity_outputs_are_outside_the_git_dirty_boundary() -> None:
     root = Path(__file__).resolve().parents[1]
-    driver = Config.load(
-        root / ".engineering-bootstrap/processing-order/final100-release-automation.json"
-    )
-    from scripts.run_release_stage_owner import Config as StageConfig
-
-    stage = StageConfig.load(
-        root / ".engineering-bootstrap/processing-order/final100-stage-owner.json"
-    )
-    assert driver.identity_path_manifest == stage.path_manifest
     candidates = [
-        driver.identity_path_manifest,
-        driver.log_root / "final100-identity.log",
-        stage.evidence_dir / f"{driver.candidate_id}-identity.json",
+        root / ".engineering-bootstrap/processing-order/final100-identity-manifest.json",
+        root / ".engineering-bootstrap/processing-order/final100-identity.log",
+        root / ".engineering-bootstrap/processing-order/final100-identity.json",
         root / ".engineering-bootstrap/resource-lifecycle/ledger.json",
     ]
     assert all(
@@ -774,7 +765,7 @@ def test_config_requires_four_card_reconcile_checks_then_applies(tmp_path: Path)
             "path": "identity-manifest.json",
         },
         "timeouts_seconds": {step: 60 for step in STEP_ORDER},
-        "fresh_paths": ["fresh"], "owners": owners,
+        "fresh_paths": ["fresh", "identity-manifest.json"], "owners": owners,
     }
     path = tmp_path / "config.json"
     path.write_text(json.dumps(raw), encoding="utf-8")

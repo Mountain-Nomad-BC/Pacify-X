@@ -1,0 +1,332 @@
+{
+  "schema_version": "px.typed-surface-inventory/1.0",
+  "report_id": "typed-surface-inventory-20260816",
+  "discovering_agent": "/root/typed_surface_inventory",
+  "timestamp": "2026-08-16T17:51:03.8032401Z",
+  "mode": "read-only-source-derived",
+  "scope": "Every current dashboard and sidebar surface, including Studio overlays and the shared control shell",
+  "stable_control_id_scheme": {
+    "action": "pxui.<surface>.action.<literal-action>[.<placement-or-variant>]",
+    "field": "pxui.<surface>.field.<semantic-field>",
+    "gesture": "pxui.<surface>.gesture.<semantic-gesture>",
+    "indicator": "pxui.<surface>.indicator.<semantic-indicator>",
+    "command": "pxui.<surface>.command.<command-id>",
+    "dynamic_row_rule": "Use one stable template ID per row control, such as pxui.agents.action.inspectCatalogItem.row; do not allocate an ID per runtime record.",
+    "duplicate_rule": "When the same literal action is rendered in multiple semantic placements, retain the literal action and add a stable placement suffix."
+  },
+  "global_anchors": {
+    "surface_registry": "extension/media/dashboard/40-surfaces.js:7-17",
+    "surface_dispatch": "extension/media/dashboard/90-controller.js:586-596",
+    "shell_open_load_render": "extension/media/dashboard/90-controller.js:537-583",
+    "click_dispatch": "extension/media/dashboard/90-controller.js:1217-1471",
+    "field_input_change": "extension/media/dashboard/90-controller.js:1522-1560",
+    "keyboard_drag_gestures": "extension/media/dashboard/90-controller.js:1562-1613",
+    "result_acknowledgement": "extension/media/dashboard/90-controller.js:1615-1726",
+    "failure_recovery": "extension/media/dashboard/90-controller.js:1727-1748",
+    "webview_state_persistence": "extension/media/dashboard/90-controller.js:581",
+    "webview_message_contract": "extension/src/webviewMessages.js:9-110",
+    "host_dispatch": "extension/src/extension.js:911-1115",
+    "host_command_registration": "extension/src/extension.js:1166-1210",
+    "sidebar_render": "extension/media/sidebar.js:36-165",
+    "sidebar_contract": "extension/src/sidebarMessages.js:12-92",
+    "sidebar_host_dispatch": "extension/src/sidebarView.js:93-174"
+  },
+  "interaction_profiles": {
+    "local_view": "rendered control -> delegated click/input/change handler -> bounded in-memory state mutation -> render -> vscode.setState when declared -> reload reconstruction",
+    "read_query": "surface load or explicit action -> requestId-bound webview message -> webview contract validation -> host dispatch -> bounded runtime reader -> typed result -> requestId check -> render -> inline retry/error state",
+    "write_operation": "modal or exact control -> browser input validation -> webview contract validation -> retained host authority/approval -> backend controller effect -> typed receipt -> source requery -> visible result; generic failures fail closed",
+    "host_ui": "webview action -> validated host message -> native VS Code command/document/save dialog -> host-owned UI; several current routes do not return a result envelope",
+    "durable_run": "exact authenticated admitted revision -> ephemeral run inputs -> host approval -> durable run ID -> status/pause/cancel/stop/resume -> terminal or reconciliation receipt"
+  },
+  "surfaces": {
+    "dashboard-control-plane": {
+      "source_refs": ["extension/media/dashboard/90-controller.js:537-583", "extension/media/dashboard/90-controller.js:1056-1058"],
+      "actions": ["navigate.dashboard", "navigate.projects", "navigate.agents", "navigate.knowledgeGraph", "navigate.skillsTools", "navigate.workflows", "navigate.plugins", "navigate.memory", "navigate.activity", "navigate.diagnostics", "navigate.assurance", "navigate.settings", "navigate.knowledgeCore", "navigate.runtimeCore", "toggleAdvanced", "refresh.header", "commandCenter", "openSettings.header", "closeModal", "informationTab.human", "informationTab.machine", "copyModal", "exportRecordJson"],
+      "commands": ["refresh", "validate", "newParallelPlan", "openCoordinationHandoff", "contextSnapshot", "teamPackPreview", "enterpriseDoctor", "cleanupManager", "openSettings"],
+      "fields": [],
+      "gestures": ["modalFocusTrap", "escapeCloseModal", "informationTabArrowSwitch"],
+      "indicators": ["loading", "connection", "extensionIdentityMismatch", "workspace", "branch", "coordination", "providerAuthBoundary", "git", "turbovec", "enterpriseBoundary", "snapshotFooter"],
+      "profiles": ["local_view", "read_query", "host_ui"],
+      "persistence_reload": "Active surface, advanced visibility, scopes, graph view metadata, saved graph views, and Studio receipt history are written with vscode.setState.",
+      "failure_recovery": "Generic operation-blocked modal; identity warning directs reload/reinstall but supplies no direct reinstall action."
+    },
+    "dashboard": {
+      "source_refs": ["extension/media/dashboard/42-core-surfaces.js:21-31"],
+      "actions": ["refresh.hero", "navigate.workflows.parallelPlan", "navigate.diagnostics", "inspectSensor.row"],
+      "fields": [],
+      "gestures": [],
+      "indicators": ["heroConnection", "sourceVersion", "counts", "attentionQueue", "coordinationSummary", "serviceGrid", "thermalSensors", "rollingActivity"],
+      "profiles": ["read_query", "local_view"],
+      "persistence_reload": "The host snapshot is authoritative and is reread on refresh/reopen.",
+      "failure_recovery": "Disconnected or identity-mismatch hero; refresh is the only surface-local recovery control."
+    },
+    "projects": {
+      "source_refs": ["extension/media/dashboard/42-core-surfaces.js:34-48"],
+      "actions": ["inspectProjectMapRecord.risk", "inspectProjectMapRecord.entrypoint", "inspectProjectMapRecord.package", "inspectProjectMapRecord.history", "openRepositoryGraph", "buildRepositoryGraph", "openEngineRoot", "openCoordinationHandoff"],
+      "fields": [],
+      "gestures": [],
+      "indicators": ["mapStatus", "mapRevision", "sourceInventoryHash", "freshness", "buildReuse", "staticCoverage", "mapErrors", "projectAuthority"],
+      "profiles": ["read_query", "write_operation", "host_ui"],
+      "persistence_reload": "The sealed backend project map and history persist; graph view state persists locally.",
+      "failure_recovery": "Map errors render inline and rebuildRepositoryGraph is the explicit repair route."
+    },
+    "agents": {
+      "source_refs": ["extension/media/dashboard/43-catalog-surfaces.js:18-30", "extension/media/dashboard/90-controller.js:605-621"],
+      "actions": ["surfaceScope.core", "surfaceScope.enterprise", "openStudioDraft.agent", "openStudioRuns.agent", "teamPackPreview", "catalogRetry", "inspectCatalogItem.row", "catalogPrevious", "catalogNext", "enterprisePackToggle.row", "enterpriseTargetConfigure.row", "enterpriseDoctor"],
+      "fields": ["catalogSearch", "catalogSort"],
+      "gestures": [],
+      "indicators": ["registered", "runnableRevisions", "runningProcesses", "advisoryRecords", "activeSessions", "workerAdapterStatus", "catalogPending", "catalogError", "catalogPage", "enterpriseDoctorStatus"],
+      "profiles": ["local_view", "read_query", "write_operation"],
+      "persistence_reload": "Scope survives reload; catalog is re-queried; immutable Studio records persist in the backend.",
+      "failure_recovery": "Catalog retry plus team/enterprise result receipts."
+    },
+    "agent-studio": {
+      "source_refs": ["extension/media/dashboard/90-controller.js:162-246", "extension/media/dashboard/90-controller.js:318-390", "extension/media/dashboard/90-controller.js:1137-1184", "extension/media/dashboard/90-controller.js:1237-1254"],
+      "actions": ["studioEditorTab.visual", "studioEditorTab.json", "studioApplyJson", "agentSelectSection.identity", "agentSelectSection.behavior", "agentSelectSection.capabilities", "agentSelectSection.authority", "agentSelectSection.tests", "agentSelectSection.candidate", "refreshHostModels", "agentAddBinding", "agentRemoveBinding.row", "agentAddGrant", "agentRemoveGrant.row", "submitStudioDraft.agent", "closeModal"],
+      "fields": ["identity", "version", "owner", "project_id", "harness_id", "instructions", "model.provider", "model.host_model", "model.vendor", "model.family", "model.model_id", "model.max_output_tokens", "model.temperature", "tool_binding_ids", "memory_binding_ids", "handoff_agent_ids", "input_schema", "output_schema", "required_tests", "binding.binding_id", "binding.capability_id", "binding.capability_version", "binding.effect_grant_ids", "binding.cost_policy", "binding.egress_policy", "binding.credential_namespace", "binding.evidence_refs", "grant.grant_id", "grant.effects", "grant.scope_roots", "grant.approved_by", "grant.evidence_refs", "grant.expires_utc", "canonicalJson"],
+      "gestures": ["selectTopologySection"],
+      "indicators": ["browserStructuralValidation", "hostModelRoute", "immutableRevisionBaseline", "awaitingHostApproval", "approvalCancelled", "hostOperationFailed"],
+      "profiles": ["local_view", "write_operation"],
+      "persistence_reload": "Only a submitted immutable candidate persists. The unsaved studioEditor draft is webview-memory-only and is lost on close/reload.",
+      "failure_recovery": "Canceled approval leaves the modal open; host failure re-enables Save and adds an inline warning."
+    },
+    "skills-tools": {
+      "source_refs": ["extension/media/dashboard/43-catalog-surfaces.js:32-43", "extension/media/dashboard/90-controller.js:605-621", "extension/media/dashboard/90-controller.js:1060-1064"],
+      "actions": ["capabilityTab.skills", "capabilityTab.preserved-skills", "capabilityTab.microsoft-skills", "capabilityTab.enterprise-skills", "capabilityTab.tools", "skillSemanticQuery", "submitSkillQuery", "hydrateSkillCandidate.row", "openStudioDraft.skill", "navigate.workflows", "catalogRetry", "inspectCatalogItem.row", "catalogPrevious", "catalogNext", "enterprisePackToggle.row", "enterpriseTargetConfigure.row", "enterpriseDoctor"],
+      "fields": ["skillQueryGoal", "fixedSkillDomain", "catalogSearch", "catalogSort"],
+      "gestures": [],
+      "indicators": ["nativeCount", "preservedBoundary", "enterpriseCount", "toolCount", "domainBoundary", "queryPending", "queryResults", "queryNoMatch", "catalogPending", "catalogError", "catalogPage"],
+      "profiles": ["local_view", "read_query", "write_operation"],
+      "persistence_reload": "Selected catalog kind survives reload; hydration alone never persists or executes a skill body.",
+      "failure_recovery": "Catalog retry and explicit empty semantic result."
+    },
+    "skill-studio": {
+      "source_refs": ["extension/media/dashboard/90-controller.js:304-317", "extension/media/dashboard/90-controller.js:366-390", "extension/media/dashboard/90-controller.js:1246-1247", "extension/media/dashboard/90-controller.js:1293-1295"],
+      "actions": ["loadSkillPackageEditor", "skillSelectFile.row", "skillAddFile.contract", "skillAddFile.test", "skillAddFile.resource", "skillRemoveFile", "submitStudioDraft.skill", "closeModal"],
+      "fields": ["identity", "version", "owner", "packageFileText"],
+      "gestures": [],
+      "indicators": ["packageValidation", "missingRequiredFiles", "revisionDiff", "recentLifecycleHistory"],
+      "profiles": ["read_query", "local_view", "write_operation"],
+      "persistence_reload": "Edits remain in memory until immutable-candidate save; the backend stages, link-checks, attests, and hashes the submitted package.",
+      "failure_recovery": "Required native files cannot be removed; host save failure returns control to the editor."
+    },
+    "workflows": {
+      "source_refs": ["extension/media/dashboard/44-operational-surfaces.js:18-24", "extension/media/dashboard/90-controller.js:605-621", "extension/media/dashboard/90-controller.js:874-914", "extension/media/dashboard/90-controller.js:1067-1092"],
+      "actions": ["surfaceScope.core", "surfaceScope.enterprise", "surfaceScope.environment", "openStudioDraft.workflow", "openStudioRuns.workflow", "newParallelPlan", "submitParallelPlan", "openCoordinationHandoff", "copyTaskHandoff.row", "claimTask.row", "submitClaimTask", "renewClaim.row", "taskProgress.row", "completeTask.row", "submitTaskProgress", "releaseTask.row", "reconcileTask.row", "submitReconcile", "catalogRetry", "inspectCatalogItem.row", "catalogPrevious", "catalogNext", "enterpriseDoctor", "environmentScope.graph", "environmentScope.extensions", "environmentScope.tools", "environmentScope.environments", "environmentScope.environment-files", "environmentScope.python", "environmentScope.npm", "refreshEnvironment", "environmentExtensionDetail.row", "inspectEnvironmentRecord.row", "previewEnvironmentLifecycle", "executeEnvironmentLifecycle"],
+      "fields": ["catalogSearch", "catalogSort", "planObjective", "planGoal", "planTaskLines", "claimMode", "claimAuthority", "claimTTL", "progressSummary", "progressTokens", "progressMinutes", "progressNextAction", "reconcileSummary", "reconcileConflictsResolved", "environmentExactTarget", "environmentConsumerAcknowledgement"],
+      "gestures": [],
+      "indicators": ["workflowDefinitions", "validatorBindings", "runtimeBindings", "runnableRuns", "activePlan", "taskStatus", "claimLease", "claimFence", "claimBudget", "environmentFreshness", "environmentSnapshotHash", "catalogPending", "catalogError", "catalogPage"],
+      "profiles": ["local_view", "read_query", "write_operation", "host_ui"],
+      "persistence_reload": "Workflow scope survives reload; plans/tasks/claims are ledger-persisted; environment dispositions are receipted.",
+      "failure_recovery": "Dependency/claim validation blocks unsafe plans. Environment mutation requires two-snapshot preview and exact-target confirmation."
+    },
+    "workflow-studio": {
+      "source_refs": ["extension/media/dashboard/90-controller.js:248-301", "extension/media/dashboard/90-controller.js:366-414", "extension/media/dashboard/90-controller.js:1255-1292", "extension/media/dashboard/90-controller.js:1545-1550", "extension/media/dashboard/90-controller.js:1566-1567", "extension/media/dashboard/90-controller.js:1601-1613"],
+      "actions": ["studioEditorTab.visual", "studioEditorTab.json", "studioApplyJson", "workflowAddNode.task", "workflowAddNode.validation", "workflowAddNode.approval", "workflowSelectNode.row", "workflowAddPort.inputs", "workflowAddPort.outputs", "workflowRemovePort.row", "workflowMoveNode.earlier", "workflowMoveNode.later", "workflowRemoveNode", "workflowConnectNodes", "workflowPortConnect.input", "workflowPortConnect.output", "workflowCancelConnection", "workflowAutoLayout", "workflowFit", "workflowZoom.in", "workflowZoom.out", "workflowRemoveEdge.row", "workflowAddBinding", "workflowRemoveBinding.row", "workflowAddGrant", "workflowRemoveGrant.row", "submitStudioDraft.workflow", "closeModal"],
+      "fields": ["identity", "version", "owner", "node.node_id", "node.kind", "node.executor_binding_id", "node.executor_adapter", "node.effect_grant_ids", "node.timeout_seconds", "node.retry_limit", "node.failure_policy", "node.approval_required", "node.config", "port.name", "port.data_type", "port.required", "edge.source_endpoint", "edge.target_endpoint", "edge.condition", "binding.binding_id", "binding.capability_id", "binding.capability_version", "binding.effect_grant_ids", "binding.cost_policy", "binding.egress_policy", "binding.credential_namespace", "binding.evidence_refs", "grant.grant_id", "grant.effects", "grant.scope_roots", "grant.approved_by", "grant.evidence_refs", "grant.expires_utc", "canonicalJson"],
+      "gestures": ["dragPaletteNodeToCanvas", "dragExistingNode", "clickTypedPortsToConnect", "altArrowReorderNode"],
+      "indicators": ["structuralValidation", "pendingPortConnection", "zoom", "runInputContract", "nodeRunTrace", "immutableRevisionBaseline", "awaitingHostApproval"],
+      "profiles": ["local_view", "write_operation"],
+      "persistence_reload": "Submitted payload attempts to store editor_layout separately from executable nodes; unsaved topology remains memory-only.",
+      "failure_recovery": "Typed-port mismatch blocks connection; JSON errors use native validity; approval cancel/failure keeps the draft open."
+    },
+    "studio-lifecycle": {
+      "source_refs": ["extension/media/dashboard/90-controller.js:417-480", "extension/media/dashboard/90-controller.js:1239-1245", "extension/media/dashboard/90-controller.js:1296-1322", "extension/media/dashboard/90-controller.js:1672-1692"],
+      "actions": ["openStudioRuns.agent", "openStudioRuns.workflow", "openStudioFromCatalog", "operateStudioRevision", "studioLifecycle.test", "studioLifecycle.register-authority", "studioLifecycle.admit", "studioLifecycle.validate", "studioLifecycle.preview", "studioLifecycle.dry-run", "studioLifecycle.approve", "studioLifecycle.start", "studioLifecycle.promote", "studioLifecycle.rollback", "submitStudioAgentRun", "submitStudioWorkflowRun", "studioRunAction.status", "studioRunAction.pause", "studioRunAction.cancel", "studioRunAction.stop", "studioRunAction.resume", "studioRunAction.reconcile"],
+      "fields": ["agentObjective", "workflowRunInputsJson"],
+      "gestures": [],
+      "indicators": ["accepted", "notAccepted", "runtimeOutcome", "runId", "runState", "output", "error", "signedReceipt"],
+      "lifecycle": {"agent": "create -> test -> register-authority -> admit -> preview/start", "workflow": "create -> register-authority -> validate-and-admit -> dry-run -> approve -> start", "skill": "create -> validate -> admit -> promote -> rollback", "run": "queued -> running -> paused/interrupted -> resume or cancel/stop -> terminal/reconcile"},
+      "profiles": ["write_operation", "durable_run"],
+      "persistence_reload": "Backend revisions and run heads are durable; the exact loaded revision is transient studioSession state.",
+      "failure_recovery": "Resume fails closed without the exact authenticated revision; durable runs expose status/control routes."
+    },
+    "plugins": {
+      "source_refs": ["extension/media/dashboard/44-operational-surfaces.js:27-51"],
+      "actions": ["refreshEnvironment", "environmentExtensionDetail.row", "openExtensionsView.install", "openExtensionsView.activation", "openExtensionsView.uninstall", "openExtensionsView.footer", "inspectMachineManifest.header", "inspectMachineManifest.footer"],
+      "fields": [],
+      "gestures": [],
+      "indicators": ["inventoryFreshness", "inventoryGeneration", "shardHashMatch", "extensionActiveState", "capabilityCount", "conflictCount", "MCPRegistered", "MCPRuntimeVerified", "connectorReadiness", "inlineInventoryError"],
+      "profiles": ["read_query", "host_ui"],
+      "persistence_reload": "Environment inventory is backend evidence; the host owns install/enable/uninstall state.",
+      "failure_recovery": "Stale or mismatched shards are suppressed and refresh is offered."
+    },
+    "knowledge-graph": {
+      "source_refs": ["extension/media/dashboard/48-graph-surface.js:37-112", "extension/media/dashboard/90-controller.js:1353-1380", "extension/media/dashboard/90-controller.js:1474-1520", "extension/media/dashboard/90-controller.js:1564-1580"],
+      "actions": ["graphView.capabilities", "graphView.repository", "runGraphSearch", "graphOverview", "graphLayout.flow", "graphLayout.orbit", "graphDepth.decrease", "graphDepth.increase", "graphZoomOut", "graphZoomIn", "graphFit.button", "graphFit.minimap", "graphReset", "graphBack", "graphToggleInspector", "graphFocus", "graphLoadMore", "graphCommunity.row", "graphClearCommunity", "selectGraphNode.row", "focusGraphNode.row", "graphOpenNeighborhood", "inspectGraphRecord", "graphSaveView", "submitGraphSavedView", "graphApplySavedView.row", "graphDeleteSavedView.row", "buildRepositoryGraph"],
+      "fields": ["graphAnalysis", "graphTarget", "graphSearch", "graphRelation", "graphDirection", "graphKind", "graphStatus", "accessibleRecordList", "savedViewName"],
+      "gestures": ["wheelPan", "ctrlWheelZoom", "doubleClickZoom", "pointerDragPan", "twoPointerPinchZoom", "arrowPan", "plusMinusZoom", "zeroOrHomeFit", "arrowNodeFocus", "escapeFocusMode"],
+      "indicators": ["sourceRecords", "eligibleRecords", "loadedRecords", "loadedRelationships", "queryPending", "queryError", "graphStatusLiveRegion", "selectedRecord", "relationshipCounts", "progressiveCoverage", "renderedTelemetry"],
+      "profiles": ["local_view", "read_query", "write_operation"],
+      "persistence_reload": "Query/layout/filter/saved-view metadata is in webview state; graph records are re-queried.",
+      "failure_recovery": "Query errors offer retry; unavailable repository graph offers build."
+    },
+    "memory": {
+      "source_refs": ["extension/media/dashboard/46-observability-surfaces.js:14-26", "extension/media/dashboard/90-controller.js:1091-1092", "extension/media/dashboard/90-controller.js:1394-1399", "extension/media/dashboard/90-controller.js:1442"],
+      "actions": ["configureCanonicalMemory", "captureMemory", "submitMemory", "openCoordinationHandoff", "contextSnapshot", "memoryRefresh", "memoryPrevious", "memoryNext", "inspectMemoryRecord.row", "openMemorySource"],
+      "fields": ["memorySearch", "memoryLifecycleStatus", "memoryProject", "memorySource", "portableMemoryLayer", "portableMemoryKind", "portableMemoryContent"],
+      "gestures": [],
+      "indicators": ["canonicalConfigured", "canonicalValid", "projectRegistered", "leaseState", "leaseExpiry", "vaultOpen", "retrievalReady", "canonicalCounts", "portableIntegrity", "queryPending", "queryError", "queryPage"],
+      "profiles": ["read_query", "write_operation", "host_ui"],
+      "persistence_reload": "Canonical vault and project coordination memory persist; query filters do not survive reload.",
+      "failure_recovery": "Expired lease offers reacquisition and query errors offer retry."
+    },
+    "activity": {
+      "source_refs": ["extension/media/dashboard/46-observability-surfaces.js:29-50", "extension/media/dashboard/90-controller.js:1400-1402", "extension/media/dashboard/90-controller.js:1437-1441"],
+      "actions": ["activityPause", "activityRefresh", "filterActivityCorrelation.row", "inspectActivityEvent.row", "reconcileStaleActivity"],
+      "fields": ["activitySearch", "activityCategory", "activityStatus"],
+      "gestures": [],
+      "indicators": ["captureActive", "capturePaused", "captureDisabled", "eventRevision", "liveOperations", "staleOperations", "liveActors", "historicalActors", "integrity", "queryPending", "queryError"],
+      "profiles": ["read_query", "write_operation"],
+      "persistence_reload": "Events are append-only and pause is workspace configuration; filters do not survive reload.",
+      "failure_recovery": "Query retry and stale-operation terminal reconciliation."
+    },
+    "diagnostics": {
+      "source_refs": ["extension/media/dashboard/45-system-surfaces.js:28-65"],
+      "actions": ["inspectDiagnosticRecord.row", "dynamicRepair.refresh", "dynamicRepair.buildRepositoryGraph", "dynamicRepair.configureCanonicalMemory", "dynamicRepair.refreshEnvironment", "navigate.runtimeCore", "navigate.skillsTools", "navigate.settings", "navigate.diagnostics", "navigate.assurance", "queryOperationalCards", "operationalCardsPrevious", "operationalCardsNext", "inspectPunchCard.row", "inspectOperationalInventory", "openPunchSource.row", "validate", "catalogRetry", "inspectCatalogItem.row", "catalogPrevious", "catalogNext"],
+      "fields": ["operationalCardSearch", "operationalCardState", "operationalCardSeverity", "operationalCardEvidenceGap", "enterpriseIntegrationCatalogSearch", "enterpriseIntegrationCatalogSort"],
+      "gestures": [],
+      "indicators": ["connection", "hostCompatibility", "featureAvailability", "liveTraceBlockers", "ledgerStateCounts", "surfaceCoverage", "controlDispositionCoverage", "evidenceGaps", "reportReconciliation", "validation", "catalogPending", "catalogError", "catalogPage"],
+      "profiles": ["read_query", "write_operation", "host_ui"],
+      "persistence_reload": "The append-only operational ledger and backend catalog persist; current filters are JS-state-only.",
+      "failure_recovery": "Exact trace repair action, ledger-invalid fail-closed box, and targeted validator."
+    },
+    "assurance": {
+      "source_refs": ["extension/media/dashboard/45-system-surfaces.js:21-25", "extension/media/dashboard/45-system-surfaces.js:68-73"],
+      "actions": ["inspectReadiness.row", "inspectReadinessReport", "enterpriseDoctor"],
+      "fields": [],
+      "gestures": [],
+      "indicators": ["assuranceRecords", "contracts", "stateReceipts", "operationalFindings", "maturity", "readinessCeiling", "dimensionScores", "priorityGaps", "ownershipMap", "enterpriseSeparation"],
+      "profiles": ["read_query"],
+      "persistence_reload": "Snapshot evidence is authoritative; inspection is local.",
+      "failure_recovery": "No direct repair except the offline enterprise doctor."
+    },
+    "settings": {
+      "source_refs": ["extension/media/dashboard/45-system-surfaces.js:75-92"],
+      "actions": ["openSettings.effectiveConfiguration", "openSettings.authority", "openSettings.guardrails", "toggleBillablePolicy"],
+      "fields": [],
+      "gestures": [],
+      "indicators": ["effectiveValues", "sourceOwner", "applyBoundary", "engineConnection", "Ollama", "environmentGraph", "MCP", "billableMaster", "guardrailValues"],
+      "profiles": ["host_ui", "write_operation"],
+      "persistence_reload": "Host configuration and enterprise policy controller are authoritative.",
+      "failure_recovery": "Host settings editor; no inline field editing."
+    },
+    "knowledge-core": {
+      "source_refs": ["extension/media/dashboard/47-advanced-surfaces.js:14-65", "extension/media/dashboard/90-controller.js:998-1040", "extension/media/dashboard/90-controller.js:1403-1436"],
+      "actions": ["openKnowledgeSource.row", "knowledgeRefresh", "knowledgePropose", "submitKnowledgeProposal", "knowledgeTransition.verify", "knowledgeTransition.approve", "knowledgeTransition.promote", "knowledgeReject", "submitKnowledgeReject", "knowledgeRollback", "submitKnowledgeRollback", "knowledgeRecover", "learningObserve", "learningAppendEvidence", "learningPattern", "learningHypothesis", "learningTrial", "learningResearch", "learningFinalValidation", "learningAdmit", "learningReuse", "inspectLearningPipeline"],
+      "fields": ["knowledgeId", "knowledgeKind", "knowledgeTitle", "knowledgeSummary", "knowledgeSource", "knowledgeEvidence", "knowledgeRejectReason", "rollbackRecord", "rollbackExpectedHead", "rollbackTarget", "rollbackEvidenceRefs", "learningPipelineId", "learningOperationId", "learningTaskClass", "learningOutcome", "learningMetric", "learningMetricValue", "learningCapabilities", "learningEnvironmentSha", "learningSourceIds", "learningEvidenceRefs", "patternMetric", "higherIsBetter", "patternInterpretation", "applicability", "hypothesisUnitId", "hypothesisKind", "hypothesisClaim", "incumbentJson", "challengerJson", "dependencyHashJson", "trialWinner", "trialEvidence", "researchQuestion", "researchReferencesJson", "betterAlternativeFound", "researchConclusion", "secondaryArtifactJson", "finalValidationEvidence", "partialUnits", "reuseUses", "reuseSuccesses", "reuseRegressions"],
+      "gestures": [],
+      "indicators": ["sourceAvailability", "sourceHash", "proposalState", "canonicalHead", "conflicts", "learningStage", "trialCounts", "revisionHashes", "reuse", "controllerError"],
+      "lifecycle": {"learning": "experience -> pattern -> hypothesis -> A/B -> research -> final validation -> knowledge admission -> measured reuse/decay", "knowledge": "candidate -> verified -> approved -> promoted", "terminal_or_recovery": "reject, rollback, and recover are separately receipted"},
+      "profiles": ["read_query", "write_operation", "host_ui"],
+      "persistence_reload": "Signed backend knowledge and learning histories persist; modal inputs are transient.",
+      "failure_recovery": "Controller retry and signed projection recovery."
+    },
+    "runtime-core": {
+      "source_refs": ["extension/media/dashboard/47-advanced-surfaces.js:68-78", "extension/media/dashboard/90-controller.js:1095-1099"],
+      "actions": ["refresh", "inspectRuntimeRecord.operations", "inspectRuntimeRecord.producers", "inspectRuntimeRecord.placements", "inspectRuntimeRecord.providers", "contextSnapshot", "continueCodex", "cancelCodex", "inspectSensor.row", "navigate.workflows", "cleanupManager", "refreshCleanup", "cleanupSelectAll", "cleanupRecycle", "cleanupPermanent", "openCoordinationHandoff", "validate"],
+      "fields": ["cleanupCandidateCheckbox.row"],
+      "gestures": [],
+      "indicators": ["activeWork", "waitsFailures", "placementEvidence", "legacyProducers", "hardware", "providerBoundary", "gitBoundary", "thermals", "cleanupCandidates", "cleanupBytes", "cleanupSelection", "cleanupReceipt"],
+      "profiles": ["read_query", "write_operation", "host_ui"],
+      "persistence_reload": "Runtime/placement/activity evidence and cleanup receipts persist; cleanup selection is transient.",
+      "failure_recovery": "Resume handoff, validator, and cleanup rescan."
+    },
+    "sidebar": {
+      "source_refs": ["extension/src/sidebarView.js:10-31", "extension/media/sidebar.js:36-165", "extension/src/sidebarMessages.js:12-92", "extension/src/sidebarView.js:93-174"],
+      "actions": ["open-control-plane", "retry", "provider-previous", "provider-next", "toggleWave.row", "toggleTask.row", "openPlanFromPunch", "openEntity.plan", "openEntity.task", "openEntity.agent", "openEntity.orchestration", "openEntity.provider", "openEntity.attention"],
+      "fields": [],
+      "gestures": [],
+      "indicators": ["connection", "revision", "activeExecution", "progress", "wavesTasks", "punchCounts", "liveStaleAgents", "orchestrations", "recent", "attention", "providerActivity", "providerBudget", "providerBilling", "providerFallback", "providerFreshness", "contractError"],
+      "profiles": ["local_view", "read_query", "host_ui"],
+      "persistence_reload": "Expanded waves/tasks and selected provider are saved by SidebarView; the host pushes a bounded projection.",
+      "acknowledgement": "The rendered message returns revision and component/row counts.",
+      "failure_recovery": "retryConnection plus bounded inbound/outbound contract errors."
+    }
+  },
+  "surface_count": 20,
+  "findings": [
+    {
+      "finding_id": "typed-inventory-001",
+      "severity": "high",
+      "classification": "inventory-attribution",
+      "summary": "The existing ledger unions whole renderer files, causing unrelated controls to bleed across surfaces.",
+      "evidence": ["registry/operational_gap_ledger.snapshot.json:surfaces", "extension/media/dashboard/45-system-surfaces.js:28-92", "extension/media/dashboard/47-advanced-surfaces.js:45-78"],
+      "examples": ["diagnostics, assurance, and settings inherit one another's actions", "knowledge-core and runtime-core inherit one another's actions", "${item.repair} is retained as a false literal action"],
+      "required_disposition": "Replace current known_controls with renderer/helper-derived typed control IDs; do not incrementally patch the polluted projection."
+    },
+    {
+      "finding_id": "typed-inventory-002",
+      "severity": "high",
+      "classification": "unreachable-control",
+      "summary": "graphLoadAll is an orphan handler with no rendered control and no uiActionInventory entry.",
+      "evidence": ["extension/media/dashboard/90-controller.js:1369", "extension/media/dashboard/48-graph-surface.js:84", "extension/src/uiActionInventory.js"],
+      "required_disposition": "Either render and inventory an explicit Load Full control or remove the unreachable handler after preserving the intended bounded behavior."
+    },
+    {
+      "finding_id": "typed-inventory-003",
+      "severity": "medium",
+      "classification": "misleading-action-label",
+      "summary": "Inspect source record opens an information modal but does not open the source path.",
+      "evidence": ["extension/media/dashboard/48-graph-surface.js:84", "extension/media/dashboard/90-controller.js:1373"],
+      "required_disposition": "Rename it to Inspect graph record or add a separately governed Open source action with path-boundary acknowledgement."
+    },
+    {
+      "finding_id": "typed-inventory-004",
+      "severity": "high",
+      "classification": "agent-builder-incompleteness",
+      "summary": "Agent topology is selectable navigation, not editable construction.",
+      "evidence": ["extension/media/dashboard/90-controller.js:190-238", "extension/media/dashboard/90-controller.js:1248"],
+      "required_disposition": "Do not classify the topology as an editor gesture surface until add/remove/connect/reorder operations are implemented or the UI is relabeled as lifecycle navigation."
+    },
+    {
+      "finding_id": "typed-inventory-005",
+      "severity": "high",
+      "classification": "draft-persistence",
+      "summary": "Unsaved Agent, Workflow, and Skill Studio drafts are not reload-safe.",
+      "evidence": ["extension/media/dashboard/90-controller.js:66", "extension/media/dashboard/90-controller.js:366-390", "extension/media/dashboard/90-controller.js:581"],
+      "required_disposition": "Add an explicit bounded working-draft persistence/recovery contract or clearly expose that close/reload discards unsaved work."
+    },
+    {
+      "finding_id": "typed-inventory-006",
+      "severity": "high",
+      "classification": "authority-contract-drift",
+      "summary": "reconcileStaleActivity is documented as requiring explicit modal approval, but its click handler writes immediately.",
+      "evidence": ["extension/src/uiActionInventory.js:117", "extension/media/dashboard/90-controller.js:1402"],
+      "required_disposition": "Add the promised confirmation/evidence boundary or correct the declared authority contract before treating this control as disposed."
+    },
+    {
+      "finding_id": "typed-inventory-007",
+      "severity": "medium",
+      "classification": "authority-confirmation-gap",
+      "summary": "releaseTask performs a workspace write immediately without a confirmation or evidence form.",
+      "evidence": ["extension/media/dashboard/90-controller.js:1392", "extension/src/uiActionInventory.js:100"],
+      "required_disposition": "Require an explicit release reason/confirmation receipt or document and test why direct release is the intended safe contract."
+    },
+    {
+      "finding_id": "typed-inventory-008",
+      "severity": "medium",
+      "classification": "acknowledgement-contract-drift",
+      "summary": "Several uiActionInventory entries claim a host acknowledgement but the dashboard receives no typed result envelope.",
+      "evidence": ["extension/src/uiActionInventory.js:94-95", "extension/src/uiActionInventory.js:133-136", "extension/src/extension.js:1077-1115"],
+      "examples": ["openSettings", "openExtensionsView", "openFile", "copyText and some command handoffs"],
+      "required_disposition": "Return a typed acknowledgement/result or change the inventory to state that acknowledgement is host-external and unobserved."
+    },
+    {
+      "finding_id": "typed-inventory-009",
+      "severity": "low",
+      "classification": "sidebar-dead-route",
+      "summary": "Sidebar inbound selectProvider is supported, but no visible sidebar control emits it.",
+      "evidence": ["extension/src/sidebarMessages.js:24", "extension/src/sidebarView.js:131", "extension/media/sidebar.js:133-142"],
+      "required_disposition": "Either emit selectProvider from a visible provider-selection control or remove the unused inbound route."
+    },
+    {
+      "finding_id": "typed-inventory-010",
+      "severity": "medium",
+      "classification": "state-model-drift",
+      "summary": "10-state.js defines a second dashboard state initializer that 90-controller.js does not use.",
+      "evidence": ["extension/media/dashboard/10-state.js:7-68", "extension/media/dashboard/90-controller.js:29-41"],
+      "required_disposition": "Establish one authoritative state initializer/persisted-view schema so newly added fields cannot silently diverge."
+    }
+  ]
+}

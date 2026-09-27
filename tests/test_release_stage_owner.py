@@ -42,7 +42,7 @@ def fixture(tmp_path: Path, step: str) -> Config:
             {
                 "schema_version": "px.release-identity-path-manifest/1.0",
                 "candidate_id": "pacify-x-certification-20260905-final100-single",
-                "paths": ["one.txt", "two.txt"],
+                "paths": [],
                 "mutable_paths": ["manifest.json"],
             }
         ),
@@ -147,7 +147,7 @@ def test_each_invocation_admits_only_selected_step(
         monkeypatch.setattr(
             "runtime.release_identity._release_dirty_state",
             lambda root: {
-                "blocking_paths": ["one.txt", "two.txt"],
+                "blocking_paths": [],
                 "mutable_control_paths": [],
                 "classifier_errors": [],
             },
@@ -741,7 +741,7 @@ def test_installed_extension_listing_isolates_host_vscode_environment(
     assert result.returncode == 0
 
 
-def test_identity_uses_explicit_cached_set_and_one_annotated_retag(
+def test_identity_uses_precommitted_head_and_one_annotated_retag(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -757,10 +757,8 @@ def test_identity_uses_explicit_cached_set_and_one_annotated_retag(
 
         def git(self, config: Config, *args: str) -> str:
             calls.append(args)
-            if args[:2] in {("diff", "--name-only"), ("ls-files", "--others")}:
-                return "one.txt\0two.txt\0"
             if args[:3] == ("diff", "--cached", "--name-only"):
-                return "one.txt\0two.txt\0"
+                return ""
             if args[:2] == ("rev-list", "-n"):
                 return (
                     "0" * 40
@@ -771,6 +769,8 @@ def test_identity_uses_explicit_cached_set_and_one_annotated_retag(
             if args[:2] == ("cat-file", "-t"):
                 return "tag"
             if args[:2] == ("rev-parse", "HEAD"):
+                return "1" * 40
+            if args[:2] == ("rev-parse", "@{u}"):
                 return "1" * 40
             return ""
 
@@ -788,7 +788,7 @@ def test_identity_uses_explicit_cached_set_and_one_annotated_retag(
     dirty_calls = iter(
         (
             {
-                "blocking_paths": ["one.txt", "two.txt"],
+                "blocking_paths": [],
                 "mutable_control_paths": [],
                 "classifier_errors": [],
             },
@@ -804,10 +804,10 @@ def test_identity_uses_explicit_cached_set_and_one_annotated_retag(
     )
     result = GitEffects().identity(config)
     assert result["valid"] is True
-    assert ("add-pathspec", "one.txt", "two.txt") in calls
+    assert ("add-pathspec",) in calls
     tag_call = next(call for call in calls if call[:4] == ("tag", "-f", "-a", "v0.7.0"))
     assert tag_call[4:6] == ("-m", f"v0.7.0 {config.candidate_id}")
-    assert sum(call[:2] == ("commit", "-m") for call in calls) == 1
+    assert not any(call[:1] == ("commit",) for call in calls)
 
 
 def test_git_add_paths_streams_large_nul_delimited_pathspec(
@@ -891,7 +891,7 @@ def test_identity_requires_exact_mutable_control_manifest(
             {
                 "schema_version": "px.release-identity-path-manifest/1.0",
                 "candidate_id": config.candidate_id,
-                "paths": ["one.txt", "two.txt"],
+                "paths": [],
                 "mutable_paths": ["registry/operational_gap_ledger.jsonl"],
             }
         ),
@@ -900,7 +900,7 @@ def test_identity_requires_exact_mutable_control_manifest(
     monkeypatch.setattr(
         "runtime.release_identity._release_dirty_state",
         lambda root: {
-            "blocking_paths": ["one.txt", "two.txt"],
+            "blocking_paths": [],
             "mutable_control_paths": ["registry/operational_gap_ledger.snapshot.json"],
             "classifier_errors": [],
         },

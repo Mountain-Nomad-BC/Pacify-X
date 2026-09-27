@@ -1,0 +1,104 @@
+{
+  "schema_version": "px.commencement-live-state/1.0",
+  "observed_at_utc": "2026-09-05T00:29:21Z",
+  "repository": {
+    "root": "C:/Users/Ben/Downloads/bootstrap_project/Pacify-X",
+    "branch": "main",
+    "head": "19761e2a769885d6df25dc448c673e339eaf9c8c",
+    "tag_at_head": "v0.7.0",
+    "ahead_of_origin_main": 60,
+    "initial_tracked_changes": [
+      ".engineering-bootstrap/test-evidence/groups/structural-adversarial.json",
+      ".engineering-bootstrap/test-evidence/sections/dashboard-extension.json",
+      ".engineering-bootstrap/test-evidence/sections/testing-governance.json",
+      "registry/operational_gap_ledger.head.json",
+      "registry/operational_gap_ledger.jsonl",
+      "registry/operational_gap_ledger.snapshot.json"
+    ]
+  },
+  "source_classification": {
+    "valid": true,
+    "product_valid": true,
+    "product_digest": "e15375c38ce6700bbf76e3f0f9d453a669098f6a92af9439ca91de6fc61865eb",
+    "harness_digest": "96d7ab5f077fec2e338bbdeffa1f8db3f76f4972fec94aa7a5090e1cac70e250",
+    "source_manifest_sha256": "53bb866f417e91f3bd96a6e7ccec99dac421b3910490031ea30c19a71b544307",
+    "product_file_count": 4409,
+    "errors": []
+  },
+  "generated_artifacts": {
+    "valid": true,
+    "checks": [
+      "domain_wrappers",
+      "declared_suite_templates",
+      "profile_projections",
+      "commissioned_skill_registry",
+      "build_claims",
+      "studio_operation_projections",
+      "registry_envelope_inventory",
+      "artifact_reachability",
+      "effect_surface_ownership",
+      "historical_external_references",
+      "contract_ownership",
+      "dependency_ownership",
+      "declared_tool_hashes",
+      "graphs",
+      "generated_dependency_graph"
+    ],
+    "all_checks_passed": true
+  },
+  "terminal_release_campaign": {
+    "campaign_id": "pacify-x-certification-20260904-final85-single",
+    "state": "failed",
+    "apply_count": 1,
+    "release_identity_sha256": "c2e109feabe6509fdb2156d819e83054e5e03cc6b21a6fa9d20d28eb55dddf12",
+    "sections": "passed",
+    "full_profile": "failed_interrupted_by_user",
+    "validate": "pending_never_run",
+    "package": "pending_never_run",
+    "install": "pending_never_run",
+    "installed_operational": "pending_never_run",
+    "certify": "pending_never_run",
+    "resume_or_retry_allowed": false,
+    "terminal_evidence": {
+      "path": "evidence/release/final85-full-profile-interrupted-terminal-denominator-20260905.json",
+      "sha256": "43effea1f65a67b3acfa448f0cdf4a60a474864d5f338c3301d0d330a053fd28"
+    }
+  },
+  "operational_ledger": {
+    "valid": true,
+    "event_count": 33635,
+    "head_event_sha256": "3e17b41238822a1761149d32f292a49aa0aa06ddab040a26f65b8451b3806cbe",
+    "ledger_bytes": 101826238,
+    "snapshot_bytes": 39231705,
+    "active_audit_session": "audit-session:commencement-20260905t002921z"
+  },
+  "resource_status": {
+    "valid": true,
+    "resource_count": 0,
+    "active_processes": 0,
+    "reclaimable_paths": 0,
+    "cleanup_failures": 0,
+    "resource_ledger_exists": false,
+    "delta_note": "The older handoff described a populated resource ledger; the current default .pacify-x/resource-ledger.json is absent. This is recorded as a live-state delta rather than normalized away."
+  },
+  "immutable_vsix": {
+    "path": "extension/dist/pacify-x-vscode-0.6.83.vsix",
+    "version": "0.6.83",
+    "sha256": "9b9c1c66ae57592459b7e6b1172803c8d255d2b2a3e985421e0fe01ccb3bbc4f",
+    "bytes": 4261212,
+    "installable_entries": 114,
+    "installed_files": 114,
+    "byte_identical_files": 113,
+    "metadata_normalized_files": [
+      "package.json"
+    ],
+    "missing": [],
+    "extra": [],
+    "content_mismatches": [],
+    "crc_mismatches": [],
+    "links": [],
+    "installed_tree_digest_before": "705ec38716f0b406274ab237eca6551f8e6d22b9dfbb1324003d0f4b8b1bac79",
+    "installed_tree_digest_after": "705ec38716f0b406274ab237eca6551f8e6d22b9dfbb1324003d0f4b8b1bac79",
+    "mutated": false
+  }
+}

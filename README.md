@@ -12,13 +12,11 @@ Engineering Loop Utilization & Harnessing turns a general-purpose AI assistant i
 
 PACIFY-X is the project and framework. `engineering-bootstrap` is its Python package and command-line control plane.
 
-**Status:** pre-release. The local AI stack, the PX Agent Console, and the governance surface
-are operational and under governed certification; no publication claim is made yet.
+**Release status:** See [GitHub Releases](https://github.com/Mountain-Nomad-BC/Pacify-X/releases)
+for signed artifacts and their verification evidence.
 
 **Current line:** **v0.9.0** (see [`docs/release-process.md`](docs/release-process.md) for the
-canonical release contract; the authoritative version is assigned only by the frozen
-certification candidate)
-**Previous certified release:** [v0.6.3](https://github.com/Mountain-Nomad-BC/Pacify-X/releases/tag/v0.6.3)
+canonical release contract and exact artifact verification steps).
 
 **Requires:** Python 3.11–3.14, Git, OpenSSH Client (`ssh-keygen`), and an AI coding assistant.
 Local model lanes additionally require a CUDA-capable GPU, CMake + an MSVC toolset + the

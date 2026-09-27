@@ -6915,55 +6915,55 @@
   },
   {
     "source": "runtime/cli.py",
-    "line": 171,
+    "line": 178,
     "import": "os",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/cli.py",
-    "line": 172,
+    "line": 179,
     "import": "uuid",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/cli.py",
-    "line": 1301,
+    "line": 1320,
     "import": "time",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/cli.py",
-    "line": 2110,
+    "line": 2207,
     "import": "uuid",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/cli.py",
-    "line": 2118,
+    "line": 2215,
     "import": "os",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/cli.py",
-    "line": 2197,
+    "line": 2294,
     "import": "concurrent.futures",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/cli.py",
-    "line": 2197,
+    "line": 2294,
     "import": "concurrent.futures",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/cli.py",
-    "line": 2198,
+    "line": 2295,
     "import": "uuid",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/cli.py",
-    "line": 2199,
+    "line": 2296,
     "import": "os",
     "type": "external-or-unresolved"
   },
@@ -9526,6 +9526,18 @@
   {
     "source": "runtime/external_evidence.py",
     "line": 8,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/external_evidence.py",
+    "line": 9,
+    "import": "re",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/external_evidence.py",
+    "line": 10,
     "import": "typing",
     "type": "external-or-unresolved"
   },
@@ -9945,7 +9957,19 @@
   },
   {
     "source": "runtime/generated_artifacts.py",
-    "line": 16,
+    "line": 11,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/generated_artifacts.py",
+    "line": 12,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/generated_artifacts.py",
+    "line": 56,
     "import": "json",
     "type": "external-or-unresolved"
   },
@@ -19531,7 +19555,7 @@
   },
   {
     "source": "runtime/structural_integrity.py",
-    "line": 716,
+    "line": 748,
     "type": "computed-or-relative-dynamic-import"
   },
   {
@@ -20353,36 +20377,48 @@
   {
     "source": "runtime/test_profiles.py",
     "line": 10,
-    "import": "pathlib",
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/test_profiles.py",
+    "line": 10,
+    "import": "datetime",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/test_profiles.py",
     "line": 11,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/test_profiles.py",
+    "line": 12,
     "import": "sys",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/test_profiles.py",
-    "line": 12,
+    "line": 13,
     "import": "typing",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/test_profiles.py",
-    "line": 12,
+    "line": 13,
     "import": "typing",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/test_profiles.py",
-    "line": 428,
+    "line": 891,
     "import": "re",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/test_profiles.py",
-    "line": 445,
+    "line": 908,
     "import": "re",
     "type": "external-or-unresolved"
   },
@@ -22195,6 +22231,60 @@
     "source": "scripts/audit_source_archive.py",
     "line": 14,
     "import": "uuid",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/audit_validations_tree.py",
+    "line": 8,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/audit_validations_tree.py",
+    "line": 10,
+    "import": "argparse",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/audit_validations_tree.py",
+    "line": 11,
+    "import": "csv",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/audit_validations_tree.py",
+    "line": 12,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/audit_validations_tree.py",
+    "line": 13,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/audit_validations_tree.py",
+    "line": 14,
+    "import": "os",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/audit_validations_tree.py",
+    "line": 15,
+    "import": "sys",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/audit_validations_tree.py",
+    "line": 16,
+    "import": "collections",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/audit_validations_tree.py",
+    "line": 17,
+    "import": "pathlib",
     "type": "external-or-unresolved"
   },
   {
@@ -25398,12 +25488,18 @@
   {
     "source": "scripts/operational_gap_ledger.py",
     "line": 8,
-    "import": "sys",
+    "import": "re",
     "type": "external-or-unresolved"
   },
   {
     "source": "scripts/operational_gap_ledger.py",
     "line": 9,
+    "import": "sys",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/operational_gap_ledger.py",
+    "line": 10,
     "import": "typing",
     "type": "external-or-unresolved"
   },
@@ -27682,6 +27778,84 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "scripts/verify_repair_operations.py",
+    "line": 8,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/verify_repair_operations.py",
+    "line": 10,
+    "import": "argparse",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/verify_repair_operations.py",
+    "line": 11,
+    "import": "contextlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/verify_repair_operations.py",
+    "line": 12,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/verify_repair_operations.py",
+    "line": 13,
+    "import": "io",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/verify_repair_operations.py",
+    "line": 14,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/verify_repair_operations.py",
+    "line": 15,
+    "import": "os",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/verify_repair_operations.py",
+    "line": 16,
+    "import": "sys",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/verify_repair_operations.py",
+    "line": 17,
+    "import": "tomllib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/verify_repair_operations.py",
+    "line": 18,
+    "import": "uuid",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/verify_repair_operations.py",
+    "line": 19,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/verify_repair_operations.py",
+    "line": 20,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/verify_repair_operations.py",
+    "line": 20,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "sitecustomize.py",
     "line": 3,
     "import": "__future__",
@@ -29637,96 +29811,102 @@
   {
     "source": "tests/test_cli_commands.py",
     "line": 4,
-    "import": "io",
+    "import": "hashlib",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_cli_commands.py",
     "line": 5,
-    "import": "json",
+    "import": "io",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_cli_commands.py",
     "line": 6,
-    "import": "os",
+    "import": "json",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_cli_commands.py",
     "line": 7,
-    "import": "pathlib",
+    "import": "os",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_cli_commands.py",
     "line": 8,
-    "import": "tempfile",
+    "import": "pathlib",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_cli_commands.py",
     "line": 9,
-    "import": "types",
+    "import": "tempfile",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_cli_commands.py",
     "line": 10,
-    "import": "unittest",
+    "import": "types",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_cli_commands.py",
     "line": 11,
+    "import": "unittest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_cli_commands.py",
+    "line": 12,
     "import": "unittest.mock",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_cli_commands.py",
-    "line": 74,
+    "line": 176,
     "import": "argparse",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_cli_commands.py",
-    "line": 88,
+    "line": 190,
     "import": "argparse",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_cli_commands.py",
-    "line": 108,
+    "line": 210,
     "import": "argparse",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_cli_commands.py",
-    "line": 130,
+    "line": 232,
     "import": "argparse",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_cli_commands.py",
-    "line": 146,
+    "line": 248,
     "import": "argparse",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_cli_commands.py",
-    "line": 168,
+    "line": 270,
     "import": "argparse",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_cli_commands.py",
-    "line": 582,
+    "line": 684,
     "import": "threading",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_cli_commands.py",
-    "line": 583,
+    "line": 685,
     "import": "time",
     "type": "external-or-unresolved"
   },
@@ -31821,12 +32001,18 @@
   {
     "source": "tests/test_generated_artifacts.py",
     "line": 2,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_generated_artifacts.py",
+    "line": 3,
     "import": "json",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_generated_artifacts.py",
-    "line": 47,
+    "line": 74,
     "import": "shutil",
     "type": "external-or-unresolved"
   },
@@ -32632,6 +32818,36 @@
     "source": "tests/test_llama_cpp_capabilities.py",
     "line": 15,
     "import": "sys",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_llama_cuda_build_script.py",
+    "line": 6,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_llama_cuda_build_script.py",
+    "line": 7,
+    "import": "re",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_llama_cuda_build_script.py",
+    "line": 8,
+    "import": "shutil",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_llama_cuda_build_script.py",
+    "line": 9,
+    "import": "subprocess",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_llama_cuda_build_script.py",
+    "line": 11,
+    "import": "pytest",
     "type": "external-or-unresolved"
   },
   {
@@ -34923,18 +35139,24 @@
   {
     "source": "tests/test_project_mapping.py",
     "line": 4,
-    "import": "subprocess",
+    "import": "shutil",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_project_mapping.py",
     "line": 5,
-    "import": "sys",
+    "import": "subprocess",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_project_mapping.py",
     "line": 6,
+    "import": "sys",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_project_mapping.py",
+    "line": 7,
     "import": "pytest",
     "type": "external-or-unresolved"
   },
@@ -35763,96 +35985,102 @@
   {
     "source": "tests/test_release_artifacts.py",
     "line": 3,
-    "import": "pathlib",
-    "type": "external-or-unresolved"
-  },
-  {
-    "source": "tests/test_release_artifacts.py",
-    "line": 4,
-    "import": "shutil",
-    "type": "external-or-unresolved"
-  },
-  {
-    "source": "tests/test_release_artifacts.py",
-    "line": 5,
-    "import": "tempfile",
-    "type": "external-or-unresolved"
-  },
-  {
-    "source": "tests/test_release_artifacts.py",
-    "line": 7,
-    "import": "pytest",
-    "type": "external-or-unresolved"
-  },
-  {
-    "source": "tests/test_release_artifacts.py",
-    "line": 812,
-    "import": "hashlib",
-    "type": "external-or-unresolved"
-  },
-  {
-    "source": "tests/test_release_artifacts.py",
-    "line": 853,
-    "import": "hashlib",
-    "type": "external-or-unresolved"
-  },
-  {
-    "source": "tests/test_release_artifacts.py",
-    "line": 854,
-    "import": "stat",
-    "type": "external-or-unresolved"
-  },
-  {
-    "source": "tests/test_release_artifacts.py",
-    "line": 880,
-    "import": "os",
-    "type": "external-or-unresolved"
-  },
-  {
-    "source": "tests/test_release_artifacts.py",
-    "line": 898,
-    "import": "os",
-    "type": "external-or-unresolved"
-  },
-  {
-    "source": "tests/test_release_artifacts.py",
-    "line": 959,
-    "import": "cProfile",
-    "type": "external-or-unresolved"
-  },
-  {
-    "source": "tests/test_release_artifacts.py",
-    "line": 960,
-    "import": "io",
-    "type": "external-or-unresolved"
-  },
-  {
-    "source": "tests/test_release_artifacts.py",
-    "line": 961,
-    "import": "pstats",
-    "type": "external-or-unresolved"
-  },
-  {
-    "source": "tests/test_release_artifacts.py",
-    "line": 986,
-    "import": "os",
-    "type": "external-or-unresolved"
-  },
-  {
-    "source": "tests/test_release_artifacts.py",
-    "line": 886,
-    "import": "_winapi",
-    "type": "external-or-unresolved"
-  },
-  {
-    "source": "tests/test_release_artifacts.py",
-    "line": 333,
     "import": "json",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_release_artifacts.py",
-    "line": 475,
+    "line": 4,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_release_artifacts.py",
+    "line": 5,
+    "import": "shutil",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_release_artifacts.py",
+    "line": 6,
+    "import": "tempfile",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_release_artifacts.py",
+    "line": 8,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_release_artifacts.py",
+    "line": 816,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_release_artifacts.py",
+    "line": 857,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_release_artifacts.py",
+    "line": 858,
+    "import": "stat",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_release_artifacts.py",
+    "line": 884,
+    "import": "os",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_release_artifacts.py",
+    "line": 902,
+    "import": "os",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_release_artifacts.py",
+    "line": 963,
+    "import": "cProfile",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_release_artifacts.py",
+    "line": 964,
+    "import": "io",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_release_artifacts.py",
+    "line": 965,
+    "import": "pstats",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_release_artifacts.py",
+    "line": 990,
+    "import": "os",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_release_artifacts.py",
+    "line": 890,
+    "import": "_winapi",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_release_artifacts.py",
+    "line": 337,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_release_artifacts.py",
+    "line": 479,
     "import": "json",
     "type": "external-or-unresolved"
   },
@@ -36122,43 +36350,43 @@
   },
   {
     "source": "tests/test_release_distribution_controls.py",
-    "line": 446,
+    "line": 447,
     "import": "os",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_release_distribution_controls.py",
-    "line": 503,
+    "line": 504,
     "import": "os",
-    "type": "external-or-unresolved"
-  },
-  {
-    "source": "tests/test_release_distribution_controls.py",
-    "line": 542,
-    "import": "json",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_release_distribution_controls.py",
     "line": 543,
-    "import": "tomllib",
-    "type": "external-or-unresolved"
-  },
-  {
-    "source": "tests/test_release_distribution_controls.py",
-    "line": 544,
-    "import": "pathlib",
-    "type": "external-or-unresolved"
-  },
-  {
-    "source": "tests/test_release_distribution_controls.py",
-    "line": 560,
     "import": "json",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_release_distribution_controls.py",
-    "line": 603,
+    "line": 544,
+    "import": "tomllib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_release_distribution_controls.py",
+    "line": 545,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_release_distribution_controls.py",
+    "line": 561,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_release_distribution_controls.py",
+    "line": 604,
     "import": "os",
     "type": "external-or-unresolved"
   },
@@ -36560,6 +36788,42 @@
     "source": "tests/test_release_supply_chain_evidence.py",
     "line": 5,
     "import": "tempfile",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_repair_operational_verification.py",
+    "line": 1,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_repair_operational_verification.py",
+    "line": 2,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_repair_operational_verification.py",
+    "line": 3,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_repair_operational_verification.py",
+    "line": 4,
+    "import": "subprocess",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_repair_operational_verification.py",
+    "line": 5,
+    "import": "sys",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_repair_operational_verification.py",
+    "line": 7,
+    "import": "pytest",
     "type": "external-or-unresolved"
   },
   {
@@ -39635,13 +39899,13 @@
   },
   {
     "source": "tests/test_verification_input_boundaries.py",
-    "line": 333,
+    "line": 347,
     "import": "os",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_verification_input_boundaries.py",
-    "line": 345,
+    "line": 359,
     "import": "_winapi",
     "type": "external-or-unresolved"
   },

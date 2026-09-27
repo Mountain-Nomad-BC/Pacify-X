@@ -1,6 +1,6 @@
 {
   "dependency_parser": {
-    "python": "3.14.5",
+    "python": "3.11.9",
     "source_sha256": "eef8978418164a46d725f7c9fd9de7c40e29fef21078b86460d8fb5a80fd76a0",
     "version": "px.static-local-import-closure/2"
   },
@@ -2017,7 +2017,7 @@
         "runtime/contracts.py"
       ],
       "index_state": "verified",
-      "sha256": "24e36fec11f70c27ae1043385ebfb873c9ae1eb062500d004c1f864d0fbb9cc4"
+      "sha256": "50c19cbe3af72bcaa3aed3522b50a8acaf83b69449a035c059ab95f17d3a79bb"
     },
     "runtime/external_toolchain.py": {
       "dependencies": [
@@ -2090,6 +2090,7 @@
         "runtime/graph_registry.py",
         "runtime/native_skills.py",
         "runtime/provider_gateway.py",
+        "runtime/python_surface_certification.py",
         "runtime/semantic_index.py",
         "runtime/test_profiles.py",
         "scripts/build_contract_ownership_registry.py",
@@ -2103,7 +2104,7 @@
         "scripts/reconcile_declared_tool_hashes.py"
       ],
       "index_state": "verified",
-      "sha256": "6b3941b408dac65981c963d2cb372969b0f8a79b2cf0b8481f58ced8dcd7c735"
+      "sha256": "27c0faf8d37e2bbeeb244cea1ce55873fe8059fa3d1ae44b6ed91767625fb361"
     },
     "runtime/generated_dependency.py": {
       "dependencies": [
@@ -2318,7 +2319,7 @@
         "runtime/registry.py"
       ],
       "index_state": "verified",
-      "sha256": "9960f7ed477768602a213ecdcbcabaf835198606aa2a99134c28ba0c93fc74c3"
+      "sha256": "41288625c260372cda8ed6824ac8b4e20c0dde22cbe58c378d484def6f33a78f"
     },
     "runtime/librarian_semantic_map.py": {
       "dependencies": [
@@ -3572,7 +3573,7 @@
         "runtime/__init__.py"
       ],
       "index_state": "verified",
-      "sha256": "31c63ee7913f9debed05e2c188c2121bf44bf5be66746b012a8d14bd2298ba2f"
+      "sha256": "d45c4404d9a6e5b7682187b7be17b0ee560e059cd0549e169de75d76f541eb46"
     },
     "runtime/research_assimilation.py": {
       "dependencies": [
@@ -4632,7 +4633,7 @@
         "runtime/workflow_inputs.py"
       ],
       "index_state": "verified",
-      "sha256": "bf33b15d4f3cd280c578f618691b23b37666789587f7e8ba3be64852e24bd16c"
+      "sha256": "c556413aa51349789f485d61c898fab870b5adb00f7383ab3c6d94217978fece"
     },
     "runtime/studio_api.py": {
       "dependencies": [
@@ -4940,7 +4941,7 @@
         "runtime/verification_receipts.py"
       ],
       "index_state": "verified",
-      "sha256": "7a66d72b2445af60d9b5c43deb07e5d331c52a650dbfe807b5b0d9aeefc827eb"
+      "sha256": "7acc046a04e8d40757205d1b673bdca0ad68e38961a126c8791b3dc036eba713"
     },
     "runtime/version.py": {
       "dependencies": [
@@ -5526,7 +5527,7 @@
         "conftest.py"
       ],
       "index_state": "verified",
-      "sha256": "aaf4921e0df9402c43abcde6aa4c1e82816b7d588799246faba677508367d2cd"
+      "sha256": "053391feffef029360403fc52e8f616bca2fcc009bd6d7f84c23dc8214c3b0e6"
     },
     "scripts/build_test_group_index.py": {
       "dependencies": [
@@ -5635,13 +5636,14 @@
         "scripts/build_profile_projections.py",
         "scripts/build_python_dependency_ownership.py",
         "scripts/build_registry_envelope_inventory.py",
+        "scripts/build_specialty_map.py",
         "scripts/reconcile_active_capability_hashes.py",
         "scripts/reconcile_commissioned_skill_registry.py",
         "scripts/reconcile_declared_tool_hashes.py",
         "scripts/reconcile_nested_skill_source_hashes.py"
       ],
       "index_state": "verified",
-      "sha256": "c19cecedaf9003427c2d8b76efc0c315598431c46b4b437cf6c91f9dfabae375"
+      "sha256": "dc66bd25af455de829f2dd2ecefb7af4b260924535374b01ae65cbf53b507990"
     },
     "scripts/cleanup_python_caches.py": {
       "dependencies": [
@@ -5844,7 +5846,7 @@
         "runtime/operational_gap_ledger.py"
       ],
       "index_state": "verified",
-      "sha256": "394ac5516842e352961f360f0a7e75eb0aefbfe5d64e7fc466d0827794ddf252"
+      "sha256": "530bbbe67141d41cae74df04c510071a2de1e282649ca3fa0c71909634b3c9a6"
     },
     "scripts/package_release_evidence.py": {
       "dependencies": [
@@ -6268,7 +6270,7 @@
         "conftest.py"
       ],
       "index_state": "verified",
-      "sha256": "b6fa928ed1d082f8dae4e69da63bcf3e1e36bc280c664199d3f89674726868ae"
+      "sha256": "19666d0f683120de0f41a888a977bc12479c3420bf9cb80c8855a704957bfc56"
     },
     "scripts/verify_release_publication.py": {
       "dependencies": [
@@ -7610,7 +7612,7 @@
         "tests/__init__.py"
       ],
       "index_state": "verified",
-      "sha256": "ec39b21ece4068bae13bfdd839a7002913620461166ba7ffc8c4b8c196690cac"
+      "sha256": "a7beefb6decd1b0d78ca3591af01ca96b001d538f9b8518f8d195aac11d3d049"
     },
     "tests/test_execution_contract.py": {
       "dependencies": [
@@ -7673,7 +7675,7 @@
         "tests/__init__.py"
       ],
       "index_state": "verified",
-      "sha256": "748be16a0dc66d03b1925a07077440ede4a24241954cf56901561c8743014746"
+      "sha256": "3dd7b068947f8b52c16cef965a81f32e716ad54517c336aaa0075ca01246144d"
     },
     "tests/test_external_toolchain.py": {
       "dependencies": [
@@ -7758,7 +7760,7 @@
         "tests/__init__.py"
       ],
       "index_state": "verified",
-      "sha256": "e5e28576bfacd5510d6bfb70353dca24fd1f1d64444e94eb2bd2bc8b1426d986"
+      "sha256": "d986736839c662d186368072dd6e074495b5584c166fa5b48f09fb95b31558e7"
     },
     "tests/test_generated_dependency_graph.py": {
       "dependencies": [
@@ -8211,7 +8213,7 @@
         "tests/__init__.py"
       ],
       "index_state": "verified",
-      "sha256": "e9137d56bd0e7c10b9c591de4b0fe672341d37ae1b8d6292c45375c2185b1e54"
+      "sha256": "ad1527f17fcf4390ef242139eae0071eb5c60fadc193ca63297181a05de88ba7"
     },
     "tests/test_model_fabric_generation.py": {
       "dependencies": [
@@ -8988,7 +8990,7 @@
         "tests/__init__.py"
       ],
       "index_state": "verified",
-      "sha256": "fb5c550280eb6e9f6e254d43ebcb26a09bccf576019689813daf7bef69334026"
+      "sha256": "bcc68dc4f6c4e6a03b024c5482c187329df87a6bb2ea33b42bc361369cda6aed"
     },
     "tests/test_punch_card_reconciliation.py": {
       "dependencies": [
@@ -9163,7 +9165,7 @@
         "tests/__init__.py"
       ],
       "index_state": "verified",
-      "sha256": "37f9d1b0c952ff5dc44ef30b16192cae917fd8e4e702d5e487e6765786120785"
+      "sha256": "7da3efa0ee93a562963a9d5c8bdc35526cfca914af138b9e9950d6d9d3b73a5d"
     },
     "tests/test_release_artifacts.py": {
       "dependencies": [
@@ -9205,11 +9207,10 @@
       "dependencies": [
         "conftest.py",
         "scripts/run_release_candidate.py",
-        "scripts/run_release_stage_owner.py",
         "tests/__init__.py"
       ],
       "index_state": "verified",
-      "sha256": "6b23e0b16251a5272343fcf53e78052ae75ac5e8b9676b0c8033970e0be6df27"
+      "sha256": "e155caacca06d298c16cdc998f59539ae16e99c8282f40327f092e3a73fd3f16"
     },
     "tests/test_release_certification.py": {
       "dependencies": [
@@ -9265,10 +9266,11 @@
         "runtime/release_artifacts.py",
         "runtime/release_distribution.py",
         "runtime/test_runner.py",
+        "runtime/version.py",
         "tests/__init__.py"
       ],
       "index_state": "verified",
-      "sha256": "0dc43be751eca168e9c1cfe0c41c8add373c446f65b39579d06e016e6c207b79"
+      "sha256": "7b1bc7ea23c9d081d378b5ea9dc314c1945329ba0e8545156fd69c390cc30c67"
     },
     "tests/test_release_environment.py": {
       "dependencies": [
@@ -9430,7 +9432,7 @@
         "tests/__init__.py"
       ],
       "index_state": "verified",
-      "sha256": "eedd2861951220ac048334a80acc6fe38ef822c92aae335265256adbd386233a"
+      "sha256": "b1fe866cd0636f26a1ab4c18e29bf287a5d5ee94ce34cadbf2f6ddb67175d211"
     },
     "tests/test_release_streaming_inputs.py": {
       "dependencies": [
@@ -9483,7 +9485,7 @@
         "tests/repository_copy.py"
       ],
       "index_state": "verified",
-      "sha256": "03f93902104a22d5d36b4d60d209a87f558db111fdf221e92a2c0e4dc20e0ed0"
+      "sha256": "85e0f775fcdaba724c95b6c25a44a6e56f5c673dc79e47b75c9c7cee4f10fce2"
     },
     "tests/test_research_contract_admission.py": {
       "dependencies": [
@@ -10721,7 +10723,7 @@
         "tests/__init__.py"
       ],
       "index_state": "verified",
-      "sha256": "0067fc397b647745c82002e123338cb47e347ab3758c87a625855b8e5fd9f041"
+      "sha256": "65335ed9776c9e53868fb39af77fce5969c39141101db51796fc6525e6c51f1a"
     },
     "tests/test_studio_api.py": {
       "dependencies": [
@@ -11008,11 +11010,12 @@
         "runtime/__init__.py",
         "runtime/input_files.py",
         "runtime/verification_inputs.py",
+        "runtime/verification_status.py",
         "tests/__init__.py",
         "tests/verification_fixtures.py"
       ],
       "index_state": "verified",
-      "sha256": "304a01060f69efd23d4cd381aa46ae847682a852c59abd72cb9cc79669fe8335"
+      "sha256": "96796e812924fe9ca2b66dd4342b13bca69ad370faa1c73bc18fbe9b8fdae26b"
     },
     "tests/test_verification_inputs.py": {
       "dependencies": [
@@ -11319,6 +11322,7 @@
         "runtime/provider_budget.py",
         "runtime/provider_gateway.py",
         "runtime/px_doctor.py",
+        "runtime/python_surface_certification.py",
         "runtime/recovery.py",
         "runtime/registry.py",
         "runtime/registry_envelope.py",
@@ -11373,7 +11377,6 @@
         "scripts/reconcile_declared_tool_hashes.py",
         "scripts/reconcile_unverified_operational_controls.py",
         "scripts/run_release_candidate.py",
-        "scripts/run_release_stage_owner.py",
         "tests/__init__.py",
         "tests/pytest_guards.py",
         "tests/test_agent_session_coordinator.py",
@@ -11412,7 +11415,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "process-recovery",
-      "input_sha256": "0ee0a00fc4ef18af0652b5a204110039447840d2d2801e498fa7d507ddf94128",
+      "input_sha256": "f5dc077a5ce1b55a12b8336ab1efde44bf8220ea652a8303bb568d78f6bd8f8a",
       "inputs": [
         "conftest.py",
         "registry/test_profiles.json",
@@ -11497,6 +11500,7 @@
         "runtime/provider_budget.py",
         "runtime/provider_gateway.py",
         "runtime/px_doctor.py",
+        "runtime/python_surface_certification.py",
         "runtime/recovery.py",
         "runtime/registry.py",
         "runtime/registry_envelope.py",
@@ -11551,7 +11555,6 @@
         "scripts/reconcile_declared_tool_hashes.py",
         "scripts/reconcile_unverified_operational_controls.py",
         "scripts/run_release_candidate.py",
-        "scripts/run_release_stage_owner.py",
         "tests/__init__.py",
         "tests/pytest_guards.py",
         "tests/test_agent_session_coordinator.py",
@@ -11851,6 +11854,7 @@
         "scripts/build_profile_projections.py",
         "scripts/build_python_dependency_ownership.py",
         "scripts/build_registry_envelope_inventory.py",
+        "scripts/build_specialty_map.py",
         "scripts/clean_source_export.py",
         "scripts/cleanup_python_caches.py",
         "scripts/migration/sync_skill_packaging.py",
@@ -11871,7 +11875,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "exact-installed",
-      "input_sha256": "569b0581717dc02a11d3ad43445529505bd14d18624cae68d82e46007e5c324b",
+      "input_sha256": "bb27b72e2ee35caa4a2070114e9ff0375a2d2fe11230a57e74679ab0477a49ad",
       "inputs": [
         "README.md",
         "conftest.py",
@@ -12103,6 +12107,7 @@
         "scripts/build_profile_projections.py",
         "scripts/build_python_dependency_ownership.py",
         "scripts/build_registry_envelope_inventory.py",
+        "scripts/build_specialty_map.py",
         "scripts/clean_source_export.py",
         "scripts/cleanup_python_caches.py",
         "scripts/migration/sync_skill_packaging.py",
@@ -12290,6 +12295,7 @@
         "scripts/build_profile_projections.py",
         "scripts/build_python_dependency_ownership.py",
         "scripts/build_registry_envelope_inventory.py",
+        "scripts/build_specialty_map.py",
         "scripts/clean_source_export.py",
         "scripts/migration/sync_skill_packaging.py",
         "scripts/package_release_evidence.py",
@@ -12319,7 +12325,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "release-build",
-      "input_sha256": "f9feb4807f4fc520ef135db53b3a21fc5f65dab56733db3281a37acaa945f5e9",
+      "input_sha256": "76fd9ef0c7c031d795142bd39035ad23577f4cac68da1388f544cdab9bcf7b34",
       "inputs": [
         ".github/workflows/release.yml",
         "README.md",
@@ -12479,6 +12485,7 @@
         "scripts/build_profile_projections.py",
         "scripts/build_python_dependency_ownership.py",
         "scripts/build_registry_envelope_inventory.py",
+        "scripts/build_specialty_map.py",
         "scripts/clean_source_export.py",
         "scripts/migration/sync_skill_packaging.py",
         "scripts/package_release_evidence.py",
@@ -12610,6 +12617,7 @@
         "runtime/project_stream_orchestrator.py",
         "runtime/provider_budget.py",
         "runtime/provider_gateway.py",
+        "runtime/python_surface_certification.py",
         "runtime/registry.py",
         "runtime/registry_envelope.py",
         "runtime/release_artifacts.py",
@@ -12661,7 +12669,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "release-audit",
-      "input_sha256": "deeafd56de4b823a74f4349c790a0c0c9e51d4d1157858c82d735167f30886b0",
+      "input_sha256": "021bbc91a5b6fb0a729f45a401541c9347f1a7af6423d637144346895c815a7a",
       "inputs": [
         "README.md",
         "conftest.py",
@@ -12749,6 +12757,7 @@
         "runtime/project_stream_orchestrator.py",
         "runtime/provider_budget.py",
         "runtime/provider_gateway.py",
+        "runtime/python_surface_certification.py",
         "runtime/registry.py",
         "runtime/registry_envelope.py",
         "runtime/release_artifacts.py",
@@ -12892,6 +12901,7 @@
         "runtime/project_stream_orchestrator.py",
         "runtime/provider_budget.py",
         "runtime/provider_gateway.py",
+        "runtime/python_surface_certification.py",
         "runtime/registry.py",
         "runtime/release_artifacts.py",
         "runtime/release_campaign.py",
@@ -12941,7 +12951,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "structural-adversarial",
-      "input_sha256": "6d14ea16cd7b84a3f444f1a135ac100e33afc6672eef43b9b549ba2d8d9fce38",
+      "input_sha256": "0c70b78b692014dac2693337bd276175a3870a8e7494537f87dcd0c4e1521ad6",
       "inputs": [
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_agents_md_generator.py",
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_change_impact.py",
@@ -15650,6 +15660,7 @@
         "scripts/build_profile_projections.py",
         "scripts/build_python_dependency_ownership.py",
         "scripts/build_registry_envelope_inventory.py",
+        "scripts/build_specialty_map.py",
         "scripts/clean_source_export.py",
         "scripts/migration/sync_skill_packaging.py",
         "scripts/reconcile_active_capability_hashes.py",
@@ -15671,7 +15682,7 @@
       "disk_consumption_limit_bytes": 51539607552,
       "disk_work_units": 6,
       "group": "derived-integrity",
-      "input_sha256": "2d5d608fb54825424d372c47a7d5baba9a3decac1ed03bad73de6b29b81f943d",
+      "input_sha256": "25f9339c780561d0ea10f5973d21ab94b45dd4154ad77cfe91d6ce62b1025ac7",
       "inputs": [
         "README.md",
         "conftest.py",
@@ -15829,6 +15840,7 @@
         "scripts/build_profile_projections.py",
         "scripts/build_python_dependency_ownership.py",
         "scripts/build_registry_envelope_inventory.py",
+        "scripts/build_specialty_map.py",
         "scripts/clean_source_export.py",
         "scripts/migration/sync_skill_packaging.py",
         "scripts/reconcile_active_capability_hashes.py",
@@ -16139,6 +16151,7 @@
         "scripts/build_python_dependency_ownership.py",
         "scripts/build_registry_envelope_inventory.py",
         "scripts/build_release_successor_configs.py",
+        "scripts/build_specialty_map.py",
         "scripts/clean_source_export.py",
         "scripts/cleanup_python_caches.py",
         "scripts/extract_structured_text.py",
@@ -16280,7 +16293,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "core-a-f",
-      "input_sha256": "8d4fd95bc9add009b69ccab6998296ecfd640f32f1967f25c712bdb882c85c44",
+      "input_sha256": "3ed160a5d30b8d3e2182aeb644ca9f8a4cd922f1a5be5b9de2a4aef9d9c73193",
       "inputs": [
         "builders/__init__.py",
         "builders/common.py",
@@ -16560,6 +16573,7 @@
         "scripts/build_python_dependency_ownership.py",
         "scripts/build_registry_envelope_inventory.py",
         "scripts/build_release_successor_configs.py",
+        "scripts/build_specialty_map.py",
         "scripts/clean_source_export.py",
         "scripts/cleanup_python_caches.py",
         "scripts/extract_structured_text.py",
@@ -17089,6 +17103,7 @@
         "scripts/build_profile_projections.py",
         "scripts/build_python_dependency_ownership.py",
         "scripts/build_registry_envelope_inventory.py",
+        "scripts/build_specialty_map.py",
         "scripts/certify_local_model_profiles.py",
         "scripts/clean_source_export.py",
         "scripts/cleanup_python_caches.py",
@@ -17155,7 +17170,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "core-g-m",
-      "input_sha256": "628db4db4d91d59c5519af95b4c7e273fba520b49731e78605426648104be26e",
+      "input_sha256": "126cf0435d080cb897e3b7f47f15bd01926b85db5f833ac62e5b2afa8eda5bf3",
       "inputs": [
         "builders/__init__.py",
         "builders/common.py",
@@ -17431,6 +17446,7 @@
         "scripts/build_profile_projections.py",
         "scripts/build_python_dependency_ownership.py",
         "scripts/build_registry_envelope_inventory.py",
+        "scripts/build_specialty_map.py",
         "scripts/certify_local_model_profiles.py",
         "scripts/clean_source_export.py",
         "scripts/cleanup_python_caches.py",
@@ -17910,6 +17926,7 @@
         "scripts/build_reclamation_learning_promotion.py",
         "scripts/build_registry_envelope_inventory.py",
         "scripts/build_release_artifacts.py",
+        "scripts/build_specialty_map.py",
         "scripts/clean_source_export.py",
         "scripts/cleanup_python_caches.py",
         "scripts/migrate_px_skills.py",
@@ -18141,7 +18158,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "core-n-s",
-      "input_sha256": "3eeaabe3e743a2ef9d2ad995017951d24f91ce80435919751c5919df84937cda",
+      "input_sha256": "7511e8ffe67dbf09c4cd9264f7b39bdcb6d2b076b1be910b35d17c0ed6eabc5a",
       "inputs": [
         "conftest.py",
         "docs/architecture/tools/build_atlas.py",
@@ -18501,6 +18518,7 @@
         "scripts/build_reclamation_learning_promotion.py",
         "scripts/build_registry_envelope_inventory.py",
         "scripts/build_release_artifacts.py",
+        "scripts/build_specialty_map.py",
         "scripts/clean_source_export.py",
         "scripts/cleanup_python_caches.py",
         "scripts/migrate_px_skills.py",
@@ -19186,6 +19204,7 @@
         "scripts/build_profile_projections.py",
         "scripts/build_python_dependency_ownership.py",
         "scripts/build_registry_envelope_inventory.py",
+        "scripts/build_specialty_map.py",
         "scripts/build_typed_operational_surface_inventory.py",
         "scripts/clean_source_export.py",
         "scripts/cleanup_python_caches.py",
@@ -19230,7 +19249,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "core-t-z",
-      "input_sha256": "fea47e42d81e93aba78765a508cc1e7c4f7b561c160bf38eed41e22b3d17dc1b",
+      "input_sha256": "052a86ed168d7832fc45309a3618e80c385565bed112ed47c17444725bdc6e87",
       "inputs": [
         "builders/__init__.py",
         "builders/adapter_builder.py",
@@ -19488,6 +19507,7 @@
         "scripts/build_profile_projections.py",
         "scripts/build_python_dependency_ownership.py",
         "scripts/build_registry_envelope_inventory.py",
+        "scripts/build_specialty_map.py",
         "scripts/build_typed_operational_surface_inventory.py",
         "scripts/clean_source_export.py",
         "scripts/cleanup_python_caches.py",
@@ -19562,7 +19582,7 @@
       "timeout_seconds": 1600.0
     }
   ],
-  "index_sha256": "37c3f35f1cca861e6c1d17810776e448970609d065f0b99f7d674c05f4c1d223",
+  "index_sha256": "21b2b56afdbfd95c12866e70f63948d382af89cbfb5891fa34e0bff07888504f",
   "schema_version": "px.test-group-index/1.2",
   "test_file_count": 427,
   "topology_sha256": "b7acfcbeb33b312d298f48d3f42a92160dc57eea6c2180b06e0cbbdaa76fdd0a",

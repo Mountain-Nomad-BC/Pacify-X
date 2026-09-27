@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0",
+  "classification": "sanitized aggregate evidence; no source paths or bodies",
+  "runtime_loaded": false,
+  "catalog_campaign": {
+    "source_file_count": 771014,
+    "workspace_file_count": 129,
+    "source_categories": {
+      "implementation_or_misc": 289205,
+      "binary_or_archive": 19575,
+      "skill_or_registry": 5671,
+      "generated_or_dependency": 368589,
+      "test_or_validation": 12137,
+      "operations": 163,
+      "governance_or_assurance": 22275,
+      "large_artifact": 695,
+      "knowledge_or_reference": 52704
+    }
+  },
+  "structured_inventory_campaign": {
+    "record_count": 264244,
+    "partition_count": 89,
+    "logged_error_count": 53,
+    "files_discovered": 264297,
+    "reconciled": true,
+    "inventory_sha256": "2d7bac6daad4be901d0e3a01cf7a7e446c332fcfa8d87a5f81b9ac63a33ad821",
+    "campaign_sha256": "061db4bd439ad5a2174dd015560cbbd545dd163f6fce74354ff6a6ef2ff16582",
+    "content_kinds": {"binary": 91057, "text": 173187},
+    "domains": {
+      "data": 2316,
+      "engineering": 28406,
+      "general": 146590,
+      "infrastructure": 7045,
+      "orchestration": 7643,
+      "retrieval": 32166,
+      "security": 9014,
+      "validation": 31064
+    }
+  },
+  "archive_campaign": {
+    "archive_count": 70,
+    "open_error_count": 5,
+    "quarantine_recommended_count": 1,
+    "suspicious_bomb_count": 0,
+    "extracted_by_inventory": false,
+    "canonical_current_map": "evidence/archive-catalog.json"
+  },
+  "custody_index": "evidence/externalized-payload-index.json"
+}

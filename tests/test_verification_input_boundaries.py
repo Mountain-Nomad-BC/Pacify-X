@@ -7,7 +7,21 @@ from pathlib import Path
 import pytest
 
 from runtime import verification_inputs as candidate
+from runtime.verification_status import structural_scan
 from tests.verification_fixtures import fixture
+
+
+def test_structural_scan_ignores_mutable_audit_scratch(tmp_path):
+    scratch = tmp_path / ".audit-visible"
+    scratch.mkdir()
+    (scratch / "transient.py").write_text("pass\n", encoding="utf-8")
+    source = tmp_path / "runtime"
+    source.mkdir()
+    (source / "stable.py").write_text("pass\n", encoding="utf-8")
+
+    files = structural_scan(candidate.CapturedInputs(tmp_path))
+
+    assert files == ["runtime/stable.py"]
 
 
 @pytest.mark.parametrize(

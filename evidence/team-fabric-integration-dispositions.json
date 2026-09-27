@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "name": "PX Team Fabric Ecosystem Integration Pack",
+    "version": "0.2.0",
+    "raw_audit_sha256": "af17f82deb7831c1e1b598af8481b3ffb436eb10f275e74c23efd7d1d49b50b0",
+    "inventory_sha256": "94a05728c79924156c7940c194bb7c6c5dc523aabcbdf8a39ffaef4952cb1e15"
+  },
+  "coverage": {
+    "files": 78,
+    "bytes": 147147,
+    "text_scanned": 76,
+    "non_text_hashed": 2,
+    "excluded": 0,
+    "errors": 0,
+    "mechanism_candidates": 56,
+    "accounted_by_rules": 78,
+    "complete": true
+  },
+  "disposition_rules": [
+    {"pattern": "00_START_HERE/**", "count": 3, "disposition": "EXTERNAL_EVIDENCE_ONLY", "owner": "completion punch card and build report"},
+    {"pattern": "01_RESEARCH/**", "count": 5, "disposition": "EXTERNAL_EVIDENCE_ONLY", "owner": "source audit and provenance receipt"},
+    {"pattern": "02_ARCHITECTURE/**", "count": 16, "disposition": "MERGE_INTO_EXISTING", "owner": "project coordination, context handoff, memory, Git boundary, MCP, dashboard"},
+    {"pattern": "03_PREMADE/config/**", "count": 4, "disposition": "DEFER", "owner": "optional Team Hub / external adapter configuration", "reason": "No service is required or configured for local-first operation."},
+    {"pattern": "03_PREMADE/contracts/**", "count": 8, "disposition": "FRAGMENT_INTO_EXISTING", "owner": "coordination manager invariants and typed MCP schemas"},
+    {"pattern": "03_PREMADE/interfaces/**", "count": 6, "disposition": "FRAGMENT_INTO_EXISTING", "owner": "coordinationManager and teamFabricManager"},
+    {"pattern": "03_PREMADE/mcp/**", "count": 1, "disposition": "MERGE_INTO_EXISTING", "owner": "bundled Pacify-X stdio MCP"},
+    {"pattern": "03_PREMADE/schemas/**", "count": 12, "disposition": "FRAGMENT_INTO_EXISTING", "owner": "runtime validation, MCP Zod contracts, packaged Team Fabric contract"},
+    {"pattern": "03_PREMADE/skills/px-lean-engineering/SKILL.md", "count": 1, "disposition": "ADMIT_NEW", "owner": "px-lean-engineering"},
+    {"pattern": "03_PREMADE/skills/px-work-stop-diagnostics/SKILL.md", "count": 1, "disposition": "ADMIT_NEW", "owner": "px-work-stop-diagnostics"},
+    {"pattern": "03_PREMADE/skills/{px-agent-company-import,px-context-handoff,px-lean-audit,px-parallel-planner,px-team-coordinator}/SKILL.md", "count": 5, "disposition": "MERGE_INTO_EXISTING", "owner": "audit-source-capabilities, context-handoff-package, audit-incomplete-implementations, parallel-planning-coordination, govern-distributed-work-runtime"},
+    {"pattern": "04_VALIDATION/**", "count": 8, "disposition": "MERGE_INTO_EXISTING", "owner": "Team Fabric, coordination, MCP, packaging, and adversarial tests"},
+    {"pattern": "05_UPSTREAM_CANDIDATES/**", "count": 7, "disposition": "EXTERNAL_EVIDENCE_ONLY", "owner": "PX lean gate provenance", "reason": "Do not duplicate-vendor upstream skills into canonical owners."},
+    {"pattern": "{README.md,MANIFEST.json,CHECKSUMS.sha256}", "count": 3, "disposition": "EXTERNAL_EVIDENCE_ONLY", "owner": "source custody receipt"}
+  ],
+  "implemented_mechanisms": [
+    "event-attributed actor/session envelopes and hash-linked receipts",
+    "exclusive/shared/informational claims with local/speculative authority",
+    "monotonic per-target fencing and stale replay rejection",
+    "lease renewal, expiry, release, dependency gating, and stop diagnostics",
+    "goal/effect/budget task envelopes and durable hard stops",
+    "derived non-authoritative WorkRooms",
+    "worker adapter doctor with executor/authentication/billing separation",
+    "Agent Companies package dry-run, collision policy, candidate staging, and provenance receipt",
+    "portable cross-IDE resume and layered memory",
+    "PX lean engineering and work-stop diagnostic skills/orchestrations"
+  ],
+  "deferred_optional_adapters": [
+    "network Team Hub authority",
+    "Buzz collaboration transport",
+    "ACP-specific runtime adapter",
+    "automatic Git worktree creation",
+    "canonical Agent Companies promotion"
+  ],
+  "safety": "Deferred adapters are not reported as active. No network service, provider credential, or billable API is configured. Candidate imports never overwrite canonical content."
+}

@@ -1,0 +1,126 @@
+{
+  "schema_version": "2.0",
+  "policy": "Historical source payloads remain recoverable outside the deployable product. Portable release verification uses bundled content-addressed custody inventories and never infers a sibling-directory layout.",
+  "superseded_record_count": 8,
+  "records": [
+    {
+      "reference_id": "archive-custody-20260803",
+      "required_for": [
+        "historical_custody_provenance"
+      ],
+      "availability": "bundled_inventory",
+      "bundle_id": "sha256:859a8b70a81558054f8bdc4c38fa01b7bda288c654e7ebb70677447b14194ebc",
+      "manifest": "evidence/bundles/archive-custody-20260803/manifest.json",
+      "sha256": "b24d475be9292b3497f034f3d0bf2845537855b81638ba90098b0f4eb4a82c41",
+      "retention": "retain with every release that cites the historical source disposition",
+      "verification_mode": "bundled_manifest_and_inventory_hash",
+      "runtime_required": false
+    },
+    {
+      "reference_id": "rel010-coverage-ledger-validation",
+      "required_for": [
+        "historical_corrective_release_evidence"
+      ],
+      "availability": "external_custody",
+      "custody_root": "operator-held historical custody; location withheld from release source",
+      "custody_relative_path": "recovered-from-git/rel010-coverage-ledger-validation.json",
+      "restoration_manifest": "RESTORATION.json",
+      "path": "evidence/rel010-coverage-ledger-validation.json",
+      "sha256": "449e74e59654217ad2007b8cdcbd1196e1a83d24107fb6a2d75821ad437ae573",
+      "retention": "retain as superseded historical release evidence; never rewrite and never re-require for current certification",
+      "verification_mode": "external_custody_sha256",
+      "runtime_required": false
+    },
+    {
+      "reference_id": "rel010-final-full-profile",
+      "required_for": [
+        "historical_corrective_release_evidence"
+      ],
+      "availability": "external_custody",
+      "custody_root": "operator-held historical custody; location withheld from release source",
+      "custody_relative_path": "recovered-from-git/rel010-final-full-profile.json",
+      "restoration_manifest": "RESTORATION.json",
+      "path": "evidence/rel010-final-full-profile.json",
+      "sha256": "341907d6417f2c3220ad9f4f5ee71cb37d6170aacc92b63047e3ebdd82a59ec3",
+      "retention": "retain as superseded historical release evidence; never rewrite and never re-require for current certification",
+      "verification_mode": "external_custody_sha256",
+      "runtime_required": false
+    },
+    {
+      "reference_id": "rel010-registry-envelope-repair",
+      "required_for": [
+        "historical_corrective_release_evidence"
+      ],
+      "availability": "external_custody",
+      "custody_root": "operator-held historical custody; location withheld from release source",
+      "custody_relative_path": "recovered-from-git/rel010-registry-envelope-repair.json",
+      "restoration_manifest": "RESTORATION.json",
+      "path": "evidence/rel010-registry-envelope-repair.json",
+      "sha256": "6a9f7deacd6b7dd1283c038d3876eb06453f0cccd7b8d2cb4bf12a654ae3c2f3",
+      "retention": "retain as superseded historical release evidence; never rewrite and never re-require for current certification",
+      "verification_mode": "external_custody_sha256",
+      "runtime_required": false
+    },
+    {
+      "reference_id": "rel010-repair-validation",
+      "required_for": [
+        "historical_corrective_release_evidence"
+      ],
+      "availability": "external_custody",
+      "custody_root": "operator-held historical custody; location withheld from release source",
+      "custody_relative_path": "recovered-from-git/rel010-repair-validation.json",
+      "restoration_manifest": "RESTORATION.json",
+      "path": "evidence/rel010-repair-validation.json",
+      "sha256": "12ebfa70d677edba84c30d19a41963fbe7ff62c9c6f4ca17b4cc48284e4149f1",
+      "retention": "retain as superseded historical release evidence; never rewrite and never re-require for current certification",
+      "verification_mode": "external_custody_sha256",
+      "runtime_required": false
+    },
+    {
+      "reference_id": "release-certification-0.6.2",
+      "required_for": [
+        "historical_corrective_release_evidence"
+      ],
+      "availability": "external_custody",
+      "custody_root": "operator-held historical custody; location withheld from release source",
+      "custody_relative_path": "recovered-from-git/release-certification-0.6.2.json",
+      "restoration_manifest": "RESTORATION.json",
+      "path": "evidence/release-certification-0.6.2.json",
+      "sha256": "9979f70f8ad30ef855382213cfe2cd8c6aa3119ab78f43f4de64b56081dadc40",
+      "retention": "retain as superseded historical release evidence; never rewrite and never re-require for current certification",
+      "verification_mode": "external_custody_sha256",
+      "runtime_required": false
+    },
+    {
+      "reference_id": "release-revocation-0.6.1",
+      "required_for": [
+        "historical_corrective_release_evidence"
+      ],
+      "availability": "external_custody",
+      "custody_root": "operator-held historical custody; location withheld from release source",
+      "custody_relative_path": "recovered-from-git/release-revocation-0.6.1.json",
+      "restoration_manifest": "RESTORATION.json",
+      "path": "evidence/release-revocation-0.6.1.json",
+      "sha256": "1b783e8a59bfda9828a4af16cfb41db2967d6cdc48055c46d94c6e2c68ebe1e4",
+      "retention": "retain as superseded historical release evidence; never rewrite and never re-require for current certification",
+      "verification_mode": "external_custody_sha256",
+      "runtime_required": false
+    },
+    {
+      "reference_id": "release-revocation-0.6.2",
+      "required_for": [
+        "historical_corrective_release_evidence"
+      ],
+      "availability": "external_custody",
+      "custody_root": "operator-held historical custody; location withheld from release source",
+      "custody_relative_path": "recovered-from-git/release-revocation-0.6.2.json",
+      "restoration_manifest": "RESTORATION.json",
+      "path": "evidence/release-revocation-0.6.2.json",
+      "sha256": "c039895f357c5cfbb83efd2ddc4a569d3f8453c0d874e5581f51d71c46f2c2e3",
+      "retention": "retain as superseded historical release evidence; never rewrite and never re-require for current certification",
+      "verification_mode": "external_custody_sha256",
+      "runtime_required": false
+    }
+  ],
+  "updated_utc": "2026-09-25T00:51:32.496633Z"
+}

@@ -2,7 +2,7 @@
   "schema_version": "px.closure-atlas/1",
   "metadata": {
     "basis": "supplied snapshot + preserved historical semantic IDs",
-    "source_inventory_sha256": "1854a92bd8d62a52385b50ee1131382216ee41235b299cfd94e9e25f6a1eb2a6",
+    "source_inventory_sha256": "313b5af4049fc609b1d122b75ee72818b496f8d00256fef1baa50c746ef59036",
     "baseline_graph_sha256": "84f6ce6fd8dfbacf8c0ea70992454892a295b12b7df0f3504ed7c432792fc6ee",
     "layout_version": "px-lifecycle-seeded-attraction/1",
     "scope": "Refresh of file bytes/static imports and presentation, not a completed semantic re-audit of every claim or the live repository.",
@@ -159,8 +159,8 @@
       "evidence_level": "source-supported",
       "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
       "source_currentness_counts": {
-        "changed-file": 1,
-        "same-file-bytes": 3
+        "changed-file": 2,
+        "same-file-bytes": 2
       },
       "runtime_observed": false,
       "certified": false,
@@ -293,11 +293,11 @@
       "note": null,
       "kind": "system",
       "historical_status": "implemented",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "evidence_level": "source-supported",
       "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
       "source_currentness_counts": {
-        "same-file-bytes": 2
+        "changed-file": 2
       },
       "runtime_observed": false,
       "certified": false,
@@ -625,8 +625,7 @@
       "evidence_level": "source-supported",
       "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
       "source_currentness_counts": {
-        "same-file-bytes": 1,
-        "changed-file": 1
+        "changed-file": 2
       },
       "runtime_observed": false,
       "certified": false,
@@ -2976,8 +2975,8 @@
       "evidence_level": "source-supported",
       "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
       "source_currentness_counts": {
-        "changed-file": 2,
-        "same-file-bytes": 2
+        "changed-file": 3,
+        "same-file-bytes": 1
       },
       "runtime_observed": false,
       "certified": false,
@@ -5538,8 +5537,7 @@
       "evidence_level": "source-supported",
       "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
       "source_currentness_counts": {
-        "changed-file": 6,
-        "same-file-bytes": 1
+        "changed-file": 7
       },
       "runtime_observed": false,
       "certified": false,
@@ -5551,7 +5549,7 @@
       "position": [
         137.1618,
         -155.7536,
-        -60.3784
+        -60.3785
       ],
       "metrics": {
         "degree": 3,
@@ -5588,8 +5586,8 @@
       "evidence_level": "source-supported",
       "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
       "source_currentness_counts": {
-        "same-file-bytes": 3,
-        "changed-file": 5
+        "same-file-bytes": 2,
+        "changed-file": 6
       },
       "runtime_observed": false,
       "certified": false,
@@ -6661,8 +6659,7 @@
       "evidence_level": "source-supported",
       "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
       "source_currentness_counts": {
-        "changed-file": 2,
-        "same-file-bytes": 1
+        "changed-file": 3
       },
       "runtime_observed": false,
       "certified": false,
@@ -8139,11 +8136,11 @@
       "note": null,
       "kind": "system",
       "historical_status": "implemented",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "evidence_level": "source-supported",
       "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
       "source_currentness_counts": {
-        "same-file-bytes": 2
+        "changed-file": 2
       },
       "runtime_observed": false,
       "certified": false,
@@ -13085,11 +13082,11 @@
       "note": null,
       "kind": "system",
       "historical_status": "implemented",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "evidence_level": "source-supported",
       "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
       "source_currentness_counts": {
-        "same-file-bytes": 1
+        "changed-file": 1
       },
       "runtime_observed": false,
       "certified": false,
@@ -14500,8 +14497,7 @@
       "evidence_level": "source-supported",
       "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
       "source_currentness_counts": {
-        "same-file-bytes": 2,
-        "changed-file": 1
+        "changed-file": 3
       },
       "runtime_observed": false,
       "certified": false,
@@ -14540,11 +14536,11 @@
       "note": null,
       "kind": "system",
       "historical_status": "implemented",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "evidence_level": "source-supported",
       "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
       "source_currentness_counts": {
-        "same-file-bytes": 4
+        "changed-file": 4
       },
       "runtime_observed": false,
       "certified": false,
@@ -14583,11 +14579,11 @@
       "note": null,
       "kind": "system",
       "historical_status": "implemented",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "evidence_level": "source-supported",
       "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
       "source_currentness_counts": {
-        "same-file-bytes": 4
+        "changed-file": 4
       },
       "runtime_observed": false,
       "certified": false,
@@ -14624,11 +14620,11 @@
       "note": null,
       "kind": "system",
       "historical_status": "implemented",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "evidence_level": "source-supported",
       "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
       "source_currentness_counts": {
-        "same-file-bytes": 2
+        "changed-file": 2
       },
       "runtime_observed": false,
       "certified": false,
@@ -14667,11 +14663,11 @@
       "note": null,
       "kind": "system",
       "historical_status": "implemented",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "evidence_level": "source-supported",
       "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
       "source_currentness_counts": {
-        "same-file-bytes": 2
+        "changed-file": 2
       },
       "runtime_observed": false,
       "certified": false,
@@ -14708,11 +14704,11 @@
       "note": null,
       "kind": "system",
       "historical_status": "implemented",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "evidence_level": "source-supported",
       "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
       "source_currentness_counts": {
-        "same-file-bytes": 2
+        "changed-file": 2
       },
       "runtime_observed": false,
       "certified": false,
@@ -17473,11 +17469,11 @@
       "note": null,
       "kind": "system",
       "historical_status": "implemented",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "evidence_level": "source-supported",
       "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
       "source_currentness_counts": {
-        "same-file-bytes": 1
+        "changed-file": 1
       },
       "runtime_observed": false,
       "certified": false,
@@ -25876,11 +25872,11 @@
       "note": null,
       "kind": "system",
       "historical_status": "implemented",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "evidence_level": "source-supported",
       "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
       "source_currentness_counts": {
-        "same-file-bytes": 1
+        "changed-file": 1
       },
       "runtime_observed": false,
       "certified": false,
@@ -27972,11 +27968,11 @@
       "note": null,
       "kind": "system",
       "historical_status": "implemented",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "evidence_level": "source-supported",
       "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
       "source_currentness_counts": {
-        "same-file-bytes": 1
+        "changed-file": 1
       },
       "runtime_observed": false,
       "certified": false,
@@ -29328,11 +29324,11 @@
       "note": null,
       "kind": "system",
       "historical_status": "implemented",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "evidence_level": "source-supported",
       "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
       "source_currentness_counts": {
-        "same-file-bytes": 1
+        "changed-file": 1
       },
       "runtime_observed": false,
       "certified": false,
@@ -29368,11 +29364,11 @@
       "note": null,
       "kind": "system",
       "historical_status": "implemented",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "evidence_level": "source-supported",
       "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
       "source_currentness_counts": {
-        "same-file-bytes": 1
+        "changed-file": 1
       },
       "runtime_observed": false,
       "certified": false,
@@ -29408,11 +29404,11 @@
       "note": null,
       "kind": "system",
       "historical_status": "implemented",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "evidence_level": "source-supported",
       "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
       "source_currentness_counts": {
-        "same-file-bytes": 1
+        "changed-file": 1
       },
       "runtime_observed": false,
       "certified": false,
@@ -29818,11 +29814,11 @@
       "note": null,
       "kind": "system",
       "historical_status": "implemented",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "evidence_level": "source-supported",
       "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
       "source_currentness_counts": {
-        "same-file-bytes": 1
+        "changed-file": 1
       },
       "runtime_observed": false,
       "certified": false,
@@ -29863,8 +29859,7 @@
       "evidence_level": "source-supported",
       "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
       "source_currentness_counts": {
-        "same-file-bytes": 1,
-        "changed-file": 1
+        "changed-file": 2
       },
       "runtime_observed": false,
       "certified": false,
@@ -32820,11 +32815,11 @@
       "note": null,
       "kind": "system",
       "historical_status": "implemented",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "evidence_level": "source-supported",
       "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
       "source_currentness_counts": {
-        "same-file-bytes": 1
+        "changed-file": 1
       },
       "runtime_observed": false,
       "certified": false,
@@ -32860,11 +32855,11 @@
       "note": null,
       "kind": "system",
       "historical_status": "implemented",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "evidence_level": "source-supported",
       "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
       "source_currentness_counts": {
-        "same-file-bytes": 1
+        "changed-file": 1
       },
       "runtime_observed": false,
       "certified": false,
@@ -32901,11 +32896,12 @@
       "note": null,
       "kind": "system",
       "historical_status": "implemented",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "evidence_level": "source-supported",
       "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
       "source_currentness_counts": {
-        "same-file-bytes": 2
+        "changed-file": 1,
+        "same-file-bytes": 1
       },
       "runtime_observed": false,
       "certified": false,
@@ -33511,11 +33507,11 @@
       "note": null,
       "kind": "system",
       "historical_status": "implemented",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "evidence_level": "source-supported",
       "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
       "source_currentness_counts": {
-        "same-file-bytes": 1
+        "changed-file": 1
       },
       "runtime_observed": false,
       "certified": false,
@@ -34563,11 +34559,11 @@
       "note": null,
       "kind": "system",
       "historical_status": "implemented",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "evidence_level": "source-supported",
       "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
       "source_currentness_counts": {
-        "same-file-bytes": 1
+        "changed-file": 1
       },
       "runtime_observed": false,
       "certified": false,
@@ -35097,7 +35093,7 @@
       "repair_findings": [],
       "position": [
         -367.9214,
-        2.455,
+        2.4549,
         -127.1194
       ],
       "metrics": {
@@ -37180,11 +37176,11 @@
       "note": null,
       "kind": "system",
       "historical_status": "implemented",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "evidence_level": "source-supported",
       "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
       "source_currentness_counts": {
-        "same-file-bytes": 1
+        "changed-file": 1
       },
       "runtime_observed": false,
       "certified": false,
@@ -37346,8 +37342,8 @@
       "evidence_level": "source-supported",
       "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
       "source_currentness_counts": {
-        "changed-file": 1,
-        "same-file-bytes": 2
+        "changed-file": 2,
+        "same-file-bytes": 1
       },
       "runtime_observed": false,
       "certified": false,
@@ -37845,7 +37841,7 @@
       "repair_findings": [],
       "position": [
         -59.8685,
-        1.406,
+        1.4059,
         48.1436
       ],
       "metrics": {
@@ -38958,8 +38954,7 @@
       "evidence_level": "source-supported",
       "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
       "source_currentness_counts": {
-        "changed-file": 1,
-        "same-file-bytes": 1
+        "changed-file": 2
       },
       "runtime_observed": false,
       "certified": false,
@@ -39090,8 +39085,8 @@
       "evidence_level": "source-supported",
       "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
       "source_currentness_counts": {
-        "same-file-bytes": 4,
-        "changed-file": 2
+        "same-file-bytes": 3,
+        "changed-file": 3
       },
       "runtime_observed": false,
       "certified": false,
@@ -40922,11 +40917,12 @@
       "note": null,
       "kind": "system",
       "historical_status": "implemented",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "evidence_level": "source-supported",
       "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
       "source_currentness_counts": {
-        "same-file-bytes": 6
+        "same-file-bytes": 5,
+        "changed-file": 1
       },
       "runtime_observed": false,
       "certified": false,
@@ -43438,11 +43434,11 @@
       "note": null,
       "kind": "system",
       "historical_status": "implemented",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "evidence_level": "source-supported",
       "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
       "source_currentness_counts": {
-        "same-file-bytes": 1
+        "changed-file": 1
       },
       "runtime_observed": false,
       "certified": false,
@@ -43480,11 +43476,11 @@
       "note": null,
       "kind": "system",
       "historical_status": "implemented",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "evidence_level": "source-supported",
       "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
       "source_currentness_counts": {
-        "same-file-bytes": 3
+        "changed-file": 3
       },
       "runtime_observed": false,
       "certified": false,
@@ -43522,11 +43518,11 @@
       "note": null,
       "kind": "system",
       "historical_status": "implemented",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "evidence_level": "source-supported",
       "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
       "source_currentness_counts": {
-        "same-file-bytes": 3
+        "changed-file": 3
       },
       "runtime_observed": false,
       "certified": false,
@@ -43931,11 +43927,11 @@
       "note": null,
       "kind": "system",
       "historical_status": "implemented",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "evidence_level": "source-supported",
       "evidence_scope": "historical semantic model; byte currentness checked; behavior not revalidated",
       "source_currentness_counts": {
-        "same-file-bytes": 1
+        "changed-file": 1
       },
       "runtime_observed": false,
       "certified": false,
@@ -46212,7 +46208,7 @@
       "path": ".codex/config.toml",
       "layer": "host",
       "kind": "file",
-      "sha256": "c38bd2c73a7fe836a9ac83f4ccb62eedc7da1b5a908cdcb50a48a7c5003412d1",
+      "sha256": "f0633870b98e842856d3b040325668399b0e47ffc464213d4af7f9fc602130fa",
       "bytes": 177,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
@@ -46542,8 +46538,8 @@
       "path": ".px/skill-index.json",
       "layer": "acquisition",
       "kind": "file",
-      "sha256": "9e95a9b62fc80bdc323dbb5439b0d09b04f58d2996a966a7734f3c85747b9965",
-      "bytes": 207279,
+      "sha256": "c981a432f94d5838ac02a5b266583ea0a6202d6c8c8f99a8398b922501d82e47",
+      "bytes": 204896,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -50128,8 +50124,8 @@
       "path": ".px/skills/audit-source-capabilities/scripts/build_declared_suite_reconstruction.py",
       "layer": "reasoning",
       "kind": "file",
-      "sha256": "cb9cdb7b60f441f962cdf28ef0258171545f9e854774c26a984f113621ee8ec9",
-      "bytes": 16650,
+      "sha256": "c01f9e2c1fe2a3b6359c27c99a210e5549504bd34467cd42b961829de6841538",
+      "bytes": 17691,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -50172,8 +50168,8 @@
       "path": ".px/skills/audit-source-capabilities/scripts/certify_declared_suite_reconstruction.py",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "77e9ce364173fc5c6468031d5b5c2e5e54efc93bb47fd39f2fc1266eae429d6b",
-      "bytes": 10855,
+      "sha256": "cb5860b061f1796229479f7ea16692317cb2ecf6d5adbb4f5926eb33a9c7769d",
+      "bytes": 11660,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -77914,8 +77910,8 @@
       "path": ".px/skills/operate-self-diagnostics/SKILL.md",
       "layer": "acquisition",
       "kind": "file",
-      "sha256": "47a2e542857b12b0728c04577d9f66da6389353024046c3e1b0ccb997d8044d0",
-      "bytes": 4450,
+      "sha256": "3b72a74d7b580f8ed0c91d5c95c5fc49a9447875aee2fdd9fb72565985d9b30c",
+      "bytes": 4453,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -77958,7 +77954,7 @@
       "path": ".px/skills/operate-self-diagnostics/capability.json",
       "layer": "acquisition",
       "kind": "file",
-      "sha256": "2d8b47e98333770f55f184d8ba6389a815fe6e2ea215081fb5cb1112ebd7686d",
+      "sha256": "3ce53c98deb8ac02d8123bf582d9dc45899bee8e27b2c7f82bbe98fa5e7aa0b1",
       "bytes": 1152,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
@@ -77980,7 +77976,7 @@
       "path": ".px/skills/operate-self-diagnostics/contracts/manifest.json",
       "layer": "governance",
       "kind": "file",
-      "sha256": "d0ba1b4681f61e55c3e79df9e9b541f9d8195c5a30d6637185f492b74f3a69ab",
+      "sha256": "0c53dcf913b3a4da567b169a19d8bf804bc8f5a858d9627d6d617670a06692ed",
       "bytes": 269,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
@@ -78090,7 +78086,7 @@
       "path": ".px/skills/operate-self-diagnostics/skill.yaml",
       "layer": "acquisition",
       "kind": "file",
-      "sha256": "6a92718e055dce6f70233ef584c966912932415710288cce1e8d084e6f6dc0a7",
+      "sha256": "3ce53c98deb8ac02d8123bf582d9dc45899bee8e27b2c7f82bbe98fa5e7aa0b1",
       "bytes": 1152,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
@@ -81011,6 +81007,50 @@
       ]
     },
     {
+      "id": "file:.px/skills/parallel-planning-coordination/capability.json",
+      "title": ".px/skills/parallel-planning-coordination/capability.json",
+      "path": ".px/skills/parallel-planning-coordination/capability.json",
+      "layer": "scope",
+      "kind": "file",
+      "sha256": "df87c2331a5bac6e77c55f9a818140c3d8b0cced30d120fb3deaa0724b95e3c2",
+      "bytes": 1175,
+      "evidence_level": "source-supported",
+      "currentness": "snapshot-bytes",
+      "purpose": "Inventoried file; imports are static references, not executed calls.",
+      "resource_tags": [],
+      "runtime_observed": false,
+      "certified": false,
+      "note": null,
+      "repair_findings": [],
+      "position": [
+        -328.9617,
+        -13.8713,
+        -90.092
+      ]
+    },
+    {
+      "id": "file:.px/skills/parallel-planning-coordination/contracts/manifest.json",
+      "title": ".px/skills/parallel-planning-coordination/contracts/manifest.json",
+      "path": ".px/skills/parallel-planning-coordination/contracts/manifest.json",
+      "layer": "governance",
+      "kind": "file",
+      "sha256": "60ea7ea42625da7d2a98702c42fe0872039b72b886056470dff56af1082543ca",
+      "bytes": 275,
+      "evidence_level": "source-supported",
+      "currentness": "snapshot-bytes",
+      "purpose": "Inventoried file; imports are static references, not executed calls.",
+      "resource_tags": [],
+      "runtime_observed": false,
+      "certified": false,
+      "note": null,
+      "repair_findings": [],
+      "position": [
+        -24.9777,
+        158.9148,
+        72.951
+      ]
+    },
+    {
       "id": "file:.px/skills/parallel-planning-coordination/memory/stats.json",
       "title": ".px/skills/parallel-planning-coordination/memory/stats.json",
       "path": ".px/skills/parallel-planning-coordination/memory/stats.json",
@@ -81060,7 +81100,7 @@
       "path": ".px/skills/parallel-planning-coordination/resources/index.json",
       "layer": "execution",
       "kind": "file",
-      "sha256": "5f83479cfc81e97395f9486ea434f8377dc62ff2a48462c88cce1233f5d24572",
+      "sha256": "6899ed144c7cadd57ad1ce710f36fa7e27dfd8a59b048e6b8dc1affbc80c6fe1",
       "bytes": 223,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
@@ -81074,6 +81114,28 @@
         -195.3044,
         184.4989,
         -72.6105
+      ]
+    },
+    {
+      "id": "file:.px/skills/parallel-planning-coordination/skill.yaml",
+      "title": ".px/skills/parallel-planning-coordination/skill.yaml",
+      "path": ".px/skills/parallel-planning-coordination/skill.yaml",
+      "layer": "scope",
+      "kind": "file",
+      "sha256": "df87c2331a5bac6e77c55f9a818140c3d8b0cced30d120fb3deaa0724b95e3c2",
+      "bytes": 1175,
+      "evidence_level": "source-supported",
+      "currentness": "snapshot-bytes",
+      "purpose": "Inventoried file; imports are static references, not executed calls.",
+      "resource_tags": [],
+      "runtime_observed": false,
+      "certified": false,
+      "note": null,
+      "repair_findings": [],
+      "position": [
+        -403.4257,
+        -12.9032,
+        -128.8756
       ]
     },
     {
@@ -89772,8 +89834,8 @@
       "path": ".px/skills/system-one-decision/capability.json",
       "layer": "acquisition",
       "kind": "file",
-      "sha256": "dbfd1b3dad56494cb48bac7992bf450c934e0542345e75b813fa052b051a972c",
-      "bytes": 1143,
+      "sha256": "da57e9728663c9f8c4ae4d5f0c0e00bc0301426facdf0d58f7f502f4fd6bf504",
+      "bytes": 1152,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -89794,7 +89856,7 @@
       "path": ".px/skills/system-one-decision/contracts/manifest.json",
       "layer": "governance",
       "kind": "file",
-      "sha256": "56f48efdc4fdbc4dc42213ca305c8885923a7569e1d73b635166f78603183c60",
+      "sha256": "51383c97337b1e482c62080a24320d07243ee49421b61dcf831d6b57bda79d7c",
       "bytes": 264,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
@@ -89882,8 +89944,8 @@
       "path": ".px/skills/system-one-decision/skill.yaml",
       "layer": "acquisition",
       "kind": "file",
-      "sha256": "a731a06298199f731f4f13d00dcdfb59f80a5b111af4820e2aab1255c4e5de5a",
-      "bytes": 1143,
+      "sha256": "da57e9728663c9f8c4ae4d5f0c0e00bc0301426facdf0d58f7f502f4fd6bf504",
+      "bytes": 1152,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -93952,8 +94014,8 @@
       "path": ".vscode/settings.json",
       "layer": "host",
       "kind": "file",
-      "sha256": "5ffac0345ebba48a3c2e37c426363d12c8fe7331b887906d8915c955f0a6154e",
-      "bytes": 1353,
+      "sha256": "b6c7a36ae9cb5695972853d918602d958aec31fedc8762f0ab97ed1ba6823b63",
+      "bytes": 1787,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -94128,8 +94190,8 @@
       "path": "CHANGELOG.md",
       "layer": "host",
       "kind": "file",
-      "sha256": "fd8296986823602fe9857f55d8d15c59706d21757d8126e4fd1e2d3c35ab28c7",
-      "bytes": 5660,
+      "sha256": "009ca98793b46a38f504772f5ee790c59a077f5a860572461d3cf63c0cd7d3cf",
+      "bytes": 5871,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -94436,8 +94498,8 @@
       "path": "MANIFEST.in",
       "layer": "host",
       "kind": "file",
-      "sha256": "2e2c772832743eae912fa5c5d918c1d91af23fbcb11c3f3aff4e771c8b8019f5",
-      "bytes": 2065,
+      "sha256": "9004a55e1a9f5506042d4d6cbae9648b957f12bb9f841bb83edcda7cf07b28e0",
+      "bytes": 2225,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -94612,8 +94674,8 @@
       "path": "README.md",
       "layer": "host",
       "kind": "file",
-      "sha256": "805037deeaf2b5d18949cf376aa1a155989171cd5ec171d7055d8c4a19916776",
-      "bytes": 10628,
+      "sha256": "7165a2428da9d262727f09b0841a3ef2e61fca4e88f21e6ac764f6b19c2a7a68",
+      "bytes": 10471,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -94663,8 +94725,8 @@
       "path": "START_HERE_FOR_AI.md",
       "layer": "host",
       "kind": "file",
-      "sha256": "f92f86527d5bbe29dbf2847573e1792ac7b0b675cb64e3c6e86368dfe79bd4c6",
-      "bytes": 15835,
+      "sha256": "7ddfb4b4bf7488c5af1e2cebc9a04e276b071004496984355c05c6fb1b001991",
+      "bytes": 15896,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -100669,8 +100731,8 @@
       "path": "docs/release-process.md",
       "layer": "release",
       "kind": "file",
-      "sha256": "f26ac741bccf0f71ebbf82d4d7cac0f2cb8153895d60b8a7f00d479fc5b26248",
-      "bytes": 6511,
+      "sha256": "79b320d6e5e6ed6a6c3df7d62d1475790f17cfc9dfa8b26754af93ff413a69af",
+      "bytes": 6475,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -101659,8 +101721,8 @@
       "path": "extension/media/dashboard/47-advanced-surfaces.js",
       "layer": "host",
       "kind": "file",
-      "sha256": "c60cd210a99bdc7a57821da7f08dff3813d595328d863313788abceb0214568e",
-      "bytes": 26141,
+      "sha256": "ef77257150dcb0b5a95315bad59d50ac3d3c4b12b76fc0573afaf165bd94ba72",
+      "bytes": 28958,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -101725,8 +101787,8 @@
       "path": "extension/media/dashboard/90-controller.js",
       "layer": "host",
       "kind": "file",
-      "sha256": "913d2230a5d5b78d4bd08394613a0ce7deead5ddb55f84f24c9f83e8984e3238",
-      "bytes": 456626,
+      "sha256": "d1ae5181b1058a1e371dad0e5d4a7347f8a63e57b4b7caa714db7f399a8ed1a7",
+      "bytes": 457422,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -102121,7 +102183,7 @@
       "path": "extension/package-lock.json",
       "layer": "release",
       "kind": "file",
-      "sha256": "fe3cce9281791bc007c712260e0592073b04240d02fd9401bb283633ba010a87",
+      "sha256": "cf05babcf72d6cccefa67606af167200262e6a8824dcc0d87b9f8edf708110ff",
       "bytes": 33034,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
@@ -102143,8 +102205,8 @@
       "path": "extension/package.json",
       "layer": "release",
       "kind": "file",
-      "sha256": "565b6916010a68c4d13b6bbb6411e7a1468ea4419f0ecfc61538d0272b788025",
-      "bytes": 19401,
+      "sha256": "426ec0434b23eeb0401730bf7e452a8a5f2438fa7870d4bf3273186cee731705",
+      "bytes": 19504,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -103089,8 +103151,8 @@
       "path": "extension/scripts/run-isolated-current-source-walk.js",
       "layer": "durability",
       "kind": "file",
-      "sha256": "32dcccac9585655e34433d635baeb50ec3b0af8fc1256c203ce82be998b87291",
-      "bytes": 77705,
+      "sha256": "d6cd09f216deb6c5e23e7d8f630814c4aa37db619dc5722920649b1293d73180",
+      "bytes": 78611,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -103133,8 +103195,8 @@
       "path": "extension/scripts/run-operational-ui-walk.js",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "519f07e98efaf70d10479cc5f99a7334febf140cd9d409a10a6be144caa1e6eb",
-      "bytes": 869507,
+      "sha256": "d48dcf79525fb15a98ad45032a4cc2d5667378113f1c34060c5466b8a04464c9",
+      "bytes": 891019,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -103243,8 +103305,8 @@
       "path": "extension/server/source.mjs",
       "layer": "host",
       "kind": "file",
-      "sha256": "25e4dfa8cf35b356bb317fe7e07711ab2665b346baa8919ea90aba32ae77c5ab",
-      "bytes": 35700,
+      "sha256": "8a77b427daae4e34ef2fbddb3cfb2831a95ee9cd1e9c854b52a518d765f7a274",
+      "bytes": 37232,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -103287,8 +103349,8 @@
       "path": "extension/src/activityManager.js",
       "layer": "durability",
       "kind": "file",
-      "sha256": "e2b9bfcb802944ea09e4b91a1dd9b1efe9b6fc54f774c06cf30192ffe4581761",
-      "bytes": 25631,
+      "sha256": "67c160b2f309e2ee8d875afe94e74418cb89055398038ba22966d7fc4927e5e2",
+      "bytes": 29363,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -103353,7 +103415,7 @@
       "path": "extension/src/agentHarness/adapters/codexAppServer.js",
       "layer": "host",
       "kind": "file",
-      "sha256": "2b24a88cf39630cbafa09a61331ba54a7ed5914cd079059497c157b70d3b69ed",
+      "sha256": "af7bba997e8b1b6c7ff0c72555af34b7a59dbf662767246fac8bab33c38b4f89",
       "bytes": 8883,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
@@ -103529,8 +103591,8 @@
       "path": "extension/src/agentHarness/agentConsoleView.js",
       "layer": "host",
       "kind": "file",
-      "sha256": "c72dca771010c108e93704a48061edfe05de8235fe041c0fa760050978df15bb",
-      "bytes": 5354,
+      "sha256": "746c607011ab15fdfca281376cac8df94772b2558bd72a1ba7c8876ef4b83a39",
+      "bytes": 6075,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -103617,8 +103679,8 @@
       "path": "extension/src/agentHarness/contracts.js",
       "layer": "governance",
       "kind": "file",
-      "sha256": "a2af3c9e591dedd0c6727026e552524c6d5c7cbcbd9d85d163712a22c9beb14b",
-      "bytes": 6761,
+      "sha256": "53fd97f127b72c963d7d2a5e9b5ca7af8155f4fe4f4616fcbcfe0ed7a076c89e",
+      "bytes": 6789,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -104000,8 +104062,8 @@
       "path": "extension/src/coordinationManager.js",
       "layer": "scope",
       "kind": "file",
-      "sha256": "91d0a642d1438a95ca03089349d2986b7bc01ddf8ce6f80fe22f0a7b9b50aba4",
-      "bytes": 72899,
+      "sha256": "bc0a85d119c3a0bc58f899e41d7eca1ac827012399c8b465ec9e47cc06b73b7a",
+      "bytes": 77445,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -104149,8 +104211,8 @@
       "path": "extension/src/extension.js",
       "layer": "host",
       "kind": "file",
-      "sha256": "47c2af9f814999213387535c1a28b2f79671f67262ac2f9329ead6cca77b4a27",
-      "bytes": 161555,
+      "sha256": "156a038717d92abf8f795ae33fab0e0552820473cff2b93792924f86c725efa3",
+      "bytes": 162352,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -104303,8 +104365,8 @@
       "path": "extension/src/mcpActivityIntegration.js",
       "layer": "host",
       "kind": "file",
-      "sha256": "73770a6b47d1cf66dba3d9032a69c6f6ac5f8ac7f415b6ce435b2a4cef147644",
-      "bytes": 8052,
+      "sha256": "d1097943199b4530f882c513c3bb803ab1bf3b78bed14f7b402a4efee5392638",
+      "bytes": 8317,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -104347,8 +104409,8 @@
       "path": "extension/src/mcpMutationAuthority.js",
       "layer": "host",
       "kind": "file",
-      "sha256": "3bdb138d9092f0f73df1be5e97139d8aa907b37ec7af3616cda79b24970377be",
-      "bytes": 5760,
+      "sha256": "721042cec37ba61c0f6e231ff5d1c25782c0a9ec42d82d9da95c2a5f9076a0ff",
+      "bytes": 5860,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -104913,8 +104975,8 @@
       "path": "extension/src/webviewMessages.js",
       "layer": "durability",
       "kind": "file",
-      "sha256": "7cfe3ce5a1b1a27de11abab75247b79d9c00a762e510d29aca4ccb1ca769d730",
-      "bytes": 28284,
+      "sha256": "07f715fb962e36dd501b108514b12310855f5bd04cd4fe7433f6a66cfbebb060",
+      "bytes": 28552,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -105032,8 +105094,8 @@
       "path": "extension/tests/activity.test.js",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "cf44f3b73a1d907be06d1f739af44320b710843607298e4513f5ecdbdaee9716",
-      "bytes": 11269,
+      "sha256": "2f0d490be718d03b47ddd9fa3d4d86a91c28ed09fc74865a736afa70efbf2bce",
+      "bytes": 17460,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -105054,8 +105116,8 @@
       "path": "extension/tests/agent-console-messages.test.js",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "d2bac2c751927ec7d751b475648083c92de4b322589f2147e3f3052e90c5ac96",
-      "bytes": 606,
+      "sha256": "4b500eda73b63b1a07dcd801398a32847bdc25cde724a753f97c123375100d33",
+      "bytes": 2011,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -105076,8 +105138,8 @@
       "path": "extension/tests/agent-harness-core.test.js",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "2a89b322b999a095fa18abaea3be73db823a8adb90502369bf6e16eff0e5ea87",
-      "bytes": 3990,
+      "sha256": "6a564d40c84ea33161b7a5c7d6cb55b5caa0f5b1a65d48bb361e9232633137fa",
+      "bytes": 4953,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -105274,8 +105336,8 @@
       "path": "extension/tests/coordination-manager.test.js",
       "layer": "durability",
       "kind": "file",
-      "sha256": "3b0cf7e184451d5263b0b6d917afb44bbe2501b77a15e3d84011547dc2a4e8c7",
-      "bytes": 19719,
+      "sha256": "5f08e77d48b995e12b4ffdc675a5a9093b9de57d551083b2b80b719e3d08a5d0",
+      "bytes": 21710,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -105296,8 +105358,8 @@
       "path": "extension/tests/coordination-wait-wake.test.js",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "8bcf448ac181466b595fce0bbc2fdf389a56978a199d4c4b8db4884bd4a68768",
-      "bytes": 6632,
+      "sha256": "7b5b97525f648319061dbd13556d9d00d553832f41bd83b1bef73b3d594b9a2e",
+      "bytes": 9579,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -105318,7 +105380,7 @@
       "path": "extension/tests/dashboard-e2e.test.js",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "ed5d01a9d65df2046bb98321dc95dfff87e3cd14ad3fd321f4fbc4a1378a61ab",
+      "sha256": "75d2ab365493418b751d41766cfc15fad0b15aa82265fff983bea6e7fa4a30ff",
       "bytes": 116803,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
@@ -105428,8 +105490,8 @@
       "path": "extension/tests/extension-contract.test.js",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "ec25ae820b4a494a9c2aab51c91621f27a95d951c9e8e70c1ee1bdc7275598e1",
-      "bytes": 40192,
+      "sha256": "a9e1e2d24037d36aed08584dac5261605ec625dcde1181dcffb74886340a55ec",
+      "bytes": 40790,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -105692,8 +105754,8 @@
       "path": "extension/tests/hardening-boundaries.test.js",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "c8b9f15664004b2d3a508b24770ca2efcd53a0447a704c71d661745009cf8ae2",
-      "bytes": 20462,
+      "sha256": "4dd5e450582de1aa628802f778209fc3c2359fa0d03a6d4d42466e86fd8f947d",
+      "bytes": 21118,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -105824,8 +105886,8 @@
       "path": "extension/tests/isolated-current-source-walk.test.js",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "6115a7d88a2ba1c6587bd9b1e42d3b55c9b4037ca9a34f474b695aad5bf8af98",
-      "bytes": 64619,
+      "sha256": "89b8e0b09823f22da9864d9e42df83d33836c4bed5e89eebe40014ad6b472d2b",
+      "bytes": 65759,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -105868,8 +105930,8 @@
       "path": "extension/tests/mcp-activity-integration.test.js",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "6d1016e3bb89ae881d0c8e792664f71900d5d1ca38b0e14b7e0c3326237dbd81",
-      "bytes": 4392,
+      "sha256": "81e67f445cbee749564c31164f6906cac3766fbca535314f62fe894f769828ae",
+      "bytes": 5131,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -105912,8 +105974,8 @@
       "path": "extension/tests/mcp-mutation-authority.test.js",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "743bbe3b6bb1d48aeaa6696c14bf130f49697b29c175d724d404c8e61f5f8ee8",
-      "bytes": 2862,
+      "sha256": "47308ba487d8f6e6430dedaf879723f4b0469b702b130825fbaa7a334af6ed6d",
+      "bytes": 3678,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -105956,8 +106018,8 @@
       "path": "extension/tests/mcp-server.test.js",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "04a0da9df3a2be5e04360261adc7a10337743ad99faa44833a7d033c683463eb",
-      "bytes": 11600,
+      "sha256": "2b8d4e0a75ad6d673fb2965b9394cee2ba48b6b32d7ee89e3d321fb8ac6fdf61",
+      "bytes": 14109,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -106044,8 +106106,8 @@
       "path": "extension/tests/operational-ui-walk-installed-probe.test.js",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "544089738665f99429b1bd05ee87592a99f8b7aa262c1fe244fdcea82bb17785",
-      "bytes": 368286,
+      "sha256": "7f681307b7cc528960dbdfb25e0ba4468b070c1d46a9ddd13610ea20171c09bc",
+      "bytes": 378811,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -106176,8 +106238,8 @@
       "path": "extension/tests/package-contract.test.js",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "94f3be413f3b7e23dd64b5ead26ae06a13ada27be89939804a2098e50bccd816",
-      "bytes": 9722,
+      "sha256": "830ba6a0e02e26be5ec1a2cd18afebb3af40bd3072f7a6e43c1cbd106763fddd",
+      "bytes": 10430,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -106220,8 +106282,8 @@
       "path": "extension/tests/preview.html",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "52c475a59cd094f6042d5900cbc9b07a82e1361879aa0dfc67cf9008a39a699a",
-      "bytes": 47756,
+      "sha256": "8aa9b7a65d5bea4f144a109da65da28aebabe6c6616dc450f595a9d6998a0270",
+      "bytes": 47755,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -106726,8 +106788,8 @@
       "path": "extension/tests/ui-scaffold.test.js",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "04964d98901313a58bec073de0aa7ee60fe95f72c7d58e5997989b7a61be08e8",
-      "bytes": 29301,
+      "sha256": "61b276fb4ccab50ec021baf11a375119dfb53ea25fae2cbba37c38e2811df647",
+      "bytes": 31126,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -111104,8 +111166,8 @@
       "path": "policies/policy_index.json",
       "layer": "governance",
       "kind": "file",
-      "sha256": "d7a30049a757944668c16dc9105a9af839262e51835e9b7c5d84de30ca665cb7",
-      "bytes": 6534,
+      "sha256": "4bc888ee1b0d4d58a75d0445bf9e9ef13ebba3bf42c41acc176bad2ae6e37631",
+      "bytes": 7583,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -111170,8 +111232,8 @@
       "path": "policies/release-artifact-policy.json",
       "layer": "release",
       "kind": "file",
-      "sha256": "55a03cbbeb165e3d9230f9c3d471d26e5d90ea950424810ed31db54f3fd80153",
-      "bytes": 4021,
+      "sha256": "6d08487528242f53589f753f091dfdcb7fe2735c813bf4d6855fa4d992a5a79b",
+      "bytes": 4062,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -123864,8 +123926,8 @@
       "path": "px/py_cert/runtime/release_campaign.py",
       "layer": "release",
       "kind": "file",
-      "sha256": "a1175e0a3489dbf0e4f647dc6ba1c24d819a8e4169e9f4f8e12d01192ce424a9",
-      "bytes": 39243,
+      "sha256": "ea2b4c4e3cdb267a88fec7a98137f891903ddc238e775ffdd8d776d4f20c66a6",
+      "bytes": 42441,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -124172,8 +124234,8 @@
       "path": "pyproject.toml",
       "layer": "discovery",
       "kind": "file",
-      "sha256": "e87f16ebedff30efa44edc866d158e0eccf76d10cd9b2655b5f16257a197fab0",
-      "bytes": 222478,
+      "sha256": "4bac2397b172584ec0a60a0cc8d1b118abd5dafd6eb1c6ea12f1ce3a7e114dcd",
+      "bytes": 226864,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -124421,8 +124483,8 @@
       "path": "registry/artifact_reachability.json",
       "layer": "host",
       "kind": "file",
-      "sha256": "80275686d2b9976dfadf8c37a4d8dce81f81549ac254e2a36bd485070a4602c9",
-      "bytes": 452364,
+      "sha256": "795e8a79f50706dc4e9530314f4175a8f5809b6b3fe6381ba5b52d1ef20483e4",
+      "bytes": 452645,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -124531,7 +124593,7 @@
       "path": "registry/build_claims.json",
       "layer": "scope",
       "kind": "file",
-      "sha256": "012687ca7ef9084b8c73de4aac9addfc25f82b1857a02015220362cd6a173cf9",
+      "sha256": "5e005e1c5ceffc8f240c8c38f88467dbf580ff4d9ae87ef551fb794a3a5cc2ef",
       "bytes": 1177,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
@@ -124685,7 +124747,7 @@
       "path": "registry/cognitive_map_index.json",
       "layer": "reasoning",
       "kind": "file",
-      "sha256": "138c08f65ad1c7249be4ea5fc4457bd0dde6dc554cf1da45cc1e7b3e54df7abc",
+      "sha256": "c3ce697778b98a756e9188d664c37bc36735d937ee9bafb8cbb2d851eef9a6d9",
       "bytes": 3440182,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
@@ -124971,8 +125033,8 @@
       "path": "registry/declared_suite_reconstruction.json",
       "layer": "host",
       "kind": "file",
-      "sha256": "a166977a7629808806d3a8c83d9fc29a9022e99d03fa67b2d2f428138a1dd39a",
-      "bytes": 746346,
+      "sha256": "d15717558c905e85d8598c985097b2ace7ac2b230daf23a193ffa50b99c1f595",
+      "bytes": 726765,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -125037,8 +125099,8 @@
       "path": "registry/effect_surface_ownership.json",
       "layer": "host",
       "kind": "file",
-      "sha256": "d675a503a5f81daf274f99c9acc1aa2c2170a8bd8b2129ef8210ed76077d0a1e",
-      "bytes": 606042,
+      "sha256": "42ce1232b5f50d2d5596792850ece53d559489000c9fe64f7337143fa137dd01",
+      "bytes": 611922,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -125066,8 +125128,8 @@
       "path": "registry/engine_identity.json",
       "layer": "host",
       "kind": "file",
-      "sha256": "552e4824e898211ecdb1621fe65f2f3bab470f9c7160bef4606c05759b584caf",
-      "bytes": 971222,
+      "sha256": "8cc727f5b2159819b271ab311b656cc578ab3c6f845e9d78d2a8b46a9b009f53",
+      "bytes": 1163664,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -125462,7 +125524,7 @@
       "path": "registry/graph_authority_manifest.json",
       "layer": "discovery",
       "kind": "file",
-      "sha256": "8447552dc158a924a6729650309048d639e5d072915a0a242019798bd59f4238",
+      "sha256": "1f1e309ce733dcac1511e88b81684eb58f709b321bc7561e2f97066137177c05",
       "bytes": 7821,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
@@ -125528,7 +125590,7 @@
       "path": "registry/graphs/graph_manifest.json",
       "layer": "host",
       "kind": "file",
-      "sha256": "922241d6b3a2c60bf362bd84fc44a381739ba66561f470955b65d27c91f176b8",
+      "sha256": "77f97b5fa6220707f815fd887d7515d7a4c4ad792a0567eca0b23469353a36e2",
       "bytes": 25510,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
@@ -125814,8 +125876,8 @@
       "path": "registry/integrations.json",
       "layer": "host",
       "kind": "file",
-      "sha256": "f742b4ff54965ae86d9e229414e07ee1dd2b8b81095dce76dc361a45d5561269",
-      "bytes": 9317,
+      "sha256": "f1f192a77c35e1b208b46d73ba4ef0cf5711bab191935ff0eb7c5dbe7a99b81f",
+      "bytes": 9541,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -126364,7 +126426,7 @@
       "path": "registry/projection_dependencies.json",
       "layer": "scope",
       "kind": "file",
-      "sha256": "51ebcd1bdebc2a9998b54002bd452fbc49311e6d79d71a49ec6f411d7db400cd",
+      "sha256": "b21053d429996727bf0e0e260b2ed8c6e5c614198c3730bac97433eead16a8ca",
       "bytes": 5473,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
@@ -126386,7 +126448,7 @@
       "path": "registry/projection_staleness.json",
       "layer": "scope",
       "kind": "file",
-      "sha256": "875c0669acc2405e06ce45ad04a21f318de493cb79ef4381c7cf011e887ef0f4",
+      "sha256": "7d8d62ad3fa30b10861228585b54cd575734e91a61a4d35ae90496c455d6141f",
       "bytes": 1282,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
@@ -126452,8 +126514,8 @@
       "path": "registry/provider_route_scan.json",
       "layer": "discovery",
       "kind": "file",
-      "sha256": "1d18b2697fe450042eddb95e6548e82bfb3e04d358751cbc665fc73c4afeb22d",
-      "bytes": 111594,
+      "sha256": "992449ed5c68a16077c0dda10f6530204139e8a3c2af53b82d2210f4136da9e7",
+      "bytes": 112046,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -126481,8 +126543,8 @@
       "path": "registry/python_dependency_ownership.json",
       "layer": "host",
       "kind": "file",
-      "sha256": "d7efe6a7c0d67069bba859f1b4d331227f62ecb77843b11fc562d63b13934384",
-      "bytes": 265515,
+      "sha256": "8e3374c6d96527c57f8224dc3ddb008427c998910463fe4c5c64a927959b8c59",
+      "bytes": 266462,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -126503,8 +126565,8 @@
       "path": "registry/python_surface_ownership.json",
       "layer": "host",
       "kind": "file",
-      "sha256": "b0f31be3965ce8c333ca31e5c01a326d84023df9f1a1995c1dba36b0020eb5ef",
-      "bytes": 472387,
+      "sha256": "28d97bd7d3de26310b20163f14f2ecb6b5e4a80c88843a8cb94e4952e6a796cc",
+      "bytes": 474119,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -126943,7 +127005,7 @@
       "path": "registry/semantic_capability_index.json",
       "layer": "memory",
       "kind": "file",
-      "sha256": "f873f4950b4fd133c14be9e1a15b02385395738dfdab422015f06d52ff78686c",
+      "sha256": "18e5bc480c6ec0832a3a0ffa884ea19d44b979e71ea259712cd11a49e8bad0f0",
       "bytes": 444191,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
@@ -129649,7 +129711,7 @@
       "path": "registry/skill_packages/operate-self-diagnostics.json",
       "layer": "release",
       "kind": "file",
-      "sha256": "8b1665faa4f4c8e5ce26684934eef09d4582eaa6e10243245faec9a8ef5ed5d1",
+      "sha256": "a3b12abcad5d57f5b946c12bbb632b311fad452c2c5c46155d339f0121a59824",
       "bytes": 1851,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
@@ -133191,7 +133253,7 @@
       "path": "registry/skills/operate-self-diagnostics.json",
       "layer": "acquisition",
       "kind": "file",
-      "sha256": "80da17a3924a6e8dadd73e78c45c11411899ad57b025517896b8336d94ad229c",
+      "sha256": "d0cb8f545b91c10961fcaab541a766b9b19a68b9e62c3919262573f66a98fc0f",
       "bytes": 1429,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
@@ -135325,8 +135387,8 @@
       "path": "registry/specialty_map.json",
       "layer": "host",
       "kind": "file",
-      "sha256": "2e39d8787aad97f3d6cab6a6a71bb97d9e007b19822fc0b9dd8a07b8a7c6d483",
-      "bytes": 16038,
+      "sha256": "0fd9797783ca0c35d3425e9f5c70e1d142da0b0bdb3000abd91386ee3798ed25",
+      "bytes": 16135,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -135435,8 +135497,8 @@
       "path": "registry/test_group_index.json",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "5678e34bbc79ee38ba63a1e68a3841a808b45456a5acff69536fd46ff2aba45f",
-      "bytes": 758320,
+      "sha256": "34dad6316f54e838aeff89136c4c210254c80a97276730c7748f275a6e3c5ce6",
+      "bytes": 762703,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -135457,7 +135519,7 @@
       "path": "registry/test_profiles.json",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "7e6144cca3ae2bd97b9731ecd583eac9443bcdf9d1b3a299930cc625ffab0517",
+      "sha256": "0a819e8664dc1b2b689c2032e672d6e167c39d6dc6153118294640806f7c8a19",
       "bytes": 162755,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
@@ -136366,8 +136428,8 @@
       "path": "runtime/cli.py",
       "layer": "host",
       "kind": "file",
-      "sha256": "66469c0d2bb63063110acee9f6127a663628e9f0349e60818937684b48984f74",
-      "bytes": 154803,
+      "sha256": "d7e066109918881bc63af2638f881d08dd17ae3b3f159a2330b868b24bba8bd3",
+      "bytes": 159842,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -136929,8 +136991,8 @@
       "path": "runtime/corrective_release.py",
       "layer": "governance",
       "kind": "file",
-      "sha256": "386be7b1eb8f8f2e9500b2c57e892ca4960a8e5badd35cd8a26ed23693bb6732",
-      "bytes": 8541,
+      "sha256": "671fc7ad387d2fefa4451d094950374533eee4bc3e83309154eacba71534f5d5",
+      "bytes": 10788,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -136995,8 +137057,8 @@
       "path": "runtime/dashboard_api.py",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "6127ce9aaa7ab3e581cf1fafe3293b11259566a2bea8aab8c9b8523c4fe17ac1",
-      "bytes": 152876,
+      "sha256": "0a3e1b7194e752245dd4dcdc8d4db1b91442564ea01bd3b2760c9048bd7b149e",
+      "bytes": 155101,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -137580,8 +137642,8 @@
       "path": "runtime/external_evidence.py",
       "layer": "governance",
       "kind": "file",
-      "sha256": "24e36fec11f70c27ae1043385ebfb873c9ae1eb062500d004c1f864d0fbb9cc4",
-      "bytes": 3474,
+      "sha256": "50c19cbe3af72bcaa3aed3522b50a8acaf83b69449a035c059ab95f17d3a79bb",
+      "bytes": 6223,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -137754,8 +137816,8 @@
       "path": "runtime/generated_artifacts.py",
       "layer": "durability",
       "kind": "file",
-      "sha256": "6aedad4049bb9249676898b072c82fc9b2fd873061662af697f8e5396b8459c5",
-      "bytes": 6768,
+      "sha256": "27c0faf8d37e2bbeeb244cea1ce55873fe8059fa3d1ae44b6ed91767625fb361",
+      "bytes": 9346,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -138265,8 +138327,8 @@
       "path": "runtime/librarian_answer.py",
       "layer": "host",
       "kind": "file",
-      "sha256": "9960f7ed477768602a213ecdcbcabaf835198606aa2a99134c28ba0c93fc74c3",
-      "bytes": 18221,
+      "sha256": "41288625c260372cda8ed6824ac8b4e20c0dde22cbe58c378d484def6f33a78f",
+      "bytes": 18101,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -139961,8 +140023,8 @@
       "path": "runtime/project_intelligence.py",
       "layer": "discovery",
       "kind": "file",
-      "sha256": "1f9b5a1d8eba49b8399372050a0ab0a2491c5a598c30128e045cb735f47327e0",
-      "bytes": 137119,
+      "sha256": "f12854c511c2584583f63ed90827fc28e8b6fa6d3f9d8eeab6bb53a2da6dc516",
+      "bytes": 137681,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -140496,8 +140558,8 @@
       "path": "runtime/release_campaign.py",
       "layer": "release",
       "kind": "file",
-      "sha256": "a1175e0a3489dbf0e4f647dc6ba1c24d819a8e4169e9f4f8e12d01192ce424a9",
-      "bytes": 39243,
+      "sha256": "ea2b4c4e3cdb267a88fec7a98137f891903ddc238e775ffdd8d776d4f20c66a6",
+      "bytes": 42441,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -140540,8 +140602,8 @@
       "path": "runtime/release_distribution.py",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "56a5f5aabed5972ffd29c7946707eba3244a1bf5ec59fd42a60a4119793918ef",
-      "bytes": 68324,
+      "sha256": "dc2e2eb31d19ffbf85ac2bf21f4071fd206f3ea7da4f3d7074411b55090365fe",
+      "bytes": 68912,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -140749,8 +140811,8 @@
       "path": "runtime/repository_scope.py",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "31c63ee7913f9debed05e2c188c2121bf44bf5be66746b012a8d14bd2298ba2f",
-      "bytes": 3116,
+      "sha256": "d45c4404d9a6e5b7682187b7be17b0ee560e059cd0549e169de75d76f541eb46",
+      "bytes": 3134,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -141026,8 +141088,8 @@
       "path": "runtime/self_diagnostics.py",
       "layer": "host",
       "kind": "file",
-      "sha256": "302c9bcef5df43413cebf7b3b2489ef5198d5bf7a512f02e29a175d0af239e9f",
-      "bytes": 15406,
+      "sha256": "c87c8288947b6048e3f9a80acb0106c808513d0c32e247fce960a304f9477a62",
+      "bytes": 16438,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -142874,8 +142936,8 @@
       "path": "runtime/structural_integrity.py",
       "layer": "discovery",
       "kind": "file",
-      "sha256": "aea124e04c8ff71d63e7e5077d8a5af787d026ac1963e6511778fc59b01cd5f1",
-      "bytes": 49504,
+      "sha256": "c556413aa51349789f485d61c898fab870b5adb00f7383ab3c6d94217978fece",
+      "bytes": 49786,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -143248,8 +143310,8 @@
       "path": "runtime/test_profiles.py",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "8cc17880613175c8b325e498abae332a99ea8c5aabb67e6c59ece6ad6cf2aa58",
-      "bytes": 32380,
+      "sha256": "44f4e118b8dbe85eb12d3b4b4647d1e5657d82727d1ee9a819c6affae3ed033c",
+      "bytes": 53852,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -143525,8 +143587,8 @@
       "path": "runtime/verification_status.py",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "7a66d72b2445af60d9b5c43deb07e5d331c52a650dbfe807b5b0d9aeefc827eb",
-      "bytes": 15173,
+      "sha256": "7acc046a04e8d40757205d1b673bdca0ad68e38961a126c8791b3dc036eba713",
+      "bytes": 15191,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -143547,7 +143609,7 @@
       "path": "runtime/version.py",
       "layer": "release",
       "kind": "file",
-      "sha256": "3960d9fcdd62ea13f90033fbc1c70d8ca8f796d29e7eec7c93a16cf61fe91b40",
+      "sha256": "bbe2ce1fc9210938066f8c427f7174aaa1b60f09019491b968c1ddc8c6a1312d",
       "bytes": 128,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
@@ -143965,8 +144027,8 @@
       "path": "scripts/audit_source_archive.py",
       "layer": "durability",
       "kind": "file",
-      "sha256": "79e98a17413fbe78445880660312af9d19ecef5d0b3f36109731329030b1531e",
-      "bytes": 9853,
+      "sha256": "50252fc2efad44de6ca9d37b25b2829fcc9f888f1898444c7b1cdb9e771b334f",
+      "bytes": 10422,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -143979,6 +144041,28 @@
         432.1453,
         35.725,
         11.1205
+      ]
+    },
+    {
+      "id": "file:scripts/audit_validations_tree.py",
+      "title": "scripts/audit_validations_tree.py",
+      "path": "scripts/audit_validations_tree.py",
+      "layer": "evidence",
+      "kind": "file",
+      "sha256": "97cc394ce4afe230892145d7d4a6eeb355e5a59506f5a12ac00b86b5d388f104",
+      "bytes": 4602,
+      "evidence_level": "source-supported",
+      "currentness": "snapshot-bytes",
+      "purpose": "Inventoried file; imports are static references, not executed calls.",
+      "resource_tags": [],
+      "runtime_observed": false,
+      "certified": false,
+      "note": null,
+      "repair_findings": [],
+      "position": [
+        386.9481,
+        73.8507,
+        173.5267
       ]
     },
     {
@@ -144845,8 +144929,8 @@
       "path": "scripts/build_specialty_map.py",
       "layer": "discovery",
       "kind": "file",
-      "sha256": "aaf4921e0df9402c43abcde6aa4c1e82816b7d588799246faba677508367d2cd",
-      "bytes": 2652,
+      "sha256": "053391feffef029360403fc52e8f616bca2fcc009bd6d7f84c23dc8214c3b0e6",
+      "bytes": 2787,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -145065,8 +145149,8 @@
       "path": "scripts/clean_source_export.py",
       "layer": "execution",
       "kind": "file",
-      "sha256": "c19cecedaf9003427c2d8b76efc0c315598431c46b4b437cf6c91f9dfabae375",
-      "bytes": 37915,
+      "sha256": "dc66bd25af455de829f2dd2ecefb7af4b260924535374b01ae65cbf53b507990",
+      "bytes": 38304,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -145637,8 +145721,8 @@
       "path": "scripts/migration/sync_skill_packaging.py",
       "layer": "release",
       "kind": "file",
-      "sha256": "c771c8f265ed9b172beb41526a02ec7456eb861e66caa621afa61bfef41c3891",
-      "bytes": 5709,
+      "sha256": "2696b88a19575b44e69f454d076194716c952b06f5ff9da3dbac826b8ef113ea",
+      "bytes": 5851,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -145681,8 +145765,8 @@
       "path": "scripts/operational_gap_ledger.py",
       "layer": "execution",
       "kind": "file",
-      "sha256": "394ac5516842e352961f360f0a7e75eb0aefbfe5d64e7fc466d0827794ddf252",
-      "bytes": 5622,
+      "sha256": "530bbbe67141d41cae74df04c510071a2de1e282649ca3fa0c71909634b3c9a6",
+      "bytes": 9259,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -145791,8 +145875,8 @@
       "path": "scripts/px_build_llama_cuda.ps1",
       "layer": "host",
       "kind": "file",
-      "sha256": "3c30bd885432fe5d9171a441eebe5f454a2af3e9acb22b043f804ac9708305fc",
-      "bytes": 5139,
+      "sha256": "09418626cb96713ca8db4f016e4af52a28ef816b6cfe3639cbf92f9790f2052a",
+      "bytes": 7591,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -146693,8 +146777,8 @@
       "path": "scripts/verify_release_compliance.py",
       "layer": "release",
       "kind": "file",
-      "sha256": "81f54d7682f659ad12ffd22e1dea3b5510de6e0956bb15b53ec3123edcb03e9b",
-      "bytes": 13023,
+      "sha256": "0738967b7845c41d58079b0f95fd8f69ae90ab38a407ae0b555c9d2f51430c61",
+      "bytes": 15048,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -146715,8 +146799,8 @@
       "path": "scripts/verify_release_invariants.py",
       "layer": "release",
       "kind": "file",
-      "sha256": "b6fa928ed1d082f8dae4e69da63bcf3e1e36bc280c664199d3f89674726868ae",
-      "bytes": 14844,
+      "sha256": "19666d0f683120de0f41a888a977bc12479c3420bf9cb80c8855a704957bfc56",
+      "bytes": 14976,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -146751,6 +146835,28 @@
         354.0456,
         -37.8371,
         9.0534
+      ]
+    },
+    {
+      "id": "file:scripts/verify_repair_operations.py",
+      "title": "scripts/verify_repair_operations.py",
+      "path": "scripts/verify_repair_operations.py",
+      "layer": "host",
+      "kind": "file",
+      "sha256": "cc51f549d44e5f110dd00180e0d3d44a81425183674c39fa07b5838c9f846883",
+      "bytes": 6264,
+      "evidence_level": "source-supported",
+      "currentness": "snapshot-bytes",
+      "purpose": "Inventoried file; imports are static references, not executed calls.",
+      "resource_tags": [],
+      "runtime_observed": false,
+      "certified": false,
+      "note": null,
+      "repair_findings": [],
+      "position": [
+        -239.2999,
+        -239.7015,
+        37.6561
       ]
     },
     {
@@ -149157,7 +149263,7 @@
       "path": "tests/test_build_claims.py",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "9608fc0834e5fd1dc5f2a98ec4e8079a8330c9a895d4f5dc33136418d7b4865b",
+      "sha256": "34e4649b7122d6b1187451d107a321c14a41999b4813cd997f9227ee601dd939",
       "bytes": 3996,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
@@ -149575,8 +149681,8 @@
       "path": "tests/test_clean_source_export.py",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "73023d990fdd5513dc1f2b832dee272a33987d8f82a9898fc1552f6d2656376f",
-      "bytes": 14325,
+      "sha256": "7217fc50dd4460c1935ec770024e5f8745bbb1ef3693bc8172da66a59c952451",
+      "bytes": 14362,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -149597,8 +149703,8 @@
       "path": "tests/test_cli_commands.py",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "7b9f2efad41b2c890a33fdf468170c2df92760c15c70331fd44185a567fc313a",
-      "bytes": 50286,
+      "sha256": "85a168d537d74548016022693a4cd08087dae0328a82f1a4376728f8e1a1a26c",
+      "bytes": 54810,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -150081,8 +150187,8 @@
       "path": "tests/test_corrective_release.py",
       "layer": "release",
       "kind": "file",
-      "sha256": "91feaa1e9622284a5121e55350057a377ae3e186fd3f0eb30ee397c4a6a9efc7",
-      "bytes": 6659,
+      "sha256": "1314611d67adc88204c9c85736d33dd10b982da2f4bbf7e4869a0b11bf722650",
+      "bytes": 11446,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -150147,8 +150253,8 @@
       "path": "tests/test_dashboard_api.py",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "2ebefbd3b2292cb78c68cc6d4d207cdcae172c5ac3ab7255399b3538ddf9f595",
-      "bytes": 46638,
+      "sha256": "71b50925ad03ec067bd5b082608675246a44431e4b5dd51b94dac9438e6a5d08",
+      "bytes": 48690,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -150257,8 +150363,8 @@
       "path": "tests/test_declared_suite_reconstruction.py",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "7b2d3d150d2b48153e4c681c7cb9914781d656868260e38ba29e797541945369",
-      "bytes": 5907,
+      "sha256": "9582789a589184ed8fca5e3e851a7b8245d98021c3e38d45580d0f085099d127",
+      "bytes": 6965,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -150279,8 +150385,8 @@
       "path": "tests/test_declared_suite_support.py",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "ba2e92cf758f6a5ab5ab0ceb65765d13142ad1c0d486d62ab97e2f9c9592d837",
-      "bytes": 5542,
+      "sha256": "3f7b0a4f2b189d4ea7d876b6c6c91fd2fe580233ef5343dcb03ae506451b6e53",
+      "bytes": 7404,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -150741,8 +150847,8 @@
       "path": "tests/test_exact_tool_certification.py",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "ec39b21ece4068bae13bfdd839a7002913620461166ba7ffc8c4b8c196690cac",
-      "bytes": 5897,
+      "sha256": "a7beefb6decd1b0d78ca3591af01ca96b001d538f9b8518f8d195aac11d3d049",
+      "bytes": 6205,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -150873,8 +150979,8 @@
       "path": "tests/test_external_evidence.py",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "748be16a0dc66d03b1925a07077440ede4a24241954cf56901561c8743014746",
-      "bytes": 1570,
+      "sha256": "3dd7b068947f8b52c16cef965a81f32e716ad54517c336aaa0075ca01246144d",
+      "bytes": 2104,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -151049,8 +151155,8 @@
       "path": "tests/test_generated_artifacts.py",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "1314a01ff039f376f3a375e7165c497a26520213878fbd71c9bba2f50fd13a79",
-      "bytes": 3403,
+      "sha256": "d986736839c662d186368072dd6e074495b5584c166fa5b48f09fb95b31558e7",
+      "bytes": 4652,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -151660,6 +151766,28 @@
       ]
     },
     {
+      "id": "file:tests/test_llama_cuda_build_script.py",
+      "title": "tests/test_llama_cuda_build_script.py",
+      "path": "tests/test_llama_cuda_build_script.py",
+      "layer": "evidence",
+      "kind": "file",
+      "sha256": "16209cb533f1fe3de2f1b4dd7e8e57f330357085f4ab9cafae4dc87b04a65f7a",
+      "bytes": 2178,
+      "evidence_level": "source-supported",
+      "currentness": "snapshot-bytes",
+      "purpose": "Inventoried file; imports are static references, not executed calls.",
+      "resource_tags": [],
+      "runtime_observed": false,
+      "certified": false,
+      "note": null,
+      "repair_findings": [],
+      "position": [
+        286.3956,
+        -50.7473,
+        176.4629
+      ]
+    },
+    {
       "id": "file:tests/test_local_model_capabilities.py",
       "title": "tests/test_local_model_capabilities.py",
       "path": "tests/test_local_model_capabilities.py",
@@ -151929,8 +152057,8 @@
       "path": "tests/test_model_fabric_end_to_end.py",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "e9137d56bd0e7c10b9c591de4b0fe672341d37ae1b8d6292c45375c2185b1e54",
-      "bytes": 1118,
+      "sha256": "ad1527f17fcf4390ef242139eae0071eb5c60fadc193ca63297181a05de88ba7",
+      "bytes": 1115,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -152303,8 +152431,8 @@
       "path": "tests/test_operate_self_diagnostics.py",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "0a8e0eaa9e9c2d2970633dd2860e16c371499f5639bbb5fba87fd0cc35544709",
-      "bytes": 10223,
+      "sha256": "f68e5068467085f8fa11dbe17a18639f671b74e5bc9c31d98f583b870f632b20",
+      "bytes": 10748,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -153249,8 +153377,8 @@
       "path": "tests/test_project_mapping.py",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "a258958790b82293d7d9881dd33ca1bef9d1cdb7c0802479620ddcd5d52bbcc3",
-      "bytes": 16648,
+      "sha256": "555e29c9a656a580f455c0a5f1d5fbfb5be9e3bea138a97dc64794d2d7a1e0ec",
+      "bytes": 18766,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -153469,8 +153597,8 @@
       "path": "tests/test_public_repository_surface.py",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "fb5c550280eb6e9f6e254d43ebcb26a09bccf576019689813daf7bef69334026",
-      "bytes": 8063,
+      "sha256": "bcc68dc4f6c4e6a03b024c5482c187329df87a6bb2ea33b42bc361369cda6aed",
+      "bytes": 7973,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -153843,8 +153971,8 @@
       "path": "tests/test_rel011_revocation.py",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "37f9d1b0c952ff5dc44ef30b16192cae917fd8e4e702d5e487e6765786120785",
-      "bytes": 2627,
+      "sha256": "7da3efa0ee93a562963a9d5c8bdc35526cfca914af138b9e9950d6d9d3b73a5d",
+      "bytes": 2467,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -153865,8 +153993,8 @@
       "path": "tests/test_release_artifacts.py",
       "layer": "release",
       "kind": "file",
-      "sha256": "c014325c485128d935e522983471066524958cc07bc47e8e38d78552b0f6a3a6",
-      "bytes": 43139,
+      "sha256": "670b2a1fc446950b4b547e71aa0c43f44a7111e2194c85057a3ad1ce7ea32cd5",
+      "bytes": 49213,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -153931,8 +154059,8 @@
       "path": "tests/test_release_candidate_driver.py",
       "layer": "release",
       "kind": "file",
-      "sha256": "6b23e0b16251a5272343fcf53e78052ae75ac5e8b9676b0c8033970e0be6df27",
-      "bytes": 36727,
+      "sha256": "e155caacca06d298c16cdc998f59539ae16e99c8282f40327f092e3a73fd3f16",
+      "bytes": 36475,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -153975,8 +154103,8 @@
       "path": "tests/test_release_compliance.py",
       "layer": "release",
       "kind": "file",
-      "sha256": "597e348ebfca82af46885774a11ff736f762d05aca7a19f4094fb5791ca31a34",
-      "bytes": 6664,
+      "sha256": "40e33591483cdb0525d5d2257ade3dfb75236f1e6bd3bbfcb750cca96e34db5b",
+      "bytes": 9292,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -154041,8 +154169,8 @@
       "path": "tests/test_release_distribution_controls.py",
       "layer": "release",
       "kind": "file",
-      "sha256": "0dc43be751eca168e9c1cfe0c41c8add373c446f65b39579d06e016e6c207b79",
-      "bytes": 25859,
+      "sha256": "7b1bc7ea23c9d081d378b5ea9dc314c1945329ba0e8545156fd69c390cc30c67",
+      "bytes": 25894,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -154371,8 +154499,8 @@
       "path": "tests/test_release_stage_owner.py",
       "layer": "release",
       "kind": "file",
-      "sha256": "eedd2861951220ac048334a80acc6fe38ef822c92aae335265256adbd386233a",
-      "bytes": 35683,
+      "sha256": "b1fe866cd0636f26a1ab4c18e29bf287a5d5ee94ce34cadbf2f6ddb67175d211",
+      "bytes": 35494,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -154432,6 +154560,28 @@
       ]
     },
     {
+      "id": "file:tests/test_repair_operational_verification.py",
+      "title": "tests/test_repair_operational_verification.py",
+      "path": "tests/test_repair_operational_verification.py",
+      "layer": "evidence",
+      "kind": "file",
+      "sha256": "2236b4dd559189f053911eed55780953f93068c1f2176cdd1447e107c5407b43",
+      "bytes": 4330,
+      "evidence_level": "source-supported",
+      "currentness": "snapshot-bytes",
+      "purpose": "Inventoried file; imports are static references, not executed calls.",
+      "resource_tags": [],
+      "runtime_observed": false,
+      "certified": false,
+      "note": null,
+      "repair_findings": [],
+      "position": [
+        531.1644,
+        65.4082,
+        248.7639
+      ]
+    },
+    {
       "id": "file:tests/test_repair_root_analysis.py",
       "title": "tests/test_repair_root_analysis.py",
       "path": "tests/test_repair_root_analysis.py",
@@ -154459,8 +154609,8 @@
       "path": "tests/test_repository_scope.py",
       "layer": "scope",
       "kind": "file",
-      "sha256": "03f93902104a22d5d36b4d60d209a87f558db111fdf221e92a2c0e4dc20e0ed0",
-      "bytes": 6352,
+      "sha256": "85e0f775fcdaba724c95b6c25a44a6e56f5c673dc79e47b75c9c7cee4f10fce2",
+      "bytes": 6427,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -156602,8 +156752,8 @@
       "path": "tests/test_skill_packaging_projection.py",
       "layer": "release",
       "kind": "file",
-      "sha256": "1869b4fcfe3a4c4c9b1e7185c84d654ab6a68e5de1482475bb648561334a9034",
-      "bytes": 5133,
+      "sha256": "67e13197c3241248a49bcc793b356b747007d015df28789707871c5b4df815b0",
+      "bytes": 6676,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -156910,8 +157060,8 @@
       "path": "tests/test_structural_integrity.py",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "32397607f959009fc7c76fac0401d85d38bcb0c2423a2d768f786ee4f8c1ffe3",
-      "bytes": 13156,
+      "sha256": "65335ed9776c9e53868fb39af77fce5969c39141101db51796fc6525e6c51f1a",
+      "bytes": 15051,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -157152,8 +157302,8 @@
       "path": "tests/test_test_profiles.py",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "49c0b48fe1f918b68ad01f12375329f7e558ac2a73b32c12978b5a66a3252745",
-      "bytes": 45967,
+      "sha256": "42908e39f75c3fa2e3cc2372d093dc589a7ac99476927e5315641382de6dfc0d",
+      "bytes": 63916,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -157469,8 +157619,8 @@
       "path": "tests/test_verification_input_boundaries.py",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "304a01060f69efd23d4cd381aa46ae847682a852c59abd72cb9cc79669fe8335",
-      "bytes": 13003,
+      "sha256": "96796e812924fe9ca2b66dd4342b13bca69ad370faa1c73bc18fbe9b8fdae26b",
+      "bytes": 13486,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -157875,7 +158025,7 @@
         "S1339"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 0.6,
       "runtime_observed": false,
       "certified": false,
@@ -157947,7 +158097,7 @@
         "S1150"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 0.2,
       "runtime_observed": false,
       "certified": false,
@@ -157971,7 +158121,7 @@
         "S1149"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 0.6,
       "runtime_observed": false,
       "certified": false,
@@ -162192,7 +162342,7 @@
         "S1150"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 0.2,
       "runtime_observed": false,
       "certified": false,
@@ -165362,7 +165512,7 @@
       "curve_control": [
         193.9323,
         -118.0447,
-        -112.999
+        -112.9991
       ]
     },
     {
@@ -165889,7 +166039,7 @@
         "S1149"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 0.6,
       "runtime_observed": false,
       "certified": false,
@@ -165914,7 +166064,7 @@
         "S1151"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 0.2,
       "runtime_observed": false,
       "certified": false,
@@ -169886,7 +170036,7 @@
         "S2172"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 0.2,
       "runtime_observed": false,
       "certified": false,
@@ -171047,7 +171197,7 @@
         "S2661"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 1.0,
       "runtime_observed": false,
       "certified": false,
@@ -171071,7 +171221,7 @@
         "S2648"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 1.0,
       "runtime_observed": false,
       "certified": false,
@@ -171096,7 +171246,7 @@
         "S2655"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 1.0,
       "runtime_observed": false,
       "certified": false,
@@ -171120,7 +171270,7 @@
         "S2648"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 1.0,
       "runtime_observed": false,
       "certified": false,
@@ -171144,7 +171294,7 @@
         "S2654"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 1.0,
       "runtime_observed": false,
       "certified": false,
@@ -171168,7 +171318,7 @@
         "S2648"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 0.2,
       "runtime_observed": false,
       "certified": false,
@@ -171192,7 +171342,7 @@
         "S2648"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 0.2,
       "runtime_observed": false,
       "certified": false,
@@ -173664,7 +173814,7 @@
         "S2207"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 0.2,
       "runtime_observed": false,
       "certified": false,
@@ -173688,7 +173838,7 @@
         "S2207"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 0.2,
       "runtime_observed": false,
       "certified": false,
@@ -182116,7 +182266,7 @@
         "S313"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 1.0,
       "runtime_observed": false,
       "certified": false,
@@ -183670,7 +183820,7 @@
         "S861"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 1.0,
       "runtime_observed": false,
       "certified": false,
@@ -183718,7 +183868,7 @@
         "S873"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 0.6,
       "runtime_observed": false,
       "certified": false,
@@ -183742,7 +183892,7 @@
         "S876"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 1.0,
       "runtime_observed": false,
       "certified": false,
@@ -184033,7 +184183,7 @@
         "S1344"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 0.2,
       "runtime_observed": false,
       "certified": false,
@@ -184082,7 +184232,7 @@
         "S1348"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 1.0,
       "runtime_observed": false,
       "certified": false,
@@ -186492,7 +186642,7 @@
         "S3410"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 0.6,
       "runtime_observed": false,
       "certified": false,
@@ -186516,7 +186666,7 @@
         "S3412"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 0.6,
       "runtime_observed": false,
       "certified": false,
@@ -186540,7 +186690,7 @@
         "S3411"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 0.6,
       "runtime_observed": false,
       "certified": false,
@@ -186780,7 +186930,7 @@
         "S2202"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 0.2,
       "runtime_observed": false,
       "certified": false,
@@ -186950,7 +187100,7 @@
         "S2206"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 0.2,
       "runtime_observed": false,
       "certified": false,
@@ -186974,7 +187124,7 @@
         "S2206"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 0.2,
       "runtime_observed": false,
       "certified": false,
@@ -186998,7 +187148,7 @@
         "S2203"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 0.2,
       "runtime_observed": false,
       "certified": false,
@@ -187022,7 +187172,7 @@
         "S2201"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 0.2,
       "runtime_observed": false,
       "certified": false,
@@ -187095,7 +187245,7 @@
         "S3572"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 1.0,
       "runtime_observed": false,
       "certified": false,
@@ -187752,7 +187902,7 @@
         "S3802"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 0.6,
       "runtime_observed": false,
       "certified": false,
@@ -187776,7 +187926,7 @@
         "S3807"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 0.2,
       "runtime_observed": false,
       "certified": false,
@@ -187801,7 +187951,7 @@
         "S3803"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 1.0,
       "runtime_observed": false,
       "certified": false,
@@ -188681,7 +188831,7 @@
       "certified": false,
       "curve_control": [
         -197.0264,
-        -2.3727,
+        -2.3728,
         -59.8686
       ]
     },
@@ -189020,7 +189170,7 @@
       "certified": false,
       "curve_control": [
         -376.026,
-        37.7967,
+        37.7966,
         -148.9776
       ]
     },
@@ -190256,7 +190406,7 @@
         "S046"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 1.0,
       "runtime_observed": false,
       "certified": false,
@@ -190473,7 +190623,7 @@
         "S4186"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 0.2,
       "runtime_observed": false,
       "certified": false,
@@ -191929,7 +192079,7 @@
         "S2205"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 0.2,
       "runtime_observed": false,
       "certified": false,
@@ -195592,7 +195742,7 @@
         "S1392"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 0.6,
       "runtime_observed": false,
       "certified": false,
@@ -195616,7 +195766,7 @@
         "S1394"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 0.6,
       "runtime_observed": false,
       "certified": false,
@@ -195641,7 +195791,7 @@
         "S1388"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 0.6,
       "runtime_observed": false,
       "certified": false,
@@ -195665,7 +195815,7 @@
         "S1389"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 0.6,
       "runtime_observed": false,
       "certified": false,
@@ -195689,7 +195839,7 @@
         "S1403"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "unresolved-or-changed",
       "layout_weight": 0.6,
       "runtime_observed": false,
       "certified": false,
@@ -198722,7 +198872,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "extension/src/agentHarness/agentConsoleView.js",
-        "line": 5
+        "line": 6
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -198741,7 +198891,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "extension/src/agentHarness/agentConsoleView.js",
-        "line": 6
+        "line": 7
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -200660,13 +200810,32 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "extension/tests/agent-console-messages.test.js",
-        "line": 3
+        "line": 4
       },
       "layout_weight": 1.0,
       "curve_control": [
         65.5125,
         -105.7549,
         168.8408
+      ]
+    },
+    {
+      "id": "I:92538196a6322aa1b013d830",
+      "source": "file:extension/tests/agent-console-messages.test.js",
+      "target": "file:extension/src/agentHarness/agentConsoleView.js",
+      "kind": "imports",
+      "verb": "imports (not proof of execution)",
+      "evidence_level": "source-supported",
+      "currentness": "snapshot-bytes",
+      "source_anchor": {
+        "path": "extension/tests/agent-console-messages.test.js",
+        "line": 5
+      },
+      "layout_weight": 1.0,
+      "curve_control": [
+        59.0125,
+        -51.6982,
+        107.752
       ]
     },
     {
@@ -200746,6 +200915,25 @@
       ]
     },
     {
+      "id": "I:2f9bcbd431e1af6dab61bc21",
+      "source": "file:extension/tests/agent-harness-core.test.js",
+      "target": "file:extension/src/agentHarness/contracts.js",
+      "kind": "imports",
+      "verb": "imports (not proof of execution)",
+      "evidence_level": "source-supported",
+      "currentness": "snapshot-bytes",
+      "source_anchor": {
+        "path": "extension/tests/agent-harness-core.test.js",
+        "line": 9
+      },
+      "layout_weight": 1.0,
+      "curve_control": [
+        252.8341,
+        34.6142,
+        113.1093
+      ]
+    },
+    {
       "id": "I:5e08705267027abba59b4058",
       "source": "file:extension/tests/agent-harness-core.test.js",
       "target": "file:extension/src/agentHarness/router.js",
@@ -200755,7 +200943,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "extension/tests/agent-harness-core.test.js",
-        "line": 9
+        "line": 10
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -200774,7 +200962,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "extension/tests/agent-harness-core.test.js",
-        "line": 10
+        "line": 11
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -200793,7 +200981,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "extension/tests/agent-harness-core.test.js",
-        "line": 11
+        "line": 12
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -200812,7 +201000,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "extension/tests/agent-harness-core.test.js",
-        "line": 12
+        "line": 13
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -200831,7 +201019,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "extension/tests/agent-harness-core.test.js",
-        "line": 13
+        "line": 14
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -201059,7 +201247,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "extension/tests/coordination-manager.test.js",
-        "line": 255
+        "line": 284
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -205315,7 +205503,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 152
+        "line": 159
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -205334,7 +205522,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 174
+        "line": 181
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -205353,7 +205541,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 176
+        "line": 183
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -205372,7 +205560,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 177
+        "line": 184
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -205391,7 +205579,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 401
+        "line": 408
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -205410,7 +205598,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1308
+        "line": 1327
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -205429,7 +205617,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1367
+        "line": 1464
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -205448,7 +205636,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1383
+        "line": 1480
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -205467,7 +205655,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1419
+        "line": 1516
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -205486,7 +205674,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1466
+        "line": 1563
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -205505,7 +205693,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1423
+        "line": 1520
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -205524,7 +205712,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1435
+        "line": 1532
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -205543,7 +205731,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1491
+        "line": 1588
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -205562,7 +205750,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1530
+        "line": 1627
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -205581,7 +205769,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1558
+        "line": 1655
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -205600,7 +205788,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1587
+        "line": 1684
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -205619,7 +205807,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1595
+        "line": 1692
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -205638,7 +205826,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1659
+        "line": 1756
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -205657,7 +205845,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1681
+        "line": 1778
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -205676,7 +205864,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1718
+        "line": 1815
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -205695,7 +205883,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1735
+        "line": 1832
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -205714,7 +205902,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1751
+        "line": 1848
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -205733,7 +205921,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1755
+        "line": 1852
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -205752,7 +205940,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1763
+        "line": 1860
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -205771,7 +205959,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1784
+        "line": 1881
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -205790,7 +205978,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1767
+        "line": 1864
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -205809,7 +205997,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1775
+        "line": 1872
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -205828,7 +206016,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1793
+        "line": 1890
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -205847,7 +206035,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1800
+        "line": 1897
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -205866,7 +206054,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1805
+        "line": 1902
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -205885,7 +206073,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1828
+        "line": 1925
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -205904,7 +206092,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1832
+        "line": 1929
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -205923,7 +206111,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1837
+        "line": 1934
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -205942,7 +206130,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1868
+        "line": 1965
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -205961,7 +206149,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1884
+        "line": 1981
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -205980,7 +206168,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1903
+        "line": 2000
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -205999,7 +206187,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1946
+        "line": 2043
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -206018,7 +206206,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1963
+        "line": 2060
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -206037,7 +206225,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1974
+        "line": 2071
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -206056,7 +206244,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 1978
+        "line": 2075
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -206075,7 +206263,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 2046
+        "line": 2143
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -206094,7 +206282,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 2052
+        "line": 2149
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -206113,7 +206301,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 2093
+        "line": 2190
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -206132,7 +206320,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 2106
+        "line": 2204
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -206151,7 +206339,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 2080
+        "line": 2177
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -206170,7 +206358,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 2348
+        "line": 2445
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -206189,7 +206377,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 2349
+        "line": 2446
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -206208,7 +206396,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 2353
+        "line": 2450
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -206227,7 +206415,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 2444
+        "line": 2541
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -206246,7 +206434,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 2364
+        "line": 2461
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -206265,7 +206453,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 2376
+        "line": 2473
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -206284,7 +206472,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 2513
+        "line": 2610
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -206303,7 +206491,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 2514
+        "line": 2611
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -206322,7 +206510,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 2515
+        "line": 2612
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -206341,7 +206529,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 2536
+        "line": 2633
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -206360,7 +206548,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 2604
+        "line": 2701
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -206379,7 +206567,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 2625
+        "line": 2722
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -206398,7 +206586,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 2626
+        "line": 2723
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -206417,7 +206605,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 2650
+        "line": 2747
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -206436,7 +206624,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 2824
+        "line": 2921
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -206455,7 +206643,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 2825
+        "line": 2922
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -206474,7 +206662,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 2835
+        "line": 2932
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -206493,7 +206681,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 2854
+        "line": 2951
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -206512,7 +206700,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 2870
+        "line": 2967
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -206531,7 +206719,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 2886
+        "line": 2983
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -206550,7 +206738,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 2890
+        "line": 2987
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -206569,7 +206757,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 2891
+        "line": 2988
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -206588,7 +206776,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 2920
+        "line": 3017
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -206607,7 +206795,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 2988
+        "line": 3085
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -206626,7 +206814,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 3010
+        "line": 3107
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -206645,7 +206833,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 3079
+        "line": 3176
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -206664,7 +206852,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 3107
+        "line": 3204
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -206683,7 +206871,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 3193
+        "line": 3290
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -206702,7 +206890,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 3256
+        "line": 3353
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -206721,7 +206909,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/cli.py",
-        "line": 3279
+        "line": 3376
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -208013,7 +208201,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/dashboard_api.py",
-        "line": 2115
+        "line": 2137
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -208032,7 +208220,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/dashboard_api.py",
-        "line": 2116
+        "line": 2138
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -208051,7 +208239,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/dashboard_api.py",
-        "line": 2566
+        "line": 2606
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -208127,7 +208315,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/dashboard_api.py",
-        "line": 1981
+        "line": 1982
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -208792,7 +208980,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/external_evidence.py",
-        "line": 10
+        "line": 12
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -209011,6 +209199,25 @@
       ]
     },
     {
+      "id": "I:5df383645675a1fbf0cc32cf",
+      "source": "file:runtime/generated_artifacts.py",
+      "target": "file:runtime/python_surface_certification.py",
+      "kind": "imports",
+      "verb": "imports (not proof of execution)",
+      "evidence_level": "source-supported",
+      "currentness": "snapshot-bytes",
+      "source_anchor": {
+        "path": "runtime/generated_artifacts.py",
+        "line": 14
+      },
+      "layout_weight": 1.0,
+      "curve_control": [
+        352.9503,
+        -109.1386,
+        207.3102
+      ]
+    },
+    {
       "id": "I:d6197104411c7b6004e87817",
       "source": "file:runtime/generated_artifacts.py",
       "target": "file:runtime/artifact_reachability.py",
@@ -209020,7 +209227,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/generated_artifacts.py",
-        "line": 10
+        "line": 50
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -209039,7 +209246,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/generated_artifacts.py",
-        "line": 11
+        "line": 51
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -209058,7 +209265,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/generated_artifacts.py",
-        "line": 12
+        "line": 52
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -209077,7 +209284,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/generated_artifacts.py",
-        "line": 13
+        "line": 53
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -209096,7 +209303,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/generated_artifacts.py",
-        "line": 14
+        "line": 54
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -209115,7 +209322,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/generated_artifacts.py",
-        "line": 15
+        "line": 55
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -209134,7 +209341,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/generated_artifacts.py",
-        "line": 79
+        "line": 119
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -209153,7 +209360,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/generated_artifacts.py",
-        "line": 80
+        "line": 120
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -209172,7 +209379,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/generated_artifacts.py",
-        "line": 81
+        "line": 121
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -209191,7 +209398,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/generated_artifacts.py",
-        "line": 82
+        "line": 122
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -209210,7 +209417,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/generated_artifacts.py",
-        "line": 83
+        "line": 123
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -209229,13 +209436,32 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/generated_artifacts.py",
-        "line": 86
+        "line": 126
       },
       "layout_weight": 1.0,
       "curve_control": [
         300.8276,
         -139.0125,
         114.0548
+      ]
+    },
+    {
+      "id": "I:41ebc662038c4f6561410999",
+      "source": "file:runtime/generated_artifacts.py",
+      "target": "file:scripts/migration/sync_skill_packaging.py",
+      "kind": "imports",
+      "verb": "imports (not proof of execution)",
+      "evidence_level": "source-supported",
+      "currentness": "snapshot-bytes",
+      "source_anchor": {
+        "path": "runtime/generated_artifacts.py",
+        "line": 127
+      },
+      "layout_weight": 1.0,
+      "curve_control": [
+        251.2047,
+        -187.2679,
+        -9.3607
       ]
     },
     {
@@ -209248,7 +209474,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/generated_artifacts.py",
-        "line": 87
+        "line": 128
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -209267,13 +209493,89 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/generated_artifacts.py",
-        "line": 88
+        "line": 129
       },
       "layout_weight": 1.0,
       "curve_control": [
         -61.5493,
         -77.9844,
         -44.5284
+      ]
+    },
+    {
+      "id": "I:5fb912ac8d4182147e23ff68",
+      "source": "file:runtime/generated_artifacts.py",
+      "target": "file:runtime/native_skills.py",
+      "kind": "imports",
+      "verb": "imports (not proof of execution)",
+      "evidence_level": "source-supported",
+      "currentness": "snapshot-bytes",
+      "source_anchor": {
+        "path": "runtime/generated_artifacts.py",
+        "line": 130
+      },
+      "layout_weight": 1.0,
+      "curve_control": [
+        -32.2264,
+        -105.5764,
+        18.9481
+      ]
+    },
+    {
+      "id": "I:d38340cefac2f8dab3ad65db",
+      "source": "file:runtime/generated_artifacts.py",
+      "target": "file:runtime/provider_gateway.py",
+      "kind": "imports",
+      "verb": "imports (not proof of execution)",
+      "evidence_level": "source-supported",
+      "currentness": "snapshot-bytes",
+      "source_anchor": {
+        "path": "runtime/generated_artifacts.py",
+        "line": 131
+      },
+      "layout_weight": 1.0,
+      "curve_control": [
+        0.3603,
+        -36.1908,
+        0.6634
+      ]
+    },
+    {
+      "id": "I:bc4ca6ecf9b0dc5551b190d4",
+      "source": "file:runtime/generated_artifacts.py",
+      "target": "file:runtime/semantic_index.py",
+      "kind": "imports",
+      "verb": "imports (not proof of execution)",
+      "evidence_level": "source-supported",
+      "currentness": "snapshot-bytes",
+      "source_anchor": {
+        "path": "runtime/generated_artifacts.py",
+        "line": 132
+      },
+      "layout_weight": 1.0,
+      "curve_control": [
+        -1.5097,
+        -42.9,
+        15.387
+      ]
+    },
+    {
+      "id": "I:d91cab39a3d9c2d2c41ade24",
+      "source": "file:runtime/generated_artifacts.py",
+      "target": "file:runtime/test_profiles.py",
+      "kind": "imports",
+      "verb": "imports (not proof of execution)",
+      "evidence_level": "source-supported",
+      "currentness": "snapshot-bytes",
+      "source_anchor": {
+        "path": "runtime/generated_artifacts.py",
+        "line": 133
+      },
+      "layout_weight": 1.0,
+      "curve_control": [
+        406.17,
+        -79.0812,
+        194.3508
       ]
     },
     {
@@ -209989,7 +210291,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/librarian_answer.py",
-        "line": 43
+        "line": 42
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -215138,7 +215440,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/release_distribution.py",
-        "line": 758
+        "line": 773
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -221123,7 +221425,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/structural_integrity.py",
-        "line": 725
+        "line": 757
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -221142,7 +221444,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/structural_integrity.py",
-        "line": 726
+        "line": 758
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -221161,7 +221463,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/structural_integrity.py",
-        "line": 727
+        "line": 759
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -221180,7 +221482,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/structural_integrity.py",
-        "line": 1030
+        "line": 1062
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -221199,7 +221501,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/structural_integrity.py",
-        "line": 1050
+        "line": 1082
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -221218,7 +221520,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/structural_integrity.py",
-        "line": 1051
+        "line": 1083
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -221237,7 +221539,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/structural_integrity.py",
-        "line": 1052
+        "line": 1084
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -221256,7 +221558,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/structural_integrity.py",
-        "line": 1053
+        "line": 1085
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -221275,7 +221577,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/structural_integrity.py",
-        "line": 1054
+        "line": 1086
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -221294,7 +221596,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/structural_integrity.py",
-        "line": 763
+        "line": 795
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -222111,13 +222413,32 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/test_profiles.py",
-        "line": 14
+        "line": 15
       },
       "layout_weight": 1.0,
       "curve_control": [
         384.7504,
         -62.6924,
         136.7799
+      ]
+    },
+    {
+      "id": "I:c6c9ebd0bffd5542cbbfb257",
+      "source": "file:runtime/test_profiles.py",
+      "target": "file:runtime/release_campaign.py",
+      "kind": "imports",
+      "verb": "imports (not proof of execution)",
+      "evidence_level": "source-supported",
+      "currentness": "snapshot-bytes",
+      "source_anchor": {
+        "path": "runtime/test_profiles.py",
+        "line": 264
+      },
+      "layout_weight": 1.0,
+      "curve_control": [
+        332.6603,
+        -126.0697,
+        93.98
       ]
     },
     {
@@ -222130,7 +222451,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/test_profiles.py",
-        "line": 370
+        "line": 833
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -222149,7 +222470,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/test_profiles.py",
-        "line": 379
+        "line": 842
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -222168,7 +222489,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/test_profiles.py",
-        "line": 404
+        "line": 867
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -222187,7 +222508,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/test_profiles.py",
-        "line": 446
+        "line": 909
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -222206,7 +222527,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/test_profiles.py",
-        "line": 760
+        "line": 1223
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -222216,22 +222537,22 @@
       ]
     },
     {
-      "id": "I:c6c9ebd0bffd5542cbbfb257",
+      "id": "I:a28b97a3b5c3ed3cbb5f3add",
       "source": "file:runtime/test_profiles.py",
-      "target": "file:runtime/release_campaign.py",
+      "target": "file:runtime/operational_gap_ledger.py",
       "kind": "imports",
       "verb": "imports (not proof of execution)",
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "runtime/test_profiles.py",
-        "line": 261
+        "line": 66
       },
       "layout_weight": 1.0,
       "curve_control": [
-        332.6603,
-        -126.0697,
-        93.98
+        402.2772,
+        2.9163,
+        187.6524
       ]
     },
     {
@@ -225588,7 +225909,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "scripts/clean_source_export.py",
-        "line": 342
+        "line": 343
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -225607,7 +225928,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "scripts/clean_source_export.py",
-        "line": 343
+        "line": 344
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -225626,7 +225947,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "scripts/clean_source_export.py",
-        "line": 344
+        "line": 345
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -225645,7 +225966,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "scripts/clean_source_export.py",
-        "line": 345
+        "line": 346
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -225664,7 +225985,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "scripts/clean_source_export.py",
-        "line": 348
+        "line": 349
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -225683,7 +226004,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "scripts/clean_source_export.py",
-        "line": 349
+        "line": 350
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -225702,7 +226023,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "scripts/clean_source_export.py",
-        "line": 350
+        "line": 351
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -225721,7 +226042,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "scripts/clean_source_export.py",
-        "line": 353
+        "line": 354
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -225740,13 +226061,32 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "scripts/clean_source_export.py",
-        "line": 354
+        "line": 355
       },
       "layout_weight": 1.0,
       "curve_control": [
         -76.1423,
         104.9989,
         -84.0246
+      ]
+    },
+    {
+      "id": "I:9abe8af33634a2fd187c9a10",
+      "source": "file:scripts/clean_source_export.py",
+      "target": "file:scripts/build_specialty_map.py",
+      "kind": "imports",
+      "verb": "imports (not proof of execution)",
+      "evidence_level": "source-supported",
+      "currentness": "snapshot-bytes",
+      "source_anchor": {
+        "path": "scripts/clean_source_export.py",
+        "line": 356
+      },
+      "layout_weight": 1.0,
+      "curve_control": [
+        -243.3806,
+        74.8732,
+        -211.548
       ]
     },
     {
@@ -225759,7 +226099,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "scripts/clean_source_export.py",
-        "line": 355
+        "line": 357
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -225778,7 +226118,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "scripts/clean_source_export.py",
-        "line": 357
+        "line": 359
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -225797,7 +226137,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "scripts/clean_source_export.py",
-        "line": 360
+        "line": 362
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -225816,7 +226156,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "scripts/clean_source_export.py",
-        "line": 361
+        "line": 363
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -225835,7 +226175,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "scripts/clean_source_export.py",
-        "line": 364
+        "line": 366
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -225854,7 +226194,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "scripts/clean_source_export.py",
-        "line": 482
+        "line": 493
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -225873,7 +226213,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "scripts/clean_source_export.py",
-        "line": 758
+        "line": 769
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -226272,7 +226612,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "scripts/operational_gap_ledger.py",
-        "line": 14
+        "line": 15
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -227723,6 +228063,63 @@
         176.2049,
         52.2151,
         -12.494
+      ]
+    },
+    {
+      "id": "I:24140192b8003a3b22aec8d6",
+      "source": "file:scripts/verify_repair_operations.py",
+      "target": "file:runtime/test_profiles.py",
+      "kind": "imports",
+      "verb": "imports (not proof of execution)",
+      "evidence_level": "source-supported",
+      "currentness": "snapshot-bytes",
+      "source_anchor": {
+        "path": "scripts/verify_repair_operations.py",
+        "line": 26
+      },
+      "layout_weight": 1.0,
+      "curve_control": [
+        128.364,
+        -111.2697,
+        132.176
+      ]
+    },
+    {
+      "id": "I:ea4e1b3429da708336fc5e23",
+      "source": "file:scripts/verify_repair_operations.py",
+      "target": "file:runtime/version.py",
+      "kind": "imports",
+      "verb": "imports (not proof of execution)",
+      "evidence_level": "source-supported",
+      "currentness": "snapshot-bytes",
+      "source_anchor": {
+        "path": "scripts/verify_repair_operations.py",
+        "line": 32
+      },
+      "layout_weight": 1.0,
+      "curve_control": [
+        17.4091,
+        -225.9991,
+        -2.3424
+      ]
+    },
+    {
+      "id": "I:62305486546a235bc055dfd7",
+      "source": "file:scripts/verify_repair_operations.py",
+      "target": "file:runtime/cli.py",
+      "kind": "imports",
+      "verb": "imports (not proof of execution)",
+      "evidence_level": "source-supported",
+      "currentness": "snapshot-bytes",
+      "source_anchor": {
+        "path": "scripts/verify_repair_operations.py",
+        "line": 45
+      },
+      "layout_weight": 1.0,
+      "curve_control": [
+        -263.1716,
+        -178.5774,
+        141.5131
       ]
     },
     {
@@ -230281,7 +230678,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "tests/test_cli_commands.py",
-        "line": 13
+        "line": 14
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -230300,7 +230697,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "tests/test_cli_commands.py",
-        "line": 14
+        "line": 15
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -230319,7 +230716,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "tests/test_cli_commands.py",
-        "line": 23
+        "line": 24
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -230338,7 +230735,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "tests/test_cli_commands.py",
-        "line": 75
+        "line": 177
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -230357,7 +230754,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "tests/test_cli_commands.py",
-        "line": 170
+        "line": 272
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -230376,7 +230773,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "tests/test_cli_commands.py",
-        "line": 645
+        "line": 747
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -233169,7 +233566,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "tests/test_generated_artifacts.py",
-        "line": 4
+        "line": 5
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -233188,7 +233585,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "tests/test_generated_artifacts.py",
-        "line": 5
+        "line": 6
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -233207,7 +233604,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "tests/test_generated_artifacts.py",
-        "line": 8
+        "line": 9
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -233226,7 +233623,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "tests/test_generated_artifacts.py",
-        "line": 9
+        "line": 10
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -233245,7 +233642,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "tests/test_generated_artifacts.py",
-        "line": 32
+        "line": 59
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -233264,7 +233661,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "tests/test_generated_artifacts.py",
-        "line": 33
+        "line": 60
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -235582,7 +235979,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "tests/test_operate_self_diagnostics.py",
-        "line": 301
+        "line": 311
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -237159,7 +237556,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "tests/test_project_mapping.py",
-        "line": 7
+        "line": 8
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -237178,7 +237575,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "tests/test_project_mapping.py",
-        "line": 8
+        "line": 9
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -237197,7 +237594,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "tests/test_project_mapping.py",
-        "line": 14
+        "line": 15
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -237216,7 +237613,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "tests/test_project_mapping.py",
-        "line": 18
+        "line": 19
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -238261,7 +238658,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "tests/test_release_artifacts.py",
-        "line": 9
+        "line": 10
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -238280,7 +238677,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "tests/test_release_artifacts.py",
-        "line": 15
+        "line": 16
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -238299,7 +238696,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "tests/test_release_artifacts.py",
-        "line": 813
+        "line": 817
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -238439,25 +238836,6 @@
         286.6681,
         -113.1291,
         -30.2032
-      ]
-    },
-    {
-      "id": "I:8a8b13266d3234184b5eae27",
-      "source": "file:tests/test_release_candidate_driver.py",
-      "target": "file:scripts/run_release_stage_owner.py",
-      "kind": "imports",
-      "verb": "imports (not proof of execution)",
-      "evidence_level": "source-supported",
-      "currentness": "snapshot-bytes",
-      "source_anchor": {
-        "path": "tests/test_release_candidate_driver.py",
-        "line": 599
-      },
-      "layout_weight": 1.0,
-      "curve_control": [
-        292.6811,
-        -145.6402,
-        -24.4845
       ]
     },
     {
@@ -238708,6 +239086,25 @@
       ]
     },
     {
+      "id": "I:2b68ce6004cd3d342d4c6da5",
+      "source": "file:tests/test_release_distribution_controls.py",
+      "target": "file:runtime/version.py",
+      "kind": "imports",
+      "verb": "imports (not proof of execution)",
+      "evidence_level": "source-supported",
+      "currentness": "snapshot-bytes",
+      "source_anchor": {
+        "path": "tests/test_release_distribution_controls.py",
+        "line": 16
+      },
+      "layout_weight": 1.0,
+      "curve_control": [
+        177.1271,
+        -178.7961,
+        -47.3482
+      ]
+    },
+    {
       "id": "I:bc8c5ae07c77e9bd9350487f",
       "source": "file:tests/test_release_distribution_controls.py",
       "target": "file:runtime/release_distribution.py",
@@ -238717,7 +239114,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "tests/test_release_distribution_controls.py",
-        "line": 17
+        "line": 18
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -238736,7 +239133,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "tests/test_release_distribution_controls.py",
-        "line": 504
+        "line": 505
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -238755,7 +239152,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "tests/test_release_distribution_controls.py",
-        "line": 545
+        "line": 546
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -239389,6 +239786,44 @@
         446.4859,
         80.1995,
         110.6011
+      ]
+    },
+    {
+      "id": "I:d7ea940ee7ed85836f42c66b",
+      "source": "file:tests/test_repair_operational_verification.py",
+      "target": "file:runtime/test_profiles.py",
+      "kind": "imports",
+      "verb": "imports (not proof of execution)",
+      "evidence_level": "source-supported",
+      "currentness": "snapshot-bytes",
+      "source_anchor": {
+        "path": "tests/test_repair_operational_verification.py",
+        "line": 9
+      },
+      "layout_weight": 1.0,
+      "curve_control": [
+        513.5961,
+        41.2851,
+        237.7298
+      ]
+    },
+    {
+      "id": "I:321a68cdb9e30cd8c7c55f69",
+      "source": "file:tests/test_repair_operational_verification.py",
+      "target": "file:scripts/verify_repair_operations.py",
+      "kind": "imports",
+      "verb": "imports (not proof of execution)",
+      "evidence_level": "source-supported",
+      "currentness": "snapshot-bytes",
+      "source_anchor": {
+        "path": "tests/test_repair_operational_verification.py",
+        "line": 10
+      },
+      "layout_weight": 1.0,
+      "curve_control": [
+        145.9323,
+        -69.1467,
+        143.21
       ]
     },
     {
@@ -244759,7 +245194,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "tests/test_test_profiles.py",
-        "line": 18
+        "line": 25
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -244778,7 +245213,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "tests/test_test_profiles.py",
-        "line": 604
+        "line": 611
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -245415,6 +245850,25 @@
       ]
     },
     {
+      "id": "I:c750c6e1c4bfaed58f227949",
+      "source": "file:tests/test_verification_input_boundaries.py",
+      "target": "file:runtime/verification_status.py",
+      "kind": "imports",
+      "verb": "imports (not proof of execution)",
+      "evidence_level": "source-supported",
+      "currentness": "snapshot-bytes",
+      "source_anchor": {
+        "path": "tests/test_verification_input_boundaries.py",
+        "line": 10
+      },
+      "layout_weight": 1.0,
+      "curve_control": [
+        386.8004,
+        -76.7891,
+        209.7807
+      ]
+    },
+    {
       "id": "I:bd2e80a860c559ddd519f84a",
       "source": "file:tests/test_verification_input_boundaries.py",
       "target": "file:tests/verification_fixtures.py",
@@ -245424,7 +245878,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "tests/test_verification_input_boundaries.py",
-        "line": 10
+        "line": 11
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -245443,7 +245897,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "tests/test_verification_input_boundaries.py",
-        "line": 288
+        "line": 302
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -246789,7 +247243,7 @@
         "S1339"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "layout_weight": 0.2,
       "curve_control": [
         84.6055,
@@ -246969,7 +247423,7 @@
         "S1150"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "layout_weight": 0.2,
       "curve_control": [
         -178.8927,
@@ -246987,7 +247441,7 @@
         "S1149"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "layout_weight": 0.2,
       "curve_control": [
         -168.8544,
@@ -247239,7 +247693,7 @@
         "S2663"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "layout_weight": 0.2,
       "curve_control": [
         -412.9412,
@@ -249003,7 +249457,7 @@
         "S1959"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "layout_weight": 0.2,
       "curve_control": [
         61.3584,
@@ -250916,7 +251370,7 @@
       "curve_control": [
         163.9434,
         -99.3084,
-        -118.6061
+        -118.6062
       ]
     },
     {
@@ -250934,7 +251388,7 @@
       "curve_control": [
         220.5897,
         -71.9849,
-        47.1186
+        47.1185
       ]
     },
     {
@@ -250970,7 +251424,7 @@
       "curve_control": [
         153.5467,
         -107.7844,
-        -93.656
+        -93.6561
       ]
     },
     {
@@ -250983,12 +251437,12 @@
         "S3264"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "layout_weight": 0.2,
       "curve_control": [
         205.64,
         -184.0251,
-        -51.3597
+        -51.3598
       ]
     },
     {
@@ -251037,7 +251491,7 @@
         "S2172"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "layout_weight": 0.2,
       "curve_control": [
         112.1907,
@@ -251847,7 +252301,7 @@
         "S2207"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "layout_weight": 0.2,
       "curve_control": [
         286.9606,
@@ -252927,7 +253381,7 @@
         "S866"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "layout_weight": 0.2,
       "curve_control": [
         345.6421,
@@ -256779,7 +257233,7 @@
         "S2171"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "layout_weight": 0.2,
       "curve_control": [
         -20.5686,
@@ -257463,7 +257917,7 @@
         "S2651"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "layout_weight": 0.2,
       "curve_control": [
         -412.3043,
@@ -257499,7 +257953,7 @@
         "S2655"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "layout_weight": 0.2,
       "curve_control": [
         -429.6189,
@@ -257517,7 +257971,7 @@
         "S2650"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "layout_weight": 0.2,
       "curve_control": [
         -392.7119,
@@ -257535,7 +257989,7 @@
         "S2654"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "layout_weight": 0.2,
       "curve_control": [
         -454.6982,
@@ -257553,7 +258007,7 @@
         "S2664"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "layout_weight": 0.2,
       "curve_control": [
         -239.8973,
@@ -257571,7 +258025,7 @@
         "S2648"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "layout_weight": 0.2,
       "curve_control": [
         -96.3405,
@@ -258867,7 +259321,7 @@
         "S2200"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "layout_weight": 0.2,
       "curve_control": [
         331.4371,
@@ -262647,7 +263101,7 @@
         "S1959"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "layout_weight": 0.2,
       "curve_control": [
         -14.4866,
@@ -263619,7 +264073,7 @@
         "S313"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "layout_weight": 0.2,
       "curve_control": [
         -276.3461,
@@ -264375,7 +264829,7 @@
         "S865"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "layout_weight": 0.2,
       "curve_control": [
         338.812,
@@ -264393,7 +264847,7 @@
         "S869"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "layout_weight": 0.2,
       "curve_control": [
         394.8654,
@@ -264411,7 +264865,7 @@
         "S874"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "layout_weight": 0.2,
       "curve_control": [
         387.2044,
@@ -264609,7 +265063,7 @@
         "S1339"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "layout_weight": 0.2,
       "curve_control": [
         211.245,
@@ -264627,7 +265081,7 @@
         "S1341"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "layout_weight": 0.2,
       "curve_control": [
         360.4121,
@@ -265977,7 +266431,7 @@
         "S3409"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "layout_weight": 0.2,
       "curve_control": [
         147.1961,
@@ -265995,7 +266449,7 @@
         "S3414"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "layout_weight": 0.2,
       "curve_control": [
         427.6048,
@@ -266013,7 +266467,7 @@
         "S3408"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "layout_weight": 0.2,
       "curve_control": [
         419.8591,
@@ -266409,7 +266863,7 @@
         "S3571"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "layout_weight": 0.2,
       "curve_control": [
         -329.2038,
@@ -266913,7 +267367,7 @@
         "S3801"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "layout_weight": 0.2,
       "curve_control": [
         -165.846,
@@ -268137,7 +268591,7 @@
         "S045"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "layout_weight": 0.2,
       "curve_control": [
         344.295,
@@ -268245,7 +268699,7 @@
         "S4185"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "layout_weight": 0.2,
       "curve_control": [
         366.2764,
@@ -268483,7 +268937,7 @@
       "layout_weight": 0.2,
       "curve_control": [
         -72.535,
-        -9.0723,
+        -9.0724,
         10.0482
       ]
     },
@@ -269073,7 +269527,7 @@
         "S2205"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "layout_weight": 0.2,
       "curve_control": [
         69.8177,
@@ -269253,7 +269707,7 @@
         "S4340"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "layout_weight": 0.2,
       "curve_control": [
         405.6164,
@@ -270621,7 +271075,7 @@
         "S1431"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "layout_weight": 0.2,
       "curve_control": [
         472.3569,
@@ -271737,7 +272191,7 @@
         "S1385"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "layout_weight": 0.2,
       "curve_control": [
         454.5513,
@@ -271755,7 +272209,7 @@
         "S1396"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "layout_weight": 0.2,
       "curve_control": [
         422.5225,
@@ -271773,7 +272227,7 @@
         "S1392"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "layout_weight": 0.2,
       "curve_control": [
         442.1703,
@@ -271953,7 +272407,7 @@
         "S1436"
       ],
       "evidence_level": "source-supported",
-      "currentness": "same-file-bytes",
+      "currentness": "changed-file",
       "layout_weight": 0.2,
       "curve_control": [
         453.2419,
@@ -295241,23 +295695,23 @@
   },
   "metrics": {
     "systems": 1077,
-    "files": 5095,
-    "nodes_total": 6172,
+    "files": 5102,
+    "nodes_total": 6179,
     "semantic_relationships": 1626,
-    "static_import_relationships": 2603,
+    "static_import_relationships": 2619,
     "system_file_links": 1439,
-    "edges_total": 5668,
+    "edges_total": 5684,
     "flows": 288,
     "historical_findings": 1834,
     "evidence_anchors": 4432,
     "anchor_currentness": {
-      "same-file-bytes": 2068,
-      "changed-file": 2364
+      "same-file-bytes": 1938,
+      "changed-file": 2494
     },
-    "source_bytes": 57697953,
-    "source_exclusions": 33,
+    "source_bytes": 58085186,
+    "source_exclusions": 35,
     "source_parse_errors": 1,
-    "unresolved_import_records": 6726,
+    "unresolved_import_records": 6770,
     "system_isolates": [
       "cleanupreceiptredactor",
       "contractidrewrite",
