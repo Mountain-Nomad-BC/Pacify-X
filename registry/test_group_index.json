@@ -1,6 +1,6 @@
 {
   "dependency_parser": {
-    "python": "3.11.9",
+    "python": "3.14.5",
     "source_sha256": "eef8978418164a46d725f7c9fd9de7c40e29fef21078b86460d8fb5a80fd76a0",
     "version": "px.static-local-import-closure/2"
   },
@@ -5846,7 +5846,7 @@
         "runtime/operational_gap_ledger.py"
       ],
       "index_state": "verified",
-      "sha256": "530bbbe67141d41cae74df04c510071a2de1e282649ca3fa0c71909634b3c9a6"
+      "sha256": "8a2bd66067623e6e69cc10abf3509b25095a7ff05d56d5afde5ab8b39e432661"
     },
     "scripts/package_release_evidence.py": {
       "dependencies": [
@@ -11875,7 +11875,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "exact-installed",
-      "input_sha256": "bb27b72e2ee35caa4a2070114e9ff0375a2d2fe11230a57e74679ab0477a49ad",
+      "input_sha256": "bf091edf1c518c5e46bf512803fae419b9f601db902c4eea2cbb12ff62fe894a",
       "inputs": [
         "README.md",
         "conftest.py",
@@ -12325,7 +12325,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "release-build",
-      "input_sha256": "76fd9ef0c7c031d795142bd39035ad23577f4cac68da1388f544cdab9bcf7b34",
+      "input_sha256": "940194ae3b486d41d97587100bdd17f370a9626a2bd5874b29ba4981da902655",
       "inputs": [
         ".github/workflows/release.yml",
         "README.md",
@@ -12669,7 +12669,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "release-audit",
-      "input_sha256": "021bbc91a5b6fb0a729f45a401541c9347f1a7af6423d637144346895c815a7a",
+      "input_sha256": "58b14d38693599f4a225b2bf6032c8074f4e7c784b3f503000d64b2f5d59086f",
       "inputs": [
         "README.md",
         "conftest.py",
@@ -12951,7 +12951,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "structural-adversarial",
-      "input_sha256": "0c70b78b692014dac2693337bd276175a3870a8e7494537f87dcd0c4e1521ad6",
+      "input_sha256": "f1390ba0d531a0c06e19c9704ec6ead1610f7a05fdb0302702464a8f1844d2ac",
       "inputs": [
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_agents_md_generator.py",
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_change_impact.py",
@@ -15682,7 +15682,7 @@
       "disk_consumption_limit_bytes": 51539607552,
       "disk_work_units": 6,
       "group": "derived-integrity",
-      "input_sha256": "25f9339c780561d0ea10f5973d21ab94b45dd4154ad77cfe91d6ce62b1025ac7",
+      "input_sha256": "fdfc1dcc21d280a70c54e86bffa9423f0f55832c72261a7696891008583a18f4",
       "inputs": [
         "README.md",
         "conftest.py",
@@ -18158,7 +18158,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "core-n-s",
-      "input_sha256": "7511e8ffe67dbf09c4cd9264f7b39bdcb6d2b076b1be910b35d17c0ed6eabc5a",
+      "input_sha256": "256018eb6ef6382bc280e89585c378638f57332b3fa78669028f746c914c5885",
       "inputs": [
         "conftest.py",
         "docs/architecture/tools/build_atlas.py",
@@ -19582,7 +19582,7 @@
       "timeout_seconds": 1600.0
     }
   ],
-  "index_sha256": "21b2b56afdbfd95c12866e70f63948d382af89cbfb5891fa34e0bff07888504f",
+  "index_sha256": "1e32fb2438c8b78a6eaa729d3e0063b287f0f332f531f10c9b4a0786963cd0c2",
   "schema_version": "px.test-group-index/1.2",
   "test_file_count": 427,
   "topology_sha256": "b7acfcbeb33b312d298f48d3f42a92160dc57eea6c2180b06e0cbbdaa76fdd0a",

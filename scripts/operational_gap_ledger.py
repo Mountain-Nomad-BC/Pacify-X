@@ -40,6 +40,8 @@ def _json_value(value: str, *, root: Path) -> dict[str, Any]:
             )
         else:
             raw = sys.stdin.read()
+    elif value.lstrip().startswith("{"):
+        raw = value
     elif candidate.is_file():
         raw = candidate.read_text(encoding="utf-8")
     else:
