@@ -13,7 +13,7 @@ const STUDIO_PROTOCOL = require('../resources/studio-operations.json');
 if (STUDIO_PROTOCOL.schema_version !== 'px.studio-operation-contract/1.0' || !STUDIO_PROTOCOL.kinds) throw new Error('studio-operation-contract-invalid');
 
 const CONTRACTS = Object.freeze({
-  ready: [], refresh: [], dashboardViewState: ['state'], initializeProject: ['requestId'], openCoordinationHandoff: ['requestId'], openSettings: ['requestId'], configureCanonicalMemory: ['requestId'], disconnectCanonicalMemory: ['requestId'], buildRepositoryGraph: [], validate: [], createContextSnapshot: ['requestId'], openExtensionsView: ['requestId'], scanCleanup: [], teamPackPreview: [], refreshEnvironment: [], continueCodex: ['requestId'], cancelCodex: ['requestId'], listHostModels: [],
+  ready: [], refresh: [], dashboardViewState: ['state', 'acknowledgementRevision'], initializeProject: ['requestId'], openCoordinationHandoff: ['requestId'], openSettings: ['requestId'], configureCanonicalMemory: ['requestId'], disconnectCanonicalMemory: ['requestId'], buildRepositoryGraph: [], validate: [], createContextSnapshot: ['requestId'], openExtensionsView: ['requestId'], scanCleanup: [], teamPackPreview: [], refreshEnvironment: [], continueCodex: ['requestId'], cancelCodex: ['requestId'], listHostModels: [],
   skillQuery: ['goal', 'domain'], skillHydrate: ['skill', 'domain'], skillCompare: ['requestId', 'skill'], setupStudio: ['requestId'],
   createStudioDraft: ['requestId', 'kind', 'payload'],
   detachStudioDraft: ['requestId', 'kind'],
@@ -137,6 +137,7 @@ function validateWebviewMessage(message) {
   try { serialized = JSON.stringify(message); } catch { throw new Error('webview-message-not-serializable'); }
   if (Buffer.byteLength(serialized, 'utf8') > MAX_MESSAGE_BYTES) throw new Error('webview-message-too-large');
   if (message.type === 'dashboardViewState') {
+    if (message.acknowledgementRevision != null && (!Number.isSafeInteger(message.acknowledgementRevision) || message.acknowledgementRevision < 1)) throw new Error('webview-message-field-invalid:dashboardViewState-acknowledgementRevision');
     const allowedStateKeys = new Set([
       'active', 'advancedOpen', 'capabilityKind', 'agentScope', 'workflowScope', 'environmentScope',
       'graphView', 'graphMode', 'graphTarget', 'graphLayout', 'graphInspectorOpen', 'graphDepth',

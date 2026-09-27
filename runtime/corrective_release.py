@@ -99,6 +99,44 @@ def load_corrective_ledger(root: Path) -> dict[str, Any]:
     return json.loads((root.resolve() / LEDGER_PATH).read_text(encoding="utf-8"))
 
 
+def _externalized_custody_surface(root: Path) -> dict[str, dict[str, Any]]:
+    """Return the declared external-custody surface for superseded evidence.
+
+    Historical release evidence is externalized to recoverable custody outside the
+    deployable repository rather than rewritten or deleted (see
+    `evidence/externalized-payload-index.json` and the retention rule in
+    `policies/release-artifact-policy.json`). A card may therefore reference an evidence
+    artifact that is intentionally no longer present in the product tree.
+
+    This is a declaration lookup, not a filename allowlist: an artifact is externalized
+    only when the repository records it as externalized, with custody and digest. A
+    reference to an unrecorded missing file is still an error.
+    """
+
+    surface: dict[str, dict[str, Any]] = {}
+    for candidate in (
+        "evidence/externalized-payload-index.json",
+        "registry/externalized-payload-index.json",
+    ):
+        path = root / candidate
+        if not path.is_file():
+            continue
+        try:
+            document = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, ValueError, json.JSONDecodeError):
+            continue
+        records = document.get("records") or document.get("payloads") or []
+        if not isinstance(records, list):
+            continue
+        for record in records:
+            if not isinstance(record, dict):
+                continue
+            relative = str(record.get("path") or record.get("relative") or "")
+            if relative:
+                surface[relative.replace("\\", "/")] = record
+    return surface
+
+
 def validate_corrective_ledger(
     root: Path,
     *,
@@ -118,6 +156,11 @@ def validate_corrective_ledger(
     cards = ledger.get("cards")
     if not isinstance(cards, list):
         return {"valid": False, "errors": ["cards must be a list"], "cards": 0}
+    # Superseded evidence that the repository records as externalized to recoverable
+    # custody outside the product tree. Such a reference is satisfied by the custody
+    # record, not by a file in the tree.
+    externalized = _externalized_custody_surface(root)
+    externalized_references = 0
     identifiers = [str(card.get("id", "")) for card in cards if isinstance(card, dict)]
     if len(identifiers) != len(set(identifiers)):
         errors.append("corrective ledger contains duplicate card IDs")
@@ -157,13 +200,16 @@ def validate_corrective_ledger(
                     errors.append(
                         f"{identifier}: owning path escapes product root: {relative}"
                     )
-                elif not owner_path.exists() and not (
-                    str(relative).startswith("evidence/")
-                    and status in {"open", "in_progress"}
-                ):
-                    errors.append(
-                        f"{identifier}: owning path does not exist: {relative}"
-                    )
+                elif not owner_path.exists():
+                    if str(relative).replace("\\", "/") in externalized:
+                        externalized_references += 1
+                    elif not (
+                        str(relative).startswith("evidence/")
+                        and status in {"open", "in_progress"}
+                    ):
+                        errors.append(
+                            f"{identifier}: owning path does not exist: {relative}"
+                        )
         commands = card.get("acceptance_commands")
         if not isinstance(commands, list) or not commands:
             errors.append(f"{identifier}: acceptance_commands must be nonempty")
@@ -184,7 +230,10 @@ def validate_corrective_ledger(
             if root not in path.parents and path != root:
                 errors.append(f"{identifier}: receipt escapes product root: {relative}")
             elif not path.is_file():
-                errors.append(f"{identifier}: missing receipt: {relative}")
+                if str(relative).replace("\\", "/") in externalized:
+                    externalized_references += 1
+                else:
+                    errors.append(f"{identifier}: missing receipt: {relative}")
         if status == "deferred_with_owner":
             if (
                 not card.get("owner")

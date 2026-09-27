@@ -38,18 +38,51 @@ $ninja = Join-Path $vsRoot "Common7\IDE\CommonExtensions\Microsoft\CMake\Ninja\n
 foreach ($p in @($vcvars, $cmake, $ninja, (Join-Path $cudaRoot "bin\nvcc.exe"))) {
     if (-not (Test-Path $p)) { throw "Required tool not found: $p" }
 }
+$nvcc = Join-Path $cudaRoot "bin\nvcc.exe"
+$nvccOutput = (& $nvcc --version 2>&1 | Out-String)
+if ($LASTEXITCODE -ne 0) { throw "nvcc --version failed with exit code $LASTEXITCODE" }
+$cudaVersionMatch = [regex]::Match($nvccOutput, '\brelease\s+([0-9]+(?:\.[0-9]+)+)')
+if (-not $cudaVersionMatch.Success) { throw "Could not identify the installed CUDA toolkit version" }
+$cudaVersion = $cudaVersionMatch.Groups[1].Value
+$msvcVersionPath = Join-Path $vsRoot "VC\Auxiliary\Build\Microsoft.VCToolsVersion.default.txt"
+if (-not (Test-Path $msvcVersionPath -PathType Leaf)) { throw "MSVC default toolset version file not found: $msvcVersionPath" }
+$msvcVersion = (Get-Content -LiteralPath $msvcVersionPath -TotalCount 1).Trim()
+if ($msvcVersion -notmatch '^\d+\.\d+\.\d+(?:\.\d+)?$') { throw "Invalid MSVC toolset version: $msvcVersion" }
+if ($LlamaCppRef -notmatch '^[A-Za-z0-9][A-Za-z0-9._/-]{0,127}$' -or $LlamaCppRef.Contains('..')) {
+    throw "LlamaCppRef must be a single Git ref or commit identifier"
+}
 
 $runtimeRoot = Join-Path $InstallRoot "runtime"
 $repo = Join-Path $runtimeRoot "llama.cpp"
 New-Item -ItemType Directory -Force -Path $runtimeRoot | Out-Null
 
 if (-not (Test-Path (Join-Path $repo ".git"))) {
-    git clone https://github.com/ggml-org/llama.cpp $repo
+    & git clone https://github.com/ggml-org/llama.cpp $repo
+    if ($LASTEXITCODE -ne 0) { throw "llama.cpp clone failed with exit code $LASTEXITCODE" }
 }
 
 Push-Location $repo
 try {
-    $resolvedCommit = (git rev-parse HEAD).Trim()
+    $topLevel = (& git rev-parse --show-toplevel).Trim()
+    if ($LASTEXITCODE -ne 0 -or [IO.Path]::GetFullPath($topLevel) -ne [IO.Path]::GetFullPath($repo)) {
+        throw "llama.cpp checkout is not the expected repository: $repo"
+    }
+    $origin = (& git remote get-url origin).Trim()
+    if ($LASTEXITCODE -ne 0 -or $origin -notin @('https://github.com/ggml-org/llama.cpp', 'https://github.com/ggml-org/llama.cpp.git')) {
+        throw "llama.cpp origin is not the expected upstream: $origin"
+    }
+    $dirty = & git status --porcelain --untracked-files=all
+    if ($LASTEXITCODE -ne 0 -or $dirty) { throw "llama.cpp checkout has local changes; refusing to switch refs" }
+    & git fetch --tags origin -- $LlamaCppRef
+    if ($LASTEXITCODE -ne 0) { throw "Could not fetch requested llama.cpp ref: $LlamaCppRef" }
+    $resolvedCommit = (& git rev-parse --verify 'FETCH_HEAD^{commit}').Trim()
+    if ($LASTEXITCODE -ne 0 -or $resolvedCommit -notmatch '^[0-9a-fA-F]{40}$') {
+        throw "Requested llama.cpp ref did not resolve to a commit: $LlamaCppRef"
+    }
+    & git checkout --detach $resolvedCommit
+    if ($LASTEXITCODE -ne 0) { throw "Could not check out requested llama.cpp commit: $resolvedCommit" }
+    $headCommit = (& git rev-parse HEAD).Trim()
+    if ($LASTEXITCODE -ne 0 -or $headCommit -ne $resolvedCommit) { throw "Checked-out llama.cpp commit differs from requested ref" }
 
     $cmakeArgs = @("-S", ".", "-B", "build", "-G", "Ninja", "-DGGML_CUDA=ON", "-DCMAKE_BUILD_TYPE=Release")
     if ($PortableCudaBuild) {
@@ -97,8 +130,8 @@ try {
         resolved_commit   = $resolvedCommit
         cuda_architectures = $CudaArchitectures
         portable_cuda_build = [bool]$PortableCudaBuild
-        cuda_toolkit      = "13.4"
-        msvc_toolset      = "14.51.36231"
+        cuda_toolkit      = $cudaVersion
+        msvc_toolset      = $msvcVersion
         configured_at     = (Get-Date).ToUniversalTime().ToString("o")
         server_path       = $server
         server_sha256     = (Get-FileHash $server -Algorithm SHA256).Hash.ToLowerInvariant()

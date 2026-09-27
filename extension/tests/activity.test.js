@@ -121,12 +121,16 @@ test('activity integrity repair retains exact backups, rechains every event, and
   fs.writeFileSync(paths.events, `${events.map(JSON.stringify).join('\n')}\n`, 'utf8');
   const state = JSON.parse(fs.readFileSync(paths.state, 'utf8')); state.last_event_sha256 = events[1].event_sha256;
   fs.writeFileSync(paths.state, `${JSON.stringify(state, null, 2)}\n`, 'utf8');
+  const originalEvents = fs.readFileSync(paths.events);
+  const originalState = fs.readFileSync(paths.state);
   assert.equal(readActivity(root).integrity.valid, false);
   const receipt = repairActivityIntegrity(root);
   const view = readActivity(root, { limit: 10 });
   assert.equal(receipt.repaired, true);
   assert.equal(fs.existsSync(receipt.events_backup), true);
   assert.equal(fs.existsSync(receipt.state_backup), true);
+  assert.deepEqual(fs.readFileSync(receipt.events_backup), originalEvents);
+  assert.deepEqual(fs.readFileSync(receipt.state_backup), originalState);
   assert.equal(view.integrity.valid, true);
   assert.equal(view.events[0].operation, 'activity.integrity.recovered');
   assert.equal(view.event_count, 3);
@@ -136,17 +140,18 @@ test('activity state corruption fails closed with retained evidence instead of f
   const root = workspace(t); recordActivity(root, actor, { operation: 'activity.seed' });
   const paths = activityPaths(root); fs.writeFileSync(paths.state, '{"revision":', 'utf8');
   assert.throws(() => readActivity(root), /activity-authoritative-state-corrupt/);
+  assert.equal(fs.existsSync(paths.quarantine), false);
   assert.throws(() => recordActivity(root, actor, { operation: 'activity.must-block' }), /activity-authoritative-state-corrupt/);
   assert.ok(fs.readdirSync(paths.quarantine).some(name => name.endsWith('.corrupt')));
 });
 
-test('repeated same-millisecond corruption observations retain collision-free evidence', t => {
+test('repeated same-millisecond mutating observations retain collision-free evidence', t => {
   const root = workspace(t); recordActivity(root, actor, { operation: 'activity.seed' });
   const paths = activityPaths(root); fs.writeFileSync(paths.state, '{"revision":', 'utf8');
   const originalNow = Date.now; Date.now = () => 1786593600000;
   try {
-    assert.throws(() => readActivity(root), /activity-authoritative-state-corrupt/);
-    assert.throws(() => readActivity(root), /activity-authoritative-state-corrupt/);
+    assert.throws(() => recordActivity(root, actor, { operation: 'activity.must-block' }), /activity-authoritative-state-corrupt/);
+    assert.throws(() => recordActivity(root, actor, { operation: 'activity.must-block' }), /activity-authoritative-state-corrupt/);
   } finally { Date.now = originalNow; }
   const names = fs.readdirSync(paths.quarantine);
   assert.equal(names.filter(name => name.endsWith('.corrupt')).length, 2);
@@ -161,6 +166,111 @@ test('activity JSONL preserves its valid prefix, reports degradation, and blocks
   assert.equal(tail.health.status, 'degraded');
   assert.throws(() => recordActivity(root, actor, { operation: 'activity.must-block' }), /activity-event-log-degraded/);
   assert.equal(readActivity(root).integrity.valid, false);
+});
+
+test('activity reader rejects oversized logs and records before parsing', t => {
+  const root = workspace(t); const paths = activityPaths(root); fs.mkdirSync(paths.root, { recursive: true });
+  fs.writeFileSync(paths.events, '{}\n', 'utf8');
+  fs.truncateSync(paths.events, 32 * 1024 * 1024 + 1);
+  const tooLarge = tailEventsDetailed(paths.events, 100);
+  assert.equal(tooLarge.health.reason, 'oversized-log');
+  assert.deepEqual(tooLarge.events, []);
+  fs.writeFileSync(paths.events, `${'a'.repeat(1024 * 1024 + 1)}\n`, 'utf8');
+  const longLine = tailEventsDetailed(paths.events, 100);
+  assert.equal(longLine.health.reason, 'oversized-line');
+  assert.deepEqual(longLine.events, []);
+  fs.writeFileSync(paths.events, '\n'.repeat(100001), 'utf8');
+  const tooMany = tailEventsDetailed(paths.events, 100);
+  assert.equal(tooMany.health.reason, 'too-many-lines');
+});
+
+test('activity repair refuses a sparse oversized log before backup or rewrite', t => {
+  const root = workspace(t); recordActivity(root, actor, { operation: 'activity.seed' });
+  const paths = activityPaths(root);
+  fs.truncateSync(paths.events, 32 * 1024 * 1024 + 1);
+  const originalEventsSize = fs.statSync(paths.events).size;
+  const originalState = fs.readFileSync(paths.state, 'utf8');
+  assert.throws(() => repairActivityIntegrity(root), /activity-integrity-repair-refuses-unreadable-jsonl:oversized-log/);
+  assert.equal(fs.statSync(paths.events).size, originalEventsSize);
+  assert.equal(fs.readFileSync(paths.state, 'utf8'), originalState);
+  assert.equal(fs.existsSync(paths.quarantine), false);
+});
+
+test('activity repair refuses malformed UTF-8 inside parseable event JSON without backup or rewrite', t => {
+  const root = workspace(t); recordActivity(root, actor, { operation: 'activity.seed' });
+  const paths = activityPaths(root);
+  const original = fs.readFileSync(paths.events);
+  const marker = Buffer.from('activity.seed');
+  const position = original.indexOf(marker);
+  assert.notEqual(position, -1);
+  original[position] = 0xff;
+  fs.writeFileSync(paths.events, original);
+  const state = fs.readFileSync(paths.state);
+  const tail = tailEventsDetailed(paths.events, 100);
+  assert.equal(tail.health.reason, 'unreadable:invalid-utf8');
+  assert.throws(() => repairActivityIntegrity(root), /activity-integrity-repair-refuses-unreadable-jsonl:unreadable:invalid-utf8/);
+  assert.deepEqual(fs.readFileSync(paths.events), original);
+  assert.deepEqual(fs.readFileSync(paths.state), state);
+  assert.equal(fs.existsSync(paths.quarantine), false);
+});
+
+test('activity repair refuses malformed UTF-8 in state without backup or rewrite', t => {
+  const root = workspace(t); recordActivity(root, actor, { operation: 'activity.seed' });
+  const paths = activityPaths(root);
+  const state = fs.readFileSync(paths.state);
+  const marker = Buffer.from('project-owned');
+  const position = state.indexOf(marker);
+  assert.notEqual(position, -1);
+  state[position] = 0xff;
+  fs.writeFileSync(paths.state, state);
+  const events = fs.readFileSync(paths.events);
+  assert.throws(() => repairActivityIntegrity(root), /activity-authoritative-state-unreadable:unreadable:invalid-utf8/);
+  assert.deepEqual(fs.readFileSync(paths.events), events);
+  assert.deepEqual(fs.readFileSync(paths.state), state);
+  assert.equal(fs.existsSync(paths.quarantine), false);
+});
+
+test('activity repair refuses a truncated event window even when state count understates the log', t => {
+  const root = workspace(t); recordActivity(root, actor, { operation: 'activity.seed' });
+  const paths = activityPaths(root);
+  const event = fs.readFileSync(paths.events);
+  const oversizedHistory = Buffer.concat(Array.from({ length: 20001 }, () => event));
+  fs.writeFileSync(paths.events, oversizedHistory);
+  const originalState = fs.readFileSync(paths.state);
+  assert.throws(() => repairActivityIntegrity(root), /activity-integrity-repair-requires-complete-ledger/);
+  assert.deepEqual(fs.readFileSync(paths.events), oversizedHistory);
+  assert.deepEqual(fs.readFileSync(paths.state), originalState);
+  assert.equal(fs.existsSync(paths.quarantine), false);
+});
+
+test('activity reads and repair refuse a sparse oversized state without backup', t => {
+  const root = workspace(t); recordActivity(root, actor, { operation: 'activity.seed' });
+  const paths = activityPaths(root);
+  fs.truncateSync(paths.state, 32 * 1024 * 1024 + 1);
+  assert.throws(() => readActivity(root), /activity-authoritative-state-unreadable:oversized-state/);
+  assert.throws(() => repairActivityIntegrity(root), /activity-authoritative-state-unreadable:oversized-state/);
+  assert.equal(fs.statSync(paths.state).size, 32 * 1024 * 1024 + 1);
+  assert.equal(fs.existsSync(paths.quarantine), false);
+});
+
+test('activity repair refuses to overwrite an event log changed after its exact backup', t => {
+  const root = workspace(t); recordActivity(root, actor, { operation: 'activity.seed' });
+  const paths = activityPaths(root);
+  const event = JSON.parse(fs.readFileSync(paths.events, 'utf8').trim());
+  event.operation = 'activity.tampered';
+  fs.writeFileSync(paths.events, `${JSON.stringify(event)}\n`, 'utf8');
+  const originalState = fs.readFileSync(paths.state, 'utf8');
+  const originalWrite = fs.writeFileSync;
+  fs.writeFileSync = function(file, ...args) {
+    const result = originalWrite.call(fs, file, ...args);
+    if (String(file).endsWith('.pre-repair.jsonl')) originalWrite.call(fs, paths.events, '{}\n', 'utf8');
+    return result;
+  };
+  try {
+    assert.throws(() => repairActivityIntegrity(root), /activity-integrity-repair-source-changed-before-write/);
+  } finally { fs.writeFileSync = originalWrite; }
+  assert.equal(fs.readFileSync(paths.events, 'utf8'), '{}\n');
+  assert.equal(fs.readFileSync(paths.state, 'utf8'), originalState);
 });
 
 test('activity lock does not steal an old live owner and release is token fenced', t => {

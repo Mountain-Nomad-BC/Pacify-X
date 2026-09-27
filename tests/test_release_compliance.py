@@ -112,6 +112,63 @@ def test_version_consistency_check_shape() -> None:
     assert result["passed"], result["problems"]
 
 
+def _write_version_fixture(root: Path, version: str = "0.9.0") -> None:
+    (root / "pyproject.toml").write_text(f'version = "{version}"\n', encoding="utf-8")
+    (root / "README.md").write_text("Pacify-X 0.9 release\n", encoding="utf-8")
+    runtime = root / "runtime"
+    runtime.mkdir()
+    (runtime / "version.py").write_text(f'VERSION = "{version}"\n', encoding="utf-8")
+    extension = root / "extension"
+    extension.mkdir()
+    (extension / "package.json").write_text(json.dumps({"version": version}), encoding="utf-8")
+    (extension / "package-lock.json").write_text(
+        json.dumps({"version": version, "packages": {"": {"version": version}}}),
+        encoding="utf-8",
+    )
+    adapter = extension / "src" / "agentHarness" / "adapters"
+    adapter.mkdir(parents=True)
+    (adapter / "codexAppServer.js").write_text(
+        f"const version = this.options.clientVersion || '{version}';\n", encoding="utf-8"
+    )
+    registry = root / "registry"
+    registry.mkdir()
+    (registry / "build_claims.json").write_text(json.dumps({"version": version}), encoding="utf-8")
+
+
+def test_invalid_extension_package_json_fails_with_parse_diagnostic(tmp_path: Path) -> None:
+    _write_version_fixture(tmp_path)
+    (tmp_path / "extension" / "package.json").write_text('{"version":\n', encoding="utf-8")
+
+    result = compliance.check_version_consistency(tmp_path)
+
+    assert result["passed"] is False
+    assert result["problems"] == [
+        "extension/package.json contains invalid JSON at line 2, column 1"
+    ]
+
+
+@pytest.mark.parametrize(
+    "relative_path, content, expected_source",
+    [
+        ("runtime/version.py", 'VERSION = "0.7.0"\n', "runtime/version.py"),
+        ("extension/package.json", '{"version":"0.7.0"}', "extension/package.json"),
+        ("extension/package-lock.json", '{"version":"0.9.0","packages":{"":{"version":"0.7.0"}}}', "extension/package-lock.json#packages."),
+        ("registry/build_claims.json", '{"version":"0.7.0"}', "registry/build_claims.json"),
+        ("extension/src/agentHarness/adapters/codexAppServer.js", "this.options.clientVersion || '0.7.0'", "extension/src/agentHarness/adapters/codexAppServer.js"),
+    ],
+)
+def test_version_consistency_rejects_drift(
+    tmp_path: Path, relative_path: str, content: str, expected_source: str
+) -> None:
+    _write_version_fixture(tmp_path)
+    (tmp_path / relative_path).write_text(content, encoding="utf-8")
+
+    result = compliance.check_version_consistency(tmp_path)
+
+    assert result["passed"] is False
+    assert any(problem.startswith(f"{expected_source} version 0.7.0 disagrees") for problem in result["problems"])
+
+
 def test_invariants_manifest_is_not_a_compliance_claim_source() -> None:
     # The invariants manifest lists frameworks only to deny them.
     manifest = json.loads((ROOT / "policies/release-invariants.json").read_text(encoding="utf-8"))

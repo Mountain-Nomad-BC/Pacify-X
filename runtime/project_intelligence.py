@@ -3471,10 +3471,21 @@ def validate_project_map(
                 f"configuration map contains prohibited value field for {key.get('key')}"
             )
     if check_freshness:
-        project_root = Path(str(manifest.get("project_root", "")))
-        if not project_root.is_dir():
-            warnings.append(
-                "freshness check skipped because recorded project root is unavailable"
+        recorded_root = str(manifest.get("project_root", ""))
+        project_root = Path(recorded_root)
+        requested_root = Path(project_or_map).resolve()
+        if requested_root == map_dir and map_dir.parent.name == ".engineering-bootstrap":
+            requested_root = map_dir.parent.parent
+        if not recorded_root or not project_root.is_absolute() or not project_root.is_dir():
+            errors.append(
+                "freshness check failed because recorded project root is unavailable or invalid"
+            )
+        elif (
+            requested_root != map_dir
+            and requested_root != project_root.resolve()
+        ):
+            errors.append(
+                "freshness check failed because recorded project root differs from requested project"
             )
         else:
             try:

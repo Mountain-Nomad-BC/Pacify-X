@@ -12,6 +12,40 @@ const { createLaunchAuthority } = require('../src/mcpMutationAuthority');
 
 const root = path.resolve(__dirname, '..');
 
+test('MCP enterprise read handlers do not initialize persistent state', () => {
+  const source = fs.readFileSync(path.join(root, 'server', 'source.mjs'), 'utf8');
+  assert.match(source, /pacify_enterprise_status[\s\S]*?initializeEnterprise\(workspaceRoot\(\), enterpriseCatalog\(\), \{ persist: false \}\)/);
+  assert.match(source, /pacify_billable_guardrail_evaluate[\s\S]*?initializeEnterprise\(workspaceRoot\(\), enterpriseCatalog\(\), \{ persist: false \}\)/);
+});
+
+test('MCP dashboard calls bind the open project rather than defaulting to engine root', () => {
+  const source = fs.readFileSync(path.join(root, 'server', 'source.mjs'), 'utf8');
+  assert.match(source, /const project = process\.env\.PX_WORKSPACE_ROOT \|\| process\.env\.PX_COORDINATION_ROOT/);
+  assert.match(source, /args\.includes\('--project'\) \? args : \[\.\.\.args, '--project', path\.resolve\(project\)\]/);
+});
+
+test('MCP mailbox tools keep private payloads on trusted local recipient paths', () => {
+  const source = fs.readFileSync(path.join(root, 'server', 'source.mjs'), 'utf8');
+  assert.match(source, /pacify_message_send[\s\S]*?input\.privacy_class === 'private'[\s\S]*?requires-trusted-local-recipient/);
+  assert.match(source, /pacify_message_read[\s\S]*?readMessages\(workspaceRoot\(\), actor\(input\), input, \{ includePrivate: false \}\)/);
+  assert.match(source, /pacify_message_consume[\s\S]*?consumeMessage\(workspaceRoot\(\), actor\(input\), input, \{ allowPrivate: false \}\)/);
+});
+
+test('MCP read instrumentation cannot quarantine corrupt activity and handoff ignores stored packets', () => {
+  const source = fs.readFileSync(path.join(root, 'server', 'source.mjs'), 'utf8');
+  const middleware = fs.readFileSync(path.join(root, 'src', 'mcpActivityIntegration.js'), 'utf8');
+  assert.match(middleware, /if \(definition\.annotations\?\.readOnlyHint\) \{[\s\S]*?state\.observed_read_events \+= 1;[\s\S]*?return \{ recorded: true, persisted: false/);
+  assert.match(source, /pacify_resume_handoff[\s\S]*?stored_handoff_read: false/);
+  assert.doesNotMatch(source, /readJsonFile\(data\.paths\.handoff_json/);
+});
+
+test('MCP snapshot and readiness readers request the nonpersisting dashboard path', () => {
+  const source = fs.readFileSync(path.join(root, 'server', 'source.mjs'), 'utf8');
+  assert.equal((source.match(/runApi\(\['snapshot', '--read-only'\]\)/g) || []).length, 3);
+  assert.match(source, /const args = \['readiness', '--read-only'\]/);
+  assert.doesNotMatch(source, /runApi\(\['snapshot'\]\)/);
+});
+
 test('bundled MCP server rejects an unattested write before project state or activity changes', { timeout: 10000 }, async t => {
   const workspace = fs.mkdtempSync(path.join(os.tmpdir(), 'px-mcp-denied-'));
   t.after(() => fs.rmSync(workspace, { recursive: true, force: true }));

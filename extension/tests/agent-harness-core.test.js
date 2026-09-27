@@ -6,6 +6,7 @@ const { CanonicalEventBus } = require('../src/agentHarness/eventBus');
 const { TaskStore } = require('../src/agentHarness/taskStore');
 const { BudgetLedger } = require('../src/agentHarness/budgetLedger');
 const { WorkerRegistry } = require('../src/agentHarness/workerRegistry');
+const { WorkerDescriptor, parse } = require('../src/agentHarness/contracts');
 const { chooseWorker } = require('../src/agentHarness/router');
 const { ContextCompiler } = require('../src/agentHarness/contextCompiler');
 const { TinyLibrarian } = require('../src/agentHarness/tinyLibrarian');
@@ -13,6 +14,24 @@ const { evaluateCompletion } = require('../src/agentHarness/completionEvaluator'
 const { MockAdapter } = require('../src/agentHarness/adapters/mock');
 
 function task(store, overrides={}) { return store.createTask({ goal:'debug the hanging test', mode:'DIAGNOSE', maxEffectClass:'READ_ONLY', contextBudgetTokens:1200, taskCostCeilingUsd:0.2, localFirst:true, requireApprovalBeforeBillable:true, completionContract:[], ...overrides }); }
+
+test('worker registry accepts an explicit provider profile and only declared latency classes', () => {
+  const descriptor = {
+    workerId: 'profiled-local', adapterId: 'gateway', providerId: 'px-governed',
+    modelId: 'model', profileId: 'control-profile', displayName: 'Profiled local',
+    costClass: 'local', contextLimit: 8192, locality: 'local',
+    capabilities: { coding: 0.5, planning: 0.5, review: 0.5, classification: 0.5 },
+    supportedEffectClass: 'READ_ONLY', enabled: true, reliability: 0.5,
+    latencyClass: 'unknown'
+  };
+  const registry = new WorkerRegistry();
+  registry.register(descriptor, new MockAdapter());
+  assert.equal(registry.get('profiled-local').profileId, 'control-profile');
+  assert.throws(
+    () => parse(WorkerDescriptor, { ...descriptor, latencyClass: 'bounded' }, 'worker-descriptor'),
+    /worker-descriptor-invalid:latencyClass:/
+  );
+});
 
 test('canonical event bus is bounded and monotonic', () => { const bus=new CanonicalEventBus({maxEvents:50}); for(let i=0;i<70;i++)bus.emit('test.event',{summary:String(i)}); const rows=bus.snapshot(); assert.equal(rows.length,50); assert.ok(rows.every((r,i)=>i===0||r.sequence>rows[i-1].sequence)); });
 

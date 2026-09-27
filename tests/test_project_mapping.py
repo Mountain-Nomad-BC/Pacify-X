@@ -1,6 +1,7 @@
 from pathlib import Path
 import json
 import math
+import shutil
 import subprocess
 import sys
 import pytest
@@ -146,6 +147,56 @@ def test_build_validate_query_and_incremental(tmp_path: Path):
     second = build_project_map(p)
     assert second["incremental_reuse"]["reused"] >= 2
     assert diff_project_maps(Path(first["map_dir"]), Path(second["map_dir"]))["valid"]
+
+
+def test_relocated_map_fails_closed_when_recorded_root_is_unavailable(tmp_path: Path):
+    project = tmp_path / "original"
+    project.mkdir()
+    (project / "service.py").write_text("def ready(): return True\n", encoding="utf-8")
+    assert build_project_map(project)["valid"]
+    moved = tmp_path / "relocated"
+    project.rename(moved)
+
+    assert validate_project_map(moved)["valid"]
+    fresh = validate_project_map(moved, check_freshness=True)
+    assert not fresh["valid"]
+    assert any("recorded project root is unavailable" in error for error in fresh["errors"])
+
+    validate_tool = (
+        Path(__file__).parents[1] / ".px" / "skills" /
+        "map-project-intelligence" / "scripts" / "validate_project_map.py"
+    )
+    checked = subprocess.run(
+        [sys.executable, "-B", str(validate_tool), str(moved), "--fresh"],
+        capture_output=True, text=True, check=False,
+    )
+    assert checked.returncode != 0
+    assert json.loads(checked.stdout)["valid"] is False
+
+
+def test_copied_map_cannot_claim_freshness_for_different_project(tmp_path: Path):
+    original = tmp_path / "original"
+    original.mkdir()
+    (original / "service.py").write_text("def old(): return True\n", encoding="utf-8")
+    assert build_project_map(original)["valid"]
+    other = tmp_path / "other"
+    other.mkdir()
+    (other / "service.py").write_text("def new(): return False\n", encoding="utf-8")
+    shutil.copytree(
+        original / ".engineering-bootstrap" / "project-map",
+        other / ".engineering-bootstrap" / "project-map",
+    )
+
+    assert validate_project_map(other)["valid"]
+    assert validate_project_map(original, check_freshness=True)["valid"]
+    fresh = validate_project_map(other, check_freshness=True)
+    assert not fresh["valid"]
+    assert any("differs from requested project" in error for error in fresh["errors"])
+    direct_fresh = validate_project_map(
+        other / ".engineering-bootstrap" / "project-map", check_freshness=True
+    )
+    assert not direct_fresh["valid"]
+    assert any("differs from requested project" in error for error in direct_fresh["errors"])
 
 
 def test_project_map_status_supports_honest_fast_projection_check(tmp_path: Path):

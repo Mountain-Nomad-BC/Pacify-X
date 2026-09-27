@@ -4,9 +4,14 @@ const crypto = require('crypto');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
+const { TextDecoder } = require('util');
 
 const SCHEMA_VERSION = 'px.activity/1.1';
 const EVENT_LIMIT = 20000;
+const MAX_ACTIVITY_LOG_BYTES = 32 * 1024 * 1024;
+const MAX_ACTIVITY_STATE_BYTES = 32 * 1024 * 1024;
+const MAX_ACTIVITY_LINE_BYTES = 1024 * 1024;
+const MAX_ACTIVITY_LOG_LINES = 100000;
 const activeWriters = new Set();
 
 function now() { return new Date().toISOString(); }
@@ -55,20 +60,27 @@ function defaultState(paths, policy = {}) {
     policy: normalizePolicy(policy), totals: { by_category: {}, by_status: {} }, agents: {}, active_operations: {}
   };
 }
-function readState(paths, policy = {}) {
-  if (!fs.existsSync(paths.state)) return defaultState(paths, policy);
-  let raw; try { raw = fs.readFileSync(paths.state, 'utf8'); } catch (error) { throw new Error(`activity-authoritative-state-unreadable:${error.code || error.message}`); }
+function readState(paths, policy = {}, options = {}) {
+  const loaded = readBoundedActivityText(paths.state, MAX_ACTIVITY_STATE_BYTES, 'oversized-state');
+  if (loaded.health?.status === 'missing') {
+    const state = defaultState(paths, policy);
+    return options.returnRaw === true ? { state, raw: null } : state;
+  }
+  if (loaded.health) throw new Error(`activity-authoritative-state-unreadable:${loaded.health.reason}`);
+  const raw = loaded.raw;
   let state;
   try { state = JSON.parse(raw); }
   catch (error) {
-    fs.mkdirSync(paths.quarantine, { recursive: true }); const digest = sha(raw); const base = `current.${Date.now()}.${crypto.randomUUID()}.${digest.slice(0, 12)}`;
+    const digest = sha(raw);
+    if (options.persistCorruptionEvidence === false) throw new Error(`activity-authoritative-state-corrupt:${digest}:evidence-not-written-read-only`);
+    fs.mkdirSync(paths.quarantine, { recursive: true }); const base = `current.${Date.now()}.${crypto.randomUUID()}.${digest.slice(0, 12)}`;
     const evidence = path.join(paths.quarantine, `${base}.corrupt`); const receipt = path.join(paths.quarantine, `${base}.receipt.json`);
     fs.writeFileSync(evidence, raw, { encoding: 'utf8', flag: 'wx' });
     atomicWrite(receipt, { schema_version: 'px.activity-quarantine/1.0', detected_utc: now(), source_path: paths.state, evidence_path: evidence, source_sha256: digest, source_bytes: Buffer.byteLength(raw, 'utf8'), reason: text(error.message, 500) });
     throw new Error(`activity-authoritative-state-corrupt:${digest}:${receipt}`);
   }
   if (!state || typeof state !== 'object' || Array.isArray(state) || typeof state.active_operations !== 'object' || typeof state.agents !== 'object') throw new Error('activity-authoritative-state-invalid');
-  return state;
+  return options.returnRaw === true ? { state, raw } : state;
 }
 function atomicWrite(file, value) {
   const temporary = `${file}.${process.pid}.${crypto.randomUUID()}.tmp`;
@@ -136,14 +148,14 @@ function isExecutableLifecycle(status, effectName, operation) {
   if (!['started', 'running'].includes(status) || operation === 'terminal.session') return false;
   return /process|write|destructive|network/.test(String(effectName || ''));
 }
-function recordActivity(workspaceRoot, actorInput, input = {}, policyInput = {}) {
+function recordActivity(workspaceRoot, actorInput, input = {}, policyInput = {}, options = {}) {
   const paths = activityPaths(workspaceRoot); const policy = normalizePolicy(policyInput); const operation = text(input.operation, 200) || 'activity.unknown';
   if ((!policy.enabled || policy.paused) && operation !== 'observability.policy-changed') return { recorded: false, reason: policy.enabled ? 'activity-paused' : 'activity-disabled' };
   if (activeWriters.has(paths.root)) return { recorded: false, reason: 'activity-reentrancy-guard' };
   activeWriters.add(paths.root); let release = null;
   try {
     release = acquireLock(paths);
-    const state = readState(paths, policy); state.policy = policy;
+    const state = readState(paths, policy, { persistCorruptionEvidence: options.persistCorruptionEvidence !== false }); state.policy = policy;
     const priorTail = tailEventsDetailed(paths.events, EVENT_LIMIT);
     if (priorTail.health.status === 'degraded') throw new Error(`activity-event-log-degraded:line-${priorTail.health.failed_line}`);
     const actor = normalizeActor(actorInput); const timestamp = now(); const status = ['started', 'running', 'succeeded', 'failed', 'cancelled', 'observed', 'blocked', 'idle'].includes(input.status) ? input.status : 'observed';
@@ -178,14 +190,54 @@ function recordActivity(workspaceRoot, actorInput, input = {}, policyInput = {})
 function tailEvents(file, limit) {
   return tailEventsDetailed(file, limit).events;
 }
-function tailEventsDetailed(file, limit) {
-  let raw; try { raw = fs.readFileSync(file, 'utf8'); }
-  catch (error) { return { events: [], health: error.code === 'ENOENT' ? { status: 'missing', valid_events: 0 } : { status: 'degraded', valid_events: 0, failed_line: 0, reason: `unreadable:${error.code || error.message}` } }; }
-  const lines = raw.split(/\r?\n/); const events = []; let failure = null;
-  for (let index = 0; index < lines.length; index += 1) {
-    if (!lines[index].trim()) continue;
-    try { events.push(JSON.parse(lines[index])); }
-    catch (error) { failure = { failed_line: index + 1, reason: index === lines.length - 1 && !/\r?\n$/.test(raw) ? 'truncated-final-line' : 'malformed-line', detail: text(error.message, 500) }; break; }
+function readBoundedActivityText(file, maxBytes, oversizedReason) {
+  let descriptor;
+  try {
+    if (fs.lstatSync(file).isSymbolicLink()) throw Object.assign(new Error('symbolic-link'), { code: 'symbolic-link' });
+    descriptor = fs.openSync(file, fs.constants.O_RDONLY);
+    const before = fs.fstatSync(descriptor);
+    if (!before.isFile()) throw Object.assign(new Error('not-regular-file'), { code: 'not-regular-file' });
+    const size = before.size;
+    if (size > maxBytes) return { raw: null, health: { status: 'degraded', valid_events: 0, failed_line: 0, reason: oversizedReason } };
+    const bytes = Buffer.alloc(size);
+    let offset = 0;
+    while (offset < size) {
+      const count = fs.readSync(descriptor, bytes, offset, size - offset, offset);
+      if (!count) break;
+      offset += count;
+    }
+    const after = fs.fstatSync(descriptor);
+    if (offset !== size || after.size !== size || after.mtimeMs !== before.mtimeMs || after.ino !== before.ino)
+      throw Object.assign(new Error('changed-during-read'), { code: 'changed-during-read' });
+    let raw;
+    try { raw = new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(bytes); }
+    catch { throw Object.assign(new Error('invalid-utf8'), { code: 'invalid-utf8' }); }
+    if (!Buffer.from(raw, 'utf8').equals(bytes)) throw Object.assign(new Error('non-roundtripping-utf8'), { code: 'non-roundtripping-utf8' });
+    return { raw, health: null };
+  } catch (error) {
+    return { raw: null, health: error.code === 'ENOENT' ? { status: 'missing', valid_events: 0 } : { status: 'degraded', valid_events: 0, failed_line: 0, reason: `unreadable:${error.code || error.message}` } };
+  } finally { if (descriptor !== undefined) fs.closeSync(descriptor); }
+}
+function readBoundedActivityLog(file) {
+  return readBoundedActivityText(file, MAX_ACTIVITY_LOG_BYTES, 'oversized-log');
+}
+function tailEventsDetailed(file, limit, loaded = readBoundedActivityLog(file)) {
+  if (loaded.health) return { events: [], health: loaded.health };
+  const raw = loaded.raw;
+  const events = []; let failure = null; let cursor = 0; let lineNumber = 0;
+  while (cursor < raw.length) {
+    const end = raw.indexOf('\n', cursor);
+    const final = end === -1;
+    const line = raw.slice(cursor, final ? raw.length : end).replace(/\r$/, '');
+    lineNumber += 1;
+    if (lineNumber > MAX_ACTIVITY_LOG_LINES) { failure = { failed_line: lineNumber, reason: 'too-many-lines' }; break; }
+    if (Buffer.byteLength(line, 'utf8') > MAX_ACTIVITY_LINE_BYTES) { failure = { failed_line: lineNumber, reason: 'oversized-line' }; break; }
+    if (line.trim()) {
+      try { events.push(JSON.parse(line)); }
+      catch (error) { failure = { failed_line: lineNumber, reason: final ? 'truncated-final-line' : 'malformed-line', detail: text(error.message, 500) }; break; }
+    }
+    if (final) break;
+    cursor = end + 1;
   }
   const bounded = Math.min(EVENT_LIMIT, Math.max(Number(limit) * 4 || 0, Number(limit) || 0));
   return { events: bounded ? events.slice(-bounded) : [], health: failure ? { status: 'degraded', valid_events: events.length, ...failure } : { status: 'healthy', valid_events: events.length } };
@@ -201,7 +253,7 @@ function eventIntegrity(events, state) {
   return { valid: invalidEventIds.length === 0 && chainBreaks.length === 0 && !counterDrift, checked_events: events.length, invalid_event_ids: invalidEventIds.slice(0, 50), chain_breaks: chainBreaks.slice(0, 50), counter_drift: counterDrift, truncated: Number(state.event_count || 0) > events.length };
 }
 function readActivity(workspaceRoot, options = {}) {
-  const paths = activityPaths(workspaceRoot); const exists = fs.existsSync(paths.state); const state = readState(paths, options.policy);
+  const paths = activityPaths(workspaceRoot); const exists = fs.existsSync(paths.state); const state = readState(paths, options.policy, { persistCorruptionEvidence: false });
   const limit = Math.min(500, Math.max(1, Number(options.limit || 100))); const query = text(options.query, 300).toLowerCase();
   const tail = tailEventsDetailed(paths.events, EVENT_LIMIT); const ledgerEvents = tail.events; const checkedIntegrity = eventIntegrity(ledgerEvents, state);
   const integrity = { ...checkedIntegrity, log_health: tail.health, valid: tail.health.status !== 'degraded' && checkedIntegrity.valid };
@@ -268,20 +320,24 @@ function repairActivityIntegrity(workspaceRoot, options = {}) {
   const paths = activityPaths(workspaceRoot); let release;
   try {
     release = acquireLock(paths, options.timeoutMs || 4000);
-    const state = readState(paths, options.policy);
-    const rawEvents = fs.existsSync(paths.events) ? fs.readFileSync(paths.events, 'utf8') : '';
-    const tail = tailEventsDetailed(paths.events, EVENT_LIMIT);
+    const { state, raw: stateRaw } = readState(paths, options.policy, { returnRaw: true });
+    const loaded = readBoundedActivityLog(paths.events);
+    if (loaded.health?.status === 'degraded') throw new Error(`activity-integrity-repair-refuses-unreadable-jsonl:${loaded.health.reason}`);
+    if (loaded.health?.status === 'missing' && Number(state.event_count || 0) > 0) throw new Error('activity-integrity-repair-requires-complete-ledger');
+    const rawEvents = loaded.raw || '';
+    const tail = tailEventsDetailed(paths.events, EVENT_LIMIT, loaded);
     if (tail.health.status === 'degraded') throw new Error(`activity-integrity-repair-refuses-malformed-jsonl:line-${tail.health.failed_line}`);
+    if (tail.health.valid_events !== tail.events.length) throw new Error('activity-integrity-repair-requires-complete-ledger');
     const before = eventIntegrity(tail.events, state);
     if (before.valid) return { schema_version: 'px.activity-integrity-repair/1.0', disposition: 'already-valid', repaired: false, before, after: before };
     if (tail.events.length >= EVENT_LIMIT && Number(state.event_count || 0) > tail.events.length) throw new Error('activity-integrity-repair-requires-complete-ledger');
     fs.mkdirSync(paths.quarantine, { recursive: true });
     const stamp = `${Date.now()}.${crypto.randomUUID()}`;
     const eventsBackup = path.join(paths.quarantine, `events.${stamp}.${sha(rawEvents).slice(0, 12)}.pre-repair.jsonl`);
-    const stateRaw = fs.readFileSync(paths.state, 'utf8');
+    if (stateRaw === null) throw new Error('activity-integrity-repair-requires-authoritative-state');
     const stateBackup = path.join(paths.quarantine, `current.${stamp}.${sha(stateRaw).slice(0, 12)}.pre-repair.json`);
-    fs.copyFileSync(paths.events, eventsBackup, fs.constants.COPYFILE_EXCL);
-    fs.copyFileSync(paths.state, stateBackup, fs.constants.COPYFILE_EXCL);
+    fs.writeFileSync(eventsBackup, rawEvents, { encoding: 'utf8', flag: 'wx' });
+    fs.writeFileSync(stateBackup, stateRaw, { encoding: 'utf8', flag: 'wx' });
     let previous = null;
     const repairedEvents = tail.events.map(original => {
       const event = structuredClone(original);
@@ -314,6 +370,10 @@ function repairActivityIntegrity(workspaceRoot, options = {}) {
       totals.by_status[event.status] = Number(totals.by_status[event.status] || 0) + 1;
     }
     const repairedState = { ...state, revision: repairedEvents.length, event_count: repairedEvents.length, updated_utc: timestamp, last_event_sha256: recovery.event_sha256, totals };
+    const currentEvents = readBoundedActivityLog(paths.events);
+    const currentState = readBoundedActivityText(paths.state, MAX_ACTIVITY_STATE_BYTES, 'oversized-state');
+    if (currentEvents.health || currentState.health || currentEvents.raw !== rawEvents || currentState.raw !== stateRaw)
+      throw new Error('activity-integrity-repair-source-changed-before-write');
     atomicWriteText(paths.events, finalText); atomicWrite(paths.state, repairedState);
     const after = eventIntegrity(repairedEvents, repairedState);
     if (!after.valid) throw new Error('activity-integrity-repair-postcondition-failed');

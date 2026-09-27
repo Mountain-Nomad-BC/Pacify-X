@@ -579,6 +579,82 @@ def rewind_failed_release_campaign_repair(root: Path) -> dict[str, Any]:
     }
 
 
+def release_orphaned_release_stage_claim(root: Path) -> dict[str, Any]:
+    """Release one orphaned stage claim so an invalidated campaign can be superseded.
+
+    A release run can die while a stage is claimed: the process owning the claim is
+    gone and the source has since changed. The campaign is then structurally valid but
+    permanently stuck, because every supersession and rewind transition requires
+    ``active_claim is None`` and a failed campaign may not carry a claimed stage.
+
+    This is the minimum transition that restores a legal state. It is deliberately
+    narrow:
+
+    * it requires the identity to be source-invalid, so a coherent campaign can never
+      have its live claim released out from under it;
+    * it returns the stage to ``pending`` and **never** to ``passed`` or ``failed``, so
+      the abandoned stage cannot be inherited as completed work;
+    * it preserves the released claim and the reason in campaign history rather than
+      erasing it;
+    * it does not advance the repair campaign phase, so a fresh freeze is still
+      required before any successor can be established;
+    * it does not rewind the passed prefix, so the campaign's historical truth is
+      unchanged.
+    """
+
+    root = root.resolve(strict=True)
+    value = _validate(
+        json.loads((root / STATE_PATH).read_text(encoding="utf-8"))
+    )
+    claimed = [stage for stage in STAGES if value["stages"][stage]["status"] == "claimed"]
+    if (
+        value.get("state") != "active"
+        or value.get("apply_count") != 1
+        or len(claimed) != 1
+        or not isinstance(value.get("active_claim"), dict)
+    ):
+        raise ReleaseCampaignBlocked(
+            "orphaned claim release requires one active stage claim"
+        )
+    stage = claimed[0]
+    if value["active_claim"].get("stage") != stage:
+        raise ReleaseCampaignBlocked("orphaned claim release requires the bound stage")
+
+    verification = release_campaign_status(root, verify_source=True)
+    if verification["valid"] or not verification["errors"]:
+        raise ReleaseCampaignBlocked(
+            "a source-valid release claim cannot be released as orphaned"
+        )
+
+    claim = dict(value["active_claim"])
+    history = value.get("released_claims")
+    if not isinstance(history, list):
+        history = []
+    history.append(
+        {
+            "stage": stage,
+            "claim_id": claim.get("claim_id"),
+            "claimed_at": claim.get("claimed_at"),
+            "released_at": _now(),
+            "reason": "orphaned claim released; source changed after claim",
+            "source_verification_errors": list(verification["errors"]),
+            "stage_disposition": "pending",
+        }
+    )
+    value["released_claims"] = history
+    value["active_claim"] = None
+    value["stages"][stage] = {"status": "pending", "claim_id": None}
+    _write(root / STATE_PATH, value)
+    return {
+        "schema_version": "px.orphaned-release-stage-claim-release/1.0",
+        "campaign_id": value["campaign_id"],
+        "stage": stage,
+        "released_claim_id": claim.get("claim_id"),
+        "source_verification_errors": list(verification["errors"]),
+        "valid": True,
+    }
+
+
 def rewind_invalid_active_release_campaign_repair(root: Path) -> dict[str, Any]:
     """Return a source-invalid active campaign's passed prefix to repair freeze."""
 

@@ -115,6 +115,10 @@ def main() -> int:
     root = args.root.resolve()
     ledger_path = root / "registry/declared_suite_reconstruction.json"
     ledger = load(ledger_path)
+    if any(card.get("kind") == "evidence" for card in ledger.get("cards", [])):
+        raise SystemExit(
+            "legacy per-pack evidence cards must be migrated to historical_evidence_paths"
+        )
     operational, errors = validate_operational(root)
     contract_result = validate_contract_corpus(root)
     errors.extend(contract_result["errors"])
@@ -122,9 +126,16 @@ def main() -> int:
     formula_registry = load(root / "registry/declared_suite_formulas.json")
     knowledge_registry = load(root / "registry/declared_suite_knowledge.json")
     behavior_cases = load(root / "registry/declared_suite_behavior_cases.json")
+    knowledge_records = knowledge_registry.get("records")
+    knowledge_registry_valid = (
+        isinstance(knowledge_records, list)
+        and isinstance(knowledge_registry.get("count"), int)
+        and not isinstance(knowledge_registry.get("count"), bool)
+        and knowledge_registry["count"] == len(knowledge_records)
+    )
     support_ready = (
         formula_registry["formula_count"] == 18
-        and len(knowledge_registry["records"]) == 3
+        and knowledge_registry_valid
         and behavior_cases["case_count"] == 257
     )
     if not support_ready:
@@ -151,22 +162,12 @@ def main() -> int:
         final_gate_sha256 = sha(args.final_gates.resolve())
 
     verified = 0
-    pending_evidence = 0
     card_results = []
     for card in ledger["cards"]:
         if card["class"] == "operational_outcome":
             result = operational[(card["kind"], card["source_id"])]
             valid = result["valid"]
             evidence = result["evidence"]
-        elif card["kind"] == "evidence":
-            target = root / card["implementation_targets"][0]
-            valid = final_ready and target.is_file()
-            evidence = {
-                "final_gate_receipt_sha256": final_gate_sha256,
-                "target_sha256": sha(target) if target.is_file() else None,
-            }
-            if not valid:
-                pending_evidence += 1
         else:
             missing = [
                 target
@@ -190,6 +191,9 @@ def main() -> int:
                 card["completion_evidence"] = [
                     "evidence/declared-suite/reconstruction-progress.json"
                 ]
+        elif args.apply:
+            card["current_state"] = "assigned_not_verified"
+            card["completion_evidence"] = []
         card_results.append(
             {"card_id": card["card_id"], "valid": valid, "evidence": evidence}
         )
@@ -199,43 +203,37 @@ def main() -> int:
         "total_cards": len(ledger["cards"]),
         "verified_cards": verified,
         "open_cards": len(ledger["cards"]) - verified,
-        "pending_final_evidence_cards": pending_evidence,
+        "pending_final_evidence_cards": 0,
         "errors": errors,
     }
     receipt = {
-        "schema_version": "1.0",
+        "schema_version": "px.declared-suite-current-reconstruction/2.0",
         "status": "in_progress" if summary["open_cards"] else "complete",
+        "claim_scope": "Current reconstructed implementation coverage only; not historical pack certification or release certification.",
+        "historical_evidence": ledger.get("historical_evidence_policy", {
+            "required_for_current_completion": False,
+            "disposition": "unavailable_historical_provenance_not_reconstructed",
+        }),
+        "current_source_sha256": {
+            relative: sha(root / relative)
+            for relative in (
+                "registry/declared_suite_reconstruction.json",
+                "registry/declared_capability_recovery_map.json",
+                "registry/declared_outcome_owners.json",
+                "orchestration/workflows/declared-suite.yaml",
+                "runtime/declared_suite.py",
+                ".px/skills/audit-source-capabilities/scripts/certify_declared_suite_reconstruction.py",
+            )
+            if (root / relative).is_file()
+        },
+        "final_gate_receipt_sha256": final_gate_sha256,
+        "release_certification": "passed" if final_ready else "not_performed",
         "summary": summary,
         "cards": card_results,
     }
     receipt_path = root / "evidence" / "declared-suite" / "reconstruction-progress.json"
     if args.apply:
         if final_ready:
-            for number in range(1, 8):
-                prefix = f"pack-{number:02d}"
-                dump(
-                    root / "evidence" / "declared-suite" / f"{prefix}-build-qa.json",
-                    {
-                        "pack": f"{number:02d}",
-                        "status": "passed",
-                        "framework_tests": 293,
-                        "subtests": 336,
-                        "final_gate_receipt_sha256": final_gate_sha256,
-                    },
-                )
-                dump(
-                    root
-                    / "evidence"
-                    / "declared-suite"
-                    / f"{prefix}-certification-report.json",
-                    {
-                        "pack": f"{number:02d}",
-                        "status": "certified",
-                        "revocable": True,
-                        "blockers": [],
-                        "final_gate_receipt_sha256": final_gate_sha256,
-                    },
-                )
             owner_path = root / "registry" / "declared_outcome_owners.json"
             owners = load(owner_path)
             owners["status"] = "implemented_verified"
@@ -261,9 +259,16 @@ def main() -> int:
             {
                 "verified_cards": verified,
                 "open_cards": summary["open_cards"],
-                "states": dict(
-                    Counter(card["current_state"] for card in ledger["cards"])
+                "states": dict(Counter(card["current_state"] for card in ledger["cards"])),
+                "total_cards": len(ledger["cards"]),
+                "supporting_artifact_cards": sum(
+                    card["class"] == "supporting_artifact" for card in ledger["cards"]
                 ),
+                "support_artifacts_built": sum(
+                    card["class"] == "supporting_artifact" and card["current_state"] == "implemented_verified"
+                    for card in ledger["cards"]
+                ),
+                "by_kind": dict(Counter(card["kind"] for card in ledger["cards"])),
             }
         )
         ledger["status"] = (

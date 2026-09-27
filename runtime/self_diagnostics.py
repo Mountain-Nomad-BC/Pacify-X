@@ -363,11 +363,14 @@ def diagnose(
     )
 
 
-def select_specialist(root: Path, disposition: str) -> dict[str, object]:
-    """Bind a disposition to a declared canonical owner, or report that none exists.
+def select_specialist(
+    root: Path, disposition: str, *, owner_id: str | None = None
+) -> dict[str, object]:
+    """Validate an exact declared owner, or explicitly report an unbound disposition.
 
-    Creating a second owner is forbidden, so when no declared owner matches, the correct answer is
-    an explicit miss rather than a new implementation.
+    A generic owner class or a count of capabilities cannot establish an owner.
+    The caller must identify an existing active capability; this function does
+    not assert that a caller-selected capability is semantically canonical.
     """
 
     if disposition not in DISPOSITIONS:
@@ -380,15 +383,37 @@ def select_specialist(root: Path, disposition: str) -> dict[str, object]:
             "reason": "this disposition is not a repair and requires no owner",
             "may_create_owner": False,
         }
-    declared: list[str] = []
-    capability_map = root / "registry/capability_map.json"
-    if capability_map.is_file():
-        payload = json.loads(capability_map.read_text(encoding="utf-8-sig"))
-        declared = [entry["id"] for entry in payload.get("active_capabilities", [])]
-    return {
+    base = {
         "disposition": disposition,
         "owner_class": hint,
-        "declared_owners_available": len(declared),
+        "owner": None,
         "may_create_owner": False,
-        "reason": "delegate to the canonical owner; never create a second one",
+    }
+    if not owner_id:
+        return {
+            **base,
+            "reason": "no exact owner was supplied; a class hint is not an owner binding",
+        }
+    capability_map = root / "registry/capability_map.json"
+    if not capability_map.is_file():
+        return {**base, "reason": "active capability map is absent"}
+    try:
+        payload = json.loads(capability_map.read_text(encoding="utf-8-sig"))
+    except (OSError, ValueError):
+        return {**base, "reason": "active capability map is unreadable or malformed"}
+    entries = payload.get("active_capabilities") if isinstance(payload, dict) else None
+    if not isinstance(entries, list) or any(
+        not isinstance(entry, dict) or not isinstance(entry.get("id"), str)
+        for entry in entries
+    ):
+        return {**base, "reason": "active capability map is malformed"}
+    matches = [entry for entry in entries if entry["id"] == owner_id]
+    if len(matches) != 1:
+        return {**base, "reason": "supplied owner ID is not uniquely active"}
+    return {
+        **base,
+        "owner": owner_id,
+        "owner_contract": matches[0].get("contract"),
+        "binding_kind": "caller-selected-active-capability",
+        "reason": "exact owner ID is active; caller remains responsible for semantic ownership evidence",
     }

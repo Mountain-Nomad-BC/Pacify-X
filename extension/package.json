@@ -2,7 +2,7 @@
   "name": "pacify-x-vscode",
   "displayName": "Pacify-X Control Plane",
   "description": "Governed VS Code control plane for Pacify-X with source-linked architecture and audit evidence.",
-  "version": "0.7.0",
+  "version": "0.9.0",
   "publisher": "mountain-nomad-bc",
   "license": "Apache-2.0",
   "repository": {
@@ -435,6 +435,10 @@
       {
         "vendor": "pacify-local",
         "displayName": "Pacify-X Local Models"
+      },
+      {
+        "vendor": "pacify-x",
+        "displayName": "Pacify-X Governed Model Fabric"
       }
     ],
     "mcpServerDefinitionProviders": [

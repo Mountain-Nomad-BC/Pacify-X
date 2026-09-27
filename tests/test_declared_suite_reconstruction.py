@@ -132,15 +132,19 @@ class DeclaredSuiteReconstructionTests(unittest.TestCase):
     ) -> None:
         progress = _load("evidence/declared-suite/reconstruction-progress.json")
         self.assertEqual(progress["status"], "complete")
+        self.assertEqual(progress["schema_version"], "px.declared-suite-current-reconstruction/2.0")
+        self.assertEqual(progress["release_certification"], "not_performed")
+        self.assertFalse(progress["historical_evidence"]["required_for_current_completion"])
+        self.assertEqual(len(progress["current_source_sha256"]), 6)
         self.assertEqual(
             progress["summary"],
             {
                 "errors": [],
                 "open_cards": 0,
                 "pending_final_evidence_cards": 0,
-                "total_cards": 375,
+                "total_cards": 354,
                 "valid": True,
-                "verified_cards": 375,
+                "verified_cards": 354,
             },
         )
         recovery = _load("registry/declared_capability_recovery_map.json")
@@ -151,6 +155,16 @@ class DeclaredSuiteReconstructionTests(unittest.TestCase):
             self.assertEqual(
                 hashlib.sha256(body.read_bytes()).hexdigest(), package["body_sha256"]
             )
+
+    def test_historical_pack_evidence_is_provenance_not_completion_denominator(self) -> None:
+        ledger = _load("registry/declared_suite_reconstruction.json")
+        self.assertEqual(ledger["historical_evidence_policy"]["path_count"], 21)
+        self.assertFalse(ledger["historical_evidence_policy"]["required_for_current_completion"])
+        self.assertEqual(len(ledger["historical_evidence_paths"]), 21)
+        self.assertFalse(any(card["kind"] == "evidence" for card in ledger["cards"]))
+        self.assertEqual(ledger["summary"]["total_cards"], 354)
+        self.assertEqual(ledger["summary"]["supporting_artifact_cards"], 97)
+        self.assertEqual(ledger["summary"]["historical_evidence_paths"], 21)
 
 
 if __name__ == "__main__":

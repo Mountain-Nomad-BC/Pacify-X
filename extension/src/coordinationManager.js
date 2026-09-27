@@ -97,7 +97,13 @@ function quarantineCorruptAuthoritativeJson(paths, file, raw, error) {
   return { evidence, receipt, fingerprint };
 }
 
-function readAuthoritativeState(paths) {
+function readAuthoritativeState(paths, options = {}) {
+  const corruption = (reason, raw, error) => {
+    const fingerprint = hash(raw);
+    if (options.persistCorruptionEvidence === false) throw new Error(`${reason}:${fingerprint}:evidence-not-written-read-only`);
+    const evidence = quarantineCorruptAuthoritativeJson(paths, paths.state, raw, error);
+    throw new Error(`${reason}:${evidence.fingerprint}:${evidence.receipt}`);
+  };
   let raw;
   try { raw = fs.readFileSync(paths.state, 'utf8'); }
   catch (error) {
@@ -107,23 +113,19 @@ function readAuthoritativeState(paths) {
   let state;
   try { state = JSON.parse(raw); }
   catch (error) {
-    const evidence = quarantineCorruptAuthoritativeJson(paths, paths.state, raw, error);
-    throw new Error(`coordination-authoritative-state-corrupt:${evidence.fingerprint}:${evidence.receipt}`);
+    corruption('coordination-authoritative-state-corrupt', raw, error);
   }
   const structurallyValid = state && typeof state === 'object' && !Array.isArray(state)
     && state.project && typeof state.project === 'object'
     && Array.isArray(state.plans) && Array.isArray(state.tasks) && Array.isArray(state.claims) && Array.isArray(state.sessions);
   if (!structurallyValid) {
-    const evidence = quarantineCorruptAuthoritativeJson(paths, paths.state, raw, new Error('invalid-coordination-state-shape'));
-    throw new Error(`coordination-authoritative-state-invalid:${evidence.fingerprint}:${evidence.receipt}`);
+    corruption('coordination-authoritative-state-invalid', raw, new Error('invalid-coordination-state-shape'));
   }
   if (workspacePathIdentity(state.project.root) !== workspacePathIdentity(paths.workspace)) {
-    const evidence = quarantineCorruptAuthoritativeJson(paths, paths.state, raw, new Error('coordination-state-workspace-mismatch'));
-    throw new Error(`coordination-authoritative-state-workspace-mismatch:${evidence.fingerprint}:${evidence.receipt}`);
+    corruption('coordination-authoritative-state-workspace-mismatch', raw, new Error('coordination-state-workspace-mismatch'));
   }
   if (state.state_hash && state.state_hash !== stateHash(state)) {
-    const evidence = quarantineCorruptAuthoritativeJson(paths, paths.state, raw, new Error('coordination-state-hash-mismatch'));
-    throw new Error(`coordination-authoritative-state-hash-mismatch:${evidence.fingerprint}:${evidence.receipt}`);
+    corruption('coordination-authoritative-state-hash-mismatch', raw, new Error('coordination-state-hash-mismatch'));
   }
   return migrateState(state);
 }
@@ -591,7 +593,7 @@ function acknowledgeWake(workspaceRoot, actor, input) {
     const principal = normalizeActor(actor);
     const wake = state.wakes.find(item => item.wake_id === cleanText(input.wakeId || input.wake_id, 200));
     if (!wake) throw new Error('coordination-wake-not-found');
-    if (wake.status === 'acknowledged') return { receipt: { ...wake, idempotent: true } };
+    if (wake.status === 'acknowledged') return { receipt: { wake_id: wake.wake_id, wait_id: wake.wait_id, task_id: wake.task_id, idempotent: true } };
     const wait = waitById(state, wake.wait_id);
     if (wait.actor.actor_id !== principal.actor_id || wait.actor.session_id !== principal.session_id) throw new Error('coordination-wake-ack-actor-mismatch');
     const task = taskById(state, wake.task_id);
@@ -602,7 +604,8 @@ function acknowledgeWake(workspaceRoot, actor, input) {
 }
 
 function sendMessage(workspaceRoot, actor, input) {
-  return withState(workspaceRoot, actor, 'message-sent', state => {
+  let privateDeliveryToken = null;
+  const outcome = withState(workspaceRoot, actor, 'message-sent', state => {
     const principal = normalizeActor(actor);
     const recipient = safeId(input.recipientId || input.recipient_id, 'recipient');
     const payload = cleanText(input.payload, MAX_MESSAGE_BYTES);
@@ -618,35 +621,57 @@ function sendMessage(workspaceRoot, actor, input) {
     const suppliedId = cleanText(input.messageId || input.message_id, 200);
     if (suppliedId) {
       const existing = state.mailboxes[recipient].find(item => item.message_id === suppliedId);
-      if (existing) return { receipt: { ...existing, idempotent: true } };
+      if (existing) {
+        if (existing.payload_sha256 !== hash(payload) || existing.privacy_class !== privacy || existing.recipient_transport !== transport)
+          throw new Error('coordination-message-idempotency-conflict');
+        return { receipt: { message_id: existing.message_id, recipient_id: recipient, privacy_class: privacy, payload_sha256: existing.payload_sha256, idempotent: true } };
+      }
     }
     const message = {
       message_id: suppliedId || id('msg'), sender: principal, recipient_id: recipient, recipient_transport: transport,
       privacy_class: privacy, payload, payload_sha256: hash(payload), created_utc: now(), status: 'unread',
       evidence_refs: (input.evidence || input.evidence_refs || []).map(value => cleanText(value, 1000)).filter(Boolean).slice(0, 32)
     };
+    if (privacy === 'private') {
+      privateDeliveryToken = crypto.randomBytes(32).toString('base64url');
+      message.private_delivery_token_sha256 = hash(privateDeliveryToken);
+    }
     state.mailboxes[recipient].push(message);
-    const wakes = satisfyWaits(state, 'message', message.message_id, message.evidence_refs);
+    const wakes = satisfyWaits(state, 'message', message.message_id, privacy === 'private' ? [] : message.evidence_refs);
     return { receipt: { message_id: message.message_id, recipient_id: recipient, privacy_class: privacy, payload_sha256: message.payload_sha256, wake_ids: wakes.map(item => item.wake_id) } };
   });
+  return privateDeliveryToken ? { ...outcome, private_delivery_token: privateDeliveryToken } : outcome;
 }
 
-function readMessages(workspaceRoot, actor, input = {}) {
-  const snapshot = readCoordination(workspaceRoot, { eventLimit: 20 });
+function readMessages(workspaceRoot, actor, input = {}, options = {}) {
+  const paths = coordinationPaths(workspaceRoot);
+  const state = fs.existsSync(paths.state) ? readAuthoritativeState(paths, { persistCorruptionEvidence: false }) : defaultState(paths.workspace);
   const principal = normalizeActor(actor);
   const recipient = safeId(input.recipientId || input.recipient_id || principal.actor_id, 'recipient');
-  const rows = Array.isArray(snapshot.state.mailboxes?.[recipient]) ? snapshot.state.mailboxes[recipient] : [];
+  const rows = Array.isArray(state.mailboxes?.[recipient]) ? state.mailboxes[recipient] : [];
   const limit = Math.max(1, Math.min(100, Number(input.limit || 24)));
-  return { schema_version: SCHEMA_VERSION, recipient_id: recipient, messages: rows.filter(item => item.status !== 'consumed').slice(-limit), authority_granted: false };
+  return { schema_version: SCHEMA_VERSION, recipient_id: recipient, messages: rows.filter(item => item.status !== 'consumed' && (item.privacy_class !== 'private' || (options.includePrivate === true && privateDeliveryProof(item, input)))).slice(-limit).map(item => {
+    const { private_delivery_token_sha256, ...visible } = item;
+    return visible;
+  }), authority_granted: false };
 }
 
-function consumeMessage(workspaceRoot, actor, input) {
+function privateDeliveryProof(message, input) {
+  const token = cleanText(input.privateDeliveryToken || input.private_delivery_token, 100);
+  if (!message.private_delivery_token_sha256 || !/^[A-Za-z0-9_-]{43}$/.test(token)) return false;
+  const expected = Buffer.from(message.private_delivery_token_sha256, 'hex');
+  const observed = Buffer.from(hash(token), 'hex');
+  return expected.length === observed.length && crypto.timingSafeEqual(expected, observed);
+}
+
+function consumeMessage(workspaceRoot, actor, input, options = {}) {
   return withState(workspaceRoot, actor, 'message-consumed', state => {
     const principal = normalizeActor(actor);
     const recipient = safeId(input.recipientId || input.recipient_id || principal.actor_id, 'recipient');
     const rows = Array.isArray(state.mailboxes?.[recipient]) ? state.mailboxes[recipient] : [];
     const message = rows.find(item => item.message_id === cleanText(input.messageId || input.message_id, 200));
     if (!message) throw new Error('coordination-message-not-found');
+    if (message.privacy_class === 'private' && (options.allowPrivate === false || !privateDeliveryProof(message, input))) throw new Error('coordination-private-message-requires-delivery-proof');
     if (message.status === 'consumed') return { receipt: { message_id: message.message_id, idempotent: true } };
     message.status = 'consumed'; message.consumed_utc = now(); message.consumed_by = principal;
     return { receipt: { message_id: message.message_id, recipient_id: recipient, consumed: true } };
@@ -949,7 +974,7 @@ function memoryRecords(paths, state, options = {}) {
 function readMemoryTelemetry(workspaceRoot, options = {}) {
   const paths = coordinationPaths(workspaceRoot);
   if (!fs.existsSync(paths.state)) return { schema_version: SCHEMA_VERSION, generated_utc: now(), instrumented: false, authority: 'project-owned portable coordination memory', canonical: false, record_count: 0, records: [], errors: ['coordination-store-not-initialized'] };
-  const state = readAuthoritativeState(paths);
+  const state = readAuthoritativeState(paths, { persistCorruptionEvidence: false });
   return memoryRecords(paths, state, options);
 }
 
@@ -973,7 +998,7 @@ function readCoordination(workspaceRoot, options = {}) {
       instrumented: false, persistence: 'not-initialized-read-only'
     };
   }
-  const state = readAuthoritativeState(paths); expireClaims(state); expireSessions(state); expireWaits(state);
+  const state = readAuthoritativeState(paths, { persistCorruptionEvidence: false }); expireClaims(state); expireSessions(state); expireWaits(state);
   const eventTail = tailJsonlDetailed(paths.events, MAX_EVENTS);
   if (eventTail.health.status === 'healthy') {
     try {
@@ -990,7 +1015,8 @@ function readCoordination(workspaceRoot, options = {}) {
     eventTail.health.integrity_verified = false;
   }
   const eventLimit = Math.max(0, Math.min(Number(options.eventLimit ?? 40) || 0, 200));
-  const visibleEvents = eventLimit ? eventTail.records.slice(-eventLimit) : [];
+  const privateMessageIds = new Set(Object.values(state.mailboxes || {}).flatMap(rows => rows.filter(item => item.privacy_class === 'private').map(item => item.message_id)));
+  const visibleEvents = eventLimit ? eventTail.records.filter(event => event.result?.privacy_class !== 'private' && !containsPrivateMessageId(event.result, privateMessageIds)).slice(-eventLimit) : [];
   return { state: publicState(state), events: visibleEvents, event_log_health: eventTail.health, paths: publicPaths(paths), memory: memoryRecords(paths, state, { limit: options.memoryLimit || 12, includeContent: false }), instrumented: true };
 }
 
@@ -1043,10 +1069,33 @@ function publicPaths(paths) {
   return { root: paths.root, state: paths.state, events: paths.events, handoff_json: paths.handoffJson, handoff_markdown: paths.handoffMarkdown, memory_root: paths.memory.root, quarantine: paths.quarantine };
 }
 
+function containsPrivateMessageId(value, privateIds, depth = 0) {
+  if (!privateIds.size || depth > 8 || value == null) return false;
+  if (typeof value === 'string') return privateIds.has(value);
+  if (Array.isArray(value)) return value.some(item => containsPrivateMessageId(item, privateIds, depth + 1));
+  if (typeof value === 'object') return Object.values(value).some(item => containsPrivateMessageId(item, privateIds, depth + 1));
+  return false;
+}
+
 function publicState(state) {
   const copy = JSON.parse(JSON.stringify(state));
   expireClaims(copy); expireWaits(copy);
   copy.claims = copy.claims.filter(claim => claim.status === 'active');
+  const privateIds = new Set(Object.values(state.mailboxes || {}).flatMap(rows => rows.filter(item => item.privacy_class === 'private').map(item => item.message_id)));
+  copy.waits = copy.waits.map(wait => {
+    if (wait.condition_type !== 'message' || ![...(wait.dependency_ids || []), ...(wait.satisfied_ids || [])].some(id => privateIds.has(id))) return wait;
+    return { ...wait, dependency_ids: wait.dependency_ids.filter(id => !privateIds.has(id)),
+      satisfied_ids: wait.satisfied_ids.filter(id => !privateIds.has(id)), exact_next_action: null, private_trigger_redacted: true };
+  });
+  copy.wakes = copy.wakes.map(wake => {
+    if (wake.trigger_type !== 'message' || !(wake.trigger_ids || []).some(id => privateIds.has(id))) return wake;
+    return { ...wake, trigger_ids: wake.trigger_ids.filter(id => !privateIds.has(id)), trigger_evidence: [],
+      exact_next_action: null, private_trigger_redacted: true };
+  });
+  copy.mailboxes = Object.fromEntries(Object.entries(copy.mailboxes || {}).flatMap(([recipient, rows]) => {
+    const visible = rows.filter(item => item.privacy_class !== 'private').map(item => ({ message_id: item.message_id, recipient_id: item.recipient_id, privacy_class: item.privacy_class, created_utc: item.created_utc, status: item.status, payload_sha256: item.payload_sha256 }));
+    return visible.length ? [[recipient, visible]] : [];
+  }));
   return copy;
 }
 
@@ -1061,10 +1110,16 @@ function writeReceipt(paths, event) {
 function handoffArtifacts(paths, state, event) {
   const tasks = state.tasks.filter(task => state.plans.find(plan => plan.id === state.active_plan)?.task_ids.includes(task.id));
   const next = tasks.find(task => ['planned', 'ready', 'released'].includes(task.status) && task.depends_on.every(dep => ['completed', 'reconciled'].includes(taskById(state, dep).status)));
+  const privateIds = new Set(Object.values(state.mailboxes || {}).flatMap(rows => rows.filter(item => item.privacy_class === 'private').map(item => item.message_id)));
+  const privateEvent = event.result?.privacy_class === 'private' || containsPrivateMessageId(event.result, privateIds);
+  const publicLastEvent = privateEvent
+    ? { event_id: event.event_id, timestamp: event.timestamp, operation: event.operation,
+        event_sha256: event.event_sha256, private_message_redacted: true }
+    : event;
   const packet = {
     schema_version: SCHEMA_VERSION, generated_utc: now(), project: state.project, objective: state.plans.find(plan => plan.id === state.active_plan)?.objective || null,
     phase: state.active_plan ? 'parallel-execution' : 'idle-or-complete', verified_state_hash: state.state_hash,
-    tasks, active_claims: state.claims.filter(claim => claim.status === 'active'), last_event: event,
+    tasks, active_claims: state.claims.filter(claim => claim.status === 'active'), last_event: publicLastEvent,
     team_fabric: { mode: state.team_fabric.mode, hub: state.team_fabric.hub, work_rooms: state.team_fabric.work_rooms.length },
     exact_next_action: next ? `Claim task ${next.id}: ${next.title}` : 'Review completed work or create a new parallel plan.',
     memory_refs: [path.relative(paths.workspace, paths.memory.project).replaceAll('\\', '/'), path.relative(paths.workspace, paths.memory.state).replaceAll('\\', '/')],

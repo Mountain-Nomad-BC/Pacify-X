@@ -6,7 +6,18 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const { generateApprovalKey } = require('../src/studioApprovalHost');
-const { createLaunchAuthority, createMcpMutationAuthority, verifiedLaunchAuthority } = require('../src/mcpMutationAuthority');
+const { createLaunchAuthority, createMcpMutationAuthority, verifiedLaunchAuthority, MUTATING_TOOL_NAMES } = require('../src/mcpMutationAuthority');
+
+test('signed host allowlist exactly covers registered MCP write tools', () => {
+  const source = fs.readFileSync(path.join(__dirname, '..', 'server', 'source.mjs'), 'utf8');
+  const registrations = [...source.matchAll(/registerTool\('([^']+)'/g)];
+  const declaredWrites = registrations.filter((match, index) => {
+    const start = match.index;
+    const end = registrations[index + 1]?.index ?? source.length;
+    return /annotations: write\b/.test(source.slice(start, end));
+  }).map(match => match[1]);
+  assert.deepEqual([...MUTATING_TOOL_NAMES].sort(), declaredWrites.sort());
+});
 
 function fixture(t) {
   const projectRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'px-mcp-authority-'));
@@ -32,6 +43,9 @@ test('signed launch authority replaces self-asserted MCP identity', t => {
     ['vscode-mcp-host', 'host-session', 'VS Code MCP']
   );
   assert.equal(decision.attestation.identityAttestation, 'authenticated_host_capability');
+  for (const operation of ['pacify_message_send', 'pacify_message_consume', 'pacify_wait_register', 'pacify_wake_ack']) {
+    assert.equal(authority.authorize(operation, {}).authorized, true, operation);
+  }
 });
 
 test('launch authority fails closed for replay in another project, changed token, and unadmitted operation', t => {

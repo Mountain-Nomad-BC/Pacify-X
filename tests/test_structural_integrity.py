@@ -303,6 +303,61 @@ def test_undeclared_duplicate_group_fails_audit(tmp_path) -> None:
     assert not result["categories"]["duplicate_files"]["passed"]
 
 
+def test_embedded_skill_body_projection_is_a_declared_reviewed_duplicate() -> None:
+    """A byte-identical embedded skill body is a reviewed projection, not drift."""
+
+    result = _root_audit()
+    projections = [
+        item
+        for item in result["duplicate_file_groups"]
+        if item["classification"] == "embedded-skill-body-projections"
+    ]
+    assert projections, "the embedded skill body projection is not recognised"
+    for item in projections:
+        assert item["equivalence_rule"] == "byte-for-byte"
+        assert item["authoritative_source"] == ".px/skills"
+        assert item["regeneration_command"]
+        assert len(item["paths"]) == 2
+        canonical = [p for p in item["paths"] if p.startswith(".px/skills/")]
+        embedded = [
+            p for p in item["paths"] if p.startswith("extension/resources/skills/")
+        ]
+        assert len(canonical) == 1 and len(embedded) == 1
+    assert result["categories"]["duplicate_files"]["passed"]
+
+
+def test_same_named_but_unrelated_skill_bodies_are_not_a_reviewed_projection(
+    tmp_path,
+) -> None:
+    """Two canonical bodies are not a projection merely by sharing a name."""
+
+    from runtime.structural_integrity import _classify_exact_group
+
+    assert (
+        _classify_exact_group([
+            ".px/skills/alpha/SKILL.md",
+            ".px/skills/beta/SKILL.md",
+        ])
+        != "embedded-skill-body-projections"
+    )
+    # Differing skill identities are never a projection pair.
+    assert (
+        _classify_exact_group([
+            ".px/skills/alpha/SKILL.md",
+            "extension/resources/skills/beta/SKILL.md",
+        ])
+        != "embedded-skill-body-projections"
+    )
+    # A non-body file is not a body projection.
+    assert (
+        _classify_exact_group([
+            ".px/skills/alpha/agents/openai.yaml",
+            "extension/resources/skills/alpha/agents/openai.yaml",
+        ])
+        != "embedded-skill-body-projections"
+    )
+
+
 def test_portable_hash_helpers_have_behavioral_parity() -> None:
     result = _root_audit()
     helpers = [

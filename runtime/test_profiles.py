@@ -7,6 +7,7 @@ import fnmatch
 import hashlib
 import math
 import os
+from datetime import datetime, timezone
 from pathlib import Path
 import sys
 from typing import Any, Mapping
@@ -56,6 +57,56 @@ FULL_PROFILE_STAGE_CLOSURE_ALLOWANCE_SECONDS = 120
 
 class ProcessingOrderBlocked(ValueError):
     """Raised when downstream closure is attempted before repair freeze."""
+
+
+def _require_campaign_write_admission(root: Path, admission_event_id: str) -> None:
+    """Require a live, exact-scope ledger admission before campaign mutation."""
+
+    try:
+        from .operational_gap_ledger import guard_work_admission, read_snapshot
+
+        snapshot = read_snapshot(root)
+        checkpoints = snapshot.get("work_checkpoints", [])
+        if not isinstance(checkpoints, list) or not checkpoints:
+            raise ValueError("active checkpoint is missing")
+        active_gap_id = str(checkpoints[-1].get("active_gap_id") or "")
+        if not active_gap_id:
+            raise ValueError("active gap is missing")
+        admissions = snapshot.get("work_admissions", [])
+        admission = next(
+            (
+                item for item in admissions
+                if isinstance(item, Mapping) and item.get("event_id") == admission_event_id
+            ),
+            None,
+        ) if isinstance(admissions, list) else None
+        scopes = admission.get("effect_scopes") if isinstance(admission, Mapping) else None
+        write_scope = next(
+            (
+                item.get("scope") for item in scopes
+                if isinstance(item, Mapping) and item.get("effect") == "write"
+            ),
+            None,
+        ) if isinstance(scopes, list) else None
+        campaign_path = (root / PROJECT_REPAIR_CAMPAIGN_PATH).resolve().as_posix()
+        if (
+            not isinstance(write_scope, list)
+            or campaign_path not in {
+                str(item).strip().replace("\\", "/") for item in write_scope
+            }
+        ):
+            raise ValueError("admission does not include the managed campaign path")
+        guard_work_admission(
+            snapshot,
+            gap_id=active_gap_id,
+            effect="write",
+            scope=write_scope,
+            admission_event_id=admission_event_id,
+        )
+    except (OSError, ValueError, TypeError, KeyError) as error:
+        raise ProcessingOrderBlocked(
+            "campaign mutation requires a current exact-scope work admission"
+        ) from error
 
 
 def governed_section_timeout_envelope(root: Path) -> dict[str, int]:
@@ -186,6 +237,418 @@ def initialize_project_repair_campaign(root: Path) -> dict[str, Any]:
         "initialized": True,
         "path": path.relative_to(root).as_posix(),
     }
+
+
+def reopen_invalid_repair_campaign(
+    root: Path, *, finding_ids: list[str], admission_event_id: str
+) -> dict[str, Any]:
+    """Reopen a reconciled managed campaign only for a source-invalid identity."""
+
+    root = root.resolve(strict=True)
+    marker = root / MANAGED_PROJECT_MARKER
+    path = root / PROJECT_REPAIR_CAMPAIGN_PATH
+    if not marker.is_file() or not path.is_file():
+        raise ProcessingOrderBlocked("repair reopen requires managed campaign state")
+    if (
+        not isinstance(admission_event_id, str)
+        or not admission_event_id.startswith("gap-event:")
+        or not finding_ids
+        or any(not isinstance(item, str) or not item.strip() for item in finding_ids)
+        or len(finding_ids) != len(set(finding_ids))
+    ):
+        raise ProcessingOrderBlocked("repair reopen requires admission and unique findings")
+    state = json.loads(path.read_text(encoding="utf-8"))
+    status = repair_campaign_status(root)
+    if status["phase"] != "revision_reconciled" or status["intake_open"] or status["unresolved"]:
+        raise ProcessingOrderBlocked("repair reopen requires a closed revision_reconciled campaign")
+    from .release_campaign import release_campaign_status
+
+    release = release_campaign_status(root, verify_source=True)
+    stage_states = release.get("stages", {})
+    if (
+        release.get("state") != "active"
+        or release.get("apply_count") != 1
+        or release.get("active_claim") is not None
+        or release.get("valid") is not False
+        or not release.get("errors")
+        or any(stage.get("status") != "pending" for stage in stage_states.values())
+        or len(stage_states) != 7
+        or not any("source product digest changed" in error for error in release["errors"])
+    ):
+        raise ProcessingOrderBlocked("repair reopen requires an idle source-invalid active release identity")
+    previous_bytes = path.read_bytes()
+    history = state.get("reopen_history", [])
+    if not isinstance(history, list):
+        raise ProcessingOrderBlocked("repair reopen history is malformed")
+    history.append({
+        "prior_phase": state["phase"],
+        "prior_state_sha256": hashlib.sha256(previous_bytes).hexdigest(),
+        "admission_event_id": admission_event_id,
+        "finding_ids": list(finding_ids),
+    })
+    state["reopen_history"] = history
+    state["phase"] = "intake"
+    state["intake_open"] = True
+    state["unresolved"] = list(finding_ids)
+    _require_campaign_write_admission(root, admission_event_id)
+    temporary = path.with_name(path.name + ".reopen.new")
+    with temporary.open("x", encoding="utf-8", newline="\n") as stream:
+        json.dump(state, stream, indent=2)
+        stream.write("\n")
+        stream.flush()
+        os.fsync(stream.fileno())
+    os.replace(temporary, path)
+    return repair_campaign_status(root)
+
+
+def reopen_pre_freeze_repair_campaign(
+    root: Path, *, finding_ids: list[str], admission_event_id: str
+) -> dict[str, Any]:
+    """Return to intake when new findings appear before the repair freeze."""
+
+    root = root.resolve(strict=True)
+    marker = root / MANAGED_PROJECT_MARKER
+    path = root / PROJECT_REPAIR_CAMPAIGN_PATH
+    if not marker.is_file() or not path.is_file():
+        raise ProcessingOrderBlocked("pre-freeze reopen requires managed campaign state")
+    if (
+        not isinstance(admission_event_id, str)
+        or not admission_event_id.startswith("gap-event:")
+        or not isinstance(finding_ids, list)
+        or not finding_ids
+        or any(not isinstance(item, str) or not item.strip() for item in finding_ids)
+        or len(finding_ids) != len(set(finding_ids))
+    ):
+        raise ProcessingOrderBlocked("pre-freeze reopen requires admission and unique findings")
+    status = repair_campaign_status(root)
+    if (
+        status["phase"] != "operational_verification"
+        or status["intake_open"]
+        or status["unresolved"]
+    ):
+        raise ProcessingOrderBlocked(
+            "pre-freeze reopen requires closed zero-denominator operational verification"
+        )
+    previous_bytes = path.read_bytes()
+    state = json.loads(previous_bytes)
+    history = state.get("reopen_history", [])
+    if not isinstance(history, list):
+        raise ProcessingOrderBlocked("pre-freeze reopen history is malformed")
+    state["reopen_history"] = [
+        *history,
+        {
+            "prior_phase": "operational_verification",
+            "prior_state_sha256": hashlib.sha256(previous_bytes).hexdigest(),
+            "admission_event_id": admission_event_id,
+            "finding_ids": list(finding_ids),
+        },
+    ]
+    state["phase"] = "intake"
+    state["intake_open"] = True
+    state["unresolved"] = list(finding_ids)
+    _require_campaign_write_admission(root, admission_event_id)
+    temporary = path.with_name(path.name + ".reopen-pre-freeze.new")
+    with temporary.open("x", encoding="utf-8", newline="\n") as stream:
+        json.dump(state, stream, indent=2)
+        stream.write("\n")
+        stream.flush()
+        os.fsync(stream.fileno())
+    os.replace(temporary, path)
+    return repair_campaign_status(root)
+
+
+def begin_repair_phase(root: Path, *, admission_event_id: str) -> dict[str, Any]:
+    """Enter repair without closing staged intake or shrinking its denominator."""
+
+    root = root.resolve(strict=True)
+    marker = root / MANAGED_PROJECT_MARKER
+    path = root / PROJECT_REPAIR_CAMPAIGN_PATH
+    if not marker.is_file() or not path.is_file():
+        raise ProcessingOrderBlocked("repair phase transition requires managed campaign state")
+    if not isinstance(admission_event_id, str) or not admission_event_id.startswith("gap-event:"):
+        raise ProcessingOrderBlocked("repair phase transition requires a ledger admission reference")
+    status = repair_campaign_status(root)
+    if status["phase"] != "intake" or not status["intake_open"] or not status["unresolved"]:
+        raise ProcessingOrderBlocked("repair phase transition requires open intake and a nonempty denominator")
+    previous_bytes = path.read_bytes()
+    state = json.loads(previous_bytes)
+    history = state.get("phase_history", [])
+    if not isinstance(history, list):
+        raise ProcessingOrderBlocked("repair phase history is malformed")
+    history.append({
+        "from": "intake",
+        "to": "repair",
+        "prior_state_sha256": hashlib.sha256(previous_bytes).hexdigest(),
+        "admission_event_id": admission_event_id,
+        "unresolved": list(status["unresolved"]),
+    })
+    state["phase_history"] = history
+    state["phase"] = "repair"
+    _require_campaign_write_admission(root, admission_event_id)
+    temporary = path.with_name(path.name + ".begin-repair.new")
+    with temporary.open("x", encoding="utf-8", newline="\n") as stream:
+        json.dump(state, stream, indent=2)
+        stream.write("\n")
+        stream.flush()
+        os.fsync(stream.fileno())
+    os.replace(temporary, path)
+    return repair_campaign_status(root)
+
+
+def resolve_repair_findings(
+    root: Path, *, evidence_by_finding: Mapping[str, str], admission_event_id: str
+) -> dict[str, Any]:
+    """Resolve evidenced repair findings without closing staged intake."""
+    root = root.resolve(strict=True)
+    marker = root / MANAGED_PROJECT_MARKER
+    path = root / PROJECT_REPAIR_CAMPAIGN_PATH
+    if not marker.is_file() or not path.is_file():
+        raise ProcessingOrderBlocked("finding reconciliation requires managed campaign state")
+    if (not isinstance(admission_event_id, str) or not admission_event_id.startswith("gap-event:")
+            or not isinstance(evidence_by_finding, Mapping) or not evidence_by_finding
+            or any(not isinstance(key, str) or not key.strip() or not isinstance(value, str) or not value.strip()
+                   for key, value in evidence_by_finding.items())):
+        raise ProcessingOrderBlocked("finding reconciliation requires admission and evidence for every finding")
+    status = repair_campaign_status(root)
+    if status["phase"] != "repair" or not status["intake_open"]:
+        raise ProcessingOrderBlocked("finding reconciliation requires active repair with intake open")
+    unresolved = list(status["unresolved"])
+    if not set(evidence_by_finding).issubset(unresolved):
+        raise ProcessingOrderBlocked("finding reconciliation may resolve only currently unresolved findings")
+    previous_bytes = path.read_bytes()
+    state = json.loads(previous_bytes)
+    history = state.get("finding_history", [])
+    if not isinstance(history, list):
+        raise ProcessingOrderBlocked("finding reconciliation history is malformed")
+    history.append({
+        "prior_state_sha256": hashlib.sha256(previous_bytes).hexdigest(),
+        "admission_event_id": admission_event_id,
+        "resolved": [{"finding_id": key, "evidence": value} for key, value in evidence_by_finding.items()],
+    })
+    state["finding_history"] = history
+    state["unresolved"] = [finding for finding in unresolved if finding not in evidence_by_finding]
+    _require_campaign_write_admission(root, admission_event_id)
+    temporary = path.with_name(path.name + ".resolve-findings.new")
+    with temporary.open("x", encoding="utf-8", newline="\n") as stream:
+        json.dump(state, stream, indent=2)
+        stream.write("\n")
+        stream.flush()
+        os.fsync(stream.fileno())
+    os.replace(temporary, path)
+    return repair_campaign_status(root)
+
+
+def register_repair_findings(
+    root: Path, *, finding_ids: list[str], admission_event_id: str
+) -> dict[str, Any]:
+    """Add newly discovered findings while the repair intake remains open."""
+    root = root.resolve(strict=True)
+    marker = root / MANAGED_PROJECT_MARKER
+    path = root / PROJECT_REPAIR_CAMPAIGN_PATH
+    if not marker.is_file() or not path.is_file():
+        raise ProcessingOrderBlocked("finding registration requires managed campaign state")
+    if (
+        not isinstance(admission_event_id, str)
+        or not admission_event_id.startswith("gap-event:")
+        or not isinstance(finding_ids, list)
+        or not finding_ids
+        or any(not isinstance(item, str) or not item.strip() for item in finding_ids)
+        or len(finding_ids) != len(set(finding_ids))
+    ):
+        raise ProcessingOrderBlocked("finding registration requires admission and unique findings")
+    status = repair_campaign_status(root)
+    if status["phase"] not in {"intake", "repair"} or not status["intake_open"]:
+        raise ProcessingOrderBlocked("finding registration requires open repair intake")
+    if set(finding_ids) & set(status["unresolved"]):
+        raise ProcessingOrderBlocked("finding registration rejects duplicate unresolved findings")
+    previous_bytes = path.read_bytes()
+    state = json.loads(previous_bytes)
+    history = state.get("finding_history", [])
+    if not isinstance(history, list):
+        raise ProcessingOrderBlocked("repair finding history is malformed")
+    state["finding_history"] = [
+        *history,
+        {
+            "prior_state_sha256": hashlib.sha256(previous_bytes).hexdigest(),
+            "admission_event_id": admission_event_id,
+            "registered": list(finding_ids),
+        },
+    ]
+    state["unresolved"] = [*status["unresolved"], *finding_ids]
+    _require_campaign_write_admission(root, admission_event_id)
+    temporary = path.with_name(path.name + ".register-findings.new")
+    with temporary.open("x", encoding="utf-8", newline="\n") as stream:
+        json.dump(state, stream, indent=2)
+        stream.write("\n")
+        stream.flush()
+        os.fsync(stream.fileno())
+    os.replace(temporary, path)
+    return repair_campaign_status(root)
+
+
+def close_repair_intake(
+    root: Path, *, admission_event_id: str, closure_authority: str
+) -> dict[str, Any]:
+    """Close a zero-denominator repair intake and enter operational verification.
+
+    This transition deliberately does not freeze repair. A separate, evidence-
+    bound operational verification must succeed before the freeze boundary.
+    """
+    root = root.resolve(strict=True)
+    marker = root / MANAGED_PROJECT_MARKER
+    path = root / PROJECT_REPAIR_CAMPAIGN_PATH
+    if not marker.is_file() or not path.is_file():
+        raise ProcessingOrderBlocked("intake closure requires managed campaign state")
+    if (
+        not isinstance(admission_event_id, str)
+        or not admission_event_id.startswith("gap-event:")
+        or not isinstance(closure_authority, str)
+        or not closure_authority.strip()
+    ):
+        raise ProcessingOrderBlocked("intake closure requires explicit authority and admission")
+    status = repair_campaign_status(root)
+    if status["phase"] != "repair" or not status["intake_open"] or status["unresolved"]:
+        raise ProcessingOrderBlocked(
+            "intake closure requires open repair intake with a zero unresolved denominator"
+        )
+    previous_bytes = path.read_bytes()
+    state = json.loads(previous_bytes)
+    history = state.get("phase_history", [])
+    if not isinstance(history, list):
+        raise ProcessingOrderBlocked("repair phase history is malformed")
+    state["phase_history"] = [
+        *history,
+        {
+            "from": "repair",
+            "to": "operational_verification",
+            "prior_state_sha256": hashlib.sha256(previous_bytes).hexdigest(),
+            "admission_event_id": admission_event_id,
+            "authority": closure_authority.strip(),
+            "unresolved": [],
+        },
+    ]
+    state["intake_open"] = False
+    state["intake_closed_at"] = datetime.now(timezone.utc).isoformat()
+    state["intake_closure_authority"] = closure_authority.strip()
+    state["phase"] = "operational_verification"
+    _require_campaign_write_admission(root, admission_event_id)
+    temporary = path.with_name(path.name + ".close-intake.new")
+    with temporary.open("x", encoding="utf-8", newline="\n") as stream:
+        json.dump(state, stream, indent=2)
+        stream.write("\n")
+        stream.flush()
+        os.fsync(stream.fileno())
+    os.replace(temporary, path)
+    return repair_campaign_status(root)
+
+
+def freeze_repair_campaign(
+    root: Path, *, admission_event_id: str, evidence_path: str
+) -> dict[str, Any]:
+    """Freeze only after a current, hash-bound operational-verification receipt."""
+    root = root.resolve(strict=True)
+    marker = root / MANAGED_PROJECT_MARKER
+    path = root / PROJECT_REPAIR_CAMPAIGN_PATH
+    if not marker.is_file() or not path.is_file():
+        raise ProcessingOrderBlocked("repair freeze requires managed campaign state")
+    if not isinstance(admission_event_id, str) or not admission_event_id.startswith("gap-event:"):
+        raise ProcessingOrderBlocked("repair freeze requires a ledger admission reference")
+    status = repair_campaign_status(root)
+    if (
+        status["phase"] != "operational_verification"
+        or status["intake_open"]
+        or status["unresolved"]
+    ):
+        raise ProcessingOrderBlocked(
+            "repair freeze requires closed zero-denominator operational verification"
+        )
+    supplied = root / evidence_path
+    if supplied.is_symlink():
+        raise ProcessingOrderBlocked("operational evidence cannot be a symbolic link")
+    candidate = supplied.resolve(strict=True)
+    try:
+        relative = candidate.relative_to(root)
+    except ValueError as error:
+        raise ProcessingOrderBlocked("operational evidence must remain inside the project") from error
+    if not candidate.is_file():
+        raise ProcessingOrderBlocked("operational evidence must be an exact regular file")
+    receipt = json.loads(candidate.read_text(encoding="utf-8"))
+    previous_bytes = path.read_bytes()
+    state = json.loads(previous_bytes)
+    campaign_id = str(state.get("campaign_id") or "")
+    if (
+        not isinstance(receipt, dict)
+        or receipt.get("schema_version") != "px.operational-verification/1.0"
+        or receipt.get("valid") is not True
+        or receipt.get("campaign_id") != campaign_id
+        or receipt.get("campaign_state_sha256") != hashlib.sha256(previous_bytes).hexdigest()
+        or receipt.get("unresolved_count") != 0
+        or not isinstance(receipt.get("checks"), list)
+        or not receipt["checks"]
+    ):
+        raise ProcessingOrderBlocked("operational verification receipt is absent, stale, or not passing")
+    seen_checks: set[str] = set()
+    for check in receipt["checks"]:
+        if not isinstance(check, dict):
+            raise ProcessingOrderBlocked("operational verification check is malformed")
+        name = check.get("name")
+        artifact_path = check.get("artifact")
+        digest = check.get("artifact_sha256")
+        if (
+            not isinstance(name, str) or not name.strip() or name in seen_checks
+            or check.get("passed") is not True or check.get("exit_code") != 0
+            or not isinstance(artifact_path, str) or not artifact_path.strip()
+            or not isinstance(digest, str) or len(digest) != 64
+            or any(character not in "0123456789abcdef" for character in digest)
+        ):
+            raise ProcessingOrderBlocked("operational verification check lacks passing artifact evidence")
+        seen_checks.add(name)
+        source = root / artifact_path
+        if source.is_symlink():
+            raise ProcessingOrderBlocked("operational verification artifact cannot be a symbolic link")
+        try:
+            resolved = source.resolve(strict=True)
+            resolved.relative_to(root)
+        except (OSError, ValueError) as error:
+            raise ProcessingOrderBlocked("operational verification artifact is absent or outside project") from error
+        if resolved in {path, candidate} or not resolved.is_file():
+            raise ProcessingOrderBlocked("operational verification artifact is not an independent file")
+        if hashlib.sha256(resolved.read_bytes()).hexdigest() != digest:
+            raise ProcessingOrderBlocked("operational verification artifact hash is stale")
+    evidence_sha256 = hashlib.sha256(candidate.read_bytes()).hexdigest()
+    history = state.get("phase_history", [])
+    if not isinstance(history, list):
+        raise ProcessingOrderBlocked("repair phase history is malformed")
+    state["phase_history"] = [
+        *history,
+        {
+            "from": "operational_verification",
+            "to": "repair_frozen",
+            "prior_state_sha256": hashlib.sha256(previous_bytes).hexdigest(),
+            "admission_event_id": admission_event_id,
+            "operational_evidence": relative.as_posix(),
+            "operational_evidence_sha256": evidence_sha256,
+            "unresolved": [],
+        },
+    ]
+    state["phase"] = "repair_frozen"
+    state["repair_frozen_at"] = datetime.now(timezone.utc).isoformat()
+    state["freeze"] = {
+        "schema_version": "px.repair-freeze/1.0",
+        "phase": "repair_frozen",
+        "evidence": relative.as_posix(),
+        "evidence_sha256": evidence_sha256,
+        "governed_failure_nodes": [],
+    }
+    _require_campaign_write_admission(root, admission_event_id)
+    temporary = path.with_name(path.name + ".freeze-repair.new")
+    with temporary.open("x", encoding="utf-8", newline="\n") as stream:
+        json.dump(state, stream, indent=2)
+        stream.write("\n")
+        stream.flush()
+        os.fsync(stream.fileno())
+    os.replace(temporary, path)
+    return repair_campaign_status(root)
 
 
 def processing_stage_allowed(

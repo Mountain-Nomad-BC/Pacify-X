@@ -25,7 +25,7 @@ class CodexAppServerAdapter extends ExecutionAdapter {
     this.child.stderr.on('data', chunk => this.options.onDiagnostic?.(`codex-app-server:${String(chunk).trim().slice(0, 800)}`));
     this.child.on('exit', (code, signal) => { const err = new Error(`codex-app-server-exited:${code ?? 'null'}:${signal ?? 'none'}`); for (const item of this.pending.values()) item.reject(err); this.pending.clear(); this.child = null; });
     this.rl = readline.createInterface({ input: this.child.stdout }); this.rl.on('line', line => this._onLine(line));
-    await this._request('initialize', { clientInfo: { name: 'pacify-x', title: 'Pacify-X Agent Console', version: String(this.options.clientVersion || '0.7.0') }, capabilities: { experimentalApi: true, requestAttestation: false, explicitGatewayOauth: false, mcpServerOpenaiFormElicitation: false, optOutNotificationMethods: [], extensions: null } });
+    await this._request('initialize', { clientInfo: { name: 'pacify-x', title: 'Pacify-X Agent Console', version: String(this.options.clientVersion || '0.9.0') }, capabilities: { experimentalApi: true, requestAttestation: false, explicitGatewayOauth: false, mcpServerOpenaiFormElicitation: false, optOutNotificationMethods: [], extensions: null } });
     this._notify('initialized', null);
   }
 

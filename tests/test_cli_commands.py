@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from contextlib import redirect_stdout
+import hashlib
 from io import StringIO
 import json
 import os
@@ -36,6 +37,107 @@ def invoke(*arguments: str) -> tuple[int, dict]:
     with redirect_stdout(output):
         status = main(["--root", str(ROOT), *arguments])
     return status, json.loads(output.getvalue())
+
+
+def test_processing_order_begin_repair_cli_preserves_open_denominator(tmp_path):
+    marker = tmp_path / ".engineering-bootstrap/project-record.json"
+    marker.parent.mkdir(parents=True)
+    marker.write_text(json.dumps({"project_id": "prj_cli"}) + "\n", encoding="utf-8")
+    campaign = tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    campaign.parent.mkdir(parents=True)
+    campaign.write_text(json.dumps({
+        "schema_version": "px.repair-campaign/1.0",
+        "campaign_id": "repair-cli",
+        "phase": "intake",
+        "intake_open": True,
+        "unresolved": ["finding-a"],
+    }) + "\n", encoding="utf-8")
+    before = campaign.read_bytes()
+    output = StringIO()
+    with redirect_stdout(output):
+        status = main([
+            "--root", str(tmp_path), "processing-order", "begin-repair",
+            "--project", str(tmp_path), "--admission-event-id", "gap-event:ledger:000001",
+        ])
+    assert status == 1
+    assert "current exact-scope work admission" in output.getvalue()
+    assert campaign.read_bytes() == before
+
+
+def test_processing_order_reopen_pre_freeze_cli_registers_findings(tmp_path):
+    marker = tmp_path / ".engineering-bootstrap/project-record.json"
+    marker.parent.mkdir(parents=True)
+    marker.write_text(json.dumps({"project_id": "prj_cli"}) + "\n", encoding="utf-8")
+    campaign = tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    campaign.parent.mkdir(parents=True)
+    campaign.write_text(json.dumps({
+        "schema_version": "px.repair-campaign/1.0",
+        "campaign_id": "repair-cli",
+        "phase": "operational_verification",
+        "intake_open": False,
+        "unresolved": [],
+    }) + "\n", encoding="utf-8")
+    before = campaign.read_bytes()
+    output = StringIO()
+    with redirect_stdout(output):
+        status = main([
+            "--root", str(tmp_path), "processing-order", "reopen-pre-freeze",
+            "--project", str(tmp_path), "--admission-event-id", "gap-event:ledger:000004",
+            "--finding", "version-drift", "--finding", "freeze-proof",
+        ])
+    assert status == 1
+    assert "current exact-scope work admission" in output.getvalue()
+    assert campaign.read_bytes() == before
+
+
+def test_processing_order_register_findings_cli_extends_open_repair(tmp_path):
+    marker = tmp_path / ".engineering-bootstrap/project-record.json"
+    marker.parent.mkdir(parents=True)
+    marker.write_text(json.dumps({"project_id": "prj_cli"}) + "\n", encoding="utf-8")
+    campaign = tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    campaign.parent.mkdir(parents=True)
+    campaign.write_text(json.dumps({
+        "schema_version": "px.repair-campaign/1.0", "campaign_id": "repair-cli",
+        "phase": "repair", "intake_open": True, "unresolved": ["existing"],
+    }) + "\n", encoding="utf-8")
+    before = campaign.read_bytes()
+    output = StringIO()
+    with redirect_stdout(output):
+        status = main([
+            "--root", str(tmp_path), "processing-order", "register-findings",
+            "--project", str(tmp_path), "--admission-event-id", "gap-event:ledger:000007",
+            "--finding", "security-activity-log",
+        ])
+    assert status == 1
+    assert "current exact-scope work admission" in output.getvalue()
+    assert campaign.read_bytes() == before
+
+
+def test_processing_order_close_and_freeze_cli_require_and_record_evidence(tmp_path):
+    marker = tmp_path / ".engineering-bootstrap/project-record.json"
+    marker.parent.mkdir(parents=True)
+    marker.write_text(json.dumps({"project_id": "prj_cli"}) + "\n", encoding="utf-8")
+    campaign = tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    campaign.parent.mkdir(parents=True)
+    campaign.write_text(json.dumps({
+        "schema_version": "px.repair-campaign/1.0",
+        "campaign_id": "repair-cli",
+        "phase": "repair",
+        "intake_open": True,
+        "unresolved": [],
+    }) + "\n", encoding="utf-8")
+    before = campaign.read_bytes()
+
+    output = StringIO()
+    with redirect_stdout(output):
+        status = main([
+            "--root", str(tmp_path), "processing-order", "close-intake",
+            "--project", str(tmp_path), "--admission-event-id", "gap-event:ledger:000002",
+            "--authority", "user:2026-09-26:complete the remaining work",
+        ])
+    assert status == 1
+    assert "current exact-scope work admission" in output.getvalue()
+    assert campaign.read_bytes() == before
 
 
 class CliCommandTests(unittest.TestCase):

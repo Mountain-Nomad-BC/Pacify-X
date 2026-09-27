@@ -52,6 +52,13 @@ def _claim_test_orchestration_single_flight(
             "apply-release-identity",
             "claim-release-stage",
             "finish-release-stage",
+            "reopen",
+            "reopen-pre-freeze",
+            "register-findings",
+            "resolve-findings",
+            "close-intake",
+            "freeze-repair",
+            "begin-repair",
         }
     )
     release_stage_run = getattr(args, "command", None) == "validate" or (
@@ -434,14 +441,26 @@ def parser() -> argparse.ArgumentParser:
             "status",
             "check",
             "initialize",
+            "begin-repair",
             "release-status",
             "clear-release-identity",
             "apply-release-identity",
             "claim-release-stage",
             "finish-release-stage",
+            "reopen",
+            "reopen-pre-freeze",
+            "register-findings",
+            "resolve-findings",
+            "close-intake",
+            "freeze-repair",
         ),
     )
     processing_order.add_argument("--project", type=Path)
+    processing_order.add_argument("--finding", action="append", default=[])
+    processing_order.add_argument("--resolution", action="append", default=[])
+    processing_order.add_argument("--admission-event-id")
+    processing_order.add_argument("--authority")
+    processing_order.add_argument("--evidence")
     processing_order.add_argument("--campaign-id")
     processing_order.add_argument(
         "--release-stage",
@@ -1320,7 +1339,14 @@ def main(argv: list[str] | None = None) -> int:
                 release_campaign_status,
             )
             from .test_profiles import (
+                begin_repair_phase,
                 initialize_project_repair_campaign,
+                reopen_invalid_repair_campaign,
+                reopen_pre_freeze_repair_campaign,
+                register_repair_findings,
+                resolve_repair_findings,
+                close_repair_intake,
+                freeze_repair_campaign,
                 repair_campaign_status,
                 require_processing_stage,
             )
@@ -1330,6 +1356,77 @@ def main(argv: list[str] | None = None) -> int:
                 if args.project is None:
                     raise ValueError("processing-order initialize requires --project")
                 output = initialize_project_repair_campaign(processing_root)
+            elif args.action == "begin-repair":
+                if args.project is None or not args.admission_event_id:
+                    raise ValueError(
+                        "processing-order begin-repair requires --project and --admission-event-id"
+                    )
+                output = begin_repair_phase(
+                    processing_root, admission_event_id=args.admission_event_id
+                )
+            elif args.action == "reopen":
+                if args.project is None or not args.admission_event_id or not args.finding:
+                    raise ValueError(
+                        "processing-order reopen requires --project, --admission-event-id, and --finding"
+                    )
+                output = reopen_invalid_repair_campaign(
+                    processing_root,
+                    finding_ids=args.finding,
+                    admission_event_id=args.admission_event_id,
+                )
+            elif args.action == "reopen-pre-freeze":
+                if args.project is None or not args.admission_event_id or not args.finding:
+                    raise ValueError(
+                        "processing-order reopen-pre-freeze requires --project, --admission-event-id, and --finding"
+                    )
+                output = reopen_pre_freeze_repair_campaign(
+                    processing_root,
+                    finding_ids=args.finding,
+                    admission_event_id=args.admission_event_id,
+                )
+            elif args.action == "resolve-findings":
+                if args.project is None or not args.admission_event_id or not args.resolution:
+                    raise ValueError("processing-order resolve-findings requires --project, --admission-event-id, and --resolution FINDING=EVIDENCE")
+                resolutions = {}
+                for item in args.resolution:
+                    finding, separator, evidence = item.partition("=")
+                    if not separator or not finding or not evidence or finding in resolutions:
+                        raise ValueError("each --resolution must be a unique FINDING=EVIDENCE pair")
+                    resolutions[finding] = evidence
+                output = resolve_repair_findings(
+                    processing_root, evidence_by_finding=resolutions,
+                    admission_event_id=args.admission_event_id,
+                )
+            elif args.action == "register-findings":
+                if args.project is None or not args.admission_event_id or not args.finding:
+                    raise ValueError(
+                        "processing-order register-findings requires --project, --admission-event-id, and --finding"
+                    )
+                output = register_repair_findings(
+                    processing_root,
+                    finding_ids=args.finding,
+                    admission_event_id=args.admission_event_id,
+                )
+            elif args.action == "close-intake":
+                if args.project is None or not args.admission_event_id or not args.authority:
+                    raise ValueError(
+                        "processing-order close-intake requires --project, --admission-event-id, and --authority"
+                    )
+                output = close_repair_intake(
+                    processing_root,
+                    admission_event_id=args.admission_event_id,
+                    closure_authority=args.authority,
+                )
+            elif args.action == "freeze-repair":
+                if args.project is None or not args.admission_event_id or not args.evidence:
+                    raise ValueError(
+                        "processing-order freeze-repair requires --project, --admission-event-id, and --evidence"
+                    )
+                output = freeze_repair_campaign(
+                    processing_root,
+                    admission_event_id=args.admission_event_id,
+                    evidence_path=args.evidence,
+                )
             elif args.action == "check":
                 if not args.stage:
                     raise ValueError("processing-order check requires --stage")
@@ -2101,10 +2198,10 @@ def main(argv: list[str] | None = None) -> int:
             else:
                 if not args.name:
                     raise ValueError("test section name is required for show or run")
+                section_started = monotonic() if args.action == "run" else None
                 output = resolve_test_section(root, args.name)
                 if args.action == "run":
                     from .section_scheduler import run_section
-                    section_started = monotonic()
                     output = run_section(root, output, args.name, section_started)
         elif args.command == "test-profile":
             from uuid import uuid4

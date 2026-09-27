@@ -25,6 +25,7 @@ const vscode = Object.freeze({
   setState(value) { return vscodeApi.setState?.(value); }
 });
 const app = document.getElementById('app');
+let dashboardStatePersistenceRevision = 0;
 const shieldUri = app.dataset.shieldUri;
 const brandUri = app.dataset.brandUri || shieldUri;
 const components = globalThis.PXDashboard.require('components');
@@ -175,10 +176,12 @@ function readinessLiveBlockers(snapshot = {}) {
   return blockers;
 }
 
-function persistDashboardState() {
+function persistDashboardState({ acknowledge = false } = {}) {
   const persisted = dashboardState.persistedView(state);
   vscode.setState(persisted);
-  vscode.postMessage({ type: 'dashboardViewState', state: persisted });
+  const message = { type: 'dashboardViewState', state: persisted };
+  if (acknowledge) message.acknowledgementRevision = ++dashboardStatePersistenceRevision;
+  vscode.postMessage(message);
 }
 
 function workingStudioSourceBinding() {
@@ -2599,7 +2602,7 @@ app.addEventListener('click', event => {
   if (action === 'graphOpenNeighborhood') { const key = control.dataset.nodeKey || state.graphData?.selected; if (!key) return; state.graphMode = 'neighborhood'; state.graphLayout = 'flow'; state.graphBackStack = []; requestGraph({ mode: 'neighborhood', cluster: '', node: key, query: '', offset: 0, edgeOffset: 0 }); render(); return; }
   if (action === 'inspectGraphRecord') { const key = control.dataset.nodeKey || state.graphData?.selected; const record = state.graphData?.nodes?.find(item => item.key === key); if (record) showInformationModal(record.title || key, `${String(record.kind || 'NODE').toUpperCase()} · GRAPH SOURCE RECORD`, record, `<p>${esc(record.summary || 'No source summary is available.')}</p><dl class="modal-detail"><div><dt>Canonical key</dt><dd class="mono">${esc(record.key)}</dd></div><div><dt>Community</dt><dd>${esc(record.community_id || 'not classified')}</dd></div><div><dt>Owner</dt><dd>${esc(record.owner || 'not declared')}</dd></div><div><dt>Source path</dt><dd class="mono">${esc(record.path || record.source?.path || 'not declared')}</dd></div><div><dt>Source hash</dt><dd class="mono">${esc(record.source_sha256 || 'not declared')}</dd></div><div><dt>Provenance</dt><dd class="mono">${esc(readableValue(record.provenance || record.source || {}))}</dd></div></dl>`); return; }
   if (action === 'graphSaveView') { const query = app.querySelector('[data-graph-search]')?.value.trim() || ''; showModal('Save graph view', 'LOCAL VIEW PRESET · NO AUTHORITY CHANGE', `<label class="modal-field"><span>View name</span><input id="graph-view-name" maxlength="80" value="${esc(query || `${state.graphView} ${state.graphKind || 'all'} view`)}"></label><p class="modal-note">Stores only query, filters, layout, and depth in VS Code webview state. It does not copy graph records.</p>`, '<button data-action="closeModal">Cancel</button><button class="primary" data-action="submitGraphSavedView">Save view</button>'); return; }
-  if (action === 'submitGraphSavedView') { const name = document.getElementById('graph-view-name')?.value.trim(); if (!name) return; const data = state.graphData || {}; state.graphSavedViews.unshift({ name, view: state.graphView, mode: state.graphMode, target: state.graphTarget, query: data.requested_query || data.requestedQuery || '', relation: data.requested_relation || '', direction: data.direction || 'both', depth: state.graphDepth, layout: state.graphLayout, kind: state.graphKind, status: state.graphStatus, community: state.graphCommunity }); state.graphSavedViews = state.graphSavedViews.slice(0, 12); persistStudioMetadata(); closeModal(); render(); return; }
+  if (action === 'submitGraphSavedView') { const name = document.getElementById('graph-view-name')?.value.trim(); if (!name) return; const data = state.graphData || {}; state.graphSavedViews.unshift({ name, view: state.graphView, mode: state.graphMode, target: state.graphTarget, query: data.requested_query || data.requestedQuery || '', relation: data.requested_relation || '', direction: data.direction || 'both', depth: state.graphDepth, layout: state.graphLayout, kind: state.graphKind, status: state.graphStatus, community: state.graphCommunity }); state.graphSavedViews = state.graphSavedViews.slice(0, 12); persistDashboardState({ acknowledge: true }); closeModal(); render(); return; }
   if (action === 'graphApplySavedView') { const saved = state.graphSavedViews[Number(control.dataset.viewIndex)]; if (!saved) return; state.graphView = saved.view; state.graphMode = saved.mode || 'full'; state.graphTarget = saved.target || ''; state.graphDepth = saved.depth || 1; state.graphLayout = saved.layout || 'community'; state.graphKind = saved.kind || ''; state.graphStatus = saved.status || ''; state.graphCommunity = saved.community || ''; state.graphData = null; persistStudioMetadata(); requestGraph({ view: saved.view, mode: state.graphMode, cluster: state.graphCommunity, node: '', target: state.graphTarget, query: saved.query || '', relation: saved.relation || '', direction: saved.direction || 'both', kind: state.graphKind, status: state.graphStatus, depth: state.graphDepth, offset: 0, edgeOffset: 0 }); render(); return; }
   if (action === 'graphDeleteSavedView') { state.graphSavedViews.splice(Number(control.dataset.viewIndex), 1); persistStudioMetadata(); render(); return; }
   if (action === 'runGraphSearch') { const search = app.querySelector('[data-graph-search]'); const target = app.querySelector('[data-graph-target]'); const relation = app.querySelector('[data-graph-relation]'); const direction = app.querySelector('[data-graph-direction]'); const analysis = app.querySelector('[data-graph-analysis]'); state.graphBackStack = []; state.graphMode = analysis?.value || 'full'; if (state.graphMode === 'full') state.graphLayout = 'community'; else if (state.graphLayout === 'community') state.graphLayout = 'flow'; state.graphTarget = target?.value.trim() || ''; state.graphData = null; requestGraph({ mode: state.graphMode, cluster: state.graphMode === 'full' ? state.graphCommunity : '', node: '', target: state.graphTarget, query: search?.value.trim() || '', relation: relation?.value || '', direction: direction?.value || 'both', kind: state.graphKind, status: state.graphStatus, offset: 0, edgeOffset: 0 }); renderPreservingControl('[data-graph-search]'); return; }
@@ -2983,6 +2986,19 @@ app.addEventListener('drop', event => {
 window.addEventListener('message', event => {
   const message = event.data;
   if (!message || typeof message !== 'object') return;
+  if (message.type === 'dashboardViewStateStored') {
+    if (Number.isSafeInteger(message.acknowledgementRevision)
+      && message.acknowledgementRevision > 0
+      && /^[a-f0-9]{64}$/.test(String(message.stateSha256 || ''))
+      && Array.isArray(message.graphSavedViewNames)) {
+      globalThis.__PX_DASHBOARD_STATE_STORAGE_ACK__ = {
+        acknowledgementRevision: message.acknowledgementRevision,
+        stateSha256: message.stateSha256,
+        graphSavedViewNames: message.graphSavedViewNames.filter(name => typeof name === 'string').slice(0, 12)
+      };
+    }
+    return;
+  }
   if (message.type === 'deepLink' && typeof message.route === 'string' && message.route.startsWith('/control-plane')) {
     const route = message.route.slice(0, 1000); const parts = route.split('/').filter(Boolean);
     const decodeRouteId = value => {

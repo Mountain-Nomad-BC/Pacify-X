@@ -76,6 +76,45 @@ test('U02 advanced surfaces own Knowledge Core and Runtime Core behind a bounded
   assert.doesNotMatch(legacy, /function runtimeCore\s*\(/);
 });
 
+test('Self Operations shows canonical campaign state and keeps unowned V3 mutation controls unavailable', () => {
+  const advanced = loadScaffold().require('advancedSurfaces');
+  const html = advanced.render('runtimeCore', {
+    state: { snapshot: { repair_campaign: {
+      valid: true, campaign_id: 'repair-test', phase: 'repair', intake_open: true,
+      unresolved_count: 1, unresolved: ['PX-OS-1067/self-operations-ui-closure']
+    }, self_operations: {
+      schema_version: 'px.self-operations-status/1.0',
+      authority: 'canonical test projection',
+      monitoring: { available: true, mode: 'read_only' },
+      mutation_lifecycle: {
+        integrated: false, status: 'not_integrated',
+        stages: [{ id: 'guarded_apply', status: 'not_integrated' }]
+      }
+    } } },
+    thermalPanel: () => '',
+    coordinationSummary: () => ''
+  });
+  assert.match(html, /Self Operations/);
+  assert.match(html, /repair-test/);
+  assert.match(html, /PX-OS-1067\/self-operations-ui-closure/);
+  assert.match(html, /NOT INTEGRATED/);
+  assert.match(html, /guarded_apply/);
+  assert.match(html, /data-action="refresh"/);
+  assert.doesNotMatch(html, /data-action="(?:applyCandidate|requestApproval|rollbackRun|generateCandidates)"/);
+});
+
+test('Self Operations fails closed when canonical lifecycle projection is missing', () => {
+  const advanced = loadScaffold().require('advancedSurfaces');
+  const html = advanced.render('runtimeCore', {
+    state: { snapshot: { repair_campaign: { valid: false, unresolved: [] } } },
+    thermalPanel: () => '',
+    coordinationSummary: () => ''
+  });
+  assert.match(html, /STATUS UNAVAILABLE/);
+  assert.match(html, /Mutation lifecycle stage evidence is unavailable/);
+  assert.doesNotMatch(html, /data-action="(?:applyCandidate|requestApproval|rollbackRun|generateCandidates)"/);
+});
+
 test('U02 graph surface owns Knowledge Graph while interaction geometry stays with the single controller', () => {
   const graph = loadScaffold().require('graphSurface');
   assert.deepEqual([...graph.ids], ['knowledgeGraph']);

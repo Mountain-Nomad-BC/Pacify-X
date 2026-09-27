@@ -70,17 +70,49 @@ test('wait registration rejects a dependency cycle and requires exact current fe
 test('private mailbox payload cannot cross remote/browser transport without explicit egress approval', () => {
   const workspace = root();
   try {
+    plan(workspace, [task('receiver-task', 'private.txt')]);
+    const claimed = claimTask(workspace, actor('receiver'), { task_id: 'receiver-task' }).result.receipt;
+    const wait = registerWait(workspace, actor('receiver'), {
+      task_id: 'receiver-task', checkpoint_id: 'private-checkpoint', condition_type: 'message', dependency_ids: ['msg-fixed'],
+      ...proof({ id: claimed.claim_id, fencing_tokens: claimed.fencing_tokens })
+    }).result.receipt;
     assert.throws(() => sendMessage(workspace, actor('sender'), {
       recipient_id: 'receiver', recipient_transport: 'browser', privacy_class: 'private', payload: 'private detail'
     }), /private-message-egress-denied/);
     const sent = sendMessage(workspace, actor('sender'), {
-      recipient_id: 'receiver', recipient_transport: 'local', privacy_class: 'private', payload: 'private detail', message_id: 'msg-fixed'
+      recipient_id: 'receiver', recipient_transport: 'local', privacy_class: 'private', payload: 'private detail', message_id: 'msg-fixed', evidence_refs: ['secret-ref']
     });
     assert.equal(sent.result.receipt.message_id, 'msg-fixed');
-    assert.equal(readMessages(workspace, actor('receiver'), { recipient_id: 'receiver' }).messages.length, 1);
-    consumeMessage(workspace, actor('receiver'), { recipient_id: 'receiver', message_id: 'msg-fixed' });
+    assert.match(sent.private_delivery_token, /^[A-Za-z0-9_-]{43}$/);
+    assert.equal(JSON.stringify(sent.event).includes(sent.private_delivery_token), false);
     assert.equal(readMessages(workspace, actor('receiver'), { recipient_id: 'receiver' }).messages.length, 0);
-    assert.equal(readCoordination(workspace).state.mailboxes.receiver[0].status, 'consumed');
+    assert.equal(readMessages(workspace, actor('other'), { recipient_id: 'receiver' }, { includePrivate: true }).messages.length, 0);
+    const privateRows = readMessages(workspace, actor('receiver'), { recipient_id: 'receiver', private_delivery_token: sent.private_delivery_token }, { includePrivate: true }).messages;
+    assert.equal(privateRows.length, 1);
+    assert.deepEqual(privateRows[0].evidence_refs, ['secret-ref']);
+    assert.equal(readMessages(workspace, actor('receiver'), { recipient_id: 'receiver' }, { includePrivate: false }).messages.length, 0);
+    assert.equal(JSON.stringify(readCoordination(workspace)).includes('private detail'), false);
+    assert.equal(JSON.stringify(readCoordination(workspace)).includes('msg-fixed'), false);
+    assert.equal(JSON.stringify(readCoordination(workspace)).includes('secret-ref'), false);
+    const storedHandoff = fs.readFileSync(path.join(workspace, '.engineering-bootstrap', 'coordination', 'handoff.json'), 'utf8');
+    assert.equal(storedHandoff.includes('msg-fixed'), false);
+    assert.equal(storedHandoff.includes('secret-ref'), false);
+    assert.equal(storedHandoff.includes('private detail'), false);
+    assert.equal(JSON.parse(storedHandoff).last_event.private_message_redacted, true);
+    const publicWait = waitStatus(workspace, wait.wait_id);
+    assert.equal(publicWait.wakes[0].private_trigger_redacted, true);
+    assert.deepEqual(publicWait.resume_packet.trigger_result_ids, []);
+    assert.deepEqual(publicWait.resume_packet.trigger_evidence_ids, []);
+    assert.equal(JSON.stringify(publicWait).includes('msg-fixed'), false);
+    assert.equal(JSON.stringify(publicWait).includes('secret-ref'), false);
+    assert.equal(sendMessage(workspace, actor('sender'), {
+      recipient_id: 'receiver', recipient_transport: 'local', privacy_class: 'private', payload: 'private detail', message_id: 'msg-fixed'
+    }).result.receipt.payload, undefined);
+    assert.throws(() => consumeMessage(workspace, actor('receiver'), { recipient_id: 'receiver', message_id: 'msg-fixed' }, { allowPrivate: false }), /requires-delivery-proof/);
+    assert.throws(() => consumeMessage(workspace, actor('other'), { recipient_id: 'receiver', message_id: 'msg-fixed' }), /requires-delivery-proof/);
+    consumeMessage(workspace, actor('receiver'), { recipient_id: 'receiver', message_id: 'msg-fixed', private_delivery_token: sent.private_delivery_token });
+    assert.equal(readMessages(workspace, actor('receiver'), { recipient_id: 'receiver' }).messages.length, 0);
+    assert.equal(readCoordination(workspace).state.mailboxes.receiver, undefined);
   } finally { fs.rmSync(workspace, { recursive: true, force: true }); }
 });
 

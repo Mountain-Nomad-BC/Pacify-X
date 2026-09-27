@@ -525,6 +525,11 @@ const ERROR_INDICATOR_CONTROL_IDS = new Set([
   'pxui.memory.indicator.queryError',
   'pxui.knowledge-core.indicator.controllerError'
 ]);
+const KNOWLEDGE_GRAPH_REPAIR_CONTROL_IDS = new Set([
+  'pxui.knowledge-graph.action.focusGraphNode.row',
+  'pxui.knowledge-graph.action.graphBack',
+  'pxui.knowledge-graph.field.graphStatus'
+]);
 const focusedProfile = configurationOnly ? 'reversible-configuration' : studioLifecycleOnly ? 'studio-lifecycle' : knowledgeLifecycleOnly ? 'knowledge-lifecycle' : coordinationMemoryOnly ? 'coordination-memory' : hostBoundaryOnly ? 'host-boundary' : nativeDialogOnly ? 'native-dialog-boundary' : knowledgeGraphOnly ? 'knowledge-graph' : surfaceCaptureOnly ? 'surface-capture' : pluginLifecycleOnly ? 'plugin-lifecycle' : codexHandoffOnly ? 'codex-handoff' : errorIndicatorsOnly ? 'error-indicators' : lateCardRepairOnly ? 'late-card-repair' : catalogPaginationOnly ? 'catalog-pagination' : builderOnly ? 'builder' : workbenchCommandOnly ? 'workbench-command' : null;
 const focusedProfileOnly = Boolean(focusedProfile);
 const postAuditLongRunningAuthority = ownedReversibleConfigurationAuthority && process.env.PX_OPERATIONAL_POST_AUDIT_LONG_RUNNING === '1';
@@ -612,6 +617,8 @@ function installedDirectSelector(control) {
     'pxui.knowledge-core.indicator.controllerError': '.surface-knowledgeCore .memory-errors[role="alert"]:has([data-action="knowledgeRefresh"])',
     'pxui.knowledge-graph.action.graphFit.button': '.graph-zoom-controls [data-action="graphFit"]',
     'pxui.knowledge-graph.action.graphFit.minimap': '.graph-minimap[data-action="graphFit"]',
+    'pxui.knowledge-graph.action.focusGraphNode.row': '[data-action="focusGraphNode"][data-node-key]',
+    'pxui.knowledge-graph.action.graphBack': '[data-action="graphBack"]',
     'pxui.knowledge-graph.action.graphClearCommunity': '[data-action="graphClearCommunity"]',
     'pxui.knowledge-graph.action.graphCommunity.row': '[data-action="graphCommunity"][data-community-id]',
     'pxui.knowledge-graph.action.graphDepth.decrease': '[data-action="graphDepth"][data-delta="-1"]',
@@ -802,7 +809,12 @@ async function seedInstalledConditionalScenario(frameHost, control) {
     };
     if (spec.type === 'read-action-failure') {
       globalThis.__PX_INSTALLED_FAILURE_SCENARIOS__ ||= {};
-      globalThis.__PX_INSTALLED_FAILURE_SCENARIOS__[spec.controlId] = { operation: spec.operation, resultType: spec.resultType, kind: spec.kind || '', requestId, seeded: true };
+      globalThis.__PX_INSTALLED_FAILURE_SCENARIOS__[spec.controlId] = {
+        operation: spec.operation, resultType: spec.resultType, kind: spec.kind || '', requestId, seeded: true,
+        ...(spec.controlId === 'pxui.knowledge-graph.action.focusGraphNode.row'
+          ? { predecessorSelected: String(state.graphData?.selected || ''), predecessorBackStack: [...state.graphBackStack] }
+          : {})
+      };
       sendError(spec.operation, spec.kind || null, `Bounded installed current-source failure for ${spec.controlId}`);
       document.querySelector('[data-action="closeModal"]')?.click();
       if (spec.operation === 'catalogQuery' && spec.kind && !spec.controlId.endsWith('.action.catalogRetry')) {
@@ -1567,6 +1579,8 @@ async function prepareInstalledControl(frameHost, control) {
     await wait(80);
   }
   const graphConditional = ({
+    'pxui.knowledge-graph.action.focusGraphNode.row': 'focus-node-row',
+    'pxui.knowledge-graph.action.graphBack': 'graph-back-history',
     'pxui.knowledge-graph.action.graphClearCommunity': 'community-selected',
     'pxui.knowledge-graph.action.graphCommunity.row': 'community-index',
     'pxui.knowledge-graph.action.graphDepth.decrease': 'depth-decrease',
@@ -1605,6 +1619,7 @@ async function prepareInstalledControl(frameHost, control) {
     const physicalMode = ({
       'depth-decrease': 'neighborhood', 'depth-increase': 'neighborhood', 'depth-menu': 'neighborhood',
       'layout-flow': 'neighborhood', 'layout-orbit': 'neighborhood',
+      'focus-node-row': 'dependencies', 'graph-back-history': 'dependencies',
       direction: 'dependencies', 'path-target': 'path'
     })[graphConditional] || null;
     const prepared = physicalMode ? await frameHost.evaluateContent(mode => {
@@ -1645,6 +1660,7 @@ async function prepareInstalledControl(frameHost, control) {
       }
       if (!physicalSettled) throw new Error(`installed-graph-physical-mode-settlement-timeout:${graphConditional}:${physicalMode}`);
     }
+    if (graphConditional === 'graph-back-history') await seedInstalledGraphBackHistory(frameHost);
     const exactSelector = installedDirectSelector(control);
     if (physicalMode) {
       const predecessorPrepared = await frameHost.evaluateContent(mode => {
@@ -2026,11 +2042,68 @@ async function exerciseInstalledExactNavigation(frameHost, control, timeoutMs = 
 async function exerciseInstalledExactGraphField(frameHost, control) {
   const selector = installedExactGraphField(control);
   if (!selector) return null;
+  const isStatusFilter = control.control_id.endsWith('.graphStatus');
+  if (isStatusFilter) {
+    const original = await frameHost.evaluateContent(spec => {
+      const target = document.querySelector(spec.selector);
+      if (!target || target.tagName !== 'SELECT' || target.disabled) return null;
+      return target.value;
+    }, { selector });
+    if (original === null) throw new Error(`installed-exact-graph-field-unavailable:${control.control_id}:${selector}`);
+    const alternate = await frameHost.evaluateContent(spec => {
+      const target = document.querySelector(spec.selector);
+      const option = [...(target?.options || [])].find(item => item.value !== target.value && !item.disabled);
+      return option?.value ?? null;
+    }, { selector });
+    if (alternate === null) throw new Error(`installed-exact-graph-field-alternate-unavailable:${control.control_id}`);
+
+    const dispatchAndSettle = async expected => {
+      const before = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
+      const dispatched = await frameHost.evaluateContent(({ selector: fieldSelector, value }) => {
+        const target = document.querySelector(fieldSelector);
+        if (!target || target.tagName !== 'SELECT' || target.disabled) return false;
+        if (![...target.options].some(option => option.value === value)) target.add(new Option(value, value));
+        target.value = value;
+        target.dispatchEvent(new Event('change', { bubbles: true }));
+        return true;
+      }, { selector, value: expected });
+      if (!dispatched) throw new Error(`installed-exact-graph-field-dispatch-failed:${control.control_id}`);
+      await waitForInstalledResponse(frameHost, before, { types: ['graphResult'] }, 20_000);
+      const deadline = Date.now() + 20_000;
+      while (Date.now() < deadline) {
+        const settled = await frameHost.evaluateContent(({ selector: fieldSelector, value }) => Boolean(
+          state.graphPending !== true
+          && state.graphData
+          && state.graphStatus === value
+          && state.graphRequest?.status === value
+          && document.querySelector(fieldSelector)?.value === value
+        ), { selector, value: expected });
+        if (settled) return true;
+        await wait(100);
+      }
+      throw new Error(`installed-exact-graph-field-settlement-timeout:${control.control_id}:${expected}`);
+    };
+
+    let changed = false;
+    try {
+      await dispatchAndSettle(alternate);
+      changed = true;
+    } finally {
+      // Restore through the same real change path and await its graph response;
+      // changing the DOM value alone does not restore the live query state.
+      await dispatchAndSettle(original);
+    }
+    if (!changed) throw new Error(`installed-exact-graph-field-change-unconfirmed:${control.control_id}`);
+    return {
+      loaded: true, visible: true, attempted: true, validationObserved: true, acknowledged: true,
+      changed: true, restored: true, failureObserved: false, recoveryObserved: false,
+      details: { result_acknowledgement: 'The exact graph status field changed and restored through separate acknowledged graph requests; the restored control, request state, and settled graph state agree.' }, errors: []
+    };
+  }
   const result = await frameHost.evaluateContent(spec => {
     const visible = element => Boolean(element && !element.disabled
       && (element.offsetWidth || element.offsetHeight || element.getClientRects().length));
-    const mode = spec.controlId.endsWith('.graphTarget') ? 'path'
-      : spec.controlId.endsWith('.graphStatus') ? 'full' : 'dependencies';
+    const mode = spec.controlId.endsWith('.graphTarget') ? 'path' : 'dependencies';
     const analysis = document.querySelector('[data-graph-analysis]');
     if (!visible(analysis) || ![...analysis.options].some(option => option.value === mode)) return { available: false, modeUnavailable: true };
     analysis.value = mode;
@@ -2056,8 +2129,7 @@ async function exerciseInstalledExactGraphField(frameHost, control) {
     current.value = original;
     current.dispatchEvent(new Event(current.tagName === 'SELECT' ? 'change' : 'input', { bubbles: true }));
     const restored = document.querySelector(spec.selector);
-    const stateRestored = spec.controlId.endsWith('.graphStatus') ? state.graphStatus === original : true;
-    return { available: true, attempted: true, changed, restored: Boolean(restored && restored.value === original && stateRestored) };
+    return { available: true, attempted: true, changed, restored: Boolean(restored && restored.value === original) };
   }, { selector, controlId: control.control_id });
   if (!result.available) throw new Error(`installed-exact-graph-field-unavailable:${control.control_id}:${selector}`);
   if (!result.attempted || !result.changed || !result.restored) throw new Error(`installed-exact-graph-field-restoration-failed:${control.control_id}`);
@@ -2065,6 +2137,146 @@ async function exerciseInstalledExactGraphField(frameHost, control) {
     loaded: true, visible: true, attempted: true, validationObserved: true, acknowledged: true,
     changed: true, restored: true, failureObserved: false, recoveryObserved: false,
     details: { result_acknowledgement: 'The exact graph field accepted one bounded content-realm input and restored its predecessor value.' }, errors: []
+  };
+}
+
+async function waitForInstalledGraphSelection(frameHost, expected, expectedDepth, expectedTail, controlId) {
+  const deadline = Date.now() + 20_000;
+  while (Date.now() < deadline) {
+    const settled = await frameHost.evaluateContent(({ selected, depth, tail }) => Boolean(
+      state.graphPending !== true
+      && state.graphData
+      && state.graphData.selected === selected
+      && !state.graphError
+      && state.graphBackStack.length === depth
+      && (tail === null || state.graphBackStack.at(-1) === tail)
+    ), { selected: expected, depth: expectedDepth, tail: expectedTail });
+    if (settled) return true;
+    await wait(100);
+  }
+  throw new Error(`installed-graph-selection-settlement-timeout:${controlId}:${expected}`);
+}
+
+async function focusInstalledGraphNodeRow(frameHost, { restore = true, requireFailure = true } = {}) {
+  const failureEvidence = requireFailure ? await frameHost.evaluateContent(controlId => {
+    const scenarios = globalThis.__PX_INSTALLED_FAILURE_SCENARIOS__ || {};
+    const seeded = scenarios[controlId];
+    const expectedError = `Bounded installed current-source failure for ${controlId}`;
+    const error = String(state.graphError || '');
+    const alert = document.querySelector('.graph-inline-error[role="alert"]');
+    const unchanged = Boolean(seeded
+      && seeded.operation === 'graphQuery'
+      && seeded.resultType === 'graphResult'
+      && state.graphPending !== true
+      && seeded.predecessorSelected === state.graphData?.selected
+      && JSON.stringify(seeded.predecessorBackStack) === JSON.stringify(state.graphBackStack)
+      && error.includes(expectedError)
+      && alert?.textContent?.includes(expectedError));
+    if (unchanged) delete scenarios[controlId];
+    return unchanged ? {
+      selected: seeded.predecessorSelected,
+      backStack: seeded.predecessorBackStack,
+      message: expectedError
+    } : null;
+  }, 'pxui.knowledge-graph.action.focusGraphNode.row') : null;
+  if (requireFailure && !failureEvidence) throw new Error('installed-focus-graph-node-row-failure-not-observed-with-predecessor-unchanged');
+  const candidate = await frameHost.evaluateContent(() => {
+    const visible = element => Boolean(element && !element.disabled
+      && (element.offsetWidth || element.offsetHeight || element.getClientRects().length));
+    const selected = String(state.graphData?.selected || '');
+    const target = [...document.querySelectorAll('[data-action="focusGraphNode"][data-node-key]')]
+      .filter(visible)
+      .find(item => item.dataset.nodeKey && item.dataset.nodeKey !== selected);
+    return target ? {
+      prior: selected,
+      target: target.dataset.nodeKey,
+      backDepth: state.graphBackStack.length
+    } : null;
+  });
+  if (!candidate?.prior || !candidate.target) throw new Error('installed-focus-graph-node-row-candidate-unavailable');
+  if (failureEvidence && (candidate.prior !== failureEvidence.selected
+    || candidate.backDepth !== failureEvidence.backStack.length)) {
+    throw new Error('installed-focus-graph-node-row-recovery-predecessor-mismatch');
+  }
+  const before = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
+  const clicked = await frameHost.evaluateContent(identity => {
+    const visible = element => Boolean(element && !element.disabled
+      && (element.offsetWidth || element.offsetHeight || element.getClientRects().length));
+    if (state.graphPending === true || state.graphData?.selected !== identity.prior
+      || state.graphBackStack.length !== identity.backDepth) return false;
+    const target = [...document.querySelectorAll('[data-action="focusGraphNode"][data-node-key]')]
+      .find(item => item.dataset.nodeKey === identity.target && visible(item));
+    if (!target) return false;
+    target.click();
+    return state.graphBackStack.length === identity.backDepth + 1
+      && state.graphBackStack.at(-1) === identity.prior;
+  }, candidate);
+  if (!clicked) throw new Error('installed-focus-graph-node-row-atomic-click-failed');
+  await waitForInstalledResponse(frameHost, before, { types: ['graphResult'] }, 20_000);
+  await waitForInstalledGraphSelection(frameHost, candidate.target, candidate.backDepth + 1, candidate.prior,
+    'pxui.knowledge-graph.action.focusGraphNode.row');
+
+  if (restore) {
+    const restoreBefore = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
+    const restored = await frameHost.evaluateContent(identity => {
+      const back = document.querySelector('[data-action="graphBack"]');
+      if (!back || back.disabled || state.graphData?.selected !== identity.target
+        || state.graphBackStack.length !== identity.backDepth + 1
+        || state.graphBackStack.at(-1) !== identity.prior) return false;
+      back.click();
+      return true;
+    }, candidate);
+    if (!restored) throw new Error('installed-focus-graph-node-row-predecessor-restore-dispatch-failed');
+    await waitForInstalledResponse(frameHost, restoreBefore, { types: ['graphResult'] }, 20_000);
+    await waitForInstalledGraphSelection(frameHost, candidate.prior, candidate.backDepth, null,
+      'pxui.knowledge-graph.action.focusGraphNode.row-restore');
+  }
+  return {
+    loaded: true, visible: true, attempted: true, validationObserved: true, acknowledged: true,
+    changed: true, restored: restore, failureObserved: Boolean(failureEvidence), recoveryObserved: Boolean(failureEvidence),
+    details: {
+      result_acknowledgement: `The exact focusGraphNode row moved selection from ${candidate.prior} to ${candidate.target} on a correlated graphResult and pushed the exact predecessor onto history.`,
+      ...(failureEvidence ? { failure_handling: `The exact seeded graphQuery failure rendered its error while preserving predecessor selection and history; the next exact focusGraphNode request returned a correlated graphResult and cleared the error.` } : {}),
+      ...(restore ? { recovery_rollback: `The exact enabled Back control returned selection to ${candidate.prior} and restored the predecessor history depth.` } : {})
+    }, errors: []
+  };
+}
+
+async function seedInstalledGraphBackHistory(frameHost) {
+  const seeded = await focusInstalledGraphNodeRow(frameHost, { restore: false, requireFailure: false });
+  if (!seeded.acknowledged) throw new Error('installed-graph-back-history-seed-unacknowledged');
+  return seeded;
+}
+
+async function exerciseInstalledGraphBack(frameHost) {
+  const predecessor = await frameHost.evaluateContent(() => ({
+    selected: String(state.graphData?.selected || ''),
+    previous: String(state.graphBackStack.at(-1) || ''),
+    backDepth: state.graphBackStack.length,
+    enabled: Boolean(document.querySelector('[data-action="graphBack"]')
+      && !document.querySelector('[data-action="graphBack"]').disabled)
+  }));
+  if (!predecessor.selected || !predecessor.previous || predecessor.backDepth < 1 || !predecessor.enabled) {
+    throw new Error('installed-graph-back-enabled-history-predecessor-unavailable');
+  }
+  const before = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
+  const clicked = await frameHost.evaluateContent(identity => {
+    const back = document.querySelector('[data-action="graphBack"]');
+    if (!back || back.disabled || state.graphPending === true
+      || state.graphData?.selected !== identity.selected
+      || state.graphBackStack.length !== identity.backDepth
+      || state.graphBackStack.at(-1) !== identity.previous) return false;
+    back.click();
+    return true;
+  }, predecessor);
+  if (!clicked) throw new Error('installed-graph-back-atomic-click-failed');
+  await waitForInstalledResponse(frameHost, before, { types: ['graphResult'] }, 20_000);
+  await waitForInstalledGraphSelection(frameHost, predecessor.previous, predecessor.backDepth - 1,
+    predecessor.backDepth > 1 ? null : null, 'pxui.knowledge-graph.action.graphBack');
+  return {
+    loaded: true, visible: true, attempted: true, validationObserved: true, acknowledged: true,
+    changed: true, restored: true, failureObserved: false, recoveryObserved: false,
+    details: { result_acknowledgement: `The exact enabled Back control returned from ${predecessor.selected} to its recorded predecessor ${predecessor.previous} on a correlated graphResult and popped one history entry.` }, errors: []
   };
 }
 
@@ -2092,7 +2304,11 @@ async function probeInstalledControls(frameHost, matrix, hostErrors, controlIds 
       }
       const revealed = await revealInstalledControl(frameHost, control);
       if (revealed) await wait(60);
-      probe = installedExactNavigationTransition(control)
+      probe = control.control_id === 'pxui.knowledge-graph.action.focusGraphNode.row'
+        ? await focusInstalledGraphNodeRow(frameHost)
+        : control.control_id === 'pxui.knowledge-graph.action.graphBack'
+          ? await exerciseInstalledGraphBack(frameHost)
+          : installedExactNavigationTransition(control)
         ? await exerciseInstalledExactNavigation(frameHost, control)
         : installedExactGraphField(control)
           ? await exerciseInstalledExactGraphField(frameHost, control)
@@ -2328,7 +2544,7 @@ async function probeInstalledSidebarHandoff(frameHost, workbench, selector, hand
   }, { selector, handoff }, { timeout: phaseBudget('initial-dispatch', 5_000) });
   if (!attempt.rejected) throw new Error(`installed-sidebar-handoff-owned-rejection-failed:${JSON.stringify(attempt.expected)}`);
   await waitForInstalledSidebarHandoffRequest(frameHost, attempt.offset, attempt.expected, phaseBudget('initial-request', 10_000));
-  const dashboard = await waitForOwnedWebview(workbench, text => /PACIFY-X\s*\/\s*DASHBOARD|SIDEBAR DEEP LINK/i.test(text), phaseBudget('dashboard-discovery', 20_000));
+  const dashboard = await waitForOwnedWebview(workbench, text => /PACIFY-X\s*\/\s*DASHBOARD|SIDEBAR DEEP LINK/i.test(text), phaseBudget('dashboard-discovery', 20_000), { acceptDashboardOwnership: true });
   if (!dashboard) throw new Error(`installed-sidebar-dashboard-unavailable:${JSON.stringify(attempt.expected)}`);
   await waitForInstalledSidebarDashboardIdentity(dashboard, attempt.expected, phaseBudget('initial-dashboard-identity', 15_000));
   const restart = await restartInstalledDashboardWebview(dashboard, phaseBudget('dashboard-reconstruction', 30_000));
@@ -2663,7 +2879,7 @@ function reacquirableOwnedFrameError(error) {
   return /waiting for locator\(['"]iframe\.webview\[src\*=[\s\S]*iframe#active-frame['"]\)/.test(message);
 }
 
-async function waitForOwnedWebview(workbench, predicate, timeoutMs = 30_000) {
+async function waitForOwnedWebview(workbench, predicate, timeoutMs = 30_000, { acceptDashboardOwnership = false } = {}) {
   let current = null;
   let identityMode = null;
   const contentEvaluationBoundary = createOwnedContentEvaluationBoundary(10_000);
@@ -2676,8 +2892,13 @@ async function waitForOwnedWebview(workbench, predicate, timeoutMs = 30_000) {
     const text = await innerText(candidate, 1_000);
     const dashboardOwned = await hasDashboardOwnership(candidate);
     if (discover) {
-      if (!await predicate(text)) return false;
-      identityMode = dashboardOwned ? 'dashboard-dom' : 'predicate';
+      const mode = discoverOwnedWebviewIdentityMode({
+        dashboardOwned,
+        predicateMatched: await predicate(text),
+        acceptDashboardOwnership
+      });
+      if (!mode) return false;
+      identityMode = mode;
       return true;
     }
     return identityMode === 'dashboard-dom' ? dashboardOwned : await predicate(text);
@@ -2783,6 +3004,11 @@ async function waitForOwnedWebview(workbench, predicate, timeoutMs = 30_000) {
     screenshot: async (...args) => invokeCurrent('screenshot', args),
     page: () => workbench
   };
+}
+
+function discoverOwnedWebviewIdentityMode({ dashboardOwned, predicateMatched, acceptDashboardOwnership = false }) {
+  if (dashboardOwned === true && (acceptDashboardOwnership === true || predicateMatched === true)) return 'dashboard-dom';
+  return predicateMatched === true ? 'predicate' : null;
 }
 
 async function openWorkbenchCommandPalette(workbench) {
@@ -3738,15 +3964,34 @@ async function inspectStudioBuilder(frameHost, kind, outputRoot, hostErrors) {
   const studioSurface = kind === 'agent' ? 'agent-studio' : 'workflow-studio';
   const observations = [];
   const openSelector = `[data-action="openStudioDraft"][data-kind="${kind}"]`;
-  await settleInstalledSurfaceControl(frameHost, {
-    surface,
-    selector: openSelector,
-    scopeTarget: surface,
-    scope: 'core',
-    stableSamplesRequired: 2
-  });
   const catalogBefore = await builderState(frameHost, kind);
-  await frameHost.evaluate((frame, selector) => frame.contentDocument.querySelector(selector).click(), openSelector);
+  const openDeadline = Date.now() + 5_000;
+  let openDispatched = false;
+  let openSettleError = '';
+  while (!openDispatched && Date.now() < openDeadline) {
+    try {
+      await settleInstalledSurfaceControl(frameHost, {
+        surface,
+        selector: openSelector,
+        scopeTarget: surface,
+        scope: 'core',
+        stableSamplesRequired: 2
+      }, Math.min(1_000, Math.max(1, openDeadline - Date.now())));
+    } catch (error) {
+      openSettleError = String(error?.message || error).slice(0, 240);
+    }
+    if (Date.now() >= openDeadline) break;
+    openDispatched = await frameHost.evaluate((frame, selector) => {
+      const control = frame.contentDocument?.querySelector(selector);
+      if (!control || control.disabled || control.getAttribute('aria-hidden') === 'true') return false;
+      const style = frame.contentWindow.getComputedStyle(control);
+      if (style.display === 'none' || style.visibility === 'hidden'
+        || !(control.offsetWidth || control.offsetHeight || control.getClientRects().length)) return false;
+      control.click();
+      return true;
+    }, openSelector);
+  }
+  if (!openDispatched) throw new Error(`${kind}-studio-open-control-disappeared-after-settlement${openSettleError ? `:${openSettleError}` : ''}`);
   await wait(500);
   let opened = await builderState(frameHost, kind);
   if (!opened.modal_present) {
@@ -5262,16 +5507,39 @@ async function runInstalledSkillQueryProfile(frameHost, matrix, timeoutMs = 30_0
       selector: '[data-action="skillSemanticQuery"][data-domain="px-standard"]',
       stableSamplesRequired: 2
     }, timeoutMs);
-    await frameHost.evaluate(frame => frame.contentDocument.querySelector('[data-action="skillSemanticQuery"][data-domain="px-standard"]').click());
-    await waitForKnowledgeControl(frameHost, '[data-action="submitSkillQuery"]');
+    const opened = await frameHost.evaluate(frame => {
+      const control = frame.contentDocument?.querySelector('[data-action="skillSemanticQuery"][data-domain="px-standard"]');
+      if (!control || control.disabled) return false;
+      control.click();
+      return true;
+    });
+    if (!opened) throw new Error('skill-query-open-control-disappeared');
+    await settleInstalledSurfaceControl(frameHost, {
+      surface: 'skillsTools',
+      selector: '[data-action="submitSkillQuery"]',
+      stableSamplesRequired: 2,
+      preserveModal: true
+    }, timeoutMs);
   };
   const submit = async goal => {
+    await settleInstalledSurfaceControl(frameHost, {
+      surface: 'skillsTools',
+      selector: '[data-action="submitSkillQuery"]',
+      stableSamplesRequired: 2,
+      preserveModal: true
+    }, timeoutMs);
     const before = await frameHost.evaluate(frame => frame.contentWindow?.__PX_INSTALLED_RESPONSES__?.length || 0);
-    await frameHost.evaluate((frame, value) => {
-      const input = frame.contentDocument.querySelector('#skill-query-goal');
-      input.value = value; input.dispatchEvent(new frame.contentWindow.Event('input', { bubbles: true }));
-      frame.contentDocument.querySelector('[data-action="submitSkillQuery"]').click();
+    const dispatched = await frameHost.evaluate((frame, value) => {
+      const document = frame.contentDocument;
+      const input = document?.querySelector('#skill-query-goal');
+      const submit = document?.querySelector('[data-action="submitSkillQuery"]');
+      if (!input || !submit || submit.disabled || !submit.closest('.control-modal')) return false;
+      input.value = value;
+      input.dispatchEvent(new frame.contentWindow.Event('input', { bubbles: true }));
+      submit.click();
+      return true;
     }, goal);
+    if (!dispatched) throw new Error('skill-query-submit-controls-disappeared');
     observation.pending_observed ||= await frameHost.evaluate(frame => Boolean(frame.contentDocument?.querySelector('.cleanup-loading')));
     return waitForInstalledResponse(frameHost, before, { types: ['skillQueryResult'] }, timeoutMs);
   };
@@ -9142,6 +9410,31 @@ function requestBoundGraphResultIdentity(request, response) {
   return result ? { request_id: request.requestId, terminal: 'result', result } : null;
 }
 
+function dashboardStatePersistenceIdentity(acknowledgement, expectedViewName) {
+  if (!acknowledgement || !Number.isSafeInteger(acknowledgement.acknowledgementRevision)
+    || acknowledgement.acknowledgementRevision < 1
+    || !/^[a-f0-9]{64}$/.test(String(acknowledgement.stateSha256 || ''))
+    || !Array.isArray(acknowledgement.graphSavedViewNames)
+    || !acknowledgement.graphSavedViewNames.includes(expectedViewName)) return null;
+  return {
+    acknowledgement_revision: acknowledgement.acknowledgementRevision,
+    state_sha256: acknowledgement.stateSha256,
+    saved_view_name: expectedViewName
+  };
+}
+
+async function waitForDashboardStatePersistence(frameHost, expectedViewName, timeoutMs = 10_000) {
+  const deadline = Date.now() + timeoutMs;
+  let acknowledgement = null;
+  do {
+    acknowledgement = await frameHost.evaluate(frame => frame.contentWindow?.__PX_DASHBOARD_STATE_STORAGE_ACK__ || null);
+    const identity = dashboardStatePersistenceIdentity(acknowledgement, expectedViewName);
+    if (identity) return identity;
+    await wait(50);
+  } while (Date.now() < deadline);
+  throw new Error(`knowledge-graph-view-state-host-persistence-timeout:${JSON.stringify({ expected_view_name: expectedViewName, acknowledgement_revision: acknowledgement?.acknowledgementRevision || null, state_sha256_present: /^[a-f0-9]{64}$/.test(String(acknowledgement?.stateSha256 || '')) })}`);
+}
+
 function knowledgeGraphControlProbe(matrix, observation) {
   const exactActions = new Set([
     'pxui.knowledge-graph.action.graphApplySavedView.row',
@@ -9239,6 +9532,11 @@ async function runInstalledKnowledgeGraphProfile(frameHost, matrix, timeoutMs = 
       '[data-action="graphView"][data-view="repository"]',
       Math.min(timeoutMs, 20_000)
     ));
+    await settleInstalledSurfaceControl(frameHost, {
+      surface: 'knowledgeGraph',
+      selector: '[data-action="graphSaveView"]',
+      stableSamplesRequired: 2
+    }, Math.min(timeoutMs, 20_000));
     await clickWhenKnowledgeControlReady(frameHost, '[data-action="graphSaveView"]', Math.min(timeoutMs, 20_000));
     await settleInstalledSurfaceControl(frameHost, {
       surface: 'knowledgeGraph',
@@ -9253,10 +9551,23 @@ async function runInstalledKnowledgeGraphProfile(frameHost, matrix, timeoutMs = 
     await frameHost.evaluate((frame, name) => { const input = frame.contentDocument.querySelector('#graph-view-name'); input.value = name; frame.contentDocument.querySelector('[data-action="submitGraphSavedView"]').click(); }, viewName);
     const saved = await frameHost.evaluate((frame, name) => [...frame.contentDocument.querySelectorAll('[data-action="graphApplySavedView"]')].some(item => item.textContent.trim() === name), viewName);
     if (!saved) throw new Error('knowledge-graph-saved-view-not-visible');
+    observation.state_persistence_ack = await waitForDashboardStatePersistence(frameHost, viewName, Math.min(timeoutMs, 10_000));
     observation.saved_view_created = true;
     observation.before_restart = graphProjectionIdentity(baseline);
     const restart = await restartInstalledDashboardWebview(frameHost, 45_000);
     observation.webview_restarted = restart.restarted === true;
+    observation.after_restart_state = await frameHost.evaluateContent(() => ({
+      active_surface: String(state.active || ''),
+      graph_view: String(state.graphView || ''),
+      graph_data_present: Boolean(state.graphData),
+      graph_saved_view_names: (Array.isArray(state.graphSavedViews) ? state.graphSavedViews : [])
+        .map(item => String(item?.name || '')).filter(Boolean).slice(0, 12),
+      host_initial_saved_view_names: (Array.isArray(globalThis.__PX_INITIAL_DASHBOARD_STATE__?.graphSavedViews)
+        ? globalThis.__PX_INITIAL_DASHBOARD_STATE__.graphSavedViews : [])
+        .map(item => String(item?.name || '')).filter(Boolean).slice(0, 12),
+      rendered_saved_view_names: [...document.querySelectorAll('[data-action="graphApplySavedView"]')]
+        .map(item => item.textContent.trim()).filter(Boolean).slice(0, 12)
+    }));
     await settleInstalledSurfaceControl(frameHost, {
       surface: 'knowledgeGraph',
       selector: '[data-action="graphApplySavedView"]',
@@ -9292,6 +9603,7 @@ async function runInstalledKnowledgeGraphProfile(frameHost, matrix, timeoutMs = 
     if (!observation.exact_reconstruction) throw new Error(`knowledge-graph-projection-substitution:${JSON.stringify({ before: observation.before_restart, after: observation.after_restart })}`);
     const deleteDeadline = Date.now() + Math.min(timeoutMs, 20_000);
     let deleteReadySamples = 0;
+    let deleteClicked = false;
     let lastDeleteIdentity = null;
     do {
       try {
@@ -9327,23 +9639,30 @@ async function runInstalledKnowledgeGraphProfile(frameHost, matrix, timeoutMs = 
         && deleteIdentity.applyMatches === true
         && deleteIdentity.deleteMatches === true;
       deleteReadySamples = deleteReady ? deleteReadySamples + 1 : 0;
-      if (deleteReadySamples >= 2) break;
+      if (deleteReadySamples >= 2) {
+        // Revalidate and dispatch in the same webview turn. A separate final
+        // evaluation left a check-then-act gap where a refresh could replace
+        // the saved-view controls after they had passed the stable samples.
+        deleteClicked = await frameHost.evaluateContent(name => {
+          const viewIndex = (state.graphSavedViews || []).findIndex(item => item?.name === name);
+          const apply = viewIndex >= 0
+            ? document.querySelector(`[data-action="graphApplySavedView"][data-view-index="${viewIndex}"]`)
+            : null;
+          const remove = viewIndex >= 0
+            ? document.querySelector(`[data-action="graphDeleteSavedView"][data-view-index="${viewIndex}"]`)
+            : null;
+          if ((state.graphSavedViews || []).filter(item => item?.name === name).length !== 1
+            || !apply || apply.textContent.trim() !== name || apply.disabled
+            || !remove || remove.disabled) return false;
+          remove.click();
+          return true;
+        }, viewName);
+        if (deleteClicked) break;
+        deleteReadySamples = 0;
+      }
       await wait(100);
     } while (Date.now() < deleteDeadline);
-    if (deleteReadySamples < 2) throw new Error(`knowledge-graph-view-delete-unavailable:${JSON.stringify(lastDeleteIdentity)}`);
-    await frameHost.evaluateContent(name => {
-      const viewIndex = (state.graphSavedViews || []).findIndex(item => item?.name === name);
-      const apply = viewIndex >= 0
-        ? document.querySelector(`[data-action="graphApplySavedView"][data-view-index="${viewIndex}"]`)
-        : null;
-      const remove = viewIndex >= 0
-        ? document.querySelector(`[data-action="graphDeleteSavedView"][data-view-index="${viewIndex}"]`)
-        : null;
-      if (!apply || apply.textContent.trim() !== name || apply.disabled || !remove || remove.disabled) {
-        throw new Error('knowledge-graph-view-delete-unavailable');
-      }
-      remove.click();
-    }, viewName);
+    if (!deleteClicked) throw new Error(`knowledge-graph-view-delete-unavailable:${JSON.stringify(lastDeleteIdentity)}`);
     const deleteSettledDeadline = Date.now() + Math.min(timeoutMs, 10_000);
     let deleteSettledSamples = 0;
     do {
@@ -11820,7 +12139,9 @@ async function main() {
       : errorIndicatorsOnly
       ? await timedProfile('error-indicators', () => probeInstalledControls(dashboard, proofMatrix, hostErrors, ERROR_INDICATOR_CONTROL_IDS))
       : focusedProfileOnly
-        ? { schema_version: 'px.installed-operational-control-probe/1.0', authority: `Skipped by exact owned ${focusedProfile} profile.`, eligible_control_count: 0, records: [] }
+        ? knowledgeGraphOnly
+          ? await timedProfile('knowledge-graph-control-probe', () => probeInstalledControls(dashboard, proofMatrix, hostErrors, KNOWLEDGE_GRAPH_REPAIR_CONTROL_IDS))
+          : { schema_version: 'px.installed-operational-control-probe/1.0', authority: `Skipped by exact owned ${focusedProfile} profile.`, eligible_control_count: 0, records: [] }
         : await probeInstalledControls(dashboard, proofMatrix, hostErrors);
     const engineOutageProfile = ownedReversibleConfigurationAuthority && !focusedProfileOnly && process.env.PX_OWNED_ENGINE_ROOT
       ? await timedProfile('engine-outage', () => runInstalledEngineOutageProfile(dashboard, proofMatrix))
@@ -12060,5 +12381,5 @@ module.exports = {
   validPluginLifecycleObservation, validPendingPluginMutationReceipt, validPluginMutationReceipt, validStudioBlockedPreviewResult, validStudioDraftReceipt, validStudioLifecycleResult,
   captureSurfaceViews, surfaceCaptureCandidates, surfaceCaptureFileStem,
   validStudioRevisionEditObservation, validStudioSetupResult, validationControlProbe, runInstalledValidationBoundaryProfile, clickWhenBuilderControlReady, invokeBuilderControl, waitForBuilderJsonControls, waitForCoordinationResult, waitForInstalledCanonicalMemoryBaseline, waitForInstalledCanonicalMemoryState,
-  clickWhenInstalledGraphControlReady, installedGraphExchangeOffset, waitForInstalledGraphExchange, waitForInstalledGraphIdle, waitForOwnedWebview
+  clickWhenInstalledGraphControlReady, dashboardStatePersistenceIdentity, discoverOwnedWebviewIdentityMode, installedGraphExchangeOffset, waitForInstalledGraphExchange, waitForInstalledGraphIdle, waitForOwnedWebview
 };

@@ -26,6 +26,20 @@ test('all package commands are registered in the extension host', () => {
   for (const item of pkg.contributes.commands) assert.match(extension, new RegExp(item.command.replaceAll('.', '\\.')));
 });
 
+test('every registered language-model provider has a manifest contribution and activation event', () => {
+  const extension = fs.readFileSync(path.join(root, 'src', 'extension.js'), 'utf8');
+  const registered = [...extension.matchAll(/registerLanguageModelChatProvider\('([^']+)'/g)]
+    .map(match => match[1]).sort();
+  const contributed = (pkg.contributes.languageModelChatProviders || [])
+    .map(provider => provider.vendor).sort();
+  const activated = pkg.activationEvents
+    .filter(event => event.startsWith('onLanguageModelChat:'))
+    .map(event => event.slice('onLanguageModelChat:'.length)).sort();
+
+  assert.deepEqual(contributed, registered);
+  assert.deepEqual(activated, registered);
+});
+
 test('MCP build dependencies are pinned and the shipped server is bundled', () => {
   assert.equal(pkg.dependencies['@modelcontextprotocol/server'], '2.0.0');
   assert.equal(pkg.dependencies.zod, '4.4.3');

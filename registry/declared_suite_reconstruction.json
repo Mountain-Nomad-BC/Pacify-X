@@ -9087,699 +9087,6 @@
         "Positive and malformed-input cases pass; denied or unsafe effects fail closed.",
         "The artifact is consumed by an executable surface and is not retained as disconnected prose or metadata."
       ],
-      "behavior_contract": "Supply the pack 01 build qa support artifact required by governed execution, evidence, permission, recovery, and durable task control, with explicit ownership, consumers, validation, compatibility, and provenance.",
-      "canonical_owner": "audit-source-capabilities",
-      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-01-BUILD-QA",
-      "class": "supporting_artifact",
-      "completion_evidence": [
-        "evidence/declared-suite/reconstruction-progress.json"
-      ],
-      "current_state": "implemented_verified",
-      "implementation_targets": [
-        "evidence/declared-suite/pack-01-build-qa.json"
-      ],
-      "kind": "evidence",
-      "pack": "01-expert-operating-kernel_v1.0.0",
-      "required_tests": [
-        "tests/reconstruction/test_support_evidence_pack_01_build_qa.py"
-      ],
-      "source_id": "pack-01-build-qa",
-      "source_paths": [
-        "packs/01-expert-operating-kernel_v1.0.0/evidence/reports/BUILD_QA.json"
-      ],
-      "wiring_targets": [
-        "registry/contract_ownership.json",
-        "registry/artifact-provenance.json",
-        "tests/reconstruction"
-      ]
-    },
-    {
-      "acceptance": [
-        "Every declared source path is assigned exactly once and its consolidation rationale is recorded.",
-        "The canonical owner and all consumers resolve through current registries without eager body hydration.",
-        "Positive and malformed-input cases pass; denied or unsafe effects fail closed.",
-        "The artifact is consumed by an executable surface and is not retained as disconnected prose or metadata."
-      ],
-      "behavior_contract": "Supply the pack 01 certification report support artifact required by governed execution, evidence, permission, recovery, and durable task control, with explicit ownership, consumers, validation, compatibility, and provenance.",
-      "canonical_owner": "audit-source-capabilities",
-      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-01-CERTIFICATION-REPORT",
-      "class": "supporting_artifact",
-      "completion_evidence": [
-        "evidence/declared-suite/reconstruction-progress.json"
-      ],
-      "current_state": "implemented_verified",
-      "implementation_targets": [
-        "evidence/declared-suite/pack-01-certification-report.json"
-      ],
-      "kind": "evidence",
-      "pack": "01-expert-operating-kernel_v1.0.0",
-      "required_tests": [
-        "tests/reconstruction/test_support_evidence_pack_01_certification_report.py"
-      ],
-      "source_id": "pack-01-certification-report",
-      "source_paths": [
-        "packs/01-expert-operating-kernel_v1.0.0/evidence/reports/CERTIFICATION_REPORT.json"
-      ],
-      "wiring_targets": [
-        "registry/contract_ownership.json",
-        "registry/artifact-provenance.json",
-        "tests/reconstruction"
-      ]
-    },
-    {
-      "acceptance": [
-        "Every declared source path is assigned exactly once and its consolidation rationale is recorded.",
-        "The canonical owner and all consumers resolve through current registries without eager body hydration.",
-        "Positive and malformed-input cases pass; denied or unsafe effects fail closed.",
-        "The artifact is consumed by an executable surface and is not retained as disconnected prose or metadata."
-      ],
-      "behavior_contract": "Supply the pack 01 sha256sums support artifact required by governed execution, evidence, permission, recovery, and durable task control, with explicit ownership, consumers, validation, compatibility, and provenance.",
-      "canonical_owner": "audit-source-capabilities",
-      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-01-SHA256SUMS",
-      "class": "supporting_artifact",
-      "completion_evidence": [
-        "evidence/declared-suite/reconstruction-progress.json"
-      ],
-      "current_state": "implemented_verified",
-      "implementation_targets": [
-        "evidence/declared-suite/pack-01-sha256sums.json"
-      ],
-      "kind": "evidence",
-      "pack": "01-expert-operating-kernel_v1.0.0",
-      "required_tests": [
-        "tests/reconstruction/test_support_evidence_pack_01_sha256sums.py"
-      ],
-      "source_id": "pack-01-sha256sums",
-      "source_paths": [
-        "packs/01-expert-operating-kernel_v1.0.0/evidence/manifests/SHA256SUMS.json"
-      ],
-      "wiring_targets": [
-        "registry/contract_ownership.json",
-        "registry/artifact-provenance.json",
-        "tests/reconstruction"
-      ]
-    },
-    {
-      "acceptance": [
-        "Every declared source path is assigned exactly once and its consolidation rationale is recorded.",
-        "The canonical owner and all consumers resolve through current registries without eager body hydration.",
-        "Positive and malformed-input cases pass; denied or unsafe effects fail closed.",
-        "The artifact is consumed by an executable surface and is not retained as disconnected prose or metadata."
-      ],
-      "behavior_contract": "Supply the pack 02 build qa support artifact required by repository mapping, runtime tracing, impact analysis, reproduction, and safe change planning, with explicit ownership, consumers, validation, compatibility, and provenance.",
-      "canonical_owner": "audit-source-capabilities",
-      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-02-BUILD-QA",
-      "class": "supporting_artifact",
-      "completion_evidence": [
-        "evidence/declared-suite/reconstruction-progress.json"
-      ],
-      "current_state": "implemented_verified",
-      "implementation_targets": [
-        "evidence/declared-suite/pack-02-build-qa.json"
-      ],
-      "kind": "evidence",
-      "pack": "02-repository-intelligence-aci_v1.0.0",
-      "required_tests": [
-        "tests/reconstruction/test_support_evidence_pack_02_build_qa.py"
-      ],
-      "source_id": "pack-02-build-qa",
-      "source_paths": [
-        "packs/02-repository-intelligence-aci_v1.0.0/evidence/reports/BUILD_QA.json"
-      ],
-      "wiring_targets": [
-        "registry/contract_ownership.json",
-        "registry/artifact-provenance.json",
-        "tests/reconstruction"
-      ]
-    },
-    {
-      "acceptance": [
-        "Every declared source path is assigned exactly once and its consolidation rationale is recorded.",
-        "The canonical owner and all consumers resolve through current registries without eager body hydration.",
-        "Positive and malformed-input cases pass; denied or unsafe effects fail closed.",
-        "The artifact is consumed by an executable surface and is not retained as disconnected prose or metadata."
-      ],
-      "behavior_contract": "Supply the pack 02 certification report support artifact required by repository mapping, runtime tracing, impact analysis, reproduction, and safe change planning, with explicit ownership, consumers, validation, compatibility, and provenance.",
-      "canonical_owner": "audit-source-capabilities",
-      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-02-CERTIFICATION-REPORT",
-      "class": "supporting_artifact",
-      "completion_evidence": [
-        "evidence/declared-suite/reconstruction-progress.json"
-      ],
-      "current_state": "implemented_verified",
-      "implementation_targets": [
-        "evidence/declared-suite/pack-02-certification-report.json"
-      ],
-      "kind": "evidence",
-      "pack": "02-repository-intelligence-aci_v1.0.0",
-      "required_tests": [
-        "tests/reconstruction/test_support_evidence_pack_02_certification_report.py"
-      ],
-      "source_id": "pack-02-certification-report",
-      "source_paths": [
-        "packs/02-repository-intelligence-aci_v1.0.0/evidence/reports/CERTIFICATION_REPORT.json"
-      ],
-      "wiring_targets": [
-        "registry/contract_ownership.json",
-        "registry/artifact-provenance.json",
-        "tests/reconstruction"
-      ]
-    },
-    {
-      "acceptance": [
-        "Every declared source path is assigned exactly once and its consolidation rationale is recorded.",
-        "The canonical owner and all consumers resolve through current registries without eager body hydration.",
-        "Positive and malformed-input cases pass; denied or unsafe effects fail closed.",
-        "The artifact is consumed by an executable surface and is not retained as disconnected prose or metadata."
-      ],
-      "behavior_contract": "Supply the pack 02 sha256sums support artifact required by repository mapping, runtime tracing, impact analysis, reproduction, and safe change planning, with explicit ownership, consumers, validation, compatibility, and provenance.",
-      "canonical_owner": "audit-source-capabilities",
-      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-02-SHA256SUMS",
-      "class": "supporting_artifact",
-      "completion_evidence": [
-        "evidence/declared-suite/reconstruction-progress.json"
-      ],
-      "current_state": "implemented_verified",
-      "implementation_targets": [
-        "evidence/declared-suite/pack-02-sha256sums.json"
-      ],
-      "kind": "evidence",
-      "pack": "02-repository-intelligence-aci_v1.0.0",
-      "required_tests": [
-        "tests/reconstruction/test_support_evidence_pack_02_sha256sums.py"
-      ],
-      "source_id": "pack-02-sha256sums",
-      "source_paths": [
-        "packs/02-repository-intelligence-aci_v1.0.0/evidence/manifests/SHA256SUMS.json"
-      ],
-      "wiring_targets": [
-        "registry/contract_ownership.json",
-        "registry/artifact-provenance.json",
-        "tests/reconstruction"
-      ]
-    },
-    {
-      "acceptance": [
-        "Every declared source path is assigned exactly once and its consolidation rationale is recorded.",
-        "The canonical owner and all consumers resolve through current registries without eager body hydration.",
-        "Positive and malformed-input cases pass; denied or unsafe effects fail closed.",
-        "The artifact is consumed by an executable surface and is not retained as disconnected prose or metadata."
-      ],
-      "behavior_contract": "Supply the pack 03 build qa support artifact required by verification design, adversarial evaluation, regression quality, and trajectory assessment, with explicit ownership, consumers, validation, compatibility, and provenance.",
-      "canonical_owner": "audit-source-capabilities",
-      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-03-BUILD-QA",
-      "class": "supporting_artifact",
-      "completion_evidence": [
-        "evidence/declared-suite/reconstruction-progress.json"
-      ],
-      "current_state": "implemented_verified",
-      "implementation_targets": [
-        "evidence/declared-suite/pack-03-build-qa.json"
-      ],
-      "kind": "evidence",
-      "pack": "03-verification-evaluation-lab_v1.0.0",
-      "required_tests": [
-        "tests/reconstruction/test_support_evidence_pack_03_build_qa.py"
-      ],
-      "source_id": "pack-03-build-qa",
-      "source_paths": [
-        "packs/03-verification-evaluation-lab_v1.0.0/evidence/reports/BUILD_QA.json"
-      ],
-      "wiring_targets": [
-        "registry/contract_ownership.json",
-        "registry/artifact-provenance.json",
-        "tests/reconstruction"
-      ]
-    },
-    {
-      "acceptance": [
-        "Every declared source path is assigned exactly once and its consolidation rationale is recorded.",
-        "The canonical owner and all consumers resolve through current registries without eager body hydration.",
-        "Positive and malformed-input cases pass; denied or unsafe effects fail closed.",
-        "The artifact is consumed by an executable surface and is not retained as disconnected prose or metadata."
-      ],
-      "behavior_contract": "Supply the pack 03 certification report support artifact required by verification design, adversarial evaluation, regression quality, and trajectory assessment, with explicit ownership, consumers, validation, compatibility, and provenance.",
-      "canonical_owner": "audit-source-capabilities",
-      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-03-CERTIFICATION-REPORT",
-      "class": "supporting_artifact",
-      "completion_evidence": [
-        "evidence/declared-suite/reconstruction-progress.json"
-      ],
-      "current_state": "implemented_verified",
-      "implementation_targets": [
-        "evidence/declared-suite/pack-03-certification-report.json"
-      ],
-      "kind": "evidence",
-      "pack": "03-verification-evaluation-lab_v1.0.0",
-      "required_tests": [
-        "tests/reconstruction/test_support_evidence_pack_03_certification_report.py"
-      ],
-      "source_id": "pack-03-certification-report",
-      "source_paths": [
-        "packs/03-verification-evaluation-lab_v1.0.0/evidence/reports/CERTIFICATION_REPORT.json"
-      ],
-      "wiring_targets": [
-        "registry/contract_ownership.json",
-        "registry/artifact-provenance.json",
-        "tests/reconstruction"
-      ]
-    },
-    {
-      "acceptance": [
-        "Every declared source path is assigned exactly once and its consolidation rationale is recorded.",
-        "The canonical owner and all consumers resolve through current registries without eager body hydration.",
-        "Positive and malformed-input cases pass; denied or unsafe effects fail closed.",
-        "The artifact is consumed by an executable surface and is not retained as disconnected prose or metadata."
-      ],
-      "behavior_contract": "Supply the pack 03 sha256sums support artifact required by verification design, adversarial evaluation, regression quality, and trajectory assessment, with explicit ownership, consumers, validation, compatibility, and provenance.",
-      "canonical_owner": "audit-source-capabilities",
-      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-03-SHA256SUMS",
-      "class": "supporting_artifact",
-      "completion_evidence": [
-        "evidence/declared-suite/reconstruction-progress.json"
-      ],
-      "current_state": "implemented_verified",
-      "implementation_targets": [
-        "evidence/declared-suite/pack-03-sha256sums.json"
-      ],
-      "kind": "evidence",
-      "pack": "03-verification-evaluation-lab_v1.0.0",
-      "required_tests": [
-        "tests/reconstruction/test_support_evidence_pack_03_sha256sums.py"
-      ],
-      "source_id": "pack-03-sha256sums",
-      "source_paths": [
-        "packs/03-verification-evaluation-lab_v1.0.0/evidence/manifests/SHA256SUMS.json"
-      ],
-      "wiring_targets": [
-        "registry/contract_ownership.json",
-        "registry/artifact-provenance.json",
-        "tests/reconstruction"
-      ]
-    },
-    {
-      "acceptance": [
-        "Every declared source path is assigned exactly once and its consolidation rationale is recorded.",
-        "The canonical owner and all consumers resolve through current registries without eager body hydration.",
-        "Positive and malformed-input cases pass; denied or unsafe effects fail closed.",
-        "The artifact is consumed by an executable surface and is not retained as disconnected prose or metadata."
-      ],
-      "behavior_contract": "Supply the pack 04 build qa support artifact required by isolated memory, grounded retrieval, telemetry, replay, retention, and quality drift, with explicit ownership, consumers, validation, compatibility, and provenance.",
-      "canonical_owner": "audit-source-capabilities",
-      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-04-BUILD-QA",
-      "class": "supporting_artifact",
-      "completion_evidence": [
-        "evidence/declared-suite/reconstruction-progress.json"
-      ],
-      "current_state": "implemented_verified",
-      "implementation_targets": [
-        "evidence/declared-suite/pack-04-build-qa.json"
-      ],
-      "kind": "evidence",
-      "pack": "04-memory-retrieval-observability_v1.0.0",
-      "required_tests": [
-        "tests/reconstruction/test_support_evidence_pack_04_build_qa.py"
-      ],
-      "source_id": "pack-04-build-qa",
-      "source_paths": [
-        "packs/04-memory-retrieval-observability_v1.0.0/evidence/reports/BUILD_QA.json"
-      ],
-      "wiring_targets": [
-        "registry/contract_ownership.json",
-        "registry/artifact-provenance.json",
-        "tests/reconstruction"
-      ]
-    },
-    {
-      "acceptance": [
-        "Every declared source path is assigned exactly once and its consolidation rationale is recorded.",
-        "The canonical owner and all consumers resolve through current registries without eager body hydration.",
-        "Positive and malformed-input cases pass; denied or unsafe effects fail closed.",
-        "The artifact is consumed by an executable surface and is not retained as disconnected prose or metadata."
-      ],
-      "behavior_contract": "Supply the pack 04 certification report support artifact required by isolated memory, grounded retrieval, telemetry, replay, retention, and quality drift, with explicit ownership, consumers, validation, compatibility, and provenance.",
-      "canonical_owner": "audit-source-capabilities",
-      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-04-CERTIFICATION-REPORT",
-      "class": "supporting_artifact",
-      "completion_evidence": [
-        "evidence/declared-suite/reconstruction-progress.json"
-      ],
-      "current_state": "implemented_verified",
-      "implementation_targets": [
-        "evidence/declared-suite/pack-04-certification-report.json"
-      ],
-      "kind": "evidence",
-      "pack": "04-memory-retrieval-observability_v1.0.0",
-      "required_tests": [
-        "tests/reconstruction/test_support_evidence_pack_04_certification_report.py"
-      ],
-      "source_id": "pack-04-certification-report",
-      "source_paths": [
-        "packs/04-memory-retrieval-observability_v1.0.0/evidence/reports/CERTIFICATION_REPORT.json"
-      ],
-      "wiring_targets": [
-        "registry/contract_ownership.json",
-        "registry/artifact-provenance.json",
-        "tests/reconstruction"
-      ]
-    },
-    {
-      "acceptance": [
-        "Every declared source path is assigned exactly once and its consolidation rationale is recorded.",
-        "The canonical owner and all consumers resolve through current registries without eager body hydration.",
-        "Positive and malformed-input cases pass; denied or unsafe effects fail closed.",
-        "The artifact is consumed by an executable surface and is not retained as disconnected prose or metadata."
-      ],
-      "behavior_contract": "Supply the pack 04 sha256sums support artifact required by isolated memory, grounded retrieval, telemetry, replay, retention, and quality drift, with explicit ownership, consumers, validation, compatibility, and provenance.",
-      "canonical_owner": "audit-source-capabilities",
-      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-04-SHA256SUMS",
-      "class": "supporting_artifact",
-      "completion_evidence": [
-        "evidence/declared-suite/reconstruction-progress.json"
-      ],
-      "current_state": "implemented_verified",
-      "implementation_targets": [
-        "evidence/declared-suite/pack-04-sha256sums.json"
-      ],
-      "kind": "evidence",
-      "pack": "04-memory-retrieval-observability_v1.0.0",
-      "required_tests": [
-        "tests/reconstruction/test_support_evidence_pack_04_sha256sums.py"
-      ],
-      "source_id": "pack-04-sha256sums",
-      "source_paths": [
-        "packs/04-memory-retrieval-observability_v1.0.0/evidence/manifests/SHA256SUMS.json"
-      ],
-      "wiring_targets": [
-        "registry/contract_ownership.json",
-        "registry/artifact-provenance.json",
-        "tests/reconstruction"
-      ]
-    },
-    {
-      "acceptance": [
-        "Every declared source path is assigned exactly once and its consolidation rationale is recorded.",
-        "The canonical owner and all consumers resolve through current registries without eager body hydration.",
-        "Positive and malformed-input cases pass; denied or unsafe effects fail closed.",
-        "The artifact is consumed by an executable surface and is not retained as disconnected prose or metadata."
-      ],
-      "behavior_contract": "Supply the pack 05 build qa support artifact required by security boundaries, sandboxing, authority, supply-chain provenance, and incident response, with explicit ownership, consumers, validation, compatibility, and provenance.",
-      "canonical_owner": "audit-source-capabilities",
-      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-05-BUILD-QA",
-      "class": "supporting_artifact",
-      "completion_evidence": [
-        "evidence/declared-suite/reconstruction-progress.json"
-      ],
-      "current_state": "implemented_verified",
-      "implementation_targets": [
-        "evidence/declared-suite/pack-05-build-qa.json"
-      ],
-      "kind": "evidence",
-      "pack": "05-security-sandbox-supply-chain_v1.0.0",
-      "required_tests": [
-        "tests/reconstruction/test_support_evidence_pack_05_build_qa.py"
-      ],
-      "source_id": "pack-05-build-qa",
-      "source_paths": [
-        "packs/05-security-sandbox-supply-chain_v1.0.0/evidence/reports/BUILD_QA.json"
-      ],
-      "wiring_targets": [
-        "registry/contract_ownership.json",
-        "registry/artifact-provenance.json",
-        "tests/reconstruction"
-      ]
-    },
-    {
-      "acceptance": [
-        "Every declared source path is assigned exactly once and its consolidation rationale is recorded.",
-        "The canonical owner and all consumers resolve through current registries without eager body hydration.",
-        "Positive and malformed-input cases pass; denied or unsafe effects fail closed.",
-        "The artifact is consumed by an executable surface and is not retained as disconnected prose or metadata."
-      ],
-      "behavior_contract": "Supply the pack 05 certification report support artifact required by security boundaries, sandboxing, authority, supply-chain provenance, and incident response, with explicit ownership, consumers, validation, compatibility, and provenance.",
-      "canonical_owner": "audit-source-capabilities",
-      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-05-CERTIFICATION-REPORT",
-      "class": "supporting_artifact",
-      "completion_evidence": [
-        "evidence/declared-suite/reconstruction-progress.json"
-      ],
-      "current_state": "implemented_verified",
-      "implementation_targets": [
-        "evidence/declared-suite/pack-05-certification-report.json"
-      ],
-      "kind": "evidence",
-      "pack": "05-security-sandbox-supply-chain_v1.0.0",
-      "required_tests": [
-        "tests/reconstruction/test_support_evidence_pack_05_certification_report.py"
-      ],
-      "source_id": "pack-05-certification-report",
-      "source_paths": [
-        "packs/05-security-sandbox-supply-chain_v1.0.0/evidence/reports/CERTIFICATION_REPORT.json"
-      ],
-      "wiring_targets": [
-        "registry/contract_ownership.json",
-        "registry/artifact-provenance.json",
-        "tests/reconstruction"
-      ]
-    },
-    {
-      "acceptance": [
-        "Every declared source path is assigned exactly once and its consolidation rationale is recorded.",
-        "The canonical owner and all consumers resolve through current registries without eager body hydration.",
-        "Positive and malformed-input cases pass; denied or unsafe effects fail closed.",
-        "The artifact is consumed by an executable surface and is not retained as disconnected prose or metadata."
-      ],
-      "behavior_contract": "Supply the pack 05 sha256sums support artifact required by security boundaries, sandboxing, authority, supply-chain provenance, and incident response, with explicit ownership, consumers, validation, compatibility, and provenance.",
-      "canonical_owner": "audit-source-capabilities",
-      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-05-SHA256SUMS",
-      "class": "supporting_artifact",
-      "completion_evidence": [
-        "evidence/declared-suite/reconstruction-progress.json"
-      ],
-      "current_state": "implemented_verified",
-      "implementation_targets": [
-        "evidence/declared-suite/pack-05-sha256sums.json"
-      ],
-      "kind": "evidence",
-      "pack": "05-security-sandbox-supply-chain_v1.0.0",
-      "required_tests": [
-        "tests/reconstruction/test_support_evidence_pack_05_sha256sums.py"
-      ],
-      "source_id": "pack-05-sha256sums",
-      "source_paths": [
-        "packs/05-security-sandbox-supply-chain_v1.0.0/evidence/manifests/SHA256SUMS.json"
-      ],
-      "wiring_targets": [
-        "registry/contract_ownership.json",
-        "registry/artifact-provenance.json",
-        "tests/reconstruction"
-      ]
-    },
-    {
-      "acceptance": [
-        "Every declared source path is assigned exactly once and its consolidation rationale is recorded.",
-        "The canonical owner and all consumers resolve through current registries without eager body hydration.",
-        "Positive and malformed-input cases pass; denied or unsafe effects fail closed.",
-        "The artifact is consumed by an executable surface and is not retained as disconnected prose or metadata."
-      ],
-      "behavior_contract": "Supply the pack 06 build qa support artifact required by runtime compatibility, protocol governance, capacity, canary delivery, and safe degradation, with explicit ownership, consumers, validation, compatibility, and provenance.",
-      "canonical_owner": "audit-source-capabilities",
-      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-06-BUILD-QA",
-      "class": "supporting_artifact",
-      "completion_evidence": [
-        "evidence/declared-suite/reconstruction-progress.json"
-      ],
-      "current_state": "implemented_verified",
-      "implementation_targets": [
-        "evidence/declared-suite/pack-06-build-qa.json"
-      ],
-      "kind": "evidence",
-      "pack": "06-runtime-protocols-deployment_v1.0.0",
-      "required_tests": [
-        "tests/reconstruction/test_support_evidence_pack_06_build_qa.py"
-      ],
-      "source_id": "pack-06-build-qa",
-      "source_paths": [
-        "packs/06-runtime-protocols-deployment_v1.0.0/evidence/reports/BUILD_QA.json"
-      ],
-      "wiring_targets": [
-        "registry/contract_ownership.json",
-        "registry/artifact-provenance.json",
-        "tests/reconstruction"
-      ]
-    },
-    {
-      "acceptance": [
-        "Every declared source path is assigned exactly once and its consolidation rationale is recorded.",
-        "The canonical owner and all consumers resolve through current registries without eager body hydration.",
-        "Positive and malformed-input cases pass; denied or unsafe effects fail closed.",
-        "The artifact is consumed by an executable surface and is not retained as disconnected prose or metadata."
-      ],
-      "behavior_contract": "Supply the pack 06 certification report support artifact required by runtime compatibility, protocol governance, capacity, canary delivery, and safe degradation, with explicit ownership, consumers, validation, compatibility, and provenance.",
-      "canonical_owner": "audit-source-capabilities",
-      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-06-CERTIFICATION-REPORT",
-      "class": "supporting_artifact",
-      "completion_evidence": [
-        "evidence/declared-suite/reconstruction-progress.json"
-      ],
-      "current_state": "implemented_verified",
-      "implementation_targets": [
-        "evidence/declared-suite/pack-06-certification-report.json"
-      ],
-      "kind": "evidence",
-      "pack": "06-runtime-protocols-deployment_v1.0.0",
-      "required_tests": [
-        "tests/reconstruction/test_support_evidence_pack_06_certification_report.py"
-      ],
-      "source_id": "pack-06-certification-report",
-      "source_paths": [
-        "packs/06-runtime-protocols-deployment_v1.0.0/evidence/reports/CERTIFICATION_REPORT.json"
-      ],
-      "wiring_targets": [
-        "registry/contract_ownership.json",
-        "registry/artifact-provenance.json",
-        "tests/reconstruction"
-      ]
-    },
-    {
-      "acceptance": [
-        "Every declared source path is assigned exactly once and its consolidation rationale is recorded.",
-        "The canonical owner and all consumers resolve through current registries without eager body hydration.",
-        "Positive and malformed-input cases pass; denied or unsafe effects fail closed.",
-        "The artifact is consumed by an executable surface and is not retained as disconnected prose or metadata."
-      ],
-      "behavior_contract": "Supply the pack 06 sha256sums support artifact required by runtime compatibility, protocol governance, capacity, canary delivery, and safe degradation, with explicit ownership, consumers, validation, compatibility, and provenance.",
-      "canonical_owner": "audit-source-capabilities",
-      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-06-SHA256SUMS",
-      "class": "supporting_artifact",
-      "completion_evidence": [
-        "evidence/declared-suite/reconstruction-progress.json"
-      ],
-      "current_state": "implemented_verified",
-      "implementation_targets": [
-        "evidence/declared-suite/pack-06-sha256sums.json"
-      ],
-      "kind": "evidence",
-      "pack": "06-runtime-protocols-deployment_v1.0.0",
-      "required_tests": [
-        "tests/reconstruction/test_support_evidence_pack_06_sha256sums.py"
-      ],
-      "source_id": "pack-06-sha256sums",
-      "source_paths": [
-        "packs/06-runtime-protocols-deployment_v1.0.0/evidence/manifests/SHA256SUMS.json"
-      ],
-      "wiring_targets": [
-        "registry/contract_ownership.json",
-        "registry/artifact-provenance.json",
-        "tests/reconstruction"
-      ]
-    },
-    {
-      "acceptance": [
-        "Every declared source path is assigned exactly once and its consolidation rationale is recorded.",
-        "The canonical owner and all consumers resolve through current registries without eager body hydration.",
-        "Positive and malformed-input cases pass; denied or unsafe effects fail closed.",
-        "The artifact is consumed by an executable surface and is not retained as disconnected prose or metadata."
-      ],
-      "behavior_contract": "Supply the pack 07 build qa support artifact required by completeness, collision handling, revocable certification, recertification, and release trust, with explicit ownership, consumers, validation, compatibility, and provenance.",
-      "canonical_owner": "audit-source-capabilities",
-      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-07-BUILD-QA",
-      "class": "supporting_artifact",
-      "completion_evidence": [
-        "evidence/declared-suite/reconstruction-progress.json"
-      ],
-      "current_state": "implemented_verified",
-      "implementation_targets": [
-        "evidence/declared-suite/pack-07-build-qa.json"
-      ],
-      "kind": "evidence",
-      "pack": "07-revocable-certification-integration_v1.0.0",
-      "required_tests": [
-        "tests/reconstruction/test_support_evidence_pack_07_build_qa.py"
-      ],
-      "source_id": "pack-07-build-qa",
-      "source_paths": [
-        "packs/07-revocable-certification-integration_v1.0.0/evidence/reports/BUILD_QA.json"
-      ],
-      "wiring_targets": [
-        "registry/contract_ownership.json",
-        "registry/artifact-provenance.json",
-        "tests/reconstruction"
-      ]
-    },
-    {
-      "acceptance": [
-        "Every declared source path is assigned exactly once and its consolidation rationale is recorded.",
-        "The canonical owner and all consumers resolve through current registries without eager body hydration.",
-        "Positive and malformed-input cases pass; denied or unsafe effects fail closed.",
-        "The artifact is consumed by an executable surface and is not retained as disconnected prose or metadata."
-      ],
-      "behavior_contract": "Supply the pack 07 certification report support artifact required by completeness, collision handling, revocable certification, recertification, and release trust, with explicit ownership, consumers, validation, compatibility, and provenance.",
-      "canonical_owner": "audit-source-capabilities",
-      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-07-CERTIFICATION-REPORT",
-      "class": "supporting_artifact",
-      "completion_evidence": [
-        "evidence/declared-suite/reconstruction-progress.json"
-      ],
-      "current_state": "implemented_verified",
-      "implementation_targets": [
-        "evidence/declared-suite/pack-07-certification-report.json"
-      ],
-      "kind": "evidence",
-      "pack": "07-revocable-certification-integration_v1.0.0",
-      "required_tests": [
-        "tests/reconstruction/test_support_evidence_pack_07_certification_report.py"
-      ],
-      "source_id": "pack-07-certification-report",
-      "source_paths": [
-        "packs/07-revocable-certification-integration_v1.0.0/evidence/reports/CERTIFICATION_REPORT.json"
-      ],
-      "wiring_targets": [
-        "registry/contract_ownership.json",
-        "registry/artifact-provenance.json",
-        "tests/reconstruction"
-      ]
-    },
-    {
-      "acceptance": [
-        "Every declared source path is assigned exactly once and its consolidation rationale is recorded.",
-        "The canonical owner and all consumers resolve through current registries without eager body hydration.",
-        "Positive and malformed-input cases pass; denied or unsafe effects fail closed.",
-        "The artifact is consumed by an executable surface and is not retained as disconnected prose or metadata."
-      ],
-      "behavior_contract": "Supply the pack 07 sha256sums support artifact required by completeness, collision handling, revocable certification, recertification, and release trust, with explicit ownership, consumers, validation, compatibility, and provenance.",
-      "canonical_owner": "audit-source-capabilities",
-      "card_id": "REL-007-SUPPORT-EVIDENCE-PACK-07-SHA256SUMS",
-      "class": "supporting_artifact",
-      "completion_evidence": [
-        "evidence/declared-suite/reconstruction-progress.json"
-      ],
-      "current_state": "implemented_verified",
-      "implementation_targets": [
-        "evidence/declared-suite/pack-07-sha256sums.json"
-      ],
-      "kind": "evidence",
-      "pack": "07-revocable-certification-integration_v1.0.0",
-      "required_tests": [
-        "tests/reconstruction/test_support_evidence_pack_07_sha256sums.py"
-      ],
-      "source_id": "pack-07-sha256sums",
-      "source_paths": [
-        "packs/07-revocable-certification-integration_v1.0.0/evidence/manifests/SHA256SUMS.json"
-      ],
-      "wiring_targets": [
-        "registry/contract_ownership.json",
-        "registry/artifact-provenance.json",
-        "tests/reconstruction"
-      ]
-    },
-    {
-      "acceptance": [
-        "Every declared source path is assigned exactly once and its consolidation rationale is recorded.",
-        "The canonical owner and all consumers resolve through current registries without eager body hydration.",
-        "Positive and malformed-input cases pass; denied or unsafe effects fail closed.",
-        "The artifact is consumed by an executable surface and is not retained as disconnected prose or metadata."
-      ],
       "behavior_contract": "Supply the pack 01 changelog support artifact required by governed execution, evidence, permission, recovery, and durable task control, with explicit ownership, consumers, validation, compatibility, and provenance.",
       "canonical_owner": "audit-source-capabilities",
       "card_id": "REL-007-SUPPORT-PACK-METADATA-PACK-01-CHANGELOG",
@@ -13440,7 +12747,7 @@
       ]
     }
   ],
-  "completion_rule": "No card is complete until its implementation targets exist, its wiring resolves, and its required executable acceptance evidence passes.",
+  "completion_rule": "Current implementation cards are complete only when their implementation targets exist, wiring resolves, and executable acceptance evidence passes. Missing historical pack QA, certification, and checksum snapshots remain non-gating provenance and are never recreated from current release gates.",
   "exact_hash_recovered_outcomes": [
     {
       "canonical_owner": "certify-skeptical-engineering",
@@ -13479,13 +12786,41 @@
       "state": "exact_hash_recovered"
     }
   ],
+  "historical_evidence_paths": [
+    "packs/01-expert-operating-kernel_v1.0.0/evidence/manifests/SHA256SUMS.json",
+    "packs/01-expert-operating-kernel_v1.0.0/evidence/reports/BUILD_QA.json",
+    "packs/01-expert-operating-kernel_v1.0.0/evidence/reports/CERTIFICATION_REPORT.json",
+    "packs/02-repository-intelligence-aci_v1.0.0/evidence/manifests/SHA256SUMS.json",
+    "packs/02-repository-intelligence-aci_v1.0.0/evidence/reports/BUILD_QA.json",
+    "packs/02-repository-intelligence-aci_v1.0.0/evidence/reports/CERTIFICATION_REPORT.json",
+    "packs/03-verification-evaluation-lab_v1.0.0/evidence/manifests/SHA256SUMS.json",
+    "packs/03-verification-evaluation-lab_v1.0.0/evidence/reports/BUILD_QA.json",
+    "packs/03-verification-evaluation-lab_v1.0.0/evidence/reports/CERTIFICATION_REPORT.json",
+    "packs/04-memory-retrieval-observability_v1.0.0/evidence/manifests/SHA256SUMS.json",
+    "packs/04-memory-retrieval-observability_v1.0.0/evidence/reports/BUILD_QA.json",
+    "packs/04-memory-retrieval-observability_v1.0.0/evidence/reports/CERTIFICATION_REPORT.json",
+    "packs/05-security-sandbox-supply-chain_v1.0.0/evidence/manifests/SHA256SUMS.json",
+    "packs/05-security-sandbox-supply-chain_v1.0.0/evidence/reports/BUILD_QA.json",
+    "packs/05-security-sandbox-supply-chain_v1.0.0/evidence/reports/CERTIFICATION_REPORT.json",
+    "packs/06-runtime-protocols-deployment_v1.0.0/evidence/manifests/SHA256SUMS.json",
+    "packs/06-runtime-protocols-deployment_v1.0.0/evidence/reports/BUILD_QA.json",
+    "packs/06-runtime-protocols-deployment_v1.0.0/evidence/reports/CERTIFICATION_REPORT.json",
+    "packs/07-revocable-certification-integration_v1.0.0/evidence/manifests/SHA256SUMS.json",
+    "packs/07-revocable-certification-integration_v1.0.0/evidence/reports/BUILD_QA.json",
+    "packs/07-revocable-certification-integration_v1.0.0/evidence/reports/CERTIFICATION_REPORT.json"
+  ],
+  "historical_evidence_policy": {
+    "disposition": "unavailable_historical_provenance_not_reconstructed",
+    "path_count": 21,
+    "required_for_current_completion": false,
+    "retention": "Keep this compact disposition and one current reconstruction receipt; do not create per-pack copies on later revisions."
+  },
   "non_claim": "These cards reconstruct advertised outcomes, not unavailable historical bytes or undocumented historical behavior.",
   "schema_version": "1.0",
   "status": "complete",
   "summary": {
     "assigned_source_paths": 1133,
     "by_kind": {
-      "evidence": 21,
       "orchestration": 62,
       "pack-metadata": 21,
       "reference-or-knowledge": 21,
@@ -13500,6 +12835,7 @@
     "contract_and_owner_wired_cards": 257,
     "exact_hash_recovered_operational_outcomes": 3,
     "genuinely_absent_source_paths": 1133,
+    "historical_evidence_paths": 21,
     "open_cards": 0,
     "operational_outcome_cards": 257,
     "source_paths_by_pack": {
@@ -13513,13 +12849,13 @@
       "registry": 3
     },
     "states": {
-      "implemented_verified": 375
+      "implemented_verified": 354
     },
-    "support_artifacts_built": 118,
-    "supporting_artifact_cards": 118,
-    "total_cards": 375,
+    "support_artifacts_built": 97,
+    "supporting_artifact_cards": 97,
+    "total_cards": 354,
     "unassigned_source_paths": 0,
-    "verified_cards": 375
+    "verified_cards": 354
   },
   "waves": [
     {

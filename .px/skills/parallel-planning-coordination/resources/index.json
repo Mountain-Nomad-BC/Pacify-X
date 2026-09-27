@@ -1,11 +1,11 @@
 {
-  "schema_version": "px.skill-resources/1.0",
   "resources": [
+    "SKILL.md",
     "agents/openai.yaml",
     "contracts/manifest.json",
     "memory/stats.json",
     "memory/usage.jsonl",
-    "SKILL.md",
     "tests/validation.json"
-  ]
+  ],
+  "schema_version": "px.skill-resources/1.0"
 }

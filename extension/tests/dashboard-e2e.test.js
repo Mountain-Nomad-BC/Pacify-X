@@ -1054,7 +1054,7 @@ test('Playwright drives every dashboard route and high-risk interaction without 
   await page.locator('[data-action="submitParallelPlan"]').click();
   assert.equal(await page.locator('[role="dialog"]').count(), 0);
   await page.locator('[data-action="catalogNext"]').click(); await page.waitForTimeout(100);
-  assert.match(await page.locator('.catalog-controls > span').textContent(), /51.+72/);
+  assert.match(await page.locator('.catalog-controls > span').textContent(), /51.+77/);
   await page.locator('[data-action="surfaceScope"][data-target="workflows"][data-scope="environment"]').click(); await page.waitForTimeout(80);
   await page.setViewportSize({ width: 480, height: 900 });
   for (const label of ['Dashboard', 'Projects', 'Agents', 'Knowledge Graph', 'Skills & Tools', 'Workflows', 'Plugin Manager', 'Memory', 'Activity', 'Diagnostics', 'Assurance', 'Settings']) {

@@ -1888,6 +1888,7 @@ def _build_snapshot_admitted(
     project: Path | None = None,
     workspace_root: Path | None = None,
     refresh_hardware: bool = False,
+    read_only: bool = False,
 ) -> dict[str, Any]:
     root = root.resolve()
     project = (project or root).resolve()
@@ -2003,6 +2004,27 @@ def _build_snapshot_admitted(
             "error": f"{type(error).__name__}: {error}",
             "authority": "active project-local repair-order denominator",
         }
+    self_operations = {
+        "schema_version": "px.self-operations-status/1.0",
+        "authority": "canonical dashboard runtime snapshot; status only, no mutation authority",
+        "campaign_valid": repair_campaign.get("valid") is True,
+        "monitoring": {"available": repair_campaign.get("valid") is True, "mode": "read_only"},
+        "mutation_lifecycle": {
+            "integrated": False,
+            "status": "not_integrated",
+            "stages": [
+                {"id": stage, "status": "not_integrated"}
+                for stage in (
+                    "candidate_generation",
+                    "candidate_bound_simulation",
+                    "approval",
+                    "guarded_apply",
+                    "independent_verification",
+                    "rollback",
+                )
+            ],
+        },
+    }
     project_state = _project(root, project)
     map_available = project_state["map"].get("available") is True
     map_valid = project_state["map"].get("valid") is True
@@ -2121,58 +2143,64 @@ def _build_snapshot_admitted(
     )
 
     work_plane = RuntimeWorkPlane(root)
-    try:
-        hardware_work = work_plane.execute(
-            "dashboard.hardware",
-            lambda: _hardware(root, force_refresh=refresh_hardware),
-            reason="explicit dashboard runtime snapshot",
-            input_fingerprint={
-                "probe_policy": HARDWARE_CACHE_SCHEMA,
-                "force_refresh": refresh_hardware,
-            },
-            domains=("hardware", "runtime"),
-            lane="light",
-            cache_seconds=0 if refresh_hardware else HARDWARE_CACHE_TTL_SECONDS,
-            timeout_seconds=5.0,
-            authoritative=False,
-        )
-        hardware = dict(hardware_work["result"])
-        hardware["work_admission"] = hardware_work["admission"]
-    except WorkAdmissionTimeout as error:
-        hardware = {
-            "valid": False,
-            "error": str(error),
-            "work_admission": {
-                "decision": "wait_timeout",
-                "operation": "dashboard.hardware",
-                "fallback": "no duplicate probe started",
-            },
-        }
-    try:
-        startup_work = work_plane.execute(
-            "dashboard.host-startup",
-            startup_attribution,
-            reason="explicit dashboard runtime snapshot",
-            input_fingerprint=startup_log_revision(),
-            domains=("startup", "host-runtime"),
-            lane="light",
-            cache_seconds=120,
-            timeout_seconds=5.0,
-            authoritative=False,
-        )
-        host_startup = dict(startup_work["result"])
-        host_startup["work_admission"] = startup_work["admission"]
-    except WorkAdmissionTimeout as error:
-        host_startup = {
-            "schema_version": "px.host-startup-attribution/1.0",
-            "available": False,
-            "limitations": [str(error)],
-            "work_admission": {
-                "decision": "wait_timeout",
-                "operation": "dashboard.host-startup",
-                "fallback": "no duplicate log scan started",
-            },
-        }
+    if read_only:
+        hardware = dict(_hardware(None, cache_ttl_seconds=0))
+        hardware["work_admission"] = {"decision": "read_only_no_persistence", "operation": "dashboard.hardware"}
+        host_startup = dict(startup_attribution())
+        host_startup["work_admission"] = {"decision": "read_only_no_persistence", "operation": "dashboard.host-startup"}
+    else:
+        try:
+            hardware_work = work_plane.execute(
+                "dashboard.hardware",
+                lambda: _hardware(root, force_refresh=refresh_hardware),
+                reason="explicit dashboard runtime snapshot",
+                input_fingerprint={
+                    "probe_policy": HARDWARE_CACHE_SCHEMA,
+                    "force_refresh": refresh_hardware,
+                },
+                domains=("hardware", "runtime"),
+                lane="light",
+                cache_seconds=0 if refresh_hardware else HARDWARE_CACHE_TTL_SECONDS,
+                timeout_seconds=5.0,
+                authoritative=False,
+            )
+            hardware = dict(hardware_work["result"])
+            hardware["work_admission"] = hardware_work["admission"]
+        except WorkAdmissionTimeout as error:
+            hardware = {
+                "valid": False,
+                "error": str(error),
+                "work_admission": {
+                    "decision": "wait_timeout",
+                    "operation": "dashboard.hardware",
+                    "fallback": "no duplicate probe started",
+                },
+            }
+        try:
+            startup_work = work_plane.execute(
+                "dashboard.host-startup",
+                startup_attribution,
+                reason="explicit dashboard runtime snapshot",
+                input_fingerprint=startup_log_revision(),
+                domains=("startup", "host-runtime"),
+                lane="light",
+                cache_seconds=120,
+                timeout_seconds=5.0,
+                authoritative=False,
+            )
+            host_startup = dict(startup_work["result"])
+            host_startup["work_admission"] = startup_work["admission"]
+        except WorkAdmissionTimeout as error:
+            host_startup = {
+                "schema_version": "px.host-startup-attribution/1.0",
+                "available": False,
+                "limitations": [str(error)],
+                "work_admission": {
+                    "decision": "wait_timeout",
+                    "operation": "dashboard.host-startup",
+                    "fallback": "no duplicate log scan started",
+                },
+            }
     try:
         skill_integrity = skill_index_integrity(root)
     except (OSError, ValueError, KeyError, json.JSONDecodeError, tomllib.TOMLDecodeError) as error:
@@ -2212,6 +2240,7 @@ def _build_snapshot_admitted(
         "knowledge_core": knowledge_core,
         "completion": completion,
         "repair_campaign": repair_campaign,
+        "self_operations": self_operations,
         "coordination": coordination,
         "enterprise": {
             "schema_version": enterprise.get("schema_version"),
@@ -2294,6 +2323,7 @@ def build_snapshot(
     project: Path | None = None,
     workspace_root: Path | None = None,
     refresh_hardware: bool = False,
+    read_only: bool = False,
 ) -> dict[str, Any]:
     """Build one snapshot through the canonical bounded admission owner.
 
@@ -2307,6 +2337,16 @@ def build_snapshot(
     resolved_root = root.resolve()
     resolved_project = (project or resolved_root).resolve()
     resolved_workspace = workspace_root.resolve() if workspace_root else None
+    if read_only:
+        result = _build_snapshot_admitted(
+            resolved_root,
+            project=resolved_project,
+            workspace_root=resolved_workspace,
+            refresh_hardware=False,
+            read_only=True,
+        )
+        result["work_admission"] = {"decision": "read_only_no_persistence", "operation": "dashboard.snapshot"}
+        return result
     work_plane = RuntimeWorkPlane(resolved_root)
     work = work_plane.execute(
         "dashboard.snapshot",
@@ -3529,6 +3569,7 @@ def _parser() -> argparse.ArgumentParser:
     snapshot.add_argument("--source-root", type=Path, required=True)
     snapshot.add_argument("--project", type=Path)
     snapshot.add_argument("--workspace-root", type=Path)
+    snapshot.add_argument("--read-only", action="store_true", help="observe without work-plane or hardware-cache writes")
     snapshot.add_argument(
         "--refresh-hardware",
         action="store_true",
@@ -3539,6 +3580,7 @@ def _parser() -> argparse.ArgumentParser:
     readiness.add_argument("--source-root", type=Path, required=True)
     readiness.add_argument("--project", type=Path)
     readiness.add_argument("--workspace-root", type=Path)
+    readiness.add_argument("--read-only", action="store_true", help="observe without work-plane or hardware-cache writes")
     readiness.add_argument("--pretty", action="store_true")
     catalog = commands.add_parser("catalog")
     catalog.add_argument("--source-root", type=Path, required=True)
@@ -3651,10 +3693,11 @@ def main(argv: Iterable[str] | None = None) -> int:
             project=args.project,
             workspace_root=args.workspace_root,
             refresh_hardware=args.refresh_hardware,
+            read_only=args.read_only,
         )
     elif args.command == "readiness":
         result = build_snapshot(
-            args.source_root, project=args.project, workspace_root=args.workspace_root
+            args.source_root, project=args.project, workspace_root=args.workspace_root, read_only=args.read_only
         )["readiness"]
     elif args.command == "catalog":
         result = query_catalog(

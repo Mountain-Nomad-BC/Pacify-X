@@ -238,7 +238,17 @@ def test_non_repair_dispositions_require_no_owner() -> None:
 def test_specialist_binding_forbids_creating_a_second_owner() -> None:
     result = select_specialist(ROOT, "PRODUCT_DEFECT")
     assert result["may_create_owner"] is False
-    assert result["declared_owners_available"] > 100
+    assert result["owner"] is None
+    assert "class hint is not an owner binding" in result["reason"]
+
+    bound = select_specialist(ROOT, "PRODUCT_DEFECT", owner_id="diagnose-python-repair")
+    assert bound["owner"] == "diagnose-python-repair"
+    assert bound["binding_kind"] == "caller-selected-active-capability"
+    assert bound["owner_contract"] == "registry/skills/diagnose-python-repair.json"
+
+    unknown = select_specialist(ROOT, "PRODUCT_DEFECT", owner_id="imaginary-owner")
+    assert unknown["owner"] is None
+    assert "not uniquely active" in unknown["reason"]
 
 
 def test_unknown_disposition_is_rejected() -> None:

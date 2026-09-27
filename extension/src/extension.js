@@ -385,7 +385,7 @@ const PX_AGENT_GATEWAY_WORKERS = [
     supportedEffectClass: 'READ_ONLY',
     enabled: true,
     reliability: 0.6,
-    latencyClass: 'bounded'
+    latencyClass: 'unknown'
   },
   {
     workerId: 'px-gateway-deep-qwen3-30b-a3b',
@@ -401,7 +401,7 @@ const PX_AGENT_GATEWAY_WORKERS = [
     supportedEffectClass: 'READ_ONLY',
     enabled: true,
     reliability: 0.5,
-    latencyClass: 'bounded'
+    latencyClass: 'unknown'
   }
 ];
 
@@ -1357,9 +1357,23 @@ function activateImplementation(context, transaction) {
             assertNoOwnedOperationalHostActionFault(message.type);
           }
           switch (message?.type) {
-            case 'dashboardViewState': rememberDashboardViewState(message.state); break;
+            case 'dashboardViewState': {
+              rememberDashboardViewState(message.state);
+              if (message.acknowledgementRevision != null) {
+                const graphSavedViewNames = Array.isArray(message.state.graphSavedViews)
+                  ? message.state.graphSavedViews.map(item => item?.name).filter(name => typeof name === 'string').slice(0, 12)
+                  : [];
+                await dashboardPanel.webview.postMessage({
+                  type: 'dashboardViewStateStored',
+                  acknowledgementRevision: message.acknowledgementRevision,
+                  stateSha256: crypto.createHash('sha256').update(JSON.stringify(message.state)).digest('hex'),
+                  graphSavedViewNames
+                });
+              }
+              break;
+            }
             case 'ready':
-              settleDashboardReady?.(true);
+              settleDashboardReady?.('ready');
               settleDashboardReady = undefined;
               await publishSnapshot(false, dashboardPanel.webview);
               break;
@@ -1924,7 +1938,7 @@ function activateImplementation(context, transaction) {
       }, undefined, context.subscriptions);
       dashboardPanel.onDidDispose(() => {
         dashboardDisposed = true;
-        settleDashboardReady?.(false);
+        settleDashboardReady?.('disposed');
         settleDashboardReady = undefined;
         dashboardReadyByPanel.delete(dashboardPanel);
         panelOrigin.dispose();
@@ -1941,11 +1955,12 @@ function activateImplementation(context, transaction) {
     const dashboardReadyPromise = targetPanel ? dashboardReadyByPanel.get(targetPanel) : undefined;
     if (dashboardReadyPromise) {
       let readyTimer;
-      const ready = await Promise.race([
+      const readyState = await Promise.race([
         dashboardReadyPromise,
-        new Promise(resolve => { readyTimer = setTimeout(() => resolve(false), 15_000); })
+        new Promise(resolve => { readyTimer = setTimeout(() => resolve('timeout'), 15_000); })
       ]).finally(() => clearTimeout(readyTimer));
-      if (!ready || panel !== targetPanel) throw new Error('Pacify-X dashboard webview did not become ready within 15 seconds.');
+      if (readyState === 'disposed') return;
+      if (readyState !== 'ready' || panel !== targetPanel) throw new Error('Pacify-X dashboard webview did not become ready within 15 seconds.');
     }
     await publishSnapshot(true, targetPanel?.webview);
     if (panel === targetPanel) await targetPanel?.webview.postMessage({ type: 'deepLink', route, entity: deepLinkEntity });

@@ -234,8 +234,15 @@ def main() -> int:
         )
 
     support_groups: dict[tuple[str, str], list[dict]] = defaultdict(list)
+    historical_evidence_paths: list[str] = []
     for path, row in missing_by_path.items():
         if path not in assigned:
+            if row["artifact_type"] == "evidence":
+                # Historical QA/certification/checksum snapshots are provenance,
+                # not a per-revision implementation or release gate.
+                assigned[path] = "historical-evidence-provenance"
+                historical_evidence_paths.append(path)
+                continue
             support_groups[support_identity(row)].append(row)
     for (kind, source_id), rows in sorted(support_groups.items()):
         paths = sorted(row["path"] for row in rows)
@@ -289,12 +296,19 @@ def main() -> int:
         "status": "active_reconstruction",
         "completion_rule": "No card is complete until its implementation targets exist, its wiring resolves, and its required executable acceptance evidence passes.",
         "non_claim": "These cards reconstruct advertised outcomes, not unavailable historical bytes or undocumented historical behavior.",
+        "historical_evidence_policy": {
+            "required_for_current_completion": False,
+            "disposition": "unavailable_historical_provenance_not_reconstructed",
+            "path_count": len(historical_evidence_paths),
+            "retention": "Keep this compact disposition and one current reconstruction receipt; do not create per-pack copies on later revisions.",
+        },
         "summary": {
             "genuinely_absent_source_paths": len(missing),
             "assigned_source_paths": len(assigned),
             "unassigned_source_paths": 0,
             "operational_outcome_cards": counts["operational_outcome"],
             "exact_hash_recovered_operational_outcomes": len(exact_recovered_outcomes),
+            "historical_evidence_paths": len(historical_evidence_paths),
             "supporting_artifact_cards": counts["supporting_artifact"],
             "total_cards": len(cards),
             "verified_cards": 0,
@@ -317,6 +331,7 @@ def main() -> int:
             },
         ],
         "exact_hash_recovered_outcomes": exact_recovered_outcomes,
+        "historical_evidence_paths": sorted(historical_evidence_paths),
         "cards": cards,
     }
     args.output_json.parent.mkdir(parents=True, exist_ok=True)
@@ -333,6 +348,7 @@ def main() -> int:
         f"- Operational outcome cards: {counts['operational_outcome']:,}",
         f"- Operational outcomes already exact-hash recovered: {len(exact_recovered_outcomes):,}",
         f"- Supporting-artifact cards: {counts['supporting_artifact']:,}",
+        f"- Historical evidence paths retained as non-gating provenance: {len(historical_evidence_paths):,}",
         f"- Total cards: {len(cards):,}",
         "- Initially verified cards: 0",
         "- Unassigned paths: 0",

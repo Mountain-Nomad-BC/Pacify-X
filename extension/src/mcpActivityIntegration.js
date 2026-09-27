@@ -33,7 +33,7 @@ function actorAttestation(input = {}, context = {}, processId = process.pid) {
 function createMcpActivityIntegration(options) {
   const state = {
     schema_version: 'px.mcp-instrumentation-health/1.0', registered_tools: [], calls: 0,
-    emitted_events: 0, dropped_events: 0, last_drop_type: null,
+    emitted_events: 0, observed_read_events: 0, dropped_events: 0, last_drop_type: null,
     identity: { authenticated_host_capability_calls: 0, self_asserted_calls: 0, unattested_calls: 0 }
   };
   const now = options.now || (() => new Date().toISOString());
@@ -47,7 +47,7 @@ function createMcpActivityIntegration(options) {
       authority_granted: false,
       canonical_bus_connected: false,
       coverage_tier: 'C',
-      limitations: ['Events are canonical-contract attestations retained in the project activity ledger; direct canonical-bus publication remains an O11 reconciliation dependency.']
+      limitations: ['Write-tool events are retained in the project activity ledger; read-only tool events are counted in process memory only and are not durable.', 'Direct canonical-bus publication remains an O11 reconciliation dependency.']
     };
   }
 
@@ -89,6 +89,10 @@ function createMcpActivityIntegration(options) {
   function emit(name, definition, input, lifecycle, result, correlationId, attestation, startedAt, durationMs) {
     if (options.policy().captureMcpCalls === false) return { recorded: false, reason: 'mcp-capture-disabled' };
     const event = canonicalEvent(name, definition, input, lifecycle, result, correlationId, attestation, startedAt, durationMs);
+    if (definition.annotations?.readOnlyHint) {
+      state.observed_read_events += 1;
+      return { recorded: true, persisted: false, canonical_event_sha256: sha(event) };
+    }
     const legacyStatus = { started: 'started', completed: 'succeeded', failed: 'failed' }[lifecycle] || 'observed';
     try {
       const recorded = options.recordActivity(

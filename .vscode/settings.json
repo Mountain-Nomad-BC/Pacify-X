@@ -27,9 +27,27 @@
     "**/evidence/**": true
   },
   "python.analysis.exclude": [
+    "**/.git/**",
     "**/.venv*/**",
+    "**/venv/**",
     "**/Python/**",
-    "**/node_modules/**"
+    "**/node_modules/**",
+    "**/__pycache__/**",
+    "**/.pytest_cache/**",
+    "**/.mypy_cache/**",
+    "**/.ruff_cache/**",
+    "**/build/**",
+    "**/dist/**",
+    "**/out/**",
+    "**/coverage/**",
+    ".tmp/**",
+    "**/.tmp/**",
+    "**/.engineering-bootstrap/test-evidence/**",
+    "**/evidence/**",
+    "**/raw/**",
+    "**/quarantine/**",
+    "**/.px/preserved-skills/**",
+    "**/.px/global-skill-isolation/**"
   ],
   "pacifyX.activity.captureCommandText": true,
   "pacifyX.contextInjectionCapTokens": 25000,

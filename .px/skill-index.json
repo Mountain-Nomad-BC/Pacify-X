@@ -2,14 +2,14 @@
   "counts": {
     "enterprise-restricted": 20,
     "microsoft-vendor": 6,
-    "px-standard": 182,
+    "px-standard": 185,
     "user-preserved": 0
   },
   "default_domains": [
     "px-standard"
   ],
   "loading_rule": "metadata-only; maximum three candidates; exactly one body after explicit selection",
-  "record_count": 208,
+  "record_count": 211,
   "records": [
     {
       "adapted": false,
@@ -3330,6 +3330,31 @@
     {
       "adapted": false,
       "admission": "active",
+      "backup": null,
+      "body": ".px/skills/operate-self-diagnostics/SKILL.md",
+      "body_available": true,
+      "body_sha256": "47a2e542857b12b0728c04577d9f66da6389353024046c3e1b0ccb997d8044d0",
+      "default_eligible": true,
+      "description": "Classifies a reported condition into one disposition and delegates to the canonical owner.",
+      "domain": "px-standard",
+      "id": "operate-self-diagnostics",
+      "native": true,
+      "origin": "authored-in-repo",
+      "package_root": ".px/skills/operate-self-diagnostics",
+      "status": "active",
+      "tags": [
+        "self-operations",
+        "diagnostics",
+        "diagnosis",
+        "classification",
+        "delegation",
+        "composed"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "adapted": false,
+      "admission": "active",
       "backup": ".px/preserved-skills/initial/workspace-original/operate-semantic-code-intelligence",
       "body": ".px/skills/operate-semantic-code-intelligence/SKILL.md",
       "body_available": true,
@@ -3559,6 +3584,28 @@
         "research-ops"
       ],
       "version": "0.1.0"
+    },
+    {
+      "adapted": false,
+      "admission": "active",
+      "backup": null,
+      "body": ".px/skills/parallel-planning-coordination/SKILL.md",
+      "body_available": true,
+      "body_sha256": "8c645ffb6c4e388c2cec1261fb892ee0ca5f786abec6e3ef46d427b5b178565d",
+      "default_eligible": true,
+      "description": "Coordinate dependency-safe work across IDEs and agents through durable task graphs, bounded claims, leases, receipts, reconciliation, and layered memory.",
+      "domain": "px-standard",
+      "id": "parallel-planning-coordination",
+      "native": true,
+      "origin": "authored-in-repo",
+      "package_root": ".px/skills/parallel-planning-coordination",
+      "status": "active",
+      "tags": [
+        "planning",
+        "coordination",
+        "orchestration"
+      ],
+      "version": "1.0.0"
     },
     {
       "adapted": false,
@@ -4398,6 +4445,32 @@
     {
       "adapted": false,
       "admission": "active",
+      "backup": null,
+      "body": ".px/skills/system-one-decision/SKILL.md",
+      "body_available": true,
+      "body_sha256": "1c728cfd30f2c8d4f6645ddd94c14599b0c32af1fb1085a4d3b69fb8e3bf6a7d",
+      "default_eligible": true,
+      "description": "Governed System-1 decision layer (advisory typed decisions over a compiled state).",
+      "domain": "px-standard",
+      "id": "system-one-decision",
+      "native": true,
+      "origin": "workspace-agents-original",
+      "package_root": ".px/skills/system-one-decision",
+      "status": "active",
+      "tags": [
+        "decision",
+        "system-one",
+        "classification",
+        "routing",
+        "probabilistic",
+        "advisory",
+        "laya"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "adapted": false,
+      "admission": "active",
       "backup": ".px/preserved-skills/initial/workspace-original/test-n8n-supabase-integrations",
       "body": ".px/skills/test-n8n-supabase-integrations/SKILL.md",
       "body_available": true,
@@ -4844,6 +4917,6 @@
       "version": "0.1.0"
     }
   ],
-  "revision": "b2fb0ecc88820bae5c7b01004a095583954a8e5340d39c2608fe5e360cb29eef",
+  "revision": "04819febd812f04f32f9d63240ec8ce8688bf39f0884326bc60f6bc46eaf1476",
   "schema_version": "px.native-skill-index/1.0"
 }

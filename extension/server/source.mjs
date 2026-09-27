@@ -45,7 +45,10 @@ function nonBillableEnv() {
 function runApi(args) {
   const root = process.env.PX_ENGINE_ROOT;
   if (!root || !fs.existsSync(path.join(root, 'runtime', 'dashboard_api.py'))) return { available: false, reason: 'Pacify-X dashboard API unavailable.' };
-  const result = cp.spawnSync(process.env.PX_PYTHON_PATH || 'python', ['-m', 'runtime.dashboard_api', ...args, '--source-root', root], {
+  const project = process.env.PX_WORKSPACE_ROOT || process.env.PX_COORDINATION_ROOT;
+  if (!project) return { available: false, reason: 'Pacify-X MCP project root is unavailable.' };
+  const scopedArgs = args.includes('--project') ? args : [...args, '--project', path.resolve(project)];
+  const result = cp.spawnSync(process.env.PX_PYTHON_PATH || 'python', ['-m', 'runtime.dashboard_api', ...scopedArgs, '--source-root', root], {
     cwd: root, windowsHide: true, shell: false, encoding: 'utf8', timeout: 30_000, maxBuffer: 32 * 1024 * 1024,
     env: { ...nonBillableEnv(), PYTHONUTF8: '1', PYTHONDONTWRITEBYTECODE: '1' }
   });
@@ -58,7 +61,7 @@ function workspaceRoot() {
   return path.resolve(value);
 }
 function enterpriseCatalog() {
-  const snapshot = runApi(['snapshot']);
+  const snapshot = runApi(['snapshot', '--read-only']);
   if (!snapshot?.enterprise?.catalog_id) throw new Error('The separate MS+Enterprise catalog is unavailable.');
   return snapshot.enterprise;
 }
@@ -115,7 +118,7 @@ function buildServer() {
 
   registerTool('pacify_control_plane_summary', {
     title: 'Pacify-X Control Plane Summary', description: 'Read the canonical versioned Pacify-X dashboard snapshot.', inputSchema: empty, annotations: readOnly
-  }, async () => textResult(runApi(['snapshot'])));
+  }, async () => textResult(runApi(['snapshot', '--read-only'])));
 
   registerTool('pacify_capability_manifest', {
     title: 'Pacify-X AI Capability Manifest', description: 'Describe the machine-readable PX surfaces, effect boundaries, schema sources, and safe next calls available to an AI client.', inputSchema: empty, annotations: readOnly
@@ -145,12 +148,12 @@ function buildServer() {
 
   registerTool('pacify_hardware_telemetry', {
     title: 'Pacify-X Hardware Telemetry', description: 'Read normalized available CPU, GPU, thermal, utilization, power, and fan sensors with source, timestamp, and explicit unavailable states.', inputSchema: empty, annotations: readOnly
-  }, async () => { const snapshot = runApi(['snapshot']); return textResult(snapshot?.runtime?.hardware?.telemetry || { available: false, reason: 'Hardware telemetry unavailable.' }); });
+  }, async () => { const snapshot = runApi(['snapshot', '--read-only']); return textResult(snapshot?.runtime?.hardware?.telemetry || { available: false, reason: 'Hardware telemetry unavailable.' }); });
 
   registerTool('pacify_agent_readiness', {
     title: 'Pacify-X Agent Readiness Matrix', description: 'Return the conservative nine-dimension structural readiness matrix, explicit gaps, safe-now tasks, and operations that still require a fresh gate.', inputSchema: empty, annotations: readOnly
   }, async () => {
-    const args = ['readiness'];
+    const args = ['readiness', '--read-only'];
     const project = process.env.PX_WORKSPACE_ROOT || process.env.PX_ENGINE_ROOT;
     if (project) args.push('--project', project);
     if (process.env.PX_COORDINATION_ROOT) args.push('--workspace-root', process.env.PX_COORDINATION_ROOT);
@@ -162,7 +165,7 @@ function buildServer() {
     inputSchema: z.object({ kind: z.enum(['extensions', 'skills', 'tools', 'mcp', 'connectors']), query: z.string().max(300).optional(), offset: z.number().int().nonnegative().optional(), limit: z.number().int().min(1).max(100).optional() }).strict(), annotations: readOnly
   }, async input => {
     if (input.kind === 'extensions') return textResult(readEnvironmentSubject(workspaceRoot(), 'extensions', { query: input.query, offset: input.offset, limit: input.limit }));
-    if (input.kind === 'mcp') return textResult({ status: 'serving_this_request', observed: true, transport: 'stdio', effects: 'tool-specific', telemetry_effects: 'local metadata-only trace ledger', server: 'pacify-x-governed-context', version: MCP_VERSION, instrumentation: mcpInstrumentation.health() });
+    if (input.kind === 'mcp') return textResult({ status: 'serving_this_request', observed: true, transport: 'stdio', effects: 'tool-specific', telemetry_effects: 'read calls counted in process memory; write calls retain local metadata-only trace', server: 'pacify-x-governed-context', version: MCP_VERSION, instrumentation: mcpInstrumentation.health() });
     const kind = input.kind === 'connectors' ? 'enterprise-integrations' : input.kind;
     return textResult(runApi(['catalog', '--kind', kind, '--query', input.query || '', '--offset', String(input.offset || 0), '--limit', String(input.limit || 50), '--sort', 'label']));
   });
@@ -198,21 +201,24 @@ function buildServer() {
 
   registerTool('pacify_message_send', {
     title: 'Send Pacify-X Coordination Message',
-    description: 'Append one bounded durable project mailbox message. Private remote/browser delivery requires explicit egress approval.',
+    description: 'Append one bounded durable public or project mailbox message. Private messages require a trusted local recipient channel outside MCP.',
     inputSchema: z.object({ ...actorFields, recipient_id: z.string().min(1).max(160), recipient_transport: z.enum(['local', 'remote', 'browser']).optional(), privacy_class: z.enum(['public', 'project', 'private']).optional(), payload: z.string().min(1).max(8192), evidence_refs: z.array(z.string().max(1000)).max(32).optional(), message_id: z.string().max(200).optional(), egress_approved: z.boolean().optional() }).strict(), annotations: write
-  }, async input => textResult(sendMessage(workspaceRoot(), actor(input), input)));
+  }, async input => {
+    if (input.privacy_class === 'private') throw new Error('coordination-private-message-requires-trusted-local-recipient');
+    return textResult(sendMessage(workspaceRoot(), actor(input), input));
+  });
 
   registerTool('pacify_message_read', {
     title: 'Read Pacify-X Coordination Messages',
     description: 'Read bounded unconsumed mailbox messages without changing their state.',
     inputSchema: z.object({ ...actorFields, recipient_id: z.string().max(160).optional(), limit: z.number().int().min(1).max(100).optional() }).strict(), annotations: readOnly
-  }, async input => textResult(readMessages(workspaceRoot(), actor(input), input)));
+  }, async input => textResult(readMessages(workspaceRoot(), actor(input), input, { includePrivate: false })));
 
   registerTool('pacify_message_consume', {
     title: 'Consume Pacify-X Coordination Message',
     description: 'Mark one durable mailbox message consumed. This never changes task ownership or grants a claim.',
     inputSchema: z.object({ ...actorFields, recipient_id: z.string().max(160).optional(), message_id: z.string().min(1).max(200) }).strict(), annotations: write
-  }, async input => textResult(consumeMessage(workspaceRoot(), actor(input), input)));
+  }, async input => textResult(consumeMessage(workspaceRoot(), actor(input), input, { allowPrivate: false })));
 
   registerTool('pacify_wait_register', {
     title: 'Register Pacify-X Durable Wait',
@@ -238,7 +244,7 @@ function buildServer() {
 
   registerTool('pacify_enterprise_status', {
     title: 'Pacify-X MS+Enterprise Status', description: 'Read the separate project enterprise state, offline defaults, pack states, targets, and last readiness receipt.', inputSchema: empty, annotations: readOnly
-  }, async () => textResult(initializeEnterprise(workspaceRoot(), enterpriseCatalog())));
+  }, async () => textResult(initializeEnterprise(workspaceRoot(), enterpriseCatalog(), { persist: false })));
 
   registerTool('pacify_billable_guardrail_evaluate', {
     title: 'Evaluate Pacify-X Billable Guardrails', description: 'Evaluate a proposed provider execution against the separate project policy. This never executes, connects, reads credentials, or incurs cost.',
@@ -248,7 +254,7 @@ function buildServer() {
       cpu_cores: z.number().int().positive().optional(), ram_mb: z.number().int().positive().optional(), escalation_confidence: z.number().min(0).max(1), approval_granted: z.boolean().optional()
     }).strict(), annotations: readOnly
   }, async input => {
-    const state = initializeEnterprise(workspaceRoot(), enterpriseCatalog()).state;
+    const state = initializeEnterprise(workspaceRoot(), enterpriseCatalog(), { persist: false }).state;
     return textResult(evaluateBillableExecution(state.execution_policy, input));
   });
 
@@ -309,10 +315,21 @@ function buildServer() {
   }, async input => textResult(readMemoryTelemetry(workspaceRoot(), { query: input.query, limit: input.limit, includeContent: input.include_content === true })));
 
   registerTool('pacify_resume_handoff', {
-    title: 'Pacify-X Resume Handoff', description: 'Return the verified cross-IDE resume packet produced from the project-owned rolling ledger.', inputSchema: empty, annotations: readOnly
+    title: 'Pacify-X Resume Handoff', description: 'Return a live cross-IDE resume projection without reading the stored handoff packet.', inputSchema: empty, annotations: readOnly
   }, async () => {
     const data = readCoordination(workspaceRoot(), { eventLimit: 20 });
-    return textResult(readJsonFile(data.paths.handoff_json, { available: false, reason: 'No handoff packet exists yet.', coordination: data.state }));
+    const state = data.state;
+    const plan = state.plans.find(item => item.id === state.active_plan) || null;
+    const tasks = plan ? state.tasks.filter(item => plan.task_ids.includes(item.id)) : [];
+    const next = tasks.find(item => ['planned', 'ready', 'released'].includes(item.status)
+      && item.depends_on.every(dependency => ['completed', 'reconciled'].includes(state.tasks.find(row => row.id === dependency)?.status)));
+    return textResult({ schema_version: 'px.resume-handoff-projection/1.0', available: data.instrumented,
+      source: 'live-coordination-state', stored_handoff_read: false, project: state.project,
+      current_state_hash: state.state_hash, event_log_health: data.event_log_health,
+      objective: plan?.objective || null, phase: plan ? 'parallel-execution' : 'idle-or-complete',
+      tasks, active_claims: state.claims,
+      exact_next_action: next ? `Claim task ${next.id}: ${next.title}` : 'Review completed work or create a new parallel plan.',
+      handoff_path: data.paths.handoff_json });
   });
 
   registerTool('pacify_task_handoff', {

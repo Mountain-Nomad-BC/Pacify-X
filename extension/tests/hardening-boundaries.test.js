@@ -26,6 +26,8 @@ test('missing authoritative state reads without initialization, while malformed 
   const paths = coordinationPaths(root);
   fs.writeFileSync(paths.state, '{"schema_version":', 'utf8');
   assert.throws(() => readCoordination(root), /coordination-authoritative-state-corrupt/);
+  assert.equal(fs.existsSync(paths.quarantine), false);
+  assert.throws(() => registerSession(root, { actorId: 'fixture', sessionId: 'fixture', harness: 'test' }), /coordination-authoritative-state-corrupt/);
   const evidence = fs.readdirSync(paths.quarantine);
   assert.ok(evidence.some(name => name.endsWith('.corrupt')));
   assert.ok(evidence.some(name => name.endsWith('.receipt.json')));
@@ -44,6 +46,8 @@ test('authoritative coordination state hash mismatch fails closed with evidence'
   const state = JSON.parse(fs.readFileSync(paths.state, 'utf8')); state.revision = initialized.state.revision + 99;
   fs.writeFileSync(paths.state, JSON.stringify(state), 'utf8');
   assert.throws(() => readCoordination(root), /state-hash-mismatch/);
+  assert.equal(fs.existsSync(paths.quarantine), false);
+  assert.throws(() => registerSession(root, {}), /state-hash-mismatch/);
   assert.ok(fs.readdirSync(paths.quarantine).some(name => name.endsWith('.receipt.json')));
 });
 
@@ -185,6 +189,8 @@ test('webview messages reject unknown operations, fields, dangerous shapes, and 
     environmentScope: 'graph', graphView: 'repository', graphMode: 'full', graphTarget: '', graphLayout: 'community', graphInspectorOpen: true,
     graphDepth: 1, graphKind: '', graphStatus: '', graphCommunity: '', graphRelation: '', graphSavedViews: [], studioHistory: [], workingStudioDrafts: {}
   };
+  assert.deepEqual(validateWebviewMessage({ type: 'dashboardViewState', state: dashboardViewState, acknowledgementRevision: 1 }).state, dashboardViewState);
+  assert.throws(() => validateWebviewMessage({ type: 'dashboardViewState', state: dashboardViewState, acknowledgementRevision: 0 }), /acknowledgementRevision/);
   assert.deepEqual(validateWebviewMessage({ type: 'dashboardViewState', state: dashboardViewState }).state, dashboardViewState);
   const encodedDraft = JSON.stringify({ schema_version: 'px.studio-working-draft/1.0', kind: 'skill', draft: { skill_id: 'recovery.skill', version: '1.0.0', deeply: { nested: { semantic: { content: true } } } }, source_binding: null });
   assert.equal(validateWebviewMessage({ type: 'dashboardViewState', state: { ...dashboardViewState, workingStudioDrafts: { skill: encodedDraft } } }).state.workingStudioDrafts.skill, encodedDraft);

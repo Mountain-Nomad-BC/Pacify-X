@@ -125,7 +125,7 @@ def test_git_source_archive_is_bounded_and_excludes_local_custody() -> None:
     result = scripts.audit_source_archive.audit_source_archive(
         root, worktree_attributes=True
     )
-    assert result["valid"], result
+    assert result["valid"], json.dumps(result, indent=2, sort_keys=True)
     assert result["uncompressed_bytes"] <= result["maximum_uncompressed_bytes"]
     assert result["forbidden_members"] == []
 

@@ -77,7 +77,7 @@ no-new-evidence, and fixed-point.
 
 ## Validation
 
-`tests/test_diagnostic_coordinator.py` proves: `NO_PRODUCT_DEFECT` and `PROBE_OR_TEST_DEFECT` are
+`tests/test_operate_self_diagnostics.py` proves: `NO_PRODUCT_DEFECT` and `PROBE_OR_TEST_DEFECT` are
 reachable; a stale-evidence condition is classified as such rather than as a defect; an
 unavailable environment is not reported as a product defect; the coordinator has no mutation path;
 and every classification binds to a declared owner or explicitly reports that none exists.

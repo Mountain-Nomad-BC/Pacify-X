@@ -146,8 +146,38 @@ def test_all_generated_behavior_cases_have_positive_and_negative_results():
 def test_every_support_card_has_a_concrete_product_target():
     ledger = load("registry/declared_suite_reconstruction.json")
     cards = [card for card in ledger["cards"] if card["class"] == "supporting_artifact"]
-    assert len(cards) == 118
+    assert len(cards) == 97
+    errors = []
     for card in cards:
-        assert card["implementation_targets"]
-        for target in card["implementation_targets"]:
-            assert (ROOT / target).exists(), (card["card_id"], target)
+        if card["current_state"] == "implemented_verified":
+            assert card["implementation_targets"]
+            for target in card["implementation_targets"]:
+                if not (ROOT / target).exists():
+                    errors.append(f"{card['card_id']}: missing target {target}")
+        elif card["current_state"] == "blocked":
+            if card["implementation_targets"] != []:
+                errors.append(f"{card['card_id']}: blocked card claims implementation targets")
+            blocker_path = card.get("blocker_evidence")
+            if not isinstance(blocker_path, str) or not (ROOT / blocker_path).is_file():
+                errors.append(f"{card['card_id']}: missing blocker evidence {blocker_path}")
+                continue
+            payload = json.loads((ROOT / blocker_path).read_text(encoding="utf-8"))
+            if card["card_id"] not in payload.get("card_ids", []) or payload.get("status") != "blocked_missing_source_artifacts":
+                errors.append(f"{card['card_id']}: blocker evidence identity/status mismatch")
+        else:
+            errors.append(f"{card['card_id']}: unsupported state {card['current_state']!r}")
+    assert not errors, "\n".join(errors)
+
+
+def test_empty_knowledge_registry_has_a_self_consistent_declared_denominator():
+    registry = load("registry/declared_suite_knowledge.json")
+    assert registry["count"] == len(registry["records"]) == 0
+    certifier = (ROOT / ".px/skills/audit-source-capabilities/scripts/certify_declared_suite_reconstruction.py").read_text(encoding="utf-8")
+    assert "len(knowledge_registry[\"records\"]) == 3" not in certifier
+
+
+def test_certifier_never_synthesizes_historical_pack_certification_files():
+    source = (ROOT / ".px/skills/audit-source-capabilities/scripts/certify_declared_suite_reconstruction.py").read_text(encoding="utf-8")
+    assert 'f"{prefix}-build-qa.json"' not in source
+    assert 'f"{prefix}-certification-report.json"' not in source
+    assert '"status": "certified"' not in source

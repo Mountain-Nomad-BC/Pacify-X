@@ -23,6 +23,8 @@ recursive-include tests test_*.py
 recursive-include .agents SKILL.md *.yaml *.md *.py
 include .px/skill-index.json
 recursive-include .px/skills *
+# Append-only skill observations and derived rollups are runtime custody, not release source.
+recursive-exclude .px/skills memory/usage.jsonl memory/stats.json
 recursive-include .ai *.toml
 recursive-include .codex *
 recursive-include .cursor *

@@ -22,6 +22,10 @@ END = "# END GENERATED OPERATIONAL SKILL DATA FILES"
 EXISTING_MANUAL_SKILLS: set[str] = set()
 EXCLUDED_PARTS = {"__pycache__", ".pytest_cache", ".ruff_cache"}
 EXCLUDED_SUFFIXES = {".pyc", ".pyo", ".swp", ".tmp"}
+RUNTIME_MEMORY_FILES = {
+    ("memory", "usage.jsonl"),
+    ("memory", "stats.json"),
+}
 
 
 def _owned_files(skill: Path, root: Path = ROOT) -> list[Path]:
@@ -34,6 +38,7 @@ def _owned_files(skill: Path, root: Path = ROOT) -> list[Path]:
             or item.is_symlink()
             or EXCLUDED_PARTS.intersection(relative.parts)
             or item.suffix.casefold() in EXCLUDED_SUFFIXES
+            or relative.parts in RUNTIME_MEMORY_FILES
         ):
             continue
         files.append(item)

@@ -512,12 +512,27 @@ def _manifest_sources(root: Path, manifest_path: Path) -> set[Path]:
     }
 
 
+def _static_skill_paths(paths) -> set[str]:
+    """Exclude only declared runtime custody, refusing unknown skill-memory files."""
+    static: set[str] = set()
+    for path in paths:
+        if not path.startswith(".px/skills/"):
+            continue
+        parts = path.split("/")
+        if len(parts) >= 4 and parts[3].casefold() == "memory":
+            if parts[3] == "memory" and len(parts) == 5 and parts[4] in {"usage.jsonl", "stats.json"}:
+                continue
+            raise ValueError("unrecognized skill memory custody path: " + path)
+        static.add(path)
+    return static
+
+
 def commissioned_skill_sources(root: Path) -> dict[str, dict[str, object]]:
     reject_path_links(root)
     inputs = _ProjectionInputs(
         root.resolve(strict=True), [".px/skills/**"], {}, DEFAULT_LIMITS
     )
-    return {path: inputs.acquire(path) for path in sorted(inputs.files)}
+    return {path: inputs.acquire(path) for path in sorted(_static_skill_paths(inputs.files))}
 
 
 def _verify_skill_projection(source, manifest, source_only):
@@ -831,7 +846,7 @@ def _generate_artifact_manifest(root: Path, limits: ArchiveLimits) -> dict[str, 
     for entry in inputs.files.values():
         if entry.size > limits.max_member_bytes:
             raise ValueError("source projection member byte budget exceeded")
-    skill_paths = {path for path in inputs.files if path.startswith(".px/skills/")}
+    skill_paths = _static_skill_paths(inputs.files)
     selected = {source for source, _, _ in planned} | skill_paths
     for path in sorted(selected):
         inputs.acquire(path)

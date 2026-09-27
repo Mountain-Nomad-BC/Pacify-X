@@ -101,6 +101,124 @@ def test_closed_card_requires_existing_receipt(tmp_path):
     assert any("closed status requires receipts" in error for error in result["errors"])
 
 
+def _product_with_one_card(tmp_path, receipt: str, owning: str | None = None):
+    """A minimal product whose only missing file is the reference under test.
+
+    The validator enforces several structural invariants (source-card denominator,
+    acceptance commands). Those are satisfied with minimal valid values so a failure
+    can only come from the externalized-custody branch under test.
+    """
+
+    product = tmp_path / "product"
+    (product / "registry").mkdir(parents=True)
+    ledger = json.loads(
+        (ROOT / "registry/corrective_release_ledger.json").read_text(encoding="utf-8")
+    )
+    mutated = copy.deepcopy(ledger)
+    # Keep the authoritative card set intact so the source-card denominator holds, and
+    # make every card satisfy the structural invariants with real, existing targets.
+    (product / "PROJECT_MANAGEMENT.md").write_text("# product\n", encoding="utf-8")
+    (product / "tests").mkdir(parents=True, exist_ok=True)
+    (product / "tests/test_corrective_release.py").write_text(
+        "# present\n", encoding="utf-8"
+    )
+    for item in mutated["cards"]:
+        item["status"] = "passed"
+        item["receipts"] = ["PROJECT_MANAGEMENT.md"]
+        item["owning_paths"] = ["PROJECT_MANAGEMENT.md"]
+        item["acceptance_commands"] = ["python -m pytest tests/test_corrective_release.py"]
+    card = next(item for item in mutated["cards"] if item["id"] == "REG-010-A")
+    if owning is not None:
+        card["owning_paths"] = [owning]
+    card["receipts"] = [receipt]
+    (product / "registry/corrective_release_ledger.json").write_text(
+        json.dumps(mutated), encoding="utf-8"
+    )
+    return product, card
+
+
+def test_unrecorded_missing_receipt_is_still_an_error(tmp_path):
+    """A missing receipt that the repository has NOT externalized must still fail."""
+
+    product, _ = _product_with_one_card(
+        tmp_path, "evidence/never-existed-and-not-recorded.json"
+    )
+    result = validate_corrective_ledger(product)
+    assert not result["valid"]
+    assert any("missing receipt" in error for error in result["errors"])
+
+
+def test_externalized_custody_reference_is_satisfied_by_the_declaration(tmp_path):
+    """A recorded externalized payload satisfies the reference without a tree file."""
+
+    receipt = "evidence/rel010-repair-validation.json"
+    product, _ = _product_with_one_card(tmp_path, receipt)
+    (product / "evidence").mkdir(parents=True, exist_ok=True)
+    (product / "evidence/externalized-payload-index.json").write_text(
+        json.dumps(
+            {
+                "schema_version": "2.0",
+                "records": [
+                    {
+                        "reference_id": "rel010-repair-validation",
+                        "path": receipt,
+                        "availability": "external_custody",
+                        "sha256": "0" * 64,
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    result = validate_corrective_ledger(product)
+    assert result["valid"], result["errors"]
+
+
+def test_externalization_does_not_excuse_an_unrecorded_path(tmp_path):
+    """Recording one path must not excuse a different missing path."""
+
+    recorded = "evidence/rel010-repair-validation.json"
+    other = "evidence/rel010-coverage-ledger-validation.json"
+    product, _ = _product_with_one_card(tmp_path, other)
+    (product / "evidence").mkdir(parents=True, exist_ok=True)
+    (product / "evidence/externalized-payload-index.json").write_text(
+        json.dumps(
+            {
+                "schema_version": "2.0",
+                "records": [{"reference_id": "recorded", "path": recorded}],
+            }
+        ),
+        encoding="utf-8",
+    )
+    result = validate_corrective_ledger(product)
+    assert not result["valid"]
+    assert any("missing receipt" in error for error in result["errors"])
+
+
+def test_externalized_owning_path_is_satisfied_by_the_declaration(tmp_path):
+    """The allowance also covers owning_paths, not only receipts."""
+
+    external = "evidence/release-revocation-0.6.1.json"
+    product, _ = _product_with_one_card(
+        tmp_path, "evidence/present-receipt.json", owning=external
+    )
+    (product / "evidence").mkdir(parents=True, exist_ok=True)
+    (product / "evidence/present-receipt.json").write_text("{}\n", encoding="utf-8")
+
+    before = validate_corrective_ledger(product)
+    assert not before["valid"]
+    assert any("owning path does not exist" in e for e in before["errors"])
+
+    (product / "evidence/externalized-payload-index.json").write_text(
+        json.dumps(
+            {"schema_version": "2.0", "records": [{"reference_id": "r", "path": external}]}
+        ),
+        encoding="utf-8",
+    )
+    after = validate_corrective_ledger(product)
+    assert after["valid"], after["errors"]
+
+
 def test_omitted_source_card_fails_closed(tmp_path):
     product = tmp_path / "product"
     (product / "registry").mkdir(parents=True)

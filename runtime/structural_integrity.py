@@ -121,16 +121,16 @@ DUPLICATE_CLASSIFICATIONS = {
         "equivalence_rule": "behavioral parity",
     },
     "ledger-authority-head-anchor": {
-        "owner": "runtime/event_ledger.py",
+        "owner": "runtime/event_ledger.py and runtime/model_client_gateway.py",
         "rationale": "the current authority head is an exact recoverable projection of its immutable sequence anchor",
-        "authoritative_source": ".engineering-bootstrap/commissioning-events",
+        "authoritative_source": ".engineering-bootstrap/.ledger-authority, .engineering-bootstrap/model-client-gateway/events/.authority",
         "regeneration_command": "append chained event",
         "equivalence_rule": "byte-for-byte",
     },
     "ledger-authority-anchor-history": {
-        "owner": "runtime/event_ledger.py",
+        "owner": "runtime/event_ledger.py and runtime/model_client_gateway.py",
         "rationale": "an immutable sequence anchor and retained prior authority head preserve the same reviewed chain state",
-        "authoritative_source": ".engineering-bootstrap/commissioning-events",
+        "authoritative_source": ".engineering-bootstrap/.ledger-authority, .engineering-bootstrap/model-client-gateway/events/.authority",
         "regeneration_command": "append chained event",
         "equivalence_rule": "byte-for-byte",
     },
@@ -166,6 +166,17 @@ DUPLICATE_CLASSIFICATIONS = {
         "owner": "root policy registry",
         "rationale": "portable PX-native skill packages retain byte-identical local policy resources",
         "authoritative_source": "policies",
+        "regeneration_command": "python scripts/migration/sync_skill_packaging.py",
+        "equivalence_rule": "byte-for-byte",
+    },
+    "embedded-skill-body-projections": {
+        "owner": ".px/skills/<skill>/SKILL.md",
+        "rationale": (
+            "the extension resource plane embeds a skill body as a byte-identical "
+            "projection of its canonical PX-native body, so the packaged extension "
+            "carries the same reviewed skill text"
+        ),
+        "authoritative_source": ".px/skills",
         "regeneration_command": "python scripts/migration/sync_skill_packaging.py",
         "equivalence_rule": "byte-for-byte",
     },
@@ -378,6 +389,22 @@ def _classify_exact_group(paths: list[str]) -> str | None:
         return "native-skill-surface-scaffolds"
     if (
         len(paths) == 2
+        and sum(
+            path.startswith(".px/skills/") and path.endswith("/SKILL.md")
+            for path in paths
+        )
+        == 1
+        and sum(
+            path.startswith("extension/resources/skills/")
+            and path.endswith("/SKILL.md")
+            for path in paths
+        )
+        == 1
+        and len({Path(path).parent.name for path in paths}) == 1
+    ):
+        return "embedded-skill-body-projections"
+    if (
+        len(paths) == 2
         and sum(path.startswith("policies/") for path in paths) == 1
         and sum(
             path.startswith(".px/skills/") and "/policies/" in path
@@ -416,6 +443,7 @@ def _classify_exact_group(paths: list[str]) -> str | None:
         len(paths) == 2
         and all(
             path.startswith(".engineering-bootstrap/.ledger-authority/")
+            or "/events/.authority/" in path
             for path in paths
         )
         and any(path.endswith("/head.json") for path in paths)
@@ -426,6 +454,7 @@ def _classify_exact_group(paths: list[str]) -> str | None:
         len(paths) == 2
         and all(
             path.startswith(".engineering-bootstrap/.ledger-authority/")
+            or "/events/.authority/" in path
             for path in paths
         )
         and any("/anchors/" in path for path in paths)

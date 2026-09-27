@@ -234,19 +234,48 @@ def check_version_consistency(root: Path) -> dict:
     """Version sources must be internally consistent and not contradictory."""
 
     sources: dict[str, str] = {}
+    problems: list[str] = []
     pyproject = root / "pyproject.toml"
     if pyproject.is_file():
         match = re.search(r'^\s*version\s*=\s*"([^"]+)"', _read(pyproject), re.MULTILINE)
         if match:
             sources["pyproject.toml"] = match.group(1)
-    package = root / "extension/package.json"
-    if package.is_file():
+    runtime_version = root / "runtime/version.py"
+    if runtime_version.is_file():
+        match = re.search(r'^VERSION\s*=\s*"([^"]+)"', _read(runtime_version), re.MULTILINE)
+        if match:
+            sources["runtime/version.py"] = match.group(1)
+    json_sources = {
+        "extension/package.json": "version",
+        "extension/package-lock.json": "version",
+        "registry/build_claims.json": "version",
+    }
+    for relative_path, key in json_sources.items():
+        path = root / relative_path
+        if not path.is_file():
+            problems.append(f"{relative_path} is missing")
+            continue
         try:
-            sources["extension/package.json"] = str(json.loads(_read(package)).get("version", ""))
-        except json.JSONDecodeError:
-            pass
+            value = json.loads(_read(path))
+        except json.JSONDecodeError as error:
+            problems.append(
+                f"{relative_path} contains invalid JSON "
+                f"at line {error.lineno}, column {error.colno}"
+            )
+            continue
+        sources[relative_path] = str(value.get(key, "")) if isinstance(value, dict) else ""
+        if relative_path == "extension/package-lock.json" and isinstance(value, dict):
+            packages = value.get("packages", {})
+            package_root = packages.get("", {}) if isinstance(packages, dict) else {}
+            sources["extension/package-lock.json#packages."] = (
+                str(package_root.get("version", "")) if isinstance(package_root, dict) else ""
+            )
+    adapter = root / "extension/src/agentHarness/adapters/codexAppServer.js"
+    if adapter.is_file():
+        match = re.search(r"clientVersion\s*\|\|\s*'([^']+)'", _read(adapter))
+        if match:
+            sources["extension/src/agentHarness/adapters/codexAppServer.js"] = match.group(1)
 
-    problems: list[str] = []
     # The release lines must not silently disagree in a way that misleads: if pyproject declares a
     # line, the README must reference the same line as current.
     readme = _read(root / "README.md")
@@ -257,10 +286,19 @@ def check_version_consistency(root: Path) -> dict:
             problems.append(
                 f"README.md does not reference the pyproject version line {major_minor}"
             )
-    if not sources.get("pyproject.toml"):
-        problems.append("pyproject.toml declares no version")
-    if not sources.get("extension/package.json"):
-        problems.append("extension/package.json declares no version")
+    required_sources = (
+        "pyproject.toml", "runtime/version.py", "extension/package.json",
+        "extension/package-lock.json", "extension/package-lock.json#packages.",
+        "registry/build_claims.json", "extension/src/agentHarness/adapters/codexAppServer.js",
+    )
+    for source in required_sources:
+        if source not in sources and not any(problem.startswith(f"{source} ") for problem in problems):
+            problems.append(f"{source} declares no version")
+        elif source in sources and not sources[source]:
+            problems.append(f"{source} declares no version")
+    for source, version in sources.items():
+        if declared_line and version and version != declared_line:
+            problems.append(f"{source} version {version} disagrees with pyproject.toml {declared_line}")
 
     return {
         "id": "version-consistency",

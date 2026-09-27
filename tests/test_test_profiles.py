@@ -10,7 +10,14 @@ import pytest
 from runtime.test_profiles import (
     PROCESSING_PHASES,
     ProcessingOrderBlocked,
+    begin_repair_phase,
+    close_repair_intake,
+    freeze_repair_campaign,
     initialize_project_repair_campaign,
+    reopen_invalid_repair_campaign,
+    reopen_pre_freeze_repair_campaign,
+    register_repair_findings,
+    resolve_repair_findings,
     processing_stage_allowed,
     repair_campaign_status,
     require_processing_stage,
@@ -327,8 +334,8 @@ def test_large_sections_are_serially_partitioned_with_exact_bounded_membership()
         },
         "testing-governance": {
             "chunk_size": 8,
-            "chunk_timeout": 600,
-            "section_timeout": 1800,
+            "chunk_timeout": 850,
+            "section_timeout": 6300,
         },
         "runtime-domain-contracts": {
             "chunk_size": 8,
@@ -781,6 +788,235 @@ def test_processing_order_allows_focused_work_but_blocks_expensive_closure(tmp_p
             require_processing_stage(tmp_path, stage)
 
 
+def _write_managed_repair_campaign(root: Path, **changes: object) -> Path:
+    marker = root / ".engineering-bootstrap/project-record.json"
+    marker.parent.mkdir(parents=True, exist_ok=True)
+    marker.write_text(json.dumps({"project_id": "prj_lifecycle"}) + "\n", encoding="utf-8")
+    path = root / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    value = {
+        "schema_version": "px.repair-campaign/1.0",
+        "campaign_id": "lifecycle-campaign",
+        "phase": "repair",
+        "intake_open": True,
+        "unresolved": [],
+    }
+    value.update(changes)
+    path.write_text(json.dumps(value) + "\n", encoding="utf-8")
+    return path
+
+
+def _admit_campaign_write(monkeypatch, root: Path) -> str:
+    event_id = "gap-event:test:admitted"
+    campaign_scope = (root / ".engineering-bootstrap/processing-order/repair-campaign.json").resolve().as_posix()
+    scope = [
+        "C:/Users/Ben/Documents/bootstrap_project/Pacify-X/runtime/test_profiles.py",
+        "C:/Users/Ben/Documents/bootstrap_project/Pacify-X/tests/test_test_profiles.py",
+        "C:/Users/Ben/Documents/bootstrap_project/Pacify-X/tests/test_cli_commands.py",
+        campaign_scope,
+        "C:/Users/Ben/Downloads/validations/validations/_report/**",
+    ]
+    snapshot = {
+        "work_checkpoints": [{"event_id": "checkpoint:test", "active_gap_id": "PX-TEST"}],
+        "work_admissions": [{
+            "event_id": event_id,
+            "sequence": 2,
+            "gap_id": "PX-TEST",
+            "session_id": "test-session",
+            "expires_utc": "2099-01-01T00:00:00Z",
+            "effect_scopes": [{"effect": "write", "scope": scope}],
+        }],
+        "work_session_closures": [],
+    }
+    monkeypatch.setattr("runtime.operational_gap_ledger.read_snapshot", lambda _root: snapshot)
+    return event_id
+
+
+def test_campaign_mutation_rejects_forged_admission_before_writing(tmp_path, monkeypatch):
+    from runtime.test_profiles import PROJECT_REPAIR_CAMPAIGN_PATH
+
+    path = _write_managed_repair_campaign(
+        tmp_path, phase="intake", intake_open=True, unresolved=["finding-a"]
+    )
+    before = path.read_bytes()
+    monkeypatch.setattr(
+        "runtime.operational_gap_ledger.read_snapshot",
+        lambda _root: {
+            "work_checkpoints": [{"event_id": "checkpoint:test", "active_gap_id": "PX-TEST"}],
+            "work_admissions": [],
+            "work_session_closures": [],
+        },
+    )
+    with pytest.raises(ProcessingOrderBlocked, match="current exact-scope work admission"):
+        begin_repair_phase(tmp_path, admission_event_id="gap-event:forged")
+    assert path.read_bytes() == before
+    assert PROJECT_REPAIR_CAMPAIGN_PATH.as_posix() in str(path).replace("\\", "/")
+
+
+def test_close_repair_intake_requires_zero_denominator_and_records_user_authority(tmp_path, monkeypatch):
+    _write_managed_repair_campaign(tmp_path, unresolved=["remaining"])
+    with pytest.raises(ProcessingOrderBlocked, match="zero unresolved"):
+        close_repair_intake(
+            tmp_path, admission_event_id="gap-event:test:1", closure_authority="user directive"
+        )
+    _write_managed_repair_campaign(tmp_path)
+    admission = _admit_campaign_write(monkeypatch, tmp_path)
+    result = close_repair_intake(
+        tmp_path,
+        admission_event_id=admission,
+        closure_authority="user:2026-09-26:complete the remaining work",
+    )
+    assert result["phase"] == "operational_verification"
+    assert result["intake_open"] is False
+    assert result["unresolved"] == []
+    state = json.loads(
+        (tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json").read_text()
+    )
+    assert state["phase_history"][-1]["admission_event_id"] == admission
+    assert state["intake_closure_authority"].startswith("user:")
+
+
+def test_pre_freeze_reopen_binds_new_findings_and_rejects_post_freeze(tmp_path, monkeypatch):
+    path = _write_managed_repair_campaign(
+        tmp_path, phase="operational_verification", intake_open=False
+    )
+    previous_digest = hashlib.sha256(path.read_bytes()).hexdigest()
+    admission = _admit_campaign_write(monkeypatch, tmp_path)
+    result = reopen_pre_freeze_repair_campaign(
+        tmp_path,
+        finding_ids=["version-drift", "freeze-proof"],
+        admission_event_id=admission,
+    )
+    assert result["phase"] == "intake"
+    assert result["intake_open"] is True
+    assert result["unresolved"] == ["version-drift", "freeze-proof"]
+    history = json.loads(path.read_text())["reopen_history"][-1]
+    assert history["prior_state_sha256"] == previous_digest
+    assert history["admission_event_id"] == admission
+    with pytest.raises(ProcessingOrderBlocked, match="operational verification"):
+        reopen_pre_freeze_repair_campaign(
+            tmp_path, finding_ids=["duplicate"], admission_event_id="gap-event:ledger:000005"
+        )
+    _write_managed_repair_campaign(tmp_path, phase="repair_frozen", intake_open=False)
+    with pytest.raises(ProcessingOrderBlocked, match="operational verification"):
+        reopen_pre_freeze_repair_campaign(
+            tmp_path, finding_ids=["too-late"], admission_event_id="gap-event:ledger:000006"
+        )
+
+
+def test_register_repair_findings_extends_open_denominator_with_custody(tmp_path, monkeypatch):
+    path = _write_managed_repair_campaign(tmp_path, unresolved=["existing"])
+    prior = hashlib.sha256(path.read_bytes()).hexdigest()
+    admission = _admit_campaign_write(monkeypatch, tmp_path)
+    result = register_repair_findings(
+        tmp_path, finding_ids=["new-security-finding"],
+        admission_event_id=admission,
+    )
+    assert result["unresolved"] == ["existing", "new-security-finding"]
+    record = json.loads(path.read_text())["finding_history"][-1]
+    assert record["registered"] == ["new-security-finding"]
+    assert record["prior_state_sha256"] == prior
+    with pytest.raises(ProcessingOrderBlocked, match="duplicate unresolved"):
+        register_repair_findings(
+            tmp_path, finding_ids=["existing"], admission_event_id="gap-event:ledger:000008"
+        )
+    _write_managed_repair_campaign(tmp_path, phase="repair_frozen", intake_open=False)
+    with pytest.raises(ProcessingOrderBlocked, match="open repair intake"):
+        register_repair_findings(
+            tmp_path, finding_ids=["too-late"], admission_event_id="gap-event:ledger:000009"
+        )
+
+
+def test_repair_freeze_requires_passing_campaign_bound_operational_receipt(tmp_path, monkeypatch):
+    path = _write_managed_repair_campaign(
+        tmp_path, phase="operational_verification", intake_open=False
+    )
+    proof = tmp_path / "evidence/operational-verification.json"
+    proof.parent.mkdir(parents=True)
+    artifact = proof.parent / "host-walk.json"
+    artifact.write_text('{"execution_valid":true,"exit_code":0}\n')
+    artifact_digest = hashlib.sha256(artifact.read_bytes()).hexdigest()
+    campaign_digest = hashlib.sha256(path.read_bytes()).hexdigest()
+    admission = _admit_campaign_write(monkeypatch, tmp_path)
+    proof.write_text(json.dumps({
+        "schema_version": "px.operational-verification/1.0",
+        "valid": True,
+        "campaign_id": "lifecycle-campaign",
+        "campaign_state_sha256": campaign_digest,
+        "unresolved_count": 0,
+        "checks": [{"name": "host-walk", "passed": False}],
+    }) + "\n")
+    with pytest.raises(ProcessingOrderBlocked, match="artifact evidence"):
+        freeze_repair_campaign(
+            tmp_path, admission_event_id="gap-event:test:3",
+            evidence_path="evidence/operational-verification.json",
+        )
+    proof.write_text(json.dumps({
+        "schema_version": "px.operational-verification/1.0",
+        "valid": True,
+        "campaign_id": "lifecycle-campaign",
+        "campaign_state_sha256": campaign_digest,
+        "unresolved_count": 0,
+        "checks": [{
+            "name": "host-walk", "passed": True, "exit_code": 0,
+            "artifact": "evidence/host-walk.json", "artifact_sha256": artifact_digest,
+        }],
+    }) + "\n")
+    result = freeze_repair_campaign(
+        tmp_path, admission_event_id=admission,
+        evidence_path="evidence/operational-verification.json",
+    )
+    assert result["phase"] == "repair_frozen"
+    state = json.loads(path.read_text())
+    assert state["freeze"]["evidence_sha256"] == hashlib.sha256(proof.read_bytes()).hexdigest()
+    assert state["phase_history"][-1]["to"] == "repair_frozen"
+
+
+def test_repair_freeze_rejects_self_asserted_or_tampered_evidence(tmp_path):
+    path = _write_managed_repair_campaign(
+        tmp_path, phase="operational_verification", intake_open=False
+    )
+    proof = tmp_path / "evidence/operational-verification.json"
+    proof.parent.mkdir(parents=True)
+    artifact = proof.parent / "host-walk.json"
+    artifact.write_text('{"execution_valid":true,"exit_code":0}\n')
+    receipt = {
+        "schema_version": "px.operational-verification/1.0",
+        "valid": True,
+        "campaign_id": "lifecycle-campaign",
+        "campaign_state_sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+        "unresolved_count": 0,
+        "checks": [{
+            "name": "host-walk", "passed": True, "exit_code": 0,
+            "artifact": "evidence/host-walk.json",
+            "artifact_sha256": hashlib.sha256(artifact.read_bytes()).hexdigest(),
+        }],
+    }
+    bare = dict(receipt, checks=[{"name": "host-walk", "passed": True}])
+    proof.write_text(json.dumps(bare))
+    with pytest.raises(ProcessingOrderBlocked, match="artifact evidence"):
+        freeze_repair_campaign(
+            tmp_path, admission_event_id="gap-event:test:5",
+            evidence_path="evidence/operational-verification.json",
+        )
+    proof.write_text(json.dumps(receipt))
+    artifact.write_text('{"execution_valid":false,"exit_code":1}\n')
+    with pytest.raises(ProcessingOrderBlocked, match="hash is stale"):
+        freeze_repair_campaign(
+            tmp_path, admission_event_id="gap-event:test:6",
+            evidence_path="evidence/operational-verification.json",
+        )
+    artifact.write_text('{"execution_valid":true,"exit_code":0}\n')
+    state = json.loads(path.read_text())
+    state["intake_closed_at"] = "later"
+    path.write_text(json.dumps(state))
+    with pytest.raises(ProcessingOrderBlocked, match="stale"):
+        freeze_repair_campaign(
+            tmp_path, admission_event_id="gap-event:test:7",
+            evidence_path="evidence/operational-verification.json",
+        )
+
+
 def test_processing_order_open_work_blocks_closure_even_with_advanced_phase(tmp_path):
     _write_repair_campaign(tmp_path, phase="validated")
     with pytest.raises(ProcessingOrderBlocked, match="intake_open=true"):
@@ -855,6 +1091,137 @@ def test_processing_order_absent_campaign_preserves_unmanaged_repository(tmp_pat
     status = repair_campaign_status(tmp_path)
     assert status["managed"] is False
     assert require_processing_stage(tmp_path, "certify")["managed"] is False
+
+
+def test_reopen_invalid_repair_campaign_preserves_predecessor_and_findings(tmp_path, monkeypatch):
+    marker = tmp_path / ".engineering-bootstrap/project-record.json"
+    marker.parent.mkdir(parents=True)
+    marker.write_text(json.dumps({"project_id": "prj_demo"}) + "\n", encoding="utf-8")
+    initialize_project_repair_campaign(tmp_path)
+    path = tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    state = json.loads(path.read_text(encoding="utf-8"))
+    state.update(phase="revision_reconciled", intake_open=False, unresolved=[])
+    path.write_text(json.dumps(state) + "\n", encoding="utf-8")
+    previous_digest = hashlib.sha256(path.read_bytes()).hexdigest()
+    admission = _admit_campaign_write(monkeypatch, tmp_path)
+    monkeypatch.setattr(
+        "runtime.release_campaign.release_campaign_status",
+        lambda *args, **kwargs: {
+            "state": "active", "apply_count": 1, "active_claim": None,
+            "valid": False, "errors": ["source product digest changed after release identity apply"],
+            "stages": {name: {"status": "pending"} for name in (
+                "sections", "full_profile", "validate", "package", "install",
+                "installed_operational", "certify",
+            )},
+        },
+    )
+    reopened = reopen_invalid_repair_campaign(
+        tmp_path,
+        finding_ids=["PX-OS-1067/archive-budget", "PX-OS-1067/skill-projection"],
+        admission_event_id=admission,
+    )
+    assert reopened["phase"] == "intake"
+    assert reopened["intake_open"] is True
+    assert reopened["unresolved"] == ["PX-OS-1067/archive-budget", "PX-OS-1067/skill-projection"]
+    history = json.loads(path.read_text(encoding="utf-8"))["reopen_history"]
+    assert history[-1]["prior_state_sha256"] == previous_digest
+    assert history[-1]["admission_event_id"] == admission
+
+
+def test_reopen_invalid_repair_campaign_fails_closed_without_source_invalid_identity(tmp_path, monkeypatch):
+    marker = tmp_path / ".engineering-bootstrap/project-record.json"
+    marker.parent.mkdir(parents=True)
+    marker.write_text(json.dumps({"project_id": "prj_demo"}) + "\n", encoding="utf-8")
+    initialize_project_repair_campaign(tmp_path)
+    path = tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    state = json.loads(path.read_text(encoding="utf-8"))
+    state.update(phase="revision_reconciled", intake_open=False, unresolved=[])
+    path.write_text(json.dumps(state) + "\n", encoding="utf-8")
+    monkeypatch.setattr("runtime.release_campaign.release_campaign_status", lambda *a, **k: {"state": "active", "apply_count": 1, "active_claim": None, "valid": True, "errors": [], "stages": {}})
+    with pytest.raises(ProcessingOrderBlocked, match="source-invalid"):
+        reopen_invalid_repair_campaign(tmp_path, finding_ids=["finding-1"], admission_event_id="gap-event:test")
+
+
+def test_begin_repair_phase_preserves_open_intake_and_denominator(tmp_path, monkeypatch):
+    marker = tmp_path / ".engineering-bootstrap/project-record.json"
+    marker.parent.mkdir(parents=True)
+    marker.write_text(json.dumps({"project_id": "prj_demo"}) + "\n", encoding="utf-8")
+    path = tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    path.parent.mkdir(parents=True)
+    path.write_text(json.dumps({
+        "schema_version": "px.repair-campaign/1.0",
+        "campaign_id": "repair-demo",
+        "phase": "intake",
+        "intake_open": True,
+        "unresolved": ["finding-a", "finding-b"],
+    }) + "\n", encoding="utf-8")
+    prior_hash = hashlib.sha256(path.read_bytes()).hexdigest()
+    admission = _admit_campaign_write(monkeypatch, tmp_path)
+    status = begin_repair_phase(tmp_path, admission_event_id=admission)
+    assert status["phase"] == "repair"
+    assert status["intake_open"] is True
+    assert status["unresolved"] == ["finding-a", "finding-b"]
+    history = json.loads(path.read_text(encoding="utf-8"))["phase_history"]
+    assert history[-1]["prior_state_sha256"] == prior_hash
+    assert history[-1]["admission_event_id"] == admission
+
+
+def test_begin_repair_phase_fails_closed_without_open_denominator(tmp_path):
+    marker = tmp_path / ".engineering-bootstrap/project-record.json"
+    marker.parent.mkdir(parents=True)
+    marker.write_text(json.dumps({"project_id": "prj_demo"}) + "\n", encoding="utf-8")
+    path = tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    path.parent.mkdir(parents=True)
+    path.write_text(json.dumps({
+        "schema_version": "px.repair-campaign/1.0",
+        "campaign_id": "repair-demo",
+        "phase": "intake",
+        "intake_open": False,
+        "unresolved": [],
+    }) + "\n", encoding="utf-8")
+    with pytest.raises(ProcessingOrderBlocked, match="open intake"):
+        begin_repair_phase(tmp_path, admission_event_id="gap-event:ledger:000001")
+
+
+def test_resolve_repair_findings_retains_open_intake_and_evidence_history(tmp_path, monkeypatch):
+    marker = tmp_path / ".engineering-bootstrap/project-record.json"
+    marker.parent.mkdir(parents=True)
+    marker.write_text(json.dumps({"project_id": "prj_demo"}) + "\n", encoding="utf-8")
+    campaign = tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    campaign.parent.mkdir(parents=True)
+    campaign.write_text(json.dumps({
+        "schema_version": "px.repair-campaign/1.0", "campaign_id": "repair-demo",
+        "phase": "repair", "intake_open": True,
+        "unresolved": ["fixed", "blocked"],
+    }) + "\n", encoding="utf-8")
+    previous_hash = hashlib.sha256(campaign.read_bytes()).hexdigest()
+    admission = _admit_campaign_write(monkeypatch, tmp_path)
+    status = resolve_repair_findings(
+        tmp_path, evidence_by_finding={"fixed": "tests/test_fix.py::test_cause"},
+        admission_event_id=admission,
+    )
+    assert status["phase"] == "repair"
+    assert status["intake_open"] is True
+    assert status["unresolved"] == ["blocked"]
+    history = json.loads(campaign.read_text(encoding="utf-8"))["finding_history"][-1]
+    assert history["prior_state_sha256"] == previous_hash
+    assert history["resolved"] == [{"finding_id": "fixed", "evidence": "tests/test_fix.py::test_cause"}]
+
+
+def test_resolve_repair_findings_rejects_missing_evidence_and_unknown_finding(tmp_path):
+    marker = tmp_path / ".engineering-bootstrap/project-record.json"
+    marker.parent.mkdir(parents=True)
+    marker.write_text(json.dumps({"project_id": "prj_demo"}) + "\n", encoding="utf-8")
+    campaign = tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    campaign.parent.mkdir(parents=True)
+    campaign.write_text(json.dumps({
+        "schema_version": "px.repair-campaign/1.0", "campaign_id": "repair-demo",
+        "phase": "repair", "intake_open": True, "unresolved": ["open"],
+    }) + "\n", encoding="utf-8")
+    with pytest.raises(ProcessingOrderBlocked, match="admission and evidence"):
+        resolve_repair_findings(tmp_path, evidence_by_finding={"open": " "}, admission_event_id="gap-event:test")
+    with pytest.raises(ProcessingOrderBlocked, match="currently unresolved"):
+        resolve_repair_findings(tmp_path, evidence_by_finding={"other": "test evidence"}, admission_event_id="gap-event:test")
 
 
 def test_managed_project_missing_campaign_fails_closed_and_initializer_is_idempotent(

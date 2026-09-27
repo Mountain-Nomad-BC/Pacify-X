@@ -7,6 +7,10 @@ import tomllib
 import pytest
 
 from runtime.release_distribution import (
+    _manifest_rules,
+    _manifest_selected,
+    _static_skill_paths,
+    commissioned_skill_sources,
     generate_artifact_manifest,
     verify_commissioned_skill_projection,
 )
@@ -63,6 +67,36 @@ def test_generator_refuses_a_duplicate_generated_section():
     duplicated = current.replace(generator.START, generated + "\n" + generator.START, 1)
     with pytest.raises(ValueError, match="markers are missing or duplicated"):
         generator.render(duplicated)
+
+
+def test_mutable_skill_memory_is_not_static_package_source(tmp_path):
+    generator = load_generator()
+    package = tmp_path / ".px/skills/demo"
+    (package / "memory").mkdir(parents=True)
+    (package / "SKILL.md").write_text("# Demo\n", encoding="utf-8")
+    (package / "memory/usage.jsonl").write_text('{"event":1}\n', encoding="utf-8")
+    (package / "memory/stats.json").write_text('{"count":1}\n', encoding="utf-8")
+    rendered = generator.render('[tool.setuptools.data-files]\n', tmp_path)
+    assert '.px/skills/demo/SKILL.md' in rendered
+    assert 'memory/usage.jsonl' not in rendered
+    assert 'memory/stats.json' not in rendered
+    assert set(commissioned_skill_sources(tmp_path)) == {'.px/skills/demo/SKILL.md'}
+
+    manifest = (ROOT / 'MANIFEST.in').read_text(encoding='utf-8')
+    rules = _manifest_rules(manifest)
+    assert _manifest_selected('.px/skills/demo/SKILL.md', rules)
+    assert not _manifest_selected('.px/skills/demo/memory/usage.jsonl', rules)
+    assert not _manifest_selected('.px/skills/demo/memory/stats.json', rules)
+
+
+@pytest.mark.parametrize('path', [
+    '.px/skills/demo/memory/unregistered.json',
+    '.px/skills/demo/Memory/usage.jsonl',
+    '.px/skills/demo/memory/nested/usage.jsonl',
+])
+def test_unknown_skill_memory_file_fails_closed(path):
+    with pytest.raises(ValueError, match='unrecognized skill memory custody path'):
+        _static_skill_paths({'.px/skills/demo/SKILL.md', path})
 
 
 def test_nested_non_markdown_skill_resources_are_projected():

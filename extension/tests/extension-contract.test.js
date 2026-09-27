@@ -78,8 +78,13 @@ test('dashboard restart restoration and predecessor-bound draft recovery have li
   assert.match(extension, /openDashboard\('\/control-plane', null, restoredPanel\)/);
   assert.match(extension, /dashboardViewStateByWorkspace\.get\(dashboardViewStateKey\(\)\)/);
   assert.match(extension, /rememberDashboardViewState\(message\.state\)/);
+  assert.match(extension, /case 'dashboardViewState': \{[\s\S]*rememberDashboardViewState\(message\.state\)[\s\S]*type: 'dashboardViewStateStored'[\s\S]*stateSha256: crypto\.createHash\('sha256'\)/);
   assert.match(extension, /validateWebviewMessage\(\{ type: 'dashboardViewState', state: _state \}\)/);
-  assert.match(dashboard, /vscode\.postMessage\(\{ type: 'dashboardViewState', state: persisted \}\)/);
+  assert.match(dashboard, /vscode\.postMessage\(message\)/);
+  assert.match(dashboard, /let dashboardStatePersistenceRevision = 0/);
+  assert.match(dashboard, /persistDashboardState\(\{ acknowledge = false \} = \{\}\)[\s\S]*message\.acknowledgementRevision = \+\+dashboardStatePersistenceRevision/);
+  assert.match(dashboard, /dashboardViewStateStored[\s\S]*__PX_DASHBOARD_STATE_STORAGE_ACK__/);
+  assert.match(dashboard, /submitGraphSavedView[\s\S]*persistDashboardState\(\{ acknowledge: true \}\)/);
   assert.match(dashboard, /function workingStudioOverlayDisposition\(/);
   assert.match(dashboard, /function openReauthenticatedStudioDraft\(/);
   assert.match(dashboard, /function studioSkillRollbackPayload\([\s\S]*promotion_receipt[\s\S]*operation === 'rollback'\) payload = studioSkillRollbackPayload\(payload\)/);

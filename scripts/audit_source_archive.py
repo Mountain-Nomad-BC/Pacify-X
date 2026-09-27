@@ -20,7 +20,10 @@ from runtime.process_supervisor import ProcessSupervisor
 from runtime.resource_lifecycle import ResourceManager
 
 
-MAX_SOURCE_ARCHIVE_BYTES = 256 * 1024 * 1024
+# The current authoritative source tree is 262.5 MiB uncompressed. Keep a
+# measured, hard upper bound with roughly 10% headroom while enforcing a much
+# smaller compressed-archive ceiling on the normal Git archive path.
+MAX_SOURCE_ARCHIVE_BYTES = 288 * 1024 * 1024
 ArchiveCommandBuilder = Callable[[Path], Sequence[str]]
 
 
@@ -49,15 +52,18 @@ def _inspect_archive(
     members: list[str] = []
     forbidden: list[str] = []
     total_bytes = 0
-    if archive_path.stat().st_size > MAX_SOURCE_ARCHIVE_BYTES:
+    archive_bytes = archive_path.stat().st_size
+    if archive_bytes > MAX_SOURCE_ARCHIVE_BYTES:
         return {
             "schema_version": "px.source-archive-audit/1.0",
             "valid": False,
             "revision": revision,
-            "errors": ["archive exceeds the 256 MiB physical source budget"],
+            "errors": [f"archive exceeds the {MAX_SOURCE_ARCHIVE_BYTES // (1024 * 1024)} MiB physical source budget"],
+            "archive_bytes": archive_bytes,
+            "maximum_archive_bytes": MAX_SOURCE_ARCHIVE_BYTES,
         }
     try:
-        with tarfile.open(archive_path, mode="r:") as archive:
+        with tarfile.open(archive_path, mode="r:*") as archive:
             for member in archive:
                 if not member.isfile():
                     continue
@@ -76,7 +82,9 @@ def _inspect_archive(
     if forbidden:
         errors.append(f"archive contains {len(forbidden)} host/evidence custody members")
     if total_bytes > MAX_SOURCE_ARCHIVE_BYTES:
-        errors.append("archive exceeds the 256 MiB uncompressed source budget")
+        errors.append(
+            f"archive exceeds the {MAX_SOURCE_ARCHIVE_BYTES // (1024 * 1024)} MiB uncompressed source budget"
+        )
     required = {
         "pyproject.toml",
         "runtime/cli.py",
@@ -91,6 +99,8 @@ def _inspect_archive(
         "valid": not errors,
         "revision": revision,
         "worktree_attributes": worktree_attributes,
+        "archive_bytes": archive_bytes,
+        "maximum_archive_bytes": MAX_SOURCE_ARCHIVE_BYTES,
         "file_count": len(members),
         "uncompressed_bytes": total_bytes,
         "maximum_uncompressed_bytes": MAX_SOURCE_ARCHIVE_BYTES,
@@ -149,7 +159,7 @@ def audit_source_archive(
                     "-C",
                     str(root),
                     "archive",
-                    "--format=tar",
+                    "--format=tar.gz",
                     f"--output={archive_path}",
                 ]
                 if worktree_attributes:

@@ -42,7 +42,21 @@ test('authoritative workspace identity accepts only Windows drive-letter case eq
   state.project.root = path.join(root, 'different-workspace');
   fs.writeFileSync(statePath, `${JSON.stringify(state, null, 2)}\n`, 'utf8');
   assert.throws(() => readCoordination(root), /coordination-authoritative-state-workspace-mismatch/);
+  assert.equal(fs.existsSync(path.join(root, '.engineering-bootstrap', 'coordination', 'quarantine')), false);
+  assert.throws(() => createParallelPlan(root, actorA, { objective: 'must fail', tasks: [] }), /coordination-authoritative-state-workspace-mismatch/);
   assert.equal(fs.existsSync(path.join(root, '.engineering-bootstrap', 'coordination', 'quarantine')), true);
+});
+
+test('read-only coordination and memory inspections never quarantine a corrupt authoritative state', t => {
+  const root = fixture(t);
+  createParallelPlan(root, actorA, { objective: 'corruption', tasks: [{ id: 'one', title: 'One', claims: ['one/'] }] });
+  const store = path.join(root, '.engineering-bootstrap', 'coordination');
+  fs.writeFileSync(path.join(store, 'state.json'), '{"broken":', 'utf8');
+  assert.throws(() => readCoordination(root), /coordination-authoritative-state-corrupt/);
+  assert.throws(() => readMemoryTelemetry(root), /coordination-authoritative-state-corrupt/);
+  assert.equal(fs.existsSync(path.join(store, 'quarantine')), false);
+  assert.throws(() => createParallelPlan(root, actorA, { objective: 'must fail', tasks: [] }), /coordination-authoritative-state-corrupt/);
+  assert.ok(fs.readdirSync(path.join(store, 'quarantine')).some(name => name.endsWith('.corrupt')));
 });
 
 test('parallel plan accepts disjoint work and rejects unordered overlapping ancestor scopes', t => {

@@ -1,15 +1,33 @@
 {
-  "schema_version": "px.native-skill-package/1.0",
-  "id": "system-one-decision",
-  "version": "1.0.0",
-  "domain": "px-standard",
-  "origin": "workspace-agents-original",
-  "native": true,
-  "lazy": true,
-  "status": "active",
-  "entrypoint": "SKILL.md",
-  "body_sha256": "75088228bd548b297c06a51e14bfc721073eae7c4ec01026753761d7aa924e46",
+  "admission_record": "system-one-decision",
+  "body_sha256": "1c728cfd30f2c8d4f6645ddd94c14599b0c32af1fb1085a4d3b69fb8e3bf6a7d",
+  "contract": {
+    "available": true,
+    "sha256": "b81825c38b854f34ffaab2d0287eba61187742af0d755529a2f912b1b9313698",
+    "source": "registry/skill_packages/system-one-decision.json"
+  },
   "description": "Governed System-1 decision layer (advisory typed decisions over a compiled state).",
+  "domain": "px-standard",
+  "entrypoint": "SKILL.md",
+  "id": "system-one-decision",
+  "isolation": {
+    "cross_domain_requires_explicit_intent_and_policy": true,
+    "default_eligible": true
+  },
+  "lazy": true,
+  "native": true,
+  "origin": "workspace-agents-original",
+  "provenance": {
+    "adapted": false,
+    "source": "workspace-agents-original"
+  },
+  "schema_version": "px.native-skill-package/1.0",
+  "selection": {
+    "body_hydration": "exactly-one-after-selection",
+    "maximum_candidates": 3,
+    "metadata_visible": true
+  },
+  "status": "active",
   "tags": [
     "decision",
     "system-one",
@@ -19,23 +37,5 @@
     "advisory",
     "laya"
   ],
-  "contract": {
-    "source": "registry/skill_packages/system-one-decision.json",
-    "sha256": "7b1de37b3ce853e557b8317451f1fab51522ca27c143bf78b59dd086027406d1",
-    "available": true
-  },
-  "admission_record": "system-one-decision",
-  "selection": {
-    "metadata_visible": true,
-    "body_hydration": "exactly-one-after-selection",
-    "maximum_candidates": 3
-  },
-  "isolation": {
-    "default_eligible": true,
-    "cross_domain_requires_explicit_intent_and_policy": true
-  },
-  "provenance": {
-    "source": "authored-in-repo",
-    "adapted": false
-  }
+  "version": "1.0.0"
 }

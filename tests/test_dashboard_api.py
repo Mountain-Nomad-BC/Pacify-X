@@ -75,6 +75,21 @@ class DashboardApiTests(unittest.TestCase):
             60.0,
         )
 
+    def test_read_only_snapshot_never_creates_runtime_or_hardware_cache_state(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            with (
+                patch("runtime.work_admission.RuntimeWorkPlane.execute", side_effect=AssertionError("read-only work-plane write")),
+                patch("runtime.dashboard_api._hardware", return_value={"hardware": {}, "available": False}) as hardware,
+                patch("runtime.host_boundaries.startup_attribution", return_value={"available": False}),
+                patch("runtime.dashboard_api._extension_source_identity", return_value={"available": False}),
+            ):
+                snapshot = build_snapshot(root, read_only=True)
+            self.assertEqual(list(root.rglob("*")), [])
+            self.assertEqual(snapshot["work_admission"]["decision"], "read_only_no_persistence")
+            self.assertEqual(snapshot["runtime"]["hardware"]["work_admission"]["decision"], "read_only_no_persistence")
+            hardware.assert_called_once_with(None, cache_ttl_seconds=0)
+
     def test_extension_source_identity_binds_host_sources_and_action_contract(
         self,
     ) -> None:
@@ -444,8 +459,14 @@ class DashboardApiTests(unittest.TestCase):
         self.assertEqual(
             snapshot["counts"]["workflow_definitions"], len(project) + len(skills)
         )
-        self.assertEqual(snapshot["counts"]["workflow_validator_bindings"], 16)
-        self.assertEqual(snapshot["counts"]["workflow_runtime_bindings"], 6)
+        self.assertEqual(
+            snapshot["counts"]["workflow_validator_bindings"],
+            sum(row.get("mode") == "executable_validator" for row in bindings),
+        )
+        self.assertEqual(
+            snapshot["counts"]["workflow_runtime_bindings"],
+            sum(row.get("mode") == "executable_runtime" for row in bindings),
+        )
         effects = json.loads(
             (ROOT / "registry" / "effect_surface_ownership.json").read_text(
                 encoding="utf-8"
@@ -516,6 +537,20 @@ class DashboardApiTests(unittest.TestCase):
         self.assertIn("advisory", readiness["authority"])
         self.assertGreater(len(readiness["safe_now"]), 0)
         self.assertGreater(len(readiness["requires_fresh_gate"]), 0)
+
+    def test_snapshot_exposes_fail_closed_self_operations_lifecycle_status(self) -> None:
+        status = build_snapshot(ROOT)["self_operations"]
+        self.assertEqual(status["schema_version"], "px.self-operations-status/1.0")
+        self.assertEqual(status["monitoring"], {"available": True, "mode": "read_only"})
+        self.assertFalse(status["mutation_lifecycle"]["integrated"])
+        self.assertEqual(status["mutation_lifecycle"]["status"], "not_integrated")
+        self.assertEqual(
+            {item["id"] for item in status["mutation_lifecycle"]["stages"]},
+            {
+                "candidate_generation", "candidate_bound_simulation", "approval",
+                "guarded_apply", "independent_verification", "rollback",
+            },
+        )
 
     def test_unconfigured_canonical_memory_is_explicitly_detached(self) -> None:
         snapshot = build_snapshot(ROOT)

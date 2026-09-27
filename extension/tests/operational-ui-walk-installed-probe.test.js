@@ -6,6 +6,7 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const { spawnSync } = require('node:child_process');
+const { dashboardStatePersistenceIdentity, discoverOwnedWebviewIdentityMode } = require('../scripts/run-operational-ui-walk');
 const { advanceInstalledSurfaceControlSettlement, applyInstalledProbeObservations, catalogPaginationControlProbe, cleanupControlProbe, clickWhenKnowledgeControlReady, commandPaletteAttemptDecision, coordinationMemoryControlProbe, eligibleInstalledControl, eligibleInstalledSidebarControl, engineOutageRecord, enterpriseControlProbe, environmentLifecycleControlProbe, exactPluginConflictSignal, graphProjectionIdentity, requestBoundGraphResultIdentity, hostBoundaryControlProbe, inlineCommandOwnerControlProbe, installedActionIdentity, installedConditionalRecoverySpec, installedConditionalScenario, installedFilesystemPathIdentity, installedFilesystemPathsMatch, installedFilesystemPathWithin, installedHostActionReceiptMatches, installedHostActionRequestIdentity, installedHostBoundaryRevealSelector, installedPluginControlPreservesModal, installedPreparationIdentity, installedSidebarDashboardIdentity, installedSidebarHandoffRequestMatches, installedSidebarHandoffSpec, installedSidebarSelector, installedStudioControlScenario, installedStudioPrerequisites, installedSurfaceState, installedSurfaceAcknowledged, installedSurfaceControlAcknowledged, installedWorkbenchCommandSpec, installedWorkbenchAuthorityBoundarySpec, knowledgeBrowseHasHead, knowledgeGraphControlProbe, knowledgeLifecycleControlProbe, learningLifecycleControlProbe, nativeWorkbenchKeyboardActionAdmitted, nativeWorkbenchKeyboardFallbackAdmitted, nativeWorkbenchRequestFallbackAdmitted, ownedCleanupCandidate, ownedWorkbenchReloadIdentity, partitionExpectedFaultDiagnostics, pluginMutationControlProbe, pluginReadControlProbe, probeInstalledSidebarControls, projectMapIdentity, projectsControlProbe, reacquirableOwnedFrameError, restartInstalledSidebarWebview, revealInstalledHostBoundaryControl, selectLatestMatchingInstalledSnapshot, sidebarPreferenceRoundTripIdentity, sidebarReconstructionIdentity, sidebarStateControlProbe, sidebarStateControlVerified, skillQueryControlProbe, systemProjectionControlProbe, systemProjectionIdentity, requestBoundSystemSnapshotIdentity, validCleanupResult, validCoordinationResult, validKnowledgeLifecycleResult, validLearningLifecycleResult, validPermanentCleanupResult, validPendingPluginMutationReceipt, validPluginLifecycleObservation, validPluginMutationReceipt, validStudioBlockedPreviewResult, validStudioDraftReceipt, validStudioLifecycleResult, validStudioRevisionEditObservation, validStudioSetupResult, validationControlProbe, workbenchCommandRowIdentity } = require('../scripts/run-operational-ui-walk');
 const { codexHandoffControlProbe } = require('../scripts/run-operational-ui-walk');
 const { installedSnapshotTimeoutIdentity } = require('../scripts/run-operational-ui-walk');
@@ -27,6 +28,29 @@ const { boundedOwnedUiAction, createOwnedContentEvaluationBoundary, createOwnedL
 const { clickWhenBuilderControlReady, clickWhenInstalledGraphControlReady, installedGraphExchangeOffset, invokeBuilderControl, waitForBuilderJsonControls, waitForInstalledGraphExchange, waitForInstalledGraphIdle } = require('../scripts/run-operational-ui-walk');
 
 const STAGES = ['open_load', 'display', 'user_edit_action', 'input_validation', 'authorization', 'backend_dispatch', 'runtime_effect', 'progress_reporting', 'result_acknowledgement', 'persistence', 'reload_reopen', 'failure_handling', 'recovery_rollback'];
+
+test('owned webview discovery trusts exact dashboard DOM ownership over presentation text', () => {
+  assert.equal(discoverOwnedWebviewIdentityMode({ dashboardOwned: true, predicateMatched: false, acceptDashboardOwnership: true }), 'dashboard-dom');
+  assert.equal(discoverOwnedWebviewIdentityMode({ dashboardOwned: true, predicateMatched: false }), null);
+  assert.equal(discoverOwnedWebviewIdentityMode({ dashboardOwned: true, predicateMatched: true }), 'dashboard-dom');
+  assert.equal(discoverOwnedWebviewIdentityMode({ dashboardOwned: false, predicateMatched: true }), 'predicate');
+  assert.equal(discoverOwnedWebviewIdentityMode({ dashboardOwned: false, predicateMatched: false }), null);
+});
+
+test('Knowledge Graph restart waits for host acknowledgement of the exact saved view state', () => {
+  const valid = { acknowledgementRevision: 2, stateSha256: 'a'.repeat(64), graphSavedViewNames: ['PX owned restart exact'] };
+  assert.deepEqual(dashboardStatePersistenceIdentity(valid, 'PX owned restart exact'), {
+    acknowledgement_revision: 2,
+    state_sha256: 'a'.repeat(64),
+    saved_view_name: 'PX owned restart exact'
+  });
+  assert.equal(dashboardStatePersistenceIdentity(valid, 'different-view'), null);
+  assert.equal(dashboardStatePersistenceIdentity({ ...valid, acknowledgementRevision: 0 }, 'PX owned restart exact'), null);
+  assert.equal(dashboardStatePersistenceIdentity({ ...valid, stateSha256: 'invalid' }, 'PX owned restart exact'), null);
+  const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
+  const profile = source.slice(source.indexOf('async function runInstalledKnowledgeGraphProfile'), source.indexOf('async function runInstalledSystemProjectionProfile'));
+  assert.match(profile, /await waitForDashboardStatePersistence\(frameHost, viewName[\s\S]*restartInstalledDashboardWebview\(frameHost/);
+});
 
 test('dashboard restart identity follows canonical ownership instead of the restored visible surface title', () => {
   const canonicalRestart = { document_ready: true, canonical_dashboard_dom: true, connected: true, restarted: true };
@@ -81,10 +105,13 @@ test('Knowledge Graph restart reacquires the exact saved view stably before appl
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   const profile = source.slice(source.indexOf('async function runInstalledKnowledgeGraphProfile'), source.indexOf('async function runInstalledSystemProjectionProfile'));
   assert.match(profile, /restartInstalledDashboardWebview[\s\S]*settleInstalledSurfaceControl\(frameHost, \{[\s\S]*surface: 'knowledgeGraph'[\s\S]*selector: '\[data-action="graphApplySavedView"\]'[\s\S]*stableSamplesRequired: 2/);
+  assert.match(profile, /observation\.after_restart_state = await frameHost\.evaluateContent[\s\S]*graph_saved_view_names:[\s\S]*host_initial_saved_view_names:[\s\S]*rendered_saved_view_names:/);
   assert.match(profile, /stableSavedViewSamples[\s\S]*item\.textContent\.trim\(\) === name && !item\.disabled[\s\S]*stableSavedViewSamples < 2[\s\S]*knowledge-graph-restarted-view-missing/);
   assert.match(profile, /const deleteDeadline[\s\S]*do \{[\s\S]*settleInstalledSurfaceControl\(frameHost, \{[\s\S]*surface: 'knowledgeGraph'[\s\S]*selector: '\[data-action="graphApplySavedView"\]'[\s\S]*stableSamplesRequired: 2[\s\S]*const deleteIdentity/);
   assert.match(profile, /state\.graphSavedViews[\s\S]*data-action="graphDeleteSavedView"\]\[data-view-index="\$\{viewIndex\}"\][\s\S]*stateMatches === 1[\s\S]*deleteMatches === true[\s\S]*knowledge-graph-view-delete-unavailable/);
-  assert.match(profile, /remove\.click\(\)[\s\S]*deleteSettledSamples[\s\S]*stateAbsent[\s\S]*domAbsent[\s\S]*deleteSettledSamples >= 2/);
+  assert.match(profile, /deleteReadySamples >= 2[\s\S]*deleteClicked = await frameHost\.evaluateContent[\s\S]*remove\.click\(\)[\s\S]*if \(deleteClicked\) break/);
+  assert.match(profile, /if \(!deleteClicked\) throw new Error\(`knowledge-graph-view-delete-unavailable:/);
+  assert.match(profile, /deleteSettledSamples[\s\S]*stateAbsent[\s\S]*domAbsent[\s\S]*deleteSettledSamples >= 2/);
 });
 
 test('cleanup manager dispatch atomically settles the runtimeCore route and exact control before each scan', () => {
@@ -821,6 +848,23 @@ test('focused host-boundary scheduling runs only its exact typed-host profile', 
   assert.match(source, /enterpriseProfile = ownedReversibleConfigurationAuthority && \(!focusedProfileOnly \|\| nativeDialogOnly\)/);
 });
 
+test('focused Knowledge Graph launch proves only exact focus, Back, and status controls', () => {
+  const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
+  assert.match(source, /KNOWLEDGE_GRAPH_REPAIR_CONTROL_IDS = new Set\(\[[\s\S]*focusGraphNode\.row[\s\S]*graphBack[\s\S]*graphStatus/);
+  assert.match(source, /knowledgeGraphOnly[\s\S]*timedProfile\('knowledge-graph-control-probe',[\s\S]*KNOWLEDGE_GRAPH_REPAIR_CONTROL_IDS/);
+  assert.match(source, /focusGraphNode\.row': '\[data-action="focusGraphNode"\]\[data-node-key\]'/);
+  assert.match(source, /graphBack': '\[data-action="graphBack"\]'/);
+  const focus = source.slice(source.indexOf('async function focusInstalledGraphNodeRow'), source.indexOf('async function seedInstalledGraphBackHistory'));
+  assert.match(focus, /globalThis\.__PX_INSTALLED_FAILURE_SCENARIOS__[\s\S]*state\.graphError[\s\S]*graph-inline-error\[role="alert"\][\s\S]*predecessorBackStack[\s\S]*failureEvidence/);
+  assert.match(focus, /waitForInstalledResponse\(frameHost, before, \{ types: \['graphResult'\] \}, 20_000\)/);
+  assert.match(focus, /state\.graphBackStack\.at\(-1\) === identity\.prior[\s\S]*waitForInstalledGraphSelection[\s\S]*back\.click\(\)/);
+  assert.match(focus, /failureObserved: Boolean\(failureEvidence\), recoveryObserved: Boolean\(failureEvidence\)[\s\S]*failure_handling:/);
+  const graphSettlement = source.slice(source.indexOf('async function waitForInstalledGraphSelection'), source.indexOf('async function focusInstalledGraphNodeRow'));
+  assert.match(graphSettlement, /state\.graphData\.selected === selected[\s\S]*!state\.graphError[\s\S]*state\.graphBackStack\.length === depth/);
+  const back = source.slice(source.indexOf('async function exerciseInstalledGraphBack'), source.indexOf('async function probeInstalledControls'));
+  assert.match(back, /state\.graphData\?\.selected !== identity\.selected[\s\S]*state\.graphBackStack\.at\(-1\) !== identity\.previous[\s\S]*waitForInstalledResponse[\s\S]*predecessor\.previous/);
+});
+
 test('focused native-dialog scheduling runs the exact confirmation profiles and dependent recovery checks', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   assert.match(source, /PX_OPERATIONAL_NATIVE_DIALOG_ONLY === '1'/);
@@ -1052,7 +1096,8 @@ test('physical owner retries only exact pre-evaluation frame locator loss', () =
 test('dynamic physical owner uses stable dashboard DOM identity after route navigation', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   assert.match(source, /let identityMode = null[\s\S]*hasDashboardOwnership[\s\S]*data-surface="dashboard"[\s\S]*data-surface="agents"/);
-  assert.match(source, /identityMode = dashboardOwned \? 'dashboard-dom' : 'predicate'/);
+  assert.match(source, /waitForOwnedWebview\(workbench, text => \/PACIFY-X[\s\S]*acceptDashboardOwnership: true/);
+  assert.match(source, /discoverOwnedWebviewIdentityMode\(\{[\s\S]*dashboardOwned,[\s\S]*predicateMatched: await predicate\(text\),[\s\S]*acceptDashboardOwnership[\s\S]*identityMode = mode/);
   assert.match(source, /identityMode === 'dashboard-dom' \? dashboardOwned : await predicate\(text\)/);
 });
 
@@ -1494,7 +1539,7 @@ test('focused error-indicator scheduling probes exactly two identities and exclu
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   assert.match(source, /PX_OPERATIONAL_ERROR_INDICATORS_ONLY === '1'/);
   assert.match(source, /errorIndicatorsOnly \? 'error-indicators' : lateCardRepairOnly \? 'late-card-repair' : catalogPaginationOnly \? 'catalog-pagination' : builderOnly \? 'builder' : workbenchCommandOnly \? 'workbench-command' : null/);
-  const identityBlock = source.slice(source.indexOf('const ERROR_INDICATOR_CONTROL_IDS'), source.indexOf('const focusedProfile'));
+  const identityBlock = source.slice(source.indexOf('const ERROR_INDICATOR_CONTROL_IDS'), source.indexOf('const KNOWLEDGE_GRAPH_REPAIR_CONTROL_IDS'));
   assert.match(identityBlock, /pxui\.memory\.indicator\.queryError/);
   assert.match(identityBlock, /pxui\.knowledge-core\.indicator\.controllerError/);
   assert.equal((identityBlock.match(/pxui\./g) || []).length, 2);
@@ -1692,15 +1737,17 @@ test('R114 residual repair applies authoritative graph modes, owns exact navigat
   assert.doesNotMatch(plugin, /restartOwnedExtensionHostCatalog\(/);
 });
 
-test('final51 residual controls have exact scoped selectors and deterministic restoration', () => {
+test('final51 residual controls have exact scoped selectors and request-bound graph-status restoration', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   assert.match(source, /pxui\.dashboard\.action\.inspectSensor\.row': '\.surface-dashboard \[data-action="inspectSensor"\]\[data-sensor-id\]'/);
   assert.match(source, /pxui\.runtime-core\.action\.inspectSensor\.row': '\.surface-runtimeCore \[data-action="inspectSensor"\]\[data-sensor-id\]'/);
   assert.match(source, /installed-sensor-row-settlement-timeout/);
   assert.match(source, /pxui\.knowledge-graph\.field\.graphStatus': '\[data-graph-status-filter\]'/);
   const graphField = source.slice(source.indexOf('async function exerciseInstalledExactGraphField'), source.indexOf('async function probeInstalledControls'));
-  assert.match(graphField, /endsWith\('\.graphStatus'\) \? 'full'/);
-  assert.match(graphField, /const current = document\.querySelector\(spec\.selector\)[\s\S]*current\.add\(new Option\(original, original\)\)[\s\S]*state\.graphStatus === original[\s\S]*restored\.value === original/);
+  assert.match(graphField, /const isStatusFilter = control\.control_id\.endsWith\('\.graphStatus'\)/);
+  assert.match(graphField, /await waitForInstalledResponse\(frameHost, before, \{ types: \['graphResult'\] \}, 20_000\)/);
+  assert.match(graphField, /state\.graphPending !== true[\s\S]*state\.graphStatus === value[\s\S]*state\.graphRequest\?\.status === value[\s\S]*document\.querySelector\(fieldSelector\)\?\.value === value/);
+  assert.match(graphField, /await dispatchAndSettle\(alternate\)[\s\S]*finally[\s\S]*await dispatchAndSettle\(original\)/);
 });
 
 test('Plugin lifecycle reconstruction reloads the complete owned workbench catalog before inventory assertion', () => {
@@ -1740,7 +1787,7 @@ test('generic native cancellation is recovered only after the complete exact nat
   assert.deepEqual(partitionExpectedFaultDiagnostics([diagnostic], null, null, false, null, { enterprise, projects: { observation: { ...projects.observation, completed: false } }, cleanup }), { retained: [diagnostic], recovered: [] });
 });
 
-test('R115 final mechanics stay in the content realm and settle physical graph predecessors', () => {
+test('R115 final mechanics stay in the content realm and restore graph field values', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   const prepare = source.slice(source.indexOf('async function prepareInstalledControl'), source.indexOf('async function revealInstalledControl'));
   assert.match(prepare, /requestDispatched = true[\s\S]*installed-graph-physical-predecessor-settlement-timeout/);
@@ -1748,17 +1795,19 @@ test('R115 final mechanics stay in the content realm and settle physical graph p
   assert.match(navigation, /frameHost\.evaluateContent[\s\S]*state\.advancedOpen = true[\s\S]*state\.active === target/);
   const graphField = source.slice(source.indexOf('async function exerciseInstalledExactGraphField'), source.indexOf('async function probeInstalledControls'));
   assert.match(source, /INSTALLED_EXACT_GRAPH_FIELDS[\s\S]*graphDirection[\s\S]*graphTarget/);
-  assert.match(graphField, /frameHost\.evaluateContent[\s\S]*target\.dispatchEvent[\s\S]*const restored = document\.querySelector\(spec\.selector\)[\s\S]*restored: Boolean\(restored && restored\.value === original && stateRestored\)/);
+  assert.match(graphField, /frameHost\.evaluateContent[\s\S]*target\.dispatchEvent[\s\S]*const restored = document\.querySelector\(spec\.selector\)[\s\S]*restored: Boolean\(restored && restored\.value === original\)/);
   const probe = source.slice(source.indexOf('async function probeInstalledControls'), source.indexOf('function installedSidebarSelector'));
   assert.match(probe, /installedExactGraphField\(control\)[\s\S]*exerciseInstalledExactGraphField/);
 });
 
-test('R116 final graph fields atomically enter their real analysis mode before reversible input', () => {
+test('R116 final graph fields use real analysis modes and status changes settle before restoration', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   const graphField = source.slice(source.indexOf('async function exerciseInstalledExactGraphField'), source.indexOf('async function probeInstalledControls'));
-  assert.match(graphField, /endsWith\('\.graphTarget'\) \? 'path'[\s\S]*endsWith\('\.graphStatus'\) \? 'full' : 'dependencies'/);
-  assert.match(graphField, /data-graph-analysis[\s\S]*analysis\.dispatchEvent\(new Event\('change'[\s\S]*document\.querySelector\(spec\.selector\)/);
-  assert.ok(graphField.indexOf('analysis.dispatchEvent') < graphField.indexOf('document.querySelector(spec.selector)'));
+  assert.match(graphField, /endsWith\('\.graphTarget'\) \? 'path' : 'dependencies'/);
+  assert.match(graphField, /if \(isStatusFilter\)[\s\S]*await dispatchAndSettle\(alternate\)[\s\S]*await dispatchAndSettle\(original\)/);
+  assert.match(graphField, /const analysis = document\.querySelector\('\[data-graph-analysis\]'\)[\s\S]*analysis\.dispatchEvent\(new Event\('change'/);
+  const modePreparation = graphField.slice(graphField.indexOf('const result = await frameHost.evaluateContent(spec =>'));
+  assert.ok(modePreparation.indexOf('analysis.dispatchEvent') < modePreparation.indexOf('document.querySelector(spec.selector)'));
 });
 
 test('R117 depth menu owns focused predecessor and advanced fixture verifies state instead of transient submenu DOM', () => {
@@ -1921,9 +1970,13 @@ test('workbench cleanup command waits for the dashboard ready handshake before p
   const commandStart = source.indexOf("vscode.commands.registerCommand('pacifyX.openCleanupManager'");
   const command = source.slice(commandStart, source.indexOf("vscode.commands.registerCommand('pacifyX.continueWithCodex'", commandStart));
   assert.match(open, /dashboardReadyByPanel\.set\(dashboardPanel, createdDashboardReady\)/);
-  assert.match(open, /case 'ready':[\s\S]*settleDashboardReady\?\.\(true\)/);
   assert.match(open, /dashboardReadyByPanel\.delete\(dashboardPanel\)/);
-  assert.match(open, /Promise\.race\(\[[\s\S]*dashboardReadyPromise[\s\S]*15_000/);
+  assert.match(open, /case 'ready':[\s\S]*settleDashboardReady\?\.\('ready'\)/);
+  assert.match(open, /onDidDispose\(\(\) => \{[\s\S]*settleDashboardReady\?\.\('disposed'\)/);
+  assert.match(open, /Promise\.race\(\[[\s\S]*dashboardReadyPromise[\s\S]*resolve\('timeout'\), 15_000/);
+  assert.match(open, /\.finally\(\(\) => clearTimeout\(readyTimer\)\)[\s\S]*if \(readyState === 'disposed'\) return/);
+  assert.match(open, /if \(readyState === 'disposed'\) return;[\s\S]*readyState !== 'ready' \|\| panel !== targetPanel/);
+  assert.match(open, /dashboard webview did not become ready within 15 seconds/);
   assert.ok(open.indexOf('if (dashboardReadyPromise)') < open.lastIndexOf('await publishSnapshot(true, targetPanel?.webview)'));
   assert.match(command, /await openDashboard\(\); await publishCleanupCandidates\(\);/);
 });
@@ -2425,6 +2478,10 @@ test('read-only skill query profile separates invalid, pending, empty, result, a
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   const profile = source.slice(source.indexOf('async function runInstalledSkillQueryProfile'), source.indexOf('async function runInstalledCatalogPaginationProfile'));
   assert.match(profile, /settleInstalledSurfaceControl\(frameHost, \{[\s\S]*surface: 'skillsTools',[\s\S]*capability: 'skills',[\s\S]*selector: '\[data-action="skillSemanticQuery"\]\[data-domain="px-standard"\]'[\s\S]*stableSamplesRequired: 2/);
+  assert.match(profile, /selector: '\[data-action="submitSkillQuery"\]'[\s\S]*stableSamplesRequired: 2,[\s\S]*preserveModal: true/);
+  assert.match(profile, /const input = document\?\.querySelector\('#skill-query-goal'\);[\s\S]*const submit = document\?\.querySelector\('\[data-action="submitSkillQuery"\]'\);[\s\S]*if \(!input \|\| !submit \|\| submit\.disabled \|\| !submit\.closest\('\.control-modal'\)\) return false;[\s\S]*submit\.click\(\)/);
+  assert.match(profile, /if \(!opened\) throw new Error\('skill-query-open-control-disappeared'\)/);
+  assert.match(profile, /if \(!dispatched\) throw new Error\('skill-query-submit-controls-disappeared'\)/);
 });
 
 test('read-only catalog pagination binds real offsets and restores the normal query denominator', () => {
@@ -2773,6 +2830,10 @@ test('owned Knowledge Graph profile binds saved-view actions and authoritative g
   const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'run-operational-ui-walk.js'), 'utf8');
   const profile = source.slice(source.indexOf('async function runInstalledKnowledgeGraphProfile'), source.indexOf('function systemProjectionIdentity'));
   assert.match(profile, /restartInstalledDashboardWebview/);
+  const baselineResult = profile.indexOf('const baseline = await waitForGraph');
+  const saveRouteSettlement = profile.indexOf("selector: '[data-action=\"graphSaveView\"]'");
+  const saveAction = profile.indexOf("clickWhenKnowledgeControlReady(frameHost, '[data-action=\"graphSaveView\"]'");
+  assert.ok(baselineResult >= 0 && saveRouteSettlement > baselineResult && saveAction > saveRouteSettlement);
   assert.match(profile, /clickWhenKnowledgeControlReady\(frameHost, '\[data-action="graphSaveView"\]'/);
   assert.match(profile, /selector: '#graph-view-name'[\s\S]*preserveModal: true/);
   assert.doesNotMatch(profile, /reloadInstalledDashboardWebview/);
@@ -4032,6 +4093,9 @@ test('post-plugin baseline and builder work emit bounded profile progress', () =
   assert.match(timed, /\{ resetBaseline = true, timeoutMs = null \}/);
   assert.match(timed, /boundedOwnedUiAction\(execute, timeoutMs, `installed-profile-\$\{profile\}`\)/);
   assert.match(builder, /settleInstalledSurfaceControl\(frameHost, \{[\s\S]*surface,[\s\S]*selector: openSelector,[\s\S]*scopeTarget: surface,[\s\S]*scope: 'core',[\s\S]*stableSamplesRequired: 2/);
+  assert.match(builder, /const openDeadline = Date\.now\(\) \+ 5_000;[\s\S]*while \(!openDispatched && Date\.now\(\) < openDeadline\)/);
+  assert.match(builder, /openDispatched = await frameHost\.evaluate\([\s\S]*control\.click\(\);[\s\S]*return true;/);
+  assert.match(builder, /if \(!openDispatched\) throw new Error\(`\$\{kind\}-studio-open-control-disappeared-after-settlement/);
   const builders = source.slice(source.indexOf('// Builder inspection uses shared webview working-draft state.'), source.indexOf('// Stateful profiles intentionally precede the general probe.'));
   assert.match(builders, /timedProfile\([\s\S]*'pre-builder-baseline'[\s\S]*resetBaseline: false, timeoutMs: 30_000/);
   assert.match(builders, /`\$\{kind\}-builder`[\s\S]*inspectStudioBuilder[\s\S]*resetBaseline: false, timeoutMs: 120_000/);

@@ -2,6 +2,7 @@
 
 const path = require('node:path');
 const crypto = require('node:crypto');
+const fs = require('node:fs');
 const { MESSAGE_VERSION, ASSET_PROTOCOL, validateInbound, validateOutbound } = require('./agentConsoleMessages');
 const { buildAgentConsoleProjection } = require('./agentConsoleProjection');
 
@@ -36,6 +37,8 @@ class AgentConsoleViewProvider {
   _editorRefs() {
     const refs = []; const editor = this.vscode.window.activeTextEditor;
     if (editor?.document?.uri?.scheme === 'file') {
+      const projectRoot = this.vscode.workspace.workspaceFolders?.[0]?.uri?.fsPath;
+      if (!withinProject(editor.document.uri.fsPath, projectRoot)) return refs;
       const selected = editor.document.getText(editor.selection); if (selected) refs.push({ refId: 'active-selection', kind: 'editor-selection', label: `Selection: ${path.basename(editor.document.uri.fsPath)}`, source: editor.document.uri.fsPath, content: selected.slice(0, 50000), authority: 'active-editor' });
       else refs.push({ refId: 'active-file-ref', kind: 'editor-file', label: `Active file: ${path.basename(editor.document.uri.fsPath)}`, source: editor.document.uri.fsPath, content: null, authority: 'active-editor' });
     }
@@ -54,4 +57,15 @@ class AgentConsoleViewProvider {
   dispose() { for (const d of this.disposables.splice(0)) d?.dispose?.(); this.view = null; }
 }
 
-module.exports = { AgentConsoleViewProvider };
+function withinProject(file, root) {
+  if (!file || !root) return false;
+  try {
+    const physicalFile = fs.realpathSync.native(file);
+    const physicalRoot = fs.realpathSync.native(root);
+    if (!fs.statSync(physicalRoot).isDirectory() || !fs.statSync(physicalFile).isFile()) return false;
+    const relative = path.relative(physicalRoot, physicalFile);
+    return relative === '' || (relative !== '..' && !relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative));
+  } catch { return false; }
+}
+
+module.exports = { AgentConsoleViewProvider, withinProject };

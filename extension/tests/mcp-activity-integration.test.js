@@ -22,10 +22,11 @@ function harness(overrides = {}) {
 }
 
 const readOnly = { annotations: { readOnlyHint: true } };
+const writeTool = { annotations: { readOnlyHint: false } };
 
 test('MCP middleware emits canonical-contract start and completion for one correlation', async () => {
   const { integration, records } = harness();
-  const wrapped = integration.wrapTool('fixture_read', readOnly, async () => ({ ok: true, secret: 'not retained' }));
+  const wrapped = integration.wrapTool('fixture_write', writeTool, async () => ({ ok: true, secret: 'not retained' }));
   assert.deepEqual(await wrapped({ actor_id: 'agent-a', session_id: 'session-a', harness: 'test', accountable_owner: 'owner-a', query: 'private' }), { ok: true, secret: 'not retained' });
   assert.equal(records.length, 2);
   const events = records.map(row => row[2]);
@@ -40,7 +41,7 @@ test('MCP middleware emits canonical-contract start and completion for one corre
 
 test('error lifecycle is emitted without exception text or content hash', async () => {
   const { integration, records } = harness();
-  const wrapped = integration.wrapTool('fixture_error', readOnly, async () => { throw new Error('credential-value'); });
+  const wrapped = integration.wrapTool('fixture_error', writeTool, async () => { throw new Error('credential-value'); });
   await assert.rejects(() => wrapped({}), /credential-value/);
   assert.deepEqual(records.map(row => row[2].status), ['started', 'failed']);
   assert.equal(JSON.stringify(records).includes('credential-value'), false);
@@ -49,7 +50,7 @@ test('error lifecycle is emitted without exception text or content hash', async 
 
 test('missing identity is explicitly unattested and reported correlation is only a parent', async () => {
   const { integration, records } = harness();
-  const wrapped = integration.wrapTool('pacify_activity_emit', readOnly, async () => 1);
+  const wrapped = integration.wrapTool('pacify_activity_emit', writeTool, async () => 1);
   await wrapped({ correlation_id: 'caller-claims-this' });
   const metadata = records[0][2].metadata;
   assert.equal(metadata.identity_attestation, 'unattested');
@@ -67,13 +68,25 @@ test('spoofable identity is labeled self-asserted, never verified', () => {
 test('instrumentation drops degrade health but do not replace tool outcome', async () => {
   const drops = [];
   const { integration } = harness({ recordActivity: () => { throw new Error('ledger unavailable'); }, onDrop: value => drops.push(value) });
-  const wrapped = integration.wrapTool('fixture_drop', readOnly, async () => 42);
+  const wrapped = integration.wrapTool('fixture_drop', writeTool, async () => 42);
   assert.equal(await wrapped({}), 42);
   const health = integration.health();
   assert.equal(health.status, 'degraded');
   assert.equal(health.dropped_events, 2);
   assert.equal(health.last_drop_type, 'Error');
   assert.equal(drops.length, 2);
+});
+
+test('read-only MCP calls retain no activity events or project state', async () => {
+  const { integration, records } = harness({ recordActivity: () => { throw new Error('must not persist a read'); } });
+  const wrapped = integration.wrapTool('fixture_read', readOnly, async () => ({ ok: true }));
+  assert.deepEqual(await wrapped({ actor_id: 'self-asserted', query: 'private' }), { ok: true });
+  assert.deepEqual(records, []);
+  const health = integration.health();
+  assert.equal(health.observed_read_events, 2);
+  assert.equal(health.emitted_events, 0);
+  assert.equal(health.dropped_events, 0);
+  assert.match(health.limitations.join(' '), /process memory only/);
 });
 
 test('every registered tool is unique and appears in health inventory', () => {

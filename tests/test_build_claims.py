@@ -80,7 +80,7 @@ def test_checked_in_build_claims_and_readme_are_current() -> None:
     report = validate_build_claims(ROOT)
     assert report["valid"] is True, report["errors"]
     claims = report["claims"]
-    assert claims["version"] == "0.7.0"
+    assert claims["version"] == "0.9.0"
     assert claims == expected_build_claims(ROOT)
 
 

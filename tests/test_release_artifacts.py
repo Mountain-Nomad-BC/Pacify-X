@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 import shutil
 import tempfile
@@ -14,10 +15,13 @@ from runtime.release_artifacts import (
 )
 from runtime.release_campaign import (
     ReleaseCampaignBlocked,
+    _sha,
+    _validate,
     apply_release_identity,
     claim_release_stage,
     clear_release_identity,
     finish_release_stage,
+    release_orphaned_release_stage_claim,
     rewind_consumed_cleared_release_campaign_repair,
     rewind_failed_release_campaign_repair,
     rewind_invalid_active_release_campaign_repair,
@@ -1060,3 +1064,193 @@ def test_materialization_write_failure_retains_uncommitted_path(
     assert not any(
         row["path"] == "runtime/module.py" for row in receipt["copied_records"]
     )
+def _orphanable_campaign() -> dict:
+    """One active campaign whose first stage is claimed and whose source drifted.
+
+    Mirrors the real shape of an invalidated run: state `active`, one bound claim on a
+    leading stage, and an identity whose recorded source digest no longer matches the
+    tree.
+    """
+
+    stages = {
+        name: {"status": "pending", "claim_id": None}
+        for name in (
+            "sections",
+            "full_profile",
+            "validate",
+            "package",
+            "install",
+            "installed_operational",
+            "certify",
+        )
+    }
+    claim_id = "release-stage:example-campaign:sections:deadbeef"
+    stages["sections"] = {"status": "claimed", "claim_id": claim_id}
+    identity = {
+        "schema_version": "px.release-identity-kernel/2.0",
+        "campaign_id": "example-campaign",
+        "repair_campaign_id": "example-repair",
+        "release_version": "0.0.0",
+        "extension_version": "0.0.0",
+        # The recorded source digest cannot match the live tree, which is exactly the
+        # condition that strands the claim.
+        "source_product_digest": "0" * 64,
+        "source_harness_digest": "0" * 64,
+        "source_manifest_sha256": "0" * 64,
+        "source_file_count": 1,
+        "release_policy_sha256": "0" * 64,
+    }
+    # The kernel binds its own canonical hash, so the fixture must be self-consistent.
+    identity["release_identity_sha256"] = _sha(identity)
+    return {
+        "schema_version": "px.release-campaign/1.0",
+        "campaign_id": "example-campaign",
+        "repair_campaign_id": "example-repair",
+        "state": "active",
+        "cleared_at": "2026-01-01T00:00:00Z",
+        "applied_at": "2026-01-01T00:01:00Z",
+        "apply_count": 1,
+        "identity": identity,
+        "active_claim": {
+            "stage": "sections",
+            "claim_id": claim_id,
+            "claimed_at": "2026-01-01T00:02:00Z",
+        },
+        "stages": stages,
+    }
+
+
+def _claimed_campaign_tree() -> Path:
+    """A tree whose recorded identity cannot match its live source."""
+
+    root = _minimal_tree()
+    state_dir = root / ".engineering-bootstrap/processing-order"
+    state_dir.mkdir(parents=True)
+    (state_dir / "release-identity.json").write_text(
+        json.dumps(_orphanable_campaign(), indent=2) + "\n", encoding="utf-8"
+    )
+    (state_dir / "repair-campaign.json").write_text(
+        json.dumps(
+            {
+                "schema_version": "px.repair-campaign/1.0",
+                "campaign_id": "example-repair",
+                "phase": "revision_reconciled",
+                "intake_open": False,
+                "unresolved": [],
+            },
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    return root
+
+
+def test_orphaned_claim_release_returns_the_stage_to_pending_not_passed() -> None:
+    """Releasing an abandoned claim must never fabricate completed work."""
+
+    root = _claimed_campaign_tree()
+    result = release_orphaned_release_stage_claim(root)
+    campaign = json.loads(
+        (root / ".engineering-bootstrap/processing-order/release-identity.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert result["valid"]
+    assert campaign["stages"]["sections"]["status"] == "pending"
+    assert campaign["active_claim"] is None
+    # The stage is not inherited as complete, so certification cannot resume from it.
+    statuses = [stage["status"] for stage in campaign["stages"].values()]
+    assert "passed" not in statuses
+    assert "claimed" not in statuses
+    assert "failed" not in statuses
+
+
+def test_orphaned_claim_release_preserves_the_abandoned_claim_in_history() -> None:
+    """The released claim and its reason must survive as campaign evidence."""
+
+    root = _claimed_campaign_tree()
+    original = json.loads(
+        (root / ".engineering-bootstrap/processing-order/release-identity.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    expected_claim = original["active_claim"]["claim_id"]
+    expected_identity = original["identity"]
+
+    release_orphaned_release_stage_claim(root)
+    campaign = json.loads(
+        (root / ".engineering-bootstrap/processing-order/release-identity.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    history = campaign["released_claims"]
+    assert len(history) == 1
+    assert history[0]["stage"] == "sections"
+    assert history[0]["claim_id"] == expected_claim
+    assert history[0]["reason"]
+    assert history[0]["stage_disposition"] == "pending"
+    # The historical identity is untouched, so the campaign stays truthful.
+    assert campaign["identity"] == expected_identity
+    assert campaign["apply_count"] == original["apply_count"]
+    assert campaign["state"] == "active"
+
+
+def test_orphaned_claim_release_requires_a_bound_single_claim() -> None:
+    """A campaign without exactly one bound claim is refused."""
+
+    root = _claimed_campaign_tree()
+    state = root / ".engineering-bootstrap/processing-order/release-identity.json"
+    campaign = json.loads(state.read_text(encoding="utf-8"))
+    campaign["active_claim"] = None
+    campaign["stages"]["sections"] = {"status": "pending", "claim_id": None}
+    state.write_text(json.dumps(campaign, indent=2) + "\n", encoding="utf-8")
+
+    with pytest.raises(ReleaseCampaignBlocked):
+        release_orphaned_release_stage_claim(root)
+
+
+def test_orphaned_claim_release_refuses_a_mismatched_claim_binding() -> None:
+    """The claim must name the stage it is bound to."""
+
+    root = _claimed_campaign_tree()
+    state = root / ".engineering-bootstrap/processing-order/release-identity.json"
+    campaign = json.loads(state.read_text(encoding="utf-8"))
+    campaign["active_claim"]["stage"] = "certify"
+    state.write_text(json.dumps(campaign, indent=2) + "\n", encoding="utf-8")
+
+    with pytest.raises(ReleaseCampaignBlocked):
+        release_orphaned_release_stage_claim(root)
+
+
+def test_orphaned_claim_release_does_not_advance_the_repair_campaign() -> None:
+    """A released claim still requires a fresh freeze before any successor."""
+
+    root = _claimed_campaign_tree()
+    before = json.loads(
+        (root / ".engineering-bootstrap/processing-order/repair-campaign.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    release_orphaned_release_stage_claim(root)
+    after = json.loads(
+        (root / ".engineering-bootstrap/processing-order/repair-campaign.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert after == before
+    assert after["phase"] != "repair_frozen"
+
+
+def test_released_campaign_state_validates() -> None:
+    """The state produced by the release must satisfy the campaign validator."""
+
+    root = _claimed_campaign_tree()
+    release_orphaned_release_stage_claim(root)
+    campaign = json.loads(
+        (root / ".engineering-bootstrap/processing-order/release-identity.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    # `_validate` is the campaign invariant oracle; it must accept the result.
+    _validate(campaign)
