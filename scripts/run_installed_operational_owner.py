@@ -8,6 +8,7 @@ from datetime import datetime, timezone
 import hashlib
 import json
 import os
+import shlex
 from pathlib import Path
 import signal
 import subprocess
@@ -481,13 +482,15 @@ def _validate_commands(config: Config) -> None:
     if ubuntu[:6] != ("wsl.exe", "-d", "Ubuntu", "--", "bash", "-lc") or len(ubuntu) != 7:
         raise OwnerBlocked("Ubuntu smoke command is not the canonical WSL wrapper")
     shell = ubuntu[6]
+    # Match the builder exactly: paths are emitted through shlex.quote, which
+    # leaves special-char-free WSL paths unquoted and quotes anything else.
     ubuntu_markers = (
         "node extension/scripts/run-installed-vsix-smoke.js",
-        f"--engine-root '{_wsl_path(config.root)}'",
-        f"--vsix '{_wsl_path(config.artifact)}'",
-        f"--expected-sha256 '{config.artifact_sha256}'",
-        f"--receipt '{_wsl_path(config.ubuntu.receipt)}'",
-        f"--lifecycle-receipt '{_wsl_path(config.ubuntu.lifecycle)}'",
+        f"--engine-root {shlex.quote(_wsl_path(config.root))}",
+        f"--vsix {shlex.quote(_wsl_path(config.artifact))}",
+        f"--expected-sha256 {shlex.quote(config.artifact_sha256)}",
+        f"--receipt {shlex.quote(_wsl_path(config.ubuntu.receipt))}",
+        f"--lifecycle-receipt {shlex.quote(_wsl_path(config.ubuntu.lifecycle))}",
     )
     if any(marker not in shell for marker in ubuntu_markers):
         raise OwnerBlocked("Ubuntu smoke command is not exactly config-bound")

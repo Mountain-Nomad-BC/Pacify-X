@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import shlex
 from pathlib import Path
 
 import pytest
@@ -185,11 +186,11 @@ def _config(tmp_path: Path) -> Config:
                 " ".join(
                     (
                         "node extension/scripts/run-installed-vsix-smoke.js",
-                        f"--engine-root '{root_wsl}'",
-                        f"--vsix '{artifact_wsl}'",
-                        f"--expected-sha256 '{artifact_binding['sha256']}'",
-                        f"--receipt '{receipt_wsl}'",
-                        f"--lifecycle-receipt '{lifecycle_wsl}'",
+                        f"--engine-root {shlex.quote(root_wsl)}",
+                        f"--vsix {shlex.quote(artifact_wsl)}",
+                        f"--expected-sha256 {shlex.quote(artifact_binding['sha256'])}",
+                        f"--receipt {shlex.quote(receipt_wsl)}",
+                        f"--lifecycle-receipt {shlex.quote(lifecycle_wsl)}",
                     )
                 ),
             )
