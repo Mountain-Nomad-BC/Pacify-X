@@ -1,7 +1,7 @@
 {
   "schema_version": "px.atlas-node-shards/1",
   "partition": "first lowercase hexadecimal digit of SHA-256(canonical node ID)",
-  "records": 6179,
+  "records": 6181,
   "shards": [
     {
       "path": "data/node_shards/nodes-00.jsonl",
@@ -22,28 +22,28 @@
       "partition": "2",
       "records": 413,
       "bytes": 295384,
-      "sha256": "e4160d23c35c7f21ac0dc5ba6db0cbf9ff9fd87649318f12fff6a4f3f6865440"
+      "sha256": "52ae2c8004d27320a6efb889644bc05bf6eb9252a469cd86344baa3f80ac6bb7"
     },
     {
       "path": "data/node_shards/nodes-03.jsonl",
       "partition": "3",
       "records": 386,
       "bytes": 258639,
-      "sha256": "a3788570d92514e08bbd014b9721125c5a08f380f4e2114096babc784a30d999"
+      "sha256": "985586e53b380ac18e9c5cbd6f439cd99b20794a7ae16527eccb2d48711d9573"
     },
     {
       "path": "data/node_shards/nodes-04.jsonl",
       "partition": "4",
       "records": 385,
       "bytes": 255856,
-      "sha256": "d5eb5fc130d72e48df7d9441caaeb0bfb21d174ec8b125d5f40fce1f658579c0"
+      "sha256": "aedab1b7733e2b46de6c942d78d1023db42bdf75f69953516851fe0192ccb8e6"
     },
     {
       "path": "data/node_shards/nodes-05.jsonl",
       "partition": "5",
       "records": 424,
       "bytes": 292135,
-      "sha256": "40f3516b686a255be95214ba19f4437983bc100f5bffaf3a827d4f6cdf781b3f"
+      "sha256": "0605525a3b2b12ca135a4e46b3437ab7f37be28568cad090aab5604ef56044dc"
     },
     {
       "path": "data/node_shards/nodes-06.jsonl",
@@ -55,9 +55,9 @@
     {
       "path": "data/node_shards/nodes-07.jsonl",
       "partition": "7",
-      "records": 393,
-      "bytes": 271556,
-      "sha256": "bc5f16326001e0255776c02e119f5366e3d8a06c42b915bd8505a000c8949d23"
+      "records": 394,
+      "bytes": 272120,
+      "sha256": "8713d66ae02b5130b5970b31c131c00d8ed5336e91447eb1bd85cbd803483f0d"
     },
     {
       "path": "data/node_shards/nodes-08.jsonl",
@@ -99,21 +99,21 @@
       "partition": "d",
       "records": 381,
       "bytes": 272668,
-      "sha256": "e6462717eb41b26e1b39e5ab8ab466d4e6ab676e399051725a197a4eb5af5ae3"
+      "sha256": "986c10988583dee6d9200654edf0ffa02bbe1a82117414af5877cf2ece0fb413"
     },
     {
       "path": "data/node_shards/nodes-0e.jsonl",
       "partition": "e",
-      "records": 378,
-      "bytes": 265594,
-      "sha256": "11b3a0034a0b71606176eb51c829848ef665940f612668e544e913b257d1c771"
+      "records": 379,
+      "bytes": 266157,
+      "sha256": "bcc4459d4053470374218f3ce86ed3ee2a9c69ffc70e4070e0cf8d85d26a87c6"
     },
     {
       "path": "data/node_shards/nodes-0f.jsonl",
       "partition": "f",
       "records": 338,
       "bytes": 245027,
-      "sha256": "195e35c7acdf3d853cc898e8959b597713b3fbfad5ee367c3e9bffb81c20d754"
+      "sha256": "393f70a88c10ec73c40906a2c0c4beb268750f6b335d28650e824b14e9b1eb76"
     }
   ]
 }

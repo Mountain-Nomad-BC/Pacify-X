@@ -88,7 +88,7 @@ def _inspect_archive(
     required = {
         "pyproject.toml",
         "runtime/cli.py",
-        "registry/operational_gap_ledger.jsonl",
+        "runtime/operational_gap_ledger.py",
         ".engineering-bootstrap/project-registry.json",
     }
     missing = sorted(required - set(members))
