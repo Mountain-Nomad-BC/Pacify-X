@@ -1,6 +1,7 @@
 """Build the pxos103 release-candidate automation config for Pacify-X 0.9.0."""
 import json
 from pathlib import Path
+import tempfile
 
 PY = "C:/Python314/python.exe"
 ART = "extension/dist/pacify-x-vscode-0.9.0.vsix"
@@ -8,7 +9,8 @@ SHA = "97f491042d7de73397bd6e597f546d70b310303f31870babf752e19a3e402859"
 SIZE = 4362109
 MTIME = 1790557945653874800
 CAND = "pacify-x-certification-20260928-r103-0.9.0"
-ROOT_DOC = "C:/Users/Ben/Documents/bootstrap_project/Pacify-X"
+ROOT_DOC = Path(__file__).resolve().parents[1].as_posix()
+ROOT_WSL = f"/mnt/{ROOT_DOC[0].lower()}{ROOT_DOC[2:]}" if ROOT_DOC[1:2] == ":" else ROOT_DOC
 
 
 def owner(*a):
@@ -51,13 +53,13 @@ installed_cmd = owner(
     "--windows-lifecycle-receipt", "evidence/release/pxos103-installed/windows-lifecycle.json",
     "--ubuntu-argv-json", json.dumps([
         "wsl.exe", "-d", "Ubuntu", "--", "bash", "-lc",
-        "cd /mnt/c/Users/Ben/Documents/bootstrap_project/Pacify-X"
-        " && TMPDIR=/home/ben node extension/scripts/run-installed-vsix-smoke.js"
-        " --engine-root /mnt/c/Users/Ben/Documents/bootstrap_project/Pacify-X"
-        " --vsix /mnt/c/Users/Ben/Documents/bootstrap_project/Pacify-X/" + ART +
+        "cd " + ROOT_WSL +
+        " && TMPDIR=/tmp node extension/scripts/run-installed-vsix-smoke.js"
+        " --engine-root " + ROOT_WSL +
+        " --vsix " + ROOT_WSL + "/" + ART +
         " --expected-sha256 " + SHA +
-        " --receipt /mnt/c/Users/Ben/Documents/bootstrap_project/Pacify-X/evidence/release/pxos103-installed/ubuntu-smoke.json"
-        " --lifecycle-receipt /mnt/c/Users/Ben/Documents/bootstrap_project/Pacify-X/evidence/release/pxos103-installed/ubuntu-lifecycle.json"
+        " --receipt " + ROOT_WSL + "/evidence/release/pxos103-installed/ubuntu-smoke.json"
+        " --lifecycle-receipt " + ROOT_WSL + "/evidence/release/pxos103-installed/ubuntu-lifecycle.json"
     ]),
     "--ubuntu-log", "evidence/release/pxos103-installed/ubuntu.log",
     "--ubuntu-receipt", "evidence/release/pxos103-installed/ubuntu-smoke.json",
@@ -163,8 +165,8 @@ config = {
         "finalize": {"commands": [
             owner("-m", "runtime.cli", "--root", ".", "release", "finalize",
                   "--release", "0.9.0",
-                  "--wheelhouse", "C:/Users/Ben/AppData/Local/Temp/pacify-x-release-wheelhouse-0.9.0-pxos103",
-                  "--artifact-dir", "C:/Users/Ben/AppData/Local/Temp/pacify-x-release-artifacts-0.9.0-pxos103",
+                  "--wheelhouse", str(Path(tempfile.gettempdir()) / "pacify-x-release-wheelhouse-0.9.0-pxos103"),
+                  "--artifact-dir", str(Path(tempfile.gettempdir()) / "pacify-x-release-artifacts-0.9.0-pxos103"),
                   "--signing-key", ".git/pacify-x-release-key-2026")
         ]},
     },

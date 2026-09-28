@@ -32,7 +32,7 @@ def _archive_builder(*, stderr_bytes: int = 0):
     required = [
         "pyproject.toml",
         "runtime/cli.py",
-        "registry/operational_gap_ledger.jsonl",
+        "runtime/operational_gap_ledger.py",
         ".engineering-bootstrap/project-registry.json",
     ]
 

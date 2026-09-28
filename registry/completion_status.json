@@ -2,14 +2,14 @@
   "schema_version": "px.completion-status/1.4",
   "authority": "generated projection; current operational and instruction ledgers supersede historical audit acceptance as completion authority",
   "projection_metadata": {
-    "generated_at": "2026-09-27T22:07:53.594210Z",
-    "source_revision": "dc5fdda1d5afde4e1a7959cf21041331f219ac1ec634b8c400f5a9a6f843ea0c",
+    "generated_at": "2026-09-28T17:31:29.000514Z",
+    "source_revision": "520d13155e96cc54d5b7d0f7ecb8200daa163e53aaa22fe59de508bc2841d3cc",
     "authority_level": "non-certifying-current-state-projection",
     "marker": "current_at_generation",
     "engine_identity": {
-      "marker_file_sha256": "234cbf77d0d7c79d1bd42de6d07e397154be9e04457b25b70c273126426e1059",
-      "tree_sha256": "a1eea7e625365091e8679d4bb835071ae7aafc844456aa76e9b753c2a97187c9",
-      "file_total": 5924
+      "marker_file_sha256": "01871ffedcfaa15a99a7126032ff45df8c17dc0a91ec13d314598aebf092c2b3",
+      "tree_sha256": "319362a71840235569a5bed441b1526c6140a4ca7e67babd5d275037b1dcaab9",
+      "file_total": 5961
     },
     "invalidation_conditions": [
       "any source-byte change",
@@ -57,7 +57,7 @@
     },
     {
       "path": "registry/operational_gap_ledger.head.json",
-      "sha256": "5c1da5ad74102836222278cde979979f46a4b82e05ed6fef09aef556e724fed3"
+      "sha256": "30c70b42e912bdc7c1d7965e5cf352383cd770e558aa60cfc3d21fa9c859a267"
     },
     {
       "path": "registry/current_evidence_index.json",
@@ -99,8 +99,8 @@
   "current_operational_gap_ledger": {
     "valid": true,
     "ledger_id": "PX-OPERATIONAL-GAPS-20260816",
-    "event_count": 35965,
-    "head_event_sha256": "dc5fdda1d5afde4e1a7959cf21041331f219ac1ec634b8c400f5a9a6f843ea0c",
+    "event_count": 36016,
+    "head_event_sha256": "520d13155e96cc54d5b7d0f7ecb8200daa163e53aaa22fe59de508bc2841d3cc",
     "critical_high_blocker_count": 16,
     "critical_high_blocker_ids": [
       "PX-OS-087",
@@ -345,7 +345,7 @@
   "current_gates": {
     "valid": false,
     "blocking_ids": [
-      "group:release-audit"
+      "group:core-n-s"
     ]
   },
   "certification_freshness": {
@@ -355,7 +355,7 @@
     "evidence_identity_evaluated": false,
     "evidence_receipts_current": false,
     "failed_receipt_ids": [
-      "group:release-audit"
+      "group:core-n-s"
     ],
     "stale_receipt_ids": [],
     "dependency_stale_receipt_ids": []
