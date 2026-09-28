@@ -2850,6 +2850,20 @@
       "violations": []
     },
     {
+      "bytes": 7818,
+      "path": "scripts/build_pxos102_automation_config.py",
+      "scan_state": "verified",
+      "sha256": "81913ecc09c304928f198d8175f3a534cb80f19e85cf50e0f3eac23112693ec3",
+      "violations": []
+    },
+    {
+      "bytes": 7821,
+      "path": "scripts/build_pxos103_automation_config.py",
+      "scan_state": "verified",
+      "sha256": "2786d3f8bcb8a221b21778ffeb99fc23b73398e249820c960ccb7668242ff54e",
+      "violations": []
+    },
+    {
       "bytes": 8063,
       "path": "scripts/build_python_dependency_ownership.py",
       "scan_state": "verified",
@@ -3499,5 +3513,5 @@
     "violations": []
   },
   "schema_version": "px.provider-route-index/1.3",
-  "verified_file_count": 498
+  "verified_file_count": 500
 }

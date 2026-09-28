@@ -1,4 +1,4 @@
-﻿"""Build the pxos103 release-candidate automation config for Pacify-X 0.9.0."""
+"""Build the pxos103 release-candidate automation config for Pacify-X 0.9.0."""
 import json
 from pathlib import Path
 

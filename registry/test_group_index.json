@@ -5448,6 +5448,20 @@
       "index_state": "verified",
       "sha256": "9aefa69b1b8092b17fec52b9174fe7c9079f1996cbb15610eebccf6f20b337ec"
     },
+    "scripts/build_pxos102_automation_config.py": {
+      "dependencies": [
+        "conftest.py"
+      ],
+      "index_state": "verified",
+      "sha256": "81913ecc09c304928f198d8175f3a534cb80f19e85cf50e0f3eac23112693ec3"
+    },
+    "scripts/build_pxos103_automation_config.py": {
+      "dependencies": [
+        "conftest.py"
+      ],
+      "index_state": "verified",
+      "sha256": "2786d3f8bcb8a221b21778ffeb99fc23b73398e249820c960ccb7668242ff54e"
+    },
     "scripts/build_python_dependency_ownership.py": {
       "dependencies": [
         "conftest.py",
@@ -11875,7 +11889,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "exact-installed",
-      "input_sha256": "bf091edf1c518c5e46bf512803fae419b9f601db902c4eea2cbb12ff62fe894a",
+      "input_sha256": "a95e70be4a6268f4cd6170b7f672a1f04fae09b0d8c817e7919f892bc8e064e3",
       "inputs": [
         "README.md",
         "conftest.py",
@@ -12325,7 +12339,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "release-build",
-      "input_sha256": "940194ae3b486d41d97587100bdd17f370a9626a2bd5874b29ba4981da902655",
+      "input_sha256": "7831a87fead88abb9f92aab32562d7a80a52f0699c76e114bb13c7723619aff0",
       "inputs": [
         ".github/workflows/release.yml",
         "README.md",
@@ -12669,7 +12683,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "release-audit",
-      "input_sha256": "58b14d38693599f4a225b2bf6032c8074f4e7c784b3f503000d64b2f5d59086f",
+      "input_sha256": "f9c29ac1edab94c1185fdc3e0457295b4422377a56a03cb8631f35c25041f301",
       "inputs": [
         "README.md",
         "conftest.py",
@@ -12951,7 +12965,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "structural-adversarial",
-      "input_sha256": "f1390ba0d531a0c06e19c9704ec6ead1610f7a05fdb0302702464a8f1844d2ac",
+      "input_sha256": "72470295097cf54877c35aa30f72add1766879e16a74e8d3d4638a6c60a7e31c",
       "inputs": [
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_agents_md_generator.py",
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_change_impact.py",
@@ -13692,6 +13706,8 @@
         "scripts/build_operational_control_proof_matrix.py",
         "scripts/build_profile_projections.py",
         "scripts/build_provider_route_index.py",
+        "scripts/build_pxos102_automation_config.py",
+        "scripts/build_pxos103_automation_config.py",
         "scripts/build_python_dependency_ownership.py",
         "scripts/build_python_surface_ownership.py",
         "scripts/build_reclamation_learning_promotion.py",
@@ -14963,6 +14979,8 @@
         "scripts/build_operational_control_proof_matrix.py",
         "scripts/build_profile_projections.py",
         "scripts/build_provider_route_index.py",
+        "scripts/build_pxos102_automation_config.py",
+        "scripts/build_pxos103_automation_config.py",
         "scripts/build_python_dependency_ownership.py",
         "scripts/build_python_surface_ownership.py",
         "scripts/build_reclamation_learning_promotion.py",
@@ -15682,7 +15700,7 @@
       "disk_consumption_limit_bytes": 51539607552,
       "disk_work_units": 6,
       "group": "derived-integrity",
-      "input_sha256": "fdfc1dcc21d280a70c54e86bffa9423f0f55832c72261a7696891008583a18f4",
+      "input_sha256": "958a05d9b380cc5282d53ef188c0f4001e6554f95526d055e259b9e02a45e31a",
       "inputs": [
         "README.md",
         "conftest.py",
@@ -19582,10 +19600,10 @@
       "timeout_seconds": 1600.0
     }
   ],
-  "index_sha256": "1e32fb2438c8b78a6eaa729d3e0063b287f0f332f531f10c9b4a0786963cd0c2",
+  "index_sha256": "d80725268f0f5d3efa8689c159906adcd12fb0f5bc99ba6a352c38b85be138d8",
   "schema_version": "px.test-group-index/1.2",
   "test_file_count": 427,
   "topology_sha256": "b7acfcbeb33b312d298f48d3f42a92160dc57eea6c2180b06e0cbbdaa76fdd0a",
-  "tracked_python_file_count": 1067,
-  "verified_file_count": 1067
+  "tracked_python_file_count": 1069,
+  "verified_file_count": 1069
 }

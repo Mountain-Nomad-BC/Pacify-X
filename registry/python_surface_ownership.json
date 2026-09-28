@@ -4,7 +4,7 @@
   "evidence_association_count": 149,
   "map_current": true,
   "packaged_file_count": 910,
-  "python_file_count": 1067,
+  "python_file_count": 1069,
   "records": [
     {
       "bytes": 1275,
@@ -7421,6 +7421,34 @@
       "validation_level": "source-only-structural"
     },
     {
+      "bytes": 7818,
+      "evidence": [
+        "structural AST validation",
+        "project-management release boundary"
+      ],
+      "owner": "project-release-control",
+      "packaged": false,
+      "path": "scripts/build_pxos102_automation_config.py",
+      "role": "source-build-control",
+      "sha256": "81913ecc09c304928f198d8175f3a534cb80f19e85cf50e0f3eac23112693ec3",
+      "syntax_valid": true,
+      "validation_level": "source-only-structural"
+    },
+    {
+      "bytes": 7821,
+      "evidence": [
+        "structural AST validation",
+        "project-management release boundary"
+      ],
+      "owner": "project-release-control",
+      "packaged": false,
+      "path": "scripts/build_pxos103_automation_config.py",
+      "role": "source-build-control",
+      "sha256": "2786d3f8bcb8a221b21778ffeb99fc23b73398e249820c960ccb7668242ff54e",
+      "syntax_valid": true,
+      "validation_level": "source-only-structural"
+    },
+    {
       "bytes": 8063,
       "evidence": [
         "tests/test_dependency_contracts.py"
@@ -14465,20 +14493,20 @@
     "installed-skill-tool": 89,
     "release-test": 442,
     "release-test-harness": 3,
-    "source-build-control": 133,
+    "source-build-control": 135,
     "source-certification-control": 16,
     "source-example": 1
   },
   "schema_version": "1.0",
-  "source_only_structural_count": 105,
-  "syntax_valid_count": 1066,
+  "source_only_structural_count": 107,
+  "syntax_valid_count": 1068,
   "valid": true,
   "validation_counts": {
     "direct-isolated-behavior": 63,
     "evidence-association": 149,
     "executable-test": 445,
     "full-suite-and-installed-integration": 296,
-    "source-only-structural": 105,
+    "source-only-structural": 107,
     "unvalidated": 9
   }
 }
