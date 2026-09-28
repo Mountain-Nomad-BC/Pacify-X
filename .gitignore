@@ -97,3 +97,6 @@ repo_quarantine/
 
 .tmp/
 
+
+# Rebuildable rollup over append-only ledger deltas; never admit to git custody.
+registry/operational_gap_ledger.jsonl
