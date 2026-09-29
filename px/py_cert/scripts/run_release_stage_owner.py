@@ -383,46 +383,28 @@ def check(config: Config, step: str) -> dict[str, Any]:
         ):
             errors.append(f"repair campaign phase is not exact for {step}")
         if step == "archive_clear":
-            supersedes = current_release.get("supersedes") or {}
-            archive_rel = supersedes.get("archive")
-            already_established = (
-                current_release.get("campaign_id") == config.candidate_id
-                and current_release.get("state") == "cleared"
-                and current_release.get("apply_count") == 0
-                and current_release.get("identity") is None
-                and current_release.get("active_claim") is None
-                and tuple(current_release.get("stages", {})) == STAGES
-                and all(
-                    row.get("status") == "pending"
-                    for row in current_release.get("stages", {}).values()
-                )
-                and supersedes.get("campaign_id") == config.predecessor_id
-                and isinstance(archive_rel, str)
-                and bool(archive_rel)
-                and _valid_supersession_archive(config.root, archive_rel)
-                and supersedes.get("archive_sha256")
-                == _archive_binding(config.root, archive_rel)
-            )
-            if already_established:
-                pass
-            elif (
-                current_release.get("campaign_id") != config.predecessor_id
-                or current_release.get("active_claim") is not None
-                or current_release.get("state") not in {"failed", "cleared", "active"}
-                or (
-                    current_release.get("state") == "cleared"
-                    and (
-                        current_release.get("apply_count") != 0
-                        or current_release.get("identity") is not None
-                        or not cleared_campaign_can_be_superseded(current_release)
+            already_established = already_established_successor(config, current_release)
+            if (
+                not already_established
+                and (
+                    current_release.get("campaign_id") != config.predecessor_id
+                    or current_release.get("active_claim") is not None
+                    or current_release.get("state") not in {"failed", "cleared", "active"}
+                    or (
+                        current_release.get("state") == "cleared"
+                        and (
+                            current_release.get("apply_count") != 0
+                            or current_release.get("identity") is not None
+                            or not cleared_campaign_can_be_superseded(current_release)
+                        )
                     )
-                )
-                or (
-                    current_release.get("state") == "active"
-                    and active_kind not in {
-                        "unused_invalid_identity",
-                        "invalid_active_with_retained_passes",
-                    }
+                    or (
+                        current_release.get("state") == "active"
+                        and active_kind not in {
+                            "unused_invalid_identity",
+                            "invalid_active_with_retained_passes",
+                        }
+                    )
                 )
             ):
                 errors.append(
@@ -1093,34 +1075,14 @@ class ProductionEffects:
         )
         if step == "archive_clear":
             current = release(config)
-            supersedes = current.get("supersedes") or {}
-            archive_rel = supersedes.get("archive")
-            already_established = (
-                current.get("campaign_id") == config.candidate_id
-                and current.get("state") == "cleared"
-                and current.get("apply_count") == 0
-                and current.get("identity") is None
-                and current.get("active_claim") is None
-                and tuple(current.get("stages", {})) == STAGES
-                and all(
-                    row.get("status") == "pending"
-                    for row in current.get("stages", {}).values()
-                )
-                and supersedes.get("campaign_id") == config.predecessor_id
-                and isinstance(archive_rel, str)
-                and bool(archive_rel)
-                and _valid_supersession_archive(config.root, archive_rel)
-                and supersedes.get("archive_sha256")
-                == _archive_binding(config.root, archive_rel)
-            )
-            if already_established:
+            if already_established_successor(config, current):
                 return self.receipt(
                     config,
                     step,
                     {
                         "schema_version": "px.release-successor-receipt/1.0",
                         "candidate_id": config.candidate_id,
-                        "archive": archive_rel,
+                        "archive": current.get("supersedes", {}).get("archive"),
                         "already_established": True,
                         "valid": True,
                     },
@@ -1443,6 +1405,46 @@ class ProductionEffects:
                 f"{step} postcondition is not exact: "
                 + json.dumps(details, sort_keys=True, separators=(",", ":"))
             )
+
+
+def already_established_successor(config: "Config", current_release: dict) -> bool:
+    """True when the release campaign already IS this config's governed successor.
+
+    One pre-identity owner failure can leave a candidate established by an exact
+    archived supersession (hash-verified, still cleared and unused). Replaying the
+    supersession is forbidden, so archive_clear must verify this shape instead.
+    """
+
+    supersedes = current_release.get("supersedes") or {}
+    archive_rel = supersedes.get("archive")
+    try:
+        archive_ok = (
+            isinstance(archive_rel, str)
+            and bool(archive_rel)
+            and sha256(config.root / archive_rel) == supersedes.get("archive_sha256")
+        )
+    except (OSError, ValueError):
+        return False
+    predecessor = getattr(config, "predecessor_id", None) or getattr(
+        config, "predecessor_campaign_id", None
+    )
+    return (
+        current_release.get("campaign_id") == config.candidate_id
+        and current_release.get("state") == "cleared"
+        and current_release.get("apply_count") == 0
+        and current_release.get("identity") is None
+        and current_release.get("active_claim") is None
+        and tuple(current_release.get("stages", {})) == STAGES
+        and all(
+            row.get("status") == "pending"
+            for row in current_release.get("stages", {}).values()
+        )
+        and supersedes.get("campaign_id") == predecessor
+        and isinstance(archive_rel, str)
+        and bool(archive_rel)
+        and _valid_supersession_archive(config.root, archive_rel)
+        and supersedes.get("archive_sha256") == _archive_binding(config.root, archive_rel)
+    )
 
 
 def _archive_binding(root: Path, archive_rel: str) -> str:

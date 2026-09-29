@@ -950,10 +950,11 @@
         "runtime/resource_lifecycle.py",
         "runtime/test_profiles.py",
         "scripts/pre_candidate_hygiene.py",
-        "scripts/reconcile_unverified_operational_controls.py"
+        "scripts/reconcile_unverified_operational_controls.py",
+        "scripts/run_release_stage_owner.py"
       ],
       "index_state": "verified",
-      "sha256": "6616dd28cc2a536ea2938f1983ef2b05a5c1069083d3098d646b0d127930e5a0"
+      "sha256": "e9b5abbf3cc2e2e0698ca80718ccfe6a0a3ec64c9289b5fb6596470eaa95bba4"
     },
     "px/py_cert/scripts/run_release_candidate_dry.py": {
       "dependencies": [
@@ -980,7 +981,7 @@
         "runtime/test_profiles.py"
       ],
       "index_state": "verified",
-      "sha256": "a594520819622c665316e65469a16f1c699241a7b3bfa743d02f5173852af14d"
+      "sha256": "7095f07a03b37aa73ee92bf11d0a28c006e743ea6bb5f71c04c042d88e27826b"
     },
     "px/py_cert/scripts/validate_certification_pipeline.py": {
       "dependencies": [
@@ -6171,10 +6172,11 @@
         "runtime/resource_lifecycle.py",
         "runtime/test_profiles.py",
         "scripts/pre_candidate_hygiene.py",
-        "scripts/reconcile_unverified_operational_controls.py"
+        "scripts/reconcile_unverified_operational_controls.py",
+        "scripts/run_release_stage_owner.py"
       ],
       "index_state": "verified",
-      "sha256": "6616dd28cc2a536ea2938f1983ef2b05a5c1069083d3098d646b0d127930e5a0"
+      "sha256": "e9b5abbf3cc2e2e0698ca80718ccfe6a0a3ec64c9289b5fb6596470eaa95bba4"
     },
     "scripts/run_release_candidate_dry.py": {
       "dependencies": [
@@ -6208,7 +6210,7 @@
         "runtime/test_profiles.py"
       ],
       "index_state": "verified",
-      "sha256": "a594520819622c665316e65469a16f1c699241a7b3bfa743d02f5173852af14d"
+      "sha256": "7095f07a03b37aa73ee92bf11d0a28c006e743ea6bb5f71c04c042d88e27826b"
     },
     "scripts/sanitize_host_bound_cleanup_evidence.py": {
       "dependencies": [
@@ -11390,6 +11392,7 @@
         "scripts/reconcile_declared_tool_hashes.py",
         "scripts/reconcile_unverified_operational_controls.py",
         "scripts/run_release_candidate.py",
+        "scripts/run_release_stage_owner.py",
         "tests/__init__.py",
         "tests/pytest_guards.py",
         "tests/test_agent_session_coordinator.py",
@@ -11428,7 +11431,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "process-recovery",
-      "input_sha256": "f5dc077a5ce1b55a12b8336ab1efde44bf8220ea652a8303bb568d78f6bd8f8a",
+      "input_sha256": "93dafb48ffd5b1e47068c82b398b987740779ef6fe08e70b7a9f8546d60e0181",
       "inputs": [
         "conftest.py",
         "registry/test_profiles.json",
@@ -11568,6 +11571,7 @@
         "scripts/reconcile_declared_tool_hashes.py",
         "scripts/reconcile_unverified_operational_controls.py",
         "scripts/run_release_candidate.py",
+        "scripts/run_release_stage_owner.py",
         "tests/__init__.py",
         "tests/pytest_guards.py",
         "tests/test_agent_session_coordinator.py",
@@ -11888,7 +11892,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "exact-installed",
-      "input_sha256": "fd76db5aee71f5a621ea9bcf750d6f18401bd51221df8542d9be2a828566568b",
+      "input_sha256": "c798bb7c52636c0b9ce400211cc4a127dc6c6716af270260767b5768b01f8796",
       "inputs": [
         "README.md",
         "conftest.py",
@@ -12338,7 +12342,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "release-build",
-      "input_sha256": "45ca16b7b7ab8437ffdbf80f1522589ad15730554853313d312c65cfdd76fd31",
+      "input_sha256": "aeba9e66f41f256729a7879cbc53c513d6b636d81fd63fcf9a1adec09d619502",
       "inputs": [
         ".github/workflows/release.yml",
         "README.md",
@@ -12682,7 +12686,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "release-audit",
-      "input_sha256": "c7f9eeeea31db83346482c4cc7feae0b0c8e04d6fc47fab5e8818737d8ada869",
+      "input_sha256": "bef7cfc066d8569c3a3b29a08018b60f1b819b9f4a76e81ec11883443382023a",
       "inputs": [
         "README.md",
         "conftest.py",
@@ -12964,7 +12968,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "structural-adversarial",
-      "input_sha256": "6da12f054946602b829a815ff05b907314a778d5f506214f9553f35ce54a4bb6",
+      "input_sha256": "8dc04c407c833e2e41c82e7e9fcee525368d357cf56e3dbfe0b1640d3a972d3f",
       "inputs": [
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_agents_md_generator.py",
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_change_impact.py",
@@ -15699,7 +15703,7 @@
       "disk_consumption_limit_bytes": 51539607552,
       "disk_work_units": 6,
       "group": "derived-integrity",
-      "input_sha256": "feeddf5d1e04a6f41aa2262e6aac20d4f53349cdf92bed8a138e2d504bda2b9c",
+      "input_sha256": "54c5c7f17a4e29450eff9086a17fe2cfab54cbc8f89d7a7e733e3bba4efc8797",
       "inputs": [
         "README.md",
         "conftest.py",
@@ -16310,7 +16314,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "core-a-f",
-      "input_sha256": "207bda5e3a7562e5d369b6980f2ad27aac30ee568fa9d5e460deaff344d095f9",
+      "input_sha256": "3185814e554bd4491ce808350a48a327a4522f933866df4c1df1df7936a7d2be",
       "inputs": [
         "builders/__init__.py",
         "builders/common.py",
@@ -18175,7 +18179,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "core-n-s",
-      "input_sha256": "1d642ca5d06a6c274979c70b47803f3933813312f4c05660da0a2c8b4844a038",
+      "input_sha256": "7add3f82a471485c31657d24ba20e8a98c8300c03931301aca8330edbb4c4d7e",
       "inputs": [
         "conftest.py",
         "docs/architecture/tools/build_atlas.py",
@@ -19599,7 +19603,7 @@
       "timeout_seconds": 1600.0
     }
   ],
-  "index_sha256": "a0d3d6abe54ffb16dcc37933cc5ff55dca9f01542dbbec782834655b625a484a",
+  "index_sha256": "2d1b8cfd83574b3fb9181c901ff45858519224d9546184e69397c9a3a7352202",
   "schema_version": "px.test-group-index/1.2",
   "test_file_count": 427,
   "topology_sha256": "b7acfcbeb33b312d298f48d3f42a92160dc57eea6c2180b06e0cbbdaa76fdd0a",

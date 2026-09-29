@@ -543,11 +543,19 @@ def readiness(config: Config) -> dict[str, Any]:
         except (OSError, ValueError, json.JSONDecodeError) as exc:
             errors.append(f"repair campaign is unreadable: {type(exc).__name__}")
         try:
+            from scripts.run_release_stage_owner import (
+                already_established_successor,
+            )
+
             release = _release(config)
-            if release.get("campaign_id") != config.predecessor_campaign_id:
+            established = already_established_successor(config, release)
+            if (
+                not established
+                and release.get("campaign_id") != config.predecessor_campaign_id
+            ):
                 errors.append("predecessor campaign ID differs from configuration")
-            predecessor_ready = False
-            if release.get("state") == "failed":
+            predecessor_ready = established
+            if not established and release.get("state") == "failed":
                 failed_stages = [
                     name
                     for name, record in release.get("stages", {}).items()
@@ -562,7 +570,7 @@ def readiness(config: Config) -> dict[str, Any]:
                         RELEASE_STAGE_PHASES[failed_stages[0]],
                     }
                 )
-            elif release.get("state") == "cleared":
+            elif not established and release.get("state") == "cleared":
                 predecessor_ready = (
                     release.get("apply_count") == 0
                     and release.get("identity") is None
