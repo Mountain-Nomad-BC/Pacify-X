@@ -6,7 +6,7 @@
     "authority": {
       "evidence_reference": "registry/authority_topology.json",
       "reason_codes": [],
-      "source_revision": "9ac597968961555f1592341196c43e5313279564a619c8be373f4dc1484479ef",
+      "source_revision": "1151581f2dba0ba6f699a6c6d3514faba7cb75544b19ee6166d142fd67c2bc1f",
       "state": "GREEN"
     },
     "operations": {
@@ -14,13 +14,13 @@
       "reason_codes": [
         "critical_high_blocker"
       ],
-      "source_revision": "9ac597968961555f1592341196c43e5313279564a619c8be373f4dc1484479ef",
+      "source_revision": "1151581f2dba0ba6f699a6c6d3514faba7cb75544b19ee6166d142fd67c2bc1f",
       "state": "BLOCKED"
     },
     "projections": {
       "evidence_reference": "registry/projection_staleness.json",
       "reason_codes": [],
-      "source_revision": "9ac597968961555f1592341196c43e5313279564a619c8be373f4dc1484479ef",
+      "source_revision": "1151581f2dba0ba6f699a6c6d3514faba7cb75544b19ee6166d142fd67c2bc1f",
       "state": "GREEN"
     }
   },
@@ -38,8 +38,8 @@
   },
   "hardware_profile_revision": null,
   "health_state": "BLOCKED",
-  "ledger_checkpoint_sha256": "1741fc7d1f811f055a4b24036e686b62706c01bb77ad0742cd5ecba7247d877a",
-  "ledger_event_count": 36058,
+  "ledger_checkpoint_sha256": "f021a878d83bb03670668413044aa46970e460b4ffa9a95ad5a111df24b975d6",
+  "ledger_event_count": 36093,
   "model_count": 3,
   "open_blocker_count": 16,
   "open_blocker_ids": [
@@ -65,11 +65,11 @@
   "recommended_next_actions": [
     "resolve_current_blockers"
   ],
-  "release_campaign_id": "pacify-x-certification-20260928-r111-0.9.0",
-  "release_state": "cleared",
+  "release_campaign_id": "pacify-x-certification-20260928-r114-0.9.0",
+  "release_state": "failed",
   "schema_version": "px.world-state/1.0",
-  "source_revision": "9ac597968961555f1592341196c43e5313279564a619c8be373f4dc1484479ef",
+  "source_revision": "1151581f2dba0ba6f699a6c6d3514faba7cb75544b19ee6166d142fd67c2bc1f",
   "stale_projection_count": 0,
   "stale_projection_ids": [],
-  "world_state_sha256": "aaa1f7e042502270565c9785b71c930a5acc4f2fc8ad6cc5d99e6b0286fde705"
+  "world_state_sha256": "b54cc5c0419241b863a81bea8f2f2a82ef14b31354ed56e964d3346f84f2b844"
 }

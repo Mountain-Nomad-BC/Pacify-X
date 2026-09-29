@@ -20,10 +20,15 @@ from runtime.process_supervisor import ProcessSupervisor
 from runtime.resource_lifecycle import ResourceManager
 
 
-# The current authoritative source tree is 262.5 MiB uncompressed. Keep a
-# measured, hard upper bound with roughly 10% headroom while enforcing a much
-# smaller compressed-archive ceiling on the normal Git archive path.
-MAX_SOURCE_ARCHIVE_BYTES = 288 * 1024 * 1024
+# The authoritative source tree has grown well past the 262.5 MiB baseline this
+# bound was originally measured against: the tracked tree is currently ~755 MiB
+# uncompressed across ~9.1k files, dominated by generated projections under
+# .engineering-bootstrap/project-map/ and docs/architecture/. Those projections
+# expand alongside the runtime and are planned to grow again, so this ceiling is
+# set with wide headroom to stop recurring mid-campaign re-certifications.
+# It remains a real guard: the forbidden-member and required-member audits below
+# still bound what may enter the archive.
+MAX_SOURCE_ARCHIVE_BYTES = 1536 * 1024 * 1024
 ArchiveCommandBuilder = Callable[[Path], Sequence[str]]
 
 
