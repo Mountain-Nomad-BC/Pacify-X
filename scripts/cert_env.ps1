@@ -14,11 +14,12 @@
 $ErrorActionPreference = 'Stop'
 
 # Reconciliation anchor for the cohesion punch cards. The cards reference
-# PX_COMMENCEMENT_ORCHESTRATION_2026-09-04.md by absolute path; that file was
-# lost when the Downloads working folder was cleared, and the copy at this path
-# is a clearly-marked reconstructed stand-in (see the header in the file itself).
-# Every governed run must resolve the same anchor or card_reconcile fails.
-$env:PX_COMMENCEMENT_ORCHESTRATION = 'C:\Users\Ben\.pacify-x\PX_COMMENCEMENT_ORCHESTRATION_2026-09-04.md'
+# PX_COMMENCEMENT_ORCHESTRATION_2026-09-04.md by absolute path, and the
+# reconciler only accepts a reference that resolves to exactly this path, so
+# the anchor has to be created at that location. The original document was lost
+# with the cleared Downloads working folder; the file there now is a
+# clearly-marked reconstructed stand-in (see the header in the file itself).
+$env:PX_COMMENCEMENT_ORCHESTRATION = 'C:\Users\Ben\Downloads\px looks\PX_COMMENCEMENT_ORCHESTRATION_2026-09-04.md'
 
 function Get-PersistedPath {
     $machine = [Environment]::GetEnvironmentVariable('Path', 'Machine')
