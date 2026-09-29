@@ -99,4 +99,10 @@ repo_quarantine/
 
 
 # Rebuildable rollup over append-only ledger deltas; never admit to git custody.
+# The whole live ledger surface (head pointer, snapshot, and delta segments) is
+# local execution state that is continuously rewritten by the runtime. It is
+# regenerated on demand and is never uploaded with the repository.
 registry/operational_gap_ledger.jsonl
+registry/operational_gap_ledger.head.json
+registry/operational_gap_ledger.snapshot.json
+registry/operational_gap_ledger.deltas/
