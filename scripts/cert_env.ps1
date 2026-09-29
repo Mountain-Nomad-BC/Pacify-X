@@ -13,6 +13,13 @@
 
 $ErrorActionPreference = 'Stop'
 
+# Reconciliation anchor for the cohesion punch cards. The cards reference
+# PX_COMMENCEMENT_ORCHESTRATION_2026-09-04.md by absolute path; that file was
+# lost when the Downloads working folder was cleared, and the copy at this path
+# is a clearly-marked reconstructed stand-in (see the header in the file itself).
+# Every governed run must resolve the same anchor or card_reconcile fails.
+$env:PX_COMMENCEMENT_ORCHESTRATION = 'C:\Users\Ben\.pacify-x\PX_COMMENCEMENT_ORCHESTRATION_2026-09-04.md'
+
 function Get-PersistedPath {
     $machine = [Environment]::GetEnvironmentVariable('Path', 'Machine')
     $user = [Environment]::GetEnvironmentVariable('Path', 'User')
@@ -93,6 +100,27 @@ if (-not $probeOk) {
     exit 1
 }
 Write-Host "  signing      OK ($sshKeygen can sign with the repository release key)" -ForegroundColor Green
+
+# The exhaustive installed-operational walk resolves a retained VS Code build.
+# A half-extracted cache previously killed that stage in 26 seconds, so verify
+# the download is genuinely complete before any campaign is allowed to start.
+$vscodeCache = Join-Path ([System.IO.Path]::GetTempPath()) 'pacify-x-vscode-test-cache'
+$vscodeMarker = Join-Path $vscodeCache '.pacify-x-owned-cache.json'
+$vscodeVersion = '1.132.1'
+$vscodeDir = Join-Path $vscodeCache "vscode-win32-x64-archive-$vscodeVersion"
+if (-not (Test-Path $vscodeMarker) -or -not (Test-Path (Join-Path $vscodeDir 'is-complete')) -or -not (Test-Path (Join-Path $vscodeDir 'Code.exe'))) {
+    Write-Error ("Owned VS Code test cache is absent or incomplete: $vscodeCache. Run: node extension/scripts/prepare-owned-vscode-test-cache.js")
+    exit 1
+}
+Write-Host "  vscode-cache OK ($vscodeVersion retained and complete)" -ForegroundColor Green
+
+# The cohesion punch cards reference an external commencement-orchestration
+# document. Without this anchor card_reconcile rejects the reference outright.
+if (-not (Test-Path $env:PX_COMMENCEMENT_ORCHESTRATION)) {
+    Write-Error ("Cohesion card anchor is missing: $env:PX_COMMENCEMENT_ORCHESTRATION. card_reconcile will reject the external live evidence reference.")
+    exit 1
+}
+Write-Host "  card-anchor  OK ($env:PX_COMMENCEMENT_ORCHESTRATION)" -ForegroundColor Green
 
 Write-Host "Certification environment ready:" -ForegroundColor Green
 foreach ($tool in $required.Keys | Sort-Object) {
