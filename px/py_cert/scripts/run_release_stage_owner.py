@@ -399,8 +399,9 @@ def check(config: Config, step: str) -> dict[str, Any]:
                 and supersedes.get("campaign_id") == config.predecessor_id
                 and isinstance(archive_rel, str)
                 and bool(archive_rel)
-                and sha256(config.root / archive_rel)
-                == supersedes.get("archive_sha256")
+                and _valid_supersession_archive(config.root, archive_rel)
+                and supersedes.get("archive_sha256")
+                == _archive_binding(config.root, archive_rel)
             )
             if already_established:
                 pass
@@ -1108,8 +1109,9 @@ class ProductionEffects:
                 and supersedes.get("campaign_id") == config.predecessor_id
                 and isinstance(archive_rel, str)
                 and bool(archive_rel)
-                and sha256(config.root / archive_rel)
-                == supersedes.get("archive_sha256")
+                and _valid_supersession_archive(config.root, archive_rel)
+                and supersedes.get("archive_sha256")
+                == _archive_binding(config.root, archive_rel)
             )
             if already_established:
                 return self.receipt(
@@ -1441,6 +1443,35 @@ class ProductionEffects:
                 f"{step} postcondition is not exact: "
                 + json.dumps(details, sort_keys=True, separators=(",", ":"))
             )
+
+
+def _archive_binding(root: Path, archive_rel: str) -> str:
+    """Canonical sha of a supersession archive, matching release-campaign _sha."""
+
+    import json as _json
+
+    from runtime.release_campaign import _sha
+
+    archive = _json.loads((root / archive_rel).read_text(encoding="utf-8"))
+    archive.pop("archive_sha256", None)
+    return _sha(archive)
+
+
+def _valid_supersession_archive(root: Path, archive_rel: str) -> bool:
+    import json as _json
+
+    from runtime.release_campaign import _valid_pre_identity_failure
+
+    path = root / archive_rel
+    if not path.is_file() or path.is_symlink():
+        return False
+    archive = _json.loads(path.read_text(encoding="utf-8"))
+    state = archive.get("campaign_state") or {}
+    if state.get("pre_identity_reconciliation_successor") is True:
+        return _valid_pre_identity_failure(
+            state.get("pre_identity_failure"), str(state.get("campaign_id"))
+        )
+    return True
 
 
 def run(config: Config, step: str, effects: Effects) -> dict[str, Any]:
