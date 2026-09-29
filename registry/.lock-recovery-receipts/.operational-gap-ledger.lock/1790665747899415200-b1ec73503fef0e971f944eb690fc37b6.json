@@ -1,0 +1,27 @@
+{
+  "lock_path": ".operational-gap-ledger.lock",
+  "lock_path_basis": "receipt_parent",
+  "previous_lease": {
+    "acquired_unix_ns": 1790665728972017900,
+    "acquired_utc": "2026-09-29T07:08:48.972018+00:00",
+    "heartbeat_unix_ns": 1790665728972017900,
+    "heartbeat_utc": "2026-09-29T07:08:48.972018+00:00",
+    "hostname": "DESKTOP-8JV854D",
+    "pid": 24188,
+    "process_start_fingerprint": "cde64638048a5675349db229f5dbf400685e56080e9f229dabb09842cd5a824d",
+    "schema_version": "1.0",
+    "state": "held",
+    "token": "0aba7f6b4f4c8e003a2dd5914a215e63"
+  },
+  "reason": "recorded_owner_not_live",
+  "receipt_sha256": "49af2b37984554539b540d6dd055ddb06d4b1b3cc6c3c05a025cf4206c975949",
+  "receipt_type": "dead_file_lock_owner_recovery",
+  "recovered_by": {
+    "pid": 25628,
+    "process_start_fingerprint": "73fe2316d0102d6c207b8c02cee1198f30f58d4a33dda8bb71df810f472652ea",
+    "token": "b1ec73503fef0e971f944eb690fc37b6"
+  },
+  "recovered_unix_ns": 1790665747899415200,
+  "recovered_utc": "2026-09-29T07:09:07.899415+00:00",
+  "schema_version": "1.0"
+}
