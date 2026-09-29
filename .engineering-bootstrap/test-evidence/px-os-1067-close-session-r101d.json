@@ -1,0 +1,12 @@
+{
+  "gap_id": "PX-OS-1067",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000035974",
+  "session_id": "pxos1067-release-r101d-20260928",
+  "outcome": "superseded",
+  "evidence": [
+    {
+      "reference": ".engineering-bootstrap/processing-order/pxos102-successor-automation.json",
+      "claim": "The automation driver creates its own per-stage admissions; the manual r/w/x session is superseded before --execute-all."
+    }
+  ]
+}

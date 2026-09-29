@@ -1,0 +1,129 @@
+{
+  "schema_version": "px.release-source-evidence-inventory/1.0",
+  "release": "0.9.0",
+  "tracked_before_stage": false,
+  "file_count": 24,
+  "files": [
+    {
+      "path": "evidence/README.md",
+      "sha256": "fede20c2741509dc2f7e3894cda7084bd5a67b5385f7e4692d4de72ee636f3c4",
+      "size": 4950
+    },
+    {
+      "path": "evidence/archive-catalog.json",
+      "sha256": "9cfce53b93a7b769d04ccea779aee94c496ee1c55e45e25c152e861854abee1c",
+      "size": 15825
+    },
+    {
+      "path": "evidence/bundles/archive-custody-20260803/complete_file_inventory.jsonl",
+      "sha256": "859a8b70a81558054f8bdc4c38fa01b7bda288c654e7ebb70677447b14194ebc",
+      "size": 3127020
+    },
+    {
+      "path": "evidence/bundles/archive-custody-20260803/manifest.json",
+      "sha256": "b24d475be9292b3497f034f3d0bf2845537855b81638ba90098b0f4eb4a82c41",
+      "size": 736
+    },
+    {
+      "path": "evidence/capability-mining-receipt.json",
+      "sha256": "b54c799f78ee91aeec240c7b601de9367ffe024149dd5514a2bdfb32831a958b",
+      "size": 534
+    },
+    {
+      "path": "evidence/commencement-audit-20260905T002921Z/current-owners-and-gaps.json",
+      "sha256": "c045567157fcac8338848266aab4755c2551810d49dd80ab5f628ef9606f5b41",
+      "size": 7645
+    },
+    {
+      "path": "evidence/commencement-audit-20260905T002921Z/finding-dispositions.json",
+      "sha256": "7284c845974fc5f5aebaf8a6758dcc9fd147b712c9d44ebb6a9102acc171496b",
+      "size": 10258
+    },
+    {
+      "path": "evidence/commencement-audit-20260905T002921Z/live-state.json",
+      "sha256": "73534ca79e11a962728e7ea9fa271ac4adbfaec1f54f0da6cd3dc156fe364222",
+      "size": 3926
+    },
+    {
+      "path": "evidence/contract-disposition-receipt.json",
+      "sha256": "b57e7d12288dd2c641ac8b40ce4051616bc05d70f884719cd40565d83357c02c",
+      "size": 1035
+    },
+    {
+      "path": "evidence/corpus-intake-receipt.json",
+      "sha256": "f375d2a6c407170f5f8bd55052e97bb357733e4827df5cebe87a98c2e83894cd",
+      "size": 1545
+    },
+    {
+      "path": "evidence/declared-suite/pack-01-build-qa.json",
+      "sha256": "2d831b4062bb6527e4ff12b1e2f6f477d6909481bd02c154cef27326ee83428a",
+      "size": 2953
+    },
+    {
+      "path": "evidence/declared-suite/reconstruction-progress.json",
+      "sha256": "d9947119f620f7008351bc24b689ef0fe1af44a10414ab093f48497d6306882f",
+      "size": 128090
+    },
+    {
+      "path": "evidence/domain-reference-receipt.json",
+      "sha256": "7ea7a166f5658823c2f78e83cb01e47286dfb0eb3f27285d2f805baecc2cac2e",
+      "size": 617
+    },
+    {
+      "path": "evidence/external-source-admission-receipt.json",
+      "sha256": "f616b827b4a230939e2db04b40c1edafede96ee823b8953d4c634bc318bd4533",
+      "size": 1188
+    },
+    {
+      "path": "evidence/externalized-payload-index.json",
+      "sha256": "029524722de79a7175c22d0aef8f92215ae6cbbd774b6f05af907bfe413acc80",
+      "size": 6591
+    },
+    {
+      "path": "evidence/process-audit-intake-receipt.json",
+      "sha256": "e065a2f5556592f3bc33b53f1b74da5a050f1326c798864985d37a546210dfe5",
+      "size": 1483
+    },
+    {
+      "path": "evidence/rel008-assimilation.json",
+      "sha256": "87c30256a0de62fb0495945958b49936bccde2cb184b78a5c703419ca5138a43",
+      "size": 2026
+    },
+    {
+      "path": "evidence/release-certification-0.6.1.json",
+      "sha256": "75fc0566002cd84655551e7cfa400e716b678c7b739b00a066291144613a6179",
+      "size": 3231
+    },
+    {
+      "path": "evidence/release-certification-0.6.2.json",
+      "sha256": "9979f70f8ad30ef855382213cfe2cd8c6aa3119ab78f43f4de64b56081dadc40",
+      "size": 4285
+    },
+    {
+      "path": "evidence/release-revocation-0.6.1.json",
+      "sha256": "1b783e8a59bfda9828a4af16cfb41db2967d6cdc48055c46d94c6e2c68ebe1e4",
+      "size": 1140
+    },
+    {
+      "path": "evidence/release-revocation-0.6.2.json",
+      "sha256": "c039895f357c5cfbb83efd2ddc4a569d3f8453c0d874e5581f51d71c46f2c2e3",
+      "size": 1383
+    },
+    {
+      "path": "evidence/source-corpus-completeness.json",
+      "sha256": "6b3e02cd57eb6d4b7041cfbd315ed60b3461196ae795cf0d83bda912066fe9bc",
+      "size": 3070
+    },
+    {
+      "path": "evidence/source-intake-receipt.json",
+      "sha256": "d6b5ecf0f985c79407616fe19193116ac6d6d7dbe50a71b612945735a0fac6ed",
+      "size": 788
+    },
+    {
+      "path": "evidence/source-migration-receipt.json",
+      "sha256": "5d8c91a2851987066cd16829f7c8fedd6dab991d0e330e88879860445f0e06b2",
+      "size": 1287
+    }
+  ],
+  "purpose": "Exact evidence authorities cited by tracked tests or registries; transient release run outputs remain excluded."
+}

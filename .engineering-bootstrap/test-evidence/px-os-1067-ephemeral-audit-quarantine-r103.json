@@ -1,0 +1,11 @@
+{
+  "gap_id": "PX-OS-1067",
+  "recorded_utc": "2026-09-28T11:45:52.399191+00:00",
+  "action": "quarantined two leftover ephemeral audit-candidate workspaces from earlier test runs (dot-prefixed .tmp-class, same ephemeral workspace family already quarantined for hygiene)",
+  "moved": [
+    ".engineering-bootstrap/test-evidence/.px-audit-candidate-ekts2gt3",
+    ".engineering-bootstrap/test-evidence/.px-audit-candidate-k7j_u5m7"
+  ],
+  "quarantine_root": ".engineering-bootstrap/quarantine/pxos103-ephemeral-audit-candidates-20260928",
+  "evidence": "Path .engineering-bootstrap.test-evidence..px-audit-candidate-ekts2gt3.builders.common leaked into the local import closure and made build_test_group_index fail; blocking the r103 reconcile post-audit."
+}

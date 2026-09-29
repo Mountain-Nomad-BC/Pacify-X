@@ -1,10 +1,10 @@
 {
   "direct_behavior_count": 63,
   "errors": [],
-  "evidence_association_count": 149,
+  "evidence_association_count": 150,
   "map_current": true,
   "packaged_file_count": 910,
-  "python_file_count": 1069,
+  "python_file_count": 1070,
   "records": [
     {
       "bytes": 1275,
@@ -1578,6 +1578,19 @@
       "sha256": "ce46be259ab8fa1ceb4890cdeaab41a20660a0d3576d96c03a916cb9ffdb0f03",
       "syntax_valid": true,
       "validation_level": "unvalidated"
+    },
+    {
+      "bytes": 44124,
+      "evidence": [
+        "tests/test_structural_integrity.py"
+      ],
+      "owner": "project-certification-control",
+      "packaged": false,
+      "path": "px/py_cert/scripts/pre_candidate_hygiene.py",
+      "role": "source-certification-control",
+      "sha256": "ad7ef559fe79b3d820e83ed1e03302847f1d972025119135498a7c5214074041",
+      "syntax_valid": true,
+      "validation_level": "evidence-association"
     },
     {
       "bytes": 9248,
@@ -8085,7 +8098,7 @@
       "validation_level": "source-only-structural"
     },
     {
-      "bytes": 43019,
+      "bytes": 44124,
       "evidence": [
         "tests/test_structural_integrity.py"
       ],
@@ -8093,7 +8106,7 @@
       "packaged": false,
       "path": "scripts/pre_candidate_hygiene.py",
       "role": "source-build-control",
-      "sha256": "ce3779ddb0032022c3cba25fd17c9b80436baf939bca07fe6555818d2351ccab",
+      "sha256": "ad7ef559fe79b3d820e83ed1e03302847f1d972025119135498a7c5214074041",
       "syntax_valid": true,
       "validation_level": "evidence-association"
     },
@@ -14496,16 +14509,16 @@
     "release-test": 442,
     "release-test-harness": 3,
     "source-build-control": 135,
-    "source-certification-control": 16,
+    "source-certification-control": 17,
     "source-example": 1
   },
   "schema_version": "1.0",
   "source_only_structural_count": 107,
-  "syntax_valid_count": 1068,
+  "syntax_valid_count": 1069,
   "valid": true,
   "validation_counts": {
     "direct-isolated-behavior": 63,
-    "evidence-association": 149,
+    "evidence-association": 150,
     "executable-test": 445,
     "full-suite-and-installed-integration": 296,
     "source-only-structural": 107,

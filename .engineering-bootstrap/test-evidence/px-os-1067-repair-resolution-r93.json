@@ -1,0 +1,110 @@
+{
+  "schema_version": "px.repair-finding-resolution/1.0",
+  "release": "0.9.0",
+  "gap_id": "PX-OS-1067",
+  "scope": "source repair before generated reconciliation",
+  "valid_for_repair_resolution": true,
+  "source_hashes": [
+    {
+      "path": "pyproject.toml",
+      "sha256": "4bac2397b172584ec0a60a0cc8d1b118abd5dafd6eb1c6ea12f1ce3a7e114dcd"
+    },
+    {
+      "path": "registry/integrations.json",
+      "sha256": "f1f192a77c35e1b208b46d73ba4ef0cf5711bab191935ff0eb7c5dbe7a99b81f"
+    },
+    {
+      "path": "runtime/external_evidence.py",
+      "sha256": "50c19cbe3af72bcaa3aed3522b50a8acaf83b69449a035c059ab95f17d3a79bb"
+    },
+    {
+      "path": "runtime/generated_artifacts.py",
+      "sha256": "27c0faf8d37e2bbeeb244cea1ce55873fe8059fa3d1ae44b6ed91767625fb361"
+    },
+    {
+      "path": "runtime/librarian_answer.py",
+      "sha256": "41288625c260372cda8ed6824ac8b4e20c0dde22cbe58c378d484def6f33a78f"
+    },
+    {
+      "path": "runtime/repository_scope.py",
+      "sha256": "d45c4404d9a6e5b7682187b7be17b0ee560e059cd0549e169de75d76f541eb46"
+    },
+    {
+      "path": "runtime/structural_integrity.py",
+      "sha256": "c556413aa51349789f485d61c898fab870b5adb00f7383ab3c6d94217978fece"
+    },
+    {
+      "path": "runtime/verification_status.py",
+      "sha256": "7acc046a04e8d40757205d1b673bdca0ad68e38961a126c8791b3dc036eba713"
+    },
+    {
+      "path": "README.md",
+      "sha256": "7165a2428da9d262727f09b0841a3ef2e61fca4e88f21e6ac764f6b19c2a7a68"
+    },
+    {
+      "path": "START_HERE_FOR_AI.md",
+      "sha256": "7ddfb4b4bf7488c5af1e2cebc9a04e276b071004496984355c05c6fb1b001991"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "sha256": "009ca98793b46a38f504772f5ee790c59a077f5a860572461d3cf63c0cd7d3cf"
+    },
+    {
+      "path": "docs/release-process.md",
+      "sha256": "79b320d6e5e6ed6a6c3df7d62d1475790f17cfc9dfa8b26754af93ff413a69af"
+    }
+  ],
+  "checks": [
+    {
+      "name": "release-build-affected-group",
+      "result": "200 passed",
+      "exit_code": 0
+    },
+    {
+      "name": "public-release-surface",
+      "result": "13 passed",
+      "exit_code": 0
+    },
+    {
+      "name": "release-compliance",
+      "result": "22 passed",
+      "exit_code": 0
+    },
+    {
+      "name": "external-and-corrective-evidence",
+      "result": "16 passed",
+      "exit_code": 0
+    },
+    {
+      "name": "integration-and-skill-packaging",
+      "result": "11 passed",
+      "exit_code": 0
+    },
+    {
+      "name": "capture-and-repository-boundary",
+      "result": "2 passed",
+      "exit_code": 0
+    },
+    {
+      "name": "python-ownership-stale-detection",
+      "result": "1 passed; current map correctly reports stale",
+      "exit_code": 0
+    },
+    {
+      "name": "edited-python-lint",
+      "result": "all checks passed",
+      "exit_code": 0
+    }
+  ],
+  "findings": {
+    "PX-OS-1067/full-r87-release-build": "Affected group passed 200 tests.",
+    "PX-OS-1067/full-r87-capture-interruption": "Mutable .audit-visible scratch excluded by source boundary and structural capture; focused regression passed.",
+    "PX-OS-1067/full-r87-structural-adversarial": "Non-generated structural findings repaired; current audit errors are only intentionally stale generated projections.",
+    "PX-OS-1067/full-r87-release-audit": "Current bundled evidence validated independently of retained historical external custody; remaining audit errors are intentionally stale generated projections.",
+    "PX-OS-1067/full-r87-exact-installed": "Wheel now packages 144 skill contracts and resolves installed integration handlers; last focused installed run reached the intentionally stale graph manifest, to be refreshed once after freeze."
+  },
+  "release_limitations": [
+    "No full profile or installed wheel certification pass is claimed before post-freeze reconciliation.",
+    "Repair intake remains open until explicit user closure."
+  ]
+}

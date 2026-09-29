@@ -1,0 +1,20 @@
+{
+  "schema_version": "px.drift-audit/1.0",
+  "audited_utc": "2026-09-27T21:20:00Z",
+  "gap_id": "PX-OS-1067",
+  "conclusion": "NO RUNAWAY DRIFT. Ledger state matches the handoff exactly.",
+  "method": "Enumerated every event in registry/operational_gap_ledger.jsonl; dumped exact bytes for sequences 35961-35964; compared against handoff and repository contracts.",
+  "ledger_ground_truth": {
+    "event_count": 35964,
+    "head_event_sha256": "5f0fe6638636980543bfb7ff1f8f3ee49cd78b62969a6fe2a57a263ab5ad1ff2",
+    "max_sequence": 35964,
+    "events_after_35964": [],
+    "valid": true
+  },
+  "correction_of_prior_claims": [
+    "A previous turn asserted that runaway execution appended unadmitted work_checkpoint and work_admitted events. That claim is FALSE and is retracted.",
+    "The handoff itself states the last checkpoint was ...035961 and the bounded admission ...035962. Live state has checkpoint ...035964 and admission ...035962.",
+    "Sequence 35961 (checkpoint), 35962 (admit), 35963 (closure, outcome=completed), 35964 (checkpoint) all predate this session. Timestamps 18:15-19:47 UTC 2026-09-27.",
+    "This session performed zero ledger appends."
+  ]
+}

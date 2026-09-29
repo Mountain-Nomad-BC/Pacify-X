@@ -1,0 +1,71 @@
+{
+  "campaign_id": "pacify-x-certification-20260927-r85-0.9.0",
+  "completed_groups": [
+    {
+      "failure_nodes": [
+        "tests/test_exact_tool_certification.py::ExactToolCertificationTests::test_every_python_file_is_owned_classified_and_validation_bound",
+        "tests/test_full_repair_ledger.py::test_full_repair_ledger_maps_every_controlling_audit_card",
+        "tests/test_full_repair_ledger.py::test_full_repair_ledger_accepts_every_card_with_executed_receipts",
+        "tests/test_installed_wheel_e2e.py::InstalledWheelEndToEndTests::test_wheel_installs_and_commissions_new_and_existing_projects"
+      ],
+      "group": "exact-installed",
+      "passed": false,
+      "receipt": ".engineering-bootstrap/test-evidence/groups/exact-installed.json",
+      "sha256": "d82c5684583cba6f7f4e8bb7238aa6a48695172500b424915db1d17024507d09",
+      "size": 1056
+    },
+    {
+      "failure_nodes": [],
+      "group": "process-recovery",
+      "passed": true,
+      "receipt": ".engineering-bootstrap/test-evidence/groups/process-recovery.json",
+      "sha256": "ecbb8d88e56d75488d0cbe715a7dda392b22f2394e5ed5363b369b2f19aaf756",
+      "size": 599
+    },
+    {
+      "failure_nodes": [
+        "tests/test_release_audit.py::ReleaseAuditTests::test_live_composed_audit_passes_without_fixed_component_counts"
+      ],
+      "group": "release-audit",
+      "passed": false,
+      "receipt": ".engineering-bootstrap/test-evidence/groups/release-audit.json",
+      "sha256": "6f5de1bf7bc8c5455ee59909a4d8389f03379a49c88821fcec106e690040ed7c",
+      "size": 708
+    },
+    {
+      "failure_nodes": [
+        "diagnostics:attribution-truncated"
+      ],
+      "group": "release-build",
+      "passed": false,
+      "receipt": ".engineering-bootstrap/test-evidence/groups/release-build.json",
+      "sha256": "3eb53041133b8cefe9c8cd175c07d8ae8da4d0e8aff96e1f14433909334bca50",
+      "size": 634
+    },
+    {
+      "failure_nodes": [
+        "tests/test_structural_integrity.py::test_structural_integrity_has_closed_denominators",
+        "tests/test_structural_integrity.py::test_hash_ledger_head_and_anchor_are_a_reviewed_exact_projection",
+        "tests/test_structural_integrity.py::test_embedded_skill_body_projection_is_a_declared_reviewed_duplicate",
+        "tests/test_structural_integrity.py::test_runtime_file_digest_helpers_are_reviewed_digest_adapters",
+        "tests/test_structural_integrity.py::test_release_owner_digest_and_json_helpers_are_reviewed"
+      ],
+      "group": "structural-adversarial",
+      "passed": false,
+      "receipt": ".engineering-bootstrap/test-evidence/groups/structural-adversarial.json",
+      "sha256": "48a7ed0d672c7dbec69f119fcbaf202c3f03044c984254caff44853c0045bca0",
+      "size": 1097
+    }
+  ],
+  "cross_group_profile_started": false,
+  "failure": "stale group refresh source capture changed during execution: .audit-visible",
+  "schema_version": "px.failed-full-profile-attempt/1.0",
+  "unexecuted_groups": [
+    "derived-integrity",
+    "core-a-f",
+    "core-g-m",
+    "core-n-s",
+    "core-t-z"
+  ],
+  "valid": false
+}

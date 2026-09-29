@@ -1,0 +1,12 @@
+{
+  "gap_id": "PX-OS-1067",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000035965",
+  "session_id": "pxos1067-release-r97-20260927",
+  "outcome": "superseded",
+  "evidence": [
+    {
+      "reference": ".engineering-bootstrap/test-evidence/px-os-1067-checkpoint-r101.json",
+      "claim": "New r101 checkpoint 35966 bound; r97 session superseded before the r101 read/write/execute session and the dedicated network publication session are admitted."
+    }
+  ]
+}

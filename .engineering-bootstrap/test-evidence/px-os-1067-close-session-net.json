@@ -1,0 +1,12 @@
+{
+  "gap_id": "PX-OS-1067",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000035972",
+  "session_id": "pxos1067-release-r101-net-20260928",
+  "outcome": "completed",
+  "evidence": [
+    {
+      "reference": ".git/HEAD",
+      "claim": "main pushed to origin: origin/main == HEAD == 57b42338c1e317965a58e8469064d5878d07f0a7 after custody rewrite removed the oversized rebuildable ledger rollup blob (backup branch pxos-backup-r101-pre-rewrite retained)."
+    }
+  ]
+}

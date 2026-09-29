@@ -1,0 +1,12 @@
+{
+  "gap_id": "PX-OS-1067",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000035968",
+  "session_id": "pxos1067-release-r101-20260928",
+  "outcome": "superseded",
+  "evidence": [
+    {
+      "reference": ".engineering-bootstrap/test-evidence/px-os-1067-admit-r101-network.json",
+      "claim": "Network publication effect requires its own admission; re-admitting the session with the full read/write/execute/network effect set after archive_clear and reconcile completed."
+    }
+  ]
+}

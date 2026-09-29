@@ -1,0 +1,12 @@
+{
+  "gap_id": "PX-OS-1067",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000035970",
+  "session_id": "pxos1067-release-r101c-20260928",
+  "outcome": "superseded",
+  "evidence": [
+    {
+      "reference": ".engineering-bootstrap/test-evidence/px-os-1067-admit-r101-net.json",
+      "claim": "The release identity owner requires origin/main sync (a network effect) before the identity stage; superseding the read/write/execute session to run the single-effect network push session first."
+    }
+  ]
+}

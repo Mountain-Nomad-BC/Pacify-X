@@ -1,0 +1,1862 @@
+{
+  "schema_version": "px.pre-candidate-quarantine/1.0",
+  "created_utc": "2026-09-28T02:53:49.304858Z",
+  "actor": "scripts.pre_candidate_hygiene",
+  "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+  "run_id": "pxos103-transient-20260928",
+  "quarantine_root": ".quarantine/pxos103-transient-20260928",
+  "authority": "User-authorized recoverable pre-candidate hygiene; no hard deletion.",
+  "preserved_external_custody": [
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\pacify-x-recovery-quarantine-Ffanp8",
+      "classification": "QUARANTINE_CUSTODY",
+      "owner": "external-tool-or-release-custody",
+      "reason": "Explicit external custody boundary; retained for installed/browser/offline release proof."
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\pacify-x-recovery-quarantine-final133-pre-candidate-20260907",
+      "classification": "QUARANTINE_CUSTODY",
+      "owner": "external-tool-or-release-custody",
+      "reason": "Explicit external custody boundary; retained for installed/browser/offline release proof."
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\pacify-x-recovery-quarantine-final150-generated-cache-20260914",
+      "classification": "QUARANTINE_CUSTODY",
+      "owner": "external-tool-or-release-custody",
+      "reason": "Explicit external custody boundary; retained for installed/browser/offline release proof."
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\pacify-x-recovery-quarantine-XImIpp",
+      "classification": "QUARANTINE_CUSTODY",
+      "owner": "external-tool-or-release-custody",
+      "reason": "Explicit external custody boundary; retained for installed/browser/offline release proof."
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\pacify-x-recovery-quarantine-XImIpp-remainder",
+      "classification": "QUARANTINE_CUSTODY",
+      "owner": "external-tool-or-release-custody",
+      "reason": "Explicit external custody boundary; retained for installed/browser/offline release proof."
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\pacify-x-release-artifacts-0.7.0-final68",
+      "classification": "REGENERABLE_DERIVED_STATE",
+      "owner": "external-tool-or-release-custody",
+      "reason": "Explicit external custody boundary; retained for installed/browser/offline release proof."
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\pacify-x-release-artifacts-0.7.0-final73",
+      "classification": "REGENERABLE_DERIVED_STATE",
+      "owner": "external-tool-or-release-custody",
+      "reason": "Explicit external custody boundary; retained for installed/browser/offline release proof."
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\pacify-x-release-artifacts-0.7.0-final82",
+      "classification": "REGENERABLE_DERIVED_STATE",
+      "owner": "external-tool-or-release-custody",
+      "reason": "Explicit external custody boundary; retained for installed/browser/offline release proof."
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\pacify-x-release-quarantine",
+      "classification": "QUARANTINE_CUSTODY",
+      "owner": "external-tool-or-release-custody",
+      "reason": "Explicit external custody boundary; retained for installed/browser/offline release proof."
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\pacify-x-release-wheelhouse-0.7.0-final68",
+      "classification": "AUTHORITATIVE_STATE",
+      "owner": "external-tool-or-release-custody",
+      "reason": "Explicit external custody boundary; retained for installed/browser/offline release proof."
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\pacify-x-vscode-test-cache",
+      "classification": "REGENERABLE_DERIVED_STATE",
+      "owner": "external-tool-or-release-custody",
+      "reason": "Explicit external custody boundary; retained for installed/browser/offline release proof."
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\pacify-x-vscode-test-cache-incomplete-final163-20260918",
+      "classification": "REGENERABLE_DERIVED_STATE",
+      "owner": "external-tool-or-release-custody",
+      "reason": "Explicit external custody boundary; retained for installed/browser/offline release proof."
+    }
+  ],
+  "records": [
+    {
+      "path": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.pytest_cache",
+      "display_path": ".pytest_cache",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pytest",
+      "reason": "Repository-root pytest tool cache; Git-ignored and outside product custody.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "bf9840ddb9f0a57ebe9d87ca9443e518c893c18e33948ea8ae316542216fc1fb",
+        "entry_count": 8,
+        "file_count": 5,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 618063,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/workspace/.pytest_cache",
+      "timestamp": "2026-09-28T02:53:49.388314Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.engineering-bootstrap\\runtime-core\\cache",
+      "display_path": ".engineering-bootstrap/runtime-core/cache",
+      "classification": "REGENERABLE_DERIVED_STATE",
+      "owner": "runtime-core-cache-owner",
+      "reason": "Content-addressed runtime cache regenerated from authoritative inputs.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "5da7ce8e970c36a96010dc9eee3d3960efa1fd72e0f8e515e19172abe8522b42",
+        "entry_count": 6,
+        "file_count": 5,
+        "directory_count": 1,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1124666,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/workspace/.engineering-bootstrap/runtime-core/cache",
+      "timestamp": "2026-09-28T02:53:49.484249Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\pacify-x-pytest-qj97sski",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\pacify-x-pytest-qj97sski",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "4803fa6045ccda3618e742a1f33acc2fd335a78514375773ec0efebd9818c91d",
+        "entry_count": 3,
+        "file_count": 0,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 0,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/pacify-x-pytest-qj97sski",
+      "timestamp": "2026-09-28T02:53:49.498628Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-0IFpwh",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-0IFpwh",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "12c38d220d466f7e2b54291124618af352ebd80ea7a76807e10acfce01b6cfce",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 2214,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-0IFpwh",
+      "timestamp": "2026-09-28T02:53:49.528457Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-1dntiI",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-1dntiI",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "9d0985ca9ce650d3f168e213ffd5f3fbdc59dbd00fbd255ca11dd9f8a141cbc4",
+        "entry_count": 4,
+        "file_count": 1,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1262,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-1dntiI",
+      "timestamp": "2026-09-28T02:53:49.545028Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-2y6QsZ",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-2y6QsZ",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "f38ed59102e696b6277e3a1f76eb6adb83d07fe148e15a6b9ba28a2d3d7eeeee",
+        "entry_count": 7,
+        "file_count": 3,
+        "directory_count": 4,
+        "reparse_point_count": 0,
+        "total_file_bytes": 4953,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-2y6QsZ",
+      "timestamp": "2026-09-28T02:53:49.573710Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-59vTYB",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-59vTYB",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "d727303ea2c1ff50ec46407c59b83ba129306907a19db3f498cfa42c1cad8e57",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1750,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-59vTYB",
+      "timestamp": "2026-09-28T02:53:49.602481Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-5SyNe0",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-5SyNe0",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "9ef2abb0c6ae3900b8f6750ba7a59e7878e5024590549b5d7061f4e4c43d8c86",
+        "entry_count": 7,
+        "file_count": 3,
+        "directory_count": 4,
+        "reparse_point_count": 0,
+        "total_file_bytes": 4953,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-5SyNe0",
+      "timestamp": "2026-09-28T02:53:49.630518Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-5YGghQ",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-5YGghQ",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "2bb7a548b091bee030d9884cb18d8bf3fbb3bed27c31239ef26069291faaf31b",
+        "entry_count": 4,
+        "file_count": 1,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1262,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-5YGghQ",
+      "timestamp": "2026-09-28T02:53:49.644655Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-823ThO",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-823ThO",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "9c6166e0cfe4020b1d0d60b29e3d94aaadfee011bf32207803a30b7335407377",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 2214,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-823ThO",
+      "timestamp": "2026-09-28T02:53:49.666403Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-8c5Ou4",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-8c5Ou4",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "066e27eab51bcd047df969d8e48224e6d0bc0a19b71117129ce5b7b853fa1496",
+        "entry_count": 4,
+        "file_count": 1,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1262,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-8c5Ou4",
+      "timestamp": "2026-09-28T02:53:49.679910Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-8hhOeO",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-8hhOeO",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "27ea80eb05c48bcf7fdbc6da4b613b584cadfdfee817bcbc224578d2d3ca2664",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1750,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-8hhOeO",
+      "timestamp": "2026-09-28T02:53:49.706042Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-8QRyoG",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-8QRyoG",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "f9cd815d2ddc445b30fe6415efed768d95c514809358f3d87dc1b07a84538f6a",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 2214,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-8QRyoG",
+      "timestamp": "2026-09-28T02:53:49.731472Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-8Wyn9k",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-8Wyn9k",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "b96e7eef4866348ca66fb6b53b239e5618ef3c8add91e229915824044a0fc776",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1750,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-8Wyn9k",
+      "timestamp": "2026-09-28T02:53:49.757131Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-9Fhcq9",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-9Fhcq9",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "03f929664eb5755f84caf35859a4fe65ac22bdf9726d7bc0c2711f4850ed1765",
+        "entry_count": 7,
+        "file_count": 3,
+        "directory_count": 4,
+        "reparse_point_count": 0,
+        "total_file_bytes": 4953,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-9Fhcq9",
+      "timestamp": "2026-09-28T02:53:49.792102Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-9vxtl4",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-9vxtl4",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "3a0ec7c22c71a67d537bb4a99d607cdff171177554b14924b7e4adec0d642ef8",
+        "entry_count": 4,
+        "file_count": 1,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1262,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-9vxtl4",
+      "timestamp": "2026-09-28T02:53:49.807531Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-A4TYJh",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-A4TYJh",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "0b891e167ec58dfef5c886dd4989ff68bd2104df57380ab73bc00fdbec7d6d77",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 2214,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-A4TYJh",
+      "timestamp": "2026-09-28T02:53:49.825244Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-a5A7bY",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-a5A7bY",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "f5edeabf7acf288194d355119884fcb5e7962934405a074b5036d62d0db71d1a",
+        "entry_count": 7,
+        "file_count": 3,
+        "directory_count": 4,
+        "reparse_point_count": 0,
+        "total_file_bytes": 4953,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-a5A7bY",
+      "timestamp": "2026-09-28T02:53:49.865676Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-aTnU2W",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-aTnU2W",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "cddfd14c2a346cca1e292ee76d636af54bd549be3e2f320ffe1d8662b75eb0e6",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1738,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-aTnU2W",
+      "timestamp": "2026-09-28T02:53:49.887295Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-auIgxE",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-auIgxE",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "a10262fb15c02884019fd62a2a8c6183ee7be66e68e7661b4c8b454c1f4332b3",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1738,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-auIgxE",
+      "timestamp": "2026-09-28T02:53:49.915403Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-BsaCJV",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-BsaCJV",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "2b0bb2bf1a67d9435efa3031ca75ac4b521a69b7a7e504056bce79df37c4e626",
+        "entry_count": 7,
+        "file_count": 3,
+        "directory_count": 4,
+        "reparse_point_count": 0,
+        "total_file_bytes": 4953,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-BsaCJV",
+      "timestamp": "2026-09-28T02:53:49.948235Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-c2qWRs",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-c2qWRs",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "12775e974548025269572c43a18817e6d7c729848bd8690e36d820b6ea26e03c",
+        "entry_count": 7,
+        "file_count": 3,
+        "directory_count": 4,
+        "reparse_point_count": 0,
+        "total_file_bytes": 4953,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-c2qWRs",
+      "timestamp": "2026-09-28T02:53:49.985490Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-D4447U",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-D4447U",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "e00ac6457270ba5949047d3cfd853e0d8150f5cf72d20f0a2550a4da351428fe",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1738,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-D4447U",
+      "timestamp": "2026-09-28T02:53:50.013679Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-dT8jJG",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-dT8jJG",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "86ce2558293ea76d268b1adf9601d13fef5b78d2ade90d52ef72b2e47b85fc5b",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1750,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-dT8jJG",
+      "timestamp": "2026-09-28T02:53:50.039483Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-ducJnt",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-ducJnt",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "33139e31416092cf156fe967e866ccd1c9de676e23fd3fc89019beaa74f85ead",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1738,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-ducJnt",
+      "timestamp": "2026-09-28T02:53:50.070882Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-EawBtP",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-EawBtP",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "d89cf85f512b8b78bafde2c341e16630d9fb69b5a1cf7b41a6dbfdd0ecc7857d",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 2214,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-EawBtP",
+      "timestamp": "2026-09-28T02:53:50.101512Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-gCyNT8",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-gCyNT8",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "a5b4e1970b078ba9c2fbf0d04c5ef2f689e93fe9ff44b003d96afec66112d867",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1750,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-gCyNT8",
+      "timestamp": "2026-09-28T02:53:50.127051Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-HH9Zly",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-HH9Zly",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "9ebe756577cbc4c3d4ea08173e5a95cc274cffbfe4438d1e22f34bcbf381809a",
+        "entry_count": 4,
+        "file_count": 1,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1262,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-HH9Zly",
+      "timestamp": "2026-09-28T02:53:50.141421Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-HicAQF",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-HicAQF",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "44b97c8be35a6293501494c9b0a76e8796cfaa265f882bcd7825129fde804fe3",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1750,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-HicAQF",
+      "timestamp": "2026-09-28T02:53:50.172989Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-ir4mJ3",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-ir4mJ3",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "00c722643ab115e7f905158cdf79be54e5691a1c2282910cf76c196ecbb413b4",
+        "entry_count": 7,
+        "file_count": 3,
+        "directory_count": 4,
+        "reparse_point_count": 0,
+        "total_file_bytes": 4953,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-ir4mJ3",
+      "timestamp": "2026-09-28T02:53:50.206769Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-iT6nMY",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-iT6nMY",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "16ee7c0ba007f9218397dbe975e131a12b01cf9a20a36a3f403e46293fc101ce",
+        "entry_count": 7,
+        "file_count": 3,
+        "directory_count": 4,
+        "reparse_point_count": 0,
+        "total_file_bytes": 4953,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-iT6nMY",
+      "timestamp": "2026-09-28T02:53:50.243132Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-jABCww",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-jABCww",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "175e321bf0627d58b2278e8f8afac376a74a3d74306f45668b0855e08626e14c",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1738,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-jABCww",
+      "timestamp": "2026-09-28T02:53:50.268619Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-js6yji",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-js6yji",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "0fb9036539ac6195568407175ecbbf232002c995189daa74a132dd4cb0d126db",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1738,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-js6yji",
+      "timestamp": "2026-09-28T02:53:50.293269Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-jsJi12",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-jsJi12",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "43d317541b0cf5a55feec9f1fb7e8925c991649758dfd24b1f6d9f1333545872",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1738,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-jsJi12",
+      "timestamp": "2026-09-28T02:53:50.324196Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-K7mhCR",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-K7mhCR",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "7be34e1029b9fd32ef290d1aa8c2cc1738b9c588de642f494e03af135fc622d5",
+        "entry_count": 4,
+        "file_count": 1,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1262,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-K7mhCR",
+      "timestamp": "2026-09-28T02:53:50.340596Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-K8rll2",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-K8rll2",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "da0a77af3c19b08f2b4c43798914eecd5bd6f6967313c3e7cb426558e0053498",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 2214,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-K8rll2",
+      "timestamp": "2026-09-28T02:53:50.364382Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-kJA6k8",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-kJA6k8",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "975c29ee9919d3364eee58311a17715bbdd9602725ee8012fcfbc4277ed77f6e",
+        "entry_count": 4,
+        "file_count": 1,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1262,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-kJA6k8",
+      "timestamp": "2026-09-28T02:53:50.378837Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-klrYDx",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-klrYDx",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "2c6c3ce003537166d079d82a05767dcf067dd94dabdfaa588fd0830032a9e2b1",
+        "entry_count": 4,
+        "file_count": 1,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1262,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-klrYDx",
+      "timestamp": "2026-09-28T02:53:50.393495Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-kzzyBQ",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-kzzyBQ",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "464987874455cb457711bcfa036cec94ecea0e0a88311a9c72124a943887ba34",
+        "entry_count": 4,
+        "file_count": 1,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1262,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-kzzyBQ",
+      "timestamp": "2026-09-28T02:53:50.408872Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-lCwXIv",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-lCwXIv",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "175eec1e3e7a19b352de6cc0c81dd1a6eca6be2dde5c242cea7c4c049bfb7f03",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 2214,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-lCwXIv",
+      "timestamp": "2026-09-28T02:53:50.435906Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-lTp61E",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-lTp61E",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "d94330ca8eba555b81112078e86f03cff6a3f138dac1d2f1aa6aec93c3257390",
+        "entry_count": 7,
+        "file_count": 3,
+        "directory_count": 4,
+        "reparse_point_count": 0,
+        "total_file_bytes": 4953,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-lTp61E",
+      "timestamp": "2026-09-28T02:53:50.469050Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-lyl1Wx",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-lyl1Wx",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "fc247f2f32d147e66df4f23368f4f17210508b6dce5ebc118d70bebbf7b8ac49",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1750,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-lyl1Wx",
+      "timestamp": "2026-09-28T02:53:50.496368Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-mHA5Jl",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-mHA5Jl",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "27d2eaa546cef414cc49fc98e81b5e1f09fb5b15892af143e149e5ca1a5de235",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1738,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-mHA5Jl",
+      "timestamp": "2026-09-28T02:53:50.520197Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-N3frcL",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-N3frcL",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "c050a55dd959bf466e2cbe89671cc1af23e307a091db943b052d0a921845f526",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 2214,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-N3frcL",
+      "timestamp": "2026-09-28T02:53:50.549665Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-NJoR0B",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-NJoR0B",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "e03fbd0884a1127332fb7dc0a838e2c861652a3228b3af5a687d9f982fd01da7",
+        "entry_count": 7,
+        "file_count": 3,
+        "directory_count": 4,
+        "reparse_point_count": 0,
+        "total_file_bytes": 4953,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-NJoR0B",
+      "timestamp": "2026-09-28T02:53:50.582173Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-ob1544",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-ob1544",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "e353adc9815622558a46f26588eb9e4cbeef2cd1074f2489d8ca7f88efdeec05",
+        "entry_count": 7,
+        "file_count": 3,
+        "directory_count": 4,
+        "reparse_point_count": 0,
+        "total_file_bytes": 4953,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-ob1544",
+      "timestamp": "2026-09-28T02:53:50.613034Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-OEYpDl",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-OEYpDl",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "a2851aab8f853128b81432fa6856c54a33feaba3043e36dd4013f7fa575e57cd",
+        "entry_count": 4,
+        "file_count": 1,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1262,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-OEYpDl",
+      "timestamp": "2026-09-28T02:53:50.628430Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-PH7dqS",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-PH7dqS",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "26b23d29e5afb309e6d3c1c4eacb7087e98341fdfa40977abff2e4d015fd3f6d",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1750,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-PH7dqS",
+      "timestamp": "2026-09-28T02:53:50.646627Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-poqQyP",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-poqQyP",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "9e9481f3184d5b2055a28913ba115367de64347395a97d9cc073e117844ee5d5",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1750,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-poqQyP",
+      "timestamp": "2026-09-28T02:53:50.672874Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-QKXtye",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-QKXtye",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "88f2d76c57f8de9404e1f5aed845a297b3daf1fdff1fe026c61a4715070637d1",
+        "entry_count": 7,
+        "file_count": 3,
+        "directory_count": 4,
+        "reparse_point_count": 0,
+        "total_file_bytes": 4953,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-QKXtye",
+      "timestamp": "2026-09-28T02:53:50.708377Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-QLkPDE",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-QLkPDE",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "8d408520085d97e90c3408571fcb1c60c638cc4be0c7e2da50c7979f56c6561d",
+        "entry_count": 4,
+        "file_count": 1,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1262,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-QLkPDE",
+      "timestamp": "2026-09-28T02:53:50.724347Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-Qwezxv",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-Qwezxv",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "4b9f32c3857fd6a9fed739106fa193cccbb404b6df3325f51f5a5135e540f8d8",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 2214,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-Qwezxv",
+      "timestamp": "2026-09-28T02:53:50.753620Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-RBzAdO",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-RBzAdO",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "07ced6ec1b60fcb44100ac90ee2e849a9096be6e6f66648fbaaed82b08d9235c",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 2214,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-RBzAdO",
+      "timestamp": "2026-09-28T02:53:50.780969Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-rFAOkL",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-rFAOkL",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "1a3584679786f90b16ce8a2a5716e8f38e71979949ae2d7c1cfc8af6fdfe99c6",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1750,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-rFAOkL",
+      "timestamp": "2026-09-28T02:53:50.809120Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-SfjA6O",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-SfjA6O",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "500c05d7f29768588b4e428e055e088775a79499759538230347dbd97d855a99",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1738,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-SfjA6O",
+      "timestamp": "2026-09-28T02:53:50.835707Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-sHPv9z",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-sHPv9z",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "51b91f7707dd84625ec8152198223d6dc8b5dcb41847668851bd5283e5715d02",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1750,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-sHPv9z",
+      "timestamp": "2026-09-28T02:53:50.861622Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-Sk3iuX",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-Sk3iuX",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "8b5e6ef360afed76eaa74bbf35610aa4f6af7a2d346446a4d11348cf2ebf11dd",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1738,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-Sk3iuX",
+      "timestamp": "2026-09-28T02:53:50.883628Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-Tnuu1D",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-Tnuu1D",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "60bae51bf053c545e3f38a474a6161a038b328d6d6e1e3c8bb4f7735f701e48c",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1738,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-Tnuu1D",
+      "timestamp": "2026-09-28T02:53:50.906354Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-TqDupB",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-TqDupB",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "ba9d80be1878f14b7f445e4a6dfedc5534333e8562983ce63296b40b798c7687",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1738,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-TqDupB",
+      "timestamp": "2026-09-28T02:53:50.929379Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-uA5poj",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-uA5poj",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "a674a09ba69722a9d9d4ca386a607d88115d5dd79391bb79fd096d84cc11dd84",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1750,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-uA5poj",
+      "timestamp": "2026-09-28T02:53:50.957812Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-ULbPIk",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-ULbPIk",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "dfdce37ff6212c68805da9b8228a106967f74be6836d12dac0d11bd30eeb1d37",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1750,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-ULbPIk",
+      "timestamp": "2026-09-28T02:53:50.987070Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-Vfg6nI",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-Vfg6nI",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "1c4149bf0a9281cb0e59eed1722d2b4c8a7e5d79a8479e894ae55d4f7d1783f8",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 2214,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-Vfg6nI",
+      "timestamp": "2026-09-28T02:53:51.019957Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-vfpIfu",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-vfpIfu",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "4c97e238fcdab261d55b1fef0ec08eaab492e90b4facca062d67ada830404cb7",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 2214,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-vfpIfu",
+      "timestamp": "2026-09-28T02:53:51.049722Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-VJH92x",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-VJH92x",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "a1e4f23887cbaf541d33f0a4f4895792dc01ee75ebf8e400a961c26539b34419",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 2214,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-VJH92x",
+      "timestamp": "2026-09-28T02:53:51.073914Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-Y5CxBn",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-Y5CxBn",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "218388534370c3e3a52dc83f664c6e47cd6cf6c46a695f431221b368c95f60a4",
+        "entry_count": 7,
+        "file_count": 3,
+        "directory_count": 4,
+        "reparse_point_count": 0,
+        "total_file_bytes": 4953,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-Y5CxBn",
+      "timestamp": "2026-09-28T02:53:51.107921Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-YCyQc7",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-YCyQc7",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "3ae7b333b26cbed0010ebaf36657a3cec6c6059f05e595eb9e944bca4afad836",
+        "entry_count": 4,
+        "file_count": 1,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1262,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-YCyQc7",
+      "timestamp": "2026-09-28T02:53:51.125513Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-Z4Nplt",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-Z4Nplt",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "f7b0ddefad804ee3946c9350e0bdc377a7d9a70486001e63aea2abea7133035c",
+        "entry_count": 4,
+        "file_count": 1,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1262,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-Z4Nplt",
+      "timestamp": "2026-09-28T02:53:51.143995Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-zyMeAD",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-enterprise-zyMeAD",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "45a234b568c02eaefaf3a5364b0b038924bb671bf1b402879849c36da1833702",
+        "entry_count": 5,
+        "file_count": 2,
+        "directory_count": 3,
+        "reparse_point_count": 0,
+        "total_file_bytes": 1738,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-enterprise-zyMeAD",
+      "timestamp": "2026-09-28T02:53:51.170906Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-public-docs-r91",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-public-docs-r91",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "40fb4c7d0d64cc19e3f6bb1a80bbed2f65df543cf724a0a610630399a77c0769",
+        "entry_count": 1,
+        "file_count": 0,
+        "directory_count": 1,
+        "reparse_point_count": 0,
+        "total_file_bytes": 0,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-public-docs-r91",
+      "timestamp": "2026-09-28T02:53:51.181891Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-public-docs-r91b",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\px-public-docs-r91b",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "40fb4c7d0d64cc19e3f6bb1a80bbed2f65df543cf724a0a610630399a77c0769",
+        "entry_count": 1,
+        "file_count": 0,
+        "directory_count": 1,
+        "reparse_point_count": 0,
+        "total_file_bytes": 0,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/px-public-docs-r91b",
+      "timestamp": "2026-09-28T02:53:51.191313Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\pytest-of-Ben",
+      "display_path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\pytest-of-Ben",
+      "classification": "DISPOSABLE_CERTIFICATION_TRANSIENT",
+      "owner": "pacify-x-external-test-owner",
+      "reason": "Terminal Pacify-X test workspace beneath the explicit system TEMP root.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "40fb4c7d0d64cc19e3f6bb1a80bbed2f65df543cf724a0a610630399a77c0769",
+        "entry_count": 1,
+        "file_count": 0,
+        "directory_count": 1,
+        "reparse_point_count": 0,
+        "total_file_bytes": 0,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos103-transient-20260928/external-temp/pytest-of-Ben",
+      "timestamp": "2026-09-28T02:53:51.200743Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    }
+  ],
+  "valid": true,
+  "completed_utc": "2026-09-28T02:53:51.208985Z"
+}

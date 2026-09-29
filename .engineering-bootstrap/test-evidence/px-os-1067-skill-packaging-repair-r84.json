@@ -1,0 +1,21 @@
+{
+  "checks": {
+    "provider_route_index": true,
+    "skill_packaging_projection": true,
+    "source_archive_errors": [],
+    "source_archive_manifest": true
+  },
+  "current_source_hashes": {
+    "pyproject.toml": "8cf4c499487a44fe7a381465c4cfbe70af42f31417139192b78c29dacbe2fcaf",
+    "runtime\\generated_artifacts.py": "6b3941b408dac65981c963d2cb372969b0f8a79b2cf0b8481f58ced8dcd7c735",
+    "tests\\test_generated_artifacts.py": "e5e28576bfacd5510d6bfb70353dca24fd1f1d64444e94eb2bd2bc8b1426d986"
+  },
+  "deferred_generated_projections": [
+    "test_group_index",
+    "artifact_reachability"
+  ],
+  "finding": "PX-OS-1067/current-skill-packaging-projection",
+  "governed_execution_placement_receipt": ".engineering-bootstrap/test-evidence/sections/execution-placement.json",
+  "schema_version": "px.focused-repair-evidence/1.0",
+  "valid": true
+}

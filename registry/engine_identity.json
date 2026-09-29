@@ -1,6 +1,6 @@
 {
   "authority": "CPU-authoritative exact file bytes; mutable evidence and runtime state excluded.",
-  "file_total": 6020,
+  "file_total": 6021,
   "records": [
     {
       "bytes": 179,
@@ -17873,6 +17873,11 @@
       "sha256": "ce46be259ab8fa1ceb4890cdeaab41a20660a0d3576d96c03a916cb9ffdb0f03"
     },
     {
+      "bytes": 44124,
+      "path": "px/py_cert/scripts/pre_candidate_hygiene.py",
+      "sha256": "ad7ef559fe79b3d820e83ed1e03302847f1d972025119135498a7c5214074041"
+    },
+    {
       "bytes": 9248,
       "path": "px/py_cert/scripts/pre_cert_validator_locked.py",
       "sha256": "de4d302ba61e2faa24669dffc4b1a636afe0f401abf46ed45d58b9e7562aa691"
@@ -17985,7 +17990,7 @@
     {
       "bytes": 452645,
       "path": "registry/artifact_reachability.json",
-      "sha256": "bba4ac175f0431607da4de3a9aac61b8e85d5aa66eab883f2dadcb1503c92192"
+      "sha256": "b4306a7da902800d7449832277810ca09203b1861adea1738667e07cbc433561"
     },
     {
       "bytes": 6555,
@@ -18010,7 +18015,7 @@
     {
       "bytes": 1177,
       "path": "registry/build_claims.json",
-      "sha256": "95875003cbee0ea0dacdd7198eb1a1981fd2f1bc2299dfb5a2731cf37654246d"
+      "sha256": "8f5431cd9c0e09ec9fcd8319d0154685e66203cde43f3db42378bce12a96036d"
     },
     {
       "bytes": 1205,
@@ -18118,9 +18123,9 @@
       "sha256": "2c9c32a46abcbb3c891d46465e993601c5355d95c3769339c9186c319f8e0eec"
     },
     {
-      "bytes": 611922,
+      "bytes": 615647,
       "path": "registry/effect_surface_ownership.json",
-      "sha256": "9ce047585b18955b06af1006e6c268ed203e0b506b866905114fe5c663185e99"
+      "sha256": "5afc10d1a67a99ed4adb580f68a036916e1022c891bcf6fe04aa482289e8bd03"
     },
     {
       "bytes": 6491,
@@ -22965,7 +22970,7 @@
     {
       "bytes": 112512,
       "path": "registry/provider_route_scan.json",
-      "sha256": "39d96aff39821fac41e6d1386d048da74cf77a4755cee8f90426182c31d4ba04"
+      "sha256": "7b4873b699c3642f5ae0eea304af32633c25ac01964b34326976d40318f1eec8"
     },
     {
       "bytes": 266519,
@@ -22973,9 +22978,9 @@
       "sha256": "1b1bd45699c34f136e65e0d506fa1a33987242ba9956f98588d08d908219c84e"
     },
     {
-      "bytes": 475159,
+      "bytes": 475609,
       "path": "registry/python_surface_ownership.json",
-      "sha256": "b6693be65603b444c1241ad37a6050e7d8894e223dd501353e425058b8c12c99"
+      "sha256": "137e3fa34fbcf3263020a5900829a756fb871294f8d38be8065cfc681744937a"
     },
     {
       "bytes": 46731,
@@ -27323,9 +27328,9 @@
       "sha256": "58869f8d2bbdbcab520af8b2f71e3699dccb6332eaf880b8b1117e9725b3dda6"
     },
     {
-      "bytes": 43019,
+      "bytes": 44124,
       "path": "scripts/pre_candidate_hygiene.py",
-      "sha256": "ce3779ddb0032022c3cba25fd17c9b80436baf939bca07fe6555818d2351ccab"
+      "sha256": "ad7ef559fe79b3d820e83ed1e03302847f1d972025119135498a7c5214074041"
     },
     {
       "bytes": 7591,
@@ -30104,5 +30109,5 @@
     }
   ],
   "schema_version": "px.engine-identity/1.0",
-  "tree_sha256": "68eeaac3570e12f454bcc53c463f66c67f7eb24914b2a6b6039d803e45ced72f"
+  "tree_sha256": "790d198455ddea7616fe93e3ab2c2e60c49dd5a0eeb32550916023e6677fb2a4"
 }

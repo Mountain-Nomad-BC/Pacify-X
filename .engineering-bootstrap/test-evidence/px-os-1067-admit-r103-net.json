@@ -1,0 +1,23 @@
+{
+  "gap_id": "PX-OS-1067",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000035966",
+  "session_id": "pxos1067-release-r103-net-20260928",
+  "expires_utc": "2026-09-28T23:00:00Z",
+  "authority": "User authorized completion and rollout of Pacify-X 0.9.0, including publication and deployment.",
+  "expected_effect": "Fetch the published v0.7.0 release tag from the Pacify-X GitHub origin so the pre-candidate hygiene gate can record the prior release tag commit; network scope limited to the Pacify-X GitHub repository origin.",
+  "rollback": "Fetch-only effect; local refs may be pruned afterwards. No remote mutation.",
+  "evidence": [
+    {
+      "reference": ".engineering-bootstrap/test-evidence/px-os-1067-close-session-net.json",
+      "claim": "Prior push session completed; this fetch-only session is separately admitted for the hygiene-gate tag fetch."
+    }
+  ],
+  "effect_scopes": [
+    {
+      "effect": "network",
+      "scope": [
+        "https://github.com/mountain-nomad-bc/pacify-x"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "checks": {
+    "native_skill_packages": {
+      "errors": [],
+      "maximum_candidates": 3,
+      "native_packages": 185,
+      "records": 211,
+      "valid": true
+    },
+    "provider_route_index": {
+      "allowed_gateway": "runtime/provider_gateway.py",
+      "index_current": true,
+      "index_used": true,
+      "scanned_roots": [
+        "runtime",
+        "scripts"
+      ],
+      "schema_version": "px.provider-reachability/1.0",
+      "valid": true,
+      "violation_count": 0,
+      "violations": []
+    },
+    "semantic_capability_index": {
+      "errors": [],
+      "record_count": 185,
+      "revision": "f018bda03da1ab49b937c1108223085b4917e94ff14351758e42d47fa4ab1e5f",
+      "valid": true
+    }
+  },
+  "finding": "PX-OS-1067/current-generated-index-coverage",
+  "schema_version": "px.focused-repair-evidence/1.0",
+  "source_files": {
+    ".px\\skills\\operate-self-diagnostics\\SKILL.md": "3b72a74d7b580f8ed0c91d5c95c5fc49a9447875aee2fdd9fb72565985d9b30c",
+    "runtime\\generated_artifacts.py": "a50af90e4c5725916316630d5f6a95954e901ac4ab1bf431445e2adbd6523670",
+    "tests\\test_generated_artifacts.py": "1c3a192bf4d3a2625e596b670da0a9941ac1997dbe389ee09d301fbf2c666aaa"
+  },
+  "valid": true
+}

@@ -1,0 +1,12 @@
+{
+  "gap_id": "PX-OS-1067",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000035976",
+  "session_id": "pxos1067-release-r103-net-20260928",
+  "outcome": "superseded",
+  "evidence": [
+    {
+      "reference": "evidence/release/pxos103-campaign-report.json",
+      "claim": "The r103 automation driver owns its own per-stage sessions; the standalone network session is superseded before execute-all."
+    }
+  ]
+}

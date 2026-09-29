@@ -2,7 +2,7 @@
   "schema_version": "px.closure-atlas/1",
   "metadata": {
     "basis": "supplied snapshot + preserved historical semantic IDs",
-    "source_inventory_sha256": "3d0f596d39ac862bb2d2306d565f32699b1e9f0a3b8d4621326c4c3c0065e9a8",
+    "source_inventory_sha256": "59833a9b76dcec1fa03f2f1ed9e25462de6c4b0d9923fc0cdc59af4443408955",
     "baseline_graph_sha256": "84f6ce6fd8dfbacf8c0ea70992454892a295b12b7df0f3504ed7c432792fc6ee",
     "layout_version": "px-lifecycle-seeded-attraction/1",
     "scope": "Refresh of file bytes/static imports and presentation, not a completed semantic re-audit of every claim or the live repository.",
@@ -5549,7 +5549,7 @@
       "position": [
         137.1618,
         -155.7536,
-        -60.3785
+        -60.3784
       ],
       "metrics": {
         "degree": 3,
@@ -35092,7 +35092,7 @@
       "repair_findings": [],
       "position": [
         -367.9214,
-        2.4549,
+        2.455,
         -127.1194
       ],
       "metrics": {
@@ -37840,7 +37840,7 @@
       "repair_findings": [],
       "position": [
         -59.8685,
-        1.4059,
+        1.406,
         48.1436
       ],
       "metrics": {
@@ -124008,6 +124008,28 @@
       ]
     },
     {
+      "id": "file:px/py_cert/scripts/pre_candidate_hygiene.py",
+      "title": "px/py_cert/scripts/pre_candidate_hygiene.py",
+      "path": "px/py_cert/scripts/pre_candidate_hygiene.py",
+      "layer": "host",
+      "kind": "file",
+      "sha256": "ad7ef559fe79b3d820e83ed1e03302847f1d972025119135498a7c5214074041",
+      "bytes": 44124,
+      "evidence_level": "source-supported",
+      "currentness": "snapshot-bytes",
+      "purpose": "Inventoried file; imports are static references, not executed calls.",
+      "resource_tags": [],
+      "runtime_observed": false,
+      "certified": false,
+      "note": null,
+      "repair_findings": [],
+      "position": [
+        -214.0445,
+        -228.4053,
+        78.1513
+      ]
+    },
+    {
       "id": "file:px/py_cert/scripts/pre_cert_validator_locked.py",
       "title": "px/py_cert/scripts/pre_cert_validator_locked.py",
       "path": "px/py_cert/scripts/pre_cert_validator_locked.py",
@@ -124145,8 +124167,8 @@
       "path": "px/py_cert/scripts/run_release_candidate.py",
       "layer": "release",
       "kind": "file",
-      "sha256": "6616dd28cc2a536ea2938f1983ef2b05a5c1069083d3098d646b0d127930e5a0",
-      "bytes": 70030,
+      "sha256": "e9b5abbf3cc2e2e0698ca80718ccfe6a0a3ec64c9289b5fb6596470eaa95bba4",
+      "bytes": 70337,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -124189,8 +124211,8 @@
       "path": "px/py_cert/scripts/run_release_stage_owner.py",
       "layer": "release",
       "kind": "file",
-      "sha256": "aaad927185e03c245c69bb5f04713594d367236a28da65650204d7a847799ef1",
-      "bytes": 59862,
+      "sha256": "7095f07a03b37aa73ee92bf11d0a28c006e743ea6bb5f71c04c042d88e27826b",
+      "bytes": 63131,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -124482,7 +124504,7 @@
       "path": "registry/artifact_reachability.json",
       "layer": "host",
       "kind": "file",
-      "sha256": "a3530b044bead29772a9734dedb3e77e21bf82149c82e6b79fa034f4b06222da",
+      "sha256": "b4306a7da902800d7449832277810ca09203b1861adea1738667e07cbc433561",
       "bytes": 452645,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
@@ -124592,7 +124614,7 @@
       "path": "registry/build_claims.json",
       "layer": "scope",
       "kind": "file",
-      "sha256": "95875003cbee0ea0dacdd7198eb1a1981fd2f1bc2299dfb5a2731cf37654246d",
+      "sha256": "8f5431cd9c0e09ec9fcd8319d0154685e66203cde43f3db42378bce12a96036d",
       "bytes": 1177,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
@@ -125098,8 +125120,8 @@
       "path": "registry/effect_surface_ownership.json",
       "layer": "host",
       "kind": "file",
-      "sha256": "1d7ceb3883b5ee908af103af629720772220ab5a699dd9b70d63392467dac35c",
-      "bytes": 611922,
+      "sha256": "5afc10d1a67a99ed4adb580f68a036916e1022c891bcf6fe04aa482289e8bd03",
+      "bytes": 615647,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -125127,8 +125149,8 @@
       "path": "registry/engine_identity.json",
       "layer": "host",
       "kind": "file",
-      "sha256": "83014685e8b6e855e347e4438fac56734035a3120b9d1ac70186594e752af35b",
-      "bytes": 1185838,
+      "sha256": "acf43871d35973313155a9febd437b5ff0ce9a733cdad37ab109fcbc07efca40",
+      "bytes": 1187247,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -126513,7 +126535,7 @@
       "path": "registry/provider_route_scan.json",
       "layer": "discovery",
       "kind": "file",
-      "sha256": "a921e99224df573eae1a4a48907b2cc3f5e22f269c0e2b9f1d2fb8222c033413",
+      "sha256": "7b4873b699c3642f5ae0eea304af32633c25ac01964b34326976d40318f1eec8",
       "bytes": 112512,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
@@ -126564,8 +126586,8 @@
       "path": "registry/python_surface_ownership.json",
       "layer": "host",
       "kind": "file",
-      "sha256": "88fd1fc49e42f753df84c6d48e1b20c3b48caf79eb9ed935b1eb674d1dffbe56",
-      "bytes": 475159,
+      "sha256": "137e3fa34fbcf3263020a5900829a756fb871294f8d38be8065cfc681744937a",
+      "bytes": 475609,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -135496,8 +135518,8 @@
       "path": "registry/test_group_index.json",
       "layer": "evidence",
       "kind": "file",
-      "sha256": "3baf5e1c1841c880ab0da868be4e55b6a6f99a1755b67f0d4d383ec1846b8d61",
-      "bytes": 763379,
+      "sha256": "2a8ca96189e9412807ddc05a31156055d5c26f871b9f5bc874a09b6ad5dd329c",
+      "bytes": 764293,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -145896,8 +145918,8 @@
       "path": "scripts/pre_candidate_hygiene.py",
       "layer": "durability",
       "kind": "file",
-      "sha256": "ce3779ddb0032022c3cba25fd17c9b80436baf939bca07fe6555818d2351ccab",
-      "bytes": 43019,
+      "sha256": "ad7ef559fe79b3d820e83ed1e03302847f1d972025119135498a7c5214074041",
+      "bytes": 44124,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -146578,8 +146600,8 @@
       "path": "scripts/run_release_candidate.py",
       "layer": "release",
       "kind": "file",
-      "sha256": "6616dd28cc2a536ea2938f1983ef2b05a5c1069083d3098d646b0d127930e5a0",
-      "bytes": 70030,
+      "sha256": "e9b5abbf3cc2e2e0698ca80718ccfe6a0a3ec64c9289b5fb6596470eaa95bba4",
+      "bytes": 70337,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -146644,8 +146666,8 @@
       "path": "scripts/run_release_stage_owner.py",
       "layer": "release",
       "kind": "file",
-      "sha256": "2798b49d0f298533eecae4de87d4261d705bb27cc1286c1940530c393b23796f",
-      "bytes": 59723,
+      "sha256": "7095f07a03b37aa73ee92bf11d0a28c006e743ea6bb5f71c04c042d88e27826b",
+      "bytes": 63131,
       "evidence_level": "source-supported",
       "currentness": "snapshot-bytes",
       "purpose": "Inventoried file; imports are static references, not executed calls.",
@@ -165555,7 +165577,7 @@
       "curve_control": [
         193.9323,
         -118.0447,
-        -112.9991
+        -112.999
       ]
     },
     {
@@ -188874,7 +188896,7 @@
       "certified": false,
       "curve_control": [
         -197.0264,
-        -2.3728,
+        -2.3727,
         -59.8686
       ]
     },
@@ -189213,7 +189235,7 @@
       "certified": false,
       "curve_control": [
         -376.026,
-        37.7966,
+        37.7967,
         -148.9776
       ]
     },
@@ -203010,6 +203032,177 @@
       ]
     },
     {
+      "id": "I:4e7104e65f8413a4680d2c13",
+      "source": "file:px/py_cert/scripts/pre_candidate_hygiene.py",
+      "target": "file:runtime/release_campaign.py",
+      "kind": "imports",
+      "verb": "imports (not proof of execution)",
+      "evidence_level": "source-supported",
+      "currentness": "snapshot-bytes",
+      "source_anchor": {
+        "path": "px/py_cert/scripts/pre_candidate_hygiene.py",
+        "line": 194
+      },
+      "layout_weight": 1.0,
+      "curve_control": [
+        -22.3759,
+        -230.8535,
+        19.7078
+      ]
+    },
+    {
+      "id": "I:026a6c1a88140e1544529513",
+      "source": "file:px/py_cert/scripts/pre_candidate_hygiene.py",
+      "target": "file:runtime/bounded_walk.py",
+      "kind": "imports",
+      "verb": "imports (not proof of execution)",
+      "evidence_level": "source-supported",
+      "currentness": "snapshot-bytes",
+      "source_anchor": {
+        "path": "px/py_cert/scripts/pre_candidate_hygiene.py",
+        "line": 360
+      },
+      "layout_weight": 1.0,
+      "curve_control": [
+        -302.8114,
+        -60.4853,
+        -12.1767
+      ]
+    },
+    {
+      "id": "I:4e97f09231c4e5725a2ccc87",
+      "source": "file:px/py_cert/scripts/pre_candidate_hygiene.py",
+      "target": "file:runtime/repository_scope.py",
+      "kind": "imports",
+      "verb": "imports (not proof of execution)",
+      "evidence_level": "source-supported",
+      "currentness": "snapshot-bytes",
+      "source_anchor": {
+        "path": "px/py_cert/scripts/pre_candidate_hygiene.py",
+        "line": 361
+      },
+      "layout_weight": 1.0,
+      "curve_control": [
+        44.9865,
+        -108.3108,
+        116.3835
+      ]
+    },
+    {
+      "id": "I:e89be3e82aabd66897d7daf6",
+      "source": "file:px/py_cert/scripts/pre_candidate_hygiene.py",
+      "target": "file:runtime/resource_lifecycle.py",
+      "kind": "imports",
+      "verb": "imports (not proof of execution)",
+      "evidence_level": "source-supported",
+      "currentness": "snapshot-bytes",
+      "source_anchor": {
+        "path": "px/py_cert/scripts/pre_candidate_hygiene.py",
+        "line": 672
+      },
+      "layout_weight": 1.0,
+      "curve_control": [
+        113.3173,
+        -159.5626,
+        44.5097
+      ]
+    },
+    {
+      "id": "I:3e5c640c682d2091604da9f2",
+      "source": "file:px/py_cert/scripts/pre_candidate_hygiene.py",
+      "target": "file:runtime/release_artifacts.py",
+      "kind": "imports",
+      "verb": "imports (not proof of execution)",
+      "evidence_level": "source-supported",
+      "currentness": "snapshot-bytes",
+      "source_anchor": {
+        "path": "px/py_cert/scripts/pre_candidate_hygiene.py",
+        "line": 717
+      },
+      "layout_weight": 1.0,
+      "curve_control": [
+        -22.0564,
+        -144.1102,
+        -24.3912
+      ]
+    },
+    {
+      "id": "I:5cc494032eb984c753ac2e46",
+      "source": "file:px/py_cert/scripts/pre_candidate_hygiene.py",
+      "target": "file:runtime/release_audit.py",
+      "kind": "imports",
+      "verb": "imports (not proof of execution)",
+      "evidence_level": "source-supported",
+      "currentness": "snapshot-bytes",
+      "source_anchor": {
+        "path": "px/py_cert/scripts/pre_candidate_hygiene.py",
+        "line": 718
+      },
+      "layout_weight": 1.0,
+      "curve_control": [
+        164.8127,
+        -76.4103,
+        115.4283
+      ]
+    },
+    {
+      "id": "I:5c41e96aecf5f35dc5a9b58f",
+      "source": "file:px/py_cert/scripts/pre_candidate_hygiene.py",
+      "target": "file:runtime/test_profiles.py",
+      "kind": "imports",
+      "verb": "imports (not proof of execution)",
+      "evidence_level": "source-supported",
+      "currentness": "snapshot-bytes",
+      "source_anchor": {
+        "path": "px/py_cert/scripts/pre_candidate_hygiene.py",
+        "line": 721
+      },
+      "layout_weight": 1.0,
+      "curve_control": [
+        140.9917,
+        -105.6216,
+        152.4236
+      ]
+    },
+    {
+      "id": "I:fc2f352e6352451a88233177",
+      "source": "file:px/py_cert/scripts/pre_candidate_hygiene.py",
+      "target": "file:runtime/verification_status.py",
+      "kind": "imports",
+      "verb": "imports (not proof of execution)",
+      "evidence_level": "source-supported",
+      "currentness": "snapshot-bytes",
+      "source_anchor": {
+        "path": "px/py_cert/scripts/pre_candidate_hygiene.py",
+        "line": 722
+      },
+      "layout_weight": 1.0,
+      "curve_control": [
+        100.5159,
+        -136.7797,
+        144.9273
+      ]
+    },
+    {
+      "id": "I:f676551bec02628dbc6327d0",
+      "source": "file:px/py_cert/scripts/pre_candidate_hygiene.py",
+      "target": "file:scripts/run_release_stage_owner.py",
+      "kind": "imports",
+      "verb": "imports (not proof of execution)",
+      "evidence_level": "source-supported",
+      "currentness": "snapshot-bytes",
+      "source_anchor": {
+        "path": "px/py_cert/scripts/pre_candidate_hygiene.py",
+        "line": 757
+      },
+      "layout_weight": 1.0,
+      "curve_control": [
+        46.9827,
+        -148.8696,
+        14.1302
+      ]
+    },
+    {
       "id": "I:f1a88650d49f101aed42e097",
       "source": "file:px/py_cert/scripts/reconcile_cohesion_cards.py",
       "target": "file:runtime/wal_transaction.py",
@@ -203418,13 +203611,32 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "px/py_cert/scripts/run_release_candidate.py",
-        "line": 1302
+        "line": 1310
       },
       "layout_weight": 1.0,
       "curve_control": [
         287.7115,
         -100.1611,
         46.1737
+      ]
+    },
+    {
+      "id": "I:a581a290eb6786b43c6e7a65",
+      "source": "file:px/py_cert/scripts/run_release_candidate.py",
+      "target": "file:scripts/run_release_stage_owner.py",
+      "kind": "imports",
+      "verb": "imports (not proof of execution)",
+      "evidence_level": "source-supported",
+      "currentness": "snapshot-bytes",
+      "source_anchor": {
+        "path": "px/py_cert/scripts/run_release_candidate.py",
+        "line": 546
+      },
+      "layout_weight": 1.0,
+      "curve_control": [
+        287.4534,
+        -147.1633,
+        -53.0763
       ]
     },
     {
@@ -203437,7 +203649,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "px/py_cert/scripts/run_release_candidate.py",
-        "line": 1000
+        "line": 1008
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -203456,7 +203668,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "px/py_cert/scripts/run_release_candidate.py",
-        "line": 1172
+        "line": 1180
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -203627,7 +203839,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "px/py_cert/scripts/run_release_stage_owner.py",
-        "line": 1031
+        "line": 1035
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -203646,7 +203858,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "px/py_cert/scripts/run_release_stage_owner.py",
-        "line": 1136
+        "line": 1152
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -203665,32 +203877,13 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "px/py_cert/scripts/run_release_stage_owner.py",
-        "line": 1137
+        "line": 1153
       },
       "layout_weight": 1.0,
       "curve_control": [
         168.5335,
         -87.6057,
         -96.2362
-      ]
-    },
-    {
-      "id": "I:c9281757d832910d248a4750",
-      "source": "file:px/py_cert/scripts/run_release_stage_owner.py",
-      "target": "file:scripts/clean_source_export.py",
-      "kind": "imports",
-      "verb": "imports (not proof of execution)",
-      "evidence_level": "source-supported",
-      "currentness": "snapshot-bytes",
-      "source_anchor": {
-        "path": "px/py_cert/scripts/run_release_stage_owner.py",
-        "line": 1138
-      },
-      "layout_weight": 1.0,
-      "curve_control": [
-        -16.3122,
-        8.6022,
-        -140.519
       ]
     },
     {
@@ -226826,7 +227019,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "scripts/pre_candidate_hygiene.py",
-        "line": 716
+        "line": 717
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -226845,7 +227038,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "scripts/pre_candidate_hygiene.py",
-        "line": 717
+        "line": 718
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -226864,7 +227057,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "scripts/pre_candidate_hygiene.py",
-        "line": 720
+        "line": 721
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -226883,13 +227076,32 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "scripts/pre_candidate_hygiene.py",
-        "line": 721
+        "line": 722
       },
       "layout_weight": 1.0,
       "curve_control": [
         376.1118,
         -108.0025,
         175.6257
+      ]
+    },
+    {
+      "id": "I:353d4bcd1337662be0fbadae",
+      "source": "file:scripts/pre_candidate_hygiene.py",
+      "target": "file:scripts/run_release_stage_owner.py",
+      "kind": "imports",
+      "verb": "imports (not proof of execution)",
+      "evidence_level": "source-supported",
+      "currentness": "snapshot-bytes",
+      "source_anchor": {
+        "path": "scripts/pre_candidate_hygiene.py",
+        "line": 757
+      },
+      "layout_weight": 1.0,
+      "curve_control": [
+        322.5786,
+        -120.0924,
+        44.8286
       ]
     },
     {
@@ -227662,13 +227874,32 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "scripts/run_release_candidate.py",
-        "line": 1302
+        "line": 1310
       },
       "layout_weight": 1.0,
       "curve_control": [
         302.2553,
         -7.8206,
         43.6404
+      ]
+    },
+    {
+      "id": "I:d10a89217d1eaddf16a2d87f",
+      "source": "file:scripts/run_release_candidate.py",
+      "target": "file:scripts/run_release_stage_owner.py",
+      "kind": "imports",
+      "verb": "imports (not proof of execution)",
+      "evidence_level": "source-supported",
+      "currentness": "snapshot-bytes",
+      "source_anchor": {
+        "path": "scripts/run_release_candidate.py",
+        "line": 546
+      },
+      "layout_weight": 1.0,
+      "curve_control": [
+        301.9971,
+        -54.8229,
+        -55.6096
       ]
     },
     {
@@ -227681,7 +227912,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "scripts/run_release_candidate.py",
-        "line": 1000
+        "line": 1008
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -227700,7 +227931,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "scripts/run_release_candidate.py",
-        "line": 1172
+        "line": 1180
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -227871,7 +228102,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "scripts/run_release_stage_owner.py",
-        "line": 1031
+        "line": 1035
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -227890,7 +228121,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "scripts/run_release_stage_owner.py",
-        "line": 1136
+        "line": 1152
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -227909,7 +228140,7 @@
       "currentness": "snapshot-bytes",
       "source_anchor": {
         "path": "scripts/run_release_stage_owner.py",
-        "line": 1137
+        "line": 1153
       },
       "layout_weight": 1.0,
       "curve_control": [
@@ -251413,7 +251644,7 @@
       "curve_control": [
         163.9434,
         -99.3084,
-        -118.6062
+        -118.6061
       ]
     },
     {
@@ -251431,7 +251662,7 @@
       "curve_control": [
         220.5897,
         -71.9849,
-        47.1185
+        47.1186
       ]
     },
     {
@@ -251467,7 +251698,7 @@
       "curve_control": [
         153.5467,
         -107.7844,
-        -93.6561
+        -93.656
       ]
     },
     {
@@ -251485,7 +251716,7 @@
       "curve_control": [
         205.64,
         -184.0251,
-        -51.3598
+        -51.3597
       ]
     },
     {
@@ -268980,7 +269211,7 @@
       "layout_weight": 0.2,
       "curve_control": [
         -72.535,
-        -9.0724,
+        -9.0723,
         10.0482
       ]
     },
@@ -295738,12 +295969,12 @@
   },
   "metrics": {
     "systems": 1077,
-    "files": 5104,
-    "nodes_total": 6181,
+    "files": 5105,
+    "nodes_total": 6182,
     "semantic_relationships": 1626,
-    "static_import_relationships": 2619,
+    "static_import_relationships": 2630,
     "system_file_links": 1439,
-    "edges_total": 5684,
+    "edges_total": 5695,
     "flows": 288,
     "historical_findings": 1834,
     "evidence_anchors": 4432,
@@ -295751,10 +295982,10 @@
       "same-file-bytes": 1934,
       "changed-file": 2498
     },
-    "source_bytes": 58125753,
+    "source_bytes": 58184771,
     "source_exclusions": 31,
     "source_parse_errors": 1,
-    "unresolved_import_records": 6779,
+    "unresolved_import_records": 6799,
     "system_isolates": [
       "cleanupreceiptredactor",
       "contractidrewrite",

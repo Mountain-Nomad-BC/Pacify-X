@@ -1,0 +1,31 @@
+{
+    "schema_version":  "px.focused-repair-evidence/1.0",
+    "revision":  "0.9.0",
+    "remaining":  [
+                      "retained test bytecode must move to quarantine",
+                      "generated projections are frozen until intake closure and repair freeze",
+                      "installed wheel and full profile require post-freeze run"
+                  ],
+    "checks":  [
+                   {
+                       "duration_seconds":  243.25,
+                       "exit_code":  0,
+                       "result":  "200 passed, 1 expected duplicate ZIP fixture warning",
+                       "name":  "release-build-affected-group",
+                       "passed":  true
+                   },
+                   {
+                       "exit_code":  0,
+                       "result":  "13 passed",
+                       "name":  "public-release-documentation",
+                       "passed":  true
+                   },
+                   {
+                       "exit_code":  0,
+                       "result":  "ruff all checks passed",
+                       "name":  "edited-python-lint",
+                       "passed":  true
+                   }
+               ],
+    "gap_id":  "PX-OS-1067"
+}

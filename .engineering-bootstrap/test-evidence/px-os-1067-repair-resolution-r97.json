@@ -1,0 +1,55 @@
+{
+  "schema_version": "px.repair-resolution/1.0",
+  "recorded_utc": "2026-09-27T21:30:00Z",
+  "gap_id": "PX-OS-1067",
+  "session_id": "pxos1067-release-r97-20260927",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000035965",
+  "scope": "Resolution of the five r95 full-profile failure findings with focused causal evidence. Generated projections remain intentionally stale until the single authorized post-freeze reconciliation.",
+  "focused_commands": [
+    {
+      "command": "python -m pytest -q -p no:cacheprovider tests/test_declared_capability_recovery.py tests/test_external_audit_disposition.py tests/test_typed_operational_surface_inventory.py tests/test_model_fabric_end_to_end.py tests/test_release_invariants.py tests/test_release_candidate_driver.py tests/test_release_stage_owner.py",
+      "result": "81 passed, 260 subtests passed",
+      "environment_note": "Git cmd directory prepended to PATH so test_release_candidate_driver's git check-ignore subprocess resolves."
+    }
+  ],
+  "finding_resolutions": [
+    {
+      "finding_id": "PX-OS-1067/full-r95-exact-installed",
+      "cause": "test_every_python_file_is_owned_classified_and_validation_bound asserted every Python file parses, but tests/fixtures/semantic_code/python_project/broken.py is intentionally invalid.",
+      "repair": "Test now requires exactly that one invalid fixture and every other file valid (tests/test_exact_tool_certification.py lines 113-127).",
+      "residual": "The Python ownership map is stale by design until the single authorized reconciliation; recheck after reconciliation."
+    },
+    {
+      "finding_id": "PX-OS-1067/full-r95-core-a-f",
+      "cause": "test_declared_capability_recovery and test_external_audit_disposition could not find historical source evidence.",
+      "repair": "Restored exact files from the parent of Git commit 29f17c1f: evidence/final-intake-assimilation.json, evidence/external-audit-disposition-20260803.json, evidence/team-fabric-integration-dispositions.json. Both named focused tests pass (included in the 81).",
+      "residual": "These three files are ignored by .git/info/exclude and must be force-added before the release commit."
+    },
+    {
+      "finding_id": "PX-OS-1067/full-r95-core-g-m",
+      "cause": "test_graph_authority_manifest found four stale graph revisions; test_model_fabric_end_to_end assumed zero certified profiles and an unadmitted adapter.",
+      "repair": "scripts/clean_source_export.py now calls reconcile_graph_authority_manifest after the graph builders (line 451); the model test now uses a disposable project root and passes.",
+      "residual": "Graph authority manifest becomes current only at the single authorized reconciliation."
+    },
+    {
+     "finding_id": "PX-OS-1067/full-r95-core-n-s",
+      "cause": "Release driver/stage owner tests assumed old identity behavior, a removed final100 config, and the old index gate; the invariant scanner misclassified a pinned llama.cpp origin check; the specialty map missed three active framework skills.",
+      "repair": "tests/test_release_candidate_driver.py 25 passed; tests/test_release_stage_owner.py 32 passed; scripts/verify_release_invariants.py has a narrow exception for that exact origin-check line; scripts/build_specialty_map.py exposes build() and scripts/clean_source_export.py consumes it.",
+      "residual": "Specialty map becomes current only at the single authorized reconciliation."
+    },
+    {
+      "finding_id": "PX-OS-1067/full-r95-core-t-z",
+      "cause": "Typed operational inventory missed two historical evidence files.",
+      "repair": "Restored evidence/operational-gap-ledger/agent-studio-control-revision-20260816.json and evidence/operational-gap-ledger/typed-surface-inventory-20260816.json from the parent of 29f17c1f; test_typed_operational_surface_inventory passes.",
+      "residual": "Both files are ignored by .git/info/exclude and must be force-added before the release commit."
+    }
+  ],
+  "restored_evidence_hashes": {
+    "evidence/final-intake-assimilation.json": "cab197dda45ff3d2866fa9fb155008fcc9cb289fdfe4c00c5ace040a1cbe2604",
+    "evidence/external-audit-disposition-20260803.json": "c3566241de993d8a8999b793b4a72eff65950572464b448a8095cce3df5f93e5",
+    "evidence/team-fabric-integration-dispositions.json": "dd8974a2b2ad267abfadb1affc4ac6ad5a846c2ae5cc989b70b14d9476dbd967",
+    "evidence/operational-gap-ledger/agent-studio-control-revision-20260816.json": "d978207d763e55f4bf3771b9f7fc8086ca60d768347e45f412451ecec3ab957a",
+    "evidence/operational-gap-ledger/typed-surface-inventory-20260816.json": "a19366f37023d4d14d307e6493ff6aed350a03d186538ac1ff2f4d4f96c7f8a4"
+  },
+  "not_claimed": "This is focused causal evidence, not a full-profile pass. Certification still requires the ordered reconciliation, section receipts, one full profile, validation, package, install, installed-system operational test, and certification."
+}

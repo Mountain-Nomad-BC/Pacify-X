@@ -1,0 +1,37 @@
+{
+    "schema_version":  "px.focused-repair-evidence/1.0",
+    "revision":  "0.9.0",
+    "remaining":  [
+                      "generated graph and Python ownership indexes intentionally stale until one post-freeze reconciliation",
+                      "installed-wheel end-to-end must rerun against reconciled source",
+                      "publication docs require alignment before freeze"
+                  ],
+    "checks":  [
+                   {
+                       "exit_code":  0,
+                       "command":  "python -m pytest -q tests/test_evidence_custody.py tests/test_rel008_assimilation.py tests/test_rel009_release.py tests/test_rel011_revocation.py tests/test_release_artifacts.py tests/test_release_certification.py tests/test_release_distribution_controls.py tests/test_release_environment.py tests/test_release_identity_controls.py tests/test_release_supply_chain_evidence.py tests/test_verify_release_publication.py",
+                       "name":  "release-build-affected-group",
+                       "result":  "200 passed, 1 expected duplicate ZIP fixture warning",
+                       "passed":  true
+                   },
+                   {
+                       "exit_code":  0,
+                       "result":  "11 passed",
+                       "name":  "integration-and-skill-packaging",
+                       "passed":  true
+                   },
+                   {
+                       "exit_code":  0,
+                       "result":  "4 passed; historical external custody excluded from current release proof",
+                       "name":  "external-evidence-current-revision",
+                       "passed":  true
+                   },
+                   {
+                       "exit_code":  0,
+                       "result":  "6 chunks passed; receipt requires final refresh after source changes",
+                       "name":  "governed-testing-section",
+                       "passed":  true
+                   }
+               ],
+    "gap_id":  "PX-OS-1067"
+}

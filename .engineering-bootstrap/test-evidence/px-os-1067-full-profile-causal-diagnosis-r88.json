@@ -1,0 +1,29 @@
+{
+  "campaign_id": "pacify-x-certification-20260927-r88-0.9.0",
+  "failed_attempt": ".engineering-bootstrap/test-evidence/px-os-1067-full-profile-failure-r87.json",
+  "issues": {
+    "capture-interruption": [
+      "mutable .audit-visible directory changed during verification_status.structural_scan"
+    ],
+    "exact-installed": [
+      "stale registry/python_surface_ownership.json",
+      "missing evidence/README.md",
+      "installed wheel commissioning failure to diagnose after source restore"
+    ],
+    "release-audit": [
+      "test group source capture includes mutable .audit-visible directory"
+    ],
+    "release-build": [
+      "missing rel008 and historical revocation/certification evidence",
+      "release tests pin 0.7.0 while current source is 0.9.0"
+    ],
+    "structural-adversarial": [
+      "operational-verification receipts counted as product duplicates",
+      "new duplicate digest helper pair unreviewed",
+      "project-management state runtime_version=0.7.0",
+      "assertions assume one ledger authority and exact old digest helper sets"
+    ]
+  },
+  "schema_version": "px.full-profile-causal-diagnosis/1.0",
+  "valid": true
+}

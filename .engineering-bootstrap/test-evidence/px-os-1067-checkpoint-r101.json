@@ -1,0 +1,26 @@
+{
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000035964",
+  "next_action": "Run the single revision/generated-projection reconciliation, make every governed section current, then execute exactly one full profile, validation, package, install, installed-system operational test, and certification in registered order.",
+  "unresolved_branch_gap_ids": [],
+  "active_gap_id": "PX-OS-1067",
+  "learned": "r95 full profile failed five groups; focused repairs made, source generated indexes intentionally stale; user requested complete handoff to another model.",
+  "evidence": [
+    {
+      "reference": ".engineering-bootstrap/test-evidence/px-os-1067-handoff-r96.json",
+      "claim": "Complete handoff report in Downloads records five open repair findings and no release publication.",
+      "artifact_size": 525,
+      "artifact_sha256": "81e9d10c19133f752c37884a9843088d18f8070a506c4765e99b2c9c851ac75d"
+    },
+    {
+      "reference": ".engineering-bootstrap/test-evidence/px-os-1067-full-r100.log",
+      "claim": "r100 full profile failed: stale release-audit group receipt from failed test_live_composed_audit_passes_without_fixed_component_counts caused by recreated runtime/__pycache__ bytecode."
+    },
+    {
+      "reference": ".engineering-bootstrap/test-evidence/px-os-1067-cache-quarantine-r101.json",
+      "claim": "Recreated bytecode quarantined, not hard-deleted; focused release-audit test passes 1/1 after quarantine."
+    }
+  ],
+  "newly_discovered_gap_ids": [],
+  "session_id": "pxos1067-release-r101-20260928",
+  "expires_utc": "2026-09-29T23:00:00Z"
+}

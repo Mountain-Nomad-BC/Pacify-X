@@ -1,0 +1,112 @@
+{
+  "schema_version": "px.pre-candidate-quarantine/1.0",
+  "created_utc": "2026-09-28T14:09:00.809249Z",
+  "actor": "scripts.pre_candidate_hygiene",
+  "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+  "run_id": "pxos104-transient-20260928",
+  "quarantine_root": ".quarantine/pxos104-transient-20260928",
+  "authority": "User-authorized recoverable pre-candidate hygiene; no hard deletion.",
+  "preserved_external_custody": [
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\pacify-x-recovery-quarantine-Ffanp8",
+      "classification": "QUARANTINE_CUSTODY",
+      "owner": "external-tool-or-release-custody",
+      "reason": "Explicit external custody boundary; retained for installed/browser/offline release proof."
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\pacify-x-recovery-quarantine-final133-pre-candidate-20260907",
+      "classification": "QUARANTINE_CUSTODY",
+      "owner": "external-tool-or-release-custody",
+      "reason": "Explicit external custody boundary; retained for installed/browser/offline release proof."
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\pacify-x-recovery-quarantine-final150-generated-cache-20260914",
+      "classification": "QUARANTINE_CUSTODY",
+      "owner": "external-tool-or-release-custody",
+      "reason": "Explicit external custody boundary; retained for installed/browser/offline release proof."
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\pacify-x-recovery-quarantine-XImIpp",
+      "classification": "QUARANTINE_CUSTODY",
+      "owner": "external-tool-or-release-custody",
+      "reason": "Explicit external custody boundary; retained for installed/browser/offline release proof."
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\pacify-x-recovery-quarantine-XImIpp-remainder",
+      "classification": "QUARANTINE_CUSTODY",
+      "owner": "external-tool-or-release-custody",
+      "reason": "Explicit external custody boundary; retained for installed/browser/offline release proof."
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\pacify-x-release-artifacts-0.7.0-final68",
+      "classification": "REGENERABLE_DERIVED_STATE",
+      "owner": "external-tool-or-release-custody",
+      "reason": "Explicit external custody boundary; retained for installed/browser/offline release proof."
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\pacify-x-release-artifacts-0.7.0-final73",
+      "classification": "REGENERABLE_DERIVED_STATE",
+      "owner": "external-tool-or-release-custody",
+      "reason": "Explicit external custody boundary; retained for installed/browser/offline release proof."
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\pacify-x-release-artifacts-0.7.0-final82",
+      "classification": "REGENERABLE_DERIVED_STATE",
+      "owner": "external-tool-or-release-custody",
+      "reason": "Explicit external custody boundary; retained for installed/browser/offline release proof."
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\pacify-x-release-quarantine",
+      "classification": "QUARANTINE_CUSTODY",
+      "owner": "external-tool-or-release-custody",
+      "reason": "Explicit external custody boundary; retained for installed/browser/offline release proof."
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\pacify-x-release-wheelhouse-0.7.0-final68",
+      "classification": "AUTHORITATIVE_STATE",
+      "owner": "external-tool-or-release-custody",
+      "reason": "Explicit external custody boundary; retained for installed/browser/offline release proof."
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\pacify-x-vscode-test-cache",
+      "classification": "REGENERABLE_DERIVED_STATE",
+      "owner": "external-tool-or-release-custody",
+      "reason": "Explicit external custody boundary; retained for installed/browser/offline release proof."
+    },
+    {
+      "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\pacify-x-vscode-test-cache-incomplete-final163-20260918",
+      "classification": "REGENERABLE_DERIVED_STATE",
+      "owner": "external-tool-or-release-custody",
+      "reason": "Explicit external custody boundary; retained for installed/browser/offline release proof."
+    }
+  ],
+  "records": [
+    {
+      "path": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.engineering-bootstrap\\runtime-core\\cache",
+      "display_path": ".engineering-bootstrap/runtime-core/cache",
+      "classification": "REGENERABLE_DERIVED_STATE",
+      "owner": "runtime-core-cache-owner",
+      "reason": "Content-addressed runtime cache regenerated from authoritative inputs.",
+      "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
+      "evidence": {
+        "tree_sha256": "e495161531f6e9a69a405188484afd904a16aa6338be63a87d7d29ed3aa32d10",
+        "entry_count": 2,
+        "file_count": 1,
+        "directory_count": 1,
+        "reparse_point_count": 0,
+        "total_file_bytes": 822657,
+        "reparse_points": []
+      },
+      "cleanup_action": "move_to_root_quarantine",
+      "quarantined_path": ".quarantine/pxos104-transient-20260928/workspace/.engineering-bootstrap/runtime-core/cache",
+      "timestamp": "2026-09-28T14:09:00.847823Z",
+      "cleanup_result": "moved",
+      "resulting_state": {
+        "original_absent": true,
+        "quarantine_matches": true
+      }
+    }
+  ],
+  "valid": true,
+  "completed_utc": "2026-09-28T14:09:00.857911Z"
+}

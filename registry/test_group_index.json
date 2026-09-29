@@ -876,6 +876,23 @@
       "index_state": "verified",
       "sha256": "ce46be259ab8fa1ceb4890cdeaab41a20660a0d3576d96c03a916cb9ffdb0f03"
     },
+    "px/py_cert/scripts/pre_candidate_hygiene.py": {
+      "dependencies": [
+        "conftest.py",
+        "runtime/__init__.py",
+        "runtime/bounded_walk.py",
+        "runtime/release_artifacts.py",
+        "runtime/release_audit.py",
+        "runtime/release_campaign.py",
+        "runtime/repository_scope.py",
+        "runtime/resource_lifecycle.py",
+        "runtime/test_profiles.py",
+        "runtime/verification_status.py",
+        "scripts/run_release_stage_owner.py"
+      ],
+      "index_state": "verified",
+      "sha256": "ad7ef559fe79b3d820e83ed1e03302847f1d972025119135498a7c5214074041"
+    },
     "px/py_cert/scripts/pre_cert_validator_locked.py": {
       "dependencies": [
         "conftest.py"
@@ -5900,10 +5917,11 @@
         "runtime/repository_scope.py",
         "runtime/resource_lifecycle.py",
         "runtime/test_profiles.py",
-        "runtime/verification_status.py"
+        "runtime/verification_status.py",
+        "scripts/run_release_stage_owner.py"
       ],
       "index_state": "verified",
-      "sha256": "ce3779ddb0032022c3cba25fd17c9b80436baf939bca07fe6555818d2351ccab"
+      "sha256": "ad7ef559fe79b3d820e83ed1e03302847f1d972025119135498a7c5214074041"
     },
     "scripts/px_install.py": {
       "dependencies": [
@@ -11431,7 +11449,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "process-recovery",
-      "input_sha256": "93dafb48ffd5b1e47068c82b398b987740779ef6fe08e70b7a9f8546d60e0181",
+      "input_sha256": "6a2edf955392c07d975286634f103d86d3e121ab3d9e3fa2174ebb3afa1c9403",
       "inputs": [
         "conftest.py",
         "registry/test_profiles.json",
@@ -11892,7 +11910,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "exact-installed",
-      "input_sha256": "c798bb7c52636c0b9ce400211cc4a127dc6c6716af270260767b5768b01f8796",
+      "input_sha256": "3a1acb58bb629cd45700612ef21ced3f42d1cd365c65f35454ba06254f45f628",
       "inputs": [
         "README.md",
         "conftest.py",
@@ -12342,7 +12360,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "release-build",
-      "input_sha256": "aeba9e66f41f256729a7879cbc53c513d6b636d81fd63fcf9a1adec09d619502",
+      "input_sha256": "cedb6cca915af9542daeadf9148c06e6ec6f885d43839d004f6f976119024c4e",
       "inputs": [
         ".github/workflows/release.yml",
         "README.md",
@@ -12686,7 +12704,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "release-audit",
-      "input_sha256": "bef7cfc066d8569c3a3b29a08018b60f1b819b9f4a76e81ec11883443382023a",
+      "input_sha256": "cc40f1b29c6bf6215bfba3ceb357f891eea5bf84039614116d117a0135899e94",
       "inputs": [
         "README.md",
         "conftest.py",
@@ -12968,7 +12986,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "structural-adversarial",
-      "input_sha256": "8dc04c407c833e2e41c82e7e9fcee525368d357cf56e3dbfe0b1640d3a972d3f",
+      "input_sha256": "4d7455c608961313f1eca23284a071c5c3ff23c85f513f77dc31cc37ff55ecfd",
       "inputs": [
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_agents_md_generator.py",
         ".px/skills/analyze-repository-intelligence/scripts/authoritative_change_impact.py",
@@ -13282,6 +13300,7 @@
         "px/py_cert/scripts/build_pre_cert_hash_manifest.py",
         "px/py_cert/scripts/build_release_successor_configs.py",
         "px/py_cert/scripts/converge_pre_cert_git.py",
+        "px/py_cert/scripts/pre_candidate_hygiene.py",
         "px/py_cert/scripts/pre_cert_validator_locked.py",
         "px/py_cert/scripts/reconcile_cohesion_cards.py",
         "px/py_cert/scripts/reconcile_pre_cert_generated_state.py",
@@ -14565,6 +14584,7 @@
         "px/py_cert/scripts/build_pre_cert_hash_manifest.py",
         "px/py_cert/scripts/build_release_successor_configs.py",
         "px/py_cert/scripts/converge_pre_cert_git.py",
+        "px/py_cert/scripts/pre_candidate_hygiene.py",
         "px/py_cert/scripts/pre_cert_validator_locked.py",
         "px/py_cert/scripts/reconcile_cohesion_cards.py",
         "px/py_cert/scripts/reconcile_pre_cert_generated_state.py",
@@ -15703,7 +15723,7 @@
       "disk_consumption_limit_bytes": 51539607552,
       "disk_work_units": 6,
       "group": "derived-integrity",
-      "input_sha256": "54c5c7f17a4e29450eff9086a17fe2cfab54cbc8f89d7a7e733e3bba4efc8797",
+      "input_sha256": "89cb46a9a4006aaa0212db07c0be07a336d9dd927deb10e4e9444617cae1fa00",
       "inputs": [
         "README.md",
         "conftest.py",
@@ -16314,7 +16334,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "core-a-f",
-      "input_sha256": "3185814e554bd4491ce808350a48a327a4522f933866df4c1df1df7936a7d2be",
+      "input_sha256": "c60b5afd00cde375c2f1fb8f4e098e0f61e55bc77a462fa3a865529173c41490",
       "inputs": [
         "builders/__init__.py",
         "builders/common.py",
@@ -18179,7 +18199,7 @@
       "disk_consumption_limit_bytes": 8589934592,
       "disk_work_units": 1,
       "group": "core-n-s",
-      "input_sha256": "7add3f82a471485c31657d24ba20e8a98c8300c03931301aca8330edbb4c4d7e",
+      "input_sha256": "a2e42f31de8081649b7abc9367863ffdca432a09e8c136d0ece8e1d41101b463",
       "inputs": [
         "conftest.py",
         "docs/architecture/tools/build_atlas.py",
@@ -19603,10 +19623,10 @@
       "timeout_seconds": 1600.0
     }
   ],
-  "index_sha256": "2d1b8cfd83574b3fb9181c901ff45858519224d9546184e69397c9a3a7352202",
+  "index_sha256": "5c778ac2fbdab4af16fa5e78c6704647266e704039b941ec6611fb266b509803",
   "schema_version": "px.test-group-index/1.2",
   "test_file_count": 427,
   "topology_sha256": "b7acfcbeb33b312d298f48d3f42a92160dc57eea6c2180b06e0cbbdaa76fdd0a",
-  "tracked_python_file_count": 1069,
-  "verified_file_count": 1069
+  "tracked_python_file_count": 1070,
+  "verified_file_count": 1070
 }

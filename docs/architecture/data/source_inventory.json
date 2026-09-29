@@ -17830,6 +17830,11 @@
     "sha256": "ce46be259ab8fa1ceb4890cdeaab41a20660a0d3576d96c03a916cb9ffdb0f03"
   },
   {
+    "path": "px/py_cert/scripts/pre_candidate_hygiene.py",
+    "bytes": 44124,
+    "sha256": "ad7ef559fe79b3d820e83ed1e03302847f1d972025119135498a7c5214074041"
+  },
+  {
     "path": "px/py_cert/scripts/pre_cert_validator_locked.py",
     "bytes": 9248,
     "sha256": "de4d302ba61e2faa24669dffc4b1a636afe0f401abf46ed45d58b9e7562aa691"
@@ -17861,8 +17866,8 @@
   },
   {
     "path": "px/py_cert/scripts/run_release_candidate.py",
-    "bytes": 70030,
-    "sha256": "6616dd28cc2a536ea2938f1983ef2b05a5c1069083d3098d646b0d127930e5a0"
+    "bytes": 70337,
+    "sha256": "e9b5abbf3cc2e2e0698ca80718ccfe6a0a3ec64c9289b5fb6596470eaa95bba4"
   },
   {
     "path": "px/py_cert/scripts/run_release_candidate_dry.py",
@@ -17871,8 +17876,8 @@
   },
   {
     "path": "px/py_cert/scripts/run_release_stage_owner.py",
-    "bytes": 59862,
-    "sha256": "aaad927185e03c245c69bb5f04713594d367236a28da65650204d7a847799ef1"
+    "bytes": 63131,
+    "sha256": "7095f07a03b37aa73ee92bf11d0a28c006e743ea6bb5f71c04c042d88e27826b"
   },
   {
     "path": "px/py_cert/scripts/validate_certification_pipeline.py",
@@ -17937,7 +17942,7 @@
   {
     "path": "registry/artifact_reachability.json",
     "bytes": 452645,
-    "sha256": "a3530b044bead29772a9734dedb3e77e21bf82149c82e6b79fa034f4b06222da"
+    "sha256": "b4306a7da902800d7449832277810ca09203b1861adea1738667e07cbc433561"
   },
   {
     "path": "registry/assurance_capabilities.json",
@@ -17962,7 +17967,7 @@
   {
     "path": "registry/build_claims.json",
     "bytes": 1177,
-    "sha256": "95875003cbee0ea0dacdd7198eb1a1981fd2f1bc2299dfb5a2731cf37654246d"
+    "sha256": "8f5431cd9c0e09ec9fcd8319d0154685e66203cde43f3db42378bce12a96036d"
   },
   {
     "path": "registry/builders.json",
@@ -18076,13 +18081,13 @@
   },
   {
     "path": "registry/effect_surface_ownership.json",
-    "bytes": 611922,
-    "sha256": "1d7ceb3883b5ee908af103af629720772220ab5a699dd9b70d63392467dac35c"
+    "bytes": 615647,
+    "sha256": "5afc10d1a67a99ed4adb580f68a036916e1022c891bcf6fe04aa482289e8bd03"
   },
   {
     "path": "registry/engine_identity.json",
-    "bytes": 1185838,
-    "sha256": "83014685e8b6e855e347e4438fac56734035a3120b9d1ac70186594e752af35b"
+    "bytes": 1187247,
+    "sha256": "acf43871d35973313155a9febd437b5ff0ce9a733cdad37ab109fcbc07efca40"
   },
   {
     "path": "registry/engineering_lifecycle.json",
@@ -18397,7 +18402,7 @@
   {
     "path": "registry/provider_route_scan.json",
     "bytes": 112512,
-    "sha256": "a921e99224df573eae1a4a48907b2cc3f5e22f269c0e2b9f1d2fb8222c033413"
+    "sha256": "7b4873b699c3642f5ae0eea304af32633c25ac01964b34326976d40318f1eec8"
   },
   {
     "path": "registry/python_dependency_ownership.json",
@@ -18406,8 +18411,8 @@
   },
   {
     "path": "registry/python_surface_ownership.json",
-    "bytes": 475159,
-    "sha256": "88fd1fc49e42f753df84c6d48e1b20c3b48caf79eb9ed935b1eb674d1dffbe56"
+    "bytes": 475609,
+    "sha256": "137e3fa34fbcf3263020a5900829a756fb871294f8d38be8065cfc681744937a"
   },
   {
     "path": "registry/reference_candidate_admission.json",
@@ -20436,8 +20441,8 @@
   },
   {
     "path": "registry/test_group_index.json",
-    "bytes": 763379,
-    "sha256": "3baf5e1c1841c880ab0da868be4e55b6a6f99a1755b67f0d4d383ec1846b8d61"
+    "bytes": 764293,
+    "sha256": "2a8ca96189e9412807ddc05a31156055d5c26f871b9f5bc874a09b6ad5dd329c"
   },
   {
     "path": "registry/test_profiles.json",
@@ -22761,8 +22766,8 @@
   },
   {
     "path": "scripts/pre_candidate_hygiene.py",
-    "bytes": 43019,
-    "sha256": "ce3779ddb0032022c3cba25fd17c9b80436baf939bca07fe6555818d2351ccab"
+    "bytes": 44124,
+    "sha256": "ad7ef559fe79b3d820e83ed1e03302847f1d972025119135498a7c5214074041"
   },
   {
     "path": "scripts/px_build_llama_cuda.ps1",
@@ -22916,8 +22921,8 @@
   },
   {
     "path": "scripts/run_release_candidate.py",
-    "bytes": 70030,
-    "sha256": "6616dd28cc2a536ea2938f1983ef2b05a5c1069083d3098d646b0d127930e5a0"
+    "bytes": 70337,
+    "sha256": "e9b5abbf3cc2e2e0698ca80718ccfe6a0a3ec64c9289b5fb6596470eaa95bba4"
   },
   {
     "path": "scripts/run_release_candidate_dry.py",
@@ -22931,8 +22936,8 @@
   },
   {
     "path": "scripts/run_release_stage_owner.py",
-    "bytes": 59723,
-    "sha256": "2798b49d0f298533eecae4de87d4261d705bb27cc1286c1940530c393b23796f"
+    "bytes": 63131,
+    "sha256": "7095f07a03b37aa73ee92bf11d0a28c006e743ea6bb5f71c04c042d88e27826b"
   },
   {
     "path": "scripts/sanitize_host_bound_cleanup_evidence.py",
