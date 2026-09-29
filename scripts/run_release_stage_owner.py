@@ -383,7 +383,28 @@ def check(config: Config, step: str) -> dict[str, Any]:
         ):
             errors.append(f"repair campaign phase is not exact for {step}")
         if step == "archive_clear":
-            if (
+            supersedes = current_release.get("supersedes") or {}
+            archive_rel = supersedes.get("archive")
+            already_established = (
+                current_release.get("campaign_id") == config.candidate_id
+                and current_release.get("state") == "cleared"
+                and current_release.get("apply_count") == 0
+                and current_release.get("identity") is None
+                and current_release.get("active_claim") is None
+                and tuple(current_release.get("stages", {})) == STAGES
+                and all(
+                    row.get("status") == "pending"
+                    for row in current_release.get("stages", {}).values()
+                )
+                and supersedes.get("campaign_id") == config.predecessor_id
+                and isinstance(archive_rel, str)
+                and bool(archive_rel)
+                and sha256(config.root / archive_rel)
+                == supersedes.get("archive_sha256")
+            )
+            if already_established:
+                pass
+            elif (
                 current_release.get("campaign_id") != config.predecessor_id
                 or current_release.get("active_claim") is not None
                 or current_release.get("state") not in {"failed", "cleared", "active"}
@@ -1071,6 +1092,37 @@ class ProductionEffects:
         )
         if step == "archive_clear":
             current = release(config)
+            supersedes = current.get("supersedes") or {}
+            archive_rel = supersedes.get("archive")
+            already_established = (
+                current.get("campaign_id") == config.candidate_id
+                and current.get("state") == "cleared"
+                and current.get("apply_count") == 0
+                and current.get("identity") is None
+                and current.get("active_claim") is None
+                and tuple(current.get("stages", {})) == STAGES
+                and all(
+                    row.get("status") == "pending"
+                    for row in current.get("stages", {}).values()
+                )
+                and supersedes.get("campaign_id") == config.predecessor_id
+                and isinstance(archive_rel, str)
+                and bool(archive_rel)
+                and sha256(config.root / archive_rel)
+                == supersedes.get("archive_sha256")
+            )
+            if already_established:
+                return self.receipt(
+                    config,
+                    step,
+                    {
+                        "schema_version": "px.release-successor-receipt/1.0",
+                        "candidate_id": config.candidate_id,
+                        "archive": archive_rel,
+                        "already_established": True,
+                        "valid": True,
+                    },
+                )
             if current.get("state") == "failed":
                 if repair(config).get("phase") != "repair_frozen":
                     rewind_failed_release_campaign_repair(config.root)
