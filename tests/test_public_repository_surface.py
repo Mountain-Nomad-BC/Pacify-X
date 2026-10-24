@@ -7,7 +7,7 @@ import tomllib
 
 
 ROOT = Path(__file__).resolve().parents[1]
-IDENTITY = "PACIFY-X is the project and framework. `engineering-bootstrap` is its Python package and command-line control plane."
+IDENTITY = "PACIFY-X is the project and framework. `agentic-engineering-os-px` is its Python package and command-line control plane."
 
 
 def test_product_naming_is_explicit_and_consistent() -> None:
@@ -189,3 +189,16 @@ def test_assurance_workflows_do_not_build_the_project_before_source_audits() -> 
         workflow = (ROOT / relative).read_text(encoding="utf-8")
         assert exact_tools in workflow
         assert "python -m pip install .[release]" not in workflow
+
+
+def test_standalone_campaign_status_reserves_git_and_certification_authority() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    release = (ROOT / "docs/release-process.md").read_text(encoding="utf-8")
+    assert "It has no current release certification" in readme
+    assert "explicitly deferred by owner decision" in readme
+    assert "historical release evidence does not certify this changing tree" in readme
+    assert "no commit is fabricated" in release
+    assert "no Git-specific acceptance criterion is satisfied" in release
+    assert "not permission to alter Git during this campaign" in release
+    assert "**PX Archivist**" in readme
+    assert "T.I.E. ? Tenacious Integrated Experiences" in readme

@@ -33,7 +33,7 @@ def _archive_builder(*, stderr_bytes: int = 0):
         "pyproject.toml",
         "runtime/cli.py",
         "runtime/operational_gap_ledger.py",
-        ".engineering-bootstrap/project-registry.json",
+        ".agentic_engineering_os_px/project-registry.json",
     ]
 
     def build(output: Path) -> list[str]:

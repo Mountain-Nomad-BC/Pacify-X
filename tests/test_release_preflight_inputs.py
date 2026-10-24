@@ -1,6 +1,7 @@
 """Causal checks for captured release-preflight declarations and evidence inputs."""
 from pathlib import Path
 import json
+import sys
 
 import pytest
 
@@ -31,7 +32,7 @@ def policy():
 
 @pytest.mark.parametrize("target", [
     "evidence/../runtime/owner.py", "evidence/nested/../../runtime/owner.py",
-    ".engineering-bootstrap/../runtime/owner.py", "evidence//out.json",
+    ".agentic_engineering_os_px/../runtime/owner.py", "evidence//out.json",
     "evidence/./out.json", "evidence/out.json:stream", "evidence/NUL.json",
     "evidence/out.json.", "evidence/out.json ", "evidence/<unknown>/out.json",
     "evidence/x<release>/out.json", "evidence/\x00out.json", "evidence/" + "x" * 4097,
@@ -94,8 +95,8 @@ def test_portable_feedback_aliases_are_not_distinct_authorizations(tmp_path, pai
 def test_shipped_feedback_templates_keep_their_classifications(tmp_path):
     root = product(tmp_path)
     targets = [
-        ".engineering-bootstrap/release-transaction.json",
-        ".engineering-bootstrap/runtime-core/completion_status.json",
+        ".agentic_engineering_os_px/release-transaction.json",
+        ".agentic_engineering_os_px/runtime-core/completion_status.json",
         "evidence/releases/<release>/certificate.json",
         "evidence/releases/<release>/certificate.json.sig",
         "evidence/releases/<release>/<run-id>",
@@ -106,7 +107,7 @@ def test_shipped_feedback_templates_keep_their_classifications(tmp_path):
         "temporary_workspace", "post_cert_runtime_state",
         "release_transaction_evidence", "release_transaction_evidence", "release_transaction_evidence",
     ]
-    assert not (root / ".engineering-bootstrap").exists()
+    assert not (root / ".agentic_engineering_os_px").exists()
     assert not (root / "evidence/releases").exists()
 
 
@@ -217,13 +218,44 @@ def selected_callbacks(root, configuration):
     return namespace["static"]
 
 
+def scoped_io_guard():
+    """Reject filesystem access that originates in the module under test only.
+
+    This guard exists to prove that constructing the static preflight callbacks
+    performs no IO. Patching ``Path.stat`` globally also blocks pytest's own
+    reporting machinery, which depends on ``Path.stat``: the resulting
+    AssertionError then escapes into pytest internals, pytest cannot render the
+    failure, and the entire session aborts with INTERNALERROR instead of
+    reporting a normal failure. Scoping the rejection to frames inside
+    runtime/release_preflight.py preserves exactly the property under test while
+    leaving the harness able to report results.
+    """
+    original = Path.stat
+    marker = "release_preflight.py"
+
+    def guarded(self, *args, **kwargs):
+        frame = sys._getframe(1)
+        while frame is not None:
+            if marker in frame.f_code.co_filename:
+                raise AssertionError("callback construction performed IO")
+            frame = frame.f_back
+        return original(self, *args, **kwargs)
+
+    return original, guarded
+
+
 def test_static_callback_order_and_construction_stay_lazy(monkeypatch):
     def reject(*args, **kwargs):
         raise AssertionError("callback construction performed IO")
 
+    original_stat, guarded_stat = scoped_io_guard()
     monkeypatch.setattr(owner, "classify_tree", reject)
-    monkeypatch.setattr(Path, "stat", reject)
-    callbacks = selected_callbacks(Path("unresolved-fixture-root"), {**policy(), "post_certification_writes": []})
+    monkeypatch.setattr(Path, "stat", guarded_stat)
+    try:
+        callbacks = selected_callbacks(Path("unresolved-fixture-root"), {**policy(), "post_certification_writes": []})
+    finally:
+        # Restore eagerly so pytest's own reporting never runs against the guard.
+        monkeypatch.undo()
     assert [name for name, _ in callbacks] == [
         "generated_dependency_dag", "feedback_audit", "evidence_portability", "evidence_budget", "skip_policy",
         "release_gate_repository_context", "test_group_readiness", "release_test_completion_projection",

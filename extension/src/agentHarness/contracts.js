@@ -19,6 +19,8 @@ const CompletionRequirement = z.object({
 
 const PxTask = z.object({
   schemaVersion: z.literal('px.agent-task/1.0'),
+  epoch: z.number().int().nonnegative().default(0),
+  revision: z.number().int().nonnegative().default(0),
   taskId: Id,
   createdAt: Iso,
   updatedAt: Iso,
@@ -41,6 +43,8 @@ const PxTask = z.object({
 
 const PxRun = z.object({
   schemaVersion: z.literal('px.agent-run/1.0'),
+  epoch: z.number().int().nonnegative().default(0),
+  revision: z.number().int().nonnegative().default(0),
   runId: Id,
   taskId: Id,
   createdAt: Iso,
@@ -93,6 +97,23 @@ const ContextPack = z.object({
   instruction: z.string().max(30000)
 }).strict();
 
+const WorkerBridgeIdentity = z.object({
+  bridgeKind: z.enum(['local', 'remote']).default('local'),
+  profileSha256: z.string().regex(/^[a-f0-9]{64}$/).nullable().default(null),
+  lane: Id,
+  sessionId: z.string().max(160).nullable().default(null),
+  adapterId: Id.nullable().default(null),
+  modelSha256: z.string().regex(/^[a-f0-9]{64}$/).nullable().default(null),
+  contextTokens: z.number().int().positive().nullable().default(null),
+  maxOutputTokens: z.number().int().positive().nullable().default(null),
+  toolCalling: z.boolean().default(false),
+  imageInput: z.boolean().default(false),
+  available: z.boolean().default(true),
+  unavailableReason: z.string().max(500).nullable().default(null)
+}).strict().superRefine((bridge, context) => {
+  if (bridge.bridgeKind === 'local' && bridge.profileSha256 !== null) context.addIssue({ code: z.ZodIssueCode.custom, message: 'local-bridge-cannot-carry-remote-profile' });
+  if (bridge.bridgeKind === 'remote' && (!bridge.profileSha256 || bridge.modelSha256 !== null || bridge.sessionId !== null)) context.addIssue({ code: z.ZodIssueCode.custom, message: 'remote-profile-identity-required-without-local-artifact' });
+});
 const WorkerDescriptor = z.object({
   workerId: Id,
   adapterId: Id,
@@ -115,7 +136,10 @@ const WorkerDescriptor = z.object({
   supportedEffectClass: EffectClass,
   enabled: z.boolean(),
   reliability: z.number().min(0).max(1),
-  latencyClass: z.enum(['fast', 'medium', 'slow', 'unknown'])
+  latencyClass: z.enum(['fast', 'medium', 'slow', 'unknown']),
+  // Non-authoritative display identity describing which bridged service this worker reaches.
+  // It is a projection only: it grants no admission, tool, effect or provider authority.
+  bridge: WorkerBridgeIdentity.optional()
 }).strict();
 
 const UsageReceipt = z.object({
@@ -148,6 +172,10 @@ const Evidence = z.object({
 const PxEvent = z.object({
   schemaVersion: z.literal('px.agent-event/1.0'),
   eventId: Id,
+  executionId: Id.nullable().default(null),
+  traceRootId: Id.nullable().default(null),
+  executionContextSha256: z.string().regex(/^[a-f0-9]{64}$/).nullable().default(null),
+  generationVectorSha256: z.string().regex(/^[a-f0-9]{64}$/).nullable().default(null),
   sequence: z.number().int().nonnegative(),
   type: Id,
   emittedAt: Iso,
@@ -193,6 +221,6 @@ function parse(schema, value, label) {
 
 module.exports = {
   Id, Iso, EffectClass, CostClass, TaskMode, TaskStage, CompletionRequirement,
-  PxTask, PxRun, LibrarianArtifact, ContextRef, ContextPack, WorkerDescriptor,
+  PxTask, PxRun, LibrarianArtifact, ContextRef, ContextPack, WorkerBridgeIdentity, WorkerDescriptor,
   UsageReceipt, Evidence, PxEvent, PxToolRequest, PxToolResult, parse
 };

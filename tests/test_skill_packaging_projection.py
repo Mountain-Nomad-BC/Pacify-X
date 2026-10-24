@@ -54,7 +54,7 @@ def test_generated_skill_projection_is_complete_and_idempotent():
         }
         assert facade_files <= declared
         assert any(
-            target.startswith("share/engineering-bootstrap/.px/skills/")
+            target.startswith("share/agentic-engineering-os-px/.px/skills/")
             and facade.name in target
             for target in config["tool"]["setuptools"]["data-files"]
         )
@@ -76,10 +76,12 @@ def test_mutable_skill_memory_is_not_static_package_source(tmp_path):
     (package / "SKILL.md").write_text("# Demo\n", encoding="utf-8")
     (package / "memory/usage.jsonl").write_text('{"event":1}\n', encoding="utf-8")
     (package / "memory/stats.json").write_text('{"count":1}\n', encoding="utf-8")
+    (package / "memory/.tie.lock").write_text('runtime lock', encoding="utf-8")
     rendered = generator.render('[tool.setuptools.data-files]\n', tmp_path)
     assert '.px/skills/demo/SKILL.md' in rendered
     assert 'memory/usage.jsonl' not in rendered
     assert 'memory/stats.json' not in rendered
+    assert 'memory/.tie.lock' not in rendered
     assert set(commissioned_skill_sources(tmp_path)) == {'.px/skills/demo/SKILL.md'}
 
     manifest = (ROOT / 'MANIFEST.in').read_text(encoding='utf-8')
@@ -87,12 +89,16 @@ def test_mutable_skill_memory_is_not_static_package_source(tmp_path):
     assert _manifest_selected('.px/skills/demo/SKILL.md', rules)
     assert not _manifest_selected('.px/skills/demo/memory/usage.jsonl', rules)
     assert not _manifest_selected('.px/skills/demo/memory/stats.json', rules)
+    assert not _manifest_selected('.px/skills/demo/memory/.tie.lock', rules)
 
 
 @pytest.mark.parametrize('path', [
     '.px/skills/demo/memory/unregistered.json',
     '.px/skills/demo/Memory/usage.jsonl',
     '.px/skills/demo/memory/nested/usage.jsonl',
+    '.px/skills/demo/memory/nested/.tie.lock',
+    '.px/skills/demo/Memory/.tie.lock',
+    '.px/skills/demo/memory/arbitrary.lock',
 ])
 def test_unknown_skill_memory_file_fails_closed(path):
     with pytest.raises(ValueError, match='unrecognized skill memory custody path'):
@@ -119,7 +125,7 @@ def test_future_skill_overlay_renders_canonical_paths_before_publication(tmp_pat
     (tmp_path / ".px/skills/existing/SKILL.md").write_text(
         "# Existing\n", encoding="utf-8"
     )
-    staged = tmp_path / ".engineering-bootstrap/staged/demo"
+    staged = tmp_path / ".agentic_engineering_os_px/staged/demo"
     staged.mkdir(parents=True)
     (staged / "SKILL.md").write_text("# Future\n", encoding="utf-8")
     (staged / "resources").mkdir()
@@ -140,7 +146,7 @@ def test_future_skill_overlay_renders_canonical_paths_before_publication(tmp_pat
     }
     assert ".px/skills/demo/SKILL.md" in values
     assert ".px/skills/demo/resources/data.json" in values
-    assert not any(".engineering-bootstrap/staged" in item for item in values)
+    assert not any(".agentic_engineering_os_px/staged" in item for item in values)
 
 
 def test_generator_preserves_suffix_and_refuses_malformed_markers():

@@ -507,7 +507,7 @@ class SkillStudio:
         self.root = project_root.resolve(strict=True)
         if self.root == Path(self.root.anchor):
             raise ValueError("skill studio root must be bounded")
-        self.drafts = self.root / ".engineering-bootstrap" / "studios" / "skills"
+        self.drafts = self.root / ".agentic_engineering_os_px" / "studios" / "skills"
         self.canonical = self.root / ".px" / "skills"
         self.preserved = self.root / ".px" / "preserved-skills"
         self.authority = StudioAuthorityStore(self.root)
@@ -523,10 +523,14 @@ class SkillStudio:
         studio_decision: str,
         decided_by: str,
         decision_reason: str,
+        retained_publication: Mapping[str, object] | None = None,
     ) -> object:
         """Exercise Studio's explicit intake authority without auto-promotion."""
         from .foundry_studio_bridge import build_skill_studio_draft
 
+        if retained_publication is not None:
+            from .knowledge_foundry import validate_retained_foundry_candidate
+            candidate = validate_retained_foundry_candidate(self.root, candidate, retained_publication)
         return build_skill_studio_draft(
             candidate,
             studio_decision=studio_decision,

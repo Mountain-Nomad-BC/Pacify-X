@@ -36,12 +36,7 @@ def _sha(value: object) -> str:
     return hashlib.sha256(_canonical(value)).hexdigest()
 
 
-def _file_sha(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+from runtime.hash_utils import file_sha256 as _file_sha
 
 
 def _text(value: object, field: str, *, maximum: int = 512) -> str:

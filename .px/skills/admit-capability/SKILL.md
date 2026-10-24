@@ -12,6 +12,6 @@ description: Review, restrict, quarantine, reject, or admit a reusable skill or 
 5. Prefer clean-room implementation or pattern extraction when source tooling is coupled to another product.
 6. Validate focused behavior, failure paths, determinism, and registry identity.
 7. Promote atomically: contract, implementation, evidence, admission ledger, then active capability map.
-8. Re-run `engineering-bootstrap validate`; do not advertise a candidate that fails cross-registry checks.
+8. Re-run `agentic-engineering-os-px validate`; do not advertise a candidate that fails cross-registry checks.
 
 Read [admission-contract.md](references/admission-contract.md) for dispositions and promotion evidence.

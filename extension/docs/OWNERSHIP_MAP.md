@@ -12,7 +12,7 @@
 | VS Code context and UI | Extension host | Dashboard, commands, actor identity | Implemented |
 | Cross-host tools | Bundled stdio MCP | 31 context/catalog/graph/telemetry/plugin/coordination/environment/guardrail/Team Fabric/MS+Enterprise tools | Implemented |
 | MS+Enterprise catalog | `registry/ms_enterprise_catalog.json` | Separate Skills, Agents, Workflows, connector, and provider views | Implemented; metadata/control plane only |
-| MS+Enterprise project state | `src/enterpriseManager.js` + `.engineering-bootstrap/enterprise/` | Offline pack state, non-secret targets, doctor and receipts | Implemented; separate from coordination/memory |
+| MS+Enterprise project state | `src/enterpriseManager.js` + `.agentic_engineering_os_px/enterprise/` | Offline pack state, non-secret targets, doctor and receipts | Implemented; separate from coordination/memory |
 | Microsoft/cloud connectors | Their future admitted adapters and external tenants | Honest disabled/not-installed readiness | Not connected; no credentials or billable setup |
 | Environment discovery | `src/discoveryManager.js` + VS Code manifests + fixed local probes | Lazy subjects, per-extension contracts, semantic graph, MCP | Implemented; detection is not admission or activation |
 | Billable execution policy | Separate enterprise state + VS Code settings | Default-off switch and independent hard gates | Implemented; no external executor or credential store |

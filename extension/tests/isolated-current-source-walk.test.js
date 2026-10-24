@@ -290,15 +290,15 @@ function fixture(t, { complete = true } = {}) {
   fs.mkdirSync(path.join(source, '.tmp', 'retained-campaign'), { recursive: true });
   fs.writeFileSync(path.join(source, '.tmp', 'retained-campaign', 'large-evidence.bin'), Buffer.alloc(4096, 7));
   for (const directory of ['project-map', 'project-map-history', 'project-map-history-archives']) {
-    fs.mkdirSync(path.join(source, '.engineering-bootstrap', directory), { recursive: true });
-    fs.writeFileSync(path.join(source, '.engineering-bootstrap', directory, 'derived.bin'), Buffer.alloc(1024, 5));
+    fs.mkdirSync(path.join(source, '.agentic_engineering_os_px', directory), { recursive: true });
+    fs.writeFileSync(path.join(source, '.agentic_engineering_os_px', directory, 'derived.bin'), Buffer.alloc(1024, 5));
   }
   for (const directory of ['locks/state', 'pools/background/0', 'orphaned-locks/state-fixture']) {
-    fs.mkdirSync(path.join(source, '.engineering-bootstrap', 'runtime-core', ...directory.split('/')), { recursive: true });
+    fs.mkdirSync(path.join(source, '.agentic_engineering_os_px', 'runtime-core', ...directory.split('/')), { recursive: true });
     const ownerName = directory === 'locks/state' ? '.owner.json.in-flight.prepared' : 'owner.json';
-    fs.writeFileSync(path.join(source, '.engineering-bootstrap', 'runtime-core', ...directory.split('/'), ownerName), '{"pid":123}\n');
+    fs.writeFileSync(path.join(source, '.agentic_engineering_os_px', 'runtime-core', ...directory.split('/'), ownerName), '{"pid":123}\n');
   }
-  fs.writeFileSync(path.join(source, '.engineering-bootstrap', 'runtime-core', 'state.json'), '{"schema_version":"fixture"}\n');
+  fs.writeFileSync(path.join(source, '.agentic_engineering_os_px', 'runtime-core', 'state.json'), '{"schema_version":"fixture"}\n');
   fs.mkdirSync(path.join(source, '.venv-certify'), { recursive: true });
   fs.writeFileSync(path.join(source, '.venv-certify', 'python.exe'), Buffer.alloc(1024, 3));
   fs.mkdirSync(path.join(source, 'Python'), { recursive: true });
@@ -344,13 +344,13 @@ test('disposable engine copies current state beneath the owned root and excludes
   assert.equal(fs.existsSync(path.join(result.root, 'evidence')), false);
   assert.equal(fs.existsSync(path.join(result.root, '.git')), false);
   assert.equal(fs.existsSync(path.join(result.root, '.tmp')), false);
-  assert.equal(fs.existsSync(path.join(result.root, '.engineering-bootstrap', 'project-map')), false);
-  assert.equal(fs.existsSync(path.join(result.root, '.engineering-bootstrap', 'project-map-history')), false);
-  assert.equal(fs.existsSync(path.join(result.root, '.engineering-bootstrap', 'project-map-history-archives')), false);
-  assert.equal(fs.existsSync(path.join(result.root, '.engineering-bootstrap', 'runtime-core', 'locks')), false);
-  assert.equal(fs.existsSync(path.join(result.root, '.engineering-bootstrap', 'runtime-core', 'pools')), false);
-  assert.equal(fs.existsSync(path.join(result.root, '.engineering-bootstrap', 'runtime-core', 'orphaned-locks')), false);
-  assert.equal(fs.readFileSync(path.join(result.root, '.engineering-bootstrap', 'runtime-core', 'state.json'), 'utf8'), '{"schema_version":"fixture"}\n');
+  assert.equal(fs.existsSync(path.join(result.root, '.agentic_engineering_os_px', 'project-map')), false);
+  assert.equal(fs.existsSync(path.join(result.root, '.agentic_engineering_os_px', 'project-map-history')), false);
+  assert.equal(fs.existsSync(path.join(result.root, '.agentic_engineering_os_px', 'project-map-history-archives')), false);
+  assert.equal(fs.existsSync(path.join(result.root, '.agentic_engineering_os_px', 'runtime-core', 'locks')), false);
+  assert.equal(fs.existsSync(path.join(result.root, '.agentic_engineering_os_px', 'runtime-core', 'pools')), false);
+  assert.equal(fs.existsSync(path.join(result.root, '.agentic_engineering_os_px', 'runtime-core', 'orphaned-locks')), false);
+  assert.equal(fs.readFileSync(path.join(result.root, '.agentic_engineering_os_px', 'runtime-core', 'state.json'), 'utf8'), '{"schema_version":"fixture"}\n');
   assert.equal(fs.existsSync(path.join(result.root, '.venv-certify')), false);
   assert.equal(fs.existsSync(path.join(result.root, 'Python')), false);
   assert.equal(fs.existsSync(path.join(result.root, 'extension', 'node_modules')), false);
@@ -371,27 +371,27 @@ test('engine copy exclusion is exact and does not hide similarly named source di
   assert.equal(excludedEnginePath('extension/node_modules/pkg/index.js'), true);
   assert.equal(excludedEnginePath('evidence/retained.json'), true);
   assert.equal(excludedEnginePath('runtime/__pycache__/cli.pyc'), true);
-  assert.equal(excludedEnginePath('.engineering-bootstrap/diagnostics/retained-workspaces/source/runtime.py'), true);
-  assert.equal(excludedEnginePath('.engineering-bootstrap/test-evidence/adversarial-repair-gates/run/linked-fixture'), true);
-  assert.equal(excludedEnginePath('.engineering-bootstrap/test-evidence/sections/dashboard-extension.json'), true);
-  assert.equal(excludedEnginePath('.engineering-bootstrap/focused-temp/fresh-repo-dashboard-api/locked'), true);
-  assert.equal(excludedEnginePath('.engineering-bootstrap/quarantine/disposable-cache/certification-preflight/.pytest_cache'), true);
-  assert.equal(excludedEnginePath('.engineering-bootstrap/focused-temporary/legitimate.py'), false);
-  assert.equal(excludedEnginePath('.engineering-bootstrap/operation-bus/wal/.wal.lock'), true);
+  assert.equal(excludedEnginePath('.agentic_engineering_os_px/diagnostics/retained-workspaces/source/runtime.py'), true);
+  assert.equal(excludedEnginePath('.agentic_engineering_os_px/test-evidence/adversarial-repair-gates/run/linked-fixture'), true);
+  assert.equal(excludedEnginePath('.agentic_engineering_os_px/test-evidence/sections/dashboard-extension.json'), true);
+  assert.equal(excludedEnginePath('.agentic_engineering_os_px/focused-temp/fresh-repo-dashboard-api/locked'), true);
+  assert.equal(excludedEnginePath('.agentic_engineering_os_px/quarantine/disposable-cache/certification-preflight/.pytest_cache'), true);
+  assert.equal(excludedEnginePath('.agentic_engineering_os_px/focused-temporary/legitimate.py'), false);
+  assert.equal(excludedEnginePath('.agentic_engineering_os_px/operation-bus/wal/.wal.lock'), true);
   assert.equal(excludedEnginePath('registry/.operational-gap-ledger.lock'), true);
   assert.equal(excludedEnginePath('registry/lock-policy.json'), false);
-  assert.equal(excludedEnginePath('.engineering-bootstrap/operation-bus/wal/segment-1.jsonl'), true);
-  assert.equal(excludedEnginePath('.engineering-bootstrap/project-map/architecture-graph.json'), true);
-  assert.equal(excludedEnginePath('.engineering-bootstrap/project-map-history/run/architecture-graph.json'), true);
-  assert.equal(excludedEnginePath('.engineering-bootstrap/project-map-history-archives/archive.zip'), true);
-  assert.equal(excludedEnginePath('.engineering-bootstrap/runtime-core/locks/state/.owner.json.prepared'), true);
-  assert.equal(excludedEnginePath('.engineering-bootstrap/runtime-core/pools/background/0/owner.json'), true);
-  assert.equal(excludedEnginePath('.engineering-bootstrap/runtime-core/orphaned-locks/state-fixture/owner.json'), true);
-  assert.equal(excludedEnginePath('.engineering-bootstrap/runtime-core/state.json'), false);
+  assert.equal(excludedEnginePath('.agentic_engineering_os_px/operation-bus/wal/segment-1.jsonl'), true);
+  assert.equal(excludedEnginePath('.agentic_engineering_os_px/project-map/architecture-graph.json'), true);
+  assert.equal(excludedEnginePath('.agentic_engineering_os_px/project-map-history/run/architecture-graph.json'), true);
+  assert.equal(excludedEnginePath('.agentic_engineering_os_px/project-map-history-archives/archive.zip'), true);
+  assert.equal(excludedEnginePath('.agentic_engineering_os_px/runtime-core/locks/state/.owner.json.prepared'), true);
+  assert.equal(excludedEnginePath('.agentic_engineering_os_px/runtime-core/pools/background/0/owner.json'), true);
+  assert.equal(excludedEnginePath('.agentic_engineering_os_px/runtime-core/orphaned-locks/state-fixture/owner.json'), true);
+  assert.equal(excludedEnginePath('.agentic_engineering_os_px/runtime-core/state.json'), false);
   assert.equal(excludedEnginePath('.venv-certify/Scripts/python.exe'), true);
   assert.equal(excludedEnginePath('Python/python.exe'), true);
   assert.equal(excludedEnginePath('Python-tools/legitimate.py'), false);
-  assert.equal(excludedEnginePath('.engineering-bootstrap/diagnostics-live/runtime.py'), false);
+  assert.equal(excludedEnginePath('.agentic_engineering_os_px/diagnostics-live/runtime.py'), false);
   assert.equal(excludedEnginePath('runtime/legitimate.py'), false);
   assert.equal(excludedEnginePath('docs/.git-notes.md'), false);
   assert.equal(excludedEnginePath('docs/.tmp-notes.md'), false);
@@ -399,7 +399,7 @@ test('engine copy exclusion is exact and does not hide similarly named source di
 
 test('disposable engine skips linked retained diagnostics but still copies canonical source', t => {
   const { source, owned } = fixture(t);
-  const retained = path.join(source, '.engineering-bootstrap', 'diagnostics', 'retained-workspaces');
+  const retained = path.join(source, '.agentic_engineering_os_px', 'diagnostics', 'retained-workspaces');
   fs.mkdirSync(retained, { recursive: true });
   const linked = path.join(retained, 'linked-source');
   try { fs.symlinkSync(source, linked, process.platform === 'win32' ? 'junction' : 'dir'); }
@@ -412,7 +412,7 @@ test('disposable engine skips linked retained diagnostics but still copies canon
 
   const result = stageDisposableEngine(source, owned);
 
-  assert.equal(fs.existsSync(path.join(result.root, '.engineering-bootstrap', 'diagnostics')), false);
+  assert.equal(fs.existsSync(path.join(result.root, '.agentic_engineering_os_px', 'diagnostics')), false);
   assert.equal(fs.readFileSync(path.join(result.root, 'runtime', 'canonical', 'live.py'), 'utf8'), 'LIVE = True\n');
 });
 
@@ -691,7 +691,7 @@ test('host-boundary fixture owns one real handoff task and one certified canonic
   assert.match(fixture.provider_pagination.policy_before_sha256, /^[a-f0-9]{64}$/);
   assert.match(fixture.provider_pagination.policy_after_sha256, /^[a-f0-9]{64}$/);
   assert.notEqual(fixture.provider_pagination.policy_before_sha256, fixture.provider_pagination.policy_after_sha256);
-  assert.match(fixture.coordination_handoff_relative, /^\.engineering-bootstrap\/coordination\/HANDOFF\.md$/);
+  assert.match(fixture.coordination_handoff_relative, /^\.agentic_engineering_os_px\/coordination\/HANDOFF\.md$/);
   assert.match(fixture.memory_source_relative, /^projects\/px-owned-memory-profile\/host-boundary-memory\.md$/);
   assert.match(fixture.coordination_handoff_sha256, /^[a-f0-9]{64}$/);
   assert.match(fixture.memory_source_sha256, /^[a-f0-9]{64}$/);
@@ -870,5 +870,5 @@ test('ordinary full operational walks start the owned native input helper used b
   assert.match(prepareSource, /nativeInputSecret: nativeInputRequired \? crypto\.randomBytes\(32\)\.toString\('hex'\) : null/);
   assert.match(prepareSource, /studioKeyRoot: path\.join\(temporaryRoot, 'authority-keys'\)/);
   assert.match(source, /PX_STUDIO_KEY_ROOT: config\.studioKeyRoot/);
-  assert.match(source, /nativeInputHelper = childProcess\.spawn\('python'/);
+  assert.match(source, /nativeInputHelper = childProcess\.spawn\(config\.pythonPath \|\| resolveOwnedPython/);
 });

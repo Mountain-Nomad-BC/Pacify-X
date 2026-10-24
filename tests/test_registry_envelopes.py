@@ -250,3 +250,19 @@ def test_nested_object_filtered_count_tracks_current_receipts():
     assert validate_envelope_document(payload, record) == []
     payload["current_required_receipt_count"] = 2
     assert validate_envelope_document(payload, record)
+
+
+def test_current_source_receipts_have_explicit_count_owners(tmp_path):
+    directory = tmp_path / "registry/source-freeze/current-campaign" / ("a" * 64)
+    directory.mkdir(parents=True)
+    receipt = directory / "receipt-current.json"
+    receipt.write_text('{}', encoding="utf-8")
+    relative = receipt.relative_to(tmp_path).as_posix()
+    rows = [row for row in build_inventory(tmp_path)["records"] if row["path"] == relative]
+    assert {row["count_key"] for row in rows} == {"file_count", "byte_count"}
+    assert all(row["builder"] == "runtime/source_freeze.py" for row in rows)
+    payload = {"files": [{"bytes": 3}], "file_count": 1, "byte_count": 3}
+    for row in rows:
+        assert validate_envelope_document(payload, row) == []
+    payload["file_count"] = 2
+    assert validate_envelope_document(payload, rows[0])

@@ -74,11 +74,8 @@ def _required(value: Mapping[str, Any], key: str) -> str:
 
 
 def _sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+    from runtime.hash_utils import file_sha256
+    return file_sha256(path)
 
 
 def _git(root: Path, *args: str) -> str:
@@ -400,7 +397,7 @@ def build(spec_path: Path, automation_output: Path, stage_output: Path) -> dict[
     installed_summary = f"evidence/release/{prefix}-installed-operational-summary.json"
     stage_logs = f"evidence/release/{prefix}-stage-owner-logs"
     stage_receipts = f"evidence/release/{prefix}-stage-receipts"
-    identity_manifest = f".engineering-bootstrap/processing-order/{prefix}-source-manifest.json"
+    identity_manifest = f".agentic_engineering_os_px/processing-order/{prefix}-source-manifest.json"
     exhaustive_output = f"{installed_root}/exhaustive-output"
     exhaustive_receipt = f"{exhaustive_output}/receipt.json"
     exhaustive_report = f"{installed_root}/exhaustive-report.json"

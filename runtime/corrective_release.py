@@ -64,7 +64,7 @@ def _acceptance_command_errors(root: Path, identifier: str, command: str) -> lis
         return [f"{identifier}: malformed acceptance command: {error}"]
     if not tokens:
         return [f"{identifier}: empty acceptance command"]
-    if tokens[0] == "engineering-bootstrap":
+    if tokens[0] == "agentic-engineering-os-px":
         if tuple(tokens[1:]) not in SUPPORTED_CLI_ACCEPTANCE_FORMS:
             return [
                 f"{identifier}: acceptance command is not supported by the CLI: {command}"

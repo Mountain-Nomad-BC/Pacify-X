@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:models:model-router-preset-format",
+  "title": "Exact executable router preset format declaration",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "executable_sha256",
+    "capability_fingerprint_sha256",
+    "format_evidence_sha256",
+    "section_prefix",
+    "section_suffix",
+    "option_keys",
+    "declaration_sha256"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "px.model-router-preset-format/1.0"
+    },
+    "executable_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "capability_fingerprint_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "format_evidence_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "declaration_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "section_prefix": {
+      "type": "string",
+      "maxLength": 64,
+      "pattern": "^[A-Za-z0-9_.:-]*$"
+    },
+    "section_suffix": {
+      "type": "string",
+      "maxLength": 64,
+      "pattern": "^[A-Za-z0-9_.:-]*$"
+    },
+    "option_keys": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 64,
+      "items": {
+        "type": "array",
+        "minItems": 3,
+        "maxItems": 3,
+        "items": {
+          "type": "string",
+          "maxLength": 4096
+        }
+      }
+    }
+  }
+}

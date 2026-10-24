@@ -14,6 +14,8 @@ from typing import Any, Callable, Iterable, Mapping, Sequence
 from .cognitive_core.navigator import CognitiveNavigator
 from .tiny_model_operator import OperatorCandidate, TinyModelOperator
 from .context_checkpoint import PressurePolicy, pressure_action
+from .archive_io import reject_path_links
+from .json_io import read_bounded_bytes
 
 CORE_CATEGORIES = (
     "subjects", "knowledge", "goals", "actions",
@@ -29,8 +31,7 @@ _KIND_CATEGORY = {
 }
 
 
-def _stable(value: object) -> str:
-    return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False, default=str).encode("utf-8")).hexdigest()
+from runtime.hash_utils import json_utf8_string_hash as _stable
 
 
 def _bounded(value: object, maximum: int) -> str:
@@ -124,7 +125,7 @@ def candidates_from_cognitive_index(
             score=score,
             summary=_bounded(record.get("summary") or record.get("title") or hit.identifier, 4096),
             lifecycle=hit.status,
-            project_id=project_id,
+            project_id=str(record.get("project_id") or ""),
             evidence_refs=evidence,
             reasons=tuple(hit.reasons[:16]),
             hydrate_ref=hit.path or hit.implementation_path or None,
@@ -286,7 +287,8 @@ def query_repository_index(
     top_per_category: int = 3,
 ) -> CognitiveQueryResult:
     path = Path(source_root) / "registry" / "cognitive_map_index.json"
-    raw = path.read_bytes()
+    reject_path_links(path)
+    raw = bytes(read_bounded_bytes(path, max_bytes=64 * 1024 * 1024))
     if len(raw) > 64 * 1024 * 1024:
         raise ValueError("cognitive map exceeds bounded input")
     payload = json.loads(raw)

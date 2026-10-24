@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:pacify-x:project-revision-succession-owner-policy:1.0",
+  "title": "Project revision succession owner policy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "policy_id",
+    "status",
+    "authorization_schema",
+    "trusted_authorities",
+    "revoked_authorizations",
+    "revision_scope"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "px.project-revision-succession-policy/1.0"
+    },
+    "policy_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "status": {
+      "const": "active"
+    },
+    "authorization_schema": {
+      "const": "px.project-revision-succession-authorization/1.0"
+    },
+    "trusted_authorities": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 32,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "identity",
+          "fingerprint",
+          "public_key",
+          "publisher",
+          "status"
+        ],
+        "properties": {
+          "identity": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+          },
+          "fingerprint": {
+            "type": "string",
+            "pattern": "^SHA256:[A-Za-z0-9+/]{43}$"
+          },
+          "public_key": {
+            "type": "string",
+            "pattern": "^ssh-ed25519 [^\\r\\n]+$"
+          },
+          "publisher": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "const": "active"
+          }
+        }
+      }
+    },
+    "revoked_authorizations": {
+      "type": "array",
+      "maxItems": 10000,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "revision_scope": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 32,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "revocation_registry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "checked_at",
+        "revoked",
+        "superseded"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "px.authorization-revocation-registry/1.0"
+        },
+        "checked_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "revoked": {
+          "type": "array",
+          "maxItems": 10000,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "superseded": {
+          "type": "object",
+          "maxProperties": 10000,
+          "propertyNames": {
+            "minLength": 1
+          },
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  }
+}

@@ -179,7 +179,7 @@ class KnowledgeCoreController:
         if self.project_root == Path(self.project_root.anchor):
             raise ValueError("knowledge project root must be bounded")
         self.root = (
-            self.project_root / ".engineering-bootstrap" / "studios" / "knowledge"
+            self.project_root / ".agentic_engineering_os_px" / "studios" / "knowledge"
         )
         verify_safe_ancestors(self.project_root, self.root / "placeholder")
         reject_path_links(policy_root or self.project_root)

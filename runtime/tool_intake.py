@@ -361,7 +361,7 @@ def record_tool_intake(
 ) -> dict[str, Any]:
     record = scan_project_tooling(project, framework_root, **scan_options)
     project_root = project.resolve()
-    target_root = project_root / ".engineering-bootstrap" / "project-management"
+    target_root = project_root / ".agentic_engineering_os_px" / "project-management"
     target = target_root / "tool-intake.json"
     if not apply:
         return {

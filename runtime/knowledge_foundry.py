@@ -222,10 +222,7 @@ def _interpret_calculation(node: ast.AST, values: Mapping[str, float]) -> float:
     return float(result)
 
 
-def _stable(value: object) -> str:
-    return hashlib.sha256(
-        json.dumps(value, sort_keys=True, separators=(",", ":"), default=str).encode()
-    ).hexdigest()
+from runtime.hash_utils import json_ascii_string_hash as _stable
 
 
 def _slug(value: str) -> str:
@@ -685,16 +682,15 @@ def certify_foundry_bundle(bundle: FoundryBundle) -> dict[str, object]:
     }
 
 
-def materialize_candidate_bundle(
+def _render_candidate_bundle(
     bundle: FoundryBundle, destination: Path
-) -> dict[str, object]:
+) -> tuple[dict[Path, str], dict[str, object]]:
     certification = certify_foundry_bundle(bundle)
     if certification["decision"] != "certified_candidate":
         raise ValueError(
             "foundry bundle cannot be materialized before candidate certification"
         )
     root = destination.resolve() / bundle.bundle_id
-    root.mkdir(parents=True, exist_ok=False)
 
     source_records = {str(row["source_id"]): row for row in bundle.sources}
     knowledge_files: list[tuple[Path, dict[str, object]]] = []
@@ -782,30 +778,260 @@ def materialize_candidate_bundle(
         files[base / "input.schema.json"] = (
             json.dumps(package.input_schema, indent=2, sort_keys=True) + "\n"
         )
-    records = []
-    for relative, content in sorted(files.items(), key=lambda item: item[0].as_posix()):
-        path = root / relative
-        path.parent.mkdir(parents=True, exist_ok=True)
-        with path.open("x", encoding="utf-8", newline="\n") as stream:
-            stream.write(content)
-        records.append(
-            {
-                "path": relative.as_posix(),
-                "sha256": hashlib.sha256(content.encode("utf-8")).hexdigest(),
-            }
-        )
-    receipt = {
-        "bundle_id": bundle.bundle_id,
-        "state": "candidate",
-        "files": records,
-        "knowledge_object_count": len(knowledge_index_records),
-        "knowledge_storage": "one_json_object_per_file",
-        "hard_delete": False,
-    }
-    with (root / "receipt.json").open("x", encoding="utf-8", newline="\n") as stream:
-        json.dump(receipt, stream, indent=2, sort_keys=True)
-        stream.write("\n")
-    return receipt
+    files[Path("source-image.json")] = json.dumps(asdict(bundle), indent=2, sort_keys=True) + "\n"
+    records = [{"path": relative.as_posix(), "sha256": hashlib.sha256(content.encode("utf-8")).hexdigest()}
+               for relative, content in sorted(files.items(), key=lambda item: item[0].as_posix())]
+    receipt = {"bundle_id": bundle.bundle_id, "state": "candidate", "files": records,
+               "knowledge_object_count": len(knowledge_index_records),
+               "knowledge_storage": "one_json_object_per_file", "hard_delete": False}
+    return files, receipt
+
+
+def _publication_identity(bundle_id, destination, project_root, project_id, run_id):
+    from .archive_io import reject_path_links
+    if project_root is None or type(project_id) is not str or not project_id.strip() or type(run_id) is not str or not run_id.strip():
+        raise ValueError("explicit native project root, project identity and run identity required")
+    if len(project_id) > 256 or len(run_id) > 256 or re.fullmatch(r"[a-f0-9]{64}", bundle_id) is None:
+        raise ValueError("bounded publication identity required")
+    reject_path_links(Path(project_root)); reject_path_links(Path(destination))
+    project_root = Path(project_root).resolve(strict=True)
+    if project_root == Path(project_root.anchor):
+        raise ValueError("bounded native project root required")
+    destination = Path(destination).resolve()
+    directory = destination / bundle_id
+    try:
+        relative = directory.relative_to(project_root).as_posix()
+    except ValueError:
+        raise ValueError("candidate publication must remain within explicit project root") from None
+    canonical = project_root / ".agentic_engineering_os_px/runtime-core/knowledge-foundry/candidates"
+    if destination != canonical:
+        raise ValueError("exact native knowledge-foundry candidate destination required")
+    key = "foundry-publication-" + _stable({"path": relative, "bundle_id": bundle_id, "project_id": project_id, "run_id": run_id})
+    return project_root, destination, directory, relative, key
+
+
+def _admit_candidate_publication(root, admission_event_id, scope):
+    from .operational_gap_ledger import read_snapshot, guard_work_admission
+    if type(admission_event_id) is not str or not admission_event_id:
+        raise ValueError("explicit current publication work admission required")
+    snapshot = read_snapshot(root)
+    admission = next((row for row in snapshot.get("work_admissions", []) if row.get("event_id") == admission_event_id), None)
+    if admission is None:
+        raise ValueError("publication admission is absent")
+    effect_scope = next((row for row in admission.get("effect_scopes", []) if row.get("effect") == "write"), None)
+    if effect_scope is None:
+        raise ValueError("publication write admission is absent")
+    scopes = effect_scope["scope"]
+    guard_work_admission(snapshot, gap_id=admission["gap_id"], effect="write", scope=scopes, admission_event_id=admission_event_id)
+    for target in (scope, ".agentic_engineering_os_px/runtime-core", ".agentic_engineering_os_px/resource-lifecycle"):
+        if not any(target == str(x).rstrip("/") or target.startswith(str(x).rstrip("/") + "/") for x in scopes):
+            raise ValueError("publication admission omits native output/custody scope")
+
+
+def read_candidate_publication(bundle_id, destination, *, project_root, project_id, run_id):
+    """Read only actual native committed candidate evidence; never grant activation."""
+    from .archive_io import reject_path_links
+    from .effect_intent import EffectIntentLedger
+    from .resource_lifecycle import ResourceManager, ResourceClassification
+    from .json_io import load_json_object, read_bounded_bytes
+    from .studio_authority import StudioAuthorityStore
+    root, destination, directory, scope, key = _publication_identity(bundle_id, destination, project_root, project_id, run_id)
+    reject_path_links(directory)
+    signed = load_json_object(directory / "custody.json", max_bytes=2 * 1024 * 1024)
+    authority = StudioAuthorityStore.open_existing(root)
+    if authority.project_identity != project_id:
+        raise ValueError("publication project identity differs from native existing authority")
+    body = authority.verify_receipt(signed)
+    expected = {"schema_version": "px.foundry-publication-custody/1.0", "bundle_id": bundle_id,
+                "project_id": project_id, "run_id": run_id, "path": scope, "authority_granted": False}
+    if set(body) != set(expected) | {"resource_id", "images"} or any(body.get(k) != v for k, v in expected.items()):
+        raise ValueError("candidate publication binding differs")
+    fence = EffectIntentLedger(root).fence(key)
+    if (fence.get("disposition") != "committed" or fence.get("result_sha256") != _stable(body)
+            or fence.get("execution_id") != run_id or fence.get("effect") != "write"
+            or fence.get("scopes") != [scope]):
+        raise ValueError("candidate publication has no matching native commitment")
+    manager = ResourceManager(root / ".agentic_engineering_os_px/runtime-core/knowledge-foundry/resources.json")
+    record = next((x for x in manager.ledger.observe() if x.resource_id == body["resource_id"]), None)
+    if (record is None or record.project_id != project_id or record.run_id != run_id
+            or record.creator != "runtime.knowledge_foundry" or not record.retention_required
+            or record.classification != ResourceClassification.EVIDENCE.value
+            or record.path != str(directory.absolute()) or record.path_identity is None
+            or tuple(record.path_identity) != manager._path_identity(directory)):
+        raise ValueError("candidate retained resource identity differs")
+    files = body.get("images")
+    if type(files) is not dict or len(files) > 10000:
+        raise ValueError("bounded candidate image inventory required")
+    if any(type(k) is not str or type(v) is not str or re.fullmatch(r"[a-f0-9]{64}", v) is None for k,v in files.items()):
+        raise ValueError("exact candidate image digests required")
+    actual = set()
+    for path in directory.rglob("*"):
+        reject_path_links(path)
+        if path.is_file(): actual.add(path.relative_to(directory).as_posix())
+        if len(actual) > 10001:
+            raise ValueError("candidate inventory exceeds bound")
+    if actual != set(files) | {"custody.json"}:
+        raise ValueError("candidate image inventory differs")
+    for relative, digest in files.items():
+        path = directory / relative
+        if Path(relative).is_absolute() or ".." in Path(relative).parts or path.resolve().parent != directory.resolve() and directory.resolve() not in path.resolve().parents:
+            raise ValueError("candidate image path escaped")
+        raw = bytes(read_bounded_bytes(path, max_bytes=16 * 1024 * 1024))
+        if hashlib.sha256(raw).hexdigest() != digest:
+            raise ValueError("candidate retained image differs")
+    return load_json_object(directory / "receipt.json", max_bytes=2 * 1024 * 1024)
+
+
+def foundry_candidate_from_mapping(value):
+    """Closed bounded JSON adapter for the existing complete candidate contract."""
+    from dataclasses import fields
+    from .foundry_studio_bridge import FoundryCandidateSkill, validate_foundry_candidate
+    from .json_io import bounded_canonical_json_bytes
+    if type(value) is not dict or set(value) != {x.name for x in fields(FoundryCandidateSkill)}:
+        raise ValueError("exact full Foundry candidate fields required")
+    bounded_canonical_json_bytes(value,max_bytes=256 * 1024)
+    tuple_fields={"source_lineage","mechanisms","formulas","effects","tests","unknowns","contradictions"}
+    if any(type(value[k]) is not list or len(value[k]) > 256 for k in tuple_fields):
+        raise ValueError("bounded actual Foundry candidate arrays required")
+    candidate=FoundryCandidateSkill(**{k:tuple(v) if k in tuple_fields else v for k,v in value.items()})
+    validate_foundry_candidate(candidate)
+    return candidate
+
+
+def validate_retained_foundry_candidate(project_root, candidate, reference):
+    """Actual Studio intake binding: signed bytes must reproduce the complete candidate."""
+    from dataclasses import fields
+    from .json_io import load_json_object, read_bounded_bytes
+    from .studio_authority import StudioAuthorityStore
+    from .foundry_studio_bridge import export_foundry_candidate, validate_foundry_candidate
+    validate_foundry_candidate(candidate)
+    if type(reference) is not dict or set(reference) != {"bundle_id", "run_id", "custody_sha256"}:
+        raise ValueError("exact retained Foundry publication reference required")
+    root = Path(project_root).resolve(strict=True)
+    authority = StudioAuthorityStore.open_existing(root)
+    destination = root / ".agentic_engineering_os_px/runtime-core/knowledge-foundry/candidates"
+    read_candidate_publication(reference["bundle_id"], destination, project_root=root,
+        project_id=authority.project_identity, run_id=reference["run_id"])
+    directory = destination / reference["bundle_id"]
+    signed = load_json_object(directory / "custody.json", max_bytes=2 * 1024 * 1024)
+    body = authority.verify_receipt(signed)
+    if _stable(body) != reference["custody_sha256"]:
+        raise ValueError("retained Foundry custody reference differs")
+    raw = bytes(read_bounded_bytes(directory / "source-image.json", max_bytes=16 * 1024 * 1024))
+    if hashlib.sha256(raw).hexdigest() != body["images"]["source-image.json"]:
+        raise ValueError("retained Foundry source image differs")
+    image = json.loads(raw)
+    if type(image) is not dict or set(image) != {x.name for x in fields(FoundryBundle)}:
+        raise ValueError("exact typed Foundry source image required")
+    def typed(cls, row, tuple_fields):
+        if type(row) is not dict or set(row) != {x.name for x in fields(cls)}:
+            raise ValueError("exact Foundry source component required")
+        return cls(**{k: tuple(v) if k in tuple_fields else v for k,v in row.items()})
+    bundle = FoundryBundle(image["bundle_id"], image["state"], tuple(image["sources"]),
+        tuple(typed(KnowledgeObject,x,{"evidence_refs","relationships"}) for x in image["knowledge"]),
+        tuple(tuple(x) for x in image["graph_edges"]),
+        tuple(typed(CandidateSkill,x,{"inputs","outputs","triggers","dependencies","examples","tests","failure_cases","references"}) for x in image["skills"]),
+        tuple(typed(CalculationPackage,x,{"variables","dependencies","edge_cases","failure_cases"}) for x in image["calculations"]),
+        tuple(image["schemas"]), tuple(image["benchmark_prompts"]), image["fitness"], tuple(image["certification_errors"]))
+    identity = _stable({"sources": bundle.sources, "knowledge": [asdict(x) for x in bundle.knowledge]})
+    if bundle.bundle_id != reference["bundle_id"] or identity != bundle.bundle_id:
+        raise ValueError("Foundry source image bundle identity differs")
+    expected = export_foundry_candidate(bundle, candidate.skill_id)
+    if _stable(asdict(expected)) != _stable(asdict(candidate)):
+        raise ValueError("complete retained Foundry candidate or lineage differs")
+    files, receipt = _render_candidate_bundle(bundle,destination)
+    files[Path("receipt.json")] = json.dumps(receipt,indent=2,sort_keys=True)+"\n"
+    if {path.as_posix():hashlib.sha256(content.encode()).hexdigest() for path,content in files.items()} != body["images"]:
+        raise ValueError("retained Foundry outputs differ from typed source image")
+    return expected
+
+
+def materialize_candidate_bundle(bundle, destination, *, project_root=None, project_id=None, run_id=None, admission_event_id=None):
+    """Publish candidate-only evidence under explicit native custody, never admission."""
+    from datetime import datetime, timedelta, timezone
+    import os
+    from uuid import uuid4
+    from .archive_io import reject_path_links
+    from .effect_intent import EffectIntentLedger
+    from .scope_lease import ScopeLeaseStore
+    from .resource_lifecycle import ResourceManager, ResourceClassification
+    from .studio_authority import StudioAuthorityStore
+    from .json_io import bounded_canonical_json_bytes, read_bounded_bytes
+    root, destination, directory, scope, key = _publication_identity(bundle.bundle_id, destination, project_root, project_id, run_id)
+    _admit_candidate_publication(root, admission_event_id, scope)
+    authority = StudioAuthorityStore.open_existing(root)
+    if authority.project_identity != project_id:
+        raise ValueError("publication project identity differs from native existing authority")
+    files, receipt = _render_candidate_bundle(bundle, destination)
+    images = {relative.as_posix(): content.encode("utf-8") for relative, content in files.items()}
+    images["receipt.json"] = (json.dumps(receipt, indent=2, sort_keys=True) + "\n").encode()
+    if len(images) > 10000 or sum(map(len, images.values())) > 64 * 1024 * 1024:
+        raise ValueError("candidate publication exceeds bounded image inventory")
+    for relative, raw in images.items():
+        path = Path(relative)
+        if path.is_absolute() or ".." in path.parts or not path.parts or "\\" in relative or ":" in relative or len(raw) > 16 * 1024 * 1024:
+            raise ValueError("candidate output path or image exceeds contract")
+        reject_path_links(directory / path)
+    intents = EffectIntentLedger(root)
+    fence = intents.fence(key)
+    if fence.get("disposition") == "committed":
+        previous = read_candidate_publication(bundle.bundle_id, destination, project_root=root, project_id=project_id, run_id=run_id)
+        for relative, raw in images.items():
+            if bytes(read_bounded_bytes(directory / relative, max_bytes=len(raw) + 1)) != raw:
+                raise ValueError("candidate replay content differs")
+        return previous
+    if fence.get("disposition") != "new":
+        raise ValueError("uncertain candidate publication requires native reconciliation")
+    leases = ScopeLeaseStore(root); lease_id = "foundry-lease-" + uuid4().hex
+    leases.acquire(lease_id=lease_id, execution_id=run_id, effect="write", scopes=(scope,),
+                   reason="candidate evidence publication", expires_utc=(datetime.now(timezone.utc) + timedelta(minutes=2)).isoformat())
+    def require_live_owner():
+        if any(row["binding"]["lease_id"]==lease_id and row["binding"]["execution_id"]==run_id for row in leases.quarantines(effect="write")):
+            raise ValueError("candidate publication lease has unresolved quarantine")
+        if not any(x.lease_id == lease_id and x.execution_id == run_id and x.scopes == (scope,)
+                   for x in leases.active(effect="write")):
+            raise ValueError("candidate publication lease expired or changed")
+    primary_error = None
+    try:
+        require_live_owner()
+        if intents.fence(key).get("disposition") != "new" or directory.exists():
+            raise ValueError("candidate orphan or concurrent publication requires reconciliation")
+        _admit_candidate_publication(root, admission_event_id, scope)
+        intents.intend(idempotency_key=key, execution_id=run_id, effect="write", scopes=(scope,))
+        directory.mkdir(parents=True, exist_ok=False); reject_path_links(directory)
+        manager = ResourceManager(root / ".agentic_engineering_os_px/runtime-core/knowledge-foundry/resources.json")
+        resource = manager.register_path(directory, allowed_cleanup_root=destination, project_id=project_id, run_id=run_id,
+            lane_id="foundry-candidate", creator="runtime.knowledge_foundry", classification=ResourceClassification.EVIDENCE,
+            retention_required=True, expected_cleanup_event="explicit_evidence_retention_review")
+        body = {"schema_version": "px.foundry-publication-custody/1.0", "bundle_id": bundle.bundle_id,
+                "project_id": project_id, "run_id": run_id, "path": scope, "authority_granted": False,
+                "resource_id": resource.resource_id,
+                "images": {k: hashlib.sha256(v).hexdigest() for k,v in images.items()}}
+        signed = authority.sign_receipt(body)
+        images["custody.json"] = bounded_canonical_json_bytes(signed, max_bytes=2 * 1024 * 1024)
+        for relative, raw in sorted(images.items()):
+            require_live_owner()
+            _admit_candidate_publication(root, admission_event_id, scope)
+            path = directory / relative; reject_path_links(path); path.parent.mkdir(parents=True, exist_ok=True)
+            with path.open("xb") as stream:
+                stream.write(raw); stream.flush(); os.fsync(stream.fileno())
+            if bytes(read_bounded_bytes(path, max_bytes=len(raw) + 1)) != raw:
+                raise ValueError("candidate publication readback differs")
+        require_live_owner()
+        _admit_candidate_publication(root, admission_event_id, scope)
+        intents.commit(idempotency_key=key, execution_id=run_id, result_sha256=_stable(body))
+        return read_candidate_publication(bundle.bundle_id, destination, project_root=root, project_id=project_id, run_id=run_id)
+    except BaseException as error:
+        primary_error = error
+        raise
+    finally:
+        try:
+            leases.release(lease_id=lease_id, execution_id=run_id)
+        except BaseException as release_error:
+            if primary_error is None:
+                raise
+            BaseException.add_note(primary_error, "Foundry scope release remains uncertain: " + type(release_error).__name__)
+
 
 
 def compose_candidate_skills(

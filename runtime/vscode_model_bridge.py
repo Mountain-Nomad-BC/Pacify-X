@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from pathlib import Path
 import sys
 from typing import Iterable, Mapping
@@ -22,6 +23,7 @@ from .provider_budget import ProviderBudgetLedger
 from .provider_gateway import (
     LlamaCppStreamingHttpAdapter,
     ProviderInvocationGateway,
+    ProviderInvocationError,
     ProviderRequest,
     load_provider_registry,
 )
@@ -46,7 +48,7 @@ def _bounded_json_stdin() -> dict[str, object]:
 
 
 def _event_rows(project_root: Path) -> list[dict[str, object]]:
-    path = project_root / ".engineering-bootstrap" / "local-model-runtime" / "events.jsonl"
+    path = project_root / ".agentic_engineering_os_px" / "local-model-runtime" / "events.jsonl"
     if not path.is_file() or path.stat().st_size > MAX_EVENT_LOG_BYTES:
         return []
     rows: list[dict[str, object]] = []
@@ -68,7 +70,7 @@ def _runtime_from_started(project_root: Path, event: Mapping[str, object]) -> tu
     plan = payload.get("plan")
     if type(session_id) is not str or not session_id.startswith("local-model-session-"):
         raise ValueError("local-model start event session identity is invalid")
-    if type(plan) is not dict or plan.get("schema_version") != "px.local-model-router-pool-plan/1.0":
+    if type(plan) is not dict or plan.get("schema_version") not in {"px.local-model-router-pool-plan/1.0", "px.local-model-router-pool-plan/1.1"}:
         raise ValueError("local-model start event is not a router-pool plan")
     command = plan.get("command")
     models = plan.get("models")
@@ -137,8 +139,18 @@ def _available(engine_root: Path, project_root: Path) -> list[dict[str, object]]
         admission = bindings[profile.model_id].get("admission")
         if type(admission) is not dict or type(admission.get("model_sha256")) is not str:
             continue
+        if plan.get("schema_version") == "px.local-model-router-pool-plan/1.1":
+            preset = plan.get("preset_binding")
+            members = preset.get("models") if type(preset) is dict else None
+            if type(members) is not list:
+                raise ValueError("router preset profile bindings are unavailable")
+            matches = [row for row in members if type(row) is dict and row.get("model_id") == profile.model_id]
+            if (len(matches) != 1 or matches[0].get("profile_sha256") != profile.profile_sha256
+                    or matches[0].get("model_sha256") != admission["model_sha256"]):
+                continue
         result.append({
             "profile_id": profile.profile_id,
+            "provider_id": "llama.cpp",
             "model_id": profile.model_id,
             "model_sha256": admission["model_sha256"],
             "lane": profile.lane,
@@ -154,11 +166,19 @@ def _available(engine_root: Path, project_root: Path) -> list[dict[str, object]]
 
 
 def list_models(engine_root: Path, project_root: Path) -> dict[str, object]:
-    return {
-        "schema_version": "px.vscode-model-list/1.0",
-        "models": _available(engine_root, project_root),
-        "authority_granted": False,
-    }
+    models = _available(engine_root, project_root)
+    remote_status = "unconfigured"
+    try:
+        from .remote_model_bridge import list_models as remote_models
+        remote = remote_models(engine_root, project_root)
+        models += remote["models"]
+        remote_status = "declared_unavailable" if remote["models"] else "unconfigured"
+    except (OSError, ValueError, PermissionError, KeyError, TypeError):
+        # A malformed authoritative remote configuration grants no stale route.
+        # Do not leak configuration contents or invalidate genuine local profiles.
+        remote_status = "configuration_invalid"
+    return {"schema_version": "px.vscode-model-list/1.0", "models": models,
+            "remote_catalog_status": remote_status, "authority_granted": False}
 
 
 def _model(engine_root: Path, project_root: Path, profile_id: str) -> tuple[dict[str, object], ModelRuntimeProfile, LocalModelRuntime]:
@@ -198,7 +218,7 @@ def _tools(value: object) -> tuple[CanonicalTool, ...]:
 
 
 def _gateway(engine_root: Path, project_root: Path) -> ProviderInvocationGateway:
-    state = project_root / ".engineering-bootstrap" / "model-client-gateway"
+    state = project_root / ".agentic_engineering_os_px" / "model-client-gateway"
     state.mkdir(parents=True, exist_ok=True)
     return ProviderInvocationGateway(
         engine_root,
@@ -221,6 +241,35 @@ def _request(engine_root: Path, project_root: Path, payload: Mapping[str, object
         raise ValueError("max_output_tokens must be an integer")
     max_output = min(max_output, profile.max_output_tokens)
     deadline_ms = payload.get("deadline_ms", 300_000)
+    execution_context = None
+    if payload.get("execution_context") is not None:
+        from .execution_context import execution_context_from_dict
+        from .json_io import load_json_object
+        from .archive_io import reject_path_links
+        from datetime import datetime, timezone
+        execution_context = execution_context_from_dict(payload["execution_context"])
+        project_id = str(payload.get("project_id") or project_root.name or "workspace")
+        if (execution_context.execution_id != request_id or execution_context.session_id != session_id
+                or execution_context.project_id != project_id or execution_context.actor_id != ACTOR_ID
+                or execution_context.provider_id != "llama.cpp"):
+            raise ValueError("model invocation differs from its exact execution context")
+        state_path = project_root / ".agentic_engineering_os_px/runtime-core/agent-console/task-state.json"
+        reject_path_links(state_path)
+        state = load_json_object(state_path, max_bytes=16 * 1024 * 1024)
+        runs = state.get("runs")
+        if state.get("schemaVersion") != "px.agent-task-store/2.0" or type(runs) is not list or len(runs) > 10000:
+            raise ValueError("execution task state is unavailable or invalid")
+        matches = [row for row in runs if type(row) is dict and row.get("runId") == execution_context.root_execution_id]
+        if (len(matches) != 1 or state.get("epoch") != execution_context.epoch
+                or matches[0].get("epoch") != execution_context.epoch
+                or matches[0].get("revision") != execution_context.revision
+                or matches[0].get("status") != "running"
+                or execution_context.cancellation_scope_id != execution_context.root_execution_id):
+            raise ValueError("execution is stale, cancelled, terminal or attributed to another run")
+        remaining = (datetime.fromisoformat(execution_context.deadline_utc.replace("Z", "+00:00")) - datetime.now(timezone.utc)).total_seconds()
+        if remaining <= 0:
+            raise ValueError("execution context deadline expired")
+        deadline_ms = min(int(deadline_ms), int(remaining * 1000))
     canonical = CanonicalModelRequest(
         request_id=request_id,
         session_id=session_id,
@@ -233,7 +282,8 @@ def _request(engine_root: Path, project_root: Path, payload: Mapping[str, object
         max_output_tokens=max_output,
         deadline_ms=int(deadline_ms),
         response_schema=payload.get("response_schema") if type(payload.get("response_schema")) is dict else None,
-        metadata={"profile_id": profile.profile_id, "profile_sha256": profile.profile_sha256, "lane": profile.lane},
+        metadata={"profile_id": profile.profile_id, "profile_sha256": profile.profile_sha256, "lane": profile.lane,
+                  **({"execution_context": execution_context.as_dict()} if execution_context is not None else {})},
     )
     provider_request = ProviderRequest(
         invocation_id=request_id,
@@ -269,6 +319,76 @@ def count_tokens(engine_root: Path, project_root: Path, payload: Mapping[str, ob
     return {"schema_version": "px.vscode-token-count/1.0", "input_tokens": result.input_tokens, "exact": True, "receipt_sha256": receipt["receipt_sha256"]}
 
 
+def set_sandbox_mode(engine_root: Path, project_root: Path, payload: Mapping[str, object]) -> dict[str, object]:
+    """Record the Isolated Agent Sandbox mode selected by the UI.
+
+    The UI only selects the mode; the PX runtime policy is the authority that
+    enforces it. This command validates the selection, persists it as the
+    workspace/session-scoped sandbox policy, and returns the effective policy. It
+    never claims enforcement and never grants authority.
+    """
+    from .isolated_sandbox import (
+        SandboxPolicyError,
+        establish_sandbox,
+        sandbox_off,
+        sandbox_policy_from_dict,
+    )
+
+    if payload.get("schema_version") != "px.isolated-agent-sandbox-request/1.0":
+        raise ValueError("sandbox request schema version is invalid")
+    unknown = set(payload) - {
+        "schema_version", "mode", "allowed_endpoints", "scope_key", "policy_revision",
+        "component_acknowledgments",
+    }
+    if unknown:
+        raise ValueError("sandbox request contains unsupported fields")
+    raw_mode_value = payload.get("mode")
+    if type(raw_mode_value) is not str:
+        raise ValueError("sandbox mode must be text")
+    raw_mode = raw_mode_value.strip().upper()
+    if raw_mode not in {"OFF", "ON"}:
+        raise ValueError("sandbox mode must be OFF or ON")
+    scope_key = project_root.resolve(strict=True).as_posix()
+    requested_scope = payload.get("scope_key")
+    if requested_scope is not None and requested_scope != scope_key:
+        raise ValueError("sandbox request scope does not match the project root")
+    policy_revision_value = payload.get("policy_revision", "sandbox-r1")
+    if type(policy_revision_value) is not str or not policy_revision_value.strip():
+        raise ValueError("sandbox policy revision must be nonempty text")
+    policy_revision = policy_revision_value
+    endpoints = payload.get("allowed_endpoints", [])
+    if type(endpoints) is not list:
+        raise ValueError("allowed_endpoints must be a list")
+    if raw_mode == "OFF":
+        if endpoints:
+            raise ValueError("allowed_endpoints must be empty when sandbox mode is OFF")
+        policy = sandbox_off(scope_key=scope_key, policy_revision=policy_revision)
+    else:
+        if any(type(item) is not str for item in endpoints):
+            raise ValueError("allowed_endpoints must contain only text values")
+        policy = establish_sandbox(
+            scope_key=scope_key,
+            allowed_endpoints=endpoints,
+            policy_revision=policy_revision,
+            component_acknowledgments=payload.get("component_acknowledgments"),
+        )
+    image = policy.as_dict()
+    # Round-trip through the decoder so a tampered/oversized image cannot persist.
+    sandbox_policy_from_dict(image)
+    state_root = project_root / ".agentic_engineering_os_px" / "sandbox"
+    state_root.mkdir(parents=True, exist_ok=True)
+    target = state_root / "isolated-agent-sandbox.json"
+    tmp = target.with_name(target.name + ".prepared")
+    tmp.write_text(json.dumps(image, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
+    os.replace(tmp, target)
+    return {
+        "schema_version": "px.isolated-agent-sandbox-result/1.0",
+        "mode": policy.mode,
+        "policy": image,
+        "authority_granted": False,
+    }
+
+
 def stream_chat(engine_root: Path, project_root: Path, payload: Mapping[str, object]) -> None:
     request, adapter = _request(engine_root, project_root, payload)
     gateway = _gateway(engine_root, project_root)
@@ -282,14 +402,22 @@ def stream_chat(engine_root: Path, project_root: Path, payload: Mapping[str, obj
 
 def main(argv: Iterable[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("operation", choices=("list", "count", "chat"))
+    parser.add_argument("operation", choices=("list", "count", "chat", "context", "sandbox", "prepared-group"))
     parser.add_argument("--engine-root", required=True)
     parser.add_argument("--project-root", required=True)
     args = parser.parse_args(list(argv) if argv is not None else None)
     engine_root = Path(args.engine_root).resolve(strict=True)
     project_root = Path(args.project_root).resolve(strict=True)
     payload = _bounded_json_stdin()
-    if args.operation == "list":
+    if args.operation == "prepared-group":
+        from .prepared_group_transport import inspect_prepared_group
+        print(json.dumps(inspect_prepared_group(project_root, payload), sort_keys=True, separators=(",", ":")))
+    elif args.operation == "context":
+        from .chat_context import retrieve_chat_context
+        print(json.dumps(retrieve_chat_context(engine_root, project_root, payload), sort_keys=True, separators=(",", ":")))
+    elif args.operation == "sandbox":
+        print(json.dumps(set_sandbox_mode(engine_root, project_root, payload), sort_keys=True, separators=(",", ":")))
+    elif args.operation == "list":
         print(json.dumps(list_models(engine_root, project_root), sort_keys=True, separators=(",", ":")))
     elif args.operation == "count":
         print(json.dumps(count_tokens(engine_root, project_root, payload), sort_keys=True, separators=(",", ":")))
@@ -299,4 +427,11 @@ def main(argv: Iterable[str] | None = None) -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    try:
+        raise SystemExit(main())
+    except ProviderInvocationError as error:
+        sys.stdout.write(json.dumps({"type": "failure", "failure": {
+            "schema_version": "px.provider-client-failure/1.0", "adapter_id": error.adapter_id,
+            "failure_type": error.failure_type, **error.failure_metadata}}, sort_keys=True, separators=(",", ":")) + "\n")
+        sys.stdout.flush()
+        raise SystemExit(2) from None

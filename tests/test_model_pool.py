@@ -169,6 +169,106 @@ def _gguf_bytes(*, name: str) -> bytes:
     )
 
 
+def _capability_fingerprint(executable: Path, *options: str):
+    """A test-only exact fingerprint bound to the fixture executable bytes."""
+    from dataclasses import asdict, replace
+    from hashlib import sha256
+    from runtime import llama_cpp_capabilities as CAP
+
+    fingerprint = CAP.LlamaCppCapabilityFingerprint(
+        schema_version=CAP.FINGERPRINT_SCHEMA,
+        executable_path=str(executable.resolve()),
+        executable_sha256=sha256(executable.read_bytes()).hexdigest(),
+        executable_size_bytes=executable.stat().st_size,
+        version_text="test",
+        version_sha256=sha256(b"test").hexdigest(),
+        help_sha256=sha256(b"help").hexdigest(),
+        devices_sha256=None,
+        supported_options=tuple(sorted(set(options))),
+        device_probe_supported=False,
+        fingerprint_sha256="",
+    )
+    return replace(
+        fingerprint,
+        fingerprint_sha256=CAP._sha({
+            **{key: value for key, value in asdict(fingerprint).items()
+               if key != "fingerprint_sha256"},
+            "supported_options": list(fingerprint.supported_options),
+        }),
+    )
+
+
+def _certified_profile(model_id: str, **overrides):
+    from runtime.model_profile import ModelRuntimeProfile, _sha
+
+    payload = {
+        "schema_version": "px.model-runtime-profile/1.0",
+        "profile_id": f"{model_id}-fixture",
+        "model_id": model_id,
+        "lane": "control",
+        "runtime": "llama_cpp_router",
+        "state": "certified",
+        "residency": "resident",
+        "context_tokens": 4096,
+        "max_output_tokens": 512,
+        "parallel_slots": 1,
+        "threads": 2,
+        "threads_batch": 2,
+        "batch_size": 256,
+        "ubatch_size": 64,
+        "gpu_layers": 0,
+        "cpu_moe_layers": None,
+        "flash_attention": False,
+        "reasoning": False,
+        "prompt_cache": False,
+        "text_only": True,
+        "idle_evict_seconds": None,
+        "exclusive_heavy": False,
+        "benchmark_required": False,
+        "profile_sha256": "",
+    }
+    payload.update(overrides)
+    payload["profile_sha256"] = _sha(
+        {key: value for key, value in payload.items() if key != "profile_sha256"})
+    return ModelRuntimeProfile(**payload)
+
+
+def _preset_declaration(fingerprint, executable, extra_keys=("--host", "--port", "--models-max", "--models-preset", "--no-models-autoload", "--metrics", "--slots", "--no-ui", "--log-jsonl", "--model")):
+    from dataclasses import asdict, replace
+    from runtime.model_router_preset import RouterPresetFormat, _sha as _preset_sha
+    from runtime import llama_cpp_capabilities as CAP
+
+    option_keys = [
+        ["--model", "model", ""], ["--ctx-size", "ctx_size", ""],
+        ["--cache-type-k", "cache_type_k", ""], ["--threads", "n_threads", ""],
+        ["--n-gpu-layers", "n_gpu_layers", ""],
+        ["--threads-batch", "n_threads_batch", ""],
+        ["--batch-size", "n_batch", ""], ["--ubatch-size", "n_ubatch", ""],
+        ["--parallel", "n_parallel", ""], ["--flash-attn", "flash_attn", ""],
+    ]
+    options = {row[0] for row in option_keys} | set(extra_keys)
+    fingerprint = replace(fingerprint, supported_options=tuple(sorted(options)))
+    fingerprint = replace(
+        fingerprint,
+        fingerprint_sha256=CAP._sha({
+            **{key: value for key, value in asdict(fingerprint).items()
+               if key != "fingerprint_sha256"},
+            "supported_options": list(fingerprint.supported_options),
+        }),
+    )
+    declaration = RouterPresetFormat(
+        schema_version="px.model-router-preset-format/1.0",
+        executable_sha256=fingerprint.executable_sha256,
+        capability_fingerprint_sha256=fingerprint.fingerprint_sha256,
+        format_evidence_sha256="c" * 64,
+        section_prefix="model-",
+        section_suffix="",
+        option_keys=tuple(tuple(row) for row in option_keys),
+        declaration_sha256="",
+    )
+    return replace(declaration, declaration_sha256=_preset_sha(declaration.identity_payload())), fingerprint
+
+
 def test_router_pool_plan_is_loopback_no_autoload_and_exact_file_bound(tmp_path: Path) -> None:
     from runtime.local_model_runtime import LocalModelRuntime
 
@@ -191,12 +291,37 @@ def test_router_pool_plan_is_loopback_no_autoload_and_exact_file_bound(tmp_path:
         allowed_runtime_roots=[runtime_root],
         allowed_config_roots=[config_root],
     )
+    fingerprint = _capability_fingerprint(
+        executable,
+        "--batch-size", "--ctx-size", "--flash-attn", "--host", "--log-jsonl",
+        "--metrics", "--model", "--models-max", "--models-preset",
+        "--n-gpu-layers", "--no-models-autoload", "--no-ui", "--parallel",
+        "--port", "--slots", "--threads", "--threads-batch", "--ubatch-size",
+    )
+    profiles = {
+        model_id: _certified_profile(model_id)
+        for model_id in ("qwen35-4b-operator", "qwen3-30b-a3b-deep")
+    }
+    declarations, fingerprint = _preset_declaration(fingerprint, executable)
+    models_map = {
+        "qwen35-4b-operator": runtime.inspect_model(one),
+        "qwen3-30b-a3b-deep": runtime.inspect_model(two),
+    }
+    from runtime.model_router_preset import render_model_router_preset
+    rendered, _binding = render_model_router_preset(
+        models_map, profiles, fingerprint, declarations,
+        verify_format=lambda _decl, _fp: None)
+    preset.write_bytes(rendered)
     plan = runtime.plan_router_pool(
-        {"qwen35-4b-operator": runtime.inspect_model(one), "qwen3-30b-a3b-deep": runtime.inspect_model(two)},
+        models_map,
         executable,
         preset,
         port=18080,
         models_max=2,
+        profiles=profiles,
+        capability_fingerprint=fingerprint,
+        preset_format=declarations,
+        verify_preset_format=lambda _decl, _fp: None,
     )
     assert plan.command == (
         str(executable.resolve()), "--host", "127.0.0.1", "--port", "18080",
@@ -287,7 +412,25 @@ def test_router_timeout_and_unplanned_router_models_fail_before_side_effect(tmp_
         readiness_probe=lambda _origin, _timeout: True,
         router_request=request,
     )
-    plan = runtime.plan_router_pool({"qwen35-4b-operator": runtime.inspect_model(model)}, executable, preset, port=18081, models_max=1)
+    fingerprint = _capability_fingerprint(
+        executable,
+        "--batch-size", "--ctx-size", "--flash-attn", "--host", "--log-jsonl",
+        "--metrics", "--model", "--models-max", "--models-preset",
+        "--n-gpu-layers", "--no-models-autoload", "--no-ui", "--parallel",
+        "--port", "--slots", "--threads", "--threads-batch", "--ubatch-size",
+    )
+    declaration, fingerprint = _preset_declaration(fingerprint, executable)
+    profile = _certified_profile("qwen35-4b-operator")
+    admission = runtime.inspect_model(model)
+    from runtime.model_router_preset import render_model_router_preset
+    rendered, _binding = render_model_router_preset(
+        {"qwen35-4b-operator": admission}, {"qwen35-4b-operator": profile},
+        fingerprint, declaration, verify_format=lambda _decl, _fp: None)
+    preset.write_bytes(rendered)
+    plan = runtime.plan_router_pool(
+        {"qwen35-4b-operator": admission}, executable, preset, port=18081, models_max=1,
+        profiles={"qwen35-4b-operator": profile}, capability_fingerprint=fingerprint,
+        preset_format=declaration, verify_preset_format=lambda _decl, _fp: None)
     started = runtime.start(plan)
     before = len(calls)
     with pytest.raises(ValueError, match="router timeout"):
@@ -296,7 +439,7 @@ def test_router_timeout_and_unplanned_router_models_fail_before_side_effect(tmp_
 
     assert runtime.load_router_model(started["session_id"], "qwen35-4b-operator", supplied_authority=True, timeout_seconds=1.0) == "loaded"
     assert runtime.status(started["session_id"])["state"] == "running"
-    profile = next(item for item in __import__("runtime.model_profile", fromlist=["load_runtime_profiles"]).load_runtime_profiles(ROOT) if item.model_id == "qwen35-4b-operator")
+    profile = _certified_profile("qwen35-4b-operator")
     child_pool = runtime.open_model_pool(started["session_id"], {profile.model_id: profile})
     child_pool.reconcile()
     lease = child_pool.acquire(profile.model_id, owner="operator-query", supplied_authority=False)
@@ -336,3 +479,141 @@ def test_failed_unknown_router_state_consumes_capacity_until_reconciled() -> Non
     # Reconciliation proves the first model is actually loaded and clears the failed marker.
     pool.reconcile()
     assert pool.entry("one").state == "warm"
+
+
+def test_router_pool_plan_binds_certified_profiles_through_a_commissioned_preset_format(tmp_path: Path) -> None:
+    """P4d: the per-model profile/placement contract is closed and enforced.
+
+    ``plan_router_pool`` requires an exact typed fingerprint, frozen certified
+    profiles and a commissioned format declaration; the on-disk preset must
+    match the rendered bytes exactly, and a changed profile or preset fails
+    closed before any process effect.
+    """
+    from hashlib import sha256
+    from dataclasses import asdict, replace
+
+    from runtime import llama_cpp_capabilities as CAP
+    from runtime.local_model_runtime import LocalModelRuntime
+    from runtime.model_profile import (
+        load_runtime_profiles, runtime_profile_from_mapping)
+    from runtime.model_router_preset import (
+        router_preset_format_from_mapping, render_model_router_preset)
+
+    model_root = tmp_path / "models"
+    runtime_root = tmp_path / "runtime"
+    config_root = tmp_path / "config"
+    for path in (model_root, runtime_root, config_root):
+        path.mkdir()
+    model = model_root / "operator.gguf"
+    model.write_bytes(_gguf_bytes(name="operator"))
+    executable = runtime_root / "llama-server"
+    executable.write_bytes(b"runtime")
+    preset = config_root / "models.ini"
+
+    runtime = LocalModelRuntime(
+        tmp_path,
+        allowed_model_roots=[model_root],
+        allowed_runtime_roots=[runtime_root],
+        allowed_config_roots=[config_root],
+    )
+    admission = runtime.inspect_model(model)
+
+    fingerprint = CAP.LlamaCppCapabilityFingerprint(
+        schema_version=CAP.FINGERPRINT_SCHEMA,
+        executable_path=str(executable.resolve()),
+        executable_sha256=sha256(executable.read_bytes()).hexdigest(),
+        executable_size_bytes=executable.stat().st_size,
+        version_text="test",
+        version_sha256=sha256(b"test").hexdigest(),
+        help_sha256=sha256(b"help").hexdigest(),
+        devices_sha256=None,
+        supported_options=("--batch-size", "--cache-type-k", "--ctx-size", "--flash-attn", "--host", "--log-jsonl", "--metrics", "--model", "--models-max", "--models-preset", "--n-gpu-layers", "--no-models-autoload", "--no-ui", "--parallel", "--port", "--slots", "--threads", "--threads-batch", "--ubatch-size"),
+        device_probe_supported=False,
+        fingerprint_sha256="",
+    )
+    fingerprint = replace(
+        fingerprint,
+        fingerprint_sha256=CAP._sha({
+            **{key: value for key, value in asdict(fingerprint).items()
+               if key != "fingerprint_sha256"},
+            "supported_options": list(fingerprint.supported_options),
+        }),
+    )
+
+    from runtime.model_profile import ModelRuntimeProfile, _sha
+    profile_payload = {
+        "schema_version": "px.model-runtime-profile/1.0",
+        "profile_id": "preset-fixture",
+        "model_id": "preset-fixture-model",
+        "lane": "control",
+        "runtime": "llama_cpp_router",
+        "state": "certified",
+        "residency": "resident",
+        "context_tokens": 4096,
+        "max_output_tokens": 512,
+        "parallel_slots": 1,
+        "threads": 2,
+        "threads_batch": 2,
+        "batch_size": 256,
+        "ubatch_size": 64,
+        "gpu_layers": 0,
+        "cpu_moe_layers": None,
+        "flash_attention": False,
+        "reasoning": False,
+        "prompt_cache": False,
+        "text_only": True,
+        "idle_evict_seconds": None,
+        "exclusive_heavy": False,
+        "benchmark_required": False,
+        "profile_sha256": "",
+    }
+    profile_payload["profile_sha256"] = _sha(
+        {key: value for key, value in profile_payload.items() if key != "profile_sha256"})
+    profile = ModelRuntimeProfile(**profile_payload)
+    profiles = {profile.model_id: profile}
+
+    declaration = router_preset_format_from_mapping({
+        "schema_version": "px.model-router-preset-format/1.0",
+        "executable_sha256": fingerprint.executable_sha256,
+        "capability_fingerprint_sha256": fingerprint.fingerprint_sha256,
+        "format_evidence_sha256": "c" * 64,
+        "section_prefix": "model-",
+        "section_suffix": "",
+        "option_keys": [["--model", "model", ""], ["--ctx-size", "ctx_size", ""], ["--cache-type-k", "cache_type_k", ""], ["--threads", "n_threads", ""], ["--n-gpu-layers", "n_gpu_layers", ""], ["--threads-batch", "n_threads_batch", ""], ["--batch-size", "n_batch", ""], ["--ubatch-size", "n_ubatch", ""], ["--parallel", "n_parallel", ""], ["--flash-attn", "flash_attn", ""]],
+        "declaration_sha256": "",
+    })
+    from runtime.model_router_preset import _sha as _preset_sha
+    declaration = replace(declaration, declaration_sha256=_preset_sha(declaration.identity_payload()))
+    expected_bytes, binding = render_model_router_preset(
+        {profile.model_id: admission}, profiles, fingerprint, declaration,
+        verify_format=lambda _decl, _fp: None)
+    preset.write_bytes(expected_bytes)
+
+    plan = runtime.plan_router_pool(
+        {profile.model_id: admission},
+        executable,
+        preset,
+        port=18080,
+        models_max=1,
+        profiles=profiles,
+        capability_fingerprint=fingerprint,
+        preset_format=declaration,
+        verify_preset_format=lambda _decl, _fp: None,
+    )
+    assert plan.preset_binding["binding_sha256"] == binding.binding_sha256
+
+    # Any deviation between the admitted preset bytes and the exact rendered
+    # binding fails closed before side effects.
+    preset.write_bytes(expected_bytes + b"\n")
+    with pytest.raises(ValueError, match="preset bytes do not match"):
+        runtime.plan_router_pool(
+            {profile.model_id: admission},
+            executable,
+            preset,
+            port=18080,
+            models_max=1,
+            profiles=profiles,
+            capability_fingerprint=fingerprint,
+            preset_format=declaration,
+            verify_preset_format=lambda _decl, _fp: None,
+        )

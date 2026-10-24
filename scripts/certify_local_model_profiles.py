@@ -39,11 +39,8 @@ def _load_object(path: Path) -> dict[str, object]:
 
 
 def _sha_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        for block in iter(lambda: stream.read(1024 * 1024), b""):
-            digest.update(block)
-    return digest.hexdigest()
+    from runtime.hash_utils import file_sha256
+    return file_sha256(path)
 
 
 def _write_json_atomic(path: Path, payload: Mapping[str, object]) -> None:
@@ -129,7 +126,15 @@ def _certified_profile(profile: ModelRuntimeProfile, receipt: Mapping[str, objec
     measured = runtime_profile_from_mapping(effective)
     if measured.profile_id != profile.profile_id or measured.model_id != profile.model_id:
         raise ValueError("effective profile identity does not match the declared profile")
-    allowed_measurement_changes = {"threads", "threads_batch", "gpu_layers"}
+    allowed_measurement_changes = {
+        "threads",
+        "threads_batch",
+        "gpu_layers",
+        "cpu_moe_layers",
+        "flash_attention",
+        "cache_type_k",
+        "cache_type_v",
+    }
     declared = profile.identity_payload()
     measured_payload = measured.identity_payload()
     for field, declared_value in declared.items():

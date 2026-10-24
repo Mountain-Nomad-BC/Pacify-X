@@ -152,6 +152,11 @@
       "body": "policies/resource-lifecycle-retention.json"
     },
     {
+      "id": "rev1xx-validation",
+      "summary": "Bind the Rev1xx validation basis to the current implementation, current contracts, and fresh execution evidence; historical evidence remains reference and rollback only.",
+      "body": "policies/rev1xx-validation.json"
+    },
+    {
       "id": "risk-classification",
       "summary": "Classify risk before selecting approval, containment, testing, and rollback requirements.",
       "body": "policies/risk-classification.json"

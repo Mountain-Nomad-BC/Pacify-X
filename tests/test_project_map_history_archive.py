@@ -35,7 +35,7 @@ def _maps(root, count):
         (root / 'app.py').write_text(f'def answer(): return {index}\n', encoding='utf-8')
         result = build_project_map(root)
         assert result['valid']
-    return root / '.engineering-bootstrap/project-map-history'
+    return root / '.agentic_engineering_os_px/project-map-history'
 
 
 def test_project_map_history_archive_is_verified_and_recoverable(tmp_path: Path) -> None:
@@ -113,7 +113,7 @@ def test_map_history_rejects_unlinked_snapshot_without_deleting_it(tmp_path):
 
 def test_map_history_uses_producer_exclusive_lock(tmp_path):
     _maps(tmp_path, 2)
-    lock = tmp_path / '.engineering-bootstrap/.project-map.lock'
+    lock = tmp_path / '.agentic_engineering_os_px/.project-map.lock'
     lock.write_text('existing producer custody')
     with pytest.raises(FileExistsError):
         apply(tmp_path, keep_latest=1)
@@ -135,7 +135,7 @@ def test_map_history_interrupted_cleanup_resumes_and_preserves_ancestry(tmp_path
         patch.setattr(Path, 'unlink', stop)
         with pytest.raises(OSError, match='interrupted map cleanup'):
             apply(tmp_path, keep_latest=1)
-    assert not (tmp_path / '.engineering-bootstrap/.project-map.lock').exists()
+    assert not (tmp_path / '.agentic_engineering_os_px/.project-map.lock').exists()
     result = apply(tmp_path, keep_latest=1)
     assert result['changed']
     assert plan(tmp_path, keep_latest=1)['selected_count'] == 0

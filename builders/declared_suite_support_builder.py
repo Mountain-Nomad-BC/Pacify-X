@@ -149,7 +149,7 @@ def main() -> int:
         formulas.append(
             {
                 "id": name,
-                "callable": f"engineering_bootstrap.declared_suite_formulas:{name.replace('-', '_')}",
+                "callable": f"agentic_engineering_os_px.declared_suite_formulas:{name.replace('-', '_')}",
                 "tests": "tests/test_declared_suite_support.py",
             }
         )

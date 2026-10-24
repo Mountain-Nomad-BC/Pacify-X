@@ -16,6 +16,7 @@ import uuid
 import xml.etree.ElementTree as ET
 import venv
 
+from .release_source_identity import verify_release_source_identity,SCHEMA as SOURCE_IDENTITY_SCHEMA,current_campaign
 from .corrective_release import validate_corrective_ledger
 from .coverage_assurance import validate_coverage_evidence
 from .exact_tool_certification import certify_exact_tools
@@ -64,7 +65,7 @@ FINALIZER_CARDS = {"REL-010-C", "REL-010-E", "REL-011-FULL-REPAIR"}
 FINALIZER_FULL_REPAIR_PENDING = frozenset(
     {"PC-001", "PC-002", "PC-003", "PC-004", "PC-005", "PC-006", "PC-037"}
 )
-RELEASE_SANITATION_EXCLUDED_NAMES = frozenset({".engineering-bootstrap"})
+RELEASE_SANITATION_EXCLUDED_NAMES = frozenset({".agentic_engineering_os_px"})
 MACHINE_LOCAL_PATH = re.compile(r"(?i)(?:[a-z]:[\\/]|/(?:users|home|tmp|var/tmp)/)")
 PROJECT_ESCAPE_PATH = re.compile(r"(?:^|[\\/])\.\.(?:[\\/]|$)")
 WINDOWS_LOCAL_FRAGMENT = re.compile(r"(?i)[a-z]:[\\/][^\s\"'<>]*")
@@ -210,14 +211,17 @@ def _write_supply_chain_evidence(
 
     evidence_dir = _root(evidence_dir)
     release = _version(release)
-    source_control = _recorded_git_identity(source_control)
-    if (
-        source_control.get("valid") is not True
-        or source_control["tag"] != f"v{release}"
-    ):
-        raise ValueError("provenance requires a valid matching source identity")
-    if source_control["repository"].casefold() != EXPECTED_REPOSITORY.casefold():
-        raise ValueError("provenance repository does not match the product repository")
+    from .release_source_identity import source_identity_record,provenance_source,SCHEMA as SOURCE_IDENTITY_SCHEMA
+    source_control = source_identity_record(source_control)
+    if source_control.get("schema_version") == SOURCE_IDENTITY_SCHEMA:
+        if source_control["release_version"] != release:
+            raise ValueError("provenance current source version differs")
+    else:
+        if source_control.get("valid") is not True or source_control["tag"] != f"v{release}":
+            raise ValueError("provenance requires a valid matching source identity")
+        if source_control["repository"].casefold() != EXPECTED_REPOSITORY.casefold():
+            raise ValueError("provenance repository does not match the product repository")
+    source_dependency,invocation_id=provenance_source(source_control,product_digest)
     if (
         type(product_digest) is not str
         or re.fullmatch(r"[0-9a-f]{64}", product_digest) is None
@@ -293,20 +297,11 @@ def _write_supply_chain_evidence(
             "buildDefinition": {
                 "buildType": "https://github.com/Mountain-Nomad-BC/Pacify-X/release/v1",
                 "externalParameters": {"release": release},
-                "resolvedDependencies": [
-                    {
-                        "uri": source_control["repository"],
-                        "digest": {
-                            "gitCommit": source_control["commit_sha"],
-                            "gitTree": source_control["tree_sha"],
-                            "productSha256": product_digest,
-                        },
-                    }
-                ],
+                "resolvedDependencies": [source_dependency],
             },
             "runDetails": {
-                "builder": {"id": "engineering-bootstrap atomic release finalizer"},
-                "metadata": {"invocationId": source_control["tag"]},
+                "builder": {"id": "agentic-engineering-os-px atomic release finalizer"},
+                "metadata": {"invocationId": invocation_id},
                 "byproducts": [{"name": "release-toolchain", "content": toolchain}],
             },
         },
@@ -766,6 +761,9 @@ def _portable_payload_gate(value: object) -> dict[str, Any]:
 
 
 def _eligible_ledger(root: Path) -> list[str]:
+    if current_campaign(root):
+        from .release_current_acceptance import current_certification_acceptance
+        return current_certification_acceptance(root)["errors"]
     ledger = _json(root / "registry/corrective_release_ledger.json")
     errors = []
     for card in ledger["cards"]:
@@ -795,6 +793,9 @@ def _eligible_ledger(root: Path) -> list[str]:
 
 def _certificate_ledger_errors(root: Path) -> list[str]:
     """Admit only the circular cards that certification/publication can close."""
+    if current_campaign(root):
+        from .release_current_acceptance import current_certification_acceptance
+        return current_certification_acceptance(root)["errors"]
     corrective = validate_corrective_ledger(
         root,
         require_blocking_passed=True,
@@ -1251,7 +1252,8 @@ def finalize_release(
             }
     except ValueError:
         pass
-    source_control = capture_git_identity(root, version=release)
+    from .release_source_identity import capture_release_source_identity
+    source_control = capture_release_source_identity(root, version=release) if current_campaign(root) else capture_git_identity(root,version=release)
     if not source_control["valid"]:
         return {
             "valid": False,
@@ -1291,7 +1293,7 @@ def finalize_release(
     run_id = f"rel-{release}-{uuid.uuid4().hex[:12]}"
     staging_base = Path(tempfile.gettempdir()) / "pacify-x-release-staging" / run_id
     selected_artifact_dir = (artifact_dir or (staging_base / "artifacts")).resolve()
-    lock_path = root / ".engineering-bootstrap/release.lock"
+    lock_path = root / ".agentic_engineering_os_px/release.lock"
     with FileLock(lock_path, timeout_seconds=5.0):
         release_quarantine = Path(tempfile.gettempdir()) / "pacify-x-release-quarantine"
         release_quarantine.mkdir(parents=True, exist_ok=True)
@@ -1539,7 +1541,7 @@ def finalize_release(
             certificate, private_key=signing_key, signature_path=signature_path
         )
         _dump(release_root / "certificate.json", certificate)
-        journal_path = root / ".engineering-bootstrap/release-transaction.json"
+        journal_path = root / ".agentic_engineering_os_px/release-transaction.json"
         journal = {
             "schema_version": "2.0",
             "run_id": run_id,
@@ -1697,7 +1699,7 @@ def verify_release_certificate(
             ("version validation", validate_version_surfaces(root, asserted=release)),
             (
                 "source validation",
-                verify_recorded_git_identity(root, certificate["source_control"]),
+                (verify_release_source_identity(root, certificate["source_control"]) if certificate["source_control"].get("schema_version")==SOURCE_IDENTITY_SCHEMA or "identity_kind" in certificate["source_control"] else verify_recorded_git_identity(root, certificate["source_control"])),
             ),
         ]:
             errors.extend(_certificate_check_errors(result, label))

@@ -3,13 +3,13 @@
   "authority": "Executable proof requirements only; this artifact is not evidence that any probe ran or passed.",
   "inventory": {
     "path": "registry/operational_surface_inventory.json",
-    "sha256": "e3a69f31711db927abedbe0beaf276a4b9b503bc9ae1be20497d7ee472c0ee2e",
+    "sha256": "e0c73c07a1d28a5e4dbdd58c0def6ca16edc34694bfab51e4d0a92bf04640196",
     "inventory_id": "pacify-x-typed-surfaces-20260825-r15"
   },
   "action_inventory": {
     "path": "extension/resources/ui/action-inventory.json",
-    "sha256": "b6a9b536eea2b3fd51c9492f9aa8318d047029eee158c0edbbb17b760e0709c5",
-    "action_count": 206
+    "sha256": "c6d3a86b1d4c08646e5fa6d3fd05fdb3e5db8f64993affad99a3ff242f9cd338",
+    "action_count": 207
   },
   "chain_stages": [
     "open_load",
@@ -26,7 +26,7 @@
     "failure_handling",
     "recovery_rollback"
   ],
-  "control_count": 935,
+  "control_count": 936,
   "controls": [
     {
       "control_id": "pxui.activity.action.activityPause",
@@ -22157,6 +22157,41 @@
       }
     },
     {
+      "control_id": "pxui.settings.action.sandboxControl",
+      "surface_id": "settings",
+      "kind": "action",
+      "source_refs": [
+        "extension/media/dashboard/45-system-surfaces.js"
+      ],
+      "evidence_mode": "contained_host_interaction",
+      "probe": "render exact action class and every declared dataset variant; exercise validation, activation, and acknowledgement in a fresh contained state",
+      "effect": "configuration-write",
+      "requires_disposable_target": true,
+      "requires_fault_injection": true,
+      "requires_restart": true,
+      "requires_real_external_authority": false,
+      "state_role": "direct_control",
+      "activation_condition": {
+        "mode": "always",
+        "trigger": "the owning surface and declared action variant are loaded"
+      },
+      "stage_policy": {
+        "open_load": "required",
+        "display": "required",
+        "user_edit_action": "required",
+        "input_validation": "required",
+        "authorization": "required",
+        "backend_dispatch": "required",
+        "runtime_effect": "required",
+        "progress_reporting": "not_applicable_with_evidence",
+        "result_acknowledgement": "required",
+        "persistence": "required",
+        "reload_reopen": "required",
+        "failure_handling": "required",
+        "recovery_rollback": "required"
+      }
+    },
+    {
       "control_id": "pxui.settings.action.toggleBillablePolicy",
       "surface_id": "settings",
       "kind": "action",
@@ -34279,5 +34314,5 @@
       }
     }
   ],
-  "matrix_sha256": "94407ca5a768feb1093a507efd40a08175c9fe4f37c31dc6340bb01e97d0f914"
+  "matrix_sha256": "5eb5b30613e9ad37e8dc7c36f1df230afa323e293f4be047cd8859b7170e06bd"
 }

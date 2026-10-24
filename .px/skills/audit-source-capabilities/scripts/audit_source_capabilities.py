@@ -68,7 +68,7 @@ DEFAULT_EXCLUDES = {
     ".git",
     ".hg",
     ".svn",
-    ".engineering-bootstrap",
+    ".agentic_engineering_os_px",
     "__pycache__",
     ".pytest_cache",
     ".vscode-test",
@@ -86,7 +86,7 @@ DEFAULT_EXCLUDES = {
     "venv",
 }
 OPAQUE_EXTERNAL_BOUNDARIES = {
-    ".engineering-bootstrap",
+    ".agentic_engineering_os_px",
     ".tmp",
     ".vscode-test",
     ".vscodecounter",

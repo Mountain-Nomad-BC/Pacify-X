@@ -1,0 +1,243 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:semantic:source-census-binding",
+  "title": "PX Source Census Binding",
+  "description": "Current metadata source binding; complete physical audit remains separate. No canonical identity or execution authority.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "source_revision",
+    "generator",
+    "generator_sha256",
+    "generator_dependencies",
+    "taxonomy_seed_sha256",
+    "source_boundary_sha256",
+    "worthiness_policy_sha256",
+    "authored_source_policy_sha256",
+    "owner_set",
+    "exclusion_rules",
+    "surface_limit",
+    "entities_observed",
+    "entities_sha256",
+    "accounting_complete",
+    "source_revision_complete",
+    "extraction_complete",
+    "canonical_identity_authority",
+    "execution_authority",
+    "binding_schema_sha256",
+    "authored_files"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "px.source-census-binding/1.0"
+    },
+    "source_revision": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "generator": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "generator_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "generator_dependencies": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{64}$"
+      }
+    },
+    "taxonomy_seed_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "source_boundary_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "worthiness_policy_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "authored_source_policy_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "owner_set": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 4096
+      },
+      "maxItems": 50000,
+      "uniqueItems": true
+    },
+    "exclusion_rules": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 4096
+      },
+      "maxItems": 50000
+    },
+    "surface_limit": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1
+    },
+    "entities_observed": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "entities_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "accounting_complete": {
+      "const": true
+    },
+    "source_revision_complete": {
+      "const": true
+    },
+    "extraction_complete": {
+      "type": "boolean"
+    },
+    "canonical_identity_authority": {
+      "const": false
+    },
+    "execution_authority": {
+      "const": false
+    },
+    "binding_schema_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "authored_files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path",
+          "classification",
+          "owner",
+          "surfaces",
+          "sha256",
+          "entity_count",
+          "disposition",
+          "reason"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "classification": {
+            "const": "authored"
+          },
+          "owner": {
+            "type": "string",
+            "maxLength": 4096
+          },
+          "surfaces": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 4096
+            },
+            "maxItems": 50000
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "entity_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "disposition": {
+            "enum": [
+              "observed",
+              "excluded",
+              "intentionally_unclassified",
+              "unsupported_surface",
+              "unsupported_structure",
+              "budget_exhausted",
+              "unsafe_link",
+              "extraction_error",
+              "parse_error",
+              "encoding_error",
+              "read_error",
+              "extractor_unavailable"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "maxLength": 4096
+          },
+          "record_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "unclassified_policy_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "pattern": "^px\\.reviewed/"
+          },
+          "extractor_format_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "pattern": "^px\\.format/"
+          },
+          "extractor_provenance": {
+            "anyOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "schema_version",
+                  "parser_version",
+                  "source_sha256",
+                  "parser_executable_sha256"
+                ],
+                "properties": {
+                  "schema_version": {
+                    "const": "px.powershell-source/1.0"
+                  },
+                  "parser_version": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64
+                  },
+                  "source_sha256": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  },
+                  "parser_executable_sha256": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "additionalProperties": false
+              }
+            ]
+          }
+        }
+      },
+      "maxItems": 50000
+    }
+  }
+}

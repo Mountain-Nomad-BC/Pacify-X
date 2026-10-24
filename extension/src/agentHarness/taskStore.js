@@ -6,12 +6,30 @@ const { PxTask, PxRun, parse } = require('./contracts');
 const EFFECT_ORDER = ['READ_ONLY', 'LOW_RISK', 'MUTATING', 'HIGH_RISK'];
 
 class TaskStore {
-  constructor(options = {}) { this.tasks = new Map(); this.runs = new Map(); this.persistence = options.persistence || null; this._load(); }
+  constructor(options = {}) {
+    this.tasks = new Map(); this.runs = new Map(); this.persistence = options.persistence || null;
+    this.revision = 0; this.epoch = 0; this.persistenceError = null; this.writes = Promise.resolve();
+    this._load(); this.epoch += 1;
+    for (const [id, task] of this.tasks) this.tasks.set(id, parse(PxTask, { ...task, epoch: this.epoch, revision: task.revision + 1 }, 'recovered-task'));
+    for (const [id, run] of this.runs) this.runs.set(id, parse(PxRun, { ...run, epoch: this.epoch, revision: run.revision + 1,
+      ...(run.status === 'running' ? { status: 'waiting', lastError: 'Host restarted; explicit execution resume required.' } : {}) }, 'recovered-run'));
+    this._persist();
+  }
+
+  _healthy() { if (this.persistenceError) throw this.persistenceError; }
+  _fence(current, fence) {
+    this._healthy();
+    if (fence && (fence.epoch !== this.epoch || fence.revision !== current.revision)) throw new Error('task-state-stale-object-writer');
+  }
+  async flush() { await this.writes; this._healthy(); }
 
   createTask(input) {
+    this._healthy();
+    if (input.taskId && this.tasks.has(input.taskId)) throw new Error('task-already-exists');
     const at = nowIso();
     const task = parse(PxTask, {
       schemaVersion: 'px.agent-task/1.0', taskId: input.taskId || newId('task'), createdAt: at, updatedAt: at,
+      epoch: this.epoch, revision: 1,
       goal: input.goal, mode: input.mode || 'ASK', stage: 'INTAKE', targets: input.targets || [], activeSkills: [],
       constraints: {
         maxEffectClass: input.maxEffectClass || 'READ_ONLY', contextBudgetTokens: Number(input.contextBudgetTokens || 12000),
@@ -23,23 +41,30 @@ class TaskStore {
     this.tasks.set(task.taskId, task); this._persist(); return task;
   }
 
-  updateTask(taskId, patch) {
+  updateTask(taskId, patch, fence = null) {
     const current = this.requireTask(taskId);
+    this._fence(current, fence);
+    if (['complete', 'failed', 'cancelled'].includes(current.status) && patch.status && patch.status !== current.status) throw new Error('terminal-task-cannot-resurrect');
     if (patch.constraints?.maxEffectClass && EFFECT_ORDER.indexOf(patch.constraints.maxEffectClass) < 0) throw new Error('task-effect-class-invalid');
-    const next = parse(PxTask, { ...current, ...patch, constraints: { ...current.constraints, ...(patch.constraints || {}) }, updatedAt: nowIso() }, 'task');
+    const next = parse(PxTask, { ...current, ...patch, epoch: this.epoch, revision: current.revision + 1, constraints: { ...current.constraints, ...(patch.constraints || {}) }, updatedAt: nowIso() }, 'task');
     this.tasks.set(taskId, next); this._persist(); return next;
   }
 
   createRun(taskId) {
-    this.requireTask(taskId); const at = nowIso();
+    this._healthy(); const task = this.requireTask(taskId);
+    if (['complete', 'failed', 'cancelled'].includes(task.status)) throw new Error('terminal-task-cannot-start-run');
+    const at = nowIso();
     const run = parse(PxRun, { schemaVersion: 'px.agent-run/1.0', runId: newId('run'), taskId, createdAt: at, updatedAt: at,
+      epoch: this.epoch, revision: 1,
       status: 'running', activeWorkerId: null, providerSessionRef: null, routeHistory: [], round: 0, lastError: null }, 'run');
     this.runs.set(run.runId, run); this._persist(); return run;
   }
 
-  updateRun(runId, patch) {
+  updateRun(runId, patch, fence = null) {
     const current = this.requireRun(runId);
-    const next = parse(PxRun, { ...current, ...patch, updatedAt: nowIso() }, 'run');
+    this._fence(current, fence);
+    if (['complete', 'failed', 'cancelled'].includes(current.status) && patch.status && patch.status !== current.status) throw new Error('terminal-run-cannot-resurrect');
+    const next = parse(PxRun, { ...current, ...patch, epoch: this.epoch, revision: current.revision + 1, updatedAt: nowIso() }, 'run');
     this.runs.set(runId, next); this._persist(); return next;
   }
 
@@ -52,14 +77,31 @@ class TaskStore {
   requireRun(id) { const value = this.runs.get(id); if (!value) throw new Error('run-not-found'); return value; }
   listTasks() { return [...this.tasks.values()]; }
   listRuns(taskId = null) { return [...this.runs.values()].filter(r => !taskId || r.taskId === taskId); }
-  snapshot() { return { schemaVersion: 'px.agent-task-store/1.0', tasks: this.listTasks(), runs: this.listRuns() }; }
+  snapshot() { return { schemaVersion: 'px.agent-task-store/2.0', epoch: this.epoch, revision: this.revision, tasks: this.listTasks(), runs: this.listRuns() }; }
 
   _load() {
     if (!this.persistence?.load) return;
-    try { const snap = this.persistence.load(); for (const row of snap?.tasks || []) { const task=parse(PxTask,row,'persisted-task'); this.tasks.set(task.taskId,task); } for (const row of snap?.runs || []) { const run=parse(PxRun,row,'persisted-run'); this.runs.set(run.runId,run); } } catch { this.tasks.clear(); this.runs.clear(); }
+    const snap = this.persistence.load();
+    if (snap == null) return;
+    if (!['px.agent-task-store/1.0', 'px.agent-task-store/2.0'].includes(snap.schemaVersion) || !Array.isArray(snap.tasks) || !Array.isArray(snap.runs) || snap.tasks.length > 10000 || snap.runs.length > 10000) throw new Error('task-state-corrupt-snapshot');
+    if (snap.schemaVersion === 'px.agent-task-store/2.0') {
+      if (!Number.isSafeInteger(snap.epoch) || snap.epoch < 1 || !Number.isSafeInteger(snap.revision) || snap.revision < 1) throw new Error('task-state-corrupt-generation');
+      this.epoch = snap.epoch; this.revision = snap.revision;
+    }
+    for (const row of snap.tasks) { const task=parse(PxTask,row,'persisted-task'); if (this.tasks.has(task.taskId)) throw new Error('task-state-duplicate-task'); this.tasks.set(task.taskId,task); }
+    for (const row of snap.runs) { const run=parse(PxRun,row,'persisted-run'); if (this.runs.has(run.runId) || !this.tasks.has(run.taskId)) throw new Error('task-state-invalid-run-owner'); this.runs.set(run.runId,run); }
   }
 
-  _persist() { if (this.persistence?.save) void Promise.resolve(this.persistence.save(this.snapshot())).catch(() => {}); }
+  _persist() {
+    this._healthy(); this.revision += 1;
+    if (!this.persistence?.save) return;
+    const snapshot = this.snapshot();
+    if (this.persistence.synchronous === true) {
+      try { this.persistence.save(snapshot); } catch (error) { this.persistenceError = error; throw error; }
+    } else {
+      this.writes = this.writes.then(() => { this._healthy(); return this.persistence.save(snapshot); }).catch(error => { this.persistenceError = error; });
+    }
+  }
 }
 
 module.exports = { TaskStore, EFFECT_ORDER };

@@ -7,9 +7,9 @@ description: Route and execute a bounded engineering task through admitted capab
 
 Keep startup metadata-only. Do not read skill bodies, policies, maps, or repository-wide context until a concrete task requires them.
 
-1. Run `engineering-bootstrap validate`, `engineering-bootstrap contracts status`, and `engineering-bootstrap lifecycle status --project <root>`. Stop closed on an invalid registry/contract corpus and use the returned next-stage contract instead of guessing the process stage.
+1. Run `agentic-engineering-os-px validate`, `agentic-engineering-os-px contracts status`, and `agentic-engineering-os-px lifecycle status --project <root>`. Stop closed on an invalid registry/contract corpus and use the returned next-stage contract instead of guessing the process stage.
 2. State the task, project root, inputs, postconditions, effects, and budgets.
-3. Run `engineering-bootstrap select --goal "<goal>" --input <available-name>` to obtain at most three admitted metadata candidates.
+3. Run `agentic-engineering-os-px select --goal "<goal>" --input <available-name>` to obtain at most three admitted metadata candidates.
 4. Select one capability. Load only its `SKILL.md` and directly required reference.
 5. Require explicit approval and an idempotency key for non-read effects.
 6. Checkpoint after each material step. Release task-specific context after the step.
@@ -22,6 +22,6 @@ Pause and checkpoint when the next step would exceed authorized effects, cross a
 
 The canonical stage order and required stage evidence live in `registry/engineering_lifecycle.json`. It is metadata, not a substitute for the selected skill body. `lifecycle plan` reports unfinished stages without loading those bodies.
 
-For a registered project-stream workflow, create a request conforming to `contracts/project_stream/workflow-request.schema.json`, including the active `project_id`, `session_id`, approved effects, and idempotency key. Preview it with `engineering-bootstrap workflow run --workspace <root> --request <file>`, obtain approval, then add `--apply`. The runtime resolves identity and lease from that session, rejects missing effects, materializes only bounded typed payloads, persists checkpoints, and writes one idempotent receipt below the active project's tracking root.
+For a registered project-stream workflow, create a request conforming to `contracts/project_stream/workflow-request.schema.json`, including the active `project_id`, `session_id`, approved effects, and idempotency key. Preview it with `agentic-engineering-os-px workflow run --workspace <root> --request <file>`, obtain approval, then add `--apply`. The runtime resolves identity and lease from that session, rejects missing effects, materializes only bounded typed payloads, persists checkpoints, and writes one idempotent receipt below the active project's tracking root.
 
 Read [runtime-contract.md](references/runtime-contract.md) when defining execution envelopes, recovery, or completion evidence.

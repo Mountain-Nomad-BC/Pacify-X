@@ -29,7 +29,7 @@ SCHEMA_VERSION = "px.doctor-report/1.0"
 RECEIPT_SCHEMA_VERSION = "px.doctor-receipt/1.0"
 STATES = ("healthy", "degraded", "blocked")
 PRECEDENCE = ("blocked", "degraded", "healthy")
-DEFAULT_RECEIPT_DIR = Path(".engineering-bootstrap/diagnostics")
+DEFAULT_RECEIPT_DIR = Path(".agentic_engineering_os_px/diagnostics")
 MAX_PROBE_BYTES = 256 * 1024
 # A PX checkout can legitimately contain thousands of preserved canonical-skill
 # files.  Keep the probe bounded, but do not misclassify that normal inventory as
@@ -204,8 +204,8 @@ def _environment_handoff_probe(
     evaluated_at: str,
     max_age_seconds: int = ENVIRONMENT_EVIDENCE_MAX_AGE_SECONDS,
 ) -> dict[str, object]:
-    environment = root / ".engineering-bootstrap" / "environment" / "current.json"
-    handoff = root / ".engineering-bootstrap" / "coordination" / "handoff.json"
+    environment = root / ".agentic_engineering_os_px" / "environment" / "current.json"
+    handoff = root / ".agentic_engineering_os_px" / "coordination" / "handoff.json"
     details: dict[str, object] = {
         "environment_map_present": environment.is_file(),
         "handoff_present": handoff.is_file(),
@@ -255,7 +255,7 @@ def _environment_handoff_probe(
         problems.extend(freshness_problems)
     except (OSError, UnicodeError, ValueError, json.JSONDecodeError):
         problems.append("handoff_unreadable")
-    coordination = root / ".engineering-bootstrap" / "coordination" / "state.json"
+    coordination = root / ".agentic_engineering_os_px" / "coordination" / "state.json"
     if coordination.is_file() and transfer:
         try:
             coordination_state = _read_json(coordination)
@@ -467,11 +467,11 @@ def _transaction_probe(root: Path) -> dict[str, object]:
     known_wal_roots = tuple(
         candidate
         for candidate in (
-            root / ".engineering-bootstrap" / "operations" / "wal",
-            root / ".engineering-bootstrap" / "provider-budget" / "wal",
-            root / ".engineering-bootstrap" / "resource-lifecycle" / "wal",
-            root / ".engineering-bootstrap" / "coordination" / "wal",
-            root / ".engineering-bootstrap" / "diagnostics" / "wal",
+            root / ".agentic_engineering_os_px" / "operations" / "wal",
+            root / ".agentic_engineering_os_px" / "provider-budget" / "wal",
+            root / ".agentic_engineering_os_px" / "resource-lifecycle" / "wal",
+            root / ".agentic_engineering_os_px" / "coordination" / "wal",
+            root / ".agentic_engineering_os_px" / "diagnostics" / "wal",
         )
         if candidate.is_dir()
     )

@@ -51,7 +51,7 @@ SKIP_DIRS = {
     ".tmp",
     "quarantine",
     ".next",
-    ".engineering-bootstrap",
+    ".agentic_engineering_os_px",
     "operational_gap_ledger.deltas",
     ".lock-recovery-receipts",
     "evidence",
@@ -470,6 +470,137 @@ def layout(nodes, layers):
     return result, centers
 
 
+def current_declaration_model(repo, rows):
+    """Current architecture requirements plus exact physical source anchors.
+
+    The admitted authoring manifest supplies declarations. Neither old atlas
+    projections nor historical scans establish current implementation status.
+    """
+    policy_path = repo / "policies/rev1xx-validation.json"
+    if not policy_path.is_file():
+        return None
+    policy_bytes = policy_path.read_bytes()
+    captured = {row["path"]: row for row in rows}
+    if digest(policy_bytes) != captured.get("policies/rev1xx-validation.json", {}).get("sha256"):
+        raise ValueError("atlas validation policy changed after source capture")
+    policy = json.loads(policy_bytes)
+    if (policy.get("basis") != "current_implementation"
+            or policy.get("authority") != "OWNER-FRESH-VALIDATION-001"):
+        raise ValueError("current atlas requires admitted validation authority")
+    candidates = []
+    for path in sorted((repo / "registry/planning/rev1xx").glob("*.json")):
+        if not re.fullmatch(r"[0-9a-f]{64}\.json", path.name):
+            continue
+        if path.stat().st_size > 8 * 1024**2:
+            raise ValueError("atlas declaration manifest exceeds its bound")
+        data = path.read_bytes()
+        if digest(data) != captured.get(path.relative_to(repo).as_posix(), {}).get("sha256"):
+            raise ValueError("atlas declaration changed after source capture")
+        if digest(data) != path.stem:
+            raise ValueError("admitted atlas declaration source hash differs")
+        value = json.loads(data)
+        if value.get("schema_version") == "px.rev1xx-punch-cards/1.0":
+            candidates.append((path, value))
+    if len(candidates) != 1:
+        raise ValueError("current atlas requires one unambiguous admitted declaration manifest")
+    manifest_path, manifest = candidates[0]
+    cards = manifest["cards"]
+    ids = {card["id"] for card in cards}
+    if len(ids) != len(cards) or any(dep not in ids for card in cards for dep in card["depends_on"]):
+        raise ValueError("current declaration IDs/dependencies are invalid")
+    layer_ids = ["host", "acquisition", "discovery", "scope", "execution", "reasoning",
+                 "memory", "durability", "evidence", "release", "governance"]
+    layers = [{"id": key, "title": key.title(), "description": "Current declared architecture and static source scope"} for key in layer_ids]
+    wave_layers = {"W0":"governance", "W1":"memory", "W2":"scope", "W3":"execution",
+                   "W4":"durability", "W5":"memory", "W6":"discovery", "W7":"evidence",
+                   "W8":"reasoning", "W9":"execution", "W10":"governance", "W11":"release"}
+    by_path = {row["path"]: row for row in rows}
+    anchors = {}
+    nodes = []
+    edges = []
+    for card in cards:
+        references = []
+        for owner in card["existing_owners"] + card["candidate_new_owners"]:
+            import fnmatch
+            for path in sorted(by_path):
+                if path == owner or fnmatch.fnmatchcase(path, owner):
+                    anchor_id = "current-source:" + digest(path.encode())[:24]
+                    anchors[anchor_id] = {"id": anchor_id, "path": path,
+                                          "file_sha256": by_path[path]["sha256"]}
+                    references.append(anchor_id)
+        nodes.append({"id":"requirement:" + card["id"], "title":card["title"],
+                      "layer":wave_layers[card["wave"]], "purpose":card["outcome"],
+                      "semantic_model_role":"architecture_requirement_declaration",
+                      "declaration_status":"planned", "implementation_verified":False,
+                      "evidence_ids":sorted(set(references))})
+        for dep in card["depends_on"]:
+            edges.append({"id":"requirement-dependency:" + card["id"] + ":" + dep,
+                          "source":"requirement:" + card["id"], "target":"requirement:" + dep,
+                          "kind":"dependency", "verb":"declared prerequisite", "evidence_ids":[]})
+    flows = [{"id":"planned-wave:" + wave, "title":wave,
+              "description":"Locked planning membership; not an executed workflow",
+              "steps":["requirement:" + card["id"] for card in cards if card["wave"] == wave],
+              "scope":"planning_declaration"} for wave in wave_layers]
+    raw = {"metadata":{"basis":"current_admitted_declarations", "manifest_sha256":manifest_path.stem,
+                       "historical_prerequisites":False, "implementation_verified":False},
+           "layers":layers, "nodes":nodes, "edges":edges, "flows":flows, "findings":[]}
+    return raw, {"sources":[anchors[key] for key in sorted(anchors)]}
+
+
+def preflight(repo, reference):
+    """Report every required atlas input up front (PX-GAP-0008).
+
+    The generator historically failed deep inside ``build`` when a reference
+    input was missing (for example ``graph_baseline_architecture.json``). This
+    preflight enumerates the required inputs, resolves which baseline path the
+    build will actually take, and reports every missing required input at once,
+    with the provenance of what IS present. It performs no generation and does
+    not hand-reconstruct a missing baseline.
+    """
+    repo = Path(repo)
+    reference = Path(reference)
+    required_current = (
+        "registry/planning/rev1xx",
+        "policies/rev1xx-validation.json",
+    )
+    required_baseline = (
+        "graph_baseline_architecture.json",
+        "graph_baseline_evidence-map.json",
+    )
+    missing = []
+    present = []
+
+    def _record(label, path, kind):
+        if path.exists():
+            present.append({"input": label, "path": str(path), "kind": kind})
+        else:
+            missing.append({"input": label, "path": str(path), "kind": kind})
+
+    for relative in required_current:
+        _record(relative, repo / relative, "current-declaration")
+    baseline_present = all((reference / name).exists() for name in required_baseline)
+    for name in required_baseline:
+        _record("reference/" + name, reference / name, "legacy-baseline")
+
+    blockers = [row for row in missing if row["kind"] == "current-declaration"]
+    baseline_missing = [row for row in missing if row["kind"] == "legacy-baseline"]
+    route = "current-declaration" if not blockers else "legacy-baseline"
+    return {
+        "schema_version": "px.atlas-preflight/1.0",
+        "route": route,
+        "baseline_available": baseline_present,
+        "present": present,
+        "missing": missing,
+        "blocking": blockers,
+        "baseline_missing": baseline_missing,
+        "regenerable": not blockers and (route == "current-declaration" or baseline_present),
+        "note": (
+            "A missing legacy baseline is not reconstructed by hand; it is reported. "
+            "The current-declaration route does not require the legacy baseline."
+        ),
+    }
+
+
 def build(
     repo,
     out,
@@ -491,13 +622,21 @@ def build(
             )
     elif out.exists() and any(out.iterdir()):
         raise ValueError("external output must be a new empty directory")
-    raw = json.loads(
-        (reference / "graph_baseline_architecture.json").read_text(encoding="utf-8-sig")
-    )
-    em = json.loads(
-        (reference / "graph_baseline_evidence-map.json").read_text(encoding="utf-8-sig")
-    )
     rows, excluded, images = inventory(repo, max_files, max_bytes)
+    current = current_declaration_model(repo, rows)
+    if current is not None:
+        raw, em = current
+    else:
+        # Fail up front with every missing input named, rather than raising deep
+        # inside a single read (PX-GAP-0008).
+        report = preflight(repo, reference)
+        if report["baseline_missing"]:
+            raise ValueError(
+                "atlas preflight: required baseline inputs are missing: "
+                + ", ".join(row["input"] for row in report["baseline_missing"])
+            )
+        raw = json.loads((reference / "graph_baseline_architecture.json").read_text(encoding="utf-8-sig"))
+        em = json.loads((reference / "graph_baseline_evidence-map.json").read_text(encoding="utf-8-sig"))
     by_path = {r["path"]: r for r in rows}
     evidence = []
     emap = {}
@@ -513,7 +652,7 @@ def build(
         item.update(
             currentness=status,
             current_sha256=present["sha256"] if present else None,
-            historical_source=True,
+            historical_source=current is None,
             behavior_revalidated=False,
         )
         evidence.append(item)
@@ -539,7 +678,8 @@ def build(
         )
         n["evidence_level"] = "source-supported" if refs else "declared"
         n["evidence_scope"] = (
-            "historical semantic model; byte currentness checked; behavior not revalidated"
+            "current declaration source; byte currentness checked; behavior not revalidated"
+            if current is not None else "historical semantic model; byte currentness checked; behavior not revalidated"
         )
         n["source_currentness_counts"] = dict(states)
         n["note"] = None  # Systems/*.md removed; canonical data in data/canonical_systems.json
@@ -623,7 +763,7 @@ def build(
                     "source": n["id"],
                     "target": file_id(s["path"]),
                     "kind": "anchored-in",
-                    "verb": "historical semantic source anchor",
+                    "verb": "current declaration source anchor" if current is not None else "historical semantic source anchor",
                     "evidence_ids": [ref],
                     "evidence_level": "source-supported",
                     "currentness": s["currentness"],
@@ -635,7 +775,7 @@ def build(
     overlay_path = PACKAGE / "reference/current_findings.json"
     repair_overlay = (
         json.loads(overlay_path.read_text(encoding="utf-8"))
-        if overlay_path.exists()
+        if current is None and overlay_path.exists()
         else {"findings": []}
     )
     findings_by_path = collections.defaultdict(list)
@@ -710,7 +850,8 @@ def build(
     journeys = []
     flowmap = {f["id"]: f for f in raw["flows"]}
     pairs = {(e["source"], e["target"]) for e in edges}
-    for name, fid in JOURNEYS:
+    journey_specs = [(flow["title"], flow["id"]) for flow in raw["flows"]] if current is not None else JOURNEYS
+    for name, fid in journey_specs:
         f = flowmap[fid]
         steps = f["steps"]
         journeys.append(
@@ -794,22 +935,24 @@ def build(
         ),
         "runtime_observed_nodes": 0,
         "certified_nodes": 0,
-        "betweenness_definition": "Exact directed unweighted Brandes on unique non-self semantic source-target pairs; normalized by (n-1)(n-2), all 1077 systems included; not an operational importance score.",
+        "betweenness_definition": f"Exact directed unweighted Brandes on unique non-self declaration source-target pairs; normalized by (n-1)(n-2), all {len(nodes)} modeled declarations included; not an operational importance score.",
         "missing_consumer_caveat": "Zero incoming/outgoing edges is a structural model gap, not proof of a missing implementation or operational failure.",
     }
     graph = {
         "schema_version": SCHEMA,
         "metadata": {
-            "basis": "supplied snapshot + preserved historical semantic IDs",
+            "basis": "current_admitted_declarations_and_static_source" if current is not None else "supplied snapshot + preserved historical semantic IDs",
+            "historical_prerequisites": current is None,
             "source_inventory_sha256": digest(canonical(rows)),
-            "baseline_graph_sha256": digest(
-                (reference / "graph_baseline_architecture.json").read_bytes()
-            ),
+            "baseline_graph_sha256": None if current is not None else digest(
+                (reference / "graph_baseline_architecture.json").read_bytes()),
+            "declaration_model_sha256": digest(canonical(raw)) if current is not None else None,
             "layout_version": "px-lifecycle-seeded-attraction/1",
             "scope": "Refresh of file bytes/static imports and presentation, not a completed semantic re-audit of every claim or the live repository.",
             "runtime_observed": False,
             "certified": False,
-            "historical_metadata": raw["metadata"],
+            "historical_metadata": raw["metadata"] if current is None else None,
+            "declaration_metadata": raw["metadata"] if current is not None else None,
             "concurrent_source_limit": "Per-file stable acquisition with metadata checks; not a cross-file atomic filesystem snapshot. Run with all source writers paused; same-metadata concurrent writes are not proven absent.",
         },
         "layers": raw["layers"],
@@ -960,7 +1103,9 @@ def build(
     # Keep: README
     note(
         "README.md",
-        f"# Pacify-X architecture vault\n\n{len(nodes)} canonical systems documented in JSON. Historical IDs preserved. Start at [[Views/Full_Architecture]] or the layer maps.\n\n**Not a certification.** Imported historical findings are not automatically reopened or closed. Source currentness is checked separately.\n\n"
+        (f"# Pacify-X architecture vault\n\n{len(nodes)} current architecture requirements with static source anchors. Implementation status remains unverified. Start at [[Views/Full_Architecture]] or the layer maps.\n\n**Not a certification.** No historical baseline is required. File bytes and static imports are measured separately from behavior.\n\n"
+         if current is not None else
+         f"# Pacify-X architecture vault\n\n{len(nodes)} canonical systems documented in JSON. Historical IDs preserved. Start at [[Views/Full_Architecture]] or the layer maps.\n\n**Not a certification.** Imported historical findings are not automatically reopened or closed. Source currentness is checked separately.\n\n")
         + "\n".join("- [[Layers/" + layer["id"] + "]]" for layer in raw["layers"])
         + "\n",
     )
@@ -1041,9 +1186,18 @@ def main():
         action="store_true",
         help="update the canonical docs/architecture tree, which is excluded from source inventory",
     )
+    ap.add_argument(
+        "--preflight",
+        action="store_true",
+        help="report every required input and its provenance, then exit without generating",
+    )
     a = ap.parse_args()
     if a.max_files <= 0 or a.max_bytes <= 0:
         ap.error("bounds must be positive")
+    if a.preflight:
+        report = preflight(a.repo, a.reference)
+        print(json.dumps(report, indent=2, sort_keys=True))
+        raise SystemExit(0 if report["regenerable"] else 3)
     try:
         build(a.repo, a.out, a.reference, a.max_files, a.max_bytes, a.allow_repo_output)
     except (OSError, ValueError, RuntimeError, json.JSONDecodeError) as e:

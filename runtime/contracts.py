@@ -21,11 +21,12 @@ from urllib.parse import unquote, urlsplit
 
 from .paths import declared_file_available
 from .json_io import json_value_key, load_json_object, validate_json_value
+from .bounded_walk import _is_junction
 
 
 SUPPORTED_DIALECT = "https://json-schema.org/draft/2020-12/schema"
 MAX_REF_DEPTH = 64
-SUPPORTED_FORMATS = {"date", "date-time", "uri"}
+SUPPORTED_FORMATS = {"date", "date-time", "uri", "uuid"}
 ANNOTATION_KEYS = {"$schema", "$id", "$defs", "title", "description", "default"}
 VALIDATION_KEYS = {
     "$ref",
@@ -40,6 +41,7 @@ VALIDATION_KEYS = {
     "maxItems",
     "uniqueItems",
     "minLength",
+    "maxLength",
     "pattern",
     "minimum",
     "maximum",
@@ -127,7 +129,7 @@ def _resolve_external_path(
     contained = False
     while True:
         if cursor.is_symlink() or (
-            hasattr(cursor, "is_junction") and cursor.is_junction()
+            _is_junction(cursor)
         ):
             raise ValueError(
                 f"symlinked schema references are not allowed: {ref_path!r}"
@@ -382,6 +384,8 @@ def _errors(
     if isinstance(instance, str):
         if len(instance) < int(rule.get("minLength", 0)):
             errors.append(f"{at}: string is too short")
+        if "maxLength" in rule and len(instance) > rule["maxLength"]:
+            errors.append(f"{at}: string is too long")
         if "pattern" in rule and re.search(str(rule["pattern"]), instance) is None:
             errors.append(f"{at}: string does not match required pattern")
         if "format" in rule:
@@ -390,7 +394,14 @@ def _errors(
                 "date-time": _valid_datetime,
                 "date": _valid_date,
                 "uri": _valid_uri,
-            }.get(declared_format)
+    "uuid": lambda value: bool(
+        re.fullmatch(
+            r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            value,
+            flags=re.IGNORECASE,
+        )
+    ),
+}.get(declared_format)
             if valid is None:
                 errors.append(f"{at}: unsupported format {declared_format}")
             elif not valid(instance):
@@ -481,6 +492,8 @@ def _pattern_example(pattern: str) -> str:
         return "task-plan-" + "a" * 24
     if pattern == "^evidence/bundles/[A-Za-z0-9._/-]+\\.json$":
         return "evidence/bundles/example/manifest.json"
+    if pattern.startswith("^pxdep:"):
+        return "pxdep:" + "a" * 64
     if "64}" in pattern:
         return "a" * 64
     if pattern in {"^[0-9]+\\.[0-9]+\\.[0-9]+$", "^\\d+\\.\\d+\\.\\d+$"}:
@@ -489,6 +502,15 @@ def _pattern_example(pattern: str) -> str:
         return "A"
     if pattern.startswith("^external\\.cybersecurity\\."):
         return "external.cybersecurity.example"
+    semantic_identifier_examples = {
+        "^pxe1:": "pxe1:" + "a" * 32,
+        "^pxl1:": "pxl1:" + "a" * 32,
+        "^pxr1:": "pxr1:" + "a" * 32,
+        "^PXA1:": "PXA1:" + "a" * 8 + ":" + "1",
+    }
+    for prefix, example in semantic_identifier_examples.items():
+        if pattern.startswith(prefix):
+            return example
     if ":" in pattern and "a-zA-Z_" in pattern:
         return "runtime.module:handler"
     prefixes = {
@@ -513,6 +535,7 @@ def _pattern_example(pattern: str) -> str:
         "^projects/[^/]+$": "projects/example",
         "^projects/": "projects/example",
         "^projects_tracking/projects/prj_[^/]+/memory$": "projects_tracking/projects/prj_example/memory",
+        "^pxdep:": "pxdep:" + "a" * 64,
         "^projects_tracking/projects/prj_[^/]+$": "projects_tracking/projects/prj_example",
         "^projects_tracking/projects/prj_": "projects_tracking/projects/prj_example",
         "^projects_tracking/projects/": "projects_tracking/projects/prj_example",
@@ -607,9 +630,11 @@ def _minimal(
                     and "then" in child
                 ):
                     then = child["then"]
-                    for key in then.get("required", ()):
+                    constrained = then.get("properties", {})
+                    keys = set(then.get("required", ())) | (set(constrained) & set(value))
+                    for key in sorted(keys):
                         value[key] = _minimal(
-                            properties.get(key, {}),
+                            {**properties.get(key, {}), **constrained.get(key, {})},
                             root_schema,
                             schema_path,
                             contract_root,
@@ -667,13 +692,29 @@ def _minimal(
             return "2026-08-02"
         if rule.get("format") == "uri":
             return "urn:example:value"
+        if rule.get("format") == "uuid":
+            return "00000000-0000-4000-8000-000000000000"
         result = (
             _pattern_example(str(rule["pattern"])) if "pattern" in rule else "value"
         )
+        if "pattern" in rule:
+            import re as _re
+            compiled = _re.compile(str(rule["pattern"]))
+            if compiled.fullmatch(result) is None:
+                # Bounded repetition patterns (e.g. nonce lengths) need a longer
+                # fixture; pad deterministically and refuse beyond a small bound.
+                for size in range(len(result) + 1, len(result) + 129):
+                    candidate = (result + "x" * size)[:size + len(result)]
+                    if compiled.fullmatch(candidate):
+                        result = candidate
+                        break
         minimum = int(rule.get("minLength", 0))
-        return (
+        result = (
             result if len(result) >= minimum else result + "x" * (minimum - len(result))
         )
+        if "maxLength" in rule:
+            result = result[:rule["maxLength"]]
+        return result
     if selected == "integer":
         value = int(rule.get("minimum", 0))
         multiple = int(rule.get("multipleOf", 1))
@@ -752,13 +793,21 @@ def _schema_structure_errors(
             errors.append(
                 f"{at}: additionalProperties must be a boolean or schema object"
             )
-        for key in ("minItems", "maxItems", "minLength"):
+        for key in ("minItems", "maxItems", "minLength", "maxLength"):
             if key in value and (
                 not isinstance(value[key], int)
                 or isinstance(value[key], bool)
                 or value[key] < 0
             ):
                 errors.append(f"{at}: {key} must be a non-negative integer")
+        if (
+            isinstance(value.get("minLength"), int)
+            and not isinstance(value["minLength"], bool)
+            and isinstance(value.get("maxLength"), int)
+            and not isinstance(value["maxLength"], bool)
+            and value["minLength"] > value["maxLength"]
+        ):
+            errors.append(f"{at}: minLength must not exceed maxLength")
         if "uniqueItems" in value and not isinstance(value["uniqueItems"], bool):
             errors.append(f"{at}: uniqueItems must be a boolean")
         for key in ("minimum", "maximum", "multipleOf"):

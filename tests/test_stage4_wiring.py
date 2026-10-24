@@ -271,13 +271,17 @@ def test_unknown_decision_policy_is_absent_not_defaulted() -> None:
     assert load_decision_policy(ROOT, "no.such.decision") == {}
 
 
-def test_missing_model_artifact_is_rejected() -> None:
+def test_missing_model_artifact_is_rejected(tmp_path) -> None:
     from runtime.local_model_runtime import LocalModelRuntime
 
+    model_root = tmp_path / "models"
+    runtime_root = tmp_path / "runtimes"
+    model_root.mkdir()
+    runtime_root.mkdir()
     runtime = LocalModelRuntime(
-        ROOT,
-        allowed_model_roots=[ROOT / ".pacify-x/models"],
-        allowed_runtime_roots=[Path.home() / ".px"],
+        tmp_path,
+        allowed_model_roots=[model_root],
+        allowed_runtime_roots=[runtime_root],
     )
-    with pytest.raises(Exception):
-        runtime.inspect_model(ROOT / ".pacify-x/models/definitely-absent.gguf")
+    with pytest.raises(FileNotFoundError):
+        runtime.inspect_model(model_root / "definitely-absent.gguf")

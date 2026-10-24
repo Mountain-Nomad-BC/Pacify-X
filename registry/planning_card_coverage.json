@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "source_alias": "temporary_build_instructions_and_punch_cards",
   "records": [
-    {"id":"PC-000","status":"operational","owners":["PROJECT_MANAGEMENT.md",".engineering-bootstrap/project-management/state.json"],"tests":["tests/test_project_control_plane.py"]},
+    {"id":"PC-000","status":"operational","owners":["PROJECT_MANAGEMENT.md",".agentic_engineering_os_px/project-management/state.json"],"tests":["tests/test_project_control_plane.py"]},
     {"id":"PC-001","status":"operational","owners":["policies/artifact-preservation.json","scripts/quarantine_paths.py","scripts/sanitize_tree.py"],"tests":["tests/test_quarantine_paths.py","tests/test_sanitize_tree.py"]},
     {"id":"PC-100","status":"operational","owners":["scripts/inventory/build_file_inventory.py"],"tests":["tests/test_corpus_pipeline.py"]},
     {"id":"PC-101","status":"operational","owners":["scripts/inventory/build_archive_inventory.py","scripts/map_archives.py"],"tests":["tests/test_archive_inventory.py"]},

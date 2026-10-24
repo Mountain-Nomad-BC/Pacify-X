@@ -124,7 +124,7 @@ def test_studio_knowledge_browse_is_empty_and_non_mutating_before_initialization
     assert result["proposals"] == result["canonical"] == []
     assert _tree_snapshot(project) == before_project
     assert _tree_snapshot(key_root) == before_host
-    assert not (project / ".engineering-bootstrap").exists()
+    assert not (project / ".agentic_engineering_os_px").exists()
     assert not key_root.exists()
 
 
@@ -177,7 +177,7 @@ def test_knowledge_proposal_validation_approval_promotion_and_audit_browser(
             next(
                 (
                     tmp_path
-                    / ".engineering-bootstrap/studios/knowledge/proposals"
+                    / ".agentic_engineering_os_px/studios/knowledge/proposals"
                 ).glob("*/head.json")
             ).parent
             / "events"

@@ -26,7 +26,7 @@ from .wal_transaction import (
 )
 
 SCHEMA = 'px.wal-migration/1.0'
-INTENT = Path('.engineering-bootstrap/wal-migration-intent.json')
+INTENT = Path('.agentic_engineering_os_px/wal-migration-intent.json')
 LIMIT = 64 * 1024 * 1024
 
 
@@ -162,7 +162,7 @@ def migrate_legacy_wals(root, owners, *, fault_injector=None):
     info = root.stat()
     catalog = WalOwnership(root, dict(schema_version=OWNERSHIP_SCHEMA,
         root_identity={'device': info.st_dev, 'inode': info.st_ino}, owners=owners))
-    control = root / '.engineering-bootstrap'
+    control = root / '.agentic_engineering_os_px'
     _reject_nominal_link_chain(control, root, label='migration control')
     control.mkdir(exist_ok=True)
 

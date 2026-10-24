@@ -23,6 +23,7 @@ EXISTING_MANUAL_SKILLS: set[str] = set()
 EXCLUDED_PARTS = {"__pycache__", ".pytest_cache", ".ruff_cache"}
 EXCLUDED_SUFFIXES = {".pyc", ".pyo", ".swp", ".tmp"}
 RUNTIME_MEMORY_FILES = {
+    ("memory", ".tie.lock"),
     ("memory", "usage.jsonl"),
     ("memory", "stats.json"),
 }
@@ -57,7 +58,7 @@ def _generated_lines(
     bytes are read from the staged tree, while emitted source paths remain the
     future canonical ``.px/skills/<id>`` paths.
     """
-    lines = [START, '"share/engineering-bootstrap/.px" = [".px/skill-index.json"]']
+    lines = [START, '"share/agentic-engineering-os-px/.px" = [".px/skill-index.json"]']
     skills_root = root / ".px/skills"
     overlays = dict(skill_overlays or {})
     canonical = {
@@ -73,7 +74,7 @@ def _generated_lines(
         grouped: dict[str, list[Path]] = defaultdict(list)
         for source in _owned_files(skill, root):
             parent = source.parent.relative_to(skill)
-            target = f"share/engineering-bootstrap/.px/skills/{skill_name}"
+            target = f"share/agentic-engineering-os-px/.px/skills/{skill_name}"
             if parent.parts:
                 target += "/" + parent.as_posix()
             grouped[target].append(source)
@@ -91,7 +92,7 @@ def _generated_lines(
         grouped: dict[str, list[Path]] = defaultdict(list)
         for source in _owned_files(facade, root):
             parent = source.parent.relative_to(facade)
-            target = f"share/engineering-bootstrap/.agents/skills/{facade.name}"
+            target = f"share/agentic-engineering-os-px/.agents/skills/{facade.name}"
             if parent.parts:
                 target += "/" + parent.as_posix()
             grouped[target].append(source)
@@ -124,9 +125,9 @@ def render(
         raw_prefix = current
     prefix = "\n".join(
         line for line in raw_prefix.rstrip().splitlines()
-        if not line.startswith('"share/engineering-bootstrap/.px/skills/')
-        and not line.startswith('"share/engineering-bootstrap/.agents/skills/')
-        and not line.startswith('"share/engineering-bootstrap/.px" =')
+        if not line.startswith('"share/agentic-engineering-os-px/.px/skills/')
+        and not line.startswith('"share/agentic-engineering-os-px/.agents/skills/')
+        and not line.startswith('"share/agentic-engineering-os-px/.px" =')
     ).rstrip()
     return prefix + "\n" + "\n".join(
         _generated_lines(root, skill_overlays=skill_overlays)

@@ -80,6 +80,23 @@ function admittedTeamPackRoot(value) {
   return candidate;
 }
 
+// Lazy service custody shared by every lazily-registered tool. Construction is
+// deferred to first use; teardown is deterministic and idempotent.
+const lazyServices = new Map();
+function lazyService(key, factory) {
+  if (lazyServices.has(key)) return lazyServices.get(key);
+  const service = factory();
+  lazyServices.set(key, service);
+  return service;
+}
+function disposeLazyServices() {
+  for (const [key, service] of lazyServices) {
+    try { if (typeof service?.dispose === 'function') service.dispose(); }
+    catch (failure) { process.stderr.write(`[pacify-x-mcp-teardown] ${key}:${failure?.message}\n`); }
+  }
+  lazyServices.clear();
+}
+
 function buildServer() {
   const server = new McpServer({ name: 'pacify-x-governed-context', version: MCP_VERSION }, { capabilities: { tools: {} } });
   const empty = z.object({}).strict();
@@ -95,7 +112,7 @@ function buildServer() {
     publicKeyJwk: readJsonFile(process.env.PX_MCP_AUTHORITY_PUBLIC_JWK_PATH, null),
     trustedKeyId: process.env.PX_MCP_AUTHORITY_KEY_ID
   });
-  const mcpInstrumentation = createMcpActivityIntegration({
+  const mcpInstrumentation = lazyService('mcp-instrumentation', () => createMcpActivityIntegration({
     recordActivity,
     workspaceRoot,
     projectId: () => path.basename(workspaceRoot()),
@@ -105,8 +122,30 @@ function buildServer() {
     serverVersion: MCP_VERSION,
     authorize: (name, input) => writeAuthority.authorize(name, input),
     onDrop: failure => process.stderr.write(`[pacify-x-mcp-instrumentation] ${failure.type}:${failure.tool}:${failure.lifecycle}\n`)
-  });
+  }));
   const registerTool = (name, definition, handler) => server.registerTool(name, definition, mcpInstrumentation.wrapTool(name, definition, handler));
+  // A lazily-loaded tool registers its exact schema immediately (so list/validation
+  // stays strict and unchanged) but resolves its heavy handler only on first call.
+  // The loader is invoked at most once; a changed loader contract is refused.
+  const lazyLoaders = new Map();
+  const registerLazyTool = (name, definition, loader) => {
+    if (typeof loader !== 'function') throw new TypeError('lazy tool loader must be a function');
+    if (lazyLoaders.has(name)) throw new Error(`lazy tool already registered: ${name}`);
+    let resolved = null;
+    let resolvedSha = null;
+    const handler = async (input, extra) => {
+      if (resolved === null) {
+        const loaded = await loader();
+        if (typeof loaded !== 'function') throw new TypeError(`lazy tool loader did not return a handler: ${name}`);
+        const sha = require('node:crypto').createHash('sha256').update(String(loaded)).digest('hex');
+        if (resolvedSha !== null && resolvedSha !== sha) throw new Error(`lazy tool handler contract changed: ${name}`);
+        resolved = loaded; resolvedSha = sha;
+      }
+      return resolved(input, extra);
+    };
+    lazyLoaders.set(name, loader);
+    return server.registerTool(name, definition, mcpInstrumentation.wrapTool(name, definition, handler));
+  };
 
   registerTool('pacify_context_snapshot', {
     title: 'Pacify-X Context Snapshot', description: 'Return the bounded portable context envelope and project-owned continuity references.', inputSchema: empty, annotations: readOnly
@@ -116,9 +155,9 @@ function buildServer() {
     title: 'Pacify-X Git Context', description: 'Return the read-only Git snapshot and mutation boundary.', inputSchema: empty, annotations: readOnly
   }, async () => { const snapshot = contextEnvelope() || {}; return textResult({ git: snapshot.git || null, git_policy: snapshot.git_policy || null, read_only: true }); });
 
-  registerTool('pacify_control_plane_summary', {
+  registerLazyTool('pacify_control_plane_summary', {
     title: 'Pacify-X Control Plane Summary', description: 'Read the canonical versioned Pacify-X dashboard snapshot.', inputSchema: empty, annotations: readOnly
-  }, async () => textResult(runApi(['snapshot', '--read-only'])));
+  }, async () => async () => textResult(runApi(['snapshot', '--read-only'])));
 
   registerTool('pacify_capability_manifest', {
     title: 'Pacify-X AI Capability Manifest', description: 'Describe the machine-readable PX surfaces, effect boundaries, schema sources, and safe next calls available to an AI client.', inputSchema: empty, annotations: readOnly
@@ -141,14 +180,14 @@ function buildServer() {
     invariants: ['tool availability does not grant authority', 'unknown stays unknown', 'Git mutation is denied', 'billable execution requires separate approval']
   }));
 
-  registerTool('pacify_graph_query', {
+  registerLazyTool('pacify_graph_query', {
     title: 'Pacify-X Knowledge Graph Query', description: 'Return a bounded real node-and-edge neighborhood with typed directions and human-readable connection reasons.',
     inputSchema: z.object({ view: z.enum(['capabilities', 'repository']).optional(), node: z.string().max(500).optional(), query: z.string().max(500).optional(), relation: z.string().max(160).optional(), direction: z.enum(['incoming', 'outgoing', 'both']).optional(), depth: z.number().int().min(1).max(2).optional(), max_nodes: z.number().int().min(2).max(50).optional(), max_edges: z.number().int().min(1).max(100).optional() }).strict(), annotations: readOnly
-  }, async input => textResult(runApi(['graph', '--view', input.view || 'capabilities', '--project', process.env.PX_WORKSPACE_ROOT || process.env.PX_ENGINE_ROOT || '', '--node', input.node || '', '--query', input.query || '', '--relation', input.relation || '', '--direction', input.direction || 'both', '--depth', String(input.depth || 1), '--max-nodes', String(input.max_nodes || 24), '--max-edges', String(input.max_edges || 48)])));
+  }, async () => async input => textResult(runApi(['graph', '--view', input.view || 'capabilities', '--project', process.env.PX_WORKSPACE_ROOT || process.env.PX_ENGINE_ROOT || '', '--node', input.node || '', '--query', input.query || '', '--relation', input.relation || '', '--direction', input.direction || 'both', '--depth', String(input.depth || 1), '--max-nodes', String(input.max_nodes || 24), '--max-edges', String(input.max_edges || 48)])));
 
-  registerTool('pacify_hardware_telemetry', {
+  registerLazyTool('pacify_hardware_telemetry', {
     title: 'Pacify-X Hardware Telemetry', description: 'Read normalized available CPU, GPU, thermal, utilization, power, and fan sensors with source, timestamp, and explicit unavailable states.', inputSchema: empty, annotations: readOnly
-  }, async () => { const snapshot = runApi(['snapshot', '--read-only']); return textResult(snapshot?.runtime?.hardware?.telemetry || { available: false, reason: 'Hardware telemetry unavailable.' }); });
+  }, async () => async () => { const snapshot = runApi(['snapshot', '--read-only']); return textResult(snapshot?.runtime?.hardware?.telemetry || { available: false, reason: 'Hardware telemetry unavailable.' }); });
 
   registerTool('pacify_agent_readiness', {
     title: 'Pacify-X Agent Readiness Matrix', description: 'Return the conservative nine-dimension structural readiness matrix, explicit gaps, safe-now tasks, and operations that still require a fresh gate.', inputSchema: empty, annotations: readOnly
@@ -175,19 +214,19 @@ function buildServer() {
     inputSchema: z.object({ subject: z.enum(['summary', 'graph', 'extensions', 'tools', 'python', 'npm']).optional(), query: z.string().max(300).optional(), offset: z.number().int().nonnegative().optional(), limit: z.number().int().min(1).max(500).optional() }).strict(), annotations: readOnly
   }, async input => textResult(readEnvironmentSubject(workspaceRoot(), input.subject || 'summary', { query: input.query, offset: input.offset, limit: input.limit })));
 
-  registerTool('pacify_environment_extension_detail', {
+  registerLazyTool('pacify_environment_extension_detail', {
     title: 'Pacify-X Extension Capability Contract', description: 'Lazy-load one hash-verified extension contract mapping capabilities, commands/APIs, inputs/outputs, permissions/resources, effects, conflicts, policy, and state without activating it.',
     inputSchema: z.object({ extension_id: z.string().min(1).max(200) }).strict(), annotations: readOnly
-  }, async input => textResult(readEnvironmentExtension(workspaceRoot(), input.extension_id)));
+  }, async () => async input => textResult(readEnvironmentExtension(workspaceRoot(), input.extension_id)));
 
-  registerTool('pacify_catalog_query', {
+  registerLazyTool('pacify_catalog_query', {
     title: 'Pacify-X Catalog Query', description: 'Search a bounded page of core catalogs or the separately namespaced MS+Enterprise catalogs.',
     inputSchema: z.object({
       kind: z.enum(['skills', 'tools', 'agents', 'workflows', 'graph', 'enterprise-skills', 'enterprise-agents', 'enterprise-workflows', 'enterprise-integrations', 'enterprise-models']), query: z.string().max(500).optional(),
       status: z.string().max(100).optional(), offset: z.number().int().min(0).optional(), limit: z.number().int().min(1).max(100).optional(),
       sort: z.enum(['id', 'label', 'status', 'kind']).optional()
     }).strict(), annotations: readOnly
-  }, async input => textResult(runApi(['catalog', '--kind', input.kind, '--query', input.query || '', '--status', input.status || '', '--offset', String(input.offset || 0), '--limit', String(input.limit || 50), '--sort', input.sort || 'label'])));
+  }, async () => async input => textResult(runApi(['catalog', '--kind', input.kind, '--query', input.query || '', '--status', input.status || '', '--offset', String(input.offset || 0), '--limit', String(input.limit || 50), '--sort', input.sort || 'label'])));
 
   registerTool('pacify_cognitive_query', {
     title: 'Pacify-X Cognitive Query',
@@ -242,9 +281,9 @@ function buildServer() {
     inputSchema: z.object({ ...actorFields, wake_id: z.string().min(1).max(200) }).strict(), annotations: write
   }, async input => textResult(acknowledgeWake(workspaceRoot(), actor(input), input)));
 
-  registerTool('pacify_enterprise_status', {
+  registerLazyTool('pacify_enterprise_status', {
     title: 'Pacify-X MS+Enterprise Status', description: 'Read the separate project enterprise state, offline defaults, pack states, targets, and last readiness receipt.', inputSchema: empty, annotations: readOnly
-  }, async () => textResult(initializeEnterprise(workspaceRoot(), enterpriseCatalog(), { persist: false })));
+  }, async () => async () => textResult(initializeEnterprise(workspaceRoot(), enterpriseCatalog(), { persist: false })));
 
   registerTool('pacify_billable_guardrail_evaluate', {
     title: 'Evaluate Pacify-X Billable Guardrails', description: 'Evaluate a proposed provider execution against the separate project policy. This never executes, connects, reads credentials, or incurs cost.',
@@ -417,4 +456,7 @@ function buildServer() {
   return server;
 }
 
+// Deterministic teardown for lazily constructed services: release custody on normal
+// exit and on an unexpected fatal error rather than leaking a half-built service.
+process.on('exit', () => { try { disposeLazyServices(); } catch { /* best effort at exit */ } });
 serveStdio(buildServer, { onerror: error => process.stderr.write(`[pacify-x-mcp] ${error.message}\n`) });

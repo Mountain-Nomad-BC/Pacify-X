@@ -55,11 +55,8 @@ TERMINAL_JOB_STATES = {"succeeded", "failed", "cancelled", "timed_out"}
 
 
 def stable_hash(value: object) -> str:
-    return hashlib.sha256(
-        json.dumps(
-            value, sort_keys=True, separators=(",", ":"), ensure_ascii=False
-        ).encode("utf-8")
-    ).hexdigest()
+    from runtime.hash_utils import json_utf8_hash
+    return json_utf8_hash(value)
 
 
 def validate_candidate_stage_trace(

@@ -41,8 +41,8 @@ function metadataSnapshot(target, allowedRoot) {
 class EnvironmentLifecycleManager {
   constructor(projectRoot) {
     this.projectRoot = path.resolve(projectRoot);
-    this.quarantineRoot = path.join(this.projectRoot, '.engineering-bootstrap', 'quarantine', 'environment');
-    this.receiptRoot = path.join(this.projectRoot, '.engineering-bootstrap', 'environment', 'lifecycle-receipts');
+    this.quarantineRoot = path.join(this.projectRoot, '.agentic_engineering_os_px', 'quarantine', 'environment');
+    this.receiptRoot = path.join(this.projectRoot, '.agentic_engineering_os_px', 'environment', 'lifecycle-receipts');
     this.pending = new Map();
   }
   preview(record, action = 'quarantine') {

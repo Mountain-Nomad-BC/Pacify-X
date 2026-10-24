@@ -384,7 +384,7 @@ def main() -> int:
             },
         )
         (skill_dir / "scripts" / "domain_tool.py").write_text(
-            '''#!/usr/bin/env python3\n"""Run a declared domain helper through the fail-closed shared runtime."""\nimport argparse\nimport json\nfrom pathlib import Path\nfrom engineering_bootstrap.declared_suite import run_script_outcome\nfrom engineering_bootstrap.paths import framework_root\n\np = argparse.ArgumentParser()\np.add_argument("outcome")\np.add_argument("--input", type=Path, required=True)\na = p.parse_args()\npayload = json.loads(a.input.read_text(encoding="utf-8"))\nresult = run_script_outcome(framework_root(), a.outcome, payload)\nprint(json.dumps(result, indent=2))\nraise SystemExit(0 if result.get("valid") else 1)\n''',
+            '''#!/usr/bin/env python3\n"""Run a declared domain helper through the fail-closed shared runtime."""\nimport argparse\nimport json\nfrom pathlib import Path\nfrom agentic_engineering_os_px.declared_suite import run_script_outcome\nfrom agentic_engineering_os_px.paths import framework_root\n\np = argparse.ArgumentParser()\np.add_argument("outcome")\np.add_argument("--input", type=Path, required=True)\na = p.parse_args()\npayload = json.loads(a.input.read_text(encoding="utf-8"))\nresult = run_script_outcome(framework_root(), a.outcome, payload)\nprint(json.dumps(result, indent=2))\nraise SystemExit(0 if result.get("valid") else 1)\n''',
             encoding="utf-8",
         )
         for card in domain_cards:

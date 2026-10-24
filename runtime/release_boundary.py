@@ -75,7 +75,7 @@ def copy_clean_product(source: Path, destination: Path) -> None:
             # The finalizer holds this mutable control file while it freezes the
             # product.  Copying the locked byte fails on Windows, and the release
             # policy already excludes the file from product identity.
-            if relative_posix.casefold() == ".engineering-bootstrap/release.lock":
+            if relative_posix.casefold() == ".agentic_engineering_os_px/release.lock":
                 ignored.add(name)
             elif is_external_environment_relative(relative):
                 ignored.add(name)

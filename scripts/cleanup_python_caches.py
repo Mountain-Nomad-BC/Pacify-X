@@ -62,7 +62,7 @@ def cleanup(
         raise ValueError("root must be an explicit non-filesystem-root directory")
     quarantine_base = (
         quarantine_root
-        or (resolved / ".engineering-bootstrap" / "quarantine" / "disposable-cache")
+        or (resolved / ".agentic_engineering_os_px" / "quarantine" / "disposable-cache")
     ).resolve()
     if quarantine_base == resolved or quarantine_base == Path(quarantine_base.anchor):
         raise ValueError(

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:pacify-x:active-project-revision:1.0",
+  "title": "Hash-bound active project revision pointer",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "project_id", "revision_root", "event_sha256", "campaign_sha256", "policy_sha256", "project_record_sha256"],
+  "properties": {
+    "schema_version": {"const": "px.active-project-revision/1.0"},
+    "project_id": {"type": "string", "pattern": "^prj_[A-Za-z0-9_-]+$"},
+    "revision_root": {"type": "string", "pattern": "^\\.agentic_engineering_os_px/project-revisions/prj_[A-Za-z0-9_-]+$"},
+    "event_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "campaign_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "policy_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "project_record_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  }
+}

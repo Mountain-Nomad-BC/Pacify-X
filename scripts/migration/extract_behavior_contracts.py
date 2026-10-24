@@ -16,6 +16,8 @@ from pathlib import Path
 import re
 from typing import Iterable
 
+from runtime.hash_utils import file_sha256
+
 
 TEXT_SUFFIXES = {
     ".py",
@@ -101,11 +103,8 @@ def _sanitize(value: str) -> str:
 
 
 def _sha(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+    """Bounded decision-corpus digest; parity with runtime/hash_utils.file_sha256."""
+    return file_sha256(path)
 
 
 def _symbols(path: Path, text: str) -> tuple[list[str], list[str], list[str]]:

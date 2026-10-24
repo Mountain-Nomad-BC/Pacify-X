@@ -99,7 +99,7 @@ class ProjectOnboardingTests(unittest.TestCase):
             result = commission(project, "new", apply=True, source_root=ROOT)
             self.assertTrue(result["applied"])
             manifest = json.loads(
-                (project / ".engineering-bootstrap/bootstrap-manifest.json").read_text(
+                (project / ".agentic_engineering_os_px/bootstrap-manifest.json").read_text(
                     encoding="utf-8"
                 )
             )
@@ -110,7 +110,7 @@ class ProjectOnboardingTests(unittest.TestCase):
             )
             self.assertIn("**/quarantine/**", settings["files.watcherExclude"])
             registry = json.loads(
-                (project / ".engineering-bootstrap/project-registry.json").read_text(
+                (project / ".agentic_engineering_os_px/project-registry.json").read_text(
                     encoding="utf-8"
                 )
             )

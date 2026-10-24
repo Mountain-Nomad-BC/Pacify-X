@@ -211,8 +211,17 @@ def check_network_hosts(root: Path, manifest: dict) -> dict:
     areas = tuple(a.rstrip("/") for a in inv["applies_to"])
     findings: list[dict] = []
     observed: set[str] = set()
+    # Declarative protocol catalogs list user-selectable provider origins as
+    # data (report 59, named service protocols). A connection happens only
+    # through the governed provider gateway after explicit user selection, so
+    # catalog origin entries are vocabulary, not operated endpoints.
+    declarative_catalogs = {
+        "runtime/remote_service_protocols.json",
+    }
     for path in _iter_files(root, areas):
         rel = path.relative_to(root).as_posix()
+        if rel in declarative_catalogs:
+            continue
         for number, line in _lines(path):
             for host in URL_HOST.findall(line):
                 observed.add(host)

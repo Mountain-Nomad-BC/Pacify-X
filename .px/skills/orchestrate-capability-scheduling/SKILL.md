@@ -29,5 +29,5 @@ then load exactly one of the 30 referenced capability contracts. Load
 - Scheduling is project-scoped. Queues, leases, memory, budgets, and evidence cannot bleed across projects.
 - The bundled runtime is deterministic and observe-only; it never invokes an executor or mutates canonical state.
 
-Use `engineering_bootstrap.capability_scheduler:simulate_schedule` for schedule simulation.
+Use `agentic_engineering_os_px.capability_scheduler:simulate_schedule` for schedule simulation.
 The canonical workflows are in `orchestration/workflows/capability-scheduling.yaml`.

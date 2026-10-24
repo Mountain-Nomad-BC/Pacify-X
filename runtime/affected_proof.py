@@ -17,10 +17,7 @@ from .dependency_invalidation import (
 SCHEMA_VERSION = "px.affected-proof-plan/1.0"
 
 
-def _digest(value: object) -> str:
-    return hashlib.sha256(
-        json.dumps(value, sort_keys=True, separators=(",", ":"), default=str).encode()
-    ).hexdigest()
+from runtime.hash_utils import json_ascii_string_hash as _digest
 
 
 def _load(path: Path) -> dict[str, object]:
@@ -31,7 +28,7 @@ def build_affected_proof_plan(
     root: Path,
     changed_cards: Iterable[str],
     *,
-    card_directory: str = ".engineering-bootstrap/punch-cards/cohesion-closure-20260904",
+    card_directory: str = ".agentic_engineering_os_px/punch-cards/cohesion-closure-20260904",
     projection_invalidation: Mapping[str, object] | None = None,
 ) -> dict[str, object]:
     resolved = root.resolve()

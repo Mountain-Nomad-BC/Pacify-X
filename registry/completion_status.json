@@ -2,14 +2,14 @@
   "schema_version": "px.completion-status/1.4",
   "authority": "generated projection; current operational and instruction ledgers supersede historical audit acceptance as completion authority",
   "projection_metadata": {
-    "generated_at": "2026-09-29T07:29:19.777507Z",
-    "source_revision": "c6b44dd7d05984af6f1d8062b837f073bd5eb8765c68517e2af12e1b01e4a8bb",
+    "generated_at": "2026-10-08T01:22:43.466540Z",
+    "source_revision": "d3aa04439b52c7336cddaf837bb5f09d105010b55a18c3e2c51ed44aca79cfe1",
     "authority_level": "non-certifying-current-state-projection",
     "marker": "current_at_generation",
     "engine_identity": {
-      "marker_file_sha256": "ee20c9717f0ea9d7c27f2f3a0465c483e5222ada60d395e7880590bd4654fe75",
-      "tree_sha256": "81456797b074d59967b9bc723521cd2c231fd27864d452461d9374f19866b43e",
-      "file_total": 6055
+      "marker_file_sha256": "ab9908ca5ebf3eace30c32316b17267119305f06f25fa1d7ce9d491ef7a7b4d1",
+      "tree_sha256": "35312be7a49e7b72ff4de9a12c762a2f6fe7b2945fc3e3efb0426504e60c18f6",
+      "file_total": 4894
     },
     "invalidation_conditions": [
       "any source-byte change",
@@ -17,7 +17,7 @@
       "any governed receipt freshness change",
       "any release certificate or artifact change"
     ],
-    "superseding_artifact": ".engineering-bootstrap/runtime-core/completion_status.json"
+    "superseding_artifact": ".agentic_engineering_os_px/runtime-core/completion_status.json"
   },
   "complete": false,
   "operationally_complete": false,
@@ -29,7 +29,7 @@
     },
     {
       "path": "registry/adversarial_repair_status.json",
-      "sha256": "6c83bdf7745a9b66825cd870878f8b25fa089f9036843f0f009a8220c2338701"
+      "sha256": "e26931261effb152f9c01944cc88c69f9a3675edf3f20523035cf2094a8c8c4e"
     },
     {
       "path": "registry/adversarial_reaudit_20260814.json",
@@ -57,11 +57,11 @@
     },
     {
       "path": "registry/operational_gap_ledger.head.json",
-      "sha256": "591a3b098c9bf5b01df9573193ace2291802607ad30d60510366573ba249b5d4"
+      "sha256": "bb8d4c7ae97192478f1ac4a236bdd6696c059777be99f78ebac051f342815402"
     },
     {
       "path": "registry/current_evidence_index.json",
-      "sha256": "c91794dcc8bdecfbd9e6ca17e2765e8efcd9f2d879898955590772da86a6aa61"
+      "sha256": "a0175dc3186223380694d755ab35a6dda925e256b1fba77ffdef1d81aef518a8"
     }
   ],
   "cards_complete": false,
@@ -98,27 +98,23 @@
   },
   "current_operational_gap_ledger": {
     "valid": true,
-    "ledger_id": "PX-OPERATIONAL-GAPS-20260816",
-    "event_count": 36117,
-    "head_event_sha256": "c6b44dd7d05984af6f1d8062b837f073bd5eb8765c68517e2af12e1b01e4a8bb",
-    "critical_high_blocker_count": 16,
+    "ledger_id": "px-rev1xx-2026-10-01",
+    "event_count": 410,
+    "head_event_sha256": "d3aa04439b52c7336cddaf837bb5f09d105010b55a18c3e2c51ed44aca79cfe1",
+    "critical_high_blocker_count": 12,
     "critical_high_blocker_ids": [
-      "PX-OS-087",
-      "PX-OS-1065",
-      "PX-OS-1067",
-      "PX-OS-119",
-      "PX-OS-958",
-      "PX-OS-959",
-      "PX-OS-960",
-      "PX-OS-961",
-      "PX-OS-962",
-      "PX-OS-967",
-      "PX-OS-973",
-      "PX-OS-976",
-      "PX-OS-994",
-      "PX-OS-995",
-      "PX-OS-996",
-      "PX-OS-998"
+      "PX-GAP-0001",
+      "PX-GAP-0002",
+      "PX-GAP-0003",
+      "PX-GAP-0004",
+      "PX-GAP-0006",
+      "PX-GAP-0007",
+      "PX-GAP-0008",
+      "PX-GAP-0009",
+      "PX-GAP-0010",
+      "PX-GAP-0011",
+      "PX-GAP-0012",
+      "PX-GAP-0013"
     ],
     "complete": false,
     "error": null
@@ -345,7 +341,23 @@
   "current_gates": {
     "valid": false,
     "blocking_ids": [
-      "group:release-audit"
+      "section:dashboard-extension",
+      "section:execution-placement",
+      "section:hardware-routing",
+      "section:learning-promotion",
+      "section:runtime-domain-contracts",
+      "section:studio-memory-graph",
+      "section:testing-governance",
+      "group:process-recovery",
+      "group:exact-installed",
+      "group:release-build",
+      "group:release-audit",
+      "group:structural-adversarial",
+      "group:derived-integrity",
+      "group:core-a-f",
+      "group:core-g-m",
+      "group:core-n-s",
+      "group:core-t-z"
     ]
   },
   "certification_freshness": {
@@ -355,10 +367,45 @@
     "evidence_identity_evaluated": false,
     "evidence_receipts_current": false,
     "failed_receipt_ids": [
-      "group:release-audit"
+      "section:dashboard-extension",
+      "section:execution-placement",
+      "section:hardware-routing",
+      "section:learning-promotion",
+      "section:studio-memory-graph",
+      "section:testing-governance",
+      "group:process-recovery",
+      "group:exact-installed",
+      "group:release-build",
+      "group:release-audit",
+      "group:structural-adversarial",
+      "group:derived-integrity",
+      "group:core-a-f",
+      "group:core-g-m",
+      "group:core-n-s",
+      "group:core-t-z"
     ],
-    "stale_receipt_ids": [],
-    "dependency_stale_receipt_ids": []
+    "stale_receipt_ids": [
+      "section:dashboard-extension",
+      "section:execution-placement",
+      "section:hardware-routing",
+      "section:learning-promotion",
+      "section:runtime-domain-contracts",
+      "section:studio-memory-graph",
+      "section:testing-governance",
+      "group:process-recovery",
+      "group:exact-installed",
+      "group:release-build",
+      "group:release-audit",
+      "group:structural-adversarial",
+      "group:derived-integrity",
+      "group:core-a-f",
+      "group:core-g-m",
+      "group:core-n-s",
+      "group:core-t-z"
+    ],
+    "dependency_stale_receipt_ids": [
+      "section:execution-placement"
+    ]
   },
   "release_certificate": {
     "valid": false,
@@ -367,8 +414,8 @@
     ]
   },
   "blocking_reasons": [
-    "the current operational gap ledger has 16 unresolved critical/high findings",
-    "1 required section/group receipts are stale or failed",
+    "the current operational gap ledger has 12 unresolved critical/high findings",
+    "17 required section/group receipts are stale or failed",
     "final exact-artifact certification has not been admitted"
   ]
 }

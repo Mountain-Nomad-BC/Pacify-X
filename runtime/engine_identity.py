@@ -9,12 +9,13 @@ from pathlib import Path
 from typing import Any
 
 from .repository_scope import is_external_environment_relative
+from .source_boundary import agent_experience_directories, is_operational_experience_path
 
 
 EXCLUDED_DIRECTORIES = {
     ".git",
     ".quarantine",  # Boundary protection: retained historical evidence with preserved junctions
-    ".engineering-bootstrap",
+    ".agentic_engineering_os_px",
     ".mypy_cache",
     ".pytest_cache",
     ".ruff_cache",
@@ -38,8 +39,21 @@ EXCLUDED_PATHS = {
     "registry/.operational-gap-ledger.lock",
     "registry/operational_gap_ledger.head.json",
     "registry/test_group_index.json",
+    "registry/planning/rev1xx/current-status.json",
 }
 EXCLUDED_PATH_PREFIXES = {
+    "engineering_loop_bootstrap.egg-info/",
+    "extension/tests/generated/plugin-lifecycle/",
+    # Both control-directory spellings. The control directory was renamed, but a
+    # repository or install may still hold the legacy tree, so mutable-output
+    # exclusion must accept either spelling or identity starts counting lock and
+    # cache files as source.
+    "extension/.agentic_engineering_os_px/",
+    "extension/.engineering-bootstrap/",
+    # These are real current host state/proof/transition custody, not source.
+    # Admitted planning manifests outside these exact namespaces remain inputs.
+    "registry/planning/rev1xx/foundation/",
+    "registry/planning/rev1xx/status-history/",
     "registry/.lock-recovery-receipts/",
     # Atlas projections are derived from repository source and must not
     # feed back into the CPU-authoritative source-engine identity.
@@ -58,6 +72,7 @@ EXCLUDED_SUFFIXES = {".pyc", ".pyo", ".tmp", ".vsix"}
 
 def _files(root: Path) -> list[Path]:
     values: list[Path] = []
+    agent_directories = agent_experience_directories(root)
     for current, dirs, files in os.walk(root, topdown=True, followlinks=False):
         relative_current = Path(current).relative_to(root)
         dirs[:] = sorted(
@@ -83,6 +98,7 @@ def _files(root: Path) -> list[Path]:
             if (
                 path.is_symlink()
                 or is_external_environment_relative(relative)
+                or is_operational_experience_path(relative, agent_directories=agent_directories)
                 or relative.startswith("AUDIT_ARTIFACTS/")
                 or relative in EXCLUDED_PATHS
                 or any(relative.startswith(prefix) for prefix in EXCLUDED_PATH_PREFIXES)

@@ -35,6 +35,7 @@ from runtime.certification_contract import (  # noqa: E402
 
 
 SCHEMA = "px.release-stage-owner-config/1.0"
+CURRENT_SCHEMA = "px.release-stage-owner-config/2.0"
 
 
 class OwnerBlocked(RuntimeError):
@@ -50,11 +51,8 @@ def _now() -> str:
 
 
 def sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+    from runtime.hash_utils import file_sha256
+    return file_sha256(path)
 
 
 def load_object(path: Path) -> dict[str, Any]:
@@ -126,11 +124,17 @@ class Config:
     installed_tree_digest: str
     installed_version: str
     installable_entry_count: int
+    identity_kind: str = "git"
+    source_freeze_reference: dict | None = None
+    artifact_state: str = "committed_legacy"
+    artifact_type: str = "vsix"
+    artifact_build_owner: str = ""
+    install_state: str = "observed_legacy"
 
     @classmethod
     def load(cls, path: Path) -> "Config":
         raw = load_object(path)
-        if raw.get("schema_version") != SCHEMA:
+        if raw.get("schema_version") not in (SCHEMA,CURRENT_SCHEMA):
             raise OwnerBlocked(f"config must use {SCHEMA}")
         root_raw = Path(str(raw.get("root") or ""))
         root = (
@@ -145,7 +149,26 @@ class Config:
             or not isinstance(install, dict)
         ):
             raise OwnerBlocked("artifact, identity, and install objects are required")
+        current = raw["schema_version"] == CURRENT_SCHEMA
+        if current:
+            from runtime.release_source_identity import current_campaign
+            if not current_campaign(root) or set(identity)!={"identity_kind","source_freeze"} or identity.get("identity_kind")!="standalone_current_campaign":
+                raise OwnerBlocked("current owner config requires exact native source identity; no Git fields")
+            reference=identity["source_freeze"]
+            if type(reference) is not dict or set(reference)!={"path","sha256"}:
+                raise OwnerBlocked("current config requires exact final source-freeze reference")
+        elif "identity_kind" in identity or "source_freeze" in identity:
+            raise OwnerBlocked("tagged source identity requires current config schema")
+        if current:
+            if set(artifact)!={"state","path","type","build_owner"} or artifact.get("state")!="planned" or artifact.get("type")!="vsix" or artifact.get("build_owner")!="extension/scripts/package-vsix.js":
+                raise OwnerBlocked("current early artifact must be an exact planned VSIX producer locator")
+            if set(install)!={"state","directory","code_command"} or install.get("state")!="planned":
+                raise OwnerBlocked("current early installation requires planned locators, never invented installed evidence")
         candidate = str(raw.get("candidate_id") or "").strip()
+        if current:
+            from runtime.release_source_identity import release_configuration_relative
+            if path.resolve()!=root/release_configuration_relative(candidate,"stage-owner"):
+                raise OwnerBlocked("current stage config must migrate to its closed native derived-control locator")
         predecessor = str(raw.get("predecessor_id") or "").strip()
         digest = str(artifact.get("sha256") or "")
         result = cls(
@@ -158,7 +181,7 @@ class Config:
             artifact_mtime_ns=int(artifact.get("mtime_ns") or 0),
             evidence_dir=inside(root, raw.get("evidence_dir"), "evidence_dir"),
             log_dir=inside(root, raw.get("log_dir"), "log_dir"),
-            path_manifest=inside(root, identity.get("path_manifest"), "path_manifest"),
+            path_manifest=inside(root, reference["path"] if current else identity.get("path_manifest"), "path_manifest"),
             commit_message=str(identity.get("commit_message") or "").strip(),
             release_tag=str(identity.get("release_tag") or "").strip(),
             prior_tag_target=str(identity.get("prior_tag_target") or "").strip(),
@@ -168,21 +191,25 @@ class Config:
             installed_tree_digest=str(install.get("tree_digest") or ""),
             installed_version=str(install.get("version") or "").strip(),
             installable_entry_count=int(install.get("entry_count") or 0),
+            identity_kind="standalone_current_campaign" if current else "git",
+            source_freeze_reference=dict(reference) if current else None,
+            artifact_state="planned" if current else "committed_legacy",
+            artifact_build_owner=artifact["build_owner"] if current else "",
+            install_state="planned" if current else "observed_legacy",
         )
         if (
             not candidate
             or not predecessor
             or candidate == predecessor
-            or not re.fullmatch(r"[0-9a-f]{64}", digest)
+            or (not current and (not re.fullmatch(r"[0-9a-f]{64}", digest)
             or result.artifact_size <= 0
             or result.artifact_mtime_ns <= 0
             or result.zip_entry_count <= 0
             or result.installable_entry_count <= 0
             or not re.fullmatch(r"[0-9a-f]{64}", result.installed_tree_digest)
-            or not result.installed_version
-            or not result.commit_message
-            or not result.release_tag.startswith("v")
-            or len(result.prior_tag_target) != 40
+            or not result.installed_version))
+            or (not current and (not result.commit_message
+                or not result.release_tag.startswith("v") or len(result.prior_tag_target) != 40))
         ):
             raise OwnerBlocked("config contains an incomplete exact owner contract")
         return result
@@ -192,20 +219,23 @@ class Config:
 
 
 def release(config: Config) -> dict[str, Any]:
-    return load_object(
-        config.root / ".engineering-bootstrap/processing-order/release-identity.json"
-    )
+    from runtime.release_campaign import release_state_relative
+    return load_object(config.root / release_state_relative(config.root))
 
 
 def repair(config: Config) -> dict[str, Any]:
     return load_object(
-        config.root / ".engineering-bootstrap/processing-order/repair-campaign.json"
+        config.root / ".agentic_engineering_os_px/processing-order/repair-campaign.json"
     )
 
 
 def identity_manifest(config: Config) -> tuple[list[str], list[str]]:
     """Validate the exact pre-identity Git source and mutable-control sets."""
 
+    if config.identity_kind == "standalone_current_campaign":
+        from runtime.release_repository_context import verify_source_anchor
+        verify_source_anchor(config.root,config.source_freeze_reference,require_live=True)
+        return [],[]
     from runtime.release_identity import _release_dirty_state
 
     if not config.path_manifest.is_file() or config.path_manifest.is_symlink():
@@ -298,7 +328,7 @@ def resource_postcondition(config: Config) -> dict[str, Any]:
 
     from runtime.resource_lifecycle import ResourceLedger, _resource_status_records
 
-    ledger_path = config.root / ".engineering-bootstrap/resource-lifecycle/ledger.json"
+    ledger_path = config.root / ".agentic_engineering_os_px/resource-lifecycle/ledger.json"
     records = ResourceLedger(ledger_path).observe()
     status = _resource_status_records(records)
     active = [row for row in records if row.active is True]
@@ -325,7 +355,10 @@ def check(config: Config, step: str) -> dict[str, Any]:
     errors: list[str] = []
     if step not in STEPS:
         errors.append("unsupported step")
-    if not config.artifact.is_file() or config.artifact.is_symlink():
+    if config.artifact_state == "planned":
+        if step not in {"archive_clear", "reconcile", "identity", "sections", "full_profile", "validate"}:
+            errors.append("planned artifact cannot satisfy package/install or downstream artifact evidence")
+    elif not config.artifact.is_file() or config.artifact.is_symlink():
         errors.append("artifact is not a regular file")
     else:
         info = config.artifact.stat()
@@ -515,7 +548,7 @@ class ProductionEffects:
 
     def advance(self, config: Config, before: str, after: str) -> None:
         path = (
-            config.root / ".engineering-bootstrap/processing-order/repair-campaign.json"
+            config.root / ".agentic_engineering_os_px/processing-order/repair-campaign.json"
         )
         value = load_object(path)
         if (
@@ -678,6 +711,18 @@ class ProductionEffects:
         from runtime.release_campaign import apply_release_identity
         from runtime.release_identity import _release_dirty_state, authoritative_version
 
+        if config.identity_kind == "standalone_current_campaign":
+            from runtime.release_source_identity import capture_release_source_identity
+            identity_manifest(config)
+            status=apply_release_identity(config.root,source_freeze_reference=config.source_freeze_reference)
+            source=capture_release_source_identity(config.root,version=authoritative_version(config.root))
+            if not status.get("valid") or not source.get("valid"):
+                raise OwnerBlocked("current final source identity apply failed")
+            return self.receipt(config,"identity",{"schema_version":"px.single-identity-transition-receipt/1.0",
+                "campaign_id":config.candidate_id,"source_identity":source,"git_acceptance":source["git_acceptance"],
+                "commit_created":False,"retag_count":0,"release_identity_sha256":source["release_identity_sha256"],
+                "source_product_digest":source["source_product_digest"],"source_harness_digest":source["source_harness_digest"],
+                "artifact":{"state":"planned","path":config.relative(config.artifact),"type":config.artifact_type,"build_owner":config.artifact_build_owner},"valid":True})
         paths, mutable_paths = identity_manifest(config)
         self.git_add_paths(config, paths)
         cached = {

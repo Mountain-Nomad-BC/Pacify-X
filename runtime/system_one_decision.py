@@ -94,16 +94,7 @@ class DecisionResult:
         }
 
 
-def _sha(value: object) -> str:
-    return hashlib.sha256(
-        json.dumps(
-            value,
-            sort_keys=True,
-            separators=(",", ":"),
-            ensure_ascii=False,
-            default=str,
-        ).encode("utf-8")
-    ).hexdigest()
+from runtime.hash_utils import json_utf8_string_hash as _sha
 
 
 def _bounded_text(value: object, name: str) -> str:

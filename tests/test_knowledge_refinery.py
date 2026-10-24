@@ -186,7 +186,7 @@ def test_graph_audit_catches_missing_endpoints_duplicates_self_edges_and_cycles(
 
 
 def test_stage_plan_is_review_gated_project_local_and_inert(tmp_path: Path) -> None:
-    state = tmp_path / ".engineering-bootstrap/project-management/state.json"
+    state = tmp_path / ".agentic_engineering_os_px/project-management/state.json"
     state.parent.mkdir(parents=True)
     state.write_text("{}\n", encoding="utf-8")
     novelty = classify_novelty([artifact("target")], [artifact("target")])

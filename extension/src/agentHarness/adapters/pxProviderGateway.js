@@ -26,11 +26,14 @@ class PxProviderGatewayAdapter extends ExecutionAdapter {
       run: input.run,
       message: input.message,
       contextPack: input.contextPack,
-      signal: input.signal
+      executionContext: input.executionContext,
+      maxOutputTokens: input.maxOutputTokens,
+      signal: input.signal,
+      onEvent: input.onEvent
     });
     if (!result || !result.receipt) throw new Error('px-provider-gateway-exact-receipt-missing');
     const text = typeof result.value === 'string' ? result.value : String(result.value?.text ?? result.value?.answer ?? '');
-    if (text) input.onEvent({ type: 'worker.stream.delta', status: 'progress', summary: text.slice(0, 500), payload: { delta: text, terminal: true } });
+    if (text && result.streamed !== true) input.onEvent({ type: 'worker.stream.delta', status: 'progress', summary: text.slice(0, 500), payload: { delta: text, terminal: true } });
     const receipt = result.receipt;
     const providerReceipt = receipt.provider_receipt || receipt.providerReceipt || {};
     return {
@@ -40,7 +43,7 @@ class PxProviderGatewayAdapter extends ExecutionAdapter {
         outputTokens: providerReceipt.output_tokens ?? providerReceipt.outputTokens ?? null,
         totalTokens: total(providerReceipt),
         actualChargeUsd: microunitsToUsd(providerReceipt.charge_microunits ?? providerReceipt.chargeMicrounits),
-        billingIdentityKnown: providerReceipt.billing_state !== 'unknown',
+        billingIdentityKnown: typeof providerReceipt.billing_state === 'string' && providerReceipt.billing_state !== 'unknown',
         quotaRemaining: null
       },
       exactReceipt: receipt

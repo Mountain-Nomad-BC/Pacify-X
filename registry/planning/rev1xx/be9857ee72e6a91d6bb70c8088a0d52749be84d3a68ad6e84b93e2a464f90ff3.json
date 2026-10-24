@@ -1,0 +1,1361 @@
+{
+  "cards": [
+    {
+      "acceptance": [
+        "clean working tree proven",
+        "commit/tree/package versions recorded",
+        "rollback tag/worktree created"
+      ],
+      "candidate_new_owners": [],
+      "depends_on": [],
+      "existing_owners": [
+        ".engineering-bootstrap/project-management/state.json",
+        "runtime/release_artifacts.py"
+      ],
+      "id": "BASE-001",
+      "outcome": "One real Git checkout is bound to commit, tree digest, package/extension version and inventory.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Freeze exact 0.9.0 source identity",
+      "wave": "W0"
+    },
+    {
+      "acceptance": [
+        "no mixed old/new release campaign",
+        "terminal campaigns remain terminal",
+        "decision receipt names v1 starting commit"
+      ],
+      "candidate_new_owners": [],
+      "depends_on": [
+        "BASE-001"
+      ],
+      "existing_owners": [
+        ".engineering-bootstrap/project-management/*",
+        "runtime/release_campaign.py"
+      ],
+      "id": "BASE-002",
+      "outcome": "repair12/final100 state is either completed under its existing process or explicitly superseded before v1 begins.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Resolve current release boundary",
+      "wave": "W0"
+    },
+    {
+      "acceptance": [
+        "every source pack hash recorded",
+        "duplicate payloads do not create duplicate requirements"
+      ],
+      "candidate_new_owners": [],
+      "depends_on": [
+        "BASE-001"
+      ],
+      "existing_owners": [
+        "evidence/*"
+      ],
+      "id": "BASE-003",
+      "outcome": "All 11 archives are inventoried as 8 unique payloads; duplicates and source provenance are explicit.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Admit and deduplicate planning corpus",
+      "wave": "W0"
+    },
+    {
+      "acceptance": [
+        "zero ownerless cards",
+        "DAG acyclic",
+        "decision changes require ADR/ledger update"
+      ],
+      "candidate_new_owners": [
+        "evidence/v1x/*"
+      ],
+      "depends_on": [
+        "BASE-002",
+        "BASE-003"
+      ],
+      "existing_owners": [
+        ".engineering-bootstrap/punch-cards/*"
+      ],
+      "id": "BASE-004",
+      "outcome": "Every v1 card has owner, dependencies, acceptance evidence, rollback and source traceability.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Create v1 architecture change ledger",
+      "wave": "W0"
+    },
+    {
+      "acceptance": [
+        "same object survives path rename without identity change",
+        "duplicate identities rejected"
+      ],
+      "candidate_new_owners": [
+        "contracts/semantic/semantic-entity.schema.json"
+      ],
+      "depends_on": [
+        "BASE-004"
+      ],
+      "existing_owners": [
+        "runtime/librarian_semantic_map.py",
+        "runtime/semantic_revision.py"
+      ],
+      "id": "SEM-001",
+      "outcome": "Every modeled object has path-independent stable entity_id, type, lifecycle and provenance.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Canonical semantic entity contract",
+      "wave": "W1"
+    },
+    {
+      "acceptance": [
+        "path edits change locators not entity identity",
+        "no dangling relation endpoints"
+      ],
+      "candidate_new_owners": [
+        "contracts/semantic/locator-record.schema.json",
+        "contracts/semantic/relation-record.schema.json"
+      ],
+      "depends_on": [
+        "SEM-001"
+      ],
+      "existing_owners": [
+        "runtime/semantic_project_map_bridge.py",
+        ".engineering-bootstrap/project-map/*"
+      ],
+      "id": "SEM-002",
+      "outcome": "Physical location and typed graph relations are separate records keyed to entity IDs.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Locator and relation separation",
+      "wave": "W1"
+    },
+    {
+      "acceptance": [
+        "zero collisions",
+        "0/255 reserved semantics enforced",
+        "round-trip alias->entity->alias deterministic"
+      ],
+      "candidate_new_owners": [
+        "runtime/compact_address.py",
+        "contracts/semantic/compact-address-record.schema.json"
+      ],
+      "depends_on": [
+        "SEM-001"
+      ],
+      "existing_owners": [
+        "runtime/librarian_semantic_map.py"
+      ],
+      "id": "SEM-003",
+      "outcome": "Generate Subject.Object.SemanticRole.Kind aliases with generation binding, tombstones and collision checks.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Compact semantic address allocator",
+      "wave": "W1"
+    },
+    {
+      "acceptance": [
+        "identical dependencies produce identical vector",
+        "changed dependency invalidates vector"
+      ],
+      "candidate_new_owners": [
+        "runtime/context_generation.py",
+        "contracts/context-generation-vector.schema.json"
+      ],
+      "depends_on": [
+        "SEM-002"
+      ],
+      "existing_owners": [
+        "runtime/semantic_revision.py",
+        "runtime/dependency_invalidation.py"
+      ],
+      "id": "SEM-004",
+      "outcome": "Define one hashable context/generation vector across source, semantics, projection, runtime, model/retrieval, authority/policy and execution graph.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Generation vector",
+      "wave": "W1"
+    },
+    {
+      "acceptance": [
+        "stale projection cannot be served as fresh",
+        "policy-gated degraded reads are explicit"
+      ],
+      "candidate_new_owners": [
+        "runtime/projection_gate.py",
+        "contracts/projection-status.schema.json"
+      ],
+      "depends_on": [
+        "SEM-004"
+      ],
+      "existing_owners": [
+        "registry/projection_dependencies.json",
+        "registry/projection_staleness.json",
+        "runtime/dependency_invalidation.py"
+      ],
+      "id": "SEM-005",
+      "outcome": "Standardize fresh/degraded/blocked and dependency-vector checks for all derived state.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Universal ProjectionGate",
+      "wave": "W1"
+    },
+    {
+      "acceptance": [
+        "zero unexplained/unowned source objects at remap gate",
+        "ambiguity remains explicit rather than guessed"
+      ],
+      "candidate_new_owners": [
+        "registry/semantic_entity_index.json",
+        "evidence/v1x/semantic-coverage.json"
+      ],
+      "depends_on": [
+        "SEM-003",
+        "SEM-005"
+      ],
+      "existing_owners": [
+        ".engineering-bootstrap/project-map/*",
+        "registry/source_map_index.json"
+      ],
+      "id": "SEM-006",
+      "outcome": "Every source/operational object is classified, aliased or explicitly unresolved before rename.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Map coverage and ambiguity ledger",
+      "wave": "W1"
+    },
+    {
+      "acceptance": [
+        "proposal is deterministic",
+        "every move has semantic entity ID, old/new locator and import/evidence impact cone"
+      ],
+      "candidate_new_owners": [
+        "tools/px_migration/planner.py",
+        "evidence/v1x/path-remap-crosswalk.csv"
+      ],
+      "depends_on": [
+        "SEM-006"
+      ],
+      "existing_owners": [
+        "scripts/*",
+        "runtime/project_impact.py"
+      ],
+      "id": "MIG-001",
+      "outcome": "Produce deterministic move/rename proposals from semantic classes and target package policy.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Generate exact physical remap proposal",
+      "wave": "W2"
+    },
+    {
+      "acceptance": [
+        "historical evidence resolves old paths",
+        "new writes never resurrect legacy locator"
+      ],
+      "candidate_new_owners": [
+        "runtime/semantic_locator.py"
+      ],
+      "depends_on": [
+        "MIG-001"
+      ],
+      "existing_owners": [
+        "runtime/semantic_project_map_bridge.py"
+      ],
+      "id": "MIG-002",
+      "outcome": "Old and new paths resolve to the same entity during migration; writes target only current canonical locator.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Dual locator resolver",
+      "wave": "W2"
+    },
+    {
+      "acceptance": [
+        "zero unresolved code imports",
+        "non-code references dispositioned",
+        "generated files regenerated rather than hand-edited"
+      ],
+      "candidate_new_owners": [
+        "tools/px_migration/compiler.py"
+      ],
+      "depends_on": [
+        "MIG-001"
+      ],
+      "existing_owners": [
+        "runtime/project_impact.py",
+        "registry/python_surface_ownership.json"
+      ],
+      "id": "MIG-003",
+      "outcome": "Rewrite imports/config/docs/references from generated dependency graph instead of blind text replacement.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Dependency/import migration compiler",
+      "wave": "W2"
+    },
+    {
+      "acceptance": [
+        "fault injection at each migration boundary either completes or restores exact prior tree"
+      ],
+      "candidate_new_owners": [
+        "tools/px_migration/apply.py",
+        "contracts/migration-package.schema.json",
+        "contracts/migration-report.schema.json"
+      ],
+      "depends_on": [
+        "MIG-002",
+        "MIG-003"
+      ],
+      "existing_owners": [
+        "runtime/operation_authority.py",
+        "runtime/effect_grants.py"
+      ],
+      "id": "MIG-004",
+      "outcome": "Apply remap with checkpoint, ordered operations, hash checks and exact rollback.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Transactional apply and rollback",
+      "wave": "W2"
+    },
+    {
+      "acceptance": [
+        "second rebuild byte-identical",
+        "zero legacy write paths",
+        "all aliases/references current"
+      ],
+      "candidate_new_owners": [],
+      "depends_on": [
+        "MIG-004"
+      ],
+      "existing_owners": [
+        "scripts/reconcile_*",
+        "runtime/dependency_invalidation.py"
+      ],
+      "id": "MIG-005",
+      "outcome": "Rebuild semantic/projection/generated state twice and prove path remap is stable before new feature work.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Post-remap fixed-point reconciliation",
+      "wave": "W2"
+    },
+    {
+      "acceptance": [
+        "Python/Node conformance vectors agree",
+        "IDs survive restarts/resume"
+      ],
+      "candidate_new_owners": [
+        "runtime/execution_context.py",
+        "contracts/execution-context.schema.json"
+      ],
+      "depends_on": [
+        "MIG-005"
+      ],
+      "existing_owners": [
+        "runtime/agent_runtime.py",
+        "extension/src/agentHarness/contracts.js"
+      ],
+      "id": "EXE-001",
+      "outcome": "Define execution_id, activation_epoch, revision, parent_execution_id, task/graph IDs and ownership.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Universal ExecutionContext",
+      "wave": "W3"
+    },
+    {
+      "acceptance": [
+        "stale callback cannot mutate current run",
+        "revision never regresses"
+      ],
+      "candidate_new_owners": [
+        "extension/src/agentHarness/durableTaskState.js"
+      ],
+      "depends_on": [
+        "EXE-001"
+      ],
+      "existing_owners": [
+        "extension/src/agentHarness/taskStore.js"
+      ],
+      "id": "EXE-002",
+      "outcome": "Every run/task mutation uses compare-and-set semantics against current execution epoch/revision.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Revision/epoch-fenced extension TaskStore",
+      "wave": "W3"
+    },
+    {
+      "acceptance": [
+        "restart recovers latest committed state",
+        "out-of-order save cannot overwrite newer revision"
+      ],
+      "candidate_new_owners": [],
+      "depends_on": [
+        "EXE-002"
+      ],
+      "existing_owners": [
+        "extension/src/agentHarness/taskStore.js"
+      ],
+      "id": "EXE-003",
+      "outcome": "Serialize state writes, propagate errors and optionally await terminal persistence barrier.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Ordered durable extension persistence",
+      "wave": "W3"
+    },
+    {
+      "acceptance": [
+        "parallel turns cannot interrupt/clear one another",
+        "wrong-turn cancellation test fails closed"
+      ],
+      "candidate_new_owners": [
+        "runtime/cancellation_scope.py",
+        "contracts/cancellation-scope.schema.json"
+      ],
+      "depends_on": [
+        "EXE-001"
+      ],
+      "existing_owners": [
+        "extension/src/agentHarness/adapters/codexAppServer.js",
+        "extension/src/agentHarness/harnessController.js"
+      ],
+      "id": "EXE-004",
+      "outcome": "Replace scalar last-active ownership with exact execution/turn scope; cleanup clears only owned resources.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Execution-scoped adapter ownership and cancellation",
+      "wave": "W3"
+    },
+    {
+      "acceptance": [
+        "extension local event loss cannot fabricate canonical completion",
+        "canonical event identity includes execution context"
+      ],
+      "candidate_new_owners": [
+        "runtime/extension_event_bridge.py"
+      ],
+      "depends_on": [
+        "EXE-002"
+      ],
+      "existing_owners": [
+        "runtime/operational_event_bus.py",
+        "extension/src/agentHarness/eventBus.js"
+      ],
+      "id": "EXE-005",
+      "outcome": "Demote extension bus to local event buffer and bridge admitted lifecycle events into canonical Python operational event authority.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Canonical event bridge",
+      "wave": "W3"
+    },
+    {
+      "acceptance": [
+        "one authority decision per effect",
+        "conflicting mutations serialize or reject",
+        "approval snapshot is revision-bound"
+      ],
+      "candidate_new_owners": [
+        "runtime/mutation_queue.py",
+        "runtime/approval_policy.py",
+        "runtime/scope_lease.py"
+      ],
+      "depends_on": [
+        "EXE-001"
+      ],
+      "existing_owners": [
+        "runtime/operation_authority.py",
+        "runtime/effect_grants.py",
+        "extension/src/workGovernor.js"
+      ],
+      "id": "EXE-006",
+      "outcome": "Unify serialized mutation queue, approval policy, CAS, scope leases and rollback receipts under existing authority/effect owners.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Transactional mutation and approval substrate",
+      "wave": "W3"
+    },
+    {
+      "acceptance": [
+        "same dependency joins all related states",
+        "identity not inferred from free text"
+      ],
+      "candidate_new_owners": [
+        "runtime/dependency_identity.py",
+        "contracts/dependency-identity.schema.json"
+      ],
+      "depends_on": [
+        "EXE-006"
+      ],
+      "existing_owners": [
+        "runtime/dependency_invalidation.py"
+      ],
+      "id": "DUR-001",
+      "outcome": "Create stable dependency identity for breakers, retries, caches, health and recovery.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "DependencyIdentity",
+      "wave": "W4"
+    },
+    {
+      "acceptance": [
+        "crash between intent/effect/receipt is recoverable or held",
+        "no blind replay of non-idempotent effect"
+      ],
+      "candidate_new_owners": [
+        "runtime/durable_effects.py",
+        "contracts/durable-effect.schema.json"
+      ],
+      "depends_on": [
+        "DUR-001"
+      ],
+      "existing_owners": [
+        "runtime/effect_grants.py",
+        "runtime/event_ledger.py"
+      ],
+      "id": "DUR-002",
+      "outcome": "Persist effect intent/attempt/receipt lifecycle with idempotency and verification policy.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Durable effect intent ledger",
+      "wave": "W4"
+    },
+    {
+      "acceptance": [
+        "completed pure stages may reuse current outputs",
+        "effectful stage never skipped on checkpoint assertion alone"
+      ],
+      "candidate_new_owners": [
+        "runtime/workflow_resume.py",
+        "contracts/workflow-node-snapshot.schema.json"
+      ],
+      "depends_on": [
+        "DUR-002"
+      ],
+      "existing_owners": [
+        "orchestration/workflows/*",
+        "runtime/project_stream*"
+      ],
+      "id": "DUR-003",
+      "outcome": "Resume at first unproven stage after validating checkpoint identity, dependencies, approvals and effect receipts.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "True workflow resume",
+      "wave": "W4"
+    },
+    {
+      "acceptance": [
+        "old checkpoint either migrates deterministically or blocks with reason"
+      ],
+      "candidate_new_owners": [
+        "runtime/checkpoint_migration.py",
+        "contracts/checkpoint-migration-record.schema.json"
+      ],
+      "depends_on": [
+        "DUR-003"
+      ],
+      "existing_owners": [
+        "runtime/checkpoint*"
+      ],
+      "id": "DUR-004",
+      "outcome": "Namespace checkpoints by execution/generation and support explicit schema migration.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Checkpoint generations and migrations",
+      "wave": "W4"
+    },
+    {
+      "acceptance": [
+        "stale dependency causes miss/block",
+        "concurrent identical build executes once"
+      ],
+      "candidate_new_owners": [
+        "runtime/coherent_cache.py"
+      ],
+      "depends_on": [
+        "SEM-005",
+        "DUR-001"
+      ],
+      "existing_owners": [
+        "runtime/evidence_cache.py"
+      ],
+      "id": "DUR-005",
+      "outcome": "Dependency-vector + contract-version cache identity, per-key singleflight, generation invalidation and diagnostics.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Coherent cache facade",
+      "wave": "W4"
+    },
+    {
+      "acceptance": [
+        "trace joins without text heuristics",
+        "projection can be rebuilt from canonical events/evidence"
+      ],
+      "candidate_new_owners": [
+        "runtime/trace_lineage.py",
+        "runtime/run_record_projection.py",
+        "contracts/trace-lineage.schema.json",
+        "contracts/execution-run-record.schema.json"
+      ],
+      "depends_on": [
+        "EXE-005",
+        "DUR-002"
+      ],
+      "existing_owners": [
+        "runtime/operational_event_bus.py",
+        "runtime/evidence_*"
+      ],
+      "id": "DUR-006",
+      "outcome": "Join operation->intent->graph->task->provider/tool->effect->verification with typed IDs; expose compact reproducibility projection.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Typed trace lineage and compact run projection",
+      "wave": "W4"
+    },
+    {
+      "acceptance": [
+        "existing memory subjects migrate without loss",
+        "new object classes do not create duplicate source authorities"
+      ],
+      "candidate_new_owners": [
+        "runtime/object_memory.py",
+        "contracts/object-memory-attachment.schema.json"
+      ],
+      "depends_on": [
+        "DUR-006"
+      ],
+      "existing_owners": [
+        "runtime/usage_memory.py",
+        "runtime/process_memory.py"
+      ],
+      "id": "INT-001",
+      "outcome": "Extend usage memory from skills/agents/workflows to all admitted operational object classes via stable entity ID attachment.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Generalize object-memory attachment",
+      "wave": "W5"
+    },
+    {
+      "acceptance": [
+        "aggregates retain denominator/window/context",
+        "rebuild from observations is deterministic"
+      ],
+      "candidate_new_owners": [
+        "contracts/operational-observation.schema.json",
+        "contracts/memory-episode.schema.json"
+      ],
+      "depends_on": [
+        "INT-001"
+      ],
+      "existing_owners": [
+        "runtime/memory_operations.py",
+        "runtime/memory_intelligence.py"
+      ],
+      "id": "INT-002",
+      "outcome": "Store bounded raw operational observations, derive episodes/aggregates and preserve severe failures/evidence.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Observation->episode->aggregate pipeline",
+      "wave": "W5"
+    },
+    {
+      "acceptance": [
+        "runtime memory cannot directly edit policy/source truth",
+        "promotion requires existing review authority"
+      ],
+      "candidate_new_owners": [
+        "contracts/micro-knowledge.schema.json"
+      ],
+      "depends_on": [
+        "INT-002"
+      ],
+      "existing_owners": [
+        "runtime/learning_promotion.py",
+        "runtime/semantic_memory*"
+      ],
+      "id": "INT-003",
+      "outcome": "Create small object-specific guidance packets and promotion candidates with provenance/confidence/decay.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Microknowledge and governed promotion",
+      "wave": "W5"
+    },
+    {
+      "acceptance": [
+        "identical query+generation+budget produces same pack",
+        "exact evidence protected from lossy compaction"
+      ],
+      "candidate_new_owners": [
+        "runtime/context_package.py",
+        "runtime/lexical_memory_index.py",
+        "contracts/memory/context-package.schema.json"
+      ],
+      "depends_on": [
+        "SEM-004",
+        "INT-003"
+      ],
+      "existing_owners": [
+        "runtime/project_map_retrieval.py",
+        "runtime/semantic_index.py"
+      ],
+      "id": "INT-004",
+      "outcome": "Progressive disclosure, typed prefilter, exact dedup, protected spans, lexical fallback, semantic retrieval and bounded rerank.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Deterministic context package and retrieval tiers",
+      "wave": "W5"
+    },
+    {
+      "acceptance": [
+        "shadow outcome recorded without changing authority",
+        "ambiguous/expired decision uses explicit fallback"
+      ],
+      "candidate_new_owners": [
+        "runtime/decision_registry.py",
+        "contracts/decision-registry-entry.schema.json"
+      ],
+      "depends_on": [
+        "INT-004"
+      ],
+      "existing_owners": [
+        "runtime/system_one_decision.py",
+        "runtime/librarian_semantic_map.py"
+      ],
+      "id": "INT-005",
+      "outcome": "Use compact semantic orientation plus object memory/context; Laya compiles bounded decisions in shadow mode with deterministic fallback.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Librarian orientation packets and Laya shadow registry",
+      "wave": "W5"
+    },
+    {
+      "acceptance": [
+        "acyclic except explicit bounded iterative subgraph",
+        "every executable node compiles to immutable TaskExecutionPlan"
+      ],
+      "candidate_new_owners": [
+        "runtime/execution_graph.py",
+        "contracts/execution-graph-plan.schema.json"
+      ],
+      "depends_on": [
+        "INT-005"
+      ],
+      "existing_owners": [
+        "runtime/task_execution_plan.py"
+      ],
+      "id": "EGF-001",
+      "outcome": "Represent logical DAG, typed ports, hard constraints, effect classes, capability requirements and node dependencies above TaskExecutionPlan.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "ExecutionGraphPlan contract/compiler",
+      "wave": "W6"
+    },
+    {
+      "acceptance": [
+        "no unresolved capability at execute gate",
+        "resolution receipt records alternatives/reason"
+      ],
+      "candidate_new_owners": [
+        "runtime/task_shape_compiler.py"
+      ],
+      "depends_on": [
+        "EGF-001"
+      ],
+      "existing_owners": [
+        "runtime/capability_routing.py",
+        "registry/capability_map.json"
+      ],
+      "id": "EGF-002",
+      "outcome": "Resolve task shape to admitted capabilities using semantic map, authority and current health.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Task-shape/capability resolver",
+      "wave": "W6"
+    },
+    {
+      "acceptance": [
+        "unknown quota/cost remains unknown",
+        "local providers are not fabricated as billable"
+      ],
+      "candidate_new_owners": [
+        "runtime/provider_quota.py",
+        "contracts/operations/provider-quota-state.schema.json",
+        "contracts/operations/provider-usage.schema.json"
+      ],
+      "depends_on": [
+        "EXE-005"
+      ],
+      "existing_owners": [
+        "runtime/provider_gateway.py",
+        "runtime/provider_budget.py"
+      ],
+      "id": "EGF-003",
+      "outcome": "Separate provider usage, quota, budget, pricing provenance and current availability.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Provider truth and quota state",
+      "wave": "W6"
+    },
+    {
+      "acceptance": [
+        "non-idempotent effect is not blindly retried",
+        "cancellation interrupts backoff"
+      ],
+      "candidate_new_owners": [
+        "runtime/retry_policy.py",
+        "contracts/retry-decision.schema.json"
+      ],
+      "depends_on": [
+        "EGF-003",
+        "DUR-002"
+      ],
+      "existing_owners": [
+        "runtime/provider_gateway.py"
+      ],
+      "id": "EGF-004",
+      "outcome": "Canonical retry decision binds error class, effect safety, Retry-After, jitter, deadline, attempt budget and final failure identity.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Retry/cooldown/failure classification",
+      "wave": "W6"
+    },
+    {
+      "acceptance": [
+        "child cannot exceed parent reservation",
+        "reconciliation releases exact ownership"
+      ],
+      "candidate_new_owners": [
+        "runtime/resource_admission.py"
+      ],
+      "depends_on": [
+        "EGF-001",
+        "EGF-003"
+      ],
+      "existing_owners": [
+        "runtime/provider_budget.py",
+        "runtime/resource_lifecycle.py",
+        "runtime/execution_placement.py"
+      ],
+      "id": "EGF-005",
+      "outcome": "Reserve/reconcile capacity and spend across graph->task->provider/resource ancestry with no double counting.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Hierarchical resource/budget reservations",
+      "wave": "W6"
+    },
+    {
+      "acceptance": [
+        "policy/privacy/authority/compatibility cannot be outweighed by score",
+        "placement reason is reproducible"
+      ],
+      "candidate_new_owners": [
+        "runtime/route_preview.py"
+      ],
+      "depends_on": [
+        "EGF-002",
+        "EGF-005"
+      ],
+      "existing_owners": [
+        "runtime/execution_placement.py",
+        "runtime/hardware_routing.py"
+      ],
+      "id": "EGF-006",
+      "outcome": "Hard constraints first, then measured soft metrics; produce inspectable route preview and placement receipt.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Route preview and placement scoring",
+      "wave": "W6"
+    },
+    {
+      "acceptance": [
+        "attribution/confidence explicit",
+        "truncation/restart/start-at-end handled"
+      ],
+      "candidate_new_owners": [
+        "runtime/external_observer.py",
+        "contracts/operations/external-observer-envelope.schema.json",
+        "contracts/transcripts/transcript-checkpoint.schema.json"
+      ],
+      "depends_on": [
+        "EXE-005"
+      ],
+      "existing_owners": [
+        "runtime/operational_event_bus.py",
+        "contracts/transcripts/*"
+      ],
+      "id": "ASSURE-001",
+      "outcome": "Normalize external-agent/process observations without upgrading unattested reports to authority.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "External observer envelope + transcript checkpoint",
+      "wave": "W7"
+    },
+    {
+      "acceptance": [
+        "PID reuse vector cannot misattribute protected execution",
+        "observer enrollment race tested"
+      ],
+      "candidate_new_owners": [
+        "runtime/containment_identity.py"
+      ],
+      "depends_on": [
+        "EXE-001",
+        "ASSURE-001"
+      ],
+      "existing_owners": [
+        "runtime/process_supervisor.py",
+        "runtime/resource_lifecycle.py"
+      ],
+      "id": "ASSURE-002",
+      "outcome": "Bind observed effect to execution identity robustly across PID reuse/process trees/shared brokers.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Gremlin protected execution identity",
+      "wave": "W7"
+    },
+    {
+      "acceptance": [
+        "enforcer outage blocks configured high-risk effects",
+        "workload cannot rewrite enforcer policy"
+      ],
+      "candidate_new_owners": [
+        "runtime/gremlin_enforcer.py",
+        "runtime/containment_health.py"
+      ],
+      "depends_on": [
+        "ASSURE-002"
+      ],
+      "existing_owners": [
+        "runtime/effect_grants.py",
+        "runtime/operation_authority.py"
+      ],
+      "id": "ASSURE-003",
+      "outcome": "High-risk/irreversible effects require enforcer admission outside monitored mutable workload; observer/enforcer degradation reduces authority.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Pre-effect containment and degradation",
+      "wave": "W7"
+    },
+    {
+      "acceptance": [
+        "unexplained observed effect is never marked success",
+        "deviation package is evidence-bound"
+      ],
+      "candidate_new_owners": [
+        "runtime/effect_reconciliation.py",
+        "contracts/effect-footprint.schema.json"
+      ],
+      "depends_on": [
+        "ASSURE-003",
+        "DUR-006"
+      ],
+      "existing_owners": [
+        "runtime/evidence_claims.py"
+      ],
+      "id": "ASSURE-004",
+      "outcome": "Compare declared, authorized and observed effects; package discrepancies with evidence and containment action.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Effect reconciliation and deviation packages",
+      "wave": "W7"
+    },
+    {
+      "acceptance": [
+        "PASS requires all mandatory evidence",
+        "BLOCKED/SKIPPED/UNCERTAIN distinct",
+        "cleanup verified"
+      ],
+      "candidate_new_owners": [
+        "runtime/full_spectrum_verification.py",
+        "contracts/verification-scenario.schema.json"
+      ],
+      "depends_on": [
+        "ASSURE-004"
+      ],
+      "existing_owners": [
+        "runtime/verification_*",
+        "runtime/evidence_*"
+      ],
+      "id": "ASSURE-005",
+      "outcome": "Scenario->prereq->denominator->fidelity->execute->evidence->status->cleanup->score->receipt with explicit status semantics.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Full Spectrum Verification protocol",
+      "wave": "W7"
+    },
+    {
+      "acceptance": [
+        "node snapshot names exact adapter/capability revision",
+        "resume rules enforced"
+      ],
+      "candidate_new_owners": [
+        "runtime/workflow_adapter_registry.py",
+        "contracts/workflow-node-adapter.schema.json"
+      ],
+      "depends_on": [
+        "DUR-003",
+        "EGF-002"
+      ],
+      "existing_owners": [
+        "orchestration/workflows/*",
+        "runtime/capability_routing.py"
+      ],
+      "id": "EVO-001",
+      "outcome": "Bind workflow nodes to admitted capabilities with resumable snapshots, HITL/approval/retry/interrupt semantics.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Durable workflow adapter registry",
+      "wave": "W8"
+    },
+    {
+      "acceptance": [
+        "no dangling packaged reference",
+        "restricted material remains reference-only/clean-room"
+      ],
+      "candidate_new_owners": [
+        "runtime/skill_reference_graph.py"
+      ],
+      "depends_on": [
+        "MIG-005"
+      ],
+      "existing_owners": [
+        "runtime/skill_*",
+        "registry/*skill*"
+      ],
+      "id": "EVO-002",
+      "outcome": "Verify selective hydration references, licenses, hashes, transitive files and package consistency.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Skill/package reference graph + supply chain",
+      "wave": "W8"
+    },
+    {
+      "acceptance": [
+        "experiment assignment reproducible",
+        "promotion cannot bypass hard gates"
+      ],
+      "candidate_new_owners": [
+        "runtime/runtime_rollout.py",
+        "runtime/experiment_assignment.py",
+        "runtime/experiment_statistics.py",
+        "contracts/runtime-rollout-snapshot.schema.json"
+      ],
+      "depends_on": [
+        "EGF-006",
+        "ASSURE-005"
+      ],
+      "existing_owners": [
+        "runtime/evaluation_*",
+        "runtime/benchmark_*"
+      ],
+      "id": "EVO-003",
+      "outcome": "Deterministic cohorts, rollout snapshots, integrity/SRM checks, sequential rules and guarded promotion.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Immutable experiment/rollout substrate",
+      "wave": "W8"
+    },
+    {
+      "acceptance": [
+        "candidate cannot mutate in observe/inert modes",
+        "impact cone and verification plan required"
+      ],
+      "candidate_new_owners": [
+        "runtime/self_operations.py",
+        "contracts/self-ops-candidate.schema.json"
+      ],
+      "depends_on": [
+        "ASSURE-005",
+        "EVO-003"
+      ],
+      "existing_owners": [
+        "runtime/self_diagnostics.py",
+        "runtime/project_impact.py"
+      ],
+      "id": "EVO-004",
+      "outcome": "Diagnose -> candidate -> impact -> simulation with exact proposed effect set and rollback before live mutation.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Self-Ops candidate/simulation/impact cone",
+      "wave": "W8"
+    },
+    {
+      "acceptance": [
+        "rollback physically proven",
+        "same-state/no-gain loops stop",
+        "self-authority modification denied"
+      ],
+      "candidate_new_owners": [
+        "orchestration/workflows/self-operations-improvement.yaml"
+      ],
+      "depends_on": [
+        "EVO-004"
+      ],
+      "existing_owners": [
+        "runtime/operation_authority.py",
+        "runtime/verification_*"
+      ],
+      "id": "EVO-005",
+      "outcome": "One approval-gated mutation, independent maker/checker verification, behavioral comparison, promote/rollback and stop rules; recursion remains disabled until proven.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Self-Ops bounded mutation + independent verification",
+      "wave": "W8"
+    },
+    {
+      "acceptance": [
+        "output model identity references exact parent + transform config + tool version"
+      ],
+      "candidate_new_owners": [
+        "runtime/model_transformation.py",
+        "contracts/model-transformation-plan.schema.json"
+      ],
+      "depends_on": [
+        "DUR-006"
+      ],
+      "existing_owners": [
+        "runtime/model_attachment.py",
+        "models/*"
+      ],
+      "id": "CMP-001",
+      "outcome": "Represent transformations/quantization/conversion as lineage-bound plans/steps, not opaque new model files.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Model transformation lineage",
+      "wave": "W9"
+    },
+    {
+      "acceptance": [
+        "build success does not imply runtime eligibility",
+        "benchmarks include correctness/recovery"
+      ],
+      "candidate_new_owners": [
+        "runtime/model_optimization.py",
+        "runtime/model_compatibility.py",
+        "contracts/model-optimization-request.schema.json",
+        "contracts/execution-compatibility.schema.json"
+      ],
+      "depends_on": [
+        "CMP-001",
+        "EGF-006"
+      ],
+      "existing_owners": [
+        "runtime/execution_placement.py",
+        "runtime/hardware_routing.py"
+      ],
+      "id": "CMP-002",
+      "outcome": "Separate candidate optimization proposal from runtime qualification/compatibility on exact hardware/backend.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Optimization planner and execution compatibility",
+      "wave": "W9"
+    },
+    {
+      "acceptance": [
+        "PX can choose toolchain by task without loading external repo",
+        "provenance/version/compatibility recorded"
+      ],
+      "candidate_new_owners": [
+        "knowledge/hardware/amd_rocm/*",
+        "registry/amd_rocm_capabilities.json"
+      ],
+      "depends_on": [
+        "CMP-002"
+      ],
+      "existing_owners": [
+        "knowledge/nsai/*",
+        "runtime/external_capability*"
+      ],
+      "id": "CMP-003",
+      "outcome": "Absorb capability maps/skills/workflows/selection rules while keeping ROCm frameworks external behind thin adapters.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "AMD/ROCm dual-bucket capability shelf",
+      "wave": "W9"
+    },
+    {
+      "acceptance": [
+        "benchmark comparison uses frozen config/hardware",
+        "no analytical estimate promoted as proof"
+      ],
+      "candidate_new_owners": [
+        "runtime/optimization_experiment.py"
+      ],
+      "depends_on": [
+        "CMP-003",
+        "EVO-003"
+      ],
+      "existing_owners": [
+        "runtime/benchmark_*",
+        "runtime/execution_placement.py"
+      ],
+      "id": "CMP-004",
+      "outcome": "Use analytical estimates to narrow candidate kernels/routes/profiles, then benchmark and admit only measured winners.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Analytical narrowing + empirical benchmark loop",
+      "wave": "W9"
+    },
+    {
+      "acceptance": [
+        "UI restart cannot lose canonical job truth",
+        "unknown/degraded states displayed explicitly"
+      ],
+      "candidate_new_owners": [],
+      "depends_on": [
+        "EVO-005",
+        "CMP-004"
+      ],
+      "existing_owners": [
+        "extension/src/*",
+        "runtime/*projection*"
+      ],
+      "id": "UXG-001",
+      "outcome": "Agent Console/dashboard/sidebar project execution, memory, provider, containment, projection status and verification from canonical APIs only.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Canonical operator projections",
+      "wave": "W10"
+    },
+    {
+      "acceptance": [
+        "doc claim checks pass",
+        "moved files do not break semantic references"
+      ],
+      "candidate_new_owners": [
+        "docs/adr/*",
+        "GOVERNANCE.md",
+        "SUPPORT.md",
+        "ROADMAP.md"
+      ],
+      "depends_on": [
+        "UXG-001"
+      ],
+      "existing_owners": [
+        "docs/*",
+        "README.md"
+      ],
+      "id": "UXG-002",
+      "outcome": "Create v1 ADR set and GOV/SUPPORT/ROADMAP; docs bind semantic IDs and generated truth rather than path assumptions.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Semantic-ID ADR/docs/governance convergence",
+      "wave": "W10"
+    },
+    {
+      "acceptance": [
+        "no silent break of admitted public surface",
+        "retirement is replay-safe and evidenced"
+      ],
+      "candidate_new_owners": [
+        "registry/deprecations.json"
+      ],
+      "depends_on": [
+        "UXG-002"
+      ],
+      "existing_owners": [
+        "runtime/cli.py",
+        "extension/package.json"
+      ],
+      "id": "UXG-003",
+      "outcome": "Expose v1 changes with explicit compatibility aliases/deprecation windows; remove only after evidence-backed reachability shows no consumers.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Public/API compatibility and deprecation ledger",
+      "wave": "W10"
+    },
+    {
+      "acceptance": [
+        "one immutable candidate revision",
+        "all required projections current"
+      ],
+      "candidate_new_owners": [],
+      "depends_on": [
+        "UXG-003"
+      ],
+      "existing_owners": [
+        "runtime/release_artifacts.py"
+      ],
+      "id": "REL-001",
+      "outcome": "Stop feature mutation; bind source/product digest and all generation vectors.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Freeze final source revision",
+      "wave": "W11"
+    },
+    {
+      "acceptance": [
+        "pass2 byte-identical to pass1 for required outputs",
+        "no hidden unstaged source generation"
+      ],
+      "candidate_new_owners": [],
+      "depends_on": [
+        "REL-001"
+      ],
+      "existing_owners": [
+        "scripts/*",
+        "registry/projection_dependencies.json"
+      ],
+      "id": "REL-002",
+      "outcome": "Rebuild canonical generated state in registered order twice with no source mutation.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Two-pass generated-state fixed point",
+      "wave": "W11"
+    },
+    {
+      "acceptance": [
+        "all required profiles green or explicitly external-blocked by policy",
+        "no selective rerun used to erase failure"
+      ],
+      "candidate_new_owners": [],
+      "depends_on": [
+        "REL-002"
+      ],
+      "existing_owners": [
+        "tests/*",
+        "extension/tests/*"
+      ],
+      "id": "REL-003",
+      "outcome": "Run registered full Python/Node/static/security/structural profiles on the frozen revision.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Full source and extension validation",
+      "wave": "W11"
+    },
+    {
+      "acceptance": [
+        "tested artifact digest equals installed/package digest",
+        "rollback/uninstall works"
+      ],
+      "candidate_new_owners": [],
+      "depends_on": [
+        "REL-003"
+      ],
+      "existing_owners": [
+        "runtime/release_campaign.py",
+        "extension/scripts/*"
+      ],
+      "id": "REL-004",
+      "outcome": "Build exact artifacts, install in clean host, run operational/containment/recovery walks and verify exact bytes.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Exact package/install/installed-host proof",
+      "wave": "W11"
+    },
+    {
+      "acceptance": [
+        "certificate signature/digests valid",
+        "public asset verification binds exact published bytes",
+        "no unsupported platform claim"
+      ],
+      "candidate_new_owners": [],
+      "depends_on": [
+        "REL-004"
+      ],
+      "existing_owners": [
+        "runtime/release_certification.py",
+        "evidence/releases/*"
+      ],
+      "id": "REL-005",
+      "outcome": "Issue certificate only for exact proven bytes, publish separately, then independently fetch/install/verify public assets.",
+      "rollback": "Revert only this card's bounded changes and rebuild affected projections; retain evidence.",
+      "source_basis": "Unified convergence",
+      "title": "Certification, publication and independent verification",
+      "wave": "W11"
+    }
+  ],
+  "schema_version": "px.rev1xx-punch-cards/1.0"
+}

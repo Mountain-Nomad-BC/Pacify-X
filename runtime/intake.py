@@ -20,7 +20,7 @@ EXCLUDES = {
     "build",
     "dist",
     "__pycache__",
-    ".engineering-bootstrap",
+    ".agentic_engineering_os_px",
     "quarantine",
     "evidence",
     "planning",
@@ -154,7 +154,7 @@ def inspect_existing_project(
             "bounded validation profile",
         ],
         "minimal_patch_path": [
-            "add .engineering-bootstrap metadata",
+            "add .agentic_engineering_os_px metadata",
             "preserve existing owners",
             "install no tools",
         ],

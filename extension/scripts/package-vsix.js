@@ -10,7 +10,7 @@ const root = path.resolve(__dirname, '..');
 const pkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
 const packagedPkg = { ...pkg, main: './src/extension.bundle.js' };
 const output = path.join(root, 'dist', `${pkg.name}-${pkg.version}.vsix`);
-const issuedCustodyRoot = path.join(root, '..', '.engineering-bootstrap', 'quarantine', 'release-artifacts', 'vscode');
+const issuedCustodyRoot = path.join(root, '..', '.agentic_engineering_os_px', 'quarantine', 'release-artifacts', 'vscode');
 const issuedName = path.basename(output);
 if (fs.existsSync(output) || findIssuedArtifacts(issuedCustodyRoot, issuedName).length) {
   throw new Error(`Refusing to overwrite issued extension version ${pkg.version}; bump package.version before creating changed VSIX bytes.`);

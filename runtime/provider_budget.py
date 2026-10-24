@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
 from typing import Mapping
@@ -12,7 +13,10 @@ from typing import Mapping
 from .contracts import ContractValidationError, validate_instance
 from .file_lock import FileLock
 from .json_io import decode_json_object
-from .wal_transaction import JsonArtifact, JsonWal
+from .wal_transaction import (
+    JsonArtifact, JsonWal, WalIntegrityError,
+    _is_symlink_or_reparse, _reject_nominal_link_chain,
+)
 
 
 POLICY_PATH = Path("registry/provider_budget_policy.json")
@@ -111,13 +115,54 @@ class ProviderBudgetLedger:
 
     def __init__(self, engine_root: Path, root: Path, allowed_root: Path) -> None:
         self.engine_root = engine_root.resolve(strict=True)
+        if _is_symlink_or_reparse(allowed_root):
+            raise BudgetIntegrityError("provider budget allowed root is a link/reparse point")
         self.allowed_root = allowed_root.resolve(strict=True)
+        nominal = Path(os.path.abspath(root))
+        try:
+            _reject_nominal_link_chain(nominal, self.allowed_root, label="provider budget root")
+        except WalIntegrityError as error:
+            raise BudgetIntegrityError("provider budget root traverses a link/reparse point") from error
         self.root = root.resolve()
         try:
             self.root.relative_to(self.allowed_root)
         except ValueError as error:
             raise ValueError("provider budget root must be within allowed root") from error
+        self._directory_identities: dict[Path, tuple[int, int]] = {}
+        self._guard_control_path()
         self.wal = JsonWal(self.root / "wal", self.allowed_root)
+
+    def _guard_control_path(self) -> None:
+        """Revalidate live native budget custody before pre-WAL control writes.
+
+        Retained directory identities prevent a renamed/replaced state root
+        from silently becoming a fresh budget authority at the same pathname.
+        WAL retains responsibility for artifact CAS and transaction recovery.
+        """
+        try:
+            if _is_symlink_or_reparse(self.allowed_root):
+                raise BudgetIntegrityError("provider budget root identity is a link/reparse point")
+            current = self.allowed_root
+            directories = [current]
+            for part in self.root.relative_to(self.allowed_root).parts:
+                current /= part
+                directories.append(current)
+            _reject_nominal_link_chain(self.root / ".budget.lock", self.allowed_root, label="provider budget control")
+            for directory in directories:
+                if not directory.exists():
+                    if directory in self._directory_identities:
+                        raise BudgetIntegrityError("provider budget directory identity disappeared")
+                    continue
+                if not directory.is_dir():
+                    raise BudgetIntegrityError("provider budget control parent is not a directory")
+                info = directory.stat(follow_symlinks=False)
+                identity = (info.st_dev, info.st_ino)
+                retained = self._directory_identities.get(directory)
+                if retained is not None and retained != identity:
+                    raise BudgetIntegrityError("provider budget directory identity changed")
+                self._directory_identities[directory] = identity
+        except (OSError, WalIntegrityError) as error:
+            raise BudgetIntegrityError("provider budget control containment failed") from error
 
     @property
     def state_path(self) -> Path:
@@ -138,6 +183,7 @@ class ProviderBudgetLedger:
         return self._state_image()[0]
 
     def _state_image(self):
+        self._guard_control_path()
         raw = self.wal.read_source_image(self.state_path)
         if raw is None:
             return self._empty_state(), None
@@ -161,6 +207,7 @@ class ProviderBudgetLedger:
         return self._receipt_image(invocation_id, phase)[0]
 
     def _receipt_image(self, invocation_id: str, phase: str):
+        self._guard_control_path()
         if not _IDENTIFIER.fullmatch(invocation_id) or phase not in {'reserved', 'settled'}:
             raise ValueError('invalid receipt identity')
         path = self.root / "receipts" / f"{invocation_id}.{phase}.json"
@@ -235,8 +282,11 @@ class ProviderBudgetLedger:
         **request: object,
     ) -> dict[str, object]:
         """Reserve under the ledger lock so the read/decision/commit is serial."""
+        self._guard_control_path()
         self.root.mkdir(parents=True, exist_ok=True)
+        self._guard_control_path()
         with FileLock(self.root / ".budget.lock"):
+            self._guard_control_path()
             return self._reserve_locked(**request)
 
     def _reserve_locked(
@@ -419,8 +469,11 @@ class ProviderBudgetLedger:
         usage: ProviderUsage | None,
     ) -> dict[str, object]:
         """Settle under the same lock as reservations and other settlements."""
+        self._guard_control_path()
         self.root.mkdir(parents=True, exist_ok=True)
+        self._guard_control_path()
         with FileLock(self.root / ".budget.lock"):
+            self._guard_control_path()
             return self._settle_locked(invocation_id, outcome=outcome, usage=usage)
 
     def _settle_locked(

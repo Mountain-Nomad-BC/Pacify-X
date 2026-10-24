@@ -7,7 +7,7 @@
     "effect": "none-outside-webview",
     "acknowledgement": "active surface and focus update"
   },
-  "action_count": 206,
+  "action_count": 207,
   "actions": [
     {
       "action": "acceptStudioVersionSuggestion",
@@ -2787,6 +2787,25 @@
       "rendered_in": [
         "media/dashboard/48-graph-surface.js",
         "media/dashboard/90-controller.js"
+      ]
+    },
+    {
+      "action": "sandboxControl",
+      "mode": "host",
+      "inbound_schema": {
+        "type": "sandboxControl",
+        "fields": [
+          "mode",
+          "allowedEndpoints"
+        ]
+      },
+      "authority": "isolated agent sandbox controller",
+      "effect": "configuration-write",
+      "state_transition": "sandboxResult",
+      "acknowledgement": "sandboxResult",
+      "receipt": "shared sandbox mode value receipt",
+      "rendered_in": [
+        "media/dashboard/45-system-surfaces.js"
       ]
     },
     {

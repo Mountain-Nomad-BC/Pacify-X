@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:semantic:locator-record",
+  "title": "PX Semantic Locator Record",
+  "description": "Binds a canonical entity_id to where that entity currently lives. A locator is the ONLY place a filesystem location appears in the semantic model. Editing a path therefore changes this record and nothing else: the entity_id is untouched, which is what makes identity survive rename and move.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "locator_id",
+    "entity_id",
+    "locator_kind",
+    "location",
+    "revision"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "px.semantic-locator/2.0"
+    },
+    "locator_id": {
+      "type": "string",
+      "pattern": "^pxl1:[0-9a-f]{32}$",
+      "description": "Binding identity for canonical entity, locator kind, full location geometry and monotonic revision; changing location cannot change entity identity or recycle an old locator revision."
+    },
+    "entity_id": {
+      "type": "string",
+      "pattern": "^pxe1:[0-9a-f]{32}$",
+      "description": "The canonical entity this locator points at."
+    },
+    "locator_kind": {
+      "type": "string",
+      "enum": [
+        "file",
+        "directory",
+        "line_range",
+        "symbol",
+        "uri",
+        "external"
+      ]
+    },
+    "location": {
+      "type": "object",
+      "description": "Where the entity is now. Mutable without consequence to identity.",
+      "additionalProperties": false,
+      "required": [
+        "reference"
+      ],
+      "properties": {
+        "reference": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[\\s\\S]{1,1024}$",
+          "description": "Repository-relative path, URI or external handle."
+        },
+        "line_start": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "line_end": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "symbol": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[\\s\\S]{0,400}$"
+        }
+      }
+    },
+    "observed_utc": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "observed_by": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[\\s\\S]{0,200}$"
+    },
+    "confidence": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 2147483647
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "locator_kind": {
+            "const": "line_range"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "location": {
+            "required": [
+              "line_start",
+              "line_end"
+            ],
+            "properties": {
+              "line_start": {
+                "type": "integer"
+              },
+              "line_end": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

@@ -71,7 +71,7 @@ _GENERATED_DIRECTORY_NAMES = {
     "build",
     "dist",
 }
-_QUARANTINE_PREFIX = (".engineering-bootstrap", "quarantine")
+_QUARANTINE_PREFIX = (".agentic_engineering_os_px", "quarantine")
 
 
 def _release_audit_walk(root: Path):
@@ -386,7 +386,7 @@ def audit_framework(
     )
     source_tree = (root / "pyproject.toml").is_file()
     management_present = (root / "PROJECT_MANAGEMENT.md").is_file() and (
-        root / ".engineering-bootstrap/project-management/state.json"
+        root / ".agentic_engineering_os_px/project-management/state.json"
     ).is_file()
     check(
         "project-management",
@@ -396,7 +396,7 @@ def audit_framework(
         else "installed data root: build-time management state is intentionally excluded",
         [
             "PROJECT_MANAGEMENT.md",
-            ".engineering-bootstrap/project-management/state.json",
+            ".agentic_engineering_os_px/project-management/state.json",
         ]
         if source_tree
         else [],

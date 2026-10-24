@@ -41,17 +41,17 @@ const HOST_PROGRESS_STAGES = new Set(['child-started', 'cache-ready', 'executabl
 const ENGINE_COPY_EXCLUDED_ROOTS = new Set(['.git', '.tmp', '.vscode', '.pytest_cache', '.mypy_cache', '.ruff_cache', '.venv', '.venv-certify', 'venv', 'node_modules', 'Python', 'evidence', '.quarantine']);
 const ENGINE_COPY_EXCLUDED_PATHS = new Set([
   'extension/node_modules', 'extension/dist',
-  '.engineering-bootstrap/diagnostics', '.engineering-bootstrap/test-evidence',
-  '.engineering-bootstrap/focused-temp', '.engineering-bootstrap/quarantine',
-  '.engineering-bootstrap/resource-lifecycle', '.engineering-bootstrap/operation-bus',
-  '.engineering-bootstrap/project-map', '.engineering-bootstrap/project-map-history',
-  '.engineering-bootstrap/project-map-history-archives',
+  '.agentic_engineering_os_px/diagnostics', '.agentic_engineering_os_px/test-evidence',
+  '.agentic_engineering_os_px/focused-temp', '.agentic_engineering_os_px/quarantine',
+  '.agentic_engineering_os_px/resource-lifecycle', '.agentic_engineering_os_px/operation-bus',
+  '.agentic_engineering_os_px/project-map', '.agentic_engineering_os_px/project-map-history',
+  '.agentic_engineering_os_px/project-map-history-archives',
   // These directories are live process-coordination state, not engine source.
   // Copying one while an owner.json atomic publication is in flight can leave
   // the disposable engine with an ownerless lock that no process can reclaim.
-  '.engineering-bootstrap/runtime-core/locks',
-  '.engineering-bootstrap/runtime-core/pools',
-  '.engineering-bootstrap/runtime-core/orphaned-locks'
+  '.agentic_engineering_os_px/runtime-core/locks',
+  '.agentic_engineering_os_px/runtime-core/pools',
+  '.agentic_engineering_os_px/runtime-core/orphaned-locks'
 ]);
 const REQUIRED_ENGINE_FILES = ['runtime/cli.py', 'registry/engine_identity.json'];
 
@@ -585,7 +585,7 @@ async function childMain(configPath) {
         vscode_pid: lifecycle.vscode_pid,
         ownership_token: config.userData
       }, null, 2)}\n`, { encoding: 'utf8', flag: 'wx' });
-      nativeInputHelper = childProcess.spawn('python', [nativeInputHelperPath, '--serve', helperConfig, `--px-owned-token=${config.userData}`], {
+      nativeInputHelper = childProcess.spawn(config.pythonPath || resolveOwnedPython(path.join(extensionRoot, '..')), [nativeInputHelperPath, '--serve', helperConfig, `--px-owned-token=${config.userData}`], {
         cwd: extensionRoot, shell: false, windowsHide: true, stdio: ['ignore', 'pipe', 'pipe'], env: nonBillableEnvironment()
       });
       lifecycle.native_input_helper_pid = Number(nativeInputHelper.pid) || null;

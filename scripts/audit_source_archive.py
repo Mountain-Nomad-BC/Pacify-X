@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
+import io
 from collections.abc import Callable, Sequence
 import json
 from pathlib import Path, PurePosixPath
@@ -10,6 +12,7 @@ import shutil
 import sys
 import tarfile
 import tempfile
+import time
 from typing import Any
 from uuid import uuid4
 
@@ -23,7 +26,7 @@ from runtime.resource_lifecycle import ResourceManager
 # The authoritative source tree has grown well past the 262.5 MiB baseline this
 # bound was originally measured against: the tracked tree is currently ~755 MiB
 # uncompressed across ~9.1k files, dominated by generated projections under
-# .engineering-bootstrap/project-map/ and docs/architecture/. Those projections
+# .agentic_engineering_os_px/project-map/ and docs/architecture/. Those projections
 # expand alongside the runtime and are planned to grow again, so this ceiling is
 # set with wide headroom to stop recurring mid-campaign re-certifications.
 # It remains a real guard: the forbidden-member and required-member audits below
@@ -47,12 +50,13 @@ def _forbidden(relative: str) -> bool:
             (".px", "preserved-extension-installations"),
             (".px", "preserved-skills"),
         }
-        or parts[:2] == (".engineering-bootstrap", "coordination")
+        or parts[:2] == (".agentic_engineering_os_px", "coordination")
     )
 
 
 def _inspect_archive(
-    archive_path: Path, *, revision: str, worktree_attributes: bool
+    archive_path: Path, *, revision: str, worktree_attributes: bool,
+    current_manifest: dict[str, str] | None = None,
 ) -> dict[str, Any]:
     members: list[str] = []
     forbidden: list[str] = []
@@ -70,13 +74,24 @@ def _inspect_archive(
     try:
         with tarfile.open(archive_path, mode="r:*") as archive:
             for member in archive:
+                if current_manifest is not None:
+                    if not member.isfile() or member.name in members or member.name not in current_manifest:
+                        raise ValueError("current archive has an unexpected or duplicate member")
+                    image = archive.extractfile(member)
+                    if image is None:
+                        raise ValueError("current archive member cannot be read")
+                    measured = hashlib.sha256()
+                    for block in iter(lambda: image.read(1024 * 1024), b""):
+                        measured.update(block)
+                    if measured.hexdigest() != current_manifest[member.name]:
+                        raise ValueError("current archive member hash differs from captured source")
                 if not member.isfile():
                     continue
                 members.append(member.name)
                 total_bytes += member.size
                 if _forbidden(member.name):
                     forbidden.append(member.name)
-    except tarfile.TarError as error:
+    except (tarfile.TarError, ValueError) as error:
         return {
             "schema_version": "px.source-archive-audit/1.0",
             "valid": False,
@@ -94,8 +109,13 @@ def _inspect_archive(
         "pyproject.toml",
         "runtime/cli.py",
         "runtime/operational_gap_ledger.py",
-        ".engineering-bootstrap/project-registry.json",
+        ".agentic_engineering_os_px/project-registry.json",
     }
+    if current_manifest is not None:
+        required.remove(".agentic_engineering_os_px/project-registry.json")
+        required.add("policies/rev1xx-validation.json")
+        if set(members) != set(current_manifest):
+            errors.append("current archive inventory differs from captured source")
     missing = sorted(required - set(members))
     if missing:
         errors.append("archive is missing required bootstrap authority")
@@ -115,6 +135,52 @@ def _inspect_archive(
     }
 
 
+def _audit_current_source(root: Path, archive_path: Path, timeout_seconds: float) -> dict[str, Any]:
+    """Measure preserved current files; Git acceptance remains explicitly deferred."""
+    from runtime.archive_io import reject_path_links
+    from runtime.plan_registry import _planning_object, _require_current_campaign
+    from runtime.source_boundary import authored_paths
+
+    _require_current_campaign(_planning_object(root / "policies/rev1xx-validation.json"))
+    started = time.monotonic()
+    paths = authored_paths(root)
+    manifest: dict[str, str] = {}
+    total = 0
+    with tarfile.open(archive_path, "x") as archive:
+        for relative in paths:
+            if time.monotonic() - started > timeout_seconds:
+                raise ValueError("current archive capture exceeded its deadline")
+            path = root / relative
+            reject_path_links(path)
+            size = path.stat().st_size
+            total += size
+            if size > 128 * 1024**2 or total > MAX_SOURCE_ARCHIVE_BYTES:
+                raise ValueError("current archive source exceeds its byte bound")
+            data = path.read_bytes()
+            if len(data) != size:
+                raise ValueError("current archive source changed during capture")
+            manifest[relative] = hashlib.sha256(data).hexdigest()
+            member = tarfile.TarInfo(relative)
+            member.size = len(data)
+            member.mode = 0o644
+            archive.addfile(member, io.BytesIO(data))
+    if authored_paths(root) != paths:
+        raise ValueError("current source inventory changed during capture")
+    for relative, expected in manifest.items():
+        if time.monotonic() - started > timeout_seconds:
+            raise ValueError("current archive verification exceeded its deadline")
+        path = root / relative
+        reject_path_links(path)
+        if path.stat().st_size > 128 * 1024**2 or hashlib.sha256(path.read_bytes()).hexdigest() != expected:
+            raise ValueError("current source bytes changed during capture")
+    result = _inspect_archive(archive_path, revision="current-preserved-source",
+                              worktree_attributes=False, current_manifest=manifest)
+    result.update(validation_basis="current_implementation", historical_prerequisites=False,
+                  source_manifest_sha256=hashlib.sha256(json.dumps(manifest, sort_keys=True).encode()).hexdigest(),
+                  git_acceptance={"status":"explicitly_deferred_by_owner", "satisfied":False})
+    return result
+
+
 def audit_source_archive(
     root: Path,
     *,
@@ -131,7 +197,7 @@ def audit_source_archive(
     if timeout_seconds <= 0:
         raise ValueError("archive timeout must be positive")
     manager = resource_manager or ResourceManager(
-        root / ".engineering-bootstrap" / "resource-lifecycle" / "ledger.json"
+        root / ".agentic_engineering_os_px" / "resource-lifecycle" / "ledger.json"
     )
     allowed_cleanup_root = (cleanup_root or Path(tempfile.gettempdir())).resolve(
         strict=True
@@ -149,7 +215,13 @@ def audit_source_archive(
     archive_path = workspace_path / "source.tar"
     payload: dict[str, Any]
     try:
-        if command_builder is None:
+        if command_builder is None and (root / "policies/rev1xx-validation.json").exists():
+            try:
+                payload = _audit_current_source(root, archive_path, timeout_seconds)
+            except (OSError, ValueError, RuntimeError) as error:
+                payload = {"schema_version":"px.source-archive-audit/1.0", "valid":False,
+                           "validation_basis":"current_implementation", "errors":[str(error)]}
+        elif command_builder is None:
             git = shutil.which("git")
             if git is None:
                 payload = {

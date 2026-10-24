@@ -48,7 +48,7 @@ def fixture(tmp_path: Path, step: str) -> Config:
         ),
         encoding="utf-8",
     )
-    state_dir = tmp_path / ".engineering-bootstrap/processing-order"
+    state_dir = tmp_path / ".agentic_engineering_os_px/processing-order"
     state_dir.mkdir(parents=True)
     before = {
         "archive_clear": "repair_frozen",
@@ -170,7 +170,7 @@ def test_plan_is_effect_free_and_check_rejects_wrong_phase(tmp_path: Path) -> No
         path.relative_to(tmp_path).as_posix() for path in tmp_path.rglob("*")
     )
     assert after == before
-    repair = tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    repair = tmp_path / ".agentic_engineering_os_px/processing-order/repair-campaign.json"
     value = json.loads(repair.read_text(encoding="utf-8"))
     value["phase"] = "installed"
     repair.write_text(json.dumps(value), encoding="utf-8")
@@ -208,7 +208,7 @@ def test_identity_check_rejects_wrong_candidate_manifest(
 
 def test_archive_check_allows_one_unused_cleared_predecessor(tmp_path: Path) -> None:
     config = fixture(tmp_path, "archive_clear")
-    state = tmp_path / ".engineering-bootstrap/processing-order/release-identity.json"
+    state = tmp_path / ".agentic_engineering_os_px/processing-order/release-identity.json"
     state.write_text(
         json.dumps(
             {
@@ -236,7 +236,7 @@ def test_archive_check_allows_one_unused_cleared_predecessor(tmp_path: Path) -> 
         encoding="utf-8",
     )
     assert check(config, "archive_clear")["valid"] is True
-    repair = tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    repair = tmp_path / ".agentic_engineering_os_px/processing-order/repair-campaign.json"
     repair_value = json.loads(repair.read_text(encoding="utf-8"))
     repair_value["phase"] = "revision_reconciled"
     repair.write_text(json.dumps(repair_value), encoding="utf-8")
@@ -247,7 +247,7 @@ def test_owner_binds_non_archive_steps_to_current_repair_campaign(
     tmp_path: Path,
 ) -> None:
     config = fixture(tmp_path, "reconcile")
-    state_dir = tmp_path / ".engineering-bootstrap/processing-order"
+    state_dir = tmp_path / ".agentic_engineering_os_px/processing-order"
     repair_path = state_dir / "repair-campaign.json"
     release_path = state_dir / "release-identity.json"
     repair = json.loads(repair_path.read_text(encoding="utf-8"))
@@ -266,7 +266,7 @@ def test_archive_check_rejects_unmarked_chained_preidentity_predecessor(
     tmp_path: Path,
 ) -> None:
     config = fixture(tmp_path, "archive_clear")
-    state = tmp_path / ".engineering-bootstrap/processing-order/release-identity.json"
+    state = tmp_path / ".agentic_engineering_os_px/processing-order/release-identity.json"
     value = json.loads(state.read_text(encoding="utf-8"))
     value.update(
         schema_version="px.release-campaign/1.0",
@@ -310,7 +310,7 @@ def test_execute_failure_marks_exact_current_preidentity_candidate(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, step: str
 ) -> None:
     config = fixture(tmp_path, step)
-    state = tmp_path / ".engineering-bootstrap/processing-order/release-identity.json"
+    state = tmp_path / ".agentic_engineering_os_px/processing-order/release-identity.json"
     value = json.loads(state.read_text(encoding="utf-8"))
     value.update(
         schema_version="px.release-campaign/1.0",
@@ -352,11 +352,11 @@ def test_archive_check_allows_one_unused_invalid_identity_predecessor(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     config = fixture(tmp_path, "archive_clear")
-    repair = tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    repair = tmp_path / ".agentic_engineering_os_px/processing-order/repair-campaign.json"
     repair_value = json.loads(repair.read_text(encoding="utf-8"))
     repair_value["phase"] = "revision_reconciled"
     repair.write_text(json.dumps(repair_value), encoding="utf-8")
-    state = tmp_path / ".engineering-bootstrap/processing-order/release-identity.json"
+    state = tmp_path / ".agentic_engineering_os_px/processing-order/release-identity.json"
     state.write_text(
         json.dumps(
             {
@@ -395,7 +395,7 @@ def test_archive_check_allows_exact_phase_source_invalid_retained_prefix(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     config = fixture(tmp_path, "archive_clear")
-    state_dir = tmp_path / ".engineering-bootstrap/processing-order"
+    state_dir = tmp_path / ".agentic_engineering_os_px/processing-order"
     repair = state_dir / "repair-campaign.json"
     repair_value = json.loads(repair.read_text(encoding="utf-8"))
     repair_value["phase"] = "repair_frozen"
@@ -451,11 +451,11 @@ def test_archive_effect_routes_unused_invalid_identity_to_canonical_successor(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     config = fixture(tmp_path, "archive_clear")
-    repair = tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    repair = tmp_path / ".agentic_engineering_os_px/processing-order/repair-campaign.json"
     repair_value = json.loads(repair.read_text(encoding="utf-8"))
     repair_value["phase"] = "revision_reconciled"
     repair.write_text(json.dumps(repair_value), encoding="utf-8")
-    state = tmp_path / ".engineering-bootstrap/processing-order/release-identity.json"
+    state = tmp_path / ".agentic_engineering_os_px/processing-order/release-identity.json"
     value = json.loads(state.read_text(encoding="utf-8"))
     value.update(
         state="active",
@@ -506,7 +506,7 @@ def test_archive_effect_routes_retained_passes_to_active_supersession(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     config = fixture(tmp_path, "archive_clear")
-    state_dir = tmp_path / ".engineering-bootstrap/processing-order"
+    state_dir = tmp_path / ".agentic_engineering_os_px/processing-order"
     repair = state_dir / "repair-campaign.json"
     repair_value = json.loads(repair.read_text(encoding="utf-8"))
     repair_value["phase"] = "installed_operational"
@@ -559,11 +559,11 @@ def test_archive_check_allows_failed_stage_at_its_exact_repair_phase(
     tmp_path: Path,
 ) -> None:
     config = fixture(tmp_path, "archive_clear")
-    repair = tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    repair = tmp_path / ".agentic_engineering_os_px/processing-order/repair-campaign.json"
     repair_value = json.loads(repair.read_text(encoding="utf-8"))
     repair_value["phase"] = "revision_reconciled"
     repair.write_text(json.dumps(repair_value), encoding="utf-8")
-    state = tmp_path / ".engineering-bootstrap/processing-order/release-identity.json"
+    state = tmp_path / ".agentic_engineering_os_px/processing-order/release-identity.json"
     state.write_text(
         json.dumps(
             {
@@ -598,7 +598,7 @@ def test_archive_effect_rewinds_failed_stage_before_canonical_successor(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     config = fixture(tmp_path, "archive_clear")
-    repair = tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    repair = tmp_path / ".agentic_engineering_os_px/processing-order/repair-campaign.json"
     repair_value = json.loads(repair.read_text(encoding="utf-8"))
     repair_value["phase"] = "revision_reconciled"
     repair.write_text(json.dumps(repair_value), encoding="utf-8")
@@ -623,7 +623,7 @@ def test_child_resource_postcondition_allows_only_exact_supervised_self(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     config = fixture(tmp_path, "archive_clear")
-    ledger = tmp_path / ".engineering-bootstrap/resource-lifecycle/ledger.json"
+    ledger = tmp_path / ".agentic_engineering_os_px/resource-lifecycle/ledger.json"
     ledger.parent.mkdir(parents=True, exist_ok=True)
     ledger.write_text(
         json.dumps(

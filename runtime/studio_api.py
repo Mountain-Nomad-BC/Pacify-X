@@ -432,7 +432,7 @@ def _request(value: object) -> dict:
 def _skill_promotion_receipt_path(root: Path, skill_id: str, version: str) -> Path:
     return (
         root
-        / ".engineering-bootstrap"
+        / ".agentic_engineering_os_px"
         / "studios"
         / "skills"
         / _component(skill_id)
@@ -906,8 +906,31 @@ READ_ONLY_STUDIO_OPERATIONS = frozenset(
         "preview",
         "next-version",
         "identity-absence",
+        "resolve-plan-owner",
+        "check-host-run",
     }
 )
+
+
+def _host_gremlin_composition(root: Path):
+    """Load the commissioned Gremlin runtime for the model-group host caller.
+
+    This is the selected production host composition entry: when the project's
+    signed Gremlin host configuration and the host's independent recovery
+    verifier are both present, the Studio workflow host is constructed with the
+    commissioned composition so supervisor pre-release enrollment is real.
+    Absent either, the host starts without containment and the model-group
+    adapter fails closed on the canonical ContainmentRequired boundary.
+    """
+    from .gremlin.host_configuration import (
+        CONFIGURATION_RELATIVE,
+        load_configured_gremlin_runtime,
+        resolve_recovery_verifier_from_environment,
+    )
+    verifier = resolve_recovery_verifier_from_environment()
+    if verifier is None or not (root / CONFIGURATION_RELATIVE).is_file():
+        return None
+    return load_configured_gremlin_runtime(root, recovery_verifier=verifier)
 
 
 def _approval_payload(value: Mapping[str, Any]) -> dict[str, Any]:
@@ -926,6 +949,11 @@ def studio_operation(
     operation = _text(operation, 64)
     require_studio_operation(kind, operation)
     value = dict(value)
+    foundry_intake = kind == "skill" and operation == "intake-foundry-candidate"
+    if foundry_intake:
+        StudioAuthorityStore.open_existing(root.resolve(strict=True))
+        if set(value) != {"candidate", "retained_publication", "studio_decision", "decision_reason", "approval_capability"}:
+            raise ValueError("exact signed Foundry intake request fields required")
     if kind == "agent":
         _require_standard_agent_domain(value)
     if operation == "identity-absence":
@@ -983,9 +1011,9 @@ def studio_operation(
                 "payload-bound single-use operation approval is required"
             )
         supplied_payload = _approval_payload(value)
-        approval = StudioAuthorityStore(
-            root.resolve(strict=True)
-        ).consume_host_operation_approval(
+        authority = (StudioAuthorityStore.open_existing(root.resolve(strict=True))
+                     if foundry_intake else StudioAuthorityStore(root.resolve(strict=True)))
+        approval = authority.consume_host_operation_approval(
             proof,
             kind=kind,
             operation=operation,
@@ -1164,10 +1192,13 @@ def studio_operation(
             raise ValueError("source admission is only valid for Skill Studio")
         return admit_skill_source(root, value)
     if kind == "agent":
+        if operation == "check-host-run":
+            spec, _ = _agent(value)
+            return AgentRuntimeController.assert_host_run_current(root, spec, run_id=_text(value.get("run_id") or ""), task=dict(value.get("task", {})))
         if operation in {"runs", "status"}:
             run_root = (
                 root.resolve(strict=True)
-                / ".engineering-bootstrap/studios/agents/sessions"
+                / ".agentic_engineering_os_px/studios/agents/sessions"
             )
             if operation == "runs" and not run_root.is_dir():
                 return {
@@ -1267,7 +1298,7 @@ def studio_operation(
         if operation in {"runs", "status"}:
             run_root = (
                 root.resolve(strict=True)
-                / ".engineering-bootstrap/studios/workflows/sessions"
+                / ".agentic_engineering_os_px/studios/workflows/sessions"
             )
             if operation == "runs" and not run_root.is_dir():
                 return {
@@ -1290,7 +1321,7 @@ def studio_operation(
                 if operation == "runs"
                 else control.read_snapshot(_text(value.get("run_id") or ""))
             )
-        studio = WorkflowStudio(root)
+        studio = WorkflowStudio(root, gremlin_runtime=_host_gremlin_composition(root))
         if operation in {"pause", "cancel", "stop"}:
             return studio.request_lifecycle(
                 _text(value.get("run_id") or ""),
@@ -1304,6 +1335,17 @@ def studio_operation(
                 approved_by=_text(value.get("approved_by") or ""),
                 stale_after_seconds=_number(value.get("stale_after_seconds", 60.0)),
             )
+        if operation == "resolve-plan-owner":
+            reference = value.get("prepared_group_reference")
+            if not isinstance(reference, Mapping):
+                raise ValueError("prepared-group owner resolution requires its exact reference")
+            return studio.resolve_prepared_group_owner(reference)
+        if operation == "execute-plan-owner":
+            reference = value.get("prepared_group_reference")
+            if not isinstance(reference, Mapping):
+                raise ValueError("prepared-group execution requires its exact reference")
+            return studio.execute_prepared_group_node(
+                reference, approved_by=_text(value.get("approved_by") or ""))
         definition = _workflow(value)
         if operation == "register-authority":
             bindings, grants = _authority(value)
@@ -1365,6 +1407,21 @@ def studio_operation(
                 approval=_boolean(value.get("approved", False)),
             )
     elif kind == "skill":
+        if foundry_intake:
+            if set(value) != {"candidate", "retained_publication", "studio_decision", "decision_reason", "approved", "approved_by"}:
+                raise ValueError("exact approved Foundry intake payload required")
+            from .knowledge_foundry import foundry_candidate_from_mapping, validate_retained_foundry_candidate
+            candidate = foundry_candidate_from_mapping(value["candidate"])
+            reference = _object(value["retained_publication"])
+            candidate = validate_retained_foundry_candidate(root,candidate,reference)
+            decision = _text(value["studio_decision"],32)
+            reason = _text(value["decision_reason"],4096)
+            if decision not in {"accept", "reject"} or not reason.strip():
+                raise ValueError("explicit bounded Foundry intake decision required")
+            studio = SkillStudio(root)
+            return asdict(studio.intake_foundry_candidate(candidate,studio_decision=decision,
+                decided_by=_text(value["approved_by"],512),decision_reason=reason,
+                retained_publication=reference))
         studio = SkillStudio(root)
         if operation == "rollback":
             supplied = Path(_text(value.get("promotion_receipt") or ""))
@@ -1372,7 +1429,7 @@ def studio_operation(
             resolved = receipt.resolve(strict=True)
             try:
                 resolved.relative_to(
-                    (root / ".engineering-bootstrap" / "studios" / "skills").resolve(
+                    (root / ".agentic_engineering_os_px" / "studios" / "skills").resolve(
                         strict=True
                     )
                 )

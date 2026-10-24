@@ -27,11 +27,14 @@ class SemanticIntegrationService:
     capabilities remain unavailable until their modules are actually installed.
     """
 
-    def __init__(self, *, limits: SemanticIntegrationLimits = SemanticIntegrationLimits()):
+    def __init__(self, *, limits: SemanticIntegrationLimits = SemanticIntegrationLimits(), semantic_map_provider=None):
         self.limits = limits
         self.catalog = SemanticProjectCatalog(limits=limits)
         self.cross_project = CrossProjectSemanticService(self.catalog, limits=limits)
         self._orchestrator: object | None = None
+        if semantic_map_provider is not None and not callable(semantic_map_provider):
+            raise TypeError("semantic_map_provider must be callable")
+        self.semantic_map_provider = semantic_map_provider
 
     def register_project(
         self,
@@ -66,7 +69,7 @@ class SemanticIntegrationService:
                     ) from exc
                 raise
             self._orchestrator = module.SemanticReadOrchestrator(
-                self.cross_project, limits=self.limits
+                self.cross_project, limits=self.limits, semantic_map_provider=self.semantic_map_provider
             )
         return self._orchestrator
 
@@ -78,6 +81,7 @@ class SemanticIntegrationService:
         *,
         include_project_map: bool = True,
         max_results: int = 8,
+        tie_subjects: tuple[dict[str, str], ...] = (),
     ) -> dict[str, object]:
         """Run the fused semantic read once the Wave-4 orchestrator is installed."""
         return self._wave4_orchestrator().query(
@@ -86,6 +90,7 @@ class SemanticIntegrationService:
             query,
             include_project_map=include_project_map,
             max_results=max_results,
+            tie_subjects=tie_subjects,
         )
 
     def local_model_context(
@@ -123,6 +128,29 @@ class SemanticIntegrationService:
 
     def inventory(self) -> dict[str, object]:
         return integration_inventory()
+
+    def plan_remap(self, auth, project_id, requests, *, allowed_roots, max_windows_path=240):
+        from .semantic_authorization import require_authorized
+        from .semantic_entity import EntityRegistry
+        from .semantic_locator import LocatorRegistry
+        from .semantic_migration import plan_remap
+        from .librarian_semantic_map import load_semantic_map, SemanticMap
+        require_authorized(auth, project_id, "semantic.remap.plan")
+        root = Path(self.catalog.get(project_id).root)
+        owner = self.semantic_map_provider(project_id, root) if self.semantic_map_provider else load_semantic_map(root)
+        if type(owner) is not SemanticMap:
+            raise TypeError("remap requires the canonical semantic map owner")
+        owner.assert_current()
+        entities = EntityRegistry.from_snapshot_bytes(owner.entity_snapshot_bytes)
+        locators = LocatorRegistry.from_snapshot_bytes(entities, owner.locator_snapshot_bytes())
+        return plan_remap(root, entities, locators, requests, compact_addresses=owner.compact_addresses,
+                          allowed_roots=allowed_roots, max_windows_path=max_windows_path)
+
+    def compile_remap(self, auth, project_id, proposal):
+        from .semantic_authorization import require_authorized
+        from .semantic_migration import compile_remap
+        require_authorized(auth, project_id, "semantic.remap.compile")
+        return compile_remap(Path(self.catalog.get(project_id).root), proposal)
 
     def close(self) -> None:
         self.cross_project.close()

@@ -34,6 +34,7 @@ from runtime.usage_memory import (  # noqa: E402
     KIND_ROOT,
     ensure_subject_memory,
     list_subjects_with_memory,
+    subject_memory_directory,
 )
 
 
@@ -97,10 +98,9 @@ def bootstrap(root: Path, *, apply: bool) -> dict:
         if apply:
             base.mkdir(parents=True, exist_ok=True)
         for subject_id in subjects:
-            subject_root = base / subject_id
             if apply:
-                subject_root.mkdir(parents=True, exist_ok=True)
-                (subject_root / "memory").mkdir(parents=True, exist_ok=True)
+                if kind != "agent":
+                    (base / subject_id).mkdir(parents=True, exist_ok=True)
                 try:
                     ensure_subject_memory(root, kind, subject_id)
                 except ValueError:
@@ -108,7 +108,7 @@ def bootstrap(root: Path, *, apply: bool) -> dict:
                     continue
                 created.append(subject_id)
             else:
-                if (subject_root / "memory" / "usage.jsonl").is_file():
+                if (subject_memory_directory(root, kind, subject_id) / "usage.jsonl").is_file():
                     created.append(subject_id)
                 else:
                     skipped.append(subject_id)
@@ -133,6 +133,11 @@ def main() -> int:
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
     report = bootstrap(args.root, apply=args.apply and not args.check)
+    if report["valid"]:
+        from runtime.yaml_subject_files import ensure_yaml_subject_files
+
+        report["yaml_subject_files"] = ensure_yaml_subject_files(args.root, apply=args.apply and not args.check)
+        report["valid"] = bool(report["yaml_subject_files"]["valid"])
     print(json.dumps(report, indent=2))
     return 0 if report["valid"] else 1
 

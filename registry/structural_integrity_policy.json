@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "policy_version": "1.0.0",
-  "active_release_files": ["README.md", "START_HERE_FOR_AI.md", "PROJECT_BLUEPRINT.md", "ARCHITECTURE_GOVERNANCE_AND_RISK.md", "EXECUTION_PLAN_PUNCH_CARDS_AND_ACCEPTANCE.md", "pyproject.toml", "runtime/cli.py", "runtime/project_management.py", "runtime/release_certification.py", "runtime/version.py", "PROJECT_MANAGEMENT.md", ".engineering-bootstrap/project-management/state.json"],
+  "active_release_files": ["README.md", "START_HERE_FOR_AI.md", "PROJECT_BLUEPRINT.md", "ARCHITECTURE_GOVERNANCE_AND_RISK.md", "EXECUTION_PLAN_PUNCH_CARDS_AND_ACCEPTANCE.md", "pyproject.toml", "runtime/cli.py", "runtime/project_management.py", "runtime/release_certification.py", "runtime/version.py", "PROJECT_MANAGEMENT.md", ".agentic_engineering_os_px/project-management/state.json"],
   "duplicate_classes": [
     {"id": "empty-package-markers", "rationale": "Empty package markers intentionally expose separate Python namespaces."},
     {"id": "generated-domain-tool-projections", "rationale": "Portable skill projections are generated and byte-reconciled to one canonical owner."},

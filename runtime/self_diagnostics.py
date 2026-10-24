@@ -363,6 +363,38 @@ def diagnose(
     )
 
 
+def propose_optimization_experiment(diagnosis: Diagnosis, *, experiment_id: str,
+                                    operation: str = "induce-theory",
+                                    payload: Mapping[str, Any] | None = None,
+                                    held_out: tuple[Mapping[str, Any], ...] = (),
+                                    threshold: float = 0.5,
+                                    baseline: Mapping[str, Any] | None = None) -> dict[str, object]:
+    """Bridge an OPTIMIZATION_OPPORTUNITY diagnosis to the evolution experiment owner.
+
+    Self Operations never mutates. When a condition is "working but improvable" the
+    coordinator's own remediation is "measure first; only then consider a candidate
+    through the experiment owner" — this is that handoff. A non-optimization
+    disposition is refused rather than silently turned into an experiment.
+    """
+    if type(diagnosis) is not Diagnosis:
+        raise TypeError("optimization proposal requires a typed diagnosis")
+    if diagnosis.classification.disposition != "OPTIMIZATION_OPPORTUNITY":
+        raise ValueError(
+            "only OPTIMIZATION_OPPORTUNITY conditions may become experiments, not "
+            + diagnosis.classification.disposition
+        )
+    from .metacognitive_evolution.runner import Experiment, run_experiment
+    experiment = Experiment(
+        experiment_id=experiment_id,
+        operation=operation,
+        payload=dict(payload or {"records": [], "scope": diagnosis.scope}),
+        held_out=tuple(held_out),
+        threshold=threshold,
+        baseline=dict(baseline) if baseline is not None else None,
+    )
+    return run_experiment(experiment)
+
+
 def select_specialist(
     root: Path, disposition: str, *, owner_id: str | None = None
 ) -> dict[str, object]:

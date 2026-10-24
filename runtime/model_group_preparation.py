@@ -1,0 +1,254 @@
+"""Exact, descriptive member preparation using existing model/context owners."""
+from dataclasses import dataclass
+import hashlib
+from pathlib import Path
+from .paths import framework_root
+
+from .json_io import bounded_canonical_json_bytes, decode_json_object
+from .model_attachment import ModelAttachment, model_attachment_from_dict, validate_model_attachment
+from .remote_model_attachment import RemoteModelAttachment
+from .model_execution_group import ModelExecutionGroup
+from .semantic_model_context import materialize_model_context
+from .semantic_code_types import canonical_json_bytes
+
+MAX_PREPARATION_BYTES = 2 * 1024 * 1024
+
+
+@dataclass(frozen=True)
+class MemberExecutionInput:
+    """Immutable host invocation; context reads return a fresh bounded copy."""
+    model_id: str
+    agent_generation_id: str
+    task_plan_sha256: str
+    group_sha256: str
+    attachment: ModelAttachment | RemoteModelAttachment
+    context_json: str
+    context_sha256: str
+
+    @property
+    def context(self):
+        return decode_json_object(self.context_json.encode(), max_bytes=65537)
+
+    def as_dict(self):
+        return {"schema_version": "px.member-execution-input/1.0", "model_id": self.model_id, "agent_generation_id": self.agent_generation_id,
+                "task_plan_sha256": self.task_plan_sha256, "group_sha256": self.group_sha256,
+                "attachment": self.attachment.as_dict(), "context": self.context,
+                "context_sha256": self.context_sha256, "authority_granted": False}
+
+
+def member_execution_input(task_plan, member):
+    """Build only from the already validated exact member of this plan."""
+    attachment, expected = member_attachment(task_plan, member["model_id"])
+    if expected != member:
+        raise ValueError("invocation member differs from canonical preparation")
+    invocation = MemberExecutionInput(member["model_id"], member["context"]["agent_generation_id"],
+        task_plan["plan_sha256"], task_plan["projection_revisions"]["model_execution_group"],
+        model_attachment_from_dict(attachment),
+        bounded_canonical_json_bytes(member["context"], max_bytes=65537).decode(), member["context_sha256"])
+    from .contracts import validate_instance
+    validate_instance(invocation.as_dict(), framework_root() / "contracts/models/member-execution-input.schema.json")
+    return invocation
+
+
+def context_for_branch(result, branch, *, max_bytes=65536):
+    if branch.work_contract is None or branch.independence_contract is None:
+        raise ValueError("member requires both branch contracts")
+    return materialize_model_context(result, max_bytes=max_bytes, annotations={
+        "model_id": branch.model_id, "agent_generation_id": branch.agent_generation_id,
+        "role": branch.role, "deliverable": branch.work_contract.deliverable,
+    })
+
+
+def context_sha256(context):
+    bounded_canonical_json_bytes(context, max_bytes=65536)
+    return hashlib.sha256(canonical_json_bytes(context)).hexdigest()
+
+
+@dataclass(frozen=True)
+class ModelGroupPreparation:
+    canonical_json: str
+
+    def as_dict(self):
+        return decode_json_object(self.canonical_json.encode(), max_bytes=MAX_PREPARATION_BYTES)
+
+    @property
+    def preparation_sha256(self):
+        return self.as_dict()["preparation_sha256"]
+
+
+def read_group_preparation(record, group, *, root=None):
+    if type(group) is not ModelExecutionGroup or type(record) is not dict:
+        raise ValueError("canonical group and exact preparation required")
+    if set(record) != {"schema_version", "group_sha256", "members", "preparation_sha256"}:
+        raise ValueError("exact preparation fields required")
+    if record["schema_version"] != "px.model-group-preparation/1.0" or record["group_sha256"] != group.group_sha256:
+        raise ValueError("preparation group identity differs")
+    rows = record["members"]
+    if type(rows) is not list or len(rows) != group.branch_count:
+        raise ValueError("every declared member requires preparation")
+    for branch, row in zip(group.branches, rows, strict=True):
+        if type(row) is not dict or set(row) != {"model_id", "attachment", "context", "context_sha256"}:
+            raise ValueError("exact member preparation fields required")
+        if type(row["attachment"]) is not dict or row["model_id"] != branch.model_id or row["attachment"].get("model_id") != branch.model_id:
+            raise ValueError("member attachment identity differs")
+        report = validate_model_attachment(model_attachment_from_dict(row["attachment"]), root=root)
+        if not report["valid"]:
+            raise ValueError("invalid member attachment: " + "; ".join(report["errors"]))
+        context = row["context"]
+        if (type(context) is not dict or context.get("model_id") != branch.model_id
+                or context.get("agent_generation_id") != branch.agent_generation_id
+                or context.get("write_authority") is not False):
+            raise ValueError("context member/generation/authority differs")
+        expected_fields = {"schema_version", "project_id", "query", "items", "item_count",
+            "available_item_count", "byte_count", "truncated", "retrieval_owner",
+            "source_receipt_sha256", "write_authority", "model_id", "agent_generation_id", "role", "deliverable"}
+        if (set(context) != expected_fields or context["schema_version"] != "px.semantic-model-context/1.1"
+                or context["role"] != branch.role or branch.work_contract is None
+                or context["deliverable"] != branch.work_contract.deliverable
+                or type(context["items"]) is not list or len(context["items"]) > 50
+                or type(context["item_count"]) is not int or context["item_count"] != len(context["items"])
+                or type(context["available_item_count"]) is not int or context["available_item_count"] < len(context["items"])
+                or type(context["truncated"]) is not bool
+                or context["truncated"] != (len(context["items"]) < context["available_item_count"])
+                or type(context["byte_count"]) is not int
+                or context["byte_count"] != len(canonical_json_bytes(context))):
+            raise ValueError("member context envelope differs from materializer contract")
+        for name in ("project_id", "query", "retrieval_owner"):
+            if type(context[name]) is not str or not context[name].strip():
+                raise ValueError("member context provenance required")
+        from .generation_bound_verdict import sha256_text
+        sha256_text(context["source_receipt_sha256"])
+        if (branch.work_contract is None or branch.independence_contract is None
+                or row["context_sha256"] != context_sha256(context)
+                or row["context_sha256"] != branch.work_contract.context_sha256):
+            raise ValueError("member context differs from role contract")
+    body = {k: v for k, v in record.items() if k != "preparation_sha256"}
+    if record["preparation_sha256"] != hashlib.sha256(bounded_canonical_json_bytes(body, max_bytes=MAX_PREPARATION_BYTES)).hexdigest():
+        raise ValueError("preparation content digest differs")
+    from .contracts import validate_instance
+    validate_instance(record, framework_root() / "contracts/models/model-group-preparation.schema.json")
+    return ModelGroupPreparation(bounded_canonical_json_bytes(record, max_bytes=MAX_PREPARATION_BYTES).decode())
+
+
+def prepare_model_group(group, attachments, retrievals, *, root: Path | None = None, max_context_bytes=65536):
+    if set(attachments) != set(group.model_ids) or set(retrievals) != set(group.model_ids):
+        raise ValueError("exact attachment and retrieval membership required")
+    rows = []
+    for branch in group.branches:
+        context = context_for_branch(retrievals[branch.model_id], branch, max_bytes=max_context_bytes)
+        attachment = attachments[branch.model_id]
+        rows.append({"model_id": branch.model_id, "attachment": attachment.as_dict(),
+                     "context": context, "context_sha256": context_sha256(context)})
+    body = {"schema_version": "px.model-group-preparation/1.0", "group_sha256": group.group_sha256, "members": rows}
+    return read_group_preparation({**body, "preparation_sha256": hashlib.sha256(
+        bounded_canonical_json_bytes(body, max_bytes=MAX_PREPARATION_BYTES)).hexdigest()}, group, root=root)
+
+
+def member_attachment(task_plan, model_id=None):
+    """Select exactly one member; never collapse a mesh into its primary."""
+    from .task_execution_plan import task_execution_plan_from_dict
+    plan = task_execution_plan_from_dict(task_plan)
+    if plan.model_execution_group is None:
+        if model_id is not None and (not plan.model_attachment or plan.model_attachment.get("model_id") != model_id):
+            raise ValueError("selected member differs from legacy attachment")
+        return plan.model_attachment, None
+    group = plan.model_execution_group
+    if plan.model_group_preparation is None:
+        raise ValueError("group execution requires complete per-member preparation")
+    if model_id is None:
+        if group.branch_count != 1:
+            raise ValueError("multi-member execution requires explicit member identity")
+        model_id = group.model_ids[0]
+    if model_id not in group.model_ids:
+        raise ValueError("selected member is outside declared group")
+    row = next(r for r in plan.model_group_preparation.as_dict()["members"] if r["model_id"] == model_id)
+    return row["attachment"], row
+
+
+def prepare_group_plan(
+    route,
+    group,
+    attachments,
+    retrievals,
+    *,
+    root: Path | None = None,
+    project_id: str,
+    source_revision: str,
+    projection_revisions,
+    effect_budget,
+    authority_bindings,
+    context_generation,
+    model_attachment=None,
+    model_ranking_receipt=None,
+    tie_bindings=(),
+    created_utc: str | None = None,
+):
+    """Normal production path: prepare every member, then compile one bound plan.
+
+    This is the canonical caller of :func:`prepare_model_group`. A group without
+    complete per-member preparation must never reach normal execution, so the
+    preparation and the plan are produced together rather than as two optional
+    steps a caller can forget.
+
+    Operational experience is fused from the exact ``tie_bindings`` before any role
+    context is hashed. Corrupt or unavailable experience is carried honestly in the
+    returned fusion record; it is never silently treated as valid context.
+    """
+    from .capability_routing import compile_route_plan
+
+    tie_fusion = None
+    if tie_bindings:
+        if root is None:
+            raise ValueError("T.I.E. fusion requires the canonical project root")
+        from .usage_memory import fuse_tie_experience
+        tie_fusion = fuse_tie_experience(root, tie_bindings)
+    preparation = prepare_model_group(group, attachments, retrievals, root=root)
+    if tie_fusion is not None:
+        source_id = "tie-fusion:" + tie_fusion["fusion_sha256"]
+        for row in preparation.as_dict()["members"]:
+            if not any(item.get("source_id") == source_id for item in row["context"]["items"]):
+                raise ValueError("T.I.E. must be bound to every member retrieval before its role context hash; "
+                                 "use bind_tie_retrievals before creating branch work contracts")
+    plan = compile_route_plan(
+        route,
+        project_id=project_id,
+        source_revision=source_revision,
+        projection_revisions=projection_revisions,
+        effect_budget=effect_budget,
+        authority_bindings=authority_bindings,
+        model_attachment=model_attachment,
+        model_ranking_receipt=model_ranking_receipt,
+        model_execution_group=group,
+        context_generation=context_generation,
+        model_group_preparation=preparation,
+        created_utc=created_utc,
+    )
+    return plan, preparation, tie_fusion
+
+
+def bind_tie_retrievals(root: Path, retrievals, bindings):
+    """Read-only enrichment BEFORE role-contract hashing; never mutate a prepared group."""
+    from .usage_memory import fuse_tie_experience
+    from .semantic_integration_types import FusedQueryResult
+    fusion = fuse_tie_experience(root, bindings)
+    excerpt = canonical_json_bytes(fusion).decode("utf-8")
+    if len(excerpt.encode("utf-8")) > 24000:
+        raise ValueError("T.I.E. fusion exceeds member context source budget")
+    hit = {"source_id": "tie-fusion:" + fusion["fusion_sha256"],
+           "title": "Object-local T.I.E. operational experience", "excerpt": excerpt,
+           "citation": "runtime.usage_memory.fuse_tie_experience", "lineage": "native-object-local-experience",
+           "score": 0.0, "source_revision": fusion["fusion_sha256"]}
+    results = {}
+    for model_id, result in retrievals.items():
+        if type(result) is not FusedQueryResult:
+            raise TypeError("member retrieval requires the native fused query owner")
+        hits = (hit, *result.hits)
+        if len(hits) > 50:
+            raise ValueError("T.I.E. enrichment exceeds member evidence denominator")
+        receipt_sha = hashlib.sha256(canonical_json_bytes({"retrieval_sha256": result.receipt_sha256,
+            "tie_fusion_sha256": fusion["fusion_sha256"], "hits": hits})).hexdigest()
+        counts = dict(result.source_counts)
+        counts["tie_experience"] = counts.get("tie_experience", 0) + 1
+        results[model_id] = FusedQueryResult(result.query, result.project_id, hits, counts,
+            result.context_bytes + len(excerpt.encode("utf-8")), result.canonical_retrieval_owner, receipt_sha)
+    return results, fusion

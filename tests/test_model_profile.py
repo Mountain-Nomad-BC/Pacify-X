@@ -14,7 +14,7 @@ ROOT = Path(__file__).parents[1]
 
 def test_runtime_profile_registry_is_exact_digest_bound_and_operator_profile_is_bounded() -> None:
     profiles = load_runtime_profiles(ROOT)
-    assert len(profiles) == 10
+    assert len(profiles) == 11
     assert len({item.profile_id for item in profiles}) == len(profiles)
     operator = next(item for item in profiles if item.model_id == "qwen35-4b-operator")
     assert operator.lane == "control"
@@ -60,10 +60,33 @@ def test_control_profile_rejects_reasoning_gpu_or_idle_residency() -> None:
             runtime_profile_from_mapping(raw)
 
 
+def test_profile_11_validates_kv_cache_types_and_profile_10_remains_compatible() -> None:
+    source = next(item for item in load_runtime_profiles(ROOT) if item.model_id == "qwen35-4b-operator")
+    version_11 = source.identity_payload()
+    version_11.update({
+        "schema_version": "px.model-runtime-profile/1.1",
+        "cache_type_k": "q8_0",
+        "cache_type_v": "q4_0",
+    })
+    parsed = runtime_profile_from_mapping(version_11)
+    assert parsed.cache_type_k == "q8_0"
+    assert parsed.cache_type_v == "q4_0"
+
+    invalid = dict(version_11)
+    invalid["cache_type_k"] = "Q8_0"
+    with pytest.raises(ValueError, match="bounded lowercase cache type"):
+        runtime_profile_from_mapping(invalid)
+
+    legacy = source.identity_payload()
+    assert "cache_type_k" not in legacy
+    assert runtime_profile_from_mapping(legacy).profile_sha256 == source.profile_sha256
+
+
 def test_model_portfolio_preserves_operator_effect_boundary_and_deep_candidate() -> None:
     portfolio = load_model_portfolio(ROOT)
     operator = next(item for item in portfolio if item.model_id == "qwen35-4b-operator")
     deep = next(item for item in portfolio if item.model_id == "qwen3-30b-a3b-deep")
+    librarian = next(item for item in portfolio if item.model_id == "qwen35-08b-librarian")
     assert operator.role == "resident_px_operator_preferred_candidate"
     assert "learning_trigger_planning" in operator.traits
     assert "graph_map_update_planning" in operator.traits
@@ -80,6 +103,25 @@ def test_model_portfolio_preserves_operator_effect_boundary_and_deep_candidate()
     assert deep.artifact_sha256 == (
         "e6db7da56bdb19ba30541c73628f15e8f1f45be1b1f96df4383e03fec375e43a"
     )
+    deep_profile = next(
+        item for item in load_runtime_profiles(ROOT)
+        if item.model_id == deep.model_id
+    )
+    assert deep_profile.gpu_layers is None
+    assert deep_profile.cpu_moe_layers is None
+    assert deep_profile.benchmark_required is True
+    assert librarian.state == "candidate"
+    assert librarian.artifact_sha256 is None
+    assert librarian.authority["direct_tool_execution"] is False
+    librarian_profile = next(
+        item for item in load_runtime_profiles(ROOT)
+        if item.profile_id == librarian.default_profile_id
+    )
+    assert librarian_profile.schema_version == "px.model-runtime-profile/1.1"
+    assert librarian_profile.context_tokens == 8192
+    assert librarian_profile.benchmark_required is True
+    assert librarian_profile.cache_type_k is None
+    assert librarian_profile.cache_type_v is None
 
 
 def test_control_routing_requires_certified_runtime_hint_and_deterministic_unresolved() -> None:

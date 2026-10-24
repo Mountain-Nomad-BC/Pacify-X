@@ -12,7 +12,7 @@ This directory contains the canonical repository architecture graph, an Obsidian
 
 The live build contains 1,077 modeled systems, 15,024 accepted source files, 16,101 total nodes, 1,626 directed semantic relationships, 4,413 static import relationships, 1,439 system-to-file anchors, 7,478 total edges, 288 flows, 1,834 historical findings, and 4,432 evidence anchors. It has no dangling edges, missing flow steps, or source parse errors.
 
-The source inventory excludes generated or operational control output such as `.engineering-bootstrap`, retained `evidence`, ledger deltas, caches, dependencies, quarantine, and this generated atlas tree. Exact exclusions are recorded in [`data/source_exclusions.json`](data/source_exclusions.json). The inventory is stable per file and is not a cross-file atomic filesystem snapshot.
+The source inventory excludes generated or operational control output such as `.agentic_engineering_os_px`, retained `evidence`, ledger deltas, caches, dependencies, quarantine, and this generated atlas tree. Exact exclusions are recorded in [`data/source_exclusions.json`](data/source_exclusions.json). The inventory is stable per file and is not a cross-file atomic filesystem snapshot.
 
 ## Evidence semantics
 

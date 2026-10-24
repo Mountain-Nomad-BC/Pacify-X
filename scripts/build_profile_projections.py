@@ -11,7 +11,7 @@ from pathlib import Path
 def reconcile(root: Path, *, check: bool) -> dict[str, object]:
     root = root.resolve()
     owner = root / "bootstrap/profiles"
-    projection = root / ".engineering-bootstrap/profiles"
+    projection = root / ".agentic_engineering_os_px/profiles"
     stale = []
     records = []
     owner_names = {path.name for path in owner.glob("*.toml")}
@@ -41,7 +41,7 @@ def reconcile(root: Path, *, check: bool) -> dict[str, object]:
         "schema_version": "1.0",
         "valid": not stale and not extras if check else True,
         "owner_root": "bootstrap/profiles",
-        "projection_root": ".engineering-bootstrap/profiles",
+        "projection_root": ".agentic_engineering_os_px/profiles",
         "records": records,
         "stale": stale,
         "extra": extras,

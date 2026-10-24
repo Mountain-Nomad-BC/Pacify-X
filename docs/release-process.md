@@ -1,6 +1,8 @@
 # PACIFY-X release process
 
-PACIFY-X is the project and framework. `engineering-bootstrap` is its Python package and command-line control plane.
+PACIFY-X is the project and framework. `agentic-engineering-os-px` is its Python package and command-line control plane.
+
+The Rev1xx campaign currently uses a preserved standalone source tree. Its starting Git commit requirement is explicitly deferred by owner decision; no commit is fabricated and no Git-specific acceptance criterion is satisfied. Deterministic manifests, hashes, and immutable source snapshots establish preservation. Focused checks establish only their scoped results; they do not certify this changing tree. Builds, installation, packaging, and model operations remain held. Reconcile Git only after architecture, integration, validation, and certification work are complete under the owner-approved campaign sequence. The tagged-release procedure below describes subsequent publication authority, not permission to alter Git during this campaign.
 
 Release authority is created only from a clean tagged commit. The authoritative version is `project.version` in `pyproject.toml`; the runtime version, README projection, annotated Git tag, package metadata, artifacts, certificate, and publication receipt must match it exactly.
 
@@ -15,8 +17,8 @@ New-Item -ItemType Directory release-assets | Out-Null
 gh release download v0.9.0 --repo Mountain-Nomad-BC/Pacify-X --dir release-assets
 python -m runtime.cli --root . release verify --release 0.9.0 --artifact-dir release-assets
 python -m pip install .\release-assets\engineering_loop_bootstrap-0.9.0-py3-none-any.whl
-engineering-bootstrap --version
-engineering-bootstrap doctor
+agentic-engineering-os-px --version
+agentic-engineering-os-px doctor
 ```
 
 The verification command fails before installation if the certificate, signature, artifact hashes, source identity, or release authority do not agree. A checkout of `main` is a development installation and is not the immutable v0.9.0 release.

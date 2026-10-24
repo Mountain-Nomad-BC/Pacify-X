@@ -40,7 +40,7 @@ function fixture(overrides = {}) {
       },
       environment: { summary: { graph_nodes: 12 } }
     },
-    coordination: { state: { revision: 7 }, paths: { root: '.engineering-bootstrap/coordination' } },
+    coordination: { state: { revision: 7 }, paths: { root: '.agentic_engineering_os_px/coordination' } },
     settings: {
       refreshIntervalSeconds: 30, showAdvancedSurfaces: false, contextInjectionCapTokens: 12000, ollamaEnabled: false,
       executionPolicy: { master_enabled: false, local_first: true, provider_allowlist: [], require_approval_before_billable_execution: true }
@@ -136,7 +136,7 @@ test('settings renderer keeps billable policy denied and all guardrail interacti
   assert.match(html, /role="switch" aria-checked="false"/);
   assert.match(html, /data-action="toggleBillablePolicy" data-enabled="true"/);
   assert.match(html, /No billable provider execution can pass\./);
-  assert.equal((html.match(/data-action="openSettings"/g) || []).length, 3);
+  assert.equal((html.match(/data-action="openSettings"/g) || []).length, 4);
   assert.match(html, /Edit Pacify-X settings in host/);
   assert.match(html, /Open authoritative editor/);
   assert.match(html, /Edit guardrails/);

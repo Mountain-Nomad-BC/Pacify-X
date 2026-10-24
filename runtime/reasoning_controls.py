@@ -14,11 +14,7 @@ MANDATORY_COMMUNICATION_CATEGORIES = frozenset(
 )
 
 
-def _stable(value: object) -> str:
-    rendered = json.dumps(
-        value, sort_keys=True, separators=(",", ":"), ensure_ascii=False
-    )
-    return hashlib.sha256(rendered.encode("utf-8")).hexdigest()
+from runtime.hash_utils import json_utf8_hash as _stable
 
 
 def run_independent_hypothesis_panel(
@@ -26,18 +22,56 @@ def run_independent_hypothesis_panel(
     *,
     convergence_threshold: float = 0.75,
     max_rounds: int = 3,
+    committed_group: Mapping[str, object] | None = None,
 ) -> dict[str, object]:
     """Critique isolated hypotheses and converge only when evidence supports it.
 
     The function consumes observable branch artifacts. It neither requests nor
     records private reasoning traces.
     """
+    if committed_group is not None:
+        from .model_convergence import converge_committed_group
+        required = {"root", "plan", "artifacts", "attestations", "resolver", "accepted_producers", "actor_id"}
+        if set(committed_group) != required:
+            raise ValueError("committed panel requires exact native evidence inputs")
+        assessed = converge_committed_group(**dict(committed_group))
+        result = assessed["convergence"]
+        return {"schema_version": "px.independent-hypothesis-panel/2.0",
+                "converged": result["status"] == "PASS", "status": result["status"],
+                "conclusion": result["conclusion"], "committed_assessment": assessed,
+                "authority_granted": False}
     if not 2 <= len(branches) <= 12:
         raise ValueError("an independent panel requires two through twelve branches")
     if not 0.5 <= convergence_threshold <= 1.0:
         raise ValueError("convergence_threshold must be between 0.5 and 1.0")
     if not 1 <= max_rounds <= 10:
         raise ValueError("max_rounds must be between one and ten")
+    if any("evidence_items" in branch for branch in branches):
+        from .model_execution_group import ModelExecutionGroup, BranchAssignment, RoleWorkContract, IndependenceContract
+        from .model_convergence import EvidenceItem, BranchObservation, converge
+        if not all("evidence_items" in branch for branch in branches):
+            raise ValueError("typed evidence cannot downgrade to legacy sharing checks")
+        members = []
+        observations = []
+        for branch in branches:
+            members.append(BranchAssignment(branch["model_id"], "proposal",
+                work_contract=RoleWorkContract("observable hypothesis", branch["context_sha256"]),
+                independence_contract=IndependenceContract(), agent_generation_id=branch["agent_generation_id"]))
+            items = branch["evidence_items"]
+            if type(items) is not list or len(items) > 256:
+                raise ValueError("bounded typed evidence items required")
+            observations.append(BranchObservation(branch["model_id"], branch["conclusion"], branch["artifact_sha256"],
+                tuple(EvidenceItem(**item) for item in items), branch.get("isolated", False),
+                branch.get("containment_proven", False), branch.get("state", "completed")))
+        group = ModelExecutionGroup("panel:" + _stable([member.as_mapping() for member in members])[:24],
+                                    "execution", "reasoning-controls-evidence-only", tuple(members), quorum="majority")
+        receipt = converge(group, observations, threshold=convergence_threshold)
+        return {"valid": receipt["status"] == "PASS", "converged": receipt["status"] == "PASS",
+                "selected_conclusion": receipt["conclusion"], "leading_support": receipt["support"],
+                "threshold": convergence_threshold, "rounds_used": 1, "max_rounds": max_rounds,
+                "branches": receipt["observations"], "dissent": receipt["dissent"],
+                "critic": {"independent": receipt["status"] == "PASS", "findings": receipt["not_admitted"]},
+                "convergence_receipt": receipt, "panel_sha256": receipt["convergence_sha256"], "authority_granted": False}
 
     normalized: list[dict[str, object]] = []
     branch_ids: set[str] = set()

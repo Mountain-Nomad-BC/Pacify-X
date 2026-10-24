@@ -13,4 +13,4 @@ def test_certificate_observer_cannot_write_product_input(tmp_path: Path) -> None
 
 def test_external_runtime_completion_is_downstream(tmp_path: Path) -> None:
     root = minimal_product(tmp_path)
-    assert feedback_audit(root, [".engineering-bootstrap/runtime-core/completion_status.json"])["valid"]
+    assert feedback_audit(root, [".agentic_engineering_os_px/runtime-core/completion_status.json"])["valid"]

@@ -148,6 +148,7 @@ const HOST = Object.freeze({
   enterpriseTargetConfigure: ['enterpriseTargetConfigure', 'host-ui', 'enterprise state controller', 'enterpriseResult', 'configuration handoff'],
   enterpriseDoctor: ['enterpriseDoctor', 'read', 'enterprise state controller', 'enterpriseResult', 'doctor report'],
   toggleBillablePolicy: ['toggleBillablePolicy', 'configuration-write', 'enterprise policy controller', 'enterpriseResult', 'policy event receipt'],
+  sandboxControl: ['sandboxControl', 'configuration-write', 'isolated agent sandbox controller', 'sandboxResult', 'shared sandbox mode value receipt'],
   refreshEnvironment: ['refreshEnvironment', 'read', 'environment discovery controller', 'environmentInventory or operationError', 'generation + content hash'],
   environmentExtensionDetail: ['environmentExtensionDetail', 'read', 'environment discovery reader', 'environmentExtensionDetail or operationError', 'bounded response'],
   previewExtensionInstall: ['extensionLifecyclePreview', 'read', 'exact extension lifecycle controller + current VS Code inventory', 'extensionLifecyclePreview or operationError', 'request-bound exact install preview token'],

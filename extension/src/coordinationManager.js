@@ -31,7 +31,7 @@ function safeId(value, fallbackPrefix = 'item') {
 function coordinationPaths(workspaceRoot) {
   const workspace = path.resolve(workspaceRoot || '');
   if (!workspaceRoot || workspace === path.parse(workspace).root) throw new Error('coordination-workspace-must-be-bounded');
-  const root = path.join(workspace, '.engineering-bootstrap', 'coordination');
+  const root = path.join(workspace, '.agentic_engineering_os_px', 'coordination');
   return {
     workspace, root, state: path.join(root, 'state.json'), events: path.join(root, 'events.jsonl'),
     lock: path.join(root, '.coordination.lock'), receipts: path.join(root, 'receipts'),

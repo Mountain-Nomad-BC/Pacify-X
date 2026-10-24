@@ -1,0 +1,69 @@
+{
+  "schema_version": "px.data-control-owner-contract/1.0",
+  "consumer": "runtime.data_controls.data_control_request",
+  "host_entrypoint": "python -m runtime.data_controls --project-root <existing-root>",
+  "transport": "bounded JSON stdin; response on stdout",
+  "owners": {
+    "runtime.data_subject_records": {
+      "schema_version": "px.subject-record-request/1.0",
+      "operations": [
+        "subject-access",
+        "subject-export",
+        "subject-erase",
+        "subject-retention"
+      ],
+      "canonical_record_owner": "runtime.memory_vault",
+      "authority": [
+        "existing Studio authority",
+        "explicit signed subject binding",
+        "signed approved policy",
+        "native effect grant",
+        "payload-bound single-use host operation approval"
+      ],
+      "erasure": "sealed canonical revisions are preserved; refuse erasure and report residuals"
+    },
+    "runtime.personal_record_store": {
+      "schema_version": "px.personal-record-request/1.1",
+      "operations": [
+        "personal-create",
+        "personal-access",
+        "personal-export",
+        "personal-erase",
+        "personal-retention",
+        "personal-use",
+        "personal-rectify",
+        "personal-withdraw-consent"
+      ],
+      "canonical_store": ".agentic_engineering_os_px/runtime-core/data-controls/personal-records.json",
+      "authority": [
+        "existing Studio authority",
+        "signed approved purpose/consent/minimization/classification policy",
+        "native effect grant including custody roots",
+        "payload-bound single-use host operation approval"
+      ],
+      "effect_ownership": [
+        "native FileLock",
+        "ScopeLeaseStore",
+        "EffectIntentLedger",
+        "ResourceManager"
+      ],
+      "erasure": "remove canonical live payload; signed durable tombstone; no recreation of erased record identity",
+      "retention": "actual canonical creation time compared to explicit approved retention days; hold blocks erasure",
+      "recovery": "stale store head or uncertain publication fails closed; no blind replay",
+      "purpose_control": "explicit operation-to-purpose owner policy; operational use enforces current record purpose/consent and canonical withdrawal fences",
+      "rights_control": "explicit approved rights access/export/rectification purposes may operate on withdrawn live records; no lawful-basis assertion",
+      "rectification": "expected current generation; replace allowed live fields without retaining hidden prior content",
+      "withdrawal": "persist subject/reference hash fence; block operational use and recreation; retain blocked live payload pending separately approved erasure"
+    }
+  },
+  "global_coverage_complete": false,
+  "human_legal_authority_reserved": true,
+  "excluded_erasure_claims": [
+    "sealed vault/TIE history",
+    "provider records",
+    "external exports/backups",
+    "OS snapshots/media remnants",
+    "immutable evidence"
+  ],
+  "campaign_work_admission": "governs authoring/validation; end-user operations use actual native runtime authority, not campaign gap IDs"
+}

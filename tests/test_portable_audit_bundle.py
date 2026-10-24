@@ -317,9 +317,9 @@ def test_clean_bundle_excludes_dependencies_runtime_state_and_env_values(
 ) -> None:
     source = tmp_path / "source"
     (source / "node_modules" / "pkg").mkdir(parents=True)
-    (source / ".engineering-bootstrap" / "operation-bus").mkdir(parents=True)
+    (source / ".agentic_engineering_os_px" / "operation-bus").mkdir(parents=True)
     (source / "node_modules" / "pkg" / "index.js").write_text("dependency")
-    (source / ".engineering-bootstrap" / "operation-bus" / "events.jsonl").write_text(
+    (source / ".agentic_engineering_os_px" / "operation-bus" / "events.jsonl").write_text(
         "volatile"
     )
     (source / ".env.local").write_text("SECRET=must-not-ship\n", encoding="utf-8")

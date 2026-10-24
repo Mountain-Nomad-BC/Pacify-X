@@ -9,15 +9,15 @@
   "classes": [
     {
       "id": "project-map-history",
-      "source_root": ".engineering-bootstrap/project-map-history",
-      "archive_root": ".engineering-bootstrap/project-map-history-archives",
+      "source_root": ".agentic_engineering_os_px/project-map-history",
+      "archive_root": ".agentic_engineering_os_px/project-map-history-archives",
       "retain_live": 1,
       "command": "python -B scripts/archive_project_map_history.py --root . --keep-latest 1 --apply"
     },
     {
       "id": "committed-operation-wal",
-      "source_root": ".engineering-bootstrap/operation-bus/wal/committed",
-      "archive_root": ".engineering-bootstrap/operation-bus/wal/archives",
+      "source_root": ".agentic_engineering_os_px/operation-bus/wal/committed",
+      "archive_root": ".agentic_engineering_os_px/operation-bus/wal/archives",
       "retain_live": 200,
       "command": "python -B scripts/archive_committed_wal.py --root . --keep-latest 200 --apply"
     }

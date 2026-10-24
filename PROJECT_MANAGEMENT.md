@@ -1,6 +1,6 @@
 # Project Management
 
-This is the sole durable control point for building and releasing the Engineering Loop Bootstrap. Machine-readable state is in `.engineering-bootstrap/project-management/state.json`. Closed historical plans are recoverably externalized and indexed by `evidence/externalized-payload-index.json`; they are not product inputs.
+This is the sole durable control point for building and releasing the Engineering Loop Bootstrap. Machine-readable state is in `.agentic_engineering_os_px/project-management/state.json`. Closed historical plans are recoverably externalized and indexed by `evidence/externalized-payload-index.json`; they are not product inputs.
 
 ## Objective
 
@@ -243,13 +243,13 @@ Repair-pack evidence: `evidence/integration/pxi-20260804/audit_repair_pack_dispo
 
 ## Management controls
 
-- `.engineering-bootstrap/project-management/PROJECT_CONTEXT.md`
-- `.engineering-bootstrap/project-management/ASSUMPTIONS.md`
-- `.engineering-bootstrap/project-management/EXECUTION_PLAN.md`
-- `.engineering-bootstrap/project-management/PUNCH_CARDS.md`
-- `.engineering-bootstrap/project-management/ORCHESTRATION.md`
-- `.engineering-bootstrap/project-management/RISKS.md`
-- `.engineering-bootstrap/project-management/ACCEPTANCE_CRITERIA.md`
+- `.agentic_engineering_os_px/project-management/PROJECT_CONTEXT.md`
+- `.agentic_engineering_os_px/project-management/ASSUMPTIONS.md`
+- `.agentic_engineering_os_px/project-management/EXECUTION_PLAN.md`
+- `.agentic_engineering_os_px/project-management/PUNCH_CARDS.md`
+- `.agentic_engineering_os_px/project-management/ORCHESTRATION.md`
+- `.agentic_engineering_os_px/project-management/RISKS.md`
+- `.agentic_engineering_os_px/project-management/ACCEPTANCE_CRITERIA.md`
 
 ## Completion rule
 

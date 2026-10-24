@@ -22,4 +22,4 @@ This repository is model-agnostic. Any coding assistant must follow `AGENTS.md`,
 
 ## Validation
 
-After the implementation is operationally ready, use the governed section gates, then exactly one owned full test profile and `python -m runtime.cli validate` for certification. Do not use the raw unittest entrypoint as a certification owner. Use `engineering-bootstrap project-check --project .` in a commissioned project.
+After the implementation is operationally ready, use the governed section gates, then exactly one owned full test profile and `python -m runtime.cli validate` for certification. Do not use the raw unittest entrypoint as a certification owner. Use `agentic-engineering-os-px project-check --project .` in a commissioned project.

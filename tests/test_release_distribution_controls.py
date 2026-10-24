@@ -84,7 +84,7 @@ def _modified_wheel(
 def _artifact_set(root: Path, version: str = "1.2.3") -> list[dict]:
     wheel = root / f"engineering_loop_bootstrap-{version}-py3-none-any.whl"
     with zipfile.ZipFile(wheel, "w") as archive:
-        archive.writestr("engineering_bootstrap/__init__.py", "")
+        archive.writestr("agentic_engineering_os_px/__init__.py", "")
         archive.writestr(
             f"engineering_loop_bootstrap-{version}.dist-info/METADATA",
             f"Metadata-Version: 2.4\nName: engineering-loop-bootstrap\nVersion: {version}\n",
@@ -110,7 +110,7 @@ def test_artifact_manifest_projects_declared_package_data() -> None:
         (record["package_target"], record["installed_path"])
         for record in matching
     } == {
-        ("wheel", "engineering_bootstrap/studio_operations.json"),
+        ("wheel", "agentic_engineering_os_px/studio_operations.json"),
         (
             "sdist",
             f"engineering_loop_bootstrap-{VERSION}/runtime/studio_operations.json",
@@ -349,12 +349,12 @@ def test_required_resource_omission_fails_build(built_distribution, tmp_path) ->
 def test_undeclared_package_file_fails_build(built_distribution, tmp_path) -> None:
     _, wheel, _, manifest = built_distribution
     changed = _modified_wheel(
-        wheel, tmp_path / wheel.name, extra="engineering_bootstrap/undeclared.py"
+        wheel, tmp_path / wheel.name, extra="agentic_engineering_os_px/undeclared.py"
     )
     result = verify_built_artifact(changed, manifest, package_target="wheel")
     assert not result["valid"]
     assert (
-        "undeclared wheel file: engineering_bootstrap/undeclared.py" in result["errors"]
+        "undeclared wheel file: agentic_engineering_os_px/undeclared.py" in result["errors"]
     )
 
 
@@ -385,8 +385,8 @@ def test_mirrored_runtime_source_matches_importable_package(built_distribution) 
     _, wheel, _, _ = built_distribution
     names = {item["path"] for item in inspect_wheel(wheel)["entries"]}
     forbidden = (
-        ".data/data/share/engineering-bootstrap/runtime/",
-        ".data/data/share/engineering-bootstrap/builders/",
+        ".data/data/share/agentic-engineering-os-px/runtime/",
+        ".data/data/share/agentic-engineering-os-px/builders/",
     )
     assert not any(any(marker in name for marker in forbidden) for name in names)
 
@@ -398,7 +398,7 @@ def test_runtime_install_requires_only_declared_runtime_dependencies(
     inspected = inspect_wheel(wheel)
     names = {item["path"] for item in inspected["entries"]}
     assert not any(
-        ".data/data/share/engineering-bootstrap/tests/" in name for name in names
+        ".data/data/share/agentic-engineering-os-px/tests/" in name for name in names
     )
     with zipfile.ZipFile(wheel) as archive:
         metadata_name = next(
@@ -591,7 +591,7 @@ def test_authored_quarantine_named_skill_is_projected(tmp_path, skill):
     source.parent.mkdir(parents=True)
     source.write_text('{}')
     project = tmp_path / 'pyproject.toml'
-    project.write_text(project.read_text() + f'"share/engineering-bootstrap/.px/skills/{skill}"=["{relative}"]\n')
+    project.write_text(project.read_text() + f'"share/agentic-engineering-os-px/.px/skills/{skill}"=["{relative}"]\n')
     manifest = tmp_path / 'MANIFEST.in'
     manifest.write_text(manifest.read_text() + f'include {relative}\n')
     result = owner.generate_artifact_manifest(tmp_path)

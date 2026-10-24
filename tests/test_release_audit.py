@@ -58,7 +58,7 @@ class ReleaseAuditTests(unittest.TestCase):
             clone = Path(directory) / "framework"
             cache = (
                 clone
-                / ".engineering-bootstrap"
+                / ".agentic_engineering_os_px"
                 / "quarantine"
                 / "disposable-cache"
                 / "retained"

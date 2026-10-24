@@ -80,11 +80,8 @@ class ValidationBlocked(RuntimeError):
 
 
 def _sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+    from runtime.hash_utils import file_sha256
+    return file_sha256(path)
 
 
 def _git(root: Path, *args: str, binary: bool = False) -> str | bytes:
@@ -145,6 +142,19 @@ def _one(options: Mapping[str, list[str]], key: str) -> str | None:
     return values[0] if len(values) == 1 else None
 
 
+def _current_source_snapshot(automation: AutomationConfig, stage: StageConfig, automation_path: Path, stage_path: Path) -> dict:
+    from runtime.release_repository_context import verify_source_anchor
+    from runtime.release_campaign import release_state_relative, REPAIR_CAMPAIGN_PATH
+    verified=verify_source_anchor(automation.root,automation.source_freeze_reference,require_live=True)
+    from runtime.archive_io import reject_path_links
+    paths=[automation_path,stage_path,automation.root/release_state_relative(automation.root),
+           automation.root/REPAIR_CAMPAIGN_PATH,automation.root/"policies/rev1xx-validation.json"]
+    for path in paths:
+        reject_path_links(path)
+    return {"source_freeze":verified["reference"],"source_tree":verified["receipt"]["tree_sha256"],
+            "declared_controls":{str(path):_sha256(path) if path.is_file() else None for path in paths}}
+
+
 def _add(checks: list[dict[str, Any]], code: str, passed: bool, detail: str, **extra: Any) -> None:
     checks.append({"code": code, "passed": bool(passed), "detail": detail, **extra})
 
@@ -181,7 +191,13 @@ def validate(automation_path: Path, stage_path: Path, *, allow_started: bool) ->
         return {"schema_version": SCHEMA, "valid": False, "errors": ["STAGE_CONFIG_SCHEMA"], "checks": checks}
 
     root = automation.root
-    before = _status_snapshot(root)
+    current=automation.identity_kind=="standalone_current_campaign"
+    if current != (stage.identity_kind=="standalone_current_campaign") or (current and automation.source_freeze_reference!=stage.source_freeze_reference):
+        return {"schema_version":SCHEMA,"valid":False,"errors":["CONFIG_SOURCE_IDENTITY_BINDING"],"checks":checks}
+    try:
+        before = _current_source_snapshot(automation,stage,automation_path,stage_path) if current else _status_snapshot(root)
+    except Exception as exc:
+        return {"schema_version":SCHEMA,"valid":False,"errors":["CURRENT_SOURCE_SNAPSHOT"],"detail":str(exc),"checks":checks}
 
     pair_checks = {
         "CONFIG_CANDIDATE_BINDING": (automation.candidate_id == stage.candidate_id, f"{automation.candidate_id!r} == {stage.candidate_id!r}"),
@@ -293,37 +309,47 @@ def validate(automation_path: Path, stage_path: Path, *, allow_started: bool) ->
     # independent named check so the aggregate report is useful to humans/tools.
     _add(checks, "CARD_RECONCILE_SEQUENCE", True, "exact CHECK/CHECK/APPLY/APPLY sequence accepted by current parser")
 
-    # Git convergence and tag binding are checked without mutating refs.
-    try:
-        head = str(_git(root, "rev-parse", "HEAD")).strip()
-        upstream = str(_git(root, "rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{u}")).strip()
-        upstream_head = str(_git(root, "rev-parse", "@{u}")).strip()
-        index = str(_git(root, "diff", "--cached", "--name-only")).strip()
-        git_ok = bool(re.fullmatch(r"[0-9a-f]{40}", head)) and head == upstream_head and not index
-        detail = f"HEAD={head} upstream={upstream} upstream_HEAD={upstream_head} staged={bool(index)}"
-    except Exception as exc:
-        git_ok = False
-        detail = f"{type(exc).__name__}: {exc}"
-    _add(checks, "GIT_FROZEN_HEAD", git_ok, detail)
-    if not git_ok:
-        errors.append("GIT_FROZEN_HEAD")
+    if current:
+        for code in ("GIT_FROZEN_HEAD","PRIOR_TAG_TARGET"):
+            _add(checks,code,False,"explicitly deferred by owner decision for this campaign",state="deferred_by_owner",satisfied=False,blocking=False)
+        _add(checks,"CURRENT_SOURCE_FREEZE",True,"independently verified final archive, manifest and current authored bytes",reference=automation.source_freeze_reference)
+    else:
+        # Git convergence and tag binding are checked without mutating refs.
+        try:
+            head = str(_git(root, "rev-parse", "HEAD")).strip()
+            upstream = str(_git(root, "rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{u}")).strip()
+            upstream_head = str(_git(root, "rev-parse", "@{u}")).strip()
+            index = str(_git(root, "diff", "--cached", "--name-only")).strip()
+            git_ok = bool(re.fullmatch(r"[0-9a-f]{40}", head)) and head == upstream_head and not index
+            detail = f"HEAD={head} upstream={upstream} upstream_HEAD={upstream_head} staged={bool(index)}"
+        except Exception as exc:
+            git_ok = False
+            detail = f"{type(exc).__name__}: {exc}"
+        _add(checks, "GIT_FROZEN_HEAD", git_ok, detail)
+        if not git_ok:
+            errors.append("GIT_FROZEN_HEAD")
 
-    try:
-        tag_target = str(_git(root, "rev-list", "-n", "1", stage.release_tag)).strip()
-        tag_ok = tag_target == stage.prior_tag_target and bool(re.fullmatch(r"[0-9a-f]{40}", tag_target))
-        detail = f"{stage.release_tag} -> {tag_target}; configured prior target={stage.prior_tag_target}"
-    except Exception as exc:
-        tag_ok = False
-        detail = f"{type(exc).__name__}: {exc}"
-    _add(checks, "PRIOR_TAG_TARGET", tag_ok, detail)
-    if not tag_ok:
-        errors.append("PRIOR_TAG_TARGET")
+        try:
+            tag_target = str(_git(root, "rev-list", "-n", "1", stage.release_tag)).strip()
+            tag_ok = tag_target == stage.prior_tag_target and bool(re.fullmatch(r"[0-9a-f]{40}", tag_target))
+            detail = f"{stage.release_tag} -> {tag_target}; configured prior target={stage.prior_tag_target}"
+        except Exception as exc:
+            tag_ok = False
+            detail = f"{type(exc).__name__}: {exc}"
+        _add(checks, "PRIOR_TAG_TARGET", tag_ok, detail)
+        if not tag_ok:
+            errors.append("PRIOR_TAG_TARGET")
 
     # Release-source classifier is the authority for allowing post-freeze control
     # files.  If it is unavailable, validation fails closed.
     try:
-        from runtime.release_identity import _release_dirty_state  # type: ignore
-        dirty = _release_dirty_state(root)
+        if current:
+            from runtime.release_artifacts import classify_tree
+            classification=classify_tree(root)
+            dirty={"classifier_errors":(classification.get("errors") or ["current source classification is invalid"]) if classification.get("valid") is not True or classification.get("product_valid") is not True else [],"blocking_paths":[],"mutable_paths":[]}
+        else:
+            from runtime.release_identity import _release_dirty_state  # type: ignore
+            dirty = _release_dirty_state(root)
         classifier_errors = list(dirty.get("classifier_errors", ()))
         blocking = sorted(set(dirty.get("blocking_paths", ())), key=str.casefold)
         dirty_ok = not classifier_errors and not blocking
@@ -366,9 +392,12 @@ def validate(automation_path: Path, stage_path: Path, *, allow_started: bool) ->
     if not ready_ok:
         errors.append("CURRENT_READINESS")
 
-    after = _status_snapshot(root)
+    try:
+        after = _current_source_snapshot(automation,stage,automation_path,stage_path) if current else _status_snapshot(root)
+    except Exception as exc:
+        after={"snapshot_failure":str(exc)}
     nonmutating = before == after
-    _add(checks, "VALIDATOR_NONMUTATION", nonmutating, "Git status unchanged" if nonmutating else "validator changed repository status")
+    _add(checks, "VALIDATOR_NONMUTATION", nonmutating, ("native authored source and declared authority/control inputs unchanged" if current else "Git status unchanged") if nonmutating else "validator changed repository inputs")
     if not nonmutating:
         errors.append("VALIDATOR_NONMUTATION")
 

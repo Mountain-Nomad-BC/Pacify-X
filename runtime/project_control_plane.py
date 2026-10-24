@@ -31,12 +31,7 @@ from .scheduler import ResourcePolicy, ResourceScheduler
 from .trusted_evidence import TrustedEvidenceResolver
 
 
-def _sha(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+from runtime.hash_utils import file_sha256 as _sha
 
 
 def _inside(path: Path, root: Path) -> bool:
@@ -47,10 +42,7 @@ def _inside(path: Path, root: Path) -> bool:
         return False
 
 
-def _stable(value: object) -> str:
-    return hashlib.sha256(
-        json.dumps(value, sort_keys=True, separators=(",", ":"), default=str).encode()
-    ).hexdigest()
+from runtime.hash_utils import json_ascii_string_hash as _stable
 
 
 def _fsync_file(path: Path) -> None:

@@ -18,8 +18,8 @@ from .wal_transaction import (
 )
 
 SCHEMA = "px.wal-ownership/1.0"
-RELATIVE = Path(".engineering-bootstrap/wal-ownership.json")
-ACTIVATION = Path(".engineering-bootstrap/wal-ownership-activation.json")
+RELATIVE = Path(".agentic_engineering_os_px/wal-ownership.json")
+ACTIVATION = Path(".agentic_engineering_os_px/wal-ownership-activation.json")
 LIMIT = 1024 * 1024
 MAX_OWNERS = 128
 MAX_DOMAINS = 1024
@@ -166,7 +166,7 @@ class WalOwnership:
         # Postpublication ancestor/descendant checks prevent concurrent nested
         # activations from both acknowledging success. Failed catalogs remain
         # visible and unusable; no automatic deletion or adoption occurs.
-        control = root / '.engineering-bootstrap'
+        control = root / '.agentic_engineering_os_px'
         _reject_nominal_link_chain(control, root, label='ownership control')
         control.mkdir(exist_ok=True)
         with FileLock(control / '.wal-ownership-admission.lock', timeout_seconds=10):

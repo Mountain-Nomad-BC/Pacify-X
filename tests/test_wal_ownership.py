@@ -42,7 +42,7 @@ def test_windows_case_alias_cannot_create_another_owner(tmp_path):
         _catalog(tmp_path, [_owner('journals/a', 'State'), _owner('journals/b', 'state')])
 
 
-@pytest.mark.parametrize('path', ['journals', 'journals/a/head', '.engineering-bootstrap/wal-ownership.json'])
+@pytest.mark.parametrize('path', ['journals', 'journals/a/head', '.agentic_engineering_os_px/wal-ownership.json'])
 def test_metadata_cannot_be_claimed_as_target(tmp_path, path):
     with pytest.raises(WalIntegrityError):
         _catalog(tmp_path, [_owner('journals/a', path)])

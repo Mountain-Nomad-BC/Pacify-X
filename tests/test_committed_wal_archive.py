@@ -11,8 +11,8 @@ from runtime.wal_transaction import JsonArtifact, JsonWal
 
 
 def _real_transactions(root):
-    journal = root / '.engineering-bootstrap/operation-bus/wal'
-    target = root / '.engineering-bootstrap/operation-bus/state.json'
+    journal = root / '.agentic_engineering_os_px/operation-bus/wal'
+    target = root / '.agentic_engineering_os_px/operation-bus/state.json'
     WalOwnership.activate(root, [dict(journal=journal.relative_to(root).as_posix(),
         domains=[dict(path=target.relative_to(root).as_posix(), kind='exact')])])
     wal = JsonWal(journal, root)
@@ -51,7 +51,7 @@ def test_archive_requires_actual_bounded_retention_count(tmp_path, keep):
 
 
 def test_legacy_uuid_order_does_not_supply_chronology(tmp_path):
-    committed = tmp_path / '.engineering-bootstrap/operation-bus/wal/committed'
+    committed = tmp_path / '.agentic_engineering_os_px/operation-bus/wal/committed'
     (committed / 'zz').mkdir(parents=True)
     (committed / 'aa').mkdir()
     with pytest.raises(ValueError, match='chronology'):

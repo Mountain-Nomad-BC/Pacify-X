@@ -107,3 +107,31 @@ def test_authority_budget_receiver_and_recovery_boundaries():
         )
     tampered = replace(value, run_id="substituted")
     assert not validate_handoff_packet(tampered, **context())["valid"]
+
+
+def test_generation_bound_acknowledgment_does_not_activate_receiver():
+    value = packet(sender_agent_generation_id="sender-generation-1",
+                   receiver_agent_generation_id="receiver-generation-2",
+                   context_generation_sha256=REV, model_execution_group_id="mesh-1")
+    current = context(expected_receiver_generation_id="receiver-generation-2",
+                      current_context_generation_sha256=REV)
+    ack = acknowledge_handoff(value, decision="accept", reason="fixture verified",
+                              receiver_agent_id="receiver", receiver_revision=REV,
+                              acknowledged_utc="2026-09-04T12:20:00Z")
+    result = consume_handoff(value, ack, **current)
+    assert result["consumable"]
+    assert result["runtime_activation_allowed"] is False
+    for change in ({"expected_receiver_generation_id": "other"},
+                   {"current_context_generation_sha256": "c" * 64}):
+        assert not validate_handoff_packet(value, **{**current, **change})["valid"]
+        with pytest.raises(PermissionError):
+            consume_handoff(value, ack, **{**current, **change})
+    assert not validate_handoff_packet(replace(value, model_execution_group_id="other"),
+                                      **current)["valid"]
+
+
+def test_generation_handoff_requires_distinct_complete_pair():
+    with pytest.raises(ValueError):
+        packet(sender_agent_generation_id="one")
+    with pytest.raises(ValueError):
+        packet(sender_agent_generation_id="one", receiver_agent_generation_id="one")

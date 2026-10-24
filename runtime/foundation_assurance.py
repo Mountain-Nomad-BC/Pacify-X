@@ -239,10 +239,7 @@ def _finish(payload, deadline, hashes=None):
     return payload
 
 
-def _stable(value: object) -> str:
-    return hashlib.sha256(
-        json.dumps(value, sort_keys=True, separators=(",", ":"), default=str).encode()
-    ).hexdigest()
+from runtime.hash_utils import json_ascii_string_hash as _stable
 
 
 @dataclass(frozen=True, slots=True)

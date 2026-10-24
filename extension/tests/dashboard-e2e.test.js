@@ -1186,7 +1186,9 @@ test('Playwright drives every dashboard route and high-risk interaction without 
   }
   await page.goto(`${preview}?surface=settings`); await settled(page);
   await assertContained(page, '.policy-switch', '.surface-settings > .panel:has(.policy-switch)', 'settings-policy-mobile');
-  assert.equal(await page.locator('.guardrail-grid').evaluate(element => getComputedStyle(element).gridTemplateColumns.split(' ').length), 2);
+  const policyGuardrails = page.locator('.surface-settings > .panel:has(.policy-switch) .guardrail-grid');
+  assert.equal(await policyGuardrails.count(), 2);
+  assert.deepEqual(await policyGuardrails.evaluateAll(elements => elements.map(element => getComputedStyle(element).gridTemplateColumns.split(' ').length)), [2, 2]);
   assert.equal(await page.locator('.settings-effective-metrics [data-action="inspectMetric"]').count(), 4);
   await page.locator('.settings-effective-metrics [data-action="inspectMetric"]').first().click();
   await page.locator('#modal-root [role="dialog"]').waitFor({ state: 'visible' });

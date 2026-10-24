@@ -114,6 +114,28 @@ def _identity(path: Path) -> tuple[int, int]:
     return stat.st_dev, stat.st_ino
 
 
+def _is_junction(path: Path) -> bool:
+    """Return True for Windows junctions.
+
+    Uses :meth:`pathlib.Path.is_junction` where available (Python 3.12+) and
+    falls back to reparse-point tag inspection on older interpreters so the
+    containment semantics stay identical across supported runtimes.
+    """
+
+    is_junction = getattr(path, "is_junction", None)
+    if callable(is_junction):
+        return bool(is_junction())
+    # Junctions carry IO_REPARSE_TAG_MOUNT_POINT (0xA0000003); other reparse
+    # tags (OneDrive placeholders, AppExecLinks, symlinks) must stay excluded.
+    try:
+        info = path.lstat()
+    except OSError:
+        return False
+    if not info.st_file_attributes & stat.FILE_ATTRIBUTE_REPARSE_POINT:
+        return False
+    return getattr(info, "st_reparse_tag", 0) == 0xA0000003
+
+
 def bounded_walk(
     root: Path,
     *,
@@ -148,7 +170,7 @@ def bounded_walk(
     if root_is_link and symlink_policy != "follow_within_root":
         raise FilesystemWalkError("symlink_disallowed", root=root, path=root)
     if root_is_link and not (
-        root.is_symlink() or getattr(root, "is_junction", lambda: False)()
+        root.is_symlink() or _is_junction(root)
     ):
         raise FilesystemWalkError("unsupported_reparse_point", root=root, path=root)
     canonical_root = root.resolve(strict=True)
@@ -176,7 +198,7 @@ def bounded_walk(
         if linked and symlink_policy != "follow_within_root":
             raise FilesystemWalkError("symlink_disallowed", root=canonical_root, path=logical)
         if linked and not (
-            physical.is_symlink() or getattr(physical, "is_junction", lambda: False)()
+            physical.is_symlink() or _is_junction(physical)
         ):
             raise FilesystemWalkError("unsupported_reparse_point", root=canonical_root, path=logical)
         if _identity(physical) != expected or not _inside(
@@ -223,7 +245,7 @@ def bounded_walk(
                             raise FilesystemWalkError("symlink_disallowed", root=canonical_root, path=relative_path)
                         if symlink_policy == "skip":
                             continue
-                        if not (physical_path.is_symlink() or getattr(physical_path, "is_junction", lambda: False)()):
+                        if not (physical_path.is_symlink() or _is_junction(physical_path)):
                             raise FilesystemWalkError("unsupported_reparse_point", root=canonical_root, path=relative_path)
                         try:
                             physical_path = physical_path.resolve(strict=True)

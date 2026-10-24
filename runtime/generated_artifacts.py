@@ -79,7 +79,7 @@ def validate_generated_artifacts(root: Path) -> dict[str, Any]:
             (root / "templates/declared_suite").glob("pack-*.json")
         )
         profile_owner = root / "bootstrap/profiles"
-        profile_target = root / ".engineering-bootstrap/profiles"
+        profile_target = root / ".agentic_engineering_os_px/profiles"
         checks = {
             "domain_wrappers": {
                 "valid": domain_owner.is_file()

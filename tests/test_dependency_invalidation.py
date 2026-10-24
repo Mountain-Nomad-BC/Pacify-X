@@ -40,7 +40,15 @@ def _graph():
 def test_live_dependency_authority_covers_every_required_kind() -> None:
     report = validate_dependency_authority(ROOT)
     assert report["valid"], report["errors"]
-    assert report["node_kind_count"] == 11
+    expected = {
+        "source", "skill", "agent", "workflow", "knowledge", "formula",
+        "model_profile", "projection", "test", "section", "release_evidence",
+        "semantic_generation", "provider_config", "tool_config", "policy",
+        "authority", "retrieval_index",
+    }
+    authority = load_dependency_authority(ROOT)
+    assert {row["kind"] for row in authority["node_kinds"]} == expected
+    assert report["node_kind_count"] == len(expected)
 
 
 def test_revision_drift_propagates_transitively_and_retains_history() -> None:

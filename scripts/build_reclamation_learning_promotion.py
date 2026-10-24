@@ -36,11 +36,11 @@ def _load(path: Path) -> dict[str, Any]:
 
 def build(root: Path) -> dict[str, Any]:
     root = root.resolve(strict=True)
-    receipt_root = root / ".engineering-bootstrap/resource-lifecycle/cleanup-receipts"
+    receipt_root = root / ".agentic_engineering_os_px/resource-lifecycle/cleanup-receipts"
     policy = root / ".px/skills/manage-resource-lifecycle/references/lifecycle-policy.md"
     runtime = root / "runtime/resource_lifecycle.py"
     report = root / "registry/adversarial_reaudit_20260813.json"
-    section = root / ".engineering-bootstrap/test-evidence/sections/testing-governance.json"
+    section = root / ".agentic_engineering_os_px/test-evidence/sections/testing-governance.json"
     required = (policy, runtime, report, section)
     if any(not path.is_file() for path in required):
         raise FileNotFoundError("learning promotion prerequisites are incomplete")

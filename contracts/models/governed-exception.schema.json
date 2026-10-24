@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:models:governed-exception",
+  "title": "PX governed-exception",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "px.governed-exception/1.0"
+    },
+    "exception_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "scope": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "generation_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "evidence_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "expires_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "supersession_condition": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "authority_granted": {
+      "const": false
+    },
+    "exception_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "schema_version",
+    "exception_id",
+    "scope",
+    "owner",
+    "reason",
+    "generation_sha256",
+    "evidence_sha256",
+    "expires_utc",
+    "supersession_condition",
+    "authority_granted",
+    "exception_sha256"
+  ]
+}

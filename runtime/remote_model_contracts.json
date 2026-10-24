@@ -1,0 +1,10 @@
+{
+  "schema_version": "px.remote-model-owner-contract/1.0",
+  "kind": "remote-model",
+  "operations": [
+    "chat"
+  ],
+  "request_schema": "px.remote-chat-request/1.0",
+  "owner": "runtime.remote_model_bridge",
+  "production_admission_automatic": false
+}

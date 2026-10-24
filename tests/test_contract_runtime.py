@@ -19,6 +19,42 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class ContractRuntimeTests(unittest.TestCase):
+    def test_conditional_fixture_applies_constraints_to_existing_properties(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            schema = self._write_schema(Path(directory), "conditional.json", {
+                "type": "object", "required": ["state", "allowed"],
+                "properties": {"state": {"const": "fresh"}, "allowed": {"type": "boolean"}},
+                "allOf": [{"if": {"properties": {"state": {"const": "fresh"}}},
+                           "then": {"properties": {"allowed": {"const": True}}}}],
+            })
+            fixture = build_minimal_instance(schema)
+            self.assertIs(fixture["allowed"], True)
+            validate_instance(fixture, schema)
+            with self.assertRaises(ContractValidationError):
+                validate_instance({"state": "fresh", "allowed": False}, schema)
+
+    def test_maximum_string_length_is_enforced_and_generated(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for maximum in (0, 1, 3):
+                schema = self._write_schema(root, "bounded.json", {"type": "string", "maxLength": maximum})
+                validate_instance("x" * maximum, schema)
+                with self.assertRaises(ContractValidationError):
+                    validate_instance("x" * (maximum + 1), schema)
+                validate_instance(build_minimal_instance(schema), schema)
+            schema = self._write_schema(root, "unicode.json", {"type": "string", "maxLength": 1})
+            validate_instance("🐇", schema)
+
+    def test_invalid_string_length_bounds_fail_schema_admission(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            for invalid in (-1, True, 1.5, "3"):
+                schema = self._write_schema(Path(directory), "invalid.json", {"type": "string", "maxLength": invalid})
+                with self.subTest(bound=invalid), self.assertRaises(ValueError):
+                    validate_instance("", schema)
+            schema = self._write_schema(Path(directory), "contradictory.json", {"type": "string", "minLength": 4, "maxLength": 3})
+            with self.assertRaisesRegex(ValueError, "minLength must not exceed maxLength"):
+                validate_instance("xxxx", schema)
+
     def test_json_equality_separates_booleans_from_numbers_recursively(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

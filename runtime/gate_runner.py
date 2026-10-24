@@ -193,7 +193,7 @@ GATES = {
                 "CHANGELOG.md",
                 "docs/**/*.md",
                 "bootstrap/**/*",
-                ".engineering-bootstrap/**/*.json",
+                ".agentic_engineering_os_px/**/*.json",
                 "policies/**/*.json",
                 "runtime/**/*.py",
                 "scripts/**/*.py",

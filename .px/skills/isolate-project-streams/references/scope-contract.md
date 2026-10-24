@@ -16,4 +16,4 @@ The operational workspace root contains `projects/`, `projects_tracking/`, `repo
 
 One session may hold one writable project lease. Distinct sessions may operate distinct projects concurrently; every mutation and memory lookup must resolve the caller's specific session projection rather than a workspace-global current project.
 
-Every registered repository contains `.engineering-bootstrap/workspace-binding.json`. Its workspace ID, project ID, project path, central registry, tracking root, memory namespace, and memory root must match the central projection. Drift denies activation.
+Every registered repository contains `.agentic_engineering_os_px/workspace-binding.json`. Its workspace ID, project ID, project path, central registry, tracking root, memory namespace, and memory root must match the central projection. Drift denies activation.

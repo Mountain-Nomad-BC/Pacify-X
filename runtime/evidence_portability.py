@@ -13,7 +13,7 @@ from .input_files import check_deadline
 
 
 EXTERNAL = re.compile(
-    r"(?:\.\./[^\"'\s,\]]+|(?<![A-Za-z])[A-Za-z]:(?:\\\\|\\|/)[^\"'\r\n]+|\\\\[^\\\s]+\\[^\\\s]+(?:\\[^\"'\r\n]*)?|(?i:file://)[^\"'\s]+|(?i:/mnt/[A-Za-z])/[^\"'\r\n]+|(?-i:/Users)/[^\"'\r\n]+|(?i:/(?:home|tmp|var/tmp|private/var))/[^\"'\r\n]+)",
+    r"(?:\.\./[^\"'\s,\]]+|(?<![A-Za-z])[A-Za-z]:(?:\\\\|\\|/)[^\"'\r\n]+|\\\\[^\\\s]+\\[^\\\s]+(?:\\[^\"'\r\n]*)?|(?i:file://)[^\"'\s]+|(?<![A-Za-z0-9_./-])(?i:/mnt/[A-Za-z])/[^\"'\r\n]+|(?<![A-Za-z0-9_./-])(?-i:/Users)/[^\"'\r\n]+|(?<![A-Za-z0-9_./-])(?i:/(?:home|tmp|var/tmp|private/var))/[^\"'\r\n]+)",
 )
 STRUCTURED_ROOTS = (
     "evidence",
@@ -55,6 +55,57 @@ PATH_KEYS = {
 ALLOWED_URI_SCHEMES = {"https", "http", "urn"}
 
 
+def _validated_source_reference_ids(root: Path, relative: str, text: str) -> set[str]:
+    """Recognize observed identifiers, never suppress actual external locators.
+
+    The native HTML owner embeds an authored-file-relative resource spelling in
+    its object ID. Validate that exact observation against the source owner and
+    require the referenced resource to remain inside the project.
+    """
+    if relative != "registry/semantic_entity_index.json":
+        return set()
+    from .semantic_authored_sources import MAX_SOURCE_BYTES, extract_html
+    try:
+        payload = json.loads(text)
+    except (ValueError, TypeError):
+        return set()
+    if type(payload) is not dict or payload.get("schema_version") != "px.semantic-coverage/1.0":
+        return set()
+    entities = payload.get("entities")
+    if type(entities) is not list:
+        return set()
+    recognized = set()
+    observed = {}
+    for entity in entities:
+        if type(entity) is not dict:
+            continue
+        identifier = entity.get("object_id")
+        if type(identifier) is not str:
+            continue
+        match = re.fullmatch(r"source:reference:([^:]+):ref:([1-9][0-9]*):(.+)", identifier)
+        if match is None:
+            continue
+        source_name, _, reference = match.groups()
+        source = Path(source_name)
+        if source.is_absolute() or ".." in source.parts or source.suffix.lower() not in {".html", ".htm"}:
+            continue
+        try:
+            source_path = (root / source).resolve(strict=True)
+            source_path.relative_to(root)
+            target = (source_path.parent / reference).resolve(strict=True)
+            target.relative_to(root)
+            if not target.is_file() or source_path.stat().st_size > MAX_SOURCE_BYTES:
+                continue
+            if source_name not in observed:
+                observed[source_name] = {item.key for item in extract_html(
+                    source_path.read_text(encoding="utf-8"), source_name)}
+            if identifier in observed[source_name]:
+                recognized.add(identifier)
+        except (OSError, ValueError, UnicodeError):
+            continue
+    return recognized
+
+
 def rewrite_reference_literals(value: object, replacements: dict[str, str]) -> object:
     """Recursively rewrite inert source literals without changing record shape."""
     if isinstance(value, str):
@@ -87,6 +138,7 @@ def discover_historical_references(
     root: Path, *, structured_roots: Iterable[str] = PRODUCT_STRUCTURED_ROOTS
 ) -> list[dict[str, Any]]:
     root = root.resolve()
+    from .source_boundary import RUNTIME_STATE, classify_path
     records = []
     for directory in structured_roots:
         for path in sorted((root / directory).rglob("*"), key=lambda item: item.as_posix().casefold()):
@@ -99,10 +151,22 @@ def discover_historical_references(
             if path == root / "registry/historical_external_references.json":
                 continue
             relative = path.relative_to(root).as_posix()
+            # Native host admissions and mutable runtime projections are outside
+            # the canonical clean product. Their host paths are not portable
+            # product locators; this does not migrate or authenticate that state.
+            if classify_path(relative)["classification"] == RUNTIME_STATE:
+                continue
             if any(relative.startswith(prefix) for prefix in EXCLUDED_PATH_PREFIXES):
                 continue
             text = path.read_text(encoding="utf-8", errors="replace")
+            source_reference_ids = _validated_source_reference_ids(root, relative, text)
             for line_no, line in enumerate(text.splitlines(), 1):
+                # Match only the complete object_id field. Nearby locator fields
+                # remain subject to the same scanner, even on the same line.
+                for match in reversed(list(re.finditer(r'"object_id"\s*:\s*("(?:[^"\\]|\\.)*")', line))):
+                    if json.loads(match.group(1)) in source_reference_ids:
+                        start, end = match.span(1)
+                        line = line[:start] + '""' + line[end:]
                 for locator in portability_findings(line):
                     locator = locator.rstrip("`)]}>,.")
                     if locator.startswith("../"):
@@ -214,4 +278,3 @@ def stream_portability_findings(chunks, *, deadline):
     scan(carry + decoder.decode(b"", final=True), final=True, context=has_context)
     check_deadline(deadline)
     return tuple(sorted(found))
-

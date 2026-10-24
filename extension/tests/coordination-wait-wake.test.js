@@ -94,7 +94,7 @@ test('private mailbox payload cannot cross remote/browser transport without expl
     assert.equal(JSON.stringify(readCoordination(workspace)).includes('private detail'), false);
     assert.equal(JSON.stringify(readCoordination(workspace)).includes('msg-fixed'), false);
     assert.equal(JSON.stringify(readCoordination(workspace)).includes('secret-ref'), false);
-    const storedHandoff = fs.readFileSync(path.join(workspace, '.engineering-bootstrap', 'coordination', 'handoff.json'), 'utf8');
+    const storedHandoff = fs.readFileSync(path.join(workspace, '.agentic_engineering_os_px', 'coordination', 'handoff.json'), 'utf8');
     assert.equal(storedHandoff.includes('msg-fixed'), false);
     assert.equal(storedHandoff.includes('secret-ref'), false);
     assert.equal(storedHandoff.includes('private detail'), false);

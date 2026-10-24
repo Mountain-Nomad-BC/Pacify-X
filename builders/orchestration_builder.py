@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from typing import Iterable, Mapping
 
 try:  # installed package
-    from engineering_bootstrap.graphs import validate_orchestration
+    from agentic_engineering_os_px.graphs import validate_orchestration
 except ImportError:  # source checkout
     from runtime.graphs import validate_orchestration
 

@@ -20,7 +20,9 @@ const systemSurfaces = fs.readFileSync(path.join(root, 'media', 'dashboard', '45
 const observabilitySurfaces = fs.readFileSync(path.join(root, 'media', 'dashboard', '46-observability-surfaces.js'), 'utf8');
 const graphSurface = fs.readFileSync(path.join(root, 'media', 'dashboard', '48-graph-surface.js'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'media', 'dashboard.css'), 'utf8');
-const extension = fs.readFileSync(path.join(root, 'src', 'extension.js'), 'utf8');
+const extension = fs.readFileSync(path.join(root, 'src', 'extension.js'), 'utf8') + fs.readFileSync(path.join(root, 'src', 'hostModelExecution.js'), 'utf8');
+const hostModelExecution = fs.readFileSync(path.join(root, 'src', 'hostModelExecution.js'), 'utf8');
+const dataControlHost = fs.readFileSync(path.join(root, 'src', 'dataControlHost.js'), 'utf8');
 const sidebarView = fs.readFileSync(path.join(root, 'src', 'sidebarView.js'), 'utf8');
 const activityObservability = fs.readFileSync(path.join(root, 'src', 'activityObservability.js'), 'utf8');
 const runtimeBridge = fs.readFileSync(path.join(root, 'src', 'runtimeBridge.js'), 'utf8');
@@ -61,8 +63,8 @@ test('an explicit forced snapshot refresh survives an overlapping non-forced pub
 
 test('admitted host tools reach the live interface, policy, target, budget, and receipt gates', () => {
   assert.doesNotMatch(extension, /Direct VS Code host tools are refused until/);
-  assert.match(extension, /attestHostToolInterface/);
-  assert.match(extension, /host_tool_interface_sha256/);
+  assert.match(hostModelExecution, /attestHostToolInterface/);
+  assert.match(hostModelExecution, /host_tool_interface_sha256/);
   assert.match(extension, /enforceAdmittedHostToolPolicy\(admitted, call\.input\)/);
   assert.match(extension, /fs\.realpathSync\.native/);
   assert.match(extension, /escapes its admitted physical scope through a link or reparse point/);
@@ -71,6 +73,11 @@ test('admitted host tools reach the live interface, policy, target, budget, and 
   assert.doesNotMatch(extension, /input: call\.input/);
   assert.match(extension, /toolCalls \+ calls\.length > 8/);
   assert.match(extension, /vscode\.lm\.invokeTool/);
+});
+
+test('subject data control command is registered by its host owner and activated by the extension', () => {
+  assert.match(dataControlHost, /registerCommand\('pacifyX\.manageSubjectData'/);
+  assert.match(extension, /registerDataControlCommand\(vscode, context, bridge\)/);
 });
 
 test('dashboard restart restoration and predecessor-bound draft recovery have live owners', () => {

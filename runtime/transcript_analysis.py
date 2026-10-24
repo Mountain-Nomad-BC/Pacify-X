@@ -43,12 +43,7 @@ def _sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def _stable(value: object) -> str:
-    return hashlib.sha256(
-        json.dumps(
-            value, sort_keys=True, separators=(",", ":"), ensure_ascii=False
-        ).encode("utf-8")
-    ).hexdigest()
+from runtime.hash_utils import json_utf8_hash as _stable
 
 
 def _safe_id(value: str, label: str) -> str:
@@ -84,7 +79,7 @@ def load_profile(
     """Load explicit/project configuration; never commit a host-specific default."""
     candidates = [
         profile,
-        project / ".engineering-bootstrap" / "transcript-analysis.json"
+        project / ".agentic_engineering_os_px" / "transcript-analysis.json"
         if project
         else None,
     ]

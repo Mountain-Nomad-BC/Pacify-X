@@ -1,8 +1,10 @@
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor
+import hashlib
 import json
 
 from runtime.operational_gap_ledger import (
+    DELTA_SEMANTICS_INCREMENTAL,
     append_event,
     migrate_ledger_segments,
     read_events,
@@ -53,7 +55,22 @@ def test_large_snapshot_append_uses_content_addressed_delta_without_rewrite(tmp_
     )
     assert (tmp_path / "registry/operational_gap_ledger.snapshot.json").read_bytes() == before
     head = json.loads((tmp_path / "registry/operational_gap_ledger.head.json").read_text(encoding="utf-8"))
-    assert head["delta_projection"]["authoritative"] is False
+    # Under the PX-GAP-0004 lifecycle invariant the delta is INCREMENTAL and
+    # explicitly parented, so the head carries delta_chain rather than the retired
+    # cumulative delta_projection key. The original property under test still holds
+    # and is now stated strictly: the published snapshot is never the authoritative
+    # hot projection while a delta chain is live, the chain is anchored to the base
+    # snapshot digest, and the cumulative shape must not reappear.
+    chain = head["delta_chain"]
+    assert chain["semantics"] == DELTA_SEMANTICS_INCREMENTAL
+    assert chain["authoritative"] is False
+    assert "delta_projection" not in head, "cumulative delta shape must not reappear"
+    assert chain["base_snapshot_sha256"] == hashlib.sha256(before).hexdigest()
+    assert chain["segment_count"] == len(chain["segments"]) >= 1
+    for segment in chain["segments"]:
+        assert segment["event_count"] >= 1
+        assert segment["first_sequence"] == segment["last_sequence"] - segment["event_count"] + 1
+    assert sum(segment["event_count"] for segment in chain["segments"]) == head["event_count"] - 1
     assert ledger.read_snapshot(tmp_path)["event_count"] == 2
 
 

@@ -1,0 +1,160 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:projection-status",
+  "title": "PX Observed Projection Status",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "projection_id",
+    "state",
+    "reasons",
+    "stale_dependencies",
+    "serve_allowed",
+    "rebuild_required",
+    "recorded_vector_sha256",
+    "current_vector_sha256",
+    "purpose",
+    "policy_authority"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "px.projection-status/1.0"
+    },
+    "projection_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "state": {
+      "enum": [
+        "fresh",
+        "degraded",
+        "blocked"
+      ]
+    },
+    "reasons": {
+      "type": "array",
+      "maxItems": 32,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 512
+      }
+    },
+    "stale_dependencies": {
+      "type": "array",
+      "maxItems": 9,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "source_revision",
+          "semantic_generation",
+          "projection_generation",
+          "runtime_epoch",
+          "model_fabric_generation",
+          "retrieval_generation",
+          "authority_revision",
+          "policy_revision",
+          "execution_graph_revision"
+        ]
+      }
+    },
+    "serve_allowed": {
+      "type": "boolean"
+    },
+    "rebuild_required": {
+      "type": "boolean"
+    },
+    "recorded_vector_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "current_vector_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "purpose": {
+      "enum": [
+        "read_only",
+        "execute"
+      ]
+    },
+    "policy_authority": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1,
+      "maxLength": 512
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "const": "fresh"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "serve_allowed": {
+            "const": true
+          },
+          "rebuild_required": {
+            "const": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "const": "degraded"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "serve_allowed": {
+            "const": true
+          },
+          "rebuild_required": {
+            "const": true
+          },
+          "purpose": {
+            "const": "read_only"
+          },
+          "policy_authority": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "const": "blocked"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "serve_allowed": {
+            "const": false
+          },
+          "rebuild_required": {
+            "const": true
+          }
+        }
+      }
+    }
+  ],
+  "description": "Current observed dependency comparison. Default fail closed; explicitly authorized degraded metadata reads cannot authorize execution."
+}

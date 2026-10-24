@@ -332,7 +332,7 @@ def test_model_count_precedes_per_model_validation(tmp_path, monkeypatch):
 
 def test_project_profile_size_precedes_open(tmp_path, monkeypatch):
     root = _startup_root(tmp_path)
-    folder = root / ".engineering-bootstrap"
+    folder = root / ".agentic_engineering_os_px"
     folder.mkdir()
     path = folder / "project.toml"
     with path.open("wb") as stream:

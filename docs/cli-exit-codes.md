@@ -21,8 +21,8 @@ JSON fields keep separate meanings: `evaluated` says the decision procedure ran,
 Run gates with receipts outside the product tree:
 
 ```powershell
-engineering-bootstrap gates run --receipt-dir <GATE_RECEIPT_DIR>
-engineering-bootstrap gates finalize --receipt-dir <GATE_RECEIPT_DIR>
+agentic-engineering-os-px gates run --receipt-dir <GATE_RECEIPT_DIR>
+agentic-engineering-os-px gates finalize --receipt-dir <GATE_RECEIPT_DIR>
 ```
 
 Each gate receipt is sealed to that gate's declared input hashes and its dependency receipts. A current passing receipt is reused. A failed or stale gate reruns without rerunning unrelated current gates. Finalization executes nothing; it succeeds only when every registered gate has a current, untampered passing receipt.

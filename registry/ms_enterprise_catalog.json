@@ -6,7 +6,7 @@
     "policy": "Enterprise metadata, targets, identities, adapters, receipts, and lifecycle state are separate from local project/session/state/system memory and from provider billing identity.",
     "id_prefix": "ms-enterprise/",
     "state_schema": "px.ms-enterprise.state/1.0",
-    "state_root": ".engineering-bootstrap/enterprise",
+    "state_root": ".agentic_engineering_os_px/enterprise",
     "credential_storage": "external-secret-store-only",
     "canonical_memory_import": "explicit-reviewed-promotion-only"
   },

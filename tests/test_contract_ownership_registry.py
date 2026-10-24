@@ -1,9 +1,64 @@
 from pathlib import Path
 
 from scripts.build_contract_ownership_registry import build
+from tests.test_studio_operation_mirror_custody import native
 
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_contract_cli_uses_native_publication_and_settlement(native, monkeypatch) -> None:
+    import hashlib
+    import json
+    from scripts import build_contract_ownership_registry as cli
+    from runtime.effect_intent import EffectIntentLedger
+    from runtime.scope_lease import ScopeLeaseStore
+
+    root, admission = native
+    (root / "contracts").mkdir()
+    monkeypatch.setattr(cli, "ROOT", root)
+    monkeypatch.setattr("sys.argv", ["contract-owners", "--admission-event-id", admission])
+    assert cli.main() == 0
+    image = (root / "registry/contract_ownership.json").read_bytes()
+    assert json.loads(image) == build(root)
+    assert any(row["state"] == "committed" and row["result_sha256"] == hashlib.sha256(image).hexdigest()
+               for row in EffectIntentLedger(root)._load()["intents"])
+    assert ScopeLeaseStore(root).active(effect="write") == ()
+
+
+def test_remote_profile_has_actual_runtime_owner_and_packaged_dependencies() -> None:
+    import tomllib
+
+    result = build(ROOT)
+    record = next(item for item in result["records"]
+                  if item["path"] == "contracts/operations/remote-provider-profile.schema.json")
+    assert record["owner"] == "runtime/remote_provider_profiles.py"
+    assert record["enforcement"] == "signed_remote_profile_runtime_boundary"
+    for consumer in ("runtime/remote_provider_profiles.py", "runtime/group_provider_adapters.py",
+                     "runtime/remote_model_bridge.py"):
+        assert consumer in record["consumers"]
+        assert (ROOT / consumer).is_file()
+    manifest = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
+    resources = manifest["tool"]["setuptools"]["package-data"]["agentic_engineering_os_px"]
+    for resource in ("remote_model_contracts.json", "remote_service_protocols.json"):
+        assert resource in resources and (ROOT / "runtime" / resource).is_file()
+
+
+def test_generation_contract_ownership_survives_canonical_regeneration() -> None:
+    import json
+
+    generated = build(ROOT)
+    published = json.loads((ROOT / "registry/contract_ownership.json").read_text(encoding="utf-8"))
+    for name, owner, consumer in (
+        ("context-generation-vector", "runtime/context_generation.py", "runtime/projection_gate.py"),
+        ("projection-status", "runtime/projection_gate.py", "runtime/librarian_semantic_map.py"),
+    ):
+        path = f"contracts/{name}.schema.json"
+        record = next(item for item in generated["records"] if item["path"] == path)
+        assert record["owner"] == owner
+        assert consumer in record["consumers"]
+        assert "runtime/librarian_semantic_map.py" in record["producers"]
+        assert record == next(item for item in published["records"] if item["path"] == path)
 
 
 def test_semantic_memory_envelope_has_explicit_runtime_ownership() -> None:

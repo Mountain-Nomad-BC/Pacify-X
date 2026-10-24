@@ -1,0 +1,106 @@
+{
+  "schema_version": "px.rollout-verification/1",
+  "certified": false,
+  "focused_backend": {
+    "passed": 100,
+    "failed": 0
+  },
+  "bridge_studio": {
+    "passed": 29,
+    "failed": 0
+  },
+  "overlay_regressions": {
+    "passed": 10,
+    "failed": 0
+  },
+  "extension_check_exit": 0,
+  "encoding_after_repair_exit": 0,
+  "initial_extension_unit": {
+    "passed": 897,
+    "failed": 4,
+    "total": 901,
+    "note": "Failed on broken local venv before bridge override repair; rerun pending."
+  },
+  "section_gate": "Initial attempt blocked; subsequent process running, originating session superseded: not accepted certification proof.",
+  "logs": {
+    "bridge-studio-after-repair.log": {
+      "sha256": "5b681995024999ce31d7c99f7dbad405d4126db49d3ddc3d0267490e354bf96a",
+      "size": 5826,
+      "custody": "candidate local; full logs not certified release proof"
+    },
+    "certification-readiness.log": {
+      "sha256": "86eff2c11eb6b5f5d852ae22c19e88f5d69442f2cad919055b29a10a2bf46683",
+      "size": 7248,
+      "custody": "candidate local; full logs not certified release proof"
+    },
+    "encoding-after-repair.log": {
+      "sha256": "33d17038f6c0c8ce6c90fad9fe35c9f2c20d591f714ef5dc3374032f9aff554a",
+      "size": 1194,
+      "custody": "candidate local; full logs not certified release proof"
+    },
+    "encoding-integrity.log": {
+      "sha256": "bd08e1a21120ea283186c6d20933026c6d7c34377301a1c41356a6ccb14d10fa",
+      "size": 1906,
+      "custody": "candidate local; full logs not certified release proof"
+    },
+    "extension-check.log": {
+      "sha256": "9abbc11c08545667b4a8a115e6f6c84891741d9282de2e46cdb082931e0be332",
+      "size": 13276,
+      "custody": "candidate local; full logs not certified release proof"
+    },
+    "extension-unit.log": {
+      "sha256": "a94a9a6e9620bd6ce1acaf659ac5e8806c7d12b16e9b913d594f1497fe20a132",
+      "size": 177218,
+      "custody": "candidate local; full logs not certified release proof"
+    },
+    "focused-after-repair.log": {
+      "sha256": "02584df2cf7d47cdd6d9a6fcd95c6f5a7aa9e589035ac8b573dcbbc31fa06903",
+      "size": 368,
+      "custody": "candidate local; full logs not certified release proof"
+    },
+    "focused-baseline.log": {
+      "sha256": "94ee9ab8718741a325baa2550192aa138dd926dc432905e928f594d7a7fe33b0",
+      "size": 10176,
+      "custody": "candidate local; full logs not certified release proof"
+    },
+    "processing-order.log": {
+      "sha256": "761eb2d846c861a5861ed5e711284a7f57f2ed179a7792f0a67d239fdc2a38a7",
+      "size": 1522,
+      "custody": "candidate local; full logs not certified release proof"
+    },
+    "runtime-section-after-repair.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0,
+      "custody": "candidate local; full logs not certified release proof"
+    },
+    "runtime-section.log": {
+      "sha256": "c148c06f48eda84330c04fed660db5a3e51215500b94ef2ab60edcf06c9ab104",
+      "size": 476,
+      "custody": "candidate local; full logs not certified release proof"
+    },
+    "succession-repair.log": {
+      "sha256": "bab2a2958ece7da9fcfe579d9c148d162ed190ed753f0e32ccb68fb88d45846f",
+      "size": 12920,
+      "custody": "candidate local; full logs not certified release proof"
+    },
+    "extension-unit-after-repair.log": {
+      "sha256": "588b44c4b32050bd7bf7725dd726dba9bc43758f359a6d25a4e36ae7869c6ed7",
+      "size": 172060,
+      "custody": "candidate local; full logs not certified release proof"
+    },
+    "integrated-focused.log": {
+      "sha256": "6b34624453f6cbaeda50dceb0839ac240247e7450e3f360ae6d184cf2d8253c0",
+      "size": 368,
+      "custody": "candidate local; full logs not certified release proof"
+    }
+  },
+  "extension_unit_after_repair": {
+    "passed": 902,
+    "failed": 0,
+    "skipped": 0
+  },
+  "integrated_focused": {
+    "passed": 111,
+    "failed": 0
+  }
+}

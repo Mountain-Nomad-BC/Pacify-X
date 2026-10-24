@@ -170,7 +170,7 @@ def _completion(root: Path) -> dict[str, Any]:
     baseline = dict(baseline) if isinstance(baseline, Mapping) else {}
     runtime_path = (
         root
-        / ".engineering-bootstrap"
+        / ".agentic_engineering_os_px"
         / "runtime-core"
         / "completion_status.json"
     )
@@ -309,7 +309,7 @@ def _enterprise_rows(root: Path, field: str, catalog_kind: str) -> list[dict[str
 
 
 def _coordination(root: Path) -> dict[str, Any]:
-    base = root / ".engineering-bootstrap" / "coordination"
+    base = root / ".agentic_engineering_os_px" / "coordination"
     state = _read_json(base / "state.json", {})
     if not isinstance(state, Mapping) or not state:
         return {
@@ -553,12 +553,12 @@ def _knowledge_core(root: Path, sources: list[dict[str, Any]]) -> dict[str, Any]
             invalid.append({"id": row["id"], "reason": reason, "location": relative})
     proposal_heads = list(
         root.glob(
-            ".engineering-bootstrap/studios/knowledge/proposals/*/head.json"
+            ".agentic_engineering_os_px/studios/knowledge/proposals/*/head.json"
         )
     )
     canonical_heads = list(
         root.glob(
-            ".engineering-bootstrap/studios/knowledge/canonical/*/head.json"
+            ".agentic_engineering_os_px/studios/knowledge/canonical/*/head.json"
         )
     )
     return {
@@ -676,7 +676,7 @@ def _hardware(
         )
     cache_path = (
         root
-        / ".engineering-bootstrap"
+        / ".agentic_engineering_os_px"
         / "diagnostics"
         / "hardware-dashboard-cache.json"
         if root is not None
@@ -807,7 +807,7 @@ def _turbovec() -> dict[str, Any]:
 
 
 def _placement_runtime(root: Path, hardware: Mapping[str, Any]) -> dict[str, Any]:
-    artifact_root = root / ".engineering-bootstrap" / "runtime-core" / "placement"
+    artifact_root = root / ".agentic_engineering_os_px" / "runtime-core" / "placement"
     paths = (
         sorted(
             artifact_root.glob("*.json"),
@@ -881,13 +881,13 @@ def _provider_activity(root: Path) -> list[dict[str, Any]]:
         for row in adapter_rows
         if isinstance(row, Mapping) and row.get("provider_id")
     }
-    budget_root = root / ".engineering-bootstrap" / "provider-budget"
+    budget_root = root / ".agentic_engineering_os_px" / "provider-budget"
     ledger_path = budget_root / "ledger.json"
     try:
         from .provider_budget import ProviderBudgetLedger
 
         state = ProviderBudgetLedger(
-            root, budget_root, root / ".engineering-bootstrap"
+            root, budget_root, root / ".agentic_engineering_os_px"
         ).snapshot()
         ledger_error = None
     except Exception as error:
@@ -1242,7 +1242,7 @@ def _project_map_drilldown(project: Path) -> dict[str, Any]:
         value = payload.get(key, []) if isinstance(payload, Mapping) else []
         return len(value) if isinstance(value, list) else 0
 
-    map_dir = project / ".engineering-bootstrap" / "project-map"
+    map_dir = project / ".agentic_engineering_os_px" / "project-map"
     manifest = _read_json(map_dir / "project-manifest.json", {})
     receipt = _read_json(map_dir / "map-receipt.json", {})
     risks = _read_json(map_dir / "risk-and-gap-map.json", {})
@@ -1251,7 +1251,7 @@ def _project_map_drilldown(project: Path) -> dict[str, Any]:
     tests = _read_json(map_dir / "test-coverage-map.json", {})
     service_route = _project_service_route_map(manifest, topology)
     test_links = _project_test_link_map(tests)
-    history_root = project / ".engineering-bootstrap" / "project-map-history"
+    history_root = project / ".agentic_engineering_os_px" / "project-map-history"
     history = []
     if history_root.is_dir():
         for archived in sorted(
@@ -1937,20 +1937,20 @@ def _build_snapshot_admitted(
     ]
     workflow_receipts = list(
         project.glob(
-            ".engineering-bootstrap/studios/workflows/*/revisions/*/admission-receipt.json"
+            ".agentic_engineering_os_px/studios/workflows/*/revisions/*/admission-receipt.json"
         )
     )
     workflow_runs = list(
         project.glob(
-            ".engineering-bootstrap/studios/workflows/*/revisions/*/runs/*.json"
+            ".agentic_engineering_os_px/studios/workflows/*/revisions/*/runs/*.json"
         )
     )
     workflow_runs.extend(
-        project.glob(".engineering-bootstrap/studios/workflows/runs/run-*.json")
+        project.glob(".agentic_engineering_os_px/studios/workflows/runs/run-*.json")
     )
     agent_session_heads = list(
         project.glob(
-            ".engineering-bootstrap/studios/agents/sessions/run-*/head.json"
+            ".agentic_engineering_os_px/studios/agents/sessions/run-*/head.json"
         )
     )
     runnable_revisions = sum(
@@ -2099,7 +2099,7 @@ def _build_snapshot_admitted(
         "agents_runnable_revisions": sum(
             1
             for path in project.glob(
-                ".engineering-bootstrap/studios/agents/*/revisions/*/admission-receipt.json"
+                ".agentic_engineering_os_px/studios/agents/*/revisions/*/admission-receipt.json"
             )
             if _read_json(path, {}).get("decision") == "admitted"
         ),
@@ -2295,7 +2295,7 @@ def _build_snapshot_admitted(
             },
             "coordination": {
                 "class": "LIVE" if coordination.get("instrumented") else "UNAVAILABLE",
-                "source": ".engineering-bootstrap/coordination",
+                "source": ".agentic_engineering_os_px/coordination",
             },
             "runtime": {
                 "class": "LIVE",
@@ -2816,7 +2816,7 @@ def query_graph(
         project = (project or root).resolve()
         source_path = (
             project
-            / ".engineering-bootstrap"
+            / ".agentic_engineering_os_px"
             / "project-map"
             / "architecture-graph.json"
         )

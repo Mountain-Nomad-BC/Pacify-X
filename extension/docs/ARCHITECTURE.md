@@ -6,7 +6,7 @@ VS Code / Antigravity / compatible IDE
   └─ extension host
       ├─ PxBridge ───────────────> runtime.dashboard_api
       │                            canonical snapshots + paged catalogs
-      ├─ CoordinationManager ────> <project>/.engineering-bootstrap/coordination/
+      ├─ CoordinationManager ────> <project>/.agentic_engineering_os_px/coordination/
       │                            DAG + leases + claims + events + handoffs + memory
       ├─ ContextBridge ──────────> Codex CLI (explicit; ChatGPT auth; API keys stripped)
       ├─ CleanupManager ─────────> admitted generated caches + retained receipts
@@ -24,7 +24,7 @@ Startup reads one compact snapshot. Detailed agents, skills, tools, workflows, a
 
 Environment discovery follows the same bounded-startup rule. `current.json` contains counts, ontology, boundaries, hashes, and dataset descriptors only. The Workflows Environment Map and MCP load one hash-verified subject or per-extension contract at a time. The relation chain is `resource → capabilities → interface → requirements → effects → conflicts → policy → state`; manifest gaps stay unknown.
 
-MS+Enterprise uses a second, explicitly namespaced catalog and project state model under `.engineering-bootstrap/enterprise/`. It does not reuse local agent IDs, skill IDs, connector state, authentication identity, billing identity, coordination records, or memory records. Offline metadata enablement cannot enable a connector. Cloud work requires a future admitted adapter and explicit target, authentication, billing, egress, mutation, cost, and receipt gates.
+MS+Enterprise uses a second, explicitly namespaced catalog and project state model under `.agentic_engineering_os_px/enterprise/`. It does not reuse local agent IDs, skill IDs, connector state, authentication identity, billing identity, coordination records, or memory records. Offline metadata enablement cannot enable a connector. Cloud work requires a future admitted adapter and explicit target, authentication, billing, egress, mutation, cost, and receipt gates.
 
 The default-off billable policy is separate from credentials and connectors. Enabling its master switch changes policy metadata only. A proposal must still satisfy provider allowlisting, local-first routing, task/session/day cost limits, token and GPU/CPU/RAM ceilings, escalation confidence, cache/reuse policy, and any required fresh human approval. This release does not implement an external billable executor.
 

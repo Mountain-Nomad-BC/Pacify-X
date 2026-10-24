@@ -120,7 +120,7 @@ function stageTeamPack(workspaceRoot, preview, options = {}) {
     selected_count: selected.size, staged_count: staged.length, staged, canonical_registry_mutated: false,
     next_gate: 'Pacify-X provenance, license, collision, contract, effect, and skill admission review'
   };
-  const directory = path.join(workspace, '.engineering-bootstrap', 'coordination', 'imports');
+  const directory = path.join(workspace, '.agentic_engineering_os_px', 'coordination', 'imports');
   fs.mkdirSync(directory, { recursive: true });
   const output = path.join(directory, `${receipt.import_id}.json`); const temporary = `${output}.${process.pid}.tmp`;
   fs.writeFileSync(temporary, `${JSON.stringify(receipt, null, 2)}\n`, { encoding: 'utf8', flag: 'wx' }); fs.renameSync(temporary, output);

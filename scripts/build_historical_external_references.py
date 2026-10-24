@@ -2,12 +2,14 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 from pathlib import Path
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+from runtime.guarded_registry_projection import publish_guarded_registry_projection
 from runtime.evidence_portability import (  # noqa: E402
     PRODUCT_STRUCTURED_ROOTS,
     discover_historical_references,
@@ -15,6 +17,9 @@ from runtime.evidence_portability import (  # noqa: E402
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--admission-event-id", required=True)
+    args = parser.parse_args()
     records = discover_historical_references(
         ROOT, structured_roots=PRODUCT_STRUCTURED_ROOTS
     )
@@ -23,11 +28,8 @@ def main() -> int:
         "reference_count": len(records),
         "records": records,
     }
-    (ROOT / "registry/historical_external_references.json").write_text(
-        json.dumps(output, indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
-        newline="\n",
-    )
+    publish_guarded_registry_projection(ROOT, "registry/historical_external_references.json", output,
+        admission_event_id=args.admission_event_id)
     print(json.dumps({"valid": True, "reference_count": len(records)}))
     return 0
 

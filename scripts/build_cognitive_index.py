@@ -15,23 +15,57 @@ from runtime.cognitive_core.index_builder import (
 )
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
-    args = parser.parse_args()
+    parser.add_argument("--admission-event-id")
+    args = parser.parse_args(argv)
     payload = build_cognitive_index(args.root)
     validation = validate_cognitive_index(args.root, payload)
     if not validation["valid"]:
         print(json.dumps(validation, indent=2))
         return 1
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(
-        json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
-        encoding="utf-8",
-        newline="\n",
+    admission = (args.admission_event_id or "").strip()
+    if not admission:
+        print(json.dumps({
+            "valid": False,
+            "errors": [
+                "cognitive map publication requires an explicit current work admission"
+            ],
+        }, indent=2))
+        return 1
+    from runtime.guarded_registry_projection import (
+        GuardedProjectionError,
+        publish_guarded_registry_projection,
     )
-    print(json.dumps(validation, indent=2))
+
+    root = args.root.resolve(strict=True)
+    output = args.output
+    if output.is_absolute():
+        try:
+            output = output.resolve().relative_to(root)
+        except ValueError:
+            print(json.dumps({
+                "valid": False,
+                "errors": ["cognitive map output must stay inside the project root"],
+            }, indent=2))
+            return 1
+    relative = Path(str(output).replace("\\", "/")).as_posix()
+    if not (relative.startswith("registry/") and relative.endswith(".json")):
+        print(json.dumps({
+            "valid": False,
+            "errors": ["cognitive map output must be a registry JSON projection"],
+        }, indent=2))
+        return 1
+    try:
+        publication = publish_guarded_registry_projection(
+            root, relative, payload, admission_event_id=admission,
+        )
+    except GuardedProjectionError as error:
+        print(json.dumps({"valid": False, "errors": [str(error)]}, indent=2))
+        return 1
+    print(json.dumps({**validation, "publication": publication}, indent=2))
     return 0
 
 

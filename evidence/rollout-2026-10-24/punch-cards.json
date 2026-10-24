@@ -1,0 +1,141 @@
+{
+  "schema_version": "px.day1-rollout-plan/1",
+  "date": "2026-10-24",
+  "release_certified": false,
+  "cards": [
+    {
+      "id": "D1-01",
+      "title": "\u00e2\u20ac\u201d Custody and reconciliation (owner: repository integration)",
+      "status": "integration_in_progress",
+      "evidence": [
+        "source-comparison.json",
+        "integration-plan.json"
+      ]
+    },
+    {
+      "id": "D1-02",
+      "title": "\u00e2\u20ac\u201d Real intake and historical obligations (owner: audit/control plane)",
+      "status": "open",
+      "evidence": []
+    },
+    {
+      "id": "D1-03",
+      "title": "\u00e2\u20ac\u201d Namespace and installed-package migration (owner: runtime/package)",
+      "status": "open",
+      "evidence": []
+    },
+    {
+      "id": "D1-04",
+      "title": "\u00e2\u20ac\u201d Real successor authorization (owner: succession/trusted evidence)",
+      "status": "partially_implemented_focused_pass",
+      "evidence": [
+        "focused-after-repair.log"
+      ]
+    },
+    {
+      "id": "D1-05",
+      "title": "\u00e2\u20ac\u201d Complete revision lifecycle (owner: revision campaign)",
+      "status": "open",
+      "evidence": []
+    },
+    {
+      "id": "D1-06",
+      "title": "\u00e2\u20ac\u201d Native producer custody and workflow fencing (owner: effect owners)",
+      "status": "open",
+      "evidence": []
+    },
+    {
+      "id": "D1-07",
+      "title": "\u00e2\u20ac\u201d Portable interpreter and environment (owner: extension/release environment)",
+      "status": "partially_implemented_focused_pass",
+      "evidence": [
+        "bridge-studio-after-repair.log"
+      ]
+    },
+    {
+      "id": "D1-08",
+      "title": "\u00e2\u20ac\u201d Provider/model fabric and offline behavior (owner: providers)",
+      "status": "open",
+      "evidence": []
+    },
+    {
+      "id": "D1-09",
+      "title": "\u00e2\u20ac\u201d UI and host integrations (owner: extension)",
+      "status": "open",
+      "evidence": []
+    },
+    {
+      "id": "D1-10",
+      "title": "\u00e2\u20ac\u201d Static findings and reliability (owner: runtime)",
+      "status": "inventory_complete_review_open",
+      "evidence": [
+        "runtime-inventory.json"
+      ]
+    },
+    {
+      "id": "D1-11",
+      "title": "\u00e2\u20ac\u201d Fresh Day 1 state and data boundary (owner: commissioning/privacy)",
+      "status": "open",
+      "evidence": []
+    },
+    {
+      "id": "D1-12",
+      "title": "\u00e2\u20ac\u201d Compliance, encoding and dependencies (owner: release compliance)",
+      "status": "encoding_repaired_dependencies_open",
+      "evidence": [
+        "encoding-after-repair.log",
+        "certification-readiness.log"
+      ]
+    },
+    {
+      "id": "D1-13",
+      "title": "\u00e2\u20ac\u201d Finish repairs and operational verification (owner: campaign)",
+      "status": "open",
+      "evidence": []
+    },
+    {
+      "id": "D1-14",
+      "title": "\u00e2\u20ac\u201d Freeze and reconcile once (owner: source identity)",
+      "status": "open",
+      "evidence": []
+    },
+    {
+      "id": "D1-15",
+      "title": "\u00e2\u20ac\u201d Current governed sections (owner: test orchestration)",
+      "status": "open",
+      "evidence": []
+    },
+    {
+      "id": "D1-16",
+      "title": "\u00e2\u20ac\u201d Single full profile and validation (owner: release-stage owner)",
+      "status": "open",
+      "evidence": []
+    },
+    {
+      "id": "D1-17",
+      "title": "\u00e2\u20ac\u201d Exact package and installed proof (owner: release/install)",
+      "status": "open",
+      "evidence": []
+    },
+    {
+      "id": "D1-18",
+      "title": "\u00e2\u20ac\u201d Certification and rollout publication (owner: certification)",
+      "status": "open",
+      "evidence": []
+    },
+    {
+      "id": "D1-19",
+      "title": "\u00e2\u20ac\u201d External application RC backlog (owner: managed application)",
+      "status": "open",
+      "evidence": []
+    },
+    {
+      "id": "D1-20",
+      "title": "\u00e2\u20ac\u201d Continuation and independent review (owner: each segment owner)",
+      "status": "active",
+      "evidence": [
+        "SEGMENT_LOG.md"
+      ]
+    }
+  ]
+}

@@ -48,7 +48,7 @@ _TERMINAL_KINDS = frozenset({"finish", "error"})
 _ALLOWED_ROLES = frozenset({"system", "developer", "user", "assistant", "tool"})
 _ALLOWED_PRIVACY = frozenset({"policy_gated", "isolated", "local"})
 _ALLOWED_SURFACES = frozenset(
-    {"terminal", "openai_chat", "openai_responses", "anthropic_messages"}
+    {"terminal", "openai_chat", "openai_responses", "anthropic_messages", "gemini_generate_content"}
 )
 
 

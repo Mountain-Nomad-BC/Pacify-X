@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:isolated-agent-sandbox",
+  "title": "Isolated Agent Sandbox mode",
+  "description": "The coordinated execution mode that activates monitored isolation for governed agents. PX runtime policy is the authority; the UI only selects the mode.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "mode",
+    "scope_key",
+    "policy_revision",
+    "network_policy",
+    "control_plane_read_only",
+    "require_process_identity",
+    "fail_closed",
+    "escalation_required"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "const": "px.isolated-agent-sandbox/1.0" },
+    "mode": { "enum": ["OFF", "ON"] },
+    "scope_key": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "description": "Workspace/session-aware scope this mode applies to."
+    },
+    "policy_revision": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "network_policy": {
+      "type": "object",
+      "required": ["default", "allowed_endpoints", "terminate_on_unauthorized"],
+      "additionalProperties": false,
+      "properties": {
+        "default": { "enum": ["deny", "allow"] },
+        "allowed_endpoints": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1, "maxLength": 512 },
+          "uniqueItems": true,
+          "maxItems": 256
+        },
+        "terminate_on_unauthorized": { "type": "boolean" }
+      }
+    },
+    "control_plane_read_only": { "type": "boolean" },
+    "require_process_identity": { "type": "boolean" },
+    "fail_closed": { "type": "boolean" },
+    "escalation_required": { "type": "boolean" },
+    "established_components": {
+      "type": "array",
+      "items": { "enum": ["monitoring", "process_registration", "gremlin_protection", "network_policy", "enforcement_rules", "logging_context", "orchestrator_awareness"] },
+      "uniqueItems": true
+    },
+    "authority_granted": { "const": false },
+    "policy_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  }
+}

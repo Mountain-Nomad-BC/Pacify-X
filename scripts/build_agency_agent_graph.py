@@ -13,6 +13,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from runtime.agent_provider import build_agent_graph  # noqa: E402
+from runtime.guarded_registry_projection import publish_guarded_registry_projection, GuardedProjectionError
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -22,15 +23,21 @@ def main(argv: list[str] | None = None) -> int:
         "--output", type=Path, default=Path("registry/agency_agent_graph.json")
     )
     parser.add_argument("--check", action="store_true")
+    parser.add_argument("--admission-event-id")
     args = parser.parse_args(argv)
     root = args.root.resolve()
     output = args.output if args.output.is_absolute() else root / args.output
-    rendered = json.dumps(build_agent_graph(root), indent=2, ensure_ascii=False) + "\n"
+    relative = output.relative_to(root).as_posix()
+    if (not relative.startswith('registry/') or not relative.endswith('.json')
+            or any(part in {'', '.', '..'} for part in relative.split('/'))):
+        raise GuardedProjectionError('agent graph output must remain a project registry JSON path')
+    payload = build_agent_graph(root)
+    rendered = json.dumps(payload, indent=2, sort_keys=True) + "\n"
     if args.check:
         valid = output.is_file() and output.read_text(encoding="utf-8") == rendered
     else:
-        output.parent.mkdir(parents=True, exist_ok=True)
-        output.write_text(rendered, encoding="utf-8", newline="\n")
+        publish_guarded_registry_projection(root, relative, payload,
+            admission_event_id=args.admission_event_id)
         valid = True
     result = {"valid": valid, "output": output.relative_to(root).as_posix()}
     print(json.dumps(result, indent=2))

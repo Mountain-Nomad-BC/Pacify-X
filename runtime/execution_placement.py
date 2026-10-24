@@ -8,6 +8,8 @@ evidence.
 
 from __future__ import annotations
 
+from .remote_model_attachment import SCHEMA as REMOTE_ATTACHMENT_SCHEMA
+
 import hashlib
 import json
 import math
@@ -68,6 +70,7 @@ def route_hardware(
     policy: RoutingPolicy = RoutingPolicy(),
     requested_device: str = "auto",
     project_root: Path | None = None,
+    model_id: str | None = None,
 ) -> dict[str, Any]:
     """Bind one current hardware decision to an immutable task/model plan."""
     from .task_execution_plan import validate_task_execution_plan
@@ -76,9 +79,12 @@ def route_hardware(
     plan_report = validate_task_execution_plan(task_plan)
     if not plan_report["valid"]:
         raise ValueError("hardware routing requires an intact task execution plan")
-    attachment = task_plan.get("model_attachment")
+    from .model_group_preparation import member_attachment
+    attachment, member = member_attachment(task_plan, model_id)
     if not isinstance(attachment, Mapping):
         raise ValueError("hardware routing requires one exact model attachment")
+    if attachment.get("schema_version") == REMOTE_ATTACHMENT_SCHEMA:
+        raise ValueError("remote providers require explicit route_remote_provider; no CPU/CUDA placement")
     attachment_report = validate_model_attachment(
         model_attachment_from_dict(attachment), root=project_root
     )
@@ -138,6 +144,9 @@ def route_hardware(
         "fallback": fallback,
         "reservation_required": True,
     }
+    if member is not None:
+        record["model_id"] = member["model_id"]
+        record["context_sha256"] = member["context_sha256"]
     return {**record, "placement_sha256": _hash(record)}
 
 
@@ -146,7 +155,7 @@ class PlacementCapacityLedger:
 
     def __init__(self, root: Path) -> None:
         self.root = root.resolve()
-        self.directory = self.root / ".engineering-bootstrap/runtime-core/placement"
+        self.directory = self.root / ".agentic_engineering_os_px/runtime-core/placement"
         self.state_path = self.directory / "capacity-reservations.json"
         self.lock_path = self.directory / ".capacity-reservations.lock"
 
@@ -606,7 +615,7 @@ def publish_placement_artifact(root: Path, artifact: Mapping[str, Any]) -> dict[
         ),
         _hash(artifact),
     )
-    target = root.resolve() / ".engineering-bootstrap" / "runtime-core" / "placement" / f"{artifact_hash}.json"
+    target = root.resolve() / ".agentic_engineering_os_px" / "runtime-core" / "placement" / f"{artifact_hash}.json"
 
     def publish() -> dict[str, Any]:
         rendered = json.dumps(dict(artifact), indent=2, sort_keys=True) + "\n"
@@ -631,3 +640,9 @@ def publish_placement_artifact(root: Path, artifact: Mapping[str, Any]) -> dict[
         authoritative=True,
     )
     return {**envelope["result"], "runtime_admission": envelope["admission"]}
+
+
+def route_remote_provider(task_plan, *, project_root, model_id=None):
+    """Route native remote services without inventing hardware or benchmarks."""
+    from .remote_provider_placement import route_remote_provider as native_route
+    return native_route(task_plan, project_root=project_root, model_id=model_id)

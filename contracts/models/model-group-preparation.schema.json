@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:models:model-group-preparation",
+  "title": "Exact per-member model preparation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "group_sha256",
+    "members",
+    "preparation_sha256"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "px.model-group-preparation/1.0"
+    },
+    "group_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "members": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 12,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "model_id",
+          "attachment",
+          "context",
+          "context_sha256"
+        ],
+        "properties": {
+          "model_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "attachment": {
+            "$ref": "../model_attachment.schema.json"
+          },
+          "context": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "schema_version",
+              "project_id",
+              "query",
+              "items",
+              "item_count",
+              "available_item_count",
+              "byte_count",
+              "truncated",
+              "retrieval_owner",
+              "source_receipt_sha256",
+              "write_authority",
+              "model_id",
+              "agent_generation_id",
+              "role",
+              "deliverable"
+            ],
+            "properties": {
+              "schema_version": {
+                "const": "px.semantic-model-context/1.1"
+              },
+              "project_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "query": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 65536
+              },
+              "items": {
+                "type": "array",
+                "maxItems": 50,
+                "items": {
+                  "type": "object"
+                }
+              },
+              "item_count": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 50
+              },
+              "available_item_count": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "byte_count": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 65536
+              },
+              "truncated": {
+                "type": "boolean"
+              },
+              "retrieval_owner": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "source_receipt_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "write_authority": {
+                "const": false
+              },
+              "model_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "agent_generation_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "role": {
+                "enum": [
+                  "proposal",
+                  "challenger",
+                  "anchor"
+                ]
+              },
+              "deliverable": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 256
+              }
+            }
+          },
+          "context_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        }
+      }
+    },
+    "preparation_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "description": "Runtime owner enforces exact canonical group membership, native attachment integrity, role-context digest, immutable byte count and projection identity. Preparation grants no effect or containment authority."
+}

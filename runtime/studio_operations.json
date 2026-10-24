@@ -1,9 +1,75 @@
 {
-  "schema_version": "px.studio-operation-contract/1.0",
   "kinds": {
-    "agent": ["identity-absence", "next-version", "create", "test", "register-authority", "admit", "preview", "run", "prepare-host-run", "complete-host-run", "start", "runs", "status", "pause", "resume", "cancel", "stop", "reconcile"],
-    "workflow": ["identity-absence", "next-version", "create", "register-authority", "validate", "dry-run", "approve", "run", "start", "runs", "status", "pause", "resume", "cancel", "stop", "reconcile"],
-    "skill": ["identity-absence", "next-version", "create", "admit-source", "validate", "admit", "promote", "rollback"],
-    "knowledge": ["browse", "propose", "verify", "approve", "promote", "reject", "rollback", "recover", "observe-experience", "extract-pattern", "form-hypothesis", "record-trial", "research-validate", "final-validate", "admit-learning", "measure-reuse"]
-  }
+    "agent": [
+      "identity-absence",
+      "next-version",
+      "create",
+      "test",
+      "register-authority",
+      "admit",
+      "preview",
+      "run",
+      "prepare-host-run",
+      "complete-host-run",
+      "start",
+      "runs",
+      "status",
+      "pause",
+      "resume",
+      "cancel",
+      "stop",
+      "reconcile",
+      "check-host-run"
+    ],
+    "knowledge": [
+      "browse",
+      "propose",
+      "verify",
+      "approve",
+      "promote",
+      "reject",
+      "rollback",
+      "recover",
+      "observe-experience",
+      "extract-pattern",
+      "form-hypothesis",
+      "record-trial",
+      "research-validate",
+      "final-validate",
+      "admit-learning",
+      "measure-reuse"
+    ],
+    "skill": [
+      "identity-absence",
+      "next-version",
+      "create",
+      "admit-source",
+      "validate",
+      "admit",
+      "promote",
+      "rollback",
+      "intake-foundry-candidate"
+    ],
+    "workflow": [
+      "identity-absence",
+      "next-version",
+      "create",
+      "register-authority",
+      "validate",
+      "dry-run",
+      "approve",
+      "resolve-plan-owner",
+      "execute-plan-owner",
+      "run",
+      "start",
+      "runs",
+      "status",
+      "pause",
+      "resume",
+      "cancel",
+      "stop",
+      "reconcile"
+    ]
+  },
+  "schema_version": "px.studio-operation-contract/1.0"
 }

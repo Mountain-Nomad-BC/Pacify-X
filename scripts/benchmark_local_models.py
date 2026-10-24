@@ -34,11 +34,8 @@ MAX_CAPTURE_BYTES = 8 * 1024 * 1024
 
 
 def _sha_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        for block in iter(lambda: stream.read(1024 * 1024), b""):
-            digest.update(block)
-    return digest.hexdigest()
+    from runtime.hash_utils import file_sha256
+    return file_sha256(path)
 
 
 def _bounded_file(value: str, *, executable: bool = False, suffix: str | None = None) -> Path:

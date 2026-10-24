@@ -15,8 +15,8 @@ The Python metadata startup is approximately 0.30 seconds. The installed extensi
 - Git branch `main` matches `origin/main` at `98470f6` before audit repairs.
 - Pre-repair worktree: 48 tracked modifications and 3,387 untracked files.
 - `.git`: approximately 926 MiB.
-- `.engineering-bootstrap`: approximately 539 MiB; project-map history approximately 415 MiB before this audit rebuild.
-- Fresh project-map rebuild: 83.7 seconds, 6,969 files, 46,628 symbols, 49,088 call edges, 65,089 retrieval documents; receipt at `.engineering-bootstrap/project-map/map-receipt.json`.
+- `.agentic_engineering_os_px`: approximately 539 MiB; project-map history approximately 415 MiB before this audit rebuild.
+- Fresh project-map rebuild: 83.7 seconds, 6,969 files, 46,628 symbols, 49,088 call edges, 65,089 retrieval documents; receipt at `.agentic_engineering_os_px/project-map/map-receipt.json`.
 - Installed extension: `${USER_HOME}/.vscode/extensions/mountain-nomad-bc.pacify-x-vscode-0.5.0`.
 - Development extension: `${USER_HOME}/Documents/Pacify-X_Extension`; not a Git repository; same declared version `0.5.0`.
 - Expected package comparison: 41 development files missing from the installed extension, 13 changed, 36 equal.
@@ -197,7 +197,7 @@ Two additional defects surfaced only when the strengthened installed-host gate e
 | PXA-069 | Resolved for governance | Short section gates plus one realistically bounded, supervised whole certification |
 | PXA-070 | Resolved | Lazy policy index and lifecycle/checkpoint projections reconciled |
 
-The exact replacement artifact is retained at `.engineering-bootstrap/quarantine/release-artifacts/vscode/pacify-x-vscode-0.5.4.vsix`, SHA-256 `9ae0a735752bd8c7ceb066e9746342ed6427fdb6a35eac8bef47d351f5b43fb6`. It was built at `extension/dist`, then moved with all prior VSIX versions into recoverable, content-addressed release-artifact custody so generated or executable build output does not remain active in the source or ordinary evidence trees. Its hash was unchanged before and after isolated install/test and after both custody moves, its installed host closed with no residual owned PIDs, and the same version is installed in the normal VS Code profile. A full application restart remains necessary for any already-running main process to load the new contribution and webview bytes; PX did not terminate the user's editor.
+The exact replacement artifact is retained at `.agentic_engineering_os_px/quarantine/release-artifacts/vscode/pacify-x-vscode-0.5.4.vsix`, SHA-256 `9ae0a735752bd8c7ceb066e9746342ed6427fdb6a35eac8bef47d351f5b43fb6`. It was built at `extension/dist`, then moved with all prior VSIX versions into recoverable, content-addressed release-artifact custody so generated or executable build output does not remain active in the source or ordinary evidence trees. Its hash was unchanged before and after isolated install/test and after both custody moves, its installed host closed with no residual owned PIDs, and the same version is installed in the normal VS Code profile. A full application restart remains necessary for any already-running main process to load the new contribution and webview bytes; PX did not terminate the user's editor.
 
 ### Final certification result for this repair wave
 

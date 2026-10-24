@@ -63,13 +63,13 @@ class ProjectBriefTests(unittest.TestCase):
             )
             state = json.loads(
                 (
-                    project / ".engineering-bootstrap/project-management/state.json"
+                    project / ".agentic_engineering_os_px/project-management/state.json"
                 ).read_text(encoding="utf-8")
             )
             history_count = len(
                 list(
                     (
-                        project / ".engineering-bootstrap/project-management/history"
+                        project / ".agentic_engineering_os_px/project-management/history"
                     ).glob("state-*")
                 )
             )

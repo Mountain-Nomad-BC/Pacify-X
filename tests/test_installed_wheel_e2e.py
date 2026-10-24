@@ -74,9 +74,9 @@ class InstalledWheelEndToEndTests(unittest.TestCase):
             self._run([sys.executable, "-m", "venv", str(venv)], cwd=temp)
             python = venv / ("Scripts/python.exe" if os.name == "nt" else "bin/python")
             executable = venv / (
-                "Scripts/engineering-bootstrap.exe"
+                "Scripts/agentic-engineering-os-px.exe"
                 if os.name == "nt"
-                else "bin/engineering-bootstrap"
+                else "bin/agentic-engineering-os-px"
             )
             self._run(
                 [str(python), "-m", "pip", "install", "--no-deps", str(wheel)], cwd=temp

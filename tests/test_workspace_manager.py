@@ -161,7 +161,7 @@ class WorkspaceManagerTests(unittest.TestCase):
                 project = workspace / item["path"]
                 campaign = (
                     project
-                    / ".engineering-bootstrap/processing-order/repair-campaign.json"
+                    / ".agentic_engineering_os_px/processing-order/repair-campaign.json"
                 )
                 self.assertTrue(campaign.is_file())
                 state = json.loads(campaign.read_text(encoding="utf-8"))
@@ -191,7 +191,7 @@ class WorkspaceManagerTests(unittest.TestCase):
             workspace = self._workspace_with_projects(Path(directory))
             campaign = (
                 workspace
-                / "projects/alpha/.engineering-bootstrap/processing-order/repair-campaign.json"
+                / "projects/alpha/.agentic_engineering_os_px/processing-order/repair-campaign.json"
             )
             campaign.unlink()
             with self.assertRaisesRegex(
@@ -579,7 +579,7 @@ class WorkspaceManagerTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             workspace = self._workspace_with_projects(Path(directory))
             record = (
-                workspace / "projects/alpha/.engineering-bootstrap/project-record.json"
+                workspace / "projects/alpha/.agentic_engineering_os_px/project-record.json"
             )
             value = json.loads(record.read_text(encoding="utf-8"))
             value["cross_project_access"] = "explicit-only"
@@ -794,7 +794,7 @@ class WorkspaceManagerTests(unittest.TestCase):
             activate_project(workspace, "prj_alpha")
             candidate = (
                 workspace
-                / "projects/alpha/.engineering-bootstrap/staging/candidate-tool.py"
+                / "projects/alpha/.agentic_engineering_os_px/staging/candidate-tool.py"
             )
             candidate.parent.mkdir(parents=True, exist_ok=True)
             candidate.write_text("def check():\n    return True\n", encoding="utf-8")
@@ -809,7 +809,7 @@ class WorkspaceManagerTests(unittest.TestCase):
                         "idempotency_key": "promote_candidate_001",
                         "approved_effects": ["read_local", "write_workspace"],
                         "payload": {
-                            "candidate": ".engineering-bootstrap/staging/candidate-tool.py",
+                            "candidate": ".agentic_engineering_os_px/staging/candidate-tool.py",
                             "expected_source_sha256": hashlib.sha256(
                                 candidate.read_bytes()
                             ).hexdigest(),

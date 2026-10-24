@@ -19,11 +19,7 @@ BACKEND_DOMAINS = (
 )
 
 
-def _stable(value: object) -> str:
-    rendered = json.dumps(
-        value, sort_keys=True, separators=(",", ":"), ensure_ascii=False
-    )
-    return hashlib.sha256(rendered.encode("utf-8")).hexdigest()
+from runtime.hash_utils import json_utf8_hash as _stable
 
 
 def validate_backend_capability_model(

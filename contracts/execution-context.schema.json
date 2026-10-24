@@ -1,0 +1,180 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:execution-context",
+  "title": "Execution identity and currentness envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "execution_id",
+    "parent_execution_id",
+    "root_execution_id",
+    "project_id",
+    "session_id",
+    "revision",
+    "epoch",
+    "generation_vector_sha256",
+    "authority_reference_sha256",
+    "effect_budget_sha256",
+    "cancellation_scope_id",
+    "deadline_utc",
+    "actor_id",
+    "provider_id",
+    "trace_root_id",
+    "model_execution_group_revision",
+    "contract_set_revision",
+    "gremlin_revision",
+    "network_policy_revision",
+    "workflow_adapter_revision",
+    "lease_id",
+    "effect_intent_id",
+    "authority_granted",
+    "context_sha256"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "px.execution-context/1.0"
+    },
+    "execution_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "parent_execution_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "root_execution_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "session_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 2147483647
+    },
+    "epoch": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 2147483647
+    },
+    "generation_vector_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "authority_reference_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "effect_budget_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "cancellation_scope_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "deadline_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "actor_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "provider_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "trace_root_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "model_execution_group_revision": {
+      "anyOf": [
+        { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        { "type": "null" }
+      ]
+    },
+    "contract_set_revision": {
+      "anyOf": [
+        { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        { "type": "null" }
+      ]
+    },
+    "gremlin_revision": {
+      "anyOf": [
+        { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        { "type": "null" }
+      ]
+    },
+    "network_policy_revision": {
+      "anyOf": [
+        { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        { "type": "null" }
+      ]
+    },
+    "workflow_adapter_revision": {
+      "anyOf": [
+        { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        { "type": "null" }
+      ]
+    },
+    "lease_id": {
+      "anyOf": [
+        { "type": "string", "minLength": 1, "maxLength": 512 },
+        { "type": "null" }
+      ]
+    },
+    "effect_intent_id": {
+      "anyOf": [
+        { "type": "string", "minLength": 1, "maxLength": 512 },
+        { "type": "null" }
+      ]
+    },
+    "authority_granted": {
+      "const": false
+    },
+    "context_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

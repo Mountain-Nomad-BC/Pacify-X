@@ -24,10 +24,10 @@ from .release_artifacts import classify_tree
 from .release_identity import authoritative_version
 
 
-STATE_PATH = Path(".engineering-bootstrap/processing-order/release-identity.json")
+STATE_PATH = Path(".agentic_engineering_os_px/processing-order/release-identity.json")
 FAILED_IDENTITY_ARCHIVE_ROOT = Path("evidence/release")
 REPAIR_CAMPAIGN_PATH = Path(
-    ".engineering-bootstrap/processing-order/repair-campaign.json"
+    ".agentic_engineering_os_px/processing-order/repair-campaign.json"
 )
 SHA256_PATTERN = re.compile(r"^[a-f0-9]{64}$")
 PRE_IDENTITY_FAILURE_SCHEMA = "px.pre-identity-owner-failure/1.0"
@@ -35,6 +35,26 @@ PRE_IDENTITY_FAILURE_SCHEMA = "px.pre-identity-owner-failure/1.0"
 
 class ReleaseCampaignBlocked(ValueError):
     """Raised when a release identity or stage would be replayed or skipped."""
+
+
+def release_state_relative(root: Path) -> Path:
+    """One current pointer per owner-admitted fresh campaign, preserving legacy state."""
+    from .archive_io import reject_path_links
+    from .project_revision_succession import current_revision_root, current_validation_policy_path
+    revision = current_revision_root(Path(root))
+    if revision is not None:
+        campaign = json.loads((revision / "repair-campaign.json").read_text(encoding="utf-8"))
+        namespace = hashlib.sha256(str(campaign["campaign_id"]).encode("utf-8")).hexdigest()
+        return Path(".agentic_engineering_os_px/processing-order/current-campaigns") / namespace / "release-identity.json"
+    from .plan_registry import _planning_object, _require_current_campaign
+    policy_path = current_validation_policy_path(Path(root))
+    reject_path_links(policy_path)
+    if not policy_path.exists():
+        return STATE_PATH
+    policy = _planning_object(policy_path)
+    _require_current_campaign(policy)
+    namespace = hashlib.sha256(policy["campaign_id"].encode("utf-8")).hexdigest()
+    return Path(".agentic_engineering_os_px/processing-order/current-campaigns") / namespace / "release-identity.json"
 
 
 def _now() -> str:
@@ -78,12 +98,27 @@ def _write(path: Path, value: object) -> None:
 
 
 def _repair_campaign(root: Path) -> dict[str, Any]:
-    path = root / REPAIR_CAMPAIGN_PATH
+    from .project_revision_succession import current_revision_root
+    revision = current_revision_root(root)
+    if revision is not None:
+        path = revision / "repair-campaign.json"
+        value = json.loads(path.read_text(encoding="utf-8"))
+        if not isinstance(value, dict) or not str(value.get("campaign_id") or ""):
+            raise ReleaseCampaignBlocked("active revision campaign is malformed")
+        return value
+    from .project_revision_succession import current_campaign_path
+    path = current_campaign_path(root)
     if not path.is_file():
         raise ReleaseCampaignBlocked("managed repair campaign is missing")
     value = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(value, dict) or not str(value.get("campaign_id") or ""):
         raise ReleaseCampaignBlocked("managed repair campaign is malformed")
+    if release_state_relative(root) != STATE_PATH:
+        from .plan_registry import _planning_object
+        from .project_revision_succession import current_validation_policy_path
+        policy = _planning_object(current_validation_policy_path(root))
+        if value["campaign_id"] != policy["campaign_id"]:
+            raise ReleaseCampaignBlocked("repair campaign does not match current owner policy")
     return value
 
 
@@ -215,7 +250,7 @@ def mark_pre_identity_owner_failure(
     explanation = error.strip()
     if owner_name not in {"archive_clear", "reconcile", "identity"} or not explanation:
         raise ReleaseCampaignBlocked("pre-identity failure marker is incomplete")
-    path = root / STATE_PATH
+    path = root / release_state_relative(root)
     value = _validate(json.loads(path.read_text(encoding="utf-8")))
     if (
         value.get("campaign_id") != candidate
@@ -250,13 +285,13 @@ def mark_pre_identity_owner_failure(
 
 def release_campaign_status(root: Path, *, verify_source: bool = False) -> dict[str, Any]:
     root = root.resolve(strict=True)
-    path = root / STATE_PATH
+    path = root / release_state_relative(root)
     if not path.is_file():
         return {
             "schema_version": "px.release-campaign-status/1.0",
             "valid": False,
             "state": "missing",
-            "path": STATE_PATH.as_posix(),
+            "path": release_state_relative(root).as_posix(),
             "errors": ["active release identity state is missing"],
         }
     value = _validate(json.loads(path.read_text(encoding="utf-8")))
@@ -277,7 +312,7 @@ def release_campaign_status(root: Path, *, verify_source: bool = False) -> dict[
         **value,
         "schema_version": "px.release-campaign-status/1.0",
         "valid": not errors,
-        "path": STATE_PATH.as_posix(),
+        "path": release_state_relative(root).as_posix(),
         "errors": errors,
     }
 
@@ -293,10 +328,14 @@ def clear_release_identity(root: Path, *, campaign_id: str) -> dict[str, Any]:
         raise ReleaseCampaignBlocked(
             "release identity may be cleared only during repair or repair freeze"
         )
-    path = root / STATE_PATH
+    path = root / release_state_relative(root)
     if path.is_file():
         previous = _validate(json.loads(path.read_text(encoding="utf-8")))
         same_repair = previous.get("repair_campaign_id") == repair["campaign_id"]
+        if not same_repair and previous["state"] != "cleared":
+            raise ReleaseCampaignBlocked(
+                "an applied terminal or active campaign from another repair cannot be erased; explicit supersession is required"
+            )
         if same_repair and previous.get("campaign_id") != campaign_id:
             raise ReleaseCampaignBlocked(
                 "the current repair campaign already owns a release campaign"
@@ -323,7 +362,7 @@ def clear_release_identity(root: Path, *, campaign_id: str) -> dict[str, Any]:
     return release_campaign_status(root)
 
 
-def apply_release_identity(root: Path) -> dict[str, Any]:
+def apply_release_identity(root: Path, *, source_freeze_reference: dict | None = None) -> dict[str, Any]:
     """Apply exactly one source identity to the already-cleared campaign."""
 
     root = root.resolve(strict=True)
@@ -336,12 +375,19 @@ def apply_release_identity(root: Path) -> dict[str, Any]:
         raise ReleaseCampaignBlocked(
             "release identity apply requires one reconciled, zero-unresolved revision"
         )
-    path = root / STATE_PATH
+    path = root / release_state_relative(root)
     value = _validate(json.loads(path.read_text(encoding="utf-8")))
     if value.get("repair_campaign_id") != repair["campaign_id"]:
         raise ReleaseCampaignBlocked("cleared identity belongs to another repair campaign")
     if value["state"] != "cleared" or value["apply_count"] != 0:
         raise ReleaseCampaignBlocked("release identity was already applied")
+    from .release_source_identity import current_campaign
+    final_reference = None
+    if current_campaign(root):
+        from .release_repository_context import verify_source_anchor
+        final_reference = verify_source_anchor(root, source_freeze_reference, require_live=True)["reference"]
+    elif source_freeze_reference is not None:
+        raise ReleaseCampaignBlocked("standalone source reference requires current owner campaign")
     classification = classify_tree(root)
     if not classification["valid"] or not classification["product_valid"]:
         raise ReleaseCampaignBlocked(
@@ -364,6 +410,8 @@ def apply_release_identity(root: Path) -> dict[str, Any]:
         "source_file_count": len(source_manifest),
         "release_policy_sha256": classification["policy_sha256"],
     }
+    if final_reference is not None:
+        kernel["source_freeze"] = final_reference
     value.update(
         {
             "state": "active",
@@ -407,7 +455,7 @@ def supersede_invalid_release_identity(
         raise ReleaseCampaignBlocked(
             "identity supersession requires one frozen, zero-unresolved repair"
         )
-    state_path = root / STATE_PATH
+    state_path = root / release_state_relative(root)
     previous = _validate(json.loads(state_path.read_text(encoding="utf-8")))
     if replacement_id == previous["campaign_id"]:
         raise ReleaseCampaignBlocked("replacement campaign ID must be new")
@@ -477,7 +525,7 @@ def rewind_invalid_release_identity_reconciliation(root: Path) -> dict[str, Any]
     root = root.resolve(strict=True)
     repair = _repair_campaign(root)
     value = _validate(
-        json.loads((root / STATE_PATH).read_text(encoding="utf-8"))
+        json.loads((root / release_state_relative(root)).read_text(encoding="utf-8"))
     )
     if (
         repair.get("phase") != "revision_reconciled"
@@ -515,7 +563,7 @@ def rewind_consumed_cleared_release_campaign_repair(root: Path) -> dict[str, Any
 
     root = root.resolve(strict=True)
     repair = _repair_campaign(root)
-    value = _validate(json.loads((root / STATE_PATH).read_text(encoding="utf-8")))
+    value = _validate(json.loads((root / release_state_relative(root)).read_text(encoding="utf-8")))
     if (
         repair.get("phase") != "revision_reconciled"
         or repair.get("intake_open") is not False
@@ -544,7 +592,7 @@ def rewind_failed_release_campaign_repair(root: Path) -> dict[str, Any]:
     root = root.resolve(strict=True)
     repair = _repair_campaign(root)
     value = _validate(
-        json.loads((root / STATE_PATH).read_text(encoding="utf-8"))
+        json.loads((root / release_state_relative(root)).read_text(encoding="utf-8"))
     )
     failed = [
         stage for stage in STAGES if value["stages"][stage]["status"] == "failed"
@@ -604,7 +652,7 @@ def release_orphaned_release_stage_claim(root: Path) -> dict[str, Any]:
 
     root = root.resolve(strict=True)
     value = _validate(
-        json.loads((root / STATE_PATH).read_text(encoding="utf-8"))
+        json.loads((root / release_state_relative(root)).read_text(encoding="utf-8"))
     )
     claimed = [stage for stage in STAGES if value["stages"][stage]["status"] == "claimed"]
     if (
@@ -644,7 +692,7 @@ def release_orphaned_release_stage_claim(root: Path) -> dict[str, Any]:
     value["released_claims"] = history
     value["active_claim"] = None
     value["stages"][stage] = {"status": "pending", "claim_id": None}
-    _write(root / STATE_PATH, value)
+    _write(root / release_state_relative(root), value)
     return {
         "schema_version": "px.orphaned-release-stage-claim-release/1.0",
         "campaign_id": value["campaign_id"],
@@ -661,7 +709,7 @@ def rewind_invalid_active_release_campaign_repair(root: Path) -> dict[str, Any]:
     root = root.resolve(strict=True)
     repair = _repair_campaign(root)
     value = _validate(
-        json.loads((root / STATE_PATH).read_text(encoding="utf-8"))
+        json.loads((root / release_state_relative(root)).read_text(encoding="utf-8"))
     )
     statuses = [value["stages"][stage]["status"] for stage in STAGES]
     passed_count = next(
@@ -738,7 +786,7 @@ def supersede_failed_release_campaign(
         raise ReleaseCampaignBlocked(
             "failed campaign supersession requires one frozen, zero-unresolved repair"
         )
-    state_path = root / STATE_PATH
+    state_path = root / release_state_relative(root)
     previous = _validate(json.loads(state_path.read_text(encoding="utf-8")))
     if replacement_id == previous["campaign_id"]:
         raise ReleaseCampaignBlocked("replacement campaign ID must be new")
@@ -813,7 +861,7 @@ def supersede_consumed_cleared_release_campaign(
         raise ReleaseCampaignBlocked(
             "cleared campaign supersession requires one frozen, zero-unresolved repair"
         )
-    state_path = root / STATE_PATH
+    state_path = root / release_state_relative(root)
     previous = _validate(json.loads(state_path.read_text(encoding="utf-8")))
     if replacement_id == previous["campaign_id"]:
         raise ReleaseCampaignBlocked("replacement campaign ID must be new")
@@ -894,7 +942,7 @@ def supersede_invalid_active_release_campaign(
         raise ReleaseCampaignBlocked(
             "active campaign supersession requires one frozen, zero-unresolved repair"
         )
-    state_path = root / STATE_PATH
+    state_path = root / release_state_relative(root)
     previous = _validate(json.loads(state_path.read_text(encoding="utf-8")))
     if replacement_id == previous["campaign_id"]:
         raise ReleaseCampaignBlocked("replacement campaign ID must be new")
@@ -958,7 +1006,7 @@ def claim_release_stage(root: Path, stage: str) -> dict[str, Any]:
     root = root.resolve(strict=True)
     if stage not in STAGES:
         raise ReleaseCampaignBlocked(f"unknown release stage: {stage}")
-    path = root / STATE_PATH
+    path = root / release_state_relative(root)
     value = _validate(json.loads(path.read_text(encoding="utf-8")))
     repair = _repair_campaign(root)
     if (
@@ -1000,7 +1048,7 @@ def finish_release_stage(
     root: Path, *, stage: str, claim_id: str, passed: bool
 ) -> dict[str, Any]:
     root = root.resolve(strict=True)
-    path = root / STATE_PATH
+    path = root / release_state_relative(root)
     value = _validate(json.loads(path.read_text(encoding="utf-8")))
     claim = value.get("active_claim")
     if (

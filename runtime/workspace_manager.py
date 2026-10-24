@@ -103,12 +103,7 @@ def _slug(value: str, *, prefix: str) -> str:
     return f"{prefix}_{normalized}"
 
 
-def _sha(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+from runtime.hash_utils import file_sha256 as _sha
 
 
 def _stable(value: object) -> str:
@@ -262,37 +257,14 @@ integrity_hash = "sha256"
 
 
 def _load_config(paths: WorkspacePaths) -> dict[str, object]:
-    config_path = paths.root / WORKSPACE_CONFIG
-    if not config_path.is_file():
-        raise ValueError(f"workspace is not initialized: missing {WORKSPACE_CONFIG}")
-    before = config_path.read_bytes()
-    config_digest = hashlib.sha256(before).hexdigest()
-    config = tomllib.loads(before.decode("utf-8"))
-    _validate_control(config, "workspace_config.schema.json")
+    before, config_digest, config = _validated_config_bytes(paths)
     seal = paths.tracking / CONFIG_SEAL_NAME
     if not seal.is_file() or seal.read_text(encoding="utf-8").strip() != config_digest:
         raise ValueError(
             "workspace configuration integrity seal is missing or mismatched"
         )
-    if not re.fullmatch(r"wsp_[A-Za-z0-9_-]+", str(config.get("workspace_id", ""))):
-        raise ValueError("workspace configuration has an invalid workspace_id")
-    expected = {
-        "projects": "projects",
-        "tracking": "projects_tracking",
-        "quarantine": "repo_quarantine",
-        "shared_capabilities": "shared_capabilities",
-    }
-    if config.get("roots") != expected:
-        raise ValueError("workspace roots drifted from the bounded layout")
-    boundaries = config.get("boundaries", {})
     if (
-        not isinstance(boundaries, Mapping)
-        or boundaries.get("cross_project_context_default") != "deny"
-        or boundaries.get("project_switch_requires_teardown") is not True
-    ):
-        raise ValueError("workspace isolation boundaries are not fail closed")
-    if (
-        config_path.read_bytes() != before
+        (paths.root / WORKSPACE_CONFIG).read_bytes() != before
         or seal.read_text(encoding="utf-8").strip() != config_digest
     ):
         raise ValueError("workspace configuration changed during verified read")
@@ -593,13 +565,13 @@ def _bind_project_management(
 ) -> None:
     project_id = str(binding["project_id"])
     state_path = (
-        project / ".engineering-bootstrap" / "project-management" / "state.json"
+        project / ".agentic_engineering_os_px" / "project-management" / "state.json"
     )
     state = json.loads(state_path.read_text(encoding="utf-8"))
     state["project"].update(
         {
             "workspace_id": binding["workspace_id"],
-            "workspace_binding": ".engineering-bootstrap/workspace-binding.json",
+            "workspace_binding": ".agentic_engineering_os_px/workspace-binding.json",
             "central_tracking": binding["project_tracking"],
             "memory_namespace": binding["memory_namespace"],
         }
@@ -642,6 +614,105 @@ def _bind_project_management(
         )
         _write_new(temporary_dashboard, old_dashboard + addition)
         os.replace(temporary_dashboard, dashboard)
+
+
+def _replace_seal(seal: Path, digest: str) -> None:
+    """Atomically, fsync-safely replace an existing seal with a new digest."""
+    prepared = seal.with_name(f".{seal.name}.{uuid4().hex}.prepared")
+    try:
+        with prepared.open("xb") as handle:
+            handle.write((digest + "\n").encode("utf-8"))
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(prepared, seal)
+    finally:
+        prepared.unlink(missing_ok=True)
+
+
+def _validated_config_bytes(paths: WorkspacePaths) -> tuple[bytes, str, dict[str, object]]:
+    """Read and validate the workspace config WITHOUT requiring the seal to match.
+
+    Used by the governed re-seal path, which must be able to validate a config
+    whose seal is currently stale. Every non-seal invariant is still enforced.
+    """
+    config_path = paths.root / WORKSPACE_CONFIG
+    if not config_path.is_file():
+        raise ValueError(f"workspace is not initialized: missing {WORKSPACE_CONFIG}")
+    raw = config_path.read_bytes()
+    config = tomllib.loads(raw.decode("utf-8"))
+    _validate_control(config, "workspace_config.schema.json")
+    if not re.fullmatch(r"wsp_[A-Za-z0-9_-]+", str(config.get("workspace_id", ""))):
+        raise ValueError("workspace configuration has an invalid workspace_id")
+    expected = {
+        "projects": "projects",
+        "tracking": "projects_tracking",
+        "quarantine": "repo_quarantine",
+        "shared_capabilities": "shared_capabilities",
+    }
+    if config.get("roots") != expected:
+        raise ValueError("workspace roots drifted from the bounded layout")
+    boundaries = config.get("boundaries", {})
+    if (
+        not isinstance(boundaries, Mapping)
+        or boundaries.get("cross_project_context_default") != "deny"
+        or boundaries.get("project_switch_requires_teardown") is not True
+    ):
+        raise ValueError("workspace isolation boundaries are not fail closed")
+    if config_path.read_bytes() != raw:
+        raise ValueError("workspace configuration changed during verified read")
+    return raw, hashlib.sha256(raw).hexdigest(), config
+
+
+@_locked_when_apply
+def reseal_workspace(
+    root: Path, *, expected_prior_seal: str, apply: bool = False
+) -> dict[str, object]:
+    """Governed re-seal of the workspace config integrity seal (PX-GAP-0005).
+
+    ``initialize_workspace`` writes the seal with ``_write_new``, which refuses to
+    overwrite, so once a config legitimately changes there is no governed way to
+    re-seal it: the only apparent path is hand-editing the seal file, which the
+    card forbids. This function is that missing path. It is deliberately narrow:
+
+    * it validates the current config against every non-seal invariant first;
+    * it requires the caller to present the EXACT prior seal value, so a config
+      that was tampered with cannot silently re-seal itself;
+    * it is ``apply``-gated, so the default call is a dry-run preview;
+    * it records the prior seal so the transition is auditable.
+
+    It does not change the config and does not grant any authority.
+    """
+    paths = workspace_paths(root)
+    if not isinstance(expected_prior_seal, str) or not re.fullmatch(
+        r"[0-9a-f]{64}", expected_prior_seal
+    ):
+        raise ValueError("re-seal requires the exact 64-character prior seal digest")
+    _raw, current_digest, config = _validated_config_bytes(paths)
+    seal = paths.tracking / CONFIG_SEAL_NAME
+    if not seal.is_file():
+        raise ValueError("workspace configuration seal is absent; initialize the workspace first")
+    prior_seal = seal.read_text(encoding="utf-8").strip()
+    if prior_seal != expected_prior_seal:
+        raise ValueError(
+            "re-seal refused: the presented prior seal does not match the recorded seal "
+            "(a changed config must not re-seal itself)"
+        )
+    already_current = prior_seal == current_digest
+    result = {
+        "valid": True,
+        "applied": False,
+        "already_current": already_current,
+        "workspace_id": config["workspace_id"],
+        "prior_seal": prior_seal,
+        "current_digest": current_digest,
+        "effects": [f"projects_tracking/{CONFIG_SEAL_NAME}"],
+    }
+    if not apply or already_current:
+        return result
+    # Atomic, fsynced replacement of the single seal file. This is the only
+    # governed writer of an existing seal; it never rewrites the config itself.
+    _replace_seal(seal, current_digest)
+    return {**result, "applied": True}
 
 
 @_locked_when_apply
@@ -757,7 +828,7 @@ def _discover_projects_direct(
         relative = project.relative_to(paths.root).as_posix()
         if relative in registered_paths:
             continue
-        record_path = project / ".engineering-bootstrap" / "project-record.json"
+        record_path = project / ".agentic_engineering_os_px" / "project-record.json"
         existing_record = (
             json.loads(record_path.read_text(encoding="utf-8"))
             if record_path.is_file()
@@ -775,7 +846,7 @@ def _discover_projects_direct(
         substantive = any(
             item.is_file()
             for item in project.rglob("*")
-            if ".engineering-bootstrap" not in item.parts
+            if ".agentic_engineering_os_px" not in item.parts
         )
         if substantive:
             inspect_existing_project(project, max_files=max_files)
@@ -818,7 +889,7 @@ def _discover_projects_direct(
             )
         processing_order = initialize_project_repair_campaign(project)
         local = json.loads(
-            (project / ".engineering-bootstrap" / "project-record.json").read_text(
+            (project / ".agentic_engineering_os_px" / "project-record.json").read_text(
                 encoding="utf-8"
             )
         )
@@ -838,7 +909,7 @@ def _discover_projects_direct(
             "cross_project_access": "deny",
         }
         _validate_control(binding, "workspace-binding.schema.json")
-        binding_path = project / ".engineering-bootstrap" / "workspace-binding.json"
+        binding_path = project / ".agentic_engineering_os_px" / "workspace-binding.json"
         binding_bytes = (json.dumps(binding, indent=2) + "\n").encode("utf-8")
         if binding_path.is_file() and binding_path.read_bytes() != binding_bytes:
             raise ValueError(f"workspace binding collision: {proposal['path']}")
@@ -863,7 +934,7 @@ def _discover_projects_direct(
             "memory_namespace": f"project/{local['project_id']}",
             "memory_root": memory.relative_to(paths.root).as_posix(),
             "project_record_sha256": _sha(
-                project / ".engineering-bootstrap" / "project-record.json"
+                project / ".agentic_engineering_os_px" / "project-record.json"
             ),
             "workspace_binding_sha256": _sha(binding_path),
             "project_management": (project / "PROJECT_MANAGEMENT.md")
@@ -2302,7 +2373,7 @@ def _materialize_workflow_payload(
     payload["active_root"] = project
     payload["workspace_root"] = paths.root
     payload["shared_root"] = paths.shared_capabilities
-    payload["staging_root"] = project / ".engineering-bootstrap" / "staging"
+    payload["staging_root"] = project / ".agentic_engineering_os_px" / "staging"
     payload["transaction_root"] = paths.tracking / "transactions" / project_id
     if workflow_id in {"memory_ingest_distill", "memory_maintenance"}:
         payload["vault"] = _vault(paths, workspace_id, project_id)
@@ -2649,12 +2720,12 @@ def workspace_status(
             project = _project_path(paths, item)
             if not project.is_dir():
                 raise ValueError("project directory missing")
-            local_record = project / ".engineering-bootstrap" / "project-record.json"
+            local_record = project / ".agentic_engineering_os_px" / "project-record.json"
             if not local_record.is_file() or _sha(local_record) != item.get(
                 "project_record_sha256"
             ):
                 raise ValueError("project record hash drift")
-            binding_path = project / ".engineering-bootstrap" / "workspace-binding.json"
+            binding_path = project / ".agentic_engineering_os_px" / "workspace-binding.json"
             if not binding_path.is_file() or _sha(binding_path) != item.get(
                 "workspace_binding_sha256"
             ):

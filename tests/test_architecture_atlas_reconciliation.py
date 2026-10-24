@@ -68,7 +68,7 @@ def test_atlas_precedes_final_classification_and_world_state() -> None:
 
 def test_atlas_inventory_excludes_mutable_control_roots() -> None:
     assert ".tmp" in build_atlas.SKIP_DIRS
-    assert ".engineering-bootstrap" in build_atlas.SKIP_DIRS
+    assert ".agentic_engineering_os_px" in build_atlas.SKIP_DIRS
     assert "evidence" in build_atlas.SKIP_DIRS
 
 

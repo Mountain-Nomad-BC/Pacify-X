@@ -29,34 +29,34 @@ def test_local_dependency_installations_are_pruned_at_the_root() -> None:
     assert is_external_environment_relative(
         "registry/.lock-recovery-receipts/.operational-gap-ledger.lock/receipt.json"
     )
-    assert is_external_environment_relative(".engineering-bootstrap/quarantine/run/file.bin")
+    assert is_external_environment_relative(".agentic_engineering_os_px/quarantine/run/file.bin")
     assert is_external_environment_relative(
-        ".engineering-bootstrap/.lock-recovery-receipts/release.lock/receipt.json"
+        ".agentic_engineering_os_px/.lock-recovery-receipts/release.lock/receipt.json"
     )
     assert is_external_environment_relative(
-        ".engineering-bootstrap/operation-bus/wal/committed/operation/after.json"
+        ".agentic_engineering_os_px/operation-bus/wal/committed/operation/after.json"
     )
     assert is_external_environment_relative(
-        ".engineering-bootstrap/processing-order/architecture-repair-wal/committed/operation/after/0000.json"
-    )
-    assert not is_external_environment_relative(
-        ".engineering-bootstrap/processing-order/repair-campaign.json"
-    )
-    assert is_external_environment_relative(".engineering-bootstrap/project-map/index.json")
-    assert is_external_environment_relative(".engineering-bootstrap/coordination/state.json")
-    assert is_external_environment_relative(".engineering-bootstrap/runtime-core/state.json")
-    assert is_external_environment_relative(
-        ".engineering-bootstrap/focused-temp/pytest/test-current"
+        ".agentic_engineering_os_px/processing-order/architecture-repair-wal/committed/operation/after/0000.json"
     )
     assert is_external_environment_relative(
-        ".engineering-bootstrap/project-map-history-archives/history.zip"
+        ".agentic_engineering_os_px/processing-order/repair-campaign.json"
     )
-    assert is_external_environment_relative(".engineering-bootstrap/studios/agents/revision.json")
+    assert is_external_environment_relative(".agentic_engineering_os_px/project-map/index.json")
+    assert is_external_environment_relative(".agentic_engineering_os_px/coordination/state.json")
+    assert is_external_environment_relative(".agentic_engineering_os_px/runtime-core/state.json")
     assert is_external_environment_relative(
-        ".engineering-bootstrap/test-evidence/adversarial-repair-gates/structural.json"
+        ".agentic_engineering_os_px/focused-temp/pytest/test-current"
     )
     assert is_external_environment_relative(
-        ".engineering-bootstrap/test-evidence/github-reconciliation-gates/registry.json"
+        ".agentic_engineering_os_px/project-map-history-archives/history.zip"
+    )
+    assert is_external_environment_relative(".agentic_engineering_os_px/studios/agents/revision.json")
+    assert is_external_environment_relative(
+        ".agentic_engineering_os_px/test-evidence/adversarial-repair-gates/structural.json"
+    )
+    assert is_external_environment_relative(
+        ".agentic_engineering_os_px/test-evidence/github-reconciliation-gates/registry.json"
     )
     assert is_external_environment_relative("projects/pacify-x/runtime/cli.py")
     assert is_external_environment_relative("projects_tracking/project-registry.json")
@@ -70,9 +70,9 @@ def test_local_dependency_installations_are_pruned_at_the_root() -> None:
         ".px/preserved-extension-installations/initial/extension/package.json"
     )
     assert not is_external_environment_relative("runtime/hardware_routing.py")
-    assert not is_external_environment_relative(
-        ".engineering-bootstrap/test-evidence/sections/testing-governance.json"
-    )
+    assert is_external_environment_relative(
+        ".agentic_engineering_os_px/test-evidence/sections/testing-governance.json"
+    )  # Explicit fixture retention does not make evidence authored source.
     assert not is_external_environment_relative("runtime/evidence_builder.py")
     assert not is_external_environment_relative("runtime/builders/owner.py")
     assert not is_external_environment_relative("runtime/distribution.py")
@@ -88,7 +88,7 @@ def test_project_source_boundary_does_not_hide_similar_nested_names(tmp_path: Pa
     assert not is_project_source(tmp_path / "projects" / "demo" / "runtime.py", tmp_path)
     assert not is_project_source(tmp_path / "projects_tracking" / "events" / "1.json", tmp_path)
     assert not is_project_source(
-        tmp_path / ".engineering-bootstrap" / "studios" / "agents" / "run.json",
+        tmp_path / ".agentic_engineering_os_px" / "studios" / "agents" / "run.json",
         tmp_path,
     )
     assert is_project_source(tmp_path / "runtime" / "Python" / "x.py", tmp_path)
@@ -105,10 +105,10 @@ def test_canonical_fixture_copy_prunes_local_gates_but_retains_current_receipts(
     destination = tmp_path / "destination"
     local_gate = (
         source
-        / ".engineering-bootstrap/test-evidence/adversarial-repair-gates/gate.json"
+        / ".agentic_engineering_os_px/test-evidence/adversarial-repair-gates/gate.json"
     )
     current_receipt = (
-        source / ".engineering-bootstrap/test-evidence/sections/dashboard.json"
+        source / ".agentic_engineering_os_px/test-evidence/sections/dashboard.json"
     )
     for path in (local_gate, current_receipt):
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -118,8 +118,8 @@ def test_canonical_fixture_copy_prunes_local_gates_but_retains_current_receipts(
 
     assert not (
         destination
-        / ".engineering-bootstrap/test-evidence/adversarial-repair-gates"
+        / ".agentic_engineering_os_px/test-evidence/adversarial-repair-gates"
     ).exists()
     assert (
-        destination / ".engineering-bootstrap/test-evidence/sections/dashboard.json"
+        destination / ".agentic_engineering_os_px/test-evidence/sections/dashboard.json"
     ).is_file()

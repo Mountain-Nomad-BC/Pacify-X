@@ -5,9 +5,81 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from runtime.guarded_registry_projection import publish_guarded_registry_projection
 
 
 ROOT_OWNERS = {
+    'remote_model_attachment.schema.json': (
+        'runtime/remote_model_attachment.py',
+        ['runtime/remote_model_attachment.py', 'runtime/model_group_preparation.py'],
+        'signed_remote_member_preparation_boundary',
+        ['tests/test_remote_group_attachment.py'],
+    ),
+    'remote-provider-profile.schema.json': (
+        'runtime/remote_provider_profiles.py',
+        ['runtime/remote_provider_profiles.py'],
+        'signed_remote_profile_runtime_boundary',
+        ['tests/test_remote_model_bridge.py', 'tests/test_remote_group_attachment.py'],
+    ),
+"dependency-identity.schema.json": ("runtime/dependency_identity.py", ["runtime/dependency_identity.py", "runtime/dependency_invalidation.py"], "canonical_dependency_observation_boundary", ["tests/test_dependency_invalidation.py", "tests/test_dependency_contracts.py"]),
+"execution-context.schema.json": ("runtime/execution_context.py", ["runtime/execution_context.py", "runtime/vscode_model_bridge.py"], "execution_identity_and_currentness_boundary", ["tests/test_execution_context.py", "tests/test_agent_governed_integration.py"]),
+"model-branch-artifact.schema.json": ("runtime/model_branch_artifacts.py", ["runtime/model_branch_artifacts.py", "runtime/agent_runtime.py", "runtime/model_convergence.py"], "committed_member_execution_boundary", ["tests/test_model_group_preparation.py"]),
+"member-execution-input.schema.json": ("runtime/model_group_preparation.py", ["runtime/model_group_preparation.py", "runtime/agent_runtime.py"], "exact_member_input_boundary", ["tests/test_model_group_preparation.py"]),
+"model-group-preparation.schema.json": ("runtime/model_group_preparation.py", ["runtime/model_group_preparation.py", "runtime/task_execution_plan.py", "runtime/execution_placement.py"], "exact_per_member_model_preparation", ["tests/test_model_group_preparation.py"]),
+"execution-generation-vector.schema.json": ("runtime/context_generation.py", ["runtime/context_generation.py", "runtime/task_execution_plan.py"], "generation_bound_execution", ["tests/test_refines_generation_lineage.py"]),
+'model-execution-group.schema.json': ('runtime/model_execution_group.py', ['runtime/model_execution_group.py', 'runtime/deterministic_model_stub.py'], 'typed_refines_mesh_boundary', ['tests/test_refines_mesh_integration.py']),
+'generation-bound-verdict.schema.json': ('runtime/generation_bound_verdict.py', ['runtime/generation_bound_verdict.py', 'runtime/deterministic_model_stub.py'], 'typed_refines_mesh_boundary', ['tests/test_refines_mesh_integration.py']),
+'governed-exception.schema.json': ('runtime/governed_exception.py', ['runtime/governed_exception.py', 'runtime/deterministic_model_stub.py'], 'typed_refines_mesh_boundary', ['tests/test_refines_mesh_integration.py']),
+'work-disposition.schema.json': ('runtime/work_disposition.py', ['runtime/work_disposition.py', 'runtime/deterministic_model_stub.py'], 'typed_refines_mesh_boundary', ['tests/test_refines_mesh_integration.py']),
+
+    'source-census-binding.schema.json': (
+        'runtime/semantic_surfaces.py',
+        ['runtime/semantic_surfaces.py', 'runtime/semantic_taxonomy_census.py', 'runtime/semantic_prefreeze_census.py'],
+        'typed_source_metadata_boundary',
+        ['tests/test_semantic_surfaces.py', 'tests/test_contract_ownership_registry.py'],
+    ),
+    'compact-address-record.schema.json': (
+        'runtime/compact_address.py',
+        ['runtime/compact_address.py', 'runtime/librarian_semantic_map.py'],
+        'semantic_address_runtime_boundary',
+        ['tests/test_compact_address.py', 'tests/test_librarian_semantic_map.py'],
+    ),
+    'locator-record.schema.json': (
+        'runtime/semantic_locator.py',
+        ['runtime/semantic_locator.py', 'runtime/librarian_semantic_map.py'],
+        'semantic_locator_runtime_boundary',
+        ['tests/test_semantic_locator.py', 'tests/test_librarian_semantic_map.py'],
+    ),
+    'relation-record.schema.json': (
+        'runtime/semantic_locator.py',
+        ['runtime/semantic_locator.py', 'runtime/librarian_semantic_map.py'],
+        'semantic_locator_runtime_boundary',
+        ['tests/test_semantic_locator.py', 'tests/test_librarian_semantic_map.py'],
+    ),
+    'semantic-entity.schema.json': (
+        'runtime/semantic_entity.py',
+        ['runtime/semantic_entity.py', 'runtime/semantic_taxonomy.py', 'runtime/librarian_semantic_map.py'],
+        'semantic_identity_runtime_boundary',
+        ['tests/test_semantic_entity.py', 'tests/test_librarian_semantic_map.py'],
+    ),
+    "context-generation-vector.schema.json": (
+        "runtime/context_generation.py",
+        ["runtime/context_generation.py", "runtime/dependency_invalidation.py", "runtime/librarian_semantic_map.py"],
+        "typed_scoped_archivist_metadata_boundary",
+        ["tests/test_context_generation.py", "tests/test_librarian_semantic_map.py", "tests/test_contract_ownership_registry.py"],
+    ),
+    "projection-status.schema.json": (
+        "runtime/projection_gate.py",
+        ["runtime/projection_gate.py", "runtime/librarian_semantic_map.py"],
+        "typed_scoped_archivist_metadata_boundary",
+        ["tests/test_projection_gate.py", "tests/test_librarian_semantic_map.py", "tests/test_contract_ownership_registry.py"],
+    ),
     "agent_handoff_packet.schema.json": (
         "runtime/agent_handoff.py",
         ["runtime/agent_handoff.py", "runtime/agent_runtime.py"],
@@ -171,6 +243,24 @@ ROOT_OWNERS = {
         ["runtime/assurance_controls.py"],
         "runtime_control_equivalent",
         ["tests/test_assurance_controls.py"],
+    ),
+    "cancellation-scope.schema.json": (
+        "runtime/cancellation_scope.py",
+        ["runtime/cancellation_scope.py"],
+        "runtime_enforced",
+        ["tests/test_agent_governed_integration.py"],
+    ),
+    "isolated-agent-sandbox.schema.json": (
+        "runtime/isolated_sandbox.py",
+        ["runtime/isolated_sandbox.py"],
+        "runtime_enforced",
+        ["tests/test_isolated_agent_sandbox.py"],
+    ),
+    "gremlin-containment-proof.schema.json": (
+        "runtime/gremlin/containment.py",
+        ["runtime/gremlin/containment.py"],
+        "runtime_enforced",
+        ["tests/test_gremlin_containment.py"],
     ),
     "evidence-record.schema.json": (
         "runtime/evidence_assembler.py",
@@ -613,7 +703,17 @@ def build(root: Path) -> dict[str, object]:
                 "title": schema.get("title", name),
                 "owner": owner,
                 "producers": producers,
-                "consumers": ["runtime/contracts.py"],
+                "consumers": {
+                    'remote_model_attachment.schema.json': ["runtime/contracts.py", "runtime/model_attachment.py", "runtime/remote_model_attachment.py", "runtime/model_group_preparation.py", "runtime/group_provider_adapters.py"],
+                    'remote-provider-profile.schema.json': ["runtime/contracts.py", "runtime/remote_provider_profiles.py", "runtime/group_provider_adapters.py", "runtime/remote_model_bridge.py"],
+                    'source-census-binding.schema.json': ["runtime/contracts.py", "runtime/semantic_taxonomy_census.py", "runtime/semantic_prefreeze_census.py"],
+                    'compact-address-record.schema.json': ["runtime/contracts.py", "runtime/librarian_semantic_map.py"],
+                    'locator-record.schema.json': ["runtime/contracts.py", "runtime/librarian_semantic_map.py"],
+                    'relation-record.schema.json': ["runtime/contracts.py", "runtime/librarian_semantic_map.py"],
+                    'semantic-entity.schema.json': ["runtime/contracts.py", "runtime/librarian_semantic_map.py"],
+                    "context-generation-vector.schema.json": ["runtime/contracts.py", "runtime/projection_gate.py", "runtime/dependency_invalidation.py", "runtime/librarian_semantic_map.py"],
+                    "projection-status.schema.json": ["runtime/contracts.py", "runtime/librarian_semantic_map.py"],
+                }.get(name, ["runtime/contracts.py"]),
                 "enforcement": enforcement,
                 "packaged": True,
                 "tests": list(
@@ -629,14 +729,18 @@ def build(root: Path) -> dict[str, object]:
     }
 
 
-if __name__ == "__main__":
+def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--root", type=Path, default=Path.cwd())
+    parser.add_argument("--root", type=Path, default=ROOT)
+    parser.add_argument("--admission-event-id", required=True)
     args = parser.parse_args()
     root = args.root.resolve()
     result = build(root)
-    target = root / "registry" / "contract_ownership.json"
-    target.write_text(
-        json.dumps(result, indent=2) + "\n", encoding="utf-8", newline="\n"
-    )
+    publish_guarded_registry_projection(root, "registry/contract_ownership.json", result,
+        admission_event_id=args.admission_event_id)
     print(json.dumps({"contract_count": result["contract_count"]}, indent=2))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

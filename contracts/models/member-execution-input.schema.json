@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:models:member-execution-input",
+  "title": "Member Execution Input",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "model_id",
+    "agent_generation_id",
+    "task_plan_sha256",
+    "group_sha256",
+    "attachment",
+    "context",
+    "context_sha256",
+    "authority_granted"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "px.member-execution-input/1.0"
+    },
+    "model_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "agent_generation_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "task_plan_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "group_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "attachment": {
+      "$ref": "../model_attachment.schema.json"
+    },
+    "context": {
+      "$ref": "model-group-preparation.schema.json#/properties/members/items/properties/context"
+    },
+    "context_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "authority_granted": {
+      "const": false
+    }
+  }
+}

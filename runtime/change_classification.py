@@ -117,7 +117,7 @@ def _infer(path: str, symbols: Sequence[str], effects: Sequence[str]):
         "semantic_or_symbol_surface",
     )
     add(
-        lowered.startswith(("registry/", ".engineering-bootstrap/")),
+        lowered.startswith(("registry/", ".agentic_engineering_os_px/")),
         ChangeClass.METADATA_ONLY,
         "metadata_projection_surface",
     )

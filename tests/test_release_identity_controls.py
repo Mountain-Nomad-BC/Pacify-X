@@ -62,7 +62,7 @@ def _repository() -> Path:
                 "intermediate_suffixes": [".tmp"],
                 "control_output_paths": ["registry/control.json"],
                 "control_output_prefixes": [
-                    ".engineering-bootstrap/test-evidence/"
+                    ".agentic_engineering_os_px/test-evidence/"
                 ],
                 "evidence_allowed_suffixes": [".json", ".xml"],
                 "unclassified_policy": "fail_closed",
@@ -96,7 +96,7 @@ def test_governed_control_progress_does_not_revoke_tagged_source() -> None:
     control = root / "registry/control.json"
     control.parent.mkdir()
     control.write_text('{"sequence":1}\n', encoding="utf-8")
-    receipt = root / ".engineering-bootstrap/test-evidence/groups/core.json"
+    receipt = root / ".agentic_engineering_os_px/test-evidence/groups/core.json"
     receipt.parent.mkdir(parents=True)
     receipt.write_text('{"passed":true}\n', encoding="utf-8")
     result = capture_git_identity(root, version="1.2.3")
@@ -105,7 +105,7 @@ def test_governed_control_progress_does_not_revoke_tagged_source() -> None:
     assert result["dirty"] is False
     assert result["dirty_paths"] == []
     assert result["mutable_control_paths"] == [
-        ".engineering-bootstrap/test-evidence/groups/core.json",
+        ".agentic_engineering_os_px/test-evidence/groups/core.json",
         "registry/control.json",
     ]
 

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+import pytest
 
 from runtime.agent_handoff import acknowledge_handoff, create_handoff_packet
 from runtime.agent_runtime import AgentRuntimeController
@@ -19,6 +20,52 @@ from runtime.model_attachment import build_model_attachment
 from runtime.skill_navigator import CapabilitySummary
 from runtime.studio_models import AgentSpec, CapabilityBinding, EffectGrant
 from runtime.task_execution_plan import compile_task_execution_plan
+
+
+def test_live_agent_refuses_stale_generation_before_reservation_or_callbacks(tmp_path, monkeypatch):
+    from runtime.agent_runtime import execute_agent_plan
+    from runtime.context_generation import ALL_COMPONENTS, context_vector
+    from runtime.execution_placement import _hash
+    original = _plan(tmp_path, "b" * 64)
+    route = route_task("review bounded evidence", {"skills": (
+        CapabilitySummary("review", "review bounded evidence"),)})
+    components = {**dict.fromkeys(ALL_COMPONENTS, "test-fixture-only"),
+                  "source_revision": "source-1"}
+    current = context_vector("project:demo", "scope", components)
+    plan = compile_task_execution_plan(route, project_id="project:demo", source_revision="source-1",
+        projection_revisions={"semantic": "revision"}, effect_budget=("read",),
+        authority_bindings=("binding:agent-search",), model_attachment=original.model_attachment,
+        model_ranking_receipt=original.model_ranking_receipt, context_generation=current,
+        created_utc="2026-10-04T00:00:00Z")
+    placement = {"task_plan_sha256": plan.plan_sha256,
+                 "model_attachment_sha256": original.model_attachment["attachment_sha256"],
+                 "selected_device": "cpu", "fallback": {"device": "cpu"}, "reason": "fixture"}
+    placement["placement_sha256"] = _hash(placement)
+    calls = []
+    def reserve(self, value, *, run_id):
+        calls.append("reserve")
+        return {"reservation_sha256": "a" * 64}
+    def release(self, value, *, outcome_sha256):
+        calls.append("release")
+        return {"released": True}
+    monkeypatch.setattr(PlacementCapacityLedger, "reserve", reserve)
+    monkeypatch.setattr(PlacementCapacityLedger, "release", release)
+    stale = context_vector("project:demo", "scope", {**components, "network_policy_revision": "changed"})
+    kwargs = dict(run_id="run", gpu_fn=lambda batch: calls.append("gpu"),
+                  cpu_fn=lambda: calls.append("cpu"))
+    with pytest.raises(ValueError, match="blocked"):
+        execute_agent_plan(tmp_path, plan.as_dict(), placement, current_context_generation=stale, **kwargs)
+    assert calls == []
+    controller = AgentRuntimeController(tmp_path)
+    with pytest.raises(ValueError, match="blocked"):
+        controller.execute_governed_plan(None, task_plan=plan.as_dict(), placement=placement,
+            approval=True, gpu_fn=kwargs["gpu_fn"], cpu_fn=kwargs["cpu_fn"],
+            current_context_generation=stale)
+    assert calls == []
+    value, outcome = execute_agent_plan(tmp_path, plan.as_dict(), placement,
+        current_context_generation=current, **kwargs)
+    assert calls == ["reserve", "cpu", "release"]
+    assert outcome["capacity_release"]["released"]
 
 
 def _agent(body: str):
@@ -100,7 +147,8 @@ def _plan(root: Path, benchmark_revision: str):
     )
 
 
-def test_governed_preview_and_execution_resolve_all_brokers_and_cleanup(tmp_path):
+@pytest.mark.parametrize("with_group", [False, True])
+def test_governed_preview_and_execution_resolve_all_brokers_and_cleanup(tmp_path, with_group):
     now = datetime.now(timezone.utc)
     workload = WorkloadProfile(
         WorkloadKind.TEXT_ANALYSIS,
@@ -136,6 +184,41 @@ def test_governed_preview_and_execution_resolve_all_brokers_and_cleanup(tmp_path
         workload_fingerprint=workload.fingerprint,
     )
     plan = _plan(tmp_path, benchmark.revision)
+    current_generation = None
+    if with_group:
+        from runtime.model_attachment import model_attachment_from_dict
+        from runtime.model_execution_group import BranchAssignment, RoleWorkContract, IndependenceContract, ModelExecutionGroup
+        from runtime.model_group_preparation import context_for_branch, context_sha256, prepare_model_group
+        from runtime.semantic_integration_types import FusedQueryResult
+        from runtime.context_generation import ALL_COMPONENTS, context_vector
+        from dataclasses import replace
+        primary = model_attachment_from_dict(plan.model_attachment)
+        members, exact, retrievals = [], {}, {}
+        for i, model in enumerate((primary.model_id, "fixture:model-1", "fixture:model-2")):
+            branch = BranchAssignment(model, "proposal", work_contract=RoleWorkContract("answer", "a" * 64),
+                independence_contract=IndependenceContract(), agent_generation_id=f"fixture-generation-{i}")
+            retrieval = FusedQueryResult("review bounded evidence", "project:demo", (), {}, 0,
+                "fixture:retrieval", "b" * 64)
+            context = context_for_branch(retrieval, branch)
+            branch = replace(branch, work_contract=RoleWorkContract("answer", context_sha256(context)))
+            members.append(branch)
+            retrievals[model] = retrieval
+            exact[model] = primary if i == 0 else build_model_attachment(tmp_path,
+                model_id=model, model_revision="fixture-exact", artifact_sha256="e" * 64,
+                runtime="provider-gateway", context_tokens=4096, modalities=("text",), supports_tools=False,
+                privacy="local", authority_class="contained", benchmark_revision=benchmark.revision,
+                hardware_requirements={"memory": "1GiB"})
+        group = ModelExecutionGroup("fixture-group", "execution", "human:owner", tuple(members), quorum="majority")
+        preparation = prepare_model_group(group, exact, retrievals, root=tmp_path)
+        current_generation = context_vector("project:demo", "scope", {**dict.fromkeys(ALL_COMPONENTS, "test-fixture-only"),
+            "source_revision": "source-1", "model_execution_group_revision": group.group_sha256,
+            "model_contract_set_revision": group.contract_set_sha256})
+        route = route_task("review bounded evidence", {"skills": (CapabilitySummary("review", "review bounded evidence"),)})
+        plan = compile_task_execution_plan(route, project_id="project:demo", source_revision="source-1",
+            projection_revisions={"semantic": "revision"}, effect_budget=("read",), authority_bindings=("binding:agent-search",),
+            model_attachment=primary.as_dict(), model_ranking_receipt=plan.model_ranking_receipt,
+            model_execution_group=group, model_group_preparation=preparation, context_generation=current_generation,
+            created_utc="2026-10-04T00:00:00Z")
     plan_dict = plan.as_dict()
     placement = route_hardware(
         plan_dict,
@@ -143,6 +226,7 @@ def test_governed_preview_and_execution_resolve_all_brokers_and_cleanup(tmp_path
         hardware=hardware,
         benchmark=benchmark,
         project_root=tmp_path,
+        model_id="fixture:model-2" if with_group else None,
     )
 
     body = "Use only brokered context and Studio-admitted effects.\n"
@@ -248,6 +332,7 @@ def test_governed_preview_and_execution_resolve_all_brokers_and_cleanup(tmp_path
         memory_records=(record,),
         handoff_inputs=(handoff,),
         memory_now_utc=now,
+        current_context_generation=current_generation,
     )
     assert preview["eligible"] is True
     assert preview["memory_context_receipt_sha256"]
@@ -260,10 +345,12 @@ def test_governed_preview_and_execution_resolve_all_brokers_and_cleanup(tmp_path
         approval=True,
         gpu_fn=lambda _batch: "gpu",
         cpu_fn=lambda: {"answer": "bounded"},
+        member_executor=(lambda invocation, **placement: {"answer": "bounded", "member": invocation.model_id}) if plan_dict.get("model_execution_group") else None,
         memory_query_plan=memory_plan,
         memory_records=(record,),
         handoff_inputs=(handoff,),
         memory_now_utc=now,
+        current_context_generation=current_generation,
     )
     assert receipt["effects_studio_admitted"] is True
     assert receipt["outcome"]["capacity_release"]["released"] is True
@@ -278,6 +365,7 @@ def test_governed_preview_and_execution_resolve_all_brokers_and_cleanup(tmp_path
         memory_records=(record,),
         handoff_inputs=({**handoff, "acknowledgment": None},),
         memory_now_utc=now,
+        current_context_generation=current_generation,
     )
     assert blocked["eligible"] is False
     assert "handoff_agents_not_runtime_resolved" in blocked["blockers"]

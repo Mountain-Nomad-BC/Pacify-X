@@ -33,8 +33,8 @@ Read [layered memory lifecycle](references/layered-memory-lifecycle.md) before c
 
 ## Operational commands
 
-1. Activate the owning project with `engineering-bootstrap project activate`.
-2. Preview and apply bounded project-local sources with `engineering-bootstrap memory ingest`.
+1. Activate the owning project with `agentic-engineering-os-px project activate`.
+2. Preview and apply bounded project-local sources with `agentic-engineering-os-px memory ingest`.
 3. Pass the owning `--actor-id` and `--session-id` on every memory command; the runtime verifies them against the active lease.
 4. Keep new records non-retrievable until independent evidence supports `memory transition --target validated` followed by `--target certified`.
 5. Create corrections with `memory correct`. A candidate or merely validated correction cannot suppress certified memory; supersession takes effect only after correction certification.

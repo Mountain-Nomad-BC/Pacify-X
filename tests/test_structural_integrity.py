@@ -31,16 +31,16 @@ def _root_audit() -> dict[str, object]:
 
 def test_completed_wal_images_are_inactive_but_pending_wal_remains_auditable() -> None:
     assert _exclude_structural_path(
-        ".engineering-bootstrap/doctor/wal/committed/tx/after/0000.json"
+        ".agentic_engineering_os_px/doctor/wal/committed/tx/after/0000.json"
     )
     assert not _exclude_structural_path(
-        ".engineering-bootstrap/doctor/wal/pending/tx/after/0000.json"
+        ".agentic_engineering_os_px/doctor/wal/pending/tx/after/0000.json"
     )
     assert _exclude_structural_path(
-        ".engineering-bootstrap/wal/cohesion-card-reconciliation/committed/tx/after/0000.json"
+        ".agentic_engineering_os_px/wal/cohesion-card-reconciliation/committed/tx/after/0000.json"
     )
     assert not _exclude_structural_path(
-        ".engineering-bootstrap/wal/cohesion-card-reconciliation/pending/tx/after/0000.json"
+        ".agentic_engineering_os_px/wal/cohesion-card-reconciliation/pending/tx/after/0000.json"
     )
 
 
@@ -97,10 +97,11 @@ def _clone_ignore(directory: str, names: list[str]) -> set[str]:
 
 
 def _link_read_only_source(source: str, target: str) -> str:
-    try:
-        return os.link(source, target)
-    except OSError:
-        return shutil.copy2(source, target)
+    # Copy, never link: a hard link raises the repo file's st_nlink, which the
+    # capture engine rightly reports as a physical source alias for every
+    # later test in the same process. A byte copy is as read-only as the
+    # original for these assertions.
+    return shutil.copy2(source, target)
 
 
 def _clone(directory: Path) -> Path:
@@ -124,7 +125,7 @@ def test_structural_mutation_clone_excludes_retained_evidence() -> None:
     assert is_external_environment_relative("evidence/release-certification.json")
     assert is_external_environment_relative("extension/dist/release.vsix")
     assert is_external_environment_relative(
-        ".engineering-bootstrap/project-map-history-archives/prior.json"
+        ".agentic_engineering_os_px/project-map-history-archives/prior.json"
     )
     assert is_external_environment_relative(
         "registry/operational_gap_ledger.snapshot.json"
@@ -161,8 +162,8 @@ def test_hash_ledger_head_and_anchor_are_a_reviewed_exact_projection() -> None:
 
 def test_ledger_anchor_and_retained_history_are_reviewed_custody() -> None:
     paths = [
-        ".engineering-bootstrap/.ledger-authority/commissioning-events/anchors/00000001-a.json",
-        ".engineering-bootstrap/.ledger-authority/commissioning-events/history/00000001.json",
+        ".agentic_engineering_os_px/.ledger-authority/commissioning-events/anchors/00000001-a.json",
+        ".agentic_engineering_os_px/.ledger-authority/commissioning-events/history/00000001.json",
     ]
     assert _classify_exact_group(paths) == "ledger-authority-anchor-history"
 
@@ -268,7 +269,7 @@ def test_stale_release_pinned_execution_plan_fails_closed(tmp_path) -> None:
 
 def test_project_management_checkpoint_drift_fails_closed(tmp_path) -> None:
     root = _clone(tmp_path)
-    path = root / ".engineering-bootstrap/project-management/state.json"
+    path = root / ".agentic_engineering_os_px/project-management/state.json"
     _detach_for_mutation(path)
     state = json.loads(path.read_text(encoding="utf-8"))
     state["checkpoint"]["next_safe_action"] = "different"
@@ -365,25 +366,49 @@ def test_portable_hash_helpers_have_behavioral_parity() -> None:
 
 
 def test_runtime_file_digest_helpers_are_reviewed_digest_adapters() -> None:
+    """Runtime digest adapters converge on the single hash_utils owner.
+
+    The runtime surface no longer duplicates the bounded file digest loop:
+    provider_gateway and local_model_runtime delegate to runtime/hash_utils,
+    and every remaining digest-adapters group is a reviewed portable or
+    release-control surface.
+    """
+
     result = _root_audit()
+    runtime_sources = {
+        "runtime/local_model_runtime.py": "".join(
+            line
+            for line in (ROOT / "runtime/local_model_runtime.py")
+            .read_text(encoding="utf-8")
+            .splitlines(keepends=True)
+            if "_digest_file" in line or "file_sha256" in line
+        ),
+        "runtime/provider_gateway.py": "".join(
+            line
+            for line in (ROOT / "runtime/provider_gateway.py")
+            .read_text(encoding="utf-8")
+            .splitlines(keepends=True)
+            if "_file_sha256" in line or "file_sha256" in line
+        ),
+    }
+    assert "from runtime.hash_utils import file_sha256" in runtime_sources[
+        "runtime/provider_gateway.py"
+    ]
+    assert "file_sha256(path)" in runtime_sources["runtime/local_model_runtime.py"]
     helpers = [
         item
         for item in result["duplicate_logic_groups"]
-        if {
-            location.rsplit(":", 1)[-1]
-            for location in item["locations"]
-        } >= {"_digest_file", "_file_sha256"}
-        and {
-            location.split(":", 1)[0]
-            for location in item["locations"]
-        } >= {
-            "runtime/local_model_runtime.py",
-            "runtime/provider_gateway.py",
-        }
+        if item["classification"] == "digest-adapters"
     ]
-    assert len(helpers) == 1
-    assert helpers[0]["classification"] == "digest-adapters"
-    assert helpers[0]["equivalence_rule"] == "behavioral parity"
+    assert helpers, "reviewed digest-adapters surfaces must remain classified"
+    assert all(
+        item["equivalence_rule"] == "behavioral parity" for item in helpers
+    )
+    for item in helpers:
+        paths = {location.split(":", 1)[0] for location in item["locations"]}
+        assert not (paths & {"runtime/local_model_runtime.py", "runtime/provider_gateway.py"}), (
+            "runtime digest adapters must delegate to hash_utils, not duplicate it"
+        )
 
 
 def test_release_owner_digest_and_json_helpers_are_reviewed() -> None:
@@ -401,12 +426,11 @@ def test_release_owner_digest_and_json_helpers_are_reviewed() -> None:
         "scripts/run_release_stage_owner.py",
         "scripts/verify_release_publication.py",
     }
-    digest_group = next(
-        item
-        for item in groups
-        if {location.split(":", 1)[0] for location in item["locations"]}
-        >= digest_paths
-    )
+    # The release-control digest helpers converged on the single hash_utils
+    # owner; every surface must delegate instead of carrying its own loop.
+    for relative in digest_paths:
+        text = (ROOT / relative).read_text(encoding="utf-8")
+        assert "from runtime.hash_utils import file_sha256" in text, relative
     loader_group = next(
         item
         for item in groups
@@ -418,5 +442,4 @@ def test_release_owner_digest_and_json_helpers_are_reviewed() -> None:
         and {location.rsplit(":", 1)[-1] for location in item["locations"]}
         == {"_object", "load_object"}
     )
-    assert digest_group["classification"] == "expanded-release-digest-adapters"
     assert loader_group["classification"] == "bounded-json-loaders"

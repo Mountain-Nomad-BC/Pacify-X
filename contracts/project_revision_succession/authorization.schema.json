@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:pacify-x:project-revision-succession-authorization:1.0",
+  "title": "Owner-signed project revision succession authorization",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "authorization_id",
+    "decision",
+    "successor_project_id",
+    "successor_campaign_id",
+    "predecessor_campaign_id",
+    "predecessor_raw_sha256",
+    "source_tree_sha256",
+    "owner_policy_id",
+    "issued_at",
+    "expires_at",
+    "issuer",
+    "signature",
+    "content_sha256",
+    "validation_policy",
+    "intake_findings",
+    "effect_boundary",
+    "revocation_status",
+    "replay_status"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "px.project-revision-succession-authorization/1.0"
+    },
+    "authorization_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "decision": {
+      "const": "approved"
+    },
+    "successor_project_id": {
+      "type": "string",
+      "pattern": "^prj_[A-Za-z0-9_-]+$"
+    },
+    "successor_campaign_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "predecessor_campaign_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "predecessor_raw_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "source_tree_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "owner_policy_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "issued_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "issuer": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "signature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "algorithm",
+        "namespace",
+        "identity",
+        "fingerprint"
+      ],
+      "properties": {
+        "algorithm": {
+          "const": "ssh-ed25519"
+        },
+        "namespace": {
+          "const": "pacify-x-project-revision-succession"
+        },
+        "identity": {
+          "type": "string"
+        },
+        "fingerprint": {
+          "type": "string",
+          "pattern": "^SHA256:[A-Za-z0-9+/]{43}$"
+        }
+      }
+    },
+    "content_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "validation_policy": {
+      "type": "object",
+      "minProperties": 1
+    },
+    "intake_findings": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "effect_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "local_revision_activation",
+        "production_activation",
+        "package",
+        "install",
+        "publication"
+      ],
+      "properties": {
+        "local_revision_activation": {
+          "const": true
+        },
+        "production_activation": {
+          "const": false
+        },
+        "package": {
+          "const": false
+        },
+        "install": {
+          "const": false
+        },
+        "publication": {
+          "const": false
+        }
+      }
+    },
+    "revocation_status": {
+      "const": "not_revoked"
+    },
+    "replay_status": {
+      "const": "unused"
+    }
+  }
+}

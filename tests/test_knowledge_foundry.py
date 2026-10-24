@@ -205,15 +205,18 @@ class KnowledgeFoundryTests(unittest.TestCase):
             (source("one", "Generate and validate a workflow skill with evidence."),)
         )
         with tempfile.TemporaryDirectory() as directory:
-            destination = Path(directory)
-            receipt = materialize_candidate_bundle(bundle, destination)
-            root = destination / bundle.bundle_id
-            self.assertEqual(receipt["state"], "candidate")
-            self.assertTrue((root / "bundle.json").is_file())
-            self.assertTrue((root / "benchmarks.json").is_file())
-            self.assertTrue(list((root / "skills").glob("*/SKILL.md")))
-            with self.assertRaises(FileExistsError):
-                materialize_candidate_bundle(bundle, destination)
+            from tests.foundry_publication_fixture import publication_host
+            with publication_host(Path(directory) / "project") as (destination, custody):
+                self._assert_materialized(bundle, destination, custody)
+
+    def _assert_materialized(self, bundle, destination, custody):
+        receipt = materialize_candidate_bundle(bundle, destination, **custody)
+        root = destination / bundle.bundle_id
+        self.assertEqual(receipt["state"], "candidate")
+        self.assertTrue((root / "bundle.json").is_file())
+        self.assertTrue((root / "benchmarks.json").is_file())
+        self.assertTrue(list((root / "skills").glob("*/SKILL.md")))
+        self.assertEqual(materialize_candidate_bundle(bundle, destination, **custody), receipt)
 
     def test_composition_and_evolution_never_auto_activate(self) -> None:
         bundle = compile_foundry_bundle(

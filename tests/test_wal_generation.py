@@ -171,10 +171,10 @@ def test_fleet_conflicting_catalog_owner_is_not_transferred(tmp_path):
             dict(path='agent-sessions/sessions', kind='subtree'),
         ],
     )])
-    before = (tmp_path / '.engineering-bootstrap/wal-ownership.json').read_bytes()
+    before = (tmp_path / '.agentic_engineering_os_px/wal-ownership.json').read_bytes()
     with pytest.raises(ValueError, match='explicit producer adoption'):
         _register(coordinator)
-    assert (tmp_path / '.engineering-bootstrap/wal-ownership.json').read_bytes() == before
+    assert (tmp_path / '.agentic_engineering_os_px/wal-ownership.json').read_bytes() == before
     assert not coordinator._registry_path.exists()
     assert not (coordinator.bus.root / 'events').exists()
 

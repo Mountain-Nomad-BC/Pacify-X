@@ -11,13 +11,14 @@ import sys
 import tokenize
 
 
-LOCAL = {"runtime", "builders", "scripts", "engineering_bootstrap", "tests", "docs"}
+LOCAL = {"runtime", "builders", "scripts", "agentic_engineering_os_px", "tests", "docs", "px"}
 TEST_ONLY = {"pytest": "pytest", "yaml": "PyYAML", "jsonschema": "jsonschema"}
 DECLARED_REQUIRED = {"yaml": "PyYAML"}
 OPTIONAL_GATED = {
     "laya": "laya",
     "numpy": "numpy",
     "pacifyx_memory": "pacifyx_memory",
+    "sklearn": "scikit-learn",
     "turbovec": "turbovec",
 }
 MAX_SOURCE_FILES = 10_000

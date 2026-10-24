@@ -485,7 +485,7 @@ function collectStudioCatalog(projectRoot, catalogKind, authenticatedStatuses = 
   } catch {
     return { items: [], fingerprint: 'missing-project', refused: 0 };
   }
-  const studios = path.join(root, '.engineering-bootstrap', 'studios', layout.directory);
+  const studios = path.join(root, '.agentic_engineering_os_px', 'studios', layout.directory);
   const items = []; const fingerprints = []; let refused = 0; let visited = 0; let truncated = false;
   for (const component of physicalDirectoryEntries(studios)) {
     const revisions = path.join(studios, component.name, 'revisions');

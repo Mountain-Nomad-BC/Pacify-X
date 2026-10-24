@@ -17,7 +17,7 @@ description: Enforce single-project execution sessions, scoped agent leases, con
 
 ## Operational commands
 
-1. Initialize the bounded workspace with `engineering-bootstrap workspace init`.
+1. Initialize the bounded workspace with `agentic-engineering-os-px workspace init`.
 2. Admit direct children of `projects/` with `workspace discover`.
 3. Inspect the authoritative projection with `workspace status`.
 4. Bind exactly one project using `project activate`.

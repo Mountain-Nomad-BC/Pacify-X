@@ -4,7 +4,7 @@
     {
       "label": "Bootstrap: validate installation",
       "type": "shell",
-      "command": "engineering-bootstrap validate",
+      "command": "agentic-engineering-os-px validate",
       "problemMatcher": []
     },
     {
@@ -16,7 +16,7 @@
     {
       "label": "Bootstrap: doctor",
       "type": "shell",
-      "command": "engineering-bootstrap doctor",
+      "command": "agentic-engineering-os-px doctor",
       "problemMatcher": []
     }
   ]

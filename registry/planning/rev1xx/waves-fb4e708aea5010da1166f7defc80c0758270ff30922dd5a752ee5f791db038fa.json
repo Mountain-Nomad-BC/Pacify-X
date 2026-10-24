@@ -1,0 +1,214 @@
+{
+  "schema_version": "px.rev1xx-waves/1.0",
+  "waves": [
+    {
+      "depends_on": [],
+      "gate": "No v1 source mutation until release-state ambiguity, repo cleanliness, source identity and rollback anchor are resolved.",
+      "goal": "Establish one reproducible 0.9.0 source baseline and close/supersede the pending release boundary before re-architecture.",
+      "id": "W0",
+      "name": "Baseline freeze and campaign boundary",
+      "outputs": [
+        "clean Git checkout + frozen commit",
+        "source/product digest",
+        "current generated-state/fixed-point receipt",
+        "v1 branch/worktree",
+        "accepted source-pack inventory"
+      ]
+    },
+    {
+      "depends_on": [
+        "W0"
+      ],
+      "gate": "Every modeled source/operational object resolves deterministically; zero address collisions; generated projections declare dependencies and status.",
+      "goal": "Create path-independent entity identity, locator/relation layers, compact aliases, generation vector and universal projection currentness.",
+      "id": "W1",
+      "name": "Semantic identity, generation and currentness foundation",
+      "outputs": [
+        "SemanticEntity registry",
+        "LocatorRecord + RelationRecord",
+        "compact-address registry",
+        "ContextGenerationVector",
+        "ProjectionManifest/ProjectionGate",
+        "coverage and collision reports"
+      ]
+    },
+    {
+      "depends_on": [
+        "W1"
+      ],
+      "gate": "Dry-run reaches a fixed point with zero unresolved owners/imports/evidence references; apply is transactional and exactly reversible.",
+      "goal": "Use the semantic foundation to reorganize physical structure without breaking historical identity, imports, evidence or consumers.",
+      "id": "W2",
+      "name": "Transactional remap and migration compiler",
+      "outputs": [
+        "generated rename/move proposal",
+        "dependency/import rewrite plan",
+        "dual resolver",
+        "compatibility alias ledger",
+        "migration package/report",
+        "rollback checkpoint"
+      ]
+    },
+    {
+      "depends_on": [
+        "W2"
+      ],
+      "gate": "Adversarial concurrency proves stale turns/callbacks/cleanup cannot mutate current state; terminal persistence barrier is reliable.",
+      "goal": "Make execution identity, activation ownership, mutation fencing, approval/CAS and cancellation coherent across extension and Python.",
+      "id": "W3",
+      "name": "Universal execution and authority transaction spine",
+      "outputs": [
+        "ExecutionContext",
+        "activation epoch + revision fences",
+        "ordered extension persistence",
+        "canonical event bridge",
+        "cancellation scope",
+        "mutation queue/CAS",
+        "approval-policy resolution"
+      ]
+    },
+    {
+      "depends_on": [
+        "W3"
+      ],
+      "gate": "Crash/fault vectors recover or stop closed; resume never skips unverified effect; stale derived state cannot masquerade as current.",
+      "goal": "Make effects, resume, projections and caches crash-consistent, dependency-aware and auditable.",
+      "id": "W4",
+      "name": "Durability, recovery, checkpoints, cache and trace lineage",
+      "outputs": [
+        "durable effect plane",
+        "checkpoint generation/migration",
+        "true stage-aware resume",
+        "DependencyIdentity",
+        "trace lineage",
+        "coherent cache/singleflight",
+        "workspace checkpoint/restore"
+      ]
+    },
+    {
+      "depends_on": [
+        "W4"
+      ],
+      "gate": "Memory can be rebuilt/audited from observations; promotion cannot bypass governance; context packs are deterministic for identical generations.",
+      "goal": "Generalize localized operational learning and create efficient, generation-bound context packaging for Librarian/Laya/retrieval.",
+      "id": "W5",
+      "name": "Object-local adaptive memory and context intelligence",
+      "outputs": [
+        "object-memory attachment registry",
+        "observation/episode/aggregate/microknowledge lifecycle",
+        "severe-failure protection",
+        "context package/packer",
+        "lexical fallback + semantic retrieval coordination",
+        "Laya decision registry shadow mode",
+        "Librarian orientation packets"
+      ]
+    },
+    {
+      "depends_on": [
+        "W5"
+      ],
+      "gate": "Every node has one resolved capability/owner/authority context; budget/quota failure states are explicit; no direct provider bypass route remains.",
+      "goal": "Compile logical work into governed TaskExecutionPlans and place it using hard constraints, provider truth, budgets and live resource state.",
+      "id": "W6",
+      "name": "Execution Graph Fabric, provider truth and resource placement",
+      "outputs": [
+        "ExecutionGraphPlan compiler",
+        "task-shape compiler",
+        "provider quota/usage/pricing truth",
+        "retry/cooldown policy",
+        "resource admission + hierarchical reservations",
+        "route preview",
+        "health-aware advisory placement"
+      ]
+    },
+    {
+      "depends_on": [
+        "W6"
+      ],
+      "gate": "Observer outage is visible; high-risk effects fail closed; PASS cannot be produced by missing, skipped or stale proof.",
+      "goal": "Independently observe execution/effects, enforce high-risk boundaries and validate full workflows with explicit fidelity and evidence.",
+      "id": "W7",
+      "name": "Observation, containment and Full Spectrum Verification",
+      "outputs": [
+        "external observer envelope",
+        "transcript checkpoints",
+        "Gremlin protected execution identity",
+        "pre-effect enforcer",
+        "effect reconciliation/deviation package",
+        "FSV scenario protocol",
+        "persona/adversarial/fault matrix"
+      ]
+    },
+    {
+      "depends_on": [
+        "W7"
+      ],
+      "gate": "Single-mutation self-ops proves rollback and independent verification before recursive mode can be enabled.",
+      "goal": "Round out durable workflows and activate bounded improvement only after execution, recovery and verification substrates are trustworthy.",
+      "id": "W8",
+      "name": "Workflow/skill hardening, experiments and Self Operations",
+      "outputs": [
+        "workflow adapters + resumable node snapshots",
+        "skill reference/supply-chain validation",
+        "rollout/experiment substrate",
+        "self-ops activation ladder A-D",
+        "independent maker/checker verification",
+        "counterexample/kill-signal memory"
+      ]
+    },
+    {
+      "depends_on": [
+        "W8"
+      ],
+      "gate": "Build capability and runtime qualification are distinct; optional backends fail cleanly and never become mandatory core dependencies.",
+      "goal": "Add model transformation/optimization lineage and external compute backends as optional evidence-backed placements without bloating core authority.",
+      "id": "W9",
+      "name": "Model lifecycle, optimization and AMD/ROCm capability track",
+      "outputs": [
+        "model transformation lineage",
+        "optimization request/result",
+        "execution compatibility",
+        "champion/challenger profiles",
+        "ROCm capability/compatibility shelf",
+        "benchmark profiler",
+        "optional cuVS/ROCm adapters",
+        "remote/ACP adapters only if needed"
+      ]
+    },
+    {
+      "depends_on": [
+        "W9"
+      ],
+      "gate": "UI/docs are projections of canonical owners, not shadow state; claims are testable against generated/runtime truth.",
+      "goal": "Project one canonical runtime truth into UI/docs and make the v1 architecture understandable, testable and governable.",
+      "id": "W10",
+      "name": "Operator surfaces, docs, ADR and governance convergence",
+      "outputs": [
+        "Agent Console v1 projections",
+        "execution/memory/health/containment views",
+        "GOVERNANCE/SUPPORT/ROADMAP",
+        "ADR set",
+        "semantic-ID documentation links",
+        "public-claim drift checks"
+      ]
+    },
+    {
+      "depends_on": [
+        "W10"
+      ],
+      "gate": "The exact artifact tested is the exact artifact packaged/installed/certified; no mutations after evidence seal starts.",
+      "goal": "Prove the entire re-architecture as one unchanged artifact and seal evidence only after deterministic convergence.",
+      "id": "W11",
+      "name": "Fixed point, installed-host certification and v1 release",
+      "outputs": [
+        "two-pass byte-stable generated state",
+        "full Python/Node profiles",
+        "installed-host walks",
+        "fault/recovery/containment walks",
+        "package/install evidence",
+        "certificate/release artifacts",
+        "post-release independent verification"
+      ]
+    }
+  ]
+}

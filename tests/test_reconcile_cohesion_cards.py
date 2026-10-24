@@ -45,7 +45,7 @@ def test_captured_generation_rejects_changes_before_acceptance(tmp_path, depende
         card['files'].append('new-declared.py')
         _json(card_path, card)
         _manifest(root / CARD_DIRECTORY)
-    target = root / '.engineering-bootstrap/project-management/state.json'
+    target = root / '.agentic_engineering_os_px/project-management/state.json'
     before = target.read_bytes()
     def race(point):
         if point != 'intent:before_acceptance':
@@ -115,7 +115,7 @@ def test_closed_dry_run_is_byte_equal_and_ledger_presence_is_bound(tmp_path, mon
     _reconcile(root, target='closed', installed_proof=proof, automation_state=AUTOMATION_STATE,
                at='2026-09-06T02:00:00Z')
     assert tree() == before
-    ledger = root / '.engineering-bootstrap/resource-lifecycle/ledger.json'
+    ledger = root / '.agentic_engineering_os_px/resource-lifecycle/ledger.json'
     original = reconciliation._project_management_state
     def appeared(*args, **kwargs):
         result = original(*args, **kwargs)
@@ -173,14 +173,14 @@ def _fixture(tmp_path: Path) -> Path:
     _json(dag_path, dag)
     (directory / "README.md").write_text("initial projection\n", encoding="utf-8")
     _manifest(directory)
-    state_path = root / ".engineering-bootstrap/project-management/state.json"
+    state_path = root / ".agentic_engineering_os_px/project-management/state.json"
     state_path.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(
-        REPOSITORY_ROOT / ".engineering-bootstrap/project-management/state.json",
+        REPOSITORY_ROOT / ".agentic_engineering_os_px/project-management/state.json",
         state_path,
     )
 
-    repair_campaign_source = REPOSITORY_ROOT / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    repair_campaign_source = REPOSITORY_ROOT / ".agentic_engineering_os_px/processing-order/repair-campaign.json"
     repair_campaign_target = root / repair_campaign_source.relative_to(REPOSITORY_ROOT)
     repair_campaign_target.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(repair_campaign_source, repair_campaign_target)
@@ -251,7 +251,7 @@ def _fixture(tmp_path: Path) -> Path:
         json.dumps(kernel, sort_keys=True, separators=(",", ":")).encode()
     ).hexdigest()
     _json(
-        root / ".engineering-bootstrap/processing-order/release-identity.json",
+        root / ".agentic_engineering_os_px/processing-order/release-identity.json",
         {
             "schema_version": "px.release-campaign/1.0",
             "campaign_id": final99,
@@ -505,7 +505,7 @@ def _installed_proof(
         },
     )
     _json(
-        root / ".engineering-bootstrap/processing-order/release-identity.json",
+        root / ".agentic_engineering_os_px/processing-order/release-identity.json",
         {
             "schema_version": "px.release-campaign/1.0",
             "campaign_id": campaign_id,
@@ -556,7 +556,7 @@ def _installed_proof(
         },
     )
 
-    fixture_repair_campaign = root / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    fixture_repair_campaign = root / ".agentic_engineering_os_px/processing-order/repair-campaign.json"
     _json(
         fixture_repair_campaign,
         {
@@ -676,7 +676,7 @@ def test_card_specific_live_evidence_and_final99_identity_fail_closed(
         _reconcile(root)
 
     root = _fixture(tmp_path / "identity")
-    identity_path = root / ".engineering-bootstrap/processing-order/release-identity.json"
+    identity_path = root / ".agentic_engineering_os_px/processing-order/release-identity.json"
     identity = json.loads(identity_path.read_text(encoding="utf-8"))
     identity["identity"]["source_product_digest"] = "0" * 64
     _json(identity_path, identity)
@@ -699,7 +699,7 @@ def test_apply_is_explicit_idempotent_and_hash_binds_evidence(tmp_path: Path) ->
     assert any("#anchor=PX-AUD-007" in reference for reference in card["completion_evidence"])
     assert any("runtime/agent_runtime.py#sha256=" in reference for reference in card["completion_evidence"])
     state = json.loads(
-        (root / ".engineering-bootstrap/project-management/state.json").read_text(
+        (root / ".agentic_engineering_os_px/project-management/state.json").read_text(
             encoding="utf-8"
         )
     )
@@ -856,7 +856,7 @@ def test_closed_rejects_release_identity_bound_to_different_current_repair_campa
     root = _fixture(tmp_path)
     _reconcile(root, apply=True, at="2026-09-06T01:00:00Z")
     proof_path = _installed_proof(root)
-    identity_path = root / ".engineering-bootstrap/processing-order/release-identity.json"
+    identity_path = root / ".agentic_engineering_os_px/processing-order/release-identity.json"
     identity = json.loads(identity_path.read_text(encoding="utf-8"))
     identity["repair_campaign_id"] = "pacify-x-unrelated-repair-20260905"
     identity["identity"]["repair_campaign_id"] = identity["repair_campaign_id"]
@@ -969,7 +969,7 @@ def test_closed_rejects_incomplete_or_replayed_stage_order(
     root = _fixture(tmp_path)
     _reconcile(root, apply=True, at="2026-09-06T01:00:00Z")
     proof_path = _installed_proof(root)
-    identity_path = root / ".engineering-bootstrap/processing-order/release-identity.json"
+    identity_path = root / ".agentic_engineering_os_px/processing-order/release-identity.json"
     automation_path = root / AUTOMATION_STATE
     identity = json.loads(identity_path.read_text(encoding="utf-8"))
     automation = json.loads(automation_path.read_text(encoding="utf-8"))
@@ -1029,7 +1029,7 @@ def test_closed_rejects_release_identity_disagreement(
     root = _fixture(tmp_path)
     _reconcile(root, apply=True, at="2026-09-06T01:00:00Z")
     proof = _installed_proof(root)
-    identity_path = root / ".engineering-bootstrap/processing-order/release-identity.json"
+    identity_path = root / ".agentic_engineering_os_px/processing-order/release-identity.json"
     identity = json.loads(identity_path.read_text(encoding="utf-8"))
     if case == "campaign":
         identity["campaign_id"] += "-wrong"

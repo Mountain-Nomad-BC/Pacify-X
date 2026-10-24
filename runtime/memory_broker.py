@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 import hashlib
 import json
 import math
@@ -17,11 +17,19 @@ from .memory_intelligence import MemoryCaller, can_access, resolve_loadout
 SCHEMA_VERSION = "px.memory-query-plan/1.0"
 _SHA = re.compile(r"^[0-9a-f]{64}$")
 
+#: Bounded skew tolerated when comparing memory timestamps to the trusted clock.
+#: Anything stamped further in the future than this is quarantined, never used.
+MEMORY_TIME_SKEW = timedelta(minutes=5)
 
-def _hash(value: object) -> str:
-    return hashlib.sha256(
-        json.dumps(value, sort_keys=True, separators=(",", ":"), default=str).encode()
-    ).hexdigest()
+
+def _aware_utc(value: datetime) -> datetime:
+    """Treat a naive timestamp as UTC; aware values are normalized to UTC."""
+    if value.tzinfo is None:
+        return value.replace(tzinfo=timezone.utc)
+    return value.astimezone(timezone.utc)
+
+
+from runtime.hash_utils import json_ascii_string_hash as _hash
 
 
 @dataclass(frozen=True, slots=True)
@@ -187,18 +195,40 @@ def materialize_memory_context(
     records: Iterable[MemoryRecord],
     *,
     now_utc: datetime | None = None,
+    current_source_revision: str | None = None,
+    current_dependency_revisions: Mapping[str, object] | None = None,
 ) -> dict[str, object]:
-    """Materialize an immutable context receipt or fail closed with quarantines."""
-    report = validate_memory_query_plan(plan)
+    """Materialize an immutable context receipt or fail closed with quarantines.
+
+    ``current_source_revision`` / ``current_dependency_revisions`` are the
+    trusted, live revision inputs (M03). When supplied, a stale plan is rejected
+    outright instead of materializing old bindings.
+    """
+    report = validate_memory_query_plan(
+        plan,
+        current_source_revision=current_source_revision,
+        current_dependency_revisions=current_dependency_revisions,
+    )
     if not report["valid"]:
         raise ValueError("invalid memory query plan: " + "; ".join(report["errors"]))
-    now = now_utc or datetime.now(timezone.utc)
+    now = _aware_utc(now_utc or datetime.now(timezone.utc))
     caller = MemoryCaller(plan.project_id, plan.actor_id, plan.agent_id, task_id=plan.subject_id)
     supplied = tuple(records)
-    by_id = {record.memory_id: record for record in supplied}
+    # M01: duplicate memory ids must never make the resulting context depend on
+    # input order. Conflicting duplicates are quarantined deterministically.
+    grouped: dict[str, list[MemoryRecord]] = {}
+    for record in supplied:
+        grouped.setdefault(record.memory_id, []).append(record)
+    duplicate_ids = {
+        memory_id for memory_id, group in grouped.items() if len(group) > 1
+    }
+    by_id = {memory_id: group[0] for memory_id, group in grouped.items() if len(group) == 1}
     violations: list[str] = []
     eligible: list[MemoryRecord] = []
     for memory_id in plan.binding_ids:
+        if memory_id in duplicate_ids:
+            violations.append(f"duplicate_memory_id:{memory_id}")
+            continue
         record = by_id.get(memory_id)
         if record is None:
             violations.append(f"missing_memory:{memory_id}")
@@ -217,6 +247,10 @@ def materialize_memory_context(
             violations.append(f"memory_stale:{memory_id}")
         elif (now - record.effective_at).total_seconds() > plan.max_age_seconds:
             violations.append(f"memory_stale:{memory_id}")
+        elif record.effective_at - now > MEMORY_TIME_SKEW:
+            violations.append(f"memory_future_effective:{memory_id}")
+        elif record.observed_at - now > MEMORY_TIME_SKEW:
+            violations.append(f"memory_future_observed:{memory_id}")
         elif plan.provenance_required and (
             not _SHA.fullmatch(record.source_sha256) or not record.evidence_locator
         ):

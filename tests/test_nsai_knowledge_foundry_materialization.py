@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 
 from runtime.knowledge_foundry import SourceArtifact, compile_foundry_bundle, materialize_candidate_bundle
+from tests.foundry_publication_fixture import publication_host
 from runtime.nsai_knowledge import validate_nsai_object_payload
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -31,8 +32,9 @@ def tree_bytes(root: Path) -> dict[str, bytes]:
 
 def test_foundry_materializes_one_valid_json_object_per_knowledge_item(tmp_path: Path) -> None:
     bundle = compile_foundry_bundle((source("one", "# Routing\nValidate routing evidence before promotion."),))
-    receipt = materialize_candidate_bundle(bundle, tmp_path)
-    root = tmp_path / bundle.bundle_id
+    with publication_host(tmp_path / "project") as (destination, custody):
+        receipt = materialize_candidate_bundle(bundle, destination, **custody)
+    root = destination / bundle.bundle_id
     assert receipt["knowledge_storage"] == "one_json_object_per_file"
     assert not (root / "knowledge.json").exists()
     paths = sorted((root / "knowledge" / "objects").rglob("*.json"))
@@ -50,9 +52,13 @@ def test_second_materialization_to_different_root_is_byte_stable(tmp_path: Path)
     bundle = compile_foundry_bundle((source("one", "Generate and validate bounded evidence."),))
     left, right = tmp_path / "left", tmp_path / "right"
     left.mkdir(); right.mkdir()
-    materialize_candidate_bundle(bundle, left)
-    materialize_candidate_bundle(bundle, right)
-    assert tree_bytes(left / bundle.bundle_id) == tree_bytes(right / bundle.bundle_id)
+    with publication_host(left) as (left_dest, custody):
+        materialize_candidate_bundle(bundle, left_dest, **custody)
+    with publication_host(right) as (right_dest, custody):
+        materialize_candidate_bundle(bundle, right_dest, **custody)
+    left_bytes, right_bytes = tree_bytes(left_dest / bundle.bundle_id), tree_bytes(right_dest / bundle.bundle_id)
+    left_bytes.pop("custody.json"); right_bytes.pop("custody.json")
+    assert left_bytes == right_bytes
 
 
 def test_source_artifact_from_absolute_path_materializes_portable_provenance(tmp_path: Path) -> None:
@@ -63,8 +69,9 @@ def test_source_artifact_from_absolute_path_materializes_portable_provenance(tmp
     bundle = compile_foundry_bundle((artifact,))
     destination = tmp_path / "out"
     destination.mkdir()
-    materialize_candidate_bundle(bundle, destination)
-    objects = list((destination / bundle.bundle_id / "knowledge" / "objects").rglob("*.json"))
+    with publication_host(destination) as (native_destination, custody):
+        materialize_candidate_bundle(bundle, native_destination, **custody)
+    objects = list((native_destination / bundle.bundle_id / "knowledge" / "objects").rglob("*.json"))
     assert objects
     payload = json.loads(objects[0].read_text(encoding="utf-8"))
     assert payload["provenance"]["sources"][0]["path"] == "source.md"

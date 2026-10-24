@@ -6,7 +6,7 @@
     ".ai",
     ".codex",
     ".cursor",
-    ".engineering-bootstrap",
+    ".agentic_engineering_os_px",
     ".github",
     ".px",
     ".vscode",
@@ -28,7 +28,8 @@
     "runtime",
     "scripts",
     "templates",
-    "tests"
+    "tests",
+    ".engineering-bootstrap"
   ],
   "product_root_files": [
     ".coveragerc",
@@ -72,10 +73,14 @@
     "sitecustomize.py"
   ],
   "evidence_roots": [
-    "evidence"
+    ".agentic_engineering_os_px",
+    "evidence",
+    ".engineering-bootstrap"
   ],
   "audit_roots": [
-    "AUDIT_ARTIFACTS"
+    ".agentic_engineering_os_px",
+    "AUDIT_ARTIFACTS",
+    ".engineering-bootstrap"
   ],
   "audit_root_files": [
     "AUDIT_EXPORT_MANIFEST.json",
@@ -105,13 +110,14 @@
     ".tmp"
   ],
   "control_output_paths": [
-    ".engineering-bootstrap/processing-order/release-identity.json",
-    ".engineering-bootstrap/processing-order/repair-campaign.json",
-    ".engineering-bootstrap/export-resources.json",
-    ".engineering-bootstrap/export-resources.json.lock",
-    ".engineering-bootstrap/release-transaction.json",
-    ".engineering-bootstrap/release.lock",
-    ".engineering-bootstrap/test-evidence/.test-orchestration.lock",
+    ".agentic_engineering_os_px",
+    ".agentic_engineering_os_px/processing-order/release-identity.json",
+    ".agentic_engineering_os_px/processing-order/repair-campaign.json",
+    ".agentic_engineering_os_px/export-resources.json",
+    ".agentic_engineering_os_px/export-resources.json.lock",
+    ".agentic_engineering_os_px/release-transaction.json",
+    ".agentic_engineering_os_px/release.lock",
+    ".agentic_engineering_os_px/test-evidence/.test-orchestration.lock",
     ".px/mcp-runtime-probe.json",
     "docs/architecture/data/build_measurements.json",
     "extension/SHA256SUMS.txt",
@@ -121,9 +127,32 @@
     "registry/operational_gap_ledger.head.json",
     "registry/operational_gap_ledger.jsonl",
     "registry/operational_gap_ledger.snapshot.json",
-    "registry/px_world_state.json"
+    "registry/px_world_state.json",
+    ".engineering-bootstrap",
+    ".engineering-bootstrap/processing-order/release-identity.json",
+    ".engineering-bootstrap/processing-order/repair-campaign.json",
+    ".engineering-bootstrap/export-resources.json",
+    ".engineering-bootstrap/export-resources.json.lock",
+    ".engineering-bootstrap/release-transaction.json",
+    ".engineering-bootstrap/release.lock",
+    ".engineering-bootstrap/test-evidence/.test-orchestration.lock",
+    "extension/.engineering-bootstrap/resource-lifecycle/ledger.json.lock",
+    "extension/.agentic_engineering_os_px/resource-lifecycle/ledger.json.lock"
   ],
   "control_output_prefixes": [
+    ".agentic_engineering_os_px/",
+    ".agentic_engineering_os_px/admission-payloads/",
+    ".agentic_engineering_os_px/cleanup-receipts/",
+    ".agentic_engineering_os_px/processing-order/",
+    ".agentic_engineering_os_px/test-evidence/",
+    ".agentic_engineering_os_px/resource-lifecycle/",
+    ".agentic_engineering_os_px/wal/",
+    ".agentic_engineering_os_px/local-model-runtime/",
+    ".agentic_engineering_os_px/model-client-gateway/",
+    ".agentic_engineering_os_px/resources/",
+    "registry/.lock-recovery-receipts/",
+    "registry/operational_gap_ledger.deltas/",
+    ".engineering-bootstrap/",
     ".engineering-bootstrap/admission-payloads/",
     ".engineering-bootstrap/cleanup-receipts/",
     ".engineering-bootstrap/processing-order/",
@@ -132,9 +161,7 @@
     ".engineering-bootstrap/wal/",
     ".engineering-bootstrap/local-model-runtime/",
     ".engineering-bootstrap/model-client-gateway/",
-    ".engineering-bootstrap/resources/",
-    "registry/.lock-recovery-receipts/",
-    "registry/operational_gap_ledger.deltas/"
+    ".engineering-bootstrap/resources/"
   ],
   "derived_custody_namespaces": [
     ".px/skills/*/memory",

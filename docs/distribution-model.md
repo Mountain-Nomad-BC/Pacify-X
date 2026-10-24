@@ -2,12 +2,12 @@
 
 PACIFY-X publishes a lean runtime wheel and a complete source distribution.
 
-The wheel contains the importable `engineering_bootstrap` package, its
-`engineering_bootstrap.builders` package, and the contracts, policies,
+The wheel contains the importable `agentic_engineering_os_px` package, its
+`agentic_engineering_os_px.builders` package, and the contracts, policies,
 registries, workflows, templates, skill definitions, skill scripts, and other
 assets required by installed commands. It intentionally does not contain the
 repository test suite or second source-form copies of `runtime/` and
-`builders/` below `share/engineering-bootstrap`. Importable package files are
+`builders/` below `share/agentic-engineering-os-px`. Importable package files are
 the sole installed authority for that Python code.
 
 The source distribution contains the authoritative package sources, release

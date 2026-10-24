@@ -440,9 +440,9 @@ def re_sub_non_alphanumeric(value: str) -> str:
 def _artifact_class(source_path: str) -> tuple[str, str]:
     top = source_path.split("/", 1)[0]
     if top == "runtime":
-        return "runtime-module", "engineering-bootstrap-runtime"
+        return "runtime-module", "agentic-engineering-os-px-runtime"
     if top == "builders":
-        return "builder-module", "engineering-bootstrap-builders"
+        return "builder-module", "agentic-engineering-os-px-builders"
     if top == "tests":
         return "release-testkit", "release-certification"
     if top == "scripts":
@@ -520,7 +520,7 @@ def _static_skill_paths(paths) -> set[str]:
             continue
         parts = path.split("/")
         if len(parts) >= 4 and parts[3].casefold() == "memory":
-            if parts[3] == "memory" and len(parts) == 5 and parts[4] in {"usage.jsonl", "stats.json"}:
+            if parts[3] == "memory" and len(parts) == 5 and parts[4] in {"usage.jsonl", "stats.json", ".tie.lock"}:
                 continue
             raise ValueError("unrecognized skill memory custody path: " + path)
         static.add(path)

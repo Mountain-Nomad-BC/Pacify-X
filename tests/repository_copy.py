@@ -19,12 +19,15 @@ def canonical_copy_ignore(
     def ignore(directory: str, names: list[str]) -> set[str]:
         relative = Path(directory).resolve().relative_to(resolved_source)
         ignored = set(generated(directory, names))
-        ignored.update(
-            name
-            for name in names
-            if name.casefold().endswith(".lock")
-            or is_external_environment_relative(relative / name)
-        )
+        # Receipt inclusion is fixture custody, not authored-source classification.
+        retained = tuple(Path(namespace) / "test-evidence" / "sections"
+                         for namespace in (".agentic_engineering_os_px", ".engineering-bootstrap"))
+        def retained_receipt_path(candidate):
+            return any(candidate == target or candidate in target.parents
+                       or target in candidate.parents for target in retained)
+        ignored.update(name for name in names
+                       if not retained_receipt_path(relative / name)
+                       and is_external_environment_relative(relative / name))
         return ignored
 
     return ignore

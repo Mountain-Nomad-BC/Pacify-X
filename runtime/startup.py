@@ -163,10 +163,10 @@ def bounded_startup(
     models = _models(
         _optional_metadata(root, "registry/models.json", {"models": []}, deadline)
     )
-    profile_path = project_root / ".engineering-bootstrap" / "project.toml"
+    profile_path = project_root / ".agentic_engineering_os_px" / "project.toml"
     reject_path_links(profile_path)
     if profile_path.exists():
-        _, info = _file(project_root, ".engineering-bootstrap/project.toml")
+        _, info = _file(project_root, ".agentic_engineering_os_px/project.toml")
         if info.st_size > MAX_STARTUP_METADATA_BYTES:
             raise ValueError("project profile metadata byte budget exceeded")
         profile = load_bounded_toml(profile_path)

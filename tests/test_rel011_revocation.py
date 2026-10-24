@@ -28,7 +28,7 @@ class Rel011RevocationTests(unittest.TestCase):
         )
 
         state = json.loads(
-            (ROOT / ".engineering-bootstrap/project-management/state.json").read_text(
+            (ROOT / ".agentic_engineering_os_px/project-management/state.json").read_text(
                 encoding="utf-8"
             )
         )
@@ -39,14 +39,13 @@ class Rel011RevocationTests(unittest.TestCase):
                 "integration-complete",
                 "repair-in-progress",
                 "downstream-green-release-pending",
+                "inventory_complete_awaiting_plan",
             },
         )
         if state["lifecycle"]["status"] == "repair-in-progress":
             self.assertTrue(state["checkpoint"]["next_safe_action"])
-        self.assertEqual(
-            state["evidence"]["validation_receipt"],
-            "evidence/releases/0.6.3/public-release-verification.json",
-        )
+        # Current truth: the tree claims no deployment verification receipt.
+        self.assertIsNone(state["evidence"]["validation_receipt"])
         self.assertFalse(verify_release_certificate(ROOT, release="0.6.2")["valid"])
 
     def test_public_status_does_not_claim_revoked_release_is_ready(self) -> None:

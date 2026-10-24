@@ -25,7 +25,7 @@ const DEFAULT_EXECUTION_POLICY = Object.freeze({
 
 function now() { return new Date().toISOString(); }
 function sha(value) { return crypto.createHash('sha256').update(typeof value === 'string' ? value : JSON.stringify(value)).digest('hex'); }
-function enterpriseRoot(projectRoot) { return path.join(path.resolve(projectRoot), '.engineering-bootstrap', 'enterprise'); }
+function enterpriseRoot(projectRoot) { return path.join(path.resolve(projectRoot), '.agentic_engineering_os_px', 'enterprise'); }
 function pathsFor(projectRoot) {
   const root = enterpriseRoot(projectRoot);
   return { root, state: path.join(root, 'state.json'), events: path.join(root, 'events.jsonl'), evidence: path.join(root, 'evidence') };
@@ -180,7 +180,7 @@ function enterpriseDoctor(projectRoot, catalog = {}) {
   const loaded = initializeEnterprise(projectRoot, catalog);
   const checks = [
     { id: 'separate-schema', passed: loaded.state.schema_version === STATE_SCHEMA, detail: loaded.state.schema_version },
-    { id: 'separate-state-root', passed: loaded.paths.root.endsWith(path.join('.engineering-bootstrap', 'enterprise')), detail: loaded.paths.root },
+    { id: 'separate-state-root', passed: loaded.paths.root.endsWith(path.join('.agentic_engineering_os_px', 'enterprise')), detail: loaded.paths.root },
     { id: 'offline-startup', passed: catalog.defaults?.offline_startup_required === true, detail: 'enterprise services are not startup dependencies' },
     { id: 'billable-default', passed: catalog.defaults?.billable_services === 'disabled' && loaded.state.defaults.billable_services === 'disabled', detail: 'disabled' },
     { id: 'egress-default', passed: catalog.defaults?.network_egress === 'deny' && loaded.state.defaults.network_egress === 'deny', detail: 'deny' },

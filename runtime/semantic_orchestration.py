@@ -11,6 +11,7 @@ from .semantic_integration_limits import SemanticIntegrationLimits
 from .semantic_integration_types import QueryAuthorization, SemanticEvidence
 from .semantic_model_context import materialize_model_context
 from .semantic_project_map_bridge import query_project_map_evidence
+from .semantic_project_map_bridge import _resolve_canonical
 from .semantic_query_receipts import query_receipt
 from .semantic_retrieval_fusion import fuse_evidence
 
@@ -23,11 +24,15 @@ class SemanticReadOrchestrator:
         cross_project: CrossProjectSemanticService,
         *,
         limits: SemanticIntegrationLimits = SemanticIntegrationLimits(),
+        semantic_map_provider=None,
     ) -> None:
         if not isinstance(cross_project, CrossProjectSemanticService):
             raise TypeError("cross_project must be a CrossProjectSemanticService")
         self.cross_project = cross_project
         self.limits = limits
+        if semantic_map_provider is not None and not callable(semantic_map_provider):
+            raise TypeError("semantic_map_provider must be callable")
+        self.semantic_map_provider = semantic_map_provider
 
     def query(
         self,
@@ -37,6 +42,7 @@ class SemanticReadOrchestrator:
         *,
         include_project_map: bool = True,
         max_results: int = 8,
+        tie_subjects: tuple[dict[str, str], ...] = (),
     ) -> dict[str, object]:
         if type(query) is not str or not query.strip() or len(query.encode("utf-8")) > self.limits.max_query_bytes:
             raise ValueError("query must be nonempty and bounded")
@@ -44,6 +50,11 @@ class SemanticReadOrchestrator:
             raise TypeError("include_project_map must be a boolean")
         if type(max_results) is not int or not 1 <= max_results <= self.limits.max_results:
             raise ValueError("max_results must be a positive integer within the result budget")
+        if type(tie_subjects) is not tuple or len(tie_subjects) > 4:
+            raise ValueError("T.I.E. retrieval requires at most four explicit object bindings")
+        for subject in tie_subjects:
+            if type(subject) is not dict or set(subject) != {"kind", "identity", "version"}:
+                raise ValueError("T.I.E. retrieval requires exact canonical object bindings")
 
         required_operations = [
             "semantic.cross_project.query",
@@ -53,6 +64,8 @@ class SemanticReadOrchestrator:
         ]
         if include_project_map:
             required_operations.append("semantic.project_map.query")
+        if tie_subjects:
+            required_operations.append("semantic.tie.retrieve")
         # Validate every authority before invoking any project query so partial work does
         # not occur for a request that was never fully admitted.
         for operation in required_operations:
@@ -70,6 +83,21 @@ class SemanticReadOrchestrator:
             },
         )
         descriptor = self.cross_project.catalog.get(project_id)
+        canonical_map = None
+        canonical_unavailable = None
+        try:
+            if self.semantic_map_provider is None:
+                from .librarian_semantic_map import load_semantic_map
+                canonical_map = load_semantic_map(Path(descriptor.root))
+            else:
+                canonical_map = self.semantic_map_provider(project_id, Path(descriptor.root))
+            from .librarian_semantic_map import SemanticMap
+            if type(canonical_map) is not SemanticMap:
+                raise TypeError("canonical resolver must be the semantic owner")
+            canonical_map.assert_current()
+        except (FileNotFoundError, KeyError, OSError, ValueError, TypeError) as exc:
+            canonical_map = None
+            canonical_unavailable = type(exc).__name__
         evidence: list[SemanticEvidence] = []
         matches = semantic["result"].get("matches", [])
         if not isinstance(matches, list):
@@ -79,6 +107,10 @@ class SemanticReadOrchestrator:
                 raise RuntimeError("semantic symbol matches must be objects")
             path = str(item.get("relative_path") or "")
             name = str(item.get("qualified_name") or item.get("name") or "symbol")
+            canonical_id, resolution, candidates = _resolve_canonical(
+                canonical_map, hit_id=str(item.get("symbol_id") or ""), path=path,
+                include_history=False,
+            )
             evidence.append(
                 SemanticEvidence(
                     source_id=stable_id(
@@ -99,6 +131,8 @@ class SemanticReadOrchestrator:
                     locator=path,
                     revision=str(semantic["result"].get("project_revision") or "") or None,
                     trust=1.0,
+                    metadata={"canonical_entity_id": canonical_id, "canonical_resolution": resolution,
+                              "canonical_candidates": list(candidates)},
                     structured={
                         "kind": item.get("kind"),
                         "symbol_id": item.get("symbol_id"),
@@ -115,6 +149,7 @@ class SemanticReadOrchestrator:
                     query,
                     top_k=max_results,
                     limits=self.limits,
+                    semantic_map=canonical_map,
                 )
                 evidence.extend(atlas_evidence)
             except (FileNotFoundError, KeyError, OSError, ValueError) as exc:
@@ -124,6 +159,21 @@ class SemanticReadOrchestrator:
                     "error_type": type(exc).__name__,
                 }
 
+        tie_receipts = []
+        for subject in tie_subjects:
+            from .usage_memory import retrieve_studio_experience
+            from .studio_models import canonical_bytes, studio_revision_root
+            experience = retrieve_studio_experience(Path(descriptor.root), subject["kind"], subject["identity"], subject["version"])
+            tie_receipts.append({key: value for key, value in experience.items() if key != "records"})
+            locator = (studio_revision_root(Path(descriptor.root), subject["kind"], subject["identity"]).parent / "memory/usage.jsonl").relative_to(Path(descriptor.root)).as_posix()
+            evidence.append(SemanticEvidence(source_id=stable_id("tie-evidence", project_id,
+                subject["kind"], subject["identity"], experience["experience_log_sha256"]),
+                source_kind="tie_experience", title="T.I.E. " + subject["identity"],
+                text=canonical_bytes(experience).decode("utf-8"), project_id=project_id,
+                lineage="runtime.usage_memory.retrieve_studio_experience", locator=locator,
+                revision=experience["experience_log_sha256"], trust=0.5,
+                metadata={"authority_granted": False, "experience_validated": False},
+                structured={key: value for key, value in experience.items() if key != "records"}))
         fused = fuse_evidence(
             query,
             project_id,
@@ -139,6 +189,11 @@ class SemanticReadOrchestrator:
             "context_item_count": context["item_count"],
             "context_byte_count": context["byte_count"],
             "project_map_valid": None if atlas_result is None else atlas_result.get("valid"),
+            "canonical_map_sha256": None if canonical_map is None else canonical_map.map_sha256,
+            "canonical_entity_ids": sorted({item.metadata["canonical_entity_id"] for item in evidence
+                                             if item.metadata.get("canonical_entity_id")}),
+            "canonical_unresolved_count": sum(not item.metadata.get("canonical_entity_id") for item in evidence),
+            "tie_retrievals": tie_receipts,
         }
         receipt = query_receipt(
             operation="semantic.orchestrated.read",
@@ -149,6 +204,7 @@ class SemanticReadOrchestrator:
                 "query": query,
                 "include_project_map": include_project_map,
                 "max_results": max_results,
+                "tie_subjects": list(tie_subjects),
             },
             result_identity=identity,
             limits=self.limits,
@@ -161,6 +217,12 @@ class SemanticReadOrchestrator:
             "fused": asdict(fused),
             "model_context": context,
             "receipt": receipt,
+            "tie_retrievals": tie_receipts,
+            "canonical_identity": {"map_sha256": identity["canonical_map_sha256"],
+                                   "entity_ids": identity["canonical_entity_ids"],
+                                   "unresolved_count": identity["canonical_unresolved_count"],
+                                   "unavailable_reason": canonical_unavailable,
+                                   "authority_granted": False},
             "effects": ["read"],
             "mutation": False,
             "authority_boundary": {

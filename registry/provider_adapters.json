@@ -24,10 +24,10 @@
       "adapter_id": "openai-responses",
       "provider_id": "openai",
       "mode": "remote",
-      "implementation": "runtime/provider_gateway.py",
+      "implementation": "runtime/remote_provider_adapters.py",
       "admitted": false,
       "status": "unconfigured",
-      "billing_state": "actual"
+      "billing_state": "unknown"
     },
     {
       "adapter_id": "llama-cpp-stream",
@@ -55,6 +55,78 @@
       "admitted": false,
       "status": "unconfigured",
       "billing_state": "local_non_billable"
+    },
+    {
+      "adapter_id": "claude-anthropic-messages",
+      "provider_id": "claude",
+      "mode": "remote",
+      "implementation": "runtime/remote_provider_adapters.py",
+      "admitted": false,
+      "status": "unconfigured",
+      "billing_state": "unknown"
+    },
+    {
+      "adapter_id": "openai-chat-compatible",
+      "provider_id": "openai-compatible",
+      "mode": "remote",
+      "implementation": "runtime/provider_gateway.py",
+      "admitted": false,
+      "status": "unsupported",
+      "billing_state": "unknown"
+    },
+    {
+      "adapter_id": "custom-openai-chat",
+      "provider_id": "custom",
+      "mode": "remote",
+      "implementation": "runtime/remote_provider_adapters.py",
+      "admitted": false,
+      "status": "unconfigured",
+      "billing_state": "unknown"
+    },
+    {
+      "adapter_id": "codex-app-server",
+      "provider_id": "codex",
+      "mode": "remote",
+      "implementation": "runtime/provider_gateway.py",
+      "admitted": false,
+      "status": "unsupported",
+      "billing_state": "unknown"
+    },
+    {
+      "adapter_id": "codegpt-chat",
+      "provider_id": "codegpt",
+      "mode": "remote",
+      "implementation": "runtime/provider_gateway.py",
+      "admitted": false,
+      "status": "unsupported",
+      "billing_state": "unknown"
+    },
+    {
+      "adapter_id": "mistral-chat",
+      "provider_id": "mistral",
+      "mode": "remote",
+      "implementation": "runtime/remote_provider_adapters.py",
+      "admitted": false,
+      "status": "unconfigured",
+      "billing_state": "unknown"
+    },
+    {
+      "adapter_id": "github-copilot-chat",
+      "provider_id": "github-copilot",
+      "mode": "remote",
+      "implementation": "runtime/provider_gateway.py",
+      "admitted": false,
+      "status": "unsupported",
+      "billing_state": "unknown"
+    },
+    {
+      "adapter_id": "gemini-generate-content",
+      "provider_id": "gemini",
+      "mode": "remote",
+      "implementation": "runtime/remote_provider_adapters.py",
+      "admitted": false,
+      "status": "unconfigured",
+      "billing_state": "unknown"
     }
   ]
 }

@@ -278,7 +278,7 @@ def build(
                 "any governed receipt freshness change",
                 "any release certificate or artifact change",
             ],
-            "superseding_artifact": ".engineering-bootstrap/runtime-core/completion_status.json",
+            "superseding_artifact": ".agentic_engineering_os_px/runtime-core/completion_status.json",
         },
         "complete": complete,
         "operationally_complete": operationally_complete,
@@ -409,7 +409,7 @@ def write_runtime(root: Path, *, artifact_dir: Path) -> dict[str, object]:
     }
     target = (
         root
-        / ".engineering-bootstrap"
+        / ".agentic_engineering_os_px"
         / "runtime-core"
         / "completion_status.json"
     )

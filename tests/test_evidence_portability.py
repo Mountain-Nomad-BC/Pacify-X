@@ -39,7 +39,7 @@ def test_generated_portability_registry_is_not_self_ingested() -> None:
         root,
         ignore=shutil.ignore_patterns(
             ".git",
-            ".engineering-bootstrap",
+            ".agentic_engineering_os_px",
             ".quarantine",
             "__pycache__",
             ".pytest_cache",
@@ -133,3 +133,61 @@ def test_reference_literal_rewrite_preserves_structure() -> None:
         "summary": "see source-reference:common/rules.md",
         "nested": ["local file URI", 3],
     }
+
+
+def test_relative_path_segments_are_not_host_rooted_posix_locators() -> None:
+    for path in (".agentic_engineering_os_px/tmp/run.ps1", "pkg/home/config",
+                 "registry/Users/record.json", "data/mnt/c/catalog",
+                 "source:module:.engineering-bootstrap/tmp/old.py"):
+        assert portability_findings(path) == ()
+    for path in ("/tmp/run.ps1", "/home/operator/config", "/Users/operator/record.json",
+                 "/mnt/c/catalog", "source:/tmp/run.ps1"):
+        assert portability_findings(path)
+
+
+def test_scoped_source_reference_identifier_requires_actual_internal_observation(tmp_path) -> None:
+    import json
+    source = tmp_path / "extension/tests/preview.html"
+    source.parent.mkdir(parents=True)
+    source.write_text('<html><script src="../media/bridge.js"></script></html>')
+    target = tmp_path / "extension/media/bridge.js"
+    target.parent.mkdir()
+    target.write_text("// actual internal source")
+    registry = tmp_path / "registry/semantic_entity_index.json"
+    registry.parent.mkdir()
+    identifier = "source:reference:extension/tests/preview.html:ref:1:../media/bridge.js"
+    payload = {"schema_version": "px.semantic-coverage/1.0",
+               "entities": [{"object_id": identifier}]}
+    registry.write_text(json.dumps(payload, indent=2))
+    assert discover_historical_references(tmp_path) == []
+    payload["entities"][0]["locator"] = "../outside/operator.json"
+    registry.write_text(json.dumps(payload, indent=2))
+    assert len(discover_historical_references(tmp_path)) == 1
+    payload["entities"][0].pop("locator")
+    payload["entities"][0]["object_id"] = identifier.replace("ref:1:", "ref:2:")
+    registry.write_text(json.dumps(payload, indent=2))
+    assert len(discover_historical_references(tmp_path)) == 1
+    payload["entities"][0]["object_id"] = identifier
+    payload["schema_version"] = "unowned/1.0"
+    registry.write_text(json.dumps(payload, indent=2))
+    assert len(discover_historical_references(tmp_path)) == 1
+
+
+def test_host_foundation_custody_is_not_product_but_unclassified_locator_stays_detected(tmp_path) -> None:
+    from runtime.release_boundary import copy_clean_product
+    import json
+    source = tmp_path / "source"
+    custody = source / "registry/planning/rev1xx/foundation/authority.json"
+    custody.parent.mkdir(parents=True)
+    original = json.dumps({"schema_version": "px.foundation-host-registration/1.0",
+                           "reference_root": "C:/host/corpus"}).encode()
+    custody.write_bytes(original)
+    assert discover_historical_references(source) == []
+    ordinary = source / "registry/authority.json"
+    ordinary.write_bytes(original)
+    assert len(discover_historical_references(source)) == 1
+    clean = tmp_path / "clean"
+    copy_clean_product(source, clean)
+    assert not (clean / "registry/planning/rev1xx/foundation/authority.json").exists()
+    assert (clean / "registry/authority.json").read_bytes() == original
+    assert custody.read_bytes() == original

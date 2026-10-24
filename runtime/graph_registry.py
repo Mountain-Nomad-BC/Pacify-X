@@ -12,7 +12,7 @@ from .graphs import build_graphs
 from .system_graph import build_system_graph
 
 
-GENERATOR = "engineering_bootstrap.graph_registry/1.0.0"
+GENERATOR = "agentic_engineering_os_px.graph_registry/1.0.0"
 
 
 def _load(path: Path) -> dict[str, Any]:

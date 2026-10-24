@@ -529,7 +529,7 @@ def test_versioned_record_rejects_intermediate_symlink_escape(tmp_path) -> None:
     outside = tmp_path / "physical-outside"
     outside.mkdir()
     try:
-        (tmp_path / ".engineering-bootstrap").symlink_to(
+        (tmp_path / ".agentic_engineering_os_px").symlink_to(
             outside, target_is_directory=True
         )
     except OSError:

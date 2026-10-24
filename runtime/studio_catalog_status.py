@@ -69,7 +69,7 @@ def _verify_lifecycle_transaction(
         raise ValueError("Studio lifecycle transaction path is invalid")
     journal_root = (
         project_root
-        / ".engineering-bootstrap"
+        / ".agentic_engineering_os_px"
         / "studios"
         / "skills"
         / "lifecycle-transactions"
@@ -141,7 +141,7 @@ def project(root: Path, kind: str) -> dict[str, object]:
     project_root = root.resolve(strict=True)
     if kind not in {"agents", "workflows", "skills"}:
         raise ValueError("Studio catalog kind is invalid")
-    base = project_root / ".engineering-bootstrap" / "studios" / kind
+    base = project_root / ".agentic_engineering_os_px" / "studios" / kind
     rows: dict[str, dict[str, object]] = {}
     if not base.is_dir() or base.is_symlink():
         return {"schema_version": "px.studio-catalog-status/1.1", "kind": kind, "records": rows}

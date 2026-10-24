@@ -16,10 +16,7 @@ MAX_RESPONSE_BYTES = 64 * 1024
 MAX_REASON_BYTES = 4096
 
 
-def _stable(value: object) -> str:
-    return hashlib.sha256(
-        json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False, default=str).encode("utf-8")
-    ).hexdigest()
+from runtime.hash_utils import json_utf8_string_hash as _stable
 
 
 def _text(value: object, name: str, maximum: int = 512) -> str:

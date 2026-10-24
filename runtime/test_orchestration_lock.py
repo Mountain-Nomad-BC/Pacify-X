@@ -12,7 +12,7 @@ from .file_lock import FileLock
 OWNER_ENV = "PX_TEST_ORCHESTRATION_OWNER"
 SUPERVISED_CHILD_ENV = "PX_TEST_ORCHESTRATION_SUPERVISED_CHILD"
 LOCK_RELATIVE_PATH = Path(
-    ".engineering-bootstrap/test-evidence/.test-orchestration.lock"
+    ".agentic_engineering_os_px/test-evidence/.test-orchestration.lock"
 )
 
 

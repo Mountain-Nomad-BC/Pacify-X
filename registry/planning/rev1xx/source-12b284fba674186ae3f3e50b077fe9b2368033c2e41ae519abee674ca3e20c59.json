@@ -1,0 +1,1688 @@
+{
+  "records": [
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W6",
+      "source_group": "WP-02",
+      "source_id": "PRV-01",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/provider_quota.py (new)",
+        "contracts/operations/provider-quota-state.schema.json (new)",
+        "runtime/model_routing_observability.py",
+        "registry/provider or model routing records",
+        "extension provider/health projections"
+      ],
+      "title": "Provider quota truth model and source precedence"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W6",
+      "source_group": "WP-02",
+      "source_id": "PRV-02",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/provider_gateway.py",
+        "contracts/retry-budget.schema.json",
+        "provider adapters/tests"
+      ],
+      "title": "Provider failure classification + Retry-After normalization"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W6",
+      "source_group": "WP-02",
+      "source_id": "PRV-03",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/provider_quota.py (new)",
+        "runtime/provider_gateway.py",
+        "runtime/scheduler.py",
+        "tests/provider quota/circuit"
+      ],
+      "title": "Single-probe quota cooldown / thundering-herd suppression"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W6",
+      "source_group": "WP-02",
+      "source_id": "PRV-04",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/capability_routing.py",
+        "runtime/model_routing_observability.py",
+        "runtime/provider_gateway.py (policy evaluation seam)",
+        "extension Agent Console/provider dock"
+      ],
+      "title": "Deterministic zero-execution route preview"
+    },
+    {
+      "disposition": "ADAPT-STRONGLY",
+      "final_wave": "W6",
+      "source_group": "WP-02",
+      "source_id": "PRV-05",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/provider_gateway.py",
+        "runtime/provider_budget.py",
+        "provider execution policy contract",
+        "operational events"
+      ],
+      "title": "Cross-provider failover as a distinct governed request, not silent fallback"
+    },
+    {
+      "disposition": "ADOPT-CONTRACT",
+      "final_wave": "W6",
+      "source_group": "WP-02",
+      "source_id": "PRV-06",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "contracts/scheduling/*",
+        "contracts/operations/provider-quota-state.schema.json (new)",
+        "contracts/operations/provider-budget-policy.schema.json",
+        "dashboard projections"
+      ],
+      "title": "Keep allocation, provider quota, and internal governance budget as separate domains"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W6",
+      "source_group": "WP-02",
+      "source_id": "PRV-07",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/provider_budget.py",
+        "provider adapter usage mapping",
+        "provider usage/budget contracts",
+        "Agent Console budget projection"
+      ],
+      "title": "Cache-read/cache-write token taxonomy in canonical provider usage"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W6",
+      "source_group": "WP-02",
+      "source_id": "PRV-08",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/provider_budget.py",
+        "models/provider pricing registry (new or generated)",
+        "provider dashboard/evidence",
+        "tests"
+      ],
+      "title": "Measured vs estimated cost basis + pricing provenance/cache"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W8",
+      "source_group": "WP-08",
+      "source_id": "PRV-09",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "learning/improvement candidate path",
+        "runtime/provider_budget.py telemetry inputs",
+        "metacognitive optimization experiment",
+        "routing/cache policy registry"
+      ],
+      "title": "Offline prompt-cache TTL learning as candidate evidence"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W6",
+      "source_group": "WP-04",
+      "source_id": "PRV-10",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/scheduler.py",
+        "runtime/capability_scheduler.py",
+        "MCP/provider ingress boundary",
+        "hardware/resource observers"
+      ],
+      "title": "Byte-aware resource-pressure admission"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W6",
+      "source_group": "WP-04",
+      "source_id": "PRV-11",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/capability_scheduler.py",
+        "future LAYA/MoE/fusion routing",
+        "parallel planning/orchestration scheduler"
+      ],
+      "title": "Redundant fan-out: skip-never-queue admission probes"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W5",
+      "source_group": "WP-03",
+      "source_id": "CTX-01",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/memory_broker.py",
+        "runtime/memory_intelligence.py",
+        "runtime/semantic_retrieval_fusion.py",
+        "future compact semantic address resolver",
+        "Agent Console context inspector"
+      ],
+      "title": "Progressive memory/evidence disclosure: search \u2192 neighborhood \u2192 detail"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W5",
+      "source_group": "WP-03",
+      "source_id": "CTX-02",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/retrieval.py",
+        "runtime/semantic_retrieval_fusion.py",
+        "runtime/memory_broker.py",
+        "future query.py compact-address resolver"
+      ],
+      "title": "Typed applicability/metadata prefilter before semantic ranking"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W5",
+      "source_group": "WP-03",
+      "source_id": "CTX-03",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/memory_intelligence.py",
+        "runtime/semantic_model_context.py",
+        "extension/src/agentHarness/contextCompiler.js",
+        "future LAYA Decision State Compiler"
+      ],
+      "title": "Deterministic rendered-size/token-aware context packer"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W5",
+      "source_group": "WP-03",
+      "source_id": "CTX-04",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/context_compaction.py (new or memory_intelligence helper)",
+        "runtime/memory_intelligence.py",
+        "extension contextCompiler tests"
+      ],
+      "title": "Prefix-monotonic exact cross-turn dedup"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W5",
+      "source_group": "WP-03",
+      "source_id": "CTX-05",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/memory_intelligence.py",
+        "runtime/event_ledger.py",
+        "memory recall contract"
+      ],
+      "title": "Timeline-neighborhood retrieval around a selected anchor"
+    },
+    {
+      "disposition": "REFERENCE/ADAPT-LATER",
+      "final_wave": "W5",
+      "source_group": "WP-03",
+      "source_id": "CTX-06",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/memory_intelligence.py",
+        "future context transforms registry"
+      ],
+      "title": "Content-type aware compression only behind PX reversible-offload authority"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W7",
+      "source_group": "WP-05",
+      "source_id": "OBS-01",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/operational_observers.py",
+        "contracts/operations/os-observer-registry.schema.json",
+        "new external-observer-envelope contract if needed",
+        "extension MCP/activity integration"
+      ],
+      "title": "Agent/provider-neutral edge event envelope"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W7",
+      "source_group": "WP-05",
+      "source_id": "OBS-02",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/operational_observers.py",
+        "event ingestion tests"
+      ],
+      "title": "Untrusted timestamp normalization and future clamp"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W7",
+      "source_group": "WP-05",
+      "source_id": "OBS-03",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/operational_observers.py or transcript observer module",
+        "orchestration/workflows/transcript-evidence-extraction.yaml",
+        "contracts/transcripts/*",
+        "event bus"
+      ],
+      "title": "Checkpointed incremental transcript tailer"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W7",
+      "source_group": "WP-05",
+      "source_id": "OBS-04",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/operational_observers.py",
+        "contracts/transcripts/transcript-profile.schema.json",
+        "registry observer profiles"
+      ],
+      "title": "Per-agent transcript/schema adapter registry"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W7",
+      "source_group": "WP-05",
+      "source_id": "OBS-05",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "extension/src/activityObservability.js",
+        "extension/src/agentHarness/agentConsoleProjection.js",
+        "extension/src/workflowTraceProjection.js",
+        "runtime/operational_projection.py"
+      ],
+      "title": "Session/agent timeline replay projection"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W8",
+      "source_group": "WP-08",
+      "source_id": "EXP-01",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/runtime_rollout.py (new)",
+        "contracts/runtime-rollout-snapshot.schema.json (new)",
+        "registry/runtime_features.* (new)",
+        "extension experiments/settings projection"
+      ],
+      "title": "Immutable runtime RolloutSnapshot / FeatureSpec registry"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W8",
+      "source_group": "WP-08",
+      "source_id": "EXP-02",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/metacognitive_evolution/optimization/experiment_assignment.py (new)",
+        "contracts/metacognitive/optimization-experiment.schema.json",
+        "self-operations experiment controller"
+      ],
+      "title": "Deterministic experiment cohort assignment / namespaces / sticky assignment"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W8",
+      "source_group": "WP-08",
+      "source_id": "EXP-03",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/metacognitive_evolution/optimization/experiment_statistics.py (new)",
+        "experiment evidence/report",
+        "promotion gate"
+      ],
+      "title": "Sample-ratio-mismatch guard before trusting results"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W8",
+      "source_group": "WP-08",
+      "source_id": "EXP-04",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "experiment_statistics.py",
+        "experiment contract/report"
+      ],
+      "title": "Sequential-testing / stopping discipline"
+    },
+    {
+      "disposition": "ADAPT-LATER",
+      "final_wave": "W8",
+      "source_group": "WP-08",
+      "source_id": "EXP-05",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "experiment_statistics.py",
+        "experiment evidence"
+      ],
+      "title": "CUPED/pre-period variance reduction"
+    },
+    {
+      "disposition": "BUILD-IN-PX",
+      "final_wave": "W8",
+      "source_group": "WP-08",
+      "source_id": "EXP-06",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/metacognitive_evolution/optimization/engine.py",
+        "EXP modules",
+        "runtime/runtime_rollout.py",
+        "self-operations controller"
+      ],
+      "title": "Join statistics \u2192 Pareto/hard gates \u2192 rollout snapshot"
+    },
+    {
+      "disposition": "CLEAN-ROOM-ADAPT",
+      "final_wave": "W8",
+      "source_group": "WP-07",
+      "source_id": "SKL-01",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "learning observation-pack pipeline",
+        "improvement-candidate contract",
+        "runtime/skill_studio.py",
+        "trace-to-skill / knowledge refinery"
+      ],
+      "title": "Correction/gap observations become inert improvement candidates"
+    },
+    {
+      "disposition": "CLEAN-ROOM-ADAPT",
+      "final_wave": "W8",
+      "source_group": "WP-07",
+      "source_id": "SKL-02",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/native_skills.py::validate_native_packages",
+        "runtime/skill_studio.py::validate",
+        "skill builder/release tests"
+      ],
+      "title": "Skill-package structural/reference-graph verifier"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W8",
+      "source_group": "WP-07",
+      "source_id": "SKL-03",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/native_skills.py::hydrate_skill",
+        "skill-package/resource contracts",
+        "skill navigator/context compiler"
+      ],
+      "title": "Selective reference hydration"
+    },
+    {
+      "disposition": "ADAPT-LATER",
+      "final_wave": "W8",
+      "source_group": "WP-07",
+      "source_id": "SKL-04",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "learning source adapters",
+        "runtime/operational_observers.py",
+        "skill/knowledge candidate intake"
+      ],
+      "title": "Cross-agent learning source adapter interface"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W8",
+      "source_group": "WP-07",
+      "source_id": "SEC-01",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/skill_studio.py admission/validate",
+        "runtime/external_capability_provider.py",
+        "runtime/cybersecurity_provider.py",
+        "cybersecurity-capability-operations workflow",
+        "Gremlin/Nanny containment inputs"
+      ],
+      "title": "Skill/plugin/MCP supply-chain admission lint"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W8",
+      "source_group": "WP-07",
+      "source_id": "SEC-02",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "cybersecurity scanner skills/tests",
+        "security capability registry"
+      ],
+      "title": "Security pattern taxonomy as deterministic scanner test corpus"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W4",
+      "source_group": "WP-06",
+      "source_id": "SNAP-01",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "models/index.json/provider adapters",
+        "registry generated projections",
+        "extension runtime bridge/catalog caches",
+        "future compact semantic map generations"
+      ],
+      "title": "Content fingerprints for catalog reload/invalidation"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W4",
+      "source_group": "WP-06",
+      "source_id": "SNAP-02",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "evidence_cache.py / semantic_code_cache.py where appropriate",
+        "extension cache/state",
+        "generated catalog caches",
+        "tests"
+      ],
+      "title": "Versioned LKG snapshots + atomicity/permission/stale-entry tests"
+    },
+    {
+      "disposition": "ADOPT-PATTERN",
+      "final_wave": "W7",
+      "source_group": "WP-10",
+      "source_id": "TST-01",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "extension installed-host tests",
+        "test profiles",
+        "self-operations/experiment UI tests"
+      ],
+      "title": "Result-aware E2E: verify canonical state, not click success"
+    },
+    {
+      "disposition": "ADOPT-PATTERN",
+      "final_wave": "W7",
+      "source_group": "WP-10",
+      "source_id": "TST-02",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "test result/evidence contracts",
+        "test profile runner",
+        "dashboard/evidence summaries"
+      ],
+      "title": "Explicit pass/fail/blocked/skipped/uncertain result states"
+    },
+    {
+      "disposition": "ADOPT-PATTERN",
+      "final_wave": "W7",
+      "source_group": "WP-10",
+      "source_id": "TST-03",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "installed-host/E2E tests",
+        "test evidence builder",
+        "workspace resource lifecycle"
+      ],
+      "title": "Generated fixture cleanup metadata + cleanup verification"
+    },
+    {
+      "disposition": "ADOPT-PATTERN",
+      "final_wave": "W7",
+      "source_group": "WP-10",
+      "source_id": "TST-04",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "portable audit/test bundles",
+        "test evidence builder",
+        "self-operations simulation tests"
+      ],
+      "title": "Reference-source integrity before/after test runs"
+    },
+    {
+      "disposition": "ADOPT-PATTERN",
+      "final_wave": "W7",
+      "source_group": "WP-10",
+      "source_id": "TST-05",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "extension E2E trace pipeline",
+        "evidence bundle builder",
+        "privacy/content-capture policy"
+      ],
+      "title": "Trace/artifact sanitization before evidence packaging"
+    },
+    {
+      "disposition": "ADOPT-PATTERN",
+      "final_wave": "W7",
+      "source_group": "WP-10",
+      "source_id": "TST-06",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "authority/security test suites",
+        "Agent/Workflow/Skill Studio tests",
+        "enterprise/control-plane surfaces"
+      ],
+      "title": "RBAC/ABAC persona matrix and negative controls"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W3",
+      "source_group": "WP-01",
+      "source_id": "TXN-01",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/studio_authority.py",
+        "runtime/studio_approval.py",
+        "runtime/skill_studio.py",
+        "runtime/workflow_studio.py",
+        "runtime/agency_studio_adapter.py",
+        "tests/transaction/authority-retry tests (new)"
+      ],
+      "title": "Re-authorize every optimistic/CAS retry against the freshly-read object"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W3",
+      "source_group": "WP-01",
+      "source_id": "TXN-02",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "contracts/studio approval/proposal schemas",
+        "runtime/studio_approval.py",
+        "runtime/studio_models.py",
+        "runtime/studio_authority.py",
+        "future LAYA self-operation proposal owner"
+      ],
+      "title": "Monotonic approval/review epoch to defeat ABA approval races"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W3",
+      "source_group": "WP-01",
+      "source_id": "TXN-03",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/operation_authority.py",
+        "runtime/primitive_authority.py",
+        "runtime/studio_authority.py",
+        "runtime/studio_operations.json",
+        "contracts/semantic-effect or operation authority contracts",
+        "tests/authority/effect-footprint-exhaustiveness (new)"
+      ],
+      "title": "Typed effect-footprint authorization with exhaustive action coverage"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W3",
+      "source_group": "WP-01",
+      "source_id": "TXN-04",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/studio_approval.py",
+        "runtime/studio_run_control.py",
+        "runtime/studio_authority.py",
+        "runtime/wal_transaction.py",
+        "future rollout/self-operation state machine"
+      ],
+      "title": "Commit state transition and transition-derived controls in one atomic write"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W3",
+      "source_group": "WP-01",
+      "source_id": "TXN-05",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/operational_event_bus.py",
+        "runtime/event_ledger.py",
+        "runtime/studio_run_control.py",
+        "runtime/studio_session_worker.py",
+        "extension/src/canonicalEventPublisher.js",
+        "agent/provider callback adapters"
+      ],
+      "title": "Capture immutable transaction/event context before asynchronous fire-and-forget work"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W3",
+      "source_group": "WP-01",
+      "source_id": "TXN-06",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/studio_authority.py",
+        "runtime/semantic_lsp_transaction.py",
+        "runtime/semantic_code_transaction.py",
+        "runtime/wal_transaction.py",
+        "recovery-plan receipts/tests"
+      ],
+      "title": "Verify compensation by re-reading canonical state after rollback"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W3",
+      "source_group": "WP-01",
+      "source_id": "TXN-07",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/studio_authority.py",
+        "runtime/semantic_code_transaction.py",
+        "runtime/semantic_lsp_transaction.py",
+        "contracts/recovery-plan.schema.json",
+        "future multi-object self-operation transaction owner"
+      ],
+      "title": "Dependency-aware compensation ordering"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W3",
+      "source_group": "WP-01",
+      "source_id": "TXN-08",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/studio_authority.py",
+        "runtime/studio_approval.py",
+        "runtime/skill_studio.py",
+        "runtime/workflow_studio.py",
+        "rollback/recovery contracts"
+      ],
+      "title": "Pure rollback authority: rollback may restore only a previously-live state"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W3",
+      "source_group": "WP-01",
+      "source_id": "TXN-09",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/wal_transaction.py",
+        "Studio optimistic-write utilities",
+        "future LAYA/self-operation CAS helpers",
+        "tests/transaction/cas-guard-immutability (new)"
+      ],
+      "title": "Immutable canonical CAS guard snapshots"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W5",
+      "source_group": "WP-03",
+      "source_id": "CTX-18",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "extension/src/agentHarness/toolBroker.js",
+        "extension/src/agentHarness/contextCompiler.js",
+        "contracts/tool-contract.schema.json",
+        "provider adapter request builders",
+        "runtime/model_routing_observability.py"
+      ],
+      "title": "Model-facing tool-schema compaction projection"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W5",
+      "source_group": "WP-03",
+      "source_id": "CTX-19",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/memory_intelligence.py",
+        "future context/compression owner",
+        "extension/src/agentHarness/contextCompiler.js"
+      ],
+      "title": "Protected semantic span mask before any lossy compression"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W5",
+      "source_group": "WP-03",
+      "source_id": "CTX-20",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/memory_intelligence.py",
+        "extension/src/agentHarness/contextCompiler.js",
+        "future compact-context transform registry"
+      ],
+      "title": "Embedded structured sub-span compaction"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W5",
+      "source_group": "WP-03",
+      "source_id": "CTX-21",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/semantic_retrieval_fusion.py",
+        "runtime/retrieval.py",
+        "runtime/memory_broker.py",
+        "retrieval evaluation fixtures"
+      ],
+      "title": "Novelty-aware adaptive retrieval cutoff after ranking"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W5",
+      "source_group": "WP-03",
+      "source_id": "CTX-22",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/session_context_guard.py",
+        "runtime/operational_event_bus.py",
+        "runtime/cognitive_core/* context-bound compilation",
+        "extension agent/provider fanout",
+        "tests/concurrency/request-context-isolation (new)"
+      ],
+      "title": "Request-local policy/authority context isolation across async and worker fanout"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W5",
+      "source_group": "WP-03",
+      "source_id": "CTX-23",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "future semantic compressor/parser adapters",
+        "runtime semantic-code helpers where third-party parser thread safety is not guaranteed",
+        "concurrency test profile"
+      ],
+      "title": "Thread-local ownership for non-thread-safe parser/model helpers"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W5",
+      "source_group": "WP-03",
+      "source_id": "CTX-24",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/retrieval_model_service.py",
+        "local model runtime/librarian bootstrap owner",
+        "runtime/resource_lifecycle.py",
+        "extension local provider adapters"
+      ],
+      "title": "Cancellable single-flight lazy initialization with rollback to uninitialized"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W6",
+      "source_group": "WP-02",
+      "source_id": "CTX-25",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "provider adapter cache-key owner (new/adjacent)",
+        "runtime/provider_gateway.py",
+        "extension provider adapters",
+        "context/prompt cache metrics"
+      ],
+      "title": "Separate semantic cache identity from transient transport decoration"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W6",
+      "source_group": "WP-02",
+      "source_id": "CTX-26",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "provider adapter prompt-cache policy",
+        "runtime/provider_gateway.py",
+        "provider usage/accounting projection"
+      ],
+      "title": "Provider cache-breakpoint and TTL replay/normalization"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W6",
+      "source_group": "WP-02",
+      "source_id": "CTX-27",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/model_routing_observability.py",
+        "runtime/provider_budget.py",
+        "context pack receipts",
+        "extension efficiency surface"
+      ],
+      "title": "Non-overlapping context/token savings ledger"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W6",
+      "source_group": "WP-02",
+      "source_id": "PRV-12",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/provider_gateway.py",
+        "provider adapter error normalization",
+        "contracts/provider execution receipt/error fields"
+      ],
+      "title": "Preserve final upstream failure identity after retry exhaustion"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W6",
+      "source_group": "WP-02",
+      "source_id": "PRV-13",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/provider_gateway.py",
+        "runtime/agent_runtime.py",
+        "provider retry helper",
+        "runtime/resource_lifecycle.py"
+      ],
+      "title": "Cancellation-aware retry backoff"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W6",
+      "source_group": "WP-02",
+      "source_id": "PRV-14",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/provider_gateway.py",
+        "provider retry-budget contract",
+        "agent task deadline handling"
+      ],
+      "title": "Retryability depends on remaining caller deadline, not only transient error class"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W6",
+      "source_group": "WP-02",
+      "source_id": "PRV-15",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/provider_gateway.py",
+        "streaming provider adapters",
+        "extension agent console stream protocol",
+        "canonical provider execution receipt"
+      ],
+      "title": "Transport-reset retry class and explicit streaming terminal failure"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W6",
+      "source_group": "WP-02",
+      "source_id": "PRV-16",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/agent_runtime.py",
+        "provider failure classifier",
+        "runtime/studio_session_worker.py",
+        "task state/recovery contracts"
+      ],
+      "title": "Recoverable-exit matrix preserves pending work and schedules its continuation"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W6",
+      "source_group": "WP-02",
+      "source_id": "PRV-17",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/provider_gateway.py",
+        "provider adapter registry/tests",
+        "extension/src/agentHarness/adapters/*"
+      ],
+      "title": "Multi-instance adapter/config isolation regression suite"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W7",
+      "source_group": "WP-05",
+      "source_id": "OBS-06",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/studio_protocol.py",
+        "MCP/stdio worker adapters",
+        "runtime/studio_session_worker.py",
+        "extension worker launchers",
+        "scripts/CI protocol-lint (new)"
+      ],
+      "title": "Protocol-channel discipline static gate"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W7",
+      "source_group": "WP-05",
+      "source_id": "OBS-07",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/operational_health.py or health owner",
+        "runtime/provider/runtime observer health",
+        "extension attention/health projection"
+      ],
+      "title": "One-shot outage escalation latch per outage epoch"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W7",
+      "source_group": "WP-05",
+      "source_id": "OBS-08",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/observation_projection.py",
+        "runtime/operational_event_bus.py",
+        "extension activity/efficiency projections",
+        "provider/model metrics surface"
+      ],
+      "title": "Bounded per-session metric rollup projection over canonical events"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W7",
+      "source_group": "WP-05",
+      "source_id": "OBS-09",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "external-agent observer adapters",
+        "runtime/operational_observers.py",
+        "checkpoint/tailer state contract"
+      ],
+      "title": "Transcript tailer start-at-end, serialized-poke, and truncation rules"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W7",
+      "source_group": "WP-05",
+      "source_id": "OBS-10",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "external-agent edge adapters",
+        "runtime/operational_observers.py",
+        "runtime/operational_event_bus.py"
+      ],
+      "title": "Edge-ingest idempotency key for duplicate hook deliveries"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W5",
+      "source_group": "WP-03",
+      "source_id": "OPS-01",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/memory_intelligence.py::PersistentWriteQueue or a generalized durable intent queue",
+        "sync/writeback adapters",
+        "project/memory repair queues"
+      ],
+      "title": "Typed pending-intent supersession queue with producer gating"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W7",
+      "source_group": "WP-05",
+      "source_id": "OPS-02",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/provider_gateway.py",
+        "runtime/model_routing_observability.py",
+        "extension/src/agentHarness/contextCompiler.js",
+        "runtime/operational_event_bus.py"
+      ],
+      "title": "Per-request stage latency instrumentation under the existing event plane"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W4",
+      "source_group": "WP-06",
+      "source_id": "SNAP-03",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "environment/model/provider discovery snapshots",
+        "runtime/evidence_cache.py",
+        "runtime/model_routing_observability.py",
+        "extension environment/provider catalogs"
+      ],
+      "title": "Staged baseline/enrichment refresh: optional sources never gate authority publication"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W4",
+      "source_group": "WP-06",
+      "source_id": "SNAP-04",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "runtime/evidence_cache.py",
+        "environment/model/provider snapshot owners",
+        "semantic/knowledge projections"
+      ],
+      "title": "Field-level evidence-quality merge: newer degraded data must not erase stronger known truth"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W6",
+      "source_group": "WP-02",
+      "source_id": "SNAP-05",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "provider adapter registry",
+        "host secret-storage bridge",
+        "provider/environment snapshot cache",
+        "runtime/provider_gateway.py"
+      ],
+      "title": "Resolve credential/secret-slot identity before selecting credential-scoped snapshot"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W8",
+      "source_group": "WP-07",
+      "source_id": "SKL-05",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "registry/skill package metadata",
+        "runtime/native_skills.py",
+        "Skill Studio validation",
+        "skills CI/admission lint"
+      ],
+      "title": "Always-loaded skill core budget ratchet"
+    },
+    {
+      "disposition": "ADAPT",
+      "final_wave": "W6",
+      "source_group": "WP-04",
+      "source_id": "SYS-01",
+      "source_pack": "PX_V1_EXTERNAL_INTEGRATION_EXECUTION_PACK",
+      "target_paths": [
+        "future LAYA/System-1 feature compiler",
+        "runtime/model routing policy/observability",
+        "agent task envelope derived features"
+      ],
+      "title": "Deterministic task-shape feature compiler feeding System-1/LAYA"
+    },
+    {
+      "disposition": null,
+      "final_wave": "W4",
+      "source_group": "W3",
+      "source_id": "P0-01",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "runtime/agent_runtime.py",
+        "runtime/job_receipt.py",
+        "runtime/operational_event_bus.py",
+        "runtime/scheduler.py",
+        "extension/src/agentHarness/taskStore.js",
+        "extension/src/agentHarness/harnessController.js",
+        "extension/src/agentHarness/eventBus.js",
+        "runtime/agent_turn_queue.py",
+        "contracts/agents/agent-queued-turn.schema.json",
+        "contracts/agents/agent-turn-claim.schema.json",
+        "contracts/agents/agent-turn-dead-letter.schema.json"
+      ],
+      "title": ""
+    },
+    {
+      "disposition": null,
+      "final_wave": "W3",
+      "source_group": "W1",
+      "source_id": "P0-02",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "runtime/external_toolchain.py",
+        "runtime/provider_gateway.py",
+        "runtime/process_supervisor.py",
+        "extension/src/agentHarness/toolBroker.js",
+        "runtime/outbound_url_policy.py",
+        "contracts/external_capabilities/outbound-request-policy.schema.json"
+      ],
+      "title": ""
+    },
+    {
+      "disposition": null,
+      "final_wave": "W4",
+      "source_group": "W2",
+      "source_id": "P0-03",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "runtime/operation_authority.py",
+        "runtime/external_toolchain.py",
+        "extension/src/agentHarness/toolBroker.js",
+        "runtime/mutation_queue.py",
+        "contracts/operations/mutation-queue-receipt.schema.json"
+      ],
+      "title": ""
+    },
+    {
+      "disposition": null,
+      "final_wave": "W5",
+      "source_group": "W4",
+      "source_id": "P0-04",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "runtime/memory_broker.py",
+        "runtime/semantic_retrieval_fusion.py",
+        "runtime/retrieval_generation.py",
+        "runtime/semantic_model_context.py",
+        "runtime/lexical_memory_index.py",
+        "contracts/memory/lexical-index-generation.schema.json"
+      ],
+      "title": ""
+    },
+    {
+      "disposition": null,
+      "final_wave": "W4",
+      "source_group": "W2",
+      "source_id": "P0-05",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "runtime/memory_remediation.py",
+        "runtime/memory_operations.py",
+        "runtime/wal_transaction.py",
+        "runtime/context_checkpoint.py",
+        "runtime/persistent_memory_provider.py",
+        "contracts/memory/memory-repair-plan-v2.schema.json"
+      ],
+      "title": ""
+    },
+    {
+      "disposition": null,
+      "final_wave": "W5",
+      "source_group": "W4",
+      "source_id": "P0-06",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "runtime/memory_broker.py",
+        "runtime/semantic_model_context.py",
+        "extension/src/agentHarness/contextCompiler.js",
+        "contracts/memory/context-materialization-tier.schema.json"
+      ],
+      "title": ""
+    },
+    {
+      "disposition": null,
+      "final_wave": "W4",
+      "source_group": "W2",
+      "source_id": "P0-07",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "runtime/semantic_code_concurrency.py",
+        "runtime/semantic_code_transaction.py",
+        "runtime/resource_lifecycle.py",
+        "runtime/operation_authority.py",
+        "runtime/scope_lease.py",
+        "contracts/scheduling/scope-lease.schema.json"
+      ],
+      "title": ""
+    },
+    {
+      "disposition": null,
+      "final_wave": "W4",
+      "source_group": "W2",
+      "source_id": "P0-08",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "runtime/semantic_code_transaction.py",
+        "runtime/process_supervisor.py",
+        "orchestration/workflows/project_stream/guarded_change.yaml",
+        "extension/src/agentHarness/harnessController.js",
+        "runtime/workspace_checkpoint.py",
+        "contracts/project_stream/workspace-checkpoint.schema.json"
+      ],
+      "title": ""
+    },
+    {
+      "disposition": null,
+      "final_wave": "W3",
+      "source_group": "W1",
+      "source_id": "P0-09",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "runtime/operation_authority.py",
+        "runtime/process_supervisor.py",
+        "runtime/external_toolchain.py",
+        "extension/src/agentHarness/toolBroker.js",
+        "extension/src/agentHarness/vscodeTools.js",
+        "runtime/command_risk.py",
+        "contracts/security_capabilities/command-risk-decision.schema.json"
+      ],
+      "title": ""
+    },
+    {
+      "disposition": null,
+      "final_wave": "W3",
+      "source_group": "W1",
+      "source_id": "P0-10",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "runtime/external_toolchain.py",
+        "extension/src/mcpRuntimeObservation.js",
+        "extension/src/mcpActivityIntegration.js",
+        "extension/src/agentHarness/toolBroker.js",
+        "runtime/mcp_health.py",
+        "contracts/operations/mcp-health.schema.json"
+      ],
+      "title": ""
+    },
+    {
+      "disposition": null,
+      "final_wave": "W8",
+      "source_group": "W7",
+      "source_id": "P0-11",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "extension/media/dashboard/47-advanced-surfaces.js",
+        "extension/src/studioDashboardHost.js",
+        "runtime/operational_observers.py",
+        "runtime/operational_projection.py",
+        "runtime/operation_authority.py",
+        "extension/src/selfOperationsManager.js",
+        "contracts/operations/self-diagnostic-request.schema.json",
+        "contracts/operations/self-diagnostic-result.schema.json",
+        "contracts/operations/self-improvement-run.schema.json",
+        "orchestration/workflows/self-operations-improvement.yaml"
+      ],
+      "title": ""
+    },
+    {
+      "disposition": null,
+      "final_wave": "W4",
+      "source_group": "W3",
+      "source_id": "P1-01",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "runtime/workflow_worker.py",
+        "runtime/workflow_studio.py",
+        "runtime/studio_approval.py",
+        "runtime/job_receipt.py",
+        "runtime/operational_event_bus.py",
+        "runtime/workflow_adapter_registry.py",
+        "contracts/workflow-node-adapter.schema.json",
+        "contracts/workflow-human-input.schema.json",
+        "contracts/workflow-node-snapshot.schema.json"
+      ],
+      "title": ""
+    },
+    {
+      "disposition": null,
+      "final_wave": "W5",
+      "source_group": "W4",
+      "source_id": "P1-02",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "runtime/context_checkpoint.py",
+        "runtime/session_context_guard.py",
+        "runtime/agent_runtime.py",
+        "contracts/agents/agent-checkpoint-generation.schema.json"
+      ],
+      "title": ""
+    },
+    {
+      "disposition": null,
+      "final_wave": "W4",
+      "source_group": "W3",
+      "source_id": "P1-03",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "extension/src/agentHarness/budgetLedger.js",
+        "extension/src/agentHarness/completionEvaluator.js",
+        "extension/src/agentHarness/harnessController.js"
+      ],
+      "title": ""
+    },
+    {
+      "disposition": null,
+      "final_wave": "W5",
+      "source_group": "W4",
+      "source_id": "P1-04",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "runtime/context_checkpoint.py",
+        "runtime/operational_event_bus.py",
+        "extension/src/activityObservability.js"
+      ],
+      "title": ""
+    },
+    {
+      "disposition": null,
+      "final_wave": "W5",
+      "source_group": "W4",
+      "source_id": "P1-05",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "runtime/context_checkpoint.py",
+        "runtime/wal_migration.py",
+        "contracts/checkpoint-migration-record.schema.json"
+      ],
+      "title": ""
+    },
+    {
+      "disposition": null,
+      "final_wave": "W6",
+      "source_group": "W6",
+      "source_id": "P1-06",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "runtime/operational_event_bus.py",
+        "runtime/operational_projection.py",
+        "runtime/usage_memory.py",
+        "runtime/usage_projection.py",
+        "contracts/operations/usage-projection-state.schema.json"
+      ],
+      "title": ""
+    },
+    {
+      "disposition": null,
+      "final_wave": "W4",
+      "source_group": "W3",
+      "source_id": "P1-07",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "runtime/operation_authority.py",
+        "runtime/studio_approval.py",
+        "extension/src/studioApprovalHost.js",
+        "runtime/approval_policy.py",
+        "contracts/approval-policy-decision.schema.json",
+        "contracts/approval-queue-record.schema.json"
+      ],
+      "title": ""
+    },
+    {
+      "disposition": null,
+      "final_wave": "W6",
+      "source_group": "W6",
+      "source_id": "P1-08",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "runtime/operational_observers.py",
+        "runtime/operational_projection.py",
+        "runtime/authority_topology.py",
+        "registry/integrations.json",
+        "runtime/observed_policy_drift.py",
+        "contracts/operations/observed-policy-drift.schema.json"
+      ],
+      "title": ""
+    },
+    {
+      "disposition": null,
+      "final_wave": "W6",
+      "source_group": "W6",
+      "source_id": "P1-09",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "runtime/tiny_model_operator.py",
+        "runtime/capability_routing.py",
+        "runtime/model_pool.py",
+        "models/routing-policy.json"
+      ],
+      "title": ""
+    },
+    {
+      "disposition": null,
+      "final_wave": "W4",
+      "source_group": "W3",
+      "source_id": "P1-10",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "extension/src/agentHarness/completionEvaluator.js",
+        "runtime/agent_runtime.py",
+        "runtime/process_supervisor.py",
+        "tests"
+      ],
+      "title": ""
+    },
+    {
+      "disposition": null,
+      "final_wave": "W4",
+      "source_group": "W3",
+      "source_id": "P1-11",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "extension/src/mcpRuntimeObservation.js",
+        "extension/src/mcpActivityIntegration.js",
+        "runtime/external_toolchain.py",
+        "runtime/mcp_session_cache.py"
+      ],
+      "title": ""
+    },
+    {
+      "disposition": null,
+      "final_wave": "W4",
+      "source_group": "W3",
+      "source_id": "P1-12",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "runtime/scheduler.py",
+        "runtime/capability_scheduler.py",
+        "runtime/job_receipt.py",
+        "runtime/operational_event_bus.py",
+        "runtime/scheduled_operation_registry.py",
+        "contracts/scheduling/scheduled-operation.schema.json"
+      ],
+      "title": ""
+    },
+    {
+      "disposition": null,
+      "final_wave": "W6",
+      "source_group": "W6",
+      "source_id": "P1-13",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "runtime/model_profile.py",
+        "runtime/provider_certification.py",
+        "runtime/model_health.py",
+        "models/benchmark-policy.json",
+        "contracts/operations/model-drift-report.schema.json"
+      ],
+      "title": ""
+    },
+    {
+      "disposition": null,
+      "final_wave": "W5",
+      "source_group": "W4",
+      "source_id": "P2-01",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "runtime/agent_runtime.py",
+        "runtime/context_checkpoint.py",
+        "extension/src/agentHarness/taskStore.js",
+        "contracts/agents/agent-thread-fork.schema.json"
+      ],
+      "title": ""
+    },
+    {
+      "disposition": null,
+      "final_wave": "W6",
+      "source_group": "W6",
+      "source_id": "P2-02",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "runtime/provider_budget.py",
+        "runtime/operational_projection.py",
+        "extension/media/dashboard/46-observability-surfaces.js",
+        "runtime/cost_projection.py"
+      ],
+      "title": ""
+    },
+    {
+      "disposition": null,
+      "final_wave": "W2",
+      "source_group": "W5",
+      "source_id": "P2-03",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "builders/skill_builder.py",
+        "contracts/skill-package.schema.json",
+        "tests",
+        "runtime/skill_export.py",
+        "contracts/skill-export-profile.schema.json"
+      ],
+      "title": ""
+    },
+    {
+      "disposition": null,
+      "final_wave": "W6",
+      "source_group": "W6",
+      "source_id": "P2-04",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "tests",
+        "knowledge/nsai/objects/moe",
+        "tests/fixtures/moe_reference/"
+      ],
+      "title": ""
+    },
+    {
+      "disposition": null,
+      "final_wave": "W6",
+      "source_group": "W6",
+      "source_id": "P2-05",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "docs/security/INCIDENT_RESPONSE.md",
+        "orchestration/workflows/cybersecurity-capability-operations.yaml",
+        "contracts/incident.schema.json"
+      ],
+      "title": ""
+    },
+    {
+      "disposition": null,
+      "final_wave": "W3",
+      "source_group": "W1",
+      "source_id": "P0-12",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "extension/src/agentHarness/taskStore.js",
+        "extension/src/agentHarness/registerAgentConsole.js",
+        "extension/src/agentHarness/harnessController.js",
+        "extension/src/agentHarness/durableTaskState.js"
+      ],
+      "title": ""
+    },
+    {
+      "disposition": null,
+      "final_wave": "W3",
+      "source_group": "W1",
+      "source_id": "P0-13",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "extension/src/extension.js",
+        "extension/src/agentHarness/harnessController.js",
+        "extension/src/canonicalEventPublisher.js",
+        "extension/src/agentHarness/registerAgentConsole.js",
+        "extension/src/hostQuiesce.js"
+      ],
+      "title": ""
+    },
+    {
+      "disposition": null,
+      "final_wave": "W3",
+      "source_group": "W1",
+      "source_id": "P1-14",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "runtime/provider_gateway.py",
+        "runtime/provider_budget.py",
+        "runtime/capability_routing.py",
+        "runtime/retry_policy.py",
+        "contracts/retry-decision.schema.json"
+      ],
+      "title": ""
+    },
+    {
+      "disposition": null,
+      "final_wave": "W3",
+      "source_group": "W1",
+      "source_id": "P1-15",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "contracts/failure-attribution.schema.json",
+        "runtime/archive_io.py",
+        "runtime/process_supervisor.py",
+        "runtime/model_health.py",
+        "runtime/retrieval_generation.py"
+      ],
+      "title": ""
+    },
+    {
+      "disposition": null,
+      "final_wave": "W4",
+      "source_group": "W2",
+      "source_id": "P1-16",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "runtime/semantic_code_concurrency.py",
+        "runtime/work_admission.py",
+        "runtime/retrieval.py",
+        "runtime/external_toolchain.py",
+        "runtime/shared_flight.py"
+      ],
+      "title": ""
+    },
+    {
+      "disposition": null,
+      "final_wave": "W2",
+      "source_group": "W5",
+      "source_id": "P1-17",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "runtime/semantic_code_project.py",
+        "runtime/semantic_code_index.py",
+        "runtime/semantic_code_cache.py",
+        "runtime/semantic_code_service.py",
+        "runtime/project_intelligence.py",
+        "runtime/semantic_code_incremental.py"
+      ],
+      "title": ""
+    },
+    {
+      "disposition": null,
+      "final_wave": "W4",
+      "source_group": "W3",
+      "source_id": "P1-18",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "extension/src/agentHarness/eventBus.js",
+        "extension/src/agentHarness/harnessController.js",
+        "extension/src/agentHarness/agentConsoleProjection.js",
+        "extension/src/canonicalEventPublisher.js",
+        "runtime/operational_event_bus.py",
+        "contracts/agents/agent-run-event.schema.json"
+      ],
+      "title": ""
+    },
+    {
+      "disposition": null,
+      "final_wave": "W2",
+      "source_group": "W5",
+      "source_id": "P1-19",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "runtime/dependency_invalidation.py",
+        "runtime/project_intelligence.py",
+        "runtime/wal_transaction.py",
+        "builders",
+        "tools/px_migration/",
+        "contracts/migration-package.schema.json",
+        "contracts/migration-report.schema.json"
+      ],
+      "title": ""
+    },
+    {
+      "disposition": null,
+      "final_wave": "W5",
+      "source_group": "W4",
+      "source_id": "P1-20",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "runtime/retrieval_generation.py",
+        "runtime/retrieval.py",
+        "runtime/turbovec_adapter.py",
+        "runtime/hardware_routing.py",
+        "models/retrieval-policy.json",
+        "runtime/cuvs_adapter.py",
+        "contracts/cuvs-manifest.schema.json"
+      ],
+      "title": ""
+    },
+    {
+      "disposition": null,
+      "final_wave": "W2",
+      "source_group": "W5",
+      "source_id": "P2-06",
+      "source_pack": "PX_39_CANDIDATE_IMPLEMENTATION_ASSIST_PACK",
+      "target_paths": [
+        "runtime/semantic_code_backend.py",
+        "runtime/semantic_code_registry.py",
+        "runtime/semantic_code_index.py",
+        "runtime/semantic_code_capabilities.py",
+        "runtime/semantic_tree_sitter_backend.py"
+      ],
+      "title": ""
+    }
+  ],
+  "schema_version": "px.rev1xx-source-traceability/1.0"
+}

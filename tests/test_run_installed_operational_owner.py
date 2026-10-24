@@ -44,7 +44,7 @@ def _config(tmp_path: Path) -> Config:
         "size": observed.st_size,
     }
     _write(
-        tmp_path / ".engineering-bootstrap/processing-order/release-identity.json",
+        tmp_path / ".agentic_engineering_os_px/processing-order/release-identity.json",
         {
             "schema_version": "px.release-campaign/1.0",
             "campaign_id": candidate,
@@ -60,7 +60,7 @@ def _config(tmp_path: Path) -> Config:
         },
     )
     _write(
-        tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json",
+        tmp_path / ".agentic_engineering_os_px/processing-order/repair-campaign.json",
         {
             "schema_version": "px.repair-campaign/1.0",
             "phase": "installed",

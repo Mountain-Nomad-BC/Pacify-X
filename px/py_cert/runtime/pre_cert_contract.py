@@ -11,20 +11,7 @@ GENERATED_RECONCILE_SCHEMA = "px.pre-cert-generated-reconcile/1.0"
 GIT_CONVERGENCE_SCHEMA = "px.pre-cert-git-convergence/1.0"
 READY_SEAL_SCHEMA = "px.pre-cert-ready/1.0"
 
-CERTIFICATION_STEP_ORDER = (
-    "archive_clear",
-    "reconcile",
-    "identity",
-    "sections",
-    "full_profile",
-    "validate",
-    "package",
-    "install",
-    "installed_operational",
-    "card_reconcile",
-    "preflight",
-    "finalize",
-)
+from runtime.certification_contract import STEP_ORDER as CERTIFICATION_STEP_ORDER
 
 # Files delivered by the execution-side rebuild.  Pre-cert convergence verifies
 # that these are all present before it creates the source/hash baseline.

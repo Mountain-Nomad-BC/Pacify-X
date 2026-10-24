@@ -153,8 +153,8 @@ class SanitizationAuditTests(unittest.TestCase):
                 ".tmp/cache/private.txt",
                 ".venv-certify/private.txt",
                 "Python/private.txt",
-                ".engineering-bootstrap/operation-bus/wal/owned.zip",
-                ".engineering-bootstrap/project-map-history-archives/owned.zip",
+                ".agentic_engineering_os_px/operation-bus/wal/owned.zip",
+                ".agentic_engineering_os_px/project-map-history-archives/owned.zip",
             ):
                 path = root / relative
                 path.parent.mkdir(parents=True, exist_ok=True)

@@ -40,10 +40,10 @@ def invoke(*arguments: str) -> tuple[int, dict]:
 
 
 def test_processing_order_begin_repair_cli_preserves_open_denominator(tmp_path):
-    marker = tmp_path / ".engineering-bootstrap/project-record.json"
+    marker = tmp_path / ".agentic_engineering_os_px/project-record.json"
     marker.parent.mkdir(parents=True)
     marker.write_text(json.dumps({"project_id": "prj_cli"}) + "\n", encoding="utf-8")
-    campaign = tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    campaign = tmp_path / ".agentic_engineering_os_px/processing-order/repair-campaign.json"
     campaign.parent.mkdir(parents=True)
     campaign.write_text(json.dumps({
         "schema_version": "px.repair-campaign/1.0",
@@ -65,10 +65,10 @@ def test_processing_order_begin_repair_cli_preserves_open_denominator(tmp_path):
 
 
 def test_processing_order_reopen_pre_freeze_cli_registers_findings(tmp_path):
-    marker = tmp_path / ".engineering-bootstrap/project-record.json"
+    marker = tmp_path / ".agentic_engineering_os_px/project-record.json"
     marker.parent.mkdir(parents=True)
     marker.write_text(json.dumps({"project_id": "prj_cli"}) + "\n", encoding="utf-8")
-    campaign = tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    campaign = tmp_path / ".agentic_engineering_os_px/processing-order/repair-campaign.json"
     campaign.parent.mkdir(parents=True)
     campaign.write_text(json.dumps({
         "schema_version": "px.repair-campaign/1.0",
@@ -91,10 +91,10 @@ def test_processing_order_reopen_pre_freeze_cli_registers_findings(tmp_path):
 
 
 def test_processing_order_register_findings_cli_extends_open_repair(tmp_path):
-    marker = tmp_path / ".engineering-bootstrap/project-record.json"
+    marker = tmp_path / ".agentic_engineering_os_px/project-record.json"
     marker.parent.mkdir(parents=True)
     marker.write_text(json.dumps({"project_id": "prj_cli"}) + "\n", encoding="utf-8")
-    campaign = tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    campaign = tmp_path / ".agentic_engineering_os_px/processing-order/repair-campaign.json"
     campaign.parent.mkdir(parents=True)
     campaign.write_text(json.dumps({
         "schema_version": "px.repair-campaign/1.0", "campaign_id": "repair-cli",
@@ -114,10 +114,10 @@ def test_processing_order_register_findings_cli_extends_open_repair(tmp_path):
 
 
 def test_processing_order_close_and_freeze_cli_require_and_record_evidence(tmp_path):
-    marker = tmp_path / ".engineering-bootstrap/project-record.json"
+    marker = tmp_path / ".agentic_engineering_os_px/project-record.json"
     marker.parent.mkdir(parents=True)
     marker.write_text(json.dumps({"project_id": "prj_cli"}) + "\n", encoding="utf-8")
-    campaign = tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    campaign = tmp_path / ".agentic_engineering_os_px/processing-order/repair-campaign.json"
     campaign.parent.mkdir(parents=True)
     campaign.write_text(json.dumps({
         "schema_version": "px.repair-campaign/1.0",

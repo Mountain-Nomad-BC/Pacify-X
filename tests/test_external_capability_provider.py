@@ -106,7 +106,7 @@ def test_stage_preview_rejects_forged_path_identifier(tmp_path) -> None:
 
 
 def commissioned_project(tmp_path: Path) -> Path:
-    state = tmp_path / ".engineering-bootstrap/project-management/state.json"
+    state = tmp_path / ".agentic_engineering_os_px/project-management/state.json"
     state.parent.mkdir(parents=True)
     state.write_text("{}\n", encoding="utf-8")
     return tmp_path
@@ -184,7 +184,7 @@ def test_selective_staging_is_deterministic_review_gated_and_project_local(
 
     preview = apply_selective_stage(project, first, approval_evidence=["review-1"])
     assert preview["valid"] and preview["applied"] is False
-    assert not (project / ".engineering-bootstrap/external-capabilities").exists()
+    assert not (project / ".agentic_engineering_os_px/external-capabilities").exists()
     missing_review = apply_selective_stage(
         project, first, approval_evidence=[], apply=True
     )

@@ -76,7 +76,7 @@ def test_changed_input_after_intent_refuses_without_catalog(tmp_path):
     (tmp_path / 'wal.json').write_text('{}')
     with pytest.raises(WalIntegrityError, match='changed'):
         migrate_legacy_wals(tmp_path, owners)
-    assert not (tmp_path / '.engineering-bootstrap/wal-ownership.json').exists()
+    assert not (tmp_path / '.agentic_engineering_os_px/wal-ownership.json').exists()
 
 
 def test_current_generation_requires_compact_migration_evidence(tmp_path):
@@ -129,7 +129,7 @@ def test_pending_legacy_wal_refuses_migration(tmp_path):
     owners = [dict(journal='wal', domains=[dict(path='wal.json', kind='exact')])]
     with pytest.raises(WalIntegrityError, match='pending'):
         migrate_legacy_wals(tmp_path, owners)
-    assert not (tmp_path / '.engineering-bootstrap/wal-ownership.json').exists()
+    assert not (tmp_path / '.agentic_engineering_os_px/wal-ownership.json').exists()
 
 
 def test_generation_reads_do_not_read_complete_migration_inventory(tmp_path, monkeypatch):
@@ -154,7 +154,7 @@ def test_migration_entrypoint_binds_declared_image_before_effect(tmp_path, capsy
     args = ['--root', str(tmp_path), '--declaration', str(declaration), '--expected-declaration-sha256']
     with pytest.raises(ValueError, match='changed'):
         main([*args, '0' * 64])
-    assert not (tmp_path / '.engineering-bootstrap/wal-ownership.json').exists()
+    assert not (tmp_path / '.agentic_engineering_os_px/wal-ownership.json').exists()
     assert main([*args, hashlib.sha256(raw).hexdigest()]) == 0
     assert json.loads(capsys.readouterr().out)['valid'] is True
 
@@ -168,13 +168,13 @@ def test_resealed_invalid_epoch_refuses_before_catalog_publication(tmp_path, epo
             raise RuntimeError('stop')
     with pytest.raises(RuntimeError):
         migrate_legacy_wals(tmp_path, owners, fault_injector=stop)
-    path = tmp_path / '.engineering-bootstrap/wal-migration-intent.json'
+    path = tmp_path / '.agentic_engineering_os_px/wal-migration-intent.json'
     intent = json.loads(path.read_bytes())
     intent['journals']['wal']['epoch'] = epoch
     path.write_text(json.dumps(_seal(intent)))
     with pytest.raises(WalIntegrityError):
         migrate_legacy_wals(tmp_path, owners)
-    assert not (tmp_path / '.engineering-bootstrap/wal-ownership.json').exists()
+    assert not (tmp_path / '.agentic_engineering_os_px/wal-ownership.json').exists()
 
 
 def test_physical_child_exit_migration_boundaries(tmp_path):

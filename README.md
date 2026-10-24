@@ -10,7 +10,7 @@
 
 Engineering Loop Utilization & Harnessing turns a general-purpose AI assistant into a governed, evidence-driven engineering system. It gives the AI the skills, rules, project memory, safety checks, and repeatable workflows it needs to manage software work responsibly.
 
-PACIFY-X is the project and framework. `engineering-bootstrap` is its Python package and command-line control plane.
+PACIFY-X is the project and framework. `agentic-engineering-os-px` is its Python package and command-line control plane.
 
 **Release status:** See [GitHub Releases](https://github.com/Mountain-Nomad-BC/Pacify-X/releases)
 for signed artifacts and their verification evidence.
@@ -18,7 +18,15 @@ for signed artifacts and their verification evidence.
 **Current line:** **v0.9.0** (see [`docs/release-process.md`](docs/release-process.md) for the
 canonical release contract and exact artifact verification steps).
 
-**Requires:** Python 3.11–3.14, Git, OpenSSH Client (`ssh-keygen`), and an AI coding assistant.
+**Rev1xx campaign status:** This preserved standalone source copy is undergoing
+implementation and focused validation. It has no current release certification;
+historical release evidence does not certify this changing tree. Git checkout,
+history, and starting-commit requirements are explicitly deferred by owner decision.
+Preservation uses deterministic file manifests, hashes, and immutable snapshots.
+Builds, installs, packaging, and model operations remain on hold. Human legal and
+policy approval and platform commissioning remain separate outstanding requirements.
+
+**Requires:** Python 3.11â€“3.14, Git, OpenSSH Client (`ssh-keygen`), and an AI coding assistant.
 Local model lanes additionally require a CUDA-capable GPU, CMake + an MSVC toolset + the
 **Windows SDK**, and the CUDA toolkit (see the install prompt below).
 
@@ -44,14 +52,14 @@ You describe the project and the outcome you want. PACIFY-X helps the AI:
 - use Engineering Genomics to help turn knowledge into operational code;
 - log and monitor usage, identifying candidates for learning, processes, workflows, orchestrations, and skill creation or refinement;
 - evaluate multiple potential candidates, test and refine them, and combine validated results into canonical knowledge;
-- maintain multilayer persistent memory.
+- retain and retrieve T.I.E. ? Tenacious Integrated Experiences attached to operational objects.
 
 ### Local AI, under governance
 
 PACIFY-X runs no model of its own until you choose one. When you do, the local stack is
 governed rather than ad-hoc:
 
-- **Resident librarian** — a small, fast, CPU-first model that handles retrieval, knowledge
+- **PX Archivist** — a small, fast, CPU-first model that handles retrieval, knowledge
   navigation, skill and action selection, and Pacify-X's own index/graph/memory upkeep.
 - **On-demand usage worker** — a larger MoE-class model loaded only when a task genuinely needs
   it, held under an exclusive resource lease, never autoloaded.
@@ -66,7 +74,7 @@ The model is replaceable. Pacify-X owns structure, identity, authority, evidence
 generations, memory boundaries, lifecycle, and validation.
 
 You do not need to learn the internal orchestration system or memorize a large command set.
-That is the AI’s job. The human-facing setup is intentionally short.
+That is the AIâ€™s job. The human-facing setup is intentionally short.
 
 ## Start here
 
@@ -83,13 +91,13 @@ python scripts/px_install.py
 an approved local runtime is already built, and which models are present) and prints an
 **ordered commissioning plan** with a recommended profile. It performs **no** effect on its
 own: it never downloads a model, installs a runtime, or enables a provider. Run it with
-`--apply` to record the plan under `.engineering-bootstrap/commissioning/`.
+`--apply` to record the plan under `.agentic_engineering_os_px/commissioning/`.
 
 | Profile | What you get | Needs | Extra disk |
 |---|---|---|---|
 | minimal | Deterministic PX only | — | ~2 GB |
-| librarian-only | Resident CPU-first librarian | 24 GB RAM | ~8 GB |
-| workstation | Librarian + on-demand deep worker | GPU ≥ 6 GB VRAM, 24 GB RAM | ~30 GB |
+| librarian-only | Resident CPU-first PX Archivist | 24 GB RAM | ~8 GB |
+| workstation | PX Archivist + on-demand deep worker | GPU â‰¥ 6 GB VRAM, 24 GB RAM | ~30 GB |
 | hybrid-escalation | The above + policy-gated remote slot | provider credentials | ~30 GB |
 
 ### 2. Let the AI perform the setup
@@ -145,7 +153,7 @@ In plain language, the AI follows this loop:
 understand → plan → ask when needed → work → test → prove → remember
 ```
 
-PACIFY-X loads only a small capability catalog at startup. It opens one relevant skill at a time instead of flooding the AI’s context with every skill, policy, and contract in the framework.
+PACIFY-X loads only a small capability catalog at startup. It opens one relevant skill at a time instead of flooding the AIâ€™s context with every skill, policy, and contract in the framework.
 
 ## Working with more than one project
 
@@ -156,7 +164,7 @@ Each project gets its own identity, workspace, memory, evidence, and write bound
 - Risky or destructive actions require an explicit boundary and, when applicable, your approval.
 - Unknown, failed, or superseded material is inventoried and quarantined rather than hard-deleted.
 - AI output is treated as a proposal until tests and postconditions support it.
-- Private project memory is not placed into another project’s memory or shared index.
+- Private project memory is not placed into another projectâ€™s memory or shared index.
 - Tools and integrations are discovered first; PACIFY-X does not silently install or configure them.
 
 PACIFY-X does not include an AI model, model weights, a provider account, or credentials. It is the engineering system around the model you choose.
@@ -191,10 +199,10 @@ These exact counts are checked automatically for drift; ordinary users do not ne
 
 | Layer | Exact count |
 |---|---:|
-| Runtime modules | 367 |
-| Contracts | 180 |
-| Registry artifacts | 515 |
-| Tool and support scripts | 206 |
+| Runtime modules | 468 |
+| Contracts | 210 |
+| Registry artifacts | 530 |
+| Tool and support scripts | 230 |
 
 The machine-readable source for release and inventory claims is [`registry/build_claims.json`](registry/build_claims.json).
 
@@ -213,7 +221,7 @@ needs before it asks for anything.
 
 ## License
 
-Copyright © 2026  
+Copyright Â© 2026  
 Ben J. Cikovic,  
 doing business as Mountain-Nomad-BC.
 

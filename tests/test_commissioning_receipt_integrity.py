@@ -36,7 +36,7 @@ def test_modified_commissioning_receipt_is_detected() -> None:
     with tempfile.TemporaryDirectory() as directory:
         project = Path(directory) / "project"
         commission(project, "new", apply=True, source_root=ROOT)
-        receipt_path = project / ".engineering-bootstrap/commissioning-receipt.json"
+        receipt_path = project / ".agentic_engineering_os_px/commissioning-receipt.json"
         receipt = json.loads(receipt_path.read_text())
         target_name = next(iter(receipt["managed_file_sha256"]))
         target = project / target_name
@@ -65,8 +65,8 @@ def test_commissioning_receipt_is_bound_to_project() -> None:
         second = root / "second"
         commission(first, "new", apply=True, source_root=ROOT)
         commission(second, "new", apply=True, source_root=ROOT)
-        (second / ".engineering-bootstrap/commissioning-receipt.json").write_bytes(
-            (first / ".engineering-bootstrap/commissioning-receipt.json").read_bytes()
+        (second / ".agentic_engineering_os_px/commissioning-receipt.json").write_bytes(
+            (first / ".agentic_engineering_os_px/commissioning-receipt.json").read_bytes()
         )
         result = project_check(second, source_root=ROOT)
         assert not result["valid"] and any(
@@ -78,7 +78,7 @@ def test_commissioning_receipt_is_bound_to_framework_release() -> None:
     with tempfile.TemporaryDirectory() as directory:
         project = Path(directory) / "project"
         commission(project, "new", apply=True, source_root=ROOT)
-        path = project / ".engineering-bootstrap/commissioning-receipt.json"
+        path = project / ".agentic_engineering_os_px/commissioning-receipt.json"
         _rewrite_receipt(
             path, lambda value: value["framework_release"].update({"version": "99.0.0"})
         )
@@ -93,18 +93,18 @@ def test_recommissioning_preserves_prior_receipt() -> None:
         project = Path(directory) / "project"
         commission(project, "new", apply=True, source_root=ROOT)
         prior = (
-            project / ".engineering-bootstrap/commissioning-receipt.json"
+            project / ".agentic_engineering_os_px/commissioning-receipt.json"
         ).read_bytes()
         commission(project, "new", apply=True, source_root=ROOT)
         history = (
             project
-            / ".engineering-bootstrap/commissioning-history"
+            / ".agentic_engineering_os_px/commissioning-history"
             / f"{hashlib.sha256(prior).hexdigest()}.json"
         )
         assert history.read_bytes() == prior
         assert (
             validate_event_ledger(
-                project / ".engineering-bootstrap/commissioning-events"
+                project / ".agentic_engineering_os_px/commissioning-events"
             )["event_count"]
             == 2
         )
@@ -115,7 +115,7 @@ def test_commissioning_manifest_covers_all_managed_files() -> None:
         project = Path(directory) / "project"
         commission(project, "new", apply=True, source_root=ROOT)
         receipt = json.loads(
-            (project / ".engineering-bootstrap/commissioning-receipt.json").read_text()
+            (project / ".agentic_engineering_os_px/commissioning-receipt.json").read_text()
         )
         expected = scaffold_files("new", project, ROOT)
         mutable = tuple(receipt["mutable_project_management"])
@@ -134,7 +134,7 @@ def test_framework_rebind_preserves_receipt_and_managed_files(monkeypatch) -> No
     with tempfile.TemporaryDirectory() as directory:
         project = Path(directory) / "project"
         commission(project, "new", apply=True, source_root=ROOT)
-        receipt_path = project / ".engineering-bootstrap/commissioning-receipt.json"
+        receipt_path = project / ".agentic_engineering_os_px/commissioning-receipt.json"
         prior = receipt_path.read_bytes()
         prior_sha256 = hashlib.sha256(prior).hexdigest()
         prior_receipt = json.loads(prior)
@@ -155,7 +155,7 @@ def test_framework_rebind_preserves_receipt_and_managed_files(monkeypatch) -> No
         assert result["valid"] and result["applied"] and result["changed"]
         history = (
             project
-            / ".engineering-bootstrap/commissioning-history"
+            / ".agentic_engineering_os_px/commissioning-history"
             / f"{prior_sha256}.json"
         )
         assert history.read_bytes() == prior
@@ -173,7 +173,7 @@ def test_framework_rebind_refuses_a_damaged_receipt(monkeypatch) -> None:
     with tempfile.TemporaryDirectory() as directory:
         project = Path(directory) / "project"
         commission(project, "new", apply=True, source_root=ROOT)
-        receipt_path = project / ".engineering-bootstrap/commissioning-receipt.json"
+        receipt_path = project / ".agentic_engineering_os_px/commissioning-receipt.json"
         receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
         receipt["receipt_sha256"] = "0" * 64
         receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
@@ -190,4 +190,4 @@ def test_framework_rebind_refuses_a_damaged_receipt(monkeypatch) -> None:
         assert not result["valid"]
         assert not result["applied"]
         assert result["errors"] == ["commissioning receipt digest mismatch"]
-        assert not (project / ".engineering-bootstrap/commissioning-history").exists()
+        assert not (project / ".agentic_engineering_os_px/commissioning-history").exists()

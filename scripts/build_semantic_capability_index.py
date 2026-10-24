@@ -11,21 +11,22 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from runtime.semantic_index import build_semantic_index  # noqa: E402 -- local source bootstrap
+from runtime.guarded_registry_projection import publish_guarded_registry_projection
 
 
-if __name__ == "__main__":
+def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=Path, default=ROOT)
     parser.add_argument("--output", type=Path)
-    args = parser.parse_args()
-    payload = build_semantic_index(args.root)
-    output = args.output or args.root / "registry" / "semantic_capability_index.json"
-    output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(
-        json.dumps(payload, indent=2) + "\n",
-        encoding="utf-8",
-        newline="\n",
-    )
+    parser.add_argument("--admission-event-id", required=True)
+    args = parser.parse_args(argv)
+    root = args.root.resolve(strict=True)
+    output = args.output or Path("registry/semantic_capability_index.json")
+    output = output if output.is_absolute() else root / output
+    relative = output.relative_to(root).as_posix()
+    payload = build_semantic_index(root)
+    publish_guarded_registry_projection(root, relative, payload,
+        admission_event_id=args.admission_event_id)
     print(
         json.dumps(
             {
@@ -36,3 +37,8 @@ if __name__ == "__main__":
             }
         )
     )
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

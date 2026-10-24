@@ -19,7 +19,7 @@ def test_portable_adapter_supports_source_and_installed_package_names() -> None:
         ROOT
         / ".px/skills/operate-memory-retrieval-observability/scripts/authoritative_hybrid_retrieval.py"
     ).read_text(encoding="utf-8")
-    assert "from engineering_bootstrap.retrieval import RetrievalSource, retrieve" in source
+    assert "from agentic_engineering_os_px.retrieval import RetrievalSource, retrieve" in source
     assert "from runtime.retrieval import RetrievalSource, retrieve" in source
 
 

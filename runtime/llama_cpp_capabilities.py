@@ -34,12 +34,7 @@ def _sha(value: object) -> str:
     return hashlib.sha256(_canonical(value)).hexdigest()
 
 
-def _digest_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        for block in iter(lambda: stream.read(1024 * 1024), b""):
-            digest.update(block)
-    return digest.hexdigest()
+from runtime.hash_utils import file_sha256 as _digest_file
 
 
 def _inside(path: Path, roots: Sequence[Path]) -> bool:
@@ -336,7 +331,7 @@ def _valued_boolean_args(
 
 
 def launch_policy_from_profile(profile: object) -> LlamaCppLaunchPolicy:
-    """Bridge a validated runtime profile to a typed llama.cpp launch policy.
+    """Bridge an exact, validated runtime profile to a typed llama.cpp launch policy.
 
     The typed placement layer (``gpu_layers`` / ``cpu_moe_layers`` / ``flash_attention`` and
     friends) only takes effect when a caller builds it from the profile. Without this bridge,
@@ -344,30 +339,27 @@ def launch_policy_from_profile(profile: object) -> LlamaCppLaunchPolicy:
     other placement control the binary supports is silently unused.
 
     Only fields the profile actually declares are carried. ``None`` continues to mean "PX makes
-    no request for this setting", so nothing is invented.
+    no request for this setting", so nothing is invented. Arbitrary duck-typed or stale profiles
+    are rejected rather than partially translated into a plausible launch policy.
     """
+    from .model_profile import ModelRuntimeProfile
 
-    def _get(name: str) -> object:
-        return getattr(profile, name, None)
+    if type(profile) is not ModelRuntimeProfile:
+        raise TypeError("llama.cpp launch policy requires a typed model runtime profile")
+    profile.validate()
 
-    gpu_layers = _get("gpu_layers")
-    if isinstance(gpu_layers, str) and gpu_layers not in {"auto", "all"}:
-        gpu_layers = None
-    cpu_moe_layers = _get("cpu_moe_layers")
-    threads = _get("threads")
-    threads_batch = _get("threads_batch")
-    batch_size = _get("batch_size")
-    ubatch_size = _get("ubatch_size")
-    flash_attention = _get("flash_attention")
+    cpu_moe_layers = profile.cpu_moe_layers
     policy = LlamaCppLaunchPolicy(
-        gpu_layers=gpu_layers if isinstance(gpu_layers, (int, str)) else None,
+        gpu_layers=profile.gpu_layers,
         cpu_moe=bool(cpu_moe_layers) if isinstance(cpu_moe_layers, int) and cpu_moe_layers > 0 else None,
-        cpu_moe_layers=cpu_moe_layers if isinstance(cpu_moe_layers, int) else None,
-        threads=threads if isinstance(threads, int) else None,
-        threads_batch=threads_batch if isinstance(threads_batch, int) else None,
-        batch_size=batch_size if isinstance(batch_size, int) else None,
-        ubatch_size=ubatch_size if isinstance(ubatch_size, int) else None,
-        flash_attention=flash_attention if isinstance(flash_attention, bool) else None,
+        cpu_moe_layers=cpu_moe_layers,
+        threads=profile.threads,
+        threads_batch=profile.threads_batch,
+        batch_size=profile.batch_size,
+        ubatch_size=profile.ubatch_size,
+        flash_attention=profile.flash_attention,
+        cache_type_k=profile.cache_type_k,
+        cache_type_v=profile.cache_type_v,
     )
     policy.validate()
     return policy

@@ -248,34 +248,47 @@ def append_chained_event(
         raise ValueError("event kind must be a bounded identifier")
     ledger.mkdir(parents=True, exist_ok=True)
     with FileLock(ledger / ".event-ledger.lock"):
-        recover_event_ledger(ledger)
-        current = validate_event_ledger(ledger, require_head=any(ledger.glob("*.json")))
-        if not current["valid"]:
-            raise ValueError(
-                "event ledger integrity failure: " + "; ".join(current["errors"])
-            )
-        sequence = int(current["event_count"]) + 1
-        record: dict[str, object] = {
-            "schema_version": "1.0",
-            "sequence": sequence,
-            "kind": kind,
-            "created_utc": datetime.now(timezone.utc).isoformat(),
-            "payload": dict(payload),
-            "payload_sha256": _sha(payload),
-            "previous_event_sha256": current["head_sha256"],
-        }
-        record["event_sha256"] = _event_hash(record)
-        name = f"{sequence:08d}-{kind}-{str(record['event_sha256'])[:12]}.json"
-        prepared = ledger / f".{name}.prepared"
-        target = ledger / name
-        with prepared.open("x", encoding="utf-8", newline="\n") as stream:
-            json.dump(record, stream, indent=2, default=str)
-            stream.write("\n")
-            stream.flush()
-            os.fsync(stream.fileno())
-        os.replace(prepared, target)
-        _publish_head(ledger, sequence, str(record["event_sha256"]))
-        return target
+        return _append_chained_event_locked(ledger, kind, payload)
+
+
+def _append_chained_event_locked(
+    ledger: Path, kind: str, payload: Mapping[str, object]
+) -> Path:
+    """Append while the caller holds the ledger's ``.event-ledger.lock``."""
+    ledger = ledger.resolve()
+    if not kind or not all(
+        character.isalnum() or character in "-_" for character in kind
+    ):
+        raise ValueError("event kind must be a bounded identifier")
+    ledger.mkdir(parents=True, exist_ok=True)
+    recover_event_ledger(ledger)
+    current = validate_event_ledger(ledger, require_head=any(ledger.glob("*.json")))
+    if not current["valid"]:
+        raise ValueError(
+            "event ledger integrity failure: " + "; ".join(current["errors"])
+        )
+    sequence = int(current["event_count"]) + 1
+    record: dict[str, object] = {
+        "schema_version": "1.0",
+        "sequence": sequence,
+        "kind": kind,
+        "created_utc": datetime.now(timezone.utc).isoformat(),
+        "payload": dict(payload),
+        "payload_sha256": _sha(payload),
+        "previous_event_sha256": current["head_sha256"],
+    }
+    record["event_sha256"] = _event_hash(record)
+    name = f"{sequence:08d}-{kind}-{str(record['event_sha256'])[:12]}.json"
+    prepared = ledger / f".{name}.prepared"
+    target = ledger / name
+    with prepared.open("x", encoding="utf-8", newline="\n") as stream:
+        json.dump(record, stream, indent=2, default=str)
+        stream.write("\n")
+        stream.flush()
+        os.fsync(stream.fileno())
+    os.replace(prepared, target)
+    _publish_head(ledger, sequence, str(record["event_sha256"]))
+    return target
 
 
 def recover_event_ledger(ledger: Path) -> dict[str, object]:

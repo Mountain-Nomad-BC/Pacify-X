@@ -2,6 +2,62 @@
   "policy": "Every count-bearing registry field is derived from its owned collection and validated before certification.",
   "records": [
     {
+      "builder": "runtime/plan_registry.py",
+      "collection_key": "archives",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "archive_count",
+      "path": "registry/plan_corpus.json",
+      "rule": "length",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "runtime/plan_registry.py",
+      "collection_key": "admitted_sources",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "unique_payload_count",
+      "path": "registry/plan_corpus.json",
+      "rule": "length",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "runtime/plan_registry.py",
+      "collection_key": "admitted_sources",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "duplicate_payload_count",
+      "nested": "duplicate_copies",
+      "path": "registry/plan_corpus.json",
+      "rule": "nested_nonempty",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "runtime/source_freeze.py",
+      "collection_key": "files",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "file_count",
+      "path": "registry/source_freeze.json",
+      "rule": "length",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "runtime/source_freeze.py",
+      "collection_key": "files",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "byte_count",
+      "field": "bytes",
+      "path": "registry/source_freeze.json",
+      "rule": "sum_bytes",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "runtime/plan_registry.py",
+      "collection_key": "cards",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "card_count",
+      "path": "registry/punch_card_ledger.json",
+      "rule": "length",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
       "builder": "scripts/build_admission_queue.py",
       "collection_key": "candidates",
       "consumer": "runtime/registry_envelope.py",
@@ -149,6 +205,15 @@
       "consumer": "runtime/registry_envelope.py",
       "count_key": "node_kind_count",
       "path": "registry/dependency_authority.json",
+      "rule": "length",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "scripts/build_mutating_producer_registry.py",
+      "collection_key": "producers",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "producer_count",
+      "path": "registry/mutating_producers.json",
       "rule": "length",
       "schema": "root schema_version plus shared registry-envelope invariant"
     },
@@ -784,6 +849,90 @@
       "consumer": "runtime/registry_envelope.py",
       "count_key": "count",
       "path": "registry/workflow_execution_bindings.json",
+      "rule": "length",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "runtime/source_freeze.py",
+      "collection_key": "files",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "file_count",
+      "path": "registry/source-freeze/current-campaign/ebe91b2f2902e232ad21218402d3bd2ae0aa6f2076ff26043901d175b896e9a4/receipt-12397ac95d793fd45c405629cf9f8ffd2c695b276502d18577067842c270139b.json",
+      "rule": "length",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "runtime/source_freeze.py",
+      "collection_key": "files",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "byte_count",
+      "field": "bytes",
+      "path": "registry/source-freeze/current-campaign/ebe91b2f2902e232ad21218402d3bd2ae0aa6f2076ff26043901d175b896e9a4/receipt-12397ac95d793fd45c405629cf9f8ffd2c695b276502d18577067842c270139b.json",
+      "rule": "sum_bytes",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "runtime/plan_registry.py",
+      "collection_key": "files",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "file_count",
+      "path": "registry/planning/rev1xx/corpus-33039d503edb7c393eb86e18dbcde46a866630dbc398f418d11d50852d106182.json",
+      "rule": "length",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "runtime/plan_registry.py",
+      "collection_key": "files",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "byte_count",
+      "field": "bytes",
+      "path": "registry/planning/rev1xx/corpus-33039d503edb7c393eb86e18dbcde46a866630dbc398f418d11d50852d106182.json",
+      "rule": "sum_bytes",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "runtime/plan_registry.py",
+      "collection_key": "content_sources",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "unique_content_count",
+      "path": "registry/planning/rev1xx/corpus-33039d503edb7c393eb86e18dbcde46a866630dbc398f418d11d50852d106182.json",
+      "rule": "length",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "runtime/plan_registry.py",
+      "collection_key": "files",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "file_count",
+      "path": "registry/planning/rev1xx/corpus-6956a1def872695232e616b7b0c4886031acfd80bbfca42123c9b17ab19fa49e.json",
+      "rule": "length",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "runtime/plan_registry.py",
+      "collection_key": "files",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "byte_count",
+      "field": "bytes",
+      "path": "registry/planning/rev1xx/corpus-6956a1def872695232e616b7b0c4886031acfd80bbfca42123c9b17ab19fa49e.json",
+      "rule": "sum_bytes",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "runtime/plan_registry.py",
+      "collection_key": "content_sources",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "unique_content_count",
+      "path": "registry/planning/rev1xx/corpus-6956a1def872695232e616b7b0c4886031acfd80bbfca42123c9b17ab19fa49e.json",
+      "rule": "length",
+      "schema": "root schema_version plus shared registry-envelope invariant"
+    },
+    {
+      "builder": "runtime/plan_registry.py",
+      "collection_key": "records",
+      "consumer": "runtime/registry_envelope.py",
+      "count_key": "record_count",
+      "path": "registry/planning/rev1xx/requirements-da7fbd846cf7d24dfa43d14503590297ab7ad90da67e5af0010e386604fdb8b8.json",
       "rule": "length",
       "schema": "root schema_version plus shared registry-envelope invariant"
     }

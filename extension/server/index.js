@@ -40,8 +40,13 @@ var require_activityManager = __commonJS({
     var fs2 = require("fs");
     var os = require("os");
     var path2 = require("path");
+    var { TextDecoder: TextDecoder2 } = require("util");
     var SCHEMA_VERSION = "px.activity/1.1";
     var EVENT_LIMIT = 2e4;
+    var MAX_ACTIVITY_LOG_BYTES = 32 * 1024 * 1024;
+    var MAX_ACTIVITY_STATE_BYTES = 32 * 1024 * 1024;
+    var MAX_ACTIVITY_LINE_BYTES = 1024 * 1024;
+    var MAX_ACTIVITY_LOG_LINES = 1e5;
     var activeWriters = /* @__PURE__ */ new Set();
     function now() {
       return (/* @__PURE__ */ new Date()).toISOString();
@@ -59,7 +64,7 @@ var require_activityManager = __commonJS({
     function activityPaths(workspaceRoot2) {
       const workspace = path2.resolve(workspaceRoot2 || "");
       if (!workspaceRoot2 || workspace === path2.parse(workspace).root) throw new Error("activity-workspace-must-be-bounded");
-      const coordination2 = path2.join(workspace, ".engineering-bootstrap", "coordination");
+      const coordination2 = path2.join(workspace, ".agentic_engineering_os_px", "coordination");
       const root = path2.join(coordination2, "activity");
       return { workspace, coordination: coordination2, root, state: path2.join(root, "current.json"), events: path2.join(root, "events.jsonl"), lock: path2.join(root, ".activity.lock"), quarantine: path2.join(root, "quarantine") };
     }
@@ -103,20 +108,21 @@ var require_activityManager = __commonJS({
         active_operations: {}
       };
     }
-    function readState(paths, policy = {}) {
-      if (!fs2.existsSync(paths.state)) return defaultState(paths, policy);
-      let raw;
-      try {
-        raw = fs2.readFileSync(paths.state, "utf8");
-      } catch (error51) {
-        throw new Error(`activity-authoritative-state-unreadable:${error51.code || error51.message}`);
+    function readState(paths, policy = {}, options = {}) {
+      const loaded = readBoundedActivityText(paths.state, MAX_ACTIVITY_STATE_BYTES, "oversized-state");
+      if (loaded.health?.status === "missing") {
+        const state2 = defaultState(paths, policy);
+        return options.returnRaw === true ? { state: state2, raw: null } : state2;
       }
+      if (loaded.health) throw new Error(`activity-authoritative-state-unreadable:${loaded.health.reason}`);
+      const raw = loaded.raw;
       let state;
       try {
         state = JSON.parse(raw);
       } catch (error51) {
-        fs2.mkdirSync(paths.quarantine, { recursive: true });
         const digest = sha(raw);
+        if (options.persistCorruptionEvidence === false) throw new Error(`activity-authoritative-state-corrupt:${digest}:evidence-not-written-read-only`);
+        fs2.mkdirSync(paths.quarantine, { recursive: true });
         const base = `current.${Date.now()}.${crypto2.randomUUID()}.${digest.slice(0, 12)}`;
         const evidence = path2.join(paths.quarantine, `${base}.corrupt`);
         const receipt = path2.join(paths.quarantine, `${base}.receipt.json`);
@@ -125,7 +131,7 @@ var require_activityManager = __commonJS({
         throw new Error(`activity-authoritative-state-corrupt:${digest}:${receipt}`);
       }
       if (!state || typeof state !== "object" || Array.isArray(state) || typeof state.active_operations !== "object" || typeof state.agents !== "object") throw new Error("activity-authoritative-state-invalid");
-      return state;
+      return options.returnRaw === true ? { state, raw } : state;
     }
     function atomicWrite(file2, value) {
       const temporary = `${file2}.${process.pid}.${crypto2.randomUUID()}.tmp`;
@@ -219,7 +225,7 @@ var require_activityManager = __commonJS({
       if (!["started", "running"].includes(status) || operation === "terminal.session") return false;
       return /process|write|destructive|network/.test(String(effectName || ""));
     }
-    function recordActivity2(workspaceRoot2, actorInput, input = {}, policyInput = {}) {
+    function recordActivity2(workspaceRoot2, actorInput, input = {}, policyInput = {}, options = {}) {
       const paths = activityPaths(workspaceRoot2);
       const policy = normalizePolicy(policyInput);
       const operation = text(input.operation, 200) || "activity.unknown";
@@ -229,7 +235,7 @@ var require_activityManager = __commonJS({
       let release = null;
       try {
         release = acquireLock(paths);
-        const state = readState(paths, policy);
+        const state = readState(paths, policy, { persistCorruptionEvidence: options.persistCorruptionEvidence !== false });
         state.policy = policy;
         const priorTail = tailEventsDetailed(paths.events, EVENT_LIMIT);
         if (priorTail.health.status === "degraded") throw new Error(`activity-event-log-degraded:line-${priorTail.health.failed_line}`);
@@ -285,24 +291,72 @@ var require_activityManager = __commonJS({
         }
       }
     }
-    function tailEventsDetailed(file2, limit) {
-      let raw;
+    function readBoundedActivityText(file2, maxBytes, oversizedReason) {
+      let descriptor;
       try {
-        raw = fs2.readFileSync(file2, "utf8");
+        if (fs2.lstatSync(file2).isSymbolicLink()) throw Object.assign(new Error("symbolic-link"), { code: "symbolic-link" });
+        descriptor = fs2.openSync(file2, fs2.constants.O_RDONLY);
+        const before = fs2.fstatSync(descriptor);
+        if (!before.isFile()) throw Object.assign(new Error("not-regular-file"), { code: "not-regular-file" });
+        const size = before.size;
+        if (size > maxBytes) return { raw: null, health: { status: "degraded", valid_events: 0, failed_line: 0, reason: oversizedReason } };
+        const bytes = Buffer.alloc(size);
+        let offset = 0;
+        while (offset < size) {
+          const count = fs2.readSync(descriptor, bytes, offset, size - offset, offset);
+          if (!count) break;
+          offset += count;
+        }
+        const after = fs2.fstatSync(descriptor);
+        if (offset !== size || after.size !== size || after.mtimeMs !== before.mtimeMs || after.ino !== before.ino)
+          throw Object.assign(new Error("changed-during-read"), { code: "changed-during-read" });
+        let raw;
+        try {
+          raw = new TextDecoder2("utf-8", { fatal: true, ignoreBOM: true }).decode(bytes);
+        } catch {
+          throw Object.assign(new Error("invalid-utf8"), { code: "invalid-utf8" });
+        }
+        if (!Buffer.from(raw, "utf8").equals(bytes)) throw Object.assign(new Error("non-roundtripping-utf8"), { code: "non-roundtripping-utf8" });
+        return { raw, health: null };
       } catch (error51) {
-        return { events: [], health: error51.code === "ENOENT" ? { status: "missing", valid_events: 0 } : { status: "degraded", valid_events: 0, failed_line: 0, reason: `unreadable:${error51.code || error51.message}` } };
+        return { raw: null, health: error51.code === "ENOENT" ? { status: "missing", valid_events: 0 } : { status: "degraded", valid_events: 0, failed_line: 0, reason: `unreadable:${error51.code || error51.message}` } };
+      } finally {
+        if (descriptor !== void 0) fs2.closeSync(descriptor);
       }
-      const lines = raw.split(/\r?\n/);
+    }
+    function readBoundedActivityLog(file2) {
+      return readBoundedActivityText(file2, MAX_ACTIVITY_LOG_BYTES, "oversized-log");
+    }
+    function tailEventsDetailed(file2, limit, loaded = readBoundedActivityLog(file2)) {
+      if (loaded.health) return { events: [], health: loaded.health };
+      const raw = loaded.raw;
       const events = [];
       let failure = null;
-      for (let index = 0; index < lines.length; index += 1) {
-        if (!lines[index].trim()) continue;
-        try {
-          events.push(JSON.parse(lines[index]));
-        } catch (error51) {
-          failure = { failed_line: index + 1, reason: index === lines.length - 1 && !/\r?\n$/.test(raw) ? "truncated-final-line" : "malformed-line", detail: text(error51.message, 500) };
+      let cursor = 0;
+      let lineNumber = 0;
+      while (cursor < raw.length) {
+        const end = raw.indexOf("\n", cursor);
+        const final = end === -1;
+        const line = raw.slice(cursor, final ? raw.length : end).replace(/\r$/, "");
+        lineNumber += 1;
+        if (lineNumber > MAX_ACTIVITY_LOG_LINES) {
+          failure = { failed_line: lineNumber, reason: "too-many-lines" };
           break;
         }
+        if (Buffer.byteLength(line, "utf8") > MAX_ACTIVITY_LINE_BYTES) {
+          failure = { failed_line: lineNumber, reason: "oversized-line" };
+          break;
+        }
+        if (line.trim()) {
+          try {
+            events.push(JSON.parse(line));
+          } catch (error51) {
+            failure = { failed_line: lineNumber, reason: final ? "truncated-final-line" : "malformed-line", detail: text(error51.message, 500) };
+            break;
+          }
+        }
+        if (final) break;
+        cursor = end + 1;
       }
       const bounded = Math.min(EVENT_LIMIT, Math.max(Number(limit) * 4 || 0, Number(limit) || 0));
       return { events: bounded ? events.slice(-bounded) : [], health: failure ? { status: "degraded", valid_events: events.length, ...failure } : { status: "healthy", valid_events: events.length } };
@@ -321,7 +375,7 @@ var require_activityManager = __commonJS({
     function readActivity2(workspaceRoot2, options = {}) {
       const paths = activityPaths(workspaceRoot2);
       const exists = fs2.existsSync(paths.state);
-      const state = readState(paths, options.policy);
+      const state = readState(paths, options.policy, { persistCorruptionEvidence: false });
       const limit = Math.min(500, Math.max(1, Number(options.limit || 100)));
       const query = text(options.query, 300).toLowerCase();
       const tail = tailEventsDetailed(paths.events, EVENT_LIMIT);
@@ -419,20 +473,24 @@ var require_activityManager = __commonJS({
       let release;
       try {
         release = acquireLock(paths, options.timeoutMs || 4e3);
-        const state = readState(paths, options.policy);
-        const rawEvents = fs2.existsSync(paths.events) ? fs2.readFileSync(paths.events, "utf8") : "";
-        const tail = tailEventsDetailed(paths.events, EVENT_LIMIT);
+        const { state, raw: stateRaw } = readState(paths, options.policy, { returnRaw: true });
+        const loaded = readBoundedActivityLog(paths.events);
+        if (loaded.health?.status === "degraded") throw new Error(`activity-integrity-repair-refuses-unreadable-jsonl:${loaded.health.reason}`);
+        if (loaded.health?.status === "missing" && Number(state.event_count || 0) > 0) throw new Error("activity-integrity-repair-requires-complete-ledger");
+        const rawEvents = loaded.raw || "";
+        const tail = tailEventsDetailed(paths.events, EVENT_LIMIT, loaded);
         if (tail.health.status === "degraded") throw new Error(`activity-integrity-repair-refuses-malformed-jsonl:line-${tail.health.failed_line}`);
+        if (tail.health.valid_events !== tail.events.length) throw new Error("activity-integrity-repair-requires-complete-ledger");
         const before = eventIntegrity(tail.events, state);
         if (before.valid) return { schema_version: "px.activity-integrity-repair/1.0", disposition: "already-valid", repaired: false, before, after: before };
         if (tail.events.length >= EVENT_LIMIT && Number(state.event_count || 0) > tail.events.length) throw new Error("activity-integrity-repair-requires-complete-ledger");
         fs2.mkdirSync(paths.quarantine, { recursive: true });
         const stamp = `${Date.now()}.${crypto2.randomUUID()}`;
         const eventsBackup = path2.join(paths.quarantine, `events.${stamp}.${sha(rawEvents).slice(0, 12)}.pre-repair.jsonl`);
-        const stateRaw = fs2.readFileSync(paths.state, "utf8");
+        if (stateRaw === null) throw new Error("activity-integrity-repair-requires-authoritative-state");
         const stateBackup = path2.join(paths.quarantine, `current.${stamp}.${sha(stateRaw).slice(0, 12)}.pre-repair.json`);
-        fs2.copyFileSync(paths.events, eventsBackup, fs2.constants.COPYFILE_EXCL);
-        fs2.copyFileSync(paths.state, stateBackup, fs2.constants.COPYFILE_EXCL);
+        fs2.writeFileSync(eventsBackup, rawEvents, { encoding: "utf8", flag: "wx" });
+        fs2.writeFileSync(stateBackup, stateRaw, { encoding: "utf8", flag: "wx" });
         let previous = null;
         const repairedEvents = tail.events.map((original) => {
           const event = structuredClone(original);
@@ -481,6 +539,10 @@ var require_activityManager = __commonJS({
           totals.by_status[event.status] = Number(totals.by_status[event.status] || 0) + 1;
         }
         const repairedState = { ...state, revision: repairedEvents.length, event_count: repairedEvents.length, updated_utc: timestamp, last_event_sha256: recovery.event_sha256, totals };
+        const currentEvents = readBoundedActivityLog(paths.events);
+        const currentState = readBoundedActivityText(paths.state, MAX_ACTIVITY_STATE_BYTES, "oversized-state");
+        if (currentEvents.health || currentState.health || currentEvents.raw !== rawEvents || currentState.raw !== stateRaw)
+          throw new Error("activity-integrity-repair-source-changed-before-write");
         atomicWriteText(paths.events, finalText);
         atomicWrite(paths.state, repairedState);
         const after = eventIntegrity(repairedEvents, repairedState);
@@ -605,6 +667,7 @@ var require_mcpActivityIntegration = __commonJS({
         registered_tools: [],
         calls: 0,
         emitted_events: 0,
+        observed_read_events: 0,
         dropped_events: 0,
         last_drop_type: null,
         identity: { authenticated_host_capability_calls: 0, self_asserted_calls: 0, unattested_calls: 0 }
@@ -619,7 +682,7 @@ var require_mcpActivityIntegration = __commonJS({
           authority_granted: false,
           canonical_bus_connected: false,
           coverage_tier: "C",
-          limitations: ["Events are canonical-contract attestations retained in the project activity ledger; direct canonical-bus publication remains an O11 reconciliation dependency."]
+          limitations: ["Write-tool events are retained in the project activity ledger; read-only tool events are counted in process memory only and are not durable.", "Direct canonical-bus publication remains an O11 reconciliation dependency."]
         };
       }
       function canonicalEvent(name, definition, input, lifecycle, result, correlationId, attestation, startedAt, durationMs) {
@@ -659,6 +722,10 @@ var require_mcpActivityIntegration = __commonJS({
       function emit(name, definition, input, lifecycle, result, correlationId, attestation, startedAt, durationMs) {
         if (options.policy().captureMcpCalls === false) return { recorded: false, reason: "mcp-capture-disabled" };
         const event = canonicalEvent(name, definition, input, lifecycle, result, correlationId, attestation, startedAt, durationMs);
+        if (definition.annotations?.readOnlyHint) {
+          state.observed_read_events += 1;
+          return { recorded: true, persisted: false, canonical_event_sha256: sha(event) };
+        }
         const legacyStatus = { started: "started", completed: "succeeded", failed: "failed" }[lifecycle] || "observed";
         try {
           const recorded = options.recordActivity(
@@ -760,6 +827,9 @@ var require_stateInvariants = __commonJS({
     var CLAIM_MODES = /* @__PURE__ */ new Set(["exclusive", "shared", "informational"]);
     var CLAIM_AUTHORITIES = /* @__PURE__ */ new Set(["local", "speculative", "team_authoritative", "stale"]);
     var MEMORY_COUNTERS = ["session_records", "project_records", "state_records", "system_candidates"];
+    var WAIT_STATUSES = /* @__PURE__ */ new Set(["waiting", "satisfied", "expired", "cancelled"]);
+    var WAKE_STATUSES = /* @__PURE__ */ new Set(["resume_pending", "acknowledged"]);
+    var WAIT_CONDITIONS = /* @__PURE__ */ new Set(["task", "message", "resource", "approval", "timer", "model_result"]);
     function sha(value) {
       return crypto2.createHash("sha256").update(typeof value === "string" ? value : JSON.stringify(value)).digest("hex");
     }
@@ -996,6 +1066,46 @@ var require_stateInvariants = __commonJS({
       }
       const memory = requireRecord(state.memory, "memory-counters-shape");
       for (const counter of MEMORY_COUNTERS) requireNonNegativeFinite(memory[counter], `memory-counter:${counter}`, true);
+      const waits = requireArray(state.waits, "waits-shape");
+      const wakes = requireArray(state.wakes, "wakes-shape");
+      const mailboxes = requireRecord(state.mailboxes, "mailboxes-shape");
+      requireUnique(waits, (wait) => requireText(wait?.wait_id, "wait-id"), "wait-id-duplicate");
+      requireUnique(wakes, (wake) => requireText(wake?.wake_id, "wake-id"), "wake-id-duplicate");
+      for (const wait of waits) {
+        if (!taskIds.has(requireText(wait.task_id, `wait-task:${wait.wait_id}`))) fail("wait-task-missing", wait.wait_id);
+        assertActor(wait.actor, `wait-actor:${wait.wait_id}`);
+        requireEnum(wait.status, WAIT_STATUSES, `wait-status:${wait.wait_id}`);
+        requireEnum(wait.condition_type, WAIT_CONDITIONS, `wait-condition:${wait.wait_id}`);
+        requireText(wait.checkpoint_id, `wait-checkpoint:${wait.wait_id}`);
+        const dependencies = requireArray(wait.dependency_ids, `wait-dependencies:${wait.wait_id}`);
+        if (!dependencies.length) fail("wait-dependencies-empty", wait.wait_id);
+        requireUnique(dependencies, (value) => requireText(value, `wait-dependency:${wait.wait_id}`), `wait-dependency-duplicate:${wait.wait_id}`);
+        requireArray(wait.satisfied_ids, `wait-satisfied:${wait.wait_id}`);
+        if (!Number.isFinite(Date.parse(wait.created_utc)) || !Number.isFinite(Date.parse(wait.expires_utc))) fail("wait-time", wait.wait_id);
+      }
+      for (const wake of wakes) {
+        requireEnum(wake.status, WAKE_STATUSES, `wake-status:${wake.wake_id}`);
+        if (!waits.some((wait) => wait.wait_id === wake.wait_id)) fail("wake-wait-missing", wake.wake_id);
+        if (!taskIds.has(requireText(wake.task_id, `wake-task:${wake.wake_id}`))) fail("wake-task-missing", wake.wake_id);
+        requireText(wake.checkpoint_id, `wake-checkpoint:${wake.wake_id}`);
+        if (!Number.isFinite(Date.parse(wake.created_utc))) fail("wake-time", wake.wake_id);
+      }
+      const messageIds = /* @__PURE__ */ new Set();
+      let messageCount = 0;
+      for (const [recipient, messages] of Object.entries(mailboxes)) {
+        requireText(recipient, "mailbox-recipient");
+        for (const message of requireArray(messages, `mailbox-shape:${recipient}`)) {
+          const messageId = requireText(message?.message_id, `message-id:${recipient}`);
+          if (messageIds.has(messageId)) fail("message-id-duplicate", messageId);
+          messageIds.add(messageId);
+          messageCount += 1;
+          if (!["unread", "consumed"].includes(message.status)) fail("message-status", messageId);
+          requireText(message.payload_sha256, `message-payload-sha:${messageId}`);
+          if (!/^[a-f0-9]{64}$/.test(message.payload_sha256)) fail("message-payload-sha", messageId);
+          if (!["public", "project", "private"].includes(message.privacy_class)) fail("message-privacy", messageId);
+        }
+      }
+      if (messageCount > 2e3) fail("message-capacity", messageCount);
       if (options.requireSeal !== false) {
         if (!/^[a-f0-9]{64}$/.test(String(state.state_hash || ""))) fail("state-seal-format");
         if (state.state_hash !== sealedHash(state, "state_hash")) fail("state-seal-mismatch");
@@ -1091,6 +1201,10 @@ var require_coordinationManager = __commonJS({
     var MAX_MEMORY_FILE_BYTES = 16 * 1024 * 1024;
     var MAX_MEMORY_TOTAL_BYTES = 64 * 1024 * 1024;
     var CLAIM_TTL_MINUTES = 120;
+    var MAX_WAITS = 1e3;
+    var MAX_WAKES = 2e3;
+    var MAX_MAILBOX_MESSAGES = 2e3;
+    var MAX_MESSAGE_BYTES = 8 * 1024;
     function now() {
       return (/* @__PURE__ */ new Date()).toISOString();
     }
@@ -1110,7 +1224,7 @@ var require_coordinationManager = __commonJS({
     function coordinationPaths(workspaceRoot2) {
       const workspace = path2.resolve(workspaceRoot2 || "");
       if (!workspaceRoot2 || workspace === path2.parse(workspace).root) throw new Error("coordination-workspace-must-be-bounded");
-      const root = path2.join(workspace, ".engineering-bootstrap", "coordination");
+      const root = path2.join(workspace, ".agentic_engineering_os_px", "coordination");
       return {
         workspace,
         root,
@@ -1133,7 +1247,13 @@ var require_coordinationManager = __commonJS({
     }
     function workspacePathIdentity(value) {
       const resolved = path2.resolve(value || "");
-      return process.platform === "win32" ? resolved.toLowerCase() : resolved;
+      let canonical = resolved;
+      try {
+        canonical = fs2.realpathSync.native(resolved);
+      } catch (error51) {
+        if (error51.code !== "ENOENT") throw error51;
+      }
+      return process.platform === "win32" ? canonical.toLowerCase() : canonical;
     }
     function defaultState(workspaceRoot2) {
       return {
@@ -1147,6 +1267,9 @@ var require_coordinationManager = __commonJS({
         tasks: [],
         claims: [],
         sessions: [],
+        waits: [],
+        wakes: [],
+        mailboxes: {},
         memory: { session_records: 0, project_records: 0, state_records: 0, system_candidates: 0 },
         team_fabric: {
           enabled: true,
@@ -1167,6 +1290,9 @@ var require_coordinationManager = __commonJS({
       state.tasks ||= [];
       state.claims ||= [];
       state.sessions ||= [];
+      state.waits ||= [];
+      state.wakes ||= [];
+      state.mailboxes ||= {};
       state.memory ||= { session_records: 0, project_records: 0, state_records: 0, system_candidates: 0 };
       state.team_fabric ||= {};
       state.team_fabric.enabled = true;
@@ -1202,7 +1328,13 @@ var require_coordinationManager = __commonJS({
       });
       return { evidence, receipt, fingerprint };
     }
-    function readAuthoritativeState(paths) {
+    function readAuthoritativeState(paths, options = {}) {
+      const corruption = (reason, raw2, error51) => {
+        const fingerprint = hash2(raw2);
+        if (options.persistCorruptionEvidence === false) throw new Error(`${reason}:${fingerprint}:evidence-not-written-read-only`);
+        const evidence = quarantineCorruptAuthoritativeJson(paths, paths.state, raw2, error51);
+        throw new Error(`${reason}:${evidence.fingerprint}:${evidence.receipt}`);
+      };
       let raw;
       try {
         raw = fs2.readFileSync(paths.state, "utf8");
@@ -1214,21 +1346,17 @@ var require_coordinationManager = __commonJS({
       try {
         state = JSON.parse(raw);
       } catch (error51) {
-        const evidence = quarantineCorruptAuthoritativeJson(paths, paths.state, raw, error51);
-        throw new Error(`coordination-authoritative-state-corrupt:${evidence.fingerprint}:${evidence.receipt}`);
+        corruption("coordination-authoritative-state-corrupt", raw, error51);
       }
       const structurallyValid = state && typeof state === "object" && !Array.isArray(state) && state.project && typeof state.project === "object" && Array.isArray(state.plans) && Array.isArray(state.tasks) && Array.isArray(state.claims) && Array.isArray(state.sessions);
       if (!structurallyValid) {
-        const evidence = quarantineCorruptAuthoritativeJson(paths, paths.state, raw, new Error("invalid-coordination-state-shape"));
-        throw new Error(`coordination-authoritative-state-invalid:${evidence.fingerprint}:${evidence.receipt}`);
+        corruption("coordination-authoritative-state-invalid", raw, new Error("invalid-coordination-state-shape"));
       }
       if (workspacePathIdentity(state.project.root) !== workspacePathIdentity(paths.workspace)) {
-        const evidence = quarantineCorruptAuthoritativeJson(paths, paths.state, raw, new Error("coordination-state-workspace-mismatch"));
-        throw new Error(`coordination-authoritative-state-workspace-mismatch:${evidence.fingerprint}:${evidence.receipt}`);
+        corruption("coordination-authoritative-state-workspace-mismatch", raw, new Error("coordination-state-workspace-mismatch"));
       }
       if (state.state_hash && state.state_hash !== stateHash(state)) {
-        const evidence = quarantineCorruptAuthoritativeJson(paths, paths.state, raw, new Error("coordination-state-hash-mismatch"));
-        throw new Error(`coordination-authoritative-state-hash-mismatch:${evidence.fingerprint}:${evidence.receipt}`);
+        corruption("coordination-authoritative-state-hash-mismatch", raw, new Error("coordination-state-hash-mismatch"));
       }
       return migrateState(state);
     }
@@ -1439,6 +1567,7 @@ var require_coordinationManager = __commonJS({
         assertCoordinationState(previous, { requireSeal: false, nowUtc: previous.updated_utc });
         expireClaims(state);
         expireSessions(state);
+        expireWaits(state);
         const beforeHash = previous.state_hash || stateHash(previous);
         const priorEvents = tailJsonlDetailed(paths.events, MAX_EVENTS);
         if (priorEvents.health.status === "degraded") throw new Error(`coordination-event-log-degraded:line-${priorEvents.health.failed_line}`);
@@ -1617,6 +1746,260 @@ var require_coordinationManager = __commonJS({
         if (session.status === "active" && Date.parse(session.heartbeat_utc || session.started_utc) < cutoff) session.status = "stale";
       }
     }
+    function expireWaits(state) {
+      const stamp = Date.now();
+      state.waits ||= [];
+      state.wakes ||= [];
+      for (const wait of state.waits) {
+        if (wait.status !== "waiting") continue;
+        if (!Number.isFinite(Date.parse(wait.expires_utc)) || Date.parse(wait.expires_utc) <= stamp) wait.status = "expired";
+        const task = state.tasks.find((item) => item.id === wait.task_id);
+        if (!task || ["completed", "reconciled", "released"].includes(task.status)) wait.status = "cancelled";
+      }
+    }
+    function waitById(state, waitId) {
+      const value = cleanText(waitId, 200);
+      const wait = state.waits.find((item) => item.wait_id === value);
+      if (!wait) throw new Error("coordination-wait-not-found");
+      return wait;
+    }
+    function dependencyGraph(state) {
+      return Object.fromEntries(state.tasks.map((task) => [task.id, [...task.depends_on]]));
+    }
+    function wouldWaitCreateCycle(state, taskId, dependencies) {
+      const graph = dependencyGraph(state);
+      graph[taskId] = [.../* @__PURE__ */ new Set([...graph[taskId] || [], ...dependencies])];
+      const visiting = /* @__PURE__ */ new Set();
+      const visited = /* @__PURE__ */ new Set();
+      const visit = (node) => {
+        if (visiting.has(node)) return true;
+        if (visited.has(node)) return false;
+        visiting.add(node);
+        for (const child of graph[node] || []) if (visit(child)) return true;
+        visiting.delete(node);
+        visited.add(node);
+        return false;
+      };
+      return visit(taskId);
+    }
+    function activeClaimForTask(state, task, principal) {
+      const claim = state.claims.find((item) => item.task_id === task.id && item.status === "active");
+      if (!claim) throw new Error("coordination-wait-requires-active-claim");
+      if (claim.actor.actor_id !== principal.actor_id || claim.actor.session_id !== principal.session_id) throw new Error("coordination-wait-claim-owner-mismatch");
+      return claim;
+    }
+    function wakeIdentity(wait) {
+      return `wake-${hash2({ wait_id: wait.wait_id, satisfied_ids: [...wait.satisfied_ids].sort(), checkpoint_id: wait.checkpoint_id }).slice(0, 32)}`;
+    }
+    function satisfyWaits(state, triggerType, triggerId, triggerEvidence = []) {
+      const produced = [];
+      expireWaits(state);
+      for (const wait of state.waits) {
+        if (wait.status !== "waiting" || wait.condition_type !== triggerType || !wait.dependency_ids.includes(triggerId)) continue;
+        const task = state.tasks.find((item) => item.id === wait.task_id);
+        if (!task || ["completed", "reconciled", "released"].includes(task.status)) {
+          wait.status = "cancelled";
+          continue;
+        }
+        if (!wait.satisfied_ids.includes(triggerId)) wait.satisfied_ids.push(triggerId);
+        const complete = wait.mode === "any" ? wait.satisfied_ids.length > 0 : wait.dependency_ids.every((item) => wait.satisfied_ids.includes(item));
+        if (!complete) continue;
+        wait.status = "satisfied";
+        wait.satisfied_utc = now();
+        const wakeId = wakeIdentity(wait);
+        let wake = state.wakes.find((item) => item.wake_id === wakeId);
+        if (!wake) {
+          if (state.wakes.length >= MAX_WAKES) throw new Error("coordination-wake-capacity-exceeded");
+          wake = {
+            wake_id: wakeId,
+            wait_id: wait.wait_id,
+            task_id: wait.task_id,
+            checkpoint_id: wait.checkpoint_id,
+            trigger_type: triggerType,
+            trigger_ids: [...wait.satisfied_ids],
+            trigger_evidence: triggerEvidence.map((value) => cleanText(value, 1e3)).filter(Boolean).slice(0, 32),
+            created_utc: now(),
+            status: "resume_pending",
+            required_actor: wait.actor,
+            exact_next_action: wait.exact_next_action || null,
+            cognitive_generation_id: wait.cognitive_generation_id || null,
+            fresh_claim_required: !state.claims.some((item) => item.task_id === wait.task_id && item.status === "active")
+          };
+          state.wakes.push(wake);
+        }
+        produced.push(wake);
+      }
+      return produced;
+    }
+    function registerWait2(workspaceRoot2, actor2, input) {
+      return withState(workspaceRoot2, actor2, "wait-registered", (state) => {
+        expireWaits(state);
+        const principal = normalizeActor(actor2);
+        const task = taskById(state, input.taskId || input.task_id);
+        if (!ownedBy(task, principal)) throw new Error("coordination-wait-requires-owning-actor-or-session");
+        if (["completed", "reconciled", "released"].includes(task.status)) throw new Error("coordination-wait-task-terminal");
+        const claim = activeClaimForTask(state, task, principal);
+        exactClaimProof(state, claim, input);
+        const checkpointId = cleanText(input.checkpointId || input.checkpoint_id, 240);
+        if (!checkpointId) throw new Error("coordination-wait-checkpoint-required");
+        const conditionType = cleanText(input.conditionType || input.condition_type, 40);
+        if (!["task", "message", "resource", "approval", "timer", "model_result"].includes(conditionType)) throw new Error("coordination-wait-condition-unsupported");
+        const dependencies = [...new Set((input.dependencyIds || input.dependency_ids || []).map((value) => cleanText(value, 240)).filter(Boolean))];
+        if (!dependencies.length || dependencies.length > 64) throw new Error("coordination-wait-dependencies-required");
+        if (conditionType === "task") {
+          for (const dependency of dependencies) taskById(state, dependency);
+          if (wouldWaitCreateCycle(state, task.id, dependencies)) throw new Error("coordination-wait-cycle");
+        }
+        const mode = cleanText(input.mode || "all", 20);
+        if (!["all", "any"].includes(mode)) throw new Error("coordination-wait-mode-unsupported");
+        const ttl = Math.min(1440, Math.max(1, Number(input.ttlMinutes || input.ttl_minutes || 60)));
+        const duplicate = state.waits.find((item) => item.status === "waiting" && item.task_id === task.id && item.condition_type === conditionType && item.checkpoint_id === checkpointId && JSON.stringify([...item.dependency_ids].sort()) === JSON.stringify([...dependencies].sort()));
+        if (duplicate) return { receipt: { ...duplicate, idempotent: true } };
+        if (state.waits.length >= MAX_WAITS) throw new Error("coordination-wait-capacity-exceeded");
+        const wait = {
+          wait_id: id("wait"),
+          task_id: task.id,
+          actor: principal,
+          claim_id: claim.id,
+          fencing_tokens: { ...claim.fencing_tokens },
+          condition_type: conditionType,
+          dependency_ids: dependencies,
+          satisfied_ids: [],
+          mode,
+          checkpoint_id: checkpointId,
+          exact_next_action: cleanText(input.exactNextAction || input.exact_next_action, 2e3) || null,
+          cognitive_generation_id: cleanText(input.cognitiveGenerationId || input.cognitive_generation_id, 256) || null,
+          created_utc: now(),
+          expires_utc: new Date(Date.now() + ttl * 6e4).toISOString(),
+          status: "waiting"
+        };
+        state.waits.push(wait);
+        task.status = "waiting";
+        task.updated_utc = now();
+        return { authority: claim.authority, receipt: wait };
+      });
+    }
+    function waitStatus2(workspaceRoot2, waitId) {
+      const snapshot = readCoordination2(workspaceRoot2, { eventLimit: 20 });
+      const wait = waitById(snapshot.state, waitId);
+      const wakes = (snapshot.state.wakes || []).filter((item) => item.wait_id === wait.wait_id);
+      const activeClaim = snapshot.state.claims.find((item) => item.task_id === wait.task_id && item.status === "active") || null;
+      return {
+        schema_version: SCHEMA_VERSION,
+        wait,
+        wakes,
+        resume_packet: wakes.at(-1) ? {
+          wait_id: wait.wait_id,
+          wake_id: wakes.at(-1).wake_id,
+          task_id: wait.task_id,
+          checkpoint_id: wait.checkpoint_id,
+          trigger_result_ids: wakes.at(-1).trigger_ids,
+          trigger_evidence_ids: wakes.at(-1).trigger_evidence,
+          exact_next_action: wakes.at(-1).exact_next_action,
+          fresh_claim_required: !activeClaim,
+          active_claim_id: activeClaim?.id || null,
+          cognitive_generation_id: wakes.at(-1).cognitive_generation_id || wait.cognitive_generation_id || null
+        } : null,
+        authority_granted: false
+      };
+    }
+    function acknowledgeWake2(workspaceRoot2, actor2, input) {
+      return withState(workspaceRoot2, actor2, "wake-acknowledged", (state) => {
+        expireWaits(state);
+        const principal = normalizeActor(actor2);
+        const wake = state.wakes.find((item) => item.wake_id === cleanText(input.wakeId || input.wake_id, 200));
+        if (!wake) throw new Error("coordination-wake-not-found");
+        if (wake.status === "acknowledged") return { receipt: { wake_id: wake.wake_id, wait_id: wake.wait_id, task_id: wake.task_id, idempotent: true } };
+        const wait = waitById(state, wake.wait_id);
+        if (wait.actor.actor_id !== principal.actor_id || wait.actor.session_id !== principal.session_id) throw new Error("coordination-wake-ack-actor-mismatch");
+        const task = taskById(state, wake.task_id);
+        if (["completed", "reconciled", "released"].includes(task.status)) throw new Error("coordination-wake-task-terminal");
+        wake.status = "acknowledged";
+        wake.acknowledged_utc = now();
+        wake.acknowledged_by = principal;
+        return { receipt: { wake_id: wake.wake_id, wait_id: wake.wait_id, task_id: wake.task_id, checkpoint_id: wake.checkpoint_id, fresh_claim_required: !state.claims.some((item) => item.task_id === task.id && item.status === "active") } };
+      });
+    }
+    function sendMessage2(workspaceRoot2, actor2, input) {
+      let privateDeliveryToken = null;
+      const outcome = withState(workspaceRoot2, actor2, "message-sent", (state) => {
+        const principal = normalizeActor(actor2);
+        const recipient = safeId(input.recipientId || input.recipient_id, "recipient");
+        const payload = cleanText(input.payload, MAX_MESSAGE_BYTES);
+        if (!payload) throw new Error("coordination-message-payload-required");
+        const privacy = cleanText(input.privacyClass || input.privacy_class || "project", 40);
+        if (!["public", "project", "private"].includes(privacy)) throw new Error("coordination-message-privacy-unsupported");
+        const transport = cleanText(input.recipientTransport || input.recipient_transport || "local", 40);
+        if (!["local", "remote", "browser"].includes(transport)) throw new Error("coordination-message-transport-unsupported");
+        if (privacy === "private" && transport !== "local" && input.egressApproved !== true && input.egress_approved !== true) throw new Error("coordination-private-message-egress-denied");
+        const total = Object.values(state.mailboxes).reduce((sum, rows) => sum + (Array.isArray(rows) ? rows.length : 0), 0);
+        if (total >= MAX_MAILBOX_MESSAGES) throw new Error("coordination-mailbox-capacity-exceeded");
+        state.mailboxes[recipient] ||= [];
+        const suppliedId = cleanText(input.messageId || input.message_id, 200);
+        if (suppliedId) {
+          const existing = state.mailboxes[recipient].find((item) => item.message_id === suppliedId);
+          if (existing) {
+            if (existing.payload_sha256 !== hash2(payload) || existing.privacy_class !== privacy || existing.recipient_transport !== transport)
+              throw new Error("coordination-message-idempotency-conflict");
+            return { receipt: { message_id: existing.message_id, recipient_id: recipient, privacy_class: privacy, payload_sha256: existing.payload_sha256, idempotent: true } };
+          }
+        }
+        const message = {
+          message_id: suppliedId || id("msg"),
+          sender: principal,
+          recipient_id: recipient,
+          recipient_transport: transport,
+          privacy_class: privacy,
+          payload,
+          payload_sha256: hash2(payload),
+          created_utc: now(),
+          status: "unread",
+          evidence_refs: (input.evidence || input.evidence_refs || []).map((value) => cleanText(value, 1e3)).filter(Boolean).slice(0, 32)
+        };
+        if (privacy === "private") {
+          privateDeliveryToken = crypto2.randomBytes(32).toString("base64url");
+          message.private_delivery_token_sha256 = hash2(privateDeliveryToken);
+        }
+        state.mailboxes[recipient].push(message);
+        const wakes = satisfyWaits(state, "message", message.message_id, privacy === "private" ? [] : message.evidence_refs);
+        return { receipt: { message_id: message.message_id, recipient_id: recipient, privacy_class: privacy, payload_sha256: message.payload_sha256, wake_ids: wakes.map((item) => item.wake_id) } };
+      });
+      return privateDeliveryToken ? { ...outcome, private_delivery_token: privateDeliveryToken } : outcome;
+    }
+    function readMessages2(workspaceRoot2, actor2, input = {}, options = {}) {
+      const paths = coordinationPaths(workspaceRoot2);
+      const state = fs2.existsSync(paths.state) ? readAuthoritativeState(paths, { persistCorruptionEvidence: false }) : defaultState(paths.workspace);
+      const principal = normalizeActor(actor2);
+      const recipient = safeId(input.recipientId || input.recipient_id || principal.actor_id, "recipient");
+      const rows = Array.isArray(state.mailboxes?.[recipient]) ? state.mailboxes[recipient] : [];
+      const limit = Math.max(1, Math.min(100, Number(input.limit || 24)));
+      return { schema_version: SCHEMA_VERSION, recipient_id: recipient, messages: rows.filter((item) => item.status !== "consumed" && (item.privacy_class !== "private" || options.includePrivate === true && privateDeliveryProof(item, input))).slice(-limit).map((item) => {
+        const { private_delivery_token_sha256, ...visible } = item;
+        return visible;
+      }), authority_granted: false };
+    }
+    function privateDeliveryProof(message, input) {
+      const token = cleanText(input.privateDeliveryToken || input.private_delivery_token, 100);
+      if (!message.private_delivery_token_sha256 || !/^[A-Za-z0-9_-]{43}$/.test(token)) return false;
+      const expected = Buffer.from(message.private_delivery_token_sha256, "hex");
+      const observed = Buffer.from(hash2(token), "hex");
+      return expected.length === observed.length && crypto2.timingSafeEqual(expected, observed);
+    }
+    function consumeMessage2(workspaceRoot2, actor2, input, options = {}) {
+      return withState(workspaceRoot2, actor2, "message-consumed", (state) => {
+        const principal = normalizeActor(actor2);
+        const recipient = safeId(input.recipientId || input.recipient_id || principal.actor_id, "recipient");
+        const rows = Array.isArray(state.mailboxes?.[recipient]) ? state.mailboxes[recipient] : [];
+        const message = rows.find((item) => item.message_id === cleanText(input.messageId || input.message_id, 200));
+        if (!message) throw new Error("coordination-message-not-found");
+        if (message.privacy_class === "private" && (options.allowPrivate === false || !privateDeliveryProof(message, input))) throw new Error("coordination-private-message-requires-delivery-proof");
+        if (message.status === "consumed") return { receipt: { message_id: message.message_id, idempotent: true } };
+        message.status = "consumed";
+        message.consumed_utc = now();
+        message.consumed_by = principal;
+        return { receipt: { message_id: message.message_id, recipient_id: recipient, consumed: true } };
+      });
+    }
     function taskById(state, taskId) {
       const task = state.tasks.find((item) => item.id === safeId(taskId, "task"));
       if (!task) throw new Error("unknown-coordination-task");
@@ -1763,7 +2146,8 @@ var require_coordinationManager = __commonJS({
         task.progress.push(receipt);
         task.status = exceeded && task.budget?.hard_stop ? "blocked" : status;
         task.updated_utc = receipt.timestamp;
-        return { receipt };
+        const wakes = task.status === "completed" ? satisfyWaits(state, "task", task.id, receipt.evidence) : [];
+        return { receipt: { ...receipt, wake_ids: wakes.map((item) => item.wake_id) } };
       });
     }
     function reconcileTask2(workspaceRoot2, actor2, input) {
@@ -1788,6 +2172,8 @@ var require_coordinationManager = __commonJS({
         task.status = "reconciled";
         task.outputs.push(receipt);
         task.updated_utc = receipt.timestamp;
+        const wakes = satisfyWaits(state, "task", task.id, receipt.evidence);
+        receipt.wake_ids = wakes.map((item) => item.wake_id);
         for (const claim of state.claims) if (claim.task_id === task.id && claim.status === "active") claim.status = "released";
         const plan = state.plans.find((item) => item.id === state.active_plan);
         if (plan && plan.task_ids.every((taskId) => taskById(state, taskId).status === "reconciled")) {
@@ -1807,6 +2193,10 @@ var require_coordinationManager = __commonJS({
         if (!activeClaim || activeClaim.actor.actor_id !== principal.actor_id || activeClaim.actor.session_id !== principal.session_id) throw new Error("task-release-requires-owning-claim");
         exactClaimProof(state, activeClaim, input);
         for (const claim of state.claims) if (claim.task_id === task.id && ["active", "expired"].includes(claim.status)) claim.status = "released";
+        for (const wait of state.waits || []) if (wait.task_id === task.id && wait.status === "waiting") {
+          wait.status = "cancelled";
+          wait.cancelled_utc = now();
+        }
         task.status = "released";
         task.owner = null;
         task.updated_utc = now();
@@ -1984,7 +2374,7 @@ var require_coordinationManager = __commonJS({
     function readMemoryTelemetry2(workspaceRoot2, options = {}) {
       const paths = coordinationPaths(workspaceRoot2);
       if (!fs2.existsSync(paths.state)) return { schema_version: SCHEMA_VERSION, generated_utc: now(), instrumented: false, authority: "project-owned portable coordination memory", canonical: false, record_count: 0, records: [], errors: ["coordination-store-not-initialized"] };
-      const state = readAuthoritativeState(paths);
+      const state = readAuthoritativeState(paths, { persistCorruptionEvidence: false });
       return memoryRecords(paths, state, options);
     }
     function registerSession(workspaceRoot2, actor2) {
@@ -2013,9 +2403,10 @@ var require_coordinationManager = __commonJS({
           persistence: "not-initialized-read-only"
         };
       }
-      const state = readAuthoritativeState(paths);
+      const state = readAuthoritativeState(paths, { persistCorruptionEvidence: false });
       expireClaims(state);
       expireSessions(state);
+      expireWaits(state);
       const eventTail = tailJsonlDetailed(paths.events, MAX_EVENTS);
       if (eventTail.health.status === "healthy") {
         try {
@@ -2037,7 +2428,8 @@ var require_coordinationManager = __commonJS({
         eventTail.health.integrity_verified = false;
       }
       const eventLimit = Math.max(0, Math.min(Number(options.eventLimit ?? 40) || 0, 200));
-      const visibleEvents = eventLimit ? eventTail.records.slice(-eventLimit) : [];
+      const privateMessageIds = new Set(Object.values(state.mailboxes || {}).flatMap((rows) => rows.filter((item) => item.privacy_class === "private").map((item) => item.message_id)));
+      const visibleEvents = eventLimit ? eventTail.records.filter((event) => event.result?.privacy_class !== "private" && !containsPrivateMessageId(event.result, privateMessageIds)).slice(-eventLimit) : [];
       return { state: publicState(state), events: visibleEvents, event_log_health: eventTail.health, paths: publicPaths(paths), memory: memoryRecords(paths, state, { limit: options.memoryLimit || 12, includeContent: false }), instrumented: true };
     }
     function tailJsonl(file2, limit) {
@@ -2094,15 +2486,57 @@ var require_coordinationManager = __commonJS({
     function publicPaths(paths) {
       return { root: paths.root, state: paths.state, events: paths.events, handoff_json: paths.handoffJson, handoff_markdown: paths.handoffMarkdown, memory_root: paths.memory.root, quarantine: paths.quarantine };
     }
+    function containsPrivateMessageId(value, privateIds, depth = 0) {
+      if (!privateIds.size || depth > 8 || value == null) return false;
+      if (typeof value === "string") return privateIds.has(value);
+      if (Array.isArray(value)) return value.some((item) => containsPrivateMessageId(item, privateIds, depth + 1));
+      if (typeof value === "object") return Object.values(value).some((item) => containsPrivateMessageId(item, privateIds, depth + 1));
+      return false;
+    }
     function publicState(state) {
       const copy = JSON.parse(JSON.stringify(state));
       expireClaims(copy);
+      expireWaits(copy);
       copy.claims = copy.claims.filter((claim) => claim.status === "active");
+      const privateIds = new Set(Object.values(state.mailboxes || {}).flatMap((rows) => rows.filter((item) => item.privacy_class === "private").map((item) => item.message_id)));
+      copy.waits = copy.waits.map((wait) => {
+        if (wait.condition_type !== "message" || ![...wait.dependency_ids || [], ...wait.satisfied_ids || []].some((id2) => privateIds.has(id2))) return wait;
+        return {
+          ...wait,
+          dependency_ids: wait.dependency_ids.filter((id2) => !privateIds.has(id2)),
+          satisfied_ids: wait.satisfied_ids.filter((id2) => !privateIds.has(id2)),
+          exact_next_action: null,
+          private_trigger_redacted: true
+        };
+      });
+      copy.wakes = copy.wakes.map((wake) => {
+        if (wake.trigger_type !== "message" || !(wake.trigger_ids || []).some((id2) => privateIds.has(id2))) return wake;
+        return {
+          ...wake,
+          trigger_ids: wake.trigger_ids.filter((id2) => !privateIds.has(id2)),
+          trigger_evidence: [],
+          exact_next_action: null,
+          private_trigger_redacted: true
+        };
+      });
+      copy.mailboxes = Object.fromEntries(Object.entries(copy.mailboxes || {}).flatMap(([recipient, rows]) => {
+        const visible = rows.filter((item) => item.privacy_class !== "private").map((item) => ({ message_id: item.message_id, recipient_id: item.recipient_id, privacy_class: item.privacy_class, created_utc: item.created_utc, status: item.status, payload_sha256: item.payload_sha256 }));
+        return visible.length ? [[recipient, visible]] : [];
+      }));
       return copy;
     }
     function handoffArtifacts(paths, state, event) {
       const tasks = state.tasks.filter((task) => state.plans.find((plan) => plan.id === state.active_plan)?.task_ids.includes(task.id));
       const next = tasks.find((task) => ["planned", "ready", "released"].includes(task.status) && task.depends_on.every((dep) => ["completed", "reconciled"].includes(taskById(state, dep).status)));
+      const privateIds = new Set(Object.values(state.mailboxes || {}).flatMap((rows) => rows.filter((item) => item.privacy_class === "private").map((item) => item.message_id)));
+      const privateEvent = event.result?.privacy_class === "private" || containsPrivateMessageId(event.result, privateIds);
+      const publicLastEvent = privateEvent ? {
+        event_id: event.event_id,
+        timestamp: event.timestamp,
+        operation: event.operation,
+        event_sha256: event.event_sha256,
+        private_message_redacted: true
+      } : event;
       const packet = {
         schema_version: SCHEMA_VERSION,
         generated_utc: now(),
@@ -2112,7 +2546,7 @@ var require_coordinationManager = __commonJS({
         verified_state_hash: state.state_hash,
         tasks,
         active_claims: state.claims.filter((claim) => claim.status === "active"),
-        last_event: event,
+        last_event: publicLastEvent,
         team_fabric: { mode: state.team_fabric.mode, hub: state.team_fabric.hub, work_rooms: state.team_fabric.work_rooms.length },
         exact_next_action: next ? `Claim task ${next.id}: ${next.title}` : "Review completed work or create a new parallel plan.",
         memory_refs: [path2.relative(paths.workspace, paths.memory.project).replaceAll("\\", "/"), path2.relative(paths.workspace, paths.memory.state).replaceAll("\\", "/")],
@@ -2237,6 +2671,13 @@ var require_coordinationManager = __commonJS({
       releaseTask: releaseTask2,
       captureMemory: captureMemory2,
       registerSession,
+      registerWait: registerWait2,
+      waitStatus: waitStatus2,
+      acknowledgeWake: acknowledgeWake2,
+      sendMessage: sendMessage2,
+      readMessages: readMessages2,
+      consumeMessage: consumeMessage2,
+      satisfyWaits,
       readCoordination: readCoordination2,
       readMemoryTelemetry: readMemoryTelemetry2,
       taskHandoff: taskHandoff2,
@@ -2422,7 +2863,7 @@ var require_teamFabricManager = __commonJS({
         canonical_registry_mutated: false,
         next_gate: "Pacify-X provenance, license, collision, contract, effect, and skill admission review"
       };
-      const directory = path2.join(workspace, ".engineering-bootstrap", "coordination", "imports");
+      const directory = path2.join(workspace, ".agentic_engineering_os_px", "coordination", "imports");
       fs2.mkdirSync(directory, { recursive: true });
       const output = path2.join(directory, `${receipt.import_id}.json`);
       const temporary = `${output}.${process.pid}.tmp`;
@@ -2477,7 +2918,7 @@ var require_enterpriseManager = __commonJS({
       return crypto2.createHash("sha256").update(typeof value === "string" ? value : JSON.stringify(value)).digest("hex");
     }
     function enterpriseRoot(projectRoot) {
-      return path2.join(path2.resolve(projectRoot), ".engineering-bootstrap", "enterprise");
+      return path2.join(path2.resolve(projectRoot), ".agentic_engineering_os_px", "enterprise");
     }
     function pathsFor(projectRoot) {
       const root = enterpriseRoot(projectRoot);
@@ -2680,7 +3121,7 @@ var require_enterpriseManager = __commonJS({
       const loaded = initializeEnterprise2(projectRoot, catalog);
       const checks = [
         { id: "separate-schema", passed: loaded.state.schema_version === STATE_SCHEMA, detail: loaded.state.schema_version },
-        { id: "separate-state-root", passed: loaded.paths.root.endsWith(path2.join(".engineering-bootstrap", "enterprise")), detail: loaded.paths.root },
+        { id: "separate-state-root", passed: loaded.paths.root.endsWith(path2.join(".agentic_engineering_os_px", "enterprise")), detail: loaded.paths.root },
         { id: "offline-startup", passed: catalog.defaults?.offline_startup_required === true, detail: "enterprise services are not startup dependencies" },
         { id: "billable-default", passed: catalog.defaults?.billable_services === "disabled" && loaded.state.defaults.billable_services === "disabled", detail: "disabled" },
         { id: "egress-default", passed: catalog.defaults?.network_egress === "deny" && loaded.state.defaults.network_egress === "deny", detail: "deny" },
@@ -2917,18 +3358,111 @@ var require_discoveryManager = __commonJS({
         return fallback;
       }
     }
+    function boundedArray(value, maximum = 512) {
+      return (Array.isArray(value) ? value : []).slice(0, maximum);
+    }
+    function secretLikeSetting(key = "") {
+      return /(secret|token|password|credential|api[_-]?key|private[_-]?key|access[_-]?key)/i.test(String(key));
+    }
+    function normalizeConfiguration(contributes = {}) {
+      const configurations = Array.isArray(contributes.configuration) ? contributes.configuration : contributes.configuration ? [contributes.configuration] : [];
+      const records = [];
+      for (const block of configurations.slice(0, 128)) {
+        const properties = block?.properties && typeof block.properties === "object" ? block.properties : {};
+        for (const [key, spec] of Object.entries(properties).slice(0, 2048)) {
+          records.push({
+            key: cleanText(key, 300),
+            type: Array.isArray(spec?.type) ? spec.type.map((item) => cleanText(item, 80)) : cleanText(spec?.type, 80) || null,
+            scope: cleanText(spec?.scope, 80) || null,
+            description: cleanText(spec?.markdownDescription || spec?.description, 800) || null,
+            enum: boundedArray(spec?.enum, 64).map((item) => cleanText(item, 200)),
+            has_default: Object.hasOwn(spec || {}, "default"),
+            default_value_persisted: false,
+            secret_like: secretLikeSetting(key),
+            deprecation_message: cleanText(spec?.deprecationMessage, 500) || null
+          });
+        }
+      }
+      records.sort((a, b) => a.key.localeCompare(b.key));
+      return records;
+    }
+    function normalizeMenus(contributes = {}) {
+      const menus = contributes.menus && typeof contributes.menus === "object" ? contributes.menus : {};
+      const out = [];
+      for (const [location, items] of Object.entries(menus).slice(0, 256)) {
+        for (const item of boundedArray(items, 512)) {
+          const command = cleanText(item?.command, 240);
+          const submenu = cleanText(item?.submenu, 240);
+          if (!command && !submenu) continue;
+          out.push({ location: cleanText(location, 240), command: command || null, submenu: submenu || null, alt: cleanText(item?.alt, 240) || null, when: cleanText(item?.when, 800) || null, group: cleanText(item?.group, 240) || null });
+        }
+      }
+      return out.sort((a, b) => `${a.location}\0${a.command || a.submenu}`.localeCompare(`${b.location}\0${b.command || b.submenu}`));
+    }
+    function normalizeViews(contributes = {}) {
+      const out = [];
+      const views = contributes.views && typeof contributes.views === "object" ? contributes.views : {};
+      for (const [container, records] of Object.entries(views).slice(0, 128)) {
+        for (const item of boundedArray(records, 256)) {
+          const id = cleanText(item?.id, 240);
+          if (!id) continue;
+          out.push({ id, container: cleanText(container, 240), name: cleanText(item?.name, 240) || id, when: cleanText(item?.when, 800) || null, type: cleanText(item?.type, 80) || null });
+        }
+      }
+      return out.sort((a, b) => a.id.localeCompare(b.id));
+    }
     function normalizeExtensions(extensions = []) {
-      const records = extensions.map((extension) => {
+      const records = boundedArray(extensions, 1e4).map((extension) => {
         const manifest = extension.packageJSON || {};
         const contributes = manifest.contributes && typeof manifest.contributes === "object" ? manifest.contributes : {};
-        const commands = (Array.isArray(contributes.commands) ? contributes.commands : []).map((item) => ({
+        const commands = boundedArray(contributes.commands, 2048).map((item) => ({
           id: cleanText(item?.command, 240),
           invocation: `vscode.commands.executeCommand('${cleanText(item?.command, 240)}', ...args)`,
           title: cleanText(item?.title, 240),
+          category: cleanText(item?.category, 160) || null,
+          icon_declared: Boolean(item?.icon),
           expected_inputs: "Arguments are not declared by the extension manifest; inspect provider documentation before invocation.",
           expected_outputs: "Return contract is not declared by the extension manifest.",
           enablement: cleanText(item?.enablement, 500) || null
         })).filter((item) => item.id).sort((a, b) => a.id.localeCompare(b.id));
+        const keybindings = boundedArray(contributes.keybindings, 2048).map((item) => ({
+          command: cleanText(item?.command, 240),
+          key: cleanText(item?.key, 160) || null,
+          mac: cleanText(item?.mac, 160) || null,
+          linux: cleanText(item?.linux, 160) || null,
+          win: cleanText(item?.win, 160) || null,
+          when: cleanText(item?.when, 800) || null,
+          args_declared: Object.hasOwn(item || {}, "args")
+        })).filter((item) => item.command).sort((a, b) => `${a.command}\0${a.key || ""}`.localeCompare(`${b.command}\0${b.key || ""}`));
+        const menus = normalizeMenus(contributes);
+        const settings = normalizeConfiguration(contributes);
+        const languageModelTools = boundedArray(contributes.languageModelTools, 512).map((item) => ({
+          name: cleanText(item?.name, 240),
+          display_name: cleanText(item?.displayName, 240) || null,
+          tool_reference_name: cleanText(item?.toolReferenceName, 240) || null,
+          model_description: cleanText(item?.modelDescription, 800) || null,
+          user_description: cleanText(item?.userDescription, 800) || null,
+          can_be_referenced_in_prompt: Boolean(item?.canBeReferencedInPrompt),
+          input_schema_declared: Boolean(item?.inputSchema),
+          input_schema_properties: Object.keys(item?.inputSchema?.properties || {}).slice(0, 128).sort()
+        })).filter((item) => item.name).sort((a, b) => a.name.localeCompare(b.name));
+        const chatParticipants = boundedArray(contributes.chatParticipants, 512).map((item) => ({
+          id: cleanText(item?.id, 240),
+          name: cleanText(item?.name, 240) || null,
+          full_name: cleanText(item?.fullName, 240) || null,
+          description: cleanText(item?.description, 800) || null,
+          is_sticky: Boolean(item?.isSticky)
+        })).filter((item) => item.id).sort((a, b) => a.id.localeCompare(b.id));
+        const views = normalizeViews(contributes);
+        const taskDefinitions = boundedArray(contributes.taskDefinitions, 512).map((item) => ({ type: cleanText(item?.type, 240), required: boundedArray(item?.required, 128).map((value) => cleanText(value, 200)), properties: Object.keys(item?.properties || {}).slice(0, 256).sort() })).filter((item) => item.type).sort((a, b) => a.type.localeCompare(b.type));
+        const debuggers = boundedArray(contributes.debuggers, 512).map((item) => ({ type: cleanText(item?.type, 240), label: cleanText(item?.label, 240) || null, languages: boundedArray(item?.languages, 128).map((value) => cleanText(value, 160)) })).filter((item) => item.type).sort((a, b) => a.type.localeCompare(b.type));
+        const customEditors = boundedArray(contributes.customEditors, 512).map((item) => ({ view_type: cleanText(item?.viewType, 240), display_name: cleanText(item?.displayName, 240) || null, priority: cleanText(item?.priority, 80) || null, selector_count: boundedArray(item?.selector, 128).length })).filter((item) => item.view_type).sort((a, b) => a.view_type.localeCompare(b.view_type));
+        const authentication = boundedArray(contributes.authentication, 128).map((item) => ({ id: cleanText(item?.id, 240), label: cleanText(item?.label, 240) || null })).filter((item) => item.id).sort((a, b) => a.id.localeCompare(b.id));
+        const languages = boundedArray(contributes.languages, 1024).map((item) => ({ id: cleanText(item?.id, 160), extensions: boundedArray(item?.extensions, 128).map((value) => cleanText(value, 120)), aliases: boundedArray(item?.aliases, 64).map((value) => cleanText(value, 160)) })).filter((item) => item.id).sort((a, b) => a.id.localeCompare(b.id));
+        const notebooks = boundedArray(contributes.notebooks, 256).map((item) => ({ type: cleanText(item?.type, 240), display_name: cleanText(item?.displayName, 240) || null, selector_count: boundedArray(item?.selector, 128).length })).filter((item) => item.type).sort((a, b) => a.type.localeCompare(b.type));
+        const terminalProfiles = boundedArray(contributes.terminal?.profiles, 256).map((item) => ({ id: cleanText(item?.id, 240), title: cleanText(item?.title, 240) || null })).filter((item) => item.id).sort((a, b) => a.id.localeCompare(b.id));
+        const viewContainers = ["activitybar", "panel"].flatMap((location) => boundedArray(contributes.viewsContainers?.[location], 256).map((item) => ({ location, id: cleanText(item?.id, 240), title: cleanText(item?.title, 240) || null }))).filter((item) => item.id).sort((a, b) => a.id.localeCompare(b.id));
+        const viewWelcome = boundedArray(contributes.viewsWelcome, 512).map((item) => ({ view: cleanText(item?.view, 240), when: cleanText(item?.when, 800) || null, group: cleanText(item?.group, 160) || null })).filter((item) => item.view).sort((a, b) => a.view.localeCompare(b.view));
         const capabilityFlags = manifest.capabilities && typeof manifest.capabilities === "object" ? manifest.capabilities : {};
         return {
           id: cleanText(extension.id || manifest.name, 200),
@@ -2937,21 +3471,37 @@ var require_discoveryManager = __commonJS({
           publisher: cleanText(manifest.publisher, 160),
           active: Boolean(extension.isActive),
           builtin: Boolean(manifest.isBuiltin),
-          extension_kind: Array.isArray(manifest.extensionKind) ? manifest.extensionKind.map(String) : [],
-          contribution_points: Object.keys(contributes).sort(),
-          capabilities: Object.keys(contributes).sort().map((point) => ({ id: `contribution:${point}`, kind: point, provider: cleanText(extension.id || manifest.name, 200), invocation: point === "commands" ? "See commands[]" : "VS Code contribution-point contract", expected_inputs: "Defined by the VS Code contribution point and provider manifest.", expected_outputs: "Defined by the VS Code host contract; provider-specific output is not inferred." })),
+          extension_kind: boundedArray(manifest.extensionKind, 16).map(String),
+          contribution_points: Object.keys(contributes).slice(0, 1024).sort(),
+          capabilities: Object.keys(contributes).slice(0, 1024).sort().map((point) => ({ id: `contribution:${point}`, kind: point, provider: cleanText(extension.id || manifest.name, 200), invocation: point === "commands" ? "See commands[]" : "VS Code contribution-point contract", expected_inputs: "Defined by the VS Code contribution point and provider manifest.", expected_outputs: "Defined by the VS Code host contract; provider-specific output is not inferred." })),
           commands,
+          keybindings,
+          menus,
+          settings,
+          language_model_tools: languageModelTools,
+          chat_participants: chatParticipants,
+          views,
+          view_containers: viewContainers,
+          views_welcome: viewWelcome,
+          task_definitions: taskDefinitions,
+          debuggers,
+          custom_editors: customEditors,
+          authentication,
+          languages,
+          notebooks,
+          terminal_profiles: terminalProfiles,
           api_contract: { exported_api_detected: false, activation_attempted: false, invocation: "vscode.extensions.getExtension(id)?.exports only after separately approved activation", expected_inputs: "Provider-defined; not inferred", expected_outputs: "Provider-defined; not inferred" },
-          dependencies: (Array.isArray(manifest.extensionDependencies) ? manifest.extensionDependencies : []).map((item) => cleanText(item, 200)).filter(Boolean).sort(),
-          activation_events: (Array.isArray(manifest.activationEvents) ? manifest.activationEvents : []).map((item) => cleanText(item, 300)).filter(Boolean).sort(),
+          dependencies: boundedArray(manifest.extensionDependencies, 512).map((item) => cleanText(item, 200)).filter(Boolean).sort(),
+          extension_pack: boundedArray(manifest.extensionPack, 512).map((item) => cleanText(item, 200)).filter(Boolean).sort(),
+          activation_events: boundedArray(manifest.activationEvents, 1024).map((item) => cleanText(item, 300)).filter(Boolean).sort(),
           permissions_resources: {
-            extension_kind: Array.isArray(manifest.extensionKind) ? manifest.extensionKind.map(String) : [],
+            extension_kind: boundedArray(manifest.extensionKind, 16).map(String),
             workspace_trust: capabilityFlags.untrustedWorkspaces || { supported: "not-declared" },
             virtual_workspaces: capabilityFlags.virtualWorkspaces || { supported: "not-declared" },
             resource_roots: ["VS Code extension host", "declared contribution points"],
             credential_access_inferred: false
           },
-          constraints: ["Metadata detection does not activate the extension.", "Command arguments and return types are unknown unless the provider declares them."],
+          constraints: ["Metadata detection does not activate the extension.", "Command arguments and return types are unknown unless the provider declares them.", "User setting values and credential material are not persisted."],
           known_conflicts: [],
           integration_status: "detected-metadata-only"
         };
@@ -3200,7 +3750,7 @@ var require_discoveryManager = __commonJS({
             const record2 = { root, absolute, relative, name: child.name, depth: depth + 1, directory: child.isDirectory(), file: child.isFile() };
             entries.push(record2);
             if (child.isDirectory() && /^\.venv.*$/i.test(child.name)) inspectPythonEnvironment(root, absolute, relative, depth);
-            if (child.isDirectory() && depth < MAX_SCAN_DEPTH && !/^(\.git|node_modules|__pycache__|\.engineering-bootstrap|\.pytest_cache|\.ruff_cache|\.mypy_cache|\.cache|\.px|evidence|Python|\.venv.*|dist|build|coverage)$/i.test(child.name)) pending.push({ target: absolute, depth: depth + 1 });
+            if (child.isDirectory() && depth < MAX_SCAN_DEPTH && !/^(\.git|node_modules|__pycache__|\.agentic_engineering_os_px|\.pytest_cache|\.ruff_cache|\.mypy_cache|\.cache|\.px|evidence|Python|\.venv.*|dist|build|coverage)$/i.test(child.name)) pending.push({ target: absolute, depth: depth + 1 });
           }
         }
         if (entries.length >= MAX_SCAN_ENTRIES) capped = true;
@@ -3541,10 +4091,54 @@ var require_discoveryManager = __commonJS({
           addEdge(extensionId, "contributes-command", commandId);
           addEdge(commandId, "available-to", "px:orchestration-plane");
         }
-        for (const dependency of extension.dependencies) {
+        for (const binding of extension.keybindings || []) {
+          const id = `vscode-keybinding:${sha(`${extension.id}\0${binding.command}\0${binding.key || ""}\0${binding.when || ""}`).slice(0, 20)}`;
+          addNode(id, "vscode-keybinding", binding.command, { key: binding.key, when: binding.when, args_declared: binding.args_declared });
+          addEdge(extensionId, "contributes-keybinding", id);
+          addEdge(id, "binds-command", `vscode-command:${binding.command}`);
+        }
+        for (const menu of extension.menus || []) {
+          const target = menu.command || menu.submenu;
+          const id = `vscode-menu-item:${sha(`${extension.id}\0${menu.location}\0${target}\0${menu.when || ""}`).slice(0, 20)}`;
+          addNode(id, "vscode-menu-item", target, { location: menu.location, when: menu.when, group: menu.group });
+          addEdge(extensionId, "contributes-menu-item", id);
+          if (menu.command) addEdge(id, "references-command", `vscode-command:${menu.command}`);
+        }
+        for (const setting of extension.settings || []) {
+          const id = `vscode-setting-schema:${setting.key}`;
+          addNode(id, "vscode-setting-schema", setting.key, { type: setting.type, scope: setting.scope, secret_like: setting.secret_like, default_value_persisted: false });
+          addEdge(extensionId, "contributes-setting-schema", id);
+        }
+        for (const tool of extension.language_model_tools || []) {
+          const id = `vscode-language-model-tool:${tool.name}`;
+          addNode(id, "vscode-language-model-tool", tool.name, { tool_reference_name: tool.tool_reference_name, can_be_referenced_in_prompt: tool.can_be_referenced_in_prompt });
+          addEdge(extensionId, "contributes-language-model-tool", id);
+          addEdge(id, "available-to", "px:orchestration-plane");
+        }
+        for (const participant of extension.chat_participants || []) {
+          const id = `vscode-chat-participant:${participant.id}`;
+          addNode(id, "vscode-chat-participant", participant.id, { name: participant.name });
+          addEdge(extensionId, "contributes-chat-participant", id);
+        }
+        for (const view of extension.views || []) {
+          const id = `vscode-view:${view.id}`;
+          addNode(id, "vscode-view", view.id, { container: view.container, when: view.when });
+          addEdge(extensionId, "contributes-view", id);
+        }
+        for (const task of extension.task_definitions || []) {
+          const id = `vscode-task-definition:${task.type}`;
+          addNode(id, "vscode-task-definition", task.type, { required: task.required });
+          addEdge(extensionId, "contributes-task-definition", id);
+        }
+        for (const debuggerItem of extension.debuggers || []) {
+          const id = `vscode-debugger:${debuggerItem.type}`;
+          addNode(id, "vscode-debugger", debuggerItem.type, { languages: debuggerItem.languages });
+          addEdge(extensionId, "contributes-debugger", id);
+        }
+        for (const dependency of [...extension.dependencies || [], ...extension.extension_pack || []]) {
           const dependencyId = `vscode-extension:${dependency}`;
           addNode(dependencyId, "vscode-extension-reference", dependency);
-          addEdge(extensionId, "depends-on", dependencyId);
+          addEdge(extensionId, extension.extension_pack?.includes(dependency) ? "packs-extension" : "depends-on", dependencyId);
         }
         addContract(extensionId, extension.resource_contract);
       }
@@ -3609,8 +4203,8 @@ var require_discoveryManager = __commonJS({
         boundaries: { arbitrary_extension_activation: false, credential_values_persisted: false, weak_secret_fingerprints: false, network_installs: false, billable_calls: false, mutation: false, admitted_roots_only: true },
         ontology: {
           canonical_chain: ["resource", "capabilities", "interface", "requirements", "effects", "conflicts", "policy", "state"],
-          node_types: ["orchestration-plane", "admitted-root", "consumer-file", "vscode-extension", "vscode-extension-reference", "vscode-contribution-point", "vscode-command", "system-tool", "installed-package", "virtual-environment", "environment-file", "environment-variable-schema", "capability", "interface", "requirement", "effect", "conflict", "policy", "resource-state"],
-          predicates: ["has-capability", "has-interface", "requires", "may-effect", "conflicts-with", "governed-by", "has-state", "available-to", "contributes", "contributes-command", "depends-on", "installed-by", "owned-by-root", "uses-tool", "declares-variable", "consumes-variable"]
+          node_types: ["orchestration-plane", "admitted-root", "consumer-file", "vscode-extension", "vscode-extension-reference", "vscode-contribution-point", "vscode-command", "vscode-keybinding", "vscode-menu-item", "vscode-setting-schema", "vscode-language-model-tool", "vscode-chat-participant", "vscode-view", "vscode-task-definition", "vscode-debugger", "system-tool", "installed-package", "virtual-environment", "environment-file", "environment-variable-schema", "capability", "interface", "requirement", "effect", "conflict", "policy", "resource-state"],
+          predicates: ["has-capability", "has-interface", "requires", "may-effect", "conflicts-with", "governed-by", "has-state", "available-to", "contributes", "contributes-command", "contributes-keybinding", "binds-command", "contributes-menu-item", "references-command", "contributes-setting-schema", "contributes-language-model-tool", "contributes-chat-participant", "contributes-view", "contributes-task-definition", "contributes-debugger", "depends-on", "packs-extension", "installed-by", "owned-by-root", "uses-tool", "declares-variable", "consumes-variable"]
         },
         subjects,
         graph,
@@ -3646,7 +4240,7 @@ var require_discoveryManager = __commonJS({
       return { ...stable, generated_utc: generatedUtc, snapshot_hash: sha(stable) };
     }
     function pathsFor(projectRoot) {
-      const root = path2.join(path2.resolve(projectRoot), ".engineering-bootstrap", "environment");
+      const root = path2.join(path2.resolve(projectRoot), ".agentic_engineering_os_px", "environment");
       return { root, current: path2.join(root, "current.json"), events: path2.join(root, "events.jsonl"), snapshots: path2.join(root, "snapshots") };
     }
     function optionalCurrentPathFor(projectRoot) {
@@ -3995,6 +4589,10 @@ var require_mcpMutationAuthority = __commonJS({
       "pacify_enterprise_pack_set",
       "pacify_enterprise_target_configure",
       "pacify_activity_emit",
+      "pacify_message_send",
+      "pacify_message_consume",
+      "pacify_wait_register",
+      "pacify_wake_ack",
       "pacify_parallel_plan_create",
       "pacify_task_claim",
       "pacify_claim_renew",
@@ -33292,7 +33890,13 @@ var {
   taskHandoff,
   renewClaim,
   diagnoseWorkStop,
-  workRoom
+  workRoom,
+  registerWait,
+  waitStatus,
+  acknowledgeWake,
+  sendMessage,
+  readMessages,
+  consumeMessage
 } = import_coordinationManager.default;
 var { inventoryTeamPack, stageTeamPack, workerAdapters } = import_teamFabricManager.default;
 var { initializeEnterprise, setPackEnabled, configureTarget, evaluateBillableExecution, enterpriseDoctor } = import_enterpriseManager.default;
@@ -33313,7 +33917,7 @@ function readJsonFile(file2, fallback) {
     return fallback;
   }
 }
-var MCP_VERSION = "0.7.0";
+var MCP_VERSION = "0.9.0";
 function contextEnvelope() {
   const value = readJsonFile(process.env.PX_CONTEXT_PATH, {});
   return value?.envelope || value;
@@ -33325,7 +33929,10 @@ function nonBillableEnv() {
 function runApi(args) {
   const root = process.env.PX_ENGINE_ROOT;
   if (!root || !import_node_fs.default.existsSync(import_node_path.default.join(root, "runtime", "dashboard_api.py"))) return { available: false, reason: "Pacify-X dashboard API unavailable." };
-  const result = import_node_child_process.default.spawnSync(process.env.PX_PYTHON_PATH || "python", ["-m", "runtime.dashboard_api", ...args, "--source-root", root], {
+  const project = process.env.PX_WORKSPACE_ROOT || process.env.PX_COORDINATION_ROOT;
+  if (!project) return { available: false, reason: "Pacify-X MCP project root is unavailable." };
+  const scopedArgs = args.includes("--project") ? args : [...args, "--project", import_node_path.default.resolve(project)];
+  const result = import_node_child_process.default.spawnSync(process.env.PX_PYTHON_PATH || "python", ["-m", "runtime.dashboard_api", ...scopedArgs, "--source-root", root], {
     cwd: root,
     windowsHide: true,
     shell: false,
@@ -33347,7 +33954,7 @@ function workspaceRoot() {
   return import_node_path.default.resolve(value);
 }
 function enterpriseCatalog() {
-  const snapshot = runApi(["snapshot"]);
+  const snapshot = runApi(["snapshot", "--read-only"]);
   if (!snapshot?.enterprise?.catalog_id) throw new Error("The separate MS+Enterprise catalog is unavailable.");
   return snapshot.enterprise;
 }
@@ -33368,6 +33975,24 @@ function admittedTeamPackRoot(value) {
   if (!admitted) throw new Error("Team package root is not below PX_TEAM_PACK_ROOTS.");
   return candidate;
 }
+var lazyServices = /* @__PURE__ */ new Map();
+function lazyService(key, factory) {
+  if (lazyServices.has(key)) return lazyServices.get(key);
+  const service = factory();
+  lazyServices.set(key, service);
+  return service;
+}
+function disposeLazyServices() {
+  for (const [key, service] of lazyServices) {
+    try {
+      if (typeof service?.dispose === "function") service.dispose();
+    } catch (failure) {
+      process.stderr.write(`[pacify-x-mcp-teardown] ${key}:${failure?.message}
+`);
+    }
+  }
+  lazyServices.clear();
+}
 function buildServer() {
   const server = new McpServer({ name: "pacify-x-governed-context", version: MCP_VERSION }, { capabilities: { tools: {} } });
   const empty = external_exports.object({}).strict();
@@ -33387,7 +34012,7 @@ function buildServer() {
     publicKeyJwk: readJsonFile(process.env.PX_MCP_AUTHORITY_PUBLIC_JWK_PATH, null),
     trustedKeyId: process.env.PX_MCP_AUTHORITY_KEY_ID
   });
-  const mcpInstrumentation = createMcpActivityIntegration({
+  const mcpInstrumentation = lazyService("mcp-instrumentation", () => createMcpActivityIntegration({
     recordActivity,
     workspaceRoot,
     projectId: () => import_node_path.default.basename(workspaceRoot()),
@@ -33398,8 +34023,28 @@ function buildServer() {
     authorize: (name, input) => writeAuthority.authorize(name, input),
     onDrop: (failure) => process.stderr.write(`[pacify-x-mcp-instrumentation] ${failure.type}:${failure.tool}:${failure.lifecycle}
 `)
-  });
+  }));
   const registerTool = (name, definition, handler) => server.registerTool(name, definition, mcpInstrumentation.wrapTool(name, definition, handler));
+  const lazyLoaders = /* @__PURE__ */ new Map();
+  const registerLazyTool = (name, definition, loader) => {
+    if (typeof loader !== "function") throw new TypeError("lazy tool loader must be a function");
+    if (lazyLoaders.has(name)) throw new Error(`lazy tool already registered: ${name}`);
+    let resolved = null;
+    let resolvedSha = null;
+    const handler = async (input, extra) => {
+      if (resolved === null) {
+        const loaded = await loader();
+        if (typeof loaded !== "function") throw new TypeError(`lazy tool loader did not return a handler: ${name}`);
+        const sha = require("node:crypto").createHash("sha256").update(String(loaded)).digest("hex");
+        if (resolvedSha !== null && resolvedSha !== sha) throw new Error(`lazy tool handler contract changed: ${name}`);
+        resolved = loaded;
+        resolvedSha = sha;
+      }
+      return resolved(input, extra);
+    };
+    lazyLoaders.set(name, loader);
+    return server.registerTool(name, definition, mcpInstrumentation.wrapTool(name, definition, handler));
+  };
   registerTool("pacify_context_snapshot", {
     title: "Pacify-X Context Snapshot",
     description: "Return the bounded portable context envelope and project-owned continuity references.",
@@ -33415,12 +34060,12 @@ function buildServer() {
     const snapshot = contextEnvelope() || {};
     return textResult({ git: snapshot.git || null, git_policy: snapshot.git_policy || null, read_only: true });
   });
-  registerTool("pacify_control_plane_summary", {
+  registerLazyTool("pacify_control_plane_summary", {
     title: "Pacify-X Control Plane Summary",
     description: "Read the canonical versioned Pacify-X dashboard snapshot.",
     inputSchema: empty,
     annotations: readOnly
-  }, async () => textResult(runApi(["snapshot"])));
+  }, async () => async () => textResult(runApi(["snapshot", "--read-only"])));
   registerTool("pacify_capability_manifest", {
     title: "Pacify-X AI Capability Manifest",
     description: "Describe the machine-readable PX surfaces, effect boundaries, schema sources, and safe next calls available to an AI client.",
@@ -33439,23 +34084,26 @@ function buildServer() {
       { id: "activity-observability", tool: "pacify_activity_observability", emit_tool: "pacify_activity_emit", effects: ["local-metadata-trace"], source: "project-owned activity ledger" },
       { id: "mcp-instrumentation-health", tool: "pacify_mcp_instrumentation_status", effects: ["read"], source: "src/mcpActivityIntegration.js" },
       { id: "portable-memory-observability", tool: "pacify_memory_observability", effects: ["read"], source: "project-owned coordination ledger" },
-      { id: "parallel-planning", tool: "pacify_parallel_plan_create", effects: ["project-coordination-write"], source: "project-owned coordination ledger" }
+      { id: "parallel-planning", tool: "pacify_parallel_plan_create", effects: ["project-coordination-write"], source: "project-owned coordination ledger" },
+      { id: "cognitive-query", tool: "pacify_cognitive_query", effects: ["read"], source: "registry/cognitive_map_index.json via runtime.cognitive_query" },
+      { id: "coordination-mailbox", tool: "pacify_message_send", read_tool: "pacify_message_read", effects: ["project-coordination-write", "read"], source: "project-owned coordination ledger" },
+      { id: "coordination-wait-wake", tool: "pacify_wait_register", status_tool: "pacify_wait_status", ack_tool: "pacify_wake_ack", effects: ["project-coordination-write", "read"], source: "project-owned coordination ledger" }
     ],
     invariants: ["tool availability does not grant authority", "unknown stays unknown", "Git mutation is denied", "billable execution requires separate approval"]
   }));
-  registerTool("pacify_graph_query", {
+  registerLazyTool("pacify_graph_query", {
     title: "Pacify-X Knowledge Graph Query",
     description: "Return a bounded real node-and-edge neighborhood with typed directions and human-readable connection reasons.",
     inputSchema: external_exports.object({ view: external_exports.enum(["capabilities", "repository"]).optional(), node: external_exports.string().max(500).optional(), query: external_exports.string().max(500).optional(), relation: external_exports.string().max(160).optional(), direction: external_exports.enum(["incoming", "outgoing", "both"]).optional(), depth: external_exports.number().int().min(1).max(2).optional(), max_nodes: external_exports.number().int().min(2).max(50).optional(), max_edges: external_exports.number().int().min(1).max(100).optional() }).strict(),
     annotations: readOnly
-  }, async (input) => textResult(runApi(["graph", "--view", input.view || "capabilities", "--project", process.env.PX_WORKSPACE_ROOT || process.env.PX_ENGINE_ROOT || "", "--node", input.node || "", "--query", input.query || "", "--relation", input.relation || "", "--direction", input.direction || "both", "--depth", String(input.depth || 1), "--max-nodes", String(input.max_nodes || 24), "--max-edges", String(input.max_edges || 48)])));
-  registerTool("pacify_hardware_telemetry", {
+  }, async () => async (input) => textResult(runApi(["graph", "--view", input.view || "capabilities", "--project", process.env.PX_WORKSPACE_ROOT || process.env.PX_ENGINE_ROOT || "", "--node", input.node || "", "--query", input.query || "", "--relation", input.relation || "", "--direction", input.direction || "both", "--depth", String(input.depth || 1), "--max-nodes", String(input.max_nodes || 24), "--max-edges", String(input.max_edges || 48)])));
+  registerLazyTool("pacify_hardware_telemetry", {
     title: "Pacify-X Hardware Telemetry",
     description: "Read normalized available CPU, GPU, thermal, utilization, power, and fan sensors with source, timestamp, and explicit unavailable states.",
     inputSchema: empty,
     annotations: readOnly
-  }, async () => {
-    const snapshot = runApi(["snapshot"]);
+  }, async () => async () => {
+    const snapshot = runApi(["snapshot", "--read-only"]);
     return textResult(snapshot?.runtime?.hardware?.telemetry || { available: false, reason: "Hardware telemetry unavailable." });
   });
   registerTool("pacify_agent_readiness", {
@@ -33464,7 +34112,7 @@ function buildServer() {
     inputSchema: empty,
     annotations: readOnly
   }, async () => {
-    const args = ["readiness"];
+    const args = ["readiness", "--read-only"];
     const project = process.env.PX_WORKSPACE_ROOT || process.env.PX_ENGINE_ROOT;
     if (project) args.push("--project", project);
     if (process.env.PX_COORDINATION_ROOT) args.push("--workspace-root", process.env.PX_COORDINATION_ROOT);
@@ -33477,7 +34125,7 @@ function buildServer() {
     annotations: readOnly
   }, async (input) => {
     if (input.kind === "extensions") return textResult(readEnvironmentSubject(workspaceRoot(), "extensions", { query: input.query, offset: input.offset, limit: input.limit }));
-    if (input.kind === "mcp") return textResult({ status: "serving_this_request", observed: true, transport: "stdio", effects: "tool-specific", telemetry_effects: "local metadata-only trace ledger", server: "pacify-x-governed-context", version: MCP_VERSION, instrumentation: mcpInstrumentation.health() });
+    if (input.kind === "mcp") return textResult({ status: "serving_this_request", observed: true, transport: "stdio", effects: "tool-specific", telemetry_effects: "read calls counted in process memory; write calls retain local metadata-only trace", server: "pacify-x-governed-context", version: MCP_VERSION, instrumentation: mcpInstrumentation.health() });
     const kind = input.kind === "connectors" ? "enterprise-integrations" : input.kind;
     return textResult(runApi(["catalog", "--kind", kind, "--query", input.query || "", "--offset", String(input.offset || 0), "--limit", String(input.limit || 50), "--sort", "label"]));
   });
@@ -33487,13 +34135,13 @@ function buildServer() {
     inputSchema: external_exports.object({ subject: external_exports.enum(["summary", "graph", "extensions", "tools", "python", "npm"]).optional(), query: external_exports.string().max(300).optional(), offset: external_exports.number().int().nonnegative().optional(), limit: external_exports.number().int().min(1).max(500).optional() }).strict(),
     annotations: readOnly
   }, async (input) => textResult(readEnvironmentSubject(workspaceRoot(), input.subject || "summary", { query: input.query, offset: input.offset, limit: input.limit })));
-  registerTool("pacify_environment_extension_detail", {
+  registerLazyTool("pacify_environment_extension_detail", {
     title: "Pacify-X Extension Capability Contract",
     description: "Lazy-load one hash-verified extension contract mapping capabilities, commands/APIs, inputs/outputs, permissions/resources, effects, conflicts, policy, and state without activating it.",
     inputSchema: external_exports.object({ extension_id: external_exports.string().min(1).max(200) }).strict(),
     annotations: readOnly
-  }, async (input) => textResult(readEnvironmentExtension(workspaceRoot(), input.extension_id)));
-  registerTool("pacify_catalog_query", {
+  }, async () => async (input) => textResult(readEnvironmentExtension(workspaceRoot(), input.extension_id)));
+  registerLazyTool("pacify_catalog_query", {
     title: "Pacify-X Catalog Query",
     description: "Search a bounded page of core catalogs or the separately namespaced MS+Enterprise catalogs.",
     inputSchema: external_exports.object({
@@ -33505,13 +34153,74 @@ function buildServer() {
       sort: external_exports.enum(["id", "label", "status", "kind"]).optional()
     }).strict(),
     annotations: readOnly
-  }, async (input) => textResult(runApi(["catalog", "--kind", input.kind, "--query", input.query || "", "--status", input.status || "", "--offset", String(input.offset || 0), "--limit", String(input.limit || 50), "--sort", input.sort || "label"])));
-  registerTool("pacify_enterprise_status", {
+  }, async () => async (input) => textResult(runApi(["catalog", "--kind", input.kind, "--query", input.query || "", "--status", input.status || "", "--offset", String(input.offset || 0), "--limit", String(input.limit || 50), "--sort", input.sort || "label"])));
+  registerTool("pacify_cognitive_query", {
+    title: "Pacify-X Cognitive Query",
+    description: "Return bounded metadata-first candidates from the PX cognitive map. Results are non-authoritative, limited to 1-3 per category, and do not invoke a model or hydrate bodies.",
+    inputSchema: external_exports.object({ query: external_exports.string().min(1).max(16384), project_id: external_exports.string().max(240).optional(), generation_id: external_exports.string().max(256).optional(), top_per_category: external_exports.number().int().min(1).max(3).optional() }).strict(),
+    annotations: readOnly
+  }, async (input) => {
+    const args = ["cognitive-query", "--query", input.query, "--project-id", input.project_id || "", "--top-per-category", String(input.top_per_category || 3)];
+    if (input.generation_id) args.push("--generation-id", input.generation_id);
+    return textResult(runApi(args));
+  });
+  registerTool("pacify_message_send", {
+    title: "Send Pacify-X Coordination Message",
+    description: "Append one bounded durable public or project mailbox message. Private messages require a trusted local recipient channel outside MCP.",
+    inputSchema: external_exports.object({ ...actorFields, recipient_id: external_exports.string().min(1).max(160), recipient_transport: external_exports.enum(["local", "remote", "browser"]).optional(), privacy_class: external_exports.enum(["public", "project", "private"]).optional(), payload: external_exports.string().min(1).max(8192), evidence_refs: external_exports.array(external_exports.string().max(1e3)).max(32).optional(), message_id: external_exports.string().max(200).optional(), egress_approved: external_exports.boolean().optional() }).strict(),
+    annotations: write
+  }, async (input) => {
+    if (input.privacy_class === "private") throw new Error("coordination-private-message-requires-trusted-local-recipient");
+    return textResult(sendMessage(workspaceRoot(), actor(input), input));
+  });
+  registerTool("pacify_message_read", {
+    title: "Read Pacify-X Coordination Messages",
+    description: "Read bounded unconsumed mailbox messages without changing their state.",
+    inputSchema: external_exports.object({ ...actorFields, recipient_id: external_exports.string().max(160).optional(), limit: external_exports.number().int().min(1).max(100).optional() }).strict(),
+    annotations: readOnly
+  }, async (input) => textResult(readMessages(workspaceRoot(), actor(input), input, { includePrivate: false })));
+  registerTool("pacify_message_consume", {
+    title: "Consume Pacify-X Coordination Message",
+    description: "Mark one durable mailbox message consumed. This never changes task ownership or grants a claim.",
+    inputSchema: external_exports.object({ ...actorFields, recipient_id: external_exports.string().max(160).optional(), message_id: external_exports.string().min(1).max(200) }).strict(),
+    annotations: write
+  }, async (input) => textResult(consumeMessage(workspaceRoot(), actor(input), input, { allowPrivate: false })));
+  registerTool("pacify_wait_register", {
+    title: "Register Pacify-X Durable Wait",
+    description: "Put an owned claimed task into a durable waiting state bound to a checkpoint and current fencing proof. Cyclic task waits are rejected.",
+    inputSchema: external_exports.object({
+      ...actorFields,
+      task_id: external_exports.string().min(1).max(160),
+      claim_id: external_exports.string().min(1).max(200),
+      fencing_tokens: external_exports.record(external_exports.string(), external_exports.number().int().positive()),
+      condition_type: external_exports.enum(["task", "message", "resource", "approval", "timer", "model_result"]),
+      dependency_ids: external_exports.array(external_exports.string().min(1).max(240)).min(1).max(64),
+      checkpoint_id: external_exports.string().min(1).max(240),
+      mode: external_exports.enum(["all", "any"]).optional(),
+      ttl_minutes: external_exports.number().int().min(1).max(1440).optional(),
+      exact_next_action: external_exports.string().max(2e3).optional(),
+      cognitive_generation_id: external_exports.string().max(256).optional()
+    }).strict(),
+    annotations: write
+  }, async (input) => textResult(registerWait(workspaceRoot(), actor(input), input)));
+  registerTool("pacify_wait_status", {
+    title: "Read Pacify-X Wait Status",
+    description: "Read one durable wait and its bounded resume packet. The packet never grants execution authority.",
+    inputSchema: external_exports.object({ wait_id: external_exports.string().min(1).max(200) }).strict(),
+    annotations: readOnly
+  }, async (input) => textResult(waitStatus(workspaceRoot(), input.wait_id)));
+  registerTool("pacify_wake_ack", {
+    title: "Acknowledge Pacify-X Wake",
+    description: "Acknowledge receipt of one wake as the original waiting actor/session. Acknowledgement does not mint or renew a task claim.",
+    inputSchema: external_exports.object({ ...actorFields, wake_id: external_exports.string().min(1).max(200) }).strict(),
+    annotations: write
+  }, async (input) => textResult(acknowledgeWake(workspaceRoot(), actor(input), input)));
+  registerLazyTool("pacify_enterprise_status", {
     title: "Pacify-X MS+Enterprise Status",
     description: "Read the separate project enterprise state, offline defaults, pack states, targets, and last readiness receipt.",
     inputSchema: empty,
     annotations: readOnly
-  }, async () => textResult(initializeEnterprise(workspaceRoot(), enterpriseCatalog())));
+  }, async () => async () => textResult(initializeEnterprise(workspaceRoot(), enterpriseCatalog(), { persist: false })));
   registerTool("pacify_billable_guardrail_evaluate", {
     title: "Evaluate Pacify-X Billable Guardrails",
     description: "Evaluate a proposed provider execution against the separate project policy. This never executes, connects, reads credentials, or incurs cost.",
@@ -33531,7 +34240,7 @@ function buildServer() {
     }).strict(),
     annotations: readOnly
   }, async (input) => {
-    const state = initializeEnterprise(workspaceRoot(), enterpriseCatalog()).state;
+    const state = initializeEnterprise(workspaceRoot(), enterpriseCatalog(), { persist: false }).state;
     return textResult(evaluateBillableExecution(state.execution_policy, input));
   });
   registerTool("pacify_enterprise_readiness", {
@@ -33620,12 +34329,30 @@ function buildServer() {
   }, async (input) => textResult(readMemoryTelemetry(workspaceRoot(), { query: input.query, limit: input.limit, includeContent: input.include_content === true })));
   registerTool("pacify_resume_handoff", {
     title: "Pacify-X Resume Handoff",
-    description: "Return the verified cross-IDE resume packet produced from the project-owned rolling ledger.",
+    description: "Return a live cross-IDE resume projection without reading the stored handoff packet.",
     inputSchema: empty,
     annotations: readOnly
   }, async () => {
     const data = readCoordination(workspaceRoot(), { eventLimit: 20 });
-    return textResult(readJsonFile(data.paths.handoff_json, { available: false, reason: "No handoff packet exists yet.", coordination: data.state }));
+    const state = data.state;
+    const plan = state.plans.find((item) => item.id === state.active_plan) || null;
+    const tasks = plan ? state.tasks.filter((item) => plan.task_ids.includes(item.id)) : [];
+    const next = tasks.find((item) => ["planned", "ready", "released"].includes(item.status) && item.depends_on.every((dependency) => ["completed", "reconciled"].includes(state.tasks.find((row) => row.id === dependency)?.status)));
+    return textResult({
+      schema_version: "px.resume-handoff-projection/1.0",
+      available: data.instrumented,
+      source: "live-coordination-state",
+      stored_handoff_read: false,
+      project: state.project,
+      current_state_hash: state.state_hash,
+      event_log_health: data.event_log_health,
+      objective: plan?.objective || null,
+      phase: plan ? "parallel-execution" : "idle-or-complete",
+      tasks,
+      active_claims: state.claims,
+      exact_next_action: next ? `Claim task ${next.id}: ${next.title}` : "Review completed work or create a new parallel plan.",
+      handoff_path: data.paths.handoff_json
+    });
   });
   registerTool("pacify_task_handoff", {
     title: "Pacify-X Task Handoff",
@@ -33739,5 +34466,11 @@ function buildServer() {
   });
   return server;
 }
+process.on("exit", () => {
+  try {
+    disposeLazyServices();
+  } catch {
+  }
+});
 serveStdio(buildServer, { onerror: (error51) => process.stderr.write(`[pacify-x-mcp] ${error51.message}
 `) });

@@ -11,7 +11,22 @@ const { processTreeSpawnOptions, terminateProcessTree } = require('./processTree
 const { createHealthState } = require('./healthState');
 const { WorkGovernor } = require('./workGovernor');
 const { RevisionStore, MetadataCache } = require('./runtimeRevisions');
+
+// Resolve the dependency-complete certification Python before falling back to
+// the ambient interpreter (matches the owned-host launcher resolution).
+function resolveEnginePython(engineRoot) {
+  // Match owned host launches. Explicit constructor/VS Code configuration is
+  // applied by the caller before this fallback, so it retains precedence.
+  const requested = process.env.PX_PYTHON_PATH || process.env.PX_PYTHON;
+  if (typeof requested === 'string' && requested.trim()) return requested.trim();
+  const candidate = process.platform === 'win32'
+    ? path.join(String(engineRoot || ''), '.venv-certify', 'Scripts', 'python.exe')
+    : path.join(String(engineRoot || ''), '.venv-certify', 'bin', 'python');
+  try { if (fs.existsSync(candidate) && fs.lstatSync(candidate).isFile()) return candidate; } catch { /* fall through */ }
+  return process.platform === 'win32' ? 'python' : 'python3';
+}
 const { approvalPayloadJson, signClaim, validMaterial } = require('./studioApprovalHost');
+const { descriptorFor: dataControlDescriptor, validatePayload: validateDataControlPayload } = require('./dataControlHost');
 const { collectStudioCatalog, filterStudioItems, normalizeSkillCatalogPage } = require('./studioCatalog');
 
 const MAX_OUTPUT_BYTES = 32 * 1024 * 1024;
@@ -46,12 +61,13 @@ const SNAPSHOT_FINGERPRINT_PATHS = Object.freeze([
   'extension/src',
   'extension/media/dashboard',
   'extension/media/styles',
-  '.engineering-bootstrap/provider-budget/ledger.json',
-  '.engineering-bootstrap/project-map/architecture-graph.json'
+  '.agentic_engineering_os_px/provider-budget/ledger.json',
+  '.agentic_engineering_os_px/project-map/architecture-graph.json'
 ]);
 const STUDIO_READ_ONLY_OPERATIONS = new Set([
-  'agent:identity-absence', 'agent:next-version', 'agent:preview', 'agent:runs', 'agent:status',
+  'agent:identity-absence', 'agent:next-version', 'agent:preview', 'agent:runs', 'agent:status', 'agent:check-host-run',
   'workflow:identity-absence', 'workflow:next-version', 'workflow:dry-run', 'workflow:runs', 'workflow:status',
+  'workflow:resolve-plan-owner',
   'skill:identity-absence', 'skill:next-version', 'knowledge:browse'
 ]);
 
@@ -117,8 +133,8 @@ function snapshotSourceRevision(engineRoot, projectRoot, workspaceRoot, contentM
     }
   };
   for (const relative of SNAPSHOT_FINGERPRINT_PATHS) inspect(engineRoot, relative);
-  inspect(projectRoot, '.engineering-bootstrap/project-map/architecture-graph.json');
-  inspect(projectRoot, '.engineering-bootstrap/studios');
+  inspect(projectRoot, '.agentic_engineering_os_px/project-map/architecture-graph.json');
+  inspect(projectRoot, '.agentic_engineering_os_px/studios');
   inspect(projectRoot, '.px/skill-index.json');
   inspect(projectRoot, '.px/skills');
   inspect(workspaceRoot, 'projects_tracking/project-registry.json');
@@ -210,6 +226,8 @@ function studioProcessError(stderr, exitCode) {
 }
 
 function captureJson(command, args, options = {}) {
+  const outputLimit = options.maxOutputBytes === undefined ? MAX_OUTPUT_BYTES : options.maxOutputBytes;
+  if (!Number.isSafeInteger(outputLimit) || outputLimit < 1 || outputLimit > MAX_OUTPUT_BYTES) return Promise.reject(new Error('Invalid native output bound.'));
   return new Promise((resolve, reject) => {
     const child = cp.spawn(command, args, {
       cwd: options.cwd, shell: false, windowsHide: true, stdio: [options.input === undefined ? 'ignore' : 'pipe', 'pipe', 'pipe'],
@@ -230,14 +248,14 @@ function captureJson(command, args, options = {}) {
     child.stdout.setEncoding('utf8'); child.stderr.setEncoding('utf8');
     child.stdout.on('data', chunk => {
       stdout += chunk;
-      if (Buffer.byteLength(stdout, 'utf8') > MAX_OUTPUT_BYTES) { terminateProcessTree(child); finish(new Error('Pacify-X dashboard API exceeded its bounded output limit.')); }
+      if (Buffer.byteLength(stdout, 'utf8') > outputLimit) { terminateProcessTree(child); finish(new Error('Pacify-X dashboard API exceeded its bounded output limit.')); }
     });
     child.stderr.on('data', chunk => { stderr = (stderr + chunk).slice(-200_000); });
     child.on('error', error => finish(error));
     child.on('close', code => {
       if (settled) return;
-      if (code !== 0) { finish(studioProcessError(stderr, code)); return; }
-      try { finish(null, JSON.parse(stdout)); } catch (error) { finish(new Error(`Pacify-X returned invalid dashboard JSON: ${error.message}`)); }
+      if (code !== 0) { finish(options.sensitiveResponse ? new Error('Native data control rejected the request; no completion is claimed.') : studioProcessError(stderr, code)); return; }
+      try { finish(null, JSON.parse(stdout)); } catch (error) { finish(new Error(options.sensitiveResponse ? 'Native data control returned invalid bounded JSON.' : `Pacify-X returned invalid dashboard JSON: ${error.message}`)); }
     });
   });
 }
@@ -305,8 +323,8 @@ function normalizeSnapshot(raw) {
 }
 
 class PxBridge {
-  constructor({ pythonPath = 'python', engineRoot, projectRoot, workspaceRoot, cacheTtlMs = DEFAULT_SNAPSHOT_TTL_MS, governor, capture = captureJson, now = Date.now, cacheStore = null, approvalKeyProvider = null, approvalRecoveryProvider = null } = {}) {
-    this.pythonPath = pythonPath; this.engineRoot = engineRoot; this.projectRoot = projectRoot; this.workspaceRoot = workspaceRoot;
+  constructor({ pythonPath, engineRoot, projectRoot, workspaceRoot, cacheTtlMs = DEFAULT_SNAPSHOT_TTL_MS, governor, capture = captureJson, now = Date.now, cacheStore = null, approvalKeyProvider = null, approvalRecoveryProvider = null } = {}) {
+    this.pythonPath = pythonPath || resolveEnginePython(engineRoot); this.engineRoot = engineRoot; this.projectRoot = projectRoot; this.workspaceRoot = workspaceRoot;
     this.cacheTtlMs = Math.max(5000, Math.min(5 * 60_000, Number(cacheTtlMs) || DEFAULT_SNAPSHOT_TTL_MS));
     this.capture = capture; this.now = now;
     this.governor = governor || new WorkGovernor(); this.ownsGovernor = !governor;
@@ -708,12 +726,50 @@ class PxBridge {
     if (!this.projectRoot) throw new Error('Studio requires an explicit project workspace; the Pacify-X engine source is never a project-state fallback.');
     const args = ['-m', 'runtime.studio_api', '--root', this.projectRoot, '--kind', kind, '--operation', operation, '--payload-stdin'];
     const key = `studio:${kind}:${operation}:${crypto.createHash('sha256').update(body).digest('hex')}:${crypto.randomUUID()}`;
-    const timeoutMs = ['run', 'start', 'resume', 'recover', 'reconcile'].includes(operation) ? 120_000 : 30_000;
+    const timeoutMs = ['run', 'start', 'resume', 'recover', 'reconcile', 'execute-plan-owner'].includes(operation) ? 120_000 : 30_000;
     const result = await this.governor.run(key, signal => this.capture(this.pythonPath, args, { cwd: this.engineRoot, timeoutMs, signal, input: body }), { pool: 'interactive', priority: 1, reason: `studio-${operation}`, circuitKey: 'studio-api', timeoutMs });
     if (!STUDIO_READ_ONLY_OPERATIONS.has(`${kind}:${operation}`)) {
       const domain = kind === 'skill' ? 'skills' : kind === 'knowledge' ? 'knowledge' : kind;
       this.invalidate(`studio-${kind}-${operation}-committed`, domain);
     }
+    return result;
+  }
+
+  async issueDataControlApproval(payload, existingKeyring) {
+    if (!isEngineRoot(this.engineRoot) || !this.projectRoot) throw new Error('Data control approval requires explicit engine/project roots.');
+    validateDataControlPayload(dataControlDescriptor(this.engineRoot), payload);
+    if (existingKeyring?.schema_version !== 'px.studio-approval-keyring/2.0' || !validMaterial(existingKeyring.active)) throw new Error('Existing host signing identity required.');
+    const descriptor = await this.governor.run(`data-controls:existing-host:${crypto.randomUUID()}`, signal => this.capture(this.pythonPath,
+      ['-m', 'runtime.data_controls', '--project-root', this.projectRoot, '--describe-existing-approval'],
+      { cwd: this.engineRoot, timeoutMs: 30_000, signal, maxOutputBytes: 64 * 1024, sensitiveResponse: true }), { pool: 'interactive', priority: 1, reason: 'data-control-existing-host', timeoutMs: 30_000 });
+    const projectIdentity = String(descriptor?.project_identity || '');
+    const keyRoot = path.resolve(String(descriptor?.key_root || ''));
+    const recordPath = path.resolve(String(descriptor?.record_path || ''));
+    if (descriptor?.schema_version !== 'px.data-control-existing-host/1.0' || !projectIdentity.startsWith('px-project-') ||
+        descriptor.key_id !== existingKeyring.active.keyId || recordPath !== path.resolve(keyRoot, 'approval-verifiers', `${projectIdentity}.json`) ||
+        pathWithin(keyRoot, this.projectRoot) || pathWithin(recordPath, this.projectRoot)) throw new Error('Existing data control host identity/boundary differs.');
+    const payloadJson = approvalPayloadJson(payload);
+    const issued = new Date();
+    const claim = { schema_version: 'px.studio-host-approval/2.1', project_identity: projectIdentity, kind: 'data-controls', operation: payload.operation,
+      payload_sha256: crypto.createHash('sha256').update(payloadJson, 'utf8').digest('hex'), approved_by: 'human:vscode-local-user',
+      issued_utc: issued.toISOString(), expires_utc: new Date(issued.getTime() + 120_000).toISOString(), nonce: crypto.randomBytes(24).toString('hex'), key_id: existingKeyring.active.keyId };
+    return { approval_capability: { claim, payload_json: payloadJson, signature: signClaim(existingKeyring.active, claim) } };
+  }
+
+  async dataControlOperation(payload) {
+    if (!isEngineRoot(this.engineRoot) || !this.projectRoot) throw new Error('Data control transport requires explicit engine/project roots.');
+    const unsigned = Object.fromEntries(Object.entries(payload || {}).filter(([key]) => key !== 'approval_capability'));
+    validateDataControlPayload(dataControlDescriptor(this.engineRoot), unsigned);
+    const proof = payload.approval_capability;
+    if (!proof || proof.claim?.kind !== 'data-controls' || proof.claim?.operation !== unsigned.operation ||
+        proof.payload_json !== approvalPayloadJson(unsigned)) throw new Error('Data control approval differs from the exact payload.');
+    const body = Buffer.from(JSON.stringify(payload), 'utf8');
+    if (body.length > 256 * 1024) throw new Error('Data control envelope exceeds its native bound.');
+    const result = await this.governor.run(`data-controls:${crypto.randomUUID()}`, signal => this.capture(this.pythonPath,
+      ['-m', 'runtime.data_controls', '--project-root', this.projectRoot],
+      { cwd: this.engineRoot, timeoutMs: 30_000, signal, input: body, maxOutputBytes: 4 * 1024 * 1024, sensitiveResponse: true }),
+      { pool: 'interactive', priority: 1, reason: 'data-control-operation', circuitKey: 'data-controls', timeoutMs: 30_000 });
+    if (Buffer.byteLength(JSON.stringify(result)) > 4 * 1024 * 1024) throw new Error('Data control response exceeds its native bound.');
     return result;
   }
 

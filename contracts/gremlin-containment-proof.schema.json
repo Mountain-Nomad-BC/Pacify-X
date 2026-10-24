@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:gremlin-containment-proof",
+  "title": "Gremlin Nanny containment proof",
+  "description": "The per-execution containment proof the canonical Gremlin Nanny exposes into ExecutionContext. It is produced only by the containment authority; the workload can never set it. A branch whose proof is not proven stays NOT_ADMITTED.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "agent_execution_id",
+    "proven",
+    "gremlin_revision",
+    "health_state",
+    "reason",
+    "sandbox_policy_sha256",
+    "authority_granted"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "const": "px.gremlin-containment/1.0" },
+    "agent_execution_id": { "type": "string", "minLength": 1, "maxLength": 512 },
+    "proven": { "type": "boolean" },
+    "receipt_id": { "type": ["string", "null"], "maxLength": 512 },
+    "gremlin_revision": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "identity_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "health_state": {
+      "enum": [
+        "HEALTHY", "DEGRADED", "PARTIAL_OBSERVATION", "PARTIAL_ENFORCEMENT",
+        "UNTRUSTED_TELEMETRY", "POLICY_INTEGRITY_FAILURE", "CONTROL_INTEGRITY_FAILURE",
+        "OFFLINE", "RECOVERING"
+      ]
+    },
+    "reason": { "type": "string", "minLength": 1, "maxLength": 512 },
+    "sandbox_policy_sha256": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "authority_granted": { "const": false }
+  }
+}

@@ -27,7 +27,7 @@ def lifecycle_status(framework_root: Path, project: Path) -> dict[str, Any]:
         }
     )
     state_path = (
-        project / ".engineering-bootstrap" / "project-management" / "state.json"
+        project / ".agentic_engineering_os_px" / "project-management" / "state.json"
     )
     state: dict[str, Any] = {}
     if state_path.is_file():

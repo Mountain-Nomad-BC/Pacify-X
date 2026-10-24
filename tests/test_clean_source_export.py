@@ -112,7 +112,7 @@ def test_export_uses_shared_repository_scope_for_ephemeral_artifacts() -> None:
         "tmp_admission.json",
         ".VSCodeCounter/report.json",
         ".pacify-x/resource-ledger.json.lock",
-        ".engineering-bootstrap/coordination/state.json",
+        ".agentic_engineering_os_px/coordination/state.json",
         "extension/dist/pacify-x.vsix",
         "extension/build/generated.js",
         "extension/evidence/screenshots/view.png",
@@ -120,7 +120,7 @@ def test_export_uses_shared_repository_scope_for_ephemeral_artifacts() -> None:
         assert runtime.repository_scope.is_external_environment_relative(relative)
 
 
-def test_git_source_archive_is_bounded_and_excludes_local_custody() -> None:
+def test_current_source_archive_is_bounded_and_excludes_local_custody() -> None:
     root = Path(__file__).resolve().parents[1]
     result = scripts.audit_source_archive.audit_source_archive(
         root, worktree_attributes=True
@@ -128,6 +128,40 @@ def test_git_source_archive_is_bounded_and_excludes_local_custody() -> None:
     assert result["valid"], json.dumps(result, indent=2, sort_keys=True)
     assert result["uncompressed_bytes"] <= result["maximum_uncompressed_bytes"]
     assert result["forbidden_members"] == []
+    assert result["validation_basis"] == "current_implementation"
+    assert result["historical_prerequisites"] is False
+    assert result["git_acceptance"]["satisfied"] is False
+
+
+def test_current_archive_rejects_payload_hash_change(tmp_path: Path) -> None:
+    import hashlib
+    import io
+    import tarfile
+    archive_path = tmp_path / "source.tar"
+    with tarfile.open(archive_path, "w") as archive:
+        member = tarfile.TarInfo("runtime/cli.py")
+        member.size = 7
+        archive.addfile(member, io.BytesIO(b"changed"))
+    result = scripts.audit_source_archive._inspect_archive(
+        archive_path, revision="current", worktree_attributes=False,
+        current_manifest={"runtime/cli.py": hashlib.sha256(b"original").hexdigest()},
+    )
+    assert result["valid"] is False
+
+
+def test_current_archive_rejects_unadmitted_authority_and_closes_workspace(tmp_path: Path) -> None:
+    from runtime.resource_lifecycle import ResourceManager
+    root = tmp_path / "source"
+    (root / "policies").mkdir(parents=True)
+    (root / "policies/rev1xx-validation.json").write_text(
+        json.dumps({"basis":"current_implementation", "authority":"unadmitted"}), encoding="utf-8")
+    cleanup = tmp_path / "cleanup"
+    cleanup.mkdir()
+    result = scripts.audit_source_archive.audit_source_archive(
+        root, cleanup_root=cleanup, resource_manager=ResourceManager(tmp_path / "resources.json"))
+    assert result["valid"] is False
+    assert result["workspace_cleanup"]["resources_reclaimed"] == 1
+    assert list(cleanup.iterdir()) == []
 
 
 def test_clean_export_refuses_unearned_certified_filename(tmp_path: Path) -> None:
@@ -175,19 +209,19 @@ def test_clean_export_retains_only_test_receipts_from_runtime_state_and_omits_da
 ):
     root = tmp_path / "source"
     root.mkdir()
-    receipt = root / ".engineering-bootstrap/test-evidence/sections/dashboard.json"
+    receipt = root / ".agentic_engineering_os_px/test-evidence/sections/dashboard.json"
     receipt.parent.mkdir(parents=True)
     receipt.write_text('{"current":true}\n', encoding="utf-8")
     local_gate = (
         root
-        / ".engineering-bootstrap/test-evidence/adversarial-repair-gates/structural.json"
+        / ".agentic_engineering_os_px/test-evidence/adversarial-repair-gates/structural.json"
     )
     local_gate.parent.mkdir(parents=True)
     local_gate.write_text('{"local":true}\n', encoding="utf-8")
-    volatile = root / ".engineering-bootstrap/operation-bus/events.jsonl"
+    volatile = root / ".agentic_engineering_os_px/operation-bus/events.jsonl"
     volatile.parent.mkdir(parents=True)
     volatile.write_text("volatile\n", encoding="utf-8")
-    authority = root / ".engineering-bootstrap/.ledger-authority/commissioning-events"
+    authority = root / ".agentic_engineering_os_px/.ledger-authority/commissioning-events"
     head = authority / "head.json"
     anchor = authority / "anchors/00000001-example.json"
     anchor.parent.mkdir(parents=True)
@@ -201,23 +235,23 @@ def test_clean_export_retains_only_test_receipts_from_runtime_state_and_omits_da
     assert result["test_receipt_count"] == 1
     with zipfile.ZipFile(output) as archive:
         assert (
-            ".engineering-bootstrap/test-evidence/sections/dashboard.json"
+            ".agentic_engineering_os_px/test-evidence/sections/dashboard.json"
             in archive.namelist()
         )
         assert (
-            ".engineering-bootstrap/test-evidence/adversarial-repair-gates/structural.json"
+            ".agentic_engineering_os_px/test-evidence/adversarial-repair-gates/structural.json"
             not in archive.namelist()
         )
         assert (
-            ".engineering-bootstrap/operation-bus/events.jsonl"
+            ".agentic_engineering_os_px/operation-bus/events.jsonl"
             not in archive.namelist()
         )
         assert (
-            ".engineering-bootstrap/.ledger-authority/commissioning-events/head.json"
+            ".agentic_engineering_os_px/.ledger-authority/commissioning-events/head.json"
             in archive.namelist()
         )
         assert (
-            ".engineering-bootstrap/.ledger-authority/commissioning-events/anchors/00000001-example.json"
+            ".agentic_engineering_os_px/.ledger-authority/commissioning-events/anchors/00000001-example.json"
             in archive.namelist()
         )
         assert "extension/SHA256SUMS.txt" not in archive.namelist()

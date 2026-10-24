@@ -1,0 +1,702 @@
+{
+  "boundary_sha256": "53328a6dcb2b64d15dd19a36ed906a3e7a9a26ed383da0df4bfaa8a0c6da340d",
+  "canonical_authority_check": {
+    "problems": [],
+    "valid": true
+  },
+  "classifications": [
+    "authored",
+    "generated",
+    "vendored",
+    "evidence",
+    "runtime_state",
+    "packaging_generated",
+    "runtime_required_generated"
+  ],
+  "generated_artifacts": [
+    {
+      "classification": "generated",
+      "consumers": [
+        "docs/architecture presentation (offline)"
+      ],
+      "deterministic": false,
+      "generator": "build_atlas.py",
+      "generator_owner": "docs/architecture/tools/build_atlas.py",
+      "generator_path": "docs/architecture/tools/build_atlas.py",
+      "inputs": [
+        "runtime/architecture_audit.py",
+        "registry/*.json",
+        "runtime/*.py",
+        "extension/src/**/*.js"
+      ],
+      "notes": "Emits a wall-clock generation timestamp, so repeated runs are not byte-identical. Excluded from engine identity by runtime/engine_identity.py EXCLUDED_PATHS. NOT CURRENTLY REGENERABLE: build_atlas.py reads reference/graph_baseline_architecture.json, which does not exist in the repository. See PX-GAP-0008. Published output is stale.",
+      "path": "docs/architecture/ATLAS_OFFLINE.html",
+      "regenerable": false,
+      "regeneration_command": "python docs/architecture/tools/build_atlas.py",
+      "unbuilt_presence": "absent_by_definition"
+    },
+    {
+      "classification": "generated",
+      "consumers": [
+        "docs/architecture presentation (offline)"
+      ],
+      "deterministic": false,
+      "generator": "build_atlas.py",
+      "generator_owner": "docs/architecture/tools/build_atlas.py",
+      "generator_path": "docs/architecture/tools/build_atlas.py",
+      "inputs": [
+        "docs/architecture/data/complete_graph.json"
+      ],
+      "notes": "NOTE: this is the atlas output copy. It is NOT extension/media/graph_data.js, which does not exist in this repository and must not be registered as generated. NOT CURRENTLY REGENERABLE, see PX-GAP-0008.",
+      "path": "docs/architecture/graph_data.js",
+      "regenerable": false,
+      "regeneration_command": "python docs/architecture/tools/build_atlas.py",
+      "unbuilt_presence": "absent_by_definition"
+    },
+    {
+      "classification": "generated",
+      "consumers": [
+        "docs/architecture/data/canonical_systems.json (docs evidence)",
+        "docs/architecture/presentation/build.md (status check)"
+      ],
+      "deterministic": true,
+      "generator": "build_atlas.py",
+      "generator_owner": "docs/architecture/tools/build_atlas.py",
+      "generator_path": "docs/architecture/tools/build_atlas.py",
+      "inputs": [
+        "runtime/architecture_audit.py",
+        "registry/*.json",
+        "runtime/*.py"
+      ],
+      "notes": "Directory of JSON/JSONL projections. complete_graph.json is the largest at about 21.8 MB. Excluded from engine identity by EXCLUDED_PATH_PREFIXES. NOT CURRENTLY REGENERABLE, see PX-GAP-0008.",
+      "path": "docs/architecture/data/",
+      "regenerable": false,
+      "regeneration_command": "python docs/architecture/tools/build_atlas.py",
+      "unbuilt_presence": "optional"
+    },
+    {
+      "classification": "packaging_generated",
+      "consumers": [
+        "runtime/generated_artifacts.py:skill_packaging_projection"
+      ],
+      "deterministic": true,
+      "generator": "sync_skill_packaging.py",
+      "generator_owner": "scripts/migration/sync_skill_packaging.py",
+      "generator_path": "scripts/migration/sync_skill_packaging.py",
+      "inputs": [
+        ".px/skills/**",
+        "scripts/migration/shared.py"
+      ],
+      "notes": "Bounded by '# BEGIN GENERATED OPERATIONAL SKILL DATA FILES' and '# END GENERATED OPERATIONAL SKILL DATA FILES' markers. Only the block between the markers is generated; the rest of pyproject.toml is authored.",
+      "path": "pyproject.toml#/tool.setuptools.data-files",
+      "regenerable": true,
+      "regeneration_command": "python scripts/migration/sync_skill_packaging.py",
+      "unbuilt_presence": "optional"
+    },
+    {
+      "classification": "packaging_generated",
+      "consumers": [
+        "extension/package.json:files"
+      ],
+      "deterministic": true,
+      "generator": "build-mcp.js",
+      "generator_owner": "extension/package.json",
+      "generator_path": "extension/scripts/build-mcp.js",
+      "inputs": [
+        "extension/server/source.mjs",
+        "extension/package.json"
+      ],
+      "notes": "esbuild bundle of extension/server/source.mjs produced by extension/scripts/build-mcp.js via esbuild.buildSync(bundle=true, format='cjs', sourcemap=false). It ships in the extension package's files list but is not the extension entry point, which is ./src/extension.js. Before this declaration it was classified authored, which admitted 1406374 bytes of machine-generated output into the authored denominator used by expected_build_claims and into engine_identity tree_sha256 and source_freeze. Staleness is detectable with 'npm run check:mcp --prefix extension', which is declared in extension/package.json and asserted by extension/tests/package-contract.test.js.",
+      "path": "extension/server/index.js",
+      "regenerable": true,
+      "regeneration_command": "npm run build:mcp --prefix extension",
+      "unbuilt_presence": "optional"
+    },
+    {
+      "classification": "vendored",
+      "consumers": [
+        "extension test runtime only"
+      ],
+      "deterministic": true,
+      "generator": "npm install",
+      "generator_owner": "extension/package.json",
+      "generator_path": "extension/package-lock.json",
+      "inputs": [
+        "extension/package.json",
+        "extension/package-lock.json"
+      ],
+      "notes": "Dependency install output, not source. Never edit; never authored.",
+      "path": "extension/node_modules/",
+      "regenerable": true,
+      "regeneration_command": "npm ci --prefix extension",
+      "unbuilt_presence": "absent_by_definition"
+    },
+    {
+      "classification": "packaging_generated",
+      "consumers": [
+        "Python distribution metadata tooling"
+      ],
+      "deterministic": false,
+      "generator": "setuptools.build_meta",
+      "generator_owner": "runtime/release_distribution.py",
+      "generator_path": "pyproject.toml",
+      "inputs": [
+        "pyproject.toml",
+        "runtime/"
+      ],
+      "notes": "Exact project metadata output from the declared setuptools backend. Regeneration is unverified and builds remain on owner hold; preserved bytes are not deleted.",
+      "path": "engineering_loop_bootstrap.egg-info/",
+      "regenerable": false,
+      "regeneration_command": "python -m build",
+      "unbuilt_presence": "absent_by_definition"
+    },
+    {
+      "classification": "generated",
+      "consumers": [
+        "extension/tests/extension-lifecycle-host.test.js",
+        "extension/scripts/run-operational-ui-walk.js"
+      ],
+      "deterministic": true,
+      "generator": "build-plugin-lifecycle-fixtures.js",
+      "generator_owner": "extension/scripts/build-plugin-lifecycle-fixtures.js",
+      "generator_path": "extension/scripts/build-plugin-lifecycle-fixtures.js",
+      "inputs": [
+        "extension/tests/fixtures/plugin-lifecycle/"
+      ],
+      "notes": "Exact generated fixture and receipt tree traced to its dedicated producer. Producer not executed in this campaign; no fixture build or installation is authorized.",
+      "path": "extension/tests/generated/plugin-lifecycle/",
+      "regenerable": false,
+      "regeneration_command": "node extension/scripts/build-plugin-lifecycle-fixtures.js",
+      "unbuilt_presence": "optional"
+    }
+  ],
+  "rules": [
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime/plan_registry.py",
+      "prefix": "registry/planning/rev1xx/foundation",
+      "reason": "current host admissions, native proofs and actual status transition custody"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": true,
+      "owner": "runtime/plan_registry.py",
+      "prefix": "registry/planning/rev1xx/current-status.json",
+      "reason": "current campaign status projection"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime/plan_registry.py",
+      "prefix": "registry/planning/rev1xx/status-history",
+      "reason": "retained actual current campaign transitions"
+    },
+    {
+      "classification": "evidence",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": "evidence/",
+      "reason": "mutable evidence tree"
+    },
+    {
+      "classification": "evidence",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": "test-evidence/",
+      "reason": "mutable evidence tree"
+    },
+    {
+      "classification": "evidence",
+      "exact": false,
+      "owner": "extension",
+      "prefix": "extension/evidence/",
+      "reason": "mutable evidence tree"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime/operational_gap_ledger.py",
+      "prefix": "registry/operational_gap_ledger.deltas",
+      "reason": "PX-owned regenerable ledger checkpoints"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime/operational_gap_ledger.py",
+      "prefix": "registry/operational_gap_ledger.jsonl",
+      "reason": "authoritative ledger tail"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime/operational_gap_ledger.py",
+      "prefix": "registry/operational_gap_ledger.head.json",
+      "reason": "derived checkpoint head"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime/operational_gap_ledger.py",
+      "prefix": "registry/operational_gap_ledger.snapshot.json",
+      "reason": "derived projection snapshot"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": true,
+      "owner": "runtime/operational_gap_ledger.py",
+      "prefix": "registry/.operational-gap-ledger.lock",
+      "reason": "writer lease created by the actual ledger owner"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime/resource_lifecycle.py",
+      "prefix": "extension/.engineering-bootstrap/resource-lifecycle",
+      "reason": "declared extension subproject resource custody"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime/operational_gap_ledger.py",
+      "prefix": "registry/operational_gap_ledger.reclaim",
+      "reason": "governed reclaim set and receipt"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime/engine_identity.py",
+      "prefix": "registry/engine_identity.json",
+      "reason": "derived identity output"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": "registry/current_evidence_index.json",
+      "reason": "derived evidence index"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime/source_freeze.py",
+      "prefix": "registry/source_freeze.json",
+      "reason": "derived freeze receipt"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime/source_freeze.py",
+      "prefix": "registry/source-freeze",
+      "reason": "retained freeze archive"
+    },
+    {
+      "classification": "vendored",
+      "exact": true,
+      "owner": "npm",
+      "prefix": "node_modules",
+      "reason": "npm dependency tree"
+    },
+    {
+      "classification": "vendored",
+      "exact": true,
+      "owner": "python",
+      "prefix": "__pycache__",
+      "reason": "python bytecode cache"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": true,
+      "owner": "ruff",
+      "prefix": ".ruff_cache",
+      "reason": "tool cache"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": true,
+      "owner": "pytest",
+      "prefix": ".pytest_cache",
+      "reason": "tool cache"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "build",
+      "prefix": "dist",
+      "reason": "packaged output"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "build",
+      "prefix": "build",
+      "reason": "build output"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": true,
+      "owner": "extension",
+      "prefix": "preserved-extension-installations",
+      "reason": "preserved install output"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": true,
+      "owner": "runtime",
+      "prefix": "preserved-skills",
+      "reason": "preserved skill output"
+    },
+    {
+      "classification": "evidence",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": ".engineering-bootstrap/receipts",
+      "reason": "retained cleanup receipts"
+    },
+    {
+      "classification": "evidence",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": ".engineering-bootstrap/test-evidence",
+      "reason": "retained test evidence"
+    },
+    {
+      "classification": "evidence",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": ".engineering-bootstrap/registers",
+      "reason": "census and register artifacts"
+    },
+    {
+      "classification": "vendored",
+      "exact": false,
+      "owner": "git",
+      "prefix": ".git",
+      "reason": "version control metadata"
+    },
+    {
+      "classification": "vendored",
+      "exact": false,
+      "owner": "host",
+      "prefix": "Python",
+      "reason": "host toolchain runtime"
+    },
+    {
+      "classification": "vendored",
+      "exact": false,
+      "owner": "host",
+      "prefix": "PortableGit",
+      "reason": "host toolchain runtime"
+    },
+    {
+      "classification": "vendored",
+      "exact": false,
+      "owner": "vscode",
+      "prefix": ".vscode-test",
+      "reason": "downloaded test host"
+    },
+    {
+      "classification": "vendored",
+      "exact": false,
+      "owner": "python",
+      "prefix": ".venv",
+      "reason": "virtual environment"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": "projects",
+      "reason": "canonical workspace custody"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": "projects_tracking",
+      "reason": "canonical workspace custody"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": "repo_quarantine",
+      "reason": "canonical workspace custody"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": "shared_capabilities",
+      "reason": "canonical workspace custody"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": "coordination",
+      "reason": "derived custody tree"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": "diagnostics",
+      "reason": "derived custody tree"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": "environment",
+      "reason": "derived custody tree"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": "focused-temp",
+      "reason": "derived custody tree"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": "project-map",
+      "reason": "derived custody tree"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": "project-map-history",
+      "reason": "derived custody tree"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": "project-map-history-archives",
+      "reason": "derived custody tree"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": "project-map-lock-history",
+      "reason": "derived custody tree"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": "runtime-core",
+      "reason": "derived custody tree"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": "quarantine",
+      "reason": "derived custody tree"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": "operation-bus",
+      "reason": "volatile operation bus"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": "resource-lifecycle",
+      "reason": "derived custody tree"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": "studios",
+      "reason": "derived custody tree"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": ".lock-recovery-receipts",
+      "reason": "derived custody tree"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": ".pacify-x",
+      "reason": "derived custody tree"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": ".quarantine",
+      "reason": "derived custody tree"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": ".audit-visible",
+      "reason": "derived custody tree"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": ".engineering-bootstrap/architecture-repair-wal",
+      "reason": "governed repair wal"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": ".px/preserved-skills",
+      "reason": "preserved skill output"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": ".px/global-skill-isolation",
+      "reason": "skill isolation tree"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": ".px/preserved-extension-installations",
+      "reason": "preserved install output"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": ".engineering-bootstrap/project-map",
+      "reason": "derived custody tree"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": ".engineering-bootstrap/diagnostics",
+      "reason": "derived custody tree"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": ".engineering-bootstrap/environment",
+      "reason": "derived custody tree"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": ".engineering-bootstrap/coordination",
+      "reason": "derived custody tree"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": ".engineering-bootstrap/focused-temp",
+      "reason": "derived custody tree"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": ".engineering-bootstrap/quarantine",
+      "reason": "derived custody tree"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": ".engineering-bootstrap/runtime-core",
+      "reason": "derived custody tree"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": ".engineering-bootstrap/operation-bus",
+      "reason": "volatile operation bus"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": ".engineering-bootstrap/resource-lifecycle",
+      "reason": "derived custody tree"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": ".engineering-bootstrap/studios",
+      "reason": "derived custody tree"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": ".engineering-bootstrap/project-map-history",
+      "reason": "derived custody tree"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": ".engineering-bootstrap/project-map-lock-history",
+      "reason": "derived custody tree"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": ".engineering-bootstrap/processing-order/architecture-repair-wal",
+      "reason": "governed repair wal"
+    },
+    {
+      "classification": "runtime_state",
+      "exact": false,
+      "owner": "runtime",
+      "prefix": ".px/mcp-runtime-probe.json",
+      "reason": "mutable runtime projection"
+    }
+  ],
+  "schema_version": "px.source-boundary/1.0",
+  "unbuilt_profile": {
+    "absent_by_definition_in_unbuilt": [
+      "docs/architecture/ATLAS_OFFLINE.html (present=True)",
+      "docs/architecture/graph_data.js (present=True)",
+      "engineering_loop_bootstrap.egg-info/ (present=True)",
+      "extension/node_modules/ (present=True)"
+    ],
+    "optional_in_unbuilt": [
+      "docs/architecture/data/ (present=True)",
+      "extension/server/index.js (present=True)",
+      "extension/tests/generated/plugin-lifecycle/ (present=True)",
+      "pyproject.toml#/tool.setuptools.data-files (present=True)"
+    ],
+    "required_in_unbuilt": [],
+    "schema_version": "px.unbuilt-profile/1.0"
+  },
+  "validation": {
+    "artifact_count": 8,
+    "attributed": 8,
+    "problems": [],
+    "valid": true
+  }
+}

@@ -1,6 +1,6 @@
 # PACIFY-X quickstart demonstration
 
-PACIFY-X is the project and framework. `engineering-bootstrap` is its Python package and command-line control plane.
+PACIFY-X is the project and framework. `agentic-engineering-os-px` is its Python package and command-line control plane.
 
 From a source checkout, run:
 

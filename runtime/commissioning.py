@@ -23,13 +23,13 @@ from .wal_transaction import BytesArtifact, JsonWal
 
 AGENTS = """# Repository engineering contract
 
-- Begin with `PROJECT_MANAGEMENT.md` and `.engineering-bootstrap/AI_ASSISTANT.md`.
+- Begin with `PROJECT_MANAGEMENT.md` and `.agentic_engineering_os_px/AI_ASSISTANT.md`.
 - Keep startup bounded: inspect compact metadata before loading a selected skill body.
 - Preserve existing owners and use only admitted capabilities.
 - Declare effects and obtain approval before writes, installs, network access, services, migrations, privileged actions, or destructive work.
 - Checkpoint material steps and retain current evidence for completion claims.
 - Quarantine instead of deleting.
-- Run `engineering-bootstrap project-check --project .` before declaring bootstrap changes complete.
+- Run `agentic-engineering-os-px project-check --project .` before declaring bootstrap changes complete.
 """
 
 CODEX_CONFIG = """# Project-scoped Codex settings. Provider, credentials, model, and global profile stay user-owned.
@@ -42,7 +42,7 @@ max_concurrent_threads_per_session = 2
 AI_ASSISTANT = """# Model-neutral assistant entry point
 
 1. Read `PROJECT_MANAGEMENT.md`, this file, and the repository's existing instruction owners.
-2. Run `engineering-bootstrap validate`, `project-check --project .`, and `startup --project .`; stop closed on failure.
+2. Run `agentic-engineering-os-px validate`, `project-check --project .`, and `startup --project .`; stop closed on failure.
 3. Keep startup metadata-only. Run `working-set --goal "<goal>"`, select at most three candidates, then `hydrate --skill <id>` for one required body.
 4. Declare effects, approval boundaries, postconditions, rollback, and evidence before execution.
 5. Update project-management state at material checkpoints. Verify observable outcomes independently and release selected task context.
@@ -50,8 +50,8 @@ AI_ASSISTANT = """# Model-neutral assistant entry point
 """
 
 AI_CONFIG = """schema_version = "1.0"
-entrypoint = ".engineering-bootstrap/AI_ASSISTANT.md"
-repository_contract = ".engineering-bootstrap/AGENTS.md"
+entrypoint = ".agentic_engineering_os_px/AI_ASSISTANT.md"
+repository_contract = ".agentic_engineering_os_px/AGENTS.md"
 project_management = "PROJECT_MANAGEMENT.md"
 model_agnostic = true
 metadata_only_at_startup = true
@@ -69,7 +69,7 @@ VSCODE_SETTINGS = {
         "**/quarantine/**": True,
         "**/evidence/**": True,
         "**/planning/inventory/**": True,
-        "**/.engineering-bootstrap/cache/**": True,
+        "**/.agentic_engineering_os_px/cache/**": True,
     },
     "search.exclude": {
         "**/raw/**": True,
@@ -84,25 +84,25 @@ VSCODE_TASKS = {
         {
             "label": "Bootstrap: validate installation",
             "type": "shell",
-            "command": "engineering-bootstrap validate",
+            "command": "agentic-engineering-os-px validate",
             "problemMatcher": [],
         },
         {
             "label": "Bootstrap: check project",
             "type": "shell",
-            "command": "engineering-bootstrap project-check --project .",
+            "command": "agentic-engineering-os-px project-check --project .",
             "problemMatcher": [],
         },
         {
             "label": "Bootstrap: bounded startup",
             "type": "shell",
-            "command": "engineering-bootstrap startup --project .",
+            "command": "agentic-engineering-os-px startup --project .",
             "problemMatcher": [],
         },
         {
             "label": "Bootstrap: doctor",
             "type": "shell",
-            "command": "engineering-bootstrap doctor",
+            "command": "agentic-engineering-os-px doctor",
             "problemMatcher": [],
         },
     ],
@@ -165,11 +165,11 @@ def _bootstrap_manifest(mode: str) -> bytes:
                 },
                 "project_management": {
                     "entrypoint": "PROJECT_MANAGEMENT.md",
-                    "state": ".engineering-bootstrap/project-management/state.json",
+                    "state": ".agentic_engineering_os_px/project-management/state.json",
                 },
                 "prompts": {
-                    "new": ".engineering-bootstrap/prompts/new-project.md",
-                    "existing": ".engineering-bootstrap/prompts/existing-project.md",
+                    "new": ".agentic_engineering_os_px/prompts/new-project.md",
+                    "existing": ".agentic_engineering_os_px/prompts/existing-project.md",
                 },
                 "deployment_guardrails": [
                     "tests_pass",
@@ -268,17 +268,17 @@ def scaffold_files(
         Path("AGENTS.md"): AGENTS.encode(),
         Path(
             "AI_ASSISTANT.md"
-        ): b"# Assistant entry point\n\nFollow `.engineering-bootstrap/AI_ASSISTANT.md`, `PROJECT_MANAGEMENT.md`, and existing repository instructions.\n",
+        ): b"# Assistant entry point\n\nFollow `.agentic_engineering_os_px/AI_ASSISTANT.md`, `PROJECT_MANAGEMENT.md`, and existing repository instructions.\n",
         Path(
             "CLAUDE.md"
-        ): b"# Assistant instructions\n\nFollow `.engineering-bootstrap/AI_ASSISTANT.md` and existing repository instructions.\n",
+        ): b"# Assistant instructions\n\nFollow `.agentic_engineering_os_px/AI_ASSISTANT.md` and existing repository instructions.\n",
         Path(
             "GEMINI.md"
-        ): b"# Assistant instructions\n\nFollow `.engineering-bootstrap/AI_ASSISTANT.md` and existing repository instructions.\n",
+        ): b"# Assistant instructions\n\nFollow `.agentic_engineering_os_px/AI_ASSISTANT.md` and existing repository instructions.\n",
         Path(".ai/assistant.toml"): AI_CONFIG.encode(),
         Path(
             ".github/copilot-instructions.md"
-        ): b"# Repository assistant contract\n\nFollow `.engineering-bootstrap/AI_ASSISTANT.md` and existing repository instructions.\n",
+        ): b"# Repository assistant contract\n\nFollow `.agentic_engineering_os_px/AI_ASSISTANT.md` and existing repository instructions.\n",
         Path(".codex/config.toml"): CODEX_CONFIG.encode(),
         Path(".vscode/settings.json"): (
             json.dumps(VSCODE_SETTINGS, indent=2) + "\n"
@@ -286,51 +286,51 @@ def scaffold_files(
         Path(".vscode/tasks.json"): (
             json.dumps(VSCODE_TASKS, indent=2) + "\n"
         ).encode(),
-        Path(".engineering-bootstrap/AGENTS.md"): AGENTS.encode(),
-        Path(".engineering-bootstrap/AI_ASSISTANT.md"): AI_ASSISTANT.encode(),
-        Path(".engineering-bootstrap/project.toml"): _project_toml(mode).encode(),
-        Path(".engineering-bootstrap/bootstrap-manifest.json"): _bootstrap_manifest(
+        Path(".agentic_engineering_os_px/AGENTS.md"): AGENTS.encode(),
+        Path(".agentic_engineering_os_px/AI_ASSISTANT.md"): AI_ASSISTANT.encode(),
+        Path(".agentic_engineering_os_px/project.toml"): _project_toml(mode).encode(),
+        Path(".agentic_engineering_os_px/bootstrap-manifest.json"): _bootstrap_manifest(
             mode
         ),
-        Path(".engineering-bootstrap/project-registry.json"): _skill_registry(
+        Path(".agentic_engineering_os_px/project-registry.json"): _skill_registry(
             source, mode
         ),
-        Path(".engineering-bootstrap/project-record.json"): _project_record(
+        Path(".agentic_engineering_os_px/project-record.json"): _project_record(
             target, mode, inventory
         ),
-        Path(".engineering-bootstrap/prompts/new-project.md"): (
+        Path(".agentic_engineering_os_px/prompts/new-project.md"): (
             prompts / "NEW_PROJECT_PROMPT.md"
         ).read_bytes(),
-        Path(".engineering-bootstrap/prompts/existing-project.md"): (
+        Path(".agentic_engineering_os_px/prompts/existing-project.md"): (
             prompts / "EXISTING_PROJECT_PROMPT.md"
         ).read_bytes(),
-        Path(".engineering-bootstrap/vscode.settings.json"): (
+        Path(".agentic_engineering_os_px/vscode.settings.json"): (
             json.dumps(VSCODE_SETTINGS, indent=2) + "\n"
         ).encode(),
-        Path(".engineering-bootstrap/vscode.tasks.json"): (
+        Path(".agentic_engineering_os_px/vscode.tasks.json"): (
             json.dumps(VSCODE_TASKS, indent=2) + "\n"
         ).encode(),
         Path(
-            ".engineering-bootstrap/SECURITY_BASELINE.md"
+            ".agentic_engineering_os_px/SECURITY_BASELINE.md"
         ): b"# Security baseline\n\nLeast privilege, secret redaction, dependency review, and explicit mutation approval are required.\n",
         Path(
-            ".engineering-bootstrap/TEST_BASELINE.md"
+            ".agentic_engineering_os_px/TEST_BASELINE.md"
         ): b"# Test baseline\n\nNew capabilities require positive, negative, integration, and effect-boundary tests plus the repository's own validation commands.\n",
         Path(
-            ".engineering-bootstrap/EVIDENCE_BASELINE.md"
+            ".agentic_engineering_os_px/EVIDENCE_BASELINE.md"
         ): b"# Evidence baseline\n\nCompletion requires deterministic, sanitized, current, task-scoped evidence and independent outcome verification.\n",
         Path(
-            ".engineering-bootstrap/DEPLOYMENT_GUARDRAILS.md"
+            ".agentic_engineering_os_px/DEPLOYMENT_GUARDRAILS.md"
         ): b"# Deployment guardrails\n\nDeployment is blocked without tests, security review, current evidence, viable rollback, and explicit approval.\n",
     }
     files.update(project_management_files(target, mode, inventory, questionnaire))
     profile_root = source / "bootstrap" / "profiles"
     for profile in sorted(profile_root.glob("*.toml")):
-        files[Path(".engineering-bootstrap/profiles") / profile.name] = (
+        files[Path(".agentic_engineering_os_px/profiles") / profile.name] = (
             profile.read_bytes()
         )
     if mode == "existing":
-        files[Path(".engineering-bootstrap/existing-project-inventory.json")] = (
+        files[Path(".agentic_engineering_os_px/existing-project-inventory.json")] = (
             json.dumps(dict(inventory or {}), indent=2) + "\n"
         ).encode()
     return files
@@ -368,7 +368,7 @@ def inspect_scaffold(
         record: dict[str, object] = {
             "path": path,
             "scope": "bootstrap_owned"
-            if path.startswith(".engineering-bootstrap/")
+            if path.startswith(".agentic_engineering_os_px/")
             else "integration",
             "proposed_sha256": _sha256(content),
         }
@@ -390,7 +390,7 @@ def inspect_scaffold(
 
 
 def _existing_inventory(project: Path) -> dict[str, object]:
-    saved = project / ".engineering-bootstrap/existing-project-inventory.json"
+    saved = project / ".agentic_engineering_os_px/existing-project-inventory.json"
     if saved.is_file():
         return json.loads(saved.read_text(encoding="utf-8"))
     return inspect_existing_project(project)
@@ -425,7 +425,7 @@ def commission(
     expected = scaffold_files(mode, resolved, source, inventory, questionnaire_record)
     create, unchanged, conflicts, file_plan = inspect_scaffold(resolved, expected)
     bootstrap_conflicts = [
-        path for path in conflicts if path.startswith(".engineering-bootstrap/")
+        path for path in conflicts if path.startswith(".agentic_engineering_os_px/")
     ]
     blocking_conflicts = conflicts if mode == "new" else bootstrap_conflicts
     preserved = conflicts if mode == "existing" else []
@@ -465,7 +465,7 @@ def commission(
             continue
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes(content)
-    control = resolved / ".engineering-bootstrap"
+    control = resolved / ".agentic_engineering_os_px"
     adoption_path = control / "adoption-plan.json"
     adoption = {
         "schema_version": "1.0",
@@ -488,7 +488,7 @@ def commission(
         "PROJECT_BLUEPRINT.md",
         "ARCHITECTURE_GOVERNANCE_AND_RISK.md",
         "EXECUTION_PLAN_PUNCH_CARDS_AND_ACCEPTANCE.md",
-        ".engineering-bootstrap/project-management/",
+        ".agentic_engineering_os_px/project-management/",
     )
     managed = {}
     for relative, proposed in expected.items():
@@ -515,7 +515,7 @@ def commission(
             json.dumps(managed, sort_keys=True, separators=(",", ":")).encode()
         ),
         "mutable_project_management": list(mutable_prefixes),
-        "adoption_plan": ".engineering-bootstrap/adoption-plan.json",
+        "adoption_plan": ".agentic_engineering_os_px/adoption-plan.json",
         "project_id": project_record["project_id"],
         "project_record_sha256": _sha256(
             (control / "project-record.json").read_bytes()
@@ -588,8 +588,8 @@ def apply_project_brief(
     """Validate and version a questionnaire into an already commissioned project."""
     resolved = project.resolve()
     source = (source_root or framework_root()).resolve()
-    state_path = resolved / ".engineering-bootstrap/project-management/state.json"
-    wal = JsonWal(resolved / '.engineering-bootstrap/wal/cohesion-card-reconciliation', resolved).producer_for_target(state_path)
+    state_path = resolved / ".agentic_engineering_os_px/project-management/state.json"
+    wal = JsonWal(resolved / '.agentic_engineering_os_px/wal/cohesion-card-reconciliation', resolved).producer_for_target(state_path)
     if apply:
         wal.recover()
     errors = validate_project_management(resolved)
@@ -632,7 +632,7 @@ def apply_project_brief(
     updated["checkpoint"]["revision"] = int(updated["checkpoint"]["revision"]) + 1
     updated["checkpoint"]["next_safe_action"] = next_action
     updated["evidence"]["commissioning_questionnaire"] = (
-        ".engineering-bootstrap/project-management/commissioning-questionnaire.json"
+        ".agentic_engineering_os_px/project-management/commissioning-questionnaire.json"
     )
     validate_instance(updated, source / "contracts/project-management.schema.json")
     target = state_path.parent / "commissioning-questionnaire.json"
@@ -694,16 +694,16 @@ def project_check(project: Path, source_root: Path | None = None) -> dict:
     source = (source_root or framework_root()).resolve()
     errors: list[str] = []
     required = [
-        Path(".engineering-bootstrap/AGENTS.md"),
-        Path(".engineering-bootstrap/AI_ASSISTANT.md"),
-        Path(".engineering-bootstrap/project.toml"),
-        Path(".engineering-bootstrap/bootstrap-manifest.json"),
-        Path(".engineering-bootstrap/project-registry.json"),
-        Path(".engineering-bootstrap/commissioning-receipt.json"),
-        Path(".engineering-bootstrap/project-record.json"),
-        Path(".engineering-bootstrap/adoption-plan.json"),
-        Path(".engineering-bootstrap/prompts/new-project.md"),
-        Path(".engineering-bootstrap/prompts/existing-project.md"),
+        Path(".agentic_engineering_os_px/AGENTS.md"),
+        Path(".agentic_engineering_os_px/AI_ASSISTANT.md"),
+        Path(".agentic_engineering_os_px/project.toml"),
+        Path(".agentic_engineering_os_px/bootstrap-manifest.json"),
+        Path(".agentic_engineering_os_px/project-registry.json"),
+        Path(".agentic_engineering_os_px/commissioning-receipt.json"),
+        Path(".agentic_engineering_os_px/project-record.json"),
+        Path(".agentic_engineering_os_px/adoption-plan.json"),
+        Path(".agentic_engineering_os_px/prompts/new-project.md"),
+        Path(".agentic_engineering_os_px/prompts/existing-project.md"),
     ]
     for relative in required:
         if not (resolved / relative).is_file():
@@ -712,7 +712,7 @@ def project_check(project: Path, source_root: Path | None = None) -> dict:
     project_toml: dict[str, object] = {}
     try:
         project_toml = tomllib.loads(
-            (resolved / ".engineering-bootstrap/project.toml").read_text(
+            (resolved / ".agentic_engineering_os_px/project.toml").read_text(
                 encoding="utf-8"
             )
         )
@@ -737,13 +737,13 @@ def project_check(project: Path, source_root: Path | None = None) -> dict:
     if (
         mode == "existing"
         and not (
-            resolved / ".engineering-bootstrap/existing-project-inventory.json"
+            resolved / ".agentic_engineering_os_px/existing-project-inventory.json"
         ).is_file()
     ):
         errors.append("missing existing-project inventory")
     try:
         manifest = json.loads(
-            (resolved / ".engineering-bootstrap/bootstrap-manifest.json").read_text(
+            (resolved / ".agentic_engineering_os_px/bootstrap-manifest.json").read_text(
                 encoding="utf-8"
             )
         )
@@ -757,7 +757,7 @@ def project_check(project: Path, source_root: Path | None = None) -> dict:
     skills: list[str] = []
     try:
         registry = json.loads(
-            (resolved / ".engineering-bootstrap/project-registry.json").read_text(
+            (resolved / ".agentic_engineering_os_px/project-registry.json").read_text(
                 encoding="utf-8"
             )
         )
@@ -797,7 +797,7 @@ def project_check(project: Path, source_root: Path | None = None) -> dict:
         errors.append(f"invalid project registry: {error}")
     try:
         record = json.loads(
-            (resolved / ".engineering-bootstrap/project-record.json").read_text(
+            (resolved / ".agentic_engineering_os_px/project-record.json").read_text(
                 encoding="utf-8"
             )
         )
@@ -825,7 +825,7 @@ def project_check(project: Path, source_root: Path | None = None) -> dict:
         errors.append(f"invalid project record: {error}")
     try:
         receipt = json.loads(
-            (resolved / ".engineering-bootstrap/commissioning-receipt.json").read_text(
+            (resolved / ".agentic_engineering_os_px/commissioning-receipt.json").read_text(
                 encoding="utf-8"
             )
         )
@@ -844,7 +844,7 @@ def project_check(project: Path, source_root: Path | None = None) -> dict:
             json.dumps(base, sort_keys=True, separators=(",", ":")).encode()
         ):
             errors.append("commissioning receipt payload digest mismatch")
-        project_record_path = resolved / ".engineering-bootstrap/project-record.json"
+        project_record_path = resolved / ".agentic_engineering_os_px/project-record.json"
         if receipt.get("project_id") != record.get("project_id") or receipt.get(
             "project_record_sha256"
         ) != _sha256(project_record_path.read_bytes()):
@@ -856,7 +856,7 @@ def project_check(project: Path, source_root: Path | None = None) -> dict:
         ):
             errors.append("commissioning receipt framework release binding mismatch")
         lifecycle = validate_event_ledger(
-            resolved / ".engineering-bootstrap/commissioning-events"
+            resolved / ".agentic_engineering_os_px/commissioning-events"
         )
         if not lifecycle["valid"]:
             errors.extend(
@@ -892,8 +892,8 @@ def project_check(project: Path, source_root: Path | None = None) -> dict:
     except (OSError, json.JSONDecodeError) as error:
         errors.append(f"invalid commissioning receipt: {error}")
     for relative in (
-        Path(".engineering-bootstrap/vscode.settings.json"),
-        Path(".engineering-bootstrap/vscode.tasks.json"),
+        Path(".agentic_engineering_os_px/vscode.settings.json"),
+        Path(".agentic_engineering_os_px/vscode.tasks.json"),
     ):
         try:
             json.loads((resolved / relative).read_text(encoding="utf-8"))
@@ -952,7 +952,7 @@ def rebind_commissioning_framework(
             "errors": [],
         }
 
-    control = resolved / ".engineering-bootstrap"
+    control = resolved / ".agentic_engineering_os_px"
     receipt_path = control / "commissioning-receipt.json"
     prior = receipt_path.read_bytes()
     prior_file_sha256 = _sha256(prior)

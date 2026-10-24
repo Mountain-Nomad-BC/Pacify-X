@@ -92,6 +92,9 @@ def canonical_request_to_wire(
                     "schema": dict(request.response_schema),
                 }
             }
+    elif surface == "gemini_generate_content":
+        from .gemini_protocol import request_payload
+        payload = request_payload(request)
     elif surface == "anthropic_messages":
         system_parts: list[object] = []
         anthropic_messages: list[dict[str, object]] = []
@@ -243,6 +246,7 @@ class WireStreamTranslator:
         self._tools_by_id: dict[str, _ToolAssembly] = {}
         self._input_tokens: int | None = None
         self._output_tokens: int | None = None
+        self._anthropic_input: dict[str, int] = {}
         self._provider_request_id: str | None = None
         self._anthropic_block_tool: dict[int, str] = {}
         self._pending_finish_reason: str | None = None
@@ -283,6 +287,8 @@ class WireStreamTranslator:
         return out
 
     def feed_sse(self, event_name: str | None, data: str) -> list[CanonicalModelEvent]:
+        if data == "[DONE]" and self.surface == "gemini_generate_content":
+            raise ValueError("Gemini requires its native terminal candidate")
         if data == "[DONE]":
             if self.finished:
                 return []
@@ -302,6 +308,9 @@ class WireStreamTranslator:
             return self._feed_openai_chat(payload)
         if self.surface == "openai_responses":
             return self._feed_openai_responses(event_name, payload)
+        if self.surface == "gemini_generate_content":
+            from .gemini_protocol import stream_events
+            return stream_events(self, payload)
         if self.surface == "anthropic_messages":
             return self._feed_anthropic(event_name, payload)
         raise ValueError("unsupported stream surface")
@@ -471,6 +480,22 @@ class WireStreamTranslator:
             return [self._event("error", {"code": "provider_error", "retryable": False})]
         return out
 
+    def _anthropic_usage(self, usage: object) -> None:
+        if not isinstance(usage, Mapping):
+            raise ValueError("Anthropic usage must be an object")
+        for key in ("input_tokens", "cache_creation_input_tokens", "cache_read_input_tokens", "output_tokens"):
+            if key not in usage:
+                continue
+            value = usage[key]
+            if type(value) is not int or value < 0:
+                raise ValueError("Anthropic token usage must be a nonnegative integer")
+            if key == "output_tokens":
+                self._output_tokens = value
+            else:
+                self._anthropic_input[key] = value
+        if "input_tokens" in self._anthropic_input:
+            self._input_tokens = sum(self._anthropic_input.values())
+
     def _feed_anthropic(self, event_name: str | None, payload: Mapping[str, object]) -> list[CanonicalModelEvent]:
         kind = str(payload.get("type") or event_name or "")
         out: list[CanonicalModelEvent] = []
@@ -480,8 +505,8 @@ class WireStreamTranslator:
                 if isinstance(message.get("id"), str):
                     self._provider_request_id = str(message["id"])
                 usage = message.get("usage")
-                if isinstance(usage, Mapping) and type(usage.get("input_tokens")) is int and usage["input_tokens"] >= 0:
-                    self._input_tokens = int(usage["input_tokens"])
+                if usage is not None:
+                    self._anthropic_usage(usage)
             return out
         if kind == "content_block_start":
             index, block = payload.get("index"), payload.get("content_block")
@@ -544,8 +569,8 @@ class WireStreamTranslator:
             return out
         if kind == "message_delta":
             usage = payload.get("usage")
-            if isinstance(usage, Mapping) and type(usage.get("output_tokens")) is int and usage["output_tokens"] >= 0:
-                self._output_tokens = int(usage["output_tokens"])
+            if usage is not None:
+                self._anthropic_usage(usage)
             delta = payload.get("delta")
             if isinstance(delta, Mapping) and isinstance(delta.get("stop_reason"), str):
                 # Do not terminalize until message_stop; usage can still update.

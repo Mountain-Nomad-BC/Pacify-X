@@ -1,6 +1,6 @@
 'use strict';
 
-const { ExecutionAdapter, sanitizeRemoteError } = require('./base');
+const { ExecutionAdapter, sanitizeRemoteError, providerHttpError } = require('./base');
 
 class OllamaAdapter extends ExecutionAdapter {
   constructor(options = {}) { super(options); this.baseUrl = String(options.baseUrl || 'http://127.0.0.1:11434').replace(/\/$/, ''); this.model = options.model; }
@@ -13,6 +13,11 @@ class OllamaAdapter extends ExecutionAdapter {
   }
 
   async runTurn(input) {
+    const requestedOutputTokens = input.maxOutputTokens == null ? 1024 : input.maxOutputTokens;
+    if (!Number.isSafeInteger(requestedOutputTokens) || requestedOutputTokens < 1) {
+      throw new Error('ollama-output-token-budget-invalid');
+    }
+    const maxOutputTokens = Math.min(requestedOutputTokens, 8192);
     const messages = [];
     if (input.contextPack?.instruction) messages.push({ role: 'system', content: input.contextPack.instruction });
     const contextText = (input.contextPack?.refs || []).filter(r => r.content).map(r => `[#${r.refId} ${r.label}]\n${r.content}`).join('\n\n');
@@ -21,9 +26,10 @@ class OllamaAdapter extends ExecutionAdapter {
     let response;
     try {
       response = await fetch(`${this.baseUrl}/api/chat`, { method: 'POST', headers: { 'content-type': 'application/json' }, signal: input.signal,
-        body: JSON.stringify({ model: this.model, stream: true, messages, options: this.options.options || {} }) });
+        body: JSON.stringify({ model: this.model, stream: true, messages,
+          options: { ...(this.options.options || {}), num_predict: maxOutputTokens } }) });
     } catch (error) { throw new Error(`ollama-request-failed:${sanitizeRemoteError(error)}`); }
-    if (!response.ok || !response.body) throw new Error(`ollama-http-${response.status}:${(await response.text()).slice(0, 500)}`);
+    if (!response.ok || !response.body) throw providerHttpError(response.status, await response.text());
     const reader = response.body.getReader(); const decoder = new TextDecoder(); let pending = ''; let text = ''; let usage = null;
     while (true) {
       const { done, value } = await reader.read(); if (done) break; pending += decoder.decode(value, { stream: true });

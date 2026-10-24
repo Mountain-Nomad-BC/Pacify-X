@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:gremlin-host-configuration",
+  "title": "Commissioned Gremlin host configuration payload",
+  "description": "Payload is separately authenticated by the native Studio receipt envelope. Contains no credentials or authenticator implementation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "project_root",
+    "backend_id",
+    "nanny_authority_id",
+    "recovery_authority_id",
+    "identity_id",
+    "identity_generation",
+    "signing_key_sha256"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "px.gremlin-host-configuration/1.0"
+    },
+    "project_root": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "backend_id": {
+      "const": "windows-credential-manager"
+    },
+    "nanny_authority_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "recovery_authority_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "identity_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "identity_generation": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "signing_key_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

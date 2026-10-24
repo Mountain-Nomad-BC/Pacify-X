@@ -11,7 +11,7 @@ import sys
 
 
 try:
-    from engineering_bootstrap.retrieval import RetrievalSource, retrieve
+    from agentic_engineering_os_px.retrieval import RetrievalSource, retrieve
 except ModuleNotFoundError:
     ROOT = Path(__file__).resolve().parents[4]
     if str(ROOT) not in sys.path:

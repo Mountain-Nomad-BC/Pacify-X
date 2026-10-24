@@ -947,6 +947,9 @@ def compile_route_plan(
     semantic_profile: Mapping[str, object] | None = None,
     model_requirements: Mapping[str, object] | None = None,
     model_root: Path | None = None,
+    model_execution_group=None,
+    context_generation=None,
+    model_group_preparation=None,
     created_utc: str | None = None,
 ):
     """Adapt canonical routing output to a descriptive TaskExecutionPlan."""
@@ -988,6 +991,9 @@ def compile_route_plan(
         attachments=attachments,
         model_attachment=model_attachment,
         model_ranking_receipt=model_ranking_receipt,
+        model_execution_group=model_execution_group,
+        context_generation=context_generation,
+        model_group_preparation=model_group_preparation,
         created_utc=created_utc,
     )
 

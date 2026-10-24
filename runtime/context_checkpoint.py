@@ -16,8 +16,7 @@ MAX_CHECKPOINT_BYTES = 256 * 1024
 MAX_ITEMS_PER_FIELD = 128
 
 
-def _stable(value: object) -> str:
-    return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False, default=str).encode("utf-8")).hexdigest()
+from runtime.hash_utils import json_utf8_string_hash as _stable
 
 
 @dataclass(frozen=True, slots=True)

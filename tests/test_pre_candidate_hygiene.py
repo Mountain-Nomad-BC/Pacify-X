@@ -111,7 +111,7 @@ def test_preserved_evidence_reparse_is_explained_but_product_reparse_is_not(
 
     assert _is_preserved_evidence_reparse(
         root,
-        root / ".engineering-bootstrap/diagnostics/retained-workspaces/link",
+        root / ".agentic_engineering_os_px/diagnostics/retained-workspaces/link",
     )
     assert not _is_preserved_evidence_reparse(root, root / "runtime/link")
 

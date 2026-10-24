@@ -465,7 +465,7 @@ def test_agent_harness_requires_host_approval_and_dispatches_only_closed_tools(
     ]
     assert result["task_content_retained"] is False
     assert not list(
-        (tmp_path / ".engineering-bootstrap/studios/agents/tasks").glob("*/task.json")
+        (tmp_path / ".agentic_engineering_os_px/studios/agents/tasks").glob("*/task.json")
     )
 
 

@@ -14,7 +14,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 try:
-    from engineering_bootstrap.secret_scanning import scan_secret_shapes  # type: ignore[import-not-found]  # noqa: E402
+    from agentic_engineering_os_px.secret_scanning import scan_secret_shapes  # type: ignore[import-not-found]  # noqa: E402
 except ModuleNotFoundError:
     from runtime.secret_scanning import scan_secret_shapes  # noqa: E402
 

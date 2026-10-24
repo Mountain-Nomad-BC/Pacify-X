@@ -62,7 +62,7 @@ def test_clean_product_excludes_the_live_test_orchestration_lock(
 ) -> None:
     source = minimal_product(tmp_path / "source")
     lock_path = (
-        source / ".engineering-bootstrap/test-evidence/.test-orchestration.lock"
+        source / ".agentic_engineering_os_px/test-evidence/.test-orchestration.lock"
     )
     product_lock = source / "runtime/release-owner.lock"
     product_lock.write_text("classified product input\n", encoding="utf-8")
@@ -72,7 +72,7 @@ def test_clean_product_excludes_the_live_test_orchestration_lock(
         copy_clean_product(source, clean)
 
     assert not (
-        clean / ".engineering-bootstrap/test-evidence/.test-orchestration.lock"
+        clean / ".agentic_engineering_os_px/test-evidence/.test-orchestration.lock"
     ).exists()
     assert (clean / "runtime/release-owner.lock").read_bytes() == product_lock.read_bytes()
     result = audit_clean_boundary(
@@ -85,7 +85,7 @@ def test_clean_product_excludes_the_held_release_control_lock(
     tmp_path: Path,
 ) -> None:
     source = minimal_product(tmp_path / "source")
-    lock_path = source / ".engineering-bootstrap/release.lock"
+    lock_path = source / ".agentic_engineering_os_px/release.lock"
     product_lock = source / "runtime/release.lock"
     product_lock.write_text("classified product input\n", encoding="utf-8")
     clean = tmp_path / "clean"
@@ -93,7 +93,7 @@ def test_clean_product_excludes_the_held_release_control_lock(
     with FileLock(lock_path, timeout_seconds=1):
         copy_clean_product(source, clean)
 
-    assert not (clean / ".engineering-bootstrap/release.lock").exists()
+    assert not (clean / ".agentic_engineering_os_px/release.lock").exists()
     assert (clean / "runtime/release.lock").read_bytes() == product_lock.read_bytes()
     result = audit_clean_boundary(
         source, clean, identity_inputs=["runtime/owner.py"]

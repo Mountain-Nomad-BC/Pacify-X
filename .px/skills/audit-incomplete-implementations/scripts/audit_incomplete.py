@@ -39,7 +39,16 @@ def _excluded_relative(relative: Path) -> bool:
         and parts[:2] == (".px", "preserved-skills")
     ) or (
         len(parts) >= 2
-        and parts[:2] == (".engineering-bootstrap", "diagnostics")
+        and parts[:2] == (".agentic_engineering_os_px", "diagnostics")
+    ) or (
+        len(parts) >= 2
+        and parts[:2] == (".agentic_engineering_os_px", "test-evidence")
+    ) or (
+        len(parts) >= 2
+        and parts[:2] == (".agentic_engineering_os_px", "validation")
+    ) or (
+        len(parts) >= 2
+        and parts[:2] == (".engineering-bootstrap", "tmp")
     )
 
 

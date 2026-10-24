@@ -11,12 +11,24 @@ import sys
 import time
 
 
+def _is_junction(part: Path) -> bool:
+    """Python 3.11-safe junction detection; Path.is_junction needs 3.12+."""
+    probe = getattr(part, "is_junction", None)
+    if callable(probe):
+        return bool(probe())
+    try:
+        info = part.lstat()
+    except OSError:
+        return False
+    return getattr(info, "st_reparse_tag", 0) == 0xA0000003
+
+
 def _original_links(path: Path) -> None:
     value = str(path)
     if len(value) > 4096 or len(value.encode("utf-8")) > 4096:
         raise ValueError("wrapper source path exceeds its byte budget")
     for part in (path, *path.parents):
-        if part.is_symlink() or getattr(part, "is_junction", lambda: False)():
+        if part.is_symlink() or _is_junction(part):
             raise ValueError("linked wrapper source path refused")
 
 
@@ -49,7 +61,7 @@ def _source_root() -> Path:
 
 
 def _runtime():
-    namespace = "engineering_bootstrap"
+    namespace = "agentic_engineering_os_px"
     source_root = None
     try:
         declared = importlib.import_module(namespace + ".declared_suite")

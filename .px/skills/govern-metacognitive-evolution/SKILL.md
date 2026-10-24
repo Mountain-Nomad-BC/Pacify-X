@@ -28,5 +28,5 @@ domain is selected, then load exactly one referenced contract. Load
 - "Knowledge physics" is an auditable operational metaphor. Expose trust, age, contradiction, volatility, connectivity, and validation components; never treat a composite score as hidden authority.
 - Use the existing project memory, evidence ledger, capability graphs, recovery coordinator, and revocable certification system. Do not create parallel canonical stores.
 
-The executable read-only facade is `engineering_bootstrap.metacognitive_evolution.facade`.
+The executable read-only facade is `agentic_engineering_os_px.metacognitive_evolution.facade`.
 The canonical workflow projection is `orchestration/workflows/metacognitive-evolution.yaml`.

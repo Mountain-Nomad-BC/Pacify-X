@@ -38,10 +38,7 @@ def validate_research_candidate(
     }
 
 
-def _stable(value: object) -> str:
-    return hashlib.sha256(
-        json.dumps(value, sort_keys=True, separators=(",", ":"), default=str).encode()
-    ).hexdigest()
+from runtime.hash_utils import json_ascii_string_hash as _stable
 
 
 @dataclass(frozen=True, slots=True)
