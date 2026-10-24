@@ -146,3 +146,20 @@ Next: commit/push the scope, native-schema ownership and legacy-export followup,
 D1-02 finding reconciliation and D1-05 lifecycle implementation. The broad gate remains failed.
 Do not call any required release card complete from focused results. Main is unchanged and
 development source is not rollout-certified.
+
+
+## S10 - Verified followup push and precise continuation checkpoint
+
+Followup source commit `602ca07ae0b5f1843774e5b28e5ec9bb7df5d63d` was pushed to the
+review branch and independently matched with `git ls-remote`. Original main remains preserved.
+Narrowed the skill catalog discrepancy to three candidate-only memory directories with no
+skill bodies. The integrated worktree's exact `_skill_errors` check passes; beta residue was
+excluded from source rather than promoted into invented capabilities or destructively removed.
+`skill-residue-diagnosis.json` records that distinction. Added `CONTINUE_HERE.md` with exact
+roots, source identity, real failures, priority repairs, environment and admission instructions.
+Current material ledger checkpoint is 471; query actual live admission/closure before resuming.
+
+The review/plan/source integration milestone is durable. Full implementation, fresh managed
+rollout commissioning, all current governed receipts, full profile/validation, exact package
+installation, installed operational proof and certification remain open. No passing release
+certificate was issued. No test child process is intentionally left running.
