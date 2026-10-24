@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:pacify-x:project-revision-succession-authorization:1.0",
+  "$id": "urn:engineering-loop-bootstrap:contract:project_revision_succession:authorization",
   "title": "Owner-signed project revision succession authorization",
   "type": "object",
   "additionalProperties": false,
@@ -93,7 +93,8 @@
         },
         "fingerprint": {
           "type": "string",
-          "pattern": "^SHA256:[A-Za-z0-9+/]{43}$"
+          "pattern": "^SHA256:[A-Za-z0-9+/]{43}$",
+          "default": "SHA256:aQC1XhpHq6hbFMK2vv7cKFgxLEXJVmnprjfZKTn12Ms"
         }
       }
     },
@@ -103,7 +104,19 @@
     },
     "validation_policy": {
       "type": "object",
-      "minProperties": 1
+      "required": [
+        "campaign_id",
+        "authority"
+      ],
+      "properties": {
+        "campaign_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "authority": {
+          "const": "OWNER-FRESH-VALIDATION-001"
+        }
+      }
     },
     "intake_findings": {
       "type": "array",

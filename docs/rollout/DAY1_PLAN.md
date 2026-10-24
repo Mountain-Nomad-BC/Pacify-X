@@ -14,11 +14,11 @@ on `main`, initially clean at `67827f97b9d101befb4007e8ad19757ceeb74455`, with o
 `git@github.com:Mountain-Nomad-BC/Pacify-X.git`. Preserve that history; integrate on a reviewable branch.
 The enclosing bootstrap directory also contains an adopted project workspace, plugin/reference
 material, quarantine stores, archives, and a separate `COMPLETE_REPAIR_IMPLEMENTATION_PLAN.md`.
-Those are not one interchangeable product tree. The Stage 4/5/6/8 and Remy repair plan is a
-separate intake denominator until its actual application owners and deployable sources are located.
-The two inspected `projects/pacify-x` directories contain commissioning/control documents,
-not the Stage 6 application implementation. Do not claim those twenty RC cards are implemented
-by changing this bootstrap runtime.
+Those are not one interchangeable product tree. The owner clarified that external application
+examples are learning references only. They are excluded from Pacify-X rollout requirements,
+product features and public documentation. The two inspected `projects/pacify-x` directories
+contain commissioning/control documents. Their external reference plans are not an additional
+application to implement or certify here.
 
 The byte comparison is `evidence/rollout-2026-10-24/source-comparison.json`: 860 changed,
 1,780 candidate-only, 4,103 incumbent-only, and 4,884 equal paths at its observation point.
@@ -55,11 +55,15 @@ certification environment, and ambient fallback; `pacifyX.pythonPath` exists. It
 A working interpreter is `C:\Users\Ben\AppData\Local\Temp\py3145t\python.exe` (3.14.5).
 That temporary path is a diagnostic tool, not a supported rollout default.
 
-Readiness currently fails on the missing pinned Python build package, unfinished campaign,
-and three encoding-integrity findings. Node, npm, lockfile, browser, VS Code and Python
+Initial readiness failed on the missing pinned Python build package, unfinished campaign,
+and three encoding-integrity findings. Encoding has since been repaired; the campaign and
+build-environment prerequisites remain open. Node, npm, lockfile, browser, VS Code and Python
 probes pass. `npm run check` passes. The initial selected backend set had 99 passes and
-one failure in real signed-policy provenance. A repair now has 100 selected passes,
-including actual disposable OpenSSH signing and verification with tamper rejection.
+one failure in real signed-policy provenance. The initial repair had 100 selected passes. The final integrated focused set has 120 passes,
+including actual disposable OpenSSH signing/verification, tamper rejection, native schema
+admission, ownership-builder coverage and clean-checkout custody regressions. The broader
+runtime-domain-contracts gate failed in six of fifteen chunks; see section-failure-summary.json.
+No current passing section receipt is claimed.
 
 ## Completion rules
 
@@ -79,7 +83,7 @@ registered reopen/successor mechanism. Never rewind a completed beta campaign by
 
 ## Ordered punch cards
 
-### D1-01 — Custody and reconciliation (owner: repository integration)
+### D1-01 â€” Custody and reconciliation (owner: repository integration)
 
 Dependencies: none. Effects: read, local writes; separate network admission for remote fetch/push.
 Retain original HEAD, candidate manifest, exclusions and dirty-state observations. Compare bytes
@@ -92,17 +96,17 @@ the candidate's active ledger, quarantine, private keys, local credentials, cach
 extensions into the repository. Exit: reviewable integration manifest, diff, rollback reference,
 and a successful branch push. Rollback: discard the integration branch; original main remains.
 
-### D1-02 — Real intake and historical obligations (owner: audit/control plane)
+### D1-02 â€” Real intake and historical obligations (owner: audit/control plane)
 
 Dependencies: D1-01 inventory. Read the 13 live gap cards, latest report30 queue and full feature
-acceptance requirements; preserve every unverified interaction-chain item. Map the parent RC-01
-through RC-20 plan to actual source owners, or explicitly record missing external source.
+acceptance requirements; preserve every unverified interaction-chain item. Extract applicable engineering
+lessons from the parent plan without importing external application requirements.
 Include current test failures and source divergence, not just grep findings. Build a finding
 register with severity, reachability, producer, consumer, proof required and supersession links.
 Register it using the campaign/ledger APIs under exact admissions. Exit: zero unclassified
 current findings and a finite unresolved denominator; unresolved items remain open.
 
-### D1-03 — Namespace and installed-package migration (owner: runtime/package)
+### D1-03 â€” Namespace and installed-package migration (owner: runtime/package)
 
 Dependencies: D1-02. Trace canonical root resolution in source, installed wheel, console script,
 VS Code, MCP, workspace adoption and persisted records. Pick the renamed namespace as the
@@ -113,18 +117,19 @@ modes, project isolation, registry paths and Windows/POSIX paths. Gate: runtime-
 and affected execution/extension sections. Exit: one selected owner and tested compatibility
 contract. Rollback: restore preimages through the migration journal.
 
-### D1-04 — Real successor authorization (owner: succession/trusted evidence)
+### D1-04 â€” Real successor authorization (owner: succession/trusted evidence)
 
 Dependencies: D1-02. Align JSON schemas, exact runtime field validation, revocation registry,
 signature namespace/serialization, source digest and policy evidence. Use actual signed disposable
 fixtures; test expired, revoked, superseded, replayed, tampered and wrong-project inputs.
 The current repair admits the registry field, adds missing authorization fields, fixes the SSH
-line terminator and proves signed success plus tamper rejection. Remaining: complete revocation
+line terminator and proves signed success plus tamper rejection. Native schema IDs/dialect and ownership-builder mapping are also repaired. Their generated
+registry remains intentionally pending canonical reconciliation. Remaining: complete revocation
 freshness rules, schema/runtime parity negatives, activation through the real CLI and trusted
 evidence owner. Production policy/key issuance remains the external canonical owner's action;
 do not mint trust or self-attest a verifier. Rollback: reversible source/schema patches.
 
-### D1-05 — Complete revision lifecycle (owner: revision campaign)
+### D1-05 â€” Complete revision lifecycle (owner: revision campaign)
 
 Dependencies: D1-03/D1-04. `revision_campaign_lifecycle.py` currently supports begin/register/resolve.
 `close_repair_intake` and `freeze_repair_campaign` explicitly reject active successor revisions.
@@ -136,7 +141,7 @@ missing files, corrupt journals, unauthorized scope, repeat invocation and A->B-
 Exit: one revision can complete the entire governed lifecycle in an isolated integration fixture;
 no bypass flags or handcrafted state. Gate: testing-governance plus runtime-domain-contracts.
 
-### D1-06 — Native producer custody and workflow fencing (owner: effect owners)
+### D1-06 â€” Native producer custody and workflow fencing (owner: effect owners)
 
 Dependencies: D1-02. Finish the exact queue referenced by PX-GAP-0011/report30. Enumerate every
 real mutating producer, require its exact native host scope and admission before execution,
@@ -145,7 +150,7 @@ and fence workflow effects before subprocess dispatch. Test denied writes leave 
 stores unchanged. Test successful retries and restart reconciliation. Exit: complete owned
 producer denominator with fault evidence, not a generic wrapper-only green test.
 
-### D1-07 — Portable interpreter and environment (owner: extension/release environment)
+### D1-07 â€” Portable interpreter and environment (owner: extension/release environment)
 
 Dependencies: D1-03. Keep explicit VS Code setting and owned launcher semantics consistent;
 honor the documented environment variable only at intended entry points. Detect a broken local
@@ -154,7 +159,7 @@ durable isolated environment from pinned requirements; never commit a machine-sp
 Test absent/broken venv, spaces, explicit path precedence, ambient fallback and dependency probes.
 Exit: source, owned host and installed extension resolve the same admitted interpreter.
 
-### D1-08 — Provider/model fabric and offline behavior (owner: providers)
+### D1-08 â€” Provider/model fabric and offline behavior (owner: providers)
 
 Dependencies: D1-06/D1-07. Trace catalog -> selector/router -> admitted provider -> actual response
 -> status/evidence. Cover all bridged lanes, unavailable credentials/models, exhausted budgets,
@@ -164,7 +169,7 @@ Rebuild `scripts/build_provider_route_index.py --admission-event-id <current-id>
 guarded publisher only when source writers settle; its registry/runtime-core/resource-lifecycle
 effects require explicit scope. Exit: no unexplained direct provider routes or false readiness.
 
-### D1-09 — UI and host integrations (owner: extension)
+### D1-09 â€” UI and host integrations (owner: extension)
 
 Dependencies: D1-03/D1-06/D1-08. Verify action inventory -> renderer -> dispatcher -> runtime owner
 -> visible outcome, including sandbox settings, model selection, Studio, memory/graph,
@@ -173,7 +178,7 @@ lanes, performance and disposable VS Code host lanes. Test unavailable backend a
 fingerprints. Gate: corresponding registered section; retain operational proof for each control.
 Exit: complete required control denominator and real installed-host results.
 
-### D1-10 — Static findings and reliability (owner: runtime)
+### D1-10 â€” Static findings and reliability (owner: runtime)
 
 Dependencies: D1-02. Use the 470-module AST inventory to review handler suppression, explicit
 unsupported branches, protocol adapters, orphan modules, cycles and duplicate implementations.
@@ -183,7 +188,7 @@ For each real defect add a causal fault/recovery test; benchmark measured hot pa
 optimization. Exit: every candidate disposition has owner/reachability/evidence; no invented
 global completeness claim from source scanning.
 
-### D1-11 — Fresh Day 1 state and data boundary (owner: commissioning/privacy)
+### D1-11 â€” Fresh Day 1 state and data boundary (owner: commissioning/privacy)
 
 Dependencies: D1-03/D1-05/D1-06. Build a new isolated commissioning root through the supported
 new-project/registration APIs and bind a new rollout identity. Separate product source,
@@ -194,7 +199,7 @@ install and an explicit opt-in upgrade both preserve existing user data. Test id
 rollback, no cross-project retrieval and no historical receipt reuse. Exit: fresh state plus
 documented optional migration; version metadata is consistent across Python/VSIX/docs.
 
-### D1-12 — Compliance, encoding and dependencies (owner: release compliance)
+### D1-12 â€” Compliance, encoding and dependencies (owner: release compliance)
 
 Dependencies: D1-02/D1-07. Repair the three current encoding findings through the encoding
 verifier's exact report. Verify licenses/notices/privacy/provider handling against actual shipped
@@ -203,17 +208,17 @@ installed metadata, and run the repository's dependency/security tooling. Adviso
 current source data; do not infer security from pins alone. Exit: readiness prerequisites green
 apart from intentionally unfinished release stages. No unsupported platform claim.
 
-### D1-13 — Finish repairs and operational verification (owner: campaign)
+### D1-13 â€” Finish repairs and operational verification (owner: campaign)
 
 Dependencies: D1-02 through D1-12. Run changed-section gates during repair, preserving failures.
 Reconcile every finding with implementation and behavioral evidence; independently verify
 protected-store immutability, no escaped processes/workspaces, and real operational outcomes.
 Only after the complete denominator is zero, explicitly close intake through the canonical API
 and produce the owner-issued hash-bound operational receipt. Exit: operational verification
-accepted, no unresolved required findings, explicit intake closure. Do not freeze while an
-external required RC card or trust input remains missing.
+accepted, no unresolved required findings, explicit intake closure. Do not freeze while a required
+Pacify-X finding or trust input remains missing.
 
-### D1-14 — Freeze and reconcile once (owner: source identity)
+### D1-14 â€” Freeze and reconcile once (owner: source identity)
 
 Dependencies: D1-13. Freeze via supported campaign API, retain restorable source identity and
 clean Git commit. Reconcile deterministic projections using canonical guarded builders,
@@ -222,7 +227,7 @@ metadata. Use the intended parser/interpreter identity. Do not edit generated ha
 Exit: one source identity and complete canonical generator receipts. Any further repair invalidates
 this attempt according to the registered campaign contract.
 
-### D1-15 — Current governed sections (owner: test orchestration)
+### D1-15 â€” Current governed sections (owner: test orchestration)
 
 Dependencies: D1-14. Enumerate current `registry/test_profiles.json` rather than hardcoding a
 historical section count. Run `python -m runtime.cli test-section run <section>` for every required
@@ -230,7 +235,7 @@ section using the owned orchestrator. Prove source/dependency/parser hashes, den
 resource closure. Exit: all required receipts current against the frozen identity; no skipped
 required groups. Failed owners remain failed; use canonical repair/reopen rules.
 
-### D1-16 — Single full profile and validation (owner: release-stage owner)
+### D1-16 â€” Single full profile and validation (owner: release-stage owner)
 
 Dependencies: D1-15. Use `scripts/run_release_candidate.py` and the canonical stage config to
 own exactly one `python -m runtime.cli test-profile run full`, then one `python -m runtime.cli
@@ -238,7 +243,7 @@ validate`. No raw unittest substitute, no simultaneous competing owners and no s
 retry. Capture command, environment, monotonic timing, exit status, test counts, complete logs,
 source digest and custody settlement. Exit: both owner receipts accepted and identity unchanged.
 
-### D1-17 — Exact package and installed proof (owner: release/install)
+### D1-17 â€” Exact package and installed proof (owner: release/install)
 
 Dependencies: D1-16. Admit package/install separately, create one immutable wheel/source/VSIX
 set, inspect shipped contents, licenses, secrets, beta-state absence and identity. Install those
@@ -247,7 +252,7 @@ registered installed operational owner across required platform/browser/hardware
 Unavailable required platforms block their support claim. Exit: artifact/install/control
 denominators closed, rollback package retained, no leaked child or workspace custody.
 
-### D1-18 — Certification and rollout publication (owner: certification)
+### D1-18 â€” Certification and rollout publication (owner: certification)
 
 Dependencies: D1-17. Validate the candidate/stage configuration pair with
 `scripts/validate_certification_pipeline.py` before consuming the attempt. Complete the canonical
@@ -258,19 +263,21 @@ a distinct action from pushing development source and must use the exact certifi
 and applicable publication authority. Exit: verified remote refs/assets, installation instructions,
 rollback drill and certificate that the verifier accepts for those bytes.
 
-### D1-19 — External application RC backlog (owner: managed application)
+### D1-19 ? Product scope and reference hygiene (owner: documentation/provenance)
 
-Dependencies: D1-02 source mapping. Retain parent RC-01..RC-20 as separate unresolved obligations:
-secret-safe mapper; test isolation; stable snapshot; Stage 6 fail-closed worker; Stage 4 analytics;
-governed inference; diagnostics-learning; auth/Redis/storage ownership; artifact provenance;
-Stage 5 credential/SSRF/time-series; Stage 8 retention; Remy privacy; retrieval/egress governance;
-test/voice boundedness; MCP portability; locks/advisories; canonicalization; types/complexity;
-historical ledger closure; independent integrated certification. Each requires actual application
-producer/consumer tests and the acceptance criteria in the parent plan. If the rollout excludes
-that application, document the exact external boundary and never market those features as
-certified bootstrap capabilities. Missing source is a blocker for those cards, not a closed card.
+Dependencies: D1-02. Keep rollout scope strictly to Pacify-X bootstrap/control-plane capabilities.
+Reference examples may inform mechanisms, but do not appear as included applications, product
+requirements or certified features. Remove example product names from active documentation.
+Inventory old imported provenance in `registry/plan_corpus.json` and content-addressed planning
+corpora. Externalize raw reference metadata through the canonical recoverable custody owner;
+regenerate active projections after repairs settle. Preserve authenticated historical bytes
+outside the rollout payload rather than silently changing content-addressed provenance.
+Test that wheel/source/VSIX exports contain no reference application branding or live example
+state and that the retained provenance index remains verifiable. Exit: public documentation,
+packaged context and advertised capabilities describe Pacify-X only; historical custody is
+accessible separately and cannot satisfy current certification.
 
-### D1-20 — Continuation and independent review (owner: each segment owner)
+### D1-20 â€” Continuation and independent review (owner: each segment owner)
 
 Dependencies: continuous. Append one segment record after every material unit: active gap,
 checkpoint/admission IDs, exact files, findings, commands/results, artifacts/hashes, unresolved

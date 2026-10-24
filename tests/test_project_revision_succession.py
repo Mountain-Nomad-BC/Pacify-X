@@ -19,6 +19,21 @@ from runtime.project_revision_succession import (
 )
 
 NOW = datetime(2026, 10, 11, 1, 0, tzinfo=timezone.utc)
+
+
+@pytest.mark.parametrize('name', ['active-revision', 'authorization', 'owner-policy', 'state'])
+def test_succession_contract_is_admitted_by_native_dialect_and_ownership_builder(name):
+    from pathlib import Path
+    from runtime.contracts import build_minimal_instance, validate_instance
+    from scripts.build_contract_ownership_registry import build
+    root = Path(__file__).resolve().parents[1]
+    path = root / 'contracts/project_revision_succession' / f'{name}.schema.json'
+    validate_instance(build_minimal_instance(path), path)
+    row = next(row for row in build(root)['records'] if row['path'] == path.relative_to(root).as_posix())
+    assert row['owner'] == 'runtime/project_revision_succession.py'
+    assert 'runtime/project_revision_succession.py' in row['consumers']
+    assert 'runtime/revision_campaign_lifecycle.py' in row['producers']
+
 PREDECESSOR = {
     "schema_version": "px.repair-campaign/1.0",
     "project_id": "prj_pacify_x_previous",

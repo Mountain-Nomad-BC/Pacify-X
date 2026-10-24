@@ -45,3 +45,7 @@ evidence/releases/*/rel-*/* binary
 /evidence/** export-ignore
 /docs/architecture/reference/graph_baseline_architecture.json export-ignore
 /docs/architecture/reference/graph_baseline_evidence-map.json export-ignore
+
+# Beta controls remain in historical Git custody, never in rollout source archives.
+/.engineering-bootstrap export-ignore
+/.engineering-bootstrap/** export-ignore

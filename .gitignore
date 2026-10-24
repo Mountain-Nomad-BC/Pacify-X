@@ -106,3 +106,8 @@ registry/operational_gap_ledger.jsonl
 registry/operational_gap_ledger.head.json
 registry/operational_gap_ledger.snapshot.json
 registry/operational_gap_ledger.deltas/
+
+# Legacy beta runtime custody and experience state are not new source.
+.engineering-bootstrap/
+orchestration/workflows/*/memory/
+providers/agency_agents/agents/*/memory/

@@ -1,27 +1,71 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:pacify-x:project-revision-succession-state:1.0",
+  "$id": "urn:engineering-loop-bootstrap:contract:project_revision_succession:state",
   "title": "Append-only project revision succession state",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "events"],
+  "required": [
+    "schema_version",
+    "events"
+  ],
   "properties": {
-    "schema_version": {"const": "px.project-revision-succession-state/1.0"},
-    "events": {"type": "array", "maxItems": 100000, "items": {"$ref": "#/$defs/event"}}
+    "schema_version": {
+      "const": "px.project-revision-succession-state/1.0"
+    },
+    "events": {
+      "type": "array",
+      "maxItems": 100000,
+      "items": {
+        "$ref": "#/$defs/event"
+      }
+    }
   },
   "$defs": {
     "event": {
-      "type": "object", "additionalProperties": false,
-      "required": ["schema_version", "sequence", "previous_event_sha256", "binding", "binding_sha256", "authorization", "event_status", "event_sha256"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "sequence",
+        "previous_event_sha256",
+        "binding",
+        "binding_sha256",
+        "authorization",
+        "event_status",
+        "event_sha256"
+      ],
       "properties": {
-        "schema_version": {"const": "px.project-revision-succession-proposal/1.0"},
-        "sequence": {"type": "integer", "minimum": 1},
-        "previous_event_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
-        "binding": {"type": "object"},
-        "binding_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
-        "authorization": {"$ref": "authorization.schema.json"},
-        "event_status": {"enum": ["proposed", "activated"]},
-        "event_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+        "schema_version": {
+          "const": "px.project-revision-succession-proposal/1.0"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "previous_event_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "binding": {
+          "type": "object"
+        },
+        "binding_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "authorization": {
+          "$ref": "authorization.schema.json"
+        },
+        "event_status": {
+          "enum": [
+            "proposed",
+            "activated"
+          ]
+        },
+        "event_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
       }
     }
   }

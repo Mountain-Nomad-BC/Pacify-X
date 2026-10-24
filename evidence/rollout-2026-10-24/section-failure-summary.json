@@ -1,0 +1,124 @@
+{
+  "schema_version": "px.rollout-section-failure-summary/1",
+  "section": "runtime-domain-contracts",
+  "valid": false,
+  "exit_code": 1,
+  "duration_seconds": 392.368993,
+  "timed_out": false,
+  "chunks": 15,
+  "failed_chunks": [
+    {
+      "id": "chunk-01",
+      "exit_code": 1,
+      "members": [
+        "tests/test_plan_registry.py",
+        "tests/test_plan_current_campaign.py",
+        "tests/test_plan_waves.py",
+        "tests/test_plan_status_authority.py",
+        "tests/test_contract_runtime.py",
+        "tests/test_json_io.py",
+        "tests/test_bounded_walk.py",
+        "tests/test_agent_provider.py"
+      ],
+      "failure_nodes": [
+        "tests/test_contract_runtime.py::ContractRuntimeTests::test_every_shipped_contract_is_valid_owned_and_resolvable"
+      ]
+    },
+    {
+      "id": "chunk-04",
+      "exit_code": 1,
+      "members": [
+        "tests/test_model_attachment.py",
+        "tests/test_retrieval_and_models.py",
+        "tests/test_knowledge_foundry.py",
+        "tests/test_foundry_studio_bridge.py",
+        "tests/test_startup_input_contracts.py",
+        "tests/test_config_and_registry.py",
+        "tests/test_project_onboarding.py",
+        "tests/test_world_state.py"
+      ],
+      "failure_nodes": [
+        "tests/test_config_and_registry.py::ConfigAndRegistryTests::test_registry_is_canonical_and_cross_checked"
+      ]
+    },
+    {
+      "id": "chunk-05",
+      "exit_code": 1,
+      "members": [
+        "tests/test_orchestrator.py",
+        "tests/test_lazy_input_contracts.py",
+        "tests/test_lazy_loader_transactions.py",
+        "tests/test_coordination_input_contracts.py",
+        "tests/test_state_invariants.py",
+        "tests/test_startup_discovery_contracts.py",
+        "tests/test_runtime_wave4.py",
+        "tests/test_tool_registry.py"
+      ],
+      "failure_nodes": [
+        "tests/test_orchestrator.py::OrchestratorTests::test_failed_postcondition_is_not_complete",
+        "tests/test_orchestrator.py::OrchestratorTests::test_handler_exception_becomes_structured_failure_and_unloads",
+        "tests/test_orchestrator.py::OrchestratorTests::test_missing_inputs_blocks_before_activation",
+        "tests/test_orchestrator.py::OrchestratorTests::test_nested_px_executor_is_blocked_before_handler_resolution",
+        "tests/test_orchestrator.py::OrchestratorTests::test_runs_authorized_handler_and_verifies_result",
+        "tests/test_orchestrator.py::OrchestratorTests::test_unregistered_handler_fails_closed"
+      ]
+    },
+    {
+      "id": "chunk-10",
+      "exit_code": 1,
+      "members": [
+        "tests/test_licensing_input_contracts.py",
+        "tests/test_licensing.py",
+        "tests/test_process_input_contracts.py",
+        "tests/test_workflow_declaration_inputs.py",
+        "tests/test_trusted_evidence_inputs.py",
+        "tests/test_trust_boundaries.py",
+        "tests/test_operational_policy_inputs.py",
+        "tests/test_operational_controls.py"
+      ],
+      "failure_nodes": [
+        "tests/test_workflow_declaration_inputs.py::test_current_workflow_and_skill_relationships_remain_structurally_valid"
+      ]
+    },
+    {
+      "id": "chunk-12",
+      "exit_code": 1,
+      "members": [
+        "tests/test_release_evidence_portability.py",
+        "tests/test_source_freeze.py",
+        "tests/test_plan_registry_integrity.py",
+        "tests/test_context_generation.py",
+        "tests/test_projection_gate.py",
+        "tests/test_librarian_semantic_map.py",
+        "tests/test_semantic_entity.py",
+        "tests/test_semantic_locator.py"
+      ],
+      "failure_nodes": [
+        "tests/test_librarian_semantic_map.py::test_semantic_contract_ownership_registers_normal_archivist_producer"
+      ]
+    },
+    {
+      "id": "chunk-13",
+      "exit_code": 1,
+      "members": [
+        "tests/test_semantic_revision.py",
+        "tests/test_contract_ownership_registry.py",
+        "tests/test_compact_address.py",
+        "tests/test_plan_foundation_authority.py",
+        "tests/test_semantic_surfaces.py",
+        "tests/test_powershell_campaign_controls.py",
+        "tests/test_source_boundary.py",
+        "tests/test_semantic_powershell_source.py"
+      ],
+      "failure_nodes": [
+        "tests/test_contract_ownership_registry.py::test_remote_profile_has_actual_runtime_owner_and_packaged_dependencies",
+        "tests/test_contract_ownership_registry.py::test_generation_contract_ownership_survives_canonical_regeneration",
+        "tests/test_contract_ownership_registry.py::test_semantic_memory_envelope_has_explicit_runtime_ownership",
+        "tests/test_contract_ownership_registry.py::test_local_model_runtime_contract_has_explicit_runtime_ownership",
+        "tests/test_semantic_surfaces.py::test_source_binding_contract_is_owned_by_actual_producer_and_consumers"
+      ]
+    }
+  ],
+  "current_acceptance": false,
+  "note": "Diagnostic failure retained. Source has changed since this run; never use this receipt as current passing certification evidence."
+}

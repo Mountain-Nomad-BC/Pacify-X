@@ -685,6 +685,13 @@ def build(root: Path) -> dict[str, object]:
                 "tests/test_contract_runtime.py",
                 "tests/test_research_contract_admission.py",
             ]
+        elif path.parent.name == "project_revision_succession":
+            owner, enforcement = (
+                "runtime/project_revision_succession.py",
+                "revision_succession_runtime_boundary",
+            )
+            producers = [owner, "runtime/revision_campaign_lifecycle.py"]
+            tests = ["tests/test_project_revision_succession.py"]
         elif name in ROOT_OWNERS:
             owner, producers, enforcement, tests = ROOT_OWNERS[name]
         elif relative in existing:
@@ -713,7 +720,9 @@ def build(root: Path) -> dict[str, object]:
                     'semantic-entity.schema.json': ["runtime/contracts.py", "runtime/librarian_semantic_map.py"],
                     "context-generation-vector.schema.json": ["runtime/contracts.py", "runtime/projection_gate.py", "runtime/dependency_invalidation.py", "runtime/librarian_semantic_map.py"],
                     "projection-status.schema.json": ["runtime/contracts.py", "runtime/librarian_semantic_map.py"],
-                }.get(name, ["runtime/contracts.py"]),
+                }.get(name, ["runtime/contracts.py", "runtime/project_revision_succession.py",
+                             "runtime/revision_campaign_lifecycle.py", "runtime/test_profiles.py"]
+                      if path.parent.name == "project_revision_succession" else ["runtime/contracts.py"]),
                 "enforcement": enforcement,
                 "packaged": True,
                 "tests": list(
