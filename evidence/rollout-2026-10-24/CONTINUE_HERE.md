@@ -141,3 +141,7 @@ installed operational proof and certification. The oracle currently refuses cert
 ## 2026-10-25 repair-kit continuation
 
 First kit tracking is C:/Users/Ben/Downloads/PX_REPAIR_UNBLOCK_AND_COMPLETION_PLAN/tracking. Original 45 dirty files are backed up; 15 paths diverge, 9 match old base, 21 are additions. No automatic overwrite. Supplied inventory parser corrected in tracking copy (JSON suffix bug). Cards008/009/010 historical-byte defects reproduced; three current regressions added; generated ownership remains stale and must await reconciliation. G02 cards031-036/046/048/059 now have shared secure persistence, 162 passing focused/neighbor tests and passing governed secure-persistence/release-lifecycle gates. See secure-persistence-20261025.json and external per-card receipts. Independent P1 review/crash/platform breadth remain pending; no newly closed cards, no certification. Standalone second kit stays queued.
+
+### G03 source repair checkpoint
+
+Cards003/004/019/020: dynamic complete Job inventory, pointer-width PID ABI, complete freeze checks, handle-bound Job membership before suspension, independently checked termination, full observed descendant tree.65focused/neighbor tests pass. Native snapshot exercised; large-Job enforcement is still fixture-only and needs host proof. New mandatory host-containment section plus existing secure-persistence/release-lifecycle gates pass. Review remains unassigned; no certification. Exact evidence:host-containment-20261025.json and external first-kit tracking receipts.

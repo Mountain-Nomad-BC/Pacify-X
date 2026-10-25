@@ -2453,6 +2453,37 @@
       "max_parallel_chunks": 1,
       "chunk_timeout_seconds": 120,
       "timeout_seconds": 180
+    },
+    "host-containment": {
+      "description": "Host Job inventory, complete containment postconditions and descendant observation; causal and neighboring Gremlin regressions.",
+      "source_patterns": [
+        "runtime/gremlin/**",
+        "tests/test_host_enforcement_audit.py",
+        "registry/test_profiles.json",
+        "tests/test_gremlin_audit.py",
+        "tests/test_gremlin_runtime_identity.py",
+        "tests/test_gremlin_recovery_authority.py",
+        "tests/test_gremlin_containment.py",
+        "tests/test_gremlin_composition.py"
+      ],
+      "command": [
+        "python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_host_enforcement_audit.py",
+        "tests/test_gremlin_audit.py",
+        "tests/test_gremlin_runtime_identity.py",
+        "tests/test_gremlin_recovery_authority.py",
+        "tests/test_gremlin_containment.py",
+        "tests/test_gremlin_composition.py"
+      ],
+      "chunk_size": 3,
+      "max_parallel_chunks": 1,
+      "chunk_timeout_seconds": 120,
+      "timeout_seconds": 300
     }
   },
   "certification": {
@@ -2465,7 +2496,8 @@
       "hardware-routing",
       "runtime-domain-contracts",
       "release-lifecycle",
-      "secure-persistence"
+      "secure-persistence",
+      "host-containment"
     ],
     "whole_suite_after_sections": true,
     "required_groups": [

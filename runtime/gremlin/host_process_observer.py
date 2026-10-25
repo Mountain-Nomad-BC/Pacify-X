@@ -1,14 +1,15 @@
 """Real host process-tree observation for supervised children (Windows).
 
-The canonical projection host spawns its reconciliation workers as direct
-children. This observer reports the *actual* live child-process tree of the
+The canonical projection host spawns its reconciliation workers as supervised
+children. This observer reports the observed descendant process tree of the
 host process through the Win32 Toolhelp32 snapshot API — a real observation,
 not a stub. Every snapshot row carries the pid, parent pid and image name, so
 containment can join it against enrolled process identities (pid +
 process-start identity).
 
-On non-Windows hosts this module raises at import: the host must supply its own
-platform-true observer rather than silently claiming coverage.
+On non-Windows hosts snapshot acquisition is unavailable: the host must supply
+its own platform-true observer rather than silently claiming coverage. A PID
+snapshot is observation only, not a process-start identity or authority grant.
 """
 
 from __future__ import annotations
@@ -40,6 +41,13 @@ class _PROCESSENTRY32W(ctypes.Structure):
 
 def _snapshot_rows() -> list[dict[str, object]]:
     kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    kernel32.CreateToolhelp32Snapshot.argtypes = [wintypes.DWORD, wintypes.DWORD]
+    kernel32.CreateToolhelp32Snapshot.restype = wintypes.HANDLE
+    for name in ("Process32FirstW", "Process32NextW"):
+        function = getattr(kernel32, name)
+        function.argtypes = [wintypes.HANDLE, ctypes.POINTER(_PROCESSENTRY32W)]
+        function.restype = wintypes.BOOL
+    kernel32.CloseHandle.argtypes = [wintypes.HANDLE]
     handle = kernel32.CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0)
     if handle == INVALID_HANDLE_VALUE:
         raise OSError("process snapshot is unavailable")
@@ -55,18 +63,31 @@ def _snapshot_rows() -> list[dict[str, object]]:
                 "image": str(entry.szExeFile),
             })
             ok = kernel32.Process32NextW(handle, ctypes.byref(entry))
+        if ctypes.get_last_error() != 18:  # ERROR_NO_MORE_FILES
+            raise ctypes.WinError(ctypes.get_last_error())
     finally:
         kernel32.CloseHandle(handle)
     return rows
 
 
 def observe_host_children(*, host_pid: int | None = None) -> tuple[dict[str, object], ...]:
-    """Return the live direct children of ``host_pid`` (default: this process)."""
+    """Return all observed descendants of ``host_pid``, excluding unrelated trees."""
     parent = int(host_pid if host_pid is not None else os.getpid())
-    rows = tuple(
-        row for row in _snapshot_rows() if int(row["parent_pid"]) == parent
-    )
-    return rows
+    children: dict[int, list[dict[str, object]]] = {}
+    for row in _snapshot_rows():
+        children.setdefault(int(row["parent_pid"]), []).append(row)
+    seen = {parent}
+    pending = [parent]
+    descendants = []
+    while pending:
+        current = pending.pop()
+        for row in children.get(current, ()):
+            pid = int(row["pid"])
+            if pid not in seen:
+                seen.add(pid)
+                descendants.append(row)
+                pending.append(pid)
+    return tuple(descendants)
 
 
 def make_process_tree_poller(*, host_pid: int | None = None):

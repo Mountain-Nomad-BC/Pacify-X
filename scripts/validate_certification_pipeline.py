@@ -33,6 +33,7 @@ from scripts.run_release_stage_owner import Config as StageConfig  # noqa: E402
 SCHEMA = "px.certification-pipeline-validation/1.0"
 
 REQUIRED_LIFECYCLE_TESTS = (
+    "tests/test_host_enforcement_audit.py",
     "tests/test_secure_publish.py",
     "tests/test_project_revision_succession.py",
     "tests/test_revision_campaign_lifecycle.py",
