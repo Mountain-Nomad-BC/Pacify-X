@@ -6,6 +6,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 import hashlib
 import json
+import math
 from typing import Any, Mapping
 from pathlib import Path
 
@@ -182,10 +183,14 @@ class Scheduler:
             reasons.append("egress_policy_denied")
         maximum_cost = task.budget.get("maximum_cost")
         estimated_cost = task.budget.get("estimated_cost")
-        if (
-            maximum_cost is not None
-            and estimated_cost is not None
-            and float(estimated_cost) > float(maximum_cost)
+        if ("maximum_cost" in task.budget or "estimated_cost" in task.budget) and (
+            type(maximum_cost) not in (int, float)
+            or type(estimated_cost) not in (int, float)
+            or not math.isfinite(maximum_cost)
+            or not math.isfinite(estimated_cost)
+            or maximum_cost < 0
+            or estimated_cost < 0
+            or estimated_cost > maximum_cost
         ):
             reasons.append("budget_exhausted")
         if task.attempt > 1 and not task.idempotency_key and not task.compensation:

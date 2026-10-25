@@ -1,7 +1,7 @@
 'use strict';
 const { CanonicalEventBus } = require('./eventBus');
 const { TaskStore } = require('./taskStore');
-const { DurableTaskState } = require('./durableTaskState');
+const { DurableTaskState, DurableBudgetState } = require('./durableTaskState');
 const { migrateLegacyTaskState } = require('./legacyTaskMigration');
 const { BudgetLedger } = require('./budgetLedger');
 const { WorkerRegistry } = require('./workerRegistry');
@@ -129,7 +129,9 @@ function registerAgentConsole(vscode, context, options = {}) {
     }
   }
   const hostSettings = options.settingsProvider || (() => ({}));
-  const budgetLedger = new BudgetLedger(() => hostSettings().executionPolicy || {}); const workerRegistry = new WorkerRegistry();
+  const budgetLedger = new BudgetLedger(() => hostSettings().executionPolicy || {}, {
+    persistence: projectRoot ? new DurableBudgetState(projectRoot) : null
+  }); const workerRegistry = new WorkerRegistry();
   const contextCompiler = new ContextCompiler({ retrievalProvider: options.retrievalProvider || null });
   const experienceKey = 'pacifyX.agentConsole.tieExperience.v1';
   let experienceWrite = Promise.resolve();

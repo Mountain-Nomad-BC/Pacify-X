@@ -64,7 +64,7 @@ test('local mesh refuses tasks with a non-read-only effect budget', async () => 
 
 test('mesh cancellation reports worker interruption failures without undoing cancellation', async()=>{ let run={runId:'run-2',taskId:'task-2',status:'running'}; const events=[]; const controller=Object.create(HarnessController.prototype); controller.active=new Map([['run-2',{controllers:new Map(),branchWorkerIds:new Map([[0,'worker-failed']])}]]); controller.taskStore={requireRun:()=>run,updateRun:(_id,patch)=>{run={...run,...patch};return run;},flush:async()=>{}}; controller.workerRegistry={adapter:()=>({interrupt:async()=>{throw new Error('adapter-interrupt-error');}})}; controller.eventBus={emit:(type,event)=>events.push({type,...event})}; assert.equal(await controller.cancelRun('run-2'),true); assert.equal(run.status,'cancelled'); assert.equal(events.length,1); assert.equal(events[0].type,'worker.interrupt.result'); assert.equal(events[0].status,'failed'); assert.equal(events[0].payload.reason,'adapter-interrupt-error'); });
 
-test('a mesh branch discards late provider output and events after cancellation', async()=>{ const abort=new AbortController(); let completeTurn; let onEvent; const emitted=[]; const descriptor={workerId:'worker-late',adapterId:'mock',providerId:'local',modelId:'m',displayName:'Late worker',costClass:'local',contextLimit:8192,locality:'local',capabilities:{coding:1,planning:1,review:1,classification:1,toolUse:false,vision:false,structuredOutput:false},supportedEffectClass:'READ_ONLY',enabled:true,reliability:1,latencyClass:'fast'}; const adapter={runTurn:async request=>{onEvent=request.onEvent;return new Promise(resolve=>{completeTurn=resolve;});}}; const contexts=[]; const controller=Object.create(HarnessController.prototype); controller.active=new Map([['run-3',{controllers:new Map([[0,abort]]),branchWorkerIds:new Map()}]]); controller.workerRegistry={list:()=>[descriptor],getHealth:()=>({status:'healthy'}),adapter:()=>adapter}; controller.budgetLedger={canAdmit:()=>({allowed:true})}; controller.eventBus={setExecutionContext:(_id,context)=>contexts.push(context),clearExecutionContext:()=>{},emit:(type,event)=>emitted.push({type,...event})}; controller.projectId='workspace'; const task={taskId:'task-3',mode:'DIAGNOSE',constraints:{maxEffectClass:'READ_ONLY',taskCostCeilingUsd:null,localFirst:true,requireApprovalBeforeBillable:true}}; const run={runId:'run-3',epoch:1,revision:1,round:0}; const branch=controller._runMeshBranch({task,run,meshId:'mesh-3',branchIndex:0,branchRequest:{workerId:'worker-late'},contextPack:{suppliedTokens:100},requestReserveTokens:100,message:'hello'}); await Promise.resolve(); abort.abort(); onEvent({type:'worker.stream.delta',payload:{delta:'late'}}); completeTurn({text:'late result'}); const result=await branch; assert.equal(result.state,'cancelled'); assert.equal(result.text,undefined); assert.equal(result.conclusion,''); assert.equal(contexts.length,1); assert.deepEqual(emitted,[]); });
+test('a mesh branch discards late provider output and events after cancellation', async()=>{ const abort=new AbortController(); let completeTurn; let onEvent; const emitted=[]; const descriptor={workerId:'worker-late',adapterId:'mock',providerId:'local',modelId:'m',displayName:'Late worker',costClass:'local',contextLimit:8192,locality:'local',capabilities:{coding:1,planning:1,review:1,classification:1,toolUse:false,vision:false,structuredOutput:false},supportedEffectClass:'READ_ONLY',enabled:true,reliability:1,latencyClass:'fast'}; const adapter={runTurn:async request=>{onEvent=request.onEvent;return new Promise(resolve=>{completeTurn=resolve;});}}; const contexts=[]; const controller=Object.create(HarnessController.prototype); controller.active=new Map([['run-3',{controllers:new Map([[0,abort]]),branchWorkerIds:new Map()}]]); controller.workerRegistry={list:()=>[descriptor],getHealth:()=>({status:'healthy'}),adapter:()=>adapter}; controller.budgetLedger=new BudgetLedger(); controller.eventBus={setExecutionContext:(_id,context)=>contexts.push(context),clearExecutionContext:()=>{},emit:(type,event)=>emitted.push({type,...event})}; controller.projectId='workspace'; const task={taskId:'task-3',mode:'DIAGNOSE',constraints:{maxEffectClass:'READ_ONLY',taskCostCeilingUsd:null,localFirst:true,requireApprovalBeforeBillable:true}}; const run={runId:'run-3',epoch:1,revision:1,round:0}; const branch=controller._runMeshBranch({task,run,meshId:'mesh-3',branchIndex:0,branchRequest:{workerId:'worker-late'},contextPack:{suppliedTokens:100},requestReserveTokens:100,message:'hello'}); while (!completeTurn) await new Promise(resolve=>setImmediate(resolve)); abort.abort(); onEvent({type:'worker.stream.delta',payload:{delta:'late'}}); completeTurn({text:'late result',usage:{inputTokens:2,outputTokens:1,totalTokens:3,actualChargeUsd:0,billingIdentityKnown:true}}); const result=await branch; assert.equal(controller.budgetLedger.entries.length,1); assert.equal(controller.budgetLedger.entries[0].taskId,task.taskId); assert.equal(result.state,'cancelled'); assert.equal(result.text,undefined); assert.equal(result.conclusion,''); assert.equal(contexts.length,1); assert.deepEqual(emitted,[]); });
 
 test('single-turn cancellation discards late provider output and events', async () => {
   const taskStore = new TaskStore();
@@ -114,10 +114,7 @@ test('single-turn cancellation discards late provider output and events', async 
         budgetTokens: 1200, refs: []
       })
     },
-    budgetLedger: {
-      canAdmit: () => ({ allowed: true }),
-      summary: () => ({})
-    },
+    budgetLedger: new BudgetLedger(),
     projectId: 'project'
   });
   const pending = controller.sendTurn({
@@ -130,9 +127,11 @@ test('single-turn cancellation discards late provider output and events', async 
 
   await controller.cancelRun(run.runId);
   onEvent({ type: 'worker.stream.delta', payload: { delta: 'late' } });
-  completeTurn({ text: 'late result' });
+  completeTurn({ text: 'late result', usage: { inputTokens: 2, outputTokens: 1, totalTokens: 3, actualChargeUsd: 0, billingIdentityKnown: true } });
   await assert.rejects(pending, /turn-aborted/);
 
+  assert.equal(controller.budgetLedger.entries.length, 1);
+  assert.equal(controller.budgetLedger.entries[0].taskId, currentTask.taskId);
   assert.equal(taskStore.requireRun(run.runId).status, 'cancelled');
   assert.equal(events.some(event => event.type === 'worker.completed'), false);
   assert.equal(events.some(event => event.payload?.delta === 'late'), false);

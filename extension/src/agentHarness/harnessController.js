@@ -99,6 +99,7 @@ class HarnessController {
       const executionContext = createExecutionContext({ run, projectId: this.projectId || 'workspace', sessionId: run.runId,
         providerId: route.selected.providerId, authoritySha256: sha256(task.constraints),
         effectBudgetSha256: sha256({ maxEffectClass: task.constraints.maxEffectClass }), deadlineMs: task.deadlineMs || 300000 });
+      await this._reserveUsage(route.selected, task, run, executionContext, input.projectedChargeUsd?.[route.selected.workerId] ?? null);
       this.eventBus.setExecutionContext(run.runId, executionContext);
       this.eventBus.emit('worker.started', { taskId: task.taskId, runId: run.runId, turnId, roundId, workerId: route.selected.workerId, status: 'started', summary: route.selected.displayName });
       let executionStarted = route.selected.supportedEffectClass !== 'READ_ONLY';
@@ -119,6 +120,7 @@ class HarnessController {
       assertPersonalContextDispatchUnavailable(contextPack);
       result = await adapter.runTurn({ task, run, message: String(input.message || ''), contextPack, executionContext,
         maxOutputTokens: providerOutputTokenLimit(route.selected), signal: abort.signal, onEvent, toolBroker });
+      await this._recordUsage(route.selected, task, run, executionContext, result);
       if (abort.signal.aborted) throw Object.assign(new Error('turn-aborted'), { name: 'AbortError' });
       if (result?.providerStatus && result.providerStatus !== 'completed') throw new Error(`provider-turn-${result.providerStatus}`);
       } catch (error) {
@@ -132,9 +134,6 @@ class HarnessController {
       break;
       }
       if (result?.sessionRef) this.taskStore.updateRun(run.runId, { providerSessionRef: String(result.sessionRef) });
-      if (result?.usage) this.budgetLedger.record({ workerId: route.selected.workerId, providerId: route.selected.providerId, costClass: route.selected.costClass,
-        inputTokens: result.usage.inputTokens ?? null, outputTokens: result.usage.outputTokens ?? null, totalTokens: result.usage.totalTokens ?? null,
-        actualChargeUsd: result.usage.actualChargeUsd ?? null, projectedChargeUsd: result.usage.projectedChargeUsd ?? null, billingIdentityKnown: Boolean(result.usage.billingIdentityKnown), quotaRemaining: result.usage.quotaRemaining ?? null });
       this.eventBus.emit('worker.completed', { taskId: task.taskId, runId: run.runId, turnId, roundId, workerId: route.selected.workerId, status: 'succeeded', summary: 'Worker turn completed.', payload: { text: String(result?.text || '').slice(0, 120000) } });
       run = this.taskStore.updateRun(run.runId, { status: 'complete', round: run.round + 1 });
       await this.taskStore.flush();
@@ -257,6 +256,27 @@ class HarnessController {
     } finally { this.active.delete(run.runId); }
   }
 
+  async _reserveUsage(worker, task, run, executionContext, projectedChargeUsd) {
+    if (typeof this.budgetLedger.reserve !== 'function') {
+      if (worker.costClass === 'billable-api') throw new Error('billing-reservation-owner-required');
+      return;
+    }
+    this.budgetLedger.reserve({ worker, task, runId: run.runId, executionId: executionContext.execution_id, projectedChargeUsd });
+    await this.budgetLedger.flush?.();
+  }
+
+  async _recordUsage(worker, task, run, executionContext, result) {
+    if (!result?.usage) return; // An unsettled reservation remains held; absence is never zero cost.
+    this.budgetLedger.record({ taskId: task.taskId, runId: run.runId, executionId: executionContext.execution_id,
+      settlementId: result.settlementId || (worker.costClass === 'billable-api' ? null : executionContext.execution_id),
+      workerId: worker.workerId, providerId: worker.providerId, costClass: worker.costClass,
+      inputTokens: result.usage.inputTokens ?? null, outputTokens: result.usage.outputTokens ?? null,
+      totalTokens: result.usage.totalTokens ?? null, actualChargeUsd: result.usage.actualChargeUsd ?? null,
+      projectedChargeUsd: result.usage.projectedChargeUsd ?? null, billingIdentityKnown: result.usage.billingIdentityKnown === true,
+      quotaRemaining: result.usage.quotaRemaining ?? null });
+    await this.budgetLedger.flush?.();
+  }
+
   async _runMeshBranch({ task, run, meshId, branchIndex, branchRequest, contextPack, requestReserveTokens, message }) {
     const branchId = `${meshId}:branch-${branchIndex}`;
     const generationId = newId('gen');
@@ -280,6 +300,7 @@ class HarnessController {
         const executionContext = createExecutionContext({ run, projectId: this.projectId || 'workspace', sessionId: `${run.runId}:${branchId}`, generationId,
           providerId: route.selected.providerId, authoritySha256: sha256(task.constraints),
           effectBudgetSha256: sha256({ maxEffectClass: task.constraints.maxEffectClass }), deadlineMs: task.deadlineMs || 300000 });
+        await this._reserveUsage(route.selected, task, run, executionContext, null);
         this.eventBus.setExecutionContext(run.runId, executionContext, { branchId });
         let executionStarted = false;
         let attemptActive = true;
@@ -292,6 +313,7 @@ class HarnessController {
               if (ev.type === 'worker.stream.delta' || ev.type.startsWith('tool.') || ev.type.startsWith('effect.') || ev.type === 'worker.execution.started') executionStarted = true;
               this.eventBus.emit(ev.type, { taskId: task.taskId, runId: run.runId, branchId, generationId, workerId: route.selected.workerId, status: ev.status || 'info', summary: ev.summary || '', payload: ev.payload || {} });
             }, toolBroker: null });
+          await this._recordUsage(route.selected, task, run, executionContext, result);
           if (controller.signal.aborted) throw Object.assign(new Error('branch-aborted'), { name: 'AbortError' });
           if (result?.providerStatus && result.providerStatus !== 'completed') throw new Error(`provider-turn-${result.providerStatus}`);
           const text = String(result?.text || '');

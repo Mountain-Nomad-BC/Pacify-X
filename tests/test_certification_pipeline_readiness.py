@@ -15,7 +15,7 @@ def fixture(root):
         p.write_text('# disposable test', encoding='utf-8')
     value = {'certification': {'required_sections': ['release-lifecycle', 'ui-event-integrity']},
              'sections': {'release-lifecycle': {'command': ['python', '-m', 'pytest', *REQUIRED_LIFECYCLE_TESTS]},
-                          'ui-event-integrity': {'cwd': 'extension', 'command': ['node', '--test', 'tests/event-integrity-audit.test.js']}}}
+                          'ui-event-integrity': {'cwd': 'extension', 'command': ['node', '--test', *[p.removeprefix('extension/') for p in REQUIRED_NODE_TESTS]]}}}
     path = root / 'registry/test_profiles.json'
     path.write_text(json.dumps(value), encoding='utf-8')
     return path, value

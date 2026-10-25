@@ -33,6 +33,7 @@ from scripts.run_release_stage_owner import Config as StageConfig  # noqa: E402
 SCHEMA = "px.certification-pipeline-validation/1.0"
 
 REQUIRED_LIFECYCLE_TESTS = (
+    "tests/test_billing_budget_audit.py",
     "tests/test_event_integrity_audit.py",
     "tests/test_event_ledger_regression.py",
     "tests/test_host_enforcement_audit.py",
@@ -47,7 +48,7 @@ REQUIRED_LIFECYCLE_TESTS = (
     "tests/test_rollout_inventory.py",
     "tests/test_certification_pipeline_readiness.py",
 )
-REQUIRED_NODE_TESTS = ("extension/tests/event-integrity-audit.test.js",)
+REQUIRED_NODE_TESTS = ("extension/tests/event-integrity-audit.test.js", "extension/tests/billing-settlement-audit.test.js")
 
 
 def certification_coverage(root: Path) -> dict[str, Any]:

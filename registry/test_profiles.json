@@ -2547,6 +2547,56 @@
       "max_parallel_chunks": 1,
       "chunk_timeout_seconds": 120,
       "timeout_seconds": 600
+    },
+    "billing-accounting": {
+      "description": "Durable reservations, cumulative ceilings, owner-bound idempotent settlement and exact provider receipt validation.",
+      "source_patterns": [
+        "extension/src/agentHarness/**",
+        "extension/tests/billing-settlement-audit.test.js",
+        "extension/tests/agent-harness-core.test.js",
+        "extension/tests/px-provider-invoker.test.js",
+        "registry/test_profiles.json"
+      ],
+      "command": [
+        "node",
+        "--test",
+        "tests/billing-settlement-audit.test.js",
+        "tests/agent-harness-core.test.js",
+        "tests/px-provider-invoker.test.js"
+      ],
+      "cwd": "extension",
+      "chunk_size": 1,
+      "max_parallel_chunks": 1,
+      "chunk_timeout_seconds": 120,
+      "timeout_seconds": 600
+    },
+    "billing-budget": {
+      "description": "Finite observe-only scheduler budgets and actual native Python to Node receipt compatibility.",
+      "source_patterns": [
+        "runtime/capability_scheduler.py",
+        "runtime/provider_gateway.py",
+        "runtime/provider_budget.py",
+        "extension/src/agentHarness/adapters/pxProviderGateway.js",
+        "tests/test_billing_budget_audit.py",
+        "tests/test_capability_scheduler.py",
+        "tests/test_provider_gateway_streaming.py",
+        "registry/test_profiles.json"
+      ],
+      "command": [
+        "python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_billing_budget_audit.py",
+        "tests/test_capability_scheduler.py",
+        "tests/test_provider_gateway_streaming.py"
+      ],
+      "chunk_size": 1,
+      "max_parallel_chunks": 1,
+      "chunk_timeout_seconds": 180,
+      "timeout_seconds": 600
     }
   },
   "certification": {
@@ -2562,7 +2612,9 @@
       "secure-persistence",
       "host-containment",
       "event-integrity",
-      "ui-event-integrity"
+      "ui-event-integrity",
+      "billing-accounting",
+      "billing-budget"
     ],
     "whole_suite_after_sections": true,
     "required_groups": [

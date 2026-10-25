@@ -79,7 +79,7 @@ class AgentConsoleViewProvider {
     } catch (error) { this.onDiagnostic(`agent-console-handler:${error?.stack || error}`); return this._error('host-action-failed', String(error?.message || error).slice(0, 900)); }
   }
 
-  _defaults() { const s = this.harness.hostSettings?.() || {}; return { contextBudgetTokens: s.contextInjectionCapTokens || 12000, taskCostCeilingUsd: s.executionPolicy?.max_cost_per_task_usd || null, localFirst: s.executionPolicy?.local_first !== false, requireApprovalBeforeBillable: s.executionPolicy?.require_approval_before_billable_execution !== false }; }
+  _defaults() { const s = this.harness.hostSettings?.() || {}; return { contextBudgetTokens: s.contextInjectionCapTokens || 12000, taskCostCeilingUsd: s.executionPolicy?.max_cost_per_task_usd ?? null, localFirst: s.executionPolicy?.local_first !== false, requireApprovalBeforeBillable: s.executionPolicy?.require_approval_before_billable_execution !== false }; }
   _editorRefs() {
     const refs = []; const editor = this.vscode.window.activeTextEditor;
     if (editor?.document?.uri?.scheme === 'file') {
