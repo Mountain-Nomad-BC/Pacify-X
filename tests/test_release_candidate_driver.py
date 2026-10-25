@@ -116,6 +116,15 @@ def test_plan_is_read_only_and_canonical(tmp_path: Path) -> None:
     assert not value.automation_state.exists()
 
 
+def test_planned_artifact_is_rejected_before_a_release_attempt_is_consumed(tmp_path):
+    from dataclasses import replace
+    value = replace(config(tmp_path), artifact_state='planned')
+    result = readiness(value)
+    assert result['valid'] is False
+    assert any('package/install realization owner' in message for message in result['errors'])
+    assert not value.automation_state.exists()
+
+
 def test_execute_all_runs_every_owner_once_and_writes_one_report(tmp_path: Path) -> None:
     value = config(tmp_path)
     owners = FakeOwners()

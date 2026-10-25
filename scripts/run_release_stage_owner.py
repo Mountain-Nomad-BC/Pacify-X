@@ -349,6 +349,25 @@ def resource_postcondition(config: Config) -> dict[str, Any]:
     return {**status, "active_records": len(active), "exact_supervised_self": exact_self, "valid": valid}
 
 
+def required_section_evidence(status: Mapping[str, Any]) -> dict[str, Any]:
+    """Bind a sections receipt to every current required section, without fixed counts."""
+    names, rows = status.get("required_sections"), status.get("sections")
+    if (status.get("valid") is not True or not isinstance(names, list) or not names
+            or any(type(name) is not str or not name for name in names)
+            or len(names) != len(set(names)) or not isinstance(rows, list)):
+        raise OwnerBlocked("required governed sections are not current")
+    evidence = []
+    for name in names:
+        matches = [row for row in rows if isinstance(row, dict) and row.get("section") == name]
+        if (len(matches) != 1 or matches[0].get("current") is not True
+                or not isinstance(matches[0].get("input_sha256"), str)
+                or re.fullmatch(r"[a-f0-9]{64}", matches[0]["input_sha256"]) is None):
+            raise OwnerBlocked("required section lacks unique current input evidence: " + name)
+        evidence.append({"section": name, "input_sha256": matches[0]["input_sha256"]})
+    return {"all_required_sections_current": True, "required_section_count": len(names),
+            "required_section_inputs": evidence}
+
+
 def check(config: Config, step: str) -> dict[str, Any]:
     from runtime.release_campaign import cleared_campaign_can_be_superseded
 
@@ -1247,7 +1266,8 @@ class ProductionEffects:
                     )
                     for name in stale
                 ]
-                passed = section_status(config.root).get("valid") is True
+                section_evidence = required_section_evidence(section_status(config.root))
+                passed = section_evidence["all_required_sections_current"]
                 finish_release_stage(
                     config.root,
                     stage="sections",
@@ -1256,7 +1276,7 @@ class ProductionEffects:
                 )
                 finished = True
                 if not passed:
-                    raise OwnerBlocked("not all six governed sections are current")
+                    raise OwnerBlocked("not all required governed sections are current")
             except BaseException:
                 if not finished:
                     try:
@@ -1279,7 +1299,7 @@ class ProductionEffects:
                     "claim_id": claim["claim_id"],
                     "stale_sections_before": stale,
                     "owners": logs,
-                    "all_six_current": True,
+                    **section_evidence,
                     "valid": True,
                 },
             )
@@ -1404,6 +1424,12 @@ class ProductionEffects:
             and receipt_campaign == config.candidate_id
             and receipt.get("valid") is True
         )
+        if step == "sections":
+            from runtime.test_profiles import section_status
+            expected_sections = required_section_evidence(section_status(config.root))
+            receipt_valid = receipt_valid and all(
+                receipt.get(key) == value for key, value in expected_sections.items()
+            )
         if step in {"sections", "package", "install"}:
             expected_claim = current_release.get("stages", {}).get(step, {}).get("claim_id")
             actual_claim = receipt.get("claim_id")
@@ -1462,14 +1488,6 @@ def already_established_successor(config: "Config", current_release: dict) -> bo
 
     supersedes = current_release.get("supersedes") or {}
     archive_rel = supersedes.get("archive")
-    try:
-        archive_ok = (
-            isinstance(archive_rel, str)
-            and bool(archive_rel)
-            and sha256(config.root / archive_rel) == supersedes.get("archive_sha256")
-        )
-    except (OSError, ValueError):
-        return False
     predecessor = getattr(config, "predecessor_id", None) or getattr(
         config, "predecessor_campaign_id", None
     )

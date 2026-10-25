@@ -9,7 +9,6 @@ repository/artifact state, collecting all discoverable defects in one report.
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import os
 from pathlib import Path
@@ -33,6 +32,55 @@ from scripts.run_release_stage_owner import Config as StageConfig  # noqa: E402
 
 SCHEMA = "px.certification-pipeline-validation/1.0"
 
+REQUIRED_LIFECYCLE_TESTS = (
+    "tests/test_project_revision_succession.py",
+    "tests/test_revision_campaign_lifecycle.py",
+    "tests/test_release_candidate_driver.py",
+    "tests/test_release_stage_owner.py",
+    "tests/test_run_installed_operational_owner.py",
+    "tests/test_certificate_input_contracts.py",
+    "tests/test_certification_readiness.py",
+    "tests/test_rollout_inventory.py",
+    "tests/test_certification_pipeline_readiness.py",
+)
+
+
+def certification_coverage(root: Path) -> dict[str, Any]:
+    """Require the current release mechanisms to be exercised by governed sections."""
+    profiles = json.loads((root / "registry/test_profiles.json").read_text(encoding="utf-8"))
+    sections = profiles.get("sections")
+    if not isinstance(sections, dict) or not sections:
+        raise ValidationBlocked("governed section topology is missing")
+    required = profiles.get("certification", {}).get("required_sections")
+    if (not isinstance(required, list) or not required
+            or any(not isinstance(name, str) or name not in sections for name in required)
+            or len(required) != len(set(required))):
+        raise ValidationBlocked("required governed section denominator is malformed")
+    membership: dict[str, list[str]] = {}
+    for name, definition in sections.items():
+        if not isinstance(definition, dict) or not isinstance(definition.get("command"), list):
+            raise ValidationBlocked("governed section command is malformed")
+        command = definition["command"]
+        if any(token in REQUIRED_LIFECYCLE_TESTS for token in command):
+            if command[:3] != ["python", "-m", "pytest"] or any(
+                isinstance(token, str) and (
+                    token in {"-k", "-m", "--collect-only", "--co", "--pyargs"}
+                    or token.startswith(("--ignore", "--deselect"))
+                ) for token in command[3:]
+            ):
+                raise ValidationBlocked("lifecycle coverage requires an unfiltered pytest command")
+        for token in definition["command"]:
+            if token in REQUIRED_LIFECYCLE_TESTS and name in required:
+                membership.setdefault(token, []).append(name)
+    missing = [path for path in REQUIRED_LIFECYCLE_TESTS if path not in membership]
+    absent = [path for path in REQUIRED_LIFECYCLE_TESTS
+              if not (root / path).is_file() or (root / path).is_symlink()]
+    duplicate = [path for path, owners in membership.items() if len(owners) != len(set(owners))]
+    return {"valid": not missing and not absent and not duplicate,
+            "required_count": len(REQUIRED_LIFECYCLE_TESTS), "membership": membership,
+            "missing_membership": missing, "missing_files": absent,
+            "duplicate_members": duplicate}
+
 REQUIRED_REPO_FILES = (
     # Direct certification control surface.
     "scripts/run_release_candidate.py",
@@ -41,6 +89,10 @@ REQUIRED_REPO_FILES = (
     "scripts/reconcile_unverified_operational_controls.py",
     "scripts/reconcile_cohesion_cards.py",
     "runtime/certification_contract.py",
+    "runtime/project_revision_succession.py",
+    "runtime/revision_campaign_lifecycle.py",
+    "runtime/release_source_identity.py",
+    "runtime/engineering_os_paths.py",
     "runtime/release_campaign.py",
     "runtime/release_identity.py",
     # Direct command targets.
@@ -191,6 +243,15 @@ def validate(automation_path: Path, stage_path: Path, *, allow_started: bool) ->
         return {"schema_version": SCHEMA, "valid": False, "errors": ["STAGE_CONFIG_SCHEMA"], "checks": checks}
 
     root = automation.root
+    try:
+        coverage = certification_coverage(root)
+        _add(checks, "GOVERNED_LIFECYCLE_COVERAGE", coverage["valid"],
+             "required lifecycle and certification suites must have governed owners", **coverage)
+        if not coverage["valid"]:
+            errors.append("GOVERNED_LIFECYCLE_COVERAGE")
+    except (OSError, ValueError, TypeError, ValidationBlocked) as exc:
+        _add(checks, "GOVERNED_LIFECYCLE_COVERAGE", False, str(exc))
+        errors.append("GOVERNED_LIFECYCLE_COVERAGE")
     current=automation.identity_kind=="standalone_current_campaign"
     if current != (stage.identity_kind=="standalone_current_campaign") or (current and automation.source_freeze_reference!=stage.source_freeze_reference):
         return {"schema_version":SCHEMA,"valid":False,"errors":["CONFIG_SOURCE_IDENTITY_BINDING"],"checks":checks}

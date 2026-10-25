@@ -12,9 +12,11 @@ from .project_revision_succession import (
     current_revision_root,
 )
 from .wal_transaction import JsonArtifact, JsonWal
+from .json_io import bounded_canonical_json_bytes
 
 def _canonical(value: object) -> bytes:
-    return json.dumps(value, sort_keys=True, separators=(',', ':'), ensure_ascii=False, allow_nan=False).encode('utf-8')
+    # Hash the exact native WAL wire image, including its trailing newline.
+    return bounded_canonical_json_bytes(value, max_bytes=64 * 1024 * 1024)
 
 class RevisionCampaignBlocked(ValueError):
     pass
@@ -32,6 +34,7 @@ def _load_revision(root: Path) -> tuple[Path, dict[str, Any], dict[str, Any]]:
     return campaign_path, campaign, pointer
 
 def status(root: Path) -> dict[str, Any]:
+    from .test_profiles import repair_campaign_status
     root = Path(root).resolve(strict=True)
     _, campaign, pointer = _load_revision(root)
     unresolved = campaign.get("unresolved")
@@ -41,14 +44,13 @@ def status(root: Path) -> dict[str, Any]:
             or len(unresolved) != len(set(unresolved))):
         raise RevisionCampaignBlocked("active revision campaign is malformed")
     return {
-        "valid": True,
+        **repair_campaign_status(root),
         "project_id": campaign["project_id"],
         "campaign_id": campaign["campaign_id"],
         "phase": campaign.get("phase"),
         "intake_open": campaign.get("intake_open"),
         "unresolved": list(unresolved),
         "revision_event_sha256": pointer["event_sha256"],
-        "blocked_stages": [] if campaign.get("phase") == "repair" and campaign.get("intake_open") else ["repair"],
     }
 
 
@@ -80,6 +82,12 @@ def _publish_campaign_update(root: Path, campaign_path: Path, state: dict[str, A
     wal = JsonWal(Path(".agentic_engineering_os_px/project-revision-succession/wal"), root)
     policy_path = campaign_path.parent / "validation-policy.json"
     policy_before = policy_path.read_bytes()
+    pointer_path = root / ACTIVE_REVISION_PATH
+    pointer_before = pointer_path.read_bytes()
+    if (json.loads(pointer_before) != pointer
+            or hashlib.sha256(policy_before).hexdigest() != pointer["policy_sha256"]
+            or hashlib.sha256(before).hexdigest() != pointer["campaign_sha256"]):
+        raise RevisionCampaignBlocked("revision before-images changed before publication")
     policy = json.loads(policy_before)
     policy_binding = policy.get("revision_succession")
     if not isinstance(policy_binding, dict):
@@ -92,16 +100,17 @@ def _publish_campaign_update(root: Path, campaign_path: Path, state: dict[str, A
         raise
     except (OSError, ValueError, RuntimeError) as error:
         raise RevisionCampaignBlocked("succession WAL is corrupt or requires recovery") from error
+    _guard_succession_effect(root, admission_event_id, "write")
     campaign_bytes = _canonical(state)
     policy_binding["campaign_state_sha256"] = hashlib.sha256(campaign_bytes).hexdigest()
     policy_bytes = _canonical(policy)
+    pointer = dict(pointer)
     pointer["campaign_sha256"] = hashlib.sha256(campaign_bytes).hexdigest()
     pointer["policy_sha256"] = hashlib.sha256(policy_bytes).hexdigest()
-    pointer_path = root / ACTIVE_REVISION_PATH
     expected = {
         campaign_path.relative_to(root).as_posix(): hashlib.sha256(before).hexdigest(),
         policy_path.relative_to(root).as_posix(): hashlib.sha256(policy_before).hexdigest(),
-        pointer_path.relative_to(root).as_posix(): hashlib.sha256(pointer_path.read_bytes()).hexdigest(),
+        pointer_path.relative_to(root).as_posix(): hashlib.sha256(pointer_before).hexdigest(),
     }
     wal.commit(
         [JsonArtifact("state", campaign_path, state), JsonArtifact("state", policy_path, policy), JsonArtifact("projection", pointer_path, pointer)],
@@ -109,6 +118,39 @@ def _publish_campaign_update(root: Path, campaign_path: Path, state: dict[str, A
         expected_before=expected,
     )
     current_revision_root(root)
+
+
+def _transition(root: Path, *, admission_event_id: str, transition: str,
+                closure_authority: str = "", evidence_path: str = "") -> dict[str, Any]:
+    """Publish phase, validation binding and active pointer as one WAL transaction."""
+    from .test_profiles import prepare_intake_closure, prepare_repair_freeze
+    root = Path(root).resolve(strict=True)
+    _guard_succession_effect(root, admission_event_id, "write")
+    lock = root / ".agentic_engineering_os_px/project-revision-succession/activation.lock"
+    with FileLock(lock, timeout_seconds=10.0):
+        campaign_path, _, pointer = _load_revision(root)
+        before = campaign_path.read_bytes()
+        if transition == "close_intake":
+            state = prepare_intake_closure(before, admission_event_id=admission_event_id,
+                                           closure_authority=closure_authority)
+        elif transition == "freeze_repair":
+            state = prepare_repair_freeze(root, campaign_path, before,
+                                          admission_event_id=admission_event_id,
+                                          evidence_path=evidence_path)
+        else:
+            raise RevisionCampaignBlocked("unknown revision phase transition")
+        _publish_campaign_update(root, campaign_path, state, pointer, admission_event_id, before)
+    return status(root)
+
+
+def close_intake(root: Path, *, admission_event_id: str, closure_authority: str) -> dict[str, Any]:
+    return _transition(root, admission_event_id=admission_event_id, transition="close_intake",
+                       closure_authority=closure_authority)
+
+
+def freeze_repair(root: Path, *, admission_event_id: str, evidence_path: str) -> dict[str, Any]:
+    return _transition(root, admission_event_id=admission_event_id, transition="freeze_repair",
+                       evidence_path=evidence_path)
 
 
 def _mutate(root: Path, *, admission_event_id: str, mutation: str, payload: Mapping[str, Any]) -> dict[str, Any]:
@@ -161,26 +203,7 @@ def _mutate(root: Path, *, admission_event_id: str, mutation: str, payload: Mapp
             "admission_event_id": admission_event_id,
             **dict(payload),
         })
-        artifacts = [JsonArtifact("state", campaign_path, state)]
-        policy_path = campaign_path.parent / "validation-policy.json"
-        policy_before = policy_path.read_bytes()
-        policy = json.loads(policy_before)
-        policy_binding = policy.get("revision_succession")
-        if not isinstance(policy_binding, dict):
-            raise RevisionCampaignBlocked("revision validation policy lacks succession binding")
-        policy_binding["campaign_state_sha256"] = hashlib.sha256(_canonical(state)).hexdigest()
-        policy_bytes = _canonical(policy)
-        artifacts.append(JsonArtifact("state", policy_path, policy))
-        pointer["campaign_sha256"] = hashlib.sha256(_canonical(state)).hexdigest()
-        pointer["policy_sha256"] = hashlib.sha256(policy_bytes).hexdigest()
-        artifacts.append(JsonArtifact("projection", root / ACTIVE_REVISION_PATH, pointer))
-        before_images = {
-            campaign_path.relative_to(root).as_posix(): before_sha,
-            policy_path.relative_to(root).as_posix(): hashlib.sha256(policy_path.read_bytes()).hexdigest(),
-            (root / ACTIVE_REVISION_PATH).relative_to(root).as_posix(): hashlib.sha256((root / ACTIVE_REVISION_PATH).read_bytes()).hexdigest(),
-        }
-        wal.commit(artifacts, transaction_id=f"campaign-{mutation}-{hashlib.sha256((admission_event_id+before_sha).encode()).hexdigest()[:24]}", expected_before=before_images)
-        current_revision_root(root)
+        _publish_campaign_update(root, campaign_path, state, pointer, admission_event_id, before)
     return status(root)
 
 

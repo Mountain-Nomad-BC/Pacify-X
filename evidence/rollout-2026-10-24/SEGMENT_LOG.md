@@ -163,3 +163,76 @@ The review/plan/source integration milestone is durable. Full implementation, fr
 rollout commissioning, all current governed receipts, full profile/validation, exact package
 installation, installed operational proof and certification remain open. No passing release
 certificate was issued. No test child process is intentionally left running.
+
+## S11 - 2026-10-25 lifecycle completion and certification review
+
+Owner requested finish the readiness work before later repair paths. Canonical ledger
+checkpoint 479 and guarded admission 480 cover the Git worktree; the prior session was closed
+before renewal. Source remains on `codex/rollout-day1-20261024`, original main preserved.
+
+Implemented public successor intake closure and operational freeze through the transactional
+revision owner. Extracted shared preparation/validation for legacy and revision flows. Unified
+publication, rechecked admissions and policy/pointer/campaign before-images immediately before
+commit. Actual disposable revision selection exposed an existing serialization mismatch:
+campaign/policy digests used compact JSON, while JsonWal writes the native newline-terminated
+format. Publication now hashes the exact native serialized bytes. The first recovery tests also
+exposed a fixture passing str where JsonWal requires Path; corrected that fixture.
+
+Added ten actual selector/WAL tests for public phase progression, predecessor immutability,
+stale artifacts, strict integer evidence, concurrent closure, admission expiry, policy drift,
+and interruption/recovery after campaign, policy and pointer publication. They exercise real
+publication/recovery in disposable roots; their isolated admission fixture is not production
+owner-authority issuance. Signed-policy/authorization tests remain separate actual SSH tests.
+
+Certification baseline driver/stage/installed-owner set: 68 passed. Found none of the seven
+registered sections explicitly owned the new succession suite. Added an eighth section,
+`release-lifecycle`, owning nine required suites. Added pipeline preflight checks for required
+suite membership/files and rejection of filtered-away or duplicated tests, and added the new
+runtime dependencies to required certification inputs. The final governed section passed all
+three chunks: **199 tests passed**, 18.38 seconds, no timeout, receipt published. Ruff and diff
+whitespace checks passed for the changed code. See `governed-release-lifecycle-20261025.json`.
+
+The broader old test-profile run found six failures caused by stale parser/index/projection
+identity; its 82 passing tests are retained in `lifecycle-first-regression.log`. No speculative
+index regeneration or full certification run was performed during open repairs.
+
+Certification review identified another actual dead end: current configuration schemas require
+a planned package, while the production package/install owner requires realized artifact
+evidence and has no implementation to materialize the planned state. Readiness previously
+accepted it. It now rejects that unsupported graph **before** consuming a release attempt;
+the regression proves no automation journal is created. This is early truthful refusal, not
+completed producer support. `READINESS_EXECUTION_PLAN.md` specifies the remaining package,
+realization receipt, exact-byte installation and installed-host proof work. The twelve-stage
+contract/order is unchanged. Full rollout certification is still incomplete.
+
+
+S11 followup: legacy campaign causal subset passed 24 tests (26 deselected). The mandatory
+section denominator was also corrected: adding a section alone had not added it to required
+certification sections. Preflight now rejects optional-only membership and filtered execution.
+The stage owner records and verifies all required section names/input hashes with a dynamic
+count, replacing the obsolete all_six_current field. A regression rejects a synthetic valid
+summary that omits any required section. The dead unused raw-byte archive pre-read was removed;
+canonical supersession archive validation and canonical content-hash binding remain enforced.
+
+Later-stage audit additionally located `ProductionEffects.advance` writing the old single
+campaign path instead of the active revision's transactional owner, with no explicit phase
+admission propagation in its argv contract. This is an actionable remaining lifecycle/E2E
+blocker, recorded in the new execution plan rather than deferred until a real release run.
+
+Final S11 governed rerun after all source changes: 201 tests passed, all three chunks, 18.48 seconds, exit 0. No timeout. Receipt published; scoped source evidence only, no managed release certificate.
+
+
+## S12 - External checkout custody and current integration boundary
+
+On 2026-10-25, original bootstrap checkout main was observed with new uncommitted source/tests
+and a repair handoff that were not authored by this rollout segment. This differs from its
+previously clean state. `original-checkout-observation-20261025.json` retains names/status only.
+Those changes remain untouched and are not incorporated into the isolated rollout branch.
+Do not reset, clean, checkout over, stage, or merge them by assumption. The user has not yet
+supplied the later repair-path intake. The original repo and rollout worktree share Git history,
+but their working files/indexes are distinct.
+
+Latest material candidate checkpoint: 482; current local integration admission at writing: 483.
+Query actual current ledger expiry/closure before continuing. All source changes for this
+segment are confined to the rollout worktree and explicit review evidence. No required full
+profile, package, install, final validation or certificate was attempted.

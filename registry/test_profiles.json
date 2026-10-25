@@ -2370,6 +2370,58 @@
       "max_parallel_chunks": 1,
       "chunk_timeout_seconds": 300,
       "timeout_seconds": 900
+    },
+    "release-lifecycle": {
+      "description": "Revision lifecycle, real WAL publication/recovery, certification owner ordering and readiness, installed proof and source-overlay boundaries.",
+      "source_patterns": [
+        "runtime/project_revision_succession.py",
+        "runtime/revision_campaign_lifecycle.py",
+        "runtime/test_profiles.py",
+        "runtime/certification_contract.py",
+        "runtime/release_campaign.py",
+        "runtime/release_identity.py",
+        "runtime/release_source_identity.py",
+        "runtime/certification_readiness.py",
+        "runtime/wal_transaction.py",
+        "runtime/json_io.py",
+        "contracts/project_revision_succession/*.json",
+        "scripts/run_release_candidate.py",
+        "scripts/run_release_stage_owner.py",
+        "scripts/run_installed_operational_owner.py",
+        "scripts/validate_certification_pipeline.py",
+        "scripts/rollout/*.py",
+        "registry/test_profiles.json",
+        "tests/test_project_revision_succession.py",
+        "tests/test_revision_campaign_lifecycle.py",
+        "tests/test_release_candidate_driver.py",
+        "tests/test_release_stage_owner.py",
+        "tests/test_run_installed_operational_owner.py",
+        "tests/test_certificate_input_contracts.py",
+        "tests/test_certification_readiness.py",
+        "tests/test_rollout_inventory.py",
+        "tests/test_certification_pipeline_readiness.py"
+      ],
+      "command": [
+        "python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_project_revision_succession.py",
+        "tests/test_revision_campaign_lifecycle.py",
+        "tests/test_release_candidate_driver.py",
+        "tests/test_release_stage_owner.py",
+        "tests/test_run_installed_operational_owner.py",
+        "tests/test_certificate_input_contracts.py",
+        "tests/test_certification_readiness.py",
+        "tests/test_rollout_inventory.py",
+        "tests/test_certification_pipeline_readiness.py"
+      ],
+      "chunk_size": 3,
+      "max_parallel_chunks": 1,
+      "chunk_timeout_seconds": 600,
+      "timeout_seconds": 2100
     }
   },
   "certification": {
@@ -2380,7 +2432,8 @@
       "learning-promotion",
       "execution-placement",
       "hardware-routing",
-      "runtime-domain-contracts"
+      "runtime-domain-contracts",
+      "release-lifecycle"
     ],
     "whole_suite_after_sections": true,
     "required_groups": [

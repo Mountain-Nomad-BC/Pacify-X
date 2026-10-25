@@ -17,7 +17,20 @@ from scripts.run_release_stage_owner import (
     plan,
     run,
     resource_postcondition,
+    required_section_evidence,
 )
+
+
+def test_required_section_receipt_uses_the_actual_denominator_and_hashes():
+    names = [f'section-{i}' for i in range(8)]
+    status = {'valid': True, 'required_sections': names,
+              'sections': [{'section': name, 'current': True, 'input_sha256': 'a' * 64} for name in names]}
+    evidence = required_section_evidence(status)
+    assert evidence['required_section_count'] == 8
+    assert len(evidence['required_section_inputs']) == 8
+    status['sections'].pop()
+    with pytest.raises(OwnerBlocked, match='unique current'):
+        required_section_evidence(status)
 
 
 class FakeEffects:

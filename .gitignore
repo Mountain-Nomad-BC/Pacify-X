@@ -111,3 +111,7 @@ registry/operational_gap_ledger.deltas/
 .engineering-bootstrap/
 orchestration/workflows/*/memory/
 providers/agency_agents/agents/*/memory/
+
+# Live governed test receipts have separate local evidence custody.
+.agentic_engineering_os_px/test-evidence/sections/
+.agentic_engineering_os_px/test-evidence/section-chunks/

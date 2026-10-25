@@ -1,3 +1,31 @@
+# Current continuation checkpoint - 2026-10-25
+
+Read `docs/rollout/READINESS_EXECUTION_PLAN.md` before the older baseline below.
+The current Git worktree has implemented and tested successor closure/freeze and exact WAL
+publication. `release-lifecycle` is now a mandatory eighth governed section. Certification
+preflight requires all nine lifecycle/certification suites in required, unfiltered sections,
+and section-completion evidence binds every required section name and current input hash.
+
+The next major blocker is **planned artifact realization**: the current config parser accepts
+planned VSIX/install state but the production package/install owner cannot materialize it.
+Readiness now refuses this graph before consuming a release attempt. Implement actual package
+production, immutable source/candidate/claim-bound realization receipts, exact-byte installation
+and installed-host consumption at existing owners; do not remove the refusal just to go green.
+Also audit the later stage owner's hardcoded campaign-phase writer and admission propagation
+for active successor revisions. See the execution plan for the complete required chain.
+
+Canonical candidate ledger: last material checkpoint 482, local integration admission 483 at this segment's
+execution time; query actual current IDs/expiry/closure before using them. Source is in
+`C:\Users\Ben\Music\Pacify-X-rollout-20261024`, branch `codex/rollout-day1-20261024`.
+Original bootstrap main now has external uncommitted repairs; preserve them untouched and
+consult original-checkout-observation-20261025.json. New test logs are in this worktree's evidence folder;
+older candidate logs remain in the candidate directory. No full release certificate exists.
+
+The baseline below predates these source repairs. Its statement that successor closure/freeze
+is unsupported has been superseded; later stage namespace/producer support is still open.
+
+---
+
 # Continuation checkpoint - 2026-10-24
 
 The review, twenty-card execution plan and source integration are durable. The complete

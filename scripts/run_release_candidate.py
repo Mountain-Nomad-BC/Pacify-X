@@ -12,7 +12,6 @@ from __future__ import annotations
 import argparse
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
-import hashlib
 import json
 import os
 from pathlib import Path
@@ -535,7 +534,13 @@ def readiness(config: Config) -> dict[str, Any]:
             f"full-profile timeout envelope is unavailable: {type(exc).__name__}"
         )
     if config.artifact_state=="planned":
-        pass  # Native package owner must refuse until actual producer custody is available.
+        # The current stage owner explicitly refuses planned artifacts at
+        # package/install. Detect that before consuming archive/reconcile/tests,
+        # rather than admitting a candidate that can never complete its graph.
+        errors.append(
+            "planned artifact has no implemented package/install realization owner; "
+            "complete producer custody and exact-artifact binding before starting a release attempt"
+        )
     elif not config.artifact.is_file() or config.artifact.is_symlink():
         errors.append("immutable artifact is not an exact non-symlink file")
     else:

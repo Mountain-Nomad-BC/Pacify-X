@@ -113,6 +113,41 @@
       "sha256": "3437f8a8e4ac4d9ac08bca63e160843b64ed64a6349e94dcac5eb9d7d6afadd4",
       "size": 204,
       "custody": "candidate-local diagnostic evidence; not current certification proof"
+    },
+    "certification-owner-baseline.log": {
+      "sha256": "fdc8527066c63cbcc35275081d25e5d5faec682c254ae66c1cd8dd79b5fd89e0",
+      "size": 206,
+      "custody": "Git worktree local diagnostic evidence; scope is described by segment log"
+    },
+    "governed-release-lifecycle-20261025.log": {
+      "sha256": "62a01064e37e6ecbdd07b5567993ae24ae8d71d16c04071105cc07d4f0afbf53",
+      "size": 57096,
+      "custody": "Git worktree local diagnostic evidence; scoped by segment log"
+    },
+    "lifecycle-certification-integrated.log": {
+      "sha256": "94e3de2e221838450116c38c814c96f9112c75422f0cf5360f18db808733484a",
+      "size": 370,
+      "custody": "Git worktree local diagnostic evidence; scope is described by segment log"
+    },
+    "lifecycle-first-regression.log": {
+      "sha256": "393c902b864f9cd7e075256d141f4dc16b5f812eb287c439c1615c15ff8697ea",
+      "size": 42654,
+      "custody": "Git worktree local diagnostic evidence; scope is described by segment log"
+    },
+    "revision-lifecycle-integration.log": {
+      "sha256": "3ee0e1b1afca96ed4113e9d86c9111f4d06357868b811877c723ce515f574480",
+      "size": 202,
+      "custody": "Git worktree local diagnostic evidence; scope is described by segment log"
+    },
+    "governed-release-lifecycle-20261025-final.log": {
+      "sha256": "d5c19dc0ea817d34530e670905eb6c815f2d343b5967996989f2ec9237e6d937",
+      "size": 57096,
+      "custody": "Git worktree local diagnostic evidence; scoped by segment log"
+    },
+    "legacy-campaign-compatibility-20261025.log": {
+      "sha256": "aaaf5a410b076141bb694e53e34d91e8b713f093c1058ee60dc1a96724f09fbd",
+      "size": 234,
+      "custody": "Git worktree local diagnostic evidence; scoped by segment log"
     }
   },
   "extension_unit_after_repair": {
@@ -138,5 +173,55 @@
     "valid": true,
     "scope": "Git archive with worktree attributes; not distribution certification"
   },
-  "integrated_skill_gate_errors": []
+  "integrated_skill_gate_errors": [],
+  "governed_release_lifecycle_20261025": {
+    "section": "release-lifecycle",
+    "valid": true,
+    "exit_code": 0,
+    "timed_out": false,
+    "duration_seconds": 18.483263,
+    "receipt_published": true,
+    "input_sha256": "dba60179bc5a22b518c3884566de92da45aff6374a8cdb9e3b115e48efc7aaa7",
+    "chunks": [
+      {
+        "id": "chunk-01",
+        "members": [
+          "tests/test_project_revision_succession.py",
+          "tests/test_revision_campaign_lifecycle.py",
+          "tests/test_release_candidate_driver.py"
+        ],
+        "exit_code": 0,
+        "passed": 74,
+        "receipt_sha256": "ca67992e3fc92a06a7c196db85d1923e791f0196f5a1a29563af1807ede3f3be"
+      },
+      {
+        "id": "chunk-02",
+        "members": [
+          "tests/test_release_stage_owner.py",
+          "tests/test_run_installed_operational_owner.py",
+          "tests/test_certificate_input_contracts.py"
+        ],
+        "exit_code": 0,
+        "passed": 103,
+        "receipt_sha256": "1d769e3cc1f61be0ccbc7b5897c59358c49c9509ab02e5d4de26e51760d626f4"
+      },
+      {
+        "id": "chunk-03",
+        "members": [
+          "tests/test_certification_readiness.py",
+          "tests/test_rollout_inventory.py",
+          "tests/test_certification_pipeline_readiness.py"
+        ],
+        "exit_code": 0,
+        "passed": 24,
+        "receipt_sha256": "01421118ea0c7611d7ffaa924828626aafbee28910548420c6a2661a54aaf94c"
+      }
+    ],
+    "passed_tests": 201,
+    "scope": "Current source governed section; not final managed rollout certification."
+  },
+  "legacy_campaign_compatibility_20261025": {
+    "passed": 24,
+    "deselected": 26
+  }
 }
