@@ -112,7 +112,7 @@ function projectFabricCatalog(listResponse) {
 
 function registerAgentConsole(vscode, context, options = {}) {
   const disposables = [];
-  const eventBus = new CanonicalEventBus();
+  const eventBus = new CanonicalEventBus({ onDiagnostic: options.onDiagnostic });
   const projectRoot = options.workspaceRootProvider?.();
   const taskPersistence = projectRoot ? new DurableTaskState(projectRoot) : {
     load: () => context.workspaceState.get(TASK_STATE_KEY), save: value => context.workspaceState.update(TASK_STATE_KEY, value)

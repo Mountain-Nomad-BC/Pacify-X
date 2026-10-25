@@ -33,6 +33,8 @@ from scripts.run_release_stage_owner import Config as StageConfig  # noqa: E402
 SCHEMA = "px.certification-pipeline-validation/1.0"
 
 REQUIRED_LIFECYCLE_TESTS = (
+    "tests/test_event_integrity_audit.py",
+    "tests/test_event_ledger_regression.py",
     "tests/test_host_enforcement_audit.py",
     "tests/test_secure_publish.py",
     "tests/test_project_revision_succession.py",
@@ -45,6 +47,7 @@ REQUIRED_LIFECYCLE_TESTS = (
     "tests/test_rollout_inventory.py",
     "tests/test_certification_pipeline_readiness.py",
 )
+REQUIRED_NODE_TESTS = ("extension/tests/event-integrity-audit.test.js",)
 
 
 def certification_coverage(root: Path) -> dict[str, Any]:
@@ -74,12 +77,25 @@ def certification_coverage(root: Path) -> dict[str, Any]:
         for token in definition["command"]:
             if token in REQUIRED_LIFECYCLE_TESTS and name in required:
                 membership.setdefault(token, []).append(name)
-    missing = [path for path in REQUIRED_LIFECYCLE_TESTS if path not in membership]
-    absent = [path for path in REQUIRED_LIFECYCLE_TESTS
+        if definition.get("cwd") == "extension":
+            for token in command:
+                path = "extension/" + str(token)
+                if path not in REQUIRED_NODE_TESTS:
+                    continue
+                if command[:2] != ["node", "--test"] or any(
+                    str(item).startswith(("--test-name-pattern", "--test-skip-pattern",
+                                          "--test-only", "--test-shard")) for item in command[2:]
+                ):
+                    raise ValidationBlocked("UI event coverage requires an unfiltered node test command")
+                if name in required:
+                    membership.setdefault(path, []).append(name)
+    all_required = (*REQUIRED_LIFECYCLE_TESTS, *REQUIRED_NODE_TESTS)
+    missing = [path for path in all_required if path not in membership]
+    absent = [path for path in all_required
               if not (root / path).is_file() or (root / path).is_symlink()]
     duplicate = [path for path, owners in membership.items() if len(owners) != len(set(owners))]
     return {"valid": not missing and not absent and not duplicate,
-            "required_count": len(REQUIRED_LIFECYCLE_TESTS), "membership": membership,
+            "required_count": len(all_required), "membership": membership,
             "missing_membership": missing, "missing_files": absent,
             "duplicate_members": duplicate}
 

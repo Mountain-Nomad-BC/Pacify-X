@@ -106,3 +106,7 @@ repair/reopen path; it never becomes a synthetic passing receipt.
 
 Append every segment's actual files, commands, results and residual blockers to the continuation
 log. Preserve current Git commit/remote and active admission IDs for the next model.
+
+## Ordered repair-kit intake update
+
+The user admitted C:/Users/Ben/Downloads/PX_REPAIR_UNBLOCK_AND_COMPLETION_PLAN and its tracking directory before the standalone105-findings kit. Follow the first plan dependency groups, preserving per-card evidence and original dirty checkout. Source custody and G02/G03/G04 segments are logged in external tracking and rollout evidence; no card is REVIEWED_CLOSED. Current mandatory sections additionally include secure-persistence, host-containment, event-integrity and ui-event-integrity. Required Python and Node suites are checked by certification preflight. Remaining repair groups, trusted sandbox/network enforcement, independent review, complete planned package/install realization and later-phase revision transactions must finish before release gates. Local Node developer dependencies now install offline from the exact lock; durable supported Python3.11.9 and most pinned release tools are present, while Ruff pin/environment isolation still require reconciliation. This supersedes the earlier blanket statement that no durable working interpreter/build tools were available.

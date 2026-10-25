@@ -364,6 +364,7 @@ class HarnessController {
     return { schemaVersion: 'px.agent-console-state/1.0', activeTask, activeRun: run, workers: this.workerRegistry.list().map(w => ({ ...w, health: this.workerRegistry.getHealth(w.workerId) })),
       librarian: activeTask ? this.lastLibrarian.get(activeTask.taskId) || null : null, context: activeTask ? this.lastContext.get(activeTask.taskId) || null : null,
       route: activeTask ? this.lastRoute.get(activeTask.taskId) || null : null, budget: this.budgetLedger.summary(), evidence: activeTask ? this.evidence.get(activeTask.taskId) || [] : [],
+      eventOmissions: this.eventBus.omissionSummary?.() || null,
       events: activeTask ? this.eventBus.snapshot({ taskId: activeTask.taskId, limit: 240 }) : this.eventBus.snapshot({ limit: 120 }) };
   }
 

@@ -4,11 +4,11 @@ const path = require('node:path');
 const crypto = require('node:crypto');
 const fs = require('node:fs');
 const { MESSAGE_VERSION, ASSET_PROTOCOL, validateInbound, validateOutbound } = require('./agentConsoleMessages');
-const { buildAgentConsoleProjection } = require('./agentConsoleProjection');
+const { buildAgentConsoleProjection, redactEventPayload } = require('./agentConsoleProjection');
 
 class AgentConsoleViewProvider {
   constructor(vscode, context, options) { this.vscode = vscode; this.context = context; this.harness = options.harness; this.openControlPlane = options.openControlPlane; this.onDiagnostic = options.onDiagnostic || (() => {}); this.modelCatalog = options.modelCatalog || null; this.refreshModelCatalog = options.refreshModelCatalog || null; this.tieControl = options.tieControl || null; this.sandboxControl = options.sandboxControl || null; this.inspectPreparedGroup = options.inspectPreparedGroup || null; this.executePreparedGroup = options.executePreparedGroup || null; this.view = null; this.disposables = [];
-    this.disposables.push(this.harness.eventBus.subscribe(event => { void this._post({ schemaVersion: MESSAGE_VERSION, type: 'event', event }); void this.publish(); })); }
+    this.disposables.push(this.harness.eventBus.subscribe(event => Promise.all([this._post({ schemaVersion: MESSAGE_VERSION, type: 'event', event: { ...event, payload: redactEventPayload(event) } }), this.publish()]))); }
 
   resolveWebviewView(view) {
     this.view = view; const webview = view.webview; webview.options = { enableScripts: true, localResourceRoots: [this.vscode.Uri.file(path.join(this.context.extensionPath, 'media'))] }; webview.html = this._html(webview);

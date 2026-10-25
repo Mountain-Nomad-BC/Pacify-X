@@ -89,15 +89,25 @@ def test_writer_failed_replace_preserves_previous_target(case, tmp_path, monkeyp
     target, _, publish = _writer(case, root, monkeypatch)
     target.parent.mkdir(parents=True, exist_ok=True)
     if not target.exists():
-        target.write_bytes(b"previous image")
+        target.write_bytes(b'{"previous":"image"}' if case == "tool" else b"previous image")
     previous = target.read_bytes()
     def fail(*a, **k):
         raise PermissionError("injected owner publication failure")
     monkeypatch.setattr(secure_publish.os, "replace", fail)
-    with pytest.raises(PermissionError):
+    with pytest.raises(PermissionError) as failure:
         publish()
     assert target.read_bytes() == previous
-    assert not list(root.rglob("*.prepared"))
+    retained = list(root.rglob("*.prepared"))
+    if case in {"tool", "tool-state"}:
+        # The transactional intake owner retains failed WAL allocation evidence;
+        # target staging must still be absent and the outcome must be explicit.
+        journal = root / ".agentic_engineering_os_px/project-management/tool-intake-wal"
+        assert all(path.is_relative_to(journal) for path in retained)
+        outcome = failure.value.wal_outcome
+        assert outcome["acknowledgement"] == "failed"
+        assert outcome["publication"] == "not_started"
+    else:
+        assert not retained
 
 
 def test_failed_replace_preserves_prior_image_and_cleans_owned_staging(tmp_path, monkeypatch):

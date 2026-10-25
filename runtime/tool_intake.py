@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from .secure_publish import atomic_write_bytes
-
 from datetime import datetime, timezone
 import hashlib
 import json
@@ -15,7 +13,11 @@ import subprocess
 from typing import Any, Callable, Iterable
 
 from .contracts import validate_instance
+from .file_lock import FileLock
+from .json_io import decode_json_object, read_bounded_bytes
+from .wal_transaction import BytesArtifact, JsonArtifact, JsonWal
 
+MAX_TOOL_INTAKE_BYTES = 8 * 1024 * 1024
 
 MANIFESTS = {
     "pyproject.toml": "python",
@@ -376,21 +378,36 @@ def record_tool_intake(
     if not state_path.is_file():
         raise ValueError("project must be commissioned before tool intake is recorded")
     target_root.mkdir(parents=True, exist_ok=True)
-    payload = (json.dumps(record, indent=2) + "\n").encode()
-    if target.is_file():
-        history = target_root / "history" / f"tool-intake-{_sha(target)[:16]}.json"
-        history.parent.mkdir(parents=True, exist_ok=True)
-        if not history.exists():
-            atomic_write_bytes(history, target.read_bytes())
-    atomic_write_bytes(target, payload)
-    state = json.loads(state_path.read_text(encoding="utf-8"))
-    state.setdefault("evidence", {})["tool_intake_records"] = [
-        target.relative_to(project_root).as_posix()
-    ]
-    state["checkpoint"]["revision"] = int(state["checkpoint"]["revision"]) + 1
-    prior = target_root / "history" / f"state-{_sha(state_path)[:16]}.json"
-    prior.parent.mkdir(parents=True, exist_ok=True)
-    if not prior.exists():
-        atomic_write_bytes(prior, state_path.read_bytes())
-    atomic_write_bytes(state_path, (json.dumps(state, indent=2) + "\n").encode("utf-8"))
-    return {**record, "applied": True, "target": target.as_posix()}
+    with FileLock(target_root / ".tool-intake.lock", timeout_seconds=10):
+        wal = JsonWal(target_root / "tool-intake-wal", project_root)
+        wal.recover()
+        generation = wal.capture_generation()
+        state_before = bytes(read_bounded_bytes(state_path, max_bytes=MAX_TOOL_INTAKE_BYTES))
+        target_before = bytes(read_bounded_bytes(target, max_bytes=MAX_TOOL_INTAKE_BYTES)) if target.exists() else None
+        state = decode_json_object(state_before)
+        checkpoint = state.get("checkpoint")
+        if (not isinstance(checkpoint, dict) or type(checkpoint.get("revision")) is not int
+                or checkpoint["revision"] < 0):
+            raise ValueError("tool intake requires a valid lifecycle revision")
+        if not isinstance(state.setdefault("evidence", {}), dict):
+            raise ValueError("tool intake lifecycle evidence must be an object")
+        state["evidence"]["tool_intake_records"] = [target.relative_to(project_root).as_posix()]
+        checkpoint["revision"] += 1
+        artifacts = [JsonArtifact("receipt", target, record), JsonArtifact("state", state_path, state)]
+        for label, image in (("state", state_before), ("tool-intake", target_before)):
+            if image is None:
+                continue
+            history = target_root / "history" / f"{label}-{hashlib.sha256(image).hexdigest()[:16]}.json"
+            if history.exists():
+                if bytes(read_bounded_bytes(history, max_bytes=MAX_TOOL_INTAKE_BYTES)) != image:
+                    raise ValueError("tool intake retained history differs")
+            else:
+                artifacts.append(BytesArtifact("receipt", history, image))
+        inputs = {
+            state_path.relative_to(project_root).as_posix(): hashlib.sha256(state_before).hexdigest(),
+            target.relative_to(project_root).as_posix(): hashlib.sha256(target_before).hexdigest() if target_before is not None else None,
+        }
+        transaction = wal.commit(artifacts,
+            transaction_id=f"tool-intake-{checkpoint['revision']:08d}-{hashlib.sha256(state_before).hexdigest()[:16]}",
+            expected_inputs=inputs, expected_generation=generation)
+    return {**record, "applied": True, "target": target.as_posix(), "transaction": transaction}

@@ -10,15 +10,23 @@ from pathlib import Path
 from typing import Mapping
 
 from .file_lock import FileLock
+from .json_io import MAX_JSON_BYTES, decode_json_value, load_json_object
+from .secure_publish import atomic_write_bytes
 
 
 ZERO_SHA256 = "0" * 64
 
 
 def _canonical(value: object) -> bytes:
-    return json.dumps(
-        value, sort_keys=True, separators=(",", ":"), ensure_ascii=False
+    image = json.dumps(
+        value, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False
     ).encode("utf-8")
+    if len(image) >= MAX_JSON_BYTES:
+        raise ValueError("event ledger JSON byte budget exceeded")
+    # Preserve the public owner's existing tuple-to-JSON-array serialization,
+    # while validating the exact resulting JSON for finiteness/depth/ambiguity.
+    decode_json_value(image)
+    return image
 
 
 def _sha(value: object) -> str:
@@ -44,8 +52,8 @@ def validate_event_ledger(
     events: list[dict[str, object]] = []
     for expected, path in enumerate(event_paths, start=1):
         try:
-            record = json.loads(path.read_text(encoding="utf-8"))
-        except (OSError, UnicodeError, json.JSONDecodeError) as error:
+            record = load_json_object(path)
+        except (OSError, UnicodeError, ValueError) as error:
             errors.append(f"{path.name}: unreadable event: {type(error).__name__}")
             continue
         required = {
@@ -61,7 +69,7 @@ def validate_event_ledger(
         if set(record) != required:
             errors.append(f"{path.name}: event fields are not exact")
             continue
-        if record.get("sequence") != expected or not path.name.startswith(
+        if type(record.get("sequence")) is not int or record.get("sequence") != expected or not path.name.startswith(
             f"{expected:08d}-"
         ):
             errors.append(f"{path.name}: event sequence is not contiguous")
@@ -78,6 +86,8 @@ def validate_event_ledger(
         previous = str(record.get("event_sha256", ""))
         events.append(record)
     head_path, anchors = _paths(ledger)
+    if require_head and not event_paths and (head_path.exists() or any(anchors.glob("*.json"))):
+        errors.append("protected ledger history exists but no event files remain")
     if require_head and event_paths:
         try:
             head = json.loads(head_path.read_text(encoding="utf-8"))
@@ -114,15 +124,17 @@ def read_event_tail(
     ledger = ledger.resolve()
     event_paths = tuple(sorted(ledger.glob("*.json"))) if ledger.is_dir() else ()
     if not event_paths:
+        head_path, anchors = _paths(ledger)
+        damaged = require_head and (head_path.exists() or any(anchors.glob("*.json")))
         return {
             "schema_version": "1.0",
             "events": [],
             "health": {
-                "status": "missing",
+                "status": "degraded" if damaged else "missing",
                 "valid_prefix_count": 0,
-                "failed_file": None,
+                "failed_file": head_path.name if damaged else None,
                 "ignored_suffix_files": 0,
-                "reason": None,
+                "reason": "protected ledger history exists but no event files remain" if damaged else None,
                 "ancestry_head_sha256": ZERO_SHA256,
             },
         }
@@ -141,10 +153,10 @@ def read_event_tail(
     failure: tuple[str, str] | None = None
     for expected, path in enumerate(event_paths, start=1):
         try:
-            record = json.loads(path.read_text(encoding="utf-8"))
+            record = load_json_object(path)
             if not isinstance(record, dict) or set(record) != required:
                 raise ValueError("event fields are not exact")
-            if record.get("sequence") != expected or not path.name.startswith(
+            if type(record.get("sequence")) is not int or record.get("sequence") != expected or not path.name.startswith(
                 f"{expected:08d}-"
             ):
                 raise ValueError("event sequence is not contiguous")
@@ -226,16 +238,7 @@ def _publish_head(ledger: Path, sequence: int, event_sha256: str) -> None:
         except FileExistsError:
             if history.read_text(encoding="utf-8") != previous:
                 raise ValueError("existing event-ledger head history differs")
-    temporary = head_path.with_name(f".{head_path.name}.{sequence:08d}.prepared")
-    if temporary.exists():
-        if temporary.read_text(encoding="utf-8") != encoded:
-            raise ValueError("existing prepared event-ledger head differs")
-    else:
-        with temporary.open("x", encoding="utf-8", newline="\n") as stream:
-            stream.write(encoded)
-            stream.flush()
-            os.fsync(stream.fileno())
-    os.replace(temporary, head_path)
+    atomic_write_bytes(head_path, encoded.encode("utf-8"))
 
 
 def append_chained_event(
@@ -261,8 +264,10 @@ def _append_chained_event_locked(
     ):
         raise ValueError("event kind must be a bounded identifier")
     ledger.mkdir(parents=True, exist_ok=True)
-    recover_event_ledger(ledger)
-    current = validate_event_ledger(ledger, require_head=any(ledger.glob("*.json")))
+    recovery = _recover_event_ledger_locked(ledger)
+    if recovery["errors"]:
+        raise ValueError("event ledger recovery refused: " + "; ".join(recovery["errors"]))
+    current = validate_event_ledger(ledger, require_head=True)
     if not current["valid"]:
         raise ValueError(
             "event ledger integrity failure: " + "; ".join(current["errors"])
@@ -279,34 +284,85 @@ def _append_chained_event_locked(
     }
     record["event_sha256"] = _event_hash(record)
     name = f"{sequence:08d}-{kind}-{str(record['event_sha256'])[:12]}.json"
-    prepared = ledger / f".{name}.prepared"
     target = ledger / name
-    with prepared.open("x", encoding="utf-8", newline="\n") as stream:
-        json.dump(record, stream, indent=2, default=str)
-        stream.write("\n")
-        stream.flush()
-        os.fsync(stream.fileno())
-    os.replace(prepared, target)
+    head_path, _ = _paths(ledger)
+    pending = head_path.parent / ".pending-head.json"
+    intent = {
+        "schema_version": "px.event-head-intent/1.0", "sequence": sequence,
+        "event_sha256": record["event_sha256"], "event_file": name,
+        "previous_head_sha256": hashlib.sha256(head_path.read_bytes()).hexdigest() if head_path.exists() else None,
+    }
+    image = _canonical(record) + b"\n"
+    atomic_write_bytes(pending, _canonical(intent))
+    atomic_write_bytes(target, image)
     _publish_head(ledger, sequence, str(record["event_sha256"]))
+    _finish_head_intent(pending, intent, "committed")
     return target
 
 
 def recover_event_ledger(ledger: Path) -> dict[str, object]:
-    """Finish a pending head publication without duplicating its durable event."""
+    """Recover an explicit pending publication, never unexplained authority damage."""
+    ledger.mkdir(parents=True, exist_ok=True)
+    with FileLock(ledger / ".event-ledger.lock"):
+        return _recover_event_ledger_locked(ledger)
+
+
+def _finish_head_intent(pending: Path, intent: dict[str, object], outcome: str) -> None:
+    image = _canonical(intent)
+    history = pending.parent / "head-intents" / f"{hashlib.sha256(image).hexdigest()}-{outcome}.json"
+    if history.exists():
+        if history.read_bytes() != image:
+            raise ValueError("retained event-head intent differs")
+    else:
+        atomic_write_bytes(history, image)
+    pending.unlink()
+
+
+def _recover_event_ledger_locked(ledger: Path) -> dict[str, object]:
     ledger = ledger.resolve()
     current = validate_event_ledger(ledger, require_head=False)
-    if not current["valid"] or not current["event_count"]:
+    if not current["valid"]:
         return {"recovered": False, "event_count": current["event_count"], "errors": current["errors"]}
+    head_path, _ = _paths(ledger)
+    pending = head_path.parent / ".pending-head.json"
     complete = validate_event_ledger(ledger, require_head=True)
-    if complete["valid"]:
-        return {"recovered": False, "event_count": complete["event_count"], "errors": []}
-    # The event files form a complete chain. Re-publishing their exact last head
-    # is an idempotent recovery; it never appends or repeats the operation.
-    _publish_head(ledger, int(current["event_count"]), str(current["head_sha256"]))
-    verified = validate_event_ledger(ledger, require_head=True)
-    if not verified["valid"]:
-        raise ValueError("event ledger head recovery failed: " + "; ".join(verified["errors"]))
-    return {"recovered": True, "event_count": verified["event_count"], "errors": []}
+    if not pending.exists():
+        return {"recovered": False, "event_count": complete["event_count"],
+                "errors": complete["errors"],
+                "classification": "healthy" if complete["valid"] else "authority_integrity_incident"}
+    try:
+        intent = load_json_object(pending)
+        if (set(intent) != {"schema_version", "sequence", "event_sha256", "event_file", "previous_head_sha256"}
+                or intent["schema_version"] != "px.event-head-intent/1.0"
+                or type(intent["sequence"]) is not int
+                or type(intent["event_file"]) is not str
+                or Path(intent["event_file"]).name != intent["event_file"]):
+            raise ValueError("invalid event-head intent")
+        prior_hash = hashlib.sha256(head_path.read_bytes()).hexdigest() if head_path.exists() else None
+        target = ledger / intent["event_file"]
+        if not target.exists():
+            if (complete["valid"] and intent["sequence"] == current["event_count"] + 1
+                    and intent["previous_head_sha256"] == prior_hash):
+                _finish_head_intent(pending, intent, "aborted-before-event")
+                return {"recovered": True, "event_count": current["event_count"], "errors": []}
+            raise ValueError("pending event image missing with conflicting head")
+        record = load_json_object(target)
+        if (intent["sequence"] != current["event_count"]
+                or intent["event_sha256"] != current["head_sha256"]
+                or record != current["events"][-1]):
+            raise ValueError("pending event-head intent does not bind current chain")
+        if not complete["valid"]:
+            if prior_hash != intent["previous_head_sha256"]:
+                raise ValueError("protected head changed outside pending publication")
+            _publish_head(ledger, int(current["event_count"]), str(current["head_sha256"]))
+        verified = validate_event_ledger(ledger, require_head=True)
+        if not verified["valid"]:
+            raise ValueError("pending head verification failed")
+        _finish_head_intent(pending, intent, "committed")
+        return {"recovered": True, "event_count": verified["event_count"], "errors": []}
+    except (OSError, ValueError, KeyError, TypeError) as error:
+        return {"recovered": False, "event_count": current["event_count"],
+                "errors": [str(error)], "classification": "authority_integrity_incident"}
 
 
 def append_operational_lifecycle_event(

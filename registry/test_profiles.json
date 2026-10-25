@@ -2484,6 +2484,69 @@
       "max_parallel_chunks": 1,
       "chunk_timeout_seconds": 120,
       "timeout_seconds": 300
+    },
+    "event-integrity": {
+      "description": "Atomic event batches, immutable IDs, protected head recovery, finite JSON and transactional tool intake; dependent workspace regressions.",
+      "source_patterns": [
+        "runtime/event_ledger.py",
+        "runtime/operational_event_bus.py",
+        "runtime/tool_intake.py",
+        "registry/test_profiles.json",
+        "tests/test_event_integrity_audit.py",
+        "tests/test_event_ledger_regression.py",
+        "tests/test_event_ledger_integrity.py",
+        "tests/test_operational_event_bus.py",
+        "tests/test_tool_intake.py",
+        "tests/test_workspace_manager.py"
+      ],
+      "command": [
+        "python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_event_integrity_audit.py",
+        "tests/test_event_ledger_regression.py",
+        "tests/test_event_ledger_integrity.py",
+        "tests/test_operational_event_bus.py",
+        "tests/test_tool_intake.py",
+        "tests/test_workspace_manager.py"
+      ],
+      "chunk_size": 1,
+      "max_parallel_chunks": 1,
+      "chunk_timeout_seconds": 360,
+      "timeout_seconds": 1200
+    },
+    "ui-event-integrity": {
+      "description": "Live/snapshot privacy, bounded event buffering and isolated observers; console and harness neighboring suites.",
+      "source_patterns": [
+        "extension/src/agentHarness/eventBus.js",
+        "extension/src/agentHarness/agentConsoleProjection.js",
+        "extension/src/agentHarness/agentConsoleView.js",
+        "extension/src/agentHarness/harnessController.js",
+        "extension/src/agentHarness/registerAgentConsole.js",
+        "registry/test_profiles.json",
+        "extension/tests/event-integrity-audit.test.js",
+        "extension/tests/agent-harness-core.test.js",
+        "extension/tests/agent-console-messages.test.js",
+        "extension/tests/agent-console-catalog-currentness.test.js",
+        "extension/tests/agent-console-model-fabric-catalog.test.js"
+      ],
+      "command": [
+        "node",
+        "--test",
+        "tests/event-integrity-audit.test.js",
+        "tests/agent-harness-core.test.js",
+        "tests/agent-console-messages.test.js",
+        "tests/agent-console-catalog-currentness.test.js",
+        "tests/agent-console-model-fabric-catalog.test.js"
+      ],
+      "cwd": "extension",
+      "chunk_size": 1,
+      "max_parallel_chunks": 1,
+      "chunk_timeout_seconds": 120,
+      "timeout_seconds": 600
     }
   },
   "certification": {
@@ -2497,7 +2560,9 @@
       "runtime-domain-contracts",
       "release-lifecycle",
       "secure-persistence",
-      "host-containment"
+      "host-containment",
+      "event-integrity",
+      "ui-event-integrity"
     ],
     "whole_suite_after_sections": true,
     "required_groups": [
