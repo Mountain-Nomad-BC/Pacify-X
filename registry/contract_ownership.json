@@ -1273,6 +1273,25 @@
       ]
     },
     {
+      "path": "contracts/memory-record.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:memory-record",
+      "contract_version": "1.0.0",
+      "title": "Memory Record",
+      "owner": "runtime/declared_suite.py",
+      "producers": [
+        "builders/declared_suite_support_builder.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "declared_suite_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_declared_suite_support.py"
+      ]
+    },
+    {
       "path": "contracts/memory/memory-evaluation-fixture.schema.json",
       "contract_id": "urn:engineering-loop-bootstrap:contract:memory:memory-evaluation-fixture",
       "contract_version": "1.0.0",
@@ -1435,25 +1454,6 @@
         "tests/test_contract_runtime.py",
         "tests/test_memory_intelligence.py",
         "tests/test_clean_room_capabilities.py"
-      ]
-    },
-    {
-      "path": "contracts/memory-record.schema.json",
-      "contract_id": "urn:engineering-loop-bootstrap:contract:memory-record",
-      "contract_version": "1.0.0",
-      "title": "Memory Record",
-      "owner": "runtime/declared_suite.py",
-      "producers": [
-        "builders/declared_suite_support_builder.py"
-      ],
-      "consumers": [
-        "runtime/contracts.py"
-      ],
-      "enforcement": "declared_suite_runtime_boundary",
-      "packaged": true,
-      "tests": [
-        "tests/test_contract_runtime.py",
-        "tests/test_declared_suite_support.py"
       ]
     },
     {

@@ -1,0 +1,100 @@
+{
+  "schema_version": "px.repair-source-segment/1.0",
+  "timestamp_utc": "2026-10-25T18:29:53.517625+00:00",
+  "segment": "resume3-source-authority",
+  "state": "IMPLEMENTED_UNVERIFIED",
+  "independent_reviewer": "UNASSIGNED",
+  "reviewed_closed": false,
+  "tests": [
+    {
+      "command": "pytest clone isolation + contract ownership + declared suites",
+      "result": "19 passed in59.46s",
+      "log": "docs/repair/evidence/resume3-isolation-ownership.log"
+    },
+    {
+      "command": "pytest ownership source independence BEFORE correction",
+      "result": "1 failed,1passed; JSONDecodeError on corrupt prior map",
+      "log": "docs/repair/evidence/resume3-ownership-source-before.log"
+    },
+    {
+      "command": "pytest source-authority focused suites with isolated basetemp",
+      "result": "27passed in51.69s",
+      "log": "docs/repair/evidence/resume3-source-authority-focused-green.log"
+    },
+    {
+      "command": "Updated required-section expectation for new mandatory source-authority lane",
+      "result": "1 passed in41.63s",
+      "log": "docs/repair/evidence/resume3-section-policy-focused.log"
+    }
+  ],
+  "governed_gate": {
+    "result": "BLOCKED BEFORE EXECUTION",
+    "reason": "Historical managed campaign at installed_operational; no repair/successor mutation performed",
+    "log": "docs/repair/evidence/resume3-source-authority-gate.log"
+  },
+  "source_files": [
+    {
+      "path": "scripts/build_contract_ownership_registry.py",
+      "session_before_sha256": "896e466c715437818ccc5be2b82f7a06d2c932aa252b8b46d03a207326974253",
+      "after_sha256": "896e466c715437818ccc5be2b82f7a06d2c932aa252b8b46d03a207326974253"
+    },
+    {
+      "path": "registry/contract_ownership.json",
+      "session_before_sha256": "fb14a32f7ab6c05b5a057d813f882277cecd921d08cd34b2db65197275ab9c60",
+      "after_sha256": "fb14a32f7ab6c05b5a057d813f882277cecd921d08cd34b2db65197275ab9c60"
+    },
+    {
+      "path": "runtime/python_surface_certification.py",
+      "session_before_sha256": "152baac9112e639f98e78d2c5c2b266429e43e88e09411e5bc9c55412107414b",
+      "after_sha256": "54dd2b27573394363dff830ff10b775248de257d0c28f31a25ff22d37b5aa93a",
+      "before_basis": "Git HEAD; file was not dirty in initial snapshot"
+    },
+    {
+      "path": "runtime/repository_scope.py",
+      "session_before_sha256": "d45c4404d9a6e5b7682187b7be17b0ee560e059cd0549e169de75d76f541eb46",
+      "after_sha256": "13176a9f1ce66cdf5b923465bfc37508efecf9854231f0acac8510f8a7de77be",
+      "before_basis": "Git HEAD; file was not dirty in initial snapshot"
+    },
+    {
+      "path": "registry/test_profiles.json",
+      "session_before_sha256": "0a819e8664dc1b2b689c2032e672d6e167c39d6dc6153118294640806f7c8a19",
+      "after_sha256": "8d2a45922f3320a2db972a5e55dc5cc6b9f7f836fa88dee5a3bc96566d653301",
+      "before_basis": "Git HEAD; file was not dirty in initial snapshot"
+    },
+    {
+      "path": "tests/test_structural_integrity.py",
+      "session_before_sha256": "65335ed9776c9e53868fb39af77fce5969c39141101db51796fc6525e6c51f1a",
+      "after_sha256": "69429fec1a0383426e5691df5559d42e186fca2b9285c50ec66317d55240f01f",
+      "before_basis": "Git HEAD; file was not dirty in initial snapshot"
+    },
+    {
+      "path": "tests/test_structural_clone_isolation.py",
+      "session_before_sha256": null,
+      "after_sha256": "917e483941ee05990db3466671c290f124db0848055e68f11fd89c76848fc00b"
+    },
+    {
+      "path": "tests/test_ownership_source_independence.py",
+      "session_before_sha256": null,
+      "after_sha256": "d41c39beef8bd81869a891ff8889699b7c1f07580ef1ec3902ae98e0a782ae98"
+    },
+    {
+      "path": "tests/test_repository_scope.py",
+      "session_before_sha256": "85e0f775fcdaba724c95b6c25a44a6e56f5c673dc79e47b75c9c7cee4f10fce2",
+      "after_sha256": "b4b3fdb6031a031d38d3599821d40506be591a01a307d3f5d8450ae80bbde0f6",
+      "before_basis": "Git HEAD; file was not dirty in initial snapshot"
+    },
+    {
+      "path": "tests/test_contract_ownership_registry_source.py",
+      "session_before_sha256": "ac350dbf9b7c7b7ba86c52ffa6cfacec69a92baed83fbec51934dab5751125da",
+      "after_sha256": "ac350dbf9b7c7b7ba86c52ffa6cfacec69a92baed83fbec51934dab5751125da"
+    },
+    {
+      "path": "tests/test_test_profiles.py",
+      "session_before_sha256": "42908e39f75c3fa2e3cc2372d093dc589a7ac99476927e5315641382de6dfc0d",
+      "after_sha256": "5ff97eac8c577d2e68c44ea79d8d959a91e5d7d411bd0d2684d4e3fc7428b901",
+      "before_basis": "Git HEAD; file was not dirty in initial snapshot"
+    }
+  ],
+  "rollback": "Protected-source.zip and binary diff in .audit-handoff/20261025-resume3; preserve inherited original edits separately.",
+  "generator_reconciliation": "No generator executed this session. Inherited contract ownership re-sort retained; all further generated refreshes held until repair freeze."
+}

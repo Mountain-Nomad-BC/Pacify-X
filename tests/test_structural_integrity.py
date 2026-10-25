@@ -96,11 +96,10 @@ def _clone_ignore(directory: str, names: list[str]) -> set[str]:
     }
 
 
-def _link_read_only_source(source: str, target: str) -> str:
-    try:
-        return os.link(source, target)
-    except OSError:
-        return shutil.copy2(source, target)
+def _copy_isolated_source(source: str, target: str) -> str:
+    # Audits call other owners and mutation tests add new write paths over time.
+    # No clone inode may alias live source, even for currently read-only inputs.
+    return shutil.copy2(source, target)
 
 
 def _clone(directory: Path) -> Path:
@@ -109,7 +108,7 @@ def _clone(directory: Path) -> Path:
         ROOT,
         target,
         ignore=_clone_ignore,
-        copy_function=_link_read_only_source,
+        copy_function=_copy_isolated_source,
     )
     return target
 

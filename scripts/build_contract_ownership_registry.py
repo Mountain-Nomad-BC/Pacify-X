@@ -459,17 +459,126 @@ KNOWLEDGE_REFINERY_OWNERS = {
     "graph-audit.schema.json": ["runtime/knowledge_refinery.py", "runtime/cli.py"],
 }
 
+# Every rule below is declared here rather than inherited from the previously published
+# registry: a build must be derivable from source alone and must fail closed on a
+# contract that has no explicit rule (see tests/test_contract_ownership_registry_source.py).
+DECLARED_SUITE_OWNERS = {
+    "ai-bom.schema.json",
+    "approval.schema.json",
+    "assumption.schema.json",
+    "claim.schema.json",
+    "compatibility-record.schema.json",
+    "decision-record.schema.json",
+    "evaluation-case.schema.json",
+    "evaluation-result.schema.json",
+    "failure.schema.json",
+    "incident.schema.json",
+    "memory-record.schema.json",
+    "recovery-plan.schema.json",
+    "task-state.schema.json",
+    "trace-link.schema.json",
+}
+
+COGNITIVE_DIR_OWNERS = {
+    "brain-capability.schema.json": (
+        "runtime/cognitive_core/index_builder.py",
+        "cognitive_runtime_boundary",
+    ),
+    "cognitive-index.schema.json": (
+        "runtime/cognitive_core/index_builder.py",
+        "cognitive_runtime_boundary",
+    ),
+    "formula-definition.schema.json": (
+        "runtime/cognitive_core/formula_engine.py",
+        "cognitive_runtime_boundary",
+    ),
+    "reasoning-request.schema.json": (
+        "runtime/cognitive_core/facade.py",
+        "cognitive_runtime_boundary",
+    ),
+}
+
+COGNITIVE_DIR_PRODUCERS = {
+    "brain-capability.schema.json": ["registry/brain_capabilities.json"],
+    "cognitive-index.schema.json": ["scripts/build_cognitive_index.py"],
+    "formula-definition.schema.json": ["registry/brain_formulas.json"],
+    "reasoning-request.schema.json": ["runtime/cli.py"],
+}
+
+OPERATIONS_DIR_OWNERS = {
+    "health-model-registry.schema.json": ("runtime/health_model.py", "runtime_control_equivalent"),
+    "health-report.schema.json": ("runtime/health_model.py", "runtime_control_equivalent"),
+    "operation-event.schema.json": (
+        "runtime/operational_visibility.py",
+        "runtime_control_equivalent",
+    ),
+    "os-observer-registry.schema.json": (
+        "runtime/operational_observers.py",
+        "runtime_control_equivalent",
+    ),
+    "provider-adapter-registry.schema.json": (
+        "runtime/provider_gateway.py",
+        "runtime_control_equivalent",
+    ),
+    "provider-budget-policy.schema.json": (
+        "runtime/provider_budget.py",
+        "runtime_control_equivalent",
+    ),
+    "route-observer-registry.schema.json": (
+        "runtime/operational_visibility.py",
+        "runtime_control_equivalent",
+    ),
+    "local-model-runtime.schema.json": (
+        "runtime/local_model_runtime.py",
+        "local_model_lifecycle_runtime_boundary",
+    ),
+}
+
+OPERATIONS_DIR_PRODUCERS = {
+    "health-model-registry.schema.json": ["registry/health_taxonomy.json"],
+    "health-report.schema.json": ["runtime/health_model.py"],
+    "operation-event.schema.json": ["runtime/operational_visibility.py"],
+    "os-observer-registry.schema.json": ["registry/os_observer_registry.json"],
+    "provider-adapter-registry.schema.json": ["registry/provider_adapters.json"],
+    "provider-budget-policy.schema.json": ["registry/provider_budget_policy.json"],
+    "route-observer-registry.schema.json": ["registry/operation_route_registry.json"],
+    "local-model-runtime.schema.json": ["runtime/local_model_runtime.py"],
+}
+
+OPERATIONS_DIR_TESTS = {
+    "health-model-registry.schema.json": "tests/test_health_model.py",
+    "health-report.schema.json": "tests/test_health_model.py",
+    "operation-event.schema.json": "tests/test_operational_visibility.py",
+    "os-observer-registry.schema.json": "tests/test_operational_observers.py",
+    "provider-adapter-registry.schema.json": "tests/test_provider_gateway.py",
+    "provider-budget-policy.schema.json": "tests/test_provider_budget.py",
+    "route-observer-registry.schema.json": "tests/test_operational_visibility.py",
+    "local-model-runtime.schema.json": "tests/test_local_model_runtime.py",
+}
+
+CONTROL_OWNERS = {
+    "certification-readiness.schema.json": (
+        "runtime/certification_readiness.py",
+        ["runtime/certification_readiness.py", "scripts/bootstrap_certification.py"],
+        "runtime_control_equivalent",
+        ["tests/test_certification_readiness.py"],
+    ),
+    "execution-package.schema.json": (
+        "runtime/capability_routing.py",
+        ["runtime/capability_routing.py"],
+        "runtime_enforced",
+        ["tests/test_capability_routing.py"],
+    ),
+    "task-envelope.schema.json": (
+        "runtime/capability_routing.py",
+        ["runtime/capability_routing.py"],
+        "runtime_enforced",
+        ["tests/test_capability_routing.py"],
+    ),
+}
+
 
 def build(root: Path) -> dict[str, object]:
-    existing_path = root / "registry/contract_ownership.json"
-    existing = {
-        str(item["path"]): item
-        for item in (
-            json.loads(existing_path.read_text(encoding="utf-8")).get("records", [])
-            if existing_path.is_file()
-            else []
-        )
-    }
     records = []
     for path in sorted((root / "contracts").rglob("*.json")):
         relative = path.relative_to(root).as_posix()
@@ -595,14 +704,39 @@ def build(root: Path) -> dict[str, object]:
                 "tests/test_contract_runtime.py",
                 "tests/test_research_contract_admission.py",
             ]
+        elif name in DECLARED_SUITE_OWNERS:
+            owner, enforcement = (
+                "runtime/declared_suite.py",
+                "declared_suite_runtime_boundary",
+            )
+            producers = ["builders/declared_suite_support_builder.py"]
+            tests = ["tests/test_declared_suite_support.py"]
         elif name in ROOT_OWNERS:
             owner, producers, enforcement, tests = ROOT_OWNERS[name]
-        elif relative in existing:
-            prior = existing[relative]
-            owner = prior["owner"]
-            producers = list(prior.get("producers", []))
-            enforcement = prior["enforcement"]
-            tests = list(prior.get("tests", []))
+        elif name in CONTROL_OWNERS:
+            owner, producers, enforcement, tests = CONTROL_OWNERS[name]
+        elif path.parent.name == "cognitive":
+            owner, enforcement = COGNITIVE_DIR_OWNERS[name]
+            producers = COGNITIVE_DIR_PRODUCERS[name]
+            tests = ["tests/test_cognitive_core.py"]
+        elif path.parent.name == "metacognitive":
+            owner, enforcement = (
+                "runtime/metacognitive_evolution/facade.py",
+                "metacognitive_runtime_boundary",
+            )
+            producers = ["builders/last_round_assimilation_builder.py"]
+            tests = ["tests/test_metacognitive_evolution.py"]
+        elif path.parent.name == "scheduling":
+            owner, enforcement = (
+                "runtime/capability_scheduler.py",
+                "scheduling_runtime_boundary",
+            )
+            producers = ["builders/last_round_assimilation_builder.py"]
+            tests = ["tests/test_capability_scheduler.py"]
+        elif path.parent.name == "operations":
+            owner, enforcement = OPERATIONS_DIR_OWNERS[name]
+            producers = OPERATIONS_DIR_PRODUCERS[name]
+            tests = [OPERATIONS_DIR_TESTS[name]]
         else:
             raise ValueError(f"contract has no ownership rule: {relative}")
         records.append(
@@ -629,6 +763,15 @@ def build(root: Path) -> dict[str, object]:
     }
 
 
+def dump_result(result: dict[str, object]) -> str:
+    '''Canonical serialisation of a build result (sorted records, stable formatting).'''
+    ordered = dict(result)
+    ordered["records"] = sorted(
+        result["records"], key=lambda record: record["path"]  # type: ignore[index]
+    )
+    return json.dumps(ordered, indent=2) + "\n"
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=Path, default=Path.cwd())
@@ -636,7 +779,5 @@ if __name__ == "__main__":
     root = args.root.resolve()
     result = build(root)
     target = root / "registry" / "contract_ownership.json"
-    target.write_text(
-        json.dumps(result, indent=2) + "\n", encoding="utf-8", newline="\n"
-    )
+    target.write_text(dump_result(result), encoding="utf-8", newline="\n")
     print(json.dumps({"contract_count": result["contract_count"]}, indent=2))

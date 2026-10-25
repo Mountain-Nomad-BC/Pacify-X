@@ -336,7 +336,9 @@ def certify_python_surfaces(
         )
     ownership_path = root / "registry" / "python_surface_ownership.json"
     map_current = False
-    if ownership_path.is_file():
+    # Generation must not depend on a potentially stale or malformed output.
+    # Validation still checks published authority; builders publish new records.
+    if require_map_current and ownership_path.is_file():
         stored = json.loads(ownership_path.read_text(encoding="utf-8"))
         map_current = stored.get("records") == records
     if require_map_current and not map_current:

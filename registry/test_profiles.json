@@ -2258,6 +2258,46 @@
       "max_parallel_chunks": 1,
       "chunk_timeout_seconds": 300,
       "timeout_seconds": 900
+    },
+    "source-authority": {
+      "description": "Source-derived ownership, isolated structural mutation clones, and retained evidence boundaries.",
+      "source_patterns": [
+        "scripts/build_contract_ownership_registry.py",
+        "scripts/build_python_surface_ownership.py",
+        "scripts/build_python_dependency_ownership.py",
+        "scripts/build_effect_surface_ownership.py",
+        "runtime/python_surface_certification.py",
+        "runtime/repository_scope.py",
+        "runtime/effect_surface.py",
+        "tests/test_structural_integrity.py",
+        "registry/test_profiles.json",
+        "tests/test_contract_ownership_registry.py",
+        "tests/test_contract_ownership_registry_source.py",
+        "tests/test_ownership_source_independence.py",
+        "tests/test_structural_clone_isolation.py",
+        "tests/test_python_surface_boundaries.py",
+        "tests/test_repository_scope.py",
+        "tests/test_declared_suite_support.py"
+      ],
+      "command": [
+        "python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_contract_ownership_registry.py",
+        "tests/test_contract_ownership_registry_source.py",
+        "tests/test_ownership_source_independence.py",
+        "tests/test_structural_clone_isolation.py",
+        "tests/test_python_surface_boundaries.py",
+        "tests/test_repository_scope.py",
+        "tests/test_declared_suite_support.py"
+      ],
+      "chunk_size": 2,
+      "max_parallel_chunks": 1,
+      "chunk_timeout_seconds": 180,
+      "timeout_seconds": 600
     }
   },
   "certification": {
@@ -2268,7 +2308,8 @@
       "learning-promotion",
       "execution-placement",
       "hardware-routing",
-      "runtime-domain-contracts"
+      "runtime-domain-contracts",
+      "source-authority"
     ],
     "whole_suite_after_sections": true,
     "required_groups": [

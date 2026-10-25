@@ -627,6 +627,7 @@ def test_section_status_refuses_missing_or_stale_receipts(monkeypatch):
         "execution-placement",
         "hardware-routing",
         "runtime-domain-contracts",
+        "source-authority",
     }
 
 
